@@ -1,0 +1,83 @@
+[package]
+name = "gororoba_cli"
+version = "0.1.0"
+edition = "2021"
+description = "CLI tools for gororoba physics simulation library"
+license = "MIT"
+
+[[bin]]
+name = "gororoba"
+path = "src/main.rs"
+
+[[bin]]
+name = "kerr-shadow"
+path = "src/bin/kerr_shadow.rs"
+
+[[bin]]
+name = "zd-search"
+path = "src/bin/zd_search.rs"
+
+[[bin]]
+name = "gravastar-sweep"
+path = "src/bin/gravastar_sweep.rs"
+
+[[bin]]
+name = "grin-trace"
+path = "src/bin/grin_trace.rs"
+
+[[bin]]
+name = "mera-entropy"
+path = "src/bin/mera_entropy.rs"
+
+[[bin]]
+name = "frac-laplacian"
+path = "src/bin/frac_laplacian.rs"
+
+[[bin]]
+name = "lbm-poiseuille"
+path = "src/bin/lbm_poiseuille.rs"
+
+[[bin]]
+name = "bounce-cosmology"
+path = "src/bin/bounce_cosmology.rs"
+
+[[bin]]
+name = "neg-dim-eigen"
+path = "src/bin/neg_dim_eigen.rs"
+
+[[bin]]
+name = "frac-schrodinger"
+path = "src/bin/frac_schrodinger.rs"
+
+[[bin]]
+name = "ema-calc"
+path = "src/bin/ema_calc.rs"
+
+[[bin]]
+name = "oct-field"
+path = "src/bin/oct_field.rs"
+
+[[bin]]
+name = "tensor-network"
+path = "src/bin/tensor_network.rs"
+
+[[bin]]
+name = "harper-chern"
+path = "src/bin/harper_chern.rs"
+
+[dependencies]
+algebra_core = { path = "../algebra_core" }
+cosmology_core = { path = "../cosmology_core" }
+gr_core = { path = "../gr_core" }
+materials_core = { path = "../materials_core" }
+optics_core = { path = "../optics_core" }
+quantum_core = { path = "../quantum_core" }
+spectral_core = { path = "../spectral_core" }
+lbm_core = { path = "../lbm_core" }
+stats_core = { path = "../stats_core" }
+ndarray = { workspace = true }
+clap = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+csv = { workspace = true }
+num-complex = { workspace = true }

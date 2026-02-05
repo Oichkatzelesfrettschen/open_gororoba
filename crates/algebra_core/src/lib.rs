@@ -18,6 +18,7 @@ pub mod clifford;
 pub mod zd_graphs;
 pub mod e8_lattice;
 pub mod boxkites;
+pub mod octonion_field;
 
 // Re-export core algebra functions
 pub use cayley_dickson::{
@@ -47,4 +48,12 @@ pub use e8_lattice::{
 pub use boxkites::{
     BoxKite, find_box_kites, analyze_box_kite_symmetry,
     BoxKiteSymmetryResult,
+};
+
+pub use octonion_field::{
+    Octonion, FieldParams, EvolutionResult, DispersionResult,
+    FANO_TRIPLES, build_structure_constants,
+    oct_multiply, oct_conjugate, oct_norm_sq,
+    hamiltonian, force, stormer_verlet_step, noether_charges,
+    evolve, gaussian_wave_packet, standing_wave, measure_dispersion,
 };

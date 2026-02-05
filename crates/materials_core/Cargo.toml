@@ -10,6 +10,7 @@ algebra_core = { path = "../algebra_core" }
 num-complex = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
+rustfft = "6.2"
 thiserror = { workspace = true }
 
 [dev-dependencies]

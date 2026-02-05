@@ -1,0 +1,14 @@
+[package]
+name = "spectral_core"
+version = "0.1.0"
+edition = "2021"
+description = "Fractional Laplacian and spectral methods for PDEs"
+license = "MIT"
+
+[dependencies]
+num-complex = { workspace = true }
+ndarray = { workspace = true }
+rustfft = "6.2"
+
+[dev-dependencies]
+approx = { workspace = true }

@@ -1,0 +1,12 @@
+[package]
+name = "lbm_core"
+version = "0.1.0"
+edition = "2021"
+description = "D2Q9 Lattice Boltzmann Method (BGK) solver"
+license = "MIT"
+
+[dependencies]
+ndarray = { workspace = true }
+
+[dev-dependencies]
+approx = { workspace = true }

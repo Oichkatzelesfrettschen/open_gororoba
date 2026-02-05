@@ -52,6 +52,34 @@
 *   **Fuchs, J., et al.** (2024). *Constant Velocity Physical Warp Drive Solution*. CQG. [arXiv:2405.02709](https://arxiv.org/abs/2405.02709).
     *   *First warp drive satisfying all four classical energy conditions (NEC/WEC/DEC/SEC).*
 
+### Topological Insulators & Quantum Hall Effect
+*   **Hofstadter, D. R.** (1976). *Energy levels and wave functions of Bloch electrons in rational and irrational magnetic fields*. Phys. Rev. B 14, 2239-2249. DOI: 10.1103/PhysRevB.14.2239.
+    *   *Original "Hofstadter butterfly" -- fractal spectrum of 2D lattice electrons in magnetic field.*
+*   **Thouless, D. J., Kohmoto, M., Nightingale, M. P., & den Nijs, M.** (TKNN) (1982). *Quantized Hall Conductance in a Two-Dimensional Periodic Potential*. Phys. Rev. Lett. 49, 405. DOI: 10.1103/PhysRevLett.49.405.
+    *   *First proof that Hall conductance is topological invariant (Chern number); TKNN formula.*
+*   **Fukui, T., Hatsugai, Y., & Suzuki, H.** (2005). *Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances*. J. Phys. Soc. Jpn. 74, 1674-1677. DOI: 10.1143/JPSJ.74.1674.
+    *   *FHS method: lattice Berry curvature via U(1) link variables; numerically stable Chern calculation.*
+*   **Harper, P. G.** (1955). *Single Band Motion of Conduction Electrons in a Uniform Magnetic Field*. Proc. Phys. Soc. A 68, 874.
+    *   *Original Harper equation (tight-binding + magnetic field); precursor to Hofstadter.*
+*   **Hatsugai, Y.** (1993). *Chern number and edge states in the integer quantum Hall effect*. Phys. Rev. Lett. 71, 3697. DOI: 10.1103/PhysRevLett.71.3697.
+    *   *Bulk-boundary correspondence: Chern number equals number of edge states crossing gap.*
+*   **Berry, M. V.** (1984). *Quantal Phase Factors Accompanying Adiabatic Changes*. Proc. R. Soc. Lond. A 392, 45-57. DOI: 10.1098/rspa.1984.0023.
+    *   *Discovery of geometric (Berry) phase in quantum adiabatic evolution.*
+
+### Tensor Networks & Quantum Simulation
+*   **Schollwoeck, U.** (2011). *The density-matrix renormalization group in the age of matrix product states*. Annals of Physics 326, 96-192. [arXiv:1008.3477](https://arxiv.org/abs/1008.3477). DOI: 10.1016/j.aop.2010.09.012.
+    *   *Definitive reference on MPS, canonical forms, DMRG, and TEBD algorithms.*
+*   **Orus, R.** (2014). *A practical introduction to tensor networks: Matrix product states and projected entangled pair states*. Annals of Physics 349, 117-158. [arXiv:1306.2164](https://arxiv.org/abs/1306.2164). DOI: 10.1016/j.aop.2014.06.013.
+    *   *Comprehensive tutorial on MPS, PEPS, and tensor network methods.*
+*   **Vidal, G.** (2003). *Efficient classical simulation of slightly entangled quantum computations*. Phys. Rev. Lett. 91, 147902. [arXiv:quant-ph/0301063](https://arxiv.org/abs/quant-ph/0301063).
+    *   *TEBD algorithm: time-evolving block decimation for MPS.*
+*   **Vidal, G.** (2004). *Efficient simulation of one-dimensional quantum many-body systems*. Phys. Rev. Lett. 93, 040502. [arXiv:quant-ph/0310089](https://arxiv.org/abs/quant-ph/0310089).
+    *   *iTEBD algorithm for infinite MPS systems.*
+*   **White, S. R.** (1992). *Density matrix formulation for quantum renormalization groups*. Phys. Rev. Lett. 69, 2863. DOI: 10.1103/PhysRevLett.69.2863.
+    *   *Original DMRG paper; foundation of MPS methods.*
+*   **Nielsen, M. A., & Chuang, I. L.** (2000). *Quantum Computation and Quantum Information*. Cambridge University Press.
+    *   *Standard textbook on quantum circuits, gates, and entanglement measures.*
+
 ### Holographic Entropy & Information
 *   **Bekenstein, J. D.** (1981). *Universal upper bound on the entropy-to-energy ratio for bounded systems*. Phys. Rev. D 23, 287-298. DOI: 10.1103/PhysRevD.23.287.
     *   *Bekenstein bound: S <= 2*pi*k*R*E/(hbar*c).*
@@ -226,6 +254,18 @@
     *   *E8 -> SM + gravity proposal; 22 predicted bosons. Criticized by Distler & Garibaldi (2010).*
 *   **Distler, J., & Garibaldi, S.** (2010). *There is no "Theory of Everything" inside E8*. Commun. Math. Phys. 298, 419-436.
     *   *Impossibility proof: cannot embed three fermion generations in E8.*
+
+### Casimir Effect & Quantum Vacuum
+*   **Casimir, H. B. G.** (1948). *On the attraction between two perfectly conducting plates*. Proc. K. Ned. Akad. Wet. 51, 793-795.
+    *   *Original discovery of Casimir effect between parallel conducting plates.*
+*   **Bordag, M., Mohideen, U., & Mostepanenko, V. M.** (2001). *New developments in the Casimir effect*. Physics Reports 353, 1-205. DOI: 10.1016/S0370-1573(01)00015-1.
+    *   *Comprehensive review: theory, experiments, finite conductivity and thermal corrections.*
+*   **Xu, Z., Ju, P., Gao, X., Shen, K., Jacob, Z., & Li, T.** (2022). *Observation and control of Casimir effects in a sphere-plate-sphere system*. Nature Communications 13, 6148. DOI: 10.1038/s41467-022-33915-4.
+    *   *Three-terminal Casimir transistor: optically levitated silica spheres, first controlled modulation.*
+*   **Derjaguin, B. V., Rabinovich, Y. I., & Churaev, N. V.** (1978). *Direct measurement of molecular forces*. Nature 272, 313-318.
+    *   *Proximity Force Approximation (PFA) foundation for sphere-plate geometry.*
+*   **Lamoreaux, S. K.** (1997). *Demonstration of the Casimir Force in the 0.6 to 6 um Range*. Phys. Rev. Lett. 78, 5-8. DOI: 10.1103/PhysRevLett.78.5.
+    *   *First precision measurement of Casimir force; verified PFA scaling.*
 
 ### Quantum Optics and EM-Gravity Coupling
 *   **Ahmadiniaz, N., Bastianelli, F., Karbstein, F., & Schubert, C.** (2026). *One loop photon-graviton mixing in an electromagnetic field: Part 3*. Prepared for JHEP. [arXiv:2601.23279](https://arxiv.org/abs/2601.23279).

@@ -12,7 +12,14 @@ petgraph = { workspace = true }
 ordered-float = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
+rustfft = "6.2"
+faer = "0.20"
 thiserror = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }
+criterion = { workspace = true }
+
+[[bench]]
+name = "quantum_bench"
+harness = false

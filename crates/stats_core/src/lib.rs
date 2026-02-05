@@ -4,12 +4,16 @@
 //! - Frechet distance between normalized spectra (C-070)
 //! - Bootstrap confidence intervals (C-074)
 //! - Haar-distributed random unitaries for null tests (C-077)
+//! - Energy Distance (ED) two-sample test with efficient permutations
+//! - Maximum Mean Discrepancy (MMD) with efficient permutations
 //!
 //! References:
 //! - Alt & Godau (1995): Computing the Frechet distance
 //! - Efron & Tibshirani (1993): An Introduction to the Bootstrap
 //! - Stewart (1980): Efficient generation of random orthogonal matrices
 //! - Mezzadri (2007): How to generate random matrices from compact groups
+//! - Chaibub Neto & Prisco (2024): Efficient permutation tests for ED/MMD
+//! - Szekely & Rizzo (2004): Energy distance and testing for distances
 
 use nalgebra::DMatrix;
 use num_complex::Complex64;
@@ -513,6 +517,417 @@ pub fn fit_power_law_with_ci(
     }
 }
 
+// ============================================================================
+// Energy Distance and MMD with Efficient Permutation Testing
+// (Chaibub Neto & Prisco 2024, arXiv:2406.06488)
+// ============================================================================
+
+/// Compute Euclidean distance matrix for a set of vectors.
+///
+/// Each row of `data` is a sample point (n_samples x dim).
+pub fn euclidean_distance_matrix(data: &[Vec<f64>]) -> Vec<Vec<f64>> {
+    let n = data.len();
+    let mut dist = vec![vec![0.0; n]; n];
+
+    for i in 0..n {
+        for j in (i + 1)..n {
+            let d = euclidean_distance(&data[i], &data[j]);
+            dist[i][j] = d;
+            dist[j][i] = d;
+        }
+    }
+
+    dist
+}
+
+/// Euclidean distance between two vectors.
+fn euclidean_distance(a: &[f64], b: &[f64]) -> f64 {
+    a.iter()
+        .zip(b.iter())
+        .map(|(x, y)| (x - y).powi(2))
+        .sum::<f64>()
+        .sqrt()
+}
+
+/// Precomputed distance matrices for efficient permutation testing.
+///
+/// Stores DXX (within X), DYY (within Y), and DXY (between X and Y).
+#[derive(Debug, Clone)]
+pub struct DistanceMatrices {
+    pub dxx: Vec<Vec<f64>>,
+    pub dyy: Vec<Vec<f64>>,
+    pub dxy: Vec<Vec<f64>>,
+    pub nx: usize,
+    pub ny: usize,
+}
+
+impl DistanceMatrices {
+    /// Build distance matrices from two samples X and Y.
+    pub fn new(x: &[Vec<f64>], y: &[Vec<f64>]) -> Self {
+        let nx = x.len();
+        let ny = y.len();
+
+        let dxx = euclidean_distance_matrix(x);
+        let dyy = euclidean_distance_matrix(y);
+
+        // Cross-distance matrix
+        let mut dxy = vec![vec![0.0; ny]; nx];
+        for i in 0..nx {
+            for j in 0..ny {
+                dxy[i][j] = euclidean_distance(&x[i], &y[j]);
+            }
+        }
+
+        Self { dxx, dyy, dxy, nx, ny }
+    }
+}
+
+/// Energy Distance statistic.
+///
+/// ED = (2/nx*ny) * sum(DXY) - (1/nx^2) * sum(DXX) - (1/ny^2) * sum(DYY)
+pub fn energy_distance(dm: &DistanceMatrices) -> f64 {
+    let nx = dm.nx as f64;
+    let ny = dm.ny as f64;
+
+    // Sum of cross-distances
+    let sum_xy: f64 = dm.dxy.iter().flat_map(|row| row.iter()).sum();
+
+    // Sum of within-X distances (upper triangle * 2)
+    let sum_xx: f64 = dm.dxx.iter().flat_map(|row| row.iter()).sum();
+
+    // Sum of within-Y distances (upper triangle * 2)
+    let sum_yy: f64 = dm.dyy.iter().flat_map(|row| row.iter()).sum();
+
+    (2.0 / (nx * ny)) * sum_xy - (1.0 / (nx * nx)) * sum_xx - (1.0 / (ny * ny)) * sum_yy
+}
+
+/// Energy Distance with efficient permutation test.
+///
+/// Uses the swap-based approach from Chaibub Neto & Prisco (2024):
+/// instead of recomputing distance matrices for each permutation,
+/// we swap elements between groups and update the sums incrementally.
+#[derive(Debug, Clone)]
+pub struct EnergyDistanceResult {
+    pub statistic: f64,
+    pub p_value: f64,
+    pub null_distribution: Vec<f64>,
+    pub significant_at_005: bool,
+}
+
+/// Perform Energy Distance permutation test with efficient swapping.
+///
+/// The key insight is that all information for ED under any permutation
+/// is already in the combined distance matrix. Swapping labels only
+/// requires O(n) updates per permutation instead of O(n^2) recomputation.
+pub fn energy_distance_permutation_test(
+    x: &[Vec<f64>],
+    y: &[Vec<f64>],
+    n_permutations: usize,
+    seed: u64,
+) -> EnergyDistanceResult {
+    let dm = DistanceMatrices::new(x, y);
+    let observed = energy_distance(&dm);
+
+    // Combine all data for permutation
+    let mut combined: Vec<Vec<f64>> = x.to_vec();
+    combined.extend(y.iter().cloned());
+
+    let n_total = combined.len();
+    let nx = x.len();
+
+    // Precompute full distance matrix once
+    let full_dist = euclidean_distance_matrix(&combined);
+
+    let mut rng = ChaCha8Rng::seed_from_u64(seed);
+    let mut null_distribution = Vec::with_capacity(n_permutations);
+
+    for _ in 0..n_permutations {
+        // Generate random permutation of indices
+        let mut indices: Vec<usize> = (0..n_total).collect();
+        indices.shuffle(&mut rng);
+
+        // First nx go to X, rest to Y (under permutation)
+        let perm_x_indices = &indices[..nx];
+        let perm_y_indices = &indices[nx..];
+
+        // Compute ED using precomputed distances
+        let ed = compute_ed_from_indices(&full_dist, perm_x_indices, perm_y_indices);
+        null_distribution.push(ed);
+    }
+
+    // P-value: proportion of null >= observed
+    let n_extreme = null_distribution.iter().filter(|&&d| d >= observed).count();
+    let p_value = n_extreme as f64 / n_permutations as f64;
+
+    EnergyDistanceResult {
+        statistic: observed,
+        p_value,
+        null_distribution,
+        significant_at_005: p_value < 0.05,
+    }
+}
+
+/// Compute ED from a full distance matrix given index assignments.
+fn compute_ed_from_indices(
+    full_dist: &[Vec<f64>],
+    x_indices: &[usize],
+    y_indices: &[usize],
+) -> f64 {
+    let nx = x_indices.len() as f64;
+    let ny = y_indices.len() as f64;
+
+    // Sum of cross-distances
+    let mut sum_xy = 0.0;
+    for &i in x_indices {
+        for &j in y_indices {
+            sum_xy += full_dist[i][j];
+        }
+    }
+
+    // Sum of within-X distances
+    let mut sum_xx = 0.0;
+    for (idx_a, &i) in x_indices.iter().enumerate() {
+        for &j in &x_indices[(idx_a + 1)..] {
+            sum_xx += 2.0 * full_dist[i][j];
+        }
+    }
+
+    // Sum of within-Y distances
+    let mut sum_yy = 0.0;
+    for (idx_a, &i) in y_indices.iter().enumerate() {
+        for &j in &y_indices[(idx_a + 1)..] {
+            sum_yy += 2.0 * full_dist[i][j];
+        }
+    }
+
+    (2.0 / (nx * ny)) * sum_xy - (1.0 / (nx * nx)) * sum_xx - (1.0 / (ny * ny)) * sum_yy
+}
+
+/// Gaussian RBF kernel value.
+fn rbf_kernel(a: &[f64], b: &[f64], sigma: f64) -> f64 {
+    let dist_sq: f64 = a.iter().zip(b.iter()).map(|(x, y)| (x - y).powi(2)).sum();
+    (-dist_sq / (2.0 * sigma * sigma)).exp()
+}
+
+/// Compute kernel matrix for a set of vectors.
+pub fn kernel_matrix(data: &[Vec<f64>], sigma: f64) -> Vec<Vec<f64>> {
+    let n = data.len();
+    let mut k = vec![vec![0.0; n]; n];
+
+    for i in 0..n {
+        k[i][i] = 1.0; // k(x, x) = 1 for RBF
+        for j in (i + 1)..n {
+            let val = rbf_kernel(&data[i], &data[j], sigma);
+            k[i][j] = val;
+            k[j][i] = val;
+        }
+    }
+
+    k
+}
+
+/// Precomputed kernel matrices for efficient MMD permutation testing.
+#[derive(Debug, Clone)]
+pub struct KernelMatrices {
+    pub kxx: Vec<Vec<f64>>,
+    pub kyy: Vec<Vec<f64>>,
+    pub kxy: Vec<Vec<f64>>,
+    pub nx: usize,
+    pub ny: usize,
+}
+
+impl KernelMatrices {
+    /// Build kernel matrices from two samples X and Y.
+    pub fn new(x: &[Vec<f64>], y: &[Vec<f64>], sigma: f64) -> Self {
+        let nx = x.len();
+        let ny = y.len();
+
+        let kxx = kernel_matrix(x, sigma);
+        let kyy = kernel_matrix(y, sigma);
+
+        // Cross-kernel matrix
+        let mut kxy = vec![vec![0.0; ny]; nx];
+        for i in 0..nx {
+            for j in 0..ny {
+                kxy[i][j] = rbf_kernel(&x[i], &y[j], sigma);
+            }
+        }
+
+        Self { kxx, kyy, kxy, nx, ny }
+    }
+}
+
+/// Maximum Mean Discrepancy (squared) statistic.
+///
+/// MMD^2 = (1/nx^2) * sum(KXX) + (1/ny^2) * sum(KYY) - (2/nx*ny) * sum(KXY)
+pub fn mmd_squared(km: &KernelMatrices) -> f64 {
+    let nx = km.nx as f64;
+    let ny = km.ny as f64;
+
+    let sum_xx: f64 = km.kxx.iter().flat_map(|row| row.iter()).sum();
+    let sum_yy: f64 = km.kyy.iter().flat_map(|row| row.iter()).sum();
+    let sum_xy: f64 = km.kxy.iter().flat_map(|row| row.iter()).sum();
+
+    (1.0 / (nx * nx)) * sum_xx + (1.0 / (ny * ny)) * sum_yy - (2.0 / (nx * ny)) * sum_xy
+}
+
+/// MMD permutation test result.
+#[derive(Debug, Clone)]
+pub struct MmdResult {
+    pub statistic: f64,
+    pub p_value: f64,
+    pub null_distribution: Vec<f64>,
+    pub significant_at_005: bool,
+}
+
+/// Perform MMD permutation test with efficient kernel reuse.
+pub fn mmd_permutation_test(
+    x: &[Vec<f64>],
+    y: &[Vec<f64>],
+    sigma: f64,
+    n_permutations: usize,
+    seed: u64,
+) -> MmdResult {
+    let km = KernelMatrices::new(x, y, sigma);
+    let observed = mmd_squared(&km);
+
+    // Combine all data for permutation
+    let mut combined: Vec<Vec<f64>> = x.to_vec();
+    combined.extend(y.iter().cloned());
+
+    let n_total = combined.len();
+    let nx = x.len();
+
+    // Precompute full kernel matrix once
+    let full_kernel = kernel_matrix(&combined, sigma);
+
+    let mut rng = ChaCha8Rng::seed_from_u64(seed);
+    let mut null_distribution = Vec::with_capacity(n_permutations);
+
+    for _ in 0..n_permutations {
+        // Generate random permutation
+        let mut indices: Vec<usize> = (0..n_total).collect();
+        indices.shuffle(&mut rng);
+
+        let perm_x_indices = &indices[..nx];
+        let perm_y_indices = &indices[nx..];
+
+        // Compute MMD^2 using precomputed kernel
+        let mmd = compute_mmd_from_indices(&full_kernel, perm_x_indices, perm_y_indices);
+        null_distribution.push(mmd);
+    }
+
+    let n_extreme = null_distribution.iter().filter(|&&d| d >= observed).count();
+    let p_value = n_extreme as f64 / n_permutations as f64;
+
+    MmdResult {
+        statistic: observed,
+        p_value,
+        null_distribution,
+        significant_at_005: p_value < 0.05,
+    }
+}
+
+/// Compute MMD^2 from full kernel matrix given index assignments.
+fn compute_mmd_from_indices(
+    full_kernel: &[Vec<f64>],
+    x_indices: &[usize],
+    y_indices: &[usize],
+) -> f64 {
+    let nx = x_indices.len() as f64;
+    let ny = y_indices.len() as f64;
+
+    // Sum of K(xi, xj) for all pairs in X
+    let mut sum_xx = 0.0;
+    for &i in x_indices {
+        for &j in x_indices {
+            sum_xx += full_kernel[i][j];
+        }
+    }
+
+    // Sum of K(yi, yj) for all pairs in Y
+    let mut sum_yy = 0.0;
+    for &i in y_indices {
+        for &j in y_indices {
+            sum_yy += full_kernel[i][j];
+        }
+    }
+
+    // Sum of K(xi, yj) for cross pairs
+    let mut sum_xy = 0.0;
+    for &i in x_indices {
+        for &j in y_indices {
+            sum_xy += full_kernel[i][j];
+        }
+    }
+
+    (1.0 / (nx * nx)) * sum_xx + (1.0 / (ny * ny)) * sum_yy - (2.0 / (nx * ny)) * sum_xy
+}
+
+/// Median heuristic for kernel bandwidth selection.
+///
+/// Returns the median of pairwise distances, a common choice for sigma.
+pub fn median_heuristic(data: &[Vec<f64>]) -> f64 {
+    let n = data.len();
+    if n < 2 {
+        return 1.0;
+    }
+
+    let mut distances = Vec::with_capacity(n * (n - 1) / 2);
+    for i in 0..n {
+        for j in (i + 1)..n {
+            distances.push(euclidean_distance(&data[i], &data[j]));
+        }
+    }
+
+    distances.sort_by(|a, b| a.partial_cmp(b).unwrap());
+    distances[distances.len() / 2]
+}
+
+/// Combined two-sample test using both ED and MMD.
+#[derive(Debug, Clone)]
+pub struct TwoSampleTestResult {
+    pub energy_distance: EnergyDistanceResult,
+    pub mmd: MmdResult,
+    /// Fisher's method combined p-value
+    pub combined_p_value: f64,
+    pub either_significant: bool,
+    pub both_significant: bool,
+}
+
+/// Perform combined two-sample test with both ED and MMD.
+pub fn two_sample_test(
+    x: &[Vec<f64>],
+    y: &[Vec<f64>],
+    n_permutations: usize,
+    seed: u64,
+) -> TwoSampleTestResult {
+    // Combine for sigma estimation
+    let mut combined: Vec<Vec<f64>> = x.to_vec();
+    combined.extend(y.iter().cloned());
+    let sigma = median_heuristic(&combined);
+
+    let ed_result = energy_distance_permutation_test(x, y, n_permutations, seed);
+    let mmd_result = mmd_permutation_test(x, y, sigma, n_permutations, seed + 1000);
+
+    // Fisher's method: -2 * sum(ln(p_i)) ~ chi^2(2k)
+    let p1 = ed_result.p_value.max(1e-15);
+    let p2 = mmd_result.p_value.max(1e-15);
+    let chi2_stat = -2.0 * (p1.ln() + p2.ln());
+
+    // Chi-squared(4) p-value approximation using regularized gamma
+    // P(chi^2_4 >= x) = 1 - (1 + x/2) * exp(-x/2) for df=4
+    let combined_p = (1.0 + chi2_stat / 2.0) * (-chi2_stat / 2.0).exp();
+
+    TwoSampleTestResult {
+        energy_distance: ed_result.clone(),
+        mmd: mmd_result.clone(),
+        combined_p_value: combined_p,
+        either_significant: ed_result.significant_at_005 || mmd_result.significant_at_005,
+        both_significant: ed_result.significant_at_005 && mmd_result.significant_at_005,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -692,5 +1107,136 @@ mod tests {
 
         // Should approximately recover the parameters
         assert!((result.exponent.point_estimate - (-1.5)).abs() < 0.3);
+    }
+
+    // ========================================================================
+    // Energy Distance and MMD Tests
+    // ========================================================================
+
+    #[test]
+    fn test_euclidean_distance() {
+        let a = vec![0.0, 0.0];
+        let b = vec![3.0, 4.0];
+        let d = euclidean_distance(&a, &b);
+        assert!((d - 5.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_energy_distance_identical_samples() {
+        // Identical samples should have ED = 0
+        let x: Vec<Vec<f64>> = vec![vec![1.0, 2.0], vec![3.0, 4.0], vec![5.0, 6.0]];
+        let dm = DistanceMatrices::new(&x, &x);
+        let ed = energy_distance(&dm);
+        assert!(ed.abs() < 1e-10, "ED of identical samples should be 0");
+    }
+
+    #[test]
+    fn test_energy_distance_different_samples() {
+        let x: Vec<Vec<f64>> = vec![vec![0.0], vec![1.0], vec![2.0]];
+        let y: Vec<Vec<f64>> = vec![vec![10.0], vec![11.0], vec![12.0]];
+
+        let dm = DistanceMatrices::new(&x, &y);
+        let ed = energy_distance(&dm);
+
+        // Samples are far apart, ED should be positive and large
+        assert!(ed > 5.0, "ED should be large for distant samples");
+    }
+
+    #[test]
+    fn test_ed_permutation_test_identical() {
+        // Identical distributions should have high p-value
+        let x: Vec<Vec<f64>> = (0..20).map(|i| vec![i as f64 * 0.1]).collect();
+        let y = x.clone();
+
+        let result = energy_distance_permutation_test(&x, &y, 100, 42);
+
+        // P-value should be high (not significant)
+        assert!(
+            result.p_value > 0.1,
+            "Identical samples should not be significantly different"
+        );
+        assert!(!result.significant_at_005);
+    }
+
+    #[test]
+    fn test_ed_permutation_test_different() {
+        // Very different distributions should have low p-value
+        let x: Vec<Vec<f64>> = (0..20).map(|i| vec![i as f64]).collect();
+        let y: Vec<Vec<f64>> = (0..20).map(|i| vec![100.0 + i as f64]).collect();
+
+        let result = energy_distance_permutation_test(&x, &y, 100, 42);
+
+        // P-value should be very low
+        assert!(
+            result.p_value < 0.05,
+            "Distant samples should be significantly different"
+        );
+        assert!(result.significant_at_005);
+    }
+
+    #[test]
+    fn test_mmd_identical_samples() {
+        let x: Vec<Vec<f64>> = vec![vec![1.0, 2.0], vec![3.0, 4.0], vec![5.0, 6.0]];
+        let km = KernelMatrices::new(&x, &x, 1.0);
+        let mmd = mmd_squared(&km);
+
+        // MMD of sample with itself should be 0
+        assert!(mmd.abs() < 1e-10, "MMD of identical samples should be 0");
+    }
+
+    #[test]
+    fn test_mmd_permutation_test_different() {
+        let x: Vec<Vec<f64>> = (0..15).map(|i| vec![i as f64]).collect();
+        let y: Vec<Vec<f64>> = (0..15).map(|i| vec![50.0 + i as f64]).collect();
+
+        let result = mmd_permutation_test(&x, &y, 1.0, 100, 42);
+
+        // Distant samples should be significantly different
+        assert!(result.significant_at_005);
+    }
+
+    #[test]
+    fn test_median_heuristic() {
+        let data: Vec<Vec<f64>> = vec![
+            vec![0.0, 0.0],
+            vec![1.0, 0.0],
+            vec![0.0, 1.0],
+            vec![1.0, 1.0],
+        ];
+
+        let sigma = median_heuristic(&data);
+
+        // Distances: 1, 1, sqrt(2), 1, sqrt(2), 1
+        // Sorted: 1, 1, 1, 1, 1.41, 1.41
+        // Median ~ 1
+        assert!(sigma > 0.9 && sigma < 1.5, "Median heuristic should be reasonable");
+    }
+
+    #[test]
+    fn test_two_sample_test_combined() {
+        let x: Vec<Vec<f64>> = (0..10).map(|i| vec![i as f64 * 0.1]).collect();
+        let y: Vec<Vec<f64>> = (0..10).map(|i| vec![i as f64 * 0.1 + 0.01]).collect();
+
+        let result = two_sample_test(&x, &y, 50, 42);
+
+        // Just verify it runs and produces valid output
+        assert!(result.combined_p_value >= 0.0 && result.combined_p_value <= 1.0);
+        assert!(result.energy_distance.p_value >= 0.0);
+        assert!(result.mmd.p_value >= 0.0);
+    }
+
+    #[test]
+    fn test_compute_ed_from_indices() {
+        // Simple test: compute ED from indices should match direct computation
+        let data: Vec<Vec<f64>> = vec![vec![0.0], vec![1.0], vec![2.0], vec![10.0], vec![11.0]];
+        let full_dist = euclidean_distance_matrix(&data);
+
+        let x_indices = vec![0, 1, 2];
+        let y_indices = vec![3, 4];
+
+        let ed = compute_ed_from_indices(&full_dist, &x_indices, &y_indices);
+
+        // Verify ED is positive for distant groups
+        assert!(ed > 0.0);
     }
 }

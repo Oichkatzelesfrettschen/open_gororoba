@@ -181,7 +181,7 @@ pub fn rk4_step_absorbing<M: AbsorbingGrinMedium>(
     };
 
     // k1
-    let (v1, a1, n1) = get_derivatives(ray.pos, ray.dir);
+    let (v1, a1, _n1) = get_derivatives(ray.pos, ray.dir);
 
     // k2
     let d2 = normalize(add(ray.dir, scale(a1, dt * 0.5)));
@@ -189,7 +189,7 @@ pub fn rk4_step_absorbing<M: AbsorbingGrinMedium>(
 
     // k3
     let d3 = normalize(add(ray.dir, scale(a2, dt * 0.5)));
-    let (v3, a3, n3) = get_derivatives(add(ray.pos, scale(v2, dt * 0.5)), d3);
+    let (v3, a3, _n3) = get_derivatives(add(ray.pos, scale(v2, dt * 0.5)), d3);
 
     // k4
     let d4 = normalize(add(ray.dir, scale(a3, dt)));
