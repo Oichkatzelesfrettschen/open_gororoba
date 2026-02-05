@@ -2,6 +2,12 @@
 name = "gr_core"
 version = "0.1.0"
 edition = "2021"
+description = "General relativity: Kerr geodesics, black hole shadows, Boyer-Lindquist coordinates"
+license = "MIT"
 
 [dependencies]
 algebra_core = { path = "../algebra_core" }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+approx = { workspace = true }

@@ -2,6 +2,17 @@
 name = "quantum_core"
 version = "0.1.0"
 edition = "2021"
+description = "Quantum physics: MERA tensor networks, holographic entropy, Ryu-Takayanagi"
+license = "MIT"
 
 [dependencies]
-algebra_core = { path = "../algebra_core" }
+nalgebra = { workspace = true }
+num-complex = { workspace = true }
+petgraph = { workspace = true }
+ordered-float = { workspace = true }
+rand = { workspace = true }
+rand_chacha = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+approx = { workspace = true }

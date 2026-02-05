@@ -2,6 +2,15 @@
 name = "materials_core"
 version = "0.1.0"
 edition = "2021"
+description = "Materials science: metamaterial absorbers, Tang mass predictions, refractive index"
+license = "MIT"
 
 [dependencies]
 algebra_core = { path = "../algebra_core" }
+num-complex = { workspace = true }
+rand = { workspace = true }
+rand_chacha = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+approx = { workspace = true }

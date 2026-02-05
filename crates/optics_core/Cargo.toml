@@ -2,6 +2,13 @@
 name = "optics_core"
 version = "0.1.0"
 edition = "2021"
+description = "GRIN ray tracing: gradient-index optics, Beer-Lambert absorption, RK4 integration"
+license = "MIT"
 
 [dependencies]
 algebra_core = { path = "../algebra_core" }
+num-complex = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+approx = { workspace = true }
