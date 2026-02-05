@@ -1,0 +1,13 @@
+id,operation,precision_type,matrix_size,execution_time
+1,Matrix Inversion,float16,32 x 32,
+2,Cholesky Decomposition,float16,32 x 32,0.0002703983336687088
+3,Matrix Inversion,float32,32 x 32,0.07321533166638498
+4,Cholesky Decomposition,float32,32 x 32,5.365499964682385e-05
+5,Matrix Inversion,float64,32 x 32,0.0018619129999327317
+6,Cholesky Decomposition,float64,32 x 32,3.7199666015415765e-05
+7,Matrix Inversion,float128,32 x 32,
+8,Cholesky Decomposition,float128,32 x 32,5.301600079595422e-05
+9,Matrix Inversion,complex64,32 x 32,0.03425857599965335
+10,Cholesky Decomposition,complex64,32 x 32,6.824900022669074e-05
+11,Matrix Inversion,complex128,32 x 32,0.002021232000212573
+12,Cholesky Decomposition,complex128,32 x 32,6.427466723835096e-05

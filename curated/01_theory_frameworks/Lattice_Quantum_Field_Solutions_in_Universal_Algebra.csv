@@ -1,0 +1,5 @@
+Lattice Quantum Field Component,Mathematical Expression
+Discrete Scalar Kinetic Term,(\phi - \phi_prev)**2/2
+Discrete Fermion Kinetic Term,\psi*(\psi - \psi_prev)/2
+Discrete Gauge Kinetic Term,(-F_prev + F_\mu\nu)**2/4
+Higher-Order Interaction,A_\mu*\alpha*\psi*\phi + F_\mu\nu*\beta*\psi*\phi

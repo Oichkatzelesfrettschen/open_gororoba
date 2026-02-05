@@ -1,0 +1,13 @@
+Module,Operation,DataType,Input Size,Computed Result Sample,Expected Result,Abs Error,Mean Time (ms),Status
+NumPy,add,<class 'numpy.uint8'>,10000 elements,2.0,2.0,0.0,0.1924480002344353,PASS
+NumPy,add,<class 'numpy.uint16'>,10000 elements,2.0,2.0,0.0,0.3047869995498331,PASS
+NumPy,add,<class 'numpy.uint32'>,10000 elements,2.0,2.0,0.0,0.049666999984765425,PASS
+NumPy,add,<class 'numpy.uint64'>,10000 elements,2.0,2.0,0.0,0.11471499965409748,PASS
+NumPy,add,<class 'numpy.uint8'>,10000 elements,,,,,
+NumPy,add,<class 'numpy.uint8'>,10000 elements,3.0,4.0,1.0,0.15967599938448984,PASS
+NumPy,add,<class 'numpy.uint16'>,10000 elements,,,,,
+NumPy,add,<class 'numpy.uint16'>,10000 elements,3.0,4.0,1.0,0.014553001165040769,PASS
+NumPy,add,<class 'numpy.uint32'>,10000 elements,,,,,
+NumPy,add,<class 'numpy.uint32'>,10000 elements,3.0,4.0,1.0,0.026731999241746962,PASS
+NumPy,add,<class 'numpy.uint64'>,10000 elements,,,,,
+NumPy,add,<class 'numpy.uint64'>,10000 elements,3.0,4.0,1.0,0.4034489993500756,PASS

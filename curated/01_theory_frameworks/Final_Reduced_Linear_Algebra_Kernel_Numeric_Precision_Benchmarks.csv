@@ -1,0 +1,9 @@
+Operation,Precision Type,Matrix Size,Execution Time (seconds)
+Matrix Multiplication,float32,64 x 64,0.00010120433334274519
+Matrix Inversion,float32,64 x 64,0.9359115119999993
+Matrix Multiplication,float64,64 x 64,5.914333333597218e-05
+Matrix Inversion,float64,64 x 64,0.8028111393333196
+Matrix Multiplication,complex64,64 x 64,0.03150398066664669
+Matrix Inversion,complex64,64 x 64,0.7660835616666569
+Matrix Multiplication,complex128,64 x 64,0.00035389600001659954
+Matrix Inversion,complex128,64 x 64,0.9998726453333499

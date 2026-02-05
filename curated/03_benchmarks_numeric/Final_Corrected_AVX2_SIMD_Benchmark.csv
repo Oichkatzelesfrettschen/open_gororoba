@@ -1,0 +1,3 @@
+Method,Execution Time (s)
+NumPy dot(),0.0051315999999133055
+Hand-Optimized AVX2 Final Corrected,0.5812477089998538

@@ -1,0 +1,4 @@
+Next Step Number,Explicit Immediate Next Steps,Python & System Tools,Execution Status
+1,Large-scale Numeric Profiling (>1 million elements explicitly),"NumPy, memory_profiler, psutil",Explicitly Initiating Now
+2,"Explicit Numeric Kernel Profiling (NumPy, numba, Cython comparison)","Cython, ctypes, numba, NumPy",Explicitly Initiating Now
+3,LLVM IR explicit inspection via numba for SIMD confirmation,"numba, LLVM, llvmlite",Explicitly Initiating Now

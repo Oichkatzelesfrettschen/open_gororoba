@@ -1,0 +1,2 @@
+PDE Kernel Explicitly,Grid Size Explicitly,Average Execution Time (seconds)
+Simplified 5D Heat Equation,"(32, 32, 32, 16, 8)",0.11114655666642648

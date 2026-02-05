@@ -1,0 +1,9 @@
+Type,Babylonian Sqrt (ms),Taylor Exp (ms),Precision,Size,Status
+float16,0.7752722000077483,7.103601199969489,float16,2,PASS
+float32,0.0708816000042134,0.25966509997488174,float32,4,PASS
+float64,0.06360570000651933,0.34719149998636567,float64,8,PASS
+float128,0.2376068999637937,1.751378900007694,float128,16,PASS
+longdouble,0.2789005999602523,1.3980287999856955,float128,16,PASS
+int16,,,int16,2,FAIL: Cannot cast ufunc 'add' output from dtype('float64') to dtype('int16') with casting rule 'same_kind'
+uint16,,,uint16,2,FAIL: Cannot cast ufunc 'add' output from dtype('float64') to dtype('uint16') with casting rule 'same_kind'
+complex128,0.23027520001051016,1.8439816999944014,complex128,16,PASS

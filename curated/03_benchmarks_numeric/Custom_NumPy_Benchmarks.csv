@@ -1,0 +1,7 @@
+Operation,Data Type,Mean Time (s)
+Taylor Exp,<class 'numpy.float32'>,2.7596355142850368e-05
+Babylonian sqrt,<class 'numpy.float32'>,6.090571222856462e-06
+Octonion multiply,<class 'numpy.float32'>,4.565998848574963e-05
+Taylor Exp,<class 'numpy.float64'>,5.506995225714491e-06
+Babylonian sqrt,<class 'numpy.float64'>,2.5123066628579443e-06
+Octonion multiply,<class 'numpy.float64'>,2.077221439285625e-05

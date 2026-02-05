@@ -1,0 +1,4 @@
+Iteration,Operator,Grid Size,Optimal Precision,Kernel Mode,Predicted Time (s)
+1,Laplacian,64x64,float64,Symbolic,0.0022362200262883887
+2,Laplacian,128x128,float64,Symbolic,0.0022362200262883887
+3,Laplacian,256x256,float64,Symbolic,0.0022362200262883887

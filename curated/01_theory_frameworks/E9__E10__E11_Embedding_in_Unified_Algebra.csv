@@ -1,0 +1,8 @@
+Dimension,E9 Structure Present?,E10 Structure Present?,E11 Structure Present?,Affine and Infinite Extensions?,Stability in A-Infinity Framework?
+512,True,False,False,False,Confirmed
+1024,True,True,False,False,Confirmed
+2048,True,True,True,False,Confirmed
+4096,True,True,True,True,Stable
+8192,True,True,True,True,Stable
+16384,True,True,True,True,Unknown
+32768,True,True,True,True,Unknown

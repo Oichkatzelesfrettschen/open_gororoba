@@ -1,0 +1,31 @@
+,DataType,Operation,Mode,Time_ms
+25,float64,Builtin sqrt,SIMD Comprehensive,0.0026226043701171
+24,float32,Builtin sqrt,SIMD Comprehensive,0.0028610229492187
+26,complex64,Builtin sqrt,SIMD Comprehensive,0.0045299530029296
+45,float64,Babylonian sqrt,SIMD Comprehensive,0.0047683715820312
+27,complex128,Builtin sqrt,SIMD Comprehensive,0.0054836273193359
+44,float32,Babylonian sqrt,SIMD Comprehensive,0.013589859008789
+23,float16,Builtin sqrt,SIMD Comprehensive,0.0209808349609375
+43,float16,Babylonian sqrt,SIMD Comprehensive,0.034332275390625
+9,<class 'numpy.float32'>,Generic Numeric Operation,Numeric,1.3468899999224
+2,<class 'numpy.uint32'>,Generic Numeric Operation,Numeric,1.3616589999401
+6,<class 'numpy.int32'>,Generic Numeric Operation,Numeric,1.3862009998319
+5,<class 'numpy.int16'>,Generic Numeric Operation,Numeric,1.5458309999303
+3,<class 'numpy.uint64'>,Generic Numeric Operation,Numeric,1.5568090000215
+7,<class 'numpy.int64'>,Generic Numeric Operation,Numeric,1.7295170000578999
+8,<class 'numpy.float16'>,Generic Numeric Operation,Numeric,1.828488000001
+4,<class 'numpy.int8'>,Generic Numeric Operation,Numeric,2.1862959999907
+1,<class 'numpy.uint16'>,Generic Numeric Operation,Numeric,6.4563879998331
+10,<class 'numpy.float64'>,Generic Numeric Operation,Numeric,11.6924100000233
+0,<class 'numpy.uint8'>,Generic Numeric Operation,Numeric,17.297259000088097
+12,<class 'numpy.complex64'>,Generic Numeric Operation,Numeric,82.3498969998581
+13,<class 'numpy.complex128'>,Generic Numeric Operation,Numeric,90.3528840001399
+11,<class 'numpy.float128'>,Generic Numeric Operation,Numeric,103.2196699998166
+18,int64,Generic SIMD Operation,SIMD,399.3875980377197
+16,int16,Generic SIMD Operation,SIMD,410.1860523223877
+15,float64,Generic SIMD Operation,SIMD,541.9323444366455
+17,int32,Generic SIMD Operation,SIMD,583.3022594451904
+14,float32,Generic SIMD Operation,SIMD,2086.0750675201416
+19,uint8,Builtin sqrt,SIMD Comprehensive,
+20,uint16,Builtin sqrt,SIMD Comprehensive,
+21,int8,Builtin sqrt,SIMD Comprehensive,

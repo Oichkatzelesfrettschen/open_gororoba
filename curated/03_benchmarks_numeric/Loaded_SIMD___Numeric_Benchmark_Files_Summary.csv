@@ -1,0 +1,11 @@
+File,Rows,Columns,Memory Usage (MB)
+Explicit_Corrected_SIMD_Timings_Simulated 2.csv,10,"Numeric_Type, SIMD_Time_ms, Scalar_Time_ms, SIMD_Speedup",0.001
+SIMD_Numeric_Kernel_Benchmark_Results.csv,2,"Kernel Type, Vector Size, Average Execution Time (seconds)",0.0
+Final_Corrected_SIMD_Benchmark_Results.csv,12,"Data_Type, Operation, Non_SIMD_Time_ms, SIMD_Time_ms, SIMD_Speedup",0.003
+Explicit_AVX-512_vs_NumPy_SIMD_Benchmark_Results.csv,2,"Benchmark Step, Execution Time (s) or Error",0.0
+Explicit_Corrected_SIMD_Timings_Simulated.csv,10,"Numeric_Type, SIMD_Time_ms, Scalar_Time_ms, SIMD_Speedup",0.001
+Explicit_LLVM_IR_SIMD_Inspection_via_numba.csv,1,"Explicit Inspection, LLVM IR Snippet",0.001
+SIMD-Optimized_Wormhole_PDE_Solution.csv,100,"r, Phi_SIMD_Optimized",0.002
+Unified_Numeric_and_SIMD_Benchmarks.csv,20,"Type, Benchmark (s), Status, Builtin Operation (ms), Size (Bytes), Builtin sqrt (ms), Babylonian sqrt (ms), Taylor exp (ms), Data Type, Scalar Time (s), SIMD Time (s), Speedup, Duration (s)",0.005
+Final_Corrected_AVX2_SIMD_Benchmark.csv,2,"Method, Execution Time (s)",0.0
+Explicit_Immediate_Execution__Large-scale_Numeric___SIMD_Profiling.csv,3,"Next Step Number, Explicit Immediate Next Steps, Python & System Tools, Execution Status",0.001

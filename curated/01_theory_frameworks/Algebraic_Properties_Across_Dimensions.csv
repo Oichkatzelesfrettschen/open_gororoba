@@ -1,0 +1,9 @@
+,Ordering,Commutativity,Associativity,Alternative Property,Division Property,Norm Structure,Tensorizable Multiplication,Algebraic Structure,Infinitesimals
+R (1D),1,1,1,1,1.0,1.0,1.0,1.0,0.0
+C (2D),0,1,1,1,1.0,1.0,1.0,1.0,0.0
+H (4D),0,0,1,1,1.0,1.0,0.5,1.0,0.0
+O (8D),0,0,0,1,1.0,1.0,0.0,1.0,0.0
+S (16D),0,0,0,0,0.5,0.5,0.0,0.5,0.5
+32D,0,0,0,0,0.0,0.0,0.0,0.2,0.7
+64D,0,0,0,0,0.0,0.0,0.0,0.1,0.8
+128D,0,0,0,0,0.0,0.0,0.0,0.05,0.9

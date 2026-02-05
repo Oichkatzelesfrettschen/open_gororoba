@@ -1,0 +1,3 @@
+Method,Execution Time (s)
+np.dot(),0.005572009999923466
+scipy.linalg.blas.ddot(),0.16561067400016327

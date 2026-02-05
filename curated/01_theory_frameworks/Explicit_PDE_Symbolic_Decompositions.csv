@@ -1,0 +1,4 @@
+Operator,Symbolic Expression
+Laplacian,"Derivative(f(x, y), (x, 2)) + Derivative(f(x, y), (y, 2))"
+Gradient,"Matrix([[Derivative(f(x, y), x)], [Derivative(f(x, y), y)]])"
+Divergence,"Derivative(u(x, y), x) + Derivative(v(x, y), y)"

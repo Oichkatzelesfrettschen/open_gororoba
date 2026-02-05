@@ -1,0 +1,8 @@
+dim,component_id,node_count,edge_count,degree_min,degree_max,degree_mean,is_octahedron_k222,k2_multipartite_part_count,is_cuboctahedron,sampled,sample_max_nodes,seed
+16,0,6,12,4,4,4.0,True,3,False,False,,0
+16,1,6,12,4,4,4.0,True,3,False,False,,0
+16,2,6,12,4,4,4.0,True,3,False,False,,0
+16,3,6,12,4,4,4.0,True,3,False,False,,0
+16,4,6,12,4,4,4.0,True,3,False,False,,0
+16,5,6,12,4,4,4.0,True,3,False,False,,0
+16,6,6,12,4,4,4.0,True,3,False,False,,0

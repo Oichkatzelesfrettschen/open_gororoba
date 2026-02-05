@@ -1,0 +1,4 @@
+Method,Execution Time (s)
+NumPy (No AVX),0.1017176529999233
+Numba JIT,0.09216025000023365
+Numba AVX2 (Fastmath),0.9836699480001698

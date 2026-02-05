@@ -1,0 +1,7 @@
+Numeric Type,Usage Context
+float32,"Primary numeric PDE calculations, optimized Laplacian kernels, adaptive precision"
+float64,"High-precision numeric PDE calculations, stability-critical computations"
+float128,Ultra-high precision PDE benchmarking explicitly (theoretical and stability validation explicitly)
+int16,"Memory-efficient PDE state representation explicitly, converted explicitly for float32 computations"
+complex64,Quantum PDE kernels explicitly involving complex scalar wavefunctions
+complex128,High-precision quantum PDE kernels explicitly involving complex scalar wavefunctions explicitly

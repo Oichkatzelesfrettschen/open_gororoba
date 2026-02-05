@@ -1,0 +1,3 @@
+Tensor Representation,Rule
+512x512 Non-Commutative Structure,U512*U512.T - U512.T*U512
+1024x1024 Non-Commutative Structure,U1024*U1024.T - U1024.T*U1024

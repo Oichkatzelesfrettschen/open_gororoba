@@ -1,0 +1,11 @@
+Clifford Product,Result
+e1^2,1
+e2^2,1
+e3^2,1
+e4^2,1
+e5^2,1
+e6^2,1
+e1 * e2,e3
+e2 * e3,e4
+e3 * e4,e5
+e4 * e5,e6

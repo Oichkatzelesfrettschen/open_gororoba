@@ -1,0 +1,6 @@
+Field Theory Component,Mathematical Expression
+Scalar Kinetic Term,0
+Spinor Kinetic Term,0
+Gauge Kinetic Term,F_\mu\nu**2/4
+Topological Term,R_\mu\nu*g_\mu\nu/2 + g_\mu\nu*Lambda
+Higher-Order Interaction,A_\mu*\alpha*\psi*\phi + F_\mu\nu*\beta*\psi*\phi

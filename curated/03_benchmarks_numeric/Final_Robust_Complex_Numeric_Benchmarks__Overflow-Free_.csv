@@ -1,0 +1,3 @@
+Numeric Type,Benchmark Time (s)
+complex64,0.19088135999993483
+complex128,0.22050539900010335

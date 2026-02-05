@@ -1,0 +1,8 @@
+Operation,Execution Time / Error
+Matrix Multiplication (np.dot float64),0.028496980667114258
+Sparse Matrix Multiplication (float64),0.07683205604553223
+FFT (forward float64),0.14534997940063477
+FFT Reconstruction (float64),9.992007221626409e-16
+Numerical Integration Quad (float64),0.0005421638488769531
+Numerical Differentiation Gradient (float64),0.008564233779907227
+Adaptive Precision Sum (float32),0.0007593631744384766

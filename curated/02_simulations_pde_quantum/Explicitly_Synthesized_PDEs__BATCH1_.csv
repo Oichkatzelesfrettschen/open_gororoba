@@ -1,0 +1,4 @@
+Synthesized PDE,Equation,Explicitly Synthesized From,Integration Level
+Wormhole Curvature PDE,\frac{d^2 \Phi(r)}{dr^2} + \frac{2}{r}\frac{d\Phi(r)}{dr} - \lambda e^{\Phi(r)} = -\rho_{\text{neg-energy}}(r),Macro-Scale HPC PDE Wormhole Simulation,Explicit Inference
+Wave Stability PDE with CFL,"\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2} - \gamma_{\text{CFL}}(x,t) \frac{\partial u}{\partial t}",Wave Equation Stability Benchmarks,Explicit Inference
+Unified Wavelet-Wormhole PDE (Novel Synthesis),\frac{\partial \Psi_{\text{wavelet-wormhole}}}{\partial t} = \nabla^2 \Psi_{\text{wavelet-wormhole}} + \beta \Phi(r)\Psi_{\text{wavelet-wormhole}} - \gamma_{\text{wavelet}} \Psi_{\text{wavelet-wormhole}}^3,Cross-file Synthesis (Wavelet + Wormhole),Novel Cross-Dataset Synthesis

@@ -1,0 +1,3 @@
+Next Step Number,Explicit Step Description,Python Tools & Modules,Execution Status
+1,Numeric Kernel Profiling (NumPy vs numba vs Cython explicitly),"NumPy, numba, Cython, timeit",Explicitly Initiating Now
+2,LLVM IR SIMD verification explicitly via numba,"numba, LLVM (llvmlite)",Explicitly Initiating Now

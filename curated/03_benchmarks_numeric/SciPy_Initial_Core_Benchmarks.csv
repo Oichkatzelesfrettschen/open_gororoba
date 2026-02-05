@@ -1,0 +1,3 @@
+Module,Function,Input,Result,Expected Result,Abs Error,Time (ms),Status,Expected,Mean Time (ms),Accuracy (Abs)
+scipy.integrate,quad,"integrate.sin(0, pi)",2.0,2.0,0.0,0.1643849996071367,PASS,,,
+scipy.optimize,minimize,"(x - 2)^2, start at 0",1.9999999820005778,,,,PASS,2.0,1.242805999936536,[1.79994222e-08]

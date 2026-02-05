@@ -1,0 +1,17 @@
+System,Dimensionality,Commutative,Associative,Normed,Division Algebra,Zero-Divisors,Real Structure,Generalized in Unified Model?
+R (Reals),1,True,True,True,True,False,True,Yes
+C (Complex),2,True,True,True,True,False,True,Yes
+H (Quaternions),4,False,True,True,True,False,True,Yes
+O (Octonions),8,False,False,True,True,False,True,Yes
+S (Sedenions),16,False,False,False,False,True,True,Yes
+"Cl(1,0) (Clifford)",2,False,True,False,False,True,True,Yes
+"Cl(2,0) (Clifford)",4,False,True,False,False,True,True,Yes
+"Cl(3,0) (Clifford)",8,False,True,False,False,True,True,Yes
+"Cl(4,0) (Clifford)",16,False,True,False,False,True,True,Yes
+Jordan R Matrices,n^2,False,True,False,False,True,True,Yes
+Jordan C Matrices,n^2,False,True,False,False,True,True,Yes
+Jordan H Matrices,n^2,False,False,False,False,True,True,Yes
+Lie R Matrices,n^2,False,True,False,False,True,True,Yes
+Lie C Matrices,n^2,False,True,False,False,True,True,Yes
+Lie H Matrices,n^2,False,False,False,False,True,True,Yes
+Albert Algebra (3x3 Exceptional),27,False,False,False,False,False,True,Yes

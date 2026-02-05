@@ -1,0 +1,3 @@
+Kernel Implementation,Average Execution Time (seconds)
+NumPy (baseline explicitly),0.01107562239994877
+numba (JIT optimized explicitly),0.05214718900024309

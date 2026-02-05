@@ -1,0 +1,4 @@
+Scheduling Strategy,Status,Avg Execution Time (s)
+static,Success,0.23184189220010012
+dynamic,Success,5.516267430600055
+guided,Success,0.2350638746000186

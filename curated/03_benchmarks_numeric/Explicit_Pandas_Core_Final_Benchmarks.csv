@@ -1,0 +1,4 @@
+Module,Function,Input Size,Mean Time (ms),Status,Computed Sample Result,Input,Top Sorted Result
+pandas,DataFrame creation,"10,000 rows, 10 columns",2.0468560005610925,PASS,,,
+pandas,DataFrame mean,,1.8318749998798012,PASS,0.5000068935917281,,
+pandas,DataFrame sort_values,,2.752623000560561,PASS,,"10,000 rows sorted by col_0",3.495716942725213e-05

@@ -1,0 +1,3 @@
+Kernel Type,Vector Size,Average Execution Time (seconds)
+SIMD-Optimized (NumPy),1000000,0.012435429100150941
+Non-SIMD (Python Loop),1000000,0.5847980050008724

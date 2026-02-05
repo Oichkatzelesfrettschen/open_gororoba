@@ -1,0 +1,11 @@
+Step,Number System,Dimensionality,Cayley-Dickson Extension
+1,R (Reals),1D,Standard Field
+2,D (Dyadic),0.5D,Potential Interpolation Before C
+3,Qp (p-Adics),0.25D,p-Adic Extensions into Complex & Quaternions?
+4,N_0 (Surreals),0.125D,Surreal Cayley-Dickson Step?
+5,Fp (Finite Fields),0D,Does Cayley-Dickson Work on Finite Fields?
+6,Q-p (Negative p-Adics),-0.25D,Negative-Dimensional Cayley-Dickson Step?
+7,N_0-^1 (Negative Surreals),-0.125D,Embedding into Clifford Algebra?
+8,F-p (Negative Finite Fields),-0D,What Does 'Negative Finite Field' Mean?
+9,D^\alpha (Fractal Dyadic),0.5aD,Fractal Cayley-Dickson Step?
+10,N_0^\alpha (Fractal Surreal),0.125aD,Fractal Quaternionic & Clifford Embeddings?

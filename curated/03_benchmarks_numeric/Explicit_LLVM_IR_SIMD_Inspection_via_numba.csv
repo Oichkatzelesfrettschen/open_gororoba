@@ -1,0 +1,10 @@
+Explicit Inspection,LLVM IR Snippet
+LLVM IR Inspection explicitly via numba,"; ModuleID = 'simd_kernel_numba'
+source_filename = ""<string>""
+target datalayout = ""e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128""
+target triple = ""x86_64-unknown-linux-gnu""
+
+@.const.pickledata.139576884797328 = internal constant [141 x i8] c""\80\04\95\82\00\00\00\00\00\00\00\8C\08builtins\94\8C\0AValueError\94\93\94\8C_unable to broadcast argument 1 to output array\0AFile \22/tmp/ipykernel_56/2590078525.py\22, line 1, \94\85\94N\87\94.""
+@.const.pickledata.139576884797328.sha1 = internal constant [20 x i8] c""\8D\03r\F4m\17\D7\C7>\C3b\E6\9CN;[\CFI\0F\9F""
+@.const.picklebuf.139576884797328 = internal constant { i8*, i32, i8*, i8*, i32 } { i8* getelementptr inbounds ([141 x i8], [141 x i8]* @.const.pickledata.139576884797328, i32 0, i32 0), i32 141, i8* getelementptr inbounds ([20 x i8], [20 x i8]* @.const.pickledata.139576884797328.sha1, i32 0, i32 0), i8* null, i32 0 }
+@.const.pickledata.139576884664016 = internal constant [137 x i8] c""\80\04\95~\00\00\00\00\00\00"

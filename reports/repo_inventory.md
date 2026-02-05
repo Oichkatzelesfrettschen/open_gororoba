@@ -1,0 +1,43 @@
+# Repo Inventory (2026-02-01)
+
+Scope: `/home/eirikr/Playground/ChatGPT Experiments`
+
+## Top-level directories (depth<=2)
+
+- `archive/` (legacy snapshots)
+- `benchmarks/` (microbenchmarks and study harnesses)
+- `bin/` (repo scripts and verifiers)
+- `convos/` (immutable chat transcripts, may contain Unicode)
+- `cpp/` (C++ components)
+- `curated/` (curated artifacts and theory folders)
+- `data/` (artifacts, cached externals with provenance, reproduced datasets)
+- `docker/` (container build for quantum environment)
+- `docs/` (repo-authored documentation; ASCII-only)
+  - `docs/convos/` (ASCII-only extracts derived from `convos/` PDFs)
+  - `docs/external_sources/` (external-source indices and summaries; excluded from overclaim gate)
+  - `docs/preregistered/` (preregistered plans; excluded from overclaim gate)
+- `examples/` (small runnable examples)
+- `reports/` (generated human-readable reports; ASCII-only)
+- `src/` (Python source code)
+- `tests/` (pytest suite)
+
+## File counts (approx; excludes `.git/`, `venv/`, and caches)
+
+- `src/`: ~987 files
+- `data/`: ~688 files
+- `curated/`: ~621 files
+- `tests/`: ~577 files
+- `docs/`: ~212 files
+- `convos/`: ~20 files
+
+## Repo gates (high level)
+
+- ASCII-only gate: `make ascii-check` (repo-authored content; `convos/` exempt)
+- Warnings-as-errors gate: run checks/tests with `PYTHONWARNINGS=error`
+- Overclaim-phrase gate: `src/verification/verify_no_overclaim_phrases.py`
+- External provenance coverage: `src/verification/verify_external_provenance_coverage.py`
+
+## Working tree notes
+
+If `git status` shows many modifications/deletions/untracked files, treat this as a staging area:
+the evidence-first workflow expects incremental batches, each ending with `PYTHONWARNINGS=error make check`.

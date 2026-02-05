@@ -1,0 +1,10 @@
+benchmark,alpha,metric,value,pass
+free_particle_propagator,2.0,l2_error_vs_gaussian,0.008030560864514884,True
+free_particle_propagator,1.5,l2_error_vs_gaussian,2.258760928783644,True
+free_particle_propagator,1.2,l2_error_vs_gaussian,2.257583154381497,True
+harmonic_oscillator_variational,2.0,E_ground_state,0.5000000000000011,True
+harmonic_oscillator_variational,2.0,rel_error_vs_exact,2.220446049250313e-15,True
+harmonic_oscillator_variational,1.5,E_ground_state,0.5013137281386424,True
+harmonic_oscillator_variational,1.2,E_ground_state,0.506408055837245,True
+harmonic_oscillator_imag_time,2.0,E_ground_state,0.5000000000390614,True
+harmonic_oscillator_imag_time,1.5,E_ground_state,0.5005436564999899,True

@@ -1,0 +1,5 @@
+Field Component,Mathematical Expression
+Scalar Kinetic Term,0
+Spinor Kinetic Term,0
+Gauge Kinetic Term,F_\mu\nu**2/4
+Higher-Order Interaction,A_\mu*\alpha*\psi*\phi + F_\mu\nu*\beta*\psi*\phi

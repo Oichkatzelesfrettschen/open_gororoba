@@ -1,0 +1,4 @@
+Optimization Area,Details
+AVX-512 & FMA Numeric Benchmark,AVX-512 FMA execution complete.
+Available AVX-512 Instruction Subsets,"-mavx512bw, -mavx512cd, -mavx512dq, -mavx512f, -mavx512vl"
+Python-C Kernel Development Capability,"{'Cython': 'Available', 'Python C-API (ctypes)': 'Available'}"

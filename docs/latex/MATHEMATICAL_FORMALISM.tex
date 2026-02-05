@@ -1,0 +1,81 @@
+\documentclass{article}
+\usepackage{amsmath, amssymb, amsthm, graphicx}
+
+\title{Mathematical Formalism of Surreal-Noncommutative Quantum Gravity}
+\author{Gemini CLI Research Group}
+\date{January 26, 2026}
+
+\begin{document}
+
+\maketitle
+
+\section{Scope and validation status}
+
+This document is a \emph{draft}. It mixes:
+\begin{itemize}
+  \item standard definitions (Cayley--Dickson construction, associator),
+  \item in-repo computationally validated facts (tracked by unit tests), and
+  \item speculative narrative proposals that are \emph{not} established mathematics.
+\end{itemize}
+
+Treat any statement as non-authoritative unless it is backed by a first-party citation and a
+reproducible test/verifier under \texttt{tests/} or \texttt{src/verification/}.
+
+\section{Cayley--Dickson construction (standard)}
+
+\subsection{Recursive Definition}
+Let $A_n$ be the algebra obtained after $n$ iterations of the Cayley-Dickson process, with $\dim(A_n) = 2^n$. The standard doubling is:
+\begin{equation}
+A_{n+1} = A_n \oplus A_n, \quad (a,b)(c,d) = (ac - d\bar{b}, \bar{a}d + cb)
+\end{equation}
+
+\section{Trilinear order-sensitivity operators (standard vs repo-specific)}
+
+\subsection{Associator (standard)}
+For octonions and beyond, associativity fails. The (standard) associator is:
+\begin{equation}
+[x,y,z] = (xy)z - x(yz)
+\end{equation}
+
+\subsection{The repo's \texorpdfstring{$m_3$}{m3} operator (validated properties; not an $A_\infty$ proof)}
+This repo also computes a specific trilinear operator called $m_3$ (defined in
+\texttt{src/gemini\_physics/m3\_cd\_transfer.py}). It is \emph{not} the associator.
+
+On distinct octonion basis triples $(e_i,e_j,e_k)$ with $i,j,k \in \{1,\dots,7\}$ all distinct, the repo
+validates the following computational properties:
+\begin{itemize}
+  \item exactly 42 scalar outputs and 168 pure-imaginary outputs, and
+  \item the scalar cases correspond to the Fano-plane lines (with parity sign flips).
+\end{itemize}
+These are validated by \texttt{tests/test\_m3\_cd\_transfer.py}. Establishing an $A_\infty$ structure would
+require additional, separately scoped Stasheff-identity checks.
+
+\section{Sedenion zero divisors (computationally replicated subset)}
+
+\subsection{The 42 Assessors}
+In the de Marrais construction (used here as a labeling scheme), there is a set of 42 primitive
+cross-assessors that generate a diagonal-form family of 2-blades.
+
+This repo replicates:
+\begin{itemize}
+  \item 42 primitive assessors, and
+  \item a partition into 7 box-kites (6 assessors each)
+\end{itemize}
+under the repo's fixed 16D Cayley--Dickson convention, validated by
+\texttt{tests/test\_de\_marrais\_boxkites.py}.
+
+\subsection{Box-Kite Structure}
+\emph{Box-kite} is treated as a convenient name for a specific combinatorial object exported by
+\texttt{src/export\_de\_marrais\_boxkites.py}. Any geometric/physical interpretation of these objects
+is out of scope unless backed by additional sources and validation.
+
+\section{Speculative directions (not established here)}
+
+The following are possible future-work topics but are \emph{not} validated by this repo as of Jan 2026:
+\begin{itemize}
+  \item a motif census for 32D/64D/128D/256D (components such as cuboctahedra/K\_{2,2,2}),
+  \item a careful, citation-backed alignment to Reggiani's geometric identifications, and
+  \item any claimed mapping from sedenion combinatorics to exceptional Lie algebra root systems.
+\end{itemize}
+
+\end{document}

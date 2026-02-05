@@ -1,0 +1,19 @@
+Scenario,Basis Element,Lattice Point,Operation,Result
+Numeric-Only Addition,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1 -1]...,Addition,bot
+Numeric-Only Multiplication,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1 -1]...,Multiplication,bot
+Numeric-Only Addition,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1  1]...,Addition,bot
+Numeric-Only Multiplication,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1  1]...,Multiplication,bot
+Numeric-Only Addition,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1  0  0]...,Addition,bot
+Numeric-Only Multiplication,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1  0  0]...,Multiplication,bot
+Numeric-Only Addition,"((0, 0), ((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1 -1 -1]...,Addition,bot
+Numeric-Only Multiplication,"((0, 0), ((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1 -1 -1]...,Multiplication,bot
+Numeric-Only Addition,"((0, 0), ((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1 -1  1]...,Addition,bot
+Numeric-Only Multiplication,"((0, 0), ((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1 -1  1]...,Multiplication,bot
+Numeric-Only Addition,"((0, 0), ((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1  0  0]...,Addition,bot
+Numeric-Only Multiplication,"((0, 0), ((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1  0  0]...,Multiplication,bot
+Numeric-Only Addition,"(((0, 0), (((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1 -1 -1]...,Addition,bot
+Numeric-Only Multiplication,"(((0, 0), (((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1 -1 -1]...,Multiplication,bot
+Numeric-Only Addition,"(((0, 0), (((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1 -1  1]...,Addition,bot
+Numeric-Only Multiplication,"(((0, 0), (((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1 -1  1]...,Multiplication,bot
+Numeric-Only Addition,"(((0, 0), (((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1  0  0]...,Addition,bot
+Numeric-Only Multiplication,"(((0, 0), (((((((((1, 0), (0, 0)), (0, 0)), (0, 0)...",[-1 -1 -1 -1 -1 -1  0  0]...,Multiplication,bot

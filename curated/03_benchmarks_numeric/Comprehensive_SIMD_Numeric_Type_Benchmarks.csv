@@ -1,0 +1,21 @@
+Builtin Operation (ms),Type,Size (Bytes),Builtin sqrt (ms),Babylonian sqrt (ms),Taylor exp (ms),Data Type,Scalar Time (s),SIMD Time (s),Speedup
+0.38123130798339844,uint8,1.0,,,,,,,
+0.0007152557373046875,uint16,2.0,,,,,,,
+0.009298324584960938,int8,1.0,,,,,,,
+0.0016689300537109375,int16,2.0,,,,,,,
+,float16,2.0,0.0209808349609375,0.034332275390625,0.022411346435546875,,,,
+,float32,4.0,0.00286102294921875,0.013589859008789062,0.01239776611328125,,,,
+,float64,8.0,0.0026226043701171875,0.00476837158203125,0.0064373016357421875,,,,
+,complex64,8.0,0.0045299530029296875,,0.018835067749023438,,,,
+,complex128,16.0,0.0054836273193359375,,0.011444091796875,,,,
+,,,,,,<class 'numpy.uint8'>,0.03520369529724121,2.053555488586426,0.01714280207810398
+,,,,,,<class 'numpy.uint16'>,0.051122426986694336,0.027747154235839844,1.8424385633270322
+,,,,,,<class 'numpy.uint32'>,0.07054615020751953,0.09606027603149414,0.734394623063444
+,,,,,,<class 'numpy.uint64'>,0.03020620346069336,0.04499697685241699,0.6712940640382343
+,,,,,,<class 'numpy.complex64'>,,,"Error: ufunc 'cbrt' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''"
+,,,,,,<class 'numpy.complex128'>,,,"Error: ufunc 'cbrt' not supported for the input types, and the inputs could not be safely coerced to any supported types according to the casting rule ''safe''"
+,,,,,,<class 'numpy.float16'>,,,Error: float16
+,,,,,,<class 'numpy.float32'>,0.012429475784301758,1.8101551532745361,0.006866525094170559
+,,,,,,<class 'numpy.float64'>,0.027710437774658203,0.06436347961425781,0.4305304489554008
+,,,,,,<class 'numpy.float128'>,,,Error: Unsupported array dtype: float128
+,,,,,,<class 'numpy.float128'>,,,Error: Unsupported array dtype: float128

@@ -1,0 +1,3 @@
+Module,Function,Input,Result,Expected Result,Abs Error,Time (ms),Status,Expected (approx)
+scipy.linalg,solve,"Ax=b (A=[[3,1],[1,2]], b=[9,8])",[0.6 2.1],"[2, 3]",8.0156097709407,0.8930210005928529,PASS,
+scipy.special,jv (Bessel),"order=0, x=5.0",-0.17759677131433838,,,0.14434900003834628,PASS,-0.17759677131433838

@@ -1,0 +1,3 @@
+Tensor Representation,Rule
+128x128 Non-Commutative Structure,U128*U128.T - U128.T*U128
+256x256 Non-Commutative Structure,U256*U256.T - U256.T*U256

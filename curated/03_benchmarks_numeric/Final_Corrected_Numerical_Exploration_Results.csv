@@ -1,0 +1,6 @@
+Computation,Execution Time (s)
+Adjusted Large FFT,0.124572
+Dense Eigenvalue Problem,4.583449
+Sparse Eigenvalue Problem,2.509359
+Polynomial Root Finding,0.007398
+High-dimensional Integration,0.001333

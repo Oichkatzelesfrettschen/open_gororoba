@@ -1,0 +1,96 @@
+# Claims Priority Ranking (2026-02-02)
+
+Heuristic ranking for audit triage. Higher score means:
+- status is not marked Verified/Refuted/Established, and/or
+- claim is referenced frequently, and/or
+- claim has an old or missing last_verified date.
+
+This report is for planning, not evidence.
+
+## Top 80 claims to review next
+
+- C-009 (score=1503, mentions=25, last_verified=2026-01-30): Not supported
+- C-007 (score=1500, mentions=44, last_verified=2026-02-02): Speculative
+- C-010 (score=1500, mentions=30, last_verified=2026-02-02): Speculative
+- C-011 (score=1500, mentions=33, last_verified=2026-02-02): Speculative
+- C-403 (score=1500, mentions=27, last_verified=2026-02-02): Speculative
+- C-405 (score=1420, mentions=21, last_verified=2026-02-02): Speculative
+- C-026 (score=1363, mentions=18, last_verified=2026-01-30): Speculative
+- C-008 (score=1360, mentions=18, last_verified=2026-02-02): Speculative
+- C-404 (score=1360, mentions=18, last_verified=2026-02-02): Speculative
+- C-427 (score=1320, mentions=16, last_verified=2026-02-02): Speculative
+- C-019 (score=1283, mentions=14, last_verified=2026-01-30): Not supported
+- C-027 (score=1260, mentions=13, last_verified=2026-02-02): Speculative
+- C-039 (score=1243, mentions=12, last_verified=2026-01-30): Speculative
+- C-040 (score=1243, mentions=12, last_verified=2026-01-30): Speculative
+- C-032 (score=1240, mentions=12, last_verified=2026-02-02): Literature
+- C-023 (score=1220, mentions=11, last_verified=2026-02-02): Modeled
+- C-034 (score=1220, mentions=11, last_verified=2026-02-02): Literature
+- C-041 (score=1203, mentions=10, last_verified=2026-01-30): Speculative
+- C-129 (score=1202, mentions=10, last_verified=2026-01-31): Speculative
+- C-130 (score=1202, mentions=10, last_verified=2026-01-31): Speculative
+- C-022 (score=1200, mentions=10, last_verified=2026-02-02): Modeled
+- C-030 (score=1200, mentions=10, last_verified=2026-02-02): Theoretical
+- C-123 (score=1182, mentions=9, last_verified=2026-01-31): Speculative
+- C-031 (score=1163, mentions=8, last_verified=2026-01-30): Theoretical
+- C-050 (score=1162, mentions=8, last_verified=2026-01-31): Modeled
+- C-128 (score=1162, mentions=8, last_verified=2026-01-31): Speculative
+- C-135 (score=1162, mentions=8, last_verified=2026-01-31): Speculative
+- C-132 (score=1142, mentions=7, last_verified=2026-01-31): Speculative
+- C-037 (score=1123, mentions=6, last_verified=2026-01-30): Speculative
+- C-068 (score=1122, mentions=6, last_verified=2026-01-31): Speculative
+- C-087 (score=1122, mentions=6, last_verified=2026-01-31): Speculative
+- C-094 (score=1122, mentions=6, last_verified=2026-01-31): Speculative
+- C-096 (score=1122, mentions=6, last_verified=2026-01-31): Speculative
+- C-097 (score=1122, mentions=6, last_verified=2026-01-31): Speculative
+- C-099 (score=1102, mentions=5, last_verified=2026-01-31): Speculative
+- C-102 (score=1102, mentions=5, last_verified=2026-01-31): Speculative
+- C-120 (score=1102, mentions=5, last_verified=2026-01-31): Speculative
+- C-043 (score=1082, mentions=4, last_verified=2026-01-31): Speculative
+- C-053 (score=1082, mentions=4, last_verified=2026-01-31): Speculative
+- C-070 (score=1082, mentions=4, last_verified=2026-01-31): Speculative
+- C-075 (score=1082, mentions=4, last_verified=2026-01-31): Speculative
+- C-077 (score=1082, mentions=4, last_verified=2026-01-31): Speculative
+- C-108 (score=1082, mentions=4, last_verified=2026-01-31): Speculative
+- C-109 (score=1082, mentions=4, last_verified=2026-01-31): Speculative
+- C-401 (score=1080, mentions=4, last_verified=2026-02-02): Theoretical
+- C-417 (score=1080, mentions=4, last_verified=2026-02-02): Speculative
+- C-047 (score=1062, mentions=3, last_verified=2026-01-31): Clarified
+- C-048 (score=1062, mentions=3, last_verified=2026-01-31): Modeled
+- C-074 (score=1062, mentions=3, last_verified=2026-01-31): | v3 exp2: curve_fit on dims 8-256, n=5000 samples each., docs/external_sources/OPEN_CLAIMS_SOURCES.md |
+- C-078 (score=1062, mentions=3, last_verified=2026-01-31): Speculative
+- C-079 (score=1062, mentions=3, last_verified=2026-01-31): Not supported
+- C-080 (score=1062, mentions=3, last_verified=2026-01-31): Not supported
+- C-082 (score=1062, mentions=3, last_verified=2026-01-31): Speculative
+- C-084 (score=1062, mentions=3, last_verified=2026-01-31): Not supported
+- C-085 (score=1062, mentions=3, last_verified=2026-01-31): Not supported
+- C-090 (score=1062, mentions=3, last_verified=2026-01-31): Speculative
+- C-091 (score=1062, mentions=3, last_verified=2026-01-31): Not supported
+- C-092 (score=1062, mentions=3, last_verified=2026-01-31): Speculative
+- C-103 (score=1062, mentions=3, last_verified=2026-01-31): Speculative
+- C-412 (score=1060, mentions=3, last_verified=2026-02-02): Modeled
+- C-421 (score=1060, mentions=3, last_verified=2026-02-02): Modeled
+- C-423 (score=1060, mentions=3, last_verified=2026-02-02): Modeled
+- C-069 (score=1042, mentions=2, last_verified=2026-01-31): Not supported
+- C-071 (score=1042, mentions=2, last_verified=2026-01-31): Not supported
+- C-072 (score=1042, mentions=2, last_verified=2026-01-31): Not supported
+- C-073 (score=1042, mentions=2, last_verified=2026-01-31): Not supported
+- C-081 (score=1042, mentions=2, last_verified=2026-01-31): Not supported
+- C-083 (score=1042, mentions=2, last_verified=2026-01-31): Not supported
+- C-419 (score=1040, mentions=2, last_verified=2026-02-02): Modeled
+- C-420 (score=1040, mentions=2, last_verified=2026-02-02): Modeled
+- C-422 (score=1040, mentions=2, last_verified=2026-02-02): Modeled
+- C-424 (score=1040, mentions=2, last_verified=2026-02-02): Modeled
+- C-425 (score=1040, mentions=2, last_verified=2026-02-02): Modeled
+- C-426 (score=1040, mentions=2, last_verified=2026-02-02): Speculative
+- C-409 (score=1020, mentions=1, last_verified=2026-02-02): Modeled
+- C-410 (score=1020, mentions=1, last_verified=2026-02-02): Literature
+- C-411 (score=1020, mentions=1, last_verified=2026-02-02): Literature
+- C-418 (score=1020, mentions=1, last_verified=2026-02-02): Modeled
+- C-012 (score=503, mentions=44, last_verified=2026-01-30): Refuted
+- C-001 (score=500, mentions=28, last_verified=2026-02-02): Verified
+
+## Notes
+
+- Mention counts are computed from docs/src/tests/examples only.
+- This does not attempt to estimate scientific importance; it estimates audit risk.

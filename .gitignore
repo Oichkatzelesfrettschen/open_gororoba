@@ -1,0 +1,97 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.ruff_cache/
+*.egg-info/
+src/*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+.mamba/
+
+# Build and distribution
+build/
+dist/
+*.so
+*.dylib
+
+# Coq build artifacts and generated stubs
+curated/01_theory_frameworks/*.vo
+curated/01_theory_frameworks/*.vos
+curated/01_theory_frameworks/*.vok
+curated/01_theory_frameworks/*.glob
+curated/01_theory_frameworks/confine_theorems_*_axioms.v
+
+# LaTeX build output
+docs/latex/out/
+
+# OS and editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+.claude/
+
+# ----- Generated artifacts (regenerable via make targets) -----
+# HDF5 simulation output (make run)
+data/h5/
+
+# Generated images (make artifacts-*)
+# NOTE: data/artifacts/images/ is tracked for reference;
+#       add specific patterns here if regenerating via CI.
+
+# ----- External / downloaded data (fetch via make fetch-data) -----
+data/external/papers/
+data/external/nv_odmr/
+data/external/jarvis_dft/
+data/external/TESS_Metadata.csv
+
+# Curated provenance snapshots (regenerable via make provenance)
+curated/PROVENANCE.local.json
+
+# Downloaded observational datasets (large, fetchable)
+# NOTE: Cleanified_LIGO.csv is tracked (no generating script exists)
+
+# ----- Scan and analysis outputs (ephemeral) -----
+reports/trufflehog*.json
+reports/semgrep_results.txt
+reports/repo_tree*.txt
+reports/benchmark_*.txt
+reports/*.csv
+
+# ----- Legacy and archival (not part of active codebase) -----
+data/csv/legacy/
+archive/
+
+# Finder duplicate artifacts
+*\ 2.csv
+*\ 2.md
+*\ 2.v
+
+# Binaries that should not be versioned
+bin/micromamba
+
+# SQLite databases (generated)
+*.db
+*.sqlite3
+
+# Secrets and credentials (never commit)
+*.env
+*.pem
+*.key
+credentials.*
+
+# AI assistant scaffolding (local-only, superseded)
+NAVIGATOR.md
+
+# Large data files (use Git LFS if needed)
+data/h5/*.h5
+data/external/jarvis_dft/
+reports/trufflehog_results.json
+*.h5

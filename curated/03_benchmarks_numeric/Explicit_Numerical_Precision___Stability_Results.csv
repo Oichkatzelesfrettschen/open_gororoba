@@ -1,0 +1,3 @@
+Solution Method,Solution Explicitly,Precision/Error Explicitly
+Numeric (NumPy),[1. 1.],[-2.22044605e-12  2.22044605e-12]
+Symbolic (SymPy),[1. 1.],[0 0]

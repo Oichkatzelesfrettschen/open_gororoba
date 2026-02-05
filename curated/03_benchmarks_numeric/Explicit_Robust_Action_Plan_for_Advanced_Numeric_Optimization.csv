@@ -1,0 +1,11 @@
+Step ID,Explicit Next Steps,Priority,Recommended Python Tools
+1,"Granular AI-based Solver Optimization (e.g., neural nets for solver selection)",High,"scikit-learn, TensorFlow, PyTorch, XGBoost"
+2,Deeper LLVM IR explicit inspection vs manually vectorized AVX kernels,High,"LLVM inspection tools, llvmlite, numba"
+3,Compiler flags benchmarking explicitly across SIMD instructions (AVX-512 subsets explicitly),High,"GCC, Clang, perf (Linux profiling)"
+4,Explicit Python-Cython Kernel Development & Optimization,High,"Cython, ctypes, NumPy"
+5,Benchmark explicitly across extended thread-scheduling strategies (guided/dynamic/static OpenMP),Medium-High,"NumPy, joblib, OpenMP"
+6,Benchmark and profiling explicitly with large-scale datasets (>1 million elements),Medium,"NumPy, OpenMP, joblib, psutil"
+7,"Detailed assembly-level explicit profiling for additional AVX512 subsets (CD, ER, PF, VBMI)",Medium,"GCC/Clang, objdump, perf"
+8,"Memory alignment optimization explicitly benchmarked (32-byte, 64-byte, 128-byte alignments)",Medium,"NumPy, posix_memalign (via ctypes/Cython)"
+9,Integration of kernels explicitly via Python C-API with detailed overhead benchmarking,High,"ctypes, NumPy C-API, Cython"
+10,Explicit extensive numeric verification and accuracy testing across all kernels,Medium-High,"NumPy, SciPy, SymPy"

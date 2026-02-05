@@ -1,0 +1,2 @@
+Operation,Matrix/Grid Size,Average Execution Time (seconds)
+LU Decomposition (Further Optimized),128 x 128,5.328295028600041

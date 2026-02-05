@@ -1,0 +1,3 @@
+DataType,Benchmark_Time_sec,CPU_Usage_Percent,Memory_Usage_Bytes,Computation_Result
+complex64,0.09552431106567383,0.0,24000000,(2718282.75+0j)
+longdouble,0.16495490074157715,0.0,48000000,(2718281.8284590454+0j)

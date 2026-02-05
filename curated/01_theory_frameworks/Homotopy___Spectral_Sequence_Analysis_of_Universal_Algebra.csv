@@ -1,0 +1,6 @@
+Dimension,Supports \pi_n Homotopy Groups?,Exhibits Spectral Sequence Decomposition?,Higher Derived Category Structure?,Exceptional Stacks & Sheaves Required?,Beyond Known Algebraic Topology?
+512,True,False,False,False,Emerging
+1024,True,True,False,False,Confirmed
+2048,True,True,True,False,Confirmed
+4096,True,True,True,True,Beyond Known Models
+8192,True,True,True,True,Unknown

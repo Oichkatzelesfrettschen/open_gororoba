@@ -1,0 +1,4 @@
+Kernel Implementation explicitly,Average Execution Time (seconds)
+NumPy explicitly,0.010874188799789408
+numba explicitly,0.048841512799845076
+Cython explicitly,0.010721497000122326

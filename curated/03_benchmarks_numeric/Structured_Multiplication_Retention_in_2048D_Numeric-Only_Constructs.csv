@@ -1,0 +1,6 @@
+Scenario,Basis Element,Lattice Point,Aligned Basis,Aligned Lattice,Result
+Detailed Numeric Addition,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1 -1]...,bot,bot,bot (Type Mismatch)
+Detailed Numeric Multiplication,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1 -1]...,bot,bot,bot (Type Mismatch)
+Detailed Numeric Addition,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1  1]...,bot,bot,bot (Type Mismatch)
+Detailed Numeric Multiplication,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1 -1  1]...,bot,bot,bot (Type Mismatch)
+Detailed Numeric Addition,"(((((((((((1, 0), (0, 0)), (0, 0)), (0, 0)), (0, 0...",[-1 -1 -1 -1 -1 -1  0  0]...,bot,bot,bot (Type Mismatch)

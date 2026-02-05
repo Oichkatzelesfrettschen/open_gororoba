@@ -1,0 +1,11 @@
+Dimension,"Contains Clifford, Lie, Jordan?",Has Normed Substructures?,Associative Closure Possible?,Exceptional Groups Embed?,Monstrous Moonshine Links?,Unified Algebra Possible?
+1,False,True,True,False,False,False
+2,True,True,True,False,False,False
+4,True,True,True,False,False,False
+8,True,True,False,False,False,False
+16,True,False,False,True,False,True
+27,True,False,False,True,True,True
+32,True,False,False,True,True,True
+64,True,False,False,True,True,True
+128,True,False,False,True,True,True
+248,True,False,False,True,True,True

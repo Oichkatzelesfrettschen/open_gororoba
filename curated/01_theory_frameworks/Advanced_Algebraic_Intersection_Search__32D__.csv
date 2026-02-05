@@ -1,0 +1,11 @@
+Dimension,Cayley-Dickson Embedded?,Kac-Moody Embedded?,Malcev Algebra Linked?,Hopf Algebra Structure?,Yangians Retained?,Banach/von Neumann Extensions?,Freudenthal Linked?,Hecke Structure Possible?,"E9, E10, E11 Emerging?",Affine/Color Algebras Present?,Unified Algebraic Intersection?
+32,True,False,False,False,False,False,False,False,False,False,Emerging
+64,True,True,False,False,False,False,False,False,False,False,Stronger
+128,True,True,True,False,False,False,True,False,False,False,Strong
+256,True,True,True,True,False,False,True,True,True,False,Confirmed
+512,False,True,True,True,True,False,True,True,True,True,Beyond Known Models
+1024,False,True,True,True,True,True,True,True,True,True,Unknown
+2048,False,True,True,True,True,True,True,True,True,True,Unknown
+4096,False,True,True,True,True,True,True,True,True,True,Unknown
+8192,False,True,True,True,True,True,True,True,True,True,Unknown
+16384,False,True,True,True,True,True,True,True,True,True,Unknown

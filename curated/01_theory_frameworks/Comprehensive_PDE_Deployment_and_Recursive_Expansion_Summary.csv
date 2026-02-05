@@ -1,0 +1,6 @@
+Dimension,Grid Points per Dimension,Numeric Precision,Symbolic Reduction Factor,Quantum-Classical Hybrid Norm,Memory Usage (MB),Laplacian Norm,Symbolic-Numeric Kernel Norm,Explicit Memory Usage (MB),Recursive Kernel Norm
+5,15,complex128 (Quantum-Classical Hybrid),0.8,2985.5721322399504,11.587142944335938,,,,
+5,15,complex128,,,11.587142944335938,3731.9651652999382,,,
+5,15,float64 (Symbolic-Numeric Hybrid explicitly optimized),0.75,,5.793571472167969,,1976.618877363851,,
+5,15,complex128,,,,,,11.587142944335938,
+5,20,float32,0.7,,12.20703125,,,,3792.65

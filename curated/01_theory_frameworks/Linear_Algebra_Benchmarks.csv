@@ -1,0 +1,2 @@
+,Data Type,Operation,Matrix Size,Mean Time (ms),Residual Norm,Status
+0,complex128,np.linalg.solve,100x100,2865.8574676666717,3.983916248077412e-14,

@@ -1,0 +1,245 @@
+# Unified Bibliography
+
+## Primary Research & Data Sources
+
+### Astrophysics & Cosmology
+*   **LIGO Scientific Collaboration, Virgo Collaboration, & KAGRA Collaboration.** (2021). *GWTC-3: Compact Binary Coalescences Observed by LIGO and Virgo During the Second Part of the Third Observing Run*. [arXiv:2111.03606](https://arxiv.org/abs/2111.03606).
+    *   *Source of Black Hole Mass Distribution data.*
+*   **Gravitational Wave Open Science Center (GWOSC).** *GWTC-3 Confident Events (O3)*. [Web](https://www.gw-openscience.org/eventapi/html/GWTC-3-confident/).
+    *   *Authoritative event list (35 "confident" events) and access to per-event data products.*
+*   **Gravitational Wave Open Science Center (GWOSC).** *GWTC-3 Data Release Documentation*. [Web](https://www.gw-openscience.org/data/).
+    *   *Catalog release docs, formats, and download guidance for GWTC-3.*
+*   **Mazur, P. O., & Mottola, E.** (2001). *Gravitational Condensate Stars: An Alternative to Black Holes*. [arXiv:gr-qc/0109035](https://arxiv.org/abs/gr-qc/0109035).
+    *   *Foundational paper on Gravastars (Gravitational Vacuum Stars).*
+*   **Mazur, P. O., & Mottola, E.** (2004). *Gravitational vacuum condensate stars*. PNAS 101, 9545-9550. DOI: 10.1073/pnas.0402717101.
+    *   *Three-region gravastar: de Sitter interior, stiff shell, Schwarzschild exterior.*
+*   **Visser, M., & Wiltshire, D. L.** (2004). *Stable gravastars -- an alternative to black holes?*. CQG 21(4), 1135-1151. [arXiv:gr-qc/0310107](https://arxiv.org/abs/gr-qc/0310107).
+    *   *First dynamical stability analysis of gravastar via Israel junction conditions.*
+*   **Lobo, F. S. N.** (2006). *Stable dark energy stars*. CQG 23, 1525. [arXiv:gr-qc/0508115](https://arxiv.org/abs/gr-qc/0508115).
+    *   *Generalized gravastar with dark energy EoS interior; stability regions mapped.*
+*   **Cattoen, C., Faber, T., & Visser, M.** (2005). *Gravastars must have anisotropic pressures*. CQG 22(20). [arXiv:0707.1636](https://arxiv.org/abs/0707.1636).
+    *   *Continuous-profile gravastars require anisotropic stress.*
+*   **Kiziltan, B., Kottas, A., & Thorsett, S. E.** (2013). *The Neutron Star Mass Distribution*. [arXiv:1309.6635](https://arxiv.org/abs/1309.6635).
+    *   *Statistical basis for Pulsar mass baseline.*
+*   **Abbott, R., et al.** (2020). *GW190521: A Binary Black Hole Merger with a Total Mass of 150 Solar Masses*. Physical Review Letters, 125(10), 101102.
+    *   *Evidence of "Gap" Black Holes.*
+
+### Kerr Black Holes & Shadows
+*   **Bardeen, J. M.** (1973). *Timelike and null geodesics in the Kerr metric*. In: Black Holes (Les Astres Occlus), ed. DeWitt & DeWitt, Gordon and Breach, pp. 215-239.
+    *   *Foundational analysis of Kerr null geodesics; introduces celestial coordinates and shadow boundary.*
+*   **Cunningham, C. T., & Bardeen, J. M.** (1973). *The Optical Appearance of a Star Orbiting an Extreme Kerr Black Hole*. ApJ 183, 237.
+    *   *Pioneer black hole imaging calculations with Doppler and relativistic luminosity.*
+*   **Mino, Y.** (2003). *Perturbative approach to an orbital evolution around a supermassive black hole*. Phys. Rev. D 67, 084027. [arXiv:gr-qc/0302075](https://arxiv.org/abs/gr-qc/0302075).
+    *   *Introduces "Mino time" decoupling Kerr radial and polar geodesic equations.*
+*   **Fujita, R., & Hikida, W.** (2009). *Analytical solutions of bound timelike geodesic orbits in Kerr spacetime*. CQG 26, 135002. [arXiv:0906.1420](https://arxiv.org/abs/0906.1420).
+    *   *Complete analytical expressions for Kerr bound geodesic frequencies.*
+*   **EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. I. The Shadow of the Supermassive Black Hole*. ApJL 875, L1. [arXiv:1906.11238](https://arxiv.org/abs/1906.11238).
+    *   *First event-horizon-scale image; ring diameter 42 +/- 3 microarcsec.*
+*   **EHT Collaboration.** (2022). *First Sagittarius A* Event Horizon Telescope Results. I.* ApJL 930, L12.
+    *   *First Sgr A* image; ring diameter 51.8 +/- 2.3 microarcsec, consistent with Kerr GR.*
+
+### Warp Drive & Exotic Spacetimes
+*   **Alcubierre, M.** (1994). *The Warp Drive: Hyper-Fast Travel within General Relativity*. CQG 11(5), L73-L77. [arXiv:gr-qc/0009013](https://arxiv.org/abs/gr-qc/0009013).
+    *   *Original warp bubble metric; requires negative energy density (violates WEC/SEC/DEC).*
+*   **Hiscock, W. A.** (1997). *Quantum effects in the Alcubierre warp-drive spacetime*. CQG 14, L183-L188. [arXiv:gr-qc/9707024](https://arxiv.org/abs/gr-qc/9707024).
+    *   *Stress-energy diverges at superluminal speeds; horizon formation.*
+*   **Pfenning, M. J., & Ford, L. H.** (1997). *The unphysical nature of "Warp Drive"*. CQG 14, 1743-1751.
+    *   *Quantum inequality constraints: 10c bubble requires ~ visible-universe energy.*
+*   **Lentz, E. W.** (2021). *Breaking the warp barrier: hyper-fast solitons in Einstein-Maxwell-plasma theory*. CQG 38(7), 075015. [arXiv:2201.00652](https://arxiv.org/abs/2201.00652).
+    *   *First positive-energy superluminal soliton from classical EM + plasma.*
+*   **Bobrick, A., & Martire, G.** (2021). *Introducing Physical Warp Drives*. CQG 38, 105009. [arXiv:2102.06824](https://arxiv.org/abs/2102.06824).
+    *   *General warp drive classification; first subluminal positive-energy model.*
+*   **Fuchs, J., et al.** (2024). *Constant Velocity Physical Warp Drive Solution*. CQG. [arXiv:2405.02709](https://arxiv.org/abs/2405.02709).
+    *   *First warp drive satisfying all four classical energy conditions (NEC/WEC/DEC/SEC).*
+
+### Holographic Entropy & Information
+*   **Bekenstein, J. D.** (1981). *Universal upper bound on the entropy-to-energy ratio for bounded systems*. Phys. Rev. D 23, 287-298. DOI: 10.1103/PhysRevD.23.287.
+    *   *Bekenstein bound: S <= 2*pi*k*R*E/(hbar*c).*
+*   **'t Hooft, G.** (1993). *Dimensional reduction in quantum gravity*. [arXiv:gr-qc/9310026](https://arxiv.org/abs/gr-qc/9310026).
+    *   *Original holographic principle: one Boolean variable per Planck area suffices.*
+*   **Susskind, L.** (1995). *The world as a hologram*. J. Math. Phys. 36, 6377-6396. DOI: 10.1063/1.531249. [arXiv:hep-th/9409089](https://arxiv.org/abs/hep-th/9409089).
+    *   *Formalizes holographic principle; particles grow at trans-Planckian momenta.*
+*   **Maldacena, J.** (1998). *The Large N Limit of Superconformal Field Theories and Supergravity*. Adv. Theor. Math. Phys. 2, 231-252. [arXiv:hep-th/9711200](https://arxiv.org/abs/hep-th/9711200).
+    *   *AdS/CFT correspondence -- foundation for all holographic calculations.*
+*   **Strominger, A., & Vafa, C.** (1996). *Microscopic Origin of the Bekenstein-Hawking Entropy*. Phys. Lett. B 379, 99-104. [arXiv:hep-th/9601029](https://arxiv.org/abs/hep-th/9601029).
+    *   *First D-brane derivation of S = A/4G_N for supersymmetric black holes.*
+*   **Ryu, S., & Takayanagi, T.** (2006). *Holographic Derivation of Entanglement Entropy from AdS/CFT*. PRL 96, 181602. [arXiv:hep-th/0603001](https://arxiv.org/abs/hep-th/0603001).
+    *   *Ryu-Takayanagi formula: S_A = Area(gamma_A) / 4G_N.*
+*   **Ryu, S., & Takayanagi, T.** (2006b). *Aspects of Holographic Entanglement Entropy*. JHEP 08 (2006) 045. [arXiv:hep-th/0605073](https://arxiv.org/abs/hep-th/0605073).
+    *   *Extended derivation in AdS_3/CFT_2 case.*
+*   **Swingle, B.** (2012). *Entanglement Renormalization and Holography*. Phys. Rev. D 86, 065007. [arXiv:0905.1317](https://arxiv.org/abs/0905.1317).
+    *   *MERA tensor network as discrete AdS; establishes MERA/AdS correspondence.*
+*   **Vidal, G.** (2007). *Entanglement Renormalization*. Phys. Rev. Lett. 99, 220405. [arXiv:cond-mat/0512165](https://arxiv.org/abs/cond-mat/0512165).
+    *   *Original MERA proposal; hierarchical RG with log(L) entropy scaling for CFTs.*
+
+### Turbulence and Spectral Dynamics
+*   **Kraichnan, R. H.** (1967). *Inertial Ranges in Two-Dimensional Turbulence*. Phys. Fluids 10, 1417-1423.
+    *   *2D enstrophy cascade yields E(k) ~ k^{-3} spectrum; EXACT match for project's spectral ansatz.*
+*   **Kolmogorov, A. N.** (1941). *The local structure of turbulence in incompressible viscous fluid for very large Reynolds numbers*. Proc. USSR Acad. Sci. 30, 299-303.
+    *   *Classic E(k) ~ k^{-5/3} energy cascade; does NOT match k^{-3} ansatz.*
+*   **Parisi, G., & Sourlas, N.** (1979). *Random Magnetic Fields, Supersymmetry, and Negative Dimensions*. Phys. Rev. Lett. 43, 744.
+    *   *Dimensional reduction D -> D-2 in random field systems; negative dimension interpretation.*
+
+### Fractal / Negative-Dimension Cosmology
+*   **Mandelbrot, B. B.** (1990). *Negative fractal dimensions and multifractals*. Physica A 163, 306-315.
+    *   *Defines negative fractal dimensions as "degree of emptiness" for multifractals.*
+*   **Calcagni, G.** (2010). *Fractal universe and quantum gravity*. PRL 104, 251301. [arXiv:0912.3142](https://arxiv.org/abs/0912.3142).
+    *   *Field theory on fractal spacetime; UV Hausdorff dim 2 flows to IR dim 4.*
+*   **Calcagni, G.** (2010b). *Quantum field theory, gravity and cosmology in a fractal universe*. JHEP 03 (2010) 120. [arXiv:1001.0571](https://arxiv.org/abs/1001.0571).
+    *   *Gravitational sector and cosmological solutions on fractal spacetime.*
+*   **Calcagni, G.** (2012). *Geometry and field theory in multi-fractional spacetime*. JHEP 2012, 65. [arXiv:1107.5041](https://arxiv.org/abs/1107.5041).
+    *   *Multi-fractional spacetimes with complex dimensional flow.*
+*   **Sheykhi, A., Teimoori, Z., & Wang, B.** (2012). *Interacting dark energy models in fractal cosmology*. [arXiv:1202.3457](https://arxiv.org/abs/1202.3457).
+    *   *Fractal dimension of universe estimated between 2 and 2.5.*
+
+### GRIN Optics & Analogue Gravity
+*   **Stone, B. D., & Forbes, G. W.** (1990). *Optimal interpolants for Runge-Kutta ray tracing in inhomogeneous media*. JOSA A 7(2), 248-254.
+    *   *Accuracy-matching interpolants for continuous RK4 ray trajectories.*
+*   **Sharma, A., Kumar, D. V., & Ghatak, A. K.** (1982). *Tracing rays through graded-index media: a new method*. Applied Optics 21(6).
+    *   *Foundational "Sharma algorithm" for GRIN ray tracing; benchmark reference.*
+*   **Sharma, A.** (1987). *Ray trace algorithms for GRIN media*. Applied Optics 26(15), 2943.
+    *   *Comparative study of GRIN algorithms using Runge-Kutta-Gill method.*
+*   **Ohno, K.** (2020). *Symplectic ray tracing based on Hamiltonian optics in gradient-index media*. JOSA A 37(3).
+    *   *Hamiltonian formulation preserving optical invariants better than RK4.*
+*   **Leonhardt, U., & Philbin, T. G.** (2006). *General relativity in electrical engineering*. New J. Phys. 8, 247. DOI: 10.1088/1367-2630/8/10/247. [arXiv:cond-mat/0607418](https://arxiv.org/abs/cond-mat/0607418).
+    *   *Transformation optics: metamaterials mimic GR; unifies cloaking, lenses, optical horizons.*
+*   **Philbin, T. G., et al.** (2008). *Fiber-Optical Analog of the Event Horizon*. Science 319(5868), 1367-1370. DOI: 10.1126/science.1153625. [arXiv:0711.4796](https://arxiv.org/abs/0711.4796).
+    *   *Experimental demonstration of artificial event horizon in optical fiber.*
+*   **Leonhardt, U., & Philbin, T.** (2010). *Geometry and Light: The Science of Invisibility*. Dover.
+    *   *Monograph: differential geometry of transformation optics and analogue gravity.*
+*   **Reshef, O., et al.** (2021). *An optic to replace space and its application towards ultra-thin imaging systems*. Nature Communications 12, 3512. DOI: 10.1038/s41467-021-23358-8.
+    *   *"Spaceplate" -- optic propagating light for effective distance >> physical thickness.*
+*   **Sheng, C., et al.** (2020). *Optical analogues to the equatorial Kerr-Newman black hole*. Comm. Phys. (Nature) 3, 384.
+    *   *Dielectric tensors reproducing equatorial Kerr-Newman metric; feasible with ordinary materials.*
+
+### Algebra & Mathematics
+*   **Baez, J. C.** (2002). *The Octonions*. Bulletin of the American Mathematical Society, 39, 145-205. [math.RA/0105155](https://arxiv.org/abs/math/0105155).
+    *   *Reference for G2, F4, and Normed Division Algebras.*
+*   **Barton, C. H., & Sudbery, A.** (2002). *Magic squares and matrix models of Lie algebras*. [arXiv:math/0203010](https://arxiv.org/abs/math/0203010).
+    *   *Division-algebra constructions and their relation to exceptional Lie algebras (useful for correcting "E-series embedding" overclaims).*
+*   **Carlstrom, J.** (2001). *Wheels - On Division by Zero*. Stockholm University Research Reports in Mathematics, 2001:11. [PDF](https://www2.math.su.se/reports/2001/11/2001-11.pdf).
+    *   *Defines "wheels": an algebraic structure extending fields/rings with totalized division (including division by zero).*
+*   **Carlstrom, J.** (2004). *Wheels - on division by zero*. Mathematical Structures in Computer Science, 14(1), 143-184. DOI: 10.1017/S0960129503004110.
+*   **Markl, M., Merkulov, S., & Shadrin, S.** (2009). *Wheeled PROPs, graph complexes and the master equation*. Journal of Pure and Applied Algebra, 213(4), 496-535. DOI: 10.1016/j.jpaa.2008.08.007.
+*   **Dotsenko, V.** (2025). *Stable homology of wheeled operads*. Compositio Mathematica. [Cambridge Core](https://www.cambridge.org/core/journals/compositio-mathematica/article/stable-homology-of-wheeled-operads/C66016DA3A1BB600E57D975D3E8D83BC).
+*   **Stasheff, J. D.** (1963). *Homotopy associativity of H-spaces I*. Transactions of the American Mathematical Society, 108, 275-292. DOI: 10.1090/S0002-9947-1963-0158400-5.
+*   **Stasheff, J. D.** (1963). *Homotopy associativity of H-spaces II*. Transactions of the American Mathematical Society, 108, 293-312. DOI: 10.1090/S0002-9947-1963-0158400-5.
+    *   *Foundational definition of A-infinity spaces / structures (via Stasheff polytopes).*
+*   **Kadeishvili, T. V.** (1980). *On the theory of homology of fiber spaces*. Uspekhi Mat. Nauk, 35(3), 183-188. [arXiv:math/0504437](https://arxiv.org/abs/math/0504437).
+    *   *Often cited as the "Kadeishvili theorem": transfer/existence of A-infinity structures on homology.*
+*   **Gugenheim, V. K. A. M., & Stasheff, J. D.** (1991). *On perturbations and A-infinity structures*. Bulletin de la Societe Mathematique de Belgique, 38, 237-246.
+    *   *Homological perturbation viewpoint; explicit transfer formulas context.*
+*   **de Marrais, R. P. C.** (2000). *The 42 Assessors and the Box-Kites they fly: Diagonal Axis-Pair Systems of Zero-Divisors in the Sedenions' 16 Dimensions*. [arXiv:math/0011260](https://arxiv.org/abs/math/0011260). (Mirror PDF: https://lygeros.org/wp-content/uploads/perfections/sedenions.pdf)
+    *   DOI: 10.48550/arXiv.math/0011260.
+*   **de Marrais, R. P. C.** (2004). *The "Something From Nothing" Insertion Point: Where NKS Research into Physics Foundations Can Expect the "Most Bang for the Buck"*. Wolfram Science Conference 2004 (slides). [PDF](https://www.wolframscience.com/conference/2004/presentations/material/rdemarrais.pdf).
+*   **de Marrais, R. P. C.** (2002). *Placeholder Substructures I: The Road from NKS to Scale-Free Networks Is Paved with Zero-Divisors*. [arXiv:math/0207003](https://arxiv.org/abs/math/0207003).
+*   **de Marrais, R. P. C.** (2007). *Placeholder Substructures I: The Road from NKS to Scale-Free Networks is Paved with Zero-Divisors*. Complex Systems, 17(2), 125-142. DOI: 10.25088/ComplexSystems.17.2.125. [PDF](https://content.wolfram.com/sites/13/2023/02/17-2-3.pdf).
+*   **de Marrais, R. P. C.** (2004). *Box-Kites III: Quizzical Quaternions, Mock Octonions, and Other Zero-Divisor-Suppressing "Sleeper Cell" Structures in the Sedenions and 2^n-ions*. [arXiv:math/0403113](https://arxiv.org/abs/math/0403113).
+*   **de Marrais, R. P. C.** (2006). *Presto! Digitization, Part I: From NKS Number Theory to "XORbitant" Semantics, by way of Cayley-Dickson Process and Zero-Divisor-based "Representations"*. [arXiv:math/0603281](https://arxiv.org/abs/math/0603281).
+*   **de Marrais, R. P. C.** (2006). *The Marriage of Nothing and All: Zero-Divisor Box-Kites in a \"TOE\" Sky*. [arXiv:0704.1012](https://arxiv.org/abs/0704.1012).
+*   **de Marrais, R. P. C.** (2007). *Placeholder Substructures II: Meta-Fractals, Made of Box-Kites, Fill Infinite-Dimensional Skies*. [arXiv:0704.0026](https://arxiv.org/abs/0704.0026).
+*   **de Marrais, R. P. C.** (2007). *Placeholder Substructures III: A Bit-String-Driven "Recipe Theory" for Infinite-Dimensional Zero-Divisor Spaces*. [arXiv:0704.0112](https://arxiv.org/abs/0704.0112).
+    *   *Source of the "Box-Kite" zero-divisor structure hypothesis.*
+*   **de Marrais, R. P. C.** (2008). *Effecting Semantic Network Bricolage via Infinite-Dimensional Zero-Divisor Ensembles*. Complex Systems, 18(1), 75-110. DOI: 10.25088/ComplexSystems.18.1.75. [Web](https://www.complex-systems.com/abstracts/v18_i01_a04/).
+*   **OEIS Foundation Inc.** (Accessed 2026-01-28). *A167654 -- Simple zero-divisors of Cayley-Dickson algebras*. [OEIS](https://oeis.org/A167654).
+    *   *Independent count reference for "simple" sedenion zero divisors (42) and higher-dimensional counts; includes links to Arndt's Fxtbook and lists.*
+*   **Kinyon, M. K., & Sagle, A. A.** (2006). *Subalgebras of the real sedenions*. Canadian Mathematical Bulletin 49(4), 566-581. [PDF](https://cms.math.ca/wp-content/uploads/2020/02/cmb49-4-6.pdf).
+    *   *Discusses the action of G2 on norm-one sedenion zero divisors and related structure.*
+*   **Moreno, G.** (1998). *The zero divisors of the Cayley-Dickson algebras over the real numbers*. Bol. Soc. Mat. Mexicana 4(1), 13-28. [arXiv:q-alg/9710013](https://arxiv.org/abs/q-alg/9710013).
+    *   *Classification theorem for zero-divisors in Cayley-Dickson algebras.*
+*   **Reggiani, S.** (2024). *The geometry of sedenion zero divisors*. [arXiv:2411.18881](https://arxiv.org/abs/2411.18881).
+    *   DOI: 10.48550/arXiv.2411.18881.
+    *   *Differential-geometric results about manifolds of sedenion zero divisors.*
+    *   Auxiliary computations repo (cited in the paper as [Reg24]): https://github.com/silvioreggiani/sedenion-zero-div
+*   **Koebisu, S.** (2025). *Singular structures and geometric holonomy in the zero divisor set of the sedenions*. [arXiv:2512.13002](https://arxiv.org/abs/2512.13002).
+    *   DOI: 10.48550/arXiv.2512.13002.
+*   **Gazeau, J.-P.** (2025). *A Mnemonic Matrix Rule for (Split) Octonionic Multiplication and its Extension to the Cayley-Dickson Tower*. [arXiv:2512.22134](https://arxiv.org/abs/2512.22134).
+    *   DOI: 10.48550/arXiv.2512.22134.
+*   **Wilmot, G. P.** (2025). *Automorphisms of Sedenions*. [arXiv:2512.07210](https://arxiv.org/abs/2512.07210).
+    *   DOI: 10.48550/arXiv.2512.07210.
+*   **Moreno, G.** (1998). *The zero divisors of the Cayley-Dickson algebras over the real numbers*. *Boletin de la Sociedad Matematica Mexicana* 4(1), 13-28. (Cited by Reggiani 2024; original source for the bundle/topology picture.)
+    *   PDF (journal issue): https://smm.org.mx/boletin_anterior/v4/n1.pdf
+    *   Earlier preprint: arXiv:q-alg/9710013 (cited in Baez 2002).
+    *   *Shows norm-one zero-divisor pairs are homeomorphic to G_2.*
+*   **Moreno, G.** (2005). *Constructing zero divisors in the higher dimensional Cayley-Dickson algebras*. [arXiv:math/0512517](https://arxiv.org/abs/math/0512517).
+    *   *New construction methods; relates ZD set in A_{n+1} to Stiefel manifold V_{2^{n-1},2}.*
+*   **Cawagas, R. E.** (2004). *On the structure and zero divisors of the Cayley-Dickson sedenion algebra*. Discussiones Mathematicae -- General Algebra and Applications 24(2), 251-265. DOI: 10.7151/dmgaa.1088.
+    *   *Complete subalgebra structure of S; quasi-octonion subalgebra contains ZDs; 84 -> 7 reduction via 3-cycles.*
+*   **Guterman, A., & Zhilina, S.** (2023). *On Doubly Alternative Zero Divisors in Cayley-Dickson Algebras*. J. Math. Sci.
+    *   *ZDs over arbitrary fields (char != 2); hexagonal structures in ZD graph; explicit annihilators.*
+*   **Biss, D. K., Dugger, D., & Isaksen, D. C.** (2008). *Large annihilators in Cayley-Dickson algebras*. *Communications in Algebra* 36(2), 632-664. (Cited by Reggiani 2024; annihilator structure.)
+    *   arXiv:math/0511691; DOI: 10.1080/00927870701724094.
+*   **Cayley, A.** (1845). *On Jacobi's Elliptic Functions, in reply to the Rev. B. Bronwin; and on Quaternions*.
+    *   *Historical foundation of the Dickson doubling process.*
+
+### Analytic Continuation, Dimensional Regularization, and "Negative Dimensions"
+*   **'t Hooft, G. & Veltman, M. J. G.** (1972). *Regularization and renormalization of gauge fields*. Nuclear Physics B 44, 189-213. [Utrecht University repository](https://dspace.library.uu.nl/handle/1874/4845).
+*   **Bollini, C. G. & Giambiagi, J. J.** (1972). *Lowest order "divergent" graphs in \nu-dimensional space*. Physics Letters B 40(5), 566-568. DOI: 10.1016/0370-2693(72)90483-2. [OSTI record](https://www.osti.gov/biblio/4628584).
+*   **Parisi, G. & Sourlas, N.** (1979). *Random Magnetic Fields, Supersymmetry, and Negative Dimensions*. Physical Review Letters 43, 744. [APS](https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.744).
+
+### Fractional Operators (Fractional Laplacian / Fractional Schrodinger)
+*   **Caffarelli, L., & Silvestre, L.** (2007). *An extension problem related to the fractional Laplacian*. Communications in Partial Differential Equations, 32(7-9), 1245-1260. DOI: 10.1080/03605300600987306.
+*   **Laskin, N.** (2000). *Fractional quantum mechanics and Levy path integrals*. Physics Letters A, 268(4-6), 298-305. DOI: 10.1016/S0375-9601(00)00201-2.
+*   **Laskin, N.** (2002). *Fractional Schrodinger equation*. Physical Review E, 66, 056108. DOI: 10.1103/PhysRevE.66.056108.
+*   **Stinga, P. R., & Torrea, J. L.** (2010). *Extension problem and Harnack's inequality for some fractional operators*. Communications in Partial Differential Equations, 35(11), 2092-2122. DOI: 10.1080/03605301003735680.
+    *   *General extension framework for fractional powers of (certain) second-order operators; complements Caffarelli-Silvestre.*
+*   **Di Nezza, E., Palatucci, G., & Valdinoci, E.** (2012). *Hitchhiker's guide to the fractional Sobolev spaces*. Bulletin des Sciences Mathematiques, 136(5), 521-573. DOI: 10.1016/j.bulsci.2011.12.004.
+    *   arXiv:1104.4345.
+*   **Kwasnicki, M.** (2017). *Ten equivalent definitions of the fractional Laplace operator*. Fractional Calculus and Applied Analysis, 20(1), 7-51. DOI: 10.1515/fca-2017-0002.
+*   **Zhou, S., & Zhang, Y.** (2024). *A novel and simple spectral method for nonlocal PDEs with the fractional Laplacian*. Computers & Mathematics with Applications, 168, 133-147. DOI: 10.1016/j.camwa.2024.06.001.
+    *   arXiv:1507.07356.
+*   **Chen, W., et al.** (2024). *A novel and simple spectral method for nonlocal PDEs with the fractional Laplacian*. Computers & Mathematics with Applications, 168, 133-147. DOI: 10.1016/j.camwa.2024.06.001.
+
+### p-adic / Local-Field Analysis
+*   **Vladimirov, V. S., Volovich, I. V., & Zelenov, E. I.** (1994). *p-adic Analysis and Mathematical Physics*. World Scientific.
+*   **Taibleson, M. H.** (1975). *Fourier Analysis on Local Fields*. Princeton University Press.
+*   **Kozyrev, S. V.** (2006). *Wavelet analysis as a p-adic spectral analysis*. [arXiv:math/0612288](https://arxiv.org/abs/math/0612288).
+
+### Nilpotent Orbits and Exceptional Jordan Algebras
+*   **Collingwood, D. H., & McGovern, W. M.** (1993). *Nilpotent Orbits in Semisimple Lie Algebras*. Van Nostrand Reinhold.
+*   **Springer, T. A., & Veldkamp, F. D.** (2000). *Octonions, Jordan Algebras and Exceptional Groups*. Springer.
+
+### Materials-Science Datasets
+*   **Choudhary, K., Garrity, K. F., Reid, A. C. E., et al.** (2020). *The joint automated repository for various integrated simulations (JARVIS) for data-driven materials design*. *npj Computational Materials* 6, 173. DOI: 10.1038/s41524-020-00440-1. [Nature](https://www.nature.com/articles/s41524-020-00440-1).
+*   **JARVIS (NIST) landing page**. (Accessed 2026-01-27). https://jarvis.nist.gov/
+
+### Division Algebra Physics (Furey / Dixon / Gresnigt Program)
+*   **Furey, C.** (2016). *Standard model physics from an algebra?*. PhD Thesis, U. Waterloo. [arXiv:1611.09182](https://arxiv.org/abs/1611.09182).
+    *   *R x C x H x O acting on itself -> SM Lorentz reps + one generation su(3)_c x u(1)_em.*
+*   **Furey, C.** (2018a). *Three generations, two unbroken gauge symmetries, and one eight-dimensional algebra*. Phys. Lett. B 785, 84-89.
+    *   *Complex octonions yield three-generation SU(3)_c reps; Cartan factorization.*
+*   **Furey, C.** (2018b). *SU(3)_C x SU(2)_L x U(1)_Y (x U(1)_X) as a symmetry of division algebraic ladder operators*. Eur. Phys. J. C 78, 375. [arXiv:1702.04336](https://arxiv.org/abs/1702.04336).
+    *   *Full SM gauge group from division algebraic ladder operators; charge quantization.*
+*   **Dixon, G. M.** (1994). *Division Algebras: Octonions, Quaternions, Complex Numbers and the Algebraic Design of Physics*. Springer.
+    *   *T = C x H x O (64D): tensoring normed division algebras encodes SM symmetries.*
+*   **Gillard, A. B., & Gresnigt, N. G.** (2019). *Three fermion generations with two unbroken gauge symmetries from the complex sedenions*. Eur. Phys. J. C 79, 446. DOI: 10.1140/epjc/s10052-019-6967-1.
+    *   *C x S -> Cl(6) minimal left ideals describe three fermion generations.*
+*   **Gresnigt, N. G., et al.** (2021). *An exceptional G(2) extension of the Standard Model from the correspondence with Cayley-Dickson algebras automorphism groups*. Sci. Rep. (Nature) 11. DOI: 10.1038/s41598-021-01814-1.
+    *   *CD automorphism groups -> G(2) extension of SU(3); broken G(2) gluons as dark matter.*
+*   **Gresnigt, N. G., Gourlay, L., & Varma, A.** (2023). *Toward a Three Generation Model of Standard Model Fermions Based on Cayley-Dickson Sedenions*. Phys. Part. Nucl. 54, 1006-1010.
+    *   *Three octonion subalgebras of S differentiated by SU(3) color or chiral SU(2).*
+*   **Furey, C., Gillard, A. B., & Sherwin, M.** (2024). *Clifford algebra Cl(8) and three generations of fermions*. Eur. Phys. J. C 84.
+    *   *Cl(8) -> 3 generations via minimal left ideals; 256 basis elements; gamma matrix construction.*
+*   **Tang, P. S., & Tang, C.** (2023). *Sedenion Algebra Model for the Standard Model and Grand Unified Theories*. [arXiv:2308.14768](https://arxiv.org/abs/2308.14768).
+    *   *Sedenion-to-SU(5) mapping with associator-norm mass ratio predictions for leptons.*
+*   **Lisi, A. G.** (2007). *An Exceptionally Simple Theory of Everything*. [arXiv:0711.0770](https://arxiv.org/abs/0711.0770).
+    *   *E8 -> SM + gravity proposal; 22 predicted bosons. Criticized by Distler & Garibaldi (2010).*
+*   **Distler, J., & Garibaldi, S.** (2010). *There is no "Theory of Everything" inside E8*. Commun. Math. Phys. 298, 419-436.
+    *   *Impossibility proof: cannot embed three fermion generations in E8.*
+
+### Quantum Optics and EM-Gravity Coupling
+*   **Ahmadiniaz, N., Bastianelli, F., Karbstein, F., & Schubert, C.** (2026). *One loop photon-graviton mixing in an electromagnetic field: Part 3*. Prepared for JHEP. [arXiv:2601.23279](https://arxiv.org/abs/2601.23279).
+    *   *Tadpole diagram contributes to one-loop photon-graviton amplitude but not to magnetic dichroism. Relevant to C-402 scope limits.*
+*   **Son, C., & Chekhova, M.** (2026). *Spontaneous four-wave mixing in a thin layer with second-order nonlinearity*. [arXiv:2601.23137](https://arxiv.org/abs/2601.23137).
+    *   *Direct SFWM dominates over cascaded SHG+SPDC in thin LN layers (10 um) due to relaxed phase matching (Lcoh_SFWM=33.3 um >> Lcoh_SHG=3.1 um). Cascaded process is only 5% of total.*
+
+### Computational Frameworks
+*   **Qiskit.** (2023). *An Open-Source Framework for Quantum Computing*. IBM.
+    *   *Used for Quantum-Tensor simulations.*
+*   **GWpy.** (2023). *A Python package for gravitational-wave astrophysics*.
+    *   *Used for LIGO O3 data acquisition.*
+
+### Internal Project Artifacts
+*   `data/external/GWTC-3_GWpy_Official.csv`: Confident Events Catalog.
+*   `data/csv/sedenion_nilpotent_candidates.csv`: Identified Zero-Divisors.
+*   `docs/latex/MATHEMATICAL_FORMALISM.tex`: Formal derivations.

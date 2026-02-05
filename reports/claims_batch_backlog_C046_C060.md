@@ -1,0 +1,35 @@
+# Claims Batch Backlog (C-046..C-060) (2026-02-02)
+
+Purpose: planning snapshot for claim-by-claim audits (not evidence).
+
+- Matrix: `docs/CLAIMS_EVIDENCE_MATRIX.md`
+- Domain map: `docs/claims/CLAIMS_DOMAIN_MAP.csv`
+- Claims in range: 15
+- Open claims in range: 4
+
+## Open claims (in-range, oldest-first by last_verified)
+
+- C-053 (Speculative, last_verified=2026-01-31, domains=materials): Pathion (32D) Algebra maps to a High-Index Metamaterial structure.
+- C-047 (Clarified, last_verified=2026-02-03, domains=legacy): E9, E10, E11 are Euclidean sphere-packing lattices.
+- C-048 (Modeled, last_verified=2026-02-03, domains=meta): Operator-side "Depth Stratification" mirrors motivic tower stratification.
+- C-050 (Modeled, last_verified=2026-02-03, domains=meta): Spaceplate design is structurally isomorphic to Multi-Flavor Lorentzian Threads flow allocation.
+
+## Details (all claims in range)
+
+| Claim | Domains | Status | Last verified | Claim (short) | Where stated (short) | Evidence / notes (short) |
+|---|---|---|---|---|---|---|
+| C-046 | legacy, algebra | Refuted (Scalar Rescaling) | 2026-01-31 | "Fractal Doping" (sum x/n^beta) stabilizes zero divisors. | archive/legacy_conjectures/ | Mathematical audit (docs/theory/OPERATOR_DEPTH_STRATIFICATION.md) shows this... |
+| C-047 | legacy | Clarified (Kac-Moody) | 2026-02-03 | E9, E10, E11 are Euclidean sphere-packing lattices. | archive/legacy_conjectures/, docs/C047_E_SERIES_KAC_MOODY_AUDIT.md, docs/exte... | The legacy "Euclidean lattice" framing is rejected: E9 is affine/degenerate a... |
+| C-048 | meta | Modeled (Analogy) | 2026-02-03 | Operator-side "Depth Stratification" mirrors motivic tower stratification. | docs/theory/OPERATOR_DEPTH_STRATIFICATION.md, docs/external_sources/C048_MOTI... | The mapping is maintained as a terminology/structure analogy (tower levels vs... |
+| C-049 | meta | Established (GR) | 2026-01-31 | Lightspace and Gravitytime are distinct geometric structures (Conformal vs Sc... | docs/theory/PHASE_IV_0_2_LEDGER.md | The typed dependency graph cleanly separates the conformal causal skeleton (N... |
+| C-050 | meta | Modeled (Optimization) | 2026-02-03 | Spaceplate design is structurally isomorphic to Multi-Flavor Lorentzian Threa... | docs/theory/WARP_FLOW_ALLOCATION.md, docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md... | Scope-safe form: the delay-allocation problem and a multi-flavor flow-allocat... |
+| C-051 | meta | Verified (Simulation) | 2026-01-31 | A Pareto frontier exists for Spaceplates trading Compression (R) vs Bandwidth... | src/gemini_physics/engineering/warp_pareto.py | src/gemini_physics/engineering/warp_pareto.py sweep verifies the existence of... |
+| C-052 | holography, tensor-networks | Verified (Simulation) | 2026-01-31 | MERA (Multi-scale Entanglement Renormalization) circuit produces logarithmic... | src/scripts/analysis/verify_phase_3_tasks.py | Simulation of constructive MERA (L=4, 8, 16) detected logarithmic growth (Coe... |
+| C-053 | materials | Speculative (Supported (T... | 2026-01-31 | Pathion (32D) Algebra maps to a High-Index Metamaterial structure. | src/scripts/analysis/unified_spacetime_synthesis.py, docs/external_sources/OP... | Mapping the 32D interaction tensor diagonal to a dielectric layer stack yield... |
+| C-054 | algebra | Verified (Math/Code) | 2026-01-31 | Carlstrom's Wheel Algebra formally models information loss in non-associative... | src/gemini_physics/cd/cd_wheel_algebra.py | Implementation of Wheel axioms over CD algebras verifies that the "Nullity" e... |
+| C-055 | meta | Verified (Monte Carlo) | 2026-01-31 | Non-associativity is the generic (bulk) state of 16D/32D CD algebras (100% pr... | src/scripts/analysis/verify_zd_32d_count.py | Random sweeps ($N=100,000$) in 16D and 32D show 100% of pairs have non-zero r... |
+| C-056 | holography, datasets | Verified (data) | 2026-01-31 | PDG lepton/boson masses verified against experiment (electron, muon, Z, W, Hi... | src/scripts/data/fetch_pdg_particle_data.py, tests/test_pdg_particle_data.py,... | Offline tests check cached PDG values against NIST/PDG 2024 reference; coupli... |
+| C-057 | datasets | Verified (data) | 2026-01-31 | DESI Y1 BAO 7-bin measurements integrated into multi-probe pipeline. | src/scripts/data/fetch_desi_dr1_bao.py, tests/test_desi_dr1_bao.py, data/exte... | Offline test checks 7 redshift bins against DESI DR1 Table 1 (arXiv:2404.0300... |
+| C-058 | stellar-cartography, cosmology, datasets | Verified (data) | 2026-01-31 | Planck 2018 parameter summary + CMB spectra integrated. | src/scripts/data/fetch_planck_2018_chains.py, src/scripts/data/fetch_planck_2... | Tests validate parameter means (H0, Omega_m) within 1% of Planck 2018 Table 2... |
+| C-059 | datasets | Verified (data) | 2026-02-02 | NANOGrav 15yr free spectrum (log10(rho(f)) KDE) integrated. | src/scripts/data/fetch_nanograv_15yr.py, data/csv/nanograv_15yr_free_spectrum... | Cached Zenodo KDE zip (DOI: 10.5281/zenodo.8060824) and derived a 30-bin quan... |
+| C-060 | gravitational-waves, stellar-cartography, datasets | Verified (data) | 2026-01-31 | GWTC-3 sky localizations (64 events) integrated. | src/scripts/data/fetch_gwtc3_confident.py, tests/test_gwtc3_sky_localization_... | 64 confident events with sky area (deg^2), chirp mass, luminosity distance. |

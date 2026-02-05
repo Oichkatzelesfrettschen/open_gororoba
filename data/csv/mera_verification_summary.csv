@@ -1,0 +1,7 @@
+metric,value
+slope,0.39999999999999963
+intercept,2.3999999999999995
+central_charge_estimate,1.1999999999999988
+slope_ci_lower,0.39999999999999963
+slope_ci_upper,0.39999999999999963
+log_scaling_confirmed,True

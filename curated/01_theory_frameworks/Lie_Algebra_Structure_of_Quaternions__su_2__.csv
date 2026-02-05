@@ -1,0 +1,4 @@
+Bracket,Result
+"[i, j]",2*k
+"[j, k]",2*i
+"[k, i]",2*j

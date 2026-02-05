@@ -1,0 +1,3 @@
+Tensor Representation,Rule
+2048x2048 Non-Commutative Structure,U2048*U2048.T - U2048.T*U2048
+4096x4096 Non-Commutative Structure,U4096*U4096.T - U4096.T*U4096

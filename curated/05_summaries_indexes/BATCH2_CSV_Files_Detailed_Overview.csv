@@ -1,0 +1,15 @@
+,,Data Type,Mean Time (ms),Residual Norm,Status,Source_File,Unnamed: 0,Operation,Matrix Size,FFT Size,Reconstruction Error,Stable,CFL,Spatial Error (L2 Norm),mean,std,count
+Combined_LinearAlgebra_FFT_PDE.csv,0,float16,,,Error: array type float16 is unsupported in linalg,Refined_Linear_Algebra_Benchmarks.csv,,,,,,,,,,,
+Combined_LinearAlgebra_FFT_PDE.csv,1,float32,2898.396689333329,3.6629946862376528e-06,PASS,Refined_Linear_Algebra_Benchmarks.csv,,,,,,,,,,,
+Combined_LinearAlgebra_FFT_PDE.csv,2,float64,2761.8360293333426,4.724186699414458e-13,PASS,Refined_Linear_Algebra_Benchmarks.csv,,,,,,,,,,,
+Combined_LinearAlgebra_FFT_PDE.csv,3,complex64,2401.812389999994,3.478943108348176e-05,PASS,Refined_Linear_Algebra_Benchmarks.csv,,,,,,,,,,,
+Combined_LinearAlgebra_FFT_PDE.csv,4,complex128,2633.972119999991,3.07001258871788e-14,PASS,Refined_Linear_Algebra_Benchmarks.csv,,,,,,,,,,,
+PDE_Solver_Execution_Profiling.csv,0,-1,,,,,,,,,,,,,4.071394532408757,8.156157343384269,51.0
+PDE_Solver_Execution_Profiling.csv,1,0,,,,,,,,,,,,,1326.8683093999955,1848.5239363800663,2.0
+PDE_Solver_Execution_Profiling.csv,2,1,,,,,,,,,,,,,74.3542789360968,105.25594141578271,3.0
+PDE_Solver_Execution_Profiling.csv,3,2,,,,,,,,,,,,,7.293149332933001,12.279179132873356,3.0
+PDE_Solver_Execution_Profiling.csv,4,3,,,,,,,,,,,,,1.6577613200007515,2.638202293487062,5.0
+PDE_Wave_Equation_Accuracy_Benchmarks.csv,0,float32,4.147953000028792,,,,,,,,,,,0.0002377536286616,,,
+PDE_Wave_Equation_Accuracy_Benchmarks.csv,1,float64,3.911345000005895,,,,,,,,,,,0.0,,,
+PDE_Wave_Equation_Accuracy_Benchmarks.csv,2,complex64,3.8586969999414578,,,,,,,,,,,0.0002377536286616,,,
+PDE_Wave_Equation_Accuracy_Benchmarks.csv,3,complex128,4.5073730000240175,,,,,,,,,,,0.0,,,

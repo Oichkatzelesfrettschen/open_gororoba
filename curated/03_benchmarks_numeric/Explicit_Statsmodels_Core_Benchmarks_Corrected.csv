@@ -1,0 +1,4 @@
+Module,Function,Input Size,R^2,Mean Time (ms),Status,AIC,F-Value,p-value
+statsmodels.regression.linear_model,OLS,"1000 samples, 3 features",0.3808253943831129,3.1394220004585804,PASS,,,
+statsmodels.tsa.arima.model,"ARIMA(1,1,1)",500 points,,326.95019000038883,PASS,1442.8327162821433,,
+statsmodels.stats.anova,anova_lm,"300 samples, 3 groups",,44.87354299999424,PASS,,0.40910037989652015,0.6646212825270672

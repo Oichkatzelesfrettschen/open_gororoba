@@ -1,0 +1,66 @@
+[project]
+name = "gemini-experiments"
+version = "0.1.0"
+description = "Verification and synthesis of AI-generated physics and math artifacts"
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26.0",
+    "scipy>=1.11.0",
+    "pandas>=2.1.0",
+    "numba>=0.58.0",
+    "matplotlib>=3.8.0",
+    "requests>=2.31.0",
+    "pillow>=10.0.0",
+    "sympy>=1.12"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "ruff>=0.6.0"
+]
+analysis = [
+    "networkx>=3.2",
+    "ripser>=0.6.10",
+    "persim>=0.3.8",
+    # Used for PCA/TSNE/KMeans visualizations. May not have wheels for all Python versions.
+    "scikit-learn>=1.4; python_version < '3.14'",
+]
+astro = [
+    "astroquery>=0.4.8",
+    "gwpy>=3.0.0",
+]
+quantum = [
+    # Qiskit is pinned and expected to run in Docker (Python 3.11) per docs/docker.
+    "qiskit==1.0.2; python_version < '3.13'",
+    "qiskit-aer==0.13.3; python_version < '3.13'",
+    "qiskit-ibm-runtime; python_version < '3.13'",
+]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+exclude = [
+    ".mamba",
+    "venv",
+    "data",
+    "curated",
+    "archive",
+    "convos",
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "B"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["gemini_physics"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"

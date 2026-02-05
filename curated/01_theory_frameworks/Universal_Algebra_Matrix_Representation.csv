@@ -1,0 +1,2 @@
+Matrix Multiplication Rule,Result
+U1 * U2 - U2 * U1,"Matrix([[0, 0, 0, -2], [0, 0, -2, 0], [0, 2, 0, 0], [2, 0, 0, 0]])"

@@ -1,0 +1,6 @@
+Numeric Type,Explicit Mean_Time_ms,Explicit Numeric Insight,Recommended Explicit Action
+float32 SIMD,3.033,Optimal SIMD numeric type explicitly for balance between speed and precision.,Prioritize for explicit SIMD numeric kernels and PDE computations explicitly.
+float64 SIMD,0.864,High precision numeric SIMD explicitly good balance for double precision arithmetic.,Explicitly utilize for PDEs explicitly requiring double precision numeric accuracy.
+longdouble SIMD,4.344,Highest numeric precision explicitly computationally costly; explicitly consider numeric necessity.,Explicitly use sparingly; beneficial explicitly only when extreme numeric precision is explicitly needed.
+float16 SIMD,3.687,Reduced precision numeric SIMD explicitly slower due to numeric overhead in rounding operations.,Explicit numeric stability analysis explicitly needed; potential explicit numeric stability trade-offs.
+complex256 SIMD,,Explicit numeric anomaly (pending detailed numeric stability inspection).,Explicitly investigate numeric anomalies explicitly further for numeric accuracy and SIMD compatibility.

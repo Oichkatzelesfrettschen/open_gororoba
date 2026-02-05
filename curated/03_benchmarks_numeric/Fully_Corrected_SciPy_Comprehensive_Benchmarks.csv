@@ -1,0 +1,5 @@
+Module,Function,Input,Computed Result,Expected Result,Abs Error,Mean Time (ms),Status,Abs Error (Residual),Function Value
+scipy.integrate,quad,"exp(x), [0,1]",1.718281828459045,1.718281828459045,0.0,0.13668800056620967,PASS,,
+scipy.linalg,solve,"Ax=b (A=[[3,1],[1,2]], b=[9,8])","[2.0, 3.0]","[2, 3]",,0.8325959997819155,PASS,0.0,
+scipy.optimize,minimize,"sin(x)+x^2, x0=0",-0.45018197202047305,,,3.6287240000092424,PASS,,-0.23246557515494376
+scipy.special,gamma,5,24.0,24,0.0,0.10201700024481397,PASS,,

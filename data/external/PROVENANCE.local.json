@@ -1,0 +1,120 @@
+{
+  "generated_at_utc": "2026-01-28T07:33:17.022641+00:00",
+  "hashes": [
+    {
+      "mtime_utc": "2026-01-27T03:52:33.459303+00:00",
+      "path": "DESI_QSO.csv",
+      "sha256": "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58",
+      "size_bytes": 153
+    },
+    {
+      "mtime_utc": "2026-01-27T03:53:02.502439+00:00",
+      "path": "GWTC-3.csv",
+      "sha256": "b6ee03773b806a3eb25c26f9fd5f2487c382cdcaf5af4bdc9f0a9ef82664ddb3",
+      "size_bytes": 232
+    },
+    {
+      "mtime_utc": "2026-01-27T04:01:40.305243+00:00",
+      "path": "GWTC-3_GWpy_Official.csv",
+      "sha256": "bb5ab708f5d9ef68639dd5a7a09f05e5191af8fc04211c40b55c0715ef727080",
+      "size_bytes": 997
+    },
+    {
+      "mtime_utc": "2026-01-27T03:59:30.472649+00:00",
+      "path": "GWTC-3_confident.csv",
+      "sha256": "6e154917fa65b4f0c41e5bc57123aa1e8fa09a3ff027bd7f0c00a7ca82f7766b",
+      "size_bytes": 11359
+    },
+    {
+      "mtime_utc": "2026-01-27T03:53:51.878205+00:00",
+      "path": "GWTC-3_synthetic.csv",
+      "sha256": "8ffe88c10b50e491792f76b6eba45f19dfbed0497dd69b0568afb7bbd096ed94",
+      "size_bytes": 7479
+    },
+    {
+      "mtime_utc": "2026-01-27T03:56:23.869217+00:00",
+      "path": "HST_UDF_Metadata.csv",
+      "sha256": "e0aca08526d149b25ce2c0ddfd4e914f6b0c0d9f7c0cf183f015173bd9bfddac",
+      "size_bytes": 365
+    },
+    {
+      "mtime_utc": "2026-01-28T06:33:55.649906+00:00",
+      "path": "PROVENANCE.local.json",
+      "sha256": "22390b4f5a89f6f8e966087aadc01f7f22683cedeabbd9fffc4e2b36adb9a915",
+      "size_bytes": 4337
+    },
+    {
+      "mtime_utc": "2026-01-27T03:53:30.932831+00:00",
+      "path": "SDSS_DR16Q.csv",
+      "sha256": "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880",
+      "size_bytes": 196
+    },
+    {
+      "mtime_utc": "2026-01-27T03:57:48.292429+00:00",
+      "path": "SDSS_Quasars_Astroquery.csv",
+      "sha256": "d18266f5dd06970c9678c1639e0771d1ba90c8a98e05dea1ee7f4b989f881428",
+      "size_bytes": 24975
+    },
+    {
+      "mtime_utc": "2026-01-27T03:57:47.793527+00:00",
+      "path": "TESS_Metadata.csv",
+      "sha256": "392072233e722cc1c0b31c2cbfedfbc8c77480514f8a42e28b4a15173685da79",
+      "size_bytes": 5483734
+    },
+    {
+      "mtime_utc": "2026-01-27T06:18:29.051594+00:00",
+      "path": "jarvis_dft/PROVENANCE.json",
+      "sha256": "fd9915f711d8d8436e295ddc87953ddd114f311238f0fbb71d80ea280bcfa8e1",
+      "size_bytes": 383
+    },
+    {
+      "mtime_utc": "2026-01-27T06:18:28.184124+00:00",
+      "path": "jarvis_dft/jdft_3d-4-26-2020/jdft_3d-4-26-2020.json",
+      "sha256": "e970ddf8648398838aae9bee26898f92e513ca784b8a01d4e238b395f401cc1d",
+      "size_bytes": 74456082
+    },
+    {
+      "mtime_utc": "2026-01-27T05:40:40.717564+00:00",
+      "path": "jarvis_dft/jdft_3d-4-26-2020.zip",
+      "sha256": "63a1fccfdc4b570d8f683fb15f45b66579dd16cb93f3813b0fbfa6eff9112c25",
+      "size_bytes": 16551136
+    },
+    {
+      "mtime_utc": "2026-01-28T07:32:52.548394+00:00",
+      "path": "nv_odmr/NV_ODMR_OPU_BOM_Jan2026.xlsx",
+      "sha256": "9d8f5f40d0646f6160f6d9b48c49113e8e00612b3f833dfc2e19ceb40b01f56a",
+      "size_bytes": 16654
+    },
+    {
+      "mtime_utc": "2026-01-27T17:24:04.625191+00:00",
+      "path": "papers/de_marrais_2000_math0011260.pdf",
+      "sha256": "20a66711a71e41714fa2305a03a05ae4b9e8d90d65ee52f439bdeb733ff9ea45",
+      "size_bytes": 441893
+    },
+    {
+      "mtime_utc": "2026-01-27T17:24:20.471251+00:00",
+      "path": "papers/de_marrais_2000_math0011260.txt",
+      "sha256": "e630361093bb2041d5eb54b3cfde5d3dd3603328cb76fb3fafe5c7417e3e29fb",
+      "size_bytes": 201039
+    },
+    {
+      "mtime_utc": "2026-01-27T17:00:22.647524+00:00",
+      "path": "papers/de_marrais_math0011260.pdf",
+      "sha256": "20a66711a71e41714fa2305a03a05ae4b9e8d90d65ee52f439bdeb733ff9ea45",
+      "size_bytes": 441893
+    },
+    {
+      "mtime_utc": "2026-01-27T17:24:04.729191+00:00",
+      "path": "papers/reggiani_2024_2411.18881.pdf",
+      "sha256": "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18",
+      "size_bytes": 226232
+    },
+    {
+      "mtime_utc": "2026-01-27T17:24:25.778270+00:00",
+      "path": "papers/reggiani_2024_2411.18881.txt",
+      "sha256": "329b4a11ec932fac8f8a007168945dfc58ee17beb193f84b8753b224f678bf9d",
+      "size_bytes": 59976
+    }
+  ],
+  "root": "data/external"
+}

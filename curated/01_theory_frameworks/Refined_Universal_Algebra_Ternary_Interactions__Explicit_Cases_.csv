@@ -1,0 +1,4 @@
+Ternary Interaction,Result
+(U*_1 * U*_2) * U*_3,0
+(U*_1 * U*_3) * U*_4,0
+(U*_2 * U*_3) * U*_4,0

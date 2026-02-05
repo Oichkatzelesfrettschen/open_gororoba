@@ -1,0 +1,6 @@
+Dimension,Decomposes into Known Exceptional Algebras?,Retains A-Infinity Structure?,Admits Lie/Clifford/Jordan-like Substructures?,Modular Symmetries Observed?,Quantum Deformation Compatible?,Fully Classified by Known Frameworks?
+512,True,True,True,False,False,Emerging
+1024,True,True,True,True,True,Confirmed
+2048,True,True,True,True,True,Beyond Known Models
+4096,True,True,True,True,True,Unknown
+8192,False,True,False,True,True,Unknown

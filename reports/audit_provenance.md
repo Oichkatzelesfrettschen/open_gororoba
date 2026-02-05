@@ -1,0 +1,11 @@
+# Provenance Audit (2026-02-04)
+
+Goal: keep external caches and advertised artifacts auditable and reproducible.
+
+## data/external coverage
+
+- OK: external files appear covered and non-empty.
+
+## README advertised artifacts
+
+(No README artifact entries found.)

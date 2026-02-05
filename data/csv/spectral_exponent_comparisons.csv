@@ -1,0 +1,5 @@
+framework,exponent,rms_deviation_from_k_minus_3,matches
+kolmogorov,-1.6666666666666667,1.54114340083979,False
+kraichnan_enstrophy,-3,0.0,True
+calcagni,running (1 to 3),5.833529261178719,False
+parisi_sourlas_D4,1,N/A,False

@@ -1,0 +1,6 @@
+Iteration,Operator,Grid Size,Optimal Precision,Kernel Mode,Predicted Time (s),Tensor Contraction Result
+1,Gradient,64x64,float64,Symbolic,0.0017185780116231036,1.0
+2,Gradient,128x128,float64,Symbolic,0.0017185780116231036,1.0
+3,Gradient,256x256,float64,Symbolic,0.0017185780116231036,1.0
+4,Gradient,512x512,float64,Symbolic,0.0017185780116231036,1.0
+5,Gradient,512x512,float64,Symbolic,0.0017185780116231036,1.0

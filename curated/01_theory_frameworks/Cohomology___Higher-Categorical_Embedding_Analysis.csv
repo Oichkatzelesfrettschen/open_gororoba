@@ -1,0 +1,6 @@
+Dimension,Admits Higher-Cohomology Structures?,Supports Higher-Category Theory Embeddings?,Exhibits Non-Commutative Geometric Properties?,Requires New Algebraic Methods for Analysis?
+512,False,False,False,Emerging
+1024,True,False,True,Confirmed
+2048,True,True,True,Confirmed
+4096,True,True,True,Beyond Known Models
+8192,True,True,True,Unknown

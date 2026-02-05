@@ -1,0 +1,10 @@
+Metric,Value
+Scaling Exponents of Ricci Flow (E12),"[0.11354428312090263, -0.4554263767657165, -0.08222215705758792]"
+Scaling Exponents of Ricci Flow (E13),"[-0.06876058946879776, 0.15227640912146342, 0.06131654420185241]"
+Harmonic Series Expansion of Laplacian (E12),2.6528108429155717
+Harmonic Series Expansion of Laplacian (E13),3.179025575707767
+Laplacian Trace Deviation (E12),-0.9737272537477475
+Laplacian Trace Deviation (E13),0.31975026415902263
+Flow Scaling Divergence (E12),0.007472564236407964
+Flow Scaling Divergence (E13),0.10885569680302487
+Modular Stability Ratio (E12/E13),0.8548677624528183

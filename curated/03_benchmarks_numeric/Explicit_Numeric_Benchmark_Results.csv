@@ -1,0 +1,7 @@
+Operation,Execution Time (s)
+Dense Matrix Multiplication (float64),0.4562253952026367
+Sparse Matrix Multiplication (float64),29.093595266342163
+Numerical Integration (Quad float64),0.00018835067749023438
+Numerical Differentiation (Gradient float64),0.001316070556640625
+FFT and inverse FFT (float64),0.18626117706298828
+Adaptive Precision Summation (Numba float64),0.6218562126159668

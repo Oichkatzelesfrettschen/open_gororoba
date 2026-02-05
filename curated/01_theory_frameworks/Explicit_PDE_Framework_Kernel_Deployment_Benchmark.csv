@@ -1,0 +1,2 @@
+Explicit PDE Kernel Operation,Simulation Size explicitly,Average Execution Time (seconds)
+2D Heat Equation Kernel explicitly,512 x 512,0.006564334599897847

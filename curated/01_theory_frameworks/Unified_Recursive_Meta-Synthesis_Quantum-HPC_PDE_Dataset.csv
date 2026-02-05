@@ -1,0 +1,7 @@
+,PDE Model,Final Max Absolute Value,Dominant Precision,Average Execution Time per Step (s),PDE Simulation Kernel,Simulation Grid Size,Average Execution Time (seconds),PDE Kernel Explicitly,Grid Size Explicitly,id,precision_type,grid_size,laplacian_execution_time,gradient_execution_time,divergence_execution_time
+0,Quantum Foam PDE,0.0099,float128,0.0016239166259765,,,,,,1.0,float32,128 x 128,0.0014331439997476,0.0001858123335599,0.0003788863323279
+1,Domain-Wall Electron Transport PDE,0.0009894,float128,0.00244140625,,,,,,2.0,float64,128 x 128,0.0012532513331583,0.0002101786667481,0.0004251203342088
+2,Dielectric Polarization Dynamics PDE,0.0009945,float128,0.0021880626678466,,,,,,3.0,complex64,128 x 128,0.0015098480010541,0.0002589023327648,0.0004732430000634
+3,Field-Induced Electron Density Modulation PDE,0.0009947,float128,0.0008153438568115,,,,,,4.0,complex128,128 x 128,0.0017001659992577,0.0006757273331459,0.0011005356670163
+4,,,,,Explicit 4D Heat Equation Kernel,32^4,0.0313902383331878,,,,,,,,
+5,,,,,,,0.1111465566664264,Simplified 5D Heat Equation,"(32, 32, 32, 16, 8)",,,,,,

@@ -1,0 +1,13 @@
+Data_Type,Operation,Non_SIMD_Time_ms,SIMD_Time_ms,SIMD_Speedup
+<class 'numpy.float32'>,add,6.0600000000000005,11.532,0.5254942767950053
+<class 'numpy.float32'>,divide,5.411,10.283999999999999,0.5261571373006613
+<class 'numpy.float64'>,add,10.614,22.404,0.4737546866630959
+<class 'numpy.float64'>,divide,9.854999999999999,9.687,1.0173428305977081
+<class 'numpy.complex64'>,add,10.423,36.922999999999995,0.28229017143785723
+<class 'numpy.complex64'>,divide,13.275,35.841,0.3703858709299406
+<class 'numpy.complex128'>,add,20.89,15.187000000000001,1.3755185355896489
+<class 'numpy.complex128'>,divide,23.765,34.791000000000004,0.6830789572015751
+<class 'numpy.float16'>,add,15.554,N/A,N/A - Unsupported
+<class 'numpy.float16'>,divide,13.811,N/A,N/A - Unsupported
+<class 'numpy.float128'>,add,24.066,N/A,N/A - Unsupported
+<class 'numpy.float128'>,divide,26.691,N/A,N/A - Unsupported

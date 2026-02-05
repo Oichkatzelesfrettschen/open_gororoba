@@ -1,0 +1,31 @@
+,DataType,Operation,Mode,Count,Mean_Time_ms,Std_Dev_ms,Min_Time_ms,Max_Time_ms
+0,<class 'numpy.complex128'>,Generic Numeric Operation,Numeric,90.3528840001399,,90.3528840001399,90.3528840001399,1
+1,<class 'numpy.complex64'>,Generic Numeric Operation,Numeric,82.3498969998581,,82.3498969998581,82.3498969998581,1
+2,<class 'numpy.float128'>,Generic Numeric Operation,Numeric,103.2196699998166,,103.2196699998166,103.2196699998166,1
+3,<class 'numpy.float16'>,Generic Numeric Operation,Numeric,1.828488000001,,1.828488000001,1.828488000001,1
+4,<class 'numpy.float32'>,Generic Numeric Operation,Numeric,1.3468899999224,,1.3468899999224,1.3468899999224,1
+5,<class 'numpy.float64'>,Generic Numeric Operation,Numeric,11.6924100000233,,11.6924100000233,11.6924100000233,1
+6,<class 'numpy.int16'>,Generic Numeric Operation,Numeric,1.5458309999303,,1.5458309999303,1.5458309999303,1
+7,<class 'numpy.int32'>,Generic Numeric Operation,Numeric,1.3862009998319,,1.3862009998319,1.3862009998319,1
+8,<class 'numpy.int64'>,Generic Numeric Operation,Numeric,1.7295170000578999,,1.7295170000578999,1.7295170000578999,1
+9,<class 'numpy.int8'>,Generic Numeric Operation,Numeric,2.1862959999907,,2.1862959999907,2.1862959999907,1
+10,<class 'numpy.uint16'>,Generic Numeric Operation,Numeric,6.4563879998331,,6.4563879998331,6.4563879998331,1
+11,<class 'numpy.uint32'>,Generic Numeric Operation,Numeric,1.3616589999401,,1.3616589999401,1.3616589999401,1
+12,<class 'numpy.uint64'>,Generic Numeric Operation,Numeric,1.5568090000215,,1.5568090000215,1.5568090000215,1
+13,<class 'numpy.uint8'>,Generic Numeric Operation,Numeric,17.297259000088097,,17.297259000088097,17.297259000088097,1
+14,complex128,Babylonian sqrt,SIMD Comprehensive,,,,,0
+15,complex128,Builtin sqrt,SIMD Comprehensive,0.0054836273193359,,0.0054836273193359,0.0054836273193359,1
+16,complex64,Babylonian sqrt,SIMD Comprehensive,,,,,0
+17,complex64,Builtin sqrt,SIMD Comprehensive,0.0045299530029296,,0.0045299530029296,0.0045299530029296,1
+18,float16,Babylonian sqrt,SIMD Comprehensive,0.034332275390625,,0.034332275390625,0.034332275390625,1
+19,float16,Builtin sqrt,SIMD Comprehensive,0.0209808349609375,,0.0209808349609375,0.0209808349609375,1
+20,float32,Babylonian sqrt,SIMD Comprehensive,0.013589859008789,,0.013589859008789,0.013589859008789,1
+21,float32,Builtin sqrt,SIMD Comprehensive,0.0028610229492187,,0.0028610229492187,0.0028610229492187,1
+22,float32,Generic SIMD Operation,SIMD,2086.0750675201416,,2086.0750675201416,2086.0750675201416,1
+23,float64,Babylonian sqrt,SIMD Comprehensive,0.0047683715820312,,0.0047683715820312,0.0047683715820312,1
+24,float64,Builtin sqrt,SIMD Comprehensive,0.0026226043701171,,0.0026226043701171,0.0026226043701171,1
+25,float64,Generic SIMD Operation,SIMD,541.9323444366455,,541.9323444366455,541.9323444366455,1
+26,int16,Babylonian sqrt,SIMD Comprehensive,,,,,0
+27,int16,Builtin sqrt,SIMD Comprehensive,,,,,0
+28,int16,Generic SIMD Operation,SIMD,410.1860523223877,,410.1860523223877,410.1860523223877,1
+29,int32,Generic SIMD Operation,SIMD,583.3022594451904,,583.3022594451904,583.3022594451904,1

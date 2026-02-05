@@ -1,0 +1,8 @@
+Lie Group Embedding,Structural Property
+Spin(8) -> Spin(7),Fixes a vector in V8
+Spin(7) -> G2,Fixes a spinor in S+8
+G2 -> SO(7),Automorphism group of octonions
+SO(7) -> F4,Isometry group of OP2
+F4 -> E6,Symmetry of 27D Jordan algebra
+E6 -> E7,Symmetry of 56D space
+E7 -> E8,Largest exceptional Lie group

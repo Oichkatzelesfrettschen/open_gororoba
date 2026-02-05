@@ -1,0 +1,2 @@
+Determinant of J_3(O)
+O_1**3 - O_1*O_2*conjugate(O_2) - 2*O_1*O_3*conjugate(O_3) + O_2*O_3*conjugate(O_3) + O_3*conjugate(O_2)*conjugate(O_3)

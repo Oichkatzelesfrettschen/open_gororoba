@@ -1,0 +1,9 @@
+Dimension,Commutativity Preserved?,Associativity Preserved?,Aligns with Lie Group Symmetries?,Contains A-Infinity Structure?,Unifies Exceptional Algebras?,Master Algebra Candidate?
+8,False,False,True,True,False,Emerging
+16,False,False,True,True,True,Emerging
+32,False,False,True,True,True,Strong
+64,False,False,True,True,True,Strong
+128,False,False,True,True,True,Confirmed
+256,False,False,True,True,True,Confirmed
+512,False,False,True,True,True,Beyond Known Models
+1024,False,False,True,True,True,Unknown

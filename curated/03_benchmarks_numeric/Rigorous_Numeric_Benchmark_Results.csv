@@ -1,0 +1,10 @@
+DataType,Operation,ExecutionTime(ms),BabylonianSqrtResult,TaylorExpResult,TestStatus,Benchmark
+float16,Babylonian sqrt and Taylor exp,4.769325256347656,111.1,inf,PASS,
+float32,Babylonian sqrt and Taylor exp,3.139495849609375,111.111115,inf,PASS,
+float64,Babylonian sqrt and Taylor exp,3.3850669860839844,111.11111060555555,4.511892927335035e+60,PASS,
+float128,Babylonian sqrt and Taylor exp,3.567218780517578,111.111110605555557976,4.5118929273350358987e+60,PASS,
+uint8,Babylonian sqrt and Taylor exp,N/A,Cannot cast ufunc 'add' output from dtype('float64') to dtype('uint8') with casting rule 'same_kind',Cannot cast ufunc 'add' output from dtype('float64') to dtype('uint8') with casting rule 'same_kind',FAIL,
+uint16,Babylonian sqrt and Taylor exp,N/A,Cannot cast ufunc 'add' output from dtype('float64') to dtype('uint16') with casting rule 'same_kind',Cannot cast ufunc 'add' output from dtype('float64') to dtype('uint16') with casting rule 'same_kind',FAIL,
+complex64,Babylonian sqrt and Taylor exp,5.493640899658203,(111.111115+0j),(inf+0j),PASS,
+complex128,Babylonian sqrt and Taylor exp,5.091190338134766,(111.11111060555555+0j),(4.511892927335038e+60+0j),PASS,
+mpmath.mpf,,,111.1111106,4.57322e+5361,PASS,0.5650520324707031

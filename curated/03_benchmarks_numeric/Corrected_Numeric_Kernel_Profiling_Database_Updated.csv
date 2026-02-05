@@ -1,0 +1,7 @@
+id,kernel,vector_size,execution_time
+1,multiply,500000,0.002265
+2,add,500000,0.000615
+3,subtract,500000,0.000558
+4,divide,500000,0.010782
+5,add,500000,0.000615
+6,subtract,500000,0.000558

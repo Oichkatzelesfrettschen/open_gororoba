@@ -1,0 +1,5 @@
+Operator,Grid Size,Optimal Precision,Kernel Mode,Predicted Time (s),Tensor Contraction Result
+Quantum Foam PDE,128x128,float64,Symbolic,0.0022362200262883887,1.0000000000000002
+Domain-Wall Electron Transport PDE,128x128,float64,Symbolic,0.0022362200262883887,1.0000000000000002
+Dielectric Polarization Dynamics PDE,128x128,float64,Symbolic,0.0022362200262883887,1.0000000000000002
+Field-Induced Electron Density Modulation PDE,128x128,float64,Symbolic,0.0022362200262883887,1.0000000000000002

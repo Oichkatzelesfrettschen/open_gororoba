@@ -1,0 +1,81 @@
+# Verified Claims Index (Test-Backed)
+
+Cross-references: [CLAIMS_EVIDENCE_MATRIX](CLAIMS_EVIDENCE_MATRIX.md) |
+[TERMINOLOGY_GLOSSARY](TERMINOLOGY_GLOSSARY.md) |
+[BIBLIOGRAPHY](BIBLIOGRAPHY.md)
+
+This file is a quick index from high-value, test-backed claims to the exact in-repo
+validation locations (unit tests and/or verifiers).
+
+Policy reminder: text in `convos/` is not treated as authoritative. Claims are only
+"verified" here when there is a reproducible check in-repo.
+
+Date: 2026-01-28 (Phase 6 harmonization)
+
+## Mathematics (core)
+
+- C-001: Cayley-Dickson becomes non-associative at 8D and beyond.
+  - Tests: `tests/test_cayley_dickson_properties.py`
+- C-002: 16D sedenions have zero divisors and lose norm composition.
+  - Tests: `tests/test_cayley_dickson_properties.py`
+- C-003: "42 assessors" / "7 box-kites" organize primitive sedenion zero divisors.
+  - Tests: `tests/test_de_marrais_boxkites.py`
+- C-013: de Marrais GoTo "automorphemes" cover primitive assessors twice.
+  - Tests: `tests/test_de_marrais_automorphemes.py`
+- C-014: 84 diagonal-form zero divisors have annihilator nullity (4,4).
+  - Tests: `tests/test_reggiani_standard_zero_divisors.py`
+- C-015: Each diagonal-form zero divisor has 4 diagonal partners spanning Ann_L(u).
+  - Tests: `tests/test_reggiani_standard_zero_divisors.py`
+- C-016: m3 trilinear operation has a 42/168 split aligned with Fano lines.
+  - Tests: `tests/test_m3_cd_transfer.py`
+- C-017: XOR-bucket match is a necessary condition for observed 2-blade ZD edges.
+  - Tests: `tests/test_cd_xor_heuristics.py`
+- Dimensional continuation formulas (Gamma-function based) are consistent with
+  integer-dimension identities.
+  - Tests: `tests/test_dimensional_geometry.py`
+
+## Data + artifact integrity (local)
+
+- C-006: GWTC-3 "confident events" CSV matches the GWOSC EventAPI jsonfull snapshot.
+  - Fetcher: `src/scripts/data/fetch_gwtc3_confident.py`
+  - Tests: `tests/test_gwosc_eventapi_snapshot.py`
+- Artifact schemas and required CSV outputs are checked for consistency.
+  - Verifier: `src/verification/verify_generated_artifacts.py`
+- "Grand" image resolution compliance is reported (and optionally enforceable).
+  - Verifier: `src/verification/verify_grand_images.py`
+
+## Algebraic structures (non-CD)
+
+- C-018: Carlstrom "wheels" axioms (1)-(8) hold for a concrete finite wheel model used here.
+  - Tests: `tests/test_wheels.py`
+
+## C++ acceleration kernels
+
+- C-024: C++ CD multiplication reproduces Python results within float64 tolerance.
+  - Tests: `cpp/tests/test_cd_algebra.cpp` (Catch2)
+  - Benchmarks: `cpp/benchmarks/bench_cd_multiply.cpp` (Google Benchmark)
+  - Build: `make cpp-test`
+
+## Sedenion field theory and exceptional cosmology (from PDF import, 2026-01-30)
+
+- C-028: Aut(S) = G2 x S3 verification (pending).
+  - Tests: `tests/test_sedenion_automorphism.py` (planned)
+- C-029: Three fermion generations via C tensor S (literature-supported).
+  - Source: Gillard & Gresnigt (2019); Gresnigt (2023).
+- C-030: Bypass mechanisms required for sedenion Lagrangians (established).
+  - Evidence: C-011 Phase 3D associator data.
+- C-035: F4 Casimir ratio epsilon = 1/4 (pending verification).
+  - Tests: `tests/test_f4_casimir.py` (planned)
+- C-036: Bigraph clustering coefficient -> 0.25 (pending verification).
+  - Tests: `tests/test_bigraph_cosmogenesis.py` (planned)
+- C-038: w0 = -5/6 observational comparison (pending; expected disfavored).
+  - Tests: `tests/test_exceptional_w0.py` (planned)
+
+## Scope guards (speculative enforcement)
+
+- C-011: Sedenion-Gravastar equivalence remains labeled speculative in its primary doc.
+  - Tests: `tests/test_gravastar_equivalence_guard.py`
+
+For narrative scope boundaries and what remains unverified, see:
+- `docs/MATH_VALIDATION_REPORT.md`
+- `docs/CLAIMS_EVIDENCE_MATRIX.md`

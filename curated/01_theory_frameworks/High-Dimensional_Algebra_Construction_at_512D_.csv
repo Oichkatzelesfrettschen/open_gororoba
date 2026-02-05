@@ -1,0 +1,12 @@
+Dimension,"Retains Clifford, Lie, Jordan?",Retains E8 or Exceptional Groups?,Potential for Unification with New Structure?,Possible Higher Symmetry Groups?
+3,True,False,False,-
+8,True,False,False,-
+27,True,False,False,-
+56,True,True,False,E8
+128,True,True,True,E8
+248,True,True,True,E8
+512,True,True,True,E9?
+1024,True,True,True,E10?
+2048,True,True,True,E11?
+4096,True,True,True,Unknown
+8192,True,True,True,Unknown

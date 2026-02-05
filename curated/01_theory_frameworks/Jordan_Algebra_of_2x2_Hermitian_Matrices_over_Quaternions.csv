@@ -1,0 +1,5 @@
+Entry,Value
+1.0*a*c + 0.5*q*r_conj + 0.5*q_conj*r,1.0*a*c + 0.5*q*r_conj + 0.5*q_conj*r
+0.5*a*r + 0.5*b*r + 0.5*c*q + 0.5*d*q,0.5*a*r + 0.5*b*r + 0.5*c*q + 0.5*d*q
+0.5*a*r_conj + 0.5*b*r_conj + 0.5*c*q_conj + 0.5*d*q_conj,0.5*a*r_conj + 0.5*b*r_conj + 0.5*c*q_conj + 0.5*d*q_conj
+1.0*b*d + 0.5*q*r_conj + 0.5*q_conj*r,1.0*b*d + 0.5*q*r_conj + 0.5*q_conj*r

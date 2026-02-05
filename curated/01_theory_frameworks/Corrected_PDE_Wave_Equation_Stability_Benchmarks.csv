@@ -1,0 +1,5 @@
+Data Type,Mean Time (ms),Stable,CFL,Status
+float32,4.651150666707811,True,0.5,PASS
+float64,3.6862356666536775,True,0.5,PASS
+complex64,3.753186999991461,True,0.5,PASS
+complex128,4.697544000047553,True,0.5,PASS

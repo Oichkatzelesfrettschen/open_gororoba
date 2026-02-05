@@ -1,0 +1,15 @@
+Type,Duration (s)
+<class 'numpy.uint8'>,0.01729725900008816
+<class 'numpy.uint16'>,0.006456387999833169
+<class 'numpy.uint32'>,0.0013616589999401185
+<class 'numpy.uint64'>,0.0015568090000215307
+<class 'numpy.int8'>,0.0021862959999907616
+<class 'numpy.int16'>,0.001545830999930331
+<class 'numpy.int32'>,0.001386200999831999
+<class 'numpy.int64'>,0.0017295170000579674
+<class 'numpy.float16'>,0.0018284880000010162
+<class 'numpy.float32'>,0.001346889999922496
+<class 'numpy.float64'>,0.011692410000023301
+<class 'numpy.float128'>,0.10321966999981669
+<class 'numpy.complex64'>,0.08234989699985817
+<class 'numpy.complex128'>,0.09035288400013997

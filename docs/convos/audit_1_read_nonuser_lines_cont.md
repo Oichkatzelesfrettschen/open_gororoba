@@ -1,0 +1,1090 @@
+# Audit: convos/1_read_nonuser_lines_cont.md
+
+Input file:
+- Path: `convos/1_read_nonuser_lines_cont.md`
+- Lines: 32220
+- Chunk size: 800
+- Chunks: 41 (C1-0001..C1-0041)
+
+Conventions:
+- Chunk ids: C1-0001, C1-0002, ...
+- Convo references use `convos/1_read_nonuser_lines_cont.md:L<line>`.
+- Concepts should map to existing `CX-xxx` items in `docs/CONVOS_CONCEPTS_STATUS_INDEX.md` when possible.
+
+## Chunk log
+
+### C1-0001 (L1-L800)
+Status: drafted
+- Concepts:
+  - Candidate new concept: "wheel algebra" (term appears repeatedly; definition in chunk looks nonstandard)
+  - Algebraic integer rings: Gaussian integers Z[i], Eisenstein integers Z[omega]
+  - Quaternionic and octonionic integer lattices: Hurwitz integers, "octavian integers"
+  - p-adics / 2-adics (maps to CX-006)
+  - "negative-dimensional integers" (treat as speculation; maps to CX-005 policy)
+- Claims/hypotheses (treat as unverified):
+  - H1: "Wheel algebra" is a standard term with a first-party definition in algebra/geometry.
+  - H2: The chunk's proposed axioms (cyclic multiplication, n-ary closure, trace axioms) match that first-party definition.
+  - H3: There is a real connection between "wheel algebras" and Cayley-Dickson algebras (beyond loose analogy).
+  - H4: "Negative-dimensional integers" are a published concept in number theory (likely false as stated).
+- What to implement next (minimal):
+  - Add a new CX entry for "wheel algebra" and scope it as "source-first" until a citation is found.
+  - Add a small, rigorous doc note on Gaussian/Eisenstein/Hurwitz integers with correct norm forms and references.
+- Source needs (first-party):
+  - Disambiguate "wheel algebra". Plausible standard meanings:
+    - wheel graph (graph theory; graph Laplacian is well-defined, but this is not an algebra),
+    - wheels (algebraic structure supporting "division by zero", Carlstrom),
+    - wheeled operads/PROPs (Markl/Merkulov/Shadrin; category/operad language).
+  - Find first-party sources for the intended meaning and update CX-017 accordingly.
+  - Standard references for Gaussian/Eisenstein/Hurwitz/octonion integer lattices (textbook/paper).
+
+### C1-0002 (L801-L1600)
+Status: drafted (no new concepts)
+- Concepts:
+  - Continued expansion of the same "wheel algebra" material from C1-0001.
+- Claims/hypotheses:
+  - No materially new claims beyond C1-0001; mostly repetition/expansion.
+- What to implement next:
+  - Defer: wait for a topic shift in later chunks before spending more time on repeated content.
+- Source needs:
+  - Same as C1-0001.
+
+### C1-0003 (L1601-L2400)
+Status: drafted
+- Concepts:
+  - "Wheel algebra graph" visualization and graph metrics (centrality, degree distribution).
+  - Claimed Laplacian spectrum/eigenvalues for a wheel algebra graph.
+  - Claimed "dynamic evolution" via a time-dependent multiplication state (appears as a Markov-like linear evolution).
+  - Claimed lattice embedding / projection visualization.
+  - Claimed negative-dimension transport ODE/PDE driven by a wheel algebra matrix (maps to CX-005 policy + CX-004 operator caution).
+- Claims/hypotheses (unverified):
+  - H1: The transcript's claimed figures/tables were actually computed (likely false; treat as narrative).
+  - H2: There exists a standard, well-defined "wheel algebra" multiplication table suitable for graph modeling.
+  - H3: Graph Laplacian eigenvalues of that multiplication graph are meaningful invariants for the algebra (needs a definition and justification).
+  - H4: The "negative-dimensional PDE transport" described is mathematically well-posed and corresponds to a fractional Laplacian model (likely false as written).
+- What to implement next (minimal):
+  - Do NOT implement "wheel algebra" graphs yet (term not sourced).
+  - If we want a near-term, repo-grounded analog: add an optional script that visualizes the Cayley-Dickson 16D multiplication graph on basis units, plus Laplacian spectrum, under warnings-as-errors.
+- Source needs:
+  - First-party definition of "wheel algebra" or corrected standard term.
+  - If proceeding with graph invariants: references for using graphs/Laplacians as invariants of algebraic multiplication tables.
+
+### C1-0004 (L2401-L3200)
+Status: drafted
+- Concepts:
+  - Claimed W64 graph embedding using an ad-hoc cyclic rule (e_i * e_{i+1} = e_{i+2}).
+  - Claimed "nonassociative Hamiltonian mechanics" where time evolution uses structure constants omega_ijk.
+  - Claimed unification narrative: graph-theoretic embeddings, spectral graph analysis, negative-D PDE transport, ML.
+- Claims/hypotheses (unverified):
+  - H1: The W64 rule is a meaningful algebraic multiplication (likely just a toy cyclic magma).
+  - H2: The proposed Hamiltonian evolution is coherent and reduces to classical Hamiltonian mechanics under a limit (no evidence provided).
+  - H3: The "unified theory" section is evidence-backed (it is not; treat as narrative).
+- What to implement next (minimal):
+  - Treat this chunk as a cautionary example of "toy cyclic rules" not to be conflated with Cayley-Dickson.
+  - If we want a positive action: add a doc note clarifying that ad-hoc cyclic rules are not Cayley-Dickson and must be labeled toy models.
+- Source needs:
+  - If we ever pursue nonassociative mechanics: first-party sources on nonassociative algebras in mechanics/Poisson bracket generalizations.
+
+### C1-0005 (L3201-L4000)
+Status: drafted
+- Concepts:
+  - High-value critique checklist for any "new math" claim:
+    - definitions first
+    - precise objects and morphisms (if using category language)
+    - explicit examples
+    - falsifiable predictions and reproducible experiments
+  - "Surreal tensor operators" (not standard; likely an invented term).
+  - "Reverse Cayley-Dickson" / "negative-dimensional extensions" (not defined; likely invalid as stated).
+  - "Functorial embedding into exceptional Lie groups" (extraordinary claim; no evidence).
+- Claims/hypotheses (unverified or likely false):
+  - H1: There is a coherent, published definition of "surreal tensor operator" in this sense (unlikely).
+  - H2: There is a meaningful "inverse Cayley-Dickson" process yielding negative dimensions (no standard meaning; treat as false until defined).
+  - H3: The intersection formula A_{n-1} = intersection_{i>=0} A_{n+i} is mathematically meaningful (it is not, as written).
+  - H4: "FFT spectral decomposition" validates surreal/noncommutative structure (not sufficient; needs a theorem/prediction).
+- What to implement next (minimal, repo-aligned):
+  - Add a short doc note that "reverse Cayley-Dickson" is not a standard construction; any usage must be labeled speculative and moved out of the validated layer.
+  - Treat the critique section as requirements for future claims: update `docs/CLAIMS_EVIDENCE_MATRIX.md` entries that mention surreals/negative dimensions accordingly.
+- Source needs:
+  - If keeping surreals in scope at all: first-party sources on Conway surreals (and what they are not).
+  - If keeping category language: identify the correct standard objects (operads, PROPs, wheeled operads) and cite first-party sources.
+
+### C1-0006 (L4001-L4800)
+Status: drafted
+- Concepts:
+  - A "fully rigorous" monograph-style narrative that introduces multiple new objects without sources.
+  - "Surreal tensor space" defined as a direct sum over a surreal-indexed family of vector spaces, plus a
+    bracket with structure constants and an ad-hoc "surreal perturbation" term.
+  - "Wheel algebra W_n" defined as a nonassociative cyclic rule on basis elements, e.g.
+    `e_i * e_{i+1} = omega_i * e_{i+2}`, plus antisymmetric structure constants.
+    NOTE: this is not Carlstrom's division-by-zero wheels (see `docs/WHEELS_DIVISION_BY_ZERO.md`).
+  - A claimed "reversed Cayley-Dickson" / "negative-dimensional extension" using a dimensional reduction
+    map `psi` and an intersection formula of the form `A_{n-1} = intersection_{i>=0} A_{n+i}`.
+  - Claimed "nonassociative Hamiltonian mechanics" and QFT generalizations using the same `omega_{ijk}`.
+  - Claimed computational validation, but with no defined input objects (random matrices are used).
+  - Black hole / holography / complexity narrative layers:
+    - modifies Hawking entropy and writes a Wheeler-DeWitt-like ODE driven by a random matrix,
+    - proposes AdS/CFT deformations with `omega_{ijk}` terms and recursive tensor sums,
+    - mentions "persistent homology" without concrete definitions.
+  - A concrete graph toy: an 8-cycle in networkx and a bar plot of its Laplacian eigenvalues.
+    The transcript includes a FutureWarning about `networkx.laplacian_matrix` changing return type in
+    networkx 3.0 (relevant under warnings-as-errors).
+  - ML snippets (Ridge regression) and "fractal holographic complexity" using an undefined
+    `surreal_entanglement_matrix`.
+  - Experimental hooks:
+    - quantum Hall "noncommutative plane" commutator `[x,y] = i * l_B^2` (standard in guiding-center
+      physics, but unrelated to surreals as written),
+    - optical lattice Bloch oscillations (the next chunk dives into Debye confusion).
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The transcript's "wheel algebra" matches Carlstrom wheels (it does not; conflation).
+  - H2: "Surreal index structure implies noncommutativity" (not a standard theorem).
+  - H3: The "reversed Cayley-Dickson" / intersection construction yields well-defined algebras (no support).
+  - H4: The physical predictions (BH entropy corrections, AdS/CFT deformations, transport corrections)
+    are derived from a coherent sourced model (no derivations provided).
+  - H5: The numeric tables/plots are meaningful validations (they are mostly random-matrix toys).
+- What to implement next (minimal, repo-aligned):
+  - Clarify vocabulary:
+    - keep "wheels" as division-by-zero (Carlstrom),
+    - label this chunk's "wheel algebra" as an unsourced toy cyclic magma unless a source is found.
+  - Keep only grounded bridge points:
+    - quantum Hall guiding-center commutator can be tied to the repo's Hofstadter/Chern work (CX-008),
+      but must be sourced and stated correctly.
+    - do not accept any "surreal" or "negative-D" physics claims into the validated layer without sources.
+  - Record the deprecation signal:
+    - if the repo uses networkx Laplacian helpers, avoid deprecated return types under warnings-as-errors.
+- Source needs (first-party):
+  - First-party sources for the quantum Hall guiding-center commutator `[x,y] = i*l_B^2`.
+  - First-party sources for AdS/CFT "complexity" proposals, if we keep that topic at all.
+
+### C1-0007 (L4801-L5600)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Optical lattice Bloch oscillation experiment narrative:
+    - defines Bloch oscillations for "charged particles" and then applies to ultracold atoms in an
+      optical lattice without distinguishing the neutral-atom setting (force via gravity/acceleration).
+    - proposes a modified Hamiltonian with ad-hoc omega_ijk "nonassociative tensor corrections".
+  - An explicit (but purely tabular) "parameter sweep" over:
+    - atomic species: Li/Na/K/Rb/Cs,
+    - lattice type: Square/Honeycomb/Triangular,
+    - lattice spacing: 500/700/1000 nm,
+    - electric field: 1e4..1e5 V/m (not a typical cold-atom knob),
+    - magnetic field: 0.1/1/10 T (scale mismatch for most cold-atom discussions),
+    - Debye temperature, Debye screening length, and electron-phonon coupling (solid-state concepts).
+  - The narrative expands into "p-adic fractal cosmology" and "nonassociative dark matter" with ad-hoc
+    embeddings `F: W_n -> Q_p`, and uses real-valued `exp(-j)` terms while calling them "p-adic".
+  - Continues with "nonassociative braid matrices" driven by a random matrix; the snippet itself emits
+    a ComplexWarning (casting complex to real discards imaginary part), indicating internal inconsistency.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: Debye temperature / Debye screening length / electron-phonon coupling are required knobs for a
+    neutral-atom optical lattice Bloch oscillation experiment (generally no; conflates solid-state and
+    cold-atom regimes).
+  - H2: The proposed omega_ijk correction is derived from a defined algebra relevant to the experiment
+    (no definition; no derivation).
+  - H3: The braid-matrix construction is a valid braid-group representation suitable for topological QC
+    (no; random-matrix phase toy, plus type/ComplexWarning issues).
+  - H4: The p-adic "metric" and embeddings in this chunk are mathematically correct and used correctly
+    in the computations (no; it does not implement p-adic norms/operators).
+- What to implement next (minimal, repo-aligned):
+  - Add a scope boundary doc note:
+    - "cold atoms in optical lattices" vs "solid-state lattices" require different parameter sets; do
+      not mix Debye/phonon language into cold-atom protocols unless explicitly modeling a solid.
+  - If we ever implement an experiment-design helper:
+    - use cold-atom knobs: atomic mass, scattering length (Feshbach), lattice depth in recoil units,
+      wavelength, trap frequencies, temperature, coherence time, background gas collisions, imaging.
+    - model constant force via acceleration or gravity (not literal E-field on charged particles).
+  - For p-adics: route any future work through the existing, tested p-adic/Cantor foundations (CX-006)
+    and do not accept narrative "p-adic cosmology" claims without a real operator (e.g. Vladimirov).
+  - Defer braid-matrix work until we have a sourced braid representation (source-first).
+- Source needs (first-party):
+  - Bloch oscillations in ultracold atoms / optical lattices (standard parameterization and protocols).
+  - Guiding references for braid group representations used in topological QC, if kept in scope.
+
+### C1-0008 (L5601-L6400)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the braid-matrix narrative with:
+    - nearest-neighbor spacing plots and claims of Wigner-Dyson "level repulsion" as evidence of quantum chaos,
+    - a "standard braid matrix" modeled as a 2x2 diagonal phase gate `diag(exp(i*theta), exp(-i*theta))`,
+    - a "nonassociative braid matrix" modeled by shifting theta by entries from an undefined
+      `surreal_entanglement_matrix`,
+    - a "spectral flow" sweep over a "nonassociativity strength" parameter.
+  - Gate fidelity is introduced via the standard trace overlap formula `|Tr(U^dagger V)|^2 / d^2`,
+    then plotted as a function of the same strength parameter.
+  - A hardware wishlist / engineering narrative is added:
+    - claims standard topological hardware assumes associativity of gate composition,
+    - proposes "adaptive noise-correcting gates" driven by omega_ijk terms,
+    - lists candidate platforms (superconducting qubits / trapped ions / optical lattices),
+    - lists candidate materials (NbTiN, YBCO, graphene superlattices),
+    - proposes a modified transmon Hamiltonian with omega_ijk coupling terms and mK cryogenics.
+  - Expands into AI-driven circuit optimization (RL/GAN language) but uses the same random-matrix/Ridge
+    toy pattern as earlier chunks.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The 2x2 diagonal phase gate is a sufficient representation of braid group structure for the
+    intended claims (it is an oversimplified abelian phase model; not a general braid rep).
+  - H2: The shown eigenvalue "amplitude distortion" indicates loss of unitarity (not supported by the
+    shown formula; `exp(i*angle)` stays on the unit circle).
+  - H3: The fidelity curve demonstrates a real, derived exponential degradation due to nonassociativity
+    (the model is ad-hoc and not tied to a physical noise channel or a braid representation).
+  - H4: The proposed hardware/materials list is a realizable protocol for detecting the claimed effect
+    (no; it is a speculative mash-up without a defined measurable target).
+- What to implement next (minimal, repo-aligned):
+  - Defer: do not implement any of this as stated.
+  - If we keep "braids/topological QC" at all, re-scope to a clean, sourced math module:
+    - define a specific braid group representation (with citations),
+    - compute eigenvalues/unitarity invariants and add unit tests,
+    - only then discuss "gate fidelity" in a standard noise-model setting.
+- Source needs:
+  - First-party sources on braid group representations for anyons/topological QC (and what is meant by
+    "topological protection").
+  - First-party sources for standard gate fidelity and quantum channels (quantum info text).
+
+### C1-0009 (L6401-L7200)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continued expansion of the same "surreal tensor" program into:
+    - quantum ML for "noncommutative computation" (RL/GAN prose, but implemented with the same Ridge
+      regression on random matrices as earlier chunks),
+    - optical cavity / interferometry experiment ideas (Fabry-Perot, Mach-Zehnder, tomography) with no
+      defined measurable signature tied to a real model,
+    - holographic "tensor growth" models using ad-hoc recurrences and random matrices.
+  - A "quantum chaos" narrative that borrows standard random matrix theory (RMT) vocabulary:
+    - GOE/GUE/GSE beta parameter,
+    - nearest-neighbor spacing distribution `P(s) ~ a s^beta exp(-b s^2)`,
+    - spectral rigidity `Delta_3(L)` formula,
+    but applies it to ad-hoc data (eigenvalues from the earlier random braid-matrix toys).
+  - A "surreal tensor information theory" and "nonassociative QEC" narrative:
+    - introduces an entropy-like functional with omega_ijk correction terms,
+    - restates the standard QEC condition `<psi_i| E_a^dag E_b |psi_j> = delta_ij C_ab`,
+    - then reuses the same toy fidelity sweep as "verification".
+  - "Fractal-surreal structures" narrative:
+    - defines a "fractal-surreal duality" map without definitions,
+    - reuses the same `abs(state[i]) * exp(-j) + dot(random_matrix, state)` toy as "fractal growth".
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The spacing plots shown establish Wigner-Dyson statistics / quantum chaos for a defined
+    nonassociative Hamiltonian (no; the underlying matrix model is not defined or sourced).
+  - H2: The proposed "fractal-surreal QEC" claims are grounded in a defined noise model and code
+    construction (no; it is narrative plus toy plots).
+  - H3: The optical-cavity roadmap is a realizable experimental protocol for a well-posed effect (no;
+    it lacks a defined observable tied to a defined Hamiltonian or operator).
+- What to implement next (minimal, repo-aligned):
+  - If we keep "quantum chaos" at all, re-scope to a standard setting:
+    - choose a real Hamiltonian family already in the repo (e.g. Hofstadter tight-binding),
+    - compute level-spacing stats on a controlled parameter sweep and add tests for invariants.
+  - Do not implement "surreal/QEC/fractal" claims without first defining the objects and citing sources.
+- Source needs (first-party):
+  - Standard quantum chaos + RMT references (for correct definitions and diagnostics).
+  - Standard quantum info references for QEC and gate fidelity.
+
+### C1-0010 (L7201-L8000)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the "fractal-surreal" narrative into condensed matter and QFT:
+    - proposes Penrose/aperiodic optical lattice potentials and "quantum beat spectroscopy" as a testbed,
+    - writes an ad-hoc "fractal Hall resistance tensor" with a Cantor-function correction term,
+    - proposes a modified beta function `dg/dlog Lambda = beta(g) + sum omega_ijk g_k`,
+    - repeatedly uses the same toy numeric kernel `abs(state[i]) * exp(-j) + dot(random_matrix, state)`
+      as "validation" of fractal QFT spectral shifts, particle masses, etc.
+  - Expands into repeated AI/RL/GAN prose and "holographic codes" rhetoric with no defined code object.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The "fractal Hall resistance" formula is derived from a defined Hamiltonian / Kubo formula and
+    yields an observable correction (no; it is ad-hoc).
+  - H2: The "fractal QFT" beta-function modification is mathematically/physically justified (no).
+  - H3: The toy numeric outputs validate anything about particle spectra or QFT (no; it is a repeated
+    random-matrix template).
+- What to implement next (minimal, repo-aligned):
+  - Defer: do not implement "fractal-surreal QFT" or "fractal Hall corrections" without a defined model.
+  - If we want a legitimate in-repo bridge:
+    - treat "fractal potentials" as a separate, conventional physics simulation problem (choose a
+      Hamiltonian and compute spectra/transport), or
+    - treat "Cantor/Devil's staircase" as part of the Hofstadter/gap-labeling story (CX-008), with
+      sources and tests.
+- Source needs (first-party):
+  - Hofstadter/Harper transport references for any Hall-conductance / gap-labeling claims.
+  - Aperiodic/Quasicrystal optical lattice references if we keep Penrose-lattice experiments in scope.
+
+### C1-0011 (L8001-L8800)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the same pattern of:
+    - "AI-optimized" recursive holography / complexity models implemented as Ridge regression on random
+      matrices,
+    - photonic-processor experiment roadmaps (chips, combs, interferometry) without a defined measurable
+      signature tied to a model,
+    - cosmology claims (modified Friedmann equations and "fractal vacuum fluctuations") but computed
+      with the same repeated toy numeric kernel.
+  - Re-introduces "quantum chaos in fractal-surreal tensor networks" using RMT spacing plots, then
+    switches to a fresh random Hermitian matrix as the "Hamiltonian" after an execution reset.
+  - Starts an "AI-guided quantum materials" thread, but even the notebook snippet itself is not
+    reproducible: it hits `NameError: Ridge is not defined` and then re-imports it.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The plotted RMT spacing curves validate a specific, defined physics model (no; random matrices).
+  - H2: The cosmology and photonics roadmaps correspond to a single coherent experimental program (no).
+  - H3: The "AI-discovered materials" claims correspond to real materials properties (no; random vectors).
+- What to implement next (minimal, repo-aligned):
+  - Defer these narratives.
+  - If we want "quantum materials discovery" in-scope, connect it to real datasets already in the repo
+    (e.g., JARVIS) and define the supervised task and evaluation.
+- Source needs (first-party):
+  - If we keep RMT/quantum chaos: standard sources for correct diagnostics and proper usage.
+  - If we keep photonic processors: standard references for interferometry/tomography protocols.
+
+### C1-0012 (L8801-L9600)
+Status: drafted (updated from direct read)
+- Concepts:
+  - A "quantum gravity simulations using tensor networks" section that defines:
+    - holographic "complexity" recurrences with omega_ijk terms,
+    - a noncommutative partition-function slogan `Z_bulk = Z_boundary + sum omega_ijk Z_tensor`,
+    - an ad-hoc "tensor network gravity equation" for T_{mu nu}.
+  - A repeated toy computation of an 8x8 "gravity tensor" using the same `abs(state[i]) * exp(-j) +
+    dot(random_matrix, state)` template.
+  - An "experimental testing in superconducting qubits" roadmap with generic tomography language.
+  - "Quantum tensor gravity" narrative: modifies Einstein equations/action by adding omega-weighted terms.
+  - A hardware-focused photonic quantum computing section:
+    - lists generic components (waveguides, combs, beam splitters, detectors),
+    - proposes 2/4/6/8/10 qubit "budget demos" via formal exponentials `U = exp(i * sum omega * sigma)`
+      but provides no concrete circuits, compilation targets, or measurements.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The toy 8x8 numeric outputs are a validation of emergent spacetime / quantum gravity (no).
+  - H2: The proposed omega_ijk modifications are derived from a defined algebra and map to observables
+    (no definition; no derivation).
+  - H3: The photonic "budget demos" correspond to runnable experiments (no; only slogans).
+- What to implement next (minimal, repo-aligned):
+  - Defer.
+  - If we keep photonic quantum computing in scope, re-scope to a small, conventional demo:
+    - choose an existing simulator (e.g. QuTiP/qiskit) and build a 2-qubit circuit with explicit gates,
+    - define a measurable (fidelity, tomography error) and add a reproducible script and test.
+- Source needs (first-party):
+  - Standard references for photonic quantum computing hardware and for fidelity/tomography protocols.
+  - Standard references for holographic tensor networks if we keep the topic at all.
+
+### C1-0013 (L9601-L10400)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the "tensor holography / HQEC / fractal QNN" narrative with the same random-matrix + Ridge
+    template (no new defined objects).
+  - A real, externally referenceable insertion appears:
+    - the user pastes a large "Planck 2018 cosmological parameters" listing (including nuisance terms),
+      and links to the Planck release 3 (2018) ancillary data page on IRSA.
+  - The transcript then claims it will "integrate Planck 2018 parameters" into a fractal/tensor quantum
+    cosmology model by adding omega_ijk correction terms, but the computation shown is again the same
+    repeated toy kernel.
+- Claims/hypotheses (testable):
+  - H1: The pasted parameter values correspond to a real Planck 2018 (release 3) chain / best-fit for a
+    specific likelihood combination (e.g. plik TTTEEE + lowl + lensing).
+  - H2: The link provided is an authoritative first-party location for Planck 2018 ancillary data.
+  - H3: The "tensor corrections" computed in the transcript have any connection to Planck cosmology
+    (no; as written it is not a parameter inference model).
+- What to implement next (minimal, repo-aligned):
+  - Ingest the pasted Planck parameter block as a local, provenance-tracked artifact:
+    - store the raw text under `data/external/planck/` with hash/provenance,
+    - add a parser that extracts name/value pairs and writes a normalized JSON/CSV.
+  - Add a validation script that compares key parameters (Omega_b h^2, Omega_c h^2, n_s, tau, H0, etc.)
+    against official Planck 2018 reference tables or released chains (source-first).
+  - Only after that, propose any additional modeling, and keep it explicitly separated from the
+    validated Planck parameter ingestion.
+- Source needs (first-party):
+  - Planck 2018 (release 3) papers or official parameter tables and/or released chains to validate the
+    pasted values.
+  - A stable first-party citation for the IRSA Planck release 3 ancillary data page.
+
+### C1-0014 (L10401-L11200)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the "Planck parameter integration" story but does not actually use the pasted values as
+    inputs; instead it:
+    - defines dark energy / dark matter recurrences with omega_ijk correction terms,
+    - claims ML/RL optimization against "Planck constraints" as a reward target, but still trains on
+      random vectors/matrices,
+    - repeats "CMB power spectrum modification" slogans (`C_ell = C_ell,0 + sum omega_ijk C_ell,k`),
+      without specifying an actual Boltzmann code / likelihood.
+  - Introduces large-scale structure / cosmic web evolution equations with extra omega_ijk terms and
+    again "validates" with the repeated toy kernel.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The ML outputs shown demonstrate any fit to Planck constraints (no; no likelihood is used).
+  - H2: The omega_ijk terms represent a defined physical correction to LCDM (no definition; no source).
+- What to implement next (minimal, repo-aligned):
+  - Keep the Planck ingestion task from C1-0013 as the only validated next step here.
+  - If we want cosmology modeling, re-scope to a standard pipeline:
+    - choose a parameterization and use an established code (CAMB/CLASS) and likelihood definition,
+    - define a small reproducible comparison (e.g. reproduce a published best-fit parameter set).
+- Source needs (first-party):
+  - Planck 2018 papers and released chains for validation.
+  - First-party sources for any claimed "tensor correction" model (currently absent).
+
+### C1-0015 (L11201-L12000)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the same "tensor modifications everywhere" theme across:
+    - large-scale structure evolution equations with omega_ijk terms,
+    - "quantum information flow in spacetime" entropy-with-omega slogans,
+    - "tensor QFT high-energy" as modified Klein-Gordon/RG equations with omega terms,
+    - experimental roadmaps for photonic/superconducting quantum hardware, without concrete circuits.
+  - Computations remain the same repeated 8x8 random-matrix template; multiple "execution reset" blocks
+    show these are notebook-style narratives, not reproducible programs.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The toy numeric outputs validate any QFT/cosmology/gravity claim (no).
+  - H2: The omega_ijk corrections correspond to a defined physical model (no definition; no source).
+- What to implement next (minimal, repo-aligned):
+  - Defer the narratives.
+  - Focus the cosmology thread on the concrete Planck ingestion/validation task (C1-0013).
+- Source needs: TBD
+
+### C1-0016 (L12001-L12800)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the same 8x8 random-matrix "tensor" template, now labeled as:
+    - "recursive tensor quantum error correction" (QEC) performance tables,
+    - "quantum tensor gravity" / cosmic structure evolution equations with omega_ijk terms,
+    - "AI-assisted recursive tensor QFT computation" with an execution reset and a re-randomized
+      `surreal_entanglement_matrix`.
+  - The repeated numeric kernel remains: `abs(state[i]) * exp(-j) + dot(random_row, state)`.
+  - Multiple "execution reset" blocks confirm this is a narrative notebook transcript, not a defined,
+    reproducible model.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The shown tables demonstrate improved QEC or fault tolerance (no; the "metric" is undefined and
+    depends on random matrices).
+  - H2: The omega_ijk terms define a coherent modification to GR / perturbation theory (no definition;
+    no sourcing; no dimensional analysis).
+  - H3: The AI-assisted "QFT computation" outputs reflect field-theory quantities (no; ad-hoc kernel).
+- What to implement next (minimal, repo-aligned):
+  - Defer this narrative.
+  - If we want to keep any part in scope, route it through existing validated pipelines:
+    - cosmology: prioritize the Planck parameter ingestion/validation task (C1-0013),
+    - QEC: only implement after selecting a standard code family and measurable (with sources).
+- Source needs (first-party):
+  - Standard QEC references (stabilizer codes, thresholds) if QEC is kept in scope.
+  - Standard cosmological perturbation / structure formation references if any GR modification claims
+    are kept in scope.
+
+### C1-0017 (L12801-L13600)
+Status: drafted (updated from direct read)
+- Concepts:
+  - More "tensor everything" narrative, now framed as:
+    - tensor-based quantum communication networks (tomography, Ramsey spectroscopy),
+    - reinforcement learning / QNN for "tensor QFT" simulations,
+    - a "tensor origami folding" unification and a single recursive equation `Q(n) = Q(n-1) + sum omega_ijk Q(k)`.
+  - Computation remains the same re-randomized 8x8 kernel and multiple "execution reset" blocks.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: These sections define a concrete quantum communication protocol or measurable that is linked to a
+    defined Hamiltonian or channel model (no).
+  - H2: The "unified tensor recursion equation" is derived from an established framework (no; narrative).
+  - H3: The shown numeric tables validate any QNN/QFT claim (no; ad-hoc kernel).
+- What to implement next (minimal, repo-aligned):
+  - Defer this narrative.
+  - If we want a real, in-repo "quantum communication" module:
+    - pick an explicit circuit/channel model (qiskit/aer already exists in the repo),
+    - define a single measurable (fidelity, process infidelity, tomography error),
+    - add a small reproducible script + unit test.
+- Source needs (first-party):
+  - Standard quantum information references for tomography and quantum channels.
+  - Any QNN-specific sources only if a concrete model is selected.
+
+### C1-0018 (L13601-L14400)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Repeats the same 8x8 kernel under new labels:
+    - "recursive tensor quantum computation" tables,
+    - superconducting + photonic hardware roadmaps (Josephson junction arrays, frequency combs),
+    - QNN / RL narratives for "nonperturbative quantum simulations".
+  - The only consistent pattern is re-randomizing `surreal_entanglement_matrix` after resets.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The numeric tables quantify a defined performance metric (no; metric is undefined and depends on
+    random matrices).
+  - H2: The hardware lists correspond to a specific implementable circuit family and measurable (no).
+- What to implement next (minimal, repo-aligned):
+  - Defer this narrative.
+  - If we want to keep "hardware validation" at all, reduce to an explicit, tested qiskit artifact:
+    - build a small circuit set,
+    - choose a noise model,
+    - compute fidelity / process infidelity with unit tests.
+- Source needs (first-party):
+  - Standard references for superconducting qubits and photonic quantum computing if any of this is
+    brought into scope.
+
+### C1-0019 (L14401-L15200)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the same "tensor network AI quantum gravity" kernel and then pivots to a self-critique
+    section and a parameter-sweep table.
+  - Proposes (still narratively) using LIGO/Virgo/KAGRA data to detect "tensor-modified deviations" via
+    FFT/residual analysis.
+  - The parameter sweep lists ad-hoc knobs (omega strength, QNN depth, QEC fidelity, circuit complexity)
+    without defining a model or likelihood.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The transcript defines a measurable, model-based deviation in GW data attributable to omega_ijk
+    terms (no).
+  - H2: The FFT-of-residuals idea constitutes a valid validation pipeline for a new gravity model (not
+    without an explicit waveform/model and statistical test).
+- What to implement next (minimal, repo-aligned):
+  - Keep only the conventional, in-repo-valid part:
+    - if we do GW data analysis, it must be framed as standard signal processing/statistics and
+      cross-checked against public GW open data sources (no omega terms).
+  - Any "new gravity" parameter sweeps must be deferred until a concrete, sourced model is selected.
+- Source needs (first-party):
+  - LIGO/Virgo/KAGRA public data references and standard GW parameter-estimation / residual analysis
+    references, if this thread is kept.
+
+### C1-0020 (L15201-L16000)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the same pattern with two repeated "validation" proposals:
+    - GW residual/FFT analysis for "tensor gravity" (still not a defined waveform/model),
+    - "AI-assisted renormalization flow" for high-energy physics, implemented as the same 8x8 random
+      kernel with execution resets and re-randomized parameters.
+  - Expands the narrative to QCD/BSM language (hadronization, mass spectra) without any defined model.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The random-matrix tables correspond to RG flow or renormalization (no).
+  - H2: The proposed GW FFT step isolates a model-specific deviation (not without an explicit model and
+    statistical test).
+- What to implement next (minimal, repo-aligned):
+  - Defer these narratives.
+  - If "renormalization" is kept, re-scope to an actual RG toy already in the repo (or add one) and
+    validate against a known analytic result.
+  - If "GW residuals" are kept, treat as standard signal processing only (no omega terms).
+- Source needs (first-party):
+  - Standard QFT/RG references if we implement any RG toy.
+  - Standard GW data-analysis references if we implement any residual/FFT analysis.
+
+### C1-0021 (L16001-L16800)
+Status: drafted (updated from direct read)
+- Concepts:
+  - A long "comprehensive multidimensional analysis" and "Universal Algebra" manifesto that repeats:
+    - omega_ijk-weighted recursion equations,
+    - generic QFT beta-function modifications,
+    - generic "experimental protocols" (CMB, galaxy rotation curves, collider tests) without an actual
+      likelihood/model.
+  - Introduces "Monstrous Moonshine" and "homotopy corrections" language without definitions.
+  - No concrete computations; primarily prose + symbolic formulas.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The text provides a computationally verified, experimentally testable theory (no; no defined
+    model, data pipeline, or test statistic is provided).
+  - H2: CMB/rotation-curve "Bayesian evidence favors" the proposed omega terms (unsupported).
+- What to implement next (minimal, repo-aligned):
+  - Defer this narrative.
+  - Keep only narrow, already-in-repo validated threads (e.g., motif census, m3 transfer, fractional
+    Laplacian foundations, materials embeddings), and explicitly reject/relocate "TOE" claims.
+- Source needs (first-party):
+  - None until scope is narrowed to a concrete mathematical object already implemented in the repo.
+
+### C1-0022 (L16801-L17600)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Another "Universal Algebra" manifesto layer that introduces many named areas (E6/E7/E8, monstrous
+    moonshine, spectral sequences, braided monoidal categories) without definitions or sources.
+  - A concrete (and likely incorrect) homotopy/cohomology claim: `pi_n(U) ~= H_n(U)` "via collapse of
+    the associated spectral sequence" (needs precise conditions; as stated it is false).
+  - Multiple notebook-style code blocks that error (`NameError`, undefined variables) and then "fix"
+    by rewriting code, confirming this is not a coherent computational artifact.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: `pi_n(U) ~= H_n(U)` holds under "stabilization conditions" for compact, simply connected
+    spaces (not generally; must be replaced by correct theorems like Hurewicz + specific connectivity
+    hypotheses).
+  - H2: The listed "Cl(p,q) -> E6 -> E7 -> E8" embedding chain is meaningful as written (needs a precise
+    statement; likely not correct as stated).
+  - H3: The code blocks implement a defined quantum noise/decoherence simulation (no; they error and
+    use ad-hoc linear algebra).
+- What to implement next (minimal, repo-aligned):
+  - Do not implement this narrative.
+  - If we keep any of these topics, isolate one at a time and replace claims with correct, sourced
+    statements before writing code.
+- Source needs (first-party):
+  - Algebraic topology sources for Hurewicz theorem / spectral sequences (to correct the pi_n vs H_n
+    claims).
+  - If any exceptional-group embedding claims remain, primary sources or standard texts are required.
+
+### C1-0023 (L17601-L18400)
+Status: drafted (updated from direct read)
+- Concepts:
+  - A more concrete computational thread appears:
+    - a simple "noise + interaction" tensor evolution simulation,
+    - an attempted `np.tensordot` contraction that triggers a `MemoryError` due to a huge intermediate
+      reshape/matmul,
+    - a follow-up "fix" that replaces the interaction with a low-rank SVD truncation (rank-k
+      approximation) to reduce memory and allow a toy simulation to run.
+  - Still not tied to any defined physics model; this is generic numerical linear algebra.
+- Claims/hypotheses (unverified or overstated):
+  - H1: The toy tensor update represents a "gravitational interaction" (no; it is an arbitrary
+    contraction + noise).
+  - H2: The low-rank SVD step preserves "dominant gravitational features" (unsupported narrative).
+- What to implement next (minimal, repo-aligned):
+  - If we want to keep the *engineering* lesson:
+    - add a small, tested utility for low-rank compression of matrices/tensors (as a numerical tool),
+      but do not attach physics meaning to it.
+  - Otherwise defer.
+- Source needs (first-party):
+  - None for the linear algebra itself (SVD is standard), but any physics interpretation would require
+    real modeling sources.
+
+### C1-0024 (L18401-L19200)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Attempts "advanced AI integration" for the earlier toy tensor evolution:
+    - proposes a CNN with TensorFlow/Keras, but the transcript hits `ModuleNotFoundError:
+      No module named 'tensorflow'`.
+    - falls back to a scikit-learn GaussianProcessRegressor (GPR) as a "BNN-like" alternative.
+  - The GPR example is entirely synthetic:
+    - inputs are random vectors in R^8,
+    - targets are `sum(x) + Gaussian noise`,
+    - kernel is RBF (sometimes with an extra scale factor), and predictions include uncertainty.
+  - Then attempts a "holographic duality" step:
+    - constructs `bulk_space = outer(tensor_params, tensor_params)`,
+    - defines "boundary" as `fft2(bulk_space).real`,
+    - claims this is an explicit AdS/CFT-like mapping (it is just a Fourier transform on a toy matrix).
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: GPR on synthetic data demonstrates "quantum noise prediction and correction" (no; no quantum
+    model, channel, or measurement is defined).
+  - H2: GPR is a usable stand-in for a Bayesian neural network in this context (only as a generic
+    probabilistic regressor; the equivalence claim is overstated).
+  - H3: A 2D FFT of an outer product provides an AdS/CFT holographic duality map (no; needs a real
+    field theory / geometry setup and sources).
+- What to implement next (minimal, repo-aligned):
+  - Defer all physics interpretation.
+  - If we keep any of this, keep it as a purely numerical/ML utility:
+    - optional: add a small scikit-learn GPR demo for denoising/regression with uncertainty,
+      explicitly labeled as synthetic and non-physical.
+    - do not add TensorFlow dependencies to the core build; treat deep learning as an optional module
+      only.
+- Source needs (first-party):
+  - Rasmussen and Williams, "Gaussian Processes for Machine Learning" (for correct GPR statements).
+  - If any holography claim is retained, it must be replaced by a correct, sourced AdS/CFT reference;
+    FFT-on-a-matrix is not sufficient.
+
+### C1-0025 (L19201-L20000)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the toy "holographic duality via FFT" narrative:
+    - computes and visualizes a 2D DFT of an outer-product matrix and calls it a boundary theory.
+  - Proposes "advanced quantum tensor interactions" as a nonlinear matrix recurrence:
+    - updates an 8x8 matrix by `tensor_state += interaction_strength * tanh(tensor_state @ tensor_state)`
+      plus additive Gaussian noise, then renormalizes by Frobenius norm.
+  - The transcript shows typical notebook fragility:
+    - uses `pd.DataFrame(...)` without importing pandas in the shown snippet,
+    - later hits an exception-chain involving Matplotlib/IPython figure rendering and a small
+      memory allocation failure, then IPython traceback formatting itself errors.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The FFT2 visualization constitutes a gauge-gravity duality bridge (no; toy transform).
+  - H2: The tanh-matrix recurrence models "quantum gravity-like behavior" (no; ad-hoc dynamical system).
+  - H3: The output plots/tables validate any physics claim (no; synthetic recurrence only).
+- What to implement next (minimal, repo-aligned):
+  - Defer the physics narrative.
+  - If we keep any part, keep only engineering lessons:
+    - define a small, reproducible nonlinear matrix recurrence demo (explicitly synthetic),
+    - enforce imports and deterministic seeding,
+    - add memory-safe plotting defaults (our repo already prefers saving PNGs over interactive display).
+- Source needs (first-party):
+  - None for the generic numerical recurrence itself; any physical interpretation would require a
+    concrete, sourced model.
+
+### C1-0026 (L20001-L20800)
+Status: drafted (updated from direct read)
+- Concepts:
+  - The transcript continues to fail in the notebook environment:
+    - repeated IPython/Matplotlib rendering errors and exception-formatting failures,
+    - attempted "reduced dimensionality" code uses inconsistent variables (`dim_reduced` defined but
+      `tensor_state_reduced = np.random.rand(dim, dim, spin_index)` uses undefined `dim` and
+      `spin_index` before assignment).
+  - Repeats the theme of "AI integration" for noise prediction:
+    - proposes an MLPRegressor as a "BNN approximation" (not a BNN; no Bayesian treatment is defined),
+    - more `NameError` due to variable mismatches (`X_data_minimal` / `bnn_model_minimal`), then "fixes"
+      by re-running with yet another synthetic dataset.
+  - The synthetic target is again a smooth function of inputs plus noise (e.g. `tanh(sum(x)) + noise`)
+    and the reported metric is MSE on that toy regression.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The MLP regression result demonstrates quantum coherence stabilization (no; synthetic regression).
+  - H2: The MLP is a Bayesian neural network "explicitly" via dropout (dropout is not shown; no posterior
+    is computed).
+  - H3: The plotted/printed metrics validate any quantum gravity/RG-flow modification (no).
+- What to implement next (minimal, repo-aligned):
+  - Defer the narrative.
+  - If we keep any of this, keep it as a generic ML sanity-check module:
+    - one fixed synthetic regression task with deterministic seeds,
+    - correct terminology (MLP regression, not BNN),
+    - optional uncertainty only if implemented (e.g., GPR or explicit Bayesian methods).
+- Source needs (first-party):
+  - Standard ML references if we claim anything about Bayesian inference; otherwise treat as plain
+    regression demos.
+
+### C1-0027 (L20801-L21600)
+Status: drafted (updated from direct read)
+- Concepts:
+  - "Logical order" is agreed, then the transcript proceeds with a toy "quantum gravity extension":
+    - draws a random 3x3 matrix, takes `fft2(...).real`, and defines a "holographic correction" as
+      `alpha * mean(fft2(matrix))`.
+    - applies that scalar to an arbitrary "beta function" value (e.g. -0.25).
+  - "Tensor network complexity refinement" is implemented as repeating the same FFT2-mean correction on
+    random matrices of increasing size, then generating synthetic "quantum measurements" from a tanh of
+    sums plus Gaussian noise.
+  - Uses GPR/MLP regression to predict those synthetic measurements and reports MSE.
+  - Multiple environment reset blocks continue (code re-imports, variable redefinitions).
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: FFT2(mean) on a random matrix is a holographic correction term for RG flow (no).
+  - H2: The corrected beta values imply "quantum gravitational stability" (unsupported).
+  - H3: Low MSE on synthetic regression validates a quantum gravity theory (no; synthetic target).
+- What to implement next (minimal, repo-aligned):
+  - Defer the physics narrative.
+  - If we keep any part, keep only the reproducible ML scaffold:
+    - synthetic regression with uncertainty, clearly labeled,
+    - do not label MLP as "BNN" without an actual Bayesian method.
+- Source needs (first-party):
+  - Any real RG/beta-function or AdS/CFT claim needs primary sources; FFT2-on-random-matrix is not a
+    valid bridge.
+
+### C1-0028 (L21601-L22400)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the synthetic "quantum gravity + AI" regression pattern (MLP on tanh(sum(x)) + noise),
+    then expands into a long, mostly prose "protocol" for:
+    - quantum hardware validation,
+    - AI quantum error correction with BNN + RL,
+    - fidelity metrics and targets (e.g., "10-20% improvement").
+  - A toy "quantum hardware simulation" appears:
+    - defines a 4-qubit uniform superposition state,
+    - adds Gaussian noise to amplitudes (not a physical quantum channel model),
+    - defines a "bayesian_correction" as a simple linear interpolation back toward the ideal state,
+    - computes fidelity before/after and plots a bar chart.
+  - Execution reset blocks reappear.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The MLP regression or the toy correction constitutes a Bayesian neural network (no).
+  - H2: Adding Gaussian noise to state amplitudes is a valid hardware noise model (not in general; a
+    CPTP channel model is needed for physical claims).
+  - H3: Fidelity improvements in this toy imply real QEC progress (no).
+- What to implement next (minimal, repo-aligned):
+  - Defer this narrative.
+  - If we keep a "toy fidelity under noise" demo, implement it correctly:
+    - represent noise as a quantum channel (e.g., depolarizing, dephasing, amplitude damping),
+    - compute fidelity with density matrices,
+    - keep it explicitly as a toy (no gravity claims).
+- Source needs (first-party):
+  - Standard quantum information references for quantum channels and fidelity definitions if we
+    implement any of this.
+
+### C1-0029 (L22401-L23200)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Extends the 4-qubit toy further:
+    - an "RL-based correction" is implemented as iterative gradient-like updates
+      `state <- state + lr * (ideal - state)` with renormalization; this is plain gradient descent.
+  - Attempts an "RG flow" simulation with "homotopy-tensor corrections":
+    - the code shown is inconsistent (e.g., `np.zeros_like(mu_initial)` where `mu_initial` is a scalar,
+      repeated walrus assignments, truncated loop), indicating it is not a coherent program.
+  - A large theoretical expansion layer follows, asserting:
+    - fractal tensor scaling laws and "fractal dimension" stability,
+    - a generic "holographic correspondence" proof sketch without a defined model,
+    - corrected RG equations with an undefined `H(T_n)` term,
+    - "negative dimension" stability claims.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The RL loop is reinforcement learning (no; it is supervised/targeted gradient descent).
+  - H2: The fractal scaling and holography claims are proven or validated here (no; not defined/sourced).
+  - H3: "Negative dimension" stability for tensor networks is established (no; overclaim).
+- What to implement next (minimal, repo-aligned):
+  - Defer these narratives.
+  - If we keep any part, keep only correct, narrow items:
+    - label the iterative correction as gradient descent, not RL,
+    - implement a clean, tested RG toy (e.g., one-coupling beta function) if RG is desired,
+    - keep any "fractal dimension" discussion strictly tied to defined objects already in-repo.
+- Source needs (first-party):
+  - RG/QFT sources if RG is kept.
+  - Fractional/negative dimension claims must be reconciled with the repo's existing clarification
+    policy (CX-005) and supported by primary sources.
+
+### C1-0030 (L23201-L24000)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the "AI optimized negative/fractional dimension tensor" narrative:
+    - ad-hoc "higher-order correction" scalar recurrence for a tensor amplitude across log-spaced scales,
+    - "BNN-inspired" optimization and "RL" language, but implemented as deterministic target-tracking updates,
+    - "theoretical integration" prose with undefined objects (no fixed domain/operator/algebra).
+  - Mentions "fractional and negative dimensions" as rhetorical knobs without defining an operator (route to CX-004/CX-005).
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The recurrence is derived from a sourced quantum gravity model (no; synthetic update rule).
+  - H2: The "BNN" and "RL" terms are used correctly and correspond to implemented Bayesian/RL methods (no; not shown).
+  - H3: The stability inequalities constitute a proof of coherence in "negative-dimensional" field theory (no; not a defined model).
+- What to implement next (minimal, repo-aligned):
+  - Defer the physics narrative.
+  - If we keep any part, keep it explicitly as a synthetic demo:
+    - deterministic seeding and fixed recurrence definition,
+    - save plots to artifacts (no interactive `plt.show()`),
+    - do not label it "BNN" or "RL" unless we implement those methods.
+- Source needs (first-party):
+  - Any "negative/fractional dimension" claim must be reconciled with CX-004/CX-005 and backed by primary sources.
+  - Any "BNN/RL" claim needs standard ML sources (otherwise treat as plain optimization/toy regression).
+
+### C1-0031 (L24001-L24800)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Visualization-heavy section:
+    - multiple Matplotlib sketches for a layered "framework" diagram and spiral-style plots,
+    - "negative-dimensional embeddings" are requested as the next visualization, but only drawn as
+      stylized geometry (no defined embedding map or operator),
+    - includes an explicit ASCII equation overlay (example: `T_n = T_0 * s^{-D_f * n}`).
+  - Repeated notebook-style fragility patterns:
+    - repeated re-imports and redefinitions, interactive `plt.show()` usage, no artifact saving.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The visualizations are "geometrically faithful" embeddings of negative/fractional dimensional
+    tensor dynamics (no; purely decorative spirals).
+  - H2: The plotted layers validate a physical holography/quantum gravity model (no; no model defined).
+- What to implement next (minimal, repo-aligned):
+  - Defer the physical narrative.
+  - If we keep any part, keep it explicitly as a synthetic visualization utility:
+    - factor a small "layered spiral plot" helper that saves a PNG artifact deterministically,
+    - keep all repo-authored annotations ASCII-only (no Unicode math in titles/labels),
+    - include a note that this is an illustrative diagram, not a derived embedding.
+- Source needs (first-party):
+  - None for generic plotting; any claim of "negative-dimensional embeddings" requires a precise,
+    sourced definition and a testable operator (route to CX-004/CX-005).
+
+### C1-0032 (L24801-L25600)
+Status: drafted (updated from direct read)
+- Concepts:
+  - "Negative-dimensional embeddings" are visualized as stacked rings/spirals with a claimed symmetry:
+    - `T_{-d}(x) = T_d(1/x)` (introduced as an "inversion symmetry"),
+    - 1D/2D/3D plots are layered into a single dark-mode figure.
+  - The 2D demo computes `T_neg = exp(-(1/x)^2)` on an `x` grid that includes 0, which triggers a
+    divide-by-zero / invalid operation in NumPy (relevant under warnings-as-errors).
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: `T_{-d}(x) = T_d(1/x)` is a standard "negative-dimensional symmetry" used in analysis/physics (no).
+  - H2: The plotted construction is a "geometrically faithful mapping" across negative dimensions (no;
+    it is a stylized offset plot).
+- What to implement next (minimal, repo-aligned):
+  - If we keep a "negative-D visualization" topic at all:
+    - treat it as illustrative only and do not present `x -> 1/x` as a definition of negative dimension,
+    - enforce numerical hygiene under `PYTHONWARNINGS=error` (mask `x=0`, or define a well-posed operator
+      and use that instead),
+    - keep annotations ASCII-only and save artifacts deterministically.
+- Source needs (first-party):
+  - Any legitimate "negative dimension" usage must be routed through CX-005 (dim-reg / Parisi-Sourlas),
+    not through an `x -> 1/x` inversion ansatz.
+
+### C1-0033 (L25601-L26400)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Further "integrated visualization" iterations:
+    - re-executes the 1D/2D/3D panel (still includes `1/x` singularity),
+    - adds a 6-layer schematic with rings, inner/outer spirals, "RL policy path", "AI feedback bursts",
+      and radial "holographic projection vectors",
+    - overlays a list of equations spanning (a) fractal decay, (b) the `x -> 1/x` ansatz, (c) gradient
+      updates, (d) fidelity, (e) quantum channels, (f) RL objective.
+  - Notebook fragility continues: repeated "re-executing after reset" blocks.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The combined schematic is a derived, coherent mathematical model (no; it is an illustrative collage).
+  - H2: The presence of correct-looking quantum equations implies the rest of the narrative is validated (no).
+- What to implement next (minimal, repo-aligned):
+  - Defer the physical narrative.
+  - If we keep a "visualization template" artifact:
+    - keep it explicitly as illustrative,
+    - remove singular expressions (mask `x=0` or avoid `1/x` entirely) so it survives `PYTHONWARNINGS=error`,
+    - keep all repo-authored annotations ASCII-only and save artifacts deterministically.
+- Source needs (first-party):
+  - If we claim any of the overlaid equations represent repo-implemented physics, add primary sources and
+    map each equation to actual code/tests. Otherwise treat as decorative.
+
+### C1-0034 (L26401-L27200)
+Status: drafted (updated from direct read)
+- Concepts:
+  - The same "ultra-integrated" visualization is iterated again, but this time with explicit runtime
+    issues captured in the transcript:
+    - Matplotlib `UserWarning` about `edgecolors=...` on an unfilled marker,
+    - MathText parse failure due to `\\text{...}` usage inside labels (Matplotlib mathtext does not
+      support all LaTeX; this throws, not just warns).
+  - The transcript then proceeds to yet another composite plot with the same ingredients:
+    spirals, negative-D rings, RL path, entropy overlay, and equation list.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The failure cases are "minor"; under warnings-as-errors they would halt execution (true: they halt).
+  - H2: The produced plot is a validated scientific visualization (no; it is decorative and unstable as written).
+- What to implement next (minimal, repo-aligned):
+  - Treat this chunk as an engineering lesson:
+    - under `PYTHONWARNINGS=error`, Matplotlib warnings must be eliminated (marker styling),
+    - avoid unsupported MathText commands (`\\text{...}`); prefer plain ASCII strings or supported mathtext
+      subsets, and avoid `usetex` unless we explicitly accept TeX toolchain dependencies.
+  - Any future repo visualization helpers should:
+    - save artifacts (no interactive display),
+    - be deterministic and warning-free.
+- Source needs (first-party):
+  - None for Matplotlib behavior; document constraints in repo docs if we build a visualization module.
+
+### C1-0035 (L27201-L28000)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Major topic shift: an attempted "full corpus synthesis" presented as a whitepaper-style
+    "Universal Algebraic Quantum Tensor Framework".
+  - Legitimate standard-topic keywords are mixed together without definitions:
+    - exceptional Lie algebras (E6/E7/E8), Jordan algebras, Clifford algebras, wheel algebras,
+      spectral sequences, RG flow, QFT, quantum channels, RL.
+  - Several concrete but unsourced/undefined constructions appear:
+    - a "Universal Algebra" tower `U = union_{n>=0} U_n` with "tensor recursion" maps,
+    - "negative-dimensional holographic embeddings" via the `x -> 1/x` ansatz,
+    - a claimed "Cl(8) -> E6 -> E7 -> E8" embedding chain justified by "H3(O)" and "Dynkin folding",
+    - an asserted homotopy/cohomology stabilization `pi_n(U) ~= H_n(U)` "for large n",
+    - a "dimensional cascade" with dimensions in `Z, Q, R, S-` (surreals/negative) plus a coupling kernel.
+- Claims/hypotheses (unverified; several are clearly false as stated):
+  - H1: For compact simply-connected spaces, spectral sequence stabilization implies
+    `pi_n(U) ~= H_n(U)` for large n (false in general; needs correction or removal).
+  - H2: There is a natural embedding chain `Cl(8) -> E6 -> E7 -> E8` as written (needs precise
+    statement and sources; likely false/misleading as stated).
+  - H3: "H3(O) embeds into E6" (there are real, well-known relationships between the Albert algebra
+    and exceptional groups, but the correct groups and maps must be stated precisely and sourced).
+  - H4: "wheel algebras" here refer to division-by-zero wheels (Carlstrom) rather than wheel graphs
+    or wheeled operads (ambiguous; must be disambiguated and sourced).
+  - H5: The `x -> 1/x` inversion is a standard definition/principle for "negative dimensions" (no;
+    route to CX-005 policy).
+- What to implement next (minimal, repo-aligned):
+  - Treat this chunk as a "topic inventory", not validated content.
+  - Split salvageable topics into source-first, testable modules:
+    - exceptional groups / Albert algebra / Freudenthal invariants (align to CX-007),
+    - wheels-as-division-by-zero (align to CX-017),
+    - remove or quarantine any "negative dimension" claims that are not dim-reg / Parisi-Sourlas (CX-005).
+  - Add explicit "overclaim" flags anywhere this chunk is referenced: it mixes correct words with
+    incorrect theorems and undefined objects.
+- Source needs (first-party):
+  - Exceptional groups / Jordan / Albert algebra: authoritative references (textbook/primary papers),
+    plus a corrected statement of which group acts how on `H3(O)` and what "embedding" means.
+  - Homotopy/spectral sequences: standard topology references to correct the false `pi_n ~= H_n` claim.
+  - Wheels: first-party division-by-zero wheel sources (Carlstrom) and clear disambiguation from
+    wheel graphs and wheeled operads.
+
+### C1-0036 (L28001-L28800)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continuation of the "Universal Algebraic Quantum Tensor Framework" narrative:
+    - a glossary table of symbols (largely re-labeling earlier ad-hoc quantities),
+    - explicit admission that many visuals are "mathematical metaphor",
+    - "proceed all directions" prompts that branch into more synthetic tracks (simulation embedding, AI export, etc).
+  - A concrete toy visualization appears:
+    - "phase-flip spiral" (just an exponential spiral),
+    - "RL-driven projection walkers" implemented as a 2D Gaussian random walk with a linear pull-to-origin
+      correction (plain drift toward 0).
+  - Notebook reset loops continue (re-executed blocks).
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The symbol glossary and metaphors constitute a mathematically rigorous framework (no).
+  - H2: The "RL-driven projection walkers" implement reinforcement learning (no; deterministic drift added to a random walk).
+- What to implement next (minimal, repo-aligned):
+  - Defer the framework narrative.
+  - If we keep any part:
+    - treat the random-walk + drift demo as a generic stochastic-process visualization (not RL),
+    - ensure all plotting code is deterministic, saves artifacts, and is warning-free under `PYTHONWARNINGS=error`.
+- Source needs (first-party):
+  - None for a generic random walk; any claim tying this to quantum RL or phase-flip physics needs
+    a sourced model and a mapping to repo code/tests.
+
+### C1-0037 (L28801-L29600)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Continues the synthetic visualization thread:
+    - "phase-flip inversions + RL-driven projection walkers" recap,
+    - a generic "next phase launchpad" list (meta-theory generator, compiler, codex layout),
+    - a "Dimensional Drift Map" heatmap: defines a toy amplitude function `T_d(x,d)` on a grid over
+      `d in [-3,3]` and `x in [0.5,5]`, then plots `pcolormesh(D, X, Z)`.
+  - Dimension is treated as a free continuous parameter in a hand-picked trigonometric formula, not
+    as an operator/dimension-continued object (route to CX-005 policy).
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The drift-map heatmap represents tensor amplitudes across negative to positive dimensions in a
+    physically meaningful way (no; it is an arbitrary toy function of `d`).
+  - H2: The "compiler" and "meta-theory generator" are defined and implementable from the transcript
+    as-is (no; only high-level prompts).
+- What to implement next (minimal, repo-aligned):
+  - Defer these narrative "expansion vectors".
+  - If we keep a drift-map artifact at all:
+    - label it explicitly as a synthetic visualization of a chosen scalar field on `(d,x)`,
+    - keep repo-authored text ASCII-only and remove any Unicode minus signs from titles/labels,
+    - avoid implying that varying `d` is "negative dimension" unless tied to dim-reg / analytic continuation.
+- Source needs (first-party):
+  - Any claim involving "negative dimension" must be grounded in dim-reg or Parisi-Sourlas sources (CX-005),
+    not a toy trigonometric dependence on `d`.
+
+### C1-0038 (L29601-L30400)
+Status: drafted (updated from direct read)
+- Concepts:
+  - The "Dimensional Drift Map" heatmap is executed and triggers a Matplotlib deprecation warning:
+    - `MatplotlibDeprecationWarning: Auto-removal of grids by pcolormesh() is deprecated...`.
+  - "Plate 2" attempts a "recursive mutation tree" using `networkx` + `graphviz_layout`:
+    - `nx.nx_agraph.graphviz_layout(..., prog='dot')` implies a dependency on Graphviz + pygraphviz.
+  - The transcript then attempts image-tool generation via an OpenAI client:
+    - `ModuleNotFoundError: No module named 'openai'`,
+    - `NameError: name 'image_gen' is not defined`,
+    showing the notebook is not reproducible as written.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The "plates" are computed/available from the corpus as reproducible artifacts (no; missing deps and tool stubs).
+  - H2: The drift map is "mathematically correct" across negative/fractional dimensions (no; it is a toy field).
+- What to implement next (minimal, repo-aligned):
+  - Treat this chunk as a dependency + warnings audit:
+    - if we use `pcolormesh` anywhere, avoid the deprecation warning (explicit `ax.grid(False)` or explicit grid policy),
+    - if we want Graphviz layouts, document optional deps clearly and provide a non-Graphviz fallback layout,
+    - do not include OpenAI "image tool" calls in the validated build unless we explicitly add optional integration.
+- Source needs (first-party):
+  - None for the Matplotlib warning itself; document the warning-free plotting policy.
+  - Any "tensor atlas plates" claim needs real, version-controlled artifacts produced by repo scripts.
+
+### C1-0039 (L30401-L31200)
+Status: drafted (updated from direct read)
+- Concepts:
+  - "Plate system" is formalized as a 1..12 visualization roadmap ("Codex plates"):
+    - Plate 4 is generated as a `networkx` graph layout (spring layout) grouping plates into hubs.
+  - The transcript again attempts to use an external image-generation client:
+    - `ModuleNotFoundError: No module named 'openai'`,
+    - `ModuleNotFoundError: No module named 'openai_tools'`,
+    indicating non-reproducible environment/tool coupling.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The "plate" artifacts are reproducible from the notebook transcript (no; missing deps and tool stubs).
+  - H2: External image tools are reliably available as part of the execution environment (no; not guaranteed).
+- What to implement next (minimal, repo-aligned):
+  - If we adopt a "plate/codex" concept in-repo, make it reproducible:
+    - implement each plate as a deterministic script that saves an artifact under `data/artifacts/`,
+    - keep optional AI image generation behind an explicit, optional integration (not in `make check`),
+    - document optional dependencies (Graphviz/pygraphviz if needed; otherwise stick to spring layout).
+- Source needs (first-party):
+  - None; this is engineering/process. The key requirement is reproducibility under warnings-as-errors.
+
+### C1-0040 (L31201-L32000)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Repeated "image tool" execution failures:
+    - `NameError: image_gen is not defined`,
+    - `ModuleNotFoundError` for `openai` and `openai_tools`,
+    even while claiming the tool works in another session.
+  - A "plate integration" narrative is drafted for Plates 1-6, and new plates are introduced:
+    - Plate 5: "Spectral tensor decomposition" (eigenvalues/eigenmodes) as a future visualization,
+    - Plate 6: "Projection onto Lie algebra fibers" (mentions su(2), so(3) as examples),
+    - Plate 7: "Surreal time tensor evolution" implemented as a toy 1D time series:
+      `surreal_times = tan(t) * exp(-0.5 t^2)` and `tensor_field = sin(3*surreal_times)*exp(-|t|) + noise`.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: The plate captions/equations correspond to derived, validated results (no; captions retrofit toy plots).
+  - H2: "surreal time" is implemented by `tan(t)*exp(-t^2/2)` and is indexed by irrational/imag/negative
+    values (no; this is not surreal number theory).
+  - H3: "projection onto Lie algebra fibers" is defined and computed (no; only prose).
+- What to implement next (minimal, repo-aligned):
+  - If we adopt Plates 5-7 as real roadmap items, make them precise and testable:
+    - Plate 5: define the tensor/operator whose spectrum is computed; implement eigendecomp with unit tests,
+    - Plate 6: define the representation map and the inner product used for projection; add tests on a toy
+      Lie algebra (e.g., su(2) matrices),
+    - Plate 7: replace "surreal time" rhetoric with either (a) a sourced surreal-number module (CX-010) or
+      (b) a clearly labeled synthetic time-warp toy; seed RNG and save artifacts.
+  - Keep external image generation out of the validated build unless explicitly integrated as an optional feature.
+- Source needs (first-party):
+  - If we keep "surreal time" in scope: first-party surreal number sources (Conway) and a clear statement
+    of what is being modeled (or drop the term).
+  - For Lie algebra projections: standard Lie algebra / representation references as needed.
+
+### C1-0041 (L32001-L32220)
+Status: drafted (updated from direct read)
+- Concepts:
+  - Plate 7 ("Surreal Time Tensor Evolution") continues:
+    - time-warp toy `surreal_times = tan(t) * exp(-t^2/2)` and a noisy sinusoid field, plotted in dark mode.
+    - no RNG seed is set; behavior is non-deterministic.
+  - External image generation is attempted again for a "stylized" plate:
+    - `image_gen` is undefined and subsequent `openai` / `openai_tools` imports fail (same non-reproducible pattern).
+  - The transcript ends with a broad directive to:
+    - fact-check and source everything online,
+    - standardize scientific terminology,
+    - build a publication-style "speculative whitepaper" integrating the whole corpus.
+- Claims/hypotheses (unverified or likely false as stated):
+  - H1: `tan(t)*exp(-t^2/2)` is a "surreal time coordinate" grounded in surreal number theory (no).
+  - H2: The Plate 7 plot suggests physical "surreal geometry" behaviors (no; synthetic signal + noise).
+  - H3: Image-tool outputs are part of a reproducible workflow (no; tool context is inconsistent).
+- What to implement next (minimal, repo-aligned):
+  - Treat Plate 7 as either:
+    - a purely synthetic signal-processing demo (rename accordingly, seed RNG, save artifacts), or
+    - replace it with a sourced surreal-number note (CX-010) without implying physics.
+  - Move the "speculative whitepaper" work into:
+    - (a) a sources-first bibliography expansion, and
+    - (b) a validated-vs-speculative separation layer, so we can implement only what is testable.
+- Source needs (first-party):
+  - Surreal numbers: primary sources (Conway) if we keep the term at all.
+  - For any "negative/fractional dimension" physics claims: dim-reg / Parisi-Sourlas and operator-specific sources (CX-004/CX-005).

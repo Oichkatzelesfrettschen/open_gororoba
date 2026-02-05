@@ -1,0 +1,3 @@
+Module,Function,Input Expression,Computed Result,Expected Result,Abs Error,Mean Time (ms),Status
+sympy.simplify,simplify,sin(x)^2 + cos(x)^2,1,1,Symbolic Exact,292.5124670000514,PASS
+sympy.integrate,integrate,"exp(-x^2), (-oo, oo)",sqrt(pi),sqrt(pi),Symbolic Exact,444.9377460005053,PASS

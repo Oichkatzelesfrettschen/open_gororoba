@@ -1,0 +1,9 @@
+--- Computing m3 Associator for CD(O)->S ---
+
+Case A: m3(e1, e2, e3)
+Expected: -2.0 scalar (on real component)
+Result: [-2.  0.  0.  0.  0.  0.  0.  0.]
+
+Case B: m3(e1, e2, e4)
+Scanning for non-zero components...
+Component e7: 2.0

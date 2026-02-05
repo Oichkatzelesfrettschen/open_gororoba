@@ -1,0 +1,3 @@
+Benchmark Step,Execution Time (s) or Error
+Cython AVX-512 Kernel,0.0026069079999615496
+NumPy Native SIMD,0.0013162770001144963

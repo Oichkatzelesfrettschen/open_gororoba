@@ -1,0 +1,31 @@
+,DataType,Operation,SIMD_Speedup,Mode,Time_ms
+28,int8,Generic SIMD Operation,3.608484485919075,SIMD_Time_ms,0.3846096996241773
+27,int16,Generic SIMD Operation,3.366809019706868,SIMD_Time_ms,0.864373149647393
+26,float64,Generic SIMD Operation,3.363649934414201,SIMD_Time_ms,0.864491338167939
+6,int8,Generic SIMD Operation,3.608484485919075,Scalar_Time_ms,1.3878581342278395
+22,complex128,Generic SIMD Operation,3.041168988591605,SIMD_Time_ms,1.9352465823520764
+4,float64,Generic SIMD Operation,3.363649934414201,Scalar_Time_ms,2.907846232930233
+5,int16,Generic SIMD Operation,3.366809019706868,Scalar_Time_ms,2.910179316625277
+25,float32,Generic SIMD Operation,3.4246782213565523,SIMD_Time_ms,3.0334265725654794
+30,uint16,Generic SIMD Operation,3.8638900372842313,SIMD_Time_ms,3.0454635575417237
+31,uint8,Generic SIMD Operation,3.582458280396084,SIMD_Time_ms,3.569555631200623
+24,float16,Generic SIMD Operation,4.664885281600844,SIMD_Time_ms,3.6867703148758855
+29,longdouble,Generic SIMD Operation,4.049512863264476,SIMD_Time_ms,4.344263114297182
+23,complex64,Generic SIMD Operation,4.939819704323988,SIMD_Time_ms,4.758500101408589
+11,<class 'numpy.float32'>,divide,0.5261571373006613,Scalar_Time_ms,5.411
+0,complex128,Generic SIMD Operation,3.041168988591605,Scalar_Time_ms,5.885411891527024
+10,<class 'numpy.float32'>,add,0.5254942767950053,Scalar_Time_ms,6.0600000000000005
+35,<class 'numpy.float64'>,divide,1.0173428305977081,SIMD_Time_ms,9.687
+13,<class 'numpy.float64'>,divide,1.0173428305977081,Scalar_Time_ms,9.855
+33,<class 'numpy.float32'>,divide,0.5261571373006613,SIMD_Time_ms,10.284
+3,float32,Generic SIMD Operation,3.4246782213565523,Scalar_Time_ms,10.388509919149248
+14,<class 'numpy.complex64'>,add,0.28229017143785723,Scalar_Time_ms,10.423
+12,<class 'numpy.float64'>,add,0.4737546866630959,Scalar_Time_ms,10.614
+32,<class 'numpy.float32'>,add,0.5254942767950053,SIMD_Time_ms,11.532
+8,uint16,Generic SIMD Operation,3.8638900372842313,Scalar_Time_ms,11.767336298897655
+9,uint8,Generic SIMD Operation,3.582458280396084,Scalar_Time_ms,12.787784128329143
+15,<class 'numpy.complex64'>,divide,0.3703858709299406,Scalar_Time_ms,13.275
+19,<class 'numpy.float16'>,divide,N/A - Unsupported,Scalar_Time_ms,13.811
+38,<class 'numpy.complex128'>,add,1.3755185355896489,SIMD_Time_ms,15.187
+18,<class 'numpy.float16'>,add,N/A - Unsupported,Scalar_Time_ms,15.554
+2,float16,Generic SIMD Operation,4.664885281600844,Scalar_Time_ms,17.198360578507426

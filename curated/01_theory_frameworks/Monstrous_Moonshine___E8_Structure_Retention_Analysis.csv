@@ -1,0 +1,7 @@
+Dimension,Retains Jordan Algebra?,Retains Octonion Structure?,Retains E8 Structure?,Monstrous Moonshine Linked?
+3,True,False,False,False
+8,False,True,False,False
+27,True,False,False,True
+56,True,False,True,True
+128,False,False,True,True
+248,False,False,True,True
