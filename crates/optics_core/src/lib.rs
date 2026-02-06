@@ -38,6 +38,11 @@ pub use tcmt::{
     // Thermal dynamics (Johnson et al. 2006, Carmon et al. 2004)
     ThermalCavity, ThermalCavityState, ThermalSteadyStateResult,
     ThermalTcmtSolver, ThermalRegime, thermal_regime,
+    // First-class engine module: errors and hysteresis detection
+    TcmtError,
+    TurningPoint, TurningPointBranch, HysteresisResult, HysteresisTrace,
+    find_turning_points, find_turning_points_physical,
+    hysteresis_width, trace_hysteresis_loop, validate_cavity,
 };
 
 pub use phase_retrieval::{
