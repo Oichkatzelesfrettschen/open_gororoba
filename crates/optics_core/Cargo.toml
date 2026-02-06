@@ -10,5 +10,8 @@ algebra_core = { path = "../algebra_core" }
 num-complex = { workspace = true }
 thiserror = { workspace = true }
 
+# Physics constants
+physical_constants = { workspace = true }
+
 [dev-dependencies]
 approx = { workspace = true }

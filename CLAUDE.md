@@ -70,6 +70,66 @@ No placeholders, no deferred verification.
 
 ---
 
+## Python-to-Rust Migration Protocol (MANDATORY)
+
+This codebase is transitioning from Python to pure Rust.  The migration must be
+incremental, verified, and crate-first.  NO mass deletions.  NO stubs.  NO PyO3.
+
+### Workspace dependency management
+
+**All external crates MUST be declared at the workspace level and trickle down.**
+
+1. Add new crates to the root `Cargo.toml` under `[workspace.dependencies]`:
+   ```toml
+   [workspace.dependencies]
+   some_crate = "1.2.3"
+   ```
+
+2. In each sub-crate's `Cargo.toml`, reference with `workspace = true`:
+   ```toml
+   [dependencies]
+   some_crate = { workspace = true }
+   ```
+
+3. NEVER add version numbers directly in sub-crate Cargo.toml files.
+
+### Crate research before implementation
+
+Before implementing any module in Rust, research existing crates:
+
+1. **Search crates.io** -- use `cargo search <topic>` or web search.
+2. **Check lib.rs** -- https://lib.rs for curated alternatives.
+3. **Evaluate candidates** -- check stars, maintenance, API fit, dependencies.
+4. **Prefer composition** -- wrap or extend existing crates rather than rewrite.
+5. **Document decision** -- if no suitable crate exists, note why in module docs.
+
+Examples of crates already adopted:
+- `wheel` (0.1.0) -- wheel algebra (division-by-zero semantics)
+- `padic` (0.1.6) -- p-adic numbers
+- `adic` (0.5.0) -- p-adic arithmetic and rootfinding
+- `permutation` (0.4.1) -- permutation groups
+
+### Incremental migration workflow
+
+For each Python module being ported:
+
+1. **Read** -- Study the Python source, tests, and any referenced literature.
+2. **Research** -- Search for existing Rust crates that cover the functionality.
+3. **Implement** -- Write Rust code in `crates/<crate_name>/src/`.
+4. **Test** -- Port or create equivalent tests; all must pass.
+5. **Verify** -- Run `cargo test -p <crate>` and ensure no regressions.
+6. **Remove** -- Only after verification, remove the Python file.
+
+NEVER delete Python files en masse.  Each removal is a separate verified step.
+
+### Rust crate locations
+
+- `crates/algebra_core/` -- Cayley-Dickson, Clifford, wheels, p-adic, groups
+- `crates/zd_core/` -- zero-divisor census and algorithms
+- `src/gororoba_kernels/` -- PyO3 bridge (legacy, being phased out)
+
+---
+
 ## References
 
 - `AGENTS.md` -- full contributor guide (hard rules, build, layout, workflow)

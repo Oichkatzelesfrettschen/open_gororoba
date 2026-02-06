@@ -51,7 +51,7 @@ fn main() {
         eprintln!("Analyzing box-kite structure...");
         let bks = find_box_kites(args.dim, args.atol);
         let sym = analyze_box_kite_symmetry(args.dim, args.atol);
-        eprintln!("Found {} box-kites, {} sail vertices", bks.len(), sym.n_sails);
+        eprintln!("Found {} box-kites, {} assessors", bks.len(), sym.n_assessors);
     }
 
     if args.json {

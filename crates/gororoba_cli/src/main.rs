@@ -8,6 +8,9 @@
 //! - quantum: MERA entropy, Ryu-Takayanagi
 //! - materials: Metamaterial absorbers
 //! - stats: Statistical tests
+//! - plot: Visualization utilities
+
+use gororoba_cli::viz;
 
 use clap::{Parser, Subcommand};
 
@@ -46,6 +49,11 @@ enum Commands {
     Quantum {
         #[command(subcommand)]
         cmd: QuantumCmd,
+    },
+    /// Visualization: Generate plots from data
+    Plot {
+        #[command(subcommand)]
+        cmd: PlotCmd,
     },
 }
 
@@ -156,6 +164,40 @@ enum QuantumCmd {
     },
 }
 
+#[derive(Subcommand)]
+enum PlotCmd {
+    /// Plot E8 root projection to 2D
+    E8 {
+        #[arg(short, long, default_value = "e8_projection.svg")]
+        output: String,
+    },
+    /// Plot entropy evolution from CSV
+    Entropy {
+        #[arg(short, long)]
+        input: String,
+        #[arg(short, long, default_value = "entropy_evolution.svg")]
+        output: String,
+    },
+    /// Plot heatmap from CSV matrix
+    Heatmap {
+        #[arg(short, long)]
+        input: String,
+        #[arg(short, long, default_value = "heatmap.svg")]
+        output: String,
+        #[arg(short, long, default_value = "Heatmap")]
+        title: String,
+    },
+    /// Plot Kerr shadow boundary
+    Shadow {
+        #[arg(short, long)]
+        spin: f64,
+        #[arg(short, long, default_value = "500")]
+        n_points: usize,
+        #[arg(short, long, default_value = "kerr_shadow.svg")]
+        output: String,
+    },
+}
+
 fn main() {
     let cli = Cli::parse();
 
@@ -165,6 +207,7 @@ fn main() {
         Commands::Optics { cmd } => handle_optics(cmd),
         Commands::Cosmology { cmd } => handle_cosmology(cmd),
         Commands::Quantum { cmd } => handle_quantum(cmd),
+        Commands::Plot { cmd } => handle_plot(cmd),
     }
 }
 
@@ -364,6 +407,123 @@ fn handle_quantum(cmd: QuantumCmd) {
         QuantumCmd::Bekenstein { radius_nm, energy_ev } => {
             let bits = bekenstein_bound_bits(radius_nm, energy_ev);
             println!("Bekenstein bound: R={} nm, E={} eV -> S_max = {:.2e} bits", radius_nm, energy_ev, bits);
+        }
+    }
+}
+
+fn handle_plot(cmd: PlotCmd) {
+    use algebra_core::generate_e8_roots;
+    use gr_core::shadow_boundary;
+    use viz::{line_plot_svg, scatter_plot_svg, heatmap_svg, colors, Colormap};
+    use std::f64::consts::FRAC_PI_2;
+    use std::io::BufRead;
+
+    match cmd {
+        PlotCmd::E8 { output } => {
+            eprintln!("Generating E8 root projection to {}", output);
+            let roots = generate_e8_roots();
+
+            // Project 8D roots to 2D using fixed orthogonal projection
+            // Using coordinates 0,1 for simplicity (real projection would use QR decomposition)
+            let points: Vec<(f64, f64)> = roots
+                .iter()
+                .map(|r| {
+                    // Simple projection: sum pairs of coordinates
+                    let x = r.coords[0] + 0.5 * r.coords[2] + 0.25 * r.coords[4] + 0.125 * r.coords[6];
+                    let y = r.coords[1] + 0.5 * r.coords[3] + 0.25 * r.coords[5] + 0.125 * r.coords[7];
+                    (x, y)
+                })
+                .collect();
+
+            scatter_plot_svg(
+                &output,
+                "E8 Root System Projection (240 roots)",
+                "x",
+                "y",
+                &points,
+                colors::INDIGO,
+                4,
+            ).expect("Failed to create plot");
+            println!("Wrote {} roots to {}", roots.len(), output);
+        }
+
+        PlotCmd::Entropy { input, output } => {
+            eprintln!("Plotting entropy from {} to {}", input, output);
+
+            // Read CSV with columns: step, entropy
+            let file = std::fs::File::open(&input).expect("Failed to open input file");
+            let reader = std::io::BufReader::new(file);
+            let mut data = Vec::new();
+
+            for (i, line) in reader.lines().enumerate() {
+                if i == 0 { continue; } // Skip header
+                let line = line.expect("Failed to read line");
+                let parts: Vec<&str> = line.split(',').collect();
+                if parts.len() >= 2 {
+                    let x: f64 = parts[0].trim().parse().unwrap_or(i as f64);
+                    let y: f64 = parts[1].trim().parse().unwrap_or(0.0);
+                    data.push((x, y));
+                }
+            }
+
+            line_plot_svg(
+                &output,
+                "Entropy Evolution",
+                "Step",
+                "Entropy",
+                &data,
+                colors::PURPLE,
+            ).expect("Failed to create plot");
+            println!("Plotted {} points to {}", data.len(), output);
+        }
+
+        PlotCmd::Heatmap { input, output, title } => {
+            eprintln!("Plotting heatmap from {} to {}", input, output);
+
+            // Read CSV as matrix
+            let file = std::fs::File::open(&input).expect("Failed to open input file");
+            let reader = std::io::BufReader::new(file);
+            let mut matrix: Vec<Vec<f64>> = Vec::new();
+
+            for (i, line) in reader.lines().enumerate() {
+                if i == 0 { continue; } // Skip header
+                let line = line.expect("Failed to read line");
+                let row: Vec<f64> = line
+                    .split(',')
+                    .filter_map(|s| s.trim().parse().ok())
+                    .collect();
+                if !row.is_empty() {
+                    matrix.push(row);
+                }
+            }
+
+            heatmap_svg(&output, &title, &matrix, Colormap::Inferno)
+                .expect("Failed to create heatmap");
+            println!("Plotted {}x{} heatmap to {}",
+                matrix.len(),
+                matrix.first().map(|r| r.len()).unwrap_or(0),
+                output);
+        }
+
+        PlotCmd::Shadow { spin, n_points, output } => {
+            eprintln!("Plotting Kerr shadow for a={} to {}", spin, output);
+            let (alpha, beta) = shadow_boundary(spin, n_points, FRAC_PI_2);
+
+            let points: Vec<(f64, f64)> = alpha.iter()
+                .zip(beta.iter())
+                .map(|(&a, &b)| (a, b))
+                .collect();
+
+            scatter_plot_svg(
+                &output,
+                &format!("Kerr Black Hole Shadow (a={})", spin),
+                "alpha",
+                "beta",
+                &points,
+                colors::CRIMSON,
+                2,
+            ).expect("Failed to create plot");
+            println!("Plotted {} points to {}", points.len(), output);
         }
     }
 }

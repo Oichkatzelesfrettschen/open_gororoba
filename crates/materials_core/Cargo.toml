@@ -13,5 +13,10 @@ rand_chacha = { workspace = true }
 rustfft = "6.2"
 thiserror = { workspace = true }
 
+# Materials databases and periodic table (workspace)
+mendeleev = { workspace = true }
+periodic-table-on-an-enum = { workspace = true }
+physical_constants = { workspace = true }
+
 [dev-dependencies]
 approx = { workspace = true }

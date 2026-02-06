@@ -13,12 +13,23 @@ The D2Q9 velocity set uses the standard ordering:
   cy:  0   0   1   0  -1   1   1  -1  -1
   w: 4/9 1/9 1/9 1/9 1/9 1/36 1/36 1/36 1/36
 
+The main simulation function uses a Rust backend (gororoba_py) when available
+for improved performance, falling back to pure NumPy otherwise.
+
 Ref: Succi, "The Lattice Boltzmann Equation" (OUP, 2018), Ch. 10-12.
 """
 
 from __future__ import annotations
 
 import numpy as np
+
+# Try to import Rust bindings first
+_USE_RUST = False
+try:
+    import gororoba_py as _gp
+    _USE_RUST = True
+except ImportError:
+    pass
 
 # D2Q9 lattice constants.
 W = np.array([4.0 / 9, 1.0 / 9, 1.0 / 9, 1.0 / 9, 1.0 / 9,
@@ -126,6 +137,8 @@ def simulate_poiseuille(
     Walls at y=0 and y=ny-1 (bounce-back), periodic in x.
     Body force fx drives flow in x-direction.
 
+    Uses Rust backend when gororoba_py is available for improved performance.
+
     Analytical solution (channel half-width H = (ny-2)/2):
       u_x(y) = fx / (2*nu) * y * (ny - 1 - y)
     where nu = (tau - 0.5) / 3.
@@ -150,9 +163,25 @@ def simulate_poiseuille(
         'ux_numerical' : simulated x-velocity profile at x=nx//2.
         'ux_analytical' : analytical parabolic profile.
         'max_rel_error' : max |u_num - u_ana| / max(u_ana).
-        'mass_history' : total mass at each step.
-        'rho_final' : final density field.
+        'mass_history' : total mass at each step (Python backend only).
+        'rho_final' : final density field (Python backend only).
     """
+    if _USE_RUST:
+        # Use Rust backend (returns core arrays, no mass_history/rho_final)
+        y_arr, ux_num, ux_ana, max_err = _gp.py_simulate_poiseuille(
+            nx, ny, tau, fx, n_steps
+        )
+        return {
+            "y": np.asarray(y_arr),
+            "ux_numerical": np.asarray(ux_num),
+            "ux_analytical": np.asarray(ux_ana),
+            "max_rel_error": max_err,
+            "mass_history": None,  # Not available in Rust backend
+            "initial_mass": None,
+            "rho_final": None,
+        }
+
+    # Python fallback
     omega = 1.0 / tau
     nu = (tau - 0.5) / 3.0
 

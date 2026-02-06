@@ -6,12 +6,16 @@
 //! - Zero-divisor search algorithms
 //! - Clifford algebra Cl(8) for particle physics
 //! - E8 lattice and root system computations
+//! - Kac-Moody algebras (E9, E10, E11 extensions)
 //! - Box-kite symmetry structures (de Marrais)
+//! - Monstrous Moonshine (j-function and Monster group)
 //!
 //! # Literature
 //! - de Marrais (2000): Box-kite structure of sedenion zero-divisors
 //! - Furey et al. (2024): Cl(8) -> 3 generations
 //! - Reggiani (2024): Geometry of sedenion zero divisors
+//! - Kac (1990): Infinite-Dimensional Lie Algebras
+//! - Damour, Henneaux, Nicolai (2002): E10 and M-theory
 
 pub mod cayley_dickson;
 pub mod clifford;
@@ -19,6 +23,16 @@ pub mod zd_graphs;
 pub mod e8_lattice;
 pub mod boxkites;
 pub mod octonion_field;
+pub mod wheels;
+pub mod padic;
+pub mod group_theory;
+pub mod fractal_analysis;
+pub mod nilpotent_orbits;
+pub mod hypercomplex;
+pub mod moonshine;
+pub mod kac_moody;
+pub mod homotopy_algebra;
+pub mod stochastic;
 
 // Re-export core algebra functions
 pub use cayley_dickson::{
@@ -43,11 +57,20 @@ pub use zd_graphs::{
 pub use e8_lattice::{
     E8Lattice, E8Root, generate_e8_roots, e8_cartan_matrix,
     e8_weyl_group_order, compute_e8_inner_products,
+    // Atlas-E8 integration
+    AtlasE8CrossValidation, AtlasEmbeddingInfo, ExceptionalGroupsFromAtlas,
+    cross_validate_with_atlas, get_atlas_embedding_info,
+    verify_cartan_matrix_with_atlas, exceptional_groups_from_atlas,
+    // Freudenthal-Tits magic square
+    DivisionAlgebra, MagicSquareLieAlgebra, FreudenthalTitsMagicSquare,
+    magic_square_entry,
 };
 
 pub use boxkites::{
-    BoxKite, find_box_kites, analyze_box_kite_symmetry,
-    BoxKiteSymmetryResult,
+    Assessor, BoxKite, find_box_kites, analyze_box_kite_symmetry,
+    BoxKiteSymmetryResult, primitive_assessors, are_coassessors,
+    diagonal_zero_product, build_coassessor_graph, find_connected_components,
+    compute_strut_signature,
 };
 
 pub use octonion_field::{
@@ -57,3 +80,97 @@ pub use octonion_field::{
     hamiltonian, force, stormer_verlet_step, noether_charges,
     evolve, gaussian_wave_packet, standing_wave, measure_dispersion,
 };
+
+pub use wheels::{
+    WheelQ, verify_carlstrom_axioms, canonical_test_set,
+};
+
+pub use padic::{
+    Rational, CantorDigits,
+    vp_int, vp, abs_p, is_power_of_two, is_dyadic,
+    ternary_digits_power3, cantor_function_on_cantor,
+    padic_distance, check_ultrametric,
+};
+
+pub use group_theory::{
+    order_psl2_q, order_symmetric, order_alternating,
+    order_gl, order_sl, is_prime, prime_power,
+    PSL_2_7_ORDER, exceptional,
+};
+
+pub use fractal_analysis::{
+    HurstResult, RescaledRangeResult, DfaResult, HurstClassification,
+    MultiSeriesHurstResult,
+    calculate_hurst, hurst_rs_analysis, dfa_analysis, classify_hurst,
+    analyze_multiple_series, generate_fgn, generate_fbm,
+};
+
+pub use nilpotent_orbits::{
+    JordanType, NilpotentAnalysis,
+    nilpotency_index, jordan_type_nilpotent, jordan_block,
+    matrix_from_jordan_type, enumerate_partitions, partition_count,
+    dominance_order,
+};
+
+pub use hypercomplex::{
+    AlgebraDim, ZeroSearchConfig, ZeroDivisorResults,
+    HypercomplexAlgebra, OctonionFieldDynamics, PathionAlgebra,
+};
+
+pub use moonshine::{
+    J_COEFFICIENTS, J_COEFFICIENTS_VALID,
+    MONSTER_REP_DIMENSIONS, MONSTER_REPS_VALID,
+    MONSTER_CONJUGACY_CLASSES, LEECH_LATTICE_DIMENSION, NIEMEIER_LATTICE_COUNT,
+    monster_group_order, verify_monster_order_factorization,
+    verify_moonshine_c1, verify_moonshine_c2,
+    compute_j_coefficients, known_moonshine_decompositions,
+    j_constant_term_e8_relation, moonshine_dimensions,
+    j_as_hauptmodul, mckay_e8_observation,
+    MoonshineDecomposition, MoonshineDimensions, HauptmodulProperty,
+};
+
+pub use kac_moody::{
+    // Core types
+    GeneralizedCartanMatrix, CartanEntry, KacMoodyType, LieAlgebraType,
+    // Dynkin diagrams
+    DynkinDiagram, DynkinNode, DynkinEdge,
+    // E-series Cartan matrices
+    e8_cartan, e9_cartan, e10_cartan, e11_cartan,
+    // Classical series
+    a_n_cartan, d_n_cartan,
+    // Weyl groups and root systems
+    WeylGroupInfo, KacMoodyRootSystem,
+    // Extended E-series root systems
+    KacMoodyRoot, RootType,
+    E9RootSystem, E10RootSystem, E11RootSystem, ESeriesRootSystem,
+};
+
+pub use homotopy_algebra::{
+    // Core types
+    Degree, GradedElement, HomotopyAlgebraType, HomotopyOperation,
+    // A-infinity structures
+    AInfinityAlgebra, MinimalAInfinity, MasseyProduct,
+    // L-infinity structures
+    LInfinityAlgebra, BVInfinityAlgebra, FormalityMorphism,
+    // Combinatorics
+    Associahedron, catalan_number, cyclohedron_vertices,
+    // Sign computations
+    koszul_sign, a_infinity_sign, l_infinity_sign,
+    // String field theory
+    StringFieldTheory, StringType,
+};
+
+pub use stochastic::{
+    // Ornstein-Uhlenbeck process
+    OUParams, generate_ou_process, fit_ou_parameters, MeanReversionResult,
+    // Geometric Brownian Motion
+    GBMParams, generate_gbm,
+    // Levy flights
+    LevyParams, generate_levy_flight,
+    // Anomalous diffusion analysis
+    AnomalousDiffusionResult, DiffusionType, analyze_anomalous_diffusion,
+};
+
+// Re-export external algebra crates for convenience
+pub use wheel as ext_wheel;
+pub use padic as ext_padic;

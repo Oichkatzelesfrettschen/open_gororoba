@@ -21,6 +21,9 @@ use gr_core::{
     kerr_metric_quantities, photon_orbit_radius, impact_parameters,
     shadow_boundary, trace_null_geodesic,
 };
+use cosmology_core::bounce::{simulate_bounce, BounceParams, chi2_distance_modulus, luminosity_distance};
+use lbm_core::simulate_poiseuille;
+use spectral_core::fractional_laplacian_periodic_1d;
 use stats_core::frechet_distance;
 use materials_core::{
     build_absorber_stack, canonical_sedenion_zd_pairs,
@@ -118,7 +121,7 @@ fn py_analyze_box_kite_symmetry(dim: usize, atol: f64) -> PyResult<(usize, usize
         return Err(PyValueError::new_err("Dimension must be power of two >= 16"));
     }
     let result = analyze_box_kite_symmetry(dim, atol);
-    Ok((result.n_boxkites, result.n_sails))
+    Ok((result.n_boxkites, result.n_assessors))
 }
 
 // ============================================================================
@@ -213,6 +216,100 @@ fn py_build_absorber_stack(max_layers: usize, base_n: f64) -> Vec<(usize, usize,
 }
 
 // ============================================================================
+// Cosmology Module
+// ============================================================================
+
+/// Simulate bounce cosmology evolution.
+/// Returns (time, a, h, q) arrays.
+#[pyfunction]
+#[pyo3(signature = (a_init, t_end, n_steps, omega_m = 0.315, omega_l = 0.685, q_corr = 1e-6))]
+fn py_simulate_bounce(
+    py: Python<'_>,
+    a_init: f64,
+    t_end: f64,
+    n_steps: usize,
+    omega_m: f64,
+    omega_l: f64,
+    q_corr: f64,
+) -> (Py<PyArray1<f64>>, Py<PyArray1<f64>>, Py<PyArray1<f64>>, Py<PyArray1<f64>>) {
+    let params = BounceParams {
+        omega_m,
+        omega_l,
+        q_corr,
+    };
+    let result = simulate_bounce(&params, t_end, n_steps, a_init);
+    (
+        result.time.into_pyarray(py).to_owned().into(),
+        result.a.into_pyarray(py).to_owned().into(),
+        result.h.into_pyarray(py).to_owned().into(),
+        result.q.into_pyarray(py).to_owned().into(),
+    )
+}
+
+/// Compute chi-squared for distance modulus fit.
+#[pyfunction]
+#[pyo3(signature = (z_obs, mu_obs, sigma_obs, omega_m, h0, q_corr))]
+fn py_chi2_distance_modulus(
+    z_obs: Vec<f64>,
+    mu_obs: Vec<f64>,
+    sigma_obs: Vec<f64>,
+    omega_m: f64,
+    h0: f64,
+    q_corr: f64,
+) -> f64 {
+    chi2_distance_modulus(&z_obs, &mu_obs, &sigma_obs, omega_m, h0, q_corr)
+}
+
+/// Compute luminosity distance for a single redshift.
+#[pyfunction]
+#[pyo3(signature = (z, omega_m, h0, q_corr))]
+fn py_luminosity_distance(z: f64, omega_m: f64, h0: f64, q_corr: f64) -> f64 {
+    luminosity_distance(z, omega_m, h0, q_corr)
+}
+
+// ============================================================================
+// LBM Module
+// ============================================================================
+
+/// Simulate Poiseuille flow between parallel walls.
+/// Returns (y, ux_numerical, ux_analytical, max_rel_error).
+#[pyfunction]
+#[pyo3(signature = (nx, ny, tau, fx, n_steps))]
+fn py_simulate_poiseuille(
+    py: Python<'_>,
+    nx: usize,
+    ny: usize,
+    tau: f64,
+    fx: f64,
+    n_steps: usize,
+) -> (Py<PyArray1<f64>>, Py<PyArray1<f64>>, Py<PyArray1<f64>>, f64) {
+    let result = simulate_poiseuille(nx, ny, tau, fx, n_steps);
+    (
+        result.y.into_pyarray(py).to_owned().into(),
+        result.ux_numerical.into_pyarray(py).to_owned().into(),
+        result.ux_analytical.into_pyarray(py).to_owned().into(),
+        result.max_rel_error,
+    )
+}
+
+// ============================================================================
+// Spectral Module
+// ============================================================================
+
+/// Compute 1D fractional Laplacian using spectral method (periodic BC).
+#[pyfunction]
+#[pyo3(signature = (u, s, length))]
+fn py_fractional_laplacian_1d(
+    py: Python<'_>,
+    u: Vec<f64>,
+    s: f64,
+    length: f64,
+) -> Py<PyArray1<f64>> {
+    let result = fractional_laplacian_periodic_1d(&u, s, length);
+    result.into_pyarray(py).to_owned().into()
+}
+
+// ============================================================================
 // Module Registration
 // ============================================================================
 
@@ -243,6 +340,17 @@ fn gororoba_py(m: &Bound<'_, PyModule>) -> PyResult<()> {
 
     // Materials functions
     m.add_function(wrap_pyfunction!(py_build_absorber_stack, m)?)?;
+
+    // Cosmology functions
+    m.add_function(wrap_pyfunction!(py_simulate_bounce, m)?)?;
+    m.add_function(wrap_pyfunction!(py_chi2_distance_modulus, m)?)?;
+    m.add_function(wrap_pyfunction!(py_luminosity_distance, m)?)?;
+
+    // LBM functions
+    m.add_function(wrap_pyfunction!(py_simulate_poiseuille, m)?)?;
+
+    // Spectral functions
+    m.add_function(wrap_pyfunction!(py_fractional_laplacian_1d, m)?)?;
 
     Ok(())
 }

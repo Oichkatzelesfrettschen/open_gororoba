@@ -18,6 +18,9 @@ Observational fitting:
   5. AIC/BIC model comparison vs Lambda-CDM.
   6. Primordial spectral index n_s from bounce perturbation theory.
 
+Some functions use a Rust backend (gororoba_py) when available for
+improved performance.
+
 References:
   Pinto-Neto & Fabris (2013), CQG 30, 143001 [arXiv:1306.0820].
   Ashtekar & Singh (2011), CQG 28, 213001 [LQC review].
@@ -32,6 +35,14 @@ import numpy as np
 import pandas as pd
 from scipy.integrate import odeint, quad
 from scipy.optimize import minimize
+
+# Try to import Rust bindings first
+_USE_RUST = False
+try:
+    import gororoba_py as _gp
+    _USE_RUST = True
+except ImportError:
+    pass
 
 # Fixed seed for reproducibility across runs.
 _RNG_SEED = 42
@@ -166,6 +177,8 @@ def luminosity_distance(z, omega_m, h0, q_corr=0.0, n_quad=500):
 
     d_L(z) = (c/H_0) * (1+z) * integral_0^z dz' / E(z')
 
+    Uses Rust backend when gororoba_py is available.
+
     Parameters
     ----------
     z : float or ndarray
@@ -187,6 +200,16 @@ def luminosity_distance(z, omega_m, h0, q_corr=0.0, n_quad=500):
     z = np.atleast_1d(np.asarray(z, dtype=float))
     d_L = np.zeros_like(z)
 
+    if _USE_RUST:
+        # Use Rust backend (handles one z at a time)
+        for i, zi in enumerate(z):
+            if zi <= 0:
+                d_L[i] = 0.0
+            else:
+                d_L[i] = _gp.py_luminosity_distance(zi, omega_m, h0, q_corr)
+        return d_L.squeeze()
+
+    # Python fallback using scipy.integrate.quad
     for i, zi in enumerate(z):
         if zi <= 0:
             d_L[i] = 0.0

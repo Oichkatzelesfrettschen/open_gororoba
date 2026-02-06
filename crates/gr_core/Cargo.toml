@@ -9,5 +9,9 @@ license = "MIT"
 algebra_core = { path = "../algebra_core" }
 thiserror = { workspace = true }
 
+# Physics constants and ODE solvers
+physical_constants = { workspace = true }
+russell_ode = { workspace = true }
+
 [dev-dependencies]
 approx = { workspace = true }

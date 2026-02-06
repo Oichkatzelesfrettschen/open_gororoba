@@ -250,6 +250,7 @@ pub fn find_zero_divisors_general_form(
 /// Count zero-divisors in pathion (32D) algebra.
 ///
 /// Returns (n_2blade_zd, n_3blade_zd, n_general_zd) counts.
+/// Uses parallel search for 2-blade ZDs to reduce compute time.
 pub fn count_pathion_zero_divisors(
     n_general_samples: usize,
     atol: f64,
@@ -257,7 +258,8 @@ pub fn count_pathion_zero_divisors(
 ) -> (usize, usize, usize) {
     let dim = 32;
 
-    let zd_2blade = find_zero_divisors(dim, atol);
+    // Use parallel version for significant speedup (O(n^4) complexity)
+    let zd_2blade = find_zero_divisors_parallel(dim, atol);
     // 3-blade is very expensive for dim=32, so we use sampling instead.
     // Estimate via general form search.
     let zd_general = find_zero_divisors_general_form(dim, n_general_samples, atol, seed);
@@ -876,8 +878,9 @@ mod tests {
     #[test]
     fn test_pathion_more_zd_than_sedenion() {
         // Pathion (32D) should have more zero-divisors than sedenion (16D).
+        // Use parallel version for 32D to reduce test time from 60s+ to ~10s.
         let sed_zd = find_zero_divisors(16, 1e-10);
-        let path_zd = find_zero_divisors(32, 1e-10);
+        let path_zd = find_zero_divisors_parallel(32, 1e-10);
 
         assert!(
             path_zd.len() > sed_zd.len(),
@@ -903,17 +906,19 @@ mod tests {
         // General form search should find some zero-divisors in sedenions.
         let results = find_zero_divisors_general_form(16, 100000, 1e-6, 42);
         // With looser tolerance, should find at least a few.
-        // This is a sampling test, so we just verify it runs and returns results.
-        assert!(results.len() >= 0); // Always true, but verifies it runs.
+        // This is a sampling test - general-form search may or may not find ZDs.
+        // Just verify the function runs without panic.
+        let _ = results.len();
     }
 
     #[test]
     fn test_count_pathion_zero_divisors() {
         // Count function should return valid counts.
+        // Uses parallel search internally for 32D.
         let (n_2blade, _n_3blade, _n_general) = count_pathion_zero_divisors(1000, 1e-10, 42);
 
-        // 2-blade count should be consistent with direct search.
-        let direct = find_zero_divisors(32, 1e-10);
+        // 2-blade count should be consistent with direct parallel search.
+        let direct = find_zero_divisors_parallel(32, 1e-10);
         assert_eq!(n_2blade, direct.len());
     }
 }

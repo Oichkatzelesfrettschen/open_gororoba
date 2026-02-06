@@ -13,9 +13,25 @@ petgraph = { workspace = true }
 ordered-float = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
+rand_distr = { workspace = true }
 rayon = { workspace = true }
 rustfft = "6.2"
 thiserror = { workspace = true }
+
+# External algebra crates (workspace)
+wheel = { workspace = true }
+padic = { workspace = true }
+adic = { workspace = true }
+atlas-embeddings = { workspace = true }
+num-bigint = { workspace = true }
+
+# Stochastic processes and fractal analysis (workspace)
+diffusionx = { workspace = true }
+hurst = { workspace = true }
+
+# Lie algebras
+liealg = { workspace = true }
+commutator-rs = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

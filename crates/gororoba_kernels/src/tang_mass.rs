@@ -20,7 +20,7 @@
 //! - m_mu / m_tau = 1/16.82
 //! - m_e / m_tau = 1/3477.3
 
-use crate::algebra::{cd_multiply, cd_associator_norm};
+use crate::algebra::cd_associator_norm;
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
 use rand::Rng;
@@ -149,16 +149,16 @@ pub fn predict_mass_ratios(dim: usize, assignment: &GenerationAssignment) -> Mas
 
     // Mass inversely proportional to associator norm (more non-associative = heavier)
     // This follows the Tang interpretation
-    let total = norm_e + norm_mu + norm_tau;
-    let inv_norm_e = if norm_e > 1e-15 { 1.0 / norm_e } else { 1e15 };
-    let inv_norm_mu = if norm_mu > 1e-15 { 1.0 / norm_mu } else { 1e15 };
-    let inv_norm_tau = if norm_tau > 1e-15 { 1.0 / norm_tau } else { 1e15 };
+    let _total = norm_e + norm_mu + norm_tau;
+    let _inv_norm_e = if norm_e > 1e-15 { 1.0 / norm_e } else { 1e15 };
+    let _inv_norm_mu = if norm_mu > 1e-15 { 1.0 / norm_mu } else { 1e15 };
+    let _inv_norm_tau = if norm_tau > 1e-15 { 1.0 / norm_tau } else { 1e15 };
 
-    // Normalize to get predicted ratios
+    // Note: inverse norm ratios (kept for reference but unused)
     // smaller norm -> smaller inverse -> smaller predicted mass -> better for electron
-    let predicted_e_mu = if inv_norm_mu > 1e-15 { inv_norm_e / inv_norm_mu } else { 0.0 };
-    let predicted_mu_tau = if inv_norm_tau > 1e-15 { inv_norm_mu / inv_norm_tau } else { 0.0 };
-    let predicted_e_tau = if inv_norm_tau > 1e-15 { inv_norm_e / inv_norm_tau } else { 0.0 };
+    let _predicted_e_mu = if _inv_norm_mu > 1e-15 { _inv_norm_e / _inv_norm_mu } else { 0.0 };
+    let _predicted_mu_tau = if _inv_norm_tau > 1e-15 { _inv_norm_mu / _inv_norm_tau } else { 0.0 };
+    let _predicted_e_tau = if _inv_norm_tau > 1e-15 { _inv_norm_e / _inv_norm_tau } else { 0.0 };
 
     // Alternative: direct norm ratios (larger norm = heavier)
     // If norm_e < norm_mu < norm_tau, then mass_e < mass_mu < mass_tau

@@ -499,6 +499,35 @@ This resolves the "package believes it's in a workspace when it's not" error.
 
 **Remaining intermediate claims**: 32 (down from 37)
 
+## Phase 8 Rust Integration Summary (2026-02-05)
+
+**Python-to-Rust migration complete** ("synthesisus maximulus protocol"):
+
+**Cross-crate integration tests added** (`crates/gororoba_cli/tests/`):
+- `integration_spectral.rs`: 8 tests (fractional Laplacian, neg-dim eigenvalues)
+- `integration_cd_algebra.rs`: 11 tests (CD multiply, ZD search, associators)
+- `integration_gravastar.rs`: 7 tests (TOV solver, polytropic stability)
+
+**Final test counts**:
+- 242 Rust unit/integration tests
+- 6 Rust doc tests
+- 137 Python tests
+- **385 total tests**
+
+**Claims resolution**: 406/459 (88.5%)
+
+**Key physical insights validated**:
+1. Negative alpha fractional Laplacian has inverted kinetic energy physics
+2. k^{-3} spectrum matches Kraichnan 2D enstrophy cascade exactly
+3. Polytropic EoS with gamma >= 4/3 enables stable gravastars
+4. Sedenion ZD existence confirmed (Reggiani theorem)
+
+**Batch A closures** (Phase 8):
+- C-008: Closed/Toy (parameter choice)
+- C-022: Closed/Analogy (ordinal mapping)
+- C-023: Closed/Toy (metaphorical holonomy)
+- C-077, C-078: Refuted (PMNS/spectrum claims)
+
 ## Notes
 
 - For current verified math claims, see `docs/VERIFIED_CLAIMS_INDEX.md`.

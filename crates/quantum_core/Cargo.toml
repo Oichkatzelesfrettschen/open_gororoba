@@ -16,6 +16,13 @@ rustfft = "6.2"
 faer = "0.20"
 thiserror = { workspace = true }
 
+# Quantum computing and tensor networks (workspace)
+quantum = { workspace = true }
+qua_ten_net = { workspace = true }
+
+# Physics constants
+physical_constants = { workspace = true }
+
 [dev-dependencies]
 approx = { workspace = true }
 criterion = { workspace = true }

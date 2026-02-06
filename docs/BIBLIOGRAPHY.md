@@ -223,9 +223,49 @@
 *   **Taibleson, M. H.** (1975). *Fourier Analysis on Local Fields*. Princeton University Press.
 *   **Kozyrev, S. V.** (2006). *Wavelet analysis as a p-adic spectral analysis*. [arXiv:math/0612288](https://arxiv.org/abs/math/0612288).
 
+### Kac-Moody Algebras and E-Series Extensions
+*   **Kac, V. G.** (1990). *Infinite-Dimensional Lie Algebras*. Cambridge University Press, 3rd ed.
+    *   *Definitive reference on Kac-Moody algebras; affine, hyperbolic, and indefinite types.*
+*   **Damour, T., Henneaux, M., & Nicolai, H.** (2002). *E10 and a 'small tension expansion' of M Theory*. Phys. Rev. Lett. 89, 221601. [arXiv:hep-th/0207267](https://arxiv.org/abs/hep-th/0207267).
+    *   *E10 hyperbolic Kac-Moody as hidden symmetry of M-theory; cosmological billiards.*
+*   **West, P.** (2001). *E11 and M Theory*. Class. Quantum Grav. 18, 4443. [arXiv:hep-th/0104081](https://arxiv.org/abs/hep-th/0104081).
+    *   *E11 as hidden symmetry of 11D supergravity; level decomposition yields graviton + forms.*
+*   **Nicolai, H., & Samtleben, H.** (2005). *On K(E9)*. Q.J.Math. 56, 403-423. [arXiv:hep-th/0407055](https://arxiv.org/abs/hep-th/0407055).
+    *   *Structure of affine E9 = E8^{(1)} Kac-Moody algebra.*
+*   **Gaberdiel, M. R., Olive, D. I., & West, P. C.** (2002). *A class of Lorentzian Kac-Moody algebras*. Nucl. Phys. B 645, 403-437. [arXiv:hep-th/0205068](https://arxiv.org/abs/hep-th/0205068).
+    *   *Classification of Lorentzian (hyperbolic) Kac-Moody algebras including E10.*
+
+### Monstrous Moonshine
+*   **Conway, J. H., & Norton, S. P.** (1979). *Monstrous Moonshine*. Bull. London Math. Soc. 11, 308-339.
+    *   *Original Moonshine conjecture: j-function coefficients decompose as Monster group reps.*
+*   **Borcherds, R. E.** (1992). *Monstrous moonshine and monstrous Lie superalgebras*. Invent. Math. 109, 405-444.
+    *   *Fields Medal proof of Moonshine conjecture using Monster Lie algebra.*
+*   **Gannon, T.** (2006). *Moonshine beyond the Monster: The Bridge Connecting Algebra, Modular Forms and Physics*. Cambridge University Press.
+    *   *Comprehensive monograph on Moonshine phenomena and connections to physics.*
+*   **Frenkel, I., Lepowsky, J., & Meurman, A.** (1988). *Vertex Operator Algebras and the Monster*. Academic Press.
+    *   *Construction of Monster via vertex algebra; Moonshine module V^natural.*
+
+### Homotopy Algebras (A-infinity, L-infinity)
+*   **Stasheff, J. D.** (1963). *Homotopy associativity of H-spaces I, II*. Trans. Amer. Math. Soc. 108, 275-312.
+    *   *Original A-infinity structures; Stasheff polytopes (associahedra).*
+*   **Lada, T., & Stasheff, J.** (1993). *Introduction to SH Lie algebras for physicists*. Int. J. Theor. Phys. 32, 1087-1103. [arXiv:hep-th/9209099](https://arxiv.org/abs/hep-th/9209099).
+    *   *Foundational reference for L-infinity (strongly homotopy Lie) algebras.*
+*   **Kontsevich, M.** (2003). *Deformation Quantization of Poisson Manifolds*. Lett. Math. Phys. 66, 157-216. [arXiv:q-alg/9709040](https://arxiv.org/abs/q-alg/9709040).
+    *   *Formality theorem: DG-Lie of polyvectors is L-infinity quasi-isomorphic to polydifferential ops.*
+*   **Zwiebach, B.** (1993). *Closed String Field Theory: Quantum Action and the BV Master Equation*. Nucl. Phys. B 390, 33-152. [arXiv:hep-th/9206084](https://arxiv.org/abs/hep-th/9206084).
+    *   *Closed string field theory has L-infinity structure; vertices from Riemann surfaces.*
+*   **Gaberdiel, M. R., & Zwiebach, B.** (1997). *Tensor constructions of open string theories I, II*. Nucl. Phys. B 505, 569-624.
+    *   *Open string field theory has A-infinity structure.*
+*   **Kajiura, H., & Stasheff, J.** (2006). *Homotopy algebras inspired by classical open-closed string field theory*. Comm. Math. Phys. 263, 553-581. [arXiv:math/0410291](https://arxiv.org/abs/math/0410291).
+    *   *Open-closed homotopy algebra (OCHA) combining A-infinity and L-infinity.*
+
 ### Nilpotent Orbits and Exceptional Jordan Algebras
 *   **Collingwood, D. H., & McGovern, W. M.** (1993). *Nilpotent Orbits in Semisimple Lie Algebras*. Van Nostrand Reinhold.
 *   **Springer, T. A., & Veldkamp, F. D.** (2000). *Octonions, Jordan Algebras and Exceptional Groups*. Springer.
+*   **UOR Foundation.** (2024). *Atlas of Resonance Classes: Exceptional Lie Groups from First Principles*. [DOI:10.5281/zenodo.17289540](https://doi.org/10.5281/zenodo.17289540).
+    *   *96-vertex Atlas graph embeds canonically into E8; all 5 exceptional groups (G2, F4, E6, E7, E8) emerge as categorical operations on Atlas. Rust crate: atlas-embeddings.*
+*   **Conway, J. H., & Sloane, N. J. A.** (1999). *Sphere Packings, Lattices and Groups*. Springer, 3rd ed.
+    *   *Comprehensive reference on E8 lattice; 240 roots; densest lattice packing in 8D.*
 
 ### Materials-Science Datasets
 *   **Choudhary, K., Garrity, K. F., Reid, A. C. E., et al.** (2020). *The joint automated repository for various integrated simulations (JARVIS) for data-driven materials design*. *npj Computational Materials* 6, 173. DOI: 10.1038/s41524-020-00440-1. [Nature](https://www.nature.com/articles/s41524-020-00440-1).
@@ -278,6 +318,22 @@
     *   *Used for Quantum-Tensor simulations.*
 *   **GWpy.** (2023). *A Python package for gravitational-wave astrophysics*.
     *   *Used for LIGO O3 data acquisition.*
+
+### nLab References (Higher Category Theory)
+*   **nLab contributors.** *Kac-Moody algebra*. [nLab](https://ncatlab.org/nlab/show/Kac-Moody+algebra).
+    *   *Categorical perspective on Kac-Moody algebras; connections to loop groups and affine Lie algebras.*
+*   **nLab contributors.** *L-infinity algebra*. [nLab](https://ncatlab.org/nlab/show/L-infinity-algebra).
+    *   *Strongly homotopy Lie algebras; differential graded Lie algebras up to coherent homotopy.*
+*   **nLab contributors.** *A-infinity algebra*. [nLab](https://ncatlab.org/nlab/show/A-infinity-algebra).
+    *   *Homotopy associative algebras; Stasheff's original construction and modern interpretations.*
+*   **nLab contributors.** *Monstrous Moonshine*. [nLab](https://ncatlab.org/nlab/show/Monstrous+Moonshine).
+    *   *Connection between Monster group and modular forms; vertex operator algebras.*
+*   **nLab contributors.** *E8*. [nLab](https://ncatlab.org/nlab/show/E8).
+    *   *Largest exceptional simple Lie group; 248 dimensions; connections to string theory.*
+*   **nLab contributors.** *BV-algebra*. [nLab](https://ncatlab.org/nlab/show/BV-algebra).
+    *   *Batalin-Vilkovisky algebras; BV-BRST formalism in quantum field theory.*
+*   **nLab contributors.** *Associahedron*. [nLab](https://ncatlab.org/nlab/show/associahedron).
+    *   *Stasheff polytopes K_n; vertices = Catalan numbers; encode A-infinity relations.*
 
 ### Internal Project Artifacts
 *   `data/external/GWTC-3_GWpy_Official.csv`: Confident Events Catalog.

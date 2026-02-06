@@ -1,7 +1,24 @@
+"""
+Fractional Laplacian operators.
+
+This module provides spectral fractional Laplacian operators for periodic and
+Dirichlet boundary conditions in 1D, 2D, and 3D.
+
+The periodic 1D case uses a Rust backend (gororoba_py) when available for
+improved performance, falling back to NumPy FFT otherwise.
+"""
 from __future__ import annotations
 
 import numpy as np
 from scipy.fft import dst, idst
+
+# Try to import Rust bindings first
+_USE_RUST = False
+try:
+    import gororoba_py as _gp
+    _USE_RUST = True
+except ImportError:
+    pass
 
 
 def fractional_laplacian_periodic_1d(
@@ -11,6 +28,8 @@ def fractional_laplacian_periodic_1d(
     Discrete 1D periodic (-\\Delta)^s via Fourier multiplier on an evenly spaced grid.
 
     This corresponds to a torus/periodic-domain model (not a bounded-domain Dirichlet model).
+
+    Uses Rust backend when gororoba_py is available for improved performance.
 
     Args:
         u: Samples on a periodic grid (length N).
@@ -30,6 +49,12 @@ def fractional_laplacian_periodic_1d(
     if n < 2:
         return np.zeros_like(u)
 
+    if _USE_RUST:
+        # Use Rust backend
+        result = _gp.py_fractional_laplacian_1d(list(u), s, L)
+        return np.asarray(result)
+
+    # NumPy FFT fallback
     # Frequencies (cycles per unit length) -> angular frequencies.
     k = 2.0 * np.pi * np.fft.fftfreq(n, d=L / n)
     mult = np.abs(k) ** (2.0 * s)

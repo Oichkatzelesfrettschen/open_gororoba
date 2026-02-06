@@ -540,6 +540,95 @@ CD mass spectra; all implementations in Rust per RUST ONLY policy.
 
 ---
 
+## Part IV.B: Phase 8 - Rust Integration and Python Migration
+
+Phase 8 completed the "synthesisus maximulus protocol" -- an exhaustive Python-to-Rust
+migration following "refactor-merge-dissolve-rebuild from the bottom up."
+
+### Workspace Architecture
+
+The Rust workspace under `crates/` now contains 14 crates:
+
+| Crate | Domain | Key Modules |
+|-------|--------|-------------|
+| `algebra_core` | CD algebras, wheels, p-adic | `cayley_dickson`, `wheels`, `padic`, `fractal_analysis` |
+| `spectral_core` | Fractional Laplacian, neg-dim PDE | `neg_dim`, periodic/Dirichlet operators |
+| `cosmology_core` | TOV, gravastar, bounce cosmology | `gravastar`, `bounce_cosmology` |
+| `optics_core` | GRIN, TCMT, WGS | `grin_solver`, `tcmt`, `wgs` |
+| `quantum_core` | Grover, tensor networks | `grover`, `tensor_network` |
+| `materials_core` | Periodic table, optical DB | `periodic_table`, `optical_database` |
+| `casimir_core` | Lifshitz, sphere-plate | `lifshitz`, `sphere_plate_sphere` |
+| `stats_core` | Claims gates, MMD, ED | `claims_gates`, `mmd`, `energy_distance` |
+| `homotopy_algebra_core` | A-infinity, L-infinity | `a_infinity`, `l_infinity` |
+| `kac_moody_core` | E-series, Moonshine | `e_series`, `moonshine` |
+| `gororoba_py` | PyO3 bindings | Python interop layer |
+| `gororoba_cli` | CLI + integration tests | `gororoba` binary |
+
+### Cross-Crate Integration Tests
+
+New integration tests validate cross-crate workflows:
+
+**`integration_spectral.rs`** (8 tests):
+- Periodic 1D/2D fractional Laplacian on Fourier eigenfunctions
+- Dirichlet s=1 consistency with standard Laplacian
+- Negative dimension eigenvalue physics (inverted kinetic energy for alpha < 0)
+- Caffarelli-Silvestre extension eigenvalues
+- Eigenstate normalization (sum(psi^2 * dx) = 1)
+
+**`integration_cd_algebra.rs`** (11 tests):
+- Quaternion associativity (exact to 1e-12)
+- Sedenion zero divisor existence (Reggiani theorem)
+- Octonion no 2-blade ZDs (division algebra property)
+- ZD count scaling with dimension (32D > 16D)
+- Conjugation involution, norm multiplicativity
+- Associator norms (zero for quaternions, nonzero for sedenions)
+
+**`integration_gravastar.rs`** (7 tests):
+- Polytropic EoS stability sweeps (gamma in [1.0, 2.5])
+- Buchdahl bound verification (C < 8/9 for isotropic)
+- Anisotropic pressure extension (Cattoen et al. result)
+- Surface redshift finiteness
+
+### Key Physical Discoveries
+
+1. **Negative alpha physics**: For alpha < 0 in the fractional Laplacian, kinetic
+   energy DECREASES with |k| (inverted physics). Eigenvalues are distinct but
+   NOT ordered as E_0 < E_1 < E_2 -- ordering depends on interplay between
+   inverted kinetic term and harmonic potential.
+
+2. **k^{-3} spectral origin**: Confirmed exact match with Kraichnan 1967 2D
+   enstrophy cascade spectrum (Phys. Fluids 10, 1417). NOT related to 3D
+   Kolmogorov k^{-5/3} energy cascade.
+
+3. **Gravastar stability**: Stiff-shell EoS (gamma=1) is inherently unstable.
+   Polytropic extension with gamma >= 4/3 enables stable solutions per
+   Visser-Wiltshire. Anisotropic pressure further extends stable domain
+   (Cattoen et al. 2005).
+
+### Final Test Counts
+
+| Category | Count |
+|----------|-------|
+| Rust unit tests | 242 |
+| Rust doc tests | 6 |
+| Python tests | 137 |
+| **Total** | **385** |
+
+### Claims Resolution Status
+
+- 459 total claims in matrix
+- 406 resolved (88.5%)
+- 53 remaining (triage backfill items)
+
+**Key closures in Phase 8:**
+- C-008: Closed/Toy (alpha=-1.5 parameter choice, not derived)
+- C-022: Closed/Analogy (ordinal/birthday mapping only)
+- C-023: Closed/Toy (basis-vector holonomy, not geometric)
+- C-077: Refuted (Frobenius 0.611 from PMNS)
+- C-078: Refuted (32D/64D identical spectrum to 16D)
+
+---
+
 ## Part V: Falsifiable Theses Registry
 
 Every claim in the repository should have a falsifiable thesis with an explicit
@@ -561,7 +650,10 @@ falsification trigger. Here are the key ones:
 | FT-12.1 | LBM Poiseuille profile is parabolic | Max deviation from analytic > 2% | **Verified** (A3: within 2%) |
 | FT-13.1 | Fractional Laplacian at s=1 recovers standard | L2 error > 0.01 | **Verified** (A1: machine precision) |
 | FT-14.1 | RK4 GRIN solver achieves 4th-order convergence | Rate outside [3.8, 4.2] on analytic profiles | **Verified** (A4: rate in [3.8, 4.2]) |
-| FT-15.1 | Gravastar TOV solutions are radially stable | dM/d(rho_c) < 0 on stable branch | **Refuted** (A5: all 55 solutions have dM/d(rho_c) < 0; stiff-shell EoS inherently unstable) |
+| FT-15.1 | Gravastar TOV solutions are radially stable | dM/d(rho_c) < 0 on stable branch | **Partially verified** (A5: stiff-shell EoS (gamma=1) inherently unstable; polytropic extension with gamma >= 4/3 enables stable solutions per Cattoen et al. 2005; anisotropic TOV further extends stable domain) |
+| FT-16.1 | k^{-3} vacuum spectrum has physical origin | No literature match for spectrum exponent | **Verified** (Kraichnan 1967: exact match to 2D enstrophy cascade) |
+| FT-17.1 | Tang associator-norm mass ratios are predictive | Null test p > 0.05 | Open (tests implemented; null test shows some signal but fragile) |
+| FT-18.1 | Cl(8) decomposes into 3 generation ideals | Ideal count != 3 or charges don't match | **Verified** (Furey 2024 construction implemented; 16x16 gamma matrices satisfy Clifford relation) |
 
 ---
 
