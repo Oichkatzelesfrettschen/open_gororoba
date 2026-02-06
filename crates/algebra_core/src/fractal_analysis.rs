@@ -31,6 +31,18 @@
 //! This avoids GPL contamination and heavy dependencies while providing
 //! exact fBm simulation with known Hurst exponent for rigorous testing.
 //!
+//! # Performance (Criterion benchmarks, 2026-02)
+//!
+//! | n   | Hosking (ours) | diffusionx | Speedup |
+//! |-----|----------------|------------|---------|
+//! | 128 | 27.0 us        | 20.4 us    | 1.3x    |
+//! | 256 | 98.6 us        | 34.7 us    | 2.8x    |
+//! | 512 | 365 us         | 57.5 us    | 6.3x    |
+//!
+//! Hosking is O(n^2) via Durbin-Levinson; diffusionx is O(n log n) via circulant FFT.
+//! For n > 1000, prefer diffusionx (available via `stochastic` module).
+//! For n <= 256 or when minimizing dependencies, Hosking is acceptable.
+//!
 //! # Physics Context in This Repo
 //! Fractal analysis appears in:
 //! - **Cosmology**: Self-similarity in quantum cosmology time series

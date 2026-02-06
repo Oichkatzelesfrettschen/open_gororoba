@@ -6,6 +6,7 @@
 //! - Zero-divisor search
 //! - Octonion field evolution
 //! - Fractal analysis (Hurst exponent, fBm generation)
+//! - fBm algorithm comparison (Hosking vs diffusionx)
 
 use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
 use algebra_core::{
@@ -15,6 +16,7 @@ use algebra_core::{
     oct_multiply, stormer_verlet_step, gaussian_wave_packet, FieldParams,
     fractal_analysis::{calculate_hurst, generate_fbm},
 };
+use diffusionx::simulation::{prelude::*, continuous::FBm};
 
 /// Benchmark Cayley-Dickson multiplication at various dimensions.
 fn bench_cd_multiply(c: &mut Criterion) {
@@ -211,6 +213,36 @@ fn bench_fbm_generation(c: &mut Criterion) {
     group.finish();
 }
 
+/// Benchmark fBm: Hosking (ours) vs diffusionx.
+///
+/// This comparison helps quantify the performance tradeoff of our lightweight
+/// Hosking implementation vs the feature-rich diffusionx crate.
+fn bench_fbm_comparison(c: &mut Criterion) {
+    let mut group = c.benchmark_group("fbm_comparison");
+    group.sample_size(20);
+
+    for n in [128, 256, 512] {
+        let h = 0.7;
+
+        // Our Hosking implementation
+        group.bench_with_input(BenchmarkId::new("hosking", n), &n, |bench, &n| {
+            bench.iter(|| {
+                generate_fbm(black_box(n), black_box(h), black_box(42))
+            });
+        });
+
+        // diffusionx FBm (time-step based: duration = n-1, step = 1.0 -> n samples)
+        group.bench_with_input(BenchmarkId::new("diffusionx", n), &n, |bench, &n| {
+            let fbm = FBm::new(0.0, h).expect("valid Hurst exponent");
+            bench.iter(|| {
+                fbm.simulate(black_box((n - 1) as f64), black_box(1.0))
+            });
+        });
+    }
+
+    group.finish();
+}
+
 criterion_group!(
     benches,
     bench_cd_multiply,
@@ -221,6 +253,7 @@ criterion_group!(
     bench_stormer_verlet,
     bench_hurst_exponent,
     bench_fbm_generation,
+    bench_fbm_comparison,
 );
 
 criterion_main!(benches);
