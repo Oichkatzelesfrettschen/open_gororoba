@@ -84,6 +84,9 @@ pub use casimir::{
     SPRING_CONSTANT_ERROR_FACTOR, SpringConstantResult,
     spring_constant_strict, transistor_gain_strict,
     spring_constant_with_diagnostics,
+    // Three-body transistor dynamics
+    ThreeBodyResult,
+    three_body_casimir_dynamics, three_body_gain_quasistatic, three_body_gain_strict,
     // Lifshitz theory with dielectric functions
     DielectricModel, LifshitzResult,
     fresnel_tm_imaginary, fresnel_te_imaginary,
