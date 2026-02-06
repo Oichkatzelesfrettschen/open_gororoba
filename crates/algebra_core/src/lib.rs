@@ -37,6 +37,7 @@ pub mod stochastic;
 // Re-export core algebra functions
 pub use cayley_dickson::{
     cd_multiply, cd_conjugate, cd_norm_sq, cd_associator, cd_associator_norm,
+    cd_multiply_simd, cd_norm_sq_simd,  // SIMD-accelerated versions
     batch_associator_norms, batch_associator_norms_sq, batch_associator_norms_parallel,
     left_mult_operator, find_zero_divisors, measure_associator_density,
     zd_spectrum_analysis, count_pathion_zero_divisors,

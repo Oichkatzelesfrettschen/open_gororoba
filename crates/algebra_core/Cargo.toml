@@ -15,6 +15,7 @@ rand = { workspace = true }
 rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
 rayon = { workspace = true }
+wide = { workspace = true }
 rustfft = "6.2"
 thiserror = { workspace = true }
 

@@ -10,7 +10,7 @@
 
 use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
 use algebra_core::{
-    cd_multiply, cd_associator, cd_associator_norm,
+    cd_multiply, cd_multiply_simd, cd_associator, cd_associator_norm,
     batch_associator_norms, batch_associator_norms_parallel,
     find_zero_divisors,
     oct_multiply, stormer_verlet_step, gaussian_wave_packet, FieldParams,
@@ -30,6 +30,30 @@ fn bench_cd_multiply(c: &mut Criterion) {
         group.bench_with_input(BenchmarkId::new("dim", dim), &dim, |bench, _| {
             bench.iter(|| {
                 cd_multiply(black_box(&a), black_box(&b))
+            });
+        });
+    }
+
+    group.finish();
+}
+
+/// Benchmark scalar vs SIMD CD multiplication.
+fn bench_cd_multiply_simd(c: &mut Criterion) {
+    let mut group = c.benchmark_group("cd_multiply_comparison");
+
+    for dim in [8, 16, 32, 64] {
+        let a: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.1).sin()).collect();
+        let b: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.2).cos()).collect();
+
+        group.bench_with_input(BenchmarkId::new("scalar", dim), &dim, |bench, _| {
+            bench.iter(|| {
+                cd_multiply(black_box(&a), black_box(&b))
+            });
+        });
+
+        group.bench_with_input(BenchmarkId::new("simd", dim), &dim, |bench, _| {
+            bench.iter(|| {
+                cd_multiply_simd(black_box(&a), black_box(&b))
             });
         });
     }
@@ -246,6 +270,7 @@ fn bench_fbm_comparison(c: &mut Criterion) {
 criterion_group!(
     benches,
     bench_cd_multiply,
+    bench_cd_multiply_simd,
     bench_associator,
     bench_batch_associator,
     bench_zero_divisor_search,

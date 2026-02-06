@@ -68,6 +68,9 @@ qua_ten_net = "0.2.0"        # Tensor networks for quantum computing
 # Parallelism
 rayon = "1.10"
 
+# SIMD
+wide = "0.7"                 # Portable SIMD (f64x4, f64x2, etc.)
+
 # Error handling
 thiserror = "2.0"
 
