@@ -6,6 +6,7 @@
 //! - Haar-distributed random unitaries for null tests (C-077)
 //! - Energy Distance (ED) two-sample test with efficient permutations
 //! - Maximum Mean Discrepancy (MMD) with efficient permutations
+//! - Claims gates for CI integration (pass/fail verdicts)
 //!
 //! References:
 //! - Alt & Godau (1995): Computing the Frechet distance
@@ -14,6 +15,15 @@
 //! - Mezzadri (2007): How to generate random matrices from compact groups
 //! - Chaibub Neto & Prisco (2024): Efficient permutation tests for ED/MMD
 //! - Szekely & Rizzo (2004): Energy distance and testing for distances
+
+pub mod claims_gates;
+
+pub use claims_gates::{
+    Verdict, Evidence, GateResult, GateRegistry,
+    pvalue_gate, inverse_pvalue_gate, bootstrap_ci_gate, frechet_gate,
+    two_sample_gate, metric_gate,
+    run_frechet_gate, run_two_sample_gate, run_bootstrap_ci_gate,
+};
 
 use nalgebra::DMatrix;
 use num_complex::Complex64;

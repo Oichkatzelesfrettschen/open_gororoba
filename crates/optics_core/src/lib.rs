@@ -32,6 +32,12 @@ pub use grin::{
 pub use tcmt::{
     KerrCavity, CouplingRegime, CavityState, InputField,
     SteadyStateResult, TcmtSolver, linear_transmission,
+    // Normalized cubic solver (Liu et al. 2013, Eq. 5)
+    NormalizedSteadyState, solve_normalized_cubic, solve_normalized_cubic_batch,
+    normalize_parameters, denormalize_energy, bistability_bounds,
+    // Thermal dynamics (Johnson et al. 2006, Carmon et al. 2004)
+    ThermalCavity, ThermalCavityState, ThermalSteadyStateResult,
+    ThermalTcmtSolver, ThermalRegime, thermal_regime,
 };
 
 pub use phase_retrieval::{
