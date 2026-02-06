@@ -1,0 +1,54 @@
+[package]
+name = "gororoba_kernels"
+version = "0.2.0"
+edition = "2021"
+description = "Rust-accelerated kernels for Cayley-Dickson algebra and physics simulations"
+license = "MIT"
+repository = "https://github.com/eirikr/open_gororoba"
+
+[lib]
+name = "gororoba_kernels"
+crate-type = ["cdylib", "rlib"]  # Both Python extension and Rust library
+
+[dependencies]
+# Python bindings (workspace)
+pyo3 = { workspace = true, optional = true }
+numpy = { workspace = true, optional = true }
+
+# Core numerics (workspace)
+num-traits.workspace = true
+num-complex.workspace = true
+nalgebra.workspace = true
+
+# Quaternions with num crate integration (workspace)
+num-quaternion.workspace = true
+
+# Parallelism (workspace)
+rayon.workspace = true
+
+# RNG (workspace)
+rand.workspace = true
+rand_chacha.workspace = true
+
+# Error handling (workspace)
+thiserror.workspace = true
+
+# Statistics and distributions (workspace)
+statrs.workspace = true
+
+# Graph algorithms (workspace)
+petgraph.workspace = true
+ordered-float.workspace = true
+
+[dev-dependencies]
+criterion.workspace = true
+proptest.workspace = true
+approx.workspace = true
+
+[features]
+default = ["python"]
+python = ["dep:pyo3", "dep:numpy"]
+
+[[bench]]
+name = "algebra_bench"
+harness = false

@@ -381,7 +381,7 @@ of 7 language/runtime options was completed (2026-02-04).
 
 **Phase 1 implementation (Rust PyO3):** The first target is `cd_multiply_jit` and
 the RK4 GRIN stepper.  PyO3 + maturin provides seamless Python interop with
-zero-copy numpy arrays.  The Rust crate will live at `src/gororoba_kernels/`.
+zero-copy numpy arrays.  The Rust crate will live at `crates/gororoba_kernels/`.
 
 ### 13. Phase 5 Implementation Summary (2026-02-04)
 

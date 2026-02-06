@@ -13,7 +13,7 @@ Rules:
 - Date header is ISO: `Date: YYYY-MM-DD`.
 - Task status tokens are canonical: `TODO`, `IN PROGRESS`, `PARTIAL`, `DONE`, `REFUTED`, `DEFERRED`, `BLOCKED`.
 
-Date: 2026-02-04
+Date: 2026-02-05
 
 ## Active tasks (start here)
 
@@ -436,7 +436,7 @@ batch-processed in Sprint 5 by cross-referencing against existing
 
 ## Phase 7 Sprint 4: R6 400-Series Triage Summary (2026-02-04)
 
-**Rust statistical methodology implemented** (`src/gororoba_kernels/src/stats.rs`):
+**Rust statistical methodology implemented** (`crates/gororoba_kernels/src/stats.rs`):
 - Frechet distance for spectrum comparison
 - Bootstrap CI with percentile method
 - Haar-distributed random unitaries (QR + phase correction)
@@ -457,7 +457,7 @@ batch-processed in Sprint 5 by cross-referencing against existing
 
 ## Phase 7 Rust Module Expansion (2026-02-04)
 
-**New Rust modules in `src/gororoba_kernels/`**:
+**New Rust modules in `crates/gororoba_kernels/`**:
 
 | Module | Crates Used | Physics Domain | Claims Addressed |
 |--------|-------------|----------------|------------------|
@@ -473,12 +473,31 @@ batch-processed in Sprint 5 by cross-referencing against existing
 - `statrs 0.18`: Statistical distributions and functions
 - `ordered-float 4.6`: Ordered floats for graph weights
 
-**Test count progression**: 76 -> 90 -> 98 Rust tests
+**Test count progression**: 76 -> 90 -> 98 -> 441 Rust tests (workspace integration)
 
 **Key discoveries**:
 - k^{-3} spectral ansatz EXACTLY matches Kraichnan 2D enstrophy cascade (Phys. Fluids 10, 1967)
 - Sedenion ZD graph has non-trivial clustering (de Marrais box-kites confirmed)
 - Anisotropic pressure permits stable gravastars at gamma < 4/3 (Cattoen et al. result)
+
+## Phase 7 Batch A Closures (2026-02-05)
+
+**Sprint 1 R1: Close 5 claims with existing evidence**
+
+| Claim ID | Old Status | New Status | Rationale |
+|----------|------------|------------|-----------|
+| C-008 | Speculative | Closed/Toy | alpha=-1.5 is a parameter choice, not derived |
+| C-022 | Modeled | Closed/Analogy | ordinal/birthday mapping only |
+| C-023 | Modeled | Closed/Toy | basis-vector holonomy model, not geometric |
+| C-077 | Not supported | Refuted | Frobenius distance 0.611 from PMNS |
+| C-078 | Not supported | Refuted | 32D/64D yield identical spectrum to 16D |
+
+**Infrastructure fix**: Moved `gororoba_kernels` from `src/` to `crates/` and integrated into workspace.
+This resolves the "package believes it's in a workspace when it's not" error.
+
+**Test counts**: 441 Rust tests (all crates) + 1 doc test (grover)
+
+**Remaining intermediate claims**: 32 (down from 37)
 
 ## Notes
 

@@ -728,6 +728,28 @@ dependencies = [
 ]
 
 [[package]]
+name = "gororoba_kernels"
+version = "0.2.0"
+dependencies = [
+ "approx",
+ "criterion",
+ "nalgebra",
+ "num-complex",
+ "num-quaternion",
+ "num-traits",
+ "numpy",
+ "ordered-float",
+ "petgraph",
+ "proptest",
+ "pyo3",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
+ "rayon",
+ "statrs",
+ "thiserror 2.0.18",
+]
+
+[[package]]
 name = "gororoba_py"
 version = "0.1.0"
 dependencies = [
@@ -1076,6 +1098,16 @@ version = "0.1.46"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "7969661fd2958a5cb096e56c8e1ad0444ac2bbcd0061bd28660485a44879858f"
 dependencies = [
+ "num-traits",
+]
+
+[[package]]
+name = "num-quaternion"
+version = "1.0.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "cb69c8c0e9323a100ead8ce71701894d7f97b3a36d22db5d8f52ddce13b35595"
+dependencies = [
+ "num-integer",
  "num-traits",
 ]
 
