@@ -202,6 +202,7 @@ fn run_variational(alpha: f64, d: f64, omega: f64, m: f64, json: bool) {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn run_ground_state(alpha: f64, d: f64, omega: f64, n: usize, l: f64, tau: f64, steps: usize, json: bool) {
     eprintln!(
         "Imaginary-time ground state: alpha={}, D={}, omega={}, n={}, L={}",
@@ -244,6 +245,7 @@ fn run_ground_state(alpha: f64, d: f64, omega: f64, n: usize, l: f64, tau: f64, 
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn run_propagator_benchmark(alpha: f64, d: f64, t: f64, n_x: usize, l: f64, n_k: usize, k_max: f64, json: bool) {
     eprintln!("Propagator L2 error: alpha={}, D={}, t={}", alpha, d, t);
 

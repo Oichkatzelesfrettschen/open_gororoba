@@ -10,11 +10,10 @@ algebra_core = { path = "../algebra_core" }
 num-complex = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
-rustfft = "6.2"
+rustfft = { workspace = true }
 thiserror = { workspace = true }
 
-# Materials databases and periodic table (workspace)
-mendeleev = { workspace = true }
+# Periodic table (workspace)
 periodic-table-on-an-enum = { workspace = true }
 physical_constants = { workspace = true }
 

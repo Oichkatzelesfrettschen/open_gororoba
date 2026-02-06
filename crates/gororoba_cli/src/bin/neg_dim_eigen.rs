@@ -156,7 +156,7 @@ fn main() {
         }
     }
 }
-
+#[allow(clippy::too_many_arguments)]
 fn run_eigenvalues(
     alpha: f64,
     epsilon: f64,
@@ -203,6 +203,7 @@ fn run_eigenvalues(
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn run_sweep(
     alpha: f64,
     eps_start: f64,

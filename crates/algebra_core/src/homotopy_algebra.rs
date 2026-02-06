@@ -337,7 +337,7 @@ impl Associahedron {
         assert!(n >= 2, "Associahedron requires n >= 2");
 
         let num_vertices = catalan_number(n - 1);
-        let dimension = if n >= 2 { n - 2 } else { 0 };
+        let dimension = n.saturating_sub(2);
 
         Self {
             n,

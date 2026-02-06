@@ -189,10 +189,10 @@ fn run_butterfly(q_max: u32, output: Option<String>, include_chern: bool, n_grid
         println!();
 
         if include_chern {
-            println!("{:>5}  {:>5}  {:>10}  {:>8}  {}", "p", "q", "alpha", "sum(C)", "Chern numbers");
+            println!("{:>5}  {:>5}  {:>10}  {:>8}  Chern numbers", "p", "q", "alpha", "sum(C)");
             println!("{:-<5}  {:-<5}  {:-<10}  {:-<8}  {:-<30}", "", "", "", "", "");
         } else {
-            println!("{:>5}  {:>5}  {:>10}  {}", "p", "q", "alpha", "Energies");
+            println!("{:>5}  {:>5}  {:>10}  Energies", "p", "q", "alpha");
             println!("{:-<5}  {:-<5}  {:-<10}  {:-<40}", "", "", "", "");
         }
 

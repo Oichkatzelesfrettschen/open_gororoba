@@ -192,7 +192,7 @@ pub fn analyze_zd_graph(dim: usize, atol: f64) -> ZdGraphAnalysis {
         *basis_counts.entry(*l).or_insert(0) += 1;
     }
     let mut basis_participation: Vec<_> = basis_counts.into_iter().collect();
-    basis_participation.sort_by(|a, b| b.1.cmp(&a.1));
+    basis_participation.sort_by_key(|b| std::cmp::Reverse(b.1));
 
     ZdGraphAnalysis {
         n_nodes,
@@ -260,7 +260,7 @@ pub fn analyze_basis_participation(dim: usize, atol: f64) -> BasisParticipationR
 
     // Sorted (index, count) pairs
     let mut indexed_counts: Vec<(usize, usize)> = counts.into_iter().enumerate().collect();
-    indexed_counts.sort_by(|a, b| b.1.cmp(&a.1));
+    indexed_counts.sort_by_key(|b| std::cmp::Reverse(b.1));
 
     BasisParticipationResult {
         counts: indexed_counts,

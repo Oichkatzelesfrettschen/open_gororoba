@@ -430,7 +430,7 @@ pub fn gs_continuous(
     let mut slm_field: Vec<Complex64> = vec![Complex64::new(0.0, 0.0); n2];
     let mut rng = Rng::new(config.seed);
 
-    for i in 0..n2 {
+    for (i, field) in slm_field.iter_mut().enumerate() {
         let phase = match config.initial_phase {
             InitialPhase::Uniform => 0.0,
             InitialPhase::Random => 2.0 * PI * rng.next_f64(),
@@ -442,7 +442,7 @@ pub fn gs_continuous(
                 -PI * (x * x + y * y) / focal_length
             }
         };
-        slm_field[i] = Complex64::from_polar(1.0, phase);
+        *field = Complex64::from_polar(1.0, phase);
     }
 
     let mut convergence = Vec::with_capacity(config.max_iterations);
@@ -607,8 +607,8 @@ fn noll_to_nm(j: usize) -> (usize, i32) {
     let k = j - j_start;
 
     // Compute m based on position and parity
-    let m_abs = if n % 2 == 0 {
-        2 * ((k + 1) / 2)
+    let m_abs = if n.is_multiple_of(2) {
+        2 * (k + 1).div_ceil(2)
     } else {
         2 * (k / 2) + 1
     };
@@ -616,7 +616,7 @@ fn noll_to_nm(j: usize) -> (usize, i32) {
     let m_abs = m_abs.min(n);
     let m = if m_abs == 0 {
         0
-    } else if j % 2 == 0 {
+    } else if j.is_multiple_of(2) {
         m_abs as i32
     } else {
         -(m_abs as i32)
@@ -627,7 +627,7 @@ fn noll_to_nm(j: usize) -> (usize, i32) {
 
 /// Computes the Zernike radial polynomial R_n^m(rho).
 fn zernike_radial(n: usize, m: usize, rho: f64) -> f64 {
-    if (n - m) % 2 != 0 {
+    if !(n - m).is_multiple_of(2) {
         return 0.0;
     }
 

@@ -243,7 +243,7 @@ pub fn haar_random_unitary(dim: usize, seed: u64) -> DMatrix<Complex64> {
         if diag.norm() > 1e-15 {
             let phase = diag / Complex64::new(diag.norm(), 0.0);
             for i in 0..dim {
-                result[(i, j)] = result[(i, j)] / phase;
+                result[(i, j)] /= phase;
             }
         }
     }
@@ -266,7 +266,7 @@ fn gram_schmidt_qr(a: &DMatrix<Complex64>) -> DMatrix<Complex64> {
 
         if norm > 1e-15 {
             for i in 0..n {
-                q[(i, j)] = q[(i, j)] / norm;
+                q[(i, j)] /= norm;
             }
         }
 
@@ -274,7 +274,7 @@ fn gram_schmidt_qr(a: &DMatrix<Complex64>) -> DMatrix<Complex64> {
         for k in (j + 1)..n {
             let mut proj = Complex64::new(0.0, 0.0);
             for i in 0..n {
-                proj = proj + q[(i, j)].conj() * q[(i, k)];
+                proj += q[(i, j)].conj() * q[(i, k)];
             }
             for i in 0..n {
                 q[(i, k)] = q[(i, k)] - proj * q[(i, j)];

@@ -43,6 +43,7 @@ Treat warnings as failures everywhere.
 
 - Python: run checks and tests with `PYTHONWARNINGS=error`.
 - Prefer `-X dev` when debugging locally.
+- Rust: `cargo clippy --workspace -- -D warnings` (clippy lint failures block merges).
 - Compiler and linter warnings are errors in CI.
 
 ### 3. Source-first
@@ -108,6 +109,29 @@ make clean-all            # clean + clean-artifacts
 
 Regenerate everything from scratch: `make clean-all && make install && make artifacts`.
 
+### Rust workspace (parallel builds)
+
+All Rust crates live under `crates/`.  Always build and test with maximum
+parallelism -- this machine has 12 cores.
+
+```
+cargo build --workspace -j$(nproc)              # Full parallel build
+cargo test  --workspace -j$(nproc)              # Full parallel test
+cargo clippy --workspace -j$(nproc) -- -D warnings  # Lint (warnings = errors)
+cargo test  -p stats_core -j$(nproc)            # Single-crate test
+cargo test  --workspace -j$(nproc) -- --nocapture  # Tests with stdout
+```
+
+Individual analysis binaries:
+
+```
+cargo run --bin dm-ultrametric   -- --help
+cargo run --bin baire-compact    -- --help
+cargo run --bin frb-cascades     -- --help
+cargo run --bin gw-merger-tree   -- --help
+cargo run --bin cosmic-dendrogram -- --help
+```
+
 ### Other runtimes
 
 - **Quantum/Qiskit:** use Docker (`docs/requirements/qiskit.md`).
@@ -118,6 +142,7 @@ Regenerate everything from scratch: `make clean-all && make install && make arti
 
 ## Linting
 
+### Python
 - Tool: **ruff** (>= 0.6.0)
 - Line length: 100
 - Target: Python 3.11
@@ -125,6 +150,13 @@ Regenerate everything from scratch: `make clean-all && make install && make arti
 - First-party package: `gemini_physics`
 - Excluded dirs: `.mamba`, `venv`, `data`, `curated`, `archive`, `convos`
 - Config: `pyproject.toml` `[tool.ruff]`
+
+### Rust
+- Tool: **clippy** (ships with rustup)
+- Policy: `-D warnings` (all warnings are errors)
+- Format: `cargo fmt --all -- --check`
+- Command: `cargo clippy --workspace -j$(nproc) -- -D warnings`
+- Every PR must pass clippy with zero warnings before merge.
 
 ---
 
@@ -191,10 +223,48 @@ Grand visualization specs (3160x2820, dark mode, annotated) are documented in
 
 ---
 
+## Documenting Insights
+
+When implementing features or running analyses, non-obvious discoveries,
+design decisions, and mathematical connections should be recorded in
+`docs/INSIGHTS.md`. Each entry should include:
+
+- A unique ID (I-nnn)
+- Date and context (which module, which analysis)
+- Related claims (C-nnn IDs from CLAIMS_EVIDENCE_MATRIX.md)
+- The insight itself: what was discovered and why it matters
+
+Examples of insight-worthy observations:
+- A mathematical identity that simplifies computation
+- A crate or library that prevents reimplementing known algorithms
+- A representation change that transforms a null result into a signal
+- A numerical method choice that affects accuracy or performance
+- A connection between datasets that enables cross-validation
+
+Do NOT document routine implementation details. Focus on knowledge that
+would save time or prevent mistakes in future sessions.
+
+---
+
+## Rust Workspace Conventions
+
+All external crates MUST be declared at the workspace level in the root
+`Cargo.toml` under `[workspace.dependencies]` and referenced in sub-crate
+`Cargo.toml` files with `workspace = true`. Never add version numbers
+directly in sub-crate Cargo.toml files.
+
+Before implementing any module in Rust, search for existing crates on
+crates.io and lib.rs. Prefer composition (wrapping/extending existing
+crates) over reimplementation. Document the decision in module-level docs
+if no suitable crate exists.
+
+---
+
 ## References
 
 - `docs/CLAIMS_EVIDENCE_MATRIX.md` -- master claims tracker
 - `docs/claims/INDEX.md` -- claims navigation index
+- `docs/INSIGHTS.md` -- research insights and design decisions
 - `docs/BIBLIOGRAPHY.md` -- external source citations
 - `docs/agents.md` -- visualization standards
 - `docs/REPO_STRUCTURE.md` -- directory layout details

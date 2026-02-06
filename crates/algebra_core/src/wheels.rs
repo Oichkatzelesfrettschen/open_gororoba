@@ -99,6 +99,7 @@ impl WheelQ {
     }
 
     /// Wheel addition: (a/b) + (c/d) = (ad + bc) / (bd)
+    #[allow(clippy::should_implement_trait)]
     pub fn add(self, other: Self) -> Self {
         // If either is NaN, result is NaN
         if self.is_nan() || other.is_nan() {
@@ -111,6 +112,7 @@ impl WheelQ {
     }
 
     /// Wheel multiplication: (a/b) * (c/d) = (ac) / (bd)
+    #[allow(clippy::should_implement_trait)]
     pub fn mul(self, other: Self) -> Self {
         Self::new(self.num * other.num, self.den * other.den)
     }
@@ -123,11 +125,13 @@ impl WheelQ {
     }
 
     /// Wheel division: x/y = x * /y
+    #[allow(clippy::should_implement_trait)]
     pub fn div(self, other: Self) -> Self {
         self.mul(other.inv())
     }
 
     /// Negation: -(a/b) = (-a)/b
+    #[allow(clippy::should_implement_trait)]
     pub fn neg(self) -> Self {
         WheelQ {
             num: -self.num,

@@ -48,7 +48,7 @@ impl JordanType {
     /// # Panics
     /// If any block size is zero.
     pub fn new(mut blocks: Vec<usize>) -> Self {
-        if blocks.iter().any(|&b| b == 0) {
+        if blocks.contains(&0) {
             panic!("Block sizes must be positive");
         }
         blocks.sort_by(|a, b| b.cmp(a));

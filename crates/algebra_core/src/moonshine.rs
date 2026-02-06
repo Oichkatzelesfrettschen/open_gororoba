@@ -127,8 +127,8 @@ pub fn compute_j_coefficients(n: usize) -> Vec<i128> {
 
     // Use precomputed values for efficiency
     let mut coeffs = Vec::with_capacity(n);
-    for i in 0..n.min(J_COEFFICIENTS_VALID) {
-        coeffs.push(J_COEFFICIENTS[i] as i128);
+    for &coeff in J_COEFFICIENTS.iter().take(n.min(J_COEFFICIENTS_VALID)) {
+        coeffs.push(coeff as i128);
     }
 
     // For n > J_COEFFICIENTS_VALID, we would need BigInt computation

@@ -385,6 +385,7 @@ mod python_bindings {
     }
 
     // MERA bindings
+    #[allow(clippy::type_complexity)]
     #[pyfunction]
     #[pyo3(signature = (l_values, d=2, seed=42))]
     fn mera_entropy_scaling<'py>(
@@ -416,6 +417,7 @@ mod python_bindings {
     }
 
     // Metamaterial bindings
+    #[allow(clippy::type_complexity)]
     #[pyfunction]
     #[pyo3(signature = (max_layers=20, base_n=1.5))]
     fn build_metamaterial_stack<'py>(
@@ -472,6 +474,7 @@ mod python_bindings {
         ))
     }
 
+    #[allow(clippy::type_complexity)]
     #[pyfunction]
     #[pyo3(signature = (x, y, n_bootstrap=1000, seed=42))]
     fn fit_power_law_with_ci(
@@ -520,6 +523,7 @@ mod python_bindings {
         holographic::bekenstein_bound_bits(radius, energy)
     }
 
+    #[allow(clippy::type_complexity)]
     #[pyfunction]
     #[pyo3(signature = (depth=4, seed=42))]
     fn rt_lattice_entropy_scaling<'py>(
@@ -564,6 +568,7 @@ mod python_bindings {
     }
 
     // Gravastar bindings
+    #[allow(clippy::type_complexity)]
     #[pyfunction]
     #[pyo3(signature = (r1=5.0, m_target=10.0, compactness=0.7, gamma=1.0, k=1.0, lambda_aniso=0.0))]
     fn solve_gravastar_py(
@@ -598,6 +603,7 @@ mod python_bindings {
         ))
     }
 
+    #[allow(clippy::type_complexity)]
     #[pyfunction]
     #[pyo3(signature = (r1, m_target, compactness, gamma_min=1.0, gamma_max=2.5, n_gamma=10))]
     fn polytropic_stability_sweep_py<'py>(
@@ -623,6 +629,7 @@ mod python_bindings {
     }
 
     // ZD graph bindings
+    #[allow(clippy::type_complexity)]
     #[pyfunction]
     #[pyo3(signature = (dim=16, atol=1e-10))]
     fn analyze_zd_graph_py(
@@ -663,6 +670,7 @@ mod python_bindings {
         )
     }
 
+    #[allow(clippy::type_complexity)]
     #[pyfunction]
     #[pyo3(signature = (dim=8, threshold=1e-10))]
     fn analyze_associator_graph_py(
@@ -690,6 +698,7 @@ mod python_bindings {
     }
 
     // Tang mass ratio bindings
+    #[allow(clippy::type_complexity)]
     #[pyfunction]
     #[pyo3(signature = (dim=16, n_samples=1000, seed=42))]
     fn find_best_mass_assignment(

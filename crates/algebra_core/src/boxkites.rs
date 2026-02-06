@@ -45,8 +45,8 @@ pub struct Assessor {
 impl Assessor {
     /// Create a new assessor.
     pub fn new(low: usize, high: usize) -> Self {
-        debug_assert!(low >= 1 && low <= 7, "low must be in 1..7");
-        debug_assert!(high >= 8 && high <= 15, "high must be in 8..15");
+        debug_assert!((1..=7).contains(&low), "low must be in 1..7");
+        debug_assert!((8..=15).contains(&high), "high must be in 8..15");
         Self { low, high }
     }
 

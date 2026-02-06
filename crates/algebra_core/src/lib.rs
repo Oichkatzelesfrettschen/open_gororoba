@@ -33,6 +33,7 @@ pub mod moonshine;
 pub mod kac_moody;
 pub mod homotopy_algebra;
 pub mod stochastic;
+pub mod grassmannian;
 
 // Re-export core algebra functions
 pub use cayley_dickson::{
@@ -80,6 +81,12 @@ pub use octonion_field::{
     oct_multiply, oct_conjugate, oct_norm_sq,
     hamiltonian, force, stormer_verlet_step, noether_charges,
     evolve, gaussian_wave_packet, standing_wave, measure_dispersion,
+};
+
+pub use grassmannian::{
+    Subspace, subspace_from_vectors, subspace_from_orthonormal,
+    principal_angles, geodesic_distance, chordal_distance,
+    pairwise_geodesic_distances, count_distinct_distances, orthonormality_error,
 };
 
 pub use wheels::{

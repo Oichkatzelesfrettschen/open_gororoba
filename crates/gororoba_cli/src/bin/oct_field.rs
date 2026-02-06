@@ -125,6 +125,7 @@ fn main() {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn run_evolve(
     n: usize,
     domain: f64,
@@ -284,7 +285,7 @@ fn run_sweep(n_min: usize, n_max: usize, n_samples: usize, mass: f64, output: Op
 
         // Measure dispersion for first 2 modes
         let disp = measure_dispersion(&params, 2);
-        let err1 = disp.get(0).map(|r| r.rel_error).unwrap_or(f64::NAN);
+        let err1 = disp.first().map(|r| r.rel_error).unwrap_or(f64::NAN);
         let err2 = disp.get(1).map(|r| r.rel_error).unwrap_or(f64::NAN);
 
         // Measure energy drift

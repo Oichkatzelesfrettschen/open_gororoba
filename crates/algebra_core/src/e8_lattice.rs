@@ -93,6 +93,7 @@ pub fn generate_e8_roots() -> Vec<E8Root> {
         let minus_count = sign_pattern.count_ones();
         if minus_count % 2 == 0 {
             let mut coords = [0.5; 8];
+            #[allow(clippy::needless_range_loop)]
             for bit in 0..8 {
                 if (sign_pattern >> bit) & 1 == 1 {
                     coords[bit] = -0.5;
@@ -194,6 +195,7 @@ impl E8Lattice {
         let c = &self.cartan_matrix;
 
         // Check diagonal elements are 2
+        #[allow(clippy::needless_range_loop)]
         for i in 0..8 {
             if c[i][i] != 2 {
                 return false;
@@ -201,12 +203,14 @@ impl E8Lattice {
         }
 
         // Check symmetry of A_ij * A_ji pattern
+        #[allow(clippy::needless_range_loop)]
         for i in 0..8 {
+            #[allow(clippy::needless_range_loop)]
             for j in 0..8 {
                 if i != j && c[i][j] != 0 && c[j][i] != 0 {
                     // Off-diagonal product should be 0, 1, 2, or 3
                     let prod = c[i][j] * c[j][i];
-                    if prod < 0 || prod > 3 {
+                    if !(0..=3).contains(&prod) {
                         return false;
                     }
                 }
@@ -338,10 +342,12 @@ pub fn verify_cartan_matrix_with_atlas() -> bool {
     // Check our matrix has the same fundamental properties
     // Diagonal entries = 2, off-diagonal <= 0
     let mut our_valid = true;
+    #[allow(clippy::needless_range_loop)]
     for i in 0..8 {
         if our_cartan[i][i] != 2 {
             our_valid = false;
         }
+        #[allow(clippy::needless_range_loop)]
         for j in 0..8 {
             if i != j && our_cartan[i][j] > 0 {
                 our_valid = false;

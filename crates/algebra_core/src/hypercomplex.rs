@@ -166,6 +166,7 @@ pub struct ZeroDivisorResults {
     /// 2-blade zero-divisor pairs: (i, j, k, l, norm) where (e_i +/- e_j)(e_k +/- e_l) ~ 0
     pub blade2: Vec<(usize, usize, usize, usize, f64)>,
     /// 3-blade zero-divisor pairs (if searched)
+    #[allow(clippy::type_complexity)]
     pub blade3: Option<Vec<(usize, usize, usize, usize, usize, usize, f64)>>,
     /// General-form zero-divisors from random sampling
     pub general: Option<Vec<GeneralFormZD>>,

@@ -243,6 +243,7 @@ fn rk4_step(
 /// * `sgn_r` - Initial sign of dr/dlambda (+1 outgoing, -1 ingoing)
 /// * `sgn_theta` - Initial sign of dtheta/dlambda
 /// * `n_steps` - Number of integration steps
+#[allow(clippy::too_many_arguments)]
 pub fn trace_null_geodesic(
     a: f64,
     e: f64,

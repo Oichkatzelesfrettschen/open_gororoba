@@ -251,7 +251,7 @@ fn handle_algebra(cmd: AlgebraCmd) {
                 let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
                 wtr.write_record(["x0", "x1", "x2", "x3", "x4", "x5", "x6", "x7"]).unwrap();
                 for root in &roots {
-                    wtr.write_record(&root.coords.map(|x| x.to_string())).unwrap();
+                    wtr.write_record(root.coords.map(|x| x.to_string())).unwrap();
                 }
                 wtr.flush().unwrap();
                 println!("Wrote {} roots to {}", roots.len(), path);

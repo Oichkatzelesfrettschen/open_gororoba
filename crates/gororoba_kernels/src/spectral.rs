@@ -61,7 +61,7 @@ pub fn kraichnan_enstrophy_spectrum(k: f64) -> f64 {
 /// In presence of quenched random disorder, effective dimension reduces.
 /// For D=4, D_eff=2. This does NOT produce k^{-3}.
 pub fn parisi_sourlas_effective_dimension(d: usize) -> usize {
-    if d >= 2 { d - 2 } else { 0 }
+    d.saturating_sub(2)
 }
 
 /// Spectral exponent from Parisi-Sourlas.

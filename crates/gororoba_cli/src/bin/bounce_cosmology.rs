@@ -119,6 +119,7 @@ fn main() {
     }
 }
 
+#[allow(clippy::too_many_arguments)]
 fn run_simulate(
     omega_m: f64,
     omega_l: f64,

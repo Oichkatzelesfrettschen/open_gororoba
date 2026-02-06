@@ -131,12 +131,14 @@ impl GeneralizedCartanMatrix {
         }
 
         // Verify GCM axioms
+        #[allow(clippy::needless_range_loop)]
         for i in 0..rank {
             // Axiom 1: diagonal = 2
             if entries[i][i] != 2 {
                 return Err("GCM diagonal entries must be 2");
             }
 
+            #[allow(clippy::needless_range_loop)]
             for j in 0..rank {
                 if i != j {
                     // Axiom 2: off-diagonal <= 0
@@ -236,6 +238,7 @@ impl GeneralizedCartanMatrix {
 
             for k in (i + 1)..n {
                 let factor = matrix[k][i] / matrix[i][i];
+                #[allow(clippy::needless_range_loop)]
                 for j in i..n {
                     matrix[k][j] -= factor * matrix[i][j];
                 }
@@ -269,9 +272,7 @@ impl GeneralizedCartanMatrix {
                 positive += 1;
             } else if minor == 0 {
                 zero += 1;
-            } else if minor < 0 && prev_det > 0 {
-                negative += 1;
-            } else if minor > 0 && prev_det < 0 {
+            } else if (minor < 0 && prev_det > 0) || (minor > 0 && prev_det < 0) {
                 negative += 1;
             } else if minor < 0 && prev_det < 0 {
                 positive += 1;
@@ -589,8 +590,8 @@ pub fn d_n_cartan(n: usize) -> GeneralizedCartanMatrix {
     let mut entries = vec![vec![0; n]; n];
 
     // Linear chain 0 - 1 - 2 - ... - (n-3) - (n-2)
-    for i in 0..n {
-        entries[i][i] = 2;
+    for (i, row) in entries.iter_mut().enumerate() {
+        row[i] = 2;
     }
     for i in 0..(n - 2) {
         entries[i][i + 1] = -1;
@@ -708,6 +709,7 @@ impl KacMoodyRootSystem {
             .map(|(w, c)| w * c)
             .sum();
 
+        #[allow(clippy::needless_range_loop)]
         for j in 0..n {
             result[j] -= pairing * self.simple_roots[i][j];
         }
@@ -828,7 +830,7 @@ impl KacMoodyRoot {
 /// The root system consists of:
 /// - Real roots: alpha + n*delta for alpha in E8 roots, n in Z
 /// - Imaginary roots: n*delta for n != 0
-/// where delta is the null root (minimal imaginary root).
+///   where delta is the null root (minimal imaginary root).
 #[derive(Debug, Clone)]
 pub struct E9RootSystem {
     /// E8 simple roots (finite part)
@@ -855,7 +857,7 @@ impl E9RootSystem {
         ];
 
         let e8_simple_roots: Vec<KacMoodyRoot> = e8_simple.into_iter()
-            .map(|coords| KacMoodyRoot::real(coords))
+            .map(KacMoodyRoot::real)
             .collect();
 
         // Delta is the null root corresponding to the affine extension
@@ -880,7 +882,7 @@ impl E9RootSystem {
         // Highest root of E8: theta = 2*alpha_1 + 3*alpha_2 + 4*alpha_3 + ...
         // In our coordinates: (1, -1, 0, 0, 0, 0, 0, 0) + multiples
         // Simplified: use the standard highest root
-        let theta = vec![1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]; // Approximate
+        let theta = [1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]; // Approximate
         let neg_theta: Vec<f64> = theta.iter().map(|x| -x).collect();
 
         KacMoodyRoot::affine(neg_theta, 1)
@@ -1083,7 +1085,7 @@ impl Default for E11RootSystem {
 /// Unified interface for E-series root systems.
 #[derive(Debug, Clone)]
 pub enum ESeriesRootSystem {
-    E8(crate::e8_lattice::E8Lattice),
+    E8(Box<crate::e8_lattice::E8Lattice>),
     E9(E9RootSystem),
     E10(E10RootSystem),
     E11(E11RootSystem),

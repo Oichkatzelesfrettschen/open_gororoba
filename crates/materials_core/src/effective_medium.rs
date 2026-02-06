@@ -223,7 +223,7 @@ pub fn kramers_kronig_check(eps: &[Complex64], check_real: bool, eps_inf: Option
 
         fft.process(&mut signal);
 
-        for i in 0..m {
+        for (i, s) in signal.iter_mut().enumerate() {
             let freq_idx = if i <= m / 2 { i as i64 } else { i as i64 - m as i64 };
             let sgn = if freq_idx > 0 {
                 1.0
@@ -232,7 +232,7 @@ pub fn kramers_kronig_check(eps: &[Complex64], check_real: bool, eps_inf: Option
             } else {
                 0.0
             };
-            signal[i] *= Complex64::new(0.0, -sgn);
+            *s *= Complex64::new(0.0, -sgn);
         }
 
         ifft.process(&mut signal);
@@ -262,7 +262,7 @@ pub fn kramers_kronig_check(eps: &[Complex64], check_real: bool, eps_inf: Option
 
         fft.process(&mut signal);
 
-        for i in 0..m {
+        for (i, s) in signal.iter_mut().enumerate() {
             let freq_idx = if i <= m / 2 { i as i64 } else { i as i64 - m as i64 };
             let sgn = if freq_idx > 0 {
                 1.0
@@ -271,7 +271,7 @@ pub fn kramers_kronig_check(eps: &[Complex64], check_real: bool, eps_inf: Option
             } else {
                 0.0
             };
-            signal[i] *= Complex64::new(0.0, -sgn);
+            *s *= Complex64::new(0.0, -sgn);
         }
 
         ifft.process(&mut signal);

@@ -112,12 +112,12 @@ pub fn is_prime(n: u64) -> bool {
     if n == 2 {
         return true;
     }
-    if n % 2 == 0 {
+    if n.is_multiple_of(2) {
         return false;
     }
     let mut i = 3;
     while i * i <= n {
-        if n % i == 0 {
+        if n.is_multiple_of(i) {
             return false;
         }
         i += 2;
@@ -136,11 +136,11 @@ pub fn prime_power(n: u64) -> Option<(u64, u32)> {
     // Find smallest prime factor
     let mut p = 2u64;
     while p * p <= n {
-        if n % p == 0 {
+        if n.is_multiple_of(p) {
             // p is the smallest prime factor
             let mut k = 0u32;
             let mut m = n;
-            while m % p == 0 {
+            while m.is_multiple_of(p) {
                 m /= p;
                 k += 1;
             }

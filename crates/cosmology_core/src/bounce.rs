@@ -171,21 +171,6 @@ pub fn hubble_e_bounce(z: f64, omega_m: f64, q_corr: f64) -> f64 {
     e2.max(1e-30).sqrt()
 }
 
-/// Simpson's rule integration over [a, b].
-fn simpson_integrate<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, n: usize) -> f64 {
-    let n = if n % 2 == 0 { n } else { n + 1 }; // Simpson requires even n
-    let h = (b - a) / n as f64;
-
-    let mut sum = f(a) + f(b);
-    for i in 1..n {
-        let x = a + i as f64 * h;
-        let coef = if i % 2 == 0 { 2.0 } else { 4.0 };
-        sum += coef * f(x);
-    }
-
-    sum * h / 3.0
-}
-
 /// Luminosity distance d_L(z) in Mpc.
 ///
 /// d_L(z) = (c/H_0) * (1+z) * integral_0^z dz' / E(z')
@@ -194,7 +179,7 @@ pub fn luminosity_distance(z: f64, omega_m: f64, h0: f64, q_corr: f64) -> f64 {
         return 0.0;
     }
 
-    let integral = simpson_integrate(
+    let integral = crate::gl_integrate(
         |zp| {
             if q_corr == 0.0 {
                 1.0 / hubble_e_lcdm(zp, omega_m)
@@ -204,7 +189,7 @@ pub fn luminosity_distance(z: f64, omega_m: f64, h0: f64, q_corr: f64) -> f64 {
         },
         0.0,
         z,
-        500,
+        50,
     );
 
     (C_KM_S / h0) * (1.0 + z) * integral
@@ -219,7 +204,7 @@ pub fn distance_modulus(z: f64, omega_m: f64, h0: f64, q_corr: f64) -> f64 {
 
 /// CMB shift parameter R = sqrt(Omega_m) * d_C(z_*) * H_0 / c.
 pub fn cmb_shift_parameter(omega_m: f64, q_corr: f64, z_star: f64) -> f64 {
-    let integral = simpson_integrate(
+    let integral = crate::gl_integrate(
         |z| {
             if q_corr == 0.0 {
                 1.0 / hubble_e_lcdm(z, omega_m)
@@ -229,7 +214,7 @@ pub fn cmb_shift_parameter(omega_m: f64, q_corr: f64, z_star: f64) -> f64 {
         },
         0.0,
         z_star,
-        1000,
+        80,
     );
 
     omega_m.sqrt() * integral

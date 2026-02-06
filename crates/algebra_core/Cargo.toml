@@ -16,7 +16,7 @@ rand_chacha = { workspace = true }
 rand_distr = { workspace = true }
 rayon = { workspace = true }
 wide = { workspace = true }
-rustfft = "6.2"
+rustfft = { workspace = true }
 thiserror = { workspace = true }
 
 # External algebra crates (workspace)
@@ -29,10 +29,6 @@ num-bigint = { workspace = true }
 # Stochastic processes and fractal analysis (workspace)
 diffusionx = { workspace = true }
 hurst = { workspace = true }
-
-# Lie algebras
-liealg = { workspace = true }
-commutator-rs = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

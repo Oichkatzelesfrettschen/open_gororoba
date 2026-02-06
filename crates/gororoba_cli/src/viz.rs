@@ -50,6 +50,7 @@ pub fn line_plot_svg(
 }
 
 /// Plot multiple line series on the same chart.
+#[allow(clippy::type_complexity)]
 pub fn multi_line_plot_svg(
     filename: &str,
     title: &str,

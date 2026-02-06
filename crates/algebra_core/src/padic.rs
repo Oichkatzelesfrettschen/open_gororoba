@@ -60,7 +60,7 @@ pub fn vp_int(n: i64, p: u64) -> i32 {
 
     let mut n_abs = n.unsigned_abs();
     let mut k = 0i32;
-    while n_abs % p == 0 {
+    while n_abs.is_multiple_of(p) {
         n_abs /= p;
         k += 1;
     }

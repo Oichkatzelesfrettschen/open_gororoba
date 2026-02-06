@@ -82,8 +82,8 @@ pub fn oct_multiply(a: &Octonion, b: &Octonion) -> Octonion {
 /// Conjugate an octonion (negate imaginary parts).
 pub fn oct_conjugate(a: &Octonion) -> Octonion {
     let mut out = *a;
-    for i in 1..8 {
-        out[i] = -out[i];
+    for val in out.iter_mut().skip(1) {
+        *val = -*val;
     }
     out
 }
@@ -152,6 +152,7 @@ pub fn hamiltonian(phi: &[Octonion], pi: &[Octonion], params: &FieldParams) -> f
     let mut v_grad = 0.0;
     for i in 0..n {
         let j = (i + 1) % n;
+        #[allow(clippy::needless_range_loop)]
         for k in 0..8 {
             let diff = phi[j][k] - phi[i][k];
             v_grad += diff * diff;
@@ -322,6 +323,7 @@ pub fn standing_wave(params: &FieldParams, mode: usize, amplitude: f64) -> (Vec<
     let mut phi = vec![[0.0; 8]; n];
     let pi = vec![[0.0; 8]; n];
 
+    #[allow(clippy::needless_range_loop)]
     for i in 0..n {
         let x = i as f64 * dx;
         phi[i][1] = amplitude * (k * x).sin();
@@ -400,8 +402,8 @@ fn fft_peak_frequency(signal: &[f64], dt: f64) -> f64 {
     let mut max_power = 0.0;
     let mut max_idx = 1;
 
-    for i in 1..n_half {
-        let power = buffer[i].norm_sqr();
+    for (i, val) in buffer.iter().enumerate().take(n_half).skip(1) {
+        let power = val.norm_sqr();
         if power > max_power {
             max_power = power;
             max_idx = i;

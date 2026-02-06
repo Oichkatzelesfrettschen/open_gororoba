@@ -1489,7 +1489,7 @@ pub fn trace_hysteresis_loop(
         powers.push(u_sq);
 
         let result = solve_normalized_cubic(u_sq, omega);
-        let mut sorted: Vec<_> = result.y_solutions.iter().copied().collect();
+        let mut sorted: Vec<_> = result.y_solutions.to_vec();
         sorted.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
 
         if sorted.is_empty() {
@@ -1518,7 +1518,7 @@ pub fn trace_hysteresis_loop(
         let u_sq = powers[i];
 
         let result = solve_normalized_cubic(u_sq, omega);
-        let mut sorted: Vec<_> = result.y_solutions.iter().copied().collect();
+        let mut sorted: Vec<_> = result.y_solutions.to_vec();
         sorted.sort_by(|a, b| a.partial_cmp(b).unwrap_or(std::cmp::Ordering::Equal));
 
         if sorted.is_empty() {

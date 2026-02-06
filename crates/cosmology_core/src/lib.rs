@@ -13,9 +13,12 @@
 //! - Kraichnan (1967): 2D enstrophy cascade
 //! - Pinto-Neto & Fabris (2013): Bohmian bounce cosmology
 
+use gauss_quad::GaussLegendre;
+
 pub mod gravastar;
 pub mod spectral;
 pub mod bounce;
+pub mod distances;
 
 pub use gravastar::{
     PolytropicEos, AnisotropicParams, TovState, GravastarSolution,
@@ -37,3 +40,18 @@ pub use bounce::{
     bao_sound_horizon, spectral_index_bounce, chi2_distance_modulus,
     C_KM_S, OMEGA_B_H2, Z_STAR,
 };
+
+pub use distances::{
+    comoving_distance, macquart_dm_cosmic, dm_excess_to_redshift,
+    dm_to_comoving, angular_diameter_distance, radec_to_cartesian,
+};
+
+/// Gauss-Legendre quadrature over [a, b].
+///
+/// Replaces hand-rolled Simpson's rule with gauss-quad's GaussLegendre,
+/// which converges exponentially for smooth integrands. Degree 50 gives
+/// far better accuracy than 500-point Simpson at 1/10th the evaluations.
+pub(crate) fn gl_integrate<F: Fn(f64) -> f64>(f: F, a: f64, b: f64, degree: usize) -> f64 {
+    let quad = GaussLegendre::new(degree).expect("valid quadrature degree");
+    quad.integrate(a, b, f)
+}
