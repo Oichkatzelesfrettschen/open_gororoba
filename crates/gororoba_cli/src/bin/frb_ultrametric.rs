@@ -105,8 +105,7 @@ fn main() {
 
     // Set up output CSV writer
     let mut csv_writer = args.output.as_ref().map(|path| {
-        let wtr = csv::Writer::from_path(path).expect("Failed to create output CSV");
-        wtr
+        csv::Writer::from_path(path).expect("Failed to create output CSV")
     });
 
     // Write header if CSV output

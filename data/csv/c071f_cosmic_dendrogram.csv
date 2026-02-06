@@ -1,0 +1,6 @@
+metric,value,null_mean,null_std,p_value,verdict
+cophenetic_correlation,0.830734,0.830734,0.000000,0.910448,Fail
+ultrametric_fraction,0.173870,N/A,N/A,N/A,N/A
+n_frbs,4996,N/A,N/A,N/A,N/A
+n_gw_events,35,N/A,N/A,N/A,N/A
+redshift_range,"[0.0029, 13.3878]",N/A,N/A,N/A,N/A

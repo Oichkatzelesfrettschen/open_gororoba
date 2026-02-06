@@ -1,0 +1,6 @@
+test_type,epsilon_mpc,n_points,n_testable,metric_value,null_mean,p_value,verdict
+local_ultrametricity,50,4996,1504,0.334346,0.333838,0.039604,Pass
+local_ultrametricity,100,4996,2163,0.303302,0.303254,0.465347,Fail
+local_ultrametricity,200,4996,3499,0.293005,0.293355,0.960396,Fail
+local_ultrametricity,500,4996,4744,0.247384,0.247395,0.564356,Fail
+dendrogram_cophenetic,global,200,200,0.764533,0.764533,0.435644,Fail

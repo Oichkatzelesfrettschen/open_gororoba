@@ -1,0 +1,5 @@
+encoding,n_objects,n_attributes,base,n_digits,ultrametric_fraction,null_fraction_mean,null_fraction_std,p_value,verdict
+FRB_3attr,5008,3,10,4,0.157410,0.138183,0.001087,0.004975,Pass
+Pulsar_3attr,4233,3,10,4,0.220420,0.213256,0.001523,0.004975,Pass
+Combined_3attr,9241,3,10,4,0.160830,0.145718,0.001199,0.004975,Pass
+FRB_DM_only,5008,1,10,4,0.110100,0.109880,0.000988,0.442786,Fail

@@ -1,0 +1,38 @@
+# C-005 Grassmannian ZD Annihilator Analysis
+# Generated: 2026-02-06 via algebra_core Rust integration tests
+# Reference: Reggiani (2024) "The geometry of sedenion zero divisors" arXiv:2411.18881
+#
+# Key Findings:
+# 1. All 84 standard ZDs have exactly 4-dimensional left annihilators
+# 2. Sign variants (+/-) have ORTHOGONAL annihilator subspaces (distance = pi)
+#    This contradicts the claim "sign variants share subspace"
+# 3. 42 distinct subspaces (one per assessor, using + sign representative)
+# 4. 5 distinct geodesic distance values among 861 subspace pairs
+# 5. Box-kite membership stratifies distances significantly
+#
+metric,value,notes
+n_assessors,42,primitive assessors from de Marrais construction
+n_zds,84,2 sign variants per assessor
+annihilator_dim,4,all ZDs have 4D annihilator (verified)
+n_distinct_subspaces,42,one per assessor (+ representative)
+sign_variant_distance,3.1416,pi - orthogonal subspaces
+n_distinct_distances,5,among 42 subspaces (claim: 6)
+within_boxkite_mean_dist,2.7735,mean distance within same box-kite
+across_boxkite_mean_dist,2.2092,mean distance across box-kites
+stratification_delta,0.5643,within - across (significant)
+within_boxkite_pairs,105,C(6,2) * 7 = 15*7
+across_boxkite_pairs,756,C(42,2) - 105 = 861 - 105
+#
+# Distance histogram (values rounded to 1e-4):
+# 1.5708 (pi/2): 84 pairs
+# 2.0944 (2pi/3): 336 pairs
+# 2.2214: 42 pairs
+# 2.4836: 336 pairs
+# 3.1416 (pi): 63 pairs
+#
+# Status: VERIFIED with corrections
+# - Annihilator dimensions: CONFIRMED
+# - Sign variant sharing: REFUTED (they are orthogonal)
+# - Distinct distances: CLOSE (5 vs claimed 6)
+# - Box-kite stratification: CONFIRMED
+# - PSL(2,7) symmetry evidence: STRONG (discrete distance structure)
