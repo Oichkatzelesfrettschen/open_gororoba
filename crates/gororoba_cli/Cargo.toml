@@ -65,6 +65,10 @@ path = "src/bin/tensor_network.rs"
 name = "harper-chern"
 path = "src/bin/harper_chern.rs"
 
+[[bin]]
+name = "tcmt-sweep"
+path = "src/bin/tcmt_sweep.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
