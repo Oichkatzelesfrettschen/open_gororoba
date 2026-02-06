@@ -616,9 +616,9 @@ New integration tests validate cross-crate workflows:
 
 ### Claims Resolution Status
 
-- 459 total claims in matrix
-- 406 resolved (88.5%)
-- 53 remaining (triage backfill items)
+- 435 total claims in matrix
+- 421 resolved (96.8%)
+- 14 remaining (10 speculative, 4 not supported/pending data)
 
 **Key closures in Phase 8:**
 - C-008: Closed/Toy (alpha=-1.5 parameter choice, not derived)

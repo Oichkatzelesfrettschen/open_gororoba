@@ -514,7 +514,7 @@ This resolves the "package believes it's in a workspace when it's not" error.
 - 137 Python tests
 - **385 total tests**
 
-**Claims resolution**: 406/459 (88.5%)
+**Claims resolution**: 421/435 (96.8%)
 
 **Key physical insights validated**:
 1. Negative alpha fractional Laplacian has inverted kinetic energy physics
