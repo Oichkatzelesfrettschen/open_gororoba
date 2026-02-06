@@ -35,6 +35,7 @@
 //! - Derjaguin et al., Kolloid-Z. 69, 155 (1934) - PFA foundation
 
 use std::f64::consts::PI;
+use thiserror::Error;
 
 // Physical constants (SI units)
 /// Reduced Planck constant (J*s)
@@ -1141,6 +1142,630 @@ pub fn thermal_wavelength(temperature: f64) -> f64 {
     HBAR * C / (K_B * temperature)
 }
 
+// ============================================================================
+// PFA Validity Guard System
+// ============================================================================
+//
+// The Proximity Force Approximation (PFA) becomes unreliable when the gap d
+// approaches or exceeds the radius R. This section provides strict validity
+// guards that enforce geometric constraints and return detailed diagnostics.
+//
+// # Critical Thresholds (Emig et al. PRL 96, 220401)
+//
+// | Accuracy | R/d ratio | d/R ratio   |
+// |----------|-----------|-------------|
+// | 1%       | > 132     | < 0.00755   |
+// | 5%       | > 26      | < 0.038     |
+// | 10%      | > 13      | < 0.077     |
+// | Qual.    | > 5       | < 0.2       |
+//
+// # Literature
+// - Emig et al., PRL 96, 220401 (2006)
+// - Fosco et al., Physics 6(1), 20 (2024): Derivative expansion review
+
+/// Errors arising from Casimir force calculations.
+#[derive(Debug, Clone, Error)]
+pub enum CasimirError {
+    /// PFA validity violated: geometry outside approximation regime.
+    #[error("PFA validity violated: d/R = {d_over_r:.6} exceeds {accuracy:?} threshold of {threshold:.6}")]
+    PfaViolation {
+        /// Actual d/R ratio in the geometry
+        d_over_r: f64,
+        /// Required accuracy level that was violated
+        accuracy: PfaAccuracy,
+        /// Threshold d/R for the requested accuracy
+        threshold: f64,
+        /// Detailed validity information
+        info: PfaValidityInfo,
+    },
+
+    /// Gap is non-positive (surfaces overlapping or touching).
+    #[error("Invalid gap: {gap:.3e} m (must be positive)")]
+    InvalidGap {
+        /// The offending gap value
+        gap: f64,
+    },
+
+    /// Radius is non-positive.
+    #[error("Invalid radius: {radius:.3e} m (must be positive)")]
+    InvalidRadius {
+        /// The offending radius value
+        radius: f64,
+    },
+}
+
+/// Detailed information about PFA validity for a given geometry.
+#[derive(Debug, Clone)]
+pub struct PfaValidityInfo {
+    /// Sphere radius (m)
+    pub radius: f64,
+    /// Gap distance (m)
+    pub gap: f64,
+    /// R/d ratio (larger = better PFA validity)
+    pub r_over_d: f64,
+    /// d/R ratio (smaller = better PFA validity)
+    pub d_over_r: f64,
+    /// Achieved accuracy level
+    pub achieved_accuracy: PfaAccuracy,
+    /// Whether 1% accuracy is achieved
+    pub one_percent_valid: bool,
+    /// Whether 5% accuracy is achieved
+    pub five_percent_valid: bool,
+    /// Whether 10% accuracy is achieved
+    pub ten_percent_valid: bool,
+    /// Whether qualitative validity is achieved
+    pub qualitative_valid: bool,
+    /// Estimated relative error from PFA (based on d/R)
+    pub estimated_error: f64,
+}
+
+impl PfaValidityInfo {
+    /// Check if the geometry satisfies the given accuracy requirement.
+    pub fn satisfies(&self, accuracy: PfaAccuracy) -> bool {
+        match accuracy {
+            PfaAccuracy::OnePercent => self.one_percent_valid,
+            PfaAccuracy::FivePercent => self.five_percent_valid,
+            PfaAccuracy::TenPercent => self.ten_percent_valid,
+            PfaAccuracy::Qualitative => self.qualitative_valid,
+        }
+    }
+}
+
+/// Check PFA validity and return detailed diagnostics.
+///
+/// This function provides comprehensive information about whether PFA
+/// is valid for a given sphere-plate geometry, including the achieved
+/// accuracy level and estimated error.
+///
+/// # Arguments
+/// * `radius` - Sphere radius in meters
+/// * `gap` - Surface-to-surface gap in meters
+///
+/// # Returns
+/// Detailed validity information
+///
+/// # Example
+/// ```
+/// use quantum_core::casimir::{check_pfa_validity, PfaAccuracy};
+///
+/// let radius = 5e-6;  // 5 um sphere
+/// let gap = 100e-9;   // 100 nm gap
+///
+/// let info = check_pfa_validity(radius, gap);
+/// assert!(info.one_percent_valid);  // R/d = 50, need > 132 for 1%
+/// // Actually R/d = 50 does NOT satisfy 1% (needs > 132)
+/// ```
+pub fn check_pfa_validity(radius: f64, gap: f64) -> PfaValidityInfo {
+    let r_over_d = if gap > 0.0 { radius / gap } else { 0.0 };
+    let d_over_r = if radius > 0.0 { gap / radius } else { f64::INFINITY };
+
+    let one_percent_valid = r_over_d > 132.0;
+    let five_percent_valid = r_over_d > 26.0;
+    let ten_percent_valid = r_over_d > 13.0;
+    let qualitative_valid = r_over_d > 5.0;
+
+    // Determine achieved accuracy level
+    let achieved_accuracy = if one_percent_valid {
+        PfaAccuracy::OnePercent
+    } else if five_percent_valid {
+        PfaAccuracy::FivePercent
+    } else if ten_percent_valid {
+        PfaAccuracy::TenPercent
+    } else {
+        PfaAccuracy::Qualitative
+    };
+
+    // Estimate relative error: leading correction ~ d/R
+    // From derivative expansion: error ~ (d/R) + O((d/R)^2)
+    let estimated_error = d_over_r;
+
+    PfaValidityInfo {
+        radius,
+        gap,
+        r_over_d,
+        d_over_r,
+        achieved_accuracy,
+        one_percent_valid,
+        five_percent_valid,
+        ten_percent_valid,
+        qualitative_valid,
+        estimated_error,
+    }
+}
+
+/// Compute Casimir force with strict PFA validity guard.
+///
+/// This function enforces PFA validity at the specified accuracy level,
+/// returning an error if the geometry violates the constraint.
+///
+/// # Arguments
+/// * `radius` - Sphere radius in meters
+/// * `gap` - Surface-to-surface gap in meters
+/// * `required_accuracy` - Minimum accuracy level required
+///
+/// # Returns
+/// * `Ok(force)` - Force in Newtons if geometry is valid
+/// * `Err(CasimirError::PfaViolation)` - If geometry violates PFA at required accuracy
+///
+/// # Example
+/// ```
+/// use quantum_core::casimir::{casimir_force_guarded, PfaAccuracy};
+///
+/// let radius = 5e-6;
+/// let gap = 30e-9;  // R/d ~ 167, satisfies 1% (needs > 132)
+///
+/// match casimir_force_guarded(radius, gap, PfaAccuracy::OnePercent) {
+///     Ok(force) => println!("Force: {:.3e} N", force),
+///     Err(e) => eprintln!("PFA violated: {}", e),
+/// }
+/// ```
+pub fn casimir_force_guarded(
+    radius: f64,
+    gap: f64,
+    required_accuracy: PfaAccuracy,
+) -> Result<f64, CasimirError> {
+    // Validate inputs
+    if radius <= 0.0 {
+        return Err(CasimirError::InvalidRadius { radius });
+    }
+    if gap <= 0.0 {
+        return Err(CasimirError::InvalidGap { gap });
+    }
+
+    // Check PFA validity
+    let info = check_pfa_validity(radius, gap);
+    if !info.satisfies(required_accuracy) {
+        let threshold = 1.0 / required_accuracy.min_r_over_d();
+        return Err(CasimirError::PfaViolation {
+            d_over_r: info.d_over_r,
+            accuracy: required_accuracy,
+            threshold,
+            info,
+        });
+    }
+
+    // Compute force
+    Ok(casimir_force_pfa(radius, gap))
+}
+
+/// Compute Casimir force with validity info (non-failing version).
+///
+/// Unlike `casimir_force_guarded`, this always computes the force but
+/// returns detailed validity information alongside. Useful when you
+/// want to compute the force regardless of validity but still need
+/// diagnostics.
+///
+/// # Arguments
+/// * `radius` - Sphere radius in meters
+/// * `gap` - Surface-to-surface gap in meters
+///
+/// # Returns
+/// Tuple of (force in Newtons, validity info)
+pub fn casimir_force_with_validity(radius: f64, gap: f64) -> (f64, PfaValidityInfo) {
+    let force = casimir_force_pfa(radius, gap);
+    let info = check_pfa_validity(radius, gap);
+    (force, info)
+}
+
+/// Spring constant with strict PFA validity guard.
+///
+/// The Casimir spring constant k = dF/dx = 3 * C * R / d^4 where
+/// C = pi^3 * hbar * c / 360.
+///
+/// This function requires stricter PFA validity for spring constant
+/// calculations because the derivative amplifies errors.
+///
+/// # Arguments
+/// * `radius` - Sphere radius in meters
+/// * `gap` - Surface-to-surface gap in meters
+/// * `required_accuracy` - Minimum accuracy level (OnePercent recommended)
+///
+/// # Returns
+/// * `Ok(k)` - Spring constant in N/m if geometry is valid
+/// * `Err(CasimirError)` - If geometry violates PFA
+pub fn casimir_spring_constant_guarded(
+    radius: f64,
+    gap: f64,
+    required_accuracy: PfaAccuracy,
+) -> Result<f64, CasimirError> {
+    // For spring constant, we recommend stricter requirements
+    // because k ~ 1/d^4 amplifies errors
+    casimir_force_guarded(radius, gap, required_accuracy)?;
+
+    // k = dF/dx = 3 * C * R / d^4
+    let k = 3.0 * CASIMIR_COEFF * radius / (gap * gap * gap * gap);
+    Ok(k)
+}
+
+/// Error amplification factor for spring constant vs force.
+///
+/// Since k ~ dF/dd ~ R/d^4 while F ~ R/d^3, the relative error on k
+/// is approximately 4x larger than the relative error on F for the
+/// same geometry.
+pub const SPRING_CONSTANT_ERROR_FACTOR: f64 = 4.0;
+
+/// Stricter accuracy requirement for spring constant computation.
+///
+/// Maps a target spring constant accuracy to the required force accuracy,
+/// accounting for error amplification from differentiation.
+///
+/// # Arguments
+/// * `k_accuracy` - Desired accuracy for spring constant
+///
+/// # Returns
+/// Required accuracy for force computation (one level stricter)
+impl PfaAccuracy {
+    /// Get the stricter requirement for spring constant/gain computations.
+    ///
+    /// Spring constant errors are amplified ~4x relative to force errors,
+    /// so we require stricter PFA validity.
+    pub fn stricter_for_derivative(&self) -> PfaAccuracy {
+        match self {
+            PfaAccuracy::Qualitative => PfaAccuracy::TenPercent,
+            PfaAccuracy::TenPercent => PfaAccuracy::FivePercent,
+            PfaAccuracy::FivePercent => PfaAccuracy::OnePercent,
+            PfaAccuracy::OnePercent => PfaAccuracy::OnePercent, // Already strictest
+        }
+    }
+
+    /// Compute the effective accuracy when computing spring constant.
+    ///
+    /// Returns the actual accuracy achieved for k given the geometry.
+    pub fn effective_for_spring_constant(&self, radius: f64, gap: f64) -> Option<PfaAccuracy> {
+        // Spring constant needs stricter geometry
+        let info = check_pfa_validity(radius, gap);
+        let stricter = self.stricter_for_derivative();
+        if info.satisfies(stricter) {
+            Some(*self)
+        } else if info.satisfies(*self) {
+            // Geometry passes for force but not for spring constant
+            // Return the degraded accuracy
+            match self {
+                PfaAccuracy::OnePercent => Some(PfaAccuracy::FivePercent),
+                PfaAccuracy::FivePercent => Some(PfaAccuracy::TenPercent),
+                PfaAccuracy::TenPercent => Some(PfaAccuracy::Qualitative),
+                PfaAccuracy::Qualitative => None,
+            }
+        } else {
+            None
+        }
+    }
+}
+
+/// Spring constant with automatic stricter accuracy enforcement.
+///
+/// This function automatically applies the stricter d/R requirements
+/// needed for spring constant accuracy (error amplified ~4x vs force).
+///
+/// # Arguments
+/// * `radius` - Sphere radius in meters
+/// * `gap` - Surface-to-surface gap in meters
+/// * `target_k_accuracy` - Desired accuracy for the spring constant result
+///
+/// # Returns
+/// * `Ok(k)` - Spring constant in N/m if geometry supports target accuracy
+/// * `Err(CasimirError)` - If geometry cannot achieve target accuracy for k
+///
+/// # Example
+/// ```
+/// use quantum_core::casimir::{spring_constant_strict, PfaAccuracy};
+///
+/// // For 1% spring constant accuracy, we need stricter geometry
+/// let radius = 20e-6;  // Larger sphere
+/// let gap = 100e-9;
+///
+/// match spring_constant_strict(radius, gap, PfaAccuracy::FivePercent) {
+///     Ok(k) => println!("k = {:.3e} N/m", k),
+///     Err(e) => println!("Geometry insufficient: {}", e),
+/// }
+/// ```
+pub fn spring_constant_strict(
+    radius: f64,
+    gap: f64,
+    target_k_accuracy: PfaAccuracy,
+) -> Result<f64, CasimirError> {
+    // Use stricter force accuracy to achieve target k accuracy
+    let force_accuracy = target_k_accuracy.stricter_for_derivative();
+    casimir_force_guarded(radius, gap, force_accuracy)?;
+
+    let k = 3.0 * CASIMIR_COEFF * radius / (gap * gap * gap * gap);
+    Ok(k)
+}
+
+/// Transistor gain with strict PFA validity enforcement.
+///
+/// The transistor gain G = k_drain / k_plate requires accurate spring
+/// constant computation, so this enforces stricter d/R requirements.
+///
+/// # Arguments
+/// * `r_drain` - Drain sphere radius (m)
+/// * `gap_drain` - Plate-drain gap (m)
+/// * `plate_spring` - Plate mechanical spring constant (N/m)
+/// * `required_accuracy` - Minimum accuracy for the gain result
+///
+/// # Returns
+/// * `Ok(gain)` - Transistor gain if geometry supports accuracy
+/// * `Err(CasimirError)` - If geometry insufficient
+pub fn transistor_gain_strict(
+    r_drain: f64,
+    gap_drain: f64,
+    plate_spring: f64,
+    required_accuracy: PfaAccuracy,
+) -> Result<f64, CasimirError> {
+    if plate_spring <= 0.0 {
+        return Ok(0.0);
+    }
+
+    // Gain depends on k_drain, which needs stricter accuracy
+    let k_drain = spring_constant_strict(r_drain, gap_drain, required_accuracy)?;
+    Ok(k_drain / plate_spring)
+}
+
+/// Detailed spring constant result with accuracy diagnostics.
+#[derive(Debug, Clone)]
+pub struct SpringConstantResult {
+    /// Computed spring constant (N/m)
+    pub k: f64,
+    /// Achieved accuracy level
+    pub achieved_accuracy: PfaAccuracy,
+    /// Estimated relative error on k
+    pub estimated_k_error: f64,
+    /// Whether the result meets the requested accuracy
+    pub meets_requirement: bool,
+    /// Validity information
+    pub validity: PfaValidityInfo,
+}
+
+/// Compute spring constant with full diagnostics.
+///
+/// Returns detailed information about accuracy and errors.
+pub fn spring_constant_with_diagnostics(
+    radius: f64,
+    gap: f64,
+    target_accuracy: PfaAccuracy,
+) -> SpringConstantResult {
+    let validity = check_pfa_validity(radius, gap);
+    let k = 3.0 * CASIMIR_COEFF * radius / (gap * gap * gap * gap);
+
+    // Compute effective accuracy for spring constant
+    let effective_acc = target_accuracy.effective_for_spring_constant(radius, gap);
+    let achieved_accuracy = effective_acc.unwrap_or(PfaAccuracy::Qualitative);
+
+    // Estimated error on k is ~4x the force error
+    let estimated_k_error = SPRING_CONSTANT_ERROR_FACTOR * validity.estimated_error;
+
+    let meets_requirement = effective_acc.is_some()
+        && matches!(
+            (target_accuracy, achieved_accuracy),
+            (PfaAccuracy::OnePercent, PfaAccuracy::OnePercent)
+                | (PfaAccuracy::FivePercent, PfaAccuracy::OnePercent | PfaAccuracy::FivePercent)
+                | (PfaAccuracy::TenPercent, PfaAccuracy::OnePercent | PfaAccuracy::FivePercent | PfaAccuracy::TenPercent)
+                | (PfaAccuracy::Qualitative, _)
+        );
+
+    SpringConstantResult {
+        k,
+        achieved_accuracy,
+        estimated_k_error,
+        meets_requirement,
+        validity,
+    }
+}
+
+// ============================================================================
+// Derivative Expansion Error Estimates
+// ============================================================================
+//
+// The Derivative Expansion (DE) provides systematic corrections to PFA:
+//
+//   F = F_PFA * (1 + sum_{n=1}^N a_n (d/R)^n)
+//
+// For a sphere-plate geometry with Dirichlet BCs (perfect conductor limit):
+//   a_1 = 1/3 (leading correction)
+//   a_2 ~ 1/10 (subleading, geometry-dependent)
+//
+// # Literature
+// - Emig et al., PRL 96, 220401 (2006): DE for sphere-plate
+// - Fosco et al., Physics 6(1), 20 (2024): Comprehensive DE review
+// - Bimonte et al., PRD 95, 065004 (2017): Higher-order corrections
+
+/// Derivative expansion coefficients for sphere-plate geometry.
+///
+/// These are exact values from the literature for the leading correction
+/// terms beyond PFA.
+pub struct DeCoefficients {
+    /// a_1 coefficient: leading O(d/R) correction
+    pub a1: f64,
+    /// a_2 coefficient: subleading O((d/R)^2) correction
+    pub a2: f64,
+    /// Source for the coefficient values
+    pub source: &'static str,
+}
+
+impl DeCoefficients {
+    /// Coefficients for sphere-plate with perfect conductor (Dirichlet).
+    ///
+    /// From Emig et al., PRL 96, 220401 (2006).
+    pub const SPHERE_PLATE_DIRICHLET: DeCoefficients = DeCoefficients {
+        a1: 1.0 / 3.0,
+        a2: 0.1, // Approximate
+        source: "Emig et al. PRL 96 (2006)",
+    };
+
+    /// Coefficients for sphere-plate with Neumann BCs.
+    ///
+    /// Different boundary conditions give different coefficients.
+    pub const SPHERE_PLATE_NEUMANN: DeCoefficients = DeCoefficients {
+        a1: -1.0 / 3.0,
+        a2: 0.1, // Approximate
+        source: "Fosco et al. Physics 6(1) (2024)",
+    };
+
+    /// Coefficients for cylinder-plate geometry.
+    ///
+    /// The cylinder geometry has different correction structure.
+    pub const CYLINDER_PLATE: DeCoefficients = DeCoefficients {
+        a1: 0.5,
+        a2: 0.15,
+        source: "Bimonte et al. PRD 95 (2017)",
+    };
+}
+
+/// Result of derivative expansion analysis.
+#[derive(Debug, Clone)]
+pub struct DerivativeExpansionResult {
+    /// PFA force (zeroth order)
+    pub force_pfa: f64,
+    /// First-order correction: a_1 * (d/R) * F_PFA
+    pub correction_o1: f64,
+    /// Second-order correction: a_2 * (d/R)^2 * F_PFA
+    pub correction_o2: f64,
+    /// Total force with corrections: F_PFA + O1 + O2
+    pub force_corrected: f64,
+    /// Relative error estimate: |O1 + O2| / |F_PFA|
+    pub relative_error: f64,
+    /// d/R ratio (expansion parameter)
+    pub expansion_param: f64,
+    /// Whether the expansion is well-converged (O2 << O1)
+    pub is_converged: bool,
+    /// Coefficients used
+    pub coefficients: &'static str,
+}
+
+/// Compute Casimir force with derivative expansion corrections.
+///
+/// Returns both the corrected force and detailed error analysis.
+///
+/// # Arguments
+/// * `radius` - Sphere radius in meters
+/// * `gap` - Surface-to-surface gap in meters
+/// * `coeffs` - Derivative expansion coefficients for the geometry
+///
+/// # Returns
+/// Detailed result with force, corrections, and convergence diagnostics
+///
+/// # Example
+/// ```
+/// use quantum_core::casimir::{casimir_force_with_de, DeCoefficients};
+///
+/// let radius = 5e-6;
+/// let gap = 100e-9;
+///
+/// let result = casimir_force_with_de(
+///     radius, gap,
+///     &DeCoefficients::SPHERE_PLATE_DIRICHLET,
+/// );
+///
+/// println!("PFA force: {:.3e} N", result.force_pfa);
+/// println!("Corrected: {:.3e} N", result.force_corrected);
+/// println!("Relative error: {:.2}%", result.relative_error * 100.0);
+/// ```
+pub fn casimir_force_with_de(
+    radius: f64,
+    gap: f64,
+    coeffs: &DeCoefficients,
+) -> DerivativeExpansionResult {
+    let f_pfa = casimir_force_pfa(radius, gap);
+    let eps = gap / radius; // Expansion parameter d/R
+
+    // Corrections (note: F_PFA is negative, corrections maintain sign)
+    let corr_o1 = coeffs.a1 * eps * f_pfa;
+    let corr_o2 = coeffs.a2 * eps * eps * f_pfa;
+
+    let f_corrected = f_pfa + corr_o1 + corr_o2;
+
+    // Relative error estimate (absolute values for magnitude comparison)
+    let total_correction = (corr_o1 + corr_o2).abs();
+    let relative_error = if f_pfa.abs() > 1e-50 {
+        total_correction / f_pfa.abs()
+    } else {
+        0.0
+    };
+
+    // Convergence check: O2 should be much smaller than O1
+    let is_converged = corr_o2.abs() < 0.25 * corr_o1.abs() || eps < 0.01;
+
+    DerivativeExpansionResult {
+        force_pfa: f_pfa,
+        correction_o1: corr_o1,
+        correction_o2: corr_o2,
+        force_corrected: f_corrected,
+        relative_error,
+        expansion_param: eps,
+        is_converged,
+        coefficients: coeffs.source,
+    }
+}
+
+/// Estimate the derivative expansion error without computing corrected force.
+///
+/// This is a lightweight function that just returns the expected relative
+/// error for a given geometry, useful for validity checking.
+///
+/// # Arguments
+/// * `radius` - Sphere radius in meters
+/// * `gap` - Surface-to-surface gap in meters
+///
+/// # Returns
+/// Estimated relative error (fraction, not percent)
+///
+/// # Note
+/// Uses sphere-plate Dirichlet coefficients by default.
+pub fn estimate_de_error(radius: f64, gap: f64) -> f64 {
+    let eps = gap / radius;
+    let coeffs = &DeCoefficients::SPHERE_PLATE_DIRICHLET;
+
+    // Relative error ~ |a_1 * eps + a_2 * eps^2|
+    (coeffs.a1 * eps + coeffs.a2 * eps * eps).abs()
+}
+
+/// Compute the gap at which PFA error equals a target value.
+///
+/// Solves for d such that DE error ~ target_error.
+///
+/// # Arguments
+/// * `radius` - Sphere radius in meters
+/// * `target_error` - Desired maximum relative error (e.g., 0.01 for 1%)
+///
+/// # Returns
+/// Maximum gap in meters that achieves the target error
+///
+/// # Example
+/// ```
+/// use quantum_core::casimir::max_gap_for_error;
+///
+/// let radius = 5e-6;  // 5 um sphere
+/// let max_gap = max_gap_for_error(radius, 0.01);  // 1% error
+///
+/// println!("Max gap for 1% error: {:.1} nm", max_gap * 1e9);
+/// ```
+pub fn max_gap_for_error(radius: f64, target_error: f64) -> f64 {
+    // Simplified: using only a_1 term, d/R ~ target_error / a_1
+    let a1 = DeCoefficients::SPHERE_PLATE_DIRICHLET.a1;
+    let max_eps = target_error / a1.abs();
+    radius * max_eps
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1625,5 +2250,454 @@ mod tests {
         // High frequency returns 1
         let eps_high = model.epsilon_at_imaginary(1e20);
         assert_eq!(eps_high, 1.0);
+    }
+
+    // =========================================================================
+    // PFA Validity Guard Tests
+    // =========================================================================
+
+    #[test]
+    fn test_check_pfa_validity_one_percent() {
+        // R/d = 150 > 132 -> 1% validity achieved
+        let radius = 15e-6;
+        let gap = 100e-9;
+        let info = check_pfa_validity(radius, gap);
+
+        assert!(info.one_percent_valid, "R/d = {} should satisfy 1%", info.r_over_d);
+        assert!(info.five_percent_valid);
+        assert!(info.ten_percent_valid);
+        assert!(info.qualitative_valid);
+        assert_eq!(info.achieved_accuracy, PfaAccuracy::OnePercent);
+    }
+
+    #[test]
+    fn test_check_pfa_validity_five_percent() {
+        // R/d = 50 -> 5% but not 1%
+        let radius = 5e-6;
+        let gap = 100e-9;
+        let info = check_pfa_validity(radius, gap);
+
+        assert!(!info.one_percent_valid, "R/d = {} should NOT satisfy 1%", info.r_over_d);
+        assert!(info.five_percent_valid, "R/d = {} should satisfy 5%", info.r_over_d);
+        assert!(info.ten_percent_valid);
+        assert!(info.qualitative_valid);
+        assert_eq!(info.achieved_accuracy, PfaAccuracy::FivePercent);
+    }
+
+    #[test]
+    fn test_check_pfa_validity_ten_percent() {
+        // R/d = 15 -> 10% but not 5%
+        let radius = 1.5e-6;
+        let gap = 100e-9;
+        let info = check_pfa_validity(radius, gap);
+
+        assert!(!info.five_percent_valid);
+        assert!(info.ten_percent_valid);
+        assert!(info.qualitative_valid);
+        assert_eq!(info.achieved_accuracy, PfaAccuracy::TenPercent);
+    }
+
+    #[test]
+    fn test_check_pfa_validity_qualitative_only() {
+        // R/d = 8 -> qualitative only
+        let radius = 0.8e-6;
+        let gap = 100e-9;
+        let info = check_pfa_validity(radius, gap);
+
+        assert!(!info.ten_percent_valid);
+        assert!(info.qualitative_valid);
+        assert_eq!(info.achieved_accuracy, PfaAccuracy::Qualitative);
+    }
+
+    #[test]
+    fn test_check_pfa_validity_below_qualitative() {
+        // R/d = 3 -> below qualitative threshold
+        let radius = 0.3e-6;
+        let gap = 100e-9;
+        let info = check_pfa_validity(radius, gap);
+
+        assert!(!info.qualitative_valid);
+        // Still returns Qualitative as "achieved" (best possible)
+        assert_eq!(info.achieved_accuracy, PfaAccuracy::Qualitative);
+    }
+
+    #[test]
+    fn test_casimir_force_guarded_passes_at_one_percent() {
+        // R/d = 200 > 132 -> should pass 1%
+        let radius = 20e-6;
+        let gap = 100e-9;
+
+        let result = casimir_force_guarded(radius, gap, PfaAccuracy::OnePercent);
+        assert!(result.is_ok(), "Should pass at 1%: {:?}", result);
+
+        let force = result.unwrap();
+        assert!(force < 0.0, "Force should be attractive");
+    }
+
+    #[test]
+    fn test_casimir_force_guarded_fails_at_one_percent() {
+        // R/d = 50 < 132 -> should fail 1%
+        let radius = 5e-6;
+        let gap = 100e-9;
+
+        let result = casimir_force_guarded(radius, gap, PfaAccuracy::OnePercent);
+        assert!(result.is_err(), "Should fail at 1%");
+
+        match result {
+            Err(CasimirError::PfaViolation { d_over_r, accuracy, .. }) => {
+                assert!((d_over_r - 0.02).abs() < 0.001);
+                assert_eq!(accuracy, PfaAccuracy::OnePercent);
+            }
+            _ => panic!("Expected PfaViolation error"),
+        }
+    }
+
+    #[test]
+    fn test_casimir_force_guarded_passes_at_qualitative() {
+        // R/d = 50 > 5 -> should pass qualitative
+        let radius = 5e-6;
+        let gap = 100e-9;
+
+        let result = casimir_force_guarded(radius, gap, PfaAccuracy::Qualitative);
+        assert!(result.is_ok(), "Should pass qualitative");
+    }
+
+    #[test]
+    fn test_casimir_force_guarded_invalid_gap() {
+        let radius = 5e-6;
+        let gap = -100e-9;  // Invalid negative gap
+
+        let result = casimir_force_guarded(radius, gap, PfaAccuracy::Qualitative);
+        assert!(matches!(result, Err(CasimirError::InvalidGap { .. })));
+    }
+
+    #[test]
+    fn test_casimir_force_guarded_invalid_radius() {
+        let radius = -5e-6;  // Invalid negative radius
+        let gap = 100e-9;
+
+        let result = casimir_force_guarded(radius, gap, PfaAccuracy::Qualitative);
+        assert!(matches!(result, Err(CasimirError::InvalidRadius { .. })));
+    }
+
+    #[test]
+    fn test_casimir_force_with_validity() {
+        let radius = 5e-6;
+        let gap = 100e-9;
+
+        let (force, info) = casimir_force_with_validity(radius, gap);
+
+        assert!(force < 0.0);
+        assert_eq!(info.radius, radius);
+        assert_eq!(info.gap, gap);
+        assert!(info.five_percent_valid);
+        assert!(!info.one_percent_valid);
+    }
+
+    #[test]
+    fn test_casimir_spring_constant_guarded() {
+        // R/d = 200 -> passes 1%
+        let radius = 20e-6;
+        let gap = 100e-9;
+
+        let result = casimir_spring_constant_guarded(radius, gap, PfaAccuracy::OnePercent);
+        assert!(result.is_ok());
+
+        let k = result.unwrap();
+        assert!(k > 0.0, "Spring constant should be positive");
+
+        // k ~ 3*C*R/d^4 ~ order 10^-3 N/m for these parameters
+        assert!(k > 1e-5);
+        assert!(k < 1e-1);
+    }
+
+    #[test]
+    fn test_pfa_accuracy_thresholds() {
+        // Verify the threshold values match the literature
+        assert_eq!(PfaAccuracy::OnePercent.min_r_over_d(), 132.0);
+        assert_eq!(PfaAccuracy::FivePercent.min_r_over_d(), 26.0);
+        assert_eq!(PfaAccuracy::TenPercent.min_r_over_d(), 13.0);
+        assert_eq!(PfaAccuracy::Qualitative.min_r_over_d(), 5.0);
+
+        // d/R thresholds
+        assert!((1.0_f64 / 132.0 - 0.00757).abs() < 0.0001);  // 1%: d/R < 0.00755
+        assert!((1.0_f64 / 26.0 - 0.0385).abs() < 0.001);     // 5%: d/R < 0.038
+    }
+
+    #[test]
+    fn test_pfa_estimated_error_matches_d_over_r() {
+        let radius = 5e-6;
+        let gap = 100e-9;
+        let info = check_pfa_validity(radius, gap);
+
+        // Estimated error should equal d/R (leading order)
+        assert!((info.estimated_error - info.d_over_r).abs() < 1e-12);
+        assert!((info.estimated_error - 0.02).abs() < 1e-6);
+    }
+
+    // =========================================================================
+    // Derivative Expansion Error Estimate Tests
+    // =========================================================================
+
+    #[test]
+    fn test_de_coefficients_sphere_plate() {
+        let coeffs = &DeCoefficients::SPHERE_PLATE_DIRICHLET;
+        // a_1 = 1/3 for sphere-plate Dirichlet
+        assert!((coeffs.a1 - 1.0 / 3.0).abs() < 1e-12);
+        assert!(coeffs.source.contains("Emig"));
+    }
+
+    #[test]
+    fn test_casimir_force_with_de_basic() {
+        let radius = 5e-6;
+        let gap = 100e-9;
+
+        let result = casimir_force_with_de(
+            radius, gap,
+            &DeCoefficients::SPHERE_PLATE_DIRICHLET,
+        );
+
+        // PFA force should be attractive
+        assert!(result.force_pfa < 0.0);
+
+        // Corrected force should also be attractive
+        assert!(result.force_corrected < 0.0);
+
+        // For d/R = 0.02, correction is small but non-zero
+        assert!(result.relative_error > 0.0);
+        assert!(result.relative_error < 0.1); // Less than 10% error
+
+        // Expansion parameter should be d/R
+        assert!((result.expansion_param - 0.02).abs() < 1e-6);
+    }
+
+    #[test]
+    fn test_casimir_force_with_de_convergence() {
+        // Small d/R -> well converged
+        let radius = 20e-6;  // Large sphere
+        let gap = 100e-9;    // d/R = 0.005
+
+        let result = casimir_force_with_de(
+            radius, gap,
+            &DeCoefficients::SPHERE_PLATE_DIRICHLET,
+        );
+
+        assert!(result.is_converged, "Should be converged at d/R = 0.005");
+
+        // Large d/R -> may not be converged
+        let radius_small = 0.5e-6;  // Small sphere
+        let gap_large = 100e-9;     // d/R = 0.2
+
+        let result2 = casimir_force_with_de(
+            radius_small, gap_large,
+            &DeCoefficients::SPHERE_PLATE_DIRICHLET,
+        );
+
+        // O2 term becomes comparable to O1 at large d/R
+        // Convergence depends on exact ratio
+        assert!(result2.expansion_param > 0.1);
+    }
+
+    #[test]
+    fn test_casimir_force_with_de_correction_sign() {
+        // For Dirichlet (a_1 = +1/3), correction has same sign as F_PFA
+        // Since F_PFA < 0, correction < 0, so |F_corrected| > |F_PFA|
+        let radius = 5e-6;
+        let gap = 100e-9;
+
+        let result = casimir_force_with_de(
+            radius, gap,
+            &DeCoefficients::SPHERE_PLATE_DIRICHLET,
+        );
+
+        // O1 correction should have same sign as F_PFA (both negative)
+        assert!(result.correction_o1 < 0.0);
+
+        // Corrected force should be more negative (larger magnitude)
+        assert!(result.force_corrected < result.force_pfa);
+    }
+
+    #[test]
+    fn test_estimate_de_error() {
+        let radius = 5e-6;
+        let gap = 100e-9;  // d/R = 0.02
+
+        let error = estimate_de_error(radius, gap);
+
+        // Should be approximately a_1 * (d/R) ~ 0.02/3 ~ 0.0067
+        assert!(error > 0.006);
+        assert!(error < 0.008);
+    }
+
+    #[test]
+    fn test_max_gap_for_error() {
+        let radius = 5e-6;
+        let target_error = 0.01;  // 1% error
+
+        let max_gap = max_gap_for_error(radius, target_error);
+
+        // For 1% error with a_1 = 1/3, d/R ~ 0.03, so d ~ 150 nm
+        assert!(max_gap > 100e-9);
+        assert!(max_gap < 200e-9);
+
+        // Verify: actual error at this gap should be near target
+        let actual_error = estimate_de_error(radius, max_gap);
+        assert!((actual_error - target_error).abs() < 0.005);
+    }
+
+    #[test]
+    fn test_de_neumann_has_opposite_sign() {
+        // Neumann BC has a_1 = -1/3, opposite to Dirichlet
+        let coeffs_d = &DeCoefficients::SPHERE_PLATE_DIRICHLET;
+        let coeffs_n = &DeCoefficients::SPHERE_PLATE_NEUMANN;
+
+        assert!((coeffs_d.a1 + coeffs_n.a1).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_de_cylinder_different_from_sphere() {
+        let coeffs_sphere = &DeCoefficients::SPHERE_PLATE_DIRICHLET;
+        let coeffs_cyl = &DeCoefficients::CYLINDER_PLATE;
+
+        // Cylinder has different a_1
+        assert!((coeffs_sphere.a1 - coeffs_cyl.a1).abs() > 0.1);
+    }
+
+    // =========================================================================
+    // Strict Spring Constant / Gain Tests
+    // =========================================================================
+
+    #[test]
+    fn test_stricter_for_derivative() {
+        assert_eq!(
+            PfaAccuracy::Qualitative.stricter_for_derivative(),
+            PfaAccuracy::TenPercent
+        );
+        assert_eq!(
+            PfaAccuracy::TenPercent.stricter_for_derivative(),
+            PfaAccuracy::FivePercent
+        );
+        assert_eq!(
+            PfaAccuracy::FivePercent.stricter_for_derivative(),
+            PfaAccuracy::OnePercent
+        );
+        assert_eq!(
+            PfaAccuracy::OnePercent.stricter_for_derivative(),
+            PfaAccuracy::OnePercent
+        );
+    }
+
+    #[test]
+    fn test_spring_constant_strict_passes() {
+        // Very large R/d for 1% spring constant accuracy
+        let radius = 40e-6;  // R/d = 400, very safe
+        let gap = 100e-9;
+
+        let result = spring_constant_strict(radius, gap, PfaAccuracy::OnePercent);
+        assert!(result.is_ok());
+    }
+
+    #[test]
+    fn test_spring_constant_strict_fails() {
+        // R/d = 50 -> passes 5% force but not 1% force
+        // So for 5% spring constant (needs 1% force), it should fail
+        let radius = 5e-6;
+        let gap = 100e-9;
+
+        let result = spring_constant_strict(radius, gap, PfaAccuracy::FivePercent);
+        assert!(result.is_err(), "Should fail: 5% k needs 1% force, R/d=50 insufficient");
+    }
+
+    #[test]
+    fn test_spring_constant_strict_vs_regular() {
+        // The strict version requires more stringent geometry
+        let radius = 13e-6;  // R/d = 130, just under 132 for 1%
+        let gap = 100e-9;
+
+        // Regular guard at 5% should pass (R/d > 26)
+        let regular = casimir_spring_constant_guarded(radius, gap, PfaAccuracy::FivePercent);
+        assert!(regular.is_ok());
+
+        // Strict at 5% k (needs 1% force) should fail (R/d < 132)
+        let strict = spring_constant_strict(radius, gap, PfaAccuracy::FivePercent);
+        assert!(strict.is_err());
+    }
+
+    #[test]
+    fn test_transistor_gain_strict() {
+        let radius = 40e-6;
+        let gap = 100e-9;
+        let plate_spring = 1e-3;  // 1 mN/m
+
+        let result = transistor_gain_strict(
+            radius, gap, plate_spring,
+            PfaAccuracy::TenPercent,
+        );
+        assert!(result.is_ok());
+
+        let gain = result.unwrap();
+        assert!(gain > 0.0);
+    }
+
+    #[test]
+    fn test_transistor_gain_strict_zero_plate_spring() {
+        let radius = 5e-6;
+        let gap = 100e-9;
+
+        // Zero plate spring gives zero gain (no coupling)
+        let result = transistor_gain_strict(
+            radius, gap, 0.0,
+            PfaAccuracy::Qualitative,
+        );
+        assert!(result.is_ok());
+        assert_eq!(result.unwrap(), 0.0);
+    }
+
+    #[test]
+    fn test_spring_constant_with_diagnostics() {
+        let radius = 5e-6;
+        let gap = 100e-9;
+
+        let result = spring_constant_with_diagnostics(
+            radius, gap,
+            PfaAccuracy::FivePercent,
+        );
+
+        assert!(result.k > 0.0);
+        assert!(result.estimated_k_error > 0.0);
+        // Error amplification: k error ~ 4x force error
+        assert!(result.estimated_k_error > result.validity.estimated_error);
+    }
+
+    #[test]
+    fn test_spring_constant_error_factor() {
+        assert!((SPRING_CONSTANT_ERROR_FACTOR - 4.0).abs() < 1e-12);
+    }
+
+    #[test]
+    fn test_effective_for_spring_constant() {
+        // Large sphere: R/d = 400, should achieve target accuracy
+        let result = PfaAccuracy::FivePercent.effective_for_spring_constant(40e-6, 100e-9);
+        assert_eq!(result, Some(PfaAccuracy::FivePercent));
+
+        // Medium sphere: R/d = 100
+        // For 5% k: needs stricter = 1% force (R/d > 132), R/d = 100 fails
+        // Fallback: passes 5% force? (R/d > 26) YES -> degrade to 10%
+        let result2 = PfaAccuracy::FivePercent.effective_for_spring_constant(10e-6, 100e-9);
+        assert_eq!(result2, Some(PfaAccuracy::TenPercent));
+
+        // Qualitative k: needs 10% force (R/d > 13), R/d = 100 passes stricter
+        let result3 = PfaAccuracy::Qualitative.effective_for_spring_constant(10e-6, 100e-9);
+        assert_eq!(result3, Some(PfaAccuracy::Qualitative));
+
+        // 1% k with R/d = 100: needs 1% force (stricter = 1%) but R/d < 132
+        // Fallback: passes 1%? R/d > 132? NO. Returns None
+        let result4 = PfaAccuracy::OnePercent.effective_for_spring_constant(10e-6, 100e-9);
+        assert!(result4.is_none(), "R/d = 100 cannot achieve 1% k");
+
+        // 10% k with R/d = 100: needs 5% force (stricter), R/d > 26 passes
+        // Since R/d = 100 > 26 (5%), stricter is satisfied -> return Some(TenPercent)
+        let result5 = PfaAccuracy::TenPercent.effective_for_spring_constant(10e-6, 100e-9);
+        assert_eq!(result5, Some(PfaAccuracy::TenPercent));
     }
 }

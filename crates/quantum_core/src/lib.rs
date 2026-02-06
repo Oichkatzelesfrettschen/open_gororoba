@@ -73,6 +73,17 @@ pub use casimir::{
     PfaAccuracy, AdditivityResult,
     force_sps_additive, cross_coupling_additive, transistor_gain_additive,
     nonadditivity_correction,
+    // PFA validity guard system (Emig et al. 2006)
+    CasimirError, PfaValidityInfo,
+    check_pfa_validity, casimir_force_guarded, casimir_force_with_validity,
+    casimir_spring_constant_guarded,
+    // Derivative expansion error estimates (Fosco et al. 2024)
+    DeCoefficients, DerivativeExpansionResult,
+    casimir_force_with_de, estimate_de_error, max_gap_for_error,
+    // Strict spring constant / gain modes with error amplification
+    SPRING_CONSTANT_ERROR_FACTOR, SpringConstantResult,
+    spring_constant_strict, transistor_gain_strict,
+    spring_constant_with_diagnostics,
     // Lifshitz theory with dielectric functions
     DielectricModel, LifshitzResult,
     fresnel_tm_imaginary, fresnel_te_imaginary,
