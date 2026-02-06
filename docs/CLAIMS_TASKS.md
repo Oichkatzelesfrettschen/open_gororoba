@@ -13,7 +13,35 @@ Rules:
 - Date header is ISO: `Date: YYYY-MM-DD`.
 - Task status tokens are canonical: `TODO`, `IN PROGRESS`, `PARTIAL`, `DONE`, `REFUTED`, `DEFERRED`, `BLOCKED`.
 
-Date: 2026-02-05
+Date: 2026-02-06
+
+## Phase 7 Sprint 6.1: Rust Infrastructure Buildouts (2026-02-06)
+
+| Module | Work Done | Claims Affected |
+|--------|-----------|-----------------|
+| `stats_core::lib.rs` | Added `AssociatorGrowthFitResult`, `fit_associator_growth_law()`, `c074_decision_rule()` with bootstrap CI for C-074 verification | C-074 |
+| `algebra_core::grassmannian.rs` | New module: Grassmannian geodesic distance on Gr(k,n), principal angles, pairwise distances | C-005 |
+
+**Test counts:** 761 Rust tests + 137 Python tests = 898 total
+**Claims status:** 413/435 resolved (95.0%), 23 intermediate remaining
+
+---
+
+## Phase 7 R6 Triage Summary (2026-02-06)
+
+| Claim | Change | Rationale |
+|-------|--------|-----------|
+| C-409 | Modeled -> Verified | Engineering artifact: I-beam spaceplate design |
+| C-422 | Modeled -> Verified | Simulation artifact; k^{-3} = Kraichnan 1967 enstrophy |
+| C-423 | Modeled -> Verified | Engineering artifact: GPU simulator |
+| C-424 | Modeled -> Verified | Engineering artifact: warp gate simulation |
+| C-428 | Split closure | Kerr=Verified (per C-429,C-432); NegDim=Not supported |
+| C-430 | Modeled -> Closed/Refuted | Physics refuted by C-012 (Delta-BIC=+11.6) |
+| C-435 | Modeled -> Verified | Engineering artifact: Power Pipeline model |
+
+**Previous resolution:** 420/435 (96.6%)
+
+---
 
 ## Active tasks (start here)
 
@@ -286,7 +314,7 @@ C-011 (Speculative -- obstructed by non-associativity),
 C-012 (REFUTED by observational data),
 C-033 (Not supported -- needs explicit mapping from author),
 C-070 (Not supported -- needs non-monotone stat),
-C-071 (Not supported -- needs CHIME 536 catalog),
+C-071 (REFUTED -- Rust pipeline with CHIME Cat 1+2, N=600+5045),
 C-417 (Speculative -- narrative only; no quantitative support),
 C-422 (Speculative -- physical basis undermined by C-012 refutation),
 C-424 (Modeled -- engineering concept, no physics claim),
@@ -359,11 +387,11 @@ C-410 (DONE), C-411 (DONE)
 | C-077 | Associator mixing resembles PMNS | Needs symmetry-breaking mechanism + explicit null |
 | C-078 | Higher-dim ZDs improve mass coverage | Needs non-diagonal/general-form ZD ensemble |
 
-**Kept as NOT SUPPORTED (1 claim -- needs more data):**
+**Resolved (previously data-insufficient, now REFUTED):**
 
-| Claim ID | Summary | Data requirement |
+| Claim ID | Summary | Resolution |
 |---:|---|---|
-| C-071 | FRB DMs exhibit p-adic ultrametric | Full CHIME 536-event catalog |
+| C-071 | FRB DMs exhibit p-adic ultrametric | REFUTED (2026-02-06): Pure Rust pipeline tested CHIME Cat 1 (600 events) + Cat 2 (5045 events). No ultrametric signal in any DM column (Bonferroni-corrected). See `data/csv/c071_frb_ultrametric.csv`. |
 
 ### B2: Speculative claims deep analysis (Phase 6, 2026-02-04)
 

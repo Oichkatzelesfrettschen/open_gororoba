@@ -12,6 +12,7 @@ statrs = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 thiserror = { workspace = true }
+algebra_core = { path = "../algebra_core" }
 
 [dev-dependencies]
 approx = { workspace = true }

@@ -69,6 +69,14 @@ path = "src/bin/harper_chern.rs"
 name = "tcmt-sweep"
 path = "src/bin/tcmt_sweep.rs"
 
+[[bin]]
+name = "fetch-chime-frb"
+path = "src/bin/fetch_chime_frb.rs"
+
+[[bin]]
+name = "frb-ultrametric"
+path = "src/bin/frb_ultrametric.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
@@ -87,3 +95,5 @@ csv = { workspace = true }
 num-complex = { workspace = true }
 plotters = { workspace = true }
 plotters-svg = { workspace = true }
+ureq = { workspace = true }
+sha2 = { workspace = true }
