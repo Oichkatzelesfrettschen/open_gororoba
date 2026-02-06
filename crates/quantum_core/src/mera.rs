@@ -25,9 +25,9 @@ pub type ComplexMatrix = Vec<Vec<Complex64>>;
 pub fn random_unitary(d: usize, rng: &mut ChaCha8Rng) -> ComplexMatrix {
     // Generate random complex matrix
     let mut a: ComplexMatrix = vec![vec![Complex64::new(0.0, 0.0); d]; d];
-    for i in 0..d {
-        for j in 0..d {
-            a[i][j] = Complex64::new(
+    for row in &mut a {
+        for elem in row.iter_mut() {
+            *elem = Complex64::new(
                 rng.gen_range(-1.0..1.0),
                 rng.gen_range(-1.0..1.0),
             );
@@ -47,16 +47,17 @@ fn gram_schmidt_orthonormalize(a: &mut ComplexMatrix) {
         // Subtract projections onto previous vectors
         for j in 0..i {
             let proj = inner_product(&a[j], &a[i]);
-            for k in 0..d {
-                a[i][k] = a[i][k] - proj * a[j][k];
+            let basis_j = a[j].clone();
+            for (k, elem) in a[i].iter_mut().enumerate() {
+                *elem -= proj * basis_j[k];
             }
         }
 
         // Normalize
         let norm = vector_norm(&a[i]);
         if norm > 1e-10 {
-            for k in 0..d {
-                a[i][k] = a[i][k] / norm;
+            for elem in &mut a[i] {
+                *elem /= norm;
             }
         }
     }

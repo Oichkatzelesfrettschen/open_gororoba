@@ -40,6 +40,7 @@
 use faer::complex_native::c64;
 use faer::Mat;
 use faer::Side;
+use rayon::prelude::*;
 
 /// Maximum bond dimension before truncation.
 const DEFAULT_CHI_MAX: usize = 64;
@@ -113,9 +114,9 @@ impl MatrixProductState {
     pub fn new_zero_state(n_qubits: usize) -> Self {
         let mut tensors = Vec::with_capacity(n_qubits);
 
-        for i in 0..n_qubits {
-            let chi_left = if i == 0 { 1 } else { 1 };
-            let chi_right = if i == n_qubits - 1 { 1 } else { 1 };
+        for _i in 0..n_qubits {
+            let chi_left = 1;
+            let chi_right = 1;
 
             let mut tensor = MpsTensor::zeros(chi_left, 2, chi_right);
             // Set |0> coefficient to 1
@@ -186,7 +187,7 @@ impl MatrixProductState {
                         chi_new += 1;
                     }
                 }
-                chi_new = chi_new.max(1).min(DEFAULT_CHI_MAX);
+                chi_new = chi_new.clamp(1, DEFAULT_CHI_MAX);
 
                 // Build tensor from U
                 let mut tensor = MpsTensor::zeros(chi_left, physical_dim, chi_new);
@@ -569,7 +570,7 @@ impl MatrixProductState {
         let size = 1 << self.n_qubits;
         let mut coeffs = vec![c64::new(0.0, 0.0); size];
 
-        for basis_state in 0..size {
+        for (basis_state, coeff) in coeffs.iter_mut().enumerate() {
             // Extract physical indices
             let mut physical_indices = Vec::with_capacity(self.n_qubits);
             for q in 0..self.n_qubits {
@@ -603,7 +604,7 @@ impl MatrixProductState {
                 result = new_result;
             }
 
-            coeffs[basis_state] = result.read(0, 0);
+            *coeff = result.read(0, 0);
         }
 
         coeffs
@@ -678,6 +679,186 @@ impl MatrixProductState {
         }
 
         entropy
+    }
+
+    // =========================================================================
+    // Parallel methods using rayon
+    // =========================================================================
+
+    /// Convert MPS back to dense state vector (parallel version).
+    ///
+    /// Uses rayon to parallelize over basis states. Recommended for n > 10 qubits.
+    pub fn to_state_vector_parallel(&self) -> Vec<c64> {
+        let size = 1 << self.n_qubits;
+        let n_qubits = self.n_qubits;
+        let tensors = &self.tensors;
+
+        (0..size)
+            .into_par_iter()
+            .map(|basis_state| {
+                // Extract physical indices for this basis state
+                let mut physical_indices = Vec::with_capacity(n_qubits);
+                for q in 0..n_qubits {
+                    let bit = (basis_state >> (n_qubits - 1 - q)) & 1;
+                    physical_indices.push(bit);
+                }
+
+                // Contract MPS for this basis state
+                let mut result = vec![c64::new(1.0, 0.0)];
+                let mut result_dim = 1;
+
+                for (site, &p) in physical_indices.iter().enumerate() {
+                    let tensor = &tensors[site];
+                    let chi_l = tensor.chi_left;
+                    let chi_r = tensor.chi_right;
+
+                    let mut new_result = vec![c64::new(0.0, 0.0); chi_r];
+
+                    for (r, slot) in new_result.iter_mut().enumerate() {
+                        let mut sum = c64::new(0.0, 0.0);
+                        for (l, &left) in result.iter().enumerate().take(chi_l.min(result_dim)) {
+                            let t = tensor.get(l, p, r);
+                            sum = c64::new(
+                                sum.re + left.re * t.re - left.im * t.im,
+                                sum.im + left.re * t.im + left.im * t.re,
+                            );
+                        }
+                        *slot = sum;
+                    }
+                    result = new_result;
+                    result_dim = chi_r;
+                }
+
+                result[0]
+            })
+            .collect()
+    }
+
+    /// Apply single-qubit gates to multiple sites in parallel.
+    ///
+    /// Each gate is a 2x2 matrix, applied to the corresponding site.
+    pub fn apply_single_gates_parallel(&mut self, gates: &[(usize, [c64; 4])]) {
+        // Collect which tensors need modification
+        let updates: Vec<_> = gates
+            .par_iter()
+            .filter_map(|(site, gate)| {
+                if *site >= self.n_qubits {
+                    return None;
+                }
+
+                let tensor = &self.tensors[*site];
+                let chi_l = tensor.chi_left;
+                let chi_r = tensor.chi_right;
+
+                // Compute new tensor data
+                let new_data: Vec<c64> = (0..chi_l)
+                    .flat_map(|l| {
+                        (0..2).flat_map(move |p_new| {
+                            (0..chi_r).map(move |r| {
+                                let mut sum = c64::new(0.0, 0.0);
+                                for p_old in 0..2 {
+                                    let g = gate[p_new * 2 + p_old];
+                                    let t = tensor.get(l, p_old, r);
+                                    sum = c64::new(
+                                        sum.re + g.re * t.re - g.im * t.im,
+                                        sum.im + g.re * t.im + g.im * t.re,
+                                    );
+                                }
+                                sum
+                            })
+                        })
+                    })
+                    .collect();
+
+                Some((*site, new_data))
+            })
+            .collect();
+
+        // Apply updates
+        for (site, new_data) in updates {
+            self.tensors[site].data = new_data;
+        }
+
+        self.ortho_center = None;
+    }
+
+    /// Compute norm squared in parallel (for large bond dimensions).
+    pub fn norm_squared_parallel(&self) -> f64 {
+        // For small MPS, sequential is fine
+        if self.max_bond_dimension() < 16 {
+            return self.norm_squared();
+        }
+
+        let mut left_data = vec![c64::new(1.0, 0.0)];
+        let mut left_dim = 1;
+
+        for tensor in &self.tensors {
+            let chi_l = tensor.chi_left;
+            let chi_r = tensor.chi_right;
+
+            // Clone left_data for parallel access
+            let left_ref = &left_data;
+            let left_d = left_dim;
+
+            // Parallelize over output index pairs (r1, r2)
+            let new_left_data: Vec<c64> = (0..chi_r * chi_r)
+                .into_par_iter()
+                .map(|idx| {
+                    let r1 = idx / chi_r;
+                    let r2 = idx % chi_r;
+                    let mut sum = c64::new(0.0, 0.0);
+                    for l1 in 0..chi_l.min(left_d) {
+                        for l2 in 0..chi_l.min(left_d) {
+                            let left_val = left_ref[l1 * left_d + l2];
+                            for p in 0..2 {
+                                let a = tensor.get(l1, p, r1);
+                                let b = tensor.get(l2, p, r2);
+                                let a_conj = c64::new(a.re, -a.im);
+                                let prod = c64::new(
+                                    a_conj.re * b.re - a_conj.im * b.im,
+                                    a_conj.re * b.im + a_conj.im * b.re,
+                                );
+                                let contrib = c64::new(
+                                    left_val.re * prod.re - left_val.im * prod.im,
+                                    left_val.re * prod.im + left_val.im * prod.re,
+                                );
+                                sum = c64::new(sum.re + contrib.re, sum.im + contrib.im);
+                            }
+                        }
+                    }
+                    sum
+                })
+                .collect();
+
+            left_data = new_left_data;
+            left_dim = chi_r;
+        }
+
+        left_data[0].re
+    }
+
+    /// Apply Hadamard gates to all qubits in parallel.
+    pub fn apply_hadamard_all_parallel(&mut self) {
+        let inv_sqrt2 = std::f64::consts::FRAC_1_SQRT_2;
+        let h = [
+            c64::new(inv_sqrt2, 0.0),
+            c64::new(inv_sqrt2, 0.0),
+            c64::new(inv_sqrt2, 0.0),
+            c64::new(-inv_sqrt2, 0.0),
+        ];
+
+        let gates: Vec<_> = (0..self.n_qubits).map(|i| (i, h)).collect();
+        self.apply_single_gates_parallel(&gates);
+    }
+
+    /// Compute entanglement entropy at multiple bipartitions in parallel.
+    ///
+    /// Returns entropy for each bipartition in 1..n_qubits.
+    pub fn measure_entropy_all_parallel(&self) -> Vec<f64> {
+        (1..self.n_qubits)
+            .into_par_iter()
+            .map(|k| self.measure_entropy(k))
+            .collect()
     }
 }
 
@@ -798,5 +979,77 @@ mod tests {
         assert!((coeffs[1].re - 1.0).abs() < 1e-10, "|01> = {}", coeffs[1].re);
         assert!((coeffs[2].re).abs() < 1e-10);
         assert!((coeffs[3].re).abs() < 1e-10);
+    }
+
+    // =========================================================================
+    // Parallel method tests
+    // =========================================================================
+
+    #[test]
+    fn test_to_state_vector_parallel_matches_sequential() {
+        let mut mps = MatrixProductState::new_zero_state(4);
+        mps.apply_hadamard(0);
+        mps.apply_cnot(0, 1);
+        mps.apply_hadamard(2);
+
+        let seq = mps.to_state_vector();
+        let par = mps.to_state_vector_parallel();
+
+        assert_eq!(seq.len(), par.len());
+        for (a, b) in seq.iter().zip(par.iter()) {
+            let diff = ((a.re - b.re).powi(2) + (a.im - b.im).powi(2)).sqrt();
+            assert!(diff < 1e-10, "Mismatch: {} vs {}", a, b);
+        }
+    }
+
+    #[test]
+    fn test_apply_single_gates_parallel() {
+        let mut mps1 = MatrixProductState::new_zero_state(4);
+        let mut mps2 = MatrixProductState::new_zero_state(4);
+
+        // Apply gates sequentially
+        mps1.apply_hadamard(0);
+        mps1.apply_hadamard(1);
+        mps1.apply_hadamard(2);
+        mps1.apply_hadamard(3);
+
+        // Apply gates in parallel
+        mps2.apply_hadamard_all_parallel();
+
+        let v1 = mps1.to_state_vector();
+        let v2 = mps2.to_state_vector();
+
+        for (a, b) in v1.iter().zip(v2.iter()) {
+            let diff = ((a.re - b.re).powi(2) + (a.im - b.im).powi(2)).sqrt();
+            assert!(diff < 1e-10, "Mismatch: {} vs {}", a, b);
+        }
+    }
+
+    #[test]
+    fn test_norm_squared_parallel() {
+        let mut mps = MatrixProductState::new_zero_state(4);
+        mps.apply_hadamard(0);
+        mps.apply_cnot(0, 1);
+
+        let norm_seq = mps.norm_squared();
+        let norm_par = mps.norm_squared_parallel();
+
+        assert!((norm_seq - norm_par).abs() < 1e-10);
+        assert!((norm_seq - 1.0).abs() < 0.1, "Should be normalized");
+    }
+
+    #[test]
+    fn test_measure_entropy_all_parallel() {
+        let mut mps = MatrixProductState::new_zero_state(4);
+        mps.apply_hadamard(0);
+        mps.apply_cnot(0, 1);
+
+        let entropies = mps.measure_entropy_all_parallel();
+
+        // Should have n-1 = 3 entropy values
+        assert_eq!(entropies.len(), 3);
+
+        // At bipartition 1, we expect entanglement (Bell-like on first 2 qubits)
+        assert!(entropies[0] > 0.1, "Should have entanglement at k=1");
     }
 }

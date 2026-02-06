@@ -7,11 +7,13 @@ license = "MIT"
 
 [dependencies]
 nalgebra = { workspace = true }
+ndarray = { workspace = true }
 num-complex = { workspace = true }
 petgraph = { workspace = true }
 ordered-float = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
+rayon = { workspace = true }
 rustfft = "6.2"
 faer = "0.20"
 thiserror = { workspace = true }

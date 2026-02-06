@@ -153,6 +153,7 @@ pub fn propagator_l2_error(alpha: f64, d: f64, t: f64, n_x: usize, l: f64, n_k: 
 /// * `dt` - Time step
 /// * `n_steps` - Number of time steps
 /// * `normalize` - Whether to renormalize after each step
+#[allow(clippy::too_many_arguments)]
 pub fn split_operator_evolve(
     psi0: &[Complex64],
     x: &[f64],
@@ -386,6 +387,7 @@ fn gamma(x: f64) -> f64 {
         PI / ((PI * x).sin() * gamma(1.0 - x))
     } else {
         let g = 7.0;
+        #[allow(clippy::excessive_precision)]
         let c = [
             0.99999999999980993,
             676.5203681218851,

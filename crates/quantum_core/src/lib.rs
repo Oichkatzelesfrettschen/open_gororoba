@@ -24,8 +24,13 @@ pub mod fractional_schrodinger;
 pub mod tensor_network_classical;
 pub mod harper_chern;
 pub mod mps;
+pub mod peps;
+pub mod tensor_networks;
 pub mod casimir;
 pub mod grover;
+pub mod hypothesis_search;
+pub mod hardware;
+pub mod qua_ten_net_bridge;
 
 pub use mera::{
     build_mera_structure, von_neumann_entropy, mera_entropy_estimate,
@@ -61,6 +66,19 @@ pub use harper_chern::{
 
 pub use mps::{
     MatrixProductState, MpsTensor,
+};
+
+pub use peps::{
+    Peps, PepsTensor,
+};
+
+pub use tensor_networks::{
+    EntanglementMeasure, estimate_memory_bytes, suggest_representation,
+};
+
+pub use qua_ten_net_bridge::{
+    TruncatedSVD, truncated_svd, contract_network, tensor_contract,
+    truncate_mps_bond, estimate_contraction_cost,
 };
 
 pub use casimir::{
@@ -103,4 +121,16 @@ pub use grover::{
     success_probability, top_candidates,
     grover_search, grover_search_indices, amplitude_amplification,
     theoretical_amplitude, theoretical_success_probability,
+};
+
+pub use hypothesis_search::{
+    Hypothesis, OraclePredicate, ThresholdOracle,
+    HypothesisSearchResult, QuantumHypothesisSearch,
+    quantum_hypothesis_search, quantum_grid_search,
+};
+
+pub use hardware::{
+    QubitTopology, NativeGate, GateTiming, ErrorRates, CoherenceTimes,
+    HardwareProfile, IdealHardware,
+    NeutralAtomProfile, SuperconductingProfile, SuperconductingVendor, TrappedIonProfile,
 };

@@ -139,11 +139,11 @@ impl TensorNetworkState {
 
         let mut new_data = self.data.clone();
 
-        for i in 0..n {
+        for (i, entry) in new_data.iter_mut().enumerate().take(n) {
             // If control qubit is 1, flip target qubit
             if i & control_mask != 0 {
                 let flipped = i ^ target_mask;
-                new_data[i] = self.data[flipped];
+                *entry = self.data[flipped];
             }
         }
 

@@ -782,6 +782,7 @@ pub struct ThreeBodyResult {
 ///
 /// # Returns
 /// Full three-body dynamics result with Jacobian and stability
+#[allow(clippy::too_many_arguments)]
 pub fn three_body_casimir_dynamics(
     r_source: f64,
     r_drain: f64,
@@ -1475,8 +1476,9 @@ impl PfaValidityInfo {
 /// let gap = 100e-9;   // 100 nm gap
 ///
 /// let info = check_pfa_validity(radius, gap);
-/// assert!(info.one_percent_valid);  // R/d = 50, need > 132 for 1%
-/// // Actually R/d = 50 does NOT satisfy 1% (needs > 132)
+/// // R/d = 50: NOT 1% accurate (needs > 132), but IS 5% accurate (needs > 26)
+/// assert!(!info.one_percent_valid);
+/// assert!(info.five_percent_valid);
 /// ```
 pub fn check_pfa_validity(radius: f64, gap: f64) -> PfaValidityInfo {
     let r_over_d = if gap > 0.0 { radius / gap } else { 0.0 };

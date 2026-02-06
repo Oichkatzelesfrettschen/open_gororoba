@@ -165,8 +165,7 @@ fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
     // Reorder eigenvectors according to sorted eigenvalues
     let u = eig.u();
     let mut eigenvectors = Mat::<c64>::zeros(n, n);
-    for new_col in 0..n {
-        let orig_col = indexed[new_col].0;
+    for (new_col, &(orig_col, _)) in indexed.iter().enumerate() {
         for row in 0..n {
             eigenvectors.write(row, new_col, u.read(row, orig_col));
         }
@@ -280,8 +279,8 @@ pub fn fhs_chern_numbers(p: u32, q: u32, n_grid: usize) -> ChernResult {
     // Gap Chern numbers are cumulative sums
     let mut gap_cherns = Vec::with_capacity(q_usize - 1);
     let mut cumsum = 0;
-    for i in 0..(q_usize - 1) {
-        cumsum += band_cherns[i];
+    for &chern in band_cherns.iter().take(q_usize - 1) {
+        cumsum += chern;
         gap_cherns.push(cumsum);
     }
 
