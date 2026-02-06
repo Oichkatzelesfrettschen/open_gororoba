@@ -1,0 +1,20 @@
+[package]
+name = "data_core"
+version = "0.1.0"
+edition = "2021"
+description = "Dataset acquisition, validation, and caching for cosmological catalogs"
+license = "MIT"
+
+[dependencies]
+csv = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+sha2 = { workspace = true }
+ureq = { workspace = true }
+thiserror = { workspace = true }
+flate2 = { workspace = true }
+zip = { workspace = true }
+tar = { workspace = true }
+
+[dev-dependencies]
+approx = { workspace = true }

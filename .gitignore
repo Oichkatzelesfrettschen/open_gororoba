@@ -95,3 +95,20 @@ data/h5/*.h5
 data/external/jarvis_dft/
 reports/trufflehog_results.json
 *.h5
+
+# Fetched datasets (large, reproducible via fetch-datasets)
+data/external/*.tar.gz
+data/external/*.zip
+data/external/*.gfc
+data/external/wmap9_chains/
+data/external/planck2018_chains/
+data/external/jpl_planets_*.csv
+data/external/sdss_dr18_*.csv
+data/external/gaia_dr3_*.csv
+data/external/fermi_gbm_*.csv
+data/external/tsis1_*.csv
+data/external/nanograv_*.csv
+data/external/PantheonPlusSH0ES.dat
+data/external/igrf13coeffs.txt
+data/external/GGM05S.gfc
+data/external/GRGM1200B.gfc

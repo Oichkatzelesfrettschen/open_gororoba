@@ -1,0 +1,9 @@
+//! File format parsers for specialized data formats.
+//!
+//! These handle formats beyond standard CSV that appear in geophysical
+//! and astronomical data archives.
+
+pub mod pantheon_dat;
+pub mod mcmc_chain;
+pub mod tap;
+pub mod gfc;

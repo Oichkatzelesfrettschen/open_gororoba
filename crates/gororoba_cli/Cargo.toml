@@ -77,6 +77,30 @@ path = "src/bin/fetch_chime_frb.rs"
 name = "frb-ultrametric"
 path = "src/bin/frb_ultrametric.rs"
 
+[[bin]]
+name = "gw-merger-tree"
+path = "src/bin/gw_merger_tree.rs"
+
+[[bin]]
+name = "frb-cascades"
+path = "src/bin/frb_cascades.rs"
+
+[[bin]]
+name = "dm-ultrametric"
+path = "src/bin/dm_ultrametric.rs"
+
+[[bin]]
+name = "baire-compact"
+path = "src/bin/baire_compact.rs"
+
+[[bin]]
+name = "cosmic-dendrogram"
+path = "src/bin/cosmic_dendrogram.rs"
+
+[[bin]]
+name = "fetch-datasets"
+path = "src/bin/fetch_datasets.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
@@ -87,7 +111,10 @@ quantum_core = { path = "../quantum_core" }
 spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
 stats_core = { path = "../stats_core" }
+data_core = { path = "../data_core" }
 ndarray = { workspace = true }
+rand = { workspace = true }
+rand_chacha = { workspace = true }
 clap = { workspace = true }
 serde = { workspace = true }
 serde_json = { workspace = true }
