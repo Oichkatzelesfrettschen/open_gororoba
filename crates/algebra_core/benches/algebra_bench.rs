@@ -5,6 +5,7 @@
 //! - Associator computation (single and batch)
 //! - Zero-divisor search
 //! - Octonion field evolution
+//! - Fractal analysis (Hurst exponent, fBm generation)
 
 use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
 use algebra_core::{
@@ -12,6 +13,7 @@ use algebra_core::{
     batch_associator_norms, batch_associator_norms_parallel,
     find_zero_divisors,
     oct_multiply, stormer_verlet_step, gaussian_wave_packet, FieldParams,
+    fractal_analysis::{calculate_hurst, generate_fbm},
 };
 
 /// Benchmark Cayley-Dickson multiplication at various dimensions.
@@ -162,6 +164,53 @@ fn bench_stormer_verlet(c: &mut Criterion) {
     group.finish();
 }
 
+/// Benchmark Hurst exponent calculation.
+fn bench_hurst_exponent(c: &mut Criterion) {
+    let mut group = c.benchmark_group("hurst_exponent");
+
+    for n in [256, 512, 1024, 2048] {
+        // Generate synthetic test series with known structure
+        let series: Vec<f64> = (0..n)
+            .map(|i| (i as f64 * 0.1).sin() + (i as f64 * 0.01).cos())
+            .collect();
+
+        group.bench_with_input(BenchmarkId::new("n", n), &n, |bench, _| {
+            bench.iter(|| {
+                calculate_hurst(black_box(&series), black_box(2), black_box(n / 4))
+            });
+        });
+    }
+
+    group.finish();
+}
+
+/// Benchmark fBm generation via Hosking method.
+fn bench_fbm_generation(c: &mut Criterion) {
+    let mut group = c.benchmark_group("fbm_hosking");
+    group.sample_size(20); // fBm generation can be slow for large n
+
+    for n in [128, 256, 512] {
+        group.bench_with_input(BenchmarkId::new("n", n), &n, |bench, &n| {
+            bench.iter(|| {
+                generate_fbm(black_box(n), black_box(0.7), black_box(42))
+            });
+        });
+    }
+
+    // Also benchmark different Hurst exponents
+    let n = 256;
+    for h in [0.3, 0.5, 0.7, 0.9] {
+        let h_str = format!("{:.1}", h);
+        group.bench_with_input(BenchmarkId::new("H", &h_str), &h, |bench, &h| {
+            bench.iter(|| {
+                generate_fbm(black_box(n), black_box(h), black_box(42))
+            });
+        });
+    }
+
+    group.finish();
+}
+
 criterion_group!(
     benches,
     bench_cd_multiply,
@@ -170,6 +219,8 @@ criterion_group!(
     bench_zero_divisor_search,
     bench_octonion_multiply,
     bench_stormer_verlet,
+    bench_hurst_exponent,
+    bench_fbm_generation,
 );
 
 criterion_main!(benches);
