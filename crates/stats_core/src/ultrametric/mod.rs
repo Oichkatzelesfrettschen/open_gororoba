@@ -16,6 +16,19 @@
 //!    P-adic metrics are inherently ultrametric, so the question is whether
 //!    the data's p-adic structure exceeds what shuffled data produces.
 //!
+//! 4. **Local ultrametricity** (Bradley arXiv:2408.07174): For each point,
+//!    find its epsilon-neighborhood and test triples within that neighborhood.
+//!
+//! 5. **Baire metric** (Murtagh arXiv:1104.4063): Encode multi-attribute
+//!    tuples as p-adic digit sequences. Baire distance = p^(-k) where k is
+//!    the longest common prefix length.
+//!
+//! 6. **Temporal cascade analysis**: For repeating transient sources, test
+//!    whether waiting-time hierarchies exhibit ultrametric structure.
+//!
+//! 7. **Dendrogram / cophenetic correlation**: Build hierarchical clustering
+//!    and measure how well the tree structure preserves pairwise distances.
+//!
 //! # Statistical methodology
 //!
 //! All tests use permutation nulls (shuffled values) with Bonferroni correction
@@ -26,12 +39,31 @@
 //! - Rammal, Toulouse, Virasoro (1986): Ultrametricity for physicists
 //! - Mezard, Parisi, Virasoro (1987): Spin Glass Theory and Beyond
 //! - Dragovich et al. (2017): p-Adic mathematical physics
+//! - Bradley (2025): arXiv:2408.07174 (local ultrametricity)
+//! - Murtagh (2004): arXiv:1104.4063 (Baire metric hierarchical clustering)
+
+pub mod local;
+pub mod baire;
+pub mod temporal;
+pub mod dendrogram;
 
 use algebra_core::padic::{Rational, padic_distance};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
 use crate::claims_gates::{Evidence, GateResult, Verdict};
+
+// Re-export submodule public types
+pub use local::{LocalUltrametricResult, local_ultrametricity_test};
+pub use baire::{
+    BaireEncoder, AttributeSpec, baire_distance_matrix,
+    euclidean_distance_matrix, euclidean_ultrametric_test, BaireTestResult,
+};
+pub use temporal::{CascadeAnalysis, WaitingTimeStats, analyze_temporal_cascade};
+pub use dendrogram::{
+    DendrogramResult, cophenetic_distance_matrix, cophenetic_correlation,
+    hierarchical_ultrametric_test,
+};
 
 /// Configuration for ultrametric analysis.
 #[derive(Debug, Clone)]
@@ -214,6 +246,56 @@ fn compute_ultrametric_fraction(values: &[f64], n_triples: usize, rng: &mut ChaC
             }
         } else {
             // All distances zero (all values equal) -- trivially ultrametric
+            count += 1;
+        }
+    }
+
+    count as f64 / n_triples as f64
+}
+
+/// Compute ultrametric fraction on a precomputed distance matrix.
+///
+/// This generalized version works with any distance matrix (Euclidean,
+/// Baire, comoving, etc.) rather than computing Euclidean distances
+/// from scalar values.
+///
+/// `dist_matrix` is a flat upper-triangle stored row-major:
+/// index(i,j) = i*n - i*(i+1)/2 + j - i - 1 for i < j.
+pub fn ultrametric_fraction_from_matrix(
+    dist_matrix: &[f64],
+    n_points: usize,
+    n_triples: usize,
+    seed: u64,
+) -> f64 {
+    let mut rng = ChaCha8Rng::seed_from_u64(seed);
+    let mut count = 0usize;
+
+    let idx = |i: usize, j: usize| -> usize {
+        let (a, b) = if i < j { (i, j) } else { (j, i) };
+        a * n_points - a * (a + 1) / 2 + b - a - 1
+    };
+
+    for _ in 0..n_triples {
+        let i = rng.gen_range(0..n_points);
+        let mut j = rng.gen_range(0..n_points - 1);
+        if j >= i { j += 1; }
+        let mut k = rng.gen_range(0..n_points - 2);
+        if k >= i.min(j) { k += 1; }
+        if k >= i.max(j) { k += 1; }
+
+        let d_ij = dist_matrix[idx(i, j)];
+        let d_jk = dist_matrix[idx(j, k)];
+        let d_ik = dist_matrix[idx(i, k)];
+
+        let mut dists = [d_ij, d_jk, d_ik];
+        dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+        if dists[2] > 1e-15 {
+            let relative_diff = (dists[2] - dists[1]) / dists[2];
+            if relative_diff < 0.05 {
+                count += 1;
+            }
+        } else {
             count += 1;
         }
     }
@@ -721,5 +803,28 @@ mod tests {
         assert_eq!(gate.claim_id, "C-071");
         // Random data: gate should fail (no signal)
         assert_eq!(gate.verdict, Verdict::Fail);
+    }
+
+    #[test]
+    fn test_ultrametric_fraction_from_matrix() {
+        // Test the matrix-based fraction computation with a small example
+        // 4 points forming a perfect ultrametric tree:
+        //       *
+        //      / \
+        //     *   *
+        //    / \ / \
+        //   0  1 2  3
+        // d(0,1) = 1, d(2,3) = 1, d(0,2) = d(0,3) = d(1,2) = d(1,3) = 2
+        // Upper triangle (row-major): d01, d02, d03, d12, d13, d23
+        let dist_matrix = vec![1.0, 2.0, 2.0, 2.0, 2.0, 1.0];
+
+        let frac = ultrametric_fraction_from_matrix(&dist_matrix, 4, 10_000, 42);
+
+        // Perfect ultrametric: fraction should be 1.0
+        assert!(
+            frac > 0.95,
+            "Perfect ultrametric tree should yield fraction ~1.0, got {}",
+            frac
+        );
     }
 }

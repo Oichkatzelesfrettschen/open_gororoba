@@ -423,6 +423,7 @@ pub fn run_two_sample_gate(
 }
 
 /// Run bootstrap CI gate with data directly.
+#[allow(clippy::too_many_arguments)]
 pub fn run_bootstrap_ci_gate<F>(
     claim_id: &str,
     data: &[f64],
