@@ -5,9 +5,9 @@ Source: docs/claims/CLAIMS_DOMAIN_MAP.csv + docs/CLAIMS_EVIDENCE_MATRIX.md
 Count: 214
 
 - Hypothesis C-017 (**Verified** (math), 2026-01-28): For diagonal 2-blades `(e_i +/- e_j)` in 16D CD, any observed zero product between two 2-blades satisfies the XOR-bucket necessary condition `(i^j) == (k^ell)`.
-  - Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `src/gemini_physics/cd/cd_xor_heuristics.py`
+  - Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `src/gemini_physics/cd_xor_heuristics.py`
 - Hypothesis C-042 (**Verified** (code), 2026-01-31): Kozyrev p-adic wavelets form an explicitly computable eigenbasis for the Vladimirov operator.
-  - Where stated: `docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `src/gemini_physics/padic/kozyrev_wavelets.py`
+  - Where stated: `docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `crates/algebra_core/src/padic.rs`
 - Hypothesis C-045 (**Verified** (Toy Model), 2026-01-31): 64-Layer Strang Splitting achieves 2nd-order convergence given finite commutator budgets.
   - Where stated: `docs/theory/OPERATOR_DEPTH_STRATIFICATION.md`, `examples/strang_splitting_demo.py`
 - Hypothesis C-048 (**Verified** (Analogy; scope-limited), 2026-02-04): Analogy: "depth stratification" is used as a terminology/structure analogy to motivic tower stratification (no physical equivalence claimed).
@@ -17,7 +17,7 @@ Count: 214
 - Hypothesis C-050 (**Verified** (Toy model; LP equivalence), 2026-02-04): Toy equivalence: spaceplate delay allocation can be cast as multi-flavor flow allocation under variable renaming (LP equivalence).
   - Where stated: `docs/theory/WARP_FLOW_ALLOCATION.md`, `docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md`, `src/scripts/analysis/c050_spaceplate_flow_isomorphism_toy.py`, `data/csv/c050_spaceplate_flow_isomorphism_toy.csv`, `tests/test_c050_spaceplate_flow_isomorphism_toy.py`
 - Hypothesis C-051 (**Verified** (Simulation), 2026-01-31): A Pareto frontier exists for Spaceplates trading Compression (R) vs Bandwidth (B) vs Angle.
-  - Where stated: `src/gemini_physics/engineering/warp_pareto.py`
+  - Where stated: `crates/optics_core/src/tcmt.rs`
 - Hypothesis C-055 (**Verified** (Monte Carlo), 2026-01-31): Non-associativity is the generic (bulk) state of 16D/32D CD algebras (100% prevalence).
   - Where stated: `src/scripts/analysis/verify_zd_32d_count.py`
 - Hypothesis C-070 (**Not supported** (legacy metric non-diagnostic), 2026-02-03): CD associator power spectrum shape matches NANOGrav GW background.

@@ -17,14 +17,14 @@ Count: 12
 - Hypothesis C-402 (**Refuted**, 2026-02-02): Metamaterial Gravitational Coupling can reduce warp drive energy requirements to achievable levels.
   - Where stated: `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`, `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/Rodal_2025_Metamaterial_Gravity.pdf`
 - Hypothesis C-409 (**Modeled** (Simulation), 2026-02-02): "Interleaved I-Beam" spaceplate design targets high refractive index via capacitive loading (metal/dielectric stack).
-  - Where stated: `src/gemini_physics/metamaterials/designs.py`, `src/gemini_physics/async_warp.py`
+  - Where stated: `src/gemini_physics/metamaterial.py`, `crates/optics_core/src/grin.rs`
 - Hypothesis C-417 (**Speculative** (Synthesis), 2026-02-02): Hypothesis: Ray capture efficiency in fractal metamaterials correlates with Sedenion Zero Divisor density; "Holographic Entropy Trap" maps information loss to algebraic annihilation.
   - Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `src/scripts/analysis/sedenion_warp_synthesis.py`, `data/artifacts/images/sedenion_capture_scaling.png`
 - Hypothesis C-420 (**Modeled** (Engineering), 2026-02-02): Automated CAD generation outputs OpenSCAD geometry and SVG lithography masks for metamaterial nanostructures, linking refractive index maps to pillar diameters.
-  - Where stated: `src/scripts/engineering/generate_bom_cad.py`, `src/gemini_physics/engineering/nanoscale_metasurface.py`, `data/artifacts/engineering/spaceplate_geometry.scad`
+  - Where stated: `src/scripts/engineering/generate_bom_cad.py`, `crates/materials_core/src/metamaterial.rs`, `data/artifacts/engineering/spaceplate_geometry.scad`
 - Hypothesis C-421 (**Modeled** (Design), 2026-02-02): Metamaterial designs incorporate Rogers RT5880 carrier substrates and Gold/Silicon I-beam stacks to achieve impedance-matched high-index performance.
-  - Where stated: `src/gemini_physics/metamaterials/designs.py`, `src/scripts/engineering/generate_bom_cad.py`
+  - Where stated: `src/gemini_physics/metamaterial.py`, `src/scripts/engineering/generate_bom_cad.py`
 - Hypothesis C-423 (**Modeled** (Simulation), 2026-02-02): Grand Unified Simulator v4 integrates CUDA-based relativistic ray tracing with robust FDFD electromagnetic field solving to visualize multi-scale warp-metamaterial interactions.
   - Where stated: `src/scripts/engineering/grand_unified_simulator_v4.py`, `data/artifacts/images/OCULUS_GRAND_DASHBOARD_v4.png`
 - Hypothesis C-427 (**Speculative** (Design), 2026-02-02): Algebraic Metamaterial synthesis maps Cayley-Dickson structure constants to permittivity tensors and Clifford subspace dimensions to quasi-periodic layer stacks.
-  - Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `src/gemini_physics/metamaterials/algebraic_media.py`
+  - Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `src/gemini_physics/metamaterial.py`
