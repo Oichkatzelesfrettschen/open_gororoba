@@ -7,6 +7,7 @@
 //! - Quantum bounce cosmology with observational fitting
 //! - Flat Lambda-CDM (FLRW) cosmology with struct-based interface
 //! - Axiodilaton scalar field cosmology
+//! - Relativistic polytropic equation of state
 //!
 //! # Literature
 //! - Mazur & Mottola (2004): Gravastar proposal
@@ -16,6 +17,8 @@
 //! - Pinto-Neto & Fabris (2013): Bohmian bounce cosmology
 //! - Planck Collaboration VI (2020): A&A 641, A6
 //! - Hogg (1999): arXiv:astro-ph/9905116 (distance measures)
+//! - Shapiro & Teukolsky (1983): Black Holes, White Dwarfs, and Neutron Stars
+//! - Oppenheimer & Volkoff (1939): Phys. Rev. 55, 374
 
 use gauss_quad::GaussLegendre;
 
@@ -23,6 +26,7 @@ pub mod axiodilaton;
 pub mod bounce;
 pub mod dimensional_geometry;
 pub mod distances;
+pub mod eos;
 pub mod flrw;
 pub mod gravastar;
 pub mod observational;
@@ -67,6 +71,12 @@ pub use observational::{
 pub use distances::{
     comoving_distance, macquart_dm_cosmic, dm_excess_to_redshift,
     dm_to_comoving, angular_diameter_distance, radec_to_cartesian,
+};
+
+pub use eos::{
+    Polytrope, polytropic_index, gamma_from_index,
+    GAMMA_NONREL_DEGENERATE, GAMMA_ULTRAREL_DEGENERATE,
+    GAMMA_STIFF, GAMMA_RADIATION,
 };
 
 pub use flrw::{
