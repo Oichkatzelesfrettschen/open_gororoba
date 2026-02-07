@@ -8,7 +8,7 @@ Primary trackers:
 
 Note:
 - Python-to-Rust migration is COMPLETE (all 15 modules ported, gororoba_kernels removed).
-- 1426 Rust tests (unit + doc) pass, 0 clippy warnings.
+- 1464 Rust tests (unit + doc) pass, 0 clippy warnings.
 - Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md`) deleted; content absorbed into `docs/ROADMAP.md`.
 
 ## Current sprint (blockers first)
@@ -19,7 +19,7 @@ Note:
   - [x] Fractional Laplacian sources: Riesz vs spectral vs extension (CX-004). Audit complete: periodic=Riesz, Dirichlet=spectral correctly labeled. C-S doc clarified. All 5 sources cited.
   - [x] p-adic operator sources (Vladimirov/Kozyrev) (CX-006). Audit complete: foundations correct (14 tests), Vladimirov/Kozyrev correctly deferred, sources cited in BIBLIOGRAPHY.md.
   - [x] Exceptional/Jordan/Albert references to correct overclaims (CX-007). Audit complete: no overclaims found. nilpotent_orbits.rs is generic (no exceptional claims), magic square verified, H3(O) correctly deferred.
-- [ ] Execute missing dataset pillars roadmap from `docs/ULTRA_ROADMAP.md` Section H.
+- [x] Execute missing dataset pillars roadmap from `docs/ULTRA_ROADMAP.md` Section H (21/21 done, 1464 tests).
 - [ ] Implementation (keep every warning as an error):
   - [x] Wheels axioms checker + unit tests (CX-017). Already in wheels.rs (WheelQ, 8 axioms, 10 tests).
   - [x] XOR-balanced search extension + tests (CX-003). 10 new tests.
@@ -28,7 +28,7 @@ Note:
 
 ## Quality gates
 - [x] `cargo clippy --workspace -j$(nproc) -- -D warnings`
-- [x] `cargo test --workspace -j$(nproc)` (1449 tests, 0 failures)
+- [x] `cargo test --workspace -j$(nproc)` (1464 tests, 0 failures)
 - [ ] `make ascii-check`
 
 ## Completed (keep for provenance)

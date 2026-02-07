@@ -101,12 +101,12 @@ end with cached artifacts, provenance hashes, and offline validation hooks.
 - [x] Add a verifier ensuring every dataset in manifest has a provider in CLI.
 - [x] Add a verifier ensuring cached dataset hashes match provenance JSON (`data_core::provenance`, 7 tests).
 - [x] Add a verifier ensuring docs source-index links resolve to files (`data_core::doc_links`, 84 Rust paths at 100%, 6 tests).
-- [ ] Add benchmark scripts for parser throughput (rows/s) on large catalogs.
-- [ ] Add benchmark scripts for ephemeris interpolation accuracy vs Horizons snapshots.
-- [ ] Add benchmark scripts for gravity-harmonic truncation error curves.
-- [ ] Add benchmark scripts for magnetic-field sample coverage by mission day.
-- [ ] Add benchmark scripts for irradiance time-series gap detection.
-- [ ] Add benchmark scripts for Landsat scene metadata filtering throughput.
+- [x] Add benchmark scripts for parser throughput (rows/s) on large catalogs (`data_core::benchmarks::benchmark_parser_throughput`, 6 parsers, 3 tests).
+- [x] Add benchmark scripts for ephemeris interpolation accuracy vs Horizons snapshots (`data_core::benchmarks::benchmark_ephemeris_accuracy`, 4 bodies, 1 test).
+- [x] Add benchmark scripts for gravity-harmonic truncation error curves (`data_core::benchmarks::benchmark_gravity_truncation`, Kaula-rule synthetic GFC, 1 convergence test).
+- [x] Add benchmark scripts for magnetic-field sample coverage by mission day (`data_core::benchmarks::benchmark_magnetic_coverage`, ISO 8601 gap analysis, 3 tests).
+- [x] Add benchmark scripts for irradiance time-series gap detection (`data_core::benchmarks::detect_irradiance_gaps`, TSIS + SORCE, 5 tests).
+- [x] Add benchmark scripts for Landsat scene metadata filtering throughput (`data_core::benchmarks::benchmark_landsat_filtering`, STAC schema + cloud filter, 2 tests).
 - [x] Integrate Rust verifiers into `make rust-smoke` target (clippy + tests, includes provenance + doc-link verifiers).
 - [x] Add date-stamped status snapshot in `docs/CLAIMS_TASKS.md` (2026-02-07, 15 metrics, key completions).
-- [x] Release gate passed: `cargo clippy --workspace -j$(nproc) -- -D warnings` (0 warnings), `cargo test --workspace -j$(nproc)` (1449 tests, 0 failures).
+- [x] Release gate passed: `cargo clippy --workspace -j$(nproc) -- -D warnings` (0 warnings), `cargo test --workspace -j$(nproc)` (1464 tests, 0 failures).

@@ -20,6 +20,7 @@
 //! let path = provider.fetch(&config).unwrap();
 //! ```
 
+pub mod benchmarks;
 pub mod catalogs;
 pub mod doc_links;
 pub mod fetcher;
