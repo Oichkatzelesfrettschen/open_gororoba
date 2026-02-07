@@ -957,12 +957,12 @@ pub fn three_body_gain_strict(
 
 /// Dielectric model for computing optical response at imaginary frequency.
 ///
-/// The dielectric function at imaginary frequency ε(iξ) is always real and
-/// monotonically decreasing from ε(0) to 1 as ξ → ∞. This is a consequence
+/// The dielectric function at imaginary frequency \epsilon(i\xi) is always real and
+/// monotonically decreasing from \epsilon(0) to 1 as \xi -> infty. This is a consequence
 /// of Kramers-Kronig relations.
 #[derive(Debug, Clone)]
 pub enum DielectricModel {
-    /// Perfect conductor: ε → ∞ (reflection coefficient r = 1)
+    /// Perfect conductor: \epsilon -> infty (reflection coefficient r = 1)
     PerfectConductor,
 
     /// Drude model for metals: eps(i*xi) = 1 + omega_p^2 / (xi*(xi + gamma))
@@ -979,7 +979,7 @@ pub enum DielectricModel {
     DrudeLorentz { oscillators: Vec<(f64, f64, f64)> },
 
     /// Tabulated dielectric data (interpolated)
-    /// Parameters: (frequencies ξ in rad/s, dielectric values ε(iξ))
+    /// Parameters: (frequencies \xi in rad/s, dielectric values \epsilon(i\xi))
     Tabulated { xi: Vec<f64>, eps: Vec<f64> },
 }
 
@@ -987,8 +987,8 @@ impl DielectricModel {
     /// Create a Drude model for gold at room temperature.
     ///
     /// Parameters from optical data:
-    /// - ω_p = 9.0 eV = 1.37e16 rad/s
-    /// - γ = 35 meV = 5.3e13 rad/s
+    /// - \omega_p = 9.0 eV = 1.37e16 rad/s
+    /// - \gamma = 35 meV = 5.3e13 rad/s
     pub fn gold() -> Self {
         DielectricModel::Drude {
             omega_p: 1.37e16,
@@ -999,8 +999,8 @@ impl DielectricModel {
     /// Create a Drude model for aluminum.
     ///
     /// Parameters from optical data:
-    /// - ω_p = 12.5 eV = 1.9e16 rad/s
-    /// - γ = 126 meV = 1.9e14 rad/s
+    /// - \omega_p = 12.5 eV = 1.9e16 rad/s
+    /// - \gamma = 126 meV = 1.9e14 rad/s
     pub fn aluminum() -> Self {
         DielectricModel::Drude {
             omega_p: 1.9e16,
@@ -1026,18 +1026,18 @@ impl DielectricModel {
         }
     }
 
-    /// Evaluate dielectric function at imaginary frequency ε(iξ).
+    /// Evaluate dielectric function at imaginary frequency \epsilon(i\xi).
     ///
     /// Returns the real, positive dielectric response at the imaginary
-    /// frequency iξ. The result is always >= 1 for passive materials.
+    /// frequency i\xi. The result is always >= 1 for passive materials.
     ///
     /// # Arguments
     /// * `xi` - Imaginary frequency (rad/s), must be >= 0
     pub fn epsilon_at_imaginary(&self, xi: f64) -> f64 {
         match self {
-            // Perfect conductor approximated by very large but finite ε
+            // Perfect conductor approximated by very large but finite \epsilon
             // This avoids NaN in numerical integration while capturing
-            // the essential physics (r → 1)
+            // the essential physics (r -> 1)
             DielectricModel::PerfectConductor => 1e20,
 
             DielectricModel::Drude { omega_p, gamma } => {
@@ -1112,9 +1112,9 @@ pub fn fresnel_tm_imaginary(eps1: f64, eps2: f64, xi: f64, k_perp: f64) -> f64 {
     let kappa2 = (eps2 * xi_c * xi_c + k_perp * k_perp).sqrt();
 
     // Handle very large or infinite dielectric (perfect conductor limit)
-    // In the limit ε₂ → ∞: r_TM → (ε₁/ε₂)(κ₂/κ₁) → 0, but accounting
-    // for the fact that κ₂ ∝ √ε₂, we get r_TM → -1
-    // For numerical stability with large finite ε, compute directly
+    // In the limit \epsilon_2 -> infty: r_TM -> (\epsilon_1/\epsilon_2)(\kappa_2/\kappa_1) -> 0, but accounting
+    // for the fact that \kappa_2 ~ sqrt\epsilon_2, we get r_TM -> -1
+    // For numerical stability with large finite \epsilon, compute directly
     let numer = eps1 * kappa2 - eps2 * kappa1;
     let denom = eps1 * kappa2 + eps2 * kappa1;
 
@@ -1127,9 +1127,9 @@ pub fn fresnel_tm_imaginary(eps1: f64, eps2: f64, xi: f64, k_perp: f64) -> f64 {
 
 /// Fresnel reflection coefficient at imaginary frequency (TE/s-polarization).
 ///
-/// r_TE = (κ₂ - κ₁) / (κ₂ + κ₁)
+/// r_TE = (\kappa_2 - \kappa_1) / (\kappa_2 + \kappa_1)
 ///
-/// For non-magnetic materials (μ = 1).
+/// For non-magnetic materials (\mu = 1).
 ///
 /// # Arguments
 /// * `eps1` - Dielectric of medium 1 at imaginary frequency
@@ -1170,8 +1170,8 @@ pub fn lifshitz_pressure_plates(
     // Characteristic frequency scale: c/d
     let xi_char = C / gap;
 
-    // Integration over ξ using Gauss-Laguerre-like quadrature
-    // We use a change of variables: ξ = xi_char * u, integrate u from 0 to ~10
+    // Integration over \xi using Gauss-Laguerre-like quadrature
+    // We use a change of variables: \xi = xi_char * u, integrate u from 0 to ~10
     let mut pressure = 0.0;
 
     for i in 0..n_xi {
@@ -1184,7 +1184,7 @@ pub fn lifshitz_pressure_plates(
         let e1 = eps1.epsilon_at_imaginary(xi);
         let e2 = eps2.epsilon_at_imaginary(xi);
 
-        // Integration over k_perp: k_perp = (ξ/c) * v, v from 0 to ~10
+        // Integration over k_perp: k_perp = (\xi/c) * v, v from 0 to ~10
         for j in 0..n_k {
             let v = ((j as f64 + 0.5) / n_k as f64) * 10.0;
             let dv = 10.0 / n_k as f64;
@@ -1207,7 +1207,7 @@ pub fn lifshitz_pressure_plates(
             // Jacobian: d(xi) d(k_perp) = xi_char * du * (xi/c) * dv = (xi_char * xi/c) * du * dv
             let jacobian = xi_char * (xi / C) * du * dv;
 
-            // Integrand: k_perp * κ * (TM + TE contributions)
+            // Integrand: k_perp * \kappa * (TM + TE contributions)
             pressure += k_perp * kappa * (tm_factor + te_factor) * jacobian;
         }
     }
@@ -1221,10 +1221,10 @@ pub fn lifshitz_pressure_plates(
 /// Lifshitz force for sphere-plate geometry using PFA.
 ///
 /// Combines the Lifshitz pressure with the Proximity Force Approximation:
-/// F_sp = 2πR ∫ P(d) d(d) evaluated at the minimum gap.
+/// F_sp = 2\piR integral P(d) d(d) evaluated at the minimum gap.
 ///
 /// For computational efficiency, we use:
-/// F_sp ≈ 2πR * gap * P(gap) * correction_factor
+/// F_sp ~= 2\piR * gap * P(gap) * correction_factor
 ///
 /// where the correction factor accounts for the integration over the sphere surface.
 ///
@@ -1249,12 +1249,12 @@ pub fn lifshitz_force_sphere_plate(
     // Compute plate-plate Lifshitz pressure at the gap
     let pressure = lifshitz_pressure_plates(gap, eps_sphere, eps_plate, n_xi, n_k);
 
-    // PFA integration: F = 2πR ∫ P(d') d(d') from gap to ∞
-    // For P ~ 1/d^3 (perfect conductor), this gives F = πR * P(gap) * gap
+    // PFA integration: F = 2\piR integral P(d') d(d') from gap to infty
+    // For P ~ 1/d^3 (perfect conductor), this gives F = \piR * P(gap) * gap
     // More generally, we need the integrated pressure, which for P(d) ~ 1/d^n gives:
-    // F = 2πR * gap * P(gap) / (n-1) where n ~ 3 for Casimir
-    // Using the standard result from PFA: F ≈ 2πR * ∫_gap^∞ P(d') dd'
-    //                                       ≈ 2πR * gap * P(gap) / 2  (for n=3)
+    // F = 2\piR * gap * P(gap) / (n-1) where n ~ 3 for Casimir
+    // Using the standard result from PFA: F ~= 2\piR * integral_gap^infty P(d') dd'
+    //                                       ~= 2\piR * gap * P(gap) / 2  (for n=3)
 
     // For consistency with casimir_force_pfa, use the PFA formula
     2.0 * PI * radius * gap * pressure / 2.0
@@ -1262,7 +1262,7 @@ pub fn lifshitz_force_sphere_plate(
 
 /// Lifshitz force ratio: compares material-dependent force to perfect conductor.
 ///
-/// η = F_Lifshitz / F_ideal_PFA
+/// \eta = F_Lifshitz / F_ideal_PFA
 ///
 /// This ratio is always <= 1 for real materials and approaches 1 for
 /// perfect conductors or at very short distances (high-frequency limit).
@@ -1274,7 +1274,7 @@ pub fn lifshitz_force_sphere_plate(
 /// * `eps_plate` - Dielectric model for plate
 ///
 /// # Returns
-/// Ratio η (dimensionless, 0 < η <= 1)
+/// Ratio \eta (dimensionless, 0 < \eta <= 1)
 pub fn lifshitz_force_ratio(
     radius: f64,
     gap: f64,
@@ -1341,9 +1341,9 @@ pub fn lifshitz_sphere_plate(
 
 /// Matsubara frequency for finite-temperature Lifshitz theory.
 ///
-/// ξ_n = 2π n k_B T / ℏ
+/// \xi_n = 2\pi n k_B T / hbar
 ///
-/// At room temperature (T = 300 K), ξ_1 ≈ 2.4e14 rad/s.
+/// At room temperature (T = 300 K), \xi_1 ~= 2.4e14 rad/s.
 ///
 /// # Arguments
 /// * `n` - Matsubara index (n = 0, 1, 2, ...)
@@ -1355,9 +1355,9 @@ pub fn matsubara_frequency(n: usize, temperature: f64) -> f64 {
 
 /// Characteristic thermal wavelength.
 ///
-/// λ_T = ℏc / (k_B T)
+/// \lambda_T = hbarc / (k_B T)
 ///
-/// At room temperature: λ_T ≈ 7.6 μm
+/// At room temperature: \lambda_T ~= 7.6 \mum
 ///
 /// # Arguments
 /// * `temperature` - Temperature in Kelvin
@@ -2320,11 +2320,11 @@ mod tests {
         // At high frequency, dielectric should approach 1
         let eps_high = gold.epsilon_at_imaginary(1e18);
         assert!(eps_high > 1.0);
-        assert!(eps_high < 2.0, "High-frequency ε should be close to 1");
+        assert!(eps_high < 2.0, "High-frequency epsilon should be close to 1");
 
         // At lower frequency, dielectric should be larger
         let eps_low = gold.epsilon_at_imaginary(1e14);
-        assert!(eps_low > eps_high, "ε should decrease with frequency");
+        assert!(eps_low > eps_high, "epsilon should decrease with frequency");
     }
 
     #[test]
@@ -2344,21 +2344,21 @@ mod tests {
     fn test_dielectric_silica() {
         let silica = DielectricModel::silica();
 
-        // Silica should have ε > 1 at all frequencies (dielectric)
+        // Silica should have \epsilon > 1 at all frequencies (dielectric)
         let eps1 = silica.epsilon_at_imaginary(1e14);
         let eps2 = silica.epsilon_at_imaginary(1e16);
 
         assert!(eps1 > 1.0);
         assert!(eps2 > 1.0);
-        // At resonance frequency (~1.5e16), ε should drop
-        assert!(eps2 < eps1, "ε should decrease toward resonance");
+        // At resonance frequency (~1.5e16), \epsilon should drop
+        assert!(eps2 < eps1, "epsilon should decrease toward resonance");
     }
 
     #[test]
     fn test_fresnel_tm_high_epsilon() {
         // Very high dielectric (like perfect conductor): r_TM approaches -1
-        // For vacuum/metal interface: r_TM = (ε₁κ₂ - ε₂κ₁)/(ε₁κ₂ + ε₂κ₁)
-        // As ε₂ → ∞, κ₂ ∝ √ε₂, so ratio → -1
+        // For vacuum/metal interface: r_TM = (\epsilon_1\kappa_2 - \epsilon_2\kappa_1)/(\epsilon_1\kappa_2 + \epsilon_2\kappa_1)
+        // As \epsilon_2 -> infty, \kappa_2 ~ sqrt\epsilon_2, so ratio -> -1
         let eps1 = 1.0;
         let eps2 = 1e20; // Large but finite (perfect conductor approx)
         let r = fresnel_tm_imaginary(eps1, eps2, 1e15, 1e6);
@@ -2376,7 +2376,7 @@ mod tests {
         let xi = 1e15;
         let r = fresnel_te_imaginary(eps1, eps2, xi, 0.0);
 
-        // r_TE = (κ2 - κ1)/(κ2 + κ1) = (√ε2 - √ε1)/(√ε2 + √ε1)
+        // r_TE = (\kappa2 - \kappa1)/(\kappa2 + \kappa1) = (sqrt\epsilon2 - sqrt\epsilon1)/(sqrt\epsilon2 + sqrt\epsilon1)
         let expected = (eps2.sqrt() - eps1.sqrt()) / (eps2.sqrt() + eps1.sqrt());
         assert!((r - expected).abs() < 1e-10);
     }
@@ -2437,7 +2437,7 @@ mod tests {
 
     #[test]
     fn test_thermal_wavelength_room_temp() {
-        // At 300 K, thermal wavelength ~ 7.6 μm
+        // At 300 K, thermal wavelength ~ 7.6 \mum
         let lambda_t = thermal_wavelength(300.0);
         assert!((lambda_t - 7.6e-6).abs() / 7.6e-6 < 0.1);
     }

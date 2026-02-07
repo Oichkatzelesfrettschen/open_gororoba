@@ -58,8 +58,29 @@ REPLACEMENTS: dict[str, str] = {
     "\u03bc": "\\mu",
     "\u03c0": "\\pi",
     "\u03c8": "\\psi",
+    "\u03b6": "\\zeta",
+    "\u03b7": "\\eta",
+    "\u03ba": "\\kappa",
+    "\u03bd": "\\nu",
+    "\u03be": "\\xi",
+    "\u03c1": "\\rho",
+    "\u03c3": "\\sigma",
+    "\u03c4": "\\tau",
+    "\u03c6": "\\phi",
+    "\u03c7": "\\chi",
+    "\u03c9": "\\omega",
+    "\u0393": "\\Gamma",
     "\u0394": "\\Delta",
+    "\u0398": "\\Theta",
+    "\u039b": "\\Lambda",
+    "\u03a3": "\\Sigma",
+    "\u03a9": "\\Omega",
     "\u2206": "\\Delta",
+    "\u2248": "~=",
+    "\u221d": "~",
+    "\u221a": "sqrt",
+    "\u222b": "integral",
+    "\u210f": "hbar",
     "\u2295": "\\oplus",
     "\u00f6": "o",
     "\u00fc": "u",
@@ -71,8 +92,13 @@ REPLACEMENTS: dict[str, str] = {
 
 SKIP_DIRS = {
     ".git",
+    "target",
     "venv",
     "convos",
+    "data",
+    "reports",
+    "__pycache__",
+    "node_modules",
 }
 
 SKIP_PATH_PREFIXES = {
@@ -93,6 +119,21 @@ SKIP_EXTS = {
     ".bz2",
     ".xz",
     ".7z",
+    ".bsp",
+    ".npy",
+    ".npz",
+    ".fits",
+    ".pyc",
+    ".so",
+    ".o",
+    ".a",
+    ".rlib",
+    ".rmeta",
+    ".d",
+    ".vo",
+    ".vok",
+    ".vos",
+    ".glob",
 }
 
 
@@ -159,6 +200,12 @@ def main() -> int:
             continue
         rel_posix = path.relative_to(repo_root).as_posix()
         if any(rel_posix.startswith(prefix) for prefix in SKIP_PATH_PREFIXES):
+            continue
+        # Skip files > 10 MB (likely binaries or generated data)
+        try:
+            if path.stat().st_size > 10_000_000:
+                continue
+        except OSError:
             continue
         try:
             raw = path.read_bytes()

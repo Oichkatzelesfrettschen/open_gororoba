@@ -524,12 +524,12 @@ impl TcmtSolver {
 
         // At normalized detuning Delta = delta/g = 2, the cubic f(U) = U^3 - 4*U^2 + 5*U - P
         // has local extrema at U = 1 (max) and U = 5/3 (min).
-        // f(1) = 2 - P, f(5/3) = 50/27 - P ≈ 1.85 - P
+        // f(1) = 2 - P, f(5/3) = 50/27 - P ~= 1.85 - P
         //
         // For 3 positive roots (bistability): f(max) > 0 > f(min)
-        // → 1.85 < P_norm < 2.0
+        // -> 1.85 < P_norm < 2.0
         //
-        // Lower threshold: P_onset = 50/27 ≈ 1.852
+        // Lower threshold: P_onset = 50/27 ~= 1.852
         // Upper threshold: P_offset = 2.0
         //
         // The normalized power P_norm = 2*gamma_k*gamma_e*|s_in|^2/g^3
@@ -562,7 +562,7 @@ impl TcmtSolver {
         let delta = 2.0 * g; // Inside bistability region
 
         // Normalized power thresholds at Delta = 2
-        let p_norm_onset = 50.0 / 27.0;  // ≈ 1.852
+        let p_norm_onset = 50.0 / 27.0;  // ~= 1.852
         let p_norm_offset = 2.0;
 
         let scale = g.powi(3) / (2.0 * gamma_k * gamma_e);

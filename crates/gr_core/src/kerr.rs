@@ -1330,7 +1330,7 @@ mod tests {
 
         // Quantitative check: the shadow area should be pi * r_shadow^2 where
         // r_shadow = sqrt(27). The pixel area is (16/50)^2, so expected pixel
-        // count ≈ pi * 27 / (16/50)^2 ≈ 828.
+        // count ~= pi * 27 / (16/50)^2 ~= 828.
         let pixel_area = (16.0 / 50.0) * (16.0 / 50.0);
         let expected_area = PI * 27.0;
         let expected_pixels = expected_area / pixel_area;

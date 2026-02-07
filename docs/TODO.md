@@ -29,7 +29,7 @@ Note:
 ## Quality gates
 - [x] `cargo clippy --workspace -j$(nproc) -- -D warnings`
 - [x] `cargo test --workspace -j$(nproc)` (1464 tests, 0 failures)
-- [ ] `make ascii-check`
+- [x] `make ascii-check` (5 files fixed, extended replacement table + skip lists)
 
 ## Completed (keep for provenance)
 - [x] Package `gemini_physics` and add tests (`pyproject.toml`, `src/gemini_physics/`, `tests/`).

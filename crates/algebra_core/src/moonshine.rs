@@ -66,16 +66,16 @@ pub const J_COEFFICIENTS_VALID: usize = 9;
 /// The Monster has 194 irreducible representations. These are the dimensions
 /// of the smallest ones (character degrees).
 pub const MONSTER_REP_DIMENSIONS: [u64; 20] = [
-    1,           // χ_1: trivial
-    196883,      // χ_2: smallest non-trivial
-    21296876,    // χ_3
-    842609326,   // χ_4
-    18538750076, // χ_5
-    19360062527, // χ_6
-    293553734298, // χ_7
-    3879214937598, // χ_8
-    36173193327999, // χ_9
-    125510727015275, // χ_10
+    1,           // \chi_1: trivial
+    196883,      // \chi_2: smallest non-trivial
+    21296876,    // \chi_3
+    842609326,   // \chi_4
+    18538750076, // \chi_5
+    19360062527, // \chi_6
+    293553734298, // \chi_7
+    3879214937598, // \chi_8
+    36173193327999, // \chi_9
+    125510727015275, // \chi_10
     // More representations...
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
 ];
@@ -150,7 +150,7 @@ pub fn verify_moonshine_c1() -> bool {
 
 /// Verify that j-coefficient c_2 = 21493760 decomposes correctly.
 ///
-/// c_2 = 1 + 196883 + 21296876 = dim(χ_1) + dim(χ_2) + dim(χ_3)
+/// c_2 = 1 + 196883 + 21296876 = dim(\chi_1) + dim(\chi_2) + dim(\chi_3)
 pub fn verify_moonshine_c2() -> bool {
     let c2 = J_COEFFICIENTS[1];
     let expected = MONSTER_REP_DIMENSIONS[0]

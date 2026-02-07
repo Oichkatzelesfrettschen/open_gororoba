@@ -129,7 +129,7 @@ pub fn harper_hamiltonian(kx: f64, ky: f64, p: u32, q: u32) -> Mat<c64> {
     }
 
     // Boundary condition wrapping with k_y phase (magnetic Bloch condition)
-    // Note: ky ranges over the reduced magnetic BZ [0, 2π/q], so the phase is just ky
+    // Note: ky ranges over the reduced magnetic BZ [0, 2\pi/q], so the phase is just ky
     // This gives the standard Hofstadter Chern numbers.
     let phase_angle = ky;
     let phase = c64::new(phase_angle.cos(), phase_angle.sin());
@@ -189,7 +189,7 @@ fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
 /// causing Berry curvature cancellation. Works correctly for q >= 3.
 pub fn fhs_chern_numbers(p: u32, q: u32, n_grid: usize) -> ChernResult {
     let q_usize = q as usize;
-    // Both kx and ky span [0, 2π] with the phase=ky Hamiltonian
+    // Both kx and ky span [0, 2\pi] with the phase=ky Hamiltonian
     let dk = 2.0 * PI / n_grid as f64;
 
     // Build grid of eigenvectors
@@ -368,7 +368,7 @@ mod tests {
     #[test]
     fn test_eigenvalues_alpha_half() {
         // At Gamma point for alpha=1/2: H = [[2, 1], [1, -2]]
-        // Eigenvalues: +/- sqrt(5) ≈ +/- 2.236
+        // Eigenvalues: +/- sqrt(5) ~= +/- 2.236
         let h = harper_hamiltonian(0.0, 0.0, 1, 2);
         let (evals, _) = diagonalize(&h);
 
