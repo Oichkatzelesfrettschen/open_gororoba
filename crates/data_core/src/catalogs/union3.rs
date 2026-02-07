@@ -70,7 +70,61 @@ impl DatasetProvider for Union3Provider {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::Write;
     use std::path::Path;
+
+    #[test]
+    fn test_parse_union3_synthetic() {
+        let dir = std::env::temp_dir().join("union3_test");
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("chain_test.txt");
+
+        let mut f = std::fs::File::create(&path).unwrap();
+        writeln!(f, "# MCMC chain -- header comment").unwrap();
+        writeln!(f, "    0.5000   12.345  0.30  71.0").unwrap();
+        writeln!(f, "    1.0000   11.200  0.28  70.5").unwrap();
+        writeln!(f, "    0.7500   13.100  0.32  72.0").unwrap();
+        writeln!(f, "").unwrap(); // blank line
+        writeln!(f, "# trailing comment").unwrap();
+
+        let rows = parse_union3_chain(&path).unwrap();
+        assert_eq!(rows.len(), 3, "Should parse 3 data rows");
+        assert!((rows[0].weight - 0.5).abs() < 1e-10);
+        assert!((rows[0].minus_log_posterior - 12.345).abs() < 1e-10);
+        assert!((rows[1].weight - 1.0).abs() < 1e-10);
+        assert!((rows[2].weight - 0.75).abs() < 1e-10);
+
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn test_parse_union3_empty_file() {
+        let dir = std::env::temp_dir().join("union3_empty_test");
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("empty.txt");
+
+        std::fs::File::create(&path).unwrap();
+        let rows = parse_union3_chain(&path).unwrap();
+        assert!(rows.is_empty(), "Empty file should produce zero rows");
+
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn test_parse_union3_comments_only() {
+        let dir = std::env::temp_dir().join("union3_comments_test");
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("comments.txt");
+
+        let mut f = std::fs::File::create(&path).unwrap();
+        writeln!(f, "# just comments").unwrap();
+        writeln!(f, "# nothing else").unwrap();
+
+        let rows = parse_union3_chain(&path).unwrap();
+        assert!(rows.is_empty(), "Comments-only file should produce zero rows");
+
+        std::fs::remove_dir_all(&dir).ok();
+    }
 
     #[test]
     fn test_parse_union3_if_available() {
@@ -81,5 +135,9 @@ mod tests {
         }
         let rows = parse_union3_chain(path).expect("failed to parse Union3 chain");
         assert!(!rows.is_empty(), "Union3 chain should not be empty");
+        // All weights should be positive
+        for row in &rows {
+            assert!(row.weight > 0.0, "Chain weight must be positive");
+        }
     }
 }

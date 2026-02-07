@@ -7,3 +7,5 @@ pub mod pantheon_dat;
 pub mod mcmc_chain;
 pub mod tap;
 pub mod gfc;
+
+pub use gfc::{parse_gfc, validate_gfc_degrees, actual_max_degree, GravityField, GravityCoefficient};

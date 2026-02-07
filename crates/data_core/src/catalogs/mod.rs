@@ -23,3 +23,8 @@ pub mod sdss;
 pub mod sorce;
 pub mod tsi;
 pub mod union3;
+
+pub use eht::{list_tgz_members, validate_eht_archive, tgz_member_count};
+pub use hipparcos::{validate_hipparcos_format, parse_hip_number, HIPPARCOS_LINE_WIDTH, HIPPARCOS_PIPE_COUNT, HIPPARCOS_EXPECTED_ROWS};
+pub use landsat::{validate_stac_schema, extract_cloud_cover, count_stac_assets};
+pub use tsi::{compare_tsis_sorce, TsiOverlapResult};

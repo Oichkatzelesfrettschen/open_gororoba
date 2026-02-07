@@ -13,3 +13,5 @@ pub mod igrf;
 pub mod jpl_ephemeris;
 pub mod swarm;
 pub mod wmm;
+
+pub use swarm::{parse_swarm_csv, check_timestamp_monotonicity, SwarmRecord, SWARM_EXPECTED_COLUMNS};

@@ -31,6 +31,37 @@ pub fn tgz_member_count(path: &Path) -> Result<usize, FetchError> {
     Ok(count)
 }
 
+/// List filenames in a .tgz archive.
+pub fn list_tgz_members(path: &Path) -> Result<Vec<String>, FetchError> {
+    let file = std::fs::File::open(path)?;
+    let gz = GzDecoder::new(file);
+    let mut tar = Archive::new(gz);
+    let mut names = Vec::new();
+    for entry in tar.entries()? {
+        let entry = entry?;
+        if let Ok(p) = entry.path() {
+            names.push(p.display().to_string());
+        }
+    }
+    Ok(names)
+}
+
+/// Check that an EHT archive contains at least one CSV file matching a pattern.
+pub fn validate_eht_archive(path: &Path, pattern: &str) -> Result<(), FetchError> {
+    let members = list_tgz_members(path)?;
+    let has_match = members.iter().any(|name| {
+        let lower = name.to_lowercase();
+        lower.contains(&pattern.to_lowercase()) && lower.ends_with(".csv")
+    });
+    if !has_match {
+        return Err(FetchError::Validation(format!(
+            "EHT archive at {} contains no CSV files matching pattern '{}'",
+            path.display(), pattern
+        )));
+    }
+    Ok(())
+}
+
 /// EHT M87* data bundle provider.
 pub struct EhtM87Provider;
 
@@ -71,6 +102,70 @@ impl DatasetProvider for EhtSgrAProvider {
 mod tests {
     use super::*;
     use std::path::Path;
+
+    /// Create a synthetic .tgz containing files with given names.
+    fn create_test_tgz(path: &Path, filenames: &[&str]) {
+        let file = std::fs::File::create(path).unwrap();
+        let gz = flate2::write::GzEncoder::new(file, flate2::Compression::fast());
+        let mut tar = tar::Builder::new(gz);
+        for name in filenames {
+            let data = b"col1,col2\n1,2\n";
+            let mut header = tar::Header::new_gnu();
+            header.set_size(data.len() as u64);
+            header.set_mode(0o644);
+            header.set_cksum();
+            tar.append_data(&mut header, name, &data[..]).unwrap();
+        }
+        tar.finish().unwrap();
+    }
+
+    #[test]
+    fn test_list_tgz_members() {
+        let dir = std::env::temp_dir().join("eht_list_test");
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("test.tgz");
+        create_test_tgz(&path, &["data/ehtc_m87_results.csv", "data/readme.txt"]);
+
+        let members = list_tgz_members(&path).unwrap();
+        assert_eq!(members.len(), 2);
+        assert!(members.iter().any(|m| m.contains("m87")));
+
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn test_validate_eht_archive_accepts_matching() {
+        let dir = std::env::temp_dir().join("eht_validate_ok_test");
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("good.tgz");
+        create_test_tgz(&path, &["EHTC_M87_uv_data.csv", "EHTC_M87_image.csv"]);
+
+        assert!(validate_eht_archive(&path, "m87").is_ok());
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn test_validate_eht_archive_rejects_missing() {
+        let dir = std::env::temp_dir().join("eht_validate_bad_test");
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("bad.tgz");
+        create_test_tgz(&path, &["unrelated_data.csv"]);
+
+        assert!(validate_eht_archive(&path, "m87").is_err());
+        std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn test_tgz_member_count_synthetic() {
+        let dir = std::env::temp_dir().join("eht_count_test");
+        std::fs::create_dir_all(&dir).unwrap();
+        let path = dir.join("count.tgz");
+        create_test_tgz(&path, &["a.csv", "b.csv", "c.csv"]);
+
+        let n = tgz_member_count(&path).unwrap();
+        assert_eq!(n, 3);
+        std::fs::remove_dir_all(&dir).ok();
+    }
 
     #[test]
     fn test_eht_m87_archive_if_available() {

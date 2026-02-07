@@ -119,6 +119,30 @@ pub fn parse_gfc(path: &Path) -> Result<GravityField, FetchError> {
     })
 }
 
+/// Validate that all coefficients have degree n <= max_degree and order m <= n.
+pub fn validate_gfc_degrees(gf: &GravityField) -> Result<(), FetchError> {
+    for coeff in &gf.coefficients {
+        if coeff.n > gf.max_degree {
+            return Err(FetchError::Validation(format!(
+                "Coefficient degree {} exceeds declared max_degree {} in model '{}'",
+                coeff.n, gf.max_degree, gf.modelname
+            )));
+        }
+        if coeff.m > coeff.n {
+            return Err(FetchError::Validation(format!(
+                "Coefficient order {} exceeds degree {} in model '{}'",
+                coeff.m, coeff.n, gf.modelname
+            )));
+        }
+    }
+    Ok(())
+}
+
+/// Return the actual maximum degree found in coefficients.
+pub fn actual_max_degree(gf: &GravityField) -> u32 {
+    gf.coefficients.iter().map(|c| c.n).max().unwrap_or(0)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -159,5 +183,75 @@ mod tests {
         assert!((gf.coefficients[1].cnm - (-4.841653e-4)).abs() < 1e-10);
 
         std::fs::remove_dir_all(&dir).ok();
+    }
+
+    #[test]
+    fn test_validate_gfc_degrees_ok() {
+        let gf = GravityField {
+            modelname: "Test".into(),
+            earth_gravity_constant: 0.0,
+            radius: 0.0,
+            max_degree: 4,
+            coefficients: vec![
+                GravityCoefficient { n: 0, m: 0, cnm: 1.0, snm: 0.0, sigma_cnm: 0.0, sigma_snm: 0.0 },
+                GravityCoefficient { n: 2, m: 0, cnm: -4.8e-4, snm: 0.0, sigma_cnm: 0.0, sigma_snm: 0.0 },
+                GravityCoefficient { n: 4, m: 3, cnm: 1e-6, snm: 2e-6, sigma_cnm: 0.0, sigma_snm: 0.0 },
+            ],
+        };
+        assert!(validate_gfc_degrees(&gf).is_ok());
+        assert_eq!(actual_max_degree(&gf), 4);
+    }
+
+    #[test]
+    fn test_validate_gfc_degree_exceeds_max() {
+        let gf = GravityField {
+            modelname: "Bad".into(),
+            earth_gravity_constant: 0.0,
+            radius: 0.0,
+            max_degree: 2,
+            coefficients: vec![
+                GravityCoefficient { n: 5, m: 0, cnm: 1.0, snm: 0.0, sigma_cnm: 0.0, sigma_snm: 0.0 },
+            ],
+        };
+        assert!(validate_gfc_degrees(&gf).is_err());
+    }
+
+    #[test]
+    fn test_validate_gfc_order_exceeds_degree() {
+        let gf = GravityField {
+            modelname: "BadOrder".into(),
+            earth_gravity_constant: 0.0,
+            radius: 0.0,
+            max_degree: 10,
+            coefficients: vec![
+                GravityCoefficient { n: 3, m: 5, cnm: 1.0, snm: 0.0, sigma_cnm: 0.0, sigma_snm: 0.0 },
+            ],
+        };
+        assert!(validate_gfc_degrees(&gf).is_err());
+    }
+
+    #[test]
+    fn test_actual_max_degree_empty() {
+        let gf = GravityField {
+            modelname: "Empty".into(),
+            earth_gravity_constant: 0.0,
+            radius: 0.0,
+            max_degree: 0,
+            coefficients: vec![],
+        };
+        assert_eq!(actual_max_degree(&gf), 0);
+    }
+
+    #[test]
+    fn test_gfc_if_grace_fo_available() {
+        let path = std::path::Path::new("data/external/GRACEFO_monthly_sample.gfc");
+        if !path.exists() {
+            eprintln!("Skipping: GRACE-FO data not available");
+            return;
+        }
+        let gf = parse_gfc(path).expect("failed to parse GRACE-FO GFC");
+        assert!(gf.max_degree >= 60, "GRACE-FO model should have degree >= 60");
+        assert!(!gf.coefficients.is_empty());
+        validate_gfc_degrees(&gf).expect("degree validation should pass");
     }
 }

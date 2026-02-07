@@ -48,3 +48,100 @@ pub use catalogs::jarvis::{
     parse_jarvis_json, sample_materials,
 };
 pub use catalogs::union3::parse_union3_chain;
+
+/// All dataset provider names that should appear in the manifest.
+///
+/// This list is the single source of truth for the dataset count.
+/// The fetch-datasets binary, DATASET_MANIFEST.md, and this function
+/// must all agree on the provider inventory.
+pub fn known_provider_names() -> Vec<&'static str> {
+    vec![
+        "CHIME/FRB Catalog 2",
+        "ATNF Pulsar Catalogue",
+        "McGill Magnetar Catalog",
+        "SDSS DR18 Quasars",
+        "Gaia DR3 Nearby Stars",
+        "Hipparcos Legacy Catalog",
+        "GWTC-3 confident events",
+        "GWOSC combined GWTC (O1-O4a)",
+        "NANOGrav 15yr Free Spectrum",
+        "Fermi GBM Burst Catalog",
+        "EHT M87 2018 Data Bundle",
+        "EHT SgrA 2022 Data Bundle",
+        "TSIS-1 TSI Daily",
+        "SORCE TSI Daily",
+        "Pantheon+ SH0ES",
+        "Union3 Legacy SN Ia",
+        "Planck 2018 Summary",
+        "WMAP 9yr MCMC Chains",
+        "Planck 2018 MCMC Chains",
+        "IGRF-13 Coefficients",
+        "WMM 2025 Coefficients",
+        "GRACE GGM05S Gravity Field",
+        "GRACE-FO Gravity Field",
+        "GRAIL GRGM1200B Lunar Gravity",
+        "EGM2008 Static Geoid",
+        "Swarm L1B Magnetic Sample",
+        "Landsat C2 L2 STAC Metadata",
+        "JPL DE440 Ephemeris Kernel",
+        "JPL DE441 Ephemeris Kernel",
+        "JPL Horizons Planetary Ephemeris",
+    ]
+}
+
+/// Number of datasets in the canonical inventory.
+pub const DATASET_COUNT: usize = 30;
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_known_provider_count_matches_constant() {
+        let names = known_provider_names();
+        assert_eq!(
+            names.len(),
+            DATASET_COUNT,
+            "known_provider_names() length must match DATASET_COUNT"
+        );
+    }
+
+    #[test]
+    fn test_no_duplicate_provider_names() {
+        let names = known_provider_names();
+        let mut sorted = names.clone();
+        sorted.sort();
+        sorted.dedup();
+        assert_eq!(
+            sorted.len(),
+            names.len(),
+            "provider names must be unique"
+        );
+    }
+
+    #[test]
+    fn test_all_providers_instantiable() {
+        // Verify that key provider types exist and implement DatasetProvider
+        use crate::fetcher::FetchConfig;
+        let config = FetchConfig::default();
+
+        let providers: Vec<Box<dyn DatasetProvider>> = vec![
+            Box::new(catalogs::chime::ChimeCat2Provider),
+            Box::new(catalogs::gwtc::Gwtc3Provider),
+            Box::new(catalogs::atnf::AtnfProvider),
+            Box::new(catalogs::pantheon::PantheonProvider),
+            Box::new(catalogs::tsi::TsisTsiProvider),
+            Box::new(catalogs::sorce::SorceTsiProvider),
+            Box::new(catalogs::landsat::LandsatStacProvider),
+            Box::new(geophysical::swarm::SwarmMagAProvider),
+            Box::new(geophysical::de_ephemeris::De440Provider),
+        ];
+
+        for p in &providers {
+            // Just verify name() doesn't panic and returns non-empty
+            assert!(!p.name().is_empty());
+            // is_cached should not panic
+            let _ = p.is_cached(&config);
+        }
+    }
+}
