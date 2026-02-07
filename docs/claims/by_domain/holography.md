@@ -249,7 +249,7 @@ Count: 135
 - Hypothesis C-420 (**Modeled** (Engineering), 2026-02-02): Automated CAD generation outputs OpenSCAD geometry and SVG lithography masks for metamaterial nanostructures, linking refractive index maps to pillar diameters.
   - Where stated: `src/scripts/engineering/generate_bom_cad.py`, `crates/materials_core/src/metamaterial.rs`, `data/artifacts/engineering/spaceplate_geometry.scad`
 - Hypothesis C-421 (**Modeled** (Design), 2026-02-02): Metamaterial designs incorporate Rogers RT5880 carrier substrates and Gold/Silicon I-beam stacks to achieve impedance-matched high-index performance.
-  - Where stated: `src/gemini_physics/metamaterial.py`, `src/scripts/engineering/generate_bom_cad.py`
+  - Where stated: `crates/materials_core/src/effective_medium.rs`, `src/scripts/engineering/generate_bom_cad.py`
 - Hypothesis C-422 (**Modeled** (Simulation), 2026-02-02): Negative-dimension vacuum dynamics ($D \sim k^{-3}$) coupled with attractive self-interaction spontaneously generates stable solitons (gravastar candidates) from random fluctuations.
   - Where stated: `src/scripts/simulation/genesis_simulation_v2.py`, `data/artifacts/images/genesis_simulation_grand.png`
 - Hypothesis C-423 (**Modeled** (Simulation), 2026-02-02): Grand Unified Simulator v4 integrates CUDA-based relativistic ray tracing with robust FDFD electromagnetic field solving to visualize multi-scale warp-metamaterial interactions.

@@ -4,8 +4,12 @@
 //! reference datasets. All providers use the same DatasetProvider pattern
 //! as the astrophysical catalogs.
 
-pub mod igrf;
-pub mod wmm;
+pub mod de_ephemeris;
+pub mod egm2008;
 pub mod grace;
+pub mod grace_fo;
 pub mod grail;
+pub mod igrf;
 pub mod jpl_ephemeris;
+pub mod swarm;
+pub mod wmm;

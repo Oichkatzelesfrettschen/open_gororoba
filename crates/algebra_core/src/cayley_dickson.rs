@@ -711,6 +711,60 @@ pub fn measure_associator_density(
     (density, failures)
 }
 
+// ---------------------------------------------------------------------------
+// Integer-exact basis sign computation
+// ---------------------------------------------------------------------------
+
+/// Compute the sign in the Cayley-Dickson basis product: `e_p * e_q = sign * e_{p^q}`.
+///
+/// Uses the recursive doubling rule without allocating dense vectors.
+/// Returns +1 or -1. Integer-exact: no floating point involved.
+///
+/// This is the core building block for the integer-exact diagonal zero-product
+/// detection used by the motif census (`boxkites::motif_components`).
+///
+/// # Panics
+/// Debug-panics if `dim` is not a power of two, or if `p >= dim` or `q >= dim`.
+pub fn cd_basis_mul_sign(dim: usize, p: usize, q: usize) -> i32 {
+    debug_assert!(dim.is_power_of_two() && dim >= 1);
+    debug_assert!(p < dim && q < dim);
+
+    if dim == 1 {
+        return 1;
+    }
+
+    let half = dim / 2;
+
+    if p < half && q < half {
+        // Both in lower half: (a,0) * (c,0) = (ac, 0)
+        return cd_basis_mul_sign(half, p, q);
+    }
+
+    if p < half && q >= half {
+        // (a,0) * (0,d) = (0, d*a)
+        return cd_basis_mul_sign(half, q - half, p);
+    }
+
+    if p >= half && q < half {
+        // (0,b) * (c,0) = (0, b*conj(c))
+        // conj(c): if q==0, conj is identity; else negate
+        let s = cd_basis_mul_sign(half, p - half, q);
+        return if q == 0 { s } else { -s };
+    }
+
+    // p >= half && q >= half
+    // (0,b) * (0,d) = (-conj(d)*b, 0)
+    let qh = q - half;
+    let ph = p - half;
+    if qh == 0 {
+        // conj(e_0) = e_0, so -(e_0 * e_ph) = -e_ph
+        return -1;
+    }
+    // conj(e_qh) = -e_qh when qh != 0
+    // -((-e_qh) * e_ph) = e_qh * e_ph
+    cd_basis_mul_sign(half, qh, ph)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1152,6 +1206,38 @@ mod tests {
                 scalar_norm,
                 simd_norm
             );
+        }
+    }
+
+    #[test]
+    fn test_basis_mul_sign_cross_validates_with_multiply() {
+        // Verify integer-exact sign computation matches floating-point cd_multiply
+        for dim in [4, 8, 16] {
+            for p in 0..dim {
+                for q in 0..dim {
+                    // Create basis vectors
+                    let mut ep = vec![0.0; dim];
+                    ep[p] = 1.0;
+                    let mut eq = vec![0.0; dim];
+                    eq[q] = 1.0;
+
+                    let product = cd_multiply(&ep, &eq);
+                    let target_idx = p ^ q;
+                    let expected_sign = cd_basis_mul_sign(dim, p, q);
+
+                    // Product should be +/- e_{p^q}
+                    assert!(
+                        (product[target_idx].abs() - 1.0).abs() < 1e-12,
+                        "dim={}, p={}, q={}: product[{}] = {}, expected +/-1",
+                        dim, p, q, target_idx, product[target_idx],
+                    );
+                    assert_eq!(
+                        product[target_idx].signum() as i32, expected_sign,
+                        "dim={}, p={}, q={}: sign mismatch",
+                        dim, p, q,
+                    );
+                }
+            }
         }
     }
 }

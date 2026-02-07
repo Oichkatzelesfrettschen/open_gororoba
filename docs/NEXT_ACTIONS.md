@@ -1,6 +1,7 @@
 # Next Actions (Prioritized)
 
 This is the short actionable list after the second-pass audit (2026-01-27).
+Execution detail for missing datasets now lives in `docs/ULTRA_ROADMAP.md` Section H.
 
 ## A. Claims -> Evidence (highest impact)
 
@@ -41,3 +42,8 @@ This is the short actionable list after the second-pass audit (2026-01-27).
    - shortlist 5-10 artifacts
    - 1-2 paragraph method summary per artifact
    - one reproducibility check per artifact
+
+## D. Dataset pillars (now active)
+
+9) Execute the Universal-to-Local dataset pillars sequence in
+   `docs/ULTRA_ROADMAP.md` Section H and keep the manifest/provenance in lock-step.

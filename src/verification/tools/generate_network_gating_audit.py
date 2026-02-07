@@ -142,6 +142,8 @@ def main() -> int:
     findings: list[Finding] = []
     for p in sorted((src_root / "gemini_physics").rglob("*.py")):
         findings.append(_scan_file(p, kind="package"))
+    for p in sorted(src_root.glob("*.py")):
+        findings.append(_scan_file(p, kind="script"))
     for p in sorted((src_root / "scripts").rglob("*.py")):
         findings.append(_scan_file(p, kind="script"))
 

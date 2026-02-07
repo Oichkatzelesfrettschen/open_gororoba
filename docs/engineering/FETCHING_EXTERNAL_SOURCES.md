@@ -31,20 +31,13 @@ Then index the source in `docs/external_sources/<TOPIC>_SOURCES.md`.
 
 ### 2) Tor fetch (when normal path is blocked)
 
-This repo includes a helper that starts a one-shot Tor client on a non-9050 port and runs
-`wget` through `torsocks`:
+Use `torsocks` with `wget` directly:
 
 ```bash
-PYTHONWARNINGS=error venv/bin/python3 bin/torified_wget.py \
-  'https://example.com/file.pdf' \
-  --out data/external/papers/<stable_name>.pdf \
-  --socks-port 9150
+torsocks wget -O data/external/papers/<stable_name>.pdf 'https://example.com/file.pdf'
+pdftotext -layout data/external/papers/<stable_name>.pdf data/external/papers/<stable_name>.txt
+PYTHONWARNINGS=error make provenance
 ```
-
-Notes:
-- `--socks-port 9150` avoids the default Tor service port `9050`.
-- If you want to use the system Tor service explicitly, use `--use-existing-socks` and pass
-  the correct port (usually `9050`).
 
 ### 3) Blocked sources (paywall/WAF)
 
@@ -70,4 +63,4 @@ Use:
 systemctl status tor
 ```
 
-For repo fetches, prefer the helper above (9150+) to avoid port conflicts.
+For repo fetches, prefer `torsocks wget` against the existing Tor service.

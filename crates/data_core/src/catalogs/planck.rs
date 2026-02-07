@@ -67,11 +67,12 @@ pub mod wmap9 {
 
 /// Planck 2018 full MCMC chain URLs.
 ///
-/// These are the baseline plikHM_TTTEEE_lowl_lowE_lensing chains from the
-/// Planck Legacy Archive. Total size is ~9 GB uncompressed.
+/// The IRSA mirror hosts the closest available chain set (TTTEEE+lowl+lowE,
+/// without lensing, R3.00). The PLA endpoint that hosted the
+/// TTTEEE+lowl+lowE+lensing R3.01 set returns 404 as of 2026-02.
 const PLANCK_CHAIN_URLS: &[&str] = &[
-    // Base plikHM TTTEEE lowl lowE lensing chains (tar.gz)
-    "http://pla.esac.esa.int/pla/aio/product-action?COSMOLOGY.FILE_ID=COM_CosmoParams_base-plikHM-TTTEEE-lowl-lowE-lensing_R3.01.tar.gz",
+    // IRSA mirror: TTTEEE+lowl+lowE (without lensing, R3.00)
+    "https://irsa.ipac.caltech.edu/data/Planck/release_3/ancillary-data/cosmoparams/COM_CosmoParams_base-plikHM-TTTEEE-lowl-lowE_R3.00.zip",
 ];
 
 /// WMAP 9-year full MCMC chain URLs.
@@ -88,12 +89,12 @@ impl DatasetProvider for PlanckChainsProvider {
     fn name(&self) -> &str { "Planck 2018 MCMC Chains" }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("planck2018_chains.tar.gz");
+        let output = config.output_dir.join("planck2018_chains.zip");
         download_with_fallbacks(self.name(), PLANCK_CHAIN_URLS, &output, config.skip_existing)
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("planck2018_chains.tar.gz").exists()
+        config.output_dir.join("planck2018_chains.zip").exists()
     }
 }
 
@@ -122,28 +123,28 @@ impl Wmap9ChainsProvider {
     }
 }
 
-/// Planck getdist summary provider (~1 MB, not the full 9 GB chains).
+/// Planck base parameters (best-fit values) from IRSA.
 ///
-/// Fetches the distilled parameter constraints in getdist `.margestats` format
-/// from the Planck Legacy Archive. Much more practical than full chains for
-/// most analysis purposes.
+/// The PLA ZIP endpoint (which contained getdist .margestats files) returns
+/// 404 as of 2026-02. This IRSA TXT file contains the maximum-likelihood
+/// parameters from base_plikHM_TTTEEE_lowl_lowE_lensing.
 const PLANCK_SUMMARY_URLS: &[&str] = &[
-    "http://pla.esac.esa.int/pla/aio/product-action?COSMOLOGY.FILE_ID=COM_CosmoParams_base-plikHM-TTTEEE-lowl-lowE-lensing_R3.01.zip",
+    "https://irsa.ipac.caltech.edu/data/Planck/release_3/ancillary-data/cosmoparams/COM_PowerSpect_CMB-base-plikHM-TTTEEE-lowl-lowE-lensing-minimum_R3.01.txt",
 ];
 
-/// Planck 2018 parameter summary (getdist, ZIP, ~1 MB).
+/// Planck 2018 base parameter constraints (best-fit TXT from IRSA).
 pub struct PlanckSummaryProvider;
 
 impl DatasetProvider for PlanckSummaryProvider {
     fn name(&self) -> &str { "Planck 2018 Summary" }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("planck2018_summary.zip");
+        let output = config.output_dir.join("planck2018_base_params.txt");
         download_with_fallbacks(self.name(), PLANCK_SUMMARY_URLS, &output, config.skip_existing)
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("planck2018_summary.zip").exists()
+        config.output_dir.join("planck2018_base_params.txt").exists()
     }
 }
 

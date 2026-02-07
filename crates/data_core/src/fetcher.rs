@@ -194,22 +194,35 @@ pub fn extract_tar_gz(archive: &Path, output_dir: &Path) -> Result<Vec<PathBuf>,
 
 /// Convert HEASARC pipe-delimited text to standard CSV.
 ///
-/// HEASARC QueryServlet with `displaymode=FlatDisplay` returns pipe-delimited
-/// rows where each line has the form `value|value|value|`. This function
-/// strips the trailing pipe, replaces interior pipes with commas, and
-/// preserves the header line.
+/// W3Browse `displaymode=BatchDisplay` returns pipe-delimited rows wrapped in
+/// `BatchStart`/`BatchEnd` markers with a `+---+---+` separator between
+/// headers and data. This function strips those markers, converts pipes to
+/// commas, and trims whitespace from each cell value.
 pub fn convert_pipe_to_csv(input: &str) -> String {
     let mut output = String::with_capacity(input.len());
     for line in input.lines() {
         let trimmed = line.trim();
-        if trimmed.is_empty() || trimmed.starts_with('<') {
+        // Skip empty lines, HTML fragments, batch markers, and separators
+        if trimmed.is_empty()
+            || trimmed.starts_with('<')
+            || trimmed.starts_with("BatchStart")
+            || trimmed.starts_with("BatchEnd")
+            || trimmed.starts_with('+')
+        {
             continue;
         }
-        // Strip trailing pipe and convert interior pipes to commas
-        let cleaned = trimmed.trim_end_matches('|');
-        let csv_line = cleaned.replace('|', ",");
-        output.push_str(&csv_line);
-        output.push('\n');
+        // Strip leading/trailing pipe and convert interior pipes to commas
+        let cleaned = trimmed.trim_start_matches('|').trim_end_matches('|');
+        // Trim whitespace from each cell value
+        let csv_line: String = cleaned
+            .split('|')
+            .map(|cell| cell.trim())
+            .collect::<Vec<_>>()
+            .join(",");
+        if !csv_line.is_empty() {
+            output.push_str(&csv_line);
+            output.push('\n');
+        }
     }
     output
 }
@@ -292,5 +305,23 @@ mod tests {
     fn test_pipe_to_csv_empty_input() {
         let csv = convert_pipe_to_csv("");
         assert!(csv.is_empty());
+    }
+
+    #[test]
+    fn test_pipe_to_csv_batch_display_format() {
+        // Real W3Browse BatchDisplay output has markers and separators
+        let input = "\
+BatchStart\n\
+|name        |ra   |dec  |\n\
++------------+-----+-----+\n\
+|GRB080714086|12.34|56.78|\n\
+|GRB090101   |98.10|-12.3|\n\
+BatchEnd\n";
+        let csv = convert_pipe_to_csv(input);
+        let lines: Vec<&str> = csv.lines().collect();
+        assert_eq!(lines.len(), 3, "Should have header + 2 data rows, got: {:?}", lines);
+        assert_eq!(lines[0], "name,ra,dec");
+        assert_eq!(lines[1], "GRB080714086,12.34,56.78");
+        assert_eq!(lines[2], "GRB090101,98.10,-12.3");
     }
 }

@@ -6,7 +6,17 @@ Astro scripts depend on `astroquery` and (for some workflows) `gwpy`.
 make install-astro
 ```
 
-If a dataset is missing, fetch it explicitly and record the provenance in `docs/BIBLIOGRAPHY.md`.
+Rust-based unified fetcher for cosmology/astro/geophysical pillars:
+
+```bash
+cargo run --bin fetch-datasets -- --list
+cargo run --bin fetch-datasets -- --all --skip-existing
+```
+
+If a dataset is missing, fetch it explicitly and record provenance in:
+- `data/external/PROVENANCE.local.json` (`make provenance`)
+- `docs/BIBLIOGRAPHY.md`
+- `docs/external_sources/DATASET_MANIFEST.md`
 
 Common entrypoints:
 - `src/fetch_observatory_data.py` (MAST, SDSS)

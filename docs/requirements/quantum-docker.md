@@ -4,7 +4,7 @@ Host Python may be too new for Qiskit wheels. Use Docker.
 
 ```bash
 docker build -t qiskit-env -f docker/Dockerfile .
-bin/run_quantum_container.sh src/quantum/local_test.py
+./run_quantum_container.sh src/quantum/local_test.py
 ```
 
 Makefile equivalents:

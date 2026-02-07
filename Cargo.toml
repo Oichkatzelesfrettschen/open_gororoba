@@ -12,7 +12,6 @@ members = [
     "crates/stats_core",
     "crates/spectral_core",
     "crates/lbm_core",
-    "crates/gororoba_kernels",
     "crates/gororoba_py",
     "crates/gororoba_cli",
 ]
@@ -67,6 +66,9 @@ periodic-table-on-an-enum = "0.3.2"  # Element enum with atomic data
 
 # Numerical quadrature
 gauss-quad = "0.2.4"         # Gauss-Legendre quadrature (replaces hand-rolled Simpson)
+
+# ODE solvers
+ode_solvers = "0.6.1"        # Dormand-Prince 5(4), Dop853, RK4 (nalgebra-based)
 
 # Quantum computing
 quantum = "0.1.2"            # Quantum computer simulator

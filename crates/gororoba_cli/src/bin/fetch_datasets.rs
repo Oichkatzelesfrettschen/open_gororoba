@@ -63,6 +63,11 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~2 MB",
         },
         DatasetEntry {
+            provider: Box::new(gwtc::GwoscCombinedProvider),
+            category: "astro",
+            size_hint: "~100 KB",
+        },
+        DatasetEntry {
             provider: Box::new(atnf::AtnfProvider),
             category: "astro",
             size_hint: "~5 MB",
@@ -93,15 +98,40 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~15 MB",
         },
         DatasetEntry {
+            provider: Box::new(hipparcos::HipparcosProvider),
+            category: "astro",
+            size_hint: "~35 MB",
+        },
+        DatasetEntry {
             provider: Box::new(tsi::TsisTsiProvider),
             category: "astro",
             size_hint: "~500 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(sorce::SorceTsiProvider),
+            category: "astro",
+            size_hint: "~2 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(eht::EhtM87Provider),
+            category: "astro",
+            size_hint: "~250 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(eht::EhtSgrAProvider),
+            category: "astro",
+            size_hint: "~120 MB",
         },
         // Cosmological datasets
         DatasetEntry {
             provider: Box::new(pantheon::PantheonProvider),
             category: "cosmology",
             size_hint: "~200 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(union3::Union3Provider),
+            category: "cosmology",
+            size_hint: "~15 MB",
         },
         DatasetEntry {
             provider: Box::new(planck::PlanckSummaryProvider),
@@ -135,9 +165,39 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~350 KB",
         },
         DatasetEntry {
+            provider: Box::new(grace_fo::GraceFoProvider),
+            category: "geophysical",
+            size_hint: "~3 MB",
+        },
+        DatasetEntry {
             provider: Box::new(grail::GrailGrgm1200bProvider),
             category: "geophysical",
             size_hint: "~84 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(egm2008::Egm2008Provider),
+            category: "geophysical",
+            size_hint: "~75 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(swarm::SwarmMagAProvider),
+            category: "geophysical",
+            size_hint: "~1 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(landsat::LandsatStacProvider),
+            category: "geophysical",
+            size_hint: "~100 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(de_ephemeris::De440Provider),
+            category: "geophysical",
+            size_hint: "~120 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(de_ephemeris::De441Provider),
+            category: "geophysical",
+            size_hint: "~2.6 GB",
         },
         DatasetEntry {
             provider: Box::new(jpl_ephemeris::JplEphemerisProvider),
@@ -161,7 +221,11 @@ fn main() {
         println!("{:<35} {:<15} {:<10} Cached", "Dataset", "Category", "Size");
         println!("{}", "-".repeat(75));
         for entry in &registry {
-            let cached = if entry.provider.is_cached(&config) { "yes" } else { "no" };
+            let cached = if entry.provider.is_cached(&config) {
+                "yes"
+            } else {
+                "no"
+            };
             println!(
                 "{:<35} {:<15} {:<10} {}",
                 entry.provider.name(),
@@ -176,7 +240,10 @@ fn main() {
     let targets: Vec<&DatasetEntry> = if args.all {
         registry.iter().collect()
     } else if let Some(ref cat) = args.category {
-        registry.iter().filter(|e| e.category == cat.as_str()).collect()
+        registry
+            .iter()
+            .filter(|e| e.category == cat.as_str())
+            .collect()
     } else if let Some(ref name) = args.dataset {
         let lower = name.to_lowercase();
         registry
@@ -198,7 +265,12 @@ fn main() {
     let mut failed = 0;
 
     for entry in &targets {
-        eprintln!("[{}/{}] {}", success + failed + 1, targets.len(), entry.provider.name());
+        eprintln!(
+            "[{}/{}] {}",
+            success + failed + 1,
+            targets.len(),
+            entry.provider.name()
+        );
         match entry.provider.fetch(&config) {
             Ok(path) => {
                 eprintln!("  OK: {}", path.display());
@@ -211,7 +283,12 @@ fn main() {
         }
     }
 
-    eprintln!("\nDone: {} succeeded, {} failed out of {} datasets.", success, failed, targets.len());
+    eprintln!(
+        "\nDone: {} succeeded, {} failed out of {} datasets.",
+        success,
+        failed,
+        targets.len()
+    );
     if failed > 0 {
         std::process::exit(1);
     }

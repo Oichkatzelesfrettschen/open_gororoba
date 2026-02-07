@@ -29,9 +29,10 @@ use stats_core::ultrametric::dendrogram;
 #[command(name = "gw-merger-tree")]
 #[command(about = "Direction 4: Test ultrametric structure in GW merger mass-redshift space")]
 struct Cli {
-    /// Path to GWTC-3 confident events CSV.
-    #[arg(long, default_value = "data/external/GWTC-3_confident.csv")]
-    input: PathBuf,
+    /// Path to GWTC events CSV (combined or GWTC-3 confident).
+    /// Defaults to the combined catalog if available, otherwise GWTC-3.
+    #[arg(long)]
+    input: Option<PathBuf>,
 
     /// Weight for mass dimension in the combined metric.
     /// The distance is: d = sqrt(w_m * (dm/dm_scale)^2 + w_z * (dz/dz_scale)^2)
@@ -59,10 +60,22 @@ fn main() {
     let cli = Cli::parse();
 
     eprintln!("=== Direction 4: GW Merger Tree Ultrametricity ===");
-    eprintln!("Input: {}", cli.input.display());
 
-    // 1. Load GWTC-3 events
-    let events = parse_gwtc3_csv(&cli.input)
+    // Resolve input path: prefer combined catalog, fall back to GWTC-3
+    let input = cli.input.unwrap_or_else(|| {
+        let combined = PathBuf::from("data/external/gwosc_all_events.csv");
+        if combined.exists() {
+            eprintln!("Using combined GWOSC catalog (O1-O4a, ~219 events)");
+            combined
+        } else {
+            eprintln!("Combined catalog not found, falling back to GWTC-3 confident");
+            PathBuf::from("data/external/GWTC-3_confident.csv")
+        }
+    });
+    eprintln!("Input: {}", input.display());
+
+    // 1. Load GWTC events
+    let events = parse_gwtc3_csv(&input)
         .unwrap_or_else(|e| {
             eprintln!("Failed to parse GWTC-3 CSV: {}", e);
             std::process::exit(1);

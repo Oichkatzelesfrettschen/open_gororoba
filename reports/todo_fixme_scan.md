@@ -1,22 +1,22 @@
-# TODO/FIXME Scan (2026-02-01)
+# TODO/FIXME Scan (2026-02-07)
 
-Command used (excluding venv/caches and large artifact dirs):
+Command used (excluding venv/cache/artifact trees):
 
-`rg -n "\\b(TODO|FIXME)\\b" -S`
+`rg -n "\\b(TODO|FIXME)\\b" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'`
 
 ## High-signal hotspots
 
 - Claims pipeline backlog: `docs/CLAIMS_TASKS.md` (many rows still `TODO`)
 - Global tracker: `docs/TODO.md`
-- Targeted mechanism stubs:
-  - `docs/C026_MASS_GAP_MECHANISM.md` (Status: TODO)
-  - `docs/C027_DEFF_HORIZON_TEST.md` (Status: TODO)
-- Tensor-network engine TODOs:
-  - `src/tensor_networks/contraction.py`
-  - `src/tensor_networks/gradients.py`
-  - `src/tensor_networks/mera.py`
+- Open ticket stubs:
+  - `docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md`
+  - `reports/tickets_inventory.md`
+- Code-level implementation TODOs:
+  - `crates/quantum_core/src/tensor_networks.rs`
+  - `crates/quantum_core/src/casimir.rs`
 
 ## Notes
 
-- This scan is a navigation aid only. Treat each TODO as a scoped hypothesis-to-check task.
-- For repo policy, TODO lines are allowed to be imperative ("must verify ...") and do not count as overclaims.
+- This scan is a navigation aid only. Treat each TODO as a scoped
+  hypothesis-to-check task.
+- TODO entries in docs are expected and intentionally retained for provenance.

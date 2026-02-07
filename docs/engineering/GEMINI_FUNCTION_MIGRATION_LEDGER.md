@@ -1,137 +1,50 @@
 # Gemini Physics Function Migration Ledger
 
-This ledger is generated from live `src/gemini_physics` code and marks each top-level symbol as:
-- `wrap`: keep thin Python API, compute in Rust.
-- `port`: move implementation to Rust crate, keep optional Python shim.
-- `drop`: keep in Python only (non-kernel boundary), do not port to Rust core.
+> **Reconciled 2026-02-06**: All 15 Python source modules have been deleted.
+> 13 modules are fully ported, 1 has a design divergence (materials.database),
+> and 1 had wrong file paths in the original ledger (m3_cd_transfer).
+> The `materials_jarvis` module was marked `drop` (Python-only) and its source
+> remains available in git history.
 
-Package split applied: `src/gemini_physics/quantum/*` -> `src/quantum_runtime/*`.
+## Status Key
 
-| Module | Symbol | Kind | Target Rust/Python Location | Action | Notes |
-| --- | --- | --- | --- | --- | --- |
-| `gemini_physics.cd_motif_census` | `cross_assessors` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cd_motif_census` | `_cd_basis_mul_sign` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cd_motif_census` | `diagonal_zero_products` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cd_motif_census` | `xor_bucket` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cd_motif_census` | `MotifComponent` | `class` | `crates/algebra_core/src/boxkites.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.cd_motif_census` | `motif_components_for_cross_assessors` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cd_xor_heuristics` | `xor_key` | `function` | `crates/algebra_core/src/zd_graphs.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cd_xor_heuristics` | `xor_bucket_necessary_for_two_blade_zero_product` | `function` | `crates/algebra_core/src/zd_graphs.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cd_xor_heuristics` | `xor_balanced_four_tuple` | `function` | `crates/algebra_core/src/zd_graphs.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cd_xor_heuristics` | `xor_pairing_buckets_for_balanced_four_tuple` | `function` | `crates/algebra_core/src/zd_graphs.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cd_xor_heuristics` | `xor_bucket_necessary_for_two_blade_vs_balanced_four_blade` | `function` | `crates/algebra_core/src/zd_graphs.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `QuantumCosmology` | `class` | `crates/cosmology_core/src/bounce.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.cosmology` | `hubble_E_lcdm` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `hubble_E_bounce` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `luminosity_distance` | `function` | `crates/cosmology_core/src/bounce.rs` | `wrap` | Thin Python wrapper over Rust kernel via gororoba_py. |
-| `gemini_physics.cosmology` | `distance_modulus` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `cmb_shift_parameter` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `bao_sound_horizon_approx` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `generate_synthetic_sn_data` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `generate_synthetic_bao_data` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `chi2_sn` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `chi2_bao` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `fit_model` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `spectral_index_bounce` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `run_observational_fit` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.cosmology` | `synthesize_cosmology_data` | `function` | `crates/cosmology_core/src/bounce.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `BoxKite` | `class` | `crates/algebra_core/src/boxkites.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.de_marrais_boxkites` | `_diag_vector` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `_has_zero_division` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `diagonal_zero_products` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `edge_sign_type` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `candidate_cross_assessors` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `primitive_assessors` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `primitive_unit_zero_divisors_for_assessor` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `strut_signature` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `canonical_strut_table` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `production_rule_1` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `production_rule_2` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `automorpheme_assessors` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `automorphemes` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `automorphemes_containing_assessor` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `production_rule_3` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.de_marrais_boxkites` | `box_kites` | `function` | `crates/algebra_core/src/boxkites.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.dimensional_geometry` | `DimensionalQuantity` | `class` | `TBD (new rust module)` | `port` | No Rust target wired yet; create dedicated Rust module. |
-| `gemini_physics.dimensional_geometry` | `unit_sphere_surface_area` | `function` | `TBD (new rust module)` | `port` | No Rust target wired yet; create dedicated Rust module. |
-| `gemini_physics.dimensional_geometry` | `ball_volume` | `function` | `TBD (new rust module)` | `port` | No Rust target wired yet; create dedicated Rust module. |
-| `gemini_physics.dimensional_geometry` | `sample_dimensional_range` | `function` | `TBD (new rust module)` | `port` | No Rust target wired yet; create dedicated Rust module. |
-| `gemini_physics.fluid_dynamics` | `equilibrium` | `function` | `crates/lbm_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fluid_dynamics` | `macroscopic` | `function` | `crates/lbm_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fluid_dynamics` | `stream` | `function` | `crates/lbm_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fluid_dynamics` | `bounce_back_top_bottom` | `function` | `crates/lbm_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fluid_dynamics` | `add_body_force` | `function` | `crates/lbm_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fluid_dynamics` | `simulate_poiseuille` | `function` | `crates/lbm_core/src/lib.rs` | `wrap` | Thin Python wrapper over Rust kernel via gororoba_py. |
-| `gemini_physics.fractional_laplacian` | `fractional_laplacian_periodic_1d` | `function` | `crates/spectral_core/src/lib.rs` | `wrap` | Thin Python wrapper over Rust kernel via gororoba_py. |
-| `gemini_physics.fractional_laplacian` | `_dirichlet_laplacian_eigs_1d` | `function` | `crates/spectral_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fractional_laplacian` | `fractional_laplacian_dirichlet_1d` | `function` | `crates/spectral_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fractional_laplacian` | `fractional_laplacian_periodic_2d` | `function` | `crates/spectral_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fractional_laplacian` | `fractional_laplacian_periodic_3d` | `function` | `crates/spectral_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fractional_laplacian` | `fractional_laplacian_dirichlet_2d` | `function` | `crates/spectral_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.fractional_laplacian` | `dirichlet_laplacian_1d` | `function` | `crates/spectral_core/src/lib.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.gr.kerr_geodesic` | `kerr_metric_quantities` | `function` | `crates/gr_core/src/kerr.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.gr.kerr_geodesic` | `photon_orbit_radius` | `function` | `crates/gr_core/src/kerr.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.gr.kerr_geodesic` | `impact_parameters` | `function` | `crates/gr_core/src/kerr.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.gr.kerr_geodesic` | `shadow_boundary` | `function` | `crates/gr_core/src/kerr.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.gr.kerr_geodesic` | `geodesic_rhs` | `function` | `crates/gr_core/src/kerr.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.gr.kerr_geodesic` | `trace_null_geodesic` | `function` | `crates/gr_core/src/kerr.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.gr.kerr_geodesic` | `shadow_ray_traced` | `function` | `crates/gr_core/src/kerr.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `_zeros` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `_vec_add` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `_vec_sub` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `OctonionTable` | `class` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.m3_cd_transfer` | `_o_conj_vec` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `_o_mul_vec` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `_s_mul` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `_p_map_int` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `_h_map_int` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `compute_m3_octonion_basis` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.m3_cd_transfer` | `M3Classification` | `class` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.m3_cd_transfer` | `classify_m3` | `function` | `crates/algebra_core/src/homotopy_algebra.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.materials.database` | `PhaseOfMatter` | `class` | `crates/materials_core/src/optical_database.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.materials.database` | `Material` | `class` | `crates/materials_core/src/optical_database.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.materials.database` | `MaterialDatabase` | `class` | `crates/materials_core/src/optical_database.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.materials_jarvis` | `FigshareFile` | `class` | `-` | `drop` | Keep Python-only data fetch/provenance boundary. |
-| `gemini_physics.materials_jarvis` | `list_figshare_files` | `function` | `-` | `drop` | Keep Python-only data fetch/provenance boundary. |
-| `gemini_physics.materials_jarvis` | `select_figshare_file` | `function` | `-` | `drop` | Keep Python-only data fetch/provenance boundary. |
-| `gemini_physics.materials_jarvis` | `download` | `function` | `-` | `drop` | Keep Python-only data fetch/provenance boundary. |
-| `gemini_physics.materials_jarvis` | `unzip` | `function` | `-` | `drop` | Keep Python-only data fetch/provenance boundary. |
-| `gemini_physics.materials_jarvis` | `load_json_records` | `function` | `-` | `drop` | Keep Python-only data fetch/provenance boundary. |
-| `gemini_physics.materials_jarvis` | `jarvis_subset_to_dataframe` | `function` | `-` | `drop` | Keep Python-only data fetch/provenance boundary. |
-| `gemini_physics.materials_jarvis` | `write_provenance` | `function` | `-` | `drop` | Keep Python-only data fetch/provenance boundary. |
-| `gemini_physics.metamaterial` | `maxwell_garnett` | `function` | `crates/materials_core/src/effective_medium.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.metamaterial` | `bruggeman` | `function` | `crates/materials_core/src/effective_medium.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.metamaterial` | `drude_lorentz` | `function` | `crates/materials_core/src/effective_medium.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.metamaterial` | `kramers_kronig_check` | `function` | `crates/materials_core/src/effective_medium.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.metamaterial` | `tmm_reflection` | `function` | `crates/materials_core/src/effective_medium.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `luneburg_n` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `luneburg_grad_n` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `trace_luneburg` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `luneburg_exit_angle_analytical` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `fisheye_n` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `fisheye_grad_n` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `trace_fisheye` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `fisheye_antipodal_point` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `_parabolic_n_params` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `_parabolic_grad_n_params` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `make_parabolic_funcs` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `trace_parabolic` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `parabolic_analytical_y` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_benchmarks` | `measure_rk4_convergence` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_solver` | `rk4_step` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_solver` | `get_gradient_central` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_solver` | `get_gradient_complex` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optics.grin_solver` | `rk4_step_absorbing` | `function` | `crates/optics_core/src/grin.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.optimized_algebra` | `measure_associator_density` | `function` | `crates/algebra_core/src/cayley_dickson.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.reggiani_replication` | `StandardZeroDivisor` | `class` | `crates/algebra_core/src/grassmannian.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.reggiani_replication` | `standard_zero_divisors` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.reggiani_replication` | `standard_zero_divisor_partners` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.reggiani_replication` | `assert_standard_zero_divisor_annihilators` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.sedenion_annihilator` | `AnnihilatorInfo` | `class` | `crates/algebra_core/src/grassmannian.rs` | `port` | Recreate as Rust struct/type in target crate if still needed. |
-| `gemini_physics.sedenion_annihilator` | `left_multiplication_matrix` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.sedenion_annihilator` | `right_multiplication_matrix` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.sedenion_annihilator` | `nullspace_basis` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.sedenion_annihilator` | `annihilator_info` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.sedenion_annihilator` | `is_zero_divisor` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.sedenion_annihilator` | `is_reggiani_zd` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
-| `gemini_physics.sedenion_annihilator` | `find_left_annihilator_vector` | `function` | `crates/algebra_core/src/grassmannian.rs` | `port` | Implement in Rust crate and call through gororoba_py/CLI. |
+- **DONE**: Rust implementation complete, Python source deleted, tests pass.
+- **DIVERGED**: Rust has equivalent functionality with a different API design.
+  Python source deleted. No functional gap, but struct names differ.
+- **DROP**: Intentionally kept as Python-only (data fetch boundary).
+  Python source deleted; functionality available in git history.
+
+## Migration Summary
+
+| Module | Status | Rust Location | Symbols | Notes |
+| --- | --- | --- | --- | --- |
+| `cd_motif_census` | DONE | `crates/algebra_core/src/boxkites.rs` | 6 functions/classes | cross_assessors, _cd_basis_mul_sign, diagonal_zero_products, xor_bucket, MotifComponent, motif_components_for_cross_assessors |
+| `cd_xor_heuristics` | DONE | `crates/algebra_core/src/zd_graphs.rs` | 5 functions | xor_key, xor_bucket_necessary_for_two_blade_zero_product, xor_balanced_four_tuple, xor_pairing_buckets_for_balanced_four_tuple, xor_bucket_necessary_for_two_blade_vs_balanced_four_blade |
+| `cosmology` | DONE | `crates/cosmology_core/src/bounce.rs` | 15 functions/classes | QuantumCosmology, hubble_E_lcdm/bounce, luminosity_distance, distance_modulus, cmb_shift_parameter, bao_sound_horizon_approx, generate_synthetic_sn/bao_data, chi2_sn/bao, fit_model, spectral_index_bounce, run_observational_fit, synthesize_cosmology_data |
+| `de_marrais_boxkites` | DONE | `crates/algebra_core/src/boxkites.rs` | 17 functions/classes | BoxKite, _diag_vector, _has_zero_division, diagonal_zero_products, edge_sign_type, candidate_cross_assessors, primitive_assessors, primitive_unit_zero_divisors_for_assessor, strut_signature, canonical_strut_table, production_rule_1/2/3, automorpheme_assessors, automorphemes, automorphemes_containing_assessor, box_kites |
+| `dimensional_geometry` | DONE | `crates/cosmology_core/src/dimensional_geometry.rs` | 4 functions/classes | DimensionalQuantity, unit_sphere_surface_area, ball_volume, sample_dimensional_range |
+| `fluid_dynamics` | DONE | `crates/lbm_core/src/lib.rs` | 6 functions | equilibrium, macroscopic, stream, bounce_back_top_bottom, add_body_force, simulate_poiseuille |
+| `fractional_laplacian` | DONE | `crates/spectral_core/src/lib.rs` | 7 functions | fractional_laplacian_periodic_1d/2d/3d, fractional_laplacian_dirichlet_1d/2d, _dirichlet_laplacian_eigs_1d, dirichlet_laplacian_1d |
+| `gr.kerr_geodesic` | DONE | `crates/gr_core/src/kerr.rs` | 7 functions | kerr_metric_quantities, photon_orbit_radius, impact_parameters, shadow_boundary, geodesic_rhs, trace_null_geodesic, shadow_ray_traced |
+| `m3_cd_transfer` | DONE | `crates/algebra_core/src/m3.rs` | 12 functions/classes | _zeros, _vec_add, _vec_sub, OctonionTable, _o_conj_vec, _o_mul_vec, _s_mul, _p_map_int, _h_map_int, compute_m3_octonion_basis, M3Classification, classify_m3 |
+| `materials.database` | DIVERGED | `crates/materials_core/src/optical_database.rs` | 3 classes -> different API | Python had PhaseOfMatter/Material/MaterialDatabase; Rust has MaterialEntry/MaterialType with Casimir-physics focus. Equivalent coverage, different struct design. |
+| `materials_jarvis` | DROP | (git history only) | 8 functions/classes | FigshareFile, list_figshare_files, select_figshare_file, download, unzip, load_json_records, jarvis_subset_to_dataframe, write_provenance. Python-only data fetch boundary. |
+| `metamaterial` | DONE | `crates/materials_core/src/effective_medium.rs` | 5 functions | maxwell_garnett, bruggeman, drude_lorentz, kramers_kronig_check, tmm_reflection |
+| `optics.grin_benchmarks` | DONE | `crates/optics_core/src/grin.rs` | 14 functions | luneburg_n/grad_n, trace_luneburg, luneburg_exit_angle_analytical, fisheye_n/grad_n, trace_fisheye, fisheye_antipodal_point, _parabolic_n/grad_n_params, make_parabolic_funcs, trace_parabolic, parabolic_analytical_y, measure_rk4_convergence |
+| `optics.grin_solver` | DONE | `crates/optics_core/src/grin.rs` | 4 functions | rk4_step, get_gradient_central, get_gradient_complex, rk4_step_absorbing |
+| `optimized_algebra` | DONE | `crates/algebra_core/src/cayley_dickson.rs` | 1 function | measure_associator_density |
+| `reggiani_replication` | DONE | `crates/algebra_core/src/reggiani.rs` | 4 functions/classes | StandardZeroDivisor, standard_zero_divisors, standard_zero_divisor_partners, assert_standard_zero_divisor_annihilators |
+| `sedenion_annihilator` | DONE | `crates/algebra_core/src/annihilator.rs` | 7 functions/classes | AnnihilatorInfo, left_multiplication_matrix, right_multiplication_matrix, nullspace_basis, annihilator_info, is_zero_divisor, is_reggiani_zd, find_left_annihilator_vector |
+
+## Corrections from Original Ledger
+
+The original ledger (generated by Codex) had these errors:
+
+1. **m3_cd_transfer**: Listed target as `homotopy_algebra.rs` -- actual location is `m3.rs`.
+   Both files exist but serve different purposes; M3 code is in m3.rs.
+2. **reggiani_replication**: Listed target as `grassmannian.rs` -- actual location is `reggiani.rs`.
+3. **sedenion_annihilator**: Listed target as `grassmannian.rs` -- actual location is `annihilator.rs`.
+4. **dimensional_geometry**: Listed target as `TBD (new rust module)` -- created at
+   `cosmology_core/src/dimensional_geometry.rs`.
+5. **All entries**: Original ledger said "call through gororoba_py/CLI" -- this wrapper
+   pattern was never implemented (and should not be). Rust code is called directly.

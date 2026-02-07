@@ -13,7 +13,7 @@
 
 ## Docker entrypoint
 
-- Docker wrapper script lives at `bin/run_quantum_container.sh`; docs updated to match.
+- Docker wrapper script lives at `run_quantum_container.sh`; docs updated to match.
 
 ## Hygiene
 

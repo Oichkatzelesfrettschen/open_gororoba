@@ -8,12 +8,39 @@
 
 use crate::fetcher::{download_to_string, FetchError};
 
+/// Percent-encode a query string value for use in a URL parameter.
+///
+/// Encodes all characters except unreserved ones (RFC 3986):
+/// ALPHA / DIGIT / "-" / "." / "_" / "~"
+/// Space is encoded as `+` (application/x-www-form-urlencoded).
+pub fn percent_encode_query(s: &str) -> String {
+    let mut out = String::with_capacity(s.len() * 2);
+    for b in s.bytes() {
+        match b {
+            b'A'..=b'Z' | b'a'..=b'z' | b'0'..=b'9' | b'-' | b'.' | b'_' | b'~' => {
+                out.push(b as char);
+            }
+            b' ' | b'\t' | b'\n' | b'\r' => {
+                out.push('+');
+            }
+            _ => {
+                out.push('%');
+                out.push(char::from(HEX[(b >> 4) as usize]));
+                out.push(char::from(HEX[(b & 0x0f) as usize]));
+            }
+        }
+    }
+    out
+}
+
+const HEX: &[u8; 16] = b"0123456789ABCDEF";
+
 /// Build a TAP synchronous query URL.
 ///
 /// Encodes the ADQL query and requested format into the TAP sync endpoint URL.
 /// Common formats: "csv", "votable", "json", "tsv".
 pub fn tap_sync_url(base_url: &str, adql: &str, format: &str) -> String {
-    let encoded_query = adql.replace([' ', '\n', '\t'], "+");
+    let encoded_query = percent_encode_query(adql);
     format!(
         "{}/sync?REQUEST=doQuery&LANG=ADQL&FORMAT={}&QUERY={}",
         base_url.trim_end_matches('/'),

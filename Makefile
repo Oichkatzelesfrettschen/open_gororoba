@@ -1,10 +1,12 @@
 # ---- Phony targets ----
-.PHONY: help install install-analysis install-astro install-quantum
+.PHONY: help install install-analysis install-astro install-particle install-quantum
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify
 .PHONY: verify verify-grand ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data run coq latex
+.PHONY: cpp-deps cpp-build cpp-test cpp-bench cpp-clean
+.PHONY: docker-quantum-build docker-quantum-run docker-quantum-shell
 .PHONY: clean clean-artifacts clean-all
 
 VENV ?= venv
@@ -25,6 +27,9 @@ install-analysis: install
 
 install-astro: install
 	$(PIP) install -e ".[astro]"
+
+install-particle: install
+	$(PIP) install -e ".[particle]"
 
 install-quantum: install
 	$(PIP) install -e ".[quantum]"
@@ -54,6 +59,7 @@ smoke: install
 	$(PYTHON) -m ruff check src/gemini_physics tests
 	$(PYTHON) -m ruff check src --statistics --exit-zero
 	$(PYTHON) bin/ascii_check.py --check
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_dataset_manifest_providers.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
 
@@ -148,6 +154,41 @@ latex:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found. Install TeX Live (see docs/requirements/latex.md)"; exit 1; }
 	latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=docs/latex/out docs/latex/MASTER_SYNTHESIS.tex
 
+# ---- Quantum Docker ----
+
+docker-quantum-build:
+	docker build -t qiskit-env -f docker/Dockerfile .
+
+docker-quantum-run:
+	./run_quantum_container.sh $(ARGS)
+
+docker-quantum-shell:
+	docker run --rm -it \
+		-v "$(PWD)/data:/app/data" \
+		-v "$(PWD)/src:/app/src" \
+		qiskit-env /bin/bash
+
+# ---- C++ kernels ----
+
+cpp-deps:
+	@test -f cpp/conanfile.txt -o -f cpp/conanfile.py || { echo "ERROR: missing cpp/conanfile.*"; exit 1; }
+	cd cpp && conan install . --build=missing
+
+cpp-build:
+	@test -f cpp/CMakeLists.txt || { echo "ERROR: missing cpp/CMakeLists.txt"; exit 1; }
+	cmake -S cpp -B cpp/build/Release -DCMAKE_BUILD_TYPE=Release
+	cmake --build cpp/build/Release -j$$(nproc)
+
+cpp-test: cpp-build
+	ctest --test-dir cpp/build/Release --output-on-failure
+
+cpp-bench: cpp-build
+	@command -v ./cpp/build/Release/bench_cd_multiply >/dev/null 2>&1 || { echo "ERROR: bench_cd_multiply not built"; exit 1; }
+	./cpp/build/Release/bench_cd_multiply
+
+cpp-clean:
+	rm -rf cpp/build
+
 # ---- Cleanup ----
 
 clean-artifacts:
@@ -191,6 +232,7 @@ help:
 	@echo "    make install              Create venv and install (editable, dev deps)"
 	@echo "    make install-analysis     Add analysis extras (networkx, ripser, sklearn)"
 	@echo "    make install-astro        Add astronomy extras (gwpy, astroquery)"
+	@echo "    make install-particle     Add particle-analysis extras (uproot, awkward, vector)"
 	@echo "    make install-quantum      Add quantum extras (qiskit, Docker recommended)"
 	@echo ""
 	@echo "  Quality:"
@@ -228,4 +270,10 @@ help:
 	@echo "    make run                  Run simulations (sedenion, modular, entropy)"
 	@echo "    make coq                  Compile Coq proofs"
 	@echo "    make latex                Build MASTER_SYNTHESIS.pdf"
+	@echo "    make cpp-build            Build optional C++ kernels"
+	@echo "    make cpp-test             Run C++ kernel tests"
+	@echo "    make cpp-bench            Run C++ kernel benchmarks"
+	@echo "    make docker-quantum-build Build qiskit-env Docker image"
+	@echo "    make docker-quantum-run   Run quantum script in Docker (ARGS=...)"
+	@echo "    make docker-quantum-shell Open interactive shell in qiskit-env"
 	@echo "    make doctor               Environment diagnostics"

@@ -26,4 +26,5 @@
 1. Convert each claim in `docs/CLAIMS_EVIDENCE_MATRIX.md` into a small test + citation update.
 2. Add a second materials dataset backend for cross-validation (OQMD or NOMAD).
 3. Add a reproducible GWTC-3 refetch + checksum workflow and tie LIGO plots directly to it.
-
+4. Execute and track missing cosmology/ephemeris/geodesy pillars in
+   `docs/ULTRA_ROADMAP.md` Section H.

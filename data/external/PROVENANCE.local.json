@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-01-28T07:33:17.022641+00:00",
+  "generated_at_utc": "2026-02-07T01:36:56.923719+00:00",
   "hashes": [
     {
       "mtime_utc": "2026-01-27T03:52:33.459303+00:00",
@@ -20,10 +20,10 @@
       "size_bytes": 997
     },
     {
-      "mtime_utc": "2026-01-27T03:59:30.472649+00:00",
+      "mtime_utc": "2026-01-31T20:01:26.696084+00:00",
       "path": "GWTC-3_confident.csv",
-      "sha256": "6e154917fa65b4f0c41e5bc57123aa1e8fa09a3ff027bd7f0c00a7ca82f7766b",
-      "size_bytes": 11359
+      "sha256": "96b5292325bef325a3df686f21e3103560f625933f63aec684ba8c28ff7bb0eb",
+      "size_bytes": 11323
     },
     {
       "mtime_utc": "2026-01-27T03:53:51.878205+00:00",
@@ -38,9 +38,9 @@
       "size_bytes": 365
     },
     {
-      "mtime_utc": "2026-01-28T06:33:55.649906+00:00",
+      "mtime_utc": "2026-02-04T05:38:07.540217+00:00",
       "path": "PROVENANCE.local.json",
-      "sha256": "22390b4f5a89f6f8e966087aadc01f7f22683cedeabbd9fffc4e2b36adb9a915",
+      "sha256": "55fde4633dbd63d9919e715137a74890ffd5b64121bcad55e26f024da9417dc8",
       "size_bytes": 4337
     },
     {
@@ -62,6 +62,24 @@
       "size_bytes": 5483734
     },
     {
+      "mtime_utc": "2026-02-06T21:48:41.272784+00:00",
+      "path": "atnf_pulsars.csv",
+      "sha256": "3a5987bca6ecc3c22dcaa00060acd6c8f483ca6c98820e653f08b5af022b324b",
+      "size_bytes": 253509
+    },
+    {
+      "mtime_utc": "2026-02-06T18:04:23.319108+00:00",
+      "path": "chime_frb_cat1.csv",
+      "sha256": "affd86573fee8fe94be9d0d85e73cc787fa260b2497ccec5d9d93e1d26610ed5",
+      "size_bytes": 221007
+    },
+    {
+      "mtime_utc": "2026-02-06T18:08:38.505734+00:00",
+      "path": "chime_frb_cat2.csv",
+      "sha256": "5108ada779d279a2547d9f9e73ae25bfdd40d8496d6ba7255ec29c6629057a48",
+      "size_bytes": 4057396
+    },
+    {
       "mtime_utc": "2026-01-27T06:18:29.051594+00:00",
       "path": "jarvis_dft/PROVENANCE.json",
       "sha256": "fd9915f711d8d8436e295ddc87953ddd114f311238f0fbb71d80ea280bcfa8e1",
@@ -80,10 +98,970 @@
       "size_bytes": 16551136
     },
     {
+      "mtime_utc": "2026-02-06T21:46:50.459406+00:00",
+      "path": "mcgill_magnetars.csv",
+      "sha256": "cb89a085a4e49b6a5130f1fda59d4d616b6e8384fa2b2d9de594b69a41fd60f6",
+      "size_bytes": 7296
+    },
+    {
       "mtime_utc": "2026-01-28T07:32:52.548394+00:00",
       "path": "nv_odmr/NV_ODMR_OPU_BOM_Jan2026.xlsx",
       "sha256": "9d8f5f40d0646f6160f6d9b48c49113e8e00612b3f833dfc2e19ceb40b01f56a",
       "size_bytes": 16654
+    },
+    {
+      "mtime_utc": "2026-02-04T04:37:19.223312+00:00",
+      "path": "papers/Babar_Weaver_Gold_Optical.pdf",
+      "sha256": "7fb74d9bb70c68214a5f3e18f0701b087794f960032e23bedfe06a859e5debbb",
+      "size_bytes": 176610
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:46.975459+00:00",
+      "path": "papers/CMS_TOP-22-007.pdf",
+      "sha256": "8363a41a1c8359b0058230858815c65d2a7c1a00db4ce3852133782b58337b11",
+      "size_bytes": 2169479
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:47.188460+00:00",
+      "path": "papers/CMS_TOP-22-007.txt",
+      "sha256": "cddcb6d23d409e291cc184581cc1c129adc3d976fa0ed755f317bf8f94b95d39",
+      "size_bytes": 126023
+    },
+    {
+      "mtime_utc": "2026-02-04T04:37:18.493311+00:00",
+      "path": "papers/CSC_KTH_Ray_Tracing.pdf",
+      "sha256": "88ab42e11b11054e8f6a96281028dac7240de9bf0a735c8139e6d2b71e7f6709",
+      "size_bytes": 113097
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:50.784806+00:00",
+      "path": "papers/JHEP_01_2025_025.pdf",
+      "sha256": "5770c5280142d45b7755fee12359f970d0cd7a4de6a083727e07c2d77c435b93",
+      "size_bytes": 907477
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:50.943473+00:00",
+      "path": "papers/JHEP_01_2025_025.txt",
+      "sha256": "417ed4e178d4fa0f8ddd8be384214f577d1f895eb91a1b4b36bfa3b68b0eccaa",
+      "size_bytes": 108304
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:49.151594+00:00",
+      "path": "papers/JHEP_10_2025_079.pdf",
+      "sha256": "ad0af34ee506931c061ccb8052a50fcb5a51b7db83ac6372c2d89089e4a85e9e",
+      "size_bytes": 1402586
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:49.265467+00:00",
+      "path": "papers/JHEP_10_2025_079.txt",
+      "sha256": "5013a2d781a4ef206b911813ac7e1eede130571ed5f13eb50e0fd8929bc2cf57",
+      "size_bytes": 84482
+    },
+    {
+      "mtime_utc": "2026-01-31T21:17:52.834347+00:00",
+      "path": "papers/Landy_2008_Thermal_Metamaterials.pdf",
+      "sha256": "cdf688e214b4e76b1c6aabd34d2c0881536301abdf08ba3da857a9a80d8d7f6c",
+      "size_bytes": 635245
+    },
+    {
+      "mtime_utc": "2026-01-31T21:17:52.849590+00:00",
+      "path": "papers/Landy_2008_Thermal_Metamaterials.txt",
+      "sha256": "99f34e0eccd5f505030f258db3c76f632d1ef1e1a0f65bade95e69d77fa69060",
+      "size_bytes": 24894
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:51.290815+00:00",
+      "path": "papers/Lorentzian_Threads_2025.pdf",
+      "sha256": "44ffd93d771ac9e96e71f468d394bbb75255dde674715cf56fbb09bce03b53e0",
+      "size_bytes": 730682
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:51.371475+00:00",
+      "path": "papers/Lorentzian_Threads_2025.txt",
+      "sha256": "6554a5c04ec85b72a0e39c05d0ab0fbe8a60d4f77a51a1811a7ba9465a024462",
+      "size_bytes": 88813
+    },
+    {
+      "mtime_utc": "2026-02-04T04:59:29.650164+00:00",
+      "path": "papers/Malitson_1962_Sapphire.pdf",
+      "sha256": "cc0b4e42510d49c6decd464123ecf3b14ae9b47f9b4ed2ee64893e2d6520a264",
+      "size_bytes": 355
+    },
+    {
+      "mtime_utc": "2026-02-04T04:37:19.788313+00:00",
+      "path": "papers/NIST_Silicon.pdf",
+      "sha256": "2da850527f40fd815fcf737dbebd4218f26989793b581743b99b73382dbd8610",
+      "size_bytes": 4697030
+    },
+    {
+      "mtime_utc": "2026-01-31T21:17:52.353841+00:00",
+      "path": "papers/Pozar_2005_Microwave_Engineering_Transitions.pdf",
+      "sha256": "8456a1e8124251330a47da3784815c4995f937937edab8cba4aa8e8b05066a50",
+      "size_bytes": 560226
+    },
+    {
+      "mtime_utc": "2026-01-31T21:17:52.380590+00:00",
+      "path": "papers/Pozar_2005_Microwave_Engineering_Transitions.txt",
+      "sha256": "61fbacdac83f1e514214c4f17b50035bb32488eadf12438eb567b57580676abc",
+      "size_bytes": 48714
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:51.545735+00:00",
+      "path": "papers/Rodal_2025_Metamaterial_Gravity.pdf",
+      "sha256": "204c4fcb88bfcb3fc1a52efe720d9e608fa4ff8588c88b83b5af3f84c6f91253",
+      "size_bytes": 378440
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:51.591475+00:00",
+      "path": "papers/Rodal_2025_Metamaterial_Gravity.txt",
+      "sha256": "8535a0abc7fbb4899783a907a912547e1d6d3109d7dddf3ccb88b361227532df",
+      "size_bytes": 38030
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:54.012323+00:00",
+      "path": "papers/White_2021_Casimir_Warp.pdf",
+      "sha256": "1580be671a957993b796344cb55cfd9b99ea2dbdb37cb57327c4205f005732b5",
+      "size_bytes": 2024021
+    },
+    {
+      "mtime_utc": "2026-01-31T21:02:54.062484+00:00",
+      "path": "papers/White_2021_Casimir_Warp.txt",
+      "sha256": "8db9d424d9f4dcb9d0f2589f3aff78015c3b114d43a409823d7e2debac4a58b0",
+      "size_bytes": 41204
+    },
+    {
+      "mtime_utc": "2006-07-14T22:27:25+00:00",
+      "path": "papers/abdi_2007_bonferroni_sidak_corrections.pdf",
+      "sha256": "243227b8fc609e69791bff6909b1bd18a9b160110202ec4c6c4517d3ce6c951c",
+      "size_bytes": 72811
+    },
+    {
+      "mtime_utc": "2026-02-02T05:43:11.161980+00:00",
+      "path": "papers/abdi_2007_bonferroni_sidak_corrections.txt",
+      "sha256": "93db71f5caf8f216c79f93c729cb4382da0a4341e0eedc036302de7a9424fd25",
+      "size_bytes": 14957
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:52.377858+00:00",
+      "path": "papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf",
+      "sha256": "6b99da71d95f5231a8bc921d19831dcc260b0a03ad34065160d65268a188da6e",
+      "size_bytes": 831313
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:52.558859+00:00",
+      "path": "papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.txt",
+      "sha256": "93c1a4cfc9bb4788e09823a4840fb0e3b7ab020a83fe016ce0a3ef814c0bc582",
+      "size_bytes": 219542
+    },
+    {
+      "mtime_utc": "2023-01-17T23:14:11+00:00",
+      "path": "papers/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.pdf",
+      "sha256": "9a7757f998b7f6808f05324c7f3e26e9270a6c32a40846f450fe7c357f84b1ed",
+      "size_bytes": 459991
+    },
+    {
+      "mtime_utc": "2026-02-02T20:05:01.610719+00:00",
+      "path": "papers/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.txt",
+      "sha256": "65f3636ca0015573c64fcf7874ba0fe0de0b545ef3bc77253d8ffe41e37b0be6",
+      "size_bytes": 149137
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:46.300988+00:00",
+      "path": "papers/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.pdf",
+      "sha256": "08fbac64b6b86fb84a51d38f64c29387d3e616832b40ff0064e3691963f4cba8",
+      "size_bytes": 589322
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:46.463989+00:00",
+      "path": "papers/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.txt",
+      "sha256": "ae90aef51a461a723e217b7fb71cb0da726d29da5b86cdb2fa19d16d4fe76651",
+      "size_bytes": 193939
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:46.803989+00:00",
+      "path": "papers/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.pdf",
+      "sha256": "41239e8508a65b86716c43857443a67db3883088f11a985db6ae6363b93f0022",
+      "size_bytes": 331230
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:46.892989+00:00",
+      "path": "papers/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.txt",
+      "sha256": "4ecc712788398e3b19110b1e4a7990b7a3f52183724f936f1c433e14792f449e",
+      "size_bytes": 96790
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:45.232536+00:00",
+      "path": "papers/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.pdf",
+      "sha256": "50981b73078009f4bd5dd9b26e366bd63a9fd02093b7e916c016a71751f5b8e0",
+      "size_bytes": 750625
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:45.425536+00:00",
+      "path": "papers/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.txt",
+      "sha256": "417888d9d5cdc1ff52a969d7c00dbcf12412f6f4dd0656aed69ab631cc0de23c",
+      "size_bytes": 209441
+    },
+    {
+      "mtime_utc": "2023-01-18T07:58:35+00:00",
+      "path": "papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf",
+      "sha256": "daace87c360fa46f300000fed03c1a92ab4b9ed6227b885f9e32dae0dd5b7f28",
+      "size_bytes": 409478
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:47.673541+00:00",
+      "path": "papers/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.pdf",
+      "sha256": "7723208a4df4eeee90b9f07002dc93eabf4ae45586dc497804f5a9adf6b5f841",
+      "size_bytes": 1090250
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:47.948541+00:00",
+      "path": "papers/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.txt",
+      "sha256": "5297af83b36415dbf0f81d15f2937d33f5e1b17d4c48682412456395e3d23f40",
+      "size_bytes": 365734
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:47.623990+00:00",
+      "path": "papers/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.pdf",
+      "sha256": "40665f9848e9a02f81219b23b693986ad0026d56d5bbb3bdc89dd7d8eaa9261e",
+      "size_bytes": 185812
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:47.666990+00:00",
+      "path": "papers/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.txt",
+      "sha256": "96a6244dbe663be16585909fff1aa287b13d16c48613be78cdb6c43556cd72e7",
+      "size_bytes": 55470
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:46.513538+00:00",
+      "path": "papers/arxiv_0903.5082_zurek_2009_quantum_darwinism.pdf",
+      "sha256": "1c887b195b8b2e23ccc436e153fc4e7506c75aa7f8ae997ca2da4e6489b9fd17",
+      "size_bytes": 843308
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:46.564538+00:00",
+      "path": "papers/arxiv_0903.5082_zurek_2009_quantum_darwinism.txt",
+      "sha256": "b9f617bda1851dd93dba42ed63060abce937165b4581465e1114847696095978",
+      "size_bytes": 80570
+    },
+    {
+      "mtime_utc": "2026-01-29T00:48:16.567882+00:00",
+      "path": "papers/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf",
+      "sha256": "202833bbbf36b0c8bb6ca0c448c98df3f21e2f072a82e3b30c0b029f19cb8ce1",
+      "size_bytes": 245005
+    },
+    {
+      "mtime_utc": "2026-02-02T01:26:00.538739+00:00",
+      "path": "papers/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.pdf",
+      "sha256": "edd8948d1fbba4b7082ffe63c5846474bdb4a51a3a09cca122ba53d7eb786fd3",
+      "size_bytes": 235923
+    },
+    {
+      "mtime_utc": "2026-02-02T01:26:06.175748+00:00",
+      "path": "papers/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.txt",
+      "sha256": "cad96d88cffe6154659cfb30b482ccba3340d20e5b20d779f7d89bd72e85f82d",
+      "size_bytes": 33401
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:52.704859+00:00",
+      "path": "papers/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.pdf",
+      "sha256": "3b96c5632dfc5fb5d19d2a6ffc0ce0ace07ca184965c96238182b96a99f6bfd4",
+      "size_bytes": 108620
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:52.720859+00:00",
+      "path": "papers/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.txt",
+      "sha256": "d26ed4a147e41793e75c9777427e87df19ca7423b6a764cddec9b3a8e5040a80",
+      "size_bytes": 16694
+    },
+    {
+      "mtime_utc": "2021-08-10T18:39:05+00:00",
+      "path": "papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf",
+      "sha256": "94ad70d51b9317f0a5e6ae4f02a68e4ca6f1458395a5a664793208093f2d2ee8",
+      "size_bytes": 133977
+    },
+    {
+      "mtime_utc": "2026-02-02T15:44:06.200985+00:00",
+      "path": "papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.txt",
+      "sha256": "34cff53620da862dc7e8f0ce783e770f90d40ae1aac4668c7f2d4b9e70b7937d",
+      "size_bytes": 18490
+    },
+    {
+      "mtime_utc": "2024-11-30T01:16:50+00:00",
+      "path": "papers/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.pdf",
+      "sha256": "2173fcd10d99c269eec4d28d2089887452eb972456c52a1b961a2bf186194029",
+      "size_bytes": 4036949
+    },
+    {
+      "mtime_utc": "2026-02-02T05:43:11.260980+00:00",
+      "path": "papers/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.txt",
+      "sha256": "454da4e7f752e8ec1139c2bc1cb5cae38d198c31a49f5e7a556db078d27e81f4",
+      "size_bytes": 71467
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:54.289865+00:00",
+      "path": "papers/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.pdf",
+      "sha256": "0048d573ffb2efd0e1d335c89b54acb24e00787a82f60acc888835fe5f17a577",
+      "size_bytes": 468228
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:54.394866+00:00",
+      "path": "papers/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.txt",
+      "sha256": "213250ad790a09693a7273407145826412911b44d5e1181392f3c2cf359baa9f",
+      "size_bytes": 146948
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:52.996860+00:00",
+      "path": "papers/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.pdf",
+      "sha256": "6f0df8d48c7d331203247a81eddd44c3e037f88a02feb2fd1eb439a656029b56",
+      "size_bytes": 693869
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:53.116861+00:00",
+      "path": "papers/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.txt",
+      "sha256": "c57a53d13315d74379a2cd9afd7479f899d35e00cfcea48ff059f32b773c7d71",
+      "size_bytes": 109665
+    },
+    {
+      "mtime_utc": "2023-01-20T17:31:52+00:00",
+      "path": "papers/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf",
+      "sha256": "c0d09d86fbd11fb5229b8becc1692065c8f99c2ab33178076220758c3f4b2a4e",
+      "size_bytes": 236258
+    },
+    {
+      "mtime_utc": "2026-02-03T07:35:52.689858+00:00",
+      "path": "papers/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.txt",
+      "sha256": "9a99ec1a9981d05748754312f3b8007dcf36e7584e4e248dcff4c1965feef36b",
+      "size_bytes": 42992
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:42.280983+00:00",
+      "path": "papers/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf",
+      "sha256": "d7e998e2cb18382bce4840c6a8683db6afa227e8502a35959ed24f9a546f90ce",
+      "size_bytes": 279339
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:42.336983+00:00",
+      "path": "papers/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.txt",
+      "sha256": "30d306db77cd9e816de49eb914e7c6512d7cd3887f9ad87ebb9317c98254b51e",
+      "size_bytes": 81975
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:54.649867+00:00",
+      "path": "papers/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.pdf",
+      "sha256": "5269c0e7ff5e2e14bed7f753757e9927a4dd42f5a4b87b06d4481ed15c71c194",
+      "size_bytes": 394757
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:54.683867+00:00",
+      "path": "papers/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.txt",
+      "sha256": "2c4faa51bb8a2c60e1857e250b896320db39624744951c38281095d87a2b0574",
+      "size_bytes": 60450
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:43.402984+00:00",
+      "path": "papers/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.pdf",
+      "sha256": "23aaef1103e759cde2e9ff1d13a27b5e8696d72d9131b87768e57e6dfd83dee4",
+      "size_bytes": 339843
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:43.481984+00:00",
+      "path": "papers/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.txt",
+      "sha256": "e2b9ffca9190304d8e043a1ad94482e0091d2cffac15249edf7b833cb2c667e2",
+      "size_bytes": 88425
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:53.370862+00:00",
+      "path": "papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf",
+      "sha256": "04198f2251ee5d14074b00ea4decc5ba856c758e0d81d96313457112bc99e08a",
+      "size_bytes": 870595
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:53.428862+00:00",
+      "path": "papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.txt",
+      "sha256": "133522cff93ff862bd4e32124cef389f72687af9bdd0fe48c3b554964429b040",
+      "size_bytes": 62797
+    },
+    {
+      "mtime_utc": "2023-01-21T00:48:00+00:00",
+      "path": "papers/arxiv_1601.05416_dong_harlow_wall_2016_entanglement_wedge_reconstruction.pdf",
+      "sha256": "0e005ea46b67299bcb5169a1861c8e93f52529b9e7e6b4028c138ee9654cadd2",
+      "size_bytes": 421836
+    },
+    {
+      "mtime_utc": "2026-02-03T00:40:10.685687+00:00",
+      "path": "papers/arxiv_1601.05416_dong_harlow_wall_2016_entanglement_wedge_reconstruction.txt",
+      "sha256": "8553d3b7e5c7848dfa298482f49b7770035615b1cfc55b900620f947f84ac60e",
+      "size_bytes": 46843
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:53.798863+00:00",
+      "path": "papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf",
+      "sha256": "98a0efccd5ed3f3adc523445ebb82a248793268bd9114a9b56d84b62b2373362",
+      "size_bytes": 1014315
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:53.956864+00:00",
+      "path": "papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.txt",
+      "sha256": "9961acbe1dd02fb3d9ccade5e8cfd81fe09f4f3246f5837141d22e3d2af35f53",
+      "size_bytes": 211352
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:45.900988+00:00",
+      "path": "papers/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.pdf",
+      "sha256": "bc6879758ea4280a5c7638270718224fb4a1959a2017dbe029453fcb1959935f",
+      "size_bytes": 3587505
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:45.949988+00:00",
+      "path": "papers/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.txt",
+      "sha256": "03d4e34bd054303cbe64fe28c49b45c402a87ac1bf8d8aebc0f33f798864571d",
+      "size_bytes": 58516
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:42.658983+00:00",
+      "path": "papers/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.pdf",
+      "sha256": "4c36445978cf6afbb8d912975e79b2a3724ab422e3be6b6fa756548a90653478",
+      "size_bytes": 284042
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:42.709983+00:00",
+      "path": "papers/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.txt",
+      "sha256": "aee7a3437cfc43ef6a1cb2e7d9cec9aeb24aacf92306ba0361f00e63415c6199",
+      "size_bytes": 64969
+    },
+    {
+      "mtime_utc": "2023-01-22T19:32:47+00:00",
+      "path": "papers/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.pdf",
+      "sha256": "cbe7e0805bc8ff98f5bca11681c2651854d9c814abb8da5b29f6c4a11d370a2e",
+      "size_bytes": 596143
+    },
+    {
+      "mtime_utc": "2026-02-02T16:45:05.489263+00:00",
+      "path": "papers/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.txt",
+      "sha256": "d4a48f4ea510aaf2915c4e384c018b707727d92c962dbf6eb981448b26624624",
+      "size_bytes": 54480
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:46.056537+00:00",
+      "path": "papers/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf",
+      "sha256": "bc8b30cb6561ee0e9487573e9e23e7408cf5e09b19fde5c8936fd802b7236941",
+      "size_bytes": 729107
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:46.145537+00:00",
+      "path": "papers/arxiv_1906.04478_manzano_2019_lindblad_short_intro.txt",
+      "sha256": "8657977bdbd07b7aeeeaaad6e19c1537c8d2cda6a1e98448e69eef9e1782b0cd",
+      "size_bytes": 113961
+    },
+    {
+      "mtime_utc": "2023-01-23T05:28:20+00:00",
+      "path": "papers/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.pdf",
+      "sha256": "12e765d1897467e78a158e520405fb0ed2c54f9a73e979fd3e2f002da0dfad8b",
+      "size_bytes": 5801454
+    },
+    {
+      "mtime_utc": "2026-02-02T15:42:04.073056+00:00",
+      "path": "papers/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.txt",
+      "sha256": "abb81120f158a338b280fdf4a2e445bf39f52e54557897678fcabcf096210f7e",
+      "size_bytes": 31994
+    },
+    {
+      "mtime_utc": "2023-01-23T05:37:56+00:00",
+      "path": "papers/arxiv_2006.12611_abbott_et_al_2020_gw190814_mass_gap.pdf",
+      "sha256": "1844a0eb939671c93f994c69db53edf34713505a82f0cd39006e46ea2298b435",
+      "size_bytes": 4377907
+    },
+    {
+      "mtime_utc": "2026-02-03T02:00:44.602186+00:00",
+      "path": "papers/arxiv_2006.12611_abbott_et_al_2020_gw190814_mass_gap.txt",
+      "sha256": "9bc2faa0888f6a60e6450dd4934a0a864009c6c7137a87a0a5ec91a2b496baf1",
+      "size_bytes": 194140
+    },
+    {
+      "mtime_utc": "2023-01-23T08:40:21+00:00",
+      "path": "papers/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.pdf",
+      "sha256": "9dabbc035f5a3fa8d6a8cf263e800279971fddd9bb1cfcf222655ff5b8368d63",
+      "size_bytes": 558814
+    },
+    {
+      "mtime_utc": "2026-02-02T15:41:54.217065+00:00",
+      "path": "papers/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.txt",
+      "sha256": "99283b35e141706741b3458373688a96323ad07fab08fc9dcaa6bfb99a05d3c9",
+      "size_bytes": 75773
+    },
+    {
+      "mtime_utc": "2026-02-02T01:26:06.145748+00:00",
+      "path": "papers/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.pdf",
+      "sha256": "4aac18a0f2a8c1070923579f67f2bc31aab2ec6dc91d98286508345a30ea91ca",
+      "size_bytes": 882578
+    },
+    {
+      "mtime_utc": "2026-02-02T01:26:07.909750+00:00",
+      "path": "papers/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.txt",
+      "sha256": "01a01948a293bc7011d5c3317be9ab61253a409ec2048ddf9709688918e0c432",
+      "size_bytes": 120532
+    },
+    {
+      "mtime_utc": "2023-01-23T10:48:09+00:00",
+      "path": "papers/arxiv_2106.12106_page_et_al_2021_designing_spaceplates_multilayer_stacks.pdf",
+      "sha256": "c7feb44fc848c3137f70eb17126fe64c091d6d761d5e809f9630a4392edf5739",
+      "size_bytes": 862967
+    },
+    {
+      "mtime_utc": "2026-02-03T11:48:42.037600+00:00",
+      "path": "papers/arxiv_2106.12106_page_et_al_2021_designing_spaceplates_multilayer_stacks.txt",
+      "sha256": "b4d52a5139f766d768e971b3150fb4347455a2b01a3dc9d14b2975062c0f6f18",
+      "size_bytes": 29067
+    },
+    {
+      "mtime_utc": "2023-01-23T11:34:39+00:00",
+      "path": "papers/arxiv_2106.15163_abbott_et_al_2021_two_nsbh_coalescences.pdf",
+      "sha256": "efed66f662086821000450c62cf9667384ead500e70857c9b1c642a309cefafb",
+      "size_bytes": 3734431
+    },
+    {
+      "mtime_utc": "2026-02-03T02:00:44.760186+00:00",
+      "path": "papers/arxiv_2106.15163_abbott_et_al_2021_two_nsbh_coalescences.txt",
+      "sha256": "7c586a61f16e8779e122f2dff7821a15b57ed83da0800e2a952415827e03be46",
+      "size_bytes": 208970
+    },
+    {
+      "mtime_utc": "2026-02-02T01:26:02.814743+00:00",
+      "path": "papers/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf",
+      "sha256": "8d7401dfae3ffe3d7abc1faa7252bc6423ec0e4784ed7a2e9118d9c18aefed68",
+      "size_bytes": 7324786
+    },
+    {
+      "mtime_utc": "2026-02-02T01:26:07.097749+00:00",
+      "path": "papers/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.txt",
+      "sha256": "27516c439e165d278768e7c74a5fee2849dbc1a9ccef5b66751f8bd95dcd9402",
+      "size_bytes": 820450
+    },
+    {
+      "mtime_utc": "2026-02-02T01:26:05.774747+00:00",
+      "path": "papers/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf",
+      "sha256": "3e616e77962260040e3def02a4d7aac3152ee62a76fa8d5a8262b64b34c96ed9",
+      "size_bytes": 11436130
+    },
+    {
+      "mtime_utc": "2026-02-02T01:26:07.829750+00:00",
+      "path": "papers/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.txt",
+      "sha256": "88cc548a27a8ad61d62147a8bfea639fca47366efc5ae89508888bb56bac0eae",
+      "size_bytes": 560831
+    },
+    {
+      "mtime_utc": "2023-07-01T00:05:00+00:00",
+      "path": "papers/arxiv_2306.16213_agazie_et_al_2023_nanograv_15yr_gwb.pdf",
+      "sha256": "3a33495ae465768f832d5e55efff0769a6a6c41564ce8714e3f51ba929785aeb",
+      "size_bytes": 3095832
+    },
+    {
+      "mtime_utc": "2023-09-01T23:41:19+00:00",
+      "path": "papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf",
+      "sha256": "38ad641c6f2683cf4a00a817fc7129e568added96ea0fe0cfa99b672142d1138",
+      "size_bytes": 588679
+    },
+    {
+      "mtime_utc": "2026-02-02T17:39:34.985778+00:00",
+      "path": "papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt",
+      "sha256": "8b3dc276d4e5ddc3c869b8dcaf1f9cb2d1d013e24e83081d780c8e7ba1ede8ef",
+      "size_bytes": 44357
+    },
+    {
+      "mtime_utc": "2026-01-29T01:02:45.554910+00:00",
+      "path": "papers/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf",
+      "sha256": "56e792505db42aec0983968ce761fcde4b6b9b9e6a3107291ef5834cd3eb7a99",
+      "size_bytes": 235836
+    },
+    {
+      "mtime_utc": "2026-01-29T00:48:16.165881+00:00",
+      "path": "papers/arxiv_2505.11747v2_structure_cayley_dickson.pdf",
+      "sha256": "815b797e690def4bd889ea30b17ecd715f3009ed60526a76ea9fd92f45aab7e2",
+      "size_bytes": 369591
+    },
+    {
+      "mtime_utc": "2026-01-29T01:02:45.189910+00:00",
+      "path": "papers/arxiv_2512.07210v1_automorphisms_sedenions.pdf",
+      "sha256": "2fefa736f6ed2ac9b10485a2110a7b2c4689b0039730f2c536edbbd625051f4d",
+      "size_bytes": 353728
+    },
+    {
+      "mtime_utc": "2026-01-29T01:02:44.991909+00:00",
+      "path": "papers/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf",
+      "sha256": "5e2e39feff3716ece2116071dcc6139bb2835478805e22ec9a69af7a43834281",
+      "size_bytes": 368706
+    },
+    {
+      "mtime_utc": "2026-01-29T00:48:17.863886+00:00",
+      "path": "papers/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf",
+      "sha256": "74111b6e4be468583efae99f8700c5f5427b50fd46e41945dd90a84175809289",
+      "size_bytes": 2472812
+    },
+    {
+      "mtime_utc": "2026-01-29T00:48:17.176884+00:00",
+      "path": "papers/arxiv_2601.19734v1_clifford_invariant_unification.pdf",
+      "sha256": "c96b2c2e20303e3e1d3a59431e2f6eddbaf3b8642364b60f6da3f6e0589b37a9",
+      "size_bytes": 428362
+    },
+    {
+      "mtime_utc": "2026-02-02T02:27:39+00:00",
+      "path": "papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf",
+      "sha256": "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e6",
+      "size_bytes": 5515834
+    },
+    {
+      "mtime_utc": "2026-02-02T18:23:03.712884+00:00",
+      "path": "papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.txt",
+      "sha256": "433009bb523880ab307723c4b8266f697d97dd75355b48fece323c73601e4364",
+      "size_bytes": 21079
+    },
+    {
+      "mtime_utc": "2026-02-02T02:25:50+00:00",
+      "path": "papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf",
+      "sha256": "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90",
+      "size_bytes": 1374894
+    },
+    {
+      "mtime_utc": "2026-02-02T18:23:02.105883+00:00",
+      "path": "papers/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.txt",
+      "sha256": "b3f9b2dd5a066a6a9cb07fa538ca7b9a4a8e0f46d13306dfd4ba2623316a42ba",
+      "size_bytes": 65284
+    },
+    {
+      "mtime_utc": "2024-11-30T00:40:16+00:00",
+      "path": "papers/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.pdf",
+      "sha256": "9702624fb1696893a175a142fd4960dc67ff787cf6291310a3277fad5f271099",
+      "size_bytes": 95375
+    },
+    {
+      "mtime_utc": "2026-02-02T15:44:16.577996+00:00",
+      "path": "papers/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.txt",
+      "sha256": "278ce7883bd13d801a3c559c35dfd7d63440c809fd30104ab0011765a2d7b9d7",
+      "size_bytes": 14515
+    },
+    {
+      "mtime_utc": "2023-01-18T19:53:37+00:00",
+      "path": "papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf",
+      "sha256": "628bf2d787097a32c1991a6192e255b0092e689bafa8b0495d7cc96a2bb9ef30",
+      "size_bytes": 222411
+    },
+    {
+      "mtime_utc": "2026-02-03T01:37:10.538671+00:00",
+      "path": "papers/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.txt",
+      "sha256": "8bae641acb8629a3ce1c39538fcde65e941297c5255cd456135758fc10ef6f16",
+      "size_bytes": 35579
+    },
+    {
+      "mtime_utc": "2024-11-30T00:56:47+00:00",
+      "path": "papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf",
+      "sha256": "2de07e909b17c5a5117b4021c0a42d2ed3deeedad318a446c233de63d2cbf9f3",
+      "size_bytes": 168282
+    },
+    {
+      "mtime_utc": "2026-02-03T01:35:47.575550+00:00",
+      "path": "papers/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.txt",
+      "sha256": "ad2e97df340b9a57dc130963b2647ace96f925eb59d9897def2dfa3ef6d83c33",
+      "size_bytes": 29452
+    },
+    {
+      "mtime_utc": "2024-12-07T01:32:19+00:00",
+      "path": "papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf",
+      "sha256": "4624ea2fb4d318ad118e333446e66a3af77c744d7192cbffe0742915ad33d4ff",
+      "size_bytes": 113224
+    },
+    {
+      "mtime_utc": "2026-02-03T01:35:48.359551+00:00",
+      "path": "papers/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.txt",
+      "sha256": "7834b7898385f53e96f7cd6ca6671ea06f270fa23f9c377ea4ca7a2ed5daa60e",
+      "size_bytes": 15218
+    },
+    {
+      "mtime_utc": "2023-01-21T04:02:46+00:00",
+      "path": "papers/arxiv_gr-qc9410014_barbero_1994_real_ashtekar_variables.pdf",
+      "sha256": "c3e454b0a752acd69c154a087b4bc012cf7a1cab0cb1dd635d9f932bbe43a934",
+      "size_bytes": 109033
+    },
+    {
+      "mtime_utc": "2026-02-03T01:35:48.799552+00:00",
+      "path": "papers/arxiv_gr-qc9410014_barbero_1994_real_ashtekar_variables.txt",
+      "sha256": "350279c142d71e7a5ff53433aee03cfde5b414fef552b1601d62384f147e9420",
+      "size_bytes": 18121
+    },
+    {
+      "mtime_utc": "2023-01-24T01:41:29+00:00",
+      "path": "papers/arxiv_gr-qc9612030_immirzi_1996_real_and_complex_connections.pdf",
+      "sha256": "316ffcb718bf5b0f78e415aa5d6e6b02b1a230edf95b3718060396985232ee86",
+      "size_bytes": 110522
+    },
+    {
+      "mtime_utc": "2026-02-03T01:35:48.995552+00:00",
+      "path": "papers/arxiv_gr-qc9612030_immirzi_1996_real_and_complex_connections.txt",
+      "sha256": "5d77350224416696b14f44f479425e29b2ac19927defbea423b71e0408aad31a",
+      "size_bytes": 15608
+    },
+    {
+      "mtime_utc": "2024-11-30T01:45:51+00:00",
+      "path": "papers/arxiv_gr-qc9701052_immirzi_1997_quantum_gravity_and_regge_calculus.pdf",
+      "sha256": "c8478eb3557415aa007c12cd7bf5c0c1e3892bf7ad1bc5baec1b118051b66b45",
+      "size_bytes": 147553
+    },
+    {
+      "mtime_utc": "2026-02-03T01:35:47.841551+00:00",
+      "path": "papers/arxiv_gr-qc9701052_immirzi_1997_quantum_gravity_and_regge_calculus.txt",
+      "sha256": "8cb5adc5825113bbb2e82a13221fc206da10d9c9610458976b6b250f57e06d01",
+      "size_bytes": 26367
+    },
+    {
+      "mtime_utc": "2024-11-30T01:49:32+00:00",
+      "path": "papers/arxiv_gr-qc9712019_carroll_1997_lecture_notes_general_relativity.pdf",
+      "sha256": "d4cbfeed3a18370cb7e1a256da6fa7de722982ad7f6a146b4fc0fe14a6bebf6c",
+      "size_bytes": 1583209
+    },
+    {
+      "mtime_utc": "2026-02-03T03:57:53.410161+00:00",
+      "path": "papers/arxiv_gr-qc9712019_carroll_1997_lecture_notes_general_relativity.txt",
+      "sha256": "9e90e8a0609758a16c2c25fba6b7c1beb2c6d25ffffbc12d9a64c81d83b0687c",
+      "size_bytes": 499074
+    },
+    {
+      "mtime_utc": "2023-01-19T13:55:40+00:00",
+      "path": "papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf",
+      "sha256": "dea6b95fc781f47cf367677a8c01ca18e356b83a7c70159cca5351d7efcbae12",
+      "size_bytes": 161527
+    },
+    {
+      "mtime_utc": "2026-02-03T01:36:40.383627+00:00",
+      "path": "papers/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.txt",
+      "sha256": "f86488ff468f43af682cb7ac16c8e8924861c37fdac97eeda98d84c967db37e7",
+      "size_bytes": 24249
+    },
+    {
+      "mtime_utc": "2024-11-30T01:10:03+00:00",
+      "path": "papers/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.pdf",
+      "sha256": "66111197414ccb8f3fb8dbaaac8355084c49aa7d1f6879092bd16ad76744f00b",
+      "size_bytes": 136521
+    },
+    {
+      "mtime_utc": "2026-02-02T17:41:01.905740+00:00",
+      "path": "papers/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.txt",
+      "sha256": "42c3d39abe17e37f12edf9bc4d6c47947c97a0891353cf0855b1df493ffe4084",
+      "size_bytes": 25975
+    },
+    {
+      "mtime_utc": "2024-11-30T01:13:44+00:00",
+      "path": "papers/arxiv_hep-th0508202_lauscher_reuter_2005_fractal_spacetime_structure_asymptotic_safety.pdf",
+      "sha256": "77d6ba4c3af9e5cfb89584ab83e8dffc07fd3bcc392509241a490ff6ee9d83a7",
+      "size_bytes": 184037
+    },
+    {
+      "mtime_utc": "2026-02-03T01:37:40.791714+00:00",
+      "path": "papers/arxiv_hep-th0508202_lauscher_reuter_2005_fractal_spacetime_structure_asymptotic_safety.txt",
+      "sha256": "2685d5d8b036bc99afd2ef17ec1f5a7e127931c85241652a77625f86b59848d4",
+      "size_bytes": 37531
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:51.698855+00:00",
+      "path": "papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf",
+      "sha256": "2c8802f8ce95275be371de0eebf143aac8827856d502b26249ea16851bcf27db",
+      "size_bytes": 187229
+    },
+    {
+      "mtime_utc": "2026-02-01T19:18:51.723855+00:00",
+      "path": "papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.txt",
+      "sha256": "e869fbfb97def4b2a5d3ef5bb024dac5171e543482ca8bd327209926300400b6",
+      "size_bytes": 41813
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:49.024992+00:00",
+      "path": "papers/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.pdf",
+      "sha256": "2d8055bc9173a66100787ca229a0da7e218f1bf8db393f74d221912609901006",
+      "size_bytes": 350359
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:49.111992+00:00",
+      "path": "papers/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.txt",
+      "sha256": "1866e32576f7362cf1e706fb94db748565842eff3097e249a7d647c1ca222cd1",
+      "size_bytes": 102150
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:48.626992+00:00",
+      "path": "papers/arxiv_hep-th9409089_susskind_1994_world_as_hologram.pdf",
+      "sha256": "8f4ee75f384178c942bcff69809fb683c58ad257e05c7dff23f3ee403fd23934",
+      "size_bytes": 365965
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:48.690992+00:00",
+      "path": "papers/arxiv_hep-th9409089_susskind_1994_world_as_hologram.txt",
+      "sha256": "ec9f8842d0f5b47d7c9ba5e5c3f57bcb996b149c73b7689b660606e7310007b4",
+      "size_bytes": 74947
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:44.789535+00:00",
+      "path": "papers/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.pdf",
+      "sha256": "5fbca853f9f9d5de248fe3027958f547b1026dd65c8e44115c16e991be1dd7d0",
+      "size_bytes": 223353
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:44.851535+00:00",
+      "path": "papers/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.txt",
+      "sha256": "34be3bbd903b7725e7686450053cbf5155918c03eb40576b2d83aff3eaade0bf",
+      "size_bytes": 67564
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:45.670537+00:00",
+      "path": "papers/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.pdf",
+      "sha256": "2c5cdd1bd8da1dcc65d90cb2d28d17e8d4cddd9697af1eb7387128f15d47b756",
+      "size_bytes": 196251
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:45.722537+00:00",
+      "path": "papers/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.txt",
+      "sha256": "06732f6d4fb484a027b91bcd7a740ba4a185d3ace20bee26f2cd4ec48bed59c4",
+      "size_bytes": 66551
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:48.107991+00:00",
+      "path": "papers/arxiv_hep-th9711200_maldacena_1997_ads_cft.pdf",
+      "sha256": "b711c300aac9a8c93d84451675554da8829d4b7d3c1ae23cdd16e94523975f06",
+      "size_bytes": 246327
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:48.154991+00:00",
+      "path": "papers/arxiv_hep-th9711200_maldacena_1997_ads_cft.txt",
+      "sha256": "3e9162ac5bf3c91f821ff38a4e182c145a86feb7381c1469becf5db7d60f8b80",
+      "size_bytes": 61504
+    },
+    {
+      "mtime_utc": "2024-11-30T00:42:34+00:00",
+      "path": "papers/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf",
+      "sha256": "c69ae97ce4fcb557bececc59c3449512ca97071a60983f097a2591ab35419f4a",
+      "size_bytes": 196765
+    },
+    {
+      "mtime_utc": "2023-01-18T16:55:54+00:00",
+      "path": "papers/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf",
+      "sha256": "36c01c4a6271358758717b208601401254a6bd13733e5c5ee925029ff8ae3f75",
+      "size_bytes": 579634
+    },
+    {
+      "mtime_utc": "2024-11-30T00:42:50+00:00",
+      "path": "papers/arxiv_math0105155_baez_2002_octonions.pdf",
+      "sha256": "f8087fb91b10cdbee2157e8eec8c33ac6b918b0de2c8c1fd16b4d8183f0868cc",
+      "size_bytes": 526062
+    },
+    {
+      "mtime_utc": "2026-02-02T17:25:08.284395+00:00",
+      "path": "papers/arxiv_math0105155_baez_2002_octonions.txt",
+      "sha256": "10da368039c15a22e0e100d34630bab409b7f8750ecc31a258543eba6a48f82d",
+      "size_bytes": 198765
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:42.947984+00:00",
+      "path": "papers/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.pdf",
+      "sha256": "98524443dc2728b87016ecac9c4e33ad7bccac30de70ccd64fd1f47416f9a7cc",
+      "size_bytes": 203299
+    },
+    {
+      "mtime_utc": "2026-02-01T21:23:42.980984+00:00",
+      "path": "papers/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.txt",
+      "sha256": "ba320847a0e3c6aae348b7a0e5d6f149552d2dea5d871d9804b65734df615825",
+      "size_bytes": 37412
+    },
+    {
+      "mtime_utc": "2021-08-11T09:16:06+00:00",
+      "path": "papers/arxiv_physics0111203_smith_et_al_2002_effective_eps_mu_from_rt.pdf",
+      "sha256": "622ba15ba37273bf1e02db1d62578651e99df06dc8d6a476f3ce31218127754c",
+      "size_bytes": 179816
+    },
+    {
+      "mtime_utc": "2026-02-03T11:48:41.518600+00:00",
+      "path": "papers/arxiv_physics0111203_smith_et_al_2002_effective_eps_mu_from_rt.txt",
+      "sha256": "971fc078c0c9cfb71c69dfbaa1f4032e1e756d9d539046580d747e5c999baae1",
+      "size_bytes": 32508
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:46.892539+00:00",
+      "path": "papers/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.pdf",
+      "sha256": "d22c9fdfcaf3ec867631e3c903c404d3819cc3959a680facf0a47df1aa1df011",
+      "size_bytes": 137315
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:46.917539+00:00",
+      "path": "papers/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.txt",
+      "sha256": "c676c3fb28af18aa38d11c31929079af13b0b770579d426f4d2ca45992284276",
+      "size_bytes": 30366
+    },
+    {
+      "mtime_utc": "2026-02-02T07:41:35.548729+00:00",
+      "path": "papers/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf",
+      "sha256": "d2539a55d6c63c598ee00b26bc1e7320a77c6fcdd58d17663ef7cdca2af1bc1b",
+      "size_bytes": 423052
+    },
+    {
+      "mtime_utc": "2026-02-02T04:53:09.005013+00:00",
+      "path": "papers/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.txt",
+      "sha256": "a72ec6fd2386b689786708ca6622e37c3464035e52ce11eb61bb7b668a64e4a4",
+      "size_bytes": 121406
+    },
+    {
+      "mtime_utc": "2026-02-02T07:41:47.125737+00:00",
+      "path": "papers/arxiv_quant-ph0301032_mirror.pdf",
+      "sha256": "d2539a55d6c63c598ee00b26bc1e7320a77c6fcdd58d17663ef7cdca2af1bc1b",
+      "size_bytes": 423052
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:47.153540+00:00",
+      "path": "papers/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.pdf",
+      "sha256": "1207c7576cf33f7c540f657af588f32389e14ba5926c65564ec033d4e91aa2ca",
+      "size_bytes": 130831
+    },
+    {
+      "mtime_utc": "2026-02-01T19:28:47.173540+00:00",
+      "path": "papers/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.txt",
+      "sha256": "6f897046e168e2b6b35c2feeeadd97cb60c9f1d75a33c6d206f25b2b2bd3c181",
+      "size_bytes": 31788
+    },
+    {
+      "mtime_utc": "2026-01-28T18:57:38.807367+00:00",
+      "path": "papers/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf",
+      "sha256": "550e4a027c0ead746040167912911e92ed77f3bd73dfb7ad702990e168e1966c",
+      "size_bytes": 208813
+    },
+    {
+      "mtime_utc": "2026-01-28T18:57:48.198379+00:00",
+      "path": "papers/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.txt",
+      "sha256": "37cf72df884925aa97f636bc37336ddf3f7bb9ca909833a06cf46d8be2e7dee9",
+      "size_bytes": 33159
+    },
+    {
+      "mtime_utc": "2026-01-28T19:52:45.325181+00:00",
+      "path": "papers/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.pdf",
+      "sha256": "36d4c72353ed82ecd5958ec60d52d82b9696e2955c8e85ebf55d407ddbff414f",
+      "size_bytes": 330386
+    },
+    {
+      "mtime_utc": "2026-01-28T19:53:35.883230+00:00",
+      "path": "papers/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.txt",
+      "sha256": "1ecd52059ad19bff1ff605c839285ff291f6a3074829c993559bf6c2d6dfd8fa",
+      "size_bytes": 99058
+    },
+    {
+      "mtime_utc": "2026-01-28T17:46:46.373419+00:00",
+      "path": "papers/carlstrom_2001_wheels_report.pdf",
+      "sha256": "339fd916659b381dd8e03ca58164e533c15173b7700bb7f3b08d42ad7ed5319b",
+      "size_bytes": 350294
+    },
+    {
+      "mtime_utc": "2026-01-28T17:51:01.951614+00:00",
+      "path": "papers/carlstrom_2001_wheels_report.txt",
+      "sha256": "6e3776422448e5b08ceecfa45de77d61e24829ff9bef8a49dd1a936302ab6444",
+      "size_bytes": 110315
+    },
+    {
+      "mtime_utc": "2026-01-30T02:51:30.494133+00:00",
+      "path": "papers/chong_2010_cpa_arxiv_1003.4968.pdf",
+      "sha256": "2aee24f71078be4a779f9a3caf1c433ec9e066f8365ddea84c6bd95b9d0adeb3",
+      "size_bytes": 598926
     },
     {
       "mtime_utc": "2026-01-27T17:24:04.625191+00:00",
@@ -98,10 +1076,448 @@
       "size_bytes": 201039
     },
     {
+      "mtime_utc": "2026-01-28T17:50:38.763601+00:00",
+      "path": "papers/de_marrais_2002_math0207003_placeholder_substructures_I.pdf",
+      "sha256": "4ce77adf6d0ac2cdde814d7f93ccf4b26da7cfe172a53ff5c18b3f6629a4cf3a",
+      "size_bytes": 304671
+    },
+    {
+      "mtime_utc": "2026-01-28T17:51:01.732614+00:00",
+      "path": "papers/de_marrais_2002_math0207003_placeholder_substructures_I.txt",
+      "sha256": "318019a4f6c430cdeaa384abe6af2d25466041a67366ea35fb024fdabc555710",
+      "size_bytes": 69288
+    },
+    {
+      "mtime_utc": "2026-01-28T17:50:39.113601+00:00",
+      "path": "papers/de_marrais_2004_math0403113_boxkites_III.pdf",
+      "sha256": "3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872",
+      "size_bytes": 206494
+    },
+    {
+      "mtime_utc": "2026-01-28T17:51:01.757614+00:00",
+      "path": "papers/de_marrais_2004_math0403113_boxkites_III.txt",
+      "sha256": "a4ae47cafa3e61bf4cb8311cd1244d86dcaf82ba7e81f64bdb8b1e636a602613",
+      "size_bytes": 41481
+    },
+    {
+      "mtime_utc": "2026-01-28T17:50:40.319602+00:00",
+      "path": "papers/de_marrais_2004_wolfram_science_slides.pdf",
+      "sha256": "aee5ce85600658b21c2c29fdd2d56dc5c831a77e4fa42c28e5c2da5ffa5e20d9",
+      "size_bytes": 473273
+    },
+    {
+      "mtime_utc": "2026-01-28T17:51:01.855614+00:00",
+      "path": "papers/de_marrais_2004_wolfram_science_slides.txt",
+      "sha256": "03c068111128f78b50f84e169d6b433458d637b756c8411b9a5b5f821285a834",
+      "size_bytes": 69997
+    },
+    {
+      "mtime_utc": "2026-01-28T17:50:39.431601+00:00",
+      "path": "papers/de_marrais_2006_math0603281_presto_digitization_I.pdf",
+      "sha256": "3ca3892d929f027deb676e17586c2a4fbde0762fca30717f8841cd363459ac5c",
+      "size_bytes": 402016
+    },
+    {
+      "mtime_utc": "2026-01-28T17:51:01.820614+00:00",
+      "path": "papers/de_marrais_2006_math0603281_presto_digitization_I.txt",
+      "sha256": "4f8d52ca6fc5b12a2dc0f798cbb0746dc75ab284e6eb049a85a5b9b105193ad3",
+      "size_bytes": 121132
+    },
+    {
       "mtime_utc": "2026-01-27T17:00:22.647524+00:00",
       "path": "papers/de_marrais_math0011260.pdf",
       "sha256": "20a66711a71e41714fa2305a03a05ae4b9e8d90d65ee52f439bdeb733ff9ea45",
       "size_bytes": 441893
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.855913+00:00",
+      "path": "papers/des_y6_cosmology_2601.14559.pdf",
+      "sha256": "bced63f554eccba48005f47ad570d0b41399805084ecfb1d6865e070f2b27031",
+      "size_bytes": 4832597
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:49.759901+00:00",
+      "path": "papers/des_y6_cosmology_2601.14559.txt",
+      "sha256": "41147072f42ce5896cbe366a300f97e24ce11334da0b61af39b806f86c274c86",
+      "size_bytes": 198648
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.850913+00:00",
+      "path": "papers/desi_dr2_bao_cosmology_2503.14738.pdf",
+      "sha256": "1e82f26e4cc3901b16168cd147f252bfa804f9c3caad3f4f7e3532640d237841",
+      "size_bytes": 12175089
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:49.078901+00:00",
+      "path": "papers/desi_dr2_bao_cosmology_2503.14738.txt",
+      "sha256": "e10026cdfbca92925e1a84437a864ed073a6cee6801836c014fdf7ebfa5626dc",
+      "size_bytes": 197614
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.852913+00:00",
+      "path": "papers/desi_dr2_dynamical_de_2504.06118.pdf",
+      "sha256": "e396959e2ecb85a43db589ca31f21736c4bce1bb5d7fdc78a86ad5b0c6e30ff5",
+      "size_bytes": 1989157
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:49.225901+00:00",
+      "path": "papers/desi_dr2_dynamical_de_2504.06118.txt",
+      "sha256": "0267557a9b85d2856e454ff6b96a926eb9ad6fed30ca52f81cc1a209a2addc40",
+      "size_bytes": 81862
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.854173+00:00",
+      "path": "papers/desi_dr2_lya_bao_2503.14739.pdf",
+      "sha256": "c6d4688027e9e83bebba85bfb05d68a6cdd3603f30b222ed8e2d26ca66a237a8",
+      "size_bytes": 1977967
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:49.388901+00:00",
+      "path": "papers/desi_dr2_lya_bao_2503.14739.txt",
+      "sha256": "8a45da241d7b091c8fca23440613aacf859aa5fa99055a5c52d50d27292d0aa5",
+      "size_bytes": 124936
+    },
+    {
+      "mtime_utc": "2026-02-02T07:43:12.428802+00:00",
+      "path": "papers/dfs_content.txt",
+      "sha256": "fe660bf6a8d80ec57eac7fd051996c2f1f8fbc083803bcb21f57fcdd6e17b0bb",
+      "size_bytes": 105462
+    },
+    {
+      "mtime_utc": "2026-01-28T18:57:39.172368+00:00",
+      "path": "papers/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.pdf",
+      "sha256": "9c766906f32852c89caf6b9aec08fd3d6ef134bee939e3bd70046b1b20da5c32",
+      "size_bytes": 589012
+    },
+    {
+      "mtime_utc": "2026-01-28T18:57:48.450379+00:00",
+      "path": "papers/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt",
+      "sha256": "9f49f1e2684514d718653ac560a264edd29e5c18864ed858e4a6ca2d5e751847",
+      "size_bytes": 102919
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.857410+00:00",
+      "path": "papers/dragovich_padic_math_physics_review_1705.04758.pdf",
+      "sha256": "0f1f9ed3b024d47134698862c36fdeb609bfdaabde371995b9f5f2f588933902",
+      "size_bytes": 512076
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:49.863900+00:00",
+      "path": "papers/dragovich_padic_math_physics_review_1705.04758.txt",
+      "sha256": "d3f5be2d7b33461065b0abaf3db48264b174a5392797a67bf96c51b266163b39",
+      "size_bytes": 133970
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.858247+00:00",
+      "path": "papers/entanglement_scaling_continuous_TN_2410.23624.pdf",
+      "sha256": "080764a7f26af949b458b64db97329dd59810f7343d4c5166de1c50374c75961",
+      "size_bytes": 2441226
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:49.901900+00:00",
+      "path": "papers/entanglement_scaling_continuous_TN_2410.23624.txt",
+      "sha256": "473557d1b4706c2c16fcb30fa8d382acfecbbd62e85a3c41a0ecc69cc8ae8159",
+      "size_bytes": 39301
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.859486+00:00",
+      "path": "papers/evenbly_vidal_tnr_1412.0732.pdf",
+      "sha256": "0202b510bcd99cc03e5f80ab338d6f508ec08c2c7561b2039208254548c32fa9",
+      "size_bytes": 1593926
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:49.946900+00:00",
+      "path": "papers/evenbly_vidal_tnr_1412.0732.txt",
+      "sha256": "152f073d0ace91eb6d9411c400469c8838ac70428335dee123b64a9827315611",
+      "size_bytes": 56791
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.860581+00:00",
+      "path": "papers/evenbly_vidal_tnr_mera_1502.05385.pdf",
+      "sha256": "181278b9b077b0d86644820e817f864d420fcef3ad90891be86171608aa2393a",
+      "size_bytes": 1668158
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:49.984900+00:00",
+      "path": "papers/evenbly_vidal_tnr_mera_1502.05385.txt",
+      "sha256": "7d8f68bf014b0f500acf1be0e92ed218563df0d446208c50cc01963fa4716c4f",
+      "size_bytes": 47986
+    },
+    {
+      "mtime_utc": "2026-01-28T17:30:44.145645+00:00",
+      "path": "papers/gwtc3_2021_arxiv2111.03606.pdf",
+      "sha256": "8d7401dfae3ffe3d7abc1faa7252bc6423ec0e4784ed7a2e9118d9c18aefed68",
+      "size_bytes": 7324786
+    },
+    {
+      "mtime_utc": "2026-01-28T17:51:02.889615+00:00",
+      "path": "papers/gwtc3_2021_arxiv2111.03606.txt",
+      "sha256": "d31c89cc6111a229a213992e5aa923cb72af5e34004f347a023b364bd2abf453",
+      "size_bytes": 472075
+    },
+    {
+      "mtime_utc": "2026-01-29T01:46:29.847687+00:00",
+      "path": "papers/hogg_1999_distance_measures.pdf",
+      "sha256": "d1d01604d15d656951f720c0ca22ecfe8bd0621c6eb702269511171d8cdeaac0",
+      "size_bytes": 235473
+    },
+    {
+      "mtime_utc": "2013-10-09T12:25:14+00:00",
+      "path": "papers/holm_1979_sequentially_rejective_multiple_test_procedure.pdf",
+      "sha256": "4317a0d1555dad949dc1760605d925ba20037402827741fdf99cd8ea37e80c46",
+      "size_bytes": 1059670
+    },
+    {
+      "mtime_utc": "2026-02-02T01:57:54.655220+00:00",
+      "path": "papers/holm_1979_sequentially_rejective_multiple_test_procedure.txt",
+      "sha256": "85d612d7a911c4e223403e5f955e10ac146e563bca427aacefbe866f73b35e72",
+      "size_bytes": 27463
+    },
+    {
+      "mtime_utc": "2026-01-28T19:02:24.538684+00:00",
+      "path": "papers/huebschmann_2008_0809.4791v1_construction_ainfty_structures.pdf",
+      "sha256": "c13d7c26a74bca1f55701debbd92873ea897372676b24920581063db1b5c6d65",
+      "size_bytes": 380911
+    },
+    {
+      "mtime_utc": "2026-01-28T19:02:32.466692+00:00",
+      "path": "papers/huebschmann_2008_0809.4791v1_construction_ainfty_structures.txt",
+      "sha256": "20f5416389c66bf40fc0dbe423ba9f746c2c8e8b892223270f107a7d1e76f74d",
+      "size_bytes": 90140
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.861913+00:00",
+      "path": "papers/ising_ads_tensor_networks_2512.20838.pdf",
+      "sha256": "7ef467fa5988d4e5a43a0fdca59c8421835c419371f0ba0a487b75cd42bb9902",
+      "size_bytes": 1312267
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:50.055900+00:00",
+      "path": "papers/ising_ads_tensor_networks_2512.20838.txt",
+      "sha256": "644f902f34310998c0e4ccd5af91f747d106f30b0db8ed8a4b0e3329d1b836fe",
+      "size_bytes": 32270
+    },
+    {
+      "mtime_utc": "2026-01-28T19:03:38.019753+00:00",
+      "path": "papers/kadeishvili_1980_math0504437v1_homology_fiber_spaces.pdf",
+      "sha256": "af476afd4e5eee7abd19b8217076975864362350cf4c63f596f0ff783a2e1ae2",
+      "size_bytes": 109971
+    },
+    {
+      "mtime_utc": "2026-01-28T19:03:38.043753+00:00",
+      "path": "papers/kadeishvili_1980_math0504437v1_homology_fiber_spaces.txt",
+      "sha256": "b3104ef21f204ec11ae00002f7530d3fdd7a97b9d11e9f1fc767a6b8976ab8a1",
+      "size_bytes": 17675
+    },
+    {
+      "mtime_utc": "2003-10-15T00:28:50+00:00",
+      "path": "papers/kass_raftery_1995_bayes_factors.pdf",
+      "sha256": "bb8d4451e98bd76998522018906a8042be809c57bc49fae8151183649da5a42e",
+      "size_bytes": 5376776
+    },
+    {
+      "mtime_utc": "2026-02-02T10:37:42.799763+00:00",
+      "path": "papers/kass_raftery_1995_bayes_factors.txt",
+      "sha256": "bfe719d1c68277189402336c3dfe046c0b89ae887c52c23466847efe4374a90a",
+      "size_bytes": 24
+    },
+    {
+      "mtime_utc": "2026-01-29T01:37:09.947745+00:00",
+      "path": "papers/kaviraj_2020_jhep04_090_parisi_sourlas_cft.pdf",
+      "sha256": "1a105f0240376000c9f908c9a7ab8de55e075ceb916626d29ffa0c099feed660",
+      "size_bytes": 787246
+    },
+    {
+      "mtime_utc": "2026-01-29T01:37:12.353750+00:00",
+      "path": "papers/kaviraj_2021_jhep03_219_parisi_sourlas_rg.pdf",
+      "sha256": "09f160ab48b697215569fde3e16ab882addcc409da4725b6e77bdcfcb0bfaae4",
+      "size_bytes": 1742744
+    },
+    {
+      "mtime_utc": "2026-01-29T01:37:14.774754+00:00",
+      "path": "papers/kaviraj_2022_jhep08_290_random_field_phi3.pdf",
+      "sha256": "f50637a20567be8de1804efc1e2f292b6a953a1526c016cab53bac2dadf92e04",
+      "size_bytes": 1028384
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.862878+00:00",
+      "path": "papers/kozyrev_padic_multidim_wavelets_0612049.pdf",
+      "sha256": "0e51350ae56fa3faf46fd208879b2db2ae6b8aea2aa41378c99c07c86d60e641",
+      "size_bytes": 282629
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:50.107900+00:00",
+      "path": "papers/kozyrev_padic_multidim_wavelets_0612049.txt",
+      "sha256": "18c88302e1042105befb6824972173bb36e06b570eb2e31cf5883ebc862a957e",
+      "size_bytes": 44998
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.863665+00:00",
+      "path": "papers/kozyrev_padic_pseudodiff_0303045.pdf",
+      "sha256": "a22fa1f15292cf908a152f8c10d1bbdb331c6e469426ad11a92df636ff3d84b6",
+      "size_bytes": 128142
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:50.136900+00:00",
+      "path": "papers/kozyrev_padic_pseudodiff_0303045.txt",
+      "sha256": "40775373328a673e7a1ab7787a00320535bea47fc5bac337daf25a4fd510c833",
+      "size_bytes": 26286
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.864440+00:00",
+      "path": "papers/kozyrev_padic_wavelet_spectral_0012019.pdf",
+      "sha256": "428ccfc616d09c02cd6e6998720adc13608ddcca8fd66bade3881c1ca4ca6cbc",
+      "size_bytes": 115686
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:50.160900+00:00",
+      "path": "papers/kozyrev_padic_wavelet_spectral_0012019.txt",
+      "sha256": "5ff0f01f043347812475a9f07053dbd5e6202d96b63c78ff11cfce85e3b17a6e",
+      "size_bytes": 16530
+    },
+    {
+      "mtime_utc": "2026-01-28T21:53:21.426558+00:00",
+      "path": "papers/landy_2008_prl_perfect_metamaterial_absorber.pdf",
+      "sha256": "1d1dba01afa9292f5f59979367d77a672dd6f2c69d99b492ddaa0c220cb78677",
+      "size_bytes": 414004
+    },
+    {
+      "mtime_utc": "2026-01-28T21:53:21.448558+00:00",
+      "path": "papers/landy_2008_prl_perfect_metamaterial_absorber.txt",
+      "sha256": "056addf219bce5c2b61bdf1d02773d31119774b64bb409c8313942183da9659e",
+      "size_bytes": 34412
+    },
+    {
+      "mtime_utc": "2026-01-28T19:38:50.481185+00:00",
+      "path": "papers/ligo_webinar_gwtc3_population_o3_G2102458.pdf",
+      "sha256": "f23ef101d0eaf5a665d2c9c76d2a890967ab64e4a1d60e76cc75a331958b5bdc",
+      "size_bytes": 7442430
+    },
+    {
+      "mtime_utc": "2026-01-28T19:38:51.267186+00:00",
+      "path": "papers/ligo_webinar_gwtc3_population_o3_G2102458.txt",
+      "sha256": "7bee2723872fbdaff332fcb00284de299e460761e6edca259f85c5e5c3e159ea",
+      "size_bytes": 34599
+    },
+    {
+      "mtime_utc": "2026-01-28T19:38:18.294135+00:00",
+      "path": "papers/lvc_2021_2111.03634_population_properties_gwtc3.pdf",
+      "sha256": "3e616e77962260040e3def02a4d7aac3152ee62a76fa8d5a8262b64b34c96ed9",
+      "size_bytes": 11436130
+    },
+    {
+      "mtime_utc": "2026-01-28T19:38:51.229186+00:00",
+      "path": "papers/lvc_2021_2111.03634_population_properties_gwtc3.txt",
+      "sha256": "88cc548a27a8ad61d62147a8bfea639fca47366efc5ae89508888bb56bac0eae",
+      "size_bytes": 560831
+    },
+    {
+      "mtime_utc": "2026-01-28T22:01:40.811249+00:00",
+      "path": "papers/mazur_mottola_2001_gr-qc-0109035_gravastars.pdf",
+      "sha256": "a943c4d4120fc8c35316c9901fc0fa867daf00bda371aa1eb03cfca6d09f80a9",
+      "size_bytes": 249216
+    },
+    {
+      "mtime_utc": "2026-01-28T22:01:41.100249+00:00",
+      "path": "papers/mazur_mottola_2001_gr-qc-0109035_gravastars.txt",
+      "sha256": "8a6617231e33608bc96f0c789848e441a1ce15a805fc2eacb804952d2ff9571e",
+      "size_bytes": 52830
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.865211+00:00",
+      "path": "papers/mera_quantum_computer_entanglement_2412.18602.pdf",
+      "sha256": "f76e5fe7bf2cbfe3ad0bdf9369db23f1afde5a47d7a16ff55bcf48090e0ccb55",
+      "size_bytes": 1914747
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:50.274900+00:00",
+      "path": "papers/mera_quantum_computer_entanglement_2412.18602.txt",
+      "sha256": "deda1cf80f62309b61addaff92aa90cd9cd080acde8a6f123b185fa8ba38e739",
+      "size_bytes": 89110
+    },
+    {
+      "mtime_utc": "2026-01-29T01:46:30.330688+00:00",
+      "path": "papers/nasa_lambda_hubble_constant.html",
+      "sha256": "b0dce2ad6fc71b753f6fda4eb412bb5379306b1bdac52f3de3a7c1fdc531c1bb",
+      "size_bytes": 24278
+    },
+    {
+      "mtime_utc": "2024-12-24T19:43:37+00:00",
+      "path": "papers/nosek_et_al_2018_preregistration_revolution_osf_2dxu5.pdf",
+      "sha256": "937416ea98b92b0df93cd3ab40fa8edfd6b285d9fdfef152ee277faed33bd783",
+      "size_bytes": 221013
+    },
+    {
+      "mtime_utc": "2026-02-02T05:43:11.288980+00:00",
+      "path": "papers/nosek_et_al_2018_preregistration_revolution_osf_2dxu5.txt",
+      "sha256": "3b8af6cdf17634375de8ae876c720d782ee83d8ee4f1aa23dc52c42d5ebcde3d",
+      "size_bytes": 58409
+    },
+    {
+      "mtime_utc": "2026-01-28T19:52:44.045179+00:00",
+      "path": "papers/orus_2014_1306.2164_tensor_networks_intro.pdf",
+      "sha256": "7ae0a9dcff8347e8acb7ff1f628be971f982d0d46cc7738501b1f21b70c271c3",
+      "size_bytes": 3024215
+    },
+    {
+      "mtime_utc": "2026-01-28T19:53:35.517230+00:00",
+      "path": "papers/orus_2014_1306.2164_tensor_networks_intro.txt",
+      "sha256": "1d4c820dd08dd1f647265025f82ec511d404e9c1fd6651670eb9bf24eb91b9bb",
+      "size_bytes": 142899
+    },
+    {
+      "mtime_utc": "2026-01-28T21:52:17.329229+00:00",
+      "path": "papers/padgett_2008_oe_16_7181_terahertz_metamaterial_absorber.captcha.html",
+      "sha256": "841505cdeda90e6cfd7c81766a9683147d15984932f2095d18f6bf8e03516af9",
+      "size_bytes": 15033
+    },
+    {
+      "mtime_utc": "2026-01-28T22:16:44.342618+00:00",
+      "path": "papers/parisi_sourlas_1979_prl_negative_dimensions.blocked.html",
+      "sha256": "f80c78acd6c8c190442a505100e8ba1c3c74ead3f55233ff8ecbe9cf227c6f1b",
+      "size_bytes": 9027
+    },
+    {
+      "mtime_utc": "2026-01-28T19:52:44.986180+00:00",
+      "path": "papers/pastawski_yoshida_harlow_preskill_2015_1503.06237_happy_code.pdf",
+      "sha256": "55572e7133514f4adc54f5bfb025111fc3fcb911c87ca22bae0a9e30955d1e05",
+      "size_bytes": 4496178
+    },
+    {
+      "mtime_utc": "2026-01-28T19:53:35.807230+00:00",
+      "path": "papers/pastawski_yoshida_harlow_preskill_2015_1503.06237_happy_code.txt",
+      "sha256": "80d348b80fed2777b51532bb05de842c2f6c65ef1a22088602fa9597896c65d6",
+      "size_bytes": 180777
+    },
+    {
+      "mtime_utc": "2026-01-28T19:53:35.381230+00:00",
+      "path": "papers/pirsa_08010005_vidal_entanglement_renormalization_talk.pdf",
+      "sha256": "99daa9204d4f39da152de94d34d33ace58ba696e1e7254cd9fb222ffafcbb83e",
+      "size_bytes": 9598274
+    },
+    {
+      "mtime_utc": "2026-01-28T19:53:35.933230+00:00",
+      "path": "papers/pirsa_08010005_vidal_entanglement_renormalization_talk.txt",
+      "sha256": "4d85211e5ff9ec586fc5158fcb71f01e04c94a7382c7cfad9b04953932884c4b",
+      "size_bytes": 6758
+    },
+    {
+      "mtime_utc": "2026-02-03T01:18:15.035025+00:00",
+      "path": "papers/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt",
+      "sha256": "a120d388537a9b6e834728f30a7284b8104e2bce1244f501b452438aab7e0893",
+      "size_bytes": 50170
+    },
+    {
+      "mtime_utc": "2026-02-04T04:59:30.138860+00:00",
+      "path": "papers/refractiveindex_info_Si3N4.html",
+      "sha256": "94f2c846b13ef3caeecd3a9c15670989b65d9494b506ee9dc58ef17b2ae75fae",
+      "size_bytes": 41135
+    },
+    {
+      "mtime_utc": "2026-02-04T04:59:29.887859+00:00",
+      "path": "papers/refractiveindex_info_sapphire.html",
+      "sha256": "6ceedcaa699a3275b711c176751fe833db6b9ff4a590bf759efbf05f2098bfab",
+      "size_bytes": 42939
     },
     {
       "mtime_utc": "2026-01-27T17:24:04.729191+00:00",
@@ -114,6 +1530,144 @@
       "path": "papers/reggiani_2024_2411.18881.txt",
       "sha256": "329b4a11ec932fac8f8a007168945dfc58ee17beb193f84b8753b224f678bf9d",
       "size_bytes": 59976
+    },
+    {
+      "mtime_utc": "2026-01-28T21:52:45.184499+00:00",
+      "path": "papers/researchsquare_2023_rs-3109229_metamaterial_perfect_absorber.pdf",
+      "sha256": "214bc5a04bb062db22defaf265521e6735982a3349047e4f362735a37667c164",
+      "size_bytes": 1346801
+    },
+    {
+      "mtime_utc": "2026-01-28T21:52:45.209499+00:00",
+      "path": "papers/researchsquare_2023_rs-3109229_metamaterial_perfect_absorber.txt",
+      "sha256": "794812db1e2856dc9674a8755bb2213f4896d2356d3e3308c2297af47ab7f624",
+      "size_bytes": 33580
+    },
+    {
+      "mtime_utc": "2026-01-30T02:51:30.820134+00:00",
+      "path": "papers/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf",
+      "sha256": "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a",
+      "size_bytes": 316457
+    },
+    {
+      "mtime_utc": "2026-01-28T19:02:24.707684+00:00",
+      "path": "papers/sagave_2009_0711.4499v3_dg_algebras_derived_ainfty.pdf",
+      "sha256": "c4db8b800578a1ed1ed49a53a732eb3c2b221722ddea6ce3f584f37cae2cb155",
+      "size_bytes": 388574
+    },
+    {
+      "mtime_utc": "2026-01-28T19:02:32.549692+00:00",
+      "path": "papers/sagave_2009_0711.4499v3_dg_algebras_derived_ainfty.txt",
+      "sha256": "5a620fbe6b4d67f7911358801a665955319ad93f85c0219abe71fcecb9578d62",
+      "size_bytes": 82935
+    },
+    {
+      "mtime_utc": "2014-06-27T02:47:18+00:00",
+      "path": "papers/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf",
+      "sha256": "5bda12d536bf039231ccbeb8da13861be3525aa21faa4b4e8e4c256aa2960e52",
+      "size_bytes": 348274
+    },
+    {
+      "mtime_utc": "2026-02-03T07:36:12.333824+00:00",
+      "path": "papers/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt",
+      "sha256": "0c0afaf27f6c0652adffe8d22c61e7a718ecad062ee47105d597ec88f9d99b3c",
+      "size_bytes": 34318
+    },
+    {
+      "mtime_utc": "2026-01-28T19:58:55.107533+00:00",
+      "path": "papers/soton_2025_psl2_7_structure_957754.pdf",
+      "sha256": "84722a39e6595c67151aae725ca3e340d0adf2df8bfdfef1da986f53abfc9013",
+      "size_bytes": 3935180
+    },
+    {
+      "mtime_utc": "2026-01-28T19:58:55.237533+00:00",
+      "path": "papers/soton_2025_psl2_7_structure_957754.txt",
+      "sha256": "13c30142574abd91ee4ef184e49a220b858efb28f12167caf1869ce72c7bc43b",
+      "size_bytes": 217271
+    },
+    {
+      "mtime_utc": "2026-01-28T18:57:38.979367+00:00",
+      "path": "papers/stinga_torrea_2010_0910.2569v2_extension_harnack_fractional_operators.pdf",
+      "sha256": "8790df99f4cc825c004341ccdeedbc3872b280c77f8dcc14b7da0c47c0ddd029",
+      "size_bytes": 362590
+    },
+    {
+      "mtime_utc": "2026-01-28T18:57:48.279379+00:00",
+      "path": "papers/stinga_torrea_2010_0910.2569v2_extension_harnack_fractional_operators.txt",
+      "sha256": "cbb78fa65f55f3602eeb38fbff870f1c1920d06ce36018dcd2fe75a08f96ee66",
+      "size_bytes": 62348
+    },
+    {
+      "mtime_utc": "2026-01-29T01:16:34.387492+00:00",
+      "path": "papers/sutton_barto_2020_rl_intro.pdf",
+      "sha256": "2dd0d71d9ee883fbeb99f9b888c65ac3255fae2512203d11b18e838befffe9a6",
+      "size_bytes": 73129769
+    },
+    {
+      "mtime_utc": "2026-01-28T22:17:34.609288+00:00",
+      "path": "papers/t_hooft_veltman_1972_dimreg.pdf",
+      "sha256": "0893ece2cdb211f78180f279f8e1f04674eabde8d1d7a9f45006085eea1571b0",
+      "size_bytes": 12616901
+    },
+    {
+      "mtime_utc": "2026-01-28T22:17:34.617289+00:00",
+      "path": "papers/t_hooft_veltman_1972_dimreg.txt",
+      "sha256": "c30b0131124bde0ba2adde1d09c45eb953842cb9b556b82629a85c81db9652d6",
+      "size_bytes": 25
+    },
+    {
+      "mtime_utc": "2026-01-28T22:17:12.750266+00:00",
+      "path": "papers/t_hooft_veltman_1972_dimreg_handle_1874_4845.html",
+      "sha256": "25bec9fe87eba4dfa2c3b89d47af5bc353ad0cfd0efcb443b50c3b89fd07b4bc",
+      "size_bytes": 15976
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:38.866376+00:00",
+      "path": "papers/universal_entanglement_correction_2405.10230.pdf",
+      "sha256": "88632c1e4f510da5441b4dbb6b0d64d4f47fdb99f948c729da1d80bd8fafa9dc",
+      "size_bytes": 896582
+    },
+    {
+      "mtime_utc": "2026-02-01T22:03:50.318900+00:00",
+      "path": "papers/universal_entanglement_correction_2405.10230.txt",
+      "sha256": "51108726d2d71a23f860c760235ce85ff150661cc12c99c2ed2efa22fbe636ae",
+      "size_bytes": 36069
+    },
+    {
+      "mtime_utc": "2026-01-29T01:16:24.548474+00:00",
+      "path": "papers/vanderpol_2020_mdp_homomorphic_networks_neurips.pdf",
+      "sha256": "1b0d077a326e013f891ac9d2e4ac8ab99bb6bd77c23228da10263f8276e1d42c",
+      "size_bytes": 680494
+    },
+    {
+      "mtime_utc": "2026-01-29T01:16:24.342473+00:00",
+      "path": "papers/vanderpol_2023_symmetry_structure_deep_rl_thesis.pdf",
+      "sha256": "100984217c0707eb293eb8a38c75247d4b465b7f560fee9a2767ddc62d0384fd",
+      "size_bytes": 14329754
+    },
+    {
+      "mtime_utc": "2026-01-28T19:52:45.647181+00:00",
+      "path": "papers/vidal_2005_cond-mat0512165_entanglement_renormalization.pdf",
+      "sha256": "e1fdcd321a9a368e7851d144bc6c651b31796eceb738492efe82ec167e6983f4",
+      "size_bytes": 263673
+    },
+    {
+      "mtime_utc": "2026-01-28T19:53:35.918230+00:00",
+      "path": "papers/vidal_2005_cond-mat0512165_entanglement_renormalization.txt",
+      "sha256": "09c15896d977bba40b2e2e29afebab97170bcefbba42b7c53cf9c63b1bb61c2a",
+      "size_bytes": 33473
+    },
+    {
+      "mtime_utc": "2026-01-28T22:01:41.053249+00:00",
+      "path": "papers/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.pdf",
+      "sha256": "92e0748b36ea76befe754ab7247cd4ac44cf6c321fa83e1b487360df62fcfd4e",
+      "size_bytes": 207055
+    },
+    {
+      "mtime_utc": "2026-01-28T22:01:41.142249+00:00",
+      "path": "papers/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.txt",
+      "sha256": "de8a3c6e7bd500fba56b965a52e2ce3d46368c20a0e99d54d6eb4d096a4ca630",
+      "size_bytes": 45069
     }
   ],
   "root": "data/external"

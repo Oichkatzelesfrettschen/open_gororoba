@@ -29,8 +29,9 @@
 //! - de Marrais (2000): "The 42 Assessors and the Box-Kites they fly" (arXiv:math/0011260)
 //! - de Marrais (2004): "Box-Kites III: Quizzical Quaternions" (arXiv:math/0403113)
 
-use std::collections::{HashSet, HashMap, VecDeque};
-use crate::cayley_dickson::{cd_multiply, cd_norm_sq};
+use std::collections::{HashSet, HashMap, BTreeSet, VecDeque};
+use crate::cayley_dickson::{cd_multiply, cd_norm_sq, cd_basis_mul_sign};
+use crate::zd_graphs::xor_key;
 
 /// An assessor: pair (low, high) with low in 1..7, high in 8..15.
 /// Represents a 2-plane of zero-divisors.
@@ -394,6 +395,694 @@ pub fn boxkite_intersection_matrix(boxkites: &[BoxKite]) -> Vec<Vec<usize>> {
     matrix
 }
 
+// ---------------------------------------------------------------------------
+// Production Rules, Automorphemes, and Strut Tables
+// ---------------------------------------------------------------------------
+
+/// Return ALL sign-pair solutions (s, t) with s, t in {-1, +1} such that
+/// diag(a, s) * diag(b, t) = 0 under 16D Cayley-Dickson multiplication.
+///
+/// Unlike `diagonal_zero_product` (which returns only the first match),
+/// this returns every solution. Needed for edge sign classification.
+pub fn all_diagonal_zero_products(a: &Assessor, b: &Assessor, atol: f64) -> Vec<(i8, i8)> {
+    let mut results = Vec::new();
+    for s in [-1.0_f64, 1.0] {
+        for t in [-1.0_f64, 1.0] {
+            let v1 = a.diagonal(s);
+            let v2 = b.diagonal(t);
+            let product = cd_multiply(&v1, &v2);
+            let norm = cd_norm_sq(&product).sqrt();
+            if norm < atol {
+                results.push((s as i8, t as i8));
+            }
+        }
+    }
+    results
+}
+
+/// Edge sign classification for co-assessor pairs.
+///
+/// de Marrais distinguishes "trefoil" vs "triple-zigzag" lanyards:
+/// - `Same`: solutions have same signs: (+,+) or (-,-) -- "+" in paper
+/// - `Opposite`: solutions have opposite signs: (+,-) or (-,+) -- "-" in paper
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum EdgeSignType {
+    /// Same-sign solutions: (+,+) or (-,-)
+    Same,
+    /// Opposite-sign solutions: (+,-) or (-,+)
+    Opposite,
+}
+
+/// Classify the diagonal-zero-product relationship between two co-assessors.
+///
+/// # Panics
+/// Panics if no diagonal zero-products exist (the pair is not co-assessors).
+pub fn edge_sign_type(a: &Assessor, b: &Assessor, atol: f64) -> EdgeSignType {
+    let sols = all_diagonal_zero_products(a, b, atol);
+    assert!(
+        !sols.is_empty(),
+        "No diagonal zero-products for ({},{})--({},{})",
+        a.low, a.high, b.low, b.high
+    );
+    if sols.contains(&(1, 1)) || sols.contains(&(-1, -1)) {
+        EdgeSignType::Same
+    } else {
+        EdgeSignType::Opposite
+    }
+}
+
+/// The 7 Fano-plane lines (oriented-free octonion triplets).
+///
+/// Each triple (a, b, c) represents a line in PG(2,2) = Fano plane.
+/// Properties: 7 lines, 7 points, each point on exactly 3 lines,
+/// each pair of points on exactly 1 line.
+///
+/// Used by de Marrais' "GoTo listings" for automorpheme construction.
+pub const O_TRIPS: [[usize; 3]; 7] = [
+    [1, 2, 3],
+    [1, 4, 5],
+    [1, 6, 7],
+    [2, 4, 6],
+    [2, 5, 7],
+    [3, 4, 7],
+    [3, 5, 6],
+];
+
+/// de Marrais Production Rule #1 ("Three-Ring Circuits").
+///
+/// Given two co-assessors a=(A,B) and b=(C,D), constructs a third assessor
+/// (E,F) via XOR:
+///   E = A ^ C = B ^ D   (low index)
+///   F = A ^ D = B ^ C   (high index)
+///
+/// The result is the unique third assessor completing the co-assessor triple.
+///
+/// # Panics
+/// Panics if the XOR invariants fail or the result is degenerate.
+pub fn production_rule_1(a: &Assessor, b: &Assessor) -> Assessor {
+    let (big_a, big_b) = (a.low, a.high);
+    let (big_c, big_d) = (b.low, b.high);
+
+    let e = big_a ^ big_c;
+    let f = big_a ^ big_d;
+
+    assert_eq!(
+        e,
+        big_b ^ big_d,
+        "PR#1 invariant failed: A^C != B^D for ({},{}) and ({},{})",
+        big_a, big_b, big_c, big_d
+    );
+    assert_eq!(
+        f,
+        big_b ^ big_c,
+        "PR#1 invariant failed: A^D != B^C for ({},{}) and ({},{})",
+        big_a, big_b, big_c, big_d
+    );
+    assert_ne!(
+        e, f,
+        "PR#1 degenerate: equal indices {} from ({},{}) and ({},{})",
+        e, big_a, big_b, big_c, big_d
+    );
+
+    // For sedenion cross-assessors: e is in 1..7 (XOR of two lows),
+    // f is in 8..15 (XOR of low and high), so e < f always.
+    let (low, high) = if e < f { (e, f) } else { (f, e) };
+    Assessor::new(low, high)
+}
+
+/// Helper: create a diagonal zero-divisor vector from raw index pair.
+/// Used internally by production_rule_2 for candidate pairs that may
+/// not satisfy the Assessor invariants.
+fn raw_diagonal(i: usize, j: usize, sign: f64) -> Vec<f64> {
+    let mut v = vec![0.0; 16];
+    let norm = 2.0_f64.sqrt();
+    v[i] = 1.0 / norm;
+    v[j] = sign / norm;
+    v
+}
+
+/// Helper: diagonal zero-products for raw index pairs (not necessarily valid Assessors).
+fn raw_all_diagonal_zero_products(
+    a: (usize, usize),
+    b: (usize, usize),
+    atol: f64,
+) -> Vec<(i8, i8)> {
+    let mut results = Vec::new();
+    for s in [-1.0_f64, 1.0] {
+        for t in [-1.0_f64, 1.0] {
+            let v1 = raw_diagonal(a.0, a.1, s);
+            let v2 = raw_diagonal(b.0, b.1, t);
+            let product = cd_multiply(&v1, &v2);
+            let norm = cd_norm_sq(&product).sqrt();
+            if norm < atol {
+                results.push((s as i8, t as i8));
+            }
+        }
+    }
+    results
+}
+
+/// de Marrais Production Rule #2 ("Skew-Symmetric Twisting").
+///
+/// Given co-assessors a=(A,B) and b=(C,D), creates two new assessors via
+/// pair swapping. Two candidate swaps exist:
+///   - Candidate 1: (A,D) and (C,B)  -- cross-index swap
+///   - Candidate 2: (B,D) and (A,C)  -- same-range swap
+///
+/// Exactly one candidate satisfies the defining property: the outputs are
+/// co-assessors with each other, but not with either input.
+///
+/// For sedenion cross-assessors, candidate 1 is always the valid one
+/// (candidate 2 produces non-cross-assessor pairs), but both are checked
+/// for mathematical rigor.
+///
+/// # Panics
+/// Panics if exactly one valid swap cannot be found.
+pub fn production_rule_2(a: &Assessor, b: &Assessor, atol: f64) -> (Assessor, Assessor) {
+    let (big_a, big_b) = (a.low, a.high);
+    let (big_c, big_d) = (b.low, b.high);
+
+    // Candidate 1: cross swap -> (A,D) and (C,B)
+    let c1_p = (big_a.min(big_d), big_a.max(big_d));
+    let c1_q = (big_c.min(big_b), big_c.max(big_b));
+
+    // Candidate 2: same-range swap -> (B,D) and (A,C)
+    let c2_p = (big_b.min(big_d), big_b.max(big_d));
+    let c2_q = (big_a.min(big_c), big_a.max(big_c));
+
+    let a_raw = (a.low, a.high);
+    let b_raw = (b.low, b.high);
+
+    let valid_pair = |p: (usize, usize), q: (usize, usize)| -> bool {
+        if p == q {
+            return false;
+        }
+        // p and q must be co-assessors
+        if raw_all_diagonal_zero_products(p, q, atol).is_empty() {
+            return false;
+        }
+        // Neither must be co-assessor with either input
+        if !raw_all_diagonal_zero_products(p, a_raw, atol).is_empty() {
+            return false;
+        }
+        if !raw_all_diagonal_zero_products(p, b_raw, atol).is_empty() {
+            return false;
+        }
+        if !raw_all_diagonal_zero_products(q, a_raw, atol).is_empty() {
+            return false;
+        }
+        if !raw_all_diagonal_zero_products(q, b_raw, atol).is_empty() {
+            return false;
+        }
+        true
+    };
+
+    let val1 = valid_pair(c1_p, c1_q);
+    let val2 = valid_pair(c2_p, c2_q);
+
+    assert_ne!(
+        val1, val2,
+        "PR#2 expected exactly one valid swap for ({},{}) and ({},{}), got val1={}, val2={}",
+        big_a, big_b, big_c, big_d, val1, val2
+    );
+
+    let (p, q) = if val1 { (c1_p, c1_q) } else { (c2_p, c2_q) };
+
+    // Verify the result forms valid cross-assessors
+    assert!(
+        (1..=7).contains(&p.0) && (8..=15).contains(&p.1),
+        "PR#2 produced invalid assessor indices ({},{})",
+        p.0, p.1
+    );
+    assert!(
+        (1..=7).contains(&q.0) && (8..=15).contains(&q.1),
+        "PR#2 produced invalid assessor indices ({},{})",
+        q.0, q.1
+    );
+
+    (Assessor::new(p.0, p.1), Assessor::new(q.0, q.1))
+}
+
+/// Compute the 12 assessors for a de Marrais automorpheme (GoTo listing).
+///
+/// For each Fano-plane O-trip (o1, o2, o3), the "Behind the 8-Ball Theorem"
+/// implies excluded sedenion high indices are {8, 8^o1, 8^o2, 8^o3},
+/// leaving exactly 4 allowed highs to pair with each of the 3 low indices.
+///
+/// # Panics
+/// Panics if `o_trip` is not one of the 7 canonical O_TRIPS.
+pub fn automorpheme_assessors(o_trip: &[usize; 3]) -> HashSet<Assessor> {
+    assert!(O_TRIPS.contains(o_trip), "Unknown O-trip: {:?}", o_trip);
+
+    let excluded_highs: HashSet<usize> = std::iter::once(8)
+        .chain(o_trip.iter().map(|&o| 8 ^ o))
+        .collect();
+
+    let allowed_highs: Vec<usize> = (8..=15)
+        .filter(|h| !excluded_highs.contains(h))
+        .collect();
+    debug_assert_eq!(allowed_highs.len(), 4);
+
+    let mut result = HashSet::new();
+    for &o in o_trip {
+        for &h in &allowed_highs {
+            result.insert(Assessor::new(o, h));
+        }
+    }
+    debug_assert_eq!(result.len(), 12);
+    result
+}
+
+/// Return all 7 automorpheme assessor sets (one per Fano-plane O-trip).
+pub fn automorphemes() -> Vec<HashSet<Assessor>> {
+    O_TRIPS.iter().map(automorpheme_assessors).collect()
+}
+
+/// Return all O-trips whose automorphemes contain the given assessor.
+///
+/// For a valid primitive assessor, this returns exactly 2 O-trips.
+/// For excluded assessors (high=8 or high=8^low), returns empty.
+pub fn automorphemes_containing_assessor(a: &Assessor) -> Vec<[usize; 3]> {
+    O_TRIPS
+        .iter()
+        .filter(|t| automorpheme_assessors(t).contains(a))
+        .copied()
+        .collect()
+}
+
+/// de Marrais Production Rule #3 (Automorpheme Uniqueness).
+///
+/// Given an automorpheme (by O-trip) and an assessor it contains, returns the
+/// unique OTHER O-trip whose automorpheme also contains that assessor.
+///
+/// Each primitive assessor belongs to exactly 2 automorphemes (by Fano-plane
+/// incidence). PR#3 finds the other one.
+///
+/// # Panics
+/// Panics if the assessor is not in the given automorpheme, or if the
+/// expected 2-membership property fails.
+pub fn production_rule_3(o_trip: &[usize; 3], a: &Assessor) -> [usize; 3] {
+    assert!(
+        automorpheme_assessors(o_trip).contains(a),
+        "Assessor ({},{}) not in automorpheme for {:?}",
+        a.low, a.high, o_trip
+    );
+
+    let candidates = automorphemes_containing_assessor(a);
+    assert_eq!(
+        candidates.len(),
+        2,
+        "Expected exactly 2 automorphemes for ({},{}), got {}",
+        a.low, a.high, candidates.len()
+    );
+
+    if candidates[1] == *o_trip {
+        candidates[0]
+    } else {
+        candidates[1]
+    }
+}
+
+/// Deterministic A..F labeling for a box-kite's strut table.
+///
+/// - (a, b, c) form a zigzag face (all Opposite-sign edges)
+/// - (d, e, f) form the opposite zigzag face
+/// - Strut pairs: (a,f), (b,e), (c,d)
+#[derive(Debug, Clone)]
+pub struct StrutTable {
+    pub a: Assessor,
+    pub b: Assessor,
+    pub c: Assessor,
+    pub d: Assessor,
+    pub e: Assessor,
+    pub f: Assessor,
+}
+
+/// Compute the canonical strut table labeling for a box-kite.
+///
+/// Each box-kite has exactly 2 zigzag faces (triangles with all Opposite-sign
+/// edges). We pick the lexicographically smaller one as (A,B,C) and derive
+/// (D,E,F) as their octahedral opposites: F=opp(A), E=opp(B), D=opp(C).
+///
+/// # Panics
+/// Panics if the box-kite structure is invalid (wrong face counts or
+/// non-zigzag opposite face).
+pub fn canonical_strut_table(bk: &BoxKite, atol: f64) -> StrutTable {
+    let nodes = &bk.assessors;
+    assert_eq!(nodes.len(), 6, "Box-kite must have 6 assessors");
+
+    // Build edge set with both directions for O(1) lookup
+    let edge_set: HashSet<(usize, usize)> = bk
+        .edges
+        .iter()
+        .flat_map(|&(a, b)| [(a, b), (b, a)])
+        .collect();
+
+    let adjacent = |i: usize, j: usize| -> bool { edge_set.contains(&(i, j)) };
+
+    // Find the unique opposite (non-neighbor) for each vertex
+    let mut opposite = [0usize; 6];
+    for (i, opp) in opposite.iter_mut().enumerate() {
+        let non_neighbors: Vec<usize> = (0..6)
+            .filter(|&j| j != i && !adjacent(i, j))
+            .collect();
+        assert_eq!(
+            non_neighbors.len(),
+            1,
+            "Expected unique opposite for vertex {}, got {:?}",
+            i, non_neighbors
+        );
+        *opp = non_neighbors[0];
+    }
+
+    // Find all 8 triangular faces and identify the 2 zigzag faces
+    let mut zigzag_faces: Vec<[usize; 3]> = Vec::new();
+    for i in 0..6 {
+        for j in (i + 1)..6 {
+            if !adjacent(i, j) {
+                continue;
+            }
+            for k in (j + 1)..6 {
+                if adjacent(i, k) && adjacent(j, k) {
+                    let signs = [
+                        edge_sign_type(&nodes[i], &nodes[j], atol),
+                        edge_sign_type(&nodes[j], &nodes[k], atol),
+                        edge_sign_type(&nodes[i], &nodes[k], atol),
+                    ];
+                    if signs.iter().all(|&s| s == EdgeSignType::Opposite) {
+                        zigzag_faces.push([i, j, k]);
+                    }
+                }
+            }
+        }
+    }
+
+    assert_eq!(
+        zigzag_faces.len(),
+        2,
+        "Expected exactly 2 zigzag faces, got {}",
+        zigzag_faces.len()
+    );
+
+    // Pick the lexicographically smaller face (by sorted assessor tuples)
+    let face_key = |face: &[usize; 3]| -> Vec<(usize, usize)> {
+        let mut keys: Vec<(usize, usize)> =
+            face.iter().map(|&i| (nodes[i].low, nodes[i].high)).collect();
+        keys.sort();
+        keys
+    };
+
+    let abc_face = if face_key(&zigzag_faces[0]) < face_key(&zigzag_faces[1]) {
+        zigzag_faces[0]
+    } else {
+        zigzag_faces[1]
+    };
+
+    let a_idx = abc_face[0];
+    let b_idx = abc_face[1];
+    let c_idx = abc_face[2];
+    let f_idx = opposite[a_idx];
+    let e_idx = opposite[b_idx];
+    let d_idx = opposite[c_idx];
+
+    // Verify the opposite face is also zigzag
+    let opp_signs = [
+        edge_sign_type(&nodes[d_idx], &nodes[e_idx], atol),
+        edge_sign_type(&nodes[e_idx], &nodes[f_idx], atol),
+        edge_sign_type(&nodes[d_idx], &nodes[f_idx], atol),
+    ];
+    assert!(
+        opp_signs.iter().all(|&s| s == EdgeSignType::Opposite),
+        "Derived opposite face is not a zigzag"
+    );
+
+    StrutTable {
+        a: nodes[a_idx],
+        b: nodes[b_idx],
+        c: nodes[c_idx],
+        d: nodes[d_idx],
+        e: nodes[e_idx],
+        f: nodes[f_idx],
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Generalized motif census for arbitrary Cayley-Dickson dimension
+// ---------------------------------------------------------------------------
+
+/// A generalized cross-assessor pair (low, high) for any power-of-2 dimension.
+/// For dim=16: low in 1..7, high in 8..15.
+/// For dim=32: low in 1..15, high in 16..31. Etc.
+pub type CrossPair = (usize, usize);
+
+/// Generate all cross-assessors for a given Cayley-Dickson dimension.
+///
+/// Cross-assessors are pairs (i, j) with i in [1, dim/2) and j in [dim/2, dim).
+/// For dim=16, these are the 7*8 = 56 raw pairs from which the 42 primitive
+/// assessors are drawn (after excluding behind-the-8-ball pairs).
+/// For the generalized census, no such exclusion is applied.
+pub fn cross_assessors(dim: usize) -> Vec<CrossPair> {
+    assert!(
+        dim >= 4 && dim.is_power_of_two(),
+        "dim must be a power of two >= 4, got {dim}"
+    );
+    let half = dim / 2;
+    let mut result = Vec::with_capacity((half - 1) * half);
+    for i in 1..half {
+        for j in half..dim {
+            result.push((i, j));
+        }
+    }
+    result
+}
+
+/// Integer-exact diagonal zero-product detection.
+///
+/// Given cross-assessor pairs a = (i, j) and b = (k, l), returns all
+/// sign pairs (s, t) in {+1, -1}^2 such that
+/// `(e_i + s*e_j) * (e_k + t*e_l) = 0`.
+///
+/// Uses `cd_basis_mul_sign` for integer-exact computation -- no floating-point
+/// tolerance is needed.
+pub fn diagonal_zero_products_exact(dim: usize, a: CrossPair, b: CrossPair) -> Vec<(i8, i8)> {
+    let (i, j) = a;
+    let (k, l) = b;
+
+    let idx_ik = i ^ k;
+    let idx_il = i ^ l;
+    let idx_jk = j ^ k;
+    let idx_jl = j ^ l;
+
+    let s_ik = cd_basis_mul_sign(dim, i, k);
+    let s_il = cd_basis_mul_sign(dim, i, l);
+    let s_jk = cd_basis_mul_sign(dim, j, k);
+    let s_jl = cd_basis_mul_sign(dim, j, l);
+
+    let mut solutions = Vec::new();
+    for s in [1i32, -1] {
+        for t in [1i32, -1] {
+            let mut coeffs = HashMap::new();
+            *coeffs.entry(idx_ik).or_insert(0i32) += s_ik;
+            *coeffs.entry(idx_il).or_insert(0i32) += t * s_il;
+            *coeffs.entry(idx_jk).or_insert(0i32) += s * s_jk;
+            *coeffs.entry(idx_jl).or_insert(0i32) += s * t * s_jl;
+
+            if coeffs.values().all(|&v| v == 0) {
+                solutions.push((s as i8, t as i8));
+            }
+        }
+    }
+    solutions
+}
+
+/// A connected component of the diagonal zero-product graph over cross-assessors.
+///
+/// At dim=16 each component is an octahedral graph (box-kite). At higher
+/// dimensions, new graph motifs appear, including complete multipartite graphs
+/// K_{2,2,...,2}.
+pub struct MotifComponent {
+    /// Cayley-Dickson dimension.
+    pub dim: usize,
+    /// Assessor pairs in this component.
+    pub nodes: BTreeSet<CrossPair>,
+    /// Undirected edges, stored as (a, b) with a < b.
+    pub edges: BTreeSet<(CrossPair, CrossPair)>,
+}
+
+impl MotifComponent {
+    /// Sorted degree sequence of the graph.
+    pub fn degree_sequence(&self) -> Vec<usize> {
+        let mut deg: HashMap<CrossPair, usize> =
+            self.nodes.iter().map(|&n| (n, 0)).collect();
+        for &(a, b) in &self.edges {
+            *deg.entry(a).or_insert(0) += 1;
+            *deg.entry(b).or_insert(0) += 1;
+        }
+        let mut seq: Vec<usize> = deg.values().copied().collect();
+        seq.sort_unstable();
+        seq
+    }
+
+    /// True if the component is an octahedral graph K_{2,2,2}
+    /// (6 vertices, 12 edges, all degree 4).
+    pub fn is_octahedron_graph(&self) -> bool {
+        self.nodes.len() == 6
+            && self.edges.len() == 12
+            && self.degree_sequence() == vec![4; 6]
+    }
+
+    /// Detect a complete multipartite graph with all parts of size 2.
+    ///
+    /// The complement graph must be a perfect matching: each vertex has
+    /// exactly one non-neighbor, and the relation is an involution with
+    /// no fixed points.
+    ///
+    /// Returns the number of 2-vertex parts, or 0 if not of this form.
+    pub fn k2_multipartite_part_count(&self) -> usize {
+        let nodes: Vec<CrossPair> = self.nodes.iter().copied().collect();
+        if nodes.len() < 4 || !nodes.len().is_multiple_of(2) {
+            return 0;
+        }
+
+        let edge_set: HashSet<(CrossPair, CrossPair)> =
+            self.edges.iter().copied().collect();
+        let adjacent = |a: CrossPair, b: CrossPair| -> bool {
+            if a == b {
+                return false;
+            }
+            let (x, y) = if a < b { (a, b) } else { (b, a) };
+            edge_set.contains(&(x, y))
+        };
+
+        let mut opposite: HashMap<CrossPair, CrossPair> = HashMap::new();
+        for &a in &nodes {
+            let non_neighbors: Vec<CrossPair> = nodes
+                .iter()
+                .filter(|&&b| b != a && !adjacent(a, b))
+                .copied()
+                .collect();
+            if non_neighbors.len() != 1 {
+                return 0;
+            }
+            opposite.insert(a, non_neighbors[0]);
+        }
+
+        // Must be an involution with no fixed points
+        for (&a, &b) in &opposite {
+            if b == a {
+                return 0;
+            }
+            if opposite.get(&b) != Some(&a) {
+                return 0;
+            }
+        }
+
+        nodes.len() / 2
+    }
+
+    /// True if the component is a cuboctahedron graph
+    /// (12 vertices, 24 edges, all degree 4).
+    pub fn is_cuboctahedron_graph(&self) -> bool {
+        self.nodes.len() == 12
+            && self.edges.len() == 24
+            && self.degree_sequence() == vec![4; 12]
+    }
+}
+
+/// Build the diagonal zero-product graph over cross-assessors and return its
+/// connected components, sorted by (node count, lexicographic node set).
+///
+/// Uses XOR-bucket pruning: only pairs with matching `xor_key(low, high)` can
+/// form a diagonal zero-product (necessary condition from the expansion
+/// `(e_i + s*e_j)(e_k + t*e_l)` requiring `i^k == j^l` for cancellation).
+pub fn motif_components_for_cross_assessors(dim: usize) -> Vec<MotifComponent> {
+    let nodes = cross_assessors(dim);
+
+    // XOR-bucket pruning: only check pairs within the same bucket
+    let mut buckets: HashMap<usize, Vec<CrossPair>> = HashMap::new();
+    for &a in &nodes {
+        buckets.entry(xor_key(a.0, a.1)).or_default().push(a);
+    }
+
+    let mut adj: HashMap<CrossPair, HashSet<CrossPair>> =
+        nodes.iter().map(|&n| (n, HashSet::new())).collect();
+    let mut edges: HashSet<(CrossPair, CrossPair)> = HashSet::new();
+
+    for bucket_nodes in buckets.values() {
+        let mut sorted_bucket = bucket_nodes.clone();
+        sorted_bucket.sort();
+        for i in 0..sorted_bucket.len() {
+            for j in (i + 1)..sorted_bucket.len() {
+                let a = sorted_bucket[i];
+                let b = sorted_bucket[j];
+                let sols = diagonal_zero_products_exact(dim, a, b);
+                if !sols.is_empty() {
+                    adj.get_mut(&a).unwrap().insert(b);
+                    adj.get_mut(&b).unwrap().insert(a);
+                    edges.insert((a, b));
+                }
+            }
+        }
+    }
+
+    // Only keep nodes that participate in at least one edge
+    let active: HashSet<CrossPair> = adj
+        .iter()
+        .filter(|(_, neigh)| !neigh.is_empty())
+        .map(|(&n, _)| n)
+        .collect();
+
+    if active.is_empty() {
+        return Vec::new();
+    }
+
+    // Connected components via DFS
+    let mut seen: HashSet<CrossPair> = HashSet::new();
+    let mut components: Vec<MotifComponent> = Vec::new();
+
+    let mut sorted_active: Vec<CrossPair> = active.iter().copied().collect();
+    sorted_active.sort();
+
+    for start in sorted_active {
+        if seen.contains(&start) {
+            continue;
+        }
+
+        let mut comp_nodes: BTreeSet<CrossPair> = BTreeSet::new();
+        let mut stack = vec![start];
+        while let Some(x) = stack.pop() {
+            if !comp_nodes.insert(x) {
+                continue;
+            }
+            if let Some(neighbors) = adj.get(&x) {
+                for &y in neighbors {
+                    if active.contains(&y) && !comp_nodes.contains(&y) {
+                        stack.push(y);
+                    }
+                }
+            }
+        }
+        seen.extend(comp_nodes.iter());
+
+        let comp_edges: BTreeSet<(CrossPair, CrossPair)> = edges
+            .iter()
+            .filter(|&&(a, b)| comp_nodes.contains(&a) && comp_nodes.contains(&b))
+            .copied()
+            .collect();
+
+        components.push(MotifComponent {
+            dim,
+            nodes: comp_nodes,
+            edges: comp_edges,
+        });
+    }
+
+    components.sort_by_key(|c| {
+        (c.nodes.len(), c.nodes.iter().copied().collect::<Vec<_>>())
+    });
+    components
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -519,6 +1208,418 @@ mod tests {
             for (v, &d) in degrees.iter().enumerate() {
                 assert_eq!(d, 4, "Vertex {} should have degree 4, got {}", v, d);
             }
+        }
+    }
+
+    // --- Production Rule and Automorpheme Tests ---
+
+    #[test]
+    fn test_primitive_unit_zero_divisors_count() {
+        // de Marrais: 168 primitive unit zero-divisors as quartets along 42 assessors
+        let assessors = primitive_assessors();
+        let mut count = 0;
+        for a in &assessors {
+            let v1 = a.diagonal(1.0);
+            let v2 = a.diagonal(-1.0);
+            // Each diagonal is a unit vector
+            assert!((cd_norm_sq(&v1) - 1.0).abs() < 1e-12);
+            assert!((cd_norm_sq(&v2) - 1.0).abs() < 1e-12);
+            // 4 unit points per assessor: +v1, -v1, +v2, -v2
+            count += 4;
+        }
+        assert_eq!(count, 168);
+    }
+
+    #[test]
+    fn test_all_edges_have_sign_solutions() {
+        let boxkites = find_box_kites(16, 1e-10);
+        for bk in &boxkites {
+            for &(i, j) in &bk.edges {
+                let sols = all_diagonal_zero_products(
+                    &bk.assessors[i], &bk.assessors[j], 1e-10,
+                );
+                assert!(
+                    !sols.is_empty(),
+                    "Expected zero-products for edge ({},{})--({},{})",
+                    bk.assessors[i].low, bk.assessors[i].high,
+                    bk.assessors[j].low, bk.assessors[j].high,
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_each_box_kite_has_6_trefoil_and_2_zigzag() {
+        // de Marrais: 8 triangular faces = 6 trefoils + 2 zigzags
+        let boxkites = find_box_kites(16, 1e-10);
+        for bk in &boxkites {
+            let nodes = &bk.assessors;
+            let edge_set: HashSet<(usize, usize)> = bk.edges.iter()
+                .flat_map(|&(a, b)| [(a, b), (b, a)])
+                .collect();
+
+            let mut trefoil = 0;
+            let mut zigzag = 0;
+            let mut other = 0;
+
+            for i in 0..6 {
+                for j in (i + 1)..6 {
+                    if !edge_set.contains(&(i, j)) { continue; }
+                    for k in (j + 1)..6 {
+                        if edge_set.contains(&(i, k)) && edge_set.contains(&(j, k)) {
+                            let signs = [
+                                edge_sign_type(&nodes[i], &nodes[j], 1e-10),
+                                edge_sign_type(&nodes[j], &nodes[k], 1e-10),
+                                edge_sign_type(&nodes[i], &nodes[k], 1e-10),
+                            ];
+                            let opp = signs.iter()
+                                .filter(|&&s| s == EdgeSignType::Opposite).count();
+                            let same = signs.iter()
+                                .filter(|&&s| s == EdgeSignType::Same).count();
+                            if opp == 3 {
+                                zigzag += 1;
+                            } else if same == 2 && opp == 1 {
+                                trefoil += 1;
+                            } else {
+                                other += 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            assert_eq!(
+                (trefoil, zigzag, other), (6, 2, 0),
+                "Box-kite {} has ({},{},{}) trefoil/zigzag/other faces",
+                bk.id, trefoil, zigzag, other,
+            );
+        }
+    }
+
+    #[test]
+    fn test_strut_pairs_no_zero_products() {
+        // Struts (non-edges in octahedron) should have no diagonal zero-products
+        let boxkites = find_box_kites(16, 1e-10);
+        for bk in &boxkites {
+            for &(i, j) in &bk.struts {
+                let sols = all_diagonal_zero_products(
+                    &bk.assessors[i], &bk.assessors[j], 1e-10,
+                );
+                assert!(
+                    sols.is_empty(),
+                    "Strut ({},{})--({},{}) should have no zero-products",
+                    bk.assessors[i].low, bk.assessors[i].high,
+                    bk.assessors[j].low, bk.assessors[j].high,
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_canonical_strut_table_two_zigzag_faces() {
+        let boxkites = find_box_kites(16, 1e-10);
+        for bk in &boxkites {
+            let tab = canonical_strut_table(bk, 1e-10);
+
+            // ABC should be a zigzag face (all Opposite edges)
+            assert_eq!(edge_sign_type(&tab.a, &tab.b, 1e-10), EdgeSignType::Opposite);
+            assert_eq!(edge_sign_type(&tab.b, &tab.c, 1e-10), EdgeSignType::Opposite);
+            assert_eq!(edge_sign_type(&tab.a, &tab.c, 1e-10), EdgeSignType::Opposite);
+
+            // DEF should also be a zigzag face
+            assert_eq!(edge_sign_type(&tab.d, &tab.e, 1e-10), EdgeSignType::Opposite);
+            assert_eq!(edge_sign_type(&tab.e, &tab.f, 1e-10), EdgeSignType::Opposite);
+            assert_eq!(edge_sign_type(&tab.d, &tab.f, 1e-10), EdgeSignType::Opposite);
+        }
+    }
+
+    #[test]
+    fn test_production_rule_1_trefoil_third() {
+        // PR#1 should reconstruct a valid third vertex for every edge
+        let boxkites = find_box_kites(16, 1e-10);
+        for bk in &boxkites {
+            let edge_set: HashSet<(usize, usize)> = bk.edges.iter()
+                .flat_map(|&(a, b)| [(a, b), (b, a)])
+                .collect();
+
+            for &(i, j) in &bk.edges {
+                let c = production_rule_1(&bk.assessors[i], &bk.assessors[j]);
+
+                // Result must be in the box-kite
+                assert!(
+                    bk.assessors.contains(&c),
+                    "PR#1 result ({},{}) not in box-kite {}",
+                    c.low, c.high, bk.id,
+                );
+
+                // Result must be adjacent to both inputs
+                let c_idx = bk.assessors.iter().position(|a| *a == c).unwrap();
+                assert!(
+                    edge_set.contains(&(i, c_idx)),
+                    "PR#1 result not adjacent to first input",
+                );
+                assert!(
+                    edge_set.contains(&(j, c_idx)),
+                    "PR#1 result not adjacent to second input",
+                );
+
+                // Triangle sign pattern: trefoil (2 Same, 1 Opposite) or
+                // zigzag (0 Same, 3 Opposite)
+                let signs = [
+                    edge_sign_type(&bk.assessors[i], &bk.assessors[j], 1e-10),
+                    edge_sign_type(&bk.assessors[i], &c, 1e-10),
+                    edge_sign_type(&bk.assessors[j], &c, 1e-10),
+                ];
+                let same = signs.iter()
+                    .filter(|&&s| s == EdgeSignType::Same).count();
+                let opp = signs.iter()
+                    .filter(|&&s| s == EdgeSignType::Opposite).count();
+                assert!(
+                    (same, opp) == (2, 1) || (same, opp) == (0, 3),
+                    "PR#1 triangle has unexpected sign pattern ({},{}) for edge ({},{})--({},{})",
+                    same, opp,
+                    bk.assessors[i].low, bk.assessors[i].high,
+                    bk.assessors[j].low, bk.assessors[j].high,
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_production_rule_2_creates_new_co_assessors() {
+        // PR#2 outputs must be co-assessors with each other but not with inputs
+        let primitives: HashSet<Assessor> = primitive_assessors().into_iter().collect();
+        let boxkites = find_box_kites(16, 1e-10);
+
+        for bk in &boxkites {
+            for &(i, j) in &bk.edges {
+                let (p, q) = production_rule_2(
+                    &bk.assessors[i], &bk.assessors[j], 1e-10,
+                );
+                assert_ne!(p, q);
+                assert!(primitives.contains(&p), "PR#2 output ({},{}) not primitive", p.low, p.high);
+                assert!(primitives.contains(&q), "PR#2 output ({},{}) not primitive", q.low, q.high);
+
+                // Outputs are co-assessors
+                assert!(
+                    !all_diagonal_zero_products(&p, &q, 1e-10).is_empty(),
+                    "PR#2 outputs should be co-assessors",
+                );
+
+                // Outputs are NOT co-assessors with inputs
+                assert!(all_diagonal_zero_products(&p, &bk.assessors[i], 1e-10).is_empty());
+                assert!(all_diagonal_zero_products(&p, &bk.assessors[j], 1e-10).is_empty());
+                assert!(all_diagonal_zero_products(&q, &bk.assessors[i], 1e-10).is_empty());
+                assert!(all_diagonal_zero_products(&q, &bk.assessors[j], 1e-10).is_empty());
+            }
+        }
+    }
+
+    #[test]
+    fn test_o_trips_form_fano_plane() {
+        // 7 lines, 7 points, each point on 3 lines, each pair on 1 line
+        assert_eq!(O_TRIPS.len(), 7);
+
+        let mut point_counts = [0usize; 8]; // indices 1..7
+        for t in &O_TRIPS {
+            for &p in t {
+                assert!((1..=7).contains(&p));
+                point_counts[p] += 1;
+            }
+        }
+        for p in 1..=7 {
+            assert_eq!(point_counts[p], 3, "Point {} should appear on 3 lines", p);
+        }
+
+        // Each pair determines exactly 1 line
+        let mut pair_counts: HashMap<(usize, usize), usize> = HashMap::new();
+        for t in &O_TRIPS {
+            for i in 0..3 {
+                for j in (i + 1)..3 {
+                    let pair = (t[i].min(t[j]), t[i].max(t[j]));
+                    *pair_counts.entry(pair).or_insert(0) += 1;
+                }
+            }
+        }
+        // C(7,2) = 21 pairs
+        assert_eq!(pair_counts.len(), 21);
+        for &count in pair_counts.values() {
+            assert_eq!(count, 1, "Each pair should appear on exactly 1 line");
+        }
+    }
+
+    #[test]
+    fn test_automorphemes_cover_assessors_twice() {
+        let autos = automorphemes();
+        assert_eq!(autos.len(), 7);
+        for a in &autos {
+            assert_eq!(a.len(), 12, "Each automorpheme should have 12 assessors");
+        }
+
+        let primitives: HashSet<Assessor> = primitive_assessors().into_iter().collect();
+        let union: HashSet<Assessor> = autos.iter().flat_map(|s| s.iter().copied()).collect();
+        assert_eq!(union, primitives);
+
+        // Each assessor appears in exactly 2 automorphemes
+        let mut membership: HashMap<Assessor, usize> = HashMap::new();
+        for a in &autos {
+            for &assessor in a {
+                *membership.entry(assessor).or_insert(0) += 1;
+            }
+        }
+        for (&assessor, &count) in &membership {
+            assert_eq!(
+                count, 2,
+                "Assessor ({},{}) should appear in exactly 2 automorphemes",
+                assessor.low, assessor.high,
+            );
+        }
+
+        // "Behind the 8-ball": excluded assessors have no automorphemes
+        for low in 1..=7 {
+            let a8 = Assessor::new(low, 8);
+            assert!(
+                automorphemes_containing_assessor(&a8).is_empty(),
+                "({}, 8) should not be in any automorpheme", low,
+            );
+        }
+    }
+
+    #[test]
+    fn test_production_rule_3_unique_other() {
+        for o_trip in &O_TRIPS {
+            let assessors = automorpheme_assessors(o_trip);
+            for a in &assessors {
+                let other = production_rule_3(o_trip, a);
+                assert_ne!(other, *o_trip);
+                assert!(automorpheme_assessors(&other).contains(a));
+
+                let mut containing = automorphemes_containing_assessor(a);
+                containing.sort();
+                let mut expected = vec![*o_trip, other];
+                expected.sort();
+                assert_eq!(containing, expected);
+            }
+        }
+    }
+
+    // --- Motif Census Tests ---
+
+    #[test]
+    fn test_motif_census_16d_matches_de_marrais_box_kites() {
+        // At dim=16 the motif census must recover exactly the 7 box-kites
+        let comps = motif_components_for_cross_assessors(16);
+        assert_eq!(comps.len(), 7, "Expected 7 components at dim=16, got {}", comps.len());
+
+        // All should be octahedral (6 nodes, 12 edges, degree-4 regular)
+        for (i, c) in comps.iter().enumerate() {
+            assert_eq!(c.nodes.len(), 6, "Component {i} has {} nodes", c.nodes.len());
+            assert!(c.is_octahedron_graph(), "Component {i} is not an octahedron");
+        }
+
+        // Union of all component nodes = the 42 primitive assessors
+        let union: HashSet<CrossPair> = comps
+            .iter()
+            .flat_map(|c| c.nodes.iter().copied())
+            .collect();
+        let primitives: HashSet<CrossPair> = primitive_assessors()
+            .iter()
+            .map(|a| (a.low, a.high))
+            .collect();
+        assert_eq!(union, primitives, "Census nodes should match primitive assessors");
+
+        // Cross-validate against find_box_kites
+        let boxkites = find_box_kites(16, 1e-10);
+        let bk_union: HashSet<CrossPair> = boxkites
+            .iter()
+            .flat_map(|bk| bk.assessors.iter().map(|a| (a.low, a.high)))
+            .collect();
+        assert_eq!(union, bk_union, "Census should agree with find_box_kites");
+    }
+
+    #[test]
+    fn test_motif_edges_respect_xor_bucket() {
+        // XOR bucket is a necessary condition for diagonal zero-products
+        for comp in &motif_components_for_cross_assessors(16) {
+            for &(a, b) in &comp.edges {
+                assert_eq!(
+                    xor_key(a.0, a.1),
+                    xor_key(b.0, b.1),
+                    "Edge ({},{})--({},{}) violates XOR bucket necessity",
+                    a.0, a.1, b.0, b.1,
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_motif_census_32d_has_k2_multipartite() {
+        // At dim=32, new graph motifs appear beyond octahedra
+        let comps = motif_components_for_cross_assessors(32);
+        assert!(!comps.is_empty(), "Expected non-empty census at dim=32");
+        assert!(
+            comps.iter().any(|c| c.k2_multipartite_part_count() > 0),
+            "Expected at least one K_{{2,...,2}} component at dim=32",
+        );
+    }
+
+    #[test]
+    fn test_motif_census_32d_summary() {
+        // Record the dim=32 census as a regression test.
+        //
+        // Results (discovered 2026-02-06):
+        //   15 components, all with 14 nodes (7 cross-assessor pairs).
+        //   8 are K_{2,2,2,2,2,2,2} (heptacross: 14 nodes, 84 edges, degree-12 regular).
+        //   7 have mixed degree [4^12, 12^2] with 36 edges -- a new motif class.
+        let comps = motif_components_for_cross_assessors(32);
+
+        // Exact component count.
+        assert_eq!(comps.len(), 15, "dim=32 should have exactly 15 motif components");
+
+        // All components have 14 nodes.
+        for (i, c) in comps.iter().enumerate() {
+            assert_eq!(c.nodes.len(), 14, "comp[{}] should have 14 nodes", i);
+        }
+
+        // Count multipartite (heptacross) vs non-multipartite.
+        let n_heptacross = comps.iter().filter(|c| c.k2_multipartite_part_count() == 7).count();
+        let n_mixed = comps.iter().filter(|c| c.k2_multipartite_part_count() == 0).count();
+
+        assert_eq!(n_heptacross, 8, "Expected 8 K_{{2,2,2,2,2,2,2}} (heptacross) components");
+        assert_eq!(n_mixed, 7, "Expected 7 mixed-degree components");
+
+        // Heptacross validation: 84 edges, degree-12 regular.
+        for c in comps.iter().filter(|c| c.k2_multipartite_part_count() == 7) {
+            assert_eq!(c.edges.len(), 84);
+            assert!(c.degree_sequence().iter().all(|&d| d == 12));
+        }
+
+        // Mixed-degree validation: 36 edges, degree sequence [4^12, 12^2].
+        for c in comps.iter().filter(|c| c.k2_multipartite_part_count() == 0) {
+            assert_eq!(c.edges.len(), 36);
+            let seq = c.degree_sequence();
+            assert_eq!(seq.iter().filter(|&&d| d == 4).count(), 12);
+            assert_eq!(seq.iter().filter(|&&d| d == 12).count(), 2);
+        }
+    }
+
+    #[test]
+    fn test_complement_graph_regression_dim16() {
+        // At dim=16, all 7 components should be K_{2,2,2} (octahedra),
+        // so k2_multipartite_part_count should return 3 for each.
+        let comps = motif_components_for_cross_assessors(16);
+        assert_eq!(comps.len(), 7);
+        for (i, c) in comps.iter().enumerate() {
+            assert_eq!(
+                c.k2_multipartite_part_count(), 3,
+                "Component {} at dim=16 should be K_{{2,2,2}} (3 parts), got {}",
+                i, c.k2_multipartite_part_count()
+            );
+            assert!(
+                c.is_octahedron_graph(),
+                "Component {} at dim=16 should be octahedral",
+                i
+            );
         }
     }
 }

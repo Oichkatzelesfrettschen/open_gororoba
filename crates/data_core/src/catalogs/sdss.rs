@@ -7,6 +7,7 @@
 //! Reference: Almeida et al. (2023), ApJS 267, 44
 
 use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string, validate_not_html};
+use crate::formats::tap::percent_encode_query;
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -118,9 +119,12 @@ pub fn parse_sdss_quasar_csv(path: &Path) -> Result<Vec<SdssQuasar>, FetchError>
 }
 
 /// SDSS SkyServer SQL query for TOP 50000 quasars.
+///
+/// Uses `specObjID` (not `objID`) as the identifier from SpecObj,
+/// and `bestObjID` to join to PhotoObj for photometric magnitudes.
 const SDSS_QUERY: &str = "\
 SELECT TOP 50000 \
-  s.objID as objid, s.ra, s.dec, s.z, s.zErr as zerr, \
+  s.specObjID as objid, s.ra, s.dec, s.z, s.zErr as zerr, \
   p.psfMag_u as u, p.psfMag_g as g, p.psfMag_r as r, \
   p.psfMag_i as i \
 FROM SpecObj s \
@@ -128,9 +132,9 @@ JOIN PhotoObj p ON s.bestObjID = p.objID \
 WHERE s.class = 'QSO' AND s.zWarning = 0 AND s.z > 0.1 \
 ORDER BY s.z";
 
-/// Build the SkyServer CSV download URL.
+/// Build the SkyServer CSV download URL with proper percent-encoding.
 fn skyserver_csv_url(query: &str) -> String {
-    let encoded = query.replace(' ', "+");
+    let encoded = percent_encode_query(query);
     format!(
         "https://skyserver.sdss.org/dr18/SkyServerWS/SearchTools/SqlSearch?cmd={}&format=csv",
         encoded

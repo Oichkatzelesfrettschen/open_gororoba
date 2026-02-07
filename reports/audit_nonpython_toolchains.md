@@ -1,4 +1,4 @@
-# Non-Python Toolchains Audit (2026-02-04)
+# Non-Python Toolchains Audit (2026-02-06)
 
 Goal: ensure non-Python targets have minimal reproducible setup guidance.
 

@@ -80,8 +80,7 @@ Some targets rely on standard system utilities (documented here for reproducibil
   - Enable: `sudo systemctl enable --now tor`
   - Note: do NOT run a second `tor` instance on `127.0.0.1:9050` if `tor.service` is already running.
     Check: `sudo ss -lntp | rg ':9050'`
-  - Use (existing Tor on 9050): `bin/torified_wget.py --use-existing-socks --socks-port 9050 --out <path> <url>`
-  - Use (one-shot Tor on 9150+): `bin/torified_wget.py --socks-port 9150 --out <path> <url>`
+  - Use: `torsocks wget -O <path> <url>`
 
 ## Dev / Quality
 - `pytest>=7.4.0`    # Testing framework

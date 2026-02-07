@@ -18,7 +18,6 @@ import sys
 from pathlib import Path
 
 import numpy as np
-import pytest
 
 # Add src to path for imports
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
@@ -105,9 +104,6 @@ class TestPolytropicStability:
         masses_arr = np.array(masses)
         valid = ~np.isnan(masses_arr)
         if np.sum(valid) >= 2:
-            dM_drho = np.diff(masses_arr[valid]) / np.diff(
-                np.array(rho_shell_values)[valid]
-            )
             # For gamma < 4/3, expect unstable branch
             # Note: not all configs may show this clearly due to shell structure
             # We just verify the solver runs and produces physical output
@@ -297,11 +293,9 @@ class TestPolytropicPhysics:
         result = solve_gravastar(1e-5, 100.0, 3e-5, gamma=1.5, K=1.0)
 
         m = result['m']
-        r = result['r']
 
         # Mass should be monotonically non-decreasing
         dm = np.diff(m)
-        dr = np.diff(r)
 
         # dm/dr >= 0 everywhere
         assert np.all(dm >= -1e-15)

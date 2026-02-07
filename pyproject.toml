@@ -30,6 +30,11 @@ astro = [
     "astroquery>=0.4.8",
     "gwpy>=3.0.0",
 ]
+particle = [
+    "uproot>=5.4.0",
+    "awkward>=2.6.0",
+    "vector>=1.4.0",
+]
 quantum = [
     # Qiskit is pinned and expected to run in Docker (Python 3.11) per docs/docker.
     "qiskit==1.0.2; python_version < '3.13'",

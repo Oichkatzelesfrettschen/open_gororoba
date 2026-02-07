@@ -413,6 +413,75 @@ pub fn zd_graph_diameter(dim: usize, atol: f64) -> usize {
     max_dist
 }
 
+// ---------------------------------------------------------------------------
+// XOR-bucket heuristics for Cayley-Dickson zero-product detection
+// ---------------------------------------------------------------------------
+
+/// XOR-bucket key for a Cayley-Dickson basis pair.
+///
+/// In CD algebras, `e_i * e_j = +/- e_{i^j}`. The XOR of two basis indices
+/// determines the target basis element. This key is used for grouping
+/// assessors that could potentially annihilate.
+#[inline]
+pub fn xor_key(i: usize, j: usize) -> usize {
+    i ^ j
+}
+
+/// Necessary (not sufficient) condition for a 2-blade zero-product:
+/// `(e_i + e_j) * (e_k + e_l) = 0` requires `(i ^ j) == (k ^ l)`.
+///
+/// This is a fast O(1) pre-filter that eliminates most non-zero-product pairs.
+#[inline]
+pub fn xor_bucket_necessary_for_two_blade(i: usize, j: usize, k: usize, l: usize) -> bool {
+    xor_key(i, j) == xor_key(k, l)
+}
+
+/// Check if a 4-tuple is XOR-balanced: `a ^ b ^ c ^ d == 0`.
+///
+/// This is a common necessary constraint for 4-term cancellation patterns
+/// in XOR-indexed algebras.
+#[inline]
+pub fn xor_balanced_four_tuple(a: usize, b: usize, c: usize, d: usize) -> bool {
+    (a ^ b ^ c ^ d) == 0
+}
+
+/// For a XOR-balanced 4-tuple, return the 3 pairing bucket values.
+///
+/// The 3 perfect matchings of {a,b,c,d} into pairs give shared XOR buckets:
+///   (a,b)-(c,d): bucket = a^b = c^d
+///   (a,c)-(b,d): bucket = a^c = b^d
+///   (a,d)-(b,c): bucket = a^d = b^c
+///
+/// Returns an array of 3 bucket values (NOT necessarily distinct).
+///
+/// # Panics
+/// Panics if the 4-tuple is not XOR-balanced.
+pub fn xor_pairing_buckets(a: usize, b: usize, c: usize, d: usize) -> [usize; 3] {
+    assert!(
+        xor_balanced_four_tuple(a, b, c, d),
+        "Expected XOR-balanced 4-tuple (a^b^c^d == 0), got {}", a ^ b ^ c ^ d,
+    );
+    [a ^ b, a ^ c, a ^ d]
+}
+
+/// Necessary condition for a 2-blade to be compatible with a XOR-balanced 4-blade.
+///
+/// The 2-blade bucket `(i ^ j)` must match one of the 3 pairing buckets
+/// induced by the balanced 4-tuple `(a, b, c, d)`.
+///
+/// Returns false if the 4-tuple is not XOR-balanced.
+pub fn xor_bucket_necessary_2v4(
+    i: usize, j: usize,
+    a: usize, b: usize, c: usize, d: usize,
+) -> bool {
+    if !xor_balanced_four_tuple(a, b, c, d) {
+        return false;
+    }
+    let bucket = xor_key(i, j);
+    let pairings = xor_pairing_buckets(a, b, c, d);
+    pairings.contains(&bucket)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -487,5 +556,47 @@ mod tests {
         // Diameter should be finite for connected graph
         assert!(diameter > 0);
         assert!(diameter < 100); // Reasonable upper bound
+    }
+
+    // --- XOR heuristic tests ---
+
+    #[test]
+    fn test_xor_balanced_four_tuple() {
+        // 1^2^4^7 = 0b001 ^ 0b010 ^ 0b100 ^ 0b111 = 0
+        assert!(xor_balanced_four_tuple(1, 2, 4, 7));
+        // 1^2^3^0 = 0 (since 1^2=3, 3^3=0, 0^0=0)
+        assert!(xor_balanced_four_tuple(1, 2, 3, 0));
+        // Non-balanced
+        assert!(!xor_balanced_four_tuple(1, 2, 3, 4));
+    }
+
+    #[test]
+    fn test_xor_pairing_buckets() {
+        let (a, b, c, d) = (1, 2, 4, 7);
+        let buckets = xor_pairing_buckets(a, b, c, d);
+        // a^b = 3, a^c = 5, a^d = 6
+        assert_eq!(buckets, [3, 5, 6]);
+        // Verify each pairing has matching XOR
+        assert_eq!(a ^ b, c ^ d); // 3 == 3
+        assert_eq!(a ^ c, b ^ d); // 5 == 5
+        assert_eq!(a ^ d, b ^ c); // 6 == 6
+    }
+
+    #[test]
+    fn test_xor_bucket_necessary_2v4() {
+        let (a, b, c, d) = (1, 2, 4, 7);
+        // 2-blades matching one of the 3 pairing buckets (3, 5, 6)
+        assert!(xor_bucket_necessary_2v4(1, 2, a, b, c, d)); // bucket 3
+        assert!(xor_bucket_necessary_2v4(1, 4, a, b, c, d)); // bucket 5
+        assert!(xor_bucket_necessary_2v4(1, 7, a, b, c, d)); // bucket 6
+        // Non-matching bucket
+        assert!(!xor_bucket_necessary_2v4(1, 3, a, b, c, d)); // bucket 2
+    }
+
+    #[test]
+    fn test_xor_bucket_necessary_two_blade() {
+        // (i^j) must equal (k^l) for zero-product possibility
+        assert!(xor_bucket_necessary_for_two_blade(1, 10, 2, 9));  // 11 == 11
+        assert!(!xor_bucket_necessary_for_two_blade(1, 10, 2, 10)); // 11 != 8
     }
 }

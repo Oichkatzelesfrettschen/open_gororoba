@@ -3,10 +3,19 @@
 //! The Bohmian quantum potential Q ~ l_P^4 / a^6 (from Wheeler-DeWitt)
 //! provides a repulsive force preventing the Big Bang singularity.
 //!
+//! Includes:
+//! - Bounce cosmology ODE simulation (RK4)
+//! - Luminosity distance, distance modulus, CMB shift parameter
+//! - BAO sound horizon (Eisenstein & Hu 1998)
+//! - Synthetic data generation (SN Ia + BAO)
+//! - Joint chi-square fitting with bounded Nelder-Mead optimization
+//! - AIC/BIC model comparison vs Lambda-CDM
+//!
 //! # Literature
 //! - Pinto-Neto & Fabris (2013), CQG 30, 143001 [arXiv:1306.0820]
 //! - Ashtekar & Singh (2011), CQG 28, 213001 [LQC review]
 //! - Peter & Pinto-Neto (2008), PRD 78, 063506 [Bohmian bounce]
+//! - Eisenstein & Hu (1998), ApJ 496, 605 [BAO fitting formulae]
 
 
 /// Speed of light in km/s.
@@ -275,6 +284,325 @@ pub fn chi2_distance_modulus(
         .sum()
 }
 
+// ---------------------------------------------------------------------------
+// Synthetic Data Generation
+// ---------------------------------------------------------------------------
+
+/// Synthetic supernova data for fitting tests.
+#[derive(Clone, Debug)]
+pub struct SyntheticSnData {
+    pub z: Vec<f64>,
+    pub mu_obs: Vec<f64>,
+    pub mu_err: Vec<f64>,
+}
+
+/// Synthetic BAO data for fitting tests.
+#[derive(Clone, Debug)]
+pub struct SyntheticBaoData {
+    pub z_eff: Vec<f64>,
+    pub dv_rd_obs: Vec<f64>,
+    pub dv_rd_err: Vec<f64>,
+}
+
+/// Generate synthetic Type Ia supernova data following Lambda-CDM.
+///
+/// Mimics Pantheon+ distribution: redshifts in [0.01, 2.3] with
+/// Gaussian distance modulus errors of 0.10-0.15 mag.
+pub fn generate_synthetic_sn_data(n_sn: usize, omega_m_true: f64, h0_true: f64, seed: u64) -> SyntheticSnData {
+    use rand::prelude::*;
+    use rand_distr::Normal;
+
+    let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
+
+    // Uniform redshifts in [0.01, 2.3], then sorted
+    let mut z: Vec<f64> = (0..n_sn)
+        .map(|_| rng.gen::<f64>() * 2.29 + 0.01)
+        .collect();
+    z.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
+
+    let mu_true: Vec<f64> = z.iter()
+        .map(|&zi| distance_modulus(zi, omega_m_true, h0_true, 0.0))
+        .collect();
+
+    // Errors uniform in [0.10, 0.15]
+    let mu_err: Vec<f64> = (0..n_sn)
+        .map(|_| rng.gen::<f64>() * 0.05 + 0.10)
+        .collect();
+
+    let mu_obs: Vec<f64> = mu_true.iter()
+        .zip(mu_err.iter())
+        .map(|(&mt, &me)| {
+            let noise = Normal::new(0.0, me).unwrap();
+            mt + rng.sample(noise)
+        })
+        .collect();
+
+    SyntheticSnData { z, mu_obs, mu_err }
+}
+
+/// Generate synthetic BAO data mimicking DESI DR1 measurements.
+///
+/// Returns distance ratios D_V(z)/r_d at effective redshifts.
+pub fn generate_synthetic_bao_data(omega_m_true: f64, h0_true: f64, seed: u64) -> SyntheticBaoData {
+    use rand::prelude::*;
+    use rand_distr::Normal;
+
+    let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
+
+    let z_eff = vec![0.30, 0.51, 0.71, 0.93, 1.32, 1.49, 2.33];
+    let r_d = bao_sound_horizon(omega_m_true, h0_true);
+
+    let dv_rd_true: Vec<f64> = z_eff.iter().map(|&zi| {
+        let d_l = luminosity_distance(zi, omega_m_true, h0_true, 0.0);
+        let d_c = d_l / (1.0 + zi);
+        let e_val = hubble_e_lcdm(zi, omega_m_true);
+        let d_h = C_KM_S / (h0_true * e_val);
+        let d_v = (zi * d_c * d_c * d_h).powf(1.0 / 3.0);
+        d_v / r_d
+    }).collect();
+
+    // 2% errors
+    let dv_rd_err: Vec<f64> = dv_rd_true.iter().map(|&v| 0.02 * v).collect();
+
+    let dv_rd_obs: Vec<f64> = dv_rd_true.iter()
+        .zip(dv_rd_err.iter())
+        .map(|(&vt, &ve)| {
+            let noise = Normal::new(0.0, ve).unwrap();
+            vt + rng.sample(noise)
+        })
+        .collect();
+
+    SyntheticBaoData { z_eff, dv_rd_obs, dv_rd_err }
+}
+
+// ---------------------------------------------------------------------------
+// Chi-square Functions for Joint SN + BAO Fitting
+// ---------------------------------------------------------------------------
+
+/// Chi-square for supernova distance modulus data with parameter bounds.
+///
+/// Returns 1e10 for out-of-bounds parameters.
+pub fn chi2_sn(omega_m: f64, h0: f64, q_corr: f64, sn: &SyntheticSnData) -> f64 {
+    if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) || q_corr < 0.0 {
+        return 1e10;
+    }
+    chi2_distance_modulus(&sn.z, &sn.mu_obs, &sn.mu_err, omega_m, h0, q_corr)
+}
+
+/// Chi-square for BAO distance ratio data.
+pub fn chi2_bao(omega_m: f64, h0: f64, q_corr: f64, bao: &SyntheticBaoData) -> f64 {
+    if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) {
+        return 1e10;
+    }
+
+    let r_d = bao_sound_horizon(omega_m, h0);
+
+    bao.z_eff.iter()
+        .zip(bao.dv_rd_obs.iter())
+        .zip(bao.dv_rd_err.iter())
+        .map(|((&zi, &obs), &err)| {
+            let d_l = luminosity_distance(zi, omega_m, h0, q_corr);
+            let d_c = d_l / (1.0 + zi);
+            let e_val = if q_corr == 0.0 {
+                hubble_e_lcdm(zi, omega_m)
+            } else {
+                hubble_e_bounce(zi, omega_m, q_corr)
+            };
+            let d_h = C_KM_S / (h0 * e_val);
+            let d_v = (zi * d_c * d_c * d_h).powf(1.0 / 3.0);
+            let model = d_v / r_d;
+            let residual = (obs - model) / err;
+            residual * residual
+        })
+        .sum()
+}
+
+// ---------------------------------------------------------------------------
+// Bounded Nelder-Mead Optimizer (2-3 params, domain-specific)
+// ---------------------------------------------------------------------------
+
+/// Bounded Nelder-Mead minimization for 2-3 parameter cosmology fits.
+///
+/// This is a simple, domain-specific optimizer sufficient for the smooth,
+/// well-behaved chi-square landscapes in cosmological parameter fitting.
+/// For 2-3 parameters, Nelder-Mead converges reliably without gradients.
+fn bounded_nelder_mead<F: Fn(&[f64]) -> f64>(
+    f: F,
+    x0: &[f64],
+    bounds: &[(f64, f64)],
+    max_iter: usize,
+    tol: f64,
+) -> (Vec<f64>, f64) {
+    let n = x0.len();
+
+    // Project point into bounds
+    let project = |x: &[f64]| -> Vec<f64> {
+        x.iter()
+            .zip(bounds.iter())
+            .map(|(&xi, &(lo, hi))| xi.clamp(lo, hi))
+            .collect()
+    };
+
+    // Initialize simplex: x0 + perturbations along each axis
+    let mut simplex: Vec<Vec<f64>> = Vec::with_capacity(n + 1);
+    simplex.push(project(x0));
+    for i in 0..n {
+        let mut v = x0.to_vec();
+        let range = bounds[i].1 - bounds[i].0;
+        v[i] += range * 0.05;
+        simplex.push(project(&v));
+    }
+
+    let mut fvals: Vec<f64> = simplex.iter().map(|v| f(v)).collect();
+
+    let alpha = 1.0; // reflection
+    let gamma = 2.0; // expansion
+    let rho = 0.5;   // contraction
+    let sigma = 0.5;  // shrink
+
+    for _ in 0..max_iter {
+        // Sort by function value
+        let mut order: Vec<usize> = (0..=n).collect();
+        order.sort_by(|&a, &b| fvals[a].partial_cmp(&fvals[b]).unwrap());
+        let sorted_simplex: Vec<Vec<f64>> = order.iter().map(|&i| simplex[i].clone()).collect();
+        let sorted_fvals: Vec<f64> = order.iter().map(|&i| fvals[i]).collect();
+        simplex = sorted_simplex;
+        fvals = sorted_fvals;
+
+        // Check convergence
+        let f_range = fvals[n] - fvals[0];
+        if f_range < tol {
+            break;
+        }
+
+        // Centroid of all points except worst
+        let centroid: Vec<f64> = (0..n)
+            .map(|j| simplex[..n].iter().map(|v| v[j]).sum::<f64>() / n as f64)
+            .collect();
+
+        // Reflection
+        let xr: Vec<f64> = (0..n)
+            .map(|j| centroid[j] + alpha * (centroid[j] - simplex[n][j]))
+            .collect();
+        let xr = project(&xr);
+        let fr = f(&xr);
+
+        if fr < fvals[0] {
+            // Expansion
+            let xe: Vec<f64> = (0..n)
+                .map(|j| centroid[j] + gamma * (xr[j] - centroid[j]))
+                .collect();
+            let xe = project(&xe);
+            let fe = f(&xe);
+            if fe < fr {
+                simplex[n] = xe;
+                fvals[n] = fe;
+            } else {
+                simplex[n] = xr;
+                fvals[n] = fr;
+            }
+        } else if fr < fvals[n - 1] {
+            simplex[n] = xr;
+            fvals[n] = fr;
+        } else {
+            // Contraction
+            let xc: Vec<f64> = (0..n)
+                .map(|j| centroid[j] + rho * (simplex[n][j] - centroid[j]))
+                .collect();
+            let xc = project(&xc);
+            let fc = f(&xc);
+            if fc < fvals[n] {
+                simplex[n] = xc;
+                fvals[n] = fc;
+            } else {
+                // Shrink: move all vertices toward the best vertex
+                let best = simplex[0].clone();
+                for i in 1..=n {
+                    for (sij, &bj) in simplex[i].iter_mut().zip(best.iter()) {
+                        *sij = bj + sigma * (*sij - bj);
+                    }
+                    simplex[i] = project(&simplex[i]);
+                    fvals[i] = f(&simplex[i]);
+                }
+            }
+        }
+    }
+
+    // Return best
+    let best_idx = fvals.iter()
+        .enumerate()
+        .min_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
+        .unwrap()
+        .0;
+    (simplex[best_idx].clone(), fvals[best_idx])
+}
+
+// ---------------------------------------------------------------------------
+// Model Fitting Pipeline
+// ---------------------------------------------------------------------------
+
+/// Joint fit of SN + BAO data for a given model.
+///
+/// For "lcdm": fits [omega_m, h0] (q_corr = 0).
+/// For "bounce": fits [omega_m, h0, q_corr].
+///
+/// Returns a FitResult with best-fit parameters, chi2, AIC, and BIC.
+pub fn fit_model(
+    sn: &SyntheticSnData,
+    bao: &SyntheticBaoData,
+    is_bounce: bool,
+) -> FitResult {
+    let n_data = sn.z.len() + bao.z_eff.len();
+
+    if is_bounce {
+        let (best, chi2_val) = bounded_nelder_mead(
+            |p| chi2_sn(p[0], p[1], p[2], sn) + chi2_bao(p[0], p[1], p[2], bao),
+            &[0.3, 70.0, 1e-6],
+            &[(0.1, 0.5), (60.0, 80.0), (0.0, 1e-2)],
+            2000,
+            1e-8,
+        );
+        let n_params = 3;
+        let aic = chi2_val + 2.0 * n_params as f64;
+        let bic = chi2_val + n_params as f64 * (n_data as f64).ln();
+        FitResult { omega_m: best[0], h0: best[1], q_corr: best[2], chi2: chi2_val, n_params, aic, bic }
+    } else {
+        let (best, chi2_val) = bounded_nelder_mead(
+            |p| chi2_sn(p[0], p[1], 0.0, sn) + chi2_bao(p[0], p[1], 0.0, bao),
+            &[0.3, 70.0],
+            &[(0.1, 0.5), (60.0, 80.0)],
+            2000,
+            1e-8,
+        );
+        let n_params = 2;
+        let aic = chi2_val + 2.0 * n_params as f64;
+        let bic = chi2_val + n_params as f64 * (n_data as f64).ln();
+        FitResult { omega_m: best[0], h0: best[1], q_corr: 0.0, chi2: chi2_val, n_params, aic, bic }
+    }
+}
+
+/// Run the full observational fitting pipeline.
+///
+/// 1. Generate synthetic SN Ia and BAO data from Lambda-CDM truth.
+/// 2. Fit Lambda-CDM model (2 params: Omega_m, H_0).
+/// 3. Fit bounce model (3 params: Omega_m, H_0, q_corr).
+/// 4. Compare AIC/BIC.
+/// 5. Compute spectral index n_s for best-fit q_corr.
+///
+/// Returns (lcdm_result, bounce_result, delta_bic, n_s).
+pub fn run_observational_fit(seed: u64) -> (FitResult, FitResult, f64, f64) {
+    let sn = generate_synthetic_sn_data(200, 0.315, 67.4, seed);
+    let bao = generate_synthetic_bao_data(0.315, 67.4, seed + 100);
+
+    let lcdm = fit_model(&sn, &bao, false);
+    let bounce = fit_model(&sn, &bao, true);
+
+    let delta_bic = bounce.bic - lcdm.bic;
+    let n_s = spectral_index_bounce(bounce.q_corr, 0.315);
+
+    (lcdm, bounce, delta_bic, n_s)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -389,5 +717,70 @@ mod tests {
         // With true parameters, chi2 should be 0
         let chi2 = chi2_distance_modulus(&z, &mu_true, &mu_err, 0.3, 70.0, 0.0);
         assert_relative_eq!(chi2, 0.0, epsilon = 1e-8);
+    }
+
+    #[test]
+    fn test_synthetic_sn_data_generation() {
+        let sn = generate_synthetic_sn_data(50, 0.315, 67.4, 42);
+        assert_eq!(sn.z.len(), 50);
+        assert_eq!(sn.mu_obs.len(), 50);
+        assert_eq!(sn.mu_err.len(), 50);
+
+        // Redshifts should be sorted and in range
+        assert!(sn.z[0] >= 0.01);
+        assert!(sn.z[49] <= 2.30);
+        for w in sn.z.windows(2) {
+            assert!(w[1] >= w[0], "Redshifts not sorted");
+        }
+
+        // Errors should be in [0.10, 0.15]
+        for &e in &sn.mu_err {
+            assert!(e >= 0.10 && e <= 0.15, "mu_err={e} out of range");
+        }
+    }
+
+    #[test]
+    fn test_synthetic_bao_data_generation() {
+        let bao = generate_synthetic_bao_data(0.315, 67.4, 142);
+        assert_eq!(bao.z_eff.len(), 7);
+        assert_eq!(bao.dv_rd_obs.len(), 7);
+        assert_eq!(bao.dv_rd_err.len(), 7);
+
+        // D_V/r_d should be positive
+        for &v in &bao.dv_rd_obs {
+            assert!(v > 0.0, "D_V/r_d should be positive, got {v}");
+        }
+    }
+
+    #[test]
+    fn test_lcdm_chi2_per_dof_reasonable() {
+        let sn = generate_synthetic_sn_data(50, 0.315, 67.4, 42);
+        let bao = generate_synthetic_bao_data(0.315, 67.4, 142);
+        let result = fit_model(&sn, &bao, false);
+
+        let n_data = sn.z.len() + bao.z_eff.len();
+        let dof = n_data - result.n_params;
+        let chi2_per_dof = result.chi2 / dof as f64;
+
+        assert!(
+            chi2_per_dof > 0.3 && chi2_per_dof < 3.0,
+            "chi2/dof = {chi2_per_dof:.2}, expected in [0.3, 3.0]"
+        );
+    }
+
+    #[test]
+    fn test_bounce_delta_bic_threshold() {
+        let sn = generate_synthetic_sn_data(50, 0.315, 67.4, 42);
+        let bao = generate_synthetic_bao_data(0.315, 67.4, 142);
+
+        let lcdm = fit_model(&sn, &bao, false);
+        let bounce = fit_model(&sn, &bao, true);
+
+        let delta_bic = bounce.bic - lcdm.bic;
+        // Bounce should NOT be strongly preferred over LCDM for LCDM-generated data
+        assert!(
+            delta_bic > -10.0,
+            "delta_BIC = {delta_bic:.2}, bounce too strongly preferred"
+        );
     }
 }

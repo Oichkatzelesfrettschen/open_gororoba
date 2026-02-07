@@ -6,9 +6,7 @@
 from __future__ import annotations
 
 import os
-import sys
-from typing import TYPE_CHECKING
-from unittest.mock import MagicMock, patch
+from unittest.mock import patch
 
 import pytest
 
@@ -16,7 +14,6 @@ import pytest
 pytest.importorskip("qiskit")
 
 from src.quantum_runtime.ibm_bridge import (
-    QISKIT_AVAILABLE,
     JobResult,
     QiskitService,
 )

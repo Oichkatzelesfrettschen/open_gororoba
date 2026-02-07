@@ -10,48 +10,66 @@ use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_strin
 use std::path::{Path, PathBuf};
 
 /// A BAO distance measurement from DESI.
+///
+/// DESI DR1 provides two types of measurement depending on signal-to-noise:
+/// - **Isotropic**: Only DV/rd (angle-averaged) is available (BGS, QSO).
+/// - **Anisotropic**: Both DM/rd (transverse) and DH/rd (radial) with
+///   correlation coefficient (LRG, ELG, Lya).
 #[derive(Debug, Clone)]
 pub struct BaoMeasurement {
     /// Effective redshift of the bin.
     pub z_eff: f64,
-    /// DM/rd (transverse distance ratio).
+    /// True if this bin provides only isotropic DV/rd (not DM/rd + DH/rd).
+    ///
+    /// For isotropic bins, `dm_over_rd` holds DV/rd and `dh_over_rd` is unused.
+    pub is_isotropic: bool,
+    /// DM/rd (transverse) for anisotropic bins, or DV/rd for isotropic bins.
     pub dm_over_rd: f64,
-    /// DM/rd error.
+    /// DM/rd error (or DV/rd error for isotropic bins).
     pub dm_over_rd_err: f64,
-    /// DH/rd (line-of-sight distance ratio).
+    /// DH/rd (line-of-sight distance ratio). Unused for isotropic bins.
     pub dh_over_rd: f64,
-    /// DH/rd error.
+    /// DH/rd error. Unused for isotropic bins.
     pub dh_over_rd_err: f64,
-    /// Correlation between DM/rd and DH/rd.
+    /// Correlation between DM/rd and DH/rd. Zero for isotropic bins.
     pub rho: f64,
     /// Tracer type (BGS, LRG, ELG, QSO, Lya).
     pub tracer: String,
 }
 
 /// Hardcoded DESI DR1 BAO results from DESI Collaboration (2024) Table 1.
-/// These are the consensus values used by Cobaya.
+///
+/// BGS (z=0.295) and QSO (z=1.491) provide only isotropic DV/rd due to
+/// lower signal-to-noise. All other bins provide anisotropic DM/rd + DH/rd.
+///
+/// Source: arXiv:2404.03002, Table 1
 pub fn desi_dr1_bao() -> Vec<BaoMeasurement> {
     vec![
+        // Isotropic: DV/rd only (low S/N tracers)
         BaoMeasurement {
             z_eff: 0.295,
-            dm_over_rd: 7.93,
+            is_isotropic: true,
+            dm_over_rd: 7.93,  // This is DV/rd for isotropic bins
             dm_over_rd_err: 0.15,
-            dh_over_rd: 20.98,
-            dh_over_rd_err: 0.61,
-            rho: -0.445,
+            dh_over_rd: 0.0,   // Not measured
+            dh_over_rd_err: 0.0,
+            rho: 0.0,
             tracer: "BGS".to_string(),
         },
+        // Anisotropic: DM/rd + DH/rd (high S/N tracers)
         BaoMeasurement {
             z_eff: 0.510,
+            is_isotropic: false,
             dm_over_rd: 13.62,
             dm_over_rd_err: 0.25,
             dh_over_rd: 20.98,
             dh_over_rd_err: 0.61,
-            rho: -0.474,
+            rho: -0.445,
             tracer: "LRG1".to_string(),
         },
         BaoMeasurement {
             z_eff: 0.706,
+            is_isotropic: false,
             dm_over_rd: 16.85,
             dm_over_rd_err: 0.32,
             dh_over_rd: 20.08,
@@ -61,33 +79,39 @@ pub fn desi_dr1_bao() -> Vec<BaoMeasurement> {
         },
         BaoMeasurement {
             z_eff: 0.930,
+            is_isotropic: false,
             dm_over_rd: 21.71,
             dm_over_rd_err: 0.28,
             dh_over_rd: 17.88,
             dh_over_rd_err: 0.35,
-            rho: -0.386,
+            rho: -0.389,
             tracer: "LRG3+ELG1".to_string(),
         },
         BaoMeasurement {
             z_eff: 1.317,
+            is_isotropic: false,
             dm_over_rd: 27.79,
             dm_over_rd_err: 0.69,
             dh_over_rd: 13.82,
             dh_over_rd_err: 0.42,
-            rho: -0.474,
+            rho: -0.444,
             tracer: "ELG2".to_string(),
         },
+        // Isotropic: DV/rd only (low S/N tracer)
         BaoMeasurement {
             z_eff: 1.491,
-            dm_over_rd: 30.69,
-            dm_over_rd_err: 0.79,
-            dh_over_rd: 13.26,
-            dh_over_rd_err: 0.55,
-            rho: -0.470,
+            is_isotropic: true,
+            dm_over_rd: 26.07, // This is DV/rd for isotropic bins
+            dm_over_rd_err: 0.67,
+            dh_over_rd: 0.0,   // Not measured
+            dh_over_rd_err: 0.0,
+            rho: 0.0,
             tracer: "QSO".to_string(),
         },
+        // Anisotropic: DM/rd + DH/rd
         BaoMeasurement {
             z_eff: 2.330,
+            is_isotropic: false,
             dm_over_rd: 39.71,
             dm_over_rd_err: 0.94,
             dh_over_rd: 8.52,
@@ -119,6 +143,7 @@ pub fn parse_desi_bao_txt(path: &Path) -> Result<Vec<BaoMeasurement>, FetchError
             if z.is_finite() {
                 measurements.push(BaoMeasurement {
                     z_eff: z,
+                    is_isotropic: false, // Cobaya files contain anisotropic data
                     dm_over_rd: dm_rd,
                     dm_over_rd_err: 0.0,
                     dh_over_rd: dh_rd,
@@ -195,12 +220,30 @@ mod tests {
             assert!(w[0].z_eff < w[1].z_eff, "z_eff should increase");
         }
 
-        // Verify DM/rd increases with redshift (cosmological expectation)
-        for w in bao.windows(2) {
+        // Verify DM/rd increases with z within anisotropic bins only.
+        // Isotropic bins hold DV/rd (a different quantity), so cross-type
+        // monotonicity is not expected.
+        let aniso: Vec<&BaoMeasurement> = bao.iter().filter(|b| !b.is_isotropic).collect();
+        for w in aniso.windows(2) {
             assert!(
                 w[0].dm_over_rd < w[1].dm_over_rd,
-                "DM/rd should increase with z"
+                "DM/rd should increase with z among anisotropic bins"
             );
+        }
+
+        // Verify DV/rd increases with z within isotropic bins.
+        let iso: Vec<&BaoMeasurement> = bao.iter().filter(|b| b.is_isotropic).collect();
+        for w in iso.windows(2) {
+            assert!(
+                w[0].dm_over_rd < w[1].dm_over_rd,
+                "DV/rd should increase with z among isotropic bins"
+            );
+        }
+
+        // Verify isotropic bins have zero DH and rho.
+        for b in &iso {
+            assert_eq!(b.dh_over_rd, 0.0, "isotropic bin should have dh=0");
+            assert_eq!(b.rho, 0.0, "isotropic bin should have rho=0");
         }
     }
 }

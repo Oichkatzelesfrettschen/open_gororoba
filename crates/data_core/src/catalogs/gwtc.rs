@@ -49,7 +49,13 @@ fn parse_f64(s: &str) -> f64 {
     s.trim().parse::<f64>().unwrap_or(0.0)
 }
 
-/// Parse GWTC-3 confident events CSV.
+/// Parse any GWOSC event CSV (GWTC-3 confident or combined catalog).
+///
+/// Handles both v1 (eventapi) and v2 (api/v2) column name conventions:
+/// - v1: `id`, `commonName`
+/// - v2: `name`, `shortName`
+///
+/// Physics columns are the same in both formats.
 pub fn parse_gwtc3_csv(path: &Path) -> Result<Vec<GwEvent>, FetchError> {
     let mut reader = csv::ReaderBuilder::new()
         .flexible(true)
@@ -62,13 +68,19 @@ pub fn parse_gwtc3_csv(path: &Path) -> Result<Vec<GwEvent>, FetchError> {
         .map_err(|e| FetchError::Validation(format!("Header read error: {}", e)))?
         .clone();
 
-    // Find column indices
+    // Find column indices -- case-insensitive with fallbacks for both
+    // v1 (eventapi) and v2 (api/v2) CSV formats.
     let col = |name: &str| -> Option<usize> {
         headers.iter().position(|h| h == name)
     };
+    let col_ci = |name: &str| -> Option<usize> {
+        headers.iter().position(|h| h.eq_ignore_ascii_case(name))
+    };
 
-    let idx_id = col("id");
-    let idx_common = col("commonName");
+    // v1 has "id", v2 has "name"
+    let idx_id = col("id").or_else(|| col("name"));
+    // v1 has "commonName", v2 has "shortName"
+    let idx_common = col("commonName").or_else(|| col("shortName"));
     let idx_m1 = col("mass_1_source");
     let idx_m1_lo = col("mass_1_source_lower");
     let idx_m1_up = col("mass_1_source_upper");
@@ -83,10 +95,13 @@ pub fn parse_gwtc3_csv(path: &Path) -> Result<Vec<GwEvent>, FetchError> {
     let idx_z = col("redshift");
     let idx_z_lo = col("redshift_lower");
     let idx_z_up = col("redshift_upper");
-    let idx_snr = col("network_matched_filter_snr");
-    let idx_p = col("p_astro");
-    let idx_total = col("total_mass_source");
-    let idx_final = col("final_mass_source");
+    let idx_snr = col("network_matched_filter_snr")
+        .or_else(|| col_ci("network_matched_filter_snr"));
+    let idx_p = col("p_astro").or_else(|| col_ci("p_astro"));
+    let idx_total = col("total_mass_source")
+        .or_else(|| col_ci("total_mass_source"));
+    let idx_final = col("final_mass_source")
+        .or_else(|| col_ci("final_mass_source"));
 
     let get = |record: &csv::StringRecord, idx: Option<usize>| -> String {
         idx.and_then(|i| record.get(i))
@@ -146,7 +161,7 @@ const GWTC3_URLS: &[&str] = &[
     "https://gwosc.org/eventapi/csv/GWTC-3-confident/",
 ];
 
-/// GWTC-3 dataset provider.
+/// GWTC-3 dataset provider (35 confident O3b events only).
 pub struct Gwtc3Provider;
 
 impl DatasetProvider for Gwtc3Provider {
@@ -161,6 +176,34 @@ impl DatasetProvider for Gwtc3Provider {
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("GWTC-3_confident.csv").exists()
+    }
+}
+
+/// Combined GWTC catalog URLs (all O1-O4a events, 219 unique).
+///
+/// The GWOSC v2 API returns a CSV with all default parameters when
+/// `include-default-parameters=true` and `pagesize=500` (all events in one
+/// page). The combined `GWTC` catalog deduplicates events by keeping the
+/// latest catalog version for each.
+const GWOSC_COMBINED_URLS: &[&str] = &[
+    "https://gwosc.org/api/v2/catalogs/GWTC/events?include-default-parameters=true&format=csv&pagesize=500",
+];
+
+/// Combined GWTC dataset provider (all O1 through O4a events).
+pub struct GwoscCombinedProvider;
+
+impl DatasetProvider for GwoscCombinedProvider {
+    fn name(&self) -> &str {
+        "GWOSC combined GWTC (O1-O4a)"
+    }
+
+    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
+        let output = config.output_dir.join("gwosc_all_events.csv");
+        download_with_fallbacks(self.name(), GWOSC_COMBINED_URLS, &output, config.skip_existing)
+    }
+
+    fn is_cached(&self, config: &FetchConfig) -> bool {
+        config.output_dir.join("gwosc_all_events.csv").exists()
     }
 }
 
@@ -188,5 +231,28 @@ mod tests {
         }
 
         eprintln!("Parsed {} GWTC-3 events", events.len());
+    }
+
+    #[test]
+    fn test_parse_gwosc_combined_csv_if_available() {
+        let path = Path::new("data/external/gwosc_all_events.csv");
+        if !path.exists() {
+            eprintln!("Skipping: GWOSC combined CSV not available");
+            return;
+        }
+
+        let events = parse_gwtc3_csv(path).expect("Failed to parse GWOSC combined CSV");
+        assert!(!events.is_empty(), "Should parse at least one event");
+
+        // Combined catalog should have significantly more events than GWTC-3 alone
+        eprintln!("Parsed {} combined GWOSC events", events.len());
+
+        // Verify that events with mass data have positive values
+        let with_mass: Vec<_> = events.iter()
+            .filter(|e| e.mass_1_source > 0.0 && e.mass_2_source > 0.0)
+            .collect();
+        assert!(with_mass.len() > 50, "Should have >50 events with mass data, got {}",
+            with_mass.len());
+        eprintln!("Events with valid mass data: {}", with_mass.len());
     }
 }

@@ -1,0 +1,9 @@
+metric,value,null_mean,null_std,p_value,verdict
+chirp_mass_ultrametric_fraction,0.113470,0.113512,0.001009,0.954092,Fail
+mass_redshift_ultrametric_fraction,0.114020,N/A,N/A,N/A,N/A
+cophenetic_correlation,0.623514,0.623514,0.000000,0.085828,Fail
+defect_mean,0.381414,0.381127,N/A,0.630739,N/A
+padic_p2,1.000000,1.000000,N/A,1.000000,N/A
+padic_p3,1.000000,1.000000,N/A,1.000000,N/A
+padic_p5,1.000000,1.000000,N/A,1.000000,N/A
+padic_p7,1.000000,1.000000,N/A,1.000000,N/A

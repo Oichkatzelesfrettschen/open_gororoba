@@ -15,6 +15,12 @@ Rules:
 
 Date: 2026-02-06
 
+Current status snapshot policy:
+- Treat any test-count or resolved-count line in this file as date-scoped.
+- Use the newest date-stamped snapshot as canonical for progress reporting.
+- Historical snapshots are retained for provenance and should not be merged
+  into one cumulative metric without re-running full gates.
+
 ## Phase 7 Sprint 6.1: Rust Infrastructure Buildouts (2026-02-06)
 
 | Module | Work Done | Claims Affected |
@@ -464,7 +470,7 @@ batch-processed in Sprint 5 by cross-referencing against existing
 
 ## Phase 7 Sprint 4: R6 400-Series Triage Summary (2026-02-04)
 
-**Rust statistical methodology implemented** (`crates/gororoba_kernels/src/stats.rs`):
+**Rust statistical methodology implemented** (originally `gororoba_kernels/src/stats.rs`, now `crates/stats_core/`):
 - Frechet distance for spectrum comparison
 - Bootstrap CI with percentile method
 - Haar-distributed random unitaries (QR + phase correction)
@@ -481,11 +487,11 @@ batch-processed in Sprint 5 by cross-referencing against existing
 | Speculative | 6 | C-401, C-403-405, C-417, C-427 |
 | Partially verified | 3 | C-406-408 |
 
-**Test counts**: 64 Rust tests (gororoba_kernels) + 154 Python tests
+**Test counts**: 64 Rust tests (originally gororoba_kernels, now in domain crates) + 154 Python tests
 
 ## Phase 7 Rust Module Expansion (2026-02-04)
 
-**New Rust modules in `crates/gororoba_kernels/`**:
+**New Rust modules** (originally in `gororoba_kernels/`, consolidated into domain crates 2026-02-06):
 
 | Module | Crates Used | Physics Domain | Claims Addressed |
 |--------|-------------|----------------|------------------|
@@ -522,6 +528,9 @@ batch-processed in Sprint 5 by cross-referencing against existing
 
 **Infrastructure fix**: Moved `gororoba_kernels` from `src/` to `crates/` and integrated into workspace.
 This resolves the "package believes it's in a workspace when it's not" error.
+**Note**: `gororoba_kernels` was later removed (2026-02-06) -- all functionality
+consolidated into domain crates (`algebra_core`, `stats_core`, etc.) and
+`gororoba_py` serves as the sole thin PyO3 bridge.
 
 **Test counts**: 441 Rust tests (all crates) + 1 doc test (grover)
 

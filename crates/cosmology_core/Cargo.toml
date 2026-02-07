@@ -16,5 +16,12 @@ gauss-quad = { workspace = true }
 # Physics constants
 physical_constants = { workspace = true }
 
+# Statistical distributions (Gamma function for dimensional geometry)
+statrs = { workspace = true }
+
+# RNG for synthetic data generation
+rand = { workspace = true }
+rand_distr = { workspace = true }
+
 [dev-dependencies]
 approx = { workspace = true }

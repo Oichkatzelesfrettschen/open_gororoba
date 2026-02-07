@@ -22,6 +22,9 @@ pub mod clifford;
 pub mod zd_graphs;
 pub mod e8_lattice;
 pub mod boxkites;
+pub mod annihilator;
+pub mod reggiani;
+pub mod m3;
 pub mod octonion_field;
 pub mod wheels;
 pub mod padic;
@@ -42,6 +45,7 @@ pub use cayley_dickson::{
     batch_associator_norms, batch_associator_norms_sq, batch_associator_norms_parallel,
     left_mult_operator, find_zero_divisors, measure_associator_density,
     zd_spectrum_analysis, count_pathion_zero_divisors,
+    cd_basis_mul_sign,  // Integer-exact basis product sign
 };
 
 pub use clifford::{
@@ -54,6 +58,9 @@ pub use zd_graphs::{
     build_associator_graph, analyze_associator_graph, zd_shortest_path,
     zd_graph_diameter, ZdGraphAnalysis, BasisParticipationResult,
     AssociatorGraphResult,
+    // XOR heuristics (cd_xor_heuristics port)
+    xor_key, xor_bucket_necessary_for_two_blade, xor_balanced_four_tuple,
+    xor_pairing_buckets, xor_bucket_necessary_2v4,
 };
 
 pub use e8_lattice::{
@@ -73,6 +80,30 @@ pub use boxkites::{
     BoxKiteSymmetryResult, primitive_assessors, are_coassessors,
     diagonal_zero_product, build_coassessor_graph, find_connected_components,
     compute_strut_signature,
+    // Production rules and automorphemes (de Marrais 2000, 2004)
+    all_diagonal_zero_products, EdgeSignType, edge_sign_type,
+    O_TRIPS, production_rule_1, production_rule_2, production_rule_3,
+    automorpheme_assessors, automorphemes, automorphemes_containing_assessor,
+    StrutTable, canonical_strut_table,
+    // Generalized motif census (cd_motif_census port)
+    CrossPair, cross_assessors, diagonal_zero_products_exact,
+    MotifComponent, motif_components_for_cross_assessors,
+};
+
+pub use annihilator::{
+    AnnihilatorInfo, left_multiplication_matrix, right_multiplication_matrix,
+    nullspace_basis, annihilator_info, is_zero_divisor, is_reggiani_zd,
+    find_left_annihilator_vector,
+};
+
+pub use reggiani::{
+    StandardZeroDivisor, standard_zero_divisors,
+    standard_zero_divisor_partners, assert_standard_zero_divisor_annihilators,
+};
+
+pub use m3::{
+    OctonionTable, compute_m3_octonion_basis,
+    M3Classification, classify_m3,
 };
 
 pub use octonion_field::{

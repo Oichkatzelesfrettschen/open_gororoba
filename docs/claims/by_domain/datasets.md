@@ -2,7 +2,7 @@
 
 Source: docs/claims/CLAIMS_DOMAIN_MAP.csv + docs/CLAIMS_EVIDENCE_MATRIX.md
 
-Count: 26
+Count: 33
 
 - Hypothesis C-005 (**Partially verified** (source-aligned; geometric invariants computed; Phase 3A), 2026-01-30): "The geometry of sedenion zero divisors" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`).
   - Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `data/external/papers/reggiani_2024_2411.18881.pdf`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`
@@ -55,4 +55,18 @@ Count: 26
 - Hypothesis C-411 (**Literature** (Experimental), 2026-02-02): Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxed phase matching, enabling flat entangled photon sources.
   - Where stated: `docs/BIBLIOGRAPHY.md` (Son & Chekhova 2026), `data/external/papers/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf`
 - Hypothesis C-418 (**Modeled** (Database), 2026-02-02): Material Database tracks temperature-dependent phase transitions (e.g., Ice Ih/VII/X) and wide-spectrum optical dispersion (Sellmeier/Drude) for 20+ compounds.
-  - Where stated: `src/gemini_physics/materials/database.py`, `data/external/SiO2_refractive_index.csv`, `data/external/TiO2_rutile_refractive_index.csv`
+  - Where stated: `crates/materials_core/src/optical_database.rs`, `data/external/SiO2_refractive_index.csv`, `data/external/TiO2_rutile_refractive_index.csv`
+- Hypothesis C-436 (**Refuted** (Rust pipeline, N=4996), 2026-02-06): FRB comoving positions exhibit local ultrametric structure (C-071 follow-up, Direction 1).
+  - Where stated: `crates/gororoba_cli/src/bin/dm_ultrametric.rs`, `crates/stats_core/src/ultrametric/local.rs`, `data/csv/c071b_dm_comoving_ultrametric.csv`
+- Hypothesis C-437 (**Verified** (Rust pipeline, N=5008 FRBs + 4233 pulsars), 2026-02-06): Compact object multi-attribute parameter space (DM, gl, gb) exhibits ultrametric structure under Euclidean distances (C-071 follow-up, Direction 2).
+  - Where stated: `crates/gororoba_cli/src/bin/baire_compact.rs`, `crates/stats_core/src/ultrametric/baire.rs`, `data/csv/c071c_baire_compact_ultrametric.csv`
+- Hypothesis C-438 (**Verified** (partial: 15/40 repeaters, 37.5%), 2026-02-06): Repeating FRB temporal cascades exhibit ultrametric hierarchy (C-071 follow-up, Direction 3).
+  - Where stated: `crates/gororoba_cli/src/bin/frb_cascades.rs`, `crates/stats_core/src/ultrametric/temporal.rs`, `data/csv/c071d_frb_cascades_ultrametric.csv`
+- Hypothesis C-439 (**Refuted** (Rust pipeline, N=35 events), 2026-02-06): GWTC-3 mass-redshift clustering exhibits ultrametric structure (C-071 follow-up, Direction 4).
+  - Where stated: `crates/gororoba_cli/src/bin/gw_merger_tree.rs`, `data/csv/c071e_gw_merger_ultrametric.csv`
+- Hypothesis C-440 (**Refuted** (Rust pipeline, N=5031), 2026-02-06): Cross-dataset cosmic objects (FRBs+GW events) exhibit dendrogram ultrametricity in comoving 3D space (C-071 follow-up, Direction 5).
+  - Where stated: `crates/gororoba_cli/src/bin/cosmic_dendrogram.rs`, `data/csv/c071f_cosmic_dendrogram.csv`
+- Hypothesis C-441 (**Verified** (Real data, N=1590), 2026-02-06): Bounce cosmology is disfavored by joint Pantheon+ SN Ia + DESI DR1 BAO fit; Lambda-CDM is the simpler adequate model.
+  - Where stated: `crates/cosmology_core/src/observational.rs`, `crates/gororoba_cli/src/bin/real_cosmo_fit.rs`, `docs/INSIGHTS.md`
+- Hypothesis C-442 (**Verified** (7 catalogs, N=25K total), 2026-02-06): Multi-attribute Euclidean ultrametricity is specific to radio transient catalogs (FRB, pulsar); not a general property of astrophysical catalogs.
+  - Where stated: `crates/gororoba_cli/src/bin/multi_dataset_ultrametric.rs`, `data/csv/c071g_multi_dataset_ultrametric.csv`, `docs/INSIGHTS.md`

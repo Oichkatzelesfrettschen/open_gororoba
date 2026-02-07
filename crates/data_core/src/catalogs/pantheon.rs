@@ -120,15 +120,35 @@ pub fn parse_pantheon_dat(path: &Path) -> Result<Vec<Supernova>, FetchError> {
             continue;
         }
 
+        // Pantheon+ SH0ES uses m_b_corr (corrected apparent magnitude).
+        // For distance modulus fitting, use m_b_corr with analytic M_B
+        // marginalization. Fall back to MU if m_b_corr is not present.
+        let mu_val = {
+            let mb = get_field("M_B_CORR");
+            if mb.is_nan() { get_field("MU") } else { mb }
+        };
+        let mu_err_val = {
+            let mbe = get_field("M_B_CORR_ERR_DIAG");
+            if mbe.is_nan() {
+                let v1 = get_field("MUERR");
+                if v1.is_nan() { get_field("MUERR_VPEC") } else { v1 }
+            } else {
+                mbe
+            }
+        };
+
         sne.push(Supernova {
             cid,
-            z_cmb: get_field("ZCMB").max(get_field("zCMB")),
-            z_hel: get_field("ZHEL").max(get_field("zHEL")),
-            mu: get_field("MU"),
-            mu_err: get_field("MUERR").max(get_field("MUERR_VPEC")),
+            z_cmb: {
+                let v = get_field("ZCMB");
+                if v.is_nan() { get_field("ZHD") } else { v }
+            },
+            z_hel: get_field("ZHEL"),
+            mu: mu_val,
+            mu_err: mu_err_val,
             host_logmass: get_field("HOST_LOGMASS"),
-            x1: get_field("x1"),
-            c: get_field("c"),
+            x1: get_field("X1"),
+            c: get_field("C"),
             idsurvey: get_field("IDSURVEY") as i32,
             is_calibrator: get_field("IS_CALIBRATOR") > 0.5,
         });

@@ -381,7 +381,8 @@ of 7 language/runtime options was completed (2026-02-04).
 
 **Phase 1 implementation (Rust PyO3):** The first target is `cd_multiply_jit` and
 the RK4 GRIN stepper.  PyO3 + maturin provides seamless Python interop with
-zero-copy numpy arrays.  The Rust crate will live at `crates/gororoba_kernels/`.
+zero-copy numpy arrays.  The initial Rust crate lived at `gororoba_kernels/`
+(removed 2026-02-06; functionality consolidated into domain crates, PyO3 bindings in `gororoba_py`).
 
 ### 13. Phase 5 Implementation Summary (2026-02-04)
 
@@ -395,7 +396,7 @@ the language evaluation results, the following code was built or refactored:
 | Gravastar TOV | `gravastar_tov.py` | Complete rewrite: eigenvalue R2, Brent root-finding, subcritical compactness guard |
 | Cosmology ODE | `cosmology.py` | Added -H^2 Hubble friction, seeded RNG, documented WDW quantum potential derivation |
 | Warp animation v9 | `animate_warp_v9_sapphire.py` | Replaced CAPTURE_PROB proxy with Beer-Lambert complex-n solver; MaterialDatabase integration |
-| **Rust PyO3 crate** | `gororoba_kernels/` | Cayley-Dickson multiply/conjugate/norm in Rust; 3.5x faster than Numba for sedenions |
+| **Rust PyO3 crate** | `gororoba_kernels/` (now `algebra_core` + `gororoba_py`) | Cayley-Dickson multiply/conjugate/norm in Rust; 3.5x faster than Numba for sedenions |
 
 **Rust PyO3 benchmarks** (dim=16 sedenion, release build, Python 3.14):
 
@@ -405,7 +406,8 @@ the language evaluation results, the following code was built or refactored:
 | cd_multiply (dim=8) | 232,986 | 672,448 | 2.9x |
 | associator_density (5000 trials) | 11,494 | 60,827 | 5.3x |
 
-Build: `cd src/gororoba_kernels && maturin build --release && pip install target/wheels/*.whl`
+Build (historical): `cd src/gororoba_kernels && maturin build --release && pip install target/wheels/*.whl`
+(Note: gororoba_kernels removed 2026-02-06; use `maturin build -m crates/gororoba_py/Cargo.toml --release` now)
 
 **ChatGPT critique items resolved:**
 1. Ice VIII replaced by Sapphire (comparable n~1.73, stable at STP)
@@ -493,7 +495,7 @@ bringing the matrix from 86.7% to 91.5% resolved (398/435 with final disposition
 **Objective:** Coverage gap buildouts for holographic entropy, k^{-3} vacuum dynamics,
 CD mass spectra; all implementations in Rust per RUST ONLY policy.
 
-**Rust Kernels (gororoba_kernels crate):**
+**Rust Kernels** (originally `gororoba_kernels`, consolidated into domain crates 2026-02-06):
 
 | Module | Functions | Tests | Purpose |
 |--------|-----------|-------|---------|

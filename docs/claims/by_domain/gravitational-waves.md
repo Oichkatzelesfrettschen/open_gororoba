@@ -2,7 +2,7 @@
 
 Source: docs/claims/CLAIMS_DOMAIN_MAP.csv + docs/CLAIMS_EVIDENCE_MATRIX.md
 
-Count: 6
+Count: 7
 
 - Hypothesis C-006 (**Verified** (snapshot reproducibility), 2026-01-28): GWTC-3 "confident events" data integrated into `data/external/GWTC-3_confident.csv` and matches the GWOSC eventapi jsonfull endpoint snapshot.
   - Where stated: `docs/archive/RESEARCH_STATUS.md`, `docs/BIBLIOGRAPHY.md`
@@ -16,3 +16,5 @@ Count: 6
   - Where stated: `src/scripts/data/fetch_gwtc3_confident.py`, `tests/test_gwtc3_sky_localization_areas.py`, `data/external/GWTC-3_confident.json`
 - Hypothesis C-061 (**Verified** (data), 2026-01-31): O4 GW events (10 confirmed) integrated.
   - Where stated: `src/scripts/data/fetch_o4_events.py`, `tests/test_gwtc_o4_events.py`
+- Hypothesis C-439 (**Refuted** (Rust pipeline, N=35 events), 2026-02-06): GWTC-3 mass-redshift clustering exhibits ultrametric structure (C-071 follow-up, Direction 4).
+  - Where stated: `crates/gororoba_cli/src/bin/gw_merger_tree.rs`, `data/csv/c071e_gw_merger_ultrametric.csv`

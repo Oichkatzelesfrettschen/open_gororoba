@@ -5,7 +5,7 @@ Source: docs/claims/CLAIMS_DOMAIN_MAP.csv + docs/CLAIMS_EVIDENCE_MATRIX.md
 Count: 214
 
 - Hypothesis C-017 (**Verified** (math), 2026-01-28): For diagonal 2-blades `(e_i +/- e_j)` in 16D CD, any observed zero product between two 2-blades satisfies the XOR-bucket necessary condition `(i^j) == (k^ell)`.
-  - Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `src/gemini_physics/cd_xor_heuristics.py`
+  - Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `crates/algebra_core/src/zd_graphs.rs`
 - Hypothesis C-042 (**Verified** (code), 2026-01-31): Kozyrev p-adic wavelets form an explicitly computable eigenbasis for the Vladimirov operator.
   - Where stated: `docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `crates/algebra_core/src/padic.rs`
 - Hypothesis C-045 (**Verified** (Toy Model), 2026-01-31): 64-Layer Strang Splitting achieves 2nd-order convergence given finite commutator budgets.
@@ -431,4 +431,4 @@ Count: 214
 - Hypothesis C-415 (**Verified** (Math), 2026-02-02): Gram spectrum `L_a L_a^T` is a scalar multiple of identity \|\|a\|\|^2 I iff dim <= 8; eigenvalues spread significantly at dim >= 16.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LH), `data/csv/cd_algebraic_experiments_v58.json`
 - Hypothesis C-433 (**Verified** (Math/Code), 2026-02-03): Hamiltonian Ray Equation solver (dT/ds = (grad_n - (T*grad_n)T)/n) implemented using 4th-order Runge-Kutta (RK4) for stable bending in high-gradient analogue-gravity media.
-  - Where stated: `src/gemini_physics/optics/grin_solver.py`, `tests/test_grin_solver.py`
+  - Where stated: `crates/optics_core/src/grin.rs`, `tests/test_grin_solver.py`

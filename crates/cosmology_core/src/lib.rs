@@ -19,6 +19,8 @@ pub mod gravastar;
 pub mod spectral;
 pub mod bounce;
 pub mod distances;
+pub mod dimensional_geometry;
+pub mod observational;
 
 pub use gravastar::{
     PolytropicEos, AnisotropicParams, TovState, GravastarSolution,
@@ -38,7 +40,22 @@ pub use bounce::{
     simulate_bounce, hubble_e_lcdm, hubble_e_bounce,
     luminosity_distance, distance_modulus, cmb_shift_parameter,
     bao_sound_horizon, spectral_index_bounce, chi2_distance_modulus,
+    // Synthetic data and fitting pipeline
+    SyntheticSnData, SyntheticBaoData,
+    generate_synthetic_sn_data, generate_synthetic_bao_data,
+    chi2_sn, chi2_bao, fit_model, run_observational_fit,
     C_KM_S, OMEGA_B_H2, Z_STAR,
+};
+
+pub use dimensional_geometry::{
+    unit_sphere_surface_area, ball_volume, sample_dimensional_range,
+};
+
+pub use observational::{
+    RealSnData, RealBaoData, ObsFitResult, ModelComparison,
+    chi2_sn_real, chi2_bao_real, bao_data_point_count,
+    fit_real_data, compare_models,
+    filter_pantheon_data, desi_to_real_bao,
 };
 
 pub use distances::{

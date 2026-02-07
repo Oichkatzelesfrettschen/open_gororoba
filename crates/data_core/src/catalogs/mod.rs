@@ -5,15 +5,21 @@
 //! - A DatasetProvider implementation for fetching
 //! - Typed record structs with CSV parsing
 
-pub mod chime;
-pub mod gwtc;
 pub mod atnf;
-pub mod mcgill;
-pub mod fermi_gbm;
-pub mod planck;
+pub mod chime;
 pub mod desi_bao;
-pub mod pantheon;
-pub mod nanograv;
-pub mod sdss;
+pub mod eht;
+pub mod fermi_gbm;
 pub mod gaia;
+pub mod gwtc;
+pub mod hipparcos;
+pub mod jarvis;
+pub mod landsat;
+pub mod mcgill;
+pub mod nanograv;
+pub mod pantheon;
+pub mod planck;
+pub mod sdss;
+pub mod sorce;
 pub mod tsi;
+pub mod union3;

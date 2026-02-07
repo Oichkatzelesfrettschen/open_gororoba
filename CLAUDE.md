@@ -126,7 +126,7 @@ NEVER delete Python files en masse.  Each removal is a separate verified step.
 
 - `crates/algebra_core/` -- Cayley-Dickson, Clifford, wheels, p-adic, groups
 - `crates/zd_core/` -- zero-divisor census and algorithms
-- `src/gororoba_kernels/` -- PyO3 bridge (legacy, being phased out)
+- `crates/gororoba_py/` -- PyO3 bindings (thin wrappers delegating to domain crates)
 
 ---
 

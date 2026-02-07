@@ -101,6 +101,14 @@ path = "src/bin/cosmic_dendrogram.rs"
 name = "fetch-datasets"
 path = "src/bin/fetch_datasets.rs"
 
+[[bin]]
+name = "real-cosmo-fit"
+path = "src/bin/real_cosmo_fit.rs"
+
+[[bin]]
+name = "multi-dataset-ultrametric"
+path = "src/bin/multi_dataset_ultrametric.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }

@@ -20,23 +20,31 @@
 //! let path = provider.fetch(&config).unwrap();
 //! ```
 
-pub mod fetcher;
 pub mod catalogs;
+pub mod fetcher;
 pub mod formats;
 pub mod geophysical;
 
-pub use fetcher::{FetchConfig, FetchError, DatasetProvider};
-pub use fetcher::{download_to_file, download_to_string, compute_sha256};
+pub use fetcher::{compute_sha256, download_to_file, download_to_string};
+pub use fetcher::{DatasetProvider, FetchConfig, FetchError};
 
-pub use catalogs::chime::{FrbEvent, parse_chime_csv, extract_repeaters};
-pub use catalogs::gwtc::{GwEvent, parse_gwtc3_csv};
-pub use catalogs::atnf::{Pulsar, parse_atnf_csv};
-pub use catalogs::mcgill::{Magnetar, parse_mcgill_csv};
-pub use catalogs::fermi_gbm::{GrbEvent, parse_fermi_gbm_csv};
-pub use catalogs::pantheon::{Supernova, parse_pantheon_dat};
-pub use catalogs::desi_bao::{BaoMeasurement, desi_dr1_bao};
+pub use catalogs::atnf::{parse_atnf_csv, Pulsar};
+pub use catalogs::chime::{extract_repeaters, parse_chime_csv, FrbEvent};
+pub use catalogs::desi_bao::{desi_dr1_bao, BaoMeasurement};
+pub use catalogs::fermi_gbm::{parse_fermi_gbm_csv, GrbEvent};
+pub use catalogs::gaia::{parse_gaia_csv, GaiaSource};
+pub use catalogs::gwtc::{parse_gwtc3_csv, GwEvent};
+pub use catalogs::hipparcos::hipparcos_row_count_gzip;
+pub use catalogs::landsat::looks_like_landsat_stac_json;
+pub use catalogs::mcgill::{parse_mcgill_csv, Magnetar};
+pub use catalogs::nanograv::{parse_nanograv_free_spectrum, FreeSpectrumPoint};
+pub use catalogs::pantheon::{parse_pantheon_dat, Supernova};
 pub use catalogs::planck::bestfit as planck2018;
-pub use catalogs::nanograv::{FreeSpectrumPoint, parse_nanograv_free_spectrum};
-pub use catalogs::sdss::{SdssQuasar, parse_sdss_quasar_csv};
-pub use catalogs::gaia::{GaiaSource, parse_gaia_csv};
-pub use catalogs::tsi::{TsiMeasurement, parse_tsi_csv};
+pub use catalogs::sdss::{parse_sdss_quasar_csv, SdssQuasar};
+pub use catalogs::sorce::{parse_sorce_csv, SorceMeasurement};
+pub use catalogs::tsi::{parse_tsi_csv, TsiMeasurement};
+pub use catalogs::jarvis::{
+    JarvisMaterial, FigshareFile, list_figshare_files, fetch_jarvis_json,
+    parse_jarvis_json, sample_materials,
+};
+pub use catalogs::union3::parse_union3_chain;

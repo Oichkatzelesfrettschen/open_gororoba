@@ -2,14 +2,14 @@
 
 Source: docs/claims/CLAIMS_DOMAIN_MAP.csv + docs/CLAIMS_EVIDENCE_MATRIX.md
 
-Count: 66
+Count: 67
 
 - Hypothesis C-001 (**Verified** (math), 2026-02-02): Cayley-Dickson algebras become non-associative at 8D and beyond.
   - Where stated: `src/verification/verify_algebra.py`, `tests/test_cayley_dickson_properties.py`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
 - Hypothesis C-002 (**Verified** (math), 2026-02-02): 16D sedenions have zero divisors and lose norm composition.
   - Where stated: `docs/THE_GEMINI_PROTOCOL.md`, `tests/test_cayley_dickson_properties.py`, `docs/external_sources/DE_MARRAIS_SOURCES.md`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
 - Hypothesis C-003 (**Verified** (math), 2026-02-02): "42 assessors" / "7 box-kites" organize primitive sedenion zero divisors.
-  - Where stated: `docs/SEDENION_ATLAS.md`, `src/gemini_physics/de_marrais_boxkites.py`, `tests/test_de_marrais_boxkites.py`, `docs/external_sources/DE_MARRAIS_SOURCES.md`
+  - Where stated: `docs/SEDENION_ATLAS.md`, `crates/algebra_core/src/boxkites.rs`, `tests/test_de_marrais_boxkites.py`, `docs/external_sources/DE_MARRAIS_SOURCES.md`
 - Hypothesis C-004 (**Verified** (count + in-repo action on box-kites), 2026-01-28): The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs.
   - Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/group_theory.rs`, `crates/algebra_core/src/boxkites.rs`, `tests/test_psl_2_7_action.py`, `tests/test_boxkite_symmetry_action.py`
 - Hypothesis C-005 (**Partially verified** (source-aligned; geometric invariants computed; Phase 3A), 2026-01-30): "The geometry of sedenion zero divisors" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`).
@@ -17,13 +17,13 @@ Count: 66
 - Hypothesis C-011 (**Speculative** (/ Obstructed (Phase 3D)), 2026-02-02): Hypothesis: a Cayley-Dickson (sedenion) structure could parameterize a gravastar-like effective model, but current analysis shows a non-associative obstruction; no physically grounded equivalence mechanism is established.
   - Where stated: `docs/NAVIGATOR.md`, `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/external_sources/GRAVASTAR_SOURCES.md`, `docs/theory/GRAVASTAR_CD_IMPOSSIBILITY_ANALYSIS.md`, `src/scripts/analysis/gravastar_eos_sweep.py`, `src/scripts/analysis/gravastar_thin_shell.py`, `src/scripts/analysis/gravastar_thin_shell_stability.py`, `src/scripts/analysis/gravastar_nonassociative_obstruction.py`, `data/csv/gravastar_eos_pressure_gradient_sweep.csv`, `data/csv/gravastar_thin_shell_matching.csv`, `data/csv/gravastar_thin_shell_stability.csv`, `data/csv/gravastar_nonassociative_obstruction.csv`, `tests/test_tov_gravastar_core.py`, `tests/test_tov_gravastar_sweep.py`, `tests/test_gravastar_thin_shell.py`, `tests/test_gravastar_thin_shell_stability.py`, `tests/test_gravastar_nonassociative_obstruction.py`
 - Hypothesis C-013 (**Verified** (math), 2026-01-28): de Marrais' GoTo "automorphemes" (from the 7 O-trips + the "8-ball" exclude rule) cover the 42 primitive assessors exactly twice; each assessor lies in exactly two automorphemes (Production Rule #3 uniqueness).
-  - Where stated: `docs/DE_MARRAIS_REPLICATION.md`, `src/gemini_physics/de_marrais_boxkites.py`
+  - Where stated: `docs/DE_MARRAIS_REPLICATION.md`, `crates/algebra_core/src/boxkites.rs`
 - Hypothesis C-014 (**Verified** (math), 2026-01-28): The diagonal-form family of 84 sedenion zero divisors `(e_low +/- e_high)` (from de Marrais' 42 primitive assessors) has left and right annihilator dimension 4 (so the annihilator unit sphere is S^3 ~ SU(2)).
-  - Where stated: `docs/REGGIANI_REPLICATION.md`, `src/gemini_physics/reggiani_replication.py`
+  - Where stated: `docs/REGGIANI_REPLICATION.md`, `crates/algebra_core/src/reggiani.rs`
 - Hypothesis C-015 (**Verified** (math), 2026-01-28): For each of the 84 diagonal-form zero divisors `u`, there are exactly 4 other diagonal-form zero divisors `v` with `u*v=0`, and these 4 span `Ann_L(u)`.
-  - Where stated: `docs/REGGIANI_REPLICATION.md`, `src/gemini_physics/reggiani_replication.py`
+  - Where stated: `docs/REGGIANI_REPLICATION.md`, `crates/algebra_core/src/reggiani.rs`
 - Hypothesis C-016 (**Verified** (math), 2026-01-28): The repo's `m3` trilinear operation on distinct octonion basis triples produces exactly 42 scalar outputs and 168 pure-imaginary outputs, and the scalar cases correspond exactly to the 7 Fano-plane lines (with parity sign flips).
-  - Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `src/gemini_physics/m3_cd_transfer.py`
+  - Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `crates/algebra_core/src/m3.rs`
 - Hypothesis C-018 (**Verified** (source + tests), 2026-01-28): "Wheels" (Carlstrom) are commutative monoid-based structures <H,0,1,+,*,/> with a total reciprocal operation and defining axioms (1)-(8) (Carlstrom 2001, Definition 1.1) that provide division-by-zero semantics without partiality.
   - Where stated: `docs/WHEELS_DIVISION_BY_ZERO.md`, convos "wheel" mentions
 - Hypothesis C-019 (**Not supported** (rejected (rejected (Phase 2C round-trip test complete))), 2026-01-30): Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson zero-divisor phenomena at higher dimensions.
@@ -133,6 +133,8 @@ Count: 66
 - Hypothesis C-425 (**Modeled** (Math), 2026-02-02): Sedenion Transport Kernel generates explicit 16x16 basis multiplication matrices for modeling non-associative quantum evolution via Strang splitting.
   - Where stated: `crates/algebra_core/src/hypercomplex.rs`
 - Hypothesis C-427 (**Speculative** (Design), 2026-02-02): Algebraic Metamaterial synthesis maps Cayley-Dickson structure constants to permittivity tensors and Clifford subspace dimensions to quasi-periodic layer stacks.
-  - Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `src/gemini_physics/metamaterial.py`
+  - Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/materials_core/src/effective_medium.rs`
 - Hypothesis C-431 (**Modeled** (Visualization), 2026-02-02): The Sedenion Zero Divisor manifold, when projected into 3D perturbation space (e2, e5, e14), forms a coherent, non-trivial isosurface, visualizing the 'shadow' of the 16D algebraic singularity.
   - Where stated: `src/scripts/visualization/vis_8d_slice.py`, `data/artifacts/images/sedenion_slice_3d.png`
+- Hypothesis C-443 (**Verified** (exhaustive enumeration), 2026-02-06): Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2].
+  - Where stated: `crates/algebra_core/src/boxkites.rs`, `docs/INSIGHTS.md` (I-006)

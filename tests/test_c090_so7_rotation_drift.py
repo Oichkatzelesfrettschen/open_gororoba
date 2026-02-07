@@ -12,12 +12,10 @@ from __future__ import annotations
 import numpy as np
 
 from scripts.analysis.c090_so7_rotation_drift_audit import (
+    _cd_multiply,
     measure_zd_drift,
     run_angle_sweep,
     sedenion_zd_pair,
-)
-from scripts.analysis.c090_so7_rotation_drift_audit import (
-    _cd_multiply,
 )
 
 
