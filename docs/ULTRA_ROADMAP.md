@@ -107,6 +107,6 @@ end with cached artifacts, provenance hashes, and offline validation hooks.
 - [ ] Add benchmark scripts for magnetic-field sample coverage by mission day.
 - [ ] Add benchmark scripts for irradiance time-series gap detection.
 - [ ] Add benchmark scripts for Landsat scene metadata filtering throughput.
-- [ ] Integrate new verifiers into `make smoke` after violation burn-down.
-- [ ] Add date-stamped status snapshots in `docs/CLAIMS_TASKS.md` with one canonical count.
-- [ ] Run `make check`, `cargo test --workspace -j$(nproc)`, and `cargo clippy --workspace -j$(nproc) -- -D warnings` as release gate.
+- [x] Integrate Rust verifiers into `make rust-smoke` target (clippy + tests, includes provenance + doc-link verifiers).
+- [x] Add date-stamped status snapshot in `docs/CLAIMS_TASKS.md` (2026-02-07, 15 metrics, key completions).
+- [x] Release gate passed: `cargo clippy --workspace -j$(nproc) -- -D warnings` (0 warnings), `cargo test --workspace -j$(nproc)` (1449 tests, 0 failures).
