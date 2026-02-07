@@ -93,6 +93,8 @@ pub use tov::{
 pub use flrw::{
     FlatLCDM, deceleration_parameter, z_equality,
     distance_duality_deviation, verify_distance_duality,
+    lookback_time, universe_age, age_at_z,
+    wavelength_to_redshift, apply_redshift_to_wavelength, redshift_flux_dimming,
     PLANCK18_H0, PLANCK18_OMEGA_M, PLANCK18_OMEGA_B,
     PLANCK18_T_CMB, PLANCK18_SOUND_HORIZON,
 };

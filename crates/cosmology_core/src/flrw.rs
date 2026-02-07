@@ -25,6 +25,14 @@
 use crate::bounce::{hubble_e_lcdm, C_KM_S};
 use crate::gl_integrate;
 
+/// Conversion factor: 1 Mpc/(km/s) in Gyr.
+///
+/// 1 Mpc = 3.08567758e19 km, 1 Gyr = 3.15576e16 s.
+/// So (1 Mpc/(km/s)) = 3.08567758e19 / 3.15576e16 = 977.792 Gyr.
+///
+/// Used to convert Hubble time 1/H_0 [Mpc s/km] to Gyr.
+const MPC_PER_KM_S_TO_GYR: f64 = 977.792;
+
 // ============================================================================
 // FlatLCDM cosmology struct
 // ============================================================================
@@ -164,6 +172,33 @@ impl FlatLCDM {
     pub fn deceleration(&self, z: f64) -> f64 {
         deceleration_parameter(self.omega_m, z)
     }
+
+    /// Lookback time t_L(z) [Gyr].
+    ///
+    /// t_L(z) = (1/H_0) integral_0^z dz' / ((1+z') E(z'))
+    ///
+    /// The lookback time is how far back in time we observe an object at
+    /// redshift z. For Planck 2018 at z=1, t_L ~ 7.9 Gyr; at z=1100 (CMB),
+    /// t_L ~ 13.8 Gyr (essentially the age of the universe).
+    pub fn lookback_time(&self, z: f64) -> f64 {
+        lookback_time(z, self.h0, self.omega_m)
+    }
+
+    /// Age of the universe at redshift z [Gyr].
+    ///
+    /// Computes the integral directly from z to z_max to avoid catastrophic
+    /// cancellation from subtracting two nearly-equal large numbers.
+    ///
+    /// t(z) = (1/H_0) integral_z^inf dz' / ((1+z') E(z'))
+    ///
+    /// At z=0, returns the current age (~13.8 Gyr for Planck 2018).
+    ///
+    /// Note: this model includes only matter + Lambda (no radiation), so
+    /// ages at very high z (e.g., z=1100) will differ from the full-physics
+    /// answer that includes radiation.
+    pub fn age_at_redshift(&self, z: f64) -> f64 {
+        age_at_z(z, self.h0, self.omega_m)
+    }
 }
 
 impl Default for FlatLCDM {
@@ -251,6 +286,118 @@ pub fn distance_duality_deviation(d_l: f64, d_a: f64, z: f64) -> f64 {
 /// Returns true if |D_L / ((1+z)^2 D_A) - 1| < tol.
 pub fn verify_distance_duality(d_l: f64, d_a: f64, z: f64, tol: f64) -> bool {
     distance_duality_deviation(d_l, d_a, z) < tol
+}
+
+// ============================================================================
+// Lookback time
+// ============================================================================
+
+/// Lookback time to redshift z [Gyr].
+///
+/// t_L(z) = (1/H_0) integral_0^z dz' / ((1+z') E(z'))
+///
+/// The integrand 1/((1+z)E(z)) is smooth and well-behaved for flat LCDM,
+/// so Gauss-Legendre quadrature converges exponentially.
+///
+/// # Units
+///
+/// H_0 is in km/s/Mpc. The result is converted to Gyr using the factor
+/// 1 Mpc/(km/s) = 977.792 Gyr.
+pub fn lookback_time(z: f64, h0: f64, omega_m: f64) -> f64 {
+    if z <= 0.0 {
+        return 0.0;
+    }
+    let integral = gl_integrate(
+        |zp| 1.0 / ((1.0 + zp) * hubble_e_lcdm(zp, omega_m)),
+        0.0,
+        z,
+        50,
+    );
+    (MPC_PER_KM_S_TO_GYR / h0) * integral
+}
+
+/// Age of the universe [Gyr] for given cosmological parameters.
+///
+/// Equivalent to `age_at_z(0.0, h0, omega_m)`.
+///
+/// For Planck 2018: t_0 ~ 13.8 Gyr.
+pub fn universe_age(h0: f64, omega_m: f64) -> f64 {
+    age_at_z(0.0, h0, omega_m)
+}
+
+/// Age of the universe at redshift z [Gyr].
+///
+/// Uses scale-factor integration for numerical stability:
+///
+///   t(z) = (1/H_0) integral_0^{a(z)} da / sqrt(Omega_m/a + Omega_Lambda a^2)
+///
+/// where a(z) = 1/(1+z). This change of variables from dz to da concentrates
+/// the quadrature nodes where the integrand has support (a in [0, 1]) rather
+/// than spreading them over an infinite redshift range.
+///
+/// The integrand goes as sqrt(a / Omega_m) near a=0, which is integrable
+/// and smooth -- ideal for Gauss-Legendre quadrature.
+pub fn age_at_z(z: f64, h0: f64, omega_m: f64) -> f64 {
+    let omega_lambda = 1.0 - omega_m;
+    let a_z = 1.0 / (1.0 + z);
+    if a_z <= 0.0 {
+        return 0.0;
+    }
+    // t(z) = (1/H_0) * integral_0^{a(z)} da / sqrt(Omega_m/a + Omega_Lambda*a^2)
+    // Derived from dt = da / (a H(a)) and H(a) = H_0 sqrt(Omega_m a^{-3} + Omega_Lambda).
+    let integral = gl_integrate(
+        |a| {
+            if a <= 0.0 {
+                return 0.0;
+            }
+            1.0 / (omega_m / a + omega_lambda * a * a).sqrt()
+        },
+        0.0,
+        a_z,
+        50,
+    );
+    (MPC_PER_KM_S_TO_GYR / h0) * integral
+}
+
+// ============================================================================
+// Redshift relations
+// ============================================================================
+
+/// Convert observed and emitted wavelengths to redshift.
+///
+/// z = lambda_obs / lambda_emit - 1
+///
+/// Works for any wavelength units as long as both are the same.
+/// Returns negative values for blueshifted sources.
+pub fn wavelength_to_redshift(lambda_observed: f64, lambda_emitted: f64) -> f64 {
+    lambda_observed / lambda_emitted - 1.0
+}
+
+/// Apply cosmological redshift to an emitted wavelength.
+///
+/// lambda_obs = lambda_emit * (1 + z)
+///
+/// Useful for computing where a known emission line (e.g., Lyman-alpha
+/// at 121.6 nm) appears in the observer's frame.
+pub fn apply_redshift_to_wavelength(lambda_emitted: f64, z: f64) -> f64 {
+    lambda_emitted * (1.0 + z)
+}
+
+/// Flux dimming factor due to cosmological redshift.
+///
+/// F_obs / F_emit = 1 / (1+z)^4
+///
+/// The four powers of (1+z) arise from:
+/// - (1+z)^{-1}: photon energy decrease (E_obs = E_emit / (1+z))
+/// - (1+z)^{-1}: photon arrival rate decrease (dt_obs = dt_emit * (1+z))
+/// - (1+z)^{-2}: solid angle dilution (d_L = (1+z) d_C, flux ~ 1/d_L^2)
+///
+/// This is the bolometric flux ratio. Spectral (per-frequency) flux has
+/// an additional k-correction factor.
+pub fn redshift_flux_dimming(z: f64) -> f64 {
+    let one_plus_z = 1.0 + z;
+    let f = one_plus_z * one_plus_z;
+    1.0 / (f * f)
 }
 
 #[cfg(test)]
@@ -549,5 +696,152 @@ mod tests {
             (e_flrw - e_bounce).abs() < 1e-14,
             "FLRW: {e_flrw}, bounce: {e_bounce}"
         );
+    }
+
+    // -- Lookback time --
+
+    #[test]
+    fn test_lookback_time_at_z0() {
+        let t = lookback_time(0.0, PLANCK18_H0, PLANCK18_OMEGA_M);
+        assert!(t.abs() < 1e-15, "t_L(0) = {t}");
+    }
+
+    #[test]
+    fn test_lookback_time_at_z1() {
+        // Planck 2018: t_L(z=1) ~ 7.9 Gyr
+        let t = lookback_time(1.0, PLANCK18_H0, PLANCK18_OMEGA_M);
+        assert!(t > 7.5 && t < 8.5, "t_L(z=1) = {t} Gyr");
+    }
+
+    #[test]
+    fn test_lookback_time_increases_with_z() {
+        let t1 = lookback_time(0.5, PLANCK18_H0, PLANCK18_OMEGA_M);
+        let t2 = lookback_time(1.0, PLANCK18_H0, PLANCK18_OMEGA_M);
+        let t3 = lookback_time(3.0, PLANCK18_H0, PLANCK18_OMEGA_M);
+        assert!(t2 > t1 && t3 > t2);
+    }
+
+    #[test]
+    fn test_lookback_time_method_matches_standalone() {
+        let cosmo = planck();
+        let z = 2.0;
+        let t_method = cosmo.lookback_time(z);
+        let t_standalone = lookback_time(z, PLANCK18_H0, PLANCK18_OMEGA_M);
+        assert!((t_method - t_standalone).abs() < 1e-14);
+    }
+
+    // -- Universe age --
+
+    #[test]
+    fn test_universe_age_planck() {
+        // Planck 2018 best-fit: 13.797 +/- 0.023 Gyr
+        let age = universe_age(PLANCK18_H0, PLANCK18_OMEGA_M);
+        assert!(age > 13.5 && age < 14.1, "t_0 = {age} Gyr (expected ~13.8)");
+    }
+
+    #[test]
+    fn test_age_at_z0_equals_universe_age() {
+        let cosmo = planck();
+        let age_z0 = cosmo.age_at_redshift(0.0);
+        let age_total = universe_age(PLANCK18_H0, PLANCK18_OMEGA_M);
+        assert!(
+            (age_z0 - age_total).abs() < 1e-10,
+            "age(z=0) = {age_z0}, t_0 = {age_total}"
+        );
+    }
+
+    #[test]
+    fn test_age_at_redshift_decreases() {
+        let cosmo = planck();
+        let age0 = cosmo.age_at_redshift(0.0);
+        let age1 = cosmo.age_at_redshift(1.0);
+        let age3 = cosmo.age_at_redshift(3.0);
+        assert!(age0 > age1 && age1 > age3);
+    }
+
+    #[test]
+    fn test_age_at_cmb_very_small() {
+        // At z=1100 in matter-only flat LCDM (no radiation), the age is
+        // ~0.5 Myr. With radiation included (full Planck model), it would
+        // be ~380 kyr. Our model has no radiation component, so the age
+        // is somewhat larger since E(z) is smaller at high z.
+        let cosmo = planck();
+        let age_cmb = cosmo.age_at_redshift(1100.0);
+        assert!(
+            age_cmb > 0.0 && age_cmb < 0.01,
+            "age(z=1100) = {age_cmb} Gyr (expected < 10 Myr)"
+        );
+    }
+
+    // -- Wavelength-redshift relations --
+
+    #[test]
+    fn test_wavelength_to_redshift_identity() {
+        // Same wavelength -> z=0
+        let z = wavelength_to_redshift(500.0, 500.0);
+        assert!(z.abs() < 1e-15, "z = {z}");
+    }
+
+    #[test]
+    fn test_wavelength_to_redshift_double() {
+        // Observed at 2x emitted -> z=1
+        let z = wavelength_to_redshift(1000.0, 500.0);
+        assert!((z - 1.0).abs() < 1e-15, "z = {z}");
+    }
+
+    #[test]
+    fn test_wavelength_roundtrip() {
+        // Apply redshift then recover z
+        let lambda_emit = 121.6; // Lyman-alpha [nm]
+        let z = 2.5;
+        let lambda_obs = apply_redshift_to_wavelength(lambda_emit, z);
+        let z_recovered = wavelength_to_redshift(lambda_obs, lambda_emit);
+        assert!((z_recovered - z).abs() < 1e-14, "z_recovered = {z_recovered}");
+    }
+
+    #[test]
+    fn test_apply_redshift_increases_wavelength() {
+        let lambda_obs = apply_redshift_to_wavelength(500.0, 1.0);
+        assert!((lambda_obs - 1000.0).abs() < 1e-10, "lambda_obs = {lambda_obs}");
+    }
+
+    #[test]
+    fn test_blueshift() {
+        // Approaching source: lambda_obs < lambda_emit -> z < 0
+        let z = wavelength_to_redshift(400.0, 500.0);
+        assert!(z < 0.0, "Blueshift should give z < 0, got {z}");
+        assert!((z - (-0.2)).abs() < 1e-15);
+    }
+
+    // -- Flux dimming --
+
+    #[test]
+    fn test_flux_dimming_at_z0() {
+        let f = redshift_flux_dimming(0.0);
+        assert!((f - 1.0).abs() < 1e-15, "f(z=0) = {f}");
+    }
+
+    #[test]
+    fn test_flux_dimming_at_z1() {
+        // (1+1)^4 = 16, so dimming = 1/16 = 0.0625
+        let f = redshift_flux_dimming(1.0);
+        assert!((f - 0.0625).abs() < 1e-15, "f(z=1) = {f}");
+    }
+
+    #[test]
+    fn test_flux_dimming_decreases_with_z() {
+        let f1 = redshift_flux_dimming(0.5);
+        let f2 = redshift_flux_dimming(1.0);
+        let f3 = redshift_flux_dimming(3.0);
+        assert!(f1 > f2 && f2 > f3);
+    }
+
+    #[test]
+    fn test_flux_dimming_fourth_power() {
+        // Verify the (1+z)^{-4} scaling explicitly
+        let z = 2.0;
+        let expected = 1.0 / (3.0_f64.powi(4)); // (1+2)^{-4} = 1/81
+        let f = redshift_flux_dimming(z);
+        assert!((f - expected).abs() < 1e-15, "f(z=2) = {f}, expected {expected}");
     }
 }
