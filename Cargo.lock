@@ -1449,6 +1449,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "19fc433e8437a212d1b6f1e68c7824af3aed907da60afa994e7f542d18d12aa9"
 
 [[package]]
+name = "glob"
+version = "0.3.3"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0cc23270f6e1808e30a928bdc84dea0b9b4136a8bc82338574f23baf47bbd280"
+
+[[package]]
 name = "gororoba_cli"
 version = "0.1.0"
 dependencies = [
@@ -1457,6 +1463,7 @@ dependencies = [
  "cosmology_core",
  "csv",
  "data_core",
+ "glob",
  "gr_core",
  "lbm_core",
  "materials_core",
@@ -1469,12 +1476,14 @@ dependencies = [
  "rand 0.8.5",
  "rand_chacha 0.3.1",
  "rayon",
+ "regex",
  "serde",
  "serde_json",
  "sha2",
  "spectral_core",
  "stats_core",
  "ureq",
+ "walkdir",
 ]
 
 [[package]]
