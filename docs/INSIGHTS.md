@@ -424,4 +424,82 @@ a larger sample.
 
 **Data**: `data/csv/c071g_multi_dataset_ultrametric.csv`
 
+**UPDATE (I-011)**: This finding was based on 5K-subsampled data with 100K
+triples per test -- severely underpowered. GPU-accelerated full-dataset
+analysis (I-011) overturns the "radio-transient-specific" conclusion.
+
+---
+
+## I-011: GPU-Accelerated Full-Dataset Exploration Overturns I-008
+
+**Date**: 2026-02-06
+**Context**: stats_core/ultrametric/gpu.rs + multi_dataset_ultrametric --explore
+**Related claims**: C-437, C-436, C-438, C-439, C-440
+**Supersedes**: I-008 (partially)
+
+The CUDA GPU kernel (cudarc 0.19, NVRTC runtime compilation, RTX 4070 Ti)
+enables 10M triples per test with 1000 permutations across all 9 catalogs
+at FULL dataset size (no subsampling). This overturns the I-008 conclusion
+that only radio transients show ultrametric structure.
+
+### Results: 82/472 significant at FDR < 0.05
+
+| Dataset | Significant/Total | Key subsets | Physical interpretation |
+|---------|------------------:|-------------|------------------------|
+| Hipparcos | 48/114 | pm + sky coords dominate | Galactic structure in proper motions |
+| Gaia DR3 | 12/114 | parallax+pm, pm+rv | Same: kinematic subgroups |
+| CHIME/FRB | 8/8 | ALL subsets | ISM-mediated DM + galactic coords |
+| ATNF Pulsars | 6/8 | All except log_DM+gb | ISM-mediated, same as CHIME |
+| GWOSC GW | 4/66 | chirp_mass+q, +chi_eff | Mass-ratio clustering in mergers |
+| SDSS Quasars | 2/52 | z+r+i only | Marginal; redshift-magnitude relation |
+| Pantheon+ SNe | 2/22 | x1+c (shape+color) | Light-curve standardization residuals |
+| McGill Magnetars | 0/66 | -- | N=20 too small |
+| Fermi GBM GRBs | 0/22 | -- | Isotropic sky; no hierarchical structure |
+
+### What changed from I-008
+
+The old analysis used 5K-object random subsamples and 100K triples with 200
+permutations. Three critical failures:
+
+1. **Subsampling destroyed signal**: Hipparcos went from p=0.438 (5K subset)
+   to 48/114 significant at full 113K. Gaia went from p=1.000 (5K) to 12/114.
+   The galactic structure signal requires the FULL spatial coverage of the
+   catalog -- random 5K-object subsets erase the large-scale hierarchy.
+
+2. **100K triples was underpowered**: With 50K+ objects, 100K random triples
+   samples only a tiny fraction of the N*(N-1)*(N-2)/6 possible triples.
+   10M triples provides 100x better estimation of the true ultrametric fraction.
+
+3. **200 permutations was too coarse**: The p-value floor of 0.005 (1/201) was
+   too high for BH-FDR correction across 472 tests. At 1000 permutations, the
+   floor drops to 0.001, and 62 of 82 significant tests hit this floor -- they
+   are likely much more significant than p=0.001.
+
+### Revised physical interpretation
+
+Ultrametric structure in astrophysical point catalogs has TWO sources:
+
+**Galactic kinematics** (Hipparcos, Gaia): Proper motions + sky positions encode
+the hierarchical structure of the Milky Way (disk populations, moving groups,
+streams, halo substructure). This is the DOMINANT signal -- 48+12 = 60 of 82
+significant tests come from stellar kinematic catalogs.
+
+**ISM-mediated DM** (CHIME, ATNF): Dispersion measure encodes integrated
+electron density along the line of sight, which clusters hierarchically
+because the ISM itself is hierarchically structured (shells, bubbles, spiral
+arms). This is a SECONDARY signal (8+6 = 14 tests).
+
+**Non-detections are physically meaningful**: Fermi GBM GRBs are cosmological
+and isotropically distributed -- no hierarchical structure expected. McGill
+magnetars have N=20, insufficient statistical power.
+
+### P-value resolution
+
+62/82 significant tests have raw_p = 0.001 (the 1000-perm floor). These
+warrant a higher-resolution run (5000+ permutations) to establish the true
+significance ranking. However, all 82 tests are firmly significant after
+BH-FDR correction (adj_p <= 0.040), so the qualitative conclusions are robust.
+
+**Data**: `data/csv/c071g_exploration_gpu_10M_1000perm.csv`
+
 ---
