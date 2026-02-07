@@ -221,9 +221,17 @@ pub fn epsilon_convergence_sweep(
     results
 }
 
-/// Compute eigenvalues using standard fractional Laplacian |k|^{2s}.
+/// Compute eigenvalues using standard fractional Laplacian |k|^{2s} in a
+/// harmonic potential well, via imaginary-time propagation (split-step FFT).
 ///
-/// For s in (0,1), this is the Caffarelli-Silvestre operator.
+/// Uses the Fourier-multiplier (Riesz) definition of (-Delta)^s. For s in
+/// (0,1), this is equivalent to the Caffarelli-Silvestre extension operator
+/// by their 2007 theorem, but we compute via the Fourier symbol rather than
+/// solving the (d+1)-dimensional extension PDE.
+///
+/// # References
+/// - Caffarelli & Silvestre (2007), Comm. PDE 32, 1245 (equivalence theorem)
+/// - Kwasnicki (2017), Fract. Calc. Appl. Anal. 20, 7 (ten definitions)
 pub fn caffarelli_silvestre_eigenvalues(s: f64, n: usize, l: f64, n_eig: usize) -> Vec<f64> {
     let dx = l / n as f64;
     let x: Vec<f64> = (0..n).map(|i| -l / 2.0 + i as f64 * dx).collect();

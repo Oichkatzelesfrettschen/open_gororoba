@@ -42,7 +42,7 @@ Convos chunk audit logs live under `docs/convos/` (start with `docs/convos/audit
 | CX-014 | Spectral triple, noncommutative geometry, Connes distance, Dixmier trace, zeta-function regularization | `convos/3_further_explorations.md:399` | (none) | Unimplemented (scope pending) | Add a scope doc that separates (a) toy commutative spectral triple sanity checks vs (b) any claims about "surreal"/CD algebras; implement only (a) first. |
 | CX-015 | Geometry over F1 (Tits, Soule, Connes-Consani, Lorscheid blueprints) | `convos/1_read_each_nonuser_line.md:9473` | (none) | Rejected / reframed | Add a sourced note: F1 is not a field; any use is philosophical scaffolding only, not a computational module claim. |
 | CX-016 | Sectorial operators, semigroups, resolvent bounds, pseudospectrum | `convos/1_read_each_nonuser_line.md:6000` | `src/quantum/advanced/pseudospectrum_slice.py`, `data/artifacts/images/pseudospectrum_slice_3160x2820.png` | Prototype only | Extract a small, tested linear-operator discretization (periodic 1D) and validate basic pseudospectrum monotonicity under parameter sweeps. |
-| CX-017 | wheels (division-by-zero algebra, Carlstrom); wheel graph (graph theory); wheeled operads/PROPs (Markl/Merkulov/Shadrin) | `convos/1_read_nonuser_lines_cont.md:L5` | `docs/WHEELS_DIVISION_BY_ZERO.md` | Unimplemented (source-first) | Primary scope: Carlstrom wheels (division by zero). Add a tiny wheel model + tests, then evaluate (source-first) whether wheels meaningfully interact with CD zero divisors (likely as interpretation, not as a cure). |
+| CX-017 | wheels (division-by-zero algebra, Carlstrom); wheel graph (graph theory); wheeled operads/PROPs (Markl/Merkulov/Shadrin) | `convos/1_read_nonuser_lines_cont.md:L5` | `docs/WHEELS_DIVISION_BY_ZERO.md`, `crates/algebra_core/src/wheels.rs` | Implemented + tested | Carlstrom WheelQ with all 8 axioms verified on canonical test set. Source doc disambiguates wheel (Carlstrom) vs wheel graph vs wheeled operad. Scope boundary: wheels do not explain CD zero-divisors (labeled speculative unless sourced). |
 | CX-018 | Algebraic integer rings (Gaussian/Eisenstein), Hurwitz quaternions, octonion integer lattices ("octavians") | `convos/1_read_nonuser_lines_cont.md:L60` | (none) | Unimplemented (docs-first) | Add a short, sourced doc note defining these rings/lattices and their norm forms; avoid any "negative dimension" framing. |
 | CX-021 | RG flow spectral scaling; associator growth exponent; Callan-Symanzik analogy | `convos/3_further_explorations.md`, `convos/2_exploration_cont.md` | `src/gemini_physics/renormalization.py`, C-074 (`tests/test_claim_c074_associator_growth.py`) | Prototype only | Formalize the connection between associator growth exponent (C-074: alpha~1.80) and RG-like scaling; add a rigorous beta-function extraction or declare the analogy heuristic. |
 | CX-022 | Triality, Spin(8), outer automorphisms, G2 as triality fixed-point subgroup | `convos/4_read_every_nonuser_line.md`, `convos/2_exploration_cont.md` | `src/gemini_physics/algebra/sedenion_automorphism.py`, C-028 (Verified), `curated/02_simulations_pde_quantum/Triality-Based_Quantum_Information_Structures.csv` | Implemented + tested (via C-028) | Extract triality-specific module from sedenion_automorphism.py; add explicit Spin(8) outer-automorphism verification and D4 Dynkin diagram symmetry test. |
@@ -103,6 +103,8 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 
 ## CX-002 - 32D/64D/128D/256D motif census (ZD graphs)
 
+**Status:** Implemented + tested (motif census + scaling laws + terminology audit)
+
 ### What the convos claim
 - Build graphs whose nodes are blades (2-blades, selected 4-blades), edges indicate exact zero-products.
 - In 16D (sedenions), pure 2-blade ZD components resemble 12-vertex degree-4 motifs (cuboctahedra).
@@ -111,22 +113,26 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 - Proposed extension: repeat for 64D/128D/256D (sometimes using "Chingons/Routons" naming) and track motif density vs dimension.
 
 ### Minimal reproducible hypotheses (tests)
-- H1: In 16D and 32D, there exist nontrivial ZD edges among 2-blades under the repo's CD multiplication convention.
-- H2: For a deterministic index set, the induced component census contains at least one 12-vertex, degree-4 component.
-- H3: XOR-bucket heuristics are high-recall relative to brute force on a small index set (quantify recall/precision).
+- H1: VERIFIED. In 16D and 32D, nontrivial ZD edges among 2-blades exist. Tested via `motif_components_for_cross_assessors()`.
+- H2: VERIFIED. At dim=16, all 7 components are octahedral (K_{2,2,2}). At dim=32+, cuboctahedra appear. Component structure changes completely at each doubling.
+- H3: VERIFIED. XOR-bucket heuristics have zero false negatives (perfect recall). Precision quantified in CX-003: 168/315 = 53.3% at dim=16.
 
-### What to implement next
-- Implement `src/gemini_physics/cd_motif_census.py` with:
-  - exact CD multiply compatible with `gemini_physics.optimized_algebra` conventions,
-  - deterministic sampling policy (seeded RNG, fixed index subsets),
-  - motif detection for cuboctahedron (12 nodes) and K_{2,2,2} (6 nodes).
-- Add `make artifacts-cd-motifs` to emit:
-  - CSV of components (size/edges/degree hist),
-  - one "grand quality" plot for a representative component per dimension.
+### Implementation artifacts
+- `crates/algebra_core/src/boxkites.rs`: `cross_assessors()`, `diagonal_zero_products_exact()`, `MotifComponent`, `motif_components_for_cross_assessors()`.
+- Exact census extended to dim=256 (16 regression tests in boxkites.rs).
+- 5 verified scaling laws: n_components = dim/2-1, nodes_per_component = dim/2-2, n_motif_classes = dim/16, K2_components = 3+log2(dim), K2_parts = dim/4-1.
+- NO octahedra beyond dim=16; structure completely restructures each doubling.
 
-### First-party sources to cite (core)
-- de Marrais (2000) box-kites + production rules (already replicated in-repo).
-- de Marrais "Placeholder Substructures" series (2002-2008) for emanation tables, Pathions, and XOR-driven recipes.
+### Terminology audit (source-first pass, 2026-02-06)
+- **Sedenion (dim=16) terms**: FULLY ALIGNED with de Marrais (2000, 2004). assessor, box-kite, strut, sail/vent, co-assessor, production rules 1/2/3, automorpheme, "Behind-the-8-Ball Theorem", edge sign types, O-trips, strut table -- all match primary sources.
+- **Higher-dim naming**: Pathion/Chingon/Routon (32/64/128D) present in `hypercomplex.rs::AlgebraDim`. Dim=256 has no de Marrais name ("Voudouion" appears in some informal sources but has no first-party citation).
+- **Placeholder Substructures series (2002-2008)**: Terms "emanation tables", "meta-fractals", "bit-string recipes" describe infinite-dimensional organizational patterns NOT YET implemented. Our finite census correctly uses neutral generic terms (`CrossPair`, `MotifComponent`).
+- **Decision**: No terminology changes needed in existing code. The generic naming for dim>16 is appropriate since de Marrais's nomenclature is informal and non-standardized beyond sedenions.
+
+### First-party sources cited
+- de Marrais (2000) box-kites + production rules: replicated in boxkites.rs.
+- de Marrais (2004) Box-Kites III: production rules 1/2/3, automorphemes, strut tables.
+- de Marrais "Placeholder Substructures" series (2002-2008): emanation tables, Pathions, XOR-driven recipes. CITED in BIBLIOGRAPHY.md (entries 160-171). NOT yet implemented (infinite-dim patterns).
 
 ---
 
@@ -147,6 +153,8 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 
 ## CX-004 - Fractional Laplacian foundations
 
+**Status:** Implemented + clarified (Rust spectral_core, source-first pass 2026-02-06)
+
 ### What the convos claim
 - Interchangeably uses "fractional Laplacian" across (at least) three non-equivalent objects:
   - Riesz fractional Laplacian on R^d (Fourier symbol |xi|^alpha),
@@ -154,25 +162,25 @@ precise definitions + first-party citations + reproducible tests/artifacts.
   - Caffarelli-Silvestre extension (Dirichlet-to-Neumann map).
 - Mentions "fractional diffusion" closures and fractional Schrodinger dynamics.
 
-### Repo reality (current)
-- `src/quantum/fractional_schrodinger.py` implements a periodic Fourier-multiplier kinetic term `|k|^alpha` on a grid (a torus/periodic-domain model).
-- We do not yet implement:
-  - a bounded-domain spectral fractional Laplacian (continuous),
-  - a Caffarelli-Silvestre extension solver,
-  - cross-validation tests tying multiple formulations together.
+### Repo reality (updated 2026-02-06)
+- `crates/spectral_core/src/lib.rs` implements TWO correctly-labeled formulations:
+  - **Periodic (Riesz)**: `fractional_laplacian_periodic_{1d,2d,3d}` -- Fourier multiplier |k|^{2s} on torus.
+  - **Dirichlet (spectral)**: `fractional_laplacian_dirichlet_{1d,2d}` -- DST-I eigenexpansion with lambda_k^s.
+- `crates/spectral_core/src/neg_dim.rs` has `caffarelli_silvestre_eigenvalues()` which uses Fourier-symbol (Riesz) definition. Doc clarified: equivalent to C-S extension for s in (0,1) by their theorem, but does NOT implement the (d+1)-dimensional extension PDE.
+- **Cross-validation**: `test_dirichlet_laplacian_1d_consistency` compares s=1 fractional Dirichlet vs direct finite difference. Passes.
+- 11 tests verify eigenfunction expansion, roundtrip DST-I, consistency across formulations.
 
-### What to implement next
-- Standardize terminology in docs:
-  - be explicit about domain + boundary conditions.
-- Add a minimal operator-consistency test suite:
-  - compare FFT-symbol implementation vs finite-difference surrogate on smooth test functions.
+### Terminology clarification applied
+- Function names correctly distinguish periodic vs Dirichlet domains.
+- `caffarelli_silvestre_eigenvalues` doc now explicitly states it uses Fourier-symbol, not extension solver, and cites the equivalence theorem.
+- NOT yet implemented: Caffarelli-Silvestre (d+1)-dimensional extension solver. This is a future enhancement, not a gap in the current formulations.
 
-### First-party sources to cite (core)
-- Caffarelli-Silvestre (2007): extension characterization.
-- Laskin (2000/2002): fractional quantum mechanics / fractional Schrodinger.
-- Di Nezza-Palatucci-Valdinoci (2012): fractional Sobolev spaces "hitchhiker's guide".
-- Kwasnicki (2017): "Ten equivalent definitions..." (operator-choice taxonomy and equivalences).
-- Stinga-Torrea (2010): extension framework for fractional powers of operators.
+### First-party sources cited (all in BIBLIOGRAPHY.md)
+- Caffarelli-Silvestre (2007): extension characterization. CITED.
+- Laskin (2000/2002): fractional quantum mechanics / fractional Schrodinger. CITED.
+- Di Nezza-Palatucci-Valdinoci (2012): fractional Sobolev spaces "hitchhiker's guide". CITED.
+- Kwasnicki (2017): "Ten equivalent definitions..." (operator-choice taxonomy). CITED in lib.rs.
+- Stinga-Torrea (2010): extension framework. CITED.
 
 ---
 
@@ -192,10 +200,13 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 
 ## CX-006 - p-adics / dyadics / Cantor sets
 
+**Status:** Foundations implemented + tested (Rust padic.rs, source-first pass 2026-02-06)
+
 ### What to implement next
-- Decide scope:
-  - either implement a small, correct p-adic analysis module (Vladimirov operator / Kozyrev wavelets),
-  - or explicitly defer with bibliographic pointers and remove any repo claims that imply completion.
+- Decide scope for ADVANCED features:
+  - either implement Vladimirov operator / Kozyrev wavelets (requires Q_p function spaces),
+  - or explicitly defer with bibliographic pointers (current choice).
+- Foundations are COMPLETE: valuations, absolute values, dyadic rationals, Cantor digits, devil's staircase, p-adic distance, ultrametric check. 14 tests pass.
 
 ### First-party sources to cite (core)
 - Vladimirov-Volovich-Zelenov (1994): p-adic analysis + mathematical physics.
@@ -205,23 +216,27 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 
 ## CX-007 - Nilpotent orbits / Jordan forms / exceptional algebras
 
+**Status:** Foundations implemented, no overclaims found (source-first pass 2026-02-06)
+
 ### What the convos claim
 - Nilpotency claims based on "all eigenvalues are 0" for purported exceptional-algebra representation matrices.
 - Mentions Bala-Carter classification and Jordan-form diagnostics.
 - Mentions Albert algebra `H3(O)` and a Freudenthal determinant upgrade path.
 
-### What to implement next
-- Add a verified nilpotent example pipeline:
-  - generate nilpotent elements in `sl_n`, compute Jordan form partition, compare to theory.
-- Separately, implement a carefully scoped `H3(O)` numeric model with:
-  - explicit definition of the Albert algebra elements,
-  - Jordan product,
-  - trace / quadratic / cubic invariants,
-  - and (later) the Freudenthal determinant with tests.
+### Repo reality (updated 2026-02-06)
+- `nilpotent_orbits.rs`: Generic nilpotent matrix analysis (Jordan types, nilpotency index, partition enumeration, dominance order). Does NOT claim Bala-Carter or exceptional-algebra features. Correctly labeled "toy" -- works for arbitrary nilpotent matrices. 8 functions, tests pass.
+- `e8_lattice.rs`: Freudenthal-Tits magic square fully implemented. All exceptional Lie algebras (F4, E6, E7, E8) derived correctly from division algebra pairs. Dimensions, ranks, root counts verified. No overclaims.
+- NOT implemented (correctly absent): Bala-Carter classification, Albert algebra H3(O), Freudenthal determinant, Jordan product on exceptional algebras.
+- No overclaims in code -- CX-007 "next actions" correctly identify H3(O) and Bala-Carter as FUTURE work.
 
-### First-party sources to cite (core)
-- Collingwood-McGovern (1993): nilpotent orbits reference text.
-- Springer-Veldkamp (2000): octonions, Jordan algebras, exceptional groups.
+### What to implement next (unchanged, deferred)
+- Verified nilpotent pipeline: sl_n examples with Jordan form vs theory.
+- H3(O) numeric model: elements, Jordan product, trace/quadratic/cubic invariants.
+- Freudenthal determinant (later, depends on H3(O)).
+
+### First-party sources cited (both in BIBLIOGRAPHY.md)
+- Collingwood-McGovern (1993): nilpotent orbits reference text. CITED in nilpotent_orbits.rs.
+- Springer-Veldkamp (2000): octonions, Jordan algebras, exceptional groups. CITED in BIBLIOGRAPHY.md.
 
 ---
 
