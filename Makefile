@@ -109,13 +109,13 @@ artifacts-reggiani: install
 artifacts-m3: install
 	PYTHONWARNINGS=error $(PYTHON) src/export_m3_table.py
 
-artifacts-motifs: install
-	PYTHONWARNINGS=error $(PYTHON) src/export_cd_motif_census.py --dims 16,32
+artifacts-motifs:
+	cargo run -p gororoba_cli --bin motif-census --release -j$$(nproc) -- --dims 16,32 --details
 	PYTHONWARNINGS=error $(PYTHON) src/vis_cd_motif_summary.py
 
-artifacts-motifs-big: install
-	PYTHONWARNINGS=error $(PYTHON) src/export_cd_motif_census.py --dims 64,128 --summary-only
-	PYTHONWARNINGS=error $(PYTHON) src/export_cd_motif_census.py --dims 256 --max-nodes 5000 --seed 0 --summary-only
+artifacts-motifs-big:
+	cargo run -p gororoba_cli --bin motif-census --release -j$$(nproc) -- --dims 16,32,64,128 --summary-only
+	cargo run -p gororoba_cli --bin motif-census --release -j$$(nproc) -- --dims 256 --max-nodes 5000 --seed 0 --summary-only
 	PYTHONWARNINGS=error $(PYTHON) src/vis_cd_motif_summary.py
 
 # ---- Data fetching ----

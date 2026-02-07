@@ -109,6 +109,10 @@ path = "src/bin/real_cosmo_fit.rs"
 name = "multi-dataset-ultrametric"
 path = "src/bin/multi_dataset_ultrametric.rs"
 
+[[bin]]
+name = "motif-census"
+path = "src/bin/motif_census.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
