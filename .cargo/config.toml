@@ -1,0 +1,20 @@
+# Workspace-level Cargo configuration
+# Optimized for AMD Ryzen 5 5600X3D (Zen 3 + 3D V-Cache, AVX2, no AVX-512)
+
+[build]
+# Use all available cores for compilation
+jobs = 12
+
+[target.'cfg(target_arch = "x86_64")']
+# Enable native CPU instruction set (AVX2, BMI2, FMA, POPCNT, etc.)
+# This gives ~15-30% speedup on compute-heavy algebra tests
+rustflags = ["-C", "target-cpu=native"]
+
+# Incremental compilation for faster rebuilds during development
+[profile.dev]
+incremental = true
+
+[profile.test]
+# Optimize tests enough to make compute-heavy tests bearable
+# opt-level 1 gives major speedup with modest compile time increase
+opt-level = 1

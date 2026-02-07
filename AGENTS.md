@@ -10,11 +10,17 @@ and human contributors working in this repository.  Both `CLAUDE.md` and
 
 open_gororoba is a research-style codebase mixing:
 
-- **Executable experiments** -- Python under `src/` (NumPy, SciPy, Numba, SymPy).
+- **Rust domain crates** -- 13 workspace members under `crates/` covering
+  algebra, cosmology, GR, optics, materials, quantum, statistics, spectral,
+  LBM, control, data providers, CLI binaries, and PyO3 bindings.
+- **Python layer** -- visualization and notebooks under `src/gemini_physics/`.
 - **Artifacts** -- reproducible CSVs and plots under `data/` and `curated/`.
 - **Narrative documents** -- theoretical analysis, claims tracking, and audit
   reports under `docs/`.
 - **Formal proofs** -- Coq files under `curated/01_theory_frameworks/`.
+
+Python-to-Rust migration is COMPLETE (all 15 modules ported, 855 Rust tests,
+0 clippy warnings).  See `docs/ROADMAP.md` for architecture and evolution.
 
 Many physics-facing statements are **hypotheses**.  Treat them as unverified
 unless backed by first-party sources and a reproducible test or artifact.
@@ -112,24 +118,68 @@ Regenerate everything from scratch: `make clean-all && make install && make arti
 ### Rust workspace (parallel builds)
 
 All Rust crates live under `crates/`.  Always build and test with maximum
-parallelism -- this machine has 12 cores.
+parallelism -- this machine has 12 cores (AMD Ryzen 5 5600X3D).
+
+**Build optimization**: `.cargo/config.toml` sets:
+- `target-cpu=native` (enables AVX2, FMA, BMI2 for Zen 3)
+- `opt-level = 1` for test profile (major speedup for compute-heavy algebra tests)
+- `jobs = 12` (parallel compilation)
 
 ```
 cargo build --workspace -j$(nproc)              # Full parallel build
-cargo test  --workspace -j$(nproc)              # Full parallel test
+cargo test  --workspace -j$(nproc)              # Full parallel test (all crates)
 cargo clippy --workspace -j$(nproc) -- -D warnings  # Lint (warnings = errors)
+cargo test  -p algebra_core -j$(nproc)          # Single-crate test (fastest iteration)
 cargo test  -p stats_core -j$(nproc)            # Single-crate test
 cargo test  --workspace -j$(nproc) -- --nocapture  # Tests with stdout
 ```
 
-Individual analysis binaries:
+**During iteration**: target only the crate you changed rather than full workspace.
+`algebra_core` is the heaviest (~240 tests, ~30-50s with opt-level=1).
+
+Individual analysis binaries (25 total in `crates/gororoba_cli/src/bin/`):
 
 ```
-cargo run --bin dm-ultrametric   -- --help
-cargo run --bin baire-compact    -- --help
-cargo run --bin frb-cascades     -- --help
-cargo run --bin gw-merger-tree   -- --help
-cargo run --bin cosmic-dendrogram -- --help
+# Algebra
+cargo run --bin zd-search          -- --help   # Zero-divisor search
+cargo run --bin oct-field          -- --help   # Octonion field computations
+
+# Cosmology
+cargo run --bin real-cosmo-fit     -- --help   # Pantheon+ / DESI BAO fitting
+cargo run --bin bounce-cosmology   -- --help   # Bounce cosmology simulation
+cargo run --bin neg-dim-eigen      -- --help   # Negative-dimension eigenvalues
+cargo run --bin gravastar-sweep    -- --help   # Gravastar parameter sweep
+
+# GR
+cargo run --bin kerr-shadow        -- --help   # Kerr black hole shadow
+
+# Optics / Materials
+cargo run --bin grin-trace         -- --help   # GRIN lens ray tracing
+cargo run --bin tcmt-sweep         -- --help   # Temporal coupled-mode sweep
+cargo run --bin ema-calc           -- --help   # Effective medium approximation
+
+# Quantum
+cargo run --bin mera-entropy       -- --help   # MERA entropy analysis
+cargo run --bin tensor-network     -- --help   # Tensor network contraction
+cargo run --bin frac-schrodinger   -- --help   # Fractional Schrodinger
+cargo run --bin frac-laplacian     -- --help   # Fractional Laplacian
+cargo run --bin harper-chern       -- --help   # Harper-Chern topological
+
+# Statistics / Ultrametric
+cargo run --bin dm-ultrametric     -- --help   # DM-based ultrametricity
+cargo run --bin baire-compact      -- --help   # Baire metric compactness
+cargo run --bin frb-cascades       -- --help   # FRB temporal cascades
+cargo run --bin frb-ultrametric    -- --help   # FRB multi-attribute ultrametric
+cargo run --bin gw-merger-tree     -- --help   # GW merger tree analysis
+cargo run --bin cosmic-dendrogram  -- --help   # Cosmic dendrogram
+cargo run --bin multi-dataset-ultrametric -- --help  # Cross-dataset analysis
+
+# Fluid dynamics
+cargo run --bin lbm-poiseuille     -- --help   # Lattice Boltzmann Poiseuille
+
+# Data
+cargo run --bin fetch-datasets     -- --help   # Fetch external datasets
+cargo run --bin fetch-chime-frb    -- --help   # Fetch CHIME/FRB catalog
 ```
 
 ### Other runtimes
@@ -163,31 +213,49 @@ cargo run --bin cosmic-dendrogram -- --help
 ## Project Layout
 
 ```
+crates/                     # Rust workspace (13 members)
+  algebra_core/             #   Cayley-Dickson, Clifford, E8, box-kites, Reggiani, M3
+  cosmology_core/           #   TOV, bounce, dimensional geometry, observational fitting
+  gr_core/                  #   Kerr geodesics, gravastar, shadow, Schwarzschild
+  materials_core/           #   Metamaterials, absorbers, optical database
+  optics_core/              #   GRIN solver, ray tracing, warp metrics
+  quantum_core/             #   Tensor networks, MERA, fractional Schrodinger, Casimir
+  stats_core/               #   Frechet, bootstrap, Haar, ultrametric suite
+  spectral_core/            #   Fractional Laplacian (periodic/Dirichlet)
+  lbm_core/                 #   Lattice Boltzmann D2Q9
+  control_core/             #   Control theory utilities
+  data_core/                #   18 dataset providers + provenance + parsers
+  gororoba_py/              #   PyO3 bindings (thin wrappers -> domain crates)
+  gororoba_cli/             #   25 analysis binaries + fetch-datasets
 src/
-  gemini_physics/         # Core library (Cayley-Dickson, optics, groups)
-  scripts/                # Analysis, reporting, visualization, simulation
-  verification/           # Artifact and claims verification scripts
-  quantum/                # Qiskit circuits (Docker recommended)
-tests/                    # pytest suite (51 tests)
+  gemini_physics/           # Python layer (visualization, remaining scripts)
+  scripts/                  # Analysis, reporting, visualization, simulation
+  verification/             # Artifact and claims verification scripts
+  quantum/                  # Qiskit circuits (Docker recommended)
+tests/                      # pytest suite
 data/
-  csv/                    # Generated CSVs (make artifacts)
-  artifacts/images/       # Generated plots and dashboards
-  external/               # Downloaded datasets (gitignored, make fetch-data)
-  h5/                     # HDF5 simulation output (gitignored, make run)
+  csv/                      # Generated CSVs (make artifacts)
+  artifacts/images/         # Generated plots and dashboards
+  external/                 # Downloaded datasets (gitignored, make fetch-data)
+  h5/                       # HDF5 simulation output (gitignored, make run)
 docs/
-  claims/                 # Claims domain map, index, 16 domain breakdowns
-  theory/                 # Physics reconciliation and derivations
-  tickets/                # Batch audit tickets
-  engineering/            # Engineering analysis docs
-  external_sources/       # Source references
-  latex/                  # LaTeX manuscript sources
-  convos/                 # Structured conversation extracts
+  ROADMAP.md                # Consolidated roadmap (architecture, crates, GR port plan)
+  ULTRA_ROADMAP.md          # Granular test-driven claim-to-evidence checklists
+  TODO.md                   # Current sprint tracker
+  NEXT_ACTIONS.md           # Priority queue (top-5 items)
+  claims/                   # Claims domain map, index, 16 domain breakdowns
+  theory/                   # Physics reconciliation and derivations
+  tickets/                  # Batch audit tickets
+  engineering/              # Engineering analysis docs
+  external_sources/         # Source references
+  latex/                    # LaTeX manuscript sources
+  convos/                   # Structured conversation extracts
 curated/
-  01_theory_frameworks/   # Coq proofs and theorem inventories
+  01_theory_frameworks/     # Coq proofs and theorem inventories
   04_observational_datasets/  # Curated observational data
-convos/                   # Original brainstorming transcripts (immutable)
-bin/                      # Utility scripts (ascii_check, doctor, provenance)
-reports/                  # Generated analysis reports
+convos/                     # Original brainstorming transcripts (immutable)
+bin/                        # Utility scripts (ascii_check, doctor, provenance)
+reports/                    # Generated analysis reports
 ```
 
 ---
@@ -262,11 +330,13 @@ if no suitable crate exists.
 
 ## References
 
+- `docs/ROADMAP.md` -- consolidated roadmap (architecture, crates, evolution, GR port plan)
 - `docs/CLAIMS_EVIDENCE_MATRIX.md` -- master claims tracker
 - `docs/claims/INDEX.md` -- claims navigation index
 - `docs/INSIGHTS.md` -- research insights and design decisions
 - `docs/BIBLIOGRAPHY.md` -- external source citations
 - `docs/agents.md` -- visualization standards
 - `docs/REPO_STRUCTURE.md` -- directory layout details
-- `pyproject.toml` -- dependencies and linter config
+- `Cargo.toml` -- Rust workspace and dependency declarations
+- `pyproject.toml` -- Python dependencies and linter config
 - `Makefile` -- all build/test/artifact targets

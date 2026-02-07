@@ -1,10 +1,14 @@
 # Ultra Roadmap (Granular, Test-Driven)
 
-**Date:** 2026-01-27
+**Date:** 2026-01-27 (updated 2026-02-06)
+**See also:** [`docs/ROADMAP.md`](ROADMAP.md) for architecture, crate ecosystem, and GR port plan.
 
 This roadmap is organized so that every major claim becomes:
 1) a cited statement, and
 2) a small reproducible experiment or test.
+
+**Migration status:** All 15 Python modules ported to Rust domain crates.
+848 Rust unit tests + 7 doc-tests pass, 0 clippy warnings. Python items below are historical.
 
 ## A. Reproducibility & Quality Gates
 
@@ -32,9 +36,9 @@ This roadmap is organized so that every major claim becomes:
 
 ## C. Dimensional Continuation (-4D -> 32D)
 
-- [x] Implement analytic-continuation formulas (`src/gemini_physics/dimensional_geometry.py`).
-- [x] Add tests for integer dimensions and identities (`tests/test_dimensional_geometry.py`).
-- [x] Generate "grand" plots and CSV outputs (`src/vis_dimensional_geometry.py`).
+- [x] Implement analytic-continuation formulas (Rust: `crates/cosmology_core/src/dimensional_geometry.rs`).
+- [x] Add tests for integer dimensions and identities (Rust unit tests in same file).
+- [x] Generate "grand" plots and CSV outputs (historical: `src/vis_dimensional_geometry.py`).
 - [ ] Add pole-aware plotting (optional: residue plots / annotated singularities).
 
 ## D. Materials Science (Real Data)
@@ -47,10 +51,11 @@ This roadmap is organized so that every major claim becomes:
 
 ## E. Algebra Engine (Sedenions and Beyond)
 
-- [x] Add tests for associativity and norm composition behavior (`tests/test_cayley_dickson_properties.py`).
-- [ ] Replace "random search for zero divisors" with a literature-derived explicit construction and tests.
+- [x] Add tests for associativity and norm composition behavior (Rust: `crates/algebra_core/src/cayley_dickson.rs`).
+- [x] Replace random search with explicit constructions: Reggiani standard ZDs (84 count), annihilator SVD, M3 classification (Rust: `annihilator.rs`, `reggiani.rs`, `m3.rs`).
+- [x] Motif census at dim=16 and dim=32 with graph component analysis (Rust: `boxkites.rs`).
 - [ ] Add a fast basis-element multiplication table generator (for 16D and 32D) with cache + checksum.
-- [ ] (Optional) Add a C++/pybind11 accelerator if Numba becomes a bottleneck.
+- [x] Rust native performance replaces Numba: 3.5-5.3x speedup over Python (no C++ needed).
 
 ## F. Coq Formalization
 

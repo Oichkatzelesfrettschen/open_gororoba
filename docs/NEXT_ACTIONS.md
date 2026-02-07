@@ -1,22 +1,22 @@
 # Next Actions (Prioritized)
 
-This is the short actionable list after the second-pass audit (2026-01-27).
-Execution detail for missing datasets now lives in `docs/ULTRA_ROADMAP.md` Section H.
+Updated 2026-02-06 after consolidation pass. Previous audit: 2026-01-27.
+**See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and GR port plan.
+Execution detail for missing datasets lives in `docs/ULTRA_ROADMAP.md` Section H.
 
 ## A. Claims -> Evidence (highest impact)
 
-1) **Box-kites / 42 assessors / PSL(2,7) replication**
-   - Implement a small, deterministic enumeration that reproduces de Marrais counts and structures.
-   - Add tests under `tests/` that assert reproduced counts/identities.
-   - (Done as a prerequisite) Add an explicit zero-divisor identity test in 16D (`tests/test_cayley_dickson_properties.py`).
+1) **Box-kites / 42 assessors / PSL(2,7) replication** -- DONE
+   - Rust: `crates/algebra_core/src/boxkites.rs` (production rules, automorphemes, motif census).
+   - Tests: 42 assessors, 7 box-kites at dim=16; 15 components at dim=32.
 
-2) **Reggiani (arXiv:2411.18881) alignment**
-   - Extract the paper's exact definitions (`Z(S)`, `ZD(S)` etc.) into `docs/SEDENION_ATLAS.md`.
-   - Add a minimal computational check aligned to those definitions.
+2) **Reggiani (arXiv:2411.18881) alignment** -- DONE
+   - Rust: `crates/algebra_core/src/reggiani.rs` (84 standard ZDs, partner enumeration).
+   - Annihilator SVD: `crates/algebra_core/src/annihilator.rs`.
 
-3) **GWTC-3 provenance hardening**
-   - Add a fetch script that downloads GWTC-3 "confident" events from GWOSC, records URL+date+checksum,
-     and writes a cached CSV under `data/external/` with a machine-readable provenance JSON.
+3) **GWTC-3 provenance hardening** -- DONE
+   - Rust: `crates/data_core/src/catalogs/gwtc.rs` (combined GWTC catalog, 219 events).
+   - Provenance: `data/external/PROVENANCE.local.json` with URL + checksum.
 
 4) **Mass "clumping" hypothesis test**
    - Replace narrative "clumping implies modes" with a falsifiable statistical test:
@@ -32,9 +32,9 @@ Execution detail for missing datasets now lives in `docs/ULTRA_ROADMAP.md` Secti
    - Decide if "grand" applies to all artifacts or only those tagged in filenames.
    - Optionally add `make verify-grand --enforce-all` as a strict CI step once the repo is upgraded.
 
-7) **External data provenance**
-   - Extend `data/external/PROVENANCE.local.json` into a richer provenance registry:
-     source URL, license, query params, access date, and checksum.
+7) **External data provenance** -- PARTIALLY DONE
+   - `data/external/PROVENANCE.local.json` is now richer with URL, license, access date, checksum.
+   - Still need: query params for HEASARC fetches, automated provenance checks in CI.
 
 ## C. Experiments portfolio (paper synth)
 
@@ -43,7 +43,18 @@ Execution detail for missing datasets now lives in `docs/ULTRA_ROADMAP.md` Secti
    - 1-2 paragraph method summary per artifact
    - one reproducibility check per artifact
 
-## D. Dataset pillars (now active)
+## D. Dataset pillars (active)
 
 9) Execute the Universal-to-Local dataset pillars sequence in
    `docs/ULTRA_ROADMAP.md` Section H and keep the manifest/provenance in lock-step.
+   - Major providers done: Pantheon+, Union3, DESI, GWOSC, Fermi GBM, Gaia, SDSS, NANOGrav, Planck.
+   - Remaining: parser-level schema checks, pillar grouping flags, benchmark scripts.
+
+## E. GR module expansion (Blackhole C++ port)
+
+10) Port verified GR computations from the Blackhole C++ codebase:
+    - Kerr/Schwarzschild Christoffel symbols (tasks #28, #29)
+    - Carlson elliptic integrals (task #30)
+    - Novikov-Thorne disk, Penrose process (tasks #33, #34)
+    - Connection.h generic computation (task #37)
+    - Energy-conserving geodesic integrator (task #40)

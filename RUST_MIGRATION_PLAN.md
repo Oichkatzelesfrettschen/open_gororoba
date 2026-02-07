@@ -1,5 +1,9 @@
 # Rust Migration Plan: open_gororoba
 
+> **HISTORICAL**: This document is preserved for provenance.  The authoritative
+> consolidated roadmap is [`docs/ROADMAP.md`](docs/ROADMAP.md).
+> Migration status: COMPLETE (all 15 modules ported, 855 Rust tests, 0 clippy warnings).
+
 ## Overview
 
 Complete migration of Python physics stack to native Rust with domain-specific crate organization.

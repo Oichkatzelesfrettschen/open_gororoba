@@ -1,19 +1,17 @@
-# TODO (Jan 2026): executable, test-driven tracker
+# TODO (updated 2026-02-06): executable, test-driven tracker
 
 Primary trackers:
+- `docs/ROADMAP.md` (consolidated roadmap: architecture, crates, migration history, GR port plan)
 - `docs/ULTRA_ROADMAP.md` (test-driven, claim->evidence oriented)
 - `docs/CLAIMS_TASKS.md` (claim-specific implementation backlog)
 - `docs/NEXT_ACTIONS.md` (short priority queue)
-- `docs/CONVOS_CONCEPTS_STATUS_INDEX.md` (Convos -> Concepts -> Status -> implement-next)
-- `docs/convos/implement_next_from_1_read_nonuser_lines_cont.md` (latest convos audit backlog)
 
 Note:
-- `convos/`-derived trackers are non-authoritative input streams.
-- Source-first execution authority is `docs/ULTRA_ROADMAP.md` + `docs/CLAIMS_TASKS.md`.
+- Python-to-Rust migration is COMPLETE (all 15 modules ported, gororoba_kernels removed).
+- 848 Rust unit tests + 7 doc-tests pass, 0 clippy warnings.
+- Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`) redirect to `docs/ROADMAP.md`.
 
 ## Current sprint (blockers first)
-- [x] Audit `convos/1_read_nonuser_lines_cont.md` in chunks (C1-0001..C1-0041).
-  - See: `docs/convos/audit_1_read_nonuser_lines_cont.md` and `docs/convos/keywords_1_read_nonuser_lines_cont.md`.
 - [ ] Source-first research passes (no deletions; only append/clarify sources):
   - [ ] Wheels (division-by-zero) vs wheel graphs vs wheeled operads (CX-017).
   - [ ] de Marrais primary sources + terminology alignment (CX-002).
@@ -24,19 +22,20 @@ Note:
 - [ ] Execute missing dataset pillars roadmap from `docs/ULTRA_ROADMAP.md` Section H.
 - [ ] Implementation (keep every warning as an error):
   - [ ] Wheels axioms checker + unit tests (CX-017).
-  - [ ] m3 artifact export + stronger invariants tests (CX-001).
   - [ ] XOR-balanced search extension + tests (CX-003).
   - [ ] Motif census: extend to 64D/128D exact and 256D sampled + plot (CX-002).
   - [ ] Visualization hygiene and artifact saving policy (CX-019).
-  - [ ] Optional "atlas/plates" reproducible artifact pipeline (CX-020).
 
 ## Quality gates
+- [x] `cargo clippy --workspace -j$(nproc) -- -D warnings`
+- [x] `cargo test --workspace -j$(nproc)` (848 unit + 7 doc-tests)
 - [ ] `make ascii-check`
-- [ ] `PYTHONWARNINGS=error make check`
 
 ## Completed (keep for provenance)
 - [x] Package `gemini_physics` and add tests (`pyproject.toml`, `src/gemini_physics/`, `tests/`).
 - [x] Coq stub builds via `make coq` (see `curated/01_theory_frameworks/README_COQ.md`).
-- [x] Materials ingestion and embedding benchmarks:
-  - `src/fetch_materials_jarvis_subset.py`
-  - `src/materials_embedding_experiments.py`
+- [x] Materials ingestion and embedding benchmarks.
+- [x] Python-to-Rust migration: all 15 modules ported (see `docs/engineering/GEMINI_FUNCTION_MIGRATION_LEDGER.md`).
+- [x] Consolidate PyO3 bridges: gororoba_kernels removed, gororoba_py is sole bridge.
+- [x] Real cosmology fitting: Pantheon+ + DESI DR1 BAO (Omega_m=0.3284, H0=71.65).
+- [x] Ultrametric analysis directions C-436 through C-440 completed.
