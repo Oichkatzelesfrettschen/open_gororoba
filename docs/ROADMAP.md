@@ -492,7 +492,7 @@ here for completeness.
 
 ### 7.2 Claims -> Evidence (Section B)
 - [ ] Primary-source citation for every claim in CLAIMS_EVIDENCE_MATRIX.md
-- [ ] Reggiani Z(S)/ZD(S) terminology alignment
+- [x] Reggiani Z(S)/ZD(S) terminology alignment -- DONE (CX-003, Sprint 4)
 
 ### 7.3 Materials Science (Section D)
 - [ ] Second dataset backend (OQMD or NOMAD) for cross-validation
