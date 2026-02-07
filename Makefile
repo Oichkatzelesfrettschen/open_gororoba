@@ -2,6 +2,7 @@
 .PHONY: help install install-analysis install-astro install-particle install-quantum
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify
 .PHONY: verify verify-grand ascii-check doctor provenance patch-pyfilesystem2
+.PHONY: rust-test rust-clippy rust-smoke
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data run coq latex
@@ -65,6 +66,15 @@ smoke: install
 
 math-verify: test lint
 	@echo "OK: math validation suite complete. See docs/MATH_VALIDATION_REPORT.md"
+
+rust-test:
+	cargo test --workspace -j$$(nproc)
+
+rust-clippy:
+	cargo clippy --workspace -j$$(nproc) -- -D warnings
+
+rust-smoke: rust-clippy rust-test
+	@echo "OK: Rust quality gate passed (clippy + tests)."
 
 ascii-check:
 	python3 bin/ascii_check.py --check
@@ -241,6 +251,7 @@ help:
 	@echo "    make smoke                Compileall + lint stats + artifact verifiers"
 	@echo "    make check                test + lint + smoke (CI entry point)"
 	@echo "    make ascii-check          Verify ASCII-only policy"
+	@echo "    make rust-smoke           Rust clippy + full test suite"
 	@echo ""
 	@echo "  Artifacts:"
 	@echo "    make artifacts            Regenerate all core artifact sets"

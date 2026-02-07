@@ -92,6 +92,45 @@ pub fn known_provider_names() -> Vec<&'static str> {
 /// Number of datasets in the canonical inventory.
 pub const DATASET_COUNT: usize = 30;
 
+/// The 7 scientific pillars that organize datasets.
+pub const PILLARS: &[&str] = &[
+    "candle", "gravitational", "electromagnetic", "survey", "cmb", "solar", "geophysical",
+];
+
+/// Map each provider name to its scientific pillar.
+pub fn provider_pillar(name: &str) -> &'static str {
+    match name {
+        "Pantheon+ SH0ES" | "Union3 Legacy SN Ia" => "candle",
+        "GWTC-3 confident events" | "GWOSC combined GWTC (O1-O4a)" | "NANOGrav 15yr Free Spectrum" => "gravitational",
+        "Fermi GBM Burst Catalog" | "EHT M87 2018 Data Bundle" | "EHT SgrA 2022 Data Bundle" => "electromagnetic",
+        "CHIME/FRB Catalog 2" | "ATNF Pulsar Catalogue" | "McGill Magnetar Catalog"
+        | "SDSS DR18 Quasars" | "Gaia DR3 Nearby Stars" | "Hipparcos Legacy Catalog" => "survey",
+        "Planck 2018 Summary" | "WMAP 9yr MCMC Chains" | "Planck 2018 MCMC Chains" => "cmb",
+        "TSIS-1 TSI Daily" | "SORCE TSI Daily" => "solar",
+        _ => "geophysical", // IGRF, WMM, GRACE, EGM2008, Swarm, Landsat, DE440/441, Horizons
+    }
+}
+
+/// Claim IDs backed by each dataset. Returns empty slice for infrastructure datasets.
+pub fn claims_for_provider(name: &str) -> &'static [&'static str] {
+    match name {
+        "CHIME/FRB Catalog 2" => &["C-043", "C-062", "C-071", "C-080", "C-436", "C-437", "C-438", "C-440"],
+        "ATNF Pulsar Catalogue" => &["C-043", "C-063", "C-437"],
+        "McGill Magnetar Catalog" => &["C-043", "C-063", "C-437"],
+        "SDSS DR18 Quasars" => &["C-437"],
+        "Gaia DR3 Nearby Stars" => &["C-437"],
+        "Hipparcos Legacy Catalog" => &["C-437"],
+        "GWTC-3 confident events" => &["C-006", "C-007", "C-025", "C-060"],
+        "GWOSC combined GWTC (O1-O4a)" => &["C-061", "C-070", "C-437", "C-439", "C-440", "C-441"],
+        "NANOGrav 15yr Free Spectrum" => &["C-059", "C-070"],
+        "Fermi GBM Burst Catalog" => &["C-064", "C-437"],
+        "Pantheon+ SH0ES" => &["C-038", "C-437", "C-441"],
+        "DESI DR1 BAO" => &["C-057", "C-441"],
+        "Planck 2018 Summary" => &["C-040", "C-058"],
+        _ => &[],
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -116,6 +155,47 @@ mod tests {
             sorted.len(),
             names.len(),
             "provider names must be unique"
+        );
+    }
+
+    #[test]
+    fn test_every_provider_has_a_pillar() {
+        for name in known_provider_names() {
+            let pillar = provider_pillar(name);
+            assert!(
+                PILLARS.contains(&pillar),
+                "Provider {:?} mapped to unknown pillar {:?}",
+                name, pillar
+            );
+        }
+    }
+
+    #[test]
+    fn test_all_pillars_have_providers() {
+        for pillar in PILLARS {
+            let count = known_provider_names()
+                .iter()
+                .filter(|n| provider_pillar(n) == *pillar)
+                .count();
+            assert!(
+                count > 0,
+                "Pillar {:?} has no providers",
+                pillar
+            );
+        }
+    }
+
+    #[test]
+    fn test_claim_backed_provider_count() {
+        let backed: Vec<_> = known_provider_names()
+            .into_iter()
+            .filter(|n| !claims_for_provider(n).is_empty())
+            .collect();
+        // 12 datasets have claims (DESI is hardcoded, not in provider list)
+        assert!(
+            backed.len() >= 11,
+            "Expected at least 11 claim-backed providers, got {}",
+            backed.len()
         );
     }
 

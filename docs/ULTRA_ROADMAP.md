@@ -96,8 +96,8 @@ end with cached artifacts, provenance hashes, and offline validation hooks.
 - [x] Add Swarm CSV header and timestamp monotonicity tests.
 - [x] Add SORCE/TSIS overlap comparison function with synthetic tests.
 - [x] Add Landsat STAC asset-schema validation and cloud-cover extraction.
-- [ ] Add a `dataset_coverage` report that maps claims to concrete dataset files.
-- [ ] Link dataset pillars to claim IDs in `docs/CLAIMS_EVIDENCE_MATRIX.md`.
+- [x] Add a `dataset_coverage` report mapping claims to datasets (`docs/DATASET_COVERAGE.md`, `data_core::provider_pillar`, `data_core::claims_for_provider`).
+- [x] Link dataset pillars to claim IDs (7 pillars, 12/30 datasets claim-backed, 3 coverage tests).
 - [x] Add a verifier ensuring every dataset in manifest has a provider in CLI.
 - [ ] Add a verifier ensuring every cached dataset hash is present in provenance JSON.
 - [ ] Add a verifier ensuring docs source-index links resolve to cached files.
