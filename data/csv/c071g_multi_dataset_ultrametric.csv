@@ -1,8 +1,10 @@
 dataset,n_objects,attributes,um_fraction,null_mean,null_std,p_value,verdict
 CHIME/FRB Cat 2,5000,log_DM+gl+gb,0.156060,0.135342,0.001141,0.0050,PASS
 ATNF Pulsars,4233,log_DM+gl+gb,0.222200,0.213066,0.001598,0.0050,PASS
+McGill Magnetars,20,log_period+log_B_dipole+ra+dec,0.196050,0.172233,0.016031,0.0796,FAIL
 GWOSC GW Events,176,log_chirp_mass+z+q+chi_eff,0.153230,0.161145,0.002788,0.9950,FAIL
 Pantheon+ SN Ia,1588,z_cmb+mu+x1+c,0.147450,0.163199,0.001500,1.0000,FAIL
 Gaia DR3 Stars,5000,parallax+pmra+pmdec+rv+G_mag+bp_rp,0.123550,0.143741,0.001095,1.0000,FAIL
 SDSS DR18 Quasars,5000,z+u_mag+g_mag+r_mag+i_mag,0.128360,0.136868,0.001137,1.0000,FAIL
 Fermi GBM GRBs,4202,log_t90+log_fluence+ra+dec,0.150730,0.151377,0.001238,0.6816,FAIL
+Hipparcos Stars,5000,parallax+pmra+pmdec+Vmag+ra+dec,0.140150,0.139922,0.001273,0.4378,FAIL

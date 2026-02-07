@@ -27,6 +27,17 @@ struct Args {
     #[arg(long)]
     category: Option<String>,
 
+    /// Fetch datasets in a scientific pillar:
+    ///   candle       Standard candles/rulers (Pantheon+, Union3, DESI BAO)
+    ///   gravitational  GW events + PTA (GWTC, NANOGrav)
+    ///   electromagnetic  EM transients + imaging (Fermi GBM, EHT)
+    ///   survey       Multi-object surveys (Gaia, SDSS, ATNF, CHIME, etc.)
+    ///   cmb          CMB/WMAP chains and parameters (Planck, WMAP)
+    ///   solar        Solar irradiance (TSIS, SORCE)
+    ///   geophysical  Gravity + magnetic field models (IGRF, WMM, GRACE, etc.)
+    #[arg(long)]
+    pillar: Option<String>,
+
     /// Fetch a specific dataset by name (substring match).
     #[arg(long)]
     dataset: Option<String>,
@@ -43,165 +54,204 @@ struct Args {
 struct DatasetEntry {
     provider: Box<dyn DatasetProvider>,
     category: &'static str,
+    pillar: &'static str,
     size_hint: &'static str,
 }
+
+const VALID_PILLARS: &[&str] = &[
+    "candle", "gravitational", "electromagnetic", "survey", "cmb", "solar", "geophysical",
+];
 
 fn build_registry() -> Vec<DatasetEntry> {
     use data_core::catalogs::*;
     use data_core::geophysical::*;
 
     vec![
-        // Astrophysical catalogs
+        // -- Survey pillar: multi-object catalogs --
         DatasetEntry {
             provider: Box::new(chime::ChimeCat2Provider),
             category: "astro",
+            pillar: "survey",
             size_hint: "~15 MB",
-        },
-        DatasetEntry {
-            provider: Box::new(gwtc::Gwtc3Provider),
-            category: "astro",
-            size_hint: "~2 MB",
-        },
-        DatasetEntry {
-            provider: Box::new(gwtc::GwoscCombinedProvider),
-            category: "astro",
-            size_hint: "~100 KB",
         },
         DatasetEntry {
             provider: Box::new(atnf::AtnfProvider),
             category: "astro",
+            pillar: "survey",
             size_hint: "~5 MB",
         },
         DatasetEntry {
             provider: Box::new(mcgill::McgillProvider),
             category: "astro",
+            pillar: "survey",
             size_hint: "~50 KB",
-        },
-        DatasetEntry {
-            provider: Box::new(fermi_gbm::FermiGbmProvider),
-            category: "astro",
-            size_hint: "~10 MB",
-        },
-        DatasetEntry {
-            provider: Box::new(nanograv::NanoGrav15yrProvider),
-            category: "astro",
-            size_hint: "~10 KB",
         },
         DatasetEntry {
             provider: Box::new(sdss::SdssQsoProvider),
             category: "astro",
+            pillar: "survey",
             size_hint: "~20 MB",
         },
         DatasetEntry {
             provider: Box::new(gaia::GaiaDr3Provider),
             category: "astro",
+            pillar: "survey",
             size_hint: "~15 MB",
         },
         DatasetEntry {
             provider: Box::new(hipparcos::HipparcosProvider),
             category: "astro",
+            pillar: "survey",
             size_hint: "~35 MB",
         },
+        // -- Gravitational pillar: GW events + PTA --
         DatasetEntry {
-            provider: Box::new(tsi::TsisTsiProvider),
+            provider: Box::new(gwtc::Gwtc3Provider),
             category: "astro",
-            size_hint: "~500 KB",
+            pillar: "gravitational",
+            size_hint: "~2 MB",
         },
         DatasetEntry {
-            provider: Box::new(sorce::SorceTsiProvider),
+            provider: Box::new(gwtc::GwoscCombinedProvider),
             category: "astro",
-            size_hint: "~2 MB",
+            pillar: "gravitational",
+            size_hint: "~100 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(nanograv::NanoGrav15yrProvider),
+            category: "astro",
+            pillar: "gravitational",
+            size_hint: "~10 KB",
+        },
+        // -- Electromagnetic pillar: EM transients + imaging --
+        DatasetEntry {
+            provider: Box::new(fermi_gbm::FermiGbmProvider),
+            category: "astro",
+            pillar: "electromagnetic",
+            size_hint: "~10 MB",
         },
         DatasetEntry {
             provider: Box::new(eht::EhtM87Provider),
             category: "astro",
+            pillar: "electromagnetic",
             size_hint: "~250 MB",
         },
         DatasetEntry {
             provider: Box::new(eht::EhtSgrAProvider),
             category: "astro",
+            pillar: "electromagnetic",
             size_hint: "~120 MB",
         },
-        // Cosmological datasets
+        // -- Solar pillar: irradiance --
+        DatasetEntry {
+            provider: Box::new(tsi::TsisTsiProvider),
+            category: "astro",
+            pillar: "solar",
+            size_hint: "~500 KB",
+        },
+        DatasetEntry {
+            provider: Box::new(sorce::SorceTsiProvider),
+            category: "astro",
+            pillar: "solar",
+            size_hint: "~2 MB",
+        },
+        // -- Candle pillar: standard candles/rulers --
         DatasetEntry {
             provider: Box::new(pantheon::PantheonProvider),
             category: "cosmology",
+            pillar: "candle",
             size_hint: "~200 KB",
         },
         DatasetEntry {
             provider: Box::new(union3::Union3Provider),
             category: "cosmology",
+            pillar: "candle",
             size_hint: "~15 MB",
         },
+        // -- CMB pillar: CMB parameter chains --
         DatasetEntry {
             provider: Box::new(planck::PlanckSummaryProvider),
             category: "cosmology",
+            pillar: "cmb",
             size_hint: "~1 MB",
         },
         DatasetEntry {
             provider: Box::new(planck::Wmap9ChainsProvider),
             category: "cosmology",
+            pillar: "cmb",
             size_hint: "~100 MB",
         },
         DatasetEntry {
             provider: Box::new(planck::PlanckChainsProvider),
             category: "cosmology",
+            pillar: "cmb",
             size_hint: "~9 GB",
         },
-        // Geophysical datasets
+        // -- Geophysical pillar: gravity + magnetic field models --
         DatasetEntry {
             provider: Box::new(igrf::Igrf13Provider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~30 KB",
         },
         DatasetEntry {
             provider: Box::new(wmm::Wmm2025Provider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~2 MB",
         },
         DatasetEntry {
             provider: Box::new(grace::GraceGgm05sProvider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~350 KB",
         },
         DatasetEntry {
             provider: Box::new(grace_fo::GraceFoProvider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~3 MB",
         },
         DatasetEntry {
             provider: Box::new(grail::GrailGrgm1200bProvider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~84 MB",
         },
         DatasetEntry {
             provider: Box::new(egm2008::Egm2008Provider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~75 MB",
         },
         DatasetEntry {
             provider: Box::new(swarm::SwarmMagAProvider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~1 MB",
         },
         DatasetEntry {
             provider: Box::new(landsat::LandsatStacProvider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~100 KB",
         },
         DatasetEntry {
             provider: Box::new(de_ephemeris::De440Provider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~120 MB",
         },
         DatasetEntry {
             provider: Box::new(de_ephemeris::De441Provider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~2.6 GB",
         },
         DatasetEntry {
             provider: Box::new(jpl_ephemeris::JplEphemerisProvider),
             category: "geophysical",
+            pillar: "geophysical",
             size_hint: "~200 KB",
         },
     ]
@@ -218,8 +268,11 @@ fn main() {
     let registry = build_registry();
 
     if args.list {
-        println!("{:<35} {:<15} {:<10} Cached", "Dataset", "Category", "Size");
-        println!("{}", "-".repeat(75));
+        println!(
+            "{:<35} {:<15} {:<16} {:<10} Cached",
+            "Dataset", "Category", "Pillar", "Size"
+        );
+        println!("{}", "-".repeat(90));
         for entry in &registry {
             let cached = if entry.provider.is_cached(&config) {
                 "yes"
@@ -227,9 +280,10 @@ fn main() {
                 "no"
             };
             println!(
-                "{:<35} {:<15} {:<10} {}",
+                "{:<35} {:<15} {:<16} {:<10} {}",
                 entry.provider.name(),
                 entry.category,
+                entry.pillar,
                 entry.size_hint,
                 cached
             );
@@ -237,8 +291,25 @@ fn main() {
         return;
     }
 
+    // Validate --pillar value
+    if let Some(ref p) = args.pillar {
+        if !VALID_PILLARS.contains(&p.as_str()) {
+            eprintln!(
+                "Error: unknown pillar '{}'. Valid pillars: {}",
+                p,
+                VALID_PILLARS.join(", ")
+            );
+            std::process::exit(1);
+        }
+    }
+
     let targets: Vec<&DatasetEntry> = if args.all {
         registry.iter().collect()
+    } else if let Some(ref p) = args.pillar {
+        registry
+            .iter()
+            .filter(|e| e.pillar == p.as_str())
+            .collect()
     } else if let Some(ref cat) = args.category {
         registry
             .iter()
@@ -251,7 +322,7 @@ fn main() {
             .filter(|e| e.provider.name().to_lowercase().contains(&lower))
             .collect()
     } else {
-        eprintln!("No action specified. Use --list, --all, --category, or --dataset.");
+        eprintln!("No action specified. Use --list, --all, --category, --pillar, or --dataset.");
         eprintln!("Run with --help for usage information.");
         std::process::exit(1);
     };

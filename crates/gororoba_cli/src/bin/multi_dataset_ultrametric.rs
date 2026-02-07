@@ -331,6 +331,31 @@ fn load_gaia(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
     Some((rows, specs))
 }
 
+/// Parse sexagesimal RA "HH MM SS.S" to decimal degrees.
+fn parse_ra_sexa(s: &str) -> Option<f64> {
+    let parts: Vec<&str> = s.split_whitespace().collect();
+    if parts.len() < 2 {
+        return s.trim().parse().ok();
+    }
+    let h: f64 = parts[0].parse().ok()?;
+    let m: f64 = parts[1].parse().ok()?;
+    let sec: f64 = if parts.len() >= 3 { parts[2].parse().unwrap_or(0.0) } else { 0.0 };
+    Some((h + m / 60.0 + sec / 3600.0) * 15.0)
+}
+
+/// Parse sexagesimal Dec "[+-]DD MM SS" to decimal degrees.
+fn parse_dec_sexa(s: &str) -> Option<f64> {
+    let parts: Vec<&str> = s.split_whitespace().collect();
+    if parts.len() < 2 {
+        return s.trim().parse().ok();
+    }
+    let d: f64 = parts[0].parse().ok()?;
+    let m: f64 = parts[1].parse().ok()?;
+    let sec: f64 = if parts.len() >= 3 { parts[2].parse().unwrap_or(0.0) } else { 0.0 };
+    let sign = if d < 0.0 || parts[0].starts_with('-') { -1.0 } else { 1.0 };
+    Some(sign * (d.abs() + m / 60.0 + sec / 3600.0))
+}
+
 fn load_fermi_gbm(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
     let path = dir.join("fermi_gbm_grbs.csv");
     if !path.exists() {
@@ -365,17 +390,22 @@ fn load_fermi_gbm(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
             continue;
         }
         let fields: Vec<&str> = trimmed.split(',').collect();
-        let parse = |idx: Option<usize>| -> Option<f64> {
+        let parse_num = |idx: Option<usize>| -> Option<f64> {
             idx.and_then(|i| fields.get(i))
                 .and_then(|s| {
                     let s = s.trim();
                     if s.is_empty() || s == "NaN" { None } else { s.parse().ok() }
                 })
         };
-        let t90 = parse(idx_t90);
-        let fluence = parse(idx_fluence);
-        let ra = parse(idx_ra);
-        let dec = parse(idx_dec);
+        let t90 = parse_num(idx_t90);
+        let fluence = parse_num(idx_fluence);
+        // RA/Dec are sexagesimal in HEASARC Fermi GBM data
+        let ra = idx_ra
+            .and_then(|i| fields.get(i))
+            .and_then(|s| parse_ra_sexa(s));
+        let dec = idx_dec
+            .and_then(|i| fields.get(i))
+            .and_then(|s| parse_dec_sexa(s));
 
         if let (Some(t90), Some(fluence), Some(ra), Some(dec)) = (t90, fluence, ra, dec) {
             if t90 > 0.0 && fluence > 0.0 {
@@ -389,6 +419,70 @@ fn load_fermi_gbm(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
     let specs = vec![
         attr("log_t90", &rows, 0, false),
         attr("log_fluence", &rows, 1, false),
+        attr("ra", &rows, 2, false),
+        attr("dec", &rows, 3, false),
+    ];
+    Some((rows, specs))
+}
+
+fn load_mcgill(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
+    let path = dir.join("mcgill_magnetars.csv");
+    if !path.exists() {
+        return None;
+    }
+    // McGill RA/Dec columns are sexagesimal -- the generic parser treats them
+    // as NaN, so we parse the CSV directly with sexagesimal conversion.
+    let content = std::fs::read_to_string(&path).ok()?;
+    let mut rows = Vec::new();
+    let mut header_seen = false;
+    let mut idx_ra = None;
+    let mut idx_dec = None;
+    let mut idx_period = None;
+    let mut idx_b = None;
+
+    for line in content.lines() {
+        let trimmed = line.trim();
+        if trimmed.is_empty() {
+            continue;
+        }
+        if !header_seen {
+            let cols: Vec<&str> = trimmed.split(',').collect();
+            for (i, c) in cols.iter().enumerate() {
+                let lc = c.trim().to_lowercase();
+                if lc == "ra" { idx_ra = Some(i); }
+                if lc == "decl" || lc == "dec" { idx_dec = Some(i); }
+                if lc == "period" { idx_period = Some(i); }
+                if lc == "b" || lc == "b_dipole" { idx_b = Some(i); }
+            }
+            header_seen = true;
+            continue;
+        }
+        let fields: Vec<&str> = trimmed.split(',').collect();
+        let ra = idx_ra
+            .and_then(|i| fields.get(i))
+            .and_then(|s| parse_ra_sexa(s));
+        let dec = idx_dec
+            .and_then(|i| fields.get(i))
+            .and_then(|s| parse_dec_sexa(s));
+        let period = idx_period
+            .and_then(|i| fields.get(i))
+            .and_then(|s| { let s = s.trim(); s.parse::<f64>().ok() });
+        let b = idx_b
+            .and_then(|i| fields.get(i))
+            .and_then(|s| { let s = s.trim(); s.parse::<f64>().ok() });
+
+        if let (Some(ra), Some(dec), Some(period), Some(b)) = (ra, dec, period, b) {
+            if period > 0.0 && b > 0.0 {
+                rows.push(vec![period.log10(), b.log10(), ra, dec]);
+            }
+        }
+    }
+    if rows.len() < 10 {
+        return None;
+    }
+    let specs = vec![
+        attr("log_period", &rows, 0, false),
+        attr("log_B_dipole", &rows, 1, false),
         attr("ra", &rows, 2, false),
         attr("dec", &rows, 3, false),
     ];
@@ -422,6 +516,53 @@ fn load_sdss(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
         attr("g_mag", &rows, 2, false),
         attr("r_mag", &rows, 3, false),
         attr("i_mag", &rows, 4, false),
+    ];
+    Some((rows, specs))
+}
+
+fn load_hipparcos(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
+    let path = dir.join("hip_main.dat");
+    if !path.exists() {
+        return None;
+    }
+    // Hipparcos main catalog is pipe-delimited with 78 fields.
+    // Field indices (0-based after splitting on '|'):
+    //   8: RA (degrees)    9: Dec (degrees)
+    //  11: parallax (mas) 12: pmRA (mas/yr)  13: pmDec (mas/yr)
+    //   5: Vmag
+    let content = std::fs::read_to_string(&path).ok()?;
+    let mut rows = Vec::new();
+    for line in content.lines() {
+        let fields: Vec<&str> = line.split('|').collect();
+        if fields.len() < 14 {
+            continue;
+        }
+        let parse = |s: &str| -> Option<f64> {
+            let s = s.trim();
+            if s.is_empty() { None } else { s.parse().ok() }
+        };
+        let (Some(plx), Some(pmra), Some(pmdec), Some(vmag), Some(ra), Some(dec)) =
+            (parse(fields[11]), parse(fields[12]), parse(fields[13]),
+             parse(fields[5]), parse(fields[8]), parse(fields[9]))
+        else {
+            continue;
+        };
+        // Filter: positive parallax, reasonable magnitude
+        if plx <= 0.0 || !(-2.0..=20.0).contains(&vmag) {
+            continue;
+        }
+        rows.push(vec![plx, pmra, pmdec, vmag, ra, dec]);
+    }
+    if rows.len() < 10 {
+        return None;
+    }
+    let specs = vec![
+        attr("parallax", &rows, 0, false),
+        attr("pmra", &rows, 1, false),
+        attr("pmdec", &rows, 2, false),
+        attr("Vmag", &rows, 3, false),
+        attr("ra", &rows, 4, false),
+        attr("dec", &rows, 5, false),
     ];
     Some((rows, specs))
 }
@@ -531,11 +672,13 @@ fn main() {
     let loaders: Vec<(&str, LoaderFn)> = vec![
         ("CHIME/FRB Cat 2", Box::new(load_chime_frb)),
         ("ATNF Pulsars", Box::new(load_atnf_pulsars)),
+        ("McGill Magnetars", Box::new(load_mcgill)),
         ("GWOSC GW Events", Box::new(load_gwtc3)),
         ("Pantheon+ SN Ia", Box::new(load_pantheon)),
         ("Gaia DR3 Stars", Box::new(load_gaia)),
         ("SDSS DR18 Quasars", Box::new(load_sdss)),
         ("Fermi GBM GRBs", Box::new(load_fermi_gbm)),
+        ("Hipparcos Stars", Box::new(load_hipparcos)),
     ];
 
     for (name, loader) in &loaders {
