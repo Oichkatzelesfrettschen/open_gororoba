@@ -336,3 +336,51 @@ output trajectory alone, since Dopri5's interpolant does not preserve velocity
 accuracy. The potential non-negativity test is the accessible alternative.
 
 ---
+
+## I-009: Elliptic Integral Crate Eliminates Carlson Port
+
+**Date**: 2026-02-06
+**Context**: gr_core GR module expansion / Blackhole C++ port research
+**Related claims**: Task #30 (Carlson elliptic integrals), Task #48 (crate research)
+
+The `ellip` crate (1.0.4, BSD-3-Clause) provides all 5 Carlson symmetric forms
+(RF, RD, RJ, RC, RG) plus all Legendre complete/incomplete elliptic integrals
+(K, E, Pi, D, F). This completely eliminates the need to hand-port the Carlson
+implementation from the Blackhole C++ codebase (Task #30).
+
+Carlson symmetric forms are numerically superior to Legendre forms for Kerr
+geodesic integrals (see Carlson 1995, Press et al. NR Ch 6.11, Dexter & Agol
+2009). The crate is tested against Boost Math and Wolfram reference values,
+has minimal dependencies (num-traits, num-lazy, numeric_literals), and uses the
+standard parameter convention m = k^2 (consistent with SciPy).
+
+The companion crate `ellip-rayon` provides parallel evaluation, which could be
+useful for shadow computation sweeps over large parameter grids.
+
+---
+
+## I-010: nalgebra 0.33/0.34 Version Split Blocks Autodiff
+
+**Date**: 2026-02-06
+**Context**: gr_core GR module expansion / crate version compatibility
+**Related claims**: Task #37 (generic connection computation), Task #48
+
+num-dual 0.13.2 (exact automatic differentiation via dual numbers) is the
+ideal crate for computing Christoffel symbols from arbitrary metric functions.
+However, it requires nalgebra 0.34, while ode_solvers 0.6.1 requires nalgebra
+0.33.2. These are incompatible (0.33 and 0.34 are different semver-minor
+versions under the 0.x convention, so Cargo treats them as separate crates
+with incompatible types).
+
+**Decision**: Defer num-dual until ode_solvers releases a nalgebra 0.34-
+compatible version. For known metrics (Schwarzschild, Kerr, Kerr-Newman),
+use closed-form Christoffel symbols (textbook derivations, hand-coded, faster
+than autodiff). num-dual becomes necessary only for generic connection
+computation (Task #37) where the metric is not known at compile time.
+
+**Monitoring**: Check ode_solvers GitHub for nalgebra 0.34 support periodically.
+Alternative: evaluate switching to a different ODE solver crate that supports
+nalgebra 0.34, or upgrading nalgebra to 0.34 if ode_solvers supports it
+transitively.
+
+---

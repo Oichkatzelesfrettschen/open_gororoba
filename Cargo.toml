@@ -67,6 +67,9 @@ periodic-table-on-an-enum = "0.3.2"  # Element enum with atomic data
 # Numerical quadrature
 gauss-quad = "0.2.4"         # Gauss-Legendre quadrature (replaces hand-rolled Simpson)
 
+# Special functions
+ellip = "1.0.4"              # Carlson symmetric (RF,RD,RJ,RC,RG) + Legendre elliptic integrals
+
 # ODE solvers
 ode_solvers = "0.6.1"        # Dormand-Prince 5(4), Dop853, RK4 (nalgebra-based)
 

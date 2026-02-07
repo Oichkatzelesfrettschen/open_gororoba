@@ -11,6 +11,7 @@ rayon = { workspace = true }
 thiserror = { workspace = true }
 nalgebra = { workspace = true }
 ode_solvers = { workspace = true }
+ellip = { workspace = true }
 
 # Physics constants
 physical_constants = { workspace = true }
