@@ -109,5 +109,5 @@ else:
     plt.tight_layout()
     outp = "data/artifacts/images/css_fractal_candidate_logical_expanded_3160x2820.png"
     plt.savefig(outp, dpi=dpi, facecolor="#0d0f14")
-    plt.show()
+    plt.close()
     print("Saved:", outp)

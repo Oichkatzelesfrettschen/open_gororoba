@@ -20,11 +20,11 @@ Note:
   - [x] p-adic operator sources (Vladimirov/Kozyrev) (CX-006). Audit complete: foundations correct (14 tests), Vladimirov/Kozyrev correctly deferred, sources cited in BIBLIOGRAPHY.md.
   - [x] Exceptional/Jordan/Albert references to correct overclaims (CX-007). Audit complete: no overclaims found. nilpotent_orbits.rs is generic (no exceptional claims), magic square verified, H3(O) correctly deferred.
 - [x] Execute missing dataset pillars roadmap from `docs/ULTRA_ROADMAP.md` Section H (21/21 done, 1464 tests).
-- [ ] Implementation (keep every warning as an error):
+- [x] Implementation (keep every warning as an error):
   - [x] Wheels axioms checker + unit tests (CX-017). Already in wheels.rs (WheelQ, 8 axioms, 10 tests).
   - [x] XOR-balanced search extension + tests (CX-003). 10 new tests.
   - [x] Motif census: exact to 256D with scaling laws (CX-002). 16 new tests.
-  - [ ] Visualization hygiene and artifact saving policy (CX-019).
+  - [x] Visualization hygiene and artifact saving policy (CX-019). plt.show() -> plt.close() in 2 files; no MathText/grid/deprecation issues found.
 
 ## Quality gates
 - [x] `cargo clippy --workspace -j$(nproc) -- -D warnings`
