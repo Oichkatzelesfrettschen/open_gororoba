@@ -9,8 +9,8 @@ use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, Fetc
 use std::path::PathBuf;
 
 const GRACE_FO_URLS: &[&str] = &[
-    "https://icgem.gfz-potsdam.de/sp/01_GRACE/GFZ/GFZ%20Release%2006.3%20%28GFO%29/60x60/unfiltered/GSM-2_2018152-2018181_GRFO_GFZOP_BA01_0603.gfc",
-    "https://icgem.gfz.de/sp/01_GRACE/JPL/JPL%20Release%2006.1%20%28GFO%29/60x60/unfiltered/GSM-2_2018152-2018181_GRFO_JPLEM_BA01_0601.gfc",
+    "https://icgem.gfz-potsdam.de/getseries/01_GRACE/GFZ/GFZ%20Release%2006.3%20%28GFO%29/60x60/unfiltered/GSM-2_2018152-2018181_GRFO_GFZOP_BA01_0603.gfc",
+    "https://icgem.gfz-potsdam.de/getseries/01_GRACE/JPL/JPL%20Release%2006.3%20%28GFO%29/60x60/unfiltered/GSM-2_2018152-2018181_GRFO_JPLEM_BA01_0603.gfc",
 ];
 
 /// GRACE-FO provider.

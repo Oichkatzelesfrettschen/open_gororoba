@@ -14,7 +14,7 @@ use std::path::PathBuf;
 ///
 /// The ZIP contains WMM.COF (the coefficient file) and supporting documents.
 const WMM_URLS: &[&str] = &[
-    "https://www.ncei.noaa.gov/products/world-magnetic-model/wmm2025_Linux.zip",
+    "https://www.ncei.noaa.gov/sites/default/files/2024-12/WMM2025COF.zip",
     "https://www.ngdc.noaa.gov/geomag/WMM/data/WMM2025/WMM2025COF.zip",
 ];
 
