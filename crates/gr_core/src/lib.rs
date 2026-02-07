@@ -16,6 +16,8 @@
 //! - `metric` -- Generic spacetime trait and numerical curvature computation
 //! - `schwarzschild` -- Schwarzschild black hole (exact Christoffels, ISCO, potentials)
 //! - `kerr` -- Kerr black hole (exact Christoffels, geodesics, shadow, ISCO, ergosphere)
+//! - `kerr_newman` -- Kerr-Newman (rotating charged BH): horizons, EM field, ISCO
+//! - `kerr_de_sitter` -- Kerr-de Sitter (rotating BH + Lambda): triple horizon structure
 //! - `coordinates` -- BL, MKS, Cartesian, and Kerr-Schild coordinate transforms
 //! - `hawking` -- Hawking radiation, BH thermodynamics, entropy, evaporation
 //! - `penrose` -- Penrose process, Blandford-Znajek, superradiance
@@ -39,6 +41,10 @@
 //! - Begelman, Blandford, Rees (1984): Rev. Mod. Phys. 56, 255
 //! - Peters & Mathews (1963): Phys. Rev. 131, 435
 //! - Blanchet (2014): Living Reviews in Relativity
+//! - Newman et al. (1965): J. Math. Phys. 6, 918
+//! - Carter (1968): Phys. Rev. 174, 1559
+//! - Carter (1973): Black hole equilibrium states with Lambda
+//! - Griffiths & Podolsky (2009): Exact Space-Times in Einstein's GR
 
 pub mod absorption;
 pub mod constants;
@@ -47,6 +53,8 @@ pub mod doppler;
 pub mod gravitational_waves;
 pub mod hawking;
 pub mod kerr;
+pub mod kerr_de_sitter;
+pub mod kerr_newman;
 pub mod metric;
 pub mod novikov_thorne;
 pub mod penrose;
