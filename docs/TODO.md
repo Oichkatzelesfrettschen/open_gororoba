@@ -28,7 +28,7 @@ Note:
 
 ## Quality gates
 - [x] `cargo clippy --workspace -j$(nproc) -- -D warnings`
-- [x] `cargo test --workspace -j$(nproc)` (1433 tests, 0 failures)
+- [x] `cargo test --workspace -j$(nproc)` (1449 tests, 0 failures)
 - [ ] `make ascii-check`
 
 ## Completed (keep for provenance)

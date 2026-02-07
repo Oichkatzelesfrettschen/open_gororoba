@@ -21,9 +21,11 @@
 //! ```
 
 pub mod catalogs;
+pub mod doc_links;
 pub mod fetcher;
 pub mod formats;
 pub mod geophysical;
+pub mod provenance;
 
 pub use fetcher::{compute_sha256, download_to_file, download_to_string};
 pub use fetcher::{DatasetProvider, FetchConfig, FetchError};
