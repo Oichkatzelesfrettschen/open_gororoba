@@ -26,6 +26,7 @@
 //! - `doppler` -- Relativistic Doppler effect, beaming, aberration
 //! - `absorption` -- SSA, free-free, Compton absorption + radiative transfer
 //! - `gravitational_waves` -- GW strain, chirp mass, inspiral waveforms, QNM
+//! - `null_constraint` -- Null geodesic constraint preservation and renormalization
 //! - `constants` -- Astrophysical constants (CGS, natural units, conversions)
 //!
 //! # Literature
@@ -56,6 +57,7 @@ pub mod kerr;
 pub mod kerr_de_sitter;
 pub mod kerr_newman;
 pub mod metric;
+pub mod null_constraint;
 pub mod novikov_thorne;
 pub mod penrose;
 pub mod schwarzschild;
@@ -74,3 +76,10 @@ pub use metric::{
 };
 
 pub use schwarzschild::Schwarzschild;
+
+pub use null_constraint::{
+    null_constraint, is_null, mass_shell_constraint, is_timelike,
+    renormalize_null, renormalize_null_diagonal, renormalize_null_kerr,
+    renormalize_massive, constraint_drift_bound, global_drift_bound,
+    adaptive_tolerance, needs_renormalization, ConstraintStats,
+};
