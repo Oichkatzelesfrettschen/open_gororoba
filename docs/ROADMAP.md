@@ -77,7 +77,7 @@ spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
 Penrose process, coordinates, null constraint, energy-conserving integrator.
 **Claims infrastructure**: COMPLETE.  Rust claims-audit + claims-verify binaries
 replace 11 Python scripts.  118 backfill items confirmed Verified (2026-02-07).
-**Test count**: 1523 Rust unit tests + 14 doc-tests pass (1537 total), 0 clippy warnings.
+**Test count**: 1525 Rust unit tests + 14 doc-tests pass (1539 total), 0 clippy warnings.
 gororoba_kernels removed (2026-02-06).
 **GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
 
@@ -227,7 +227,7 @@ These implementations STAY because no suitable crate exists or licensing prevent
 
 ### 3.1 Current State
 
-1517 Rust unit tests pass across 13 crates, plus 14 doc-tests (1531 total).
+1525 Rust unit tests pass across 13 crates, plus 14 doc-tests (1539 total).
 0 clippy warnings (warnings-as-errors is non-negotiable).
 
 ### 3.2 Testing Layers
@@ -298,19 +298,19 @@ python -m pytest tests/   # Python integration tests
 
 No deletions; only append/clarify sources:
 
-- [ ] Wheels (division-by-zero) vs wheel graphs vs wheeled operads (CX-017)
-- [ ] de Marrais primary sources + terminology alignment (CX-002)
-- [ ] Reggiani alignment: Z(S) vs ZD(S) repo terminology (CX-003)
-- [ ] Fractional Laplacian sources: Riesz vs spectral vs extension (CX-004)
-- [ ] p-adic operator sources: Vladimirov/Kozyrev (CX-006)
-- [ ] Exceptional/Jordan/Albert references to correct overclaims (CX-007)
+- [x] Wheels (division-by-zero) vs wheel graphs vs wheeled operads (CX-017) -- DONE
+- [x] de Marrais primary sources + terminology alignment (CX-002) -- DONE
+- [x] Reggiani alignment: Z(S) vs ZD(S) repo terminology (CX-003) -- DONE
+- [x] Fractional Laplacian sources: Riesz vs spectral vs extension (CX-004) -- DONE
+- [x] p-adic operator sources: Vladimirov/Kozyrev (CX-006) -- DONE
+- [x] Exceptional/Jordan/Albert references to correct overclaims (CX-007) -- DONE
 
 ### 4.2 Implementation
 
 - [x] Wheels axioms checker + unit tests (CX-017) -- DONE
 - [x] XOR-balanced search extension + tests (CX-003) -- DONE (10 regression tests)
 - [x] Motif census: extend to 64D/128D/256D exact + scaling laws (CX-002) -- DONE (16 regression tests)
-- [ ] Visualization hygiene and artifact saving policy (CX-019)
+- [x] Visualization hygiene and artifact saving policy (CX-019) -- DONE
 - [ ] Fast basis-element multiplication table generator (16D/32D) with cache + checksum
 
 ### 4.3 Dataset Pillars (Active)
@@ -488,7 +488,7 @@ here for completeness.
 
 ### 7.1 Reproducibility & Quality Gates (Section A)
 - [x] Package gemini_physics, pytest, ruff, CI, artifact verifier
-- [ ] Extend ruff linting phased to all `src/*.py`
+- ~~Extend ruff linting phased to all `src/*.py`~~ -- Obsolete (Python migration complete; only viz scripts remain)
 
 ### 7.2 Claims -> Evidence (Section B)
 - [ ] Primary-source citation for every claim in CLAIMS_EVIDENCE_MATRIX.md
@@ -507,9 +507,9 @@ here for completeness.
 - [ ] "Paper-ready" LaTeX build pipeline (`make latex`)
 - [ ] Structured "hypotheses + tests + results" format
 
-### 7.6 Dataset Pillars (Section H)
-Full granular checklist in `docs/ULTRA_ROADMAP.md` Section H.
-Major providers operational; schema checks and benchmarks remain.
+### 7.6 Dataset Pillars (Section H) -- COMPLETE
+Full granular checklist in `docs/ULTRA_ROADMAP.md` Section H (21/21 done).
+30 dataset providers, 6 EHT multi-format bundles (UVFITS+CSV+TXT), 3 URL fixes applied.
 
 ---
 
@@ -521,7 +521,7 @@ Major providers operational; schema checks and benchmarks remain.
 | ~~Near~~ | ~~Cross-domain ultrametric analysis (9 catalogs)~~ | ~~Dataset providers~~ | **DONE** (I-011, 82/472 sig) |
 | ~~Near~~ | ~~GPU acceleration (CUDA ultrametric kernel)~~ | ~~cudarc 0.19.1~~ | **DONE** (RTX 4070 Ti) |
 | ~~Near~~ | ~~Schema checks for all 18 dataset providers~~ | ~~Parser code in data_core~~ | **DONE** (21 tests, 3 URL fixes) |
-| Near | Extend motif census to 64D/128D | algebra_core | Planned |
+| ~~Near~~ | ~~Extend motif census to 64D/128D/256D exact~~ | ~~algebra_core~~ | **DONE** (16 regression tests, 5 scaling laws) |
 | Medium | WASM target for browser visualization | Crate compatibility audit | Future |
 | Medium | Hardware quantum circuit run (IBM Eagle 127q) | F4 circuit design | Future |
 | Medium | Publication pipeline (LaTeX from verified results) | Source-first research | Future |

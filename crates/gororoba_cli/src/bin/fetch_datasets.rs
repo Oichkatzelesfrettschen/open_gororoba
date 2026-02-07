@@ -131,16 +131,40 @@ fn build_registry() -> Vec<DatasetEntry> {
             size_hint: "~10 MB",
         },
         DatasetEntry {
+            provider: Box::new(eht::EhtM87_2017Provider),
+            category: "astro",
+            pillar: "electromagnetic",
+            size_hint: "~5 MB (CSV+UVFITS+TXT)",
+        },
+        DatasetEntry {
             provider: Box::new(eht::EhtM87Provider),
             category: "astro",
             pillar: "electromagnetic",
-            size_hint: "~250 MB",
+            size_hint: "~8 MB (CSV+UVFITS+TXT)",
         },
         DatasetEntry {
             provider: Box::new(eht::EhtSgrAProvider),
             category: "astro",
             pillar: "electromagnetic",
-            size_hint: "~120 MB",
+            size_hint: "~21 MB (CSV+UVFITS+TXT)",
+        },
+        DatasetEntry {
+            provider: Box::new(eht::Eht3c279Provider),
+            category: "astro",
+            pillar: "electromagnetic",
+            size_hint: "~5 MB (CSV+UVFITS+TXT)",
+        },
+        DatasetEntry {
+            provider: Box::new(eht::EhtCenAProvider),
+            category: "astro",
+            pillar: "electromagnetic",
+            size_hint: "~3 MB (CSV+UVFITS+TXT)",
+        },
+        DatasetEntry {
+            provider: Box::new(eht::EhtM87LegacyProvider),
+            category: "astro",
+            pillar: "electromagnetic",
+            size_hint: "~24 KB",
         },
         // -- Solar pillar: irradiance --
         DatasetEntry {

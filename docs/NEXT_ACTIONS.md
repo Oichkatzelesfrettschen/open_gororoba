@@ -6,7 +6,7 @@ Execution detail for missing datasets lives in `docs/ULTRA_ROADMAP.md` Section H
 
 ## Sprint 5 Summary (2026-02-07)
 
-**Test count**: 1517 unit + 14 doc-tests = 1531 total, 0 clippy warnings.
+**Test count**: 1525 unit + 14 doc-tests = 1539 total, 0 clippy warnings.
 
 Completed this sprint:
 - P1-P5: Deleted 10 Python files with confirmed Rust equivalents, ported 4 analysis scripts.

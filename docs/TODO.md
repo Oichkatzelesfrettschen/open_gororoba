@@ -8,7 +8,7 @@ Primary trackers:
 
 Note:
 - Python-to-Rust migration is COMPLETE (all 15 modules ported, gororoba_kernels removed).
-- 1464 Rust tests (unit + doc) pass, 0 clippy warnings.
+- 1539 Rust tests (unit + doc) pass, 0 clippy warnings.
 - Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md`) deleted; content absorbed into `docs/ROADMAP.md`.
 
 ## Current sprint (blockers first)
@@ -28,7 +28,7 @@ Note:
 
 ## Quality gates
 - [x] `cargo clippy --workspace -j$(nproc) -- -D warnings`
-- [x] `cargo test --workspace -j$(nproc)` (1464 tests, 0 failures)
+- [x] `cargo test --workspace -j$(nproc)` (1539 tests, 0 failures)
 - [x] `make ascii-check` (5 files fixed, extended replacement table + skip lists)
 
 ## Completed (keep for provenance)
@@ -46,4 +46,4 @@ Note:
 - [x] Motif census extended to dim=64/128/256 exact. 5 scaling laws verified, 16 new tests.
 - [x] XOR-balanced search extension (CX-003): mixed 2-blade/4-blade graph, necessity statistics. 10 new tests.
 - [x] Source-first research passes: 6/6 complete (CX-017, CX-002, Reggiani, CX-004, CX-006, CX-007). No overclaims found. C-S doc clarified in spectral_core.
-- [x] Dataset pillar validation: +33 new tests in data_core (Union3, Swarm, EHT, GFC, SPK, Landsat STAC, SORCE/TSIS overlap, provider verifier). 9/21 Section H items done.
+- [x] Dataset pillar validation: +33 new tests in data_core (Union3, Swarm, EHT, GFC, SPK, Landsat STAC, SORCE/TSIS overlap, provider verifier). 21/21 Section H items done.
