@@ -49,6 +49,9 @@ Convos chunk audit logs live under `docs/convos/` (start with `docs/convos/audit
 | CX-023 | Fractal CSS codes, Sierpinski stabilizers, fracton topological order, GF(2) rank | `convos/1_read_nonuser_lines_cont.md`, `convos/3_further_explorations.md` | `src/quantum/fracton_code.py`, `src/quantum/advanced/fractal_css_expanded.py` | Prototype only | Refactor into tested module; add distance lower-bound computation; connect to Yoshida (2013) fracton framework with proper citations. |
 | CX-024 | p-adic gauge deformations, Vladimirov operator on gauge fields, p-adic AdS/CFT | `convos/3_further_explorations.md` | CX-006 (`src/gemini_physics/padic.py`, `tests/test_padic_and_cantor.py`) | Unimplemented (scope pending) | Requires CX-006 foundations; scope a minimal gauge-deformation toy model or defer with explicit bibliography (Gubser et al. 2017, Heydeman et al. 2018). |
 | CX-025 | Inverse Cayley-Dickson (un-doubling / contraction), CD contraction as A-infinity co-operations | `convos/3_further_explorations.md`, `convos/1_read_each_nonuser_line.md` | CX-001 (`src/gemini_physics/m3_cd_transfer.py`, `tests/test_m3_cd_transfer.py`) | Unimplemented (theory-first) | Formalize the "inverse CD" map p: CD(A)->A as an A-infinity co-operation; verify whether m3 from CX-001 arises as a transferred structure from this contraction. Cite Kadeishvili (2005). |
+| CX-026 | Quantum inequalities (Ford-Roman-Pfenning), negative energy constraints, warp drive obstructions | `convos/compass_artifact_wf-a59991f9...md`, `convos/compass_artifact_wf-7f987cff...md` | `crates/gr_core/src/constants.rs` (Planck units), C-011 (warp drive constraints) | Unimplemented (literature-first) | Cache Ford-Roman QI bound C=3/(32pi^2); verify tau^4 scaling; connect to existing C-011 warp-drive constraint chain. |
+| CX-027 | Light-ion QGP (O-O, Ne-Ne), alpha-clustering nuclear geometry, v3 centrality inversion | `convos/compass_artifact_wf-f3798de2...md` | C-043 (O-O collisions July 2025) | Unimplemented (data pending) | Track CMS HIN-25-008 RAA=0.69, Ne-Ne RAA~0.60; add alpha-clustering geometry (tetrahedral O-16, bowling-pin Ne-20); monitor for ALICE/ATLAS publications through 2026. |
+| CX-028 | Subluminal positive-energy warp drives (Bobrick-Martire, Fuchs 2024), Lentz refutation | `convos/compass_artifact_wf-a59991f9...md` | C-011 (warp drive framework), C-401 (White-Casimir warp) | Unimplemented (literature-first) | Cache Bobrick-Martire (2021) and Fuchs et al. (2024) papers; document distinction between subluminal-positive-energy and superluminal-exotic-matter regimes; note acceleration-mechanism absence as open problem. |
 
 ---
 
@@ -429,3 +432,125 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 - Kadeishvili (1980/2005): "On the homology theory of fibre spaces" / transferred A-infinity.
 - Loday & Vallette (2012): "Algebraic Operads", Ch. 9 (A-infinity algebras and transfer).
 - Markl (2006): "Transferring A-infinity structures" (explicit formulas).
+
+---
+
+## CX-026 - Quantum inequalities and negative energy constraints
+
+**Status:** Unimplemented (literature-first)
+
+### What the convos claim
+- Ford-Roman quantum inequality bound: integral of <T_00> f(tau)^2 dtau >= -C/tau^4
+  with C = 3/(32 pi^2) ~ 0.00949 for 4D massless scalar (Pfenning & Ford 1997).
+- This implies minimum bubble wall thickness ~ 100 Planck lengths for warp drives.
+- Negative energy requirement for Alcubierre metric: ~ 10^64 kg for 100m bubble at 10c.
+- Van Den Broeck (1999) topology modification reduces to few solar masses.
+- No quantum inequalities exist along null geodesics in 4D (Fewster & Roman 2003).
+
+### Minimal reproducible hypotheses (tests)
+- H1: Verify C = 3/(32 pi^2) numerically and confirm dimensional consistency.
+- H2: Derive bubble thickness lower bound from QI and verify ~ 100 l_Planck.
+- H3: Reproduce Alcubierre energy estimate for standard parameters.
+
+### First-party sources to cite
+- Pfenning & Ford (1997): "Quantum inequalities on the energy density in static Robertson-Walker spacetimes".
+- Fewster (2012): "Lectures on quantum energy inequalities".
+- Kontou & Sanders (2020): Review, CQG 37, 193001.
+- Fewster & Roman (2003): null geodesic counterexample.
+
+---
+
+## CX-027 - Light-ion QGP and alpha-clustering
+
+**Status:** Unimplemented (data pending 2026)
+
+### What the convos claim
+- O-O collisions at LHC (July 2025, sqrt(s_NN) = 5.36 TeV): CMS HIN-25-008
+  measures R_AA = 0.69 +/- 0.04 at pT ~ 6 GeV (>5 sigma significance).
+- Ne-Ne collisions: R_AA ~ 0.60 at pT ~ 6 GeV (7 sigma significance).
+- O-16 has tetrahedral alpha-clustering: generates enhanced triangular
+  eccentricity epsilon_3 -> v_3 (centrality inversion vs Pb-Pb).
+- Ne-20 has prolate bowling-pin shape: beta_2 ~ 0.5-0.7 deformation.
+- Energy loss scales ~ L (near-linear) in expanding QGP, not L^2
+  static medium (Arleo & Falmagne, arXiv:2411.13258).
+- Pre-equilibrium quenching onset at ~ 0.2 fm/c (Pablos & Takacs).
+
+### Connection to existing claims
+- C-043: O-O collisions at LHC (already tracked, needs R_AA update).
+- New claims: Ne-Ne R_AA, v_3 inversion, energy-loss scaling, pre-equilibrium onset.
+
+### First-party sources to cite
+- CMS HIN-25-008 (2025): O-O jet quenching.
+- Arleo & Falmagne (arXiv:2411.13258): energy-loss scaling analysis.
+- Pablos & Takacs (arXiv:2509.19430): pre-equilibrium timing via Bayesian inference.
+
+---
+
+## CX-028 - Subluminal positive-energy warp drives
+
+**Status:** Unimplemented (literature-first)
+
+### What the convos claim
+- Bobrick & Martire (2021): subluminal positive-energy warp drives are
+  constructible but reduce negative energy by only ~2 orders of magnitude
+  and lack any acceleration mechanism (passengers arrive slower than light).
+- Erik Lentz (2021): claimed hyper-fast soliton with positive energy.
+  REFUTED by Santiago, Schuster & Visser (2021) error analysis.
+- Fuchs, Helmerich et al. (2024): achieve subluminal constant-velocity
+  solution satisfying all classical energy conditions. Most rigorous
+  positive-energy result to date, but still subluminal and constant-velocity.
+- Finazzi, Liberati & Barcelo (2009): superluminal warp bubbles are
+  unstable against quantum backreaction (Hawking-like instability).
+
+### Connection to existing claims
+- C-011: Alcubierre warp drive framework (exotic matter requirements).
+- C-401: White-Casimir warp conjecture (PARTIAL, needs landscape update).
+
+### Key distinction
+The field splits into two regimes:
+- **Subluminal + positive energy**: mathematically valid but physically trivial
+  (slower than light, no acceleration). Bobrick, Fuchs results live here.
+- **Superluminal + exotic matter**: requires NEC violation, quantum-scale
+  constraints from Ford-Roman QIs (CX-026), and suffers Finazzi instability.
+No bridge between regimes is known.
+
+### First-party sources to cite
+- Bobrick & Martire (2021): "Introducing physical warp drives", CQG 38, 105009.
+- Lentz (2021): "Breaking the warp barrier" (CQG 38, 075015).
+- Santiago, Schuster & Visser (2021): Lentz error analysis (PRD 105, 064038).
+- Fuchs et al. (2024): positive-energy constant-velocity solution.
+- Finazzi, Liberati & Barcelo (2009): instability result, PRD 79, 124017.
+
+---
+
+## Convos audit summary (2026-02-07)
+
+Full audit of 7 files in `convos/`. Results:
+
+- **104 distinct claims** identified across 6 compass artifacts + 1 large convo.
+- **56 already in CLAIMS_EVIDENCE_MATRIX.md** (54%).
+- **18 already in CX-index** (17%, CX-001 through CX-025).
+- **30 new claims** extracted (29%), clustered into CX-026..CX-028 + individual items.
+- **5 refutations** identified:
+  1. Winding number formula ill-defined on discrete 5-site graphs.
+  2. Lentz positive-energy hyper-fast soliton (error found by Santiago et al.).
+  3. G2 holonomy + sedenion extension: no literature connection found.
+  4. Debye screening lambda_D quoted as 0.2 fm; correct value 0.3-0.5 fm at T~200 MeV.
+  5. Neutron star core temperature overstated (correct: ~10^9-10^7 K, not 0-50 MeV).
+
+### Individual new claims not elevated to CX-level (for matrix tracking)
+
+| ID | Domain | Summary |
+|----|--------|---------|
+| NEW-004 | Cosmology | Sedenion-based cosmological constant suppression (novel, no precedent) |
+| NEW-005 | Cosmology | DESI Year 3 evolving dark energy at 2.8-4.2 sigma (not 5 sigma) |
+| NEW-013 | Quantum gravity | Lauscher-Reuter eta_N = -2 yields d_S = 2 UV (asymptotic safety) |
+| NEW-014 | Analog gravity | Steinhauer BEC Hawking radiation ~10% temperature agreement |
+| NEW-015 | Information theory | Bekenstein bound S <= 2 pi R E / hbar c verified (Casini 2008) |
+| NEW-016 | Optics | Spaceplates R = 176 +/- 14 compression (Hogan et al. 2025) |
+| NEW-017 | Quantum gravity | d_S -> 2 universal across 6 independent QG frameworks (synthesis) |
+| NEW-020 | QCD | Clarke et al. T_CEP = 102 MeV, mu_B_CEP = 428 MeV (published PRD) |
+| NEW-026 | History | Pentium FDIV: 16 missing entries, 5 cause errors (nuanced) |
+
+These should be promoted to C-nnn entries in the matrix when they acquire
+primary source caching and offline validation tests.
