@@ -113,6 +113,14 @@ path = "src/bin/multi_dataset_ultrametric.rs"
 name = "motif-census"
 path = "src/bin/motif_census.rs"
 
+[[bin]]
+name = "claims-audit"
+path = "src/bin/claims_audit.rs"
+
+[[bin]]
+name = "claims-verify"
+path = "src/bin/claims_verify.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
@@ -137,3 +145,6 @@ plotters-svg = { workspace = true }
 ureq = { workspace = true }
 sha2 = { workspace = true }
 rayon = { workspace = true }
+regex = { workspace = true }
+walkdir = { workspace = true }
+glob = { workspace = true }
