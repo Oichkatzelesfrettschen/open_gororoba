@@ -223,7 +223,92 @@ impl DatasetProvider for ChimeCat2Provider {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::Write;
     use std::path::Path;
+    use tempfile::NamedTempFile;
+
+    fn write_temp_csv(content: &str) -> NamedTempFile {
+        let mut f = NamedTempFile::new().unwrap();
+        f.write_all(content.as_bytes()).unwrap();
+        f.flush().unwrap();
+        f
+    }
+
+    #[test]
+    fn test_parse_chime_synthetic_basic() {
+        let csv = "\
+tns_name,repeater_name,ra,dec,gl,gb,bonsai_dm,dm_fitb,dm_exc_ne2001,dm_exc_ymw16,bonsai_snr,flux,fluence,width_fitb,scat_time,mjd_400,sp_idx,high_freq,low_freq,peak_freq,catalog1_flag
+FRB20180725A,,123.4,56.7,210.1,-30.2,300.5,298.1,250.0,240.0,12.5,0.5,1.2,0.003,0.001,58324.5,-2.0,800.0,400.0,600.0,1
+FRB20190101B,R1,98.1,-12.3,180.0,20.0,500.0,498.0,450.0,440.0,20.0,1.0,3.5,0.001,0.0005,58484.2,-1.5,800.0,400.0,650.0,0
+FRB20190201C,R1,98.2,-12.4,180.1,20.1,505.0,503.0,455.0,445.0,15.0,0.8,2.1,0.002,0.0008,58515.1,-1.8,800.0,400.0,620.0,0
+";
+        let f = write_temp_csv(csv);
+        let events = parse_chime_csv(f.path()).unwrap();
+        assert_eq!(events.len(), 3, "Should parse 3 events");
+        assert_eq!(events[0].tns_name, "FRB20180725A");
+        assert!((events[0].bonsai_dm - 300.5).abs() < 0.01);
+        assert!(events[0].catalog1_flag);
+        assert!(!events[1].catalog1_flag);
+    }
+
+    #[test]
+    fn test_parse_chime_skips_zero_dm() {
+        let csv = "\
+tns_name,repeater_name,ra,dec,gl,gb,bonsai_dm,dm_fitb,dm_exc_ne2001,dm_exc_ymw16,bonsai_snr,flux,fluence,width_fitb,scat_time,mjd_400,sp_idx,high_freq,low_freq,peak_freq,catalog1_flag
+FRB_GOOD,,10.0,20.0,30.0,40.0,100.0,99.0,80.0,70.0,10.0,0.5,1.0,0.001,0.0,58000.0,0.0,800.0,400.0,600.0,0
+FRB_BAD_ZERO,,10.0,20.0,30.0,40.0,0.0,0.0,0.0,0.0,10.0,0.5,1.0,0.001,0.0,58001.0,0.0,800.0,400.0,600.0,0
+FRB_BAD_NAN,,10.0,20.0,30.0,40.0,nan,nan,nan,nan,10.0,0.5,1.0,0.001,0.0,58002.0,0.0,800.0,400.0,600.0,0
+";
+        let f = write_temp_csv(csv);
+        let events = parse_chime_csv(f.path()).unwrap();
+        assert_eq!(events.len(), 1, "Should skip zero/NaN DM events");
+        assert_eq!(events[0].tns_name, "FRB_GOOD");
+    }
+
+    #[test]
+    fn test_parse_chime_handles_nan_fields() {
+        let csv = "\
+tns_name,repeater_name,ra,dec,gl,gb,bonsai_dm,dm_fitb,dm_exc_ne2001,dm_exc_ymw16,bonsai_snr,flux,fluence,width_fitb,scat_time,mjd_400,sp_idx,high_freq,low_freq,peak_freq,catalog1_flag
+FRB_PARTIAL,,nan,nan,nan,nan,200.0,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,0
+";
+        let f = write_temp_csv(csv);
+        let events = parse_chime_csv(f.path()).unwrap();
+        assert_eq!(events.len(), 1, "Event with valid DM but NaN coords should parse");
+        assert!(events[0].ra.is_nan());
+        assert!((events[0].bonsai_dm - 200.0).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_extract_repeaters_groups_by_name() {
+        let csv = "\
+tns_name,repeater_name,ra,dec,gl,gb,bonsai_dm,dm_fitb,dm_exc_ne2001,dm_exc_ymw16,bonsai_snr,flux,fluence,width_fitb,scat_time,mjd_400,sp_idx,high_freq,low_freq,peak_freq,catalog1_flag
+E1,R_alpha,10.0,20.0,30.0,40.0,100.0,99.0,80.0,70.0,10.0,0.5,1.0,0.001,0.0,58100.0,0.0,800.0,400.0,600.0,0
+E2,R_alpha,10.0,20.0,30.0,40.0,100.0,99.0,80.0,70.0,10.0,0.5,1.0,0.001,0.0,58050.0,0.0,800.0,400.0,600.0,0
+E3,R_beta,50.0,60.0,70.0,80.0,200.0,199.0,180.0,170.0,15.0,1.0,2.0,0.002,0.0,58200.0,0.0,800.0,400.0,600.0,0
+E4,,90.0,10.0,20.0,30.0,300.0,299.0,280.0,270.0,20.0,1.5,3.0,0.003,0.0,58300.0,0.0,800.0,400.0,600.0,0
+";
+        let f = write_temp_csv(csv);
+        let events = parse_chime_csv(f.path()).unwrap();
+        assert_eq!(events.len(), 4);
+
+        let repeaters = extract_repeaters(&events);
+        assert_eq!(repeaters.len(), 2, "Should have 2 repeater sources");
+
+        // Find R_alpha group
+        let alpha = repeaters.iter().find(|(n, _)| n == "R_alpha").unwrap();
+        assert_eq!(alpha.1.len(), 2, "R_alpha should have 2 bursts");
+        // Verify sorted by MJD (E2 at 58050 before E1 at 58100)
+        assert!(alpha.1[0].mjd_400 < alpha.1[1].mjd_400,
+            "Repeater bursts should be sorted by MJD");
+    }
+
+    #[test]
+    fn test_parse_chime_empty_csv() {
+        let csv = "tns_name,repeater_name,ra,dec,gl,gb,bonsai_dm\n";
+        let f = write_temp_csv(csv);
+        let events = parse_chime_csv(f.path()).unwrap();
+        assert!(events.is_empty(), "Empty CSV should produce no events");
+    }
 
     #[test]
     fn test_parse_chime_cat2_if_available() {
@@ -239,7 +324,6 @@ mod tests {
         let repeaters = extract_repeaters(&events);
         eprintln!("Parsed {} events, {} repeater sources", events.len(), repeaters.len());
 
-        // Check for specific known repeaters
         let large_repeaters: Vec<_> = repeaters
             .iter()
             .filter(|(_, evts)| evts.len() >= 10)

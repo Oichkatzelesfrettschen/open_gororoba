@@ -181,7 +181,82 @@ impl DatasetProvider for FermiGbmProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::Write;
     use std::path::Path;
+    use tempfile::NamedTempFile;
+
+    fn write_temp_csv(content: &str) -> NamedTempFile {
+        let mut f = NamedTempFile::new().unwrap();
+        f.write_all(content.as_bytes()).unwrap();
+        f.flush().unwrap();
+        f
+    }
+
+    #[test]
+    fn test_parse_fermi_synthetic_basic() {
+        let csv = "\
+name,trigger_time,ra,dec,t90,t50,fluence,flux_64,flux_1024,flnc_best_fitting_model,pflx_best_fitting_model
+GRB080714086,2008-07-14T02:04:12,03 41 21.2,-89 00 33,12.5,6.3,1.2e-6,3.5,2.1,pflx_band,pflx_comp
+GRB090101001,2009-01-01T00:01:00,12 00 00.0,+45 30 00,0.5,0.2,5.0e-7,8.0,4.0,pflx_comp,pflx_comp
+";
+        let f = write_temp_csv(csv);
+        let events = parse_fermi_gbm_csv(f.path()).unwrap();
+        assert_eq!(events.len(), 2, "Should parse 2 GRB events");
+        assert_eq!(events[0].name, "GRB080714086");
+        assert!((events[0].t90 - 12.5).abs() < 0.01);
+        assert_eq!(events[0].ra, "03 41 21.2");
+        assert_eq!(events[0].flnc_best_fitting_model, "pflx_band");
+        assert!((events[1].flux_64 - 8.0).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_parse_fermi_handles_null_values() {
+        let csv = "\
+name,trigger_time,ra,dec,t90,t50,fluence,flux_64,flux_1024,flnc_best_fitting_model,pflx_best_fitting_model
+GRB_NULL,2010-01-01T00:00:00,,,null,null,null,null,null,,
+";
+        let f = write_temp_csv(csv);
+        let events = parse_fermi_gbm_csv(f.path()).unwrap();
+        assert_eq!(events.len(), 1);
+        assert_eq!(events[0].name, "GRB_NULL");
+        assert!(events[0].t90.is_nan(), "null should parse as NaN");
+        assert!(events[0].flux_64.is_nan(), "null should parse as NaN");
+        assert!(events[0].ra.is_empty(), "empty RA should be empty string");
+    }
+
+    #[test]
+    fn test_parse_fermi_skips_empty_name() {
+        let csv = "\
+name,trigger_time,ra,dec,t90,t50,fluence,flux_64,flux_1024,flnc_best_fitting_model,pflx_best_fitting_model
+,2010-01-01T00:00:00,10 00 00,20 00 00,1.0,0.5,1e-7,2.0,1.0,band,comp
+GRB_VALID,2010-02-01T00:00:00,10 00 00,20 00 00,2.0,1.0,2e-7,3.0,1.5,band,comp
+";
+        let f = write_temp_csv(csv);
+        let events = parse_fermi_gbm_csv(f.path()).unwrap();
+        assert_eq!(events.len(), 1, "Should skip row with empty name");
+        assert_eq!(events[0].name, "GRB_VALID");
+    }
+
+    #[test]
+    fn test_parse_fermi_alternate_column_name() {
+        // Some HEASARC downloads use trigger_name instead of name
+        let csv = "\
+trigger_name,trigger_time,ra,dec,t90,t50,fluence,flux_64,flux_1024,flnc_best_fitting_model,pflx_best_fitting_model
+GRB_ALT,2010-01-01T00:00:00,10 00 00,20 00 00,1.0,0.5,1e-7,2.0,1.0,band,comp
+";
+        let f = write_temp_csv(csv);
+        let events = parse_fermi_gbm_csv(f.path()).unwrap();
+        assert_eq!(events.len(), 1);
+        assert_eq!(events[0].name, "GRB_ALT");
+    }
+
+    #[test]
+    fn test_parse_fermi_empty_csv() {
+        let csv = "name,trigger_time,ra,dec,t90\n";
+        let f = write_temp_csv(csv);
+        let events = parse_fermi_gbm_csv(f.path()).unwrap();
+        assert!(events.is_empty());
+    }
 
     #[test]
     fn test_parse_fermi_gbm_csv_if_available() {
@@ -194,13 +269,11 @@ mod tests {
         let events = parse_fermi_gbm_csv(path).expect("Failed to parse Fermi GBM CSV");
         assert!(!events.is_empty(), "Should parse at least one GRB event");
 
-        // Verify first event has plausible values
         let first = &events[0];
         assert!(!first.name.is_empty(), "Name should not be empty");
         assert!(first.t90.is_finite(), "T90 should be finite for first event");
         assert!(first.fluence.is_finite(), "Fluence should be finite for first event");
 
-        // Count events with valid peak flux
         let with_flux = events.iter().filter(|e| e.flux_64.is_finite()).count();
         assert!(with_flux > 100, "Should have >100 events with flux_64, got {}", with_flux);
 

@@ -209,6 +209,15 @@ impl DatasetProvider for DesiBaoProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::Write;
+    use tempfile::NamedTempFile;
+
+    fn write_temp(content: &str) -> NamedTempFile {
+        let mut f = NamedTempFile::new().unwrap();
+        f.write_all(content.as_bytes()).unwrap();
+        f.flush().unwrap();
+        f
+    }
 
     #[test]
     fn test_desi_hardcoded_values() {
@@ -221,8 +230,6 @@ mod tests {
         }
 
         // Verify DM/rd increases with z within anisotropic bins only.
-        // Isotropic bins hold DV/rd (a different quantity), so cross-type
-        // monotonicity is not expected.
         let aniso: Vec<&BaoMeasurement> = bao.iter().filter(|b| !b.is_isotropic).collect();
         for w in aniso.windows(2) {
             assert!(
@@ -245,5 +252,89 @@ mod tests {
             assert_eq!(b.dh_over_rd, 0.0, "isotropic bin should have dh=0");
             assert_eq!(b.rho, 0.0, "isotropic bin should have rho=0");
         }
+    }
+
+    #[test]
+    fn test_desi_hardcoded_tracer_types() {
+        let bao = desi_dr1_bao();
+        let tracers: Vec<&str> = bao.iter().map(|b| b.tracer.as_str()).collect();
+        assert_eq!(tracers, &["BGS", "LRG1", "LRG2", "LRG3+ELG1", "ELG2", "QSO", "Lya"]);
+    }
+
+    #[test]
+    fn test_desi_hardcoded_isotropic_bins() {
+        let bao = desi_dr1_bao();
+        // Only BGS (z=0.295) and QSO (z=1.491) are isotropic
+        let iso_tracers: Vec<&str> = bao.iter()
+            .filter(|b| b.is_isotropic)
+            .map(|b| b.tracer.as_str())
+            .collect();
+        assert_eq!(iso_tracers, &["BGS", "QSO"]);
+    }
+
+    #[test]
+    fn test_desi_hardcoded_dh_decreases_for_aniso() {
+        // DH/rd should decrease with z for anisotropic bins (Hubble parameter increases)
+        let bao = desi_dr1_bao();
+        let aniso: Vec<&BaoMeasurement> = bao.iter().filter(|b| !b.is_isotropic).collect();
+        for w in aniso.windows(2) {
+            assert!(
+                w[0].dh_over_rd > w[1].dh_over_rd,
+                "DH/rd should decrease with z: {} > {} at z={} vs z={}",
+                w[0].dh_over_rd, w[1].dh_over_rd, w[0].z_eff, w[1].z_eff
+            );
+        }
+    }
+
+    #[test]
+    fn test_desi_hardcoded_correlations_negative() {
+        // Cross-correlation between DM/rd and DH/rd should be negative
+        let bao = desi_dr1_bao();
+        for b in &bao {
+            if !b.is_isotropic {
+                assert!(b.rho < 0.0,
+                    "Anisotropic bin {} should have negative correlation, got {}",
+                    b.tracer, b.rho);
+            }
+        }
+    }
+
+    #[test]
+    fn test_parse_desi_bao_txt_synthetic() {
+        let txt = "\
+# z_eff  DM/rd  DH/rd
+0.51  13.62  20.98
+0.71  16.85  20.08
+0.93  21.71  17.88
+";
+        let f = write_temp(txt);
+        let measurements = parse_desi_bao_txt(f.path()).unwrap();
+        assert_eq!(measurements.len(), 3);
+        assert!((measurements[0].z_eff - 0.51).abs() < 0.01);
+        assert!((measurements[0].dm_over_rd - 13.62).abs() < 0.01);
+        assert!((measurements[0].dh_over_rd - 20.98).abs() < 0.01);
+        // Cobaya parser sets all as anisotropic
+        assert!(!measurements[0].is_isotropic);
+    }
+
+    #[test]
+    fn test_parse_desi_bao_txt_empty() {
+        let txt = "# header only\n# another comment\n";
+        let f = write_temp(txt);
+        let measurements = parse_desi_bao_txt(f.path()).unwrap();
+        assert!(measurements.is_empty());
+    }
+
+    #[test]
+    fn test_parse_desi_bao_txt_skips_bad_lines() {
+        let txt = "\
+0.51  13.62  20.98
+bad_line
+0.71  16.85  20.08
+";
+        let f = write_temp(txt);
+        let measurements = parse_desi_bao_txt(f.path()).unwrap();
+        // "bad_line" parses z as NaN which is_finite() == false, so skipped
+        assert_eq!(measurements.len(), 2);
     }
 }

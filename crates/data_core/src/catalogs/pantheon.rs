@@ -180,7 +180,82 @@ impl DatasetProvider for PantheonProvider {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::io::Write;
     use std::path::Path;
+    use tempfile::NamedTempFile;
+
+    fn write_temp(content: &str) -> NamedTempFile {
+        let mut f = NamedTempFile::new().unwrap();
+        f.write_all(content.as_bytes()).unwrap();
+        f.flush().unwrap();
+        f
+    }
+
+    #[test]
+    fn test_parse_pantheon_synthetic_with_header() {
+        let dat = "\
+# CID ZCMB ZHEL M_B_CORR M_B_CORR_ERR_DIAG HOST_LOGMASS X1 C IDSURVEY IS_CALIBRATOR
+SN2005eq 0.028 0.029 34.12 0.15 10.5 0.5 -0.02 4 0
+SN2007af 0.005 0.006 31.80 0.12 11.2 -0.3 0.01 15 1
+";
+        let f = write_temp(dat);
+        let sne = parse_pantheon_dat(f.path()).unwrap();
+        assert_eq!(sne.len(), 2, "Should parse 2 supernovae");
+        assert_eq!(sne[0].cid, "SN2005eq");
+        assert!((sne[0].z_cmb - 0.028).abs() < 0.001);
+        assert!((sne[0].mu - 34.12).abs() < 0.01, "M_B_CORR should map to mu");
+        assert!((sne[0].mu_err - 0.15).abs() < 0.01);
+        assert_eq!(sne[0].idsurvey, 4);
+        assert!(!sne[0].is_calibrator);
+        assert!(sne[1].is_calibrator);
+    }
+
+    #[test]
+    fn test_parse_pantheon_mu_fallback() {
+        // When M_B_CORR is absent, parser should fall back to MU column
+        let dat = "\
+CID ZCMB ZHEL MU MUERR HOST_LOGMASS X1 C IDSURVEY IS_CALIBRATOR
+SN_FALLBACK 0.05 0.051 36.5 0.2 10.0 0.1 -0.01 1 0
+";
+        let f = write_temp(dat);
+        let sne = parse_pantheon_dat(f.path()).unwrap();
+        assert_eq!(sne.len(), 1);
+        assert!((sne[0].mu - 36.5).abs() < 0.01, "Should use MU when M_B_CORR absent");
+        assert!((sne[0].mu_err - 0.2).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_parse_pantheon_zhd_fallback() {
+        // When ZCMB is absent, parser should fall back to ZHD
+        let dat = "\
+CID ZHD ZHEL M_B_CORR M_B_CORR_ERR_DIAG HOST_LOGMASS X1 C IDSURVEY IS_CALIBRATOR
+SN_ZHD 0.035 0.036 35.0 0.18 10.8 0.2 -0.03 2 0
+";
+        let f = write_temp(dat);
+        let sne = parse_pantheon_dat(f.path()).unwrap();
+        assert_eq!(sne.len(), 1);
+        assert!((sne[0].z_cmb - 0.035).abs() < 0.001, "Should use ZHD when ZCMB absent");
+    }
+
+    #[test]
+    fn test_parse_pantheon_skips_short_rows() {
+        let dat = "\
+CID ZCMB ZHEL MU MUERR HOST_LOGMASS X1 C IDSURVEY
+SN_GOOD 0.05 0.051 36.5 0.2 10.0 0.1 -0.01 1
+TOO_SHORT 0.05 0.051 36.5
+";
+        let f = write_temp(dat);
+        let sne = parse_pantheon_dat(f.path()).unwrap();
+        assert_eq!(sne.len(), 1, "Should skip rows with <5 fields");
+    }
+
+    #[test]
+    fn test_parse_pantheon_empty_file() {
+        let dat = "# CID ZCMB ZHEL MU MUERR\n";
+        let f = write_temp(dat);
+        let sne = parse_pantheon_dat(f.path()).unwrap();
+        assert!(sne.is_empty());
+    }
 
     #[test]
     fn test_parse_pantheon_if_available() {
@@ -193,7 +268,6 @@ mod tests {
         let sne = parse_pantheon_dat(path).expect("Failed to parse Pantheon+ dat");
         assert!(sne.len() > 1000, "Pantheon+ should have >1000 SNe, got {}", sne.len());
 
-        // Verify redshifts are positive
         for sn in &sne {
             assert!(sn.z_cmb > 0.0 || sn.z_cmb.is_nan(), "z_cmb should be positive: {}", sn.cid);
         }
