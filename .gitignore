@@ -98,8 +98,10 @@ reports/trufflehog_results.json
 
 # Fetched datasets (large, reproducible via fetch-datasets)
 data/external/*.tar.gz
+data/external/*.tgz
 data/external/*.zip
 data/external/*.gfc
+data/external/*.spk
 data/external/wmap9_chains/
 data/external/planck2018_chains/
 data/external/jpl_planets_*.csv
@@ -114,5 +116,14 @@ data/external/GGM05S.gfc
 data/external/GRGM1200B.gfc
 data/external/hip_main.dat
 data/external/sorce_tsi_daily.csv
+data/external/swarm_magnetic_sample.csv
+data/external/planck2018_base_params.txt
+data/external/wmm2025.zip
+data/external/GRACEFO_monthly_sample.gfc
 data/external/nanograv_15yr_kde/
+data/external/eht_*/
+data/external/union3_*/
+data/external/de440.bsp
+data/external/de441.bsp
+data/external/landsat_stac_sample.json
 .playwright-mcp/

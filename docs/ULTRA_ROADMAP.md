@@ -7,8 +7,9 @@ This roadmap is organized so that every major claim becomes:
 1) a cited statement, and
 2) a small reproducible experiment or test.
 
-**Migration status:** All 15 Python modules ported to Rust domain crates.
-1370 Rust unit tests + 7 doc-tests pass, 0 clippy warnings. Python items below are historical.
+**Migration status:** COMPLETE. All 15 Python modules ported to Rust domain crates.
+1531 Rust tests (unit + doc) pass, 0 clippy warnings. Section H: 21/21 DONE.
+Remaining open items are forward-looking research (Sections B partial, C, D, F, G).
 
 ## A. Reproducibility & Quality Gates
 
@@ -17,7 +18,7 @@ This roadmap is organized so that every major claim becomes:
 - [x] Add `ruff` lint gate for kernel + tests (`make lint`).
 - [x] Add environment report (`make doctor`).
 - [x] Add artifact verifier for resolution/schema (`make verify`).
-- [ ] Extend linting from `src/gemini_physics/` to all `src/*.py` (phased).
+- [x] ~~Extend linting from `src/gemini_physics/` to all `src/*.py` (phased).~~ Obsolete: Python migration complete, only `__init__.py` remains.
 - [x] Add CI workflow (GitHub Actions) mirroring `make test lint`.
 - [x] Add repo-wide lint visibility targets (`make lint-all-stats`, `make lint-all`).
 
@@ -26,13 +27,15 @@ This roadmap is organized so that every major claim becomes:
 - [ ] For each item in `docs/CLAIMS_EVIDENCE_MATRIX.md`, add:
   - [ ] a primary-source citation (or explicitly mark speculative),
   - [ ] a reproducible script/test validating the narrowest computable part.
-- [ ] GWTC-3 provenance hardening:
-  - [ ] re-fetch and checksum `data/external/GWTC-3_GWpy_Official.csv`,
-  - [ ] record query parameters + date,
-  - [ ] tie plots to that provenance.
-- [ ] Reggiani (arXiv:2411.18881) integration:
-  - [ ] extract the exact definitions of `Z(S)` and `ZD(S)` as used in the paper,
-  - [ ] align repo terminology to the paper's.
+- [x] GWTC-3 provenance hardening:
+  - [x] re-fetch and checksum `data/external/GWTC-3_GWpy_Official.csv`,
+  - [x] record query parameters + date,
+  - [x] tie plots to that provenance.
+  - Done: combined GWTC catalog (219 events) in data_core with PROVENANCE.local.json.
+- [x] Reggiani (arXiv:2411.18881) integration:
+  - [x] extract the exact definitions of `Z(S)` and `ZD(S)` as used in the paper,
+  - [x] align repo terminology to the paper's.
+  - Done: reggiani.rs (84 standard ZDs), annihilator.rs (SVD nullspace), is_reggiani_zd().
 
 ## C. Dimensional Continuation (-4D -> 32D)
 

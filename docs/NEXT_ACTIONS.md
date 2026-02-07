@@ -50,10 +50,13 @@ Completed this sprint:
    - `data/external/PROVENANCE.local.json` is now richer with URL, license, access date, checksum.
    - Still need: query params for HEASARC fetches, automated provenance checks in CI.
 
-8) **Dataset endpoint validation**
-   - Run `fetch-datasets --all` against live endpoints to verify providers work.
-   - Fix any broken URLs or parser mismatches.
-   - Add deterministic row-count / column-integrity tests per provider.
+8) **Dataset endpoint validation** -- DONE (2026-02-07)
+   - Ran `fetch-datasets` against all 30 providers: 22 tested, all pass.
+   - Fixed 3 broken geophysical URLs: WMM 2025 (NOAA path change),
+     GRACE GGM05S (ICGEM hash change), GRACE-FO (/sp/ -> /getseries/ + RL06.3).
+   - 8 large providers (EHT, WMAP, Planck chains, GRAIL, EGM2008, DE440/441)
+     untested (multi-GB, on-demand only).
+   - Deterministic row-count / column-integrity tests already in D3 (Sprint 5).
 
 ## C. Experiments portfolio (paper synth)
 
