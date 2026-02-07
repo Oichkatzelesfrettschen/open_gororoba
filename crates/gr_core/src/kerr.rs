@@ -19,6 +19,9 @@
 //!   Chandrasekhar, S. (1983), "The Mathematical Theory of Black Holes", Ch. 7.
 //!   Teo, E. (2003), Gen. Relativ. Gravit. 35, 1909.
 
+use crate::metric::{
+    ChristoffelComponents, MetricComponents, SpacetimeMetric, DIM, PHI, R, T, THETA,
+};
 use ode_solvers::dopri5::Dopri5;
 use ode_solvers::{SVector, System};
 use rayon::prelude::*;
@@ -526,6 +529,355 @@ pub fn shadow_ray_traced(
     }
 }
 
+// ---------------------------------------------------------------------------
+// Kerr spacetime: SpacetimeMetric trait implementation
+// ---------------------------------------------------------------------------
+
+/// Kerr black hole implementing the generic `SpacetimeMetric` trait.
+///
+/// Unlike the free functions above (which fix M=1), this struct carries
+/// explicit mass and spin parameters. The spin parameter a has dimensions
+/// of length (a = J/M) and must satisfy |a| <= M for a black hole.
+///
+/// The metric is written in Boyer-Lindquist coordinates (G = c = 1):
+///
+///   ds^2 = -(1 - 2Mr/Sigma) dt^2 - (4Mar sin^2 theta / Sigma) dt dphi
+///          + (Sigma/Delta) dr^2 + Sigma dtheta^2
+///          + A sin^2 theta / Sigma dphi^2
+///
+/// where:
+///   Sigma = r^2 + a^2 cos^2 theta
+///   Delta = r^2 - 2Mr + a^2
+///   A = (r^2 + a^2)^2 - a^2 Delta sin^2 theta
+///
+/// References:
+///   Kerr (1963): Phys. Rev. Lett. 11, 237
+///   Boyer & Lindquist (1967): J. Math. Phys. 8, 265
+///   Chandrasekhar (1983): Mathematical Theory of Black Holes, Ch. 6-7
+///   Bardeen, Press, Teukolsky (1972): ApJ 178, 347 (ISCO formula)
+#[derive(Debug, Clone, Copy)]
+pub struct Kerr {
+    /// Black hole mass (G = c = 1)
+    pub mass: f64,
+    /// Spin parameter a = J/M (|a| <= M for a black hole)
+    pub spin: f64,
+}
+
+impl Kerr {
+    /// Create a Kerr black hole with mass M and spin a.
+    ///
+    /// Panics if mass <= 0 or |a| > M (naked singularity).
+    pub fn new(mass: f64, spin: f64) -> Self {
+        assert!(mass > 0.0, "mass must be positive");
+        assert!(
+            spin.abs() <= mass,
+            "|spin| must be <= mass (no naked singularities)"
+        );
+        Self { mass, spin }
+    }
+
+    /// Sigma = r^2 + a^2 cos^2(theta)
+    fn sigma(&self, r: f64, theta: f64) -> f64 {
+        r * r + self.spin * self.spin * theta.cos().powi(2)
+    }
+
+    /// Delta = r^2 - 2Mr + a^2
+    fn delta(&self, r: f64) -> f64 {
+        r * r - 2.0 * self.mass * r + self.spin * self.spin
+    }
+
+    /// A = (r^2 + a^2)^2 - a^2 Delta sin^2(theta)
+    fn big_a(&self, r: f64, theta: f64) -> f64 {
+        let a = self.spin;
+        let r2_a2 = r * r + a * a;
+        r2_a2 * r2_a2 - a * a * self.delta(r) * theta.sin().powi(2)
+    }
+
+    /// Outer (event) horizon radius: r+ = M + sqrt(M^2 - a^2).
+    pub fn outer_horizon(&self) -> f64 {
+        self.mass + (self.mass * self.mass - self.spin * self.spin).sqrt()
+    }
+
+    /// Inner (Cauchy) horizon radius: r- = M - sqrt(M^2 - a^2).
+    pub fn inner_horizon(&self) -> f64 {
+        self.mass - (self.mass * self.mass - self.spin * self.spin).sqrt()
+    }
+
+    /// Ergosphere radius at polar angle theta.
+    ///
+    /// r_ergo(theta) = M + sqrt(M^2 - a^2 cos^2 theta)
+    ///
+    /// At the equator: r_ergo = 2M (for all spins).
+    /// At the poles: r_ergo = r+ (coincides with horizon).
+    pub fn ergosphere_radius(&self, theta: f64) -> f64 {
+        let a = self.spin;
+        self.mass + (self.mass * self.mass - a * a * theta.cos().powi(2)).sqrt()
+    }
+
+    /// Prograde ISCO radius (Bardeen, Press, Teukolsky 1972).
+    ///
+    /// For Schwarzschild (a=0): r_ISCO = 6M.
+    /// For extremal prograde (a=M): r_ISCO = M.
+    pub fn isco_prograde(&self) -> f64 {
+        self.isco_bpt(1.0)
+    }
+
+    /// Retrograde ISCO radius.
+    ///
+    /// For Schwarzschild (a=0): r_ISCO = 6M.
+    /// For extremal retrograde (a=M): r_ISCO = 9M.
+    pub fn isco_retrograde(&self) -> f64 {
+        self.isco_bpt(-1.0)
+    }
+
+    /// Bardeen-Press-Teukolsky ISCO formula.
+    ///
+    /// r_ISCO = M (3 + Z2 -/+ sqrt((3-Z1)(3+Z1+2Z2)))
+    /// Z1 = 1 + (1 - a*^2)^{1/3} ((1+a*)^{1/3} + (1-a*)^{1/3})
+    /// Z2 = sqrt(3 a*^2 + Z1^2)
+    /// where a* = a/M and -/+ is prograde/retrograde.
+    fn isco_bpt(&self, sign: f64) -> f64 {
+        let m = self.mass;
+        let a_star = self.spin / m;
+        let z1 = 1.0
+            + (1.0 - a_star * a_star).cbrt()
+                * ((1.0 + a_star).cbrt() + (1.0 - a_star).cbrt());
+        let z2 = (3.0 * a_star * a_star + z1 * z1).sqrt();
+        m * (3.0 + z2 - sign * ((3.0 - z1) * (3.0 + z1 + 2.0 * z2)).sqrt())
+    }
+
+    /// Prograde circular photon orbit radius.
+    ///
+    /// r_ph = 2M (1 + cos(2/3 arccos(-a/M)))
+    pub fn photon_orbit_prograde(&self) -> f64 {
+        let a_star = self.spin / self.mass;
+        2.0 * self.mass * (1.0 + (2.0 / 3.0 * (-a_star).acos()).cos())
+    }
+
+    /// Retrograde circular photon orbit radius.
+    pub fn photon_orbit_retrograde(&self) -> f64 {
+        let a_star = self.spin / self.mass;
+        2.0 * self.mass * (1.0 + (2.0 / 3.0 * a_star.acos()).cos())
+    }
+
+    /// Angular velocity of the event horizon: Omega_H = a / (r+^2 + a^2).
+    pub fn angular_velocity_horizon(&self) -> f64 {
+        let r_plus = self.outer_horizon();
+        self.spin / (r_plus * r_plus + self.spin * self.spin)
+    }
+
+    /// Surface gravity at the outer horizon.
+    ///
+    /// kappa = (r+ - r-) / (2(r+^2 + a^2))
+    ///
+    /// For Schwarzschild: kappa = 1/(4M).
+    pub fn surface_gravity(&self) -> f64 {
+        let r_plus = self.outer_horizon();
+        let r_minus = self.inner_horizon();
+        (r_plus - r_minus) / (2.0 * (r_plus * r_plus + self.spin * self.spin))
+    }
+
+    /// Irreducible mass: M_irr = sqrt(A_H / (16 pi)) = sqrt(r+^2 + a^2) / 2.
+    ///
+    /// For Schwarzschild: M_irr = M.
+    /// For extremal Kerr: M_irr = M / sqrt(2).
+    pub fn irreducible_mass(&self) -> f64 {
+        let r_plus = self.outer_horizon();
+        0.5 * (r_plus * r_plus + self.spin * self.spin).sqrt()
+    }
+
+    /// Horizon area: A_H = 4 pi (r+^2 + a^2).
+    pub fn horizon_area(&self) -> f64 {
+        let r_plus = self.outer_horizon();
+        4.0 * PI * (r_plus * r_plus + self.spin * self.spin)
+    }
+
+    // -- Exact metric derivatives (internal) --
+
+    /// dg_{mu nu}/dr (exact analytic expressions).
+    fn metric_derivs_r(&self, x: &[f64; DIM]) -> MetricComponents {
+        let m = self.mass;
+        let a = self.spin;
+        let r = x[R];
+        let theta = x[THETA];
+        let s2 = theta.sin().powi(2);
+        let c2 = theta.cos().powi(2);
+
+        let sigma = self.sigma(r, theta);
+        let delta = self.delta(r);
+        let big_a = self.big_a(r, theta);
+        let sigma2 = sigma * sigma;
+
+        // Derivatives of auxiliary quantities
+        let sigma_r = 2.0 * r;
+        let delta_r = 2.0 * (r - m);
+        let a_r = 4.0 * r * (r * r + a * a) - delta_r * a * a * s2;
+
+        let mut dg = [[0.0; DIM]; DIM];
+
+        // dg_tt/dr = 2M(a^2 cos^2 theta - r^2) / Sigma^2
+        dg[T][T] = 2.0 * m * (a * a * c2 - r * r) / sigma2;
+
+        // dg_tphi/dr = 2Ma sin^2 theta (r^2 - a^2 cos^2 theta) / Sigma^2
+        dg[T][PHI] = 2.0 * m * a * s2 * (r * r - a * a * c2) / sigma2;
+        dg[PHI][T] = dg[T][PHI];
+
+        // dg_rr/dr = (Sigma_r Delta - Sigma Delta_r) / Delta^2
+        let delta2 = delta * delta;
+        dg[R][R] = (sigma_r * delta - sigma * delta_r) / delta2;
+
+        // dg_theta_theta/dr = 2r
+        dg[THETA][THETA] = sigma_r;
+
+        // dg_phiphi/dr = sin^2 theta (A_r Sigma - Sigma_r A) / Sigma^2
+        dg[PHI][PHI] = s2 * (a_r * sigma - sigma_r * big_a) / sigma2;
+
+        dg
+    }
+
+    /// dg_{mu nu}/dtheta (exact analytic expressions).
+    fn metric_derivs_theta(&self, x: &[f64; DIM]) -> MetricComponents {
+        let m = self.mass;
+        let a = self.spin;
+        let r = x[R];
+        let theta = x[THETA];
+        let s2 = theta.sin().powi(2);
+        let sin2th = (2.0 * theta).sin(); // sin(2 theta)
+
+        let sigma = self.sigma(r, theta);
+        let delta = self.delta(r);
+        let big_a = self.big_a(r, theta);
+        let sigma2 = sigma * sigma;
+
+        // Derivatives of auxiliary quantities
+        let sigma_th = -a * a * sin2th;
+
+        let mut dg = [[0.0; DIM]; DIM];
+
+        // dg_tt/dtheta = 2Mr a^2 sin(2 theta) / Sigma^2
+        dg[T][T] = 2.0 * m * r * a * a * sin2th / sigma2;
+
+        // dg_tphi/dtheta = -2Mar sin(2 theta) (r^2 + a^2) / Sigma^2
+        dg[T][PHI] = -2.0 * m * a * r * sin2th * (r * r + a * a) / sigma2;
+        dg[PHI][T] = dg[T][PHI];
+
+        // dg_rr/dtheta = Sigma_theta / Delta = -a^2 sin(2 theta) / Delta
+        dg[R][R] = sigma_th / delta;
+
+        // dg_theta_theta/dtheta = -a^2 sin(2 theta)
+        dg[THETA][THETA] = sigma_th;
+
+        // dg_phiphi/dtheta = sin(2 theta) [A(r^2+a^2) - a^2 Delta Sigma sin^2 theta] / Sigma^2
+        dg[PHI][PHI] =
+            sin2th * (big_a * (r * r + a * a) - a * a * delta * sigma * s2) / sigma2;
+
+        dg
+    }
+}
+
+impl SpacetimeMetric for Kerr {
+    fn metric_components(&self, x: &[f64; DIM]) -> MetricComponents {
+        let m = self.mass;
+        let a = self.spin;
+        let r = x[R];
+        let theta = x[THETA];
+        let s2 = theta.sin().powi(2);
+
+        let sigma = self.sigma(r, theta);
+        let delta = self.delta(r);
+        let big_a = self.big_a(r, theta);
+
+        let mut g = [[0.0; DIM]; DIM];
+        g[T][T] = -(1.0 - 2.0 * m * r / sigma);
+        g[T][PHI] = -2.0 * m * a * r * s2 / sigma;
+        g[PHI][T] = g[T][PHI];
+        g[R][R] = sigma / delta;
+        g[THETA][THETA] = sigma;
+        g[PHI][PHI] = big_a * s2 / sigma;
+        g
+    }
+
+    fn inverse_metric(&self, x: &[f64; DIM]) -> MetricComponents {
+        let m = self.mass;
+        let a = self.spin;
+        let r = x[R];
+        let theta = x[THETA];
+        let s2 = theta.sin().powi(2);
+
+        let sigma = self.sigma(r, theta);
+        let delta = self.delta(r);
+        let big_a = self.big_a(r, theta);
+
+        let mut g_inv = [[0.0; DIM]; DIM];
+
+        // The (t, phi) block inverse uses det = g_tt g_phiphi - g_tphi^2 = -Delta sin^2 theta
+        g_inv[T][T] = -big_a / (sigma * delta);
+        g_inv[T][PHI] = -2.0 * m * a * r / (sigma * delta);
+        g_inv[PHI][T] = g_inv[T][PHI];
+        g_inv[R][R] = delta / sigma;
+        g_inv[THETA][THETA] = 1.0 / sigma;
+        // g^{phi phi} = (Sigma - 2Mr) / (Sigma Delta sin^2 theta)
+        if s2 > 1e-30 {
+            g_inv[PHI][PHI] = (sigma - 2.0 * m * r) / (sigma * delta * s2);
+        }
+
+        g_inv
+    }
+
+    /// Exact Christoffel symbols computed from analytic metric derivatives.
+    ///
+    /// Avoids double numerical differentiation by using closed-form
+    /// expressions for all 10 non-zero metric derivatives (5 components
+    /// x 2 non-Killing directions r and theta). The standard assembly
+    /// formula then gives exact Christoffel symbols.
+    #[allow(clippy::needless_range_loop)]
+    fn christoffel(&self, x: &[f64; DIM]) -> ChristoffelComponents {
+        let g_inv = self.inverse_metric(x);
+
+        // Exact metric derivatives (only R and THETA directions are non-zero)
+        let dg_dr = self.metric_derivs_r(x);
+        let dg_dth = self.metric_derivs_theta(x);
+
+        let mut dg = [[[0.0; DIM]; DIM]; DIM];
+        for a in 0..DIM {
+            for b in 0..DIM {
+                dg[a][b][R] = dg_dr[a][b];
+                dg[a][b][THETA] = dg_dth[a][b];
+            }
+        }
+
+        // Gamma^alpha_{mu nu} = (1/2) g^{alpha beta} (g_{beta mu,nu} + g_{beta nu,mu} - g_{mu nu,beta})
+        let mut gamma = [[[0.0; DIM]; DIM]; DIM];
+        for alpha in 0..DIM {
+            for mu in 0..DIM {
+                for nu in mu..DIM {
+                    let mut sum = 0.0;
+                    for beta in 0..DIM {
+                        sum += g_inv[alpha][beta]
+                            * (dg[beta][mu][nu] + dg[beta][nu][mu] - dg[mu][nu][beta]);
+                    }
+                    gamma[alpha][mu][nu] = 0.5 * sum;
+                    gamma[alpha][nu][mu] = gamma[alpha][mu][nu];
+                }
+            }
+        }
+
+        gamma
+    }
+
+    fn event_horizon_radius(&self) -> Option<f64> {
+        Some(self.outer_horizon())
+    }
+
+    fn isco_radius(&self) -> Option<f64> {
+        Some(self.isco_prograde())
+    }
+
+    fn photon_sphere_radius(&self) -> Option<f64> {
+        Some(self.photon_orbit_prograde())
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1023,5 +1375,428 @@ mod tests {
         // (left half of alpha grid if range is symmetric).
         // At minimum, both halves should have some shadow pixels.
         assert!(left_count > 0 || right_count > 0, "Should have shadow pixels");
+    }
+
+    // -- Kerr SpacetimeMetric trait tests --
+
+    fn kerr_bh() -> Kerr {
+        Kerr::new(1.0, 0.9) // M=1, a=0.9
+    }
+
+    #[test]
+    fn test_kerr_trait_schwarzschild_limit_metric() {
+        // Kerr(M, a=0) should reproduce Schwarzschild metric exactly
+        let k = Kerr::new(1.0, 0.0);
+        let s = crate::schwarzschild::Schwarzschild::new(1.0);
+        let x = [0.0, 10.0, std::f64::consts::FRAC_PI_2, 0.0];
+
+        let g_kerr = k.metric_components(&x);
+        let g_schw = s.metric_components(&x);
+
+        for i in 0..DIM {
+            for j in 0..DIM {
+                assert!(
+                    (g_kerr[i][j] - g_schw[i][j]).abs() < 1e-12,
+                    "g[{}][{}]: Kerr(a=0)={}, Schwarzschild={}",
+                    i, j, g_kerr[i][j], g_schw[i][j]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_kerr_trait_off_diagonal() {
+        // Kerr with spin should have non-zero g_tphi (frame dragging)
+        let k = kerr_bh();
+        let x = [0.0, 10.0, std::f64::consts::FRAC_PI_2, 0.0];
+        let g = k.metric_components(&x);
+
+        assert!(
+            g[T][PHI].abs() > 1e-6,
+            "g_tphi should be non-zero for spinning black hole"
+        );
+        assert_relative_eq!(g[T][PHI], g[PHI][T], epsilon = 1e-14);
+    }
+
+    #[test]
+    fn test_kerr_trait_inverse_consistency() {
+        // g * g^{-1} = delta (identity) for the (t,phi) block
+        let k = kerr_bh();
+        let x = [0.0, 8.0, 1.2, 0.5];
+        let g = k.metric_components(&x);
+        let g_inv = k.inverse_metric(&x);
+
+        // Check that g * g^{-1} = I for all components
+        for i in 0..DIM {
+            for j in 0..DIM {
+                let mut product = 0.0;
+                for k_idx in 0..DIM {
+                    product += g[i][k_idx] * g_inv[k_idx][j];
+                }
+                let expected = if i == j { 1.0 } else { 0.0 };
+                assert!(
+                    (product - expected).abs() < 1e-10,
+                    "(g g^-1)[{}][{}] = {} (expected {})",
+                    i, j, product, expected
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_kerr_trait_inverse_schwarzschild_limit() {
+        // Kerr(M, a=0) inverse should match Schwarzschild inverse
+        let k = Kerr::new(1.0, 0.0);
+        let s = crate::schwarzschild::Schwarzschild::new(1.0);
+        let x = [0.0, 10.0, 1.0, 0.5];
+
+        let g_inv_k = k.inverse_metric(&x);
+        let g_inv_s = s.inverse_metric(&x);
+
+        for i in 0..DIM {
+            for j in 0..DIM {
+                assert!(
+                    (g_inv_k[i][j] - g_inv_s[i][j]).abs() < 1e-12,
+                    "g_inv[{}][{}]: Kerr(a=0)={}, Schwarzschild={}",
+                    i, j, g_inv_k[i][j], g_inv_s[i][j]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_kerr_trait_christoffel_symmetry() {
+        // Christoffel symbols must be symmetric in lower indices
+        let k = kerr_bh();
+        let x = [0.0, 7.0, 1.0, 0.5];
+        let gamma = k.christoffel(&x);
+
+        for a in 0..DIM {
+            for m in 0..DIM {
+                for n in 0..DIM {
+                    assert!(
+                        (gamma[a][m][n] - gamma[a][n][m]).abs() < 1e-12,
+                        "Gamma^{}_{}{} != Gamma^{}_{}{}  ({} vs {})",
+                        a, m, n, a, n, m, gamma[a][m][n], gamma[a][n][m]
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_kerr_trait_christoffel_schwarzschild_limit() {
+        // Kerr(M, a=0) Christoffel should match Schwarzschild
+        let k = Kerr::new(1.0, 0.0);
+        let s = crate::schwarzschild::Schwarzschild::new(1.0);
+        let x = [0.0, 10.0, 1.0, 0.5];
+
+        let gamma_k = k.christoffel(&x);
+        let gamma_s = s.christoffel(&x);
+
+        for a in 0..DIM {
+            for m in 0..DIM {
+                for n in 0..DIM {
+                    let diff = (gamma_k[a][m][n] - gamma_s[a][m][n]).abs();
+                    let scale = gamma_s[a][m][n].abs().max(1e-12);
+                    assert!(
+                        diff / scale < 1e-8,
+                        "Gamma^{}_{}{}: Kerr(a=0)={:.6e}, Schw={:.6e}, diff={:.2e}",
+                        a, m, n, gamma_k[a][m][n], gamma_s[a][m][n], diff
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_kerr_trait_christoffel_vs_numerical() {
+        // Exact analytic Christoffel vs finite-difference numerical
+        let k = kerr_bh();
+        let x = [0.0, 10.0, 1.0, 0.5];
+
+        let exact = k.christoffel(&x);
+        let numerical = crate::metric::christoffel_numerical(&k, &x);
+
+        for a in 0..DIM {
+            for m in 0..DIM {
+                for n in 0..DIM {
+                    let diff = (exact[a][m][n] - numerical[a][m][n]).abs();
+                    let scale = exact[a][m][n].abs().max(1e-12);
+                    assert!(
+                        diff / scale < 1e-3,
+                        "Gamma^{}_{}{}: exact={:.6e}, numerical={:.6e}, rel_err={:.2e}",
+                        a, m, n, exact[a][m][n], numerical[a][m][n], diff / scale
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_kerr_trait_frame_dragging_christoffel() {
+        // Kerr with spin should have non-zero Gamma^t_{r phi} (frame dragging)
+        // This symbol vanishes for Schwarzschild
+        let k = kerr_bh();
+        let x = [0.0, 10.0, std::f64::consts::FRAC_PI_2, 0.0];
+        let gamma = k.christoffel(&x);
+
+        // Gamma^t_{r phi} -- coupling between radial and azimuthal motion
+        assert!(
+            gamma[T][R][PHI].abs() > 1e-6,
+            "Gamma^t_rphi should be non-zero for spinning BH, got {}",
+            gamma[T][R][PHI]
+        );
+
+        // Verify it vanishes for Schwarzschild
+        let k0 = Kerr::new(1.0, 0.0);
+        let gamma0 = k0.christoffel(&x);
+        assert!(
+            gamma0[T][R][PHI].abs() < 1e-12,
+            "Gamma^t_rphi should vanish for Schwarzschild"
+        );
+    }
+
+    #[test]
+    fn test_kerr_trait_vacuum_einstein() {
+        // Kerr is a vacuum solution: R_{mu nu} = 0
+        let k = kerr_bh();
+        let x = [0.0, 10.0, std::f64::consts::FRAC_PI_4, 0.0];
+
+        let riemann = crate::metric::riemann_from_christoffel(&k, &x);
+        let ricci = crate::metric::ricci_from_riemann(&riemann);
+
+        for mu in 0..DIM {
+            for nu in 0..DIM {
+                assert!(
+                    ricci[mu][nu].abs() < 0.01,
+                    "R_{}{} = {:.4e} (expected 0 for vacuum Kerr)",
+                    mu, nu, ricci[mu][nu]
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_kerr_trait_kretschner_schwarzschild_limit() {
+        // At a=0, Kretschner should match Schwarzschild: K = 48 M^2 / r^6
+        let k = Kerr::new(1.0, 0.0);
+        let r = 10.0;
+        let x = [0.0, r, std::f64::consts::FRAC_PI_2, 0.0];
+        let result = crate::metric::full_curvature(&k, &x);
+
+        let expected = 48.0 / r.powi(6);
+        let rel_err = (result.kretschner - expected).abs() / expected;
+        assert!(
+            rel_err < 0.05,
+            "Kretschner at a=0, r={}: got {:.4e}, expected {:.4e}, rel_err={:.2e}",
+            r, result.kretschner, expected, rel_err
+        );
+    }
+
+    #[test]
+    fn test_kerr_trait_kretschner_general() {
+        // Kerr Kretschner scalar: K = 48 M^2 (r^2 - a^2 c^2)(r^4 - 14r^2a^2c^2 + a^4c^4) / Sigma^6
+        let k = kerr_bh();
+        let m = k.mass;
+        let a = k.spin;
+        let r = 10.0;
+        let theta = std::f64::consts::FRAC_PI_4;
+        let x = [0.0, r, theta, 0.0];
+
+        let result = crate::metric::full_curvature(&k, &x);
+
+        let c2 = theta.cos().powi(2);
+        let sigma = r * r + a * a * c2;
+        let f = (r * r - a * a * c2)
+            * (r.powi(4) - 14.0 * r * r * a * a * c2 + a.powi(4) * c2 * c2);
+        let expected = 48.0 * m * m * f / sigma.powi(6);
+
+        let rel_err = (result.kretschner - expected).abs() / expected.abs().max(1e-30);
+        assert!(
+            rel_err < 0.05,
+            "Kerr Kretschner at r={}, theta=pi/4: got {:.4e}, expected {:.4e}, rel_err={:.2e}",
+            r, result.kretschner, expected, rel_err
+        );
+    }
+
+    // -- Kerr horizon and orbital property tests --
+
+    #[test]
+    fn test_kerr_trait_horizons() {
+        // Schwarzschild limit: r+ = 2M, r- = 0
+        let k0 = Kerr::new(1.0, 0.0);
+        assert_relative_eq!(k0.outer_horizon(), 2.0, epsilon = 1e-12);
+        assert_relative_eq!(k0.inner_horizon(), 0.0, epsilon = 1e-12);
+
+        // Extremal: r+ = r- = M
+        let ke = Kerr::new(1.0, 1.0);
+        assert_relative_eq!(ke.outer_horizon(), 1.0, epsilon = 1e-12);
+        assert_relative_eq!(ke.inner_horizon(), 1.0, epsilon = 1e-12);
+
+        // Generic: r+ = M + sqrt(M^2 - a^2)
+        let k = kerr_bh();
+        let expected = 1.0 + (1.0 - 0.81_f64).sqrt();
+        assert_relative_eq!(k.outer_horizon(), expected, epsilon = 1e-12);
+    }
+
+    #[test]
+    fn test_kerr_trait_ergosphere() {
+        let k = kerr_bh();
+
+        // At equator: r_ergo = 2M for ALL spins
+        assert_relative_eq!(
+            k.ergosphere_radius(std::f64::consts::FRAC_PI_2),
+            2.0 * k.mass,
+            epsilon = 1e-12
+        );
+
+        // At poles: r_ergo = r+ (coincides with horizon)
+        assert_relative_eq!(
+            k.ergosphere_radius(0.0),
+            k.outer_horizon(),
+            epsilon = 1e-12
+        );
+
+        // Ergosphere is always outside or at the horizon
+        for theta in [0.3, 0.5, 1.0, 1.2, std::f64::consts::FRAC_PI_2] {
+            assert!(
+                k.ergosphere_radius(theta) >= k.outer_horizon() - 1e-12,
+                "Ergosphere at theta={:.2} should be >= horizon",
+                theta
+            );
+        }
+    }
+
+    #[test]
+    fn test_kerr_trait_isco() {
+        // Schwarzschild: prograde = retrograde = 6M
+        let k0 = Kerr::new(1.0, 0.0);
+        assert_relative_eq!(k0.isco_prograde(), 6.0, epsilon = 1e-8);
+        assert_relative_eq!(k0.isco_retrograde(), 6.0, epsilon = 1e-8);
+
+        // Extremal: prograde ISCO = M, retrograde ISCO = 9M
+        let ke = Kerr::new(1.0, 1.0);
+        assert_relative_eq!(ke.isco_prograde(), 1.0, epsilon = 1e-6);
+        assert_relative_eq!(ke.isco_retrograde(), 9.0, epsilon = 1e-6);
+
+        // Generic: prograde < retrograde
+        let k = kerr_bh();
+        assert!(
+            k.isco_prograde() < k.isco_retrograde(),
+            "Prograde ISCO ({}) should be < retrograde ISCO ({})",
+            k.isco_prograde(),
+            k.isco_retrograde()
+        );
+
+        // Both should be outside the horizon
+        assert!(k.isco_prograde() > k.outer_horizon());
+    }
+
+    #[test]
+    fn test_kerr_trait_photon_orbits() {
+        // Schwarzschild: both = 3M
+        let k0 = Kerr::new(1.0, 0.0);
+        assert_relative_eq!(k0.photon_orbit_prograde(), 3.0, epsilon = 1e-6);
+        assert_relative_eq!(k0.photon_orbit_retrograde(), 3.0, epsilon = 1e-6);
+
+        // Generic: prograde < retrograde
+        let k = kerr_bh();
+        assert!(k.photon_orbit_prograde() < k.photon_orbit_retrograde());
+
+        // Both outside horizon
+        assert!(k.photon_orbit_prograde() > k.outer_horizon());
+    }
+
+    #[test]
+    fn test_kerr_trait_surface_gravity() {
+        // Schwarzschild: kappa = 1/(4M)
+        let k0 = Kerr::new(1.0, 0.0);
+        assert_relative_eq!(k0.surface_gravity(), 0.25, epsilon = 1e-12);
+
+        // Extremal: kappa = 0 (extremal BH has zero surface gravity)
+        let ke = Kerr::new(1.0, 1.0);
+        assert_relative_eq!(ke.surface_gravity(), 0.0, epsilon = 1e-12);
+
+        // Generic: 0 < kappa < 1/(4M)
+        let k = kerr_bh();
+        assert!(k.surface_gravity() > 0.0);
+        assert!(k.surface_gravity() < 0.25);
+    }
+
+    #[test]
+    fn test_kerr_trait_irreducible_mass() {
+        // Schwarzschild: M_irr = M
+        let k0 = Kerr::new(1.0, 0.0);
+        assert_relative_eq!(k0.irreducible_mass(), 1.0, epsilon = 1e-12);
+
+        // Extremal: M_irr = M / sqrt(2)
+        let ke = Kerr::new(1.0, 1.0);
+        assert_relative_eq!(
+            ke.irreducible_mass(),
+            1.0 / 2.0_f64.sqrt(),
+            epsilon = 1e-12
+        );
+
+        // M_irr <= M always
+        let k = kerr_bh();
+        assert!(k.irreducible_mass() <= k.mass + 1e-12);
+    }
+
+    #[test]
+    fn test_kerr_trait_angular_velocity_horizon() {
+        // Schwarzschild: Omega_H = 0 (no rotation)
+        let k0 = Kerr::new(1.0, 0.0);
+        assert_relative_eq!(k0.angular_velocity_horizon(), 0.0, epsilon = 1e-12);
+
+        // Extremal: Omega_H = a/(r+^2 + a^2) = 1/(1+1) = 0.5
+        let ke = Kerr::new(1.0, 1.0);
+        assert_relative_eq!(ke.angular_velocity_horizon(), 0.5, epsilon = 1e-12);
+    }
+
+    #[test]
+    fn test_kerr_trait_mass_scaling() {
+        // All radii should scale linearly with M
+        let k1 = Kerr::new(1.0, 0.5);
+        let k10 = Kerr::new(10.0, 5.0); // same a/M ratio
+
+        assert_relative_eq!(
+            k10.outer_horizon() / k1.outer_horizon(),
+            10.0,
+            epsilon = 1e-10
+        );
+        assert_relative_eq!(
+            k10.isco_prograde() / k1.isco_prograde(),
+            10.0,
+            epsilon = 1e-10
+        );
+        assert_relative_eq!(
+            k10.photon_orbit_prograde() / k1.photon_orbit_prograde(),
+            10.0,
+            epsilon = 1e-10
+        );
+    }
+
+    #[test]
+    fn test_kerr_trait_event_horizon_radius() {
+        let k = kerr_bh();
+        assert_eq!(k.event_horizon_radius(), Some(k.outer_horizon()));
+    }
+
+    #[test]
+    fn test_kerr_trait_isco_radius() {
+        let k = kerr_bh();
+        assert_eq!(k.isco_radius(), Some(k.isco_prograde()));
+    }
+
+    #[test]
+    fn test_kerr_trait_horizon_area() {
+        // Schwarzschild: A_H = 16 pi M^2
+        let k0 = Kerr::new(1.0, 0.0);
+        assert_relative_eq!(k0.horizon_area(), 16.0 * PI, epsilon = 1e-10);
+
+        // Extremal: A_H = 8 pi M^2
+        let ke = Kerr::new(1.0, 1.0);
+        assert_relative_eq!(ke.horizon_area(), 8.0 * PI, epsilon = 1e-10);
     }
 }

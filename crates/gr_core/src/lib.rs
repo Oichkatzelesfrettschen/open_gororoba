@@ -11,7 +11,7 @@
 //!
 //! - `metric` -- Generic spacetime trait and numerical curvature computation
 //! - `schwarzschild` -- Schwarzschild black hole (exact Christoffels, ISCO, potentials)
-//! - `kerr` -- Kerr black hole geodesics and shadow (Bardeen curve, ray-tracing)
+//! - `kerr` -- Kerr black hole (exact Christoffels, geodesics, shadow, ISCO, ergosphere)
 //! - `constants` -- Astrophysical constants (CGS, natural units, conversions)
 //!
 //! # Literature
@@ -29,7 +29,7 @@ pub mod schwarzschild;
 pub use kerr::{
     kerr_metric_quantities, photon_orbit_radius, impact_parameters,
     shadow_boundary, GeodesicState, geodesic_rhs, trace_null_geodesic,
-    GeodesicResult,
+    GeodesicResult, ShadowResult, shadow_ray_traced, Kerr,
 };
 
 pub use metric::{

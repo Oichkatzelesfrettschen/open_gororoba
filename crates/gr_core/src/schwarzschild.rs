@@ -214,7 +214,7 @@ impl SpacetimeMetric for Schwarzschild {
 mod tests {
     use super::*;
     use crate::metric::{
-        full_curvature, kretschner_scalar, ricci_from_riemann, riemann_from_christoffel,
+        full_curvature, ricci_from_riemann, riemann_from_christoffel,
     };
 
     const TOL: f64 = 1e-10;
