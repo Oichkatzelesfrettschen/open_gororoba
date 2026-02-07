@@ -1603,6 +1603,257 @@ mod tests {
         }
     }
 
+    // ---------------------------------------------------------------
+    // Regression tests for dim=64 motif census
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_motif_census_64d_component_count() {
+        let comps = motif_components_for_cross_assessors(64);
+        assert_eq!(comps.len(), 31, "dim=64 should have 31 components");
+    }
+
+    #[test]
+    fn test_motif_census_64d_uniform_node_count() {
+        let comps = motif_components_for_cross_assessors(64);
+        for (i, c) in comps.iter().enumerate() {
+            assert_eq!(c.nodes.len(), 30, "dim=64 comp[{}] should have 30 nodes", i);
+        }
+    }
+
+    #[test]
+    fn test_motif_census_64d_summary() {
+        // dim=64 census (discovered 2026-02-07):
+        //   31 components, all with 30 nodes.
+        //   4 distinct motif classes:
+        //     8 x [30 nodes, 84 edges,  deg=[4^28, 28^2]]         -- sparse double-hub
+        //     7 x [30 nodes, 228 edges, deg=[12^24, 28^6]]        -- intermediate
+        //     7 x [30 nodes, 276 edges, deg=[4^4, 20^24, 28^2]]   -- mixed intermediate
+        //     9 x [30 nodes, 420 edges, deg=[28^30]]               -- K_{2,...,2} (15 parts)
+        let comps = motif_components_for_cross_assessors(64);
+
+        // Classify by edge count
+        let by_edges = |e: usize| -> usize {
+            comps.iter().filter(|c| c.edges.len() == e).count()
+        };
+
+        assert_eq!(by_edges(84), 8, "Expected 8 sparse double-hub components (84 edges)");
+        assert_eq!(by_edges(228), 7, "Expected 7 intermediate components (228 edges)");
+        assert_eq!(by_edges(276), 7, "Expected 7 mixed intermediate components (276 edges)");
+        assert_eq!(by_edges(420), 9, "Expected 9 K_{{2,...,2}} components (420 edges)");
+
+        // Verify K_{2,...,2} structure: 15-partite with all parts size 2
+        for c in comps.iter().filter(|c| c.edges.len() == 420) {
+            assert_eq!(c.k2_multipartite_part_count(), 15);
+            assert!(c.degree_sequence().iter().all(|&d| d == 28));
+        }
+
+        // Verify sparse double-hub: degree sequence [4^28, 28^2]
+        for c in comps.iter().filter(|c| c.edges.len() == 84) {
+            let seq = c.degree_sequence();
+            assert_eq!(seq.iter().filter(|&&d| d == 4).count(), 28);
+            assert_eq!(seq.iter().filter(|&&d| d == 28).count(), 2);
+        }
+
+        // Verify total edges
+        let total_edges: usize = comps.iter().map(|c| c.edges.len()).sum();
+        assert_eq!(total_edges, 7980);
+    }
+
+    // ---------------------------------------------------------------
+    // Regression tests for dim=128 motif census
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_motif_census_128d_component_count() {
+        let comps = motif_components_for_cross_assessors(128);
+        assert_eq!(comps.len(), 63, "dim=128 should have 63 components");
+    }
+
+    #[test]
+    fn test_motif_census_128d_uniform_node_count() {
+        let comps = motif_components_for_cross_assessors(128);
+        for (i, c) in comps.iter().enumerate() {
+            assert_eq!(c.nodes.len(), 62, "dim=128 comp[{}] should have 62 nodes", i);
+        }
+    }
+
+    #[test]
+    fn test_motif_census_128d_summary() {
+        // dim=128 census (discovered 2026-02-07):
+        //   63 components, all with 62 nodes.
+        //   8 distinct motif classes (edges, count):
+        //     (180, 9), (516, 8), (756, 7), (948, 7),
+        //     (1092, 7), (1284, 7), (1524, 8), (1860, 10)
+        let comps = motif_components_for_cross_assessors(128);
+
+        let by_edges = |e: usize| -> usize {
+            comps.iter().filter(|c| c.edges.len() == e).count()
+        };
+
+        // 8 motif classes
+        let expected: [(usize, usize); 8] = [
+            (180, 9), (516, 8), (756, 7), (948, 7),
+            (1092, 7), (1284, 7), (1524, 8), (1860, 10),
+        ];
+        for &(edges, count) in &expected {
+            assert_eq!(by_edges(edges), count,
+                "dim=128: expected {} components with {} edges", count, edges);
+        }
+
+        // Verify K_{2,...,2} structure: 31-partite
+        for c in comps.iter().filter(|c| c.edges.len() == 1860) {
+            assert_eq!(c.k2_multipartite_part_count(), 31);
+            assert!(c.degree_sequence().iter().all(|&d| d == 60));
+        }
+
+        // Verify sparsest: degree [4^60, 60^2]
+        for c in comps.iter().filter(|c| c.edges.len() == 180) {
+            let seq = c.degree_sequence();
+            assert_eq!(seq.iter().filter(|&&d| d == 4).count(), 60);
+            assert_eq!(seq.iter().filter(|&&d| d == 60).count(), 2);
+        }
+
+        // Total edges
+        let total_edges: usize = comps.iter().map(|c| c.edges.len()).sum();
+        assert_eq!(total_edges, 65100);
+    }
+
+    // ---------------------------------------------------------------
+    // Regression tests for dim=256 motif census
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_motif_census_256d_component_count() {
+        let comps = motif_components_for_cross_assessors(256);
+        assert_eq!(comps.len(), 127, "dim=256 should have 127 components");
+    }
+
+    #[test]
+    fn test_motif_census_256d_uniform_node_count() {
+        let comps = motif_components_for_cross_assessors(256);
+        for (i, c) in comps.iter().enumerate() {
+            assert_eq!(c.nodes.len(), 126, "dim=256 comp[{}] should have 126 nodes", i);
+        }
+    }
+
+    #[test]
+    fn test_motif_census_256d_summary() {
+        // dim=256 census (discovered 2026-02-07):
+        //   127 components, all with 126 nodes.
+        //   16 distinct motif classes (edges, count):
+        //     (372, 10), (1092, 9), (1716, 8), (2436, 8),
+        //     (2676, 7), (3396, 7), (3444, 7), (4020, 7),
+        //     (4164, 7), (4740, 7), (4788, 7), (5508, 7),
+        //     (5748, 8), (6468, 8), (7092, 9), (7812, 11)
+        let comps = motif_components_for_cross_assessors(256);
+
+        let by_edges = |e: usize| -> usize {
+            comps.iter().filter(|c| c.edges.len() == e).count()
+        };
+
+        let expected: [(usize, usize); 16] = [
+            (372, 10), (1092, 9), (1716, 8), (2436, 8),
+            (2676, 7), (3396, 7), (3444, 7), (4020, 7),
+            (4164, 7), (4740, 7), (4788, 7), (5508, 7),
+            (5748, 8), (6468, 8), (7092, 9), (7812, 11),
+        ];
+        for &(edges, count) in &expected {
+            assert_eq!(by_edges(edges), count,
+                "dim=256: expected {} components with {} edges", count, edges);
+        }
+
+        // Verify K_{2,...,2}: 63-partite
+        for c in comps.iter().filter(|c| c.edges.len() == 7812) {
+            assert_eq!(c.k2_multipartite_part_count(), 63);
+            assert!(c.degree_sequence().iter().all(|&d| d == 124));
+        }
+
+        // Verify sparsest: degree [4^124, 124^2]
+        for c in comps.iter().filter(|c| c.edges.len() == 372) {
+            let seq = c.degree_sequence();
+            assert_eq!(seq.iter().filter(|&&d| d == 4).count(), 124);
+            assert_eq!(seq.iter().filter(|&&d| d == 124).count(), 2);
+        }
+
+        // Total edges
+        let total_edges: usize = comps.iter().map(|c| c.edges.len()).sum();
+        assert_eq!(total_edges, 523404);
+    }
+
+    // ---------------------------------------------------------------
+    // Cross-dimensional scaling law tests
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_motif_scaling_laws() {
+        // Verify the scaling patterns hold across all computed dimensions.
+        // These are empirical laws discovered from the exact census.
+        for &dim in &[16, 32, 64, 128] {
+            let comps = motif_components_for_cross_assessors(dim);
+
+            // Law 1: n_comps = dim/2 - 1
+            assert_eq!(comps.len(), dim / 2 - 1,
+                "dim={}: n_comps should be dim/2-1", dim);
+
+            // Law 2: all components have dim/2 - 2 nodes
+            for c in &comps {
+                assert_eq!(c.nodes.len(), dim / 2 - 2,
+                    "dim={}: nodes_per_comp should be dim/2-2", dim);
+            }
+
+            // Law 3: K_{2,...,2} components have dim/4-1 bipartite parts
+            let k2_parts_max = comps.iter()
+                .map(|c| c.k2_multipartite_part_count())
+                .max()
+                .unwrap_or(0);
+            assert_eq!(k2_parts_max, dim / 4 - 1,
+                "dim={}: max K2 parts should be dim/4-1", dim);
+        }
+    }
+
+    #[test]
+    fn test_motif_class_count_scaling() {
+        // The number of distinct motif classes = dim/16.
+        // This doubles with each Cayley-Dickson doubling.
+        use std::collections::HashSet;
+        for &dim in &[16, 32, 64, 128] {
+            let comps = motif_components_for_cross_assessors(dim);
+            let classes: HashSet<usize> = comps.iter()
+                .map(|c| c.edges.len())
+                .collect();
+            assert_eq!(classes.len(), dim / 16,
+                "dim={}: n_classes should be dim/16", dim);
+        }
+    }
+
+    #[test]
+    fn test_k2_component_count_scaling() {
+        // The number of K_{2,...,2} components = 3 + log2(dim).
+        for &(dim, expected_k2) in &[(16, 7), (32, 8), (64, 9), (128, 10)] {
+            let comps = motif_components_for_cross_assessors(dim);
+            let n_k2 = comps.iter()
+                .filter(|c| c.k2_multipartite_part_count() > 0)
+                .count();
+            assert_eq!(n_k2, expected_k2,
+                "dim={}: K2 component count should be {}", dim, expected_k2);
+        }
+    }
+
+    #[test]
+    fn test_no_octahedra_beyond_16d() {
+        // Octahedra (6 nodes, 12 edges) appear ONLY at dim=16.
+        // At dim=32 and beyond, the structure completely restructures.
+        for &dim in &[32, 64, 128] {
+            let comps = motif_components_for_cross_assessors(dim);
+            let n_octahedra = comps.iter()
+                .filter(|c| c.is_octahedron_graph())
+                .count();
+            assert_eq!(n_octahedra, 0,
+                "dim={}: should have no octahedra (only at dim=16)", dim);
+        }
+    }
+
     #[test]
     fn test_complement_graph_regression_dim16() {
         // At dim=16, all 7 components should be K_{2,2,2} (octahedra),

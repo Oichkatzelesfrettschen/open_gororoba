@@ -61,6 +61,11 @@ pub use zd_graphs::{
     // XOR heuristics (cd_xor_heuristics port)
     xor_key, xor_bucket_necessary_for_two_blade, xor_balanced_four_tuple,
     xor_pairing_buckets, xor_bucket_necessary_2v4,
+    // XOR-balanced search extension (CX-003)
+    enumerate_xor_balanced_4tuples, even_parity_sign_vectors,
+    zero_product_2blade_x_4blade, build_mixed_blade_graph,
+    xor_necessity_statistics,
+    BladeNode, MixedBladeGraphResult, TwoBladeSpec, FourBladeSpec,
 };
 
 pub use e8_lattice::{
