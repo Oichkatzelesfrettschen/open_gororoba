@@ -5,6 +5,10 @@ edition = "2021"
 description = "Statistical methodology for physics analysis: Frechet distance, bootstrap CI, Haar unitaries"
 license = "MIT"
 
+[features]
+default = []
+gpu = ["cudarc"]
+
 [dependencies]
 nalgebra = { workspace = true }
 num-complex = { workspace = true }
@@ -18,6 +22,7 @@ rustfft = { workspace = true }
 realfft = { workspace = true }
 hurst = { workspace = true }
 algebra_core = { path = "../algebra_core" }
+cudarc = { workspace = true, optional = true }
 
 [dev-dependencies]
 approx = { workspace = true }

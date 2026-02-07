@@ -383,6 +383,231 @@ pub struct BaireTestResult {
     pub p_value: f64,
 }
 
+// ---------------------------------------------------------------------------
+// Matrix-free ultrametric tests: O(N*d) memory instead of O(N^2)
+// ---------------------------------------------------------------------------
+
+/// Normalize a full dataset into [0,1]^d using the encoder's attribute specs.
+///
+/// Returns a flat column-major array: `normalized[col * n + row]` for SIMD-
+/// friendly column access during distance computation.
+pub fn normalize_data_column_major(
+    encoder: &BaireEncoder,
+    data: &[Vec<f64>],
+) -> (Vec<f64>, usize, usize) {
+    let n = data.len();
+    let d = encoder.attributes.len();
+    let mut cols = vec![0.0_f64; d * n];
+    for (row_i, row) in data.iter().enumerate() {
+        for (col_j, spec) in encoder.attributes.iter().enumerate() {
+            cols[col_j * n + row_i] = encoder.normalize(row[col_j], spec);
+        }
+    }
+    (cols, n, d)
+}
+
+/// Compute squared Euclidean distance between two rows in column-major layout.
+#[inline(always)]
+fn euclidean_dist_sq_colmajor(cols: &[f64], n: usize, d: usize, i: usize, j: usize) -> f64 {
+    let mut sum = 0.0_f64;
+    for c in 0..d {
+        let diff = cols[c * n + i] - cols[c * n + j];
+        sum += diff * diff;
+    }
+    sum
+}
+
+/// Compute ultrametric fraction by sampling triples directly from data.
+///
+/// No distance matrix is built. Memory: O(N * d) for the normalized data.
+/// Computation: O(n_triples * d) for the triple evaluations.
+pub fn matrix_free_fraction(
+    cols: &[f64],
+    n: usize,
+    d: usize,
+    n_triples: usize,
+    seed: u64,
+    epsilon: f64,
+) -> f64 {
+    let mut rng = ChaCha8Rng::seed_from_u64(seed);
+    let mut count = 0_usize;
+
+    for _ in 0..n_triples {
+        let i = rng.gen_range(0..n);
+        let mut j = rng.gen_range(0..n - 1);
+        if j >= i { j += 1; }
+        let mut k = rng.gen_range(0..n - 2);
+        if k >= i.min(j) { k += 1; }
+        if k >= i.max(j) { k += 1; }
+
+        // Compute distances on-the-fly (sqrt not needed for relative comparison
+        // if we compare squared distances, but epsilon is on the ratio of actual
+        // distances, so we need sqrt)
+        let d_ij = euclidean_dist_sq_colmajor(cols, n, d, i, j).sqrt();
+        let d_jk = euclidean_dist_sq_colmajor(cols, n, d, j, k).sqrt();
+        let d_ik = euclidean_dist_sq_colmajor(cols, n, d, i, k).sqrt();
+
+        let mut dists = [d_ij, d_jk, d_ik];
+        dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+        if dists[2] > 1e-15 {
+            let relative_diff = (dists[2] - dists[1]) / dists[2];
+            if relative_diff < epsilon {
+                count += 1;
+            }
+        } else {
+            count += 1;
+        }
+    }
+
+    count as f64 / n_triples as f64
+}
+
+/// Shuffle a single column in the column-major array in-place.
+fn shuffle_column(cols: &mut [f64], n: usize, col: usize, rng: &mut ChaCha8Rng) {
+    let start = col * n;
+    let slice = &mut cols[start..start + n];
+    slice.shuffle(rng);
+}
+
+/// Full matrix-free ultrametric test with permutation null.
+///
+/// Memory: O(N * d) for the data -- no O(N^2) distance matrix.
+/// For 50K objects with 6 attributes, this uses ~2.4 MB instead of ~10 GB.
+pub fn matrix_free_ultrametric_test(
+    encoder: &BaireEncoder,
+    data: &[Vec<f64>],
+    n_triples: usize,
+    n_permutations: usize,
+    seed: u64,
+) -> BaireTestResult {
+    let n = data.len();
+    assert!(n >= 3, "Need at least 3 objects");
+    let d = encoder.attributes.len();
+
+    let (cols, _, _) = normalize_data_column_major(encoder, data);
+
+    // Observed fraction at default epsilon = 0.05
+    let obs_frac = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+    // Null: shuffle each column independently
+    let mut rng = ChaCha8Rng::seed_from_u64(seed + 1_000_000);
+    let mut null_fracs = Vec::with_capacity(n_permutations);
+    let mut shuffled_cols = cols.clone();
+
+    for _ in 0..n_permutations {
+        for col in 0..d {
+            shuffle_column(&mut shuffled_cols, n, col, &mut rng);
+        }
+        let null_frac = matrix_free_fraction(
+            &shuffled_cols, n, d, n_triples, seed + 2_000_000, 0.05,
+        );
+        null_fracs.push(null_frac);
+    }
+
+    let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+    let null_var = null_fracs
+        .iter()
+        .map(|f| (f - null_mean).powi(2))
+        .sum::<f64>()
+        / n_permutations as f64;
+    let null_std = null_var.sqrt();
+
+    let n_extreme = null_fracs.iter().filter(|&&f| f >= obs_frac).count();
+    let p_value = (n_extreme as f64 + 1.0) / (n_permutations as f64 + 1.0);
+
+    BaireTestResult {
+        n_objects: n,
+        n_attributes: d,
+        base: encoder.base,
+        n_digits: encoder.n_digits,
+        ultrametric_fraction: obs_frac,
+        null_fraction_mean: null_mean,
+        null_fraction_std: null_std,
+        p_value,
+    }
+}
+
+/// Matrix-free tolerance curve: sweep epsilon without any O(N^2) matrices.
+///
+/// For each epsilon, computes the fraction for observed data and for each
+/// null permutation. No distance matrices are stored -- everything is
+/// computed on-the-fly from the column-major normalized data.
+///
+/// Memory: O(N * d) -- just the data.
+/// Computation: O(n_epsilons * (1 + n_perms) * n_triples * d)
+pub fn matrix_free_tolerance_curve(
+    encoder: &BaireEncoder,
+    data: &[Vec<f64>],
+    n_triples: usize,
+    n_permutations: usize,
+    seed: u64,
+) -> super::ToleranceCurveResult {
+    let n = data.len();
+    let d = encoder.attributes.len();
+
+    let (cols, _, _) = normalize_data_column_major(encoder, data);
+    let epsilons: Vec<f64> = (1..=20).map(|i| i as f64 * 0.01).collect();
+
+    // Compute observed fractions at each epsilon
+    let obs_fracs: Vec<f64> = epsilons
+        .iter()
+        .map(|&eps| matrix_free_fraction(&cols, n, d, n_triples, seed, eps))
+        .collect();
+
+    // Compute null mean at each epsilon using column-shuffled data
+    let mut null_means = vec![0.0_f64; epsilons.len()];
+    let mut rng = ChaCha8Rng::seed_from_u64(seed + 1_000_000);
+    let mut shuffled_cols = cols.clone();
+    let n_perms = n_permutations.min(50);
+
+    for _ in 0..n_perms {
+        for col in 0..d {
+            shuffle_column(&mut shuffled_cols, n, col, &mut rng);
+        }
+        for (ei, &eps) in epsilons.iter().enumerate() {
+            let null_frac = matrix_free_fraction(
+                &shuffled_cols, n, d, n_triples, seed + 2_000_000, eps,
+            );
+            null_means[ei] += null_frac;
+        }
+    }
+    for nm in &mut null_means {
+        *nm /= n_perms as f64;
+    }
+
+    // Build curve points
+    let mut points = Vec::with_capacity(epsilons.len());
+    for (ei, &eps) in epsilons.iter().enumerate() {
+        points.push(super::ToleranceCurvePoint {
+            epsilon: eps,
+            observed: obs_fracs[ei],
+            null_mean: null_means[ei],
+            excess: obs_fracs[ei] - null_means[ei],
+        });
+    }
+
+    // AUC of excess curve (trapezoidal rule)
+    let mut auc = 0.0;
+    for w in points.windows(2) {
+        let h = w[1].epsilon - w[0].epsilon;
+        auc += 0.5 * h * (w[0].excess + w[1].excess);
+    }
+
+    let (max_excess, best_epsilon) = points
+        .iter()
+        .max_by(|a, b| a.excess.partial_cmp(&b.excess).unwrap())
+        .map(|p| (p.excess, p.epsilon))
+        .unwrap_or((0.0, 0.05));
+
+    super::ToleranceCurveResult {
+        points,
+        auc_excess: auc,
+        max_excess,
+        best_epsilon,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -492,5 +717,100 @@ mod tests {
         let dists = baire_distance_matrix(&encoder, &data);
 
         assert_eq!(dists.len(), 5 * 4 / 2);
+    }
+
+    #[test]
+    fn test_matrix_free_fraction_matches_matrix_version() {
+        // Verify that matrix-free fraction gives the same result as the
+        // matrix-based version (same seed, same data, same epsilon).
+        let specs = vec![
+            AttributeSpec { name: "x".into(), min: 0.0, max: 10.0, log_scale: false },
+            AttributeSpec { name: "y".into(), min: 0.0, max: 10.0, log_scale: false },
+        ];
+        let encoder = BaireEncoder::new(specs, 10, 4);
+        let mut rng = ChaCha8Rng::seed_from_u64(999);
+        let data: Vec<Vec<f64>> = (0..200)
+            .map(|_| vec![rng.gen_range(0.0..10.0), rng.gen_range(0.0..10.0)])
+            .collect();
+
+        // Matrix-based
+        let dm = euclidean_distance_matrix(&encoder, &data);
+        let frac_matrix = crate::ultrametric::ultrametric_fraction_from_matrix_eps(
+            &dm, data.len(), 10_000, 42, 0.05,
+        );
+
+        // Matrix-free
+        let (cols, n, d) = normalize_data_column_major(&encoder, &data);
+        let frac_free = matrix_free_fraction(&cols, n, d, 10_000, 42, 0.05);
+
+        assert!(
+            (frac_matrix - frac_free).abs() < 1e-10,
+            "Matrix ({frac_matrix}) and matrix-free ({frac_free}) fractions must match",
+        );
+    }
+
+    #[test]
+    fn test_matrix_free_ultrametric_test_runs() {
+        let specs = vec![
+            AttributeSpec { name: "a".into(), min: 0.0, max: 1.0, log_scale: false },
+            AttributeSpec { name: "b".into(), min: 0.0, max: 1.0, log_scale: false },
+        ];
+        let encoder = BaireEncoder::new(specs, 10, 4);
+        let mut rng = ChaCha8Rng::seed_from_u64(77);
+        let data: Vec<Vec<f64>> = (0..100)
+            .map(|_| vec![rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0)])
+            .collect();
+
+        let result = matrix_free_ultrametric_test(&encoder, &data, 5_000, 50, 42);
+        assert!(result.p_value >= 0.0 && result.p_value <= 1.0);
+        assert!(result.ultrametric_fraction > 0.0);
+        assert_eq!(result.n_objects, 100);
+    }
+
+    #[test]
+    fn test_matrix_free_tolerance_curve_structure() {
+        let specs = vec![
+            AttributeSpec { name: "x".into(), min: 0.0, max: 1.0, log_scale: false },
+            AttributeSpec { name: "y".into(), min: 0.0, max: 1.0, log_scale: false },
+        ];
+        let encoder = BaireEncoder::new(specs, 10, 4);
+        let mut rng = ChaCha8Rng::seed_from_u64(55);
+        let data: Vec<Vec<f64>> = (0..50)
+            .map(|_| vec![rng.gen_range(0.0..1.0), rng.gen_range(0.0..1.0)])
+            .collect();
+
+        let tc = matrix_free_tolerance_curve(&encoder, &data, 5_000, 20, 42);
+        assert_eq!(tc.points.len(), 20);
+        // Observed fraction must be monotonically non-decreasing with epsilon
+        for w in tc.points.windows(2) {
+            assert!(
+                w[1].observed >= w[0].observed - 1e-10,
+                "Fraction must increase with epsilon: {} -> {}",
+                w[0].observed, w[1].observed,
+            );
+        }
+    }
+
+    #[test]
+    fn test_column_major_layout() {
+        let specs = vec![
+            AttributeSpec { name: "x".into(), min: 0.0, max: 10.0, log_scale: false },
+            AttributeSpec { name: "y".into(), min: 0.0, max: 10.0, log_scale: false },
+        ];
+        let encoder = BaireEncoder::new(specs, 10, 4);
+        let data = vec![vec![2.0, 8.0], vec![4.0, 6.0], vec![6.0, 4.0]];
+
+        let (cols, n, d) = normalize_data_column_major(&encoder, &data);
+        assert_eq!(n, 3);
+        assert_eq!(d, 2);
+        assert_eq!(cols.len(), 6);
+        // Column 0 (x): normalized values of [2, 4, 6] in range [0, 10]
+        assert!((cols[0] - 0.2).abs() < 1e-10); // x[0] = 2/10
+        assert!((cols[1] - 0.4).abs() < 1e-10); // x[1] = 4/10
+        assert!((cols[2] - 0.6).abs() < 1e-10); // x[2] = 6/10
+        // Column 1 (y): normalized values of [8, 6, 4] in range [0, 10]
+        assert!((cols[3] - 0.8).abs() < 1e-10); // y[0] = 8/10
+        assert!((cols[4] - 0.6).abs() < 1e-10); // y[1] = 6/10
+        assert!((cols[5] - 0.4).abs() < 1e-10); // y[2] = 4/10
     }
 }

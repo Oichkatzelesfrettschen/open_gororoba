@@ -46,6 +46,8 @@ pub mod local;
 pub mod baire;
 pub mod temporal;
 pub mod dendrogram;
+#[cfg(feature = "gpu")]
+pub mod gpu;
 
 use algebra_core::padic::{Rational, padic_distance};
 use rand::prelude::*;
@@ -58,11 +60,14 @@ pub use local::{LocalUltrametricResult, local_ultrametricity_test};
 pub use baire::{
     BaireEncoder, AttributeSpec, baire_distance_matrix,
     euclidean_distance_matrix, euclidean_ultrametric_test, BaireTestResult,
+    normalize_data_column_major, matrix_free_fraction,
+    matrix_free_ultrametric_test, matrix_free_tolerance_curve,
 };
 pub use temporal::{CascadeAnalysis, WaitingTimeStats, analyze_temporal_cascade};
 pub use dendrogram::{
-    DendrogramResult, cophenetic_distance_matrix, cophenetic_correlation,
-    hierarchical_ultrametric_test,
+    DendrogramResult, MultiLinkageResult, cophenetic_distance_matrix,
+    cophenetic_correlation, hierarchical_ultrametric_test,
+    hierarchical_ultrametric_test_with_method, multi_linkage_test,
 };
 
 /// Configuration for ultrametric analysis.
@@ -301,6 +306,150 @@ pub fn ultrametric_fraction_from_matrix(
     }
 
     count as f64 / n_triples as f64
+}
+
+/// Compute ultrametric fraction on a distance matrix with configurable tolerance.
+///
+/// Like `ultrametric_fraction_from_matrix` but with an explicit `epsilon`
+/// parameter instead of the hardcoded 0.05. The two largest pairwise
+/// distances in a triple must differ by less than `epsilon * d_max` to
+/// count as ultrametric.
+pub fn ultrametric_fraction_from_matrix_eps(
+    dist_matrix: &[f64],
+    n_points: usize,
+    n_triples: usize,
+    seed: u64,
+    epsilon: f64,
+) -> f64 {
+    let mut rng = ChaCha8Rng::seed_from_u64(seed);
+    let mut count = 0usize;
+
+    let idx = |i: usize, j: usize| -> usize {
+        let (a, b) = if i < j { (i, j) } else { (j, i) };
+        a * n_points - a * (a + 1) / 2 + b - a - 1
+    };
+
+    for _ in 0..n_triples {
+        let i = rng.gen_range(0..n_points);
+        let mut j = rng.gen_range(0..n_points - 1);
+        if j >= i { j += 1; }
+        let mut k = rng.gen_range(0..n_points - 2);
+        if k >= i.min(j) { k += 1; }
+        if k >= i.max(j) { k += 1; }
+
+        let d_ij = dist_matrix[idx(i, j)];
+        let d_jk = dist_matrix[idx(j, k)];
+        let d_ik = dist_matrix[idx(i, k)];
+
+        let mut dists = [d_ij, d_jk, d_ik];
+        dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+        if dists[2] > 1e-15 {
+            let relative_diff = (dists[2] - dists[1]) / dists[2];
+            if relative_diff < epsilon {
+                count += 1;
+            }
+        } else {
+            count += 1;
+        }
+    }
+
+    count as f64 / n_triples as f64
+}
+
+/// One point on the tolerance curve.
+#[derive(Debug, Clone)]
+pub struct ToleranceCurvePoint {
+    /// The epsilon (relative tolerance) value.
+    pub epsilon: f64,
+    /// Observed ultrametric fraction at this epsilon.
+    pub observed: f64,
+    /// Mean null fraction at this epsilon.
+    pub null_mean: f64,
+    /// Excess = observed - null_mean. Positive means more ultrametric than null.
+    pub excess: f64,
+}
+
+/// Result of a tolerance curve sweep.
+#[derive(Debug, Clone)]
+pub struct ToleranceCurveResult {
+    /// Points along the curve (one per epsilon value).
+    pub points: Vec<ToleranceCurvePoint>,
+    /// Area under the excess curve (trapezoidal rule).
+    /// Positive AUC means the data is consistently more ultrametric than null.
+    pub auc_excess: f64,
+    /// Maximum excess observed at any epsilon.
+    pub max_excess: f64,
+    /// Epsilon at which maximum excess occurs.
+    pub best_epsilon: f64,
+}
+
+/// Compute the tolerance curve: ultrametric fraction as a function of epsilon.
+///
+/// Instead of a single threshold, sweeps epsilon from 0.01 to 0.20 in steps
+/// of 0.01. At each epsilon, computes observed fraction and null mean (from
+/// column-shuffled permutations). Returns the full curve plus summary
+/// statistics (AUC of excess, max excess, best epsilon).
+///
+/// The RNG state is shared across epsilons for each permutation so the same
+/// triple samples and shuffles are reused, ensuring the curve is smooth.
+pub fn tolerance_curve(
+    dist_matrix: &[f64],
+    n_points: usize,
+    n_triples: usize,
+    null_dist_matrices: &[Vec<f64>],
+    seed: u64,
+) -> ToleranceCurveResult {
+    let epsilons: Vec<f64> = (1..=20).map(|i| i as f64 * 0.01).collect();
+
+    let mut points = Vec::with_capacity(epsilons.len());
+
+    for &eps in &epsilons {
+        let obs = ultrametric_fraction_from_matrix_eps(
+            dist_matrix, n_points, n_triples, seed, eps,
+        );
+
+        let null_mean = if null_dist_matrices.is_empty() {
+            0.0
+        } else {
+            let sum: f64 = null_dist_matrices
+                .iter()
+                .map(|null_dm| {
+                    ultrametric_fraction_from_matrix_eps(
+                        null_dm, n_points, n_triples, seed, eps,
+                    )
+                })
+                .sum();
+            sum / null_dist_matrices.len() as f64
+        };
+
+        points.push(ToleranceCurvePoint {
+            epsilon: eps,
+            observed: obs,
+            null_mean,
+            excess: obs - null_mean,
+        });
+    }
+
+    // AUC of excess curve (trapezoidal rule)
+    let mut auc = 0.0;
+    for w in points.windows(2) {
+        let h = w[1].epsilon - w[0].epsilon;
+        auc += 0.5 * h * (w[0].excess + w[1].excess);
+    }
+
+    let (max_excess, best_epsilon) = points
+        .iter()
+        .max_by(|a, b| a.excess.partial_cmp(&b.excess).unwrap())
+        .map(|p| (p.excess, p.epsilon))
+        .unwrap_or((0.0, 0.05));
+
+    ToleranceCurveResult {
+        points,
+        auc_excess: auc,
+        max_excess,
+        best_epsilon,
+    }
 }
 
 /// Test graded ultrametric defect.
@@ -632,6 +781,80 @@ pub fn ultrametric_gate(
 }
 
 // ---------------------------------------------------------------------------
+// Multiple testing correction
+// ---------------------------------------------------------------------------
+
+/// Result of Benjamini-Hochberg FDR correction.
+#[derive(Debug, Clone)]
+pub struct FdrResult {
+    /// Adjusted p-values (in original order).
+    pub adjusted_p_values: Vec<f64>,
+    /// Which tests are significant at the given FDR level (in original order).
+    pub significant: Vec<bool>,
+    /// Number of significant tests.
+    pub n_significant: usize,
+    /// FDR level used.
+    pub fdr_level: f64,
+}
+
+/// Benjamini-Hochberg FDR correction for multiple testing.
+///
+/// Given a set of p-values, returns adjusted p-values and a boolean mask
+/// indicating which tests are significant at the specified FDR level.
+///
+/// Less conservative than Bonferroni for exploration with many tests.
+///
+/// # Algorithm
+/// 1. Sort p-values by rank
+/// 2. Adjusted p_i = min(p_i * m / rank_i, 1.0)
+/// 3. Enforce monotonicity from bottom up
+/// 4. Compare adjusted p-values to FDR level
+pub fn benjamini_hochberg(p_values: &[f64], fdr_level: f64) -> FdrResult {
+    let m = p_values.len();
+    if m == 0 {
+        return FdrResult {
+            adjusted_p_values: vec![],
+            significant: vec![],
+            n_significant: 0,
+            fdr_level,
+        };
+    }
+
+    // Sort indices by p-value
+    let mut indices: Vec<usize> = (0..m).collect();
+    indices.sort_by(|&a, &b| {
+        p_values[a]
+            .partial_cmp(&p_values[b])
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
+
+    // Compute adjusted p-values
+    let mut adjusted = vec![0.0; m];
+    for (rank_minus_1, &orig_idx) in indices.iter().enumerate() {
+        let rank = rank_minus_1 + 1;
+        adjusted[orig_idx] = (p_values[orig_idx] * m as f64 / rank as f64).min(1.0);
+    }
+
+    // Enforce monotonicity: walk from largest rank to smallest,
+    // ensuring adjusted[rank_i] <= adjusted[rank_{i+1}]
+    let mut running_min = 1.0;
+    for &orig_idx in indices.iter().rev() {
+        adjusted[orig_idx] = adjusted[orig_idx].min(running_min);
+        running_min = adjusted[orig_idx];
+    }
+
+    let significant: Vec<bool> = adjusted.iter().map(|&p| p < fdr_level).collect();
+    let n_significant = significant.iter().filter(|&&s| s).count();
+
+    FdrResult {
+        adjusted_p_values: adjusted,
+        significant,
+        n_significant,
+        fdr_level,
+    }
+}
+
+// ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
 
@@ -826,5 +1049,108 @@ mod tests {
             "Perfect ultrametric tree should yield fraction ~1.0, got {}",
             frac
         );
+    }
+
+    #[test]
+    fn test_fraction_eps_monotonic() {
+        // Ultrametric fraction must increase with epsilon (monotonic).
+        // Larger tolerance accepts more triples.
+        let dist_matrix = vec![1.0, 2.0, 2.0, 2.0, 2.0, 1.0];
+        let n = 4;
+
+        let mut prev = 0.0;
+        for i in 1..=20 {
+            let eps = i as f64 * 0.01;
+            let frac = ultrametric_fraction_from_matrix_eps(
+                &dist_matrix, n, 10_000, 42, eps,
+            );
+            assert!(
+                frac >= prev - 0.01, // Allow tiny noise from sampling
+                "Fraction should be non-decreasing: eps={} frac={} < prev={}",
+                eps, frac, prev,
+            );
+            prev = frac;
+        }
+    }
+
+    #[test]
+    fn test_tolerance_curve_structure() {
+        // Tolerance curve on perfect ultrametric: excess should be positive
+        // at all epsilons since tree distances are always exactly isosceles.
+        let dist_matrix = vec![1.0, 2.0, 2.0, 2.0, 2.0, 1.0];
+        let n = 4;
+
+        // Generate a "null" by perturbing distances
+        let null_dm = vec![1.2, 1.8, 2.1, 1.9, 2.2, 0.9];
+        let result = tolerance_curve(&dist_matrix, n, 5_000, &[null_dm], 42);
+
+        assert_eq!(result.points.len(), 20);
+        assert!(result.points[0].epsilon > 0.0);
+        assert!(result.points[19].epsilon < 0.21);
+        // Perfect ultrametric should have positive AUC
+        assert!(
+            result.auc_excess > 0.0,
+            "Perfect ultrametric should have positive AUC, got {}",
+            result.auc_excess,
+        );
+        assert!(result.max_excess > 0.0);
+        assert!(result.best_epsilon > 0.0);
+    }
+
+    #[test]
+    fn test_bh_fdr_no_signal() {
+        // All p-values high: nothing should be significant
+        let p_values = vec![0.50, 0.60, 0.70, 0.80, 0.90];
+        let result = benjamini_hochberg(&p_values, 0.05);
+
+        assert_eq!(result.n_significant, 0);
+        assert!(result.significant.iter().all(|&s| !s));
+        assert!(result.adjusted_p_values.iter().all(|&p| p >= 0.05));
+    }
+
+    #[test]
+    fn test_bh_fdr_some_signal() {
+        // Mix of strong and weak signals
+        let p_values = vec![0.001, 0.004, 0.030, 0.500, 0.800];
+        let result = benjamini_hochberg(&p_values, 0.05);
+
+        // First two should survive FDR correction
+        assert!(result.significant[0], "p=0.001 should be significant");
+        assert!(result.significant[1], "p=0.004 should be significant");
+        // Last two definitely not
+        assert!(!result.significant[3], "p=0.500 should not be significant");
+        assert!(!result.significant[4], "p=0.800 should not be significant");
+        assert!(result.n_significant >= 2);
+    }
+
+    #[test]
+    fn test_bh_fdr_adjusted_monotonic() {
+        // Adjusted p-values should be monotonic when sorted by raw p-value
+        let p_values = vec![0.01, 0.03, 0.05, 0.10, 0.50];
+        let result = benjamini_hochberg(&p_values, 0.05);
+
+        // Already sorted by raw p-value; adjusted should be non-decreasing
+        for w in result.adjusted_p_values.windows(2) {
+            assert!(
+                w[1] >= w[0] - 1e-15,
+                "Adjusted p-values should be non-decreasing: {} > {}",
+                w[0], w[1],
+            );
+        }
+    }
+
+    #[test]
+    fn test_bh_fdr_empty() {
+        let result = benjamini_hochberg(&[], 0.05);
+        assert_eq!(result.n_significant, 0);
+        assert!(result.adjusted_p_values.is_empty());
+    }
+
+    #[test]
+    fn test_bh_fdr_all_significant() {
+        // All p-values very small
+        let p_values = vec![0.0001, 0.0002, 0.0003];
+        let result = benjamini_hochberg(&p_values, 0.05);
+        assert_eq!(result.n_significant, 3);
     }
 }

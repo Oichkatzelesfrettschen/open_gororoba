@@ -122,7 +122,7 @@ optics_core = { path = "../optics_core" }
 quantum_core = { path = "../quantum_core" }
 spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
-stats_core = { path = "../stats_core" }
+stats_core = { path = "../stats_core", features = ["gpu"] }
 data_core = { path = "../data_core" }
 ndarray = { workspace = true }
 rand = { workspace = true }
@@ -136,3 +136,4 @@ plotters = { workspace = true }
 plotters-svg = { workspace = true }
 ureq = { workspace = true }
 sha2 = { workspace = true }
+rayon = { workspace = true }

@@ -31,6 +31,8 @@ use crate::claims_gates::Verdict;
 pub struct DendrogramResult {
     /// Number of points clustered.
     pub n_points: usize,
+    /// Linkage method used.
+    pub linkage_method: String,
     /// Cophenetic correlation coefficient (Pearson r between original
     /// and cophenetic distances). 1.0 = perfect ultrametric.
     pub cophenetic_correlation: f64,
@@ -40,10 +42,58 @@ pub struct DendrogramResult {
     pub null_cophenetic_std: f64,
     /// P-value: fraction of null correlations >= observed.
     pub p_value: f64,
+    /// RMSE between original and cophenetic distances (absolute distortion).
+    pub cophenetic_rmse: f64,
+    /// Maximum relative error between original and cophenetic distances.
+    pub cophenetic_max_rel_error: f64,
     /// Ultrametric fraction computed on the original distance matrix.
     pub ultrametric_fraction: f64,
     /// Verdict based on cophenetic correlation significance.
     pub verdict: Verdict,
+}
+
+/// Result of testing across multiple linkage methods.
+#[derive(Debug, Clone)]
+pub struct MultiLinkageResult {
+    /// Results for each linkage method.
+    pub results: Vec<DendrogramResult>,
+    /// Whether the signal is stable across methods (>= 2 pass at p < 0.05).
+    pub linkage_stable: bool,
+}
+
+/// Name a kodama Method for display.
+fn method_name(method: Method) -> &'static str {
+    match method {
+        Method::Single => "single",
+        Method::Complete => "complete",
+        Method::Average => "average",
+        Method::Ward => "ward",
+        _ => "other",
+    }
+}
+
+/// Compute RMSE between original and cophenetic distances.
+fn cophenetic_rmse(original: &[f64], cophenetic: &[f64]) -> f64 {
+    assert_eq!(original.len(), cophenetic.len());
+    let n = original.len() as f64;
+    let mse: f64 = original
+        .iter()
+        .zip(cophenetic.iter())
+        .map(|(&o, &c)| (o - c).powi(2))
+        .sum::<f64>()
+        / n;
+    mse.sqrt()
+}
+
+/// Compute max relative error between original and cophenetic distances.
+fn cophenetic_max_rel_error(original: &[f64], cophenetic: &[f64]) -> f64 {
+    assert_eq!(original.len(), cophenetic.len());
+    original
+        .iter()
+        .zip(cophenetic.iter())
+        .filter(|(&o, _)| o > 1e-15)
+        .map(|(&o, &c)| ((o - c) / o).abs())
+        .fold(0.0_f64, f64::max)
 }
 
 /// Compute the cophenetic distance matrix from a kodama dendrogram.
@@ -125,8 +175,8 @@ pub fn cophenetic_correlation(
 /// Run the full dendrogram-based ultrametric test.
 ///
 /// Takes a flat upper-triangle distance matrix and the number of points.
-/// Builds a single-linkage dendrogram, computes cophenetic distances,
-/// and tests whether the cophenetic correlation exceeds what shuffled
+/// Builds a dendrogram using the specified linkage method, computes cophenetic
+/// distances, and tests whether the cophenetic correlation exceeds what shuffled
 /// data produces.
 ///
 /// `dist_matrix` layout: index(i,j) = i*n - i*(i+1)/2 + j - i - 1 for i < j.
@@ -136,12 +186,25 @@ pub fn hierarchical_ultrametric_test(
     n_permutations: usize,
     seed: u64,
 ) -> DendrogramResult {
+    hierarchical_ultrametric_test_with_method(
+        dist_matrix, n_points, n_permutations, seed, Method::Single,
+    )
+}
+
+/// Run dendrogram test with a specific linkage method.
+pub fn hierarchical_ultrametric_test_with_method(
+    dist_matrix: &[f64],
+    n_points: usize,
+    n_permutations: usize,
+    seed: u64,
+    method: Method,
+) -> DendrogramResult {
     let n_pairs = n_points * (n_points - 1) / 2;
     assert_eq!(dist_matrix.len(), n_pairs, "Distance matrix size mismatch");
 
-    // Build dendrogram using kodama (single-linkage)
+    // Build dendrogram
     let mut condensed = dist_matrix.to_vec();
-    let dend = linkage(&mut condensed, n_points, Method::Single);
+    let dend = linkage(&mut condensed, n_points, method);
 
     // Extract steps as tuples
     let steps: Vec<(usize, usize, f64, usize)> = dend
@@ -153,8 +216,10 @@ pub fn hierarchical_ultrametric_test(
     // Compute cophenetic distances
     let coph = cophenetic_distance_matrix(n_points, &steps);
 
-    // Cophenetic correlation
+    // Cophenetic correlation and distortion
     let obs_corr = cophenetic_correlation(dist_matrix, &coph);
+    let rmse = cophenetic_rmse(dist_matrix, &coph);
+    let max_rel = cophenetic_max_rel_error(dist_matrix, &coph);
 
     // Ultrametric fraction on original distances
     let obs_frac = super::ultrametric_fraction_from_matrix(
@@ -162,11 +227,9 @@ pub fn hierarchical_ultrametric_test(
     );
 
     // Null distribution: shuffle the distance matrix labels
-    // (equivalent to random relabeling of points)
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
     let mut null_corrs = Vec::with_capacity(n_permutations);
 
-    // Create index permutation and apply it to the distance matrix
     let mut perm: Vec<usize> = (0..n_points).collect();
 
     let idx = |i: usize, j: usize, n: usize| -> usize {
@@ -177,7 +240,6 @@ pub fn hierarchical_ultrametric_test(
     for _ in 0..n_permutations {
         perm.shuffle(&mut rng);
 
-        // Build permuted distance matrix
         let mut perm_dists = vec![0.0; n_pairs];
         for i in 0..n_points {
             for j in (i + 1)..n_points {
@@ -186,9 +248,8 @@ pub fn hierarchical_ultrametric_test(
             }
         }
 
-        // Build dendrogram on permuted distances
         let mut perm_condensed = perm_dists.clone();
-        let perm_dend = linkage(&mut perm_condensed, n_points, Method::Single);
+        let perm_dend = linkage(&mut perm_condensed, n_points, method);
         let perm_steps: Vec<(usize, usize, f64, usize)> = perm_dend
             .steps()
             .iter()
@@ -208,7 +269,6 @@ pub fn hierarchical_ultrametric_test(
         / n_permutations as f64;
     let null_std = null_var.sqrt();
 
-    // One-sided p-value: fraction of null with correlation >= observed
     let n_ge = null_corrs.iter().filter(|&&c| c >= obs_corr).count();
     let p_value = (n_ge as f64 + 1.0) / (n_permutations as f64 + 1.0);
 
@@ -220,12 +280,47 @@ pub fn hierarchical_ultrametric_test(
 
     DendrogramResult {
         n_points,
+        linkage_method: method_name(method).to_string(),
         cophenetic_correlation: obs_corr,
         null_cophenetic_mean: null_mean,
         null_cophenetic_std: null_std,
         p_value,
+        cophenetic_rmse: rmse,
+        cophenetic_max_rel_error: max_rel,
         ultrametric_fraction: obs_frac,
         verdict,
+    }
+}
+
+/// Test across all four standard linkage methods.
+///
+/// A real ultrametric signal should be stable across linkage choices.
+/// If the signal appears only under single-linkage (which can "chain"),
+/// it is likely an artifact.
+pub fn multi_linkage_test(
+    dist_matrix: &[f64],
+    n_points: usize,
+    n_permutations: usize,
+    seed: u64,
+) -> MultiLinkageResult {
+    let methods = [Method::Single, Method::Complete, Method::Average, Method::Ward];
+
+    let results: Vec<DendrogramResult> = methods
+        .iter()
+        .enumerate()
+        .map(|(i, &m)| {
+            hierarchical_ultrametric_test_with_method(
+                dist_matrix, n_points, n_permutations, seed + i as u64 * 100, m,
+            )
+        })
+        .collect();
+
+    let n_pass = results.iter().filter(|r| r.verdict == Verdict::Pass).count();
+    let linkage_stable = n_pass >= 2;
+
+    MultiLinkageResult {
+        results,
+        linkage_stable,
     }
 }
 
@@ -352,5 +447,76 @@ mod tests {
         let dists = euclidean_distance_matrix_3d(&coords);
         assert_eq!(dists.len(), 1);
         assert!((dists[0] - 5.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_distortion_perfect_ultrametric() {
+        // Perfect ultrametric: cophenetic distances = original -> RMSE ~ 0
+        let dist_matrix = vec![1.0, 2.0, 2.0, 2.0, 2.0, 1.0];
+        let result = hierarchical_ultrametric_test(&dist_matrix, 4, 20, 42);
+
+        assert!(
+            result.cophenetic_rmse < 0.01,
+            "Perfect ultrametric RMSE should be ~0, got {}",
+            result.cophenetic_rmse,
+        );
+        assert!(result.linkage_method == "single");
+    }
+
+    #[test]
+    fn test_distortion_random_positive() {
+        // Random data should have non-zero distortion
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        let n = 15;
+        let coords: Vec<(f64, f64, f64)> = (0..n)
+            .map(|_| (
+                rng.gen_range(0.0..100.0),
+                rng.gen_range(0.0..100.0),
+                rng.gen_range(0.0..100.0),
+            ))
+            .collect();
+
+        let dists = euclidean_distance_matrix_3d(&coords);
+        let result = hierarchical_ultrametric_test(&dists, n, 20, 42);
+
+        assert!(
+            result.cophenetic_rmse > 0.0,
+            "Random data should have positive RMSE, got {}",
+            result.cophenetic_rmse,
+        );
+        assert!(
+            result.cophenetic_max_rel_error > 0.0,
+            "Random data should have positive max relative error, got {}",
+            result.cophenetic_max_rel_error,
+        );
+    }
+
+    #[test]
+    fn test_multi_linkage_runs_all_methods() {
+        let dist_matrix = vec![1.0, 2.0, 2.0, 2.0, 2.0, 1.0];
+        let result = multi_linkage_test(&dist_matrix, 4, 20, 42);
+
+        assert_eq!(result.results.len(), 4);
+        let methods: Vec<&str> = result.results.iter().map(|r| r.linkage_method.as_str()).collect();
+        assert!(methods.contains(&"single"));
+        assert!(methods.contains(&"complete"));
+        assert!(methods.contains(&"average"));
+        assert!(methods.contains(&"ward"));
+    }
+
+    #[test]
+    fn test_complete_linkage_on_ultrametric() {
+        // Perfect ultrametric should work well under complete linkage too
+        let dist_matrix = vec![1.0, 2.0, 2.0, 2.0, 2.0, 1.0];
+        let result = hierarchical_ultrametric_test_with_method(
+            &dist_matrix, 4, 20, 42, Method::Complete,
+        );
+
+        assert!(
+            result.cophenetic_correlation > 0.9,
+            "Complete linkage on perfect ultrametric should have high correlation, got {}",
+            result.cophenetic_correlation,
+        );
+        assert_eq!(result.linkage_method, "complete");
     }
 }

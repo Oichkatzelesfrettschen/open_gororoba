@@ -23,10 +23,24 @@
 use clap::Parser;
 use rand::prelude::*;
 use rand::SeedableRng;
+use rayon::prelude::*;
 use std::path::{Path, PathBuf};
+use std::sync::Arc;
 
 use stats_core::ultrametric::baire::{
-    AttributeSpec, BaireEncoder, BaireTestResult, euclidean_ultrametric_test,
+    AttributeSpec, BaireEncoder, BaireTestResult,
+    euclidean_distance_matrix, euclidean_ultrametric_test,
+    matrix_free_ultrametric_test, matrix_free_tolerance_curve,
+    normalize_data_column_major,
+};
+use stats_core::ultrametric::{
+    benjamini_hochberg,
+};
+use stats_core::ultrametric::dendrogram::{
+    multi_linkage_test,
+};
+use stats_core::ultrametric::gpu::{
+    GpuUltrametricEngine, to_f32_column_major,
 };
 
 #[derive(Parser)]
@@ -38,8 +52,9 @@ struct Args {
     data_dir: String,
 
     /// Number of triples for ultrametric fraction test.
-    #[arg(long, default_value = "100000")]
-    n_triples: usize,
+    /// GPU default: 10_000_000, CPU default: 100_000.
+    #[arg(long)]
+    n_triples: Option<usize>,
 
     /// Number of permutations for null distribution.
     #[arg(long, default_value = "200")]
@@ -52,6 +67,16 @@ struct Args {
     /// Output as JSON.
     #[arg(long)]
     json: bool,
+
+    /// Enable exploration mode: sweep attribute subsets, multiple metrics,
+    /// tolerance curves, and multi-linkage dendrogram tests. Reports
+    /// BH-FDR adjusted p-values.
+    #[arg(long)]
+    explore: bool,
+
+    /// Disable GPU acceleration (force CPU-only mode).
+    #[arg(long)]
+    no_gpu: bool,
 }
 
 /// Loader function type: returns (data rows, attribute specs) or None.
@@ -67,6 +92,277 @@ struct DatasetResult {
     null_std: f64,
     p_value: f64,
     verdict: String,
+}
+
+/// One row from exploration mode: a single (dataset, subset, metric) test.
+struct ExploreRow {
+    dataset: String,
+    subset: String,
+    metric: String,
+    n_objects: usize,
+    value: f64,
+    null_mean: f64,
+    effect_size: f64,
+    raw_p: f64,
+    adj_p: f64,
+    significant: bool,
+}
+
+/// Generate all subsets of indices of size `min_size..=total`.
+fn attribute_subsets(total: usize, min_size: usize) -> Vec<Vec<usize>> {
+    let mut result = Vec::new();
+    for size in min_size..=total {
+        let mut combo = vec![0usize; size];
+        generate_combinations(total, size, 0, 0, &mut combo, &mut result);
+    }
+    result
+}
+
+fn generate_combinations(
+    n: usize,
+    k: usize,
+    start: usize,
+    depth: usize,
+    current: &mut Vec<usize>,
+    result: &mut Vec<Vec<usize>>,
+) {
+    if depth == k {
+        result.push(current.clone());
+        return;
+    }
+    for i in start..n {
+        current[depth] = i;
+        generate_combinations(n, k, i + 1, depth + 1, current, result);
+    }
+}
+
+/// Project data to a subset of columns.
+fn project_data(
+    data: &[Vec<f64>],
+    specs: &[AttributeSpec],
+    indices: &[usize],
+) -> (Vec<Vec<f64>>, Vec<AttributeSpec>) {
+    let projected: Vec<Vec<f64>> = data
+        .iter()
+        .map(|row| indices.iter().map(|&i| row[i]).collect())
+        .collect();
+    let proj_specs: Vec<AttributeSpec> = indices
+        .iter()
+        .enumerate()
+        .map(|(new_col, &old_col)| {
+            attr(&specs[old_col].name, &projected, new_col, specs[old_col].log_scale)
+        })
+        .collect();
+    (projected, proj_specs)
+}
+
+/// Run the full exploration battery on a single dataset.
+///
+/// When a GPU engine is provided, uses CUDA for massively parallel triple
+/// evaluation (10M+ triples per kernel launch, all 20 epsilon thresholds
+/// simultaneously). Falls back to CPU matrix-free approach otherwise.
+///
+/// Subsets are parallelized across CPU cores with rayon. When using GPU,
+/// the GPU is shared across subsets (one kernel launch at a time, but
+/// subsets are processed in parallel on CPU for data prep).
+fn explore_dataset(
+    name: &str,
+    data: &[Vec<f64>],
+    specs: &[AttributeSpec],
+    n_triples: usize,
+    n_perms: usize,
+    gpu: Option<&Arc<GpuUltrametricEngine>>,
+) -> Vec<ExploreRow> {
+    let actual_n = data.len();
+
+    // Generate attribute subsets (min size 2)
+    let subsets = attribute_subsets(specs.len(), 2);
+
+    if let Some(gpu_engine) = gpu {
+        // GPU path: sequential subset processing (GPU is the bottleneck, not CPU)
+        // Each subset gets the full GPU for its kernel launches.
+        let gpu_engine = Arc::clone(gpu_engine);
+        subsets
+            .iter()
+            .enumerate()
+            .flat_map(|(subset_idx, subset_indices)| {
+                let (proj_data, proj_specs) = project_data(data, specs, subset_indices);
+                let subset_name: String = proj_specs
+                    .iter()
+                    .map(|s| s.name.as_str())
+                    .collect::<Vec<_>>()
+                    .join("+");
+
+                let encoder = BaireEncoder::new(proj_specs.clone(), 10, 4);
+                let base_seed = 12345_u64 + (subset_idx as u64) * 10_000;
+
+                // Normalize and convert to f32 for GPU
+                let (cols_f64, n, d) = normalize_data_column_major(&encoder, &proj_data);
+                let mut cols_f32 = to_f32_column_major(&cols_f64);
+
+                let mut subset_rows = Vec::new();
+
+                // GPU: single call computes fraction + tolerance curve together
+                match gpu_engine.ultrametric_test(
+                    &mut cols_f32, n, d, n_triples, n_perms, base_seed,
+                ) {
+                    Ok(result) => {
+                        // 1. Main fraction test
+                        subset_rows.push(ExploreRow {
+                            dataset: name.to_string(),
+                            subset: subset_name.clone(),
+                            metric: "um_fraction_eps05".to_string(),
+                            n_objects: actual_n,
+                            value: result.ultrametric_fraction,
+                            null_mean: result.null_fraction_mean,
+                            effect_size: result.ultrametric_fraction
+                                - result.null_fraction_mean,
+                            raw_p: result.p_value,
+                            adj_p: f64::NAN,
+                            significant: false,
+                        });
+
+                        // 2. Tolerance curve AUC
+                        let auc_p = if result.tolerance_curve.auc_excess > 0.0 {
+                            result.p_value
+                        } else {
+                            1.0
+                        };
+                        subset_rows.push(ExploreRow {
+                            dataset: name.to_string(),
+                            subset: subset_name.clone(),
+                            metric: "tolerance_auc".to_string(),
+                            n_objects: actual_n,
+                            value: result.tolerance_curve.auc_excess,
+                            null_mean: 0.0,
+                            effect_size: result.tolerance_curve.auc_excess,
+                            raw_p: auc_p,
+                            adj_p: f64::NAN,
+                            significant: false,
+                        });
+                    }
+                    Err(e) => {
+                        eprintln!("      GPU error on {}/{}: {}", name, subset_name, e);
+                    }
+                }
+
+                // 3. Multi-linkage dendrogram (CPU-only, requires O(N^2))
+                if actual_n <= 500 {
+                    let dist_matrix = euclidean_distance_matrix(&encoder, &proj_data);
+                    let ml = multi_linkage_test(
+                        &dist_matrix,
+                        proj_data.len(),
+                        n_perms.min(50),
+                        base_seed + 2_000_000,
+                    );
+                    for dr in &ml.results {
+                        subset_rows.push(ExploreRow {
+                            dataset: name.to_string(),
+                            subset: subset_name.clone(),
+                            metric: format!("coph_corr_{}", dr.linkage_method),
+                            n_objects: actual_n,
+                            value: dr.cophenetic_correlation,
+                            null_mean: dr.null_cophenetic_mean,
+                            effect_size: dr.cophenetic_correlation
+                                - dr.null_cophenetic_mean,
+                            raw_p: dr.p_value,
+                            adj_p: f64::NAN,
+                            significant: false,
+                        });
+                    }
+                }
+
+                subset_rows
+            })
+            .collect()
+    } else {
+        // CPU path: parallel subset processing with rayon
+        subsets
+            .par_iter()
+            .enumerate()
+            .flat_map(|(subset_idx, subset_indices)| {
+                let (proj_data, proj_specs) = project_data(data, specs, subset_indices);
+                let subset_name: String = proj_specs
+                    .iter()
+                    .map(|s| s.name.as_str())
+                    .collect::<Vec<_>>()
+                    .join("+");
+
+                let encoder = BaireEncoder::new(proj_specs.clone(), 10, 4);
+                let mut subset_rows = Vec::new();
+                let base_seed = 12345_u64 + (subset_idx as u64) * 10_000;
+
+                // 1. Matrix-free fraction test
+                let baire_result: BaireTestResult = matrix_free_ultrametric_test(
+                    &encoder, &proj_data, n_triples, n_perms.min(200), base_seed,
+                );
+                subset_rows.push(ExploreRow {
+                    dataset: name.to_string(),
+                    subset: subset_name.clone(),
+                    metric: "um_fraction_eps05".to_string(),
+                    n_objects: actual_n,
+                    value: baire_result.ultrametric_fraction,
+                    null_mean: baire_result.null_fraction_mean,
+                    effect_size: baire_result.ultrametric_fraction
+                        - baire_result.null_fraction_mean,
+                    raw_p: baire_result.p_value,
+                    adj_p: f64::NAN,
+                    significant: false,
+                });
+
+                // 2. Matrix-free tolerance curve
+                let tc = matrix_free_tolerance_curve(
+                    &encoder, &proj_data, n_triples, n_perms, base_seed,
+                );
+                let auc_p = if tc.auc_excess > 0.0 {
+                    baire_result.p_value
+                } else {
+                    1.0
+                };
+                subset_rows.push(ExploreRow {
+                    dataset: name.to_string(),
+                    subset: subset_name.clone(),
+                    metric: "tolerance_auc".to_string(),
+                    n_objects: actual_n,
+                    value: tc.auc_excess,
+                    null_mean: 0.0,
+                    effect_size: tc.auc_excess,
+                    raw_p: auc_p,
+                    adj_p: f64::NAN,
+                    significant: false,
+                });
+
+                // 3. Multi-linkage dendrogram (requires O(N^2); only for N<=500)
+                if actual_n <= 500 {
+                    let dist_matrix = euclidean_distance_matrix(&encoder, &proj_data);
+                    let n = proj_data.len();
+                    let ml = multi_linkage_test(
+                        &dist_matrix,
+                        n,
+                        n_perms.min(50),
+                        base_seed + 2_000_000,
+                    );
+                    for dr in &ml.results {
+                        subset_rows.push(ExploreRow {
+                            dataset: name.to_string(),
+                            subset: subset_name.clone(),
+                            metric: format!("coph_corr_{}", dr.linkage_method),
+                            n_objects: actual_n,
+                            value: dr.cophenetic_correlation,
+                            null_mean: dr.null_cophenetic_mean,
+                            effect_size: dr.cophenetic_correlation
+                                - dr.null_cophenetic_mean,
+                            raw_p: dr.p_value,
+                            adj_p: f64::NAN,
+                            significant: false,
+                        });
+                    }
+                }
+
+                subset_rows
+            })
+            .collect()
+    }
 }
 
 fn load_chime_frb(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
@@ -662,11 +958,30 @@ fn main() {
     let args = Args::parse();
     let dir = Path::new(&args.data_dir);
 
-    eprintln!("=== Cross-Dataset Ultrametric Analysis ===");
-    eprintln!("  Direction 2: Multi-Attribute Euclidean Ultrametricity");
-    eprintln!();
+    // Auto-detect GPU
+    let gpu: Option<Arc<GpuUltrametricEngine>> = if args.no_gpu {
+        eprintln!("GPU disabled by --no-gpu flag");
+        None
+    } else {
+        match GpuUltrametricEngine::try_new() {
+            Some(engine) => {
+                eprintln!("GPU: CUDA device detected, using GPU acceleration");
+                Some(Arc::new(engine))
+            }
+            None => {
+                eprintln!("GPU: no CUDA device found, using CPU fallback");
+                None
+            }
+        }
+    };
 
-    let mut results: Vec<DatasetResult> = Vec::new();
+    // Set n_triples: GPU default 10M, CPU default 100K
+    let n_triples = args.n_triples.unwrap_or(if gpu.is_some() {
+        10_000_000
+    } else {
+        100_000
+    });
+    eprintln!("n_triples: {}", n_triples);
 
     // Load and test each dataset
     let loaders: Vec<(&str, LoaderFn)> = vec![
@@ -681,10 +996,24 @@ fn main() {
         ("Hipparcos Stars", Box::new(load_hipparcos)),
     ];
 
-    for (name, loader) in &loaders {
+    if args.explore {
+        run_exploration(&args, n_triples, dir, &loaders, gpu.as_ref());
+    } else {
+        run_standard(&args, n_triples, dir, &loaders);
+    }
+}
+
+fn run_standard(args: &Args, n_triples: usize, dir: &Path, loaders: &[(&str, LoaderFn)]) {
+    eprintln!("=== Cross-Dataset Ultrametric Analysis ===");
+    eprintln!("  Direction 2: Multi-Attribute Euclidean Ultrametricity");
+    eprintln!();
+
+    let mut results: Vec<DatasetResult> = Vec::new();
+
+    for (name, loader) in loaders {
         match loader(dir) {
             Some((data, specs)) => {
-                let r = run_test(name, &data, &specs, args.n_triples, args.n_permutations);
+                let r = run_test(name, &data, &specs, n_triples, args.n_permutations);
                 results.push(r);
             }
             None => {
@@ -695,15 +1024,101 @@ fn main() {
 
     eprintln!();
 
-    // Output results
     if args.json {
         print_json(&results);
     } else {
         print_table(&results);
     }
 
-    // Write CSV
     write_csv(&args.output, &results);
+}
+
+fn run_exploration(
+    args: &Args,
+    n_triples: usize,
+    dir: &Path,
+    loaders: &[(&str, LoaderFn)],
+    gpu: Option<&Arc<GpuUltrametricEngine>>,
+) {
+    let mode = if gpu.is_some() { "GPU" } else { "CPU" };
+    eprintln!("=== Ultrametric EXPLORATION Mode ({}) ===", mode);
+    eprintln!("  Sweeping: attribute subsets x metrics x linkage methods");
+    eprintln!("  Triples per test: {}", n_triples);
+    eprintln!("  Correction: Benjamini-Hochberg FDR at 0.05");
+    eprintln!();
+
+    let mut all_rows: Vec<ExploreRow> = Vec::new();
+
+    for (name, loader) in loaders {
+        match loader(dir) {
+            Some((data, specs)) => {
+                eprintln!("  Exploring {} ({} objects, {} attrs -> {} subsets)...",
+                    name, data.len(), specs.len(),
+                    attribute_subsets(specs.len(), 2).len(),
+                );
+                let rows = explore_dataset(
+                    name, &data, &specs, n_triples, args.n_permutations, gpu,
+                );
+                eprintln!("    {} tests generated", rows.len());
+                all_rows.extend(rows);
+            }
+            None => {
+                eprintln!("  {} -- data not available, skipping", name);
+            }
+        }
+    }
+
+    // Apply BH-FDR correction across ALL tests
+    let raw_ps: Vec<f64> = all_rows.iter().map(|r| r.raw_p).collect();
+    let fdr = benjamini_hochberg(&raw_ps, 0.05);
+
+    for (i, row) in all_rows.iter_mut().enumerate() {
+        row.adj_p = fdr.adjusted_p_values[i];
+        row.significant = fdr.significant[i];
+    }
+
+    // Sort by adjusted p-value (most significant first)
+    all_rows.sort_by(|a, b| a.adj_p.partial_cmp(&b.adj_p).unwrap_or(std::cmp::Ordering::Equal));
+
+    // Print ranked table
+    eprintln!();
+    println!(
+        "{:<22} {:<25} {:<20} {:>6} {:>10} {:>10} {:>8} {:>8} {:>4}",
+        "Dataset", "Subset", "Metric", "N", "Value", "Effect", "raw_p", "adj_p", "Sig"
+    );
+    println!("{}", "-".repeat(135));
+    for row in &all_rows {
+        let sig_mark = if row.significant { "*" } else { "" };
+        println!(
+            "{:<22} {:<25} {:<20} {:>6} {:>10.4} {:>10.4} {:>8.4} {:>8.4} {:>4}",
+            row.dataset, row.subset, row.metric, row.n_objects,
+            row.value, row.effect_size, row.raw_p, row.adj_p, sig_mark,
+        );
+    }
+
+    println!();
+    println!(
+        "Total tests: {}  Significant (FDR<0.05): {}",
+        all_rows.len(), fdr.n_significant,
+    );
+
+    // Write exploration CSV
+    let explore_path = args.output.with_file_name("c071g_exploration.csv");
+    let mut wtr = std::fs::File::create(&explore_path).expect("Failed to create CSV");
+    use std::io::Write;
+    writeln!(wtr, "dataset,subset,metric,n_objects,value,null_mean,effect_size,raw_p,adj_p,significant")
+        .expect("CSV header");
+    for row in &all_rows {
+        writeln!(
+            wtr,
+            "{},{},{},{},{:.6},{:.6},{:.6},{:.6},{:.6},{}",
+            row.dataset, row.subset, row.metric, row.n_objects,
+            row.value, row.null_mean, row.effect_size, row.raw_p, row.adj_p,
+            row.significant,
+        )
+        .expect("CSV row");
+    }
+    eprintln!("Exploration results written to {}", explore_path.display());
 }
 
 fn print_table(results: &[DatasetResult]) {
