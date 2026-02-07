@@ -5,6 +5,8 @@
 //! - Spectral dimension flow analysis
 //! - Kraichnan k^{-3} enstrophy cascade matching
 //! - Quantum bounce cosmology with observational fitting
+//! - Flat Lambda-CDM (FLRW) cosmology with struct-based interface
+//! - Axiodilaton scalar field cosmology
 //!
 //! # Literature
 //! - Mazur & Mottola (2004): Gravastar proposal
@@ -12,16 +14,19 @@
 //! - Calcagni (2010): Fractal spacetime
 //! - Kraichnan (1967): 2D enstrophy cascade
 //! - Pinto-Neto & Fabris (2013): Bohmian bounce cosmology
+//! - Planck Collaboration VI (2020): A&A 641, A6
+//! - Hogg (1999): arXiv:astro-ph/9905116 (distance measures)
 
 use gauss_quad::GaussLegendre;
 
 pub mod axiodilaton;
-pub mod gravastar;
-pub mod spectral;
 pub mod bounce;
-pub mod distances;
 pub mod dimensional_geometry;
+pub mod distances;
+pub mod flrw;
+pub mod gravastar;
 pub mod observational;
+pub mod spectral;
 
 pub use gravastar::{
     PolytropicEos, AnisotropicParams, TovState, GravastarSolution,
@@ -62,6 +67,13 @@ pub use observational::{
 pub use distances::{
     comoving_distance, macquart_dm_cosmic, dm_excess_to_redshift,
     dm_to_comoving, angular_diameter_distance, radec_to_cartesian,
+};
+
+pub use flrw::{
+    FlatLCDM, deceleration_parameter, z_equality,
+    distance_duality_deviation, verify_distance_duality,
+    PLANCK18_H0, PLANCK18_OMEGA_M, PLANCK18_OMEGA_B,
+    PLANCK18_T_CMB, PLANCK18_SOUND_HORIZON,
 };
 
 /// Gauss-Legendre quadrature over [a, b].
