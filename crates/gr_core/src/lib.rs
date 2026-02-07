@@ -27,6 +27,7 @@
 //! - `absorption` -- SSA, free-free, Compton absorption + radiative transfer
 //! - `gravitational_waves` -- GW strain, chirp mass, inspiral waveforms, QNM
 //! - `null_constraint` -- Null geodesic constraint preservation and renormalization
+//! - `energy_conserving` -- Energy-conserving geodesic integration (RK4 + Hamiltonian correction)
 //! - `constants` -- Astrophysical constants (CGS, natural units, conversions)
 //!
 //! # Literature
@@ -46,11 +47,13 @@
 //! - Carter (1968): Phys. Rev. 174, 1559
 //! - Carter (1973): Black hole equilibrium states with Lambda
 //! - Griffiths & Podolsky (2009): Exact Space-Times in Einstein's GR
+//! - Chan et al. (2013): GRay -- GPU ray tracing in relativistic spacetimes
 
 pub mod absorption;
 pub mod constants;
 pub mod coordinates;
 pub mod doppler;
+pub mod energy_conserving;
 pub mod gravitational_waves;
 pub mod hawking;
 pub mod kerr;
@@ -76,6 +79,15 @@ pub use metric::{
 };
 
 pub use schwarzschild::Schwarzschild;
+
+pub use energy_conserving::{
+    ConservedQuantities, FullGeodesicState,
+    compute_energy, compute_angular_momentum, compute_carter_constant,
+    extract_conserved_quantities, geodesic_acceleration,
+    rk4_geodesic_step, apply_constraint_correction,
+    energy_conserving_step, integrate_energy_conserving,
+    relative_energy_drift, relative_angular_momentum_drift,
+};
 
 pub use null_constraint::{
     null_constraint, is_null, mass_shell_constraint, is_timelike,
