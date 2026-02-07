@@ -331,15 +331,17 @@ See `docs/ULTRA_ROADMAP.md` Section H for the full granular checklist.
 ### 4.4 New Concept Sources (CX-026..028, Sprint 6)
 
 Download papers, results, and datasets for newly extracted concepts:
-- [ ] CX-026: Quantum inequalities (Ford-Roman-Pfenning)
+- [x] CX-026: Quantum inequalities (Ford-Roman-Pfenning) -- DONE (4 papers)
   - Papers: Pfenning & Ford (1997), Fewster (2012), Kontou & Sanders (2020), Fewster & Roman (2003)
   - Data: QI constant C=3/(32pi^2), tau^4 scaling verification
-- [ ] CX-027: Light-ion QGP (O-O/Ne-Ne)
-  - Papers: CMS HIN-25-008 (2025), Arleo & Falmagne (arXiv:2411.13258), Pablos & Takacs (arXiv:2509.19430)
-  - Data: RAA measurements, alpha-clustering geometry parameters
-- [ ] CX-028: Subluminal positive-energy warp drives
-  - Papers: Bobrick & Martire (2021), Lentz (2021), Santiago-Schuster-Visser (2021), Fuchs et al. (2024), Finazzi et al. (2009)
-  - Data: Energy estimates, bubble thickness constraints
+- [x] CX-027: Light-ion QGP (O-O/Ne-Ne) -- DONE (4 papers + HEPData RAA)
+  - Papers: CMS (2510.09864), Mazeliauskas (2509.07008), Arleo & Falmagne (2411.13258), Pablos & Takacs (2509.19430)
+  - Data: CMS O-O RAA 44 pT bins (3-103.6 GeV), ALICE Pb-Pb 0-5% baseline
+  - Dataset: `data/external/cms_oo_raa/` (4 CSV files from HEPData ins3068407)
+- [x] CX-028: Subluminal positive-energy warp drives -- DONE (3 new + 2 existing)
+  - Papers: Santiago-Schuster-Visser (2105.03079), Fuchs et al. (2407.18908), Finazzi et al. (0904.0141)
+  - Already had: Bobrick & Martire (2021), Lentz (2021), Alcubierre (2000), Smolyaninov (2010)
+  - Data: Energy estimates, bubble thickness constraints (from paper text)
 
 ---
 

@@ -437,7 +437,7 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 
 ## CX-026 - Quantum inequalities and negative energy constraints
 
-**Status:** Unimplemented (literature-first)
+**Status:** Papers downloaded (2026-02-07)
 
 ### What the convos claim
 - Ford-Roman quantum inequality bound: integral of <T_00> f(tau)^2 dtau >= -C/tau^4
@@ -452,6 +452,12 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 - H2: Derive bubble thickness lower bound from QI and verify ~ 100 l_Planck.
 - H3: Reproduce Alcubierre energy estimate for standard parameters.
 
+### Downloaded papers (local, gitignored)
+- `papers/arxiv_gr-qc9702026_pfenning_ford_1997_quantum_inequality_restrictions.pdf`
+- `papers/arxiv_1207.5805_fewster_2012_lectures_quantum_energy_inequalities.pdf`
+- `papers/arxiv_1904.05684_kontou_sanders_2020_quantum_energy_inequalities_review.pdf`
+- `papers/arxiv_gr-qc0209036_fewster_roman_2003_null_energy_condition.pdf`
+
 ### First-party sources to cite
 - Pfenning & Ford (1997): "Quantum inequalities on the energy density in static Robertson-Walker spacetimes".
 - Fewster (2012): "Lectures on quantum energy inequalities".
@@ -462,7 +468,7 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 
 ## CX-027 - Light-ion QGP and alpha-clustering
 
-**Status:** Unimplemented (data pending 2026)
+**Status:** Papers and data downloaded (2026-02-07)
 
 ### What the convos claim
 - O-O collisions at LHC (July 2025, sqrt(s_NN) = 5.36 TeV): CMS HIN-25-008
@@ -479,8 +485,23 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 - C-043: O-O collisions at LHC (already tracked, needs R_AA update).
 - New claims: Ne-Ne R_AA, v_3 inversion, energy-loss scaling, pre-equilibrium onset.
 
+### Downloaded papers (local, gitignored)
+- `papers/arxiv_2510.09864_cms_2025_discovery_suppressed_oo_collisions.pdf` (CMS discovery)
+- `papers/arxiv_2509.07008_mazeliauskas_2025_energy_loss_baseline_oo.pdf` (no-quenching baseline)
+- `papers/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.pdf` (Ne-Ne predictions)
+- `papers/arxiv_2509.19430_pablos_takacs_2025_alpha_clustering_geometry.pdf` (pre-equilibrium)
+
+### Available datasets (tracked in git)
+- `data/external/cms_oo_raa/table3_oo_raa.csv`: CMS O-O R_AA, 44 pT bins (3-103.6 GeV)
+  - Min R_AA = 0.695 at pT = 6.2 GeV, recovers to ~0.97 at pT > 80 GeV
+  - HEPData DOI: 10.17182/hepdata.165512.v1/t3
+- `data/external/cms_oo_raa/table1_pp_spectra.csv`: pp reference spectra
+- `data/external/cms_oo_raa/table2_oo_spectra.csv`: OO inclusive spectra
+- `data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv`: ALICE Pb-Pb 0-5% R_AA baseline
+
 ### First-party sources to cite
-- CMS HIN-25-008 (2025): O-O jet quenching.
+- CMS (arXiv:2510.09864): Discovery of O-O jet quenching, HEPData ins3068407.
+- Mazeliauskas (arXiv:2509.07008): No-quenching baseline for O-O.
 - Arleo & Falmagne (arXiv:2411.13258): energy-loss scaling analysis.
 - Pablos & Takacs (arXiv:2509.19430): pre-equilibrium timing via Bayesian inference.
 
@@ -488,7 +509,7 @@ precise definitions + first-party citations + reproducible tests/artifacts.
 
 ## CX-028 - Subluminal positive-energy warp drives
 
-**Status:** Unimplemented (literature-first)
+**Status:** Papers downloaded (2026-02-07)
 
 ### What the convos claim
 - Bobrick & Martire (2021): subluminal positive-energy warp drives are
@@ -513,6 +534,12 @@ The field splits into two regimes:
 - **Superluminal + exotic matter**: requires NEC violation, quantum-scale
   constraints from Ford-Roman QIs (CX-026), and suffers Finazzi instability.
 No bridge between regimes is known.
+
+### Downloaded papers (local, gitignored)
+- `papers/arxiv_2105.03079_santiago_schuster_visser_2021_generic_warp_drives.pdf` (Lentz refutation)
+- `papers/arxiv_2407.18908_fuchs_2024_constant_velocity_subluminal_warp.pdf` (positive-energy)
+- `papers/arxiv_0904.0141_finazzi_liberati_barcelo_2009_semiclassical_instability.pdf` (instability)
+- Already in collection: Bobrick & Martire (2021), Lentz (2021), Alcubierre (2000), Smolyaninov (2010)
 
 ### First-party sources to cite
 - Bobrick & Martire (2021): "Introducing physical warp drives", CQG 38, 105009.
