@@ -20,6 +20,8 @@
 //! - `hawking` -- Hawking radiation, BH thermodynamics, entropy, evaporation
 //! - `penrose` -- Penrose process, Blandford-Znajek, superradiance
 //! - `novikov_thorne` -- Thin disk accretion: efficiency, temperature, flux
+//! - `synchrotron` -- Synchrotron radiation from relativistic electrons
+//! - `doppler` -- Relativistic Doppler effect, beaming, aberration
 //! - `constants` -- Astrophysical constants (CGS, natural units, conversions)
 //!
 //! # Literature
@@ -31,15 +33,19 @@
 //! - Penrose (1969): Gravitational Collapse: The Role of GR
 //! - Novikov & Thorne (1973): Black Holes (Les Astres Occlus)
 //! - Page & Thorne (1974): ApJ 191, 499
+//! - Rybicki & Lightman (1979): Radiative Processes in Astrophysics
+//! - Begelman, Blandford, Rees (1984): Rev. Mod. Phys. 56, 255
 
 pub mod constants;
 pub mod coordinates;
+pub mod doppler;
 pub mod hawking;
 pub mod kerr;
 pub mod metric;
 pub mod novikov_thorne;
 pub mod penrose;
 pub mod schwarzschild;
+pub mod synchrotron;
 
 // Re-export primary types from each module
 pub use kerr::{
