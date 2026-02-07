@@ -15,6 +15,7 @@
 
 use gauss_quad::GaussLegendre;
 
+pub mod axiodilaton;
 pub mod gravastar;
 pub mod spectral;
 pub mod bounce;
