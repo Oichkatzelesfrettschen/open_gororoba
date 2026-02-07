@@ -71,7 +71,12 @@ optics, quantum, statistics, and data fetching.
 ### 1.3 Where We Are Now
 
 **Migration status**: COMPLETE.  All 15 Python modules ported to Rust.
-848 Rust unit tests + 7 doc-tests pass, 0 clippy warnings.  gororoba_kernels removed (2026-02-06).
+**Blackhole C++ port**: COMPLETE.  18 gr_core modules (394 tests), 5 cosmology_core
+modules (tov, eos, flrw, axiodilaton, observational), scattering, absorption,
+spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
+Penrose process, coordinates, null constraint, energy-conserving integrator.
+**Test count**: 1327 Rust tests + 7 doc-tests pass, 0 clippy warnings.
+gororoba_kernels removed (2026-02-06).
 
 ```
 open_gororoba/
@@ -214,7 +219,7 @@ These implementations STAY because no suitable crate exists or licensing prevent
 
 ### 3.1 Current State
 
-848 Rust unit tests pass across 13 crates, plus 7 doc-tests (855 total).
+1327 Rust unit tests pass across 13 crates, plus 7 doc-tests (1334 total).
 0 clippy warnings (warnings-as-errors is non-negotiable).
 
 ### 3.2 Testing Layers
@@ -324,6 +329,10 @@ The Blackhole C++ codebase is an EXTERNAL repository containing verified GR
 computations.  It is NOT checked into this repo.  The port brings these
 computations into `crates/gr_core/` as pure Rust, with full test coverage
 and provenance to the original C++ source.
+
+**STATUS: COMPLETE** (2026-02-06).  All 6 layers (30 tasks) finished.
+18 gr_core modules with 394 tests, plus 5 cosmology_core modules.
+See gr_core/src/lib.rs for the full module listing.
 
 ### 5.2 Dependency Graph
 
@@ -474,15 +483,16 @@ Major providers operational; schema checks and benchmarks remain.
 
 ## 8. Long-Term Vision
 
-| Horizon | Goal | Dependencies |
-|---------|------|--------------|
-| Near | Complete GR module Layer 0-1 (foundation + core GR) | Task #48 crate research |
-| Near | Schema checks for all 18 dataset providers | Parser code in data_core |
-| Medium | Complete GR module Layer 2-3 (Kerr family + physics) | Layer 0-1 |
-| Medium | WASM target for browser visualization | Crate compatibility audit |
-| Medium | Hardware quantum circuit run (IBM Eagle 127q) | F4 circuit design |
-| Far | Full GR module (Layers 4-6) | Layers 0-3 |
-| Far | GPU acceleration (wgpu/CUDA for tensor ops) | API stabilization |
+| Horizon | Goal | Dependencies | Status |
+|---------|------|--------------|--------|
+| ~~Near~~ | ~~Complete GR module Layers 0-6~~ | ~~Task #48 crate research~~ | **DONE** (2026-02-06) |
+| Near | Schema checks for all 18 dataset providers | Parser code in data_core | In progress |
+| Near | Cross-domain ultrametric analysis (Gaia, SDSS, Fermi) | Dataset providers | Planned |
+| Near | Extend motif census to 64D/128D | algebra_core | Planned |
+| Medium | WASM target for browser visualization | Crate compatibility audit | Future |
+| Medium | Hardware quantum circuit run (IBM Eagle 127q) | F4 circuit design | Future |
+| Medium | Publication pipeline (LaTeX from verified results) | Source-first research | Future |
+| Far | GPU acceleration (wgpu/CUDA for tensor ops) | API stabilization | Future |
 
 ---
 
