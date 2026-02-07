@@ -765,6 +765,99 @@ pub fn cd_basis_mul_sign(dim: usize, p: usize, q: usize) -> i32 {
     cd_basis_mul_sign(half, qh, ph)
 }
 
+/// Result of Monte Carlo associator independence statistics for one dimension.
+#[derive(Debug, Clone)]
+pub struct AssociatorStats {
+    /// Algebra dimension.
+    pub dim: usize,
+    /// Number of random triples tested.
+    pub n_trials: usize,
+    /// Mean of ||[a,b,c]||^2 (expected to approach 2 as dim -> infinity).
+    pub mean_assoc_sq: f64,
+    /// Standard deviation of ||[a,b,c]||^2.
+    pub std_assoc_sq: f64,
+    /// Mean of ||(ab)c||^2.
+    pub mean_ab_c_sq: f64,
+    /// Mean of ||a(bc)||^2.
+    pub mean_a_bc_sq: f64,
+    /// Mean of Re((ab)c . a(bc)) (cross-term, should decay to 0).
+    pub mean_cross_term: f64,
+    /// Correlation coefficient: cross_term / sqrt(mean_ab_c_sq * mean_a_bc_sq).
+    pub correlation_coeff: f64,
+}
+
+/// Monte Carlo estimation of associator norm statistics (C-087).
+///
+/// For random unit elements a, b, c in a Cayley-Dickson algebra of dimension d,
+/// computes statistics of the associator [a,b,c] = (ab)c - a(bc).
+///
+/// Key property: E[||[a,b,c]||^2] -> 2 as d -> infinity, because the
+/// cross-term Re((ab)c . a(bc)) vanishes as the two products become
+/// statistically independent (Schafer 1966).
+pub fn associator_independence_stats(dim: usize, n_trials: usize, seed: u64) -> AssociatorStats {
+    use rand::prelude::*;
+    use rand_chacha::ChaCha8Rng;
+
+    let mut rng = ChaCha8Rng::seed_from_u64(seed);
+
+    let mut assoc_sq = Vec::with_capacity(n_trials);
+    let mut ab_c_sq = Vec::with_capacity(n_trials);
+    let mut a_bc_sq = Vec::with_capacity(n_trials);
+    let mut cross = Vec::with_capacity(n_trials);
+
+    for _ in 0..n_trials {
+        // Generate random unit vectors.
+        let a = random_unit_vec(dim, &mut rng);
+        let b = random_unit_vec(dim, &mut rng);
+        let c = random_unit_vec(dim, &mut rng);
+
+        let ab = cd_multiply(&a, &b);
+        let bc = cd_multiply(&b, &c);
+        let ab_c_vec = cd_multiply(&ab, &c);
+        let a_bc_vec = cd_multiply(&a, &bc);
+
+        let assoc_vec: Vec<f64> = ab_c_vec.iter().zip(&a_bc_vec).map(|(l, r)| l - r).collect();
+
+        assoc_sq.push(cd_norm_sq(&assoc_vec));
+        ab_c_sq.push(cd_norm_sq(&ab_c_vec));
+        a_bc_sq.push(cd_norm_sq(&a_bc_vec));
+        cross.push(ab_c_vec.iter().zip(&a_bc_vec).map(|(l, r)| l * r).sum::<f64>());
+    }
+
+    let n = n_trials as f64;
+    let mean_assoc = assoc_sq.iter().sum::<f64>() / n;
+    let mean_ab_c = ab_c_sq.iter().sum::<f64>() / n;
+    let mean_a_bc = a_bc_sq.iter().sum::<f64>() / n;
+    let mean_cross = cross.iter().sum::<f64>() / n;
+
+    let var_assoc = assoc_sq.iter().map(|x| (x - mean_assoc).powi(2)).sum::<f64>() / n;
+
+    let corr = if mean_ab_c > 0.0 && mean_a_bc > 0.0 {
+        mean_cross / (mean_ab_c * mean_a_bc).sqrt()
+    } else {
+        0.0
+    };
+
+    AssociatorStats {
+        dim,
+        n_trials,
+        mean_assoc_sq: mean_assoc,
+        std_assoc_sq: var_assoc.sqrt(),
+        mean_ab_c_sq: mean_ab_c,
+        mean_a_bc_sq: mean_a_bc,
+        mean_cross_term: mean_cross,
+        correlation_coeff: corr,
+    }
+}
+
+/// Generate a random unit vector in R^dim.
+fn random_unit_vec(dim: usize, rng: &mut impl rand::Rng) -> Vec<f64> {
+    use rand_distr::{Distribution, StandardNormal};
+    let v: Vec<f64> = (0..dim).map(|_| StandardNormal.sample(rng)).collect();
+    let norm = cd_norm_sq(&v).sqrt();
+    v.iter().map(|x| x / norm).collect()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1239,5 +1332,42 @@ mod tests {
                 }
             }
         }
+    }
+
+    /// C-087: Associator independence -- E[||A||^2] converges to 2 for large dim.
+    #[test]
+    fn test_c087_associator_independence_convergence() {
+        // Quaternions (dim=4): fully associative, E[||A||^2] = 0.
+        let stats_4 = associator_independence_stats(4, 500, 42);
+        assert!(
+            stats_4.mean_assoc_sq < 1e-10,
+            "Quaternions should have zero associator: {:.6}",
+            stats_4.mean_assoc_sq,
+        );
+
+        // Sedenions and beyond: E[||A||^2] should approach 2.
+        // dim=16: close to 2 but with finite-size correction.
+        let stats_16 = associator_independence_stats(16, 2000, 42);
+        assert!(
+            stats_16.mean_assoc_sq > 1.5 && stats_16.mean_assoc_sq < 2.5,
+            "dim=16: E[||A||^2] = {:.4}, expected ~2.0",
+            stats_16.mean_assoc_sq,
+        );
+
+        // dim=64: closer to 2.
+        let stats_64 = associator_independence_stats(64, 2000, 42);
+        assert!(
+            stats_64.mean_assoc_sq > 1.8 && stats_64.mean_assoc_sq < 2.2,
+            "dim=64: E[||A||^2] = {:.4}, expected ~2.0",
+            stats_64.mean_assoc_sq,
+        );
+
+        // Cross-term correlation should decrease with dimension.
+        assert!(
+            stats_64.correlation_coeff.abs() < stats_16.correlation_coeff.abs() + 0.1,
+            "Correlation should decrease: dim=16 corr={:.4}, dim=64 corr={:.4}",
+            stats_16.correlation_coeff,
+            stats_64.correlation_coeff,
+        );
     }
 }

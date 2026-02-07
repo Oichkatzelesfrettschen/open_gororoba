@@ -19,6 +19,7 @@
 //! - Manetsch et al., arXiv:2403.12021 (2025): Large-scale tweezer arrays
 
 pub mod grin;
+pub mod sfwm;
 pub mod tcmt;
 pub mod phase_retrieval;
 

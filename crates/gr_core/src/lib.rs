@@ -70,6 +70,7 @@ pub mod penrose;
 pub mod scattering;
 pub mod schwarzschild;
 pub mod spectral_bands;
+pub mod photon_graviton;
 pub mod synchrotron;
 
 // Re-export primary types from each module

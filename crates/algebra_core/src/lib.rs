@@ -37,6 +37,7 @@ pub mod kac_moody;
 pub mod homotopy_algebra;
 pub mod stochastic;
 pub mod grassmannian;
+pub mod so7_drift;
 
 // Re-export core algebra functions
 pub use cayley_dickson::{
