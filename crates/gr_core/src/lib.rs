@@ -27,6 +27,7 @@
 //! - `absorption` -- SSA, free-free, Compton absorption + radiative transfer
 //! - `scattering` -- Thomson, Rayleigh, Mie scattering + albedo, asymmetry
 //! - `gravitational_waves` -- GW strain, chirp mass, inspiral waveforms, QNM
+//! - `spectral_bands` -- Observational bands (EHT, ALMA, V-band, Chandra), filters, magnitudes
 //! - `null_constraint` -- Null geodesic constraint preservation and renormalization
 //! - `energy_conserving` -- Energy-conserving geodesic integration (RK4 + Hamiltonian correction)
 //! - `constants` -- Astrophysical constants (CGS, natural units, conversions)
@@ -68,6 +69,7 @@ pub mod novikov_thorne;
 pub mod penrose;
 pub mod scattering;
 pub mod schwarzschild;
+pub mod spectral_bands;
 pub mod synchrotron;
 
 // Re-export primary types from each module
