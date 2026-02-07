@@ -22,6 +22,8 @@
 //! - `novikov_thorne` -- Thin disk accretion: efficiency, temperature, flux
 //! - `synchrotron` -- Synchrotron radiation from relativistic electrons
 //! - `doppler` -- Relativistic Doppler effect, beaming, aberration
+//! - `absorption` -- SSA, free-free, Compton absorption + radiative transfer
+//! - `gravitational_waves` -- GW strain, chirp mass, inspiral waveforms, QNM
 //! - `constants` -- Astrophysical constants (CGS, natural units, conversions)
 //!
 //! # Literature
@@ -35,10 +37,14 @@
 //! - Page & Thorne (1974): ApJ 191, 499
 //! - Rybicki & Lightman (1979): Radiative Processes in Astrophysics
 //! - Begelman, Blandford, Rees (1984): Rev. Mod. Phys. 56, 255
+//! - Peters & Mathews (1963): Phys. Rev. 131, 435
+//! - Blanchet (2014): Living Reviews in Relativity
 
+pub mod absorption;
 pub mod constants;
 pub mod coordinates;
 pub mod doppler;
+pub mod gravitational_waves;
 pub mod hawking;
 pub mod kerr;
 pub mod metric;
