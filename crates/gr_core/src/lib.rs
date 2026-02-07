@@ -25,6 +25,7 @@
 //! - `synchrotron` -- Synchrotron radiation from relativistic electrons
 //! - `doppler` -- Relativistic Doppler effect, beaming, aberration
 //! - `absorption` -- SSA, free-free, Compton absorption + radiative transfer
+//! - `scattering` -- Thomson, Rayleigh, Mie scattering + albedo, asymmetry
 //! - `gravitational_waves` -- GW strain, chirp mass, inspiral waveforms, QNM
 //! - `null_constraint` -- Null geodesic constraint preservation and renormalization
 //! - `energy_conserving` -- Energy-conserving geodesic integration (RK4 + Hamiltonian correction)
@@ -40,6 +41,8 @@
 //! - Novikov & Thorne (1973): Black Holes (Les Astres Occlus)
 //! - Page & Thorne (1974): ApJ 191, 499
 //! - Rybicki & Lightman (1979): Radiative Processes in Astrophysics
+//! - Bohren & Huffman (1983): Absorption and Scattering of Light by Small Particles
+//! - Klein & Nishina (1929): Z. Phys. 52, 853
 //! - Begelman, Blandford, Rees (1984): Rev. Mod. Phys. 56, 255
 //! - Peters & Mathews (1963): Phys. Rev. 131, 435
 //! - Blanchet (2014): Living Reviews in Relativity
@@ -63,6 +66,7 @@ pub mod metric;
 pub mod null_constraint;
 pub mod novikov_thorne;
 pub mod penrose;
+pub mod scattering;
 pub mod schwarzschild;
 pub mod synchrotron;
 
