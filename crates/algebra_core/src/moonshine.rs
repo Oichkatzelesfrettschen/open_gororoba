@@ -25,7 +25,7 @@
 //!
 //! The Monster M is the largest sporadic simple group with order:
 //! |M| = 2^46 * 3^20 * 5^9 * 7^6 * 11^2 * 13^3 * 17 * 19 * 23 * 29 * 31 * 41 * 47 * 59 * 71
-//!     ≈ 8.08 × 10^53
+//!     ~ 8.08 x 10^53
 //!
 //! It has 194 conjugacy classes and hence 194 irreducible representations.
 //!
@@ -241,7 +241,7 @@ pub fn moonshine_dimensions() -> MoonshineDimensions {
 /// The Monster group is related to the Leech lattice.
 ///
 /// The automorphism group of the Leech lattice is Co_0 (Conway's group),
-/// and Co_1 = Co_0 / {±1} is a subquotient of the Monster.
+/// and Co_1 = Co_0 / {+/-1} is a subquotient of the Monster.
 pub const LEECH_LATTICE_DIMENSION: usize = 24;
 
 /// Number of Niemeier lattices (even unimodular lattices in 24D).
@@ -298,7 +298,7 @@ mod tests {
     #[test]
     fn test_monster_order_magnitude() {
         let order = monster_group_order();
-        // Should be approximately 8.08 × 10^53
+        // Should be approximately 8.08 x 10^53
         // Check it has 54 digits
         let digits = order.to_string().len();
         assert_eq!(digits, 54, "Monster order has 54 digits");

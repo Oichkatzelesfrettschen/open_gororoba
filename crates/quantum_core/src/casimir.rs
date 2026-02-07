@@ -965,17 +965,17 @@ pub enum DielectricModel {
     /// Perfect conductor: ε → ∞ (reflection coefficient r = 1)
     PerfectConductor,
 
-    /// Drude model for metals: ε(iξ) = 1 + ω_p² / (ξ(ξ + γ))
-    /// Parameters: (plasma frequency ω_p in rad/s, damping γ in rad/s)
+    /// Drude model for metals: eps(i*xi) = 1 + omega_p^2 / (xi*(xi + gamma))
+    /// Parameters: (plasma frequency omega_p in rad/s, damping gamma in rad/s)
     Drude { omega_p: f64, gamma: f64 },
 
-    /// Plasma model (dissipationless Drude): ε(iξ) = 1 + ω_p² / ξ²
-    /// The γ → 0 limit of Drude; controversial for thermal Casimir effect
+    /// Plasma model (dissipationless Drude): eps(i*xi) = 1 + omega_p^2 / xi^2
+    /// The gamma -> 0 limit of Drude; controversial for thermal Casimir effect
     Plasma { omega_p: f64 },
 
     /// Drude-Lorentz oscillator model (dielectrics with resonance):
-    /// ε(iξ) = 1 + Σ S_j ω_j² / (ω_j² + ξ² + γ_j ξ)
-    /// Parameters: Vec of (oscillator strength S, resonance ω_j, damping γ_j)
+    /// eps(i*xi) = 1 + Sum S_j omega_j^2 / (omega_j^2 + xi^2 + gamma_j xi)
+    /// Parameters: Vec of (oscillator strength S, resonance omega_j, damping gamma_j)
     DrudeLorentz { oscillators: Vec<(f64, f64, f64)> },
 
     /// Tabulated dielectric data (interpolated)
@@ -1017,10 +1017,10 @@ impl DielectricModel {
     ///
     /// Simplified single-oscillator model:
     /// - UV resonance at ~10 eV
-    /// - Static ε ≈ 3.8
+    /// - Static eps ~ 3.8
     pub fn silica() -> Self {
-        // Single oscillator: S*ω² / (ω² + ξ²) where S*(ω/ω)² gives ε(0)-1
-        // For ε(0) ~ 3.8, S ~ 2.8 with ω ~ 1.5e16 rad/s (10 eV)
+        // Single oscillator: S*w^2 / (w^2 + xi^2) where S*(w/w)^2 gives eps(0)-1
+        // For eps(0) ~ 3.8, S ~ 2.8 with w ~ 1.5e16 rad/s (10 eV)
         DielectricModel::DrudeLorentz {
             oscillators: vec![(2.8, 1.5e16, 1e15)],
         }
@@ -1097,9 +1097,9 @@ impl DielectricModel {
 
 /// Fresnel reflection coefficient at imaginary frequency (TM/p-polarization).
 ///
-/// r_TM = (ε₁ κ₂ - ε₂ κ₁) / (ε₁ κ₂ + ε₂ κ₁)
+/// r_TM = (eps1 kappa2 - eps2 kappa1) / (eps1 kappa2 + eps2 kappa1)
 ///
-/// where κ_i = sqrt(ε_i ξ²/c² + k_⊥²)
+/// where kappa_i = sqrt(eps_i xi^2/c^2 + k_perp^2)
 ///
 /// # Arguments
 /// * `eps1` - Dielectric of medium 1 at imaginary frequency
@@ -1149,7 +1149,7 @@ pub fn fresnel_te_imaginary(eps1: f64, eps2: f64, xi: f64, k_perp: f64) -> f64 {
 /// Integrates over imaginary frequency and transverse momentum to compute
 /// the Casimir pressure P = -dE/dA/dd between two semi-infinite slabs.
 ///
-/// P = -(ℏ/2π²) ∫₀^∞ dξ ∫₀^∞ k_⊥ dk_⊥ κ (r_TM² e^{-2κd}/(1-r_TM² e^{-2κd}) + TE)
+/// P = -(hbar/2pi^2) int_0^inf dxi int_0^inf k_perp dk_perp kappa (r_TM^2 e^{-2 kappa d}/(1-r_TM^2 e^{-2 kappa d}) + TE)
 ///
 /// # Arguments
 /// * `gap` - Surface separation (m)
@@ -1190,7 +1190,7 @@ pub fn lifshitz_pressure_plates(
             let dv = 10.0 / n_k as f64;
             let k_perp = (xi / C) * v;
 
-            // κ = sqrt(ε*ξ²/c² + k_⊥²), for vacuum (ε=1):
+            // kappa = sqrt(eps*xi^2/c^2 + k_perp^2), for vacuum (eps=1):
             let kappa = (xi * xi / (C * C) + k_perp * k_perp).sqrt();
 
             // Reflection coefficients
@@ -1212,7 +1212,7 @@ pub fn lifshitz_pressure_plates(
         }
     }
 
-    // Prefactor: -ℏ/(2π²)
+    // Prefactor: -hbar/(2*pi^2)
     pressure *= -HBAR / (2.0 * PI * PI);
 
     pressure
@@ -2331,7 +2331,7 @@ mod tests {
     fn test_dielectric_plasma_model() {
         let plasma = DielectricModel::gold_plasma();
 
-        // Plasma model: ε(iξ) = 1 + ω_p² / ξ²
+        // Plasma model: eps(i*xi) = 1 + omega_p^2 / xi^2
         let omega_p = 1.37e16;
         let xi = 1e15;
         let expected = 1.0 + omega_p * omega_p / (xi * xi);
@@ -2384,8 +2384,8 @@ mod tests {
     #[test]
     fn test_lifshitz_pressure_order_of_magnitude() {
         // Perfect conductors at 100 nm gap
-        // P = -π²ℏc / (240 d⁴) for perfect conductors
-        // At d = 100 nm: P ≈ -13 Pa
+        // P = -pi^2 * hbar * c / (240 d^4) for perfect conductors
+        // At d = 100 nm: P ~ -13 Pa
         let gap = 100e-9;
         let eps = DielectricModel::PerfectConductor;
         let pressure = lifshitz_pressure_plates(gap, &eps, &eps, 32, 32);
@@ -2394,7 +2394,7 @@ mod tests {
         assert!(pressure < 0.0, "Pressure should be attractive");
 
         // Order of magnitude check for 100 nm gap:
-        // P = -π² ℏ c / (240 d⁴) ≈ -13 Pa
+        // P = -pi^2 * hbar * c / (240 d^4) ~ -13 Pa
         // Allow factor of 10 tolerance due to integration approximation
         assert!(pressure.abs() > 1.0, "Pressure too small: {}", pressure);
         assert!(pressure.abs() < 200.0, "Pressure too large: {}", pressure);
