@@ -75,7 +75,9 @@ optics, quantum, statistics, and data fetching.
 modules (tov, eos, flrw, axiodilaton, observational), scattering, absorption,
 spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
 Penrose process, coordinates, null constraint, energy-conserving integrator.
-**Test count**: 1370 Rust tests + 7 doc-tests pass, 0 clippy warnings.
+**Claims infrastructure**: COMPLETE.  Rust claims-audit + claims-verify binaries
+replace 11 Python scripts.  118 backfill items confirmed Verified (2026-02-07).
+**Test count**: 1517 Rust tests + 14 doc-tests pass (1531 total), 0 clippy warnings.
 gororoba_kernels removed (2026-02-06).
 **GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
 
@@ -225,7 +227,7 @@ These implementations STAY because no suitable crate exists or licensing prevent
 
 ### 3.1 Current State
 
-1370 Rust unit tests pass across 13 crates, plus 7 doc-tests (1377 total).
+1517 Rust unit tests pass across 13 crates, plus 14 doc-tests (1531 total).
 0 clippy warnings (warnings-as-errors is non-negotiable).
 
 ### 3.2 Testing Layers
@@ -305,9 +307,9 @@ No deletions; only append/clarify sources:
 
 ### 4.2 Implementation
 
-- [ ] Wheels axioms checker + unit tests (CX-017)
-- [ ] XOR-balanced search extension + tests (CX-003)
-- [ ] Motif census: extend to 64D/128D exact and 256D sampled + plot (CX-002)
+- [x] Wheels axioms checker + unit tests (CX-017) -- DONE
+- [x] XOR-balanced search extension + tests (CX-003) -- DONE (10 regression tests)
+- [x] Motif census: extend to 64D/128D/256D exact + scaling laws (CX-002) -- DONE (16 regression tests)
 - [ ] Visualization hygiene and artifact saving policy (CX-019)
 - [ ] Fast basis-element multiplication table generator (16D/32D) with cache + checksum
 
@@ -322,8 +324,22 @@ Remaining:
 - [ ] Deterministic row-count / column-integrity tests per provider
 - [ ] Benchmark scripts for parser throughput on large catalogs
 - [ ] Link dataset pillars to claim IDs in CLAIMS_EVIDENCE_MATRIX.md
+- [ ] Validate all fetch-datasets providers against live endpoints
 
 See `docs/ULTRA_ROADMAP.md` Section H for the full granular checklist.
+
+### 4.4 New Concept Sources (CX-026..028, Sprint 6)
+
+Download papers, results, and datasets for newly extracted concepts:
+- [ ] CX-026: Quantum inequalities (Ford-Roman-Pfenning)
+  - Papers: Pfenning & Ford (1997), Fewster (2012), Kontou & Sanders (2020), Fewster & Roman (2003)
+  - Data: QI constant C=3/(32pi^2), tau^4 scaling verification
+- [ ] CX-027: Light-ion QGP (O-O/Ne-Ne)
+  - Papers: CMS HIN-25-008 (2025), Arleo & Falmagne (arXiv:2411.13258), Pablos & Takacs (arXiv:2509.19430)
+  - Data: RAA measurements, alpha-clustering geometry parameters
+- [ ] CX-028: Subluminal positive-energy warp drives
+  - Papers: Bobrick & Martire (2021), Lentz (2021), Santiago-Schuster-Visser (2021), Fuchs et al. (2024), Finazzi et al. (2009)
+  - Data: Energy estimates, bubble thickness constraints
 
 ---
 
