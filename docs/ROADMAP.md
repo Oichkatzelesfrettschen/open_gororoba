@@ -1,7 +1,7 @@
 # open_gororoba Roadmap
 
 **Consolidated**: 2026-02-06
-**Supersedes**: `RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md`
+**Supersedes**: `RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md` (all deleted)
 **Companions**: `docs/TODO.md` (sprint), `docs/NEXT_ACTIONS.md` (priority queue)
 
 This document merges the architectural evolution, crate ecosystem, migration
@@ -75,8 +75,9 @@ optics, quantum, statistics, and data fetching.
 modules (tov, eos, flrw, axiodilaton, observational), scattering, absorption,
 spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
 Penrose process, coordinates, null constraint, energy-conserving integrator.
-**Test count**: 1327 Rust tests + 7 doc-tests pass, 0 clippy warnings.
+**Test count**: 1370 Rust tests + 7 doc-tests pass, 0 clippy warnings.
 gororoba_kernels removed (2026-02-06).
+**GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
 
 ```
 open_gororoba/
@@ -88,7 +89,7 @@ open_gororoba/
     optics_core/              # GRIN solver, ray tracing, warp metrics, benchmarks
     quantum_core/             # Tensor networks, MERA, fractional Schrodinger, Casimir, Grover
     gr_core/                  # Kerr geodesics, gravastar, shadow, Schwarzschild
-    stats_core/               # Frechet, bootstrap, Haar, ultrametric (local, Baire, temporal, dendrogram)
+    stats_core/               # Frechet, bootstrap, Haar, ultrametric (local, Baire, temporal, dendrogram, GPU)
     spectral_core/            # Fractional Laplacian (periodic/Dirichlet, 1D/2D/3D)
     lbm_core/                 # Lattice Boltzmann D2Q9
     control_core/             # Control theory utilities
@@ -186,10 +187,15 @@ All external crates are declared in the root `Cargo.toml` under
 | thiserror | 2.0 | Error types | Active: all crates |
 | plotters | 0.3 | Visualization | Active: SVG output |
 
-#### ODE Solvers
+#### GPU Compute
 | Crate | Version | Domain | Status |
 |-------|---------|--------|--------|
-| ode_solvers | 0.6.1 | Dormand-Prince, RK4 | Workspace dep, evaluate for GR geodesics |
+| cudarc | 0.19.1 | CUDA (dynamic loading) | Active: ultrametric GPU kernel (feature-gated) |
+
+#### Elliptic Integrals
+| Crate | Version | Domain | Status |
+|-------|---------|--------|--------|
+| ellip | 1.0.4 | Carlson symmetric + Legendre | Active: RF, RD, RJ, RC, RG |
 
 ### 2.2 Hand-Rolled Code (Justified)
 
@@ -219,7 +225,7 @@ These implementations STAY because no suitable crate exists or licensing prevent
 
 ### 3.1 Current State
 
-1327 Rust unit tests pass across 13 crates, plus 7 doc-tests (1334 total).
+1370 Rust unit tests pass across 13 crates, plus 7 doc-tests (1377 total).
 0 clippy warnings (warnings-as-errors is non-negotiable).
 
 ### 3.2 Testing Layers
@@ -437,10 +443,16 @@ pub mod constants;         // Physical constants (NEW from #63)
 - **Next**: Generate PDF from `MATHEMATICAL_FORMALISM.tex`.
 - **Prerequisite**: Complete source-first research passes (Section 4.1).
 
-### 6.4 Cross-Domain Ultrametric Analysis
-- **Goal**: Extend C-437 multi-attribute Euclidean ultrametricity to new catalogs.
-- **Data**: Gaia DR3, SDSS, NANOGrav, Fermi GBM (all providers operational).
-- **Crate**: `stats_core/ultrametric/` (Bradley local, Baire, temporal, dendrogram).
+### 6.4 Cross-Domain Ultrametric Analysis -- COMPLETE (I-011)
+- **Result**: GPU exploration (10M triples x 1000 permutations x 9 catalogs).
+  82/472 tests significant at BH-FDR<0.05.
+- **Key finding**: Ultrametricity is NOT radio-transient-specific (old I-008 was wrong).
+  Galactic kinematics dominates (60/82 hits from Hipparcos + Gaia proper motions).
+- **Catalogs with signal**: Hipparcos (48/114), Gaia (12/114), CHIME (8/8),
+  ATNF (6/8), GWOSC (4/66), SDSS (2/52), Pantheon+ (2/22).
+- **No signal**: McGill magnetars (N=20 too small), Fermi GBM (isotropic).
+- **Data**: `data/csv/c071g_exploration.csv`, `data/csv/c071g_exploration_gpu_10M_1000perm.csv`.
+- **Crate**: `stats_core/ultrametric/gpu.rs` (CUDA kernel via cudarc 0.19.1).
 
 ### 6.5 Standard Model Embedding (Speculative)
 - **Goal**: Embed SU(3) x SU(2) x U(1) generators into G2 subalgebra of F4.
@@ -486,13 +498,14 @@ Major providers operational; schema checks and benchmarks remain.
 | Horizon | Goal | Dependencies | Status |
 |---------|------|--------------|--------|
 | ~~Near~~ | ~~Complete GR module Layers 0-6~~ | ~~Task #48 crate research~~ | **DONE** (2026-02-06) |
+| ~~Near~~ | ~~Cross-domain ultrametric analysis (9 catalogs)~~ | ~~Dataset providers~~ | **DONE** (I-011, 82/472 sig) |
+| ~~Near~~ | ~~GPU acceleration (CUDA ultrametric kernel)~~ | ~~cudarc 0.19.1~~ | **DONE** (RTX 4070 Ti) |
 | Near | Schema checks for all 18 dataset providers | Parser code in data_core | In progress |
-| Near | Cross-domain ultrametric analysis (Gaia, SDSS, Fermi) | Dataset providers | Planned |
 | Near | Extend motif census to 64D/128D | algebra_core | Planned |
 | Medium | WASM target for browser visualization | Crate compatibility audit | Future |
 | Medium | Hardware quantum circuit run (IBM Eagle 127q) | F4 circuit design | Future |
 | Medium | Publication pipeline (LaTeX from verified results) | Source-first research | Future |
-| Far | GPU acceleration (wgpu/CUDA for tensor ops) | API stabilization | Future |
+| Medium | GPU tensor network contraction (cudarc) | Extend GPU path beyond ultrametric | Future |
 
 ---
 
@@ -512,13 +525,13 @@ This document synthesizes and supersedes:
 
 | Original | Lines | Key Contribution | Disposition |
 |----------|-------|-------------------|-------------|
-| `RUST_MIGRATION_PLAN.md` | 268 | Crate architecture, phase structure, test strategy | Absorbed into Sections 1-3 |
-| `RUST_REFACTOR_PLAN.md` | 293 | Sprint history, benchmarks, proptest/criterion patterns | Absorbed into Sections 1, 3 |
-| `docs/RESEARCH_ROADMAP.md` | 41 | Research workstreams, future directions | Absorbed into Section 6 |
-| `docs/ULTRA_ROADMAP.md` | 112 | Granular claim-to-evidence checklists | Referenced in Section 7 (remains authoritative for detail) |
-| `docs/TODO.md` | 41 | Current sprint tracker | Remains as companion (sprint-level) |
-| `docs/NEXT_ACTIONS.md` | 60 | Priority queue | Remains as companion (top-5) |
+| `RUST_MIGRATION_PLAN.md` | 268 | Crate architecture, phase structure, test strategy | **Deleted** (absorbed into Sections 1-3) |
+| `RUST_REFACTOR_PLAN.md` | 293 | Sprint history, benchmarks, proptest/criterion patterns | **Deleted** (absorbed into Sections 1, 3) |
+| `docs/RESEARCH_ROADMAP.md` | 41 | Research workstreams, future directions | **Deleted** (absorbed into Section 6) |
+| `docs/engineering/GEMINI_FUNCTION_MIGRATION_LEDGER.md` | 130 | Codex migration audit (inaccurate) | **Deleted** (wrapper anti-pattern throughout) |
+| `docs/ULTRA_ROADMAP.md` | 112 | Granular claim-to-evidence checklists | Active companion (Section 7 detail) |
+| `docs/TODO.md` | 41 | Current sprint tracker | Active companion (sprint-level) |
+| `docs/NEXT_ACTIONS.md` | 60 | Priority queue | Active companion (top-5) |
 
-The original files remain in the repo as historical artifacts.
 `docs/ULTRA_ROADMAP.md`, `docs/TODO.md`, and `docs/NEXT_ACTIONS.md` continue
 as active companions for granular tracking.

@@ -8,8 +8,8 @@ Primary trackers:
 
 Note:
 - Python-to-Rust migration is COMPLETE (all 15 modules ported, gororoba_kernels removed).
-- 848 Rust unit tests + 7 doc-tests pass, 0 clippy warnings.
-- Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`) redirect to `docs/ROADMAP.md`.
+- 1370 Rust unit tests + 7 doc-tests pass, 0 clippy warnings.
+- Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md`) deleted; content absorbed into `docs/ROADMAP.md`.
 
 ## Current sprint (blockers first)
 - [ ] Source-first research passes (no deletions; only append/clarify sources):
@@ -28,14 +28,18 @@ Note:
 
 ## Quality gates
 - [x] `cargo clippy --workspace -j$(nproc) -- -D warnings`
-- [x] `cargo test --workspace -j$(nproc)` (848 unit + 7 doc-tests)
+- [x] `cargo test --workspace -j$(nproc)` (1370 unit + 7 doc-tests)
 - [ ] `make ascii-check`
 
 ## Completed (keep for provenance)
 - [x] Package `gemini_physics` and add tests (`pyproject.toml`, `src/gemini_physics/`, `tests/`).
 - [x] Coq stub builds via `make coq` (see `curated/01_theory_frameworks/README_COQ.md`).
 - [x] Materials ingestion and embedding benchmarks.
-- [x] Python-to-Rust migration: all 15 modules ported (see `docs/engineering/GEMINI_FUNCTION_MIGRATION_LEDGER.md`).
+- [x] Python-to-Rust migration: all 15 modules ported.
 - [x] Consolidate PyO3 bridges: gororoba_kernels removed, gororoba_py is sole bridge.
 - [x] Real cosmology fitting: Pantheon+ + DESI DR1 BAO (Omega_m=0.3284, H0=71.65).
 - [x] Ultrametric analysis directions C-436 through C-440 completed.
+- [x] GPU ultrametric exploration: 82/472 sig at FDR<0.05, 9 catalogs (I-011).
+- [x] Blackhole C++ port: COMPLETE (18 gr_core modules, 394 tests).
+- [x] CUDA compute engine: cudarc 0.19.1, 10M triples/test on RTX 4070 Ti.
+- [x] Deleted stale planning docs: RUST_MIGRATION_PLAN.md, RUST_REFACTOR_PLAN.md, RESEARCH_ROADMAP.md.

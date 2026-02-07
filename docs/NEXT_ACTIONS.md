@@ -50,11 +50,14 @@ Execution detail for missing datasets lives in `docs/ULTRA_ROADMAP.md` Section H
    - Major providers done: Pantheon+, Union3, DESI, GWOSC, Fermi GBM, Gaia, SDSS, NANOGrav, Planck.
    - Remaining: parser-level schema checks, pillar grouping flags, benchmark scripts.
 
-## E. GR module expansion (Blackhole C++ port)
+## E. GR module expansion (Blackhole C++ port) -- DONE
 
-10) Port verified GR computations from the Blackhole C++ codebase:
-    - Kerr/Schwarzschild Christoffel symbols (tasks #28, #29)
-    - Carlson elliptic integrals (task #30)
-    - Novikov-Thorne disk, Penrose process (tasks #33, #34)
-    - Connection.h generic computation (task #37)
-    - Energy-conserving geodesic integrator (task #40)
+10) All 30 tasks complete (2026-02-06).  18 gr_core modules, 394 tests.
+    See `docs/ROADMAP.md` Section 5 for the full dependency graph and module listing.
+
+## F. GPU ultrametric exploration -- DONE (I-011)
+
+11) CUDA kernel via cudarc 0.19.1 on RTX 4070 Ti.
+    10M triples x 1000 permutations x 9 catalogs: 82/472 significant at BH-FDR<0.05.
+    Old I-008 conclusion (radio-transient-specific) overturned.
+    See `docs/INSIGHTS.md` I-011 for full results.
