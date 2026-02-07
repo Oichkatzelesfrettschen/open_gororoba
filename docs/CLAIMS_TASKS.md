@@ -565,27 +565,29 @@ consolidated into domain crates (`algebra_core`, `stats_core`, etc.) and
 - C-023: Closed/Toy (metaphorical holonomy)
 - C-077, C-078: Refuted (PMNS/spectrum claims)
 
-## Status Snapshot: 2026-02-07
+## Status Snapshot: 2026-02-07 (updated)
 
 | Metric | Count |
 |--------|-------|
-| Rust unit tests | 1449 |
+| Rust unit tests | 1464 |
 | Rust doc-tests | 14 |
 | Rust clippy warnings | 0 |
 | Claims in matrix (C-001..C-442) | 443 |
-| Dataset providers | 30 |
-| Datasets with backing claims | 12 |
-| Infrastructure datasets (no claims) | 18 |
-| Scientific pillars | 7 |
-| Section H items done | 14 / 21 |
-| data_core tests | 121 |
+| Dataset providers | 18 |
+| Section H items done | 21 / 21 |
+| data_core tests | 137 |
 | gr_core tests | 394 |
 | algebra_core tests | 264 |
 | stats_core tests | 189 |
-| Rust crate path resolution in matrix | 84 / 84 (100%) |
+| Rust crate path resolution in matrix | 47 / 47 (100%) |
 | GPU ultrametric tests significant (I-011) | 82 / 472 |
+| Claims matrix dead-ref audit | 183/555 paths exist (see matrix header) |
 
 Key completions since last snapshot (2026-02-06):
+- Section H: 21/21 COMPLETE (6 benchmark families added, 15 new tests)
+- ASCII-only enforcement: 5 source files fixed, extended replacement table
+- CX-019 visualization hygiene: plt.show() -> plt.close() in 2 files
+- Claims matrix path audit: 47/47 Rust paths healthy; 218 Python paths historical
 - Motif census extended to dim=256 exact (16 new tests, 5 scaling laws)
 - XOR-balanced search extension CX-003 (10 new tests)
 - 6 source-first research audits completed (no overclaims)

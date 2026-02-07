@@ -1,6 +1,6 @@
 # Next Actions (Prioritized)
 
-Updated 2026-02-06 after consolidation pass. Previous audit: 2026-01-27.
+Updated 2026-02-07 after sprint completion. Previous audit: 2026-02-06.
 **See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and GR port plan.
 Execution detail for missing datasets lives in `docs/ULTRA_ROADMAP.md` Section H.
 
@@ -43,12 +43,11 @@ Execution detail for missing datasets lives in `docs/ULTRA_ROADMAP.md` Section H
    - 1-2 paragraph method summary per artifact
    - one reproducibility check per artifact
 
-## D. Dataset pillars (active)
+## D. Dataset pillars -- DONE (Section H 21/21)
 
-9) Execute the Universal-to-Local dataset pillars sequence in
-   `docs/ULTRA_ROADMAP.md` Section H and keep the manifest/provenance in lock-step.
-   - Major providers done: Pantheon+, Union3, DESI, GWOSC, Fermi GBM, Gaia, SDSS, NANOGrav, Planck.
-   - Remaining: parser-level schema checks, pillar grouping flags, benchmark scripts.
+9) All 21 Section H items complete (2026-02-07).
+   18 providers + 6 benchmark families + provenance verifier.
+   1464 unit tests, 14 doc-tests, 0 clippy warnings.
 
 ## E. GR module expansion (Blackhole C++ port) -- DONE
 
