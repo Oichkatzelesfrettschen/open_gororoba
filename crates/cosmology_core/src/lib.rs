@@ -8,6 +8,7 @@
 //! - Flat Lambda-CDM (FLRW) cosmology with struct-based interface
 //! - Axiodilaton scalar field cosmology
 //! - Relativistic polytropic equation of state
+//! - Neutron star TOV solver with tidal deformability
 //!
 //! # Literature
 //! - Mazur & Mottola (2004): Gravastar proposal
@@ -19,6 +20,9 @@
 //! - Hogg (1999): arXiv:astro-ph/9905116 (distance measures)
 //! - Shapiro & Teukolsky (1983): Black Holes, White Dwarfs, and Neutron Stars
 //! - Oppenheimer & Volkoff (1939): Phys. Rev. 55, 374
+//! - Hinderer (2008): ApJ 677, 1216 (tidal Love number)
+//! - Yagi & Yunes (2013): Science 341, 365 (I-Love-Q universality)
+//! - Abbott et al. (2017): PRL 119, 161101 (GW170817)
 
 use gauss_quad::GaussLegendre;
 
@@ -31,6 +35,7 @@ pub mod flrw;
 pub mod gravastar;
 pub mod observational;
 pub mod spectral;
+pub mod tov;
 
 pub use gravastar::{
     PolytropicEos, AnisotropicParams, TovState, GravastarSolution,
@@ -77,6 +82,12 @@ pub use eos::{
     Polytrope, polytropic_index, gamma_from_index,
     GAMMA_NONREL_DEGENERATE, GAMMA_ULTRAREL_DEGENERATE,
     GAMMA_STIFF, GAMMA_RADIATION,
+};
+
+pub use tov::{
+    tidal_love_number_k2, tidal_deformability, combined_tidal_deformability,
+    NeutronStarProfile, integrate_neutron_star,
+    MassRadiusPoint, mass_radius_relation, tov_maximum_mass,
 };
 
 pub use flrw::{
