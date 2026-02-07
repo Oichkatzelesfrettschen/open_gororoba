@@ -34,7 +34,7 @@ pub use catalogs::desi_bao::{desi_dr1_bao, BaoMeasurement};
 pub use catalogs::fermi_gbm::{parse_fermi_gbm_csv, GrbEvent};
 pub use catalogs::gaia::{parse_gaia_csv, GaiaSource};
 pub use catalogs::gwtc::{parse_gwtc3_csv, GwEvent};
-pub use catalogs::hipparcos::hipparcos_row_count_gzip;
+pub use catalogs::hipparcos::hipparcos_row_count;
 pub use catalogs::landsat::looks_like_landsat_stac_json;
 pub use catalogs::mcgill::{parse_mcgill_csv, Magnetar};
 pub use catalogs::nanograv::{parse_nanograv_free_spectrum, FreeSpectrumPoint};

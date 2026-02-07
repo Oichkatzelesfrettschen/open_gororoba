@@ -112,3 +112,7 @@ data/external/PantheonPlusSH0ES.dat
 data/external/igrf13coeffs.txt
 data/external/GGM05S.gfc
 data/external/GRGM1200B.gfc
+data/external/hip_main.dat
+data/external/sorce_tsi_daily.csv
+data/external/nanograv_15yr_kde/
+.playwright-mcp/

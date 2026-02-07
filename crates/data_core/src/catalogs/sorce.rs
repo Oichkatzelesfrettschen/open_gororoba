@@ -3,8 +3,12 @@
 //! SORCE extends the long-term irradiance record and is useful as a legacy
 //! complement to TSIS-1.
 //!
-//! Source: LASP LISIRD
-//! https://lasp.colorado.edu/lisird/
+//! Source: LASP LISIRD / SORCE data archive
+//! https://lasp.colorado.edu/lisird/data/sorce_tsi_24hr_l3
+//!
+//! The old LaTiS endpoint (`sorce_tsi_24hr`) was renamed to `sorce_tsi_24hr_l3`
+//! (Level 3 suffix). The most stable URL is the direct file link at
+//! `/data/sorce/tsi_data/daily/`.
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
@@ -25,42 +29,73 @@ fn parse_f64(s: &str) -> f64 {
     s.parse::<f64>().unwrap_or(f64::NAN)
 }
 
-/// Parse SORCE CSV rows.
+/// Parse SORCE data from either CSV (LaTiS) or space-delimited TXT (direct).
+///
+/// CSV format: `time (Julian Date),tsi_1au (W/m^2),...`
+/// TXT format: `YYYYMMDD.5  JDN  avg_jdn  stdev  tsi_1au  ...` (`;` comments)
 pub fn parse_sorce_csv(path: &Path) -> Result<Vec<SorceMeasurement>, FetchError> {
     let content = std::fs::read_to_string(path)
         .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;
 
     let mut rows = Vec::new();
+    let is_csv = content.lines().any(|l| l.contains("tsi_1au") && l.contains(','));
+
     for line in content.lines() {
         let trimmed = line.trim();
         if trimmed.is_empty()
             || trimmed.starts_with('#')
             || trimmed.starts_with(';')
             || trimmed.contains("date")
+            || trimmed.contains("tsi_1au")
         {
             continue;
         }
 
-        let fields: Vec<&str> = trimmed.split(',').collect();
-        if fields.len() < 3 {
-            continue;
+        if is_csv {
+            // LaTiS CSV: col 0 = JD, col 1 = TSI
+            let fields: Vec<&str> = trimmed.split(',').collect();
+            if fields.len() < 2 {
+                continue;
+            }
+            let jd = parse_f64(fields[0]);
+            let tsi = parse_f64(fields[1]);
+            if tsi.is_nan() || tsi <= 0.0 {
+                continue;
+            }
+            rows.push(SorceMeasurement {
+                jd,
+                date: String::new(),
+                tsi,
+            });
+        } else {
+            // Direct TXT: col 1 = JDN, col 4 = tsi_1au (space-separated)
+            let fields: Vec<&str> = trimmed.split_whitespace().collect();
+            if fields.len() < 5 {
+                continue;
+            }
+            let jd = parse_f64(fields[1]);
+            let tsi = parse_f64(fields[4]);
+            if tsi.is_nan() || tsi <= 0.0 {
+                continue;
+            }
+            let date_str = fields[0];
+            // date_str is like "20030225.500"; strip decimal
+            let date = date_str.split('.').next().unwrap_or("").to_string();
+            rows.push(SorceMeasurement {
+                jd,
+                date,
+                tsi,
+            });
         }
-        let tsi = parse_f64(fields[2]);
-        if tsi.is_nan() {
-            continue;
-        }
-        rows.push(SorceMeasurement {
-            jd: parse_f64(fields[0]),
-            date: fields[1].trim().to_string(),
-            tsi,
-        });
     }
     Ok(rows)
 }
 
 const SORCE_URLS: &[&str] = &[
-    "https://lasp.colorado.edu/lisird/latis/dap/sorce_tsi_24hr.csv",
-    "https://lasp.colorado.edu/lisird/latis/dap/sorce_tsi_6hr.csv",
+    // Direct file link (most stable, 933 KB, Version 20, Aug 2025)
+    "https://lasp.colorado.edu/data/sorce/tsi_data/daily/sorce_tsi_L3_c24h_latest.txt",
+    // LaTiS API (renamed from sorce_tsi_24hr to sorce_tsi_24hr_l3)
+    "https://lasp.colorado.edu/lisird/latis/dap/sorce_tsi_24hr_l3.csv",
 ];
 
 /// SORCE TSI dataset provider.

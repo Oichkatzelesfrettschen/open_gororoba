@@ -4,23 +4,25 @@
 //! cross-calibration and long-baseline astrometry comparisons.
 //!
 //! Source: CDS catalog I/239
-//! https://cdsarc.cds.unistra.fr/ftp/cats/I/239/
+//! https://cdsarc.cds.unistra.fr/ftp/I/239/
+//!
+//! The CDS FTP layout changed (2025): `/ftp/cats/I/239/` -> `/ftp/I/239/`.
+//! The `.gz` variant is no longer served; we download the uncompressed `.dat`.
 
 use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
-use flate2::read::GzDecoder;
 use std::io::{BufRead, BufReader};
 use std::path::{Path, PathBuf};
 
+/// Corrected CDS URLs (no `/cats/` prefix, uncompressed `.dat`).
 const HIPPARCOS_URLS: &[&str] = &[
-    "https://cdsarc.cds.unistra.fr/ftp/cats/I/239/hip_main.dat.gz",
-    "https://cdsarc.u-strasbg.fr/ftp/cats/I/239/hip_main.dat.gz",
+    "https://cdsarc.cds.unistra.fr/ftp/I/239/hip_main.dat",
+    "https://cdsarc.u-strasbg.fr/ftp/I/239/hip_main.dat",
 ];
 
-/// Count rows in a gzipped Hipparcos main catalog file.
-pub fn hipparcos_row_count_gzip(path: &Path) -> Result<usize, FetchError> {
+/// Count non-empty rows in a plain-text Hipparcos main catalog file.
+pub fn hipparcos_row_count(path: &Path) -> Result<usize, FetchError> {
     let file = std::fs::File::open(path)?;
-    let decoder = GzDecoder::new(file);
-    let reader = BufReader::new(decoder);
+    let reader = BufReader::new(file);
     let mut count = 0usize;
     for line in reader.lines() {
         let line = line?;
@@ -40,12 +42,12 @@ impl DatasetProvider for HipparcosProvider {
     }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
-        let output = config.output_dir.join("hip_main.dat.gz");
+        let output = config.output_dir.join("hip_main.dat");
         download_with_fallbacks(self.name(), HIPPARCOS_URLS, &output, config.skip_existing)
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("hip_main.dat.gz").exists()
+        config.output_dir.join("hip_main.dat").exists()
     }
 }
 
@@ -56,15 +58,16 @@ mod tests {
 
     #[test]
     fn test_hipparcos_if_available() {
-        let path = Path::new("data/external/hip_main.dat.gz");
+        let path = Path::new("data/external/hip_main.dat");
         if !path.exists() {
             eprintln!("Skipping: Hipparcos data not available");
             return;
         }
-        let rows = hipparcos_row_count_gzip(path).expect("failed to count Hipparcos rows");
+        let rows = hipparcos_row_count(path).expect("failed to count Hipparcos rows");
+        // Hipparcos main catalog has 118,218 entries
         assert!(
-            rows > 1000,
-            "Hipparcos file should have many rows, got {}",
+            rows > 100_000,
+            "Hipparcos file should have >100k rows, got {}",
             rows
         );
     }
