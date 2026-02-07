@@ -19,3 +19,4 @@ rand = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }
+tempfile = { workspace = true }

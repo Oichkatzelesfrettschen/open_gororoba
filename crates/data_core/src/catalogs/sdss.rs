@@ -118,6 +118,9 @@ pub fn parse_sdss_quasar_csv(path: &Path) -> Result<Vec<SdssQuasar>, FetchError>
     Ok(quasars)
 }
 
+/// Number of fields in the SdssQuasar struct.
+pub const SDSS_QUASAR_FIELD_COUNT: usize = 10;
+
 /// SDSS SkyServer SQL query for TOP 50000 quasars.
 ///
 /// Uses `specObjID` (not `objID`) as the identifier from SpecObj,
@@ -169,5 +172,74 @@ impl DatasetProvider for SdssQsoProvider {
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("sdss_dr18_quasars.csv").exists()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+
+    fn write_temp_csv(content: &str) -> tempfile::NamedTempFile {
+        let mut f = tempfile::NamedTempFile::new().unwrap();
+        f.write_all(content.as_bytes()).unwrap();
+        f.flush().unwrap();
+        f
+    }
+
+    #[test]
+    fn test_parse_synthetic_sdss() {
+        let csv = "\
+objid,ra,dec,z,zerr,u,g,r,i
+1237648720693714945,180.123,45.678,2.301,0.0003,20.1,19.5,19.2,18.9
+1237648720693714946,200.456,-10.234,0.512,0.0001,21.3,20.1,19.7,19.5
+";
+        let f = write_temp_csv(csv);
+        let quasars = parse_sdss_quasar_csv(f.path()).unwrap();
+        assert_eq!(quasars.len(), 2);
+
+        let q1 = &quasars[0];
+        assert_eq!(q1.objid, "1237648720693714945");
+        assert!((q1.ra - 180.123).abs() < 0.001);
+        assert!((q1.z - 2.301).abs() < 0.001);
+        assert!((q1.mag_u - 20.1).abs() < 0.01);
+        assert!((q1.mag_r - 19.2).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_sdss_empty_objid_skipped() {
+        let csv = "\
+objid,ra,dec,z,zerr,u,g,r,i
+,180.0,45.0,2.0,0.001,20,19,19,18
+";
+        let f = write_temp_csv(csv);
+        let quasars = parse_sdss_quasar_csv(f.path()).unwrap();
+        assert_eq!(quasars.len(), 0, "empty objid should be skipped");
+    }
+
+    #[test]
+    fn test_sdss_null_fields() {
+        let csv = "\
+objid,ra,dec,z,zerr,u,g,r,i
+12345,null,NULL,0.5,null,null,null,null,null
+";
+        let f = write_temp_csv(csv);
+        let quasars = parse_sdss_quasar_csv(f.path()).unwrap();
+        assert_eq!(quasars.len(), 1);
+        assert!(quasars[0].ra.is_nan());
+        assert!(quasars[0].mag_u.is_nan());
+    }
+
+    #[test]
+    fn test_sdss_quasar_field_count() {
+        assert_eq!(SDSS_QUASAR_FIELD_COUNT, 10);
+    }
+
+    #[test]
+    fn test_sdss_skyserver_url() {
+        let url = skyserver_csv_url("SELECT TOP 10 ra FROM SpecObj");
+        assert!(url.starts_with("https://skyserver.sdss.org/dr18/"));
+        assert!(url.contains("format=csv"));
+        assert!(url.contains("SELECT"));
     }
 }

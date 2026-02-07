@@ -81,6 +81,9 @@ pub fn parse_tsi_csv(path: &Path) -> Result<Vec<TsiMeasurement>, FetchError> {
     Ok(measurements)
 }
 
+/// Number of fields in the TsiMeasurement struct.
+pub const TSI_FIELD_COUNT: usize = 4;
+
 /// LASP LISIRD TSIS-1 daily TSI data URL.
 const TSIS_URLS: &[&str] = &[
     "https://lasp.colorado.edu/lisird/latis/dap/tsis_tsi_24hr.csv",
@@ -99,5 +102,81 @@ impl DatasetProvider for TsisTsiProvider {
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("tsis1_tsi_daily.csv").exists()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+
+    fn write_temp_csv(content: &str) -> tempfile::NamedTempFile {
+        let mut f = tempfile::NamedTempFile::new().unwrap();
+        f.write_all(content.as_bytes()).unwrap();
+        f.flush().unwrap();
+        f
+    }
+
+    #[test]
+    fn test_parse_synthetic_tsi() {
+        let csv = "\
+jd,date,TSI,uncertainty
+2459215.5,2021-01-01,1360.52,0.14
+2459216.5,2021-01-02,1360.48,0.13
+2459217.5,2021-01-03,1360.55,0.15
+";
+        let f = write_temp_csv(csv);
+        let measurements = parse_tsi_csv(f.path()).unwrap();
+        assert_eq!(measurements.len(), 3);
+
+        let m1 = &measurements[0];
+        assert!((m1.jd - 2459215.5).abs() < 0.01);
+        assert_eq!(m1.date, "2021-01-01");
+        assert!((m1.tsi - 1360.52).abs() < 0.01);
+        assert!((m1.tsi_uncertainty - 0.14).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_tsi_nan_rows_skipped() {
+        let csv = "\
+jd,date,TSI,uncertainty
+2459215.5,2021-01-01,NaN,0
+2459216.5,2021-01-02,1360.5,0.1
+";
+        let f = write_temp_csv(csv);
+        let measurements = parse_tsi_csv(f.path()).unwrap();
+        assert_eq!(measurements.len(), 1, "NaN TSI rows should be skipped");
+        assert!((measurements[0].tsi - 1360.5).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_tsi_comment_lines_skipped() {
+        let csv = "\
+# TSIS-1 Total Solar Irradiance
+; Version 03
+jd,date,TSI,uncertainty
+2459215.5,2021-01-01,1360.52,0.14
+";
+        let f = write_temp_csv(csv);
+        let measurements = parse_tsi_csv(f.path()).unwrap();
+        assert_eq!(measurements.len(), 1);
+    }
+
+    #[test]
+    fn test_tsi_sentinel_values() {
+        let csv = "\
+jd,date,TSI,uncertainty
+2459215.5,2021-01-01,-99,0
+2459216.5,2021-01-02,-999,0
+2459217.5,2021-01-03,1360.5,0.1
+";
+        let f = write_temp_csv(csv);
+        let measurements = parse_tsi_csv(f.path()).unwrap();
+        assert_eq!(measurements.len(), 1, "sentinel values -99/-999 should be NaN -> skipped");
+    }
+
+    #[test]
+    fn test_tsi_field_count() {
+        assert_eq!(TSI_FIELD_COUNT, 4);
     }
 }

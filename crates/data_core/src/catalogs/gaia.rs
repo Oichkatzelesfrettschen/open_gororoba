@@ -118,6 +118,9 @@ pub fn parse_gaia_csv(path: &Path) -> Result<Vec<GaiaSource>, FetchError> {
     Ok(sources)
 }
 
+/// Number of fields in the GaiaSource struct.
+pub const GAIA_SOURCE_FIELD_COUNT: usize = 11;
+
 /// ADQL query for nearby stars with radial velocities from Gaia DR3.
 const GAIA_ADQL: &str = "\
 SELECT TOP 50000 \
@@ -159,5 +162,73 @@ impl DatasetProvider for GaiaDr3Provider {
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("gaia_dr3_nearby.csv").exists()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+
+    fn write_temp_csv(content: &str) -> tempfile::NamedTempFile {
+        let mut f = tempfile::NamedTempFile::new().unwrap();
+        f.write_all(content.as_bytes()).unwrap();
+        f.flush().unwrap();
+        f
+    }
+
+    #[test]
+    fn test_parse_synthetic_gaia() {
+        let csv = "\
+source_id,ra,dec,parallax,parallax_error,pmra,pmdec,radial_velocity,radial_velocity_error,phot_g_mean_mag,bp_rp
+4472832130942575872,269.448,-1.942,546.976,0.029,-3775.4,10362.5,-110.51,0.16,9.53,2.88
+5853498713190525696,217.429,-62.681,768.067,0.049,3853.2,-693.8,21.7,0.28,0.01,-0.02
+";
+        let f = write_temp_csv(csv);
+        let sources = parse_gaia_csv(f.path()).unwrap();
+        assert_eq!(sources.len(), 2);
+
+        // Barnard's Star (roughly)
+        let s1 = &sources[0];
+        assert_eq!(s1.source_id, "4472832130942575872");
+        assert!((s1.parallax - 546.976).abs() < 0.001);
+        assert!((s1.pmra - (-3775.4)).abs() < 0.1);
+        assert!((s1.radial_velocity - (-110.51)).abs() < 0.01);
+        assert!((s1.phot_g_mean_mag - 9.53).abs() < 0.01);
+
+        // Alpha Centauri (roughly)
+        let s2 = &sources[1];
+        assert_eq!(s2.source_id, "5853498713190525696");
+        assert!((s2.parallax - 768.067).abs() < 0.001);
+        assert!((s2.bp_rp - (-0.02)).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_gaia_empty_source_id_skipped() {
+        let csv = "\
+source_id,ra,dec,parallax,parallax_error,pmra,pmdec,radial_velocity,radial_velocity_error,phot_g_mean_mag,bp_rp
+,0,0,100,1,0,0,0,0,5.0,0.5
+";
+        let f = write_temp_csv(csv);
+        let sources = parse_gaia_csv(f.path()).unwrap();
+        assert_eq!(sources.len(), 0, "empty source_id should be skipped");
+    }
+
+    #[test]
+    fn test_gaia_null_fields() {
+        let csv = "\
+source_id,ra,dec,parallax,parallax_error,pmra,pmdec,radial_velocity,radial_velocity_error,phot_g_mean_mag,bp_rp
+123456789,null,NULL,500,null,null,null,null,null,null,null
+";
+        let f = write_temp_csv(csv);
+        let sources = parse_gaia_csv(f.path()).unwrap();
+        assert_eq!(sources.len(), 1);
+        assert!(sources[0].ra.is_nan());
+        assert!(sources[0].pmra.is_nan());
+    }
+
+    #[test]
+    fn test_gaia_source_field_count() {
+        assert_eq!(GAIA_SOURCE_FIELD_COUNT, 11);
     }
 }

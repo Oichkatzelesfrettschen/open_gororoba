@@ -136,6 +136,9 @@ pub fn parse_mcgill_csv(path: &Path) -> Result<Vec<Magnetar>, FetchError> {
     Ok(magnetars)
 }
 
+/// Number of fields in the Magnetar struct.
+pub const MAGNETAR_FIELD_COUNT: usize = 13;
+
 const MCGILL_URLS: &[&str] = &[
     "http://www.physics.mcgill.ca/~pulsar/magnetar/TabO1.csv",
 ];
@@ -153,5 +156,84 @@ impl DatasetProvider for McgillProvider {
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
         config.output_dir.join("mcgill_magnetars.csv").exists()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use std::io::Write;
+
+    fn write_temp_csv(content: &str) -> tempfile::NamedTempFile {
+        let mut f = tempfile::NamedTempFile::new().unwrap();
+        f.write_all(content.as_bytes()).unwrap();
+        f.flush().unwrap();
+        f
+    }
+
+    #[test]
+    fn test_parse_synthetic_mcgill() {
+        let csv = "\
+name,ra,dec,gl,gb,period,pdot,dipole,age,edot,dist,dm,lx
+SGR 0418+5729,64.68,57.54,152.35,0.84,9.078,4.0e-15,0.061,36000,1.7e29,2.0,...,2.5e31
+1E 2259+586,345.28,58.88,109.08,-0.99,6.979,4.8e-13,5.9,230,3.6e31,3.2,...,1.8e35
+";
+        let f = write_temp_csv(csv);
+        let magnetars = parse_mcgill_csv(f.path()).unwrap();
+        assert_eq!(magnetars.len(), 2);
+
+        let sgr = &magnetars[0];
+        assert_eq!(sgr.name, "SGR 0418+5729");
+        assert!((sgr.ra - 64.68).abs() < 0.01);
+        assert!((sgr.period - 9.078).abs() < 0.001);
+        assert!((sgr.b_dipole - 0.061).abs() < 0.001);
+
+        let axp = &magnetars[1];
+        assert_eq!(axp.name, "1E 2259+586");
+        assert!((axp.distance - 3.2).abs() < 0.01);
+    }
+
+    #[test]
+    fn test_mcgill_range_midpoint() {
+        // McGill uses dashes for ranges like "3.1-5.5"
+        let csv = "\
+name,ra,dec,gl,gb,period,pdot,dipole,age,edot,dist,dm,lx
+SGR TEST,0,0,0,0,5.0,0,0,0,0,3.0-5.0,0,0
+";
+        let f = write_temp_csv(csv);
+        let magnetars = parse_mcgill_csv(f.path()).unwrap();
+        assert_eq!(magnetars.len(), 1);
+        // Distance should be midpoint of 3.0 and 5.0
+        assert!((magnetars[0].distance - 4.0).abs() < 0.01,
+            "range midpoint should be 4.0, got {}", magnetars[0].distance);
+    }
+
+    #[test]
+    fn test_mcgill_empty_name_skipped() {
+        let csv = "\
+name,ra,dec,gl,gb,period,pdot,dipole,age,edot,dist,dm,lx
+,0,0,0,0,5.0,0,0,0,0,0,0,0
+";
+        let f = write_temp_csv(csv);
+        let magnetars = parse_mcgill_csv(f.path()).unwrap();
+        assert_eq!(magnetars.len(), 0, "empty name should be skipped");
+    }
+
+    #[test]
+    fn test_mcgill_dash_sentinel() {
+        let csv = "\
+name,ra,dec,gl,gb,period,pdot,dipole,age,edot,dist,dm,lx
+SGR TEST,0,0,0,0,5.0,--,...,0,0,0,...,0
+";
+        let f = write_temp_csv(csv);
+        let magnetars = parse_mcgill_csv(f.path()).unwrap();
+        assert_eq!(magnetars.len(), 1);
+        assert!(magnetars[0].pdot.is_nan(), "-- should parse as NaN");
+        assert!(magnetars[0].dm.is_nan(), "... should parse as NaN");
+    }
+
+    #[test]
+    fn test_magnetar_field_count() {
+        assert_eq!(MAGNETAR_FIELD_COUNT, 13);
     }
 }
