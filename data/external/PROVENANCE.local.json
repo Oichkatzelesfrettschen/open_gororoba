@@ -1,5 +1,5 @@
 {
-  "generated_at_utc": "2026-02-07T01:36:56.923719+00:00",
+  "generated_at_utc": "2026-02-07T21:53:17.947249+00:00",
   "hashes": [
     {
       "mtime_utc": "2026-01-27T03:52:33.459303+00:00",
@@ -80,22 +80,46 @@
       "size_bytes": 4057396
     },
     {
+      "mtime_utc": "2026-02-07T21:52:39.970523+00:00",
+      "path": "cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv",
+      "sha256": "80da16e314d7f0ec205412173bd96950c6ebb3685bbabb57753eaf4ef87549b8",
+      "size_bytes": 3913
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:56.690056+00:00",
+      "path": "cms_oo_raa/table1_pp_spectra.csv",
+      "sha256": "339b4bed5db62555210863da82b7ff3bd1180a5aca1e508eb03e1ce86a72ac14",
+      "size_bytes": 4083
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:57.449021+00:00",
+      "path": "cms_oo_raa/table2_oo_spectra.csv",
+      "sha256": "3f5cc4c5dbaabf85c2b9720b5ced8c080e1763ef92fc33b88097be018bedef1a",
+      "size_bytes": 3938
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:58.170320+00:00",
+      "path": "cms_oo_raa/table3_oo_raa.csv",
+      "sha256": "136f109ea7a42b9983004bb9428fc7874b02ecf66f53d1ce43ea2ff8776e2e01",
+      "size_bytes": 3477
+    },
+    {
       "mtime_utc": "2026-01-27T06:18:29.051594+00:00",
       "path": "jarvis_dft/PROVENANCE.json",
       "sha256": "fd9915f711d8d8436e295ddc87953ddd114f311238f0fbb71d80ea280bcfa8e1",
       "size_bytes": 383
     },
     {
-      "mtime_utc": "2026-01-27T06:18:28.184124+00:00",
-      "path": "jarvis_dft/jdft_3d-4-26-2020/jdft_3d-4-26-2020.json",
-      "sha256": "e970ddf8648398838aae9bee26898f92e513ca784b8a01d4e238b395f401cc1d",
-      "size_bytes": 74456082
-    },
-    {
       "mtime_utc": "2026-01-27T05:40:40.717564+00:00",
       "path": "jarvis_dft/jdft_3d-4-26-2020.zip",
       "sha256": "63a1fccfdc4b570d8f683fb15f45b66579dd16cb93f3813b0fbfa6eff9112c25",
       "size_bytes": 16551136
+    },
+    {
+      "mtime_utc": "2026-01-27T06:18:28.184124+00:00",
+      "path": "jarvis_dft/jdft_3d-4-26-2020/jdft_3d-4-26-2020.json",
+      "sha256": "e970ddf8648398838aae9bee26898f92e513ca784b8a01d4e238b395f401cc1d",
+      "size_bytes": 74456082
     },
     {
       "mtime_utc": "2026-02-06T21:46:50.459406+00:00",
@@ -344,6 +368,18 @@
       "size_bytes": 80570
     },
     {
+      "mtime_utc": "2026-02-07T21:50:11.630188+00:00",
+      "path": "papers/arxiv_0904.0141_finazzi_liberati_barcelo_2009_semiclassical_instability.pdf",
+      "sha256": "80471f649a07bfcbafec02a231b0c4864210e7bd1e44fecc84e205f985e4bc3b",
+      "size_bytes": 351291
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:06.090362+00:00",
+      "path": "papers/arxiv_0904.0141_finazzi_liberati_barcelo_2009_semiclassical_instability.txt",
+      "sha256": "f1c402e55f5b7d38c11b2250698783dc81608292655f6a1a83a14b34b55b7225",
+      "size_bytes": 65130
+    },
+    {
       "mtime_utc": "2026-01-29T00:48:16.567882+00:00",
       "path": "papers/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf",
       "sha256": "202833bbbf36b0c8bb6ca0c448c98df3f21e2f072a82e3b30c0b029f19cb8ce1",
@@ -384,6 +420,18 @@
       "path": "papers/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.txt",
       "sha256": "34cff53620da862dc7e8f0ce783e770f90d40ae1aac4668c7f2d4b9e70b7937d",
       "size_bytes": 18490
+    },
+    {
+      "mtime_utc": "2026-02-07T21:49:43.362664+00:00",
+      "path": "papers/arxiv_1207.5805_fewster_2012_lectures_quantum_energy_inequalities.pdf",
+      "sha256": "8dc1e8bc788aa13ec0f46655afcc47d67618ce0a18337ad15ba330a755b9ef15",
+      "size_bytes": 300535
+    },
+    {
+      "mtime_utc": "2026-02-07T21:49:58.114411+00:00",
+      "path": "papers/arxiv_1207.5805_fewster_2012_lectures_quantum_energy_inequalities.txt",
+      "sha256": "60a0d11a35f2ea473b560aaeddbccf36ee039268430e42d54871e173991ca166",
+      "size_bytes": 29348
     },
     {
       "mtime_utc": "2024-11-30T01:16:50+00:00",
@@ -542,6 +590,18 @@
       "size_bytes": 54480
     },
     {
+      "mtime_utc": "2026-02-07T21:49:44.485644+00:00",
+      "path": "papers/arxiv_1904.05684_kontou_sanders_2020_quantum_energy_inequalities_review.pdf",
+      "sha256": "de4ff595c746c67433dfa50be6a8659fd05e1e1eaf04277fac0a44e3965d44ee",
+      "size_bytes": 349422
+    },
+    {
+      "mtime_utc": "2026-02-07T21:49:58.192410+00:00",
+      "path": "papers/arxiv_1904.05684_kontou_sanders_2020_quantum_energy_inequalities_review.txt",
+      "sha256": "48d9dbccc20c1665208f0904956962adee9031f365327fd96fe7fc69d99dbd2b",
+      "size_bytes": 64311
+    },
+    {
       "mtime_utc": "2026-02-01T19:28:46.056537+00:00",
       "path": "papers/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf",
       "sha256": "bc8b30cb6561ee0e9487573e9e23e7408cf5e09b19fde5c8936fd802b7236941",
@@ -600,6 +660,18 @@
       "path": "papers/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.txt",
       "sha256": "01a01948a293bc7011d5c3317be9ab61253a409ec2048ddf9709688918e0c432",
       "size_bytes": 120532
+    },
+    {
+      "mtime_utc": "2026-02-07T21:50:08.974231+00:00",
+      "path": "papers/arxiv_2105.03079_santiago_schuster_visser_2021_generic_warp_drives.pdf",
+      "sha256": "4dca80f871be164599c4bb6917b833fd40b781dd27e023f567046e747cdf52d7",
+      "size_bytes": 663131
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:05.966363+00:00",
+      "path": "papers/arxiv_2105.03079_santiago_schuster_visser_2021_generic_warp_drives.txt",
+      "sha256": "61c54e52da64b514fb85e41deef512b3591b641b2eef321a5030e0bf48a9bfb2",
+      "size_bytes": 94317
     },
     {
       "mtime_utc": "2023-01-23T10:48:09+00:00",
@@ -674,10 +746,70 @@
       "size_bytes": 235836
     },
     {
+      "mtime_utc": "2026-02-07T21:50:10.046213+00:00",
+      "path": "papers/arxiv_2407.18908_fuchs_2024_constant_velocity_subluminal_warp.pdf",
+      "sha256": "ec0d10f3a73fefce03c5e41e33cc1809c6f5c12cf4c178dcca8fcafbd868761e",
+      "size_bytes": 3014149
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:06.027363+00:00",
+      "path": "papers/arxiv_2407.18908_fuchs_2024_constant_velocity_subluminal_warp.txt",
+      "sha256": "839c6792094afd668b3f68ecc78e4fd30e75713320e1a75d4b6d50ec1d87ca4e",
+      "size_bytes": 63536
+    },
+    {
+      "mtime_utc": "2026-02-07T21:50:07.869249+00:00",
+      "path": "papers/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.pdf",
+      "sha256": "b9f0db61ad9cc06ccabcdcdfb0a8cee407b2e282f1116c4b1658ed376d015b03",
+      "size_bytes": 404058
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:05.428371+00:00",
+      "path": "papers/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.txt",
+      "sha256": "f7fc6b6f500605949f3d1fef9979541ab0d2a1fe0a9ad45ee008f07b38d530a0",
+      "size_bytes": 18131
+    },
+    {
       "mtime_utc": "2026-01-29T00:48:16.165881+00:00",
       "path": "papers/arxiv_2505.11747v2_structure_cayley_dickson.pdf",
       "sha256": "815b797e690def4bd889ea30b17ecd715f3009ed60526a76ea9fd92f45aab7e2",
       "size_bytes": 369591
+    },
+    {
+      "mtime_utc": "2026-02-07T21:50:53.692539+00:00",
+      "path": "papers/arxiv_2509.07008_mazeliauskas_2025_energy_loss_baseline_oo.pdf",
+      "sha256": "dc9c51649032a7ec3c917ff0243b550792e966902b729f2c45a7cd6cea96fe55",
+      "size_bytes": 825671
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:05.672368+00:00",
+      "path": "papers/arxiv_2509.07008_mazeliauskas_2025_energy_loss_baseline_oo.txt",
+      "sha256": "064e019dbbe3f007abd4593660788916b9d35aa068725f8b95d42d4a3b1e39f5",
+      "size_bytes": 43440
+    },
+    {
+      "mtime_utc": "2026-02-07T21:50:24.484982+00:00",
+      "path": "papers/arxiv_2509.19430_pablos_takacs_2025_alpha_clustering_geometry.pdf",
+      "sha256": "8956975a256c215d09ff5c838b514ac4a6880b9961fdda167c59cf4a9899e6d2",
+      "size_bytes": 1695330
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:05.595369+00:00",
+      "path": "papers/arxiv_2509.19430_pablos_takacs_2025_alpha_clustering_geometry.txt",
+      "sha256": "7709f65a840cf7060bede25c2193e95e5393959e7a8f840d7d5c9f56b5b67687",
+      "size_bytes": 61402
+    },
+    {
+      "mtime_utc": "2026-02-07T21:50:54.713525+00:00",
+      "path": "papers/arxiv_2510.09864_cms_2025_discovery_suppressed_oo_collisions.pdf",
+      "sha256": "bb11ec81920f9527c95f72b97cc52d9ede26e412560f654845cd3518a06a7955",
+      "size_bytes": 1130037
+    },
+    {
+      "mtime_utc": "2026-02-07T21:51:05.849365+00:00",
+      "path": "papers/arxiv_2510.09864_cms_2025_discovery_suppressed_oo_collisions.txt",
+      "sha256": "28ad4b99e0ad4ef1a3adf1f22df7ec35712d9a1955c76a010c7e3c2353240c2d",
+      "size_bytes": 103837
     },
     {
       "mtime_utc": "2026-01-29T01:02:45.189910+00:00",
@@ -738,6 +870,18 @@
       "path": "papers/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.txt",
       "sha256": "278ce7883bd13d801a3c559c35dfd7d63440c809fd30104ab0011765a2d7b9d7",
       "size_bytes": 14515
+    },
+    {
+      "mtime_utc": "2026-02-07T21:49:45.322629+00:00",
+      "path": "papers/arxiv_gr-qc0209036_fewster_roman_2003_null_energy_condition.pdf",
+      "sha256": "7fc80341a80cfca247af83fa1c5a954524271c0f36f7af521520ef7de1123e5a",
+      "size_bytes": 574608
+    },
+    {
+      "mtime_utc": "2026-02-07T21:49:58.240409+00:00",
+      "path": "papers/arxiv_gr-qc0209036_fewster_roman_2003_null_energy_condition.txt",
+      "sha256": "c2d42cc454480e9c2101750f832970147f87d78c42a2d640f114e180af62cc26",
+      "size_bytes": 45587
     },
     {
       "mtime_utc": "2023-01-18T19:53:37+00:00",
@@ -810,6 +954,18 @@
       "path": "papers/arxiv_gr-qc9701052_immirzi_1997_quantum_gravity_and_regge_calculus.txt",
       "sha256": "8cb5adc5825113bbb2e82a13221fc206da10d9c9610458976b6b250f57e06d01",
       "size_bytes": 26367
+    },
+    {
+      "mtime_utc": "2026-02-07T21:49:42.343681+00:00",
+      "path": "papers/arxiv_gr-qc9702026_pfenning_ford_1997_quantum_inequality_restrictions.pdf",
+      "sha256": "c77ede864c527c7773507e73dabc0054b8c7220ba3f1fb96caba50d90ceb1207",
+      "size_bytes": 142740
+    },
+    {
+      "mtime_utc": "2026-02-07T21:49:58.077411+00:00",
+      "path": "papers/arxiv_gr-qc9702026_pfenning_ford_1997_quantum_inequality_restrictions.txt",
+      "sha256": "332764c37cc5ed7268fe9b9299aa6435fa9f38d39c987bfdbb0e8f03bfb7fe44",
+      "size_bytes": 24067
     },
     {
       "mtime_utc": "2024-11-30T01:49:32+00:00",
