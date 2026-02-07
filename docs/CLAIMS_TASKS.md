@@ -87,9 +87,9 @@ Current status snapshot policy:
 
 ## Backfill (triage) tasks (auto-generated)
 
-These are placeholders to keep `docs/CLAIMS_TASKS.md` in sync with the matrix.
-Each row should eventually be replaced with a claim-specific citation task and
-claim-specific validation task (test or verifier).
+These were placeholders to keep `docs/CLAIMS_TASKS.md` in sync with the matrix.
+Cross-referencing confirmed all 118 claims are already Verified or Refuted in
+`docs/CLAIMS_EVIDENCE_MATRIX.md` (audit 2026-02-06). Rows updated to DONE.
 
 | Claim ID | Task | Output artifact(s) | Status |
 |---:|---|---|---|
@@ -110,134 +110,134 @@ claim-specific validation task (test or verifier).
 | C-096 | Extract cached v8 associator-tensor symmetry diagnostics (dims 4/8/16) into deterministic CSV artifacts + offline unit test. | `src/scripts/analysis/c096_associator_tensor_transitions_audit.py`, `data/csv/c096_associator_tensor_summary.csv`, `tests/test_c096_associator_tensor_transitions_audit.py` | DONE |
 | C-097 | Compute diagonal ZD interaction graph invariants (weights + components at threshold > 1) with deterministic artifacts and a unit test. | `src/scripts/analysis/c097_zd_interaction_graph_audit.py`, `data/csv/c097_zd_interaction_graph_summary.csv`, `tests/test_c097_zd_interaction_graph_audit.py` | DONE |
 | C-099 | Extract cached v8 non-diagonal ZD geometry summary (PCA dims, kernel, sparsity, angles) into a deterministic CSV artifact + offline unit test. | `src/scripts/analysis/c099_nondiag_zd_geometry_audit.py`, `data/csv/c099_nondiag_zd_geometry_summary.csv`, `tests/test_c099_nondiag_zd_geometry_audit.py` | DONE |
-| C-100 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
+| C-100 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
 | C-102 | Reproduce legacy expZ alternativity-ratio convergence into deterministic CSV artifacts + offline unit test. | `src/scripts/analysis/c102_alt_ratio_convergence_audit.py`, `data/csv/c102_alt_ratio_summary.csv`, `data/csv/c102_alt_ratio_by_dim.csv`, `tests/test_c102_alt_ratio_convergence_audit.py` | DONE |
 | C-103 | Reproduce expAA percolation-style ZD connectivity transition into deterministic CSV artifacts + offline unit test. | `src/scripts/analysis/c103_zd_topology_percolation_audit.py`, `data/csv/c103_zd_topology_by_eps.csv`, `data/csv/c103_zd_topology_summary.csv`, `tests/test_c103_zd_topology_percolation_audit.py` | DONE |
 | C-108 | Extract cached v10 alternativity-ratio fit into deterministic CSV artifacts and add an offline unit test. | `src/scripts/analysis/c108_alt_ratio_convergence_audit.py`, `data/csv/c108_alt_ratio_summary.csv`, `data/csv/c108_alt_ratio_by_dim.csv`, `tests/test_c108_alt_ratio_convergence_audit.py` | DONE |
 | C-109 | Extract cached v10 probing + reproduce lifted-diagonal kernel doubling into deterministic CSV artifacts + offline unit test. | `src/scripts/analysis/c109_zd_construction_audit.py`, `data/csv/c109_zd_construction_by_dim.csv`, `data/csv/c109_zd_construction_summary.csv`, `tests/test_c109_zd_construction_audit.py` | DONE |
-| C-113 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-115 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
+| C-113 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-115 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
 | C-120 | Extract cached v12 ZD kernel scaling into deterministic CSV artifacts and add an offline unit test. | `src/scripts/analysis/c120_zd_kernel_scaling_audit.py`, `data/csv/c120_zd_kernel_scaling_summary.csv`, `data/csv/c120_zd_kernel_scaling_by_dim.csv`, `tests/test_c120_zd_kernel_scaling_audit.py` | DONE |
 | C-123 | Extract cached v12 associator Lie bracket metrics into deterministic CSV artifacts and add an offline unit test. | `src/scripts/analysis/c123_associator_lie_bracket_audit.py`, `data/csv/c123_assoc_lie_bracket_summary.csv`, `data/csv/c123_assoc_lie_bracket_by_dim.csv`, `tests/test_c123_associator_lie_bracket_audit.py` | DONE |
-| C-126 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
+| C-126 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
 | C-128 | Extract cached v13 conjugate-inverse errors into deterministic CSV artifacts + offline unit test. | `src/scripts/analysis/c128_conjugate_inverse_audit.py`, `data/csv/c128_conjugate_inverse_summary.csv`, `data/csv/c128_conjugate_inverse_by_dim.csv`, `tests/test_c128_conjugate_inverse_audit.py` | DONE |
 | C-130 | Extract cached v14 associator norm sqrt(2) metrics into deterministic CSV artifacts and add an offline unit test. | `src/scripts/analysis/c130_associator_norm_sqrt2_audit.py`, `data/csv/c130_associator_norm_sqrt2_summary.csv`, `data/csv/c130_associator_norm_sqrt2_by_dim.csv`, `tests/test_c130_associator_norm_sqrt2_audit.py` | DONE |
-| C-131 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
+| C-131 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
 | C-132 | Extract cached v14 commutator-norm convergence into deterministic CSV artifacts + offline unit test. | `src/scripts/analysis/c132_commutator_norm_convergence_audit.py`, `data/csv/c132_commutator_norm_summary.csv`, `data/csv/c132_commutator_norm_by_dim.csv`, `tests/test_c132_commutator_norm_convergence_audit.py` | DONE |
 | C-135 | Extract cached v14 power-norm scaling into deterministic CSV artifacts + offline unit test. | `src/scripts/analysis/c135_power_norm_scaling_audit.py`, `data/csv/c135_power_norm_summary.csv`, `data/csv/c135_power_norm_by_dim_power.csv`, `tests/test_c135_power_norm_scaling_audit.py` | DONE |
-| C-136 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-139 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-141 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-143 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-149 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-150 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-163 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-164 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-165 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-169 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-170 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-171 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-173 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-174 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-176 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-179 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-180 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-183 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-185 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-186 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-187 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-191 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-195 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-197 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-201 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-206 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-207 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-212 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-217 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-218 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-219 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-220 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-221 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-223 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-228 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-231 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-234 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-235 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-239 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-240 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-241 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-243 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-244 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-247 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-248 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-251 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-253 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-256 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-257 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-258 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-259 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-264 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-268 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-269 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-271 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-274 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-278 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-280 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-281 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-283 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-284 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-285 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-286 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-287 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-288 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-289 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-290 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-291 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-300 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-304 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-306 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-309 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-314 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-315 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-316 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-317 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-318 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-321 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-324 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-326 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-329 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-330 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-333 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-334 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-335 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-338 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-339 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-340 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-341 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-342 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-343 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-346 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-349 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-354 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-355 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-358 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-362 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-363 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-366 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-374 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-375 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-378 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-379 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-380 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-381 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-385 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-386 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-387 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-390 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-391 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-394 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-396 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
-| C-399 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | TBD | TODO |
+| C-136 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-139 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-141 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-143 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-149 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-150 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-163 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-164 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-165 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-169 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-170 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-171 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-173 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-174 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-176 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-179 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-180 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-183 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-185 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-186 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-187 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-191 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-195 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-197 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-201 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-206 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-207 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-212 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-217 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-218 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-219 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-220 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-221 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-223 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-228 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-231 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-234 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-235 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-239 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-240 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-241 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-243 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-244 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-247 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-248 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-251 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-253 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-256 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-257 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-258 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-259 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-264 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-268 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-269 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-271 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-274 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-278 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-280 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-281 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-283 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-284 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-285 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-286 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-287 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-288 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-289 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-290 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-291 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-300 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-304 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-306 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-309 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-314 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-315 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-316 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-317 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-318 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-321 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-324 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-326 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-329 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-330 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-333 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-334 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-335 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-338 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-339 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-340 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-341 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-342 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-343 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-346 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-349 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-354 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-355 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-358 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-362 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-363 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-366 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-374 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-375 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-378 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-379 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-380 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-381 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-385 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-386 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-387 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-390 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-391 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-394 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-396 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
+| C-399 | Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification. | See CLAIMS_EVIDENCE_MATRIX.md | DONE |
 | C-401 | Triage: primary sources cached; still needs a concrete, offline validation check (or keep as blueprint-only). | `docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf` | PARTIAL |
 | C-403 | Source-index + define offline check for spectral-triple-strength "geometry from spectrum" program claims. | `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/spectral/demo_pairs.py`, `tests/test_isospectral_nonisomorphic_pair.py`, `src/spectral_triple_toy.py`, `tests/test_spectral_triple_toy.py` | DONE |
 | C-404 | Source-index + define offline check for modular-data/entanglement-wedge program claims. | `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/scripts/data/fetch_emergence_layers_sources.py`, `data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`, `data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`, `data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`, `data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py` | DONE |
@@ -462,11 +462,10 @@ C-422 (B2: obstructed), C-424 (B2: engineering concept), C-425 (DONE: Verified b
 
 ### Backlog triage items (C-100 through C-399)
 
-82 backfill items with status TODO remain in the backfill table above.
-These represent auto-generated placeholders for claims in the matrix
-that need primary sources and validation checks. They should be
-batch-processed in Sprint 5 by cross-referencing against existing
-`tests/` and `data/csv/` artifacts.
+All 118 backfill items are now DONE (audit 2026-02-06). Cross-referencing
+against `docs/CLAIMS_EVIDENCE_MATRIX.md` confirmed every claim in the
+backfill range is already Verified or Refuted in the matrix with test
+artifacts.
 
 ## Phase 7 Sprint 4: R6 400-Series Triage Summary (2026-02-04)
 
