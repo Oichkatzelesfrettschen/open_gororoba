@@ -879,4 +879,58 @@ mod tests {
         assert!((cols[4] - 0.6).abs() < 1e-10); // y[1] = 6/10
         assert!((cols[5] - 0.4).abs() < 1e-10); // y[2] = 4/10
     }
+
+    /// Baire distances are ultrametric BY CONSTRUCTION (d(x,z) <= max(d(x,y),d(y,z))
+    /// because the distance is base^(-first_differing_position) and prefix matching
+    /// is a tree metric. Testing ultrametric fraction on Baire distances is therefore
+    /// tautological -- it must always return 1.0.
+    ///
+    /// The Euclidean test on the SAME data may or may not show ultrametricity,
+    /// depending on whether the data has genuine hierarchical structure.
+    /// This test documents the distinction as expected behavior (I-015).
+    #[test]
+    fn test_baire_tautological_vs_euclidean() {
+        let specs = vec![
+            AttributeSpec { name: "a".into(), min: 0.0, max: 100.0, log_scale: false },
+            AttributeSpec { name: "b".into(), min: 0.0, max: 100.0, log_scale: false },
+            AttributeSpec { name: "c".into(), min: 0.0, max: 100.0, log_scale: false },
+        ];
+        let encoder = BaireEncoder::new(specs, 10, 4);
+
+        // Random-ish data with no hierarchical structure
+        let data: Vec<Vec<f64>> = vec![
+            vec![12.0, 55.0, 83.0],
+            vec![47.0, 19.0, 62.0],
+            vec![73.0, 41.0, 28.0],
+            vec![5.0, 88.0, 44.0],
+            vec![91.0, 33.0, 71.0],
+            vec![38.0, 67.0, 15.0],
+            vec![60.0, 10.0, 99.0],
+            vec![25.0, 76.0, 51.0],
+        ];
+
+        // Baire distances -> ultrametric fraction must be exactly 1.0
+        let baire_dists = baire_distance_matrix(&encoder, &data);
+        let n = data.len();
+        let baire_frac = crate::ultrametric::ultrametric_fraction_from_matrix(
+            &baire_dists, n, 500, 42,
+        );
+        assert!(
+            (baire_frac - 1.0).abs() < 1e-12,
+            "Baire distances are ultrametric by construction, fraction must be 1.0, got {}",
+            baire_frac,
+        );
+
+        // Euclidean distances on same data -> fraction will be < 1.0 for non-hierarchical data
+        let euclid_dists = euclidean_distance_matrix(&encoder, &data);
+        let euclid_frac = crate::ultrametric::ultrametric_fraction_from_matrix(
+            &euclid_dists, n, 500, 42,
+        );
+        // Non-hierarchical random data should have Euclidean fraction well below 1.0
+        assert!(
+            euclid_frac < 0.95,
+            "Random data should NOT be ultrametric under Euclidean metric, got {}",
+            euclid_frac,
+        );
+    }
 }

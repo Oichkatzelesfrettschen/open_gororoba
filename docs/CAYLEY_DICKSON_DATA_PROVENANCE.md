@@ -116,6 +116,62 @@ Minimal proof steps. Not validated.
 - Notable: Addition_and_Subtraction_Patterns and Multiplication_Breakdown
   had identical hashes (AI data confusion)
 
+## Lattice Codebook Filtration (Sprint 9, 2026-02-08)
+
+The four lattice CSVs form a strict filtration hierarchy:
+
+```
+Lambda_2048 (2048 pts)
+  |-- lex prefix [0..1024) -->  Lambda_1024 (1024 pts)
+       |-- lex prefix [0..512) -->  Lambda_512 (512 pts)
+            |-- lex prefix [0..256) -->  Lambda_256 (256 pts)
+                 |-- pinned corner [0..32) -->  Lambda_32 (32 pts)
+```
+
+Each transition is a LEXICOGRAPHIC PREFIX CUT: the child codebook consists
+of exactly the first |child| points when the parent is sorted lexicographically.
+
+### Base Universe S_base
+
+All vectors in {-1,0,1}^8 satisfying:
+- coord[0] in {-1, 0} (never +1)
+- sum of coordinates is even
+- number of nonzero coordinates is even
+
+|S_base| = 2187 = 3^7. Of these, 2048 are in Lambda_2048 (139 excluded).
+
+### Prefix-Cut Rules (per transition)
+
+| Transition       | Parent | Child | Cut Type           |
+|------------------|--------|-------|--------------------|
+| 2048 -> 1024     | 2048   | 1024  | First 1024 in lex  |
+| 1024 -> 512      | 1024   | 512   | First 512 in lex   |
+| 512 -> 256       | 512    | 256   | First 256 in lex   |
+| 256 -> 32        | 256    | 32    | coords[0..4] = -1  |
+
+### Codebook Parity (all dims)
+
+Every lattice point satisfies: coords in {-1,0,1}, even sum, even nonzero
+count, coord[0] != +1. See claims C-458..C-461.
+
+### Two Adjacency Predicates (P_ZD vs P_match)
+
+The external CSV data and our computations use TWO DISTINCT adjacency
+predicates that must not be conflated:
+
+**P_ZD (Zero-Divisor Adjacency):** Cross-assessor pairs (a,b) and (c,d)
+are ZD-adjacent if e_a*e_c = 0 (or any diagonal combination). Produces
+parity-separated bipartite cliques (K_m union K_m). See C-463 (Thesis F).
+
+**P_match (Pathion/Matching Adjacency):** Cross-assessor pairs connected
+by matching-type edges where the pair index XOR yields a fixed constant.
+Produces perfect matchings (r*K_2 components). See C-462 (Thesis E).
+
+These are NOT the same graph -- they are different projections of the
+Cayley-Dickson algebraic structure. The spectral fingerprints (C-464)
+distinguish them: K_m has spectrum {(m-1), (-1)^{m-1}} while r*K_2 has
+spectrum {+1, -1} with multiplicity r each.
+
 ## Data Quality Assessment
 
 - **PDFs:** Authentic de Marrais manuscripts. Strut table data verified.

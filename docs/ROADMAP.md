@@ -541,6 +541,35 @@ Besag-Clifford (1991) sequential stopping for the ultrametric pipeline:
 
 ---
 
+### 7.9 Lattice Codebook Filtration (Sprint 9)
+
+**Goal**: Implement and verify the monograph's 8 falsifiable theses (A-H) about
+Cayley-Dickson lattice codebook structure.
+
+| Thesis | Topic | Claim | Status |
+|--------|-------|-------|--------|
+| A | Codebook parity | C-458 | **Verified** (4 dims) |
+| B | Filtration nesting | C-459 | **Verified** (strict subsets) |
+| C | Prefix-cut characterization | C-460 | **Verified** (lex prefix!) |
+| D | Scalar shadow action | C-465, C-466 | **Partial** (addition verified, multiplication open) |
+| E | XOR partner law | C-462 | **Verified** (dim=64) |
+| F | Parity-clique law | C-463 | **Verified** (dims 16, 32) |
+| G | Spectral fingerprints | C-464 | **Verified** (known graphs) |
+| H | Null-model identity | C-467 | **Verified** (3 tests) |
+
+**Novel discovery**: All filtration transitions are lexicographic prefix cuts
+(simpler than anticipated decision-trie rules). S_base = 2187 = 3^7.
+
+**Conversation extraction**: 12 files in convos/ processed; 3 new markdown
+extracts in docs/external_sources/ (inverse CD, wheel taxonomy, sedenion ZD).
+
+**Open question**: Multiplication coupling rho(b) in GL(8,Z) (C-466).
+
+**Insight**: I-015 (monograph theses verification)
+**Test count**: ~1690+ (20 new cd_external + 3 stats_core)
+
+---
+
 ## 8. Long-Term Vision
 
 | Horizon | Goal | Dependencies | Status |

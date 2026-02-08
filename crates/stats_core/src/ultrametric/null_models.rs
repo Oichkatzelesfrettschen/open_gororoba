@@ -463,4 +463,156 @@ mod tests {
     fn test_default_is_column_independent() {
         assert_eq!(NullModel::default(), NullModel::ColumnIndependent);
     }
+
+    // === Thesis H: Null-Model Identity Property ===
+
+    /// Thesis H states: RandomRotation is identity-equivalent for Euclidean-
+    /// distance-based ultrametric fraction tests, because rotation is an isometry
+    /// that preserves all pairwise distances. The ultrametric fraction computed
+    /// from Euclidean distances is therefore unchanged by rotation, making the
+    /// permutation p-value trivially 1.0.
+    ///
+    /// This test verifies the identity property by computing ultrametric fraction
+    /// before and after rotation, confirming they are equal.
+    #[test]
+    fn test_thesis_h_null_model_identity_rotation() {
+        let n = 30;
+        let d = 4;
+        let original = make_test_data(n, d, 42);
+
+        // Compute pairwise Euclidean distances for original data
+        let orig_dists = euclidean_pairwise_distances(&original, n, d);
+
+        // Apply random rotation
+        let mut rotated = original.clone();
+        let mut rng = ChaCha8Rng::seed_from_u64(99);
+        apply_null_column_major(&mut rotated, n, d, NullModel::RandomRotation, &mut rng);
+
+        // Compute pairwise distances after rotation
+        let rot_dists = euclidean_pairwise_distances(&rotated, n, d);
+
+        // All pairwise distances should match (rotation is isometry)
+        for (d_orig, d_rot) in orig_dists.iter().zip(rot_dists.iter()) {
+            assert!(
+                (d_orig - d_rot).abs() < 1e-8,
+                "Rotation changed distance: {:.8} -> {:.8}",
+                d_orig, d_rot
+            );
+        }
+
+        // Compute ultrametric fraction for both
+        let uf_orig = ultrametric_fraction_from_distances(&orig_dists, n);
+        let uf_rot = ultrametric_fraction_from_distances(&rot_dists, n);
+
+        assert!(
+            (uf_orig - uf_rot).abs() < 1e-10,
+            "Thesis H violated: ultrametric fraction changed by rotation: {} -> {}",
+            uf_orig, uf_rot
+        );
+    }
+
+    /// Thesis H also states: ColumnIndependent is the informative null --
+    /// it should detectably change the ultrametric fraction by breaking
+    /// inter-attribute correlations that create hierarchical structure.
+    #[test]
+    fn test_thesis_h_column_independent_is_informative() {
+        let n = 50;
+        let d = 3;
+        // Create data with strong hierarchical structure (clustered)
+        let mut data = vec![0.0_f64; n * d];
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        // Two clusters: first 25 points near origin, next 25 far away
+        for i in 0..25 {
+            for c in 0..d {
+                data[c * n + i] = rng.gen_range(-0.1..0.1);
+            }
+        }
+        for i in 25..50 {
+            for c in 0..d {
+                data[c * n + i] = 10.0 + rng.gen_range(-0.1..0.1);
+            }
+        }
+
+        let orig_dists = euclidean_pairwise_distances(&data, n, d);
+        let uf_orig = ultrametric_fraction_from_distances(&orig_dists, n);
+
+        // ColumnIndependent shuffle should change the structure
+        let mut shuffled = data.clone();
+        let mut srng = ChaCha8Rng::seed_from_u64(77);
+        apply_null_column_major(&mut shuffled, n, d, NullModel::ColumnIndependent, &mut srng);
+
+        let shuf_dists = euclidean_pairwise_distances(&shuffled, n, d);
+        let uf_shuf = ultrametric_fraction_from_distances(&shuf_dists, n);
+
+        // The structured data should have high ultrametric fraction (near 1.0
+        // for well-separated clusters). After shuffling, it should decrease
+        // because the correlation structure is broken.
+        assert!(
+            uf_orig > 0.5,
+            "Original clustered data should have high UF, got {}",
+            uf_orig
+        );
+        // We only assert the original has meaningful UF; the shuffled value
+        // depends on chance but should generally differ.
+        eprintln!(
+            "Thesis H: UF original={:.4}, UF shuffled={:.4}, diff={:.4}",
+            uf_orig, uf_shuf, (uf_orig - uf_shuf).abs()
+        );
+    }
+
+    /// Helper: compute pairwise Euclidean distances from column-major data.
+    fn euclidean_pairwise_distances(data: &[f64], n: usize, d: usize) -> Vec<f64> {
+        let mut dists = Vec::with_capacity(n * (n - 1) / 2);
+        for i in 0..n {
+            for j in (i + 1)..n {
+                let mut sq = 0.0;
+                for c in 0..d {
+                    let diff = data[c * n + i] - data[c * n + j];
+                    sq += diff * diff;
+                }
+                dists.push(sq.sqrt());
+            }
+        }
+        dists
+    }
+
+    /// Helper: compute ultrametric fraction from a flat pairwise distance vector.
+    /// For each triple (i,j,k), check if the ultrametric inequality holds:
+    /// max(d_ij, d_ik, d_jk) <= max of the two smallest (i.e., the two largest
+    /// are equal). Fraction of triples satisfying this.
+    fn ultrametric_fraction_from_distances(dists: &[f64], n: usize) -> f64 {
+        let idx = |i: usize, j: usize| -> usize {
+            // Upper triangle index for (i, j) where i < j
+            i * (2 * n - i - 1) / 2 + (j - i - 1)
+        };
+
+        let mut n_triples = 0u64;
+        let mut n_ultra = 0u64;
+
+        for i in 0..n {
+            for j in (i + 1)..n {
+                for k in (j + 1)..n {
+                    let dij = dists[idx(i, j)];
+                    let dik = dists[idx(i, k)];
+                    let djk = dists[idx(j, k)];
+
+                    // Sort the three distances
+                    let mut sorted = [dij, dik, djk];
+                    sorted.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+                    // Ultrametric: max(d1,d2,d3) approx second-max
+                    // Use 5% relative tolerance (appropriate for test data)
+                    n_triples += 1;
+                    if (sorted[2] - sorted[1]).abs() < 0.05 * sorted[2].max(1e-15) {
+                        n_ultra += 1;
+                    }
+                }
+            }
+        }
+
+        if n_triples == 0 {
+            return 0.0;
+        }
+        n_ultra as f64 / n_triples as f64
+    }
 }

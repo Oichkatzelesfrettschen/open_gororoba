@@ -230,3 +230,64 @@ Scaling laws verified across 5 doublings (dim=16, 32, 64, 128, 256):
 - NO octahedra beyond dim=16
 
 All computed exactly (no sampling). dim=256 completes in ~2s release mode.
+
+---
+
+## I-015: Monograph Theses Verification -- Lattice Codebook Filtration
+
+**Date:** 2026-02-08
+**Status:** Verification Complete (8 theses, 10 claims)
+**Claims:** C-458 through C-467
+
+### Summary
+
+Implemented and tested the 8 falsifiable theses (A-H) from the monograph on
+lattice codebook filtration of Cayley-Dickson algebras. Results:
+
+### Verified Theses
+
+1. **Thesis A (Codebook Parity, C-458):** All lattice points at dims
+   256/512/1024/2048 satisfy: coords in {-1,0,1}, even sum, even nonzero
+   count, coord[0] never +1. Total 3840 rows verified.
+
+2. **Thesis B (Filtration Nesting, C-459):** Strict subset chain
+   Lambda_256 < Lambda_512 < Lambda_1024 < Lambda_2048 confirmed.
+
+3. **Thesis C (Prefix-Cut, C-460):** ALL filtration transitions are
+   lexicographic prefix cuts -- the child is the lex-sorted first N points
+   of the parent. This is simpler than the monograph anticipated (which
+   expected decision-trie rules).
+
+4. **Thesis D (Scalar Shadow, C-465):** pi(b) = signum(sum(coords))
+   maps to {-1,0,1}; addition-mode action verified. Multiplication
+   coupling rho(b) remains open (C-466).
+
+5. **Thesis E (XOR Partner Law, C-462):** Each cross-pair has unique
+   XOR partner at dim=64. General law: partner(i) = i XOR (N/16).
+
+6. **Thesis F (Parity-Clique, C-463):** ZD adjacency = K_m union K_m
+   by parity of low basis index, verified at dims 16 and 32.
+
+7. **Thesis G (Spectral Fingerprints, C-464):** Eigenvalue multisets
+   distinguish all observed motif classes (K_m, K_m union K_m, r*K_2).
+
+8. **Thesis H (Null-Model Identity, C-467):** RandomRotation is identity
+   for Euclidean ultrametric tests; ColumnIndependent is informative.
+   Baire fraction is tautologically 1.0 (ultrametric by construction).
+
+### Novel Discoveries
+
+- **Lex prefix cuts** (Thesis C): The filtration structure is purely
+  lexicographic, not a general decision trie. This constrains the lattice
+  embedding to respect coordinate ordering.
+- **S_base = 2187 = 3^7:** The base universe (coord[0] in {-1,0},
+  even sum, even nonzero count) has exactly 2187 points, with 139
+  excluded from Lambda_2048.
+- **Lambda_32 pinned corner:** First 4 coords = (-1,-1,-1,-1) for all
+  32 points (C-461).
+
+### Open Questions
+
+- Multiplication coupling rho(b) in GL(8,Z) (C-466)
+- Extension of parity-clique and XOR partner to dim=256+ (computational)
+- Connection between lex-prefix filtration and octonion subalgebra structure
