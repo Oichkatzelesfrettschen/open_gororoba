@@ -1,5 +1,51 @@
 # Insights registry -- discoveries and interpretations from the computational census.
 # Each insight cross-references the claims it produced.
+# Sorted by ID (I-001..I-016).
+
+[[insight]]
+id = "I-001"
+title = "Macquart Relation Fills the Comoving Distance Gap"
+date = "2026-02-06"
+status = "verified"
+summary = "The Macquart relation connects FRB dispersion measures to redshift via integrated baryon density: DM_cosmic(z) = 935 * integral (1+z')/E(z') dz'. Bisection inversion (DM->z) converges in ~27 iterations. Foundation for comoving distance in ultrametric analysis."
+claims = ["C-071"]
+sprint = 6
+
+[[insight]]
+id = "I-002"
+title = "Ultrametric Structure Lives in Representations, Not Scalars"
+date = "2026-02-06"
+status = "verified"
+summary = "C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using raw DM values. Ultrametricity is a property of hierarchical organization, not scalar distributions. This motivated five new analysis directions testing multi-attribute encodings, temporal cascades, and transformed coordinate spaces."
+claims = ["C-071"]
+sprint = 6
+
+[[insight]]
+id = "I-003"
+title = "Existing Rust Crate Ecosystem for Cosmological Analysis"
+date = "2026-02-06"
+status = "verified"
+summary = "Identified key crates preventing reimplementation: kodama 0.3.0 (dendrograms), kiddo 5.2.4 (k-d trees, AVX2), fitsrs 0.4.1 (FITS), rustfft 6.4.1 + realfft 3.5.0 (FFT), votable 0.7.0, satkit 0.9.3. Notable gaps requiring custom implementation: cophenetic correlation, Baire metric, local ultrametricity (Bradley 2025), KDE."
+claims = []
+sprint = 6
+
+[[insight]]
+id = "I-004"
+title = "Kodama Dendrogram and Real Observational Cosmology Infrastructure"
+date = "2026-02-06"
+status = "verified"
+summary = "Kodama returns Dendrogram with Step{cluster1, cluster2, dissimilarity, size}; cophenetic distance c(i,j) = dissimilarity at first merge, enabling cophenetic correlation. Also: first real-data joint fit of Lambda-CDM vs bounce cosmology using 1578 Pantheon+ SNe + 7 DESI DR1 BAO bins. Delta BIC = +7.37 favoring Lambda-CDM. Critical data quality fix: BGS/QSO bins are isotropic-only (not anisotropic)."
+claims = ["C-200", "C-201", "C-202", "C-203", "C-204", "C-205", "C-206", "C-207", "C-208", "C-209", "C-210"]
+sprint = 6
+
+[[insight]]
+id = "I-005"
+title = "Ultrametric Structure is Radio-Transient-Specific (Preliminary)"
+date = "2026-02-06"
+status = "superseded"
+summary = "Initial 7-catalog survey with 5K subsampling found only FRB/pulsar catalogs showing significant ultrametric excess. SUPERSEDED by I-011 (GPU 10M-triple sweep): the 5K subsampling destroyed Hipparcos galactic signal, making the conclusion too narrow. The ISM-mediation hypothesis for radio transients remains valid."
+claims = ["C-437", "C-442"]
+sprint = 6
 
 [[insight]]
 id = "I-006"
@@ -8,6 +54,42 @@ date = "2026-02-06"
 status = "verified"
 summary = "Exact scaling laws for Cayley-Dickson zero-divisor box-kite structure across 5 doublings: n_components = dim/2 - 1, nodes_per_component = dim/2 - 2, n_motif_classes = dim/16, n_K2_components = 3 + log2(dim), K2 part count = dim/4 - 1. NO octahedra beyond dim=16."
 claims = ["C-126", "C-127", "C-128", "C-129", "C-130"]
+sprint = 6
+
+[[insight]]
+id = "I-007"
+title = "Kerr Geodesic Integrator Verification Summary"
+date = "2026-02-06"
+status = "verified"
+summary = "u=1/r regularized Kerr geodesic integrator (Dopri5, Mino time) passes: potential non-negativity, circular photon orbit at 3M, near-horizon infall, a=0.998 stability, r=500 large-distance, shadow area pi*27, asymmetry at a=0.9, coordinate/Mino time monotonicity. Hamiltonian constraint inaccessible from dense output."
+claims = ["C-028"]
+sprint = 6
+
+[[insight]]
+id = "I-008"
+title = "Cross-Domain Ultrametric Analysis (5K Subsampling)"
+date = "2026-02-06"
+status = "superseded"
+summary = "9-catalog ultrametric fraction test with 5K subsampling: only CHIME/FRB and ATNF pulsars pass. Hipparcos at null baseline (p=0.438). SUPERSEDED by I-011: GPU sweep with 10M triples shows Hipparcos 48/114 significant at BH-FDR<0.05. The 5K subsampling destroyed the galactic spatial hierarchy signal."
+claims = ["C-437"]
+sprint = 7
+
+[[insight]]
+id = "I-009"
+title = "Elliptic Integral Crate Eliminates Carlson Port"
+date = "2026-02-06"
+status = "verified"
+summary = "The ellip crate (1.0.4, BSD-3-Clause) provides all 5 Carlson symmetric forms (RF, RD, RJ, RC, RG) plus Legendre complete/incomplete integrals (K, E, Pi, D, F). Eliminates need to hand-port Carlson from C++ Blackhole codebase. Tested against Boost Math and Wolfram reference values."
+claims = []
+sprint = 6
+
+[[insight]]
+id = "I-010"
+title = "nalgebra 0.33/0.34 Version Split Blocks Autodiff"
+date = "2026-02-06"
+status = "open"
+summary = "num-dual 0.13.2 (autodiff via dual numbers) requires nalgebra 0.34, while workspace is pinned to 0.33. Decision: defer num-dual, use closed-form Christoffels for known metrics (Schwarzschild, Kerr, Kerr-Newman). num-dual needed only for generic connection computation on arbitrary metrics."
+claims = []
 sprint = 6
 
 [[insight]]

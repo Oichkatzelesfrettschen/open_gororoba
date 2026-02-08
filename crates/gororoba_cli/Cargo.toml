@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2021"
 description = "CLI tools for gororoba physics simulation library"
 license = "MIT"
+autobins = false
 
 [[bin]]
 name = "gororoba"
@@ -141,6 +142,18 @@ path = "src/bin/migrate_claims.rs"
 name = "registry-check"
 path = "src/bin/registry_check.rs"
 
+[[bin]]
+name = "migrate-insights"
+path = "src/bin/migrate_insights.rs"
+
+[[bin]]
+name = "generate-latex"
+path = "src/bin/generate_latex.rs"
+
+[[bin]]
+name = "export-hdf5"
+path = "src/bin/export_hdf5.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe" }
 algebra_core = { path = "../algebra_core" }
@@ -170,3 +183,7 @@ regex = { workspace = true }
 toml = { workspace = true }
 walkdir = { workspace = true }
 glob = { workspace = true }
+
+[features]
+default = []
+hdf5-export = ["data_core/hdf5-export"]

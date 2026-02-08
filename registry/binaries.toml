@@ -174,3 +174,23 @@ description = "Batch PDF extraction to structured TOML via docpipe"
 name = "migrate-claims"
 crate = "gororoba_cli"
 description = "Migrate claims from markdown evidence matrix to TOML registry"
+
+[[binary]]
+name = "registry-check"
+crate = "gororoba_cli"
+description = "Validate TOML registry for internal consistency"
+
+[[binary]]
+name = "migrate-insights"
+crate = "gororoba_cli"
+description = "Migrate insights from markdown INSIGHTS.md to TOML registry"
+
+[[binary]]
+name = "generate-latex"
+crate = "gororoba_cli"
+description = "Generate LaTeX appendices from TOML registry (claims table, insights)"
+
+[[binary]]
+name = "export-hdf5"
+crate = "gororoba_cli"
+description = "Export computed data to HDF5 format (feature-gated)"
