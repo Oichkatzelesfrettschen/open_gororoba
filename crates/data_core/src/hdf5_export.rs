@@ -3,17 +3,16 @@
 //! Provides functions to export lattice data, motif census results,
 //! GPU sweep results, and registry summaries to HDF5 format.
 //!
-//! Feature-gated behind `hdf5-export`. Requires libhdf5-dev at link time.
+//! Feature-gated behind `hdf5-export`. Requires system libhdf5 at link time.
 //!
 //! # System Requirements
 //!
-//! The `hdf5-sys` crate (0.8.1) supports HDF5 versions 1.8.4 through 1.14.x.
-//! It does NOT support HDF5 2.0.0+, which ships on Arch Linux / CachyOS as of
-//! February 2026.  The build script panics with `Invalid H5_VERSION: "2.0.0"`.
+//! Uses `hdf5-metno` 0.12 (maintained fork of `hdf5-rust`) which supports
+//! HDF5 1.8.4 through 2.0.x.  The original `hdf5` 0.8.1 panicked on HDF5 2.0
+//! with `Invalid H5_VERSION: "2.0.0"`; the metno fork fixes this.
 //!
-//! This is an upstream ecosystem gap.  Until `hdf5-sys` or `hdf5-metno-sys`
-//! adds HDF5 2.0 support, this feature is only usable on systems with HDF5 1.x
-//! (e.g., Ubuntu 22.04/24.04, Fedora 39, macOS via Homebrew).
+//! On Arch Linux / CachyOS: `pacman -S hdf5`
+//! On Ubuntu / Debian: `apt install libhdf5-dev`
 
 use std::path::Path;
 

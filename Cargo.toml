@@ -115,8 +115,10 @@ lopdf = "0.39"                   # Pure Rust PDF parser (fallback, object-level 
 pdf-extract = "0.10"             # Pure Rust PDF text extraction (fallback, wraps lopdf)
 toml = "0.8"                     # TOML serialization/deserialization
 
-# HDF5 data export (requires libhdf5-dev)
-hdf5 = "0.8.1"
+# HDF5 data export (requires system libhdf5)
+# Using hdf5-metno fork which supports HDF5 2.0 (Arch/CachyOS ships 2.0.0-3.1)
+# The upstream hdf5 0.8.1 panics on HDF5 2.0 with "Invalid H5_VERSION"
+hdf5 = { package = "hdf5-metno", version = "0.12" }
 
 # Documentation generation
 clap_mangen = "0.2"              # Manpage generation from clap App structs

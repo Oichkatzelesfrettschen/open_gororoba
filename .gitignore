@@ -83,6 +83,9 @@ bin/micromamba
 *.db
 *.sqlite3
 
+# Compiler crash dumps
+rustc-ice-*.txt
+
 # Secrets and credentials (never commit)
 *.env
 *.pem
