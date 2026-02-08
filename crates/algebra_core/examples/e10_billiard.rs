@@ -25,48 +25,60 @@ fn main() {
     println!("Loaded {} simple roots defining the Weyl chamber walls.", n_walls);
     println!("Signature: (9, 1) - 9 spacelike, 1 timelike direction.");
 
+    // Verify all simple roots have norm^2 = 2 (Cartan matrix diagonal)
+    for (i, root) in simple_roots.iter().enumerate() {
+        let norm_sq = e10.inner_product(root, root);
+        assert!(
+            (norm_sq - 2.0).abs() < 1e-10,
+            "Simple root {i} has |alpha|^2 = {norm_sq}, expected 2.0"
+        );
+    }
+    println!("All {} simple roots verified: |alpha_i|^2 = 2.0", n_walls);
+
+    // Verify E10 Cartan matrix structure: off-diagonal entries
+    for i in 0..n_walls {
+        for j in (i + 1)..n_walls {
+            let ip = e10.inner_product(&simple_roots[i], &simple_roots[j]);
+            if ip.abs() > 1e-10 {
+                println!("  <alpha_{}, alpha_{}> = {:.1}", i, j, ip);
+            }
+        }
+    }
+
     // Simulation parameters
     let n_steps = 100_000;
     let mut rng = thread_rng();
 
+    // Compute a position INSIDE the Weyl chamber using the Weyl vector.
+    // Solve G * x = [1,...,1] where G[i][j] = <alpha_i, alpha_j> (Gram matrix).
+    // Then pos = sum_i x_i * alpha_i guarantees <pos, alpha_j> = 1 for all j.
+    let mut current_pos = compute_chamber_interior(&e10, &simple_roots);
+    println!("Chamber interior found. Verifying all walls have positive inner product:");
+    for (i, root) in simple_roots.iter().enumerate() {
+        let ip = e10.inner_product(&current_pos, root);
+        println!("  <pos, alpha_{}> = {:.6}", i, ip);
+        assert!(ip > 0.0, "Position is NOT inside chamber for wall {i}!");
+    }
+
     // Construct a random timelike velocity vector (signature 9,1)
-    // Coords: 8 finite, 1 spacelike extension, 1 timelike extension
     let mut current_v = KacMoodyRoot::lorentzian(
         vec![0.0; 8],
         0,
         vec![0.0, 0.0],
     );
-    
-    // Add some random noise to velocity
-    let mut spacelike_norm_sq = 0.0;
-    for i in 0..8 {
-        current_v.finite_part[i] = rng.gen_range(-2.0..2.0);
-        spacelike_norm_sq += current_v.finite_part[i] * current_v.finite_part[i];
-    }
-    current_v.lorentz_coords[0] = rng.gen_range(-2.0..2.0); // Spacelike part
-    spacelike_norm_sq += current_v.lorentz_coords[0] * current_v.lorentz_coords[0];
-    
-    // Force timelike: timelike_coord^2 = spacelike_norm_sq + 1.0
-    current_v.lorentz_coords[1] = (spacelike_norm_sq + 1.0).sqrt();
-    
-    // Position beta. Inside chamber: beta . alpha_i > 0.
-    let mut current_pos = KacMoodyRoot::lorentzian(
-        vec![0.0; 8],
-        0,
-        vec![-10.0, -20.0], // Validated to be inside E10 chamber for walls 0, 9
-    );
-    
-    // For E8 walls (0..8), the roots have level=0, lorentz=[0,0].
-    // They only care about the finite_part.
-    // We should set finite_part such that dot(pos, alpha_i) > 0.
-    // Sum of simple roots is a safe bet for E8.
-    for root in &simple_roots[0..8] {
-        for i in 0..8 {
-            current_pos.finite_part[i] += root.finite_part[i] * 10.0;
-        }
-    }
 
-    
+    // Random spacelike components
+    let mut spacelike_norm_sq = 0.0;
+    for x in current_v.finite_part.iter_mut() {
+        *x = rng.gen_range(-2.0..2.0);
+        spacelike_norm_sq += *x * *x;
+    }
+    current_v.lorentz_coords[0] = rng.gen_range(-2.0..2.0); // Spacelike extension
+    spacelike_norm_sq += current_v.lorentz_coords[0] * current_v.lorentz_coords[0];
+
+    // Force timelike: t^2 = spacelike_norm_sq + 1.0, so norm^2 = -1
+    current_v.lorentz_coords[1] = (spacelike_norm_sq + 1.0).sqrt();
+
     let norm_sq = e10.inner_product(&current_v, &current_v);
 
 
@@ -107,15 +119,12 @@ fn main() {
             // Move to collision
             current_pos = advance(&current_pos, &current_v, min_t);
             
-            // Reflect velocity
-            // v' = v - 2 (v.alpha / alpha.alpha) alpha
-            // For simple roots, alpha.alpha = 2
-            // v' = v - (v.alpha) alpha
+            // Reflect velocity: v' = v - 2 (v.alpha / alpha.alpha) alpha
             let root = &simple_roots[wall_idx];
             let v_dot_alpha = e10.inner_product(&current_v, root);
-            
-            // Construct scaled root vector
-            let scaled_root = scale_root(root, v_dot_alpha);
+            let alpha_sq = e10.inner_product(root, root);
+            let coeff = 2.0 * v_dot_alpha / alpha_sq;
+            let scaled_root = scale_root(root, coeff);
             current_v = subtract_roots(&current_v, &scaled_root);
             
             // Record stats
@@ -139,45 +148,40 @@ fn main() {
 
     println!("\n=== Results ===");
     println!("Wall Hit Frequencies:");
-    for i in 0..n_walls {
-        println!("  Wall {}: {:6} hits ({:.2}%)", i, wall_hits[i], 100.0 * wall_hits[i] as f64 / n_steps as f64);
+    for (i, &hits) in wall_hits.iter().enumerate() {
+        println!("  Wall {}: {:6} hits ({:.2}%)", i, hits, 100.0 * hits as f64 / n_steps as f64);
     }
 
     println!("\nAnalysis of Transition Matrix (Octonion Correlations):");
     println!("Checking transitions between E8 simple roots (walls 1-8)...");
     
     // Check if transitions align with E8 structure (connections in Dynkin diagram)
-    // E8 diagram: 
-    // 1-3-4-5-6-7-8
-    //     |
-    //     2
-    // (Note: Indices might be 0-based in array, need to map to standard numbering)
-    // In e10.simple_roots():
-    // 0..7 are E8 roots (indices 1..8 in standard)
-    // 8 is Affine (node 0)
-    // 9 is Hyperbolic (node -1)
-    
+    // Our E8 Dynkin diagram (from actual root vector Gram matrix):
+    //   0 -- 1 -- 2 -- 3 -- 4 -- 5
+    //                        |
+    //                        6 -- 7
+    // Branching at node 4. Affine node 8 connects to node 0 (via highest root).
+    // Hyperbolic node 9 connects to node 8.
+
     let mut connected_hits = 0;
     let mut disconnected_hits = 0;
-    
-    // Adjacency in our 0-based array for E8 part (0..8 are E8 simple roots):
-    // Based on e8_cartan in kac_moody.rs:
-    let adjacency = [
-        vec![1],          // 0
-        vec![0, 2],       // 1
-        vec![1, 3, 7],    // 2
-        vec![2, 4],       // 3
-        vec![3, 5],       // 4
-        vec![4, 6],       // 5
-        vec![5],          // 6
-        vec![2],          // 7
+
+    // Adjacency from actual root vector inner products (verified numerically):
+    let adjacency: [Vec<usize>; 8] = [
+        vec![1],          // 0 -- 1
+        vec![0, 2],       // 1 -- 0, 2
+        vec![1, 3],       // 2 -- 1, 3
+        vec![2, 4],       // 3 -- 2, 4
+        vec![3, 5, 6],    // 4 -- 3, 5, 6 (branch node)
+        vec![4],          // 5 -- 4
+        vec![4, 7],       // 6 -- 4, 7
+        vec![6],          // 7 -- 6
     ];
 
-    for i in 0..8 {
-        for j in 0..8 {
+    for (i, adj_row) in adjacency.iter().enumerate() {
+        for (j, &count) in transition_matrix[i].iter().enumerate().take(8) {
             if i == j { continue; }
-            let count = transition_matrix[i][j];
-            if adjacency[i].contains(&j) {
+            if adj_row.contains(&j) {
                 connected_hits += count;
             } else {
                 disconnected_hits += count;
@@ -240,13 +244,94 @@ fn scale_root(root: &KacMoodyRoot, scale: f64) -> KacMoodyRoot {
 }
 
 fn subtract_roots(a: &KacMoodyRoot, b: &KacMoodyRoot) -> KacMoodyRoot {
-    let mut finite = Vec::new();
-    for (x, y) in a.finite_part.iter().zip(b.finite_part.iter()) {
-        finite.push(x - y);
-    }
-    let mut lorentz = Vec::new();
-    for (x, y) in a.lorentz_coords.iter().zip(b.lorentz_coords.iter()) {
-        lorentz.push(x - y);
-    }
+    let finite: Vec<f64> = a.finite_part.iter().zip(b.finite_part.iter())
+        .map(|(x, y)| x - y).collect();
+    let lorentz: Vec<f64> = a.lorentz_coords.iter().zip(b.lorentz_coords.iter())
+        .map(|(x, y)| x - y).collect();
     KacMoodyRoot::lorentzian(finite, a.level - b.level, lorentz)
+}
+
+fn add_roots(a: &KacMoodyRoot, b: &KacMoodyRoot) -> KacMoodyRoot {
+    let finite: Vec<f64> = a.finite_part.iter().zip(b.finite_part.iter())
+        .map(|(x, y)| x + y).collect();
+    let lorentz: Vec<f64> = a.lorentz_coords.iter().zip(b.lorentz_coords.iter())
+        .map(|(x, y)| x + y).collect();
+    KacMoodyRoot::lorentzian(finite, a.level + b.level, lorentz)
+}
+
+/// Compute a point strictly inside the E10 Weyl chamber.
+///
+/// Solves G * x = [1,...,1] where G is the Gram matrix of simple roots,
+/// then returns pos = sum_i x_i * alpha_i. This guarantees <pos, alpha_j> = 1
+/// for all j, placing pos exactly at the Weyl vector.
+fn compute_chamber_interior(
+    e10: &E10RootSystem,
+    roots: &[KacMoodyRoot],
+) -> KacMoodyRoot {
+    let n = roots.len();
+
+    // Build Gram matrix
+    let mut gram = vec![vec![0.0; n]; n];
+    for i in 0..n {
+        for j in 0..n {
+            gram[i][j] = e10.inner_product(&roots[i], &roots[j]);
+        }
+    }
+
+    // Augmented matrix [G | 1]
+    let mut aug = vec![vec![0.0; n + 1]; n];
+    for i in 0..n {
+        for j in 0..n {
+            aug[i][j] = gram[i][j];
+        }
+        aug[i][n] = 1.0; // RHS: we want <pos, alpha_i> = 1
+    }
+
+    // Gaussian elimination with partial pivoting
+    for col in 0..n {
+        // Find pivot (partial pivoting)
+        let mut max_row = col;
+        let mut max_val = aug[col][col].abs();
+        for (row, aug_row) in aug.iter().enumerate().skip(col + 1).take(n - col - 1) {
+            if aug_row[col].abs() > max_val {
+                max_val = aug_row[col].abs();
+                max_row = row;
+            }
+        }
+        aug.swap(col, max_row);
+
+        let pivot = aug[col][col];
+        assert!(pivot.abs() > 1e-12, "Gram matrix is singular at column {col}");
+
+        // Eliminate below
+        for row in (col + 1)..n {
+            let factor = aug[row][col] / pivot;
+            // Split borrow: copy the pivot row segment, then update
+            let pivot_row: Vec<f64> = aug[col][col..=n].to_vec();
+            for (j_off, &pval) in pivot_row.iter().enumerate() {
+                aug[row][col + j_off] -= factor * pval;
+            }
+        }
+    }
+
+    // Back-substitution
+    let mut x = vec![0.0; n];
+    for i in (0..n).rev() {
+        let mut sum = aug[i][n];
+        for j in (i + 1)..n {
+            sum -= aug[i][j] * x[j];
+        }
+        x[i] = sum / aug[i][i];
+    }
+
+    // Construct pos = sum_i x_i * alpha_i
+    let fp_len = roots[0].finite_part.len();
+    let lc_len = roots[0].lorentz_coords.len();
+    let mut pos = KacMoodyRoot::lorentzian(vec![0.0; fp_len], 0, vec![0.0; lc_len]);
+    for (i, &coeff) in x.iter().enumerate() {
+        let scaled = scale_root(&roots[i], coeff);
+        pos = add_roots(&pos, &scaled);
+    }
+
+    pos
 }
