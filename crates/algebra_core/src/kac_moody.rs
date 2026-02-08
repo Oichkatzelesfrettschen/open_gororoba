@@ -1008,8 +1008,10 @@ impl E10RootSystem {
         // In our e8_cartan, node 0 connects to node 1. So we want dot(theta, alpha_0) = 1.
         let mut theta_vec = [0.0; 8];
         // Sum simple roots weighted by Coxeter labels to obtain highest root.
-        // For E8: 2, 3, 4, 5, 6, 4, 2, 3
-        let labels = [2.0, 3.0, 4.0, 5.0, 6.0, 4.0, 2.0, 3.0];
+        // Our Dynkin diagram: 0--1--2--3--4(--5)(--6--7), branching at node 4.
+        // Coxeter labels for this ordering: [2, 3, 4, 5, 6, 3, 4, 2].
+        // Yields theta = [1, 0, 0, 0, 0, 0, 0, -1] with |theta|^2 = 2.
+        let labels = [2.0, 3.0, 4.0, 5.0, 6.0, 3.0, 4.0, 2.0];
         for (i, &label) in labels.iter().enumerate() {
             for (tv, &fp) in theta_vec.iter_mut().zip(e8_roots[i].finite_part.iter()) {
                 *tv += label * fp;
