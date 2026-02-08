@@ -7,6 +7,67 @@ ladder in CLAUDE.md.
 
 ---
 
+## I-014: Cayley-Dickson External Data Cross-Validation
+
+**Date:** 2026-02-07
+**Status:** Cross-Validation Complete
+**Claims:** C-450 through C-457
+
+### Summary
+
+Cross-validated 68 external files (5 de Marrais PDFs, 36 unique CSVs after
+deduplication) from an AI-generated Cayley-Dickson data set against our Rust
+integer-exact computations. Key results:
+
+### Verified
+
+1. **Strut table (C-454):** De Marrais's published strut table for all 7
+   sedenion box-kites matches our `canonical_strut_table()` output exactly.
+   All 42 assessor pairs, all 21 strut pairings, and the inner XOR property
+   confirmed.
+
+2. **8D lattice embedding (C-452, C-453):** Cayley-Dickson basis elements at
+   dims 256, 512, 1024, and 2048 all embed into the same 8-dimensional
+   integer lattice with coordinates in {-1, 0, 1}. The lattice dimension does
+   NOT grow with log2(dim) as originally hypothesized. This is consistent with
+   the octonion sub-algebra (8D) providing the fundamental lattice structure.
+
+3. **Nested-tuple parser (C-457):** A tree-based parser correctly handles the
+   Cayley-Dickson doubling-tree representation across 4476 rows spanning 5
+   dimensions.
+
+### Refuted
+
+1. **E8 lattice-ZD connection (C-455):** Lattice differences between
+   ZD-adjacent pairs at dim=16 have norm-squared values {4, 6, 8, 10, 12,
+   14, 18} but never 2. E8 roots (norm^2 = 2) are completely absent. The
+   minimum ZD separation in the 8D lattice is |d|^2 = 4.
+
+2. **256D associativity CSV (C-456):** The external CSV incorrectly claims all
+   125 tested triples are associative. Our Rust computation identifies 4/50
+   non-associative triples involving high-index basis elements (e_128 * e_64 *
+   e_32, etc.). This confirms the CSV is AI-generated with errors.
+
+### Structural Finding
+
+The 105 unique lattice-difference vectors between ZD-adjacent pairs distribute
+across 7 distinct norm-squared values. The peak at |d|^2 = 6 (84 occurrences)
+suggests that ZD adjacency preferentially connects basis elements that differ
+in 3 lattice coordinates by 1 each plus some additional structure. The absence
+of |d|^2 = 0 (no self-adjacency) and |d|^2 = 2 (no nearest-neighbor
+adjacency) creates a "forbidden zone" in lattice space around each basis
+element where ZD partners cannot exist.
+
+### Data Quality
+
+- PDFs: Authentic, verified (strut table matches)
+- Lattice CSVs: High quality, verified at all 4 dimensions
+- Adjacency CSVs: Multiple incompatible representations, inconclusive
+- Associativity CSV: Contains errors, AI-generated
+- Comparison/qualitative CSVs: Speculative, no numerical content
+
+---
+
 ## I-013: The Hierarchy Fingerprint Theorem
 
 **Date:** 2026-02-07
