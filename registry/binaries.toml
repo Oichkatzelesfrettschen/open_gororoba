@@ -1,0 +1,176 @@
+# CLI binaries registry -- all executables in gororoba_cli.
+
+[[binary]]
+name = "gororoba"
+crate = "gororoba_cli"
+description = "Main entry point (currently placeholder)"
+
+[[binary]]
+name = "kerr-shadow"
+crate = "gororoba_cli"
+description = "Compute Bardeen shadow boundary for Kerr black holes"
+experiment = "E-004"
+
+[[binary]]
+name = "zd-search"
+crate = "gororoba_cli"
+description = "Zero-divisor graph search and invariant computation"
+experiment = "E-005"
+
+[[binary]]
+name = "gravastar-sweep"
+crate = "gororoba_cli"
+description = "TOV parameter sweep for three-layer gravastar models"
+experiment = "E-006"
+
+[[binary]]
+name = "grin-trace"
+crate = "gororoba_cli"
+description = "GRIN lens ray-tracing through gradient-index optics"
+
+[[binary]]
+name = "mera-entropy"
+crate = "gororoba_cli"
+description = "MERA tensor network entanglement entropy computation"
+
+[[binary]]
+name = "frac-laplacian"
+crate = "gororoba_cli"
+description = "Fractional Laplacian eigenvalue computation"
+
+[[binary]]
+name = "lbm-poiseuille"
+crate = "gororoba_cli"
+description = "Lattice Boltzmann Method Poiseuille flow benchmark"
+
+[[binary]]
+name = "bounce-cosmology"
+crate = "gororoba_cli"
+description = "Bouncing cosmology model simulation"
+
+[[binary]]
+name = "neg-dim-eigen"
+crate = "gororoba_cli"
+description = "Negative-dimension eigenvalue convergence sweep"
+experiment = "E-009"
+
+[[binary]]
+name = "frac-schrodinger"
+crate = "gororoba_cli"
+description = "Fractional Schrodinger equation solver"
+
+[[binary]]
+name = "ema-calc"
+crate = "gororoba_cli"
+description = "Exponential moving average calculator"
+
+[[binary]]
+name = "oct-field"
+crate = "gororoba_cli"
+description = "Octonionic field theory computation"
+
+[[binary]]
+name = "tensor-network"
+crate = "gororoba_cli"
+description = "Tensor network simulator (Bell/GHZ/random circuits, PEPS)"
+experiment = "E-007"
+
+[[binary]]
+name = "harper-chern"
+crate = "gororoba_cli"
+description = "Harper-Hofstadter Chern number computation"
+
+[[binary]]
+name = "tcmt-sweep"
+crate = "gororoba_cli"
+description = "Temporal coupled-mode theory parameter sweep"
+
+[[binary]]
+name = "fetch-chime-frb"
+crate = "gororoba_cli"
+description = "Download CHIME/FRB catalog data"
+
+[[binary]]
+name = "frb-ultrametric"
+crate = "gororoba_cli"
+description = "FRB catalog ultrametric analysis"
+
+[[binary]]
+name = "gw-merger-tree"
+crate = "gororoba_cli"
+description = "Gravitational wave merger tree dendrogram analysis"
+
+[[binary]]
+name = "frb-cascades"
+crate = "gororoba_cli"
+description = "FRB temporal cascade (SOC) analysis"
+
+[[binary]]
+name = "dm-ultrametric"
+crate = "gororoba_cli"
+description = "Dispersion measure ultrametric analysis"
+
+[[binary]]
+name = "baire-compact"
+crate = "gororoba_cli"
+description = "Baire metric compactness analysis"
+
+[[binary]]
+name = "cosmic-dendrogram"
+crate = "gororoba_cli"
+description = "Cosmic-scale dendrogram hierarchy analysis"
+
+[[binary]]
+name = "fetch-datasets"
+crate = "gororoba_cli"
+description = "Download all external astrophysical datasets"
+
+[[binary]]
+name = "real-cosmo-fit"
+crate = "gororoba_cli"
+description = "Joint Pantheon+ / DESI BAO cosmological fit"
+experiment = "E-003"
+
+[[binary]]
+name = "multi-dataset-ultrametric"
+crate = "gororoba_cli"
+description = "GPU-accelerated multi-dataset ultrametric sweep"
+experiment = "E-002"
+
+[[binary]]
+name = "motif-census"
+crate = "gororoba_cli"
+description = "Cayley-Dickson motif census across doubling levels"
+experiment = "E-001"
+
+[[binary]]
+name = "claims-audit"
+crate = "gororoba_cli"
+description = "Audit claims evidence matrix for consistency"
+
+[[binary]]
+name = "claims-verify"
+crate = "gororoba_cli"
+description = "Verify claims against test suite results"
+
+[[binary]]
+name = "materials-baseline"
+crate = "gororoba_cli"
+description = "Materials science regression baselines (JARVIS/AFLOW)"
+experiment = "E-010"
+
+[[binary]]
+name = "mass-clumping"
+crate = "gororoba_cli"
+description = "GWTC-3 mass distribution dip test for multimodality"
+experiment = "E-008"
+
+[[binary]]
+name = "extract-papers"
+crate = "gororoba_cli"
+description = "Batch PDF extraction to structured TOML via docpipe"
+
+[[binary]]
+name = "migrate-claims"
+crate = "gororoba_cli"
+description = "Migrate claims from markdown evidence matrix to TOML registry"

@@ -1,0 +1,4980 @@
+equations = []
+tables = []
+full_text = """
+arXiv:2411.18881v1 [math.DG] 28 Nov 2024\r
+THE GEOMETRY OF SEDENION ZERO DIVISORS\r
+SILVIO REGGIANI\r
+Abstract. The sedenion algebra S is a non-commutative, non-associative, 16-dimen\u0002sional real algebra with zero divisors. It is obtained from the octonions through the\r
+Cayley-Dickson construction. The zero divisors of S can be viewed as the submanifold\r
+Z(S) ⊂ S × S of normalized pairs whose product equals zero, or as the submanifold\r
+ZD(S) ⊂ S of normalized elements with non-trivial annihilators. We prove that Z(S)\r
+is isometric to the excepcional Lie group G2, equipped with a naturally reductive left\u0002invariant metric. Moreover, Z(S) is the total space of a Riemannian submersion over\r
+the excepcional symmetric space of quaternion subalgebras of the octonion algebra, with\r
+fibers that are locally isometric to a product of two round 3-spheres with different radii.\r
+Additionally, we prove that ZD(S) is isometric to the Stiefel manifold V2(R\r
+7\r
+), the space\r
+of orthonormal 2-frames in R\r
+7\r
+, endowed with a specific G2-invariant metric. By shrink\u0002ing this metric along a circle fibration, we construct new examples of an Einstein metric\r
+and a family of homogenous metrics on V2(R\r
+7\r
+) with non-negative sectional curvature.\r
+1. Introduction\r
+The Cayley-Dickson algebras form a sequence of real algebras An, defined recursively\r
+beginning with R and doubling in dimension with each iteration. The first members\r
+of this family are the familiar real division algebras: R = A0, C = A1, H = A2 and\r
+O = A3. The next algebra in this sequence is the so-called sedenion algebra S = A4,\r
+which is often overlooked in comparison to its lower-dimensional relatives due to its lack\r
+of certain desirable algebraic properties. Nonetheless, this somewhat enigmatic algebra\r
+has long intrigued mathematicians and has recently found applications in fields such as\r
+theoretical physics [GG19] and machine learning [SA20].\r
+Since S is not a division algebra, it is interesting to understand the structure of its zero\r
+divisors. The topology of the sedenion zero divisors is described by the principal bundle\r
+SU(2) → G2 → V2(R\r
+7\r
+),\r
+where G2 is the excepcional compact Lie group of rank 2 and V2(R\r
+7\r
+) is the Stiefel mani\u0002fold of orthonormal 2-frames in R\r
+7\r
+. Specifically, G2 is homeomorphic to the submanifold\r
+Z(S) ⊂ S × S of normalized sedenion pairs that multiply to zero; V2(R\r
+7\r
+) is homeomor\u0002phic to the submanifold ZD(S) ⊂ S of sedenions with norm √\r
+2 that have non-trivial\r
+annihilators; and, for each u ∈ ZD(S), the fiber SU(2) corresponds to the sphere of the\r
+annihilator subspace of u (see [Mor98, BDI08]). However, little is known regarding the\r
+geometry of the sedenion zero divisors.\r
+Both Z(S) and ZD(S) carry a natural geometry as submanifolds of R\r
+32 and R16, re\u0002spectively. Furthermore, since the zero divisors of S are invariant under Aut(S), whose\r
+Date: December 2, 2024.\r
+2020 Mathematics Subject Classification. 53C30, 17A20.\r
+Key words and phrases. Cayley-Dickson algebras, Sedenion algebra, Zero divisors, Einstein manifolds,\r
+Non-negative curvature.\r
+1
+
+2 SILVIO REGGIANI\r
+connected component is isomorphic to G2, it follows that Z(S) and ZD(S) are homoge\u0002neous submanifolds. In this article, we study the intrinsic geometry of the zero divisors\r
+of S. First, we prove that Z(S) is isometric to G2 with a naturally reductive left-invariant\r
+metric, forming the total space of a Riemannian submersion over the exceptional sym\u0002metric space G2/SO(4), with fibers locally isometric to a product of two round 3-spheres\r
+with different radii.\r
+Next, we analyze the geometry of ZD(S), which is isometric to V2(R\r
+7\r
+) = G2/SU(2)\r
+with a particular G2-invariant metric. At first glance, the geometry of ZD(S) does not\r
+seem very interesting; however, by shrinking the metric along a certain circle fibration,\r
+we obtain a family gr (r > 0) of G2-invariant metrics on V2(R\r
+7\r
+), where g 2\r
+3\r
+represents\r
+the original metric. This process reveals several distinguished examples. Specifically, we\r
+prove, among other things, that (V2(R\r
+7\r
+), gr):\r
+• has positive scalar curvature if and only of r < 20\r
+3\r
+;\r
+• is an Einstein manifold if and only if r =\r
+5\r
+9\r
+;\r
+• has non-negative sectional curvature if and only if 0 < r ≤\r
+4\r
+9\r
+.\r
+These results are quite remarkable, as Einstein metrics and metrics with non-negative\r
+curvature are very rare. To the best of our knowledge, the examples presented in this\r
+article are new. The known homogeneous Einstein metrics on V2(R\r
+7\r
+) = G2/SU(2) =\r
+SO(7)/SO(5) are limited to the unique SO(7)-invariant Einstein metric discovered by\r
+Sagle and the so-called Jensen metrics (see [Sag70, Jen73, BH87, Ker98]). It is worth\r
+noticing that the metric g 5\r
+9\r
+is neither SO(7)-invariant nor a Jensen metric. Regarding\r
+metrics with non-negative sectional curvature, we refer to the survey [Zil07]. Typically,\r
+examples of homogeneous metrics with non-negative curvature appear as normal homo\u0002geneous metrics or are constructed through a Cheeger deformation of a metric already\r
+known to have non-negative curvature. Recall that none of the metrics gr is normal ho\u0002mogeneous (nor even naturally reductive) and that the initial metric g 2\r
+3\r
+does not possess\r
+non-negative sectional curvature.\r
+Let us comment briefly on the proof our main results. In order to study the geometry\r
+of Z(S), it is necessary to “fix an origin” so that the metric can be identified with a\r
+left-invariant metric on G2. Any choice of such an origin for Z(S) leads to isometric\r
+metrics on G2, but a well-chosen origin can greatly simplify computations. We select the\r
+origin from among the so-called 84 standard zero divisors of S. Then, using the results\r
+in [DZ79], we show that Z(S) is a naturally reductive space. A similar approach applies\r
+to the study of ZD(S) with the metric gr. Here, we select another standard zero divisor\r
+(different from the previous one) so that the isotropy subgroup of G2 acts trivially on\r
+the usual subalgebra H ⊂ S. This choice allows the metric gr to be expressed in diagonal\r
+form with respect to the normal homogeneous metric, making it possible to derive a nice\r
+expression for the Ricci tensor of gr.\r
+The most challenging part is to determine the sign of the sectional curvatures of gr.\r
+Since there is no manageable expression for the curvature (as there is for naturally re\u0002ductive spaces), using algebraic manipulation proves to be nearly impossible. Indeed, the\r
+sectional curvature function Fr of gr can be interpreted as a homogeneous polynomial\r
+of degree 4 in 22 real variables, which, for a generic r, has 285 non-trivial coefficients.\r
+To show that Fr is non-negative for 0 < r ≤\r
+4\r
+9\r
+, we reduce the problem to proving that\r
+both F0 (the formal extension of Fr at r = 0) and F4\r
+9\r
+are non-negative. By using convex
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 3\r
+optimization techniques, we are able to prove the stronger result that F0 and F4\r
+9\r
+are\r
+polynomial sums of squares.\r
+Finally we want to mention that the computations required in the proof of some of our\r
+results are often cumbersome and were computer checked using the software SageMath.\r
+The code used to verify our results is available at [Reg24].\r
+We believe this work shows that the study of the geometry of Cayley-Dickson alge\u0002bras, particularly regarding their zero divisors, deserves further attention, as it may have\r
+interesting implications in differential geometry of compact homogeneous spaces.\r
+Acknowledgements. This work is supported by CONICET and partially supported by\r
+SeCyT-UNR and ANPCyT. The author would like to thank Andreas Arvanitoyeorgos for\r
+helpful discussions on homogeneous Einstein metrics on Stiefel manifolds.\r
+2. Preliminaries and notation\r
+The main references for this section are [Mor98, BDI08] on Cayley-Dickson algebras\r
+and their zero divisors, [Arv03] on the geometry of homogeneous spaces and [DZ79] on\r
+naturally reductive left-invariant metrics on compact Lie groups. Observe that in this\r
+section, as well as throughout the rest of the article, we start counting indices from 0.\r
+2.1. Cayley-Dickson algebras. The Cayley-Dickson algebras An are a family of real\r
+algebras, equipped with an involution a 7→ a\r
+∗\r
+(also called conjugation), which are recur\u0002sively defined starting from A0 = R, where a\r
+∗ = a. Each subsequent algebra is defined\r
+by setting An = An−1 × An−1 as a vector space, with multiplication given by\r
+(a, b)(c, d) = (ac − d\r
+∗\r
+b, da + bc∗)\r
+and involution defined by\r
+(a, b)\r
+∗ = (a∗\r
+, −b).\r
+Notice that the inclusion a 7→ (a, 0) is a monomorphism of algebras from An−1 into\r
+An for all n ≥ 0. It is well known that the first four algebras in the Cayley-Dickson\r
+construction are the real division algebras R, C, H and O, respectively. It is also known\r
+that the Cayley-Dickson algebras lose some important properties with each iteration.\r
+For example, An is commutative if and only if n ≤ 1, associative if and only if n ≤ 2;\r
+alterative (i.e., x(xy) = (xx)y and (xy)y = x(yy) for all x, y ∈ An) if and only of n ≤ 3.\r
+On the other hand, every Cayley-Dickson algebra is flexible (i.e., x(yx) = (xy)x for all\r
+x, y ∈ An) and power associative (i.e., x\r
+k\r
+is well defined for all x ∈ An and k ∈ N).\r
+For x ∈ An we define its real and imaginary parts as Re x =\r
+1\r
+2\r
+(x + x\r
+∗\r
+) and Im x =\r
+1\r
+2\r
+(x−x\r
+∗\r
+), respectively. We say that x is real (resp. imaginary) if Im x = 0 (resp. Re x = 0).\r
+Thus, one can recover the usual inner product on An ≃ R\r
+2\r
+n\r
+by\r
+hx, yi = Re(xy∗).\r
+In An, one has that kxk\r
+2 = xx∗\r
+for all x. However, the identity kxyk = kxkkyk does not\r
+hold in general if n ≥ 4. Recall that An is a division algebra if and only n ≤ 3. If n ≥ 4,\r
+then An has zero divisors. Since, xy = 0 implies yx = 0, the left and right zero divisors\r
+of An coincide. Thus, an element 0 6= u ∈ An is a zero divisor if and only if ann u 6= 0,\r
+where ann u is the kernel of the R-linear map Lu : An → An given by Lu(x) = ux. In\r
+[Mor98], it is proven that a zero divisor u must be imaginary and dim(ann u) ≡ 0 mod 4.
+
+4 SILVIO REGGIANI\r
+Furthermore, in [BDI08] it is proven that dim ann u ≤ 2\r
+n − 4n + 4. One can study the\r
+zero divisors globally by defining the sets\r
+Z(An) = {(u, v) ∈ An × An : kuk = kvk =\r
+√\r
+2 and uv = 0},\r
+ZD(An) = {u ∈ An : (u, v) ∈ Z(An) for some v ∈ An}.\r
+Normalizing the zero divisors to √2 is not particularly important, but it will be convenient\r
+later. When n ≥ 5, the sets ZDk(An) = {u ∈ ZD(An) : dim(ann u) = k} are also of\r
+interest.\r
+For n ≥ 4, one has that the automorphism group of An is given by\r
+Aut(An) ≃ Aut(An−1) × S3 ≃ G2 × (S3)\r
+n−3\r
+,\r
+where S3 is the symmetric group in three elements, and G2 = Aut(O) is the 14-dimen\u0002sional compact simple Lie group of rank 2. Recall that G2 acts diagonally on An. It\r
+follows that Der(An) = g2 for all n ≥ 4, where g2 is the Lie algebra of G2.\r
+2.2. Sedenion zero divisors. From now on we denote the sedenion algebra A4 by S.\r
+Let us denote by e0, . . . , e15 the canonical basis of S. By making an abuse of notation, we\r
+also denote by e0, . . . , e3 and e0, . . . , e7 the canonical basis of H and O respectively. The\r
+zero divisors of S have the following form.\r
+Proposition 2.1 (See [BDI08]). An element (a, b) ∈ S is a zero divisor if and only if\r
+a, b are imaginary elements of O such that kak = kbk 6= 0 and a ⊥ b.\r
+From this result, one can construct the 84 standard zero divisors of S. Namely, the\r
+elements of the form (ei + ej, ek ± el) ∈ Z(S) such that 1 ≤ i ≤ 6, 9 ≤ j ≤ 15, i < k ≤ 7\r
+and 9 ≤ l ≤ 15 (see Table 1). Clearly, every automorphism of S maps Z(S) into itself.\r
+Moreover, we have that the connected component of Aut(S) acts simply and transitively\r
+on Z(S):\r
+Theorem 2.2 ([Mor98]). Z(S) is homeomorphic (and moreover, diffeomorphic) to G2.\r
+Given (u0, v0) ∈ Z(S), we have that G2 · u0 = ZD(S). It is not difficult to see that the\r
+isotropy subgroup at u0 is isomorphic to SU(2). Note that G2/SU(2) is diffeomorphic to\r
+the Stiefel manifold V2(R\r
+7\r
+). In fact, every automorphism of O is completely determined\r
+by its values a, b, c at e1, e2, e4 respectively. Here (a, b, c) can be any triple of pairwise\r
+orthonormal imaginary octonions of norm 1 such that ab ⊥ c. Hence the map (a, b, c) 7→\r
+(a, b) identifies with a transitive action of G2 in V2(R\r
+7\r
+), whose isotropy subgroup at (e1, e2)\r
+are the octonion automorphism that act trivially on H, and therefore are isomorphic to\r
+SU(2). Thus, the topology of the sedenion zero divisors is encoded by the principal bundle\r
+SU(2) → G2 → V2(R\r
+7\r
+).\r
+2.3. The Lie algebra of G2. We think of the Lie group G2 = Aut(O) as a subgroup of\r
+SO(8) in the natural way (since every automorphism of O fixes e0, we have that G2 is\r
+actually a subgroup of SO(7), but we do not use this identification here). So, we have g2\r
+as a subalgebra of so(8). Let us consider the bi-invariant metric gbi induced by the inner\r
+product on g2, which we denote with the same symbol, given by\r
+gbi(X, Y ) = − tr(XY ).
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 5\r
+Let us denote by Eij ∈ so(8), where 0 ≤ i < j ≤ 7, the matrix such that (Eij )ij =\r
+−(Eij )ji = −1 and (Eij )kl = 0 in any other case. We define\r
+X0 =\r
+1\r
+2\r
+(E45 + E67), X7 =\r
+1\r
+2\r
+(E16 + E25),\r
+X1 =\r
+1\r
+2\r
+(E46 − E57), X8 = −\r
+1\r
+2\r
+(E15 − E26),\r
+X2 =\r
+1\r
+2\r
+(E47 + E56), X9 =\r
+1\r
+2\r
+(E14 + E27),\r
+X3 = −\r
+√\r
+3\r
+6\r
+(2E23 − E45 + E67), X10 =\r
+√\r
+3\r
+6\r
+(E16 − E25 + 2E34),\r
+X4 =\r
+√\r
+3\r
+6\r
+(2E13 + E46 + E57), X11 =\r
+√\r
+3\r
+6\r
+(E17 + E24 + 2E35),\r
+X5 = −\r
+√\r
+3\r
+6\r
+(2E12 − E47 + E56), X12 = −\r
+√\r
+3\r
+6\r
+(E14 − E27 − 2E36),\r
+X6 = −\r
+1\r
+2\r
+(E17 − E24), X13 = −\r
+√\r
+3\r
+6\r
+(E15 + E26 − 2E37).\r
+One can see that X0, . . . , X13 is an orthonormal basis of g2 with respect to the bi\u0002invariant metric. We will denote by X0\r
+, . . . , X13 its dual basis. Define\r
+k0 =\r
+M\r
+2\r
+i=0\r
+RXi, m0 =\r
+M\r
+5\r
+i=3\r
+RXi, m1 =\r
+M\r
+9\r
+i=6\r
+RXi, m2 =\r
+M\r
+13\r
+i=10\r
+RXi.\r
+We have that k0 and m0 are two subalgebras of g2 isomorphic to so(3) such that\r
+[k0, m0] = 0. Moreover, k0 ⊕ m0 ≃ so(4) is the subalgebra of a maximal subgroup of G2\r
+isomorphic to SO(4) (cfr. [BLS20]). Such subgroup preserves the orthogonal decomposi\u0002tion O = H ⊕ H⊥. Furthermore, the subgroup of G2 with Lie algebra k0 is isomorphic\r
+to SU(2) and acts trivially on H. Recall that G2/SO(4), with the normal homogeneous\r
+metric, is the symmetric space of quaternion subalgebras of O.\r
+2.4. Homogeneous and naturally reductive spaces. Let G be a Lie group and H\r
+be a compact subgroup of G. Let us denote by g and h the Lie algebras of G and H,\r
+respectively. Assume that G acts almost effectively on M = G/H and that M is endowed\r
+with a G-invariant metric g. Recall that every X ∈ g induces a Killing vector field X∗\r
+on M defined as X∗\r
+q =\r
+d\r
+dt\r
+\f\r
+\f\r
+0\r
+Exp(tX) · q. The map X 7→ X∗from g into X(M) satisfies\r
+[X, Y ]\r
+∗ = −[X∗\r
+, Y ∗].\r
+Let us fix a reductive decomposition g = h⊕m (i.e., m is an Ad(H)-invariant subspace\r
+of g complementary to h), which always exists since H is compact. Assume that H is\r
+the isotropy subgroup of p ∈ M. Then we can identify m ≃ TpM. The geometry of M\r
+is determined by an Ad(H)-invariant inner product on m, which we also denote by g,\r
+defined such that the map X ∈ m 7→ X∗\r
+p ∈ TpM is a linear isometry. With this setting,\r
+we can compute the Levi-Civita connection of M as\r
+(∇X∗ Y\r
+∗\r
+)p = −\r
+1\r
+2\r
+[X, Y ]m + U(X, Y ), X, Y ∈ m, (2.1)\r
+where U is the algebraic tensor on m given by\r
+2g(U(X, Y ), Z) = g([Z, X]m, Y ) + g(X, [Z, Y ]m), X, Y, Z ∈ m.
+
+6 SILVIO REGGIANI\r
+Let RX,Y = ∇[X,Y ] − [∇X, ∇Y ] be the curvature tensor of M. The sectional curvature\r
+of M is determined by\r
+g(RX,Y X, Y ) = −\r
+3\r
+4\r
+k[X, Y ]mk\r
+2 −\r
+1\r
+2\r
+g([X, [X, Y ]m]m, Y ) −\r
+1\r
+2\r
+g([Y, [Y, X]m]m, X)\r
++ kU(X, Y )k\r
+2 − g(U(X, X), U(Y, Y )) + g(Y, [[X, Y ]h, X]m)\r
+for X, Y ∈ m. Also, the Ricci tensor of M is determined by\r
+Ric(X, X) = −\r
+1\r
+2\r
+X\r
+i\r
+{k[X, Xi]mk\r
+2 + g([X, [X, Xi\r
+]m]m, Xi) + 2g([X, [X, Xi]h]m, Xi)}\r
++\r
+1\r
+4\r
+X\r
+i,j\r
+g([Xi, Xj]m, X)\r
+2 − g([Z, X]m, X), (2.2)\r
+for X ∈ m, where {Xi} is an orthonormal basis of m and Z =\r
+P\r
+i U(Xi\r
+, Xi).\r
+Recall that the metric g on M = G/H is naturally reductive if and only if U ≡ 0.\r
+An interesting particular case is when a left-invariant metric on a Lie group is naturally\r
+reductive (with respect to a certain transitive Lie group of isometries).\r
+Theorem 2.3 ([DZ79]). Let G be a compact, simple Lie group group endowed with a\r
+left-invariant metric g. Let g denote the Lie algebra of G and let gbi be a bi-invariant\r
+metric on G (which is a negative multiple of the Killing form of g). The metric g is\r
+naturally reductive if and only if there exists a subalgebra k of g such that\r
+g = gk0 ⊕ α1 gbi|k1 ⊕ · · · ⊕ αr gbi|kr ⊕ α gbi|k⊥\r
+where k = k0 ⊕ k1 ⊕ · · · ⊕ kr, with k0 the center of k and k1, . . . ,kr are simple ideals. Here,\r
+k\r
+⊥ is the orthogonal complement of k with respect to the bi-invariant metric, gk0\r
+is an\r
+arbitrary inner product on k0, and α1, . . . , αr, α are positive real numbers.\r
+3. The G2-invariant metrics on Z(S) and ZD(S)\r
+Consider Z(S) as a submanifold of S × S ≃ R\r
+32 with the induced metric. Although\r
+this reduction is not necessary here, one could lower the codimension of Z(S). In fact,\r
+by Proposition 2.1, Z(S) is a submanifold of S\r
+6 × S6 × S6 × S6\r
+. Since G2 = Aut(O) ⊂\r
+Aut(S) acts isometrically on S × S, we have that Z(S) is a homogeneous submanifold.\r
+Furthermore, by Theorem 2.2, the diffeomorphism Z(S) ≃ G2 induces a left-invariant\r
+metric g on G2.\r
+Theorem 3.1. The metric on Z(S) is naturally reductive. Furthermore, Z(S) is the\r
+total space of a Riemannian submersion over the excepcional symmetric space G2/SO(4)\r
+with totally geodesic fibers, which are locally isometric to a product of two round 3-spheres\r
+with different radii.\r
+Proof. It is sufficient to prove the theorem for the left-invariant metric on G2 defined in\r
+the paragraph preceding the statement. To determine such a metric, one fixes an element\r
+(u0, v0) ∈ Z(S) and computes\r
+g(Xi, Xj ) = (Xi· (u0, v0))T(Xj· (u0, v0)). (3.1)\r
+Note that not every zero divisor pair behaves nicely with respect to the decomposition\r
+g2 = k0 ⊕ m0 ⊕ m1 ⊕ m2 given in Subsection 2.3. By running (3.1) over the standard zero
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 7\r
+divisors from Table 1, we observe that if (u0, v0) = (e4 + e13, e6 + e15) the metric can be\r
+expressed as\r
+g =\r
+X\r
+2\r
+i=0\r
+X\r
+i ⊗ Xi +\r
+1\r
+3\r
+X\r
+5\r
+i=3\r
+X\r
+i ⊗ Xi +\r
+1\r
+2\r
+X\r
+13\r
+i=6\r
+X\r
+i ⊗ Xi = gbi|k0 ⊕\r
+1\r
+3\r
+gbi|m0 ⊕\r
+1\r
+2\r
+gbi|m1⊕m2.\r
+From Theorem 2.3, it follows that this metric is naturally reductive. More precisely, this\r
+metric is naturally reductive with respect to G2 ×SO(4), where the second factor acts on\r
+the right and the isotropy subgroup is given by diag(SO(4) × SO(4)). Thus, from [DZ79,\r
+Theorem 8], the subgroup SO(4) ⊂ G2, whose Lie algebra is given by k0 ⊕ m0, is totally\r
+geodesic.\r
+Since g|m1⊕m2is a multiple of the bi-invariant metric, when restricted to m1 ⊕ m2, and\r
+k0 ⊕ m0 ≃ so(4) is orthogonal to m1 ⊕ m2 with respect to both metrics, we conclude\r
+that (G2, g) → G2/SO(4) is a Riemannian submersion. The fiber of this submersion is\r
+isometric to the Lie group SO(4) endowed with the bi-invariant metric g|k0⊕m0, which is\r
+obtained by taking two different scalings of the bi-invariant metric on the simple ideals\r
+so(3) ≃ k0 ≃ m0 of so(4). Hence, the universal cover of SO(4) splits into a product of\r
+two round spheres with different radii. \u0003\r
+Remark 3.2. Since the metric in Z(S) is naturally reductive, many geometric properties\r
+follow from existing results. For example, the (connected component of the) full isometry\r
+group is computed in [DZ79] (see also [OR13]). The so-called index of symmetry of Z(S),\r
+which in this case is trivial, can be computed from the results in [ORT14]. It can also\r
+be seen from [DZ79] that the metric on Z(S) is not Einstein. We verify this fact again\r
+in the next proposition by explicitly computing the Ricci tensor, which also allows us to\r
+show that the Ricci curvature is positive.\r
+Proposition 3.3. Z(S) has positive Ricci curvature. Moreover,\r
+Ric = 5\r
+2\r
+X\r
+2\r
+i=0\r
+X\r
+i ⊗ Xi +\r
+29\r
+54\r
+X\r
+5\r
+i=3\r
+X\r
+i ⊗ Xi +\r
+5\r
+6\r
+X\r
+13\r
+i=6\r
+X\r
+i ⊗ Xi\r
+. (3.2)\r
+Proof. It follows from a straightforward computation using the following well-known for\u0002mula. Let Y0, . . . , Y13 be an g-orthonormal basis of g2. Then\r
+Ric(Yj, Yh) = 1\r
+2\r
+X\r
+i,k\r
+\u001A\r
+ciki(ckjh + ckhj ) + 1\r
+2\r
+cikhcikj − cijkckhi + cikicjhk − cijkcihk\u001B\r
+where cijk = g([Yi, Yj], Yk). Since g has diagonal form in the basis X0, . . . , X13, we can\r
+choose Yi = g(Xi, Xi)\r
+− 1\r
+2 Xi\r
+. From this, we can show that\r
+Ric = 5\r
+2\r
+X\r
+2\r
+i=0\r
+Y\r
+i ⊗ Yi +\r
+29\r
+18\r
+X\r
+5\r
+i=3\r
+Y\r
+i ⊗ Yi +\r
+5\r
+3\r
+X\r
+13\r
+i=6\r
+Y\r
+i ⊗ Yi\r
+,\r
+which is equivalent to (3.2). \u0003\r
+Now we direct our attention to the geometry of ZD(S) with the metric induced from the\r
+ambient space S ≃ R\r
+16. Since G2 acts isometrically and transitively on ZD(S), we have\r
+that ZD(S) is isometric to the Stiefel manifold G2 · u0 = G2/SU(2) = V2(R\r
+7\r
+), equipped\r
+with a certain G2-invariant metric, where SU(2) is the isotropy subgroup of u0 ∈ ZD(S).\r
+We again denote by g such a metric, which is defined by\r
+g(Xi, Xj ) = (Xi· u0)\r
+T\r
+(Xj· u0).
+
+8 SILVIO REGGIANI\r
+Similarly to the case of Z(S), we can choose u0 appropriately so that the Lie algebra\r
+of SU(2) is k0. Taking u0 = e1 + e10, we obtain that\r
+g2 = k0 ⊕ m, where m = m0 ⊕ m1 ⊕ m2,\r
+is a reductive decomposition for G2/SU(2). The corresponding Ad(SU(2))-invariant inner\r
+product on m is given by\r
+g =\r
+1\r
+3\r
+(X\r
+3 ⊗ X3 + X4 ⊗ X4\r
+) + 2\r
+3\r
+X\r
+5 ⊗ X5 +\r
+1\r
+2\r
+X\r
+9\r
+i=6\r
+X\r
+i ⊗ Xi +\r
+1\r
+6\r
+X\r
+13\r
+i=10\r
+X\r
+i ⊗ Xi\r
+.\r
+A detailed study of the isometry group and the curvature of g is given in the next\r
+section. Before proceeding, we note a simple fact about the sectional curvatures of g.\r
+Remark 3.4. Let us denote by πij the 2-dimensional subspace of m generated by Xi and\r
+Xj, where 3 ≤ i < j ≤ 13. Then the sectional curvature of πij is non-negative if and\r
+only if πij 6= π34. This suggests that one could attempt to modify the metric g along\r
+the direction normal to π34 inside m1 in order to get some examples of metrics with\r
+non-negative sectional curvature. We explore this approach in the next section.\r
+4. A family of G2-invariant metrics on V2(R\r
+7\r
+)\r
+For each r > 0, we consider on V2(R\r
+7\r
+) the family of G2-invariant metrics given by\r
+gr =\r
+1\r
+3\r
+(X\r
+3 ⊗ X3 + X4 ⊗ X4\r
+) + r X5 ⊗ X\r
+5 +\r
+1\r
+2\r
+X\r
+9\r
+i=6\r
+X\r
+i ⊗ Xi +\r
+1\r
+6\r
+X\r
+13\r
+i=10\r
+X\r
+i ⊗ Xi\r
+. (4.1)\r
+Indeed, gr gives an Ad(SU(2))-invariant inner product on m since m0 is the subspace\r
+of fixed points of the isotropy representation of G2/SU(2) and\r
+gr|m1 =\r
+1\r
+2\r
+gbi|m1, gr|m2 =\r
+1\r
+6\r
+gbi|m2.\r
+Next, we compute the connected component of the full isometry group of gr.\r
+Theorem 4.1. I0(V2(R\r
+7\r
+), gr) ≃ G2 × S\r
+1\r
+.\r
+Proof. Since G2 is a compact simple Lie group, it follows from the results in [Oni92] that\r
+I0(V2(R\r
+7\r
+), gr) ⊂ I0(V2(R\r
+7\r
+), gnh), where gnh = gbi|m is the normal homogeneous metric\r
+associated with the homogeneous presentation V2(R\r
+7\r
+) = G2/SU(2). From [Reg10], we\r
+have that I0(V2(R\r
+7\r
+), gnh) ≃ G2 × K (almost direct product) where the Lie algebra of\r
+K is given by the G2-invariant vector fields, which are identified with the fixed vectors\r
+of the isotropy representation. That is, the Lie algebra of K is identified with m0, but\r
+the elements of K ≃ SU(2) act “on the right”. Then, it is not difficult to see that\r
+I0(V2(R\r
+7\r
+)) ≃ G2 × K′(almost direct product) for a compact and connected subgroup K′\r
+of K, which in principle depends on r. Since dim K = 3, it is enough to see that K′ 6= K\r
+and dim K′ ≥ 1.\r
+Now, for Y ∈ m0, let Yˆ be the G2-invariant vector field induced by Y . Using (2.1)\r
+and the fact that ∇X∗ Yˆ = ∇Yˆ X∗\r
+for all X ∈ m, one can see that Yˆ is a Killing field\r
+for gr if and only if [Y, −]m : m → m is skew-symmetric with respect to gr. The 1\r
+2\r
+- and\r
+1\r
+6\r
+-scalings of the metric on the irreducible subspaces m1 and m2 prevent Xˆ\r
+3 and Xˆ4 from\r
+being Killing fields for gr. However, one can check that Xˆ\r
+5 is a Killing field for gr for any\r
+r > 0. Thus K′ = S\r
+1\r
+, which implies I0(V2(R\r
+7\r
+)) = G2 × S\r
+1\r
+is actually a direct product.\r
+Observe that we have proved that the S\r
+1\r
+factor is independent of r. \u0003
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 9\r
+Now, we compute the Ricci and scalar curvature of gr. In particular, we obtain the\r
+following result.\r
+Theorem 4.2. (1) The metric gr is Einstein if and only if r =\r
+5\r
+9\r
+.\r
+(2) The metric gr has positive scalar curvature if and only if r < 20\r
+3\r
+.\r
+Proof. Let Y3, . . . , Y13 be the gr-orthonormal basis of m obtained from normalizing the\r
+basis X3, . . . , X13. We can use formula (2.2) to explicitly compute the Ricci tensor Ricgr\r
+of gr. After lengthy computations, carefully verified using a computer (see [Reg24]), we\r
+obtain\r
+Ricgr =\r
+15r\r
+2\r
+Y\r
+5 ⊗ Y5 +\r
+\u0012\r
+−\r
+3r\r
+2\r
++ 5\u0013X\r
+i6=5\r
+Y\r
+i ⊗ Yi\r
+. (4.2)\r
+Hence, gr is Einstein if and only if r =\r
+5\r
+9\r
+. Also, from (4.2) we get that the scalar\r
+curvature scalgr = 50 −\r
+15\r
+2\r
+r is positive if and only if r < 20\r
+3\r
+. \u0003\r
+Remark 4.3. In [Jen73], the construction of remarkable examples of Einstein metrics on\r
+the base space of certain principal bundles can be found. Such metrics are now known\r
+as Jensen metrics. In particular, there exist G2-invariant Einstein metrics on V2(R\r
+7\r
+),\r
+arising from the principal bundle SU(2) → G2 → G2/SU(2), which in our notation takes\r
+the form t\r
+2\r
+gbi|m0 ⊕ gbi|m1⊕m2for certain values of t > 0. Notice that the metric g 5\r
+9\r
+from\r
+Theorem 4.2 is not a Jensen metric. Moreover, it is not even bi-invariant when restricted\r
+to m0.\r
+Theorem 4.4. The metric gr has non-negative sectional curvature if and only if r ≤\r
+4\r
+9\r
+.\r
+In order to prove our theorem, we will need the following result, which is a particular\r
+case of Theorem 1 in [PW98] (see also [CLR95]).\r
+Lemma 4.5. Let F ∈ R[x0, . . . , xn] be a homogeneous polynomial of degree 4. Then F is\r
+a (polynomial) sum of squares if and only if there exists a symmetric positive semi-definite\r
+matrix H such that\r
+F = x\r
+T Hx (4.3)\r
+where x = (x\r
+2\r
+0\r
+, x0x1, . . . , xn−1xn, x2\r
+n\r
+)\r
+T\r
+is the vector of monomials of degree 2.\r
+Let us mention that the vector x has (n+2)(n+1)\r
+2\r
+coordinates and the subspace of, not\r
+necessarily positive semi-definite, matrices H satisfying (4.3) has dimension (n+2)(n+1)2n\r
+12 .\r
+Thus, finding an exact (positive semi-definite) solution H for equation (4.3) can be quite\r
+difficult, even for relatively small values of n.\r
+Proof of Theorem 4.4. It is not hard to see that if π34 = RX3 ⊕ RX4, then the sectional\r
+curvature of the plane π34 is\r
+κgr\r
+(π34) = −\r
+9\r
+4\r
+r + 1.\r
+Thus, gr does not have non-negative sectional curvature for r > 4\r
+9\r
+. Let Y3, . . . , Y13 be\r
+the orthonormal basis of m defined in the proof of Theorem 4.2 and write\r
+X =\r
+X\r
+13\r
+i=3\r
+xi−3Yi, Y =\r
+X\r
+13\r
+i=3\r
+xi+8Yi.\r
+For each r, consider the polynomial\r
+Fr = gr(R\r
+gr\r
+X,Y X, Y ) ∈ R[x0, . . . , x21],
+
+10 SILVIO REGGIANI\r
+where Rgr denotes the curvature tensor of gr. Observe that we can formally extend the\r
+polynomial Fr to every r ∈ R (even when gr does not make sense for r ≤ 0). Moreover,\r
+from the explicit formula for Fr, which can be found in the Appendix A.2, we see that\r
+fixing x0, . . . , x21, the map r 7→ Fr(x0, . . . , x21) defines a linear function on r. Thus, it is\r
+enough to prove that the polynomials F0 and F4\r
+9\r
+are non-negative. We will use Lemma 4.5\r
+to prove the stronger statement that F0 and F4\r
+9\r
+are polynomial sums of squares. Since\r
+Fr is obtained from computing sectional curvatures, every monomial xixjxkxl with non\u0002trivial coefficient in Fr satisfies 0 ≤ i ≤ j ≤ 10 < k ≤ l ≤ 21. Hence, we do not lose\r
+generality replacing x\r
+T\r
+in Lemma 4.5 with\r
+x\r
+T = (x0x11, . . . , x0x21, . . . , x10x11, . . . , x10x21, x2\r
+0\r
+, . . . , x2\r
+21).\r
+This change substantially reduces the size of the system (4.3) from 253×253 to 143×143.\r
+Now we are looking for symmetric positive semi-definite matrices Hα such that\r
+Fα = x\r
+T Hαx, α ∈ {0,\r
+4\r
+9\r
+}.\r
+This is a convex optimization problem, which, thanks to the reduction of the dimen\u0002sion mentioned above, can be successfully solved by the Python solver CVXOPT. We\r
+implemented the computer code in SageMath through two instances of SemidefinitePro\u0002gram(). However, this only yields numerical solutions, and since the condition of being\r
+positive semi-definite is a closed one, an exact solution is not guaranteed. Nonetheless,\r
+since the polynomial sums of squares are dense in the set of non-negative polynomials,\r
+exact solutions are expected to exist. Moreover, since Fr has relatively few non-trivial\r
+coefficients, one can expect to find sparse solutions H0 and H4\r
+9\r
+. This is indeed the case,\r
+since rounding the numerical solutions lead us to the exact solution described as follows.\r
+Define the index subsets\r
+I0,−2 = {(39, 69),(49, 59),(87, 117),(97, 107)},\r
+I0,−1 = {(1, 11),(1, 39),(1, 59),(1, 87),(1, 107),(11, 49),(11, 69),(11, 97),(11, 117),\r
+(39, 49),(39, 117),(49, 107),(59, 69),(59, 97),(69, 87),(87, 97),(107, 117)},\r
+I0,− 1\r
+2\r
+= {(3, 17),(3, 33),(3, 88),(3, 100),(4, 7),(4, 44),(4, 56),(4, 111),(5, 10),(5, 15),\r
+(5, 18),(5, 55),(6, 19),(6, 34),(6, 66),(6, 99),(7, 16),(7, 21),(7, 77),(8, 17),\r
+(8, 33),(8, 88),(8, 100),(9, 19),(9, 34),(9, 66),(9, 99),(10, 45),(10, 78),(10, 110),\r
+(14, 19),(14, 34),(14, 66),(14, 99),(15, 45),(15, 78),(15, 110),(16, 44),(16, 56),\r
+(16, 111),(17, 20),(17, 67),(18, 45),(18, 78),(18, 110),(19, 89),(20, 33),(20, 88),\r
+(20, 100),(21, 44),(21, 56),(21, 111),(33, 67),(34, 89),(37, 47),(37, 71),(37, 95),\r
+(37, 119),(38, 50),(38, 58),(38, 98),(38, 106),(40, 80),(40, 92),(40, 104),\r
+(40, 116),(43, 53),(43, 73),(43, 93),(43, 113),(44, 77),(45, 55),(47, 61),(47, 85),\r
+(47, 109),(50, 70),(50, 86),(50, 118),(52, 80),(52, 92),(52, 104),(52, 116),\r
+(53, 63),(53, 83),(53, 103),(55, 78),(55, 110),(56, 77),(58, 70),(58, 86),(58, 118),\r
+(61, 71),(61, 95),(61, 119),(63, 73),(63, 93),(63, 113),(64, 80),(64, 92),(64, 104),\r
+(64, 116),(66, 89),(67, 88),(67, 100),(70, 98),(70, 106),(71, 85),(71, 109),\r
+(73, 83),(73, 103),(76, 80),(76, 92),(76, 104),(76, 116),(77, 111),(83, 93),\r
+(83, 113),(85, 95),(85, 119),(86, 98),(86, 106),(89, 99),(93, 103),(95, 109),
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 11\r
+(98, 118),(103, 113),(106, 118),(109, 119)},\r
+I0,\r
+1\r
+2\r
+= {(3, 3),(3, 8),(3, 20),(3, 67),(4, 4),(4, 16),(4, 21),(4, 77),(5, 5),(5, 45),(5, 78),\r
+(5, 110),(6, 6),(6, 9),(6, 14),(6, 89),(7, 7),(7, 44),(7, 56),(7, 111),(8, 8),(8, 20),\r
+(8, 67),(9, 9),(9, 14),(9, 89),(10, 10),(10, 15),(10, 18),(10, 55),(14, 14),(14, 89),\r
+(15, 15),(15, 18),(15, 55),(16, 16),(16, 21),(16, 77),(17, 17),(17, 33),(17, 88),\r
+(17, 100),(18, 18),(18, 55),(19, 19),(19, 34),(19, 66),(19, 99),(20, 20),(20, 67),\r
+(21, 21),(21, 77),(33, 33),(33, 88),(33, 100),(34, 34),(34, 66),(34, 99),(37, 37),\r
+(37, 61),(37, 85),(37, 109),(38, 38),(38, 70),(38, 86),(38, 118),(40, 40),(40, 52),\r
+(40, 64),(40, 76),(43, 43),(43, 63),(43, 83),(43, 103),(44, 44),(44, 56),(44, 111),\r
+(45, 45),(45, 78),(45, 110),(47, 47),(47, 71),(47, 95),(47, 119),(50, 50),(50, 58),\r
+(50, 98),(50, 106),(52, 52),(52, 64),(52, 76),(53, 53),(53, 73),(53, 93),(53, 113),\r
+(55, 55),(56, 56),(56, 111),(58, 58),(58, 98),(58, 106),(61, 61),(61, 85),(61, 109),\r
+(63, 63),(63, 83),(63, 103),(64, 64),(64, 76),(66, 66),(66, 99),(67, 67),(70, 70),\r
+(70, 86),(70, 118),(71, 71),(71, 95),(71, 119),(73, 73),(73, 93),(73, 113),(76, 76),\r
+(77, 77),(78, 78),(78, 110),(80, 80),(80, 92),(80, 104),(80, 116),(83, 83),\r
+(83, 103),(85, 85),(85, 109),(86, 86),(86, 118),(88, 88),(88, 100),(89, 89),\r
+(92, 92),(92, 104),(92, 116),(93, 93),(93, 113),(95, 95),(95, 119),(98, 98),\r
+(98, 106),(99, 99),(100, 100),(103, 103),(104, 104),(104, 116),(106, 106),\r
+(109, 109),(110, 110),(111, 111),(113, 113),(116, 116),(118, 118),(119, 119)},\r
+I0,1 = {(1, 1),(1, 49),(1, 69),(1, 97),(1, 117),(11, 11),(11, 39),(11, 59),(11, 87),(11, 107),\r
+(39, 59),(39, 87),(49, 69),(49, 97),(59, 107),(69, 117),(87, 107),(97, 117)},\r
+I0,2 = {(39, 39),(49, 49),(59, 59),(69, 69),(87, 87),(97, 97),(107, 107),(117, 117)},\r
+and let H0 be the symmetric matrix defined as\r
+(H0)ij =\r
+(\r
+a, (i, j) ∈ I0,a,\r
+0, (i, j) ∈/ I0,± 1\r
+2\r
+∪ I0,±1 ∪ I0,±2.\r
+Now it is routine to verify that H0 is positive semi-definite and satisfies F0 = x\r
+T H0x.\r
+Similarly, if\r
+I 4\r
+9\r
+,−1 = {(39, 69),(39, 107),(49, 59),(49, 117),(59, 87),(69, 97),(87, 117),(97, 107)},\r
+I 4\r
+9\r
+,−\r
+1\r
+2\r
+= {(3, 17),(3, 33),(3, 88),(3, 100),(4, 7),(4, 44),(4, 56),(4, 111),(5, 10),(5, 15),\r
+(5, 18),(5, 55),(6, 19),(6, 34),(6, 66),(6, 99),(7, 16),(7, 21),(7, 77),(8, 17),\r
+(8, 33),(8, 88),(8, 100),(9, 19),(9, 34),(9, 66),(9, 99),(10, 45),(10, 78),(10, 110),\r
+(14, 19),(14, 34),(14, 66),(14, 99),(15, 45),(15, 78),(15, 110),(16, 44),(16, 56),\r
+(16, 111),(17, 20),(17, 67),(18, 45),(18, 78),(18, 110),(19, 89),(20, 33),(20, 88),\r
+(20, 100),(21, 44),(21, 56),(21, 111),(33, 67),(34, 89),(37, 47),(37, 71),(37, 95),\r
+(37, 119),(38, 50),(38, 58),(38, 98),(38, 106),(40, 80),(40, 92),(40, 104),\r
+(40, 116),(43, 53),(43, 73),(43, 93),(43, 113),(44, 77),(45, 55),(47, 61),(47, 85),
+
+12 SILVIO REGGIANI\r
+(47, 109),(50, 70),(50, 86),(50, 118),(52, 80),(52, 92),(52, 104),(52, 116),\r
+(53, 63),(53, 83),(53, 103),(55, 78),(55, 110),(56, 77),(58, 70),(58, 86),(58, 118),\r
+(61, 71),(61, 95),(61, 119),(63, 73),(63, 93),(63, 113),(64, 80),(64, 92),(64, 104),\r
+(64, 116),(66, 89),(67, 88),(67, 100),(70, 98),(70, 106),(71, 85),(71, 109),\r
+(73, 83),(73, 103),(76, 80),(76, 92),(76, 104),(76, 116),(77, 111),(83, 93),\r
+(83, 113),(85, 95),(85, 119),(86, 98),(86, 106),(89, 99),(93, 103),(95, 109),\r
+(98, 118),(103, 113),(106, 118),(109, 119)},\r
+I 4\r
+9\r
+,− 1\r
+3\r
+= {(2, 22),(13, 23),(25, 35),(26, 46),(27, 57),(28, 68),(29, 79),(30, 90),(31, 101),\r
+(32, 112)},\r
+I 4\r
+9\r
+,\r
+1\r
+3\r
+= {(2, 2),(13, 13),(22, 22),(23, 23),(25, 25),(26, 26),(27, 27),(28, 28),(29, 29),\r
+(30, 30),(31, 31),(32, 32),(35, 35),(46, 46),(57, 57),(68, 68),(79, 79),(90, 90),\r
+(101, 101),(112, 112)},\r
+I 4\r
+9\r
+,\r
+1\r
+2\r
+= {(3, 3),(3, 8),(3, 20),(3, 67),(4, 4),(4, 16),(4, 21),(4, 77),(5, 5),(5, 45),(5, 78),\r
+(5, 110),(6, 6),(6, 9),(6, 14),(6, 89),(7, 7),(7, 44),(7, 56),(7, 111),(8, 8),(8, 20),\r
+(8, 67),(9, 9),(9, 14),(9, 89),(10, 10),(10, 15),(10, 18),(10, 55),(14, 14),(14, 89),\r
+(15, 15),(15, 18),(15, 55),(16, 16),(16, 21),(16, 77),(17, 17),(17, 33),(17, 88),\r
+(17, 100),(18, 18),(18, 55),(19, 19),(19, 34),(19, 66),(19, 99),(20, 20),(20, 67),\r
+(21, 21),(21, 77),(33, 33),(33, 88),(33, 100),(34, 34),(34, 66),(34, 99),(37, 37),\r
+(37, 61),(37, 85),(37, 109),(38, 38),(38, 70),(38, 86),(38, 118),(40, 40),(40, 52),\r
+(40, 64),(40, 76),(43, 43),(43, 63),(43, 83),(43, 103),(44, 44),(44, 56),(44, 111),\r
+(45, 45),(45, 78),(45, 110),(47, 47),(47, 71),(47, 95),(47, 119),(50, 50),(50, 58),\r
+(50, 98),(50, 106),(52, 52),(52, 64),(52, 76),(53, 53),(53, 73),(53, 93),(53, 113),\r
+(55, 55),(56, 56),(56, 111),(58, 58),(58, 98),(58, 106),(61, 61),(61, 85),(61, 109),\r
+(63, 63),(63, 83),(63, 103),(64, 64),(64, 76),(66, 66),(66, 99),(67, 67),(70, 70),\r
+(70, 86),(70, 118),(71, 71),(71, 95),(71, 119),(73, 73),(73, 93),(73, 113),(76, 76),\r
+(77, 77),(78, 78),(78, 110),(80, 80),(80, 92),(80, 104),(80, 116),(83, 83),\r
+(83, 103),(85, 85),(85, 109),(86, 86),(86, 118),(88, 88),(88, 100),(89, 89),\r
+(92, 92),(92, 104),(92, 116),(93, 93),(93, 113),(95, 95),(95, 119),(98, 98),\r
+(98, 106),(99, 99),(100, 100),(103, 103),(104, 104),(104, 116),(106, 106),\r
+(109, 109),(110, 110),(111, 111),(113, 113),(116, 116),(118, 118),(119, 119)},\r
+I 4\r
+9\r
+,1 = {(39, 39),(39, 97),(49, 49),(49, 87),(59, 59),(59, 117),(69, 69),(69, 107),(87, 87),\r
+(97, 97),(107, 107),(117, 117)},\r
+then\r
+(H4\r
+9\r
+)ij =\r
+(\r
+a, (i, j) ∈ I 4\r
+9\r
+,a,\r
+0, (i, j) ∈/ I 4\r
+9\r
+,± 1\r
+3\r
+∪ I 4\r
+9\r
+,± 1\r
+2\r
+∪ I 4\r
+9\r
+,±1\r
+,
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 13\r
+defines a symmetric positive semi-definite matrix satisfying F4\r
+9\r
+= x\r
+T H4\r
+9\r
+x. This concludes\r
+the proof of the theorem. \u0003\r
+Remark 4.6. We are not certain if Fr is a polynomial sum of squares for 0 < r < 4\r
+9\r
+.\r
+Although it is not needed in the proof of Theorem 4.4, it would be interesting to know if\r
+this is indeed the case.\r
+Remark 4.7. The definition (4.1) of the metric gr resembles the construction of Berger\r
+spheres from the Hopf fibration by shrinking the metrics along the fibers. Moreover, if\r
+we restrict gr to m0 ≃ su(2), then S\r
+3\r
+r = (SU(2), gr|m0\r
+) is a Berger sphere. Recall that S\r
+3\r
+r\r
+has (strictly) positive sectional curvature if and only if 0 < r < 4\r
+9\r
+.\r
+Appendix A.\r
+A.1. Standard zero divisors. In this appendix, we include Table 1 with the standard\r
+zero divisors of the sedenion algebra.\r
+Table 1. The 84 standard zero divisors of S\r
+(e1 + e10, e4 − e15) (e1 + e10, e5 + e14) (e1 + e10, e6 − e13) (e1 + e10, e7 + e12)\r
+(e1 + e11, e4 + e14) (e1 + e11, e5 + e15) (e1 + e11, e6 − e12) (e1 + e11, e7 − e13)\r
+(e1 + e12, e2 + e15) (e1 + e12, e3 − e14) (e1 + e12, e6 + e11) (e1 + e12, e7 − e10)\r
+(e1 + e13, e2 − e14) (e1 + e13, e3 − e15) (e1 + e13, e6 + e10) (e1 + e13, e7 + e11)\r
+(e1 + e14, e2 + e13) (e1 + e14, e3 + e12) (e1 + e14, e4 − e11) (e1 + e14, e5 − e10)\r
+(e1 + e15, e2 − e12) (e1 + e15, e3 + e13) (e1 + e15, e4 + e10) (e1 + e15, e5 − e11)\r
+(e2 + e9, e4 + e15) (e2 + e9, e5 − e14) (e2 + e9, e6 + e13) (e2 + e9, e7 − e12)\r
+(e2 + e11, e4 − e13) (e2 + e11, e5 + e12) (e2 + e11, e6 + e15) (e2 + e11, e7 − e14)\r
+(e2 + e12, e3 + e13) (e2 + e12, e5 − e11) (e2 + e12, e7 + e9) (e2 + e13, e3 − e12)\r
+(e2 + e13, e4 + e11) (e2 + e13, e6 − e9) (e2 + e14, e3 − e15) (e2 + e14, e5 + e9)\r
+(e2 + e14, e7 + e11) (e2 + e15, e3 + e14) (e2 + e15, e4 − e9) (e2 + e15, e6 − e11)\r
+(e3 + e9, e4 − e14) (e3 + e9, e5 − e15) (e3 + e9, e6 + e12) (e3 + e9, e7 + e13)\r
+(e3 + e10, e4 + e13) (e3 + e10, e5 − e12) (e3 + e10, e6 − e15) (e3 + e10, e7 + e14)\r
+(e3 + e12, e5 + e10) (e3 + e12, e6 − e9) (e3 + e13, e4 − e10) (e3 + e13, e7 − e9)\r
+(e3 + e14, e4 + e9) (e3 + e14, e7 − e10) (e3 + e15, e5 + e9) (e3 + e15, e6 + e10)\r
+(e4 + e9, e6 − e11) (e4 + e9, e7 + e10) (e4 + e10, e5 + e11) (e4 + e10, e7 − e9)\r
+(e4 + e11, e5 − e10) (e4 + e11, e6 + e9) (e4 + e13, e6 + e15) (e4 + e13, e7 − e14)\r
+(e4 + e14, e5 − e15) (e4 + e14, e7 + e13) (e4 + e15, e5 + e14) (e4 + e15, e6 − e13)\r
+(e5 + e9, e6 − e10) (e5 + e9, e7 − e11) (e5 + e10, e6 + e9) (e5 + e11, e7 + e9)\r
+(e5 + e12, e6 − e15) (e5 + e12, e7 + e14) (e5 + e14, e7 − e12) (e5 + e15, e6 + e12)\r
+(e6 + e10, e7 − e11) (e6 + e11, e7 + e10) (e6 + e12, e7 − e13) (e6 + e13, e7 + e12)\r
+A.2. Expression for the sectional curvature. We write down the polynomial Fr used\r
+in the proof of Theorem 4.4.\r
+Fr = (−\r
+9\r
+4\r
+r + 1)x\r
+2\r
+0x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+0x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+14 + x\r
+2\r
+0x14x19 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+15 − x\r
+2\r
+0x15x18 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+16\r
+− x\r
+2\r
+0x16x21 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+17 + x\r
+2\r
+0x17x20 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+18 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+20 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+21\r
++ ( 9\r
+2\r
+r − 2)x0x1x11x12 + 2x0x1x14x20 + 2x0x1x15x21 − 2x0x1x16x18\r
+− 2x0x1x17x19 −\r
+3\r
+2\r
+rx0x2x11x13 − x0x3x11x14 − x0x3x11x19
+
+14 SILVIO REGGIANI\r
++ ( 9\r
+2\r
+r − 3)x0x3x12x17 − x0x3x12x20 − x0x4x11x15 + x0x4x11x18\r
++ (−\r
+9\r
+2\r
+r + 3)x0x4x12x16 − x0x4x12x21 − x0x5x11x16 + x0x5x11x21\r
++ ( 9\r
+2\r
+r − 3)x0x5x12x15 + x0x5x12x18 − x0x6x11x17 − x0x6x11x20\r
++ (−\r
+9\r
+2\r
+r + 3)x0x6x12x14 + x0x6x12x19 + x0x7x11x15 − x0x7x11x18 + x0x7x12x16\r
++ ( 9\r
+2\r
+r − 3)x0x7x12x21 − x0x8x11x14 − x0x8x11x19 + x0x8x12x17\r
++ (−\r
+9\r
+2\r
+r + 3)x0x8x12x20 − x0x9x11x17 − x0x9x11x20 − x0x9x12x14\r
++ ( 9\r
+2\r
+r − 3)x0x9x12x19 + x0x10x11x16 − x0x10x11x21 − x0x10x12x15\r
++ (−\r
+9\r
+2\r
+r + 3)x0x10x12x18 + (−\r
+9\r
+4\r
+r + 1)x\r
+2\r
+1x\r
+2\r
+11 +\r
+3\r
+4\r
+rx2\r
+1x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+14 − x\r
+2\r
+1x14x19\r
++\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+15 + x\r
+2\r
+1x15x18 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+16 + x\r
+2\r
+1x16x21 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+17 − x\r
+2\r
+1x17x20 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+18\r
++\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+20 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+21 −\r
+3\r
+2\r
+rx1x2x12x13 + (−\r
+9\r
+2\r
+r + 3)x1x3x11x17\r
+− x1x3x11x20 − x1x3x12x14 + x1x3x12x19 + ( 9\r
+2\r
+r − 3)x1x4x11x16 − x1x4x11x21\r
+− x1x4x12x15 − x1x4x12x18 + (−\r
+9\r
+2\r
+r + 3)x1x5x11x15 + x1x5x11x18\r
+− x1x5x12x16 − x1x5x12x21 + ( 9\r
+2\r
+r − 3)x1x6x11x14 + x1x6x11x19\r
+− x1x6x12x17 + x1x6x12x20 + x1x7x11x16 + (−\r
+9\r
+2\r
+r + 3)x1x7x11x21\r
+− x1x7x12x15 − x1x7x12x18 + x1x8x11x17 + ( 9\r
+2\r
+r − 3)x1x8x11x20\r
++ x1x8x12x14 − x1x8x12x19 − x1x9x11x14 + (−\r
+9\r
+2\r
+r + 3)x1x9x11x19 + x1x9x12x17\r
+− x1x9x12x20 − x1x10x11x15 + ( 9\r
+2\r
+r − 3)x1x10x11x18 − x1x10x12x16 − x1x10x12x21\r
++\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+11 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+14 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+15 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+16 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+17 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+18\r
++\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+19 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+20 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+21 −\r
+3\r
+2\r
+rx2x3x13x14 −\r
+3\r
+2\r
+rx2x4x13x15 −\r
+3\r
+2\r
+rx2x5x13x16\r
+−\r
+3\r
+2\r
+rx2x6x13x17 −\r
+3\r
+2\r
+rx2x7x13x18 −\r
+3\r
+2\r
+rx2x8x13x19 −\r
+3\r
+2\r
+rx2x9x13x20 −\r
+3\r
+2\r
+rx2x10x13x21\r
++\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+3x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+15 +\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+16 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+3x\r
+2\r
+17 +\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+18\r
++\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+21 − x3x4x14x15 + ( 9\r
+2\r
+r − 3)x3x4x16x17 + x3x4x18x19 − x3x4x20x21\r
+− x3x5x14x16 + (−\r
+9\r
+2\r
+r + 3)x3x5x15x17 + x3x5x18x20 + x3x5x19x21\r
++ ( 9\r
+2\r
+r − 4)x3x6x14x17 − x3x7x14x18 + x3x7x15x19 + x3x7x16x20\r
++ (−\r
+9\r
+2\r
+r + 3)x3x7x17x21 + x3x8x\r
+2\r
+11 − x3x8x\r
+2\r
+12 − 2x3x8x15x18 − 2x3x8x16x21\r
++\r
+9\r
+2\r
+rx3x8x17x20 + 2x3x9x11x12 + 2x3x9x15x21 − 2x3x9x16x18 −\r
+9\r
+2\r
+rx3x9x17x19\r
+− x3x10x14x21 − x3x10x15x20 + x3x10x16x19 + ( 9\r
+2\r
+r − 3)x3x10x17x18 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+11\r
++\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+4x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+14 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+4x\r
+2\r
+16 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+17 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+20\r
++ ( 9\r
+2\r
+r − 4)x4x5x15x16 + (−\r
+9\r
+2\r
+r + 3)x4x6x14x16 − x4x6x15x17 + x4x6x18x20\r
++ x4x6x19x21 − x4x7x\r
+2\r
+11 + x4x7x\r
+2\r
+12 − 2x4x7x14x19 +\r
+9\r
+2\r
+rx4x7x16x21\r
+− 2x4x7x17x20 + x4x8x14x18 − x4x8x15x19 + (−\r
+9\r
+2\r
+r + 3)x4x8x16x20 + x4x8x17x21\r
+− x4x9x14x21 − x4x9x15x20 + ( 9\r
+2\r
+r − 3)x4x9x16x19 + x4x9x17x18 + 2x4x10x11x12\r
++ 2x4x10x14x20 −\r
+9\r
+2\r
+rx4x10x16x18 − 2x4x10x17x19 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+5x\r
+2\r
+13\r
++\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+14 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+5x\r
+2\r
+15 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+17 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+20 + ( 9\r
+2\r
+r − 3)x5x6x14x15\r
+− x5x6x16x17 − x5x6x18x19 + x5x6x20x21 − 2x5x7x11x12 − 2x5x7x14x20
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 15\r
+−\r
+9\r
+2\r
+rx5x7x15x21 + 2x5x7x17x19 + x5x8x14x21 + ( 9\r
+2\r
+r − 3)x5x8x15x20\r
+− x5x8x16x19 − x5x8x17x18 + x5x9x14x18 + (−\r
+9\r
+2\r
+r + 3)x5x9x15x19 − x5x9x16x20\r
++ x5x9x17x21 − x5x10x\r
+2\r
+11 + x5x10x\r
+2\r
+12 − 2x5x10x14x19 +\r
+9\r
+2\r
+rx5x10x15x18\r
+− 2x5x10x17x20 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+6x\r
+2\r
+13 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+6x\r
+2\r
+14 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+15\r
++\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+16 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+18 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+21 + ( 9\r
+2\r
+r − 3)x6x7x14x21 + x6x7x15x20 − x6x7x16x19\r
+− x6x7x17x18 − 2x6x8x11x12 −\r
+9\r
+2\r
+rx6x8x14x20 − 2x6x8x15x21 + 2x6x8x16x18\r
++ x6x9x\r
+2\r
+11 − x6x9x\r
+2\r
+12 +\r
+9\r
+2\r
+rx6x9x14x19 − 2x6x9x15x18 − 2x6x9x16x21\r
++ (−\r
+9\r
+2\r
+r + 3)x6x10x14x18 + x6x10x15x19 + x6x10x16x20 − x6x10x17x21 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+11\r
++\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+7x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+14 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+17 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+20 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+7x\r
+2\r
+21\r
++ x7x8x14x15 − x7x8x16x17 − x7x8x18x19 + ( 9\r
+2\r
+r − 3)x7x8x20x21 + x7x9x14x16\r
++ x7x9x15x17 − x7x9x18x20 + (−\r
+9\r
+2\r
+r + 3)x7x9x19x21 + ( 9\r
+2\r
+r − 4)x7x10x18x21\r
++\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+8x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+15 +\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+16 +\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+18 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+8x\r
+2\r
+20\r
++\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+21 + ( 9\r
+2\r
+r − 4)x8x9x19x20 + x8x10x14x16 + x8x10x15x17\r
++ (−\r
+9\r
+2\r
+r + 3)x8x10x18x20 − x8x10x19x21 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+9x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+15\r
++\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+16 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+18 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+9x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+21 − x9x10x14x15 + x9x10x16x17\r
++ ( 9\r
+2\r
+r − 3)x9x10x18x19 − x9x10x20x21 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+10x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+14\r
++\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+17 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+10x\r
+2\r
+18 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+20.\r
+References\r
+[Arv03] A. Arvanitogeorgos, An introduction to Lie groups and the geometry of homogeneous spaces,\r
+Student Mathematical Library, no. v. 22, American Mathematical Society, Providence, RI,\r
+2003.\r
+[BDI08] D. K. Biss, D. Dugger, and D. C. Isaksen, Large annihilators in Cayley–Dickson algebras,\r
+Comm. Algebra 36 (2008), no. 2, 632–664.\r
+[BH87] A. Back and W. Y. Hsiang, Equivariant geometry and Kervaire spheres, Trans. Amer. Math.\r
+Soc. 304 (1987), no. 1, 207–227.\r
+[BLS20] T. C. Burness, M. W. Liebeck, and A. Shalev, The length and depth of compact Lie groups,\r
+Math. Z. 294 (2020), no. 3-4, 1457–1476.\r
+[CLR95] M. D. Choi, T. Y. Lam, and B. Reznick, Sums of squares of real polynomials, K-Theory\r
+and Algebraic Geometry: Connections with Quadratic Forms and Division Algebras. Summer\r
+Research Institute on Quadratic Forms and Division Algebras, July 6-24, 1992, University of\r
+California, Santa Barbara, CA (USA), Providence, RI: American Mathematical Society, 1995,\r
+pp. 103–126.\r
+[DZ79] J. E. D’Atri and W. Ziller, Naturally reductive metrics and Einstein metrics on compact Lie\r
+groups, Memoirs of the American Mathematical Society, no. 215, American Mathematical\r
+Society, Providence, RI, 1979.\r
+[GG19] A. B. Gillard and N. G. Gresnigt, Three fermion generations with two unbroken gauge symme\u0002tries from the complex sedenions, Eur. Phys. J. C 79 (2019), no. 5, 11 p.\r
+[Jen73] G. R. Jensen, Einstein metrics on principal fibre bundles, J. Differential Geom. 8 (1973), no. 4,\r
+599–614.\r
+[Ker98] M. M. Kerr, New examples of homogeneous Einstein metrics, Michigan Math. J. 45 (1998),\r
+no. 1, 115–134.\r
+[Mor98] G. Moreno, The zero divisors of the Cayley-Dickson algebras over the real numbers, Bol. Soc.\r
+Mat. Mex., III. Ser. 4 (1998), no. 1, 13–28.
+
+16 SILVIO REGGIANI\r
+[Oni92] A. L. Onishchik, The group of isometries of a compact Riemannian homogeneous space, Dif\u0002ferential Geometry and Its Applications. Proceedings of a Colloquium, Held in Eger, Hungary,\r
+August 20-25, 1989, Organized by the J´anos Bolyai Mathematical Society, Amsterdam: North\u0002Holland Publishing Company; Budapest: J´anos Bolyai Mathematical Society, 1992, pp. 597–\r
+616.\r
+[OR13] C. Olmos and S. Reggiani, A note on the uniqueness of the canonical connection of a naturally\r
+reductive space, Monatsh. Math. 172 (2013), no. 3-4, 379–386.\r
+[ORT14] C. Olmos, S. Reggiani, and H. Tamaru, The index of symmetry of compact naturally reductive\r
+spaces, Math. Z. 277 (2014), no. 3-4, 611–628.\r
+[PW98] V. Powers and T. W¨ormann, An algorithm for sums of squares of real polynomials, J. Pure\r
+Appl. Algebra 127 (1998), no. 1, 99–104.\r
+[Reg10] S. Reggiani, On the affine group of a normal homogeneous manifold, Ann. Global Anal. Geom.\r
+37 (2010), no. 4, 351–359.\r
+[Reg24] , Auxiliary computations for the article The Geometry of Sedenion Zero Divisors,\r
+https://github.com/silvioreggiani/sedenion-zero-div, 2024.\r
+[SA20] L. S. Saoud and H. Al-Marzouqi, Metacognitive Sedenion-Valued Neural Network and its Learn\u0002ing Algorithm, IEEE Access 8 (2020), 144823–144838.\r
+[Sag70] A. A. Sagle, Some Homogeneous Einstein Manifolds, Nagoya Math. J. 39 (1970), 81–106.\r
+[Zil07] W. Ziller, Examples of Riemannian manifolds with non-negative sectional curvature, Metric\r
+and Comparison Geometry. Surveys in Differential Geometry. Vol. XI., Somerville, MA: Inter\u0002national Press, 2007, pp. 63–102.\r
+CONICET and Universidad Nacional de Rosario, ECEN-FCEIA, Departamento de Ma\u0002tematica. Av. Pellegrini 250, 2000 Rosario, Argentina. ´\r
+Email address: reggiani@fceia.unr.edu.ar\r
+URL: http://www.fceia.unr.edu.ar/~reggiani"""
+
+[metadata]
+title = "Cayley-Dickson Algebras and Projective Planes"
+authors = ["Silvio Reggiani"]
+arxiv = "2411.18881"
+year = 2024
+
+[[sections]]
+number = "0"
+title = "Preamble"
+text = """
+arXiv:2411.18881v1 [math.DG] 28 Nov 2024\r
+THE GEOMETRY OF SEDENION ZERO DIVISORS\r
+SILVIO REGGIANI\r
+Abstract. The sedenion algebra S is a non-commutative, non-associative, 16-dimen\u0002sional real algebra with zero divisors. It is obtained from the octonions through the\r
+Cayley-Dickson construction. The zero divisors of S can be viewed as the submanifold\r
+Z(S) ⊂ S × S of normalized pairs whose product equals zero, or as the submanifold\r
+ZD(S) ⊂ S of normalized elements with non-trivial annihilators. We prove that Z(S)\r
+is isometric to the excepcional Lie group G2, equipped with a naturally reductive left\u0002invariant metric. Moreover, Z(S) is the total space of a Riemannian submersion over\r
+the excepcional symmetric space of quaternion subalgebras of the octonion algebra, with\r
+fibers that are locally isometric to a product of two round 3-spheres with different radii.\r
+Additionally, we prove that ZD(S) is isometric to the Stiefel manifold V2(R\r
+7\r
+), the space\r
+of orthonormal 2-frames in R\r
+7\r
+, endowed with a specific G2-invariant metric. By shrink\u0002ing this metric along a circle fibration, we construct new examples of an Einstein metric\r
+and a family of homogenous metrics on V2(R\r
+7\r
+) with non-negative sectional curvature."""
+
+[[sections]]
+number = "1"
+title = "Introduction"
+text = """
+The Cayley-Dickson algebras form a sequence of real algebras An, defined recursively\r
+beginning with R and doubling in dimension with each iteration. The first members\r
+of this family are the familiar real division algebras: R = A0, C = A1, H = A2 and\r
+O = A3. The next algebra in this sequence is the so-called sedenion algebra S = A4,\r
+which is often overlooked in comparison to its lower-dimensional relatives due to its lack\r
+of certain desirable algebraic properties. Nonetheless, this somewhat enigmatic algebra\r
+has long intrigued mathematicians and has recently found applications in fields such as\r
+theoretical physics [GG19] and machine learning [SA20].\r
+Since S is not a division algebra, it is interesting to understand the structure of its zero\r
+divisors. The topology of the sedenion zero divisors is described by the principal bundle\r
+SU(2) → G2 → V2(R\r
+7\r
+),\r
+where G2 is the excepcional compact Lie group of rank 2 and V2(R\r
+7\r
+) is the Stiefel mani\u0002fold of orthonormal 2-frames in R"""
+
+[[sections]]
+number = "7"
+title = "Specifically, G2 is homeomorphic to the submanifold"
+text = """
+Z(S) ⊂ S × S of normalized sedenion pairs that multiply to zero; V2(R\r
+7\r
+) is homeomor\u0002phic to the submanifold ZD(S) ⊂ S of sedenions with norm √\r
+2 that have non-trivial\r
+annihilators; and, for each u ∈ ZD(S), the fiber SU(2) corresponds to the sphere of the\r
+annihilator subspace of u (see [Mor98, BDI08]). However, little is known regarding the\r
+geometry of the sedenion zero divisors.\r
+Both Z(S) and ZD(S) carry a natural geometry as submanifolds of R\r
+32 and R16, re\u0002spectively. Furthermore, since the zero divisors of S are invariant under Aut(S), whose\r
+Date: December 2, 2024."""
+
+[[sections]]
+number = "2020"
+title = "Mathematics Subject Classification. 53C30, 17A20."
+text = """
+Key words and phrases. Cayley-Dickson algebras, Sedenion algebra, Zero divisors, Einstein manifolds,\r
+Non-negative curvature.\r
+1"""
+
+[[sections]]
+number = "2"
+title = "SILVIO REGGIANI"
+text = """
+connected component is isomorphic to G2, it follows that Z(S) and ZD(S) are homoge\u0002neous submanifolds. In this article, we study the intrinsic geometry of the zero divisors\r
+of S. First, we prove that Z(S) is isometric to G2 with a naturally reductive left-invariant\r
+metric, forming the total space of a Riemannian submersion over the exceptional sym\u0002metric space G2/SO(4), with fibers locally isometric to a product of two round 3-spheres\r
+with different radii.\r
+Next, we analyze the geometry of ZD(S), which is isometric to V2(R\r
+7\r
+) = G2/SU(2)\r
+with a particular G2-invariant metric. At first glance, the geometry of ZD(S) does not\r
+seem very interesting; however, by shrinking the metric along a certain circle fibration,\r
+we obtain a family gr (r > 0) of G2-invariant metrics on V2(R\r
+7\r
+), where g 2\r
+3\r
+represents\r
+the original metric. This process reveals several distinguished examples. Specifically, we\r
+prove, among other things, that (V2(R\r
+7\r
+), gr):\r
+• has positive scalar curvature if and only of r < 20\r
+3\r
+;\r
+• is an Einstein manifold if and only if r =\r
+5\r
+9\r
+;\r
+• has non-negative sectional curvature if and only if 0 < r ≤\r
+4\r
+9\r
+.\r
+These results are quite remarkable, as Einstein metrics and metrics with non-negative\r
+curvature are very rare. To the best of our knowledge, the examples presented in this\r
+article are new. The known homogeneous Einstein metrics on V2(R\r
+7\r
+) = G2/SU(2) =\r
+SO(7)/SO(5) are limited to the unique SO(7)-invariant Einstein metric discovered by\r
+Sagle and the so-called Jensen metrics (see [Sag70, Jen73, BH87, Ker98]). It is worth\r
+noticing that the metric g 5\r
+9\r
+is neither SO(7)-invariant nor a Jensen metric. Regarding\r
+metrics with non-negative sectional curvature, we refer to the survey [Zil07]. Typically,\r
+examples of homogeneous metrics with non-negative curvature appear as normal homo\u0002geneous metrics or are constructed through a Cheeger deformation of a metric already\r
+known to have non-negative curvature. Recall that none of the metrics gr is normal ho\u0002mogeneous (nor even naturally reductive) and that the initial metric g 2\r
+3\r
+does not possess\r
+non-negative sectional curvature.\r
+Let us comment briefly on the proof our main results. In order to study the geometry\r
+of Z(S), it is necessary to “fix an origin” so that the metric can be identified with a\r
+left-invariant metric on G2. Any choice of such an origin for Z(S) leads to isometric\r
+metrics on G2, but a well-chosen origin can greatly simplify computations. We select the\r
+origin from among the so-called 84 standard zero divisors of S. Then, using the results\r
+in [DZ79], we show that Z(S) is a naturally reductive space. A similar approach applies\r
+to the study of ZD(S) with the metric gr. Here, we select another standard zero divisor\r
+(different from the previous one) so that the isotropy subgroup of G2 acts trivially on\r
+the usual subalgebra H ⊂ S. This choice allows the metric gr to be expressed in diagonal\r
+form with respect to the normal homogeneous metric, making it possible to derive a nice\r
+expression for the Ricci tensor of gr.\r
+The most challenging part is to determine the sign of the sectional curvatures of gr.\r
+Since there is no manageable expression for the curvature (as there is for naturally re\u0002ductive spaces), using algebraic manipulation proves to be nearly impossible. Indeed, the\r
+sectional curvature function Fr of gr can be interpreted as a homogeneous polynomial\r
+of degree 4 in 22 real variables, which, for a generic r, has 285 non-trivial coefficients.\r
+To show that Fr is non-negative for 0 < r ≤\r
+4\r
+9\r
+, we reduce the problem to proving that\r
+both F0 (the formal extension of Fr at r = 0) and F4\r
+9\r
+are non-negative. By using convex
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 3\r
+optimization techniques, we are able to prove the stronger result that F0 and F4\r
+9\r
+are\r
+polynomial sums of squares.\r
+Finally we want to mention that the computations required in the proof of some of our\r
+results are often cumbersome and were computer checked using the software SageMath.\r
+The code used to verify our results is available at [Reg24].\r
+We believe this work shows that the study of the geometry of Cayley-Dickson alge\u0002bras, particularly regarding their zero divisors, deserves further attention, as it may have\r
+interesting implications in differential geometry of compact homogeneous spaces.\r
+Acknowledgements. This work is supported by CONICET and partially supported by\r
+SeCyT-UNR and ANPCyT. The author would like to thank Andreas Arvanitoyeorgos for\r
+helpful discussions on homogeneous Einstein metrics on Stiefel manifolds."""
+
+[[sections]]
+number = "2"
+title = "Preliminaries and notation"
+text = """
+The main references for this section are [Mor98, BDI08] on Cayley-Dickson algebras\r
+and their zero divisors, [Arv03] on the geometry of homogeneous spaces and [DZ79] on\r
+naturally reductive left-invariant metrics on compact Lie groups. Observe that in this\r
+section, as well as throughout the rest of the article, we start counting indices from 0."""
+
+[[sections]]
+number = "2.1"
+title = "Cayley-Dickson algebras. The Cayley-Dickson algebras An are a family of real"
+text = """
+algebras, equipped with an involution a 7→ a\r
+∗\r
+(also called conjugation), which are recur\u0002sively defined starting from A0 = R, where a\r
+∗ = a. Each subsequent algebra is defined\r
+by setting An = An−1 × An−1 as a vector space, with multiplication given by\r
+(a, b)(c, d) = (ac − d\r
+∗\r
+b, da + bc∗)\r
+and involution defined by\r
+(a, b)\r
+∗ = (a∗\r
+, −b).\r
+Notice that the inclusion a 7→ (a, 0) is a monomorphism of algebras from An−1 into\r
+An for all n ≥ 0. It is well known that the first four algebras in the Cayley-Dickson\r
+construction are the real division algebras R, C, H and O, respectively. It is also known\r
+that the Cayley-Dickson algebras lose some important properties with each iteration.\r
+For example, An is commutative if and only if n ≤ 1, associative if and only if n ≤ 2;\r
+alterative (i.e., x(xy) = (xx)y and (xy)y = x(yy) for all x, y ∈ An) if and only of n ≤ 3.\r
+On the other hand, every Cayley-Dickson algebra is flexible (i.e., x(yx) = (xy)x for all\r
+x, y ∈ An) and power associative (i.e., x\r
+k\r
+is well defined for all x ∈ An and k ∈ N).\r
+For x ∈ An we define its real and imaginary parts as Re x =\r
+1\r
+2\r
+(x + x\r
+∗\r
+) and Im x =\r
+1\r
+2\r
+(x−x\r
+∗\r
+), respectively. We say that x is real (resp. imaginary) if Im x = 0 (resp. Re x = 0).\r
+Thus, one can recover the usual inner product on An ≃ R\r
+2\r
+n\r
+by\r
+hx, yi = Re(xy∗).\r
+In An, one has that kxk\r
+2 = xx∗\r
+for all x. However, the identity kxyk = kxkkyk does not\r
+hold in general if n ≥ 4. Recall that An is a division algebra if and only n ≤ 3. If n ≥ 4,\r
+then An has zero divisors. Since, xy = 0 implies yx = 0, the left and right zero divisors\r
+of An coincide. Thus, an element 0 6= u ∈ An is a zero divisor if and only if ann u 6= 0,\r
+where ann u is the kernel of the R-linear map Lu : An → An given by Lu(x) = ux. In\r
+[Mor98], it is proven that a zero divisor u must be imaginary and dim(ann u) ≡ 0 mod 4."""
+
+[[sections]]
+number = "4"
+title = "SILVIO REGGIANI"
+text = """
+Furthermore, in [BDI08] it is proven that dim ann u ≤ 2\r
+n − 4n + 4. One can study the\r
+zero divisors globally by defining the sets\r
+Z(An) = {(u, v) ∈ An × An : kuk = kvk =\r
+√\r
+2 and uv = 0},\r
+ZD(An) = {u ∈ An : (u, v) ∈ Z(An) for some v ∈ An}.\r
+Normalizing the zero divisors to √2 is not particularly important, but it will be convenient\r
+later. When n ≥ 5, the sets ZDk(An) = {u ∈ ZD(An) : dim(ann u) = k} are also of\r
+interest.\r
+For n ≥ 4, one has that the automorphism group of An is given by\r
+Aut(An) ≃ Aut(An−1) × S3 ≃ G2 × (S3)\r
+n−3\r
+,\r
+where S3 is the symmetric group in three elements, and G2 = Aut(O) is the 14-dimen\u0002sional compact simple Lie group of rank 2. Recall that G2 acts diagonally on An. It\r
+follows that Der(An) = g2 for all n ≥ 4, where g2 is the Lie algebra of G2."""
+
+[[sections]]
+number = "2.2"
+title = "Sedenion zero divisors. From now on we denote the sedenion algebra A4 by S."
+text = """
+Let us denote by e0, . . . , e15 the canonical basis of S. By making an abuse of notation, we\r
+also denote by e0, . . . , e3 and e0, . . . , e7 the canonical basis of H and O respectively. The\r
+zero divisors of S have the following form.\r
+Proposition 2.1 (See [BDI08]). An element (a, b) ∈ S is a zero divisor if and only if\r
+a, b are imaginary elements of O such that kak = kbk 6= 0 and a ⊥ b.\r
+From this result, one can construct the 84 standard zero divisors of S. Namely, the\r
+elements of the form (ei + ej, ek ± el) ∈ Z(S) such that 1 ≤ i ≤ 6, 9 ≤ j ≤ 15, i < k ≤ 7\r
+and 9 ≤ l ≤ 15 (see Table 1). Clearly, every automorphism of S maps Z(S) into itself.\r
+Moreover, we have that the connected component of Aut(S) acts simply and transitively\r
+on Z(S):\r
+Theorem 2.2 ([Mor98]). Z(S) is homeomorphic (and moreover, diffeomorphic) to G2.\r
+Given (u0, v0) ∈ Z(S), we have that G2 · u0 = ZD(S). It is not difficult to see that the\r
+isotropy subgroup at u0 is isomorphic to SU(2). Note that G2/SU(2) is diffeomorphic to\r
+the Stiefel manifold V2(R\r
+7\r
+). In fact, every automorphism of O is completely determined\r
+by its values a, b, c at e1, e2, e4 respectively. Here (a, b, c) can be any triple of pairwise\r
+orthonormal imaginary octonions of norm 1 such that ab ⊥ c. Hence the map (a, b, c) 7→\r
+(a, b) identifies with a transitive action of G2 in V2(R\r
+7\r
+), whose isotropy subgroup at (e1, e2)\r
+are the octonion automorphism that act trivially on H, and therefore are isomorphic to\r
+SU(2). Thus, the topology of the sedenion zero divisors is encoded by the principal bundle\r
+SU(2) → G2 → V2(R\r
+7\r
+)."""
+
+[[sections]]
+number = "2.3"
+title = "The Lie algebra of G2. We think of the Lie group G2 = Aut(O) as a subgroup of"
+text = """
+SO(8) in the natural way (since every automorphism of O fixes e0, we have that G2 is\r
+actually a subgroup of SO(7), but we do not use this identification here). So, we have g2\r
+as a subalgebra of so(8). Let us consider the bi-invariant metric gbi induced by the inner\r
+product on g2, which we denote with the same symbol, given by\r
+gbi(X, Y ) = − tr(XY ).
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 5\r
+Let us denote by Eij ∈ so(8), where 0 ≤ i < j ≤ 7, the matrix such that (Eij )ij =\r
+−(Eij )ji = −1 and (Eij )kl = 0 in any other case. We define\r
+X0 =\r
+1\r
+2\r
+(E45 + E67), X7 =\r
+1\r
+2\r
+(E16 + E25),\r
+X1 =\r
+1\r
+2\r
+(E46 − E57), X8 = −\r
+1\r
+2\r
+(E15 − E26),\r
+X2 =\r
+1\r
+2\r
+(E47 + E56), X9 =\r
+1\r
+2\r
+(E14 + E27),\r
+X3 = −\r
+√\r
+3\r
+6\r
+(2E23 − E45 + E67), X10 =\r
+√\r
+3\r
+6\r
+(E16 − E25 + 2E34),\r
+X4 =\r
+√\r
+3\r
+6\r
+(2E13 + E46 + E57), X11 =\r
+√\r
+3\r
+6\r
+(E17 + E24 + 2E35),\r
+X5 = −\r
+√\r
+3\r
+6\r
+(2E12 − E47 + E56), X12 = −\r
+√\r
+3\r
+6\r
+(E14 − E27 − 2E36),\r
+X6 = −\r
+1\r
+2\r
+(E17 − E24), X13 = −\r
+√\r
+3\r
+6\r
+(E15 + E26 − 2E37).\r
+One can see that X0, . . . , X13 is an orthonormal basis of g2 with respect to the bi\u0002invariant metric. We will denote by X0\r
+, . . . , X13 its dual basis. Define\r
+k0 =\r
+M\r
+2\r
+i=0\r
+RXi, m0 =\r
+M\r
+5\r
+i=3\r
+RXi, m1 =\r
+M\r
+9\r
+i=6\r
+RXi, m2 =\r
+M\r
+13\r
+i=10\r
+RXi.\r
+We have that k0 and m0 are two subalgebras of g2 isomorphic to so(3) such that\r
+[k0, m0] = 0. Moreover, k0 ⊕ m0 ≃ so(4) is the subalgebra of a maximal subgroup of G2\r
+isomorphic to SO(4) (cfr. [BLS20]). Such subgroup preserves the orthogonal decomposi\u0002tion O = H ⊕ H⊥. Furthermore, the subgroup of G2 with Lie algebra k0 is isomorphic\r
+to SU(2) and acts trivially on H. Recall that G2/SO(4), with the normal homogeneous\r
+metric, is the symmetric space of quaternion subalgebras of O."""
+
+[[sections]]
+number = "2.4"
+title = "Homogeneous and naturally reductive spaces. Let G be a Lie group and H"
+text = """
+be a compact subgroup of G. Let us denote by g and h the Lie algebras of G and H,\r
+respectively. Assume that G acts almost effectively on M = G/H and that M is endowed\r
+with a G-invariant metric g. Recall that every X ∈ g induces a Killing vector field X∗\r
+on M defined as X∗\r
+q =\r
+d\r
+dt"""
+
+[[sections]]
+number = "0"
+title = "Exp(tX) · q. The map X 7→ X∗from g into X(M) satisfies"
+text = """
+[X, Y ]\r
+∗ = −[X∗\r
+, Y ∗].\r
+Let us fix a reductive decomposition g = h⊕m (i.e., m is an Ad(H)-invariant subspace\r
+of g complementary to h), which always exists since H is compact. Assume that H is\r
+the isotropy subgroup of p ∈ M. Then we can identify m ≃ TpM. The geometry of M\r
+is determined by an Ad(H)-invariant inner product on m, which we also denote by g,\r
+defined such that the map X ∈ m 7→ X∗\r
+p ∈ TpM is a linear isometry. With this setting,\r
+we can compute the Levi-Civita connection of M as\r
+(∇X∗ Y\r
+∗\r
+)p = −\r
+1\r
+2\r
+[X, Y ]m + U(X, Y ), X, Y ∈ m, (2.1)\r
+where U is the algebraic tensor on m given by\r
+2g(U(X, Y ), Z) = g([Z, X]m, Y ) + g(X, [Z, Y ]m), X, Y, Z ∈ m."""
+
+[[sections]]
+number = "6"
+title = "SILVIO REGGIANI"
+text = """
+Let RX,Y = ∇[X,Y ] − [∇X, ∇Y ] be the curvature tensor of M. The sectional curvature\r
+of M is determined by\r
+g(RX,Y X, Y ) = −\r
+3\r
+4\r
+k[X, Y ]mk\r
+2 −\r
+1\r
+2\r
+g([X, [X, Y ]m]m, Y ) −\r
+1\r
+2\r
+g([Y, [Y, X]m]m, X)\r
++ kU(X, Y )k\r
+2 − g(U(X, X), U(Y, Y )) + g(Y, [[X, Y ]h, X]m)\r
+for X, Y ∈ m. Also, the Ricci tensor of M is determined by\r
+Ric(X, X) = −\r
+1\r
+2\r
+X\r
+i\r
+{k[X, Xi]mk\r
+2 + g([X, [X, Xi\r
+]m]m, Xi) + 2g([X, [X, Xi]h]m, Xi)}\r
++\r
+1\r
+4\r
+X\r
+i,j\r
+g([Xi, Xj]m, X)\r
+2 − g([Z, X]m, X), (2.2)\r
+for X ∈ m, where {Xi} is an orthonormal basis of m and Z =\r
+P\r
+i U(Xi\r
+, Xi).\r
+Recall that the metric g on M = G/H is naturally reductive if and only if U ≡ 0.\r
+An interesting particular case is when a left-invariant metric on a Lie group is naturally\r
+reductive (with respect to a certain transitive Lie group of isometries).\r
+Theorem 2.3 ([DZ79]). Let G be a compact, simple Lie group group endowed with a\r
+left-invariant metric g. Let g denote the Lie algebra of G and let gbi be a bi-invariant\r
+metric on G (which is a negative multiple of the Killing form of g). The metric g is\r
+naturally reductive if and only if there exists a subalgebra k of g such that\r
+g = gk0 ⊕ α1 gbi|k1 ⊕ · · · ⊕ αr gbi|kr ⊕ α gbi|k⊥\r
+where k = k0 ⊕ k1 ⊕ · · · ⊕ kr, with k0 the center of k and k1, . . . ,kr are simple ideals. Here,\r
+k\r
+⊥ is the orthogonal complement of k with respect to the bi-invariant metric, gk0\r
+is an\r
+arbitrary inner product on k0, and α1, . . . , αr, α are positive real numbers."""
+
+[[sections]]
+number = "3"
+title = "The G2-invariant metrics on Z(S) and ZD(S)"
+text = """
+Consider Z(S) as a submanifold of S × S ≃ R\r
+32 with the induced metric. Although\r
+this reduction is not necessary here, one could lower the codimension of Z(S). In fact,\r
+by Proposition 2.1, Z(S) is a submanifold of S\r
+6 × S6 × S6 × S6\r
+. Since G2 = Aut(O) ⊂\r
+Aut(S) acts isometrically on S × S, we have that Z(S) is a homogeneous submanifold.\r
+Furthermore, by Theorem 2.2, the diffeomorphism Z(S) ≃ G2 induces a left-invariant\r
+metric g on G2.\r
+Theorem 3.1. The metric on Z(S) is naturally reductive. Furthermore, Z(S) is the\r
+total space of a Riemannian submersion over the excepcional symmetric space G2/SO(4)\r
+with totally geodesic fibers, which are locally isometric to a product of two round 3-spheres\r
+with different radii.\r
+Proof. It is sufficient to prove the theorem for the left-invariant metric on G2 defined in\r
+the paragraph preceding the statement. To determine such a metric, one fixes an element\r
+(u0, v0) ∈ Z(S) and computes\r
+g(Xi, Xj ) = (Xi· (u0, v0))T(Xj· (u0, v0)). (3.1)\r
+Note that not every zero divisor pair behaves nicely with respect to the decomposition\r
+g2 = k0 ⊕ m0 ⊕ m1 ⊕ m2 given in Subsection 2.3. By running (3.1) over the standard zero
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 7\r
+divisors from Table 1, we observe that if (u0, v0) = (e4 + e13, e6 + e15) the metric can be\r
+expressed as\r
+g =\r
+X\r
+2\r
+i=0\r
+X\r
+i ⊗ Xi +\r
+1\r
+3\r
+X\r
+5\r
+i=3\r
+X\r
+i ⊗ Xi +\r
+1\r
+2\r
+X\r
+13\r
+i=6\r
+X\r
+i ⊗ Xi = gbi|k0 ⊕\r
+1\r
+3\r
+gbi|m0 ⊕\r
+1\r
+2\r
+gbi|m1⊕m2.\r
+From Theorem 2.3, it follows that this metric is naturally reductive. More precisely, this\r
+metric is naturally reductive with respect to G2 ×SO(4), where the second factor acts on\r
+the right and the isotropy subgroup is given by diag(SO(4) × SO(4)). Thus, from [DZ79,\r
+Theorem 8], the subgroup SO(4) ⊂ G2, whose Lie algebra is given by k0 ⊕ m0, is totally\r
+geodesic.\r
+Since g|m1⊕m2is a multiple of the bi-invariant metric, when restricted to m1 ⊕ m2, and\r
+k0 ⊕ m0 ≃ so(4) is orthogonal to m1 ⊕ m2 with respect to both metrics, we conclude\r
+that (G2, g) → G2/SO(4) is a Riemannian submersion. The fiber of this submersion is\r
+isometric to the Lie group SO(4) endowed with the bi-invariant metric g|k0⊕m0, which is\r
+obtained by taking two different scalings of the bi-invariant metric on the simple ideals\r
+so(3) ≃ k0 ≃ m0 of so(4). Hence, the universal cover of SO(4) splits into a product of\r
+two round spheres with different radii. \u0003\r
+Remark 3.2. Since the metric in Z(S) is naturally reductive, many geometric properties\r
+follow from existing results. For example, the (connected component of the) full isometry\r
+group is computed in [DZ79] (see also [OR13]). The so-called index of symmetry of Z(S),\r
+which in this case is trivial, can be computed from the results in [ORT14]. It can also\r
+be seen from [DZ79] that the metric on Z(S) is not Einstein. We verify this fact again\r
+in the next proposition by explicitly computing the Ricci tensor, which also allows us to\r
+show that the Ricci curvature is positive.\r
+Proposition 3.3. Z(S) has positive Ricci curvature. Moreover,\r
+Ric = 5\r
+2\r
+X\r
+2\r
+i=0\r
+X\r
+i ⊗ Xi +\r
+29\r
+54\r
+X\r
+5\r
+i=3\r
+X\r
+i ⊗ Xi +\r
+5\r
+6\r
+X\r
+13\r
+i=6\r
+X\r
+i ⊗ Xi\r
+. (3.2)\r
+Proof. It follows from a straightforward computation using the following well-known for\u0002mula. Let Y0, . . . , Y13 be an g-orthonormal basis of g2. Then\r
+Ric(Yj, Yh) = 1\r
+2\r
+X\r
+i,k\r
+\u001A\r
+ciki(ckjh + ckhj ) + 1\r
+2\r
+cikhcikj − cijkckhi + cikicjhk − cijkcihk\u001B\r
+where cijk = g([Yi, Yj], Yk). Since g has diagonal form in the basis X0, . . . , X13, we can\r
+choose Yi = g(Xi, Xi)\r
+− 1"""
+
+[[sections]]
+number = "2"
+title = "Xi"
+text = """
+. From this, we can show that\r
+Ric = 5\r
+2\r
+X\r
+2\r
+i=0\r
+Y\r
+i ⊗ Yi +\r
+29\r
+18\r
+X\r
+5\r
+i=3\r
+Y\r
+i ⊗ Yi +\r
+5\r
+3\r
+X\r
+13\r
+i=6\r
+Y\r
+i ⊗ Yi\r
+,\r
+which is equivalent to (3.2). \u0003\r
+Now we direct our attention to the geometry of ZD(S) with the metric induced from the\r
+ambient space S ≃ R"""
+
+[[sections]]
+number = "16"
+title = "Since G2 acts isometrically and transitively on ZD(S), we have"
+text = """
+that ZD(S) is isometric to the Stiefel manifold G2 · u0 = G2/SU(2) = V2(R\r
+7\r
+), equipped\r
+with a certain G2-invariant metric, where SU(2) is the isotropy subgroup of u0 ∈ ZD(S).\r
+We again denote by g such a metric, which is defined by\r
+g(Xi, Xj ) = (Xi· u0)\r
+T\r
+(Xj· u0)."""
+
+[[sections]]
+number = "8"
+title = "SILVIO REGGIANI"
+text = """
+Similarly to the case of Z(S), we can choose u0 appropriately so that the Lie algebra\r
+of SU(2) is k0. Taking u0 = e1 + e10, we obtain that\r
+g2 = k0 ⊕ m, where m = m0 ⊕ m1 ⊕ m2,\r
+is a reductive decomposition for G2/SU(2). The corresponding Ad(SU(2))-invariant inner\r
+product on m is given by\r
+g =\r
+1\r
+3\r
+(X\r
+3 ⊗ X3 + X4 ⊗ X4\r
+) + 2\r
+3\r
+X\r
+5 ⊗ X5 +\r
+1\r
+2\r
+X\r
+9\r
+i=6\r
+X\r
+i ⊗ Xi +\r
+1\r
+6\r
+X\r
+13\r
+i=10\r
+X\r
+i ⊗ Xi\r
+.\r
+A detailed study of the isometry group and the curvature of g is given in the next\r
+section. Before proceeding, we note a simple fact about the sectional curvatures of g.\r
+Remark 3.4. Let us denote by πij the 2-dimensional subspace of m generated by Xi and\r
+Xj, where 3 ≤ i < j ≤ 13. Then the sectional curvature of πij is non-negative if and\r
+only if πij 6= π34. This suggests that one could attempt to modify the metric g along\r
+the direction normal to π34 inside m1 in order to get some examples of metrics with\r
+non-negative sectional curvature. We explore this approach in the next section."""
+
+[[sections]]
+number = "4"
+title = "A family of G2-invariant metrics on V2(R"
+text = """
+7\r
+)\r
+For each r > 0, we consider on V2(R\r
+7\r
+) the family of G2-invariant metrics given by\r
+gr =\r
+1\r
+3\r
+(X\r
+3 ⊗ X3 + X4 ⊗ X4\r
+) + r X5 ⊗ X\r
+5 +\r
+1\r
+2\r
+X\r
+9\r
+i=6\r
+X\r
+i ⊗ Xi +\r
+1\r
+6\r
+X\r
+13\r
+i=10\r
+X\r
+i ⊗ Xi\r
+. (4.1)\r
+Indeed, gr gives an Ad(SU(2))-invariant inner product on m since m0 is the subspace\r
+of fixed points of the isotropy representation of G2/SU(2) and\r
+gr|m1 =\r
+1\r
+2\r
+gbi|m1, gr|m2 =\r
+1\r
+6\r
+gbi|m2.\r
+Next, we compute the connected component of the full isometry group of gr.\r
+Theorem 4.1. I0(V2(R\r
+7\r
+), gr) ≃ G2 × S\r
+1\r
+.\r
+Proof. Since G2 is a compact simple Lie group, it follows from the results in [Oni92] that\r
+I0(V2(R\r
+7\r
+), gr) ⊂ I0(V2(R\r
+7\r
+), gnh), where gnh = gbi|m is the normal homogeneous metric\r
+associated with the homogeneous presentation V2(R\r
+7\r
+) = G2/SU(2). From [Reg10], we\r
+have that I0(V2(R\r
+7\r
+), gnh) ≃ G2 × K (almost direct product) where the Lie algebra of\r
+K is given by the G2-invariant vector fields, which are identified with the fixed vectors\r
+of the isotropy representation. That is, the Lie algebra of K is identified with m0, but\r
+the elements of K ≃ SU(2) act “on the right”. Then, it is not difficult to see that\r
+I0(V2(R\r
+7\r
+)) ≃ G2 × K′(almost direct product) for a compact and connected subgroup K′\r
+of K, which in principle depends on r. Since dim K = 3, it is enough to see that K′ 6= K\r
+and dim K′ ≥ 1.\r
+Now, for Y ∈ m0, let Yˆ be the G2-invariant vector field induced by Y . Using (2.1)\r
+and the fact that ∇X∗ Yˆ = ∇Yˆ X∗\r
+for all X ∈ m, one can see that Yˆ is a Killing field\r
+for gr if and only if [Y, −]m : m → m is skew-symmetric with respect to gr. The 1\r
+2\r
+- and\r
+1\r
+6\r
+-scalings of the metric on the irreducible subspaces m1 and m2 prevent Xˆ\r
+3 and Xˆ4 from\r
+being Killing fields for gr. However, one can check that Xˆ\r
+5 is a Killing field for gr for any\r
+r > 0. Thus K′ = S\r
+1\r
+, which implies I0(V2(R\r
+7\r
+)) = G2 × S\r
+1\r
+is actually a direct product.\r
+Observe that we have proved that the S\r
+1\r
+factor is independent of r. \u0003
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 9\r
+Now, we compute the Ricci and scalar curvature of gr. In particular, we obtain the\r
+following result.\r
+Theorem 4.2. (1) The metric gr is Einstein if and only if r =\r
+5\r
+9\r
+.\r
+(2) The metric gr has positive scalar curvature if and only if r < 20\r
+3\r
+.\r
+Proof. Let Y3, . . . , Y13 be the gr-orthonormal basis of m obtained from normalizing the\r
+basis X3, . . . , X13. We can use formula (2.2) to explicitly compute the Ricci tensor Ricgr\r
+of gr. After lengthy computations, carefully verified using a computer (see [Reg24]), we\r
+obtain\r
+Ricgr =\r
+15r\r
+2\r
+Y\r
+5 ⊗ Y5 +\r
+\u0012\r
+−\r
+3r\r
+2\r
++ 5\u0013X\r
+i6=5\r
+Y\r
+i ⊗ Yi\r
+. (4.2)\r
+Hence, gr is Einstein if and only if r =\r
+5"""
+
+[[sections]]
+number = "9"
+title = "Also, from (4.2) we get that the scalar"
+text = """
+curvature scalgr = 50 −\r
+15\r
+2\r
+r is positive if and only if r < 20\r
+3\r
+. \u0003\r
+Remark 4.3. In [Jen73], the construction of remarkable examples of Einstein metrics on\r
+the base space of certain principal bundles can be found. Such metrics are now known\r
+as Jensen metrics. In particular, there exist G2-invariant Einstein metrics on V2(R\r
+7\r
+),\r
+arising from the principal bundle SU(2) → G2 → G2/SU(2), which in our notation takes\r
+the form t\r
+2\r
+gbi|m0 ⊕ gbi|m1⊕m2for certain values of t > 0. Notice that the metric g 5\r
+9\r
+from\r
+Theorem 4.2 is not a Jensen metric. Moreover, it is not even bi-invariant when restricted\r
+to m0.\r
+Theorem 4.4. The metric gr has non-negative sectional curvature if and only if r ≤\r
+4\r
+9\r
+.\r
+In order to prove our theorem, we will need the following result, which is a particular\r
+case of Theorem 1 in [PW98] (see also [CLR95]).\r
+Lemma 4.5. Let F ∈ R[x0, . . . , xn] be a homogeneous polynomial of degree 4. Then F is\r
+a (polynomial) sum of squares if and only if there exists a symmetric positive semi-definite\r
+matrix H such that\r
+F = x\r
+T Hx (4.3)\r
+where x = (x\r
+2\r
+0\r
+, x0x1, . . . , xn−1xn, x2\r
+n\r
+)\r
+T\r
+is the vector of monomials of degree 2.\r
+Let us mention that the vector x has (n+2)(n+1)\r
+2\r
+coordinates and the subspace of, not\r
+necessarily positive semi-definite, matrices H satisfying (4.3) has dimension (n+2)(n+1)2n\r
+12 .\r
+Thus, finding an exact (positive semi-definite) solution H for equation (4.3) can be quite\r
+difficult, even for relatively small values of n.\r
+Proof of Theorem 4.4. It is not hard to see that if π34 = RX3 ⊕ RX4, then the sectional\r
+curvature of the plane π34 is\r
+κgr\r
+(π34) = −\r
+9\r
+4\r
+r + 1.\r
+Thus, gr does not have non-negative sectional curvature for r > 4"""
+
+[[sections]]
+number = "9"
+title = "Let Y3, . . . , Y13 be"
+text = """
+the orthonormal basis of m defined in the proof of Theorem 4.2 and write\r
+X =\r
+X\r
+13\r
+i=3\r
+xi−3Yi, Y =\r
+X\r
+13\r
+i=3\r
+xi+8Yi.\r
+For each r, consider the polynomial\r
+Fr = gr(R\r
+gr\r
+X,Y X, Y ) ∈ R[x0, . . . , x21],"""
+
+[[sections]]
+number = "10"
+title = "SILVIO REGGIANI"
+text = """
+where Rgr denotes the curvature tensor of gr. Observe that we can formally extend the\r
+polynomial Fr to every r ∈ R (even when gr does not make sense for r ≤ 0). Moreover,\r
+from the explicit formula for Fr, which can be found in the Appendix A.2, we see that\r
+fixing x0, . . . , x21, the map r 7→ Fr(x0, . . . , x21) defines a linear function on r. Thus, it is\r
+enough to prove that the polynomials F0 and F4\r
+9\r
+are non-negative. We will use Lemma 4.5\r
+to prove the stronger statement that F0 and F4\r
+9\r
+are polynomial sums of squares. Since\r
+Fr is obtained from computing sectional curvatures, every monomial xixjxkxl with non\u0002trivial coefficient in Fr satisfies 0 ≤ i ≤ j ≤ 10 < k ≤ l ≤ 21. Hence, we do not lose\r
+generality replacing x\r
+T\r
+in Lemma 4.5 with\r
+x\r
+T = (x0x11, . . . , x0x21, . . . , x10x11, . . . , x10x21, x2\r
+0\r
+, . . . , x2\r
+21).\r
+This change substantially reduces the size of the system (4.3) from 253×253 to 143×143.\r
+Now we are looking for symmetric positive semi-definite matrices Hα such that\r
+Fα = x\r
+T Hαx, α ∈ {0,\r
+4\r
+9\r
+}.\r
+This is a convex optimization problem, which, thanks to the reduction of the dimen\u0002sion mentioned above, can be successfully solved by the Python solver CVXOPT. We\r
+implemented the computer code in SageMath through two instances of SemidefinitePro\u0002gram(). However, this only yields numerical solutions, and since the condition of being\r
+positive semi-definite is a closed one, an exact solution is not guaranteed. Nonetheless,\r
+since the polynomial sums of squares are dense in the set of non-negative polynomials,\r
+exact solutions are expected to exist. Moreover, since Fr has relatively few non-trivial\r
+coefficients, one can expect to find sparse solutions H0 and H4"""
+
+[[sections]]
+number = "9"
+title = "This is indeed the case,"
+text = """
+since rounding the numerical solutions lead us to the exact solution described as follows.\r
+Define the index subsets\r
+I0,−2 = {(39, 69),(49, 59),(87, 117),(97, 107)},\r
+I0,−1 = {(1, 11),(1, 39),(1, 59),(1, 87),(1, 107),(11, 49),(11, 69),(11, 97),(11, 117),\r
+(39, 49),(39, 117),(49, 107),(59, 69),(59, 97),(69, 87),(87, 97),(107, 117)},\r
+I0,− 1\r
+2\r
+= {(3, 17),(3, 33),(3, 88),(3, 100),(4, 7),(4, 44),(4, 56),(4, 111),(5, 10),(5, 15),\r
+(5, 18),(5, 55),(6, 19),(6, 34),(6, 66),(6, 99),(7, 16),(7, 21),(7, 77),(8, 17),\r
+(8, 33),(8, 88),(8, 100),(9, 19),(9, 34),(9, 66),(9, 99),(10, 45),(10, 78),(10, 110),\r
+(14, 19),(14, 34),(14, 66),(14, 99),(15, 45),(15, 78),(15, 110),(16, 44),(16, 56),\r
+(16, 111),(17, 20),(17, 67),(18, 45),(18, 78),(18, 110),(19, 89),(20, 33),(20, 88),\r
+(20, 100),(21, 44),(21, 56),(21, 111),(33, 67),(34, 89),(37, 47),(37, 71),(37, 95),\r
+(37, 119),(38, 50),(38, 58),(38, 98),(38, 106),(40, 80),(40, 92),(40, 104),\r
+(40, 116),(43, 53),(43, 73),(43, 93),(43, 113),(44, 77),(45, 55),(47, 61),(47, 85),\r
+(47, 109),(50, 70),(50, 86),(50, 118),(52, 80),(52, 92),(52, 104),(52, 116),\r
+(53, 63),(53, 83),(53, 103),(55, 78),(55, 110),(56, 77),(58, 70),(58, 86),(58, 118),\r
+(61, 71),(61, 95),(61, 119),(63, 73),(63, 93),(63, 113),(64, 80),(64, 92),(64, 104),\r
+(64, 116),(66, 89),(67, 88),(67, 100),(70, 98),(70, 106),(71, 85),(71, 109),\r
+(73, 83),(73, 103),(76, 80),(76, 92),(76, 104),(76, 116),(77, 111),(83, 93),\r
+(83, 113),(85, 95),(85, 119),(86, 98),(86, 106),(89, 99),(93, 103),(95, 109),
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 11\r
+(98, 118),(103, 113),(106, 118),(109, 119)},\r
+I0,\r
+1\r
+2\r
+= {(3, 3),(3, 8),(3, 20),(3, 67),(4, 4),(4, 16),(4, 21),(4, 77),(5, 5),(5, 45),(5, 78),\r
+(5, 110),(6, 6),(6, 9),(6, 14),(6, 89),(7, 7),(7, 44),(7, 56),(7, 111),(8, 8),(8, 20),\r
+(8, 67),(9, 9),(9, 14),(9, 89),(10, 10),(10, 15),(10, 18),(10, 55),(14, 14),(14, 89),\r
+(15, 15),(15, 18),(15, 55),(16, 16),(16, 21),(16, 77),(17, 17),(17, 33),(17, 88),\r
+(17, 100),(18, 18),(18, 55),(19, 19),(19, 34),(19, 66),(19, 99),(20, 20),(20, 67),\r
+(21, 21),(21, 77),(33, 33),(33, 88),(33, 100),(34, 34),(34, 66),(34, 99),(37, 37),\r
+(37, 61),(37, 85),(37, 109),(38, 38),(38, 70),(38, 86),(38, 118),(40, 40),(40, 52),\r
+(40, 64),(40, 76),(43, 43),(43, 63),(43, 83),(43, 103),(44, 44),(44, 56),(44, 111),\r
+(45, 45),(45, 78),(45, 110),(47, 47),(47, 71),(47, 95),(47, 119),(50, 50),(50, 58),\r
+(50, 98),(50, 106),(52, 52),(52, 64),(52, 76),(53, 53),(53, 73),(53, 93),(53, 113),\r
+(55, 55),(56, 56),(56, 111),(58, 58),(58, 98),(58, 106),(61, 61),(61, 85),(61, 109),\r
+(63, 63),(63, 83),(63, 103),(64, 64),(64, 76),(66, 66),(66, 99),(67, 67),(70, 70),\r
+(70, 86),(70, 118),(71, 71),(71, 95),(71, 119),(73, 73),(73, 93),(73, 113),(76, 76),\r
+(77, 77),(78, 78),(78, 110),(80, 80),(80, 92),(80, 104),(80, 116),(83, 83),\r
+(83, 103),(85, 85),(85, 109),(86, 86),(86, 118),(88, 88),(88, 100),(89, 89),\r
+(92, 92),(92, 104),(92, 116),(93, 93),(93, 113),(95, 95),(95, 119),(98, 98),\r
+(98, 106),(99, 99),(100, 100),(103, 103),(104, 104),(104, 116),(106, 106),\r
+(109, 109),(110, 110),(111, 111),(113, 113),(116, 116),(118, 118),(119, 119)},\r
+I0,1 = {(1, 1),(1, 49),(1, 69),(1, 97),(1, 117),(11, 11),(11, 39),(11, 59),(11, 87),(11, 107),\r
+(39, 59),(39, 87),(49, 69),(49, 97),(59, 107),(69, 117),(87, 107),(97, 117)},\r
+I0,2 = {(39, 39),(49, 49),(59, 59),(69, 69),(87, 87),(97, 97),(107, 107),(117, 117)},\r
+and let H0 be the symmetric matrix defined as\r
+(H0)ij =\r
+(\r
+a, (i, j) ∈ I0,a,\r
+0, (i, j) ∈/ I0,± 1\r
+2\r
+∪ I0,±1 ∪ I0,±2.\r
+Now it is routine to verify that H0 is positive semi-definite and satisfies F0 = x\r
+T H0x.\r
+Similarly, if\r
+I 4\r
+9\r
+,−1 = {(39, 69),(39, 107),(49, 59),(49, 117),(59, 87),(69, 97),(87, 117),(97, 107)},\r
+I 4\r
+9\r
+,−\r
+1\r
+2\r
+= {(3, 17),(3, 33),(3, 88),(3, 100),(4, 7),(4, 44),(4, 56),(4, 111),(5, 10),(5, 15),\r
+(5, 18),(5, 55),(6, 19),(6, 34),(6, 66),(6, 99),(7, 16),(7, 21),(7, 77),(8, 17),\r
+(8, 33),(8, 88),(8, 100),(9, 19),(9, 34),(9, 66),(9, 99),(10, 45),(10, 78),(10, 110),\r
+(14, 19),(14, 34),(14, 66),(14, 99),(15, 45),(15, 78),(15, 110),(16, 44),(16, 56),\r
+(16, 111),(17, 20),(17, 67),(18, 45),(18, 78),(18, 110),(19, 89),(20, 33),(20, 88),\r
+(20, 100),(21, 44),(21, 56),(21, 111),(33, 67),(34, 89),(37, 47),(37, 71),(37, 95),\r
+(37, 119),(38, 50),(38, 58),(38, 98),(38, 106),(40, 80),(40, 92),(40, 104),\r
+(40, 116),(43, 53),(43, 73),(43, 93),(43, 113),(44, 77),(45, 55),(47, 61),(47, 85),"""
+
+[[sections]]
+number = "12"
+title = "SILVIO REGGIANI"
+text = """
+(47, 109),(50, 70),(50, 86),(50, 118),(52, 80),(52, 92),(52, 104),(52, 116),\r
+(53, 63),(53, 83),(53, 103),(55, 78),(55, 110),(56, 77),(58, 70),(58, 86),(58, 118),\r
+(61, 71),(61, 95),(61, 119),(63, 73),(63, 93),(63, 113),(64, 80),(64, 92),(64, 104),\r
+(64, 116),(66, 89),(67, 88),(67, 100),(70, 98),(70, 106),(71, 85),(71, 109),\r
+(73, 83),(73, 103),(76, 80),(76, 92),(76, 104),(76, 116),(77, 111),(83, 93),\r
+(83, 113),(85, 95),(85, 119),(86, 98),(86, 106),(89, 99),(93, 103),(95, 109),\r
+(98, 118),(103, 113),(106, 118),(109, 119)},\r
+I 4\r
+9\r
+,− 1\r
+3\r
+= {(2, 22),(13, 23),(25, 35),(26, 46),(27, 57),(28, 68),(29, 79),(30, 90),(31, 101),\r
+(32, 112)},\r
+I 4\r
+9\r
+,\r
+1\r
+3\r
+= {(2, 2),(13, 13),(22, 22),(23, 23),(25, 25),(26, 26),(27, 27),(28, 28),(29, 29),\r
+(30, 30),(31, 31),(32, 32),(35, 35),(46, 46),(57, 57),(68, 68),(79, 79),(90, 90),\r
+(101, 101),(112, 112)},\r
+I 4\r
+9\r
+,\r
+1\r
+2\r
+= {(3, 3),(3, 8),(3, 20),(3, 67),(4, 4),(4, 16),(4, 21),(4, 77),(5, 5),(5, 45),(5, 78),\r
+(5, 110),(6, 6),(6, 9),(6, 14),(6, 89),(7, 7),(7, 44),(7, 56),(7, 111),(8, 8),(8, 20),\r
+(8, 67),(9, 9),(9, 14),(9, 89),(10, 10),(10, 15),(10, 18),(10, 55),(14, 14),(14, 89),\r
+(15, 15),(15, 18),(15, 55),(16, 16),(16, 21),(16, 77),(17, 17),(17, 33),(17, 88),\r
+(17, 100),(18, 18),(18, 55),(19, 19),(19, 34),(19, 66),(19, 99),(20, 20),(20, 67),\r
+(21, 21),(21, 77),(33, 33),(33, 88),(33, 100),(34, 34),(34, 66),(34, 99),(37, 37),\r
+(37, 61),(37, 85),(37, 109),(38, 38),(38, 70),(38, 86),(38, 118),(40, 40),(40, 52),\r
+(40, 64),(40, 76),(43, 43),(43, 63),(43, 83),(43, 103),(44, 44),(44, 56),(44, 111),\r
+(45, 45),(45, 78),(45, 110),(47, 47),(47, 71),(47, 95),(47, 119),(50, 50),(50, 58),\r
+(50, 98),(50, 106),(52, 52),(52, 64),(52, 76),(53, 53),(53, 73),(53, 93),(53, 113),\r
+(55, 55),(56, 56),(56, 111),(58, 58),(58, 98),(58, 106),(61, 61),(61, 85),(61, 109),\r
+(63, 63),(63, 83),(63, 103),(64, 64),(64, 76),(66, 66),(66, 99),(67, 67),(70, 70),\r
+(70, 86),(70, 118),(71, 71),(71, 95),(71, 119),(73, 73),(73, 93),(73, 113),(76, 76),\r
+(77, 77),(78, 78),(78, 110),(80, 80),(80, 92),(80, 104),(80, 116),(83, 83),\r
+(83, 103),(85, 85),(85, 109),(86, 86),(86, 118),(88, 88),(88, 100),(89, 89),\r
+(92, 92),(92, 104),(92, 116),(93, 93),(93, 113),(95, 95),(95, 119),(98, 98),\r
+(98, 106),(99, 99),(100, 100),(103, 103),(104, 104),(104, 116),(106, 106),\r
+(109, 109),(110, 110),(111, 111),(113, 113),(116, 116),(118, 118),(119, 119)},\r
+I 4\r
+9\r
+,1 = {(39, 39),(39, 97),(49, 49),(49, 87),(59, 59),(59, 117),(69, 69),(69, 107),(87, 87),\r
+(97, 97),(107, 107),(117, 117)},\r
+then\r
+(H4\r
+9\r
+)ij =\r
+(\r
+a, (i, j) ∈ I 4\r
+9\r
+,a,\r
+0, (i, j) ∈/ I 4\r
+9\r
+,± 1\r
+3\r
+∪ I 4\r
+9\r
+,± 1\r
+2\r
+∪ I 4\r
+9\r
+,±1\r
+,
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 13\r
+defines a symmetric positive semi-definite matrix satisfying F4\r
+9\r
+= x\r
+T H4\r
+9\r
+x. This concludes\r
+the proof of the theorem. \u0003\r
+Remark 4.6. We are not certain if Fr is a polynomial sum of squares for 0 < r < 4\r
+9\r
+.\r
+Although it is not needed in the proof of Theorem 4.4, it would be interesting to know if\r
+this is indeed the case.\r
+Remark 4.7. The definition (4.1) of the metric gr resembles the construction of Berger\r
+spheres from the Hopf fibration by shrinking the metrics along the fibers. Moreover, if\r
+we restrict gr to m0 ≃ su(2), then S\r
+3\r
+r = (SU(2), gr|m0\r
+) is a Berger sphere. Recall that S\r
+3\r
+r\r
+has (strictly) positive sectional curvature if and only if 0 < r < 4"""
+
+[[sections]]
+number = "9"
+title = "Appendix A."
+text = """
+A.1. Standard zero divisors. In this appendix, we include Table 1 with the standard\r
+zero divisors of the sedenion algebra.\r
+Table 1. The 84 standard zero divisors of S\r
+(e1 + e10, e4 − e15) (e1 + e10, e5 + e14) (e1 + e10, e6 − e13) (e1 + e10, e7 + e12)\r
+(e1 + e11, e4 + e14) (e1 + e11, e5 + e15) (e1 + e11, e6 − e12) (e1 + e11, e7 − e13)\r
+(e1 + e12, e2 + e15) (e1 + e12, e3 − e14) (e1 + e12, e6 + e11) (e1 + e12, e7 − e10)\r
+(e1 + e13, e2 − e14) (e1 + e13, e3 − e15) (e1 + e13, e6 + e10) (e1 + e13, e7 + e11)\r
+(e1 + e14, e2 + e13) (e1 + e14, e3 + e12) (e1 + e14, e4 − e11) (e1 + e14, e5 − e10)\r
+(e1 + e15, e2 − e12) (e1 + e15, e3 + e13) (e1 + e15, e4 + e10) (e1 + e15, e5 − e11)\r
+(e2 + e9, e4 + e15) (e2 + e9, e5 − e14) (e2 + e9, e6 + e13) (e2 + e9, e7 − e12)\r
+(e2 + e11, e4 − e13) (e2 + e11, e5 + e12) (e2 + e11, e6 + e15) (e2 + e11, e7 − e14)\r
+(e2 + e12, e3 + e13) (e2 + e12, e5 − e11) (e2 + e12, e7 + e9) (e2 + e13, e3 − e12)\r
+(e2 + e13, e4 + e11) (e2 + e13, e6 − e9) (e2 + e14, e3 − e15) (e2 + e14, e5 + e9)\r
+(e2 + e14, e7 + e11) (e2 + e15, e3 + e14) (e2 + e15, e4 − e9) (e2 + e15, e6 − e11)\r
+(e3 + e9, e4 − e14) (e3 + e9, e5 − e15) (e3 + e9, e6 + e12) (e3 + e9, e7 + e13)\r
+(e3 + e10, e4 + e13) (e3 + e10, e5 − e12) (e3 + e10, e6 − e15) (e3 + e10, e7 + e14)\r
+(e3 + e12, e5 + e10) (e3 + e12, e6 − e9) (e3 + e13, e4 − e10) (e3 + e13, e7 − e9)\r
+(e3 + e14, e4 + e9) (e3 + e14, e7 − e10) (e3 + e15, e5 + e9) (e3 + e15, e6 + e10)\r
+(e4 + e9, e6 − e11) (e4 + e9, e7 + e10) (e4 + e10, e5 + e11) (e4 + e10, e7 − e9)\r
+(e4 + e11, e5 − e10) (e4 + e11, e6 + e9) (e4 + e13, e6 + e15) (e4 + e13, e7 − e14)\r
+(e4 + e14, e5 − e15) (e4 + e14, e7 + e13) (e4 + e15, e5 + e14) (e4 + e15, e6 − e13)\r
+(e5 + e9, e6 − e10) (e5 + e9, e7 − e11) (e5 + e10, e6 + e9) (e5 + e11, e7 + e9)\r
+(e5 + e12, e6 − e15) (e5 + e12, e7 + e14) (e5 + e14, e7 − e12) (e5 + e15, e6 + e12)\r
+(e6 + e10, e7 − e11) (e6 + e11, e7 + e10) (e6 + e12, e7 − e13) (e6 + e13, e7 + e12)\r
+A.2. Expression for the sectional curvature. We write down the polynomial Fr used\r
+in the proof of Theorem 4.4.\r
+Fr = (−\r
+9\r
+4\r
+r + 1)x\r
+2\r
+0x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+0x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+14 + x\r
+2\r
+0x14x19 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+15 − x\r
+2\r
+0x15x18 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+16\r
+− x\r
+2\r
+0x16x21 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+17 + x\r
+2\r
+0x17x20 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+18 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+20 +\r
+1\r
+2\r
+x\r
+2\r
+0x\r
+2\r
+21\r
++ ( 9\r
+2\r
+r − 2)x0x1x11x12 + 2x0x1x14x20 + 2x0x1x15x21 − 2x0x1x16x18\r
+− 2x0x1x17x19 −\r
+3\r
+2\r
+rx0x2x11x13 − x0x3x11x14 − x0x3x11x19"""
+
+[[sections]]
+number = "14"
+title = "SILVIO REGGIANI"
+text = """
++ ( 9\r
+2\r
+r − 3)x0x3x12x17 − x0x3x12x20 − x0x4x11x15 + x0x4x11x18\r
++ (−\r
+9\r
+2\r
+r + 3)x0x4x12x16 − x0x4x12x21 − x0x5x11x16 + x0x5x11x21\r
++ ( 9\r
+2\r
+r − 3)x0x5x12x15 + x0x5x12x18 − x0x6x11x17 − x0x6x11x20\r
++ (−\r
+9\r
+2\r
+r + 3)x0x6x12x14 + x0x6x12x19 + x0x7x11x15 − x0x7x11x18 + x0x7x12x16\r
++ ( 9\r
+2\r
+r − 3)x0x7x12x21 − x0x8x11x14 − x0x8x11x19 + x0x8x12x17\r
++ (−\r
+9\r
+2\r
+r + 3)x0x8x12x20 − x0x9x11x17 − x0x9x11x20 − x0x9x12x14\r
++ ( 9\r
+2\r
+r − 3)x0x9x12x19 + x0x10x11x16 − x0x10x11x21 − x0x10x12x15\r
++ (−\r
+9\r
+2\r
+r + 3)x0x10x12x18 + (−\r
+9\r
+4\r
+r + 1)x\r
+2\r
+1x\r
+2\r
+11 +\r
+3\r
+4\r
+rx2\r
+1x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+14 − x\r
+2\r
+1x14x19\r
++\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+15 + x\r
+2\r
+1x15x18 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+16 + x\r
+2\r
+1x16x21 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+17 − x\r
+2\r
+1x17x20 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+18\r
++\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+20 +\r
+1\r
+2\r
+x\r
+2\r
+1x\r
+2\r
+21 −\r
+3\r
+2\r
+rx1x2x12x13 + (−\r
+9\r
+2\r
+r + 3)x1x3x11x17\r
+− x1x3x11x20 − x1x3x12x14 + x1x3x12x19 + ( 9\r
+2\r
+r − 3)x1x4x11x16 − x1x4x11x21\r
+− x1x4x12x15 − x1x4x12x18 + (−\r
+9\r
+2\r
+r + 3)x1x5x11x15 + x1x5x11x18\r
+− x1x5x12x16 − x1x5x12x21 + ( 9\r
+2\r
+r − 3)x1x6x11x14 + x1x6x11x19\r
+− x1x6x12x17 + x1x6x12x20 + x1x7x11x16 + (−\r
+9\r
+2\r
+r + 3)x1x7x11x21\r
+− x1x7x12x15 − x1x7x12x18 + x1x8x11x17 + ( 9\r
+2\r
+r − 3)x1x8x11x20\r
++ x1x8x12x14 − x1x8x12x19 − x1x9x11x14 + (−\r
+9\r
+2\r
+r + 3)x1x9x11x19 + x1x9x12x17\r
+− x1x9x12x20 − x1x10x11x15 + ( 9\r
+2\r
+r − 3)x1x10x11x18 − x1x10x12x16 − x1x10x12x21\r
++\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+11 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+14 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+15 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+16 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+17 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+18\r
++\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+19 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+20 +\r
+3\r
+4\r
+rx2\r
+2x\r
+2\r
+21 −\r
+3\r
+2\r
+rx2x3x13x14 −\r
+3\r
+2\r
+rx2x4x13x15 −\r
+3\r
+2\r
+rx2x5x13x16\r
+−\r
+3\r
+2\r
+rx2x6x13x17 −\r
+3\r
+2\r
+rx2x7x13x18 −\r
+3\r
+2\r
+rx2x8x13x19 −\r
+3\r
+2\r
+rx2x9x13x20 −\r
+3\r
+2\r
+rx2x10x13x21\r
++\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+3x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+15 +\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+16 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+3x\r
+2\r
+17 +\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+18\r
++\r
+1\r
+2\r
+x\r
+2\r
+3x\r
+2\r
+21 − x3x4x14x15 + ( 9\r
+2\r
+r − 3)x3x4x16x17 + x3x4x18x19 − x3x4x20x21\r
+− x3x5x14x16 + (−\r
+9\r
+2\r
+r + 3)x3x5x15x17 + x3x5x18x20 + x3x5x19x21\r
++ ( 9\r
+2\r
+r − 4)x3x6x14x17 − x3x7x14x18 + x3x7x15x19 + x3x7x16x20\r
++ (−\r
+9\r
+2\r
+r + 3)x3x7x17x21 + x3x8x\r
+2\r
+11 − x3x8x\r
+2\r
+12 − 2x3x8x15x18 − 2x3x8x16x21\r
++\r
+9\r
+2\r
+rx3x8x17x20 + 2x3x9x11x12 + 2x3x9x15x21 − 2x3x9x16x18 −\r
+9\r
+2\r
+rx3x9x17x19\r
+− x3x10x14x21 − x3x10x15x20 + x3x10x16x19 + ( 9\r
+2\r
+r − 3)x3x10x17x18 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+11\r
++\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+4x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+14 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+4x\r
+2\r
+16 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+17 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+4x\r
+2\r
+20\r
++ ( 9\r
+2\r
+r − 4)x4x5x15x16 + (−\r
+9\r
+2\r
+r + 3)x4x6x14x16 − x4x6x15x17 + x4x6x18x20\r
++ x4x6x19x21 − x4x7x\r
+2\r
+11 + x4x7x\r
+2\r
+12 − 2x4x7x14x19 +\r
+9\r
+2\r
+rx4x7x16x21\r
+− 2x4x7x17x20 + x4x8x14x18 − x4x8x15x19 + (−\r
+9\r
+2\r
+r + 3)x4x8x16x20 + x4x8x17x21\r
+− x4x9x14x21 − x4x9x15x20 + ( 9\r
+2\r
+r − 3)x4x9x16x19 + x4x9x17x18 + 2x4x10x11x12\r
++ 2x4x10x14x20 −\r
+9\r
+2\r
+rx4x10x16x18 − 2x4x10x17x19 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+5x\r
+2\r
+13\r
++\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+14 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+5x\r
+2\r
+15 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+17 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+5x\r
+2\r
+20 + ( 9\r
+2\r
+r − 3)x5x6x14x15\r
+− x5x6x16x17 − x5x6x18x19 + x5x6x20x21 − 2x5x7x11x12 − 2x5x7x14x20
+
+THE GEOMETRY OF SEDENION ZERO DIVISORS 15\r
+−\r
+9\r
+2\r
+rx5x7x15x21 + 2x5x7x17x19 + x5x8x14x21 + ( 9\r
+2\r
+r − 3)x5x8x15x20\r
+− x5x8x16x19 − x5x8x17x18 + x5x9x14x18 + (−\r
+9\r
+2\r
+r + 3)x5x9x15x19 − x5x9x16x20\r
++ x5x9x17x21 − x5x10x\r
+2\r
+11 + x5x10x\r
+2\r
+12 − 2x5x10x14x19 +\r
+9\r
+2\r
+rx5x10x15x18\r
+− 2x5x10x17x20 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+6x\r
+2\r
+13 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+6x\r
+2\r
+14 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+15\r
++\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+16 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+18 +\r
+1\r
+2\r
+x\r
+2\r
+6x\r
+2\r
+21 + ( 9\r
+2\r
+r − 3)x6x7x14x21 + x6x7x15x20 − x6x7x16x19\r
+− x6x7x17x18 − 2x6x8x11x12 −\r
+9\r
+2\r
+rx6x8x14x20 − 2x6x8x15x21 + 2x6x8x16x18\r
++ x6x9x\r
+2\r
+11 − x6x9x\r
+2\r
+12 +\r
+9\r
+2\r
+rx6x9x14x19 − 2x6x9x15x18 − 2x6x9x16x21\r
++ (−\r
+9\r
+2\r
+r + 3)x6x10x14x18 + x6x10x15x19 + x6x10x16x20 − x6x10x17x21 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+11\r
++\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+7x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+14 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+17 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+7x\r
+2\r
+20 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+7x\r
+2\r
+21\r
++ x7x8x14x15 − x7x8x16x17 − x7x8x18x19 + ( 9\r
+2\r
+r − 3)x7x8x20x21 + x7x9x14x16\r
++ x7x9x15x17 − x7x9x18x20 + (−\r
+9\r
+2\r
+r + 3)x7x9x19x21 + ( 9\r
+2\r
+r − 4)x7x10x18x21\r
++\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+8x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+15 +\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+16 +\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+18 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+8x\r
+2\r
+20\r
++\r
+1\r
+2\r
+x\r
+2\r
+8x\r
+2\r
+21 + ( 9\r
+2\r
+r − 4)x8x9x19x20 + x8x10x14x16 + x8x10x15x17\r
++ (−\r
+9\r
+2\r
+r + 3)x8x10x18x20 − x8x10x19x21 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+9x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+15\r
++\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+16 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+18 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+9x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+9x\r
+2\r
+21 − x9x10x14x15 + x9x10x16x17\r
++ ( 9\r
+2\r
+r − 3)x9x10x18x19 − x9x10x20x21 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+11 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+12 +\r
+3\r
+4\r
+rx2\r
+10x\r
+2\r
+13 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+14\r
++\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+17 + (−\r
+9\r
+4\r
+r + 2)x\r
+2\r
+10x\r
+2\r
+18 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2\r
+19 +\r
+1\r
+2\r
+x\r
+2\r
+10x\r
+2"""
+
+[[sections]]
+number = "20"
+title = "References"
+text = """
+[Arv03] A. Arvanitogeorgos, An introduction to Lie groups and the geometry of homogeneous spaces,\r
+Student Mathematical Library, no. v. 22, American Mathematical Society, Providence, RI,\r
+2003.\r
+[BDI08] D. K. Biss, D. Dugger, and D. C. Isaksen, Large annihilators in Cayley–Dickson algebras,\r
+Comm. Algebra 36 (2008), no. 2, 632–664.\r
+[BH87] A. Back and W. Y. Hsiang, Equivariant geometry and Kervaire spheres, Trans. Amer. Math.\r
+Soc. 304 (1987), no. 1, 207–227.\r
+[BLS20] T. C. Burness, M. W. Liebeck, and A. Shalev, The length and depth of compact Lie groups,\r
+Math. Z. 294 (2020), no. 3-4, 1457–1476.\r
+[CLR95] M. D. Choi, T. Y. Lam, and B. Reznick, Sums of squares of real polynomials, K-Theory\r
+and Algebraic Geometry: Connections with Quadratic Forms and Division Algebras. Summer\r
+Research Institute on Quadratic Forms and Division Algebras, July 6-24, 1992, University of\r
+California, Santa Barbara, CA (USA), Providence, RI: American Mathematical Society, 1995,\r
+pp. 103–126.\r
+[DZ79] J. E. D’Atri and W. Ziller, Naturally reductive metrics and Einstein metrics on compact Lie\r
+groups, Memoirs of the American Mathematical Society, no. 215, American Mathematical\r
+Society, Providence, RI, 1979.\r
+[GG19] A. B. Gillard and N. G. Gresnigt, Three fermion generations with two unbroken gauge symme\u0002tries from the complex sedenions, Eur. Phys. J. C 79 (2019), no. 5, 11 p.\r
+[Jen73] G. R. Jensen, Einstein metrics on principal fibre bundles, J. Differential Geom. 8 (1973), no. 4,\r
+599–614.\r
+[Ker98] M. M. Kerr, New examples of homogeneous Einstein metrics, Michigan Math. J. 45 (1998),\r
+no. 1, 115–134.\r
+[Mor98] G. Moreno, The zero divisors of the Cayley-Dickson algebras over the real numbers, Bol. Soc.\r
+Mat. Mex., III. Ser. 4 (1998), no. 1, 13–28."""
+
+[[sections]]
+number = "16"
+title = "SILVIO REGGIANI"
+text = """
+[Oni92] A. L. Onishchik, The group of isometries of a compact Riemannian homogeneous space, Dif\u0002ferential Geometry and Its Applications. Proceedings of a Colloquium, Held in Eger, Hungary,\r
+August 20-25, 1989, Organized by the J´anos Bolyai Mathematical Society, Amsterdam: North\u0002Holland Publishing Company; Budapest: J´anos Bolyai Mathematical Society, 1992, pp. 597–\r
+616.\r
+[OR13] C. Olmos and S. Reggiani, A note on the uniqueness of the canonical connection of a naturally\r
+reductive space, Monatsh. Math. 172 (2013), no. 3-4, 379–386.\r
+[ORT14] C. Olmos, S. Reggiani, and H. Tamaru, The index of symmetry of compact naturally reductive\r
+spaces, Math. Z. 277 (2014), no. 3-4, 611–628.\r
+[PW98] V. Powers and T. W¨ormann, An algorithm for sums of squares of real polynomials, J. Pure\r
+Appl. Algebra 127 (1998), no. 1, 99–104.\r
+[Reg10] S. Reggiani, On the affine group of a normal homogeneous manifold, Ann. Global Anal. Geom.\r
+37 (2010), no. 4, 351–359.\r
+[Reg24] , Auxiliary computations for the article The Geometry of Sedenion Zero Divisors,\r
+https://github.com/silvioreggiani/sedenion-zero-div, 2024.\r
+[SA20] L. S. Saoud and H. Al-Marzouqi, Metacognitive Sedenion-Valued Neural Network and its Learn\u0002ing Algorithm, IEEE Access 8 (2020), 144823–144838.\r
+[Sag70] A. A. Sagle, Some Homogeneous Einstein Manifolds, Nagoya Math. J. 39 (1970), 81–106.\r
+[Zil07] W. Ziller, Examples of Riemannian manifolds with non-negative sectional curvature, Metric\r
+and Comparison Geometry. Surveys in Differential Geometry. Vol. XI., Somerville, MA: Inter\u0002national Press, 2007, pp. 63–102.\r
+CONICET and Universidad Nacional de Rosario, ECEN-FCEIA, Departamento de Ma\u0002tematica. Av. Pellegrini 250, 2000 Rosario, Argentina. ´\r
+Email address: reggiani@fceia.unr.edu.ar\r
+URL: http://www.fceia.unr.edu.ar/~reggiani"""
+
+[[figures]]
+label = "fig:1"
+page_num = 1
+
+[[figures]]
+label = "fig:2"
+page_num = 1
+
+[[figures]]
+label = "fig:3"
+page_num = 2
+
+[[figures]]
+label = "fig:4"
+page_num = 2
+
+[[figures]]
+label = "fig:5"
+page_num = 2
+
+[[figures]]
+label = "fig:6"
+page_num = 2
+
+[[figures]]
+label = "fig:7"
+page_num = 2
+
+[[figures]]
+label = "fig:8"
+page_num = 2
+
+[[figures]]
+label = "fig:9"
+page_num = 2
+
+[[figures]]
+label = "fig:10"
+page_num = 2
+
+[[figures]]
+label = "fig:11"
+page_num = 3
+
+[[figures]]
+label = "fig:12"
+page_num = 3
+
+[[figures]]
+label = "fig:13"
+page_num = 3
+
+[[figures]]
+label = "fig:14"
+page_num = 4
+
+[[figures]]
+label = "fig:15"
+page_num = 4
+
+[[figures]]
+label = "fig:16"
+page_num = 5
+
+[[figures]]
+label = "fig:17"
+page_num = 5
+
+[[figures]]
+label = "fig:18"
+page_num = 5
+
+[[figures]]
+label = "fig:19"
+page_num = 5
+
+[[figures]]
+label = "fig:20"
+page_num = 5
+
+[[figures]]
+label = "fig:21"
+page_num = 5
+
+[[figures]]
+label = "fig:22"
+page_num = 5
+
+[[figures]]
+label = "fig:23"
+page_num = 5
+
+[[figures]]
+label = "fig:24"
+page_num = 5
+
+[[figures]]
+label = "fig:25"
+page_num = 5
+
+[[figures]]
+label = "fig:26"
+page_num = 5
+
+[[figures]]
+label = "fig:27"
+page_num = 5
+
+[[figures]]
+label = "fig:28"
+page_num = 5
+
+[[figures]]
+label = "fig:29"
+page_num = 5
+
+[[figures]]
+label = "fig:30"
+page_num = 5
+
+[[figures]]
+label = "fig:31"
+page_num = 5
+
+[[figures]]
+label = "fig:32"
+page_num = 5
+
+[[figures]]
+label = "fig:33"
+page_num = 5
+
+[[figures]]
+label = "fig:34"
+page_num = 5
+
+[[figures]]
+label = "fig:35"
+page_num = 5
+
+[[figures]]
+label = "fig:36"
+page_num = 5
+
+[[figures]]
+label = "fig:37"
+page_num = 5
+
+[[figures]]
+label = "fig:38"
+page_num = 5
+
+[[figures]]
+label = "fig:39"
+page_num = 6
+
+[[figures]]
+label = "fig:40"
+page_num = 6
+
+[[figures]]
+label = "fig:41"
+page_num = 6
+
+[[figures]]
+label = "fig:42"
+page_num = 6
+
+[[figures]]
+label = "fig:43"
+page_num = 6
+
+[[figures]]
+label = "fig:44"
+page_num = 7
+
+[[figures]]
+label = "fig:45"
+page_num = 7
+
+[[figures]]
+label = "fig:46"
+page_num = 7
+
+[[figures]]
+label = "fig:47"
+page_num = 7
+
+[[figures]]
+label = "fig:48"
+page_num = 7
+
+[[figures]]
+label = "fig:49"
+page_num = 7
+
+[[figures]]
+label = "fig:50"
+page_num = 7
+
+[[figures]]
+label = "fig:51"
+page_num = 7
+
+[[figures]]
+label = "fig:52"
+page_num = 7
+
+[[figures]]
+label = "fig:53"
+page_num = 7
+
+[[figures]]
+label = "fig:54"
+page_num = 7
+
+[[figures]]
+label = "fig:55"
+page_num = 7
+
+[[figures]]
+label = "fig:56"
+page_num = 7
+
+[[figures]]
+label = "fig:57"
+page_num = 8
+
+[[figures]]
+label = "fig:58"
+page_num = 8
+
+[[figures]]
+label = "fig:59"
+page_num = 8
+
+[[figures]]
+label = "fig:60"
+page_num = 8
+
+[[figures]]
+label = "fig:61"
+page_num = 8
+
+[[figures]]
+label = "fig:62"
+page_num = 8
+
+[[figures]]
+label = "fig:63"
+page_num = 8
+
+[[figures]]
+label = "fig:64"
+page_num = 8
+
+[[figures]]
+label = "fig:65"
+page_num = 8
+
+[[figures]]
+label = "fig:66"
+page_num = 8
+
+[[figures]]
+label = "fig:67"
+page_num = 8
+
+[[figures]]
+label = "fig:68"
+page_num = 9
+
+[[figures]]
+label = "fig:69"
+page_num = 9
+
+[[figures]]
+label = "fig:70"
+page_num = 9
+
+[[figures]]
+label = "fig:71"
+page_num = 9
+
+[[figures]]
+label = "fig:72"
+page_num = 9
+
+[[figures]]
+label = "fig:73"
+page_num = 9
+
+[[figures]]
+label = "fig:74"
+page_num = 9
+
+[[figures]]
+label = "fig:75"
+page_num = 9
+
+[[figures]]
+label = "fig:76"
+page_num = 9
+
+[[figures]]
+label = "fig:77"
+page_num = 9
+
+[[figures]]
+label = "fig:78"
+page_num = 9
+
+[[figures]]
+label = "fig:79"
+page_num = 9
+
+[[figures]]
+label = "fig:80"
+page_num = 9
+
+[[figures]]
+label = "fig:81"
+page_num = 10
+
+[[figures]]
+label = "fig:82"
+page_num = 10
+
+[[figures]]
+label = "fig:83"
+page_num = 10
+
+[[figures]]
+label = "fig:84"
+page_num = 10
+
+[[figures]]
+label = "fig:85"
+page_num = 10
+
+[[figures]]
+label = "fig:86"
+page_num = 11
+
+[[figures]]
+label = "fig:87"
+page_num = 11
+
+[[figures]]
+label = "fig:88"
+page_num = 11
+
+[[figures]]
+label = "fig:89"
+page_num = 11
+
+[[figures]]
+label = "fig:90"
+page_num = 11
+
+[[figures]]
+label = "fig:91"
+page_num = 12
+
+[[figures]]
+label = "fig:92"
+page_num = 12
+
+[[figures]]
+label = "fig:93"
+page_num = 12
+
+[[figures]]
+label = "fig:94"
+page_num = 12
+
+[[figures]]
+label = "fig:95"
+page_num = 12
+
+[[figures]]
+label = "fig:96"
+page_num = 12
+
+[[figures]]
+label = "fig:97"
+page_num = 12
+
+[[figures]]
+label = "fig:98"
+page_num = 12
+
+[[figures]]
+label = "fig:99"
+page_num = 12
+
+[[figures]]
+label = "fig:100"
+page_num = 12
+
+[[figures]]
+label = "fig:101"
+page_num = 12
+
+[[figures]]
+label = "fig:102"
+page_num = 12
+
+[[figures]]
+label = "fig:103"
+page_num = 12
+
+[[figures]]
+label = "fig:104"
+page_num = 12
+
+[[figures]]
+label = "fig:105"
+page_num = 13
+
+[[figures]]
+label = "fig:106"
+page_num = 13
+
+[[figures]]
+label = "fig:107"
+page_num = 13
+
+[[figures]]
+label = "fig:108"
+page_num = 13
+
+[[figures]]
+label = "fig:109"
+page_num = 13
+
+[[figures]]
+label = "fig:110"
+page_num = 13
+
+[[figures]]
+label = "fig:111"
+page_num = 13
+
+[[figures]]
+label = "fig:112"
+page_num = 13
+
+[[figures]]
+label = "fig:113"
+page_num = 13
+
+[[figures]]
+label = "fig:114"
+page_num = 13
+
+[[figures]]
+label = "fig:115"
+page_num = 13
+
+[[figures]]
+label = "fig:116"
+page_num = 13
+
+[[figures]]
+label = "fig:117"
+page_num = 13
+
+[[figures]]
+label = "fig:118"
+page_num = 13
+
+[[figures]]
+label = "fig:119"
+page_num = 13
+
+[[figures]]
+label = "fig:120"
+page_num = 13
+
+[[figures]]
+label = "fig:121"
+page_num = 13
+
+[[figures]]
+label = "fig:122"
+page_num = 13
+
+[[figures]]
+label = "fig:123"
+page_num = 14
+
+[[figures]]
+label = "fig:124"
+page_num = 14
+
+[[figures]]
+label = "fig:125"
+page_num = 14
+
+[[figures]]
+label = "fig:126"
+page_num = 14
+
+[[figures]]
+label = "fig:127"
+page_num = 14
+
+[[figures]]
+label = "fig:128"
+page_num = 14
+
+[[figures]]
+label = "fig:129"
+page_num = 14
+
+[[figures]]
+label = "fig:130"
+page_num = 14
+
+[[figures]]
+label = "fig:131"
+page_num = 14
+
+[[figures]]
+label = "fig:132"
+page_num = 14
+
+[[figures]]
+label = "fig:133"
+page_num = 14
+
+[[figures]]
+label = "fig:134"
+page_num = 14
+
+[[figures]]
+label = "fig:135"
+page_num = 14
+
+[[figures]]
+label = "fig:136"
+page_num = 14
+
+[[figures]]
+label = "fig:137"
+page_num = 14
+
+[[figures]]
+label = "fig:138"
+page_num = 14
+
+[[figures]]
+label = "fig:139"
+page_num = 14
+
+[[figures]]
+label = "fig:140"
+page_num = 14
+
+[[figures]]
+label = "fig:141"
+page_num = 14
+
+[[figures]]
+label = "fig:142"
+page_num = 14
+
+[[figures]]
+label = "fig:143"
+page_num = 14
+
+[[figures]]
+label = "fig:144"
+page_num = 14
+
+[[figures]]
+label = "fig:145"
+page_num = 14
+
+[[figures]]
+label = "fig:146"
+page_num = 14
+
+[[figures]]
+label = "fig:147"
+page_num = 14
+
+[[figures]]
+label = "fig:148"
+page_num = 14
+
+[[figures]]
+label = "fig:149"
+page_num = 14
+
+[[figures]]
+label = "fig:150"
+page_num = 14
+
+[[figures]]
+label = "fig:151"
+page_num = 14
+
+[[figures]]
+label = "fig:152"
+page_num = 14
+
+[[figures]]
+label = "fig:153"
+page_num = 14
+
+[[figures]]
+label = "fig:154"
+page_num = 14
+
+[[figures]]
+label = "fig:155"
+page_num = 14
+
+[[figures]]
+label = "fig:156"
+page_num = 14
+
+[[figures]]
+label = "fig:157"
+page_num = 14
+
+[[figures]]
+label = "fig:158"
+page_num = 14
+
+[[figures]]
+label = "fig:159"
+page_num = 14
+
+[[figures]]
+label = "fig:160"
+page_num = 14
+
+[[figures]]
+label = "fig:161"
+page_num = 14
+
+[[figures]]
+label = "fig:162"
+page_num = 14
+
+[[figures]]
+label = "fig:163"
+page_num = 14
+
+[[figures]]
+label = "fig:164"
+page_num = 14
+
+[[figures]]
+label = "fig:165"
+page_num = 14
+
+[[figures]]
+label = "fig:166"
+page_num = 14
+
+[[figures]]
+label = "fig:167"
+page_num = 14
+
+[[figures]]
+label = "fig:168"
+page_num = 14
+
+[[figures]]
+label = "fig:169"
+page_num = 14
+
+[[figures]]
+label = "fig:170"
+page_num = 14
+
+[[figures]]
+label = "fig:171"
+page_num = 14
+
+[[figures]]
+label = "fig:172"
+page_num = 14
+
+[[figures]]
+label = "fig:173"
+page_num = 14
+
+[[figures]]
+label = "fig:174"
+page_num = 14
+
+[[figures]]
+label = "fig:175"
+page_num = 14
+
+[[figures]]
+label = "fig:176"
+page_num = 14
+
+[[figures]]
+label = "fig:177"
+page_num = 14
+
+[[figures]]
+label = "fig:178"
+page_num = 14
+
+[[figures]]
+label = "fig:179"
+page_num = 14
+
+[[figures]]
+label = "fig:180"
+page_num = 14
+
+[[figures]]
+label = "fig:181"
+page_num = 14
+
+[[figures]]
+label = "fig:182"
+page_num = 14
+
+[[figures]]
+label = "fig:183"
+page_num = 14
+
+[[figures]]
+label = "fig:184"
+page_num = 14
+
+[[figures]]
+label = "fig:185"
+page_num = 14
+
+[[figures]]
+label = "fig:186"
+page_num = 14
+
+[[figures]]
+label = "fig:187"
+page_num = 14
+
+[[figures]]
+label = "fig:188"
+page_num = 14
+
+[[figures]]
+label = "fig:189"
+page_num = 14
+
+[[figures]]
+label = "fig:190"
+page_num = 14
+
+[[figures]]
+label = "fig:191"
+page_num = 14
+
+[[figures]]
+label = "fig:192"
+page_num = 14
+
+[[figures]]
+label = "fig:193"
+page_num = 14
+
+[[figures]]
+label = "fig:194"
+page_num = 14
+
+[[figures]]
+label = "fig:195"
+page_num = 14
+
+[[figures]]
+label = "fig:196"
+page_num = 14
+
+[[figures]]
+label = "fig:197"
+page_num = 14
+
+[[figures]]
+label = "fig:198"
+page_num = 14
+
+[[figures]]
+label = "fig:199"
+page_num = 14
+
+[[figures]]
+label = "fig:200"
+page_num = 14
+
+[[figures]]
+label = "fig:201"
+page_num = 14
+
+[[figures]]
+label = "fig:202"
+page_num = 14
+
+[[figures]]
+label = "fig:203"
+page_num = 14
+
+[[figures]]
+label = "fig:204"
+page_num = 14
+
+[[figures]]
+label = "fig:205"
+page_num = 14
+
+[[figures]]
+label = "fig:206"
+page_num = 15
+
+[[figures]]
+label = "fig:207"
+page_num = 15
+
+[[figures]]
+label = "fig:208"
+page_num = 15
+
+[[figures]]
+label = "fig:209"
+page_num = 15
+
+[[figures]]
+label = "fig:210"
+page_num = 15
+
+[[figures]]
+label = "fig:211"
+page_num = 15
+
+[[figures]]
+label = "fig:212"
+page_num = 15
+
+[[figures]]
+label = "fig:213"
+page_num = 15
+
+[[figures]]
+label = "fig:214"
+page_num = 15
+
+[[figures]]
+label = "fig:215"
+page_num = 15
+
+[[figures]]
+label = "fig:216"
+page_num = 15
+
+[[figures]]
+label = "fig:217"
+page_num = 15
+
+[[figures]]
+label = "fig:218"
+page_num = 15
+
+[[figures]]
+label = "fig:219"
+page_num = 15
+
+[[figures]]
+label = "fig:220"
+page_num = 15
+
+[[figures]]
+label = "fig:221"
+page_num = 15
+
+[[figures]]
+label = "fig:222"
+page_num = 15
+
+[[figures]]
+label = "fig:223"
+page_num = 15
+
+[[figures]]
+label = "fig:224"
+page_num = 15
+
+[[figures]]
+label = "fig:225"
+page_num = 15
+
+[[figures]]
+label = "fig:226"
+page_num = 15
+
+[[figures]]
+label = "fig:227"
+page_num = 15
+
+[[figures]]
+label = "fig:228"
+page_num = 15
+
+[[figures]]
+label = "fig:229"
+page_num = 15
+
+[[figures]]
+label = "fig:230"
+page_num = 15
+
+[[figures]]
+label = "fig:231"
+page_num = 15
+
+[[figures]]
+label = "fig:232"
+page_num = 15
+
+[[figures]]
+label = "fig:233"
+page_num = 15
+
+[[figures]]
+label = "fig:234"
+page_num = 15
+
+[[figures]]
+label = "fig:235"
+page_num = 15
+
+[[figures]]
+label = "fig:236"
+page_num = 15
+
+[[figures]]
+label = "fig:237"
+page_num = 15
+
+[[figures]]
+label = "fig:238"
+page_num = 15
+
+[[figures]]
+label = "fig:239"
+page_num = 15
+
+[[figures]]
+label = "fig:240"
+page_num = 15
+
+[[figures]]
+label = "fig:241"
+page_num = 15
+
+[[figures]]
+label = "fig:242"
+page_num = 15
+
+[[figures]]
+label = "fig:243"
+page_num = 15
+
+[[figures]]
+label = "fig:244"
+page_num = 15
+
+[[figures]]
+label = "fig:245"
+page_num = 15
+
+[[figures]]
+label = "fig:246"
+page_num = 15
+
+[[figures]]
+label = "fig:247"
+page_num = 15
+
+[[figures]]
+label = "fig:248"
+page_num = 15
+
+[[figures]]
+label = "fig:249"
+page_num = 15
+
+[[figures]]
+label = "fig:250"
+page_num = 15
+
+[[figures]]
+label = "fig:251"
+page_num = 15
+
+[[figures]]
+label = "fig:252"
+page_num = 15
+
+[[figures]]
+label = "fig:253"
+page_num = 15
+
+[[figures]]
+label = "fig:254"
+page_num = 15
+
+[[figures]]
+label = "fig:255"
+page_num = 15
+
+[[figures]]
+label = "fig:256"
+page_num = 15
+
+[[figures]]
+label = "fig:257"
+page_num = 15
+
+[[figures]]
+label = "fig:258"
+page_num = 15
+
+[[figures]]
+label = "fig:259"
+page_num = 15
+
+[[figures]]
+label = "fig:260"
+page_num = 16

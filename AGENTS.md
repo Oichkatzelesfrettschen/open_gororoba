@@ -398,10 +398,36 @@ Det. column: Yes = fully deterministic, Seed = deterministic given --seed flag.
 
 ---
 
+## CLI Documentation Rules
+
+Every new CLI binary MUST:
+1. Use `clap::Parser` derive for argument parsing (no manual arg parsing).
+2. Include a doc comment on the Args struct that serves as the binary's description.
+3. Be listed in `registry/binaries.toml` with name, crate, and description.
+4. Be listed in `crates/gororoba_cli/Cargo.toml` as a `[[bin]]` entry.
+
+Documentation commands:
+- `mdbook build docs/book/` -- build HTML documentation site
+- `cargo run --release --bin registry-check` -- validate registry integrity
+- `cargo run --release --bin extract-papers` -- batch PDF to TOML extraction
+
+## TOML Registry (Sprint 11+)
+
+The `registry/` directory is the machine-parseable source of truth:
+- `registry/claims.toml` -- 475 claims (C-001..C-475)
+- `registry/insights.toml` -- 7 insights (I-006..I-016)
+- `registry/experiments.toml` -- 10 experiments (E-001..E-010)
+- `registry/binaries.toml` -- 33 CLI binaries
+- `registry/project.toml` -- project-level metadata and sprint history
+
+The corresponding markdown files in `docs/` remain as human-readable narratives.
+For new claims/insights/experiments, add entries to BOTH the TOML registry AND
+the markdown files until the markdown files are fully superseded.
+
 ## References
 
 - `docs/ROADMAP.md` -- consolidated roadmap (architecture, crates, evolution, GR port plan)
-- `docs/CLAIMS_EVIDENCE_MATRIX.md` -- master claims tracker (442 rows)
+- `docs/CLAIMS_EVIDENCE_MATRIX.md` -- master claims tracker (475 rows)
 - `docs/claims/INDEX.md` -- claims navigation index
 - `docs/INSIGHTS.md` -- research insights and design decisions
 - `docs/BIBLIOGRAPHY.md` -- external source citations
@@ -410,6 +436,10 @@ Det. column: Yes = fully deterministic, Seed = deterministic given --seed flag.
 - `docs/RISKS_AND_GAPS.md` -- current technical risks and gaps
 - `docs/agents.md` -- visualization standards
 - `docs/REPO_STRUCTURE.md` -- directory layout details
+- `registry/` -- TOML registry (claims, insights, experiments, binaries)
+- `papers/MANIFEST.toml` -- paper inventory and extraction status
+- `papers/bib/cayley_dickson.bib` -- BibTeX bibliography
+- `docs/book/` -- mdbook documentation site source
 - `Cargo.toml` -- Rust workspace and dependency declarations
 - `pyproject.toml` -- Python dependencies and linter config
 - `Makefile` -- all build/test/artifact targets
