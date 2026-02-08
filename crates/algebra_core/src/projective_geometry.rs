@@ -936,6 +936,56 @@ mod tests {
     }
 
     #[test]
+    fn test_determine_exact_degree_dim32() {
+        // Determine the minimum GF(2) polynomial degree that separates the
+        // 8/7 motif class split (heptacross vs mixed-degree) at dim=32.
+        //
+        // Result: degree 1 (linear) and degree 2 (quadratic) fail;
+        //         degree 3 (cubic) is the minimum separating degree.
+        use crate::boxkites::motif_components_for_cross_assessors;
+        let comps = motif_components_for_cross_assessors(32);
+
+        let labels: Vec<PGPoint> = comps
+            .iter()
+            .map(|c| component_xor_label(c).unwrap())
+            .collect();
+        let classes: Vec<usize> = comps
+            .iter()
+            .map(|c| if c.edges.len() == 84 { 0 } else { 1 })
+            .collect();
+
+        let max_label = *labels.iter().max().unwrap();
+        let n_bits = (usize::BITS - max_label.leading_zeros()) as usize;
+
+        // Degree 1 (linear): FAILS
+        let d1 = find_boolean_class_predicate(&labels, &classes, n_bits, 1);
+        assert!(d1.is_none(), "degree 1 (linear) should not separate 8/7 split");
+
+        // Degree 2 (quadratic): FAILS
+        let d2 = find_boolean_class_predicate(&labels, &classes, n_bits, 2);
+        assert!(d2.is_none(), "degree 2 (quadratic) should not separate 8/7 split");
+
+        // Degree 3 (cubic): SUCCEEDS -- this is the minimum separating degree
+        let d3 = find_boolean_class_predicate(&labels, &classes, n_bits, 3);
+        assert!(
+            d3.is_some(),
+            "degree 3 (cubic) must separate the 8/7 split"
+        );
+
+        // Verify the cubic predicate evaluates consistently on all points
+        let monomials = d3.unwrap();
+        let max_mono_degree = monomials
+            .iter()
+            .map(|m| m.count_ones() as usize)
+            .max()
+            .unwrap_or(0);
+        assert!(
+            max_mono_degree <= 3,
+            "returned predicate should use monomials of degree <= 3, got {max_mono_degree}"
+        );
+    }
+
+    #[test]
     fn test_affine_predicate_fallback() {
         // If linear fails, affine should still work for simple cases
         let labels = vec![1, 3]; // Both have bit 0 set; linear might fail
