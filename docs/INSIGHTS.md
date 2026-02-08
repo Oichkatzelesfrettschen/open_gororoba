@@ -291,3 +291,72 @@ lattice codebook filtration of Cayley-Dickson algebras. Results:
 - Multiplication coupling rho(b) in GL(8,Z) (C-466)
 - Extension of parity-clique and XOR partner to dim=256+ (computational)
 - Connection between lex-prefix filtration and octonion subalgebra structure
+
+---
+
+## I-016: De Marrais Emanation Architecture (Sprint 10, 2026-02-08)
+
+**Claims**: C-468..C-475
+**Module**: `crates/algebra_core/src/emanation.rs` (~4400 lines, 113 tests)
+
+### Summary
+
+Implemented the full de Marrais "lacuna map" (L1-L18) as a single coherent
+Rust module covering: Cayley-Dickson signed products, emanation tables (dim=16
+and dim=32 strutted), tone-row ordering, DMZ cell geometry, ET sparsity
+spectroscopy, twist mechanics, PSL(2,7) navigation, lanyard taxonomy, Trip Sync,
+semiotic squares, sail-loop duality, oriented Trip Sync, signed adjacency graphs,
+lanyard state machines, delta transition functions, and brocade normalization.
+
+### Key Findings
+
+- **Emanation tables are fully determined by XOR**: The product index at
+  cell (i,j) is always i XOR j, and the sign comes from the Cayley-Dickson
+  multiplication recursion. Zero-divisor marking is exact (42 assessor pairs
+  at dim=16 = 84 symmetric ET cells).
+
+- **DMZ geometry is sign-concordance, not octahedral adjacency**: A cell
+  is DMZ when its 4 quadrant products have concordant diagonal signs
+  (UL*LR sign = UR*LL sign). This produces 12 DMZ edges per BK (not 9
+  as naive octahedral counting suggests).
+
+- **Sail-loop duality is combinatorial, not dynamical**: The 28 O-trip
+  sails partition into 7 automorphemes (Cawagas loops) by Fano plane
+  incidence, not by twist-orbit BFS. Each BK contributes 4 sails to 4
+  distinct automorphemes. This is the correct BK-automorpheme duality.
+
+- **Oriented Trip Sync is universal at dim=16**: All 7 box-kites admit
+  at least one PSL(2,7) embedding where the shorthand pattern
+  (a,b,c),(a,d,e),(d,b,f),(e,f,c) is satisfiable.
+
+- **Delta transition structure**: Each S0 has exactly 3 XOR strut pairs
+  covering {1..7}\{S0}. The delta reachability matches twist reachability
+  but the detailed pair-level correspondence is more nuanced than simple
+  containment.
+
+- **Brocade normalization yields 4 relabelings per BK**: Any of the 4
+  O-trips in a BK's L-set can serve as the Rule-0 central circle. CPO
+  preservation (outer indices also forming an O-trip) is uniform across BKs.
+
+### Architecture
+
+The module follows a layered design:
+1. **Product engine** (L1): CDP signed products with quadrant recursion
+2. **Table generation** (L2-L4): Tone rows, emanation tables, strutted ETs, sparsity
+3. **Twist mechanics** (L5-L6): H*/V* operations, PSL(2,7) navigation graph
+4. **Lanyard taxonomy** (L7-L8): Sails, tray-racks, blues, quincunx, bicycle chains, Trip Sync
+5. **Semiotic geometry** (L9-L14): Strut-opposite kernels, CT boundary, loop duality, Sky, Eco echo
+6. **Orientation and normalization** (L15-L18): Oriented Trip Sync, signed graphs, delta, brocade
+
+### Open Questions from Sprint 10
+
+- **Twist-delta pair correspondence**: The twist navigation targets do not
+  always match delta strut pairs at the individual pair level. The XOR of
+  twist targets (h XOR v) is not always = source_strut. Need to understand
+  which Fano-plane quantity governs each twist transition.
+- **Full lanyard classification from signed graph**: The infrastructure for
+  signed-graph -> lanyard extraction is in place (L16), but systematic
+  classification of all cycle types across all 7 BKs is not yet done.
+- **Brocade CPO preservation**: The CPO count is uniform across BKs but
+  the actual count (0 or >0) needs algebraic explanation from Fano plane
+  complementation properties.

@@ -1,6 +1,6 @@
 # Risks and Gaps (Open Items)
 
-Updated 2026-02-07 (Sprint 8 complete).
+Updated 2026-02-08 (Sprint 10 complete).
 
 ## Remaining open items
 
@@ -19,12 +19,30 @@ Updated 2026-02-07 (Sprint 8 complete).
 - **GPU test coverage**: 4 CUDA tests require RTX GPU; CI environments without
   NVIDIA hardware skip them silently via `#[ignore]`.  No CI GPU runner configured.
 
+- **Twist-delta pair correspondence**: At the individual pair level, twist
+  navigation targets do not always match delta XOR strut pairs. The twist
+  target XOR is not always = source_strut. Understanding which Fano quantity
+  governs each twist transition is an open algebraic question.
+
+- **Full lanyard classification from signed graph**: The L16 infrastructure
+  (signed-graph -> lanyard extraction) is in place but systematic classification
+  of all cycle types across all 7 BKs is not yet done.
+
+- **Brocade CPO preservation**: The CPO count is uniform across BKs but its
+  actual value needs algebraic explanation from Fano plane complementation.
+
 ## Documentation health
 
-- **Test count**: 1693 Rust tests (unit + integration + doc), synchronized across
+- **Test count**: 1806 Rust tests (unit + integration + doc), synchronized across
   all 7 tracking documents (ROADMAP, TODO, ULTRA_ROADMAP, NEXT_ACTIONS,
   CLAIMS_TASKS, AGENTS, this file).
-- **CLAIMS_TASKS.md snapshot**: updated Sprint 8 with correct per-crate counts.
+- **CLAIMS_TASKS.md snapshot**: updated Sprint 10 with current counts.
+
+## Resolved in Sprint 10
+
+- ~~De Marrais emanation table implementation~~: DONE (L1-L18, 113 tests, C-468..C-475).
+- ~~Sail-loop duality mechanism~~: DONE (automorpheme membership, not twist-orbits).
+- ~~Oriented Trip Sync verification~~: DONE (all 7 BKs admit shorthand embedding).
 
 ## Resolved in Sprint 8
 

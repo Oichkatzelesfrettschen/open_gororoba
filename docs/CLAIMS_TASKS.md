@@ -13,7 +13,7 @@ Rules:
 - Date header is ISO: `Date: YYYY-MM-DD`.
 - Task status tokens are canonical: `TODO`, `IN PROGRESS`, `PARTIAL`, `DONE`, `REFUTED`, `DEFERRED`, `BLOCKED`.
 
-Date: 2026-02-06
+Date: 2026-02-08
 
 Current status snapshot policy:
 - Treat any test-count or resolved-count line in this file as date-scoped.

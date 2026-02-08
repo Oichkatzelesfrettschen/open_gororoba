@@ -1,25 +1,31 @@
 # Next Actions (Prioritized)
 
-Updated 2026-02-08 after Sprint 9 completion.
+Updated 2026-02-08 after Sprint 10 completion.
 **See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and research plan.
+
+## Sprint 10 Summary (2026-02-08)
+
+**Test count**: 1806 total (unit + integration + doc), 0 clippy warnings.
+**Claims**: C-001..C-475 (475 total). **Insights**: I-001..I-016.
+
+Completed this sprint:
+- De Marrais emanation architecture: L1-L18 implemented in emanation.rs (~4400 lines)
+- 113 emanation tests covering signed products, ETs, twists, lanyards, Trip Sync, semiotic geometry
+- Oriented Trip Sync: all 7 BKs admit PSL(2,7) shorthand embedding
+- Signed adjacency graph + lanyard state-machine traversal
+- Delta transition function: XOR strut pairs with full reachability verification
+- Brocade normalization: 4 relabelings per BK, CPO consistency
+- Sail-loop duality: 28 sails -> 7 automorpheme loops of 4
+- 8 new claims (C-468..C-475), Insight I-016
 
 ## Sprint 9 Summary (2026-02-08)
 
-**Test count**: 1693 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-467 (467 total). **Insights**: I-001..I-015.
-
-Completed this sprint:
 - Monograph theses A-H: 8/8 verified (lattice codebook filtration)
-- Novel discovery: all filtration transitions are lexicographic prefix cuts
-- S_base = 2187 = 3^7 (base universe), Lambda_32 = pinned corner
-- 3 conversation extracts (inverse CD, wheel taxonomy, sedenion ZD)
-- 12 conversation files removed (convos/ fully processed)
-- 10 new claims (C-458..C-467), Insight I-015
+- 10 new claims (C-458..C-467), Insight I-015. 1693 tests.
 
 ## Sprint 8 Summary (2026-02-07)
 
-- CdMultTable generator, Hartigan dip test, Casimir DE, PEPS entropy
-- mass-clumping binary, EXPERIMENTS_PORTFOLIO_SHORTLIST.md, MATH_CONVENTIONS.md
+- CdMultTable, Hartigan dip test, Casimir DE, PEPS entropy
 - Cubic Anomaly (I-012), External data cross-validation (I-014)
 - License: GPL-2.0-only. 1670 tests.
 
@@ -37,6 +43,7 @@ Completed this sprint:
 | F. GPU ultrametric | DONE | S4 | 82/472 sig at FDR<0.05 |
 | G. Convos extraction | DONE | S5, S9 | 104 claims + 3 extracts, convos/ removed |
 | H. Lattice codebook | DONE | S9 | 8 theses verified, I-015 |
+| I. Emanation architecture | DONE | S10 | L1-L18, 113 tests, I-016 |
 
 ---
 
@@ -61,7 +68,17 @@ Completed this sprint:
 
 ### Medium Priority
 
-4) **GF(2) separating degree at dim=64** (I-012 open question)
+4) **Twist-delta pair correspondence** (I-016 open question)
+   - Twist navigation targets {h,v} have h XOR v != source_strut in many cases.
+   - Need to identify which Fano-plane quantity governs each twist transition.
+   - Related to brocade normalization (different central-trip choices may align).
+
+5) **Full lanyard classification from signed graph** (I-016)
+   - L16 infrastructure is in place (signed graph -> lanyard extraction).
+   - Systematic census of all cycle types across all 7 BKs not yet done.
+   - Goal: formal bijection between ET edge signs, lanyard types, and de Marrais terminology.
+
+6) **GF(2) separating degree at dim=64** (I-012 open question)
    - At dim=32, the 8/7 motif split needs a cubic GF(2) polynomial.
    - At dim=64 (4 motif classes, PG(4,2)), minimum separating degree is unknown.
    - Does the degree grow with the doubling level?

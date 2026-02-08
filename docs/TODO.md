@@ -8,11 +8,41 @@ Primary trackers:
 
 Note:
 - Python-to-Rust migration is COMPLETE (all 15 modules ported, gororoba_kernels removed).
-- 1693 Rust tests (unit + integration + doc) pass, 0 clippy warnings.
+- 1806 Rust tests (unit + integration + doc) pass, 0 clippy warnings.
 - Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md`) deleted; content absorbed into `docs/ROADMAP.md`.
-- Claims: C-001..C-467 (467 total). Insights: I-001..I-015.
+- Claims: C-001..C-475 (475 total). Insights: I-001..I-016.
 
-## Current sprint: Sprint 9 -- Lattice Codebook Filtration (COMPLETE)
+## Current sprint: Sprint 10 -- De Marrais Emanation Architecture (COMPLETE)
+
+### emanation.rs module (L1-L18, ~4400 lines, 113 tests)
+- [x] L1: CDP signed-product engine with quadrant recursion
+- [x] L2: Tone-row ordering and ET row/col label generation
+- [x] L3: Exact DMZ cell test with 4-product X-pattern
+- [x] L4: ET sparsity spectroscopy with per-strut regime detection
+- [x] L5: Twist product mechanics with H*/V* operations
+- [x] L6: Twisted Sisters PSL(2,7) navigation graph
+- [x] L7: Lanyard taxonomy (Sails, TrayRacks, Blues, Quincunx, BicycleChain)
+- [x] L8: Trip Sync and quaternion copy decomposition within Sails
+- [x] L9: Semiotic Square with strut-opposite arithmetic kernel
+- [x] L10: CT boundary detection (strutted ET edge-type transitions)
+- [x] L11: Loop duality via sail-loop partition (automorpheme membership)
+- [x] L12: Quincunx 5-assessor cross-linking construction
+- [x] L13: Sky meta-fractal (strutted ET sparsity scaling across dims)
+- [x] L14: Eco echo (semiotic square replication probe)
+- [x] L15: Oriented Trip Sync (PSL(2,7) shorthand pattern verification)
+- [x] L16: ET-lanyard dictionary (signed adjacency graph + state-machine traversal)
+- [x] L17: Delta transition function (XOR strut pairs, reachability)
+- [x] L18: Brocade/slipcover normalization (4 relabelings per BK)
+
+### Claims and Insights
+- [x] Claims C-468..C-475 added (8 new)
+- [x] Insight I-016 written (De Marrais Emanation Architecture)
+
+### Quality gates
+- [x] `cargo clippy --workspace -j$(nproc) -- -D warnings` (0 warnings)
+- [x] `cargo test --workspace -j$(nproc)` (1806 pass, 0 fail)
+
+## Previous sprint: Sprint 9 -- Lattice Codebook Filtration (COMPLETE)
 
 ### Monograph theses (8/8 verified)
 - [x] Thesis A: Codebook parity (C-458) -- all 4 dims verified
@@ -79,6 +109,7 @@ Note:
 - [x] `make ascii-check` (5 files fixed, extended replacement table + skip lists)
 
 ## Completed (keep for provenance)
+- [x] Sprint 10: De Marrais Emanation Architecture -- L1-L18 implemented, 113 emanation tests, 8 claims (C-468..C-475), I-016. 1806 tests.
 - [x] Sprint 9: Lattice codebook filtration -- 8 theses verified, 10 claims (C-458..C-467), I-015. 1693 tests.
 - [x] Sprint 8: Consolidation -- mult table, dip test, Casimir DE, PEPS entropy, I-012/I-014. 1670 tests.
 - [x] Package `gemini_physics` and add tests (`pyproject.toml`, `src/gemini_physics/`, `tests/`).

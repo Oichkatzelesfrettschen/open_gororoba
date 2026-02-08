@@ -19,7 +19,7 @@ open_gororoba is a research-style codebase mixing:
   reports under `docs/`.
 - **Formal proofs** -- Coq files under `curated/01_theory_frameworks/`.
 
-Python-to-Rust migration is COMPLETE (all 15 modules ported, 1693 Rust tests,
+Python-to-Rust migration is COMPLETE (all 15 modules ported, 1806 Rust tests,
 0 clippy warnings).  See `docs/ROADMAP.md` for architecture and evolution.
 
 Many physics-facing statements are **hypotheses**.  Treat them as unverified

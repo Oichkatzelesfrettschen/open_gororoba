@@ -568,6 +568,36 @@ extracts in docs/external_sources/ (inverse CD, wheel taxonomy, sedenion ZD).
 **Insight**: I-015 (monograph theses verification)
 **Test count**: ~1690+ (20 new cd_external + 3 stats_core)
 
+### 7.10 De Marrais Emanation Architecture (Sprint 10)
+
+**Goal**: Implement the full de Marrais "lacuna map" (L1-L18) as a single
+coherent Rust module covering emanation tables, twist mechanics, lanyard
+taxonomy, PSL(2,7) navigation, semiotic geometry, and brocade normalization.
+
+**Module**: `crates/algebra_core/src/emanation.rs` (~4400 lines, 113 tests)
+
+| Layer | Items | Topic | Claims |
+|-------|-------|-------|--------|
+| Product engine | L1 | CDP signed products, quadrant recursion | C-468 |
+| Table generation | L2-L4 | Tone rows, ETs, strutted ETs, sparsity | C-469 |
+| Twist mechanics | L5-L6 | H*/V* operations, PSL(2,7) graph | -- |
+| Lanyard taxonomy | L7-L8 | Sails, tray-racks, blues, quincunx, Trip Sync | -- |
+| Semiotic geometry | L9-L14 | Strut-opposite kernel, CT boundary, loop duality, Sky, Eco | C-475 |
+| Orientation | L15-L18 | Oriented Trip Sync, signed graph, delta, brocade | C-470..C-474 |
+
+**Key findings**:
+- DMZ geometry is sign-concordance (12 edges/BK), not octahedral adjacency (9)
+- Sail-loop duality is combinatorial (Fano incidence), not dynamical (twist orbits)
+- All 7 BKs admit PSL(2,7) shorthand embedding (oriented Trip Sync universal)
+- Delta reachability matches twist reachability but pair-level correspondence is nuanced
+
+**Open questions**: twist-delta pair correspondence, full lanyard classification,
+brocade CPO count explanation.
+
+**Insight**: I-016 (De Marrais Emanation Architecture)
+**Test count**: 1806 (113 new emanation + prior 1693)
+**Claims**: C-468..C-475 (8 new, total 475)
+
 ---
 
 ## 8. Long-Term Vision
