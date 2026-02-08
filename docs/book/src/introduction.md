@@ -10,7 +10,7 @@ explain or predict phenomena in quantum gravity, particle physics, and cosmology
 - **475** tracked claims (C-001..C-475)
 - **16** insights (I-001..I-016)
 - **10** reproducible experiments (E-001..E-010)
-- **33** CLI binaries
+- **37** CLI binaries
 - **19** extracted research papers
 - **15** workspace crates
 
@@ -50,7 +50,7 @@ crates/
   data_core/        Data loading, benchmarks
   docpipe/          PDF extraction (pdfium-render primary)
   gororoba_py/      PyO3 bindings (thin wrappers)
-  gororoba_cli/     33 analysis binaries
+  gororoba_cli/     37 analysis binaries
 registry/           TOML registry (claims, insights, experiments)
 papers/             PDF collection + TOML extractions
 docs/               Documentation and tracking
