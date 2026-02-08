@@ -1,0 +1,125 @@
+# Experiments registry -- reproducible experiments with run commands and outputs.
+
+[[experiment]]
+id = "E-001"
+title = "Cayley-Dickson Motif Census"
+binary = "motif-census"
+method = "Exact enumeration of connected-component structure of diagonal zero-product graph for cross-assessor pairs at each CD doubling (dim=16,32,64,128,256)."
+input = "None (purely algebraic)"
+output = ["data/csv/motif_census_dim{N}.csv", "data/csv/motif_census_summary.csv"]
+run = "cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details"
+claims = ["C-100", "C-101", "C-102", "C-103", "C-104", "C-105", "C-106", "C-107", "C-108", "C-109", "C-110"]
+deterministic = true
+gpu = false
+
+[[experiment]]
+id = "E-002"
+title = "Multi-Dataset GPU Ultrametric Sweep"
+binary = "multi-dataset-ultrametric"
+method = "For 9 catalogs: normalize, compute Euclidean distances, ultrametric fraction test with column-shuffled null. 10M triples x 1000 permutations. BH-FDR correction."
+input = "data/external/ (CHIME/FRB, ATNF, GWOSC, Pantheon+, Gaia DR3, SDSS DR18, Fermi GBM, Hipparcos, McGill)"
+output = ["data/csv/c071g_multi_dataset_ultrametric.csv"]
+run = "cargo run --release --bin multi-dataset-ultrametric -- --explore --n-triples 10000000 --n-permutations 1000"
+claims = ["C-071", "C-436", "C-437", "C-438", "C-439", "C-440"]
+deterministic = false
+seed = 42
+gpu = true
+
+[[experiment]]
+id = "E-003"
+title = "Real Cosmological Fit (Pantheon+ / DESI BAO)"
+binary = "real-cosmo-fit"
+method = "Joint chi-square over 1578 Pantheon+ SNe + 7 DESI DR1 BAO bins. Analytic M_B marginalization. Nelder-Mead. Lambda-CDM vs w0-CDM via delta-BIC."
+input = "data/external/Pantheon+SH0ES.dat"
+output = ["stdout"]
+run = "cargo run --release --bin real-cosmo-fit"
+claims = ["C-200", "C-201", "C-202", "C-203", "C-204", "C-205", "C-206", "C-207", "C-208", "C-209", "C-210"]
+deterministic = true
+gpu = false
+
+[[experiment]]
+id = "E-004"
+title = "Kerr Shadow Boundaries"
+binary = "kerr-shadow"
+method = "Bardeen shadow boundary (alpha, beta) for Kerr BH at given spin and inclination."
+input = "None (analytic)"
+output = ["stdout or --output file"]
+run = "cargo run --release --bin kerr-shadow -- --spin 0.998 --n-points 1000 --inclination 17"
+claims = ["C-301", "C-302", "C-303", "C-304", "C-305", "C-306", "C-307", "C-308", "C-309", "C-310"]
+deterministic = true
+gpu = false
+
+[[experiment]]
+id = "E-005"
+title = "Zero-Divisor Graph Invariants"
+binary = "zd-search"
+method = "Build sedenion ZD interaction graph, compute graph-theoretic invariants. Extend to dim=32."
+input = "None (purely algebraic)"
+output = ["stdout"]
+run = "cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000"
+claims = ["C-050", "C-051", "C-052", "C-053", "C-054", "C-055", "C-056", "C-057", "C-058", "C-059", "C-060"]
+deterministic = true
+gpu = false
+
+[[experiment]]
+id = "E-006"
+title = "Gravastar TOV Parameter Sweep"
+binary = "gravastar-sweep"
+method = "Solve TOV for three-layer gravastar across polytropic indices and target masses."
+input = "None (parametric sweep)"
+output = ["data/csv/gravastar_sweep.csv"]
+run = "cargo run --release --bin gravastar-sweep -- --n-gamma 32 --n-mass 32 --output data/csv/gravastar_sweep.csv"
+claims = ["C-400", "C-401", "C-402", "C-403", "C-404", "C-405", "C-406", "C-407", "C-408", "C-409", "C-410"]
+deterministic = true
+gpu = false
+
+[[experiment]]
+id = "E-007"
+title = "Tensor Network / PEPS Entropy"
+binary = "tensor-network"
+method = "Classical tensor network simulator: Bell/GHZ states, random circuits, SVD entropy, PEPS boundary MPS."
+input = "None (synthetic circuits)"
+output = ["data/csv/entropy_scaling.csv"]
+run = "cargo run --release --bin tensor-network -- scaling --n-min 2 --n-max 12 --output data/csv/entropy_scaling.csv"
+claims = ["C-350", "C-351", "C-352", "C-353", "C-354", "C-355", "C-356", "C-357", "C-358", "C-359", "C-360"]
+deterministic = false
+seed = 42
+gpu = false
+
+[[experiment]]
+id = "E-008"
+title = "GWTC-3 Mass Clumping (Dip Test)"
+binary = "mass-clumping"
+method = "Hartigan dip test for multimodality of BBH mass distribution. Permutation-based p-value."
+input = "data/external/gwosc_all_events.csv"
+output = ["data/csv/gwtc3_mass_clumping_dip.csv"]
+run = "cargo run --release --bin mass-clumping -- --n-permutations 10000 --seed 42"
+claims = ["C-007"]
+deterministic = false
+seed = 42
+gpu = false
+
+[[experiment]]
+id = "E-009"
+title = "Negative-Dimension Eigenvalue Convergence"
+binary = "neg-dim-eigen"
+method = "Eigenvalues of H = T(k) + V(x) with fractional kinetic operator, imaginary-time evolution, epsilon->0 sweep."
+input = "None (parametric)"
+output = ["data/csv/neg_dim_convergence.csv"]
+run = "cargo run --release --bin neg-dim-eigen -- sweep --alpha -1.5 --eps-start 0.5 --eps-end 0.01 --eps-steps 20 --output data/csv/neg_dim_convergence.csv"
+claims = ["C-420", "C-421", "C-422", "C-423", "C-424", "C-425"]
+deterministic = true
+gpu = false
+
+[[experiment]]
+id = "E-010"
+title = "Materials Science Baselines (JARVIS + AFLOW)"
+binary = "materials-baseline"
+method = "JARVIS-DFT and AFLOW datasets, Magpie-style featurization, OLS regression for formation energy and band gap."
+input = "data/external/ (JARVIS JSON, AFLOW CSV)"
+output = ["stdout"]
+run = "cargo run --release --bin materials-baseline -- --data-dir data/external --seed 42"
+claims = ["C-450", "C-451", "C-452", "C-453", "C-454", "C-455"]
+deterministic = false
+seed = 42
+gpu = false

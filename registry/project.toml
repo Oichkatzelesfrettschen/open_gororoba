@@ -1,0 +1,42 @@
+# Project-level metadata for the open_gororoba registry.
+
+[project]
+name = "open_gororoba"
+version = "0.11.0"
+description = "Research workbench for Cayley-Dickson algebra and physics applications"
+license = "GPL-2.0-only"
+test_count = 1806
+claim_count = 475
+insight_count = 16
+experiment_count = 10
+paper_count = 19
+binary_count = 32
+
+[sprints.s10]
+number = 10
+date = "2026-02-08"
+test_count = 1806
+claim_count = 475
+summary = "De Marrais emanation architecture (L1-L18), 113 tests, 8 new claims"
+
+[sprints.s9]
+number = 9
+date = "2026-02-08"
+test_count = 1693
+claim_count = 467
+summary = "Lattice codebook filtration, 8 monograph theses A-H"
+
+[sprints.s8]
+number = 8
+date = "2026-02-07"
+test_count = 1645
+claim_count = 459
+summary = "Mult table SHA-256, Hartigan dip test, mass-clumping, citation sweep"
+
+[sprints.s11]
+number = 11
+date = "2026-02-08"
+test_count = 1828
+claim_count = 475
+binary_count = 33
+summary = "Document acquisition, docpipe crate (pdfium-render primary), TOML registry, 19 paper extractions, mdbook skeleton"

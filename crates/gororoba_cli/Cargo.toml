@@ -129,7 +129,20 @@ path = "src/bin/materials_baseline.rs"
 name = "mass-clumping"
 path = "src/bin/mass_clumping.rs"
 
+[[bin]]
+name = "extract-papers"
+path = "src/bin/extract_papers.rs"
+
+[[bin]]
+name = "migrate-claims"
+path = "src/bin/migrate_claims.rs"
+
+[[bin]]
+name = "registry-check"
+path = "src/bin/registry_check.rs"
+
 [dependencies]
+docpipe = { path = "../docpipe" }
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
@@ -154,5 +167,6 @@ ureq = { workspace = true }
 sha2 = { workspace = true }
 rayon = { workspace = true }
 regex = { workspace = true }
+toml = { workspace = true }
 walkdir = { workspace = true }
 glob = { workspace = true }

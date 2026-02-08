@@ -1,0 +1,29 @@
+[package]
+name = "docpipe"
+version = "0.1.0"
+edition = "2021"
+license.workspace = true
+description = "PDF text/image extraction and structured TOML output pipeline (pdfium-render primary)"
+
+[features]
+default = ["pdfium"]
+pdfium = ["dep:pdfium-render", "dep:image"]
+# Pure-Rust fallback for environments without libpdfium (CI, WASM, etc.)
+fallback = ["dep:lopdf", "dep:pdf-extract"]
+
+[dependencies]
+# Primary PDF engine (requires libpdfium.so at runtime)
+pdfium-render = { workspace = true, optional = true }
+image = { workspace = true, optional = true }
+# Fallback: pure Rust PDF parsing
+lopdf = { workspace = true, optional = true }
+pdf-extract = { workspace = true, optional = true }
+# Always needed
+serde = { workspace = true }
+serde_json = { workspace = true }
+toml = { workspace = true }
+regex = { workspace = true }
+thiserror = { workspace = true }
+
+[dev-dependencies]
+tempfile = { workspace = true }

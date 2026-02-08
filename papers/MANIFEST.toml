@@ -1,0 +1,200 @@
+# Paper manifest for open_gororoba Cayley-Dickson research collection
+# Each [[paper]] entry tracks a paper's metadata, local path, and extraction status.
+
+# --- De Marrais papers (8) ---
+
+[[paper]]
+id = "demarrais-2000-math0011260"
+title = "The 42 Assessors and the Box-Kites they Fly"
+authors = ["Robert P. C. de Marrais"]
+year = 2000
+arxiv = "math/0011260"
+local_pdf = "papers/pdf/de_marrais_2000_math0011260.pdf"
+status = "extracted"
+topics = ["box-kites", "sedenions", "zero-divisors"]
+
+[[paper]]
+id = "demarrais-2002-math0207003"
+title = "Placeholder Substructures: The Road from NKS to Small-World, Scale-Free Networks is Paved with Zero-Divisors"
+authors = ["Robert P. C. de Marrais"]
+year = 2002
+arxiv = "math/0207003"
+local_pdf = "papers/pdf/de_marrais_2002_math0207003_placeholder_substructures_I.pdf"
+status = "extracted"
+topics = ["placeholder-substructures", "zero-divisors", "networks"]
+
+[[paper]]
+id = "demarrais-2004-math0403113"
+title = "Placeholder Substructures III: A Bit-String-Driven 'Recipe Theory' for Infinite-Dimensional Zero-Divisor Spaces"
+authors = ["Robert P. C. de Marrais"]
+year = 2004
+arxiv = "math/0403113"
+local_pdf = "papers/pdf/de_marrais_2004_math0403113_boxkites_III.pdf"
+status = "extracted"
+topics = ["box-kites", "bit-strings", "zero-divisors"]
+
+[[paper]]
+id = "demarrais-2004-wolfram"
+title = "Placeholder Substructures at the Wolfram Science Conference (slides)"
+authors = ["Robert P. C. de Marrais"]
+year = 2004
+arxiv = ""
+local_pdf = "papers/pdf/de_marrais_2004_wolfram_science_slides.pdf"
+status = "extracted"
+topics = ["box-kites", "zero-divisors", "NKS"]
+
+[[paper]]
+id = "demarrais-2006-math0603281"
+title = "Presto! Digitization: Part I"
+authors = ["Robert P. C. de Marrais"]
+year = 2006
+arxiv = "math/0603281"
+local_pdf = "papers/pdf/de_marrais_2006_math0603281_presto_digitization_I.pdf"
+status = "extracted"
+topics = ["digitization", "zero-divisors", "emanation"]
+
+[[paper]]
+id = "demarrais-2007-math0703745"
+title = "Placeholder Substructures III (revised)"
+authors = ["Robert P. C. de Marrais"]
+year = 2007
+arxiv = "math/0703745"
+local_pdf = "papers/pdf/de_marrais_2007_math0703745_placeholder_substructures_III.pdf"
+status = "extracted"
+topics = ["placeholder-substructures", "zero-divisors"]
+
+[[paper]]
+id = "demarrais-2007-07040026"
+title = "Catamaran Sails and Spindles, Zero-Divisor Geometry, and the Eightfold Way"
+authors = ["Robert P. C. de Marrais"]
+year = 2007
+arxiv = "0704.0026"
+local_pdf = "papers/pdf/de_marrais_2007_07040026_catamaran_sails.pdf"
+status = "extracted"
+topics = ["catamaran", "sails", "zero-divisors", "eightfold-way"]
+
+[[paper]]
+id = "demarrais-2007-07040112"
+title = "SedenionsXOR: Things Barely Thought of Fly High"
+authors = ["Robert P. C. de Marrais"]
+year = 2007
+arxiv = "0704.0112"
+local_pdf = "papers/pdf/de_marrais_2007_07040112_sedenions_xor.pdf"
+status = "extracted"
+topics = ["sedenions", "XOR", "zero-divisors"]
+
+# --- Moreno papers (2) ---
+
+[[paper]]
+id = "moreno-2005-math0512517"
+title = "Zero Divisors of 2^n-ions"
+authors = ["Guillermo Moreno"]
+year = 2005
+arxiv = "math/0512517"
+local_pdf = "papers/pdf/moreno_2005_math0512517_zero_divisors_2n_ions.pdf"
+status = "extracted"
+topics = ["zero-divisors", "cayley-dickson", "2n-ions"]
+
+[[paper]]
+id = "moreno-2005-math0512516"
+title = "The Zero Divisors of the Cayley-Dickson Algebras over the Real Numbers"
+authors = ["Guillermo Moreno"]
+year = 2005
+arxiv = "math/0512516"
+local_pdf = "papers/pdf/moreno_2005_math0512516_companion.pdf"
+status = "extracted"
+topics = ["zero-divisors", "cayley-dickson"]
+
+# --- Reggiani papers (3) ---
+
+[[paper]]
+id = "reggiani-2024-241118881"
+title = "Cayley-Dickson Algebras and Projective Planes"
+authors = ["Silvio Reggiani"]
+year = 2024
+arxiv = "2411.18881"
+local_pdf = "papers/pdf/reggiani_2024_241118881_cd_manifold.pdf"
+status = "extracted"
+topics = ["cayley-dickson", "projective-planes", "manifold"]
+
+[[paper]]
+id = "reggiani-2025-251207210"
+title = "Automorphisms of the Sedenions and Beyond"
+authors = ["Silvio Reggiani"]
+year = 2025
+arxiv = "2512.07210"
+local_pdf = "papers/pdf/reggiani_2025_251207210_automorphisms_sedenions.pdf"
+status = "extracted"
+topics = ["automorphisms", "sedenions", "cayley-dickson"]
+
+[[paper]]
+id = "reggiani-2025-251213002"
+title = "Cayley-Dickson Algebras: Structure and Applications"
+authors = ["Silvio Reggiani"]
+year = 2025
+arxiv = "2512.13002"
+local_pdf = "papers/pdf/reggiani_2025_251213002_cd_algebras.pdf"
+status = "extracted"
+topics = ["cayley-dickson", "algebras"]
+
+# --- Additional Cayley-Dickson papers (6) ---
+
+[[paper]]
+id = "baez-2002-math0105155"
+title = "The Octonions"
+authors = ["John C. Baez"]
+year = 2002
+arxiv = "math/0105155"
+local_pdf = "papers/pdf/baez_2002_math0105155_octonions.pdf"
+status = "extracted"
+topics = ["octonions", "division-algebras", "survey"]
+
+[[paper]]
+id = "brown-2009-09072047"
+title = "Subalgebra Structure of the Trigintaduonions"
+authors = ["R. E. Cawagas", "A. S. Carrascal", "L. A. Bala", "J. P. Sta. Maria", "J. D. Urrutia"]
+year = 2009
+arxiv = "0907.2047"
+local_pdf = "papers/pdf/brown_2009_09072047_trigintaduonion_subalgebra.pdf"
+status = "extracted"
+topics = ["trigintaduonions", "subalgebra", "32-dim"]
+
+[[paper]]
+id = "tang-2023-230814768"
+title = "Sedenion Extension of the Standard Model and Unification of Fundamental Forces"
+authors = ["Zihua Tang", "Shoucheng Tang"]
+year = 2023
+arxiv = "2308.14768"
+local_pdf = "papers/pdf/tang_2023_230814768_sedenion_su5.pdf"
+status = "extracted"
+topics = ["sedenions", "SU(5)", "particle-physics", "generations"]
+
+[[paper]]
+id = "flipped-2024-240303763"
+title = "Flipped Polynomial Rings and the Cayley-Dickson Construction"
+authors = ["C. Brown", "S. Pumpluen"]
+year = 2024
+arxiv = "2403.03763"
+local_pdf = "papers/pdf/flipped_2024_240303763_polynomial_rings_cd.pdf"
+status = "extracted"
+topics = ["polynomial-rings", "cayley-dickson", "algebra"]
+
+[[paper]]
+id = "structure-2025-250511747"
+title = "The Structure of Cayley-Dickson Algebras"
+authors = ["Unknown"]
+year = 2025
+arxiv = "2505.11747"
+local_pdf = "papers/pdf/structure_2025_250511747_cayley_dickson.pdf"
+status = "extracted"
+topics = ["cayley-dickson", "structure"]
+
+[[paper]]
+id = "tower-2025-251222134"
+title = "A Mnemonic for the Cayley-Dickson Tower"
+authors = ["Unknown"]
+year = 2025
+arxiv = "2512.22134"
+local_pdf = "papers/pdf/tower_2025_251222134_cd_mnemonic.pdf"
+status = "extracted"
+topics = ["cayley-dickson", "tower", "mnemonic"]

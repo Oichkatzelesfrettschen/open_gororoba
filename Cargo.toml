@@ -9,6 +9,7 @@ members = [
     "crates/control_core",
     "crates/cosmology_core",
     "crates/data_core",
+    "crates/docpipe",
     "crates/materials_core",
     "crates/optics_core",
     "crates/quantum_core",
@@ -106,6 +107,16 @@ ureq = "3"                    # Minimal sync HTTP client for data fetching
 flate2 = "1.1"                # Gzip compression/decompression
 zip = "2.2"                   # ZIP archive extraction
 tar = "0.4"                   # Tar archive reading (WMAP/Planck chain extraction)
+
+# PDF extraction (pdfium-render is primary; lopdf/pdf-extract are pure-Rust fallback)
+pdfium-render = "0.8"            # High-level PDFium wrapper (text, images, rendering)
+image = "0.25"                   # Image encoding/decoding (used by pdfium-render for PNG output)
+lopdf = "0.39"                   # Pure Rust PDF parser (fallback, object-level access)
+pdf-extract = "0.10"             # Pure Rust PDF text extraction (fallback, wraps lopdf)
+toml = "0.8"                     # TOML serialization/deserialization
+
+# Documentation generation
+clap_mangen = "0.2"              # Manpage generation from clap App structs
 
 # Visualization
 plotters = "0.3"
