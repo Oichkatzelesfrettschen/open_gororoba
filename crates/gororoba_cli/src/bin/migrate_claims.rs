@@ -61,24 +61,36 @@ fn main() {
 
     let mut claims = Vec::new();
 
+    // Sentinel for escaped pipes inside markdown table cells.
+    // Markdown uses \| for literal pipe characters within cells.
+    const PIPE_SENTINEL: &str = "\x00PIPE\x00";
+
     for line in content.lines() {
         if !claim_re.is_match(line) {
             continue;
         }
 
-        // Split by | and collect fields
-        let parts: Vec<&str> = line.split('|').collect();
+        // Replace escaped pipes (\|) with sentinel before splitting by delimiter |
+        let safe_line = line.replace("\\|", PIPE_SENTINEL);
+
+        // Split by unescaped | and collect fields
+        let parts: Vec<&str> = safe_line.split('|').collect();
         // parts[0] is empty (before first |), parts[1] is ID, etc.
         if parts.len() < 7 {
             continue;
         }
 
-        let id = parts[1].trim().to_string();
-        let statement = parts[2].trim().to_string();
-        let where_stated = parts[3].trim().to_string();
-        let status_raw = parts[4].trim().to_string();
-        let last_verified = parts[5].trim().to_string();
-        let what_would = parts[6..].join("|").trim_end_matches('|').trim().to_string();
+        // Restore literal pipe characters from sentinel
+        let restore = |s: &str| s.replace(PIPE_SENTINEL, "|").trim().to_string();
+
+        let id = restore(parts[1]);
+        let statement = restore(parts[2]);
+        let where_stated = restore(parts[3]);
+        let status_raw = restore(parts[4]);
+        let last_verified = restore(parts[5]);
+        let what_would = restore(
+            parts[6..].join("|").trim_end_matches('|'),
+        );
 
         let status = extract_status_token(&status_raw);
 

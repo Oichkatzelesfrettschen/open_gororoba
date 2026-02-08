@@ -272,11 +272,11 @@ what_would_verify_refute = """The Springer PDF is not cached (requires authentic
 
 [[claim]]
 id = "C-035"
-statement = 'F4 Casimir ratio epsilon = C2(26)/\'
-where_stated = 'Delta+(F4)\'
-status = "= 6/24 = 1/4 exactly."
-last_verified = "`docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
-what_would_verify_refute = '''**Verified** (pure group theory computation complete) | 2026-01-31 | `crates/quantum_core/src/casimir.rs` verifies ratio is 1/4 under 'unit-long' root normalization (where long roots have\|a\|^2=1), and 1/2 under Bourbaki normalization (\|a\|^2=2). Matches claim logic.'''
+statement = "F4 Casimir ratio epsilon = C2(26)/|Delta+(F4)|= 6/24 = 1/4 exactly."
+where_stated = "`docs/convos/pdf_extract_2b693d92f57d_exceptional_cosmological_framework_synthesis.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+status = "Verified"
+last_verified = "2026-01-31"
+what_would_verify_refute = "`crates/quantum_core/src/casimir.rs` verifies ratio is 1/4 under 'unit-long' root normalization (where long roots have|a|^2=1), and 1/2 under Bourbaki normalization (|a|^2=2). Matches claim logic."
 
 [[claim]]
 id = "C-036"
@@ -540,7 +540,7 @@ statement = "Sedenion 84-ZD interaction matrix eigenvalue spectrum matches PDG p
 where_stated = "`src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`, `docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, inputs: `data/csv/reggiani_standard_zero_divisors.csv`"
 status = "Refuted"
 last_verified = "2026-02-03"
-what_would_verify_refute = 'Deterministic reproduction: build M[i,j]=\|\|v_i*v_j\|\| from the 84 diagonal-form sedenion ZDs and compute eigvals(M). The resulting spectrum has only 6 distinct eigenvalues when rounded to 12 decimals (see `data/csv/c068_zd_interaction_eigen_summary.csv`). This is far too little spectral diversity to match the PDG mass hierarchy, so the "spectrum matches PDG masses" claim is rejected for the standard 84-ZD set. Offline hook: `tests/test_c068_zd_interaction_spectrum_degeneracy.py`.'
+what_would_verify_refute = 'Deterministic reproduction: build M[i,j]=||v_i*v_j|| from the 84 diagonal-form sedenion ZDs and compute eigvals(M). The resulting spectrum has only 6 distinct eigenvalues when rounded to 12 decimals (see `data/csv/c068_zd_interaction_eigen_summary.csv`). This is far too little spectral diversity to match the PDG mass hierarchy, so the "spectrum matches PDG masses" claim is rejected for the standard 84-ZD set. Offline hook: `tests/test_c068_zd_interaction_spectrum_degeneracy.py`.'
 
 [[claim]]
 id = "C-069"
@@ -584,11 +584,11 @@ what_would_verify_refute = "Diagonal-form ZDs produce extremely degenerate opera
 
 [[claim]]
 id = "C-074"
-statement = '**CD associator growth law: <\'
-where_stated = 'A(a,b,c)\'
-status = "^2> = 2.00 * (1 - 14.6 * d^{-1.80}) for unit vectors.**"
-last_verified = "`crates/stats_core/src/lib.rs` (test_c074_integration_with_real_associator_data), `data/csv/c074_associator_growth_empirical.csv`, `docs/external_sources/C074_ASSOCIATOR_GROWTH_LAW_SOURCES.md`"
-what_would_verify_refute = "**Verified** (Phase 7: Rust integration test with real CD associator data) | 2026-02-06 | VERIFIED (Phase 7): Rust integration test generates 500 random unit vector triples per dimension (d=8,16,32,64) and fits growth law. Empirical results: A_inf=2.01 (claim: 2.00, +0.7%), alpha=-1.70 (claim: -1.80, +5.6%), R^2=0.998. Point estimates match claim within 15%. Note: Bootstrap CIs are wide due to 4 data points (methodological limitation, not physics issue). The functional form y=A_inf*(1-B*d^alpha) is strongly supported by R^2>0.99. See `data/csv/c074_associator_growth_empirical.csv`."
+statement = "**CD associator growth law: <|A(a,b,c)|^2> = 2.00 * (1 - 14.6 * d^{-1.80}) for unit vectors.**"
+where_stated = "`crates/stats_core/src/lib.rs` (test_c074_integration_with_real_associator_data), `data/csv/c074_associator_growth_empirical.csv`, `docs/external_sources/C074_ASSOCIATOR_GROWTH_LAW_SOURCES.md`"
+status = "Verified"
+last_verified = "2026-02-06"
+what_would_verify_refute = "VERIFIED (Phase 7): Rust integration test generates 500 random unit vector triples per dimension (d=8,16,32,64) and fits growth law. Empirical results: A_inf=2.01 (claim: 2.00, +0.7%), alpha=-1.70 (claim: -1.80, +5.6%), R^2=0.998. Point estimates match claim within 15%. Note: Bootstrap CIs are wide due to 4 data points (methodological limitation, not physics issue). The functional form y=A_inf*(1-B*d^alpha) is strongly supported by R^2>0.99. See `data/csv/c074_associator_growth_empirical.csv`."
 
 [[claim]]
 id = "C-075"
@@ -612,7 +612,7 @@ statement = "Subalgebra associator mixing matrix resembles PMNS matrix."
 where_stated = "`src/scripts/analysis/c077_associator_mixing_pmns_audit.py`, `data/csv/c077_associator_mixing_summary.csv`, `tests/test_c077_associator_mixing_pmns_audit.py`, `data/csv/cd_algebraic_experiments_v3.json` (exp5v3_associator_mixing)"
 status = "Refuted"
 last_verified = "2026-02-05"
-what_would_verify_refute = 'REFUTED (Phase 7 Batch A): The normalized 3x3 mixing matrix is near-uniform (close to democratic 1/3 in all entries) with Frobenius distance 0.611 from PMNS \|U_ij\|^2. Mean diagonal 0.314 vs PMNS mean diagonal ~0.54. The matrix lacks the hierarchical structure required to match neutrino oscillation data. No symmetry-breaking mechanism produces PMNS-like mixing from this construction.'
+what_would_verify_refute = "REFUTED (Phase 7 Batch A): The normalized 3x3 mixing matrix is near-uniform (close to democratic 1/3 in all entries) with Frobenius distance 0.611 from PMNS |U_ij|^2. Mean diagonal 0.314 vs PMNS mean diagonal ~0.54. The matrix lacks the hierarchical structure required to match neutrino oscillation data. No symmetry-breaking mechanism produces PMNS-like mixing from this construction."
 
 [[claim]]
 id = "C-078"
@@ -652,7 +652,7 @@ statement = "Associator saturation extends to dim 1024 with same parameters."
 where_stated = "`src/scripts/analysis/c082_associator_saturation_extended_audit.py`, `data/csv/c082_associator_saturation_summary.csv`, `data/csv/c082_associator_saturation_by_dim.csv`, `tests/test_c082_associator_saturation_extended_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v4.json` (exp_e_associator_extended)"
 status = "Verified"
 last_verified = "2026-02-03"
-what_would_verify_refute = 'Notes: Extracted from cached v4 expE and enforced via a deterministic audit artifact. Fit domain dims>=8 uses <\|A\|\|^2> = A_inf * (1 - c * d^(-alpha)) with A_inf=2.002381+/-0.004415, alpha=1.83228+/-0.07268, RMS residual 0.0073566, and abs(A_inf-2)=0.0023806. The dim=1024 point is measured 2.008988 vs predicted 2.002286 (abs error 0.006702), consistent with saturation and the "same parameters" fit.'
+what_would_verify_refute = 'Notes: Extracted from cached v4 expE and enforced via a deterministic audit artifact. Fit domain dims>=8 uses <|A||^2> = A_inf * (1 - c * d^(-alpha)) with A_inf=2.002381+/-0.004415, alpha=1.83228+/-0.07268, RMS residual 0.0073566, and abs(A_inf-2)=0.0023806. The dim=1024 point is measured 2.008988 vs predicted 2.002286 (abs error 0.006702), consistent with saturation and the "same parameters" fit.'
 
 [[claim]]
 id = "C-083"
@@ -748,7 +748,7 @@ statement = "Associator saturation fit fails for non-power-of-2 dimensions."
 where_stated = "`src/scripts/analysis/c094_non_power_two_dims_fit_audit.py`, `data/csv/c094_non_power_two_dims_summary.csv`, `data/csv/c094_non_power_two_dims_by_dim.csv`, `tests/test_c094_non_power_two_dims_fit_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v6.json` (results.R)"
 status = "Verified"
 last_verified = "2026-02-03"
-what_would_verify_refute = 'Notes: The cached v6 expR mixed power-of-two dims with non-2^n truncations (dims=[8,12,16,24,32,48,64,96,128,192,256,384,512]). The non-2^n points have much smaller <\|A\|\|^2> (~0.64-0.90), so the mixed-dimension saturation fit degrades: A_inf=1.594845+/-1.031781 with RMS residual 0.540426. This is expected because Cayley-Dickson algebras are defined at dim=2^n; non-2^n truncations are not closed under multiplication and should not be treated as part of the CD tower.'
+what_would_verify_refute = "Notes: The cached v6 expR mixed power-of-two dims with non-2^n truncations (dims=[8,12,16,24,32,48,64,96,128,192,256,384,512]). The non-2^n points have much smaller <|A||^2> (~0.64-0.90), so the mixed-dimension saturation fit degrades: A_inf=1.594845+/-1.031781 with RMS residual 0.540426. This is expected because Cayley-Dickson algebras are defined at dim=2^n; non-2^n truncations are not closed under multiplication and should not be treated as part of the CD tower."
 
 [[claim]]
 id = "C-095"
@@ -772,7 +772,7 @@ statement = "Diagonal ZD interaction graph has exactly 3 distinct edge weights {
 where_stated = "`src/scripts/analysis/c097_zd_interaction_graph_audit.py`, `data/csv/c097_zd_interaction_graph_summary.csv`, `tests/test_c097_zd_interaction_graph_audit.py`, `data/csv/reggiani_standard_zero_divisors.csv`"
 status = "Verified"
 last_verified = "2026-02-03"
-what_would_verify_refute = 'Notes: Verified invariants for the 84 standard diagonal-form sedenion ZDs: the interaction matrix takes exactly three rounded values {0.000, 1.000, 1.414} and the threshold graph (edges where \|\|v_i*v_j\|\| > 1) has 14 connected components of size 6, uniform degree 4, and mean clustering coefficient 2/3 (see `data/csv/c097_zd_interaction_graph_summary.csv`).'
+what_would_verify_refute = "Notes: Verified invariants for the 84 standard diagonal-form sedenion ZDs: the interaction matrix takes exactly three rounded values {0.000, 1.000, 1.414} and the threshold graph (edges where ||v_i*v_j|| > 1) has 14 connected components of size 6, uniform degree 4, and mean clustering coefficient 2/3 (see `data/csv/c097_zd_interaction_graph_summary.csv`)."
 
 [[claim]]
 id = "C-098"
@@ -808,11 +808,11 @@ what_would_verify_refute = "Key metric: 1970-01-01 (unknown). Notes: This is eff
 
 [[claim]]
 id = "C-102"
-statement = 'Alternativity ratio\'
-where_stated = '\'
-status = 'A(x,x,y)\'
-last_verified = '\'
-what_would_verify_refute = '^2 /\|\|A(x,y,z)\|\|^2 converges to approximately 1/2 as dim -> infinity. | `src/scripts/analysis/c102_alt_ratio_convergence_audit.py`, `data/csv/c102_alt_ratio_summary.csv`, `data/csv/c102_alt_ratio_by_dim.csv`, `tests/test_c102_alt_ratio_convergence_audit.py`, legacy: v9 expZ, `docs/external_sources/OPEN_CLAIMS_SOURCES.md` | **Verified** (Monte Carlo; standalone expZ) | 2026-02-04 | Offline artifacts reproduce the legacy expZ ratio trend across dims 16..1024: alt_ratio rises from 0.163186 (dim=16) to 0.493572 (dim=1024). The convergence fit gives r_inf=0.512341 +/- 0.003812 with beta=0.7452, so r_inf is close to 1/2 but slightly above (3.24 sigma). Operational decision rule: PASS if r_inf in [0.45, 0.55] (see `data/csv/c102_alt_ratio_summary.csv`). For a tighter, higher-dim statement see C-108.'
+statement = "Alternativity ratio||A(x,x,y)||^2 /||A(x,y,z)||^2 converges to approximately 1/2 as dim -> infinity."
+where_stated = "`src/scripts/analysis/c102_alt_ratio_convergence_audit.py`, `data/csv/c102_alt_ratio_summary.csv`, `data/csv/c102_alt_ratio_by_dim.csv`, `tests/test_c102_alt_ratio_convergence_audit.py`, legacy: v9 expZ, `docs/external_sources/OPEN_CLAIMS_SOURCES.md`"
+status = "Verified"
+last_verified = "2026-02-04"
+what_would_verify_refute = "Offline artifacts reproduce the legacy expZ ratio trend across dims 16..1024: alt_ratio rises from 0.163186 (dim=16) to 0.493572 (dim=1024). The convergence fit gives r_inf=0.512341 +/- 0.003812 with beta=0.7452, so r_inf is close to 1/2 but slightly above (3.24 sigma). Operational decision rule: PASS if r_inf in [0.45, 0.55] (see `data/csv/c102_alt_ratio_summary.csv`). For a tighter, higher-dim statement see C-108."
 
 [[claim]]
 id = "C-103"
@@ -896,11 +896,11 @@ what_would_verify_refute = "Key metric: 1970-01-01 (unknown). Notes: With dim=16
 
 [[claim]]
 id = "C-113"
-statement = 'Moufang ratio\'
-where_stated = '\'
-status = 'M(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = '^2/\|\|A(a,b,c)\|\|^2 converges to M_inf = 1.561 +/- 0.017, consistent with pi/2 (0.6 sigma), inconsistent with 3/2 (3.6 sigma). | `src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/csv/cd_algebraic_experiments_v11.json` | **Verified** | 2026-01-31 | Key metric: 1970-01-01 (unknown). Notes: The Moufang-to-associator ratio converges to a value strikingly close to pi/2 = 1.5708. If confirmed, this would connect CD algebraic structure to circular geometry. The Moufang identity measures a different aspect of non-associativity than the associator itself, and its pi/2 ratio suggests the Moufang deviation is "perpendicular" to the associator in some geometric sense.'
+statement = "Moufang ratio||M(a,b,c)||^2/||A(a,b,c)||^2 converges to M_inf = 1.561 +/- 0.017, consistent with pi/2 (0.6 sigma), inconsistent with 3/2 (3.6 sigma)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v11.py`, `data/csv/cd_algebraic_experiments_v11.json`"
+status = "Verified"
+last_verified = "2026-01-31"
+what_would_verify_refute = 'Key metric: 1970-01-01 (unknown). Notes: The Moufang-to-associator ratio converges to a value strikingly close to pi/2 = 1.5708. If confirmed, this would connect CD algebraic structure to circular geometry. The Moufang identity measures a different aspect of non-associativity than the associator itself, and its pi/2 ratio suggests the Moufang deviation is "perpendicular" to the associator in some geometric sense.'
 
 [[claim]]
 id = "C-114"
@@ -1016,11 +1016,11 @@ what_would_verify_refute = "Key metric: 1970-01-01 (unknown). Notes: This streng
 
 [[claim]]
 id = "C-128"
-statement = 'The conjugate inverse x^{-1} = conj(x)/\'
-where_stated = '\'
-status = 'x\'
-last_verified = '\'
-what_would_verify_refute = '^2 gives x * x^{-1} = x^{-1} * x = 1 at ALL CD dimensions through 256, to machine precision. The ZD conjugate inverse also works because u*conj(u) =\|\|u\|\|^2 is a norm identity. | `src/scripts/analysis/c128_conjugate_inverse_audit.py`, `data/csv/c128_conjugate_inverse_summary.csv`, `data/csv/c128_conjugate_inverse_by_dim.csv`, `tests/test_c128_conjugate_inverse_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v13.json` (AZ_inverse_element), `docs/external_sources/OPEN_CLAIMS_SOURCES.md` | **Verified** (cached v13 expAZ) | 2026-02-04 | Offline extract records max inverse errors <= 6.66e-16 (left and right) across dims 2..256, with lr_diff==0. The cached ZD test reports inverse_error=2.22e-16 for the diagonal-form element (e_1+e_10)/sqrt(2) and marks inverse_works=True (see `data/csv/c128_conjugate_inverse_summary.csv`).'
+statement = "The conjugate inverse x^{-1} = conj(x)/||x||^2 gives x * x^{-1} = x^{-1} * x = 1 at ALL CD dimensions through 256, to machine precision. The ZD conjugate inverse also works because u*conj(u) =||u||^2 is a norm identity."
+where_stated = "`src/scripts/analysis/c128_conjugate_inverse_audit.py`, `data/csv/c128_conjugate_inverse_summary.csv`, `data/csv/c128_conjugate_inverse_by_dim.csv`, `tests/test_c128_conjugate_inverse_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v13.json` (AZ_inverse_element), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`"
+status = "Verified"
+last_verified = "2026-02-04"
+what_would_verify_refute = "Offline extract records max inverse errors <= 6.66e-16 (left and right) across dims 2..256, with lr_diff==0. The cached ZD test reports inverse_error=2.22e-16 for the diagonal-form element (e_1+e_10)/sqrt(2) and marks inverse_works=True (see `data/csv/c128_conjugate_inverse_summary.csv`)."
 
 [[claim]]
 id = "C-129"
@@ -1032,11 +1032,11 @@ what_would_verify_refute = "Offline extract records CV shrinking from 0.307 (dim
 
 [[claim]]
 id = "C-130"
-statement = 'The associator norm\'
-where_stated = '\'
-status = 'A(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = '-> sqrt(2) because (ab)c and a(bc) become uncorrelated (cos -> 0) while both preserve unit norm (\|\|product\|\|-> 1).\|\|A\|\|^2 = 2 - 2*cos -> 2. | `src/scripts/analysis/c130_associator_norm_sqrt2_audit.py`, `data/csv/c130_associator_norm_sqrt2_summary.csv`, `data/csv/c130_associator_norm_sqrt2_by_dim.csv`, `tests/test_c130_associator_norm_sqrt2_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v14.json` (BB_assoc_norm_sqrt2), `docs/external_sources/OPEN_CLAIMS_SOURCES.md` | **Verified** (Monte Carlo; cached v14 expBB) | 2026-02-03 | Offline extract reports mean_sq_highdim=1.9883911277 with mean_cos_highdim=0.0056638747 and mean_ab_highdim=0.9976043786 (see `data/csv/c130_associator_norm_sqrt2_summary.csv`). Per-dimension means at dims 8..1024 are recorded in `data/csv/c130_associator_norm_sqrt2_by_dim.csv` and checked by `tests/test_c130_associator_norm_sqrt2_audit.py`. This supports the concentration-of-measure interpretation at the level of the cached v14 procedure; it does not by itself prove an exact asymptotic theorem.'
+statement = "The associator norm||A(a,b,c)||-> sqrt(2) because (ab)c and a(bc) become uncorrelated (cos -> 0) while both preserve unit norm (||product||-> 1).||A||^2 = 2 - 2*cos -> 2."
+where_stated = "`src/scripts/analysis/c130_associator_norm_sqrt2_audit.py`, `data/csv/c130_associator_norm_sqrt2_summary.csv`, `data/csv/c130_associator_norm_sqrt2_by_dim.csv`, `tests/test_c130_associator_norm_sqrt2_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v14.json` (BB_assoc_norm_sqrt2), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`"
+status = "Verified"
+last_verified = "2026-02-03"
+what_would_verify_refute = "Offline extract reports mean_sq_highdim=1.9883911277 with mean_cos_highdim=0.0056638747 and mean_ab_highdim=0.9976043786 (see `data/csv/c130_associator_norm_sqrt2_summary.csv`). Per-dimension means at dims 8..1024 are recorded in `data/csv/c130_associator_norm_sqrt2_by_dim.csv` and checked by `tests/test_c130_associator_norm_sqrt2_audit.py`. This supports the concentration-of-measure interpretation at the level of the cached v14 procedure; it does not by itself prove an exact asymptotic theorem."
 
 [[claim]]
 id = "C-131"
@@ -1048,11 +1048,11 @@ what_would_verify_refute = "Key metric: 1970-01-01 (unknown). Notes: This establ
 
 [[claim]]
 id = "C-132"
-statement = 'The commutator norm\'
-where_stated = '\'
-status = '[a,b]\'
-last_verified = '\'
-what_would_verify_refute = '^2 -> 4.01 (\|\|[a,b]\|\|-> 2.0). Commutator is zero at dim=2 (commutative) and nonzero starting at dim=4. The limit satisfies\|\|[a,b]\|\|^2 = 2 *\|\|A\|\|^2 = 2 * 2 = 4. | `src/scripts/analysis/c132_commutator_norm_convergence_audit.py`, `data/csv/c132_commutator_norm_summary.csv`, `data/csv/c132_commutator_norm_by_dim.csv`, `tests/test_c132_commutator_norm_convergence_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v14.json` (BD_commutator_norm), `docs/external_sources/OPEN_CLAIMS_SOURCES.md` | **Verified** (cached v14 expBD) | 2026-02-04 | Offline extract records fitted limit c_sq_inf=4.00938 +/- 0.01016 with transition_dim=4 (commutator becomes nonzero at dim=4). At dim=2 the cached mean_sq is exactly 0, consistent with commutativity. Decision rule: PASS if abs(c_sq_inf-4) <= 0.2 and transition_dim==4 (see `data/csv/c132_commutator_norm_summary.csv`).'
+statement = "The commutator norm||[a,b]||^2 -> 4.01 (||[a,b]||-> 2.0). Commutator is zero at dim=2 (commutative) and nonzero starting at dim=4. The limit satisfies||[a,b]||^2 = 2 *||A||^2 = 2 * 2 = 4."
+where_stated = "`src/scripts/analysis/c132_commutator_norm_convergence_audit.py`, `data/csv/c132_commutator_norm_summary.csv`, `data/csv/c132_commutator_norm_by_dim.csv`, `tests/test_c132_commutator_norm_convergence_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v14.json` (BD_commutator_norm), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`"
+status = "Verified"
+last_verified = "2026-02-04"
+what_would_verify_refute = "Offline extract records fitted limit c_sq_inf=4.00938 +/- 0.01016 with transition_dim=4 (commutator becomes nonzero at dim=4). At dim=2 the cached mean_sq is exactly 0, consistent with commutativity. Decision rule: PASS if abs(c_sq_inf-4) <= 0.2 and transition_dim==4 (see `data/csv/c132_commutator_norm_summary.csv`)."
 
 [[claim]]
 id = "C-133"
@@ -1072,19 +1072,19 @@ what_would_verify_refute = "Key metric: 1970-01-01 (unknown). Notes: The ZD pair
 
 [[claim]]
 id = "C-135"
-statement = 'Power norms\'
-where_stated = '\'
-status = 'x^n\'
-last_verified = '\'
-what_would_verify_refute = "= 1 EXACTLY (to machine precision) at ALL CD dimensions through 256 for ALL powers through x^16. Power-associativity perfectly preserves the norm. | `src/scripts/analysis/c135_power_norm_scaling_audit.py`, `data/csv/c135_power_norm_summary.csv`, `data/csv/c135_power_norm_by_dim_power.csv`, `tests/test_c135_power_norm_scaling_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v14.json` (BG_power_norm_scaling), `docs/external_sources/OPEN_CLAIMS_SOURCES.md` | **Verified** (cached v14 expBG) | 2026-02-04 | Offline extract records 112 (dim,power) pairs across dims 4..256 and powers 1..16 with max_abs_dev=2.22e-16 from 1.0 (machine precision). Decision rule: PASS if max_abs_dev <= 1e-12 (see `data/csv/c135_power_norm_summary.csv`)."
+statement = "Power norms||x^n||= 1 EXACTLY (to machine precision) at ALL CD dimensions through 256 for ALL powers through x^16. Power-associativity perfectly preserves the norm."
+where_stated = "`src/scripts/analysis/c135_power_norm_scaling_audit.py`, `data/csv/c135_power_norm_summary.csv`, `data/csv/c135_power_norm_by_dim_power.csv`, `tests/test_c135_power_norm_scaling_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v14.json` (BG_power_norm_scaling), `docs/external_sources/OPEN_CLAIMS_SOURCES.md`"
+status = "Verified"
+last_verified = "2026-02-04"
+what_would_verify_refute = "Offline extract records 112 (dim,power) pairs across dims 4..256 and powers 1..16 with max_abs_dev=2.22e-16 from 1.0 (machine precision). Decision rule: PASS if max_abs_dev <= 1e-12 (see `data/csv/c135_power_norm_summary.csv`)."
 
 [[claim]]
 id = "C-136"
-statement = 'Norm multiplicativity\'
-where_stated = '\'
-status = 'xy\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|x\|\|*\|\|y\|\|holds exactly through dim=8 (composition algebras) and is lost at dim=16; mean ratio stays 1.0 but std ~ 0.09 at dim=16, concentrating as dim grows (std ~ 0.023 at dim=1024). | `src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v9.py::TestBHNormMultiplicativity` (5 tests). std_ratio < 1e-14 at dims 2,4,8; spread decreases monotonically for dim >= 16.'
+statement = "Norm multiplicativity||xy||=||x||*||y||holds exactly through dim=8 (composition algebras) and is lost at dim=16; mean ratio stays 1.0 but std ~ 0.09 at dim=16, concentrating as dim grows (std ~ 0.023 at dim=1024)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v9.py::TestBHNormMultiplicativity` (5 tests). std_ratio < 1e-14 at dims 2,4,8; spread decreases monotonically for dim >= 16."
 
 [[claim]]
 id = "C-137"
@@ -1104,11 +1104,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v9.py::TestBJTh
 
 [[claim]]
 id = "C-139"
-statement = 'Violation ratios at dim=8192 with 5-seed bootstrap: alt/assoc = 0.497 +/- 0.002 (1.7 sigma from 1/2), mouf/assoc = 1.487 +/- 0.004 (3.5 sigma from 3/2), flex/assoc = 1.491 +/- 0.003 (3.1 sigma from 3/2).\'
-where_stated = 'mouf - flex\'
-status = "= 0.004. Finite-N bias at dim=8192 is ~ 1% below theoretical values."
-last_verified = "`src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`"
-what_would_verify_refute = "**Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v9.py::TestBKRatioPrecision` (4 tests). All ratios within tolerance; mouf-flex difference < 0.01."
+statement = "Violation ratios at dim=8192 with 5-seed bootstrap: alt/assoc = 0.497 +/- 0.002 (1.7 sigma from 1/2), mouf/assoc = 1.487 +/- 0.004 (3.5 sigma from 3/2), flex/assoc = 1.491 +/- 0.003 (3.1 sigma from 3/2).|mouf - flex|= 0.004. Finite-N bias at dim=8192 is ~ 1% below theoretical values."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v9.py::TestBKRatioPrecision` (4 tests). All ratios within tolerance; mouf-flex difference < 0.01."
 
 [[claim]]
 id = "C-140"
@@ -1120,11 +1120,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v9.py::TestBLAs
 
 [[claim]]
 id = "C-141"
-statement = 'Mixed product norms:\'
-where_stated = '\'
-status = '(ab)c\'
-last_verified = '\'
-what_would_verify_refute = 'and\|\|a(bc)\|\|both concentrate near 1.0 for unit inputs. The ratio\|\|(ab)c\|\|/\|\|a(bc)\|\|-> 1 as dim -> inf. Norm composition\|\|xy\|\|= 1 exact through dim=8, lost at dim=16 (consistent with BH). | `src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v9.py::TestBMMixedProductNorms` (5 tests). Triple norms within 0.02 of 1.0; std decreases with dim.'
+statement = "Mixed product norms:||(ab)c||and||a(bc)||both concentrate near 1.0 for unit inputs. The ratio||(ab)c||/||a(bc)||-> 1 as dim -> inf. Norm composition||xy||= 1 exact through dim=8, lost at dim=16 (consistent with BH)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v9.py::TestBMMixedProductNorms` (5 tests). Triple norms within 0.02 of 1.0; std decreases with dim."
 
 [[claim]]
 id = "C-142"
@@ -1136,11 +1136,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v10.py::TestBNP
 
 [[claim]]
 id = "C-143"
-statement = 'Left and right multiplication operators L_a, R_a have identical singular value spectra (SV overlap = 1.0) and are always full-rank for unit a, despite L != R for dim >= 4.\'
-where_stated = '\'
-status = 'L-R\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|L\|\|grows from 0 (dim=2) toward 2.0 (approaching complete operator independence). | `src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v10.py::TestBOLROperatorSpectra` (6 tests). SV overlap = 1.0 at all dims; full rank confirmed.'
+statement = "Left and right multiplication operators L_a, R_a have identical singular value spectra (SV overlap = 1.0) and are always full-rank for unit a, despite L != R for dim >= 4.||L-R||/||L||grows from 0 (dim=2) toward 2.0 (approaching complete operator independence)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v16.py`, `data/csv/cd_algebraic_experiments_v16.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v10.py::TestBOLROperatorSpectra` (6 tests). SV overlap = 1.0 at all dims; full rank confirmed."
 
 [[claim]]
 id = "C-144"
@@ -1184,19 +1184,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v11.py::TestBTN
 
 [[claim]]
 id = "C-149"
-statement = 'Composition defect delta =\'
-where_stated = '\'
-status = 'xy\'
-last_verified = '\'
-what_would_verify_refute = '^2 -\|\|x\|\|^2*\|\|y\|\|^2 is identically zero at dim <= 8 (Hurwitz theorem). At dim >= 16, delta is zero-mean (\|E[delta]\|< 0.02) with std decreasing monotonically from 0.18 (dim=16) to 0.06 (dim=512). Skewness and kurtosis remain small. | `src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v11.py::TestBUCompositionDefect` (5 tests). Exact zero through dim=8; std decreases; mean near zero.'
+statement = "Composition defect delta =||xy||^2 -||x||^2*||y||^2 is identically zero at dim <= 8 (Hurwitz theorem). At dim >= 16, delta is zero-mean (|E[delta]|< 0.02) with std decreasing monotonically from 0.18 (dim=16) to 0.06 (dim=512). Skewness and kurtosis remain small."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v11.py::TestBUCompositionDefect` (5 tests). Exact zero through dim=8; std decreases; mean near zero."
 
 [[claim]]
 id = "C-150"
-statement = 'Quadruple associator A(a,b,c,d) has\'
-where_stated = '\'
-status = 'A(a,b,cd)\'
-last_verified = '\'
-what_would_verify_refute = '~\|\|A(a,b,c)\|\|(ratio 0.8-1.2) at all dims. The derivation-like fraction converges to ~1.45 and the nested/simple ratio converges to ~1.41 (near sqrt(2)). Both ratios lie in (1.0, 2.0). | `src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v11.py::TestBVQuadrupleAssociator` (4 tests). deriv_ratio_inf = 1.446; nest_ratio_inf = 1.411.'
+statement = "Quadruple associator A(a,b,c,d) has||A(a,b,cd)||~||A(a,b,c)||(ratio 0.8-1.2) at all dims. The derivation-like fraction converges to ~1.45 and the nested/simple ratio converges to ~1.41 (near sqrt(2)). Both ratios lie in (1.0, 2.0)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v17.py`, `data/csv/cd_algebraic_experiments_v17.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v11.py::TestBVQuadrupleAssociator` (4 tests). deriv_ratio_inf = 1.446; nest_ratio_inf = 1.411."
 
 [[claim]]
 id = "C-151"
@@ -1296,27 +1296,27 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v13.py::TestCHA
 
 [[claim]]
 id = "C-163"
-statement = 'Commutator-associator cross-structure:\'
-where_stated = '\'
-status = '[A(a,b,c), d]\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|A(a,b,c)\|\|converges to ~2.0 at high dim. Alternator/associator ratio = 2.0 exactly at dim=8 (alternative algebras), decreasing toward ~1.74 at dim=256. All ratios > 1.5. | `src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v13.py::TestCICommAssocCross` (4 tests). Alt/assoc=2.0 at dim=8; decreasing.'
+statement = "Commutator-associator cross-structure:||[A(a,b,c), d]||/||A(a,b,c)||converges to ~2.0 at high dim. Alternator/associator ratio = 2.0 exactly at dim=8 (alternative algebras), decreasing toward ~1.74 at dim=256. All ratios > 1.5."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v13.py::TestCICommAssocCross` (4 tests). Alt/assoc=2.0 at dim=8; decreasing."
 
 [[claim]]
 id = "C-164"
-statement = 'n-fold product norms: at composition dimensions (dim <= 8),\'
-where_stated = '\'
-status = 'a1*a2*...*an\'
-last_verified = '\'
-what_would_verify_refute = "= 1.0 exactly for ALL n up to 20. At dim >= 16, norms fluctuate but stay in [0.5, 2.0], with std growing slowly with n. No norm explosion or collapse. | `src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v13.py::TestCJNfoldProductNorm` (5 tests). Composition exact; no explosion."
+statement = "n-fold product norms: at composition dimensions (dim <= 8),||a1*a2*...*an||= 1.0 exactly for ALL n up to 20. At dim >= 16, norms fluctuate but stay in [0.5, 2.0], with std growing slowly with n. No norm explosion or collapse."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v13.py::TestCJNfoldProductNorm` (5 tests). Composition exact; no explosion."
 
 [[claim]]
 id = "C-165"
-statement = 'Generic SO(dim) rotations do NOT preserve associator norms. Relative difference\'
-where_stated = '\'
-status = 'A_orig\'
-last_verified = ""
-what_would_verify_refute = '`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`; legacy: vs\|\|A_rot\|\|is 13-29% at all tested dims (8-64). CD automorphisms (G2 for dim=8) form a much smaller subgroup of SO(dim). | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v13.py::TestCKRotationInvariance` (4 tests). All not invariant; rel_diff > 5%.'
+statement = "Generic SO(dim) rotations do NOT preserve associator norms. Relative difference||A_orig|"
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`; legacy: vs||A_rot||is 13-29% at all tested dims (8-64). CD automorphisms (G2 for dim=8) form a much smaller subgroup of SO(dim)."
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v13.py::TestCKRotationInvariance` (4 tests). All not invariant; rel_diff > 5%."
 
 [[claim]]
 id = "C-166"
@@ -1344,27 +1344,27 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v14.py::TestCNZ
 
 [[claim]]
 id = "C-169"
-statement = 'Associator trilinearity via commutator: A(a,b,[c,d]) = A(a,b,cd) - A(a,b,dc) holds EXACTLY at ALL dims. This is a direct consequence of multilinearity (C-161).\'
-where_stated = '\'
-status = 'A(a,b,[c,d])\'
-last_verified = '\'
-what_would_verify_refute = "grows from 1.87 (dim=8) toward 2.84 (dim=256). | `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v14.py::TestCOAssocCommutator` (4 tests). max_diff < 1e-10 at all dims."
+statement = "Associator trilinearity via commutator: A(a,b,[c,d]) = A(a,b,cd) - A(a,b,dc) holds EXACTLY at ALL dims. This is a direct consequence of multilinearity (C-161).||A(a,b,[c,d])||grows from 1.87 (dim=8) toward 2.84 (dim=256)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v14.py::TestCOAssocCommutator` (4 tests). max_diff < 1e-10 at all dims."
 
 [[claim]]
 id = "C-170"
-statement = 'Associator norm\'
-where_stated = '\'
-status = 'A(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = "for random unit vectors converges to sqrt(2) from below as dim increases. Deviation from sqrt(2): 0.30 (dim=8), 0.098 (dim=16), 0.031 (dim=32), 0.005 (dim=128), 0.010 (dim=1024). Standard deviation decreases from 0.33 to 0.04. | `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v14.py::TestCPAssocNormScaling` (5 tests). Converging; dev < 0.05 at last point."
+statement = "Associator norm||A(a,b,c)||for random unit vectors converges to sqrt(2) from below as dim increases. Deviation from sqrt(2): 0.30 (dim=8), 0.098 (dim=16), 0.031 (dim=32), 0.005 (dim=128), 0.010 (dim=1024). Standard deviation decreases from 0.33 to 0.04."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v14.py::TestCPAssocNormScaling` (5 tests). Converging; dev < 0.05 at last point."
 
 [[claim]]
 id = "C-171"
-statement = 'Left multiplication operator determinant:\'
-where_stated = 'det(L_a)\'
-status = '= 1 exactly for unit a at composition dimensions (dim <= 8). At dim=16,\'
-last_verified = 'det(L_a)\'
-what_would_verify_refute = '~ 0.19; at dim=32, ~0.005. The determinant collapses rapidly with dimension, reflecting the increasing "information loss" in CD multiplication. | `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v14.py::TestCQMultiplicationDeterminant` (4 tests). det=1 at dim<=8; < 0.5 at dim>=16.'
+statement = 'Left multiplication operator determinant:|det(L_a)|= 1 exactly for unit a at composition dimensions (dim <= 8). At dim=16,|det(L_a)|~ 0.19; at dim=32, ~0.005. The determinant collapses rapidly with dimension, reflecting the increasing "information loss" in CD multiplication.'
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v14.py::TestCQMultiplicationDeterminant` (4 tests). det=1 at dim<=8; < 0.5 at dim>=16."
 
 [[claim]]
 id = "C-172"
@@ -1376,19 +1376,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v15.py::TestCRC
 
 [[claim]]
 id = "C-173"
-statement = 'Power norm ratio\'
-where_stated = '\'
-status = 'x^n\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|x\|\|^n = 1.0 EXACTLY at ALL CD dimensions through 128, for all n from 2 to 10. This is a direct consequence of power-associativity (C-142): x^m * x^n = x^{m+n} preserves the norm identity. Std < 1e-4 everywhere. | `src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v15.py::TestCSPowerNormRatio` (4 tests). All norms = 1.0 within 1e-4.'
+statement = "Power norm ratio||x^n||/||x||^n = 1.0 EXACTLY at ALL CD dimensions through 128, for all n from 2 to 10. This is a direct consequence of power-associativity (C-142): x^m * x^n = x^{m+n} preserves the norm identity. Std < 1e-4 everywhere."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v15.py::TestCSPowerNormRatio` (4 tests). All norms = 1.0 within 1e-4."
 
 [[claim]]
 id = "C-174"
-statement = 'Left-right operator commutant [L_a, R_b] = 0 exactly at associative dimensions (dim <= 4). At non-associative dims (>= 8),\'
-where_stated = '\'
-status = '[L_a,R_b]\'
-last_verified = '\'
-what_would_verify_refute = "_rel is nonzero (0.40 at dim=8, 0.18 at dim=64) and decreasing with dimension. [L,R]=0 is equivalent to associativity. | `src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v15.py::TestCTLRCommutant` (4 tests). Zero at dim<=4; nonzero at dim>=8."
+statement = "Left-right operator commutant [L_a, R_b] = 0 exactly at associative dimensions (dim <= 4). At non-associative dims (>= 8),||[L_a,R_b]||_rel is nonzero (0.40 at dim=8, 0.18 at dim=64) and decreasing with dimension. [L,R]=0 is equivalent to associativity."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v15.py::TestCTLRCommutant` (4 tests). Zero at dim<=4; nonzero at dim>=8."
 
 [[claim]]
 id = "C-175"
@@ -1400,11 +1400,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v15.py::TestCUA
 
 [[claim]]
 id = "C-176"
-statement = 'Commutator/product norm ratio\'
-where_stated = '\'
-status = '[a,b]\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|ab\|\|converges to 2.0 from below as dim increases: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.95 (dim=64), 1.99 (dim=256). Monotonically increasing. At dim=2 (complex), ratio = 0 (commutative). | `src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v15.py::TestCVCommProductRatio` (5 tests). Approaches 2.0; monotone increasing.'
+statement = "Commutator/product norm ratio||[a,b]||/||ab||converges to 2.0 from below as dim increases: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.95 (dim=64), 1.99 (dim=256). Monotonically increasing. At dim=2 (complex), ratio = 0 (commutative)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v21.py`, `data/csv/cd_algebraic_experiments_v21.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v15.py::TestCVCommProductRatio` (5 tests). Approaches 2.0; monotone increasing."
 
 [[claim]]
 id = "C-177"
@@ -1424,19 +1424,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v16.py::TestCXD
 
 [[claim]]
 id = "C-179"
-statement = 'No nonzero nilpotent elements exist in any CD algebra. For unit vectors,\'
-where_stated = '\'
-status = 'x^n\'
-last_verified = '\'
-what_would_verify_refute = "= 1.0 exactly for all n tested (2 through 5) at all dims through 128. This is a consequence of power-associativity + norm multiplicativity on powers (C-142, C-173). Random unit products never vanish (min norm > 0.1). | `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v16.py::TestCYNilpotentPrevalence` (4 tests). No nilpotents; all power norms = 1.0."
+statement = "No nonzero nilpotent elements exist in any CD algebra. For unit vectors,||x^n||= 1.0 exactly for all n tested (2 through 5) at all dims through 128. This is a consequence of power-associativity + norm multiplicativity on powers (C-142, C-173). Random unit products never vanish (min norm > 0.1)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v16.py::TestCYNilpotentPrevalence` (4 tests). No nilpotents; all power norms = 1.0."
 
 [[claim]]
 id = "C-180"
-statement = 'Inner product preservation <ax,ay> =\'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = "^2 <x,y> holds EXACTLY at composition dimensions (dim <= 8) and FAILS at dim >= 16. Mean deviation decreases with dim: 0.106 (dim=16), 0.092 (dim=64), 0.062 (dim=128). This is equivalent to the norm composition property. | `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v16.py::TestCZIPPreservation` (4 tests). Exact at dim<=8; fails at dim>=16."
+statement = "Inner product preservation <ax,ay> =||a||^2 <x,y> holds EXACTLY at composition dimensions (dim <= 8) and FAILS at dim >= 16. Mean deviation decreases with dim: 0.106 (dim=16), 0.092 (dim=64), 0.062 (dim=128). This is equivalent to the norm composition property."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v16.py::TestCZIPPreservation` (4 tests). Exact at dim<=8; fails at dim>=16."
 
 [[claim]]
 id = "C-181"
@@ -1456,11 +1456,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v16.py::TestDBA
 
 [[claim]]
 id = "C-183"
-statement = 'Iterated commutator:\'
-where_stated = '\'
-status = '[[a,b],c]\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|[a,b]\|\|-> 2.0 as dim increases (1.34 at dim=4, 1.98 at dim=256). Jacobi identity holds EXACTLY at dim=4 (associative -> commutator is Lie bracket with Jacobi=0). Jacobi fails at dim >= 8 (relative defect 2.37 at dim=8, decreasing to 1.79 at dim=256). | `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v16.py::TestDCIteratedCommutator` (4 tests). Ratio -> 2; Jacobi=0 at dim=4 only.'
+statement = "Iterated commutator:||[[a,b],c]||/||[a,b]||-> 2.0 as dim increases (1.34 at dim=4, 1.98 at dim=256). Jacobi identity holds EXACTLY at dim=4 (associative -> commutator is Lie bracket with Jacobi=0). Jacobi fails at dim >= 8 (relative defect 2.37 at dim=8, decreasing to 1.79 at dim=256)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v16.py::TestDCIteratedCommutator` (4 tests). Ratio -> 2; Jacobi=0 at dim=4 only."
 
 [[claim]]
 id = "C-184"
@@ -1472,27 +1472,27 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v17.py::TestDDM
 
 [[claim]]
 id = "C-185"
-statement = 'Product norm distribution:\'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '= 1.0 exactly at composition dims (<=8). Beyond,\|\|ab\|\|~ 1.0 +/- sigma where sigma decreases with dim: 0.083 (dim=16), 0.099 (dim=32), 0.058 (dim=128), 0.036 (dim=512). Min norm stays above 0.70. The distribution narrows toward 1.0 at high dim (CLT effect). | `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v17.py::TestDEProductNormDistribution` (5 tests). Composition exact; std decreasing.'
+statement = "Product norm distribution:||ab||= 1.0 exactly at composition dims (<=8). Beyond,||ab||~ 1.0 +/- sigma where sigma decreases with dim: 0.083 (dim=16), 0.099 (dim=32), 0.058 (dim=128), 0.036 (dim=512). Min norm stays above 0.70. The distribution narrows toward 1.0 at high dim (CLT effect)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v17.py::TestDEProductNormDistribution` (5 tests). Composition exact; std decreasing."
 
 [[claim]]
 id = "C-186"
-statement = 'Nested associator (triassociator):\'
-where_stated = '\'
-status = 'A(A(a,b,c),d,e)\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|A(a,b,c)\|\|~ 1.2-1.5 at all tested dims (8-256). The nesting amplification is bounded (no explosion).\|\|A2\|\|approaches 2.0 at high dim (consistent with A2 being an associator of a "random" vector near sqrt(2) norm). | `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v17.py::TestDFTriassociator` (4 tests). Ratio bounded;\|\|A2\|\|-> 2.0.'
+statement = 'Nested associator (triassociator):||A(A(a,b,c),d,e)||/||A(a,b,c)||~ 1.2-1.5 at all tested dims (8-256). The nesting amplification is bounded (no explosion).||A2||approaches 2.0 at high dim (consistent with A2 being an associator of a "random" vector near sqrt(2) norm).'
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v17.py::TestDFTriassociator` (4 tests). Ratio bounded;||A2||-> 2.0."
 
 [[claim]]
 id = "C-187"
-statement = 'Every nonzero CD element has a two-sided inverse: a * conj(a)/\'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^2 = conj(a)/\|\|a\|\|^2 * a = e_0 EXACTLY at ALL dimensions through 512. This is universal: CD algebras are "division-like" for every nonzero element (not just non-zero-divisors). | `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v17.py::TestDGInverseElement` (4 tests). Both sides exact at all dims.'
+statement = 'Every nonzero CD element has a two-sided inverse: a * conj(a)/||a||^2 = conj(a)/||a||^2 * a = e_0 EXACTLY at ALL dimensions through 512. This is universal: CD algebras are "division-like" for every nonzero element (not just non-zero-divisors).'
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v17.py::TestDGInverseElement` (4 tests). Both sides exact at all dims."
 
 [[claim]]
 id = "C-188"
@@ -1520,11 +1520,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v18.py::TestDJB
 
 [[claim]]
 id = "C-191"
-statement = 'Double commutator norm ratio\'
-where_stated = '\'
-status = '[a,[b,c]]\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|[b,c]\|\|approaches 2.0 monotonically from 1.35 (dim=4) through 1.99 (dim=256). At dim >= 128, the ratio is within 0.1 of 2.0. The standard deviation decreases with dim (0.47 at dim=4, 0.11 at dim=256), indicating convergence. | `src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v18.py::TestDKDoubleCommutator` (3 tests). Ratio -> 2.0; monotone increasing.'
+statement = "Double commutator norm ratio||[a,[b,c]]||/||[b,c]||approaches 2.0 monotonically from 1.35 (dim=4) through 1.99 (dim=256). At dim >= 128, the ratio is within 0.1 of 2.0. The standard deviation decreases with dim (0.47 at dim=4, 0.11 at dim=256), indicating convergence."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v18.py::TestDKDoubleCommutator` (3 tests). Ratio -> 2.0; monotone increasing."
 
 [[claim]]
 id = "C-192"
@@ -1552,11 +1552,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v18.py::TestDNF
 
 [[claim]]
 id = "C-195"
-statement = 'Norm submultiplicativity:\'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '<= k*\|\|a\|\|*\|\|b\|\|with k = 1.0 exactly at composition dims (<=8). Beyond, k decreases with dim: 1.24 (dim=16), 1.26 (dim=32), 1.22 (dim=64), 1.15 (dim=128), 1.12 (dim=256), 1.09 (dim=512). The submultiplicativity constant converges toward 1.0 at high dim, consistent with product norm concentration (C-185). | `src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v18.py::TestDOSubmultiplicativity` (4 tests). k decreasing toward 1.0.'
+statement = "Norm submultiplicativity:||ab||<= k*||a||*||b||with k = 1.0 exactly at composition dims (<=8). Beyond, k decreases with dim: 1.24 (dim=16), 1.26 (dim=32), 1.22 (dim=64), 1.15 (dim=128), 1.12 (dim=256), 1.09 (dim=512). The submultiplicativity constant converges toward 1.0 at high dim, consistent with product norm concentration (C-185)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v18.py::TestDOSubmultiplicativity` (4 tests). k decreasing toward 1.0."
 
 [[claim]]
 id = "C-196"
@@ -1568,11 +1568,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v19.py::TestDPA
 
 [[claim]]
 id = "C-197"
-statement = 'Associator norm scaling: mean\'
-where_stated = '\'
-status = 'A(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = '= 0 at dim<=4 (associative), ~1.088 at dim=8, and converges to sqrt(2) ~ 1.414 at high dim (1.415 at dim=512). Standard deviation decreases as O(1/sqrt(dim)): 0.32 (dim=8), 0.064 (dim=512). The sqrt(2) limit is consistent with the associator of two "random" unit vectors in high dim. | `src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v19.py::TestDQAssociatorNormScaling` (6 tests). Approaches sqrt(2); std decreasing.'
+statement = 'Associator norm scaling: mean||A(a,b,c)||= 0 at dim<=4 (associative), ~1.088 at dim=8, and converges to sqrt(2) ~ 1.414 at high dim (1.415 at dim=512). Standard deviation decreases as O(1/sqrt(dim)): 0.32 (dim=8), 0.064 (dim=512). The sqrt(2) limit is consistent with the associator of two "random" unit vectors in high dim.'
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v19.py::TestDQAssociatorNormScaling` (6 tests). Approaches sqrt(2); std decreasing."
 
 [[claim]]
 id = "C-198"
@@ -1600,11 +1600,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v19.py::TestDTC
 
 [[claim]]
 id = "C-201"
-statement = 'Iterated product norms:\'
-where_stated = '\'
-status = 'a^n\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|a\|\|^n = 1.0 EXACTLY at ALL CD dimensions from 4 through 256, for all powers n = 2 through 10. This is a stronger statement than power-associativity (C-142): not only is a^n well-defined, but the norm is exactly preserved under iterated self-multiplication at ALL dimensions, including non-composition dims (16+). | `src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v19.py::TestDUIteratedProductNorms` (4 tests). Exact at ALL dims.'
+statement = "Iterated product norms:||a^n||=||a||^n = 1.0 EXACTLY at ALL CD dimensions from 4 through 256, for all powers n = 2 through 10. This is a stronger statement than power-associativity (C-142): not only is a^n well-defined, but the norm is exactly preserved under iterated self-multiplication at ALL dimensions, including non-composition dims (16+)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v25.py`, `data/csv/cd_algebraic_experiments_v25.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v19.py::TestDUIteratedProductNorms` (4 tests). Exact at ALL dims."
 
 [[claim]]
 id = "C-202"
@@ -1640,19 +1640,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v20.py::TestDYA
 
 [[claim]]
 id = "C-206"
-statement = 'Product commutativity defect\'
-where_stated = '\'
-status = 'ab-ba\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|ab\|\|= 0 at dim=2 (commutative). At dim>=4: approaches 2.0 monotonically: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.95 (dim=64), 1.99 (dim=512). Std decreases as O(1/sqrt(dim)): 0.46 (dim=4), 0.003 (dim=512). Verifies C-176 from a normalized perspective. | `src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v20.py::TestDZCommutativityDefect` (5 tests). Ratio -> 2.0; std decreasing.'
+statement = "Product commutativity defect||ab-ba||/||ab||= 0 at dim=2 (commutative). At dim>=4: approaches 2.0 monotonically: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.95 (dim=64), 1.99 (dim=512). Std decreases as O(1/sqrt(dim)): 0.46 (dim=4), 0.003 (dim=512). Verifies C-176 from a normalized perspective."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v20.py::TestDZCommutativityDefect` (5 tests). Ratio -> 2.0; std decreasing."
 
 [[claim]]
 id = "C-207"
-statement = 'Triple product norms\'
-where_stated = '\'
-status = '(ab)c\'
-last_verified = '\'
-what_would_verify_refute = 'and\|\|a(bc)\|\|are both exactly 1.0 at dim<=8 (composition). At dim>=16, left and right triple products differ (mean\|L-R\|= 0.11 at dim=16, 0.05 at dim=512) but both means stay near 1.0. The L-R difference decreases at high dim, consistent with product norm concentration. | `src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v20.py::TestEATripleProductNorm` (5 tests). Exact at comp; L!=R at dim>=16.'
+statement = "Triple product norms||(ab)c||and||a(bc)||are both exactly 1.0 at dim<=8 (composition). At dim>=16, left and right triple products differ (mean|L-R|= 0.11 at dim=16, 0.05 at dim=512) but both means stay near 1.0. The L-R difference decreases at high dim, consistent with product norm concentration."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v26.py`, `data/csv/cd_algebraic_experiments_v26.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v20.py::TestEATripleProductNorm` (5 tests). Exact at comp; L!=R at dim>=16."
 
 [[claim]]
 id = "C-208"
@@ -1688,11 +1688,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v21.py::TestEEQ
 
 [[claim]]
 id = "C-212"
-statement = 'Cascade associator norms: A1 = A(a,b,c), A2 = A(A1,d,e), A3 = A(A2,f,g). Ratios\'
-where_stated = '\'
-status = 'A2\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|A1\|\|~ 1.2-1.4 and\|\|A3\|\|/\|\|A2\|\|~ 1.2-1.4 at all dims. No explosion.\|\|A1\|\|-> sqrt(2) confirming C-197. Higher-depth associators amplify but remain bounded, approaching geometric growth with ratio ~sqrt(2). | `src/scripts/analysis/cd_algebraic_experiments_v27.py`, `data/csv/cd_algebraic_experiments_v27.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v21.py::TestEFCascadeAssociator` (4 tests). Bounded ratios; A1 -> sqrt(2).'
+statement = "Cascade associator norms: A1 = A(a,b,c), A2 = A(A1,d,e), A3 = A(A2,f,g). Ratios||A2||/||A1||~ 1.2-1.4 and||A3||/||A2||~ 1.2-1.4 at all dims. No explosion.||A1||-> sqrt(2) confirming C-197. Higher-depth associators amplify but remain bounded, approaching geometric growth with ratio ~sqrt(2)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v27.py`, `data/csv/cd_algebraic_experiments_v27.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v21.py::TestEFCascadeAssociator` (4 tests). Bounded ratios; A1 -> sqrt(2)."
 
 [[claim]]
 id = "C-213"
@@ -1728,43 +1728,43 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v22.py::TestEJA
 
 [[claim]]
 id = "C-217"
-statement = 'Jordan product norm\'
-where_stated = '\'
-status = '{a,b}\'
-last_verified = '\'
-what_would_verify_refute = 'for unit vectors: exactly 1.0 at dim=2 (commutative), then monotonically decreasing: 0.77 (dim=4), 0.56 (dim=8), 0.40 (dim=16), 0.28 (dim=32), 0.20 (dim=64), 0.14 (dim=128), 0.10 (dim=256), 0.065 (dim=512). Anti-symmetric part\|\|(ab-ba)/2\|\|-> 1.0. CD algebras become "maximally non-commutative" at high dim: the symmetric (Jordan) component vanishes while the antisymmetric (Lie) component dominates. | `src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v22.py::TestEKJordanNorm` (5 tests). Jordan norm decreasing; anti-norm increasing.'
+statement = 'Jordan product norm||{a,b}||for unit vectors: exactly 1.0 at dim=2 (commutative), then monotonically decreasing: 0.77 (dim=4), 0.56 (dim=8), 0.40 (dim=16), 0.28 (dim=32), 0.20 (dim=64), 0.14 (dim=128), 0.10 (dim=256), 0.065 (dim=512). Anti-symmetric part||(ab-ba)/2||-> 1.0. CD algebras become "maximally non-commutative" at high dim: the symmetric (Jordan) component vanishes while the antisymmetric (Lie) component dominates.'
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v22.py::TestEKJordanNorm` (5 tests). Jordan norm decreasing; anti-norm increasing."
 
 [[claim]]
 id = "C-218"
-statement = 'Bilinear form B(a,b) = Re(a*conj(b)): the Gram matrix G[i,j] = B(e_i,e_j) equals the identity matrix EXACTLY at ALL CD dims 4-128. B(a,a) =\'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^2 EXACTLY at ALL dims. The standard basis is orthonormal under this bilinear form at every level of the Cayley-Dickson tower. This is a universal inner product structure. | `src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v22.py::TestELBilinearForm` (5 tests). Gram = I at ALL dims; B(a,a)=\|\|a\|\|^2 at ALL dims.'
+statement = "Bilinear form B(a,b) = Re(a*conj(b)): the Gram matrix G[i,j] = B(e_i,e_j) equals the identity matrix EXACTLY at ALL CD dims 4-128. B(a,a) =||a||^2 EXACTLY at ALL dims. The standard basis is orthonormal under this bilinear form at every level of the Cayley-Dickson tower. This is a universal inner product structure."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v22.py::TestELBilinearForm` (5 tests). Gram = I at ALL dims; B(a,a)=||a||^2 at ALL dims."
 
 [[claim]]
 id = "C-219"
-statement = 'Trace formula: Tr(L_a) = Tr(R_a) = dim * Re(a) holds EXACTLY at ALL CD dims 4-128. The traces are exactly equal (\'
-where_stated = 'Tr(L)-Tr(R)\'
-status = "= 0.0) and both equal dim * a_0 with ratio exactly 1.0. This is a universal operator-trace identity connecting the real part of an element to the traces of its left and right multiplication operators."
-last_verified = "`src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`"
-what_would_verify_refute = "**Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v22.py::TestEMOperatorTrace` (6 tests). Trace formula exact at ALL dims; L and R traces equal."
+statement = "Trace formula: Tr(L_a) = Tr(R_a) = dim * Re(a) holds EXACTLY at ALL CD dims 4-128. The traces are exactly equal (|Tr(L)-Tr(R)|= 0.0) and both equal dim * a_0 with ratio exactly 1.0. This is a universal operator-trace identity connecting the real part of an element to the traces of its left and right multiplication operators."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v22.py::TestEMOperatorTrace` (6 tests). Trace formula exact at ALL dims; L and R traces equal."
 
 [[claim]]
 id = "C-220"
-statement = 'Norm product ratio\'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '/(\|\|a\|\|*\|\|b\|\|) = 1.0 EXACTLY at dim<=8 (composition algebras). At dim>=16, the ratio has mean ~1.0 but nonzero spread (std ~0.08 at dim=16, decreasing to ~0.04 at dim=512). The mean stays near 1.0 but the std decreases as O(1/sqrt(dim)), showing concentration of measure. | `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v23.py::TestENNormProductRatio` (6 tests). Exact at dim<=8; mean near 1; std decreasing.'
+statement = "Norm product ratio||ab||/(||a||*||b||) = 1.0 EXACTLY at dim<=8 (composition algebras). At dim>=16, the ratio has mean ~1.0 but nonzero spread (std ~0.08 at dim=16, decreasing to ~0.04 at dim=512). The mean stays near 1.0 but the std decreases as O(1/sqrt(dim)), showing concentration of measure."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v23.py::TestENNormProductRatio` (6 tests). Exact at dim<=8; mean near 1; std decreasing."
 
 [[claim]]
 id = "C-221"
-statement = 'Only trivial idempotents (0 and e_0) exist in CD algebras: e_0^2 = e_0 and 0^2 = 0 are EXACT at ALL dims 4-128. No non-trivial idempotent a^2=a found via random search (min\'
-where_stated = '\'
-status = 'a^2-a\'
-last_verified = '\'
-what_would_verify_refute = "> 0.01 for random unit vectors) or Newton iteration (diverges to NaN at dim>=16). This is consistent with the absence of zero divisors at dim<=8 (since a^2=a implies a(a-e_0)=0). | `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v23.py::TestEOIdempotent` (4 tests). Trivial exact; random not idempotent."
+statement = "Only trivial idempotents (0 and e_0) exist in CD algebras: e_0^2 = e_0 and 0^2 = 0 are EXACT at ALL dims 4-128. No non-trivial idempotent a^2=a found via random search (min||a^2-a||> 0.01 for random unit vectors) or Newton iteration (diverges to NaN at dim>=16). This is consistent with the absence of zero divisors at dim<=8 (since a^2=a implies a(a-e_0)=0)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v23.py::TestEOIdempotent` (4 tests). Trivial exact; random not idempotent."
 
 [[claim]]
 id = "C-222"
@@ -1776,11 +1776,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v23.py::TestEPC
 
 [[claim]]
 id = "C-223"
-statement = 'Associator trilinear ratio\'
-where_stated = '\'
-status = 'A(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = '/(\|\|a\|\|*\|\|b\|\|*\|\|c\|\|) = 0 at dim=4 (associative). Mean -> sqrt(2) ~ 1.414 at high dim (1.415 at dim=512), confirming C-197. Max ratio bounded < 2.3 at all dims. Std decreasing as O(1/sqrt(dim)). The associator norm concentrates at sqrt(2) via CLT, same as EC (C-209). | `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v23.py::TestEQAssociatorTrilinear` (6 tests). Zero at dim=4; sqrt(2) at high dim; bounded.'
+statement = "Associator trilinear ratio||A(a,b,c)||/(||a||*||b||*||c||) = 0 at dim=4 (associative). Mean -> sqrt(2) ~ 1.414 at high dim (1.415 at dim=512), confirming C-197. Max ratio bounded < 2.3 at all dims. Std decreasing as O(1/sqrt(dim)). The associator norm concentrates at sqrt(2) via CLT, same as EC (C-209)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v23.py::TestEQAssociatorTrilinear` (6 tests). Zero at dim=4; sqrt(2) at high dim; bounded."
 
 [[claim]]
 id = "C-224"
@@ -1816,11 +1816,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v24.py::TestEUS
 
 [[claim]]
 id = "C-228"
-statement = 'Commutator norm ratio\'
-where_stated = '\'
-status = '[a,b]\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|ab\|\|-> 2.0 as dim -> infinity. Values: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.90 (dim=32), 1.95 (dim=64), 1.98 (dim=128), 1.99 (dim=256), 1.995 (dim=512). Monotone increasing. Zero at dim=2. This refines C-206 with precise convergence: the ratio approaches 2 from below, with corrections O(1/dim). | `src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v24.py::TestEVCommutatorNorm` (5 tests). Monotone; approaches 2.0.'
+statement = "Commutator norm ratio||[a,b]||/||ab||-> 2.0 as dim -> infinity. Values: 1.14 (dim=4), 1.60 (dim=8), 1.80 (dim=16), 1.90 (dim=32), 1.95 (dim=64), 1.98 (dim=128), 1.99 (dim=256), 1.995 (dim=512). Monotone increasing. Zero at dim=2. This refines C-206 with precise convergence: the ratio approaches 2 from below, with corrections O(1/dim)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v24.py::TestEVCommutatorNorm` (5 tests). Monotone; approaches 2.0."
 
 [[claim]]
 id = "C-229"
@@ -1840,11 +1840,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v24.py::TestEXR
 
 [[claim]]
 id = "C-231"
-statement = 'Reverse associator: A(c,b,a) = -A(a,b,c) holds EXACTLY at ALL CD dims 8-256. The associator is antisymmetric under full argument reversal at ALL dims, even though individual transpositions break antisymmetry at dim>=16 (C-216).\'
-where_stated = '\'
-status = 'A(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|A(c,b,a)\|\|exactly, and A(a,b,c) + A(c,b,a) = 0 exactly (mean sum norm < 1e-10). This is a universal identity that survives the Hurwitz boundary. | `src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v24.py::TestEYReverseAssociator` (4 tests). A(c,b,a)=-A(a,b,c) at ALL dims.'
+statement = "Reverse associator: A(c,b,a) = -A(a,b,c) holds EXACTLY at ALL CD dims 8-256. The associator is antisymmetric under full argument reversal at ALL dims, even though individual transpositions break antisymmetry at dim>=16 (C-216).||A(a,b,c)||=||A(c,b,a)||exactly, and A(a,b,c) + A(c,b,a) = 0 exactly (mean sum norm < 1e-10). This is a universal identity that survives the Hurwitz boundary."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v30.py`, `data/csv/cd_algebraic_experiments_v30.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v24.py::TestEYReverseAssociator` (4 tests). A(c,b,a)=-A(a,b,c) at ALL dims."
 
 [[claim]]
 id = "C-232"
@@ -1864,19 +1864,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v25.py::TestFAL
 
 [[claim]]
 id = "C-234"
-statement = 'Jordan norm scaling:\'
-where_stated = '\'
-status = '{a,b}\'
-last_verified = '\'
-what_would_verify_refute = '~ C/sqrt(dim) with C ~ 1.57. Power-law fit gives slope = -0.502 (expect -0.5). sqrt(dim)*\|\|{a,b}\|\|= 1.571 +/- 0.043, nearly constant across dims 4-512. This gives a precise quantitative law for how the symmetric (Jordan) part of the product vanishes at high dimension. | `src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v25.py::TestFBJordanNormScaling` (4 tests). Slope ~ -0.5; constant ~ 1.57.'
+statement = "Jordan norm scaling:||{a,b}||~ C/sqrt(dim) with C ~ 1.57. Power-law fit gives slope = -0.502 (expect -0.5). sqrt(dim)*||{a,b}||= 1.571 +/- 0.043, nearly constant across dims 4-512. This gives a precise quantitative law for how the symmetric (Jordan) part of the product vanishes at high dimension."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v25.py::TestFBJordanNormScaling` (4 tests). Slope ~ -0.5; constant ~ 1.57."
 
 [[claim]]
 id = "C-235"
-statement = 'Operator determinant: det(L_a) = +/-1 for unit a at dim<=8 (L_a is orthogonal). At dim>=16,\'
-where_stated = 'det(L_a)\'
-status = "collapses rapidly: 0.40 (dim=16), 0.002 (dim=32), ~0 (dim=64). At dim>=64, L_a is effectively singular for generic unit a. This means left multiplication by a unit element loses information (non-injective) beyond composition dimensions."
-last_verified = "`src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`"
-what_would_verify_refute = "**Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v25.py::TestFCOperatorDeterminant` (5 tests). det=+/-1 at dim<=8; collapses beyond."
+statement = "Operator determinant: det(L_a) = +/-1 for unit a at dim<=8 (L_a is orthogonal). At dim>=16,|det(L_a)|collapses rapidly: 0.40 (dim=16), 0.002 (dim=32), ~0 (dim=64). At dim>=64, L_a is effectively singular for generic unit a. This means left multiplication by a unit element loses information (non-injective) beyond composition dimensions."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v31.py`, `data/csv/cd_algebraic_experiments_v31.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v25.py::TestFCOperatorDeterminant` (5 tests). det=+/-1 at dim<=8; collapses beyond."
 
 [[claim]]
 id = "C-236"
@@ -1904,27 +1904,27 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v26.py::TestFFR
 
 [[claim]]
 id = "C-239"
-statement = 'Norm power scaling:\'
-where_stated = '\'
-status = 'a^n\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|a\|\|^n holds EXACTLY at ALL CD dims 4-256, for powers n=2,3,4,5. This is UNIVERSAL, not restricted to composition dimensions. Each element generates a 2D complex subalgebra where norm multiplicativity holds. Mean ratio = 1.0 with std < 1e-6 at all dims. | `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v26.py::TestFGNormPowerScaling` (4 tests). All dims exact.'
+statement = "Norm power scaling:||a^n||=||a||^n holds EXACTLY at ALL CD dims 4-256, for powers n=2,3,4,5. This is UNIVERSAL, not restricted to composition dimensions. Each element generates a 2D complex subalgebra where norm multiplicativity holds. Mean ratio = 1.0 with std < 1e-6 at all dims."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v26.py::TestFGNormPowerScaling` (4 tests). All dims exact."
 
 [[claim]]
 id = "C-240"
-statement = 'Adjoint map T_a(x) = a*x*conj(a) is an isometry (\'
-where_stated = '\'
-status = 'T_a(x)\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|x\|\|) EXACTLY at dim<=8. At dim>=16, T_a distorts norms: mean ratio 1.13 (dim=16) growing to 1.38 (dim=128). The adjoint/inner automorphism preserves the norm only in composition algebras. | `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v26.py::TestFHAdjointIsometry` (5 tests). Isometry at dim<=8; fails beyond.'
+statement = "Adjoint map T_a(x) = a*x*conj(a) is an isometry (||T_a(x)||=||x||) EXACTLY at dim<=8. At dim>=16, T_a distorts norms: mean ratio 1.13 (dim=16) growing to 1.38 (dim=128). The adjoint/inner automorphism preserves the norm only in composition algebras."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v26.py::TestFHAdjointIsometry` (5 tests). Isometry at dim<=8; fails beyond."
 
 [[claim]]
 id = "C-241"
-statement = 'Pythagorean decomposition:\'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '^2 =\|\|S(a,b)\|\|^2 +\|\|A(a,b)\|\|^2 where S=(ab+ba)/2 and A=(ab-ba)/2 holds EXACTLY at ALL CD dims 2-512. The symmetric fraction decreases monotonically: 1.0 (dim=2, commutative), 0.62 (dim=4), 0.35 (dim=8), 0.005 (dim=512). Products become almost entirely antisymmetric at high dim. | `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v26.py::TestFISymmetricAntisymmetricBalance` (8 tests). Pythagorean universal; sym fraction monotone decreasing.'
+statement = "Pythagorean decomposition:||ab||^2 =||S(a,b)||^2 +||A(a,b)||^2 where S=(ab+ba)/2 and A=(ab-ba)/2 holds EXACTLY at ALL CD dims 2-512. The symmetric fraction decreases monotonically: 1.0 (dim=2, commutative), 0.62 (dim=4), 0.35 (dim=8), 0.005 (dim=512). Products become almost entirely antisymmetric at high dim."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v26.py::TestFISymmetricAntisymmetricBalance` (8 tests). Pythagorean universal; sym fraction monotone decreasing."
 
 [[claim]]
 id = "C-242"
@@ -1936,19 +1936,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v26.py::TestFJD
 
 [[claim]]
 id = "C-243"
-statement = 'Quadratic form N(a) = a*conj(a): (1) N(a) is purely real at ALL CD dims (imaginary parts = 0). (2) Re(N(a)) =\'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = "^2 EXACTLY at ALL dims. (3) N(ab) = N(a)*N(b) EXACTLY at dim<=8 (composition property). (4) N(ab) != N(a)*N(b) at dim>=16, with deviation growing rapidly (158 at dim=16, 16000 at dim=256). This is the fundamental norm form whose multiplicativity characterizes composition algebras. | `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v26.py::TestFKQuadraticForm` (9 tests). Real + norm universal; multiplicativity at dim<=8 only."
+statement = "Quadratic form N(a) = a*conj(a): (1) N(a) is purely real at ALL CD dims (imaginary parts = 0). (2) Re(N(a)) =||a||^2 EXACTLY at ALL dims. (3) N(ab) = N(a)*N(b) EXACTLY at dim<=8 (composition property). (4) N(ab) != N(a)*N(b) at dim>=16, with deviation growing rapidly (158 at dim=16, 16000 at dim=256). This is the fundamental norm form whose multiplicativity characterizes composition algebras."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v26.py::TestFKQuadraticForm` (9 tests). Real + norm universal; multiplicativity at dim<=8 only."
 
 [[claim]]
 id = "C-244"
-statement = 'Inverse element: a^{-1} = conj(a)/\'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^2 satisfies a*a^{-1} = a^{-1}*a = e_0 EXACTLY at ALL CD dims 2-256. Both left and right inverses work universally. This follows from N(a) = a*conj(a) =\|\|a\|\|^2*e_0 (C-243). Every nonzero CD element is invertible. | `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v27.py::TestFLInverseElement` (4 tests). Both exact at ALL dims.'
+statement = "Inverse element: a^{-1} = conj(a)/||a||^2 satisfies a*a^{-1} = a^{-1}*a = e_0 EXACTLY at ALL CD dims 2-256. Both left and right inverses work universally. This follows from N(a) = a*conj(a) =||a||^2*e_0 (C-243). Every nonzero CD element is invertible."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v27.py::TestFLInverseElement` (4 tests). Both exact at ALL dims."
 
 [[claim]]
 id = "C-245"
@@ -1968,19 +1968,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v27.py::TestFNN
 
 [[claim]]
 id = "C-247"
-statement = 'Jacobi defect: [a,[b,c]]+[b,[c,a]]+[c,[a,b]] = 0 at dim<=4 (associative: commutator forms Lie algebra). At dim=8 (octonions): Jacobi defect norm equals\'
-where_stated = '\'
-status = '6*A(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = "with ratio 1.0000, confirming the alternative algebra identity. At dim>=16: ratio decays from 0.93 (dim=16) to 0.84 (dim=128). | `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v27.py::TestFOJacobiAssociator` (5 tests). Zero at dim<=4; ratio=1 at dim=8; decays beyond."
+statement = "Jacobi defect: [a,[b,c]]+[b,[c,a]]+[c,[a,b]] = 0 at dim<=4 (associative: commutator forms Lie algebra). At dim=8 (octonions): Jacobi defect norm equals||6*A(a,b,c)||with ratio 1.0000, confirming the alternative algebra identity. At dim>=16: ratio decays from 0.93 (dim=16) to 0.84 (dim=128)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v27.py::TestFOJacobiAssociator` (5 tests). Zero at dim<=4; ratio=1 at dim=8; decays beyond."
 
 [[claim]]
 id = "C-248"
-statement = 'Norm decomposition: 4*\'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '^2 =\|\|{a,b}\|\|^2 +\|\|[a,b]\|\|^2 holds EXACTLY at ALL CD dims 2-512 (equivalent to C-241 Pythagorean decomposition with factor of 4). Jordan fraction decreases from 1.0 (dim=2) to 0.005 (dim=512), confirming products become dominated by commutator at high dim. | `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v27.py::TestFPNormDecomposition` (4 tests). Universal; fraction monotone.'
+statement = "Norm decomposition: 4*||ab||^2 =||{a,b}||^2 +||[a,b]||^2 holds EXACTLY at ALL CD dims 2-512 (equivalent to C-241 Pythagorean decomposition with factor of 4). Jordan fraction decreases from 1.0 (dim=2) to 0.005 (dim=512), confirming products become dominated by commutator at high dim."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v27.py::TestFPNormDecomposition` (4 tests). Universal; fraction monotone."
 
 [[claim]]
 id = "C-249"
@@ -2000,11 +2000,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v28.py::TestFRL
 
 [[claim]]
 id = "C-251"
-statement = 'Eigenvalue spectrum of L_a: all eigenvalues lie on the unit circle (\'
-where_stated = 'lambda\'
-status = '=1) at dim<=8 (L_a orthogonal). At dim>=16, eigenvalues spread: spectral radius grows from 1.27 (dim=16) to 1.77 (dim=64); minimum\'
-last_verified = 'lambda\'
-what_would_verify_refute = "shrinks from 0.60 to 0.13. L_a becomes progressively more ill-conditioned. | `src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v28.py::TestFSLaSpectrum` (5 tests). Unit circle at dim<=8; spreads beyond."
+statement = "Eigenvalue spectrum of L_a: all eigenvalues lie on the unit circle (|lambda|=1) at dim<=8 (L_a orthogonal). At dim>=16, eigenvalues spread: spectral radius grows from 1.27 (dim=16) to 1.77 (dim=64); minimum|lambda|shrinks from 0.60 to 0.13. L_a becomes progressively more ill-conditioned."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v28.py::TestFSLaSpectrum` (5 tests). Unit circle at dim<=8; spreads beyond."
 
 [[claim]]
 id = "C-252"
@@ -2016,11 +2016,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v28.py::TestFTC
 
 [[claim]]
 id = "C-253"
-statement = 'Associator norm scaling:\'
-where_stated = '\'
-status = 'A(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = "for unit vectors converges to sqrt(2) ~ 1.4142 as dim -> infinity. Zero at dim=4 (associative), then 1.09 (dim=8), 1.31 (dim=16), ..., 1.415 (dim=512). Log-log slope ~ 0.05 (nearly flat). The associator has a well-defined infinite-dimensional limit. | `src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v28.py::TestFUAssociatorNormScaling` (5 tests). Approaches sqrt(2); monotone."
+statement = "Associator norm scaling:||A(a,b,c)||for unit vectors converges to sqrt(2) ~ 1.4142 as dim -> infinity. Zero at dim=4 (associative), then 1.09 (dim=8), 1.31 (dim=16), ..., 1.415 (dim=512). Log-log slope ~ 0.05 (nearly flat). The associator has a well-defined infinite-dimensional limit."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v34.py`, `data/csv/cd_algebraic_experiments_v34.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v28.py::TestFUAssociatorNormScaling` (5 tests). Approaches sqrt(2); monotone."
 
 [[claim]]
 id = "C-254"
@@ -2040,35 +2040,35 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v28.py::TestFWL
 
 [[claim]]
 id = "C-256"
-statement = 'R_a and L_a eigenvalue spectra match (sorted\'
-where_stated = 'eigenvalues\'
-status = "identical) at ALL CD dims 4-64. This verifies C-214 (spectral mirroring) with explicit eigenvalue comparison, not just spectral radius. The left-right spectral equivalence is universal."
-last_verified = "`src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`"
-what_would_verify_refute = "**Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v29.py::TestFXRaLaSpectrum` (3 tests). All dims match."
+statement = "R_a and L_a eigenvalue spectra match (sorted|eigenvalues|identical) at ALL CD dims 4-64. This verifies C-214 (spectral mirroring) with explicit eigenvalue comparison, not just spectral radius. The left-right spectral equivalence is universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v29.py::TestFXRaLaSpectrum` (3 tests). All dims match."
 
 [[claim]]
 id = "C-257"
-statement = 'Associator norm concentration: CV(\'
-where_stated = '\'
-status = 'A\'
-last_verified = '\'
-what_would_verify_refute = ") = std/mean decreases monotonically from 0.30 (dim=8) to 0.05 (dim=512). CV scaling slope ~ -0.45 (near -0.5), consistent with concentration of measure ~ 1/sqrt(dim). The associator norm becomes sharply peaked around sqrt(2) at high dim. | `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v29.py::TestFYAssociatorConcentration` (5 tests). CV decreasing; slope ~ -0.45."
+statement = "Associator norm concentration: CV(||A||) = std/mean decreases monotonically from 0.30 (dim=8) to 0.05 (dim=512). CV scaling slope ~ -0.45 (near -0.5), consistent with concentration of measure ~ 1/sqrt(dim). The associator norm becomes sharply peaked around sqrt(2) at high dim."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v29.py::TestFYAssociatorConcentration` (5 tests). CV decreasing; slope ~ -0.45."
 
 [[claim]]
 id = "C-258"
-statement = 'Product norm ratio:\'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '/(\|\|a\|\|*\|\|b\|\|) = 1.0 EXACTLY at dim<=8 (composition property). At dim>=16, the ratio has mean ~ 1.0 but std > 0 (spread). The mean stays near 1.0 at all dims (unbiased), but the variance decreases with dim. Norm multiplicativity fails symmetrically. | `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v29.py::TestFZProductNormRatio` (5 tests). Exact at dim<=8; spread beyond.'
+statement = "Product norm ratio:||ab||/(||a||*||b||) = 1.0 EXACTLY at dim<=8 (composition property). At dim>=16, the ratio has mean ~ 1.0 but std > 0 (spread). The mean stays near 1.0 at all dims (unbiased), but the variance decreases with dim. Norm multiplicativity fails symmetrically."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v29.py::TestFZProductNormRatio` (5 tests). Exact at dim<=8; spread beyond."
 
 [[claim]]
 id = "C-259"
-statement = 'Doubling-level associator: at dim=16, left-half elements (octonion subalgebra) have\'
-where_stated = '\'
-status = 'A\'
-last_verified = '\'
-what_would_verify_refute = '~ 1.12 (matching octonion-level C-253), while right-half elements have\|\|A\|\|~ 1.58 (higher due to doubling conjugation terms). Right exceeds left at all tested dims. The doubling construction introduces ADDITIONAL non-associativity beyond the embedded subalgebra level. | `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v29.py::TestGADoublingAssociator` (4 tests). Right > left; left matches octonion.'
+statement = "Doubling-level associator: at dim=16, left-half elements (octonion subalgebra) have||A||~ 1.12 (matching octonion-level C-253), while right-half elements have||A||~ 1.58 (higher due to doubling conjugation terms). Right exceeds left at all tested dims. The doubling construction introduces ADDITIONAL non-associativity beyond the embedded subalgebra level."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v29.py::TestGADoublingAssociator` (4 tests). Right > left; left matches octonion."
 
 [[claim]]
 id = "C-260"
@@ -2104,11 +2104,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v30.py::TestGEP
 
 [[claim]]
 id = "C-264"
-statement = 'Commutator-to-associator norm ratio:\'
-where_stated = '\'
-status = '[a,b]\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|A(a,b,c)\|\|-> sqrt(2) ~ 1.414 as dim -> infinity. This follows from\|\|[a,b]\|\|-> 2.0 (C-222) and\|\|A\|\|-> sqrt(2) (C-253), giving ratio 2/sqrt(2) = sqrt(2). Convergence is monotonic from ~1.58 at dim=8 to ~1.41 at dim>=128. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGFCommutatorAssociatorRatio` (5 tests). Converges to sqrt(2).'
+statement = "Commutator-to-associator norm ratio:||[a,b]||/||A(a,b,c)||-> sqrt(2) ~ 1.414 as dim -> infinity. This follows from||[a,b]||-> 2.0 (C-222) and||A||-> sqrt(2) (C-253), giving ratio 2/sqrt(2) = sqrt(2). Convergence is monotonic from ~1.58 at dim=8 to ~1.41 at dim>=128."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v30.py::TestGFCommutatorAssociatorRatio` (5 tests). Converges to sqrt(2)."
 
 [[claim]]
 id = "C-265"
@@ -2136,19 +2136,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v30.py::TestGIM
 
 [[claim]]
 id = "C-268"
-statement = 'Quadratic identity: x^2 - 2*Re(x)*x +\'
-where_stated = '\'
-status = 'x\'
-last_verified = '\'
-what_would_verify_refute = '^2*e_0 = 0 holds EXACTLY at ALL CD dims 2-256. Every CD element satisfies a degree-2 minimal polynomial over R. This makes all CD algebras "quadratic algebras" -- each element is a root of t^2 - 2*Re(x)*t +\|\|x\|\|^2 = 0. | `src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v31.py::TestGJQuadraticIdentity` (4 tests). All dims exact.'
+statement = 'Quadratic identity: x^2 - 2*Re(x)*x +||x||^2*e_0 = 0 holds EXACTLY at ALL CD dims 2-256. Every CD element satisfies a degree-2 minimal polynomial over R. This makes all CD algebras "quadratic algebras" -- each element is a root of t^2 - 2*Re(x)*t +||x||^2 = 0.'
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v31.py::TestGJQuadraticIdentity` (4 tests). All dims exact."
 
 [[claim]]
 id = "C-269"
-statement = 'Power-norm for non-unit vectors:\'
-where_stated = '\'
-status = 'x^n\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|x\|\|^n at ALL CD dims 4-128 for n=2,3,4,5, with non-unit vectors of varying norms (0.1 to 10.0). This reconfirms C-239 with stronger test conditions: non-unit vectors and scalar scaling. The power-associative subalgebra generated by any single element is norm-preserving. | `src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v31.py::TestGKPowerNormNonUnit` (4 tests). All dims, all powers exact.'
+statement = "Power-norm for non-unit vectors:||x^n||=||x||^n at ALL CD dims 4-128 for n=2,3,4,5, with non-unit vectors of varying norms (0.1 to 10.0). This reconfirms C-239 with stronger test conditions: non-unit vectors and scalar scaling. The power-associative subalgebra generated by any single element is norm-preserving."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v31.py::TestGKPowerNormNonUnit` (4 tests). All dims, all powers exact."
 
 [[claim]]
 id = "C-270"
@@ -2160,11 +2160,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v31.py::TestGLD
 
 [[claim]]
 id = "C-271"
-statement = '''Artin's theorem: subalgebra generated by any two elements is associative at dim<=8 (alternative algebras). All products a,b,ab,ba,a^2,b^2 and their triple products have zero associator. Fails at dim>=16 with\'''
-where_stated = '\'
-status = 'A\'
-last_verified = '\'
-what_would_verify_refute = "~ 1.0-1.8. This is a direct computational verification of Artin's classical theorem for CD algebras. | `src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v31.py::TestGMArtinSubalgebra` (4 tests). Associative at dim<=8; fails beyond."
+statement = "Artin's theorem: subalgebra generated by any two elements is associative at dim<=8 (alternative algebras). All products a,b,ab,ba,a^2,b^2 and their triple products have zero associator. Fails at dim>=16 with||A||~ 1.0-1.8. This is a direct computational verification of Artin's classical theorem for CD algebras."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v37.py`, `data/csv/cd_algebraic_experiments_v37.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v31.py::TestGMArtinSubalgebra` (4 tests). Associative at dim<=8; fails beyond."
 
 [[claim]]
 id = "C-272"
@@ -2184,11 +2184,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v31.py::TestGON
 
 [[claim]]
 id = "C-274"
-statement = 'Polarization identity: both standard (4<a,b> =\'
-where_stated = '\'
-status = 'a+b\'
-last_verified = '\'
-what_would_verify_refute = '^2 -\|\|a-b\|\|^2) and CD-specific (Re(conj(a)*b) = <a,b>) hold EXACTLY at ALL CD dims 2-256. The CD inner product is the standard Euclidean inner product on R^n, recoverable via either polarization or the algebraic product. | `src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v32.py::TestGPPolarizationIdentity` (4 tests). Both forms exact.'
+statement = "Polarization identity: both standard (4<a,b> =||a+b||^2 -||a-b||^2) and CD-specific (Re(conj(a)*b) = <a,b>) hold EXACTLY at ALL CD dims 2-256. The CD inner product is the standard Euclidean inner product on R^n, recoverable via either polarization or the algebraic product."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v32.py::TestGPPolarizationIdentity` (4 tests). Both forms exact."
 
 [[claim]]
 id = "C-275"
@@ -2216,11 +2216,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v32.py::TestGSB
 
 [[claim]]
 id = "C-278"
-statement = 'No nilpotent elements: x^n != 0 for any nonzero x at ALL CD dims 8-128. This follows from\'
-where_stated = '\'
-status = 'x^n\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|x\|\|^n (C-239/C-269) -- since\|\|x\|\|> 0 implies\|\|x^n\|\|> 0. CD algebras have no nilpotent elements despite having zero divisors at dim>=16. Powers always have strictly positive norm. | `src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v32.py::TestGTNilpotentElements` (4 tests). All norms positive.'
+statement = "No nilpotent elements: x^n != 0 for any nonzero x at ALL CD dims 8-128. This follows from||x^n||=||x||^n (C-239/C-269) -- since||x||> 0 implies||x^n||> 0. CD algebras have no nilpotent elements despite having zero divisors at dim>=16. Powers always have strictly positive norm."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v32.py::TestGTNilpotentElements` (4 tests). All norms positive."
 
 [[claim]]
 id = "C-279"
@@ -2232,19 +2232,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v32.py::TestGUA
 
 [[claim]]
 id = "C-280"
-statement = 'L_a eigenvalue distribution: at dim<=8, all eigenvalues of L_a (unit a) lie exactly on the unit circle (\'
-where_stated = 'lambda\'
-status = '=1, std=0). At dim>=16, eigenvalues spread with increasing std (0.25 at dim=16 to 0.50 at dim=64) and range expanding [0.07, 1.84] at dim=64. The mean\'
-last_verified = 'eigenvalue\'
-what_would_verify_refute = "decreases from 1.0 to ~0.87. | `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v33.py::TestGVLaEigenvalueDistribution` (5 tests). Unit circle at dim<=8; spread beyond."
+statement = "L_a eigenvalue distribution: at dim<=8, all eigenvalues of L_a (unit a) lie exactly on the unit circle (|lambda|=1, std=0). At dim>=16, eigenvalues spread with increasing std (0.25 at dim=16 to 0.50 at dim=64) and range expanding [0.07, 1.84] at dim=64. The mean|eigenvalue|decreases from 1.0 to ~0.87."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v33.py::TestGVLaEigenvalueDistribution` (5 tests). Unit circle at dim<=8; spread beyond."
 
 [[claim]]
 id = "C-281"
-statement = 'Near-zero-divisor product norm: min(\'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '/(\|\|a\|\|*\|\|b\|\|)) = 1.0 exactly at dim<=8. At dim>=16, min ratio drops below 1.0 (reaching 0.61 at dim=16), confirming norm multiplicativity failure. The min ratio increases at very high dim (0.90 at dim=256) due to concentration of measure, but never returns to 1.0. Mean ratio stays ~1.0 at all dims (unbiased, confirming C-258). | `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v33.py::TestGWZeroDivisorProductNorm` (4 tests). Exact at dim<=8; sub-unit beyond.'
+statement = "Near-zero-divisor product norm: min(||ab||/(||a||*||b||)) = 1.0 exactly at dim<=8. At dim>=16, min ratio drops below 1.0 (reaching 0.61 at dim=16), confirming norm multiplicativity failure. The min ratio increases at very high dim (0.90 at dim=256) due to concentration of measure, but never returns to 1.0. Mean ratio stays ~1.0 at all dims (unbiased, confirming C-258)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v33.py::TestGWZeroDivisorProductNorm` (4 tests). Exact at dim<=8; sub-unit beyond."
 
 [[claim]]
 id = "C-282"
@@ -2256,75 +2256,75 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v33.py::TestGXS
 
 [[claim]]
 id = "C-283"
-statement = 'Associator mean norm convergence: mean(\'
-where_stated = '\'
-status = 'A(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = ") for unit vectors increases monotonically from 1.12 (dim=8) to 1.41 (dim=256), approaching sqrt(2) with normalized ratio reaching 0.998. This reconfirms C-253 with explicit monotonicity verification over 6 dimensions. | `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v33.py::TestGYAssociatorFrobenius` (4 tests). Monotone; converges to sqrt(2)."
+statement = "Associator mean norm convergence: mean(||A(a,b,c)||) for unit vectors increases monotonically from 1.12 (dim=8) to 1.41 (dim=256), approaching sqrt(2) with normalized ratio reaching 0.998. This reconfirms C-253 with explicit monotonicity verification over 6 dimensions."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v33.py::TestGYAssociatorFrobenius` (4 tests). Monotone; converges to sqrt(2)."
 
 [[claim]]
 id = "C-284"
-statement = 'Anti-commutator norm ratio:\'
-where_stated = '\'
-status = '{a,b}\'
-last_verified = '\'
-what_would_verify_refute = '/(2*\|\|a\|\|*\|\|b\|\|) = 1.0 at dim=2 (commutative), decreasing to ~0.10 at dim=256. The ratio scales approximately as 1/sqrt(dim/2), consistent with random orientation in high-dimensional space. The anti-commutator measures "commutativity overlap" which vanishes as the algebra grows more non-commutative. | `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v33.py::TestGZAntiCommutatorNorm` (5 tests). 1.0 at dim=2; decreasing.'
+statement = 'Anti-commutator norm ratio:||{a,b}||/(2*||a||*||b||) = 1.0 at dim=2 (commutative), decreasing to ~0.10 at dim=256. The ratio scales approximately as 1/sqrt(dim/2), consistent with random orientation in high-dimensional space. The anti-commutator measures "commutativity overlap" which vanishes as the algebra grows more non-commutative.'
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v33.py::TestGZAntiCommutatorNorm` (5 tests). 1.0 at dim=2; decreasing."
 
 [[claim]]
 id = "C-285"
-statement = 'Power tower:\'
-where_stated = '\'
-status = 'x^{2^k}\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|x\|\|^{2^k} remains exact to machine precision through k=8 (x^{256}) at ALL CD dims 4-64 for unit vectors. Max ratio deviation ~5e-14 after 256 iterated squarings. This verifies the power-associative subalgebra is numerically stable under extreme iteration. | `src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v33.py::TestHAPowerTower` (3 tests). All dims exact through 256 squarings.'
+statement = "Power tower:||x^{2^k}||=||x||^{2^k} remains exact to machine precision through k=8 (x^{256}) at ALL CD dims 4-64 for unit vectors. Max ratio deviation ~5e-14 after 256 iterated squarings. This verifies the power-associative subalgebra is numerically stable under extreme iteration."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v39.py`, `data/csv/cd_algebraic_experiments_v39.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v33.py::TestHAPowerTower` (3 tests). All dims exact through 256 squarings."
 
 [[claim]]
 id = "C-286"
-statement = 'Norm product identity: a*conj(a) = conj(a)*a = \'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = "^2 * e_0 holds EXACTLY at ALL CD dims 2-256. Both orderings produce identical results to machine precision (max diff ~6e-14 at dim=256). This is a universal CD identity with no Hurwitz boundary dependence. | `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v34.py::TestHBNormProduct` (4 tests). Both orderings exact at all dims."
+statement = "Norm product identity: a*conj(a) = conj(a)*a = ||a||^2 * e_0 holds EXACTLY at ALL CD dims 2-256. Both orderings produce identical results to machine precision (max diff ~6e-14 at dim=256). This is a universal CD identity with no Hurwitz boundary dependence."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v34.py::TestHBNormProduct` (4 tests). Both orderings exact at all dims."
 
 [[claim]]
 id = "C-287"
-statement = 'Imaginary product structure: for pure imaginary a,b (Re=0), Re(ab) = -<a,b> (negative inner product) holds EXACTLY at ALL CD dims 4-128. The imaginary part \'
-where_stated = '\'
-status = 'Im(ab)\'
-last_verified = '\'
-what_would_verify_refute = "grows proportionally to dim-1. This decomposes the product into a scalar (inner product) and vector (cross product) part universally. | `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v34.py::TestHCImaginaryProduct` (4 tests). Exact at all dims; Im norm monotone."
+statement = "Imaginary product structure: for pure imaginary a,b (Re=0), Re(ab) = -<a,b> (negative inner product) holds EXACTLY at ALL CD dims 4-128. The imaginary part ||Im(ab)||grows proportionally to dim-1. This decomposes the product into a scalar (inner product) and vector (cross product) part universally."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v34.py::TestHCImaginaryProduct` (4 tests). Exact at all dims; Im norm monotone."
 
 [[claim]]
 id = "C-288"
-statement = 'L_a eigenvalue conjugate pairing: all eigenvalues of the left-multiplication matrix L_a come in conjugate pairs (real matrix property). At dim<=8, \'
-where_stated = 'det(L_a)\'
-status = '= 1 exactly (composition algebra). At dim>=16, \'
-last_verified = 'det(L_a)\'
-what_would_verify_refute = "decays rapidly: ~0.40 (dim=16), ~0.002 (dim=32), ~3e-8 (dim=64). The determinant collapse quantifies the loss of norm multiplicativity. | `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v34.py::TestHDEigenvaluePairing` (4 tests). Pairing universal; det=1 at composition."
+statement = "L_a eigenvalue conjugate pairing: all eigenvalues of the left-multiplication matrix L_a come in conjugate pairs (real matrix property). At dim<=8, |det(L_a)|= 1 exactly (composition algebra). At dim>=16, |det(L_a)|decays rapidly: ~0.40 (dim=16), ~0.002 (dim=32), ~3e-8 (dim=64). The determinant collapse quantifies the loss of norm multiplicativity."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v34.py::TestHDEigenvaluePairing` (4 tests). Pairing universal; det=1 at composition."
 
 [[claim]]
 id = "C-289"
-statement = 'n-fold product norm: \'
-where_stated = '\'
-status = 'a1*a2*...*an\'
-last_verified = '\'
-what_would_verify_refute = '/ prod(\|\|ai\|\|) = 1.0 exactly at dim<=8 for all n=3,5,8 (composition algebra). At dim>=16, the ratio has mean~1.0 but increasing standard deviation with n: std grows from ~0.13 (n=3) to ~0.25 (n=8). More multiplications amplify the norm-multiplicativity failure. | `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v34.py::TestHENFoldProductNorm` (5 tests). Exact at composition; std grows with n.'
+statement = "n-fold product norm: ||a1*a2*...*an||/ prod(||ai||) = 1.0 exactly at dim<=8 for all n=3,5,8 (composition algebra). At dim>=16, the ratio has mean~1.0 but increasing standard deviation with n: std grows from ~0.13 (n=3) to ~0.25 (n=8). More multiplications amplify the norm-multiplicativity failure."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v34.py::TestHENFoldProductNorm` (5 tests). Exact at composition; std grows with n."
 
 [[claim]]
 id = "C-290"
-statement = 'Associator antisymmetry: A(a,b,c) = -A(b,a,c) holds exactly at dim<=8 (alternating associator, swap ratio = 0). At dim>=16, the swap ratio \'
-where_stated = '\'
-status = 'A(a,b,c)+A(b,a,c)\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|A(a,b,c)\|\|grows monotonically: 0.64 (dim=16), 0.82 (dim=32), 0.91 (dim=64), 0.98 (dim=256), approaching 1.0 in high dims. The associator becomes increasingly symmetric (non-alternating) beyond the composition boundary. | `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v34.py::TestHFAssociatorSwapRatio` (5 tests). Alternating iff dim<=8; ratio monotone.'
+statement = "Associator antisymmetry: A(a,b,c) = -A(b,a,c) holds exactly at dim<=8 (alternating associator, swap ratio = 0). At dim>=16, the swap ratio ||A(a,b,c)+A(b,a,c)||/||A(a,b,c)||grows monotonically: 0.64 (dim=16), 0.82 (dim=32), 0.91 (dim=64), 0.98 (dim=256), approaching 1.0 in high dims. The associator becomes increasingly symmetric (non-alternating) beyond the composition boundary."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v34.py::TestHFAssociatorSwapRatio` (5 tests). Alternating iff dim<=8; ratio monotone."
 
 [[claim]]
 id = "C-291"
-statement = 'Generated subalgebra dimension: every nonzero element x of a CD algebra generates a 2-dimensional subalgebra isomorphic to C, spanned by {e_0, x}. Verified at all dims 4-128 by projecting x^2, x^3, x^4 onto span{e_0, x} via least-squares: max residual < 1e-6 at all dims. This follows from the universal quadratic identity x^2 = 2*Re(x)*x - \'
-where_stated = '\'
-status = 'x\'
-last_verified = '\'
-what_would_verify_refute = "^2*e_0. | `src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v34.py::TestHGGeneratedSubalgebra` (3 tests). Universal dim=2 at all dims."
+statement = "Generated subalgebra dimension: every nonzero element x of a CD algebra generates a 2-dimensional subalgebra isomorphic to C, spanned by {e_0, x}. Verified at all dims 4-128 by projecting x^2, x^3, x^4 onto span{e_0, x} via least-squares: max residual < 1e-6 at all dims. This follows from the universal quadratic identity x^2 = 2*Re(x)*x - ||x||^2*e_0."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v40.py`, `data/csv/cd_algebraic_experiments_v40.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v34.py::TestHGGeneratedSubalgebra` (3 tests). Universal dim=2 at all dims."
 
 [[claim]]
 id = "C-292"
@@ -2392,11 +2392,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v36.py::TestHOR
 
 [[claim]]
 id = "C-300"
-statement = 'Commutator-anticommutator decomposition: \'
-where_stated = '\'
-status = '[a,b]\'
-last_verified = '\'
-what_would_verify_refute = '^2 + \|\|{a,b}\|\|^2 = 4*\|\|ab\|\|^2 holds EXACTLY at ALL CD dims 2-256. This is the Parseval-like orthogonal decomposition ab = ([a,b] + {a,b})/2, proving that commutator and anticommutator are orthogonal components of the product. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v36.py::TestHPCommAnticommDecomposition` (3 tests). Exact at all dims.'
+statement = "Commutator-anticommutator decomposition: ||[a,b]||^2 + ||{a,b}||^2 = 4*||ab||^2 holds EXACTLY at ALL CD dims 2-256. This is the Parseval-like orthogonal decomposition ab = ([a,b] + {a,b})/2, proving that commutator and anticommutator are orthogonal components of the product. Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v36.py::TestHPCommAnticommDecomposition` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-301"
@@ -2424,11 +2424,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v36.py::TestHSR
 
 [[claim]]
 id = "C-304"
-statement = 'Inverse element: a * conj(a)/\'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^2 = conj(a)/\|\|a\|\|^2 * a = e_0 holds EXACTLY at ALL CD dims 2-256. Every nonzero element is invertible with inverse a^{-1} = conj(a)/\|\|a\|\|^2. Both orderings produce e_0 to machine precision. This is a universal CD property. | `src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v37.py::TestHTInverse` (4 tests). Both orderings exact at all dims.'
+statement = "Inverse element: a * conj(a)/||a||^2 = conj(a)/||a||^2 * a = e_0 holds EXACTLY at ALL CD dims 2-256. Every nonzero element is invertible with inverse a^{-1} = conj(a)/||a||^2. Both orderings produce e_0 to machine precision. This is a universal CD property."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v37.py::TestHTInverse` (4 tests). Both orderings exact at all dims."
 
 [[claim]]
 id = "C-305"
@@ -2440,11 +2440,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v37.py::TestHUL
 
 [[claim]]
 id = "C-306"
-statement = 'Flexible product norm: \'
-where_stated = '\'
-status = 'a(ba)\'
-last_verified = '\'
-what_would_verify_refute = '= \|\|a\|\|^2*\|\|b\|\|exactly at dim<=8 (composition). At dim>=16, the ratio \|\|a(ba)\|\|/(\|\|a\|\|^2*\|\|b\|\|) exceeds 1.0 on average: 1.13 (dim=16), 1.23 (dim=32), 1.33 (dim=64), 1.38 (dim=128). The flexible product is systematically "norm-amplifying" beyond the composition boundary. | `src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v37.py::TestHVFlexibleProductNorm` (4 tests). Exact iff dim<=8; amplifying beyond.'
+statement = 'Flexible product norm: ||a(ba)||= ||a||^2*||b||exactly at dim<=8 (composition). At dim>=16, the ratio ||a(ba)||/(||a||^2*||b||) exceeds 1.0 on average: 1.13 (dim=16), 1.23 (dim=32), 1.33 (dim=64), 1.38 (dim=128). The flexible product is systematically "norm-amplifying" beyond the composition boundary.'
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v37.py::TestHVFlexibleProductNorm` (4 tests). Exact iff dim<=8; amplifying beyond."
 
 [[claim]]
 id = "C-307"
@@ -2464,11 +2464,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v37.py::TestHXI
 
 [[claim]]
 id = "C-309"
-statement = 'Commutator norm scaling: \'
-where_stated = '\'
-status = '[a,b]\'
-last_verified = '\'
-what_would_verify_refute = "for unit vectors = 0 at dim=2 (commutative), increases through 1.14 (dim=4), 1.60 (dim=8), 1.81 (dim=16), and approaches 2.0 at dim=256 (1.99). The standard deviation decreases with dim (concentration of measure). This verifies and extends C-222 with explicit convergence data. | `src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v37.py::TestHYCommutatorNormScaling` (4 tests). Zero at dim=2; -> 2.0; std decreasing."
+statement = "Commutator norm scaling: ||[a,b]||for unit vectors = 0 at dim=2 (commutative), increases through 1.14 (dim=4), 1.60 (dim=8), 1.81 (dim=16), and approaches 2.0 at dim=256 (1.99). The standard deviation decreases with dim (concentration of measure). This verifies and extends C-222 with explicit convergence data."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v43.py`, `data/csv/cd_algebraic_experiments_v43.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v37.py::TestHYCommutatorNormScaling` (4 tests). Zero at dim=2; -> 2.0; std decreasing."
 
 [[claim]]
 id = "C-310"
@@ -2504,43 +2504,43 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v38.py::TestICI
 
 [[claim]]
 id = "C-314"
-statement = 'Norm of sum: \'
-where_stated = '\'
-status = 'a+b\'
-last_verified = '\'
-what_would_verify_refute = '^2 = \|\|a\|\|^2 + \|\|b\|\|^2 + 2*Re(conj(a)*b) holds EXACTLY at ALL CD dims 2-256. This is the standard inner product expansion <a+b, a+b> = <a,a> + <b,b> + 2*<a,b> where <a,b> = Re(conj(a)*b). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v38.py::TestIDNormOfSum` (3 tests). Exact at all dims.'
+statement = "Norm of sum: ||a+b||^2 = ||a||^2 + ||b||^2 + 2*Re(conj(a)*b) holds EXACTLY at ALL CD dims 2-256. This is the standard inner product expansion <a+b, a+b> = <a,a> + <b,b> + 2*<a,b> where <a,b> = Re(conj(a)*b). Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v38.py::TestIDNormOfSum` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-315"
-statement = 'Polarization identity: 4*Re(conj(a)*b) = \'
-where_stated = '\'
-status = 'a+b\'
-last_verified = '\'
-what_would_verify_refute = '^2 - \|\|a-b\|\|^2 holds EXACTLY at ALL CD dims 2-256. This recovers the inner product from the norm, confirming that the CD norm satisfies the parallelogram law. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v38.py::TestIEPolarization` (3 tests). Exact at all dims.'
+statement = "Polarization identity: 4*Re(conj(a)*b) = ||a+b||^2 - ||a-b||^2 holds EXACTLY at ALL CD dims 2-256. This recovers the inner product from the norm, confirming that the CD norm satisfies the parallelogram law. Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v44.py`, `data/csv/cd_algebraic_experiments_v44.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v38.py::TestIEPolarization` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-316"
-statement = 'L_a quadratic identity: L_a^2 - 2*Re(a)*L_a + \'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^2*I = 0 holds at dim<=8 (composition algebras) and FAILS at dim>=16. At dim=4 and dim=8, the residual is <1e-15 (exact). At dim>=16, residuals grow: 2.63 (dim=16), 4.71 (dim=32), 7.96 (dim=64). This characterizes composition algebras: L_a is a root of the quadratic x^2 - 2*Re(a)*x + \|\|a\|\|^2. | `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v39.py::TestIFLaQuadratic` (5 tests). Exact at dim<=8, fails at dim>=16.'
+statement = "L_a quadratic identity: L_a^2 - 2*Re(a)*L_a + ||a||^2*I = 0 holds at dim<=8 (composition algebras) and FAILS at dim>=16. At dim=4 and dim=8, the residual is <1e-15 (exact). At dim>=16, residuals grow: 2.63 (dim=16), 4.71 (dim=32), 7.96 (dim=64). This characterizes composition algebras: L_a is a root of the quadratic x^2 - 2*Re(a)*x + ||a||^2."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v39.py::TestIFLaQuadratic` (5 tests). Exact at dim<=8, fails at dim>=16."
 
 [[claim]]
 id = "C-317"
-statement = 'Product norm ratio variance: Var(\'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '/(\|\|a\|\|\|\|b\|\|)) = 0 exactly at dim<=8 (norm multiplicativity) and >0 at dim>=16. The CV decreases from ~0.084 (dim=16) to ~0.046 (dim=256), consistent with concentration of measure. Mean ratio stays near 1.0 at all dims. | `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v39.py::TestIGProductNormVariance` (5 tests). Zero at composition, CV trend decreasing.'
+statement = "Product norm ratio variance: Var(||ab||/(||a||||b||)) = 0 exactly at dim<=8 (norm multiplicativity) and >0 at dim>=16. The CV decreases from ~0.084 (dim=16) to ~0.046 (dim=256), consistent with concentration of measure. Mean ratio stays near 1.0 at all dims."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v39.py::TestIGProductNormVariance` (5 tests). Zero at composition, CV trend decreasing."
 
 [[claim]]
 id = "C-318"
-statement = 'Associator norm concentration: CV of \'
-where_stated = '\'
-status = 'A(a,b,c)\'
-last_verified = '\'
-what_would_verify_refute = "scales as dim^alpha with alpha = -0.448 (near the -0.5 expected from concentration of measure). CV decreases monotonically: 0.299 (dim=8), 0.221 (dim=16), 0.154 (dim=32), 0.116 (dim=64), 0.088 (dim=128), 0.062 (dim=256). | `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v39.py::TestIHAssociatorConcentration` (4 tests). Scaling exponent near -0.5, monotone CV."
+statement = "Associator norm concentration: CV of ||A(a,b,c)||scales as dim^alpha with alpha = -0.448 (near the -0.5 expected from concentration of measure). CV decreases monotonically: 0.299 (dim=8), 0.221 (dim=16), 0.154 (dim=32), 0.116 (dim=64), 0.088 (dim=128), 0.062 (dim=256)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v39.py::TestIHAssociatorConcentration` (4 tests). Scaling exponent near -0.5, monotone CV."
 
 [[claim]]
 id = "C-319"
@@ -2560,11 +2560,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v39.py::TestIJJ
 
 [[claim]]
 id = "C-321"
-statement = 'Minimal polynomial: every CD element x satisfies x^2 - 2*Re(x)*x + \'
-where_stated = '\'
-status = 'x\'
-last_verified = '\'
-what_would_verify_refute = "^2*e_0 = 0 at ALL dims 4-128. This means every element has minimal polynomial degree <= 2 over R. The quadratic identity is the element-level analog of C-316 (operator-level). Max residual <3e-14 at all dims. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v39.py::TestIKMinimalPolynomial` (3 tests). Degree=2 at all dims."
+statement = "Minimal polynomial: every CD element x satisfies x^2 - 2*Re(x)*x + ||x||^2*e_0 = 0 at ALL dims 4-128. This means every element has minimal polynomial degree <= 2 over R. The quadratic identity is the element-level analog of C-316 (operator-level). Max residual <3e-14 at all dims. Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v45.py`, `data/csv/cd_algebraic_experiments_v45.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v39.py::TestIKMinimalPolynomial` (3 tests). Degree=2 at all dims."
 
 [[claim]]
 id = "C-322"
@@ -2584,11 +2584,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v40.py::TestINR
 
 [[claim]]
 id = "C-324"
-statement = 'Commutator energy partition: \'
-where_stated = '\'
-status = '[a,b]\'
-last_verified = '\'
-what_would_verify_refute = '^2/\|\|ab\|\|^2 increases from 0.0 (dim=2, commutative) through 1.51 (dim=4), 2.67 (dim=8), 3.21 (dim=16), 3.59 (dim=32), 3.81 (dim=64), to 3.96 (dim=256), approaching 4.0. The anticommutator fraction decreases correspondingly. Sum is exactly 4.0 at all dims (Parseval, C-300). At high dim, products are almost purely antisymmetric. | `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v40.py::TestIMCommAnticommRatio` (6 tests). Sum=4, trend increasing.'
+statement = "Commutator energy partition: ||[a,b]||^2/||ab||^2 increases from 0.0 (dim=2, commutative) through 1.51 (dim=4), 2.67 (dim=8), 3.21 (dim=16), 3.59 (dim=32), 3.81 (dim=64), to 3.96 (dim=256), approaching 4.0. The anticommutator fraction decreases correspondingly. Sum is exactly 4.0 at all dims (Parseval, C-300). At high dim, products are almost purely antisymmetric."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v40.py::TestIMCommAnticommRatio` (6 tests). Sum=4, trend increasing."
 
 [[claim]]
 id = "C-325"
@@ -2600,11 +2600,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v40.py::TestION
 
 [[claim]]
 id = "C-326"
-statement = 'Norm submultiplicativity: \'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '<= C(dim)*\|\|a\|\|*\|\|b\|\|with C(dim)=1.0 exactly at dim<=8 (norm multiplicativity) and C(dim)>1 at dim>=16. Observed maxima: C=1.197 (dim=16), 1.159 (dim=32), 1.153 (dim=64), 1.142 (dim=128), 1.089 (dim=256). The constant appears bounded and possibly decreasing toward 1 at large dim. | `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v40.py::TestIPNormSubmultiplicativity` (4 tests). C=1 at composition, C>1 beyond.'
+statement = "Norm submultiplicativity: ||ab||<= C(dim)*||a||*||b||with C(dim)=1.0 exactly at dim<=8 (norm multiplicativity) and C(dim)>1 at dim>=16. Observed maxima: C=1.197 (dim=16), 1.159 (dim=32), 1.153 (dim=64), 1.142 (dim=128), 1.089 (dim=256). The constant appears bounded and possibly decreasing toward 1 at large dim."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v40.py::TestIPNormSubmultiplicativity` (4 tests). C=1 at composition, C>1 beyond."
 
 [[claim]]
 id = "C-327"
@@ -2624,19 +2624,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v41.py::TestIRP
 
 [[claim]]
 id = "C-329"
-statement = 'L_a eigenvalue structure: at dim<=8 (composition algebras), L_a has exactly 1 distinct eigenvalue magnitude = \'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = "(i.e. L_a is a scaled orthogonal matrix). At dim>=16, the number of distinct eigenvalue magnitudes increases: 3 (dim=16), 8 (dim=32), 16 (dim=64). This is equivalent to saying L_a is conformal at dim<=8 but not beyond. | `src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v41.py::TestISEigenvalueStructure` (5 tests). 1 magnitude at composition, many beyond."
+statement = "L_a eigenvalue structure: at dim<=8 (composition algebras), L_a has exactly 1 distinct eigenvalue magnitude = ||a||(i.e. L_a is a scaled orthogonal matrix). At dim>=16, the number of distinct eigenvalue magnitudes increases: 3 (dim=16), 8 (dim=32), 16 (dim=64). This is equivalent to saying L_a is conformal at dim<=8 but not beyond."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v41.py::TestISEigenvalueStructure` (5 tests). 1 magnitude at composition, many beyond."
 
 [[claim]]
 id = "C-330"
-statement = 'Fourth-power norm: \'
-where_stated = '\'
-status = 'a^2\'
-last_verified = '\'
-what_would_verify_refute = '^2 = \|\|a\|\|^4 at ALL CD dims 2-256. This follows from the quadratic identity (C-321): a^2 = 2*Re(a)*a - \|\|a\|\|^2*e_0, which gives \|\|a^2\|\|^2 = 4*Re(a)^2*\|\|a\|\|^2 - 4*Re(a)^2*\|\|a\|\|^2 + \|\|a\|\|^4. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v41.py::TestITFourthPowerNorm` (3 tests). Exact at all dims.'
+statement = "Fourth-power norm: ||a^2||^2 = ||a||^4 at ALL CD dims 2-256. This follows from the quadratic identity (C-321): a^2 = 2*Re(a)*a - ||a||^2*e_0, which gives ||a^2||^2 = 4*Re(a)^2*||a||^2 - 4*Re(a)^2*||a||^2 + ||a||^4. Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v41.py::TestITFourthPowerNorm` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-331"
@@ -2656,27 +2656,27 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v41.py::TestIVA
 
 [[claim]]
 id = "C-333"
-statement = 'Conjugate product norm: \'
-where_stated = '\'
-status = 'conj(a)*a\'
-last_verified = '\'
-what_would_verify_refute = '= \|\|a\|\|^2 at ALL CD dims 2-256. Since conj(a)*a = \|\|a\|\|^2*e_0 exactly (C-286), the norm equals \|\|a\|\|^2. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v41.py::TestIWConjugateProductNorm` (3 tests). Exact at all dims.'
+statement = "Conjugate product norm: ||conj(a)*a||= ||a||^2 at ALL CD dims 2-256. Since conj(a)*a = ||a||^2*e_0 exactly (C-286), the norm equals ||a||^2. Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v47.py`, `data/csv/cd_algebraic_experiments_v47.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v41.py::TestIWConjugateProductNorm` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-334"
-statement = 'Exponential map: for purely imaginary unit u (Re(u)=0, \'
-where_stated = '\'
-status = 'u\'
-last_verified = '\'
-what_would_verify_refute = "=1), exp(t*u) = cos(t)*e_0 + sin(t)*u. Verified via 20-term power series at ALL CD dims 4-128. This follows from u^2 = -e_0, giving the same series as complex exponential. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIXExponentialMap` (3 tests). Exact at all dims."
+statement = "Exponential map: for purely imaginary unit u (Re(u)=0, ||u||=1), exp(t*u) = cos(t)*e_0 + sin(t)*u. Verified via 20-term power series at ALL CD dims 4-128. This follows from u^2 = -e_0, giving the same series as complex exponential. Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v42.py::TestIXExponentialMap` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-335"
-statement = 'Squaring Lipschitz constant: \'
-where_stated = '\'
-status = 'a^2 - b^2\'
-last_verified = '\'
-what_would_verify_refute = '<= C*\|\|a-b\|\|*(\|\|a\|\|+\|\|b\|\|) with C<=1 at dim<=8 and C decreasing with dim: 0.98 (dim=4), 0.86 (dim=8), 0.61 (dim=16), 0.27 (dim=64), 0.15 (dim=256). The squaring map becomes MORE Lipschitz-stable at high dim due to concentration of measure. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIYSquaringLipschitz` (4 tests). C bounded and decreasing.'
+statement = "Squaring Lipschitz constant: ||a^2 - b^2||<= C*||a-b||*(||a||+||b||) with C<=1 at dim<=8 and C decreasing with dim: 0.98 (dim=4), 0.86 (dim=8), 0.61 (dim=16), 0.27 (dim=64), 0.15 (dim=256). The squaring map becomes MORE Lipschitz-stable at high dim due to concentration of measure."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v42.py::TestIYSquaringLipschitz` (4 tests). C bounded and decreasing."
 
 [[claim]]
 id = "C-336"
@@ -2696,51 +2696,51 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v42.py::TestJAI
 
 [[claim]]
 id = "C-338"
-statement = 'Pythagorean decomposition: \'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^2 = Re(a)^2 + \|\|Im(a)\|\|^2 at ALL CD dims 2-256. This is trivially the Euclidean norm decomposition a = (Re(a), Im_1(a), ..., Im_{d-1}(a)). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJBPythagorean` (3 tests). Exact at all dims.'
+statement = "Pythagorean decomposition: ||a||^2 = Re(a)^2 + ||Im(a)||^2 at ALL CD dims 2-256. This is trivially the Euclidean norm decomposition a = (Re(a), Im_1(a), ..., Im_{d-1}(a)). Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v42.py::TestJBPythagorean` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-339"
-statement = 'Imaginary square: for purely imaginary u (Re(u)=0), u^2 = -\'
-where_stated = '\'
-status = 'u\'
-last_verified = '\'
-what_would_verify_refute = "^2*e_0 at ALL CD dims 2-256. This follows from the quadratic identity (C-321) with Re(u)=0. Every purely imaginary unit element squares to -e_0, generalizing i^2 = -1. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJCImaginarySquare` (3 tests). Exact at all dims."
+statement = "Imaginary square: for purely imaginary u (Re(u)=0), u^2 = -||u||^2*e_0 at ALL CD dims 2-256. This follows from the quadratic identity (C-321) with Re(u)=0. Every purely imaginary unit element squares to -e_0, generalizing i^2 = -1. Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v42.py::TestJCImaginarySquare` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-340"
-statement = 'Norm of product of conjugates: \'
-where_stated = '\'
-status = 'conj(a)*conj(b)\'
-last_verified = '\'
-what_would_verify_refute = '= \|\|a\|\|*\|\|b\|\|iff dim<=8 (norm multiplicativity via conjugates). Since \|\|conj(x)\|\|= \|\|x\|\|, this is equivalent to full norm multiplicativity. Fails at dim>=16 with relative errors ~0.12-0.24. | `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v43.py::TestJDConjugateProductNorm` (4 tests). Exact iff composition.'
+statement = "Norm of product of conjugates: ||conj(a)*conj(b)||= ||a||*||b||iff dim<=8 (norm multiplicativity via conjugates). Since ||conj(x)||= ||x||, this is equivalent to full norm multiplicativity. Fails at dim>=16 with relative errors ~0.12-0.24."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v43.py::TestJDConjugateProductNorm` (4 tests). Exact iff composition."
 
 [[claim]]
 id = "C-341"
-statement = 'Right norm identity: Re(a*conj(a)) = \'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^2 at ALL CD dims 2-256. Since a*conj(a) = \|\|a\|\|^2*e_0 (both orderings give the same scalar), Re = \|\|a\|\|^2. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v43.py::TestJEReAConjA` (3 tests). Exact at all dims.'
+statement = "Right norm identity: Re(a*conj(a)) = ||a||^2 at ALL CD dims 2-256. Since a*conj(a) = ||a||^2*e_0 (both orderings give the same scalar), Re = ||a||^2. Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v43.py::TestJEReAConjA` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-342"
-statement = 'Real part of square: Re(a^2) = 2*Re(a)^2 - \'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^2 at ALL CD dims 2-256. This is the Re-component of the quadratic identity (C-321). Equivalently, Re(a^2) = Re(a)^2 - \|\|Im(a)\|\|^2 (difference of squared real and imaginary norms). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v43.py::TestJFRealPartOfSquare` (3 tests). Exact at all dims.'
+statement = "Real part of square: Re(a^2) = 2*Re(a)^2 - ||a||^2 at ALL CD dims 2-256. This is the Re-component of the quadratic identity (C-321). Equivalently, Re(a^2) = Re(a)^2 - ||Im(a)||^2 (difference of squared real and imaginary norms). Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v43.py::TestJFRealPartOfSquare` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-343"
-statement = 'Determinant of L_a: \'
-where_stated = 'det(L_a)\'
-status = '= \'
-last_verified = '\'
-what_would_verify_refute = 'a\|\|^dim iff dim<=8 (composition algebras). At dim<=8, L_a is a scaled orthogonal matrix, so all eigenvalue magnitudes equal \|\|a\|\|and det = \|\|a\|\|^dim. At dim>=16, eigenvalue magnitudes spread (C-329) and the determinant deviates: relative error ~0.23-0.31 in log space. | `src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v43.py::TestJGDeterminantLa` (3 tests). Exact at composition, fails beyond.'
+statement = "Determinant of L_a: |det(L_a)|= ||a||^dim iff dim<=8 (composition algebras). At dim<=8, L_a is a scaled orthogonal matrix, so all eigenvalue magnitudes equal ||a||and det = ||a||^dim. At dim>=16, eigenvalue magnitudes spread (C-329) and the determinant deviates: relative error ~0.23-0.31 in log space."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v49.py`, `data/csv/cd_algebraic_experiments_v49.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v43.py::TestJGDeterminantLa` (3 tests). Exact at composition, fails beyond."
 
 [[claim]]
 id = "C-344"
@@ -2760,11 +2760,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v43.py::TestJIC
 
 [[claim]]
 id = "C-346"
-statement = 'Power norm: \'
-where_stated = '\'
-status = 'a^n\'
-last_verified = '\'
-what_would_verify_refute = '= \|\|a\|\|^n for n=2,3,4,5 at ALL CD dims 4-128. Follows from the quadratic identity a^2 = 2*Re(a)*a - \|\|a\|\|^2*e_0, which constrains a^n to the span {a, e_0}, giving \|\|a^n\|\|^2 = alpha_n^2*\|\|a\|\|^2 + beta_n^2 = \|\|a\|\|^{2n} by the Chebyshev recursion (C-319). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v44.py::TestJJPowerNorm` (4 tests). Exact at all dims.'
+statement = "Power norm: ||a^n||= ||a||^n for n=2,3,4,5 at ALL CD dims 4-128. Follows from the quadratic identity a^2 = 2*Re(a)*a - ||a||^2*e_0, which constrains a^n to the span {a, e_0}, giving ||a^n||^2 = alpha_n^2*||a||^2 + beta_n^2 = ||a||^{2n} by the Chebyshev recursion (C-319). Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v44.py::TestJJPowerNorm` (4 tests). Exact at all dims."
 
 [[claim]]
 id = "C-347"
@@ -2784,11 +2784,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v44.py::TestJLM
 
 [[claim]]
 id = "C-349"
-statement = 'Imaginary product norm Pythagorean: \'
-where_stated = '\'
-status = 'Im(ab)\'
-last_verified = '\'
-what_would_verify_refute = '^2 = \|\|ab\|\|^2 - Re(ab)^2 at ALL CD dims 2-256. This is the Pythagorean decomposition (C-338) applied to the product ab. The identity is tautological (orthogonal decomposition into real and imaginary parts). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v44.py::TestJMImaginaryProductNorm` (3 tests). Exact at all dims.'
+statement = "Imaginary product norm Pythagorean: ||Im(ab)||^2 = ||ab||^2 - Re(ab)^2 at ALL CD dims 2-256. This is the Pythagorean decomposition (C-338) applied to the product ab. The identity is tautological (orthogonal decomposition into real and imaginary parts). Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v50.py`, `data/csv/cd_algebraic_experiments_v50.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v44.py::TestJMImaginaryProductNorm` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-350"
@@ -2824,19 +2824,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v45.py::TestJQS
 
 [[claim]]
 id = "C-354"
-statement = 'Commutator norm scaling: \'
-where_stated = '\'
-status = '[a,b]\'
-last_verified = '\'
-what_would_verify_refute = '^2 / (\|\|a\|\|^2 * \|\|b\|\|^2) converges to 4 as dim -> infinity. Mean ratio: 1.50 (dim=4), 2.63 (dim=8), 3.27 (dim=16), 3.96 (dim=256). CV decreases monotonically (concentration of measure). Consistent with asymptotic anti-commutativity (C-323). | `src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v45.py::TestJRCommutatorNormScaling` (5 tests). Monotone approach to 4.'
+statement = "Commutator norm scaling: ||[a,b]||^2 / (||a||^2 * ||b||^2) converges to 4 as dim -> infinity. Mean ratio: 1.50 (dim=4), 2.63 (dim=8), 3.27 (dim=16), 3.96 (dim=256). CV decreases monotonically (concentration of measure). Consistent with asymptotic anti-commutativity (C-323)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v45.py::TestJRCommutatorNormScaling` (5 tests). Monotone approach to 4."
 
 [[claim]]
 id = "C-355"
-statement = 'Quadratic identity: x^2 - 2*Re(x)*x + \'
-where_stated = '\'
-status = 'x\'
-last_verified = '\'
-what_would_verify_refute = "^2*e_0 = 0 at ALL CD dims 2-256. Every element of a CD algebra satisfies a degree-2 polynomial. This is the minimal polynomial identity. Residuals are at floating-point epsilon (~1e-14). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v45.py::TestJSQuadraticIdentity` (3 tests). Exact at all dims."
+statement = "Quadratic identity: x^2 - 2*Re(x)*x + ||x||^2*e_0 = 0 at ALL CD dims 2-256. Every element of a CD algebra satisfies a degree-2 polynomial. This is the minimal polynomial identity. Residuals are at floating-point epsilon (~1e-14). Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v45.py::TestJSQuadraticIdentity` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-356"
@@ -2856,11 +2856,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v45.py::TestJUC
 
 [[claim]]
 id = "C-358"
-statement = 'Associator norm scaling: \'
-where_stated = '\'
-status = '[a,b,c]\'
-last_verified = '\'
-what_would_verify_refute = '^2 / (\|\|a\|\|^2*\|\|b\|\|^2*\|\|c\|\|^2) is zero at dim=4 (associative), nonzero at dim>=8, and converges to ~2.0 as dim -> infinity with decreasing CV (concentration of measure). Mean ratio: 1.29 (dim=8), 1.79 (dim=16), 2.01 (dim=256). | `src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v46.py::TestJVAssociatorNormScaling` (5 tests). Converges to 2.'
+statement = "Associator norm scaling: ||[a,b,c]||^2 / (||a||^2*||b||^2*||c||^2) is zero at dim=4 (associative), nonzero at dim>=8, and converges to ~2.0 as dim -> infinity with decreasing CV (concentration of measure). Mean ratio: 1.29 (dim=8), 1.79 (dim=16), 2.01 (dim=256)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v46.py::TestJVAssociatorNormScaling` (5 tests). Converges to 2."
 
 [[claim]]
 id = "C-359"
@@ -2888,19 +2888,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v46.py::TestJYT
 
 [[claim]]
 id = "C-362"
-statement = 'Two-sided inverse: a * (conj(a)/\'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^2) = (conj(a)/\|\|a\|\|^2) * a = e_0 at ALL CD dims 2-256. Every nonzero CD element has a two-sided inverse computed via conjugation. This follows from a*conj(a) = conj(a)*a = \|\|a\|\|^2*e_0 (C-341). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v46.py::TestJZInverseViaConjugate` (4 tests). Exact at all dims.'
+statement = "Two-sided inverse: a * (conj(a)/||a||^2) = (conj(a)/||a||^2) * a = e_0 at ALL CD dims 2-256. Every nonzero CD element has a two-sided inverse computed via conjugation. This follows from a*conj(a) = conj(a)*a = ||a||^2*e_0 (C-341). Universal."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v46.py::TestJZInverseViaConjugate` (4 tests). Exact at all dims."
 
 [[claim]]
 id = "C-363"
-statement = 'Polarization identity: \'
-where_stated = '\'
-status = 'a+b\'
-last_verified = '\'
-what_would_verify_refute = '^2 = \|\|a\|\|^2 + \|\|b\|\|^2 + 2*Re(conj(a)*b) at ALL CD dims 2-256. This is the standard inner product polarization with <a,b> = Re(conj(a)*b) = sum(a_i*b_i). Universal and exact. | `src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v46.py::TestKANormSumPolarization` (3 tests). Exact at all dims.'
+statement = "Polarization identity: ||a+b||^2 = ||a||^2 + ||b||^2 + 2*Re(conj(a)*b) at ALL CD dims 2-256. This is the standard inner product polarization with <a,b> = Re(conj(a)*b) = sum(a_i*b_i). Universal and exact."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v52.py`, `data/csv/cd_algebraic_experiments_v52.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v46.py::TestKANormSumPolarization` (3 tests). Exact at all dims."
 
 [[claim]]
 id = "C-364"
@@ -2920,11 +2920,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v47.py::TestKCL
 
 [[claim]]
 id = "C-366"
-statement = 'Left-right operator commutation: L_a*R_b = R_b*L_a iff dim<=4 (associative). At dim>=8, L_a and R_b generically do not commute. Normalized ratio\'
-where_stated = '\'
-status = '[L_a,R_b]\'
-last_verified = '\'
-what_would_verify_refute = '_F/(\|\|a\|\|*\|\|b\|\|*dim) is ~0.41 at dim=8, decreasing to ~0.18 at dim=64. Reconfirms C-331. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKDLRCommutation` (3 tests). Commutes iff associative.'
+statement = "Left-right operator commutation: L_a*R_b = R_b*L_a iff dim<=4 (associative). At dim>=8, L_a and R_b generically do not commute. Normalized ratio||[L_a,R_b]||_F/(||a||*||b||*dim) is ~0.41 at dim=8, decreasing to ~0.18 at dim=64. Reconfirms C-331."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v47.py::TestKDLRCommutation` (3 tests). Commutes iff associative."
 
 [[claim]]
 id = "C-367"
@@ -2984,19 +2984,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v48.py::TestKKN
 
 [[claim]]
 id = "C-374"
-statement = 'Normed division algebra (Hurwitz theorem):\'
-where_stated = '\'
-status = 'xy\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|x\|\|*\|\|y\|\|exactly iff dim in {1,2,4,8}. At dim>=16, norm multiplicativity fails: min(\|\|xy\|\|/(\|\|x\|\|*\|\|y\|\|)) drops to ~0.66-0.88. This is the classical Hurwitz theorem verified computationally. Only R, C, H, O are normed division algebras. | `src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v48.py::TestKLNormedDivision` (4 tests). Exact at dim<=8, fails at dim>=16.'
+statement = "Normed division algebra (Hurwitz theorem):||xy||=||x||*||y||exactly iff dim in {1,2,4,8}. At dim>=16, norm multiplicativity fails: min(||xy||/(||x||*||y||)) drops to ~0.66-0.88. This is the classical Hurwitz theorem verified computationally. Only R, C, H, O are normed division algebras."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v48.py::TestKLNormedDivision` (4 tests). Exact at dim<=8, fails at dim>=16."
 
 [[claim]]
 id = "C-375"
-statement = 'Anti-involution properties of CD conjugation: (1) conj(conj(a)) = a (involutive), (2)\'
-where_stated = '\'
-status = 'conj(a)\'
-last_verified = '\'
-what_would_verify_refute = '=\|\|a\|\|(norm-preserving), (3) a + conj(a) = 2*Re(a)*e_0 (real extraction), (4) a*conj(a) =\|\|a\|\|^2*e_0 (norm product). All four hold universally at all dims 2-256. All are exact to machine precision. | `src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v48.py::TestKMAntiInvolution` (3 tests). Universal, exact.'
+statement = "Anti-involution properties of CD conjugation: (1) conj(conj(a)) = a (involutive), (2)||conj(a)||=||a||(norm-preserving), (3) a + conj(a) = 2*Re(a)*e_0 (real extraction), (4) a*conj(a) =||a||^2*e_0 (norm product). All four hold universally at all dims 2-256. All are exact to machine precision."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v54.py`, `data/csv/cd_algebraic_experiments_v54.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v48.py::TestKMAntiInvolution` (3 tests). Universal, exact."
 
 [[claim]]
 id = "C-376"
@@ -3016,35 +3016,35 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v49.py::TestKOP
 
 [[claim]]
 id = "C-378"
-statement = 'Inner product composition identity: <xy,xz> =\'
-where_stated = '\'
-status = 'x\'
-last_verified = '\'
-what_would_verify_refute = "^2 <y,z> holds iff dim<=8 (composition algebras). This is the polarized form of norm multiplicativity (C-374). At dim>=16, relative deviations reach ~2.0. | `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v49.py::TestKPIPIdentity` (5 tests). Composition only."
+statement = "Inner product composition identity: <xy,xz> =||x||^2 <y,z> holds iff dim<=8 (composition algebras). This is the polarized form of norm multiplicativity (C-374). At dim>=16, relative deviations reach ~2.0."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v49.py::TestKPIPIdentity` (5 tests). Composition only."
 
 [[claim]]
 id = "C-379"
-statement = 'Frobenius norm of L_a:\'
-where_stated = '\'
-status = 'L_a\'
-last_verified = '\'
-what_would_verify_refute = '_F^2 = dim *\|\|a\|\|^2 holds universally at all CD dimensions 2-64. This follows from bilinearity and orthonormality of the CD basis: the multiplication table permutes basis products with signs. Exact (std=0) at all dims. | `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v49.py::TestKQFrobeniusNormScaling` (4 tests). Universal, exact.'
+statement = "Frobenius norm of L_a:||L_a||_F^2 = dim *||a||^2 holds universally at all CD dimensions 2-64. This follows from bilinearity and orthonormality of the CD basis: the multiplication table permutes basis products with signs. Exact (std=0) at all dims."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v49.py::TestKQFrobeniusNormScaling` (4 tests). Universal, exact."
 
 [[claim]]
 id = "C-380"
-statement = 'Left regular representation defect:\'
-where_stated = '\'
-status = 'L_{ab} - L_a*L_b\'
-last_verified = '\'
-what_would_verify_refute = '_F / (\|\|a\|\|*\|\|b\|\|*dim) is zero at dim<=4 (associative) and nonzero at dim>=8. Mean defect ~0.40 at dim=8, decreasing to ~0.17 at dim=64. The left regular representation is a homomorphism iff the algebra is associative. | `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v49.py::TestKRLeftRepDefect` (5 tests). Zero iff associative.'
+statement = "Left regular representation defect:||L_{ab} - L_a*L_b||_F / (||a||*||b||*dim) is zero at dim<=4 (associative) and nonzero at dim>=8. Mean defect ~0.40 at dim=8, decreasing to ~0.17 at dim=64. The left regular representation is a homomorphism iff the algebra is associative."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v49.py::TestKRLeftRepDefect` (5 tests). Zero iff associative."
 
 [[claim]]
 id = "C-381"
-statement = 'Anticommutator norm scaling:\'
-where_stated = '\'
-status = '{a,b}\'
-last_verified = '\'
-what_would_verify_refute = '^2/(\|\|a\|\|^2*\|\|b\|\|^2) = 4.0 exactly at dim=2 (commutative, composition). Decreases monotonically: ~2.47 at dim=4, ~1.38 at dim=8, ~0.73 at dim=16, approaching 0 as dim increases. The anticommutator vanishes in the high-dim limit as commutativity breaks down maximally. | `src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v49.py::TestKSAnticommutatorNorm` (5 tests). Monotone decrease.'
+statement = "Anticommutator norm scaling:||{a,b}||^2/(||a||^2*||b||^2) = 4.0 exactly at dim=2 (commutative, composition). Decreases monotonically: ~2.47 at dim=4, ~1.38 at dim=8, ~0.73 at dim=16, approaching 0 as dim increases. The anticommutator vanishes in the high-dim limit as commutativity breaks down maximally."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v55.py`, `data/csv/cd_algebraic_experiments_v55.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v49.py::TestKSAnticommutatorNorm` (5 tests). Monotone decrease."
 
 [[claim]]
 id = "C-382"
@@ -3072,27 +3072,27 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v50.py::TestKVJ
 
 [[claim]]
 id = "C-385"
-statement = 'Commutator Jacobi identity: J(a,b,c) = [a,[b,c]] + [b,[c,a]] + [c,[a,b]] = 0 iff dim<=4 (associative). At dim>=8, the Jacobi identity fails with\'
-where_stated = '\'
-status = 'J\'
-last_verified = '\'
-what_would_verify_refute = '/(\|\|a\|\|*\|\|b\|\|*\|\|c\|\|) mean ~6.6-7.5. This verifies that the commutator algebra is NOT a Lie algebra beyond dim=4 (but IS a Malcev algebra at dim=8, C-352). | `src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v50.py::TestKWJacobiRemainder` (5 tests). Zero iff associative.'
+statement = "Commutator Jacobi identity: J(a,b,c) = [a,[b,c]] + [b,[c,a]] + [c,[a,b]] = 0 iff dim<=4 (associative). At dim>=8, the Jacobi identity fails with||J||/(||a||*||b||*||c||) mean ~6.6-7.5. This verifies that the commutator algebra is NOT a Lie algebra beyond dim=4 (but IS a Malcev algebra at dim=8, C-352)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v50.py::TestKWJacobiRemainder` (5 tests). Zero iff associative."
 
 [[claim]]
 id = "C-386"
-statement = 'Trace bilinear form: Re(x * conj(y)) = dot(x, y) universally at all CD dimensions 2-128. The trace form T(x,y) = Re(x*conj(y)) coincides with the Euclidean inner product. This means the CD norm\'
-where_stated = '\'
-status = 'x\'
-last_verified = '\'
-what_would_verify_refute = "^2 = T(x,x) = dot(x,x) is non-degenerate. Exact to machine precision. | `src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v50.py::TestKXBilinearForm` (3 tests). Universal, exact."
+statement = "Trace bilinear form: Re(x * conj(y)) = dot(x, y) universally at all CD dimensions 2-128. The trace form T(x,y) = Re(x*conj(y)) coincides with the Euclidean inner product. This means the CD norm||x||^2 = T(x,x) = dot(x,x) is non-degenerate. Exact to machine precision."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v50.py::TestKXBilinearForm` (3 tests). Universal, exact."
 
 [[claim]]
 id = "C-387"
-statement = 'Norm product ratio:\'
-where_stated = '\'
-status = 'ab\'
-last_verified = '\'
-what_would_verify_refute = '^2/(\|\|a\|\|^2*\|\|b\|\|^2) = 1 exactly iff dim<=8. At dim>=16, the ratio has mean ~1.0 but nonzero variance (std ~0.08-0.18), with min values ~0.50-0.79. The MEAN converges to 1 at all dims (law of large numbers), but individual products deviate. Variance decreases with dimension. | `src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v50.py::TestKYNormProductRatio` (5 tests). Exact at composition, mean=1 universal.'
+statement = "Norm product ratio:||ab||^2/(||a||^2*||b||^2) = 1 exactly iff dim<=8. At dim>=16, the ratio has mean ~1.0 but nonzero variance (std ~0.08-0.18), with min values ~0.50-0.79. The MEAN converges to 1 at all dims (law of large numbers), but individual products deviate. Variance decreases with dimension."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v56.py`, `data/csv/cd_algebraic_experiments_v56.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v50.py::TestKYNormProductRatio` (5 tests). Exact at composition, mean=1 universal."
 
 [[claim]]
 id = "C-388"
@@ -3112,19 +3112,19 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v51.py::TestLAR
 
 [[claim]]
 id = "C-390"
-statement = 'Commutativity measure:\'
-where_stated = '\'
-status = 'ab-ba\'
-last_verified = '\'
-what_would_verify_refute = '/\|\|ab\|\|= 0 at dim=2, increases monotonically, converges to 2.0 as dim->inf. At dim=256, mean = 1.99. The limit 2.0 means ab ~ -ba (maximally anti-commutative) in the high-dimensional limit. | `src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v51.py::TestLBCommutativityMeasure` (5 tests). Converges to 2.'
+statement = "Commutativity measure:||ab-ba||/||ab||= 0 at dim=2, increases monotonically, converges to 2.0 as dim->inf. At dim=256, mean = 1.99. The limit 2.0 means ab ~ -ba (maximally anti-commutative) in the high-dimensional limit."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v51.py::TestLBCommutativityMeasure` (5 tests). Converges to 2."
 
 [[claim]]
 id = "C-391"
-statement = 'Associator norm for unit elements:\'
-where_stated = '\'
-status = '[a,b,c]\'
-last_verified = '\'
-what_would_verify_refute = "= 0 at dim<=4, mean ~1.07 at dim=8, converging to ~1.40 at high dim. The associator magnitude saturates (does not grow without bound), consistent with the n-fold associator saturation (C-372). | `src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v51.py::TestLCAssociatorProductRatio` (5 tests). Zero iff associative."
+statement = "Associator norm for unit elements:||[a,b,c]||= 0 at dim<=4, mean ~1.07 at dim=8, converging to ~1.40 at high dim. The associator magnitude saturates (does not grow without bound), consistent with the n-fold associator saturation (C-372)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v51.py::TestLCAssociatorProductRatio` (5 tests). Zero iff associative."
 
 [[claim]]
 id = "C-392"
@@ -3144,11 +3144,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v51.py::TestLEE
 
 [[claim]]
 id = "C-394"
-statement = 'Determinant of L_a: det(L_a) =\'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^dim exactly iff dim<=8 (composition algebras). At dim>=16, the ratio\|det(L_a)\|/\|\|a\|\|^dim deviates dramatically: mean ~0.18 at dim=16, ~0.001 at dim=32. This is because L_a is a scaled isometry only at composition dimensions. | `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v52.py::TestLFDeterminantLa` (4 tests). Exact at dim<=8.'
+statement = "Determinant of L_a: det(L_a) =||a||^dim exactly iff dim<=8 (composition algebras). At dim>=16, the ratio|det(L_a)|/||a||^dim deviates dramatically: mean ~0.18 at dim=16, ~0.001 at dim=32. This is because L_a is a scaled isometry only at composition dimensions."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v52.py::TestLFDeterminantLa` (4 tests). Exact at dim<=8."
 
 [[claim]]
 id = "C-395"
@@ -3160,11 +3160,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v52.py::TestLGA
 
 [[claim]]
 id = "C-396"
-statement = 'Gram matrix spectrum: L_a*L_a^T =\'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = "^2*I iff dim<=8. At dim>=16, normalized eigenvalues spread: n_distinct = 3 (dim=16), 8 (dim=32), 16 (dim=64). Max normalized eigenvalue grows from 1.76 to 3.06, min shrinks from 0.24 to 0.03. The spectral condition number grows rapidly. | `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v52.py::TestLHGramSpectrum` (5 tests). Identity iff composition."
+statement = "Gram matrix spectrum: L_a*L_a^T =||a||^2*I iff dim<=8. At dim>=16, normalized eigenvalues spread: n_distinct = 3 (dim=16), 8 (dim=32), 16 (dim=64). Max normalized eigenvalue grows from 1.76 to 3.06, min shrinks from 0.24 to 0.03. The spectral condition number grows rapidly."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`"
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v52.py::TestLHGramSpectrum` (5 tests). Identity iff composition."
 
 [[claim]]
 id = "C-397"
@@ -3184,11 +3184,11 @@ what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v52.py::TestLJP
 
 [[claim]]
 id = "C-399"
-statement = 'Idempotent structure: the ONLY idempotents in any CD algebra are 0 and e_0 (the identity). This follows from the quadratic identity x^2 = 2Re(x)x -\'
-where_stated = '\'
-status = 'x\'
-last_verified = '\'
-what_would_verify_refute = '^2*e_0: if e^2=e with e=alpha*e_0+v, then (2alpha-1)v=0 and alpha(2alpha-1)=alpha^2+\| | `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`; legacy: v\|\|^2. If v!=0 then alpha=1/2 giving\|\|v\|\|^2=-1/4, impossible. If v=0 then alpha=0 or 1. Universal. | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v52.py::TestLKIdempotents` (4 tests). Universal, proven algebraically.'
+statement = "Idempotent structure: the ONLY idempotents in any CD algebra are 0 and e_0 (the identity). This follows from the quadratic identity x^2 = 2Re(x)x -||x||^2*e_0: if e^2=e with e=alpha*e_0+v, then (2alpha-1)v=0 and alpha(2alpha-1)=alpha^2+|"
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`; legacy: v||^2. If v!=0 then alpha=1/2 giving||v||^2=-1/4, impossible. If v=0 then alpha=0 or 1. Universal."
+status = "Verified"
+last_verified = "2026-02-01"
+what_would_verify_refute = "`tests/test_cd_algebraic_experiments_v52.py::TestLKIdempotents` (4 tests). Universal, proven algebraically."
 
 [[claim]]
 id = "C-400"
@@ -3296,11 +3296,11 @@ what_would_verify_refute = "Rendered 45s/120fps physics-driven animation. Visual
 
 [[claim]]
 id = "C-413"
-statement = 'Determinant of left-multiplication operator `det(L_a)` equals \'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = '^dim exactly iff dim <= 8; collapses to near-zero at dim >= 16 (e.g., 0.18 at dim 16). | `src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LF), `data/csv/cd_algebraic_experiments_v58.json` | **Verified** (Math) | 2026-02-02 | Verifies that `L_a` is a scaled isometry only for composition algebras. The "volume" of the multiplication map collapses in sedenion space.'
+statement = "Determinant of left-multiplication operator `det(L_a)` equals ||a||^dim exactly iff dim <= 8; collapses to near-zero at dim >= 16 (e.g., 0.18 at dim 16)."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LF), `data/csv/cd_algebraic_experiments_v58.json`"
+status = "Verified"
+last_verified = "2026-02-02"
+what_would_verify_refute = 'Verifies that `L_a` is a scaled isometry only for composition algebras. The "volume" of the multiplication map collapses in sedenion space.'
 
 [[claim]]
 id = "C-414"
@@ -3312,11 +3312,11 @@ what_would_verify_refute = "Universal structural identity connecting the transpo
 
 [[claim]]
 id = "C-415"
-statement = 'Gram spectrum `L_a L_a^T` is a scalar multiple of identity \'
-where_stated = '\'
-status = 'a\'
-last_verified = '\'
-what_would_verify_refute = "^2 I iff dim <= 8; eigenvalues spread significantly at dim >= 16. | `src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LH), `data/csv/cd_algebraic_experiments_v58.json` | **Verified** (Math) | 2026-02-02 | Indicates loss of orthogonality in the left-regular representation for sedenions."
+statement = "Gram spectrum `L_a L_a^T` is a scalar multiple of identity ||a||^2 I iff dim <= 8; eigenvalues spread significantly at dim >= 16."
+where_stated = "`src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LH), `data/csv/cd_algebraic_experiments_v58.json`"
+status = "Verified"
+last_verified = "2026-02-02"
+what_would_verify_refute = "Indicates loss of orthogonality in the left-regular representation for sedenions."
 
 [[claim]]
 id = "C-416"
@@ -3460,7 +3460,7 @@ statement = "Hamiltonian Ray Equation solver (dT/ds = (grad_n - (T*grad_n)T)/n) 
 where_stated = "`crates/optics_core/src/grin.rs`, `tests/test_grin_solver.py`"
 status = "Verified"
 last_verified = "2026-02-03"
-what_would_verify_refute = '`crates/optics_core/src/grin.rs` implements the arclength-parameterized ray equation. `tests/test_grin_solver.py` verifies correct bending in a linear gradient and energy conservation (\|T\|=1).'
+what_would_verify_refute = "`crates/optics_core/src/grin.rs` implements the arclength-parameterized ray equation. `tests/test_grin_solver.py` verifies correct bending in a linear gradient and energy conservation (|T|=1)."
 
 [[claim]]
 id = "C-434"
@@ -3632,11 +3632,11 @@ what_would_verify_refute = 'WHERE STATED: de Marrais, "Flying Higher Than A Box-
 
 [[claim]]
 id = "C-455"
-statement = "Lattice-point differences between ZD-adjacent cross-assessor pairs at dim=16 (mapped to the 256D lattice) do NOT include any E8 root vectors (norm-squared = 2). The observed norm-squared values are {4, 6, 8, 10, 12, 14, 18}, with minimum separation"
-where_stated = "d"
-status = "^2 = 4. The 105 unique difference vectors form their own combinatorial structure distinct from E8."
-last_verified = "`crates/algebra_core/src/cd_external.rs` (test_256d_lattice_zd_difference_structure)"
-what_would_verify_refute = "**Refuted** (E8 connection absent) | 2026-02-07 | WHERE STATED: Hypothesis that ZD adjacency might correspond to E8 root system under lattice embedding. REFUTED: Zero out of 336 pairwise differences have norm-squared = 2. The minimum lattice separation for ZD-adjacent pairs is |d|^2 = 4. WHAT WOULD REFUTE THIS REFUTATION: An alternative normalization of the lattice coordinates under which the differences DO form E8 roots."
+statement = "Lattice-point differences between ZD-adjacent cross-assessor pairs at dim=16 (mapped to the 256D lattice) do NOT include any E8 root vectors (norm-squared = 2). The observed norm-squared values are {4, 6, 8, 10, 12, 14, 18}, with minimum separation |d|^2 = 4. The 105 unique difference vectors form their own combinatorial structure distinct from E8."
+where_stated = "`crates/algebra_core/src/cd_external.rs` (test_256d_lattice_zd_difference_structure)"
+status = "Refuted"
+last_verified = "2026-02-07"
+what_would_verify_refute = "WHERE STATED: Hypothesis that ZD adjacency might correspond to E8 root system under lattice embedding. REFUTED: Zero out of 336 pairwise differences have norm-squared = 2. The minimum lattice separation for ZD-adjacent pairs is |d|^2 = 4. WHAT WOULD REFUTE THIS REFUTATION: An alternative normalization of the lattice coordinates under which the differences DO form E8 roots."
 
 [[claim]]
 id = "C-456"
@@ -3672,11 +3672,11 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis B. VERIFIED: verify_l
 
 [[claim]]
 id = "C-460"
-statement = "Prefix-cut characterization (Thesis C): Each filtration transition (2048->1024, 1024->512, 512->256) is a lexicographic prefix cut -- the child codebook consists of exactly the first"
-where_stated = "child"
-status = "points when the parent is sorted in lexicographic order."
-last_verified = "`crates/algebra_core/src/cd_external.rs` (learn_prefix_cut, verify_prefix_cut, test_thesis_c_*_prefix_cut)"
-what_would_verify_refute = "**Verified** (all 3 transitions) | 2026-02-08 | WHERE STATED: Monograph Thesis C (expected decision-trie rules; actual structure is simpler: pure lex prefix). VERIFIED: learn_prefix_cut identifies the lex-sorted cut index; verify_prefix_cut confirms the child is the exact lex-sorted prefix. WHAT WOULD REFUTE: A filtration step where the child is not a contiguous lex prefix of the parent."
+statement = "Prefix-cut characterization (Thesis C): Each filtration transition (2048->1024, 1024->512, 512->256) is a lexicographic prefix cut -- the child codebook consists of exactly the first |child| points when the parent is sorted in lexicographic order."
+where_stated = "`crates/algebra_core/src/cd_external.rs` (learn_prefix_cut, verify_prefix_cut, test_thesis_c_*_prefix_cut)"
+status = "Verified"
+last_verified = "2026-02-08"
+what_would_verify_refute = "WHERE STATED: Monograph Thesis C (expected decision-trie rules; actual structure is simpler: pure lex prefix). VERIFIED: learn_prefix_cut identifies the lex-sorted cut index; verify_prefix_cut confirms the child is the exact lex-sorted prefix. WHAT WOULD REFUTE: A filtration step where the child is not a contiguous lex prefix of the parent."
 
 [[claim]]
 id = "C-461"
