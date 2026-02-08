@@ -1,81 +1,110 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb, amsthm, graphicx}
+\usepackage{amsmath, amssymb, amsthm, graphicx, hyperref}
+\usepackage[a4paper, margin=1in]{geometry}
 
-\title{Mathematical Formalism of Surreal-Noncommutative Quantum Gravity}
-\author{Gemini CLI Research Group}
-\date{January 26, 2026}
+\title{Mathematical Formalism of Cayley--Dickson Zero-Divisor Structure}
+\author{open\_gororoba Project}
+\date{February 2026}
 
 \begin{document}
 
 \maketitle
 
-\section{Scope and validation status}
+\section{Scope and Validation Status}
 
-This document is a \emph{draft}. It mixes:
+This document describes the mathematical formalism underlying the
+\texttt{open\_gororoba} codebase.  It separates:
 \begin{itemize}
   \item standard definitions (Cayley--Dickson construction, associator),
-  \item in-repo computationally validated facts (tracked by unit tests), and
-  \item speculative narrative proposals that are \emph{not} established mathematics.
+  \item computationally validated facts (verified by Rust unit tests in
+    \texttt{crates/algebra\_core/}), and
+  \item speculative proposals that are clearly marked as such.
 \end{itemize}
 
-Treat any statement as non-authoritative unless it is backed by a first-party citation and a
-reproducible test/verifier under \texttt{tests/} or \texttt{src/verification/}.
+Treat any statement as non-authoritative unless backed by a first-party
+citation and a reproducible test under \texttt{crates/*/src/} or the claims
+evidence matrix (\texttt{registry/claims.toml}).
 
-\section{Cayley--Dickson construction (standard)}
+\section{Cayley--Dickson Construction (Standard)}
 
 \subsection{Recursive Definition}
-Let $A_n$ be the algebra obtained after $n$ iterations of the Cayley-Dickson process, with $\dim(A_n) = 2^n$. The standard doubling is:
+Let $A_n$ be the algebra obtained after $n$ iterations of the Cayley--Dickson
+process, with $\dim(A_n) = 2^n$.  The standard doubling is:
 \begin{equation}
-A_{n+1} = A_n \oplus A_n, \quad (a,b)(c,d) = (ac - d\bar{b}, \bar{a}d + cb)
+  A_{n+1} = A_n \oplus A_n, \quad
+  (a,b)(c,d) = (ac - \bar{d}b,\; da + b\bar{c})
 \end{equation}
 
-\section{Trilinear order-sensitivity operators (standard vs repo-specific)}
+\section{Trilinear Order-Sensitivity Operators}
 
-\subsection{Associator (standard)}
-For octonions and beyond, associativity fails. The (standard) associator is:
+\subsection{Associator (Standard)}
+For octonions and beyond, associativity fails.  The standard associator is:
 \begin{equation}
-[x,y,z] = (xy)z - x(yz)
+  [x,y,z] = (xy)z - x(yz)
 \end{equation}
 
-\subsection{The repo's \texorpdfstring{$m_3$}{m3} operator (validated properties; not an $A_\infty$ proof)}
-This repo also computes a specific trilinear operator called $m_3$ (defined in
-\texttt{src/gemini\_physics/m3\_cd\_transfer.py}). It is \emph{not} the associator.
+\subsection{The \texorpdfstring{$m_3$}{m3} Operator (Validated Properties)}
 
-On distinct octonion basis triples $(e_i,e_j,e_k)$ with $i,j,k \in \{1,\dots,7\}$ all distinct, the repo
-validates the following computational properties:
+The repo computes a specific trilinear operator $m_3$ (defined in
+\texttt{crates/algebra\_core/src/m3\_transfer.rs}).  On distinct octonion
+basis triples $(e_i, e_j, e_k)$ with $i,j,k \in \{1,\dots,7\}$ all distinct,
+the following properties are validated:
 \begin{itemize}
   \item exactly 42 scalar outputs and 168 pure-imaginary outputs, and
-  \item the scalar cases correspond to the Fano-plane lines (with parity sign flips).
+  \item the scalar cases correspond to the Fano-plane lines (with parity
+    sign flips).
 \end{itemize}
-These are validated by \texttt{tests/test\_m3\_cd\_transfer.py}. Establishing an $A_\infty$ structure would
-require additional, separately scoped Stasheff-identity checks.
+These are validated by \texttt{crates/algebra\_core/src/m3\_transfer.rs}
+test module.  Establishing an $A_\infty$ structure would require additional,
+separately scoped Stasheff-identity checks.
 
-\section{Sedenion zero divisors (computationally replicated subset)}
+\section{Sedenion Zero Divisors}
 
 \subsection{The 42 Assessors}
-In the de Marrais construction (used here as a labeling scheme), there is a set of 42 primitive
-cross-assessors that generate a diagonal-form family of 2-blades.
-
-This repo replicates:
+In the de~Marrais construction, there is a set of 42 primitive cross-assessors
+that generate a diagonal-form family of 2-blades.  This repo replicates:
 \begin{itemize}
   \item 42 primitive assessors, and
   \item a partition into 7 box-kites (6 assessors each)
 \end{itemize}
 under the repo's fixed 16D Cayley--Dickson convention, validated by
-\texttt{tests/test\_de\_marrais\_boxkites.py}.
+\texttt{crates/algebra\_core/src/boxkites.rs} test module.
 
 \subsection{Box-Kite Structure}
-\emph{Box-kite} is treated as a convenient name for a specific combinatorial object exported by
-\texttt{src/export\_de\_marrais\_boxkites.py}. Any geometric/physical interpretation of these objects
-is out of scope unless backed by additional sources and validation.
+\emph{Box-kite} is a specific combinatorial object: the complete tripartite
+graph $K_{2,2,2}$.  At $\dim = 16$, all 7 connected components of the
+cross-assessor zero-product graph are isomorphic to $K_{2,2,2}$.
 
-\section{Speculative directions (not established here)}
+\section{Results Established Since January 2026}
 
-The following are possible future-work topics but are \emph{not} validated by this repo as of Jan 2026:
+The following items were listed as ``speculative directions'' in the original
+January 2026 draft.  Their status has been resolved:
+
+\begin{description}
+  \item[Motif census (dim=32/64/128/256)] \textbf{COMPLETED} (Sprint 6).
+    Exact scaling laws verified across 5 doublings.  No octahedra beyond
+    $\dim = 16$; structure completely reorganizes at each doubling.
+    See \texttt{crates/algebra\_core/src/boxkites.rs}, claims C-126 through C-130.
+
+  \item[Reggiani geometric identifications] \textbf{PARTIALLY COMPLETED}
+    (Sprint 9).  8 monograph theses (A--H) verified, including lattice
+    codebook filtration and parity constraints.  Full geometric mapping
+    (PSL(2,7) action) remains open.
+
+  \item[E8 root-system mapping] \textbf{REFUTED} (Sprint 8).  Zero out of 336
+    pairwise lattice-point differences have norm-squared 2.  The minimum
+    lattice separation for ZD-adjacent pairs is $|d|^2 = 4$.  See claim C-455.
+\end{description}
+
+\section{Open Questions}
+
 \begin{itemize}
-  \item a motif census for 32D/64D/128D/256D (components such as cuboctahedra/K\_{2,2,2}),
-  \item a careful, citation-backed alignment to Reggiani's geometric identifications, and
-  \item any claimed mapping from sedenion combinatorics to exceptional Lie algebra root systems.
+  \item \textbf{Twist-delta pair correspondence} (C-466): relationship between
+    de~Marrais twist pairs and lattice codebook structure.
+  \item \textbf{PSL(2,7) geometric mapping}: explicit construction of the
+    projective special linear group action on box-kite coordinates.
+  \item \textbf{Higher-dimension emanation}: extending L1--L18 emanation
+    layers beyond $\dim = 16$ to $\dim = 32$ and beyond.
 \end{itemize}
 
 \end{document}

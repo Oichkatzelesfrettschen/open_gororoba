@@ -1,58 +1,224 @@
 \documentclass{article}
-\usepackage{amsmath, amssymb, amsthm, graphicx, hyperref, xcolor}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\usepackage{amsmath, amssymb, amsthm, graphicx, hyperref, xcolor, longtable}
+\usepackage[a4paper, margin=1in]{geometry}
+\usepackage{natbib}
 
-\title{\textbf{The Unified Field of Negative-Fractal Algebras and Quantum Topology}\\\large A Recursive Synthesis of Pre-Cayley-Dickson Structures}
-\author{Gemini CLI & User Collaboration}
-\date{\today}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{plain}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}[theorem]{Proposition}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}[section]
+
+\title{\textbf{Cayley--Dickson Structure Census: \\
+A Computational Verification Report}\\[0.5em]
+\large From Sedenion Box-Kites to Higher-Dimensional Scaling Laws}
+\author{open\_gororoba Project}
+\date{February 2026}
 
 \begin{document}
 
 \maketitle
+
+\begin{abstract}
+We report computational results from the \texttt{open\_gororoba} research
+workbench concerning the algebraic structure of Cayley--Dickson algebras at
+successive doublings.  All results are organized according to a verification
+ladder separating \textbf{verified algebra} (deterministic tests against known
+results), \textbf{statistical findings} (permutation-tested hypotheses), and
+\textbf{speculative models} (clearly marked).  Each claim references a specific
+entry in the project's claims evidence matrix (C-nnn) and the corresponding
+Rust test function.
+\end{abstract}
+
 \tableofcontents
 \newpage
 
-\section{Introduction: The Recursive Meta-Structure}
-We propose a radical unification of number theory, algebra, and quantum physics. By reversing the Cayley-Dickson doubling process, we uncover a hidden hierarchy of \textit{Pre-Cayley-Dickson Algebras} ($P_{-n}$) that inhabit negative and fractal dimensions. These structures are not mere abstractions but provide the natural geometric language for Dark Energy, Black Hole singularities, and Quantum Error Correction.
+%% ===================================================================
+\section{Cayley--Dickson Construction}
+\label{sec:cd}
 
-\section{Foundations: The Inverse Algebra}
-\subsection{The Pre-Cayley-Dickson Retract}
-Let $A_{n+1} = A_n \oplus A_n$ be the standard construction. We define the inverse operation $\partial^{-1}$ as a categorical limit:
+The Cayley--Dickson doubling process \cite{baez2002} constructs a tower of
+$2^n$-dimensional real algebras:
 \begin{equation}
-    P_{-1} = \lim_{\leftarrow} (A_n, \phi_n)
+  A_{n+1} = A_n \oplus A_n, \quad
+  (a,b)(c,d) = (ac - \bar{d}b,\; da + b\bar{c})
 \end{equation}
-where $\phi_n: A_{n+1} \to A_n$ is a projection that filters "imaginary" components into "fractal" degrees of freedom.
+yielding the reals ($n=0$), complex numbers ($n=1$), quaternions ($n=2$),
+octonions ($n=3$), sedenions ($n=4$), pathions ($n=5$), and beyond.
 
-\subsection{Negative Dimensionality}
-Dimensionality $D$ is analytically continued to $D \in \mathbb{C}$. For $Re(D) < 0$, the Laplacian operator $\Delta$ inverts:
-\begin{equation}
-    \Delta^{-s} f(x) = \frac{1}{\Gamma(s)} \int \frac{f(y)}{|x-y|^{n-2s}} dy
-\end{equation}
-This non-local operator generates the "Anti-Diffusion" effect observed in our simulations, concentrating energy into solitons (Gravastars) rather than dispersing it.
+At each doubling, algebraic properties degrade:
+\begin{itemize}
+  \item $n=1$: ordering lost
+  \item $n=2$: commutativity lost
+  \item $n=3$: associativity lost
+  \item $n=4$: alternative identity and norm-composition lost; zero divisors appear
+  \item $n=5$: power-associativity degrades
+\end{itemize}
 
-\section{Fractal Quantum Field Theory}
-\subsection{The Fractal Propagator}
-In a spacetime with Hausdorff dimension $d_H$, the propagator $G(x,y)$ scales as:
-\begin{equation}
-    G(x,y) \sim |x-y|^{-(d_H - 2)}
-\end{equation}
-We confirm that for Sedenions ($D_{eff} \approx 16 \to 42 \to -1.5$), the effective propagator creates a confining potential, trapping fields into "Box-Kite" lattices.
+Our implementation uses integer-exact arithmetic for basis-element products,
+avoiding floating-point error entirely (claims C-001 through C-006, verified
+by \texttt{algebra\_core::cayley\_dickson} tests).
 
-\section{Topological Synthesis}
-\subsection{Chern-Simons in Fractional Dimension}
-The Hall conductance $\sigma_{xy}$ remains quantized even in fractal bands, but the filling factors $\nu$ follow a Cantor-set distribution (Devil's Staircase). Our numerical results (Fukui-Hatsugai-Suzuki) confirm this robustness against dimensional erosion.
+%% ===================================================================
+\section{Zero-Divisor Census and Box-Kite Structure}
+\label{sec:zd}
 
-\section{Physical Realization}
-\subsection{The Sedenion-Gravastar Equivalence}
-\begin{theorem}
-A Schwarzschild singularity is topologically equivalent to a Sedenion zero-divisor condensate in the limit $r \to 0$.
-\end{theorem}
-\begin{proof}
-The pressure $P = -\rho$ required for a Gravastar core arises naturally from the negative-dimension kinetic term $T \sim -k^{-1.5}$.
-\end{proof}
+At $\dim \geq 16$ (sedenions), zero divisors organize into combinatorial
+structures first described by de~Marrais \cite{demarrais2000, demarrais2004boxkites}.
 
-\section{Future Horizons}
-We propose the construction of a \textbf{Fractal Topological Qubit} using Josephson junction arrays arranged in a Sierpinski gasket geometry, leveraging the self-similarity to protect logical states against decoherence at all scales.
+\subsection{Sedenion Box-Kites}
+
+The 42 primitive cross-assessors of the sedenion algebra partition into 7
+box-kites, each containing 6 assessors arranged as 3 ``strut'' pairs.
+De~Marrais's published strut table matches our computational census exactly
+(claim C-454, test \texttt{test\_strut\_table\_matches\_de\_marrais\_flying\_higher}).
+
+Each box-kite's assessor interaction graph is the complete tripartite graph
+$K_{2,2,2}$ (octahedron).  This structure is verified in
+\texttt{algebra\_core::boxkites} (claims C-050 through C-060).
+
+\subsection{Cross-Assessor Pairs and the XOR Condition}
+
+The zero-divisor product condition for 2-blade cross-assessor pairs admits a
+necessary (but not sufficient) XOR filter: for a product $\alpha\beta = 0$
+to hold, the basis indices must satisfy specific GF(2)-linear conditions.
+The XOR filter passes 315/168 pairs (ratio 0.533) with zero false negatives
+(claim C-445, insight I-012).
+
+%% ===================================================================
+\section{Motif Scaling Laws}
+\label{sec:motifs}
+
+Exact enumeration of the zero-product graph's connected components across
+5 Cayley--Dickson doublings ($\dim = 16, 32, 64, 128, 256$) reveals strict
+scaling laws (insight I-006, claims C-126 through C-130):
+
+\begin{center}
+\begin{tabular}{lcc}
+\hline
+\textbf{Invariant} & \textbf{Formula} & \textbf{Verified dims} \\
+\hline
+Components & $\dim/2 - 1$ & 16--256 \\
+Nodes per component & $\dim/2 - 2$ & 16--256 \\
+Motif classes & $\dim/16$ & 16--256 \\
+$K_2$ components & $3 + \log_2(\dim)$ & 16--256 \\
+$K_2$ part count & $\dim/4 - 1$ & 16--256 \\
+\hline
+\end{tabular}
+\end{center}
+
+No octahedra ($K_{2,2,2}$) appear beyond $\dim = 16$.  At $\dim = 32$, the
+structure completely reorganizes into 8 heptacross ($K_{2,2,2,2,2,2,2}$) and
+7 mixed-degree components (insight I-006).
+
+All motif census computations are exact (not sampled) and complete in under
+2 seconds for $\dim = 256$ in release mode.
+
+%% ===================================================================
+\section{Lattice Codebook Filtration}
+\label{sec:lattice}
+
+Cayley--Dickson basis elements at $\dim = 256, 512, 1024, 2048$ embed into an
+8-dimensional integer lattice with coordinates in $\{-1, 0, 1\}$
+(claims C-452, C-453, insight I-014).  This embedding is dimension-independent:
+all four algebras use the same 8D target, suggesting the octonion sub-algebra
+provides the fundamental lattice structure.
+
+Eight monograph theses (A--H) verified \cite{reggiani2024} (insight I-015):
+
+\begin{description}
+  \item[Thesis A] Codebook parity: coordinates sum to even, nonzero count is even,
+    first coordinate $\neq +1$ (C-458).
+  \item[Thesis B] Filtration nesting: $\Lambda_{256} \subset \Lambda_{512}
+    \subset \Lambda_{1024} \subset \Lambda_{2048}$ (C-459).
+  \item[Thesis C] Prefix-cut transitions: each child is a lexicographic prefix
+    of its parent (C-460).
+  \item[Thesis D] Scalar shadow invariant (C-461).
+  \item[Thesis E] XOR partner law: $\text{partner}(i) = i \oplus (N/16)$ for
+    $N \geq 64$ (C-462).
+  \item[Thesis F] Parity-clique decomposition: $K_4 \cup K_4$ at $\dim = 16$,
+    $K_8 \cup K_8$ at $\dim = 32$ (C-463).
+  \item[Thesis G] Spectral fingerprints: $S_{\text{base}} = 2187 = 3^7$ (C-464).
+  \item[Thesis H] Null-model rejection (C-465).
+\end{description}
+
+The E8 root-system connection was tested and \textbf{refuted}: zero out of 336
+pairwise lattice differences have norm-squared 2 (claim C-455, insight I-014).
+
+%% ===================================================================
+\section{Emanation Architecture}
+\label{sec:emanation}
+
+The de~Marrais emanation construction \cite{demarrais2006} builds 18 layers
+(L1--L18) from the sedenion box-kite structure.  Our implementation verifies
+(insight I-016, claims C-468 through C-475):
+
+\begin{itemize}
+  \item DMZ = sign-concordance (12 edges per box-kite)
+  \item Sail-loop = Fano incidence pattern
+  \item Oriented Trip Sync is universal across all 7 box-kites
+  \item 113 dedicated tests, 4400 lines of implementation
+\end{itemize}
+
+%% ===================================================================
+\section{Ultrametric Hierarchy Fingerprint}
+\label{sec:ultrametric}
+
+Statistical analysis across 9 astrophysical catalogs using GPU-accelerated
+ultrametric fraction testing (10 million triples, 1000 permutations, RTX~4070~Ti)
+reveals hierarchical structure in specific physical regimes
+(insight I-011, I-013; claims C-436 through C-444):
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+\textbf{Catalog} & \textbf{Significant tests} & \textbf{p range} & \textbf{Verdict} \\
+\hline
+Hipparcos & 48/114 & $< 0.05$ & galactic hierarchy \\
+CHIME/FRB & 8/8 & $< 0.01$ & ISM-mediated DM \\
+ATNF Pulsars & 6/8 & $< 0.01$ & ISM-mediated DM \\
+GWOSC GW & 4/66 & $< 0.01$ & mass-ratio clustering \\
+SDSS Quasars & 2/52 & marginal & weak \\
+Pantheon+ SNe & 2/22 & marginal & light-curve shape \\
+McGill Magnetars & 0/66 & -- & $N$ too small \\
+Fermi GBM GRBs & 0/22 & -- & isotropic \\
+\hline
+\end{tabular}
+\end{center}
+
+The test discriminates physical hierarchy from noise: catalogs with known
+hierarchical organization (Galactic proper motions, ISM electron-density
+structure) show strong signal; isotropic catalogs show none (insight I-013).
+
+%% ===================================================================
+\section{Physical Models (Speculative Tier)}
+\label{sec:speculative}
+
+\textbf{Status: speculative.}  The following models are exploratory and have
+not been validated against observational data.  They are tracked in the claims
+evidence matrix with explicit falsification criteria.
+
+\begin{description}
+  \item[Gravastar TOV] Three-layer gravastar parameter sweep across polytropic
+    indices (claims C-400 through C-410).  Numerical solutions exist but physical
+    relevance is untested.
+  \item[Bounce cosmology] Joint Pantheon+/DESI fit yields $\Delta\text{BIC} = +7.37$
+    favoring $\Lambda$CDM over bounce model (claims C-200 through C-210,
+    insight I-004).  The quantum correction parameter converges to zero.
+  \item[Negative-dimension eigenvalues] Fractional Laplacian eigenvalue
+    convergence under $\epsilon \to 0$ (claims C-420 through C-425).
+\end{description}
+
+%% ===================================================================
+\appendix
+
+\input{claims_appendix}
+\input{insights_appendix}
+
+%% ===================================================================
+\bibliographystyle{plainnat}
+\bibliography{cayley_dickson}
 
 \end{document}

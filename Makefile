@@ -3,6 +3,7 @@
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify
 .PHONY: verify verify-grand ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke
+.PHONY: registry
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data run coq latex
@@ -75,6 +76,9 @@ rust-clippy:
 
 rust-smoke: rust-clippy rust-test
 	@echo "OK: Rust quality gate passed (clippy + tests)."
+
+registry:
+	cargo run --release --bin registry-check
 
 ascii-check:
 	python3 bin/ascii_check.py --check
@@ -162,7 +166,10 @@ coq:
 
 latex:
 	@command -v latexmk >/dev/null 2>&1 || { echo "ERROR: latexmk not found. Install TeX Live (see docs/requirements/latex.md)"; exit 1; }
-	latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=docs/latex/out docs/latex/MASTER_SYNTHESIS.tex
+	cargo run --release --bin generate-latex
+	@mkdir -p docs/latex/out
+	cd docs/latex && TEXINPUTS=.:$(CURDIR)/papers/bib/: BIBINPUTS=$(CURDIR)/papers/bib/: latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out MASTER_SYNTHESIS.tex
+	cd docs/latex && latexmk -pdf -interaction=nonstopmode -halt-on-error -output-directory=out MATHEMATICAL_FORMALISM.tex
 
 # ---- Quantum Docker ----
 
@@ -252,6 +259,7 @@ help:
 	@echo "    make check                test + lint + smoke (CI entry point)"
 	@echo "    make ascii-check          Verify ASCII-only policy"
 	@echo "    make rust-smoke           Rust clippy + full test suite"
+	@echo "    make registry             Validate TOML registry consistency"
 	@echo ""
 	@echo "  Artifacts:"
 	@echo "    make artifacts            Regenerate all core artifact sets"
