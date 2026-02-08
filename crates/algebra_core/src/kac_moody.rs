@@ -248,37 +248,48 @@ impl GeneralizedCartanMatrix {
         det.round() as i64
     }
 
-    /// Compute eigenvalues (approximate, for classification).
+    /// Compute eigenvalue sign counts (positive, zero, negative) for classification.
+    ///
+    /// Uses Sylvester's law of inertia via leading principal minors.
+    /// When intermediate minors vanish (e.g., E10 whose E9 sub-block is degenerate),
+    /// we count sign changes among the non-zero entries in the sequence
+    /// (1, M_1, M_2, ..., M_n) to determine the number of negative eigenvalues,
+    /// then use the overall determinant to distinguish true zero eigenvalues.
     pub fn eigenvalue_signs(&self) -> (usize, usize, usize) {
-        // Use Sylvester's law of inertia via principal minors
-        // Returns (positive, zero, negative) counts
-
         let det = self.determinant();
 
         if self.rank == 1 {
             return if det > 0 { (1, 0, 0) } else if det == 0 { (0, 1, 0) } else { (0, 0, 1) };
         }
 
-        // Compute all principal minors to determine signature
-        let mut positive = 0;
-        let mut zero = 0;
-        let mut negative = 0;
-
-        // Check leading principal minors
-        let mut prev_det: i64 = 1;
+        // Build the sequence (1, M_1, M_2, ..., M_n)
+        let mut minors = vec![1i64];
         for k in 1..=self.rank {
-            let minor = self.leading_principal_minor(k);
-            if minor > 0 && prev_det > 0 {
-                positive += 1;
-            } else if minor == 0 {
-                zero += 1;
-            } else if (minor < 0 && prev_det > 0) || (minor > 0 && prev_det < 0) {
-                negative += 1;
-            } else if minor < 0 && prev_det < 0 {
-                positive += 1;
-            }
-            prev_det = if minor != 0 { minor } else { prev_det };
+            minors.push(self.leading_principal_minor(k));
         }
+
+        // Count sign changes among non-zero entries in the minor sequence.
+        // By Sylvester's law of inertia (generalized for vanishing intermediate
+        // minors), the number of sign changes in the filtered non-zero subsequence
+        // equals the number of negative eigenvalues.
+        let non_zero: Vec<i64> = minors.iter().copied().filter(|&m| m != 0).collect();
+        let mut negative: usize = 0;
+        for window in non_zero.windows(2) {
+            if (window[0] > 0 && window[1] < 0) || (window[0] < 0 && window[1] > 0) {
+                negative += 1;
+            }
+        }
+
+        // Zero eigenvalues: the matrix is singular iff det = 0.
+        // The corank equals the number of trailing zeros in the minor sequence.
+        let zero: usize = if det == 0 {
+            // Count trailing zeros in the minor sequence (excluding position 0)
+            minors[1..].iter().rev().take_while(|&&m| m == 0).count().max(1)
+        } else {
+            0
+        };
+
+        let positive = self.rank - negative - zero;
 
         (positive, zero, negative)
     }
@@ -471,16 +482,28 @@ impl GeneralizedCartanMatrix {
 // === E-series Cartan matrices ===
 
 /// E8 Cartan matrix (finite, simply-laced, exceptional).
+///
+/// Node numbering matches the standard root vectors in `E9RootSystem::new()`:
+///
+/// ```text
+///     0 -- 1 -- 2 -- 3 -- 4 -- 5
+///                          |
+///                          6 -- 7
+/// ```
+///
+/// Branching at node 4 (degree 3). This is the Gram matrix of the root vectors:
+///   alpha_0 = (1,-1,0,0,0,0,0,0), alpha_1 = (0,1,-1,0,0,0,0,0), ...,
+///   alpha_6 = (0,0,0,0,0,1,1,0), alpha_7 = (-1/2,-1/2,...,-1/2).
 pub fn e8_cartan() -> GeneralizedCartanMatrix {
     GeneralizedCartanMatrix::from_array([
-        [ 2, -1,  0,  0,  0,  0,  0,  0],
-        [-1,  2, -1,  0,  0,  0,  0,  0],
-        [ 0, -1,  2, -1,  0,  0,  0, -1],
-        [ 0,  0, -1,  2, -1,  0,  0,  0],
-        [ 0,  0,  0, -1,  2, -1,  0,  0],
-        [ 0,  0,  0,  0, -1,  2, -1,  0],
-        [ 0,  0,  0,  0,  0, -1,  2,  0],
-        [ 0,  0, -1,  0,  0,  0,  0,  2],
+        [ 2, -1,  0,  0,  0,  0,  0,  0],  // 0: connects to 1
+        [-1,  2, -1,  0,  0,  0,  0,  0],  // 1: connects to 0, 2
+        [ 0, -1,  2, -1,  0,  0,  0,  0],  // 2: connects to 1, 3
+        [ 0,  0, -1,  2, -1,  0,  0,  0],  // 3: connects to 2, 4
+        [ 0,  0,  0, -1,  2, -1, -1,  0],  // 4: connects to 3, 5, 6 (branch)
+        [ 0,  0,  0,  0, -1,  2,  0,  0],  // 5: connects to 4
+        [ 0,  0,  0,  0, -1,  0,  2, -1],  // 6: connects to 4, 7
+        [ 0,  0,  0,  0,  0,  0, -1,  2],  // 7: connects to 6
     ]).expect("E8 Cartan matrix is valid")
 }
 
@@ -490,35 +513,32 @@ pub fn e8_cartan() -> GeneralizedCartanMatrix {
 /// It has rank 9 with determinant 0 (one null direction).
 /// Important in heterotic string theory compactifications.
 ///
-/// The affine extension adds node 0 connected to node 7 (the end of the long branch).
-/// The highest root of E8 in terms of simple roots is:
-///   theta = 2*alpha_1 + 3*alpha_2 + 4*alpha_3 + 5*alpha_4 + 6*alpha_5 + 4*alpha_6 + 2*alpha_7 + 3*alpha_8
-/// Node 0 connects to nodes such that -alpha_0 = theta.
+/// Node numbering: E8 nodes 0-7 (matching `e8_cartan()` and root vectors),
+/// plus affine extension node 8 connected to node 0 (end of the long arm).
+///
+/// The highest root of E8 (in our 0-indexed root-vector convention) is:
+///   theta = 2*alpha_0 + 3*alpha_1 + 4*alpha_2 + 5*alpha_3
+///         + 6*alpha_4 + 3*alpha_5 + 4*alpha_6 + 2*alpha_7
+///         = (1, 0, 0, 0, 0, 0, 0, -1)
+/// with <theta, alpha_0> = 1, <theta, alpha_i> = 0 for i > 0.
+/// The affine root is alpha_8 = delta - theta, connecting to node 0.
+///
+/// ```text
+///     8 -- 0 -- 1 -- 2 -- 3 -- 4 -- 5
+///                               |
+///                               6 -- 7
+/// ```
 pub fn e9_cartan() -> GeneralizedCartanMatrix {
-    // Standard affine E8^(1) Dynkin diagram (Kac numbering):
-    //
-    //         0
-    //         |
-    //     1 - 2 - 3 - 4 - 5 - 6 - 7 - 8
-    //                     |
-    //                     9  (we use 0-based, so this is index 8)
-    //
-    // In our 0-based indexing with E8 as nodes 1-8, node 0 is the affine extension.
-    // Node 0 connects to node 2 (which is alpha_1 in Bourbaki = our node index 1)
-    // Actually, for E8^(1), node 0 typically connects to the node at the end of
-    // the long arm, which is node 8 in Bourbaki (our index 7).
-    //
-    // Using Kac's convention: node 0 connects to node 1 (which was alpha_1)
     GeneralizedCartanMatrix::from_array([
-        [ 2, -1,  0,  0,  0,  0,  0,  0,  0],  // 0 (affine extension, connects to 1)
-        [-1,  2, -1,  0,  0,  0,  0,  0,  0],  // 1
-        [ 0, -1,  2, -1,  0,  0,  0,  0, -1],  // 2 (branching node in standard E8)
-        [ 0,  0, -1,  2, -1,  0,  0,  0,  0],  // 3
-        [ 0,  0,  0, -1,  2, -1,  0,  0,  0],  // 4
-        [ 0,  0,  0,  0, -1,  2, -1,  0,  0],  // 5
-        [ 0,  0,  0,  0,  0, -1,  2, -1,  0],  // 6
-        [ 0,  0,  0,  0,  0,  0, -1,  2,  0],  // 7
-        [ 0,  0, -1,  0,  0,  0,  0,  0,  2],  // 8 (the short branch)
+        [ 2, -1,  0,  0,  0,  0,  0,  0, -1],  // 0: connects to 1, 8
+        [-1,  2, -1,  0,  0,  0,  0,  0,  0],  // 1: connects to 0, 2
+        [ 0, -1,  2, -1,  0,  0,  0,  0,  0],  // 2: connects to 1, 3
+        [ 0,  0, -1,  2, -1,  0,  0,  0,  0],  // 3: connects to 2, 4
+        [ 0,  0,  0, -1,  2, -1, -1,  0,  0],  // 4: connects to 3, 5, 6 (branch)
+        [ 0,  0,  0,  0, -1,  2,  0,  0,  0],  // 5: connects to 4
+        [ 0,  0,  0,  0, -1,  0,  2, -1,  0],  // 6: connects to 4, 7
+        [ 0,  0,  0,  0,  0,  0, -1,  2,  0],  // 7: connects to 6
+        [-1,  0,  0,  0,  0,  0,  0,  0,  2],  // 8 (affine): connects to 0
     ]).expect("E9 Cartan matrix is valid")
 }
 
@@ -526,25 +546,27 @@ pub fn e9_cartan() -> GeneralizedCartanMatrix {
 ///
 /// E10 is conjectured to be a symmetry of M-theory (Damour-Henneaux-Nicolai).
 /// The Cartan matrix has signature (9, 1).
+///
+/// Node numbering: E8 nodes 0-7, affine node 8, hyperbolic node 9.
+/// Consistent with `e8_cartan()` / `e9_cartan()` and root vectors.
+///
+/// ```text
+///     9 -- 8 -- 0 -- 1 -- 2 -- 3 -- 4 -- 5
+///                                    |
+///                                    6 -- 7
+/// ```
 pub fn e10_cartan() -> GeneralizedCartanMatrix {
-    // E10 extends E9 by adding node 10 connected to node 0
-    // Dynkin diagram (linear chain with one branch):
-    //
-    //     10 - 0 - 1 - 2 - 3 - 4 - 5 - 6 - 7
-    //                      |
-    //                      8
-    //
     GeneralizedCartanMatrix::from_array([
-        [ 2, -1,  0,  0,  0,  0,  0,  0,  0, -1],  // 0
-        [-1,  2, -1,  0,  0,  0,  0,  0,  0,  0],  // 1
-        [ 0, -1,  2, -1,  0,  0,  0,  0,  0,  0],  // 2
-        [ 0,  0, -1,  2, -1,  0,  0,  0, -1,  0],  // 3
-        [ 0,  0,  0, -1,  2, -1,  0,  0,  0,  0],  // 4
-        [ 0,  0,  0,  0, -1,  2, -1,  0,  0,  0],  // 5
-        [ 0,  0,  0,  0,  0, -1,  2, -1,  0,  0],  // 6
-        [ 0,  0,  0,  0,  0,  0, -1,  2,  0,  0],  // 7
-        [ 0,  0,  0, -1,  0,  0,  0,  0,  2,  0],  // 8
-        [-1,  0,  0,  0,  0,  0,  0,  0,  0,  2],  // 9 (new hyperbolic extension)
+        [ 2, -1,  0,  0,  0,  0,  0,  0, -1,  0],  // 0: connects to 1, 8
+        [-1,  2, -1,  0,  0,  0,  0,  0,  0,  0],  // 1: connects to 0, 2
+        [ 0, -1,  2, -1,  0,  0,  0,  0,  0,  0],  // 2: connects to 1, 3
+        [ 0,  0, -1,  2, -1,  0,  0,  0,  0,  0],  // 3: connects to 2, 4
+        [ 0,  0,  0, -1,  2, -1, -1,  0,  0,  0],  // 4: connects to 3, 5, 6 (branch)
+        [ 0,  0,  0,  0, -1,  2,  0,  0,  0,  0],  // 5: connects to 4
+        [ 0,  0,  0,  0, -1,  0,  2, -1,  0,  0],  // 6: connects to 4, 7
+        [ 0,  0,  0,  0,  0,  0, -1,  2,  0,  0],  // 7: connects to 6
+        [-1,  0,  0,  0,  0,  0,  0,  0,  2, -1],  // 8 (affine): connects to 0, 9
+        [ 0,  0,  0,  0,  0,  0,  0,  0, -1,  2],  // 9 (hyperbolic): connects to 8
     ]).expect("E10 Cartan matrix is valid")
 }
 
@@ -552,20 +574,27 @@ pub fn e10_cartan() -> GeneralizedCartanMatrix {
 ///
 /// E11 is proposed as a hidden symmetry of 11D supergravity (West 2001).
 /// Contains E10 as a subalgebra.
+///
+/// Node numbering: E8 nodes 0-7, affine 8, hyperbolic 9, very extended 10.
+///
+/// ```text
+///     10 -- 9 -- 8 -- 0 -- 1 -- 2 -- 3 -- 4 -- 5
+///                                          |
+///                                          6 -- 7
+/// ```
 pub fn e11_cartan() -> GeneralizedCartanMatrix {
-    // E11 extends E10 by adding node 11 connected to node 10
     GeneralizedCartanMatrix::from_array([
-        [ 2, -1,  0,  0,  0,  0,  0,  0,  0, -1,  0],  // 0
-        [-1,  2, -1,  0,  0,  0,  0,  0,  0,  0,  0],  // 1
-        [ 0, -1,  2, -1,  0,  0,  0,  0,  0,  0,  0],  // 2
-        [ 0,  0, -1,  2, -1,  0,  0,  0, -1,  0,  0],  // 3
-        [ 0,  0,  0, -1,  2, -1,  0,  0,  0,  0,  0],  // 4
-        [ 0,  0,  0,  0, -1,  2, -1,  0,  0,  0,  0],  // 5
-        [ 0,  0,  0,  0,  0, -1,  2, -1,  0,  0,  0],  // 6
-        [ 0,  0,  0,  0,  0,  0, -1,  2,  0,  0,  0],  // 7
-        [ 0,  0,  0, -1,  0,  0,  0,  0,  2,  0,  0],  // 8
-        [-1,  0,  0,  0,  0,  0,  0,  0,  0,  2, -1],  // 9
-        [ 0,  0,  0,  0,  0,  0,  0,  0,  0, -1,  2],  // 10 (very extended)
+        [ 2, -1,  0,  0,  0,  0,  0,  0, -1,  0,  0],  // 0: connects to 1, 8
+        [-1,  2, -1,  0,  0,  0,  0,  0,  0,  0,  0],  // 1: connects to 0, 2
+        [ 0, -1,  2, -1,  0,  0,  0,  0,  0,  0,  0],  // 2: connects to 1, 3
+        [ 0,  0, -1,  2, -1,  0,  0,  0,  0,  0,  0],  // 3: connects to 2, 4
+        [ 0,  0,  0, -1,  2, -1, -1,  0,  0,  0,  0],  // 4: connects to 3, 5, 6 (branch)
+        [ 0,  0,  0,  0, -1,  2,  0,  0,  0,  0,  0],  // 5: connects to 4
+        [ 0,  0,  0,  0, -1,  0,  2, -1,  0,  0,  0],  // 6: connects to 4, 7
+        [ 0,  0,  0,  0,  0,  0, -1,  2,  0,  0,  0],  // 7: connects to 6
+        [-1,  0,  0,  0,  0,  0,  0,  0,  2, -1,  0],  // 8 (affine): connects to 0, 9
+        [ 0,  0,  0,  0,  0,  0,  0,  0, -1,  2, -1],  // 9 (hyperbolic): connects to 8, 10
+        [ 0,  0,  0,  0,  0,  0,  0,  0,  0, -1,  2],  // 10 (very extended): connects to 9
     ]).expect("E11 Cartan matrix is valid")
 }
 
@@ -876,13 +905,17 @@ impl E9RootSystem {
         }
     }
 
-    /// Get the affine simple root (alpha_0).
-    /// alpha_0 = delta - theta where theta is the highest root of E8.
+    /// Get the affine simple root (alpha_8 in our numbering).
+    /// alpha_8 = delta - theta where theta is the highest root of E8.
+    ///
+    /// In our 0-indexed root-vector convention:
+    ///   theta = 2*alpha_0 + 3*alpha_1 + 4*alpha_2 + 5*alpha_3
+    ///         + 6*alpha_4 + 3*alpha_5 + 4*alpha_6 + 2*alpha_7
+    ///         = (1, 0, 0, 0, 0, 0, 0, -1)
     pub fn affine_simple_root(&self) -> KacMoodyRoot {
-        // Highest root of E8: theta = 2*alpha_1 + 3*alpha_2 + 4*alpha_3 + ...
-        // In our coordinates: (1, -1, 0, 0, 0, 0, 0, 0) + multiples
-        // Simplified: use the standard highest root
-        let theta = [1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]; // Approximate
+        // Exact highest root: theta = (1, 0, 0, 0, 0, 0, 0, -1)
+        // Verified: |theta|^2 = 2, <theta, alpha_0> = 1, <theta, alpha_i> = 0 for i > 0.
+        let theta = [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, -1.0];
         let neg_theta: Vec<f64> = theta.iter().map(|x| -x).collect();
 
         KacMoodyRoot::affine(neg_theta, 1)
@@ -1471,5 +1504,107 @@ mod tests {
 
         assert!(!apps.is_empty());
         assert!(apps.iter().any(|s| s.contains("M-theory")));
+    }
+
+    /// Verify that e8_cartan() is exactly the Gram matrix of the E8 simple root vectors.
+    ///
+    /// This is the canonical consistency check: C[i][j] must equal <alpha_i, alpha_j>
+    /// for the root vectors defined in E9RootSystem::new().
+    #[test]
+    fn test_e8_cartan_matches_root_vector_gram_matrix() {
+        let e8_cartan = e8_cartan();
+        let e9 = E9RootSystem::new();
+        let roots = &e9.e8_simple_roots;
+
+        assert_eq!(roots.len(), 8);
+        for i in 0..8 {
+            for j in 0..8 {
+                let gram: f64 = roots[i].finite_part.iter()
+                    .zip(roots[j].finite_part.iter())
+                    .map(|(a, b)| a * b)
+                    .sum();
+                let cartan = e8_cartan.get(i, j) as f64;
+                assert!(
+                    (gram - cartan).abs() < 1e-10,
+                    "Gram[{i},{j}] = {gram} but Cartan[{i},{j}] = {cartan}"
+                );
+            }
+        }
+    }
+
+    /// Verify the E10 Cartan matrix matches the inner products of E10 simple roots.
+    #[test]
+    fn test_e10_cartan_matches_simple_root_inner_products() {
+        let e10 = E10RootSystem::new();
+        let roots = e10.simple_roots();
+        let cartan = e10_cartan();
+
+        assert_eq!(roots.len(), 10);
+        for i in 0..10 {
+            for j in 0..10 {
+                let ip = e10.inner_product(&roots[i], &roots[j]);
+                let expected = cartan.get(i, j) as f64;
+                assert!(
+                    (ip - expected).abs() < 1e-8,
+                    "E10 inner product <alpha_{i}, alpha_{j}> = {ip} but Cartan[{i},{j}] = {expected}"
+                );
+            }
+        }
+    }
+
+    /// Verify E8 branching node is at index 4 (degree 3 in the Dynkin diagram).
+    #[test]
+    fn test_e8_branch_at_node_4() {
+        let e8 = e8_cartan();
+        for node in 0..8 {
+            let degree: usize = (0..8)
+                .filter(|&j| j != node && e8.get(node, j) == -1)
+                .count();
+            if node == 4 {
+                assert_eq!(degree, 3, "Node 4 should be the branch (degree 3)");
+            } else {
+                assert!(degree <= 2, "Node {node} has unexpected degree {degree}");
+            }
+        }
+    }
+
+    /// Verify E8 highest root theta has the correct properties.
+    #[test]
+    fn test_e8_highest_root_theta() {
+        let e9 = E9RootSystem::new();
+        let roots = &e9.e8_simple_roots;
+
+        // Coxeter labels for our numbering (branch at node 4)
+        let labels: [f64; 8] = [2.0, 3.0, 4.0, 5.0, 6.0, 3.0, 4.0, 2.0];
+        let mut theta = [0.0f64; 8];
+        for (i, &label) in labels.iter().enumerate() {
+            for (t, &r) in theta.iter_mut().zip(roots[i].finite_part.iter()) {
+                *t += label * r;
+            }
+        }
+
+        // theta should be (1, 0, 0, 0, 0, 0, 0, -1)
+        assert!((theta[0] - 1.0).abs() < 1e-10, "theta[0] = {}", theta[0]);
+        for k in 1..7 {
+            assert!(theta[k].abs() < 1e-10, "theta[{k}] = {}", theta[k]);
+        }
+        assert!((theta[7] + 1.0).abs() < 1e-10, "theta[7] = {}", theta[7]);
+
+        // |theta|^2 = 2
+        let norm_sq: f64 = theta.iter().map(|x| x * x).sum();
+        assert!((norm_sq - 2.0).abs() < 1e-10, "|theta|^2 = {norm_sq}");
+
+        // <theta, alpha_0> = 1, <theta, alpha_i> = 0 for i > 0
+        for (i, root) in roots.iter().enumerate() {
+            let ip: f64 = theta.iter()
+                .zip(root.finite_part.iter())
+                .map(|(a, b)| a * b)
+                .sum();
+            if i == 0 {
+                assert!((ip - 1.0).abs() < 1e-10, "<theta, alpha_0> = {ip}");
+            } else {
+                assert!(ip.abs() < 1e-10, "<theta, alpha_{i}> = {ip}");
+            }
+        }
     }
 }

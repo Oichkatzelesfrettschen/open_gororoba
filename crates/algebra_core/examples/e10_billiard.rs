@@ -153,7 +153,7 @@ fn main() {
     }
 
     println!("\nAnalysis of Transition Matrix (Octonion Correlations):");
-    println!("Checking transitions between E8 simple roots (walls 1-8)...");
+    println!("Checking transitions between E8 simple roots (walls 0-7)...");
     
     // Check if transitions align with E8 structure (connections in Dynkin diagram)
     // Our E8 Dynkin diagram (from actual root vector Gram matrix):
