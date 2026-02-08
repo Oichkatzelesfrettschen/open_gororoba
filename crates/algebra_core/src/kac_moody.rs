@@ -967,6 +967,7 @@ impl E10RootSystem {
     }
 
     /// Inner product for E10 (Lorentzian).
+    /// Standard realization uses 8D finite space + 2D Lorentzian extension (+1, -1).
     pub fn inner_product(&self, a: &KacMoodyRoot, b: &KacMoodyRoot) -> f64 {
         let mut result = 0.0;
 
@@ -975,14 +976,16 @@ impl E10RootSystem {
             result += x * y;
         }
 
-        // Level contribution (from affine direction)
-        result += (a.level * b.level) as f64;
-
-        // Lorentzian direction: negative
-        if !a.lorentz_coords.is_empty() && !b.lorentz_coords.is_empty() {
+        // Lorentzian extension (2D): signature (+1, -1)
+        if a.lorentz_coords.len() >= 2 && b.lorentz_coords.len() >= 2 {
+            result += a.lorentz_coords[0] * b.lorentz_coords[0]; // Spacelike
+            result -= a.lorentz_coords[1] * b.lorentz_coords[1]; // Timelike
+        } else if !a.lorentz_coords.is_empty() && !b.lorentz_coords.is_empty() {
+            // Fallback for 1D: assume timelike if it's the only one
             result -= a.lorentz_coords[0] * b.lorentz_coords[0];
         }
 
+        // Ignore level for E10 since we use lorentz_coords instead for consistency
         result
     }
 
@@ -990,21 +993,44 @@ impl E10RootSystem {
     pub fn simple_roots(&self) -> Vec<KacMoodyRoot> {
         let mut roots = Vec::with_capacity(10);
 
-        // E8 simple roots (indices 1-8 in standard numbering)
-        for root in &self.e9_roots.e8_simple_roots {
-            roots.push(root.clone());
+        // E8 simple roots: (alpha_i, 0, 0)
+        let e8_roots = &self.e9_roots.e8_simple_roots;
+        for root in e8_roots {
+            let mut r = root.clone();
+            r.lorentz_coords = vec![0.0, 0.0];
+            roots.push(r);
         }
 
-        // E9 affine root (index 0)
-        roots.push(self.e9_roots.affine_simple_root());
+        // Exact Highest Root theta for E8
+        // Using the property that dot(theta, alpha_i) >= 0 and theta is the highest.
+        // For standard E8 basis, theta = (1, 1, 0, 0, 0, 0, 0, 0) in some conventions.
+        // Let's use the one that makes dot(theta, alpha_i) = 1 for the affine connection.
+        // In our e8_cartan, node 0 connects to node 1. So we want dot(theta, alpha_0) = 1.
+        let mut theta_vec = [0.0; 8];
+        // Sum simple roots weighted by Coxeter labels to obtain highest root.
+        // For E8: 2, 3, 4, 5, 6, 4, 2, 3
+        let labels = [2.0, 3.0, 4.0, 5.0, 6.0, 4.0, 2.0, 3.0];
+        for (i, &label) in labels.iter().enumerate() {
+            for (tv, &fp) in theta_vec.iter_mut().zip(e8_roots[i].finite_part.iter()) {
+                *tv += label * fp;
+            }
+        }
+        
+        // E9 affine root (alpha_0): (-theta, 1, 1)
+        roots.push(KacMoodyRoot {
+            finite_part: theta_vec.iter().map(|x| -x).collect(),
+            level: 0,
+            lorentz_coords: vec![1.0, 1.0], 
+            root_type: RootType::Real,
+        });
 
-        // E10 hyperbolic extension (index -1 or 9)
-        let hyperbolic_root = KacMoodyRoot::lorentzian(
-            vec![0.0; 8],
-            -1,
-            vec![1.0], // Lorentzian direction
-        );
-        roots.push(hyperbolic_root);
+        // E10 hyperbolic extension (alpha_9): (0, -1.5, -0.5)
+        roots.push(KacMoodyRoot {
+            finite_part: vec![0.0; 8],
+            level: 0,
+            lorentz_coords: vec![-1.5, -0.5],
+            root_type: RootType::Real,
+        });
 
         roots
     }
