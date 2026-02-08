@@ -10,6 +10,7 @@
 //! hidden algebraic structures, specifically checking if the transition probabilities
 //! between walls reflect the underlying Octonion structure of the E8 subalgebra.
 
+use algebra_core::e10_octonion;
 use algebra_core::kac_moody::{E10RootSystem, KacMoodyRoot};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
@@ -99,6 +100,7 @@ fn main() {
     let mut transition_matrix: Vec<Vec<u64>> = vec![vec![0; n_walls]; n_walls];
     let mut last_wall: Option<usize> = None;
     let mut actual_bounces: usize = 0;
+    let mut bounce_sequence: Vec<usize> = Vec::new();
 
     // Constraint logging: track norm drift and wall-inequality violations
     let mut max_norm_drift: f64 = 0.0;
@@ -160,6 +162,7 @@ fn main() {
             }
             last_wall = Some(wall_idx);
             actual_bounces += 1;
+            bounce_sequence.push(wall_idx);
 
             // Constraint logging: check all wall inequalities after reflection
             for (i, r) in simple_roots.iter().enumerate() {
@@ -319,6 +322,41 @@ fn main() {
     for row in &adj_matrix {
         let s: Vec<String> = row.iter().map(|&v| if v { "1" } else { "." }.to_string()).collect();
         println!("  {}", s.join(" "));
+    }
+
+    // === Fano plane (Octonion) analysis ===
+    // Test whether the billiard transition sequence respects the Fano plane
+    // structure of the octonion multiplication table (Claim 4).
+    println!("\n=== Fano Plane (Octonion) Analysis ===");
+
+    let windows = e10_octonion::extract_3windows(&bounce_sequence);
+    println!("3-bounce windows (E8 only): {}", windows.len());
+
+    if windows.len() >= 10 {
+        let (best_mapping, best_rate, best_comp, best_opp, all_rates) =
+            e10_octonion::optimal_fano_mapping(&windows);
+        let pvalue = e10_octonion::exact_pvalue(best_rate, &all_rates);
+        let zscore = e10_octonion::fano_enrichment_zscore(best_rate, best_opp);
+
+        println!("Optimal mapping (wall -> octonion basis):");
+        for (wall, &oct) in best_mapping.iter().enumerate() {
+            let label = if oct == 0 { "e_0 (real)" } else { "" };
+            println!("  wall {} -> e_{} {}", wall, oct, label);
+        }
+        println!("Fano triple completions: {}/{} ({:.4})", best_comp, best_opp, best_rate);
+        println!("Null expectation (uniform): {:.4}", e10_octonion::NULL_FANO_RATE_UNIFORM);
+        println!("Enrichment ratio: {:.4}", best_rate / e10_octonion::NULL_FANO_RATE_UNIFORM);
+        println!("Z-score vs uniform null: {:.2}", zscore);
+        println!("Exact p-value (rank among 40320 permutations): {:.6}", pvalue);
+
+        // Report Fano triples implied by the mapping
+        let triples = e10_octonion::describe_fano_structure(&best_mapping);
+        println!("Implied Fano triples (wall indices):");
+        for (a, b, c) in &triples {
+            println!("  ({}, {}, {})", a, b, c);
+        }
+    } else {
+        println!("Too few bounces for Fano analysis (need >= 10 3-windows).");
     }
 
     println!("\nDone. Seed={}, bounces={}", seed, actual_bounces);

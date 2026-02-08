@@ -42,6 +42,7 @@ pub mod projective_geometry;
 pub mod mult_table;
 pub mod cd_external;
 pub mod emanation;
+pub mod e10_octonion;
 
 // Re-export core algebra functions
 pub use cayley_dickson::{
@@ -227,6 +228,13 @@ pub use stochastic::{
     LevyParams, generate_levy_flight,
     // Anomalous diffusion analysis
     AnomalousDiffusionResult, DiffusionType, analyze_anomalous_diffusion,
+};
+
+pub use e10_octonion::{
+    fano_complement, fano_complement_table, extract_3windows,
+    fano_completion_rate, optimal_fano_mapping, exact_pvalue,
+    fano_enrichment_zscore, describe_fano_structure,
+    NULL_FANO_RATE_UNIFORM,
 };
 
 // Re-export external algebra crates for convenience
