@@ -5,6 +5,7 @@
 //! - A DatasetProvider implementation for fetching
 //! - Typed record structs with CSV parsing
 
+pub mod aflow;
 pub mod atnf;
 pub mod chime;
 pub mod desi_bao;

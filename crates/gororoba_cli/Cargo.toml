@@ -121,6 +121,10 @@ path = "src/bin/claims_audit.rs"
 name = "claims-verify"
 path = "src/bin/claims_verify.rs"
 
+[[bin]]
+name = "materials-baseline"
+path = "src/bin/materials_baseline.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }

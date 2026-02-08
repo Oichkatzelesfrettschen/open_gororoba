@@ -50,6 +50,8 @@ data/h5/
 data/external/papers/
 data/external/nv_odmr/
 data/external/jarvis_dft/
+data/external/jarvis_dft_3d.json
+data/external/aflow_materials.json
 data/external/TESS_Metadata.csv
 
 # Curated provenance snapshots (regenerable via make provenance)

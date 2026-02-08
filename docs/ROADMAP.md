@@ -495,8 +495,11 @@ here for completeness.
 - [x] Reggiani Z(S)/ZD(S) terminology alignment -- DONE (CX-003, Sprint 4)
 
 ### 7.3 Materials Science (Section D)
-- [ ] Second dataset backend (OQMD or NOMAD) for cross-validation
-- [ ] Element-property featurization and predictive baselines
+- [x] Second dataset backend: AFLOW (aflowlib.duke.edu) -- full database via AFLUX REST API
+- [x] JARVIS-DFT registered as DatasetProvider in fetch-datasets CLI
+- [x] Magpie-style composition featurizer (54-dim: 10 properties x 5 stats + 4 global)
+- [x] OLS linear regression baselines (SVD-based, formation energy + band gap)
+- [x] materials-baseline CLI binary (cross-database comparison)
 
 ### 7.4 Coq/Rocq Formalization (Section F)
 - [x] Buildable stub + compile workflow

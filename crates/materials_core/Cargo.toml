@@ -7,9 +7,11 @@ license = "MIT"
 
 [dependencies]
 algebra_core = { path = "../algebra_core" }
+nalgebra = { workspace = true }
 num-complex = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
+regex = { workspace = true }
 rustfft = { workspace = true }
 thiserror = { workspace = true }
 

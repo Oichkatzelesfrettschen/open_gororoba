@@ -48,9 +48,9 @@ Remaining open items are forward-looking research (Sections B partial, C, D, F, 
 
 - [x] Add JARVIS-DFT subset fetcher + provenance (`src/fetch_materials_jarvis_subset.py`).
 - [x] Add 118D composition -> {4,8,16,32}D PCA experiments (`src/materials_embedding_experiments.py`).
-- [ ] Add a second dataset backend (OQMD or NOMAD) for cross-validation.
-- [ ] Add element-property featurization (e.g., periodic-table descriptors) and compare vs. pure composition.
-- [ ] Add predictive baselines (e.g., linear regression for formation energy / bandgap) with proper train/test splits.
+- [x] Add AFLOW dataset backend (full database via AFLUX REST API) for cross-validation.
+- [x] Add Magpie-style element-property featurization (10 properties x 5 stats + 4 global = 54-dim).
+- [x] Add OLS linear regression baselines (formation energy + band gap) with 80/20 train/test split.
 
 ## E. Algebra Engine (Sedenions and Beyond)
 

@@ -35,6 +35,7 @@ struct Args {
     ///   cmb          CMB/WMAP chains and parameters (Planck, WMAP)
     ///   solar        Solar irradiance (TSIS, SORCE)
     ///   geophysical  Gravity + magnetic field models (IGRF, WMM, GRACE, etc.)
+    ///   materials    Condensed-matter DFT databases (JARVIS, AFLOW)
     #[arg(long)]
     pillar: Option<String>,
 
@@ -60,6 +61,7 @@ struct DatasetEntry {
 
 const VALID_PILLARS: &[&str] = &[
     "candle", "gravitational", "electromagnetic", "survey", "cmb", "solar", "geophysical",
+    "materials",
 ];
 
 fn build_registry() -> Vec<DatasetEntry> {
@@ -277,6 +279,19 @@ fn build_registry() -> Vec<DatasetEntry> {
             category: "geophysical",
             pillar: "geophysical",
             size_hint: "~200 KB",
+        },
+        // -- Materials pillar: condensed-matter DFT databases --
+        DatasetEntry {
+            provider: Box::new(jarvis::JarvisProvider),
+            category: "materials",
+            pillar: "materials",
+            size_hint: "~50 MB",
+        },
+        DatasetEntry {
+            provider: Box::new(aflow::AflowProvider),
+            category: "materials",
+            pillar: "materials",
+            size_hint: "~500 MB",
         },
     ]
 }

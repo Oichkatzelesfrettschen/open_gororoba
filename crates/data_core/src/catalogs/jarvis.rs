@@ -6,7 +6,7 @@
 //! Source: Figshare article 6815699
 //! https://figshare.com/articles/dataset/jdft_3d-7-7-2018_json/6815699
 
-use crate::fetcher::{download_to_file, FetchConfig, FetchError};
+use crate::fetcher::{download_to_file, DatasetProvider, FetchConfig, FetchError};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Path, PathBuf};
 
@@ -261,6 +261,23 @@ fn compute_volume_from_lattice(atoms: &serde_json::Value) -> Option<f64> {
     ];
     let det = a[0] * cross[0] + a[1] * cross[1] + a[2] * cross[2];
     Some(det.abs())
+}
+
+/// JARVIS-DFT dataset provider for the unified fetch pipeline.
+pub struct JarvisProvider;
+
+impl DatasetProvider for JarvisProvider {
+    fn name(&self) -> &str {
+        "JARVIS-DFT 3D"
+    }
+
+    fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
+        fetch_jarvis_json(config)
+    }
+
+    fn is_cached(&self, config: &FetchConfig) -> bool {
+        config.output_dir.join("jarvis_dft_3d.json").exists()
+    }
 }
 
 /// Sample a random subset of materials.

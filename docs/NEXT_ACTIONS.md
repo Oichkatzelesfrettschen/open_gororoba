@@ -77,9 +77,9 @@ Completed this sprint:
 
 ### Low Priority / Long-Term
 
-7) **Materials science second dataset** (ROADMAP 7.3)
-   - OQMD or NOMAD backend for cross-validation.
-   - Element-property featurization and predictive baselines.
+7) ~~**Materials science second dataset** (ROADMAP 7.3)~~ -- DONE
+   - AFLOW full-database provider (AFLUX REST API), JARVIS registered as DatasetProvider.
+   - Magpie-style composition featurizer (54-dim) + OLS baselines + materials-baseline CLI.
 
 8) **Coq/Rocq formalization** (ROADMAP 7.4)
    - Decide semantics for `has_right`/`reachable_delegation`.

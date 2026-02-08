@@ -22,6 +22,8 @@ pub mod effective_medium;
 pub mod tang_mass;
 pub mod periodic_table;
 pub mod optical_database;
+pub mod featurizer;
+pub mod baselines;
 
 pub use metamaterial::{
     map_zd_to_refractive_index, map_zd_norm_to_thickness, classify_material_type,
@@ -49,6 +51,15 @@ pub use effective_medium::{
 pub use periodic_table::{
     Element, CrystalStructure,
     get_element, get_element_by_z,
+};
+
+pub use featurizer::{
+    parse_formula, composition_fractions, featurize,
+    CompositionFeatures, PropertyStats, feature_vector, feature_names,
+};
+
+pub use baselines::{
+    train_test_split, ols_fit, run_baseline, RegressionResult,
 };
 
 pub use optical_database::{

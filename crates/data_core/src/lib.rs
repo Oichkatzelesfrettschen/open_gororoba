@@ -47,8 +47,11 @@ pub use catalogs::sdss::{parse_sdss_quasar_csv, SdssQuasar};
 pub use catalogs::sorce::{parse_sorce_csv, SorceMeasurement};
 pub use catalogs::tsi::{parse_tsi_csv, TsiMeasurement};
 pub use catalogs::jarvis::{
-    JarvisMaterial, FigshareFile, list_figshare_files, fetch_jarvis_json,
+    JarvisMaterial, JarvisProvider, FigshareFile, list_figshare_files, fetch_jarvis_json,
     parse_jarvis_json, sample_materials,
+};
+pub use catalogs::aflow::{
+    AflowMaterial, AflowProvider, parse_aflow_json, parse_aflow_records, fetch_aflow_dataset,
 };
 pub use catalogs::union3::parse_union3_chain;
 
@@ -89,15 +92,18 @@ pub fn known_provider_names() -> Vec<&'static str> {
         "JPL DE440 Ephemeris Kernel",
         "JPL DE441 Ephemeris Kernel",
         "JPL Horizons Planetary Ephemeris",
+        "JARVIS-DFT 3D",
+        "AFLOW Materials Database",
     ]
 }
 
 /// Number of datasets in the canonical inventory.
-pub const DATASET_COUNT: usize = 30;
+pub const DATASET_COUNT: usize = 32;
 
-/// The 7 scientific pillars that organize datasets.
+/// The 8 scientific pillars that organize datasets.
 pub const PILLARS: &[&str] = &[
     "candle", "gravitational", "electromagnetic", "survey", "cmb", "solar", "geophysical",
+    "materials",
 ];
 
 /// Map each provider name to its scientific pillar.
@@ -110,6 +116,7 @@ pub fn provider_pillar(name: &str) -> &'static str {
         | "SDSS DR18 Quasars" | "Gaia DR3 Nearby Stars" | "Hipparcos Legacy Catalog" => "survey",
         "Planck 2018 Summary" | "WMAP 9yr MCMC Chains" | "Planck 2018 MCMC Chains" => "cmb",
         "TSIS-1 TSI Daily" | "SORCE TSI Daily" => "solar",
+        "JARVIS-DFT 3D" | "AFLOW Materials Database" => "materials",
         _ => "geophysical", // IGRF, WMM, GRACE, EGM2008, Swarm, Landsat, DE440/441, Horizons
     }
 }
@@ -218,6 +225,8 @@ mod tests {
             Box::new(catalogs::landsat::LandsatStacProvider),
             Box::new(geophysical::swarm::SwarmMagAProvider),
             Box::new(geophysical::de_ephemeris::De440Provider),
+            Box::new(catalogs::jarvis::JarvisProvider),
+            Box::new(catalogs::aflow::AflowProvider),
         ];
 
         for p in &providers {
