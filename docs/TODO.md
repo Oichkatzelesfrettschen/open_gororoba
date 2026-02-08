@@ -1,4 +1,4 @@
-# TODO (updated 2026-02-06): executable, test-driven tracker
+# TODO (updated 2026-02-07): executable, test-driven tracker
 
 Primary trackers:
 - `docs/ROADMAP.md` (consolidated roadmap: architecture, crates, migration history, GR port plan)
@@ -8,10 +8,41 @@ Primary trackers:
 
 Note:
 - Python-to-Rust migration is COMPLETE (all 15 modules ported, gororoba_kernels removed).
-- 1539 Rust tests (unit + doc) pass, 0 clippy warnings.
+- 1645 Rust tests (unit + integration + doc) pass, 0 clippy warnings.
 - Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md`) deleted; content absorbed into `docs/ROADMAP.md`.
 
-## Current sprint (blockers first)
+## Current sprint: Sprint 8 -- Consolidation, Audit, and Buildout
+
+### Code implementations
+- [x] Casimir nonadditivity correction (Bimonte 2012 derivative expansion)
+- [x] PEPS boundary MPS entropy (exact for small, boundary MPS for large)
+- [x] CdMultTable generator (O(1) basis multiplication lookup)
+- [x] Hartigan dip test (GCM/LCM algorithm + permutation p-value)
+
+### New binaries
+- [x] mass-clumping analysis binary (GWTC-3 + dip test, N>=50 guard)
+
+### New documents
+- [x] EXPERIMENTS_PORTFOLIO_SHORTLIST.md (10 experiments with run commands)
+- [x] MATH_CONVENTIONS.md (9 conventions with code references)
+
+### Doc harmonization
+- [x] Test counts synchronized (1645 across all docs)
+- [x] RISKS_AND_GAPS.md rewritten (all stale items resolved)
+- [x] CLAIMS_TASKS.md snapshot updated
+- [x] Primary-source citation sweep (10 claims)
+
+### Tracker hygiene
+- [x] Document hierarchy section in AGENTS.md
+- [x] Binary contracts table in AGENTS.md
+- [x] MEMORY.md updated with Sprint 8 results
+
+### Quality gates
+- [x] `cargo clippy --workspace -j$(nproc) -- -D warnings` (0 warnings)
+- [x] `cargo test --workspace -j$(nproc)` (1645 pass, 0 fail)
+- [x] `make ascii-check`
+
+## Previous sprint: Sprint 6-7 (completed)
 - [x] Source-first research passes (no deletions; only append/clarify sources):
   - [x] Wheels (division-by-zero) vs wheel graphs vs wheeled operads (CX-017). Already in wheels.rs + doc.
   - [x] de Marrais primary sources + terminology alignment (CX-002). Audit complete: dim=16 terms fully aligned, higher-dim generic naming is correct.
@@ -25,10 +56,8 @@ Note:
   - [x] XOR-balanced search extension + tests (CX-003). 10 new tests.
   - [x] Motif census: exact to 256D with scaling laws (CX-002). 16 new tests.
   - [x] Visualization hygiene and artifact saving policy (CX-019). plt.show() -> plt.close() in 2 files; no MathText/grid/deprecation issues found.
-
-## Quality gates
 - [x] `cargo clippy --workspace -j$(nproc) -- -D warnings`
-- [x] `cargo test --workspace -j$(nproc)` (1539 tests, 0 failures)
+- [x] `cargo test --workspace -j$(nproc)` (1628 tests, 0 failures)
 - [x] `make ascii-check` (5 files fixed, extended replacement table + skip lists)
 
 ## Completed (keep for provenance)

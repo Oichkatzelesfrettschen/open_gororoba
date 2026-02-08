@@ -125,6 +125,10 @@ path = "src/bin/claims_verify.rs"
 name = "materials-baseline"
 path = "src/bin/materials_baseline.rs"
 
+[[bin]]
+name = "mass-clumping"
+path = "src/bin/mass_clumping.rs"
+
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }

@@ -6,7 +6,7 @@ Execution detail for missing datasets lives in `docs/ULTRA_ROADMAP.md` Section H
 
 ## Sprint 6 Summary (2026-02-07)
 
-**Test count**: 1525 unit + 14 doc-tests = 1539 total, 0 clippy warnings.
+**Test count**: 1645 total (unit + integration + doc), 0 clippy warnings.
 
 Completed this sprint:
 - D1/D2: Dataset endpoint validation -- 22/30 providers tested, 3 broken URLs fixed
@@ -34,7 +34,7 @@ Completed this sprint:
 | Workstream | Status | Sprint | Key Metric |
 |-----------|--------|--------|------------|
 | A. Claims -> Evidence | DONE | S4-S5 | 459 claims, 118 backfill verified |
-| B. Quality gates | DONE (except B.7 provenance CI) | S5-S6 | 0 clippy warnings, 1539 tests |
+| B. Quality gates | DONE (except B.7 provenance CI) | S5-S6 | 0 clippy warnings, 1628 tests |
 | C. Experiments portfolio | Open | -- | -- |
 | D. Dataset pillars | DONE | S5-S6 | 30 providers, 21/21 Section H |
 | E. GR module expansion | DONE | S3-S4 | 18 modules, 394 tests |

@@ -106,11 +106,16 @@ impl EntanglementMeasure for MatrixProductState {
 }
 
 impl EntanglementMeasure for Peps {
-    fn entanglement_entropy(&self, _subsystem: &[usize]) -> f64 {
-        // PEPS entropy computation is more complex - use boundary MPS
-        // For now, return estimate based on boundary length
-        // TODO: Implement proper boundary contraction entropy
-        0.0
+    fn entanglement_entropy(&self, subsystem: &[usize]) -> f64 {
+        // Determine the horizontal cut row from the subsystem specification.
+        // Convention: subsystem lists sites in rows [0..cut_row), so the cut row
+        // is one past the maximum row index present in the subsystem.
+        if subsystem.is_empty() {
+            return 0.0;
+        }
+        let max_site = *subsystem.iter().max().unwrap_or(&0);
+        let cut_row = (max_site / self.cols) + 1;
+        self.entanglement_entropy_row_cut(cut_row)
     }
 
     fn n_sites(&self) -> usize {

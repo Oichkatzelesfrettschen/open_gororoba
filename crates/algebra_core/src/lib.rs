@@ -39,6 +39,7 @@ pub mod stochastic;
 pub mod grassmannian;
 pub mod so7_drift;
 pub mod projective_geometry;
+pub mod mult_table;
 
 // Re-export core algebra functions
 pub use cayley_dickson::{

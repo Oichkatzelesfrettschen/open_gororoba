@@ -564,19 +564,28 @@ consolidated into domain crates (`algebra_core`, `stats_core`, etc.) and
 - C-023: Closed/Toy (metaphorical holonomy)
 - C-077, C-078: Refuted (PMNS/spectrum claims)
 
-## Status Snapshot: 2026-02-07 (updated)
+## Status Snapshot: 2026-02-07 (Sprint 8)
 
 | Metric | Count |
 |--------|-------|
-| Rust unit tests | 1464 |
+| Rust tests (total) | 1645 |
 | Rust doc-tests | 14 |
 | Rust clippy warnings | 0 |
-| Claims in matrix (C-001..C-442) | 443 |
-| Dataset providers | 18 |
+| Claims in matrix (C-001..C-447) | 448 |
+| Dataset providers | 30 |
 | Section H items done | 21 / 21 |
-| data_core tests | 137 |
-| gr_core tests | 394 |
-| algebra_core tests | 264 |
+| algebra_core tests | 309 |
+| gr_core tests | 412 |
+| quantum_core tests | 196 |
+| data_core tests | 170 |
+| cosmology_core tests | 161 |
+| stats_core tests | 107 |
+| gororoba_cli tests | 64 |
+| optics_core tests | 63 |
+| materials_core tests | 62 |
+| control_core tests | 49 |
+| spectral_core tests | 20 |
+| lbm_core tests | 11 |
 | stats_core tests | 189 |
 | Rust crate path resolution in matrix | 47 / 47 (100%) |
 | GPU ultrametric tests significant (I-011) | 82 / 472 |

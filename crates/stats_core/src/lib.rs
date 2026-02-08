@@ -19,6 +19,7 @@
 //! - Roy (2003): "Discovery and the Scientific Method" (Annals of Statistics)
 
 pub mod claims_gates;
+pub mod dip;
 pub mod ultrametric;
 
 pub use claims_gates::{

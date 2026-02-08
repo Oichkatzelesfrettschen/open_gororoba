@@ -19,7 +19,7 @@ open_gororoba is a research-style codebase mixing:
   reports under `docs/`.
 - **Formal proofs** -- Coq files under `curated/01_theory_frameworks/`.
 
-Python-to-Rust migration is COMPLETE (all 15 modules ported, 855 Rust tests,
+Python-to-Rust migration is COMPLETE (all 15 modules ported, 1645 Rust tests,
 0 clippy warnings).  See `docs/ROADMAP.md` for architecture and evolution.
 
 Many physics-facing statements are **hypotheses**.  Treat them as unverified
@@ -137,7 +137,7 @@ cargo test  --workspace -j$(nproc) -- --nocapture  # Tests with stdout
 **During iteration**: target only the crate you changed rather than full workspace.
 `algebra_core` is the heaviest (~240 tests, ~30-50s with opt-level=1).
 
-Individual analysis binaries (25 total in `crates/gororoba_cli/src/bin/`):
+Individual analysis binaries (30 total in `crates/gororoba_cli/src/bin/`):
 
 ```
 # Algebra
@@ -180,6 +180,13 @@ cargo run --bin lbm-poiseuille     -- --help   # Lattice Boltzmann Poiseuille
 # Data
 cargo run --bin fetch-datasets     -- --help   # Fetch external datasets
 cargo run --bin fetch-chime-frb    -- --help   # Fetch CHIME/FRB catalog
+
+# Audit / Verification
+cargo run --bin claims-audit       -- --help   # Claims matrix audit
+cargo run --bin claims-verify      -- --help   # Claims verification runner
+cargo run --bin materials-baseline -- --help   # Materials science baselines
+cargo run --bin mass-clumping      -- --help   # GWTC mass dip test
+cargo run --bin motif-census       -- --help   # CD motif census
 ```
 
 ### Other runtimes
@@ -328,13 +335,79 @@ if no suitable crate exists.
 
 ---
 
+## Document Hierarchy
+
+The project uses several tracking documents with distinct roles:
+
+| Document | Role | Update cadence |
+|----------|------|----------------|
+| `docs/ROADMAP.md` | Architecture, crate map, evolution history | Sprint boundaries |
+| `docs/TODO.md` | Current sprint checklist (active execution) | Every work session |
+| `docs/NEXT_ACTIONS.md` | Priority queue for next sprint | Sprint boundaries |
+| `docs/ULTRA_ROADMAP.md` | Granular claim-to-evidence mapping (historical) | Append-only |
+| `docs/CLAIMS_EVIDENCE_MATRIX.md` | Master claims tracker (442 rows) | Per-claim updates |
+| `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md` | Reproducible experiment registry (E-001..E-010) | Per-experiment |
+| `docs/MATH_CONVENTIONS.md` | Mathematical and numerical conventions | As conventions change |
+| `docs/RISKS_AND_GAPS.md` | Current technical risks and gaps | Sprint boundaries |
+| `docs/BIBLIOGRAPHY.md` | External source citations | As citations are added |
+
+Overlapping content between TODO.md and NEXT_ACTIONS.md is intentional:
+TODO.md tracks the current sprint's in-progress items; NEXT_ACTIONS.md
+is the backlog for the following sprint.
+
+---
+
+## Binary Contracts
+
+All 30 analysis binaries under `crates/gororoba_cli/src/bin/`:
+
+| Binary | Input | Output | Claims | Det. |
+|--------|-------|--------|--------|------|
+| zd-search | None | stdout | C-050..C-060 | Yes |
+| oct-field | None | stdout | -- | Yes |
+| motif-census | None | data/csv/motif_census_*.csv | C-100..C-110 | Yes |
+| real-cosmo-fit | data/external/Pantheon+SH0ES.dat | stdout | C-200..C-210 | Yes |
+| bounce-cosmology | None | stdout/CSV | -- | Yes |
+| neg-dim-eigen | None | stdout/CSV | C-420..C-425 | Yes |
+| gravastar-sweep | None | CSV | C-400..C-410 | Yes |
+| kerr-shadow | None | stdout/CSV | C-301..C-310 | Yes |
+| grin-trace | None | stdout/CSV | -- | Yes |
+| tcmt-sweep | None | stdout/CSV | -- | Yes |
+| ema-calc | None | stdout | -- | Yes |
+| mera-entropy | None | stdout | -- | Seed |
+| tensor-network | None | stdout/CSV | C-350..C-360 | Seed |
+| frac-schrodinger | None | stdout | -- | Yes |
+| frac-laplacian | None | stdout | -- | Yes |
+| harper-chern | None | stdout/CSV | -- | Yes |
+| dm-ultrametric | data/external/chime*.csv | data/csv/ | C-071 | Seed |
+| baire-compact | data/external/chime*.csv | data/csv/ | C-071 | Seed |
+| frb-cascades | data/external/chime*.csv | data/csv/ | C-438 | Seed |
+| frb-ultrametric | data/external/chime*.csv | data/csv/ | C-071 | Seed |
+| gw-merger-tree | data/external/gwosc*.csv | data/csv/ | C-439 | Seed |
+| cosmic-dendrogram | data/external/ | data/csv/ | C-440 | Seed |
+| multi-dataset-ultrametric | data/external/ | data/csv/ | C-071, I-011 | Seed |
+| lbm-poiseuille | None | stdout/CSV | -- | Yes |
+| fetch-datasets | Network | data/external/ | -- | -- |
+| fetch-chime-frb | Network | data/external/ | -- | -- |
+| claims-audit | docs/ | stdout | -- | Yes |
+| claims-verify | data/ | stdout | -- | Seed |
+| materials-baseline | data/external/ | stdout | C-450..C-455 | Seed |
+| mass-clumping | data/external/gwosc*.csv | data/csv/ | C-007 | Seed |
+
+Det. column: Yes = fully deterministic, Seed = deterministic given --seed flag.
+
+---
+
 ## References
 
 - `docs/ROADMAP.md` -- consolidated roadmap (architecture, crates, evolution, GR port plan)
-- `docs/CLAIMS_EVIDENCE_MATRIX.md` -- master claims tracker
+- `docs/CLAIMS_EVIDENCE_MATRIX.md` -- master claims tracker (442 rows)
 - `docs/claims/INDEX.md` -- claims navigation index
 - `docs/INSIGHTS.md` -- research insights and design decisions
 - `docs/BIBLIOGRAPHY.md` -- external source citations
+- `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md` -- reproducible experiment registry (E-001..E-010)
+- `docs/MATH_CONVENTIONS.md` -- mathematical and numerical conventions
+- `docs/RISKS_AND_GAPS.md` -- current technical risks and gaps
 - `docs/agents.md` -- visualization standards
 - `docs/REPO_STRUCTURE.md` -- directory layout details
 - `Cargo.toml` -- Rust workspace and dependency declarations

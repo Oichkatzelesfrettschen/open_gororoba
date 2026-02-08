@@ -689,30 +689,63 @@ pub fn transistor_gain_additive(r_drain: f64, gap_drain: f64, plate_spring: f64)
     k_drain / plate_spring
 }
 
-/// Nonadditivity correction placeholder (feature-gated for future implementation).
+/// First-order nonadditivity correction for the sphere-plate-sphere system.
 ///
-/// Three-body Casimir forces are generically nonadditive. The leading correction
-/// to the additivity approximation comes from:
-/// 1. Multiple scattering: photons bounce between all three surfaces
-/// 2. Edge/curvature effects beyond PFA
+/// Three-body Casimir forces are generically nonadditive.  The leading
+/// correction to the additive (pairwise-PFA) result comes from the derivative
+/// expansion beyond PFA (Bimonte 2012, Fosco et al. 2024).
 ///
-/// This function returns 0 currently but provides the API hook for future
-/// implementation of scattering-matrix or derivative-expansion corrections.
+/// For a single sphere-plate interaction with perfect conductors, the
+/// next-to-leading-order correction to PFA is:
+///
+///   delta_F_i / F_PFA_i = (1/3) * (d_i / R_i)
+///
+/// where d_i is the gap and R_i the sphere radius.  This captures curvature
+/// effects that PFA misses.  Higher orders enter as O((d/R)^2) and involve
+/// plate thickness; we neglect those here.
+///
+/// For the three-body system, we return the sum of both single-sphere
+/// corrections (fractional shifts applied to the respective PFA forces,
+/// then summed as an absolute force correction in Newtons).
+///
+/// # Arguments
+/// * `r_source` - Source sphere radius (m)
+/// * `r_drain` - Drain sphere radius (m)
+/// * `gap_source` - Source-plate gap (m)
+/// * `gap_drain` - Plate-drain gap (m)
+/// * `plate_thickness` - Plate thickness (m), enters at O(d/R)^2 (unused at this order)
+///
+/// # Returns
+/// Absolute nonadditivity correction (N).  Sign convention: positive means
+/// the total force magnitude is *larger* than the additive PFA prediction
+/// (beyond-PFA curvature corrections reduce the gap-to-radius ratio error
+/// and typically increase force magnitude for d/R < 1).
 ///
 /// # Literature
+/// - Bimonte, G., PRD 86, 046008 (2012): Beyond-PFA derivative expansion
+/// - Fosco, C. D. et al., Physics 6(1), 20 (2024): Derivative expansion review
 /// - Rahi et al., PRD 80, 085021 (2009): Scattering approach to Casimir
-/// - Fosco et al., Physics 6(1), 20 (2024): Derivative expansion beyond PFA
-#[allow(unused_variables)]
 pub fn nonadditivity_correction(
     r_source: f64,
     r_drain: f64,
     gap_source: f64,
     gap_drain: f64,
-    _plate_thickness: f64,
+    _plate_thickness: f64, // enters at O(d/R)^2 -- documented, not used at first order
 ) -> f64 {
-    // TODO: Implement scattering-matrix correction when needed
-    // For now, return 0 (pure additivity)
-    0.0
+    // Beyond-PFA coefficient for perfect conductors (derivative expansion).
+    // Bimonte (2012) Eq. 3.11: alpha_1 = 1/3 for Dirichlet (perfect conductor).
+    const ALPHA_1: f64 = 1.0 / 3.0;
+
+    // PFA force for each sphere-plate pair: F = -C * R / d^3
+    let f_pfa_source = casimir_force_pfa(r_source, gap_source);
+    let f_pfa_drain = casimir_force_pfa(r_drain, gap_drain);
+
+    // Fractional correction: delta_F_i = |F_PFA_i| * alpha_1 * (d_i / R_i)
+    // Take absolute values since PFA forces are negative (attractive).
+    let delta_source = f_pfa_source.abs() * ALPHA_1 * (gap_source / r_source);
+    let delta_drain = f_pfa_drain.abs() * ALPHA_1 * (gap_drain / r_drain);
+
+    delta_source + delta_drain
 }
 
 // ============================================================================
@@ -2287,10 +2320,15 @@ mod tests {
     }
 
     #[test]
-    fn test_nonadditivity_correction_placeholder() {
-        // Currently returns 0 (pure additivity)
+    fn test_nonadditivity_correction_positive() {
+        // Beyond-PFA derivative expansion gives positive correction
         let corr = nonadditivity_correction(5e-6, 5e-6, 100e-9, 100e-9, 10e-9);
-        assert_eq!(corr, 0.0);
+        assert!(corr > 0.0, "Correction should be positive, got {}", corr);
+        // Fractional correction = (1/3) * (100e-9 / 5e-6) = 6.67e-6
+        let f_pfa = casimir_force_pfa(5e-6, 100e-9).abs();
+        let fractional = corr / (2.0 * f_pfa);
+        let expected = (1.0 / 3.0) * (100e-9 / 5e-6);
+        assert!((fractional - expected).abs() < 1e-12);
     }
 
     #[test]
@@ -3083,5 +3121,86 @@ mod tests {
         // Should include validity info for both source and drain
         assert!(result.source_validity.five_percent_valid);
         assert!(result.drain_validity.five_percent_valid);
+    }
+
+    // ================================================================
+    // Nonadditivity correction tests
+    // ================================================================
+
+    #[test]
+    fn test_nonadditivity_nonzero_for_realistic_params() {
+        // Typical MEMS/NEMS parameters: R = 100 um, gap = 200 nm
+        let r = 100e-6;
+        let gap = 200e-9;
+        let thickness = 1e-6;
+        let correction = nonadditivity_correction(r, r, gap, gap, thickness);
+        assert!(
+            correction > 0.0,
+            "Correction should be positive (force magnitude increase), got {}",
+            correction
+        );
+        // The fractional correction is alpha_1 * d/R = (1/3) * (200e-9 / 100e-6) = 6.67e-4
+        // Small but definitely nonzero
+        let f_pfa = casimir_force_pfa(r, gap).abs();
+        let fractional = correction / (2.0 * f_pfa); // Two spheres contribute
+        assert!(
+            fractional > 1e-5,
+            "Fractional correction should be measurable, got {}",
+            fractional
+        );
+        assert!(
+            fractional < 1.0,
+            "Fractional correction should be perturbative, got {}",
+            fractional
+        );
+    }
+
+    #[test]
+    fn test_nonadditivity_linear_in_gap_over_r() {
+        // Fix R, vary gap: correction should scale linearly with gap/R.
+        // delta_F ~ |F_PFA| * (1/3) * (d/R)
+        // |F_PFA| ~ R/d^3, so delta_F ~ (1/3) * R * d / (R * d^3) = 1/(3*d^2)
+        // Actually delta_F = |F_PFA| * alpha * d/R = C*R/d^3 * (1/3) * d/R = C/(3*d^2)
+        // So delta_F ~ 1/d^2 when R is fixed.
+        // But the FRACTIONAL correction delta_F/|F_PFA| = (1/3)*d/R scales linearly in d.
+        let r = 50e-6;
+        let thickness = 1e-6;
+
+        let gap1 = 100e-9;
+        let gap2 = 200e-9;
+
+        let corr1 = nonadditivity_correction(r, r, gap1, gap1, thickness);
+        let corr2 = nonadditivity_correction(r, r, gap2, gap2, thickness);
+
+        let frac1 = corr1 / (2.0 * casimir_force_pfa(r, gap1).abs());
+        let frac2 = corr2 / (2.0 * casimir_force_pfa(r, gap2).abs());
+
+        // frac2/frac1 should equal gap2/gap1 = 2.0
+        let ratio = frac2 / frac1;
+        assert!(
+            (ratio - 2.0).abs() < 1e-10,
+            "Fractional correction should scale linearly with d/R: ratio = {}",
+            ratio
+        );
+    }
+
+    #[test]
+    fn test_nonadditivity_symmetric_in_spheres() {
+        // Swapping source and drain should give same total correction
+        let r1 = 50e-6;
+        let r2 = 100e-6;
+        let g1 = 100e-9;
+        let g2 = 200e-9;
+        let t = 1e-6;
+
+        let corr_a = nonadditivity_correction(r1, r2, g1, g2, t);
+        let corr_b = nonadditivity_correction(r2, r1, g2, g1, t);
+
+        assert!(
+            (corr_a - corr_b).abs() < 1e-30,
+            "Correction should be symmetric under sphere swap: {} vs {}",
+            corr_a,
+            corr_b
+        );
     }
 }

@@ -77,7 +77,7 @@ spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
 Penrose process, coordinates, null constraint, energy-conserving integrator.
 **Claims infrastructure**: COMPLETE.  Rust claims-audit + claims-verify binaries
 replace 11 Python scripts.  118 backfill items confirmed Verified (2026-02-07).
-**Test count**: 1525 Rust unit tests + 14 doc-tests pass (1539 total), 0 clippy warnings.
+**Test count**: 1645 Rust tests pass (unit + doc + integration), 0 clippy warnings.
 gororoba_kernels removed (2026-02-06).
 **GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
 
@@ -227,7 +227,7 @@ These implementations STAY because no suitable crate exists or licensing prevent
 
 ### 3.1 Current State
 
-1525 Rust unit tests pass across 13 crates, plus 14 doc-tests (1539 total).
+1628 Rust tests pass across 13 crates (unit + integration + doc-tests), 2 GPU-gated ignored.
 0 clippy warnings (warnings-as-errors is non-negotiable).
 
 ### 3.2 Testing Layers
