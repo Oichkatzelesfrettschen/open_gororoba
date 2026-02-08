@@ -12,10 +12,20 @@
 
 use algebra_core::kac_moody::{E10RootSystem, KacMoodyRoot};
 use rand::prelude::*;
+use rand_chacha::ChaCha8Rng;
 
 /// The E10 billiard simulation.
+///
+/// Usage: e10_billiard [SEED] [N_STEPS]
+///   SEED: u64 RNG seed for reproducibility (default: 42)
+///   N_STEPS: number of bounces to simulate (default: 100000)
 fn main() {
+    let args: Vec<String> = std::env::args().collect();
+    let seed: u64 = args.get(1).and_then(|s| s.parse().ok()).unwrap_or(42);
+    let n_steps: usize = args.get(2).and_then(|s| s.parse().ok()).unwrap_or(100_000);
+
     println!("=== E10 Cosmological Billiard Simulation ===");
+    println!("RNG seed: {}, steps: {}", seed, n_steps);
     println!("Initializing E10 root system (Lorentzian signature)...");
 
     let e10 = E10RootSystem::new();
@@ -45,9 +55,8 @@ fn main() {
         }
     }
 
-    // Simulation parameters
-    let n_steps = 100_000;
-    let mut rng = thread_rng();
+    // Simulation parameters (deterministic RNG for reproducibility)
+    let mut rng = ChaCha8Rng::seed_from_u64(seed);
 
     // Compute a position INSIDE the Weyl chamber using the Weyl vector.
     // Solve G * x = [1,...,1] where G[i][j] = <alpha_i, alpha_j> (Gram matrix).
@@ -89,21 +98,27 @@ fn main() {
     let mut wall_hits: Vec<u64> = vec![0; n_walls];
     let mut transition_matrix: Vec<Vec<u64>> = vec![vec![0; n_walls]; n_walls];
     let mut last_wall: Option<usize> = None;
+    let mut actual_bounces: usize = 0;
+
+    // Constraint logging: track norm drift and wall-inequality violations
+    let mut max_norm_drift: f64 = 0.0;
+    let mut min_wall_ip: f64 = f64::INFINITY;
+    let initial_v_norm = e10.inner_product(&current_v, &current_v);
 
     println!("Simulating {} bounces...", n_steps);
 
-    for _step in 0..n_steps {
+    for step in 0..n_steps {
         // Find collision times with all walls
         // Wall i: (pos + t*v) . alpha_i = 0 => t = - (pos . alpha_i) / (v . alpha_i)
         // We want smallest positive t.
-        
+
         let mut min_t = f64::INFINITY;
         let mut hit_wall = None;
-        
+
         for (i, root) in simple_roots.iter().enumerate() {
             let pos_dot = e10.inner_product(&current_pos, root);
             let v_dot = e10.inner_product(&current_v, root);
-            
+
             // If v_dot is positive, we are moving away from the wall (since pos_dot > 0 inside)
             // If v_dot is negative, we are moving towards it.
             if v_dot < -1e-9 {
@@ -114,11 +129,15 @@ fn main() {
                 }
             }
         }
-        
+
         if let Some(wall_idx) = hit_wall {
-            // Move to collision
-            current_pos = advance(&current_pos, &current_v, min_t);
-            
+            // Advance to just BEFORE the wall (standard hyperbolic billiard technique).
+            // This avoids the need for post-bounce nudging which is unreliable in
+            // Lorentzian signature where root corrections along alpha_i can violate
+            // walls connected to i (since <alpha_i, alpha_j> = -1 for neighbors).
+            let approach_t = min_t * (1.0 - 1e-10);
+            current_pos = advance(&current_pos, &current_v, approach_t);
+
             // Reflect velocity: v' = v - 2 (v.alpha / alpha.alpha) alpha
             let root = &simple_roots[wall_idx];
             let v_dot_alpha = e10.inner_product(&current_v, root);
@@ -126,49 +145,70 @@ fn main() {
             let coeff = 2.0 * v_dot_alpha / alpha_sq;
             let scaled_root = scale_root(root, coeff);
             current_v = subtract_roots(&current_v, &scaled_root);
-            
+
+            // Constraint logging: monitor velocity norm drift (T2 invariant)
+            let v_norm_now = e10.inner_product(&current_v, &current_v);
+            let drift = (v_norm_now - initial_v_norm).abs();
+            if drift > max_norm_drift {
+                max_norm_drift = drift;
+            }
+
             // Record stats
             wall_hits[wall_idx] += 1;
             if let Some(prev) = last_wall {
                 transition_matrix[prev][wall_idx] += 1;
             }
             last_wall = Some(wall_idx);
-            
-            // Numerical stability: push slightly off the wall into the chamber to avoid getting stuck
-            // The reflection puts v pointing into the chamber.
-            // But pos is exactly on the wall.
-            // Move pos slightly along new v.
-            current_pos = advance(&current_pos, &current_v, 1e-5);
-            
+            actual_bounces += 1;
+
+            // Constraint logging: check all wall inequalities after reflection
+            for (i, r) in simple_roots.iter().enumerate() {
+                let ip = e10.inner_product(&current_pos, r);
+                if ip < min_wall_ip {
+                    min_wall_ip = ip;
+                }
+                if ip < -1e-6 {
+                    println!("WARNING: wall {} violated at step {} (<pos,alpha> = {:.6e})",
+                             i, step, ip);
+                }
+            }
         } else {
-            println!("Particle escaped to infinity at step {}! (Should not happen in BKL)", _step);
+            println!("Particle escaped at step {}. Max norm drift: {:.6e}", step, max_norm_drift);
             break;
         }
     }
 
-    println!("\n=== Results ===");
-    println!("Wall Hit Frequencies:");
+    // === Constraint diagnostics ===
+    println!("\n=== Constraint Diagnostics ===");
+    println!("Actual bounces completed: {}", actual_bounces);
+    println!("Max velocity norm drift:  {:.6e} (should be ~0 if reflections are isometries)",
+             max_norm_drift);
+    println!("Min wall inner product:   {:.6e} (should be > 0 if always inside chamber)",
+             min_wall_ip);
+    let final_v_norm = e10.inner_product(&current_v, &current_v);
+    println!("Initial |v|^2: {:.6}, Final |v|^2: {:.6}, Drift: {:.6e}",
+             initial_v_norm, final_v_norm, (final_v_norm - initial_v_norm).abs());
+
+    // === Wall hit frequencies ===
+    println!("\n=== Wall Hit Frequencies ===");
     for (i, &hits) in wall_hits.iter().enumerate() {
-        println!("  Wall {}: {:6} hits ({:.2}%)", i, hits, 100.0 * hits as f64 / n_steps as f64);
+        let pct = if actual_bounces > 0 { 100.0 * hits as f64 / actual_bounces as f64 } else { 0.0 };
+        println!("  Wall {}: {:6} hits ({:.2}%)", i, hits, pct);
     }
 
-    println!("\nAnalysis of Transition Matrix (Octonion Correlations):");
-    println!("Checking transitions between E8 simple roots (walls 0-7)...");
-    
-    // Check if transitions align with E8 structure (connections in Dynkin diagram)
-    // Our E8 Dynkin diagram (from actual root vector Gram matrix):
+    // === Transition matrix analysis ===
+    println!("\n=== Transition Matrix Analysis ===");
+
+    // E8 Dynkin diagram (from actual root vector Gram matrix, branch at node 4):
     //   0 -- 1 -- 2 -- 3 -- 4 -- 5
     //                        |
     //                        6 -- 7
-    // Branching at node 4. Affine node 8 connects to node 0 (via highest root).
+    // Affine node 8 connects to node 0 (via highest root).
     // Hyperbolic node 9 connects to node 8.
 
-    let mut connected_hits = 0;
-    let mut disconnected_hits = 0;
-
-    // Adjacency from actual root vector inner products (verified numerically):
-    let adjacency: [Vec<usize>; 8] = [
-        vec![1],          // 0 -- 1
+    // Full E10 adjacency (10 nodes, from Cartan matrix):
+    let adjacency_e10: [Vec<usize>; 10] = [
+        vec![1, 8],       // 0 -- 1, 8
         vec![0, 2],       // 1 -- 0, 2
         vec![1, 3],       // 2 -- 1, 3
         vec![2, 4],       // 3 -- 2, 4
@@ -176,29 +216,112 @@ fn main() {
         vec![4],          // 5 -- 4
         vec![4, 7],       // 6 -- 4, 7
         vec![6],          // 7 -- 6
+        vec![0, 9],       // 8 -- 0, 9 (affine)
+        vec![8],          // 9 -- 8 (hyperbolic)
     ];
 
-    for (i, adj_row) in adjacency.iter().enumerate() {
-        for (j, &count) in transition_matrix[i].iter().enumerate().take(8) {
-            if i == j { continue; }
-            if adj_row.contains(&j) {
-                connected_hits += count;
+    // Sector-specific adjacency ratios (Claim 3: locality is sector-specific)
+    let mut e8_connected: u64 = 0;
+    let mut e8_disconnected: u64 = 0;
+    let mut mixed_transitions: u64 = 0;  // E8 <-> affine/hyperbolic
+    let mut hyp_transitions: u64 = 0;    // within {8,9}
+    let mut total_connected_e10: u64 = 0;
+    let mut total_disconnected_e10: u64 = 0;
+
+    for (i, row_i) in transition_matrix.iter().enumerate() {
+        for (j, &count) in row_i.iter().enumerate() {
+            if i == j || count == 0 { continue; }
+
+            let is_adjacent = adjacency_e10[i].contains(&j);
+            if is_adjacent {
+                total_connected_e10 += count;
             } else {
-                disconnected_hits += count;
+                total_disconnected_e10 += count;
+            }
+
+            // Sector classification
+            let i_in_e8 = i < 8;
+            let j_in_e8 = j < 8;
+            match (i_in_e8, j_in_e8) {
+                (true, true) => {
+                    if is_adjacent { e8_connected += count; } else { e8_disconnected += count; }
+                }
+                (false, false) => {
+                    hyp_transitions += count;
+                }
+                _ => {
+                    mixed_transitions += count;
+                }
             }
         }
     }
-    
-    println!("  Transitions between connected E8 nodes: {}", connected_hits);
-    println!("  Transitions between disconnected E8 nodes: {}", disconnected_hits);
-    let ratio = connected_hits as f64 / (connected_hits + disconnected_hits) as f64;
-    println!("  Connected Ratio: {:.4} (High ratio implies geometric locality)", ratio);
-    
-    println!("\nNovelty Check: Fano Plane Correlations");
-    println!("Do 'vector' walls (non-Cartan-like) transition to 'scalar' walls?");
-    // This is a heuristic check for the user's request.
-    
-    println!("Done.");
+
+    println!("\nE8 sector (walls 0-7):");
+    let e8_total = e8_connected + e8_disconnected;
+    let r_e8 = if e8_total > 0 { e8_connected as f64 / e8_total as f64 } else { 0.0 };
+    println!("  Connected:    {} ({:.4})", e8_connected, r_e8);
+    println!("  Disconnected: {}", e8_disconnected);
+    // Null baseline: E8 has 7 edges out of C(8,2)=28 directed pairs -> 14/56 = 0.25
+    println!("  Null baseline (uniform): 0.2500");
+    println!("  Locality ratio r_E8/r_null: {:.4}", r_e8 / 0.25);
+
+    println!("\nMixed sector (E8 <-> affine/hyperbolic):");
+    println!("  Transitions: {}", mixed_transitions);
+
+    println!("\nHyperbolic sector (walls 8-9):");
+    println!("  Transitions: {}", hyp_transitions);
+
+    let e10_total = total_connected_e10 + total_disconnected_e10;
+    let r_e10 = if e10_total > 0 { total_connected_e10 as f64 / e10_total as f64 } else { 0.0 };
+    println!("\nFull E10 connected ratio: {:.4}", r_e10);
+
+    // === Graph invariants on the empirical transition graph ===
+    println!("\n=== Transition Graph Invariants ===");
+
+    // Build symmetric 0/1 adjacency matrix (undirected skeleton of directed transitions)
+    let mut adj_matrix = vec![vec![false; n_walls]; n_walls];
+    for (i, row_i) in transition_matrix.iter().enumerate() {
+        for (j, &count) in row_i.iter().enumerate() {
+            if i != j && (count > 0 || transition_matrix[j][i] > 0) {
+                adj_matrix[i][j] = true;
+                adj_matrix[j][i] = true;
+            }
+        }
+    }
+
+    // Degree sequence from adjacency matrix
+    let degrees: Vec<usize> = adj_matrix.iter()
+        .map(|row| row.iter().filter(|&&v| v).count())
+        .collect();
+
+    // Edge count (upper triangle only)
+    let edge_count: usize = (0..n_walls)
+        .flat_map(|i| ((i + 1)..n_walls).map(move |j| (i, j)))
+        .filter(|&(i, j)| adj_matrix[i][j])
+        .count();
+
+    // Triangle count (ordered triples i < j < k)
+    let triangle_count: usize = (0..n_walls)
+        .flat_map(|i| ((i + 1)..n_walls).map(move |j| (i, j)))
+        .filter(|&(i, j)| adj_matrix[i][j])
+        .flat_map(|(i, j)| ((j + 1)..n_walls).map(move |k| (i, j, k)))
+        .filter(|&(i, j, k)| adj_matrix[j][k] && adj_matrix[i][k])
+        .count();
+
+    let mut sorted_degrees = degrees.clone();
+    sorted_degrees.sort_unstable_by(|a, b| b.cmp(a));
+    println!("Degree sequence (desc): {:?}", sorted_degrees);
+    println!("Edge count: {}", edge_count);
+    println!("Triangle count: {}", triangle_count);
+
+    // Print adjacency matrix for external analysis
+    println!("Adjacency matrix (empirical, 0/1 skeleton):");
+    for row in &adj_matrix {
+        let s: Vec<String> = row.iter().map(|&v| if v { "1" } else { "." }.to_string()).collect();
+        println!("  {}", s.join(" "));
+    }
+
+    println!("\nDone. Seed={}, bounces={}", seed, actual_bounces);
 }
 
 // Helpers
