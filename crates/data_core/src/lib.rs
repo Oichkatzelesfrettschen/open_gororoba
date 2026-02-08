@@ -26,6 +26,8 @@ pub mod doc_links;
 pub mod fetcher;
 pub mod formats;
 pub mod geophysical;
+#[cfg(feature = "hdf5-export")]
+pub mod hdf5_export;
 pub mod provenance;
 
 pub use fetcher::{compute_sha256, download_to_file, download_to_string};

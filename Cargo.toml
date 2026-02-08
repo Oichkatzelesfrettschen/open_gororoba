@@ -115,6 +115,9 @@ lopdf = "0.39"                   # Pure Rust PDF parser (fallback, object-level 
 pdf-extract = "0.10"             # Pure Rust PDF text extraction (fallback, wraps lopdf)
 toml = "0.8"                     # TOML serialization/deserialization
 
+# HDF5 data export (requires libhdf5-dev)
+hdf5 = "0.8.1"
+
 # Documentation generation
 clap_mangen = "0.2"              # Manpage generation from clap App structs
 

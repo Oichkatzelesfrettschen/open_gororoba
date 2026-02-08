@@ -16,6 +16,11 @@ flate2 = { workspace = true }
 zip = { workspace = true }
 tar = { workspace = true }
 rand = { workspace = true }
+hdf5 = { workspace = true, optional = true }
+
+[features]
+default = []
+hdf5-export = ["dep:hdf5"]
 
 [dev-dependencies]
 approx = { workspace = true }
