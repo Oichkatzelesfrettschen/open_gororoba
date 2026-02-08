@@ -239,6 +239,32 @@ pub fn planck_function(nu: f64, temp_k: f64) -> f64 {
     numerator / denominator
 }
 
+// ============================================================================
+// Plasma frequency
+// ============================================================================
+
+/// Plasma frequency [Hz].
+///
+/// nu_p = (n_e * e^2 / (pi * m_e))^{1/2}
+///
+/// The frequency below which electromagnetic waves cannot propagate
+/// through a plasma. Photons with nu < nu_p are reflected.
+///
+/// Typical values:
+/// - Solar corona (n_e ~ 1e8 cm^-3): nu_p ~ 90 MHz
+/// - ISM (n_e ~ 0.03 cm^-3): nu_p ~ 1.6 kHz
+/// - Tokamak (n_e ~ 1e14 cm^-3): nu_p ~ 90 GHz
+///
+/// The plasma frequency also determines the dispersion delay of radio
+/// pulses through ionized media: delta_t ~ DM / nu^2, where DM = integral(n_e dl).
+///
+/// # Arguments
+/// * `n_e` - Electron number density [cm^-3]
+pub fn plasma_frequency(n_e: f64) -> f64 {
+    // nu_p = sqrt(n_e * e^2 / (pi * m_e))  in CGS
+    (n_e * E_CHARGE_CGS * E_CHARGE_CGS / (PI * M_ELECTRON_CGS)).sqrt()
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -430,5 +456,45 @@ mod tests {
         let b_low = planck_function(nu_peak / 10.0, t);
         let b_high = planck_function(nu_peak * 10.0, t);
         assert!(b_peak > b_low && b_peak > b_high);
+    }
+
+    // -- Plasma frequency --
+
+    #[test]
+    fn test_plasma_frequency_solar_corona() {
+        // Solar corona: n_e ~ 1e8 cm^-3, nu_p ~ 90 MHz
+        let nu_p = plasma_frequency(1e8);
+        assert!(
+            nu_p > 80e6 && nu_p < 100e6,
+            "solar corona nu_p = {nu_p:.2e}, expected ~90 MHz"
+        );
+    }
+
+    #[test]
+    fn test_plasma_frequency_ism() {
+        // ISM: n_e ~ 0.03 cm^-3, nu_p ~ 1.6 kHz
+        let nu_p = plasma_frequency(0.03);
+        assert!(
+            nu_p > 1.0e3 && nu_p < 2.0e3,
+            "ISM nu_p = {nu_p:.2e}, expected ~1.6 kHz"
+        );
+    }
+
+    #[test]
+    fn test_plasma_frequency_scaling() {
+        // nu_p ~ sqrt(n_e), so quadrupling density doubles frequency
+        let nu1 = plasma_frequency(1e6);
+        let nu4 = plasma_frequency(4e6);
+        assert!(
+            (nu4 / nu1 - 2.0).abs() < 1e-10,
+            "nu_p should scale as sqrt(n_e): ratio = {}",
+            nu4 / nu1
+        );
+    }
+
+    #[test]
+    fn test_plasma_frequency_positive() {
+        assert!(plasma_frequency(1.0) > 0.0);
+        assert!(plasma_frequency(1e20) > 0.0);
     }
 }

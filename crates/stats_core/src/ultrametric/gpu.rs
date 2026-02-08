@@ -76,26 +76,29 @@ extern "C" __global__ void ultrametric_triples(
         d_ik_sq += diff_ik * diff_ik;
     }
 
-    float dij = sqrtf(d_ij_sq);
-    float djk = sqrtf(d_jk_sq);
-    float dik = sqrtf(d_ik_sq);
+    // Sort squared distances to find d_max_sq and d_mid_sq.
+    // No sqrtf() needed: the ultrametric condition on distances
+    //   (d_max - d_mid) / d_max < epsilon
+    // is equivalent to
+    //   (d_max_sq - d_mid_sq) / d_max_sq < epsilon_sq
+    // where epsilon_sq = 1 - (1 - epsilon)^2.
+    // The host pre-computes epsilon_sq for each threshold.
+    float d_max_sq = fmaxf(d_ij_sq, fmaxf(d_jk_sq, d_ik_sq));
+    float d_min_sq = fminf(d_ij_sq, fminf(d_jk_sq, d_ik_sq));
+    float d_mid_sq = d_ij_sq + d_jk_sq + d_ik_sq - d_min_sq - d_max_sq;
 
-    // Sort to find d_max and d_mid (two largest must be ~equal for ultrametric)
-    float d_max = fmaxf(dij, fmaxf(djk, dik));
-    float d_min = fminf(dij, fminf(djk, dik));
-    float d_mid = dij + djk + dik - d_min - d_max;
-
-    // Relative difference between the two largest distances
-    float rel_diff;
-    if (d_max > 1e-7f) {
-        rel_diff = (d_max - d_mid) / d_max;
+    // Relative difference between the two largest squared distances
+    float rel_diff_sq;
+    if (d_max_sq > 1e-14f) {
+        rel_diff_sq = (d_max_sq - d_mid_sq) / d_max_sq;
     } else {
-        rel_diff = -1.0f;  // degenerate triple: always counts
+        rel_diff_sq = -1.0f;  // degenerate triple: always counts
     }
 
-    // Check ALL epsilon thresholds for this triple (one atomic per epsilon)
+    // Check ALL epsilon thresholds for this triple (one atomic per epsilon).
+    // epsilons[] now contains squared-distance thresholds pre-computed by host.
     for (int e = 0; e < n_eps; e++) {
-        if (rel_diff < epsilons[e]) {
+        if (rel_diff_sq < epsilons[e]) {
             atomicAdd(&counts[e], 1);
         }
     }
@@ -134,7 +137,10 @@ impl GpuUltrametricEngine {
     /// kernel launch.
     ///
     /// `data_f32`: column-major f32 normalized data (d columns x n rows).
-    /// `epsilons`: array of epsilon thresholds to test simultaneously.
+    /// `epsilons`: array of epsilon thresholds (on distances) to test simultaneously.
+    ///
+    /// Internally converts epsilon thresholds to squared-distance space:
+    /// `eps_sq = 1 - (1 - eps)^2` before uploading to the GPU kernel.
     ///
     /// Returns a Vec<f64> of fractions, one per epsilon.
     pub fn fraction_multi_eps(
@@ -146,8 +152,13 @@ impl GpuUltrametricEngine {
         seed: u64,
         epsilons: &[f32],
     ) -> Result<Vec<f64>, cudarc::driver::DriverError> {
+        // Convert distance-space epsilons to squared-distance-space thresholds
+        let epsilons_sq: Vec<f32> = epsilons
+            .iter()
+            .map(|&eps| 1.0 - (1.0 - eps).powi(2))
+            .collect();
         let data_dev = self.stream.clone_htod(data_f32)?;
-        let eps_dev = self.stream.clone_htod(epsilons)?;
+        let eps_dev = self.stream.clone_htod(&epsilons_sq)?;
         let mut counts_dev = self.stream.alloc_zeros::<i32>(epsilons.len())?;
 
         let n_i32 = n as i32;

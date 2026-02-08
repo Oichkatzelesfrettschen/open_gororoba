@@ -105,6 +105,37 @@ pub fn mass_to_eddington_luminosity(m_solar: f64) -> f64 {
     m_solar * L_EDDINGTON_PER_MSUN
 }
 
+// -- Relativistic thermodynamics --
+
+/// Relativistic sound speed squared [c^2 units, dimensionless].
+///
+/// c_s^2 = gamma * P / (epsilon + P)
+///
+/// where gamma is the adiabatic index, P is pressure, and epsilon is
+/// the total energy density (including rest mass). In natural units (c=1),
+/// this gives a dimensionless quantity bounded by [0, 1].
+///
+/// Limits:
+/// - Ultrarelativistic (P = epsilon/3, gamma = 4/3): c_s^2 = 1/3
+/// - Non-relativistic (P << epsilon): c_s^2 ~ gamma * P / epsilon
+/// - Stiff EOS (P = epsilon): c_s^2 = gamma / 2 (causality limit at gamma = 2)
+///
+/// This provides a gr_core-local function for GR applications (e.g., accretion
+/// flows, neutron star oscillations) without requiring a cross-crate dependency
+/// on cosmology_core::eos.
+///
+/// # Arguments
+/// * `pressure` - Pressure [any consistent units]
+/// * `energy_density` - Total energy density (same units as pressure)
+/// * `gamma` - Adiabatic index (ratio of specific heats)
+pub fn relativistic_sound_speed_sq(pressure: f64, energy_density: f64, gamma: f64) -> f64 {
+    let denom = energy_density + pressure;
+    if denom.abs() < 1e-30 {
+        return 0.0;
+    }
+    gamma * pressure / denom
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -150,5 +181,54 @@ mod tests {
         let t1 = mass_to_hawking_temp(1.0);
         let t10 = mass_to_hawking_temp(10.0);
         assert!((t1 / t10 - 10.0).abs() < 1e-10);
+    }
+
+    // -- Relativistic sound speed --
+
+    #[test]
+    fn test_sound_speed_ultrarelativistic() {
+        // Ultrarelativistic gas: P = epsilon/3, gamma = 4/3
+        // c_s^2 = (4/3) * (epsilon/3) / (epsilon + epsilon/3)
+        //       = (4/9 * epsilon) / (4/3 * epsilon) = 1/3
+        let epsilon = 1e15;
+        let p = epsilon / 3.0;
+        let cs2 = relativistic_sound_speed_sq(p, epsilon, 4.0 / 3.0);
+        assert!(
+            (cs2 - 1.0 / 3.0).abs() < 1e-12,
+            "ultrarelativistic cs2 = {cs2}, expected 1/3"
+        );
+    }
+
+    #[test]
+    fn test_sound_speed_nonrelativistic() {
+        // Non-relativistic: P << epsilon, so c_s^2 ~ gamma * P / epsilon
+        let epsilon = 1e15;
+        let p = 1e10; // P/epsilon = 1e-5
+        let gamma = 5.0 / 3.0;
+        let cs2 = relativistic_sound_speed_sq(p, epsilon, gamma);
+        let expected = gamma * p / epsilon; // neglect P in denominator
+        assert!(
+            (cs2 - expected).abs() / expected < 1e-4,
+            "non-relativistic cs2 = {cs2}, expected {expected}"
+        );
+    }
+
+    #[test]
+    fn test_sound_speed_zero_pressure() {
+        // Dust: P = 0 -> c_s^2 = 0
+        let cs2 = relativistic_sound_speed_sq(0.0, 1e15, 5.0 / 3.0);
+        assert!(cs2.abs() < 1e-30, "dust should have zero sound speed");
+    }
+
+    #[test]
+    fn test_sound_speed_causal_limit() {
+        // Stiff EOS P = epsilon with gamma = 2 -> c_s^2 = 1 (speed of light)
+        let epsilon = 1e15;
+        let p = epsilon;
+        let cs2 = relativistic_sound_speed_sq(p, epsilon, 2.0);
+        assert!(
+            (cs2 - 1.0).abs() < 1e-12,
+            "stiff EOS cs2 = {cs2}, expected 1.0"
+        );
     }
 }

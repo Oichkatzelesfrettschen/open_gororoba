@@ -514,6 +514,31 @@ here for completeness.
 Full granular checklist in `docs/ULTRA_ROADMAP.md` Section H (21/21 done).
 30 dataset providers, 6 EHT multi-format bundles (UVFITS+CSV+TXT), 3 URL fixes applied.
 
+### 7.7 Finite Projective Geometry Integration (Sprint 7)
+
+Maps Cayley-Dickson zero-divisor motif structure to PG(n-2,2) finite projective spaces:
+
+- [x] PG(m,2) finite projective space implementation (points, lines, incidence)
+- [x] PG-to-motif-component bijection via XOR-key extraction
+- [x] Graph invariants on MotifComponent (adjacency matrix, spectrum, diameter, girth)
+- [x] GF(2)-linear bit-predicate for motif class separation
+- [x] Sign-twist cancellation predicate formalization
+
+**Claim coverage**: C-444 (bijection), C-445 (bit-predicate), C-446 (sign-twist)
+**Insight**: I-013 (PG explains scaling laws)
+
+### 7.8 Adaptive Permutation Testing (Sprint 7)
+
+Besag-Clifford (1991) sequential stopping for the ultrametric pipeline:
+
+- [x] Null model abstraction (ColumnIndependent, RowPermutation, ToroidalShift, RandomRotation)
+- [x] Adaptive permutation testing with binomial CI stopping rule
+- [x] Attribute subset search extracted to library function
+- [x] Squared-distance optimization (CPU + GPU, ~30% speedup)
+
+**Claim coverage**: C-447 (type-I error preservation)
+**Insight**: I-014 (squared-distance optimization)
+
 ---
 
 ## 8. Long-Term Vision

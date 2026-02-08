@@ -38,6 +38,7 @@ pub mod homotopy_algebra;
 pub mod stochastic;
 pub mod grassmannian;
 pub mod so7_drift;
+pub mod projective_geometry;
 
 // Re-export core algebra functions
 pub use cayley_dickson::{
@@ -203,6 +204,15 @@ pub use homotopy_algebra::{
     koszul_sign, a_infinity_sign, l_infinity_sign,
     // String field theory
     StringFieldTheory, StringType,
+};
+
+pub use projective_geometry::{
+    PGPoint, PGLine, ProjectiveGeometry,
+    pg, pg_from_cd_dim, incidence_matrix,
+    component_xor_label, map_components_to_pg, verify_pg_line_structure,
+    find_linear_class_predicate, find_affine_class_predicate,
+    find_boolean_class_predicate,
+    sign_twist_signature, verify_signature_determines_solutions,
 };
 
 pub use stochastic::{

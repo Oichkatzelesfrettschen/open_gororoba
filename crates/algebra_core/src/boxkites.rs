@@ -30,6 +30,7 @@
 //! - de Marrais (2004): "Box-Kites III: Quizzical Quaternions" (arXiv:math/0403113)
 
 use std::collections::{HashSet, HashMap, BTreeSet, VecDeque};
+use nalgebra::{DMatrix, SymmetricEigen};
 use crate::cayley_dickson::{cd_multiply, cd_norm_sq, cd_basis_mul_sign};
 use crate::zd_graphs::xor_key;
 
@@ -987,6 +988,131 @@ impl MotifComponent {
             && self.edges.len() == 24
             && self.degree_sequence() == vec![4; 12]
     }
+
+    /// Adjacency matrix of the component graph as a dense real matrix.
+    ///
+    /// Rows/columns follow the BTreeSet ordering of nodes.
+    pub fn adjacency_matrix(&self) -> DMatrix<f64> {
+        let nodes: Vec<CrossPair> = self.nodes.iter().copied().collect();
+        let n = nodes.len();
+        let idx: HashMap<CrossPair, usize> =
+            nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
+
+        let mut a = DMatrix::zeros(n, n);
+        for &(u, v) in &self.edges {
+            let i = idx[&u];
+            let j = idx[&v];
+            a[(i, j)] = 1.0;
+            a[(j, i)] = 1.0;
+        }
+        a
+    }
+
+    /// Eigenvalue spectrum of the adjacency matrix, sorted descending.
+    ///
+    /// Graph spectra are isomorphism invariants: isomorphic graphs have
+    /// identical spectra. Same-class motif components should share spectra.
+    pub fn spectrum(&self) -> Vec<f64> {
+        let a = self.adjacency_matrix();
+        let eigen = SymmetricEigen::new(a);
+        let mut vals: Vec<f64> = eigen.eigenvalues.iter().copied().collect();
+        vals.sort_by(|a, b| b.partial_cmp(a).unwrap());
+        vals
+    }
+
+    /// Number of triangles in the component graph.
+    ///
+    /// Computed as trace(A^3) / 6. Each triangle is counted 6 times in
+    /// the trace (2 orientations x 3 starting vertices).
+    pub fn triangle_count(&self) -> usize {
+        let a = self.adjacency_matrix();
+        let a3 = &a * &a * &a;
+        let trace: f64 = (0..a3.nrows()).map(|i| a3[(i, i)]).sum();
+        (trace / 6.0).round() as usize
+    }
+
+    /// Diameter of the component graph (longest shortest path).
+    ///
+    /// Computed via BFS from each vertex. Returns 0 for single-node graphs.
+    pub fn diameter(&self) -> usize {
+        let nodes: Vec<CrossPair> = self.nodes.iter().copied().collect();
+        let n = nodes.len();
+        if n <= 1 {
+            return 0;
+        }
+        let idx: HashMap<CrossPair, usize> =
+            nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
+
+        // Build adjacency list
+        let mut adj: Vec<Vec<usize>> = vec![Vec::new(); n];
+        for &(u, v) in &self.edges {
+            let i = idx[&u];
+            let j = idx[&v];
+            adj[i].push(j);
+            adj[j].push(i);
+        }
+
+        let mut max_dist = 0usize;
+        for start in 0..n {
+            let mut dist = vec![usize::MAX; n];
+            dist[start] = 0;
+            let mut queue = VecDeque::new();
+            queue.push_back(start);
+            while let Some(u) = queue.pop_front() {
+                for &v in &adj[u] {
+                    if dist[v] == usize::MAX {
+                        dist[v] = dist[u] + 1;
+                        max_dist = max_dist.max(dist[v]);
+                        queue.push_back(v);
+                    }
+                }
+            }
+        }
+        max_dist
+    }
+
+    /// Girth of the component graph (length of shortest cycle).
+    ///
+    /// Computed via BFS from each vertex, detecting back-edges.
+    /// Returns `usize::MAX` if the graph is acyclic (a forest).
+    pub fn girth(&self) -> usize {
+        let nodes: Vec<CrossPair> = self.nodes.iter().copied().collect();
+        let n = nodes.len();
+        if n <= 2 {
+            return usize::MAX;
+        }
+        let idx: HashMap<CrossPair, usize> =
+            nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
+
+        let mut adj: Vec<Vec<usize>> = vec![Vec::new(); n];
+        for &(u, v) in &self.edges {
+            let i = idx[&u];
+            let j = idx[&v];
+            adj[i].push(j);
+            adj[j].push(i);
+        }
+
+        let mut min_cycle = usize::MAX;
+        for start in 0..n {
+            let mut dist = vec![usize::MAX; n];
+            dist[start] = 0;
+            let mut queue = VecDeque::new();
+            queue.push_back(start);
+            while let Some(u) = queue.pop_front() {
+                for &v in &adj[u] {
+                    if dist[v] == usize::MAX {
+                        dist[v] = dist[u] + 1;
+                        queue.push_back(v);
+                    } else if dist[v] >= dist[u] {
+                        // Back-edge or cross-edge at same level
+                        let cycle_len = dist[u] + dist[v] + 1;
+                        min_cycle = min_cycle.min(cycle_len);
+                    }
+                }
+            }
+        }
+        min_cycle
+    }
 }
 
 /// Build the diagonal zero-product graph over cross-assessors and return its
@@ -1871,6 +1997,169 @@ mod tests {
                 "Component {} at dim=16 should be octahedral",
                 i
             );
+        }
+    }
+
+    // ---------------------------------------------------------------
+    // Graph invariant tests (spectral, combinatorial)
+    // ---------------------------------------------------------------
+
+    #[test]
+    fn test_octahedron_spectrum_dim16() {
+        // K_{2,2,2} (octahedron) is complete tripartite with k=3 parts of m=2.
+        // Eigenvalues: 2(k-1)=4 (x1), 0 (x k*(m-1)=3), -m=-2 (x k-1=2).
+        // Sorted descending: [4, 0, 0, 0, -2, -2]
+        let comps = motif_components_for_cross_assessors(16);
+        let expected = vec![4.0, 0.0, 0.0, 0.0, -2.0, -2.0];
+        for (i, c) in comps.iter().enumerate() {
+            let spec = c.spectrum();
+            assert_eq!(spec.len(), 6, "dim=16 comp[{i}] should have 6 eigenvalues");
+            for (j, (&got, &want)) in spec.iter().zip(expected.iter()).enumerate() {
+                assert!(
+                    (got - want).abs() < 1e-10,
+                    "dim=16 comp[{i}] eigenvalue[{j}]: got {got:.6}, expected {want}",
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_octahedron_triangle_count_dim16() {
+        // An octahedron (K_{2,2,2}) has 8 triangles.
+        let comps = motif_components_for_cross_assessors(16);
+        for (i, c) in comps.iter().enumerate() {
+            assert_eq!(
+                c.triangle_count(), 8,
+                "dim=16 comp[{i}] should have 8 triangles"
+            );
+        }
+    }
+
+    #[test]
+    fn test_octahedron_diameter_dim16() {
+        // Diameter of octahedron = 2 (non-adjacent strut pairs).
+        let comps = motif_components_for_cross_assessors(16);
+        for (i, c) in comps.iter().enumerate() {
+            assert_eq!(
+                c.diameter(), 2,
+                "dim=16 comp[{i}] diameter should be 2"
+            );
+        }
+    }
+
+    #[test]
+    fn test_octahedron_girth_dim16() {
+        // Girth of octahedron = 3 (has triangles).
+        let comps = motif_components_for_cross_assessors(16);
+        for (i, c) in comps.iter().enumerate() {
+            assert_eq!(
+                c.girth(), 3,
+                "dim=16 comp[{i}] girth should be 3"
+            );
+        }
+    }
+
+    #[test]
+    fn test_same_class_same_spectrum_dim32() {
+        // Components in the same motif class (same edge count) should
+        // have identical spectra up to numerical precision.
+        let comps = motif_components_for_cross_assessors(32);
+        let mut by_edges: HashMap<usize, Vec<Vec<f64>>> = HashMap::new();
+        for c in &comps {
+            by_edges.entry(c.edges.len())
+                .or_default()
+                .push(c.spectrum());
+        }
+        for (edges, spectra) in &by_edges {
+            if spectra.len() < 2 {
+                continue;
+            }
+            let ref_spec = &spectra[0];
+            for (j, spec) in spectra.iter().enumerate().skip(1) {
+                assert_eq!(
+                    ref_spec.len(), spec.len(),
+                    "class edges={edges}: spectrum length mismatch"
+                );
+                for (k, (&a, &b)) in ref_spec.iter().zip(spec.iter()).enumerate() {
+                    assert!(
+                        (a - b).abs() < 1e-8,
+                        "class edges={edges}: comp[0] vs comp[{j}] eigenvalue[{k}]: \
+                         {a:.6} vs {b:.6}",
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_different_classes_different_spectra_dim32() {
+        // Different motif classes should have distinct spectra.
+        let comps = motif_components_for_cross_assessors(32);
+        let mut class_spectra: Vec<(usize, Vec<f64>)> = Vec::new();
+        let mut seen_edges: HashSet<usize> = HashSet::new();
+        for c in &comps {
+            if seen_edges.insert(c.edges.len()) {
+                class_spectra.push((c.edges.len(), c.spectrum()));
+            }
+        }
+        for i in 0..class_spectra.len() {
+            for j in (i + 1)..class_spectra.len() {
+                let (e1, s1) = &class_spectra[i];
+                let (e2, s2) = &class_spectra[j];
+                // Spectra should differ in at least one eigenvalue
+                let differ = s1.len() != s2.len()
+                    || s1.iter().zip(s2.iter())
+                        .any(|(&a, &b)| (a - b).abs() > 1e-6);
+                assert!(
+                    differ,
+                    "Classes edges={e1} and edges={e2} should have different spectra"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_k2_multipartite_spectrum_dim32() {
+        // K_{2,2,...,2} with k parts has known spectrum:
+        // eigenvalue 2(k-1) with multiplicity 1,
+        // eigenvalue 0 with multiplicity k,
+        // eigenvalue -2 with multiplicity k-1.
+        // At dim=32, max K2 part count = 7, so k=7:
+        // spectrum = [12, 0,0,0,0,0,0,0, -2,-2,-2,-2,-2,-2]
+        let comps = motif_components_for_cross_assessors(32);
+        let k2_comps: Vec<&MotifComponent> = comps.iter()
+            .filter(|c| c.k2_multipartite_part_count() == 7)
+            .collect();
+        assert!(!k2_comps.is_empty(), "Should have K_{{2,...,2}} with 7 parts at dim=32");
+
+        for c in &k2_comps {
+            let spec = c.spectrum();
+            // 14 nodes, so 14 eigenvalues
+            assert_eq!(spec.len(), 14);
+            // Largest eigenvalue = 2*(7-1) = 12
+            assert!((spec[0] - 12.0).abs() < 1e-8, "largest eigenvalue should be 12");
+            // 7 zeros
+            let n_zeros = spec.iter().filter(|&&v| v.abs() < 1e-8).count();
+            assert_eq!(n_zeros, 7, "should have 7 zero eigenvalues");
+            // 6 eigenvalues of -2
+            let n_neg2 = spec.iter().filter(|&&v| (v + 2.0).abs() < 1e-8).count();
+            assert_eq!(n_neg2, 6, "should have 6 eigenvalues of -2");
+        }
+    }
+
+    #[test]
+    fn test_adjacency_matrix_symmetry() {
+        let comps = motif_components_for_cross_assessors(16);
+        for c in &comps {
+            let a = c.adjacency_matrix();
+            for i in 0..a.nrows() {
+                for j in 0..a.ncols() {
+                    assert!(
+                        (a[(i, j)] - a[(j, i)]).abs() < 1e-15,
+                        "Adjacency matrix should be symmetric"
+                    );
+                }
+            }
         }
     }
 }

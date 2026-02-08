@@ -57,6 +57,8 @@ pub struct LocalUltrametricResult {
 ///
 /// Given a set of 3D points, samples random triples and checks the
 /// ultrametric inequality. Returns the fraction of triples satisfying it.
+///
+/// Uses squared distances internally to avoid 3 sqrt() calls per triple.
 fn neighborhood_ultrametric_index(
     points: &[(f64, f64, f64)],
     n_samples: usize,
@@ -68,6 +70,8 @@ fn neighborhood_ultrametric_index(
     }
 
     let mut count = 0usize;
+    // epsilon=0.05 on distances -> epsilon_sq on squared distances
+    let epsilon_sq = 1.0 - (1.0 - 0.05_f64).powi(2); // = 0.0975
 
     for _ in 0..n_samples {
         let i = rng.gen_range(0..n);
@@ -77,16 +81,16 @@ fn neighborhood_ultrametric_index(
         if k >= i.min(j) { k += 1; }
         if k >= i.max(j) { k += 1; }
 
-        let d_ij = euclidean_3d(&points[i], &points[j]);
-        let d_jk = euclidean_3d(&points[j], &points[k]);
-        let d_ik = euclidean_3d(&points[i], &points[k]);
+        let d_ij_sq = euclidean_3d_sq(&points[i], &points[j]);
+        let d_jk_sq = euclidean_3d_sq(&points[j], &points[k]);
+        let d_ik_sq = euclidean_3d_sq(&points[i], &points[k]);
 
-        let mut dists = [d_ij, d_jk, d_ik];
-        dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        let mut dists_sq = [d_ij_sq, d_jk_sq, d_ik_sq];
+        dists_sq.sort_by(|a, b| a.partial_cmp(b).unwrap());
 
-        if dists[2] > 1e-15 {
-            let relative_diff = (dists[2] - dists[1]) / dists[2];
-            if relative_diff < 0.05 {
+        if dists_sq[2] > 1e-30 {
+            let relative_diff_sq = (dists_sq[2] - dists_sq[1]) / dists_sq[2];
+            if relative_diff_sq < epsilon_sq {
                 count += 1;
             }
         } else {
@@ -97,12 +101,15 @@ fn neighborhood_ultrametric_index(
     count as f64 / n_samples as f64
 }
 
-/// Euclidean distance between two 3D points.
-fn euclidean_3d(a: &(f64, f64, f64), b: &(f64, f64, f64)) -> f64 {
+/// Squared Euclidean distance between two 3D points.
+///
+/// Returns d^2 to avoid the sqrt; callers that need the actual distance
+/// should take the square root of the result.
+fn euclidean_3d_sq(a: &(f64, f64, f64), b: &(f64, f64, f64)) -> f64 {
     let dx = a.0 - b.0;
     let dy = a.1 - b.1;
     let dz = a.2 - b.2;
-    (dx * dx + dy * dy + dz * dz).sqrt()
+    dx * dx + dy * dy + dz * dz
 }
 
 /// Run the local ultrametricity test on 3D point coordinates.

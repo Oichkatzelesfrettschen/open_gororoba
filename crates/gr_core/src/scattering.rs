@@ -255,6 +255,58 @@ pub fn asymmetry_parameter(scat_type: ScatteringType, nu: f64, grain_radius: f64
 }
 
 // ============================================================================
+// Scattering regime classification
+// ============================================================================
+
+/// Physical scattering regime based on the Mie size parameter x = 2*pi*a/lambda.
+///
+/// Determines which approximation is valid for scattering cross-section
+/// calculations. This complements [`ScatteringType`] which is used for
+/// asymmetry parameter dispatch -- [`ScatteringRegime`] classifies the
+/// physical regime itself.
+///
+/// Boundaries (Bohren & Huffman 1983):
+/// - x < 0.05: Rayleigh (dipole approximation valid, sigma ~ x^4)
+/// - 0.05 <= x < 1.0: Transition (neither Rayleigh nor geometric works)
+/// - x >= 1.0: Geometric (ray optics + diffraction, Q_sca -> 2)
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ScatteringRegime {
+    /// Rayleigh regime: particle much smaller than wavelength (x < 0.05)
+    Rayleigh,
+    /// Transition regime: full Mie theory needed (0.05 <= x < 1.0)
+    Transition,
+    /// Geometric regime: ray optics valid (x >= 1.0)
+    Geometric,
+}
+
+/// Classify the scattering regime from the Mie size parameter.
+///
+/// # Arguments
+/// * `x` - Mie size parameter: x = 2*pi*a / lambda
+pub fn classify_scattering_regime(x: f64) -> ScatteringRegime {
+    if x < 0.05 {
+        ScatteringRegime::Rayleigh
+    } else if x < 1.0 {
+        ScatteringRegime::Transition
+    } else {
+        ScatteringRegime::Geometric
+    }
+}
+
+/// Classify the scattering regime from frequency and grain radius.
+///
+/// Convenience wrapper that computes x = 2*pi*a/lambda internally.
+///
+/// # Arguments
+/// * `nu` - Observing frequency [Hz]
+/// * `grain_radius` - Grain radius [cm]
+pub fn classify_scattering_regime_from_params(nu: f64, grain_radius: f64) -> ScatteringRegime {
+    let lambda = C_CGS / nu;
+    let x = 2.0 * PI * grain_radius / lambda;
+    classify_scattering_regime(x)
+}
+
+// ============================================================================
 // Combined opacity
 // ============================================================================
 
@@ -457,5 +509,49 @@ mod tests {
         let k_thom = thomson_opacity(n_e);
 
         assert!(k_thom / k_total > 0.99, "Thomson should dominate at radio frequencies");
+    }
+
+    // -- Scattering regime classification --
+
+    #[test]
+    fn test_regime_rayleigh() {
+        assert_eq!(classify_scattering_regime(0.01), ScatteringRegime::Rayleigh);
+        assert_eq!(classify_scattering_regime(0.049), ScatteringRegime::Rayleigh);
+    }
+
+    #[test]
+    fn test_regime_transition() {
+        assert_eq!(classify_scattering_regime(0.05), ScatteringRegime::Transition);
+        assert_eq!(classify_scattering_regime(0.5), ScatteringRegime::Transition);
+        assert_eq!(classify_scattering_regime(0.999), ScatteringRegime::Transition);
+    }
+
+    #[test]
+    fn test_regime_geometric() {
+        assert_eq!(classify_scattering_regime(1.0), ScatteringRegime::Geometric);
+        assert_eq!(classify_scattering_regime(100.0), ScatteringRegime::Geometric);
+    }
+
+    #[test]
+    fn test_regime_consistent_with_mie_efficiency() {
+        // Rayleigh regime: mie_efficiency should return x^4
+        let nu: f64 = 1e10;
+        let a: f64 = 1e-4; // x ~ 2e-4
+        let lambda = C_CGS / nu;
+        let x = 2.0 * PI * a / lambda;
+        assert_eq!(classify_scattering_regime(x), ScatteringRegime::Rayleigh);
+        let q = mie_efficiency(nu, a);
+        let expected = x.powi(4);
+        assert!((q - expected).abs() / expected.max(1e-30) < 0.01);
+    }
+
+    #[test]
+    fn test_regime_from_params() {
+        // Large grain at optical frequency -> Geometric
+        let regime = classify_scattering_regime_from_params(1e15, 0.01);
+        assert_eq!(regime, ScatteringRegime::Geometric);
+        // Small grain at radio frequency -> Rayleigh
+        let regime = classify_scattering_regime_from_params(1e9, 1e-5);
+        assert_eq!(regime, ScatteringRegime::Rayleigh);
     }
 }

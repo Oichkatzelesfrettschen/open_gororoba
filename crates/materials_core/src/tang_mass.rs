@@ -392,7 +392,7 @@ mod tests {
         // Should find something
         assert!(best.rms_deviation < f64::INFINITY);
 
-        // Best should be better than random single assignment
+        // Best should be better than (or equal to) a fixed arbitrary assignment
         let random_assignment = GenerationAssignment {
             electron: (1, 2, 3),
             muon: (4, 5, 6),
@@ -400,8 +400,17 @@ mod tests {
         };
         let random_pred = predict_mass_ratios(16, &random_assignment);
 
-        // Best might not always be better due to random search, but should be reasonable
-        assert!(best.rms_deviation < 100.0);
+        // The arbitrary prediction should itself be valid
+        assert!(random_pred.rms_deviation >= 0.0);
+        assert!(random_pred.norms.0 >= 0.0);
+
+        // Search over 100 trials should find something at least as good
+        assert!(
+            best.rms_deviation <= random_pred.rms_deviation,
+            "best ({}) should be <= arbitrary assignment ({})",
+            best.rms_deviation,
+            random_pred.rms_deviation,
+        );
     }
 
     #[test]
@@ -429,7 +438,11 @@ mod tests {
 
         // Norms should be similar (all sqrt(2) for standard octonion triples)
         let norm_range = pred.norms.2 - pred.norms.0;
-        // Octonions have uniform associator structure
+        // Octonions have uniform associator structure, so the spread should be small
+        assert!(
+            norm_range.abs() < 1e-10,
+            "octonion associator norms should be nearly identical, but spread = {norm_range}",
+        );
     }
 
     #[test]

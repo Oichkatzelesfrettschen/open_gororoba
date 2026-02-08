@@ -335,6 +335,80 @@
 *   **nLab contributors.** *Associahedron*. [nLab](https://ncatlab.org/nlab/show/associahedron).
     *   *Stasheff polytopes K_n; vertices = Catalan numbers; encode A-infinity relations.*
 
+### Cayley-Dickson Algebras (Additional)
+*   **Schafer, R. D.** (1966). *An Introduction to Nonassociative Algebras*. Academic Press (reprinted Dover, 1995).
+    *   *Standard reference for Cayley-Dickson process, alternative algebras, and composition algebras.*
+*   **Eakin, P. M., & Sathaye, A.** (1990). *On automorphisms and derivations of Cayley-Dickson algebras*. Journal of Algebra 129(2), 263-278.
+    *   *Automorphism structure of Cayley-Dickson algebras beyond octonions.*
+*   **Smith, J. D. H.** (1995). *A left loop on the 15-sphere*. Journal of Algebra 176(1), 128-138.
+    *   *Loop structure on norm-one sedenions; relevant to non-associativity beyond octonions.*
+*   **Bales, J. W.** (2023). *The Cayley-Dickson Algebras and their Combinatorics*. Bulletin of the Malaysian Mathematical Sciences Society.
+    *   *Modern combinatorial perspective on CD doubling; sign function structure.*
+
+### Finite Projective Geometry
+*   **Saniga, M., Holweck, F., & Pracna, P.** (2015). *Cayley-Dickson algebras and finite geometry*. Discrete and Computational Geometry, arXiv:1405.6888.
+    *   *Maps CD zero-divisor structure to PG(n-2,2) finite projective spaces; our A1-A4 implementation follows this framework.*
+*   **Polster, B.** (1998). *A Geometrical Picture Book*. Springer.
+    *   *Accessible visual guide to finite geometries including PG(2,2) (Fano plane) and PG(3,2).*
+*   **Hirschfeld, J. W. P.** (1998). *Projective Geometries over Finite Fields*. Oxford Mathematical Monographs, 2nd ed.
+    *   *Definitive reference for PG(m,q); point/line/hyperplane counting formulas.*
+
+### Zero-Divisor Graphs (Additional)
+*   **Anderson, D. F., & Livingston, P. S.** (1999). *The zero-divisor graph of a commutative ring*. Journal of Algebra 217(2), 434-447.
+    *   *Foundational paper defining zero-divisor graphs for rings; our complement graph follows this tradition.*
+*   **Mulay, S. B.** (2002). *Cycles and symmetries of zero-divisors*. Communications in Algebra 30(7), 3533-3558.
+    *   *Cycle structure and girth analysis for ZD graphs.*
+*   **DeMeyer, F. R., McKenzie, T., & Schneider, K.** (2002). *The zero-divisor graph of a commutative semigroup*. Semigroup Forum 65, 206-214.
+    *   *Extension to semigroup setting; relevant for non-associative CD algebras.*
+
+### Ultrametric Structure (Additional)
+*   **Rammal, R., Toulouse, G., & Virasoro, M. A.** (1986). *Ultrametricity for physicists*. Reviews of Modern Physics 58(3), 765.
+    *   *Classic introduction to ultrametric spaces in physics; spin glass connection. Our 5% tolerance threshold from Eq. 2.4.*
+*   **Murtagh, F.** (2004). *On ultrametricity, data coding, and computation*. Journal of Classification 21(2), 167-184.
+    *   *Baire metric encoding for hierarchical data; our baire.rs implements this approach.*
+*   **Bradley, P. E.** (2008). *On p-adic classification*. p-Adic Numbers, Ultrametric Analysis and Applications, 1(4), 271-285.
+    *   *P-adic distance-based clustering; our p-adic ultrametric tests follow this framework.*
+*   **Bradley, P. E.** (2010). *Ultrametric approximation of distances*. Mathematics in Computer Science 4(2-3), 233-244.
+    *   *Local ultrametricity quantification via neighborhood triple tests; our local.rs implements Bradley's method.*
+
+### Permutation Testing Methodology
+*   **Besag, J., & Clifford, P.** (1991). *Sequential Monte Carlo p-values*. Biometrika 78(2), 301-304.
+    *   *Adaptive stopping rules for permutation tests via binomial confidence intervals. Our B4 implementation follows this.*
+*   **Phipson, B., & Smyth, G. K.** (2010). *Permutation P-values should never be zero: calculating exact P-values when permutations are randomly drawn*. Statistical Applications in Genetics and Molecular Biology 9(1), Article 39.
+    *   *Correct (r+1)/(K+1) formula for permutation p-values; avoids zero p-values.*
+*   **North, B. V., Curtis, D., & Sham, P. C.** (2002). *A note on the calculation of empirical P values from Monte Carlo procedures*. American Journal of Human Genetics 71(2), 439-441.
+    *   *Practical guidelines for permutation p-value computation; minimum permutation counts.*
+
+### General Relativity (Additional)
+*   **Page, D. N., & Thorne, K. S.** (1974). *Disk-accretion onto a black hole. Time-averaged structure of accretion disk*. Astrophysical Journal 191, 499-506.
+    *   *Foundational relativistic thin disk model; Page-Thorne efficiency. Our novikov_thorne.rs follows this.*
+*   **Novikov, I. D., & Thorne, K. S.** (1973). *Astrophysics of Black Holes*. In: Black Holes (Les Astres Occlus), ed. DeWitt & DeWitt, Gordon and Breach, pp. 343-450.
+    *   *Original Novikov-Thorne accretion disk theory; radial structure functions.*
+*   **Boyer, R. H., & Lindquist, R. W.** (1967). *Maximal analytic extension of the Kerr metric*. Journal of Mathematical Physics 8(2), 265-281.
+    *   *Boyer-Lindquist coordinates for the Kerr metric; our kerr.rs uses these throughout.*
+
+### Dust Scattering (Additional)
+*   **Bohren, C. F., & Huffman, D. R.** (1983). *Absorption and Scattering of Light by Small Particles*. Wiley.
+    *   *Definitive reference for Mie theory; our mie_efficiency() approximation follows Ch. 4.*
+*   **Draine, B. T.** (2003). *Scattering by interstellar dust grains. I. Optical and ultraviolet*. ApJ 598, 1017.
+    *   *ISM dust grain optical properties; size distribution and scattering regimes.*
+*   **Mathis, J. S., Rumpl, W., & Nordsieck, K. H.** (1977). *The size distribution of interstellar grains*. ApJ 217, 425-433.
+    *   *MRN power-law grain size distribution n(a) ~ a^{-3.5}; canonical ISM dust model.*
+
+### NANOGrav and Gravitational-Wave Background
+*   **Agazie, G., et al. (NANOGrav Collaboration).** (2023). *The NANOGrav 15 yr Data Set: Evidence for a Gravitational-wave Background*. ApJL 951, L8. [arXiv:2306.16213](https://arxiv.org/abs/2306.16213).
+    *   *First strong evidence for nanohertz GW background; our nanograv.rs provider uses free-spectrum posteriors.*
+*   **Antoniadis, J., et al. (IPTA).** (2022). *The International Pulsar Timing Array second data release: Search for an isotropic gravitational wave background*. MNRAS 510(4), 4873-4887.
+    *   *IPTA DR2 combined analysis; correlated low-frequency noise.*
+
+### Event Horizon Telescope (Additional)
+*   **EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. II. Array and Instrumentation*. ApJL 875, L2.
+*   **EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. III. Data Processing and Calibration*. ApJL 875, L3.
+*   **EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. IV. Imaging the Central Supermassive Black Hole*. ApJL 875, L4.
+*   **EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. V. Physical Origin of the Asymmetric Ring*. ApJL 875, L5.
+*   **EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. VI. The Shadow and Mass of the Central Black Hole*. ApJL 875, L6.
+    *   *Papers I-VI of the first EHT M87 results. Our eht.rs providers fetch data products from these releases.*
+
 ### Internal Project Artifacts
 *   `data/external/GWTC-3_GWpy_Official.csv`: Confident Events Catalog.
 *   `data/csv/sedenion_nilpotent_candidates.csv`: Identified Zero-Divisors.

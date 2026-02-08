@@ -7,8 +7,10 @@ jobs = 12
 
 [target.'cfg(target_arch = "x86_64")']
 # Enable native CPU instruction set (AVX2, BMI2, FMA, POPCNT, etc.)
-# This gives ~15-30% speedup on compute-heavy algebra tests
-rustflags = ["-C", "target-cpu=native"]
+# This gives ~15-30% speedup on compute-heavy algebra tests.
+# Use mold linker for faster link phase on full rebuilds.
+rustflags = ["-C", "target-cpu=native", "-C", "link-arg=-fuse-ld=mold"]
+linker = "clang"
 
 # Incremental compilation for faster rebuilds during development
 [profile.dev]

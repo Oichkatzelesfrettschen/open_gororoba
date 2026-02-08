@@ -46,6 +46,9 @@ pub mod local;
 pub mod baire;
 pub mod temporal;
 pub mod dendrogram;
+pub mod null_models;
+pub mod adaptive;
+pub mod subset_search;
 #[cfg(feature = "gpu")]
 pub mod gpu;
 
@@ -61,13 +64,20 @@ pub use baire::{
     BaireEncoder, AttributeSpec, baire_distance_matrix,
     euclidean_distance_matrix, euclidean_ultrametric_test, BaireTestResult,
     normalize_data_column_major, matrix_free_fraction,
-    matrix_free_ultrametric_test, matrix_free_tolerance_curve,
+    matrix_free_ultrametric_test, matrix_free_ultrametric_test_with_null,
+    matrix_free_tolerance_curve, matrix_free_tolerance_curve_with_null,
 };
 pub use temporal::{CascadeAnalysis, WaitingTimeStats, analyze_temporal_cascade};
 pub use dendrogram::{
     DendrogramResult, MultiLinkageResult, cophenetic_distance_matrix,
     cophenetic_correlation, hierarchical_ultrametric_test,
     hierarchical_ultrametric_test_with_method, multi_linkage_test,
+};
+pub use null_models::{NullModel, apply_null_column_major};
+pub use adaptive::{AdaptiveConfig, AdaptiveResult, StopReason, adaptive_permutation_test};
+pub use subset_search::{
+    SubsetTestResult, SubsetSearchResult, SubsetSearchConfig,
+    attribute_subsets, project_data, subset_search,
 };
 
 /// Configuration for ultrametric analysis.
