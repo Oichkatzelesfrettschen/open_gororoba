@@ -568,10 +568,10 @@ consolidated into domain crates (`algebra_core`, `stats_core`, etc.) and
 
 | Metric | Count |
 |--------|-------|
-| Rust tests (total) | 1645 |
+| Rust tests (total) | 1693 |
 | Rust doc-tests | 14 |
 | Rust clippy warnings | 0 |
-| Claims in matrix (C-001..C-447) | 448 |
+| Claims in matrix (C-001..C-467) | 467 |
 | Dataset providers | 30 |
 | Section H items done | 21 / 21 |
 | algebra_core tests | 309 |

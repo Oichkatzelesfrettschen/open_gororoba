@@ -1,4 +1,4 @@
-# TODO (updated 2026-02-07): executable, test-driven tracker
+# TODO (updated 2026-02-08): executable, test-driven tracker
 
 Primary trackers:
 - `docs/ROADMAP.md` (consolidated roadmap: architecture, crates, migration history, GR port plan)
@@ -8,39 +8,57 @@ Primary trackers:
 
 Note:
 - Python-to-Rust migration is COMPLETE (all 15 modules ported, gororoba_kernels removed).
-- 1645 Rust tests (unit + integration + doc) pass, 0 clippy warnings.
+- 1693 Rust tests (unit + integration + doc) pass, 0 clippy warnings.
 - Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md`) deleted; content absorbed into `docs/ROADMAP.md`.
+- Claims: C-001..C-467 (467 total). Insights: I-001..I-015.
 
-## Current sprint: Sprint 8 -- Consolidation, Audit, and Buildout
+## Current sprint: Sprint 9 -- Lattice Codebook Filtration (COMPLETE)
 
-### Code implementations
+### Monograph theses (8/8 verified)
+- [x] Thesis A: Codebook parity (C-458) -- all 4 dims verified
+- [x] Thesis B: Filtration nesting (C-459) -- strict subset chain
+- [x] Thesis C: Prefix-cut characterization (C-460) -- ALL transitions are lex prefix cuts
+- [x] Thesis D: Scalar shadow action (C-465) -- addition mode verified; multiplication coupling open (C-466)
+- [x] Thesis E: XOR partner law (C-462) -- partner(i) = i XOR (N/16) at dim=64
+- [x] Thesis F: Parity-clique law (C-463) -- ZD adj = K_m union K_m at dims 16, 32
+- [x] Thesis G: Spectral fingerprints (C-464) -- eigenvalues distinguish all motif classes
+- [x] Thesis H: Null-model identity (C-467) -- rotation=identity, column-shuffle=informative
+
+### Conversation extraction
+- [x] 3 new docs in docs/external_sources/ (inverse CD, wheel taxonomy, sedenion ZD)
+- [x] convos/ fully processed and removed (12 files)
+
+### Novel discoveries
+- [x] Lex prefix cuts (simpler than decision-trie rules)
+- [x] S_base = 2187 = 3^7 (base universe, 139 excluded from Lambda_2048)
+- [x] Lambda_32 = pinned corner (first 4 coords = -1)
+- [x] dim=256 ZD adjacency documented as computationally infeasible
+
+### Documentation
+- [x] Claims C-458..C-467 added (10 new)
+- [x] Insight I-015 written
+- [x] CAYLEY_DICKSON_DATA_PROVENANCE.md updated (filtration diagram, adjacency predicates)
+- [x] ROADMAP.md Section 7.9 added
+
+### Quality gates
+- [x] `cargo clippy --workspace -j$(nproc) -- -D warnings` (0 warnings)
+- [x] `cargo test --workspace -j$(nproc)` (1693 pass, 0 fail)
+
+## Previous sprint: Sprint 8 -- Consolidation, Audit, and Buildout (COMPLETE)
+
 - [x] Casimir nonadditivity correction (Bimonte 2012 derivative expansion)
 - [x] PEPS boundary MPS entropy (exact for small, boundary MPS for large)
 - [x] CdMultTable generator (O(1) basis multiplication lookup)
 - [x] Hartigan dip test (GCM/LCM algorithm + permutation p-value)
-
-### New binaries
 - [x] mass-clumping analysis binary (GWTC-3 + dip test, N>=50 guard)
-
-### New documents
 - [x] EXPERIMENTS_PORTFOLIO_SHORTLIST.md (10 experiments with run commands)
 - [x] MATH_CONVENTIONS.md (9 conventions with code references)
-
-### Doc harmonization
-- [x] Test counts synchronized (1645 across all docs)
-- [x] RISKS_AND_GAPS.md rewritten (all stale items resolved)
-- [x] CLAIMS_TASKS.md snapshot updated
 - [x] Primary-source citation sweep (10 claims)
-
-### Tracker hygiene
-- [x] Document hierarchy section in AGENTS.md
-- [x] Binary contracts table in AGENTS.md
-- [x] MEMORY.md updated with Sprint 8 results
-
-### Quality gates
-- [x] `cargo clippy --workspace -j$(nproc) -- -D warnings` (0 warnings)
-- [x] `cargo test --workspace -j$(nproc)` (1645 pass, 0 fail)
-- [x] `make ascii-check`
+- [x] Document hierarchy + binary contracts table in AGENTS.md
+- [x] License: GPL-3.0 -> GPL-2.0-only
+- [x] Cubic Anomaly (I-012): dim=32 8/7 split needs degree-3 GF(2) polynomial
+- [x] External data cross-validation (I-014): 68 files, strut table verified, 9 CSVs
+- [x] `cargo test --workspace` (1670 pass, 0 fail, 0 clippy warnings)
 
 ## Previous sprint: Sprint 6-7 (completed)
 - [x] Source-first research passes (no deletions; only append/clarify sources):
@@ -61,6 +79,8 @@ Note:
 - [x] `make ascii-check` (5 files fixed, extended replacement table + skip lists)
 
 ## Completed (keep for provenance)
+- [x] Sprint 9: Lattice codebook filtration -- 8 theses verified, 10 claims (C-458..C-467), I-015. 1693 tests.
+- [x] Sprint 8: Consolidation -- mult table, dip test, Casimir DE, PEPS entropy, I-012/I-014. 1670 tests.
 - [x] Package `gemini_physics` and add tests (`pyproject.toml`, `src/gemini_physics/`, `tests/`).
 - [x] Coq stub builds via `make coq` (see `curated/01_theory_frameworks/README_COQ.md`).
 - [x] Materials ingestion and embedding benchmarks.

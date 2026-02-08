@@ -21,7 +21,7 @@ Updated 2026-02-07 (Sprint 8 complete).
 
 ## Documentation health
 
-- **Test count**: 1645 Rust tests (unit + integration + doc), synchronized across
+- **Test count**: 1693 Rust tests (unit + integration + doc), synchronized across
   all 7 tracking documents (ROADMAP, TODO, ULTRA_ROADMAP, NEXT_ACTIONS,
   CLAIMS_TASKS, AGENTS, this file).
 - **CLAIMS_TASKS.md snapshot**: updated Sprint 8 with correct per-crate counts.

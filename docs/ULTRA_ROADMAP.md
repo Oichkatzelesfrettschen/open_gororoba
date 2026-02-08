@@ -8,7 +8,7 @@ This roadmap is organized so that every major claim becomes:
 2) a small reproducible experiment or test.
 
 **Migration status:** COMPLETE. All 15 Python modules ported to Rust domain crates.
-1645 Rust tests (unit + integration + doc) pass, 0 clippy warnings. Section H: 21/21 DONE.
+1693 Rust tests (unit + integration + doc) pass, 0 clippy warnings. Section H: 21/21 DONE.
 Remaining open items are forward-looking research (Sections B partial, C, D, F, G).
 
 ## A. Reproducibility & Quality Gates
