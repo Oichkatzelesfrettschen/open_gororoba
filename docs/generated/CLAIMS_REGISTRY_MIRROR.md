@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/claims.toml`.
 
-Total claims: 494
+Total claims: 500
 
 ## C-001
 
@@ -3958,3 +3958,51 @@ Total claims: 494
 - Statement: Quarter Rule (mechanism of Double 3:1 Law): Within each parity class of triangles in any ZD graph component, the 'pure' pattern (AllOpposite in even class, AllSame in odd class) is exactly 1/4 of the class total. The 3:1 ratio (C-487) follows: the 'mixed' patterns consume the remaining 3/4, giving TwoSameOneOpp = 3*AllOpposite and OneSameTwoOpp = 3*AllSame. The class total is always divisible by 4.
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)
 - What would verify/refute it: VERIFIED at dims 16, 32, 64 for all components. WHAT WOULD REFUTE: any component where class total is not divisible by 4, or pure count != total/4.
+
+## C-495
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Face sign census at dim=512: 255 components, 33 regimes (512/16 + 1), e_max=32004, e_min=756, 214M triangles, Universal Double 3:1 Law holds for all 255 components. Exactly 1 pure-max component. Confirms all scaling laws from C-486/C-487/C-488 at the 6th doubling.
+- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim512)
+- What would verify/refute it: VERIFIED: all assertions pass in 275s release mode. 33 regimes, all edge/regime formulas match, 3:1 law holds universally. WHAT WOULD REFUTE: any component violating TS=3*AO or OS=3*AS.
+
+## C-496
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Fano Residue Distribution Law: At dim=2^n (n>=4), each ZD graph component has a unique XOR key (lo ^ hi), and the Fano residue (xor_key & 7) distributes as: 7 residues get dim/16 components each, 1 'deficit' residue gets dim/16 - 1 components. Total: 7*(dim/16) + (dim/16-1) = dim/2 - 1. The deficit residue is 0. This means the octonion Fano structure propagates through ALL doublings as a mod-8 partition of the XOR product space.
+- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_octonion_subalgebra_fano_projection)
+- What would verify/refute it: VERIFIED at dims 32 and 64. dim=32: {0:1, others:2} = 15 comps. dim=64: {0:3, others:4} = 31 comps. WHAT WOULD REFUTE: any dimension where the Fano residue distribution violates the dim/16 formula, or where components do not have unique XOR keys.
+
+## C-497
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Fano Projection Full Mixing: At dim>=32, every ZD graph component uses the FULL set of Fano projections (lo & 7) in its cross-assessor low indices. The octonion subalgebra does NOT partition component node membership -- it only labels components via the XOR product residue (C-496).
+- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_octonion_subalgebra_fano_projection)
+- What would verify/refute it: VERIFIED: at dims 32 (15/15) and 64 (31/31) all components use all 7+ Fano indices. WHAT WOULD REFUTE: any component at dim>=32 whose low indices project onto fewer than 7 distinct Fano residues.
+
+## C-498
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Coset Obstruction Theorem: Lambda_n (n <= 1024) has exactly 0% closure under both Z-addition and F_3-addition because all lattice vectors have l_0 = -1. Z-addition gives l_0 = (-1)+(-1) = -2, leaving the trinary range {-1,0,1}. F_3-addition gives l_0 = (-1)+(-1) = +1 (mod 3), mapping to the forbidden l_0=+1 coset excluded by is_in_base_universe(). This applies to ALL pairs without exception. The zero vector [0,...,0] is NOT in any Lambda_n (fails l_0=-1 at Lambda_1024), so there is no additive identity.
+- Where stated: `crates/algebra_core/src/analysis/codebook.rs` (test_coset_obstruction_and_affine_closure)
+- What would verify/refute it: VERIFIED: exhaustive check over all 65536 pairs of Lambda_256 vectors confirms l_0=+1 for every F_3 sum and l_0=-2 for every Z sum. WHAT WOULD REFUTE: existence of any Lambda_n vector with l_0 != -1 (structurally impossible by Lambda_1024 definition).
+
+## C-499
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Affine F_3 Partial Closure: The affine F_3 operation a +_3 b -_3 p (for fixed base point p) preserves l_0=-1 and achieves partial closure on Lambda sets. Measured rates: Lambda_256 = 30-39% (base-dependent), Lambda_512 = 34%, Lambda_1024 = 47%, Lambda_2048 l_0=0 sub-lattice = 45%. Rates are below 100% at all levels because forbidden prefix exclusions break F_3 group structure. Rates vary with base point, confirming Lambda_n sets are NOT affine subgroups of F_3^8.
+- Where stated: `crates/algebra_core/src/analysis/codebook.rs` (test_coset_obstruction_and_affine_closure)
+- What would verify/refute it: VERIFIED: measured with 4 base points on Lambda_256 (range 30.2%-38.8%), Lambda_512 (33.7%), Lambda_1024 (46.9%), and l_0=0 sub-lattice of Lambda_2048 (44.8%). WHAT WOULD REFUTE: finding any Lambda_n with 100% affine F_3 closure would mean it IS an affine subgroup, contradicting the trie-cut exclusion mechanism.
+
+## C-500
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Euclidean Filtration Ultrametricity Gradient: Euclidean distance on prefix-stripped lattice coordinates shows a monotone ultrametricity gradient across filtration levels. Lambda_2048 is anti-ultrametric (z=-5.65, p=1.0), Lambda_1024 is marginally anti-ultrametric (z=-1.57, p=0.96), Lambda_512 is significantly ultrametric (z=9.22, p<0.005), and Lambda_256 is very significantly ultrametric (z=17.07, p<0.005). The trie-cut filtration progressively selects lattice vectors forming a hierarchical Euclidean cluster. Baire distances are trivially 1.0 at all levels (by construction). The transition from anti- to genuine ultrametricity occurs between Lambda_1024 and Lambda_512.
+- Where stated: `crates/stats_core/src/ultrametric/baire_codebook.rs` (test_euclidean_ultrametricity_across_filtration_levels)
+- What would verify/refute it: VERIFIED: 200-permutation column-shuffle null at each level with 50K triples. Effect sizes: -0.012, -0.004, +0.024, +0.053. WHAT WOULD REFUTE: observing p<0.05 for Lambda_2048 or Lambda_1024 would indicate trie-cuts are not the source of the ultrametricity gradient.

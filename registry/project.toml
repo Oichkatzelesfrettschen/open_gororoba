@@ -5,12 +5,19 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2270
-claim_count = 494
+test_count = 2280
+claim_count = 500
 insight_count = 17
 experiment_count = 13
 paper_count = 19
 binary_count = 40
+
+[sprints.s25]
+number = 25
+date = "2026-02-09"
+test_count = 2280
+claim_count = 500
+summary = "Dim=512 census (33 regimes, 214M triangles, 275s, C-495). Fano Residue Distribution Law (C-496) and Fano Projection Full Mixing (C-497). Layer 3/4 bridge with budget-aware invariants. Coset Obstruction Theorem (C-498): 0% closure explained by l_0=-1 coset. Affine F_3 Partial Closure 30-47% (C-499). Euclidean Filtration Ultrametricity Gradient (C-500): Lambda_256 z=17.07 significant, transition at Lambda_512."
 
 [sprints.s24]
 number = 24
