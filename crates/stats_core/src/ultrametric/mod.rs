@@ -73,7 +73,11 @@ pub use dendrogram::{
     cophenetic_correlation, hierarchical_ultrametric_test,
     hierarchical_ultrametric_test_with_method, multi_linkage_test,
 };
-pub use null_models::{NullModel, MultiNullResult, apply_null_column_major, multi_null_comparison};
+pub use null_models::{
+    NullModel, MultiNullResult, apply_null_column_major, multi_null_comparison,
+    NullModelStrategy, NullTestConfig, ColumnIndependentNull, RowPermutationNull,
+    ToroidalShiftNull, RandomRotationNull, all_strategies, run_adaptive_null_test,
+};
 pub use adaptive::{AdaptiveConfig, AdaptiveResult, StopReason, adaptive_permutation_test};
 pub use subset_search::{
     SubsetTestResult, SubsetSearchResult, SubsetSearchConfig,
