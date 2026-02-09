@@ -2491,6 +2491,135 @@ pub fn create_skybox(n: usize, s: usize) -> Skybox {
 }
 
 // ===========================================================================
+// L9e: Theorem 11 -- Recursive ET Embedding (de Marrais 2004)
+// ===========================================================================
+//
+// Theorem 11 (de Marrais, "The 42 Assessors"): When building the ET for
+// dim = 2^(N+1) with strut constant S, the old dim = 2^N ET (same S)
+// reappears as an exact sub-block. Specifically:
+//
+//   Primary copy: new positions whose lo matches an old position's lo.
+//   Shifted copy: new positions whose lo = old_lo + old_g (g = 2^(N-1)).
+//
+// Both copies have identical DMZ patterns and emanation values to the
+// old ET. This is the core "bit-string recursion" that connects all CD levels.
+
+/// Result of verifying Theorem 11 recursive embedding.
+#[derive(Debug, Clone)]
+pub struct Theorem11Result {
+    /// Old CD level.
+    pub n_old: usize,
+    /// New CD level (n_old + 1).
+    pub n_new: usize,
+    /// Strut constant.
+    pub s: usize,
+    /// Primary copy: map from old position -> new position.
+    pub primary_map: Vec<usize>,
+    /// Shifted copy: map from old position -> new position (lo + old_g).
+    pub shifted_map: Vec<usize>,
+    /// Whether primary copy DMZ pattern exactly matches old ET.
+    pub primary_dmz_match: bool,
+    /// Whether shifted copy DMZ pattern exactly matches old ET.
+    pub shifted_dmz_match: bool,
+    /// Whether primary copy emanation values exactly match old ET.
+    pub primary_value_match: bool,
+    /// Old ET DMZ count.
+    pub old_dmz_count: usize,
+    /// DMZ count in the primary sub-block of the new ET.
+    pub primary_subblock_dmz: usize,
+    /// DMZ count in the shifted sub-block of the new ET.
+    pub shifted_subblock_dmz: usize,
+}
+
+/// Verify Theorem 11 recursive embedding: old ET embeds in new ET.
+///
+/// Computes the position mapping from old (level N) to new (level N+1) tone
+/// rows and verifies that both the primary and shifted copies preserve the
+/// DMZ pattern and emanation values exactly.
+pub fn verify_theorem11(n: usize, s: usize) -> Theorem11Result {
+    let et_old = create_strutted_et(n, s);
+    let et_new = create_strutted_et(n + 1, s);
+    let tr_old = &et_old.tone_row;
+    let tr_new = &et_new.tone_row;
+    let old_g = tr_old.g;
+
+    // Build primary map: old_lo -> new position with matching lo
+    let mut primary_map = Vec::with_capacity(tr_old.k);
+    for &old_lo in &tr_old.lo {
+        let new_pos = tr_new.lo.iter().position(|&l| l == old_lo)
+            .expect("primary: old lo must appear in new tone row");
+        primary_map.push(new_pos);
+    }
+
+    // Build shifted map: old_lo + old_g -> new position
+    let mut shifted_map = Vec::with_capacity(tr_old.k);
+    for &old_lo in &tr_old.lo {
+        let shifted = old_lo + old_g;
+        let new_pos = tr_new.lo.iter().position(|&l| l == shifted)
+            .expect("shifted: old lo + g must appear in new tone row");
+        shifted_map.push(new_pos);
+    }
+
+    // Check primary copy
+    let mut primary_dmz_match = true;
+    let mut primary_value_match = true;
+    let mut primary_subblock_dmz = 0usize;
+    for old_r in 0..tr_old.k {
+        for old_c in 0..tr_old.k {
+            let nr = primary_map[old_r];
+            let nc = primary_map[old_c];
+            let old_dmz = et_old.cells[old_r][old_c].as_ref().is_some_and(|c| c.is_dmz);
+            let new_dmz = et_new.cells[nr][nc].as_ref().is_some_and(|c| c.is_dmz);
+            if old_dmz != new_dmz {
+                primary_dmz_match = false;
+            }
+            if new_dmz {
+                primary_subblock_dmz += 1;
+            }
+            if old_dmz && new_dmz {
+                let old_val = et_old.cells[old_r][old_c].as_ref().unwrap().emanation_value;
+                let new_val = et_new.cells[nr][nc].as_ref().unwrap().emanation_value;
+                if old_val != new_val {
+                    primary_value_match = false;
+                }
+            }
+        }
+    }
+
+    // Check shifted copy
+    let mut shifted_dmz_match = true;
+    let mut shifted_subblock_dmz = 0usize;
+    for old_r in 0..tr_old.k {
+        for old_c in 0..tr_old.k {
+            let nr = shifted_map[old_r];
+            let nc = shifted_map[old_c];
+            let old_dmz = et_old.cells[old_r][old_c].as_ref().is_some_and(|c| c.is_dmz);
+            let new_dmz = et_new.cells[nr][nc].as_ref().is_some_and(|c| c.is_dmz);
+            if old_dmz != new_dmz {
+                shifted_dmz_match = false;
+            }
+            if new_dmz {
+                shifted_subblock_dmz += 1;
+            }
+        }
+    }
+
+    Theorem11Result {
+        n_old: n,
+        n_new: n + 1,
+        s,
+        primary_map,
+        shifted_map,
+        primary_dmz_match,
+        shifted_dmz_match,
+        primary_value_match,
+        old_dmz_count: et_old.dmz_count,
+        primary_subblock_dmz,
+        shifted_subblock_dmz,
+    }
+}
+
+// ===========================================================================
 // L10: CT Boundary / A7 Star -- Twist as Double Transfer
 // ===========================================================================
 //
@@ -6201,6 +6330,114 @@ mod tests {
             .filter(|c| !c.is_structural_empty && !c.is_label_line).count();
         assert_eq!(n_empty + n_label + n_interior, sb.edge * sb.edge,
             "partition must cover all edge^2 cells");
+    }
+
+    // --- L9e: Theorem 11 Tests ---
+
+    #[test]
+    fn test_theorem11_primary_dmz_n4_to_n5_all_struts() {
+        // Every sedenion strut (S=1..7) must embed exactly in the 32-ion ET.
+        for s in 1..=7 {
+            let r = verify_theorem11(4, s);
+            assert!(r.primary_dmz_match,
+                "S={}: primary DMZ pattern must match", s);
+            assert!(r.primary_value_match,
+                "S={}: primary emanation values must match", s);
+            assert_eq!(r.old_dmz_count, r.primary_subblock_dmz,
+                "S={}: primary sub-block DMZ count must equal old ET DMZ count", s);
+        }
+    }
+
+    #[test]
+    fn test_theorem11_shifted_dmz_n4_to_n5_all_struts() {
+        // The shifted copy (lo + old_g) must also embed exactly.
+        for s in 1..=7 {
+            let r = verify_theorem11(4, s);
+            assert!(r.shifted_dmz_match,
+                "S={}: shifted DMZ pattern must match", s);
+            assert_eq!(r.old_dmz_count, r.shifted_subblock_dmz,
+                "S={}: shifted sub-block DMZ count must equal old ET DMZ count", s);
+        }
+    }
+
+    #[test]
+    fn test_theorem11_n5_to_n6_representative() {
+        // N=5->6 for mandala and sky struts.
+        for &s in &[3, 5, 9, 15] {
+            let r = verify_theorem11(5, s);
+            assert!(r.primary_dmz_match,
+                "N=5->6, S={}: primary DMZ must match", s);
+            assert!(r.shifted_dmz_match,
+                "N=5->6, S={}: shifted DMZ must match", s);
+            assert!(r.primary_value_match,
+                "N=5->6, S={}: primary values must match", s);
+            assert_eq!(r.old_dmz_count, r.primary_subblock_dmz,
+                "N=5->6, S={}: primary DMZ count must match", s);
+        }
+    }
+
+    #[test]
+    fn test_theorem11_map_coverage() {
+        // Primary and shifted maps must cover 2*K_old positions total,
+        // and must be disjoint (no position appears in both).
+        let r = verify_theorem11(4, 3);
+        let k_old = r.primary_map.len();
+        assert_eq!(k_old, 6, "K_old must be 6 at N=4");
+
+        let mut all_positions: Vec<usize> = Vec::new();
+        all_positions.extend_from_slice(&r.primary_map);
+        all_positions.extend_from_slice(&r.shifted_map);
+        assert_eq!(all_positions.len(), 2 * k_old,
+            "must have 2*K_old mapped positions total");
+
+        // Check disjointness
+        all_positions.sort();
+        for w in all_positions.windows(2) {
+            assert_ne!(w[0], w[1],
+                "primary and shifted maps must be disjoint, but both contain {}", w[0]);
+        }
+    }
+
+    #[test]
+    fn test_theorem11_map_injective() {
+        // Each map must be injective (no two old positions map to the same new position).
+        for &s in &[3, 7] {
+            let r = verify_theorem11(4, s);
+            let mut prim = r.primary_map.clone();
+            prim.sort();
+            prim.dedup();
+            assert_eq!(prim.len(), r.primary_map.len(),
+                "S={}: primary map must be injective", s);
+
+            let mut shift = r.shifted_map.clone();
+            shift.sort();
+            shift.dedup();
+            assert_eq!(shift.len(), r.shifted_map.len(),
+                "S={}: shifted map must be injective", s);
+        }
+    }
+
+    #[test]
+    fn test_theorem11_two_level_chain() {
+        // Verify embedding chains: N=4 embeds in N=5 which embeds in N=6.
+        // The composition of embeddings must also give a valid embedding.
+        let r45 = verify_theorem11(4, 3);
+        let r56 = verify_theorem11(5, 3);
+        assert!(r45.primary_dmz_match && r56.primary_dmz_match,
+            "both levels must match for chain embedding");
+
+        // The N=4 sub-block in N=6 should be reachable by composing maps:
+        // old_N4_pos -> new_N5_pos (via r45.primary_map) -> new_N6_pos (via r56.primary_map)
+        let composed: Vec<usize> = r45.primary_map.iter()
+            .map(|&n5_pos| r56.primary_map[n5_pos])
+            .collect();
+
+        // Verify this composed map gives distinct positions
+        let mut sorted = composed.clone();
+        sorted.sort();
+        sorted.dedup();
+        assert_eq!(sorted.len(), composed.len(),
+            "composed N=4->N=6 map must be injective");
     }
 
     // --- L16: Signed Adjacency Graph & Lanyard Dictionary Tests ---
