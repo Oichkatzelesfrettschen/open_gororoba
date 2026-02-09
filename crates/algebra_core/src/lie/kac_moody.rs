@@ -494,6 +494,13 @@ impl GeneralizedCartanMatrix {
 /// Branching at node 4 (degree 3). This is the Gram matrix of the root vectors:
 ///   alpha_0 = (1,-1,0,0,0,0,0,0), alpha_1 = (0,1,-1,0,0,0,0,0), ...,
 ///   alpha_6 = (0,0,0,0,0,1,1,0), alpha_7 = (-1/2,-1/2,...,-1/2).
+///
+/// NOTE on Dynkin node numbering: this module uses a 0-indexed convention
+/// where the branch node is at index 4, optimized for E9/E10 affine extension
+/// (node 8 attaches to node 0 at the far end of the long arm). This differs
+/// from the Bourbaki convention used in `e8_lattice.rs`, where the branch
+/// node is at index 2 (1-indexed: node 3). Both are isomorphic; the mapping
+/// between conventions is a relabeling of the Dynkin diagram nodes.
 pub fn e8_cartan() -> GeneralizedCartanMatrix {
     GeneralizedCartanMatrix::from_array([
         [ 2, -1,  0,  0,  0,  0,  0,  0],  // 0: connects to 1

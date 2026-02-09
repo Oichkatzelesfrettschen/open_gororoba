@@ -112,7 +112,11 @@ pub fn generate_e8_roots() -> Vec<E8Root> {
 /// The Cartan matrix A_ij = 2 * (alpha_i, alpha_j) / (alpha_j, alpha_j)
 /// For E8, this is an 8x8 matrix with specific structure.
 pub fn e8_cartan_matrix() -> [[i32; 8]; 8] {
-    // Standard E8 Cartan matrix (Bourbaki numbering)
+    // Standard E8 Cartan matrix (Bourbaki numbering).
+    // Branch node is at index 2 (0-indexed) = Bourbaki node 3.
+    // NOTE: kac_moody.rs uses a different numbering where the branch is at
+    // index 4, optimized for E9/E10 affine extensions. Both are isomorphic
+    // -- just a relabeling of the Dynkin diagram nodes.
     [
         [ 2, -1,  0,  0,  0,  0,  0,  0],
         [-1,  2, -1,  0,  0,  0,  0,  0],

@@ -34,3 +34,7 @@
 # Papers
 
 - [Paper Collection](./papers/collection.md)
+
+# Appendix
+
+- [Glossary](./glossary.md)

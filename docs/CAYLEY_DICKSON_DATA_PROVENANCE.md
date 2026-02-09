@@ -36,7 +36,7 @@ Our Rust computations (integer-exact where possible) are authoritative.
 | 512D_Basis-to-Extended_Lattice_Mapping.csv | 512 | 512 | 8D | **Verified** -- all 512 rows parsed |
 | 1024D_Basis_to_Extended_Lattice_Mapping 2.csv | 1024 | 1024 | 8D | **Verified** -- all 1024 rows parsed |
 | 2048D_Basis_to_Extended_Lattice_Mapping.csv | 2048 | 2048 | 8D | **Verified** -- all 2048 rows parsed |
-| 64D_Pathion_Adjacency_Matrix.csv | 64 | 64 | - | **Inconclusive** -- sparse, 64 nonzero entries, different node labeling than cross-assessor pairs |
+| 64D_Pathion_Adjacency_Matrix.csv (renamed to 64d_chingon_adjacency.csv -- 64D is chingon, not pathion) | 64 | 64 | - | **Inconclusive** -- sparse, 64 nonzero entries, different node labeling than cross-assessor pairs |
 | 128D_Cayley-Dickson_Adjacency_Matrix.csv | 128 | 128 | - | Not yet validated |
 | Zero-Divisor_Adjacency_Matrix__64D_.csv | 64 | 64 | - | Nearly full matrix (uses 0/0.5/1.0 values) -- different schema |
 | cleaned_zero_divisor_adj_64D.csv | 64 | 64 | - | Uses 0/0.5/1.0 values -- different schema |

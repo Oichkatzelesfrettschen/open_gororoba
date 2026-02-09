@@ -1,6 +1,7 @@
-# Claims / Evidence Matrix (Canonical)
+# Claims / Evidence Matrix (Markdown Mirror)
 
-This file is the machine-parseable source of truth for claims C-001..C-467.
+This file is a human-readable mirror for claims C-001..C-475.
+The machine-parseable source of truth is `registry/claims.toml`.
 The expanded narrative and legacy tables live in the corresponding notes file.
 
 Legend (canonical tokens):

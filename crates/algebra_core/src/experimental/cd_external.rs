@@ -1614,7 +1614,7 @@ mod tests {
         // Phase 2.2: Compare 64D adjacency CSV against Rust computation
         let csv_path = concat!(
             env!("CARGO_MANIFEST_DIR"),
-            "/../../data/csv/cayley_dickson/64d_pathion_adjacency.csv"
+            "/../../data/csv/cayley_dickson/64d_chingon_adjacency.csv"
         );
         let Ok(content) = std::fs::read_to_string(csv_path) else {
             eprintln!("Skipping: CSV file not found at {}", csv_path);

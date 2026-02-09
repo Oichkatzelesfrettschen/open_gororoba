@@ -185,3 +185,40 @@ through octonions (composition algebra property).  For sedenions and beyond,
 - **Default significance:** alpha = 0.05 (two-sided)
 - **Minimum sample size:** Pre-registered per claim (typically N >= 50)
 - **Bootstrap CI:** Percentile method, 10000 replicates default
+
+---
+
+## 10. Dynkin Node Numbering (E8 Family)
+
+Two valid conventions for E8 Dynkin diagram node numbering coexist in this
+codebase. Both are isomorphic -- they differ only in which node gets which
+index.
+
+**Convention A (kac_moody.rs):** 0-indexed, branch at node 4.
+
+```
+0 -- 1 -- 2 -- 3 -- 4 -- 5
+                     |
+                     6 -- 7
+```
+
+Coxeter labels: [2, 3, 4, 5, 6, 3, 4, 2].  Optimized for E9/E10 affine
+extension: node 8 attaches to node 0 at the far end of the long arm,
+making the E10 diagram a simple linear chain with one branch.
+
+**Convention B (e8_lattice.rs):** Bourbaki numbering, branch at node 2
+(0-indexed).
+
+```
+0 -- 1 -- 2 -- 3 -- 4 -- 5 -- 6
+           |
+           7
+```
+
+This is the standard numbering from Bourbaki's "Lie Groups and Lie
+Algebras" and most reference tables.  The simple roots here use the
+standard basis construction (alpha_1 = e_1 - e_2, etc.).
+
+When working across both modules, remember that the node indices do NOT
+correspond: "node 4" in kac_moody.rs is NOT the same simple root as
+"node 4" in e8_lattice.rs.
