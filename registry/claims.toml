@@ -4069,3 +4069,11 @@ where_stated = "`crates/stats_core/src/ultrametric/baire_codebook.rs` (test_l1_f
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: 200 permutations x 50K triples per subgroup. WHAT WOULD REFUTE: finding l_1=+1 anti-ultrametric while l_1=-1/l_1=0 are ultrametric would confirm a genuine l_1 phase transition (as C-501 suggested). Finding the combined l_0=-1 population MORE ultrametric than subgroups would refute the Simpson's Paradox. Finding prefix=2 (same as subgroups) for the combined set would rule out the dimensional mismatch mechanism."
+
+[[claim]]
+id = "C-510"
+statement = "Recursive Coordinate Simpson's Paradox: The Simpson's Paradox discovered in C-509 is RECURSIVE through the entire coordinate hierarchy. Within l_0=-1, l_1=-1 (N=365, z=13.28), partitioning by l_2 yields: l_2=-1 (N=122, z=17.65), l_2=0 (N=121, z=20.82), l_2=+1 (N=122, z=19.13) -- ALL higher than the combined z=13.28. Within l_2=-1: l_3=-1 (N=41, z=10.00), l_3=0 (N=40, z=10.30), l_3=+1 (N=41, z=9.53) -- still strongly ultrametric despite N~40. The observed UM fractions increase monotonically with coordinate depth: 0.251 (d=6) -> 0.276-0.286 (d=5) -> 0.301-0.323 (d=4). Cross-stratum triple decomposition confirms the mechanism: within the l_0=-1 population, same-l_1 triples have UM fraction 0.254 vs mixed-l_1 at 0.228 (10.2% higher), but mixed triples constitute 88.9% of all triples, so their lower UM fraction dominates. The filtration chain works by removing one coordinate from the mixing at each step, progressively revealing the underlying per-stratum ultrametricity."
+where_stated = "`crates/stats_core/src/ultrametric/baire_codebook.rs` (test_recursive_simpsons_paradox_l2, test_cross_stratum_triple_decomposition)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 200 permutations x 50K triples per level (l_2, l_3). Cross-stratum: 200K sampled triples with explicit l_1 classification. WHAT WOULD REFUTE: finding z-scores DECREASE with coordinate depth would show the recursion is not universal. Finding same-l_1 UM fraction LOWER than mixed-l_1 would refute the contamination mechanism. Finding l_3 strata anti-ultrametric despite homogeneity would indicate the structure breaks at a specific depth."
