@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Reggiani Alignment & Replication (Computational)
 
 **Primary source:** Silvio Reggiani, *The geometry of sedenion zero divisors* (2024), arXiv:2411.18881.

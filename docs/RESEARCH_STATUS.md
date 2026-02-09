@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Research Status: Toy Operator Study (Speculative "Negative Dimension" Mapping)
 
 **Date:** January 27, 2026

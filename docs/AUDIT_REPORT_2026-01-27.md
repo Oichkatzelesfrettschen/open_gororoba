@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Repository Audit Report (2026-01-27)
 
 ## 1) What this repository is (honest scope)
@@ -92,4 +95,3 @@ make artifacts-materials
 2. Replace "toy" mappings (e.g. to LIGO peaks) with falsifiable statistical models and null-model comparisons.
 3. Add a second materials dataset backend (OQMD or NOMAD) to cross-check the JARVIS pipeline.
 4. Decide whether to invest in a C++ accelerator (Numba may suffice).
-

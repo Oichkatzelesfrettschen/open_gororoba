@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # NV ODMR / OPU BOM (Jan 2026) -- Local Staging
 
 This repo has a locally staged bill-of-materials spreadsheet:

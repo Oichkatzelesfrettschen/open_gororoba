@@ -155,8 +155,13 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
 - Strategy: `narrative_primary_raw_capture_backup`
 - Status: `active`
 - Source markdown:
-  - `docs/*.md`
-- Notes: Residual manual narratives remain for curated prose not yet normalized to dedicated TOML overlays.
+  - `AGENTS.md`
+  - `CLAUDE.md`
+  - `GEMINI.md`
+  - `README.md`
+  - `curated/**/*.md`
+  - `data/csv/README.md`
+- Notes: Residual manual narratives remain for repository governance and curated inputs that should stay human-authored.
 
 ### KM-012: external_sources
 
@@ -201,6 +206,19 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - `docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md`
   - `docs/book/src/**/*.md`
 - Notes: mdBook source pages are TOML-first and rendered back into docs/book/src markdown mirrors.
+
+### KM-015: docs_root_narratives
+
+- Strategy: `toml_primary_generated_mirror`
+- Status: `complete`
+- Source markdown:
+  - `docs/*.md`
+- Authoritative TOML:
+  - `registry/docs_root_narratives.toml`
+- Generated mirrors:
+  - `docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md`
+  - `docs/*.md`
+- Notes: Root-level docs narratives are TOML-first and generated back into docs/*.md.
 
 ## Phases
 
@@ -290,6 +308,15 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - registry/book_docs.toml
   - docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md
   - docs/book/src/**/*.md
+
+### KMP-P11: docs_root_narratives_registry_normalization
+
+- Status: `complete`
+- Deliverables:
+  - src/scripts/analysis/normalize_docs_root_narratives_registry.py
+  - registry/docs_root_narratives.toml
+  - docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md
+  - docs/*.md
 
 ## Policies
 

@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Visualization Standards and Guidelines
 
 This document is a visualization supplement to `AGENTS.md`.

@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Curated Artifacts Audit (Scope + Provenance)
 
 This document is a lightweight, reproducible inventory of `curated/` to support ongoing cleanup and
@@ -35,4 +38,3 @@ python3 bin/record_external_hashes.py --root curated --output curated/PROVENANCE
 See also:
 - `docs/LACUNAE.md` for the "black box artifacts" diagnosis.
 - `curated/README.md` for directory-level caveats.
-

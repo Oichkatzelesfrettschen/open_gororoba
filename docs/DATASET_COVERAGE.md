@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Dataset Coverage Report
 
 Maps the 30 dataset providers to the 7 scientific pillars and their

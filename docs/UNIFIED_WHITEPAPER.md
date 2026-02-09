@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Unified Mathematical Framework for Surreal-Noncommutative Algebras, Inverse Cayley-Dickson Processes, and Spectral Geometry
 
 **Date:** January 26, 2026

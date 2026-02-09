@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Risks and Gaps (Open Items)
 
 Updated 2026-02-08 (Sprint 10 complete).

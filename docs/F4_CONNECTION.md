@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Subdomain Expansion: The $F_4$ Connection
 
 **Date:** January 26, 2026

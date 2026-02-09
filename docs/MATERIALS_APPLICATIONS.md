@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Novel Connections: High-Dimensional Algebra in Condensed Matter
 
 ## 1. Topological Insulators & Octonions

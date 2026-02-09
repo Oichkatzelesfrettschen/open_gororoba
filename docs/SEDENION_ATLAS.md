@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # THE SEDENION ATLAS: First-Party Math & Source Synthesis
 
 **Subject:** Algebraic Meltdown & Exceptional Manifolds

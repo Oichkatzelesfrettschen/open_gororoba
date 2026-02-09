@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Core Abstractions: Unified Design Patterns Across Physics Domains
 
 **Status:** Phase 7 reference document

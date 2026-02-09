@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Audit Changelog
 
 ## 2026-01-27
@@ -12,4 +15,3 @@
 - Hardened provenance hashing for `data/external/`:
   - `bin/record_external_hashes.py`
   - `make provenance` writes `data/external/PROVENANCE.local.json`
-

@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Physical Interpretation: The Sedenion Vacuum & Mass Quantization
 
 **Date:** January 26, 2026

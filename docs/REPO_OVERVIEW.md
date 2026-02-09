@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Repository Overview (Honest Audit)
 
 This repository is a **working lab notebook** that mixes:

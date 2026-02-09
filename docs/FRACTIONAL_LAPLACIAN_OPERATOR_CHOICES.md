@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Fractional Laplacian: operator choices (Riesz vs spectral vs extension)
 
 This repo uses the phrase "fractional Laplacian" only when the domain, boundary conditions, and
@@ -56,4 +59,3 @@ implemented in this repo as an operator that can be cross-validated against the 
 - We do not claim equivalence between these operators on bounded domains.
 - Any "negative dimension PDE" narrative is treated as analytic continuation / dim-reg language only
   and must not be conflated with a literal geometric dimension.
-

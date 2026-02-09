@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # RESEARCH STATUS: The Unified Field
 
 **Date:** January 26, 2026

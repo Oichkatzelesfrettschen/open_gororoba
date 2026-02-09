@@ -128,10 +128,10 @@ notes = "Keep as generated outputs with explicit regeneration commands; do not h
 [[domain]]
 id = "KM-007"
 name = "research_narratives"
-source_markdown = ["docs/*.md"]
+source_markdown = ["AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md", "curated/**/*.md", "data/csv/README.md"]
 strategy = "narrative_primary_raw_capture_backup"
 status = "active"
-notes = "Residual manual narratives remain for curated prose not yet normalized to dedicated TOML overlays."
+notes = "Residual manual narratives remain for repository governance and curated inputs that should stay human-authored."
 
 [[domain]]
 id = "KM-012"
@@ -175,6 +175,19 @@ generated_mirror = [
 strategy = "toml_primary_generated_mirror"
 status = "complete"
 notes = "mdBook source pages are TOML-first and rendered back into docs/book/src markdown mirrors."
+
+[[domain]]
+id = "KM-015"
+name = "docs_root_narratives"
+source_markdown = ["docs/*.md"]
+authoritative_toml = ["registry/docs_root_narratives.toml"]
+generated_mirror = [
+  "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md",
+  "docs/*.md",
+]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "Root-level docs narratives are TOML-first and generated back into docs/*.md."
 
 [[phase]]
 id = "KMP-P1"
@@ -265,6 +278,17 @@ deliverables = [
   "registry/book_docs.toml",
   "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md",
   "docs/book/src/**/*.md",
+]
+
+[[phase]]
+id = "KMP-P11"
+name = "docs_root_narratives_registry_normalization"
+status = "complete"
+deliverables = [
+  "src/scripts/analysis/normalize_docs_root_narratives_registry.py",
+  "registry/docs_root_narratives.toml",
+  "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md",
+  "docs/*.md",
 ]
 
 [[policy]]

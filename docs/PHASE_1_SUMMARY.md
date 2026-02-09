@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Phase 1 Summary: The Assessor Field Theory
 
 **Date:** January 26, 2026

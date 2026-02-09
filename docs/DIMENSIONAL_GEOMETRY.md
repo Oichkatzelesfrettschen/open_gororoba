@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Dimensional Geometry: Analytic Continuation (-4D -> 32D)
 
 This repo includes a **mathematically standard** notion of "non-integer" and even "negative"
@@ -41,4 +44,3 @@ Outputs:
 These plots are **pure geometry**. Any mapping from "negative dimension" to a physical
 model (e.g., PDE operators, cosmology, materials) must be treated separately and justified
 with first-party sources and falsifiable experiments.
-

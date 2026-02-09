@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # de Marrais Replication (Computational)
 
 **Primary source:** Robert P. C. de Marrais, *The 42 Assessors and the Box-Kites they fly* (2000),

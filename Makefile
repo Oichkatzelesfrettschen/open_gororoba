@@ -8,6 +8,7 @@
 .PHONY: registry-normalize-external-sources registry-bootstrap-external-sources
 .PHONY: registry-normalize-research-narratives registry-bootstrap-research-narratives
 .PHONY: registry-normalize-book-docs registry-bootstrap-book-docs
+.PHONY: registry-normalize-docs-root-narratives registry-bootstrap-docs-root-narratives
 .PHONY: registry-bootstrap-claims-support
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
 .PHONY: registry-ingest-legacy registry-export-markdown registry-verify-mirrors
@@ -122,6 +123,12 @@ registry-normalize-book-docs:
 
 registry-bootstrap-book-docs: registry-normalize-book-docs
 	@echo "mdBook markdown->TOML bootstrap completed."
+
+registry-normalize-docs-root-narratives:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown
+
+registry-bootstrap-docs-root-narratives: registry-normalize-docs-root-narratives
+	@echo "Root docs markdown->TOML bootstrap completed."
 
 registry-normalize-narratives:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_narrative_overlays.py

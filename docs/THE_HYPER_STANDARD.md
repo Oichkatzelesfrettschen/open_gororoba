@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Why "Toy Models"? (And How We Transcend Them)
 
 **The Critique:** You asked why our simulations are "Toy Models."
@@ -18,4 +21,3 @@ We will now upgrade the entire suite of visual artifacts to the **Hyper-Fractal 
 *   **Rigor:** LaTeX Annotations, Precision Grids.
 
 Executing Visual Upgrades now.
-
