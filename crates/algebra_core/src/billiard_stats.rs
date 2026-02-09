@@ -574,7 +574,7 @@ pub fn permutation_test_mi(
 }
 
 /// Summarize a permutation test from observed value and null distribution.
-fn summarize_permutation_test(observed: f64, null_values: &[f64]) -> PermutationTestResult {
+pub(crate) fn summarize_permutation_test(observed: f64, null_values: &[f64]) -> PermutationTestResult {
     let k = null_values.len();
     if k == 0 {
         return PermutationTestResult {

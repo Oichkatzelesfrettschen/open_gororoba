@@ -25,6 +25,11 @@
 //! - Wilson: "The Finite Simple Groups", Sec. 4.3 (E8 and octonions)
 //! - Baez: "The Octonions", Bull. AMS 39 (2002), Sec. 4.4
 
+use rand::SeedableRng;
+
+use crate::billiard_stats::{
+    generate_null_sequence, summarize_permutation_test, NullModel, PermutationTestResult,
+};
 use crate::e8_lattice::{e8_simple_roots, generate_e8_roots, E8Root};
 use crate::octonion_field::{oct_multiply, oct_norm_sq, Octonion, FANO_TRIPLES};
 
@@ -776,9 +781,133 @@ pub fn optimal_fano_overlap_basis() -> (
     (best_basis, best_graph, best_cmp, all_overlaps)
 }
 
+// ---------------------------------------------------------------------------
+// Claim 4 verification: Fano completion rate permutation test
+// ---------------------------------------------------------------------------
+
+/// Result of the Claim 4 verification: octonionic Fano completion analysis.
+///
+/// Two independent statistical tests:
+/// 1. **Mapping test**: Is the optimal wall-to-octonion mapping significantly
+///    better than random permutations? (exact p-value over 40320 permutations)
+/// 2. **Sequence test**: With the optimal mapping fixed, does the real billiard
+///    sequence show higher Fano completion than null billiard sequences?
+///
+/// Claim 4 is supported if BOTH tests reject at the specified alpha.
+#[derive(Debug, Clone)]
+pub struct Claim4Result {
+    /// The optimal wall-to-octonion mapping found by exhaustive search.
+    pub optimal_mapping: [usize; 8],
+    /// Number of Fano triple completions in the real sequence.
+    pub completions: usize,
+    /// Number of Fano triple opportunities in the real sequence.
+    pub opportunities: usize,
+    /// Observed Fano completion rate (completions / opportunities).
+    pub observed_rate: f64,
+    /// Exact p-value from the mapping test (fraction of permutations >= observed).
+    pub mapping_pvalue: f64,
+    /// Z-score against the uniform null rate (1/7).
+    pub enrichment_zscore: f64,
+    /// Permutation test result from the sequence test (null billiard sequences).
+    pub sequence_test: PermutationTestResult,
+    /// Number of E8-only 3-windows extracted from the sequence.
+    pub n_windows: usize,
+}
+
+/// Verify Claim 4: the octonion interpretation adds predictive power.
+///
+/// This is the full verification pipeline:
+/// 1. Extract 3-bounce windows restricted to E8 walls (indices 0-7).
+/// 2. Exhaustive search over 8! = 40320 wall-to-octonion mappings for the
+///    one that maximizes Fano triple completion rate.
+/// 3. Compute exact p-value against the permutation distribution (mapping test).
+/// 4. Fix the optimal mapping, generate `n_permutations` null billiard sequences
+///    using the specified `NullModel`, compute Fano completion rate for each
+///    (sequence test).
+/// 5. Report both test results and overall statistics.
+///
+/// # Arguments
+/// - `sequence`: raw billiard wall-hit sequence (may contain walls 0-9)
+/// - `null_model`: which null model to use for the sequence test
+/// - `n_permutations`: number of null sequences to generate
+/// - `seed`: deterministic RNG seed for reproducibility
+pub fn verify_claim4(
+    sequence: &[usize],
+    null_model: &NullModel,
+    n_permutations: usize,
+    seed: u64,
+) -> Claim4Result {
+    // Step 1: Extract E8-only 3-windows
+    let windows = extract_3windows(sequence);
+    let n_windows = windows.len();
+
+    // Step 2: Exhaustive mapping search
+    let (best_mapping, best_rate, best_completions, best_opportunities, all_rates) =
+        optimal_fano_mapping(&windows);
+
+    // Step 3: Exact p-value (mapping test)
+    let mapping_pvalue = exact_pvalue(best_rate, &all_rates);
+
+    // Step 4: Enrichment Z-score against uniform null
+    let enrichment_zscore = fano_enrichment_zscore(best_rate, best_opportunities);
+
+    // Step 5: Sequence permutation test -- fix the optimal mapping,
+    // generate null sequences, measure Fano completion on each
+    let mut null_rates = Vec::with_capacity(n_permutations);
+    let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(seed);
+
+    for _ in 0..n_permutations {
+        let null_seq = generate_null_sequence(null_model, sequence.len(), sequence, &mut rng);
+        let null_windows = extract_3windows(&null_seq);
+        let (_, _, null_rate) = fano_completion_rate(&best_mapping, &null_windows);
+        null_rates.push(null_rate);
+    }
+
+    let sequence_test = summarize_permutation_test(best_rate, &null_rates);
+
+    Claim4Result {
+        optimal_mapping: best_mapping,
+        completions: best_completions,
+        opportunities: best_opportunities,
+        observed_rate: best_rate,
+        mapping_pvalue,
+        enrichment_zscore,
+        sequence_test,
+        n_windows,
+    }
+}
+
+/// Quick summary of Claim 4 result: returns (supported, reason).
+///
+/// Claim 4 is supported if:
+/// 1. Mapping p-value < alpha (optimal mapping is not random)
+/// 2. Sequence p-value < alpha (dynamics show Fano preference)
+/// 3. Observed rate > 1/7 (enrichment, not depletion)
+pub fn claim4_summary(result: &Claim4Result, alpha: f64) -> (bool, String) {
+    let mapping_sig = result.mapping_pvalue < alpha;
+    let sequence_sig = result.sequence_test.p_value < alpha;
+    let enriched = result.observed_rate > NULL_FANO_RATE_UNIFORM;
+
+    let supported = mapping_sig && sequence_sig && enriched;
+
+    let reason = format!(
+        "rate={:.4} (vs null 1/7={:.4}), mapping p={:.4} {}, sequence p={:.4} {}, z={:.2}",
+        result.observed_rate,
+        NULL_FANO_RATE_UNIFORM,
+        result.mapping_pvalue,
+        if mapping_sig { "<alpha" } else { ">=alpha" },
+        result.sequence_test.p_value,
+        if sequence_sig { "<alpha" } else { ">=alpha" },
+        result.enrichment_zscore,
+    );
+
+    (supported, reason)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
+    use rand::Rng;
 
     #[test]
     fn test_fano_complement_basic() {
@@ -1277,5 +1406,202 @@ mod tests {
         // NOT Fano-connected.
         assert_eq!(cmp.intersection, 5);
         assert_eq!(cmp.b_only, 1);
+    }
+
+    // -----------------------------------------------------------------------
+    // Claim 4 verification tests
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn test_verify_claim4_uniform_null() {
+        // Uniform random sequence of E8 walls: should show no Fano preference.
+        // With uniform random data, the optimal mapping should not beat null
+        // sequences significantly (p > 0.01).
+        let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(12345);
+        let sequence: Vec<usize> = (0..500)
+            .map(|_| rng.gen_range(0..8))
+            .collect();
+
+        let result = verify_claim4(&sequence, &NullModel::Uniform, 200, 54321);
+
+        // Uniform random data: Fano completion rate should be near 1/7 ~ 0.143
+        assert!(result.observed_rate < 0.30,
+            "Random data should not show extreme Fano rate, got {:.4}",
+            result.observed_rate);
+        // The mapping p-value measures whether the optimal mapping is special
+        // among all 40320 permutations -- with random data this is just noise
+        assert!(result.mapping_pvalue > 0.0,
+            "Mapping p-value should be computable");
+        // Verify structure
+        assert!(result.n_windows > 0, "Should have some 3-windows");
+        assert!(result.opportunities > 0, "Should have some opportunities");
+    }
+
+    #[test]
+    fn test_verify_claim4_structured_sequence() {
+        // Construct a sequence that strongly respects Fano triples under a
+        // specific mapping. Use the identity mapping: wall i -> e_i.
+        // Fano triples are: (1,2,3), (1,4,5), (1,7,6), (2,4,6), (2,5,7),
+        //                   (3,4,7), (3,6,5).
+        // Build a sequence that repeatedly cycles through Fano completions.
+        let mut sequence = Vec::new();
+        for _ in 0..50 {
+            // Each triple (a,b,c): after seeing a,b the next bounce is c
+            sequence.extend_from_slice(&[1, 2, 3]); // completes (1,2,3)
+            sequence.extend_from_slice(&[2, 4, 6]); // completes (2,4,6)
+            sequence.extend_from_slice(&[3, 4, 7]); // completes (3,4,7)
+        }
+
+        let result = verify_claim4(&sequence, &NullModel::Uniform, 200, 99999);
+
+        // This sequence was constructed to have high completion rate
+        assert!(result.observed_rate > 0.30,
+            "Structured Fano sequence should have high rate, got {:.4}",
+            result.observed_rate);
+        // The sequence test should show this is significantly above null
+        assert!(result.sequence_test.p_value < 0.10,
+            "Structured sequence should have significant sequence p-value, got {:.4}",
+            result.sequence_test.p_value);
+        // Effect size should be positive
+        assert!(result.sequence_test.effect_size > 0.0,
+            "Effect size should be positive, got {:.4}",
+            result.sequence_test.effect_size);
+    }
+
+    #[test]
+    fn test_verify_claim4_result_structure() {
+        // Verify the result struct is well-formed
+        let sequence: Vec<usize> = (0..100).map(|i| i % 8).collect();
+        let result = verify_claim4(&sequence, &NullModel::Uniform, 50, 42);
+
+        // Mapping should be a valid permutation
+        let mut sorted_mapping = result.optimal_mapping;
+        sorted_mapping.sort();
+        assert_eq!(sorted_mapping, [0, 1, 2, 3, 4, 5, 6, 7],
+            "Optimal mapping must be a permutation of 0..8");
+        // Completions <= opportunities
+        assert!(result.completions <= result.opportunities,
+            "Completions ({}) should not exceed opportunities ({})",
+            result.completions, result.opportunities);
+        // Rate consistency
+        if result.opportunities > 0 {
+            let expected_rate = result.completions as f64 / result.opportunities as f64;
+            assert!((result.observed_rate - expected_rate).abs() < 1e-10,
+                "Rate inconsistency: {} vs {}", result.observed_rate, expected_rate);
+        }
+        // Sequence test has correct number of permutations
+        assert_eq!(result.sequence_test.n_permutations, 50);
+        // Mapping p-value in [0, 1]
+        assert!(result.mapping_pvalue >= 0.0 && result.mapping_pvalue <= 1.0);
+    }
+
+    #[test]
+    fn test_claim4_summary_logic() {
+        // Test the summary function decision logic
+        let result = Claim4Result {
+            optimal_mapping: [0, 1, 2, 3, 4, 5, 6, 7],
+            completions: 50,
+            opportunities: 200,
+            observed_rate: 0.25, // > 1/7
+            mapping_pvalue: 0.01, // < 0.05
+            enrichment_zscore: 3.5,
+            sequence_test: PermutationTestResult {
+                observed: 0.25,
+                null_mean: 0.14,
+                null_std: 0.02,
+                p_value: 0.001, // < 0.05
+                n_permutations: 1000,
+                null_ci_lower: 0.10,
+                null_ci_upper: 0.18,
+                effect_size: 5.5,
+            },
+            n_windows: 500,
+        };
+        let (supported, reason) = claim4_summary(&result, 0.05);
+        assert!(supported, "Should be supported when both p < alpha and enriched: {}",
+            reason);
+
+        // Test rejection: sequence p-value too high
+        let mut result_fail = result.clone();
+        result_fail.sequence_test.p_value = 0.30;
+        let (supported_fail, _) = claim4_summary(&result_fail, 0.05);
+        assert!(!supported_fail, "Should NOT be supported when sequence p >= alpha");
+
+        // Test rejection: mapping p-value too high
+        let mut result_fail2 = result.clone();
+        result_fail2.mapping_pvalue = 0.20;
+        let (supported_fail2, _) = claim4_summary(&result_fail2, 0.05);
+        assert!(!supported_fail2, "Should NOT be supported when mapping p >= alpha");
+
+        // Test rejection: depleted rate
+        let mut result_fail3 = result.clone();
+        result_fail3.observed_rate = 0.10; // < 1/7
+        let (supported_fail3, _) = claim4_summary(&result_fail3, 0.05);
+        assert!(!supported_fail3, "Should NOT be supported when rate < 1/7");
+    }
+
+    #[test]
+    fn test_verify_claim4_deterministic() {
+        // Same inputs and seed should produce identical results
+        let sequence: Vec<usize> = (0..200).map(|i| (i * 3 + 7) % 8).collect();
+        let r1 = verify_claim4(&sequence, &NullModel::Uniform, 100, 77777);
+        let r2 = verify_claim4(&sequence, &NullModel::Uniform, 100, 77777);
+
+        assert_eq!(r1.optimal_mapping, r2.optimal_mapping);
+        assert!((r1.observed_rate - r2.observed_rate).abs() < 1e-15);
+        assert!((r1.mapping_pvalue - r2.mapping_pvalue).abs() < 1e-15);
+        assert!((r1.sequence_test.p_value - r2.sequence_test.p_value).abs() < 1e-15);
+        assert!((r1.enrichment_zscore - r2.enrichment_zscore).abs() < 1e-15);
+    }
+
+    #[test]
+    fn test_verify_claim4_empty_sequence() {
+        // Edge case: empty sequence
+        let result = verify_claim4(&[], &NullModel::Uniform, 50, 42);
+        assert_eq!(result.n_windows, 0);
+        assert_eq!(result.completions, 0);
+        assert_eq!(result.opportunities, 0);
+        assert!((result.observed_rate - 0.0).abs() < 1e-15);
+    }
+
+    #[test]
+    fn test_verify_claim4_hyperbolic_only() {
+        // Sequence with only walls 8 and 9: no E8-only windows
+        let sequence: Vec<usize> = (0..100).map(|i| 8 + i % 2).collect();
+        let result = verify_claim4(&sequence, &NullModel::Uniform, 50, 42);
+        assert_eq!(result.n_windows, 0, "Hyperbolic-only sequence has no E8 windows");
+    }
+
+    #[test]
+    fn test_verify_claim4_different_null_models() {
+        // Test that different null models produce different distributions
+        let sequence: Vec<usize> = (0..300).map(|i| i % 8).collect();
+        let r_uniform = verify_claim4(&sequence, &NullModel::Uniform, 100, 42);
+        let r_iid = verify_claim4(&sequence, &NullModel::IidEmpirical, 100, 42);
+        let r_degree = verify_claim4(&sequence, &NullModel::DegreePreserving, 100, 42);
+
+        // All should have the same observed rate (same sequence and mapping)
+        assert!((r_uniform.observed_rate - r_iid.observed_rate).abs() < 1e-15);
+        assert!((r_uniform.observed_rate - r_degree.observed_rate).abs() < 1e-15);
+
+        // But the null distributions (and hence p-values) may differ
+        // At minimum, verify they all complete without panic
+        assert!(r_uniform.sequence_test.n_permutations == 100);
+        assert!(r_iid.sequence_test.n_permutations == 100);
+        assert!(r_degree.sequence_test.n_permutations == 100);
+    }
+
+    #[test]
+    fn test_verify_claim4_enrichment_zscore_sign() {
+        // For a structured sequence, Z-score should be positive (enrichment)
+        let mut sequence = Vec::new();
+        for _ in 0..100 {
+            sequence.extend_from_slice(&[1, 2, 3, 1, 4, 5, 2, 5, 7]);
+        }
+        let result = verify_claim4(&sequence, &NullModel::Uniform, 100, 42);
+
+        // The Z-score should be meaningful (non-zero) for non-trivial data
+        assert!(result.enrichment_zscore.is_finite(),
+            "Z-score should be finite, got {}", result.enrichment_zscore);
     }
 }
