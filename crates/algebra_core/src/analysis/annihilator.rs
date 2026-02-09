@@ -12,7 +12,7 @@
 //! - Reggiani (2024): Geometry of sedenion zero divisors
 
 use nalgebra::{DMatrix, SVD};
-use crate::cayley_dickson::cd_multiply;
+use crate::construction::cayley_dickson::cd_multiply;
 
 /// Dimensions of left and right annihilator subspaces.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -179,7 +179,7 @@ mod tests {
     fn test_all_primitive_assessor_diagonals_have_nullity_4() {
         // The 84 standard zero-divisors (42 assessors * 2 signs) all have
         // left nullity 4 and right nullity 4
-        use crate::boxkites::primitive_assessors;
+        use crate::analysis::boxkites::primitive_assessors;
         for a in &primitive_assessors() {
             for sign in [1.0_f64, -1.0] {
                 let diag = a.diagonal(sign);

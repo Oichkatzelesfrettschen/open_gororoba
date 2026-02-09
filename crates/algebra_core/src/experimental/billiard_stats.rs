@@ -103,6 +103,10 @@ pub struct LocalityMetrics {
     pub commutation_rate: f64,
     /// Mutual information I(S_t; S_{t+1}) in nats.
     pub mutual_information: f64,
+    /// Conditional mutual information I(S_{t+1}; S_{t-1} | S_t) in nats.
+    /// Measures how much the next bounce depends on the previous bounce,
+    /// given the current bounce.
+    pub conditional_mutual_information: f64,
     /// Total transitions analyzed (sequence length - 1).
     pub n_transitions: usize,
 }
@@ -121,6 +125,7 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
             n_hyp_transitions: 0,
             commutation_rate: 0.0,
             mutual_information: 0.0,
+            conditional_mutual_information: 0.0,
             n_transitions: 0,
         };
     }
@@ -134,11 +139,15 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
     let mut hyp: usize = 0;
     let mut commuting: usize = 0;
 
-    // Transition counts for MI computation
+    // Transition counts for MI and CMI
     let mut trans_counts = [[0u64; N_WALLS]; N_WALLS];
     let mut from_counts = [0u64; N_WALLS];
+    
+    // Triple counts for CMI: N[i, j, k] where S_{t-1}=i, S_t=j, S_{t+1}=k
+    let mut triple_counts = [[[0u64; N_WALLS]; N_WALLS]; N_WALLS];
+    let mut pair_counts = [[0u64; N_WALLS]; N_WALLS]; // N[i, j] for S_{t-1}=i, S_t=j
 
-    for pair in sequence.windows(2) {
+    for (t, pair) in sequence.windows(2).enumerate() {
         let (i, j) = (pair[0], pair[1]);
         if i >= N_WALLS || j >= N_WALLS { continue; }
 
@@ -168,6 +177,15 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
         // Transition counting for MI
         trans_counts[i][j] += 1;
         from_counts[i] += 1;
+
+        // Counting for CMI (requires windows of size 3)
+        if t < sequence.len() - 2 {
+            let k = sequence[t + 2];
+            if k < N_WALLS {
+                triple_counts[i][j][k] += 1;
+                pair_counts[i][j] += 1;
+            }
+        }
     }
 
     let r_e8 = if e8_total > 0 { e8_connected as f64 / e8_total as f64 } else { 0.0 };
@@ -196,6 +214,42 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
         }
     }
 
+    // Conditional Mutual Information: I(S_{t+1}; S_{t-1} | S_t)
+    // CMI = sum_{i,j,k} p(i,j,k) log( p(j)p(i,j,k) / (p(i,j)p(j,k)) )
+    let mut cmi = 0.0;
+    let n_triples = if sequence.len() >= 3 { (sequence.len() - 2) as f64 } else { 0.0 };
+    
+    if n_triples > 0.0 {
+        // We need marginals for triples
+        let mut p_j = [0.0; N_WALLS];
+        for t in 1..(sequence.len() - 1) {
+            p_j[sequence[t]] += 1.0 / n_triples;
+        }
+
+        for j in 0..N_WALLS {
+            if p_j[j] <= 0.0 { continue; }
+            for i in 0..N_WALLS {
+                let nij = pair_counts[i][j];
+                if nij == 0 { continue; }
+                let p_ij = nij as f64 / n_triples;
+
+                for (k, &nijk) in triple_counts[i][j].iter().enumerate() {
+                    if nijk == 0 { continue; }
+                    let p_ijk = nijk as f64 / n_triples;
+
+                    // We need p(j,k) for the same triple set
+                    // p(j,k) = sum_i p(i,j,k)
+                    let njk: u64 = triple_counts.iter().map(|tc| tc[j][k]).sum();
+                    let p_jk = njk as f64 / n_triples;
+
+                    if p_ij > 0.0 && p_jk > 0.0 {
+                        cmi += p_ijk * ( (p_j[j] * p_ijk) / (p_ij * p_jk) ).ln();
+                    }
+                }
+            }
+        }
+    }
+
     LocalityMetrics {
         r_e8,
         r_e10,
@@ -204,6 +258,7 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
         n_hyp_transitions: hyp,
         commutation_rate,
         mutual_information: mi,
+        conditional_mutual_information: cmi,
         n_transitions: n_trans,
     }
 }
@@ -721,8 +776,8 @@ pub fn verify_claim1(
     n_seeds: usize,
     n_bounces: usize,
 ) -> Claim1Result {
-    use crate::billiard_sim::HyperbolicBilliard;
-    use crate::kac_moody::E10RootSystem;
+    use crate::physics::billiard_sim::HyperbolicBilliard;
+    use crate::lie::kac_moody::E10RootSystem;
 
     let e10 = E10RootSystem::new();
 
@@ -929,8 +984,8 @@ pub fn fano_structure_analysis(
     n_bounces: usize,
     n_permutations: usize,
 ) -> FanoStructureAnalysis {
-    use crate::billiard_sim::HyperbolicBilliard;
-    use crate::kac_moody::E10RootSystem;
+    use crate::physics::billiard_sim::HyperbolicBilliard;
+    use crate::lie::kac_moody::E10RootSystem;
 
     let e10 = E10RootSystem::new();
     let mut billiard = HyperbolicBilliard::from_e10(&e10, seed);
@@ -988,7 +1043,7 @@ pub fn fano_analysis_report(a: &FanoStructureAnalysis) -> String {
         "=== Fano Structure Analysis ({n} bounces) ===\n\
          \n\
          Locality:\n\
-         r_e8={re8:.4}  r_e10={re10:.4}  MI={mi:.4} nats  commute={comm:.1}%\n\
+         r_e8={re8:.4}  r_e10={re10:.4}  MI={mi:.4} nats  CMI={cmi:.4} nats  commute={comm:.1}%\n\
          E8 trans={ne8}  mixed={nmix}  hyp={nhyp}\n\
          \n\
          Sectors:\n\
@@ -1009,6 +1064,7 @@ pub fn fano_analysis_report(a: &FanoStructureAnalysis) -> String {
         re8 = a.locality.r_e8,
         re10 = a.locality.r_e10,
         mi = a.locality.mutual_information,
+        cmi = a.locality.conditional_mutual_information,
         comm = a.locality.commutation_rate * 100.0,
         ne8 = a.locality.n_e8_transitions,
         nmix = a.locality.n_mixed_transitions,

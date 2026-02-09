@@ -196,7 +196,7 @@ pub fn generate_levy_flight(n: usize, params: LevyParams, seed: u64) -> Vec<f64>
 /// but using our Hosking implementation for consistency.
 pub fn generate_fbm_diffusionx_compatible(n: usize, hurst: f64, seed: u64) -> Vec<f64> {
     // Use our existing Hosking implementation
-    crate::fractal_analysis::generate_fbm(n, hurst, seed)
+    crate::analysis::fractal_analysis::generate_fbm(n, hurst, seed)
 }
 
 /// Result of mean-reversion analysis on a time series.
@@ -480,7 +480,7 @@ mod tests {
     #[test]
     fn test_anomalous_diffusion_fbm() {
         // fBm with H > 0.5 is superdiffusive
-        let fbm = crate::fractal_analysis::generate_fbm(2000, 0.8, 42);
+        let fbm = crate::analysis::fractal_analysis::generate_fbm(2000, 0.8, 42);
         let result = analyze_anomalous_diffusion(&fbm);
 
         // For fBm, MSD ~ t^{2H}, so alpha should be near 2*H = 1.6

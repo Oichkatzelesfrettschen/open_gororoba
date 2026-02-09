@@ -16,7 +16,7 @@
 use petgraph::graph::{DiGraph, UnGraph};
 use petgraph::algo::{connected_components, dijkstra, tarjan_scc};
 use std::collections::{HashMap, HashSet};
-use crate::cayley_dickson::{find_zero_divisors, cd_associator_norm, cd_basis_mul_sign};
+use crate::construction::cayley_dickson::{find_zero_divisors, cd_associator_norm, cd_basis_mul_sign};
 
 /// A zero-divisor pair: indices (i, j, k, l) where (e_i + e_j) * (e_k +/- e_l) ~ 0.
 pub type ZdPair = (usize, usize, usize, usize, f64);
@@ -1119,5 +1119,36 @@ mod tests {
 
         // For dim=16: 105 (verified against convo)
         assert_eq!(count_16, 105);
+    }
+
+    #[test]
+    fn test_assessor_xor_bucket_count() {
+        // For Cayley-Dickson level N, G = dim/2.
+        // Assessors are (l, h) with l < G, h >= G.
+        // The XOR key l ^ h always has the top bit set, so it lies in [G, 2G).
+        // There are exactly G such keys.
+        for n in [4, 5, 6, 7] {
+            let dim = 1 << n;
+            let g = dim / 2;
+            let mut keys = std::collections::HashSet::new();
+            for l in 1..g {
+                for h in g..dim {
+                    keys.insert(l ^ h);
+                }
+            }
+            // All keys must be >= g
+            for &k in &keys {
+                assert!(k >= g, "Key {} < g={} for dim={}", k, g, dim);
+            }
+            // Number of keys should be g (if l=0 was allowed) or g-1?
+            // Actually, if we allow l from 0..G-1 and h from G..2G-1,
+            // l ^ h covers exactly [G, 2G).
+            // In our loop l starts from 1, so we miss the key (0 ^ h) = h?
+            // No, h can be g + u. l ^ (g + u) = g + (l ^ u).
+            // To get key g, we need l ^ u = 0, so u = l.
+            // Since l is in 1..g-1, we can pick u = l in 1..g-1.
+            // So g is indeed reachable.
+            assert_eq!(keys.len(), g, "dim={} should have {} buckets, got {}", dim, g, keys.len());
+        }
     }
 }

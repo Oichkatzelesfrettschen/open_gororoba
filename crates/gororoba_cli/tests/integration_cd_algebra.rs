@@ -6,8 +6,8 @@
 use algebra_core::{
     cd_multiply, cd_conjugate, cd_norm_sq, cd_associator_norm,
     find_zero_divisors,
-    cayley_dickson::find_zero_divisors_general_form,
 };
+use algebra_core::construction::cayley_dickson::find_zero_divisors_general_form;
 
 /// Test that quaternion multiplication is associative.
 #[test]

@@ -19,6 +19,8 @@ sha2 = { workspace = true }
 wide = { workspace = true }
 rustfft = { workspace = true }
 thiserror = { workspace = true }
+serde = { workspace = true }
+csv = { workspace = true }
 
 # External algebra crates (workspace)
 wheel = { workspace = true }

@@ -17,37 +17,19 @@
 //! - Kac (1990): Infinite-Dimensional Lie Algebras
 //! - Damour, Henneaux, Nicolai (2002): E10 and M-theory
 
-pub mod cayley_dickson;
-pub mod clifford;
-pub mod zd_graphs;
-pub mod e8_lattice;
-pub mod boxkites;
-pub mod annihilator;
-pub mod reggiani;
-pub mod m3;
-pub mod octonion_field;
-pub mod wheels;
-pub mod padic;
-pub mod group_theory;
-pub mod fractal_analysis;
-pub mod nilpotent_orbits;
-pub mod hypercomplex;
-pub mod moonshine;
-pub mod kac_moody;
-pub mod homotopy_algebra;
-pub mod stochastic;
-pub mod grassmannian;
-pub mod so7_drift;
-pub mod projective_geometry;
-pub mod mult_table;
-pub mod cd_external;
-pub mod emanation;
-pub mod e10_octonion;
-pub mod billiard_stats;
-pub mod billiard_sim;
+pub mod construction;
+pub mod lie;
+pub mod physics;
+pub mod analysis;
+pub mod experimental;
+pub mod error;
+pub mod universal_algebra;
 
-// Re-export core algebra functions
-pub use cayley_dickson::{
+pub use error::{AlgebraError, AlgebraResult};
+pub use universal_algebra::UniversalAlgebra;
+
+// Re-export core algebra functions from construction
+pub use construction::cayley_dickson::{
     cd_multiply, cd_conjugate, cd_norm_sq, cd_associator, cd_associator_norm,
     cd_multiply_simd, cd_norm_sq_simd,  // SIMD-accelerated versions
     batch_associator_norms, batch_associator_norms_sq, batch_associator_norms_parallel,
@@ -56,12 +38,48 @@ pub use cayley_dickson::{
     cd_basis_mul_sign,  // Integer-exact basis product sign
 };
 
-pub use clifford::{
+pub use construction::wheels::{
+    WheelQ, verify_carlstrom_axioms, canonical_test_set,
+};
+
+pub use construction::padic::{
+    Rational, CantorDigits,
+    vp_int, vp, abs_p, is_power_of_two, is_dyadic,
+    ternary_digits_power3, cantor_function_on_cantor,
+    padic_distance, check_ultrametric,
+};
+
+pub use construction::hypercomplex::{
+    AlgebraDim, ZeroSearchConfig, ZeroDivisorResults,
+    HypercomplexAlgebra, OctonionFieldDynamics, PathionAlgebra,
+};
+
+// Re-export from physics
+pub use physics::clifford::{
     pauli_matrices, gamma_matrices_cl8, verify_clifford_relation,
     GammaMatrix, CliffordAlgebra,
 };
 
-pub use zd_graphs::{
+pub use physics::octonion_field::{
+    Octonion, FieldParams, EvolutionResult, DispersionResult,
+    FANO_TRIPLES, build_structure_constants,
+    oct_multiply, oct_conjugate, oct_norm_sq,
+    hamiltonian, force, stormer_verlet_step, noether_charges,
+    evolve, gaussian_wave_packet, standing_wave, measure_dispersion,
+};
+
+pub use physics::m3::{
+    OctonionTable, compute_m3_octonion_basis,
+    M3Classification, classify_m3,
+};
+
+pub use physics::billiard_sim::{
+    LorentzVec, BilliardState, BounceResult, ConstraintDiagnostics,
+    BilliardConfig, HyperbolicBilliard,
+};
+
+// Re-export from analysis
+pub use analysis::zd_graphs::{
     build_zd_interaction_graph, analyze_zd_graph, analyze_basis_participation,
     build_associator_graph, analyze_associator_graph, zd_shortest_path,
     zd_graph_diameter, ZdGraphAnalysis, BasisParticipationResult,
@@ -76,19 +94,7 @@ pub use zd_graphs::{
     BladeNode, MixedBladeGraphResult, TwoBladeSpec, FourBladeSpec,
 };
 
-pub use e8_lattice::{
-    E8Lattice, E8Root, generate_e8_roots, e8_cartan_matrix,
-    e8_weyl_group_order, compute_e8_inner_products,
-    // Atlas-E8 integration
-    AtlasE8CrossValidation, AtlasEmbeddingInfo, ExceptionalGroupsFromAtlas,
-    cross_validate_with_atlas, get_atlas_embedding_info,
-    verify_cartan_matrix_with_atlas, exceptional_groups_from_atlas,
-    // Freudenthal-Tits magic square
-    DivisionAlgebra, MagicSquareLieAlgebra, FreudenthalTitsMagicSquare,
-    magic_square_entry,
-};
-
-pub use boxkites::{
+pub use analysis::boxkites::{
     Assessor, BoxKite, find_box_kites, analyze_box_kite_symmetry,
     BoxKiteSymmetryResult, primitive_assessors, are_coassessors,
     diagonal_zero_product, build_coassessor_graph, find_connected_components,
@@ -103,85 +109,94 @@ pub use boxkites::{
     MotifComponent, motif_components_for_cross_assessors,
 };
 
-pub use annihilator::{
+pub use analysis::annihilator::{
     AnnihilatorInfo, left_multiplication_matrix, right_multiplication_matrix,
     nullspace_basis, annihilator_info, is_zero_divisor, is_reggiani_zd,
     find_left_annihilator_vector,
 };
 
-pub use reggiani::{
+pub use analysis::reggiani::{
     StandardZeroDivisor, standard_zero_divisors,
     standard_zero_divisor_partners, assert_standard_zero_divisor_annihilators,
 };
 
-pub use m3::{
-    OctonionTable, compute_m3_octonion_basis,
-    M3Classification, classify_m3,
-};
-
-pub use octonion_field::{
-    Octonion, FieldParams, EvolutionResult, DispersionResult,
-    FANO_TRIPLES, build_structure_constants,
-    oct_multiply, oct_conjugate, oct_norm_sq,
-    hamiltonian, force, stormer_verlet_step, noether_charges,
-    evolve, gaussian_wave_packet, standing_wave, measure_dispersion,
-};
-
-pub use grassmannian::{
+pub use analysis::grassmannian::{
     Subspace, subspace_from_vectors, subspace_from_orthonormal,
     principal_angles, geodesic_distance, chordal_distance,
     pairwise_geodesic_distances, count_distinct_distances, orthonormality_error,
 };
 
-pub use wheels::{
-    WheelQ, verify_carlstrom_axioms, canonical_test_set,
-};
-
-pub use padic::{
-    Rational, CantorDigits,
-    vp_int, vp, abs_p, is_power_of_two, is_dyadic,
-    ternary_digits_power3, cantor_function_on_cantor,
-    padic_distance, check_ultrametric,
-};
-
-pub use group_theory::{
-    order_psl2_q, order_symmetric, order_alternating,
-    order_gl, order_sl, is_prime, prime_power,
-    PSL_2_7_ORDER, exceptional,
-};
-
-pub use fractal_analysis::{
+pub use analysis::fractal_analysis::{
     HurstResult, RescaledRangeResult, DfaResult, HurstClassification,
     MultiSeriesHurstResult,
     calculate_hurst, hurst_rs_analysis, dfa_analysis, classify_hurst,
     analyze_multiple_series, generate_fgn, generate_fbm,
 };
 
-pub use nilpotent_orbits::{
+pub use analysis::stochastic::{
+    // Ornstein-Uhlenbeck process
+    OUParams, generate_ou_process, fit_ou_parameters, MeanReversionResult,
+    // Geometric Brownian Motion
+    GBMParams, generate_gbm,
+    // Levy flights
+    LevyParams, generate_levy_flight,
+    // Anomalous diffusion analysis
+    AnomalousDiffusionResult, DiffusionType, analyze_anomalous_diffusion,
+};
+
+pub use analysis::homotopy_algebra::{
+    // Core types
+    Degree, GradedElement, HomotopyAlgebraType, HomotopyOperation,
+    // A-infinity structures
+    AInfinityAlgebra, MinimalAInfinity, MasseyProduct,
+    // L-infinity structures
+    LInfinityAlgebra, BVInfinityAlgebra, FormalityMorphism,
+    // Combinatorics
+    Associahedron, catalan_number, cyclohedron_vertices,
+    // Sign computations
+    koszul_sign, a_infinity_sign, l_infinity_sign,
+    // String field theory
+    StringFieldTheory, StringType,
+};
+
+pub use analysis::projective_geometry::{
+    PGPoint, PGLine, ProjectiveGeometry,
+    pg, pg_from_cd_dim, incidence_matrix,
+    component_xor_label, map_components_to_pg, verify_pg_line_structure,
+    find_linear_class_predicate, find_affine_class_predicate,
+    find_boolean_class_predicate,
+    sign_twist_signature, verify_signature_determines_solutions,
+    // C-444 correspondence verification
+    PGCorrespondenceResult, verify_pg_correspondence, pg_correspondence_summary,
+};
+
+// Re-export from lie
+pub use lie::e8_lattice::{
+    E8Lattice, E8Root, generate_e8_roots, e8_cartan_matrix,
+    e8_weyl_group_order, compute_e8_inner_products,
+    // Atlas-E8 integration
+    AtlasE8CrossValidation, AtlasEmbeddingInfo, ExceptionalGroupsFromAtlas,
+    cross_validate_with_atlas, get_atlas_embedding_info,
+    verify_cartan_matrix_with_atlas, exceptional_groups_from_atlas,
+    // Freudenthal-Tits magic square
+    DivisionAlgebra, MagicSquareLieAlgebra, FreudenthalTitsMagicSquare,
+    magic_square_entry,
+};
+
+pub use lie::group_theory::{
+    order_psl2_q, order_symmetric, order_alternating,
+    order_gl, order_sl, is_prime, prime_power,
+    PSL_2_7_ORDER, exceptional,
+};
+
+pub use lie::nilpotent_orbits::{
     JordanType, NilpotentAnalysis,
     nilpotency_index, jordan_type_nilpotent, jordan_block,
     matrix_from_jordan_type, enumerate_partitions, partition_count,
     dominance_order,
 };
 
-pub use hypercomplex::{
-    AlgebraDim, ZeroSearchConfig, ZeroDivisorResults,
-    HypercomplexAlgebra, OctonionFieldDynamics, PathionAlgebra,
-};
-
-pub use moonshine::{
-    J_COEFFICIENTS, J_COEFFICIENTS_VALID,
-    MONSTER_REP_DIMENSIONS, MONSTER_REPS_VALID,
-    MONSTER_CONJUGACY_CLASSES, LEECH_LATTICE_DIMENSION, NIEMEIER_LATTICE_COUNT,
-    monster_group_order, verify_monster_order_factorization,
-    verify_moonshine_c1, verify_moonshine_c2,
-    compute_j_coefficients, known_moonshine_decompositions,
-    j_constant_term_e8_relation, moonshine_dimensions,
-    j_as_hauptmodul, mckay_e8_observation,
-    MoonshineDecomposition, MoonshineDimensions, HauptmodulProperty,
-};
-
-pub use kac_moody::{
+pub use lie::kac_moody::{
     // Core types
     GeneralizedCartanMatrix, CartanEntry, KacMoodyType, LieAlgebraType,
     // Dynkin diagrams
@@ -197,44 +212,20 @@ pub use kac_moody::{
     E9RootSystem, E10RootSystem, E11RootSystem, ESeriesRootSystem,
 };
 
-pub use homotopy_algebra::{
-    // Core types
-    Degree, GradedElement, HomotopyAlgebraType, HomotopyOperation,
-    // A-infinity structures
-    AInfinityAlgebra, MinimalAInfinity, MasseyProduct,
-    // L-infinity structures
-    LInfinityAlgebra, BVInfinityAlgebra, FormalityMorphism,
-    // Combinatorics
-    Associahedron, catalan_number, cyclohedron_vertices,
-    // Sign computations
-    koszul_sign, a_infinity_sign, l_infinity_sign,
-    // String field theory
-    StringFieldTheory, StringType,
+// Re-export from experimental
+pub use experimental::moonshine::{
+    J_COEFFICIENTS, J_COEFFICIENTS_VALID,
+    MONSTER_REP_DIMENSIONS, MONSTER_REPS_VALID,
+    MONSTER_CONJUGACY_CLASSES, LEECH_LATTICE_DIMENSION, NIEMEIER_LATTICE_COUNT,
+    monster_group_order, verify_monster_order_factorization,
+    verify_moonshine_c1, verify_moonshine_c2,
+    compute_j_coefficients, known_moonshine_decompositions,
+    j_constant_term_e8_relation, moonshine_dimensions,
+    j_as_hauptmodul, mckay_e8_observation,
+    MoonshineDecomposition, MoonshineDimensions, HauptmodulProperty,
 };
 
-pub use projective_geometry::{
-    PGPoint, PGLine, ProjectiveGeometry,
-    pg, pg_from_cd_dim, incidence_matrix,
-    component_xor_label, map_components_to_pg, verify_pg_line_structure,
-    find_linear_class_predicate, find_affine_class_predicate,
-    find_boolean_class_predicate,
-    sign_twist_signature, verify_signature_determines_solutions,
-    // C-444 correspondence verification
-    PGCorrespondenceResult, verify_pg_correspondence, pg_correspondence_summary,
-};
-
-pub use stochastic::{
-    // Ornstein-Uhlenbeck process
-    OUParams, generate_ou_process, fit_ou_parameters, MeanReversionResult,
-    // Geometric Brownian Motion
-    GBMParams, generate_gbm,
-    // Levy flights
-    LevyParams, generate_levy_flight,
-    // Anomalous diffusion analysis
-    AnomalousDiffusionResult, DiffusionType, analyze_anomalous_diffusion,
-};
-
-pub use e10_octonion::{
+pub use experimental::e10_octonion::{
     fano_complement, fano_complement_table, extract_3windows,
     fano_completion_rate, optimal_fano_mapping, exact_pvalue,
     fano_enrichment_zscore, describe_fano_structure,
@@ -253,7 +244,7 @@ pub use e10_octonion::{
     Claim4Result, verify_claim4, claim4_summary,
 };
 
-pub use billiard_stats::{
+pub use experimental::billiard_stats::{
     // Constants
     E10_ADJACENCY, N_WALLS, N_E8, NULL_R_E8_UNIFORM,
     // Locality metrics
@@ -274,12 +265,7 @@ pub use billiard_stats::{
     Claim1Result, verify_claim1, claim1_summary,
 };
 
-pub use billiard_sim::{
-    LorentzVec, BilliardState, BounceResult, ConstraintDiagnostics,
-    BilliardConfig, HyperbolicBilliard,
-};
-
-pub use emanation::{
+pub use experimental::emanation::{
     // Core ET types
     ToneRow, StruttedEtCell, StruttedEmanationTable, StrutSpectrum,
     // ET construction
@@ -314,6 +300,9 @@ pub use emanation::{
     ThreeVizierResult, verify_three_viziers,
     VizierXorAudit, vizier_xor_audit,
 };
+
+pub use experimental::cd_external;
+pub use experimental::so7_drift;
 
 // Re-export external algebra crates for convenience
 pub use wheel as ext_wheel;

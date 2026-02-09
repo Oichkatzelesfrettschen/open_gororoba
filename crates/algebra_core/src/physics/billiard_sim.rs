@@ -23,7 +23,7 @@
 //! - Damour, Henneaux, Nicolai (2003): "Cosmological billiards"
 //! - Damour, de Buyl, Henneaux, Schomblond (2004): "Einstein billiards"
 
-use crate::kac_moody::{E10RootSystem, KacMoodyRoot};
+use crate::lie::kac_moody::{E10RootSystem, KacMoodyRoot};
 
 /// A 10-dimensional vector with Lorentzian metric signature (9,1).
 ///
@@ -265,6 +265,28 @@ impl HyperbolicBilliard {
         let wall = &self.config.walls[wall_idx];
         weyl_reflect(&mut self.state.vel, wall);
 
+        // Adaptive Nudge: Ensure we remain inside all walls after the bounce.
+        // We need to move a tiny bit along the new velocity v'.
+        // To avoid crossing ANY other wall i, we need <pos + eps*v', alpha_i> >= 0.
+        // eps <= <pos, alpha_i> / -<v', alpha_i> for all walls with <v', alpha_i> < 0.
+        let mut max_eps = 1e-5; // Upper bound for the nudge
+        for (i, w) in self.config.walls.iter().enumerate() {
+            if i == wall_idx { continue; }
+            let pos_dot = self.state.pos.inner_product(w);
+            let vel_dot = self.state.vel.inner_product(w);
+            if vel_dot < -1e-12 {
+                let limit = pos_dot / -vel_dot;
+                if limit > 0.0 && limit < max_eps {
+                    max_eps = limit;
+                }
+            }
+        }
+        // Use a safety fraction of the limit
+        let eps = max_eps * 0.1;
+        if eps > 1e-15 {
+            geodesic_advance(&mut self.state, eps);
+        }
+
         // Renormalize to combat floating-point drift
         if self.config.renormalize {
             project_to_hyperboloid(&mut self.state);
@@ -412,7 +434,7 @@ fn compute_weyl_vector(
     e10: &E10RootSystem,
     roots: &[KacMoodyRoot],
 ) -> KacMoodyRoot {
-    use crate::kac_moody::RootType;
+    use crate::lie::kac_moody::RootType;
 
     let n = roots.len();
 
@@ -711,5 +733,53 @@ mod tests {
                 "E8 fraction too low: {:.4} ({} of {})",
                 e8_fraction, e8_count, sequence.len());
         }
+    }
+
+    /// T1: Verify that the initial Weyl vector point is strictly inside all walls.
+    #[test]
+    fn test_t1_chamber_validity() {
+        let e10 = E10RootSystem::new();
+        let simple_roots = e10.simple_roots();
+        let pos_km = compute_weyl_vector(&e10, &simple_roots);
+        
+        for (i, root) in simple_roots.iter().enumerate() {
+            let ip = e10.inner_product(&pos_km, root);
+            assert!(ip > 0.99, "Wall {} inner product {} < 1.0", i, ip);
+        }
+    }
+
+    /// T5: Verify that the adaptive nudge prevents false escapes.
+    #[test]
+    fn test_t5_no_false_escape() {
+        let mut billiard = make_test_billiard(123);
+        let n = 2000;
+        let sequence = billiard.simulate(n);
+        
+        assert_eq!(sequence.len(), n, 
+            "Simulation escaped at step {}/{} with adaptive nudge!", sequence.len(), n);
+        
+        // Also check that min slack remains non-negative
+        for _ in 0..100 {
+            billiard.step().expect("Should not escape");
+            assert!(billiard.is_inside_chamber(), "Escaped chamber during step!");
+        }
+    }
+
+    /// T2: Verify hyperboloid stability (norm preservation).
+    #[test]
+    fn test_t2_hyperboloid_stability() {
+        let mut billiard = make_test_billiard(456);
+        let initial_pos_norm = billiard.state.pos.norm_sq();
+        let initial_vel_norm = billiard.state.vel.norm_sq();
+        
+        billiard.simulate(1000);
+        
+        let final_pos_norm = billiard.state.pos.norm_sq();
+        let final_vel_norm = billiard.state.vel.norm_sq();
+        
+        assert!((final_pos_norm - initial_pos_norm).abs() < 1e-10,
+            "Position norm drifted: {} -> {}", initial_pos_norm, final_pos_norm);
+        assert!((final_vel_norm - initial_vel_norm).abs() < 1e-10,
+            "Velocity norm drifted: {} -> {}", initial_vel_norm, final_vel_norm);
     }
 }

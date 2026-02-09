@@ -12,11 +12,26 @@ jobs = 12
 rustflags = ["-C", "target-cpu=native", "-C", "link-arg=-fuse-ld=mold"]
 linker = "clang"
 
-# Incremental compilation for faster rebuilds during development
-[profile.dev]
-incremental = true
-
-[profile.test]
-# Optimize tests enough to make compute-heavy tests bearable
-# opt-level 1 gives major speedup with modest compile time increase
-opt-level = 1
+# --- PGO (Profile-Guided Optimization) workflow ---
+# PGO requires a two-pass build; it cannot be a static profile setting.
+#
+# Step 1: Instrument -- build with profile generation enabled:
+#   CARGO_PROFILE_RELEASE_LTO=false \
+#   RUSTFLAGS="-Cprofile-generate=/tmp/pgo-data" \
+#     cargo build --release --workspace -j$(nproc)
+#
+# Step 2: Collect -- run representative workloads to generate .profraw files:
+#   cargo run --release --bin ultrametric_gpu_sweep -- ...
+#   cargo run --release --bin export_hdf5 -- ...
+#   (run any other performance-critical binaries)
+#
+# Step 3: Merge -- combine raw profiles into a single .profdata:
+#   llvm-profdata merge -o /tmp/pgo-data/merged.profdata /tmp/pgo-data/
+#
+# Step 4: Optimize -- rebuild using the merged profile:
+#   RUSTFLAGS="-Cprofile-use=/tmp/pgo-data/merged.profdata" \
+#     cargo build --release --workspace -j$(nproc)
+#
+# Step 5 (optional): Post-link with BOLT for further ~5-10% speedup:
+#   llvm-bolt target/release/binary -o target/release/binary.bolt \
+#     -data=perf.fdata -reorder-blocks=ext-tsp -reorder-functions=hfsort

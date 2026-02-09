@@ -144,8 +144,8 @@ pub fn incidence_matrix(geom: &ProjectiveGeometry) -> Vec<Vec<u8>> {
 // PG-to-motif bijection (A2)
 // ============================================================================
 
-use crate::boxkites::{CrossPair, MotifComponent};
-use crate::zd_graphs::xor_key;
+use crate::analysis::boxkites::{CrossPair, MotifComponent};
+use crate::analysis::zd_graphs::xor_key;
 
 /// Extract the XOR-key label for a motif component, mapped to PG(n-2,2) space.
 ///
@@ -561,7 +561,7 @@ pub struct PGCorrespondenceResult {
 ///
 /// References: Saniga-Holweck-Pracna (2015), de Marrais (2000)
 pub fn verify_pg_correspondence(dim: usize) -> PGCorrespondenceResult {
-    use crate::boxkites::motif_components_for_cross_assessors;
+    use crate::analysis::boxkites::motif_components_for_cross_assessors;
 
     assert!(dim >= 16 && dim.is_power_of_two(), "dim must be 2^n with n >= 4");
     let n = dim.trailing_zeros() as usize;
@@ -633,7 +633,7 @@ pub fn pg_correspondence_summary(r: &PGCorrespondenceResult) -> String {
 // Sign-twist cancellation predicate (A5)
 // ============================================================================
 
-use crate::cayley_dickson::cd_basis_mul_sign;
+use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
 /// Compute the 4-bit sign-twist signature for a cross-pair interaction.
 ///
@@ -855,7 +855,7 @@ mod tests {
     #[test]
     fn test_fano_cross_validate_with_o_trips() {
         // Cross-validate PG(2,2) against the hardcoded O_TRIPS in boxkites.rs
-        use crate::boxkites::O_TRIPS;
+        use crate::analysis::boxkites::O_TRIPS;
 
         let geom = pg(2);
 
@@ -908,7 +908,7 @@ mod tests {
 
     #[test]
     fn test_component_xor_label_dim16() {
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(16);
         assert_eq!(comps.len(), 7);
 
@@ -927,7 +927,7 @@ mod tests {
 
     #[test]
     fn test_bijection_dim16() {
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(16);
         let geom = pg_from_cd_dim(16);
         let mapping = map_components_to_pg(&comps, &geom);
@@ -936,7 +936,7 @@ mod tests {
 
     #[test]
     fn test_bijection_dim32() {
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(32);
         let geom = pg_from_cd_dim(32);
         assert_eq!(comps.len(), 15);
@@ -947,7 +947,7 @@ mod tests {
 
     #[test]
     fn test_pg_line_structure_dim16() {
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(16);
         let geom = pg_from_cd_dim(16);
         assert!(verify_pg_line_structure(&comps, &geom));
@@ -955,7 +955,7 @@ mod tests {
 
     #[test]
     fn test_pg_line_structure_dim32() {
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(32);
         let geom = pg_from_cd_dim(32);
         assert!(verify_pg_line_structure(&comps, &geom));
@@ -967,7 +967,7 @@ mod tests {
 
     #[test]
     fn test_bijection_dim64() {
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(64);
         let geom = pg_from_cd_dim(64);
         assert_eq!(comps.len(), 31, "64D should have 31 motif components");
@@ -978,7 +978,7 @@ mod tests {
 
     #[test]
     fn test_pg_line_structure_dim64() {
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(64);
         let geom = pg_from_cd_dim(64);
         assert!(
@@ -991,7 +991,7 @@ mod tests {
 
     #[test]
     fn test_bijection_dim128() {
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(128);
         let geom = pg_from_cd_dim(128);
         assert_eq!(comps.len(), 63, "128D should have 63 motif components");
@@ -1002,7 +1002,7 @@ mod tests {
 
     #[test]
     fn test_pg_line_structure_dim128() {
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(128);
         let geom = pg_from_cd_dim(128);
         assert!(
@@ -1078,7 +1078,7 @@ mod tests {
     #[test]
     fn test_boolean_predicate_dim32_motif_classes() {
         // At dim=32: 15 components, 2 motif classes (8 heptacross + 7 mixed)
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(32);
         assert_eq!(comps.len(), 15);
 
@@ -1149,7 +1149,7 @@ mod tests {
         //
         // Result: degree 1 (linear) and degree 2 (quadratic) fail;
         //         degree 3 (cubic) is the minimum separating degree.
-        use crate::boxkites::motif_components_for_cross_assessors;
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
         let comps = motif_components_for_cross_assessors(32);
 
         let labels: Vec<PGPoint> = comps
@@ -1214,7 +1214,7 @@ mod tests {
 
     #[test]
     fn test_sign_twist_determines_solutions_dim16() {
-        use crate::boxkites::{cross_assessors, diagonal_zero_products_exact};
+        use crate::analysis::boxkites::{cross_assessors, diagonal_zero_products_exact};
 
         let dim = 16;
         let nodes = cross_assessors(dim);
@@ -1256,7 +1256,7 @@ mod tests {
     #[test]
     fn test_sign_twist_cross_assessor_pairs() {
         // At dim=16 cross-assessors, verify actual zero counts
-        use crate::boxkites::{cross_assessors, diagonal_zero_products_exact};
+        use crate::analysis::boxkites::{cross_assessors, diagonal_zero_products_exact};
 
         let dim = 16;
         let nodes = cross_assessors(dim);
@@ -1292,7 +1292,7 @@ mod tests {
     fn test_xor_315_168_via_full_enumeration() {
         // The 315/168 ratio comes from the full 2-blade enumeration
         // (not just cross-assessors). Verify via xor_necessity_statistics.
-        use crate::zd_graphs::xor_necessity_statistics;
+        use crate::analysis::zd_graphs::xor_necessity_statistics;
 
         let (n_passing, n_zero, ratio) = xor_necessity_statistics(16);
         assert_eq!(n_passing, 315);

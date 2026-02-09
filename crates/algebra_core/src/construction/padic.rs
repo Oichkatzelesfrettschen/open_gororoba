@@ -45,7 +45,7 @@ use std::fmt;
 ///
 /// # Example
 /// ```
-/// use algebra_core::padic::vp_int;
+/// use algebra_core::vp_int;
 /// assert_eq!(vp_int(12, 2), 2);  // 12 = 2^2 * 3
 /// assert_eq!(vp_int(12, 3), 1);  // 12 = 4 * 3^1
 /// assert_eq!(vp_int(7, 2), 0);   // 7 is odd

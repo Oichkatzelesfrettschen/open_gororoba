@@ -21,7 +21,7 @@
 //! # Usage
 //!
 //! ```rust
-//! use algebra_core::grassmannian::{subspace_from_vectors, geodesic_distance};
+//! use algebra_core::{subspace_from_vectors, geodesic_distance};
 //!
 //! // Two 2-subspaces of R^4
 //! let basis_a = vec![vec![1.0, 0.0, 0.0, 0.0], vec![0.0, 1.0, 0.0, 0.0]];
@@ -361,8 +361,8 @@ mod tests {
     // - Only 6 distinct geodesic distance values exist among the 42 subspaces
     // - This symmetry reflects PSL(2,7) action on the ZD family
 
-    use crate::boxkites::primitive_assessors;
-    use crate::cayley_dickson::left_mult_operator;
+    use crate::analysis::boxkites::primitive_assessors;
+    use crate::construction::cayley_dickson::left_mult_operator;
 
     /// Compute the nullspace of a matrix using SVD.
     /// Returns column vectors as basis for the nullspace.
@@ -529,7 +529,7 @@ mod tests {
         // Verify that box-kite membership stratifies geodesic distances
         // ZDs within the same box-kite should have different mean distance
         // than ZDs in different box-kites
-        use crate::boxkites::find_box_kites;
+        use crate::analysis::boxkites::find_box_kites;
 
         let box_kites = find_box_kites(16, 1e-10);
         assert_eq!(box_kites.len(), 7, "Should have 7 box-kites");

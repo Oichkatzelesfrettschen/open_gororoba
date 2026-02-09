@@ -52,7 +52,7 @@ pub mod subset_search;
 #[cfg(feature = "gpu")]
 pub mod gpu;
 
-use algebra_core::padic::{Rational, padic_distance};
+use algebra_core::{Rational, padic_distance};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
@@ -73,7 +73,7 @@ pub use dendrogram::{
     cophenetic_correlation, hierarchical_ultrametric_test,
     hierarchical_ultrametric_test_with_method, multi_linkage_test,
 };
-pub use null_models::{NullModel, apply_null_column_major};
+pub use null_models::{NullModel, MultiNullResult, apply_null_column_major, multi_null_comparison};
 pub use adaptive::{AdaptiveConfig, AdaptiveResult, StopReason, adaptive_permutation_test};
 pub use subset_search::{
     SubsetTestResult, SubsetSearchResult, SubsetSearchConfig,
@@ -245,7 +245,7 @@ fn compute_ultrametric_fraction(values: &[f64], n_triples: usize, rng: &mut ChaC
 
         // Sort distances: dists[0] <= dists[1] <= dists[2]
         let mut dists = [d_ij, d_jk, d_ik];
-        dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        dists.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
 
         // Ultrametric property: all triangles are isosceles with the
         // unequal side being shortest. Equivalently, the two largest
@@ -303,7 +303,7 @@ pub fn ultrametric_fraction_from_matrix(
         let d_ik = dist_matrix[idx(i, k)];
 
         let mut dists = [d_ij, d_jk, d_ik];
-        dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        dists.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
 
         if dists[2] > 1e-15 {
             let relative_diff = (dists[2] - dists[1]) / dists[2];
@@ -352,7 +352,7 @@ pub fn ultrametric_fraction_from_matrix_eps(
         let d_ik = dist_matrix[idx(i, k)];
 
         let mut dists = [d_ij, d_jk, d_ik];
-        dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        dists.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
 
         if dists[2] > 1e-15 {
             let relative_diff = (dists[2] - dists[1]) / dists[2];
@@ -536,7 +536,7 @@ fn compute_defects(values: &[f64], n_triples: usize, rng: &mut ChaCha8Rng) -> Ve
         let d_ik = (values[i] - values[k]).abs();
 
         let mut dists = [d_ij, d_jk, d_ik];
-        dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        dists.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
 
         // defect = (d_max - d_second) / d_second when d_second > 0
         if dists[1] > 1e-15 {
@@ -643,7 +643,7 @@ fn compute_padic_fraction(
         // P-adic metrics are inherently ultrametric, so this should hold exactly,
         // but we use the same relative tolerance for consistency.
         let mut dists = [d_ab, d_bc, d_ac];
-        dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+        dists.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
 
         if dists[2] > 1e-15 {
             let relative_diff = (dists[2] - dists[1]) / dists[2];
