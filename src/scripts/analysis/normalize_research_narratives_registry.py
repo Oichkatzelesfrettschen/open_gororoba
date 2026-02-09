@@ -5,6 +5,7 @@ Bootstrap research narrative markdown into a TOML-first registry.
 Inputs:
 - docs/theory/*.md
 - docs/engineering/*.md
+- docs/research/*.md
 
 Output:
 - registry/research_narratives.toml
@@ -215,7 +216,9 @@ def _render_toml(records: list[NarrativeDoc]) -> str:
     lines.append("[research_narratives]")
     lines.append('updated = "2026-02-09"')
     lines.append("authoritative = true")
-    lines.append('source_markdown_globs = ["docs/theory/*.md", "docs/engineering/*.md"]')
+    lines.append(
+        'source_markdown_globs = ["docs/theory/*.md", "docs/engineering/*.md", "docs/research/*.md"]'
+    )
     lines.append(f"document_count = {len(records)}")
     lines.append("")
     for rec in records:
@@ -261,7 +264,11 @@ def main() -> int:
 
     root = Path(args.repo_root).resolve()
     files = sorted(
-        [*root.glob("docs/theory/*.md"), *root.glob("docs/engineering/*.md")]
+        [
+            *root.glob("docs/theory/*.md"),
+            *root.glob("docs/engineering/*.md"),
+            *root.glob("docs/research/*.md"),
+        ]
     )
     if not files:
         raise SystemExit("ERROR: no research narrative markdown files found")

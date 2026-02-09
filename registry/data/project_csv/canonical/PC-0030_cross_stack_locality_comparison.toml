@@ -1,0 +1,198 @@
+[dataset]
+id = "PC-0030"
+slug = "cross_stack_locality_comparison"
+source_csv = "data/csv/cross_stack_locality_comparison.csv"
+source_sha256 = "24c8395a40f3890500b7ad0048012f17952b4671e2eef902c02845c5cd38949b"
+source_size_bytes = 537
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 3
+column_count = 13
+header_value_sha256 = "3f07d98e7725af82288158766aaae5b0cbc545281f3114f5dde3b4f2323abd7f"
+row_value_sha256 = "3c0e8c3dd52d3948a23c2b566fa866fce58b8c71e9f280d49574d32e90bc079b"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "system_name",
+    "n_generators",
+    "n_transitions",
+    "n_adjacent",
+    "walk_r",
+    "walk_r_null",
+    "walk_mutual_information",
+    "null_r",
+    "null_mutual_information",
+    "p_value",
+    "n_bounces",
+    "n_permutations",
+    "seed",
+]
+original_header = [
+    "system_name",
+    "n_generators",
+    "n_transitions",
+    "n_adjacent",
+    "walk_r",
+    "walk_r_null",
+    "walk_mutual_information",
+    "null_r",
+    "null_mutual_information",
+    "p_value",
+    "n_bounces",
+    "n_permutations",
+    "seed",
+]
+rows = [
+    [
+    "E10 Dynkin billiard",
+    "10",
+    "9999",
+    "9999",
+    "1.0000000000",
+    "0.2000000000",
+    "1.6090306805",
+    "0.2016201620",
+    "0.1104546568",
+    "0.0000000000",
+    "10000",
+    "1000",
+    "42",
+],
+    [
+    "ET DMZ adjacency",
+    "196",
+    "9999",
+    "9999",
+    "1.0000000000",
+    "0.0096284668",
+    "3.4610446771",
+    "0.0107010701",
+    "1.5033098835",
+    "0.0000000000",
+    "10000",
+    "1000",
+    "42",
+],
+    [
+    "Sedenion ZD adjacency",
+    "15",
+    "9999",
+    "9999",
+    "1.0000000000",
+    "0.8666666667",
+    "0.0821940725",
+    "0.8673867387",
+    "0.0775936033",
+    "1.0000000000",
+    "10000",
+    "1000",
+    "42",
+],
+]
+
+[[column]]
+index = 1
+name = "system_name"
+original_name = "system_name"
+inferred_type = "string"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 2
+name = "n_generators"
+original_name = "n_generators"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 3
+name = "n_transitions"
+original_name = "n_transitions"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 4
+name = "n_adjacent"
+original_name = "n_adjacent"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 5
+name = "walk_r"
+original_name = "walk_r"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 6
+name = "walk_r_null"
+original_name = "walk_r_null"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 7
+name = "walk_mutual_information"
+original_name = "walk_mutual_information"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 8
+name = "null_r"
+original_name = "null_r"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 9
+name = "null_mutual_information"
+original_name = "null_mutual_information"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 10
+name = "p_value"
+original_name = "p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 11
+name = "n_bounces"
+original_name = "n_bounces"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 12
+name = "n_permutations"
+original_name = "n_permutations"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 13
+name = "seed"
+original_name = "seed"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0

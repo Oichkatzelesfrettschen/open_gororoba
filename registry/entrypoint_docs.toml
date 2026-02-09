@@ -4,12 +4,12 @@
 [entrypoint_docs]
 authoritative = true
 updated = "2026-02-09"
-document_count = 8
+document_count = 11
 
 [[document]]
 path = "AGENTS.md"
 title = "Agent and Contributor Operating Manual"
-body_markdown = """
+body_markdown = '''
 # Agent and Contributor Operating Manual
 
 This is the canonical policy and operating contract for all assistants and
@@ -276,12 +276,12 @@ cargo clippy --workspace -j$(nproc) -- -D warnings
 - `src/scripts/analysis/migrate_legacy_csv_to_toml.py` - legacy CSV canonicalizer
 - `src/verification/verify_legacy_csv_toml_parity.py` - CSV parity/fidelity verifier
 - `registry/` - canonical machine-readable project state
-"""
+'''
 
 [[document]]
 path = "CLAUDE.md"
 title = "Claude Overlay for open_gororoba"
-body_markdown = """
+body_markdown = '''
 # Claude Overlay for open_gororoba
 
 This file is a Claude-specific overlay.
@@ -361,12 +361,12 @@ For every substantive task, provide:
 - what remains open
 
 Use precise file references and include command outcomes in summary form.
-"""
+'''
 
 [[document]]
 path = "GEMINI.md"
 title = "Gemini Overlay for open_gororoba"
-body_markdown = """
+body_markdown = '''
 # Gemini Overlay for open_gororoba
 
 This file is a Gemini-specific overlay.
@@ -434,12 +434,85 @@ Every final handoff should include:
 - validation evidence
 - unresolved risks
 - next recommended steps
-"""
+'''
+
+
+[[document]]
+path = "docs/monograph/01_foundations.md"
+title = "Volume I: Algebraic Foundations of Flow"
+body_markdown = '''
+# Volume I: Algebraic Foundations of Flow
+
+## 1.1 The Geometry of Interaction
+We posit that the nonlinear advection term $(u \cdot \nabla) u$ in the Navier-Stokes equations can be mapped to the root system of the E7 Lie algebra.
+
+### 1.1.1 The E7 Root System
+The E7 root system $\Phi_{E7}$ consists of 126 vectors in $\mathbb{R}^7$. It is a subsystem of the E8 lattice, specifically the set of roots orthogonal to a fixed root $\alpha \in \Phi_{E8}$.
+
+**Definition 1.1:** Let $\Phi_{E8}$ be the set of 240 roots of E8. Let $\xi \in \Phi_{E8}$ be a fixed reference root. The E7 root system is defined as:
+$$ \Phi_{E7} = \{ \alpha \in \Phi_{E8} \mid (\alpha, \xi) = 0 \} $$
+
+This projection preserves the inner product structure and the crystallographic property.
+
+## 1.2 Triad Dynamics
+In spectral space, turbulence is driven by triad interactions satisfying $k + p + q = 0$.
+
+**Theorem 1.2 (Conjecture):** The set of active triads in fully developed turbulence maps isomorphically to the set of structure constants $N_{\alpha,\beta}$ in the E7 Lie algebra, where $\alpha, \beta, \gamma \in \Phi_{E7}$ and $\alpha + \beta + \gamma = 0$.
+
+### 1.2.1 The Structure Tensor
+The interaction strength is given by the structure tensor $T_{kpq}$. In our algebraic model, this corresponds to the projection of the E7 structure constants onto the flow manifold.
+'''
+
+[[document]]
+path = "docs/monograph/02_turbulence.md"
+title = "Volume II: Turbulence and Spectral Theory"
+body_markdown = '''
+# Volume II: Turbulence and Spectral Theory
+
+## 2.1 The Spectral Landscape
+We analyze the energy cascade through the lens of hypergraph theory.
+
+### 2.1.1 Spectral Triads
+A spectral triad is a tuple $(k, p, q)$ of wavevectors.
+The energy transfer function $T(k)$ is the sum over all such triads:
+$$ \frac{\partial E(k)}{\partial t} = \sum_{k+p+q=0} T(k,p,q) - 2\nu k^2 E(k) + F(k) $$
+
+## 2.2 Hypergraph Metrics
+We define the **Triad Hypergraph** $H = (V, E)$ where $V$ is the set of active wavemodes and $E$ is the set of interacting triads.
+
+**Metric 2.2.1 (Clustering Coefficient):**
+$$ C = \frac{3 \times \text{Number of triangles}}{\text{Number of connected triplets}} $$
+A high clustering coefficient indicates a dense, local interaction network, characteristic of the inertial range.
+
+**Metric 2.2.2 (Betti Numbers):**
+The topology of the interaction manifold is characterized by its Betti numbers $\beta_k$. We observe that $\beta_1$ peaks at the dissipation scale, indicating a topological phase transition in the flow.
+'''
+
+[[document]]
+path = "docs/monograph/03_synthesis.md"
+title = "Volume III: Synthesis - The Warp Ring"
+body_markdown = '''
+# Volume III: Synthesis - The Warp Ring
+
+## 3.1 The Warp Ring Hypothesis
+The "Warp Ring" is the visual manifestation of the E7 polytope projected onto the turbulent flow field. It represents the "event horizon" of energy transfer—the boundary between the inertial range and the dissipation range.
+
+### 3.1.1 Visualization
+By projecting the 56-dimensional E7 weight space onto a 2D plane (the Coxeter plane), we observe a ring-like structure. When overlaid with the spectral energy density of the fluid, active triads cluster along the vertices of this projection.
+
+## 3.2 Unified Field Theory
+We propose that the Navier-Stokes equations are a low-energy effective theory of a higher-dimensional algebraic structure governed by E7 geometry.
+
+**Conjecture 3.2:** The intermittency exponents $\zeta_p$ of turbulence are eigenvalues of the E7 Casimir operators.
+
+## 3.3 Conclusion
+This monograph synthesizes the algebraic rigor of Lie theory with the statistical chaos of fluid dynamics. The resulting framework—the "Algebra-Fluid Duality"—provides a novel pathway for solving the closure problem of turbulence.
+'''
 
 [[document]]
 path = "README.md"
 title = "Gemini Experiments: Evidence-First Algebra/Physics Sandbox"
-body_markdown = """
+body_markdown = '''
 # Gemini Experiments: Evidence-First Algebra/Physics Sandbox
 
 This repository is a research-style sandbox focused on reproducible, offline-checkable
@@ -499,12 +572,12 @@ Quick commands:
 - File: `data/artifacts/images/warp_ring_annotated.png` (~1.5 MB)
 - SHA256: `b5e2fe84c603ea0d9b56d90c2472d859925e7b123a0326e46a9816b70245bf58`
 - Summary: Publication-ready annotated visualization combining volumetric Sedenion glow with refractive starfield lensing; includes scale bar (10 Planck Lengths), callouts (Metamaterial Ergoregion, Sedenion ZD Projection), and legend (Toroidal Alcubierre metric, S16 algebra).
-"""
+'''
 
 [[document]]
 path = "curated/README.md"
 title = "Curated Artifacts (Legacy / Mixed Provenance)"
-body_markdown = """
+body_markdown = '''
 # Curated Artifacts (Legacy / Mixed Provenance)
 
 `curated/` is a legacy artifact store that predates the repo's current reproducibility guardrails.
@@ -530,12 +603,12 @@ Treat anything in `curated/` as **non-authoritative** unless it is:
 - `curated/03_benchmarks_numeric/`: numeric benchmark tables (largely not yet reproducible).
 - `curated/04_observational_datasets/`: \"observational\" CSVs (requires cross-checking against first-party sources).
 - `curated/05_summaries_indexes/`: summary/index artifacts.
-"""
+'''
 
 [[document]]
 path = "curated/01_theory_frameworks/README_COQ.md"
 title = "Coq Proofs: The Computational Substrate"
-body_markdown = """
+body_markdown = '''
 # Coq Proofs: The Computational Substrate
 
 ## Overview
@@ -570,12 +643,12 @@ This generates `confine_theorems_*_axioms.v` (ignored by git) and compiles them 
 To make this physically rigorous, we define the mapping:
 $$ \\text{Thread}_i \\leftrightarrow x^\\mu_i \\in \\mathcal{M} $$
 $$ \\text{reachable}(i, j) \\iff \\Delta s^2_{ij} \\ge 0 $$
-"""
+'''
 
 [[document]]
 path = "data/csv/README.md"
 title = "Data Index: CSV Datasets"
-body_markdown = """
+body_markdown = '''
 # Data Index: CSV Datasets
 
 This directory contains raw output from various simulation runs and theoretical models related to the Surreal-Noncommutative Quantum Gravity project.
@@ -593,12 +666,12 @@ This directory contains raw output from various simulation runs and theoretical 
 ## 3. Missing Metadata (Gaps)
 *   **Units**: Most files lack headers specifying physical units (e.g., $t$ in seconds vs steps).
 *   **Parameters**: Filenames often don't capture full parameter sets (e.g., coupling constants $J$, $\\alpha$). Use the corresponding `src/` scripts to trace provenance.
-"""
+'''
 
 [[document]]
 path = "data/artifacts/README.md"
 title = "README"
-body_markdown = """
+body_markdown = '''
 data/artifacts conventions
 =========================
 
@@ -677,4 +750,4 @@ Phase 2 (suggested):
   data/artifacts/<domain>/... and update ALL references (docs, scripts, tests).
 - Consider keeping a short \"compatibility window\" by leaving copies at old paths
   temporarily, but avoid long-lived duplication.
-"""
+'''

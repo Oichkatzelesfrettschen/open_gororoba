@@ -1,0 +1,275 @@
+[dataset]
+id = "PG-0018"
+slug = "de_marrais_strut_table"
+source_csv = "data/csv/de_marrais_strut_table.csv"
+source_sha256 = "cc9d06b756802af667466309ec2926b121d3cc98370f40308afca570755af870"
+source_size_bytes = 335
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 7
+column_count = 14
+header_value_sha256 = "3ec0bca8337e02b67038cf012b6e7684729f4e16595718ca07f34271c3783caf"
+row_value_sha256 = "97f97ef23caec1e719a02e8df6803eb16534e829cd76cdb11c99e9ddfc908e99"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "generated_artifact"
+corpus_label = "project CSV generated artifact"
+header = [
+    "box_kite",
+    "strut_signature",
+    "a_low",
+    "a_high",
+    "b_low",
+    "b_high",
+    "c_low",
+    "c_high",
+    "d_low",
+    "d_high",
+    "e_low",
+    "e_high",
+    "f_low",
+    "f_high",
+]
+original_header = [
+    "box_kite",
+    "strut_signature",
+    "A_low",
+    "A_high",
+    "B_low",
+    "B_high",
+    "C_low",
+    "C_high",
+    "D_low",
+    "D_high",
+    "E_low",
+    "E_high",
+    "F_low",
+    "F_high",
+]
+rows = [
+    [
+    "0",
+    "3",
+    "1",
+    "10",
+    "4",
+    "15",
+    "6",
+    "13",
+    "5",
+    "14",
+    "7",
+    "12",
+    "2",
+    "9",
+],
+    [
+    "1",
+    "2",
+    "1",
+    "11",
+    "6",
+    "12",
+    "7",
+    "13",
+    "5",
+    "15",
+    "4",
+    "14",
+    "3",
+    "9",
+],
+    [
+    "2",
+    "5",
+    "1",
+    "12",
+    "3",
+    "14",
+    "7",
+    "10",
+    "2",
+    "15",
+    "6",
+    "11",
+    "4",
+    "9",
+],
+    [
+    "3",
+    "4",
+    "1",
+    "13",
+    "2",
+    "14",
+    "3",
+    "15",
+    "7",
+    "11",
+    "6",
+    "10",
+    "5",
+    "9",
+],
+    [
+    "4",
+    "7",
+    "1",
+    "14",
+    "4",
+    "11",
+    "5",
+    "10",
+    "2",
+    "13",
+    "3",
+    "12",
+    "6",
+    "9",
+],
+    [
+    "5",
+    "6",
+    "1",
+    "15",
+    "2",
+    "12",
+    "5",
+    "11",
+    "3",
+    "13",
+    "4",
+    "10",
+    "7",
+    "9",
+],
+    [
+    "6",
+    "1",
+    "2",
+    "11",
+    "4",
+    "13",
+    "7",
+    "14",
+    "6",
+    "15",
+    "5",
+    "12",
+    "3",
+    "10",
+],
+]
+
+[[column]]
+index = 1
+name = "box_kite"
+original_name = "box_kite"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 2
+name = "strut_signature"
+original_name = "strut_signature"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 3
+name = "a_low"
+original_name = "A_low"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 4
+name = "a_high"
+original_name = "A_high"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 5
+name = "b_low"
+original_name = "B_low"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 6
+name = "b_high"
+original_name = "B_high"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 7
+name = "c_low"
+original_name = "C_low"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 8
+name = "c_high"
+original_name = "C_high"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 9
+name = "d_low"
+original_name = "D_low"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 10
+name = "d_high"
+original_name = "D_high"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 11
+name = "e_low"
+original_name = "E_low"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 12
+name = "e_high"
+original_name = "E_high"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 13
+name = "f_low"
+original_name = "F_low"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 14
+name = "f_high"
+original_name = "F_high"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0

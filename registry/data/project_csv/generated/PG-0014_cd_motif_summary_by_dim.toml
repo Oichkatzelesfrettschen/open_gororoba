@@ -1,0 +1,198 @@
+[dataset]
+id = "PG-0014"
+slug = "cd_motif_summary_by_dim"
+source_csv = "data/csv/cd_motif_summary_by_dim.csv"
+source_sha256 = "51634b044c02df2cd6d92d8015d85b10f4aff865153c0b7533b4e5229a28a603"
+source_size_bytes = 349
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 5
+column_count = 11
+header_value_sha256 = "ba1f9c32b469620465aef4c1010178ee75feed78a4d2924cfdb70c22874983b3"
+row_value_sha256 = "d2b91e8eec84240ce4824369d15541fcc8b4f353d539e1a54aae867558179b12"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "generated_artifact"
+corpus_label = "project CSV generated artifact"
+header = [
+    "dim",
+    "component_count",
+    "active_nodes_total",
+    "max_component_nodes",
+    "max_component_edges",
+    "octahedron_k222_count",
+    "cuboctahedron_count",
+    "k2_multipartite_max_parts",
+    "sampled",
+    "sample_max_nodes",
+    "seed",
+]
+original_header = [
+    "dim",
+    "component_count",
+    "active_nodes_total",
+    "max_component_nodes",
+    "max_component_edges",
+    "octahedron_k222_count",
+    "cuboctahedron_count",
+    "k2_multipartite_max_parts",
+    "sampled",
+    "sample_max_nodes",
+    "seed",
+]
+rows = [
+    [
+    "16",
+    "7",
+    "42",
+    "6",
+    "12",
+    "7",
+    "0",
+    "3",
+    "False",
+    "0",
+    "0",
+],
+    [
+    "32",
+    "15",
+    "210",
+    "14",
+    "84",
+    "0",
+    "0",
+    "7",
+    "False",
+    "0",
+    "0",
+],
+    [
+    "64",
+    "31",
+    "930",
+    "30",
+    "420",
+    "0",
+    "0",
+    "15",
+    "False",
+    "0",
+    "0",
+],
+    [
+    "128",
+    "63",
+    "3906",
+    "62",
+    "1860",
+    "0",
+    "0",
+    "31",
+    "False",
+    "0",
+    "0",
+],
+    [
+    "256",
+    "127",
+    "16002",
+    "126",
+    "7812",
+    "0",
+    "0",
+    "63",
+    "False",
+    "0",
+    "0",
+],
+]
+
+[[column]]
+index = 1
+name = "dim"
+original_name = "dim"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 2
+name = "component_count"
+original_name = "component_count"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 3
+name = "active_nodes_total"
+original_name = "active_nodes_total"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 4
+name = "max_component_nodes"
+original_name = "max_component_nodes"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 5
+name = "max_component_edges"
+original_name = "max_component_edges"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 6
+name = "octahedron_k222_count"
+original_name = "octahedron_k222_count"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 7
+name = "cuboctahedron_count"
+original_name = "cuboctahedron_count"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 8
+name = "k2_multipartite_max_parts"
+original_name = "k2_multipartite_max_parts"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 9
+name = "sampled"
+original_name = "sampled"
+inferred_type = "bool"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 10
+name = "sample_max_nodes"
+original_name = "sample_max_nodes"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 11
+name = "seed"
+original_name = "seed"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0

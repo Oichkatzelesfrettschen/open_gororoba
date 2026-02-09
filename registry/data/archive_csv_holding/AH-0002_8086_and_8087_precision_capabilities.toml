@@ -1,0 +1,123 @@
+[dataset]
+id = "AH-0002"
+slug = "8086_and_8087_precision_capabilities"
+source_csv = "archive/8086_legacy/8086_and_8087_Precision_Capabilities.csv"
+source_sha256 = "c6f76d5d71f87bfe4863b0a5c3c726ccdbc28d7acee6e7f6e208c0009b6d49b7"
+source_size_bytes = 989
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 10
+column_count = 4
+header_value_sha256 = "1cdf5afbc12ba32140a3df391cbb6630198c87f835a4446d99a3afe9a049ba06"
+row_value_sha256 = "11d7bc796e22544b7d6988ec030ecc87b63818141eb559be6632a96814640af1"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_archive_csv"
+corpus_label = "archive CSV holding queue"
+header = [
+    "data_type",
+    "col_8086_native_support",
+    "col_8087_support",
+    "hybrid_8086_8087",
+]
+original_header = [
+    "Data Type",
+    "8086 Native Support",
+    "8087 Support",
+    "Hybrid 8086+8087",
+]
+rows = [
+    [
+    "8-bit Integer",
+    "Yes (AH, AL, etc.)",
+    "No (Converted to floating-point)",
+    "Converted via 8087",
+],
+    [
+    "16-bit Integer",
+    "Yes (AX, BX, etc.)",
+    "Yes (FILD/FISTP)",
+    "Converted via 8087",
+],
+    [
+    "32-bit Integer",
+    "Yes (via register pairs DX:AX)",
+    "Yes (FILD/FISTP)",
+    "Converted via 8087",
+],
+    [
+    "64-bit Integer",
+    "Limited (via software)",
+    "Yes (FILD/FISTP)",
+    "Converted via 8087",
+],
+    [
+    "32-bit Floating-Point (Single Precision)",
+    "No (Software emulation only)",
+    "Yes (IEEE 754 Single Precision)",
+    "Accelerated via 8087",
+],
+    [
+    "64-bit Floating-Point (Double Precision)",
+    "No (Software emulation only)",
+    "Yes (IEEE 754 Double Precision)",
+    "Accelerated via 8087",
+],
+    [
+    "80-bit Floating-Point (Extended Precision)",
+    "No (Not supported)",
+    "Yes (Internal 80-bit Extended Precision)",
+    "Fully supported via 8087",
+],
+    [
+    "80-bit Packed BCD",
+    "No (Not supported)",
+    "Yes (Used for BCD operations)",
+    "Fully supported via 8087",
+],
+    [
+    "128-bit Floating-Point",
+    "No (Not supported)",
+    "No (Not supported)",
+    "Not possible",
+],
+    [
+    "160-bit Floating-Point",
+    "No (Not supported)",
+    "No (Not supported)",
+    "Not possible",
+],
+]
+
+[[column]]
+index = 1
+name = "data_type"
+original_name = "Data Type"
+inferred_type = "string"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_8086_native_support"
+original_name = "8086 Native Support"
+inferred_type = "string"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 3
+name = "col_8087_support"
+original_name = "8087 Support"
+inferred_type = "string"
+non_empty_count = 10
+empty_count = 0
+
+[[column]]
+index = 4
+name = "hybrid_8086_8087"
+original_name = "Hybrid 8086+8087"
+inferred_type = "string"
+non_empty_count = 10
+empty_count = 0

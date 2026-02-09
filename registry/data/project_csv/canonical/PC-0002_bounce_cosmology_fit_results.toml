@@ -1,0 +1,159 @@
+[dataset]
+id = "PC-0002"
+slug = "bounce_cosmology_fit_results"
+source_csv = "data/csv/bounce_cosmology_fit_results.csv"
+source_sha256 = "dadd2c00fa1fc5e48d46a43ce59473a7f0eb71974ecb627eaa211e2f8bc639c7"
+source_size_bytes = 365
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 2
+column_count = 11
+header_value_sha256 = "d34dac05c652f078e7f38d0d0051fc81d430298a8b82236a4853db62d9aa2aa6"
+row_value_sha256 = "c4844accad324417efaee6708a8fd0bc1371d1f79fe136adc56529c4f3c884f6"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "model",
+    "omega_m",
+    "h0",
+    "q_corr",
+    "chi2",
+    "n_params",
+    "aic",
+    "bic",
+    "delta_bic",
+    "delta_aic",
+    "n_s",
+]
+original_header = [
+    "model",
+    "omega_m",
+    "h0",
+    "q_corr",
+    "chi2",
+    "n_params",
+    "aic",
+    "bic",
+    "delta_bic",
+    "delta_aic",
+    "n_s",
+]
+rows = [
+    [
+    "lcdm",
+    "0.3048506254472321",
+    "68.0042222378977",
+    "0.0",
+    "204.53919462244247",
+    "2",
+    "208.53919462244247",
+    "215.2046322089732",
+    "0.0",
+    "0.0",
+    "1.0",
+],
+    [
+    "bounce",
+    "0.3004898279731004",
+    "67.91163098830253",
+    "0.00029771493568279516",
+    "202.7681970484702",
+    "3",
+    "208.7681970484702",
+    "218.7663534282663",
+    "3.561721219293105",
+    "0.22900242602773346",
+    "0.8037272449428841",
+],
+]
+
+[[column]]
+index = 1
+name = "model"
+original_name = "model"
+inferred_type = "string"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 2
+name = "omega_m"
+original_name = "omega_m"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 3
+name = "h0"
+original_name = "h0"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 4
+name = "q_corr"
+original_name = "q_corr"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 5
+name = "chi2"
+original_name = "chi2"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 6
+name = "n_params"
+original_name = "n_params"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 7
+name = "aic"
+original_name = "aic"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 8
+name = "bic"
+original_name = "bic"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 9
+name = "delta_bic"
+original_name = "delta_bic"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 10
+name = "delta_aic"
+original_name = "delta_aic"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 11
+name = "n_s"
+original_name = "n_s"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0

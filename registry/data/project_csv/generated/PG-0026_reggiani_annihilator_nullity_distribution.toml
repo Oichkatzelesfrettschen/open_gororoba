@@ -1,0 +1,56 @@
+[dataset]
+id = "PG-0026"
+slug = "reggiani_annihilator_nullity_distribution"
+source_csv = "data/csv/reggiani_annihilator_nullity_distribution.csv"
+source_sha256 = "665c14bc58affeebb86e538b274737cde2f29c70ea503896d6e6653df14d30a3"
+source_size_bytes = 40
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 1
+column_count = 3
+header_value_sha256 = "d2c99cc29fe196d73c0370b5b7f43e1dfa09f72f53ddc7fef4caa1c8a3c1274b"
+row_value_sha256 = "94e43975446f309a37cf487cbcb0f22c84d1d678648d606969e60f85198c38aa"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "generated_artifact"
+corpus_label = "project CSV generated artifact"
+header = [
+    "left_nullity",
+    "right_nullity",
+    "count",
+]
+original_header = [
+    "left_nullity",
+    "right_nullity",
+    "count",
+]
+rows = [[
+    "4",
+    "4",
+    "84",
+]]
+
+[[column]]
+index = 1
+name = "left_nullity"
+original_name = "left_nullity"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 2
+name = "right_nullity"
+original_name = "right_nullity"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0
+
+[[column]]
+index = 3
+name = "count"
+original_name = "count"
+inferred_type = "int"
+non_empty_count = 1
+empty_count = 0

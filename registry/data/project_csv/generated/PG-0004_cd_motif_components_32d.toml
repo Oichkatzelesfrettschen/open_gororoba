@@ -1,0 +1,378 @@
+[dataset]
+id = "PG-0004"
+slug = "cd_motif_components_32d"
+source_csv = "data/csv/cd_motif_components_32d.csv"
+source_sha256 = "ac0d86c94842b2a4a855357404960e4ce4e9b371e79ad21487ab8f52b6232fb1"
+source_size_bytes = 914
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 15
+column_count = 13
+header_value_sha256 = "68034a4e9c17bee9e18a7b57edbb7bb6f9b2eb4f8b5dcf8e009248f9079949f7"
+row_value_sha256 = "a0a79521ec88dbd68fb88ef6fb2144f10057296cb5f610d277108a33fe97f2b2"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "generated_artifact"
+corpus_label = "project CSV generated artifact"
+header = [
+    "dim",
+    "component_id",
+    "node_count",
+    "edge_count",
+    "degree_min",
+    "degree_max",
+    "degree_mean",
+    "is_octahedron_k222",
+    "k2_multipartite_part_count",
+    "is_cuboctahedron",
+    "sampled",
+    "sample_max_nodes",
+    "seed",
+]
+original_header = [
+    "dim",
+    "component_id",
+    "node_count",
+    "edge_count",
+    "degree_min",
+    "degree_max",
+    "degree_mean",
+    "is_octahedron_k222",
+    "k2_multipartite_part_count",
+    "is_cuboctahedron",
+    "sampled",
+    "sample_max_nodes",
+    "seed",
+]
+rows = [
+    [
+    "32",
+    "0",
+    "14",
+    "84",
+    "12",
+    "12",
+    "12",
+    "False",
+    "7",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "1",
+    "14",
+    "84",
+    "12",
+    "12",
+    "12",
+    "False",
+    "7",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "2",
+    "14",
+    "84",
+    "12",
+    "12",
+    "12",
+    "False",
+    "7",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "3",
+    "14",
+    "84",
+    "12",
+    "12",
+    "12",
+    "False",
+    "7",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "4",
+    "14",
+    "84",
+    "12",
+    "12",
+    "12",
+    "False",
+    "7",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "5",
+    "14",
+    "84",
+    "12",
+    "12",
+    "12",
+    "False",
+    "7",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "6",
+    "14",
+    "36",
+    "4",
+    "12",
+    "5.142857142857143",
+    "False",
+    "0",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "7",
+    "14",
+    "84",
+    "12",
+    "12",
+    "12",
+    "False",
+    "7",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "8",
+    "14",
+    "36",
+    "4",
+    "12",
+    "5.142857142857143",
+    "False",
+    "0",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "9",
+    "14",
+    "36",
+    "4",
+    "12",
+    "5.142857142857143",
+    "False",
+    "0",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "10",
+    "14",
+    "36",
+    "4",
+    "12",
+    "5.142857142857143",
+    "False",
+    "0",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "11",
+    "14",
+    "36",
+    "4",
+    "12",
+    "5.142857142857143",
+    "False",
+    "0",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "12",
+    "14",
+    "36",
+    "4",
+    "12",
+    "5.142857142857143",
+    "False",
+    "0",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "13",
+    "14",
+    "36",
+    "4",
+    "12",
+    "5.142857142857143",
+    "False",
+    "0",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "32",
+    "14",
+    "14",
+    "84",
+    "12",
+    "12",
+    "12",
+    "False",
+    "7",
+    "False",
+    "False",
+    "",
+    "0",
+],
+]
+
+[[column]]
+index = 1
+name = "dim"
+original_name = "dim"
+inferred_type = "int"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 2
+name = "component_id"
+original_name = "component_id"
+inferred_type = "int"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 3
+name = "node_count"
+original_name = "node_count"
+inferred_type = "int"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 4
+name = "edge_count"
+original_name = "edge_count"
+inferred_type = "int"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 5
+name = "degree_min"
+original_name = "degree_min"
+inferred_type = "int"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 6
+name = "degree_max"
+original_name = "degree_max"
+inferred_type = "int"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 7
+name = "degree_mean"
+original_name = "degree_mean"
+inferred_type = "float"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 8
+name = "is_octahedron_k222"
+original_name = "is_octahedron_k222"
+inferred_type = "bool"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 9
+name = "k2_multipartite_part_count"
+original_name = "k2_multipartite_part_count"
+inferred_type = "int"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 10
+name = "is_cuboctahedron"
+original_name = "is_cuboctahedron"
+inferred_type = "bool"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 11
+name = "sampled"
+original_name = "sampled"
+inferred_type = "bool"
+non_empty_count = 15
+empty_count = 0
+
+[[column]]
+index = 12
+name = "sample_max_nodes"
+original_name = "sample_max_nodes"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 15
+
+[[column]]
+index = 13
+name = "seed"
+original_name = "seed"
+inferred_type = "int"
+non_empty_count = 15
+empty_count = 0

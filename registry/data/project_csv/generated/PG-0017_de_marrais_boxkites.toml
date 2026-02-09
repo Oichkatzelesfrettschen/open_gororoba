@@ -1,0 +1,315 @@
+[dataset]
+id = "PG-0017"
+slug = "de_marrais_boxkites"
+source_csv = "data/csv/de_marrais_boxkites.csv"
+source_sha256 = "0698205613408a2d1ddf4c270ee50a106d47054a07c72e9f01dcaebf628ecfa9"
+source_size_bytes = 406
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 42
+column_count = 4
+header_value_sha256 = "d23a85de30cf39c1adf23e0d57dbc5c3a0b3092adb36702b0476fc3a1033e822"
+row_value_sha256 = "1191a5c65238f87fb8c684d27a448094387c844f41dec0e9ead35e259eb749bb"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "generated_artifact"
+corpus_label = "project CSV generated artifact"
+header = [
+    "box_kite",
+    "strut_signature",
+    "low",
+    "high",
+]
+original_header = [
+    "box_kite",
+    "strut_signature",
+    "low",
+    "high",
+]
+rows = [
+    [
+    "0",
+    "3",
+    "1",
+    "10",
+],
+    [
+    "0",
+    "3",
+    "2",
+    "9",
+],
+    [
+    "0",
+    "3",
+    "4",
+    "15",
+],
+    [
+    "0",
+    "3",
+    "5",
+    "14",
+],
+    [
+    "0",
+    "3",
+    "6",
+    "13",
+],
+    [
+    "0",
+    "3",
+    "7",
+    "12",
+],
+    [
+    "1",
+    "2",
+    "1",
+    "11",
+],
+    [
+    "1",
+    "2",
+    "3",
+    "9",
+],
+    [
+    "1",
+    "2",
+    "4",
+    "14",
+],
+    [
+    "1",
+    "2",
+    "5",
+    "15",
+],
+    [
+    "1",
+    "2",
+    "6",
+    "12",
+],
+    [
+    "1",
+    "2",
+    "7",
+    "13",
+],
+    [
+    "2",
+    "5",
+    "1",
+    "12",
+],
+    [
+    "2",
+    "5",
+    "2",
+    "15",
+],
+    [
+    "2",
+    "5",
+    "3",
+    "14",
+],
+    [
+    "2",
+    "5",
+    "4",
+    "9",
+],
+    [
+    "2",
+    "5",
+    "6",
+    "11",
+],
+    [
+    "2",
+    "5",
+    "7",
+    "10",
+],
+    [
+    "3",
+    "4",
+    "1",
+    "13",
+],
+    [
+    "3",
+    "4",
+    "2",
+    "14",
+],
+    [
+    "3",
+    "4",
+    "3",
+    "15",
+],
+    [
+    "3",
+    "4",
+    "5",
+    "9",
+],
+    [
+    "3",
+    "4",
+    "6",
+    "10",
+],
+    [
+    "3",
+    "4",
+    "7",
+    "11",
+],
+    [
+    "4",
+    "7",
+    "1",
+    "14",
+],
+    [
+    "4",
+    "7",
+    "2",
+    "13",
+],
+    [
+    "4",
+    "7",
+    "3",
+    "12",
+],
+    [
+    "4",
+    "7",
+    "4",
+    "11",
+],
+    [
+    "4",
+    "7",
+    "5",
+    "10",
+],
+    [
+    "4",
+    "7",
+    "6",
+    "9",
+],
+    [
+    "5",
+    "6",
+    "1",
+    "15",
+],
+    [
+    "5",
+    "6",
+    "2",
+    "12",
+],
+    [
+    "5",
+    "6",
+    "3",
+    "13",
+],
+    [
+    "5",
+    "6",
+    "4",
+    "10",
+],
+    [
+    "5",
+    "6",
+    "5",
+    "11",
+],
+    [
+    "5",
+    "6",
+    "7",
+    "9",
+],
+    [
+    "6",
+    "1",
+    "2",
+    "11",
+],
+    [
+    "6",
+    "1",
+    "3",
+    "10",
+],
+    [
+    "6",
+    "1",
+    "4",
+    "13",
+],
+    [
+    "6",
+    "1",
+    "5",
+    "12",
+],
+    [
+    "6",
+    "1",
+    "6",
+    "15",
+],
+    [
+    "6",
+    "1",
+    "7",
+    "14",
+],
+]
+
+[[column]]
+index = 1
+name = "box_kite"
+original_name = "box_kite"
+inferred_type = "int"
+non_empty_count = 42
+empty_count = 0
+
+[[column]]
+index = 2
+name = "strut_signature"
+original_name = "strut_signature"
+inferred_type = "int"
+non_empty_count = 42
+empty_count = 0
+
+[[column]]
+index = 3
+name = "low"
+original_name = "low"
+inferred_type = "int"
+non_empty_count = 42
+empty_count = 0
+
+[[column]]
+index = 4
+name = "high"
+original_name = "high"
+inferred_type = "int"
+non_empty_count = 42
+empty_count = 0

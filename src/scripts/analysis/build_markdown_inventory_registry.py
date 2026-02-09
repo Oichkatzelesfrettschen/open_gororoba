@@ -62,6 +62,8 @@ GENERATED_PATTERNS = (
     "docs/theory/INDEX.md",
     "docs/engineering/*.md",
     "docs/engineering/INDEX.md",
+    "docs/research/*.md",
+    "docs/monograph/*.md",
     "docs/convos/*.md",
     "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
     "data/artifacts/BIBLIOGRAPHY.md",

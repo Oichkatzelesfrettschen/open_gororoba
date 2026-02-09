@@ -1,0 +1,258 @@
+[dataset]
+id = "PG-0002"
+slug = "cd_motif_components_16d"
+source_csv = "data/csv/cd_motif_components_16d.csv"
+source_sha256 = "33e8b7d10318118c71bc5745360e0d9cb864bcf2c2a3d5b6e3c7922552c0382b"
+source_size_bytes = 432
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 7
+column_count = 13
+header_value_sha256 = "68034a4e9c17bee9e18a7b57edbb7bb6f9b2eb4f8b5dcf8e009248f9079949f7"
+row_value_sha256 = "b521362d292dfca7bd8c5c546d1f179d052b0e8ee9fdb810abdf6ffca43cdd6e"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "generated_artifact"
+corpus_label = "project CSV generated artifact"
+header = [
+    "dim",
+    "component_id",
+    "node_count",
+    "edge_count",
+    "degree_min",
+    "degree_max",
+    "degree_mean",
+    "is_octahedron_k222",
+    "k2_multipartite_part_count",
+    "is_cuboctahedron",
+    "sampled",
+    "sample_max_nodes",
+    "seed",
+]
+original_header = [
+    "dim",
+    "component_id",
+    "node_count",
+    "edge_count",
+    "degree_min",
+    "degree_max",
+    "degree_mean",
+    "is_octahedron_k222",
+    "k2_multipartite_part_count",
+    "is_cuboctahedron",
+    "sampled",
+    "sample_max_nodes",
+    "seed",
+]
+rows = [
+    [
+    "16",
+    "0",
+    "6",
+    "12",
+    "4",
+    "4",
+    "4",
+    "True",
+    "3",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "16",
+    "1",
+    "6",
+    "12",
+    "4",
+    "4",
+    "4",
+    "True",
+    "3",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "16",
+    "2",
+    "6",
+    "12",
+    "4",
+    "4",
+    "4",
+    "True",
+    "3",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "16",
+    "3",
+    "6",
+    "12",
+    "4",
+    "4",
+    "4",
+    "True",
+    "3",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "16",
+    "4",
+    "6",
+    "12",
+    "4",
+    "4",
+    "4",
+    "True",
+    "3",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "16",
+    "5",
+    "6",
+    "12",
+    "4",
+    "4",
+    "4",
+    "True",
+    "3",
+    "False",
+    "False",
+    "",
+    "0",
+],
+    [
+    "16",
+    "6",
+    "6",
+    "12",
+    "4",
+    "4",
+    "4",
+    "True",
+    "3",
+    "False",
+    "False",
+    "",
+    "0",
+],
+]
+
+[[column]]
+index = 1
+name = "dim"
+original_name = "dim"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 2
+name = "component_id"
+original_name = "component_id"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 3
+name = "node_count"
+original_name = "node_count"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 4
+name = "edge_count"
+original_name = "edge_count"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 5
+name = "degree_min"
+original_name = "degree_min"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 6
+name = "degree_max"
+original_name = "degree_max"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 7
+name = "degree_mean"
+original_name = "degree_mean"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 8
+name = "is_octahedron_k222"
+original_name = "is_octahedron_k222"
+inferred_type = "bool"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 9
+name = "k2_multipartite_part_count"
+original_name = "k2_multipartite_part_count"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 10
+name = "is_cuboctahedron"
+original_name = "is_cuboctahedron"
+inferred_type = "bool"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 11
+name = "sampled"
+original_name = "sampled"
+inferred_type = "bool"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 12
+name = "sample_max_nodes"
+original_name = "sample_max_nodes"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 7
+
+[[column]]
+index = 13
+name = "seed"
+original_name = "seed"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0

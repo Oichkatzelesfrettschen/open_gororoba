@@ -1,0 +1,73 @@
+[dataset]
+id = "PG-0022"
+slug = "materials_embedding_benchmarks"
+source_csv = "data/csv/materials_embedding_benchmarks.csv"
+source_sha256 = "f264b06fefee10fed7d56ad439e9ee8fcd41e7f604b8b1a008b9a3ed0d2da44a"
+source_size_bytes = 227
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 4
+column_count = 3
+header_value_sha256 = "c8d5660bf8a157d2dfaa16580a90a559e8340e89201ff16586793136de00e3cb"
+row_value_sha256 = "951e2f826ad7f93e4f7fa42152e7926dbdea6360aa40d4243107890887aa7313"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "generated_artifact"
+corpus_label = "project CSV generated artifact"
+header = [
+    "k",
+    "spearman_distance_preservation",
+    "explained_variance_ratio_sum",
+]
+original_header = [
+    "k",
+    "spearman_distance_preservation",
+    "explained_variance_ratio_sum",
+]
+rows = [
+    [
+    "4",
+    "0.23564820502971764",
+    "0.30973727063262696",
+],
+    [
+    "8",
+    "0.3921771952844037",
+    "0.42867038301412375",
+],
+    [
+    "16",
+    "0.6149785555742373",
+    "0.6040572956426018",
+],
+    [
+    "32",
+    "0.8435078516467539",
+    "0.8219144993367273",
+],
+]
+
+[[column]]
+index = 1
+name = "k"
+original_name = "k"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 2
+name = "spearman_distance_preservation"
+original_name = "spearman_distance_preservation"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 3
+name = "explained_variance_ratio_sum"
+original_name = "explained_variance_ratio_sum"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
