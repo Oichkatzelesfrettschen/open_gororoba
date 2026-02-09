@@ -3563,9 +3563,9 @@ mod tests {
     #[test]
     fn test_strutted_et_dim16_s1_dmz_count() {
         let et = create_strutted_et(4, 1);
-        // The actual DMZ count for S=1 at dim=16 should be consistent
-        // across all 7 strut constants (single regime for sedenions).
-        assert!(et.dmz_count > 0, "S=1 dim=16 should have DMZ cells");
+        // N=4: K=6, total_possible=24, DMZ=24 (100% fill for all struts).
+        assert_eq!(et.dmz_count, 24,
+            "N=4 S=1 DMZ count should be exactly 24, got {}", et.dmz_count);
     }
 
     #[test]
@@ -3608,10 +3608,20 @@ mod tests {
 
     #[test]
     fn test_strutted_et_dim32_two_regimes() {
-        // De Marrais: pathions have 2 DMZ regimes (168 and 72).
+        // De Marrais: pathions have 2 DMZ regimes.
+        // S=1..8 (inherited from sedenions): DMZ=168 (100% fill)
+        // S=9..15 (new at pathion level): DMZ=72 (42.9% fill)
         let regimes = et_regimes(5);
         assert_eq!(regimes.len(), 2,
             "Pathion (N=5) should have exactly 2 regimes, got {:?}", regimes);
+        assert!(regimes.contains_key(&168),
+            "Pathion should have regime DMZ=168");
+        assert!(regimes.contains_key(&72),
+            "Pathion should have regime DMZ=72");
+        assert_eq!(regimes[&168].len(), 8,
+            "168-regime should have 8 struts (S=1..8)");
+        assert_eq!(regimes[&72].len(), 7,
+            "72-regime should have 7 struts (S=9..15)");
     }
 
     #[test]
@@ -3661,6 +3671,120 @@ mod tests {
         unique_counts.sort();
         assert_eq!(unique_counts.len(), 2,
             "Pathion should have 2 distinct DMZ counts, got {:?}", unique_counts);
+    }
+
+    // ===================================================================
+    // ET Regime Verification: Exact DMZ Counts (N=4..7)
+    // ===================================================================
+
+    #[test]
+    fn test_strutted_et_dim16_exact_dmz_24() {
+        // N=4 (sedenions): all 7 struts yield DMZ=24 = total_possible (100% fill).
+        for s in 1..8 {
+            let et = create_strutted_et(4, s);
+            assert_eq!(et.dmz_count, 24,
+                "N=4 S={}: expected DMZ=24, got {}", s, et.dmz_count);
+            assert_eq!(et.total_possible, 24,
+                "N=4 S={}: expected total_possible=24, got {}", s, et.total_possible);
+        }
+    }
+
+    #[test]
+    fn test_strutted_et_dim32_exact_dmz_counts() {
+        // N=5 (pathions): S=1..8 -> DMZ=168, S=9..15 -> DMZ=72.
+        for s in 1..=8 {
+            let et = create_strutted_et(5, s);
+            assert_eq!(et.dmz_count, 168,
+                "N=5 S={}: expected DMZ=168 (full fill), got {}", s, et.dmz_count);
+        }
+        for s in 9..=15 {
+            let et = create_strutted_et(5, s);
+            assert_eq!(et.dmz_count, 72,
+                "N=5 S={}: expected DMZ=72, got {}", s, et.dmz_count);
+        }
+    }
+
+    #[test]
+    fn test_strutted_et_dim64_four_regimes() {
+        // N=6 (chingons): 4 regimes as de Marrais predicted.
+        // DMZ=840 (S=1..8,16), 456 (S=9..15), 168 (S=17..24), 552 (S=25..31)
+        let regimes = et_regimes(6);
+        assert_eq!(regimes.len(), 4,
+            "Chingon (N=6) should have 4 regimes, got {:?}", regimes);
+        assert!(regimes.contains_key(&840), "Missing 840-regime");
+        assert!(regimes.contains_key(&456), "Missing 456-regime");
+        assert!(regimes.contains_key(&168), "Missing 168-regime");
+        assert!(regimes.contains_key(&552), "Missing 552-regime");
+        assert_eq!(regimes[&840].len(), 9,
+            "840-regime: expected 9 struts (S=1..8,16)");
+        assert_eq!(regimes[&456].len(), 7,
+            "456-regime: expected 7 struts (S=9..15)");
+        assert_eq!(regimes[&168].len(), 8,
+            "168-regime: expected 8 struts (S=17..24)");
+        assert_eq!(regimes[&552].len(), 7,
+            "552-regime: expected 7 struts (S=25..31)");
+    }
+
+    #[test]
+    fn test_strutted_et_dim64_dmz_divisible_by_24() {
+        for s in 1..32 {
+            let et = create_strutted_et(6, s);
+            assert_eq!(et.dmz_count % 24, 0,
+                "N=6 S={}: DMZ count {} not divisible by 24", s, et.dmz_count);
+        }
+    }
+
+    #[test]
+    fn test_strutted_et_dim128_eight_regimes() {
+        // N=7 (routons): 8 regimes, extending the period-doubling cascade.
+        let regimes = et_regimes(7);
+        assert_eq!(regimes.len(), 8,
+            "Routon (N=7) should have 8 regimes, got {}", regimes.len());
+        // Exact DMZ counts discovered empirically:
+        let expected_dmz: [usize; 8] = [360, 1032, 1512, 1896, 2184, 2568, 3048, 3720];
+        for &dmz in &expected_dmz {
+            assert!(regimes.contains_key(&dmz),
+                "N=7 missing regime DMZ={}", dmz);
+        }
+    }
+
+    #[test]
+    fn test_strutted_et_dim128_dmz_divisible_by_24() {
+        for s in 1..64 {
+            let et = create_strutted_et(7, s);
+            assert_eq!(et.dmz_count % 24, 0,
+                "N=7 S={}: DMZ count {} not divisible by 24", s, et.dmz_count);
+        }
+    }
+
+    #[test]
+    fn test_regime_doubling_cascade_n4_to_n7() {
+        // De Marrais regime-doubling law: number of regimes doubles at each N.
+        // N=4: 1, N=5: 2, N=6: 4, N=7: 8.
+        let expected = [(4, 1), (5, 2), (6, 4), (7, 8)];
+        for &(n, expected_count) in &expected {
+            let regimes = et_regimes(n);
+            assert_eq!(regimes.len(), expected_count,
+                "N={}: expected {} regimes, got {}", n, expected_count, regimes.len());
+        }
+    }
+
+    #[test]
+    fn test_generator_power_struts_always_full_fill() {
+        // Struts that are powers of 2 (generators) always yield 100% fill.
+        // At N=n, the generators are G=2^(n-1). S that are powers of 2
+        // and less than G yield full fill.
+        for n in 4..=7 {
+            let g = 1usize << (n - 1);
+            let mut power = 1usize;
+            while power < g {
+                let et = create_strutted_et(n, power);
+                assert_eq!(et.dmz_count, et.total_possible,
+                    "N={} S={}: generator-power strut should have full fill, \
+                     got {}/{}", n, power, et.dmz_count, et.total_possible);
+                power <<= 1;
+            }
+        }
     }
 
     // ===================================================================
