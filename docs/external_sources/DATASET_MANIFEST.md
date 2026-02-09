@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Dataset Manifest
 
 All 29 datasets managed by `fetch-datasets` CLI. Fetch with:

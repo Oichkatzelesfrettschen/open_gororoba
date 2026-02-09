@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Placeholder Substructures III
 
 **Full Title:** Placeholder Substructures III: A Bit-String-Driven "Recipe

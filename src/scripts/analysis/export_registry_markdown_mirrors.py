@@ -1069,6 +1069,88 @@ def export_claim_tickets_legacy(repo_root: Path) -> None:
     _write(repo_root / "docs/tickets/INDEX.md", "\n".join(index_lines))
 
 
+def export_external_sources(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/external_sources.toml")
+    meta = data.get("external_sources", {})
+    docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
+    lines = _header("External Sources Registry Mirror")
+    lines.append("Authoritative source: `registry/external_sources.toml`.")
+    lines.append("")
+    lines.append(f"- Updated: {meta.get('updated', '')}")
+    lines.append(f"- Source markdown glob: `{meta.get('source_markdown_glob', '')}`")
+    lines.append(f"- Document count: {meta.get('document_count', len(docs))}")
+    lines.append("")
+    lines.append("## Documents")
+    lines.append("")
+    for row in docs:
+        lines.append(f"### {row.get('id', 'XS-???')}: {row.get('title', '(untitled)')}")
+        lines.append("")
+        lines.append(f"- Source markdown: `{row.get('source_markdown', '')}`")
+        lines.append(f"- Slug: `{row.get('slug', '')}`")
+        lines.append(f"- Status token: `{row.get('status_token', '')}`")
+        lines.append(f"- Content kind: `{row.get('content_kind', '')}`")
+        lines.append(f"- Authority level: `{row.get('authority_level', '')}`")
+        lines.append(f"- Verification level: `{row.get('verification_level', '')}`")
+        lines.append(f"- Has full transcript: `{row.get('has_full_transcript', False)}`")
+        lines.append(f"- Line count: {row.get('line_count', 0)}")
+        claims = row.get("claim_refs", [])
+        if claims:
+            lines.append(f"- Claim refs ({len(claims)}): {', '.join(claims)}")
+        urls = row.get("url_refs", [])
+        if urls:
+            lines.append(f"- URL refs ({len(urls)}):")
+            for url in urls[:10]:
+                lines.append(f"  - `{url}`")
+            if len(urls) > 10:
+                lines.append(f"  - ... ({len(urls) - 10} more)")
+        notes = str(row.get("notes", "")).strip()
+        if notes:
+            lines.append(f"- Notes: {notes}")
+        lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_external_sources_legacy(repo_root: Path) -> None:
+    data = _load_toml(repo_root / "registry/external_sources.toml")
+    docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
+    index_lines = [
+        "# External Sources",
+        "",
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+        "<!-- Source of truth: registry/external_sources.toml -->",
+        "",
+        "This index and all files under `docs/external_sources/*.md` are generated from TOML.",
+        "",
+    ]
+
+    for row in docs:
+        rel_path = str(row.get("source_markdown", "")).strip()
+        if not rel_path:
+            continue
+        path = repo_root / rel_path
+        body = str(row.get("body_markdown", "")).strip("\n")
+        lines: list[str] = [
+            "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+            "<!-- Source of truth: registry/external_sources.toml -->",
+            "",
+        ]
+        if body:
+            lines.extend(body.splitlines())
+        else:
+            title = str(row.get("title", Path(rel_path).stem))
+            lines.append(f"# {title}")
+            lines.append("")
+            lines.append("(No body_markdown captured in registry/external_sources.toml.)")
+        lines.append("")
+        _write(path, "\n".join(lines))
+        index_lines.append(
+            f"- `{row.get('id', 'XS-???')}` `{row.get('status_token', '')}`: `{rel_path}`"
+        )
+
+    index_lines.append("")
+    _write(repo_root / "docs/external_sources/INDEX.md", "\n".join(index_lines))
+
+
 def main() -> int:
     global CHECK_MODE
 
@@ -1118,6 +1200,7 @@ def main() -> int:
     export_claims_tasks(repo_root, out_dir / "CLAIMS_TASKS_REGISTRY_MIRROR.md")
     export_claims_domains(repo_root, out_dir / "CLAIMS_DOMAINS_REGISTRY_MIRROR.md")
     export_claim_tickets(repo_root, out_dir / "CLAIM_TICKETS_REGISTRY_MIRROR.md")
+    export_external_sources(repo_root, out_dir / "EXTERNAL_SOURCES_REGISTRY_MIRROR.md")
     export_insights_legacy(repo_root, repo_root / "docs/INSIGHTS.md")
     export_experiments_legacy(
         repo_root, repo_root / "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
@@ -1133,6 +1216,7 @@ def main() -> int:
         export_claims_tasks_legacy(repo_root, repo_root / "docs/CLAIMS_TASKS.md")
         export_claims_domains_legacy(repo_root)
         export_claim_tickets_legacy(repo_root)
+        export_external_sources_legacy(repo_root)
 
     if CHECK_MODE:
         if CHANGED_PATHS:

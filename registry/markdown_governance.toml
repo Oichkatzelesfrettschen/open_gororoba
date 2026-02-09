@@ -6,8 +6,8 @@ generated_at = "deterministic"
 authoritative = true
 document_count = 233
 generated_artifact_count = 59
-manual_narrative_count = 114
-toml_generated_mirror_count = 60
+manual_narrative_count = 100
+toml_generated_mirror_count = 74
 
 [[document]]
 path = "AGENTS.md"
@@ -1132,114 +1132,128 @@ notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
 [[document]]
 path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 id = "MDG-0138"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/DATASET_MANIFEST.md"
 id = "MDG-0139"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 id = "MDG-0140"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 id = "MDG-0141"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 id = "MDG-0142"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 id = "MDG-0143"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 id = "MDG-0144"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 id = "MDG-0145"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 id = "MDG-0146"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 id = "MDG-0147"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 id = "MDG-0148"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 id = "MDG-0149"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 id = "MDG-0150"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 id = "MDG-0151"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"

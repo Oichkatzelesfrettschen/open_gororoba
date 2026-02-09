@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Wheel Algebra Taxonomy
 
 Extracted from conversation logs (convos/2_exploration_cont.md,

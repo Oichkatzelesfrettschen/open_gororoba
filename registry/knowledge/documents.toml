@@ -4,8 +4,8 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 111
-skipped_generated_count = 122
+raw_capture_count = 97
+skipped_generated_count = 136
 authoritative = false
 normalization_required = true
 
@@ -1044,160 +1044,6 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0137.toml"
 
 [[document]]
-id = "DOC-0138"
-source_path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
-title = "C-071: FRB Ultrametric Structure -- Data Provenance"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0138.toml"
-
-[[document]]
-id = "DOC-0139"
-source_path = "docs/external_sources/DATASET_MANIFEST.md"
-title = "Dataset Manifest"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0139.toml"
-
-[[document]]
-id = "DOC-0140"
-source_path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
-title = "2004 Math0403113 Boxkites Iii"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0140.toml"
-
-[[document]]
-id = "DOC-0141"
-source_path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
-title = "Voyage by Catamaran"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0141.toml"
-
-[[document]]
-id = "DOC-0142"
-source_path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
-title = "Flying Higher Than A Box-Kite"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0142.toml"
-
-[[document]]
-id = "DOC-0143"
-source_path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
-title = "Placeholder Substructures I"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0143.toml"
-
-[[document]]
-id = "DOC-0144"
-source_path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
-title = "Placeholder Substructures III"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0144.toml"
-
-[[document]]
-id = "DOC-0145"
-source_path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
-title = "Presto! Digitization: Part I"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0145.toml"
-
-[[document]]
-id = "DOC-0146"
-source_path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
-title = "2004 Wolfram Science Slides"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0146.toml"
-
-[[document]]
-id = "DOC-0147"
-source_path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
-title = "Inverse Cayley-Dickson Formalism"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0147.toml"
-
-[[document]]
-id = "DOC-0148"
-source_path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
-title = "Open Claims Sources (Inbox)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0148.toml"
-
-[[document]]
-id = "DOC-0149"
-source_path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
-title = "Reggiani 2024 manifold identifications (C-005)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0149.toml"
-
-[[document]]
-id = "DOC-0150"
-source_path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
-title = "Sedenion Zero-Divisor Experimental Connections"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0150.toml"
-
-[[document]]
-id = "DOC-0151"
-source_path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
-title = "Wheel Algebra Taxonomy"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0151.toml"
-
-[[document]]
 id = "DOC-0174"
 source_path = "docs/theory/CLAIMS_METHODOLOGY.md"
 title = "Claims Methodology and Scientific Rigor"
@@ -1613,6 +1459,132 @@ id = "DOC-0117"
 source_path = "docs/convos/keywords_1_read_nonuser_lines_cont.md"
 title = "Convos keyword summary: convos/1_read_nonuser_lines_cont.md"
 kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0138"
+source_path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
+title = "C-071: FRB Ultrametric Structure -- Data Provenance"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0139"
+source_path = "docs/external_sources/DATASET_MANIFEST.md"
+title = "Dataset Manifest"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0140"
+source_path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
+title = "2004 Math0403113 Boxkites Iii"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0141"
+source_path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
+title = "Voyage by Catamaran"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0142"
+source_path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
+title = "Flying Higher Than A Box-Kite"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0143"
+source_path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
+title = "Placeholder Substructures I"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0144"
+source_path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
+title = "Placeholder Substructures III"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0145"
+source_path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
+title = "Presto! Digitization: Part I"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0146"
+source_path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
+title = "2004 Wolfram Science Slides"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0147"
+source_path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
+title = "Inverse Cayley-Dickson Formalism"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0148"
+source_path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
+title = "Open Claims Sources (Inbox)"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0149"
+source_path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
+title = "Reggiani 2024 manifold identifications (C-005)"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0150"
+source_path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
+title = "Sedenion Zero-Divisor Experimental Connections"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0151"
+source_path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+title = "Wheel Algebra Taxonomy"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"

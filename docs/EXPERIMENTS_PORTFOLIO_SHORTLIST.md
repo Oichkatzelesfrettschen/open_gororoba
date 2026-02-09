@@ -1,45 +1,6 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
-
 # Experiments Portfolio Shortlist
 
 Source-of-truth policy:
@@ -80,40 +41,6 @@ cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
 
 ---
 
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
 ## E-002: Multi-Dataset GPU Ultrametric Sweep
 
 **Method:** For each of 9 astrophysical catalogs, normalize attributes to [0,1],
@@ -138,40 +65,6 @@ cargo run --release --bin multi-dataset-ultrametric -- \
 
 ---
 
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
 ## E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)
 
 **Method:** Joint chi-square minimization over 1578 Pantheon+ SNe Ia and 7
@@ -190,40 +83,6 @@ cargo run --release --bin real-cosmo-fit
 **Related claims:** C-200..C-210
 
 **Determinism:** Fully deterministic (no RNG in optimizer).
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
 
 ---
 
@@ -247,40 +106,6 @@ cargo run --release --bin kerr-shadow -- --spin 0.998 --n-points 1000 --inclinat
 
 ---
 
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
 ## E-005: Zero-Divisor Graph Invariants
 
 **Method:** Build the interaction graph of sedenion zero-divisors, compute
@@ -299,40 +124,6 @@ cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000
 **Related claims:** C-050..C-060 (ZD graph structure)
 
 **Determinism:** Fully deterministic.
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
 
 ---
 
@@ -358,40 +149,6 @@ cargo run --release --bin gravastar-sweep -- \
 
 ---
 
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
 ## E-007: Tensor Network / PEPS Entropy
 
 **Method:** Classical tensor network simulator for quantum circuits.  Bell/GHZ
@@ -414,40 +171,6 @@ cargo run --release --bin tensor-network -- \
 
 ---
 
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
 ## E-008: GWTC-3 Mass Clumping (Dip Test)
 
 **Method:** Hartigan dip test (Hartigan & Hartigan, 1985) for multimodality
@@ -466,40 +189,6 @@ cargo run --release --bin mass-clumping -- --n-permutations 10000 --seed 42
 **Related claims:** C-007 (mass distribution multimodality)
 
 **Determinism:** Seed-controlled (default 42).
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
 
 ---
 
@@ -526,40 +215,6 @@ cargo run --release --bin neg-dim-eigen -- sweep \
 
 ---
 
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
 ## E-010: Materials Science Baselines (JARVIS + AFLOW)
 
 **Method:** Load JARVIS-DFT and AFLOW datasets, featurize compounds with
@@ -579,7 +234,6 @@ cargo run --release --bin materials-baseline -- --data-dir data/external --seed 
 
 **Determinism:** Seed-controlled (default 42).
 
----
 
 ## Summary Table
 
@@ -595,38 +249,6 @@ cargo run --release --bin materials-baseline -- --data-dir data/external --seed 
 | E-008 | Mass Clumping Dip Test      | mass-clumping                | Seed  | No  |
 | E-009 | Neg-Dim Eigenvalue Sweep    | neg-dim-eigen                | Yes   | No  |
 | E-010 | Materials Baselines         | materials-baseline           | Seed  | No  |
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
 
 ---
 
@@ -656,38 +278,6 @@ cargo run --release --bin cross-stack-locality -- --n-bounces 10000 --n-permutat
 
 ---
 
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
 ## E-012: ET Discrete Billiard (Experiment B)
 
 Method: Treat the Emanation Table as a discrete billiard wall set.
@@ -707,38 +297,6 @@ Run:
 ```bash
 cargo run --release --bin et-billiard -- --n-levels 4,5,6 --n-steps 10000 --seed 42
 ```
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
 
 ---
 
@@ -766,37 +324,5 @@ Run:
 ```bash
 cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-types A,B,D
 ```
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
-
----
 
 ---

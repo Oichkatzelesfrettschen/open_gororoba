@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Sedenion Zero-Divisor Experimental Connections
 
 Extracted from conversation logs (compass artifact wf-7f987cff, the

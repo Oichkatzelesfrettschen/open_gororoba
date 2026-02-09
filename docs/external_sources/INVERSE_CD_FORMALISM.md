@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Inverse Cayley-Dickson Formalism
 
 Extracted from conversation logs (convos/1_read_each_nonuser_line.md,

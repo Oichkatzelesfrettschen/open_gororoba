@@ -26,6 +26,10 @@ import argparse
 from pathlib import Path
 
 UPDATED_STAMP = "2026-02-09"
+HEADER_PREFIXES = (
+    "<!-- AUTO-GENERATED:",
+    "<!-- Source of truth:",
+)
 
 
 def _assert_ascii(text: str, context: str) -> None:
@@ -109,7 +113,23 @@ def _render_requirements_overlay(documents: list[tuple[str, str, str]]) -> str:
 
 
 def _read_file(path: Path) -> str:
-    return path.read_text(encoding="utf-8", errors="ignore")
+    lines = path.read_text(encoding="utf-8", errors="ignore").splitlines()
+    trimmed = _strip_generated_header(lines)
+    return "\n".join(trimmed).strip()
+
+
+def _strip_generated_header(lines: list[str]) -> list[str]:
+    i = 0
+    while i < len(lines):
+        stripped = lines[i].strip()
+        if not stripped:
+            i += 1
+            continue
+        if any(stripped.startswith(prefix) for prefix in HEADER_PREFIXES):
+            i += 1
+            continue
+        break
+    return lines[i:]
 
 
 def main() -> int:
