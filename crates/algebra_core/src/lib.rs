@@ -236,6 +236,10 @@ pub use e10_octonion::{
     fano_completion_rate, optimal_fano_mapping, exact_pvalue,
     fano_enrichment_zscore, describe_fano_structure,
     NULL_FANO_RATE_UNIFORM,
+    // Cayley integer bridge
+    CayleyBasis, default_cayley_basis, verify_cayley_integer_norms,
+    simple_root_products, dynkin_fano_correspondence,
+    optimal_cayley_basis, dynkin_fano_null_summary,
 };
 
 pub use billiard_stats::{

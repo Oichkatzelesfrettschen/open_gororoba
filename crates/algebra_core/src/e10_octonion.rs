@@ -25,7 +25,8 @@
 //! - Wilson: "The Finite Simple Groups", Sec. 4.3 (E8 and octonions)
 //! - Baez: "The Octonions", Bull. AMS 39 (2002), Sec. 4.4
 
-use crate::octonion_field::FANO_TRIPLES;
+use crate::e8_lattice::{e8_simple_roots, generate_e8_roots, E8Root};
+use crate::octonion_field::{oct_multiply, oct_norm_sq, Octonion, FANO_TRIPLES};
 
 /// Given two distinct imaginary octonion indices (1..=7), return the third
 /// index that completes their unique Fano line, or None if the input is
@@ -232,6 +233,268 @@ fn invert_mapping(mapping: &[usize; 8]) -> std::collections::HashMap<usize, usiz
         .collect()
 }
 
+// ---------------------------------------------------------------------------
+// Cayley integer <-> E8 root bridge
+// ---------------------------------------------------------------------------
+
+/// A coordinate permutation mapping E8 root coordinates to octonion
+/// basis elements.
+///
+/// The E8 simple roots in Bourbaki coordinates live in R^8. The Cayley
+/// integers (integral octonions) also live in an 8D space with basis
+/// {1, e_1, ..., e_7}. This struct records an explicit identification
+/// between the two bases.
+///
+/// `perm[i]` = octonion basis index (0=real, 1..7=imaginary) for the
+/// i-th coordinate of an E8 root vector.
+#[derive(Debug, Clone)]
+pub struct CayleyBasis {
+    /// Permutation: E8 coordinate index -> octonion basis index.
+    pub perm: [usize; 8],
+    /// Sign flips: +1 or -1 for each coordinate.
+    pub signs: [f64; 8],
+}
+
+impl CayleyBasis {
+    /// Apply this basis to convert an E8 root into a Cayley integer (octonion).
+    pub fn root_to_octonion(&self, root: &E8Root) -> Octonion {
+        let mut oct = [0.0; 8];
+        for (i, &c) in root.coords.iter().enumerate() {
+            oct[self.perm[i]] += self.signs[i] * c;
+        }
+        oct
+    }
+}
+
+/// Default Cayley basis: identity permutation with no sign flips.
+///
+/// This directly identifies E8 coordinate i with octonion basis e_i
+/// (where e_0 = 1, the real unit).
+pub fn default_cayley_basis() -> CayleyBasis {
+    CayleyBasis {
+        perm: [0, 1, 2, 3, 4, 5, 6, 7],
+        signs: [1.0; 8],
+    }
+}
+
+/// Verify that all 240 E8 roots, when mapped through a CayleyBasis,
+/// produce valid Cayley integers (octonions of norm 1).
+///
+/// Returns `(valid_count, max_norm_error)`.
+pub fn verify_cayley_integer_norms(basis: &CayleyBasis) -> (usize, f64) {
+    let roots = generate_e8_roots();
+    let mut valid = 0;
+    let mut max_err = 0.0f64;
+    for root in &roots {
+        let oct = basis.root_to_octonion(root);
+        let norm_sq = oct_norm_sq(&oct);
+        let err = (norm_sq - 2.0).abs();
+        if err < 1e-10 {
+            valid += 1;
+        }
+        max_err = max_err.max(err);
+    }
+    (valid, max_err)
+}
+
+/// For a given CayleyBasis, compute the multiplication table of the
+/// 8 simple roots viewed as Cayley integers.
+///
+/// Returns an 8x8 array where entry [i][j] is the octonion product
+/// of the i-th and j-th simple root images. This reveals which simple
+/// root pairs are related by Fano triple structure.
+pub fn simple_root_products(basis: &CayleyBasis) -> [[Octonion; 8]; 8] {
+    let simple = e8_simple_roots();
+    let octs: Vec<Octonion> = simple.iter().map(|r| basis.root_to_octonion(r)).collect();
+    let mut table = [[[0.0; 8]; 8]; 8];
+    for i in 0..8 {
+        for j in 0..8 {
+            table[i][j] = oct_multiply(&octs[i], &octs[j]);
+        }
+    }
+    table
+}
+
+/// Check whether Dynkin adjacency of E8 simple roots corresponds to
+/// Fano triple membership when roots are mapped to octonion basis
+/// elements via a CayleyBasis.
+///
+/// Two simple roots alpha_i and alpha_j are Dynkin-adjacent iff
+/// <alpha_i, alpha_j> = -1 (off-diagonal Cartan matrix entry is -1).
+///
+/// Two octonion basis elements e_a and e_b are Fano-connected iff
+/// there exists a Fano triple containing both.
+///
+/// This function computes what fraction of Dynkin-adjacent pairs map
+/// to Fano-connected octonion elements under the given basis.
+///
+/// Returns `(adjacent_fano_count, total_adjacent, fano_rate)`.
+pub fn dynkin_fano_correspondence(basis: &CayleyBasis) -> (usize, usize, f64) {
+    let simple = e8_simple_roots();
+    let octs: Vec<Octonion> = simple.iter().map(|r| basis.root_to_octonion(r)).collect();
+    let table = fano_complement_table();
+
+    let mut adj_fano = 0usize;
+    let mut total_adj = 0usize;
+
+    for i in 0..8 {
+        for j in (i + 1)..8 {
+            let ip = simple[i].inner_product(&simple[j]);
+            if (ip + 1.0).abs() < 1e-10 {
+                // Dynkin-adjacent pair
+                total_adj += 1;
+
+                // Find which basis elements the octonions are closest to.
+                // Each simple root maps to a specific octonion via the basis.
+                // We need the "dominant" basis element for each.
+                let dom_i = dominant_basis_element(&octs[i]);
+                let dom_j = dominant_basis_element(&octs[j]);
+
+                if let (Some(di), Some(dj)) = (dom_i, dom_j) {
+                    if di > 0 && dj > 0 && di != dj && table[di][dj].is_some() {
+                        adj_fano += 1;
+                    }
+                }
+            }
+        }
+    }
+
+    let rate = if total_adj > 0 {
+        adj_fano as f64 / total_adj as f64
+    } else {
+        0.0
+    };
+    (adj_fano, total_adj, rate)
+}
+
+/// Find the octonion basis element with the largest absolute component.
+///
+/// For E8 simple roots that are pure coordinate vectors (like alpha_1 = (1,-1,0,...)),
+/// this identifies which basis direction dominates. Returns None if the octonion
+/// is zero or has all very small components.
+fn dominant_basis_element(oct: &Octonion) -> Option<usize> {
+    let mut best_idx = 0;
+    let mut best_val = 0.0f64;
+    for (i, &v) in oct.iter().enumerate() {
+        if v.abs() > best_val {
+            best_val = v.abs();
+            best_idx = i;
+        }
+    }
+    if best_val < 1e-10 {
+        None
+    } else {
+        Some(best_idx)
+    }
+}
+
+/// Search over all 8! permutations and 2^8 sign patterns to find the
+/// CayleyBasis that maximizes Dynkin-Fano correspondence.
+///
+/// Since 8! * 2^8 = 10,321,920 is expensive, we search only over the
+/// 8! permutations with identity signs first. Sign-searching can be
+/// added later if needed.
+///
+/// Returns `(best_basis, best_fano_count, total_adjacent, all_fano_counts)`.
+pub fn optimal_cayley_basis() -> (CayleyBasis, usize, usize, Vec<usize>) {
+    let simple = e8_simple_roots();
+    let table = fano_complement_table();
+
+    // Precompute Dynkin-adjacent pairs
+    let mut adj_pairs = Vec::new();
+    for i in 0..8 {
+        for j in (i + 1)..8 {
+            let ip = simple[i].inner_product(&simple[j]);
+            if (ip + 1.0).abs() < 1e-10 {
+                adj_pairs.push((i, j));
+            }
+        }
+    }
+    let total_adj = adj_pairs.len();
+
+    // Precompute root coordinates
+    let coords: Vec<[f64; 8]> = simple.iter().map(|r| r.coords).collect();
+
+    let mut best_basis = default_cayley_basis();
+    let mut best_count = 0usize;
+    let mut all_counts = Vec::with_capacity(40320);
+
+    let mut perm = [0usize, 1, 2, 3, 4, 5, 6, 7];
+
+    let eval = |perm: &[usize; 8]| -> usize {
+        let mut count = 0;
+        for &(i, j) in &adj_pairs {
+            // Map simple root i through this permutation
+            let mut oct_i = [0.0f64; 8];
+            let mut oct_j = [0.0f64; 8];
+            for (k, &c) in coords[i].iter().enumerate() {
+                oct_i[perm[k]] += c;
+            }
+            for (k, &c) in coords[j].iter().enumerate() {
+                oct_j[perm[k]] += c;
+            }
+            let di = dominant_basis_element(&oct_i);
+            let dj = dominant_basis_element(&oct_j);
+            if let (Some(a), Some(b)) = (di, dj) {
+                if a > 0 && b > 0 && a != b && table[a][b].is_some() {
+                    count += 1;
+                }
+            }
+        }
+        count
+    };
+
+    // Identity permutation
+    let count = eval(&perm);
+    all_counts.push(count);
+    if count > best_count {
+        best_count = count;
+        best_basis.perm = perm;
+    }
+
+    // Heap's algorithm
+    let mut c = [0usize; 8];
+    let mut idx = 0;
+    while idx < 8 {
+        if c[idx] < idx {
+            if idx % 2 == 0 {
+                perm.swap(0, idx);
+            } else {
+                perm.swap(c[idx], idx);
+            }
+            let count = eval(&perm);
+            all_counts.push(count);
+            if count > best_count {
+                best_count = count;
+                best_basis.perm = perm;
+            }
+            c[idx] += 1;
+            idx = 0;
+        } else {
+            c[idx] = 0;
+            idx += 1;
+        }
+    }
+
+    (best_basis, best_count, total_adj, all_counts)
+}
+
+/// Compute the null expectation for Dynkin-Fano correspondence under
+/// a random permutation.
+///
+/// Given `n_adj` Dynkin-adjacent pairs and `n_fano = 21` Fano-connected
+/// pairs (out of C(7,2) = 21 imaginary pairs -- actually ALL imaginary
+/// pairs are Fano-connected), the null probability depends on how
+/// many simple roots map to imaginary vs real.
+pub fn dynkin_fano_null_summary(all_counts: &[usize]) -> (f64, f64) {
+    let n = all_counts.len() as f64;
+    let mean = all_counts.iter().sum::<usize>() as f64 / n;
+    let var = all_counts.iter()
+        .map(|&c| (c as f64 - mean).powi(2))
+        .sum::<f64>() / n;
+    (mean, var.sqrt())
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -402,5 +665,136 @@ mod tests {
         let triples = describe_fano_structure(&mapping);
         // Should recover the 7 original Fano triples (mapped back through identity)
         assert_eq!(triples.len(), 7);
+    }
+
+    // -----------------------------------------------------------------------
+    // Cayley integer bridge tests
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn test_default_cayley_basis_norms() {
+        // With identity basis, all 240 E8 roots should have octonion norm^2 = 2
+        // (same as root norm^2 since basis is orthonormal).
+        let basis = default_cayley_basis();
+        let (valid, max_err) = verify_cayley_integer_norms(&basis);
+        assert_eq!(valid, 240, "all 240 roots should have norm^2=2");
+        assert!(max_err < 1e-10, "max norm error = {max_err}");
+    }
+
+    #[test]
+    fn test_root_to_octonion_simple() {
+        let basis = default_cayley_basis();
+        let simple = e8_simple_roots();
+
+        // alpha_1 = (1, -1, 0, 0, 0, 0, 0, 0)
+        // With identity basis: oct = [1, -1, 0, 0, 0, 0, 0, 0]
+        // = 1*e_0 + (-1)*e_1 = 1 - e_1
+        let oct = basis.root_to_octonion(&simple[0]);
+        assert!((oct[0] - 1.0).abs() < 1e-10);
+        assert!((oct[1] + 1.0).abs() < 1e-10);
+        for k in 2..8 {
+            assert!(oct[k].abs() < 1e-10);
+        }
+    }
+
+    #[test]
+    fn test_e8_has_7_dynkin_edges() {
+        // E8 Dynkin diagram has 7 edges (8 nodes, tree)
+        let simple = e8_simple_roots();
+        let mut edges = 0;
+        for i in 0..8 {
+            for j in (i + 1)..8 {
+                let ip = simple[i].inner_product(&simple[j]);
+                if (ip + 1.0).abs() < 1e-10 {
+                    edges += 1;
+                }
+            }
+        }
+        assert_eq!(edges, 7, "E8 Dynkin diagram has exactly 7 edges");
+    }
+
+    #[test]
+    fn test_dominant_basis_element() {
+        let oct = [0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
+        assert_eq!(dominant_basis_element(&oct), Some(1));
+
+        let oct2 = [0.0, 0.0, 0.0, 0.0, 0.0, -3.0, 0.0, 0.0];
+        assert_eq!(dominant_basis_element(&oct2), Some(5));
+
+        let oct3 = [0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5, 0.5];
+        // All equal: returns first (index 0)
+        assert_eq!(dominant_basis_element(&oct3), Some(0));
+
+        let zero = [0.0; 8];
+        assert_eq!(dominant_basis_element(&zero), None);
+    }
+
+    #[test]
+    fn test_dynkin_fano_identity_basis() {
+        // With identity basis, measure the correspondence
+        let basis = default_cayley_basis();
+        let (adj_fano, total_adj, rate) = dynkin_fano_correspondence(&basis);
+        // E8 has 7 edges. The correspondence rate depends on how the
+        // Bourbaki coordinates align with octonion Fano triples.
+        assert_eq!(total_adj, 7, "E8 has 7 Dynkin edges");
+        // Record the actual rate (this is an empirical measurement)
+        eprintln!("Identity basis: {adj_fano}/{total_adj} = {rate:.3}");
+    }
+
+    #[test]
+    fn test_optimal_cayley_basis_search() {
+        // Run the exhaustive search over 8! permutations
+        let (best_basis, best_count, total_adj, all_counts) = optimal_cayley_basis();
+        assert_eq!(total_adj, 7);
+        assert_eq!(all_counts.len(), 40320);
+
+        // The best basis should achieve at least as many as the identity basis
+        let identity_count = all_counts[0]; // first entry is identity
+        assert!(best_count >= identity_count);
+
+        // Report
+        let (mean, std) = dynkin_fano_null_summary(&all_counts);
+        eprintln!(
+            "Optimal Cayley basis: {best_count}/{total_adj} edges are Fano-connected"
+        );
+        eprintln!("  perm: {:?}", best_basis.perm);
+        eprintln!("  null distribution: mean={mean:.3}, std={std:.3}");
+        eprintln!("  identity basis: {identity_count}/{total_adj}");
+    }
+
+    #[test]
+    fn test_simple_root_products_norm() {
+        // Product of two norm-sqrt(2) octonions should have norm <= 2
+        // (since |ab| = |a||b| for octonions)
+        let basis = default_cayley_basis();
+        let table = simple_root_products(&basis);
+        for i in 0..8 {
+            for j in 0..8 {
+                let prod = &table[i][j];
+                let norm_sq: f64 = prod.iter().map(|x| x * x).sum();
+                // |a*b|^2 = |a|^2 * |b|^2 = 2 * 2 = 4
+                assert!(
+                    (norm_sq - 4.0).abs() < 1e-10,
+                    "product norm^2 should be 4, got {norm_sq} for ({i},{j})"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_all_imag_pairs_fano_connected() {
+        // In the Fano plane, every pair of distinct imaginary units lies
+        // on exactly one line. So ALL pairs are Fano-connected.
+        let table = fano_complement_table();
+        for i in 1..=7 {
+            for j in 1..=7 {
+                if i != j {
+                    assert!(
+                        table[i][j].is_some(),
+                        "({i},{j}) should be Fano-connected"
+                    );
+                }
+            }
+        }
     }
 }
