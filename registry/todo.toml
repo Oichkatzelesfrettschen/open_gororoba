@@ -1,153 +1,46 @@
-# Sprint execution tracker (TOML-first).
-# Markdown mirror: docs/TODO.md
+# To-Do Registry (TOML-first)
+# Markdown mirrors: docs/TODO.md
 
 [todo]
-source_markdown = "docs/TODO.md"
-authoritative = true
-status = "active"
 updated = "2026-02-09"
+status = "active"
 
-[sprint]
-id = "S13"
-name = "TOML Centralization and Markdown Governance"
-status = "in_progress"
+[[item]]
+id = "T-001"
+area = "math"
+title = "Implement Lyndon Basis for E7 Signs"
+description = "Implement a Lyndon basis for the E7 root system to ensure the structure constants satisfy the Jacobi identity."
+priority = "high"
+status = "open"
 
-[[task]]
-id = "S13-T01"
-title = "Build markdown knowledge index"
-status = "done"
-evidence = [
-  "src/scripts/analysis/build_knowledge_sources_registry.py",
-  "registry/knowledge_sources.toml",
-]
+[[item]]
+id = "T-002"
+area = "math"
+title = "Betti Number Computation"
+description = "Implement Betti-0 and Betti-1 calculation for the TriadHypergraph using a homology solver."
+priority = "medium"
+status = "open"
 
-[[task]]
-id = "S13-T02"
-title = "Create raw TOML capture for non-generated markdown docs"
-status = "done"
-evidence = [
-  "src/scripts/analysis/migrate_markdown_corpus_to_toml.py",
-  "registry/knowledge/documents.toml",
-]
+[[item]]
+id = "T-003"
+area = "optics"
+title = "Kerr Lens Effect"
+description = "Integrate `optics_core::tcmt` to simulate non-linear Kerr lensing based on the local energy density of the fluid."
+priority = "low"
+status = "open"
 
-[[task]]
-id = "S13-T03"
-title = "Define authoritative operational TOML registries"
-status = "done"
-evidence = [
-  "registry/roadmap.toml",
-  "registry/todo.toml",
-  "registry/next_actions.toml",
-  "registry/requirements.toml",
-  "registry/claims_tasks.toml",
-  "registry/claims_domains.toml",
-  "registry/claim_tickets.toml",
-]
+[[item]]
+id = "T-004"
+area = "infra"
+title = "Registry Validation"
+description = "Create a validation script to ensure all registry TOML files conform to the defined schemas."
+priority = "medium"
+status = "open"
 
-[[task]]
-id = "S13-T04"
-title = "Add TOML-first export path for insights markdown mirror"
-status = "done"
-evidence = [
-  "registry/insights.toml",
-  "docs/generated/INSIGHTS_REGISTRY_MIRROR.md",
-]
-
-[[task]]
-id = "S13-T05"
-title = "Add TOML-first export path for experiments markdown mirror"
-status = "done"
-evidence = [
-  "registry/experiments.toml",
-  "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md",
-]
-
-[[task]]
-id = "S13-T06"
-title = "Run registry and quality gates after registry schema changes"
-status = "partial"
-evidence = [
-  "make registry",
-  "cargo run --release --bin registry-check",
-  "python3 bin/ascii_check.py --check",
-]
-
-[[task]]
-id = "S13-T07"
-title = "Normalize docs/CLAIMS_TASKS.md into claims task registry"
-status = "done"
-evidence = [
-  "src/scripts/analysis/normalize_claims_support_registries.py",
-  "registry/claims_tasks.toml",
-  "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
-]
-
-[[task]]
-id = "S13-T08"
-title = "Normalize claims domain map and by-domain markdown into TOML"
-status = "done"
-evidence = [
-  "src/scripts/analysis/normalize_claims_support_registries.py",
-  "registry/claims_domains.toml",
-  "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
-]
-
-[[task]]
-id = "S13-T09"
-title = "Normalize claims audit tickets into TOML with claim linkages"
-status = "done"
-evidence = [
-  "src/scripts/analysis/normalize_claims_support_registries.py",
-  "registry/claim_tickets.toml",
-  "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md",
-]
-
-[[task]]
-id = "S13-T10"
-title = "Remove non-deterministic timestamp churn from registry generators"
-status = "done"
-evidence = [
-  "src/scripts/analysis/build_knowledge_sources_registry.py",
-  "src/scripts/analysis/migrate_markdown_corpus_to_toml.py",
-  "src/scripts/analysis/export_registry_markdown_mirrors.py",
-]
-
-[[task]]
-id = "S13-T11"
-title = "Decide policy for legacy narrative markdown overlays"
-status = "pending"
-evidence = [
-  "registry/knowledge_migration_plan.toml",
-  "docs/NEXT_ACTIONS.md",
-  "docs/ROADMAP.md",
-]
-
-[[task]]
-id = "S13-T12"
-title = "Invert make registry to TOML-first sequencing"
-status = "done"
-evidence = [
-  "Makefile",
-  "src/scripts/analysis/export_registry_markdown_mirrors.py",
-]
-
-[[task]]
-id = "S13-T13"
-title = "Generate legacy claims-support docs from TOML registries"
-status = "done"
-evidence = [
-  "docs/CLAIMS_TASKS.md",
-  "docs/claims/INDEX.md",
-  "docs/claims/CLAIMS_DOMAIN_MAP.csv",
-  "docs/claims/by_domain/algebra.md",
-  "src/scripts/analysis/export_registry_markdown_mirrors.py",
-]
-
-[[task]]
-id = "S13-T14"
-title = "Add mirror freshness verifier to registry quality gate"
-status = "done"
-evidence = [
-  "src/verification/verify_registry_mirror_freshness.py",
-  "Makefile",
-]
+[[item]]
+id = "T-005"
+area = "docs"
+title = "Fetch Reference PDFs"
+description = "Retrieve or reconstruct missing reference PDFs cited in the monograph."
+priority = "low"
+status = "open"
