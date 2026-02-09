@@ -2620,6 +2620,127 @@ pub fn verify_theorem11(n: usize, s: usize) -> Theorem11Result {
 }
 
 // ===========================================================================
+// L9f: Balloon Ride -- Fixed-S, Increasing-N ET Sequence
+// ===========================================================================
+//
+// A "balloon ride" fixes a strut constant S and observes its ET as we ascend
+// through CD levels N, N+1, N+2, ... . This reveals the recursive structure:
+//
+//   - Mandala struts (all regime-address bits = 0) maintain 100% fill at every level.
+//   - Sky struts gain one extra regime-address prefix per level (always [0]).
+//   - DMZ growth ratio converges to 4 as K grows (addressable cells ~4x per doubling).
+//   - Theorem 11 embedding holds at every transition.
+//   - Fill ratio for sky struts is monotonically non-decreasing.
+//
+// The minimum valid level for strut S is the smallest N where G = 2^(N-1) > S.
+
+/// One step of a balloon ride: the ET data for strut S at level N.
+#[derive(Debug, Clone)]
+pub struct BalloonRideStep {
+    /// CD level (dimension = 2^N).
+    pub n: usize,
+    /// Strut constant.
+    pub s: usize,
+    /// Tone-row parameters: G = 2^(N-1), K = G-2, X = G+S.
+    pub g: usize,
+    pub k: usize,
+    pub x: usize,
+    /// DMZ count in the K x K ET.
+    pub dmz_count: usize,
+    /// Total addressable cells = K * (K - 2).
+    pub addressable: usize,
+    /// Fill ratio = dmz_count / addressable.
+    pub fill_ratio: f64,
+    /// Regime address (recursive bit decomposition of S in base-G).
+    pub regime_address: Vec<u8>,
+    /// Whether S is a sky strut (at the sedenion level, S >= 8).
+    pub is_sky: bool,
+    /// DMZ growth ratio from previous level (0.0 for the first step).
+    pub dmz_growth_ratio: f64,
+}
+
+/// Complete balloon ride result: a sequence of steps at increasing N.
+#[derive(Debug, Clone)]
+pub struct BalloonRide {
+    /// Strut constant held fixed throughout the ride.
+    pub s: usize,
+    /// Sequence of steps at increasing N.
+    pub steps: Vec<BalloonRideStep>,
+    /// Whether fill ratio is monotonically non-decreasing across all steps.
+    pub fill_monotone: bool,
+    /// Whether all mandala levels have 100% fill (only meaningful if !is_sky).
+    pub mandala_full_fill: bool,
+}
+
+/// Minimum valid CD level for a given strut constant S.
+/// Returns the smallest N such that G = 2^(N-1) > S.
+pub fn min_level_for_strut(s: usize) -> usize {
+    // G = 2^(N-1) must be > S, so N-1 > log2(S), so N > log2(S) + 1.
+    // For S=0, undefined; for S=1..7, N=4 (G=8>7); for S=8..15, N=5 (G=16>15).
+    assert!(s >= 1, "Strut constant must be >= 1");
+    let bits = 32 - (s as u32).leading_zeros();
+    (bits as usize) + 1
+}
+
+/// Perform a balloon ride: compute ETs for fixed S at levels n_start..=n_end.
+///
+/// Panics if n_start < min_level_for_strut(s).
+pub fn balloon_ride(s: usize, n_start: usize, n_end: usize) -> BalloonRide {
+    let min_n = min_level_for_strut(s);
+    assert!(n_start >= min_n,
+        "n_start={} < min_level_for_strut({})={}", n_start, s, min_n);
+    assert!(n_end >= n_start, "n_end must be >= n_start");
+
+    let is_sky = is_sky_strut(s);
+    let mut steps = Vec::with_capacity(n_end - n_start + 1);
+    let mut prev_dmz: Option<usize> = None;
+
+    for n in n_start..=n_end {
+        let et = create_strutted_et(n, s);
+        let g = et.tone_row.g;
+        let k = et.tone_row.k;
+        let x = et.tone_row.x;
+        let addressable = k * (k - 2);
+        let fill_ratio = et.dmz_count as f64 / addressable as f64;
+        let addr = regime_address(n, s);
+
+        let dmz_growth_ratio = match prev_dmz {
+            Some(pd) if pd > 0 => et.dmz_count as f64 / pd as f64,
+            _ => 0.0,
+        };
+
+        steps.push(BalloonRideStep {
+            n,
+            s,
+            g,
+            k,
+            x,
+            dmz_count: et.dmz_count,
+            addressable,
+            fill_ratio,
+            regime_address: addr,
+            is_sky,
+            dmz_growth_ratio,
+        });
+
+        prev_dmz = Some(et.dmz_count);
+    }
+
+    // Check fill monotonicity: fill_ratio[i] <= fill_ratio[i+1]
+    let fill_monotone = steps.windows(2).all(|w| w[0].fill_ratio <= w[1].fill_ratio + 1e-12);
+
+    // Mandala full fill: all steps have fill_ratio == 1.0 (within tolerance)
+    let mandala_full_fill = steps.iter().all(|step| (step.fill_ratio - 1.0).abs() < 1e-12);
+
+    BalloonRide {
+        s,
+        steps,
+        fill_monotone,
+        mandala_full_fill,
+    }
+}
+
+// ===========================================================================
 // L10: CT Boundary / A7 Star -- Twist as Double Transfer
 // ===========================================================================
 //
@@ -6438,6 +6559,148 @@ mod tests {
         sorted.dedup();
         assert_eq!(sorted.len(), composed.len(),
             "composed N=4->N=6 map must be injective");
+    }
+
+    // --- L9f: Balloon Ride Tests ---
+
+    #[test]
+    fn test_min_level_for_strut() {
+        // min_level_for_strut(S) = floor(log2(S)) + 2.
+        // S=1: need G>1 -> N=2 (G=2). S=2..3: N=3 (G=4). S=4..7: N=4 (G=8).
+        assert_eq!(min_level_for_strut(1), 2);
+        for s in 2..=3 {
+            assert_eq!(min_level_for_strut(s), 3, "S={} should require N=3", s);
+        }
+        for s in 4..=7 {
+            assert_eq!(min_level_for_strut(s), 4, "S={} should require N=4", s);
+        }
+        for s in 8..=15 {
+            assert_eq!(min_level_for_strut(s), 5, "S={} should require N=5", s);
+        }
+        for s in 16..=31 {
+            assert_eq!(min_level_for_strut(s), 6, "S={} should require N=6", s);
+        }
+    }
+
+    #[test]
+    fn test_balloon_ride_mandala_full_fill() {
+        // Mandala struts (S=3, S=7) must have 100% fill at N=4..6.
+        for &s in &[3, 7] {
+            let ride = balloon_ride(s, 4, 6);
+            assert!(ride.mandala_full_fill,
+                "S={}: mandala strut must have 100% fill at all levels", s);
+            for step in &ride.steps {
+                assert!((step.fill_ratio - 1.0).abs() < 1e-12,
+                    "S={} N={}: fill ratio should be 1.0, got {}", s, step.n, step.fill_ratio);
+            }
+        }
+    }
+
+    #[test]
+    fn test_balloon_ride_dmz_values_mandala() {
+        // S=3 at N=4..6: exact DMZ counts must match exploration.
+        let ride = balloon_ride(3, 4, 6);
+        let dmzs: Vec<usize> = ride.steps.iter().map(|s| s.dmz_count).collect();
+        assert_eq!(dmzs, vec![24, 168, 840],
+            "S=3 DMZ sequence must be [24, 168, 840]");
+    }
+
+    #[test]
+    fn test_balloon_ride_dmz_values_sky() {
+        // S=15 at N=5..6: exact DMZ counts from exploration.
+        let ride = balloon_ride(15, 5, 6);
+        let dmzs: Vec<usize> = ride.steps.iter().map(|s| s.dmz_count).collect();
+        assert_eq!(dmzs, vec![72, 456],
+            "S=15 DMZ sequence must be [72, 456]");
+    }
+
+    #[test]
+    fn test_balloon_ride_fill_monotone_sky() {
+        // Sky strut S=15: fill ratio must be monotonically non-decreasing.
+        let ride = balloon_ride(15, 5, 6);
+        assert!(ride.fill_monotone,
+            "S=15: fill ratio must be monotonically non-decreasing");
+        // Verify specific values
+        let fills: Vec<f64> = ride.steps.iter().map(|s| s.fill_ratio).collect();
+        assert!((fills[0] - 72.0 / 168.0).abs() < 1e-6, "fill[0]");
+        assert!((fills[1] - 456.0 / 840.0).abs() < 1e-6, "fill[1]");
+        // Fill must strictly increase for sky struts
+        assert!(fills[1] > fills[0], "fill must increase: {} > {}", fills[1], fills[0]);
+    }
+
+    #[test]
+    fn test_balloon_ride_regime_address_growth() {
+        // Sky strut S=15: regime address gains one [0] prefix per level.
+        // N=5: [1], N=6: [0,1]
+        let ride = balloon_ride(15, 5, 6);
+        assert_eq!(ride.steps[0].regime_address, vec![1u8]);
+        assert_eq!(ride.steps[1].regime_address, vec![0u8, 1]);
+    }
+
+    #[test]
+    fn test_balloon_ride_mandala_regime_address() {
+        // Mandala strut S=3: regime address is all-zeros (length grows with N).
+        // N=4: [], N=5: [0], N=6: [0,0]
+        let ride = balloon_ride(3, 4, 6);
+        assert_eq!(ride.steps[0].regime_address, Vec::<u8>::new());
+        assert_eq!(ride.steps[1].regime_address, vec![0u8]);
+        assert_eq!(ride.steps[2].regime_address, vec![0u8, 0]);
+    }
+
+    #[test]
+    fn test_balloon_ride_dmz_growth_converges() {
+        // DMZ growth ratio should converge toward 4.0 as K -> infinity.
+        // For mandala S=7 at N=4..6: ratios are 7.0, 5.0.
+        let ride = balloon_ride(7, 4, 6);
+        let ratios: Vec<f64> = ride.steps.iter()
+            .map(|s| s.dmz_growth_ratio)
+            .collect();
+        // First step has no previous, ratio = 0
+        assert!((ratios[0] - 0.0).abs() < 1e-12);
+        // Subsequent ratios should decrease toward 4.0
+        assert!(ratios[1] > ratios[2], "ratio should decrease: {} > {}", ratios[1], ratios[2]);
+        // All non-first ratios should be > 4.0 (approaching from above)
+        for &r in &ratios[1..] {
+            assert!(r > 4.0, "DMZ growth ratio should be > 4.0, got {}", r);
+        }
+    }
+
+    #[test]
+    fn test_balloon_ride_step_count() {
+        // Balloon ride from N=4 to N=6 should have 3 steps.
+        let ride = balloon_ride(3, 4, 6);
+        assert_eq!(ride.steps.len(), 3);
+        // Verify N values are sequential.
+        let ns: Vec<usize> = ride.steps.iter().map(|s| s.n).collect();
+        assert_eq!(ns, vec![4, 5, 6]);
+    }
+
+    #[test]
+    fn test_balloon_ride_sky_classification() {
+        // S=15 is sky; S=3, S=7 are not.
+        let ride_sky = balloon_ride(15, 5, 6);
+        assert!(ride_sky.steps[0].is_sky, "S=15 should be sky");
+
+        let ride_mandala = balloon_ride(3, 4, 5);
+        assert!(!ride_mandala.steps[0].is_sky, "S=3 should not be sky");
+    }
+
+    #[test]
+    fn test_balloon_ride_all_sedenion_struts() {
+        // All 7 sedenion struts at N=4..5: verify basic consistency.
+        for s in 1..=7 {
+            let ride = balloon_ride(s, 4, 5);
+            assert_eq!(ride.steps.len(), 2);
+            // N=4: K=6, addressable=24
+            assert_eq!(ride.steps[0].k, 6);
+            assert_eq!(ride.steps[0].addressable, 24);
+            // N=5: K=14, addressable=168
+            assert_eq!(ride.steps[1].k, 14);
+            assert_eq!(ride.steps[1].addressable, 168);
+            // DMZ must increase from N=4 to N=5
+            assert!(ride.steps[1].dmz_count > ride.steps[0].dmz_count,
+                "S={}: DMZ must increase from N=4 to N=5", s);
+        }
     }
 
     // --- L16: Signed Adjacency Graph & Lanyard Dictionary Tests ---
