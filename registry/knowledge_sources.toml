@@ -4,10 +4,10 @@
 
 [knowledge_sources]
 generated_at = "deterministic"
-tracked_markdown_count = 228
-manual_source_count = 113
+tracked_markdown_count = 229
+manual_source_count = 112
 markdown_mirror_count = 6
-generated_markdown_count = 55
+generated_markdown_count = 57
 artifact_report_count = 54
 transcript_input_count = 0
 
@@ -92,9 +92,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "80385b424bc3a9d1872c12c94e2ea034ea1a917f0a259529a4d165571e28ab3e"
-size_bytes = 2438
-line_count = 59
+sha256 = "eef765bb70a04f77c3fc995453c489d4bc018717f1a8531e92b4af71d10f720a"
+size_bytes = 2954
+line_count = 71
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -432,8 +432,8 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "dd54e2b20556779855736bfe20a1604fcd17145f69852316bca1175919ccd774"
-size_bytes = 52993
+sha256 = "7acde8a0cb86314c706b9af9d86ab4ff76fc4b467178d613fdc6ad312d32846a"
+size_bytes = 52997
 line_count = 302
 claim_ref_count = 201
 insight_ref_count = 0
@@ -559,9 +559,9 @@ generated = false
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/experiments.toml"
-sha256 = "ecb397e1e7327e36837a97a3ae7e346389d71f64fae625c27c7c03ef8d9afeee"
-size_bytes = 11861
-line_count = 426
+sha256 = "e06988ffeffe360dfd9b41eae8084b11c384646a7019900f4ac06a03d907066d"
+size_bytes = 12629
+line_count = 542
 claim_ref_count = 22
 insight_ref_count = 1
 experiment_ref_count = 13
@@ -667,9 +667,9 @@ generated = false
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/insights.toml"
-sha256 = "b93d5fb413c76f191d84f28400d2813f1e57c0bdb6387193bab769c55d186b2d"
-size_bytes = 21094
-line_count = 588
+sha256 = "57570436e93e34166458787c5c30b3145423932308d61d9f12a972e309624d89"
+size_bytes = 21918
+line_count = 736
 claim_ref_count = 46
 insight_ref_count = 17
 experiment_ref_count = 3
@@ -828,9 +828,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "a75f088d807402293ec09df2ce26d866786aa908c95a4b9022319d0726040ad8"
-size_bytes = 9869
-line_count = 175
+sha256 = "ee4368b1fd5963b5306648aa8e3038df6cdf420a64f35349831b3644de44aac8"
+size_bytes = 10385
+line_count = 187
 claim_ref_count = 17
 insight_ref_count = 6
 experiment_ref_count = 3
@@ -972,9 +972,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "531c87c290353741099af560bdf6c9d588015a5640b900df5f464eb1966fcd62"
-size_bytes = 3651
-line_count = 97
+sha256 = "6c07faf7c65ecc6bdd6935a742c6b31022182bafa4d080ac923244811425541a"
+size_bytes = 4167
+line_count = 109
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -1061,9 +1061,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "7d06db10cc92f62b2c19cf588afe11ead2869135be9691d5ee32a53080161001"
-size_bytes = 32782
-line_count = 699
+sha256 = "505164555e961d011dd1d0a7180f978f9d0f1f842a2611cd5fb68f7ecc2813c3"
+size_bytes = 33258
+line_count = 711
 claim_ref_count = 23
 insight_ref_count = 8
 experiment_ref_count = 2
@@ -1257,9 +1257,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "9a54cb86ad3af46b131c58ce6807f3d89209eb15c66cf1aa99db5e993aeca59a"
-size_bytes = 11399
-line_count = 161
+sha256 = "ccec22b52ad8457de1eeea23cbbbdbc9309fe53fc2e520c8b3f7a5450359652a"
+size_bytes = 11851
+line_count = 173
 claim_ref_count = 15
 insight_ref_count = 6
 experiment_ref_count = 0
@@ -2734,8 +2734,8 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "e2d731c7fb08184e1a6e315858c721f6bf229d095a06af4f3b19a61003f3344d"
-size_bytes = 82921
+sha256 = "0696ebf25faf954b10487db19658157ca73d6dc8648dab072a6089adf77adace"
+size_bytes = 82925
 line_count = 2854
 claim_ref_count = 201
 insight_ref_count = 0
@@ -2799,6 +2799,24 @@ link_sample = ["registry/insights.toml"]
 
 [[document]]
 id = "DOC-0157"
+path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
+title = "Markdown Governance Registry Mirror"
+kind = "generated_markdown"
+authoring_mode = "generated"
+generated = true
+status = "active"
+migration_priority = "none"
+sha256 = "1fdfb60f4972967021d60b4c91b373960d482a6ee5f006fcab6af7695ca646b8"
+size_bytes = 49645
+line_count = 1729
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 254
+link_sample = ["AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md", "REQUIREMENTS.md", "curated/01_theory_frameworks/README_COQ.md", "curated/README.md", "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"]
+
+[[document]]
+id = "DOC-0158"
 path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
 title = "Next Actions Registry Mirror"
 kind = "generated_markdown"
@@ -2816,7 +2834,7 @@ link_count = 16
 link_sample = ["crates/gororoba_cli/src/bin/generate_latex.rs", "docs/BIBLIOGRAPHY.md", "docs/CLAIMS_TASKS.md", "docs/NEXT_ACTIONS.md", "docs/ROADMAP.md", "docs/latex/", "registry/claims.toml", "registry/insights.toml"]
 
 [[document]]
-id = "DOC-0158"
+id = "DOC-0159"
 path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
 title = "Requirements Registry Mirror"
 kind = "generated_markdown"
@@ -2834,7 +2852,7 @@ link_count = 27
 link_sample = ["3.11-3.12", "docs/REQUIREMENTS.md", "docs/requirements/algebra.md", "docs/requirements/analysis.md", "docs/requirements/astro.md", "docs/requirements/coq.md", "docs/requirements/cpp.md", "docs/requirements/latex.md"]
 
 [[document]]
-id = "DOC-0159"
+id = "DOC-0160"
 path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
 title = "Roadmap Registry Mirror"
 kind = "generated_markdown"
@@ -2852,7 +2870,7 @@ link_count = 26
 link_sample = ["AGENTS.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md", "docs/NEXT_ACTIONS.md", "docs/REQUIREMENTS.md", "docs/ROADMAP.md", "docs/TODO.md", "docs/claims/INDEX.md"]
 
 [[document]]
-id = "DOC-0160"
+id = "DOC-0161"
 path = "docs/generated/TODO_REGISTRY_MIRROR.md"
 title = "TODO Registry Mirror"
 kind = "generated_markdown"
@@ -2870,7 +2888,7 @@ link_count = 36
 link_sample = ["docs/CLAIMS_TASKS.md", "docs/NEXT_ACTIONS.md", "docs/ROADMAP.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv", "docs/claims/INDEX.md", "docs/claims/by_domain/algebra.md", "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md", "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"]
 
 [[document]]
-id = "DOC-0161"
+id = "DOC-0162"
 path = "docs/requirements/algebra.md"
 title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
 kind = "generated_markdown"
@@ -2878,9 +2896,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "e51bb2d20c10dbd2f3c773539b86c209233f5cf0074af9a18d60f7110fb9b6d1"
-size_bytes = 5094
-line_count = 125
+sha256 = "e3e5818c2a107d417bab0201336bca8e60aa90299499c757e5aa4f624c10d700"
+size_bytes = 5610
+line_count = 137
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -2888,7 +2906,7 @@ link_count = 45
 link_sample = ["pkg_resources.declare_namespace(...)", "pkgutil.extend_path(...)", "src/gemini_physics/", "venv/bin/python3"]
 
 [[document]]
-id = "DOC-0162"
+id = "DOC-0163"
 path = "docs/requirements/analysis.md"
 title = "Requirements: Analysis (Topology + Embeddings)"
 kind = "generated_markdown"
@@ -2896,9 +2914,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "bc39a8bfeb86006a7fc4d46525c038b6e665e10947714c347a84d84308a73a07"
-size_bytes = 977
-line_count = 25
+sha256 = "113f972269782aab654feca890955a0a7448cadfb413752fc079ff05b9bc5fad"
+size_bytes = 1493
+line_count = 37
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -2906,7 +2924,7 @@ link_count = 7
 link_sample = ["src/holo_tensor_net.py", "src/topology_analysis.py", "src/vis_advanced_projections.py", "src/vis_box_kites.py", "src/vis_hyper_mera*.py"]
 
 [[document]]
-id = "DOC-0163"
+id = "DOC-0164"
 path = "docs/requirements/astro.md"
 title = "Requirements: Astronomy Data Fetching"
 kind = "generated_markdown"
@@ -2914,9 +2932,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "0355981759cf3c6f0b21cb8a44b6e21eadee1d59018c09b7452c53d33e1a70a0"
-size_bytes = 1086
-line_count = 34
+sha256 = "be0148cd4cb4d0416f4ae8f46d415a30d8f28d0997f2ffe13c49c03182e8ab5c"
+size_bytes = 1602
+line_count = 46
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -2924,7 +2942,7 @@ link_count = 10
 link_sample = ["data/external/PROVENANCE.local.json", "docs/BIBLIOGRAPHY.md", "docs/external_sources/DATASET_MANIFEST.md", "src/fetch_ligo_gwpy.py", "src/fetch_observatory_data.py", "src/fetch_pulsars_rigorous.py", "src/map_cosmic_objects.py"]
 
 [[document]]
-id = "DOC-0164"
+id = "DOC-0165"
 path = "docs/requirements/coq.md"
 title = "Requirements: Coq Proof Checking"
 kind = "generated_markdown"
@@ -2932,9 +2950,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "21d0f71772330bda4ecaeb9516a513cffe9831ae1f2e1b578f212e6934ce23f6"
-size_bytes = 833
-line_count = 28
+sha256 = "749a4a882c3dce710fb8086ca3e8c162fa089ed0d6e126e8644d9d5ca64380a6"
+size_bytes = 1349
+line_count = 40
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -2942,7 +2960,7 @@ link_count = 7
 link_sample = [".v", "confine_theorems_*.v", "confine_theorems_*_axioms.v", "curated/01_theory_frameworks/"]
 
 [[document]]
-id = "DOC-0165"
+id = "DOC-0166"
 path = "docs/requirements/cpp.md"
 title = "Requirements: C++ Kernels (Conan + CMake)"
 kind = "generated_markdown"
@@ -2950,9 +2968,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "9be97f744125087fbb3953bd0cdc7e9622710dea76230e7b5c79906a0ba88a7c"
-size_bytes = 1108
-line_count = 42
+sha256 = "7c6e174fb1c70b51f339f64a86881d5c71f1439bfd82dacc94e93bc00aecb957"
+size_bytes = 1624
+line_count = 54
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -2960,7 +2978,7 @@ link_count = 6
 link_sample = ["cpp/"]
 
 [[document]]
-id = "DOC-0166"
+id = "DOC-0167"
 path = "docs/requirements/latex.md"
 title = "Requirements: LaTeX (PDF Build)"
 kind = "generated_markdown"
@@ -2968,9 +2986,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "f059c2a512a37c433336eb301134714fd5c3aac820facbc75ad21b16fcbfba68"
-size_bytes = 758
-line_count = 22
+sha256 = "ac5d2af204e364f0abbfbdbea5c7af8d679f1ac9009f113df80604eacc2e77ed"
+size_bytes = 1274
+line_count = 34
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -2978,7 +2996,7 @@ link_count = 5
 link_sample = ["docs/latex/", "docs/latex/out/"]
 
 [[document]]
-id = "DOC-0167"
+id = "DOC-0168"
 path = "docs/requirements/materials.md"
 title = "Requirements: Materials Datasets"
 kind = "generated_markdown"
@@ -2986,9 +3004,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "a409be2aeff077d3b65cfa7e2b7aadeb45db2fdb98d94d484248f139a723b081"
-size_bytes = 1012
-line_count = 29
+sha256 = "3cca6dac0861cbcc380e97fa4f51acc4c8d97419d0e3fc76030862a1d20958ad"
+size_bytes = 1528
+line_count = 41
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -2996,7 +3014,7 @@ link_count = 1
 link_sample = ["docs/BIBLIOGRAPHY.md"]
 
 [[document]]
-id = "DOC-0168"
+id = "DOC-0169"
 path = "docs/requirements/particle.md"
 title = "Requirements: Particle Data Workflows"
 kind = "generated_markdown"
@@ -3004,9 +3022,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "ab62a628ad4e8b472f3896be018ce26b8303a07208a998df3ed70bc580b31f78"
-size_bytes = 885
-line_count = 26
+sha256 = "0046fdfc94ffa3d9c37662c76fa476298d1d3a202361b7fd61f1bb7aa5f6e1c3"
+size_bytes = 1401
+line_count = 38
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -3014,7 +3032,7 @@ link_count = 5
 link_sample = ["data/external/", "docs/BIBLIOGRAPHY.md"]
 
 [[document]]
-id = "DOC-0169"
+id = "DOC-0170"
 path = "docs/requirements/quantum-docker.md"
 title = "Requirements: Quantum (Qiskit via Docker)"
 kind = "generated_markdown"
@@ -3022,9 +3040,9 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "f0f1732a4ff7ea6b7b087252828378d1a11fc589de8a82a2a9c4954a2ab8f7bf"
-size_bytes = 874
-line_count = 31
+sha256 = "595dd8b2575d5d5e93978a3427ba63c3dd6a9feddabe05e020315c921a8f78f6"
+size_bytes = 1390
+line_count = 43
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -3032,7 +3050,7 @@ link_count = 1
 link_sample = ["docs/QISKIT_SETUP.md"]
 
 [[document]]
-id = "DOC-0170"
+id = "DOC-0171"
 path = "docs/theory/CLAIMS_METHODOLOGY.md"
 title = "Claims Methodology and Scientific Rigor"
 kind = "manual_source"
@@ -3050,7 +3068,7 @@ link_count = 7
 link_sample = [".PROVENANCE.json", "crates/*/tests/", "data/csv/", "data/external/papers/", "docs/external_sources/", "docs/preregistered/CLAIM_NAME.md", "tests/test_*.py"]
 
 [[document]]
-id = "DOC-0171"
+id = "DOC-0172"
 path = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
 title = "Warp Ring Physics Reconciliation (Phase 7.0)"
 kind = "manual_source"
@@ -3067,7 +3085,7 @@ experiment_ref_count = 0
 link_count = 0
 
 [[document]]
-id = "DOC-0172"
+id = "DOC-0173"
 path = "docs/tickets/C001_C050_claims_audit.md"
 title = "Ticket: Claims audit batch C-001..C-050"
 kind = "generated_markdown"
@@ -3075,17 +3093,17 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "ef9c16a673af41d80c522ebbe3e23d3ce65a8a22ff3242698f71fab1089e3648"
-size_bytes = 6709
-line_count = 101
+sha256 = "4d5e972ad7b67bee9cbc39bf6a19a8e1fe69020bb2c38e8f5cffb90b7e79f7e4"
+size_bytes = 3027
+line_count = 69
 claim_ref_count = 23
 insight_ref_count = 0
 experiment_ref_count = 0
 link_count = 38
-link_sample = ["PYTHONWARNINGS=error venv/bin/python3 src/scripts/analysis/claims_batch_backlog.py --id-from 1 --id-to 50 --out reports/claims_batch_backlog_C001_C050.md", "data/csv/c030_sedenion_lagrangian_bypass_checks.csv", "data/csv/c031_hurwitz_norm_composition_checks.csv", "data/csv/c039_spectral_dimension_bigraph_*.csv", "data/csv/c040_primordial_tilt_*.csv", "data/csv/c050_spaceplate_flow_isomorphism_toy.csv", "data/csv/compact_objects_catalog.csv", "data/csv/deff_horizon_mass_scaling*.csv"]
+link_sample = ["data/csv/c030_sedenion_lagrangian_bypass_checks.csv", "data/csv/c031_hurwitz_norm_composition_checks.csv", "data/csv/c039_spectral_dimension_bigraph_*.csv", "data/csv/c040_primordial_tilt_*.csv", "data/csv/c050_spaceplate_flow_isomorphism_toy.csv", "data/csv/compact_objects_catalog.csv", "data/csv/deff_horizon_mass_scaling*.csv", "data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf"]
 
 [[document]]
-id = "DOC-0173"
+id = "DOC-0174"
 path = "docs/tickets/C051_C100_claims_audit.md"
 title = "Ticket: Claims audit batch C-051..C-100"
 kind = "generated_markdown"
@@ -3093,17 +3111,17 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "957cec17ef171b55256608f76bfd3183b10f70acf454db440dc7efbf169c323d"
-size_bytes = 6980
-line_count = 79
+sha256 = "6a1437fb1a6a2d89a33ba5ed3a1c2534c0ae70d2f9416c5c7e74b394748de418"
+size_bytes = 1489
+line_count = 39
 claim_ref_count = 17
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 52
-link_sample = ["PYTHONWARNINGS=error venv/bin/python3 src/scripts/analysis/claims_batch_backlog.py --id-from 51 --id-to 100 --out reports/claims_batch_backlog_C051_C100.md", "data/csv/c053_pathion_tmm_summary.csv", "data/csv/c068_zd_interaction_eigen_summary.csv", "data/csv/c070_nanograv_shape_match_summary.csv", "data/csv/c075_pathion_interaction_summary.csv", "data/csv/c077_associator_mixing_summary.csv", "data/csv/c078_higher_dim_zd_coverage_summary.csv", "data/csv/c082_associator_saturation_summary.csv"]
+link_count = 10
+link_sample = ["data/external/", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/external_sources/*.md", "reports/claims_batch_backlog_C051_C100.md"]
 
 [[document]]
-id = "DOC-0174"
+id = "DOC-0175"
 path = "docs/tickets/C101_C150_claims_audit.md"
 title = "Ticket: Claims audit batch C-101..C-150"
 kind = "generated_markdown"
@@ -3111,17 +3129,17 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "3bb23058a287f60e2bd7ed54f9cebf428d242b6ec7ee5359a1e3b6e0ed44974c"
-size_bytes = 4665
-line_count = 86
+sha256 = "fc18571956f3f598e58c3c9ba8f4856761bbd43425a8e5d52de98c2e78ab6288"
+size_bytes = 3183
+line_count = 72
 claim_ref_count = 13
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 39
-link_sample = ["PYTHONWARNINGS=error venv/bin/python3 src/scripts/analysis/claims_batch_backlog.py --id-from 101 --id-to 150 --out reports/claims_batch_backlog_C101_C150.md", "data/csv/c102_alt_ratio_summary.csv", "data/csv/c103_zd_topology_summary.csv", "data/csv/c108_alt_ratio_summary.csv", "data/csv/c109_zd_construction_summary.csv", "data/csv/c120_zd_kernel_scaling_summary.csv", "data/csv/c123_assoc_lie_bracket_summary.csv", "data/csv/c128_conjugate_inverse_summary.csv"]
+link_count = 41
+link_sample = ["data/csv/c102_alt_ratio_summary.csv", "data/csv/c103_zd_topology_summary.csv", "data/csv/c108_alt_ratio_summary.csv", "data/csv/c109_zd_construction_summary.csv", "data/csv/c120_zd_kernel_scaling_summary.csv", "data/csv/c123_assoc_lie_bracket_summary.csv", "data/csv/c128_conjugate_inverse_summary.csv", "data/csv/c129_assoc_norm_dist_summary.csv"]
 
 [[document]]
-id = "DOC-0175"
+id = "DOC-0176"
 path = "docs/tickets/C151_C200_claims_audit.md"
 title = "Ticket: Claims audit batch C-151..C-200"
 kind = "generated_markdown"
@@ -3129,17 +3147,17 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "465d44a61f970dcd3ad3efc92f6d5bffc120cba575d227cfc01e04c1e8b00845"
-size_bytes = 593
-line_count = 24
+sha256 = "695d6730d6d97686cc71df6f215bb056874d32242d5be89b8aec9f59f7b74d21"
+size_bytes = 947
+line_count = 38
 claim_ref_count = 2
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 4
+link_count = 7
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C151_C200.md"]
 
 [[document]]
-id = "DOC-0176"
+id = "DOC-0177"
 path = "docs/tickets/C201_C250_claims_audit.md"
 title = "Ticket: Claims audit batch C-201..C-250"
 kind = "generated_markdown"
@@ -3147,17 +3165,17 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "361ce1991365d47d0593708b4acd38272f78271168f5e6e66de34eaff6ebbbda"
-size_bytes = 593
-line_count = 24
+sha256 = "fbdc002629e9e2760411f884c6609352cf630dc8cc5d91208c2bdbf2d3ebe0cd"
+size_bytes = 947
+line_count = 38
 claim_ref_count = 2
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 4
+link_count = 7
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C201_C250.md"]
 
 [[document]]
-id = "DOC-0177"
+id = "DOC-0178"
 path = "docs/tickets/C251_C300_claims_audit.md"
 title = "Ticket: Claims audit batch C-251..C-300"
 kind = "generated_markdown"
@@ -3165,17 +3183,17 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "a1d60fff64abc43eef768e78d90329d28b54db5ebdfb78d6b0b9159f66f32b24"
-size_bytes = 593
-line_count = 24
+sha256 = "0b7568cae3b32de3ed504190faf2c42a1e5ce805424902f0f9ec99997d2610ae"
+size_bytes = 947
+line_count = 38
 claim_ref_count = 2
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 4
+link_count = 7
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C251_C300.md"]
 
 [[document]]
-id = "DOC-0178"
+id = "DOC-0179"
 path = "docs/tickets/C301_C350_claims_audit.md"
 title = "Ticket: Claims audit batch C-301..C-350"
 kind = "generated_markdown"
@@ -3183,17 +3201,17 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "df5f6f0fe65c4b130164bbde890f0fef2db52397af43644047541b8027105b33"
-size_bytes = 593
-line_count = 24
+sha256 = "94b4aaf544f76a6d8e6fe6bf0c8a330e17b3e5dd49f261dddcf890f571009beb"
+size_bytes = 947
+line_count = 38
 claim_ref_count = 2
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 4
+link_count = 7
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C301_C350.md"]
 
 [[document]]
-id = "DOC-0179"
+id = "DOC-0180"
 path = "docs/tickets/C351_C400_claims_audit.md"
 title = "Ticket: Claims audit batch C-351..C-400"
 kind = "generated_markdown"
@@ -3201,17 +3219,17 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "c7c1bc94cc731907bed7f010c710766aad3c0a4094f981c51ef5da173dc44d07"
-size_bytes = 593
-line_count = 24
+sha256 = "15563cbdabbf30a9476b31eda192d9e36b4851a266b48f9be39a39e24dadd1dc"
+size_bytes = 947
+line_count = 38
 claim_ref_count = 2
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 4
+link_count = 7
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C351_C400.md"]
 
 [[document]]
-id = "DOC-0180"
+id = "DOC-0181"
 path = "docs/tickets/C401_C427_claims_audit.md"
 title = "Ticket: Claims audit batch C-401..C-427"
 kind = "generated_markdown"
@@ -3219,26 +3237,26 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "bc378c739af5f3fb2059c6472604d5d0e1dd63fa0640c880c557a95a883926a0"
-size_bytes = 3537
-line_count = 64
+sha256 = "0cd01051b2946f84b02fb4c0bde99699f38340573f19cfd3f53a2ca7a5f26dfc"
+size_bytes = 1575
+line_count = 41
 claim_ref_count = 22
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 22
-link_sample = ["PYTHONWARNINGS=error venv/bin/python3 src/scripts/analysis/claims_batch_backlog.py --id-from 401 --id-to 427 --out reports/claims_batch_backlog_C401_C427.md", "data/external/papers/arxiv_1601.05416_dong_harlow_wall_2016_entanglement_wedge_reconstruction.pdf", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/external_sources/*.md", "docs/external_sources/C403_SPECTRAL_TRIPLE_RECONSTRUCTION_SOURCES.md", "docs/external_sources/C404_HOLOGRAPHIC_MODULAR_LOCALITY_SOURCES.md", "docs/external_sources/C405_OPEN_SYSTEMS_RECORD_ALGEBRA_SOURCES.md", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
+link_count = 12
+link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/external_sources/*.md", "reports/claims_batch_backlog_C401_C427.md", "reports/convos_pdf_inventory.md", "reports/tscp_trial_factor_ledger.md", "src/verification/"]
 
 [[document]]
-id = "DOC-0181"
+id = "DOC-0182"
 path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
 title = "Plan: Warp Ring Physics Reconciliation"
-kind = "manual_source"
-authoring_mode = "manual"
-generated = false
+kind = "generated_markdown"
+authoring_mode = "generated"
+generated = true
 status = "active"
-migration_priority = "high"
-sha256 = "dd9eb34ed7d72ad6f59a4de28e7692bac8baa2516d0a0f6165dfddea0ae7b173"
-size_bytes = 1513
+migration_priority = "none"
+sha256 = "b3d8fc6c87a1a78bcbdda92c7237eb17b2b7ba3e5939b30a55bb9bd1243aebff"
+size_bytes = 814
 line_count = 37
 claim_ref_count = 2
 insight_ref_count = 0
@@ -3247,7 +3265,7 @@ link_count = 7
 link_sample = ["data/external/papers/", "references/", "src/gemini_physics/optics/grin_solver.py", "src/scripts/visualization/animate_warp_v8_rigorous.py"]
 
 [[document]]
-id = "DOC-0182"
+id = "DOC-0183"
 path = "docs/x86_SIMD_OPTIMIZATION.md"
 title = "x86 SIMD/FPU Optimization & History Reference"
 kind = "manual_source"
@@ -3264,7 +3282,7 @@ experiment_ref_count = 0
 link_count = 33
 
 [[document]]
-id = "DOC-0183"
+id = "DOC-0184"
 path = "reports/artifacts_phase0_dryrun.md"
 title = "Artifacts Phase 0 dry-run"
 kind = "artifact_report"
@@ -3281,7 +3299,7 @@ experiment_ref_count = 0
 link_count = 0
 
 [[document]]
-id = "DOC-0184"
+id = "DOC-0185"
 path = "reports/artifacts_reorg_plan.md"
 title = "Artifacts reorganization plan (non-destructive)"
 kind = "artifact_report"
@@ -3298,7 +3316,7 @@ experiment_ref_count = 0
 link_count = 0
 
 [[document]]
-id = "DOC-0185"
+id = "DOC-0186"
 path = "reports/audit_network_gating.md"
 title = "Network Gating Audit (2026-02-06)"
 kind = "artifact_report"
@@ -3316,7 +3334,7 @@ link_count = 9
 link_sample = ["gemini_physics.network", "src/fetch_external_data.py", "src/fetch_observatory_data.py", "src/fetch_pulsars_rigorous.py", "src/gemini_physics/materials_jarvis.py", "src/map_cosmic_objects.py"]
 
 [[document]]
-id = "DOC-0186"
+id = "DOC-0187"
 path = "reports/audit_nonpython_toolchains.md"
 title = "Non-Python Toolchains Audit (2026-02-06)"
 kind = "artifact_report"
@@ -3333,7 +3351,7 @@ experiment_ref_count = 0
 link_count = 14
 
 [[document]]
-id = "DOC-0187"
+id = "DOC-0188"
 path = "reports/audit_provenance.md"
 title = "Provenance Audit (2026-02-04)"
 kind = "artifact_report"
@@ -3350,7 +3368,7 @@ experiment_ref_count = 0
 link_count = 0
 
 [[document]]
-id = "DOC-0188"
+id = "DOC-0189"
 path = "reports/audit_pythonpath.md"
 title = "Pythonpath Hygiene Audit (2026-02-04)"
 kind = "artifact_report"
@@ -3368,7 +3386,7 @@ link_count = 102
 link_sample = ["src/", "src/scripts/*", "src/scripts/**", "src/scripts/analysis", "src/scripts/data", "src/scripts/export", "src/scripts/measure", "src/scripts/simulation"]
 
 [[document]]
-id = "DOC-0189"
+id = "DOC-0190"
 path = "reports/claims_batch_backlog_C001_C050.md"
 title = "Claims Batch Backlog (C-001..C-050) (2026-02-03)"
 kind = "artifact_report"
@@ -3386,7 +3404,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0190"
+id = "DOC-0191"
 path = "reports/claims_batch_backlog_C001_C200.md"
 title = "Claims Batch Backlog (C-001..C-200) (2026-02-04)"
 kind = "artifact_report"
@@ -3404,7 +3422,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0191"
+id = "DOC-0192"
 path = "reports/claims_batch_backlog_C011_C025.md"
 title = "Claims Batch Backlog (C-011..C-025) (2026-02-02)"
 kind = "artifact_report"
@@ -3422,7 +3440,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0192"
+id = "DOC-0193"
 path = "reports/claims_batch_backlog_C027_C045.md"
 title = "Claims Batch Backlog (C-027..C-045) (2026-02-03)"
 kind = "artifact_report"
@@ -3440,7 +3458,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0193"
+id = "DOC-0194"
 path = "reports/claims_batch_backlog_C046_C060.md"
 title = "Claims Batch Backlog (C-046..C-060) (2026-02-02)"
 kind = "artifact_report"
@@ -3458,7 +3476,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0194"
+id = "DOC-0195"
 path = "reports/claims_batch_backlog_C046_C066.md"
 title = "Claims Batch Backlog (C-046..C-066) (2026-02-03)"
 kind = "artifact_report"
@@ -3476,7 +3494,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0195"
+id = "DOC-0196"
 path = "reports/claims_batch_backlog_C051_C100.md"
 title = "Claims Batch Backlog (C-051..C-100) (2026-02-03)"
 kind = "artifact_report"
@@ -3494,7 +3512,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0196"
+id = "DOC-0197"
 path = "reports/claims_batch_backlog_C101_C150.md"
 title = "Claims Batch Backlog (C-101..C-150) (2026-02-03)"
 kind = "artifact_report"
@@ -3512,7 +3530,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0197"
+id = "DOC-0198"
 path = "reports/claims_batch_backlog_C151_C200.md"
 title = "Claims Batch Backlog (C-151..C-200) (2026-02-02)"
 kind = "artifact_report"
@@ -3530,7 +3548,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0198"
+id = "DOC-0199"
 path = "reports/claims_batch_backlog_C201_C250.md"
 title = "Claims Batch Backlog (C-201..C-250) (2026-02-02)"
 kind = "artifact_report"
@@ -3548,7 +3566,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0199"
+id = "DOC-0200"
 path = "reports/claims_batch_backlog_C201_C408.md"
 title = "Claims Batch Backlog (C-201..C-408) (2026-02-02)"
 kind = "artifact_report"
@@ -3566,7 +3584,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0200"
+id = "DOC-0201"
 path = "reports/claims_batch_backlog_C201_C427.md"
 title = "Claims Batch Backlog (C-201..C-427) (2026-02-02)"
 kind = "artifact_report"
@@ -3584,7 +3602,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0201"
+id = "DOC-0202"
 path = "reports/claims_batch_backlog_C201_C430.md"
 title = "Claims Batch Backlog (C-201..C-430) (2026-02-02)"
 kind = "artifact_report"
@@ -3602,7 +3620,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0202"
+id = "DOC-0203"
 path = "reports/claims_batch_backlog_C201_C432.md"
 title = "Claims Batch Backlog (C-201..C-432) (2026-02-04)"
 kind = "artifact_report"
@@ -3620,7 +3638,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0203"
+id = "DOC-0204"
 path = "reports/claims_batch_backlog_C251_C300.md"
 title = "Claims Batch Backlog (C-251..C-300) (2026-02-02)"
 kind = "artifact_report"
@@ -3638,7 +3656,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0204"
+id = "DOC-0205"
 path = "reports/claims_batch_backlog_C301_C350.md"
 title = "Claims Batch Backlog (C-301..C-350) (2026-02-02)"
 kind = "artifact_report"
@@ -3656,7 +3674,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0205"
+id = "DOC-0206"
 path = "reports/claims_batch_backlog_C351_C400.md"
 title = "Claims Batch Backlog (C-351..C-400) (2026-02-02)"
 kind = "artifact_report"
@@ -3674,7 +3692,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0206"
+id = "DOC-0207"
 path = "reports/claims_batch_backlog_C401_C427.md"
 title = "Claims Batch Backlog (C-401..C-427) (2026-02-03)"
 kind = "artifact_report"
@@ -3692,7 +3710,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv"]
 
 [[document]]
-id = "DOC-0207"
+id = "DOC-0208"
 path = "reports/claims_bold_tokens_inventory.md"
 title = "Claims Bold-Token Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -3710,7 +3728,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md"]
 
 [[document]]
-id = "DOC-0208"
+id = "DOC-0209"
 path = "reports/claims_id_inventory.md"
 title = "Claims ID Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -3728,7 +3746,7 @@ link_count = 1
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
 
 [[document]]
-id = "DOC-0209"
+id = "DOC-0210"
 path = "reports/claims_priority_ranking.md"
 title = "Claims Priority Ranking (2026-02-02)"
 kind = "artifact_report"
@@ -3745,7 +3763,7 @@ experiment_ref_count = 0
 link_count = 0
 
 [[document]]
-id = "DOC-0210"
+id = "DOC-0211"
 path = "reports/claims_staleness_report.md"
 title = "Claims Staleness Report (2026-02-04)"
 kind = "artifact_report"
@@ -3763,7 +3781,7 @@ link_count = 1
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
 
 [[document]]
-id = "DOC-0211"
+id = "DOC-0212"
 path = "reports/claims_status_contradictions.md"
 title = "Claims Status Contradictions (2026-02-04)"
 kind = "artifact_report"
@@ -3781,7 +3799,7 @@ link_count = 1
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
 
 [[document]]
-id = "DOC-0212"
+id = "DOC-0213"
 path = "reports/claims_status_inventory.md"
 title = "Claims Status Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -3799,7 +3817,7 @@ link_count = 2
 link_sample = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
 
 [[document]]
-id = "DOC-0213"
+id = "DOC-0214"
 path = "reports/config_audit.md"
 title = "Config Audit Notes (2026-02-01)"
 kind = "artifact_report"
@@ -3817,7 +3835,7 @@ link_count = 15
 link_sample = ["__pycache__/", "bin/", "docker/", "pytest.ini", "run_quantum_container.sh", "src/", "src/scripts/*", "src/scripts/analysis/spectral_triple_toy.py"]
 
 [[document]]
-id = "DOC-0214"
+id = "DOC-0215"
 path = "reports/convos_claim_candidates.md"
 title = "Convos Claim Candidates (Auto-Scan)"
 kind = "artifact_report"
@@ -3835,7 +3853,7 @@ link_count = 39
 link_sample = ["convos/1_read_each_nonuser_line.md", "convos/1_read_nonuser_lines_cont.md", "convos/1_remove_CPU_Specifics.md", "convos/2_exploration_cont.md", "convos/3_further_explorations.md", "convos/4_read_every_nonuser_line.md", "convos/another_chat.md", "convos/folded_space.md"]
 
 [[document]]
-id = "DOC-0215"
+id = "DOC-0216"
 path = "reports/convos_claim_candidates_prioritized.md"
 title = "Convos Claim Candidates (Prioritized Shortlist, 2026-02-01)"
 kind = "artifact_report"
@@ -3853,7 +3871,7 @@ link_count = 6
 link_sample = ["convos/1_read_each_nonuser_line.md", "docs/convos/CONVOS_CLAIMS_INBOX.md", "reports/convos_claim_candidates.md", "tests/test_holography_bit_threads.py", "tests/test_isospectral_nonisomorphic_pair.py", "tests/test_open_systems_lindblad.py"]
 
 [[document]]
-id = "DOC-0216"
+id = "DOC-0217"
 path = "reports/convos_pdf_inventory.md"
 title = "Convos PDF inventory"
 kind = "artifact_report"
@@ -3871,7 +3889,7 @@ link_count = 45
 link_sample = ["2026-01-28T19:07:59.679325+00:00", "2026-01-30T14:00:09.413081+00:00", "2026-01-30T14:55:07.525720+00:00", "2026-02-01T18:24:27.768151+00:00", "2026-02-01T18:33:49.092229+00:00", "2026-02-01T18:35:59.859258+00:00", "2026-02-01T18:39:30.683232+00:00", "2026-02-01T18:41:10.003162+00:00"]
 
 [[document]]
-id = "DOC-0217"
+id = "DOC-0218"
 path = "reports/non_iso_dates_inventory.md"
 title = "Non-ISO date inventory"
 kind = "artifact_report"
@@ -3888,7 +3906,7 @@ experiment_ref_count = 0
 link_count = 0
 
 [[document]]
-id = "DOC-0218"
+id = "DOC-0219"
 path = "reports/open_claims_missing_dedicated_sources.md"
 title = "Open claims missing dedicated source index"
 kind = "artifact_report"
@@ -3906,7 +3924,7 @@ link_count = 12
 link_sample = ["archive/legacy_conjectures/", "data/csv/legacy/", "docs/ROADMAP_DETAILED.md", "docs/external_sources/*.md", "docs/external_sources/OPEN_CLAIMS_SOURCES.md", "docs/theory/OPERATOR_DEPTH_STRATIFICATION.md", "docs/theory/WARP_FLOW_ALLOCATION.md", "docs/theory/unified_tensor_wheel_cd_framework.md"]
 
 [[document]]
-id = "DOC-0219"
+id = "DOC-0220"
 path = "reports/open_claims_missing_test_hooks.md"
 title = "Open claims missing explicit test/verifier hook"
 kind = "artifact_report"
@@ -3924,7 +3942,7 @@ link_count = 26
 link_sample = ["What would verify/refute it", "archive/legacy_conjectures/", "data/csv/legacy/", "docs/BIBLIOGRAPHY.md", "docs/EXCEPTIONAL_COSMOLOGY.md", "docs/MATERIALS_APPLICATIONS.md", "docs/ROADMAP_DETAILED.md", "docs/SEDENION_FIELD_THEORY.md"]
 
 [[document]]
-id = "DOC-0220"
+id = "DOC-0221"
 path = "reports/package_index.md"
 title = "Package Index (2026-02-01)"
 kind = "artifact_report"
@@ -3942,7 +3960,7 @@ link_count = 25
 link_sample = ["gemini_physics.algebra", "gemini_physics.audit", "gemini_physics.cd", "gemini_physics.cosmology", "gemini_physics.engineering", "gemini_physics.geometry", "gemini_physics.kinematics", "gemini_physics.materials"]
 
 [[document]]
-id = "DOC-0221"
+id = "DOC-0222"
 path = "reports/pdf_inventory.md"
 title = "PDF Inventory"
 kind = "artifact_report"
@@ -3960,7 +3978,7 @@ link_count = 131
 link_sample = [".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/back.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/filesave.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/forward.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/hand.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/help.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/home.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/matplotlib.pdf", ".mamba/envs/qiskit_env/lib/python3.11/site-packages/matplotlib/mpl-data/images/move.pdf"]
 
 [[document]]
-id = "DOC-0222"
+id = "DOC-0223"
 path = "reports/pythonpath_refactor_plan.md"
 title = "Pythonpath Refactor Plan (2026-02-04)"
 kind = "artifact_report"
@@ -3978,7 +3996,7 @@ link_count = 149
 link_sample = ["__init__.py", "scripts.analysis.c050_spaceplate_flow_isomorphism_toy", "scripts.analysis.compact_object_census", "scripts.analysis.gravastar_thin_shell", "scripts.analysis.gravastar_thin_shell_stability", "scripts.analysis.gwtc3_bayesian_mixture", "scripts.analysis.gwtc3_mass_clumping_selection_control", "scripts.analysis.gwtc3_modality_preregistered"]
 
 [[document]]
-id = "DOC-0223"
+id = "DOC-0224"
 path = "reports/repo_inventory.md"
 title = "Repo Inventory (2026-02-01)"
 kind = "artifact_report"
@@ -3996,7 +4014,7 @@ link_count = 25
 link_sample = [".git/", "/home/eirikr/Playground/ChatGPT Experiments", "archive/", "benchmarks/", "bin/", "convos/", "cpp/", "curated/"]
 
 [[document]]
-id = "DOC-0224"
+id = "DOC-0225"
 path = "reports/repo_structure_audit.md"
 title = "Repo Structure Audit (2026-02-04)"
 kind = "artifact_report"
@@ -4014,7 +4032,7 @@ link_count = 25
 link_sample = [".github/", ".mamba/", "/home/eirikr/Playground/ChatGPT Experiments", "archive/", "benchmarks/", "bin/", "convos/", "cpp/"]
 
 [[document]]
-id = "DOC-0225"
+id = "DOC-0226"
 path = "reports/script_contracts_inventory.md"
 title = "Script contract inventory"
 kind = "artifact_report"
@@ -4031,7 +4049,7 @@ experiment_ref_count = 0
 link_count = 0
 
 [[document]]
-id = "DOC-0226"
+id = "DOC-0227"
 path = "reports/tickets_inventory.md"
 title = "Tickets Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -4049,7 +4067,7 @@ link_count = 17
 link_sample = ["docs/tickets", "docs/tickets/A1_boxkites_replication.md", "docs/tickets/A2_reggiani_alignment.md", "docs/tickets/A3_gwtc3_provenance.md", "docs/tickets/A4_mass_clumping_test.md", "docs/tickets/A5_gwtc3_selection_bias_control.md", "docs/tickets/A6_tensor_network_measurement_pipeline.md", "docs/tickets/A7_psl_2_7_explicit_action.md"]
 
 [[document]]
-id = "DOC-0227"
+id = "DOC-0228"
 path = "reports/todo_fixme_scan.md"
 title = "TODO/FIXME Scan (2026-02-07)"
 kind = "artifact_report"
@@ -4067,7 +4085,7 @@ link_count = 8
 link_sample = ["crates/quantum_core/src/casimir.rs", "crates/quantum_core/src/tensor_networks.rs", "docs/CLAIMS_TASKS.md", "docs/TODO.md", "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md", "reports/tickets_inventory.md", "rg -n \"\\\\b(TODO|FIXME)\\\\b\" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'"]
 
 [[document]]
-id = "DOC-0228"
+id = "DOC-0229"
 path = "reports/tscp_trial_factor_ledger.md"
 title = "TSCP Trial-Factor Ledger (2026-02-04)"
 kind = "artifact_report"

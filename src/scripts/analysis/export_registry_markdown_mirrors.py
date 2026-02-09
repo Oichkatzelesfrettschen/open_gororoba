@@ -779,6 +779,102 @@ def export_claim_tickets(repo_root: Path, out_path: Path) -> None:
     _write(out_path, "\n".join(lines))
 
 
+def export_claim_tickets_legacy(repo_root: Path) -> None:
+    data = _load_toml(repo_root / "registry/claim_tickets.toml")
+    tickets = sorted(data.get("ticket", []), key=lambda item: item.get("source_markdown", ""))
+
+    index_lines = [
+        "# Claim Audit Tickets",
+        "",
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+        "<!-- Source of truth: registry/claim_tickets.toml -->",
+        "",
+        "This index and all files under `docs/tickets/*.md` are generated from TOML.",
+        "",
+    ]
+
+    for row in tickets:
+        rel_path = str(row.get("source_markdown", "")).strip()
+        if not rel_path:
+            continue
+        path = repo_root / rel_path
+        title = str(row.get("title", "(untitled)")).strip()
+        owner = str(row.get("owner", "")).strip()
+        created = str(row.get("created", "")).strip()
+        status_raw = str(row.get("status_raw", "")).strip()
+        status_token = str(row.get("status_token", "")).strip()
+        ticket_kind = str(row.get("ticket_kind", "")).strip()
+        claim_start = int(row.get("claim_range_start", 0))
+        claim_end = int(row.get("claim_range_end", 0))
+        goal_summary = str(row.get("goal_summary", "")).strip()
+        done_checkboxes = int(row.get("done_checkboxes", 0))
+        open_checkboxes = int(row.get("open_checkboxes", 0))
+        claims = [str(item) for item in row.get("claims_referenced", [])]
+        backlog = [str(item) for item in row.get("backlog_reports", [])]
+        deliverables = [str(item) for item in row.get("deliverable_links", [])]
+        checks = [str(item) for item in row.get("acceptance_checks", [])]
+
+        lines: list[str] = []
+        lines.append(f"# {title}")
+        lines.append("")
+        lines.append("<!-- AUTO-GENERATED: DO NOT EDIT -->")
+        lines.append("<!-- Source of truth: registry/claim_tickets.toml -->")
+        lines.append("")
+        lines.append(f"Owner: {owner}")
+        lines.append(f"Created: {created}")
+        lines.append(f"Status: {status_raw}")
+        lines.append("")
+        lines.append("## Goal")
+        lines.append("")
+        lines.append(goal_summary if goal_summary else "(not specified)")
+        lines.append("")
+        lines.append("## Scope")
+        lines.append("")
+        lines.append(f"- Ticket ID: `{row.get('id', '')}`")
+        lines.append(f"- Kind: `{ticket_kind}`")
+        lines.append(f"- Status token: `{status_token}`")
+        if claim_start > 0 and claim_end > 0:
+            lines.append(f"- Claim range: C-{claim_start:03d}..C-{claim_end:03d}")
+        else:
+            lines.append("- Claim range: none (general ticket)")
+        if claims:
+            lines.append(f"- Claims referenced ({len(claims)}): {', '.join(claims)}")
+        else:
+            lines.append("- Claims referenced: none")
+        lines.append("")
+        lines.append("## Deliverables")
+        lines.append("")
+        if deliverables:
+            for item in deliverables:
+                lines.append(f"- `{item}`")
+        else:
+            lines.append("- (none recorded)")
+        lines.append("")
+        lines.append("## Acceptance checks")
+        lines.append("")
+        if checks:
+            for item in checks:
+                lines.append(f"- `{item}`")
+        else:
+            lines.append("- (none recorded)")
+        lines.append("")
+        lines.append("## Progress snapshot")
+        lines.append("")
+        lines.append(f"- Completed checkboxes: {done_checkboxes}")
+        lines.append(f"- Open checkboxes: {open_checkboxes}")
+        if backlog:
+            lines.append("- Backlog reports:")
+            for item in backlog:
+                lines.append(f"  - `{item}`")
+        lines.append("")
+
+        _write(path, "\n".join(lines))
+        index_lines.append(f"- `{row.get('id', '')}`: `{rel_path}`")
+
+    index_lines.append("")
+    _write(repo_root / "docs/tickets/INDEX.md", "\n".join(index_lines))
+
+
 def main() -> int:
     global CHECK_MODE
 
@@ -835,6 +931,7 @@ def main() -> int:
     if args.legacy_claims_sync:
         export_claims_tasks_legacy(repo_root, repo_root / "docs/CLAIMS_TASKS.md")
         export_claims_domains_legacy(repo_root)
+        export_claim_tickets_legacy(repo_root)
 
     if CHECK_MODE:
         if CHANGED_PATHS:
