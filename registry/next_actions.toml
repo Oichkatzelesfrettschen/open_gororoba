@@ -8,7 +8,7 @@ status = "active"
 updated = "2026-02-09"
 sprint_current = 26
 test_count = 2314
-claim_count = 535
+claim_count = 544
 insight_count = 18
 
 [[action]]

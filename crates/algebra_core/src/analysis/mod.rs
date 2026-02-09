@@ -5,6 +5,7 @@ pub mod fractal_analysis;
 pub mod graph_projections;
 pub mod grassmannian;
 pub mod homotopy_algebra;
+pub mod legacy_crossval;
 pub mod projective_geometry;
 pub mod reggiani;
 pub mod stochastic;
