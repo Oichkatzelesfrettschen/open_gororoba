@@ -3797,3 +3797,19 @@ where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (sail_loop_p
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = 'WHERE STATED: de Marrais, "Flying Higher"; Cawagas (2004) deformed octonion copies. VERIFIED: 28 sails total; 7 loops of 4; each BK in exactly 4 distinct loops; each loop has 4 distinct BKs. WHAT WOULD REFUTE: Fewer or more than 7 loops, or a loop without exactly 4 BKs from 4 distinct strut sigs.'
+
+[[claim]]
+id = "C-476"
+statement = "Algebraic Locality Principle (ALP): In physically realized or numerically stable regimes, generator sequences in algebraic constraint systems concentrate on locally adjacent moves in the constraint graph Gamma, because nonlocal moves are either dynamically suppressed (long collision times, low measure) or annihilated (zero product, absorption). This produces geometric locality in the observed chaos. Evidence across three stacks: (A) E10 billiard r_e8=0.45 vs r_null=0.25; (B) CD zero-divisor graphs where non-adjacent products vanish; (C) ET DMZ adjacency constraining valid transitions."
+where_stated = "`crates/algebra_core/src/experimental/billiard_stats.rs` (compute_locality_metrics, permutation_test_r_e8), `crates/algebra_core/src/experimental/emanation.rs` (DMZ adjacency), `crates/algebra_core/src/core/boxkites.rs` (ZD adjacency)"
+status = "Theoretical"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'WHERE STATED: E10 billiard synthesis. SUPPORTING: r_e8 excess over null (p<0.05 permutation test), ZD annihilation of non-adjacent pairs, ET DMZ constraint on transitions. WHAT WOULD REFUTE: Finding a physically stable regime where generator sequences are uniformly random (no locality concentration), or where nonlocal moves dominate the observed dynamics despite algebraic suppression.'
+
+[[claim]]
+id = "C-477"
+statement = "Sky-Limit-Set Hypothesis: For appropriate encoding of ET (Emanation Table) rules as reflection-group constraints, the ET empty/filled pattern is a discrete cross-section of a reflection-group limit set. Spectroscopy bands correspond to changes in effective Coxeter data. Specifically: (1) the skybox G x G grid at each CD level N encodes a fractal-like pattern whose invariants (box-kite count scaling, emptiness clustering exponent, DMZ density) should match invariants of a Coxeter limit set with matching rank, and (2) the spectroscopy band transitions (Dense/Sparse/Mixed behaviors across 8-strut blocks) encode discrete jumps in Coxeter diagram connectivity."
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (create_skybox, spectroscopy_bands, SpectroscopyResult, SkyboxCell)"
+status = "Theoretical"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'WHERE STATED: E10 billiard synthesis, de Marrais "meta-fractal skybox" (arXiv:0704.0112). SUPPORTING: Skybox structural empties at N=4,5; spectroscopy bands show Dense/Sparse/Mixed phase transitions; box-kite count = N-1 is rank-like. WHAT WOULD REFUTE: ET pattern invariants (box-kite counts, emptiness clusters, scaling exponents) systematically fail to match known Coxeter limit set invariants for any choice of Coxeter group at matching rank.'
