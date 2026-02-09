@@ -12,7 +12,7 @@ normalization_required = true
 [[document]]
 id = "DOC-0001"
 source_path = "AGENTS.md"
-title = "Agent and Contributor Guide"
+title = "Agent and Contributor Operating Manual"
 kind = "manual_source"
 migration_priority = "medium"
 raw_captured = true
@@ -23,7 +23,7 @@ document_toml = "registry/knowledge/docs/DOC-0001.toml"
 [[document]]
 id = "DOC-0002"
 source_path = "CLAUDE.md"
-title = "Claude Code project instructions"
+title = "Claude Overlay for open_gororoba"
 kind = "manual_source"
 migration_priority = "medium"
 raw_captured = true
@@ -34,7 +34,7 @@ document_toml = "registry/knowledge/docs/DOC-0002.toml"
 [[document]]
 id = "DOC-0003"
 source_path = "GEMINI.md"
-title = "Gemini context"
+title = "Gemini Overlay for open_gororoba"
 kind = "manual_source"
 migration_priority = "medium"
 raw_captured = true

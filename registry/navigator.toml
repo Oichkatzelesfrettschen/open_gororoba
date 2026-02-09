@@ -1,0 +1,119 @@
+# Navigator registry (TOML-first).
+# Canonical source for generated NAVIGATOR.md.
+
+[navigator]
+authoritative = true
+updated = "2026-02-09"
+title = "Navigator Maximus: Sedenion and Gravastar Research Index"
+epoch = "Era of Synthesis"
+mission = "Navigate algebra, physics, and computation with evidence-first discipline."
+output_markdown = "NAVIGATOR.md"
+
+[[section]]
+id = "NAV-001"
+title = "Cosmological Map"
+summary = "Theory-facing map of foundations, bridge hypotheses, and interpretation notes."
+
+[[section.link]]
+label = "Mathematical Formalism"
+path = "docs/latex/MASTER_SYNTHESIS.tex"
+notes = "Axiomatic and derivational manuscript source."
+hypothesis = false
+
+[[section.link]]
+label = "Sedenion-Gravastar Equivalence"
+path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+notes = "Mechanistic bridge from algebraic structures to gravastar model assumptions."
+hypothesis = true
+
+[[section.link]]
+label = "Physical Interpretation"
+path = "docs/PHYSICAL_INTERPRETATION.md"
+notes = "Interpretive model linking negative-dimension diffusion narratives."
+hypothesis = true
+
+[[section]]
+id = "NAV-002"
+title = "Observational Deck"
+summary = "Data-facing visual outputs and cross-domain correlation artifacts."
+
+[[section.link]]
+label = "LIGO O3 Mass Spectrum"
+path = "data/artifacts/images/LIGO_GWTC3_Mass_Spectrum.png"
+notes = "Narrative hypothesis plot. Requires strict statistical null-model validation."
+hypothesis = true
+
+[[section.link]]
+label = "Grand Spectrum"
+path = "data/artifacts/images/grand_cosmic_map.png"
+notes = "Panoramic object-space map from pulsars to black holes."
+hypothesis = true
+
+[[section.link]]
+label = "Multi-Messenger Correlation"
+path = "data/artifacts/images/real_physics_correlation_gwtc3.png"
+notes = "Cross-dataset view for quasars, exoplanets, and black hole metrics."
+hypothesis = true
+
+[[section]]
+id = "NAV-003"
+title = "Quantum Laboratory"
+summary = "Simulation-facing registry for vacuum, lattice, and fractal logic artifacts."
+
+[[section.link]]
+label = "Anti-Diffusion Soliton"
+path = "data/artifacts/images/neg_dim_evolution_alpha_-1.5.png"
+notes = "Vacuum field simulation artifact."
+hypothesis = true
+
+[[section.link]]
+label = "Vacuum Eigenmodes"
+path = "data/artifacts/images/neg_dim_spectrum_-1.5.png"
+notes = "Spectral analysis output for negative-dimension model variants."
+hypothesis = true
+
+[[section.link]]
+label = "Harper-Chern Map"
+path = "data/artifacts/images/harper_chern_map_highres.png"
+notes = "Topological lattice artifact from quantum model sweep."
+hypothesis = true
+
+[[section.link]]
+label = "Fractional Schrodinger Potential"
+path = "data/artifacts/images/fractional_schrodinger_potential_highres.png"
+notes = "Fractional dynamics visualization under selected potential family."
+hypothesis = true
+
+[[section.link]]
+label = "Fracton Stabilizer Mask"
+path = "data/artifacts/images/fracton_stabilizer_mask.png"
+notes = "Fractal logic and error-correction themed artifact."
+hypothesis = true
+
+[[section.link]]
+label = "Absorber Pareto"
+path = "data/artifacts/images/absorber_pareto_3160x2820.png"
+notes = "Boundary-condition optimization artifact for materials workflow."
+hypothesis = true
+
+[[section]]
+id = "NAV-004"
+title = "Trajectory: Genesis Run"
+summary = "Unified simulation trajectory connecting vacuum and matter generation narratives."
+
+[[section.link]]
+label = "Genesis Simulation Command"
+path = "src/genesis_simulation.py"
+notes = "Run with PYTHONWARNINGS=error venv/bin/python3 src/genesis_simulation.py."
+hypothesis = true
+
+[[section.link]]
+label = "Genesis Output Artifact"
+path = "data/artifacts/images/genesis_simulation_grand.png"
+notes = "Primary generated output from prototype run."
+hypothesis = true
+
+[navigator.disclaimer]
+text = "Many linked narratives are hypotheses. Use registry claims and reproducible verification before asserting physical validity."
+claims_source = "registry/claims.toml"
+legacy_claims_mirror = "docs/CLAIMS_EVIDENCE_MATRIX.md"

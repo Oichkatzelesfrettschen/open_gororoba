@@ -7,16 +7,16 @@ authoritative = true
 status = "active"
 updated = "2026-02-09"
 sprint_current = 26
-test_count = 2312
-claim_count = 527
+test_count = 2314
+claim_count = 530
 insight_count = 18
 
 [[action]]
 id = "NA-001"
 priority = "P0"
 title = "Complete TOML centralization for markdown mirrors"
-status = "in_progress"
-description = "Keep TOML-first governance: preserve mirror freshness gates, retire remaining narrative overlays where feasible, and keep legacy ingest explicit."
+status = "done"
+description = "COMPLETE (commit 85b360b). All TOML-generated markdown mirrors untracked from git. TOML registry is sole source of truth. `make publish-docs` regenerates on demand."
 references = [
   "registry/knowledge_sources.toml",
   "registry/knowledge/documents.toml",
@@ -40,7 +40,7 @@ id = "NA-003"
 priority = "P1"
 title = "Primary-source citation sweep for remaining claims"
 status = "done"
-description = "COMPLETE (Sprint 25 audit). All 527/527 claims have non-empty where_stated."
+description = "COMPLETE (Sprint 25 audit). All 530/530 claims have non-empty where_stated."
 references = [
   "registry/claims.toml",
   "docs/BIBLIOGRAPHY.md",

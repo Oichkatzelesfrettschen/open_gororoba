@@ -14,56 +14,56 @@ transcript_input_count = 0
 [[document]]
 id = "DOC-0001"
 path = "AGENTS.md"
-title = "Agent and Contributor Guide"
+title = "Agent and Contributor Operating Manual"
 kind = "manual_source"
 authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "medium"
-sha256 = "670a9dbc2b6df0a767b55466a23d4d72df330cde4e051b6ab462cbb8f52898e2"
-size_bytes = 21436
-line_count = 497
-claim_ref_count = 23
-insight_ref_count = 3
-experiment_ref_count = 2
-link_count = 87
-link_sample = [".cargo/config.toml", ".gitignore", ".mamba", "<U+....>", "CLAUDE.md", "Cargo.toml", "GEMINI.md", "MASTER_SYNTHESIS.pdf"]
+sha256 = "9356bd910a9607646e38200b04c4eefb99f5930ebee99ff761d847c9113a59fb"
+size_bytes = 7870
+line_count = 256
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 54
+link_sample = ["/init", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "NAVIGATOR.md", "README.md", "REQUIREMENTS.md", "convos/"]
 
 [[document]]
 id = "DOC-0002"
 path = "CLAUDE.md"
-title = "Claude Code project instructions"
+title = "Claude Overlay for open_gororoba"
 kind = "manual_source"
 authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "medium"
-sha256 = "f7b1ced0427edca23df03fc4e6684ddfd1e390b93f7818036ca4afd66751ca7e"
-size_bytes = 6459
-line_count = 139
+sha256 = "dcf96afd413f9b450f4642b36e2aaab6cb781085b8f5eb52bb0021bb9634e2d0"
+size_bytes = 2137
+line_count = 78
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 19
-link_sample = ["AGENTS.md", "Cargo.toml", "[workspace.dependencies]", "crates/", "crates/<crate_name>/src/", "crates/algebra_core/", "crates/gororoba_py/", "crates/zd_core/"]
+link_count = 5
+link_sample = ["/init", "AGENTS.md", "registry/*.toml"]
 
 [[document]]
 id = "DOC-0003"
 path = "GEMINI.md"
-title = "Gemini context"
+title = "Gemini Overlay for open_gororoba"
 kind = "manual_source"
 authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "medium"
-sha256 = "982627893fee6ef32f8edf5ab8ba5f2aa484eb8979f9a636cae3defe3912363f"
-size_bytes = 395
-line_count = 10
+sha256 = "e0b8f6ca373044c3b9ff5b7d74d2a35d07d3cd89fa8bbaef75eeb27b5f7c93bf"
+size_bytes = 1752
+line_count = 66
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 4
-link_sample = ["AGENTS.md", "docs/TODO.md", "docs/ULTRA_ROADMAP.md", "docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md"]
+link_count = 5
+link_sample = ["/init", "AGENTS.md", "registry/*.toml"]
 
 [[document]]
 id = "DOC-0004"
@@ -74,14 +74,14 @@ authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "medium"
-sha256 = "6293fa8a1cda31ca1d93e1c779389f40635c233ce50a9950a06e034d2c094e73"
-size_bytes = 2783
-line_count = 48
+sha256 = "c25e28f9b1320939405f09e16076afa72a90480d1b26aab762462944f8b0e49a"
+size_bytes = 3504
+line_count = 60
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 28
-link_sample = ["convos/", "data/artifacts/images/warp_ring_annotated.png", "data/external/", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md", "docs/COMPUTING_SPECS.md", "docs/REPO_STRUCTURE.md", "docs/REQUIREMENTS.md"]
+link_count = 36
+link_sample = ["AGENTS.md", "CLAUDE.md", "GEMINI.md", "NAVIGATOR.md", "convos/", "curated/01_theory_frameworks/README_COQ.md", "curated/README.md", "data/artifacts/README.md"]
 
 [[document]]
 id = "DOC-0005"
