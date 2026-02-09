@@ -12,6 +12,7 @@ an in-repo check (test/verifier/script + artifact).
 - Canonical source of truth: `registry/*.toml` (authoring happens here)
 - Generate docs mirrors for browsing: `PYTHONWARNINGS=error make docs-publish`
 - Validate TOML registries only (no mirror tracking required): `PYTHONWARNINGS=error make registry`
+- Navigator authority: `registry/navigator.toml` (generated view: `NAVIGATOR.md`)
 
 README entry points (tracked and maintained):
 

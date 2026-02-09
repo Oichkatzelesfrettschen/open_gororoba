@@ -1,496 +1,255 @@
-# Agent and Contributor Guide
+# Agent and Contributor Operating Manual
 
-This is the single source of truth for agents (Claude, Gemini, Copilot, etc.)
-and human contributors working in this repository.  Both `CLAUDE.md` and
-`GEMINI.md` redirect here.
+This is the canonical policy and operating contract for all assistants and
+human contributors in this repository.
 
----
+If any instruction in `CLAUDE.md` or `GEMINI.md` conflicts with this file,
+`AGENTS.md` wins.
 
-## Overview
+## 1. File Roles and Authority
 
-open_gororoba is a research-style codebase mixing:
+| File | Role | Edit policy |
+|---|---|---|
+| `AGENTS.md` | Global policy and repo `/init` procedure | Canonical, tracked |
+| `CLAUDE.md` | Claude-specific overlay | Tracked, must defer to `AGENTS.md` |
+| `GEMINI.md` | Gemini-specific overlay | Tracked, must defer to `AGENTS.md` |
+| `README.md` | Human-facing repo entrypoint | Tracked |
+| `registry/*.toml` | Canonical machine-readable knowledge state | Canonical, tracked |
+| `docs/**/*.md` | Generated mirrors and narrative exports | Generated, not canonical |
 
-- **Rust domain crates** -- 14 workspace members under `crates/` covering
-  algebra, cosmology, GR, optics, materials, quantum, statistics, spectral,
-  LBM, control, data providers, documentation pipeline tooling, CLI binaries,
-  and PyO3 bindings.
-- **Python layer** -- visualization and notebooks under `src/gemini_physics/`.
-- **Artifacts** -- reproducible CSVs and plots under `data/` and `curated/`.
-- **Narrative documents** -- theoretical analysis, claims tracking, and audit
-  reports under `docs/`.
-- **Formal proofs** -- Coq files under `curated/01_theory_frameworks/`.
+## 2. Repo Identity and Scope
 
-Python-to-Rust migration is tracked as COMPLETE in the current roadmap.
-Because test and binary counts change during active development, treat
-`docs/ROADMAP.md` and the registry files as the authoritative live snapshot.
+open_gororoba is a research workbench centered on reproducible algebra,
+physics, and data workflows with a Rust-first architecture.
 
-Many physics-facing statements are **hypotheses**.  Treat them as unverified
-unless backed by first-party sources and a reproducible test or artifact.
+Primary code surfaces:
+- Rust workspace under `crates/`
+- Python support layer under `src/gemini_physics/`
+- Verification scripts under `src/verification/`
+- Registry authority under `registry/`
 
----
+Research claims are hypotheses unless backed by:
+1. first-party source citation, and
+2. reproducible in-repo verification path.
 
-## Hard Rules
+## 3. Non-Negotiable Hard Rules
 
-These are non-negotiable across every agent and every PR.
+### 3.1 ASCII-only
+- All repo-authored code and docs must be ASCII-only.
+- Exception: immutable transcripts under `convos/`.
+- Validate with: `make ascii-check`
 
-### 1. ASCII-only
+### 3.2 Warnings-as-errors
+- Python checks and tests must run with `PYTHONWARNINGS=error`.
+- Rust lint must pass with `-D warnings`.
+- Treat all warnings as failures.
 
-All repo-authored code and docs MUST use ASCII characters only.
+### 3.3 TOML-first documentation
+- Authoritative state lives in `registry/*.toml`.
+- Markdown in `docs/`, `reports/`, and `data/artifacts/` is generated or mirror
+  output unless explicitly listed as tracked manual exception.
+- Do not treat mirrors as authoritative.
 
-- No Unicode punctuation (smart quotes, em dashes, arrows, Greek letters).
-- Use ASCII spellings: `grad_`, `eps`, `A_infty`, `<=`, `->`.
-- **Exception:** transcripts under `convos/` may contain Unicode and are
-  treated as immutable inputs.
-- Enforced by `make ascii-check` (runs `python3 bin/ascii_check.py --check`).
-- To sanitize: `python3 bin/ascii_check.py --fix`, then clean up any
-  `<U+....>` placeholders by hand.
+### 3.4 Source-first claims discipline
+- Do not treat narrative text as proof.
+- Every claim should be falsifiable and tied to verifiable evidence.
 
-### 2. Warnings-as-errors
+### 3.5 Provenance and reproducibility
+- No large opaque binary commits.
+- Track external data provenance and hashes.
+- Tests must not rely on network.
 
-Treat warnings as failures everywhere.
+## 4. `/init` Procedure (Mandatory Session Startup)
 
-- Python: run checks and tests with `PYTHONWARNINGS=error`.
-- Prefer `-X dev` when debugging locally.
-- Rust: `cargo clippy --workspace -- -D warnings` (clippy lint failures block merges).
-- Compiler and linter warnings are errors in CI.
+Every agent session should follow this exact initialization flow.
 
-### 3. Source-first
+1. Establish repo context
+   - confirm cwd is repo root
+   - capture branch, commit, and worktree status
 
-Do not treat `convos/` text as authoritative.
+2. Detect pre-existing local changes
+   - list modified, staged, untracked files
+   - never silently revert existing user changes
 
-- Every claim becomes a testable hypothesis tied to first-party sources.
-- Claims are tracked in `docs/CLAIMS_EVIDENCE_MATRIX.md` (475 rows).
-- Domain breakdowns live in `docs/claims/by_domain/*.md` (16 files).
+3. Load canonical policy and active objectives
+   - read `AGENTS.md`
+   - read current objective-relevant registry files
 
-### 4. Provenance
+4. Validate toolchain readiness
+   - check Python and Rust toolchain availability
+   - confirm `make` targets are discoverable
 
-- Do not commit large external binaries.
-- Record hashes and provenance in `data/external/` or via `make provenance`.
-- If a dataset is missing, either fetch it explicitly or label any synthetic
-  replacement as synthetic.  Record provenance in `docs/BIBLIOGRAPHY.md`.
+5. Build a task plan before wide edits
+   - define scoped tasks with dependencies
+   - identify owner for each task when delegating to sub-agents
 
-### 5. Citations
+6. Choose execution lane
+   - lane A: code and tests
+   - lane B: registry and docs pipeline
+   - lane C: data/provenance workflows
 
-Never delete existing sources.  Only append or clarify as validation proceeds.
+7. Execute with quality gates
+   - run targeted checks as changes land
+   - run final validation commands before commit
 
----
+8. Close loop
+   - update registry state first
+   - regenerate mirrors
+   - summarize outcomes and residual risk
 
-## Repository Reality Checks
+## 5. Skills and Agent Delegation Protocol
 
-Before editing this guide, run these quick checks to prevent count/path drift:
+### 5.1 Skills
+- If a task matches an available skill, use it.
+- Read only required sections of the skill file.
+- Reuse skill scripts/assets instead of rewriting from scratch.
+- If skill is unavailable, report and use best fallback.
+
+### 5.2 Delegation
+- Delegate only when it improves speed or quality.
+- Assign explicit ownership by file or subsystem.
+- Keep one integrator agent responsible for final merge and validation.
+- Parallelize independent workstreams (search, audit, static reads).
+
+### 5.3 Ownership handoff format
+- Scope: what this agent owns
+- Inputs: files and assumptions
+- Outputs: expected artifacts
+- Validation: commands/tests agent must run
+
+## 6. MCP and CLI Tool Orchestration
+
+Preferred order:
+1. MCP filesystem/ripgrep/git tools for deterministic local operations
+2. shell commands for build/test execution
+3. network tools only when required by objective
+
+Rules:
+- Use ripgrep for repo search.
+- Parallelize independent reads/searches.
+- Avoid destructive git commands unless explicitly requested.
+- Do not bypass reproducibility gates to speed up progress.
+
+## 7. Task Tracking and Planning Workflow
+
+Canonical planning state is TOML-first:
+- `registry/roadmap.toml`
+- `registry/todo.toml`
+- `registry/next_actions.toml`
+
+Narrative overlays:
+- `registry/roadmap_narrative.toml`
+- `registry/todo_narrative.toml`
+- `registry/next_actions_narrative.toml`
+
+Generated mirrors:
+- `docs/ROADMAP.md`
+- `docs/TODO.md`
+- `docs/NEXT_ACTIONS.md`
+
+Update policy:
+1. update registry TOML first
+2. regenerate mirrors
+3. validate freshness checks
+
+## 8. TOML-first Documentation Lifecycle
+
+### 8.1 Canonical registries
+- claims: `registry/claims.toml`
+- insights: `registry/insights.toml`
+- experiments: `registry/experiments.toml`
+- binaries: `registry/binaries.toml`
+- requirements: `registry/requirements.toml`
+- narrative corpora:
+  - `registry/docs_root_narratives.toml`
+  - `registry/research_narratives.toml`
+  - `registry/external_sources.toml`
+  - `registry/data_artifact_narratives.toml`
+  - `registry/reports_narratives.toml`
+  - `registry/docs_convos.toml`
+  - `registry/book_docs.toml`
+
+### 8.2 Build and publish flow
+- Validate registries:
+  - `PYTHONWARNINGS=error make registry`
+- Publish mirrors:
+  - `PYTHONWARNINGS=error make docs-publish`
+
+### 8.3 Mirror discipline
+- Generated markdown mirrors are read-only outputs.
+- Never edit generated mirrors as source.
+- If mirror content is wrong, fix source TOML and regenerate.
+
+## 9. LLM Overlay Files Contract
+
+`CLAUDE.md` and `GEMINI.md` must contain:
+- assistant-specific operating notes
+- `/init` quick checklist aligned with this file
+- tool orchestration notes specific to that runtime
+
+They must not:
+- redefine hard rules
+- override TOML-first policy
+- carry stale numeric counts that drift from registry truth
+
+## 10. Requirements and Navigator Policy
+
+### 10.1 Requirements
+- Canonical source:
+  - `registry/requirements.toml`
+  - `registry/requirements_narrative.toml`
+- Generated outputs:
+  - `REQUIREMENTS.md`
+  - `docs/REQUIREMENTS.md`
+  - `docs/requirements/*.md`
+
+### 10.2 Navigator
+- Navigator content must be managed TOML-first.
+- Any `NAVIGATOR.md` output is a generated projection, not canonical source.
+
+## 11. Validation Gate Checklist Before Commit
+
+Run relevant gates for touched surfaces:
+
+Core:
+- `PYTHONWARNINGS=error make check`
+- `make ascii-check`
+
+Registry/docs:
+- `PYTHONWARNINGS=error make registry`
+- `PYTHONWARNINGS=error make docs-publish`
+
+Rust-focused changes:
+- `cargo build --workspace -j$(nproc)`
+- `cargo test --workspace -j$(nproc)`
+- `cargo clippy --workspace -j$(nproc) -- -D warnings`
+
+If full gates are too expensive for iteration, run targeted checks while coding
+and full gates before final handoff.
+
+## 12. Quickstart Command Block
 
 ```bash
-# Workspace crates
-ls -1 crates | wc -l
+# Registry authority and mirror publish
+PYTHONWARNINGS=error make registry
+PYTHONWARNINGS=error make docs-publish
 
-# Claims and domain-map counts
-python3 - <<'PY'
-from pathlib import Path
-import re
-claims = Path("docs/CLAIMS_EVIDENCE_MATRIX.md").read_text()
-domain = Path("docs/claims/CLAIMS_DOMAIN_MAP.csv").read_text().splitlines()
-print("claims_matrix_rows", len(re.findall(r"^\\|\\s*C-\\d+", claims, flags=re.M)))
-print("claims_domain_map_rows", max(0, len(domain) - 1))
-PY
+# Full quality gate
+PYTHONWARNINGS=error make check
+make ascii-check
 
-# CLI binary inventory
-find crates/gororoba_cli/src/bin -maxdepth 1 -name '*.rs' | wc -l
-grep -c '^\[\[bin\]\]' crates/gororoba_cli/Cargo.toml
-grep -c '^\[\[binary\]\]' registry/binaries.toml
+# Rust strict gate
+cargo build --workspace -j$(nproc)
+cargo test --workspace -j$(nproc)
+cargo clippy --workspace -j$(nproc) -- -D warnings
 ```
 
-If counts differ, update this file, `registry/`, and any dependent docs together
-in the same change.
-
----
-
-## Build and Test
-
-Requires Python >= 3.11.  All commands use the project venv.
-
-```
-make install              # Create venv, install editable + dev deps
-make test                 # pytest (warnings-as-errors)
-make lint                 # ruff check on src/gemini_physics + tests
-make smoke                # compileall + lint stats + artifact verifiers
-make check                # test + lint + smoke (CI entry point)
-make ascii-check          # Verify ASCII-only policy
-make doctor               # Environment diagnostics
-```
-
-### Artifact generation (deterministic, reproducible)
-
-```
-make artifacts            # Regenerate all core artifact sets
-make artifacts-motifs     # CD motif census (16D, 32D)
-make artifacts-boxkites   # De Marrais boxkite geometry
-make artifacts-reggiani   # Reggiani annihilator statistics
-make artifacts-m3         # M3 transfer table
-make artifacts-dimensional # Dimensional geometry sweeps
-```
-
-### External data
-
-```
-make fetch-data           # Download external datasets
-make provenance           # Hash data/external/* into PROVENANCE.local.json
-```
-
-### Cleanup
-
-```
-make clean-artifacts      # Remove generated CSV/images/HDF5/LaTeX output
-make clean                # Remove venv, caches, bytecode
-make clean-all            # clean + clean-artifacts
-```
-
-Regenerate everything from scratch: `make clean-all && make install && make artifacts`.
-
-### Rust workspace (parallel builds)
-
-All Rust crates live under `crates/`.  Always build and test with maximum
-parallelism -- this machine has 12 cores (AMD Ryzen 5 5600X3D).
-
-**Build optimization**: `.cargo/config.toml` sets:
-- `target-cpu=native` (enables AVX2, FMA, BMI2 for Zen 3)
-- `opt-level = 1` for test profile (major speedup for compute-heavy algebra tests)
-- `jobs = 12` (parallel compilation)
-
-```
-cargo build --workspace -j$(nproc)              # Full parallel build
-cargo test  --workspace -j$(nproc)              # Full parallel test (all crates)
-cargo clippy --workspace -j$(nproc) -- -D warnings  # Lint (warnings = errors)
-cargo test  -p algebra_core -j$(nproc)          # Single-crate test (fastest iteration)
-cargo test  -p stats_core -j$(nproc)            # Single-crate test
-cargo test  --workspace -j$(nproc) -- --nocapture  # Tests with stdout
-```
-
-**During iteration**: target only the crate you changed rather than full workspace.
-`algebra_core` is the heaviest (~240 tests, ~30-50s with opt-level=1).
-
-Analysis binaries (30 total; subset of the full CLI inventory):
-
-```
-# Algebra
-cargo run --bin zd-search          -- --help   # Zero-divisor search
-cargo run --bin oct-field          -- --help   # Octonion field computations
-
-# Cosmology
-cargo run --bin real-cosmo-fit     -- --help   # Pantheon+ / DESI BAO fitting
-cargo run --bin bounce-cosmology   -- --help   # Bounce cosmology simulation
-cargo run --bin neg-dim-eigen      -- --help   # Negative-dimension eigenvalues
-cargo run --bin gravastar-sweep    -- --help   # Gravastar parameter sweep
-
-# GR
-cargo run --bin kerr-shadow        -- --help   # Kerr black hole shadow
-
-# Optics / Materials
-cargo run --bin grin-trace         -- --help   # GRIN lens ray tracing
-cargo run --bin tcmt-sweep         -- --help   # Temporal coupled-mode sweep
-cargo run --bin ema-calc           -- --help   # Effective medium approximation
-
-# Quantum
-cargo run --bin mera-entropy       -- --help   # MERA entropy analysis
-cargo run --bin tensor-network     -- --help   # Tensor network contraction
-cargo run --bin frac-schrodinger   -- --help   # Fractional Schrodinger
-cargo run --bin frac-laplacian     -- --help   # Fractional Laplacian
-cargo run --bin harper-chern       -- --help   # Harper-Chern topological
-
-# Statistics / Ultrametric
-cargo run --bin dm-ultrametric     -- --help   # DM-based ultrametricity
-cargo run --bin baire-compact      -- --help   # Baire metric compactness
-cargo run --bin frb-cascades       -- --help   # FRB temporal cascades
-cargo run --bin frb-ultrametric    -- --help   # FRB multi-attribute ultrametric
-cargo run --bin gw-merger-tree     -- --help   # GW merger tree analysis
-cargo run --bin cosmic-dendrogram  -- --help   # Cosmic dendrogram
-cargo run --bin multi-dataset-ultrametric -- --help  # Cross-dataset analysis
-
-# Fluid dynamics
-cargo run --bin lbm-poiseuille     -- --help   # Lattice Boltzmann Poiseuille
-
-# Data
-cargo run --bin fetch-datasets     -- --help   # Fetch external datasets
-cargo run --bin fetch-chime-frb    -- --help   # Fetch CHIME/FRB catalog
-
-# Audit / Verification
-cargo run --bin claims-audit       -- --help   # Claims matrix audit
-cargo run --bin claims-verify      -- --help   # Claims verification runner
-cargo run --bin materials-baseline -- --help   # Materials science baselines
-cargo run --bin mass-clumping      -- --help   # GWTC mass dip test
-cargo run --bin motif-census       -- --help   # CD motif census
-
-# Registry / Documentation / Maintenance
-cargo run --bin registry-check      -- --help   # Validate TOML registry integrity
-cargo run --bin extract-papers      -- --help   # Batch PDF extraction to TOML
-cargo run --bin migrate-claims      -- --help   # Migrate claims markdown -> TOML
-cargo run --bin migrate-insights    -- --help   # Migrate insights markdown -> TOML
-cargo run --bin generate-latex      -- --help   # Generate LaTeX from registry
-cargo run --bin export-hdf5         -- --help   # Export computed data to HDF5
-```
-
-### Other runtimes
-
-- **Quantum/Qiskit:** use Docker (`docs/requirements/quantum-docker.md`).
-- **Coq:** `make coq` (compiles axiom stubs for theorem inventories).
-- **LaTeX:** `make latex` (builds `MASTER_SYNTHESIS.pdf`).
-
----
-
-## Linting
-
-### Python
-- Tool: **ruff** (>= 0.6.0)
-- Line length: 100
-- Target: Python 3.11
-- Rules: E, F, I, W, B
-- First-party package: `gemini_physics`
-- Excluded dirs: `.mamba`, `venv`, `data`, `curated`, `archive`, `convos`
-- Config: `pyproject.toml` `[tool.ruff]`
-
-### Rust
-- Tool: **clippy** (ships with rustup)
-- Policy: `-D warnings` (all warnings are errors)
-- Format: `cargo fmt --all -- --check`
-- Command: `cargo clippy --workspace -j$(nproc) -- -D warnings`
-- Every PR must pass clippy with zero warnings before merge.
-
----
-
-## Project Layout
-
-```
-crates/                     # Rust workspace (14 members)
-  algebra_core/             #   Cayley-Dickson, Clifford, E8, box-kites, Reggiani, M3
-  cosmology_core/           #   TOV, bounce, dimensional geometry, observational fitting
-  gr_core/                  #   Kerr geodesics, gravastar, shadow, Schwarzschild
-  materials_core/           #   Metamaterials, absorbers, optical database
-  optics_core/              #   GRIN solver, ray tracing, warp metrics
-  quantum_core/             #   Tensor networks, MERA, fractional Schrodinger, Casimir
-  stats_core/               #   Frechet, bootstrap, Haar, ultrametric suite
-  spectral_core/            #   Fractional Laplacian (periodic/Dirichlet)
-  lbm_core/                 #   Lattice Boltzmann D2Q9
-  control_core/             #   Control theory utilities
-  data_core/                #   18 dataset providers + provenance + parsers
-  docpipe/                  #   Documentation/paper extraction and processing
-  gororoba_py/              #   PyO3 bindings (thin wrappers -> domain crates)
-  gororoba_cli/             #   37 total CLI binaries (analysis + tooling)
-src/
-  gemini_physics/           # Python layer (visualization, remaining scripts)
-  scripts/                  # Analysis, reporting, visualization, simulation
-  verification/             # Artifact and claims verification scripts
-  quantum/                  # Qiskit circuits (Docker recommended)
-tests/                      # pytest suite
-data/
-  csv/                      # Generated CSVs (make artifacts)
-  artifacts/images/         # Generated plots and dashboards
-  external/                 # Downloaded datasets (gitignored, make fetch-data)
-  h5/                       # HDF5 simulation output (gitignored, make run)
-docs/
-  ROADMAP.md                # Consolidated roadmap (architecture, crates, GR port plan)
-  ULTRA_ROADMAP.md          # Granular test-driven claim-to-evidence checklists
-  TODO.md                   # Current sprint tracker
-  NEXT_ACTIONS.md           # Priority queue (top-5 items)
-  claims/                   # Claims domain map, index, 16 domain breakdowns
-  theory/                   # Physics reconciliation and derivations
-  tickets/                  # Batch audit tickets
-  engineering/              # Engineering analysis docs
-  external_sources/         # Source references
-  latex/                    # LaTeX manuscript sources
-  convos/                   # Structured conversation extracts
-curated/
-  01_theory_frameworks/     # Coq proofs and theorem inventories
-  04_observational_datasets/  # Curated observational data
-convos/                     # Original brainstorming transcripts (immutable)
-bin/                        # Utility scripts (ascii_check, doctor, provenance)
-reports/                    # Generated analysis reports
-```
-
----
-
-## Claims Workflow
-
-1. Hypotheses originate from brainstorming transcripts in `convos/`.
-2. Each is formalized in `docs/CLAIMS_EVIDENCE_MATRIX.md` with a C-nnn ID.
-3. Domain mapping: `docs/claims/CLAIMS_DOMAIN_MAP.csv` (443 rows).
-4. Per-domain breakdowns: `docs/claims/by_domain/*.md` (16 domains).
-5. Audit tickets track verification batches: `docs/tickets/C*_claims_audit.md`.
-6. Status levels: Speculative -> Modeled -> Partially verified -> Verified.
-7. Every claim must have a WHERE STATED reference to source code or artifact.
-
----
-
-## Visualization Standards
-
-Grand visualization specs (3160x2820, dark mode, annotated) are documented in
-`docs/agents.md`.  All generated visual artifacts should follow those standards.
-
----
-
-## Common Pitfalls
-
-1. **Stale venv:** if imports fail after branch switches, `make clean && make install`.
-2. **Non-ASCII sneaking in:** run `make ascii-check` before committing; Greek
-   letters in docs are the usual culprit.
-3. **Large files:** never commit files > 1 MB without discussion.  Use
-   `make fetch-data` + `.gitignore` for external datasets.
-4. **Warnings hidden:** always use `PYTHONWARNINGS=error`; silent warnings
-   mask real issues.
-
----
-
-## Documenting Insights
-
-When implementing features or running analyses, non-obvious discoveries,
-design decisions, and mathematical connections should be recorded in
-`docs/INSIGHTS.md`. Each entry should include:
-
-- A unique ID (I-nnn)
-- Date and context (which module, which analysis)
-- Related claims (C-nnn IDs from CLAIMS_EVIDENCE_MATRIX.md)
-- The insight itself: what was discovered and why it matters
-
-Examples of insight-worthy observations:
-- A mathematical identity that simplifies computation
-- A crate or library that prevents reimplementing known algorithms
-- A representation change that transforms a null result into a signal
-- A numerical method choice that affects accuracy or performance
-- A connection between datasets that enables cross-validation
-
-Do NOT document routine implementation details. Focus on knowledge that
-would save time or prevent mistakes in future sessions.
-
----
-
-## Rust Workspace Conventions
-
-All external crates MUST be declared at the workspace level in the root
-`Cargo.toml` under `[workspace.dependencies]` and referenced in sub-crate
-`Cargo.toml` files with `workspace = true`. Never add version numbers
-directly in sub-crate Cargo.toml files.
-
-Before implementing any module in Rust, search for existing crates on
-crates.io and lib.rs. Prefer composition (wrapping/extending existing
-crates) over reimplementation. Document the decision in module-level docs
-if no suitable crate exists.
-
----
-
-## Document Hierarchy
-
-The project uses several tracking documents with distinct roles:
-
-| Document | Role | Update cadence |
-|----------|------|----------------|
-| `docs/ROADMAP.md` | Architecture, crate map, evolution history | Sprint boundaries |
-| `docs/TODO.md` | Current sprint checklist (active execution) | Every work session |
-| `docs/NEXT_ACTIONS.md` | Priority queue for next sprint | Sprint boundaries |
-| `docs/ULTRA_ROADMAP.md` | Granular claim-to-evidence mapping (historical) | Append-only |
-| `docs/CLAIMS_EVIDENCE_MATRIX.md` | Master claims tracker (475 rows) | Per-claim updates |
-| `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md` | Reproducible experiment registry (E-001..E-010) | Per-experiment |
-| `docs/MATH_CONVENTIONS.md` | Mathematical and numerical conventions | As conventions change |
-| `docs/RISKS_AND_GAPS.md` | Current technical risks and gaps | Sprint boundaries |
-| `docs/BIBLIOGRAPHY.md` | External source citations | As citations are added |
-
-Overlapping content between TODO.md and NEXT_ACTIONS.md is intentional:
-TODO.md tracks the current sprint's in-progress items; NEXT_ACTIONS.md
-is the backlog for the following sprint.
-
----
-
-## Binary Contracts
-
-All 37 CLI binaries in `crates/gororoba_cli`:
-30 analysis binaries in `crates/gororoba_cli/src/bin/`, 6 tooling binaries
-in `crates/gororoba_cli/src/bin/`, and 1 main entry binary (`gororoba`) in
-`crates/gororoba_cli/src/main.rs`.
-
-| Binary | Input | Output | Claims | Det. |
-|--------|-------|--------|--------|------|
-| zd-search | None | stdout | C-050..C-060 | Yes |
-| oct-field | None | stdout | -- | Yes |
-| motif-census | None | data/csv/motif_census_*.csv | C-100..C-110 | Yes |
-| real-cosmo-fit | data/external/Pantheon+SH0ES.dat | stdout | C-200..C-210 | Yes |
-| bounce-cosmology | None | stdout/CSV | -- | Yes |
-| neg-dim-eigen | None | stdout/CSV | C-420..C-425 | Yes |
-| gravastar-sweep | None | CSV | C-400..C-410 | Yes |
-| kerr-shadow | None | stdout/CSV | C-301..C-310 | Yes |
-| grin-trace | None | stdout/CSV | -- | Yes |
-| tcmt-sweep | None | stdout/CSV | -- | Yes |
-| ema-calc | None | stdout | -- | Yes |
-| mera-entropy | None | stdout | -- | Seed |
-| tensor-network | None | stdout/CSV | C-350..C-360 | Seed |
-| frac-schrodinger | None | stdout | -- | Yes |
-| frac-laplacian | None | stdout | -- | Yes |
-| harper-chern | None | stdout/CSV | -- | Yes |
-| dm-ultrametric | data/external/chime*.csv | data/csv/ | C-071 | Seed |
-| baire-compact | data/external/chime*.csv | data/csv/ | C-071 | Seed |
-| frb-cascades | data/external/chime*.csv | data/csv/ | C-438 | Seed |
-| frb-ultrametric | data/external/chime*.csv | data/csv/ | C-071 | Seed |
-| gw-merger-tree | data/external/gwosc*.csv | data/csv/ | C-439 | Seed |
-| cosmic-dendrogram | data/external/ | data/csv/ | C-440 | Seed |
-| multi-dataset-ultrametric | data/external/ | data/csv/ | C-071, I-011 | Seed |
-| lbm-poiseuille | None | stdout/CSV | -- | Yes |
-| fetch-datasets | Network | data/external/ | -- | -- |
-| fetch-chime-frb | Network | data/external/ | -- | -- |
-| claims-audit | docs/ | stdout | -- | Yes |
-| claims-verify | data/ | stdout | -- | Seed |
-| materials-baseline | data/external/ | stdout | C-450..C-455 | Seed |
-| mass-clumping | data/external/gwosc*.csv | data/csv/ | C-007 | Seed |
-| registry-check | registry/ | stdout | -- | Yes |
-| extract-papers | papers/ | papers/ (structured TOML output) | -- | Yes |
-| migrate-claims | docs/CLAIMS_EVIDENCE_MATRIX.md | registry/claims.toml | -- | Yes |
-| migrate-insights | docs/INSIGHTS.md | registry/insights.toml | -- | Yes |
-| generate-latex | registry/ | docs/latex/ (generated content) | -- | Yes |
-| export-hdf5 | computed outputs | data/h5/*.h5 | -- | Yes |
-| gororoba | CLI args | stdout | -- | Yes |
-
-Det. column: Yes = fully deterministic, Seed = deterministic given --seed flag.
-
----
-
-## CLI Documentation Rules
-
-Every new CLI binary MUST:
-1. Use `clap::Parser` derive for argument parsing (no manual arg parsing).
-2. Include a doc comment on the Args struct that serves as the binary's description.
-3. Be listed in `registry/binaries.toml` with name, crate, and description.
-4. Be listed in `crates/gororoba_cli/Cargo.toml` as a `[[bin]]` entry.
-
-Documentation commands:
-- `mdbook build docs/book/` -- build HTML documentation site
-- `cargo run --release --bin registry-check` -- validate registry integrity
-- `cargo run --release --bin extract-papers` -- batch PDF to TOML extraction
-
-## TOML Registry (Sprint 11+)
-
-The `registry/` directory is the machine-parseable source of truth:
-- `registry/claims.toml` -- 475 claims (C-001..C-475)
-- `registry/insights.toml` -- 16 insights (I-001..I-016)
-- `registry/experiments.toml` -- 10 experiments (E-001..E-010)
-- `registry/binaries.toml` -- 37 CLI binaries
-- `registry/project.toml` -- project-level metadata and sprint history
-
-The corresponding markdown files in `docs/` remain as human-readable narratives.
-For new claims/insights/experiments, add entries to BOTH the TOML registry AND
-the markdown files until the markdown files are fully superseded.
-
-## References
-
-- `docs/ROADMAP.md` -- consolidated roadmap (architecture, crates, evolution, GR port plan)
-- `docs/CLAIMS_EVIDENCE_MATRIX.md` -- master claims tracker (475 rows)
-- `docs/claims/INDEX.md` -- claims navigation index
-- `docs/INSIGHTS.md` -- research insights and design decisions
-- `docs/BIBLIOGRAPHY.md` -- external source citations
-- `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md` -- reproducible experiment registry (E-001..E-010)
-- `docs/MATH_CONVENTIONS.md` -- mathematical and numerical conventions
-- `docs/RISKS_AND_GAPS.md` -- current technical risks and gaps
-- `docs/agents.md` -- visualization standards
-- `docs/requirements/quantum-docker.md` -- Docker workflow for quantum tooling
-- `docs/REPO_STRUCTURE.md` -- directory layout details
-- `registry/` -- TOML registry (claims, insights, experiments, binaries)
-- `papers/MANIFEST.toml` -- paper inventory and extraction status
-- `papers/bib/cayley_dickson.bib` -- BibTeX bibliography
-- `docs/book/` -- mdbook documentation site source
-- `Cargo.toml` -- Rust workspace and dependency declarations
-- `pyproject.toml` -- Python dependencies and linter config
-- `Makefile` -- all build/test/artifact targets
+## 13. References
+
+- `README.md` - human-facing entrypoint
+- `CLAUDE.md` - Claude overlay
+- `GEMINI.md` - Gemini overlay
+- `Makefile` - build, registry, docs-publish targets
+- `src/scripts/analysis/export_registry_markdown_mirrors.py` - mirror exporter
+- `src/verification/verify_registry_mirror_freshness.py` - freshness gate
+- `registry/` - canonical machine-readable project state

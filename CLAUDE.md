@@ -1,138 +1,77 @@
-# Claude Code project instructions
+# Claude Overlay for open_gororoba
 
-All agent and contributor guidance lives in `AGENTS.md`.
-See that file for hard rules, build commands, project layout, and workflows.
+This file is a Claude-specific overlay.
+Global policy is canonical in `AGENTS.md`.
 
----
+## 1. Authority and Scope
 
-## Research Methodology for This Codebase
+- Read `AGENTS.md` first in every session.
+- If this file conflicts with `AGENTS.md`, follow `AGENTS.md`.
+- Use this file only for Claude runtime behavior and execution style.
 
-open_gororoba is a research workbench, not a library.  It explores whether
-algebraic structure in Cayley-Dickson algebras (real -> complex -> quaternion
--> octonion -> sedenion -> ...) can explain or predict phenomena in quantum
-gravity, particle physics, and cosmology.  This means the codebase contains
-a spectrum from **verified mathematics** to **speculative hypotheses**, and
-every agent must respect that spectrum.
+## 2. Claude `/init` Checklist
 
-### The verification ladder
+Run this sequence at session start:
 
-| Layer | Example | Standard of evidence |
-|-------|---------|---------------------|
-| **Algebraic (verified)** | Cayley-Dickson multiplication, zero-divisor census, de Marrais box-kite count | Unit tests against known results (Baez, Hurwitz, de Marrais) |
-| **Mathematical (partially verified)** | Reggiani manifold dimension, spectral dimension flow, E8 root structure | Tests + literature cross-check; some gaps remain (e.g., PSL(2,7) geometric mapping) |
-| **Physical (modeled)** | Gravastar stability, Tang mass ratios, holographic entropy scaling | Toy models with parameter fits; no empirical validation |
-| **Speculative (hypothetical)** | Negative-dimension vacuum, sedenion-gravastar equivalence, associator-to-Standard-Model | Exploratory code only; claims tracked in docs/CLAIMS_EVIDENCE_MATRIX.md |
+1. repo state
+   - branch, commit, worktree status
+2. policy and objective load
+   - open `AGENTS.md`
+   - open objective-relevant registry TOML files
+3. quality gate baseline
+   - plan to run `PYTHONWARNINGS=error make registry`
+   - plan to run `PYTHONWARNINGS=error make docs-publish` when docs are touched
+4. task plan
+   - create explicit step list with dependencies
+   - choose what can run in parallel
 
-### When facing a hard problem in this repo
+## 3. Claude Execution Contract
 
-The algebraic and physical content here is dense.  Cutting corners produces
-wrong answers that look plausible.  Follow this discipline:
+### 3.1 Planning and tracking
+- Use granular task tracking for multi-step work.
+- Keep implementation tied to registry-first updates.
+- Close each task with validation evidence.
 
-**Research** -- Read the relevant Rust crate (under `crates/`), the Python
-module (under `src/gemini_physics/`), the tests, and the claim entries in
-`docs/CLAIMS_EVIDENCE_MATRIX.md`.  Trace the mathematics from definition to
-computation to test assertion.  Identify what is proven, what is tested, and
-what is merely conjectured.
+### 3.2 Skills usage
+- If a listed skill matches the request, use it.
+- Read only needed sections of the skill.
+- Prefer skill scripts/templates over ad hoc reimplementation.
 
-**Comprehend** -- Build a model of the algebraic structure you are working
-with.  Cayley-Dickson algebras lose properties at each doubling (ordering at
-C, commutativity at H, associativity at O, norm composition at S, division
-at 32D).  Zero-divisor geometry creates structure where division fails.
-Understand which layer of the property-degradation ladder your task lives on.
+### 3.3 Agent delegation
+- Delegate independent workstreams with explicit ownership.
+- Require delegates to report:
+  - files touched
+  - commands run
+  - unresolved risks
 
-**Scope** -- Separate the mathematical claim from the physical interpretation.
-A zero-divisor census is algebra; mapping it to metamaterial layers is
-speculation.  Keep these layers distinct in code, tests, and documentation.
-If a change touches both layers, decompose it into algebraic and physical
-sub-tasks with independent verification.
+### 3.4 MCP orchestration defaults
+- Prefer deterministic local tools:
+  - filesystem ops via MCP
+  - search via ripgrep
+  - git state via git tools
+- Parallelize independent searches and file reads.
 
-**Synthesize** -- Verify that your approach is consistent with the existing
-verification ladder.  Algebraic code must pass deterministic tests.  Physical
-models must declare their assumptions and parameter ranges.  Speculative
-claims must be tracked in the claims matrix with explicit WHERE STATED and
-WHAT WOULD REFUTE entries.
+## 4. TOML-first Documentation Rules
 
-**Build out completely** -- Implement the full solution with tests, not a
-sketch.  This codebase already has 150+ Python tests and 76+ Rust tests.
-New code must meet the same standard: unit tests for algebraic properties,
-null tests for statistical claims, convergence tests for numerical methods.
-No placeholders, no deferred verification.
+- Update authoritative `registry/*.toml` first.
+- Treat markdown mirrors as generated outputs.
+- Do not hand-edit generated mirrors to fix content.
+- Regenerate mirrors after registry changes.
 
-### What this means in practice
+Core commands:
 
-- Do not conflate "the algebra checks out" with "the physics is correct."
-- Do not skip the claims workflow for new physical hypotheses.
-- Do not add untested numerical code -- even toy models need convergence tests.
-- Do not assume a result is known -- check `docs/BIBLIOGRAPHY.md` and the
-  test suite before citing or depending on it.
-- When genuinely stuck, trace the mathematics by hand before writing code.
-  The Cayley-Dickson product is the foundation; everything else follows from it.
+```bash
+PYTHONWARNINGS=error make registry
+PYTHONWARNINGS=error make docs-publish
+make ascii-check
+```
 
----
+## 5. Output and Handoff Standard
 
-## Python-to-Rust Migration Protocol (MANDATORY)
+For every substantive task, provide:
+- what changed
+- why it changed
+- what was validated
+- what remains open
 
-This codebase is transitioning from Python to pure Rust.  The migration must be
-incremental, verified, and crate-first.  NO mass deletions.  NO stubs.  NO PyO3.
-
-### Workspace dependency management
-
-**All external crates MUST be declared at the workspace level and trickle down.**
-
-1. Add new crates to the root `Cargo.toml` under `[workspace.dependencies]`:
-   ```toml
-   [workspace.dependencies]
-   some_crate = "1.2.3"
-   ```
-
-2. In each sub-crate's `Cargo.toml`, reference with `workspace = true`:
-   ```toml
-   [dependencies]
-   some_crate = { workspace = true }
-   ```
-
-3. NEVER add version numbers directly in sub-crate Cargo.toml files.
-
-### Crate research before implementation
-
-Before implementing any module in Rust, research existing crates:
-
-1. **Search crates.io** -- use `cargo search <topic>` or web search.
-2. **Check lib.rs** -- https://lib.rs for curated alternatives.
-3. **Evaluate candidates** -- check stars, maintenance, API fit, dependencies.
-4. **Prefer composition** -- wrap or extend existing crates rather than rewrite.
-5. **Document decision** -- if no suitable crate exists, note why in module docs.
-
-Examples of crates already adopted:
-- `wheel` (0.1.0) -- wheel algebra (division-by-zero semantics)
-- `padic` (0.1.6) -- p-adic numbers
-- `adic` (0.5.0) -- p-adic arithmetic and rootfinding
-- `permutation` (0.4.1) -- permutation groups
-
-### Incremental migration workflow
-
-For each Python module being ported:
-
-1. **Read** -- Study the Python source, tests, and any referenced literature.
-2. **Research** -- Search for existing Rust crates that cover the functionality.
-3. **Implement** -- Write Rust code in `crates/<crate_name>/src/`.
-4. **Test** -- Port or create equivalent tests; all must pass.
-5. **Verify** -- Run `cargo test -p <crate>` and ensure no regressions.
-6. **Remove** -- Only after verification, remove the Python file.
-
-NEVER delete Python files en masse.  Each removal is a separate verified step.
-
-### Rust crate locations
-
-- `crates/algebra_core/` -- Cayley-Dickson, Clifford, wheels, p-adic, groups
-- `crates/zd_core/` -- zero-divisor census and algorithms
-- `crates/gororoba_py/` -- PyO3 bindings (thin wrappers delegating to domain crates)
-
----
-
-## References
-
-- `AGENTS.md` -- full contributor guide (hard rules, build, layout, workflow)
-- `docs/CLAIMS_EVIDENCE_MATRIX.md` -- master claims tracker (459 rows)
-- `docs/MATH_VALIDATION_REPORT.md` -- algebraic verification status
-- `docs/BIBLIOGRAPHY.md` -- external source citations
+Use precise file references and include command outcomes in summary form.

@@ -664,6 +664,101 @@ def export_markdown_governance(repo_root: Path, out_path: Path) -> None:
     _write(out_path, "\n".join(lines))
 
 
+def export_navigator(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/navigator.toml")
+    meta = data.get("navigator", {})
+    sections = data.get("section", [])
+    lines = _header("Navigator Registry Mirror")
+    lines.append("Authoritative source: `registry/navigator.toml`.")
+    lines.append("")
+    lines.append(f"- Updated: {meta.get('updated', '')}")
+    lines.append(f"- Epoch: {meta.get('epoch', '')}")
+    lines.append(f"- Mission: {meta.get('mission', '')}")
+    lines.append(f"- Section count: {len(sections)}")
+    lines.append("")
+    for section in sections:
+        lines.append(f"## {section.get('id', 'NAV-?')}: {section.get('title', '(untitled)')}")
+        lines.append("")
+        summary = str(section.get("summary", "")).strip()
+        if summary:
+            lines.append(summary)
+            lines.append("")
+        for link in section.get("link", []):
+            path = str(link.get("path", "")).strip()
+            label = str(link.get("label", path)).strip()
+            notes = str(link.get("notes", "")).strip()
+            hypothesis = bool(link.get("hypothesis", False))
+            lines.append(f"- `{label}` -> `{path}`")
+            lines.append(f"  - Hypothesis narrative: `{hypothesis}`")
+            if notes:
+                lines.append(f"  - Notes: {notes}")
+        lines.append("")
+    disclaimer = data.get("navigator", {}).get("disclaimer", {})
+    disclaimer_text = str(disclaimer.get("text", "")).strip()
+    if disclaimer_text:
+        lines.append("## Disclaimer")
+        lines.append("")
+        lines.append(disclaimer_text)
+        claims_source = str(disclaimer.get("claims_source", "")).strip()
+        legacy_claims_mirror = str(disclaimer.get("legacy_claims_mirror", "")).strip()
+        if claims_source:
+            lines.append(f"- Claims source: `{claims_source}`")
+        if legacy_claims_mirror:
+            lines.append(f"- Legacy claims mirror: `{legacy_claims_mirror}`")
+        lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_navigator_legacy(repo_root: Path) -> None:
+    data = _load_toml(repo_root / "registry/navigator.toml")
+    meta = data.get("navigator", {})
+    sections = data.get("section", [])
+    lines = _legacy_header(["registry/navigator.toml"])
+    title = str(meta.get("title", "Navigator")).strip()
+    epoch = str(meta.get("epoch", "")).strip()
+    mission = str(meta.get("mission", "")).strip()
+    lines.append(f"# {title}")
+    lines.append("")
+    if epoch:
+        lines.append(f"**Current Epoch:** {epoch}")
+    if mission:
+        lines.append(f"**Mission:** {mission}")
+    if epoch or mission:
+        lines.append("")
+    lines.append(
+        "**Important:** This file is generated from TOML registry state and is not authoritative."
+    )
+    lines.append("")
+    for section in sections:
+        lines.append(f"## {section.get('id', 'NAV-?')}: {section.get('title', '(untitled)')}")
+        lines.append("")
+        summary = str(section.get("summary", "")).strip()
+        if summary:
+            lines.append(summary)
+            lines.append("")
+        for link in section.get("link", []):
+            path = str(link.get("path", "")).strip()
+            label = str(link.get("label", path)).strip()
+            notes = str(link.get("notes", "")).strip()
+            lines.append(f"- **{label}:** `{path}`")
+            if notes:
+                lines.append(f"  - {notes}")
+            if bool(link.get("hypothesis", False)):
+                lines.append("  - Status: hypothesis narrative")
+        lines.append("")
+    disclaimer = data.get("navigator", {}).get("disclaimer", {})
+    disclaimer_text = str(disclaimer.get("text", "")).strip()
+    if disclaimer_text:
+        lines.append("---")
+        lines.append("")
+        lines.append(disclaimer_text)
+        claims_source = str(disclaimer.get("claims_source", "")).strip()
+        if claims_source:
+            lines.append(f"Claims source: `{claims_source}`")
+    lines.append("")
+    _write(repo_root / "NAVIGATOR.md", "\n".join(lines))
+
+
 def export_requirements_legacy(repo_root: Path) -> None:
     req_data = _load_toml(repo_root / "registry/requirements.toml")
     narrative = _load_optional_toml(repo_root / "registry/requirements_narrative.toml")
@@ -1533,6 +1628,7 @@ def main() -> int:
     export_knowledge_migration_plan(
         repo_root, out_dir / "KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
     )
+    export_navigator(repo_root, out_dir / "NAVIGATOR_REGISTRY_MIRROR.md")
     export_markdown_governance(repo_root, out_dir / "MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md")
     export_claims_tasks(repo_root, out_dir / "CLAIMS_TASKS_REGISTRY_MIRROR.md")
     export_claims_domains(repo_root, out_dir / "CLAIMS_DOMAINS_REGISTRY_MIRROR.md")
@@ -1554,6 +1650,7 @@ def main() -> int:
     export_todo_legacy(repo_root, repo_root / "docs/TODO.md")
     export_next_actions_legacy(repo_root, repo_root / "docs/NEXT_ACTIONS.md")
     export_requirements_legacy(repo_root)
+    export_navigator_legacy(repo_root)
     export_bibliography_legacy(repo_root, repo_root / "docs/BIBLIOGRAPHY.md")
 
     if args.legacy_claims_sync:

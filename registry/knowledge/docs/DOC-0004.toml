@@ -9,10 +9,10 @@ kind = "manual_source"
 status = "active"
 migration_priority = "medium"
 generated = false
-source_sha256 = "6293fa8a1cda31ca1d93e1c779389f40635c233ce50a9950a06e034d2c094e73"
-source_line_count = 48
-source_size_bytes = 2783
-content_sha256 = "6293fa8a1cda31ca1d93e1c779389f40635c233ce50a9950a06e034d2c094e73"
+source_sha256 = "c25e28f9b1320939405f09e16076afa72a90480d1b26aab762462944f8b0e49a"
+source_line_count = 60
+source_size_bytes = 3504
+content_sha256 = "c25e28f9b1320939405f09e16076afa72a90480d1b26aab762462944f8b0e49a"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -29,15 +29,27 @@ an in-repo check (test/verifier/script + artifact).
 
 ## Start here
 
-- Requirements: `docs/REQUIREMENTS.md`
-- Repo structure and conventions: `docs/REPO_STRUCTURE.md`
-- Claims and evidence hooks: `docs/CLAIMS_EVIDENCE_MATRIX.md`
-- Task tracker: `docs/CLAIMS_TASKS.md`
+- Canonical source of truth: `registry/*.toml` (authoring happens here)
+- Generate docs mirrors for browsing: `PYTHONWARNINGS=error make docs-publish`
+- Validate TOML registries only (no mirror tracking required): `PYTHONWARNINGS=error make registry`
+- Navigator authority: `registry/navigator.toml` (generated view: `NAVIGATOR.md`)
+
+README entry points (tracked and maintained):
+
+- Contributor/agent contract: `AGENTS.md`
+- Assistant compatibility shim: `CLAUDE.md`
+- Assistant compatibility shim: `GEMINI.md`
+- Curated datasets and theory index: `curated/README.md`
+- Coq workflow entrypoint: `curated/01_theory_frameworks/README_COQ.md`
+- Artifact conventions and provenance policy: `data/artifacts/README.md`
+- CSV data conventions: `data/csv/README.md`
 
 Quick commands:
 
 - Full gate (tests + lint + verifiers): `PYTHONWARNINGS=error make check`
 - Verification-only gate (no artifact generation): `PYTHONWARNINGS=error make smoke`
+- Registry-only gate (TOML authority): `PYTHONWARNINGS=error make registry`
+- Publish docs mirrors from TOML registries: `PYTHONWARNINGS=error make docs-publish`
 - Full gate, parallel pytest workers (opt-in): `PYTHONWARNINGS=error make check-parallel`
 - Tests only, parallel pytest workers (opt-in): `PYTHONWARNINGS=error make test-parallel`
 - Opt-in experiments/simulations smoke: `PYTHONWARNINGS=error make experiments-smoke`

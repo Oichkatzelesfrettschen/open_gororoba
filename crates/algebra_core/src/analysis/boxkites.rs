@@ -6265,6 +6265,522 @@ mod tests {
         assert!(frust_ratio < 0.40, "dim=256: frustration ratio should be below 0.40");
     }
 
+    /// Cayley-Dickson tower psi/eta analysis at dim=2,4,8 (C-532).
+    ///
+    /// The twist exponent psi(i,j) = 0 if cd_basis_mul_sign(dim,i,j) = +1, else 1,
+    /// and the anti-diagonal eta exist at ALL Cayley-Dickson dimensions, not just
+    /// those with zero-divisors (dim >= 16). This test characterizes the GF(2)
+    /// structure at dim=2 (complex), dim=4 (quaternion), and dim=8 (octonion),
+    /// establishing the foundation of the tower before zero-divisors appear.
+    ///
+    /// At dim=2: psi has 1 imaginary basis element (i), 1x1 matrix
+    /// At dim=4: psi has 3 imaginary elements (i,j,k), 3x3 matrix, quaternion signs
+    /// At dim=8: psi has 7 imaginary elements, 7x7 matrix, Fano plane structure
+    #[test]
+    fn test_psi_eta_tower_dim2_dim4_dim8() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        // ===== dim=2 (complex numbers) =====
+        // Only imaginary element: e_1 = i
+        // e_1 * e_1 = -1, so psi(1,1) = 1
+        let dim = 2;
+        let psi_2 = psi(dim, 1, 1);
+        eprintln!("\n=== Cayley-Dickson Tower psi/eta Analysis ===");
+        eprintln!("dim=2: psi(1,1) = {psi_2}");
+        assert_eq!(psi_2, 1, "i*i = -1, so psi should be 1");
+
+        // GF(2) ANF at dim=2: psi(x,y) with x,y in {1} -- trivially constant 1
+        // Degree: 0 (constant function mapping to 1)
+        // Note: C-527 formula gives log2(2)=1 which applies only to dims >= 4
+
+        // ===== dim=4 (quaternions) =====
+        // Imaginary elements: e_1, e_2, e_3 (= i, j, k)
+        // Standard quaternion: i*j=k, j*i=-k, i^2=j^2=k^2=-1
+        let dim = 4;
+        eprintln!("\ndim=4 psi matrix (1-indexed imaginary basis):");
+        let mut psi4 = [[0u8; 3]; 3];
+        for a in 1..4 {
+            for b in 1..4 {
+                psi4[a - 1][b - 1] = psi(dim, a, b);
+            }
+            eprintln!(
+                "  e_{}: [{} {} {}]",
+                a, psi4[a - 1][0], psi4[a - 1][1], psi4[a - 1][2]
+            );
+        }
+
+        // All diagonal entries should be 1 (e_i^2 = -1 for quaternions)
+        for a in 0..3 {
+            assert_eq!(psi4[a][a], 1, "e_{}^2 should be -1", a + 1);
+        }
+
+        // Off-diagonal: quaternion multiplication signs
+        // e_1*e_2 = e_3 (sign +1, psi=0), e_2*e_1 = -e_3 (sign -1, psi=1)
+        assert_eq!(psi4[0][1], 0, "e1*e2 = +e3, so psi=0");
+        assert_eq!(psi4[1][0], 1, "e2*e1 = -e3, so psi=1");
+
+        // Count psi=1 entries
+        let psi4_ones: usize = psi4.iter().flat_map(|r| r.iter()).filter(|&&v| v == 1).count();
+        let psi4_zeros: usize = 9 - psi4_ones;
+        eprintln!("dim=4: psi=0: {psi4_zeros}, psi=1: {psi4_ones} (of 9 total)");
+
+        // At dim=4 there are no cross-assessor pairs (no ZDs), but we can still
+        // compute eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b) if we define
+        // lo = i & 1, hi = i >> 1 for 2-bit indices.
+        // For dim=4: basis indices 1,2,3 have lo/hi = (1,0), (0,1), (1,1)
+        // Cross-assessor pairs at dim=4: pairs (i,j) with lo_i != lo_j AND hi_i != hi_j
+        // But dim/2-1 = 1, so no cross-pair structure (assessors have 1 lo, 1 hi)
+
+        // Instead, compute eta for ALL imaginary pairs to see the structure
+        eprintln!("\ndim=4 eta matrix (anti-diagonal XOR of psi):");
+        for a in 1..4usize {
+            let lo_a = a & 1;
+            let hi_a = a >> 1;
+            let mut row = Vec::new();
+            for b in 1..4usize {
+                let lo_b = b & 1;
+                let hi_b = b >> 1;
+                // eta only defined when lo and hi are both nonzero (valid basis elements)
+                if lo_a > 0 && hi_b > 0 && hi_a > 0 && lo_b > 0 {
+                    let e = psi(dim, lo_a, hi_b) ^ psi(dim, hi_a, lo_b);
+                    row.push(format!("{e}"));
+                } else {
+                    row.push("-".to_string());
+                }
+            }
+            eprintln!("  e_{a} (lo={lo_a},hi={hi_a}): [{}]", row.join(" "));
+        }
+
+        // ===== dim=8 (octonions) =====
+        // Imaginary elements: e_1..e_7
+        // The psi matrix encodes the octonion multiplication sign structure
+        // (Fano plane determines which products are positive)
+        let dim = 8;
+        eprintln!("\ndim=8 psi matrix (7x7, imaginary basis):");
+        let mut psi8 = [[0u8; 7]; 7];
+        for a in 1..8 {
+            for b in 1..8 {
+                psi8[a - 1][b - 1] = psi(dim, a, b);
+            }
+            let row: Vec<String> = psi8[a - 1].iter().map(|v| format!("{v}")).collect();
+            eprintln!("  e_{a}: [{}]", row.join(" "));
+        }
+
+        // All diagonal entries should be 1 (e_i^2 = -1 for octonions)
+        for a in 0..7 {
+            assert_eq!(psi8[a][a], 1, "e_{}^2 should be -1", a + 1);
+        }
+
+        // Count psi=1 entries
+        let psi8_ones: usize = psi8.iter().flat_map(|r| r.iter()).filter(|&&v| v == 1).count();
+        let psi8_zeros: usize = 49 - psi8_ones;
+        eprintln!("dim=8: psi=0: {psi8_zeros}, psi=1: {psi8_ones} (of 49 total)");
+
+        // Antisymmetry check: psi(a,b) + psi(b,a) mod 2 for a != b
+        // In a non-commutative algebra, psi(a,b) XOR psi(b,a) = 1 for all a != b
+        let mut antisymmetric = 0;
+        let mut symmetric = 0;
+        for a in 0..7 {
+            for b in (a + 1)..7 {
+                if psi8[a][b] != psi8[b][a] {
+                    antisymmetric += 1;
+                } else {
+                    symmetric += 1;
+                }
+            }
+        }
+        eprintln!("dim=8 off-diagonal: {antisymmetric} antisymmetric, {symmetric} symmetric pairs");
+        // All off-diagonal pairs should be antisymmetric (octonions are non-commutative)
+        assert_eq!(symmetric, 0, "Octonions: all off-diagonal psi pairs should be antisymmetric");
+        assert_eq!(antisymmetric, 21, "C(7,2) = 21 off-diagonal pairs");
+
+        // Check quaternion antisymmetry too
+        let mut q_antisym = 0;
+        for a in 0..3 {
+            for b in (a + 1)..3 {
+                if psi4[a][b] != psi4[b][a] {
+                    q_antisym += 1;
+                }
+            }
+        }
+        assert_eq!(q_antisym, 3, "Quaternions: all 3 off-diagonal pairs antisymmetric");
+
+        // Fano plane analysis at dim=8:
+        // A Fano line is a triple {a,b,c} where a XOR b = c in GF(2)^3.
+        // The sign of e_a * e_b determines the ORIENTATION of the line, not
+        // whether it IS a line. All 7 XOR triples are Fano lines.
+        let mut fano_lines = Vec::new();
+        for a in 1..8usize {
+            for b in (a + 1)..8usize {
+                let c = a ^ b;
+                if c > b && c < 8 {
+                    // Each unordered triple counted once (a < b < c)
+                    let sign_ab = cd_basis_mul_sign(8, a, b);
+                    fano_lines.push((a, b, c, sign_ab));
+                }
+            }
+        }
+        eprintln!("\ndim=8 Fano lines (triples with a^b=c):");
+        for &(a, b, c, s) in &fano_lines {
+            let orient = if s == 1 { "+" } else { "-" };
+            eprintln!("  ({a},{b},{c}): e_{a}*e_{b} = {orient}e_{c}");
+        }
+        eprintln!("Fano line count: {}", fano_lines.len());
+        // Fano plane has exactly 7 lines
+        assert_eq!(fano_lines.len(), 7, "Octonion Fano plane should have 7 lines");
+
+        // Count positive vs negative orientations
+        let n_positive = fano_lines.iter().filter(|l| l.3 == 1).count();
+        let n_negative = fano_lines.iter().filter(|l| l.3 == -1).count();
+        eprintln!("Orientations: {n_positive} positive, {n_negative} negative");
+
+        // GF(2) polynomial degree analysis across the tower
+        // psi at dim=2: degree 0 (constant 1 on the single point)
+        // psi at dim=4: degree ? (3 points in GF(2)^2 minus origin)
+        // psi at dim=8: degree ? (7 points in GF(2)^3 minus origin)
+        // The ANF degree formula (C-527) predicts: deg(psi) = log2(dim) for dim >= 4
+
+        // Verify at dim=4: psi on {01,10,11} -> {values}
+        // ANF: psi(x_0, x_1) = ? where (x_0, x_1) = binary representation of basis index
+        // Index 1 = (1,0): psi(1,1) = 1, psi(1,2) = 0, psi(1,3) = 1
+        // Index 2 = (0,1): psi(2,1) = 1, psi(2,2) = 1, psi(2,3) = 0
+        // Index 3 = (1,1): psi(3,1) = 1, psi(3,2) = 1, psi(3,3) = 1
+        // psi is a function GF(2)^2 x GF(2)^2 -> GF(2) on nonzero inputs
+
+        // Print full GF(2) polynomial representation
+        eprintln!("\n=== GF(2) Polynomial Summary ===");
+        for &dim in &[4, 8, 16, 32] {
+            let n = (dim as f64).log2() as usize;
+            let n_imag = dim - 1;
+            let total_entries = n_imag * n_imag;
+            let ones: usize = (1..dim).flat_map(|a| (1..dim).map(move |b| psi(dim, a, b)))
+                .filter(|&v| v == 1).count();
+            eprintln!(
+                "dim={dim} (n={n}): {ones}/{total_entries} psi=1 entries ({:.1}%)",
+                100.0 * ones as f64 / total_entries as f64
+            );
+        }
+
+        // Key finding: at dim=2 there's only 1 entry (trivially psi=1)
+        // At dim=4: psi is a 3x3 binary matrix
+        // At dim=8: psi is a 7x7 binary matrix encoding the Fano plane
+        // At dim >= 16: zero-divisors appear and eta becomes the key invariant
+    }
+
+    /// Anti-Diagonal Parity Theorem verification at dim=512 (C-531).
+    ///
+    /// Extends verification to the largest computed dimension: 255 components,
+    /// 254 nodes each, producing ~214M triangles across 33 regimes.
+    /// Also collects Klein-four fibers, edge eta balance, cycle rank,
+    /// and frustration ratio (extending C-529).
+    ///
+    /// Runtime: ~3-5 min in release mode.
+    #[test]
+    #[ignore] // Long-running: ~3-5 min in release mode
+    fn test_antidiagonal_parity_theorem_dim512() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use std::time::Instant;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        let dim = 512;
+        let t0 = Instant::now();
+        let components = motif_components_for_cross_assessors(dim);
+        let t_graph = t0.elapsed();
+        eprintln!("\n=== Anti-Diagonal Parity Theorem at dim={dim} ===");
+        eprintln!("Graph construction: {:.2}s", t_graph.as_secs_f64());
+        eprintln!("Components: {}", components.len());
+
+        let mut total_triangles = 0usize;
+        let mut total_pure = 0usize;
+        let mut total_mixed = 0usize;
+        let mut mismatches = 0usize;
+
+        // Klein-four fiber sizes
+        let mut fiber_counts = [0usize; 4];
+
+        // Eta balance and cohomology accumulators
+        let mut total_eta0 = 0usize;
+        let mut total_eta1 = 0usize;
+        let mut total_cycle_rank = 0usize;
+        let mut total_frustrated = 0usize;
+
+        let t1 = Instant::now();
+
+        for comp in components.iter() {
+            let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+            let n = nodes.len();
+            let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                comp.edges.iter().copied().collect();
+            let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                let (a, b) = if u < v { (u, v) } else { (v, u) };
+                edge_set.contains(&(a, b))
+            };
+
+            let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+            };
+
+            // Edge eta balance
+            let mut comp_eta0 = 0usize;
+            let mut comp_eta1 = 0usize;
+            for &(u, v) in &comp.edges {
+                if eta(u, v) == 0 { comp_eta0 += 1; } else { comp_eta1 += 1; }
+            }
+            total_eta0 += comp_eta0;
+            total_eta1 += comp_eta1;
+
+            // Cycle rank and frustration (BFS coboundary test)
+            let b1 = comp.edges.len() - n + 1;
+            total_cycle_rank += b1;
+
+            // BFS for coboundary test
+            let node_idx: std::collections::HashMap<CrossPair, usize> =
+                nodes.iter().enumerate().map(|(i, &n)| (n, i)).collect();
+            let mut adj: Vec<Vec<(usize, u8)>> = vec![vec![]; n];
+            for &(u, v) in &comp.edges {
+                let ui = node_idx[&u];
+                let vi = node_idx[&v];
+                let e = eta(u, v);
+                adj[ui].push((vi, e));
+                adj[vi].push((ui, e));
+            }
+
+            let mut delta = vec![0u8; n];
+            let mut visited = vec![false; n];
+            visited[0] = true;
+            let mut queue = std::collections::VecDeque::new();
+            queue.push_back(0usize);
+            while let Some(u) = queue.pop_front() {
+                for &(v, e) in &adj[u] {
+                    if !visited[v] {
+                        visited[v] = true;
+                        delta[v] = delta[u] ^ e;
+                        queue.push_back(v);
+                    }
+                }
+            }
+
+            // Count frustrated edges (each edge counted once via canonical order)
+            for &(u_node, v_node) in &comp.edges {
+                let ui = node_idx[&u_node];
+                let vi = node_idx[&v_node];
+                let e = eta(u_node, v_node);
+                if (delta[ui] ^ delta[vi]) != e {
+                    total_frustrated += 1;
+                }
+            }
+
+            // Triangle enumeration
+            for i in 0..n {
+                for j in (i + 1)..n {
+                    for k in (j + 1)..n {
+                        let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                        if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                            continue;
+                        }
+                        total_triangles += 1;
+
+                        // Sigma classification
+                        let sigma = |a: CrossPair, b: CrossPair| -> i32 {
+                            cd_basis_mul_sign(dim, a.0, b.0)
+                            * cd_basis_mul_sign(dim, a.1, b.1)
+                        };
+                        let s_uv = sigma(u, v);
+                        let s_vw = sigma(v, w);
+                        let s_uw = sigma(u, w);
+                        let n_same = [s_uv, s_vw, s_uw].iter()
+                            .filter(|&&s| s == -1).count();
+                        let product = s_uv * s_vw * s_uw;
+                        let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+
+                        // Eta for all 3 edges
+                        let eta_uv = eta(u, v);
+                        let eta_vw = eta(v, w);
+                        let eta_uw = eta(u, w);
+
+                        // Anti-Diagonal Parity Theorem: pure iff eta constant
+                        let eta_constant = (eta_uv == eta_vw) && (eta_vw == eta_uw);
+
+                        if eta_constant != is_pure {
+                            mismatches += 1;
+                        }
+
+                        if is_pure {
+                            total_pure += 1;
+                        } else {
+                            total_mixed += 1;
+                        }
+
+                        // Klein-four fiber
+                        let f1 = eta_uv ^ eta_vw;
+                        let f2 = eta_vw ^ eta_uw;
+                        fiber_counts[(2 * f1 + f2) as usize] += 1;
+                    }
+                }
+            }
+        }
+
+        let t_total = t1.elapsed();
+        let frust_ratio = total_frustrated as f64 / total_cycle_rank as f64;
+
+        eprintln!("Total time: {:.2}s", t_total.as_secs_f64());
+        eprintln!("Total triangles: {total_triangles}");
+        eprintln!("Pure: {total_pure}, Mixed: {total_mixed}");
+        eprintln!("Mismatches: {mismatches}");
+        eprintln!("Klein-four fibers: (0,0)={}, (0,1)={}, (1,0)={}, (1,1)={}",
+            fiber_counts[0], fiber_counts[1], fiber_counts[2], fiber_counts[3]);
+        eprintln!("Edge eta balance: eta=0: {total_eta0}, eta=1: {total_eta1}");
+        eprintln!("Total cycle rank: {total_cycle_rank}");
+        eprintln!("Frustration: {total_frustrated}/{total_cycle_rank} = {frust_ratio:.8}");
+
+        // ASSERTION 1: Anti-Diagonal Parity Theorem holds
+        assert_eq!(
+            mismatches, 0,
+            "Anti-Diagonal Parity Theorem REFUTED at dim={dim}: {mismatches} mismatches"
+        );
+
+        // ASSERTION 2: Quarter Rule
+        assert_eq!(
+            total_pure * 3, total_mixed,
+            "Quarter Rule failed: pure={total_pure}, mixed={total_mixed}"
+        );
+
+        // ASSERTION 3: Klein-four fiber (0,0) = pure count
+        assert_eq!(
+            fiber_counts[0], total_pure,
+            "F=(0,0) should equal pure count"
+        );
+
+        // ASSERTION 4: Sum of nonzero fibers = mixed count
+        assert_eq!(
+            fiber_counts[1] + fiber_counts[2] + fiber_counts[3], total_mixed,
+            "Nonzero fibers should sum to mixed count"
+        );
+
+        // ASSERTION 5: F(1,0) = F(1,1) (vertex-median symmetry, C-530)
+        assert_eq!(
+            fiber_counts[2], fiber_counts[3],
+            "F(1,0) should equal F(1,1)"
+        );
+
+        // ASSERTION 6: Edge eta exactly balanced
+        assert_eq!(total_eta0, total_eta1, "dim={dim}: eta not balanced");
+
+        // ASSERTION 7: Triangle count matches dim=512 census (C-495)
+        // Expected: ~214M triangles from generic_face_sign_census(512)
+        assert!(total_triangles > 200_000_000, "Expected ~214M triangles");
+
+        // ASSERTION 8: Frustration ratio in range (extends C-529)
+        assert!(frust_ratio > 0.37, "dim=512: frustration should be near limit");
+        assert!(frust_ratio < 0.41, "dim=512: frustration should not exceed 0.41");
+    }
+
+    /// Quick frustration-only test at dim=512 (extends C-529).
+    ///
+    /// Computes ONLY the BFS coboundary frustration ratio, skipping the
+    /// expensive O(n^3) triangle enumeration. This is O(V+E) per component.
+    ///
+    /// Sequence so far: 0.000, 0.307, 0.377, 0.388, 0.385 (dims 16..256).
+    /// Does dim=512 continue the oscillation?
+    #[test]
+    #[ignore] // ~30s in release mode (graph construction dominates)
+    fn test_frustration_ratio_dim512() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use std::time::Instant;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        let dim = 512;
+        let t0 = Instant::now();
+        let components = motif_components_for_cross_assessors(dim);
+        let t_graph = t0.elapsed();
+        eprintln!("\n=== Frustration at dim={dim} ===");
+        eprintln!("Graph construction: {:.2}s", t_graph.as_secs_f64());
+        eprintln!("Components: {}", components.len());
+
+        let mut total_edges = 0usize;
+        let mut total_eta0 = 0usize;
+        let mut total_eta1 = 0usize;
+        let mut total_b1 = 0usize;
+        let mut total_frustrated = 0usize;
+
+        for comp in components.iter() {
+            let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+            let n = nodes.len();
+            total_edges += comp.edges.len();
+
+            let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+            };
+
+            // Edge eta balance
+            for &(u, v) in &comp.edges {
+                if eta(u, v) == 0 { total_eta0 += 1; } else { total_eta1 += 1; }
+            }
+
+            // BFS coboundary test
+            let node_idx: std::collections::HashMap<CrossPair, usize> =
+                nodes.iter().enumerate().map(|(i, &n)| (n, i)).collect();
+            let mut adj: Vec<Vec<(usize, u8)>> = vec![vec![]; n];
+            for &(u, v) in &comp.edges {
+                let ui = node_idx[&u];
+                let vi = node_idx[&v];
+                let e = eta(u, v);
+                adj[ui].push((vi, e));
+                adj[vi].push((ui, e));
+            }
+
+            let mut delta = vec![0u8; n];
+            let mut visited = vec![false; n];
+            visited[0] = true;
+            let mut queue = std::collections::VecDeque::new();
+            queue.push_back(0usize);
+            while let Some(u) = queue.pop_front() {
+                for &(v, e) in &adj[u] {
+                    if !visited[v] {
+                        visited[v] = true;
+                        delta[v] = delta[u] ^ e;
+                        queue.push_back(v);
+                    }
+                }
+            }
+
+            let b1 = comp.edges.len() - n + 1;
+            total_b1 += b1;
+
+            // Count frustrated edges
+            for &(u_node, v_node) in &comp.edges {
+                let ui = node_idx[&u_node];
+                let vi = node_idx[&v_node];
+                let e = eta(u_node, v_node);
+                if (delta[ui] ^ delta[vi]) != e {
+                    total_frustrated += 1;
+                }
+            }
+        }
+
+        let frust_ratio = total_frustrated as f64 / total_b1 as f64;
+        eprintln!("edges: {total_edges}, eta=0: {total_eta0}, eta=1: {total_eta1}");
+        eprintln!("b1: {total_b1}, frustrated: {total_frustrated}");
+        eprintln!("frustration ratio: {frust_ratio:.8}");
+
+        // Sequence: 0.000, 0.307, 0.377, 0.388, 0.385 (dims 16..256)
+        // dim=512 should be near the same range
+        assert_eq!(total_eta0, total_eta1, "dim=512: eta not balanced");
+        assert!(total_frustrated > 0, "dim=512: eta should not be a coboundary");
+        assert!(frust_ratio > 0.37, "dim=512: frustration should be near limit");
+        assert!(frust_ratio < 0.41, "dim=512: frustration should not exceed 0.41");
+    }
+
     fn binomial(n: usize, k: usize) -> usize {
         if k > n { return 0; }
         let mut result = 1usize;
