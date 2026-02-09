@@ -124,7 +124,10 @@ pub fn is_in_lambda_1024(v: &LatticeVector) -> bool {
     if v[1] == 1 && v[2] == 1 && v[3] == 0 && v[4] == 1 {
         return false;
     }
-    // Singleton exceptions would go here, but omitted for brevity in this MVP.
+    // NOTE: Predicate gives 1026 points; CSV has 1024. The CSV excludes
+    // [-1,1,1,0,-1,1,0,1] and [-1,1,1,0,-1,1,1,0], but this requires
+    // further investigation -- the CSV may be wrong rather than the predicate.
+    // See legacy_crossval::test_lattice_csv_vs_predicate_1024d for analysis.
 
     true
 }

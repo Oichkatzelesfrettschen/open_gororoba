@@ -171,8 +171,14 @@ Update policy:
   - `registry/reports_narratives.toml`
   - `registry/docs_convos.toml`
   - `registry/book_docs.toml`
+- canonical legacy CSV data:
+  - `registry/legacy_csv_datasets.toml`
+  - `registry/data/legacy_csv/*.toml`
+  - `registry/csv_inventory.toml`
 
 ### 8.2 Build and publish flow
+- Validate data canon:
+  - `PYTHONWARNINGS=error make registry-data`
 - Validate registries:
   - `PYTHONWARNINGS=error make registry`
 - Publish mirrors:
@@ -219,6 +225,7 @@ Core:
 - `make ascii-check`
 
 Registry/docs:
+- `PYTHONWARNINGS=error make registry-data`
 - `PYTHONWARNINGS=error make registry`
 - `PYTHONWARNINGS=error make docs-publish`
 
@@ -233,6 +240,8 @@ and full gates before final handoff.
 ## 12. Quickstart Command Block
 
 ```bash
+# Data canon + registry authority and mirror publish
+PYTHONWARNINGS=error make registry-data
 # Registry authority and mirror publish
 PYTHONWARNINGS=error make registry
 PYTHONWARNINGS=error make docs-publish
@@ -255,4 +264,6 @@ cargo clippy --workspace -j$(nproc) -- -D warnings
 - `Makefile` - build, registry, docs-publish targets
 - `src/scripts/analysis/export_registry_markdown_mirrors.py` - mirror exporter
 - `src/verification/verify_registry_mirror_freshness.py` - freshness gate
+- `src/scripts/analysis/migrate_legacy_csv_to_toml.py` - legacy CSV canonicalizer
+- `src/verification/verify_legacy_csv_toml_parity.py` - CSV parity/fidelity verifier
 - `registry/` - canonical machine-readable project state
