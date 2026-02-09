@@ -692,7 +692,7 @@ Output artifacts:
 - Status raw: DONE
 - Canonical: `True`
 
-Associator norm independence: E[\|\|A\|\|^2] -> 2 as d -> inf, confirmed by Monte Carlo (cross-term correlation decays monotonically). Phase 6 B3.
+Associator norm independence: E[\\\\|\\\\|A\\\\|\\\\|^2] -> 2 as d -> inf, confirmed by Monte Carlo (cross-term correlation decays monotonically). Phase 6 B3.
 
 Output artifacts:
 - `src/scripts/analysis/c087_associator_independence_audit.py`

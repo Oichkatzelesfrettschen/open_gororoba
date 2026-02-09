@@ -7,6 +7,9 @@ updated = "2026-02-09"
 source_markdown = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
 entry_count = 13
 preamble_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
+
 # Experiments Portfolio Shortlist
 
 Source-of-truth policy:
@@ -51,6 +54,12 @@ cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
 ---
 
 ---
+
+---
+
+---
+
+---
 """
 
 [[entry]]
@@ -76,6 +85,12 @@ cargo run --release --bin multi-dataset-ultrametric -- \\
 **Related claims:** C-071, C-436..C-440, I-011
 
 **Determinism:** Seed-controlled (default 42).  Requires NVIDIA GPU with CUDA.
+
+---
+
+---
+
+---
 
 ---
 
@@ -106,6 +121,12 @@ cargo run --release --bin real-cosmo-fit
 ---
 
 ---
+
+---
+
+---
+
+---
 """
 
 [[entry]]
@@ -127,6 +148,12 @@ cargo run --release --bin kerr-shadow -- --spin 0.998 --n-points 1000 --inclinat
 **Related claims:** C-301..C-310 (Kerr GR)
 
 **Determinism:** Fully deterministic.
+
+---
+
+---
+
+---
 
 ---
 
@@ -153,6 +180,12 @@ cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000
 **Related claims:** C-050..C-060 (ZD graph structure)
 
 **Determinism:** Fully deterministic.
+
+---
+
+---
+
+---
 
 ---
 
@@ -184,6 +217,12 @@ cargo run --release --bin gravastar-sweep -- \\
 ---
 
 ---
+
+---
+
+---
+
+---
 """
 
 [[entry]]
@@ -207,6 +246,12 @@ cargo run --release --bin tensor-network -- \\
 **Related claims:** C-350..C-360 (entanglement scaling)
 
 **Determinism:** Seed-controlled (default 42).
+
+---
+
+---
+
+---
 
 ---
 
@@ -237,6 +282,12 @@ cargo run --release --bin mass-clumping -- --n-permutations 10000 --seed 42
 ---
 
 ---
+
+---
+
+---
+
+---
 """
 
 [[entry]]
@@ -261,6 +312,12 @@ cargo run --release --bin neg-dim-eigen -- sweep \\
 **Related claims:** C-420..C-425 (negative-dimension PDE)
 
 **Determinism:** Fully deterministic.
+
+---
+
+---
+
+---
 
 ---
 
@@ -306,6 +363,12 @@ cargo run --release --bin materials-baseline -- --data-dir data/external --seed 
 | E-010 | Materials Baselines         | materials-baseline           | Seed  | No  |
 
 ---
+
+---
+
+---
+
+---
 """
 
 [[entry]]
@@ -335,6 +398,12 @@ cargo run --release --bin cross-stack-locality -- --n-bounces 10000 --n-permutat
 ```
 
 ---
+
+---
+
+---
+
+---
 """
 
 [[entry]]
@@ -358,6 +427,12 @@ Run:
 ```bash
 cargo run --release --bin et-billiard -- --n-levels 4,5,6 --n-steps 10000 --seed 42
 ```
+
+---
+
+---
+
+---
 
 ---
 """
@@ -388,6 +463,12 @@ Run:
 ```bash
 cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-types A,B,D
 ```
+
+---
+
+---
+
+---
 
 ---
 """

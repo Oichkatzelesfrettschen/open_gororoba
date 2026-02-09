@@ -160,8 +160,11 @@ The external CSV data and our computations use TWO DISTINCT adjacency
 predicates that must not be conflated:
 
 **P_ZD (Zero-Divisor Adjacency):** Cross-assessor pairs (a,b) and (c,d)
-are ZD-adjacent if e_a*e_c = 0 (or any diagonal combination). Produces
-parity-separated bipartite cliques (K_m union K_m). See C-463 (Thesis F).
+are ZD-adjacent if e_a*e_c = 0 (or any diagonal combination). At dims 16
+and 32, this produces parity-separated cliques K_m union K_m (C-463,
+Thesis F). **At dim=128 this property FAILS** (C-451: 32640 cross-partition
+edges). The parity-clique structure is NOT universal; it is a small-dimension
+coincidence.
 
 **P_match (Pathion/Matching Adjacency):** Cross-assessor pairs connected
 by matching-type edges where the pair index XOR yields a fixed constant.

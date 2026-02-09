@@ -10,6 +10,15 @@ document_count = 11
 path = "REQUIREMENTS.md"
 title = "Installation Requirements (Reproducible)"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Installation Requirements (Reproducible)
 
 This repo targets a **host Python** for non-quantum work and a **Docker Python 3.11**
@@ -65,6 +74,15 @@ make verify
 path = "docs/REQUIREMENTS.md"
 title = "Requirements for Gemini Experiments"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements for Gemini Experiments
 
 This project follows a \"Maximal Synthesis\" protocol. Installs are designed to be reproducible,
@@ -158,6 +176,15 @@ Some targets rely on standard system utilities (documented here for reproducibil
 path = "docs/requirements/algebra.md"
 title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)
 
 These components live under `src/gemini_physics/` and are exercised by the unit tests.
@@ -279,6 +306,15 @@ If you need deterministic availability inside the repo build, install the pip eq
 path = "docs/requirements/analysis.md"
 title = "Requirements: Analysis (Topology + Embeddings)"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Analysis (Topology + Embeddings)
 
 These scripts use optional dependencies such as `networkx`, `ripser`, and friends.
@@ -300,6 +336,15 @@ Notes:
 path = "docs/requirements/astro.md"
 title = "Requirements: Astronomy Data Fetching"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Astronomy Data Fetching
 
 Astro scripts depend on `astroquery` and (for some workflows) `gwpy`.
@@ -330,6 +375,15 @@ Common entrypoints:
 path = "docs/requirements/coq.md"
 title = "Requirements: Coq Proof Checking"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Coq Proof Checking
 
 This repo contains `.v` files under `curated/01_theory_frameworks/`.
@@ -354,6 +408,15 @@ Notes:
 path = "docs/requirements/cpp.md"
 title = "Requirements: C++ Kernels (Conan + CMake)"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: C++ Kernels (Conan + CMake)
 
 This repo includes optional C++ kernels under `cpp/` (C++20) with Makefile targets:
@@ -392,6 +455,15 @@ pipx, then retry.
 path = "docs/requirements/latex.md"
 title = "Requirements: LaTeX (PDF Build)"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: LaTeX (PDF Build)
 
 To compile the LaTeX sources under `docs/latex/`, install a TeX distribution (e.g. TeX Live) and ensure `latexmk` is available.
@@ -410,6 +482,15 @@ Notes:
 path = "docs/requirements/materials.md"
 title = "Requirements: Materials Datasets"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Materials Datasets
 
 For reproducible, keyless materials-science property datasets, prefer sources with clear licensing.
@@ -435,6 +516,15 @@ References:
 path = "docs/requirements/particle.md"
 title = "Requirements: Particle Data Workflows"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Particle Data Workflows
 
 Particle workflows are optional and use Python extras:
@@ -457,6 +547,15 @@ under `data/external/` and update `docs/BIBLIOGRAPHY.md`.
 path = "docs/requirements/quantum-docker.md"
 title = "Requirements: Quantum (Qiskit via Docker)"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Quantum (Qiskit via Docker)
 
 Host Python may be too new for Qiskit wheels. Use Docker.

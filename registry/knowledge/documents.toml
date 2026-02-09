@@ -4,8 +4,8 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 133
-skipped_generated_count = 95
+raw_capture_count = 119
+skipped_generated_count = 109
 authoritative = false
 normalization_required = true
 
@@ -52,17 +52,6 @@ raw_captured = true
 authoritative = false
 normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0004.toml"
-
-[[document]]
-id = "DOC-0005"
-source_path = "REQUIREMENTS.md"
-title = "Installation Requirements (Reproducible)"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0005.toml"
 
 [[document]]
 id = "DOC-0006"
@@ -406,17 +395,6 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0045.toml"
 
 [[document]]
-id = "DOC-0046"
-source_path = "docs/NEXT_ACTIONS.md"
-title = "Next Actions (Prioritized)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0046.toml"
-
-[[document]]
 id = "DOC-0047"
 source_path = "docs/NV_ODMR_BOM.md"
 title = "NV ODMR / OPU BOM (Jan 2026) -- Local Staging"
@@ -494,17 +472,6 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0053.toml"
 
 [[document]]
-id = "DOC-0054"
-source_path = "docs/REQUIREMENTS.md"
-title = "Requirements for Gemini Experiments"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0054.toml"
-
-[[document]]
 id = "DOC-0055"
 source_path = "docs/RESEARCH_STATUS.md"
 title = "Research Status: Toy Operator Study (Speculative \"Negative Dimension\" Mapping)"
@@ -547,17 +514,6 @@ raw_captured = true
 authoritative = false
 normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0058.toml"
-
-[[document]]
-id = "DOC-0059"
-source_path = "docs/ROADMAP.md"
-title = "open_gororoba Roadmap"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0059.toml"
 
 [[document]]
 id = "DOC-0060"
@@ -668,17 +624,6 @@ raw_captured = true
 authoritative = false
 normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0069.toml"
-
-[[document]]
-id = "DOC-0070"
-source_path = "docs/TODO.md"
-title = "TODO (updated 2026-02-08): executable, test-driven tracker"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0070.toml"
 
 [[document]]
 id = "DOC-0071"
@@ -1330,105 +1275,6 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0151.toml"
 
 [[document]]
-id = "DOC-0161"
-source_path = "docs/requirements/algebra.md"
-title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0161.toml"
-
-[[document]]
-id = "DOC-0162"
-source_path = "docs/requirements/analysis.md"
-title = "Requirements: Analysis (Topology + Embeddings)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0162.toml"
-
-[[document]]
-id = "DOC-0163"
-source_path = "docs/requirements/astro.md"
-title = "Requirements: Astronomy Data Fetching"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0163.toml"
-
-[[document]]
-id = "DOC-0164"
-source_path = "docs/requirements/coq.md"
-title = "Requirements: Coq Proof Checking"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0164.toml"
-
-[[document]]
-id = "DOC-0165"
-source_path = "docs/requirements/cpp.md"
-title = "Requirements: C++ Kernels (Conan + CMake)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0165.toml"
-
-[[document]]
-id = "DOC-0166"
-source_path = "docs/requirements/latex.md"
-title = "Requirements: LaTeX (PDF Build)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0166.toml"
-
-[[document]]
-id = "DOC-0167"
-source_path = "docs/requirements/materials.md"
-title = "Requirements: Materials Datasets"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0167.toml"
-
-[[document]]
-id = "DOC-0168"
-source_path = "docs/requirements/particle.md"
-title = "Requirements: Particle Data Workflows"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0168.toml"
-
-[[document]]
-id = "DOC-0169"
-source_path = "docs/requirements/quantum-docker.md"
-title = "Requirements: Quantum (Qiskit via Docker)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0169.toml"
-
-[[document]]
 id = "DOC-0170"
 source_path = "docs/theory/CLAIMS_METHODOLOGY.md"
 title = "Claims Methodology and Scientific Rigor"
@@ -1471,6 +1317,15 @@ raw_captured = true
 authoritative = false
 normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0182.toml"
+
+[[document]]
+id = "DOC-0005"
+source_path = "REQUIREMENTS.md"
+title = "Installation Requirements (Reproducible)"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
 id = "DOC-0008"
@@ -1548,6 +1403,42 @@ skip_reason = "generated_markdown_or_artifact"
 id = "DOC-0024"
 source_path = "docs/CLAIMS_TASKS.md"
 title = "Claims -> Tasks Tracker (Generated Mirror)"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0046"
+source_path = "docs/NEXT_ACTIONS.md"
+title = "Next Actions (Prioritized)"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0054"
+source_path = "docs/REQUIREMENTS.md"
+title = "Requirements for Gemini Experiments"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0059"
+source_path = "docs/ROADMAP.md"
+title = "open_gororoba Roadmap"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0070"
+source_path = "docs/TODO.md"
+title = "TODO (updated 2026-02-08): executable, test-driven tracker"
 kind = "generated_markdown"
 raw_captured = false
 authoritative = false
@@ -1827,6 +1718,87 @@ skip_reason = "generated_markdown_or_artifact"
 id = "DOC-0160"
 source_path = "docs/generated/TODO_REGISTRY_MIRROR.md"
 title = "TODO Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0161"
+source_path = "docs/requirements/algebra.md"
+title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0162"
+source_path = "docs/requirements/analysis.md"
+title = "Requirements: Analysis (Topology + Embeddings)"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0163"
+source_path = "docs/requirements/astro.md"
+title = "Requirements: Astronomy Data Fetching"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0164"
+source_path = "docs/requirements/coq.md"
+title = "Requirements: Coq Proof Checking"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0165"
+source_path = "docs/requirements/cpp.md"
+title = "Requirements: C++ Kernels (Conan + CMake)"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0166"
+source_path = "docs/requirements/latex.md"
+title = "Requirements: LaTeX (PDF Build)"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0167"
+source_path = "docs/requirements/materials.md"
+title = "Requirements: Materials Datasets"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0168"
+source_path = "docs/requirements/particle.md"
+title = "Requirements: Particle Data Workflows"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0169"
+source_path = "docs/requirements/quantum-docker.md"
+title = "Requirements: Quantum (Qiskit via Docker)"
 kind = "generated_markdown"
 raw_captured = false
 authoritative = false
