@@ -263,6 +263,11 @@ pub use billiard_stats::{
     PermutationTestResult, permutation_test_r_e8, permutation_test_mi,
     // Transition matrix analysis
     transition_matrix, stationary_distribution,
+    // Chi-squared test
+    ChiSquaredResult, chi_squared_e8_transitions,
+    // Fano structure analysis
+    FanoStructureAnalysis, fano_structure_analysis,
+    fano_structure_analysis_from_sequence, fano_analysis_report,
     // Claim 1 verification
     Claim1Result, verify_claim1, claim1_summary,
 };

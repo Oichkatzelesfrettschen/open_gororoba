@@ -827,6 +827,213 @@ pub fn claim1_summary(result: &Claim1Result) -> (String, bool) {
 }
 
 // ---------------------------------------------------------------------------
+// Chi-squared test for transition uniformity
+// ---------------------------------------------------------------------------
+
+/// Result of a chi-squared test for E8 transition uniformity.
+#[derive(Debug, Clone)]
+pub struct ChiSquaredResult {
+    /// Chi-squared statistic.
+    pub chi_sq: f64,
+    /// Degrees of freedom.
+    pub df: usize,
+    /// Observed transition counts (E8 only, 8x8).
+    pub observed: [[u64; N_E8]; N_E8],
+    /// Total E8 transitions (off-diagonal).
+    pub total: u64,
+    /// Expected count per off-diagonal cell under uniformity.
+    pub expected_per_cell: f64,
+}
+
+/// Chi-squared goodness-of-fit test for E8 transition uniformity.
+///
+/// Null hypothesis: all off-diagonal E8 transitions are equally likely.
+/// The test statistic is sum((O_ij - E)^2 / E) for i != j, where E = total/56.
+pub fn chi_squared_e8_transitions(sequence: &[usize]) -> ChiSquaredResult {
+    let full_trans = transition_matrix(sequence);
+
+    // Extract E8 block
+    let mut observed = [[0u64; N_E8]; N_E8];
+    let mut total = 0u64;
+    for i in 0..N_E8 {
+        for j in 0..N_E8 {
+            observed[i][j] = full_trans[i][j];
+            if i != j {
+                total += full_trans[i][j];
+            }
+        }
+    }
+
+    let n_cells = N_E8 * (N_E8 - 1); // 56 off-diagonal cells
+    let expected = total as f64 / n_cells as f64;
+    let df = n_cells - 1; // 55
+
+    let mut chi_sq = 0.0;
+    if expected > 0.0 {
+        for (i, row) in observed.iter().enumerate() {
+            for (j, &count) in row.iter().enumerate() {
+                if i != j {
+                    let o = count as f64;
+                    chi_sq += (o - expected).powi(2) / expected;
+                }
+            }
+        }
+    }
+
+    ChiSquaredResult {
+        chi_sq,
+        df,
+        observed,
+        total,
+        expected_per_cell: expected,
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Integrated Fano structure analysis (task #19 integration)
+// ---------------------------------------------------------------------------
+
+/// Comprehensive analysis of Fano plane structure in billiard transitions.
+///
+/// Integrates all four falsification claims into a single analysis run:
+/// - Locality metrics (r_e8, mutual information, commutation rate)
+/// - Sector-specific metrics
+/// - Chi-squared test for transition uniformity
+/// - Permutation test for r_e8 significance
+#[derive(Debug, Clone)]
+pub struct FanoStructureAnalysis {
+    /// Bounce sequence length.
+    pub sequence_length: usize,
+    /// Locality metrics computed from the sequence.
+    pub locality: LocalityMetrics,
+    /// Sector-specific metrics.
+    pub sectors: SectorMetrics,
+    /// Chi-squared test for E8 transition uniformity.
+    pub chi_squared: ChiSquaredResult,
+    /// Permutation test for r_e8 against uniform null.
+    pub perm_test_uniform: PermutationTestResult,
+    /// Permutation test for r_e8 against IID-empirical null.
+    pub perm_test_empirical: PermutationTestResult,
+    /// Stationary distribution of the transition chain.
+    pub stationary: [f64; N_WALLS],
+    /// E8 wall frequency (fraction of bounces hitting each E8 wall).
+    pub e8_wall_freq: [f64; N_E8],
+}
+
+/// Run a complete Fano structure analysis on a billiard simulation.
+///
+/// Uses the hyperbolic billiard (billiard_sim) with the given seed and bounce count.
+/// Performs all locality metrics, sector analysis, chi-squared, and permutation tests.
+pub fn fano_structure_analysis(
+    seed: u64,
+    n_bounces: usize,
+    n_permutations: usize,
+) -> FanoStructureAnalysis {
+    use crate::billiard_sim::HyperbolicBilliard;
+    use crate::kac_moody::E10RootSystem;
+
+    let e10 = E10RootSystem::new();
+    let mut billiard = HyperbolicBilliard::from_e10(&e10, seed);
+    let sequence = billiard.simulate(n_bounces);
+
+    fano_structure_analysis_from_sequence(&sequence, n_permutations, seed)
+}
+
+/// Run Fano structure analysis on a pre-computed sequence.
+pub fn fano_structure_analysis_from_sequence(
+    sequence: &[usize],
+    n_permutations: usize,
+    seed: u64,
+) -> FanoStructureAnalysis {
+    let locality = compute_locality_metrics(sequence);
+    let sectors = compute_sector_metrics(sequence);
+    let chi_squared = chi_squared_e8_transitions(sequence);
+    let perm_test_uniform = permutation_test_r_e8(
+        sequence, &NullModel::Uniform, n_permutations, seed);
+    let perm_test_empirical = permutation_test_r_e8(
+        sequence, &NullModel::IidEmpirical, n_permutations, seed + 1);
+    let trans = transition_matrix(sequence);
+    let stationary = stationary_distribution(&trans);
+
+    // E8 wall frequencies
+    let mut wall_counts = [0u64; N_E8];
+    for &w in sequence {
+        if w < N_E8 {
+            wall_counts[w] += 1;
+        }
+    }
+    let total_e8 = wall_counts.iter().sum::<u64>() as f64;
+    let mut e8_wall_freq = [0.0f64; N_E8];
+    if total_e8 > 0.0 {
+        for (i, &c) in wall_counts.iter().enumerate() {
+            e8_wall_freq[i] = c as f64 / total_e8;
+        }
+    }
+
+    FanoStructureAnalysis {
+        sequence_length: sequence.len(),
+        locality,
+        sectors,
+        chi_squared,
+        perm_test_uniform,
+        perm_test_empirical,
+        stationary,
+        e8_wall_freq,
+    }
+}
+
+/// Format a Fano structure analysis as a human-readable report.
+pub fn fano_analysis_report(a: &FanoStructureAnalysis) -> String {
+    format!(
+        "=== Fano Structure Analysis ({n} bounces) ===\n\
+         \n\
+         Locality:\n\
+         r_e8={re8:.4}  r_e10={re10:.4}  MI={mi:.4} nats  commute={comm:.1}%\n\
+         E8 trans={ne8}  mixed={nmix}  hyp={nhyp}\n\
+         \n\
+         Sectors:\n\
+         r_e8={sre8:.4}  r_mixed={srm:.4}  r_hyp={srh:.4}\n\
+         E8={ef:.1}%  mixed={mf:.1}%  hyp={hf:.1}%\n\
+         \n\
+         Chi-squared (H0: uniform E8 transitions):\n\
+         chi2={chi:.2}  df={df}  total_E8_trans={tot}\n\
+         expected/cell={exp:.2}\n\
+         \n\
+         Permutation tests (n={np}):\n\
+         vs Uniform:  p={pu:.4}  effect={eu:.2}\n\
+         vs Empirical: p={pe:.4}  effect={ee:.2}\n\
+         \n\
+         E8 wall frequencies:\n\
+         {freq}",
+        n = a.sequence_length,
+        re8 = a.locality.r_e8,
+        re10 = a.locality.r_e10,
+        mi = a.locality.mutual_information,
+        comm = a.locality.commutation_rate * 100.0,
+        ne8 = a.locality.n_e8_transitions,
+        nmix = a.locality.n_mixed_transitions,
+        nhyp = a.locality.n_hyp_transitions,
+        sre8 = a.sectors.r_e8,
+        srm = a.sectors.r_mixed,
+        srh = a.sectors.r_hyp,
+        ef = a.sectors.e8_fraction * 100.0,
+        mf = a.sectors.mixed_fraction * 100.0,
+        hf = a.sectors.hyp_fraction * 100.0,
+        chi = a.chi_squared.chi_sq,
+        df = a.chi_squared.df,
+        tot = a.chi_squared.total,
+        exp = a.chi_squared.expected_per_cell,
+        np = a.perm_test_uniform.n_permutations,
+        pu = a.perm_test_uniform.p_value,
+        eu = a.perm_test_uniform.effect_size,
+        pe = a.perm_test_empirical.p_value,
+        ee = a.perm_test_empirical.effect_size,
+        freq = (0..N_E8).map(|i| format!("  w{i}={:.3}", a.e8_wall_freq[i]))
+            .collect::<Vec<_>>().join("\n"),
+    )
+}
+
+// ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
 
@@ -1267,5 +1474,99 @@ mod tests {
         // Epsilon delta should be moderate
         assert!(result.max_eps_delta < 0.5,
             "Epsilon delta too large: {:.4}", result.max_eps_delta);
+    }
+
+    // -----------------------------------------------------------------------
+    // Chi-squared tests
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn test_chi_squared_uniform_sequence() {
+        // Uniform random sequence should have low chi-squared
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        let seq: Vec<usize> = (0..10000).map(|_| rng.gen_range(0..N_E8)).collect();
+        let result = chi_squared_e8_transitions(&seq);
+
+        assert_eq!(result.df, 55);
+        assert!(result.total > 0);
+        assert!(result.expected_per_cell > 0.0);
+        // For truly uniform, chi-squared should be moderate (not extremely large)
+        // With 10K samples, we expect chi2 ~ df = 55 under null
+        assert!(result.chi_sq < 200.0,
+            "chi2={:.1} too large for near-uniform sequence", result.chi_sq);
+    }
+
+    #[test]
+    fn test_chi_squared_structured_sequence() {
+        // Highly structured: always alternate between 0 and 1
+        let seq: Vec<usize> = (0..1000).map(|i| i % 2).collect();
+        let result = chi_squared_e8_transitions(&seq);
+
+        // Only 0->1 and 1->0 transitions exist; rest are 0
+        // This should give very high chi-squared
+        assert!(result.chi_sq > 100.0,
+            "chi2={:.1} should be large for deterministic alternation", result.chi_sq);
+    }
+
+    #[test]
+    fn test_chi_squared_empty_sequence() {
+        let result = chi_squared_e8_transitions(&[]);
+        assert_eq!(result.total, 0);
+        assert!((result.chi_sq).abs() < 1e-10);
+    }
+
+    // -----------------------------------------------------------------------
+    // Fano structure analysis tests
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn test_fano_structure_analysis_basic() {
+        let analysis = fano_structure_analysis(42, 500, 100);
+
+        assert_eq!(analysis.sequence_length, 500);
+        assert!(analysis.locality.r_e8 >= 0.0);
+        assert!(analysis.locality.r_e8 <= 1.0);
+        assert!(analysis.chi_squared.df == 55);
+        assert_eq!(analysis.perm_test_uniform.n_permutations, 100);
+        assert_eq!(analysis.perm_test_empirical.n_permutations, 100);
+
+        // Wall frequencies should sum to ~1.0
+        let freq_sum: f64 = analysis.e8_wall_freq.iter().sum();
+        if freq_sum > 0.0 {
+            assert!((freq_sum - 1.0).abs() < 1e-10,
+                "E8 wall frequencies should sum to 1.0, got {:.6}", freq_sum);
+        }
+    }
+
+    #[test]
+    fn test_fano_structure_analysis_from_sequence() {
+        // Test with a known sequence
+        let seq = vec![0, 1, 2, 3, 4, 5, 0, 1, 4, 6, 7, 0, 3, 2, 1, 0];
+        let analysis = fano_structure_analysis_from_sequence(&seq, 50, 42);
+
+        assert_eq!(analysis.sequence_length, 16);
+        assert!(analysis.locality.n_transitions > 0);
+    }
+
+    #[test]
+    fn test_fano_analysis_report_format() {
+        let analysis = fano_structure_analysis(42, 200, 50);
+        let report = fano_analysis_report(&analysis);
+
+        assert!(report.contains("Fano Structure Analysis"));
+        assert!(report.contains("Locality:"));
+        assert!(report.contains("Sectors:"));
+        assert!(report.contains("Chi-squared"));
+        assert!(report.contains("Permutation tests"));
+        assert!(report.contains("E8 wall frequencies"));
+    }
+
+    #[test]
+    fn test_fano_structure_deterministic() {
+        let a1 = fano_structure_analysis(42, 300, 50);
+        let a2 = fano_structure_analysis(42, 300, 50);
+
+        assert!((a1.locality.r_e8 - a2.locality.r_e8).abs() < 1e-15);
+        assert!((a1.chi_squared.chi_sq - a2.chi_squared.chi_sq).abs() < 1e-10);
     }
 }
