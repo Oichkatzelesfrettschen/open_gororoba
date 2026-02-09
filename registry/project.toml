@@ -12,6 +12,14 @@ experiment_count = 13
 paper_count = 19
 binary_count = 40
 
+[sprints.s18]
+number = 18
+date = "2026-02-09"
+test_count = 2239
+claim_count = 477
+binary_count = 40
+summary = "Experiment binaries E-011/E-012/E-013: cross-stack-locality, et-billiard, sky-limit-set CLIs with CSV output. 40 binaries, all 3 produce verified output."
+
 [sprints.s17]
 number = 17
 date = "2026-02-09"
