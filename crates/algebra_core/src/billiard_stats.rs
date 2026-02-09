@@ -227,6 +227,11 @@ pub enum NullModel {
     /// (preserves pairwise transition rates but randomizes higher-order
     /// structure).
     Markov,
+    /// Commutation shuffle: randomly swap consecutive commuting pairs
+    /// (s_i s_j = s_j s_i when A_{ij} = 0). Preserves Weyl group
+    /// equivalence class. Multiple passes for mixing.
+    /// Parameter: number of mixing passes.
+    CommutationShuffle(usize),
 }
 
 /// Generate a null sequence of the given length.
@@ -266,6 +271,9 @@ pub fn generate_null_sequence(
         }
         NullModel::Markov => {
             generate_markov_sequence(empirical, length, rng)
+        }
+        NullModel::CommutationShuffle(passes) => {
+            generate_commutation_shuffle(empirical, length, *passes, rng)
         }
     }
 }
@@ -379,6 +387,119 @@ fn generate_markov_sequence(
 
 // ---------------------------------------------------------------------------
 // Permutation test
+/// Generate a commutation-shuffled sequence.
+///
+/// This preserves the Weyl group equivalence class: consecutive generators
+/// that commute (A_{ij} = 0, i.e., non-adjacent in Dynkin diagram) are
+/// randomly swapped. Multiple passes ensure good mixing.
+fn generate_commutation_shuffle(
+    empirical: &[usize],
+    length: usize,
+    passes: usize,
+    rng: &mut impl Rng,
+) -> Vec<usize> {
+    let mut seq = empirical.to_vec();
+    seq.truncate(length);
+    while seq.len() < length {
+        seq.push(empirical[rng.gen_range(0..empirical.len())]);
+    }
+
+    for _ in 0..passes {
+        for i in 0..seq.len().saturating_sub(1) {
+            let (a, b) = (seq[i], seq[i + 1]);
+            if a < N_WALLS && b < N_WALLS && a != b && !E10_ADJACENCY[a][b] {
+                // Generators commute: randomly swap with 50% probability
+                if rng.gen_bool(0.5) {
+                    seq.swap(i, i + 1);
+                }
+            }
+        }
+    }
+
+    seq
+}
+
+// ---------------------------------------------------------------------------
+
+/// Sector-specific adjacency ratios for detailed analysis.
+#[derive(Debug, Clone)]
+pub struct SectorMetrics {
+    /// E8 adjacency ratio (walls 0-7 only).
+    pub r_e8: f64,
+    /// Full E10 adjacency ratio.
+    pub r_e10: f64,
+    /// Mixed-sector adjacency ratio (E8 <-> affine/hyperbolic).
+    /// Here, "adjacent" means connected in E10 Dynkin (only 0-8).
+    pub r_mixed: f64,
+    /// Hyperbolic sector adjacency ratio (walls 8-9).
+    pub r_hyp: f64,
+    /// Fraction of all transitions that are E8-internal.
+    pub e8_fraction: f64,
+    /// Fraction of all transitions that are mixed.
+    pub mixed_fraction: f64,
+    /// Fraction of all transitions that are hyperbolic-internal.
+    pub hyp_fraction: f64,
+}
+
+/// Compute sector-specific adjacency ratios.
+///
+/// Breaks down transitions by sector (E8, mixed, hyperbolic) and computes
+/// the adjacency ratio within each sector.
+pub fn compute_sector_metrics(sequence: &[usize]) -> SectorMetrics {
+    if sequence.len() < 2 {
+        return SectorMetrics {
+            r_e8: 0.0, r_e10: 0.0, r_mixed: 0.0, r_hyp: 0.0,
+            e8_fraction: 0.0, mixed_fraction: 0.0, hyp_fraction: 0.0,
+        };
+    }
+
+    let mut e8_adj = 0u64;
+    let mut e8_total = 0u64;
+    let mut mixed_adj = 0u64;
+    let mut mixed_total = 0u64;
+    let mut hyp_adj = 0u64;
+    let mut hyp_total = 0u64;
+    let mut e10_adj = 0u64;
+    let mut e10_total = 0u64;
+
+    for pair in sequence.windows(2) {
+        let (i, j) = (pair[0], pair[1]);
+        if i >= N_WALLS || j >= N_WALLS || i == j { continue; }
+
+        let adjacent = E10_ADJACENCY[i][j];
+        e10_total += 1;
+        if adjacent { e10_adj += 1; }
+
+        let i_e8 = i < N_E8;
+        let j_e8 = j < N_E8;
+        match (i_e8, j_e8) {
+            (true, true) => {
+                e8_total += 1;
+                if adjacent { e8_adj += 1; }
+            }
+            (false, false) => {
+                hyp_total += 1;
+                if adjacent { hyp_adj += 1; }
+            }
+            _ => {
+                mixed_total += 1;
+                if adjacent { mixed_adj += 1; }
+            }
+        }
+    }
+
+    let total = e10_total as f64;
+    SectorMetrics {
+        r_e8: if e8_total > 0 { e8_adj as f64 / e8_total as f64 } else { 0.0 },
+        r_e10: if e10_total > 0 { e10_adj as f64 / e10_total as f64 } else { 0.0 },
+        r_mixed: if mixed_total > 0 { mixed_adj as f64 / mixed_total as f64 } else { 0.0 },
+        r_hyp: if hyp_total > 0 { hyp_adj as f64 / hyp_total as f64 } else { 0.0 },
+        e8_fraction: if total > 0.0 { e8_total as f64 / total } else { 0.0 },
+        mixed_fraction: if total > 0.0 { mixed_total as f64 / total } else { 0.0 },
+        hyp_fraction: if total > 0.0 { hyp_total as f64 / total } else { 0.0 },
+    }
+}
+
 // ---------------------------------------------------------------------------
 
 /// Result of a permutation test.
@@ -809,5 +930,106 @@ mod tests {
 
         let result2 = summarize_permutation_test(0.1, &vec![0.5, 0.6, 0.55, 0.52, 0.58]);
         assert!(result2.effect_size < 0.0, "Observed < mean => negative effect size");
+    }
+
+    #[test]
+    fn test_commutation_shuffle_preserves_elements() {
+        // CommutationShuffle should preserve the multiset of elements
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        let empirical = vec![0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3];
+        let null = generate_null_sequence(
+            &NullModel::CommutationShuffle(100), empirical.len(), &empirical, &mut rng,
+        );
+        assert_eq!(null.len(), empirical.len());
+        // Same elements (sorted)
+        let mut sorted_emp = empirical.clone();
+        let mut sorted_null = null.clone();
+        sorted_emp.sort_unstable();
+        sorted_null.sort_unstable();
+        assert_eq!(sorted_emp, sorted_null,
+            "CommutationShuffle must preserve element multiset");
+    }
+
+    #[test]
+    fn test_commutation_shuffle_only_swaps_commuting() {
+        // A fully connected sequence (0-1-2-3-4-5) has all adjacent pairs.
+        // CommutationShuffle should NOT swap any of them.
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        let empirical = vec![0, 1, 2, 3, 4, 5]; // all consecutive are adjacent in E8
+        let null = generate_null_sequence(
+            &NullModel::CommutationShuffle(100), empirical.len(), &empirical, &mut rng,
+        );
+        // Should be identical since no commuting pairs exist
+        assert_eq!(null, empirical,
+            "All-adjacent sequence should be invariant under CommutationShuffle");
+    }
+
+    #[test]
+    fn test_commutation_shuffle_does_swap_commuting() {
+        // Sequence 0-5-0-5: 0 and 5 are non-adjacent (commute in E10).
+        // With enough passes, some swaps should occur.
+        let mut rng = ChaCha8Rng::seed_from_u64(42);
+        let empirical = vec![0, 5, 0, 5, 0, 5, 0, 5, 0, 5];
+        let null = generate_null_sequence(
+            &NullModel::CommutationShuffle(100), empirical.len(), &empirical, &mut rng,
+        );
+        // At least some positions should differ (with high probability)
+        let diffs: usize = empirical.iter().zip(null.iter()).filter(|(&a, &b)| a != b).count();
+        assert!(diffs > 0, "CommutationShuffle should swap some commuting pairs");
+    }
+
+    #[test]
+    fn test_commutation_shuffle_preserves_locality_for_connected() {
+        // Walk back-and-forth along E8 spine: 0-1-2-1-0-1-2-1...
+        // Every consecutive pair (0-1, 1-2, 2-1, 1-0) is adjacent in E10,
+        // so CommutationShuffle has NO non-adjacent pairs to swap.
+        let pattern = [0, 1, 2, 1];
+        let seq: Vec<usize> = (0..100).map(|i| pattern[i % 4]).collect();
+        let result = permutation_test_r_e8(
+            &seq, &NullModel::CommutationShuffle(50), 100, 42,
+        );
+        // r_E8 should be identical: shuffle cannot swap any pairs
+        assert!((result.observed - result.null_mean).abs() < 1e-10,
+            "CommutationShuffle on all-adjacent should not change r_E8, \
+             obs={}, null={}", result.observed, result.null_mean);
+    }
+
+    #[test]
+    fn test_sector_metrics_basic() {
+        // E8-internal sequence: all transitions are E8
+        let seq = vec![0, 1, 2, 3, 4, 5, 6, 7];
+        let sm = compute_sector_metrics(&seq);
+        assert!((sm.e8_fraction - 1.0).abs() < 1e-10);
+        assert!(sm.mixed_fraction < 1e-10);
+        assert!(sm.hyp_fraction < 1e-10);
+    }
+
+    #[test]
+    fn test_sector_metrics_mixed() {
+        // Transition between E8 and affine/hyperbolic
+        let seq = vec![0, 8, 9];
+        let sm = compute_sector_metrics(&seq);
+        assert_eq!(sm.mixed_fraction, 0.5); // 0->8 is mixed
+        assert_eq!(sm.hyp_fraction, 0.5);   // 8->9 is hyp
+        // r_mixed: 0->8 is adjacent (0-8 edge), so r_mixed = 1.0
+        assert!((sm.r_mixed - 1.0).abs() < 1e-10);
+        // r_hyp: 8->9 is adjacent, so r_hyp = 1.0
+        assert!((sm.r_hyp - 1.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_sector_metrics_all_sectors() {
+        // Mix of all sectors
+        let seq = vec![3, 4, 8, 9, 8, 0, 2, 7];
+        let sm = compute_sector_metrics(&seq);
+        // 3->4: E8 adjacent
+        // 4->8: mixed (not adjacent -- 4 and 8 not connected)
+        // 8->9: hyp adjacent
+        // 9->8: hyp adjacent
+        // 8->0: mixed adjacent (0-8 edge)
+        // 0->2: E8 (not adjacent -- 0 connects to 1,8 only)
+        // 2->7: E8 (not adjacent)
+        assert!(sm.r_e8 > 0.0, "Some E8 adjacency should exist (3->4)");
+        assert!(sm.r_hyp > 0.0, "Hyp adjacency should exist (8->9, 9->8)");
     }
 }
