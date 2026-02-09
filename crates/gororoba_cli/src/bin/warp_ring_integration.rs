@@ -6,15 +6,15 @@
 //! 3. Map triads to E7 Lie Algebra roots
 //! 4. Visualize the "Warp Ring" (Projected E7 Triads)
 
-use algebra_core::lie::e7_geometry::{generate_e7_roots, find_e7_triads, project_to_plane};
-use lbm_core::turbulence::{power_spectrum, extract_dominant_triads};
-use stats_core::hypergraph::TriadHypergraph;
-use optics_core::grin::{trace_ray, GrinMedium, Ray, RayState, Vec3};
+use algebra_core::lie::e7_geometry::{find_e7_triads, generate_e7_roots, project_to_plane};
+use lbm_core::turbulence::{extract_dominant_triads, power_spectrum};
+use log::info;
+use ndarray::Array2;
+use optics_core::grin::{trace_ray, GrinMedium, Ray};
 use plotters::prelude::*;
 use plotters::style::full_palette::GREY;
-use ndarray::Array2;
-use log::info;
 use rand::{Rng, SeedableRng};
+use stats_core::hypergraph::TriadHypergraph;
 use std::f64::consts::PI;
 
 /// A simple GRIN medium representing a "warp" potential.
@@ -25,23 +25,14 @@ struct WarpMedium {
 }
 
 impl GrinMedium for WarpMedium {
-    fn refractive_index(&self, pos: Vec3) -> f64 {
-        let r2 = pos.x*pos.x + pos.y*pos.y + pos.z*pos.z; // Simple spherical for now, or cylindrical
-        1.0 + self.amplitude * (-r2 / (self.sigma * self.sigma)).exp()
-    }
+    fn gradient_and_n(&self, pos: [f64; 3]) -> ([f64; 3], f64) {
+        let r2 = pos[0] * pos[0] + pos[1] * pos[1] + pos[2] * pos[2];
+        let n_val = 1.0 + self.amplitude * (-r2 / (self.sigma * self.sigma)).exp();
 
-    fn gradient_n(&self, pos: Vec3) -> Vec3 {
-        let n_val = self.refractive_index(pos);
-        // grad(n) = n(r) * (-2r / sigma^2) * (pos / r) ? No
-        // n = 1 + A exp(-r2/s2)
-        // dn/dx = A exp(...) * (-2x/s2)
-        // grad n = (n - 1) * (-2 pos / s2)
         let factor = (n_val - 1.0) * (-2.0 / (self.sigma * self.sigma));
-        Vec3 {
-            x: pos.x * factor,
-            y: pos.y * factor,
-            z: pos.z * factor,
-        }
+        let grad = [pos[0] * factor, pos[1] * factor, pos[2] * factor];
+
+        (grad, n_val)
     }
 }
 
@@ -140,8 +131,32 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .take(spectral_triads.len() * 10)
         .collect::<Vec<_>>();
 
-    // 4. Visualize
-    info!("[4/4] Rendering Warp Ring...");
+    // 4. Optics Simulation (Warp Lensing)
+    info!("[4/5] Simulating Warp Lensing...");
+    let warp = WarpMedium {
+        amplitude: 0.5,
+        sigma: 2.0,
+    };
+    let mut lensed_roots = Vec::new();
+
+    for r in &e7_roots {
+        let (x, y) = project_to_plane(&r.root);
+        // Trace a ray from "infinity" towards the root position on the plane z=0
+        let start = [x * 0.1, y * 0.1, -10.0];
+        let dir = [0.0, 0.0, 1.0];
+        let ray = Ray { pos: start, dir }; // No intensity
+
+        let result = trace_ray(ray, &warp, 0.1, 200);
+
+        if let Some(end_pos) = result.positions.last() {
+            lensed_roots.push((end_pos[0], end_pos[1]));
+        } else {
+            lensed_roots.push((x, y));
+        }
+    }
+
+    // 5. Visualize
+    info!("[5/5] Rendering Warp Ring...");
     let root = BitMapBackend::new("warp_ring_integration.png", (1024, 1024)).into_drawing_area();
     root.fill(&BLACK)?;
 
@@ -166,6 +181,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         let (x, y) = project_to_plane(&r.root);
         Circle::new((x, y), 2, GREY.filled())
     }))?;
+
+    // Draw Lensed Roots (Warp Effect)
+    chart.draw_series(
+        lensed_roots
+            .iter()
+            .map(|(x, y)| Circle::new((*x, *y), 2, RED.filled())),
+    )?;
 
     // Draw Active Triads (Energy Flow)
     for triad in active_algebra_triads {
