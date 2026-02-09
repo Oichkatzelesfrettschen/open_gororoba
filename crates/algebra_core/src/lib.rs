@@ -278,6 +278,8 @@ pub use emanation::{
     // Hide/Fill involution -- row-degree invariance
     RowDegreeDistribution, row_degree_distribution,
     HideFillResult, hide_fill_analysis,
+    // Skybox -- label-line extension for recursion
+    SkyboxCell, Skybox, create_skybox,
     // Three Vizier XOR relationships (de Marrais 2007)
     ThreeVizierResult, verify_three_viziers,
     VizierXorAudit, vizier_xor_audit,
