@@ -47,5 +47,6 @@ Some algorithms remain hand-rolled for justified reasons:
 
 - **nalgebra 0.33 vs 0.34**: num-dual 0.13.2 requires nalgebra 0.34, but
   workspace is pinned to 0.33.  Autodiff deferred until ode\_solvers updates.
-- **HDF5 2.0.0**: `hdf5-sys` 0.8.1 does not support HDF5 2.0.0+ (Arch Linux).
-  The `hdf5-export` feature is only usable on systems with HDF5 1.x.
+- **HDF5 2.0.0**: The original `hdf5` 0.8.1 crate panics on HDF5 2.0.
+  We use `hdf5-metno` 0.12 (MET Norway fork), which supports HDF5 1.8.4
+  through 2.0.x.  The `hdf5-export` feature requires `libhdf5` at link time.

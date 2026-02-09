@@ -5,7 +5,7 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2057
+test_count = 2063
 claim_count = 475
 insight_count = 16
 experiment_count = 10
@@ -15,9 +15,9 @@ binary_count = 37
 [sprints.s12]
 number = 12
 date = "2026-02-08"
-test_count = 2057
+test_count = 2063
 claim_count = 475
-summary = "Registry integrity, LaTeX superstructure, claims C-444/C-447/C-451 verified, Thesis H multi-null, 17 new tests"
+summary = "Registry integrity, LaTeX superstructure, HDF5 export (hdf5-metno), algebra_core reorg, mdbook chapters, 2063 tests"
 
 [sprints.s11]
 number = 11

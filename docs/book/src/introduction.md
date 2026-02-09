@@ -6,7 +6,7 @@ explain or predict phenomena in quantum gravity, particle physics, and cosmology
 
 ## Key Numbers
 
-- **1828** Rust tests (0 failures)
+- **2063** Rust tests (0 failures)
 - **475** tracked claims (C-001..C-475)
 - **16** insights (I-001..I-016)
 - **10** reproducible experiments (E-001..E-010)

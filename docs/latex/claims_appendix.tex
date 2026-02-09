@@ -12,15 +12,15 @@
 \textbf{ID} & \textbf{Statement} & \textbf{Status} & \textbf{Source} \\
 \hline
 \endhead
-C-001 & Cayley-Dickson algebras become non-associative at 8D and beyond. & Verified & `crates/algebra\_core/src/cayley\_dickson.... \\
+C-001 & Cayley-Dickson algebras become non-associative at 8D and beyond. & Verified & `crates/algebra\_core/src/construction/ca... \\
 \hline
-C-002 & 16D sedenions have zero divisors and lose norm composition. & Verified & `crates/algebra\_core/src/boxkites.rs`... \\
+C-002 & 16D sedenions have zero divisors and lose norm composition. & Verified & `crates/algebra\_core/src/analysis/boxkit... \\
 \hline
-C-003 & "42 assessors" / "7 box-kites" organize primitive sedenion zero divisors. & Verified & `crates/algebra\_core/src/boxkites.rs`... \\
+C-003 & "42 assessors" / "7 box-kites" organize primitive sedenion zero divisors. & Verified & `crates/algebra\_core/src/analysis/boxkit... \\
 \hline
 C-004 & The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which... & Verified & `docs/SEDENION\_ATLAS.md`,... \\
 \hline
-C-005 & "The geometry of sedenion zero divisors" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`,... & Verified & `crates/algebra\_core/src/grassmannian.rs... \\
+C-005 & "The geometry of sedenion zero divisors" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`,... & Verified & `crates/algebra\_core/src/analysis/grassm... \\
 \hline
 C-006 & GWTC-3 "confident events" data integrated into `data/external/GWTC-3\_confident.csv` and matches the GWOSC eventapi... & Verified & `docs/archive/RESEARCH\_STATUS.md`,... \\
 \hline
@@ -118,9 +118,9 @@ C-052 & MERA (Multi-scale Entanglement Renormalization) circuit produces logarit
 \hline
 C-053 & Toy mapping: Pathion (32D) tensor diagonal -> dielectric stack (TMM retrieval). & Verified & `src/scripts/analysis/c053\_pathion\_metam... \\
 \hline
-C-054 & Carlstrom's Wheel Algebra formally models information loss in non-associative CD algebras. & Verified & `crates/algebra\_core/src/wheels.rs` \\
+C-054 & Carlstrom's Wheel Algebra formally models information loss in non-associative CD algebras. & Verified & `crates/algebra\_core/src/construction/wh... \\
 \hline
-C-055 & Non-associativity is the generic (bulk) state of 16D/32D CD algebras (100\% prevalence). & Verified & `crates/algebra\_core/src/cayley\_dickson.... \\
+C-055 & Non-associativity is the generic (bulk) state of 16D/32D CD algebras (100\% prevalence). & Verified & `crates/algebra\_core/src/construction/ca... \\
 \hline
 C-056 & PDG lepton/boson masses verified against experiment (electron, muon, Z, W, Higgs). & Verified & `src/scripts/data/fetch\_pdg\_particle\_dat... \\
 \hline
@@ -860,7 +860,7 @@ C-423 & Grand Unified Simulator v4 integrates CUDA-based relativistic ray tracin
 \hline
 C-424 & "Holographic Warp Gate" simulation harmonizes Alcubierre metric gradients with Kozyrev p-adic noise and Spaceplate... & Verified & `src/scripts/engineering/holographic\_war... \\
 \hline
-C-425 & Octonion-valued (8D) scalar field Hamiltonian with Stormer-Verlet symplectic integrator, 7 Noether charges from... & Verified & `crates/algebra\_core/src/octonion\_field.... \\
+C-425 & Octonion-valued (8D) scalar field Hamiltonian with Stormer-Verlet symplectic integrator, 7 Noether charges from... & Verified & `crates/algebra\_core/src/physics/octonio... \\
 \hline
 C-426 & Pathion (32D) Zero-Divisor interaction matrix diagonalization provides a testbed for algebraic mass spectrum hypotheses... & Refuted & `docs/external\_sources/OPEN\_CLAIMS\_SOURC... \\
 \hline
@@ -896,70 +896,70 @@ C-441 & Bounce cosmology (quantum-corrected Friedmann equation) is disfavored by
 \hline
 C-442 & Multi-attribute Euclidean ultrametricity is specific to radio transient catalogs (FRB, pulsar) parameterized by DM+sky... & Refuted & `crates/gororoba\_cli/src/bin/multi\_datas... \\
 \hline
-C-443 & Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8... & Verified & `crates/algebra\_core/src/boxkites.rs`... \\
+C-443 & Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8... & Verified & `crates/algebra\_core/src/analysis/boxkit... \\
 \hline
-C-444 & CD motif components at dim=2\textasciicircum{}n correspond bijectively to points of PG(n-2,2) finite projective space. At dim=16 (7... & Verified & `crates/algebra\_core/src/projective\_geom... \\
+C-444 & CD motif components at dim=2\textasciicircum{}n correspond bijectively to points of PG(n-2,2) finite projective space. At dim=16 (7... & Verified & `crates/algebra\_core/src/analysis/projec... \\
 \hline
-C-445 & Motif class assignment within a given CD dimension is determined by a GF(2)-linear predicate: a weight vector w in... & Refuted & `crates/algebra\_core/src/projective\_geom... \\
+C-445 & Motif class assignment within a given CD dimension is determined by a GF(2)-linear predicate: a weight vector w in... & Refuted & `crates/algebra\_core/src/analysis/projec... \\
 \hline
-C-446 & Sign-twist signature (4-bit encoding of sign products for cross-pair interactions) fully determines the zero-product... & Verified & `crates/algebra\_core/src/projective\_geom... \\
+C-446 & Sign-twist signature (4-bit encoding of sign products for cross-pair interactions) fully determines the zero-product... & Verified & `crates/algebra\_core/src/analysis/projec... \\
 \hline
 C-447 & Adaptive permutation testing (Besag-Clifford 1991) preserves type-I error rate at nominal alpha=0.05 while achieving... & Verified & `crates/stats\_core/src/ultrametric/adapt... \\
 \hline
-C-448 & The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=32 (8 heptacross + 7 mixed-degree) requires a... & Verified & `crates/algebra\_core/src/projective\_geom... \\
+C-448 & The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=32 (8 heptacross + 7 mixed-degree) requires a... & Verified & `crates/algebra\_core/src/analysis/projec... \\
 \hline
 C-449 & Ultrametric Core Mining Hypothesis (UCMH): for multi-attribute astronomical catalogs, the minimal attribute subsets... & Verified & `src/scripts/analysis/extract\_ultrametri... \\
 \hline
-C-450 & The external 64D pathion adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node... & Inconclusive & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-450 & The external 64D pathion adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node... & Inconclusive & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-451 & 128D Cayley-Dickson cross-validation: 4032 cross-pairs confirmed, XOR partner law universal (3968/3968 valid, mask=8),... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-451 & 128D Cayley-Dickson cross-validation: 4032 cross-pairs confirmed, XOR partner law universal (3968/3968 valid, mask=8),... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-452 & Cayley-Dickson basis elements at dim=256 embed into an 8-dimensional integer lattice with coordinates in \{-1, 0, 1\}.... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-452 & Cayley-Dickson basis elements at dim=256 embed into an 8-dimensional integer lattice with coordinates in \{-1, 0, 1\}.... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-453 & The 8D lattice embedding extends to dims 512, 1024, and 2048 (all use 8D lattice, NOT log2(dim)-dimensional as... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-453 & The 8D lattice embedding extends to dims 512, 1024, and 2048 (all use 8D lattice, NOT log2(dim)-dimensional as... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-454 & De Marrais's strut table from "Flying Higher Than A Box-Kite" (unpublished, page 3) matches our computed strut tables... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-454 & De Marrais's strut table from "Flying Higher Than A Box-Kite" (unpublished, page 3) matches our computed strut tables... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-455 & Lattice-point differences between ZD-adjacent cross-assessor pairs at dim=16 (mapped to the 256D lattice) do NOT... & Refuted & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-455 & Lattice-point differences between ZD-adjacent cross-assessor pairs at dim=16 (mapped to the 256D lattice) do NOT... & Refuted & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-456 & The external 256D associativity CSV (256D\_Cayley-Dickson\_Basis\_Properties.csv) incorrectly claims all 125 tested... & Refuted & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-456 & The external 256D associativity CSV (256D\_Cayley-Dickson\_Basis\_Properties.csv) incorrectly claims all 125 tested... & Refuted & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-457 & The Cayley-Dickson nested-tuple format uses a binary tree representation where (0, 0) at tree depth k represents 2\textasciicircum{}k... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-457 & The Cayley-Dickson nested-tuple format uses a binary tree representation where (0, 0) at tree depth k represents 2\textasciicircum{}k... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-458 & Codebook parity (Thesis A): All lattice codebook points at dims 256, 512, 1024, 2048 satisfy: (a) coordinates in \{-1,... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-458 & Codebook parity (Thesis A): All lattice codebook points at dims 256, 512, 1024, 2048 satisfy: (a) coordinates in \{-1,... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-459 & Lattice filtration nesting (Thesis B): Lambda\_256 is a strict subset of Lambda\_512, which is a strict subset of... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-459 & Lattice filtration nesting (Thesis B): Lambda\_256 is a strict subset of Lambda\_512, which is a strict subset of... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-460 & Prefix-cut characterization (Thesis C): Each filtration transition (2048->1024, 1024->512, 512->256) is a lexicographic... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-460 & Prefix-cut characterization (Thesis C): Each filtration transition (2048->1024, 1024->512, 512->256) is a lexicographic... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-461 & Lambda\_32 (the 32-row alignment) is a "pinned corner" of Lambda\_256: all 32 points have first 4 coordinates equal to... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-461 & Lambda\_32 (the 32-row alignment) is a "pinned corner" of Lambda\_256: all 32 points have first 4 coordinates equal to... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-462 & XOR partner law (Thesis E): In cross-assessor pairs at dim=64, each pair index i has unique partner i XOR 4 in the... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-462 & XOR partner law (Thesis E): In cross-assessor pairs at dim=64, each pair index i has unique partner i XOR 4 in the... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-463 & Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K\_4 union K\_4 by parity of the lower basis index.... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-463 & Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K\_4 union K\_4 by parity of the lower basis index.... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-464 & Spectral fingerprints (Thesis G): Adjacency graph motif classes are distinguishable by spectral invariants (eigenvalue... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-464 & Spectral fingerprints (Thesis G): Adjacency graph motif classes are distinguishable by spectral invariants (eigenvalue... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
-C-465 & Scalar shadow action (Thesis D): For each lattice point, the scalar shadow pi(b) = signum(sum(coords)) maps to \{-1, 0,... & Verified & `crates/algebra\_core/src/cd\_external.rs`... \\
+C-465 & Scalar shadow action (Thesis D): For each lattice point, the scalar shadow pi(b) = signum(sum(coords)) maps to \{-1, 0,... & Verified & `crates/algebra\_core/src/experimental/cd... \\
 \hline
 C-466 & Multiplication coupling lacuna (Thesis D gap): The multiplication-mode lattice coupling rho(b) in GL(8,Z) is... & Theoretical & `docs/ROADMAP.md` (open research... \\
 \hline
-C-467 & Null-model identity (Thesis H): RandomRotation is an identity transformation for Euclidean-distance ultrametric tests... & Verified & `crates/stats\_core/src/ultrametric/null\_... \\
+C-467 & Null-model identity (Thesis H): For Euclidean-distance ultrametric fraction, RowPermutation and RandomRotation are... & Verified & `crates/stats\_core/src/ultrametric/null\_... \\
 \hline
-C-468 & Emanation table (dim=16): The 15x15 signed product table has 84 zero-divisor-marked cells (42 primitive assessor pairs... & Verified & `crates/algebra\_core/src/emanation.rs`... \\
+C-468 & Emanation table (dim=16): The 15x15 signed product table has 84 zero-divisor-marked cells (42 primitive assessor pairs... & Verified & `crates/algebra\_core/src/experimental/em... \\
 \hline
-C-469 & Strutted emanation table (dim=16): For each strut constant S in \{1..7\}, the 6x6 strutted ET correctly partitions... & Verified & `crates/algebra\_core/src/emanation.rs`... \\
+C-469 & Strutted emanation table (dim=16): For each strut constant S in \{1..7\}, the 6x6 strutted ET correctly partitions... & Verified & `crates/algebra\_core/src/experimental/em... \\
 \hline
-C-470 & Oriented Trip Sync: Every sedenion box-kite admits at least one PSL(2,7) orientation where the de Marrais shorthand... & Verified & `crates/algebra\_core/src/emanation.rs`... \\
+C-470 & Oriented Trip Sync: Every sedenion box-kite admits at least one PSL(2,7) orientation where the de Marrais shorthand... & Verified & `crates/algebra\_core/src/experimental/em... \\
 \hline
-C-471 & Signed adjacency graph: The strutted ET encodes a signed graph where DMZ cells have sign +1 (same-slope coupling) or -1... & Verified & `crates/algebra\_core/src/emanation.rs`... \\
+C-471 & Signed adjacency graph: The strutted ET encodes a signed graph where DMZ cells have sign +1 (same-slope coupling) or -1... & Verified & `crates/algebra\_core/src/experimental/em... \\
 \hline
-C-472 & Lanyard state-machine traversal: Face-level lanyards are extracted as state-machine traversals of the signed graph.... & Verified & `crates/algebra\_core/src/emanation.rs`... \\
+C-472 & Lanyard state-machine traversal: Face-level lanyards are extracted as state-machine traversals of the signed graph.... & Verified & `crates/algebra\_core/src/experimental/em... \\
 \hline
-C-473 & Delta transition function: Each S0 in \{1..7\} has exactly 3 strut pairs \{u,v\} with u XOR v = S0, u < v, u,v in... & Verified & `crates/algebra\_core/src/emanation.rs`... \\
+C-473 & Delta transition function: Each S0 in \{1..7\} has exactly 3 strut pairs \{u,v\} with u XOR v = S0, u < v, u,v in... & Verified & `crates/algebra\_core/src/experimental/em... \\
 \hline
-C-474 & Brocade normalization: Each BK has exactly 4 brocade relabelings (one per O-trip in its L-set). Each central trip is a... & Verified & `crates/algebra\_core/src/emanation.rs`... \\
+C-474 & Brocade normalization: Each BK has exactly 4 brocade relabelings (one per O-trip in its L-set). Each central trip is a... & Verified & `crates/algebra\_core/src/experimental/em... \\
 \hline
-C-475 & Sail-loop partition (automorpheme duality): The 28 O-trip sails across all 7 BKs partition into exactly 7 loops of 4... & Verified & `crates/algebra\_core/src/emanation.rs`... \\
+C-475 & Sail-loop partition (automorpheme duality): The 28 O-trip sails across all 7 BKs partition into exactly 7 loops of 4... & Verified & `crates/algebra\_core/src/experimental/em... \\
 \hline
 \end{longtable}
