@@ -4,10 +4,10 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 235
+document_count = 238
 generated_artifact_count = 59
-manual_narrative_count = 78
-toml_generated_mirror_count = 98
+manual_narrative_count = 60
+toml_generated_mirror_count = 119
 
 [[document]]
 path = "AGENTS.md"
@@ -636,146 +636,164 @@ notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
 [[document]]
 path = "docs/book/src/SUMMARY.md"
 id = "MDG-0078"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/algebra/box-kites.md"
 id = "MDG-0079"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/algebra/emanation.md"
 id = "MDG-0080"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/algebra/motif-scaling.md"
 id = "MDG-0081"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/algebra/zero-divisors.md"
 id = "MDG-0082"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/architecture/crates.md"
 id = "MDG-0083"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/architecture/layout.md"
 id = "MDG-0084"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/architecture/verification.md"
 id = "MDG-0085"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/cli/catalog.md"
 id = "MDG-0086"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/experiments/e001.md"
 id = "MDG-0087"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/experiments/e002.md"
 id = "MDG-0088"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/experiments/e003.md"
 id = "MDG-0089"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/glossary.md"
 id = "MDG-0090"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/introduction.md"
 id = "MDG-0091"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/papers/collection.md"
 id = "MDG-0092"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/registry/claims.md"
 id = "MDG-0093"
 kind = "markdown_mirror"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/registry/experiments.md"
 id = "MDG-0094"
 kind = "markdown_mirror"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/book/src/registry/insights.md"
 id = "MDG-0095"
 kind = "markdown_mirror"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/book_docs.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/claims/INDEX.md"
@@ -1006,7 +1024,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md"
+path = "docs/engineering/INDEX.md"
 id = "MDG-0122"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1015,7 +1033,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md"
+path = "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md"
 id = "MDG-0123"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1024,7 +1042,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/OPTIX_ELUCIDATION.md"
+path = "docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md"
 id = "MDG-0124"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1033,7 +1051,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PADIC_SIGNAL_THEORY.md"
+path = "docs/engineering/OPTIX_ELUCIDATION.md"
 id = "MDG-0125"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1042,7 +1060,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_10_MULTIPHYSICS.md"
+path = "docs/engineering/PADIC_SIGNAL_THEORY.md"
 id = "MDG-0126"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1051,7 +1069,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_11_VISUALIZATION.md"
+path = "docs/engineering/PHASE_10_MULTIPHYSICS.md"
 id = "MDG-0127"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1060,7 +1078,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_12_RENDERER.md"
+path = "docs/engineering/PHASE_11_VISUALIZATION.md"
 id = "MDG-0128"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1069,7 +1087,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_13_GRAND_CRITIQUE.md"
+path = "docs/engineering/PHASE_12_RENDERER.md"
 id = "MDG-0129"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1078,7 +1096,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_14_DEEP_DIVE.md"
+path = "docs/engineering/PHASE_13_GRAND_CRITIQUE.md"
 id = "MDG-0130"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1087,7 +1105,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_15_RESURRECTION.md"
+path = "docs/engineering/PHASE_14_DEEP_DIVE.md"
 id = "MDG-0131"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1096,7 +1114,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_16_FINAL_VALIDATION.md"
+path = "docs/engineering/PHASE_15_RESURRECTION.md"
 id = "MDG-0132"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1105,7 +1123,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_6_IMPLEMENTATION.md"
+path = "docs/engineering/PHASE_16_FINAL_VALIDATION.md"
 id = "MDG-0133"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1114,7 +1132,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_7_REPORT.md"
+path = "docs/engineering/PHASE_6_IMPLEMENTATION.md"
 id = "MDG-0134"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1123,7 +1141,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHASE_8_SYNTHESIS.md"
+path = "docs/engineering/PHASE_7_REPORT.md"
 id = "MDG-0135"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1132,7 +1150,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/PHYSICS_VALIDATION_REPORT.md"
+path = "docs/engineering/PHASE_8_SYNTHESIS.md"
 id = "MDG-0136"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1141,7 +1159,7 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/engineering/WARP_SPACEPLATE_SPECS.md"
+path = "docs/engineering/PHYSICS_VALIDATION_REPORT.md"
 id = "MDG-0137"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1150,16 +1168,16 @@ source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
+path = "docs/engineering/WARP_SPACEPLATE_SPECS.md"
 id = "MDG-0138"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/external_sources.toml"]
+source_toml_refs = ["registry/research_narratives.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/DATASET_MANIFEST.md"
+path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
 id = "MDG-0139"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1168,7 +1186,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
+path = "docs/external_sources/DATASET_MANIFEST.md"
 id = "MDG-0140"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1177,7 +1195,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
+path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 id = "MDG-0141"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1186,7 +1204,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
+path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
 id = "MDG-0142"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1195,7 +1213,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
+path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 id = "MDG-0143"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1204,7 +1222,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
+path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 id = "MDG-0144"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1213,7 +1231,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
+path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
 id = "MDG-0145"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1222,7 +1240,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
+path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 id = "MDG-0146"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1231,7 +1249,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/INDEX.md"
+path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 id = "MDG-0147"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1240,7 +1258,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
+path = "docs/external_sources/INDEX.md"
 id = "MDG-0148"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1249,7 +1267,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
+path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
 id = "MDG-0149"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1258,7 +1276,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
+path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
 id = "MDG-0150"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1267,7 +1285,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
+path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
 id = "MDG-0151"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1276,7 +1294,7 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
 id = "MDG-0152"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
@@ -1285,15 +1303,16 @@ source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
+path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
 id = "MDG-0153"
-kind = "generated_markdown"
+kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
+source_toml_refs = ["registry/external_sources.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
+path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
 id = "MDG-0154"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1301,7 +1320,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/CLAIMS_REGISTRY_MIRROR.md"
+path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
 id = "MDG-0155"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1309,7 +1328,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
+path = "docs/generated/CLAIMS_REGISTRY_MIRROR.md"
 id = "MDG-0156"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1317,7 +1336,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
+path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
 id = "MDG-0157"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1325,7 +1344,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
+path = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
 id = "MDG-0158"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1333,7 +1352,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
+path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
 id = "MDG-0159"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1341,7 +1360,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
+path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
 id = "MDG-0160"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1349,7 +1368,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
+path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
 id = "MDG-0161"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1357,7 +1376,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
+path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
 id = "MDG-0162"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1365,7 +1384,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
+path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
 id = "MDG-0163"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1373,7 +1392,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
+path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
 id = "MDG-0164"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1381,7 +1400,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
+path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
 id = "MDG-0165"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1389,7 +1408,7 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/generated/TODO_REGISTRY_MIRROR.md"
+path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
 id = "MDG-0166"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1397,25 +1416,23 @@ header_required = true
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/requirements/algebra.md"
+path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
 id = "MDG-0167"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrative.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/requirements/analysis.md"
+path = "docs/generated/TODO_REGISTRY_MIRROR.md"
 id = "MDG-0168"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
 header_required = true
-source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrative.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/requirements/astro.md"
+path = "docs/requirements/algebra.md"
 id = "MDG-0169"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1424,7 +1441,7 @@ source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrati
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/requirements/coq.md"
+path = "docs/requirements/analysis.md"
 id = "MDG-0170"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1433,7 +1450,7 @@ source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrati
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/requirements/cpp.md"
+path = "docs/requirements/astro.md"
 id = "MDG-0171"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1442,7 +1459,7 @@ source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrati
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/requirements/latex.md"
+path = "docs/requirements/coq.md"
 id = "MDG-0172"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1451,7 +1468,7 @@ source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrati
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/requirements/materials.md"
+path = "docs/requirements/cpp.md"
 id = "MDG-0173"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1460,7 +1477,7 @@ source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrati
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/requirements/particle.md"
+path = "docs/requirements/latex.md"
 id = "MDG-0174"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1469,7 +1486,7 @@ source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrati
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/requirements/quantum-docker.md"
+path = "docs/requirements/materials.md"
 id = "MDG-0175"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1478,8 +1495,35 @@ source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrati
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/theory/CLAIMS_METHODOLOGY.md"
+path = "docs/requirements/particle.md"
 id = "MDG-0176"
+kind = "generated_markdown"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrative.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "docs/requirements/quantum-docker.md"
+id = "MDG-0177"
+kind = "generated_markdown"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/requirements.toml", "registry/requirements_narrative.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "docs/theory/CLAIMS_METHODOLOGY.md"
+id = "MDG-0178"
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/research_narratives.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "docs/theory/INDEX.md"
+id = "MDG-0179"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
@@ -1488,7 +1532,7 @@ notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
-id = "MDG-0177"
+id = "MDG-0180"
 kind = "markdown_mirror"
 mode = "toml_generated_mirror"
 header_required = true
@@ -1497,33 +1541,6 @@ notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/tickets/C001_C050_claims_audit.md"
-id = "MDG-0178"
-kind = "generated_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/claim_tickets.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/tickets/C051_C100_claims_audit.md"
-id = "MDG-0179"
-kind = "generated_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/claim_tickets.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/tickets/C101_C150_claims_audit.md"
-id = "MDG-0180"
-kind = "generated_markdown"
-mode = "toml_generated_mirror"
-header_required = true
-source_toml_refs = ["registry/claim_tickets.toml"]
-notes = "Generated from TOML registries and overlays."
-
-[[document]]
-path = "docs/tickets/C151_C200_claims_audit.md"
 id = "MDG-0181"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1532,7 +1549,7 @@ source_toml_refs = ["registry/claim_tickets.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/tickets/C201_C250_claims_audit.md"
+path = "docs/tickets/C051_C100_claims_audit.md"
 id = "MDG-0182"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1541,7 +1558,7 @@ source_toml_refs = ["registry/claim_tickets.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/tickets/C251_C300_claims_audit.md"
+path = "docs/tickets/C101_C150_claims_audit.md"
 id = "MDG-0183"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1550,7 +1567,7 @@ source_toml_refs = ["registry/claim_tickets.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/tickets/C301_C350_claims_audit.md"
+path = "docs/tickets/C151_C200_claims_audit.md"
 id = "MDG-0184"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1559,7 +1576,7 @@ source_toml_refs = ["registry/claim_tickets.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/tickets/C351_C400_claims_audit.md"
+path = "docs/tickets/C201_C250_claims_audit.md"
 id = "MDG-0185"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1568,7 +1585,7 @@ source_toml_refs = ["registry/claim_tickets.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/tickets/C401_C427_claims_audit.md"
+path = "docs/tickets/C251_C300_claims_audit.md"
 id = "MDG-0186"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1577,7 +1594,7 @@ source_toml_refs = ["registry/claim_tickets.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/tickets/INDEX.md"
+path = "docs/tickets/C301_C350_claims_audit.md"
 id = "MDG-0187"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1586,7 +1603,7 @@ source_toml_refs = ["registry/claim_tickets.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
+path = "docs/tickets/C351_C400_claims_audit.md"
 id = "MDG-0188"
 kind = "generated_markdown"
 mode = "toml_generated_mirror"
@@ -1595,8 +1612,35 @@ source_toml_refs = ["registry/claim_tickets.toml"]
 notes = "Generated from TOML registries and overlays."
 
 [[document]]
-path = "docs/x86_SIMD_OPTIMIZATION.md"
+path = "docs/tickets/C401_C427_claims_audit.md"
 id = "MDG-0189"
+kind = "generated_markdown"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/claim_tickets.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "docs/tickets/INDEX.md"
+id = "MDG-0190"
+kind = "generated_markdown"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/claim_tickets.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
+id = "MDG-0191"
+kind = "generated_markdown"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/claim_tickets.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "docs/x86_SIMD_OPTIMIZATION.md"
+id = "MDG-0192"
 kind = "manual_source"
 mode = "manual_narrative"
 header_required = false
@@ -1604,30 +1648,6 @@ notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
 
 [[document]]
 path = "reports/artifacts_phase0_dryrun.md"
-id = "MDG-0190"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
-
-[[document]]
-path = "reports/artifacts_reorg_plan.md"
-id = "MDG-0191"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
-
-[[document]]
-path = "reports/audit_network_gating.md"
-id = "MDG-0192"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
-
-[[document]]
-path = "reports/audit_nonpython_toolchains.md"
 id = "MDG-0193"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1635,7 +1655,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/audit_provenance.md"
+path = "reports/artifacts_reorg_plan.md"
 id = "MDG-0194"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1643,7 +1663,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/audit_pythonpath.md"
+path = "reports/audit_network_gating.md"
 id = "MDG-0195"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1651,7 +1671,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C001_C050.md"
+path = "reports/audit_nonpython_toolchains.md"
 id = "MDG-0196"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1659,7 +1679,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C001_C200.md"
+path = "reports/audit_provenance.md"
 id = "MDG-0197"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1667,7 +1687,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C011_C025.md"
+path = "reports/audit_pythonpath.md"
 id = "MDG-0198"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1675,7 +1695,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C027_C045.md"
+path = "reports/claims_batch_backlog_C001_C050.md"
 id = "MDG-0199"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1683,7 +1703,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C046_C060.md"
+path = "reports/claims_batch_backlog_C001_C200.md"
 id = "MDG-0200"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1691,7 +1711,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C046_C066.md"
+path = "reports/claims_batch_backlog_C011_C025.md"
 id = "MDG-0201"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1699,7 +1719,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C051_C100.md"
+path = "reports/claims_batch_backlog_C027_C045.md"
 id = "MDG-0202"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1707,7 +1727,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C101_C150.md"
+path = "reports/claims_batch_backlog_C046_C060.md"
 id = "MDG-0203"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1715,7 +1735,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C151_C200.md"
+path = "reports/claims_batch_backlog_C046_C066.md"
 id = "MDG-0204"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1723,7 +1743,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C201_C250.md"
+path = "reports/claims_batch_backlog_C051_C100.md"
 id = "MDG-0205"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1731,7 +1751,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C201_C408.md"
+path = "reports/claims_batch_backlog_C101_C150.md"
 id = "MDG-0206"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1739,7 +1759,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C201_C427.md"
+path = "reports/claims_batch_backlog_C151_C200.md"
 id = "MDG-0207"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1747,7 +1767,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C201_C430.md"
+path = "reports/claims_batch_backlog_C201_C250.md"
 id = "MDG-0208"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1755,7 +1775,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C201_C432.md"
+path = "reports/claims_batch_backlog_C201_C408.md"
 id = "MDG-0209"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1763,7 +1783,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C251_C300.md"
+path = "reports/claims_batch_backlog_C201_C427.md"
 id = "MDG-0210"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1771,7 +1791,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C301_C350.md"
+path = "reports/claims_batch_backlog_C201_C430.md"
 id = "MDG-0211"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1779,7 +1799,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C351_C400.md"
+path = "reports/claims_batch_backlog_C201_C432.md"
 id = "MDG-0212"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1787,7 +1807,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_batch_backlog_C401_C427.md"
+path = "reports/claims_batch_backlog_C251_C300.md"
 id = "MDG-0213"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1795,7 +1815,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_bold_tokens_inventory.md"
+path = "reports/claims_batch_backlog_C301_C350.md"
 id = "MDG-0214"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1803,7 +1823,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_id_inventory.md"
+path = "reports/claims_batch_backlog_C351_C400.md"
 id = "MDG-0215"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1811,7 +1831,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_priority_ranking.md"
+path = "reports/claims_batch_backlog_C401_C427.md"
 id = "MDG-0216"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1819,7 +1839,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_staleness_report.md"
+path = "reports/claims_bold_tokens_inventory.md"
 id = "MDG-0217"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1827,7 +1847,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_status_contradictions.md"
+path = "reports/claims_id_inventory.md"
 id = "MDG-0218"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1835,7 +1855,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/claims_status_inventory.md"
+path = "reports/claims_priority_ranking.md"
 id = "MDG-0219"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1843,7 +1863,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/config_audit.md"
+path = "reports/claims_staleness_report.md"
 id = "MDG-0220"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1851,7 +1871,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/convos_claim_candidates.md"
+path = "reports/claims_status_contradictions.md"
 id = "MDG-0221"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1859,7 +1879,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/convos_claim_candidates_prioritized.md"
+path = "reports/claims_status_inventory.md"
 id = "MDG-0222"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1867,7 +1887,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/convos_pdf_inventory.md"
+path = "reports/config_audit.md"
 id = "MDG-0223"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1875,7 +1895,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/non_iso_dates_inventory.md"
+path = "reports/convos_claim_candidates.md"
 id = "MDG-0224"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1883,7 +1903,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/open_claims_missing_dedicated_sources.md"
+path = "reports/convos_claim_candidates_prioritized.md"
 id = "MDG-0225"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1891,7 +1911,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/open_claims_missing_test_hooks.md"
+path = "reports/convos_pdf_inventory.md"
 id = "MDG-0226"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1899,7 +1919,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/package_index.md"
+path = "reports/non_iso_dates_inventory.md"
 id = "MDG-0227"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1907,7 +1927,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/pdf_inventory.md"
+path = "reports/open_claims_missing_dedicated_sources.md"
 id = "MDG-0228"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1915,7 +1935,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/pythonpath_refactor_plan.md"
+path = "reports/open_claims_missing_test_hooks.md"
 id = "MDG-0229"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1923,7 +1943,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/repo_inventory.md"
+path = "reports/package_index.md"
 id = "MDG-0230"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1931,7 +1951,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/repo_structure_audit.md"
+path = "reports/pdf_inventory.md"
 id = "MDG-0231"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1939,7 +1959,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/script_contracts_inventory.md"
+path = "reports/pythonpath_refactor_plan.md"
 id = "MDG-0232"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1947,7 +1967,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/tickets_inventory.md"
+path = "reports/repo_inventory.md"
 id = "MDG-0233"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1955,7 +1975,7 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/todo_fixme_scan.md"
+path = "reports/repo_structure_audit.md"
 id = "MDG-0234"
 kind = "artifact_report"
 mode = "generated_artifact"
@@ -1963,8 +1983,32 @@ header_required = false
 notes = "Generated artifact/report; preserve reproducibility."
 
 [[document]]
-path = "reports/tscp_trial_factor_ledger.md"
+path = "reports/script_contracts_inventory.md"
 id = "MDG-0235"
+kind = "artifact_report"
+mode = "generated_artifact"
+header_required = false
+notes = "Generated artifact/report; preserve reproducibility."
+
+[[document]]
+path = "reports/tickets_inventory.md"
+id = "MDG-0236"
+kind = "artifact_report"
+mode = "generated_artifact"
+header_required = false
+notes = "Generated artifact/report; preserve reproducibility."
+
+[[document]]
+path = "reports/todo_fixme_scan.md"
+id = "MDG-0237"
+kind = "artifact_report"
+mode = "generated_artifact"
+header_required = false
+notes = "Generated artifact/report; preserve reproducibility."
+
+[[document]]
+path = "reports/tscp_trial_factor_ledger.md"
+id = "MDG-0238"
 kind = "artifact_report"
 mode = "generated_artifact"
 header_required = false

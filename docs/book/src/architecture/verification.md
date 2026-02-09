@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Verification Ladder
 
 Every result in open\_gororoba is classified on a four-tier verification ladder.

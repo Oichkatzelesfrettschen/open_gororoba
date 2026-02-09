@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Box-Kite Structure
 
 The 42 zero-divisor cross-assessors of the sedenion algebra organize into

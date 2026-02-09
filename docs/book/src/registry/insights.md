@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Insights
 
 The insights registry tracks 16 discoveries (I-001 through I-016) in

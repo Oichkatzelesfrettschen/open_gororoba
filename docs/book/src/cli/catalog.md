@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Binary Catalog
 
 The `gororoba_cli` crate provides 40 binaries.  Each binary is

@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Zero-Divisor Census
 
 At dimension 16 (sedenions) and beyond, Cayley-Dickson algebras contain

@@ -128,10 +128,10 @@ notes = "Keep as generated outputs with explicit regeneration commands; do not h
 [[domain]]
 id = "KM-007"
 name = "research_narratives"
-source_markdown = ["docs/*.md", "docs/book/src/**/*.md"]
+source_markdown = ["docs/*.md"]
 strategy = "narrative_primary_raw_capture_backup"
 status = "active"
-notes = "Residual manual narratives remain for curated prose and book chapters not yet normalized to dedicated TOML overlays."
+notes = "Residual manual narratives remain for curated prose not yet normalized to dedicated TOML overlays."
 
 [[domain]]
 id = "KM-012"
@@ -162,6 +162,19 @@ generated_mirror = [
 strategy = "toml_primary_generated_mirror"
 status = "complete"
 notes = "Theory and engineering narrative dossiers are TOML-first with generated markdown mirrors."
+
+[[domain]]
+id = "KM-014"
+name = "book_docs"
+source_markdown = ["docs/book/src/**/*.md"]
+authoritative_toml = ["registry/book_docs.toml"]
+generated_mirror = [
+  "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md",
+  "docs/book/src/**/*.md",
+]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "mdBook source pages are TOML-first and rendered back into docs/book/src markdown mirrors."
 
 [[phase]]
 id = "KMP-P1"
@@ -241,6 +254,17 @@ deliverables = [
   "docs/theory/INDEX.md",
   "docs/engineering/*.md",
   "docs/engineering/INDEX.md",
+]
+
+[[phase]]
+id = "KMP-P10"
+name = "book_docs_registry_normalization"
+status = "complete"
+deliverables = [
+  "src/scripts/analysis/normalize_book_docs_registry.py",
+  "registry/book_docs.toml",
+  "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md",
+  "docs/book/src/**/*.md",
 ]
 
 [[policy]]

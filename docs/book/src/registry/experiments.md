@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Experiments Portfolio
 
 The experiments registry tracks 10 reproducible experiments (E-001 through E-010)
