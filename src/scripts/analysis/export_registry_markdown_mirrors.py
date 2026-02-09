@@ -137,7 +137,9 @@ def export_insights_legacy(repo_root: Path, out_path: Path) -> None:
     preamble, body_by_id = _narrative_map(narrative_data)
     insights = sorted(registry_data.get("insight", []), key=lambda x: x.get("id", ""))
 
-    lines: list[str] = []
+    lines: list[str] = _legacy_header(
+        ["registry/insights.toml", "registry/insights_narrative.toml"]
+    )
     if preamble:
         lines.extend(preamble.splitlines())
     else:
@@ -218,7 +220,9 @@ def export_experiments_legacy(repo_root: Path, out_path: Path) -> None:
     preamble, body_by_id = _narrative_map(narrative_data)
     experiments = sorted(registry_data.get("experiment", []), key=lambda x: x.get("id", ""))
 
-    lines: list[str] = []
+    lines: list[str] = _legacy_header(
+        ["registry/experiments.toml", "registry/experiments_narrative.toml"]
+    )
     if preamble:
         lines.extend(preamble.splitlines())
     else:
@@ -427,6 +431,41 @@ def export_requirements(repo_root: Path, out_path: Path) -> None:
         lines.append(f"- Status: `{gap.get('status', '')}`")
         lines.append(f"- Description: {gap.get('description', '')}")
         lines.append(f"- Proposed resolution: {gap.get('proposed_resolution', '')}")
+        lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_markdown_governance(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/markdown_governance.toml")
+    meta = data.get("markdown_governance", {})
+    docs = data.get("document", [])
+    lines = _header("Markdown Governance Registry Mirror")
+    lines.append("Authoritative source: `registry/markdown_governance.toml`.")
+    lines.append("")
+    lines.append(f"- Generated at: {meta.get('generated_at', '')}")
+    lines.append(f"- Document count: {meta.get('document_count', len(docs))}")
+    lines.append(f"- TOML generated mirrors: {meta.get('toml_generated_mirror_count', 0)}")
+    lines.append(f"- TOML manual sources: {meta.get('toml_manual_source_count', 0)}")
+    lines.append(f"- Generated artifacts: {meta.get('generated_artifact_count', 0)}")
+    lines.append(f"- Manual narratives: {meta.get('manual_narrative_count', 0)}")
+    lines.append(f"- Immutable transcripts: {meta.get('immutable_transcript_count', 0)}")
+    lines.append("")
+    lines.append("## Documents")
+    lines.append("")
+    for row in sorted(docs, key=lambda item: item.get("path", "")):
+        lines.append(f"### {row.get('id', 'MDG-????')}: `{row.get('path', '')}`")
+        lines.append("")
+        lines.append(f"- Kind: `{row.get('kind', '')}`")
+        lines.append(f"- Mode: `{row.get('mode', '')}`")
+        lines.append(f"- Header required: `{row.get('header_required', False)}`")
+        refs = row.get("source_toml_refs", [])
+        if refs:
+            lines.append("- Source TOML refs:")
+            for ref in refs:
+                lines.append(f"  - `{ref}`")
+        notes = str(row.get("notes", "")).strip()
+        if notes:
+            lines.append(f"- Notes: {notes}")
         lines.append("")
     _write(out_path, "\n".join(lines))
 
@@ -780,6 +819,7 @@ def main() -> int:
     export_todo(repo_root, out_dir / "TODO_REGISTRY_MIRROR.md")
     export_next_actions(repo_root, out_dir / "NEXT_ACTIONS_REGISTRY_MIRROR.md")
     export_requirements(repo_root, out_dir / "REQUIREMENTS_REGISTRY_MIRROR.md")
+    export_markdown_governance(repo_root, out_dir / "MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md")
     export_claims_tasks(repo_root, out_dir / "CLAIMS_TASKS_REGISTRY_MIRROR.md")
     export_claims_domains(repo_root, out_dir / "CLAIMS_DOMAINS_REGISTRY_MIRROR.md")
     export_claim_tickets(repo_root, out_dir / "CLAIM_TICKETS_REGISTRY_MIRROR.md")

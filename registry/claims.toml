@@ -3696,11 +3696,11 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis E. VERIFIED: verify_x
 
 [[claim]]
 id = "C-463"
-statement = "Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K_4 union K_4 by parity of the lower basis index. At dim=32 it decomposes into K_8 union K_8."
-where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (verify_parity_clique, test_thesis_f_parity_clique_{16d,32d})"
-status = "Verified"
-last_verified = "2026-02-08"
-what_would_verify_refute = "WHERE STATED: Monograph Thesis F. VERIFIED: verify_parity_clique partitions nodes by parity of low basis index and checks that each partition forms a complete graph with no inter-partition edges. WHAT WOULD REFUTE: A ZD edge crossing the parity partition."
+statement = "Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K_4 union K_4 by parity of the lower basis index. At dim=32 it decomposes into K_8 union K_8. NOTE: This property is LIMITED TO dims 16 and 32. REFUTED at dim=64 (cross-partition edges exist, test_thesis_f_parity_clique_64d) and dim=128 (C-451: 32640 cross-partition edges). Not a universal property."
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (verify_parity_clique, test_thesis_f_parity_clique_{16d,32d,64d})"
+status = "Partial"
+last_verified = "2026-02-09"
+what_would_verify_refute = "WHERE STATED: Monograph Thesis F. VERIFIED at dims 16 and 32 only. REFUTED at dims 64 and 128. Status changed from Verified to Partial. The parity-clique structure is a small-dimension coincidence, not a universal law."
 
 [[claim]]
 id = "C-464"
@@ -3917,3 +3917,35 @@ where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_parity_edge
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = 'VERIFIED at dim=32: even-parity triangles per edge range [4,8]. WHAT WOULD REFUTE: discovering that parity-specific edge regularity actually holds everywhere (would require a bug in the test).'
+
+[[claim]]
+id = "C-491"
+statement = "Sigma Correspondence: For each edge in the ZD graph between cross-assessors a=(i,j) and b=(k,l), define sigma_ab = cd_basis_mul_sign(dim, i, k) * cd_basis_mul_sign(dim, j, l). Then sigma_ab = -1 iff edge is Same-type, +1 iff Opposite-type. This gives a closed-form edge sign determination bypassing the full diagonal_zero_products_exact computation."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED at dims 16, 32, 64 -- all edges in all components. WHAT WOULD REFUTE: any edge where sigma disagrees with edge_sign_type_exact."
+
+[[claim]]
+id = "C-492"
+statement = "Half-Half Edge Law: In every component of the CD zero-divisor graph at every dimension >= 16, exactly half the edges are Same-type and half are Opposite-type (n_same = n_opposite). This is a fundamental property of the CD multiplication table's signed graph structure, verified at dims 16/32/64/128 across all 214 components."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism, test_half_half_edge_law_dim128)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED at dims 16 (7 comps), 32 (15 comps), 64 (31 comps), 128 (63 comps) = 116+98 = 214 total. WHAT WOULD REFUTE: any component at any dimension with unequal Same/Opposite edge counts."
+
+[[claim]]
+id = "C-493"
+statement = "Parity Product Identity: For any triangle in the ZD graph with edges ab, bc, ac, the product sigma_ab * sigma_bc * sigma_ac = (-1)^{n_same} where n_same is the number of Same-type edges. This splits triangles into two parity classes: even-Same (product=+1, containing AllOpposite and TwoSameOneOpp) and odd-Same (product=-1, containing AllSame and OneSameTwoOpp)."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED at dims 16, 32, 64 for all triangles in all components. Follows algebraically from sigma = -1 iff Same. WHAT WOULD REFUTE: logically impossible given C-491."
+
+[[claim]]
+id = "C-494"
+statement = "Quarter Rule (mechanism of Double 3:1 Law): Within each parity class of triangles in any ZD graph component, the 'pure' pattern (AllOpposite in even class, AllSame in odd class) is exactly 1/4 of the class total. The 3:1 ratio (C-487) follows: the 'mixed' patterns consume the remaining 3/4, giving TwoSameOneOpp = 3*AllOpposite and OneSameTwoOpp = 3*AllSame. The class total is always divisible by 4."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_double_three_to_one_algebraic_mechanism)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED at dims 16, 32, 64 for all components. WHAT WOULD REFUTE: any component where class total is not divisible by 4, or pure count != total/4."

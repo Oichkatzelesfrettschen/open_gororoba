@@ -2664,6 +2664,115 @@ mod tests {
         );
     }
 
+    /// Thesis E as a closed-form parameterized theorem with exact counts.
+    ///
+    /// For CD dimension N (power of 2, N >= 64), XOR mask m = N/16:
+    ///   half = N/2
+    ///   total_cross_pairs = (half - 1) * half
+    ///   boundary_count = half  (those with lo = m, so partner_lo = 0)
+    ///   checked_count = total_cross_pairs - boundary_count = half * (half - 2)
+    ///   n_partner_edges = checked_count / 2 = half * (half - 2) / 2
+    ///   n_K2_components = n_partner_edges
+    ///   n_isolated = boundary_count = half
+    ///   n_components_total = n_partner_edges + half
+    ///   motif_classes = exactly 2 (K_2 and K_1)
+    #[test]
+    fn test_thesis_e_closed_form_theorem() {
+        use crate::analysis::graph_projections::compute_invariant_suite_from_graph;
+        use petgraph::graph::{NodeIndex, UnGraph};
+
+        for dim in [64, 128, 256] {
+            let xor_mask = dim / 16;
+            let half = dim / 2;
+            let pairs = cross_assessors(dim);
+            let n = pairs.len();
+
+            // Closed-form expectations
+            let expected_total = (half - 1) * half;
+            let expected_boundary = half;
+            let expected_checked = half * (half - 2);
+            let expected_edges = expected_checked / 2;
+            let expected_k2 = expected_edges;
+            let expected_isolated = expected_boundary;
+            let expected_components = expected_k2 + expected_isolated;
+
+            assert_eq!(
+                n, expected_total,
+                "dim={}: cross-pair count mismatch", dim
+            );
+
+            // Build XOR-partner graph
+            let pair_index: HashMap<(usize, usize), usize> =
+                pairs.iter().enumerate().map(|(i, &p)| (p, i)).collect();
+
+            let mut graph = UnGraph::<(), ()>::with_capacity(n, expected_edges);
+            let nodes: Vec<NodeIndex> = (0..n).map(|_| graph.add_node(())).collect();
+
+            let mut actual_boundary = 0usize;
+            for (i, &(lo, hi)) in pairs.iter().enumerate() {
+                let partner_lo = lo ^ xor_mask;
+                let partner_hi = hi ^ xor_mask;
+                if partner_lo == 0 {
+                    actual_boundary += 1;
+                    continue;
+                }
+                if partner_lo >= 1
+                    && partner_lo < half
+                    && partner_hi >= half
+                    && partner_hi < dim
+                {
+                    if let Some(&j) = pair_index.get(&(partner_lo, partner_hi)) {
+                        if i < j {
+                            graph.add_edge(nodes[i], nodes[j], ());
+                        }
+                    }
+                }
+            }
+
+            assert_eq!(
+                actual_boundary, expected_boundary,
+                "dim={}: boundary count mismatch", dim
+            );
+            assert_eq!(
+                graph.edge_count(), expected_edges,
+                "dim={}: partner edge count mismatch", dim
+            );
+
+            let suite = compute_invariant_suite_from_graph(
+                &format!("P_xor_involution_{}", dim),
+                &graph,
+            );
+
+            let n_k2 = suite
+                .components
+                .iter()
+                .filter(|c| c.invariants.n_edges == 1)
+                .count();
+            let n_iso = suite
+                .components
+                .iter()
+                .filter(|c| c.invariants.n_edges == 0)
+                .count();
+
+            assert_eq!(
+                n_k2, expected_k2,
+                "dim={}: K_2 component count mismatch", dim
+            );
+            assert_eq!(
+                n_iso, expected_isolated,
+                "dim={}: isolated node count mismatch", dim
+            );
+            assert_eq!(
+                suite.components.len(), expected_components,
+                "dim={}: total component count mismatch", dim
+            );
+            assert_eq!(
+                suite.motif_classes.len(), 2,
+                "dim={}: should have exactly 2 motif classes (K_2, K_1)", dim
+            );
+        }
+    }
+
     // === Thesis F: Parity-Clique Law ===
 
     #[test]

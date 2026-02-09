@@ -3,12 +3,27 @@
 //! Implements named graph predicates (Layer 3 of the monograph abstraction)
 //! and the invariant suite for fingerprinting.
 //!
-//! # Named Predicates
-//! - **P_ZD**: Zero-divisor adjacency (parity cliques, K_{n/2} U K_{n/2})
-//! - **P_match**: XOR matching adjacency (perfect matching, partner = i XOR (N/16))
+//! # Two Graph Domains (IMPORTANT DISTINCTION)
 //!
-//! Each predicate implements the [`GraphPredicate`] trait, providing a uniform
-//! interface for graph construction, invariant computation, and testing.
+//! This module defines **hypothesis predicates** on basis indices 0..n.
+//! These are NOT the actual ZD adjacency graphs, which operate on
+//! **cross-assessor pairs** (lo, hi) -- see `boxkites.rs` and
+//! `cd_external.rs` for the actual zero-divisor graph.
+//!
+//! ## Basis-Index Graphs (this module)
+//! Nodes = basis indices {0, 1, ..., N-1}. Predicates:
+//! - **P_ZD_hypothesis**: Parity-clique hypothesis (i%2 == j%2).
+//!   Produces K_{n/2} U K_{n/2}. ONLY matches actual ZD adjacency at
+//!   dims 16 and 32 (C-463). REFUTED at dim=64+ (C-451).
+//! - **P_match**: XOR matching (i XOR j == N/16). Produces r*K_2.
+//!
+//! ## Cross-Assessor Graphs (boxkites.rs, cd_external.rs)
+//! Nodes = cross pairs (lo, hi) with lo < N/2, hi >= N/2.
+//! Edges determined by `diagonal_zero_products_exact()`.
+//! This is the actual zero-divisor adjacency structure.
+//!
+//! Use [`MatrixPredicate`] to bridge actual cross-assessor adjacency
+//! into the invariant pipeline of this module.
 
 use nalgebra::DMatrix;
 use petgraph::algo::{connected_components, dijkstra};
@@ -133,10 +148,13 @@ pub fn generate_pathion_matching(dim: usize) -> UnGraph<(), ()> {
     graph
 }
 
-/// Generate the "Zero-Divisor Adjacency" graph (Parity Cliques).
+/// Generate the parity-clique HYPOTHESIS graph (synthetic baseline).
 ///
 /// Rule: A(i,j) = 1 iff i != j AND i%2 == j%2.
 /// Creates two disjoint cliques (Evens and Odds).
+///
+/// This is NOT the actual ZD adjacency graph. It matches reality only at
+/// dims 16 and 32 (C-463). See module docs for the two-domain distinction.
 pub fn generate_zd_parity_cliques(dim: usize) -> UnGraph<(), ()> {
     let mut graph = UnGraph::<(), ()>::with_capacity(dim, dim * (dim / 2 - 1));
     let nodes: Vec<NodeIndex> = (0..dim).map(|_| graph.add_node(())).collect();
@@ -199,10 +217,15 @@ pub trait GraphPredicate {
     }
 }
 
-/// P_ZD: Zero-divisor adjacency predicate (parity cliques).
+/// P_ZD: Zero-divisor adjacency HYPOTHESIS predicate (parity cliques).
 ///
 /// Two nodes are adjacent iff they have the same parity (both even or both odd).
 /// This creates K_{n/2} U K_{n/2} -- two disjoint cliques.
+///
+/// WARNING: This is a hypothesis predicate on BASIS INDICES, not the actual
+/// ZD adjacency on cross-assessor pairs. It matches actual ZD adjacency
+/// ONLY at dims 16 and 32 (C-463). REFUTED at dim=64+ (C-451, cross-parity
+/// edges exist). Use as a synthetic baseline for comparison, not as ground truth.
 pub struct ZeroDivisorPredicate;
 
 impl GraphPredicate for ZeroDivisorPredicate {

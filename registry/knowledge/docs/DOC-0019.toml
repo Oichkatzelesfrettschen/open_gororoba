@@ -9,10 +9,10 @@ kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "4eddaa1935f54d958b6bf2871f8910a7c84a9f4aa3483a90c5cc693060f706f2"
-source_line_count = 185
-source_size_bytes = 8406
-content_sha256 = "4eddaa1935f54d958b6bf2871f8910a7c84a9f4aa3483a90c5cc693060f706f2"
+source_sha256 = "0015f1398bc5ced1443cb4ecb2aa87f2ad87f8cd2be7538d5b876e712f68db3e"
+source_line_count = 188
+source_size_bytes = 8570
+content_sha256 = "0015f1398bc5ced1443cb4ecb2aa87f2ad87f8cd2be7538d5b876e712f68db3e"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -180,8 +180,11 @@ The external CSV data and our computations use TWO DISTINCT adjacency
 predicates that must not be conflated:
 
 **P_ZD (Zero-Divisor Adjacency):** Cross-assessor pairs (a,b) and (c,d)
-are ZD-adjacent if e_a*e_c = 0 (or any diagonal combination). Produces
-parity-separated bipartite cliques (K_m union K_m). See C-463 (Thesis F).
+are ZD-adjacent if e_a*e_c = 0 (or any diagonal combination). At dims 16
+and 32, this produces parity-separated cliques K_m union K_m (C-463,
+Thesis F). **At dim=128 this property FAILS** (C-451: 32640 cross-partition
+edges). The parity-clique structure is NOT universal; it is a small-dimension
+coincidence.
 
 **P_match (Pathion/Matching Adjacency):** Cross-assessor pairs connected
 by matching-type edges where the pair index XOR yields a fixed constant.

@@ -1,3 +1,9 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/experiments.toml, registry/experiments_narrative.toml -->
+
 # Experiments Portfolio Shortlist
 
 Source-of-truth policy:
@@ -42,6 +48,12 @@ cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
 
 ---
 
+---
+
+---
+
+---
+
 ## E-002: Multi-Dataset GPU Ultrametric Sweep
 
 **Method:** For each of 9 astrophysical catalogs, normalize attributes to [0,1],
@@ -63,6 +75,12 @@ cargo run --release --bin multi-dataset-ultrametric -- \
 **Related claims:** C-071, C-436..C-440, I-011
 
 **Determinism:** Seed-controlled (default 42).  Requires NVIDIA GPU with CUDA.
+
+---
+
+---
+
+---
 
 ---
 
@@ -95,6 +113,12 @@ cargo run --release --bin real-cosmo-fit
 
 ---
 
+---
+
+---
+
+---
+
 ## E-004: Kerr Shadow Boundaries
 
 **Method:** Compute Bardeen shadow boundary curve for a Kerr black hole at
@@ -112,6 +136,12 @@ cargo run --release --bin kerr-shadow -- --spin 0.998 --n-points 1000 --inclinat
 **Related claims:** C-301..C-310 (Kerr GR)
 
 **Determinism:** Fully deterministic.
+
+---
+
+---
+
+---
 
 ---
 
@@ -137,6 +167,12 @@ cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000
 **Related claims:** C-050..C-060 (ZD graph structure)
 
 **Determinism:** Fully deterministic.
+
+---
+
+---
+
+---
 
 ---
 
@@ -170,6 +206,12 @@ cargo run --release --bin gravastar-sweep -- \
 
 ---
 
+---
+
+---
+
+---
+
 ## E-007: Tensor Network / PEPS Entropy
 
 **Method:** Classical tensor network simulator for quantum circuits.  Bell/GHZ
@@ -189,6 +231,12 @@ cargo run --release --bin tensor-network -- \
 **Related claims:** C-350..C-360 (entanglement scaling)
 
 **Determinism:** Seed-controlled (default 42).
+
+---
+
+---
+
+---
 
 ---
 
@@ -221,6 +269,12 @@ cargo run --release --bin mass-clumping -- --n-permutations 10000 --seed 42
 
 ---
 
+---
+
+---
+
+---
+
 ## E-009: Negative-Dimension Eigenvalue Convergence
 
 **Method:** Compute eigenvalues of H = T(k) + V(x) with regularized fractional
@@ -241,6 +295,12 @@ cargo run --release --bin neg-dim-eigen -- sweep \
 **Related claims:** C-420..C-425 (negative-dimension PDE)
 
 **Determinism:** Fully deterministic.
+
+---
+
+---
+
+---
 
 ---
 
@@ -288,6 +348,12 @@ cargo run --release --bin materials-baseline -- --data-dir data/external --seed 
 
 ---
 
+---
+
+---
+
+---
+
 ## E-011: Cross-Stack Locality Comparison (Experiment A)
 
 Method: Compare adjacency-locality metrics across three independent constraint systems:
@@ -311,6 +377,12 @@ Run:
 ```bash
 cargo run --release --bin cross-stack-locality -- --n-bounces 10000 --n-permutations 1000 --seed 42
 ```
+
+---
+
+---
+
+---
 
 ---
 
@@ -340,6 +412,12 @@ cargo run --release --bin et-billiard -- --n-levels 4,5,6 --n-steps 10000 --seed
 
 ---
 
+---
+
+---
+
+---
+
 ## E-013: Sky-Limit-Set Correspondence (Experiment C)
 
 Method: Compare ET skybox pattern invariants to Coxeter group limit set invariants.
@@ -364,6 +442,12 @@ Run:
 ```bash
 cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-types A,B,D
 ```
+
+---
+
+---
+
+---
 
 ---
 

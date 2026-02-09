@@ -48,8 +48,8 @@ source_markdown = ["docs/INSIGHTS.md"]
 authoritative_toml = ["registry/insights.toml"]
 generated_mirror = ["docs/generated/INSIGHTS_REGISTRY_MIRROR.md"]
 strategy = "toml_primary_narrative_overlay"
-status = "in_progress"
-notes = "Generated mirror exists; narrative doc remains non-authoritative until policy decision."
+status = "complete"
+notes = "Legacy insights markdown is now generated from TOML registry + narrative overlay."
 
 [[domain]]
 id = "KM-003"
@@ -58,8 +58,8 @@ source_markdown = ["docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"]
 authoritative_toml = ["registry/experiments.toml"]
 generated_mirror = ["docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"]
 strategy = "toml_primary_narrative_overlay"
-status = "in_progress"
-notes = "Generated mirror exists; narrative doc remains non-authoritative until policy decision."
+status = "complete"
+notes = "Legacy experiments markdown is now generated from TOML registry + narrative overlay."
 
 [[domain]]
 id = "KM-004"
@@ -72,8 +72,8 @@ generated_mirror = [
   "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md",
 ]
 strategy = "toml_primary_markdown_overlay"
-status = "in_progress"
-notes = "Registry records canonical operational state; legacy docs still contain long-form context."
+status = "complete"
+notes = "Legacy operational markdown is generated from TOML registries + narrative overlays."
 
 [[domain]]
 id = "KM-005"
@@ -82,8 +82,18 @@ source_markdown = ["REQUIREMENTS.md", "docs/REQUIREMENTS.md", "docs/requirements
 authoritative_toml = ["registry/requirements.toml"]
 generated_mirror = ["docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"]
 strategy = "toml_primary_markdown_overlay"
-status = "in_progress"
-notes = "Coverage gaps tracked in requirements registry."
+status = "complete"
+notes = "Requirements markdown set is generated from requirements registry + narrative overlay."
+
+[[domain]]
+id = "KM-010"
+name = "markdown_governance"
+source_markdown = ["docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"]
+authoritative_toml = ["registry/markdown_governance.toml"]
+generated_mirror = ["docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"]
+strategy = "toml_primary_policy_enforcement"
+status = "complete"
+notes = "Governance registry classifies all markdown lifecycle modes and drives header/parity verifiers."
 
 [[domain]]
 id = "KM-006"
@@ -128,9 +138,10 @@ deliverables = ["registry/claims_tasks.toml", "registry/claims_domains.toml", "r
 [[phase]]
 id = "KMP-P5"
 name = "policy_hardening"
-status = "in_progress"
+status = "active"
 deliverables = [
-  "Decision on replacing legacy overlays vs retaining narrative overlays",
+  "Generated-header compliance verifier for TOML mirrors",
+  "Governance parity verifier (knowledge_sources vs markdown_governance)",
   "CI checks for mirror freshness",
   "Registry-first make target sequencing",
 ]
@@ -140,3 +151,15 @@ id = "KMP-P6"
 name = "legacy_tracker_retirement"
 status = "pending"
 deliverables = ["Retire remaining manually-edited markdown trackers after TOML parity review"]
+
+[[phase]]
+id = "KMP-P7"
+name = "markdown_governance_registry"
+status = "complete"
+deliverables = [
+  "src/scripts/analysis/build_markdown_governance_registry.py",
+  "registry/markdown_governance.toml",
+  "src/verification/verify_markdown_governance_headers.py",
+  "src/verification/verify_markdown_governance_parity.py",
+  "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md",
+]

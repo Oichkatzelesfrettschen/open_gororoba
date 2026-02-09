@@ -3,7 +3,7 @@
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify
 .PHONY: verify verify-grand ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke
-.PHONY: registry registry-knowledge registry-migrate-corpus registry-normalize-claims
+.PHONY: registry registry-knowledge registry-governance registry-migrate-corpus registry-normalize-claims
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
 .PHONY: registry-ingest-legacy registry-export-markdown registry-verify-mirrors
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
@@ -82,6 +82,9 @@ rust-smoke: rust-clippy rust-test
 registry-knowledge:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_knowledge_sources_registry.py
 
+registry-governance: registry-knowledge
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_governance_registry.py
+
 registry-migrate-corpus: registry-knowledge
 	PYTHONWARNINGS=error python3 src/scripts/analysis/migrate_markdown_corpus_to_toml.py
 
@@ -97,11 +100,13 @@ registry-normalize-operational-narratives:
 registry-ingest-legacy: registry-normalize-claims registry-normalize-narratives registry-normalize-operational-narratives
 	@echo "Legacy markdown -> TOML ingest completed."
 
-registry-export-markdown: registry-migrate-corpus registry-ingest-legacy
+registry-export-markdown: registry-migrate-corpus registry-ingest-legacy registry-governance
 	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py
 
 registry-verify-mirrors: registry-export-markdown
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_mirror_freshness.py
+	PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_headers.py
+	PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_parity.py
 
 registry: registry-verify-mirrors
 	cargo run --release --bin registry-check
