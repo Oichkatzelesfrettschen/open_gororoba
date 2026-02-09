@@ -1,5 +1,10 @@
 # Insights
 
+Source-of-truth policy:
+- Authoritative machine-readable registry: `registry/insights.toml`
+- TOML-driven markdown mirror: `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`
+- This file remains narrative detail and historical context.
+
 This document records discoveries and interpretations from the open_gororoba
 computational census, organized by I-ID. Each entry separates verified
 algebraic facts from speculative physical interpretation per the verification

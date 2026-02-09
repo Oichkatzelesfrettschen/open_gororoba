@@ -1,5 +1,10 @@
 # Experiments Portfolio Shortlist
 
+Source-of-truth policy:
+- Authoritative machine-readable registry: `registry/experiments.toml`
+- TOML-driven markdown mirror: `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`
+- This file remains narrative detail and historical context.
+
 Status: Sprint 8 (2026-02-07)
 
 This document lists the primary reproducible experiments in the open_gororoba

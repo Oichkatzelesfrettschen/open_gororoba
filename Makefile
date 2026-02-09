@@ -3,7 +3,7 @@
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify
 .PHONY: verify verify-grand ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke
-.PHONY: registry
+.PHONY: registry registry-knowledge registry-migrate-corpus registry-normalize-claims registry-export-markdown
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data run coq latex
@@ -77,7 +77,19 @@ rust-clippy:
 rust-smoke: rust-clippy rust-test
 	@echo "OK: Rust quality gate passed (clippy + tests)."
 
-registry:
+registry-knowledge:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_knowledge_sources_registry.py
+
+registry-migrate-corpus: registry-knowledge
+	PYTHONWARNINGS=error python3 src/scripts/analysis/migrate_markdown_corpus_to_toml.py
+
+registry-normalize-claims: registry-migrate-corpus
+	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py
+
+registry-export-markdown: registry-normalize-claims
+	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py
+
+registry: registry-export-markdown
 	cargo run --release --bin registry-check
 
 ascii-check:

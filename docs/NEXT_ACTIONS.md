@@ -49,6 +49,20 @@ Completed this sprint:
 
 ## Open Items (Forward-Looking)
 
+### Registry and Documentation Governance
+
+0) **Complete TOML centralization for markdown mirrors** (Sprint 13)
+   - `registry/knowledge_sources.toml` now indexes all tracked markdown files.
+   - `registry/knowledge/docs/*.toml` now stores raw markdown capture (non-authoritative landing layer).
+   - Curated operational registries added: `registry/roadmap.toml`, `registry/todo.toml`,
+     `registry/next_actions.toml`, `registry/requirements.toml`.
+   - Exporters now generate TOML-driven markdown mirrors under
+     `docs/generated/*_REGISTRY_MIRROR.md` for insights, experiments, roadmap,
+     todo, next-actions, and requirements.
+   - Remaining policy decision: fully replace legacy narrative docs or keep
+     them as non-authoritative overlays.
+   - Keep markdown as human-facing mirrors, generated where practical.
+
 ### High Priority
 
 1) **Multiplication coupling rho(b) in GL(8,Z)** (C-466, Sprint 9 open question)

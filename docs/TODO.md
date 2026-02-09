@@ -12,6 +12,20 @@ Note:
 - Historical planning docs (`RUST_MIGRATION_PLAN.md`, `RUST_REFACTOR_PLAN.md`, `docs/RESEARCH_ROADMAP.md`) deleted; content absorbed into `docs/ROADMAP.md`.
 - Claims: C-001..C-475 (475 total). Insights: I-001..I-016.
 
+## Current sprint: Sprint 13 -- TOML Centralization and Markdown Governance (IN PROGRESS)
+
+- [x] Add central markdown knowledge index at `registry/knowledge_sources.toml`.
+- [x] Add deterministic builder `src/scripts/analysis/build_knowledge_sources_registry.py`.
+- [x] Wire `make registry` to regenerate knowledge index before `registry-check`.
+- [x] Reconcile claims mirror wording (`docs/CLAIMS_EVIDENCE_MATRIX.md`) to match TOML source-of-truth policy.
+- [x] Add raw-capture TOML corpus for non-generated markdown docs (`registry/knowledge/docs/*.toml`).
+- [x] Define authoritative operational TOML registries (`registry/roadmap.toml`, `registry/todo.toml`, `registry/next_actions.toml`, `registry/requirements.toml`).
+- [x] Add curated domain migration strategy (`registry/knowledge_migration_plan.toml`) to avoid blind bulk conversion.
+- [x] Add TOML-first export path for insights mirror (`registry/insights.toml` -> `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`).
+- [x] Add TOML-first export path for experiments mirror (`registry/experiments.toml` -> `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`).
+- [x] Add TOML-first markdown exporters for roadmap/todo/next-actions/requirements mirrors (`docs/generated/*_REGISTRY_MIRROR.md`).
+- [ ] Decide if `docs/INSIGHTS.md` and `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md` should be fully replaced by generated mirrors or kept as narrative overlays.
+
 ## Current sprint: Sprint 10 -- De Marrais Emanation Architecture (COMPLETE)
 
 ### emanation.rs module (L1-L18, ~4400 lines, 113 tests)
