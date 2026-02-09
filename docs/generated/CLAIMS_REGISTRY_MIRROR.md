@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/claims.toml`.
 
-Total claims: 513
+Total claims: 514
 
 ## C-001
 
@@ -4110,3 +4110,11 @@ Total claims: 513
 - Statement: Complete Stratum Counting Table and Lambda_1024 Paradox: Lambda_1024 (dim=128) has N=1026, l_0=-1 only (1 l_0 stratum), with 3 l_1 strata: l_1=-1 (N=365), l_1=0 (N=364), l_1=+1 (N=297). Combined z=-1.50, but each l_1 stratum has z=12.50/13.75/13.46 -- paradox confirmed. The complete stratum counting table across all 4 levels is: Lambda_256 (1 stratum, z=+18.31), Lambda_512 (2 strata, z=+9.46), Lambda_1024 (3 strata, z=-1.50), Lambda_2048 (6 strata, z=-5.51). The relationship is strictly monotone decreasing: more strata = lower z-score. The sign transition from positive to negative z occurs between 2 and 3 strata. This is quantitatively consistent with the cross-stratum contamination mechanism: at 3 strata, 89% of triples are cross-stratum (volume = 1 - 3*(1/3)^3 = 8/9), each with ~10% lower UM fraction, which is sufficient to reverse the sign.
 - Where stated: `crates/stats_core/src/ultrametric/baire_codebook.rs` (test_lambda1024_stratum_paradox_and_summary)
 - What would verify/refute it: VERIFIED: 200 permutations x 50K triples at all 4 filtration levels. WHAT WOULD REFUTE: finding Lambda_1024 has only 2 l_1 strata would invalidate the 3-stratum claim. Finding Lambda_1024 l_1 strata with z < combined z would refute the paradox. Finding the stratum count -> z-score relationship non-monotone would weaken the counting explanation.
+
+## C-514
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Herfindahl Stratum Model: The z-score across filtration levels is well-predicted by a linear function of the Herfindahl same-triple index H = sum(n_i/N)^3: z = 23.68*H - 3.87 (R^2=0.927, RMSE=2.52). The actual stratum sizes are UNEQUAL: Lambda_256 [256] H=1.000, Lambda_512 [365,147] H=0.386, Lambda_1024 [297,364,365] H=0.114, Lambda_2048 [365,364,365,364,365,225] H=0.030. The sign transition occurs at H=0.163 (approximately 1.8 equal-sized strata). Lambda_512's unexpectedly high z=9.46 (vs the equal-size prediction z~0) is explained by its asymmetric stratum sizes (H=0.386 >> 0.25). The model captures 93% of variance with a single predictor (H), confirming that the Herfindahl same-triple fraction is the dominant control on ultrametricity in the CD lattice codebook filtration. The residual 7% variance likely reflects additional structure (l_0 vs l_1 mixing hierarchy, sample size effects).
+- Where stated: `crates/stats_core/src/ultrametric/baire_codebook.rs` (test_stratum_count_analytical_model)
+- What would verify/refute it: VERIFIED: 4-point linear regression with R^2=0.927. WHAT WOULD REFUTE: R^2 < 0.8 would indicate H is not the dominant predictor. Finding a better predictor (e.g., based on stratum sizes alone without the cubic Herfindahl weighting) would refine the model. Finding the residuals correlated with a systematic factor (e.g., N or d) would indicate a missing predictor.

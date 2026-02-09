@@ -2152,4 +2152,104 @@ mod tests {
                 min_stratum, z_full, min_stratum > z_full);
         }
     }
+
+    // ================================================================
+    // Analytical stratum count -> z-score model (C-514)
+    // ================================================================
+
+    /// Compute the ACTUAL same-stratum fraction (Herfindahl index) using real
+    /// stratum sizes, and test whether it predicts z-scores better than the
+    /// equal-size assumption.
+    #[test]
+    fn test_stratum_count_analytical_model() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
+            is_in_lambda_1024, is_in_lambda_2048,
+        };
+
+        // For each filtration level, compute actual stratum sizes and Herfindahl index
+        // H = sum(n_i/N)^3 = probability that a random triple is same-stratum
+        let compute_herfindahl = |vectors: &[[i8; 8]]| -> (f64, Vec<usize>) {
+            let n = vectors.len() as f64;
+            // Enumerate (l_0, l_1) strata
+            let mut counts = std::collections::HashMap::new();
+            for v in vectors {
+                let key = (v[0], v[1]);
+                *counts.entry(key).or_insert(0usize) += 1;
+            }
+            let sizes: Vec<usize> = counts.values().copied().collect();
+            let h: f64 = sizes.iter().map(|&s| (s as f64 / n).powi(3)).sum();
+            (h, sizes)
+        };
+
+        let l256 = enumerate_lattice_by_predicate(is_in_lambda_256);
+        let l512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let l1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
+        let l2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+
+        let (h256, s256) = compute_herfindahl(&l256);
+        let (h512, s512) = compute_herfindahl(&l512);
+        let (h1024, s1024) = compute_herfindahl(&l1024);
+        let (h2048, s2048) = compute_herfindahl(&l2048);
+
+        // z-scores from C-513
+        let data = [
+            ("Lambda_256", 18.31f64, h256, s256.len(), &s256),
+            ("Lambda_512", 9.46, h512, s512.len(), &s512),
+            ("Lambda_1024", -1.50, h1024, s1024.len(), &s1024),
+            ("Lambda_2048", -5.51, h2048, s2048.len(), &s2048),
+        ];
+
+        eprintln!("\n=== Stratum Count Model with Actual Sizes ===");
+        eprintln!("Level       | k  | z-score | H (same) | 1-H (cross) | strata sizes");
+        eprintln!("------------|----|---------|---------|-----------|--------------");
+
+        for &(name, z, h, k, ref sizes) in &data {
+            eprintln!("{:<12}| {:>2} | {:>7.2} | {:>7.4} | {:>9.4}  | {:?}",
+                name, k, z, h, 1.0 - h, sizes);
+        }
+
+        // Linear model: z = a * H + b (where H = Herfindahl same-triple fraction)
+        // Least-squares fit with 4 points
+        let n = data.len() as f64;
+        let sum_h: f64 = data.iter().map(|d| d.2).sum();
+        let sum_z: f64 = data.iter().map(|d| d.1).sum();
+        let sum_hz: f64 = data.iter().map(|d| d.2 * d.1).sum();
+        let sum_hh: f64 = data.iter().map(|d| d.2 * d.2).sum();
+
+        let a = (n * sum_hz - sum_h * sum_z) / (n * sum_hh - sum_h * sum_h);
+        let b = (sum_z - a * sum_h) / n;
+
+        eprintln!("\nLinear model: z = {:.2} * H + ({:.2})", a, b);
+        eprintln!("(H = Herfindahl same-triple fraction)");
+
+        eprintln!("\nPredictions:");
+        let mut total_sq_err = 0.0;
+        for &(name, z_obs, h, _, _) in &data {
+            let z_pred = a * h + b;
+            let err = z_obs - z_pred;
+            total_sq_err += err * err;
+            eprintln!("  {}: H={:.4}, predicted={:.2}, observed={:.2}, error={:.2}",
+                name, h, z_pred, z_obs, err);
+        }
+        let rmse = (total_sq_err / n).sqrt();
+
+        // Pearson correlation
+        let mean_h = sum_h / n;
+        let mean_z = sum_z / n;
+        let cov: f64 = data.iter().map(|d| (d.2 - mean_h) * (d.1 - mean_z)).sum::<f64>() / n;
+        let std_h = (data.iter().map(|d| (d.2 - mean_h).powi(2)).sum::<f64>() / n).sqrt();
+        let std_z = (data.iter().map(|d| (d.1 - mean_z).powi(2)).sum::<f64>() / n).sqrt();
+        let r = cov / (std_h * std_z);
+
+        eprintln!("\nRMSE: {:.2}, R^2: {:.4}, Pearson r: {:.4}", rmse, r * r, r);
+
+        // Sign transition: z=0 when a*H + b = 0 => H = -b/a
+        let h_transition = -b / a;
+        eprintln!("Sign transition at H = {:.4}", h_transition);
+        eprintln!("This corresponds to ~{:.1} equal-sized strata", (1.0 / h_transition).cbrt());
+
+        // Key assertion: the Herfindahl model should have R^2 > 0.9
+        assert!(r * r > 0.9, "Model R^2 = {:.4}, expected > 0.9", r * r);
+    }
 }
