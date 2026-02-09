@@ -386,3 +386,15 @@ enforcement = [
   "make registry excludes registry-normalize-claims from default ingest flow",
   "mirror freshness and governance verifiers run in make registry",
 ]
+
+[[policy]]
+id = "KMPOL-002"
+name = "untracked_markdown_mirror_publish_mode"
+status = "active"
+statement = "TOML-generated markdown mirrors are publish artifacts and are intentionally not tracked in git."
+enforcement = [
+  "Git index tracks only manual markdown exceptions and explicit artifact README files",
+  "make registry validates TOML registries without requiring tracked markdown mirrors",
+  "make docs-publish generates and verifies markdown mirrors for documentation output",
+  ".gitignore excludes TOML-generated markdown mirror paths from git tracking",
+]

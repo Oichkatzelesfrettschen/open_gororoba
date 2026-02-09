@@ -12,18 +12,18 @@ Updated 2026-02-09 after Sprint 25 completion.
 
 ## Current State (Sprint 25, 2026-02-09)
 
-**Test count**: 2280 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-500 (500 total). **Insights**: I-001..I-017. **Binaries**: 40.
+**Test count**: 2312 total (unit + integration + doc), 0 clippy warnings.
+**Claims**: C-001..C-527 (527 total). **Insights**: I-001..I-018. **Binaries**: 40.
 
 ## Recent Sprint Summaries
 
-- **S25**: Dim=512 census: 33 regimes, 214M triangles, 275s (C-495). Fano Residue
-  Distribution Law: dim/16 per residue with deficit at 0 (C-496). Fano Projection Full
-  Mixing: all components use all 7 Fano indices (C-497). Layer 3/4 bridge with budget-
-  aware LightGraphInvariants O(n+e). Coset Obstruction Theorem: 0% Z/F_3 closure on
-  Lambda_n explained by l_0=-1 coset mapping to forbidden l_0=+1 (C-498). Affine F_3
-  Partial Closure 30-47% (C-499). Euclidean Filtration Ultrametricity Gradient: Lambda_256
-  z=17.07 significant, Lambda_2048 anti-ultrametric, transition at Lambda_512 (C-500).
+- **S25**: Dim=512 census (33 regimes, 214M triangles, C-495). Fano Residue Distribution
+  Law (C-496). Coset Obstruction Theorem (C-498). Anti-Diagonal Parity Theorem: complete
+  mechanism for Universal Double 3:1 Law via GF(2)^2 invariant F (C-520/C-521, I-018).
+  Sigma correspondence (C-515), Half-Half Edge Law (C-517). GF(2) coboundary phase
+  transition at dim=16 (C-523). Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524).
+  CD doubling recursion eta=1 XOR eta_half (C-526). psi ANF degree=log2(dim), eta
+  degree=log2(dim)-1 (C-527). 527 claims, 2312 tests, I-018.
 - **S24**: Face sign census at dim=256: 17 regimes, 13.3M triangles in ~16s (C-488).
   Regime-to-GF(2) class correspondence: regimes = edge-count classes + 1, unifying
   motif census, GF(2) projective geometry, and face sign census (C-489). Parity-
@@ -88,6 +88,7 @@ Updated 2026-02-09 after Sprint 25 completion.
 | L. ALP + Sky-Limit-Set | DONE (PARTIAL) | S17-S19 | C-476/C-477 partially verified, I-017 |
 | M. Face sign census | DONE | S21-S24 | 33 regimes at dim=512, Double 3:1 Law (C-481..C-495) |
 | N. Coset / filtration | DONE | S25 | Coset obstruction (C-498), filtration gradient (C-500) |
+| O. Anti-Diagonal Parity | DONE | S25 | Mechanism for Double 3:1 Law (C-515..C-527, I-018) |
 
 ---
 
@@ -124,13 +125,12 @@ Updated 2026-02-09 after Sprint 25 completion.
    Only identity element b=0 yields zero residual in rank-adaptive reduced-subspace algorithm.
 
 2) ~~**Primary-source citation for every claim** (ROADMAP 7.2)~~ -- **COMPLETE** (Sprint 25 audit).
-   All 500/500 claims have non-empty where_stated: 118 test-function refs (23.6%),
-   382 document/paper refs (76.4%). No remediation needed.
+   All 527/527 claims have non-empty where_stated.
 
 3) **Paper-ready LaTeX pipeline** (ROADMAP 7.5)
    - `make latex` build from verified results.
    - Structured \"hypotheses + tests + results\" format.
-   - Priority target: ultrametric core mining (I-013) or lattice codebook (I-015).
+   - Priority target: Anti-Diagonal Parity Theorem (I-018) or ultrametric hierarchy (I-013).
 
 ### Medium Priority
 

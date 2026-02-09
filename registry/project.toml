@@ -15,9 +15,10 @@ binary_count = 40
 [sprints.s25]
 number = 25
 date = "2026-02-09"
-test_count = 2280
-claim_count = 501
-summary = "Dim=512 census (33 regimes, 214M triangles, 275s, C-495). Fano Residue Distribution Law (C-496) and Fano Projection Full Mixing (C-497). Layer 3/4 bridge with budget-aware invariants. Coset Obstruction Theorem (C-498): 0% closure explained by l_0=-1 coset. Affine F_3 Partial Closure 30-47% (C-499). Euclidean Filtration Ultrametricity Gradient (C-500): Lambda_256 z=17.07 significant, transition at Lambda_512."
+test_count = 2312
+claim_count = 527
+insight_count = 18
+summary = "Dim=512 census (33 regimes, 214M triangles, 275s, C-495). Fano Residue Distribution Law (C-496). Coset Obstruction Theorem (C-498). Euclidean Filtration Ultrametricity Gradient (C-500). Sigma correspondence (C-515) and Half-Half Edge Law (C-517). Anti-Diagonal Parity Theorem: complete mechanism for Universal Double 3:1 Law via GF(2)^2 invariant F (C-520/C-521). GF(2) coboundary phase transition at dim=16 (C-523). Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524). CD doubling recursion eta=1 XOR eta_half (C-526). GF(2) polynomial degree: psi ANF deg=log2(dim), eta deg=log2(dim)-1 (C-527). I-018: Anti-Diagonal Parity Theorem insight."
 
 [sprints.s24]
 number = 24

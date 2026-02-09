@@ -132,3 +132,10 @@ data/external/de440.bsp
 data/external/de441.bsp
 data/external/landsat_stac_sample.json
 .playwright-mcp/
+
+# TOML-generated markdown mirrors are publish artifacts, not tracked sources.
+REQUIREMENTS.md
+docs/**/*.md
+reports/*.md
+data/artifacts/*.md
+!data/artifacts/README.md
