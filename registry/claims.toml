@@ -4101,3 +4101,11 @@ where_stated = "`crates/stats_core/src/ultrametric/baire_codebook.rs` (test_lamb
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: 200 permutations x 50K triples at all 4 filtration levels. WHAT WOULD REFUTE: finding Lambda_1024 has only 2 l_1 strata would invalidate the 3-stratum claim. Finding Lambda_1024 l_1 strata with z < combined z would refute the paradox. Finding the stratum count -> z-score relationship non-monotone would weaken the counting explanation."
+
+[[claim]]
+id = "C-514"
+statement = "Herfindahl Stratum Model: The z-score across filtration levels is well-predicted by a linear function of the Herfindahl same-triple index H = sum(n_i/N)^3: z = 23.68*H - 3.87 (R^2=0.927, RMSE=2.52). The actual stratum sizes are UNEQUAL: Lambda_256 [256] H=1.000, Lambda_512 [365,147] H=0.386, Lambda_1024 [297,364,365] H=0.114, Lambda_2048 [365,364,365,364,365,225] H=0.030. The sign transition occurs at H=0.163 (approximately 1.8 equal-sized strata). Lambda_512's unexpectedly high z=9.46 (vs the equal-size prediction z~0) is explained by its asymmetric stratum sizes (H=0.386 >> 0.25). The model captures 93% of variance with a single predictor (H), confirming that the Herfindahl same-triple fraction is the dominant control on ultrametricity in the CD lattice codebook filtration. The residual 7% variance likely reflects additional structure (l_0 vs l_1 mixing hierarchy, sample size effects)."
+where_stated = "`crates/stats_core/src/ultrametric/baire_codebook.rs` (test_stratum_count_analytical_model)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 4-point linear regression with R^2=0.927. WHAT WOULD REFUTE: R^2 < 0.8 would indicate H is not the dominant predictor. Finding a better predictor (e.g., based on stratum sizes alone without the cubic Herfindahl weighting) would refine the model. Finding the residuals correlated with a systematic factor (e.g., N or d) would indicate a missing predictor."
