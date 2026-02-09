@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Verify legacy CSV -> TOML migration coverage and semantic parity.
+Verify CSV -> TOML migration coverage and semantic parity.
 
-Checks:
+Default checks:
 - every data/csv/legacy/*.csv is represented in registry/legacy_csv_datasets.toml
 - canonical per-dataset TOML files exist
 - dataset metadata checksums and parsed rows match source CSV semantics
@@ -10,16 +10,22 @@ Checks:
 
 from __future__ import annotations
 
+import argparse
 import csv
 import hashlib
 import json
 import math
 import re
+import sys
 import tomllib
 from pathlib import Path
 
 
-INDEX_PATH = "registry/legacy_csv_datasets.toml"
+DEFAULT_INDEX_PATH = "registry/legacy_csv_datasets.toml"
+DEFAULT_SOURCE_GLOB = "data/csv/legacy/*.csv"
+DEFAULT_CORPUS_LABEL = "legacy CSV"
+
+csv.field_size_limit(sys.maxsize)
 
 
 def _sha_text(values: object) -> str:
@@ -153,12 +159,35 @@ def _parse_source(
 
 
 def main() -> int:
-    repo_root = Path(__file__).resolve().parents[2]
-    index_path = repo_root / INDEX_PATH
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--repo-root",
+        default=str(Path(__file__).resolve().parents[2]),
+        help="Repository root.",
+    )
+    parser.add_argument(
+        "--index-path",
+        default=DEFAULT_INDEX_PATH,
+        help="Path to aggregate CSV->TOML index.",
+    )
+    parser.add_argument(
+        "--source-glob",
+        default=DEFAULT_SOURCE_GLOB,
+        help="Glob of source CSV files expected to be covered by index.",
+    )
+    parser.add_argument(
+        "--corpus-label",
+        default=DEFAULT_CORPUS_LABEL,
+        help="Human-readable label for output messages.",
+    )
+    args = parser.parse_args()
+
+    repo_root = Path(args.repo_root).resolve()
+    index_path = repo_root / args.index_path
     data = tomllib.loads(index_path.read_text(encoding="utf-8"))
 
     datasets = data.get("dataset", [])
-    source_files = sorted((repo_root / "data/csv/legacy").glob("*.csv"))
+    source_files = sorted((repo_root).glob(args.source_glob))
     source_paths = {path.relative_to(repo_root).as_posix() for path in source_files}
 
     failures: list[str] = []
@@ -168,10 +197,10 @@ def main() -> int:
     extra_in_index = sorted(indexed_paths - source_paths)
 
     if missing_from_index:
-        failures.append(f"Missing {len(missing_from_index)} legacy CSV entries in index.")
+        failures.append(f"Missing {len(missing_from_index)} {args.corpus_label} entries in index.")
         failures.extend(f"- missing: {item}" for item in missing_from_index[:20])
     if extra_in_index:
-        failures.append(f"Index has {len(extra_in_index)} non-existent legacy CSV entries.")
+        failures.append(f"Index has {len(extra_in_index)} non-existent {args.corpus_label} entries.")
         failures.extend(f"- extra: {item}" for item in extra_in_index[:20])
 
     if len(datasets) != len(source_paths):
@@ -254,7 +283,7 @@ def main() -> int:
                     failures.append(f"{source_csv}: empty_count mismatch at index {idx + 1}")
 
     if failures:
-        print("ERROR: legacy CSV TOML parity verification failed.")
+        print(f"ERROR: {args.corpus_label} TOML parity verification failed.")
         for item in failures[:300]:
             print(f"- {item}")
         if len(failures) > 300:
@@ -262,7 +291,7 @@ def main() -> int:
         return 1
 
     print(
-        "OK: legacy CSV corpus is fully represented in canonical TOML with semantic parity. "
+        f"OK: {args.corpus_label} corpus is fully represented in canonical TOML with semantic parity. "
         f"datasets={len(datasets)}"
     )
     return 0

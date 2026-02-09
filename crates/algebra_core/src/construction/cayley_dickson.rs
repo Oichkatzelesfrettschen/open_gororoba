@@ -2804,8 +2804,6 @@ mod tests {
         // zero-divisor structure.
         let dim = 8;
         let sig = CdSignature::split(dim);
-        let table = SplitSignTable::new(&sig);
-
         // Find all 2-blade zero-product pairs: e_i + s*e_j where s in {-1, +1}
         // that annihilate another 2-blade.
         let mut zd_pairs: Vec<((usize, i32, usize), (usize, i32, usize))> = Vec::new();
@@ -2990,11 +2988,13 @@ mod tests {
              std-sed {psi1_std}/{total_std} = {frac_std:.4}"
         );
 
-        // The psi=1 exact formula for standard is (n+1)/(2n) where n=dim-1.
-        // For dim=16: (16)/(2*15) = 16/30 = 0.5333...
-        let expected_std = 16.0 / 30.0;
+        // The psi=1 exact formula for standard (full matrix including identity
+        // row/column) is (dim-1)/(2*dim). The C-544 formula (n+1)/(2n) applies
+        // to the imaginary submatrix only.
+        // For dim=16: 15/32 = 0.46875
+        let expected_std = (dim_std - 1) as f64 / (2.0 * dim_std as f64);
         assert!(
-            (frac_std - expected_std).abs() < 0.01,
+            (frac_std - expected_std).abs() < 0.001,
             "std sedenion psi=1 fraction should be ~{expected_std:.4}, got {frac_std:.4}"
         );
 
