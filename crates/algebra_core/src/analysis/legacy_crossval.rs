@@ -104,10 +104,7 @@ pub fn associator(dim: usize, i: usize, j: usize, k: usize) -> Vec<f64> {
     let left = cd_multiply(&ab, &ek);
     let bc = cd_multiply(&ej, &ek);
     let right = cd_multiply(&ei, &bc);
-    left.iter()
-        .zip(right.iter())
-        .map(|(a, b)| a - b)
-        .collect()
+    left.iter().zip(right.iter()).map(|(a, b)| a - b).collect()
 }
 
 /// Check if a Cayley-Dickson algebra is alternative (weak associativity).
@@ -404,27 +401,15 @@ mod tests {
 
         // [e1, e2] should be 2*e3
         let bracket_12 = lie_bracket(dim, 1, 2);
-        assert_eq!(
-            bracket_12,
-            vec![0.0, 0.0, 0.0, 2.0],
-            "[i,j] should be 2k"
-        );
+        assert_eq!(bracket_12, vec![0.0, 0.0, 0.0, 2.0], "[i,j] should be 2k");
 
         // [e2, e3] should be 2*e1
         let bracket_23 = lie_bracket(dim, 2, 3);
-        assert_eq!(
-            bracket_23,
-            vec![0.0, 2.0, 0.0, 0.0],
-            "[j,k] should be 2i"
-        );
+        assert_eq!(bracket_23, vec![0.0, 2.0, 0.0, 0.0], "[j,k] should be 2i");
 
         // [e3, e1] should be 2*e2
         let bracket_31 = lie_bracket(dim, 3, 1);
-        assert_eq!(
-            bracket_31,
-            vec![0.0, 0.0, 2.0, 0.0],
-            "[k,i] should be 2j"
-        );
+        assert_eq!(bracket_31, vec![0.0, 0.0, 2.0, 0.0], "[k,i] should be 2j");
 
         // All quaternion imaginary units anti-commute
         for i in 1..4 {
@@ -454,9 +439,7 @@ mod tests {
         eprintln!("[j,k] = {:?} (expected [0,2,0,0]=2i)", bracket_23);
         eprintln!("[k,i] = {:?} (expected [0,0,2,0]=2j)", bracket_31);
         eprintln!("Legacy CSV [i,j] reported as [0,1,0,1] -- DISCREPANCY");
-        eprintln!(
-            "FINDING: Legacy uses boolean component mask, not coefficient values."
-        );
+        eprintln!("FINDING: Legacy uses boolean component mask, not coefficient values.");
     }
 
     #[test]
@@ -484,11 +467,7 @@ mod tests {
                 if i != j {
                     let sij = cd_basis_mul_sign(dim, i, j);
                     let sji = cd_basis_mul_sign(dim, j, i);
-                    assert_eq!(
-                        sij, -sji,
-                        "e{} and e{} should anti-commute",
-                        i, j
-                    );
+                    assert_eq!(sij, -sji, "e{} and e{} should anti-commute", i, j);
                 }
             }
         }
@@ -719,10 +698,7 @@ mod tests {
         assert!(props.is_alternative, "H should be alternative");
         assert!(props.is_normed, "H should be normed");
         assert!(props.is_division, "H should be a division algebra");
-        assert!(
-            props.contains_r_c_h,
-            "H contains R, C, H"
-        );
+        assert!(props.contains_r_c_h, "H contains R, C, H");
     }
 
     #[test]
@@ -733,10 +709,7 @@ mod tests {
         assert!(props.is_alternative, "O should be alternative");
         assert!(props.is_normed, "O should be normed");
         assert!(props.is_division, "O should be a division algebra");
-        assert!(
-            props.contains_r_c_h,
-            "O contains R, C, H"
-        );
+        assert!(props.contains_r_c_h, "O contains R, C, H");
     }
 
     #[test]
@@ -776,10 +749,7 @@ mod tests {
         assert!(!props.is_alternative);
         assert!(!props.is_normed);
         assert!(!props.is_division);
-        assert!(
-            props.contains_r_c_h,
-            "32D contains R, C, H"
-        );
+        assert!(props.contains_r_c_h, "32D contains R, C, H");
     }
 
     #[test]
@@ -983,7 +953,10 @@ mod tests {
         // index (4=l): exactly the cross-half boundary products.
         // Both conventions produce valid octonion algebras (among the 480
         // possible multiplication tables).
-        assert_eq!(sign_flips, 6, "Expect exactly 6 sign flips at cross-half boundary");
+        assert_eq!(
+            sign_flips, 6,
+            "Expect exactly 6 sign flips at cross-half boundary"
+        );
 
         eprintln!(
             "VERIFIED: {}/{} known entries match CD computation exactly",
@@ -1027,7 +1000,17 @@ mod tests {
 
         // Every row permutation: for each a, the set {a XOR b | b=0..7} = {0..7}
         for a in 0..dim {
-            let mut targets: Vec<usize> = (0..dim).map(|b| if a == 0 || b == 0 { a.max(b) } else if a == b { 0 } else { a ^ b }).collect();
+            let mut targets: Vec<usize> = (0..dim)
+                .map(|b| {
+                    if a == 0 || b == 0 {
+                        a.max(b)
+                    } else if a == b {
+                        0
+                    } else {
+                        a ^ b
+                    }
+                })
+                .collect();
             targets.sort();
             assert_eq!(
                 targets,
@@ -1123,9 +1106,7 @@ mod tests {
 
         eprintln!("Lower-right block (8x8):");
         eprintln!("  Pattern: I + 0.4 * checkerboard");
-        eprintln!(
-            "  Expected eigenvalues: 0.943 (x7), 1.4 (x1)"
-        );
+        eprintln!("  Expected eigenvalues: 0.943 (x7), 1.4 (x1)");
 
         // Compare against actual sedenion multiplication table:
         // the sedenion table has entries +/- e_k, so entries are {-1,0,1}.
@@ -1137,10 +1118,13 @@ mod tests {
         eprintln!("  with two independent blocks (7-dim and 8-dim).");
 
         // Verify the upper block has continuous (non-integer) entries
-        let has_non_integer = upper_left.iter().any(|row| {
-            row.iter().any(|&v| (v - v.round()).abs() > 0.01)
-        });
-        assert!(has_non_integer, "Upper-left block should have non-integer entries");
+        let has_non_integer = upper_left
+            .iter()
+            .any(|row| row.iter().any(|&v| (v - v.round()).abs() > 0.01));
+        assert!(
+            has_non_integer,
+            "Upper-left block should have non-integer entries"
+        );
     }
 
     #[test]
@@ -1153,12 +1137,8 @@ mod tests {
         // the dense eigenvector block, while the "E6-Inspired" adds the
         // checkerboard structure in the lower-right.
 
-        let upper_e6: Vec<f64> = vec![
-            0.569, -0.537, 0.562, -0.05, -0.049, 0.246, -0.08,
-        ];
-        let upper_ext: Vec<f64> = vec![
-            0.569, -0.537, 0.562, -0.05, -0.049, 0.246, -0.08,
-        ];
+        let upper_e6: Vec<f64> = vec![0.569, -0.537, 0.562, -0.05, -0.049, 0.246, -0.08];
+        let upper_ext: Vec<f64> = vec![0.569, -0.537, 0.562, -0.05, -0.049, 0.246, -0.08];
 
         // First rows should be identical
         for (a, b) in upper_e6.iter().zip(upper_ext.iter()) {
@@ -1199,11 +1179,7 @@ mod tests {
                 norms_ok = false;
             }
             for j in (i + 1)..rows.len() {
-                let dot: f64 = rows[i]
-                    .iter()
-                    .zip(rows[j].iter())
-                    .map(|(a, b)| a * b)
-                    .sum();
+                let dot: f64 = rows[i].iter().zip(rows[j].iter()).map(|(a, b)| a * b).sum();
                 max_off = max_off.max(dot.abs());
             }
         }
@@ -1284,9 +1260,7 @@ mod tests {
         // CSV says 23123279.479... while j_coeffs[9]/1e9 = 22312779.956...
         // This is a ~3.6% error -- likely a data entry mistake in the legacy CSV.
         eprintln!("Max relative error: {:.4e}", max_rel_err);
-        eprintln!(
-            "NOTE: c(10) has ~3.6% error in legacy CSV (23123279 vs 22312779)"
-        );
+        eprintln!("NOTE: c(10) has ~3.6% error in legacy CSV (23123279 vs 22312779)");
 
         // Verify the first 8 coefficients match to within 0.01%
         for n in 0..8 {
@@ -1336,10 +1310,7 @@ mod tests {
                 expected,
                 diff
             );
-            assert!(
-                diff < 1e-15,
-                "Spin foam amplitude should be ln(n+1)/1000"
-            );
+            assert!(diff < 1e-15, "Spin foam amplitude should be ln(n+1)/1000");
         }
 
         eprintln!("FINDING: 'Spin Foam Amplitude' column = ln(n+1)/1000 exactly.");
@@ -1673,14 +1644,16 @@ mod tests {
         assert_eq!(csv_points.len(), 256, "CSV should have 256 points");
         assert_eq!(pred_points.len(), 256, "Predicates should give 256 points");
 
-        let csv_set: std::collections::BTreeSet<Vec<i32>> =
-            csv_points.into_iter().collect();
+        let csv_set: std::collections::BTreeSet<Vec<i32>> = csv_points.into_iter().collect();
         let pred_set: std::collections::BTreeSet<Vec<i32>> = pred_points
             .iter()
             .map(|v| v.iter().map(|&x| x as i32).collect())
             .collect();
 
-        assert_eq!(csv_set, pred_set, "CSV and predicate Lambda_256 must match exactly");
+        assert_eq!(
+            csv_set, pred_set,
+            "CSV and predicate Lambda_256 must match exactly"
+        );
     }
 
     #[test]
@@ -1693,14 +1666,16 @@ mod tests {
         assert_eq!(csv_points.len(), 512, "CSV should have 512 points");
         assert_eq!(pred_points.len(), 512, "Predicates should give 512 points");
 
-        let csv_set: std::collections::BTreeSet<Vec<i32>> =
-            csv_points.into_iter().collect();
+        let csv_set: std::collections::BTreeSet<Vec<i32>> = csv_points.into_iter().collect();
         let pred_set: std::collections::BTreeSet<Vec<i32>> = pred_points
             .iter()
             .map(|v| v.iter().map(|&x| x as i32).collect())
             .collect();
 
-        assert_eq!(csv_set, pred_set, "CSV and predicate Lambda_512 must match exactly");
+        assert_eq!(
+            csv_set, pred_set,
+            "CSV and predicate Lambda_512 must match exactly"
+        );
     }
 
     #[test]
@@ -1719,10 +1694,13 @@ mod tests {
         let pred_points = enumerate_lattice_by_predicate(is_in_lambda_1024);
 
         assert_eq!(csv_points.len(), 1024, "CSV should have 1024 points");
-        assert_eq!(pred_points.len(), 1026, "Predicate gives 1026 (2 extra vs CSV)");
+        assert_eq!(
+            pred_points.len(),
+            1026,
+            "Predicate gives 1026 (2 extra vs CSV)"
+        );
 
-        let csv_set: std::collections::BTreeSet<Vec<i32>> =
-            csv_points.into_iter().collect();
+        let csv_set: std::collections::BTreeSet<Vec<i32>> = csv_points.into_iter().collect();
         let pred_set: std::collections::BTreeSet<Vec<i32>> = pred_points
             .iter()
             .map(|v| v.iter().map(|&x| x as i32).collect())
@@ -1739,7 +1717,8 @@ mod tests {
         // Document the 2 disputed points
         let pred_not_in_csv: Vec<_> = pred_set.difference(&csv_set).collect();
         assert_eq!(
-            pred_not_in_csv.len(), 2,
+            pred_not_in_csv.len(),
+            2,
             "Expected exactly 2 disputed points"
         );
         eprintln!("Lambda_1024 disputed points (predicate-only):");
@@ -1753,26 +1732,34 @@ mod tests {
         // Deep investigation of the 2 points in the predicate but not the CSV.
         // Both satisfy all base universe + Lambda_1024 rules. We test whether
         // they are structurally anomalous compared to their neighbors.
-        use crate::analysis::codebook::{
-            is_in_base_universe, is_in_lambda_512,
-        };
+        use crate::analysis::codebook::{is_in_base_universe, is_in_lambda_512};
 
-        let disputed = [
-            [-1i8, 1, 1, 0, -1, 1, 0, 1],
-            [-1, 1, 1, 0, -1, 1, 1, 0],
-        ];
+        let disputed = [[-1i8, 1, 1, 0, -1, 1, 0, 1], [-1, 1, 1, 0, -1, 1, 1, 0]];
 
         // Neighbors: same prefix, different tail
-        let neighbors = [
-            [-1i8, 1, 1, 0, -1, 1, -1, 0],
-            [-1, 1, 1, 0, -1, 1, 0, -1],
-        ];
+        let neighbors = [[-1i8, 1, 1, 0, -1, 1, -1, 0], [-1, 1, 1, 0, -1, 1, 0, -1]];
 
         for v in &disputed {
-            assert!(is_in_base_universe(v), "Disputed {:?} must be in base universe", v);
-            assert!(is_in_lambda_2048(v), "Disputed {:?} must be in Lambda_2048", v);
-            assert!(is_in_lambda_1024(v), "Disputed {:?} must be in Lambda_1024", v);
-            assert!(!is_in_lambda_512(v), "Disputed {:?} should NOT be in Lambda_512", v);
+            assert!(
+                is_in_base_universe(v),
+                "Disputed {:?} must be in base universe",
+                v
+            );
+            assert!(
+                is_in_lambda_2048(v),
+                "Disputed {:?} must be in Lambda_2048",
+                v
+            );
+            assert!(
+                is_in_lambda_1024(v),
+                "Disputed {:?} must be in Lambda_1024",
+                v
+            );
+            assert!(
+                !is_in_lambda_512(v),
+                "Disputed {:?} should NOT be in Lambda_512",
+                v
+            );
 
             let sum: i32 = v.iter().map(|&x| x as i32).sum();
             let weight: usize = v.iter().filter(|&&x| x != 0).count();
@@ -1794,10 +1781,8 @@ mod tests {
         // Both are valid under the base universe (even sum requirement).
         // The CSV may have applied a TIGHTER sum constraint not in the predicate.
         let csv_points = load_lattice_points(1024);
-        let csv_sums: std::collections::BTreeSet<i32> = csv_points
-            .iter()
-            .map(|v| v.iter().sum())
-            .collect();
+        let csv_sums: std::collections::BTreeSet<i32> =
+            csv_points.iter().map(|v| v.iter().sum()).collect();
         let pred_points = enumerate_lattice_by_predicate(is_in_lambda_1024);
         let pred_sums: std::collections::BTreeSet<i32> = pred_points
             .iter()
@@ -1823,12 +1808,16 @@ mod tests {
             .iter()
             .filter(|v| v.iter().map(|&x| x as i32).sum::<i32>() == 2)
             .count();
-        eprintln!("Points with sum=2: CSV={}, Predicate={}", csv_sum2, pred_sum2);
+        eprintln!(
+            "Points with sum=2: CSV={}, Predicate={}",
+            csv_sum2, pred_sum2
+        );
 
         // If predicate has exactly 2 more sum=2 points, the dispute is within
         // the sum=2 stratum only.
         assert_eq!(
-            pred_sum2 - csv_sum2, 2,
+            pred_sum2 - csv_sum2,
+            2,
             "The 2 disputed points should both have sum=2"
         );
     }
@@ -1839,16 +1828,22 @@ mod tests {
         let pred_points = enumerate_lattice_by_predicate(is_in_lambda_2048);
 
         assert_eq!(csv_points.len(), 2048, "CSV should have 2048 points");
-        assert_eq!(pred_points.len(), 2048, "Predicates should give 2048 points");
+        assert_eq!(
+            pred_points.len(),
+            2048,
+            "Predicates should give 2048 points"
+        );
 
-        let csv_set: std::collections::BTreeSet<Vec<i32>> =
-            csv_points.into_iter().collect();
+        let csv_set: std::collections::BTreeSet<Vec<i32>> = csv_points.into_iter().collect();
         let pred_set: std::collections::BTreeSet<Vec<i32>> = pred_points
             .iter()
             .map(|v| v.iter().map(|&x| x as i32).collect())
             .collect();
 
-        assert_eq!(csv_set, pred_set, "CSV and predicate Lambda_2048 must match exactly");
+        assert_eq!(
+            csv_set, pred_set,
+            "CSV and predicate Lambda_2048 must match exactly"
+        );
     }
 
     #[test]
@@ -1892,7 +1887,10 @@ mod tests {
 
         eprintln!(
             "Filtration sizes: Lambda_256={}, Lambda_512={}, Lambda_1024={} (pred), Lambda_2048={}",
-            p256.len(), p512.len(), p1024.len(), p2048.len()
+            p256.len(),
+            p512.len(),
+            p1024.len(),
+            p2048.len()
         );
     }
 
@@ -1903,7 +1901,11 @@ mod tests {
         use crate::analysis::codebook::{CarrierSet, EncodingDictionary};
 
         let lattice_map = load_lattice_map(256);
-        assert_eq!(lattice_map.len(), 256, "Should have 256 basis-lattice pairs");
+        assert_eq!(
+            lattice_map.len(),
+            256,
+            "Should have 256 basis-lattice pairs"
+        );
 
         let cs = CarrierSet::from_i32_map(256, &lattice_map);
         let val = cs.validate();
@@ -1915,10 +1917,7 @@ mod tests {
 
         // Build encoding dictionary
         let ed = EncodingDictionary::try_from_carrier_set(cs);
-        assert!(
-            ed.is_ok(),
-            "EncodingDictionary construction should succeed"
-        );
+        assert!(ed.is_ok(), "EncodingDictionary construction should succeed");
         let ed = ed.unwrap();
 
         // Round-trip: encode then decode every basis index
@@ -2014,8 +2013,7 @@ mod tests {
         // We cross-validate by computing cd_basis_mul_sign and checking if
         // e_{i XOR j} is in the codebook.
         let lattice_map = load_lattice_map(256);
-        let lattice_set: std::collections::HashSet<usize> =
-            lattice_map.keys().copied().collect();
+        let lattice_set: std::collections::HashSet<usize> = lattice_map.keys().copied().collect();
 
         assert_eq!(lattice_set.len(), 256);
 

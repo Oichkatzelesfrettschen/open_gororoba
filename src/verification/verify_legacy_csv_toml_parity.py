@@ -6,6 +6,9 @@ Default checks:
 - every data/csv/legacy/*.csv is represented in registry/legacy_csv_datasets.toml
 - canonical per-dataset TOML files exist
 - dataset metadata checksums and parsed rows match source CSV semantics
+
+Manifest mode:
+- pass --source-manifest to verify an explicit CSV subset instead of --source-glob.
 """
 
 from __future__ import annotations
@@ -176,6 +179,11 @@ def main() -> int:
         help="Glob of source CSV files expected to be covered by index.",
     )
     parser.add_argument(
+        "--source-manifest",
+        default=None,
+        help="Optional path to a newline-delimited manifest of source CSV paths.",
+    )
+    parser.add_argument(
         "--corpus-label",
         default=DEFAULT_CORPUS_LABEL,
         help="Human-readable label for output messages.",
@@ -187,8 +195,17 @@ def main() -> int:
     data = tomllib.loads(index_path.read_text(encoding="utf-8"))
 
     datasets = data.get("dataset", [])
-    source_files = sorted((repo_root).glob(args.source_glob))
-    source_paths = {path.relative_to(repo_root).as_posix() for path in source_files}
+    if args.source_manifest:
+        manifest_path = repo_root / args.source_manifest
+        manifest_lines = manifest_path.read_text(encoding="utf-8").splitlines()
+        source_paths = {
+            line.strip()
+            for line in manifest_lines
+            if line.strip() and not line.strip().startswith("#")
+        }
+    else:
+        source_files = sorted((repo_root).glob(args.source_glob))
+        source_paths = {path.relative_to(repo_root).as_posix() for path in source_files}
 
     failures: list[str] = []
 

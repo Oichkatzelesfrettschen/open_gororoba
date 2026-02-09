@@ -127,7 +127,22 @@ def main() -> int:
         and str(row.get("migration_action", "")) == "canonicalized_to_toml"
     )
     project_total = zone_counter.get("project_csv", 0)
+    project_done = sum(
+        1
+        for row in docs
+        if str(row.get("zone", "")) == "project_csv"
+        and str(row.get("migration_action", ""))
+        in {"canonicalized_to_toml", "canonicalized_to_toml_generated_artifact"}
+    )
+    external_total = zone_counter.get("external_csv", 0)
     archive_total = zone_counter.get("archive_csv", 0)
+    holding_total = external_total + archive_total
+    holding_done = sum(
+        1
+        for row in docs
+        if str(row.get("zone", "")) in {"external_csv", "archive_csv"}
+        and str(row.get("migration_action", "")) == "queued_for_scroll_holding"
+    )
 
     lines.append("[next_waves]")
     lines.append(
@@ -137,10 +152,10 @@ def main() -> int:
         f"wave_2 = {_esc(_wave_state(curated_total, curated_done, 'plan_curated_ingest', 'curated_csv canonicalized'))}"
     )
     lines.append(
-        f"wave_3 = {_esc(f'pending: project_csv triage {project_total} records')}"
+        f"wave_3 = {_esc(_wave_state(project_total, project_done, 'project_csv split/migration', 'project_csv split-and-scroll complete'))}"
     )
     lines.append(
-        f"wave_4 = {_esc(f'pending: archive_csv retention review {archive_total} records')}"
+        f"wave_4 = {_esc(_wave_state(holding_total, holding_done, 'external/archive holding queue', 'external+archive holding queued'))}"
     )
     lines.append("")
 

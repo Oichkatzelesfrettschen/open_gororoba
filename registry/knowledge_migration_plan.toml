@@ -467,11 +467,33 @@ deliverables = [
 [[phase]]
 id = "KMP-P16"
 name = "project_external_archive_csv_policy_wave"
+status = "complete"
+deliverables = [
+  "registry/project_csv_split_policy.toml",
+  "registry/manifests/project_csv_canonical_manifest.txt",
+  "registry/manifests/project_csv_generated_manifest.txt",
+  "registry/project_csv_canonical_datasets.toml",
+  "registry/project_csv_generated_artifacts.toml",
+  "registry/data/project_csv/canonical/*.toml",
+  "registry/data/project_csv/generated/*.toml",
+  "registry/external_csv_holding.toml",
+  "registry/archive_csv_holding.toml",
+  "registry/manifests/external_csv_holding_manifest.txt",
+  "registry/manifests/archive_csv_holding_manifest.txt",
+  "registry/archive_csv_holding_datasets.toml",
+  "registry/data/archive_csv_holding/*.toml",
+  "crates/scrolls_core",
+  "gororoba_cli binary: scrollify-csv",
+]
+
+[[phase]]
+id = "KMP-P17"
+name = "external_csv_scroll_conversion_wave"
 status = "pending"
 deliverables = [
-  "project_csv generated-vs-canonical split policy",
-  "external_csv provenance-only index policy refinement",
-  "archive_csv retention and optional TOML-lift policy",
+  "registry/external_csv_holding_datasets.toml",
+  "registry/data/external_csv_holding/*.toml",
+  "external source provenance-preserving conversion policy checks",
 ]
 
 [[policy]]

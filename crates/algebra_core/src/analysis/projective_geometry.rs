@@ -699,11 +699,7 @@ fn check_separation_at_degree(
         // Try all pairs of achievable signatures
         for i in 0..achievable_sigs.len() {
             for j in (i + 1)..achievable_sigs.len() {
-                if signatures_jointly_separate(
-                    achievable_sigs[i],
-                    achievable_sigs[j],
-                    n_classes,
-                ) {
+                if signatures_jointly_separate(achievable_sigs[i], achievable_sigs[j], n_classes) {
                     return (true, achievable_sigs.len(), achievable_sigs);
                 }
             }
@@ -715,7 +711,8 @@ fn check_separation_at_degree(
     if n_needed >= 3 {
         // Enumerate all n_needed-tuples of achievable signatures
         // For small n_achievable this is tractable
-        let found = find_separating_tuple(&achievable_sigs, n_classes, n_needed, 0, &mut Vec::new());
+        let found =
+            find_separating_tuple(&achievable_sigs, n_classes, n_needed, 0, &mut Vec::new());
         return (found, achievable_sigs.len(), achievable_sigs);
     }
 
@@ -793,10 +790,7 @@ pub fn find_minimum_separating_degree(dim: usize) -> SeparatingDegreeResult {
         .enumerate()
         .map(|(i, &e)| (e, i))
         .collect();
-    let class_assignments: Vec<usize> = edge_counts
-        .iter()
-        .map(|e| edge_to_class[e])
-        .collect();
+    let class_assignments: Vec<usize> = edge_counts.iter().map(|e| edge_to_class[e]).collect();
     let n_classes = unique_edges.len();
 
     // Compute class sizes
@@ -1657,9 +1651,7 @@ mod tests {
                 .filter(|c| c.edges.len() == *edges)
                 .map(|c| component_xor_label(c).unwrap())
                 .collect();
-            eprintln!(
-                "  Class {class_idx} ({count} comps, {edges} edges): PG labels = {labels:?}"
-            );
+            eprintln!("  Class {class_idx} ({count} comps, {edges} edges): PG labels = {labels:?}");
         }
     }
 

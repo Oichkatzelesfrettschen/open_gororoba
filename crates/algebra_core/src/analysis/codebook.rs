@@ -3069,17 +3069,17 @@ mod tests {
         assert!(lambda_2048.len() < base_universe.len());
 
         // ---- Phase 2: Coset decomposition of Lambda_2048 by l_0 ----
-        let l0_neg1: Vec<&LatticeVector> =
-            lambda_2048.iter().filter(|v| v[0] == -1).collect();
-        let l0_zero: Vec<&LatticeVector> =
-            lambda_2048.iter().filter(|v| v[0] == 0).collect();
-        let l0_pos1: Vec<&LatticeVector> =
-            lambda_2048.iter().filter(|v| v[0] == 1).collect();
+        let l0_neg1: Vec<&LatticeVector> = lambda_2048.iter().filter(|v| v[0] == -1).collect();
+        let l0_zero: Vec<&LatticeVector> = lambda_2048.iter().filter(|v| v[0] == 0).collect();
+        let l0_pos1: Vec<&LatticeVector> = lambda_2048.iter().filter(|v| v[0] == 1).collect();
 
         eprintln!("\n=== Lambda_2048 Coset Decomposition by l_0 ===");
         eprintln!("  l_0 = -1: {} vectors", l0_neg1.len());
         eprintln!("  l_0 =  0: {} vectors", l0_zero.len());
-        eprintln!("  l_0 = +1: {} vectors (excluded by base universe)", l0_pos1.len());
+        eprintln!(
+            "  l_0 = +1: {} vectors (excluded by base universe)",
+            l0_pos1.len()
+        );
 
         assert_eq!(l0_pos1.len(), 0, "l_0 = +1 excluded from base universe");
         assert_eq!(
@@ -3108,21 +3108,24 @@ mod tests {
         let a0 = &lambda_256[0];
         let b0 = &lambda_256[1];
         let z_sum = lattice_add(a0, b0);
-        assert_eq!(z_sum[0], -2, "Z-addition: l_0 = (-1)+(-1) = -2 (out of bounds)");
+        assert_eq!(
+            z_sum[0], -2,
+            "Z-addition: l_0 = (-1)+(-1) = -2 (out of bounds)"
+        );
 
         // F_3-addition: (-1) + (-1) = 1, landing in forbidden coset
         let f3_sum = lattice_add_f3(a0, b0);
         assert_eq!(f3_sum[0], 1, "F_3: l_0 = (-1)+(-1) = 1");
-        assert!(!is_in_base_universe(&f3_sum), "l_0=1 excluded from base universe");
+        assert!(
+            !is_in_base_universe(&f3_sum),
+            "l_0=1 excluded from base universe"
+        );
 
         // Exhaustive: ALL pairs of Lambda_256 under F_3-addition give l_0=1
         for a in &lambda_256 {
             for b in &lambda_256 {
                 let s = lattice_add_f3(a, b);
-                assert_eq!(
-                    s[0], 1,
-                    "Every F_3 sum of Lambda_256 vectors has l_0 = 1"
-                );
+                assert_eq!(s[0], 1, "Every F_3 sum of Lambda_256 vectors has l_0 = 1");
             }
         }
 
@@ -3131,8 +3134,7 @@ mod tests {
         eprintln!("  F_3-addition: l_0 = +1 (forbidden coset) for ALL pairs");
 
         // ---- Phase 4: F_3 closure of the l_0=0 sub-lattice of Lambda_2048 ----
-        let l0_zero_set: HashSet<LatticeVector> =
-            l0_zero.iter().copied().cloned().collect();
+        let l0_zero_set: HashSet<LatticeVector> = l0_zero.iter().copied().cloned().collect();
         let n_zero = l0_zero.len();
         let mut zero_closure_count = 0usize;
         let zero_total = n_zero * n_zero;
@@ -3152,7 +3154,10 @@ mod tests {
         eprintln!("\n=== Phase 4: l_0=0 Sub-lattice F_3 Closure ===");
         eprintln!(
             "  {}/{} pairs closed = {:.4} ({:.1}%)",
-            zero_closure_count, zero_total, zero_closure_rate, zero_closure_rate * 100.0
+            zero_closure_count,
+            zero_total,
+            zero_closure_rate,
+            zero_closure_rate * 100.0
         );
         // The l_0=0 sub-lattice should have positive closure (it's an actual subgroup)
         assert!(
@@ -3163,8 +3168,7 @@ mod tests {
         // ---- Phase 5: Affine F_3 closure on Lambda_256 ----
         // Operation: a +_3 b -_3 p, where p is a fixed base point.
         // This maps l_0: (-1)+(-1)-(-1) = (-1)+(-1)+(+1) = 1+1 = -1 in F_3.
-        let lambda_256_set: HashSet<LatticeVector> =
-            lambda_256.iter().copied().collect();
+        let lambda_256_set: HashSet<LatticeVector> = lambda_256.iter().copied().collect();
         let n_256 = lambda_256.len();
         let total_256 = n_256 * n_256;
 
@@ -3172,10 +3176,7 @@ mod tests {
         let base_point = lambda_256[0];
         let neg_base = lattice_negate_f3(&base_point);
         let test_affine = lattice_add_f3(&lattice_add_f3(a0, b0), &neg_base);
-        assert_eq!(
-            test_affine[0], -1,
-            "Affine F_3: l_0 = (-1)+(-1)-(-1) = -1"
-        );
+        assert_eq!(test_affine[0], -1, "Affine F_3: l_0 = (-1)+(-1)-(-1) = -1");
 
         // Full sweep with base point = Lambda_256[0]
         let mut affine_closure_count = 0usize;
@@ -3193,13 +3194,13 @@ mod tests {
         let affine_rate = affine_closure_count as f64 / total_256 as f64;
 
         eprintln!("\n=== Phase 5: Affine F_3 Closure on Lambda_256 ===");
-        eprintln!(
-            "  base = Lambda_256[0] = {:?}",
-            base_point
-        );
+        eprintln!("  base = Lambda_256[0] = {:?}", base_point);
         eprintln!(
             "  {}/{} pairs closed = {:.4} ({:.1}%)",
-            affine_closure_count, total_256, affine_rate, affine_rate * 100.0
+            affine_closure_count,
+            total_256,
+            affine_rate,
+            affine_rate * 100.0
         );
 
         // ---- Phase 6: Test multiple base points for rate variation ----
@@ -3225,13 +3226,16 @@ mod tests {
             rates.push((idx, count, rate));
             eprintln!(
                 "  base[{}] = {:?}: {}/{} = {:.1}%",
-                idx, bp, count, total_256, rate * 100.0
+                idx,
+                bp,
+                count,
+                total_256,
+                rate * 100.0
             );
         }
 
         // ---- Phase 7: Affine F_3 closure at Lambda_512 and Lambda_1024 ----
-        for (name, level) in [("Lambda_512", &lambda_512), ("Lambda_1024", &lambda_1024)]
-        {
+        for (name, level) in [("Lambda_512", &lambda_512), ("Lambda_1024", &lambda_1024)] {
             let level_set: HashSet<LatticeVector> = level.iter().copied().collect();
             let n = level.len();
             let total = n * n;
@@ -3250,7 +3254,11 @@ mod tests {
             let rate = count as f64 / total as f64;
             eprintln!(
                 "\n  Affine F_3 on {} ({} vectors): {}/{} = {:.1}%",
-                name, n, count, total, rate * 100.0
+                name,
+                n,
+                count,
+                total,
+                rate * 100.0
             );
         }
 
@@ -3282,7 +3290,10 @@ mod tests {
         let total_pairs = n * n;
         let lambda_set: HashSet<LatticeVector> = lambda_256.iter().copied().collect();
 
-        eprintln!("\n=== Affine F_3 Closure: Full Base-Point Sweep on Lambda_256 ({} vectors) ===", n);
+        eprintln!(
+            "\n=== Affine F_3 Closure: Full Base-Point Sweep on Lambda_256 ({} vectors) ===",
+            n
+        );
 
         // Compute closure rate for every base point
         let mut rates: Vec<(usize, f64, LatticeVector)> = Vec::with_capacity(n);
@@ -3308,11 +3319,24 @@ mod tests {
         let min_rate = rates[0].1;
         let max_rate = rates[n - 1].1;
         let mean_rate = rates.iter().map(|r| r.1).sum::<f64>() / n as f64;
-        let std_rate = (rates.iter().map(|r| (r.1 - mean_rate).powi(2)).sum::<f64>() / n as f64).sqrt();
+        let std_rate =
+            (rates.iter().map(|r| (r.1 - mean_rate).powi(2)).sum::<f64>() / n as f64).sqrt();
 
         eprintln!("\n--- Rate Statistics ---");
-        eprintln!("  Min:  {:.4} ({:.1}%) at idx {} = {:?}", min_rate, min_rate * 100.0, rates[0].0, rates[0].2);
-        eprintln!("  Max:  {:.4} ({:.1}%) at idx {} = {:?}", max_rate, max_rate * 100.0, rates[n-1].0, rates[n-1].2);
+        eprintln!(
+            "  Min:  {:.4} ({:.1}%) at idx {} = {:?}",
+            min_rate,
+            min_rate * 100.0,
+            rates[0].0,
+            rates[0].2
+        );
+        eprintln!(
+            "  Max:  {:.4} ({:.1}%) at idx {} = {:?}",
+            max_rate,
+            max_rate * 100.0,
+            rates[n - 1].0,
+            rates[n - 1].2
+        );
         eprintln!("  Mean: {:.4} ({:.1}%)", mean_rate, mean_rate * 100.0);
         eprintln!("  Std:  {:.4}", std_rate);
 
@@ -3335,22 +3359,38 @@ mod tests {
         for &(idx, rate, ref v) in rates.iter().take(5) {
             let hw: usize = v.iter().filter(|&&x| x != 0).count();
             let cs: i32 = v.iter().map(|&x| x as i32).sum();
-            eprintln!("  idx={}: rate={:.4} ({:.1}%), hw={}, csum={}, v={:?}",
-                idx, rate, rate * 100.0, hw, cs, v);
+            eprintln!(
+                "  idx={}: rate={:.4} ({:.1}%), hw={}, csum={}, v={:?}",
+                idx,
+                rate,
+                rate * 100.0,
+                hw,
+                cs,
+                v
+            );
         }
         eprintln!("\n--- Top 5 ---");
         for &(idx, rate, ref v) in rates.iter().rev().take(5) {
             let hw: usize = v.iter().filter(|&&x| x != 0).count();
             let cs: i32 = v.iter().map(|&x| x as i32).sum();
-            eprintln!("  idx={}: rate={:.4} ({:.1}%), hw={}, csum={}, v={:?}",
-                idx, rate, rate * 100.0, hw, cs, v);
+            eprintln!(
+                "  idx={}: rate={:.4} ({:.1}%), hw={}, csum={}, v={:?}",
+                idx,
+                rate,
+                rate * 100.0,
+                hw,
+                cs,
+                v
+            );
         }
 
         // Correlations: Hamming weight vs rate, coordinate sum vs rate
-        let hamming_weights: Vec<usize> = lambda_256.iter()
+        let hamming_weights: Vec<usize> = lambda_256
+            .iter()
             .map(|v| v.iter().filter(|&&x| x != 0).count())
             .collect();
-        let coord_sums: Vec<i32> = lambda_256.iter()
+        let coord_sums: Vec<i32> = lambda_256
+            .iter()
             .map(|v| v.iter().map(|&x| x as i32).sum())
             .collect();
 
@@ -3362,7 +3402,10 @@ mod tests {
 
         // Spearman rank correlation (approximate via Pearson on ranks)
         let hw_corr = pearson_correlation(
-            &hamming_weights.iter().map(|&w| w as f64).collect::<Vec<_>>(),
+            &hamming_weights
+                .iter()
+                .map(|&w| w as f64)
+                .collect::<Vec<_>>(),
             &rates_by_idx,
         );
         let cs_corr = pearson_correlation(
@@ -3375,7 +3418,8 @@ mod tests {
         eprintln!("  Coordinate sum vs rate: r = {:.4}", cs_corr);
 
         // Mean rate grouped by Hamming weight
-        let mut hw_groups: std::collections::HashMap<usize, Vec<f64>> = std::collections::HashMap::new();
+        let mut hw_groups: std::collections::HashMap<usize, Vec<f64>> =
+            std::collections::HashMap::new();
         for (i, &hw) in hamming_weights.iter().enumerate() {
             hw_groups.entry(hw).or_default().push(rates_by_idx[i]);
         }
@@ -3385,7 +3429,13 @@ mod tests {
         for hw in hw_keys {
             let group = &hw_groups[&hw];
             let mean = group.iter().sum::<f64>() / group.len() as f64;
-            eprintln!("  hw={}: mean rate={:.4} ({:.1}%), n={}", hw, mean, mean * 100.0, group.len());
+            eprintln!(
+                "  hw={}: mean rate={:.4} ({:.1}%), n={}",
+                hw,
+                mean,
+                mean * 100.0,
+                group.len()
+            );
         }
 
         // Assertions
@@ -3447,7 +3497,12 @@ mod tests {
 
             eprintln!(
                 "{} ({} vectors): mean={:.4} ({:.1}%), range=[{:.4}, {:.4}]",
-                name, n, mean, mean * 100.0, min, max
+                name,
+                n,
+                mean,
+                mean * 100.0,
+                min,
+                max
             );
 
             // All levels should have some closure (>20%) but not full (<60%)
@@ -3471,7 +3526,10 @@ mod tests {
         let total_pairs = n * n;
         let lambda_set: HashSet<LatticeVector> = lambda_512.iter().copied().collect();
 
-        eprintln!("\n=== Affine F_3 Closure: Full Base-Point Sweep on Lambda_512 ({} vectors) ===", n);
+        eprintln!(
+            "\n=== Affine F_3 Closure: Full Base-Point Sweep on Lambda_512 ({} vectors) ===",
+            n
+        );
 
         let mut rates: Vec<(usize, f64, LatticeVector)> = Vec::with_capacity(n);
         for (idx, bp) in lambda_512.iter().enumerate() {
@@ -3495,7 +3553,8 @@ mod tests {
         let min_rate = rates[0].1;
         let max_rate = rates[n - 1].1;
         let mean_rate = rates.iter().map(|r| r.1).sum::<f64>() / n as f64;
-        let std_rate = (rates.iter().map(|r| (r.1 - mean_rate).powi(2)).sum::<f64>() / n as f64).sqrt();
+        let std_rate =
+            (rates.iter().map(|r| (r.1 - mean_rate).powi(2)).sum::<f64>() / n as f64).sqrt();
 
         eprintln!("\n--- Rate Statistics ---");
         eprintln!("  Min:  {:.4} ({:.1}%)", min_rate, min_rate * 100.0);
@@ -3520,12 +3579,26 @@ mod tests {
         eprintln!("\n--- Bottom 5 ---");
         for &(idx, rate, ref v) in rates.iter().take(5) {
             let hw: usize = v.iter().filter(|&&x| x != 0).count();
-            eprintln!("  idx={}: rate={:.4} ({:.1}%), hw={}, v={:?}", idx, rate, rate * 100.0, hw, v);
+            eprintln!(
+                "  idx={}: rate={:.4} ({:.1}%), hw={}, v={:?}",
+                idx,
+                rate,
+                rate * 100.0,
+                hw,
+                v
+            );
         }
         eprintln!("\n--- Top 5 ---");
         for &(idx, rate, ref v) in rates.iter().rev().take(5) {
             let hw: usize = v.iter().filter(|&&x| x != 0).count();
-            eprintln!("  idx={}: rate={:.4} ({:.1}%), hw={}, v={:?}", idx, rate, rate * 100.0, hw, v);
+            eprintln!(
+                "  idx={}: rate={:.4} ({:.1}%), hw={}, v={:?}",
+                idx,
+                rate,
+                rate * 100.0,
+                hw,
+                v
+            );
         }
 
         // Correlation with Hamming weight
@@ -3533,19 +3606,19 @@ mod tests {
         for &(idx, rate, _) in &rates {
             rates_by_idx[idx] = rate;
         }
-        let hws: Vec<f64> = lambda_512.iter()
+        let hws: Vec<f64> = lambda_512
+            .iter()
             .map(|v| v.iter().filter(|&&x| x != 0).count() as f64)
             .collect();
         let hw_corr = pearson_correlation(&hws, &rates_by_idx);
 
         // Correlation with l_1 value (is the C-501 contaminant related?)
-        let l1_vals: Vec<f64> = lambda_512.iter()
-            .map(|v| v[1] as f64)
-            .collect();
+        let l1_vals: Vec<f64> = lambda_512.iter().map(|v| v[1] as f64).collect();
         let l1_corr = pearson_correlation(&l1_vals, &rates_by_idx);
 
         // Correlation with number of +1 coordinates
-        let plus1_counts: Vec<f64> = lambda_512.iter()
+        let plus1_counts: Vec<f64> = lambda_512
+            .iter()
             .map(|v| v.iter().filter(|&&x| x == 1).count() as f64)
             .collect();
         let p1_corr = pearson_correlation(&plus1_counts, &rates_by_idx);
@@ -3556,7 +3629,8 @@ mod tests {
         eprintln!("  #(+1 coords) vs rate:    r = {:.4}", p1_corr);
 
         // Mean rate grouped by Hamming weight
-        let mut hw_groups: std::collections::HashMap<usize, Vec<f64>> = std::collections::HashMap::new();
+        let mut hw_groups: std::collections::HashMap<usize, Vec<f64>> =
+            std::collections::HashMap::new();
         for (i, v) in lambda_512.iter().enumerate() {
             let hw = v.iter().filter(|&&x| x != 0).count();
             hw_groups.entry(hw).or_default().push(rates_by_idx[i]);
@@ -3567,13 +3641,21 @@ mod tests {
         for hw in hw_keys {
             let group = &hw_groups[&hw];
             let mean = group.iter().sum::<f64>() / group.len() as f64;
-            let std = (group.iter().map(|r| (r - mean).powi(2)).sum::<f64>() / group.len() as f64).sqrt();
-            eprintln!("  hw={}: mean={:.4} ({:.1}%), std={:.4}, n={}",
-                hw, mean, mean * 100.0, std, group.len());
+            let std =
+                (group.iter().map(|r| (r - mean).powi(2)).sum::<f64>() / group.len() as f64).sqrt();
+            eprintln!(
+                "  hw={}: mean={:.4} ({:.1}%), std={:.4}, n={}",
+                hw,
+                mean,
+                mean * 100.0,
+                std,
+                group.len()
+            );
         }
 
         // Mean rate grouped by l_1 value
-        let mut l1_groups: std::collections::HashMap<i8, Vec<f64>> = std::collections::HashMap::new();
+        let mut l1_groups: std::collections::HashMap<i8, Vec<f64>> =
+            std::collections::HashMap::new();
         for (i, v) in lambda_512.iter().enumerate() {
             l1_groups.entry(v[1]).or_default().push(rates_by_idx[i]);
         }
@@ -3581,8 +3663,13 @@ mod tests {
         for l1 in [-1i8, 0, 1] {
             if let Some(group) = l1_groups.get(&l1) {
                 let mean = group.iter().sum::<f64>() / group.len() as f64;
-                eprintln!("  l_1={}: mean={:.4} ({:.1}%), n={}",
-                    l1, mean, mean * 100.0, group.len());
+                eprintln!(
+                    "  l_1={}: mean={:.4} ({:.1}%), n={}",
+                    l1,
+                    mean,
+                    mean * 100.0,
+                    group.len()
+                );
             }
         }
 
