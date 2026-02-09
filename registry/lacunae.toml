@@ -1,0 +1,46 @@
+# Lacunae Registry (TOML-first)
+# Tracks missing features, documentation gaps, and mathematical unifications.
+
+[lacunae]
+updated = "2026-02-09"
+status = "active"
+
+[[lacuna]]
+id = "L-001"
+area = "algebra_core"
+title = "E7 Structure Constant Sign Fix"
+description = "The current implementation of N(alpha, beta) uses a string-hash based sign. This guarantees antisymmetry but not necessarily the Jacobi identity. Needs a Lyndon basis implementation."
+priority = "high"
+status = "open"
+
+[[lacuna]]
+id = "L-002"
+area = "lbm_core"
+title = "Full Spectral convolution"
+description = "extract_dominant_triads uses random sampling. A full Fast Multipole Method or P3DFFT-style convolution is needed for exact energy flux computation."
+priority = "medium"
+status = "open"
+
+[[lacuna]]
+id = "L-003"
+area = "stats_core"
+title = "Betti Number Computation"
+description = "Hypergraph metrics mention Betti numbers, but the implementation only does Clustering Coefficient. Need to link a homology solver (e.g., pHom)."
+priority = "medium"
+status = "open"
+
+[[lacuna]]
+id = "L-004"
+area = "docs"
+title = "PDF Integration"
+description = "Several PDF references in the original prompt were not physically copied into the repo due to file access. These should be fetched or reconstructed."
+priority = "low"
+status = "open"
+
+[[lacuna]]
+id = "L-005"
+area = "infrastructure"
+title = "Crate Standardization"
+description = "Ensure all crates use standard logging (log/env_logger) and config crates as requested."
+priority = "high"
+status = "in_progress"

@@ -4,12 +4,12 @@
 [markdown_inventory]
 generated_at = "deterministic"
 authoritative = true
-document_count = 255
+document_count = 256
 tracked_count = 8
 untracked_count = 0
-ignored_count = 247
+ignored_count = 248
 filesystem_only_count = 0
-generated_count = 250
+generated_count = 251
 non_generated_count = 5
 archived_count = 0
 third_party_count = 5
@@ -4079,7 +4079,7 @@ third_party = false
 classification = "toml_published_markdown"
 migration_action = "keep_generated_mirror"
 migration_priority = "low"
-toml_destination = "registry/entrypoint_docs.toml"
+toml_destination = "registry/monograph.toml"
 rationale = "Published markdown generated from TOML destination."
 size_bytes = 1350
 line_count = 21
@@ -4102,11 +4102,11 @@ third_party = false
 classification = "toml_published_markdown"
 migration_action = "keep_generated_mirror"
 migration_priority = "low"
-toml_destination = "registry/entrypoint_docs.toml"
+toml_destination = "registry/monograph.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 1028
-line_count = 20
-sha256 = "4ddac213c47671e4b9f422381eb6cd8e8d52dd633d8baaf847bb81bb42e35bb6"
+size_bytes = 1388
+line_count = 25
+sha256 = "fa77ef427d6439c32057b959faa4f737ea6d96d3f4e8f5e730a1251ac08692e9"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -4125,11 +4125,11 @@ third_party = false
 classification = "toml_published_markdown"
 migration_action = "keep_generated_mirror"
 migration_priority = "low"
-toml_destination = "registry/entrypoint_docs.toml"
+toml_destination = "registry/monograph.toml"
 rationale = "Published markdown generated from TOML destination."
-size_bytes = 1114
-line_count = 16
-sha256 = "472a99af820b5ba74402fb948e8a0704273ee3e5952dbd2f6505ede8f1f8b9e6"
+size_bytes = 1551
+line_count = 24
+sha256 = "be0c4e4b844346f2a29e811816d728f974cc411fd3fc0d0c2f00b749d26337d3"
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
@@ -5493,6 +5493,29 @@ experiment_ref_count = 0
 
 [[document]]
 id = "MDI-0239"
+path = "reports/handoff_algebra_fluid_duality.md"
+title = "Handoff Report: Algebra-Fluid Duality Implementation"
+git_status = "ignored"
+archived = false
+generated_declared = false
+generated_pattern = true
+generated = true
+manual_exception = false
+third_party = false
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+toml_destination = "registry/reports_narratives.toml"
+rationale = "Published markdown generated from TOML destination."
+size_bytes = 3326
+line_count = 58
+sha256 = "38b37434c938cb7ee78d8c54f8f1c0ee4754bbb01f7e162be55c6774c66326b7"
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+
+[[document]]
+id = "MDI-0240"
 path = "reports/non_iso_dates_inventory.md"
 title = "Non-ISO date inventory"
 git_status = "ignored"
@@ -5515,7 +5538,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0240"
+id = "MDI-0241"
 path = "reports/open_claims_missing_dedicated_sources.md"
 title = "Open claims missing dedicated source index"
 git_status = "ignored"
@@ -5538,7 +5561,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0241"
+id = "MDI-0242"
 path = "reports/open_claims_missing_test_hooks.md"
 title = "Open claims missing explicit test/verifier hook"
 git_status = "ignored"
@@ -5561,7 +5584,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0242"
+id = "MDI-0243"
 path = "reports/package_index.md"
 title = "Package Index (2026-02-01)"
 git_status = "ignored"
@@ -5584,7 +5607,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0243"
+id = "MDI-0244"
 path = "reports/pdf_inventory.md"
 title = "PDF Inventory"
 git_status = "ignored"
@@ -5607,7 +5630,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0244"
+id = "MDI-0245"
 path = "reports/pythonpath_refactor_plan.md"
 title = "Pythonpath Refactor Plan (2026-02-04)"
 git_status = "ignored"
@@ -5630,7 +5653,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0245"
+id = "MDI-0246"
 path = "reports/repo_inventory.md"
 title = "Repo Inventory (2026-02-01)"
 git_status = "ignored"
@@ -5653,7 +5676,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0246"
+id = "MDI-0247"
 path = "reports/repo_structure_audit.md"
 title = "Repo Structure Audit (2026-02-04)"
 git_status = "ignored"
@@ -5676,7 +5699,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0247"
+id = "MDI-0248"
 path = "reports/script_contracts_inventory.md"
 title = "Script contract inventory"
 git_status = "ignored"
@@ -5699,7 +5722,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0248"
+id = "MDI-0249"
 path = "reports/tickets_inventory.md"
 title = "Tickets Inventory (2026-02-04)"
 git_status = "ignored"
@@ -5722,7 +5745,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0249"
+id = "MDI-0250"
 path = "reports/todo_fixme_scan.md"
 title = "TODO/FIXME Scan (2026-02-07)"
 git_status = "ignored"
@@ -5745,7 +5768,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0250"
+id = "MDI-0251"
 path = "reports/tscp_trial_factor_ledger.md"
 title = "TSCP Trial-Factor Ledger (2026-02-04)"
 git_status = "ignored"
@@ -5768,7 +5791,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0251"
+id = "MDI-0252"
 path = ".pytest_cache/README.md"
 title = "pytest cache directory #"
 git_status = "ignored"
@@ -5790,7 +5813,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0252"
+id = "MDI-0253"
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/LICENSE.md"
 title = "NCSA Open Source License"
 git_status = "ignored"
@@ -5812,7 +5835,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0253"
+id = "MDI-0254"
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -5834,7 +5857,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0254"
+id = "MDI-0255"
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
@@ -5856,7 +5879,7 @@ insight_ref_count = 0
 experiment_ref_count = 0
 
 [[document]]
-id = "MDI-0255"
+id = "MDI-0256"
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/scipy/fft/_pocketfft/LICENSE.md"
 title = "LICENSE"
 git_status = "ignored"
