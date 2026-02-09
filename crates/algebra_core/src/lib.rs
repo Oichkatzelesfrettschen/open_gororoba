@@ -273,6 +273,9 @@ pub use emanation::{
     FaceRole, ClassifiedFace, SailDecomposition, sail_decomposition,
     // Strut spectroscopy (detailed classification)
     StrutClass, StrutSpectroscopyEntry, classify_strut, strut_spectroscopy,
+    // Three Vizier XOR relationships (de Marrais 2007)
+    ThreeVizierResult, verify_three_viziers,
+    VizierXorAudit, vizier_xor_audit,
 };
 
 // Re-export external algebra crates for convenience
