@@ -495,6 +495,287 @@ pub fn dynkin_fano_null_summary(all_counts: &[usize]) -> (f64, f64) {
     (mean, var.sqrt())
 }
 
+// ---------------------------------------------------------------------------
+// Fano overlap graph: associative overlap structure for E8 walls
+// ---------------------------------------------------------------------------
+//
+// The Fano plane PG(2,2) has 7 points and 7 lines. Each line defines a
+// quaternionic (associative) subalgebra of the octonions. Every pair of
+// distinct imaginary octonion units lies on exactly one Fano line
+// (since C(7,2) = 21 = 7 * 3 = 7 lines * 3 pairs-per-line).
+//
+// The "Fano overlap graph" for a given CayleyBasis maps E8 simple roots
+// to octonion basis elements, then connects wall pairs whose images are
+// distinct imaginary units (and therefore share a unique Fano line).
+//
+// Comparing this graph to the E8 Dynkin diagram and to empirical billiard
+// transition data tests whether octonion associativity constrains the physics.
+
+/// The Fano overlap graph: which E8 wall pairs share a Fano line.
+#[derive(Debug, Clone)]
+pub struct FanoOverlapGraph {
+    /// 8x8 symmetric adjacency matrix. `adjacency[i][j] = true` iff walls
+    /// i and j both map to distinct imaginary octonion units.
+    pub adjacency: [[bool; 8]; 8],
+    /// For each connected pair, the sorted Fano triple `[a, b, c]` (a < b < c)
+    /// of imaginary unit indices. None for non-adjacent or real-mapped walls.
+    pub fano_line: [[Option<[usize; 3]>; 8]; 8],
+    /// Octonion basis index for each wall (dominant component), or None if
+    /// the wall maps to the real direction (e_0) or to zero.
+    pub wall_octonion: [Option<usize>; 8],
+    /// Number of walls mapping to imaginary directions (1..=7).
+    pub n_imaginary: usize,
+    /// Number of edges in the overlap graph.
+    pub n_edges: usize,
+    /// Number of distinct Fano lines represented among the edges.
+    pub n_distinct_lines: usize,
+}
+
+/// Comparison between two 8x8 graph edge sets.
+#[derive(Debug, Clone)]
+pub struct GraphEdgeComparison {
+    /// Number of edges in graph A.
+    pub edges_a: usize,
+    /// Number of edges in graph B.
+    pub edges_b: usize,
+    /// Edges present in both A and B.
+    pub intersection: usize,
+    /// Edges in A but not B.
+    pub a_only: usize,
+    /// Edges in B but not A.
+    pub b_only: usize,
+    /// Jaccard similarity: |A intersect B| / |A union B|. 0.0 if both empty.
+    pub jaccard: f64,
+}
+
+/// Build the Fano overlap graph for E8 walls under a given CayleyBasis.
+///
+/// For each simple root alpha_i, computes the dominant octonion basis element
+/// under the basis mapping. Two walls are connected iff both map to distinct
+/// imaginary units. The connecting Fano line is recorded for each edge.
+pub fn build_fano_overlap_graph(basis: &CayleyBasis) -> FanoOverlapGraph {
+    let simple = e8_simple_roots();
+    let table = fano_complement_table();
+
+    // Map each wall to its dominant octonion basis element
+    let mut wall_oct = [None; 8];
+    let mut n_imag = 0usize;
+    for (i, root) in simple.iter().enumerate() {
+        let oct = basis.root_to_octonion(root);
+        if let Some(idx) = dominant_basis_element(&oct) {
+            if idx > 0 {
+                wall_oct[i] = Some(idx);
+                n_imag += 1;
+            }
+        }
+    }
+
+    let mut adjacency = [[false; 8]; 8];
+    let mut fano_line = [[None; 8]; 8];
+    let mut n_edges = 0usize;
+    let mut lines_seen = std::collections::BTreeSet::new();
+
+    for i in 0..8 {
+        for j in (i + 1)..8 {
+            if let (Some(oi), Some(oj)) = (wall_oct[i], wall_oct[j]) {
+                if oi != oj {
+                    // Both imaginary, distinct -> they share a Fano line
+                    adjacency[i][j] = true;
+                    adjacency[j][i] = true;
+                    n_edges += 1;
+
+                    // Find the Fano line
+                    if let Some(ok) = table[oi][oj] {
+                        let mut triple = [oi, oj, ok];
+                        triple.sort();
+                        fano_line[i][j] = Some(triple);
+                        fano_line[j][i] = Some(triple);
+                        lines_seen.insert(triple);
+                    }
+                }
+            }
+        }
+    }
+
+    FanoOverlapGraph {
+        adjacency,
+        fano_line,
+        wall_octonion: wall_oct,
+        n_imaginary: n_imag,
+        n_edges,
+        n_distinct_lines: lines_seen.len(),
+    }
+}
+
+/// Compare two 8x8 boolean adjacency matrices (upper triangle only).
+///
+/// Both matrices must be symmetric; only the upper triangle (i < j) is counted.
+pub fn compare_8x8_graphs(a: &[[bool; 8]; 8], b: &[[bool; 8]; 8]) -> GraphEdgeComparison {
+    let mut ea = 0usize;
+    let mut eb = 0usize;
+    let mut both = 0usize;
+    let mut a_only = 0usize;
+    let mut b_only = 0usize;
+
+    for i in 0..8 {
+        for j in (i + 1)..8 {
+            let in_a = a[i][j];
+            let in_b = b[i][j];
+            if in_a { ea += 1; }
+            if in_b { eb += 1; }
+            if in_a && in_b { both += 1; }
+            if in_a && !in_b { a_only += 1; }
+            if !in_a && in_b { b_only += 1; }
+        }
+    }
+
+    let union = ea + eb - both;
+    let jaccard = if union > 0 { both as f64 / union as f64 } else { 0.0 };
+
+    GraphEdgeComparison {
+        edges_a: ea,
+        edges_b: eb,
+        intersection: both,
+        a_only,
+        b_only,
+        jaccard,
+    }
+}
+
+/// Extract the E8 sub-adjacency from E10_ADJACENCY (walls 0-7 only).
+pub fn e8_dynkin_adjacency() -> [[bool; 8]; 8] {
+    let e10 = crate::billiard_stats::E10_ADJACENCY;
+    let mut adj = [[false; 8]; 8];
+    for i in 0..8 {
+        for j in 0..8 {
+            adj[i][j] = e10[i][j];
+        }
+    }
+    adj
+}
+
+/// Compare the Fano overlap graph to the E8 Dynkin diagram.
+///
+/// Returns how many Dynkin edges are also Fano edges, and vice versa.
+pub fn compare_fano_dynkin(fano: &FanoOverlapGraph) -> GraphEdgeComparison {
+    let dynkin = e8_dynkin_adjacency();
+    compare_8x8_graphs(&fano.adjacency, &dynkin)
+}
+
+/// Build an empirical transition graph from a wall-hit sequence.
+///
+/// Edge (i, j) exists iff wall i is immediately followed by wall j at
+/// least once in the sequence. Only E8 walls (0-7) are included; walls
+/// 8+ (affine/hyperbolic) are skipped.
+///
+/// The resulting graph is NOT necessarily symmetric: edge (i,j) means
+/// i -> j occurred, not necessarily j -> i. For undirected comparison,
+/// use `symmetrize_transition_graph()`.
+pub fn build_e8_transition_graph(sequence: &[usize]) -> [[bool; 8]; 8] {
+    let mut graph = [[false; 8]; 8];
+    for pair in sequence.windows(2) {
+        let (a, b) = (pair[0], pair[1]);
+        if a < 8 && b < 8 && a != b {
+            graph[a][b] = true;
+        }
+    }
+    graph
+}
+
+/// Symmetrize a directed transition graph: edge (i,j) = true iff either
+/// direction was observed.
+pub fn symmetrize_transition_graph(directed: &[[bool; 8]; 8]) -> [[bool; 8]; 8] {
+    let mut sym = [[false; 8]; 8];
+    for i in 0..8 {
+        for j in 0..8 {
+            if directed[i][j] || directed[j][i] {
+                sym[i][j] = true;
+                sym[j][i] = true;
+            }
+        }
+    }
+    sym
+}
+
+/// Compare the Fano overlap graph to an empirical transition graph.
+///
+/// The transition graph is first symmetrized for fair comparison.
+pub fn compare_fano_transitions(
+    fano: &FanoOverlapGraph,
+    transitions: &[[bool; 8]; 8],
+) -> GraphEdgeComparison {
+    let sym = symmetrize_transition_graph(transitions);
+    compare_8x8_graphs(&fano.adjacency, &sym)
+}
+
+/// Search all 8! permutation bases for the one maximizing Fano-Dynkin overlap.
+///
+/// Returns the best basis, its FanoOverlapGraph, the Dynkin comparison,
+/// and the distribution of intersection counts across all permutations.
+pub fn optimal_fano_overlap_basis() -> (
+    CayleyBasis,
+    FanoOverlapGraph,
+    GraphEdgeComparison,
+    Vec<usize>,
+) {
+    let dynkin = e8_dynkin_adjacency();
+
+    let mut best_basis = default_cayley_basis();
+    let mut best_overlap = 0usize;
+    let mut best_graph = build_fano_overlap_graph(&best_basis);
+    let mut all_overlaps = Vec::with_capacity(40320);
+
+    // Evaluate one permutation
+    let eval = |perm: &[usize; 8]| -> (usize, FanoOverlapGraph) {
+        let basis = CayleyBasis {
+            perm: *perm,
+            signs: [1.0; 8],
+        };
+        let graph = build_fano_overlap_graph(&basis);
+        let cmp = compare_8x8_graphs(&graph.adjacency, &dynkin);
+        (cmp.intersection, graph)
+    };
+
+    let mut perm = [0usize, 1, 2, 3, 4, 5, 6, 7];
+
+    // Identity
+    let (ov, gr) = eval(&perm);
+    all_overlaps.push(ov);
+    if ov > best_overlap {
+        best_overlap = ov;
+        best_basis.perm = perm;
+        best_graph = gr;
+    }
+
+    // Heap's algorithm
+    let mut c = [0usize; 8];
+    let mut idx = 0;
+    while idx < 8 {
+        if c[idx] < idx {
+            if idx % 2 == 0 {
+                perm.swap(0, idx);
+            } else {
+                perm.swap(c[idx], idx);
+            }
+            let (ov, gr) = eval(&perm);
+            all_overlaps.push(ov);
+            if ov > best_overlap {
+                best_overlap = ov;
+                best_basis.perm = perm;
+                best_graph = gr;
+            }
+            c[idx] += 1;
+            idx = 0;
+        } else {
+            c[idx] = 0;
+            idx += 1;
+        }
+    }
+
+    let best_cmp = compare_8x8_graphs(&best_graph.adjacency, &dynkin);
+    (best_basis, best_graph, best_cmp, all_overlaps)
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -796,5 +1077,205 @@ mod tests {
                 }
             }
         }
+    }
+
+    // -----------------------------------------------------------------------
+    // Fano overlap graph tests (Engine B)
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn test_fano_overlap_identity_basis_structure() {
+        // Identity basis: wall i -> octonion coordinate i.
+        // Wall 0: alpha_1 = (1,-1,0,...) has dominant = e_0 (real, tied with e_1)
+        //   -> excluded (dominant is index 0 < 1)
+        // Wall 7: alpha_8 = (-0.5,...,-0.5,0.5) has dominant = e_0 (all tied, first wins)
+        //   -> excluded (dominant is index 0 < 1)
+        // Walls 1-4: clear imaginary dominants (e_1..e_4 respectively)
+        // Walls 5,6: both have dominant e_5 (alpha_6 and alpha_7 both peak at coord 5)
+        //   -> 5,6 NOT connected (same octonion index)
+        let basis = default_cayley_basis();
+        let graph = build_fano_overlap_graph(&basis);
+
+        // 6 walls map to imaginary units (walls 1,2,3,4,5,6)
+        assert_eq!(graph.n_imaginary, 6);
+        // Walls 0 and 7 are excluded
+        assert_eq!(graph.wall_octonion[0], None);
+        assert_eq!(graph.wall_octonion[7], None);
+        // Walls 5 and 6 both map to e_5
+        assert_eq!(graph.wall_octonion[5], Some(5));
+        assert_eq!(graph.wall_octonion[6], Some(5));
+    }
+
+    #[test]
+    fn test_fano_overlap_identity_basis_edge_count() {
+        let basis = default_cayley_basis();
+        let graph = build_fano_overlap_graph(&basis);
+        // 6 imaginary walls, but walls 5,6 share the same octonion (e_5).
+        // Distinct octonion images: {1, 2, 3, 4, 5} (5 distinct values).
+        // Edges = C(5,2) - (walls 5&6 share image, so not connected) + ...
+        // Actually: walls {1,2,3,4} each have unique images, walls {5,6} share e_5.
+        // Pairs among {1,2,3,4}: C(4,2) = 6, all connected.
+        // Pairs {1,5},{2,5},{3,5},{4,5}: 4 edges (wall 5 with walls 1-4).
+        // Pairs {1,6},{2,6},{3,6},{4,6}: 4 edges (wall 6 with walls 1-4).
+        // Pair {5,6}: NOT connected (same octonion e_5).
+        // Total = 6 + 4 + 4 = 14
+        assert_eq!(graph.n_edges, 14);
+    }
+
+    #[test]
+    fn test_fano_overlap_graph_symmetry() {
+        let basis = default_cayley_basis();
+        let graph = build_fano_overlap_graph(&basis);
+        for i in 0..8 {
+            assert!(!graph.adjacency[i][i], "no self-loops");
+            for j in 0..8 {
+                assert_eq!(graph.adjacency[i][j], graph.adjacency[j][i],
+                    "adjacency must be symmetric at ({i},{j})");
+                assert_eq!(graph.fano_line[i][j], graph.fano_line[j][i],
+                    "fano_line must be symmetric at ({i},{j})");
+            }
+        }
+    }
+
+    #[test]
+    fn test_fano_overlap_fano_lines_sorted() {
+        let basis = default_cayley_basis();
+        let graph = build_fano_overlap_graph(&basis);
+        for i in 0..8 {
+            for j in (i + 1)..8 {
+                if let Some(triple) = graph.fano_line[i][j] {
+                    assert!(triple[0] < triple[1] && triple[1] < triple[2],
+                        "Fano triple must be sorted: {:?}", triple);
+                    assert!(triple[0] >= 1 && triple[2] <= 7,
+                        "Fano triple must be imaginary indices: {:?}", triple);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_fano_dynkin_comparison_identity() {
+        let basis = default_cayley_basis();
+        let graph = build_fano_overlap_graph(&basis);
+        let cmp = compare_fano_dynkin(&graph);
+        // E8 Dynkin has 7 edges
+        assert_eq!(cmp.edges_b, 7);
+        // Fano overlap has 14 edges (identity basis)
+        assert_eq!(cmp.edges_a, 14);
+        // 5 Dynkin edges are also Fano edges
+        assert_eq!(cmp.intersection, 5);
+        // 2 Dynkin edges are NOT Fano edges (walls 0 and 7 excluded)
+        assert_eq!(cmp.b_only, 2);
+    }
+
+    #[test]
+    fn test_e8_dynkin_adjacency_edge_count() {
+        let adj = e8_dynkin_adjacency();
+        let mut edges = 0;
+        for i in 0..8 {
+            for j in (i + 1)..8 {
+                if adj[i][j] { edges += 1; }
+            }
+        }
+        // E8 Dynkin diagram: 8 nodes, tree with 7 edges
+        assert_eq!(edges, 7);
+    }
+
+    #[test]
+    fn test_compare_8x8_graphs_identical() {
+        let a = [[false; 8]; 8];
+        let cmp = compare_8x8_graphs(&a, &a);
+        assert_eq!(cmp.edges_a, 0);
+        assert_eq!(cmp.edges_b, 0);
+        assert_eq!(cmp.intersection, 0);
+        assert_eq!(cmp.jaccard, 0.0);
+    }
+
+    #[test]
+    fn test_compare_8x8_graphs_disjoint() {
+        let mut a = [[false; 8]; 8];
+        let mut b = [[false; 8]; 8];
+        a[0][1] = true; a[1][0] = true;
+        b[2][3] = true; b[3][2] = true;
+        let cmp = compare_8x8_graphs(&a, &b);
+        assert_eq!(cmp.edges_a, 1);
+        assert_eq!(cmp.edges_b, 1);
+        assert_eq!(cmp.intersection, 0);
+        assert_eq!(cmp.a_only, 1);
+        assert_eq!(cmp.b_only, 1);
+        assert!((cmp.jaccard - 0.0).abs() < 1e-10);
+    }
+
+    #[test]
+    fn test_build_e8_transition_graph() {
+        // Sequence: 0->1->2->3->8->4 (walls 0-7 are E8, wall 8 is affine)
+        let seq = vec![0, 1, 2, 3, 8, 4];
+        let graph = build_e8_transition_graph(&seq);
+        // Transitions: 0->1, 1->2, 2->3, (3->8 filtered), (8->4 filtered)
+        assert!(graph[0][1]);
+        assert!(graph[1][2]);
+        assert!(graph[2][3]);
+        // Direction matters (directed graph)
+        assert!(!graph[1][0]);
+        // No self-loops
+        for i in 0..8 { assert!(!graph[i][i]); }
+    }
+
+    #[test]
+    fn test_symmetrize_transition_graph() {
+        let mut g = [[false; 8]; 8];
+        g[0][1] = true;
+        g[2][3] = true;
+        let sym = symmetrize_transition_graph(&g);
+        assert!(sym[0][1]);
+        assert!(sym[1][0]);
+        assert!(sym[2][3]);
+        assert!(sym[3][2]);
+        assert!(!sym[0][2]);
+    }
+
+    #[test]
+    fn test_optimal_fano_overlap_basis_search() {
+        let (_best_basis, best_graph, best_cmp, all_overlaps) = optimal_fano_overlap_basis();
+        // 40320 permutations evaluated
+        assert_eq!(all_overlaps.len(), 40320);
+        // Best should achieve at least 6/7 Dynkin overlap
+        assert!(best_cmp.intersection >= 6,
+            "Best overlap should be >= 6, got {}", best_cmp.intersection);
+        // Optimal basis should have 7 imaginary walls (no wasted real mapping)
+        assert!(best_graph.n_imaginary >= 7,
+            "Optimal basis should map >= 7 walls to imaginary, got {}",
+            best_graph.n_imaginary);
+        // Mean overlap across all permutations should be around 2.5
+        let mean = all_overlaps.iter().sum::<usize>() as f64 / 40320.0;
+        assert!(mean > 2.0 && mean < 3.0,
+            "Mean overlap should be ~2.5, got {:.3}", mean);
+    }
+
+    #[test]
+    fn test_fano_overlap_distinct_lines() {
+        // Identity basis: 6 distinct Fano lines used
+        let basis = default_cayley_basis();
+        let graph = build_fano_overlap_graph(&basis);
+        assert_eq!(graph.n_distinct_lines, 6);
+        // There are only 7 Fano lines total, so 6/7 coverage is high
+    }
+
+    #[test]
+    fn test_fano_transition_comparison_synthetic() {
+        // Synthetic transition sequence: 1->2->3->4->5->6->1
+        let seq = vec![1, 2, 3, 4, 5, 6, 1];
+        let trans = build_e8_transition_graph(&seq);
+        let basis = default_cayley_basis();
+        let graph = build_fano_overlap_graph(&basis);
+        let cmp = compare_fano_transitions(&graph, &trans);
+        // 6 directed transitions, when symmetrized: {1-2, 2-3, 3-4, 4-5, 5-6, 6-1}
+        assert_eq!(cmp.edges_b, 6);
+        // 5 of these 6 transition edges are also Fano edges.
+        // The exception is edge (5,6): walls 5 and 6 both map to e_5 under
+        // the identity basis, so they share the same octonion image and are
+        // NOT Fano-connected.
+        assert_eq!(cmp.intersection, 5);
+        assert_eq!(cmp.b_only, 1);
     }
 }
