@@ -280,6 +280,8 @@ pub use emanation::{
     HideFillResult, hide_fill_analysis,
     // Skybox -- label-line extension for recursion
     SkyboxCell, Skybox, create_skybox,
+    // Theorem 11 -- recursive ET embedding
+    Theorem11Result, verify_theorem11,
     // Three Vizier XOR relationships (de Marrais 2007)
     ThreeVizierResult, verify_three_viziers,
     VizierXorAudit, vizier_xor_audit,
