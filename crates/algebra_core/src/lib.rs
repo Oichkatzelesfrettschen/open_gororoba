@@ -263,6 +263,8 @@ pub use billiard_stats::{
     PermutationTestResult, permutation_test_r_e8, permutation_test_mi,
     // Transition matrix analysis
     transition_matrix, stationary_distribution,
+    // Claim 1 verification
+    Claim1Result, verify_claim1, claim1_summary,
 };
 
 pub use billiard_sim::{
