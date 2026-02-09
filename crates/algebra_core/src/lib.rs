@@ -265,6 +265,8 @@ pub use emanation::{
     et_sparsity_spectroscopy, et_regimes,
     // CDP signed product (integer-exact)
     cdp_signed_product,
+    // Trip-Count Two-Step
+    trip_count, trip_count_two_step,
     // Sky classification (de Marrais erratum resolved)
     is_sky_strut, is_inherited_full_fill_strut,
 };
