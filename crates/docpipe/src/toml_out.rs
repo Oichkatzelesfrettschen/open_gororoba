@@ -5,9 +5,7 @@
 
 use std::path::Path;
 
-use crate::{
-    pdf, table, text, DocpipeError, ExtractedPaper, Figure, PaperMetadata, Result,
-};
+use crate::{pdf, table, text, DocpipeError, ExtractedPaper, Figure, PaperMetadata, Result};
 
 /// Extract a paper from a PDF and produce the full ExtractedPaper struct.
 ///
@@ -18,9 +16,16 @@ use crate::{
 /// 4. Extract equations
 /// 5. Detect tables
 /// 6. Extract images (metadata only in TOML)
-pub fn extract_paper(pdf_path: &Path, metadata_override: Option<PaperMetadata>) -> Result<ExtractedPaper> {
+pub fn extract_paper(
+    pdf_path: &Path,
+    metadata_override: Option<PaperMetadata>,
+) -> Result<ExtractedPaper> {
     let pages = pdf::extract_text(pdf_path)?;
-    let full_text = pages.iter().map(|p| p.text.as_str()).collect::<Vec<_>>().join("\n\n");
+    let full_text = pages
+        .iter()
+        .map(|p| p.text.as_str())
+        .collect::<Vec<_>>()
+        .join("\n\n");
 
     let metadata = metadata_override.unwrap_or_else(|| {
         let first = pages.first().map(|p| p.text.as_str()).unwrap_or("");
@@ -99,7 +104,10 @@ pub fn extract_and_write(
             csv_content.push_str(&row.join(","));
             csv_content.push('\n');
         }
-        std::fs::write(output_dir.join(format!("table_{}.csv", i + 1)), &csv_content)?;
+        std::fs::write(
+            output_dir.join(format!("table_{}.csv", i + 1)),
+            &csv_content,
+        )?;
     }
 
     Ok(paper)
@@ -141,8 +149,8 @@ mod tests {
             return;
         };
         let tmp = tempfile::tempdir().unwrap();
-        let paper = extract_and_write(&path, tmp.path(), None)
-            .expect("extract_and_write should succeed");
+        let paper =
+            extract_and_write(&path, tmp.path(), None).expect("extract_and_write should succeed");
 
         assert!(tmp.path().join("paper.toml").exists());
         assert!(!paper.full_text.is_empty());

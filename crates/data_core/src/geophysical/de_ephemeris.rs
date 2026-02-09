@@ -137,6 +137,10 @@ mod tests {
         }
         validate_spk_magic(path).expect("DE440 should have valid DAF/SPK header");
         let size = std::fs::metadata(path).unwrap().len();
-        assert!(size > DE440_MIN_SIZE, "DE440 should be > 100 MB, got {} bytes", size);
+        assert!(
+            size > DE440_MIN_SIZE,
+            "DE440 should be > 100 MB, got {} bytes",
+            size
+        );
     }
 }

@@ -20,8 +20,8 @@
 //! - Yagi & Yunes (2013): Science 341, 365 (I-Love-Q universality)
 //! - Abbott et al. (2017): PRL 119, 161101 (GW170817)
 
-use std::f64::consts::PI;
 use crate::gravastar::{PolytropicEos, TovState};
+use std::f64::consts::PI;
 
 // ============================================================================
 // Named EOS presets for neutron stars
@@ -105,11 +105,7 @@ pub fn tidal_deformability(compactness: f64) -> f64 {
 /// where q = m_2/m_1 <= 1 is the mass ratio.
 ///
 /// This is the quantity directly constrained by GW observations.
-pub fn combined_tidal_deformability(
-    lambda_1: f64,
-    lambda_2: f64,
-    q: f64,
-) -> f64 {
+pub fn combined_tidal_deformability(lambda_1: f64, lambda_2: f64, q: f64) -> f64 {
     let q4 = q.powi(4);
     let one_plus_q5 = (1.0 + q).powi(5);
     if one_plus_q5 < 1e-30 {
@@ -366,7 +362,14 @@ mod tests {
         for window in c_values.windows(2) {
             let k2_low = tidal_love_number_k2(window[0]);
             let k2_high = tidal_love_number_k2(window[1]);
-            assert!(k2_low >= k2_high, "k2({}) = {} > k2({}) = {}", window[0], k2_low, window[1], k2_high);
+            assert!(
+                k2_low >= k2_high,
+                "k2({}) = {} > k2({}) = {}",
+                window[0],
+                k2_low,
+                window[1],
+                k2_high
+            );
         }
     }
 
@@ -403,14 +406,20 @@ mod tests {
         //       = (16/13) * 26*Lambda / 32 = Lambda (for Lambda_1 = Lambda_2)
         let lambda = 500.0;
         let combined = combined_tidal_deformability(lambda, lambda, 1.0);
-        assert!((combined - lambda).abs() < 1e-6, "combined = {combined}, expected {lambda}");
+        assert!(
+            (combined - lambda).abs() < 1e-6,
+            "combined = {combined}, expected {lambda}"
+        );
     }
 
     #[test]
     fn test_combined_tidal_asymmetric() {
         let lambda_tilde = combined_tidal_deformability(600.0, 400.0, 0.8);
         // Should be between 400 and 600
-        assert!(lambda_tilde > 300.0 && lambda_tilde < 700.0, "Lambda_tilde = {lambda_tilde}");
+        assert!(
+            lambda_tilde > 300.0 && lambda_tilde < 700.0,
+            "Lambda_tilde = {lambda_tilde}"
+        );
     }
 
     // -- TOV integration --
@@ -424,7 +433,11 @@ mod tests {
         let p = profile.unwrap();
         assert!(p.mass > 1e-4, "M = {}", p.mass);
         assert!(p.radius > 0.01, "R = {}", p.radius);
-        assert!(p.compactness > 0.0 && p.compactness < 0.5, "C = {}", p.compactness);
+        assert!(
+            p.compactness > 0.0 && p.compactness < 0.5,
+            "C = {}",
+            p.compactness
+        );
     }
 
     #[test]
@@ -433,7 +446,12 @@ mod tests {
         let p1 = integrate_neutron_star(0.5, &eos, 20.0).unwrap();
         let p2 = integrate_neutron_star(1.0, &eos, 20.0).unwrap();
         // At low central density, higher rho_c gives higher mass (before TOV limit)
-        assert!(p2.mass > p1.mass, "M(rho1) = {}, M(rho2) = {}", p1.mass, p2.mass);
+        assert!(
+            p2.mass > p1.mass,
+            "M(rho1) = {}, M(rho2) = {}",
+            p1.mass,
+            p2.mass
+        );
     }
 
     #[test]
@@ -442,8 +460,16 @@ mod tests {
         let profile = integrate_neutron_star(1.0, &eos, 20.0);
         assert!(profile.is_some());
         let p = profile.unwrap();
-        assert!(p.tidal_deformability > 0.0, "Lambda = {}", p.tidal_deformability);
-        assert!(p.love_number_k2 > 0.0 && p.love_number_k2 <= 0.15, "k2 = {}", p.love_number_k2);
+        assert!(
+            p.tidal_deformability > 0.0,
+            "Lambda = {}",
+            p.tidal_deformability
+        );
+        assert!(
+            p.love_number_k2 > 0.0 && p.love_number_k2 <= 0.15,
+            "k2 = {}",
+            p.love_number_k2
+        );
     }
 
     #[test]
@@ -502,7 +528,11 @@ mod tests {
         ];
         for eos in &presets {
             assert!(eos.k > 0.0);
-            assert!(eos.gamma > 1.0, "gamma = {} should be > 1 for stability", eos.gamma);
+            assert!(
+                eos.gamma > 1.0,
+                "gamma = {} should be > 1 for stability",
+                eos.gamma
+            );
             let p = eos.pressure(0.001);
             assert!(p > 0.0, "P(0.001) = {p}");
         }

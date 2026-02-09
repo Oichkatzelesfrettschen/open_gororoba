@@ -180,12 +180,21 @@ pub fn optimal_fano_mapping(
         }
     }
 
-    (best_mapping, best_rate, best_completions, best_opportunities, all_rates)
+    (
+        best_mapping,
+        best_rate,
+        best_completions,
+        best_opportunities,
+        all_rates,
+    )
 }
 
 /// Compute the exact p-value: fraction of permutations with rate >= observed.
 pub fn exact_pvalue(observed_rate: f64, all_rates: &[f64]) -> f64 {
-    let count = all_rates.iter().filter(|&&r| r >= observed_rate - 1e-15).count();
+    let count = all_rates
+        .iter()
+        .filter(|&&r| r >= observed_rate - 1e-15)
+        .count();
     count as f64 / all_rates.len() as f64
 }
 
@@ -494,9 +503,11 @@ pub fn optimal_cayley_basis() -> (CayleyBasis, usize, usize, Vec<usize>) {
 pub fn dynkin_fano_null_summary(all_counts: &[usize]) -> (f64, f64) {
     let n = all_counts.len() as f64;
     let mean = all_counts.iter().sum::<usize>() as f64 / n;
-    let var = all_counts.iter()
+    let var = all_counts
+        .iter()
         .map(|&c| (c as f64 - mean).powi(2))
-        .sum::<f64>() / n;
+        .sum::<f64>()
+        / n;
     (mean, var.sqrt())
 }
 
@@ -626,16 +637,30 @@ pub fn compare_8x8_graphs(a: &[[bool; 8]; 8], b: &[[bool; 8]; 8]) -> GraphEdgeCo
         for j in (i + 1)..8 {
             let in_a = a[i][j];
             let in_b = b[i][j];
-            if in_a { ea += 1; }
-            if in_b { eb += 1; }
-            if in_a && in_b { both += 1; }
-            if in_a && !in_b { a_only += 1; }
-            if !in_a && in_b { b_only += 1; }
+            if in_a {
+                ea += 1;
+            }
+            if in_b {
+                eb += 1;
+            }
+            if in_a && in_b {
+                both += 1;
+            }
+            if in_a && !in_b {
+                a_only += 1;
+            }
+            if !in_a && in_b {
+                b_only += 1;
+            }
         }
     }
 
     let union = ea + eb - both;
-    let jaccard = if union > 0 { both as f64 / union as f64 } else { 0.0 };
+    let jaccard = if union > 0 {
+        both as f64 / union as f64
+    } else {
+        0.0
+    };
 
     GraphEdgeComparison {
         edges_a: ea,
@@ -932,12 +957,36 @@ mod tests {
         ];
 
         for (a, b, c) in expected {
-            assert_eq!(fano_complement(a, b), Some(c), "complement({a},{b}) should be {c}");
-            assert_eq!(fano_complement(b, a), Some(c), "complement({b},{a}) should be {c}");
-            assert_eq!(fano_complement(a, c), Some(b), "complement({a},{c}) should be {b}");
-            assert_eq!(fano_complement(c, a), Some(b), "complement({c},{a}) should be {b}");
-            assert_eq!(fano_complement(b, c), Some(a), "complement({b},{c}) should be {a}");
-            assert_eq!(fano_complement(c, b), Some(a), "complement({c},{b}) should be {a}");
+            assert_eq!(
+                fano_complement(a, b),
+                Some(c),
+                "complement({a},{b}) should be {c}"
+            );
+            assert_eq!(
+                fano_complement(b, a),
+                Some(c),
+                "complement({b},{a}) should be {c}"
+            );
+            assert_eq!(
+                fano_complement(a, c),
+                Some(b),
+                "complement({a},{c}) should be {b}"
+            );
+            assert_eq!(
+                fano_complement(c, a),
+                Some(b),
+                "complement({c},{a}) should be {b}"
+            );
+            assert_eq!(
+                fano_complement(b, c),
+                Some(a),
+                "complement({b},{c}) should be {a}"
+            );
+            assert_eq!(
+                fano_complement(c, b),
+                Some(a),
+                "complement({c},{b}) should be {a}"
+            );
         }
     }
 
@@ -948,10 +997,7 @@ mod tests {
             for j in 1..=7 {
                 if i != j {
                     let comp = fano_complement(i, j);
-                    assert!(
-                        comp.is_some(),
-                        "({i},{j}) should have a Fano complement"
-                    );
+                    assert!(comp.is_some(), "({i},{j}) should have a Fano complement");
                     let k = comp.unwrap();
                     assert_ne!(k, i);
                     assert_ne!(k, j);
@@ -1164,9 +1210,7 @@ mod tests {
 
         // Report
         let (mean, std) = dynkin_fano_null_summary(&all_counts);
-        eprintln!(
-            "Optimal Cayley basis: {best_count}/{total_adj} edges are Fano-connected"
-        );
+        eprintln!("Optimal Cayley basis: {best_count}/{total_adj} edges are Fano-connected");
         eprintln!("  perm: {:?}", best_basis.perm);
         eprintln!("  null distribution: mean={mean:.3}, std={std:.3}");
         eprintln!("  identity basis: {identity_count}/{total_adj}");
@@ -1199,10 +1243,7 @@ mod tests {
         for i in 1..=7 {
             for j in 1..=7 {
                 if i != j {
-                    assert!(
-                        table[i][j].is_some(),
-                        "({i},{j}) should be Fano-connected"
-                    );
+                    assert!(table[i][j].is_some(), "({i},{j}) should be Fano-connected");
                 }
             }
         }
@@ -1258,10 +1299,14 @@ mod tests {
         for i in 0..8 {
             assert!(!graph.adjacency[i][i], "no self-loops");
             for j in 0..8 {
-                assert_eq!(graph.adjacency[i][j], graph.adjacency[j][i],
-                    "adjacency must be symmetric at ({i},{j})");
-                assert_eq!(graph.fano_line[i][j], graph.fano_line[j][i],
-                    "fano_line must be symmetric at ({i},{j})");
+                assert_eq!(
+                    graph.adjacency[i][j], graph.adjacency[j][i],
+                    "adjacency must be symmetric at ({i},{j})"
+                );
+                assert_eq!(
+                    graph.fano_line[i][j], graph.fano_line[j][i],
+                    "fano_line must be symmetric at ({i},{j})"
+                );
             }
         }
     }
@@ -1273,10 +1318,16 @@ mod tests {
         for i in 0..8 {
             for j in (i + 1)..8 {
                 if let Some(triple) = graph.fano_line[i][j] {
-                    assert!(triple[0] < triple[1] && triple[1] < triple[2],
-                        "Fano triple must be sorted: {:?}", triple);
-                    assert!(triple[0] >= 1 && triple[2] <= 7,
-                        "Fano triple must be imaginary indices: {:?}", triple);
+                    assert!(
+                        triple[0] < triple[1] && triple[1] < triple[2],
+                        "Fano triple must be sorted: {:?}",
+                        triple
+                    );
+                    assert!(
+                        triple[0] >= 1 && triple[2] <= 7,
+                        "Fano triple must be imaginary indices: {:?}",
+                        triple
+                    );
                 }
             }
         }
@@ -1303,7 +1354,9 @@ mod tests {
         let mut edges = 0;
         for i in 0..8 {
             for j in (i + 1)..8 {
-                if adj[i][j] { edges += 1; }
+                if adj[i][j] {
+                    edges += 1;
+                }
             }
         }
         // E8 Dynkin diagram: 8 nodes, tree with 7 edges
@@ -1324,8 +1377,10 @@ mod tests {
     fn test_compare_8x8_graphs_disjoint() {
         let mut a = [[false; 8]; 8];
         let mut b = [[false; 8]; 8];
-        a[0][1] = true; a[1][0] = true;
-        b[2][3] = true; b[3][2] = true;
+        a[0][1] = true;
+        a[1][0] = true;
+        b[2][3] = true;
+        b[3][2] = true;
         let cmp = compare_8x8_graphs(&a, &b);
         assert_eq!(cmp.edges_a, 1);
         assert_eq!(cmp.edges_b, 1);
@@ -1347,7 +1402,9 @@ mod tests {
         // Direction matters (directed graph)
         assert!(!graph[1][0]);
         // No self-loops
-        for i in 0..8 { assert!(!graph[i][i]); }
+        for i in 0..8 {
+            assert!(!graph[i][i]);
+        }
     }
 
     #[test]
@@ -1369,16 +1426,24 @@ mod tests {
         // 40320 permutations evaluated
         assert_eq!(all_overlaps.len(), 40320);
         // Best should achieve at least 6/7 Dynkin overlap
-        assert!(best_cmp.intersection >= 6,
-            "Best overlap should be >= 6, got {}", best_cmp.intersection);
+        assert!(
+            best_cmp.intersection >= 6,
+            "Best overlap should be >= 6, got {}",
+            best_cmp.intersection
+        );
         // Optimal basis should have 7 imaginary walls (no wasted real mapping)
-        assert!(best_graph.n_imaginary >= 7,
+        assert!(
+            best_graph.n_imaginary >= 7,
             "Optimal basis should map >= 7 walls to imaginary, got {}",
-            best_graph.n_imaginary);
+            best_graph.n_imaginary
+        );
         // Mean overlap across all permutations should be around 2.5
         let mean = all_overlaps.iter().sum::<usize>() as f64 / 40320.0;
-        assert!(mean > 2.0 && mean < 3.0,
-            "Mean overlap should be ~2.5, got {:.3}", mean);
+        assert!(
+            mean > 2.0 && mean < 3.0,
+            "Mean overlap should be ~2.5, got {:.3}",
+            mean
+        );
     }
 
     #[test]
@@ -1418,20 +1483,22 @@ mod tests {
         // With uniform random data, the optimal mapping should not beat null
         // sequences significantly (p > 0.01).
         let mut rng = rand_chacha::ChaCha8Rng::seed_from_u64(12345);
-        let sequence: Vec<usize> = (0..500)
-            .map(|_| rng.gen_range(0..8))
-            .collect();
+        let sequence: Vec<usize> = (0..500).map(|_| rng.gen_range(0..8)).collect();
 
         let result = verify_claim4(&sequence, &NullModel::Uniform, 200, 54321);
 
         // Uniform random data: Fano completion rate should be near 1/7 ~ 0.143
-        assert!(result.observed_rate < 0.30,
+        assert!(
+            result.observed_rate < 0.30,
             "Random data should not show extreme Fano rate, got {:.4}",
-            result.observed_rate);
+            result.observed_rate
+        );
         // The mapping p-value measures whether the optimal mapping is special
         // among all 40320 permutations -- with random data this is just noise
-        assert!(result.mapping_pvalue > 0.0,
-            "Mapping p-value should be computable");
+        assert!(
+            result.mapping_pvalue > 0.0,
+            "Mapping p-value should be computable"
+        );
         // Verify structure
         assert!(result.n_windows > 0, "Should have some 3-windows");
         assert!(result.opportunities > 0, "Should have some opportunities");
@@ -1455,17 +1522,23 @@ mod tests {
         let result = verify_claim4(&sequence, &NullModel::Uniform, 200, 99999);
 
         // This sequence was constructed to have high completion rate
-        assert!(result.observed_rate > 0.30,
+        assert!(
+            result.observed_rate > 0.30,
             "Structured Fano sequence should have high rate, got {:.4}",
-            result.observed_rate);
+            result.observed_rate
+        );
         // The sequence test should show this is significantly above null
-        assert!(result.sequence_test.p_value < 0.10,
+        assert!(
+            result.sequence_test.p_value < 0.10,
             "Structured sequence should have significant sequence p-value, got {:.4}",
-            result.sequence_test.p_value);
+            result.sequence_test.p_value
+        );
         // Effect size should be positive
-        assert!(result.sequence_test.effect_size > 0.0,
+        assert!(
+            result.sequence_test.effect_size > 0.0,
             "Effect size should be positive, got {:.4}",
-            result.sequence_test.effect_size);
+            result.sequence_test.effect_size
+        );
     }
 
     #[test]
@@ -1477,17 +1550,27 @@ mod tests {
         // Mapping should be a valid permutation
         let mut sorted_mapping = result.optimal_mapping;
         sorted_mapping.sort();
-        assert_eq!(sorted_mapping, [0, 1, 2, 3, 4, 5, 6, 7],
-            "Optimal mapping must be a permutation of 0..8");
+        assert_eq!(
+            sorted_mapping,
+            [0, 1, 2, 3, 4, 5, 6, 7],
+            "Optimal mapping must be a permutation of 0..8"
+        );
         // Completions <= opportunities
-        assert!(result.completions <= result.opportunities,
+        assert!(
+            result.completions <= result.opportunities,
             "Completions ({}) should not exceed opportunities ({})",
-            result.completions, result.opportunities);
+            result.completions,
+            result.opportunities
+        );
         // Rate consistency
         if result.opportunities > 0 {
             let expected_rate = result.completions as f64 / result.opportunities as f64;
-            assert!((result.observed_rate - expected_rate).abs() < 1e-10,
-                "Rate inconsistency: {} vs {}", result.observed_rate, expected_rate);
+            assert!(
+                (result.observed_rate - expected_rate).abs() < 1e-10,
+                "Rate inconsistency: {} vs {}",
+                result.observed_rate,
+                expected_rate
+            );
         }
         // Sequence test has correct number of permutations
         assert_eq!(result.sequence_test.n_permutations, 50);
@@ -1502,7 +1585,7 @@ mod tests {
             optimal_mapping: [0, 1, 2, 3, 4, 5, 6, 7],
             completions: 50,
             opportunities: 200,
-            observed_rate: 0.25, // > 1/7
+            observed_rate: 0.25,  // > 1/7
             mapping_pvalue: 0.01, // < 0.05
             enrichment_zscore: 3.5,
             sequence_test: PermutationTestResult {
@@ -1518,20 +1601,29 @@ mod tests {
             n_windows: 500,
         };
         let (supported, reason) = claim4_summary(&result, 0.05);
-        assert!(supported, "Should be supported when both p < alpha and enriched: {}",
-            reason);
+        assert!(
+            supported,
+            "Should be supported when both p < alpha and enriched: {}",
+            reason
+        );
 
         // Test rejection: sequence p-value too high
         let mut result_fail = result.clone();
         result_fail.sequence_test.p_value = 0.30;
         let (supported_fail, _) = claim4_summary(&result_fail, 0.05);
-        assert!(!supported_fail, "Should NOT be supported when sequence p >= alpha");
+        assert!(
+            !supported_fail,
+            "Should NOT be supported when sequence p >= alpha"
+        );
 
         // Test rejection: mapping p-value too high
         let mut result_fail2 = result.clone();
         result_fail2.mapping_pvalue = 0.20;
         let (supported_fail2, _) = claim4_summary(&result_fail2, 0.05);
-        assert!(!supported_fail2, "Should NOT be supported when mapping p >= alpha");
+        assert!(
+            !supported_fail2,
+            "Should NOT be supported when mapping p >= alpha"
+        );
 
         // Test rejection: depleted rate
         let mut result_fail3 = result.clone();
@@ -1569,7 +1661,10 @@ mod tests {
         // Sequence with only walls 8 and 9: no E8-only windows
         let sequence: Vec<usize> = (0..100).map(|i| 8 + i % 2).collect();
         let result = verify_claim4(&sequence, &NullModel::Uniform, 50, 42);
-        assert_eq!(result.n_windows, 0, "Hyperbolic-only sequence has no E8 windows");
+        assert_eq!(
+            result.n_windows, 0,
+            "Hyperbolic-only sequence has no E8 windows"
+        );
     }
 
     #[test]
@@ -1601,7 +1696,10 @@ mod tests {
         let result = verify_claim4(&sequence, &NullModel::Uniform, 100, 42);
 
         // The Z-score should be meaningful (non-zero) for non-trivial data
-        assert!(result.enrichment_zscore.is_finite(),
-            "Z-score should be finite, got {}", result.enrichment_zscore);
+        assert!(
+            result.enrichment_zscore.is_finite(),
+            "Z-score should be finite, got {}",
+            result.enrichment_zscore
+        );
     }
 }

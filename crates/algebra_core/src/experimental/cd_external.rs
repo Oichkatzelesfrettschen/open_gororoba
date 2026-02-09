@@ -17,13 +17,12 @@
 //! - Associativity triple validation
 //! - Strut table cross-validation against de Marrais (unpublished)
 
-use std::collections::{HashMap, BTreeSet, HashSet};
-use crate::construction::cayley_dickson::cd_multiply;
 use crate::analysis::boxkites::{
-    find_box_kites, canonical_strut_table, Assessor,
-    cross_assessors, diagonal_zero_products_exact, CrossPair,
+    canonical_strut_table, cross_assessors, diagonal_zero_products_exact, find_box_kites, Assessor,
+    CrossPair,
 };
-
+use crate::construction::cayley_dickson::cd_multiply;
+use std::collections::{BTreeSet, HashMap, HashSet};
 
 // ---------------------------------------------------------------------------
 // De Marrais strut table (Pathions2.pdf page 3)
@@ -95,8 +94,7 @@ pub fn verify_strut_table_against_de_marrais() -> Result<(), String> {
         .into_iter()
         .collect();
 
-        let dm_set: std::collections::BTreeSet<(usize, usize)> =
-            dm_row.into_iter().collect();
+        let dm_set: std::collections::BTreeSet<(usize, usize)> = dm_row.into_iter().collect();
 
         if rust_set != dm_set {
             mismatches.push(format!(
@@ -174,7 +172,6 @@ enum CdTree {
     Leaf(f64),
     Pair(Box<CdTree>, Box<CdTree>),
 }
-
 
 fn tree_to_vec(tree: &CdTree) -> Vec<f64> {
     match tree {
@@ -262,10 +259,7 @@ pub fn parse_lattice_point(s: &str) -> Option<Vec<i32>> {
         return None;
     }
     let inner = &s[1..s.len() - 1];
-    let vals: Result<Vec<i32>, _> = inner
-        .split(',')
-        .map(|x| x.trim().parse::<i32>())
-        .collect();
+    let vals: Result<Vec<i32>, _> = inner.split(',').map(|x| x.trim().parse::<i32>()).collect();
     vals.ok()
 }
 
@@ -383,7 +377,8 @@ pub fn lattice_zd_differences(
                 let lat_i = lattice_fn(pairs[i]);
                 let lat_j = lattice_fn(pairs[j]);
                 if lat_i.len() == lat_j.len() {
-                    let diff: Vec<i32> = lat_i.iter().zip(lat_j.iter()).map(|(a, b)| a - b).collect();
+                    let diff: Vec<i32> =
+                        lat_i.iter().zip(lat_j.iter()).map(|(a, b)| a - b).collect();
                     *diffs.entry(diff).or_insert(0) += 1;
                     pair_count += 1;
                 }
@@ -501,7 +496,11 @@ pub fn verify_lattice_filtration() -> FiltrationResult {
         .map(|&d| load_lattice_points(d).into_iter().collect())
         .collect();
 
-    let sizes: Vec<(usize, usize)> = dims.iter().zip(sets.iter()).map(|(&d, s)| (d, s.len())).collect();
+    let sizes: Vec<(usize, usize)> = dims
+        .iter()
+        .zip(sets.iter())
+        .map(|(&d, s)| (d, s.len()))
+        .collect();
 
     let strict_subsets: Vec<bool> = (0..sets.len() - 1)
         .map(|i| sets[i].is_subset(&sets[i + 1]) && sets[i].len() < sets[i + 1].len())
@@ -701,7 +700,11 @@ pub fn verify_scalar_shadow_addition(dim: usize) -> ScalarShadowResult {
             }
             // Check addition mode for this element paired with identity
             if let Some(ell) = lattice_map.get(&idx) {
-                let predicted: Vec<i32> = ell.iter().zip(ones_8.iter()).map(|(e, o)| e + pi * o).collect();
+                let predicted: Vec<i32> = ell
+                    .iter()
+                    .zip(ones_8.iter())
+                    .map(|(e, o)| e + pi * o)
+                    .collect();
                 // The predicted vector should be a valid lattice point (coords in {-2..2})
                 // but may not correspond to any basis element product.
                 n_checked += 1;
@@ -780,8 +783,12 @@ pub fn verify_xor_partner_law(dim: usize) -> XorPartnerResult {
 
             // Shared index count
             let mut shared = 0;
-            if lo_i == lo_j || lo_i == hi_j { shared += 1; }
-            if hi_i == lo_j || hi_i == hi_j { shared += 1; }
+            if lo_i == lo_j || lo_i == hi_j {
+                shared += 1;
+            }
+            if hi_i == lo_j || hi_i == hi_j {
+                shared += 1;
+            }
 
             if shared == 1 {
                 matching_partner.entry(i).or_default().insert(j);
@@ -797,7 +804,8 @@ pub fn verify_xor_partner_law(dim: usize) -> XorPartnerResult {
     let mut n_checked = 0usize;
     let mut n_valid = 0usize;
 
-    let pair_index: HashMap<(usize, usize), usize> = pairs.iter().enumerate().map(|(i, &p)| (p, i)).collect();
+    let pair_index: HashMap<(usize, usize), usize> =
+        pairs.iter().enumerate().map(|(i, &p)| (p, i)).collect();
 
     for (i, &(lo, hi)) in pairs.iter().enumerate() {
         let partner_lo = lo ^ xor_mask;
@@ -933,11 +941,8 @@ pub fn build_zd_adjacency_bucketed(dim: usize) -> (Vec<CrossPair>, Vec<Vec<u8>>)
     let mut matrix = vec![vec![0u8; n]; n];
 
     // Build pair index for fast lookup
-    let pair_to_idx: HashMap<(usize, usize), usize> = pairs
-        .iter()
-        .enumerate()
-        .map(|(i, &p)| (p, i))
-        .collect();
+    let pair_to_idx: HashMap<(usize, usize), usize> =
+        pairs.iter().enumerate().map(|(i, &p)| (p, i)).collect();
 
     // Group pairs by XOR bucket
     let mut buckets: HashMap<usize, Vec<usize>> = HashMap::new();
@@ -1080,10 +1085,20 @@ pub fn verify_c451_128d() -> CrossValidation128Result {
         "C-451 dim=128: {} cross-pairs, {} XOR buckets, {} pairs checked, {} ZD edges | \
          XOR partner: {} ({}/{} valid) | \
          Parity: even={} odd={} cross={} biclique={}",
-        n, n_buckets, n_pairs_checked, n_zd_edges,
-        if xor_partner.universal { "UNIVERSAL" } else { "PARTIAL" },
-        xor_partner.n_valid, xor_partner.n_checked,
-        n_even_edges, n_odd_edges, n_cross_edges,
+        n,
+        n_buckets,
+        n_pairs_checked,
+        n_zd_edges,
+        if xor_partner.universal {
+            "UNIVERSAL"
+        } else {
+            "PARTIAL"
+        },
+        xor_partner.n_valid,
+        xor_partner.n_checked,
+        n_even_edges,
+        n_odd_edges,
+        n_cross_edges,
         is_parity_biclique,
     );
 
@@ -1137,10 +1152,12 @@ pub fn spectral_fingerprint_from_adjacency(adj: &[Vec<u8>]) -> MotifFingerprint 
     degrees.sort();
 
     // Edge count
-    let n_edges: usize = adj.iter()
+    let n_edges: usize = adj
+        .iter()
         .flat_map(|row| row.iter())
         .map(|&x| x as usize)
-        .sum::<usize>() / 2;
+        .sum::<usize>()
+        / 2;
 
     // Triangle count: count triples (i,j,k) with all three edges present
     let mut triangles = 0usize;
@@ -1171,7 +1188,12 @@ pub fn spectral_fingerprint_from_adjacency(adj: &[Vec<u8>]) -> MotifFingerprint 
                 }
             }
         }
-        let max_d = dist.iter().filter(|&&d| d != usize::MAX).copied().max().unwrap_or(0);
+        let max_d = dist
+            .iter()
+            .filter(|&&d| d != usize::MAX)
+            .copied()
+            .max()
+            .unwrap_or(0);
         if max_d > diameter {
             diameter = max_d;
         }
@@ -1267,9 +1289,10 @@ pub fn load_lattice_map(dim: usize) -> HashMap<usize, Vec<i32>> {
     for line in lines {
         let fields = parse_csv_line_internal(line);
         if fields.len() >= 2 {
-            if let (Some(basis_vec), Some(lattice)) =
-                (parse_nested_tuple(&fields[0]), parse_lattice_point(&fields[1]))
-            {
+            if let (Some(basis_vec), Some(lattice)) = (
+                parse_nested_tuple(&fields[0]),
+                parse_lattice_point(&fields[1]),
+            ) {
                 if let Some(idx) = vec_to_basis_index(&basis_vec) {
                     map.insert(idx, lattice);
                 }
@@ -1310,8 +1333,13 @@ mod tests {
     /// All 7 NATO triplets of the octonions (associative triples).
     /// Each triple [a,b,c] satisfies e_a * e_b = e_c (up to sign).
     const NATO_TRIPS: [[usize; 3]; 7] = [
-        [1, 2, 3], [1, 4, 5], [1, 6, 7], [2, 4, 6],
-        [2, 5, 7], [3, 4, 7], [3, 5, 6],
+        [1, 2, 3],
+        [1, 4, 5],
+        [1, 6, 7],
+        [2, 4, 6],
+        [2, 5, 7],
+        [3, 4, 7],
+        [3, 5, 6],
     ];
 
     // === Strut table cross-validation (Phase 2.1) ===
@@ -1347,7 +1375,11 @@ mod tests {
                     inner_xor,
                     8 + strut_const,
                     "Inner XOR of ({},{}) = {} != 8 + {} = {}",
-                    low, high, inner_xor, strut_const, 8 + strut_const
+                    low,
+                    high,
+                    inner_xor,
+                    strut_const,
+                    8 + strut_const
                 );
             }
         }
@@ -1379,7 +1411,8 @@ mod tests {
             assert!(
                 nato_trips.contains(&abc_lows),
                 "Strut {}: zigzag L-indices {:?} not a NATO trip",
-                strut_const, abc_lows
+                strut_const,
+                abc_lows
             );
         }
     }
@@ -1433,7 +1466,11 @@ mod tests {
         let v = parse_nested_tuple(s).unwrap();
         assert_eq!(v.len(), 8);
         assert_eq!(v[4], 1.0);
-        assert!(v.iter().enumerate().filter(|&(i, _)| i != 4).all(|(_, &x)| x == 0.0));
+        assert!(v
+            .iter()
+            .enumerate()
+            .filter(|&(i, _)| i != 4)
+            .all(|(_, &x)| x == 0.0));
     }
 
     #[test]
@@ -1461,8 +1498,11 @@ mod tests {
         // Matrix should be symmetric
         for i in 0..n {
             for j in 0..n {
-                assert_eq!(matrix[i][j], matrix[j][i],
-                    "Adjacency matrix not symmetric at ({},{})", i, j);
+                assert_eq!(
+                    matrix[i][j], matrix[j][i],
+                    "Adjacency matrix not symmetric at ({},{})",
+                    i, j
+                );
             }
         }
 
@@ -1472,11 +1512,16 @@ mod tests {
         }
 
         // Count total edges
-        let total_edges: usize = matrix.iter()
+        let total_edges: usize = matrix
+            .iter()
             .flat_map(|row| row.iter())
             .map(|&x| x as usize)
-            .sum::<usize>() / 2;
-        assert!(total_edges > 0, "Should have at least some ZD edges at dim=64");
+            .sum::<usize>()
+            / 2;
+        assert!(
+            total_edges > 0,
+            "Should have at least some ZD edges at dim=64"
+        );
     }
 
     // === 128D adjacency (Phase 2.3) ===
@@ -1622,7 +1667,11 @@ mod tests {
         };
 
         let csv_matrix = parse_adjacency_csv(&content);
-        assert_eq!(csv_matrix.len(), 64, "Expected 64 rows (indices 0-63) in 64D CSV");
+        assert_eq!(
+            csv_matrix.len(),
+            64,
+            "Expected 64 rows (indices 0-63) in 64D CSV"
+        );
 
         // The CSV has 64 columns (indices 0-63) but only 63 data rows.
         // Build our Rust adjacency for the same indexing.
@@ -1639,7 +1688,8 @@ mod tests {
         //
         // After analysis: this CSV likely represents something different from
         // our cross-assessor adjacency. Document as INCONCLUSIVE in claims.
-        let total_ones: usize = csv_matrix.iter()
+        let total_ones: usize = csv_matrix
+            .iter()
             .flat_map(|row| row.iter())
             .filter(|&&v| v > 0.5)
             .count();
@@ -1656,7 +1706,11 @@ mod tests {
         // This is consistent with a "pathion adjacency" matrix where only
         // one specific pair per basis element is flagged (perhaps nearest-neighbor
         // in the doubling tree).
-        assert!(total_ones < 200, "Expected sparse matrix, got {} nonzero entries", total_ones);
+        assert!(
+            total_ones < 200,
+            "Expected sparse matrix, got {} nonzero entries",
+            total_ones
+        );
     }
 
     #[test]
@@ -1725,7 +1779,10 @@ mod tests {
                 let c_idx = vec_to_basis_index(&c);
                 mismatched_details.push(format!(
                     "Row {}: e_{:?} * e_{:?} * e_{:?} -> Rust=false, CSV=true",
-                    checked - 1, a_idx, b_idx, c_idx
+                    checked - 1,
+                    a_idx,
+                    b_idx,
+                    c_idx
                 ));
             }
         }
@@ -1740,9 +1797,16 @@ mod tests {
 
         // Key assertions:
         // 1. We can parse at least 10 rows
-        assert!(checked >= 10, "Expected to check at least 10 rows, got {}", checked);
+        assert!(
+            checked >= 10,
+            "Expected to check at least 10 rows, got {}",
+            checked
+        );
         // 2. CSV says ALL are True (this is the CSV's claim)
-        assert_eq!(csv_says_true, checked, "CSV should claim all triples are associative");
+        assert_eq!(
+            csv_says_true, checked,
+            "CSV should claim all triples are associative"
+        );
         // 3. Rust finds some non-associative (this is the CORRECT result)
         // At dim=256, triples of distinct high-index basis elements should fail.
         // The exact count depends on which triples are in the first 50 rows.
@@ -1934,7 +1998,8 @@ mod tests {
                 assert!(
                     result_vec.len() == 64 || result_vec.len() == 128,
                     "Row {}: expected 64 or 128 components, got {}",
-                    checked, result_vec.len()
+                    checked,
+                    result_vec.len()
                 );
                 checked += 1;
             }
@@ -1968,9 +2033,10 @@ mod tests {
             if fields.len() < 2 {
                 continue;
             }
-            if let (Some(basis_vec), Some(lattice)) =
-                (parse_nested_tuple(&fields[0]), parse_lattice_point(&fields[1]))
-            {
+            if let (Some(basis_vec), Some(lattice)) = (
+                parse_nested_tuple(&fields[0]),
+                parse_lattice_point(&fields[1]),
+            ) {
                 if let Some(idx) = vec_to_basis_index(&basis_vec) {
                     lattice_map.insert(idx, lattice);
                 }
@@ -1999,7 +2065,8 @@ mod tests {
                     let indices = [(lo_i, lo_j), (lo_i, hi_j), (hi_i, lo_j), (hi_i, hi_j)];
                     for (a, b) in &indices {
                         if let (Some(la), Some(lb)) = (lattice_map.get(a), lattice_map.get(b)) {
-                            let diff: Vec<i32> = la.iter().zip(lb.iter()).map(|(x, y)| x - y).collect();
+                            let diff: Vec<i32> =
+                                la.iter().zip(lb.iter()).map(|(x, y)| x - y).collect();
                             *diff_counts.entry(diff).or_insert(0) += 1;
                             total_diffs += 1;
                         }
@@ -2040,13 +2107,22 @@ mod tests {
             .keys()
             .filter(|d| d.iter().map(|x| x * x).sum::<i32>() == 2)
             .collect();
-        eprintln!("Unique diffs with |d|^2 = 2 (potential E8 roots): {}", e8_root_diffs.len());
+        eprintln!(
+            "Unique diffs with |d|^2 = 2 (potential E8 roots): {}",
+            e8_root_diffs.len()
+        );
         if !e8_root_diffs.is_empty() {
-            eprintln!("  Examples: {:?}", &e8_root_diffs[..e8_root_diffs.len().min(5)]);
+            eprintln!(
+                "  Examples: {:?}",
+                &e8_root_diffs[..e8_root_diffs.len().min(5)]
+            );
         }
 
         // Report total unique norms found
-        assert!(!diff_counts.is_empty(), "Should have some lattice differences");
+        assert!(
+            !diff_counts.is_empty(),
+            "Should have some lattice differences"
+        );
     }
 
     // === Phase 3.3: Structural properties analysis ===
@@ -2083,8 +2159,10 @@ mod tests {
             }
         }
 
-        eprintln!("256D structural: {} rows, {} symmetric, {} periodic",
-            total, symmetric_true, periodic_true);
+        eprintln!(
+            "256D structural: {} rows, {} symmetric, {} periodic",
+            total, symmetric_true, periodic_true
+        );
 
         assert!(total > 0, "Should parse some rows");
         // The identity row might be symmetric; most elements should not be
@@ -2118,28 +2196,44 @@ mod tests {
     fn test_thesis_a_codebook_parity_256d() {
         let result = verify_codebook_parity(256);
         assert_eq!(result.n_points, 256);
-        assert!(result.all_valid, "256D codebook parity failed: {:?}", result);
+        assert!(
+            result.all_valid,
+            "256D codebook parity failed: {:?}",
+            result
+        );
     }
 
     #[test]
     fn test_thesis_a_codebook_parity_512d() {
         let result = verify_codebook_parity(512);
         assert_eq!(result.n_points, 512);
-        assert!(result.all_valid, "512D codebook parity failed: {:?}", result);
+        assert!(
+            result.all_valid,
+            "512D codebook parity failed: {:?}",
+            result
+        );
     }
 
     #[test]
     fn test_thesis_a_codebook_parity_1024d() {
         let result = verify_codebook_parity(1024);
         assert_eq!(result.n_points, 1024);
-        assert!(result.all_valid, "1024D codebook parity failed: {:?}", result);
+        assert!(
+            result.all_valid,
+            "1024D codebook parity failed: {:?}",
+            result
+        );
     }
 
     #[test]
     fn test_thesis_a_codebook_parity_2048d() {
         let result = verify_codebook_parity(2048);
         assert_eq!(result.n_points, 2048);
-        assert!(result.all_valid, "2048D codebook parity failed: {:?}", result);
+        assert!(
+            result.all_valid,
+            "2048D codebook parity failed: {:?}",
+            result
+        );
     }
 
     // === Thesis B: Filtration Nesting Verification ===
@@ -2147,8 +2241,15 @@ mod tests {
     #[test]
     fn test_thesis_b_filtration_nesting() {
         let result = verify_lattice_filtration();
-        assert!(result.is_strict_chain, "Filtration is not a strict chain: {:?}", result);
-        assert_eq!(result.sizes, vec![(256, 256), (512, 512), (1024, 1024), (2048, 2048)]);
+        assert!(
+            result.is_strict_chain,
+            "Filtration is not a strict chain: {:?}",
+            result
+        );
+        assert_eq!(
+            result.sizes,
+            vec![(256, 256), (512, 512), (1024, 1024), (2048, 2048)]
+        );
         assert!(result.strict_subsets.iter().all(|&b| b));
     }
 
@@ -2159,13 +2260,14 @@ mod tests {
         let p2048: BTreeSet<Vec<i32>> = load_lattice_points(2048).into_iter().collect();
         let p1024: BTreeSet<Vec<i32>> = load_lattice_points(1024).into_iter().collect();
 
-        let cut = learn_prefix_cut(&p2048, &p1024)
-            .expect("Failed to learn 2048->1024 prefix cut");
+        let cut = learn_prefix_cut(&p2048, &p1024).expect("Failed to learn 2048->1024 prefix cut");
 
         assert_eq!(cut.parent_size, 2048);
         assert_eq!(cut.child_size, 1024);
-        assert!(verify_prefix_cut(&p2048, &p1024, &cut),
-            "Prefix cut does not exactly partition parent");
+        assert!(
+            verify_prefix_cut(&p2048, &p1024, &cut),
+            "Prefix cut does not exactly partition parent"
+        );
     }
 
     #[test]
@@ -2173,8 +2275,7 @@ mod tests {
         let p1024: BTreeSet<Vec<i32>> = load_lattice_points(1024).into_iter().collect();
         let p512: BTreeSet<Vec<i32>> = load_lattice_points(512).into_iter().collect();
 
-        let cut = learn_prefix_cut(&p1024, &p512)
-            .expect("Failed to learn 1024->512 prefix cut");
+        let cut = learn_prefix_cut(&p1024, &p512).expect("Failed to learn 1024->512 prefix cut");
 
         assert_eq!(cut.parent_size, 1024);
         assert_eq!(cut.child_size, 512);
@@ -2186,8 +2287,7 @@ mod tests {
         let p512: BTreeSet<Vec<i32>> = load_lattice_points(512).into_iter().collect();
         let p256: BTreeSet<Vec<i32>> = load_lattice_points(256).into_iter().collect();
 
-        let cut = learn_prefix_cut(&p512, &p256)
-            .expect("Failed to learn 512->256 prefix cut");
+        let cut = learn_prefix_cut(&p512, &p256).expect("Failed to learn 512->256 prefix cut");
 
         assert_eq!(cut.parent_size, 512);
         assert_eq!(cut.child_size, 256);
@@ -2216,19 +2316,22 @@ mod tests {
         assert_eq!(s_base.len(), 2187, "S_base should have 2187 points");
 
         let p2048: BTreeSet<Vec<i32>> = load_lattice_points(2048).into_iter().collect();
-        assert!(p2048.is_subset(&s_base), "Lambda_2048 must be subset of S_base");
+        assert!(
+            p2048.is_subset(&s_base),
+            "Lambda_2048 must be subset of S_base"
+        );
 
         let excluded = s_base.difference(&p2048).count();
         assert_eq!(excluded, 139, "Expected 139 excluded points");
 
         // S_base is also a lexicographic superset: Lambda_2048 is first 2048 in lex order
         let s_base_sorted: Vec<&Vec<i32>> = s_base.iter().collect();
-        let lex_first_2048: BTreeSet<Vec<i32>> = s_base_sorted[..2048]
-            .iter()
-            .map(|&v| v.clone())
-            .collect();
-        assert_eq!(lex_first_2048, p2048,
-            "Lambda_2048 should be first 2048 of S_base in lex order");
+        let lex_first_2048: BTreeSet<Vec<i32>> =
+            s_base_sorted[..2048].iter().map(|&v| v.clone()).collect();
+        assert_eq!(
+            lex_first_2048, p2048,
+            "Lambda_2048 should be first 2048 of S_base in lex order"
+        );
     }
 
     // === Phase 1.5: 32-Point 421E Slice ===
@@ -2245,8 +2348,10 @@ mod tests {
         // All should have first 4 coordinates = -1 (the "pinned corner")
         for pt in &first_32 {
             assert_eq!(
-                &pt[..4], &[-1, -1, -1, -1],
-                "Lambda_32 point {:?} does not have first 4 coords = -1", pt
+                &pt[..4],
+                &[-1, -1, -1, -1],
+                "Lambda_32 point {:?} does not have first 4 coords = -1",
+                pt
             );
         }
 
@@ -2254,26 +2359,40 @@ mod tests {
         // all trie-cut exclusions are vacuously satisfied for prefix (-1,-1,-1,-1),
         // and the base universe constraint on the free tail gives:
         // weight 0: 1, weight 2: 24, weight 4: 16 = 41 total.
-        let predicate_cut: Vec<Vec<i32>> = p256_sorted.iter()
+        let predicate_cut: Vec<Vec<i32>> = p256_sorted
+            .iter()
             .filter(|p| p[0] == -1 && p[1] == -1 && p[2] == -1 && p[3] == -1)
             .cloned()
             .collect();
 
-        eprintln!("Points with coords[0:4]=(-1,-1,-1,-1): {}", predicate_cut.len());
-        assert_eq!(predicate_cut.len(), 41,
-            "Pinned corner cut has 41 points (base universe on free 4D tail)");
+        eprintln!(
+            "Points with coords[0:4]=(-1,-1,-1,-1): {}",
+            predicate_cut.len()
+        );
+        assert_eq!(
+            predicate_cut.len(),
+            41,
+            "Pinned corner cut has 41 points (base universe on free 4D tail)"
+        );
 
         // The first 32 in lex order is a proper subset of these 41
         let first_32_set: BTreeSet<Vec<i32>> = first_32.iter().cloned().collect();
         let predicate_set: BTreeSet<Vec<i32>> = predicate_cut.iter().cloned().collect();
-        assert!(first_32_set.is_subset(&predicate_set),
-            "Lambda_32 must be subset of the pinned corner cut");
+        assert!(
+            first_32_set.is_subset(&predicate_set),
+            "Lambda_32 must be subset of the pinned corner cut"
+        );
 
         // Identify the 9 points in the cut but NOT in the first 32
-        let excluded: Vec<&Vec<i32>> = predicate_cut.iter()
+        let excluded: Vec<&Vec<i32>> = predicate_cut
+            .iter()
             .filter(|p| !first_32_set.contains(*p))
             .collect();
-        assert_eq!(excluded.len(), 9, "9 points are in the pinned cut but past lex-rank 32");
+        assert_eq!(
+            excluded.len(),
+            9,
+            "9 points are in the pinned cut but past lex-rank 32"
+        );
         eprintln!("9 excluded tail patterns (beyond lex rank 32):");
         for p in &excluded {
             eprintln!("  {:?}", &p[4..]);
@@ -2293,13 +2412,16 @@ mod tests {
         assert_eq!(pred_points.len(), 256, "Predicates should give 256 points");
 
         // Convert predicate points to Vec<i32> for comparison
-        let pred_as_i32: BTreeSet<Vec<i32>> = pred_points.iter()
+        let pred_as_i32: BTreeSet<Vec<i32>> = pred_points
+            .iter()
             .map(|v| v.iter().map(|&x| x as i32).collect::<Vec<i32>>())
             .collect();
         let csv_set: BTreeSet<Vec<i32>> = csv_points.into_iter().collect();
 
-        assert_eq!(csv_set, pred_as_i32,
-            "CSV and predicate-based Lambda_256 must be identical sets");
+        assert_eq!(
+            csv_set, pred_as_i32,
+            "CSV and predicate-based Lambda_256 must be identical sets"
+        );
     }
 
     // === Thesis E: XOR Partner Law ===
@@ -2310,7 +2432,10 @@ mod tests {
         eprintln!("XOR partner 64D: {:?}", result);
         assert_eq!(result.xor_mask, 4, "64D XOR mask should be 4");
         assert!(result.n_checked > 0, "Should check some pairs");
-        assert!(result.universal, "XOR partner law should hold universally at 64D");
+        assert!(
+            result.universal,
+            "XOR partner law should hold universally at 64D"
+        );
     }
 
     #[test]
@@ -2319,7 +2444,10 @@ mod tests {
         eprintln!("XOR partner 128D: {:?}", result);
         assert_eq!(result.xor_mask, 8, "128D XOR mask should be 8 (128/16)");
         assert!(result.n_checked > 0, "Should check some pairs");
-        assert!(result.universal, "XOR partner law should hold universally at 128D");
+        assert!(
+            result.universal,
+            "XOR partner law should hold universally at 128D"
+        );
     }
 
     #[test]
@@ -2328,7 +2456,10 @@ mod tests {
         eprintln!("XOR partner 256D: {:?}", result);
         assert_eq!(result.xor_mask, 16, "256D XOR mask should be 16 (256/16)");
         assert!(result.n_checked > 0, "Should check some pairs");
-        assert!(result.universal, "XOR partner law should hold universally at 256D");
+        assert!(
+            result.universal,
+            "XOR partner law should hold universally at 256D"
+        );
     }
 
     /// Cross-validate XOR partner law against the shared-basis-index matching
@@ -2365,8 +2496,12 @@ mod tests {
 
                     // Count shared basis indices between (lo,hi) and (partner_lo, partner_hi)
                     let mut shared = 0u32;
-                    if lo == partner_lo || lo == partner_hi { shared += 1; }
-                    if hi == partner_lo || hi == partner_hi { shared += 1; }
+                    if lo == partner_lo || lo == partner_hi {
+                        shared += 1;
+                    }
+                    if hi == partner_lo || hi == partner_hi {
+                        shared += 1;
+                    }
 
                     if shared == 1 {
                         n_xor_is_matching += 1;
@@ -2394,7 +2529,7 @@ mod tests {
     /// dimensions where full graph analysis is tractable.
     #[test]
     fn test_thesis_e_matching_graph_structure_64d() {
-        use petgraph::graph::{UnGraph, NodeIndex};
+        use petgraph::graph::{NodeIndex, UnGraph};
 
         let pairs = cross_assessors(64);
         let n = pairs.len();
@@ -2411,8 +2546,12 @@ mod tests {
                 let (lo_j, hi_j) = pairs[j];
 
                 let mut shared = 0u32;
-                if lo_i == lo_j || lo_i == hi_j { shared += 1; }
-                if hi_i == lo_j || hi_i == hi_j { shared += 1; }
+                if lo_i == lo_j || lo_i == hi_j {
+                    shared += 1;
+                }
+                if hi_i == lo_j || hi_i == hi_j {
+                    shared += 1;
+                }
 
                 if shared == 1 {
                     graph.add_edge(nodes[i], nodes[j], ());
@@ -2443,7 +2582,7 @@ mod tests {
     #[test]
     fn test_thesis_e_xor_involution_invariants_128d() {
         use crate::analysis::graph_projections::compute_invariant_suite_from_graph;
-        use petgraph::graph::{UnGraph, NodeIndex};
+        use petgraph::graph::{NodeIndex, UnGraph};
 
         let dim = 128usize;
         let xor_mask = dim / 16; // 8
@@ -2474,30 +2613,55 @@ mod tests {
         let suite = compute_invariant_suite_from_graph("P_xor_involution_128", &graph);
         eprintln!(
             "128D XOR involution: {} nodes, {} edges, {} components, {} motif classes",
-            n, suite.global.n_edges, suite.components.len(), suite.motif_classes.len()
+            n,
+            suite.global.n_edges,
+            suite.components.len(),
+            suite.motif_classes.len()
         );
 
         // The involution creates a perfect matching on paired nodes
         // plus isolated nodes (boundary pairs). Every connected component
         // should be either K_2 or K_1.
-        let n_k2 = suite.components.iter().filter(|c| c.invariants.n_edges == 1).count();
-        let n_isolated = suite.components.iter().filter(|c| c.invariants.n_edges == 0).count();
+        let n_k2 = suite
+            .components
+            .iter()
+            .filter(|c| c.invariants.n_edges == 1)
+            .count();
+        let n_isolated = suite
+            .components
+            .iter()
+            .filter(|c| c.invariants.n_edges == 0)
+            .count();
 
         eprintln!("  K_2 components: {}, isolated nodes: {}", n_k2, n_isolated);
-        assert_eq!(n_k2 + n_isolated, suite.components.len(),
-            "Every component should be K_2 or K_1");
-        assert_eq!(n_k2, suite.global.n_edges,
-            "Each K_2 component contributes exactly one edge");
+        assert_eq!(
+            n_k2 + n_isolated,
+            suite.components.len(),
+            "Every component should be K_2 or K_1"
+        );
+        assert_eq!(
+            n_k2, suite.global.n_edges,
+            "Each K_2 component contributes exactly one edge"
+        );
 
         // At most 2 motif classes: K_2 and K_1
-        assert!(suite.motif_classes.len() <= 2,
-            "At most 2 motif classes (K_2 and K_1)");
+        assert!(
+            suite.motif_classes.len() <= 2,
+            "At most 2 motif classes (K_2 and K_1)"
+        );
 
         // Verify the universal property: paired nodes should account for most pairs
         let n_paired = 2 * n_k2;
-        eprintln!("  Paired fraction: {}/{} = {:.3}", n_paired, n, n_paired as f64 / n as f64);
-        assert!(n_paired as f64 / n as f64 > 0.95,
-            "Most pairs should have valid XOR partners");
+        eprintln!(
+            "  Paired fraction: {}/{} = {:.3}",
+            n_paired,
+            n,
+            n_paired as f64 / n as f64
+        );
+        assert!(
+            n_paired as f64 / n as f64 > 0.95,
+            "Most pairs should have valid XOR partners"
+        );
     }
 
     // === Thesis F: Parity-Clique Law ===
@@ -2506,12 +2670,21 @@ mod tests {
     fn test_thesis_f_parity_clique_16d() {
         let result = verify_parity_clique(16);
         eprintln!("Parity-clique 16D: {:?}", result);
-        assert_eq!(result.n_vertices, 56, "dim=16 should have 7*8=56 cross-pairs");
+        assert_eq!(
+            result.n_vertices, 56,
+            "dim=16 should have 7*8=56 cross-pairs"
+        );
         // Thesis F REFUTED at 16D: ZD adjacency is NOT K_m union K_m by parity.
         // The graph is far sparser than complete bipartite, and cross-parity
         // edges are present (48/84 = 57% of all edges).
-        assert!(!result.is_parity_biclique, "Parity-biclique should fail at 16D");
-        assert!(result.n_cross_edges > 0, "Cross-parity edges should exist at 16D");
+        assert!(
+            !result.is_parity_biclique,
+            "Parity-biclique should fail at 16D"
+        );
+        assert!(
+            result.n_cross_edges > 0,
+            "Cross-parity edges should exist at 16D"
+        );
     }
 
     #[test]
@@ -2520,12 +2693,23 @@ mod tests {
         eprintln!(
             "Parity-clique 32D: n_vertices={}, n_edges={}, n_even={}, n_odd={}, \
              even_edges={}, odd_edges={}, cross_edges={}, is_biclique={}",
-            result.n_vertices, result.n_edges, result.n_even, result.n_odd,
-            result.n_even_edges, result.n_odd_edges, result.n_cross_edges,
+            result.n_vertices,
+            result.n_edges,
+            result.n_even,
+            result.n_odd,
+            result.n_even_edges,
+            result.n_odd_edges,
+            result.n_cross_edges,
             result.is_parity_biclique
         );
-        assert!(!result.is_parity_biclique, "Parity-biclique should fail at 32D");
-        assert!(result.n_cross_edges > 0, "Cross-parity edges should exist at 32D");
+        assert!(
+            !result.is_parity_biclique,
+            "Parity-biclique should fail at 32D"
+        );
+        assert!(
+            result.n_cross_edges > 0,
+            "Cross-parity edges should exist at 32D"
+        );
     }
 
     #[test]
@@ -2535,13 +2719,25 @@ mod tests {
         eprintln!(
             "Parity-clique 64D: n_vertices={}, n_edges={}, n_even={}, n_odd={}, \
              even_edges={}, odd_edges={}, cross_edges={} ({:.1}%), is_biclique={}",
-            result.n_vertices, result.n_edges, result.n_even, result.n_odd,
-            result.n_even_edges, result.n_odd_edges, result.n_cross_edges,
-            cross_fraction * 100.0, result.is_parity_biclique
+            result.n_vertices,
+            result.n_edges,
+            result.n_even,
+            result.n_odd,
+            result.n_even_edges,
+            result.n_odd_edges,
+            result.n_cross_edges,
+            cross_fraction * 100.0,
+            result.is_parity_biclique
         );
         // Thesis F REFUTED: expect failure, with non-trivial cross-parity fraction
-        assert!(!result.is_parity_biclique, "Parity-biclique should fail at 64D");
-        assert!(result.n_cross_edges > 0, "Cross-parity edges should exist at 64D");
+        assert!(
+            !result.is_parity_biclique,
+            "Parity-biclique should fail at 64D"
+        );
+        assert!(
+            result.n_cross_edges > 0,
+            "Cross-parity edges should exist at 64D"
+        );
     }
 
     /// Characterize the parity-clique failure across dimensions.
@@ -2551,8 +2747,10 @@ mod tests {
     fn test_thesis_f_parity_scaling() {
         let dims = [16, 32, 64];
         eprintln!("\nThesis F Parity-Clique Scaling:");
-        eprintln!("{:>5} {:>8} {:>8} {:>8} {:>8} {:>8}",
-            "dim", "n_vert", "n_edges", "expected", "density", "x_frac");
+        eprintln!(
+            "{:>5} {:>8} {:>8} {:>8} {:>8} {:>8}",
+            "dim", "n_vert", "n_edges", "expected", "density", "x_frac"
+        );
 
         for &dim in &dims {
             let result = verify_parity_clique(dim);
@@ -2564,12 +2762,18 @@ mod tests {
             };
             eprintln!(
                 "{:>5} {:>8} {:>8} {:>8} {:>8.4} {:>8.3}",
-                dim, result.n_vertices, result.n_edges, result.expected_clique_edges,
-                density, cross_frac
+                dim,
+                result.n_vertices,
+                result.n_edges,
+                result.expected_clique_edges,
+                density,
+                cross_frac
             );
             // At all tested dimensions, the parity-biclique law fails
-            assert!(!result.is_parity_biclique,
-                "dim={dim}: parity-biclique should fail");
+            assert!(
+                !result.is_parity_biclique,
+                "dim={dim}: parity-biclique should fail"
+            );
         }
     }
 
@@ -2624,8 +2828,13 @@ mod tests {
         eprintln!(
             "Parity-clique 128D (bucketed): n_vert={}, n_edges={}, expected={}, \
              density={:.4}, cross_frac={:.3}, n_even={}, n_odd={}",
-            n, total_edges, expected_total, density, cross_frac,
-            even_indices.len(), odd_indices.len()
+            n,
+            total_edges,
+            expected_total,
+            density,
+            cross_frac,
+            even_indices.len(),
+            odd_indices.len()
         );
         eprintln!(
             "  even_edges={}, odd_edges={}, cross_edges={}",
@@ -2633,9 +2842,8 @@ mod tests {
         );
 
         // Thesis F REFUTED at 128D (consistent with lower dimensions)
-        let is_biclique = n_cross_edges == 0
-            && n_even_edges == expected_even
-            && n_odd_edges == expected_odd;
+        let is_biclique =
+            n_cross_edges == 0 && n_even_edges == expected_even && n_odd_edges == expected_odd;
         assert!(!is_biclique, "Parity-biclique should fail at 128D");
         assert!(total_edges > 0, "Should have ZD-adjacent edges at 128D");
     }
@@ -2685,8 +2893,16 @@ mod tests {
         assert_eq!(fp.girth, 0); // No cycles in a matching
 
         // Eigenvalues: three +1, three -1
-        let pos_count = fp.eigenvalues.iter().filter(|&&e| (e - 1.0).abs() < 0.01).count();
-        let neg_count = fp.eigenvalues.iter().filter(|&&e| (e + 1.0).abs() < 0.01).count();
+        let pos_count = fp
+            .eigenvalues
+            .iter()
+            .filter(|&&e| (e - 1.0).abs() < 0.01)
+            .count();
+        let neg_count = fp
+            .eigenvalues
+            .iter()
+            .filter(|&&e| (e + 1.0).abs() < 0.01)
+            .count();
         assert_eq!(pos_count, 3, "Expected 3 eigenvalues near +1");
         assert_eq!(neg_count, 3, "Expected 3 eigenvalues near -1");
     }
@@ -2698,13 +2914,17 @@ mod tests {
         // First K_4: vertices 0-3
         for i in 0..4 {
             for j in 0..4 {
-                if i != j { adj[i][j] = 1; }
+                if i != j {
+                    adj[i][j] = 1;
+                }
             }
         }
         // Second K_4: vertices 4-7
         for i in 4..8 {
             for j in 4..8 {
-                if i != j { adj[i][j] = 1; }
+                if i != j {
+                    adj[i][j] = 1;
+                }
             }
         }
         let fp = spectral_fingerprint_from_adjacency(&adj);
@@ -2713,8 +2933,16 @@ mod tests {
         assert_eq!(fp.triangle_count, 8); // 2 * C(4,3) = 8
 
         // Two eigenvalues near 3, six near -1
-        let near_3 = fp.eigenvalues.iter().filter(|&&e| (e - 3.0).abs() < 0.01).count();
-        let near_m1 = fp.eigenvalues.iter().filter(|&&e| (e + 1.0).abs() < 0.01).count();
+        let near_3 = fp
+            .eigenvalues
+            .iter()
+            .filter(|&&e| (e - 3.0).abs() < 0.01)
+            .count();
+        let near_m1 = fp
+            .eigenvalues
+            .iter()
+            .filter(|&&e| (e + 1.0).abs() < 0.01)
+            .count();
         assert_eq!(near_3, 2, "Expected 2 eigenvalues near 3");
         assert_eq!(near_m1, 6, "Expected 6 eigenvalues near -1");
     }
@@ -2738,7 +2966,10 @@ mod tests {
         let result = verify_scalar_shadow_addition(256);
         eprintln!("Scalar shadow 256D: {:?}", result);
         assert!(result.n_checked > 0, "Should check some basis elements");
-        assert!(result.all_ternary, "All scalar shadows should be in {{-1,0,1}}");
+        assert!(
+            result.all_ternary,
+            "All scalar shadows should be in {{-1,0,1}}"
+        );
     }
 
     #[test]

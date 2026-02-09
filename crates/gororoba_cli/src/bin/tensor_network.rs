@@ -10,8 +10,8 @@
 
 use clap::{Parser, Subcommand};
 use quantum_core::tensor_network_classical::{
-    prepare_bell_state, prepare_ghz_state,
-    simulate_random_circuit, bell_state_entropy, ghz_state_entropy,
+    bell_state_entropy, ghz_state_entropy, prepare_bell_state, prepare_ghz_state,
+    simulate_random_circuit,
 };
 
 #[derive(Parser)]
@@ -91,8 +91,18 @@ fn main() {
     match args.command {
         Commands::Bell { json } => run_bell(json),
         Commands::Ghz { n, k, json } => run_ghz(n, k, json),
-        Commands::Evolve { n, steps, seed, output, json } => run_evolve(n, steps, seed, output, json),
-        Commands::Scaling { n_min, n_max, output } => run_scaling(n_min, n_max, output),
+        Commands::Evolve {
+            n,
+            steps,
+            seed,
+            output,
+            json,
+        } => run_evolve(n, steps, seed, output, json),
+        Commands::Scaling {
+            n_min,
+            n_max,
+            output,
+        } => run_scaling(n_min, n_max, output),
     }
 }
 
@@ -203,7 +213,12 @@ fn run_evolve(n: usize, steps: usize, seed: u64, output: Option<String>, json: b
         if steps > 10 {
             println!("  ...");
         }
-        for (i, e) in result.entropies.iter().enumerate().skip(steps.saturating_sub(5)) {
+        for (i, e) in result
+            .entropies
+            .iter()
+            .enumerate()
+            .skip(steps.saturating_sub(5))
+        {
             println!("  Step {:3}: {:.6}", i + 1, e);
         }
     }
@@ -212,10 +227,15 @@ fn run_evolve(n: usize, steps: usize, seed: u64, output: Option<String>, json: b
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
         wtr.write_record(["step", "entropy"]).unwrap();
         for (i, e) in result.entropies.iter().enumerate() {
-            wtr.write_record(&[(i + 1).to_string(), e.to_string()]).unwrap();
+            wtr.write_record(&[(i + 1).to_string(), e.to_string()])
+                .unwrap();
         }
         wtr.flush().unwrap();
-        eprintln!("Wrote {} entropy values to {}", result.entropies.len(), path);
+        eprintln!(
+            "Wrote {} entropy values to {}",
+            result.entropies.len(),
+            path
+        );
     }
 }
 
@@ -232,12 +252,23 @@ fn run_scaling(n_min: usize, n_max: usize, output: Option<String>) {
     let mut records = Vec::new();
 
     for n in n_min..=n_max {
-        let ghz_s = if n >= 2 { ghz_state_entropy(n, n / 2) } else { 0.0 };
+        let ghz_s = if n >= 2 {
+            ghz_state_entropy(n, n / 2)
+        } else {
+            0.0
+        };
         let bell_s = if n >= 2 { bell_state_entropy() } else { 0.0 };
         let random_result = simulate_random_circuit(n, 20, 42);
-        let random_max = random_result.entropies.iter().cloned().fold(0.0_f64, f64::max);
+        let random_max = random_result
+            .entropies
+            .iter()
+            .cloned()
+            .fold(0.0_f64, f64::max);
 
-        println!("{:8}  {:11.6}  {:12.6}  {:10.6}", n, ghz_s, bell_s, random_max);
+        println!(
+            "{:8}  {:11.6}  {:12.6}  {:10.6}",
+            n, ghz_s, bell_s, random_max
+        );
         records.push((n, ghz_s, bell_s, random_max));
     }
 
@@ -249,14 +280,11 @@ fn run_scaling(n_min: usize, n_max: usize, output: Option<String>) {
 
     if let Some(path) = output {
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
-        wtr.write_record(["n_qubits", "ghz_entropy", "bell_entropy", "random_max"]).unwrap();
+        wtr.write_record(["n_qubits", "ghz_entropy", "bell_entropy", "random_max"])
+            .unwrap();
         for (n, g, b, r) in &records {
-            wtr.write_record(&[
-                n.to_string(),
-                g.to_string(),
-                b.to_string(),
-                r.to_string(),
-            ]).unwrap();
+            wtr.write_record(&[n.to_string(), g.to_string(), b.to_string(), r.to_string()])
+                .unwrap();
         }
         wtr.flush().unwrap();
         eprintln!("Wrote {} records to {}", records.len(), path);

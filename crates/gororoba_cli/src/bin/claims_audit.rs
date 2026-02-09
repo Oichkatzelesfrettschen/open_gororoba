@@ -68,12 +68,7 @@ fn main() {
         "all" => {
             let docs_dir = repo_root.join("docs");
             let doc_corpus = audit::collect_doc_corpus(&docs_dir);
-            audit::run_all_audits(
-                &matrix_text,
-                &cli.matrix,
-                &doc_corpus,
-                &cli.stale_before,
-            )
+            audit::run_all_audits(&matrix_text, &cli.matrix, &doc_corpus, &cli.stale_before)
         }
         "id" => {
             let claims = parse_claim_rows(&matrix_text);

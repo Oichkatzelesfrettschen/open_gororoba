@@ -2,8 +2,8 @@
 //!
 //! Usage: zd-search --dim 16 --output zd_pairs.csv
 
+use algebra_core::{analyze_box_kite_symmetry, find_box_kites, find_zero_divisors};
 use clap::Parser;
-use algebra_core::{find_zero_divisors, find_box_kites, analyze_box_kite_symmetry};
 
 #[derive(Parser)]
 #[command(name = "zd-search")]
@@ -51,7 +51,11 @@ fn main() {
         eprintln!("Analyzing box-kite structure...");
         let bks = find_box_kites(args.dim, args.atol);
         let sym = analyze_box_kite_symmetry(args.dim, args.atol);
-        eprintln!("Found {} box-kites, {} assessors", bks.len(), sym.n_assessors);
+        eprintln!(
+            "Found {} box-kites, {} assessors",
+            bks.len(),
+            sym.n_assessors
+        );
     }
 
     if args.json {
@@ -78,12 +82,15 @@ fn main() {
                 k.to_string(),
                 l.to_string(),
                 norm.to_string(),
-            ]).unwrap();
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} pairs to {}", zds.len(), path);
-        println!("Exact zeros: {}, min_norm: {:.2e}, max_norm: {:.2e}",
-            exact_count, min_norm, max_norm);
+        println!(
+            "Exact zeros: {}, min_norm: {:.2e}, max_norm: {:.2e}",
+            exact_count, min_norm, max_norm
+        );
     } else {
         println!("i,j,k,l,norm");
         for (i, j, k, l, norm) in &zds {

@@ -6,7 +6,7 @@
 //! Source: LASP Interactive Solar Irradiance Datacenter (LISIRD)
 //! Reference: Kopp (2021), https://doi.org/10.1007/s11207-021-01853-x
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
 
 /// A single TSI measurement from TSIS-1.
@@ -45,8 +45,11 @@ pub fn parse_tsi_csv(path: &Path) -> Result<Vec<TsiMeasurement>, FetchError> {
         }
 
         // Skip header line(s)
-        if !header_seen && (trimmed.contains("jd") || trimmed.contains("date")
-            || trimmed.contains("TSI") || trimmed.contains("irradiance"))
+        if !header_seen
+            && (trimmed.contains("jd")
+                || trimmed.contains("date")
+                || trimmed.contains("TSI")
+                || trimmed.contains("irradiance"))
         {
             header_seen = true;
             continue;
@@ -156,15 +159,15 @@ pub fn compare_tsis_sorce(
 }
 
 /// LASP LISIRD TSIS-1 daily TSI data URL.
-const TSIS_URLS: &[&str] = &[
-    "https://lasp.colorado.edu/lisird/latis/dap/tsis_tsi_24hr.csv",
-];
+const TSIS_URLS: &[&str] = &["https://lasp.colorado.edu/lisird/latis/dap/tsis_tsi_24hr.csv"];
 
 /// TSIS-1 Total Solar Irradiance dataset provider.
 pub struct TsisTsiProvider;
 
 impl DatasetProvider for TsisTsiProvider {
-    fn name(&self) -> &str { "TSIS-1 TSI Daily" }
+    fn name(&self) -> &str {
+        "TSIS-1 TSI Daily"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("tsis1_tsi_daily.csv");
@@ -243,7 +246,11 @@ jd,date,TSI,uncertainty
 ";
         let f = write_temp_csv(csv);
         let measurements = parse_tsi_csv(f.path()).unwrap();
-        assert_eq!(measurements.len(), 1, "sentinel values -99/-999 should be NaN -> skipped");
+        assert_eq!(
+            measurements.len(),
+            1,
+            "sentinel values -99/-999 should be NaN -> skipped"
+        );
     }
 
     #[test]
@@ -256,14 +263,41 @@ jd,date,TSI,uncertainty
         use super::super::sorce::SorceMeasurement;
 
         let tsis = vec![
-            TsiMeasurement { jd: 2458300.5, date: "2018-07-01".into(), tsi: 1360.50, tsi_uncertainty: 0.1 },
-            TsiMeasurement { jd: 2458301.5, date: "2018-07-02".into(), tsi: 1360.52, tsi_uncertainty: 0.1 },
-            TsiMeasurement { jd: 2458302.5, date: "2018-07-03".into(), tsi: 1360.48, tsi_uncertainty: 0.1 },
+            TsiMeasurement {
+                jd: 2458300.5,
+                date: "2018-07-01".into(),
+                tsi: 1360.50,
+                tsi_uncertainty: 0.1,
+            },
+            TsiMeasurement {
+                jd: 2458301.5,
+                date: "2018-07-02".into(),
+                tsi: 1360.52,
+                tsi_uncertainty: 0.1,
+            },
+            TsiMeasurement {
+                jd: 2458302.5,
+                date: "2018-07-03".into(),
+                tsi: 1360.48,
+                tsi_uncertainty: 0.1,
+            },
         ];
         let sorce = vec![
-            SorceMeasurement { jd: 2458300.5, date: "20180701".into(), tsi: 1360.40 },
-            SorceMeasurement { jd: 2458301.5, date: "20180702".into(), tsi: 1360.45 },
-            SorceMeasurement { jd: 2458302.5, date: "20180703".into(), tsi: 1360.42 },
+            SorceMeasurement {
+                jd: 2458300.5,
+                date: "20180701".into(),
+                tsi: 1360.40,
+            },
+            SorceMeasurement {
+                jd: 2458301.5,
+                date: "20180702".into(),
+                tsi: 1360.45,
+            },
+            SorceMeasurement {
+                jd: 2458302.5,
+                date: "20180703".into(),
+                tsi: 1360.42,
+            },
         ];
 
         let result = compare_tsis_sorce(&tsis, &sorce, 0.5);
@@ -279,12 +313,17 @@ jd,date,TSI,uncertainty
     fn test_compare_tsis_sorce_no_overlap() {
         use super::super::sorce::SorceMeasurement;
 
-        let tsis = vec![
-            TsiMeasurement { jd: 2460000.5, date: "2023-01-01".into(), tsi: 1360.5, tsi_uncertainty: 0.1 },
-        ];
-        let sorce = vec![
-            SorceMeasurement { jd: 2458000.5, date: "20170101".into(), tsi: 1360.4 },
-        ];
+        let tsis = vec![TsiMeasurement {
+            jd: 2460000.5,
+            date: "2023-01-01".into(),
+            tsi: 1360.5,
+            tsi_uncertainty: 0.1,
+        }];
+        let sorce = vec![SorceMeasurement {
+            jd: 2458000.5,
+            date: "20170101".into(),
+            tsi: 1360.4,
+        }];
 
         let result = compare_tsis_sorce(&tsis, &sorce, 0.5);
         assert_eq!(result.n_matched, 0);

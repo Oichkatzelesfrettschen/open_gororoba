@@ -87,7 +87,8 @@ impl UniversalAlgebra {
     /// Expects columns: "component", "block_id", "basis_indices" (comma-separated).
     pub fn from_csv<R: std::io::Read>(reader: R) -> AlgebraResult<Self> {
         let mut ua = Self::new(4096);
-        let mut comp_map: std::collections::HashMap<String, Component> = std::collections::HashMap::new();
+        let mut comp_map: std::collections::HashMap<String, Component> =
+            std::collections::HashMap::new();
 
         let mut rdr = csv::Reader::from_reader(reader);
         for result in rdr.records() {
@@ -101,14 +102,16 @@ impl UniversalAlgebra {
                 .map(|s| s.trim().parse::<usize>().unwrap_or(0))
                 .collect();
 
-            let comp = comp_map.entry(comp_label.to_string()).or_insert_with(|| Component {
-                label: comp_label.to_string(),
-                // Defaults, ideally read from another metadata CSV
-                is_associative: comp_label.contains("A"),
-                is_commutative: false,
-                homotopy_closure: true,
-                blocks: Vec::new(),
-            });
+            let comp = comp_map
+                .entry(comp_label.to_string())
+                .or_insert_with(|| Component {
+                    label: comp_label.to_string(),
+                    // Defaults, ideally read from another metadata CSV
+                    is_associative: comp_label.contains("A"),
+                    is_commutative: false,
+                    homotopy_closure: true,
+                    blocks: Vec::new(),
+                });
 
             comp.blocks.push(Block {
                 id: block_id.to_string(),

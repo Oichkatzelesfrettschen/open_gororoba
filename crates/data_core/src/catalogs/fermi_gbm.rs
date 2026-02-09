@@ -5,7 +5,7 @@
 //!
 //! Source: https://heasarc.gsfc.nasa.gov/W3Browse/fermi/fermigbrst.html
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_heasarc_csv};
+use crate::fetcher::{download_heasarc_csv, DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
 
 /// A gamma-ray burst from the Fermi GBM catalog.
@@ -159,7 +159,9 @@ displaymode=BatchDisplay";
 pub struct FermiGbmProvider;
 
 impl DatasetProvider for FermiGbmProvider {
-    fn name(&self) -> &str { "Fermi GBM Burst Catalog" }
+    fn name(&self) -> &str {
+        "Fermi GBM Burst Catalog"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("fermi_gbm_grbs.csv");
@@ -271,12 +273,26 @@ GRB_ALT,2010-01-01T00:00:00,10 00 00,20 00 00,1.0,0.5,1e-7,2.0,1.0,band,comp
 
         let first = &events[0];
         assert!(!first.name.is_empty(), "Name should not be empty");
-        assert!(first.t90.is_finite(), "T90 should be finite for first event");
-        assert!(first.fluence.is_finite(), "Fluence should be finite for first event");
+        assert!(
+            first.t90.is_finite(),
+            "T90 should be finite for first event"
+        );
+        assert!(
+            first.fluence.is_finite(),
+            "Fluence should be finite for first event"
+        );
 
         let with_flux = events.iter().filter(|e| e.flux_64.is_finite()).count();
-        assert!(with_flux > 100, "Should have >100 events with flux_64, got {}", with_flux);
+        assert!(
+            with_flux > 100,
+            "Should have >100 events with flux_64, got {}",
+            with_flux
+        );
 
-        eprintln!("Parsed {} Fermi GBM events ({} with flux_64)", events.len(), with_flux);
+        eprintln!(
+            "Parsed {} Fermi GBM events ({} with flux_64)",
+            events.len(),
+            with_flux
+        );
     }
 }

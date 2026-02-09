@@ -125,15 +125,12 @@ fn should_stop(r: usize, k: usize, alpha: f64, confidence: f64) -> Option<StopRe
 ///
 /// * `config` - Adaptive testing configuration
 /// * `run_batch` - Closure that takes batch_size, returns count of extreme permutations
-pub fn adaptive_permutation_test<F>(
-    config: &AdaptiveConfig,
-    mut run_batch: F,
-) -> AdaptiveResult
+pub fn adaptive_permutation_test<F>(config: &AdaptiveConfig, mut run_batch: F) -> AdaptiveResult
 where
     F: FnMut(usize) -> usize,
 {
-    let mut total_k = 0usize;  // total permutations
-    let mut total_r = 0usize;  // total extreme
+    let mut total_k = 0usize; // total permutations
+    let mut total_r = 0usize; // total extreme
     let mut trajectory = Vec::new();
 
     while total_k < config.max_permutations {
@@ -244,7 +241,10 @@ mod tests {
             extreme.max(if call_count.is_multiple_of(2) { 1 } else { 0 })
         });
 
-        assert_eq!(result.n_permutations_used, 200, "Borderline should reach max");
+        assert_eq!(
+            result.n_permutations_used, 200,
+            "Borderline should reach max"
+        );
         assert_eq!(result.stop_reason, StopReason::MaxReached);
     }
 
@@ -279,7 +279,7 @@ mod tests {
         let config = AdaptiveConfig {
             batch_size: 50,
             max_permutations: 200,
-            alpha: 0.01,  // tight alpha so it runs to max
+            alpha: 0.01, // tight alpha so it runs to max
             confidence: 0.99,
             min_permutations: 200,
         };
@@ -301,7 +301,7 @@ mod tests {
             batch_size: 100,
             max_permutations: 100,
             alpha: 0.05,
-            confidence: 0.50,  // low confidence to avoid early stop
+            confidence: 0.50, // low confidence to avoid early stop
             min_permutations: 100,
         };
 

@@ -6,7 +6,9 @@
 //! Source: https://skyserver.sdss.org/
 //! Reference: Almeida et al. (2023), ApJS 267, 44
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string, validate_not_html};
+use crate::fetcher::{
+    download_to_string, validate_not_html, DatasetProvider, FetchConfig, FetchError,
+};
 use crate::formats::tap::percent_encode_query;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -58,9 +60,8 @@ pub fn parse_sdss_quasar_csv(path: &Path) -> Result<Vec<SdssQuasar>, FetchError>
         .map_err(|e| FetchError::Validation(format!("Header read error: {}", e)))?
         .clone();
 
-    let col = |name: &str| -> Option<usize> {
-        headers.iter().position(|h| h.eq_ignore_ascii_case(name))
-    };
+    let col =
+        |name: &str| -> Option<usize> { headers.iter().position(|h| h.eq_ignore_ascii_case(name)) };
 
     let idx_objid = col("objid").or_else(|| col("objID"));
     let idx_ra = col("ra");
@@ -148,7 +149,9 @@ fn skyserver_csv_url(query: &str) -> String {
 pub struct SdssQsoProvider;
 
 impl DatasetProvider for SdssQsoProvider {
-    fn name(&self) -> &str { "SDSS DR18 Quasars" }
+    fn name(&self) -> &str {
+        "SDSS DR18 Quasars"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("sdss_dr18_quasars.csv");

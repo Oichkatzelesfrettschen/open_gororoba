@@ -284,10 +284,7 @@ pub fn simulate_poiseuille(
         .collect();
 
     // Compute max relative error on interior points
-    let max_ana: f64 = ux_analytical[1..ny - 1]
-        .iter()
-        .cloned()
-        .fold(0.0, f64::max);
+    let max_ana: f64 = ux_analytical[1..ny - 1].iter().cloned().fold(0.0, f64::max);
 
     let max_rel_error = if max_ana > 1e-30 {
         ux_numerical[1..ny - 1]

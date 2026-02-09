@@ -3,11 +3,11 @@
 //! Tests cross-crate integration between spectral_core (fractional Laplacian,
 //! negative dimension PDE) and cosmology_core (bounce cosmology).
 
+use spectral_core::neg_dim::{caffarelli_silvestre_eigenvalues, eigenvalues_imaginary_time};
 use spectral_core::{
-    fractional_laplacian_periodic_1d, fractional_laplacian_periodic_2d,
-    fractional_laplacian_dirichlet_1d,
+    fractional_laplacian_dirichlet_1d, fractional_laplacian_periodic_1d,
+    fractional_laplacian_periodic_2d,
 };
-use spectral_core::neg_dim::{eigenvalues_imaginary_time, caffarelli_silvestre_eigenvalues};
 
 /// Test 1D periodic fractional Laplacian on a Fourier mode.
 #[test]
@@ -80,7 +80,10 @@ fn test_dirichlet_s1_matches_standard() {
         assert!(
             rel_error < 1e-4,
             "Dirichlet s=1 mismatch at index {}: frac={}, direct={}, rel_error={}",
-            i, f, d, rel_error
+            i,
+            f,
+            d,
+            rel_error
         );
     }
 }
@@ -141,21 +144,20 @@ fn test_positive_alpha_eigenvalue_ordering() {
     let result = eigenvalues_imaginary_time(1.0, 0.1, 64, 10.0, 3, 0.005, 3000);
 
     // Should produce requested number of eigenvalues
-    assert_eq!(
-        result.eigenvalues.len(), 3,
-        "Should produce 3 eigenvalues"
-    );
+    assert_eq!(result.eigenvalues.len(), 3, "Should produce 3 eigenvalues");
 
     // For positive alpha, eigenvalues should be ordered
     assert!(
         result.eigenvalues[0] < result.eigenvalues[1],
         "E_0={} should be < E_1={} for positive alpha",
-        result.eigenvalues[0], result.eigenvalues[1]
+        result.eigenvalues[0],
+        result.eigenvalues[1]
     );
     assert!(
         result.eigenvalues[1] < result.eigenvalues[2],
         "E_1={} should be < E_2={} for positive alpha",
-        result.eigenvalues[1], result.eigenvalues[2]
+        result.eigenvalues[1],
+        result.eigenvalues[2]
     );
 }
 
@@ -170,11 +172,7 @@ fn test_negative_alpha_eigenvalues_distinct() {
 
     // All eigenvalues should be positive
     for (i, &e) in result.eigenvalues.iter().enumerate() {
-        assert!(
-            e > 0.0,
-            "Eigenvalue {} should be positive, got {}",
-            i, e
-        );
+        assert!(e > 0.0, "Eigenvalue {} should be positive, got {}", i, e);
     }
 
     // Eigenvalues should be distinct (but not necessarily ordered!)
@@ -199,19 +197,18 @@ fn test_eigenstates_normalized() {
     let result = eigenvalues_imaginary_time(-1.5, 0.1, n_grid, l, 2, 0.005, 2000);
 
     // Should produce requested number of eigenstates
-    assert_eq!(
-        result.eigenstates.len(), 2,
-        "Should produce 2 eigenstates"
-    );
+    assert_eq!(result.eigenstates.len(), 2, "Should produce 2 eigenstates");
 
     // The grid spacing is l/n (domain from -l/2 to +l/2 with n points)
     let dx = l / n_grid as f64;
 
     for (i, state) in result.eigenstates.iter().enumerate() {
         assert_eq!(
-            state.len(), n_grid,
+            state.len(),
+            n_grid,
             "Eigenstate {} should have {} points",
-            i, n_grid
+            i,
+            n_grid
         );
 
         // Compute L2 norm squared: integral(|psi|^2 dx) = sum(psi^2 * dx)
@@ -221,7 +218,8 @@ fn test_eigenstates_normalized() {
         assert!(
             (norm_sq - 1.0).abs() < 0.05,
             "Eigenstate {} not normalized: |psi|^2 = {} (expected 1.0)",
-            i, norm_sq
+            i,
+            norm_sq
         );
     }
 }

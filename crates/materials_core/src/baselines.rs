@@ -30,11 +30,7 @@ pub struct RegressionResult {
 ///
 /// Returns (train_indices, test_indices).  `test_fraction` is the
 /// fraction of data to hold out for testing (e.g. 0.2 for 80/20 split).
-pub fn train_test_split(
-    n: usize,
-    test_fraction: f64,
-    seed: u64,
-) -> (Vec<usize>, Vec<usize>) {
+pub fn train_test_split(n: usize, test_fraction: f64, seed: u64) -> (Vec<usize>, Vec<usize>) {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
     let mut indices: Vec<usize> = (0..n).collect();
     indices.shuffle(&mut rng);
@@ -54,10 +50,7 @@ pub fn train_test_split(
 ///
 /// Returns (coefficients_including_intercept, intercept).
 /// The intercept is the last element of the coefficient vector.
-pub fn ols_fit(
-    x_train: &DMatrix<f64>,
-    y_train: &DVector<f64>,
-) -> (DVector<f64>, f64) {
+pub fn ols_fit(x_train: &DMatrix<f64>, y_train: &DVector<f64>) -> (DVector<f64>, f64) {
     let n = x_train.nrows();
     let p = x_train.ncols();
 
@@ -70,7 +63,9 @@ pub fn ols_fit(
 
     // SVD-based pseudoinverse solve: beta = pinv(X) * y
     let svd = x_aug.svd(true, true);
-    let beta = svd.solve(y_train, 1e-12).unwrap_or_else(|_| DVector::zeros(p + 1));
+    let beta = svd
+        .solve(y_train, 1e-12)
+        .unwrap_or_else(|_| DVector::zeros(p + 1));
 
     let intercept = beta[p];
     let coefficients = beta.rows(0, p).into_owned();
@@ -78,11 +73,7 @@ pub fn ols_fit(
 }
 
 /// Predict targets from features using fitted coefficients.
-pub fn predict(
-    x: &DMatrix<f64>,
-    coefficients: &DVector<f64>,
-    intercept: f64,
-) -> DVector<f64> {
+pub fn predict(x: &DMatrix<f64>, coefficients: &DVector<f64>, intercept: f64) -> DVector<f64> {
     x * coefficients + DVector::from_element(x.nrows(), intercept)
 }
 
@@ -251,19 +242,14 @@ mod tests {
         );
 
         // SS_tot = 10.0, SS_res = 0.11, R^2 = 1 - 0.11/10 = 0.989
-        assert!(
-            (r2 - 0.989).abs() < 1e-10,
-            "R^2 should be 0.989, got {r2}"
-        );
+        assert!((r2 - 0.989).abs() < 1e-10, "R^2 should be 0.989, got {r2}");
     }
 
     #[test]
     fn test_run_baseline_pipeline() {
         // Create a simple dataset: y = 3*x1 + 2*x2 + 1
         let n = 200;
-        let features: Vec<Vec<f64>> = (0..n)
-            .map(|i| vec![i as f64, (i * 2) as f64])
-            .collect();
+        let features: Vec<Vec<f64>> = (0..n).map(|i| vec![i as f64, (i * 2) as f64]).collect();
         let targets: Vec<f64> = features
             .iter()
             .map(|f| 3.0 * f[0] + 2.0 * f[1] + 1.0)

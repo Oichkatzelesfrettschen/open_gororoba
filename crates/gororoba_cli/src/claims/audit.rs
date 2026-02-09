@@ -15,9 +15,7 @@ use std::path::Path;
 use std::sync::LazyLock;
 
 use super::parser::{parse_claim_rows, shorten, ClaimRow};
-use super::schema::{
-    is_canonical_status, is_open_status, CANONICAL_CLAIMS_STATUS_TOKENS,
-};
+use super::schema::{is_canonical_status, is_open_status, CANONICAL_CLAIMS_STATUS_TOKENS};
 
 // --- ID Inventory Report ---
 
@@ -53,16 +51,11 @@ pub fn id_inventory(claims: &[ClaimRow]) -> IdInventory {
     let min_id = *nums.iter().min().unwrap_or(&0);
     let max_id = *nums.iter().max().unwrap_or(&0);
 
-    let mut duplicates: Vec<(String, usize)> = counts
-        .into_iter()
-        .filter(|(_, n)| *n > 1)
-        .collect();
+    let mut duplicates: Vec<(String, usize)> = counts.into_iter().filter(|(_, n)| *n > 1).collect();
     duplicates.sort();
 
     let present: BTreeSet<u32> = nums.iter().copied().collect();
-    let gaps: Vec<u32> = (min_id..=max_id)
-        .filter(|n| !present.contains(n))
-        .collect();
+    let gaps: Vec<u32> = (min_id..=max_id).filter(|n| !present.contains(n)).collect();
 
     IdInventory {
         total: claims.len(),
@@ -151,10 +144,7 @@ pub fn status_inventory(claims: &[ClaimRow]) -> StatusInventory {
             open_claims.push(OpenClaim {
                 claim_id: c.claim_id.clone(),
                 status_token: c.status_token.clone(),
-                last_verified: c
-                    .last_verified_date
-                    .clone()
-                    .unwrap_or_default(),
+                last_verified: c.last_verified_date.clone().unwrap_or_default(),
                 claim_short: shorten(&c.claim_text, 110),
             });
         }
@@ -325,9 +315,8 @@ pub fn render_staleness_report(
 
 // --- Status Contradictions ---
 
-static BOLD_TOKEN_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"\*\*([^*]+)\*\*").expect("valid regex")
-});
+static BOLD_TOKEN_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"\*\*([^*]+)\*\*").expect("valid regex"));
 
 /// A claim with multiple status tokens in its status cell.
 #[derive(Debug)]
@@ -365,7 +354,10 @@ pub fn render_contradictions(contras: &[StatusContradiction], matrix_path: &str)
     if contras.is_empty() {
         out.push_str("No contradictions found.\n");
     } else {
-        out.push_str(&format!("Found {} claims with multiple status tokens:\n\n", contras.len()));
+        out.push_str(&format!(
+            "Found {} claims with multiple status tokens:\n\n",
+            contras.len()
+        ));
         for c in contras {
             out.push_str(&format!(
                 "- {} (line {}): {}\n",
@@ -458,9 +450,8 @@ pub struct PriorityEntry {
 ///
 /// `doc_corpus` is the concatenated text of all docs/*.md files.
 pub fn priority_ranking(claims: &[ClaimRow], doc_corpus: &str) -> Vec<PriorityEntry> {
-    static CLAIM_REF_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"\bC-\d{3}\b").expect("valid regex")
-    });
+    static CLAIM_REF_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"\bC-\d{3}\b").expect("valid regex"));
 
     // Count mentions of each claim ID across the corpus.
     let mut mention_counts: HashMap<String, usize> = HashMap::new();
@@ -560,11 +551,7 @@ pub fn collect_doc_corpus(docs_dir: &Path) -> String {
     if let Ok(entries) = std::fs::read_dir(docs_dir) {
         let mut paths: Vec<_> = entries
             .filter_map(|e| e.ok())
-            .filter(|e| {
-                e.path()
-                    .extension()
-                    .is_some_and(|ext| ext == "md")
-            })
+            .filter(|e| e.path().extension().is_some_and(|ext| ext == "md"))
             .map(|e| e.path())
             .collect();
         paths.sort();

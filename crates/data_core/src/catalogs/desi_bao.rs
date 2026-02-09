@@ -6,7 +6,7 @@
 //! Source: https://github.com/CobayaSampler/bao_data
 //! Reference: DESI Collaboration (2024), arXiv:2404.03002
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use crate::fetcher::{download_to_string, DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
 
 /// A BAO distance measurement from DESI.
@@ -49,9 +49,9 @@ pub fn desi_dr1_bao() -> Vec<BaoMeasurement> {
         BaoMeasurement {
             z_eff: 0.295,
             is_isotropic: true,
-            dm_over_rd: 7.93,  // This is DV/rd for isotropic bins
+            dm_over_rd: 7.93, // This is DV/rd for isotropic bins
             dm_over_rd_err: 0.15,
-            dh_over_rd: 0.0,   // Not measured
+            dh_over_rd: 0.0, // Not measured
             dh_over_rd_err: 0.0,
             rho: 0.0,
             tracer: "BGS".to_string(),
@@ -103,7 +103,7 @@ pub fn desi_dr1_bao() -> Vec<BaoMeasurement> {
             is_isotropic: true,
             dm_over_rd: 26.07, // This is DV/rd for isotropic bins
             dm_over_rd_err: 0.67,
-            dh_over_rd: 0.0,   // Not measured
+            dh_over_rd: 0.0, // Not measured
             dh_over_rd_err: 0.0,
             rho: 0.0,
             tracer: "QSO".to_string(),
@@ -165,7 +165,9 @@ const DESI_BAO_BASE: &str = "https://raw.githubusercontent.com/CobayaSampler/bao
 pub struct DesiBaoProvider;
 
 impl DatasetProvider for DesiBaoProvider {
-    fn name(&self) -> &str { "DESI DR1 BAO" }
+    fn name(&self) -> &str {
+        "DESI DR1 BAO"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let dir = config.output_dir.join("desi_bao");
@@ -258,14 +260,18 @@ mod tests {
     fn test_desi_hardcoded_tracer_types() {
         let bao = desi_dr1_bao();
         let tracers: Vec<&str> = bao.iter().map(|b| b.tracer.as_str()).collect();
-        assert_eq!(tracers, &["BGS", "LRG1", "LRG2", "LRG3+ELG1", "ELG2", "QSO", "Lya"]);
+        assert_eq!(
+            tracers,
+            &["BGS", "LRG1", "LRG2", "LRG3+ELG1", "ELG2", "QSO", "Lya"]
+        );
     }
 
     #[test]
     fn test_desi_hardcoded_isotropic_bins() {
         let bao = desi_dr1_bao();
         // Only BGS (z=0.295) and QSO (z=1.491) are isotropic
-        let iso_tracers: Vec<&str> = bao.iter()
+        let iso_tracers: Vec<&str> = bao
+            .iter()
             .filter(|b| b.is_isotropic)
             .map(|b| b.tracer.as_str())
             .collect();
@@ -281,7 +287,10 @@ mod tests {
             assert!(
                 w[0].dh_over_rd > w[1].dh_over_rd,
                 "DH/rd should decrease with z: {} > {} at z={} vs z={}",
-                w[0].dh_over_rd, w[1].dh_over_rd, w[0].z_eff, w[1].z_eff
+                w[0].dh_over_rd,
+                w[1].dh_over_rd,
+                w[0].z_eff,
+                w[1].z_eff
             );
         }
     }
@@ -292,9 +301,12 @@ mod tests {
         let bao = desi_dr1_bao();
         for b in &bao {
             if !b.is_isotropic {
-                assert!(b.rho < 0.0,
+                assert!(
+                    b.rho < 0.0,
                     "Anisotropic bin {} should have negative correlation, got {}",
-                    b.tracer, b.rho);
+                    b.tracer,
+                    b.rho
+                );
             }
         }
     }

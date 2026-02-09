@@ -76,10 +76,16 @@ fn neighborhood_ultrametric_index(
     for _ in 0..n_samples {
         let i = rng.gen_range(0..n);
         let mut j = rng.gen_range(0..n - 1);
-        if j >= i { j += 1; }
+        if j >= i {
+            j += 1;
+        }
         let mut k = rng.gen_range(0..n - 2);
-        if k >= i.min(j) { k += 1; }
-        if k >= i.max(j) { k += 1; }
+        if k >= i.min(j) {
+            k += 1;
+        }
+        if k >= i.max(j) {
+            k += 1;
+        }
 
         let d_ij_sq = euclidean_3d_sq(&points[i], &points[j]);
         let d_jk_sq = euclidean_3d_sq(&points[j], &points[k]);
@@ -156,11 +162,8 @@ pub fn local_ultrametricity_test(
             .collect();
 
         if neighbors.len() >= 3 {
-            let idx = neighborhood_ultrametric_index(
-                &neighbors,
-                n_samples_per_neighborhood,
-                &mut rng,
-            );
+            let idx =
+                neighborhood_ultrametric_index(&neighbors, n_samples_per_neighborhood, &mut rng);
             local_indices.push(idx);
         }
     }
@@ -283,18 +286,19 @@ mod tests {
         // Small random point cloud
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let coords: Vec<(f64, f64, f64)> = (0..30)
-            .map(|_| (
-                rng.gen_range(0.0..10.0),
-                rng.gen_range(0.0..10.0),
-                rng.gen_range(0.0..10.0),
-            ))
+            .map(|_| {
+                (
+                    rng.gen_range(0.0..10.0),
+                    rng.gen_range(0.0..10.0),
+                    rng.gen_range(0.0..10.0),
+                )
+            })
             .collect();
 
         let result = local_ultrametricity_test(
-            &coords,
-            5.0,   // epsilon
-            500,   // samples per neighborhood
-            20,    // permutations (small for speed)
+            &coords, 5.0, // epsilon
+            500, // samples per neighborhood
+            20,  // permutations (small for speed)
             42,
         );
 
@@ -307,9 +311,7 @@ mod tests {
     #[test]
     fn test_local_ultrametricity_too_small_epsilon() {
         // Epsilon so small that no neighborhoods have >= 3 points
-        let coords: Vec<(f64, f64, f64)> = (0..10)
-            .map(|i| (i as f64 * 100.0, 0.0, 0.0))
-            .collect();
+        let coords: Vec<(f64, f64, f64)> = (0..10).map(|i| (i as f64 * 100.0, 0.0, 0.0)).collect();
 
         let result = local_ultrametricity_test(&coords, 0.001, 100, 10, 42);
 

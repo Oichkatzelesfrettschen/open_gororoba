@@ -64,41 +64,36 @@ pub mod kerr;
 pub mod kerr_de_sitter;
 pub mod kerr_newman;
 pub mod metric;
-pub mod null_constraint;
 pub mod novikov_thorne;
+pub mod null_constraint;
 pub mod penrose;
+pub mod photon_graviton;
 pub mod scattering;
 pub mod schwarzschild;
 pub mod spectral_bands;
-pub mod photon_graviton;
 pub mod synchrotron;
 
 // Re-export primary types from each module
 pub use kerr::{
-    kerr_metric_quantities, photon_orbit_radius, impact_parameters,
-    shadow_boundary, GeodesicState, geodesic_rhs, trace_null_geodesic,
-    GeodesicResult, ShadowResult, shadow_ray_traced, Kerr,
+    geodesic_rhs, impact_parameters, kerr_metric_quantities, photon_orbit_radius, shadow_boundary,
+    shadow_ray_traced, trace_null_geodesic, GeodesicResult, GeodesicState, Kerr, ShadowResult,
 };
 
 pub use metric::{
-    SpacetimeMetric, MetricComponents, ChristoffelComponents,
-    CurvatureResult, full_curvature,
+    full_curvature, ChristoffelComponents, CurvatureResult, MetricComponents, SpacetimeMetric,
 };
 
 pub use schwarzschild::Schwarzschild;
 
 pub use energy_conserving::{
-    ConservedQuantities, FullGeodesicState,
-    compute_energy, compute_angular_momentum, compute_carter_constant,
-    extract_conserved_quantities, geodesic_acceleration,
-    rk4_geodesic_step, apply_constraint_correction,
-    energy_conserving_step, integrate_energy_conserving,
-    relative_energy_drift, relative_angular_momentum_drift,
+    apply_constraint_correction, compute_angular_momentum, compute_carter_constant, compute_energy,
+    energy_conserving_step, extract_conserved_quantities, geodesic_acceleration,
+    integrate_energy_conserving, relative_angular_momentum_drift, relative_energy_drift,
+    rk4_geodesic_step, ConservedQuantities, FullGeodesicState,
 };
 
 pub use null_constraint::{
-    null_constraint, is_null, mass_shell_constraint, is_timelike,
-    renormalize_null, renormalize_null_diagonal, renormalize_null_kerr,
-    renormalize_massive, constraint_drift_bound, global_drift_bound,
-    adaptive_tolerance, needs_renormalization, ConstraintStats,
+    adaptive_tolerance, constraint_drift_bound, global_drift_bound, is_null, is_timelike,
+    mass_shell_constraint, needs_renormalization, null_constraint, renormalize_massive,
+    renormalize_null, renormalize_null_diagonal, renormalize_null_kerr, ConstraintStats,
 };

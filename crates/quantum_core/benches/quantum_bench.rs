@@ -5,11 +5,8 @@
 //! - Harper-Hofstadter eigenspectrum
 //! - FHS Chern number calculation
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
-use quantum_core::{
-    MatrixProductState,
-    harper_hamiltonian, fhs_chern_numbers,
-};
+use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use quantum_core::{fhs_chern_numbers, harper_hamiltonian, MatrixProductState};
 
 /// Benchmark MPS single-qubit gate application.
 fn bench_mps_single_gate(c: &mut Criterion) {
@@ -18,12 +15,16 @@ fn bench_mps_single_gate(c: &mut Criterion) {
     for n_qubits in [4, 8, 12] {
         let mps = MatrixProductState::new_zero_state(n_qubits);
 
-        group.bench_with_input(BenchmarkId::new("hadamard/n", n_qubits), &n_qubits, |bench, _| {
-            let mut mps_mut = mps.clone();
-            bench.iter(|| {
-                mps_mut.apply_hadamard(black_box(0));
-            });
-        });
+        group.bench_with_input(
+            BenchmarkId::new("hadamard/n", n_qubits),
+            &n_qubits,
+            |bench, _| {
+                let mut mps_mut = mps.clone();
+                bench.iter(|| {
+                    mps_mut.apply_hadamard(black_box(0));
+                });
+            },
+        );
 
         group.bench_with_input(BenchmarkId::new("x/n", n_qubits), &n_qubits, |bench, _| {
             let mut mps_mut = mps.clone();
@@ -45,12 +46,16 @@ fn bench_mps_two_qubit_gate(c: &mut Criterion) {
         let mut mps = MatrixProductState::new_zero_state(n_qubits);
         mps.apply_hadamard(0);
 
-        group.bench_with_input(BenchmarkId::new("cnot/n", n_qubits), &n_qubits, |bench, _| {
-            let mut mps_mut = mps.clone();
-            bench.iter(|| {
-                mps_mut.apply_cnot(black_box(0), black_box(1));
-            });
-        });
+        group.bench_with_input(
+            BenchmarkId::new("cnot/n", n_qubits),
+            &n_qubits,
+            |bench, _| {
+                let mut mps_mut = mps.clone();
+                bench.iter(|| {
+                    mps_mut.apply_cnot(black_box(0), black_box(1));
+                });
+            },
+        );
     }
 
     group.finish();
@@ -69,9 +74,7 @@ fn bench_mps_entropy(c: &mut Criterion) {
         }
 
         group.bench_with_input(BenchmarkId::new("n", n_qubits), &n_qubits, |bench, _| {
-            bench.iter(|| {
-                mps.measure_entropy(black_box(n_qubits / 2))
-            });
+            bench.iter(|| mps.measure_entropy(black_box(n_qubits / 2)));
         });
     }
 
@@ -99,11 +102,13 @@ fn bench_fhs_chern(c: &mut Criterion) {
     group.sample_size(10); // FHS is slow, reduce samples
 
     for n_grid in [11, 17] {
-        group.bench_with_input(BenchmarkId::new("grid", n_grid), &n_grid, |bench, &n_grid| {
-            bench.iter(|| {
-                fhs_chern_numbers(black_box(1), black_box(4), black_box(n_grid))
-            });
-        });
+        group.bench_with_input(
+            BenchmarkId::new("grid", n_grid),
+            &n_grid,
+            |bench, &n_grid| {
+                bench.iter(|| fhs_chern_numbers(black_box(1), black_box(4), black_box(n_grid)));
+            },
+        );
     }
 
     group.finish();

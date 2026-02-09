@@ -31,9 +31,7 @@ use std::f64::consts::PI;
 /// a*=0: r_ISCO = 6M;  a*->1: r_ISCO -> M.
 pub fn isco_radius(a_star: f64) -> f64 {
     let a_star = a_star.clamp(-0.9999, 0.9999);
-    let z1 = 1.0
-        + (1.0 - a_star * a_star).cbrt()
-            * ((1.0 + a_star).cbrt() + (1.0 - a_star).cbrt());
+    let z1 = 1.0 + (1.0 - a_star * a_star).cbrt() * ((1.0 + a_star).cbrt() + (1.0 - a_star).cbrt());
     let z2 = (3.0 * a_star * a_star + z1 * z1).sqrt();
     3.0 + z2 - a_star.signum() * ((3.0 - z1) * (3.0 + z1 + 2.0 * z2)).sqrt()
 }
@@ -74,8 +72,7 @@ pub fn disk_temperature(r_m: f64, a_star: f64, mdot_edd: f64, mass_solar: f64) -
 
     let eta = radiative_efficiency(a_star);
     // Eddington luminosity [erg/s]
-    let l_edd = 4.0 * PI * G_CGS * mass_solar * M_SUN_CGS * M_PROTON_CGS * C_CGS
-        / SIGMA_THOMSON;
+    let l_edd = 4.0 * PI * G_CGS * mass_solar * M_SUN_CGS * M_PROTON_CGS * C_CGS / SIGMA_THOMSON;
     // Eddington mass accretion rate [g/s]
     let mdot_edd_cgs = l_edd / (eta * C_CGS * C_CGS);
     // Actual mass accretion rate [g/s]
@@ -89,8 +86,7 @@ pub fn disk_temperature(r_m: f64, a_star: f64, mdot_edd: f64, mass_solar: f64) -
     let f_r = (1.0 - (r_isco / r_m).sqrt()).max(0.0);
 
     // Page & Thorne temperature
-    let t4 = 3.0 * G_CGS * m_cgs * mdot * f_r
-        / (8.0 * PI * SIGMA_SB_CGS * r_cgs * r_cgs * r_cgs);
+    let t4 = 3.0 * G_CGS * m_cgs * mdot * f_r / (8.0 * PI * SIGMA_SB_CGS * r_cgs * r_cgs * r_cgs);
 
     t4.max(0.0).powf(0.25)
 }
@@ -137,8 +133,7 @@ pub fn peak_temperature_radius(a_star: f64) -> f64 {
 /// Integrated luminosity L = eta * Mdot * c^2 [erg/s].
 pub fn integrated_luminosity(mdot_edd: f64, a_star: f64, mass_solar: f64) -> f64 {
     let eta = radiative_efficiency(a_star);
-    let l_edd = 4.0 * PI * G_CGS * mass_solar * M_SUN_CGS * M_PROTON_CGS * C_CGS
-        / SIGMA_THOMSON;
+    let l_edd = 4.0 * PI * G_CGS * mass_solar * M_SUN_CGS * M_PROTON_CGS * C_CGS / SIGMA_THOMSON;
     let mdot_edd_cgs = l_edd / (eta * C_CGS * C_CGS);
     eta * mdot_edd * mdot_edd_cgs * C_CGS * C_CGS
 }
@@ -575,10 +570,7 @@ mod tests {
     fn test_angular_velocity_keplerian() {
         // Omega(r=100) = 1/1000 = 0.001
         let omega = angular_velocity_circular(100.0);
-        assert!(
-            (omega - 0.001).abs() < 1e-12,
-            "Omega(100) = {omega}"
-        );
+        assert!((omega - 0.001).abs() < 1e-12, "Omega(100) = {omega}");
     }
 
     #[test]
@@ -645,7 +637,10 @@ mod tests {
     fn test_doppler_blueshift_approaching() {
         // phi=pi/2 (approaching), high inclination -> blueshift (delta > 1)
         let delta = disk_doppler_factor(10.0, PI / 2.0, PI / 3.0);
-        assert!(delta > 1.0, "approaching side should be blueshifted: {delta}");
+        assert!(
+            delta > 1.0,
+            "approaching side should be blueshifted: {delta}"
+        );
     }
 
     #[test]
@@ -676,7 +671,10 @@ mod tests {
         let f_emit = disk_flux(r, 0.0, 0.1, 10.0);
         let f_obs = disk_flux_observed(r, 0.0, 0.0, 0.1, 10.0, 0.0);
         // For face-on, observed < emitted due to gravitational redshift + transverse Doppler
-        assert!(f_obs < f_emit, "observed flux should be dimmed: {f_obs} vs {f_emit}");
+        assert!(
+            f_obs < f_emit,
+            "observed flux should be dimmed: {f_obs} vs {f_emit}"
+        );
         assert!(f_obs > 0.0, "observed flux should be positive");
     }
 
@@ -701,7 +699,10 @@ mod tests {
         // Spectrum should decrease at very high frequencies (Wien tail)
         let l_opt = disk_spectrum(5e14, 0.0, 0.1, 10.0, 0.0, 100);
         let l_xray = disk_spectrum(5e18, 0.0, 0.1, 10.0, 0.0, 100);
-        assert!(l_xray < l_opt, "X-ray should be dimmer than optical for stellar BH");
+        assert!(
+            l_xray < l_opt,
+            "X-ray should be dimmer than optical for stellar BH"
+        );
     }
 
     #[test]

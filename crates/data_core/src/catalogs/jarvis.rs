@@ -211,8 +211,14 @@ fn parse_one_record(rec: &serde_json::Value) -> Option<JarvisMaterial> {
         formation_energy_peratom: rec.get("formation_energy_peratom").and_then(|v| v.as_f64()),
         optb88vdw_bandgap: rec.get("optb88vdw_bandgap").and_then(|v| v.as_f64()),
         ehull: rec.get("ehull").and_then(|v| v.as_f64()),
-        spg_symbol: rec.get("spg_symbol").and_then(|v| v.as_str()).map(String::from),
-        spg_number: rec.get("spg_number").and_then(|v| v.as_u64()).map(|n| n as u32),
+        spg_symbol: rec
+            .get("spg_symbol")
+            .and_then(|v| v.as_str())
+            .map(String::from),
+        spg_number: rec
+            .get("spg_number")
+            .and_then(|v| v.as_u64())
+            .map(|n| n as u32),
         density: rec.get("density").and_then(|v| v.as_f64()),
         volume,
     })
@@ -281,20 +287,13 @@ impl DatasetProvider for JarvisProvider {
 }
 
 /// Sample a random subset of materials.
-pub fn sample_materials(
-    materials: &[JarvisMaterial],
-    n: usize,
-    seed: u64,
-) -> Vec<JarvisMaterial> {
+pub fn sample_materials(materials: &[JarvisMaterial], n: usize, seed: u64) -> Vec<JarvisMaterial> {
     use rand::prelude::*;
     let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
     let k = n.min(materials.len());
     let mut indices: Vec<usize> = (0..materials.len()).collect();
     indices.shuffle(&mut rng);
-    indices[..k]
-        .iter()
-        .map(|&i| materials[i].clone())
-        .collect()
+    indices[..k].iter().map(|&i| materials[i].clone()).collect()
 }
 
 #[cfg(test)]

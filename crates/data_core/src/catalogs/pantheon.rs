@@ -6,7 +6,7 @@
 //! Source: https://github.com/PantheonPlusSH0ES/DataRelease
 //! Reference: Scolnic et al. (2022), ApJ 938, 113; Brout et al. (2022), ApJ 938, 110
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
 
 /// A Type Ia supernova from Pantheon+.
@@ -125,13 +125,21 @@ pub fn parse_pantheon_dat(path: &Path) -> Result<Vec<Supernova>, FetchError> {
         // marginalization. Fall back to MU if m_b_corr is not present.
         let mu_val = {
             let mb = get_field("M_B_CORR");
-            if mb.is_nan() { get_field("MU") } else { mb }
+            if mb.is_nan() {
+                get_field("MU")
+            } else {
+                mb
+            }
         };
         let mu_err_val = {
             let mbe = get_field("M_B_CORR_ERR_DIAG");
             if mbe.is_nan() {
                 let v1 = get_field("MUERR");
-                if v1.is_nan() { get_field("MUERR_VPEC") } else { v1 }
+                if v1.is_nan() {
+                    get_field("MUERR_VPEC")
+                } else {
+                    v1
+                }
             } else {
                 mbe
             }
@@ -141,7 +149,11 @@ pub fn parse_pantheon_dat(path: &Path) -> Result<Vec<Supernova>, FetchError> {
             cid,
             z_cmb: {
                 let v = get_field("ZCMB");
-                if v.is_nan() { get_field("ZHD") } else { v }
+                if v.is_nan() {
+                    get_field("ZHD")
+                } else {
+                    v
+                }
             },
             z_hel: get_field("ZHEL"),
             mu: mu_val,
@@ -165,7 +177,9 @@ const PANTHEON_URLS: &[&str] = &[
 pub struct PantheonProvider;
 
 impl DatasetProvider for PantheonProvider {
-    fn name(&self) -> &str { "Pantheon+ SH0ES" }
+    fn name(&self) -> &str {
+        "Pantheon+ SH0ES"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("PantheonPlusSH0ES.dat");
@@ -203,7 +217,10 @@ SN2007af 0.005 0.006 31.80 0.12 11.2 -0.3 0.01 15 1
         assert_eq!(sne.len(), 2, "Should parse 2 supernovae");
         assert_eq!(sne[0].cid, "SN2005eq");
         assert!((sne[0].z_cmb - 0.028).abs() < 0.001);
-        assert!((sne[0].mu - 34.12).abs() < 0.01, "M_B_CORR should map to mu");
+        assert!(
+            (sne[0].mu - 34.12).abs() < 0.01,
+            "M_B_CORR should map to mu"
+        );
         assert!((sne[0].mu_err - 0.15).abs() < 0.01);
         assert_eq!(sne[0].idsurvey, 4);
         assert!(!sne[0].is_calibrator);
@@ -220,7 +237,10 @@ SN_FALLBACK 0.05 0.051 36.5 0.2 10.0 0.1 -0.01 1 0
         let f = write_temp(dat);
         let sne = parse_pantheon_dat(f.path()).unwrap();
         assert_eq!(sne.len(), 1);
-        assert!((sne[0].mu - 36.5).abs() < 0.01, "Should use MU when M_B_CORR absent");
+        assert!(
+            (sne[0].mu - 36.5).abs() < 0.01,
+            "Should use MU when M_B_CORR absent"
+        );
         assert!((sne[0].mu_err - 0.2).abs() < 0.01);
     }
 
@@ -234,7 +254,10 @@ SN_ZHD 0.035 0.036 35.0 0.18 10.8 0.2 -0.03 2 0
         let f = write_temp(dat);
         let sne = parse_pantheon_dat(f.path()).unwrap();
         assert_eq!(sne.len(), 1);
-        assert!((sne[0].z_cmb - 0.035).abs() < 0.001, "Should use ZHD when ZCMB absent");
+        assert!(
+            (sne[0].z_cmb - 0.035).abs() < 0.001,
+            "Should use ZHD when ZCMB absent"
+        );
     }
 
     #[test]
@@ -266,10 +289,18 @@ TOO_SHORT 0.05 0.051 36.5
         }
 
         let sne = parse_pantheon_dat(path).expect("Failed to parse Pantheon+ dat");
-        assert!(sne.len() > 1000, "Pantheon+ should have >1000 SNe, got {}", sne.len());
+        assert!(
+            sne.len() > 1000,
+            "Pantheon+ should have >1000 SNe, got {}",
+            sne.len()
+        );
 
         for sn in &sne {
-            assert!(sn.z_cmb > 0.0 || sn.z_cmb.is_nan(), "z_cmb should be positive: {}", sn.cid);
+            assert!(
+                sn.z_cmb > 0.0 || sn.z_cmb.is_nan(),
+                "z_cmb should be positive: {}",
+                sn.cid
+            );
         }
     }
 }

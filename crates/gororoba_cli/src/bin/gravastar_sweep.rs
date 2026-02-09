@@ -3,7 +3,7 @@
 //! Usage: gravastar-sweep --gamma-min 1.0 --gamma-max 2.5 --output sweep.csv
 
 use clap::Parser;
-use cosmology_core::{solve_gravastar, GravastarConfig, PolytropicEos, AnisotropicParams};
+use cosmology_core::{solve_gravastar, AnisotropicParams, GravastarConfig, PolytropicEos};
 
 #[derive(Parser)]
 #[command(name = "gravastar-sweep")]
@@ -61,19 +61,23 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    eprintln!("Gravastar sweep: gamma in [{}, {}], M in [{}, {}]",
-        args.gamma_min, args.gamma_max, args.m_min, args.m_max);
+    eprintln!(
+        "Gravastar sweep: gamma in [{}, {}], M in [{}, {}]",
+        args.gamma_min, args.gamma_max, args.m_min, args.m_max
+    );
 
     let mut results = Vec::new();
 
     for i in 0..args.n_gamma {
-        let gamma = args.gamma_min + (args.gamma_max - args.gamma_min) * (i as f64) / (args.n_gamma - 1) as f64;
+        let gamma = args.gamma_min
+            + (args.gamma_max - args.gamma_min) * (i as f64) / (args.n_gamma - 1) as f64;
 
         for j in 0..args.n_mass {
-            let m_target = args.m_min + (args.m_max - args.m_min) * (j as f64) / (args.n_mass - 1) as f64;
+            let m_target =
+                args.m_min + (args.m_max - args.m_min) * (j as f64) / (args.n_mass - 1) as f64;
 
             // Compute radii from mass (rough scaling: r ~ 2.95 * M for neutron stars)
-            let r_s = 2.95 * m_target;  // Schwarzschild radius scale
+            let r_s = 2.95 * m_target; // Schwarzschild radius scale
             let _r_v = args.r_v_frac * r_s;
             let r1 = args.r1_frac * r_s;
 
@@ -89,7 +93,14 @@ fn main() {
 
             match solve_gravastar(&config) {
                 Some(sol) => {
-                    results.push((gamma, m_target, sol.mass, sol.r2, sol.compactness, sol.is_stable));
+                    results.push((
+                        gamma,
+                        m_target,
+                        sol.mass,
+                        sol.r2,
+                        sol.compactness,
+                        sol.is_stable,
+                    ));
                 }
                 None => {
                     results.push((gamma, m_target, f64::NAN, f64::NAN, f64::NAN, false));
@@ -102,11 +113,25 @@ fn main() {
 
     let n_stable = results.iter().filter(|r| r.5).count();
     let n_valid = results.iter().filter(|r| !r.2.is_nan()).count();
-    eprintln!("Results: {}/{} valid, {}/{} stable", n_valid, results.len(), n_stable, results.len());
+    eprintln!(
+        "Results: {}/{} valid, {}/{} stable",
+        n_valid,
+        results.len(),
+        n_stable,
+        results.len()
+    );
 
     if let Some(path) = args.output {
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
-        wtr.write_record(["gamma", "m_target", "m_final", "r_final", "compactness", "stable"]).unwrap();
+        wtr.write_record([
+            "gamma",
+            "m_target",
+            "m_final",
+            "r_final",
+            "compactness",
+            "stable",
+        ])
+        .unwrap();
         for (gamma, m_target, m_final, r_final, compactness, stable) in &results {
             wtr.write_record(&[
                 gamma.to_string(),
@@ -115,14 +140,18 @@ fn main() {
                 r_final.to_string(),
                 compactness.to_string(),
                 stable.to_string(),
-            ]).unwrap();
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} results to {}", results.len(), path);
     } else {
         println!("gamma,m_target,m_final,r_final,compactness,stable");
         for (gamma, m_target, m_final, r_final, compactness, stable) in &results {
-            println!("{},{},{},{},{},{}", gamma, m_target, m_final, r_final, compactness, stable);
+            println!(
+                "{},{},{},{},{},{}",
+                gamma, m_target, m_final, r_final, compactness, stable
+            );
         }
     }
 }

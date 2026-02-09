@@ -39,8 +39,10 @@ fn main() {
     }
 
     let theta_o = args.inclination.to_radians();
-    eprintln!("Computing Kerr shadow: a = {}, theta_o = {:.1} deg, n = {}",
-        args.spin, args.inclination, args.n_points);
+    eprintln!(
+        "Computing Kerr shadow: a = {}, theta_o = {:.1} deg, n = {}",
+        args.spin, args.inclination, args.n_points
+    );
 
     let (alpha, beta) = shadow_boundary(args.spin, args.n_points, theta_o);
 
@@ -49,8 +51,10 @@ fn main() {
     let alpha_max = alpha.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
     let beta_max = beta.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
 
-    eprintln!("Shadow extent: alpha in [{:.3}, {:.3}], beta_max = {:.3}",
-        alpha_min, alpha_max, beta_max);
+    eprintln!(
+        "Shadow extent: alpha in [{:.3}, {:.3}], beta_max = {:.3}",
+        alpha_min, alpha_max, beta_max
+    );
 
     if args.json {
         println!("{{");

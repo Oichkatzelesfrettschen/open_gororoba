@@ -110,14 +110,17 @@ impl PepsTensor {
                             let mut sum = c64::new(0.0, 0.0);
                             for p_old in 0..phys_dim {
                                 let g = gate[p_new * 2 + p_old];
-                                let old_idx = ((((l * chi_r + r) * chi_u + u) * chi_d + d) * phys_dim) + p_old;
+                                let old_idx = ((((l * chi_r + r) * chi_u + u) * chi_d + d)
+                                    * phys_dim)
+                                    + p_old;
                                 let t = old_data[old_idx];
                                 sum = c64::new(
                                     sum.re + g.re * t.re - g.im * t.im,
                                     sum.im + g.re * t.im + g.im * t.re,
                                 );
                             }
-                            let new_idx = ((((l * chi_r + r) * chi_u + u) * chi_d + d) * phys_dim) + p_new;
+                            let new_idx =
+                                ((((l * chi_r + r) * chi_u + u) * chi_d + d) * phys_dim) + p_new;
                             new_data[new_idx] = sum;
                         }
                     }
@@ -316,7 +319,8 @@ impl Peps {
         row.iter()
             .map(|tensor| {
                 // Contract up and down indices (assume chi=1 for boundaries)
-                let mut data = Vec::with_capacity(tensor.chi_left * tensor.chi_right * tensor.physical_dim);
+                let mut data =
+                    Vec::with_capacity(tensor.chi_left * tensor.chi_right * tensor.physical_dim);
                 for l in 0..tensor.chi_left {
                     for r in 0..tensor.chi_right {
                         for p in 0..tensor.physical_dim {
@@ -354,10 +358,7 @@ impl Peps {
                     u.iter()
                         .zip(l.iter())
                         .map(|(a, b)| {
-                            c64::new(
-                                a.re * b.re - a.im * b.im,
-                                a.re * b.im + a.im * b.re,
-                            )
+                            c64::new(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re)
                         })
                         .collect()
                 } else {
@@ -428,10 +429,7 @@ impl Peps {
                             for u in 0..tensor.chi_up {
                                 for d in 0..tensor.chi_down {
                                     let val = tensor.get(l, r, u, d, phys);
-                                    site_amp = c64::new(
-                                        site_amp.re + val.re,
-                                        site_amp.im + val.im,
-                                    );
+                                    site_amp = c64::new(site_amp.re + val.re, site_amp.im + val.im);
                                 }
                             }
                         }
@@ -739,9 +737,9 @@ mod tests {
         let mut peps = Peps::new_zero_state(2, 2);
 
         // Apply different gates to different sites
-        peps.apply_x(0, 0);     // |1>
+        peps.apply_x(0, 0); // |1>
         peps.apply_hadamard(0, 1); // |+>
-        peps.apply_z(1, 0);     // |0> (Z|0> = |0>)
+        peps.apply_z(1, 0); // |0> (Z|0> = |0>)
 
         assert!((peps.expectation_z(0, 0) - (-1.0)).abs() < 1e-10);
         assert!(peps.expectation_z(0, 1).abs() < 1e-10);

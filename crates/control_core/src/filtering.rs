@@ -247,12 +247,7 @@ pub struct ExtendedKalmanFilter {
 
 impl ExtendedKalmanFilter {
     /// Create a new EKF.
-    pub fn new(
-        q: DMatrix<f64>,
-        r: DMatrix<f64>,
-        x0: DVector<f64>,
-        p0: DMatrix<f64>,
-    ) -> Self {
+    pub fn new(q: DMatrix<f64>, r: DMatrix<f64>, x0: DVector<f64>, p0: DMatrix<f64>) -> Self {
         let initial = FilterState::new(x0.clone(), p0.clone());
         Self {
             q,
@@ -293,9 +288,10 @@ impl StateEstimator for ExtendedKalmanFilter {
         // 3. Call set_predicted_state(x_pred) and set_state_jacobian(F)
         // Then call this to update covariance.
 
-        let f = self.f_jacobian.as_ref().expect(
-            "EKF predict requires state Jacobian. Call set_state_jacobian first.",
-        );
+        let f = self
+            .f_jacobian
+            .as_ref()
+            .expect("EKF predict requires state Jacobian. Call set_state_jacobian first.");
 
         // P_pred = F * P * F^T + Q
         let p_pred = f * &self.state.p * f.transpose() + &self.q;
@@ -308,9 +304,14 @@ impl StateEstimator for ExtendedKalmanFilter {
     }
 
     fn update(&mut self, z: &DVector<f64>) -> Result<UpdateResult, FilterError> {
-        let h = self.h_jacobian.as_ref().ok_or_else(|| FilterError::NumericalInstability {
-            reason: "EKF update requires observation Jacobian. Call set_observation_jacobian first.".to_string(),
-        })?;
+        let h = self
+            .h_jacobian
+            .as_ref()
+            .ok_or_else(|| FilterError::NumericalInstability {
+                reason:
+                    "EKF update requires observation Jacobian. Call set_observation_jacobian first."
+                        .to_string(),
+            })?;
 
         // For EKF, user must compute h(x) externally.
         // Here we assume z is the innovation = z_measured - h(x_pred).

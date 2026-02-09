@@ -121,7 +121,10 @@ mod tests {
         writeln!(f, "# nothing else").unwrap();
 
         let rows = parse_union3_chain(&path).unwrap();
-        assert!(rows.is_empty(), "Comments-only file should produce zero rows");
+        assert!(
+            rows.is_empty(),
+            "Comments-only file should produce zero rows"
+        );
 
         std::fs::remove_dir_all(&dir).ok();
     }

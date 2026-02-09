@@ -10,10 +10,10 @@
 //! Each predicate implements the [`GraphPredicate`] trait, providing a uniform
 //! interface for graph construction, invariant computation, and testing.
 
-use std::collections::{HashMap, HashSet, VecDeque};
-use petgraph::graph::{UnGraph, NodeIndex};
-use petgraph::algo::{connected_components, dijkstra};
 use nalgebra::DMatrix;
+use petgraph::algo::{connected_components, dijkstra};
+use petgraph::graph::{NodeIndex, UnGraph};
+use std::collections::{HashMap, HashSet, VecDeque};
 
 /// Comprehensive graph invariants for motif fingerprinting (A3).
 #[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
@@ -37,7 +37,8 @@ pub fn compute_graph_invariants(graph: &UnGraph<(), ()>) -> GraphInvariants {
     let e = graph.edge_count();
     let n_comp = connected_components(graph);
 
-    let mut degrees: Vec<usize> = graph.node_indices()
+    let mut degrees: Vec<usize> = graph
+        .node_indices()
         .map(|i| graph.neighbors(i).count())
         .collect();
     degrees.sort_unstable();
@@ -66,7 +67,9 @@ pub fn compute_graph_invariants(graph: &UnGraph<(), ()>) -> GraphInvariants {
     for i in graph.node_indices() {
         let paths = dijkstra(graph, i, None, |_| 1);
         for &d in paths.values() {
-            if d > max_diam { max_diam = d; }
+            if d > max_diam {
+                max_diam = d;
+            }
         }
     }
 
@@ -76,10 +79,10 @@ pub fn compute_graph_invariants(graph: &UnGraph<(), ()>) -> GraphInvariants {
         let mut dist = vec![None; n];
         let mut parent = vec![None; n];
         let mut q = std::collections::VecDeque::new();
-        
+
         dist[start.index()] = Some(0);
         q.push_back(start);
-        
+
         while let Some(u) = q.pop_front() {
             let d_u = dist[u.index()].unwrap();
             for v in graph.neighbors(u) {
@@ -135,7 +138,7 @@ pub fn generate_pathion_matching(dim: usize) -> UnGraph<(), ()> {
 /// Rule: A(i,j) = 1 iff i != j AND i%2 == j%2.
 /// Creates two disjoint cliques (Evens and Odds).
 pub fn generate_zd_parity_cliques(dim: usize) -> UnGraph<(), ()> {
-    let mut graph = UnGraph::<(), ()>::with_capacity(dim, dim * (dim/2 - 1));
+    let mut graph = UnGraph::<(), ()>::with_capacity(dim, dim * (dim / 2 - 1));
     let nodes: Vec<NodeIndex> = (0..dim).map(|_| graph.add_node(())).collect();
 
     // Even clique
@@ -203,8 +206,12 @@ pub trait GraphPredicate {
 pub struct ZeroDivisorPredicate;
 
 impl GraphPredicate for ZeroDivisorPredicate {
-    fn name(&self) -> &str { "P_ZD" }
-    fn min_dim(&self) -> usize { 16 }
+    fn name(&self) -> &str {
+        "P_ZD"
+    }
+    fn min_dim(&self) -> usize {
+        16
+    }
 
     fn test(&self, i: usize, j: usize) -> bool {
         i % 2 == j % 2
@@ -232,8 +239,12 @@ impl XorMatchPredicate {
 }
 
 impl GraphPredicate for XorMatchPredicate {
-    fn name(&self) -> &str { "P_match" }
-    fn min_dim(&self) -> usize { 64 }
+    fn name(&self) -> &str {
+        "P_match"
+    }
+    fn min_dim(&self) -> usize {
+        64
+    }
 
     fn test(&self, i: usize, j: usize) -> bool {
         (i ^ j) == self.xor_mask
@@ -271,7 +282,11 @@ impl MatrixPredicate {
                 flat[i * n + j] = val;
             }
         }
-        Self { name: name.to_string(), adj: flat, n }
+        Self {
+            name: name.to_string(),
+            adj: flat,
+            n,
+        }
     }
 
     /// Build from a u8 adjacency matrix (nonzero = edge).
@@ -283,13 +298,21 @@ impl MatrixPredicate {
                 flat[i * n + j] = val != 0;
             }
         }
-        Self { name: name.to_string(), adj: flat, n }
+        Self {
+            name: name.to_string(),
+            adj: flat,
+            n,
+        }
     }
 }
 
 impl GraphPredicate for MatrixPredicate {
-    fn name(&self) -> &str { &self.name }
-    fn min_dim(&self) -> usize { self.n }
+    fn name(&self) -> &str {
+        &self.name
+    }
+    fn min_dim(&self) -> usize {
+        self.n
+    }
 
     fn test(&self, i: usize, j: usize) -> bool {
         if i < self.n && j < self.n {
@@ -417,7 +440,8 @@ fn extract_components(graph: &UnGraph<(), ()>) -> Vec<Vec<NodeIndex>> {
 
     // Sort by size descending, then by smallest node index for stability
     components.sort_by(|a, b| {
-        b.len().cmp(&a.len())
+        b.len()
+            .cmp(&a.len())
             .then_with(|| a[0].index().cmp(&b[0].index()))
     });
     components
@@ -453,19 +477,13 @@ fn induced_subgraph(graph: &UnGraph<(), ()>, nodes: &[NodeIndex]) -> UnGraph<(),
 /// the graph, decomposes it into connected components, computes invariants
 /// for each component, and classifies components into motif isomorphism
 /// classes based on their combinatorial fingerprints.
-pub fn compute_invariant_suite(
-    predicate: &dyn GraphPredicate,
-    n_nodes: usize,
-) -> InvariantSuite {
+pub fn compute_invariant_suite(predicate: &dyn GraphPredicate, n_nodes: usize) -> InvariantSuite {
     let graph = predicate.build_graph(n_nodes);
     compute_invariant_suite_from_graph(predicate.name(), &graph)
 }
 
 /// Compute the invariant suite directly from an already-built graph.
-pub fn compute_invariant_suite_from_graph(
-    name: &str,
-    graph: &UnGraph<(), ()>,
-) -> InvariantSuite {
+pub fn compute_invariant_suite_from_graph(name: &str, graph: &UnGraph<(), ()>) -> InvariantSuite {
     let n = graph.node_count();
     let global = compute_graph_invariants(graph);
 
@@ -497,11 +515,11 @@ pub fn compute_invariant_suite_from_graph(
             .or_default()
             .push(comp.component_id);
     }
-    let mut motif_classes: Vec<(MotifFingerprint, Vec<usize>)> =
-        class_map.into_iter().collect();
+    let mut motif_classes: Vec<(MotifFingerprint, Vec<usize>)> = class_map.into_iter().collect();
     // Sort by class size descending, then by n_nodes for stability
     motif_classes.sort_by(|a, b| {
-        b.1.len().cmp(&a.1.len())
+        b.1.len()
+            .cmp(&a.1.len())
             .then_with(|| b.0.n_nodes.cmp(&a.0.n_nodes))
     });
 
@@ -527,13 +545,21 @@ mod tests {
         assert_eq!(inv.n_edges, 32);
         assert_eq!(inv.n_components, 32);
         assert!(inv.degrees.iter().all(|&d| d == 1));
-        
+
         // Spectrum should be +/- 1 (32 each)
-        let n_pos = inv.spectrum.iter().filter(|&&e| (e - 1.0).abs() < 1e-10).count();
-        let n_neg = inv.spectrum.iter().filter(|&&e| (e + 1.0).abs() < 1e-10).count();
+        let n_pos = inv
+            .spectrum
+            .iter()
+            .filter(|&&e| (e - 1.0).abs() < 1e-10)
+            .count();
+        let n_neg = inv
+            .spectrum
+            .iter()
+            .filter(|&&e| (e + 1.0).abs() < 1e-10)
+            .count();
         assert_eq!(n_pos, 32);
         assert_eq!(n_neg, 32);
-        
+
         assert_eq!(inv.triangle_count, 0);
         assert_eq!(inv.girth, None);
     }
@@ -630,11 +656,7 @@ mod tests {
     #[test]
     fn test_matrix_predicate_from_u8() {
         // 3-node triangle (K3)
-        let adj: Vec<Vec<u8>> = vec![
-            vec![0, 1, 1],
-            vec![1, 0, 1],
-            vec![1, 1, 0],
-        ];
+        let adj: Vec<Vec<u8>> = vec![vec![0, 1, 1], vec![1, 0, 1], vec![1, 1, 0]];
         let pred = MatrixPredicate::from_u8_matrix("P_K3", &adj);
 
         let inv = pred.invariants(3);
@@ -667,13 +689,21 @@ mod tests {
         // Each clique size 16 has 16*15/2 = 120 edges. Total 240.
         assert_eq!(inv.n_edges, 240);
         assert!(inv.degrees.iter().all(|&d| d == 15));
-        
+
         // Spectrum: 15 (mult 2), -1 (mult 30)
-        let n_15 = inv.spectrum.iter().filter(|&&e| (e - 15.0).abs() < 1e-10).count();
-        let n_m1 = inv.spectrum.iter().filter(|&&e| (e + 1.0).abs() < 1e-10).count();
+        let n_15 = inv
+            .spectrum
+            .iter()
+            .filter(|&&e| (e - 15.0).abs() < 1e-10)
+            .count();
+        let n_m1 = inv
+            .spectrum
+            .iter()
+            .filter(|&&e| (e + 1.0).abs() < 1e-10)
+            .count();
         assert_eq!(n_15, 2);
         assert_eq!(n_m1, 30);
-        
+
         // Triangles: 2 * C(16,3) = 2 * (16*15*14 / 6) = 2 * 560 = 1120
         assert_eq!(inv.triangle_count, 1120);
         assert_eq!(inv.girth, Some(3));
@@ -840,37 +870,59 @@ mod tests {
             let inv = compute_graph_invariants(&graph);
 
             // Structural counts
-            assert_eq!(inv.n_nodes, mc.nodes.len(),
-                "dim=16 comp {i}: node count mismatch");
-            assert_eq!(inv.n_edges, mc.edges.len(),
-                "dim=16 comp {i}: edge count mismatch");
-            assert_eq!(inv.n_components, 1,
-                "dim=16 comp {i}: must be single connected component");
+            assert_eq!(
+                inv.n_nodes,
+                mc.nodes.len(),
+                "dim=16 comp {i}: node count mismatch"
+            );
+            assert_eq!(
+                inv.n_edges,
+                mc.edges.len(),
+                "dim=16 comp {i}: edge count mismatch"
+            );
+            assert_eq!(
+                inv.n_components, 1,
+                "dim=16 comp {i}: must be single connected component"
+            );
 
             // Degree sequence
-            assert_eq!(inv.degrees, mc.degree_sequence(),
-                "dim=16 comp {i}: degree sequence mismatch");
+            assert_eq!(
+                inv.degrees,
+                mc.degree_sequence(),
+                "dim=16 comp {i}: degree sequence mismatch"
+            );
 
             // Triangle count
-            assert_eq!(inv.triangle_count, mc.triangle_count(),
-                "dim=16 comp {i}: triangle count mismatch");
+            assert_eq!(
+                inv.triangle_count,
+                mc.triangle_count(),
+                "dim=16 comp {i}: triangle count mismatch"
+            );
 
             // Diameter
             let mc_diam = mc.diameter();
-            assert_eq!(inv.diameter, Some(mc_diam),
-                "dim=16 comp {i}: diameter mismatch");
+            assert_eq!(
+                inv.diameter,
+                Some(mc_diam),
+                "dim=16 comp {i}: diameter mismatch"
+            );
 
             // Girth
             let mc_girth = mc.girth();
-            let expected_girth = if mc_girth == usize::MAX { None } else { Some(mc_girth) };
-            assert_eq!(inv.girth, expected_girth,
-                "dim=16 comp {i}: girth mismatch");
+            let expected_girth = if mc_girth == usize::MAX {
+                None
+            } else {
+                Some(mc_girth)
+            };
+            assert_eq!(inv.girth, expected_girth, "dim=16 comp {i}: girth mismatch");
 
             // Spectrum (ascending in GraphInvariants, descending in MotifComponent)
             let mut mc_spec = mc.spectrum();
             mc_spec.sort_by(|a, b| a.partial_cmp(b).unwrap());
-            assert!(spectra_match(&inv.spectrum, &mc_spec, 1e-8),
-                "dim=16 comp {i}: spectrum mismatch");
+            assert!(
+                spectra_match(&inv.spectrum, &mc_spec, 1e-8),
+                "dim=16 comp {i}: spectrum mismatch"
+            );
         }
     }
 
@@ -883,28 +935,39 @@ mod tests {
             let graph = mc.to_petgraph();
             let inv = compute_graph_invariants(&graph);
 
-            assert_eq!(inv.n_nodes, mc.nodes.len(),
-                "dim=32 comp {i}: node count");
-            assert_eq!(inv.n_edges, mc.edges.len(),
-                "dim=32 comp {i}: edge count");
-            assert_eq!(inv.n_components, 1,
-                "dim=32 comp {i}: connected");
-            assert_eq!(inv.degrees, mc.degree_sequence(),
-                "dim=32 comp {i}: degrees");
-            assert_eq!(inv.triangle_count, mc.triangle_count(),
-                "dim=32 comp {i}: triangles");
-            assert_eq!(inv.diameter, Some(mc.diameter()),
-                "dim=32 comp {i}: diameter");
+            assert_eq!(inv.n_nodes, mc.nodes.len(), "dim=32 comp {i}: node count");
+            assert_eq!(inv.n_edges, mc.edges.len(), "dim=32 comp {i}: edge count");
+            assert_eq!(inv.n_components, 1, "dim=32 comp {i}: connected");
+            assert_eq!(
+                inv.degrees,
+                mc.degree_sequence(),
+                "dim=32 comp {i}: degrees"
+            );
+            assert_eq!(
+                inv.triangle_count,
+                mc.triangle_count(),
+                "dim=32 comp {i}: triangles"
+            );
+            assert_eq!(
+                inv.diameter,
+                Some(mc.diameter()),
+                "dim=32 comp {i}: diameter"
+            );
 
             let mc_girth = mc.girth();
-            let expected_girth = if mc_girth == usize::MAX { None } else { Some(mc_girth) };
-            assert_eq!(inv.girth, expected_girth,
-                "dim=32 comp {i}: girth");
+            let expected_girth = if mc_girth == usize::MAX {
+                None
+            } else {
+                Some(mc_girth)
+            };
+            assert_eq!(inv.girth, expected_girth, "dim=32 comp {i}: girth");
 
             let mut mc_spec = mc.spectrum();
             mc_spec.sort_by(|a, b| a.partial_cmp(b).unwrap());
-            assert!(spectra_match(&inv.spectrum, &mc_spec, 1e-8),
-                "dim=32 comp {i}: spectrum");
+            assert!(
+                spectra_match(&inv.spectrum, &mc_spec, 1e-8),
+                "dim=32 comp {i}: spectrum"
+            );
         }
     }
 
@@ -917,28 +980,39 @@ mod tests {
             let graph = mc.to_petgraph();
             let inv = compute_graph_invariants(&graph);
 
-            assert_eq!(inv.n_nodes, mc.nodes.len(),
-                "dim=64 comp {i}: node count");
-            assert_eq!(inv.n_edges, mc.edges.len(),
-                "dim=64 comp {i}: edge count");
-            assert_eq!(inv.n_components, 1,
-                "dim=64 comp {i}: connected");
-            assert_eq!(inv.degrees, mc.degree_sequence(),
-                "dim=64 comp {i}: degrees");
-            assert_eq!(inv.triangle_count, mc.triangle_count(),
-                "dim=64 comp {i}: triangles");
-            assert_eq!(inv.diameter, Some(mc.diameter()),
-                "dim=64 comp {i}: diameter");
+            assert_eq!(inv.n_nodes, mc.nodes.len(), "dim=64 comp {i}: node count");
+            assert_eq!(inv.n_edges, mc.edges.len(), "dim=64 comp {i}: edge count");
+            assert_eq!(inv.n_components, 1, "dim=64 comp {i}: connected");
+            assert_eq!(
+                inv.degrees,
+                mc.degree_sequence(),
+                "dim=64 comp {i}: degrees"
+            );
+            assert_eq!(
+                inv.triangle_count,
+                mc.triangle_count(),
+                "dim=64 comp {i}: triangles"
+            );
+            assert_eq!(
+                inv.diameter,
+                Some(mc.diameter()),
+                "dim=64 comp {i}: diameter"
+            );
 
             let mc_girth = mc.girth();
-            let expected_girth = if mc_girth == usize::MAX { None } else { Some(mc_girth) };
-            assert_eq!(inv.girth, expected_girth,
-                "dim=64 comp {i}: girth");
+            let expected_girth = if mc_girth == usize::MAX {
+                None
+            } else {
+                Some(mc_girth)
+            };
+            assert_eq!(inv.girth, expected_girth, "dim=64 comp {i}: girth");
 
             let mut mc_spec = mc.spectrum();
             mc_spec.sort_by(|a, b| a.partial_cmp(b).unwrap());
-            assert!(spectra_match(&inv.spectrum, &mc_spec, 1e-8),
-                "dim=64 comp {i}: spectrum");
+            assert!(
+                spectra_match(&inv.spectrum, &mc_spec, 1e-8),
+                "dim=64 comp {i}: spectrum"
+            );
         }
     }
 
@@ -972,11 +1046,16 @@ mod tests {
 
         // 15 components, 2 motif classes at dim=32
         assert_eq!(suite.components.len(), 15);
-        assert_eq!(suite.n_motif_classes(), 2,
-            "dim=32 should have 2 motif classes");
+        assert_eq!(
+            suite.n_motif_classes(),
+            2,
+            "dim=32 should have 2 motif classes"
+        );
 
         // Verify class sizes: 8 heptacross + 7 mixed-degree
-        let class_sizes: Vec<usize> = suite.motif_classes.iter()
+        let class_sizes: Vec<usize> = suite
+            .motif_classes
+            .iter()
             .map(|(_, ids)| ids.len())
             .collect();
         assert!(class_sizes.contains(&8), "should have class of size 8");
@@ -1008,13 +1087,14 @@ mod tests {
         let suite = compute_invariant_suite_from_graph("cross_assessor_64", &full_graph);
 
         assert_eq!(suite.components.len(), 31);
-        assert_eq!(suite.n_motif_classes(), 4,
-            "dim=64 should have 4 motif classes");
+        assert_eq!(
+            suite.n_motif_classes(),
+            4,
+            "dim=64 should have 4 motif classes"
+        );
 
         // Class sizes should sum to 31
-        let total: usize = suite.motif_classes.iter()
-            .map(|(_, ids)| ids.len())
-            .sum();
+        let total: usize = suite.motif_classes.iter().map(|(_, ids)| ids.len()).sum();
         assert_eq!(total, 31);
     }
 }

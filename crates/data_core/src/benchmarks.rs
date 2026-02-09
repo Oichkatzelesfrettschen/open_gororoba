@@ -56,7 +56,11 @@ pub fn synthetic_atnf_csv(n: usize) -> String {
     for i in 0..n {
         buf.push_str(&format!(
             "J{:04}+{:04};12:34:56.78;-45:12:34.5;{:.2};0.{:04};1.23e-15;;{:.1};1.0e+09;1.0e+12\n",
-            i / 100, i % 100, 100.0 + i as f64 * 0.3, 100 + i, 1.0 + i as f64 * 0.01
+            i / 100,
+            i % 100,
+            100.0 + i as f64 * 0.3,
+            100 + i,
+            1.0 + i as f64 * 0.01
         ));
     }
     buf
@@ -82,8 +86,13 @@ pub fn synthetic_gwtc_csv(n: usize) -> String {
     for i in 0..n {
         buf.push_str(&format!(
             "GW{:06},35.{},25.{},28.{},{:.0},12.{},{:.3},1.0e-10\n",
-            150914 + i, i % 10, i % 10, i % 10,
-            400.0 + i as f64 * 10.0, i % 10, 0.1 + i as f64 * 0.001
+            150914 + i,
+            i % 10,
+            i % 10,
+            i % 10,
+            400.0 + i as f64 * 10.0,
+            i % 10,
+            0.1 + i as f64 * 0.001
         ));
     }
     buf
@@ -96,7 +105,9 @@ pub fn synthetic_pantheon_dat(n: usize) -> String {
     for i in 0..n {
         buf.push_str(&format!(
             "SN{:05} {:.4} 0.0010 {:.4} 0.15\n",
-            i, 0.01 + i as f64 * 0.001, 20.0 + 5.0 * (0.01 + i as f64 * 0.001).log10()
+            i,
+            0.01 + i as f64 * 0.001,
+            20.0 + 5.0 * (0.01 + i as f64 * 0.001).log10()
         ));
     }
     buf
@@ -109,7 +120,11 @@ pub fn synthetic_sdss_csv(n: usize) -> String {
     for i in 0..n {
         buf.push_str(&format!(
             "{},180.{:04},-5.{:04},{:.3},1234,55000,{},20.1,19.5,19.0,18.8,18.5\n",
-            1000000 + i, i % 10000, i % 10000, 0.5 + i as f64 * 0.002, i % 1000
+            1000000 + i,
+            i % 10000,
+            i % 10000,
+            0.5 + i as f64 * 0.002,
+            i % 1000
         ));
     }
     buf
@@ -122,8 +137,7 @@ pub fn benchmark_parser_throughput(
     rows_per_parser: usize,
 ) -> Result<Vec<ThroughputResult>, FetchError> {
     let dir = std::env::temp_dir().join("data_core_bench_parser");
-    std::fs::create_dir_all(&dir)
-        .map_err(|e| FetchError::Validation(format!("mkdir: {}", e)))?;
+    std::fs::create_dir_all(&dir).map_err(|e| FetchError::Validation(format!("mkdir: {}", e)))?;
 
     let mut results = Vec::new();
 
@@ -141,7 +155,11 @@ pub fn benchmark_parser_throughput(
                 parser: $name.to_string(),
                 rows,
                 elapsed_s: elapsed,
-                rows_per_sec: if elapsed > 0.0 { rows as f64 / elapsed } else { f64::INFINITY },
+                rows_per_sec: if elapsed > 0.0 {
+                    rows as f64 / elapsed
+                } else {
+                    f64::INFINITY
+                },
             });
         }};
     }
@@ -230,7 +248,12 @@ pub fn synthetic_horizons_csv(body: &str, n: usize) -> String {
         let delta = 0.5 + (i as f64 * 0.123) % 40.0;
         buf.push_str(&format!(
             "{},{:.1},2000-Jan-{:02},{:.6},{:.6},{:.6}\n",
-            body, jd, (i % 28) + 1, ra, dec, delta
+            body,
+            jd,
+            (i % 28) + 1,
+            ra,
+            dec,
+            delta
         ));
     }
     buf
@@ -242,8 +265,7 @@ pub fn synthetic_horizons_csv(body: &str, n: usize) -> String {
 /// residuals. In a real scenario this compares DE440 interpolation vs Horizons.
 pub fn benchmark_ephemeris_accuracy() -> Result<Vec<EphemerisAccuracyResult>, FetchError> {
     let dir = std::env::temp_dir().join("data_core_bench_ephemeris");
-    std::fs::create_dir_all(&dir)
-        .map_err(|e| FetchError::Validation(format!("mkdir: {}", e)))?;
+    std::fs::create_dir_all(&dir).map_err(|e| FetchError::Validation(format!("mkdir: {}", e)))?;
 
     let bodies = ["Mercury", "Venus", "Mars", "Jupiter"];
     let n = 120; // 10 years at 30-day steps
@@ -344,20 +366,18 @@ pub fn benchmark_gravity_truncation(
     let mut results = Vec::new();
 
     for &trunc_deg in degrees {
-        let included: Vec<_> = gf.coefficients.iter()
+        let included: Vec<_> = gf
+            .coefficients
+            .iter()
             .filter(|c| c.n <= trunc_deg)
             .collect();
 
-        let excluded: Vec<_> = gf.coefficients.iter()
-            .filter(|c| c.n > trunc_deg)
-            .collect();
+        let excluded: Vec<_> = gf.coefficients.iter().filter(|c| c.n > trunc_deg).collect();
 
         let rms = if excluded.is_empty() {
             0.0
         } else {
-            let sum_sq: f64 = excluded.iter()
-                .map(|c| c.cnm * c.cnm + c.snm * c.snm)
-                .sum();
+            let sum_sq: f64 = excluded.iter().map(|c| c.cnm * c.cnm + c.snm * c.snm).sum();
             (sum_sq / excluded.len() as f64).sqrt()
         };
 
@@ -442,7 +462,8 @@ pub fn benchmark_magnetic_coverage(
         };
     }
 
-    let timestamps: Vec<f64> = records.iter()
+    let timestamps: Vec<f64> = records
+        .iter()
         .filter_map(|r| iso8601_to_seconds(&r.timestamp))
         .collect();
 
@@ -506,10 +527,7 @@ pub struct GapDetectionResult {
 ///
 /// A gap is any interval between consecutive measurements exceeding
 /// `gap_threshold_days` (typically 1.5 for a daily series with margin).
-pub fn detect_irradiance_gaps(
-    jd_values: &[f64],
-    gap_threshold_days: f64,
-) -> GapDetectionResult {
+pub fn detect_irradiance_gaps(jd_values: &[f64], gap_threshold_days: f64) -> GapDetectionResult {
     if jd_values.len() < 2 {
         return GapDetectionResult {
             total_points: jd_values.len(),
@@ -549,11 +567,7 @@ pub fn detect_irradiance_gaps(
 ///
 /// Creates a daily series from `start_jd` for `n_days`, with gaps inserted
 /// at the specified day offsets.
-pub fn synthetic_tsi_jd_series(
-    start_jd: f64,
-    n_days: usize,
-    gap_offsets: &[usize],
-) -> Vec<f64> {
+pub fn synthetic_tsi_jd_series(start_jd: f64, n_days: usize, gap_offsets: &[usize]) -> Vec<f64> {
     let mut jds = Vec::with_capacity(n_days);
     for day in 0..n_days {
         if !gap_offsets.contains(&day) {
@@ -614,8 +628,7 @@ pub fn benchmark_landsat_filtering(
     max_cloud_cover: f64,
 ) -> Result<LandsatFilterResult, FetchError> {
     let dir = std::env::temp_dir().join("data_core_bench_landsat");
-    std::fs::create_dir_all(&dir)
-        .map_err(|e| FetchError::Validation(format!("mkdir: {}", e)))?;
+    std::fs::create_dir_all(&dir).map_err(|e| FetchError::Validation(format!("mkdir: {}", e)))?;
 
     // Write synthetic STAC items
     let mut paths = Vec::with_capacity(n);
@@ -647,7 +660,11 @@ pub fn benchmark_landsat_filtering(
         items_processed: n,
         items_passing: passing,
         elapsed_s: elapsed,
-        items_per_sec: if elapsed > 0.0 { n as f64 / elapsed } else { f64::INFINITY },
+        items_per_sec: if elapsed > 0.0 {
+            n as f64 / elapsed
+        } else {
+            f64::INFINITY
+        },
     })
 }
 
@@ -711,17 +728,20 @@ mod tests {
             assert!(
                 r.max_ra_residual_deg < 1e-6,
                 "{}: RA residual {:.2e} too large",
-                r.body, r.max_ra_residual_deg
+                r.body,
+                r.max_ra_residual_deg
             );
             assert!(
                 r.max_dec_residual_deg < 1e-6,
                 "{}: Dec residual {:.2e} too large",
-                r.body, r.max_dec_residual_deg
+                r.body,
+                r.max_dec_residual_deg
             );
             assert!(
                 r.max_delta_residual_au < 1e-6,
                 "{}: delta residual {:.2e} too large",
-                r.body, r.max_delta_residual_au
+                r.body,
+                r.max_delta_residual_au
             );
         }
     }
@@ -746,8 +766,10 @@ mod tests {
             assert!(
                 pair[1].rms_residual <= pair[0].rms_residual,
                 "RMS should decrease: degree {} ({:.2e}) -> degree {} ({:.2e})",
-                pair[0].degree, pair[0].rms_residual,
-                pair[1].degree, pair[1].rms_residual,
+                pair[0].degree,
+                pair[0].rms_residual,
+                pair[1].degree,
+                pair[1].rms_residual,
             );
         }
 
@@ -794,15 +816,24 @@ mod tests {
         let records = vec![
             crate::geophysical::swarm::SwarmRecord {
                 timestamp: "2014-01-01T00:00:00Z".into(),
-                latitude: 0.0, longitude: 0.0, radius: 6871200.0, f_total: 48000.0,
+                latitude: 0.0,
+                longitude: 0.0,
+                radius: 6871200.0,
+                f_total: 48000.0,
             },
             crate::geophysical::swarm::SwarmRecord {
                 timestamp: "2014-01-01T00:00:01Z".into(),
-                latitude: 0.0, longitude: 0.0, radius: 6871200.0, f_total: 48000.0,
+                latitude: 0.0,
+                longitude: 0.0,
+                radius: 6871200.0,
+                f_total: 48000.0,
             },
             crate::geophysical::swarm::SwarmRecord {
                 timestamp: "2014-01-01T00:01:01Z".into(),
-                latitude: 0.0, longitude: 0.0, radius: 6871200.0, f_total: 48000.0,
+                latitude: 0.0,
+                longitude: 0.0,
+                radius: 6871200.0,
+                f_total: 48000.0,
             },
         ];
 
@@ -836,7 +867,9 @@ mod tests {
         assert!(result.coverage_fraction < 1.0, "Coverage should be < 100%");
         eprintln!(
             "Irradiance gaps: {} points, {} gaps, max {:.1} days, coverage {:.1}%",
-            result.total_points, result.gap_count, result.max_gap_days,
+            result.total_points,
+            result.gap_count,
+            result.max_gap_days,
             result.coverage_fraction * 100.0
         );
     }
@@ -873,13 +906,15 @@ mod tests {
         let result = benchmark_landsat_filtering(100, 30.0).unwrap();
         assert_eq!(result.items_processed, 100);
         // With cloud cover from 0 to 99, ~30% should pass the <= 30.0 filter
-        assert!(result.items_passing > 20 && result.items_passing < 40,
-            "Expected ~30 items passing, got {}", result.items_passing);
+        assert!(
+            result.items_passing > 20 && result.items_passing < 40,
+            "Expected ~30 items passing, got {}",
+            result.items_passing
+        );
         assert!(result.elapsed_s >= 0.0);
         eprintln!(
             "Landsat filtering: {}/{} passing in {:.4}s ({:.0} items/s)",
-            result.items_passing, result.items_processed,
-            result.elapsed_s, result.items_per_sec
+            result.items_passing, result.items_processed, result.elapsed_s, result.items_per_sec
         );
     }
 
@@ -897,10 +932,16 @@ mod tests {
         let result = detect_irradiance_gaps(&jds, 1.5);
         eprintln!(
             "TSIS: {} points over {:.0} days, {} gaps, max {:.1} days, coverage {:.1}%",
-            result.total_points, result.span_days, result.gap_count,
-            result.max_gap_days, result.coverage_fraction * 100.0
+            result.total_points,
+            result.span_days,
+            result.gap_count,
+            result.max_gap_days,
+            result.coverage_fraction * 100.0
         );
-        assert!(result.total_points > 100, "TSIS should have > 100 daily points");
+        assert!(
+            result.total_points > 100,
+            "TSIS should have > 100 daily points"
+        );
     }
 
     #[test]
@@ -915,10 +956,16 @@ mod tests {
         let result = detect_irradiance_gaps(&jds, 1.5);
         eprintln!(
             "SORCE: {} points over {:.0} days, {} gaps, max {:.1} days, coverage {:.1}%",
-            result.total_points, result.span_days, result.gap_count,
-            result.max_gap_days, result.coverage_fraction * 100.0
+            result.total_points,
+            result.span_days,
+            result.gap_count,
+            result.max_gap_days,
+            result.coverage_fraction * 100.0
         );
-        assert!(result.total_points > 100, "SORCE should have > 100 daily points");
+        assert!(
+            result.total_points > 100,
+            "SORCE should have > 100 daily points"
+        );
     }
 
     #[test]
@@ -932,8 +979,10 @@ mod tests {
         let result = benchmark_magnetic_coverage(&records, 2.0);
         eprintln!(
             "Swarm: {} records, {} gaps > 2s, max gap {:.1}s, coverage {:.1}%",
-            result.total_records, result.gap_count,
-            result.max_gap_seconds, result.coverage_fraction * 100.0
+            result.total_records,
+            result.gap_count,
+            result.max_gap_seconds,
+            result.coverage_fraction * 100.0
         );
         assert!(result.total_records > 0, "Swarm should have records");
     }

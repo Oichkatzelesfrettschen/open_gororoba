@@ -6,7 +6,7 @@
 //! Source: https://gea.esac.esa.int/archive/
 //! Reference: Gaia Collaboration, Vallenari et al. (2023), A&A 674, A1
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, validate_not_html};
+use crate::fetcher::{validate_not_html, DatasetProvider, FetchConfig, FetchError};
 use crate::formats::tap;
 use std::fs;
 use std::path::{Path, PathBuf};
@@ -59,9 +59,8 @@ pub fn parse_gaia_csv(path: &Path) -> Result<Vec<GaiaSource>, FetchError> {
         .map_err(|e| FetchError::Validation(format!("Header read error: {}", e)))?
         .clone();
 
-    let col = |name: &str| -> Option<usize> {
-        headers.iter().position(|h| h.eq_ignore_ascii_case(name))
-    };
+    let col =
+        |name: &str| -> Option<usize> { headers.iter().position(|h| h.eq_ignore_ascii_case(name)) };
 
     let idx_sid = col("source_id");
     let idx_ra = col("ra");
@@ -139,7 +138,9 @@ const GAIA_TAP_BASE: &str = "https://gea.esac.esa.int/tap-server/tap";
 pub struct GaiaDr3Provider;
 
 impl DatasetProvider for GaiaDr3Provider {
-    fn name(&self) -> &str { "Gaia DR3 Nearby Stars" }
+    fn name(&self) -> &str {
+        "Gaia DR3 Nearby Stars"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("gaia_dr3_nearby.csv");

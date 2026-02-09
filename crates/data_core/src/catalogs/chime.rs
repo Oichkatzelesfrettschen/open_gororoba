@@ -5,7 +5,7 @@
 //! Catalog 1: 536 events, Amiri+ (2021)
 //! Catalog 2: 4539 events, CHIME/FRB Collaboration (2025)
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
 
 /// A single FRB event from the CHIME catalog.
@@ -79,9 +79,7 @@ pub fn parse_chime_csv(path: &Path) -> Result<Vec<FrbEvent>, FetchError> {
         .map_err(|e| FetchError::Validation(format!("Header read error: {}", e)))?
         .clone();
 
-    let col = |name: &str| -> Option<usize> {
-        headers.iter().position(|h| h == name)
-    };
+    let col = |name: &str| -> Option<usize> { headers.iter().position(|h| h == name) };
 
     let idx_tns = col("tns_name");
     let idx_rep = col("repeater_name");
@@ -120,8 +118,8 @@ pub fn parse_chime_csv(path: &Path) -> Result<Vec<FrbEvent>, FetchError> {
 
     let mut events = Vec::new();
     for result in reader.records() {
-        let record = result
-            .map_err(|e| FetchError::Validation(format!("Record parse error: {}", e)))?;
+        let record =
+            result.map_err(|e| FetchError::Validation(format!("Record parse error: {}", e)))?;
 
         let bonsai_dm = get_f64(&record, idx_bonsai_dm);
         // Skip events with no DM
@@ -180,19 +178,19 @@ pub fn extract_repeaters(events: &[FrbEvent]) -> Vec<(String, Vec<&FrbEvent>)> {
     result
 }
 
-const CATALOG1_URLS: &[&str] = &[
-    "https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog1/chimefrbcat1.csv",
-];
+const CATALOG1_URLS: &[&str] =
+    &["https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog1/chimefrbcat1.csv"];
 
-const CATALOG2_URLS: &[&str] = &[
-    "https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog2/chimefrbcat2.csv",
-];
+const CATALOG2_URLS: &[&str] =
+    &["https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog2/chimefrbcat2.csv"];
 
 /// CHIME Catalog 1 dataset provider.
 pub struct ChimeCat1Provider;
 
 impl DatasetProvider for ChimeCat1Provider {
-    fn name(&self) -> &str { "CHIME/FRB Catalog 1" }
+    fn name(&self) -> &str {
+        "CHIME/FRB Catalog 1"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("chime_frb_cat1.csv");
@@ -208,7 +206,9 @@ impl DatasetProvider for ChimeCat1Provider {
 pub struct ChimeCat2Provider;
 
 impl DatasetProvider for ChimeCat2Provider {
-    fn name(&self) -> &str { "CHIME/FRB Catalog 2" }
+    fn name(&self) -> &str {
+        "CHIME/FRB Catalog 2"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("chime_frb_cat2.csv");
@@ -273,7 +273,11 @@ FRB_PARTIAL,,nan,nan,nan,nan,200.0,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,nan,n
 ";
         let f = write_temp_csv(csv);
         let events = parse_chime_csv(f.path()).unwrap();
-        assert_eq!(events.len(), 1, "Event with valid DM but NaN coords should parse");
+        assert_eq!(
+            events.len(),
+            1,
+            "Event with valid DM but NaN coords should parse"
+        );
         assert!(events[0].ra.is_nan());
         assert!((events[0].bonsai_dm - 200.0).abs() < 0.01);
     }
@@ -298,8 +302,10 @@ E4,,90.0,10.0,20.0,30.0,300.0,299.0,280.0,270.0,20.0,1.5,3.0,0.003,0.0,58300.0,0
         let alpha = repeaters.iter().find(|(n, _)| n == "R_alpha").unwrap();
         assert_eq!(alpha.1.len(), 2, "R_alpha should have 2 bursts");
         // Verify sorted by MJD (E2 at 58050 before E1 at 58100)
-        assert!(alpha.1[0].mjd_400 < alpha.1[1].mjd_400,
-            "Repeater bursts should be sorted by MJD");
+        assert!(
+            alpha.1[0].mjd_400 < alpha.1[1].mjd_400,
+            "Repeater bursts should be sorted by MJD"
+        );
     }
 
     #[test]
@@ -322,7 +328,11 @@ E4,,90.0,10.0,20.0,30.0,300.0,299.0,280.0,270.0,20.0,1.5,3.0,0.003,0.0,58300.0,0
         assert!(events.len() > 100, "Should have many FRB events");
 
         let repeaters = extract_repeaters(&events);
-        eprintln!("Parsed {} events, {} repeater sources", events.len(), repeaters.len());
+        eprintln!(
+            "Parsed {} events, {} repeater sources",
+            events.len(),
+            repeaters.len()
+        );
 
         let large_repeaters: Vec<_> = repeaters
             .iter()

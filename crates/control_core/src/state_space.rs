@@ -16,7 +16,7 @@
 //! - Kalman (1960): Controllability and observability conditions
 //! - Chen (1999): Linear System Theory and Design
 
-use nalgebra::{DMatrix, Complex};
+use nalgebra::{Complex, DMatrix};
 
 /// State-space model in standard form.
 #[derive(Debug, Clone)]
@@ -33,12 +33,7 @@ pub struct StateSpaceModel {
 
 impl StateSpaceModel {
     /// Create a new state-space model.
-    pub fn new(
-        a: DMatrix<f64>,
-        b: DMatrix<f64>,
-        c: DMatrix<f64>,
-        d: DMatrix<f64>,
-    ) -> Self {
+    pub fn new(a: DMatrix<f64>, b: DMatrix<f64>, c: DMatrix<f64>, d: DMatrix<f64>) -> Self {
         Self { a, b, c, d }
     }
 
@@ -193,7 +188,10 @@ pub struct TransferFunction {
 impl TransferFunction {
     /// Create a new transfer function.
     pub fn new(numerator: Vec<f64>, denominator: Vec<f64>) -> Self {
-        Self { numerator, denominator }
+        Self {
+            numerator,
+            denominator,
+        }
     }
 
     /// Create a first-order system: G(s) = K / (tau*s + 1).

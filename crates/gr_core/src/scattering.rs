@@ -356,8 +356,14 @@ mod tests {
         let sigma_low = thomson_corrected(nu_low, theta);
         let sigma_high = thomson_corrected(nu_high, theta);
 
-        assert!(sigma_low > sigma_high, "KN should reduce cross-section at high energy");
-        assert!(sigma_low / SIGMA_THOMSON > 0.99, "low-energy should be close to Thomson");
+        assert!(
+            sigma_low > sigma_high,
+            "KN should reduce cross-section at high energy"
+        );
+        assert!(
+            sigma_low / SIGMA_THOMSON > 0.99,
+            "low-energy should be close to Thomson"
+        );
     }
 
     #[test]
@@ -366,7 +372,10 @@ mod tests {
         let sigma_cold = thomson_corrected(nu, 0.0);
         let sigma_hot = thomson_corrected(nu, 1.0);
 
-        assert!(sigma_hot > sigma_cold, "hot plasma should enhance scattering");
+        assert!(
+            sigma_hot > sigma_cold,
+            "hot plasma should enhance scattering"
+        );
         // theta = 1: factor should be ~2
         assert!((sigma_hot / sigma_cold - 2.0).abs() < 0.1);
     }
@@ -390,7 +399,10 @@ mod tests {
 
         // sigma ~ nu^4, so doubling frequency should increase by 16x
         let ratio = sigma2 / sigma1;
-        assert!((ratio - 16.0).abs() / 16.0 < 0.01, "ratio = {ratio}, expected 16");
+        assert!(
+            (ratio - 16.0).abs() / 16.0 < 0.01,
+            "ratio = {ratio}, expected 16"
+        );
     }
 
     #[test]
@@ -423,7 +435,10 @@ mod tests {
         let nu: f64 = 1e15; // UV, lambda ~ 3000 A
         let a: f64 = 0.01; // 100 micron, x ~ 200
         let q = mie_efficiency(nu, a);
-        assert!(q > 0.5 && q <= 4.0, "Q = {q}, should be near 2 in geometric limit");
+        assert!(
+            q > 0.5 && q <= 4.0,
+            "Q = {q}, should be near 2 in geometric limit"
+        );
     }
 
     #[test]
@@ -508,7 +523,10 @@ mod tests {
         let k_total = total_scattering_opacity(nu, n_e, 1e-5, n_grain, 1.5);
         let k_thom = thomson_opacity(n_e);
 
-        assert!(k_thom / k_total > 0.99, "Thomson should dominate at radio frequencies");
+        assert!(
+            k_thom / k_total > 0.99,
+            "Thomson should dominate at radio frequencies"
+        );
     }
 
     // -- Scattering regime classification --
@@ -516,20 +534,35 @@ mod tests {
     #[test]
     fn test_regime_rayleigh() {
         assert_eq!(classify_scattering_regime(0.01), ScatteringRegime::Rayleigh);
-        assert_eq!(classify_scattering_regime(0.049), ScatteringRegime::Rayleigh);
+        assert_eq!(
+            classify_scattering_regime(0.049),
+            ScatteringRegime::Rayleigh
+        );
     }
 
     #[test]
     fn test_regime_transition() {
-        assert_eq!(classify_scattering_regime(0.05), ScatteringRegime::Transition);
-        assert_eq!(classify_scattering_regime(0.5), ScatteringRegime::Transition);
-        assert_eq!(classify_scattering_regime(0.999), ScatteringRegime::Transition);
+        assert_eq!(
+            classify_scattering_regime(0.05),
+            ScatteringRegime::Transition
+        );
+        assert_eq!(
+            classify_scattering_regime(0.5),
+            ScatteringRegime::Transition
+        );
+        assert_eq!(
+            classify_scattering_regime(0.999),
+            ScatteringRegime::Transition
+        );
     }
 
     #[test]
     fn test_regime_geometric() {
         assert_eq!(classify_scattering_regime(1.0), ScatteringRegime::Geometric);
-        assert_eq!(classify_scattering_regime(100.0), ScatteringRegime::Geometric);
+        assert_eq!(
+            classify_scattering_regime(100.0),
+            ScatteringRegime::Geometric
+        );
     }
 
     #[test]

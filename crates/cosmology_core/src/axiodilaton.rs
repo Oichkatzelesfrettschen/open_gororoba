@@ -14,8 +14,8 @@
 //! References:
 //!   - Planck Collaboration VI (2020): A&A 641, A6 (baseline parameters)
 
-use crate::gl_integrate;
 use crate::bounce::C_KM_S;
+use crate::gl_integrate;
 
 // ============================================================================
 // Axiodilaton parameters
@@ -78,13 +78,7 @@ pub fn hubble(z: f64, omega_m: f64, omega_ad: f64, omega_lambda: f64, h0: f64) -
 /// d_C(z) = (c/H_0) integral_0^z dz' / E(z')
 ///
 /// Uses Gauss-Legendre quadrature (degree 50) for the integral.
-pub fn comoving_distance(
-    z: f64,
-    omega_m: f64,
-    omega_ad: f64,
-    omega_lambda: f64,
-    h0: f64,
-) -> f64 {
+pub fn comoving_distance(z: f64, omega_m: f64, omega_ad: f64, omega_lambda: f64, h0: f64) -> f64 {
     if z <= 0.0 {
         return 0.0;
     }
@@ -98,13 +92,7 @@ pub fn comoving_distance(
 }
 
 /// Luminosity distance d_L(z) = (1+z) d_C(z) [Mpc].
-pub fn luminosity_distance(
-    z: f64,
-    omega_m: f64,
-    omega_ad: f64,
-    omega_lambda: f64,
-    h0: f64,
-) -> f64 {
+pub fn luminosity_distance(z: f64, omega_m: f64, omega_ad: f64, omega_lambda: f64, h0: f64) -> f64 {
     (1.0 + z) * comoving_distance(z, omega_m, omega_ad, omega_lambda, h0)
 }
 
@@ -120,13 +108,7 @@ pub fn angular_diameter_distance(
 }
 
 /// Distance modulus mu = 5 log10(d_L / 10 pc) [mag].
-pub fn distance_modulus(
-    z: f64,
-    omega_m: f64,
-    omega_ad: f64,
-    omega_lambda: f64,
-    h0: f64,
-) -> f64 {
+pub fn distance_modulus(z: f64, omega_m: f64, omega_ad: f64, omega_lambda: f64, h0: f64) -> f64 {
     let d_l_mpc = luminosity_distance(z, omega_m, omega_ad, omega_lambda, h0);
     // d_L in pc = d_L_Mpc * 1e6
     5.0 * (d_l_mpc * 1e6 / 10.0).log10()
@@ -179,7 +161,13 @@ mod tests {
 
     #[test]
     fn test_hubble_absolute_value() {
-        let h = hubble(0.0, params::OMEGA_M, params::OMEGA_AD, params::OMEGA_LAMBDA, params::H0);
+        let h = hubble(
+            0.0,
+            params::OMEGA_M,
+            params::OMEGA_AD,
+            params::OMEGA_LAMBDA,
+            params::H0,
+        );
         assert!((h - params::H0).abs() < 1.0, "H(0) = {h}");
     }
 
@@ -200,30 +188,72 @@ mod tests {
 
     #[test]
     fn test_comoving_distance_positive() {
-        let d = comoving_distance(1.0, params::OMEGA_M, params::OMEGA_AD, params::OMEGA_LAMBDA, params::H0);
+        let d = comoving_distance(
+            1.0,
+            params::OMEGA_M,
+            params::OMEGA_AD,
+            params::OMEGA_LAMBDA,
+            params::H0,
+        );
         assert!(d > 0.0, "d_C = {d}");
     }
 
     #[test]
     fn test_comoving_distance_increases() {
-        let d1 = comoving_distance(0.5, params::OMEGA_M, params::OMEGA_AD, params::OMEGA_LAMBDA, params::H0);
-        let d2 = comoving_distance(1.0, params::OMEGA_M, params::OMEGA_AD, params::OMEGA_LAMBDA, params::H0);
+        let d1 = comoving_distance(
+            0.5,
+            params::OMEGA_M,
+            params::OMEGA_AD,
+            params::OMEGA_LAMBDA,
+            params::H0,
+        );
+        let d2 = comoving_distance(
+            1.0,
+            params::OMEGA_M,
+            params::OMEGA_AD,
+            params::OMEGA_LAMBDA,
+            params::H0,
+        );
         assert!(d2 > d1);
     }
 
     #[test]
     fn test_luminosity_distance_exceeds_comoving() {
         let z = 1.0;
-        let d_c = comoving_distance(z, params::OMEGA_M, params::OMEGA_AD, params::OMEGA_LAMBDA, params::H0);
-        let d_l = luminosity_distance(z, params::OMEGA_M, params::OMEGA_AD, params::OMEGA_LAMBDA, params::H0);
+        let d_c = comoving_distance(
+            z,
+            params::OMEGA_M,
+            params::OMEGA_AD,
+            params::OMEGA_LAMBDA,
+            params::H0,
+        );
+        let d_l = luminosity_distance(
+            z,
+            params::OMEGA_M,
+            params::OMEGA_AD,
+            params::OMEGA_LAMBDA,
+            params::H0,
+        );
         assert!((d_l - (1.0 + z) * d_c).abs() < 1e-6);
     }
 
     #[test]
     fn test_angular_diameter_distance_less_than_comoving() {
         let z = 1.0;
-        let d_c = comoving_distance(z, params::OMEGA_M, params::OMEGA_AD, params::OMEGA_LAMBDA, params::H0);
-        let d_a = angular_diameter_distance(z, params::OMEGA_M, params::OMEGA_AD, params::OMEGA_LAMBDA, params::H0);
+        let d_c = comoving_distance(
+            z,
+            params::OMEGA_M,
+            params::OMEGA_AD,
+            params::OMEGA_LAMBDA,
+            params::H0,
+        );
+        let d_a = angular_diameter_distance(
+            z,
+            params::OMEGA_M,
+            params::OMEGA_AD,
+            params::OMEGA_LAMBDA,
+            params::H0,
+        );
         assert!((d_a - d_c / (1.0 + z)).abs() < 1e-6);
     }
 
@@ -231,7 +261,13 @@ mod tests {
     fn test_distance_modulus_order_of_magnitude() {
         // At z=1, d_L ~ 6700 Mpc for standard cosmology
         // mu = 5 log10(6700e6/10) ~ 5 * 8.83 ~ 44.1
-        let mu = distance_modulus(1.0, params::OMEGA_M, params::OMEGA_AD, params::OMEGA_LAMBDA, params::H0);
+        let mu = distance_modulus(
+            1.0,
+            params::OMEGA_M,
+            params::OMEGA_AD,
+            params::OMEGA_LAMBDA,
+            params::H0,
+        );
         assert!(mu > 40.0 && mu < 50.0, "mu = {mu}");
     }
 

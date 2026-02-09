@@ -147,16 +147,46 @@ fn main() {
     let args = Args::parse();
 
     match args.command {
-        Commands::Variational { alpha, d, omega, m, json } => {
+        Commands::Variational {
+            alpha,
+            d,
+            omega,
+            m,
+            json,
+        } => {
             run_variational(alpha, d, omega, m, json);
         }
-        Commands::GroundState { alpha, d, omega, n, l, tau, steps, json } => {
+        Commands::GroundState {
+            alpha,
+            d,
+            omega,
+            n,
+            l,
+            tau,
+            steps,
+            json,
+        } => {
             run_ground_state(alpha, d, omega, n, l, tau, steps, json);
         }
-        Commands::PropagatorBenchmark { alpha, d, t, n_x, l, n_k, k_max, json } => {
+        Commands::PropagatorBenchmark {
+            alpha,
+            d,
+            t,
+            n_x,
+            l,
+            n_k,
+            k_max,
+            json,
+        } => {
             run_propagator_benchmark(alpha, d, t, n_x, l, n_k, k_max, json);
         }
-        Commands::AlphaSweep { alpha_start, alpha_end, n_alpha, method, output } => {
+        Commands::AlphaSweep {
+            alpha_start,
+            alpha_end,
+            n_alpha,
+            method,
+            output,
+        } => {
             run_alpha_sweep(alpha_start, alpha_end, n_alpha, &method, output);
         }
     }
@@ -203,7 +233,16 @@ fn run_variational(alpha: f64, d: f64, omega: f64, m: f64, json: bool) {
 }
 
 #[allow(clippy::too_many_arguments)]
-fn run_ground_state(alpha: f64, d: f64, omega: f64, n: usize, l: f64, tau: f64, steps: usize, json: bool) {
+fn run_ground_state(
+    alpha: f64,
+    d: f64,
+    omega: f64,
+    n: usize,
+    l: f64,
+    tau: f64,
+    steps: usize,
+    json: bool,
+) {
     eprintln!(
         "Imaginary-time ground state: alpha={}, D={}, omega={}, n={}, L={}",
         alpha, d, omega, n, l
@@ -224,7 +263,10 @@ fn run_ground_state(alpha: f64, d: f64, omega: f64, n: usize, l: f64, tau: f64, 
         println!("  \"n\": {},", n);
         println!("  \"L\": {},", l);
         println!("  \"energy\": {},", energy);
-        println!("  \"psi_max\": {}", psi.iter().cloned().fold(0.0_f64, f64::max));
+        println!(
+            "  \"psi_max\": {}",
+            psi.iter().cloned().fold(0.0_f64, f64::max)
+        );
         println!("}}");
     } else {
         println!("Fractional Harmonic Oscillator (Imaginary-Time)");
@@ -233,7 +275,10 @@ fn run_ground_state(alpha: f64, d: f64, omega: f64, n: usize, l: f64, tau: f64, 
         println!();
         println!("Results:");
         println!("  Ground state energy: {:.10}", energy);
-        println!("  Max |psi|:           {:.10}", psi.iter().cloned().fold(0.0_f64, f64::max));
+        println!(
+            "  Max |psi|:           {:.10}",
+            psi.iter().cloned().fold(0.0_f64, f64::max)
+        );
 
         if (alpha - 2.0).abs() < 0.01 {
             let exact = omega / 2.0;
@@ -246,7 +291,16 @@ fn run_ground_state(alpha: f64, d: f64, omega: f64, n: usize, l: f64, tau: f64, 
 }
 
 #[allow(clippy::too_many_arguments)]
-fn run_propagator_benchmark(alpha: f64, d: f64, t: f64, n_x: usize, l: f64, n_k: usize, k_max: f64, json: bool) {
+fn run_propagator_benchmark(
+    alpha: f64,
+    d: f64,
+    t: f64,
+    n_x: usize,
+    l: f64,
+    n_k: usize,
+    k_max: f64,
+    json: bool,
+) {
     eprintln!("Propagator L2 error: alpha={}, D={}, t={}", alpha, d, t);
 
     let l2_err = propagator_l2_error(alpha, d, t, n_x, l, n_k, k_max);
@@ -272,7 +326,13 @@ fn run_propagator_benchmark(alpha: f64, d: f64, t: f64, n_x: usize, l: f64, n_k:
     }
 }
 
-fn run_alpha_sweep(alpha_start: f64, alpha_end: f64, n_alpha: usize, method: &str, output: Option<String>) {
+fn run_alpha_sweep(
+    alpha_start: f64,
+    alpha_end: f64,
+    n_alpha: usize,
+    method: &str,
+    output: Option<String>,
+) {
     eprintln!(
         "Alpha sweep: [{} -> {}], {} values, method={}",
         alpha_start, alpha_end, n_alpha, method
@@ -303,7 +363,8 @@ fn run_alpha_sweep(alpha_start: f64, alpha_end: f64, n_alpha: usize, method: &st
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
         wtr.write_record(["alpha", "energy"]).unwrap();
         for (alpha, e) in alpha_values.iter().zip(energies.iter()) {
-            wtr.write_record(&[alpha.to_string(), e.to_string()]).unwrap();
+            wtr.write_record(&[alpha.to_string(), e.to_string()])
+                .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} records to {}", n_alpha, path);

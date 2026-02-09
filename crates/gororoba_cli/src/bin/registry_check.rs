@@ -172,8 +172,11 @@ fn main() {
 
         // Check for duplicates
         if claim_ids.len() != claim_count {
-            eprintln!("ERROR: Duplicate claim IDs detected ({} unique vs {} total)",
-                claim_ids.len(), claim_count);
+            eprintln!(
+                "ERROR: Duplicate claim IDs detected ({} unique vs {} total)",
+                claim_ids.len(),
+                claim_count
+            );
             errors += 1;
         }
 
@@ -194,10 +197,15 @@ fn main() {
             expected = num + 1;
         }
         if !gaps.is_empty() {
-            eprintln!("WARNING: {} claim ID gaps: {}", gaps.len(),
-                if gaps.len() <= 5 { gaps.join(", ") } else {
+            eprintln!(
+                "WARNING: {} claim ID gaps: {}",
+                gaps.len(),
+                if gaps.len() <= 5 {
+                    gaps.join(", ")
+                } else {
                     format!("{}... and {} more", gaps[..5].join(", "), gaps.len() - 5)
-                });
+                }
+            );
             warnings += 1;
         }
 
@@ -208,12 +216,14 @@ fn main() {
                 errors += 1;
             } else {
                 // Check against known statuses (case-sensitive prefix match)
-                let status_ok = VALID_CLAIM_STATUSES.iter().any(|valid| {
-                    claim.status == *valid || claim.status.starts_with(valid)
-                });
+                let status_ok = VALID_CLAIM_STATUSES
+                    .iter()
+                    .any(|valid| claim.status == *valid || claim.status.starts_with(valid));
                 if !status_ok {
-                    eprintln!("WARNING: claim {} has unusual status: \"{}\"",
-                        claim.id, claim.status);
+                    eprintln!(
+                        "WARNING: claim {} has unusual status: \"{}\"",
+                        claim.id, claim.status
+                    );
                     warnings += 1;
                 }
             }
@@ -223,11 +233,15 @@ fn main() {
             "Claims: {} entries, {} unique IDs, range C-001..C-{:03}",
             claim_count,
             claim_ids.len(),
-            registry.claim.last().map(|c| {
-                c.id.strip_prefix("C-")
-                    .and_then(|s| s.parse::<u32>().ok())
-                    .unwrap_or(0)
-            }).unwrap_or(0)
+            registry
+                .claim
+                .last()
+                .map(|c| {
+                    c.id.strip_prefix("C-")
+                        .and_then(|s| s.parse::<u32>().ok())
+                        .unwrap_or(0)
+                })
+                .unwrap_or(0)
         );
     } else {
         eprintln!("ERROR: {} not found", claims_path.display());
@@ -255,9 +269,11 @@ fn main() {
         }
 
         // Check sequential IDs (I-001..I-NNN)
-        let nums: BTreeSet<u32> = registry.insight.iter().filter_map(|i| {
-            i.id.strip_prefix("I-").and_then(|s| s.parse().ok())
-        }).collect();
+        let nums: BTreeSet<u32> = registry
+            .insight
+            .iter()
+            .filter_map(|i| i.id.strip_prefix("I-").and_then(|s| s.parse().ok()))
+            .collect();
 
         if let (Some(&first), Some(&last)) = (nums.iter().next(), nums.iter().next_back()) {
             let expected_count = (last - first + 1) as usize;
@@ -266,7 +282,11 @@ fn main() {
                     .filter(|n| !nums.contains(n))
                     .map(|n| format!("I-{n:03}"))
                     .collect();
-                eprintln!("WARNING: {} insight ID gaps: {}", missing.len(), missing.join(", "));
+                eprintln!(
+                    "WARNING: {} insight ID gaps: {}",
+                    missing.len(),
+                    missing.join(", ")
+                );
                 warnings += 1;
             }
         }
@@ -284,17 +304,26 @@ fn main() {
             }
             if let Some(ref status) = insight.status {
                 if !VALID_INSIGHT_STATUSES.contains(&status.as_str()) {
-                    eprintln!("WARNING: insight {} has unusual status: \"{}\"",
-                        insight.id, status);
+                    eprintln!(
+                        "WARNING: insight {} has unusual status: \"{}\"",
+                        insight.id, status
+                    );
                     warnings += 1;
                 }
             }
         }
 
-        println!("Insights: {} entries, IDs {:?}..{:?}",
+        println!(
+            "Insights: {} entries, IDs {:?}..{:?}",
             insight_count,
-            nums.iter().next().map(|n| format!("I-{n:03}")).unwrap_or_default(),
-            nums.iter().next_back().map(|n| format!("I-{n:03}")).unwrap_or_default(),
+            nums.iter()
+                .next()
+                .map(|n| format!("I-{n:03}"))
+                .unwrap_or_default(),
+            nums.iter()
+                .next_back()
+                .map(|n| format!("I-{n:03}"))
+                .unwrap_or_default(),
         );
     } else {
         eprintln!("ERROR: {} not found", insights_path.display());
@@ -313,7 +342,9 @@ fn main() {
         let registry: ExperimentsRegistry = toml::from_str(&content).unwrap();
 
         experiment_ids = registry.experiment.iter().map(|e| e.id.clone()).collect();
-        binary_names_from_experiments = registry.experiment.iter()
+        binary_names_from_experiments = registry
+            .experiment
+            .iter()
             .filter_map(|e| e.binary.clone())
             .collect();
 
@@ -398,7 +429,11 @@ fn main() {
                 eprintln!(
                     "WARNING: {} binaries in Cargo.toml but not in binaries.toml: {}",
                     missing_from_registry.len(),
-                    missing_from_registry.iter().map(|s| s.as_str()).collect::<Vec<_>>().join(", ")
+                    missing_from_registry
+                        .iter()
+                        .map(|s| s.as_str())
+                        .collect::<Vec<_>>()
+                        .join(", ")
                 );
                 warnings += 1;
             }
@@ -406,7 +441,11 @@ fn main() {
                 eprintln!(
                     "WARNING: {} binaries in binaries.toml but not in Cargo.toml: {}",
                     missing_from_cargo.len(),
-                    missing_from_cargo.iter().map(|s| s.as_str()).collect::<Vec<_>>().join(", ")
+                    missing_from_cargo
+                        .iter()
+                        .map(|s| s.as_str())
+                        .collect::<Vec<_>>()
+                        .join(", ")
                 );
                 warnings += 1;
             }
@@ -448,7 +487,8 @@ fn main() {
             if expected_binaries as usize != registry_binary_names.len() {
                 eprintln!(
                     "WARNING: project.toml binary_count={} but binaries.toml has {} entries",
-                    expected_binaries, registry_binary_names.len()
+                    expected_binaries,
+                    registry_binary_names.len()
                 );
                 warnings += 1;
             }

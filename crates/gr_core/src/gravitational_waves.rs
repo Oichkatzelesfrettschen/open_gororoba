@@ -79,13 +79,7 @@ impl BinarySystem {
     }
 
     /// Create a binary black hole system from solar masses and Mpc distance.
-    pub fn bbh(
-        m1_solar: f64,
-        m2_solar: f64,
-        chi1: f64,
-        chi2: f64,
-        d_mpc: f64,
-    ) -> Self {
+    pub fn bbh(m1_solar: f64, m2_solar: f64, chi1: f64, chi2: f64, d_mpc: f64) -> Self {
         Self {
             m1: m1_solar * M_SUN_CGS,
             m2: m2_solar * M_SUN_CGS,
@@ -228,14 +222,9 @@ pub fn phase_2p5pn(m_c: f64, eta: f64, f: f64, t_c: f64, phi_c: f64) -> f64 {
     let psi_n = 1.0; // Newtonian
     let psi_1pn = (3715.0 / 756.0 + 55.0 * eta / 9.0) * v2;
     let psi_15pn = -16.0 * PI * v3;
-    let psi_2pn = (15_293_365.0 / 508_032.0 + 27_145.0 * eta / 504.0
-        + 3085.0 * eta2 / 72.0)
-        * v2
-        * v2;
-    let psi_25pn = PI * (38_645.0 / 756.0 - 65.0 * eta / 9.0)
-        * (1.0 + 3.0 * v.ln())
-        * v3
-        * v2;
+    let psi_2pn =
+        (15_293_365.0 / 508_032.0 + 27_145.0 * eta / 504.0 + 3085.0 * eta2 / 72.0) * v2 * v2;
+    let psi_25pn = PI * (38_645.0 / 756.0 - 65.0 * eta / 9.0) * (1.0 + 3.0 * v.ln()) * v3 * v2;
 
     let pn_sum = psi_n + psi_1pn + psi_15pn + psi_2pn + psi_25pn;
     let psi_leading = (3.0 / 128.0) / (PI * m_geo * f).powf(5.0 / 3.0);

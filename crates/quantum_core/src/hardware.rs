@@ -38,11 +38,9 @@ impl QubitTopology {
     /// Get all edges in the connectivity graph.
     pub fn edges(&self, n_qubits: usize) -> Vec<(usize, usize)> {
         match self {
-            QubitTopology::Linear => {
-                (0..n_qubits.saturating_sub(1))
-                    .map(|i| (i, i + 1))
-                    .collect()
-            }
+            QubitTopology::Linear => (0..n_qubits.saturating_sub(1))
+                .map(|i| (i, i + 1))
+                .collect(),
             QubitTopology::Grid { rows, cols } => {
                 let mut edges = Vec::new();
                 for r in 0..*rows {
@@ -138,7 +136,10 @@ impl GateTiming {
     }
 
     pub fn with_setup(duration_us: f64, setup_us: f64) -> Self {
-        Self { duration_us, setup_us }
+        Self {
+            duration_us,
+            setup_us,
+        }
     }
 
     pub fn total_us(&self) -> f64 {
@@ -299,9 +300,14 @@ impl HardwareProfile for IdealHardware {
 
     fn native_gates(&self) -> &[NativeGate] {
         &[
-            NativeGate::Rx, NativeGate::Ry, NativeGate::Rz,
-            NativeGate::H, NativeGate::T, NativeGate::S,
-            NativeGate::CZ, NativeGate::CX,
+            NativeGate::Rx,
+            NativeGate::Ry,
+            NativeGate::Rz,
+            NativeGate::H,
+            NativeGate::T,
+            NativeGate::S,
+            NativeGate::CZ,
+            NativeGate::CX,
         ]
     }
 
@@ -537,7 +543,10 @@ impl SuperconductingProfile {
         let side = (n_qubits as f64).sqrt().ceil() as usize;
         Self {
             n_qubits,
-            topology: QubitTopology::Grid { rows: side, cols: side },
+            topology: QubitTopology::Grid {
+                rows: side,
+                cols: side,
+            },
             vendor: SuperconductingVendor::Ibm,
             error_rates: ErrorRates {
                 single_qubit: 2e-4,
@@ -546,11 +555,7 @@ impl SuperconductingProfile {
                 preparation: 5e-4,
             },
             coherence_times: CoherenceTimes::new(200.0, 100.0), // 200us T1, 100us T2
-            native_gates: vec![
-                NativeGate::Rx,
-                NativeGate::Rz,
-                NativeGate::CX,
-            ],
+            native_gates: vec![NativeGate::Rx, NativeGate::Rz, NativeGate::CX],
         }
     }
 
@@ -639,7 +644,7 @@ impl HardwareProfile for SuperconductingProfile {
         match gate {
             // Single-qubit gates (microwave pulses)
             NativeGate::Rx | NativeGate::Ry => GateTiming::new(0.020), // 20 ns
-            NativeGate::Rz => GateTiming::new(0.0), // Virtual Z, free
+            NativeGate::Rz => GateTiming::new(0.0),                    // Virtual Z, free
             NativeGate::H => GateTiming::new(0.020),
             // Two-qubit gates
             NativeGate::CX => GateTiming::with_setup(0.300, 0.050), // ~300ns for cross-resonance
@@ -689,7 +694,7 @@ impl TrappedIonProfile {
             n_qubits,
             topology: QubitTopology::AllToAll, // Ion shuttling enables all-to-all
             error_rates: ErrorRates {
-                single_qubit: 3e-5,  // Very high fidelity
+                single_qubit: 3e-5, // Very high fidelity
                 two_qubit: 5e-3,
                 readout: 1e-3,
                 preparation: 1e-4,
@@ -738,7 +743,7 @@ impl HardwareProfile for TrappedIonProfile {
         match gate {
             // Single-qubit gates (laser pulses)
             NativeGate::Rx | NativeGate::Ry => GateTiming::new(10.0), // 10 us
-            NativeGate::Rz => GateTiming::new(0.1), // AC Stark shift, fast
+            NativeGate::Rz => GateTiming::new(0.1),                   // AC Stark shift, fast
             // Molmer-Sorensen gate
             NativeGate::MS => GateTiming::with_setup(200.0, 50.0), // ~200 us
             // Synthesized from MS
@@ -821,7 +826,7 @@ mod tests {
         // Coherence times should be long (milliseconds)
         let ct = hw.coherence_times();
         assert!(ct.t1_us > 1000.0); // > 1ms
-        assert!(ct.t2_us > 100.0);  // > 0.1ms
+        assert!(ct.t2_us > 100.0); // > 0.1ms
     }
 
     #[test]
@@ -844,8 +849,7 @@ mod tests {
 
     #[test]
     fn test_neutral_atom_blockade_interaction() {
-        let hw = NeutralAtomProfile::with_grid(10, 10, 4.0)
-            .with_blockade_radius(8.0); // 8um radius, 4um spacing
+        let hw = NeutralAtomProfile::with_grid(10, 10, 4.0).with_blockade_radius(8.0); // 8um radius, 4um spacing
 
         // Nearest neighbors: 4um apart -> can interact
         assert!(hw.can_interact(0, 1));

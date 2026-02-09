@@ -10,7 +10,7 @@ claim_count = 477
 insight_count = 16
 experiment_count = 13
 paper_count = 19
-binary_count = 37
+binary_count = 40
 
 [sprints.s17]
 number = 17

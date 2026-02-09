@@ -21,13 +21,13 @@ use clap::Parser;
 use std::path::PathBuf;
 
 use cosmology_core::distances::{
-    planck2018, dm_excess_to_redshift, comoving_distance, radec_to_cartesian,
+    comoving_distance, dm_excess_to_redshift, planck2018, radec_to_cartesian,
 };
 use data_core::catalogs::chime::parse_chime_csv;
-use stats_core::ultrametric::local::local_ultrametricity_test;
 use stats_core::ultrametric::dendrogram::{
     euclidean_distance_matrix_3d, hierarchical_ultrametric_test,
 };
+use stats_core::ultrametric::local::local_ultrametricity_test;
 
 #[derive(Parser)]
 #[command(name = "dm-ultrametric")]
@@ -69,11 +69,10 @@ fn main() {
     eprintln!("Input: {}", cli.input.display());
 
     // 1. Load CHIME events
-    let events = parse_chime_csv(&cli.input)
-        .unwrap_or_else(|e| {
-            eprintln!("Failed to parse CHIME CSV: {}", e);
-            std::process::exit(1);
-        });
+    let events = parse_chime_csv(&cli.input).unwrap_or_else(|e| {
+        eprintln!("Failed to parse CHIME CSV: {}", e);
+        std::process::exit(1);
+    });
 
     eprintln!("Loaded {} total FRB events", events.len());
 
@@ -128,7 +127,10 @@ fn main() {
     eprintln!(
         "Comoving distance range: [{:.0}, {:.0}] Mpc",
         comoving_dists.iter().cloned().fold(f64::INFINITY, f64::min),
-        comoving_dists.iter().cloned().fold(f64::NEG_INFINITY, f64::max),
+        comoving_dists
+            .iter()
+            .cloned()
+            .fold(f64::NEG_INFINITY, f64::max),
     );
 
     // 3. Parse epsilon values
@@ -153,20 +155,16 @@ fn main() {
         "null_mean",
         "p_value",
         "verdict",
-    ]).unwrap();
+    ])
+    .unwrap();
 
     eprintln!("\n--- Local Ultrametricity Tests ---");
 
     for &eps in &epsilons {
         eprintln!("  epsilon = {} Mpc ...", eps);
 
-        let result = local_ultrametricity_test(
-            &coords_3d,
-            eps,
-            cli.n_samples,
-            cli.n_permutations,
-            42,
-        );
+        let result =
+            local_ultrametricity_test(&coords_3d, eps, cli.n_samples, cli.n_permutations, 42);
 
         eprintln!(
             "    testable: {}, mean_idx: {:.4}, null: {:.4}, p={:.4}, {:?}",
@@ -186,7 +184,8 @@ fn main() {
             &format!("{:.6}", result.null_mean_index),
             &format!("{:.6}", result.p_value),
             &format!("{:?}", result.verdict),
-        ]).unwrap();
+        ])
+        .unwrap();
     }
 
     // 5. Global dendrogram analysis (on a subsample if too many points)
@@ -196,18 +195,19 @@ fn main() {
     let dend_coords: Vec<(f64, f64, f64)> = if coords_3d.len() > max_dend_points {
         // Take evenly spaced subsample
         let step = coords_3d.len() / max_dend_points;
-        coords_3d.iter().step_by(step).take(max_dend_points).cloned().collect()
+        coords_3d
+            .iter()
+            .step_by(step)
+            .take(max_dend_points)
+            .cloned()
+            .collect()
     } else {
         coords_3d.clone()
     };
 
     let dist_matrix = euclidean_distance_matrix_3d(&dend_coords);
-    let dend_result = hierarchical_ultrametric_test(
-        &dist_matrix,
-        dend_coords.len(),
-        cli.n_permutations,
-        42,
-    );
+    let dend_result =
+        hierarchical_ultrametric_test(&dist_matrix, dend_coords.len(), cli.n_permutations, 42);
 
     eprintln!(
         "  Cophenetic correlation: {:.4} (null: {:.4} +/- {:.4})",
@@ -227,7 +227,8 @@ fn main() {
         &format!("{:.6}", dend_result.null_cophenetic_mean),
         &format!("{:.6}", dend_result.p_value),
         &format!("{:?}", dend_result.verdict),
-    ]).unwrap();
+    ])
+    .unwrap();
 
     wtr.flush().unwrap();
 

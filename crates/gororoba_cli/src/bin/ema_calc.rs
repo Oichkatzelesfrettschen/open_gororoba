@@ -14,8 +14,7 @@
 
 use clap::{Parser, Subcommand};
 use materials_core::{
-    maxwell_garnett, bruggeman, drude, drude_lorentz, LorentzOscillator,
-    tmm_reflection,
+    bruggeman, drude, drude_lorentz, maxwell_garnett, tmm_reflection, LorentzOscillator,
 };
 use num_complex::Complex64;
 
@@ -177,25 +176,79 @@ fn main() {
     let args = Args::parse();
 
     match args.command {
-        Commands::MaxwellGarnett { eps_host, eps_host_im, eps_inc, eps_inc_im, f, json } => {
+        Commands::MaxwellGarnett {
+            eps_host,
+            eps_host_im,
+            eps_inc,
+            eps_inc_im,
+            f,
+            json,
+        } => {
             run_maxwell_garnett(eps_host, eps_host_im, eps_inc, eps_inc_im, f, json);
         }
-        Commands::Bruggeman { eps_1, eps_1_im, eps_2, eps_2_im, f, json } => {
+        Commands::Bruggeman {
+            eps_1,
+            eps_1_im,
+            eps_2,
+            eps_2_im,
+            f,
+            json,
+        } => {
             run_bruggeman(eps_1, eps_1_im, eps_2, eps_2_im, f, json);
         }
-        Commands::Drude { eps_inf, omega_p, gamma, omega_max, n_points, oscillators, output } => {
-            run_drude(eps_inf, omega_p, gamma, omega_max, n_points, oscillators, output);
+        Commands::Drude {
+            eps_inf,
+            omega_p,
+            gamma,
+            omega_max,
+            n_points,
+            oscillators,
+            output,
+        } => {
+            run_drude(
+                eps_inf,
+                omega_p,
+                gamma,
+                omega_max,
+                n_points,
+                oscillators,
+                output,
+            );
         }
-        Commands::Tmm { n_layers, d_layers, wavelength, theta, polarization, json } => {
+        Commands::Tmm {
+            n_layers,
+            d_layers,
+            wavelength,
+            theta,
+            polarization,
+            json,
+        } => {
             run_tmm(&n_layers, &d_layers, wavelength, theta, &polarization, json);
         }
-        Commands::TmmSweep { n_layers, d_layers, wl_start, wl_end, n_points, theta, output } => {
-            run_tmm_sweep(&n_layers, &d_layers, wl_start, wl_end, n_points, theta, output);
+        Commands::TmmSweep {
+            n_layers,
+            d_layers,
+            wl_start,
+            wl_end,
+            n_points,
+            theta,
+            output,
+        } => {
+            run_tmm_sweep(
+                &n_layers, &d_layers, wl_start, wl_end, n_points, theta, output,
+            );
         }
     }
 }
 
-fn run_maxwell_garnett(eps_host: f64, eps_host_im: f64, eps_inc: f64, eps_inc_im: f64, f: f64, json: bool) {
+fn run_maxwell_garnett(
+    eps_host: f64,
+    eps_host_im: f64,
+    eps_inc: f64,
+    eps_inc_im: f64,
+    f: f64,
+    json: bool,
+) {
     let eh = Complex64::new(eps_host, eps_host_im);
     let ei = Complex64::new(eps_inc, eps_inc_im);
     let eps_eff = maxwell_garnett(eh, ei, f);
@@ -245,7 +298,15 @@ fn run_bruggeman(eps_1: f64, eps_1_im: f64, eps_2: f64, eps_2_im: f64, f: f64, j
     }
 }
 
-fn run_drude(eps_inf: f64, omega_p: f64, gamma: f64, omega_max: f64, n_points: usize, oscillators: Option<String>, output: Option<String>) {
+fn run_drude(
+    eps_inf: f64,
+    omega_p: f64,
+    gamma: f64,
+    omega_max: f64,
+    n_points: usize,
+    oscillators: Option<String>,
+    output: Option<String>,
+) {
     let omega: Vec<f64> = (1..=n_points)
         .map(|i| omega_max * i as f64 / n_points as f64)
         .collect();
@@ -254,7 +315,8 @@ fn run_drude(eps_inf: f64, omega_p: f64, gamma: f64, omega_max: f64, n_points: u
         .map(|s| {
             s.split(';')
                 .filter_map(|osc_str| {
-                    let parts: Vec<f64> = osc_str.split(',')
+                    let parts: Vec<f64> = osc_str
+                        .split(',')
                         .filter_map(|p| p.trim().parse().ok())
                         .collect();
                     if parts.len() == 3 {
@@ -279,7 +341,8 @@ fn run_drude(eps_inf: f64, omega_p: f64, gamma: f64, omega_max: f64, n_points: u
 
     if let Some(path) = output {
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
-        wtr.write_record(["omega_eV", "eps_real", "eps_imag", "n", "k"]).unwrap();
+        wtr.write_record(["omega_eV", "eps_real", "eps_imag", "n", "k"])
+            .unwrap();
         for (w, e) in omega.iter().zip(eps.iter()) {
             let n_complex = e.sqrt();
             wtr.write_record(&[
@@ -288,7 +351,8 @@ fn run_drude(eps_inf: f64, omega_p: f64, gamma: f64, omega_max: f64, n_points: u
                 e.im.to_string(),
                 n_complex.re.to_string(),
                 n_complex.im.to_string(),
-            ]).unwrap();
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} points to {}", n_points, path);
@@ -297,7 +361,10 @@ fn run_drude(eps_inf: f64, omega_p: f64, gamma: f64, omega_max: f64, n_points: u
         for (i, (w, e)) in omega.iter().zip(eps.iter()).enumerate() {
             if i % (n_points / 10).max(1) == 0 {
                 let n_complex = e.sqrt();
-                println!("{:.3},{:.4},{:.4},{:.4},{:.4}", w, e.re, e.im, n_complex.re, n_complex.im);
+                println!(
+                    "{:.3},{:.4},{:.4},{:.4},{:.4}",
+                    w, e.re, e.im, n_complex.re, n_complex.im
+                );
             }
         }
     }
@@ -331,7 +398,14 @@ fn parse_d_layers(s: &str) -> Vec<f64> {
         .collect()
 }
 
-fn run_tmm(n_layers_str: &str, d_layers_str: &str, wavelength: f64, theta_deg: f64, polarization: &str, json: bool) {
+fn run_tmm(
+    n_layers_str: &str,
+    d_layers_str: &str,
+    wavelength: f64,
+    theta_deg: f64,
+    polarization: &str,
+    json: bool,
+) {
     let n_layers = parse_n_layers(n_layers_str);
     let d_layers = parse_d_layers(d_layers_str);
     let theta = theta_deg.to_radians();
@@ -350,7 +424,13 @@ fn run_tmm(n_layers_str: &str, d_layers_str: &str, wavelength: f64, theta_deg: f
         println!("}}");
     } else {
         println!("Transfer Matrix Method");
-        println!("  n_layers = {:?}", n_layers.iter().map(|n| format!("{:.3}+{:.3}i", n.re, n.im)).collect::<Vec<_>>());
+        println!(
+            "  n_layers = {:?}",
+            n_layers
+                .iter()
+                .map(|n| format!("{:.3}+{:.3}i", n.re, n.im))
+                .collect::<Vec<_>>()
+        );
         println!("  d_layers = {:?} nm", d_layers);
         println!("  lambda   = {} nm", wavelength);
         println!("  theta    = {} deg", theta_deg);
@@ -358,11 +438,23 @@ fn run_tmm(n_layers_str: &str, d_layers_str: &str, wavelength: f64, theta_deg: f
         println!();
         println!("Result:");
         println!("  r = {:.6} + {:.6}i", result.r.re, result.r.im);
-        println!("  R = {:.4} ({:.1}%)", result.reflectance, result.reflectance * 100.0);
+        println!(
+            "  R = {:.4} ({:.1}%)",
+            result.reflectance,
+            result.reflectance * 100.0
+        );
     }
 }
 
-fn run_tmm_sweep(n_layers_str: &str, d_layers_str: &str, wl_start: f64, wl_end: f64, n_points: usize, theta_deg: f64, output: Option<String>) {
+fn run_tmm_sweep(
+    n_layers_str: &str,
+    d_layers_str: &str,
+    wl_start: f64,
+    wl_end: f64,
+    n_points: usize,
+    theta_deg: f64,
+    output: Option<String>,
+) {
     let n_layers = parse_n_layers(n_layers_str);
     let d_layers = parse_d_layers(d_layers_str);
     let theta = theta_deg.to_radians();
@@ -371,7 +463,8 @@ fn run_tmm_sweep(n_layers_str: &str, d_layers_str: &str, wl_start: f64, wl_end: 
         .map(|i| wl_start + (wl_end - wl_start) * i as f64 / (n_points - 1) as f64)
         .collect();
 
-    let results: Vec<_> = wavelengths.iter()
+    let results: Vec<_> = wavelengths
+        .iter()
         .map(|&wl| tmm_reflection(&n_layers, &d_layers, wl, theta, true))
         .collect();
 
@@ -379,7 +472,8 @@ fn run_tmm_sweep(n_layers_str: &str, d_layers_str: &str, wl_start: f64, wl_end: 
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
         wtr.write_record(["wavelength_nm", "reflectance"]).unwrap();
         for (wl, r) in wavelengths.iter().zip(results.iter()) {
-            wtr.write_record(&[wl.to_string(), r.reflectance.to_string()]).unwrap();
+            wtr.write_record(&[wl.to_string(), r.reflectance.to_string()])
+                .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} points to {}", n_points, path);

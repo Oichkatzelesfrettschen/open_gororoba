@@ -38,65 +38,73 @@ pub mod spectral;
 pub mod tov;
 
 pub use gravastar::{
-    PolytropicEos, AnisotropicParams, TovState, GravastarSolution,
-    GravastarConfig, solve_gravastar, polytropic_stability_sweep,
-    anisotropic_stability_test, StabilityResult, AnisotropicStabilityResult,
+    anisotropic_stability_test, polytropic_stability_sweep, solve_gravastar, AnisotropicParams,
+    AnisotropicStabilityResult, GravastarConfig, GravastarSolution, PolytropicEos, StabilityResult,
+    TovState,
 };
 
 pub use spectral::{
-    calcagni_spectral_dimension, cdt_spectral_dimension,
+    analyze_k_minus_3_origin, calcagni_spectral_dimension, cdt_spectral_dimension,
     k_minus_3_spectrum, kolmogorov_spectrum, kraichnan_enstrophy_spectrum,
-    parisi_sourlas_effective_dimension, parisi_sourlas_spectrum_exponent,
-    analyze_k_minus_3_origin, SpectralAnalysisResult,
+    parisi_sourlas_effective_dimension, parisi_sourlas_spectrum_exponent, SpectralAnalysisResult,
 };
 
 pub use bounce::{
-    BounceState, BounceParams, BounceResult, FitResult,
-    simulate_bounce, hubble_e_lcdm, hubble_e_bounce,
-    luminosity_distance, distance_modulus, cmb_shift_parameter,
-    bao_sound_horizon, spectral_index_bounce, chi2_distance_modulus,
+    bao_sound_horizon,
+    chi2_bao,
+    chi2_distance_modulus,
+    chi2_sn,
+    cmb_shift_parameter,
+    distance_modulus,
+    fit_model,
+    generate_synthetic_bao_data,
+    generate_synthetic_sn_data,
+    hubble_e_bounce,
+    hubble_e_lcdm,
+    luminosity_distance,
+    run_observational_fit,
+    simulate_bounce,
+    spectral_index_bounce,
+    BounceParams,
+    BounceResult,
+    BounceState,
+    FitResult,
+    SyntheticBaoData,
     // Synthetic data and fitting pipeline
-    SyntheticSnData, SyntheticBaoData,
-    generate_synthetic_sn_data, generate_synthetic_bao_data,
-    chi2_sn, chi2_bao, fit_model, run_observational_fit,
-    C_KM_S, OMEGA_B_H2, Z_STAR,
+    SyntheticSnData,
+    C_KM_S,
+    OMEGA_B_H2,
+    Z_STAR,
 };
 
-pub use dimensional_geometry::{
-    unit_sphere_surface_area, ball_volume, sample_dimensional_range,
-};
+pub use dimensional_geometry::{ball_volume, sample_dimensional_range, unit_sphere_surface_area};
 
 pub use observational::{
-    RealSnData, RealBaoData, ObsFitResult, ModelComparison,
-    chi2_sn_real, chi2_bao_real, bao_data_point_count,
-    fit_real_data, compare_models,
-    filter_pantheon_data, desi_to_real_bao,
+    bao_data_point_count, chi2_bao_real, chi2_sn_real, compare_models, desi_to_real_bao,
+    filter_pantheon_data, fit_real_data, ModelComparison, ObsFitResult, RealBaoData, RealSnData,
 };
 
 pub use distances::{
-    comoving_distance, macquart_dm_cosmic, dm_excess_to_redshift,
-    dm_to_comoving, angular_diameter_distance, radec_to_cartesian,
+    angular_diameter_distance, comoving_distance, dm_excess_to_redshift, dm_to_comoving,
+    macquart_dm_cosmic, radec_to_cartesian,
 };
 
 pub use eos::{
-    Polytrope, polytropic_index, gamma_from_index,
-    GAMMA_NONREL_DEGENERATE, GAMMA_ULTRAREL_DEGENERATE,
-    GAMMA_STIFF, GAMMA_RADIATION,
+    gamma_from_index, polytropic_index, Polytrope, GAMMA_NONREL_DEGENERATE, GAMMA_RADIATION,
+    GAMMA_STIFF, GAMMA_ULTRAREL_DEGENERATE,
 };
 
 pub use tov::{
-    tidal_love_number_k2, tidal_deformability, combined_tidal_deformability,
-    NeutronStarProfile, integrate_neutron_star,
-    MassRadiusPoint, mass_radius_relation, tov_maximum_mass,
+    combined_tidal_deformability, integrate_neutron_star, mass_radius_relation,
+    tidal_deformability, tidal_love_number_k2, tov_maximum_mass, MassRadiusPoint,
+    NeutronStarProfile,
 };
 
 pub use flrw::{
-    FlatLCDM, deceleration_parameter, z_equality,
-    distance_duality_deviation, verify_distance_duality,
-    lookback_time, universe_age, age_at_z,
-    wavelength_to_redshift, apply_redshift_to_wavelength, redshift_flux_dimming,
-    PLANCK18_H0, PLANCK18_OMEGA_M, PLANCK18_OMEGA_B,
-    PLANCK18_T_CMB, PLANCK18_SOUND_HORIZON,
+    age_at_z, apply_redshift_to_wavelength, deceleration_parameter, distance_duality_deviation,
+    lookback_time, redshift_flux_dimming, universe_age, verify_distance_duality,
+    wavelength_to_redshift, z_equality, FlatLCDM, PLANCK18_H0, PLANCK18_OMEGA_B, PLANCK18_OMEGA_M,
+    PLANCK18_SOUND_HORIZON, PLANCK18_T_CMB,
 };
 
 /// Gauss-Legendre quadrature over [a, b].

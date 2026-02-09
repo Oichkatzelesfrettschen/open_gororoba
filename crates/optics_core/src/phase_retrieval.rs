@@ -118,7 +118,9 @@ struct Rng {
 
 impl Rng {
     fn new(seed: u64) -> Self {
-        Self { state: seed.wrapping_add(1) }
+        Self {
+            state: seed.wrapping_add(1),
+        }
     }
 
     fn next_f64(&mut self) -> f64 {
@@ -242,11 +244,7 @@ fn ifftshift(data: &mut [Complex64], n: usize) {
 ///
 /// # Returns
 /// `WgsResult` containing the computed SLM phase pattern and diagnostics.
-pub fn wgs_discrete(
-    grid_size: usize,
-    targets: &[TargetSpot],
-    config: &WgsConfig,
-) -> WgsResult {
+pub fn wgs_discrete(grid_size: usize, targets: &[TargetSpot], config: &WgsConfig) -> WgsResult {
     assert!(grid_size.is_power_of_two(), "Grid size must be power of 2");
     assert!(!targets.is_empty(), "Must have at least one target");
 
@@ -411,11 +409,7 @@ pub fn wgs_discrete(
 /// * `target_intensity` - Target intensity pattern (NxN, flattened row-major)
 /// * `grid_size` - Size N of NxN grid (must be power of 2)
 /// * `config` - Algorithm configuration
-pub fn gs_continuous(
-    target_intensity: &[f64],
-    grid_size: usize,
-    config: &WgsConfig,
-) -> WgsResult {
+pub fn gs_continuous(target_intensity: &[f64], grid_size: usize, config: &WgsConfig) -> WgsResult {
     assert!(grid_size.is_power_of_two(), "Grid size must be power of 2");
     assert_eq!(target_intensity.len(), grid_size * grid_size);
 
@@ -573,22 +567,22 @@ pub fn zernike_phase(grid_size: usize, j: usize, coefficient: f64) -> Vec<f64> {
 fn noll_to_nm(j: usize) -> (usize, i32) {
     // Lookup table for first 15 Zernike terms (covers most practical applications)
     static NOLL_TABLE: [(usize, i32); 16] = [
-        (0, 0),   // j=0 (unused)
-        (0, 0),   // j=1: piston
-        (1, 1),   // j=2: tip
-        (1, -1),  // j=3: tilt
-        (2, 0),   // j=4: defocus
-        (2, -2),  // j=5: oblique astigmatism
-        (2, 2),   // j=6: vertical astigmatism
-        (3, -1),  // j=7: vertical coma
-        (3, 1),   // j=8: horizontal coma
-        (3, -3),  // j=9: oblique trefoil
-        (3, 3),   // j=10: vertical trefoil
-        (4, 0),   // j=11: primary spherical
-        (4, 2),   // j=12
-        (4, -2),  // j=13
-        (4, 4),   // j=14
-        (4, -4),  // j=15
+        (0, 0),  // j=0 (unused)
+        (0, 0),  // j=1: piston
+        (1, 1),  // j=2: tip
+        (1, -1), // j=3: tilt
+        (2, 0),  // j=4: defocus
+        (2, -2), // j=5: oblique astigmatism
+        (2, 2),  // j=6: vertical astigmatism
+        (3, -1), // j=7: vertical coma
+        (3, 1),  // j=8: horizontal coma
+        (3, -3), // j=9: oblique trefoil
+        (3, 3),  // j=10: vertical trefoil
+        (4, 0),  // j=11: primary spherical
+        (4, 2),  // j=12
+        (4, -2), // j=13
+        (4, 4),  // j=14
+        (4, -4), // j=15
     ];
 
     if j < NOLL_TABLE.len() {
@@ -655,9 +649,7 @@ mod tests {
     #[test]
     fn test_fft_roundtrip() {
         let n = 8;
-        let mut data: Vec<Complex64> = (0..n * n)
-            .map(|i| Complex64::new(i as f64, 0.0))
-            .collect();
+        let mut data: Vec<Complex64> = (0..n * n).map(|i| Complex64::new(i as f64, 0.0)).collect();
         let original = data.clone();
 
         fft2d(&mut data, n, false);
@@ -687,17 +679,37 @@ mod tests {
         let result = wgs_discrete(64, &targets, &config);
 
         // Single spot should have very low error
-        assert!(result.uniformity_error < 0.01, "Single spot error too high: {}", result.uniformity_error);
+        assert!(
+            result.uniformity_error < 0.01,
+            "Single spot error too high: {}",
+            result.uniformity_error
+        );
     }
 
     #[test]
     fn test_wgs_uniform_spots() {
         // 4 spots in a square should converge to uniform intensity
         let targets = vec![
-            TargetSpot { x: 5.0, y: 5.0, intensity: 1.0 },
-            TargetSpot { x: -5.0, y: 5.0, intensity: 1.0 },
-            TargetSpot { x: 5.0, y: -5.0, intensity: 1.0 },
-            TargetSpot { x: -5.0, y: -5.0, intensity: 1.0 },
+            TargetSpot {
+                x: 5.0,
+                y: 5.0,
+                intensity: 1.0,
+            },
+            TargetSpot {
+                x: -5.0,
+                y: 5.0,
+                intensity: 1.0,
+            },
+            TargetSpot {
+                x: 5.0,
+                y: -5.0,
+                intensity: 1.0,
+            },
+            TargetSpot {
+                x: -5.0,
+                y: -5.0,
+                intensity: 1.0,
+            },
         ];
 
         let config = WgsConfig::default();
@@ -820,8 +832,16 @@ mod tests {
     fn test_convergence_completes() {
         // WGS should complete without panicking and produce valid output
         let targets = vec![
-            TargetSpot { x: 3.0, y: 3.0, intensity: 1.0 },
-            TargetSpot { x: -3.0, y: 3.0, intensity: 1.0 },
+            TargetSpot {
+                x: 3.0,
+                y: 3.0,
+                intensity: 1.0,
+            },
+            TargetSpot {
+                x: -3.0,
+                y: 3.0,
+                intensity: 1.0,
+            },
         ];
 
         let config = WgsConfig {

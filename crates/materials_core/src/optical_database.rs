@@ -160,8 +160,8 @@ impl DrudeLorentzParams {
 /// From: Lambrecht & Reynaud, Eur. Phys. J. D 8, 309 (2000)
 pub fn gold_drude() -> DrudeParams {
     DrudeParams {
-        omega_p_ev: 9.0,    // Plasma energy
-        gamma_ev: 0.035,    // Relaxation rate
+        omega_p_ev: 9.0, // Plasma energy
+        gamma_ev: 0.035, // Relaxation rate
         eps_inf: 1.0,
     }
 }
@@ -237,7 +237,7 @@ pub fn copper_drude() -> DrudeParams {
 /// Aluminum (Al) Drude parameters.
 pub fn aluminum_drude() -> DrudeParams {
     DrudeParams {
-        omega_p_ev: 15.0,   // High plasma frequency
+        omega_p_ev: 15.0, // High plasma frequency
         gamma_ev: 0.6,
         eps_inf: 1.0,
     }
@@ -283,7 +283,7 @@ pub fn silica_optical() -> DrudeLorentzParams {
             // IR phonon resonance
             LorentzOscillator {
                 strength: 1.0,
-                omega_0_ev: 0.064,  // ~8 microns
+                omega_0_ev: 0.064, // ~8 microns
                 gamma_ev: 0.005,
             },
             // UV absorption edge
@@ -293,7 +293,7 @@ pub fn silica_optical() -> DrudeLorentzParams {
                 gamma_ev: 2.0,
             },
         ],
-        eps_inf: 2.1,  // n = 1.45 -> eps = 2.1
+        eps_inf: 2.1, // n = 1.45 -> eps = 2.1
     }
 }
 
@@ -309,7 +309,7 @@ pub fn silicon_nitride_optical() -> DrudeLorentzParams {
                 gamma_ev: 0.01,
             },
         ],
-        eps_inf: 4.0,  // n ~ 2.0
+        eps_inf: 4.0, // n ~ 2.0
     }
 }
 
@@ -395,7 +395,13 @@ pub fn reflection_tm(eps: Complex64, omega: f64, k_parallel: f64) -> Complex64 {
 /// Compute the Lifshitz formula integrand for Casimir energy.
 ///
 /// This is the log of the denominator in the Casimir energy density.
-pub fn lifshitz_integrand_te(eps1: Complex64, eps2: Complex64, omega: f64, k_parallel: f64, separation: f64) -> Complex64 {
+pub fn lifshitz_integrand_te(
+    eps1: Complex64,
+    eps2: Complex64,
+    omega: f64,
+    k_parallel: f64,
+    separation: f64,
+) -> Complex64 {
     let r1 = reflection_te(eps1, omega, k_parallel);
     let r2 = reflection_te(eps2, omega, k_parallel);
 
@@ -523,7 +529,7 @@ mod tests {
     #[test]
     fn test_gold_drude() {
         let gold = gold_drude();
-        let omega = 2.0 * EV_TO_RADS;  // 2 eV
+        let omega = 2.0 * EV_TO_RADS; // 2 eV
         let eps = gold.epsilon(omega);
 
         // At 2 eV, gold should have negative real part (metallic)
@@ -534,16 +540,19 @@ mod tests {
     #[test]
     fn test_gold_imaginary_frequency() {
         let gold = gold_drude();
-        let xi = 1.0 * EV_TO_RADS;  // 1 eV imaginary frequency
+        let xi = 1.0 * EV_TO_RADS; // 1 eV imaginary frequency
 
         let eps = gold.epsilon_imaginary(xi);
-        assert!(eps > 1.0, "epsilon at imaginary freq should be > 1 for metals");
+        assert!(
+            eps > 1.0,
+            "epsilon at imaginary freq should be > 1 for metals"
+        );
     }
 
     #[test]
     fn test_silica_dielectric() {
         let silica = silica_optical();
-        let omega = 2.0 * EV_TO_RADS;  // 2 eV (visible)
+        let omega = 2.0 * EV_TO_RADS; // 2 eV (visible)
         let eps = silica.epsilon(omega);
 
         // Silica should have positive real part (dielectric)
@@ -554,7 +563,7 @@ mod tests {
 
     #[test]
     fn test_wavelength_conversion() {
-        let lambda = 632.8;  // HeNe laser wavelength in nm
+        let lambda = 632.8; // HeNe laser wavelength in nm
         let omega = wavelength_to_omega(lambda);
         let energy = omega_to_ev(omega);
 
@@ -564,9 +573,9 @@ mod tests {
 
     #[test]
     fn test_reflection_perfect_metal() {
-        let eps = Complex64::new(-1e6, 1e6);  // Approximate perfect metal
+        let eps = Complex64::new(-1e6, 1e6); // Approximate perfect metal
         let omega = 1.0 * EV_TO_RADS;
-        let k_parallel = 0.0;  // Normal incidence
+        let k_parallel = 0.0; // Normal incidence
 
         let r_te = reflection_te(eps, omega, k_parallel);
         let r_tm = reflection_tm(eps, omega, k_parallel);
@@ -599,13 +608,20 @@ mod tests {
     #[test]
     fn test_drude_lorentz_silicon() {
         let si = silicon_optical();
-        let omega = 3.5 * EV_TO_RADS;  // Above bandgap
+        let omega = 3.5 * EV_TO_RADS; // Above bandgap
 
         let eps = si.epsilon(omega);
         // Silicon has significant eps near critical points
-        assert!(eps.re.abs() > 1.0, "Silicon should have significant eps at 3.5 eV, got {}", eps.re);
+        assert!(
+            eps.re.abs() > 1.0,
+            "Silicon should have significant eps at 3.5 eV, got {}",
+            eps.re
+        );
         // Near resonance, we expect non-zero imaginary part
-        assert!(eps.im.abs() > 0.0, "Silicon should have imaginary part near critical point");
+        assert!(
+            eps.im.abs() > 0.0,
+            "Silicon should have imaginary part near critical point"
+        );
     }
 
     #[test]
@@ -621,6 +637,9 @@ mod tests {
         // At very high frequency, eps -> eps_inf
         let omega_high = 100.0 * EV_TO_RADS;
         let eps_high = gold.epsilon(omega_high);
-        assert!((eps_high.re - 1.0).abs() < 0.1, "eps -> 1 at high frequency");
+        assert!(
+            (eps_high.re - 1.0).abs() < 0.1,
+            "eps -> 1 at high frequency"
+        );
     }
 }

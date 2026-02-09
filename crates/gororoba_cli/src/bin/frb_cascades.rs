@@ -23,9 +23,9 @@
 use clap::Parser;
 use std::path::PathBuf;
 
-use data_core::catalogs::chime::{parse_chime_csv, extract_repeaters};
-use stats_core::ultrametric::temporal::analyze_temporal_cascade;
+use data_core::catalogs::chime::{extract_repeaters, parse_chime_csv};
 use stats_core::claims_gates::Verdict;
+use stats_core::ultrametric::temporal::analyze_temporal_cascade;
 
 #[derive(Parser)]
 #[command(name = "frb-cascades")]
@@ -59,11 +59,10 @@ fn main() {
     eprintln!("Input: {}", cli.input.display());
 
     // 1. Load CHIME Cat 2
-    let events = parse_chime_csv(&cli.input)
-        .unwrap_or_else(|e| {
-            eprintln!("Failed to parse CHIME CSV: {}", e);
-            std::process::exit(1);
-        });
+    let events = parse_chime_csv(&cli.input).unwrap_or_else(|e| {
+        eprintln!("Failed to parse CHIME CSV: {}", e);
+        std::process::exit(1);
+    });
 
     eprintln!("Loaded {} total events", events.len());
 
@@ -109,7 +108,8 @@ fn main() {
         "null_fraction_mean",
         "p_value",
         "verdict",
-    ]).unwrap();
+    ])
+    .unwrap();
 
     let mut n_pass = 0;
     let mut n_fail = 0;
@@ -164,7 +164,8 @@ fn main() {
             &format!("{:.4}", result.null_fraction_mean),
             &format!("{:.4}", result.p_value),
             &format!("{:?}", result.verdict),
-        ]).unwrap();
+        ])
+        .unwrap();
 
         n_analyzed += 1;
 
@@ -173,8 +174,11 @@ fn main() {
                 n_pass += 1;
                 eprintln!(
                     "  {} ({} bursts): PASS (H={:.3}, frac={:.3}, p={:.4})",
-                    source_id, result.n_bursts, result.hurst_exponent,
-                    result.ultrametric_fraction, result.p_value,
+                    source_id,
+                    result.n_bursts,
+                    result.hurst_exponent,
+                    result.ultrametric_fraction,
+                    result.p_value,
                 );
             }
             Verdict::Fail => {
@@ -182,8 +186,11 @@ fn main() {
                 if result.n_bursts >= 20 {
                     eprintln!(
                         "  {} ({} bursts): FAIL (H={:.3}, frac={:.3}, p={:.4})",
-                        source_id, result.n_bursts, result.hurst_exponent,
-                        result.ultrametric_fraction, result.p_value,
+                        source_id,
+                        result.n_bursts,
+                        result.hurst_exponent,
+                        result.ultrametric_fraction,
+                        result.p_value,
                     );
                 }
             }
@@ -200,7 +207,11 @@ fn main() {
     eprintln!("Fail (no signal): {}", n_fail);
     eprintln!(
         "Rate: {:.1}% ({}/{})",
-        if n_analyzed > 0 { 100.0 * n_pass as f64 / n_analyzed as f64 } else { 0.0 },
+        if n_analyzed > 0 {
+            100.0 * n_pass as f64 / n_analyzed as f64
+        } else {
+            0.0
+        },
         n_pass,
         n_analyzed,
     );

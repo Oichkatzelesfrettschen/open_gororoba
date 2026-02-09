@@ -21,7 +21,6 @@
 
 use std::collections::HashMap;
 
-
 /// A vector in the 8D integer lattice (typically {-1, 0, 1}).
 pub type LatticeVector = [i8; 8];
 
@@ -76,7 +75,7 @@ pub fn is_in_lambda_1024(v: &LatticeVector) -> bool {
     if !is_in_lambda_2048(v) {
         return false;
     }
-    
+
     // Slice condition
     if v[0] != -1 {
         return false;
@@ -108,17 +107,29 @@ pub fn is_in_lambda_512(v: &LatticeVector) -> bool {
 
     // Forbidden regions (l_0 is always -1 here)
     // 1. l_1 = 1
-    if v[1] == 1 { return false; }
+    if v[1] == 1 {
+        return false;
+    }
     // 2. l_1=0, l_2=1
-    if v[1] == 0 && v[2] == 1 { return false; }
+    if v[1] == 0 && v[2] == 1 {
+        return false;
+    }
     // 3. l_1=0, l_2=0, l_3=0
-    if v[1] == 0 && v[2] == 0 && v[3] == 0 { return false; }
+    if v[1] == 0 && v[2] == 0 && v[3] == 0 {
+        return false;
+    }
     // 4. l_1=0, l_2=0, l_3=1
-    if v[1] == 0 && v[2] == 0 && v[3] == 1 { return false; }
+    if v[1] == 0 && v[2] == 0 && v[3] == 1 {
+        return false;
+    }
     // 5. l_1=0, l_2=0, l_3=-1, l_4=1
-    if v[1] == 0 && v[2] == 0 && v[3] == -1 && v[4] == 1 { return false; }
+    if v[1] == 0 && v[2] == 0 && v[3] == -1 && v[4] == 1 {
+        return false;
+    }
     // 6. l_1=0, l_2=0, l_3=-1, l_4=0, l_5=1, l_6=1
-    if v[1] == 0 && v[2] == 0 && v[3] == -1 && v[4] == 0 && v[5] == 1 && v[6] == 1 { return false; }
+    if v[1] == 0 && v[2] == 0 && v[3] == -1 && v[4] == 0 && v[5] == 1 && v[6] == 1 {
+        return false;
+    }
 
     true
 }
@@ -131,19 +142,31 @@ pub fn is_in_lambda_256(v: &LatticeVector) -> bool {
 
     // Forbidden regions (l_0 = -1)
     // 1. l_1 = 0 (implies l_1 must be -1 for success, since l_1 != 1 from 512 rule)
-    if v[1] == 0 { return false; } 
-    
+    if v[1] == 0 {
+        return false;
+    }
+
     // For the remaining, l_1 = -1 is established.
     // 2. (-1, -1, 1, 1)
-    if v[2] == 1 && v[3] == 1 { return false; }
+    if v[2] == 1 && v[3] == 1 {
+        return false;
+    }
     // 3. (-1, -1, 1, 0)
-    if v[2] == 1 && v[3] == 0 { return false; }
+    if v[2] == 1 && v[3] == 0 {
+        return false;
+    }
     // 4. (-1, -1, 1, -1, 1)
-    if v[2] == 1 && v[3] == -1 && v[4] == 1 { return false; }
+    if v[2] == 1 && v[3] == -1 && v[4] == 1 {
+        return false;
+    }
     // 5. (-1, -1, 1, -1, 0)
-    if v[2] == 1 && v[3] == -1 && v[4] == 0 { return false; }
+    if v[2] == 1 && v[3] == -1 && v[4] == 0 {
+        return false;
+    }
     // 6. Singleton (-1, -1, 1, -1, -1, 1, 1, 1)
-    if v[2] == 1 && v[3] == -1 && v[4] == -1 && v[5] == 1 && v[6] == 1 && v[7] == 1 { return false; }
+    if v[2] == 1 && v[3] == -1 && v[4] == -1 && v[5] == 1 && v[6] == 1 && v[7] == 1 {
+        return false;
+    }
 
     true
 }
@@ -223,9 +246,7 @@ pub fn enumerate_forbidden_2048() -> Vec<ForbiddenPoint> {
 ///
 /// Performs exhaustive scan of 3^8 = 6561 trinary vectors, returning those
 /// that pass `pred`. Results are sorted in lexicographic order (with -1 < 0 < 1).
-pub fn enumerate_lattice_by_predicate(
-    pred: impl Fn(&LatticeVector) -> bool,
-) -> Vec<LatticeVector> {
+pub fn enumerate_lattice_by_predicate(pred: impl Fn(&LatticeVector) -> bool) -> Vec<LatticeVector> {
     let mut result = Vec::new();
     for code in 0..3u32.pow(8) {
         let mut v = [0i8; 8];
@@ -306,8 +327,7 @@ pub fn characterize_pinned_slice(prefix_len: usize) -> SliceCharacterization {
         let w = v[prefix_len..].iter().filter(|&&x| x != 0).count();
         *weight_counts.entry(w).or_insert(0usize) += 1;
     }
-    let mut tail_weight_histogram: Vec<(usize, usize)> =
-        weight_counts.into_iter().collect();
+    let mut tail_weight_histogram: Vec<(usize, usize)> = weight_counts.into_iter().collect();
     tail_weight_histogram.sort();
 
     // Pairwise squared distances and inner products
@@ -327,12 +347,10 @@ pub fn characterize_pinned_slice(prefix_len: usize) -> SliceCharacterization {
             *ip_counts.entry(ip).or_insert(0usize) += 1;
         }
     }
-    let mut distance_histogram: Vec<(i32, usize)> =
-        dist_counts.into_iter().collect();
+    let mut distance_histogram: Vec<(i32, usize)> = dist_counts.into_iter().collect();
     distance_histogram.sort();
 
-    let mut inner_product_histogram: Vec<(i32, usize)> =
-        ip_counts.into_iter().collect();
+    let mut inner_product_histogram: Vec<(i32, usize)> = ip_counts.into_iter().collect();
     inner_product_histogram.sort();
 
     SliceCharacterization {
@@ -358,11 +376,11 @@ pub fn lattice_add_f3(a: &LatticeVector, b: &LatticeVector) -> LatticeVector {
         // Compute (x + y) mod 3, keeping in {-1, 0, 1}
         let s = x as i32 + y as i32;
         *r = match s {
-            -2 => 1,   // wraps: -1 + -1 = 1 in F_3
+            -2 => 1, // wraps: -1 + -1 = 1 in F_3
             -1 => -1,
             0 => 0,
             1 => 1,
-            2 => -1,   // wraps: 1 + 1 = -1 in F_3
+            2 => -1, // wraps: 1 + 1 = -1 in F_3
             _ => unreachable!("sum of two trinary values is in [-2, 2]"),
         };
     }
@@ -392,12 +410,12 @@ pub fn apply_scalar_shadow(l: &LatticeVector, a: i8, mode: &str) -> LatticeVecto
             for i in 0..8 {
                 res[i] = l[i].saturating_add(a);
             }
-        },
+        }
         "mul" => {
             for i in 0..8 {
                 res[i] = l[i] * a;
             }
-        },
+        }
         _ => panic!("Unknown mode: {mode}"),
     }
     res
@@ -437,7 +455,10 @@ pub enum FiltrationTier {
 impl TypedCarrier {
     /// Create a new typed carrier.
     pub fn new(basis_index: usize, lattice_vec: LatticeVector) -> Self {
-        Self { basis_index, lattice_vec }
+        Self {
+            basis_index,
+            lattice_vec,
+        }
     }
 
     /// Convert from the Vec<i32> representation used in cd_external.
@@ -454,7 +475,10 @@ impl TypedCarrier {
             }
             lv[i] = val as i8;
         }
-        Some(Self { basis_index, lattice_vec: lv })
+        Some(Self {
+            basis_index,
+            lattice_vec: lv,
+        })
     }
 
     /// Return the highest filtration tier this carrier's lattice vector
@@ -506,32 +530,44 @@ impl CarrierSet {
     /// Build a carrier set from a basis_index -> lattice_vector map.
     /// This is the bridge from cd_external::load_lattice_map().
     pub fn from_i32_map(dim: usize, map: &HashMap<usize, Vec<i32>>) -> Self {
-        let mut carriers: Vec<TypedCarrier> = map.iter()
+        let mut carriers: Vec<TypedCarrier> = map
+            .iter()
             .filter_map(|(&idx, v)| TypedCarrier::from_i32_vec(idx, v))
             .collect();
         carriers.sort_by_key(|c| c.basis_index);
 
-        let index: HashMap<usize, usize> = carriers.iter()
+        let index: HashMap<usize, usize> = carriers
+            .iter()
             .enumerate()
             .map(|(pos, c)| (c.basis_index, pos))
             .collect();
 
-        Self { dim, carriers, index }
+        Self {
+            dim,
+            carriers,
+            index,
+        }
     }
 
     /// Build a carrier set from pre-validated LatticeVectors.
     pub fn from_lattice_vecs(dim: usize, pairs: &[(usize, LatticeVector)]) -> Self {
-        let mut carriers: Vec<TypedCarrier> = pairs.iter()
+        let mut carriers: Vec<TypedCarrier> = pairs
+            .iter()
             .map(|&(idx, lv)| TypedCarrier::new(idx, lv))
             .collect();
         carriers.sort_by_key(|c| c.basis_index);
 
-        let index: HashMap<usize, usize> = carriers.iter()
+        let index: HashMap<usize, usize> = carriers
+            .iter()
             .enumerate()
             .map(|(pos, c)| (c.basis_index, pos))
             .collect();
 
-        Self { dim, carriers, index }
+        Self {
+            dim,
+            carriers,
+            index,
+        }
     }
 
     /// Number of carriers in this set.
@@ -556,7 +592,8 @@ impl CarrierSet {
 
     /// Return all carriers whose lattice vectors are in Lambda_target_dim.
     pub fn filter_to_lambda(&self, target_dim: usize) -> Vec<&TypedCarrier> {
-        self.carriers.iter()
+        self.carriers
+            .iter()
             .filter(|c| c.is_in_lambda(target_dim))
             .collect()
     }
@@ -650,11 +687,13 @@ impl EncodingDictionary {
             return Err(validation);
         }
 
-        let inverse: HashMap<LatticeVector, usize> = cs.iter()
-            .map(|c| (c.lattice_vec, c.basis_index))
-            .collect();
+        let inverse: HashMap<LatticeVector, usize> =
+            cs.iter().map(|c| (c.lattice_vec, c.basis_index)).collect();
 
-        Ok(Self { carriers: cs, inverse })
+        Ok(Self {
+            carriers: cs,
+            inverse,
+        })
     }
 
     /// Build from a basis_index -> Vec<i32> map (bridge from cd_external).
@@ -710,7 +749,9 @@ impl EncodingDictionary {
 
     /// Iterate over all (basis_index, lattice_vector) pairs in order.
     pub fn iter(&self) -> impl Iterator<Item = (usize, &LatticeVector)> {
-        self.carriers.iter().map(|c| (c.basis_index, &c.lattice_vec))
+        self.carriers
+            .iter()
+            .map(|c| (c.basis_index, &c.lattice_vec))
     }
 
     /// Restrict this dictionary to carriers whose lattice vectors are in
@@ -721,7 +762,8 @@ impl EncodingDictionary {
     /// indices are the ORIGINAL indices from the parent dictionary. It will
     /// not pass completeness validation (missing basis indices are expected).
     pub fn restrict_to_lambda(&self, target_dim: usize) -> Vec<(usize, LatticeVector)> {
-        self.carriers.iter()
+        self.carriers
+            .iter()
             .filter(|c| c.is_in_lambda(target_dim))
             .map(|c| (c.basis_index, c.lattice_vec))
             .collect()
@@ -732,7 +774,13 @@ impl EncodingDictionary {
     pub fn scalar_shadow(&self, basis_index: usize) -> Option<i8> {
         self.encode(basis_index).map(|lv| {
             let s: i32 = lv.iter().map(|&x| x as i32).sum();
-            if s > 0 { 1 } else if s < 0 { -1 } else { 0 }
+            if s > 0 {
+                1
+            } else if s < 0 {
+                -1
+            } else {
+                0
+            }
         })
     }
 }
@@ -776,13 +824,9 @@ pub enum ElevatedResult {
         decoded_index: usize,
     },
     /// The sum is a valid trinary vector but not in the codebook.
-    OutOfCodebook {
-        sum_vec: LatticeVector,
-    },
+    OutOfCodebook { sum_vec: LatticeVector },
     /// The sum leaves {-1, 0, 1}^8 entirely (some coordinate exceeds bounds).
-    OutOfBounds {
-        sum_vec: [i32; 8],
-    },
+    OutOfBounds { sum_vec: [i32; 8] },
 }
 
 /// Statistics for the elevated addition table.
@@ -816,9 +860,7 @@ pub enum ElevatedResultF3 {
         decoded_index: usize,
     },
     /// The F_3-sum is a valid trinary vector but not in the codebook.
-    OutOfCodebook {
-        sum_vec: LatticeVector,
-    },
+    OutOfCodebook { sum_vec: LatticeVector },
 }
 
 /// Statistics for the F_3-elevated addition table.
@@ -855,16 +897,12 @@ impl EncodingDictionary {
         let sum = lattice_add(lv_a, lv_b);
 
         match try_narrow_to_lattice(&sum) {
-            Some(narrow) => {
-                match self.decode(&narrow) {
-                    Some(c) => Some(ElevatedResult::InCodebook {
-                        sum_vec: narrow,
-                        decoded_index: c,
-                    }),
-                    None => Some(ElevatedResult::OutOfCodebook {
-                        sum_vec: narrow,
-                    }),
-                }
+            Some(narrow) => match self.decode(&narrow) {
+                Some(c) => Some(ElevatedResult::InCodebook {
+                    sum_vec: narrow,
+                    decoded_index: c,
+                }),
+                None => Some(ElevatedResult::OutOfCodebook { sum_vec: narrow }),
             },
             None => Some(ElevatedResult::OutOfBounds { sum_vec: sum }),
         }
@@ -882,7 +920,7 @@ impl EncodingDictionary {
             for b in 0..n {
                 row.push(
                     self.elevated_add(a, b)
-                        .expect("basis indices should be valid")
+                        .expect("basis indices should be valid"),
                 );
             }
             table.push(row);
@@ -944,8 +982,7 @@ impl EncodingDictionary {
         let n = self.dim();
         let mut orbit = Vec::new();
         for a in 0..n {
-            if let Some(ElevatedResult::InCodebook { decoded_index, .. }) =
-                self.elevated_add(a, b)
+            if let Some(ElevatedResult::InCodebook { decoded_index, .. }) = self.elevated_add(a, b)
             {
                 orbit.push((a, decoded_index));
             }
@@ -985,7 +1022,7 @@ impl EncodingDictionary {
             for b in 0..n {
                 row.push(
                     self.elevated_add_f3(a, b)
-                        .expect("basis indices should be valid")
+                        .expect("basis indices should be valid"),
                 );
             }
             table.push(row);
@@ -1024,16 +1061,10 @@ impl EncodingDictionary {
                 for c in 0..limit {
                     total_triples += 1;
                     // (a + b) + c vs a + (b + c)
-                    let ab = lattice_add_f3(
-                        self.encode(a).unwrap(),
-                        self.encode(b).unwrap(),
-                    );
+                    let ab = lattice_add_f3(self.encode(a).unwrap(), self.encode(b).unwrap());
                     let abc_left = lattice_add_f3(&ab, self.encode(c).unwrap());
 
-                    let bc = lattice_add_f3(
-                        self.encode(b).unwrap(),
-                        self.encode(c).unwrap(),
-                    );
+                    let bc = lattice_add_f3(self.encode(b).unwrap(), self.encode(c).unwrap());
                     let abc_right = lattice_add_f3(self.encode(a).unwrap(), &bc);
 
                     if abc_left == abc_right {
@@ -1067,16 +1098,12 @@ impl EncodingDictionary {
         let diff = lattice_diff(lv_a, lv_b);
 
         match try_narrow_to_lattice(&diff) {
-            Some(narrow) => {
-                match self.decode(&narrow) {
-                    Some(c) => Some(ElevatedResult::InCodebook {
-                        sum_vec: narrow,
-                        decoded_index: c,
-                    }),
-                    None => Some(ElevatedResult::OutOfCodebook {
-                        sum_vec: narrow,
-                    }),
-                }
+            Some(narrow) => match self.decode(&narrow) {
+                Some(c) => Some(ElevatedResult::InCodebook {
+                    sum_vec: narrow,
+                    decoded_index: c,
+                }),
+                None => Some(ElevatedResult::OutOfCodebook { sum_vec: narrow }),
             },
             None => Some(ElevatedResult::OutOfBounds { sum_vec: diff }),
         }
@@ -1155,7 +1182,10 @@ pub fn compute_multiplication_coupling(
     mult_table: &crate::construction::mult_table::CdMultTable,
 ) -> MultiplicationCoupling {
     let dim = dict.dim();
-    assert_eq!(dim, mult_table.dim, "dictionary and multiplication table dimensions must match");
+    assert_eq!(
+        dim, mult_table.dim,
+        "dictionary and multiplication table dimensions must match"
+    );
 
     let tol = 1e-8;
 
@@ -1172,14 +1202,16 @@ pub fn compute_multiplication_coupling(
     let (q_basis, rank) = gram_schmidt_basis(&phi);
 
     // Project all lattice vectors into the reduced space: phi_r[c] = Q^T * phi[c]
-    let phi_r: Vec<Vec<f64>> = phi.iter()
-        .map(|p| project_to_basis(p, &q_basis))
-        .collect();
+    let phi_r: Vec<Vec<f64>> = phi.iter().map(|p| project_to_basis(p, &q_basis)).collect();
 
     // Find r linearly independent columns in the reduced space
     let pivot_cols = find_pivot_columns_reduced(&phi_r, rank);
-    assert_eq!(pivot_cols.len(), rank,
-        "Expected {rank} pivot columns in reduced space, got {}", pivot_cols.len());
+    assert_eq!(
+        pivot_cols.len(),
+        rank,
+        "Expected {rank} pivot columns in reduced space, got {}",
+        pivot_cols.len()
+    );
 
     // Build the r x r input matrix X_r from pivot columns
     let x_r = build_square_matrix(&phi_r, &pivot_cols, rank);
@@ -1218,10 +1250,12 @@ pub fn compute_multiplication_coupling(
                 let phi_r_prod = &phi_r[prod_idx];
 
                 for i in 0..rank {
-                    let predicted_u: f64 = m_u[i].iter().zip(phi_rc.iter()).map(|(&m, &p)| m * p).sum();
+                    let predicted_u: f64 =
+                        m_u[i].iter().zip(phi_rc.iter()).map(|(&m, &p)| m * p).sum();
                     unsigned_max_res = unsigned_max_res.max((predicted_u - phi_r_prod[i]).abs());
 
-                    let predicted_s: f64 = m_s[i].iter().zip(phi_rc.iter()).map(|(&m, &p)| m * p).sum();
+                    let predicted_s: f64 =
+                        m_s[i].iter().zip(phi_rc.iter()).map(|(&m, &p)| m * p).sum();
                     let target_s = (sign as f64) * phi_r_prod[i];
                     signed_max_res = signed_max_res.max((predicted_s - target_s).abs());
                 }
@@ -1299,7 +1333,8 @@ fn gram_schmidt_basis(vectors: &[[f64; 8]]) -> (Vec<[f64; 8]>, usize) {
 
 /// Project an 8D vector onto the orthonormal basis, giving an r-dimensional vector.
 fn project_to_basis(v: &[f64; 8], basis: &[[f64; 8]]) -> Vec<f64> {
-    basis.iter()
+    basis
+        .iter()
         .map(|b| v.iter().zip(b.iter()).map(|(&vi, &bi)| vi * bi).sum())
         .collect()
 }
@@ -1349,15 +1384,18 @@ fn build_square_matrix(phi_r: &[Vec<f64>], pivot_cols: &[usize], rank: usize) ->
 /// Invert an n x n matrix using Gauss-Jordan elimination.
 fn invert_nxn(m: &[Vec<f64>], n: usize) -> Option<Vec<Vec<f64>>> {
     let nn = 2 * n;
-    let mut aug: Vec<Vec<f64>> = (0..n).map(|i| {
-        let mut row = vec![0.0; nn];
-        row[..n].copy_from_slice(&m[i]);
-        row[n + i] = 1.0;
-        row
-    }).collect();
+    let mut aug: Vec<Vec<f64>> = (0..n)
+        .map(|i| {
+            let mut row = vec![0.0; nn];
+            row[..n].copy_from_slice(&m[i]);
+            row[n + i] = 1.0;
+            row
+        })
+        .collect();
 
     for col in 0..n {
-        let max_row = aug[col..].iter()
+        let max_row = aug[col..]
+            .iter()
             .enumerate()
             .max_by(|(_, a), (_, b)| a[col].abs().partial_cmp(&b[col].abs()).unwrap())
             .map(|(idx, _)| idx + col)
@@ -1392,7 +1430,11 @@ fn mat_mul_nxn(a: &[Vec<f64>], b: &[Vec<f64>], n: usize) -> Vec<Vec<f64>> {
     let mut c = vec![vec![0.0; n]; n];
     for (c_row, a_row) in c.iter_mut().zip(a.iter()) {
         for (j, c_val) in c_row.iter_mut().enumerate() {
-            *c_val = a_row.iter().zip(b.iter()).map(|(&a_ik, b_row)| a_ik * b_row[j]).sum();
+            *c_val = a_row
+                .iter()
+                .zip(b.iter())
+                .map(|(&a_ik, b_row)| a_ik * b_row[j])
+                .sum();
         }
     }
     c
@@ -1404,7 +1446,8 @@ fn det_nxn(m: &[Vec<f64>], n: usize) -> f64 {
     let mut sign = 1.0f64;
 
     for col in 0..n {
-        let max_row = a[col..].iter()
+        let max_row = a[col..]
+            .iter()
             .enumerate()
             .max_by(|(_, ra), (_, rb)| ra[col].abs().partial_cmp(&rb[col].abs()).unwrap())
             .map(|(idx, _)| idx + col)
@@ -1541,8 +1584,8 @@ mod tests {
     fn test_carrier_set_filter_to_lambda() {
         // Mix: one vector in Lambda_256, one not (l_0 = 0, fails Lambda_1024).
         let pairs = vec![
-            (0, [-1, -1, -1, -1, 0, 0, 0, 0]),   // in Lambda_256
-            (1, [0, -1, 0, -1, 0, -1, 0, -1]),    // base only (l_0 = 0)
+            (0, [-1, -1, -1, -1, 0, 0, 0, 0]), // in Lambda_256
+            (1, [0, -1, 0, -1, 0, -1, 0, -1]), // base only (l_0 = 0)
         ];
         let cs = CarrierSet::from_lattice_vecs(2, &pairs);
         let in_256 = cs.filter_to_lambda(256);
@@ -1554,7 +1597,7 @@ mod tests {
     fn test_carrier_set_tier_histogram() {
         let pairs = vec![
             (0, [-1, -1, -1, -1, 0, 0, 0, 0]),   // Lambda_256
-            (1, [-1, -1, -1, -1, -1, -1, 0, 0]),  // Lambda_256
+            (1, [-1, -1, -1, -1, -1, -1, 0, 0]), // Lambda_256
         ];
         let cs = CarrierSet::from_lattice_vecs(2, &pairs);
         let hist = cs.tier_histogram();
@@ -1587,10 +1630,10 @@ mod tests {
     #[test]
     fn test_base_universe_parity() {
         // Even sum + even weight + trinary + l_0 != 1
-        assert!(is_in_base_universe(&[-1, -1, 0, 0, 0, 0, 0, 0]));  // sum=-2, wt=2
-        assert!(is_in_base_universe(&[0, 0, 0, 0, 0, 0, 0, 0]));    // sum=0, wt=0
-        assert!(!is_in_base_universe(&[1, 0, 0, 0, 0, 0, 0, 0]));   // l_0=1 forbidden
-        assert!(!is_in_base_universe(&[-1, 0, 0, 0, 0, 0, 0, 0]));  // sum=-1 odd
+        assert!(is_in_base_universe(&[-1, -1, 0, 0, 0, 0, 0, 0])); // sum=-2, wt=2
+        assert!(is_in_base_universe(&[0, 0, 0, 0, 0, 0, 0, 0])); // sum=0, wt=0
+        assert!(!is_in_base_universe(&[1, 0, 0, 0, 0, 0, 0, 0])); // l_0=1 forbidden
+        assert!(!is_in_base_universe(&[-1, 0, 0, 0, 0, 0, 0, 0])); // sum=-1 odd
     }
 
     #[test]
@@ -1668,10 +1711,7 @@ mod tests {
     #[test]
     fn test_encoding_dictionary_rejects_non_injective() {
         let same_vec = [-1, -1, -1, -1, 0, 0, 0, 0];
-        let pairs = vec![
-            (0, same_vec),
-            (1, same_vec),
-        ];
+        let pairs = vec![(0, same_vec), (1, same_vec)];
         let result = EncodingDictionary::try_from_pairs(2, &pairs);
         assert!(result.is_err());
         let err = result.unwrap_err();
@@ -1726,16 +1766,22 @@ mod tests {
     fn test_forbidden_2048_count() {
         let forbidden = enumerate_forbidden_2048();
         eprintln!("Forbidden 2048D points: {}", forbidden.len());
-        assert_eq!(forbidden.len(), 139,
-            "Base universe minus Lambda_2048 should have exactly 139 points");
+        assert_eq!(
+            forbidden.len(),
+            139,
+            "Base universe minus Lambda_2048 should have exactly 139 points"
+        );
     }
 
     #[test]
     fn test_forbidden_2048_all_in_base_universe() {
         let forbidden = enumerate_forbidden_2048();
         for fp in &forbidden {
-            assert!(is_in_base_universe(&fp.vector),
-                "Forbidden point {:?} should be in base universe", fp.vector);
+            assert!(
+                is_in_base_universe(&fp.vector),
+                "Forbidden point {:?} should be in base universe",
+                fp.vector
+            );
         }
     }
 
@@ -1743,21 +1789,41 @@ mod tests {
     fn test_forbidden_2048_none_in_lambda() {
         let forbidden = enumerate_forbidden_2048();
         for fp in &forbidden {
-            assert!(!is_in_lambda_2048(&fp.vector),
-                "Forbidden point {:?} should NOT be in Lambda_2048", fp.vector);
+            assert!(
+                !is_in_lambda_2048(&fp.vector),
+                "Forbidden point {:?} should NOT be in Lambda_2048",
+                fp.vector
+            );
         }
     }
 
     #[test]
     fn test_forbidden_2048_family_counts() {
         let forbidden = enumerate_forbidden_2048();
-        let n_p1 = forbidden.iter().filter(|f| f.family == ForbiddenFamily::Prefix011).count();
-        let n_p2 = forbidden.iter().filter(|f| f.family == ForbiddenFamily::Prefix01011).count();
-        let n_p3 = forbidden.iter().filter(|f| f.family == ForbiddenFamily::Prefix010101).count();
+        let n_p1 = forbidden
+            .iter()
+            .filter(|f| f.family == ForbiddenFamily::Prefix011)
+            .count();
+        let n_p2 = forbidden
+            .iter()
+            .filter(|f| f.family == ForbiddenFamily::Prefix01011)
+            .count();
+        let n_p3 = forbidden
+            .iter()
+            .filter(|f| f.family == ForbiddenFamily::Prefix010101)
+            .count();
 
-        eprintln!("Forbidden families: Prefix011={}, Prefix01011={}, Prefix010101={}",
-            n_p1, n_p2, n_p3);
-        eprintln!("  Total: {} (= {} + {} + {})", n_p1 + n_p2 + n_p3, n_p1, n_p2, n_p3);
+        eprintln!(
+            "Forbidden families: Prefix011={}, Prefix01011={}, Prefix010101={}",
+            n_p1, n_p2, n_p3
+        );
+        eprintln!(
+            "  Total: {} (= {} + {} + {})",
+            n_p1 + n_p2 + n_p3,
+            n_p1,
+            n_p2,
+            n_p3
+        );
 
         // All families should be non-empty
         assert!(n_p1 > 0, "Prefix011 family should be non-empty");
@@ -1765,8 +1831,11 @@ mod tests {
         assert!(n_p3 > 0, "Prefix010101 family should be non-empty");
 
         // Families should partition the forbidden set (mutually exclusive)
-        assert_eq!(n_p1 + n_p2 + n_p3, 139,
-            "Three families should partition all 139 forbidden points");
+        assert_eq!(
+            n_p1 + n_p2 + n_p3,
+            139,
+            "Three families should partition all 139 forbidden points"
+        );
     }
 
     #[test]
@@ -1782,14 +1851,14 @@ mod tests {
                     assert_eq!(v[0], 0);
                     assert_eq!(v[1], 1);
                     assert_eq!(v[2], 1);
-                },
+                }
                 ForbiddenFamily::Prefix01011 => {
                     assert_eq!(v[0], 0);
                     assert_eq!(v[1], 1);
                     assert_eq!(v[2], 0);
                     assert_eq!(v[3], 1);
                     assert_eq!(v[4], 1);
-                },
+                }
                 ForbiddenFamily::Prefix010101 => {
                     assert_eq!(v[0], 0);
                     assert_eq!(v[1], 1);
@@ -1797,7 +1866,7 @@ mod tests {
                     assert_eq!(v[3], 1);
                     assert_eq!(v[4], 0);
                     assert_eq!(v[5], 1);
-                },
+                }
             }
         }
     }
@@ -1825,18 +1894,24 @@ mod tests {
                 n_base += 1;
                 if is_in_lambda_2048(&v) {
                     n_lambda += 1;
-                    assert!(!forbidden_set.contains(&v),
-                        "Lambda_2048 point should not be in forbidden set");
+                    assert!(
+                        !forbidden_set.contains(&v),
+                        "Lambda_2048 point should not be in forbidden set"
+                    );
                 } else {
                     n_forbidden += 1;
-                    assert!(forbidden_set.contains(&v),
-                        "Non-Lambda_2048 base point should be in forbidden set");
+                    assert!(
+                        forbidden_set.contains(&v),
+                        "Non-Lambda_2048 base point should be in forbidden set"
+                    );
                 }
             }
         }
 
-        eprintln!("Exhaustive scan: base={}, lambda_2048={}, forbidden={}",
-            n_base, n_lambda, n_forbidden);
+        eprintln!(
+            "Exhaustive scan: base={}, lambda_2048={}, forbidden={}",
+            n_base, n_lambda, n_forbidden
+        );
         assert_eq!(n_forbidden, 139);
         assert_eq!(n_base, n_lambda + n_forbidden);
     }
@@ -1881,7 +1956,11 @@ mod tests {
 
         eprintln!(
             "Filtration counts: base={}, 2048={}, 1024={}, 512={}, 256={}",
-            base.len(), l2048.len(), l1024.len(), l512.len(), l256.len()
+            base.len(),
+            l2048.len(),
+            l1024.len(),
+            l512.len(),
+            l256.len()
         );
 
         // Strict nesting
@@ -1891,13 +1970,14 @@ mod tests {
         assert!(l2048.len() < base.len(), "Lambda_2048 < Base");
 
         // Subset inclusion
-        let l2048_set: std::collections::HashSet<LatticeVector> =
-            l2048.iter().copied().collect();
+        let l2048_set: std::collections::HashSet<LatticeVector> = l2048.iter().copied().collect();
         for v in &l1024 {
-            assert!(l2048_set.contains(v), "Lambda_1024 point not in Lambda_2048");
+            assert!(
+                l2048_set.contains(v),
+                "Lambda_1024 point not in Lambda_2048"
+            );
         }
-        let l512_set: std::collections::HashSet<LatticeVector> =
-            l512.iter().copied().collect();
+        let l512_set: std::collections::HashSet<LatticeVector> = l512.iter().copied().collect();
         for v in &l256 {
             assert!(l512_set.contains(v), "Lambda_256 point not in Lambda_512");
         }
@@ -1925,8 +2005,10 @@ mod tests {
         // The count should be 41 (not 32) from pure predicates.
         // The "32-point slice" in the literature is the lex-first 32 of
         // Lambda_256 from CSV data, which happens to be a subset of these 41.
-        assert_eq!(char.count, 41,
-            "Pinned prefix (-1,-1,-1,-1) slice should have 41 points");
+        assert_eq!(
+            char.count, 41,
+            "Pinned prefix (-1,-1,-1,-1) slice should have 41 points"
+        );
 
         // Weight distribution: w=0 -> 1, w=2 -> 24, w=4 -> 16
         assert_eq!(char.tail_weight_histogram, vec![(0, 1), (2, 24), (4, 16)]);
@@ -1939,8 +2021,14 @@ mod tests {
         // distances only depend on the tail coordinates (l_4..l_7).
         let char = characterize_pinned_slice(4);
 
-        eprintln!("Distance histogram (d^2, count): {:?}", char.distance_histogram);
-        eprintln!("Inner product histogram (ip, count): {:?}", char.inner_product_histogram);
+        eprintln!(
+            "Distance histogram (d^2, count): {:?}",
+            char.distance_histogram
+        );
+        eprintln!(
+            "Inner product histogram (ip, count): {:?}",
+            char.inner_product_histogram
+        );
 
         // All pairs: C(41,2) = 820
         let total_pairs: usize = char.distance_histogram.iter().map(|(_, c)| c).sum();
@@ -1960,7 +2048,10 @@ mod tests {
         // Verify all distances are from tail-only differences
         for &(d2, _count) in &char.distance_histogram {
             assert!(d2 > 0, "No zero distances (points are distinct)");
-            assert!(d2 <= 16, "Max d^2 = 4*2^2 = 16 (all tail coords differ by 2)");
+            assert!(
+                d2 <= 16,
+                "Max d^2 = 4*2^2 = 16 (all tail coords differ by 2)"
+            );
         }
     }
 
@@ -1982,21 +2073,31 @@ mod tests {
         let char = characterize_pinned_slice(4);
 
         // Extract the weight-4 tail patterns
-        let w4: Vec<&LatticeVector> = char.tail_patterns.iter()
+        let w4: Vec<&LatticeVector> = char
+            .tail_patterns
+            .iter()
             .filter(|t| t[4..].iter().filter(|&&x| x != 0).count() == 4)
             .collect();
-        assert_eq!(w4.len(), 16, "16 weight-4 tail patterns (full tesseract vertices)");
+        assert_eq!(
+            w4.len(),
+            16,
+            "16 weight-4 tail patterns (full tesseract vertices)"
+        );
 
         // Verify these are exactly {-1,+1}^4 (with prefix positions zeroed)
         for t in &w4 {
             for i in 4..8 {
-                assert!(t[i] == -1 || t[i] == 1,
-                    "Weight-4 tail should be +/-1 in free coordinates");
+                assert!(
+                    t[i] == -1 || t[i] == 1,
+                    "Weight-4 tail should be +/-1 in free coordinates"
+                );
             }
         }
 
         // Extract weight-2 patterns: C(4,2) * 4 = 24
-        let w2: Vec<&LatticeVector> = char.tail_patterns.iter()
+        let w2: Vec<&LatticeVector> = char
+            .tail_patterns
+            .iter()
             .filter(|t| t[4..].iter().filter(|&&x| x != 0).count() == 2)
             .collect();
         assert_eq!(w2.len(), 24, "24 weight-2 tail patterns");
@@ -2021,8 +2122,10 @@ mod tests {
         // Actually: min tail ip is -4 (w4 vs w4 with all signs flipped),
         // so min full ip = 4 + (-4) = 0.
         for &(ip, _count) in &char.inner_product_histogram {
-            assert!(ip >= 0,
-                "Full inner product should be >= 0 (prefix contributes +4)");
+            assert!(
+                ip >= 0,
+                "Full inner product should be >= 0 (prefix contributes +4)"
+            );
         }
 
         // The inner product with self is: 4 + sum(tail_i^2).
@@ -2041,7 +2144,10 @@ mod tests {
         // Max (distinct): n_agree=3 -> ip=2, so full ip = 4+2 = 6.
         // Min: n_agree=0 -> ip=-4, so full ip = 4-4 = 0.
         // Cross (w4 vs w2): tail ip can be at most 2 (2 nonzeros agree).
-        eprintln!("Inner product histogram: {:?}", char.inner_product_histogram);
+        eprintln!(
+            "Inner product histogram: {:?}",
+            char.inner_product_histogram
+        );
     }
 
     #[test]
@@ -2068,8 +2174,10 @@ mod tests {
         }
 
         eprintln!("Trie vacuity check: {}/{} agree", n_agree, n_tested);
-        assert_eq!(n_agree, n_tested,
-            "For prefix (-1,-1,-1,-1), is_in_lambda_256 == is_in_base_universe everywhere");
+        assert_eq!(
+            n_agree, n_tested,
+            "For prefix (-1,-1,-1,-1), is_in_lambda_256 == is_in_base_universe everywhere"
+        );
     }
 
     #[test]
@@ -2086,7 +2194,8 @@ mod tests {
 
         // Extract weight-4 points (full 8D vectors)
         let all_256 = enumerate_lambda_256();
-        let w4_points: Vec<LatticeVector> = all_256.iter()
+        let w4_points: Vec<LatticeVector> = all_256
+            .iter()
             .filter(|v| v[..4] == [-1, -1, -1, -1])
             .filter(|v| v[4..].iter().filter(|&&x| x != 0).count() == 4)
             .copied()
@@ -2115,7 +2224,10 @@ mod tests {
             }
         }
 
-        eprintln!("Tesseract verification: {} vertices, {} edges", 16, edge_count);
+        eprintln!(
+            "Tesseract verification: {} vertices, {} edges",
+            16, edge_count
+        );
         assert_eq!(edge_count, 32, "Tesseract has 32 edges");
         for (idx, &deg) in degree_counts.iter().enumerate() {
             assert_eq!(deg, 4, "Vertex {} has degree {} (expected 4)", idx, deg);
@@ -2131,7 +2243,7 @@ mod tests {
     fn make_test_dictionary_4() -> EncodingDictionary {
         // Pick 4 vectors from Lambda_256 that are well-separated
         let pairs: Vec<(usize, LatticeVector)> = vec![
-            (0, [-1, -1, -1, -1, 0, 0, 0, 0]),  // weight 4, sum -4
+            (0, [-1, -1, -1, -1, 0, 0, 0, 0]),   // weight 4, sum -4
             (1, [-1, -1, -1, -1, -1, -1, 0, 0]), // weight 6, sum -6
             (2, [-1, -1, -1, -1, -1, 1, 0, 0]),  // weight 6, sum -4
             (3, [-1, -1, -1, -1, 0, 0, -1, -1]), // weight 6, sum -6
@@ -2173,8 +2285,10 @@ mod tests {
         // Phi(0) = (-1,-1,-1,-1,0,0,0,0) + Phi(0) = (-2,-2,-2,-2,0,0,0,0)
         // This overflows trinary -> OutOfBounds
         let r = dict.elevated_add(0, 0).unwrap();
-        assert!(matches!(r, ElevatedResult::OutOfBounds { .. }),
-            "Self-addition of (-1,-1,-1,-1,...) overflows");
+        assert!(
+            matches!(r, ElevatedResult::OutOfBounds { .. }),
+            "Self-addition of (-1,-1,-1,-1,...) overflows"
+        );
     }
 
     #[test]
@@ -2185,8 +2299,11 @@ mod tests {
             for b in 0..4 {
                 let r_ab = dict.elevated_add(a, b).unwrap();
                 let r_ba = dict.elevated_add(b, a).unwrap();
-                assert_eq!(r_ab, r_ba,
-                    "Elevated addition should be commutative: ({}, {})", a, b);
+                assert_eq!(
+                    r_ab, r_ba,
+                    "Elevated addition should be commutative: ({}, {})",
+                    a, b
+                );
             }
         }
     }
@@ -2197,14 +2314,21 @@ mod tests {
         let stats = dict.elevated_addition_stats();
 
         eprintln!("Synthetic 4-element dictionary stats:");
-        eprintln!("  total_pairs={}, in_codebook={}, out_of_codebook={}, out_of_bounds={}",
-            stats.total_pairs, stats.in_codebook, stats.out_of_codebook, stats.out_of_bounds);
-        eprintln!("  closure_rate={:.3}, commutative={}, identities={}",
-            stats.closure_rate, stats.is_commutative, stats.identity_count);
+        eprintln!(
+            "  total_pairs={}, in_codebook={}, out_of_codebook={}, out_of_bounds={}",
+            stats.total_pairs, stats.in_codebook, stats.out_of_codebook, stats.out_of_bounds
+        );
+        eprintln!(
+            "  closure_rate={:.3}, commutative={}, identities={}",
+            stats.closure_rate, stats.is_commutative, stats.identity_count
+        );
 
         assert_eq!(stats.total_pairs, 16, "4x4 = 16 pairs");
         assert!(stats.is_commutative, "Lattice addition is commutative");
-        assert_eq!(stats.in_codebook + stats.out_of_codebook + stats.out_of_bounds, 16);
+        assert_eq!(
+            stats.in_codebook + stats.out_of_codebook + stats.out_of_bounds,
+            16
+        );
     }
 
     #[test]
@@ -2212,13 +2336,19 @@ mod tests {
         let dict = make_test_dictionary_4();
         for b in 0..4 {
             let orbit = dict.translation_orbit(b);
-            eprintln!("Translation orbit of b={}: {} pairs in codebook", b, orbit.len());
+            eprintln!(
+                "Translation orbit of b={}: {} pairs in codebook",
+                b,
+                orbit.len()
+            );
             // Each orbit entry (a, c) means Phi(a) + Phi(b) = Phi(c)
             for &(a, c) in &orbit {
                 assert!(c < 4, "Decoded index should be valid");
                 let result = dict.elevated_add(a, b).unwrap();
-                assert!(matches!(result, ElevatedResult::InCodebook { decoded_index, .. }
-                    if decoded_index == c));
+                assert!(
+                    matches!(result, ElevatedResult::InCodebook { decoded_index, .. }
+                    if decoded_index == c)
+                );
             }
         }
     }
@@ -2240,16 +2370,22 @@ mod tests {
         let stats = dict.elevated_addition_stats();
 
         eprintln!("Lambda_256 first-8 dictionary stats:");
-        eprintln!("  total_pairs={}, in_codebook={}, out_of_codebook={}, out_of_bounds={}",
-            stats.total_pairs, stats.in_codebook, stats.out_of_codebook, stats.out_of_bounds);
-        eprintln!("  closure_rate={:.4}, commutative={}, identities={}",
-            stats.closure_rate, stats.is_commutative, stats.identity_count);
+        eprintln!(
+            "  total_pairs={}, in_codebook={}, out_of_codebook={}, out_of_bounds={}",
+            stats.total_pairs, stats.in_codebook, stats.out_of_codebook, stats.out_of_bounds
+        );
+        eprintln!(
+            "  closure_rate={:.4}, commutative={}, identities={}",
+            stats.closure_rate, stats.is_commutative, stats.identity_count
+        );
 
         assert_eq!(stats.total_pairs, 64, "8x8 = 64 pairs");
         assert!(stats.is_commutative);
         // With vectors from the deep negative corner, most sums will overflow
-        assert!(stats.out_of_bounds > 0,
-            "Some sums should overflow trinary range");
+        assert!(
+            stats.out_of_bounds > 0,
+            "Some sums should overflow trinary range"
+        );
     }
 
     #[test]
@@ -2268,8 +2404,10 @@ mod tests {
         // Verify this:
         let all_256 = enumerate_lambda_256();
         let zero_present = all_256.iter().any(|v| v.iter().all(|&x| x == 0));
-        assert!(!zero_present,
-            "Zero vector is NOT in Lambda_256 (fails l_0=-1 for Lambda_1024)");
+        assert!(
+            !zero_present,
+            "Zero vector is NOT in Lambda_256 (fails l_0=-1 for Lambda_1024)"
+        );
     }
 
     // ================================================================
@@ -2302,8 +2440,7 @@ mod tests {
         let a: LatticeVector = [-1, 1, 0, -1, 1, 0, -1, 1];
         let neg_a: LatticeVector = [1, -1, 0, 1, -1, 0, 1, -1];
         let sum = lattice_add_f3(&a, &neg_a);
-        assert_eq!(sum, [0, 0, 0, 0, 0, 0, 0, 0],
-            "a + (-a) = 0 in F_3");
+        assert_eq!(sum, [0, 0, 0, 0, 0, 0, 0, 0], "a + (-a) = 0 in F_3");
     }
 
     #[test]
@@ -2319,8 +2456,10 @@ mod tests {
         let bc = lattice_add_f3(&b, &c);
         let abc_right = lattice_add_f3(&a, &bc);
 
-        assert_eq!(abc_left, abc_right,
-            "F_3 addition is associative on raw vectors");
+        assert_eq!(
+            abc_left, abc_right,
+            "F_3 addition is associative on raw vectors"
+        );
     }
 
     #[test]
@@ -2346,8 +2485,11 @@ mod tests {
             for b in 0..4 {
                 let r_ab = dict.elevated_add_f3(a, b).unwrap();
                 let r_ba = dict.elevated_add_f3(b, a).unwrap();
-                assert_eq!(r_ab, r_ba,
-                    "F_3 elevated addition should be commutative: ({}, {})", a, b);
+                assert_eq!(
+                    r_ab, r_ba,
+                    "F_3 elevated addition should be commutative: ({}, {})",
+                    a, b
+                );
             }
         }
     }
@@ -2358,20 +2500,31 @@ mod tests {
         let stats = dict.elevated_addition_stats_f3();
 
         eprintln!("F_3 synthetic 4-element dictionary stats:");
-        eprintln!("  total_pairs={}, in_codebook={}, out_of_codebook={}",
-            stats.total_pairs, stats.in_codebook, stats.out_of_codebook);
-        eprintln!("  closure_rate={:.3}, commutative={}, identities={}",
-            stats.closure_rate, stats.is_commutative, stats.identity_count);
-        eprintln!("  associativity_rate={:.3} ({} triples tested)",
-            stats.associativity_rate, stats.associativity_triples_tested);
+        eprintln!(
+            "  total_pairs={}, in_codebook={}, out_of_codebook={}",
+            stats.total_pairs, stats.in_codebook, stats.out_of_codebook
+        );
+        eprintln!(
+            "  closure_rate={:.3}, commutative={}, identities={}",
+            stats.closure_rate, stats.is_commutative, stats.identity_count
+        );
+        eprintln!(
+            "  associativity_rate={:.3} ({} triples tested)",
+            stats.associativity_rate, stats.associativity_triples_tested
+        );
 
         assert_eq!(stats.total_pairs, 16);
         assert!(stats.is_commutative);
-        assert_eq!(stats.in_codebook + stats.out_of_codebook, 16,
-            "No out-of-bounds in F_3");
+        assert_eq!(
+            stats.in_codebook + stats.out_of_codebook,
+            16,
+            "No out-of-bounds in F_3"
+        );
         // F_3 on raw vectors is always associative
-        assert!((stats.associativity_rate - 1.0).abs() < 1e-10,
-            "F_3 is inherently associative");
+        assert!(
+            (stats.associativity_rate - 1.0).abs() < 1e-10,
+            "F_3 is inherently associative"
+        );
     }
 
     #[test]
@@ -2389,20 +2542,32 @@ mod tests {
         let stats = dict.elevated_addition_stats_f3();
 
         eprintln!("F_3 Lambda_256 first-16 dictionary stats:");
-        eprintln!("  total_pairs={}, in_codebook={}, out_of_codebook={}",
-            stats.total_pairs, stats.in_codebook, stats.out_of_codebook);
-        eprintln!("  closure_rate={:.4}, commutative={}, identities={}",
-            stats.closure_rate, stats.is_commutative, stats.identity_count);
-        eprintln!("  associativity_rate={:.4} ({} triples tested)",
-            stats.associativity_rate, stats.associativity_triples_tested);
+        eprintln!(
+            "  total_pairs={}, in_codebook={}, out_of_codebook={}",
+            stats.total_pairs, stats.in_codebook, stats.out_of_codebook
+        );
+        eprintln!(
+            "  closure_rate={:.4}, commutative={}, identities={}",
+            stats.closure_rate, stats.is_commutative, stats.identity_count
+        );
+        eprintln!(
+            "  associativity_rate={:.4} ({} triples tested)",
+            stats.associativity_rate, stats.associativity_triples_tested
+        );
 
         assert_eq!(stats.total_pairs, 256, "16x16 = 256 pairs");
         assert!(stats.is_commutative);
-        assert!((stats.associativity_rate - 1.0).abs() < 1e-10,
-            "F_3 is always associative");
+        assert!(
+            (stats.associativity_rate - 1.0).abs() < 1e-10,
+            "F_3 is always associative"
+        );
         // The closure rate should be > 0 (F_3 wraps instead of overflowing)
-        eprintln!("  F_3 closure rate: {:.1}% ({}/{})",
-            stats.closure_rate * 100.0, stats.in_codebook, stats.total_pairs);
+        eprintln!(
+            "  F_3 closure rate: {:.1}% ({}/{})",
+            stats.closure_rate * 100.0,
+            stats.in_codebook,
+            stats.total_pairs
+        );
     }
 
     #[test]
@@ -2433,16 +2598,20 @@ mod tests {
             }
         }
 
-        eprintln!("Z-difference Lambda_256 first-8: in_codebook={}, out_of_codebook={}, out_of_bounds={}",
-            in_codebook, out_of_codebook, out_of_bounds);
+        eprintln!(
+            "Z-difference Lambda_256 first-8: in_codebook={}, out_of_codebook={}, out_of_bounds={}",
+            in_codebook, out_of_codebook, out_of_bounds
+        );
 
         // The self-difference a - a = 0 always, but 0 is NOT in Lambda_256.
         // So self-differences should all be OutOfCodebook.
         for a in 0..8 {
             let r = dict.elevated_diff(a, a).unwrap();
-            assert!(matches!(r, ElevatedResult::OutOfCodebook { sum_vec }
+            assert!(
+                matches!(r, ElevatedResult::OutOfCodebook { sum_vec }
                 if sum_vec == [0, 0, 0, 0, 0, 0, 0, 0]),
-                "a - a = 0, which is not in Lambda_256");
+                "a - a = 0, which is not in Lambda_256"
+            );
         }
     }
 
@@ -2452,7 +2621,10 @@ mod tests {
 
     /// Helper: build a dim=16 dictionary from the first 16 Lambda_256 vectors
     /// and the corresponding multiplication table.
-    fn sedenion_coupling_setup() -> (EncodingDictionary, crate::construction::mult_table::CdMultTable) {
+    fn sedenion_coupling_setup() -> (
+        EncodingDictionary,
+        crate::construction::mult_table::CdMultTable,
+    ) {
         let lambda = enumerate_lambda_256();
         assert!(lambda.len() >= 16);
         let pairs: Vec<(usize, LatticeVector)> = lambda[..16]
@@ -2472,30 +2644,47 @@ mod tests {
 
         assert_eq!(coupling.dim, 16);
         assert_eq!(coupling.results.len(), 16);
-        assert!(coupling.rank > 0 && coupling.rank <= 8,
-            "rank should be in [1,8], got {}", coupling.rank);
+        assert!(
+            coupling.rank > 0 && coupling.rank <= 8,
+            "rank should be in [1,8], got {}",
+            coupling.rank
+        );
 
         // Basis 0 (e_0 = identity): multiplication is identity permutation,
         // so rho(0) is the identity map on the subspace.
         let r0 = &coupling.results[0];
-        assert!(r0.unsigned_consistent,
-            "e_0 * e_c = e_c, unsigned coupling must be consistent");
-        assert!(r0.signed_consistent,
-            "e_0 * e_c = +1 * e_c, signed coupling must be consistent");
+        assert!(
+            r0.unsigned_consistent,
+            "e_0 * e_c = e_c, unsigned coupling must be consistent"
+        );
+        assert!(
+            r0.signed_consistent,
+            "e_0 * e_c = +1 * e_c, signed coupling must be consistent"
+        );
 
         // det(I_r) = 1 in the reduced space
         let det_u = r0.unsigned_det.unwrap();
-        assert!((det_u - 1.0).abs() < 1e-6,
-            "det(rho_unsigned(0)) should be 1, got {det_u}");
+        assert!(
+            (det_u - 1.0).abs() < 1e-6,
+            "det(rho_unsigned(0)) should be 1, got {det_u}"
+        );
         let det_s = r0.signed_det.unwrap();
-        assert!((det_s - 1.0).abs() < 1e-6,
-            "det(rho_signed(0)) should be 1, got {det_s}");
+        assert!(
+            (det_s - 1.0).abs() < 1e-6,
+            "det(rho_signed(0)) should be 1, got {det_s}"
+        );
 
         // Report summary
         eprintln!("=== Sedenion (dim=16) Multiplication Coupling ===");
         eprintln!("Lattice vector rank: {}/8", coupling.rank);
-        eprintln!("Unsigned consistent: {}/16", coupling.unsigned_consistent_count);
-        eprintln!("Signed consistent:   {}/16", coupling.signed_consistent_count);
+        eprintln!(
+            "Unsigned consistent: {}/16",
+            coupling.unsigned_consistent_count
+        );
+        eprintln!(
+            "Signed consistent:   {}/16",
+            coupling.signed_consistent_count
+        );
         eprintln!("Unsigned determinants: {:?}", coupling.unsigned_dets);
         eprintln!("Signed determinants:   {:?}", coupling.signed_dets);
 
@@ -2532,11 +2721,15 @@ mod tests {
         let (dict, table) = sedenion_coupling_setup();
         let coupling = compute_multiplication_coupling(&dict, &table);
 
-        let unsigned_bases: Vec<usize> = coupling.results.iter()
+        let unsigned_bases: Vec<usize> = coupling
+            .results
+            .iter()
             .filter(|r| r.unsigned_consistent)
             .map(|r| r.basis_index)
             .collect();
-        let signed_bases: Vec<usize> = coupling.results.iter()
+        let signed_bases: Vec<usize> = coupling
+            .results
+            .iter()
             .filter(|r| r.signed_consistent)
             .map(|r| r.basis_index)
             .collect();
@@ -2554,16 +2747,23 @@ mod tests {
         // The key research question: how many basis elements have
         // consistent linear coupling? Is it all of them, or a subset?
         // Record the answer for C-466.
-        eprintln!("C-466 result: {}/{} unsigned, {}/{} signed",
-            coupling.unsigned_consistent_count, coupling.dim,
-            coupling.signed_consistent_count, coupling.dim);
+        eprintln!(
+            "C-466 result: {}/{} unsigned, {}/{} signed",
+            coupling.unsigned_consistent_count,
+            coupling.dim,
+            coupling.signed_consistent_count,
+            coupling.dim
+        );
     }
 
     #[test]
     fn test_multiplication_coupling_pathion() {
         let lambda = enumerate_lambda_256();
-        assert!(lambda.len() >= 32,
-            "Lambda_256 has {} vectors, need 32", lambda.len());
+        assert!(
+            lambda.len() >= 32,
+            "Lambda_256 has {} vectors, need 32",
+            lambda.len()
+        );
         let pairs: Vec<(usize, LatticeVector)> = lambda[..32]
             .iter()
             .enumerate()
@@ -2584,15 +2784,22 @@ mod tests {
 
         eprintln!("=== Pathion (dim=32) Multiplication Coupling ===");
         eprintln!("Rank: {}/8", coupling.rank);
-        eprintln!("Unsigned consistent: {}/32", coupling.unsigned_consistent_count);
-        eprintln!("Signed consistent:   {}/32", coupling.signed_consistent_count);
+        eprintln!(
+            "Unsigned consistent: {}/32",
+            coupling.unsigned_consistent_count
+        );
+        eprintln!(
+            "Signed consistent:   {}/32",
+            coupling.signed_consistent_count
+        );
     }
 
     #[test]
     fn test_gram_schmidt_basis_rank() {
         // Verify that gram_schmidt_basis correctly determines rank.
         let lambda = enumerate_lambda_256();
-        let phi16: Vec<[f64; 8]> = lambda[..16].iter()
+        let phi16: Vec<[f64; 8]> = lambda[..16]
+            .iter()
             .map(|lv| {
                 let mut f = [0.0f64; 8];
                 for (fv, &iv) in f.iter_mut().zip(lv.iter()) {
@@ -2603,11 +2810,14 @@ mod tests {
             .collect();
         let (basis16, rank16) = gram_schmidt_basis(&phi16);
         assert_eq!(basis16.len(), rank16);
-        assert!(rank16 >= 1 && rank16 <= 8,
-            "rank should be in [1,8], got {rank16}");
+        assert!(
+            rank16 >= 1 && rank16 <= 8,
+            "rank should be in [1,8], got {rank16}"
+        );
 
         // Full Lambda_256 should span more dimensions
-        let phi_all: Vec<[f64; 8]> = lambda.iter()
+        let phi_all: Vec<[f64; 8]> = lambda
+            .iter()
             .map(|lv| {
                 let mut f = [0.0f64; 8];
                 for (fv, &iv) in f.iter_mut().zip(lv.iter()) {
@@ -2617,27 +2827,36 @@ mod tests {
             })
             .collect();
         let (_, rank_all) = gram_schmidt_basis(&phi_all);
-        assert!(rank_all >= rank16,
-            "full Lambda_256 rank ({rank_all}) must be >= dim=16 rank ({rank16})");
+        assert!(
+            rank_all >= rank16,
+            "full Lambda_256 rank ({rank_all}) must be >= dim=16 rank ({rank16})"
+        );
 
         eprintln!("Rank of first 16 Lambda_256 vectors: {rank16}");
-        eprintln!("Rank of all {} Lambda_256 vectors: {rank_all}", lambda.len());
+        eprintln!(
+            "Rank of all {} Lambda_256 vectors: {rank_all}",
+            lambda.len()
+        );
     }
 
     #[test]
     fn test_invert_nxn_identity() {
         for n in [3, 5, 8] {
-            let m: Vec<Vec<f64>> = (0..n).map(|i| {
-                let mut row = vec![0.0; n];
-                row[i] = 1.0;
-                row
-            }).collect();
+            let m: Vec<Vec<f64>> = (0..n)
+                .map(|i| {
+                    let mut row = vec![0.0; n];
+                    row[i] = 1.0;
+                    row
+                })
+                .collect();
             let inv = invert_nxn(&m, n).unwrap();
             for (i, row) in inv.iter().enumerate() {
                 for (j, &val) in row.iter().enumerate() {
                     let expected = if i == j { 1.0 } else { 0.0 };
-                    assert!((val - expected).abs() < 1e-12,
-                        "I^-1 [{i}][{j}] = {val} for n={n}");
+                    assert!(
+                        (val - expected).abs() < 1e-12,
+                        "I^-1 [{i}][{j}] = {val} for n={n}"
+                    );
                 }
             }
         }
@@ -2646,13 +2865,17 @@ mod tests {
     #[test]
     fn test_det_nxn_identity() {
         for n in [3, 5, 8] {
-            let m: Vec<Vec<f64>> = (0..n).map(|i| {
-                let mut row = vec![0.0; n];
-                row[i] = 1.0;
-                row
-            }).collect();
-            assert!((det_nxn(&m, n) - 1.0).abs() < 1e-12,
-                "det(I_{n}) should be 1");
+            let m: Vec<Vec<f64>> = (0..n)
+                .map(|i| {
+                    let mut row = vec![0.0; n];
+                    row[i] = 1.0;
+                    row
+                })
+                .collect();
+            assert!(
+                (det_nxn(&m, n) - 1.0).abs() < 1e-12,
+                "det(I_{n}) should be 1"
+            );
         }
     }
 }

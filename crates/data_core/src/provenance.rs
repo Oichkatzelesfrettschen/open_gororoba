@@ -70,7 +70,11 @@ pub fn verify_provenance(manifest: &ProvenanceManifest, root_dir: &Path) -> Vec<
                         expected_sha256: entry.sha256.clone(),
                         actual_sha256: Some(actual),
                         ok,
-                        error: if ok { None } else { Some("hash mismatch".to_string()) },
+                        error: if ok {
+                            None
+                        } else {
+                            Some("hash mismatch".to_string())
+                        },
                     }
                 }
                 Err(e) => VerifyResult {
@@ -147,7 +151,10 @@ mod tests {
         let results = verify_provenance(&manifest, dir.path());
         assert_eq!(results.len(), 1);
         assert!(results[0].ok, "Hash should match");
-        assert_eq!(results[0].actual_sha256.as_deref(), Some(actual_hash.as_str()));
+        assert_eq!(
+            results[0].actual_sha256.as_deref(),
+            Some(actual_hash.as_str())
+        );
     }
 
     #[test]
@@ -178,7 +185,8 @@ mod tests {
             generated_at_utc: "2026-02-07T00:00:00+00:00".to_string(),
             hashes: vec![ProvenanceEntry {
                 path: "data.bin".to_string(),
-                sha256: "0000000000000000000000000000000000000000000000000000000000000000".to_string(),
+                sha256: "0000000000000000000000000000000000000000000000000000000000000000"
+                    .to_string(),
                 size_bytes: 14,
             }],
         };
@@ -192,9 +200,27 @@ mod tests {
     #[test]
     fn test_verification_summary() {
         let results = vec![
-            VerifyResult { path: "a".into(), expected_sha256: "x".into(), actual_sha256: Some("x".into()), ok: true, error: None },
-            VerifyResult { path: "b".into(), expected_sha256: "y".into(), actual_sha256: None, ok: false, error: Some("missing".into()) },
-            VerifyResult { path: "c".into(), expected_sha256: "z".into(), actual_sha256: Some("z".into()), ok: true, error: None },
+            VerifyResult {
+                path: "a".into(),
+                expected_sha256: "x".into(),
+                actual_sha256: Some("x".into()),
+                ok: true,
+                error: None,
+            },
+            VerifyResult {
+                path: "b".into(),
+                expected_sha256: "y".into(),
+                actual_sha256: None,
+                ok: false,
+                error: Some("missing".into()),
+            },
+            VerifyResult {
+                path: "c".into(),
+                expected_sha256: "z".into(),
+                actual_sha256: Some("z".into()),
+                ok: true,
+                error: None,
+            },
         ];
         let (passed, failed) = verification_summary(&results);
         assert_eq!(passed, 2);

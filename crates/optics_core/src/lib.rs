@@ -19,34 +19,51 @@
 //! - Manetsch et al., arXiv:2403.12021 (2025): Large-scale tweezer arrays
 
 pub mod grin;
+pub mod phase_retrieval;
 pub mod sfwm;
 pub mod tcmt;
-pub mod phase_retrieval;
 
 pub use grin::{
-    Ray, RayState, GrinMedium, AbsorbingGrinMedium,
-    rk4_step, rk4_step_absorbing, central_difference_gradient,
-    trace_ray, trace_ray_absorbing, RayTraceResult,
-    GrinFiber, HomogeneousMedium, Vec3,
+    central_difference_gradient, rk4_step, rk4_step_absorbing, trace_ray, trace_ray_absorbing,
+    AbsorbingGrinMedium, GrinFiber, GrinMedium, HomogeneousMedium, Ray, RayState, RayTraceResult,
+    Vec3,
 };
 
 pub use tcmt::{
-    KerrCavity, CouplingRegime, CavityState, InputField,
-    SteadyStateResult, TcmtSolver, linear_transmission,
+    bistability_bounds,
+    denormalize_energy,
+    find_turning_points,
+    find_turning_points_physical,
+    hysteresis_width,
+    linear_transmission,
+    normalize_parameters,
+    solve_normalized_cubic,
+    solve_normalized_cubic_batch,
+    thermal_regime,
+    trace_hysteresis_loop,
+    validate_cavity,
+    CavityState,
+    CouplingRegime,
+    HysteresisResult,
+    HysteresisTrace,
+    InputField,
+    KerrCavity,
     // Normalized cubic solver (Liu et al. 2013, Eq. 5)
-    NormalizedSteadyState, solve_normalized_cubic, solve_normalized_cubic_batch,
-    normalize_parameters, denormalize_energy, bistability_bounds,
-    // Thermal dynamics (Johnson et al. 2006, Carmon et al. 2004)
-    ThermalCavity, ThermalCavityState, ThermalSteadyStateResult,
-    ThermalTcmtSolver, ThermalRegime, thermal_regime,
+    NormalizedSteadyState,
+    SteadyStateResult,
     // First-class engine module: errors and hysteresis detection
     TcmtError,
-    TurningPoint, TurningPointBranch, HysteresisResult, HysteresisTrace,
-    find_turning_points, find_turning_points_physical,
-    hysteresis_width, trace_hysteresis_loop, validate_cavity,
+    TcmtSolver,
+    // Thermal dynamics (Johnson et al. 2006, Carmon et al. 2004)
+    ThermalCavity,
+    ThermalCavityState,
+    ThermalRegime,
+    ThermalSteadyStateResult,
+    ThermalTcmtSolver,
+    TurningPoint,
+    TurningPointBranch,
 };
 
 pub use phase_retrieval::{
-    WgsConfig, InitialPhase, TargetSpot, WgsResult,
-    wgs_discrete, gs_continuous, zernike_phase,
+    gs_continuous, wgs_discrete, zernike_phase, InitialPhase, TargetSpot, WgsConfig, WgsResult,
 };

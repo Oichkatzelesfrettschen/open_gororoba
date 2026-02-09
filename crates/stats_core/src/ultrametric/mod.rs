@@ -42,59 +42,58 @@
 //! - Bradley (2025): arXiv:2408.07174 (local ultrametricity)
 //! - Murtagh (2004): arXiv:1104.4063 (Baire metric hierarchical clustering)
 
-pub mod local;
-pub mod baire;
-pub mod temporal;
-pub mod dendrogram;
-pub mod null_models;
 pub mod adaptive;
-pub mod subset_search;
-pub mod codebook_null;
+pub mod baire;
 pub mod baire_codebook;
+pub mod codebook_null;
+pub mod dendrogram;
 #[cfg(feature = "gpu")]
 pub mod gpu;
+pub mod local;
+pub mod null_models;
+pub mod subset_search;
+pub mod temporal;
 
-use algebra_core::{Rational, padic_distance};
+use algebra_core::{padic_distance, Rational};
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
 use crate::claims_gates::{Evidence, GateResult, Verdict};
 
 // Re-export submodule public types
-pub use local::{LocalUltrametricResult, local_ultrametricity_test};
+pub use adaptive::{adaptive_permutation_test, AdaptiveConfig, AdaptiveResult, StopReason};
 pub use baire::{
-    BaireEncoder, AttributeSpec, baire_distance_matrix,
-    euclidean_distance_matrix, euclidean_ultrametric_test, BaireTestResult,
-    normalize_data_column_major, matrix_free_fraction,
+    baire_distance_matrix, euclidean_distance_matrix, euclidean_ultrametric_test,
+    matrix_free_fraction, matrix_free_tolerance_curve, matrix_free_tolerance_curve_with_null,
     matrix_free_ultrametric_test, matrix_free_ultrametric_test_with_null,
-    matrix_free_tolerance_curve, matrix_free_tolerance_curve_with_null,
-};
-pub use temporal::{CascadeAnalysis, WaitingTimeStats, analyze_temporal_cascade};
-pub use dendrogram::{
-    DendrogramResult, MultiLinkageResult, cophenetic_distance_matrix,
-    cophenetic_correlation, hierarchical_ultrametric_test,
-    hierarchical_ultrametric_test_with_method, multi_linkage_test,
-};
-pub use null_models::{
-    NullModel, MultiNullResult, apply_null_column_major, multi_null_comparison,
-    NullModelStrategy, NullTestConfig, ColumnIndependentNull, RowPermutationNull,
-    ToroidalShiftNull, RandomRotationNull, all_strategies, run_adaptive_null_test,
-};
-pub use adaptive::{AdaptiveConfig, AdaptiveResult, StopReason, adaptive_permutation_test};
-pub use codebook_null::{
-    CodebookNullResult, extract_zd_basis_pairs, dictionary_to_column_major,
-    selective_mean_squared_distance, run_codebook_null_test,
-    run_codebook_null_test_with_strategy, codebook_null_test_from_dim,
+    normalize_data_column_major, AttributeSpec, BaireEncoder, BaireTestResult,
 };
 pub use baire_codebook::{
-    CodebookBaireResult, shared_prefix_length, lattice_baire_distance,
-    lattice_baire_distance_matrix, filter_by_predicate, lattice_to_column_major,
-    lattice_attribute_specs, codebook_baire_ultrametric_test,
+    codebook_baire_ultrametric_test, filter_by_predicate, lattice_attribute_specs,
+    lattice_baire_distance, lattice_baire_distance_matrix, lattice_to_column_major,
+    shared_prefix_length, CodebookBaireResult,
+};
+pub use codebook_null::{
+    codebook_null_test_from_dim, dictionary_to_column_major, extract_zd_basis_pairs,
+    run_codebook_null_test, run_codebook_null_test_with_strategy, selective_mean_squared_distance,
+    CodebookNullResult,
+};
+pub use dendrogram::{
+    cophenetic_correlation, cophenetic_distance_matrix, hierarchical_ultrametric_test,
+    hierarchical_ultrametric_test_with_method, multi_linkage_test, DendrogramResult,
+    MultiLinkageResult,
+};
+pub use local::{local_ultrametricity_test, LocalUltrametricResult};
+pub use null_models::{
+    all_strategies, apply_null_column_major, multi_null_comparison, run_adaptive_null_test,
+    ColumnIndependentNull, MultiNullResult, NullModel, NullModelStrategy, NullTestConfig,
+    RandomRotationNull, RowPermutationNull, ToroidalShiftNull,
 };
 pub use subset_search::{
-    SubsetTestResult, SubsetSearchResult, SubsetSearchConfig,
-    attribute_subsets, project_data, subset_search,
+    attribute_subsets, project_data, subset_search, SubsetSearchConfig, SubsetSearchResult,
+    SubsetTestResult,
 };
+pub use temporal::{analyze_temporal_cascade, CascadeAnalysis, WaitingTimeStats};
 
 /// Configuration for ultrametric analysis.
 #[derive(Debug, Clone)]
@@ -309,10 +308,16 @@ pub fn ultrametric_fraction_from_matrix(
     for _ in 0..n_triples {
         let i = rng.gen_range(0..n_points);
         let mut j = rng.gen_range(0..n_points - 1);
-        if j >= i { j += 1; }
+        if j >= i {
+            j += 1;
+        }
         let mut k = rng.gen_range(0..n_points - 2);
-        if k >= i.min(j) { k += 1; }
-        if k >= i.max(j) { k += 1; }
+        if k >= i.min(j) {
+            k += 1;
+        }
+        if k >= i.max(j) {
+            k += 1;
+        }
 
         let d_ij = dist_matrix[idx(i, j)];
         let d_jk = dist_matrix[idx(j, k)];
@@ -358,10 +363,16 @@ pub fn ultrametric_fraction_from_matrix_eps(
     for _ in 0..n_triples {
         let i = rng.gen_range(0..n_points);
         let mut j = rng.gen_range(0..n_points - 1);
-        if j >= i { j += 1; }
+        if j >= i {
+            j += 1;
+        }
         let mut k = rng.gen_range(0..n_points - 2);
-        if k >= i.min(j) { k += 1; }
-        if k >= i.max(j) { k += 1; }
+        if k >= i.min(j) {
+            k += 1;
+        }
+        if k >= i.max(j) {
+            k += 1;
+        }
 
         let d_ij = dist_matrix[idx(i, j)];
         let d_jk = dist_matrix[idx(j, k)];
@@ -431,9 +442,7 @@ pub fn tolerance_curve(
     let mut points = Vec::with_capacity(epsilons.len());
 
     for &eps in &epsilons {
-        let obs = ultrametric_fraction_from_matrix_eps(
-            dist_matrix, n_points, n_triples, seed, eps,
-        );
+        let obs = ultrametric_fraction_from_matrix_eps(dist_matrix, n_points, n_triples, seed, eps);
 
         let null_mean = if null_dist_matrices.is_empty() {
             0.0
@@ -441,9 +450,7 @@ pub fn tolerance_curve(
             let sum: f64 = null_dist_matrices
                 .iter()
                 .map(|null_dm| {
-                    ultrametric_fraction_from_matrix_eps(
-                        null_dm, n_points, n_triples, seed, eps,
-                    )
+                    ultrametric_fraction_from_matrix_eps(null_dm, n_points, n_triples, seed, eps)
                 })
                 .sum();
             sum / null_dist_matrices.len() as f64
@@ -588,8 +595,7 @@ pub fn padic_clustering_test(
     let int_values: Vec<i64> = values.iter().map(|&v| (v * 10.0).round() as i64).collect();
 
     // Compute observed p-adic ultrametric fraction and mean distance
-    let (obs_frac, obs_mean_dist) =
-        compute_padic_fraction(&int_values, prime, n_triples, &mut rng);
+    let (obs_frac, obs_mean_dist) = compute_padic_fraction(&int_values, prime, n_triples, &mut rng);
 
     // Null distribution
     let mut null_fracs = Vec::with_capacity(n_permutations);
@@ -693,20 +699,13 @@ fn compute_padic_fraction(
 /// 3. P-adic clustering test for each prime in config
 ///
 /// Applies Bonferroni correction across all tests.
-pub fn run_ultrametric_analysis(
-    values: &[f64],
-    config: &UltrametricConfig,
-) -> UltrametricAnalysis {
+pub fn run_ultrametric_analysis(values: &[f64], config: &UltrametricConfig) -> UltrametricAnalysis {
     let n_tests = 2 + config.primes.len();
     let bonferroni_threshold = 0.05 / n_tests as f64;
 
     // 1. Fraction test
-    let fraction_result = ultrametric_fraction_test(
-        values,
-        config.n_triples,
-        config.n_permutations,
-        config.seed,
-    );
+    let fraction_result =
+        ultrametric_fraction_test(values, config.n_triples, config.n_permutations, config.seed);
 
     // 2. Defect test
     let defect_result = ultrametric_defect_test(
@@ -992,8 +991,7 @@ mod tests {
         let result = padic_clustering_test(&values, 2, 5_000, 100, 42);
 
         assert!(
-            result.padic_ultrametric_fraction >= 0.0
-                && result.padic_ultrametric_fraction <= 1.0,
+            result.padic_ultrametric_fraction >= 0.0 && result.padic_ultrametric_fraction <= 1.0,
             "Fraction out of range: {}",
             result.padic_ultrametric_fraction
         );
@@ -1087,13 +1085,13 @@ mod tests {
         let mut prev = 0.0;
         for i in 1..=20 {
             let eps = i as f64 * 0.01;
-            let frac = ultrametric_fraction_from_matrix_eps(
-                &dist_matrix, n, 10_000, 42, eps,
-            );
+            let frac = ultrametric_fraction_from_matrix_eps(&dist_matrix, n, 10_000, 42, eps);
             assert!(
                 frac >= prev - 0.01, // Allow tiny noise from sampling
                 "Fraction should be non-decreasing: eps={} frac={} < prev={}",
-                eps, frac, prev,
+                eps,
+                frac,
+                prev,
             );
             prev = frac;
         }
@@ -1160,7 +1158,8 @@ mod tests {
             assert!(
                 w[1] >= w[0] - 1e-15,
                 "Adjusted p-values should be non-decreasing: {} > {}",
-                w[0], w[1],
+                w[0],
+                w[1],
             );
         }
     }

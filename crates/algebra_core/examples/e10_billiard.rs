@@ -5,8 +5,8 @@
 //! Uses the library's HyperbolicBilliard with proper geodesic flow on H^9.
 
 use algebra_core::experimental::billiard_stats::{self, NullModel};
-use algebra_core::physics::billiard_sim::{HyperbolicBilliard, BilliardConfig, LorentzVec};
 use algebra_core::lie::kac_moody::E10RootSystem;
+use algebra_core::physics::billiard_sim::{BilliardConfig, HyperbolicBilliard, LorentzVec};
 use std::collections::HashSet;
 
 fn main() {
@@ -29,8 +29,10 @@ fn main() {
             Some(res) => {
                 sequence.push(res.wall_idx);
                 if i % 100 == 0 && i > 0 {
-                    println!("  Bounce {}: wall {}, diag error = {:.2e}", 
-                        i, res.wall_idx, res.diagnostics.pos_norm_error);
+                    println!(
+                        "  Bounce {}: wall {}, diag error = {:.2e}",
+                        i, res.wall_idx, res.diagnostics.pos_norm_error
+                    );
                 }
             }
             None => {
@@ -42,14 +44,23 @@ fn main() {
 
     println!("\n=== Results ===");
     println!("Actual bounces completed: {}", sequence.len());
-    println!("Max constraint errors: pos={:.2e} tang={:.2e} vel={:.2e}",
-        billiard.max_pos_error, billiard.max_tangency_error, billiard.max_vel_error);
+    println!(
+        "Max constraint errors: pos={:.2e} tang={:.2e} vel={:.2e}",
+        billiard.max_pos_error, billiard.max_tangency_error, billiard.max_vel_error
+    );
 
     // Hit frequencies
     let mut wall_hits = vec![0u64; 10];
-    for &w in &sequence { wall_hits[w] += 1; }
+    for &w in &sequence {
+        wall_hits[w] += 1;
+    }
     for (i, &h) in wall_hits.iter().enumerate() {
-        println!("  Wall {}: {:4} hits ({:.1}%)", i, h, 100.0 * h as f64 / sequence.len() as f64);
+        println!(
+            "  Wall {}: {:4} hits ({:.1}%)",
+            i,
+            h,
+            100.0 * h as f64 / sequence.len() as f64
+        );
     }
 
     // Locality and Fano Analysis

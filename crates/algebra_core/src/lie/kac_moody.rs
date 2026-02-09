@@ -66,10 +66,10 @@ pub enum KacMoodyType {
 /// Named Lie algebra types for convenience.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum LieAlgebraType {
-    A(usize),  // SL(n+1)
-    B(usize),  // SO(2n+1)
-    C(usize),  // Sp(2n)
-    D(usize),  // SO(2n)
+    A(usize), // SL(n+1)
+    B(usize), // SO(2n+1)
+    C(usize), // Sp(2n)
+    D(usize), // SO(2n)
     E6,
     E7,
     E8,
@@ -163,9 +163,7 @@ impl GeneralizedCartanMatrix {
 
     /// Create from a fixed-size array (convenience for small matrices).
     pub fn from_array<const N: usize>(arr: [[CartanEntry; N]; N]) -> Result<Self, &'static str> {
-        let entries: Vec<Vec<CartanEntry>> = arr.iter()
-            .map(|row| row.to_vec())
-            .collect();
+        let entries: Vec<Vec<CartanEntry>> = arr.iter().map(|row| row.to_vec()).collect();
         Self::new(entries)
     }
 
@@ -210,7 +208,9 @@ impl GeneralizedCartanMatrix {
     pub fn determinant(&self) -> i64 {
         // Convert to f64 for computation
         let n = self.rank;
-        let mut matrix: Vec<Vec<f64>> = self.entries.iter()
+        let mut matrix: Vec<Vec<f64>> = self
+            .entries
+            .iter()
             .map(|row| row.iter().map(|&x| x as f64).collect())
             .collect();
 
@@ -259,7 +259,13 @@ impl GeneralizedCartanMatrix {
         let det = self.determinant();
 
         if self.rank == 1 {
-            return if det > 0 { (1, 0, 0) } else if det == 0 { (0, 1, 0) } else { (0, 0, 1) };
+            return if det > 0 {
+                (1, 0, 0)
+            } else if det == 0 {
+                (0, 1, 0)
+            } else {
+                (0, 0, 1)
+            };
         }
 
         // Build the sequence (1, M_1, M_2, ..., M_n)
@@ -284,7 +290,12 @@ impl GeneralizedCartanMatrix {
         // The corank equals the number of trailing zeros in the minor sequence.
         let zero: usize = if det == 0 {
             // Count trailing zeros in the minor sequence (excluding position 0)
-            minors[1..].iter().rev().take_while(|&&m| m == 0).count().max(1)
+            minors[1..]
+                .iter()
+                .rev()
+                .take_while(|&&m| m == 0)
+                .count()
+                .max(1)
         } else {
             0
         };
@@ -304,7 +315,8 @@ impl GeneralizedCartanMatrix {
         }
 
         // Extract k x k submatrix
-        let submatrix: Vec<Vec<CartanEntry>> = self.entries[..k].iter()
+        let submatrix: Vec<Vec<CartanEntry>> = self.entries[..k]
+            .iter()
             .map(|row| row[..k].to_vec())
             .collect();
 
@@ -503,15 +515,16 @@ impl GeneralizedCartanMatrix {
 /// between conventions is a relabeling of the Dynkin diagram nodes.
 pub fn e8_cartan() -> GeneralizedCartanMatrix {
     GeneralizedCartanMatrix::from_array([
-        [ 2, -1,  0,  0,  0,  0,  0,  0],  // 0: connects to 1
-        [-1,  2, -1,  0,  0,  0,  0,  0],  // 1: connects to 0, 2
-        [ 0, -1,  2, -1,  0,  0,  0,  0],  // 2: connects to 1, 3
-        [ 0,  0, -1,  2, -1,  0,  0,  0],  // 3: connects to 2, 4
-        [ 0,  0,  0, -1,  2, -1, -1,  0],  // 4: connects to 3, 5, 6 (branch)
-        [ 0,  0,  0,  0, -1,  2,  0,  0],  // 5: connects to 4
-        [ 0,  0,  0,  0, -1,  0,  2, -1],  // 6: connects to 4, 7
-        [ 0,  0,  0,  0,  0,  0, -1,  2],  // 7: connects to 6
-    ]).expect("E8 Cartan matrix is valid")
+        [2, -1, 0, 0, 0, 0, 0, 0],   // 0: connects to 1
+        [-1, 2, -1, 0, 0, 0, 0, 0],  // 1: connects to 0, 2
+        [0, -1, 2, -1, 0, 0, 0, 0],  // 2: connects to 1, 3
+        [0, 0, -1, 2, -1, 0, 0, 0],  // 3: connects to 2, 4
+        [0, 0, 0, -1, 2, -1, -1, 0], // 4: connects to 3, 5, 6 (branch)
+        [0, 0, 0, 0, -1, 2, 0, 0],   // 5: connects to 4
+        [0, 0, 0, 0, -1, 0, 2, -1],  // 6: connects to 4, 7
+        [0, 0, 0, 0, 0, 0, -1, 2],   // 7: connects to 6
+    ])
+    .expect("E8 Cartan matrix is valid")
 }
 
 /// E9 = E8^{(1)} Cartan matrix (affine extension of E8).
@@ -537,16 +550,17 @@ pub fn e8_cartan() -> GeneralizedCartanMatrix {
 /// ```
 pub fn e9_cartan() -> GeneralizedCartanMatrix {
     GeneralizedCartanMatrix::from_array([
-        [ 2, -1,  0,  0,  0,  0,  0,  0, -1],  // 0: connects to 1, 8
-        [-1,  2, -1,  0,  0,  0,  0,  0,  0],  // 1: connects to 0, 2
-        [ 0, -1,  2, -1,  0,  0,  0,  0,  0],  // 2: connects to 1, 3
-        [ 0,  0, -1,  2, -1,  0,  0,  0,  0],  // 3: connects to 2, 4
-        [ 0,  0,  0, -1,  2, -1, -1,  0,  0],  // 4: connects to 3, 5, 6 (branch)
-        [ 0,  0,  0,  0, -1,  2,  0,  0,  0],  // 5: connects to 4
-        [ 0,  0,  0,  0, -1,  0,  2, -1,  0],  // 6: connects to 4, 7
-        [ 0,  0,  0,  0,  0,  0, -1,  2,  0],  // 7: connects to 6
-        [-1,  0,  0,  0,  0,  0,  0,  0,  2],  // 8 (affine): connects to 0
-    ]).expect("E9 Cartan matrix is valid")
+        [2, -1, 0, 0, 0, 0, 0, 0, -1],  // 0: connects to 1, 8
+        [-1, 2, -1, 0, 0, 0, 0, 0, 0],  // 1: connects to 0, 2
+        [0, -1, 2, -1, 0, 0, 0, 0, 0],  // 2: connects to 1, 3
+        [0, 0, -1, 2, -1, 0, 0, 0, 0],  // 3: connects to 2, 4
+        [0, 0, 0, -1, 2, -1, -1, 0, 0], // 4: connects to 3, 5, 6 (branch)
+        [0, 0, 0, 0, -1, 2, 0, 0, 0],   // 5: connects to 4
+        [0, 0, 0, 0, -1, 0, 2, -1, 0],  // 6: connects to 4, 7
+        [0, 0, 0, 0, 0, 0, -1, 2, 0],   // 7: connects to 6
+        [-1, 0, 0, 0, 0, 0, 0, 0, 2],   // 8 (affine): connects to 0
+    ])
+    .expect("E9 Cartan matrix is valid")
 }
 
 /// E10 Cartan matrix (hyperbolic, Lorentzian signature).
@@ -564,17 +578,18 @@ pub fn e9_cartan() -> GeneralizedCartanMatrix {
 /// ```
 pub fn e10_cartan() -> GeneralizedCartanMatrix {
     GeneralizedCartanMatrix::from_array([
-        [ 2, -1,  0,  0,  0,  0,  0,  0, -1,  0],  // 0: connects to 1, 8
-        [-1,  2, -1,  0,  0,  0,  0,  0,  0,  0],  // 1: connects to 0, 2
-        [ 0, -1,  2, -1,  0,  0,  0,  0,  0,  0],  // 2: connects to 1, 3
-        [ 0,  0, -1,  2, -1,  0,  0,  0,  0,  0],  // 3: connects to 2, 4
-        [ 0,  0,  0, -1,  2, -1, -1,  0,  0,  0],  // 4: connects to 3, 5, 6 (branch)
-        [ 0,  0,  0,  0, -1,  2,  0,  0,  0,  0],  // 5: connects to 4
-        [ 0,  0,  0,  0, -1,  0,  2, -1,  0,  0],  // 6: connects to 4, 7
-        [ 0,  0,  0,  0,  0,  0, -1,  2,  0,  0],  // 7: connects to 6
-        [-1,  0,  0,  0,  0,  0,  0,  0,  2, -1],  // 8 (affine): connects to 0, 9
-        [ 0,  0,  0,  0,  0,  0,  0,  0, -1,  2],  // 9 (hyperbolic): connects to 8
-    ]).expect("E10 Cartan matrix is valid")
+        [2, -1, 0, 0, 0, 0, 0, 0, -1, 0],  // 0: connects to 1, 8
+        [-1, 2, -1, 0, 0, 0, 0, 0, 0, 0],  // 1: connects to 0, 2
+        [0, -1, 2, -1, 0, 0, 0, 0, 0, 0],  // 2: connects to 1, 3
+        [0, 0, -1, 2, -1, 0, 0, 0, 0, 0],  // 3: connects to 2, 4
+        [0, 0, 0, -1, 2, -1, -1, 0, 0, 0], // 4: connects to 3, 5, 6 (branch)
+        [0, 0, 0, 0, -1, 2, 0, 0, 0, 0],   // 5: connects to 4
+        [0, 0, 0, 0, -1, 0, 2, -1, 0, 0],  // 6: connects to 4, 7
+        [0, 0, 0, 0, 0, 0, -1, 2, 0, 0],   // 7: connects to 6
+        [-1, 0, 0, 0, 0, 0, 0, 0, 2, -1],  // 8 (affine): connects to 0, 9
+        [0, 0, 0, 0, 0, 0, 0, 0, -1, 2],   // 9 (hyperbolic): connects to 8
+    ])
+    .expect("E10 Cartan matrix is valid")
 }
 
 /// E11 Cartan matrix (very extended E8).
@@ -591,18 +606,19 @@ pub fn e10_cartan() -> GeneralizedCartanMatrix {
 /// ```
 pub fn e11_cartan() -> GeneralizedCartanMatrix {
     GeneralizedCartanMatrix::from_array([
-        [ 2, -1,  0,  0,  0,  0,  0,  0, -1,  0,  0],  // 0: connects to 1, 8
-        [-1,  2, -1,  0,  0,  0,  0,  0,  0,  0,  0],  // 1: connects to 0, 2
-        [ 0, -1,  2, -1,  0,  0,  0,  0,  0,  0,  0],  // 2: connects to 1, 3
-        [ 0,  0, -1,  2, -1,  0,  0,  0,  0,  0,  0],  // 3: connects to 2, 4
-        [ 0,  0,  0, -1,  2, -1, -1,  0,  0,  0,  0],  // 4: connects to 3, 5, 6 (branch)
-        [ 0,  0,  0,  0, -1,  2,  0,  0,  0,  0,  0],  // 5: connects to 4
-        [ 0,  0,  0,  0, -1,  0,  2, -1,  0,  0,  0],  // 6: connects to 4, 7
-        [ 0,  0,  0,  0,  0,  0, -1,  2,  0,  0,  0],  // 7: connects to 6
-        [-1,  0,  0,  0,  0,  0,  0,  0,  2, -1,  0],  // 8 (affine): connects to 0, 9
-        [ 0,  0,  0,  0,  0,  0,  0,  0, -1,  2, -1],  // 9 (hyperbolic): connects to 8, 10
-        [ 0,  0,  0,  0,  0,  0,  0,  0,  0, -1,  2],  // 10 (very extended): connects to 9
-    ]).expect("E11 Cartan matrix is valid")
+        [2, -1, 0, 0, 0, 0, 0, 0, -1, 0, 0],  // 0: connects to 1, 8
+        [-1, 2, -1, 0, 0, 0, 0, 0, 0, 0, 0],  // 1: connects to 0, 2
+        [0, -1, 2, -1, 0, 0, 0, 0, 0, 0, 0],  // 2: connects to 1, 3
+        [0, 0, -1, 2, -1, 0, 0, 0, 0, 0, 0],  // 3: connects to 2, 4
+        [0, 0, 0, -1, 2, -1, -1, 0, 0, 0, 0], // 4: connects to 3, 5, 6 (branch)
+        [0, 0, 0, 0, -1, 2, 0, 0, 0, 0, 0],   // 5: connects to 4
+        [0, 0, 0, 0, -1, 0, 2, -1, 0, 0, 0],  // 6: connects to 4, 7
+        [0, 0, 0, 0, 0, 0, -1, 2, 0, 0, 0],   // 7: connects to 6
+        [-1, 0, 0, 0, 0, 0, 0, 0, 2, -1, 0],  // 8 (affine): connects to 0, 9
+        [0, 0, 0, 0, 0, 0, 0, 0, -1, 2, -1],  // 9 (hyperbolic): connects to 8, 10
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, -1, 2],   // 10 (very extended): connects to 9
+    ])
+    .expect("E11 Cartan matrix is valid")
 }
 
 /// Create the A_n Cartan matrix (SL(n+1)).
@@ -740,7 +756,8 @@ impl KacMoodyRootSystem {
         let mut result = weight.to_vec();
 
         // s_i(lambda) = lambda - <lambda, alpha_i^v> * alpha_i
-        let pairing: f64 = weight.iter()
+        let pairing: f64 = weight
+            .iter()
             .zip(&self.simple_coroots[i])
             .map(|(w, c)| w * c)
             .sum();
@@ -797,7 +814,11 @@ impl KacMoodyRoot {
             finite_part,
             level,
             lorentz_coords: vec![],
-            root_type: if level == 0 { RootType::Real } else { RootType::Imaginary },
+            root_type: if level == 0 {
+                RootType::Real
+            } else {
+                RootType::Imaginary
+            },
         }
     }
 
@@ -892,9 +913,8 @@ impl E9RootSystem {
             vec![-0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5, -0.5],
         ];
 
-        let e8_simple_roots: Vec<KacMoodyRoot> = e8_simple.into_iter()
-            .map(KacMoodyRoot::real)
-            .collect();
+        let e8_simple_roots: Vec<KacMoodyRoot> =
+            e8_simple.into_iter().map(KacMoodyRoot::real).collect();
 
         // Delta is the null root corresponding to the affine extension
         // It represents the imaginary direction
@@ -1057,12 +1077,12 @@ impl E10RootSystem {
                 *tv += label * fp;
             }
         }
-        
+
         // E9 affine root (alpha_0): (-theta, 1, 1)
         roots.push(KacMoodyRoot {
             finite_part: theta_vec.iter().map(|x| -x).collect(),
             level: 0,
-            lorentz_coords: vec![1.0, 1.0], 
+            lorentz_coords: vec![1.0, 1.0],
             root_type: RootType::Real,
         });
 
@@ -1244,8 +1264,10 @@ mod tests {
         // E10 has determinant -1 (Lorentzian signature)
         assert!(e10.determinant() < 0);
         let classification = e10.classify();
-        assert!(classification == KacMoodyType::Hyperbolic
-            || classification == KacMoodyType::Lorentzian);
+        assert!(
+            classification == KacMoodyType::Hyperbolic
+                || classification == KacMoodyType::Lorentzian
+        );
     }
 
     #[test]
@@ -1318,8 +1340,9 @@ mod tests {
         let reflected = root_sys.simple_reflection(&weight, 0);
 
         // s_1(e_1) should give something different
-        assert!((reflected[0] - weight[0]).abs() > 1e-10
-             || (reflected[1] - weight[1]).abs() > 1e-10);
+        assert!(
+            (reflected[0] - weight[0]).abs() > 1e-10 || (reflected[1] - weight[1]).abs() > 1e-10
+        );
     }
 
     #[test]
@@ -1386,9 +1409,7 @@ mod tests {
         assert!(roots.len() >= 16); // At minimum level 0
 
         // Check some roots are at different levels
-        let levels: std::collections::HashSet<i32> = roots.iter()
-            .map(|r| r.level)
-            .collect();
+        let levels: std::collections::HashSet<i32> = roots.iter().map(|r| r.level).collect();
         assert!(levels.contains(&0));
     }
 
@@ -1427,19 +1448,12 @@ mod tests {
         assert_eq!(e10.causal_type(&spacelike), "spacelike");
 
         // Create a timelike root (Lorentzian direction dominant)
-        let timelike = KacMoodyRoot::lorentzian(
-            vec![0.0; 8],
-            0,
-            vec![2.0],
-        );
+        let timelike = KacMoodyRoot::lorentzian(vec![0.0; 8], 0, vec![2.0]);
         assert_eq!(e10.causal_type(&timelike), "timelike");
 
         // Create a null root
-        let null = KacMoodyRoot::lorentzian(
-            vec![1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0],
-            0,
-            vec![1.0],
-        );
+        let null =
+            KacMoodyRoot::lorentzian(vec![1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0], 0, vec![1.0]);
         assert_eq!(e10.causal_type(&null), "null");
     }
 
@@ -1526,7 +1540,9 @@ mod tests {
         assert_eq!(roots.len(), 8);
         for i in 0..8 {
             for j in 0..8 {
-                let gram: f64 = roots[i].finite_part.iter()
+                let gram: f64 = roots[i]
+                    .finite_part
+                    .iter()
                     .zip(roots[j].finite_part.iter())
                     .map(|(a, b)| a * b)
                     .sum();
@@ -1603,7 +1619,8 @@ mod tests {
 
         // <theta, alpha_0> = 1, <theta, alpha_i> = 0 for i > 0
         for (i, root) in roots.iter().enumerate() {
-            let ip: f64 = theta.iter()
+            let ip: f64 = theta
+                .iter()
                 .zip(root.finite_part.iter())
                 .map(|(a, b)| a * b)
                 .sum();

@@ -29,11 +29,11 @@
 //! - de Marrais (2000): "The 42 Assessors and the Box-Kites they fly" (arXiv:math/0011260)
 //! - de Marrais (2004): "Box-Kites III: Quizzical Quaternions" (arXiv:math/0403113)
 
-use std::collections::{HashSet, HashMap, BTreeSet, VecDeque};
-use nalgebra::{DMatrix, SymmetricEigen};
-use petgraph::graph::{UnGraph, NodeIndex};
-use crate::construction::cayley_dickson::{cd_multiply, cd_norm_sq, cd_basis_mul_sign};
 use crate::analysis::zd_graphs::xor_key;
+use crate::construction::cayley_dickson::{cd_basis_mul_sign, cd_multiply, cd_norm_sq};
+use nalgebra::{DMatrix, SymmetricEigen};
+use petgraph::graph::{NodeIndex, UnGraph};
+use std::collections::{BTreeSet, HashMap, HashSet, VecDeque};
 
 /// An assessor: pair (low, high) with low in 1..7, high in 8..15.
 /// Represents a 2-plane of zero-divisors.
@@ -101,7 +101,9 @@ impl BoxKite {
         }
 
         // Build adjacency set for quick lookup
-        let edge_set: HashSet<(usize, usize)> = self.edges.iter()
+        let edge_set: HashSet<(usize, usize)> = self
+            .edges
+            .iter()
             .flat_map(|&(a, b)| vec![(a, b), (b, a)])
             .collect();
 
@@ -157,7 +159,11 @@ pub fn primitive_assessors() -> Vec<Assessor> {
         }
     }
 
-    debug_assert_eq!(assessors.len(), 42, "Should have exactly 42 primitive assessors");
+    debug_assert_eq!(
+        assessors.len(),
+        42,
+        "Should have exactly 42 primitive assessors"
+    );
     assessors
 }
 
@@ -283,9 +289,7 @@ pub fn find_box_kites(dim: usize, atol: f64) -> Vec<BoxKite> {
 
     for (id, component) in components.iter().enumerate() {
         // Extract assessors for this component
-        let bk_assessors: Vec<Assessor> = component.iter()
-            .map(|&i| assessors[i])
-            .collect();
+        let bk_assessors: Vec<Assessor> = component.iter().map(|&i| assessors[i]).collect();
 
         // Verify octahedral structure (should have 6 vertices)
         if bk_assessors.len() != 6 {
@@ -308,7 +312,8 @@ pub fn find_box_kites(dim: usize, atol: f64) -> Vec<BoxKite> {
         }
 
         // Find struts (non-adjacent pairs)
-        let edge_set: HashSet<(usize, usize)> = edges.iter()
+        let edge_set: HashSet<(usize, usize)> = edges
+            .iter()
             .flat_map(|&(a, b)| vec![(a, b), (b, a)])
             .collect();
 
@@ -359,15 +364,12 @@ pub fn analyze_box_kite_symmetry(dim: usize, atol: f64) -> BoxKiteSymmetryResult
     let n_assessors: usize = boxkites.iter().map(|bk| bk.assessors.len()).sum();
 
     // Collect strut signatures
-    let mut strut_signatures: Vec<usize> = boxkites.iter()
-        .map(|bk| bk.strut_signature)
-        .collect();
+    let mut strut_signatures: Vec<usize> = boxkites.iter().map(|bk| bk.strut_signature).collect();
     strut_signatures.sort();
 
     // Validate de Marrais structure
-    let de_marrais_valid = n_boxkites == 7
-        && n_assessors == 42
-        && strut_signatures == vec![1, 2, 3, 4, 5, 6, 7];
+    let de_marrais_valid =
+        n_boxkites == 7 && n_assessors == 42 && strut_signatures == vec![1, 2, 3, 4, 5, 6, 7];
 
     // PSL(2,7) has order 168 = 7 * 24
     let psl_2_7_compatible = de_marrais_valid;
@@ -444,7 +446,10 @@ pub fn edge_sign_type(a: &Assessor, b: &Assessor, atol: f64) -> EdgeSignType {
     assert!(
         !sols.is_empty(),
         "No diagonal zero-products for ({},{})--({},{})",
-        a.low, a.high, b.low, b.high
+        a.low,
+        a.high,
+        b.low,
+        b.high
     );
     if sols.contains(&(1, 1)) || sols.contains(&(-1, -1)) {
         EdgeSignType::Same
@@ -492,13 +497,19 @@ pub fn production_rule_1(a: &Assessor, b: &Assessor) -> Assessor {
         e,
         big_b ^ big_d,
         "PR#1 invariant failed: A^C != B^D for ({},{}) and ({},{})",
-        big_a, big_b, big_c, big_d
+        big_a,
+        big_b,
+        big_c,
+        big_d
     );
     assert_eq!(
         f,
         big_b ^ big_c,
         "PR#1 invariant failed: A^D != B^C for ({},{}) and ({},{})",
-        big_a, big_b, big_c, big_d
+        big_a,
+        big_b,
+        big_c,
+        big_d
     );
     assert_ne!(
         e, f,
@@ -614,12 +625,14 @@ pub fn production_rule_2(a: &Assessor, b: &Assessor, atol: f64) -> (Assessor, As
     assert!(
         (1..=7).contains(&p.0) && (8..=15).contains(&p.1),
         "PR#2 produced invalid assessor indices ({},{})",
-        p.0, p.1
+        p.0,
+        p.1
     );
     assert!(
         (1..=7).contains(&q.0) && (8..=15).contains(&q.1),
         "PR#2 produced invalid assessor indices ({},{})",
-        q.0, q.1
+        q.0,
+        q.1
     );
 
     (Assessor::new(p.0, p.1), Assessor::new(q.0, q.1))
@@ -640,9 +653,7 @@ pub fn automorpheme_assessors(o_trip: &[usize; 3]) -> HashSet<Assessor> {
         .chain(o_trip.iter().map(|&o| 8 ^ o))
         .collect();
 
-    let allowed_highs: Vec<usize> = (8..=15)
-        .filter(|h| !excluded_highs.contains(h))
-        .collect();
+    let allowed_highs: Vec<usize> = (8..=15).filter(|h| !excluded_highs.contains(h)).collect();
     debug_assert_eq!(allowed_highs.len(), 4);
 
     let mut result = HashSet::new();
@@ -687,7 +698,9 @@ pub fn production_rule_3(o_trip: &[usize; 3], a: &Assessor) -> [usize; 3] {
     assert!(
         automorpheme_assessors(o_trip).contains(a),
         "Assessor ({},{}) not in automorpheme for {:?}",
-        a.low, a.high, o_trip
+        a.low,
+        a.high,
+        o_trip
     );
 
     let candidates = automorphemes_containing_assessor(a);
@@ -695,7 +708,9 @@ pub fn production_rule_3(o_trip: &[usize; 3], a: &Assessor) -> [usize; 3] {
         candidates.len(),
         2,
         "Expected exactly 2 automorphemes for ({},{}), got {}",
-        a.low, a.high, candidates.len()
+        a.low,
+        a.high,
+        candidates.len()
     );
 
     if candidates[1] == *o_trip {
@@ -745,14 +760,13 @@ pub fn canonical_strut_table(bk: &BoxKite, atol: f64) -> StrutTable {
     // Find the unique opposite (non-neighbor) for each vertex
     let mut opposite = [0usize; 6];
     for (i, opp) in opposite.iter_mut().enumerate() {
-        let non_neighbors: Vec<usize> = (0..6)
-            .filter(|&j| j != i && !adjacent(i, j))
-            .collect();
+        let non_neighbors: Vec<usize> = (0..6).filter(|&j| j != i && !adjacent(i, j)).collect();
         assert_eq!(
             non_neighbors.len(),
             1,
             "Expected unique opposite for vertex {}, got {:?}",
-            i, non_neighbors
+            i,
+            non_neighbors
         );
         *opp = non_neighbors[0];
     }
@@ -788,8 +802,10 @@ pub fn canonical_strut_table(bk: &BoxKite, atol: f64) -> StrutTable {
 
     // Pick the lexicographically smaller face (by sorted assessor tuples)
     let face_key = |face: &[usize; 3]| -> Vec<(usize, usize)> {
-        let mut keys: Vec<(usize, usize)> =
-            face.iter().map(|&i| (nodes[i].low, nodes[i].high)).collect();
+        let mut keys: Vec<(usize, usize)> = face
+            .iter()
+            .map(|&i| (nodes[i].low, nodes[i].high))
+            .collect();
         keys.sort();
         keys
     };
@@ -914,8 +930,7 @@ pub struct MotifComponent {
 impl MotifComponent {
     /// Sorted degree sequence of the graph.
     pub fn degree_sequence(&self) -> Vec<usize> {
-        let mut deg: HashMap<CrossPair, usize> =
-            self.nodes.iter().map(|&n| (n, 0)).collect();
+        let mut deg: HashMap<CrossPair, usize> = self.nodes.iter().map(|&n| (n, 0)).collect();
         for &(a, b) in &self.edges {
             *deg.entry(a).or_insert(0) += 1;
             *deg.entry(b).or_insert(0) += 1;
@@ -928,9 +943,7 @@ impl MotifComponent {
     /// True if the component is an octahedral graph K_{2,2,2}
     /// (6 vertices, 12 edges, all degree 4).
     pub fn is_octahedron_graph(&self) -> bool {
-        self.nodes.len() == 6
-            && self.edges.len() == 12
-            && self.degree_sequence() == vec![4; 6]
+        self.nodes.len() == 6 && self.edges.len() == 12 && self.degree_sequence() == vec![4; 6]
     }
 
     /// Detect a complete multipartite graph with all parts of size 2.
@@ -946,8 +959,7 @@ impl MotifComponent {
             return 0;
         }
 
-        let edge_set: HashSet<(CrossPair, CrossPair)> =
-            self.edges.iter().copied().collect();
+        let edge_set: HashSet<(CrossPair, CrossPair)> = self.edges.iter().copied().collect();
         let adjacent = |a: CrossPair, b: CrossPair| -> bool {
             if a == b {
                 return false;
@@ -985,9 +997,7 @@ impl MotifComponent {
     /// True if the component is a cuboctahedron graph
     /// (12 vertices, 24 edges, all degree 4).
     pub fn is_cuboctahedron_graph(&self) -> bool {
-        self.nodes.len() == 12
-            && self.edges.len() == 24
-            && self.degree_sequence() == vec![4; 12]
+        self.nodes.len() == 12 && self.edges.len() == 24 && self.degree_sequence() == vec![4; 12]
     }
 
     /// Adjacency matrix of the component graph as a dense real matrix.
@@ -1126,8 +1136,7 @@ impl MotifComponent {
             nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
 
         let mut graph = UnGraph::<(), ()>::with_capacity(nodes.len(), self.edges.len());
-        let pg_nodes: Vec<NodeIndex> =
-            (0..nodes.len()).map(|_| graph.add_node(())).collect();
+        let pg_nodes: Vec<NodeIndex> = (0..nodes.len()).map(|_| graph.add_node(())).collect();
 
         for &(u, v) in &self.edges {
             graph.add_edge(pg_nodes[idx[&u]], pg_nodes[idx[&v]], ());
@@ -1224,9 +1233,7 @@ pub fn motif_components_for_cross_assessors(dim: usize) -> Vec<MotifComponent> {
         });
     }
 
-    components.sort_by_key(|c| {
-        (c.nodes.len(), c.nodes.iter().copied().collect::<Vec<_>>())
-    });
+    components.sort_by_key(|c| (c.nodes.len(), c.nodes.iter().copied().collect::<Vec<_>>()));
     components
 }
 
@@ -1237,7 +1244,11 @@ mod tests {
     #[test]
     fn test_primitive_assessors_count() {
         let assessors = primitive_assessors();
-        assert_eq!(assessors.len(), 42, "Should have exactly 42 primitive assessors");
+        assert_eq!(
+            assessors.len(),
+            42,
+            "Should have exactly 42 primitive assessors"
+        );
     }
 
     #[test]
@@ -1251,8 +1262,13 @@ mod tests {
 
         // Verify (i, i+8) excluded
         for a in &assessors {
-            assert_ne!(a.high, a.low + 8,
-                "Assessor ({}, {}) should be excluded", a.low, a.high);
+            assert_ne!(
+                a.high,
+                a.low + 8,
+                "Assessor ({}, {}) should be excluded",
+                a.low,
+                a.high
+            );
         }
     }
 
@@ -1265,8 +1281,12 @@ mod tests {
     #[test]
     fn test_sedenion_boxkite_count() {
         let boxkites = find_box_kites(16, 1e-10);
-        assert_eq!(boxkites.len(), 7,
-            "Sedenions should have exactly 7 box-kites (de Marrais), got {}", boxkites.len());
+        assert_eq!(
+            boxkites.len(),
+            7,
+            "Sedenions should have exactly 7 box-kites (de Marrais), got {}",
+            boxkites.len()
+        );
     }
 
     #[test]
@@ -1275,20 +1295,39 @@ mod tests {
 
         for (i, bk) in boxkites.iter().enumerate() {
             // Each box-kite should have 6 assessors
-            assert_eq!(bk.assessors.len(), 6,
-                "Box-kite {} should have 6 assessors, got {}", i, bk.assessors.len());
+            assert_eq!(
+                bk.assessors.len(),
+                6,
+                "Box-kite {} should have 6 assessors, got {}",
+                i,
+                bk.assessors.len()
+            );
 
             // Each box-kite should have 12 edges
-            assert_eq!(bk.edges.len(), 12,
-                "Box-kite {} should have 12 edges, got {}", i, bk.edges.len());
+            assert_eq!(
+                bk.edges.len(),
+                12,
+                "Box-kite {} should have 12 edges, got {}",
+                i,
+                bk.edges.len()
+            );
 
             // Each box-kite should have 3 struts
-            assert_eq!(bk.struts.len(), 3,
-                "Box-kite {} should have 3 struts, got {}", i, bk.struts.len());
+            assert_eq!(
+                bk.struts.len(),
+                3,
+                "Box-kite {} should have 3 struts, got {}",
+                i,
+                bk.struts.len()
+            );
 
             // Strut signature should be in 1..7
-            assert!(bk.strut_signature >= 1 && bk.strut_signature <= 7,
-                "Box-kite {} has invalid strut signature {}", i, bk.strut_signature);
+            assert!(
+                bk.strut_signature >= 1 && bk.strut_signature <= 7,
+                "Box-kite {} has invalid strut signature {}",
+                i,
+                bk.strut_signature
+            );
         }
     }
 
@@ -1298,8 +1337,12 @@ mod tests {
         let mut signatures: Vec<usize> = boxkites.iter().map(|bk| bk.strut_signature).collect();
         signatures.sort();
 
-        assert_eq!(signatures, vec![1, 2, 3, 4, 5, 6, 7],
-            "Strut signatures should be {{1..7}}, got {:?}", signatures);
+        assert_eq!(
+            signatures,
+            vec![1, 2, 3, 4, 5, 6, 7],
+            "Strut signatures should be {{1..7}}, got {:?}",
+            signatures
+        );
     }
 
     #[test]
@@ -1308,7 +1351,10 @@ mod tests {
 
         assert_eq!(result.n_boxkites, 7);
         assert_eq!(result.n_assessors, 42);
-        assert!(result.de_marrais_valid, "Should validate de Marrais structure");
+        assert!(
+            result.de_marrais_valid,
+            "Should validate de Marrais structure"
+        );
         assert!(result.psl_2_7_compatible, "Should be PSL(2,7) compatible");
     }
 
@@ -1328,7 +1374,8 @@ mod tests {
         let boxkites = find_box_kites(16, 1e-10);
 
         // Collect all assessors from all box-kites
-        let mut all_assessors: Vec<Assessor> = boxkites.iter()
+        let mut all_assessors: Vec<Assessor> = boxkites
+            .iter()
             .flat_map(|bk| bk.assessors.clone())
             .collect();
         all_assessors.sort();
@@ -1382,14 +1429,14 @@ mod tests {
         let boxkites = find_box_kites(16, 1e-10);
         for bk in &boxkites {
             for &(i, j) in &bk.edges {
-                let sols = all_diagonal_zero_products(
-                    &bk.assessors[i], &bk.assessors[j], 1e-10,
-                );
+                let sols = all_diagonal_zero_products(&bk.assessors[i], &bk.assessors[j], 1e-10);
                 assert!(
                     !sols.is_empty(),
                     "Expected zero-products for edge ({},{})--({},{})",
-                    bk.assessors[i].low, bk.assessors[i].high,
-                    bk.assessors[j].low, bk.assessors[j].high,
+                    bk.assessors[i].low,
+                    bk.assessors[i].high,
+                    bk.assessors[j].low,
+                    bk.assessors[j].high,
                 );
             }
         }
@@ -1401,7 +1448,9 @@ mod tests {
         let boxkites = find_box_kites(16, 1e-10);
         for bk in &boxkites {
             let nodes = &bk.assessors;
-            let edge_set: HashSet<(usize, usize)> = bk.edges.iter()
+            let edge_set: HashSet<(usize, usize)> = bk
+                .edges
+                .iter()
                 .flat_map(|&(a, b)| [(a, b), (b, a)])
                 .collect();
 
@@ -1411,7 +1460,9 @@ mod tests {
 
             for i in 0..6 {
                 for j in (i + 1)..6 {
-                    if !edge_set.contains(&(i, j)) { continue; }
+                    if !edge_set.contains(&(i, j)) {
+                        continue;
+                    }
                     for k in (j + 1)..6 {
                         if edge_set.contains(&(i, k)) && edge_set.contains(&(j, k)) {
                             let signs = [
@@ -1419,10 +1470,11 @@ mod tests {
                                 edge_sign_type(&nodes[j], &nodes[k], 1e-10),
                                 edge_sign_type(&nodes[i], &nodes[k], 1e-10),
                             ];
-                            let opp = signs.iter()
-                                .filter(|&&s| s == EdgeSignType::Opposite).count();
-                            let same = signs.iter()
-                                .filter(|&&s| s == EdgeSignType::Same).count();
+                            let opp = signs
+                                .iter()
+                                .filter(|&&s| s == EdgeSignType::Opposite)
+                                .count();
+                            let same = signs.iter().filter(|&&s| s == EdgeSignType::Same).count();
                             if opp == 3 {
                                 zigzag += 1;
                             } else if same == 2 && opp == 1 {
@@ -1436,9 +1488,13 @@ mod tests {
             }
 
             assert_eq!(
-                (trefoil, zigzag, other), (6, 2, 0),
+                (trefoil, zigzag, other),
+                (6, 2, 0),
                 "Box-kite {} has ({},{},{}) trefoil/zigzag/other faces",
-                bk.id, trefoil, zigzag, other,
+                bk.id,
+                trefoil,
+                zigzag,
+                other,
             );
         }
     }
@@ -1449,14 +1505,14 @@ mod tests {
         let boxkites = find_box_kites(16, 1e-10);
         for bk in &boxkites {
             for &(i, j) in &bk.struts {
-                let sols = all_diagonal_zero_products(
-                    &bk.assessors[i], &bk.assessors[j], 1e-10,
-                );
+                let sols = all_diagonal_zero_products(&bk.assessors[i], &bk.assessors[j], 1e-10);
                 assert!(
                     sols.is_empty(),
                     "Strut ({},{})--({},{}) should have no zero-products",
-                    bk.assessors[i].low, bk.assessors[i].high,
-                    bk.assessors[j].low, bk.assessors[j].high,
+                    bk.assessors[i].low,
+                    bk.assessors[i].high,
+                    bk.assessors[j].low,
+                    bk.assessors[j].high,
                 );
             }
         }
@@ -1469,14 +1525,32 @@ mod tests {
             let tab = canonical_strut_table(bk, 1e-10);
 
             // ABC should be a zigzag face (all Opposite edges)
-            assert_eq!(edge_sign_type(&tab.a, &tab.b, 1e-10), EdgeSignType::Opposite);
-            assert_eq!(edge_sign_type(&tab.b, &tab.c, 1e-10), EdgeSignType::Opposite);
-            assert_eq!(edge_sign_type(&tab.a, &tab.c, 1e-10), EdgeSignType::Opposite);
+            assert_eq!(
+                edge_sign_type(&tab.a, &tab.b, 1e-10),
+                EdgeSignType::Opposite
+            );
+            assert_eq!(
+                edge_sign_type(&tab.b, &tab.c, 1e-10),
+                EdgeSignType::Opposite
+            );
+            assert_eq!(
+                edge_sign_type(&tab.a, &tab.c, 1e-10),
+                EdgeSignType::Opposite
+            );
 
             // DEF should also be a zigzag face
-            assert_eq!(edge_sign_type(&tab.d, &tab.e, 1e-10), EdgeSignType::Opposite);
-            assert_eq!(edge_sign_type(&tab.e, &tab.f, 1e-10), EdgeSignType::Opposite);
-            assert_eq!(edge_sign_type(&tab.d, &tab.f, 1e-10), EdgeSignType::Opposite);
+            assert_eq!(
+                edge_sign_type(&tab.d, &tab.e, 1e-10),
+                EdgeSignType::Opposite
+            );
+            assert_eq!(
+                edge_sign_type(&tab.e, &tab.f, 1e-10),
+                EdgeSignType::Opposite
+            );
+            assert_eq!(
+                edge_sign_type(&tab.d, &tab.f, 1e-10),
+                EdgeSignType::Opposite
+            );
         }
     }
 
@@ -1485,7 +1559,9 @@ mod tests {
         // PR#1 should reconstruct a valid third vertex for every edge
         let boxkites = find_box_kites(16, 1e-10);
         for bk in &boxkites {
-            let edge_set: HashSet<(usize, usize)> = bk.edges.iter()
+            let edge_set: HashSet<(usize, usize)> = bk
+                .edges
+                .iter()
                 .flat_map(|&(a, b)| [(a, b), (b, a)])
                 .collect();
 
@@ -1496,7 +1572,9 @@ mod tests {
                 assert!(
                     bk.assessors.contains(&c),
                     "PR#1 result ({},{}) not in box-kite {}",
-                    c.low, c.high, bk.id,
+                    c.low,
+                    c.high,
+                    bk.id,
                 );
 
                 // Result must be adjacent to both inputs
@@ -1517,16 +1595,20 @@ mod tests {
                     edge_sign_type(&bk.assessors[i], &c, 1e-10),
                     edge_sign_type(&bk.assessors[j], &c, 1e-10),
                 ];
-                let same = signs.iter()
-                    .filter(|&&s| s == EdgeSignType::Same).count();
-                let opp = signs.iter()
-                    .filter(|&&s| s == EdgeSignType::Opposite).count();
+                let same = signs.iter().filter(|&&s| s == EdgeSignType::Same).count();
+                let opp = signs
+                    .iter()
+                    .filter(|&&s| s == EdgeSignType::Opposite)
+                    .count();
                 assert!(
                     (same, opp) == (2, 1) || (same, opp) == (0, 3),
                     "PR#1 triangle has unexpected sign pattern ({},{}) for edge ({},{})--({},{})",
-                    same, opp,
-                    bk.assessors[i].low, bk.assessors[i].high,
-                    bk.assessors[j].low, bk.assessors[j].high,
+                    same,
+                    opp,
+                    bk.assessors[i].low,
+                    bk.assessors[i].high,
+                    bk.assessors[j].low,
+                    bk.assessors[j].high,
                 );
             }
         }
@@ -1540,12 +1622,20 @@ mod tests {
 
         for bk in &boxkites {
             for &(i, j) in &bk.edges {
-                let (p, q) = production_rule_2(
-                    &bk.assessors[i], &bk.assessors[j], 1e-10,
-                );
+                let (p, q) = production_rule_2(&bk.assessors[i], &bk.assessors[j], 1e-10);
                 assert_ne!(p, q);
-                assert!(primitives.contains(&p), "PR#2 output ({},{}) not primitive", p.low, p.high);
-                assert!(primitives.contains(&q), "PR#2 output ({},{}) not primitive", q.low, q.high);
+                assert!(
+                    primitives.contains(&p),
+                    "PR#2 output ({},{}) not primitive",
+                    p.low,
+                    p.high
+                );
+                assert!(
+                    primitives.contains(&q),
+                    "PR#2 output ({},{}) not primitive",
+                    q.low,
+                    q.high
+                );
 
                 // Outputs are co-assessors
                 assert!(
@@ -1627,7 +1717,8 @@ mod tests {
             let a8 = Assessor::new(low, 8);
             assert!(
                 automorphemes_containing_assessor(&a8).is_empty(),
-                "({}, 8) should not be in any automorpheme", low,
+                "({}, 8) should not be in any automorpheme",
+                low,
             );
         }
     }
@@ -1656,24 +1747,38 @@ mod tests {
     fn test_motif_census_16d_matches_de_marrais_box_kites() {
         // At dim=16 the motif census must recover exactly the 7 box-kites
         let comps = motif_components_for_cross_assessors(16);
-        assert_eq!(comps.len(), 7, "Expected 7 components at dim=16, got {}", comps.len());
+        assert_eq!(
+            comps.len(),
+            7,
+            "Expected 7 components at dim=16, got {}",
+            comps.len()
+        );
 
         // All should be octahedral (6 nodes, 12 edges, degree-4 regular)
         for (i, c) in comps.iter().enumerate() {
-            assert_eq!(c.nodes.len(), 6, "Component {i} has {} nodes", c.nodes.len());
-            assert!(c.is_octahedron_graph(), "Component {i} is not an octahedron");
+            assert_eq!(
+                c.nodes.len(),
+                6,
+                "Component {i} has {} nodes",
+                c.nodes.len()
+            );
+            assert!(
+                c.is_octahedron_graph(),
+                "Component {i} is not an octahedron"
+            );
         }
 
         // Union of all component nodes = the 42 primitive assessors
-        let union: HashSet<CrossPair> = comps
-            .iter()
-            .flat_map(|c| c.nodes.iter().copied())
-            .collect();
+        let union: HashSet<CrossPair> =
+            comps.iter().flat_map(|c| c.nodes.iter().copied()).collect();
         let primitives: HashSet<CrossPair> = primitive_assessors()
             .iter()
             .map(|a| (a.low, a.high))
             .collect();
-        assert_eq!(union, primitives, "Census nodes should match primitive assessors");
+        assert_eq!(
+            union, primitives,
+            "Census nodes should match primitive assessors"
+        );
 
         // Cross-validate against find_box_kites
         let boxkites = find_box_kites(16, 1e-10);
@@ -1693,7 +1798,10 @@ mod tests {
                     xor_key(a.0, a.1),
                     xor_key(b.0, b.1),
                     "Edge ({},{})--({},{}) violates XOR bucket necessity",
-                    a.0, a.1, b.0, b.1,
+                    a.0,
+                    a.1,
+                    b.0,
+                    b.1,
                 );
             }
         }
@@ -1721,7 +1829,11 @@ mod tests {
         let comps = motif_components_for_cross_assessors(32);
 
         // Exact component count.
-        assert_eq!(comps.len(), 15, "dim=32 should have exactly 15 motif components");
+        assert_eq!(
+            comps.len(),
+            15,
+            "dim=32 should have exactly 15 motif components"
+        );
 
         // All components have 14 nodes.
         for (i, c) in comps.iter().enumerate() {
@@ -1729,10 +1841,19 @@ mod tests {
         }
 
         // Count multipartite (heptacross) vs non-multipartite.
-        let n_heptacross = comps.iter().filter(|c| c.k2_multipartite_part_count() == 7).count();
-        let n_mixed = comps.iter().filter(|c| c.k2_multipartite_part_count() == 0).count();
+        let n_heptacross = comps
+            .iter()
+            .filter(|c| c.k2_multipartite_part_count() == 7)
+            .count();
+        let n_mixed = comps
+            .iter()
+            .filter(|c| c.k2_multipartite_part_count() == 0)
+            .count();
 
-        assert_eq!(n_heptacross, 8, "Expected 8 K_{{2,2,2,2,2,2,2}} (heptacross) components");
+        assert_eq!(
+            n_heptacross, 8,
+            "Expected 8 K_{{2,2,2,2,2,2,2}} (heptacross) components"
+        );
         assert_eq!(n_mixed, 7, "Expected 7 mixed-degree components");
 
         // Heptacross validation: 84 edges, degree-12 regular.
@@ -1780,14 +1901,28 @@ mod tests {
         let comps = motif_components_for_cross_assessors(64);
 
         // Classify by edge count
-        let by_edges = |e: usize| -> usize {
-            comps.iter().filter(|c| c.edges.len() == e).count()
-        };
+        let by_edges = |e: usize| -> usize { comps.iter().filter(|c| c.edges.len() == e).count() };
 
-        assert_eq!(by_edges(84), 8, "Expected 8 sparse double-hub components (84 edges)");
-        assert_eq!(by_edges(228), 7, "Expected 7 intermediate components (228 edges)");
-        assert_eq!(by_edges(276), 7, "Expected 7 mixed intermediate components (276 edges)");
-        assert_eq!(by_edges(420), 9, "Expected 9 K_{{2,...,2}} components (420 edges)");
+        assert_eq!(
+            by_edges(84),
+            8,
+            "Expected 8 sparse double-hub components (84 edges)"
+        );
+        assert_eq!(
+            by_edges(228),
+            7,
+            "Expected 7 intermediate components (228 edges)"
+        );
+        assert_eq!(
+            by_edges(276),
+            7,
+            "Expected 7 mixed intermediate components (276 edges)"
+        );
+        assert_eq!(
+            by_edges(420),
+            9,
+            "Expected 9 K_{{2,...,2}} components (420 edges)"
+        );
 
         // Verify K_{2,...,2} structure: 15-partite with all parts size 2
         for c in comps.iter().filter(|c| c.edges.len() == 420) {
@@ -1821,7 +1956,12 @@ mod tests {
     fn test_motif_census_128d_uniform_node_count() {
         let comps = motif_components_for_cross_assessors(128);
         for (i, c) in comps.iter().enumerate() {
-            assert_eq!(c.nodes.len(), 62, "dim=128 comp[{}] should have 62 nodes", i);
+            assert_eq!(
+                c.nodes.len(),
+                62,
+                "dim=128 comp[{}] should have 62 nodes",
+                i
+            );
         }
     }
 
@@ -1834,18 +1974,27 @@ mod tests {
         //     (1092, 7), (1284, 7), (1524, 8), (1860, 10)
         let comps = motif_components_for_cross_assessors(128);
 
-        let by_edges = |e: usize| -> usize {
-            comps.iter().filter(|c| c.edges.len() == e).count()
-        };
+        let by_edges = |e: usize| -> usize { comps.iter().filter(|c| c.edges.len() == e).count() };
 
         // 8 motif classes
         let expected: [(usize, usize); 8] = [
-            (180, 9), (516, 8), (756, 7), (948, 7),
-            (1092, 7), (1284, 7), (1524, 8), (1860, 10),
+            (180, 9),
+            (516, 8),
+            (756, 7),
+            (948, 7),
+            (1092, 7),
+            (1284, 7),
+            (1524, 8),
+            (1860, 10),
         ];
         for &(edges, count) in &expected {
-            assert_eq!(by_edges(edges), count,
-                "dim=128: expected {} components with {} edges", count, edges);
+            assert_eq!(
+                by_edges(edges),
+                count,
+                "dim=128: expected {} components with {} edges",
+                count,
+                edges
+            );
         }
 
         // Verify K_{2,...,2} structure: 31-partite
@@ -1880,7 +2029,12 @@ mod tests {
     fn test_motif_census_256d_uniform_node_count() {
         let comps = motif_components_for_cross_assessors(256);
         for (i, c) in comps.iter().enumerate() {
-            assert_eq!(c.nodes.len(), 126, "dim=256 comp[{}] should have 126 nodes", i);
+            assert_eq!(
+                c.nodes.len(),
+                126,
+                "dim=256 comp[{}] should have 126 nodes",
+                i
+            );
         }
     }
 
@@ -1895,19 +2049,34 @@ mod tests {
         //     (5748, 8), (6468, 8), (7092, 9), (7812, 11)
         let comps = motif_components_for_cross_assessors(256);
 
-        let by_edges = |e: usize| -> usize {
-            comps.iter().filter(|c| c.edges.len() == e).count()
-        };
+        let by_edges = |e: usize| -> usize { comps.iter().filter(|c| c.edges.len() == e).count() };
 
         let expected: [(usize, usize); 16] = [
-            (372, 10), (1092, 9), (1716, 8), (2436, 8),
-            (2676, 7), (3396, 7), (3444, 7), (4020, 7),
-            (4164, 7), (4740, 7), (4788, 7), (5508, 7),
-            (5748, 8), (6468, 8), (7092, 9), (7812, 11),
+            (372, 10),
+            (1092, 9),
+            (1716, 8),
+            (2436, 8),
+            (2676, 7),
+            (3396, 7),
+            (3444, 7),
+            (4020, 7),
+            (4164, 7),
+            (4740, 7),
+            (4788, 7),
+            (5508, 7),
+            (5748, 8),
+            (6468, 8),
+            (7092, 9),
+            (7812, 11),
         ];
         for &(edges, count) in &expected {
-            assert_eq!(by_edges(edges), count,
-                "dim=256: expected {} components with {} edges", count, edges);
+            assert_eq!(
+                by_edges(edges),
+                count,
+                "dim=256: expected {} components with {} edges",
+                count,
+                edges
+            );
         }
 
         // Verify K_{2,...,2}: 63-partite
@@ -1940,22 +2109,35 @@ mod tests {
             let comps = motif_components_for_cross_assessors(dim);
 
             // Law 1: n_comps = dim/2 - 1
-            assert_eq!(comps.len(), dim / 2 - 1,
-                "dim={}: n_comps should be dim/2-1", dim);
+            assert_eq!(
+                comps.len(),
+                dim / 2 - 1,
+                "dim={}: n_comps should be dim/2-1",
+                dim
+            );
 
             // Law 2: all components have dim/2 - 2 nodes
             for c in &comps {
-                assert_eq!(c.nodes.len(), dim / 2 - 2,
-                    "dim={}: nodes_per_comp should be dim/2-2", dim);
+                assert_eq!(
+                    c.nodes.len(),
+                    dim / 2 - 2,
+                    "dim={}: nodes_per_comp should be dim/2-2",
+                    dim
+                );
             }
 
             // Law 3: K_{2,...,2} components have dim/4-1 bipartite parts
-            let k2_parts_max = comps.iter()
+            let k2_parts_max = comps
+                .iter()
                 .map(|c| c.k2_multipartite_part_count())
                 .max()
                 .unwrap_or(0);
-            assert_eq!(k2_parts_max, dim / 4 - 1,
-                "dim={}: max K2 parts should be dim/4-1", dim);
+            assert_eq!(
+                k2_parts_max,
+                dim / 4 - 1,
+                "dim={}: max K2 parts should be dim/4-1",
+                dim
+            );
         }
     }
 
@@ -1966,11 +2148,13 @@ mod tests {
         use std::collections::HashSet;
         for &dim in &[16, 32, 64, 128] {
             let comps = motif_components_for_cross_assessors(dim);
-            let classes: HashSet<usize> = comps.iter()
-                .map(|c| c.edges.len())
-                .collect();
-            assert_eq!(classes.len(), dim / 16,
-                "dim={}: n_classes should be dim/16", dim);
+            let classes: HashSet<usize> = comps.iter().map(|c| c.edges.len()).collect();
+            assert_eq!(
+                classes.len(),
+                dim / 16,
+                "dim={}: n_classes should be dim/16",
+                dim
+            );
         }
     }
 
@@ -1979,11 +2163,15 @@ mod tests {
         // The number of K_{2,...,2} components = 3 + log2(dim).
         for &(dim, expected_k2) in &[(16, 7), (32, 8), (64, 9), (128, 10)] {
             let comps = motif_components_for_cross_assessors(dim);
-            let n_k2 = comps.iter()
+            let n_k2 = comps
+                .iter()
                 .filter(|c| c.k2_multipartite_part_count() > 0)
                 .count();
-            assert_eq!(n_k2, expected_k2,
-                "dim={}: K2 component count should be {}", dim, expected_k2);
+            assert_eq!(
+                n_k2, expected_k2,
+                "dim={}: K2 component count should be {}",
+                dim, expected_k2
+            );
         }
     }
 
@@ -1993,11 +2181,12 @@ mod tests {
         // At dim=32 and beyond, the structure completely restructures.
         for &dim in &[32, 64, 128] {
             let comps = motif_components_for_cross_assessors(dim);
-            let n_octahedra = comps.iter()
-                .filter(|c| c.is_octahedron_graph())
-                .count();
-            assert_eq!(n_octahedra, 0,
-                "dim={}: should have no octahedra (only at dim=16)", dim);
+            let n_octahedra = comps.iter().filter(|c| c.is_octahedron_graph()).count();
+            assert_eq!(
+                n_octahedra, 0,
+                "dim={}: should have no octahedra (only at dim=16)",
+                dim
+            );
         }
     }
 
@@ -2009,9 +2198,11 @@ mod tests {
         assert_eq!(comps.len(), 7);
         for (i, c) in comps.iter().enumerate() {
             assert_eq!(
-                c.k2_multipartite_part_count(), 3,
+                c.k2_multipartite_part_count(),
+                3,
                 "Component {} at dim=16 should be K_{{2,2,2}} (3 parts), got {}",
-                i, c.k2_multipartite_part_count()
+                i,
+                c.k2_multipartite_part_count()
             );
             assert!(
                 c.is_octahedron_graph(),
@@ -2050,7 +2241,8 @@ mod tests {
         let comps = motif_components_for_cross_assessors(16);
         for (i, c) in comps.iter().enumerate() {
             assert_eq!(
-                c.triangle_count(), 8,
+                c.triangle_count(),
+                8,
                 "dim=16 comp[{i}] should have 8 triangles"
             );
         }
@@ -2061,10 +2253,7 @@ mod tests {
         // Diameter of octahedron = 2 (non-adjacent strut pairs).
         let comps = motif_components_for_cross_assessors(16);
         for (i, c) in comps.iter().enumerate() {
-            assert_eq!(
-                c.diameter(), 2,
-                "dim=16 comp[{i}] diameter should be 2"
-            );
+            assert_eq!(c.diameter(), 2, "dim=16 comp[{i}] diameter should be 2");
         }
     }
 
@@ -2073,10 +2262,7 @@ mod tests {
         // Girth of octahedron = 3 (has triangles).
         let comps = motif_components_for_cross_assessors(16);
         for (i, c) in comps.iter().enumerate() {
-            assert_eq!(
-                c.girth(), 3,
-                "dim=16 comp[{i}] girth should be 3"
-            );
+            assert_eq!(c.girth(), 3, "dim=16 comp[{i}] girth should be 3");
         }
     }
 
@@ -2087,7 +2273,8 @@ mod tests {
         let comps = motif_components_for_cross_assessors(32);
         let mut by_edges: HashMap<usize, Vec<Vec<f64>>> = HashMap::new();
         for c in &comps {
-            by_edges.entry(c.edges.len())
+            by_edges
+                .entry(c.edges.len())
                 .or_default()
                 .push(c.spectrum());
         }
@@ -2098,7 +2285,8 @@ mod tests {
             let ref_spec = &spectra[0];
             for (j, spec) in spectra.iter().enumerate().skip(1) {
                 assert_eq!(
-                    ref_spec.len(), spec.len(),
+                    ref_spec.len(),
+                    spec.len(),
                     "class edges={edges}: spectrum length mismatch"
                 );
                 for (k, (&a, &b)) in ref_spec.iter().zip(spec.iter()).enumerate() {
@@ -2129,7 +2317,9 @@ mod tests {
                 let (e2, s2) = &class_spectra[j];
                 // Spectra should differ in at least one eigenvalue
                 let differ = s1.len() != s2.len()
-                    || s1.iter().zip(s2.iter())
+                    || s1
+                        .iter()
+                        .zip(s2.iter())
                         .any(|(&a, &b)| (a - b).abs() > 1e-6);
                 assert!(
                     differ,
@@ -2148,17 +2338,24 @@ mod tests {
         // At dim=32, max K2 part count = 7, so k=7:
         // spectrum = [12, 0,0,0,0,0,0,0, -2,-2,-2,-2,-2,-2]
         let comps = motif_components_for_cross_assessors(32);
-        let k2_comps: Vec<&MotifComponent> = comps.iter()
+        let k2_comps: Vec<&MotifComponent> = comps
+            .iter()
             .filter(|c| c.k2_multipartite_part_count() == 7)
             .collect();
-        assert!(!k2_comps.is_empty(), "Should have K_{{2,...,2}} with 7 parts at dim=32");
+        assert!(
+            !k2_comps.is_empty(),
+            "Should have K_{{2,...,2}} with 7 parts at dim=32"
+        );
 
         for c in &k2_comps {
             let spec = c.spectrum();
             // 14 nodes, so 14 eigenvalues
             assert_eq!(spec.len(), 14);
             // Largest eigenvalue = 2*(7-1) = 12
-            assert!((spec[0] - 12.0).abs() < 1e-8, "largest eigenvalue should be 12");
+            assert!(
+                (spec[0] - 12.0).abs() < 1e-8,
+                "largest eigenvalue should be 12"
+            );
             // 7 zeros
             let n_zeros = spec.iter().filter(|&&v| v.abs() < 1e-8).count();
             assert_eq!(n_zeros, 7, "should have 7 zero eigenvalues");
@@ -2194,12 +2391,16 @@ mod tests {
             assert!(
                 norm_fwd > 0.1,
                 "Intra-assessor ({},{}) forward product should be non-zero, got norm={}",
-                a.low, a.high, norm_fwd
+                a.low,
+                a.high,
+                norm_fwd
             );
             assert!(
                 norm_rev > 0.1,
                 "Intra-assessor ({},{}) reverse product should be non-zero, got norm={}",
-                a.low, a.high, norm_rev
+                a.low,
+                a.high,
+                norm_rev
             );
         }
     }
@@ -2214,14 +2415,14 @@ mod tests {
         for bk in &boxkites {
             assert_eq!(bk.edges.len(), 12, "octahedron has 12 edges");
             for &(i, j) in &bk.edges {
-                let has_zp = diagonal_zero_product(
-                    &bk.assessors[i], &bk.assessors[j], 1e-10,
-                );
+                let has_zp = diagonal_zero_product(&bk.assessors[i], &bk.assessors[j], 1e-10);
                 assert!(
                     has_zp.is_some(),
                     "Edge ({},{})--({},{}) in box-kite {} should have a zero-product",
-                    bk.assessors[i].low, bk.assessors[i].high,
-                    bk.assessors[j].low, bk.assessors[j].high,
+                    bk.assessors[i].low,
+                    bk.assessors[i].high,
+                    bk.assessors[j].low,
+                    bk.assessors[j].high,
                     bk.strut_signature,
                 );
             }
@@ -2244,13 +2445,19 @@ mod tests {
                     info.left_nullity > 0,
                     "Diagonal ({},{}) sign={} should be a left zero-divisor, \
                      but left_nullity={}",
-                    a.low, a.high, sign as i8, info.left_nullity
+                    a.low,
+                    a.high,
+                    sign as i8,
+                    info.left_nullity
                 );
                 assert!(
                     info.right_nullity > 0,
                     "Diagonal ({},{}) sign={} should be a right zero-divisor, \
                      but right_nullity={}",
-                    a.low, a.high, sign as i8, info.right_nullity
+                    a.low,
+                    a.high,
+                    sign as i8,
+                    info.right_nullity
                 );
             }
         }
@@ -2271,16 +2478,21 @@ mod tests {
             let prod = cd_multiply(&d_plus, &d_minus);
 
             // Product should have exactly one nonzero component
-            let nonzero: Vec<(usize, f64)> = prod.iter().enumerate()
+            let nonzero: Vec<(usize, f64)> = prod
+                .iter()
+                .enumerate()
                 .filter(|(_, &v)| v.abs() > 1e-10)
                 .map(|(i, &v)| (i, v))
                 .collect();
 
             assert_eq!(
-                nonzero.len(), 1,
+                nonzero.len(),
+                1,
                 "Intra-assessor ({},{}) product should have exactly 1 nonzero \
                  component, got {:?}",
-                a.low, a.high, nonzero
+                a.low,
+                a.high,
+                nonzero
             );
 
             // That component should be at index low XOR high

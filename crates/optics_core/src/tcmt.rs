@@ -562,7 +562,7 @@ impl TcmtSolver {
         let delta = 2.0 * g; // Inside bistability region
 
         // Normalized power thresholds at Delta = 2
-        let p_norm_onset = 50.0 / 27.0;  // ~= 1.852
+        let p_norm_onset = 50.0 / 27.0; // ~= 1.852
         let p_norm_offset = 2.0;
 
         let scale = g.powi(3) / (2.0 * gamma_k * gamma_e);
@@ -575,11 +575,7 @@ impl TcmtSolver {
     /// Scans input power and computes transmission curve.
     ///
     /// Useful for observing bistable switching.
-    pub fn power_scan(
-        &self,
-        detuning: f64,
-        powers: &[f64],
-    ) -> Vec<(f64, SteadyStateResult)> {
+    pub fn power_scan(&self, detuning: f64, powers: &[f64]) -> Vec<(f64, SteadyStateResult)> {
         let omega = self.cavity.omega_0 + detuning;
         powers
             .iter()
@@ -591,11 +587,7 @@ impl TcmtSolver {
     }
 
     /// Scans frequency detuning and computes transmission curve.
-    pub fn frequency_scan(
-        &self,
-        power: f64,
-        detunings: &[f64],
-    ) -> Vec<(f64, SteadyStateResult)> {
+    pub fn frequency_scan(&self, power: f64, detunings: &[f64]) -> Vec<(f64, SteadyStateResult)> {
         detunings
             .iter()
             .map(|&d| {
@@ -639,7 +631,11 @@ fn solve_cubic_real(a: f64, b: f64, c: f64) -> Vec<f64> {
         ]
     } else {
         // Repeated roots
-        let u = if q.abs() > 1e-30 { (-q / 2.0).cbrt() } else { 0.0 };
+        let u = if q.abs() > 1e-30 {
+            (-q / 2.0).cbrt()
+        } else {
+            0.0
+        };
         vec![2.0 * u + shift, -u + shift]
     }
 }
@@ -721,7 +717,11 @@ pub fn solve_normalized_cubic(u_squared: f64, omega: f64) -> NormalizedSteadySta
     let all_roots = solve_cubic_real(a, b, c);
 
     // Filter to physical solutions (y >= 0)
-    let y_solutions: Vec<f64> = all_roots.into_iter().filter(|&y| y >= -1e-12).map(|y| y.max(0.0)).collect();
+    let y_solutions: Vec<f64> = all_roots
+        .into_iter()
+        .filter(|&y| y >= -1e-12)
+        .map(|y| y.max(0.0))
+        .collect();
 
     // Compute transmission and stability for each solution
     let mut transmissions = Vec::with_capacity(y_solutions.len());
@@ -940,7 +940,7 @@ impl ThermalCavity {
     pub fn silicon(kerr: KerrCavity, tau_thermal: f64) -> Self {
         Self {
             kerr,
-            dn_dt: 1.8e-4,        // K^-1 for Si
+            dn_dt: 1.8e-4, // K^-1 for Si
             tau_thermal,
             heat_capacity: 1e-12, // J/K (order of magnitude for microcavity)
             t_ambient: 300.0,
@@ -1032,11 +1032,7 @@ impl ThermalTcmtSolver {
     }
 
     /// Computes (da/dt, dT/dt) for coupled thermo-optical dynamics.
-    pub fn derivative(
-        &self,
-        state: &ThermalCavityState,
-        input: &InputField,
-    ) -> (Complex64, f64) {
+    pub fn derivative(&self, state: &ThermalCavityState, input: &InputField) -> (Complex64, f64) {
         let a = state.amplitude;
         let delta_t = state.temperature;
         let a_norm_sq = a.norm_sqr();
@@ -1347,13 +1343,13 @@ pub fn find_turning_points(omega: f64) -> Result<HysteresisResult, TcmtError> {
     // Use sign-correct formulas for omega > 0 (symmetric for omega < 0)
     let omega_abs = omega.abs();
     // y1 is at the local MAXIMUM of u^2(y), y2 at the local MINIMUM
-    let y1 = (2.0 * omega_abs - sqrt_disc) / 3.0;  // Lower y value
-    let y2 = (2.0 * omega_abs + sqrt_disc) / 3.0;  // Higher y value
+    let y1 = (2.0 * omega_abs - sqrt_disc) / 3.0; // Lower y value
+    let y2 = (2.0 * omega_abs + sqrt_disc) / 3.0; // Higher y value
 
     // Compute u^2 at turning points
     let u2_at = |y: f64| y * ((y - omega_abs).powi(2) + 1.0);
-    let u_sq_at_y1 = u2_at(y1);  // This is the local MAXIMUM (higher power)
-    let u_sq_at_y2 = u2_at(y2);  // This is the local MINIMUM (lower power)
+    let u_sq_at_y1 = u2_at(y1); // This is the local MAXIMUM (higher power)
+    let u_sq_at_y2 = u2_at(y2); // This is the local MINIMUM (lower power)
 
     // Compute transmission at turning points
     let trans_at = |y: f64| {
@@ -1368,8 +1364,8 @@ pub fn find_turning_points(omega: f64) -> Result<HysteresisResult, TcmtError> {
     // Higher power threshold occurs at y1 (local max of u^2)
 
     let turning_lower = TurningPoint {
-        u_squared: u_sq_at_y2,  // Lower power (local min)
-        y: y2,                   // Higher y (where jump up happens)
+        u_squared: u_sq_at_y2, // Lower power (local min)
+        y: y2,                 // Higher y (where jump up happens)
         power: None,
         energy: None,
         transmission: trans_at(y2),
@@ -1377,8 +1373,8 @@ pub fn find_turning_points(omega: f64) -> Result<HysteresisResult, TcmtError> {
     };
 
     let turning_upper = TurningPoint {
-        u_squared: u_sq_at_y1,  // Higher power (local max)
-        y: y1,                   // Lower y (where jump down happens)
+        u_squared: u_sq_at_y1, // Higher power (local max)
+        y: y1,                 // Lower y (where jump down happens)
         power: None,
         energy: None,
         transmission: trans_at(y1),
@@ -1392,8 +1388,16 @@ pub fn find_turning_points(omega: f64) -> Result<HysteresisResult, TcmtError> {
     let u_sq_mid = (u_sq_at_y1 + u_sq_at_y2) / 2.0;
     let mid_solutions = solve_normalized_cubic(u_sq_mid, omega_abs);
     let energy_contrast = if mid_solutions.y_solutions.len() >= 2 {
-        let y_min = mid_solutions.y_solutions.iter().cloned().fold(f64::INFINITY, f64::min);
-        let y_max = mid_solutions.y_solutions.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+        let y_min = mid_solutions
+            .y_solutions
+            .iter()
+            .cloned()
+            .fold(f64::INFINITY, f64::min);
+        let y_max = mid_solutions
+            .y_solutions
+            .iter()
+            .cloned()
+            .fold(f64::NEG_INFINITY, f64::max);
         y_max - y_min
     } else {
         0.0
@@ -1837,9 +1841,9 @@ mod tests {
 
         // Scan through the bistability window
         let powers: Vec<f64> = vec![
-            p_onset * 0.5,          // Below onset: 1 solution
-            (p_onset + p_offset) / 2.0,  // In window: 3 solutions
-            p_offset * 1.5,         // Above offset: 1 solution
+            p_onset * 0.5,              // Below onset: 1 solution
+            (p_onset + p_offset) / 2.0, // In window: 3 solutions
+            p_offset * 1.5,             // Above offset: 1 solution
         ];
 
         let results = solver.power_scan(delta, &powers);
@@ -1848,11 +1852,20 @@ mod tests {
         assert_eq!(results.len(), powers.len());
 
         // Below onset: 1 solution
-        assert_eq!(results[0].1.num_solutions, 1, "Expected 1 solution below onset");
+        assert_eq!(
+            results[0].1.num_solutions, 1,
+            "Expected 1 solution below onset"
+        );
         // In window: 3 solutions
-        assert_eq!(results[1].1.num_solutions, 3, "Expected 3 solutions in bistable window");
+        assert_eq!(
+            results[1].1.num_solutions, 3,
+            "Expected 3 solutions in bistable window"
+        );
         // Above offset: 1 solution
-        assert_eq!(results[2].1.num_solutions, 1, "Expected 1 solution above offset");
+        assert_eq!(
+            results[2].1.num_solutions, 1,
+            "Expected 1 solution above offset"
+        );
     }
 
     #[test]
@@ -1906,7 +1919,8 @@ mod tests {
 
         // Should have 3 solutions
         assert_eq!(
-            result.y_solutions.len(), 3,
+            result.y_solutions.len(),
+            3,
             "Expected 3 solutions in bistable regime, got {:?}",
             result.y_solutions
         );
@@ -1975,7 +1989,9 @@ mod tests {
         // In bistable regime, upper and lower branches stable
         let result_bi = solve_normalized_cubic(1.9, 2.0);
         if result_bi.y_solutions.len() == 3 {
-            let mut sorted: Vec<_> = result_bi.y_solutions.iter()
+            let mut sorted: Vec<_> = result_bi
+                .y_solutions
+                .iter()
                 .zip(result_bi.stable.iter())
                 .collect();
             sorted.sort_by(|a, b| a.0.partial_cmp(b.0).unwrap());
@@ -2019,25 +2035,31 @@ mod tests {
 
         // Slow thermal (adiabatic): tau_thermal > 100 * tau_optical
         let slow_cavity = ThermalCavity::new(
-            kerr, 1.8e-4,
+            kerr,
+            1.8e-4,
             200.0 * tau_opt, // 200x optical lifetime -> adiabatic
-            1e-12, 300.0
+            1e-12,
+            300.0,
         );
         assert_eq!(thermal_regime(&slow_cavity), ThermalRegime::Adiabatic);
 
         // Fast thermal: tau_thermal < 0.01 * tau_optical
         let fast_cavity = ThermalCavity::new(
-            kerr, 1.8e-4,
+            kerr,
+            1.8e-4,
             0.001 * tau_opt, // 0.1% of optical lifetime -> fast thermal
-            1e-12, 300.0
+            1e-12,
+            300.0,
         );
         assert_eq!(thermal_regime(&fast_cavity), ThermalRegime::FastThermal);
 
         // Intermediate: comparable timescales (0.01 < ratio < 100)
         let intermediate = ThermalCavity::new(
-            kerr, 1.8e-4,
+            kerr,
+            1.8e-4,
             10.0 * tau_opt, // 10x optical lifetime -> intermediate
-            1e-12, 300.0
+            1e-12,
+            300.0,
         );
         assert_eq!(thermal_regime(&intermediate), ThermalRegime::Intermediate);
     }
@@ -2081,7 +2103,10 @@ mod tests {
         let (_, dt) = solver.derivative(&excited_state, &input);
 
         // With energy in cavity, temperature should increase
-        assert!(dt > 0.0, "Temperature should increase when cavity is excited");
+        assert!(
+            dt > 0.0,
+            "Temperature should increase when cavity is excited"
+        );
     }
 
     #[test]
@@ -2152,7 +2177,8 @@ mod tests {
         assert!(
             gamma_eff >= gamma_kerr,
             "Effective gamma {} should be >= Kerr gamma {}",
-            gamma_eff, gamma_kerr
+            gamma_eff,
+            gamma_kerr
         );
 
         // Should be positive for self-focusing material
@@ -2236,7 +2262,11 @@ mod tests {
         assert_relative_eq!(hysteresis.turning_upper.u_squared, 2.0, epsilon = 0.01);
 
         // u^2 at lower turning point (y=5/3): 5/3 * ((5/3 - 2)^2 + 1) = 50/27
-        assert_relative_eq!(hysteresis.turning_lower.u_squared, 50.0 / 27.0, epsilon = 0.01);
+        assert_relative_eq!(
+            hysteresis.turning_lower.u_squared,
+            50.0 / 27.0,
+            epsilon = 0.01
+        );
     }
 
     #[test]
@@ -2291,7 +2321,10 @@ mod tests {
         assert_eq!(trace.omega, omega);
 
         // Should detect hysteresis
-        assert!(trace.has_hysteresis(), "Should detect hysteresis at Omega = 2");
+        assert!(
+            trace.has_hysteresis(),
+            "Should detect hysteresis at Omega = 2"
+        );
     }
 
     #[test]
@@ -2304,7 +2337,10 @@ mod tests {
         let trace = trace_hysteresis_loop(omega, n_points, power_range);
 
         // Should NOT detect hysteresis at low detuning
-        assert!(!trace.has_hysteresis(), "Should not have hysteresis below critical detuning");
+        assert!(
+            !trace.has_hysteresis(),
+            "Should not have hysteresis below critical detuning"
+        );
     }
 
     #[test]

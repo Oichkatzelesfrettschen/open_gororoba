@@ -87,7 +87,10 @@ pub fn sfwm_dominance_check(thickness_um: f64) -> SfwmDominanceResult {
 
 /// Sweep crystal thickness and compute direct/cascaded ratio at each point.
 pub fn thickness_sweep(thicknesses_um: &[f64]) -> Vec<SfwmDominanceResult> {
-    thicknesses_um.iter().map(|&l| sfwm_dominance_check(l)).collect()
+    thicknesses_um
+        .iter()
+        .map(|&l| sfwm_dominance_check(l))
+        .collect()
 }
 
 #[cfg(test)]

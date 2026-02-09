@@ -247,8 +247,7 @@ impl GpuUltrametricEngine {
         }
 
         // Main fraction statistics
-        let null_mean =
-            null_main_fracs.iter().sum::<f64>() / n_permutations as f64;
+        let null_mean = null_main_fracs.iter().sum::<f64>() / n_permutations as f64;
         let null_var = null_main_fracs
             .iter()
             .map(|f| (f - null_mean).powi(2))
@@ -256,10 +255,7 @@ impl GpuUltrametricEngine {
             / n_permutations as f64;
         let null_std = null_var.sqrt();
 
-        let n_extreme = null_main_fracs
-            .iter()
-            .filter(|&&f| f >= obs_main)
-            .count();
+        let n_extreme = null_main_fracs.iter().filter(|&&f| f >= obs_main).count();
         let p_value = (n_extreme as f64 + 1.0) / (n_permutations as f64 + 1.0);
 
         // Tolerance curve
@@ -334,7 +330,7 @@ pub struct GpuTestResult {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::ultrametric::baire::{AttributeSpec, BaireEncoder, normalize_data_column_major};
+    use crate::ultrametric::baire::{normalize_data_column_major, AttributeSpec, BaireEncoder};
 
     #[test]
     fn test_gpu_init() {
@@ -359,8 +355,18 @@ mod tests {
         };
 
         let specs = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 10.0, log_scale: false },
-            AttributeSpec { name: "y".into(), min: 0.0, max: 10.0, log_scale: false },
+            AttributeSpec {
+                name: "x".into(),
+                min: 0.0,
+                max: 10.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "y".into(),
+                min: 0.0,
+                max: 10.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(999);
@@ -378,9 +384,8 @@ mod tests {
             .expect("GPU kernel failed");
 
         // CPU fraction at epsilon=0.05
-        let cpu_frac = crate::ultrametric::baire::matrix_free_fraction(
-            &cols_f64, n, d, 100_000, 42, 0.05,
-        );
+        let cpu_frac =
+            crate::ultrametric::baire::matrix_free_fraction(&cols_f64, n, d, 100_000, 42, 0.05);
 
         // They use different RNGs (GPU: splitmix64, CPU: ChaCha8), so exact
         // match is not expected. But statistically they should be very close.
@@ -388,7 +393,9 @@ mod tests {
         assert!(
             diff < 0.02,
             "GPU ({:.4}) and CPU ({:.4}) fractions should be close (diff={:.4})",
-            gpu_frac[0], cpu_frac, diff,
+            gpu_frac[0],
+            cpu_frac,
+            diff,
         );
         eprintln!(
             "GPU fraction: {:.4}, CPU fraction: {:.4}, diff: {:.4}",
@@ -407,8 +414,18 @@ mod tests {
         };
 
         let specs = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 1.0, log_scale: false },
-            AttributeSpec { name: "y".into(), min: 0.0, max: 1.0, log_scale: false },
+            AttributeSpec {
+                name: "x".into(),
+                min: 0.0,
+                max: 1.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "y".into(),
+                min: 0.0,
+                max: 1.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(77);
@@ -430,7 +447,8 @@ mod tests {
             assert!(
                 w[1] >= w[0] - 1e-6,
                 "Fractions must increase: {:.4} -> {:.4}",
-                w[0], w[1],
+                w[0],
+                w[1],
             );
         }
         eprintln!("GPU multi-eps fractions: {:?}", fracs);
@@ -447,8 +465,18 @@ mod tests {
         };
 
         let specs = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 1.0, log_scale: false },
-            AttributeSpec { name: "y".into(), min: 0.0, max: 1.0, log_scale: false },
+            AttributeSpec {
+                name: "x".into(),
+                min: 0.0,
+                max: 1.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "y".into(),
+                min: 0.0,
+                max: 1.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(55);

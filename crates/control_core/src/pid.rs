@@ -8,7 +8,7 @@
 //! - Astrom & Hagglund (2006): Advanced PID Control
 //! - Visioli (2006): Practical PID Control
 
-use crate::feedback::{Controller, ControlOutput};
+use crate::feedback::{ControlOutput, Controller};
 
 /// PID gains.
 #[derive(Debug, Clone, Copy)]
@@ -38,7 +38,11 @@ impl PidGains {
 
     /// P-only controller.
     pub fn p_only(kp: f64) -> Self {
-        Self { kp, ki: 0.0, kd: 0.0 }
+        Self {
+            kp,
+            ki: 0.0,
+            kd: 0.0,
+        }
     }
 
     /// PI controller.
@@ -54,7 +58,11 @@ impl PidGains {
 
 impl Default for PidGains {
     fn default() -> Self {
-        Self { kp: 1.0, ki: 0.0, kd: 0.0 }
+        Self {
+            kp: 1.0,
+            ki: 0.0,
+            kd: 0.0,
+        }
     }
 }
 
@@ -243,13 +251,12 @@ impl PidController {
         };
 
         // Clamp integral directly if using clamp method
-        self.state.integral = if let (Some((min, max)), AntiWindupMethod::Clamp) =
-            (self.limits, self.anti_windup)
-        {
-            anti_windup_clamp(new_integral, self.gains.ki, min, max)
-        } else {
-            new_integral
-        };
+        self.state.integral =
+            if let (Some((min, max)), AntiWindupMethod::Clamp) = (self.limits, self.anti_windup) {
+                anti_windup_clamp(new_integral, self.gains.ki, min, max)
+            } else {
+                new_integral
+            };
 
         // Update state
         self.state.prev_error = error;

@@ -4,9 +4,8 @@
 
 use clap::Parser;
 use optics_core::{
-    KerrCavity,
-    find_turning_points, find_turning_points_physical,
-    solve_normalized_cubic, trace_hysteresis_loop,
+    find_turning_points, find_turning_points_physical, solve_normalized_cubic,
+    trace_hysteresis_loop, KerrCavity,
 };
 
 #[derive(Parser)]
@@ -57,14 +56,19 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    eprintln!("TCMT sweep: Omega={}, power range=[{}, {}], n_points={}",
-        args.omega, args.u_min, args.u_max, args.n_points);
+    eprintln!(
+        "TCMT sweep: Omega={}, power range=[{}, {}], n_points={}",
+        args.omega, args.u_min, args.u_max, args.n_points
+    );
 
     // Check bistability condition
     let omega_crit = 3.0_f64.sqrt();
     if args.omega.abs() <= omega_crit {
-        eprintln!("Warning: |Omega| = {:.4} <= sqrt(3) = {:.4}: below bistability threshold",
-            args.omega.abs(), omega_crit);
+        eprintln!(
+            "Warning: |Omega| = {:.4} <= sqrt(3) = {:.4}: below bistability threshold",
+            args.omega.abs(),
+            omega_crit
+        );
     }
 
     if args.turning_points {
@@ -85,10 +89,14 @@ fn run_turning_point_analysis(args: &Args) {
     match find_turning_points(args.omega) {
         Ok(result) => {
             eprintln!("Bistability detected:");
-            eprintln!("  Lower turning point: u^2 = {:.6}, y = {:.6}",
-                result.turning_lower.u_squared, result.turning_lower.y);
-            eprintln!("  Upper turning point: u^2 = {:.6}, y = {:.6}",
-                result.turning_upper.u_squared, result.turning_upper.y);
+            eprintln!(
+                "  Lower turning point: u^2 = {:.6}, y = {:.6}",
+                result.turning_lower.u_squared, result.turning_lower.y
+            );
+            eprintln!(
+                "  Upper turning point: u^2 = {:.6}, y = {:.6}",
+                result.turning_upper.u_squared, result.turning_upper.y
+            );
             eprintln!("  Hysteresis width: {:.6}", result.width_normalized);
             eprintln!("  Energy contrast: {:.6}", result.energy_contrast);
             eprintln!("  Stability margin: {:.4}", result.stability_margin);
@@ -106,7 +114,10 @@ fn run_turning_point_analysis(args: &Args) {
                     eprintln!("\nPhysical units (Q_total = {}):", args.q_total);
                     eprintln!("  Lower threshold power: {:.4e} W", p_low);
                     eprintln!("  Upper threshold power: {:.4e} W", p_high);
-                    eprintln!("  Hysteresis width: {:.4e} W", phys_result.width_power.unwrap_or(0.0));
+                    eprintln!(
+                        "  Hysteresis width: {:.4e} W",
+                        phys_result.width_power.unwrap_or(0.0)
+                    );
                 }
             }
 
@@ -114,14 +125,22 @@ fn run_turning_point_analysis(args: &Args) {
             if let Some(path) = &args.output {
                 let mut wtr = csv::Writer::from_path(path).expect("Failed to create CSV");
                 wtr.write_record(["parameter", "value"]).unwrap();
-                wtr.write_record(["omega", &args.omega.to_string()]).unwrap();
-                wtr.write_record(["u_sq_lower", &result.turning_lower.u_squared.to_string()]).unwrap();
-                wtr.write_record(["u_sq_upper", &result.turning_upper.u_squared.to_string()]).unwrap();
-                wtr.write_record(["y_lower", &result.turning_lower.y.to_string()]).unwrap();
-                wtr.write_record(["y_upper", &result.turning_upper.y.to_string()]).unwrap();
-                wtr.write_record(["width", &result.width_normalized.to_string()]).unwrap();
-                wtr.write_record(["energy_contrast", &result.energy_contrast.to_string()]).unwrap();
-                wtr.write_record(["stability_margin", &result.stability_margin.to_string()]).unwrap();
+                wtr.write_record(["omega", &args.omega.to_string()])
+                    .unwrap();
+                wtr.write_record(["u_sq_lower", &result.turning_lower.u_squared.to_string()])
+                    .unwrap();
+                wtr.write_record(["u_sq_upper", &result.turning_upper.u_squared.to_string()])
+                    .unwrap();
+                wtr.write_record(["y_lower", &result.turning_lower.y.to_string()])
+                    .unwrap();
+                wtr.write_record(["y_upper", &result.turning_upper.y.to_string()])
+                    .unwrap();
+                wtr.write_record(["width", &result.width_normalized.to_string()])
+                    .unwrap();
+                wtr.write_record(["energy_contrast", &result.energy_contrast.to_string()])
+                    .unwrap();
+                wtr.write_record(["stability_margin", &result.stability_margin.to_string()])
+                    .unwrap();
                 wtr.flush().unwrap();
                 println!("Wrote turning point analysis to {}", path);
             }
@@ -149,29 +168,32 @@ fn run_hysteresis_trace(args: &Args) {
     // Output
     if let Some(path) = &args.output {
         let mut wtr = csv::Writer::from_path(path).expect("Failed to create CSV");
-        wtr.write_record(["u_squared", "y_up", "y_down", "has_hysteresis"]).unwrap();
+        wtr.write_record(["u_squared", "y_up", "y_down", "has_hysteresis"])
+            .unwrap();
 
         for i in 0..trace.powers.len() {
             let up = trace.up_sweep[i].map(|v| v.to_string()).unwrap_or_default();
-            let down = trace.down_sweep[i].map(|v| v.to_string()).unwrap_or_default();
+            let down = trace.down_sweep[i]
+                .map(|v| v.to_string())
+                .unwrap_or_default();
             let hyst = match (&trace.up_sweep[i], &trace.down_sweep[i]) {
                 (Some(u), Some(d)) if (u - d).abs() > 1e-10 => "1",
                 _ => "0",
             };
-            wtr.write_record(&[
-                trace.powers[i].to_string(),
-                up,
-                down,
-                hyst.to_string(),
-            ]).unwrap();
+            wtr.write_record(&[trace.powers[i].to_string(), up, down, hyst.to_string()])
+                .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote hysteresis trace to {}", path);
     } else {
         println!("u_squared,y_up,y_down,has_hysteresis");
         for i in 0..trace.powers.len() {
-            let up = trace.up_sweep[i].map(|v| format!("{:.6}", v)).unwrap_or_default();
-            let down = trace.down_sweep[i].map(|v| format!("{:.6}", v)).unwrap_or_default();
+            let up = trace.up_sweep[i]
+                .map(|v| format!("{:.6}", v))
+                .unwrap_or_default();
+            let down = trace.down_sweep[i]
+                .map(|v| format!("{:.6}", v))
+                .unwrap_or_default();
             let hyst = match (&trace.up_sweep[i], &trace.down_sweep[i]) {
                 (Some(u), Some(d)) if (u - d).abs() > 1e-10 => "1",
                 _ => "0",
@@ -211,29 +233,54 @@ fn run_s_curve(args: &Args) {
     let max_solutions = data.iter().map(|(_, y, _)| y.len()).max().unwrap_or(0);
     let bistable_count = data.iter().filter(|(_, y, _)| y.len() == 3).count();
     eprintln!("Max solutions at single power: {}", max_solutions);
-    eprintln!("Points with 3 solutions (bistable): {} / {}",
-        bistable_count, args.n_points);
+    eprintln!(
+        "Points with 3 solutions (bistable): {} / {}",
+        bistable_count, args.n_points
+    );
 
     // Output
     if let Some(path) = &args.output {
         let mut wtr = csv::Writer::from_path(path).expect("Failed to create CSV");
-        wtr.write_record(["u_squared", "n_solutions", "y_1", "stable_1", "y_2", "stable_2", "y_3", "stable_3"]).unwrap();
+        wtr.write_record([
+            "u_squared",
+            "n_solutions",
+            "y_1",
+            "stable_1",
+            "y_2",
+            "stable_2",
+            "y_3",
+            "stable_3",
+        ])
+        .unwrap();
 
         for (u_sq, ys, stables) in &data {
             let n = ys.len();
             let y1 = ys.first().map(|v| v.to_string()).unwrap_or_default();
-            let s1 = stables.first().map(|v| if *v { "1" } else { "0" }).unwrap_or("");
+            let s1 = stables
+                .first()
+                .map(|v| if *v { "1" } else { "0" })
+                .unwrap_or("");
             let y2 = ys.get(1).map(|v| v.to_string()).unwrap_or_default();
-            let s2 = stables.get(1).map(|v| if *v { "1" } else { "0" }).unwrap_or("");
+            let s2 = stables
+                .get(1)
+                .map(|v| if *v { "1" } else { "0" })
+                .unwrap_or("");
             let y3 = ys.get(2).map(|v| v.to_string()).unwrap_or_default();
-            let s3 = stables.get(2).map(|v| if *v { "1" } else { "0" }).unwrap_or("");
+            let s3 = stables
+                .get(2)
+                .map(|v| if *v { "1" } else { "0" })
+                .unwrap_or("");
             wtr.write_record(&[
                 u_sq.to_string(),
                 n.to_string(),
-                y1, s1.to_string(),
-                y2, s2.to_string(),
-                y3, s3.to_string(),
-            ]).unwrap();
+                y1,
+                s1.to_string(),
+                y2,
+                s2.to_string(),
+                y3,
+                s3.to_string(),
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote S-curve data to {}", path);
@@ -242,12 +289,24 @@ fn run_s_curve(args: &Args) {
         for (u_sq, ys, stables) in &data {
             let n = ys.len();
             let y1 = ys.first().map(|v| format!("{:.6}", v)).unwrap_or_default();
-            let s1 = stables.first().map(|v| if *v { "1" } else { "0" }).unwrap_or("");
+            let s1 = stables
+                .first()
+                .map(|v| if *v { "1" } else { "0" })
+                .unwrap_or("");
             let y2 = ys.get(1).map(|v| format!("{:.6}", v)).unwrap_or_default();
-            let s2 = stables.get(1).map(|v| if *v { "1" } else { "0" }).unwrap_or("");
+            let s2 = stables
+                .get(1)
+                .map(|v| if *v { "1" } else { "0" })
+                .unwrap_or("");
             let y3 = ys.get(2).map(|v| format!("{:.6}", v)).unwrap_or_default();
-            let s3 = stables.get(2).map(|v| if *v { "1" } else { "0" }).unwrap_or("");
-            println!("{:.6},{},{},{},{},{},{},{}", u_sq, n, y1, s1, y2, s2, y3, s3);
+            let s3 = stables
+                .get(2)
+                .map(|v| if *v { "1" } else { "0" })
+                .unwrap_or("");
+            println!(
+                "{:.6},{},{},{},{},{},{},{}",
+                u_sq, n, y1, s1, y2, s2, y3, s3
+            );
         }
     }
 }

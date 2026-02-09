@@ -48,12 +48,19 @@ pub fn build_kinetic_operator(n: usize, l: f64, alpha: f64, epsilon: f64) -> (Ve
     let _dx = l / n as f64;
     let k: Vec<f64> = (0..n)
         .map(|i| {
-            let freq = if i <= n / 2 { i as f64 } else { i as f64 - n as f64 };
+            let freq = if i <= n / 2 {
+                i as f64
+            } else {
+                i as f64 - n as f64
+            };
             2.0 * PI * freq / l
         })
         .collect();
 
-    let t_k: Vec<f64> = k.iter().map(|&ki| (ki.abs() + epsilon).powf(alpha)).collect();
+    let t_k: Vec<f64> = k
+        .iter()
+        .map(|&ki| (ki.abs() + epsilon).powf(alpha))
+        .collect();
 
     (t_k, k)
 }
@@ -140,7 +147,12 @@ pub fn eigenvalues_imaginary_time(
 
             // Gram-Schmidt: orthogonalize against previous states
             for prev in &eigenstates {
-                let overlap: f64 = psi.iter().zip(prev.iter()).map(|(&a, &b)| a * b).sum::<f64>() * dx;
+                let overlap: f64 = psi
+                    .iter()
+                    .zip(prev.iter())
+                    .map(|(&a, &b)| a * b)
+                    .sum::<f64>()
+                    * dx;
                 for (p, &pr) in psi.iter_mut().zip(prev.iter()) {
                     *p -= overlap * pr;
                 }
@@ -168,7 +180,12 @@ pub fn eigenvalues_imaginary_time(
             * dx
             / n as f64;
 
-        let v_exp: f64 = psi.iter().zip(v.iter()).map(|(&p, &vi)| vi * p * p).sum::<f64>() * dx;
+        let v_exp: f64 = psi
+            .iter()
+            .zip(v.iter())
+            .map(|(&p, &vi)| vi * p * p)
+            .sum::<f64>()
+            * dx;
 
         eigenvalues.push(t_exp + v_exp);
         eigenstates.push(psi);
@@ -239,7 +256,11 @@ pub fn caffarelli_silvestre_eigenvalues(s: f64, n: usize, l: f64, n_eig: usize) 
 
     let k: Vec<f64> = (0..n)
         .map(|i| {
-            let freq = if i <= n / 2 { i as f64 } else { i as f64 - n as f64 };
+            let freq = if i <= n / 2 {
+                i as f64
+            } else {
+                i as f64 - n as f64
+            };
             2.0 * PI * freq / l
         })
         .collect();
@@ -304,7 +325,12 @@ pub fn caffarelli_silvestre_eigenvalues(s: f64, n: usize, l: f64, n_eig: usize) 
             }
 
             for prev in &eigenstates {
-                let overlap: f64 = psi.iter().zip(prev.iter()).map(|(&a, &b)| a * b).sum::<f64>() * dx;
+                let overlap: f64 = psi
+                    .iter()
+                    .zip(prev.iter())
+                    .map(|(&a, &b)| a * b)
+                    .sum::<f64>()
+                    * dx;
                 for (p, &pr) in psi.iter_mut().zip(prev.iter()) {
                     *p -= overlap * pr;
                 }
@@ -330,7 +356,12 @@ pub fn caffarelli_silvestre_eigenvalues(s: f64, n: usize, l: f64, n_eig: usize) 
             * dx
             / n as f64;
 
-        let v_exp: f64 = psi.iter().zip(v.iter()).map(|(&p, &vi)| vi * p * p).sum::<f64>() * dx;
+        let v_exp: f64 = psi
+            .iter()
+            .zip(v.iter())
+            .map(|(&p, &vi)| vi * p * p)
+            .sum::<f64>()
+            * dx;
 
         eigenvalues.push(t_exp + v_exp);
         eigenstates.push(psi);
@@ -358,8 +389,17 @@ mod tests {
         let (t_k, _) = build_kinetic_operator(64, 10.0, -1.5, 0.1);
         // For alpha < 0, T(k) should decay for large |k|
         // Check that max occurs near k=0
-        let max_idx = t_k.iter().enumerate().max_by(|a, b| a.1.partial_cmp(b.1).unwrap()).unwrap().0;
-        assert!(max_idx == 0 || max_idx == 1, "Max should be near k=0, got idx={}", max_idx);
+        let max_idx = t_k
+            .iter()
+            .enumerate()
+            .max_by(|a, b| a.1.partial_cmp(b.1).unwrap())
+            .unwrap()
+            .0;
+        assert!(
+            max_idx == 0 || max_idx == 1,
+            "Max should be near k=0, got idx={}",
+            max_idx
+        );
     }
 
     #[test]
@@ -367,7 +407,11 @@ mod tests {
         // Ground state of harmonic oscillator with fractional kinetic energy
         let result = eigenvalues_imaginary_time(-1.5, 0.1, 64, 10.0, 1, 0.005, 1000);
         assert_eq!(result.eigenvalues.len(), 1);
-        assert!(result.eigenvalues[0] > 0.0, "E0 = {}", result.eigenvalues[0]);
+        assert!(
+            result.eigenvalues[0] > 0.0,
+            "E0 = {}",
+            result.eigenvalues[0]
+        );
     }
 
     #[test]
@@ -446,7 +490,7 @@ mod tests {
         // Later epsilon values should have smaller relative change
         let first_change = results[2].rel_change; // index 0, eps=0.1
         let second_change = results[4].rel_change; // index 0, eps=0.05
-        // Convergence should improve or stay similar
+                                                   // Convergence should improve or stay similar
         assert!(second_change <= first_change + 0.1);
     }
 

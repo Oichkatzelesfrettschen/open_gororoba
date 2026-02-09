@@ -111,9 +111,7 @@ fn split_columns(line: &str) -> Vec<&str> {
         .split('\t')
         .flat_map(|part| {
             // Split by 2+ consecutive spaces
-            part.split("  ")
-                .map(|s| s.trim())
-                .filter(|s| !s.is_empty())
+            part.split("  ").map(|s| s.trim()).filter(|s| !s.is_empty())
         })
         .collect();
 
@@ -123,7 +121,10 @@ fn split_columns(line: &str) -> Vec<&str> {
 /// Check if a line is a table separator (all dashes, equals, etc.)
 fn is_separator_line(line: &str) -> bool {
     let trimmed = line.trim();
-    !trimmed.is_empty() && trimmed.chars().all(|c| c == '-' || c == '=' || c == '+' || c == '|' || c == ' ')
+    !trimmed.is_empty()
+        && trimmed
+            .chars()
+            .all(|c| c == '-' || c == '=' || c == '+' || c == '|' || c == ' ')
 }
 
 #[cfg(test)]

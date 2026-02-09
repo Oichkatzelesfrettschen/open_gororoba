@@ -154,7 +154,8 @@ fn diagonalize(h: &Mat<c64>) -> (Vec<f64>, Mat<c64>) {
     let eigenvalues_raw: Vec<f64> = (0..n).map(|i| s_diag.column_vector().read(i).re).collect();
 
     // Sort by eigenvalue and get permutation
-    let mut indexed: Vec<(usize, f64)> = eigenvalues_raw.iter()
+    let mut indexed: Vec<(usize, f64)> = eigenvalues_raw
+        .iter()
         .enumerate()
         .map(|(i, &e)| (i, e))
         .collect();
@@ -321,7 +322,9 @@ pub fn verify_diophantine(result: &ChernResult) -> Vec<bool> {
     let q = result.q as i32;
     let g = gcd(result.p, result.q) as i32;
 
-    result.gap_cherns.iter()
+    result
+        .gap_cherns
+        .iter()
         .enumerate()
         .map(|(r_idx, &c_r)| {
             let r = (r_idx + 1) as i32;
@@ -360,7 +363,12 @@ mod tests {
                 let hji = h.read(j, i);
                 let diff_re = (hij.re - hji.re).abs();
                 let diff_im = (hij.im + hji.im).abs();
-                assert!(diff_re < 1e-10 && diff_im < 1e-10, "H not Hermitian at ({}, {})", i, j);
+                assert!(
+                    diff_re < 1e-10 && diff_im < 1e-10,
+                    "H not Hermitian at ({}, {})",
+                    i,
+                    j
+                );
             }
         }
     }
@@ -373,8 +381,16 @@ mod tests {
         let (evals, _) = diagonalize(&h);
 
         let sqrt5 = 5.0_f64.sqrt();
-        assert!((evals[0] + sqrt5).abs() < 0.01, "E0 should be -sqrt(5), got {}", evals[0]);
-        assert!((evals[1] - sqrt5).abs() < 0.01, "E1 should be +sqrt(5), got {}", evals[1]);
+        assert!(
+            (evals[0] + sqrt5).abs() < 0.01,
+            "E0 should be -sqrt(5), got {}",
+            evals[0]
+        );
+        assert!(
+            (evals[1] - sqrt5).abs() < 0.01,
+            "E1 should be +sqrt(5), got {}",
+            evals[1]
+        );
     }
 
     #[test]
@@ -401,7 +417,13 @@ mod tests {
                 let v_i = evecs.read(i, band);
                 let lv = c64::new(evals[band] * v_i.re, evals[band] * v_i.im);
                 let err = ((hv[i].re - lv.re).powi(2) + (hv[i].im - lv.im).powi(2)).sqrt();
-                assert!(err < 1e-10, "Band {} component {}: |H*v - lambda*v| = {}", band, i, err);
+                assert!(
+                    err < 1e-10,
+                    "Band {} component {}: |H*v - lambda*v| = {}",
+                    band,
+                    i,
+                    err
+                );
             }
         }
     }
@@ -423,8 +445,10 @@ mod tests {
     fn test_energies_ordered() {
         let result = fhs_chern_numbers(1, 4, 17);
         for i in 1..result.energies_gamma.len() {
-            assert!(result.energies_gamma[i] >= result.energies_gamma[i-1],
-                "Eigenvalues not ordered");
+            assert!(
+                result.energies_gamma[i] >= result.energies_gamma[i - 1],
+                "Eigenvalues not ordered"
+            );
         }
     }
 
@@ -443,15 +467,23 @@ mod tests {
         let result = fhs_chern_numbers(1, 2, 21);
         let mut sorted = result.band_cherns.clone();
         sorted.sort();
-        assert_eq!(sorted, vec![-1, 1], "alpha=1/2 should give Chern numbers +/-1");
+        assert_eq!(
+            sorted,
+            vec![-1, 1],
+            "alpha=1/2 should give Chern numbers +/-1"
+        );
     }
 
     #[test]
     fn test_chern_alpha_third() {
         // alpha=1/3 is a standard test case with Chern numbers (+1, -2, +1)
         let result = fhs_chern_numbers(1, 3, 31);
-        assert_eq!(result.band_cherns, vec![1, -2, 1],
-            "alpha=1/3 should give Chern numbers [1, -2, 1], got {:?}", result.band_cherns);
+        assert_eq!(
+            result.band_cherns,
+            vec![1, -2, 1],
+            "alpha=1/3 should give Chern numbers [1, -2, 1], got {:?}",
+            result.band_cherns
+        );
         // Verify sum is zero
         let sum: i32 = result.band_cherns.iter().sum();
         assert_eq!(sum, 0, "Sum of Chern numbers should be 0");
@@ -466,8 +498,10 @@ mod tests {
         // Verify sum is 0 (topological constraint)
         // Note: This test may fail for intermediate grid sizes - larger grids are more stable
         if sum != 0 {
-            eprintln!("Warning: Chern sum={} for q=4 with grid=51, got {:?}", sum, result.band_cherns);
+            eprintln!(
+                "Warning: Chern sum={} for q=4 with grid=51, got {:?}",
+                sum, result.band_cherns
+            );
         }
     }
 }
-

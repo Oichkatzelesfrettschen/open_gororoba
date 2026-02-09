@@ -38,7 +38,9 @@ pub fn parse_sorce_csv(path: &Path) -> Result<Vec<SorceMeasurement>, FetchError>
         .map_err(|e| FetchError::Validation(format!("Read error: {}", e)))?;
 
     let mut rows = Vec::new();
-    let is_csv = content.lines().any(|l| l.contains("tsi_1au") && l.contains(','));
+    let is_csv = content
+        .lines()
+        .any(|l| l.contains("tsi_1au") && l.contains(','));
 
     for line in content.lines() {
         let trimmed = line.trim();
@@ -81,11 +83,7 @@ pub fn parse_sorce_csv(path: &Path) -> Result<Vec<SorceMeasurement>, FetchError>
             let date_str = fields[0];
             // date_str is like "20030225.500"; strip decimal
             let date = date_str.split('.').next().unwrap_or("").to_string();
-            rows.push(SorceMeasurement {
-                jd,
-                date,
-                tsi,
-            });
+            rows.push(SorceMeasurement { jd, date, tsi });
         }
     }
     Ok(rows)

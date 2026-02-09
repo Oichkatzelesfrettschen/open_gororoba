@@ -30,9 +30,7 @@
 
 use std::collections::HashSet;
 
-use crate::grover::{
-    grover_search_indices, optimal_iterations, GroverConfig, GroverResult,
-};
+use crate::grover::{grover_search_indices, optimal_iterations, GroverConfig, GroverResult};
 
 /// A hypothesis in the search space.
 #[derive(Debug, Clone)]
@@ -72,7 +70,11 @@ pub trait OraclePredicate: Send + Sync {
 
     /// Optional: provide a score for the hypothesis (higher is better).
     fn score(&self, hypothesis: &Hypothesis) -> f64 {
-        if self.evaluate(hypothesis) { 1.0 } else { 0.0 }
+        if self.evaluate(hypothesis) {
+            1.0
+        } else {
+            0.0
+        }
     }
 }
 
@@ -95,7 +97,10 @@ where
 {
     /// Create a threshold oracle.
     pub fn new(score_fn: F, threshold: f64) -> Self {
-        Self { score_fn, threshold }
+        Self {
+            score_fn,
+            threshold,
+        }
     }
 }
 
@@ -365,10 +370,7 @@ mod tests {
 
     #[test]
     fn test_threshold_oracle() {
-        let oracle = ThresholdOracle::new(
-            |params: &[f64]| params.iter().sum::<f64>(),
-            5.0,
-        );
+        let oracle = ThresholdOracle::new(|params: &[f64]| params.iter().sum::<f64>(), 5.0);
 
         let h1 = Hypothesis::new(0, vec![1.0, 2.0]); // sum = 3 < 5
         let h2 = Hypothesis::new(1, vec![3.0, 3.0]); // sum = 6 >= 5
@@ -379,9 +381,8 @@ mod tests {
 
     #[test]
     fn test_search_from_hypotheses() {
-        let hypotheses: Vec<Hypothesis> = (0..8)
-            .map(|i| Hypothesis::new(i, vec![i as f64]))
-            .collect();
+        let hypotheses: Vec<Hypothesis> =
+            (0..8).map(|i| Hypothesis::new(i, vec![i as f64])).collect();
 
         // Oracle: mark hypotheses where parameter > 5
         let oracle = ThresholdOracle::new(|p: &[f64]| p[0], 5.5);
@@ -425,9 +426,16 @@ mod tests {
             .collect();
 
         // Mark 4 hypotheses (6.25% of space)
-        let oracle = ThresholdOracle::new(|p: &[f64]| {
-            if p[0] >= 60.0 { 1.0 } else { 0.0 }
-        }, 0.5);
+        let oracle = ThresholdOracle::new(
+            |p: &[f64]| {
+                if p[0] >= 60.0 {
+                    1.0
+                } else {
+                    0.0
+                }
+            },
+            0.5,
+        );
 
         let mut search = QuantumHypothesisSearch::from_hypotheses(hypotheses);
         search.mark_with_oracle(&oracle);
@@ -445,10 +453,7 @@ mod tests {
             -0.1, // Points close to (0.5, 0.5)
         );
 
-        let result = quantum_grid_search(
-            vec![(0.0, 1.0, 8), (0.0, 1.0, 8)],
-            &oracle,
-        );
+        let result = quantum_grid_search(vec![(0.0, 1.0, 8), (0.0, 1.0, 8)], &oracle);
 
         // Should find points near center
         assert!(result.verified_solutions.len() > 0);
@@ -456,9 +461,8 @@ mod tests {
 
     #[test]
     fn test_empty_marked_set() {
-        let hypotheses: Vec<Hypothesis> = (0..8)
-            .map(|i| Hypothesis::new(i, vec![i as f64]))
-            .collect();
+        let hypotheses: Vec<Hypothesis> =
+            (0..8).map(|i| Hypothesis::new(i, vec![i as f64])).collect();
 
         // Oracle that marks nothing
         let oracle = ThresholdOracle::new(|_: &[f64]| 0.0, 100.0);

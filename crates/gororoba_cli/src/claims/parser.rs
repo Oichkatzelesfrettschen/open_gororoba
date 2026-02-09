@@ -49,21 +49,17 @@ pub struct ClaimRow {
     pub lineno: usize,
 }
 
-static CLAIM_ID_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^C-(\d{3})$").expect("valid regex")
-});
+static CLAIM_ID_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^C-(\d{3})$").expect("valid regex"));
 
-static STATUS_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^\*\*([^*]+)\*\*").expect("valid regex")
-});
+static STATUS_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^\*\*([^*]+)\*\*").expect("valid regex"));
 
-static ISO_DATE_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"^(\d{4}-\d{2}-\d{2})\b").expect("valid regex")
-});
+static ISO_DATE_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"^(\d{4}-\d{2}-\d{2})\b").expect("valid regex"));
 
-static BACKTICK_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"`([^`]+)`").expect("valid regex")
-});
+static BACKTICK_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"`([^`]+)`").expect("valid regex"));
 
 /// Split a markdown table row into cells, respecting escaped pipes and code spans.
 ///
@@ -125,7 +121,10 @@ pub fn iter_table_rows(text: &str) -> Vec<ParsedRow> {
         let lineno = lineno_0 + 1;
         if let Some(cells) = parse_table_line(line) {
             // Skip separator rows like | --- | --- | --- |.
-            if cells.iter().all(|c| c.chars().all(|ch| ch == '-' || ch == ':' || ch == ' ')) {
+            if cells
+                .iter()
+                .all(|c| c.chars().all(|ch| ch == '-' || ch == ':' || ch == ' '))
+            {
                 continue;
             }
             // Skip header rows (first table row with non-C- content).
@@ -162,17 +161,15 @@ pub fn parse_claim_rows(text: &str) -> Vec<ClaimRow> {
             .unwrap_or_default();
 
         let last_verified = &row.cells[4];
-        let last_verified_date = ISO_DATE_RE
-            .captures(last_verified)
-            .and_then(|c| {
-                let date_str = c[1].to_string();
-                // Validate it's a real date.
-                if is_valid_iso_date(&date_str) {
-                    Some(date_str)
-                } else {
-                    None
-                }
-            });
+        let last_verified_date = ISO_DATE_RE.captures(last_verified).and_then(|c| {
+            let date_str = c[1].to_string();
+            // Validate it's a real date.
+            if is_valid_iso_date(&date_str) {
+                Some(date_str)
+            } else {
+                None
+            }
+        });
 
         claims.push(ClaimRow {
             claim_id: claim_id.clone(),
@@ -274,9 +271,7 @@ fn is_valid_iso_date(s: &str) -> bool {
 
 /// Strip markdown formatting (bold, code, italic) for plain-text output.
 pub fn strip_markdown(text: &str) -> String {
-    text.replace('`', "")
-        .replace("**", "")
-        .replace('*', "")
+    text.replace('`', "").replace("**", "").replace('*', "")
 }
 
 /// Shorten text to a maximum length, appending "..." if truncated.
@@ -345,10 +340,7 @@ mod tests {
         assert_eq!(claims[0].claim_id, "C-001");
         assert_eq!(claims[0].claim_num, 1);
         assert_eq!(claims[0].status_token, "Verified");
-        assert_eq!(
-            claims[0].last_verified_date.as_deref(),
-            Some("2026-01-15")
-        );
+        assert_eq!(claims[0].last_verified_date.as_deref(), Some("2026-01-15"));
         assert_eq!(claims[1].claim_id, "C-002");
         assert_eq!(claims[1].status_token, "Speculative");
     }
@@ -385,6 +377,9 @@ mod tests {
     #[test]
     fn test_shorten() {
         assert_eq!(shorten("Short text", 20), "Short text");
-        assert_eq!(shorten("A very long text that exceeds the limit", 20), "A very long text...");
+        assert_eq!(
+            shorten("A very long text that exceeds the limit", 20),
+            "A very long text..."
+        );
     }
 }

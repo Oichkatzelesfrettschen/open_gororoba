@@ -125,7 +125,15 @@ impl CasimirMicrosphere {
         let initial_position = plate_position + initial_gap_um * 1e-6 + radius;
         let mass = mass_ng * 1e-12;
 
-        Self::new(radius, plate_position, mass, damping, spring_k, initial_position, dt)
+        Self::new(
+            radius,
+            plate_position,
+            mass,
+            damping,
+            spring_k,
+            initial_position,
+            dt,
+        )
     }
 
     /// Get current position.
@@ -268,7 +276,12 @@ impl CasimirTransistor {
             x_drain: drain.position(),
             v_drain: drain.velocity(),
         };
-        Self { source, drain, coupling, combined_state }
+        Self {
+            source,
+            drain,
+            coupling,
+            combined_state,
+        }
     }
 
     /// Create symmetric transistor with given geometry.
@@ -390,13 +403,13 @@ mod tests {
     #[test]
     fn test_casimir_microsphere_creation() {
         let plant = CasimirMicrosphere::from_micrometers(
-            5.0,   // 5 um radius
-            0.0,   // plate at z=0
-            0.1,   // 100 nm gap
-            1.0,   // 1 ng mass
-            1e-9,  // damping
-            1e-3,  // 1 mN/m spring
-            1e-9,  // 1 ns timestep
+            5.0,  // 5 um radius
+            0.0,  // plate at z=0
+            0.1,  // 100 nm gap
+            1.0,  // 1 ng mass
+            1e-9, // damping
+            1e-3, // 1 mN/m spring
+            1e-9, // 1 ns timestep
         );
 
         assert!(plant.gap() > 0.0);
@@ -405,9 +418,7 @@ mod tests {
 
     #[test]
     fn test_casimir_force_increases_with_smaller_gap() {
-        let mut plant = CasimirMicrosphere::from_micrometers(
-            5.0, 0.0, 0.1, 1.0, 1e-9, 1e-3, 1e-9,
-        );
+        let mut plant = CasimirMicrosphere::from_micrometers(5.0, 0.0, 0.1, 1.0, 1e-9, 1e-3, 1e-9);
 
         let force_far = plant.casimir_force().abs();
 
@@ -420,9 +431,7 @@ mod tests {
 
     #[test]
     fn test_casimir_dynamics() {
-        let mut plant = CasimirMicrosphere::from_micrometers(
-            5.0, 0.0, 0.2, 1.0, 1e-9, 1e-3, 1e-9,
-        );
+        let mut plant = CasimirMicrosphere::from_micrometers(5.0, 0.0, 0.2, 1.0, 1e-9, 1e-3, 1e-9);
 
         let initial_position = plant.position();
 
@@ -437,9 +446,7 @@ mod tests {
 
     #[test]
     fn test_casimir_feedback_control() {
-        let plant = CasimirMicrosphere::from_micrometers(
-            5.0, 0.0, 0.2, 1.0, 1e-8, 1e-3, 1e-8,
-        );
+        let plant = CasimirMicrosphere::from_micrometers(5.0, 0.0, 0.2, 1.0, 1e-8, 1e-3, 1e-8);
 
         let controller = ProportionalController::new(1e-6);
         let mut loop_ = FeedbackLoop::new(plant, controller);
@@ -454,14 +461,14 @@ mod tests {
     #[test]
     fn test_casimir_transistor_creation() {
         let transistor = CasimirTransistor::symmetric(
-            5.0,   // radius
-            0.0,   // plate
-            0.2,   // gap
-            1.0,   // mass
-            1e-9,  // damping
-            1e-3,  // spring
-            0.5,   // coupling
-            1e-9,  // dt
+            5.0,  // radius
+            0.0,  // plate
+            0.2,  // gap
+            1.0,  // mass
+            1e-9, // damping
+            1e-3, // spring
+            0.5,  // coupling
+            1e-9, // dt
         );
 
         assert_relative_eq!(
@@ -473,9 +480,8 @@ mod tests {
 
     #[test]
     fn test_casimir_transistor_coupling() {
-        let mut transistor = CasimirTransistor::symmetric(
-            5.0, 0.0, 0.2, 1.0, 1e-8, 1e-3, 0.5, 1e-8,
-        );
+        let mut transistor =
+            CasimirTransistor::symmetric(5.0, 0.0, 0.2, 1.0, 1e-8, 1e-3, 0.5, 1e-8);
 
         let initial_drain = transistor.drain_position();
 
@@ -490,9 +496,7 @@ mod tests {
 
     #[test]
     fn test_natural_frequency() {
-        let plant = CasimirMicrosphere::from_micrometers(
-            5.0, 0.0, 0.2, 1.0, 1e-9, 1e-3, 1e-9,
-        );
+        let plant = CasimirMicrosphere::from_micrometers(5.0, 0.0, 0.2, 1.0, 1e-9, 1e-3, 1e-9);
 
         let omega_n = plant.natural_frequency();
         // For m = 1e-12 kg, k = 1e-3 N/m: omega_n = sqrt(1e-3 / 1e-12) = 1e4.5 ~ 31623 rad/s
@@ -502,9 +506,7 @@ mod tests {
 
     #[test]
     fn test_quality_factor() {
-        let plant = CasimirMicrosphere::from_micrometers(
-            5.0, 0.0, 0.2, 1.0, 1e-12, 1e-3, 1e-9,
-        );
+        let plant = CasimirMicrosphere::from_micrometers(5.0, 0.0, 0.2, 1.0, 1e-12, 1e-3, 1e-9);
 
         let q = plant.quality_factor();
         // Q = sqrt(m*k) / gamma = sqrt(1e-12 * 1e-3) / 1e-12 = 1e-7.5 / 1e-12 = 31623

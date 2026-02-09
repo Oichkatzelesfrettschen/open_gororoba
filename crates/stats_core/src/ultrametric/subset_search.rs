@@ -8,8 +8,7 @@
 //! into a reusable library function.
 
 use super::baire::{
-    AttributeSpec, BaireEncoder, BaireTestResult,
-    matrix_free_ultrametric_test_with_null,
+    matrix_free_ultrametric_test_with_null, AttributeSpec, BaireEncoder, BaireTestResult,
 };
 use super::null_models::NullModel;
 
@@ -97,7 +96,10 @@ pub fn project_data(
         .iter()
         .map(|&old_col| {
             let s = &specs[old_col];
-            let vals: Vec<f64> = projected.iter().map(|row| row[indices.iter().position(|&j| j == old_col).unwrap()]).collect();
+            let vals: Vec<f64> = projected
+                .iter()
+                .map(|row| row[indices.iter().position(|&j| j == old_col).unwrap()])
+                .collect();
             let min = vals.iter().copied().fold(f64::INFINITY, f64::min);
             let max = vals.iter().copied().fold(f64::NEG_INFINITY, f64::max);
             AttributeSpec {
@@ -159,7 +161,12 @@ pub fn subset_search(
     config: &SubsetSearchConfig,
 ) -> SubsetSearchResult {
     let SubsetSearchConfig {
-        min_k, n_triples, n_permutations, null_model, fdr_level, seed,
+        min_k,
+        n_triples,
+        n_permutations,
+        null_model,
+        fdr_level,
+        seed,
     } = *config;
     let subsets = attribute_subsets(specs.len(), min_k);
     let n_subsets = subsets.len();
@@ -248,10 +255,10 @@ mod tests {
     #[test]
     fn test_attribute_subsets_content() {
         let subs = attribute_subsets(3, 2);
-        assert_eq!(subs, vec![
-            vec![0, 1], vec![0, 2], vec![1, 2],
-            vec![0, 1, 2],
-        ]);
+        assert_eq!(
+            subs,
+            vec![vec![0, 1], vec![0, 2], vec![1, 2], vec![0, 1, 2],]
+        );
     }
 
     #[test]
@@ -301,14 +308,19 @@ mod tests {
         // With only 4 tests on random data, most should be non-significant
         // after BH correction. Allow up to 1 false positive.
         let n_sig = result.significant.iter().filter(|&&s| s).count();
-        assert!(n_sig <= 1, "random data should have few BH-significant subsets, got {n_sig}");
+        assert!(
+            n_sig <= 1,
+            "random data should have few BH-significant subsets, got {n_sig}"
+        );
     }
 
     #[test]
     fn test_subset_search_sorted_by_p() {
         let (data, specs) = make_random_data(40, 3, 42);
         let config = SubsetSearchConfig {
-            n_triples: 5_000, n_permutations: 50, seed: 42,
+            n_triples: 5_000,
+            n_permutations: 50,
+            seed: 42,
             ..SubsetSearchConfig::default()
         };
         let result = subset_search(&data, &specs, &config);
@@ -332,8 +344,10 @@ mod tests {
             NullModel::RandomRotation,
         ] {
             let config = SubsetSearchConfig {
-                n_triples: 1_000, n_permutations: 20,
-                null_model, seed: 42,
+                n_triples: 1_000,
+                n_permutations: 20,
+                null_model,
+                seed: 42,
                 ..SubsetSearchConfig::default()
             };
             let result = subset_search(&data, &specs, &config);

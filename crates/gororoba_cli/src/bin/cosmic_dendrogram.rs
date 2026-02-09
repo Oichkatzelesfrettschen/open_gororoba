@@ -24,7 +24,7 @@ use clap::Parser;
 use std::path::PathBuf;
 
 use cosmology_core::distances::{
-    planck2018, dm_excess_to_redshift, comoving_distance, radec_to_cartesian,
+    comoving_distance, dm_excess_to_redshift, planck2018, radec_to_cartesian,
 };
 use data_core::catalogs::chime::parse_chime_csv;
 use data_core::catalogs::gwtc::parse_gwtc3_csv;
@@ -87,18 +87,26 @@ fn main() {
     if let Ok(frb_events) = parse_chime_csv(&cli.frbs) {
         for event in &frb_events {
             let dm_exc = event.dm_exc_ne2001;
-            if dm_exc.is_nan() || dm_exc <= 0.0 { continue; }
-            if event.ra.is_nan() || event.dec.is_nan() { continue; }
+            if dm_exc.is_nan() || dm_exc <= 0.0 {
+                continue;
+            }
+            if event.ra.is_nan() || event.dec.is_nan() {
+                continue;
+            }
 
             let dm_cosmic = dm_exc - cli.dm_host;
-            if dm_cosmic <= 0.0 { continue; }
+            if dm_cosmic <= 0.0 {
+                continue;
+            }
 
             let z = dm_excess_to_redshift(dm_cosmic, omega_m, omega_b, h0);
             let d_c = comoving_distance(z, omega_m, h0);
             let (x, y, z_c) = radec_to_cartesian(event.ra, event.dec, d_c);
 
             objects.push(CosmicObject {
-                x, y, z: z_c,
+                x,
+                y,
+                z: z_c,
                 catalog: "FRB".into(),
                 _name: event.tns_name.clone(),
                 redshift: z,
@@ -115,14 +123,16 @@ fn main() {
     let n_frbs = objects.len();
     eprintln!("Loading GW events...");
     if let Ok(gw_events) = parse_gwtc3_csv(&cli.gws) {
+        use rand::Rng;
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
-        use rand::Rng;
         use std::collections::hash_map::DefaultHasher;
         use std::hash::{Hash, Hasher};
 
         for event in &gw_events {
-            if event.redshift <= 0.0 || event.redshift.is_nan() { continue; }
+            if event.redshift <= 0.0 || event.redshift.is_nan() {
+                continue;
+            }
 
             let d_c = comoving_distance(event.redshift, omega_m, h0);
 
@@ -137,14 +147,19 @@ fn main() {
             let (x, y, z_c) = radec_to_cartesian(ra_deg, dec_deg, d_c);
 
             objects.push(CosmicObject {
-                x, y, z: z_c,
+                x,
+                y,
+                z: z_c,
                 catalog: "GW".into(),
                 _name: event.common_name.clone(),
                 redshift: event.redshift,
             });
         }
         let n_gws = objects.len() - n_frbs;
-        eprintln!("  GW events with comoving positions: {} (random sky positions)", n_gws);
+        eprintln!(
+            "  GW events with comoving positions: {} (random sky positions)",
+            n_gws
+        );
     }
 
     eprintln!("Total objects: {}", objects.len());
@@ -158,7 +173,10 @@ fn main() {
     let coords: Vec<(f64, f64, f64)> = if objects.len() > cli.max_points {
         eprintln!("Subsampling to {} points", cli.max_points);
         let step = objects.len() / cli.max_points;
-        objects.iter().step_by(step).take(cli.max_points)
+        objects
+            .iter()
+            .step_by(step)
+            .take(cli.max_points)
             .map(|o| (o.x, o.y, o.z))
             .collect()
     } else {
@@ -172,18 +190,11 @@ fn main() {
     eprintln!("\nBuilding distance matrix and running dendrogram analysis...");
     let dist_matrix = euclidean_distance_matrix_3d(&coords);
 
-    let result = hierarchical_ultrametric_test(
-        &dist_matrix,
-        n,
-        cli.n_permutations,
-        42,
-    );
+    let result = hierarchical_ultrametric_test(&dist_matrix, n, cli.n_permutations, 42);
 
     eprintln!(
         "Cophenetic correlation: {:.4} (null: {:.4} +/- {:.4})",
-        result.cophenetic_correlation,
-        result.null_cophenetic_mean,
-        result.null_cophenetic_std,
+        result.cophenetic_correlation, result.null_cophenetic_mean, result.null_cophenetic_std,
     );
     eprintln!("Ultrametric fraction: {:.4}", result.ultrametric_fraction);
     eprintln!("P-value: {:.4}", result.p_value);
@@ -193,10 +204,12 @@ fn main() {
     let n_frb_final = objects.iter().filter(|o| o.catalog == "FRB").count();
     let n_gw_final = objects.iter().filter(|o| o.catalog == "GW").count();
 
-    let z_range = objects.iter().map(|o| o.redshift).fold(
-        (f64::INFINITY, f64::NEG_INFINITY),
-        |(lo, hi), z| (lo.min(z), hi.max(z)),
-    );
+    let z_range = objects
+        .iter()
+        .map(|o| o.redshift)
+        .fold((f64::INFINITY, f64::NEG_INFINITY), |(lo, hi), z| {
+            (lo.min(z), hi.max(z))
+        });
 
     // 6. Write results
     if let Some(parent) = cli.output.parent() {
@@ -211,7 +224,8 @@ fn main() {
         "null_std",
         "p_value",
         "verdict",
-    ]).unwrap();
+    ])
+    .unwrap();
 
     wtr.write_record([
         "cophenetic_correlation",
@@ -220,7 +234,8 @@ fn main() {
         &format!("{:.6}", result.null_cophenetic_std),
         &format!("{:.6}", result.p_value),
         &format!("{:?}", result.verdict),
-    ]).unwrap();
+    ])
+    .unwrap();
 
     wtr.write_record([
         "ultrametric_fraction",
@@ -229,25 +244,38 @@ fn main() {
         "N/A",
         "N/A",
         "N/A",
-    ]).unwrap();
+    ])
+    .unwrap();
 
     wtr.write_record([
         "n_frbs",
         &n_frb_final.to_string(),
-        "N/A", "N/A", "N/A", "N/A",
-    ]).unwrap();
+        "N/A",
+        "N/A",
+        "N/A",
+        "N/A",
+    ])
+    .unwrap();
 
     wtr.write_record([
         "n_gw_events",
         &n_gw_final.to_string(),
-        "N/A", "N/A", "N/A", "N/A",
-    ]).unwrap();
+        "N/A",
+        "N/A",
+        "N/A",
+        "N/A",
+    ])
+    .unwrap();
 
     wtr.write_record([
         "redshift_range",
         &format!("[{:.4}, {:.4}]", z_range.0, z_range.1),
-        "N/A", "N/A", "N/A", "N/A",
-    ]).unwrap();
+        "N/A",
+        "N/A",
+        "N/A",
+        "N/A",
+    ])
+    .unwrap();
 
     wtr.flush().unwrap();
 
@@ -257,6 +285,9 @@ fn main() {
     eprintln!("FRBs: {}", n_frb_final);
     eprintln!("GW events: {}", n_gw_final);
     eprintln!("Redshift range: [{:.4}, {:.4}]", z_range.0, z_range.1);
-    eprintln!("Cophenetic correlation: {:.4}", result.cophenetic_correlation);
+    eprintln!(
+        "Cophenetic correlation: {:.4}",
+        result.cophenetic_correlation
+    );
     eprintln!("Gate C-071f: {:?}", result.verdict);
 }

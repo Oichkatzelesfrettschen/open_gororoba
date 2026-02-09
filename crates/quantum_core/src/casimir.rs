@@ -91,7 +91,10 @@ impl Plate {
     /// * `position` - Position along the system axis in meters
     /// * `thickness` - Plate thickness in meters
     pub fn new(position: f64, thickness: f64) -> Self {
-        Plate { position, thickness }
+        Plate {
+            position,
+            thickness,
+        }
     }
 
     /// Create a plate with dimensions in micrometers.
@@ -125,9 +128,19 @@ impl SpherePlateSphere {
     /// # Panics
     /// Panics if the geometry is invalid (spheres overlapping with plate).
     pub fn new(source: Sphere, plate: Plate, drain: Sphere) -> Self {
-        let sps = SpherePlateSphere { source, plate, drain };
-        assert!(sps.source_plate_gap() > 0.0, "Source sphere overlaps with plate");
-        assert!(sps.drain_plate_gap() > 0.0, "Drain sphere overlaps with plate");
+        let sps = SpherePlateSphere {
+            source,
+            plate,
+            drain,
+        };
+        assert!(
+            sps.source_plate_gap() > 0.0,
+            "Source sphere overlaps with plate"
+        );
+        assert!(
+            sps.drain_plate_gap() > 0.0,
+            "Drain sphere overlaps with plate"
+        );
         sps
     }
 
@@ -374,9 +387,8 @@ pub fn analyze_transistor(
     };
 
     // Transistor regime: significant gain (> 0.01) and valid PFA
-    let in_transistor_regime = gain.abs() > 0.01
-        && pfa_is_valid(r_s, gap_s)
-        && pfa_is_valid(r_d, gap_d);
+    let in_transistor_regime =
+        gain.abs() > 0.01 && pfa_is_valid(r_s, gap_s) && pfa_is_valid(r_d, gap_d);
 
     TransistorResult {
         gain,
@@ -434,7 +446,11 @@ pub fn sweep_source_gap(
         let drain_pos = plate_pos + drain_gap + sphere_radius;
         let drain = Sphere::new(sphere_radius, drain_pos);
 
-        let system = SpherePlateSphere { source, plate, drain };
+        let system = SpherePlateSphere {
+            source,
+            plate,
+            drain,
+        };
         let transistor = analyze_transistor(&system, plate_spring);
 
         forces_source.push(transistor.force_source);
@@ -490,7 +506,7 @@ pub fn casimir_energy_pfa(radius: f64, gap: f64) -> f64 {
 /// Correction factor (< 1 for finite conductivity)
 pub fn finite_conductivity_correction(gap: f64, plasma_wavelength: f64) -> f64 {
     let ratio = plasma_wavelength / (2.0 * PI * gap);
-    (1.0 - 4.0 * ratio).max(0.1)  // Saturate at 0.1 to avoid unphysical negative values
+    (1.0 - 4.0 * ratio).max(0.1) // Saturate at 0.1 to avoid unphysical negative values
 }
 
 /// Thermal (finite temperature) correction factor for the Casimir force.
@@ -508,7 +524,7 @@ pub fn finite_conductivity_correction(gap: f64, plasma_wavelength: f64) -> f64 {
 /// # Returns
 /// Correction factor (> 1 for thermal enhancement at large gaps)
 pub fn thermal_correction(gap: f64, temperature: f64) -> f64 {
-    const K_B: f64 = 1.380649e-23;  // Boltzmann constant
+    const K_B: f64 = 1.380649e-23; // Boltzmann constant
     let lambda_t = HBAR * C / (K_B * temperature);
 
     // Simplified thermal correction from Bordag et al.
@@ -969,7 +985,9 @@ pub fn three_body_gain_strict(
     casimir_force_guarded(r_source, gap_source, required_accuracy)?;
     casimir_force_guarded(r_drain, gap_drain, required_accuracy)?;
 
-    Ok(three_body_gain_quasistatic(r_source, r_drain, gap_source, gap_drain, k_plate))
+    Ok(three_body_gain_quasistatic(
+        r_source, r_drain, gap_source, gap_drain, k_plate,
+    ))
 }
 
 // ============================================================================
@@ -1515,7 +1533,11 @@ impl PfaValidityInfo {
 /// ```
 pub fn check_pfa_validity(radius: f64, gap: f64) -> PfaValidityInfo {
     let r_over_d = if gap > 0.0 { radius / gap } else { 0.0 };
-    let d_over_r = if radius > 0.0 { gap / radius } else { f64::INFINITY };
+    let d_over_r = if radius > 0.0 {
+        gap / radius
+    } else {
+        f64::INFINITY
+    };
 
     let one_percent_valid = r_over_d > 132.0;
     let five_percent_valid = r_over_d > 26.0;
@@ -1816,8 +1838,14 @@ pub fn spring_constant_with_diagnostics(
         && matches!(
             (target_accuracy, achieved_accuracy),
             (PfaAccuracy::OnePercent, PfaAccuracy::OnePercent)
-                | (PfaAccuracy::FivePercent, PfaAccuracy::OnePercent | PfaAccuracy::FivePercent)
-                | (PfaAccuracy::TenPercent, PfaAccuracy::OnePercent | PfaAccuracy::FivePercent | PfaAccuracy::TenPercent)
+                | (
+                    PfaAccuracy::FivePercent,
+                    PfaAccuracy::OnePercent | PfaAccuracy::FivePercent
+                )
+                | (
+                    PfaAccuracy::TenPercent,
+                    PfaAccuracy::OnePercent | PfaAccuracy::FivePercent | PfaAccuracy::TenPercent
+                )
                 | (PfaAccuracy::Qualitative, _)
         );
 
@@ -2063,7 +2091,7 @@ mod tests {
         // So dE/dd = C*R/d^3 = -F
         let r = 5e-6;
         let d = 100e-9;
-        let dd = 1e-12;  // Small displacement
+        let dd = 1e-12; // Small displacement
 
         let e1 = casimir_energy_pfa(r, d);
         let e2 = casimir_energy_pfa(r, d + dd);
@@ -2077,9 +2105,9 @@ mod tests {
     #[test]
     fn test_pfa_validity() {
         // Valid when R >> d (qualitative threshold: R/d > 5)
-        assert!(pfa_is_valid(5e-6, 100e-9));  // R/d = 50
-        assert!(pfa_is_valid(5e-6, 400e-9));  // R/d = 12.5
-        assert!(pfa_is_valid(5e-6, 800e-9));  // R/d = 6.25 (just above threshold)
+        assert!(pfa_is_valid(5e-6, 100e-9)); // R/d = 50
+        assert!(pfa_is_valid(5e-6, 400e-9)); // R/d = 12.5
+        assert!(pfa_is_valid(5e-6, 800e-9)); // R/d = 6.25 (just above threshold)
         assert!(!pfa_is_valid(5e-6, 1.5e-6)); // R/d = 3.33 (below threshold)
     }
 
@@ -2093,10 +2121,10 @@ mod tests {
     #[test]
     fn test_sps_system_geometry() {
         let system = SpherePlateSphere::symmetric_from_micrometers(
-            5.0,   // radius
-            0.1,   // source gap (100 nm)
-            0.1,   // drain gap (100 nm)
-            0.01,  // plate thickness (10 nm)
+            5.0,  // radius
+            0.1,  // source gap (100 nm)
+            0.1,  // drain gap (100 nm)
+            0.01, // plate thickness (10 nm)
         );
 
         assert!((system.source_plate_gap() - 0.1e-6).abs() < 1e-12);
@@ -2106,16 +2134,17 @@ mod tests {
     #[test]
     fn test_compute_forces_symmetric() {
         let system = SpherePlateSphere::symmetric_from_micrometers(
-            5.0,   // same radius
-            0.1,   // same gap
-            0.1,
-            0.01,
+            5.0, // same radius
+            0.1, // same gap
+            0.1, 0.01,
         );
 
         let result = compute_casimir_forces(&system);
 
         // Forces should be equal for symmetric system
-        assert!((result.force_source - result.force_drain).abs() / result.force_source.abs() < 0.01);
+        assert!(
+            (result.force_source - result.force_drain).abs() / result.force_source.abs() < 0.01
+        );
     }
 
     #[test]
@@ -2182,7 +2211,7 @@ mod tests {
     #[test]
     fn test_thermal_correction_room_temp() {
         // At room temperature, lambda_T ~ 7.6 um
-        let temp = 300.0;  // K
+        let temp = 300.0; // K
 
         // At nanometer gaps, thermal correction negligible
         let corr_small = thermal_correction(100e-9, temp);
@@ -2197,10 +2226,10 @@ mod tests {
     fn test_casimir_force_with_corrections_physical() {
         // Gold at room temperature
         let force = casimir_force_with_corrections(
-            5e-6,    // 5 um sphere
-            100e-9,  // 100 nm gap
-            136e-9,  // gold plasma wavelength
-            300.0,   // room temperature
+            5e-6,   // 5 um sphere
+            100e-9, // 100 nm gap
+            136e-9, // gold plasma wavelength
+            300.0,  // room temperature
         );
 
         // Should still be attractive
@@ -2216,10 +2245,9 @@ mod tests {
         // From Xu et al. 2022: silica spheres ~ 5 um diameter
         // Gaps ~ 100-500 nm range
         let system = SpherePlateSphere::symmetric_from_micrometers(
-            2.5,   // 2.5 um radius (5 um diameter)
-            0.2,   // 200 nm gap
-            0.2,
-            0.05,  // 50 nm plate
+            2.5, // 2.5 um radius (5 um diameter)
+            0.2, // 200 nm gap
+            0.2, 0.05, // 50 nm plate
         );
 
         let forces = compute_casimir_forces(&system);
@@ -2281,9 +2309,7 @@ mod tests {
     #[test]
     fn test_cross_coupling_rigid_plate() {
         // Rigid plate (infinite spring): no cross-coupling
-        let (k_s, k_d, cross) = cross_coupling_additive(
-            5e-6, 5e-6, 100e-9, 100e-9, 0.0
-        );
+        let (k_s, k_d, cross) = cross_coupling_additive(5e-6, 5e-6, 100e-9, 100e-9, 0.0);
         assert!(k_s > 0.0);
         assert!(k_d > 0.0);
         assert_eq!(cross, 0.0);
@@ -2292,9 +2318,7 @@ mod tests {
     #[test]
     fn test_cross_coupling_flexible_plate() {
         // Flexible plate: finite cross-coupling
-        let (k_s, k_d, cross) = cross_coupling_additive(
-            5e-6, 5e-6, 100e-9, 100e-9, 1.0
-        );
+        let (k_s, k_d, cross) = cross_coupling_additive(5e-6, 5e-6, 100e-9, 100e-9, 1.0);
         assert!(cross > 0.0);
         // Cross-coupling should be k_s * k_d / k_plate
         assert!((cross - k_s * k_d / 1.0).abs() < TOLERANCE);
@@ -2358,7 +2382,10 @@ mod tests {
         // At high frequency, dielectric should approach 1
         let eps_high = gold.epsilon_at_imaginary(1e18);
         assert!(eps_high > 1.0);
-        assert!(eps_high < 2.0, "High-frequency epsilon should be close to 1");
+        assert!(
+            eps_high < 2.0,
+            "High-frequency epsilon should be close to 1"
+        );
 
         // At lower frequency, dielectric should be larger
         let eps_low = gold.epsilon_at_imaginary(1e14);
@@ -2526,7 +2553,11 @@ mod tests {
         let gap = 100e-9;
         let info = check_pfa_validity(radius, gap);
 
-        assert!(info.one_percent_valid, "R/d = {} should satisfy 1%", info.r_over_d);
+        assert!(
+            info.one_percent_valid,
+            "R/d = {} should satisfy 1%",
+            info.r_over_d
+        );
         assert!(info.five_percent_valid);
         assert!(info.ten_percent_valid);
         assert!(info.qualitative_valid);
@@ -2540,8 +2571,16 @@ mod tests {
         let gap = 100e-9;
         let info = check_pfa_validity(radius, gap);
 
-        assert!(!info.one_percent_valid, "R/d = {} should NOT satisfy 1%", info.r_over_d);
-        assert!(info.five_percent_valid, "R/d = {} should satisfy 5%", info.r_over_d);
+        assert!(
+            !info.one_percent_valid,
+            "R/d = {} should NOT satisfy 1%",
+            info.r_over_d
+        );
+        assert!(
+            info.five_percent_valid,
+            "R/d = {} should satisfy 5%",
+            info.r_over_d
+        );
         assert!(info.ten_percent_valid);
         assert!(info.qualitative_valid);
         assert_eq!(info.achieved_accuracy, PfaAccuracy::FivePercent);
@@ -2607,7 +2646,9 @@ mod tests {
         assert!(result.is_err(), "Should fail at 1%");
 
         match result {
-            Err(CasimirError::PfaViolation { d_over_r, accuracy, .. }) => {
+            Err(CasimirError::PfaViolation {
+                d_over_r, accuracy, ..
+            }) => {
                 assert!((d_over_r - 0.02).abs() < 0.001);
                 assert_eq!(accuracy, PfaAccuracy::OnePercent);
             }
@@ -2628,7 +2669,7 @@ mod tests {
     #[test]
     fn test_casimir_force_guarded_invalid_gap() {
         let radius = 5e-6;
-        let gap = -100e-9;  // Invalid negative gap
+        let gap = -100e-9; // Invalid negative gap
 
         let result = casimir_force_guarded(radius, gap, PfaAccuracy::Qualitative);
         assert!(matches!(result, Err(CasimirError::InvalidGap { .. })));
@@ -2636,7 +2677,7 @@ mod tests {
 
     #[test]
     fn test_casimir_force_guarded_invalid_radius() {
-        let radius = -5e-6;  // Invalid negative radius
+        let radius = -5e-6; // Invalid negative radius
         let gap = 100e-9;
 
         let result = casimir_force_guarded(radius, gap, PfaAccuracy::Qualitative);
@@ -2683,8 +2724,8 @@ mod tests {
         assert_eq!(PfaAccuracy::Qualitative.min_r_over_d(), 5.0);
 
         // d/R thresholds
-        assert!((1.0_f64 / 132.0 - 0.00757).abs() < 0.0001);  // 1%: d/R < 0.00755
-        assert!((1.0_f64 / 26.0 - 0.0385).abs() < 0.001);     // 5%: d/R < 0.038
+        assert!((1.0_f64 / 132.0 - 0.00757).abs() < 0.0001); // 1%: d/R < 0.00755
+        assert!((1.0_f64 / 26.0 - 0.0385).abs() < 0.001); // 5%: d/R < 0.038
     }
 
     #[test]
@@ -2715,10 +2756,7 @@ mod tests {
         let radius = 5e-6;
         let gap = 100e-9;
 
-        let result = casimir_force_with_de(
-            radius, gap,
-            &DeCoefficients::SPHERE_PLATE_DIRICHLET,
-        );
+        let result = casimir_force_with_de(radius, gap, &DeCoefficients::SPHERE_PLATE_DIRICHLET);
 
         // PFA force should be attractive
         assert!(result.force_pfa < 0.0);
@@ -2737,22 +2775,20 @@ mod tests {
     #[test]
     fn test_casimir_force_with_de_convergence() {
         // Small d/R -> well converged
-        let radius = 20e-6;  // Large sphere
-        let gap = 100e-9;    // d/R = 0.005
+        let radius = 20e-6; // Large sphere
+        let gap = 100e-9; // d/R = 0.005
 
-        let result = casimir_force_with_de(
-            radius, gap,
-            &DeCoefficients::SPHERE_PLATE_DIRICHLET,
-        );
+        let result = casimir_force_with_de(radius, gap, &DeCoefficients::SPHERE_PLATE_DIRICHLET);
 
         assert!(result.is_converged, "Should be converged at d/R = 0.005");
 
         // Large d/R -> may not be converged
-        let radius_small = 0.5e-6;  // Small sphere
-        let gap_large = 100e-9;     // d/R = 0.2
+        let radius_small = 0.5e-6; // Small sphere
+        let gap_large = 100e-9; // d/R = 0.2
 
         let result2 = casimir_force_with_de(
-            radius_small, gap_large,
+            radius_small,
+            gap_large,
             &DeCoefficients::SPHERE_PLATE_DIRICHLET,
         );
 
@@ -2768,10 +2804,7 @@ mod tests {
         let radius = 5e-6;
         let gap = 100e-9;
 
-        let result = casimir_force_with_de(
-            radius, gap,
-            &DeCoefficients::SPHERE_PLATE_DIRICHLET,
-        );
+        let result = casimir_force_with_de(radius, gap, &DeCoefficients::SPHERE_PLATE_DIRICHLET);
 
         // O1 correction should have same sign as F_PFA (both negative)
         assert!(result.correction_o1 < 0.0);
@@ -2783,7 +2816,7 @@ mod tests {
     #[test]
     fn test_estimate_de_error() {
         let radius = 5e-6;
-        let gap = 100e-9;  // d/R = 0.02
+        let gap = 100e-9; // d/R = 0.02
 
         let error = estimate_de_error(radius, gap);
 
@@ -2795,7 +2828,7 @@ mod tests {
     #[test]
     fn test_max_gap_for_error() {
         let radius = 5e-6;
-        let target_error = 0.01;  // 1% error
+        let target_error = 0.01; // 1% error
 
         let max_gap = max_gap_for_error(radius, target_error);
 
@@ -2853,7 +2886,7 @@ mod tests {
     #[test]
     fn test_spring_constant_strict_passes() {
         // Very large R/d for 1% spring constant accuracy
-        let radius = 40e-6;  // R/d = 400, very safe
+        let radius = 40e-6; // R/d = 400, very safe
         let gap = 100e-9;
 
         let result = spring_constant_strict(radius, gap, PfaAccuracy::OnePercent);
@@ -2868,13 +2901,16 @@ mod tests {
         let gap = 100e-9;
 
         let result = spring_constant_strict(radius, gap, PfaAccuracy::FivePercent);
-        assert!(result.is_err(), "Should fail: 5% k needs 1% force, R/d=50 insufficient");
+        assert!(
+            result.is_err(),
+            "Should fail: 5% k needs 1% force, R/d=50 insufficient"
+        );
     }
 
     #[test]
     fn test_spring_constant_strict_vs_regular() {
         // The strict version requires more stringent geometry
-        let radius = 13e-6;  // R/d = 130, just under 132 for 1%
+        let radius = 13e-6; // R/d = 130, just under 132 for 1%
         let gap = 100e-9;
 
         // Regular guard at 5% should pass (R/d > 26)
@@ -2890,12 +2926,9 @@ mod tests {
     fn test_transistor_gain_strict() {
         let radius = 40e-6;
         let gap = 100e-9;
-        let plate_spring = 1e-3;  // 1 mN/m
+        let plate_spring = 1e-3; // 1 mN/m
 
-        let result = transistor_gain_strict(
-            radius, gap, plate_spring,
-            PfaAccuracy::TenPercent,
-        );
+        let result = transistor_gain_strict(radius, gap, plate_spring, PfaAccuracy::TenPercent);
         assert!(result.is_ok());
 
         let gain = result.unwrap();
@@ -2908,10 +2941,7 @@ mod tests {
         let gap = 100e-9;
 
         // Zero plate spring gives zero gain (no coupling)
-        let result = transistor_gain_strict(
-            radius, gap, 0.0,
-            PfaAccuracy::Qualitative,
-        );
+        let result = transistor_gain_strict(radius, gap, 0.0, PfaAccuracy::Qualitative);
         assert!(result.is_ok());
         assert_eq!(result.unwrap(), 0.0);
     }
@@ -2921,10 +2951,7 @@ mod tests {
         let radius = 5e-6;
         let gap = 100e-9;
 
-        let result = spring_constant_with_diagnostics(
-            radius, gap,
-            PfaAccuracy::FivePercent,
-        );
+        let result = spring_constant_with_diagnostics(radius, gap, PfaAccuracy::FivePercent);
 
         assert!(result.k > 0.0);
         assert!(result.estimated_k_error > 0.0);
@@ -2970,9 +2997,9 @@ mod tests {
 
     #[test]
     fn test_three_body_gain_quasistatic_basic() {
-        let r = 5e-6;  // 5 um spheres
-        let gap = 100e-9;  // 100 nm gaps
-        let k_plate = 1e-3;  // 1 mN/m
+        let r = 5e-6; // 5 um spheres
+        let gap = 100e-9; // 100 nm gaps
+        let k_plate = 1e-3; // 1 mN/m
 
         let gain = three_body_gain_quasistatic(r, r, gap, gap, k_plate);
 
@@ -2993,18 +3020,16 @@ mod tests {
     #[test]
     fn test_three_body_gain_asymmetric() {
         let r_source = 5e-6;
-        let r_drain = 10e-6;  // Larger drain sphere
+        let r_drain = 10e-6; // Larger drain sphere
         let gap_source = 100e-9;
-        let gap_drain = 50e-9;  // Smaller drain gap
+        let gap_drain = 50e-9; // Smaller drain gap
         let k_plate = 1e-3;
 
-        let gain = three_body_gain_quasistatic(
-            r_source, r_drain, gap_source, gap_drain, k_plate,
-        );
+        let gain = three_body_gain_quasistatic(r_source, r_drain, gap_source, gap_drain, k_plate);
 
         // Asymmetric configuration should still give reasonable gain
         assert!(gain > 0.0);
-        assert!(gain < 10.0);  // Shouldn't be unreasonably large
+        assert!(gain < 10.0); // Shouldn't be unreasonably large
     }
 
     #[test]
@@ -3012,11 +3037,9 @@ mod tests {
         let r = 5e-6;
         let gap = 100e-9;
         let k_plate = 1e-3;
-        let m = 1e-12;  // 1 picogram
+        let m = 1e-12; // 1 picogram
 
-        let result = three_body_casimir_dynamics(
-            r, r, gap, gap, k_plate, m, m, m,
-        );
+        let result = three_body_casimir_dynamics(r, r, gap, gap, k_plate, m, m, m);
 
         // Diagonal elements should be negative (restoring)
         assert!(result.j_ss < 0.0, "j_ss should be negative (restoring)");
@@ -3034,12 +3057,10 @@ mod tests {
     fn test_three_body_casimir_dynamics_stability() {
         let r = 5e-6;
         let gap = 100e-9;
-        let k_plate = 1e-3;  // Strong plate spring for stability
+        let k_plate = 1e-3; // Strong plate spring for stability
         let m = 1e-12;
 
-        let result = three_body_casimir_dynamics(
-            r, r, gap, gap, k_plate, m, m, m,
-        );
+        let result = three_body_casimir_dynamics(r, r, gap, gap, k_plate, m, m, m);
 
         // With strong plate spring, system should be stable
         // (eigenvalues should be positive for oscillatory modes)
@@ -3056,21 +3077,28 @@ mod tests {
         let k_plate = 1e-3;
         let m = 1e-12;
 
-        let result = three_body_casimir_dynamics(
-            r, r, gap, gap, k_plate, m, m, m,
-        );
+        let result = three_body_casimir_dynamics(r, r, gap, gap, k_plate, m, m, m);
 
         // Effective gain can be negative (opposite force direction coupling)
         // The magnitude should be non-zero and reasonable
-        assert!(result.effective_gain.abs() > 0.0, "Gain magnitude should be non-zero");
+        assert!(
+            result.effective_gain.abs() > 0.0,
+            "Gain magnitude should be non-zero"
+        );
 
         // Compare magnitude with quasistatic approximation
         let quasistatic_gain = three_body_gain_quasistatic(r, r, gap, gap, k_plate);
 
         // The formulations differ slightly, but magnitudes should be comparable
         // (within an order of magnitude, accounting for sign and formulation differences)
-        assert!(result.effective_gain.abs() > 0.001, "Gain magnitude too small");
-        assert!(result.effective_gain.abs() < 10.0, "Gain magnitude too large");
+        assert!(
+            result.effective_gain.abs() > 0.001,
+            "Gain magnitude too small"
+        );
+        assert!(
+            result.effective_gain.abs() < 10.0,
+            "Gain magnitude too large"
+        );
 
         // Both should be less than 1 for passive system (energy conserving)
         assert!(result.effective_gain.abs() < 1.0);
@@ -3079,14 +3107,11 @@ mod tests {
 
     #[test]
     fn test_three_body_gain_strict_passes() {
-        let r = 20e-6;  // Large spheres for 1% accuracy
+        let r = 20e-6; // Large spheres for 1% accuracy
         let gap = 100e-9;
         let k_plate = 1e-3;
 
-        let result = three_body_gain_strict(
-            r, r, gap, gap, k_plate,
-            PfaAccuracy::FivePercent,
-        );
+        let result = three_body_gain_strict(r, r, gap, gap, k_plate, PfaAccuracy::FivePercent);
 
         assert!(result.is_ok());
         let gain = result.unwrap();
@@ -3095,14 +3120,11 @@ mod tests {
 
     #[test]
     fn test_three_body_gain_strict_fails() {
-        let r = 1e-6;  // Small spheres
-        let gap = 100e-9;  // R/d = 10, insufficient for 1%
+        let r = 1e-6; // Small spheres
+        let gap = 100e-9; // R/d = 10, insufficient for 1%
         let k_plate = 1e-3;
 
-        let result = three_body_gain_strict(
-            r, r, gap, gap, k_plate,
-            PfaAccuracy::OnePercent,
-        );
+        let result = three_body_gain_strict(r, r, gap, gap, k_plate, PfaAccuracy::OnePercent);
 
         assert!(result.is_err());
     }
@@ -3114,9 +3136,7 @@ mod tests {
         let k_plate = 1e-3;
         let m = 1e-12;
 
-        let result = three_body_casimir_dynamics(
-            r, r, gap, gap, k_plate, m, m, m,
-        );
+        let result = three_body_casimir_dynamics(r, r, gap, gap, k_plate, m, m, m);
 
         // Should include validity info for both source and drain
         assert!(result.source_validity.five_percent_valid);

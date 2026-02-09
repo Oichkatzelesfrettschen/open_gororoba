@@ -101,15 +101,11 @@ pub fn standard_zero_divisor_partners(zd: &StandardZeroDivisor) -> Vec<StandardZ
 /// - Has nontrivial left and right annihilator
 /// - Nullspace basis vectors actually annihilate
 /// - The 4 standard partners span the annihilator subspace
-pub fn assert_standard_zero_divisor_annihilators(
-    zd: &StandardZeroDivisor,
-) -> Result<(), String> {
+pub fn assert_standard_zero_divisor_annihilators(zd: &StandardZeroDivisor) -> Result<(), String> {
     let v = &zd.vector;
     let norm_sq: f64 = v.iter().map(|x| x * x).sum();
     if (norm_sq - 2.0).abs() > 1e-12 {
-        return Err(format!(
-            "Squared norm = {norm_sq}, expected 2.0"
-        ));
+        return Err(format!("Squared norm = {norm_sq}, expected 2.0"));
     }
 
     if !is_reggiani_zd(v, 1e-12) {
@@ -118,10 +114,7 @@ pub fn assert_standard_zero_divisor_annihilators(
 
     let info = annihilator_info(v, 16, 1e-12);
     if info.left_nullity == 0 || info.right_nullity == 0 {
-        return Err(format!(
-            "Expected nontrivial annihilators, got {:?}",
-            info
-        ));
+        return Err(format!("Expected nontrivial annihilators, got {:?}", info));
     }
 
     // Verify nullspace basis vectors actually annihilate

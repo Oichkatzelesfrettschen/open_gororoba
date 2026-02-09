@@ -10,7 +10,7 @@
 //! - Gray & Kourtis (2021): Hyper-optimized tensor network contraction
 //! - Schollwoeck (2011): DMRG review with SVD-based truncation
 
-use ndarray::{Array2, ArrayD, s};
+use ndarray::{s, Array2, ArrayD};
 use qua_ten_net::tencon::contract;
 use qua_ten_net::tendot::tensor_dot;
 use qua_ten_net::tensor::svd;
@@ -64,12 +64,7 @@ pub fn truncated_svd(
     let rank = max_r.min(sv_cutoff).min(full_rank);
 
     // Compute truncation error (sum of squared discarded singular values)
-    let truncation_error: f64 = svd_result
-        .sigma
-        .iter()
-        .skip(rank)
-        .map(|sv| sv * sv)
-        .sum();
+    let truncation_error: f64 = svd_result.sigma.iter().skip(rank).map(|sv| sv * sv).sum();
 
     // Truncate matrices
     let u_trunc = svd_result.u.slice(s![.., ..rank]).to_owned();
@@ -198,11 +193,7 @@ mod tests {
     #[test]
     fn test_truncated_svd_with_cutoff() {
         // Matrix with singular values 3, 2, 1
-        let matrix: Array2<f64> = array![
-            [3.0, 0.0, 0.0],
-            [0.0, 2.0, 0.0],
-            [0.0, 0.0, 1.0],
-        ];
+        let matrix: Array2<f64> = array![[3.0, 0.0, 0.0], [0.0, 2.0, 0.0], [0.0, 0.0, 1.0],];
         let result = truncated_svd(matrix, Some(2), 1e-14).unwrap();
 
         assert_eq!(result.rank, 2);

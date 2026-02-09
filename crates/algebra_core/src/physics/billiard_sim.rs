@@ -72,7 +72,11 @@ impl LorentzVec {
     /// Add: x + y.
     pub fn add(&self, other: &Self) -> Self {
         let mut c = [0.0; 10];
-        for ((c_i, &a), &b) in c.iter_mut().zip(self.coords.iter()).zip(other.coords.iter()) {
+        for ((c_i, &a), &b) in c
+            .iter_mut()
+            .zip(self.coords.iter())
+            .zip(other.coords.iter())
+        {
             *c_i = a + b;
         }
         Self { coords: c }
@@ -81,7 +85,11 @@ impl LorentzVec {
     /// Subtract: x - y.
     pub fn sub(&self, other: &Self) -> Self {
         let mut c = [0.0; 10];
-        for ((c_i, &a), &b) in c.iter_mut().zip(self.coords.iter()).zip(other.coords.iter()) {
+        for ((c_i, &a), &b) in c
+            .iter_mut()
+            .zip(self.coords.iter())
+            .zip(other.coords.iter())
+        {
             *c_i = a - b;
         }
         Self { coords: c }
@@ -193,7 +201,8 @@ impl HyperbolicBilliard {
         let simple_roots = e10.simple_roots();
 
         // Convert walls
-        let walls: Vec<LorentzVec> = simple_roots.iter()
+        let walls: Vec<LorentzVec> = simple_roots
+            .iter()
             .map(LorentzVec::from_kac_moody)
             .collect();
 
@@ -271,7 +280,9 @@ impl HyperbolicBilliard {
         // eps <= <pos, alpha_i> / -<v', alpha_i> for all walls with <v', alpha_i> < 0.
         let mut max_eps = 1e-5; // Upper bound for the nudge
         for (i, w) in self.config.walls.iter().enumerate() {
-            if i == wall_idx { continue; }
+            if i == wall_idx {
+                continue;
+            }
             let pos_dot = self.state.pos.inner_product(w);
             let vel_dot = self.state.vel.inner_product(w);
             if vel_dot < -1e-12 {
@@ -322,7 +333,10 @@ impl HyperbolicBilliard {
 
     /// Check if position is inside the Weyl chamber (all wall inner products positive).
     pub fn is_inside_chamber(&self) -> bool {
-        self.config.walls.iter().all(|w| self.state.pos.inner_product(w) > -1e-10)
+        self.config
+            .walls
+            .iter()
+            .all(|w| self.state.pos.inner_product(w) > -1e-10)
     }
 
     /// Compute the geodesic collision time with a specific wall.
@@ -430,10 +444,7 @@ fn compute_diagnostics(state: &BilliardState) -> ConstraintDiagnostics {
 ///
 /// This is the same algorithm as in the e10_billiard example but factored out
 /// for reuse.
-fn compute_weyl_vector(
-    e10: &E10RootSystem,
-    roots: &[KacMoodyRoot],
-) -> KacMoodyRoot {
+fn compute_weyl_vector(e10: &E10RootSystem, roots: &[KacMoodyRoot]) -> KacMoodyRoot {
     use crate::lie::kac_moody::RootType;
 
     let n = roots.len();
@@ -545,19 +556,30 @@ mod tests {
         let billiard = make_test_billiard(42);
         let diag = billiard.diagnostics();
 
-        assert!(diag.pos_norm_error.abs() < 1e-12,
-            "Position not on hyperboloid: error = {:.2e}", diag.pos_norm_error);
-        assert!(diag.tangency_error.abs() < 1e-12,
-            "Velocity not tangent: error = {:.2e}", diag.tangency_error);
-        assert!(diag.vel_norm_error.abs() < 1e-12,
-            "Velocity not unit speed: error = {:.2e}", diag.vel_norm_error);
+        assert!(
+            diag.pos_norm_error.abs() < 1e-12,
+            "Position not on hyperboloid: error = {:.2e}",
+            diag.pos_norm_error
+        );
+        assert!(
+            diag.tangency_error.abs() < 1e-12,
+            "Velocity not tangent: error = {:.2e}",
+            diag.tangency_error
+        );
+        assert!(
+            diag.vel_norm_error.abs() < 1e-12,
+            "Velocity not unit speed: error = {:.2e}",
+            diag.vel_norm_error
+        );
     }
 
     #[test]
     fn test_inside_chamber_initially() {
         let billiard = make_test_billiard(42);
-        assert!(billiard.is_inside_chamber(),
-            "Initial position should be inside the Weyl chamber");
+        assert!(
+            billiard.is_inside_chamber(),
+            "Initial position should be inside the Weyl chamber"
+        );
     }
 
     #[test]
@@ -573,12 +595,27 @@ mod tests {
 
             // Tolerance scales with cosh(t)^2 * machine_eps (quadratic form amplification)
             let tol = (t.cosh().powi(2) * 1e-14).max(1e-12);
-            assert!(diag.pos_norm_error.abs() < tol,
-                "t={}: pos norm error = {:.2e} > tol {:.2e}", t, diag.pos_norm_error, tol);
-            assert!(diag.tangency_error.abs() < tol,
-                "t={}: tangency error = {:.2e} > tol {:.2e}", t, diag.tangency_error, tol);
-            assert!(diag.vel_norm_error.abs() < tol,
-                "t={}: vel norm error = {:.2e} > tol {:.2e}", t, diag.vel_norm_error, tol);
+            assert!(
+                diag.pos_norm_error.abs() < tol,
+                "t={}: pos norm error = {:.2e} > tol {:.2e}",
+                t,
+                diag.pos_norm_error,
+                tol
+            );
+            assert!(
+                diag.tangency_error.abs() < tol,
+                "t={}: tangency error = {:.2e} > tol {:.2e}",
+                t,
+                diag.tangency_error,
+                tol
+            );
+            assert!(
+                diag.vel_norm_error.abs() < tol,
+                "t={}: vel norm error = {:.2e} > tol {:.2e}",
+                t,
+                diag.vel_norm_error,
+                tol
+            );
         }
 
         // Many small steps should also preserve constraints
@@ -586,8 +623,11 @@ mod tests {
             geodesic_advance(&mut state, 0.01);
         }
         let diag = compute_diagnostics(&state);
-        assert!(diag.pos_norm_error.abs() < 1e-7,
-            "After 1000 small steps: pos error = {:.2e}", diag.pos_norm_error);
+        assert!(
+            diag.pos_norm_error.abs() < 1e-7,
+            "After 1000 small steps: pos error = {:.2e}",
+            diag.pos_norm_error
+        );
     }
 
     #[test]
@@ -599,9 +639,12 @@ mod tests {
             let mut vel = billiard.state.vel.clone();
             weyl_reflect(&mut vel, wall);
             let new_norm = vel.norm_sq();
-            assert!((new_norm - original_norm).abs() < 1e-12,
+            assert!(
+                (new_norm - original_norm).abs() < 1e-12,
                 "Weyl reflection changed velocity norm: {:.6} -> {:.6}",
-                original_norm, new_norm);
+                original_norm,
+                new_norm
+            );
         }
     }
 
@@ -611,21 +654,36 @@ mod tests {
         let sequence = billiard.simulate(10_000);
 
         // Should complete without escaping
-        assert!(sequence.len() >= 1000,
-            "Expected at least 1000 bounces, got {}", sequence.len());
+        assert!(
+            sequence.len() >= 1000,
+            "Expected at least 1000 bounces, got {}",
+            sequence.len()
+        );
 
         // Constraint errors should stay bounded
-        assert!(billiard.max_pos_error < 1e-10,
-            "Max position error too large: {:.2e}", billiard.max_pos_error);
-        assert!(billiard.max_tangency_error < 1e-10,
-            "Max tangency error too large: {:.2e}", billiard.max_tangency_error);
-        assert!(billiard.max_vel_error < 1e-10,
-            "Max velocity error too large: {:.2e}", billiard.max_vel_error);
+        assert!(
+            billiard.max_pos_error < 1e-10,
+            "Max position error too large: {:.2e}",
+            billiard.max_pos_error
+        );
+        assert!(
+            billiard.max_tangency_error < 1e-10,
+            "Max tangency error too large: {:.2e}",
+            billiard.max_tangency_error
+        );
+        assert!(
+            billiard.max_vel_error < 1e-10,
+            "Max velocity error too large: {:.2e}",
+            billiard.max_vel_error
+        );
 
         // Should hit multiple walls
         let unique_walls: std::collections::HashSet<usize> = sequence.iter().copied().collect();
-        assert!(unique_walls.len() >= 3,
-            "Expected diverse wall hits, got {} unique walls", unique_walls.len());
+        assert!(
+            unique_walls.len() >= 3,
+            "Expected diverse wall hits, got {} unique walls",
+            unique_walls.len()
+        );
     }
 
     #[test]
@@ -647,8 +705,10 @@ mod tests {
                 n_reachable += 1;
             }
         }
-        assert!(n_reachable >= 1,
-            "No reachable walls from initial position/velocity");
+        assert!(
+            n_reachable >= 1,
+            "No reachable walls from initial position/velocity"
+        );
     }
 
     #[test]
@@ -656,7 +716,8 @@ mod tests {
         // Without renormalization, errors should grow faster
         let e10 = E10RootSystem::new();
         let simple_roots = e10.simple_roots();
-        let walls: Vec<LorentzVec> = simple_roots.iter()
+        let walls: Vec<LorentzVec> = simple_roots
+            .iter()
             .map(LorentzVec::from_kac_moody)
             .collect();
 
@@ -683,9 +744,12 @@ mod tests {
         let _s_yes = b_yes.simulate(1000);
 
         // With renormalization, errors should be smaller
-        assert!(b_yes.max_pos_error <= b_no.max_pos_error + 1e-15,
+        assert!(
+            b_yes.max_pos_error <= b_no.max_pos_error + 1e-15,
             "Renormalized error ({:.2e}) should be <= non-renormalized ({:.2e})",
-            b_yes.max_pos_error, b_no.max_pos_error);
+            b_yes.max_pos_error,
+            b_no.max_pos_error
+        );
     }
 
     #[test]
@@ -698,9 +762,13 @@ mod tests {
             // Inner product should match E10 inner product
             let lv_norm = lv.norm_sq();
             let km_norm = e10.inner_product(root, root);
-            assert!((lv_norm - km_norm).abs() < 1e-10,
+            assert!(
+                (lv_norm - km_norm).abs() < 1e-10,
                 "Root {}: LorentzVec norm {:.6} != KacMoody norm {:.6}",
-                i, lv_norm, km_norm);
+                i,
+                lv_norm,
+                km_norm
+            );
         }
     }
 
@@ -708,14 +776,19 @@ mod tests {
     fn test_walls_have_norm_2() {
         let e10 = E10RootSystem::new();
         let simple_roots = e10.simple_roots();
-        let walls: Vec<LorentzVec> = simple_roots.iter()
+        let walls: Vec<LorentzVec> = simple_roots
+            .iter()
             .map(LorentzVec::from_kac_moody)
             .collect();
 
         for (i, wall) in walls.iter().enumerate() {
             let norm = wall.norm_sq();
-            assert!((norm - 2.0).abs() < 1e-10,
-                "Wall {} has norm^2 = {:.6}, expected 2.0", i, norm);
+            assert!(
+                (norm - 2.0).abs() < 1e-10,
+                "Wall {} has norm^2 = {:.6}, expected 2.0",
+                i,
+                norm
+            );
         }
     }
 
@@ -729,9 +802,13 @@ mod tests {
             let e8_count = sequence.iter().filter(|&&w| w < 8).count();
             let e8_fraction = e8_count as f64 / sequence.len() as f64;
             // E8 sector should dominate (at least 50% of bounces)
-            assert!(e8_fraction > 0.3,
+            assert!(
+                e8_fraction > 0.3,
                 "E8 fraction too low: {:.4} ({} of {})",
-                e8_fraction, e8_count, sequence.len());
+                e8_fraction,
+                e8_count,
+                sequence.len()
+            );
         }
     }
 
@@ -741,7 +818,7 @@ mod tests {
         let e10 = E10RootSystem::new();
         let simple_roots = e10.simple_roots();
         let pos_km = compute_weyl_vector(&e10, &simple_roots);
-        
+
         for (i, root) in simple_roots.iter().enumerate() {
             let ip = e10.inner_product(&pos_km, root);
             assert!(ip > 0.99, "Wall {} inner product {} < 1.0", i, ip);
@@ -754,10 +831,15 @@ mod tests {
         let mut billiard = make_test_billiard(123);
         let n = 2000;
         let sequence = billiard.simulate(n);
-        
-        assert_eq!(sequence.len(), n, 
-            "Simulation escaped at step {}/{} with adaptive nudge!", sequence.len(), n);
-        
+
+        assert_eq!(
+            sequence.len(),
+            n,
+            "Simulation escaped at step {}/{} with adaptive nudge!",
+            sequence.len(),
+            n
+        );
+
         // Also check that min slack remains non-negative
         for _ in 0..100 {
             billiard.step().expect("Should not escape");
@@ -771,15 +853,23 @@ mod tests {
         let mut billiard = make_test_billiard(456);
         let initial_pos_norm = billiard.state.pos.norm_sq();
         let initial_vel_norm = billiard.state.vel.norm_sq();
-        
+
         billiard.simulate(1000);
-        
+
         let final_pos_norm = billiard.state.pos.norm_sq();
         let final_vel_norm = billiard.state.vel.norm_sq();
-        
-        assert!((final_pos_norm - initial_pos_norm).abs() < 1e-10,
-            "Position norm drifted: {} -> {}", initial_pos_norm, final_pos_norm);
-        assert!((final_vel_norm - initial_vel_norm).abs() < 1e-10,
-            "Velocity norm drifted: {} -> {}", initial_vel_norm, final_vel_norm);
+
+        assert!(
+            (final_pos_norm - initial_pos_norm).abs() < 1e-10,
+            "Position norm drifted: {} -> {}",
+            initial_pos_norm,
+            final_pos_norm
+        );
+        assert!(
+            (final_vel_norm - initial_vel_norm).abs() < 1e-10,
+            "Velocity norm drifted: {} -> {}",
+            initial_vel_norm,
+            final_vel_norm
+        );
     }
 }

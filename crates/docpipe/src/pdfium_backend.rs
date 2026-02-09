@@ -16,9 +16,7 @@ use crate::{DocpipeError, ImageFormat, PageText, PdfImage, PositionedText, Resul
 /// Tries system library path first, then current directory.
 fn init_pdfium() -> Result<Pdfium> {
     let bindings = Pdfium::bind_to_system_library()
-        .or_else(|_| {
-            Pdfium::bind_to_library(Pdfium::pdfium_platform_library_name_at_path("./"))
-        })
+        .or_else(|_| Pdfium::bind_to_library(Pdfium::pdfium_platform_library_name_at_path("./")))
         .map_err(|e| DocpipeError::PdfParse(format!("failed to load pdfium: {e}")))?;
     Ok(Pdfium::new(bindings))
 }
@@ -82,12 +80,10 @@ pub fn extract_positioned_text(path: &Path) -> Result<Vec<PositionedText>> {
                 if text.trim().is_empty() {
                     continue;
                 }
-                let bounds = object.bounds().map_err(|e| {
-                    DocpipeError::PdfParse(format!("bounds error: {e}"))
-                })?;
-                let font_size: f32 = text_obj
-                    .scaled_font_size()
-                    .value;
+                let bounds = object
+                    .bounds()
+                    .map_err(|e| DocpipeError::PdfParse(format!("bounds error: {e}")))?;
+                let font_size: f32 = text_obj.scaled_font_size().value;
                 segments.push(PositionedText {
                     page_num: page_idx + 1,
                     text,
@@ -261,7 +257,10 @@ mod tests {
             return;
         };
         let png_data = render_page_to_png(&path, 1, 800).expect("page render should succeed");
-        assert!(png_data.len() > 100, "rendered PNG should have substantial data");
+        assert!(
+            png_data.len() > 100,
+            "rendered PNG should have substantial data"
+        );
         // PNG magic bytes
         assert_eq!(&png_data[..4], b"\x89PNG");
     }

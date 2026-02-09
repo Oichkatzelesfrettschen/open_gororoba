@@ -64,11 +64,7 @@ fn main() {
     };
 
     let papers: Vec<&ManifestEntry> = if let Some(ref only_id) = args.only {
-        manifest
-            .paper
-            .iter()
-            .filter(|p| p.id == *only_id)
-            .collect()
+        manifest.paper.iter().filter(|p| p.id == *only_id).collect()
     } else {
         manifest.paper.iter().collect()
     };
@@ -136,7 +132,10 @@ fn main() {
         }
     }
 
-    println!("\nDone: {success} extracted, {failed} failed, {} total", papers.len());
+    println!(
+        "\nDone: {success} extracted, {failed} failed, {} total",
+        papers.len()
+    );
 
     if failed > 0 {
         std::process::exit(1);

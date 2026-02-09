@@ -21,7 +21,7 @@
 use clap::Parser;
 use std::path::PathBuf;
 
-use data_core::catalogs::gwtc::{GwEvent, parse_gwtc3_csv};
+use data_core::catalogs::gwtc::{parse_gwtc3_csv, GwEvent};
 use stats_core::ultrametric;
 use stats_core::ultrametric::dendrogram;
 
@@ -75,11 +75,10 @@ fn main() {
     eprintln!("Input: {}", input.display());
 
     // 1. Load GWTC events
-    let events = parse_gwtc3_csv(&input)
-        .unwrap_or_else(|e| {
-            eprintln!("Failed to parse GWTC-3 CSV: {}", e);
-            std::process::exit(1);
-        });
+    let events = parse_gwtc3_csv(&input).unwrap_or_else(|e| {
+        eprintln!("Failed to parse GWTC-3 CSV: {}", e);
+        std::process::exit(1);
+    });
 
     eprintln!("Loaded {} GW events", events.len());
 
@@ -119,7 +118,12 @@ fn main() {
 
     // Compute scale factors (standard deviation for normalization)
     let mean_mc = chirp_masses.iter().sum::<f64>() / n as f64;
-    let std_mc = (chirp_masses.iter().map(|m| (m - mean_mc).powi(2)).sum::<f64>() / n as f64).sqrt();
+    let std_mc = (chirp_masses
+        .iter()
+        .map(|m| (m - mean_mc).powi(2))
+        .sum::<f64>()
+        / n as f64)
+        .sqrt();
 
     let mean_z = redshifts.iter().sum::<f64>() / n as f64;
     let std_z = (redshifts.iter().map(|z| (z - mean_z).powi(2)).sum::<f64>() / n as f64).sqrt();
@@ -128,10 +132,7 @@ fn main() {
         "Chirp mass: mean={:.2} Msun, std={:.2} Msun",
         mean_mc, std_mc
     );
-    eprintln!(
-        "Redshift: mean={:.4}, std={:.4}",
-        mean_z, std_z
-    );
+    eprintln!("Redshift: mean={:.4}, std={:.4}", mean_z, std_z);
 
     // 3. Build distance matrix
     let n_pairs = n * (n - 1) / 2;
@@ -151,16 +152,14 @@ fn main() {
 
     // 4. Ultrametric fraction test
     eprintln!("\nRunning ultrametric fraction test...");
-    let obs_frac = ultrametric::ultrametric_fraction_from_matrix(
-        &dist_matrix, n, cli.n_triples, 42,
-    );
+    let obs_frac =
+        ultrametric::ultrametric_fraction_from_matrix(&dist_matrix, n, cli.n_triples, 42);
     eprintln!("Observed ultrametric fraction: {:.4}", obs_frac);
 
     // 5. Dendrogram analysis
     eprintln!("Running dendrogram analysis...");
-    let dend_result = dendrogram::hierarchical_ultrametric_test(
-        &dist_matrix, n, cli.n_permutations, 42,
-    );
+    let dend_result =
+        dendrogram::hierarchical_ultrametric_test(&dist_matrix, n, cli.n_permutations, 42);
 
     eprintln!(
         "Cophenetic correlation: {:.4} (null mean: {:.4} +/- {:.4})",
@@ -210,16 +209,21 @@ fn main() {
         "null_std",
         "p_value",
         "verdict",
-    ]).unwrap();
+    ])
+    .unwrap();
 
     wtr.write_record([
         "chirp_mass_ultrametric_fraction",
-        &format!("{:.6}", scalar_analysis.fraction_result.ultrametric_fraction),
+        &format!(
+            "{:.6}",
+            scalar_analysis.fraction_result.ultrametric_fraction
+        ),
         &format!("{:.6}", scalar_analysis.fraction_result.null_fraction_mean),
         &format!("{:.6}", scalar_analysis.fraction_result.null_fraction_std),
         &format!("{:.6}", scalar_analysis.fraction_result.p_value),
         &format!("{:?}", scalar_analysis.verdict),
-    ]).unwrap();
+    ])
+    .unwrap();
 
     wtr.write_record([
         "mass_redshift_ultrametric_fraction",
@@ -228,7 +232,8 @@ fn main() {
         "N/A",
         "N/A",
         "N/A",
-    ]).unwrap();
+    ])
+    .unwrap();
 
     wtr.write_record([
         "cophenetic_correlation",
@@ -237,7 +242,8 @@ fn main() {
         &format!("{:.6}", dend_result.null_cophenetic_std),
         &format!("{:.6}", dend_result.p_value),
         &format!("{:?}", dend_result.verdict),
-    ]).unwrap();
+    ])
+    .unwrap();
 
     wtr.write_record([
         "defect_mean",
@@ -246,7 +252,8 @@ fn main() {
         "N/A",
         &format!("{:.6}", scalar_analysis.defect_result.defect_p_value),
         "N/A",
-    ]).unwrap();
+    ])
+    .unwrap();
 
     for pr in &scalar_analysis.padic_results {
         wtr.write_record([
@@ -256,7 +263,8 @@ fn main() {
             "N/A",
             &format!("{:.6}", pr.p_value),
             "N/A",
-        ]).unwrap();
+        ])
+        .unwrap();
     }
 
     wtr.flush().unwrap();
@@ -268,7 +276,10 @@ fn main() {
     eprintln!(
         "Chirp mass range: [{:.1}, {:.1}] Msun",
         chirp_masses.iter().cloned().fold(f64::INFINITY, f64::min),
-        chirp_masses.iter().cloned().fold(f64::NEG_INFINITY, f64::max),
+        chirp_masses
+            .iter()
+            .cloned()
+            .fold(f64::NEG_INFINITY, f64::max),
     );
     eprintln!(
         "Redshift range: [{:.4}, {:.4}]",

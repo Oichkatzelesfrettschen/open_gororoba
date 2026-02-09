@@ -288,7 +288,8 @@ impl TcmtThermalPlant {
     /// Get effective detuning including thermal shift.
     pub fn effective_detuning(&self) -> f64 {
         // Thermal shift in resonance: delta_omega = -omega_0 * (dn/dT) * delta_T / n
-        let thermal_shift = -self.cavity.omega_0 * self.dn_dt * self.combined_state.delta_temp / self.cavity.n_linear;
+        let thermal_shift = -self.cavity.omega_0 * self.dn_dt * self.combined_state.delta_temp
+            / self.cavity.n_linear;
         self.detuning - thermal_shift
     }
 
@@ -308,14 +309,16 @@ impl TcmtThermalPlant {
     fn step_thermal(&mut self, dt: f64) {
         // Thermal dynamics: d(delta_T)/dt = -delta_T/tau + heating_coeff * |a|^2 / tau
         let energy = self.optical_state.amplitude.norm_sqr();
-        let d_temp = (-self.combined_state.delta_temp + self.heating_coeff * energy) / self.tau_thermal;
+        let d_temp =
+            (-self.combined_state.delta_temp + self.heating_coeff * energy) / self.tau_thermal;
         self.combined_state.delta_temp += dt * d_temp;
     }
 
     fn step_optical(&mut self, dt: f64) {
         // Create solver with effective (thermally-shifted) cavity
         let mut effective_cavity = self.cavity;
-        let thermal_shift = -self.cavity.omega_0 * self.dn_dt * self.combined_state.delta_temp / self.cavity.n_linear;
+        let thermal_shift = -self.cavity.omega_0 * self.dn_dt * self.combined_state.delta_temp
+            / self.cavity.n_linear;
         effective_cavity.omega_0 += thermal_shift;
 
         let solver = TcmtSolver::new(effective_cavity);
@@ -454,12 +457,11 @@ mod tests {
     fn test_tcmt_thermal_plant() {
         let cavity = KerrCavity::normalized(1000.0, 1.0);
         let mut plant = TcmtThermalPlant::new(
-            cavity,
-            1e-3,   // 1ms thermal time constant
-            1e-4,   // typical thermo-optic coefficient
-            1.0,    // heating coefficient
-            0.0,    // on resonance
-            1e-5,   // 10 microsecond steps
+            cavity, 1e-3, // 1ms thermal time constant
+            1e-4, // typical thermo-optic coefficient
+            1.0,  // heating coefficient
+            0.0,  // on resonance
+            1e-5, // 10 microsecond steps
         );
 
         // Run with power input

@@ -18,9 +18,7 @@
 //! - DESI Collaboration (2024), arXiv:2404.03002 [DESI DR1 BAO]
 //! - Conley et al. (2011), ApJS 192, 1 [analytic marginalization]
 
-use crate::bounce::{
-    bao_sound_horizon, hubble_e_bounce, hubble_e_lcdm, C_KM_S,
-};
+use crate::bounce::{bao_sound_horizon, hubble_e_bounce, hubble_e_lcdm, C_KM_S};
 use crate::gl_integrate;
 
 // ---------------------------------------------------------------------------
@@ -163,12 +161,7 @@ pub fn chi2_sn_real(omega_m: f64, h0: f64, q_corr: f64, sn: &RealSnData) -> f64 
 /// References:
 /// - DESI Collaboration (2024), arXiv:2404.03002
 /// - Eisenstein et al. (2005), ApJ 633, 560
-pub fn chi2_bao_real(
-    omega_m: f64,
-    h0: f64,
-    q_corr: f64,
-    bao: &RealBaoData,
-) -> f64 {
+pub fn chi2_bao_real(omega_m: f64, h0: f64, q_corr: f64, bao: &RealBaoData) -> f64 {
     if !(0.01..=0.99).contains(&omega_m) || !(50.0..=90.0).contains(&h0) {
         return 1e10;
     }
@@ -368,11 +361,7 @@ fn bounded_nelder_mead<F: Fn(&[f64]) -> f64>(
 /// Bounce: 3 free parameters (Omega_m, H_0, q_corr).
 ///
 /// BAO data point count: 2 per anisotropic bin + 1 per isotropic bin.
-pub fn fit_real_data(
-    sn: &RealSnData,
-    bao: &RealBaoData,
-    is_bounce: bool,
-) -> ObsFitResult {
+pub fn fit_real_data(sn: &RealSnData, bao: &RealBaoData, is_bounce: bool) -> ObsFitResult {
     let n_bao_data = bao_data_point_count(bao);
     let n_data = sn.z.len() + n_bao_data;
 
@@ -672,7 +661,7 @@ mod tests {
         let bao = RealBaoData {
             z_eff: vec![z],
             is_isotropic: vec![true],
-            dm_over_rd: vec![dv],  // DV/rd stored in dm_over_rd for isotropic
+            dm_over_rd: vec![dv], // DV/rd stored in dm_over_rd for isotropic
             dm_over_rd_err: vec![0.15],
             dh_over_rd: vec![0.0],
             dh_over_rd_err: vec![0.0],
@@ -695,8 +684,15 @@ mod tests {
             dh_over_rd: vec![0.0, 20.98, 20.08, 17.88, 13.82, 0.0, 8.52],
             dh_over_rd_err: vec![0.0, 0.61, 0.60, 0.35, 0.42, 0.0, 0.17],
             rho: vec![0.0, -0.445, -0.420, -0.389, -0.444, 0.0, -0.477],
-            tracer: vec!["BGS".into(), "LRG1".into(), "LRG2".into(),
-                         "LRG3+ELG1".into(), "ELG2".into(), "QSO".into(), "Lya".into()],
+            tracer: vec![
+                "BGS".into(),
+                "LRG1".into(),
+                "LRG2".into(),
+                "LRG3+ELG1".into(),
+                "ELG2".into(),
+                "QSO".into(),
+                "Lya".into(),
+            ],
         };
         assert_eq!(bao_data_point_count(&bao), 12);
     }

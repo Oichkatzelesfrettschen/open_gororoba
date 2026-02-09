@@ -103,9 +103,12 @@ pub fn central_difference_gradient_complex<F>(p: Vec3, n_func: F, eps: f64) -> (
 where
     F: Fn(Vec3) -> Complex64,
 {
-    let nx = (n_func([p[0] + eps, p[1], p[2]]).re - n_func([p[0] - eps, p[1], p[2]]).re) / (2.0 * eps);
-    let ny = (n_func([p[0], p[1] + eps, p[2]]).re - n_func([p[0], p[1] - eps, p[2]]).re) / (2.0 * eps);
-    let nz = (n_func([p[0], p[1], p[2] + eps]).re - n_func([p[0], p[1], p[2] - eps]).re) / (2.0 * eps);
+    let nx =
+        (n_func([p[0] + eps, p[1], p[2]]).re - n_func([p[0] - eps, p[1], p[2]]).re) / (2.0 * eps);
+    let ny =
+        (n_func([p[0], p[1] + eps, p[2]]).re - n_func([p[0], p[1] - eps, p[2]]).re) / (2.0 * eps);
+    let nz =
+        (n_func([p[0], p[1], p[2] + eps]).re - n_func([p[0], p[1], p[2] - eps]).re) / (2.0 * eps);
     let n0 = n_func(p);
     ([nx, ny, nz], n0)
 }
@@ -157,7 +160,10 @@ pub fn rk4_step<M: GrinMedium>(ray: Ray, dt: f64, medium: &M) -> Ray {
         ),
     ));
 
-    Ray { pos: new_pos, dir: new_dir }
+    Ray {
+        pos: new_pos,
+        dir: new_dir,
+    }
 }
 
 /// One RK4 step in absorptive GRIN media (complex n).
@@ -224,7 +230,14 @@ pub fn rk4_step_absorbing<M: AbsorbingGrinMedium>(
     let n_real_mid = n2.re.max(1e-10);
     let phase_advance = 2.0 * PI * n_real_mid * dt / wavelength_nm;
 
-    (Ray { pos: new_pos, dir: new_dir }, atten, phase_advance)
+    (
+        Ray {
+            pos: new_pos,
+            dir: new_dir,
+        },
+        atten,
+        phase_advance,
+    )
 }
 
 /// Trace a ray through a GRIN medium (real n).
@@ -321,7 +334,7 @@ impl GrinMedium for HomogeneousMedium {
 pub struct GrinFiber {
     pub n0: f64,
     pub g: f64,
-    pub axis: Vec3,  // Fiber axis direction
+    pub axis: Vec3, // Fiber axis direction
 }
 
 impl GrinMedium for GrinFiber {
@@ -349,7 +362,7 @@ impl GrinMedium for GrinFiber {
 
 /// Layered absorbing medium for metamaterial simulation.
 pub struct LayeredAbsorbingMedium {
-    pub layers: Vec<(f64, Complex64)>,  // (z_boundary, n_complex)
+    pub layers: Vec<(f64, Complex64)>, // (z_boundary, n_complex)
 }
 
 impl AbsorbingGrinMedium for LayeredAbsorbingMedium {
@@ -399,7 +412,7 @@ mod tests {
     fn test_grin_fiber_bends_ray() {
         let medium = GrinFiber {
             n0: 1.5,
-            g: 0.5,  // Stronger gradient for faster focusing
+            g: 0.5, // Stronger gradient for faster focusing
             axis: [0.0, 0.0, 1.0],
         };
 
@@ -413,11 +426,17 @@ mod tests {
 
         // Ray should bend toward axis (x should decrease initially)
         // Check that x-position decreases from starting position
-        let x_min = result.positions.iter()
+        let x_min = result
+            .positions
+            .iter()
             .map(|p| p[0])
             .fold(f64::INFINITY, f64::min);
 
-        assert!(x_min < 0.5, "GRIN fiber should focus ray toward axis, min x = {}", x_min);
+        assert!(
+            x_min < 0.5,
+            "GRIN fiber should focus ray toward axis, min x = {}",
+            x_min
+        );
     }
 
     #[test]
@@ -461,7 +480,11 @@ mod tests {
 
         // Amplitude should decrease
         let final_amp = *result.amplitudes.last().unwrap();
-        assert!(final_amp < 1.0, "Absorbing medium should attenuate ray, got {}", final_amp);
+        assert!(
+            final_amp < 1.0,
+            "Absorbing medium should attenuate ray, got {}",
+            final_amp
+        );
         assert!(final_amp > 0.0, "Amplitude should remain positive");
     }
 
@@ -521,7 +544,11 @@ mod tests {
         // Should terminate early due to high absorption
         let result = trace_ray_absorbing(ray, &medium, 1.0, 1550.0, 1000, 0.01);
 
-        assert!(result.positions.len() < 1000, "Should terminate early, got {} steps", result.positions.len());
+        assert!(
+            result.positions.len() < 1000,
+            "Should terminate early, got {} steps",
+            result.positions.len()
+        );
     }
 
     #[test]

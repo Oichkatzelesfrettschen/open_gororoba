@@ -4,8 +4,7 @@
 //! and stats_core (statistical validation of stability criteria).
 
 use cosmology_core::gravastar::{
-    solve_gravastar, polytropic_stability_sweep,
-    GravastarConfig, PolytropicEos, AnisotropicParams,
+    polytropic_stability_sweep, solve_gravastar, AnisotropicParams, GravastarConfig, PolytropicEos,
 };
 
 /// Test that the gravastar solver produces physically valid solutions.
@@ -23,7 +22,10 @@ fn test_gravastar_produces_positive_radius() {
 
     if let Some(result) = solve_gravastar(&config) {
         assert!(result.r2 > 0.0, "Outer radius must be positive");
-        assert!(result.r2 > config.r1, "Outer radius must exceed vacuum core");
+        assert!(
+            result.r2 > config.r1,
+            "Outer radius must exceed vacuum core"
+        );
         assert!(result.mass > 0.0, "Mass must be positive");
     }
 }
@@ -63,7 +65,10 @@ fn test_polytropic_instability_below_threshold() {
     if let Some(result) = solve_gravastar(&config) {
         // gamma < 4/3 typically produces unstable solutions
         // This is expected behavior per Visser & Wiltshire
-        assert!(result.compactness < 0.5, "Sub-threshold gamma limits compactness");
+        assert!(
+            result.compactness < 0.5,
+            "Sub-threshold gamma limits compactness"
+        );
     }
 }
 

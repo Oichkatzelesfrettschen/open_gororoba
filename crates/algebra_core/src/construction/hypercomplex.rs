@@ -29,27 +29,23 @@
 //! - Furey et al. (2024): Cl(8) -> 3 generations of fermions
 //! - Tang & Tang (2023): Sedenion SU(5) mass predictions
 
-use crate::construction::cayley_dickson::{
-    cd_multiply, cd_conjugate, cd_norm_sq, cd_associator, cd_associator_norm,
-    batch_associator_norms_parallel,
-    find_zero_divisors, find_zero_divisors_parallel, find_zero_divisors_3blade,
-    find_zero_divisors_general_form, count_pathion_zero_divisors,
-    zd_spectrum_analysis, measure_associator_density, GeneralFormZD,
+use crate::analysis::boxkites::{
+    analyze_box_kite_symmetry, find_box_kites, BoxKite, BoxKiteSymmetryResult,
 };
 use crate::analysis::zd_graphs::{
-    analyze_zd_graph, analyze_basis_participation, analyze_associator_graph,
-    ZdGraphAnalysis, BasisParticipationResult, AssociatorGraphResult,
+    analyze_associator_graph, analyze_basis_participation, analyze_zd_graph, AssociatorGraphResult,
+    BasisParticipationResult, ZdGraphAnalysis,
 };
-use crate::analysis::boxkites::{
-    find_box_kites, analyze_box_kite_symmetry,
-    BoxKite, BoxKiteSymmetryResult,
+use crate::construction::cayley_dickson::{
+    batch_associator_norms_parallel, cd_associator, cd_associator_norm, cd_conjugate, cd_multiply,
+    cd_norm_sq, count_pathion_zero_divisors, find_zero_divisors, find_zero_divisors_3blade,
+    find_zero_divisors_general_form, find_zero_divisors_parallel, measure_associator_density,
+    zd_spectrum_analysis, GeneralFormZD,
 };
 use crate::physics::octonion_field::{
-    Octonion, FieldParams, EvolutionResult, DispersionResult,
-    FANO_TRIPLES, build_structure_constants,
-    oct_multiply, oct_conjugate, oct_norm_sq,
-    hamiltonian, force, noether_charges,
-    evolve, gaussian_wave_packet, standing_wave, measure_dispersion,
+    build_structure_constants, evolve, force, gaussian_wave_packet, hamiltonian,
+    measure_dispersion, noether_charges, oct_conjugate, oct_multiply, oct_norm_sq, standing_wave,
+    DispersionResult, EvolutionResult, FieldParams, Octonion, FANO_TRIPLES,
 };
 
 /// Known algebra dimensions in the Cayley-Dickson tower.
@@ -597,7 +593,11 @@ mod tests {
         let e1 = o.basis(1);
         let e2 = o.basis(2);
         let e3 = o.multiply(&e1, &e2);
-        assert!((e3[3] - 1.0).abs() < 1e-10, "e1*e2 should give e3, got {:?}", e3);
+        assert!(
+            (e3[3] - 1.0).abs() < 1e-10,
+            "e1*e2 should give e3, got {:?}",
+            e3
+        );
     }
 
     #[test]
@@ -611,7 +611,11 @@ mod tests {
         };
         let results = s.find_zero_divisors(&config);
         // Sedenions have exactly 84 2-blade ZD pairs
-        assert!(results.blade2.len() >= 80, "Expected ~84 2-blade ZDs, got {}", results.blade2.len());
+        assert!(
+            results.blade2.len() >= 80,
+            "Expected ~84 2-blade ZDs, got {}",
+            results.blade2.len()
+        );
     }
 
     #[test]
@@ -620,12 +624,20 @@ mod tests {
         let box_kites = s.find_box_kites(1e-10).unwrap();
 
         // de Marrais: exactly 7 box-kites as connected components of co-assessor graph
-        assert_eq!(box_kites.len(), 7, "Expected 7 box-kites, got {}", box_kites.len());
+        assert_eq!(
+            box_kites.len(),
+            7,
+            "Expected 7 box-kites, got {}",
+            box_kites.len()
+        );
 
         // Symmetry analysis should validate de Marrais structure
         let symmetry = s.analyze_box_kite_symmetry(1e-10).unwrap();
         assert_eq!(symmetry.n_boxkites, 7);
-        assert!(symmetry.de_marrais_valid, "Should validate de Marrais structure");
+        assert!(
+            symmetry.de_marrais_valid,
+            "Should validate de Marrais structure"
+        );
     }
 
     #[test]
@@ -645,8 +657,12 @@ mod tests {
         let pathion_zd = p.count_2blade_zd(1e-10);
         let sedenion_zd = s.count_2blade_zd(1e-10);
 
-        assert!(pathion_zd > sedenion_zd,
-            "Pathions should have more ZDs: {} vs {}", pathion_zd, sedenion_zd);
+        assert!(
+            pathion_zd > sedenion_zd,
+            "Pathions should have more ZDs: {} vs {}",
+            pathion_zd,
+            sedenion_zd
+        );
     }
 
     #[test]
@@ -659,7 +675,11 @@ mod tests {
         // Sedenions are highly non-associative
         let s = HypercomplexAlgebra::new(16);
         let (density_s, _) = s.measure_non_associativity(1000, 42, 1e-10);
-        assert!(density_s > 90.0, "Sedenions should be >90% non-associative, got {}%", density_s);
+        assert!(
+            density_s > 90.0,
+            "Sedenions should be >90% non-associative, got {}%",
+            density_s
+        );
     }
 
     #[test]

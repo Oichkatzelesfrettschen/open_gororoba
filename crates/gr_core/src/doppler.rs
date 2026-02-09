@@ -133,12 +133,7 @@ pub fn rest_frame_frequency(nu_obs: f64, z: f64) -> f64 {
 /// slope for a power-law spectrum F_nu ~ nu^alpha.
 ///
 /// Use alpha = 0 for blackbody (optically thick) emission.
-pub fn relativistic_beaming_intensity(
-    i_emit: f64,
-    beta: f64,
-    theta: f64,
-    alpha: f64,
-) -> f64 {
+pub fn relativistic_beaming_intensity(i_emit: f64, beta: f64, theta: f64, alpha: f64) -> f64 {
     let delta = doppler_factor(beta, theta);
     i_emit * delta.powf(3.0 + alpha)
 }
@@ -146,12 +141,7 @@ pub fn relativistic_beaming_intensity(
 /// Flux density boost from relativistic beaming.
 ///
 /// F_obs = delta^(3+alpha) * F_emit for isotropic emitter.
-pub fn relativistic_beaming_flux(
-    f_emit: f64,
-    beta: f64,
-    theta: f64,
-    alpha: f64,
-) -> f64 {
+pub fn relativistic_beaming_flux(f_emit: f64, beta: f64, theta: f64, alpha: f64) -> f64 {
     let delta = doppler_factor(beta, theta);
     f_emit * delta.powf(3.0 + alpha)
 }
@@ -268,13 +258,7 @@ pub fn k_correction_factor(z: f64, alpha: f64) -> f64 {
 /// References:
 ///   - Cunningham (1975): ApJ 202, 788
 ///   - Begelman, Blandford, Rees (1984): Rev. Mod. Phys. 56, 255
-pub fn disk_doppler_boost(
-    r: f64,
-    a_star: f64,
-    phi: f64,
-    inclination: f64,
-    alpha: f64,
-) -> f64 {
+pub fn disk_doppler_boost(r: f64, a_star: f64, phi: f64, inclination: f64, alpha: f64) -> f64 {
     let a = a_star.clamp(-0.9999, 0.9999);
     let r = r.max(1.1); // avoid singularities
 
@@ -347,7 +331,10 @@ mod tests {
         for beta in [0.1, 0.5, 0.9, 0.99] {
             let g = lorentz_factor(beta);
             let b = beta_from_gamma(g);
-            assert!((b - beta).abs() < TOL, "beta={beta} -> gamma={g} -> beta={b}");
+            assert!(
+                (b - beta).abs() < TOL,
+                "beta={beta} -> gamma={g} -> beta={b}"
+            );
         }
     }
 
@@ -358,7 +345,10 @@ mod tests {
         // theta=0 (approaching): delta = sqrt((1+b)/(1-b))
         let d = doppler_factor(0.9, 0.0);
         let expected = ((1.0 + 0.9) / (1.0 - 0.9_f64)).sqrt();
-        assert!((d - expected).abs() < 0.001, "delta = {d}, expected {expected}");
+        assert!(
+            (d - expected).abs() < 0.001,
+            "delta = {d}, expected {expected}"
+        );
     }
 
     #[test]
@@ -366,7 +356,10 @@ mod tests {
         // theta=pi (receding): delta = sqrt((1-b)/(1+b))
         let d = doppler_factor(0.9, PI);
         let expected = ((1.0 - 0.9) / (1.0 + 0.9_f64)).sqrt();
-        assert!((d - expected).abs() < 0.001, "delta = {d}, expected {expected}");
+        assert!(
+            (d - expected).abs() < 0.001,
+            "delta = {d}, expected {expected}"
+        );
     }
 
     #[test]
@@ -374,7 +367,10 @@ mod tests {
         // theta=pi/2: delta = 1/gamma (transverse Doppler)
         let d = doppler_factor(0.9, PI / 2.0);
         let expected = 1.0 / lorentz_factor(0.9);
-        assert!((d - expected).abs() < 0.001, "delta = {d}, expected {expected}");
+        assert!(
+            (d - expected).abs() < 0.001,
+            "delta = {d}, expected {expected}"
+        );
     }
 
     #[test]
@@ -492,7 +488,10 @@ mod tests {
         // to come from behind (theta' > pi/2) because the observer outruns it.
         // cos(theta') = (0 - 0.9)/(1 - 0) = -0.9 -> theta' ~ 2.69 rad
         let theta_prime = relativistic_aberration(PI / 2.0, 0.9);
-        assert!(theta_prime > PI / 2.0, "should appear from behind: {theta_prime}");
+        assert!(
+            theta_prime > PI / 2.0,
+            "should appear from behind: {theta_prime}"
+        );
         let expected = (-0.9_f64).acos();
         assert!((theta_prime - expected).abs() < 0.01);
     }
@@ -548,7 +547,10 @@ mod tests {
         // (time dilation) causes delta = 1/gamma < 1 -> boost = delta^3 < 1.
         // At large r, v_orbital is small so boost approaches 1.
         let boost = disk_doppler_boost(100.0, 0.0, 0.0, 0.0, 0.0);
-        assert!((boost - 1.0).abs() < 0.05, "face-on boost at r=100M = {boost}");
+        assert!(
+            (boost - 1.0).abs() < 0.05,
+            "face-on boost at r=100M = {boost}"
+        );
     }
 
     #[test]

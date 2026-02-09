@@ -266,8 +266,8 @@ pub fn hartigan_dip_test(data: &[f64], n_perm: usize, rng: &mut ChaCha8Rng) -> D
 #[cfg(test)]
 mod tests {
     use super::*;
-    use rand_chacha::ChaCha8Rng;
     use rand::SeedableRng;
+    use rand_chacha::ChaCha8Rng;
 
     #[test]
     fn test_uniform_small_dip() {

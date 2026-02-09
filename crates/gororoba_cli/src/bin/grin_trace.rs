@@ -3,8 +3,8 @@
 //! Usage: grin-trace --n0 1.5 --g 0.1 --output ray.csv
 
 use clap::Parser;
-use optics_core::{Ray, trace_ray, trace_ray_absorbing, GrinFiber, AbsorbingGrinMedium};
 use num_complex::Complex64;
+use optics_core::{trace_ray, trace_ray_absorbing, AbsorbingGrinMedium, GrinFiber, Ray};
 
 #[derive(Parser)]
 #[command(name = "grin-trace")]
@@ -59,7 +59,10 @@ struct AbsorbingFiber {
 }
 
 impl AbsorbingGrinMedium for AbsorbingFiber {
-    fn gradient_and_n_complex(&self, p: optics_core::grin::Vec3) -> (optics_core::grin::Vec3, Complex64) {
+    fn gradient_and_n_complex(
+        &self,
+        p: optics_core::grin::Vec3,
+    ) -> (optics_core::grin::Vec3, Complex64) {
         // Distance from z-axis
         let r2 = p[0] * p[0] + p[1] * p[1];
         let arg = 1.0 - self.g * self.g * r2;
@@ -84,16 +87,32 @@ fn main() {
         dir: [0.0, 0.0, 1.0],
     };
 
-    eprintln!("GRIN trace: n0={}, g={}, pos=({}, {}, {})",
-        args.n0, args.g, args.x0, args.y0, args.z0);
+    eprintln!(
+        "GRIN trace: n0={}, g={}, pos=({}, {}, {})",
+        args.n0, args.g, args.x0, args.y0, args.z0
+    );
 
     if let Some(kappa) = args.kappa {
         // Absorbing medium
-        let medium = AbsorbingFiber { n0: args.n0, g: args.g, kappa };
-        let result = trace_ray_absorbing(ray, &medium, args.step, args.wavelength, args.max_steps, 1e-6);
+        let medium = AbsorbingFiber {
+            n0: args.n0,
+            g: args.g,
+            kappa,
+        };
+        let result = trace_ray_absorbing(
+            ray,
+            &medium,
+            args.step,
+            args.wavelength,
+            args.max_steps,
+            1e-6,
+        );
 
-        eprintln!("Traced {} points, final amplitude = {:.4e}",
-            result.positions.len(), result.amplitudes.last().unwrap_or(&1.0));
+        eprintln!(
+            "Traced {} points, final amplitude = {:.4e}",
+            result.positions.len(),
+            result.amplitudes.last().unwrap_or(&1.0)
+        );
 
         output_absorbing(&args.output, &result);
     } else {
@@ -114,15 +133,21 @@ fn main() {
 fn output_result(output: &Option<String>, result: &optics_core::RayTraceResult) {
     if let Some(path) = output {
         let mut wtr = csv::Writer::from_path(path).expect("Failed to create CSV");
-        wtr.write_record(["s", "x", "y", "z", "dx", "dy", "dz"]).unwrap();
+        wtr.write_record(["s", "x", "y", "z", "dx", "dy", "dz"])
+            .unwrap();
         for i in 0..result.positions.len() {
             let p = result.positions[i];
             let d = result.directions[i];
             wtr.write_record(&[
                 result.arc_lengths[i].to_string(),
-                p[0].to_string(), p[1].to_string(), p[2].to_string(),
-                d[0].to_string(), d[1].to_string(), d[2].to_string(),
-            ]).unwrap();
+                p[0].to_string(),
+                p[1].to_string(),
+                p[2].to_string(),
+                d[0].to_string(),
+                d[1].to_string(),
+                d[2].to_string(),
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} points to {}", result.positions.len(), path);
@@ -131,8 +156,10 @@ fn output_result(output: &Option<String>, result: &optics_core::RayTraceResult) 
         for i in 0..result.positions.len() {
             let p = result.positions[i];
             let d = result.directions[i];
-            println!("{},{},{},{},{},{},{}",
-                result.arc_lengths[i], p[0], p[1], p[2], d[0], d[1], d[2]);
+            println!(
+                "{},{},{},{},{},{},{}",
+                result.arc_lengths[i], p[0], p[1], p[2], d[0], d[1], d[2]
+            );
         }
     }
 }
@@ -140,15 +167,19 @@ fn output_result(output: &Option<String>, result: &optics_core::RayTraceResult) 
 fn output_absorbing(output: &Option<String>, result: &optics_core::RayTraceResult) {
     if let Some(path) = output {
         let mut wtr = csv::Writer::from_path(path).expect("Failed to create CSV");
-        wtr.write_record(["s", "x", "y", "z", "amplitude", "phase"]).unwrap();
+        wtr.write_record(["s", "x", "y", "z", "amplitude", "phase"])
+            .unwrap();
         for i in 0..result.positions.len() {
             let p = result.positions[i];
             wtr.write_record(&[
                 result.arc_lengths[i].to_string(),
-                p[0].to_string(), p[1].to_string(), p[2].to_string(),
+                p[0].to_string(),
+                p[1].to_string(),
+                p[2].to_string(),
                 result.amplitudes[i].to_string(),
                 result.phases[i].to_string(),
-            ]).unwrap();
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} points to {}", result.positions.len(), path);
@@ -156,9 +187,10 @@ fn output_absorbing(output: &Option<String>, result: &optics_core::RayTraceResul
         println!("s,x,y,z,amplitude,phase");
         for i in 0..result.positions.len() {
             let p = result.positions[i];
-            println!("{},{},{},{},{},{}",
-                result.arc_lengths[i], p[0], p[1], p[2],
-                result.amplitudes[i], result.phases[i]);
+            println!(
+                "{},{},{},{},{},{}",
+                result.arc_lengths[i], p[0], p[1], p[2], result.amplitudes[i], result.phases[i]
+            );
         }
     }
 }

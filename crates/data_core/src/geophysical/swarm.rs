@@ -16,9 +16,7 @@ const SWARM_URLS: &[&str] = &[
 ];
 
 /// Expected column names in the HAPI CSV header.
-pub const SWARM_EXPECTED_COLUMNS: &[&str] = &[
-    "Timestamp", "Latitude", "Longitude", "Radius", "F",
-];
+pub const SWARM_EXPECTED_COLUMNS: &[&str] = &["Timestamp", "Latitude", "Longitude", "Radius", "F"];
 
 /// One Swarm magnetic field measurement.
 #[derive(Debug, Clone)]
@@ -166,9 +164,27 @@ wrong,columns,here,oops,bad
     #[test]
     fn test_swarm_timestamp_monotonicity_ok() {
         let records = vec![
-            SwarmRecord { timestamp: "2014-01-01T00:00:00Z".into(), latitude: 0.0, longitude: 0.0, radius: 0.0, f_total: 0.0 },
-            SwarmRecord { timestamp: "2014-01-01T00:00:01Z".into(), latitude: 0.0, longitude: 0.0, radius: 0.0, f_total: 0.0 },
-            SwarmRecord { timestamp: "2014-01-01T00:00:02Z".into(), latitude: 0.0, longitude: 0.0, radius: 0.0, f_total: 0.0 },
+            SwarmRecord {
+                timestamp: "2014-01-01T00:00:00Z".into(),
+                latitude: 0.0,
+                longitude: 0.0,
+                radius: 0.0,
+                f_total: 0.0,
+            },
+            SwarmRecord {
+                timestamp: "2014-01-01T00:00:01Z".into(),
+                latitude: 0.0,
+                longitude: 0.0,
+                radius: 0.0,
+                f_total: 0.0,
+            },
+            SwarmRecord {
+                timestamp: "2014-01-01T00:00:02Z".into(),
+                latitude: 0.0,
+                longitude: 0.0,
+                radius: 0.0,
+                f_total: 0.0,
+            },
         ];
         assert!(check_timestamp_monotonicity(&records).is_ok());
     }
@@ -176,8 +192,20 @@ wrong,columns,here,oops,bad
     #[test]
     fn test_swarm_timestamp_monotonicity_fails() {
         let records = vec![
-            SwarmRecord { timestamp: "2014-01-01T00:00:02Z".into(), latitude: 0.0, longitude: 0.0, radius: 0.0, f_total: 0.0 },
-            SwarmRecord { timestamp: "2014-01-01T00:00:01Z".into(), latitude: 0.0, longitude: 0.0, radius: 0.0, f_total: 0.0 },
+            SwarmRecord {
+                timestamp: "2014-01-01T00:00:02Z".into(),
+                latitude: 0.0,
+                longitude: 0.0,
+                radius: 0.0,
+                f_total: 0.0,
+            },
+            SwarmRecord {
+                timestamp: "2014-01-01T00:00:01Z".into(),
+                latitude: 0.0,
+                longitude: 0.0,
+                radius: 0.0,
+                f_total: 0.0,
+            },
         ];
         assert!(check_timestamp_monotonicity(&records).is_err());
     }

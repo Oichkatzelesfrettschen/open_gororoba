@@ -5,10 +5,8 @@
 
 use clap::{Parser, Subcommand};
 use cosmology_core::{
-    BounceParams, simulate_bounce,
-    luminosity_distance, distance_modulus, cmb_shift_parameter,
-    bao_sound_horizon, spectral_index_bounce,
-    hubble_e_lcdm, hubble_e_bounce, Z_STAR,
+    bao_sound_horizon, cmb_shift_parameter, distance_modulus, hubble_e_bounce, hubble_e_lcdm,
+    luminosity_distance, simulate_bounce, spectral_index_bounce, BounceParams, Z_STAR,
 };
 
 #[derive(Parser)]
@@ -107,13 +105,34 @@ fn main() {
     let args = Args::parse();
 
     match args.command {
-        Commands::Simulate { omega_m, omega_l, q_corr, t_end, steps, a0, output, json } => {
+        Commands::Simulate {
+            omega_m,
+            omega_l,
+            q_corr,
+            t_end,
+            steps,
+            a0,
+            output,
+            json,
+        } => {
             run_simulate(omega_m, omega_l, q_corr, t_end, steps, a0, output, json);
         }
-        Commands::Observables { omega_m, h0, q_corr, redshifts, json } => {
+        Commands::Observables {
+            omega_m,
+            h0,
+            q_corr,
+            redshifts,
+            json,
+        } => {
             run_observables(omega_m, h0, q_corr, &redshifts, json);
         }
-        Commands::Hubble { z_max, n_points, omega_m, q_corr, output } => {
+        Commands::Hubble {
+            z_max,
+            n_points,
+            omega_m,
+            q_corr,
+            output,
+        } => {
             run_hubble(z_max, n_points, omega_m, q_corr, output);
         }
     }
@@ -130,9 +149,16 @@ fn run_simulate(
     output: Option<String>,
     json: bool,
 ) {
-    eprintln!("Bounce cosmology: omega_m={}, omega_l={}, q_corr={}", omega_m, omega_l, q_corr);
+    eprintln!(
+        "Bounce cosmology: omega_m={}, omega_l={}, q_corr={}",
+        omega_m, omega_l, q_corr
+    );
 
-    let params = BounceParams { omega_m, omega_l, q_corr };
+    let params = BounceParams {
+        omega_m,
+        omega_l,
+        q_corr,
+    };
     let result = simulate_bounce(&params, t_end, steps, a0);
 
     let a_min: f64 = result.a.iter().cloned().fold(f64::INFINITY, f64::min);
@@ -161,14 +187,18 @@ fn run_simulate(
                 result.a[i].to_string(),
                 result.h[i].to_string(),
                 result.q[i].to_string(),
-            ]).unwrap();
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} points to {}", result.time.len(), path);
     } else {
         println!("time,a,H,q");
         for i in (0..result.time.len()).step_by(result.time.len() / 20) {
-            println!("{},{},{},{}", result.time[i], result.a[i], result.h[i], result.q[i]);
+            println!(
+                "{},{},{},{}",
+                result.time[i], result.a[i], result.h[i], result.q[i]
+            );
         }
     }
 }
@@ -179,7 +209,10 @@ fn run_observables(omega_m: f64, h0: f64, q_corr: f64, redshifts: &str, json: bo
         .filter_map(|s| s.trim().parse().ok())
         .collect();
 
-    eprintln!("Cosmological observables: omega_m={}, h0={}, q_corr={}", omega_m, h0, q_corr);
+    eprintln!(
+        "Cosmological observables: omega_m={}, h0={}, q_corr={}",
+        omega_m, h0, q_corr
+    );
 
     // Compute observables
     let r_d = bao_sound_horizon(omega_m, h0);
@@ -199,7 +232,10 @@ fn run_observables(omega_m: f64, h0: f64, q_corr: f64, redshifts: &str, json: bo
             let d_l = luminosity_distance(z, omega_m, h0, q_corr);
             let mu = distance_modulus(z, omega_m, h0, q_corr);
             let comma = if i < z_values.len() - 1 { "," } else { "" };
-            println!("    {{\"z\": {}, \"d_L_mpc\": {}, \"mu\": {}}}{}", z, d_l, mu, comma);
+            println!(
+                "    {{\"z\": {}, \"d_L_mpc\": {}, \"mu\": {}}}{}",
+                z, d_l, mu, comma
+            );
         }
         println!("  ]");
         println!("}}");
@@ -218,7 +254,10 @@ fn run_observables(omega_m: f64, h0: f64, q_corr: f64, redshifts: &str, json: bo
 }
 
 fn run_hubble(z_max: f64, n_points: usize, omega_m: f64, q_corr: f64, output: Option<String>) {
-    eprintln!("Hubble parameter E(z): omega_m={}, q_corr={}", omega_m, q_corr);
+    eprintln!(
+        "Hubble parameter E(z): omega_m={}, q_corr={}",
+        omega_m, q_corr
+    );
 
     let z_values: Vec<f64> = (0..n_points)
         .map(|i| z_max * i as f64 / (n_points - 1) as f64)
@@ -239,7 +278,8 @@ fn run_hubble(z_max: f64, n_points: usize, omega_m: f64, q_corr: f64, output: Op
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
         wtr.write_record(["z", "E"]).unwrap();
         for i in 0..n_points {
-            wtr.write_record(&[z_values[i].to_string(), e_values[i].to_string()]).unwrap();
+            wtr.write_record(&[z_values[i].to_string(), e_values[i].to_string()])
+                .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} points to {}", n_points, path);

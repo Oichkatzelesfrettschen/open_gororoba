@@ -138,11 +138,7 @@ pub struct ZdDriftResult {
 /// Measure ZD drift under random SO(7) rotations at a single angle scale.
 ///
 /// Returns product norms for each rotation trial.
-pub fn measure_zd_drift(
-    n_rotations: usize,
-    angle_scale: f64,
-    seed: u64,
-) -> Vec<f64> {
+pub fn measure_zd_drift(n_rotations: usize, angle_scale: f64, seed: u64) -> Vec<f64> {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
     let (a, b) = sedenion_zd_pair();
 
@@ -158,11 +154,7 @@ pub fn measure_zd_drift(
 }
 
 /// Sweep angle scales and measure ZD drift at each.
-pub fn angle_sweep(
-    scales: &[f64],
-    n_rotations: usize,
-    seed: u64,
-) -> Vec<ZdDriftResult> {
+pub fn angle_sweep(scales: &[f64], n_rotations: usize, seed: u64) -> Vec<ZdDriftResult> {
     scales
         .iter()
         .map(|&s| {
@@ -216,10 +208,7 @@ mod tests {
     fn test_zero_angle_scale_preserves_zd() {
         let norms = measure_zd_drift(10, 0.0, 42);
         for (i, n) in norms.iter().enumerate() {
-            assert!(
-                *n < 1e-10,
-                "Zero angle scale trial {i}: norm = {n:.3e}"
-            );
+            assert!(*n < 1e-10, "Zero angle scale trial {i}: norm = {n:.3e}");
         }
     }
 

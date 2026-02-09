@@ -25,7 +25,12 @@ pub fn looks_like_landsat_stac_json(path: &Path) -> Result<bool, FetchError> {
 
 /// Required top-level fields in a STAC Item.
 const STAC_REQUIRED_FIELDS: &[&str] = &[
-    "\"type\"", "\"stac_version\"", "\"id\"", "\"geometry\"", "\"properties\"", "\"assets\"",
+    "\"type\"",
+    "\"stac_version\"",
+    "\"id\"",
+    "\"geometry\"",
+    "\"properties\"",
+    "\"assets\"",
 ];
 
 /// Validate that a STAC item JSON contains all required fields.
@@ -36,7 +41,8 @@ pub fn validate_stac_schema(path: &Path) -> Result<(), FetchError> {
         if !content.contains(field) {
             return Err(FetchError::Validation(format!(
                 "STAC item missing required field {}: {}",
-                field, path.display()
+                field,
+                path.display()
             )));
         }
     }
@@ -56,7 +62,10 @@ pub fn extract_cloud_cover(path: &Path) -> Result<Option<f64>, FetchError> {
     if let Some(pos) = content.find(key) {
         let after_key = &content[pos + key.len()..];
         // Skip optional whitespace and colon
-        let after_colon = after_key.trim_start().strip_prefix(':').unwrap_or(after_key);
+        let after_colon = after_key
+            .trim_start()
+            .strip_prefix(':')
+            .unwrap_or(after_key);
         let value_str = after_colon.trim_start();
         // Extract numeric value until comma, brace, or whitespace
         let end = value_str.find([',', '}', '\n']).unwrap_or(value_str.len());

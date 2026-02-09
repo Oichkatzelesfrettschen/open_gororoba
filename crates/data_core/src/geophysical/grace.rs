@@ -7,7 +7,7 @@
 //! Source: ICGEM, http://icgem.gfz-potsdam.de/
 //! Reference: Ries et al. (2016), GFZ Data Services
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::PathBuf;
 
 /// ICGEM .gfc download URLs for GGM05S.
@@ -19,7 +19,9 @@ const GGM05S_URLS: &[&str] = &[
 pub struct GraceGgm05sProvider;
 
 impl DatasetProvider for GraceGgm05sProvider {
-    fn name(&self) -> &str { "GRACE GGM05S Gravity Field" }
+    fn name(&self) -> &str {
+        "GRACE GGM05S Gravity Field"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("GGM05S.gfc");

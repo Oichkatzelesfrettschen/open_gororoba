@@ -230,7 +230,11 @@ fn gcd(mut a: i64, mut b: i64) -> i64 {
         b = a % b;
         a = t;
     }
-    if a == 0 { 1 } else { a }
+    if a == 0 {
+        1
+    } else {
+        a
+    }
 }
 
 /// Verify Carlstrom's 8 wheel axioms on a set of elements.

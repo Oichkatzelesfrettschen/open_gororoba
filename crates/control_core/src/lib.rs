@@ -29,38 +29,27 @@
 //! - Ogata (2010): Modern Control Engineering
 //! - Kalman (1960): A New Approach to Linear Filtering
 
-pub mod plant;
 pub mod feedback;
 pub mod filtering;
 pub mod pid;
+pub mod plant;
 pub mod state_space;
 
 // Physics domain bridges (feature-gated)
 #[cfg(any(feature = "optics", feature = "casimir"))]
 pub mod bridges;
 
-pub use plant::{
-    Plant, PlantDynamics, LinearPlant,
-    ContinuousPlant, DiscretePlant,
-};
+pub use plant::{ContinuousPlant, DiscretePlant, LinearPlant, Plant, PlantDynamics};
 
-pub use feedback::{
-    Controller, FeedbackLoop, ControlError,
-    ReferenceSignal, ControlOutput,
-};
+pub use feedback::{ControlError, ControlOutput, Controller, FeedbackLoop, ReferenceSignal};
 
 pub use filtering::{
-    StateEstimator, KalmanFilter, ExtendedKalmanFilter,
-    FilterState, PredictionResult, UpdateResult,
+    ExtendedKalmanFilter, FilterState, KalmanFilter, PredictionResult, StateEstimator, UpdateResult,
 };
 
-pub use pid::{
-    PidController, PidGains, PidState,
-    anti_windup_clamp, derivative_filter,
-};
+pub use pid::{anti_windup_clamp, derivative_filter, PidController, PidGains, PidState};
 
 pub use state_space::{
-    StateSpaceModel, TransferFunction,
-    controllability_matrix, observability_matrix,
-    is_controllable, is_observable,
+    controllability_matrix, is_controllable, is_observable, observability_matrix, StateSpaceModel,
+    TransferFunction,
 };

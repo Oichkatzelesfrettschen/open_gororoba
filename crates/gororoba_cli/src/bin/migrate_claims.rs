@@ -39,7 +39,8 @@ fn extract_status_token(status_text: &str) -> String {
     // Extract the bold token: **Verified**, **Refuted**, etc.
     let re = Regex::new(r"\*\*([^*]+)\*\*").unwrap();
     if let Some(caps) = re.captures(status_text) {
-        caps.get(1).map_or(status_text.to_string(), |m| m.as_str().to_string())
+        caps.get(1)
+            .map_or(status_text.to_string(), |m| m.as_str().to_string())
     } else {
         status_text.trim().to_string()
     }
@@ -88,9 +89,7 @@ fn main() {
         let where_stated = restore(parts[3]);
         let status_raw = restore(parts[4]);
         let last_verified = restore(parts[5]);
-        let what_would = restore(
-            parts[6..].join("|").trim_end_matches('|'),
-        );
+        let what_would = restore(parts[6..].join("|").trim_end_matches('|'));
 
         let status = extract_status_token(&status_raw);
 
@@ -121,7 +120,11 @@ fn main() {
     }
 
     match std::fs::write(&args.output, &toml_str) {
-        Ok(()) => println!("Wrote {} bytes to {}", toml_str.len(), args.output.display()),
+        Ok(()) => println!(
+            "Wrote {} bytes to {}",
+            toml_str.len(),
+            args.output.display()
+        ),
         Err(e) => {
             eprintln!("ERROR: cannot write {}: {e}", args.output.display());
             std::process::exit(1);

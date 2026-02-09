@@ -44,18 +44,38 @@ use std::str::FromStr;
 ///
 /// These are the c_n values (OEIS A000521).
 pub const J_COEFFICIENTS: [u64; 30] = [
-    196884,          // c_1
-    21493760,        // c_2
-    864299970,       // c_3
-    20245856256,     // c_4
-    333202640600,    // c_5
-    4252023300096,   // c_6
-    44656994071935,  // c_7
-    401490886656000, // c_8
+    196884,           // c_1
+    21493760,         // c_2
+    864299970,        // c_3
+    20245856256,      // c_4
+    333202640600,     // c_5
+    4252023300096,    // c_6
+    44656994071935,   // c_7
+    401490886656000,  // c_8
     3176440229784420, // c_9
     // c_10 onwards exceed u64 max (18446744073709551615)
     // For larger coefficients we need BigUint
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
 ];
 
 /// Number of valid coefficients in J_COEFFICIENTS (before overflow).
@@ -66,18 +86,27 @@ pub const J_COEFFICIENTS_VALID: usize = 9;
 /// The Monster has 194 irreducible representations. These are the dimensions
 /// of the smallest ones (character degrees).
 pub const MONSTER_REP_DIMENSIONS: [u64; 20] = [
-    1,           // \chi_1: trivial
-    196883,      // \chi_2: smallest non-trivial
-    21296876,    // \chi_3
-    842609326,   // \chi_4
-    18538750076, // \chi_5
-    19360062527, // \chi_6
-    293553734298, // \chi_7
-    3879214937598, // \chi_8
-    36173193327999, // \chi_9
+    1,               // \chi_1: trivial
+    196883,          // \chi_2: smallest non-trivial
+    21296876,        // \chi_3
+    842609326,       // \chi_4
+    18538750076,     // \chi_5
+    19360062527,     // \chi_6
+    293553734298,    // \chi_7
+    3879214937598,   // \chi_8
+    36173193327999,  // \chi_9
     125510727015275, // \chi_10
     // More representations...
-    0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
+    0,
 ];
 
 /// Number of valid Monster rep dimensions in the array.
@@ -87,9 +116,8 @@ pub const MONSTER_REPS_VALID: usize = 10;
 ///
 /// |M| = 2^46 * 3^20 * 5^9 * 7^6 * 11^2 * 13^3 * 17 * 19 * 23 * 29 * 31 * 41 * 47 * 59 * 71
 pub fn monster_group_order() -> BigUint {
-    BigUint::from_str(
-        "808017424794512875886459904961710757005754368000000000"
-    ).expect("Valid monster order string")
+    BigUint::from_str("808017424794512875886459904961710757005754368000000000")
+        .expect("Valid monster order string")
 }
 
 /// Verify the monster group order factorization.
@@ -98,9 +126,21 @@ pub fn verify_monster_order_factorization() -> bool {
 
     // Compute 2^46 * 3^20 * 5^9 * 7^6 * 11^2 * 13^3 * 17 * 19 * 23 * 29 * 31 * 41 * 47 * 59 * 71
     let factors: Vec<(u64, u32)> = vec![
-        (2, 46), (3, 20), (5, 9), (7, 6), (11, 2), (13, 3),
-        (17, 1), (19, 1), (23, 1), (29, 1), (31, 1),
-        (41, 1), (47, 1), (59, 1), (71, 1),
+        (2, 46),
+        (3, 20),
+        (5, 9),
+        (7, 6),
+        (11, 2),
+        (13, 3),
+        (17, 1),
+        (19, 1),
+        (23, 1),
+        (29, 1),
+        (31, 1),
+        (41, 1),
+        (47, 1),
+        (59, 1),
+        (71, 1),
     ];
 
     let mut computed = BigUint::from(1u64);
@@ -153,9 +193,8 @@ pub fn verify_moonshine_c1() -> bool {
 /// c_2 = 1 + 196883 + 21296876 = dim(\chi_1) + dim(\chi_2) + dim(\chi_3)
 pub fn verify_moonshine_c2() -> bool {
     let c2 = J_COEFFICIENTS[1];
-    let expected = MONSTER_REP_DIMENSIONS[0]
-        + MONSTER_REP_DIMENSIONS[1]
-        + MONSTER_REP_DIMENSIONS[2];
+    let expected =
+        MONSTER_REP_DIMENSIONS[0] + MONSTER_REP_DIMENSIONS[1] + MONSTER_REP_DIMENSIONS[2];
 
     c2 == expected
 }
@@ -291,8 +330,10 @@ mod tests {
 
     #[test]
     fn test_monster_order_factorization() {
-        assert!(verify_monster_order_factorization(),
-            "Monster order should factor correctly");
+        assert!(
+            verify_monster_order_factorization(),
+            "Monster order should factor correctly"
+        );
     }
 
     #[test]
@@ -306,14 +347,18 @@ mod tests {
 
     #[test]
     fn test_moonshine_c1() {
-        assert!(verify_moonshine_c1(),
-            "c_1 = 196884 should equal 1 + 196883");
+        assert!(
+            verify_moonshine_c1(),
+            "c_1 = 196884 should equal 1 + 196883"
+        );
     }
 
     #[test]
     fn test_moonshine_c2() {
-        assert!(verify_moonshine_c2(),
-            "c_2 = 21493760 should equal 1 + 196883 + 21296876");
+        assert!(
+            verify_moonshine_c2(),
+            "c_2 = 21493760 should equal 1 + 196883 + 21296876"
+        );
     }
 
     #[test]
@@ -342,9 +387,14 @@ mod tests {
     fn test_j_coefficients_increasing() {
         // J-coefficients should be strictly increasing
         for i in 1..J_COEFFICIENTS_VALID {
-            assert!(J_COEFFICIENTS[i] > J_COEFFICIENTS[i - 1],
+            assert!(
+                J_COEFFICIENTS[i] > J_COEFFICIENTS[i - 1],
                 "J-coefficients should be increasing: c_{} = {} <= c_{} = {}",
-                i, J_COEFFICIENTS[i - 1], i + 1, J_COEFFICIENTS[i]);
+                i,
+                J_COEFFICIENTS[i - 1],
+                i + 1,
+                J_COEFFICIENTS[i]
+            );
         }
     }
 
@@ -352,8 +402,10 @@ mod tests {
     fn test_monster_reps_increasing() {
         // Monster rep dimensions should be increasing (for small reps)
         for i in 1..MONSTER_REPS_VALID {
-            assert!(MONSTER_REP_DIMENSIONS[i] > MONSTER_REP_DIMENSIONS[i - 1],
-                "Monster rep dimensions should be increasing");
+            assert!(
+                MONSTER_REP_DIMENSIONS[i] > MONSTER_REP_DIMENSIONS[i - 1],
+                "Monster rep dimensions should be increasing"
+            );
         }
     }
 
@@ -365,7 +417,9 @@ mod tests {
         let c1_decomp = &decomps[0];
         assert_eq!(c1_decomp.index, 1);
         assert_eq!(c1_decomp.coefficient, 196884);
-        let sum: u64 = c1_decomp.rep_indices.iter()
+        let sum: u64 = c1_decomp
+            .rep_indices
+            .iter()
             .map(|&i| MONSTER_REP_DIMENSIONS[i])
             .sum();
         assert_eq!(sum, c1_decomp.coefficient);
@@ -374,7 +428,9 @@ mod tests {
         let c2_decomp = &decomps[1];
         assert_eq!(c2_decomp.index, 2);
         assert_eq!(c2_decomp.coefficient, 21493760);
-        let sum: u64 = c2_decomp.rep_indices.iter()
+        let sum: u64 = c2_decomp
+            .rep_indices
+            .iter()
             .map(|&i| MONSTER_REP_DIMENSIONS[i])
             .sum();
         assert_eq!(sum, c2_decomp.coefficient);

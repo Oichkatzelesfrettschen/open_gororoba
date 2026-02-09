@@ -72,7 +72,11 @@ pub fn maxwell_garnett(eps_host: Complex64, eps_inc: Complex64, f: f64) -> Compl
 }
 
 /// Maxwell-Garnett for array of permittivities.
-pub fn maxwell_garnett_array(eps_host: &[Complex64], eps_inc: &[Complex64], f: f64) -> Vec<Complex64> {
+pub fn maxwell_garnett_array(
+    eps_host: &[Complex64],
+    eps_inc: &[Complex64],
+    f: f64,
+) -> Vec<Complex64> {
     eps_host
         .iter()
         .zip(eps_inc.iter())
@@ -198,7 +202,11 @@ pub fn drude(omega: &[f64], eps_inf: f64, omega_p: f64, gamma: f64) -> Vec<Compl
 /// * `eps` - Dielectric function array (positive frequencies only)
 /// * `check_real` - If true, reconstruct eps' from eps''; else reconstruct eps'' from eps'
 /// * `eps_inf` - High-frequency permittivity (default: last real part)
-pub fn kramers_kronig_check(eps: &[Complex64], check_real: bool, eps_inf: Option<f64>) -> KramersKronigResult {
+pub fn kramers_kronig_check(
+    eps: &[Complex64],
+    check_real: bool,
+    eps_inf: Option<f64>,
+) -> KramersKronigResult {
     use rustfft::FftPlanner;
 
     let n = eps.len();
@@ -224,7 +232,11 @@ pub fn kramers_kronig_check(eps: &[Complex64], check_real: bool, eps_inf: Option
         fft.process(&mut signal);
 
         for (i, s) in signal.iter_mut().enumerate() {
-            let freq_idx = if i <= m / 2 { i as i64 } else { i as i64 - m as i64 };
+            let freq_idx = if i <= m / 2 {
+                i as i64
+            } else {
+                i as i64 - m as i64
+            };
             let sgn = if freq_idx > 0 {
                 1.0
             } else if freq_idx < 0 {
@@ -238,9 +250,7 @@ pub fn kramers_kronig_check(eps: &[Complex64], check_real: bool, eps_inf: Option
         ifft.process(&mut signal);
         let scale = 1.0 / m as f64;
 
-        let reconstructed: Vec<f64> = (0..n)
-            .map(|i| eps_inf - signal[n + i].re * scale)
-            .collect();
+        let reconstructed: Vec<f64> = (0..n).map(|i| eps_inf - signal[n + i].re * scale).collect();
         let actual: Vec<f64> = eps.iter().map(|e| e.re).collect();
 
         (reconstructed, actual)
@@ -263,7 +273,11 @@ pub fn kramers_kronig_check(eps: &[Complex64], check_real: bool, eps_inf: Option
         fft.process(&mut signal);
 
         for (i, s) in signal.iter_mut().enumerate() {
-            let freq_idx = if i <= m / 2 { i as i64 } else { i as i64 - m as i64 };
+            let freq_idx = if i <= m / 2 {
+                i as i64
+            } else {
+                i as i64 - m as i64
+            };
             let sgn = if freq_idx > 0 {
                 1.0
             } else if freq_idx < 0 {
@@ -284,10 +298,7 @@ pub fn kramers_kronig_check(eps: &[Complex64], check_real: bool, eps_inf: Option
     };
 
     // Compute relative error
-    let max_actual = actual
-        .iter()
-        .map(|x| x.abs())
-        .fold(0.0_f64, f64::max);
+    let max_actual = actual.iter().map(|x| x.abs()).fold(0.0_f64, f64::max);
     let threshold = 0.01 * max_actual;
 
     let max_rel_error = actual
@@ -335,7 +346,11 @@ pub fn tmm_reflection(
         .map(|&n| {
             let sin_t = n_inc * sin_theta_i / n;
             let cos_t = (Complex64::new(1.0, 0.0) - sin_t * sin_t).sqrt();
-            if cos_t.im < 0.0 { -cos_t } else { cos_t }
+            if cos_t.im < 0.0 {
+                -cos_t
+            } else {
+                cos_t
+            }
         })
         .collect();
 
@@ -361,8 +376,10 @@ pub fn tmm_reflection(
     };
 
     // Build transfer matrix M = M_1 * M_2 * ... * M_N
-    let mut m = [[Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
-                 [Complex64::new(0.0, 0.0), Complex64::new(1.0, 0.0)]];
+    let mut m = [
+        [Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0)],
+        [Complex64::new(0.0, 0.0), Complex64::new(1.0, 0.0)],
+    ];
 
     for j in 1..(n_layers.len() - 1) {
         let n_j = n_layers[j];
@@ -485,7 +502,7 @@ mod tests {
     fn test_drude_low_frequency_negative() {
         let omega = vec![0.1, 0.2, 0.3];
         let eps = drude(&omega, 1.0, 10.0, 0.1); // Large omega_p
-        // At low frequency, Drude gives negative eps
+                                                 // At low frequency, Drude gives negative eps
         assert!(eps[0].re < 0.0);
     }
 
@@ -499,12 +516,17 @@ mod tests {
         };
         let eps = drude_lorentz(&omega, 1.0, 0.0, 0.0, &[osc]);
         // Near resonance (omega ~ 5), eps.im magnitude should be significant
-        let im_max_magnitude = eps.iter()
+        let im_max_magnitude = eps
+            .iter()
             .enumerate()
             .filter(|(i, _)| omega[*i] > 4.0 && omega[*i] < 6.0)
             .map(|(_, e)| e.im.abs())
             .fold(0.0_f64, f64::max);
-        assert!(im_max_magnitude > 0.01, "Im(eps) magnitude = {}", im_max_magnitude);
+        assert!(
+            im_max_magnitude > 0.01,
+            "Im(eps) magnitude = {}",
+            im_max_magnitude
+        );
     }
 
     #[test]

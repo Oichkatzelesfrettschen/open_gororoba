@@ -197,8 +197,14 @@ fn main() {
 
     // Sort by ID
     insights.sort_by(|a, b| {
-        let num_a: u32 = a.id.strip_prefix("I-").and_then(|s| s.parse().ok()).unwrap_or(0);
-        let num_b: u32 = b.id.strip_prefix("I-").and_then(|s| s.parse().ok()).unwrap_or(0);
+        let num_a: u32 =
+            a.id.strip_prefix("I-")
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(0);
+        let num_b: u32 =
+            b.id.strip_prefix("I-")
+                .and_then(|s| s.parse().ok())
+                .unwrap_or(0);
         num_a.cmp(&num_b)
     });
 

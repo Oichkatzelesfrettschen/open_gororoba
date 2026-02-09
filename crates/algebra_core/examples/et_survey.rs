@@ -20,7 +20,10 @@ fn main() {
             let et = create_strutted_et(n, s);
             println!(
                 "  S={:3}: K={:3}, possible={:5}, dmz={:5}, fill={:.3}",
-                s, et.tone_row.k, et.total_possible, et.dmz_count,
+                s,
+                et.tone_row.k,
+                et.total_possible,
+                et.dmz_count,
                 et.dmz_count as f64 / et.total_possible as f64
             );
         }
@@ -30,7 +33,10 @@ fn main() {
         println!(
             "  {} regimes: {:?}",
             sorted.len(),
-            sorted.iter().map(|(dmz, struts)| (*dmz, struts.len())).collect::<Vec<_>>()
+            sorted
+                .iter()
+                .map(|(dmz, struts)| (*dmz, struts.len()))
+                .collect::<Vec<_>>()
         );
         println!();
     }

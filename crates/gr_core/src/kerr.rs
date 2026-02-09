@@ -34,8 +34,8 @@ pub struct GeodesicState {
     pub r: f64,
     pub theta: f64,
     pub phi: f64,
-    pub v_r: f64,      // dr/dlambda
-    pub v_theta: f64,  // dtheta/dlambda
+    pub v_r: f64,     // dr/dlambda
+    pub v_theta: f64, // dtheta/dlambda
 }
 
 /// Result of geodesic tracing.
@@ -171,7 +171,14 @@ pub fn shadow_boundary(a: f64, n_points: usize, theta_o: f64) -> (Vec<f64>, Vec<
 /// Uses the second-order form dv/dlambda = (1/2)*dV/dq, which naturally
 /// handles turning points without explicit sign tracking.
 pub fn geodesic_rhs(state: GeodesicState, a: f64, e: f64, l: f64, q: f64) -> [f64; 6] {
-    let GeodesicState { t: _, r, theta, phi: _, v_r, v_theta } = state;
+    let GeodesicState {
+        t: _,
+        r,
+        theta,
+        phi: _,
+        v_r,
+        v_theta,
+    } = state;
 
     let (_, delta) = kerr_metric_quantities(r, theta, a);
     let sin_th = theta.sin();
@@ -195,8 +202,7 @@ pub fn geodesic_rhs(state: GeodesicState, a: f64, e: f64, l: f64, q: f64) -> [f6
     // Polar acceleration: dv_theta/dlambda = (1/2) dTheta/dtheta
     // Theta = Q - cos^2(th)*(a^2*(1-E^2) + L^2/sin^2(th))
     // dTheta/dtheta = sin(2th)*a^2*(1-E^2) + 2*L^2*cos(th)/sin^3(th)
-    let dtheta_dth = (2.0 * theta).sin() * a * a * (1.0 - e * e)
-        + 2.0 * l * l * cos_th / sin3;
+    let dtheta_dth = (2.0 * theta).sin() * a * a * (1.0 - e * e) + 2.0 * l * l * cos_th / sin3;
 
     [dt, v_r, v_theta, dphi, 0.5 * dr_dr, 0.5 * dtheta_dth]
 }
@@ -220,17 +226,17 @@ struct KerrGeodesicReduced {
     e: f64,
     l: f64,
     q: f64,
-    u_horizon: f64,  // 1/r_horizon
-    u_escape: f64,   // 1/r_escape (small, since r_escape is large)
+    u_horizon: f64, // 1/r_horizon
+    u_escape: f64,  // 1/r_escape (small, since r_escape is large)
 }
 
 type State4 = SVector<f64, 4>;
 
 impl System<f64, State4> for KerrGeodesicReduced {
     fn system(&self, _lam: f64, y: &State4, dy: &mut State4) {
-        let u = y[0];          // 1/r
+        let u = y[0]; // 1/r
         let theta = y[1];
-        let v_u = y[2];        // du/dlam
+        let v_u = y[2]; // du/dlam
         let v_theta = y[3];
 
         // Recover r from u for metric computation.
@@ -261,8 +267,7 @@ impl System<f64, State4> for KerrGeodesicReduced {
 
         // Polar acceleration (unchanged by radial regularization):
         //   dv_theta/dlam = 0.5 * dTheta/dtheta
-        let dtheta_dth = (2.0 * theta).sin() * a * a * (1.0 - e * e)
-            + 2.0 * l * l * cos_th / sin3;
+        let dtheta_dth = (2.0 * theta).sin() * a * a * (1.0 - e * e) + 2.0 * l * l * cos_th / sin3;
 
         dy[0] = v_u;
         dy[1] = v_theta;
@@ -352,7 +357,10 @@ pub fn trace_null_geodesic(
     let r_escape = 5.0 * r0;
 
     let system = KerrGeodesicReduced {
-        a, e, l, q,
+        a,
+        e,
+        l,
+        q,
         u_horizon: 1.0 / r_horizon,
         u_escape: 1.0 / r_escape,
     };
@@ -368,10 +376,17 @@ pub fn trace_null_geodesic(
     let y_out = stepper.y_out();
 
     // Transform u -> r for each output sample.
-    let r_vec: Vec<f64> = y_out.iter().map(|y| {
-        let u = y[0];
-        if u.abs() > 1e-15 { 1.0 / u } else { 1e15 }
-    }).collect();
+    let r_vec: Vec<f64> = y_out
+        .iter()
+        .map(|y| {
+            let u = y[0];
+            if u.abs() > 1e-15 {
+                1.0 / u
+            } else {
+                1e15
+            }
+        })
+        .collect();
     let theta_vec: Vec<f64> = y_out.iter().map(|y| y[1]).collect();
     let lam_vec: Vec<f64> = x_out.to_vec();
 
@@ -411,7 +426,14 @@ pub fn trace_null_geodesic(
     } else if !integration_ok {
         (true, "integration_error".to_string())
     } else {
-        (early_stop, if early_stop { "solout_halt".to_string() } else { String::new() })
+        (
+            early_stop,
+            if early_stop {
+                "solout_halt".to_string()
+            } else {
+                String::new()
+            },
+        )
     };
 
     GeodesicResult {
@@ -465,15 +487,13 @@ pub fn shadow_ray_traced(
 ) -> ShadowResult {
     let alpha: Vec<f64> = (0..n_alpha)
         .map(|i| {
-            alpha_range.0
-                + (alpha_range.1 - alpha_range.0) * i as f64 / (n_alpha - 1).max(1) as f64
+            alpha_range.0 + (alpha_range.1 - alpha_range.0) * i as f64 / (n_alpha - 1).max(1) as f64
         })
         .collect();
 
     let beta: Vec<f64> = (0..n_beta)
         .map(|j| {
-            beta_range.0
-                + (beta_range.1 - beta_range.0) * j as f64 / (n_beta - 1).max(1) as f64
+            beta_range.0 + (beta_range.1 - beta_range.0) * j as f64 / (n_beta - 1).max(1) as f64
         })
         .collect();
 
@@ -505,9 +525,8 @@ pub fn shadow_ray_traced(
                 return (i, j, false);
             }
 
-            let result = trace_null_geodesic(
-                a, 1.0, l, q, r_obs, theta_obs, lam_max, -1.0, 0.0, n_steps,
-            );
+            let result =
+                trace_null_geodesic(a, 1.0, l, q, r_obs, theta_obs, lam_max, -1.0, 0.0, n_steps);
 
             let r_final = *result.r.last().unwrap_or(&f64::INFINITY);
             let in_shadow = r_final < r_horizon + 0.5;
@@ -639,9 +658,8 @@ impl Kerr {
     fn isco_bpt(&self, sign: f64) -> f64 {
         let m = self.mass;
         let a_star = self.spin / m;
-        let z1 = 1.0
-            + (1.0 - a_star * a_star).cbrt()
-                * ((1.0 + a_star).cbrt() + (1.0 - a_star).cbrt());
+        let z1 =
+            1.0 + (1.0 - a_star * a_star).cbrt() * ((1.0 + a_star).cbrt() + (1.0 - a_star).cbrt());
         let z2 = (3.0 * a_star * a_star + z1 * z1).sqrt();
         m * (3.0 + z2 - sign * ((3.0 - z1) * (3.0 + z1 + 2.0 * z2)).sqrt())
     }
@@ -768,8 +786,7 @@ impl Kerr {
         dg[THETA][THETA] = sigma_th;
 
         // dg_phiphi/dtheta = sin(2 theta) [A(r^2+a^2) - a^2 Delta Sigma sin^2 theta] / Sigma^2
-        dg[PHI][PHI] =
-            sin2th * (big_a * (r * r + a * a) - a * a * delta * sigma * s2) / sigma2;
+        dg[PHI][PHI] = sin2th * (big_a * (r * r + a * a) - a * a * delta * sigma * s2) / sigma2;
 
         dg
     }
@@ -888,7 +905,7 @@ mod tests {
         // a = 0: Schwarzschild
         let (sigma, delta) = kerr_metric_quantities(10.0, PI / 2.0, 0.0);
         assert_relative_eq!(sigma, 100.0, epsilon = 1e-10);
-        assert_relative_eq!(delta, 80.0, epsilon = 1e-10);  // r^2 - 2r
+        assert_relative_eq!(delta, 80.0, epsilon = 1e-10); // r^2 - 2r
     }
 
     #[test]
@@ -912,7 +929,11 @@ mod tests {
         assert_relative_eq!(event_horizon_radius(1.0), 1.0, epsilon = 1e-10);
 
         // a = 0.9: r_h = 1 + sqrt(1 - 0.81) = 1 + sqrt(0.19) ~ 1.436
-        assert_relative_eq!(event_horizon_radius(0.9), 1.0 + 0.19_f64.sqrt(), epsilon = 1e-10);
+        assert_relative_eq!(
+            event_horizon_radius(0.9),
+            1.0 + 0.19_f64.sqrt(),
+            epsilon = 1e-10
+        );
     }
 
     #[test]
@@ -964,17 +985,22 @@ mod tests {
         // Radially infalling photon from close to the horizon
         let a = 0.5;
         let e = 1.0;
-        let l = 0.0;  // Zero angular momentum
+        let l = 0.0; // Zero angular momentum
         let q = 0.0;
 
         // Start closer to horizon to ensure infall before escape check
         let r0 = 5.0;
 
         let result = trace_null_geodesic(
-            a, e, l, q,
-            r0, PI / 2.0,  // Start at r=5, equator
-            50.0,          // Max Mino time
-            -1.0, 0.0,     // Ingoing, no theta motion
+            a,
+            e,
+            l,
+            q,
+            r0,
+            PI / 2.0, // Start at r=5, equator
+            50.0,     // Max Mino time
+            -1.0,
+            0.0, // Ingoing, no theta motion
             2000,
         );
 
@@ -990,8 +1016,11 @@ mod tests {
             assert!(r_final < r_horizon + 0.5);
         } else {
             // For radial infall, r should at least decrease from starting point
-            assert!(r_final < r0 || r_final > 5.0 * r0,
-                "Geodesic should either fall in or escape, r_final = {}", r_final);
+            assert!(
+                r_final < r0 || r_final > 5.0 * r0,
+                "Geodesic should either fall in or escape, r_final = {}",
+                r_final
+            );
         }
     }
 
@@ -1000,14 +1029,19 @@ mod tests {
         // Outgoing photon
         let a = 0.5;
         let e = 1.0;
-        let l = 5.0;  // Large angular momentum
+        let l = 5.0; // Large angular momentum
         let q = 10.0;
 
         let result = trace_null_geodesic(
-            a, e, l, q,
-            10.0, PI / 2.0,
+            a,
+            e,
+            l,
+            q,
+            10.0,
+            PI / 2.0,
             200.0,
-            1.0, 0.0,  // Outgoing
+            1.0,
+            0.0, // Outgoing
             2000,
         );
 
@@ -1020,13 +1054,7 @@ mod tests {
     fn test_geodesic_coordinate_time_increases() {
         let a = 0.7;
         let r_horizon = event_horizon_radius(a);
-        let result = trace_null_geodesic(
-            a, 1.0, 2.0, 5.0,
-            15.0, PI / 3.0,
-            50.0,
-            -1.0, 1.0,
-            500,
-        );
+        let result = trace_null_geodesic(a, 1.0, 2.0, 5.0, 15.0, PI / 3.0, 50.0, -1.0, 1.0, 500);
 
         // Coordinate time should increase monotonically outside the horizon.
         // Inside the horizon (r < r_h), t and r swap causal roles and t can
@@ -1036,7 +1064,10 @@ mod tests {
                 assert!(
                     result.t[i] >= result.t[i - 1] - 1e-6,
                     "t should increase outside horizon: t[{}]={} < t[{}]={}",
-                    i, result.t[i], i - 1, result.t[i - 1]
+                    i,
+                    result.t[i],
+                    i - 1,
+                    result.t[i - 1]
                 );
             }
         }
@@ -1044,20 +1075,17 @@ mod tests {
 
     #[test]
     fn test_geodesic_mino_time_monotonic() {
-        let result = trace_null_geodesic(
-            0.5, 1.0, 3.0, 2.0,
-            20.0, PI / 2.0,
-            10.0,
-            -1.0, 0.0,
-            100,
-        );
+        let result = trace_null_geodesic(0.5, 1.0, 3.0, 2.0, 20.0, PI / 2.0, 10.0, -1.0, 0.0, 100);
 
         // Mino time should increase monotonically
         for i in 1..result.lam.len() {
             assert!(
                 result.lam[i] > result.lam[i - 1],
                 "Mino time should increase: lam[{}]={} <= lam[{}]={}",
-                i, result.lam[i], i - 1, result.lam[i - 1]
+                i,
+                result.lam[i],
+                i - 1,
+                result.lam[i - 1]
             );
         }
         // First sample is 0, last should reach near lam_max (or terminate early)
@@ -1088,10 +1116,15 @@ mod tests {
         let r_horizon = event_horizon_radius(a); // = 2.0
 
         let result = trace_null_geodesic(
-            a, 1.0, 0.0, 0.0,
-            r0, PI / 2.0,
-            2.0 * r0,   // lam_max
-            -1.0, 0.0,  // ingoing
+            a,
+            1.0,
+            0.0,
+            0.0,
+            r0,
+            PI / 2.0,
+            2.0 * r0, // lam_max
+            -1.0,
+            0.0, // ingoing
             2000,
         );
         let r_final = *result.r.last().unwrap();
@@ -1122,13 +1155,7 @@ mod tests {
         let r0 = 20.0;
         let theta0 = PI / 3.0;
 
-        let result = trace_null_geodesic(
-            a, e, l, q,
-            r0, theta0,
-            40.0,
-            -1.0, 1.0,
-            500,
-        );
+        let result = trace_null_geodesic(a, e, l, q, r0, theta0, 40.0, -1.0, 1.0, 500);
 
         let r_horizon = event_horizon_radius(a);
 
@@ -1157,12 +1184,16 @@ mod tests {
             assert!(
                 r_potential > -1e-6 * r_scale,
                 "R(r) < 0 at step {}: r={:.4}, R={:.4e} (forbidden region!)",
-                i, ri, r_potential
+                i,
+                ri,
+                r_potential
             );
             assert!(
                 theta_potential > -1e-6 * q.max(1.0),
                 "Theta(theta) < 0 at step {}: theta={:.4}, Theta={:.4e} (forbidden!)",
-                i, thi, theta_potential
+                i,
+                thi,
+                theta_potential
             );
         }
     }
@@ -1178,22 +1209,13 @@ mod tests {
         // Start at r = r_horizon + 0.1 (very close to the horizon).
         let r0 = r_horizon + 0.1;
         let e = 1.0;
-        let l = 0.0;  // Radial infall
+        let l = 0.0; // Radial infall
         let q = 0.0;
 
-        let result = trace_null_geodesic(
-            a, e, l, q,
-            r0, PI / 2.0,
-            50.0,
-            -1.0, 0.0,
-            500,
-        );
+        let result = trace_null_geodesic(a, e, l, q, r0, PI / 2.0, 50.0, -1.0, 0.0, 500);
 
         // Should terminate by hitting the horizon.
-        assert!(
-            result.terminated,
-            "Near-horizon photon should terminate"
-        );
+        assert!(result.terminated, "Near-horizon photon should terminate");
         assert_eq!(
             result.termination_reason, "hit_horizon",
             "Near-horizon photon should hit horizon, got: {}",
@@ -1223,10 +1245,15 @@ mod tests {
         let (xi, eta) = impact_parameters(r_pro + 0.01, a);
 
         let result = trace_null_geodesic(
-            a, 1.0, xi, eta.max(0.0),
-            15.0, PI / 2.0,
+            a,
+            1.0,
+            xi,
+            eta.max(0.0),
+            15.0,
+            PI / 2.0,
             100.0,
-            -1.0, 0.0,
+            -1.0,
+            0.0,
             500,
         );
 
@@ -1266,10 +1293,7 @@ mod tests {
 
         // Outgoing radial velocity = 0 for circular orbit, theta velocity = 0.
         let result = trace_null_geodesic(
-            a, e, l, q,
-            r0, theta0,
-            20.0,
-            1.0, 0.0,  // sgn_r doesn't matter much since v_r ~ 0
+            a, e, l, q, r0, theta0, 20.0, 1.0, 0.0, // sgn_r doesn't matter much since v_r ~ 0
             500,
         );
 
@@ -1281,7 +1305,8 @@ mod tests {
             assert!(
                 result.r[i] > 2.0 && result.r[i] < 6.0,
                 "Circular orbit at r=3 diverged too fast at step {}: r={:.4}",
-                i, result.r[i]
+                i,
+                result.r[i]
             );
         }
     }
@@ -1291,10 +1316,11 @@ mod tests {
         // Schwarzschild (a=0): shadow should be roughly circular with
         // radius ~ sqrt(27) ~ 5.196 for a distant observer.
         let result = shadow_ray_traced(
-            0.0,             // a = 0 (Schwarzschild)
-            500.0,           // r_obs (distant)
-            PI / 2.0,        // equatorial observer
-            50, 50,          // low-res grid for test speed
+            0.0,      // a = 0 (Schwarzschild)
+            500.0,    // r_obs (distant)
+            PI / 2.0, // equatorial observer
+            50,
+            50, // low-res grid for test speed
             (-8.0, 8.0),
             (-8.0, 8.0),
         );
@@ -1303,16 +1329,10 @@ mod tests {
 
         // Count shadow pixels -- should be a filled disk
         let n_shadow: usize = result.shadow_mask.iter().filter(|&&b| b).count();
-        assert!(
-            n_shadow > 0,
-            "Shadow should contain at least some pixels"
-        );
+        assert!(n_shadow > 0, "Shadow should contain at least some pixels");
 
         // The shadow should be smaller than the full grid
-        assert!(
-            n_shadow < 50 * 50,
-            "Shadow should not fill the entire grid"
-        );
+        assert!(n_shadow < 50 * 50, "Shadow should not fill the entire grid");
 
         // Check rough circularity: center pixel should be in shadow,
         // corner pixel should not.
@@ -1340,21 +1360,15 @@ mod tests {
         assert!(
             (n_shadow_f - expected_pixels).abs() < 0.15 * expected_pixels,
             "Shadow pixel count {:.0} should be within 15% of expected {:.0} (pi*27/pixel_area)",
-            n_shadow_f, expected_pixels
+            n_shadow_f,
+            expected_pixels
         );
     }
 
     #[test]
     fn test_shadow_ray_traced_kerr_asymmetric() {
         // Kerr (a=0.9): shadow should be asymmetric (shifted prograde).
-        let result = shadow_ray_traced(
-            0.9,
-            500.0,
-            PI / 2.0,
-            40, 40,
-            (-8.0, 8.0),
-            (-8.0, 8.0),
-        );
+        let result = shadow_ray_traced(0.9, 500.0, PI / 2.0, 40, 40, (-8.0, 8.0), (-8.0, 8.0));
 
         // Count shadow pixels in left half vs right half
         let mut left_count = 0;
@@ -1374,7 +1388,10 @@ mod tests {
         // For prograde observer at equator, shadow shifts to negative alpha
         // (left half of alpha grid if range is symmetric).
         // At minimum, both halves should have some shadow pixels.
-        assert!(left_count > 0 || right_count > 0, "Should have shadow pixels");
+        assert!(
+            left_count > 0 || right_count > 0,
+            "Should have shadow pixels"
+        );
     }
 
     // -- Kerr SpacetimeMetric trait tests --
@@ -1398,7 +1415,10 @@ mod tests {
                 assert!(
                     (g_kerr[i][j] - g_schw[i][j]).abs() < 1e-12,
                     "g[{}][{}]: Kerr(a=0)={}, Schwarzschild={}",
-                    i, j, g_kerr[i][j], g_schw[i][j]
+                    i,
+                    j,
+                    g_kerr[i][j],
+                    g_schw[i][j]
                 );
             }
         }
@@ -1437,7 +1457,10 @@ mod tests {
                 assert!(
                     (product - expected).abs() < 1e-10,
                     "(g g^-1)[{}][{}] = {} (expected {})",
-                    i, j, product, expected
+                    i,
+                    j,
+                    product,
+                    expected
                 );
             }
         }
@@ -1458,7 +1481,10 @@ mod tests {
                 assert!(
                     (g_inv_k[i][j] - g_inv_s[i][j]).abs() < 1e-12,
                     "g_inv[{}][{}]: Kerr(a=0)={}, Schwarzschild={}",
-                    i, j, g_inv_k[i][j], g_inv_s[i][j]
+                    i,
+                    j,
+                    g_inv_k[i][j],
+                    g_inv_s[i][j]
                 );
             }
         }
@@ -1477,7 +1503,14 @@ mod tests {
                     assert!(
                         (gamma[a][m][n] - gamma[a][n][m]).abs() < 1e-12,
                         "Gamma^{}_{}{} != Gamma^{}_{}{}  ({} vs {})",
-                        a, m, n, a, n, m, gamma[a][m][n], gamma[a][n][m]
+                        a,
+                        m,
+                        n,
+                        a,
+                        n,
+                        m,
+                        gamma[a][m][n],
+                        gamma[a][n][m]
                     );
                 }
             }
@@ -1502,7 +1535,12 @@ mod tests {
                     assert!(
                         diff / scale < 1e-8,
                         "Gamma^{}_{}{}: Kerr(a=0)={:.6e}, Schw={:.6e}, diff={:.2e}",
-                        a, m, n, gamma_k[a][m][n], gamma_s[a][m][n], diff
+                        a,
+                        m,
+                        n,
+                        gamma_k[a][m][n],
+                        gamma_s[a][m][n],
+                        diff
                     );
                 }
             }
@@ -1526,7 +1564,12 @@ mod tests {
                     assert!(
                         diff / scale < 1e-3,
                         "Gamma^{}_{}{}: exact={:.6e}, numerical={:.6e}, rel_err={:.2e}",
-                        a, m, n, exact[a][m][n], numerical[a][m][n], diff / scale
+                        a,
+                        m,
+                        n,
+                        exact[a][m][n],
+                        numerical[a][m][n],
+                        diff / scale
                     );
                 }
             }
@@ -1571,7 +1614,9 @@ mod tests {
                 assert!(
                     ricci[mu][nu].abs() < 0.01,
                     "R_{}{} = {:.4e} (expected 0 for vacuum Kerr)",
-                    mu, nu, ricci[mu][nu]
+                    mu,
+                    nu,
+                    ricci[mu][nu]
                 );
             }
         }
@@ -1590,7 +1635,10 @@ mod tests {
         assert!(
             rel_err < 0.05,
             "Kretschner at a=0, r={}: got {:.4e}, expected {:.4e}, rel_err={:.2e}",
-            r, result.kretschner, expected, rel_err
+            r,
+            result.kretschner,
+            expected,
+            rel_err
         );
     }
 
@@ -1608,15 +1656,18 @@ mod tests {
 
         let c2 = theta.cos().powi(2);
         let sigma = r * r + a * a * c2;
-        let f = (r * r - a * a * c2)
-            * (r.powi(4) - 14.0 * r * r * a * a * c2 + a.powi(4) * c2 * c2);
+        let f =
+            (r * r - a * a * c2) * (r.powi(4) - 14.0 * r * r * a * a * c2 + a.powi(4) * c2 * c2);
         let expected = 48.0 * m * m * f / sigma.powi(6);
 
         let rel_err = (result.kretschner - expected).abs() / expected.abs().max(1e-30);
         assert!(
             rel_err < 0.05,
             "Kerr Kretschner at r={}, theta=pi/4: got {:.4e}, expected {:.4e}, rel_err={:.2e}",
-            r, result.kretschner, expected, rel_err
+            r,
+            result.kretschner,
+            expected,
+            rel_err
         );
     }
 
@@ -1652,11 +1703,7 @@ mod tests {
         );
 
         // At poles: r_ergo = r+ (coincides with horizon)
-        assert_relative_eq!(
-            k.ergosphere_radius(0.0),
-            k.outer_horizon(),
-            epsilon = 1e-12
-        );
+        assert_relative_eq!(k.ergosphere_radius(0.0), k.outer_horizon(), epsilon = 1e-12);
 
         // Ergosphere is always outside or at the horizon
         for theta in [0.3, 0.5, 1.0, 1.2, std::f64::consts::FRAC_PI_2] {
@@ -1732,11 +1779,7 @@ mod tests {
 
         // Extremal: M_irr = M / sqrt(2)
         let ke = Kerr::new(1.0, 1.0);
-        assert_relative_eq!(
-            ke.irreducible_mass(),
-            1.0 / 2.0_f64.sqrt(),
-            epsilon = 1e-12
-        );
+        assert_relative_eq!(ke.irreducible_mass(), 1.0 / 2.0_f64.sqrt(), epsilon = 1e-12);
 
         // M_irr <= M always
         let k = kerr_bh();

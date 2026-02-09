@@ -65,7 +65,8 @@ pub fn absorber_channel_capacity(layers: &[AbsorberLayer], wavelength_nm: f64) -
     }
 
     // Total absorption coefficient
-    let total_absorption: f64 = layers.iter()
+    let total_absorption: f64 = layers
+        .iter()
         .map(|l| {
             // Absorption coefficient alpha = 4*pi*k / lambda (1/m)
             let alpha = 4.0 * std::f64::consts::PI * l.n_imag / (wavelength_nm * 1e-9);
@@ -90,7 +91,8 @@ pub fn absorber_effective_radius(layers: &[AbsorberLayer]) -> f64 {
 
 /// Compute absorbed energy (simplified model).
 pub fn absorber_energy(layers: &[AbsorberLayer], incident_power: f64, _wavelength_nm: f64) -> f64 {
-    let absorption_fraction: f64 = layers.iter()
+    let absorption_fraction: f64 = layers
+        .iter()
         .map(|l| l.n_imag / (l.n_real.max(1.0)))
         .sum::<f64>()
         .min(1.0);
@@ -241,7 +243,9 @@ pub struct MinCutResult {
 pub fn compute_min_cut(lattice: &RTLattice, region_a: &[usize]) -> MinCutResult {
     // Convert region_a to a set for fast lookup
     let region_a_set: HashSet<usize> = region_a.iter().cloned().collect();
-    let region_ac: Vec<usize> = lattice.boundary_sites.iter()
+    let region_ac: Vec<usize> = lattice
+        .boundary_sites
+        .iter()
         .filter(|s| !region_a_set.contains(s))
         .cloned()
         .collect();
@@ -351,7 +355,8 @@ pub fn compute_min_cut(lattice: &RTLattice, region_a: &[usize]) -> MinCutResult 
     }
 
     // Max flow = sum of flows out of source
-    let max_flow: f64 = region_a.iter()
+    let max_flow: f64 = region_a
+        .iter()
         .map(|&a| *flow.get(&(source, a)).unwrap_or(&0.0))
         .sum();
 
@@ -389,10 +394,7 @@ pub struct EntropyScalingResult {
 }
 
 /// Analyze entropy scaling with region size.
-pub fn analyze_entropy_scaling(
-    lattice: &RTLattice,
-    seed: u64,
-) -> EntropyScalingResult {
+pub fn analyze_entropy_scaling(lattice: &RTLattice, seed: u64) -> EntropyScalingResult {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
     let n_boundary = lattice.n_boundary;
 
@@ -414,7 +416,8 @@ pub fn analyze_entropy_scaling(
     let log_r2 = r_squared(&log_sizes, &entropies, log_coef, log_int);
 
     // Power fit: log(S) = log(c) + alpha * log(L)
-    let log_entropies: Vec<f64> = entropies.iter()
+    let log_entropies: Vec<f64> = entropies
+        .iter()
         .map(|&s| if s > 1e-10 { s.ln() } else { -10.0 })
         .collect();
     let (power_alpha, log_c) = linear_fit(&log_sizes, &log_entropies);
@@ -452,7 +455,9 @@ fn linear_fit(x: &[f64], y: &[f64]) -> (f64, f64) {
 fn r_squared(x: &[f64], y: &[f64], slope: f64, intercept: f64) -> f64 {
     let mean_y: f64 = y.iter().sum::<f64>() / y.len() as f64;
     let ss_tot: f64 = y.iter().map(|yi| (yi - mean_y).powi(2)).sum();
-    let ss_res: f64 = x.iter().zip(y.iter())
+    let ss_res: f64 = x
+        .iter()
+        .zip(y.iter())
         .map(|(xi, yi)| (yi - (slope * xi + intercept)).powi(2))
         .sum();
 
@@ -481,11 +486,7 @@ pub struct AreaLawResult {
 }
 
 /// Verify area law scaling with bootstrap confidence intervals.
-pub fn verify_area_law(
-    lattice: &RTLattice,
-    n_bootstrap: usize,
-    seed: u64,
-) -> AreaLawResult {
+pub fn verify_area_law(lattice: &RTLattice, n_bootstrap: usize, seed: u64) -> AreaLawResult {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
 
     // Get base scaling data
@@ -499,13 +500,19 @@ pub fn verify_area_law(
         let n = base_result.sizes.len();
         let indices: Vec<usize> = (0..n).map(|_| rng.gen_range(0..n)).collect();
 
-        let resampled_log_sizes: Vec<f64> = indices.iter()
+        let resampled_log_sizes: Vec<f64> = indices
+            .iter()
             .map(|&i| (base_result.sizes[i] as f64).ln())
             .collect();
-        let resampled_log_entropies: Vec<f64> = indices.iter()
+        let resampled_log_entropies: Vec<f64> = indices
+            .iter()
             .map(|&i| {
                 let s = base_result.entropies[i];
-                if s > 1e-10 { s.ln() } else { -10.0 }
+                if s > 1e-10 {
+                    s.ln()
+                } else {
+                    -10.0
+                }
             })
             .collect();
 
@@ -561,8 +568,16 @@ mod tests {
     #[test]
     fn test_absorber_bound_satisfied() {
         let layers = vec![
-            AbsorberLayer { n_real: 1.5, n_imag: 0.01, thickness_nm: 100.0 },
-            AbsorberLayer { n_real: 1.8, n_imag: 0.02, thickness_nm: 50.0 },
+            AbsorberLayer {
+                n_real: 1.5,
+                n_imag: 0.01,
+                thickness_nm: 100.0,
+            },
+            AbsorberLayer {
+                n_real: 1.8,
+                n_imag: 0.02,
+                thickness_nm: 50.0,
+            },
         ];
 
         let result = verify_bekenstein_bound(&layers, 1e-12, 1550.0);
@@ -629,12 +644,14 @@ mod tests {
 
         // Entropy should generally increase with region size
         // (may not be strictly monotonic due to random regions)
-        let first_half: f64 = result.entropies[..result.entropies.len()/2].iter().sum();
-        let second_half: f64 = result.entropies[result.entropies.len()/2..].iter().sum();
+        let first_half: f64 = result.entropies[..result.entropies.len() / 2].iter().sum();
+        let second_half: f64 = result.entropies[result.entropies.len() / 2..].iter().sum();
 
         // Average entropy in larger regions should be >= smaller regions
-        assert!(second_half / (result.entropies.len() / 2) as f64 >=
-                first_half / (result.entropies.len() / 2) as f64 * 0.5);
+        assert!(
+            second_half / (result.entropies.len() / 2) as f64
+                >= first_half / (result.entropies.len() / 2) as f64 * 0.5
+        );
     }
 
     #[test]

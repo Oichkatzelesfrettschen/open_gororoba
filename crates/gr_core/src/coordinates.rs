@@ -65,11 +65,7 @@ pub struct BlCoord {
 pub fn mks_to_bl(x1: f64, x2: f64, x3: f64, params: &MksParams) -> BlCoord {
     let r = params.r0 * x1.exp();
     let theta = th_of_x2(x2, params.hslope);
-    BlCoord {
-        r,
-        theta,
-        phi: x3,
-    }
+    BlCoord { r, theta, phi: x3 }
 }
 
 /// Compute r from MKS radial coordinate X1.

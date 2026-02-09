@@ -15,7 +15,9 @@ fn main() {
     #[cfg(not(feature = "hdf5-export"))]
     {
         eprintln!("ERROR: export-hdf5 requires the hdf5-export feature.");
-        eprintln!("Rebuild with: cargo run --release --features data_core/hdf5-export --bin export-hdf5");
+        eprintln!(
+            "Rebuild with: cargo run --release --features data_core/hdf5-export --bin export-hdf5"
+        );
         std::process::exit(1);
     }
 
@@ -27,8 +29,8 @@ fn main() {
 
 #[cfg(feature = "hdf5-export")]
 fn run_export() {
-    use std::path::PathBuf;
     use clap::Parser;
+    use std::path::PathBuf;
 
     #[derive(Parser)]
     #[command(name = "export-hdf5")]
@@ -58,9 +60,14 @@ fn run_export() {
     let claims_path = args.registry_dir.join("claims.toml");
     if claims_path.exists() {
         #[derive(serde::Deserialize)]
-        struct ClaimsRegistry { claim: Vec<ClaimEntry> }
+        struct ClaimsRegistry {
+            claim: Vec<ClaimEntry>,
+        }
         #[derive(serde::Deserialize)]
-        struct ClaimEntry { id: String, status: String }
+        struct ClaimEntry {
+            id: String,
+            status: String,
+        }
 
         let content = std::fs::read_to_string(&claims_path).unwrap();
         let registry: ClaimsRegistry = toml::from_str(&content).unwrap();

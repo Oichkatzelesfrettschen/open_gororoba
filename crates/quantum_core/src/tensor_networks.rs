@@ -38,18 +38,13 @@
 
 // Re-export all tensor network types
 pub use crate::tensor_network_classical::{
-    TensorNetworkState, EntropyResult, CircuitEvolutionResult,
-    simulate_random_circuit, prepare_bell_state, prepare_ghz_state,
-    bell_state_entropy, ghz_state_entropy,
+    bell_state_entropy, ghz_state_entropy, prepare_bell_state, prepare_ghz_state,
+    simulate_random_circuit, CircuitEvolutionResult, EntropyResult, TensorNetworkState,
 };
 
-pub use crate::mps::{
-    MatrixProductState, MpsTensor,
-};
+pub use crate::mps::{MatrixProductState, MpsTensor};
 
-pub use crate::peps::{
-    Peps, PepsTensor,
-};
+pub use crate::peps::{Peps, PepsTensor};
 
 /// Trait for types that can compute entanglement entropy.
 pub trait EntanglementMeasure {

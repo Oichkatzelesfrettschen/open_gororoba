@@ -89,7 +89,9 @@ pub fn multi_line_plot_svg(
                 color.stroke_width(2),
             ))?
             .label(*name)
-            .legend(move |(x, y)| PathElement::new(vec![(x, y), (x + 20, y)], color.stroke_width(2)));
+            .legend(move |(x, y)| {
+                PathElement::new(vec![(x, y), (x + 20, y)], color.stroke_width(2))
+            });
     }
 
     chart
@@ -268,7 +270,9 @@ mod tests {
 
     #[test]
     fn test_line_plot() {
-        let data: Vec<(f64, f64)> = (0..50).map(|i| (i as f64, (i as f64 * 0.1).sin())).collect();
+        let data: Vec<(f64, f64)> = (0..50)
+            .map(|i| (i as f64, (i as f64 * 0.1).sin()))
+            .collect();
 
         let result = line_plot_svg(
             "/tmp/test_line_plot.svg",
@@ -311,7 +315,12 @@ mod tests {
             .map(|i| (0..20).map(|j| ((i + j) as f64).sin()).collect())
             .collect();
 
-        let result = heatmap_svg("/tmp/test_heatmap.svg", "Test Heatmap", &data, Colormap::Inferno);
+        let result = heatmap_svg(
+            "/tmp/test_heatmap.svg",
+            "Test Heatmap",
+            &data,
+            Colormap::Inferno,
+        );
         assert!(result.is_ok());
         fs::remove_file("/tmp/test_heatmap.svg").ok();
     }

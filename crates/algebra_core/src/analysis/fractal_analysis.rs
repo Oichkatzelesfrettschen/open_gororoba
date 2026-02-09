@@ -171,7 +171,11 @@ pub fn calculate_hurst(series: &[f64], min_lag: usize, max_lag: usize) -> Option
 ///
 /// # Returns
 /// `HurstResult` with the classical R/S Hurst estimate.
-pub fn hurst_rs_analysis(series: &[f64], min_window: usize, max_window: usize) -> Option<HurstResult> {
+pub fn hurst_rs_analysis(
+    series: &[f64],
+    min_window: usize,
+    max_window: usize,
+) -> Option<HurstResult> {
     if series.len() < min_window * 2 {
         return None;
     }
@@ -268,7 +272,12 @@ fn rescaled_range_at_scale(series: &[f64], window: usize) -> Option<f64> {
 ///
 /// # Returns
 /// `DfaResult` with alpha exponent and fluctuation function.
-pub fn dfa_analysis(series: &[f64], min_scale: usize, max_scale: usize, order: usize) -> Option<DfaResult> {
+pub fn dfa_analysis(
+    series: &[f64],
+    min_scale: usize,
+    max_scale: usize,
+    order: usize,
+) -> Option<DfaResult> {
     if series.len() < min_scale * 4 {
         return None;
     }
@@ -596,7 +605,11 @@ pub fn generate_fbm(n: usize, hurst: f64, seed: u64) -> Vec<f64> {
 }
 
 /// Analyze Hurst exponents for multiple time series.
-pub fn analyze_multiple_series(series_list: &[&[f64]], min_lag: usize, max_lag: usize) -> MultiSeriesHurstResult {
+pub fn analyze_multiple_series(
+    series_list: &[&[f64]],
+    min_lag: usize,
+    max_lag: usize,
+) -> MultiSeriesHurstResult {
     let results: Vec<HurstResult> = series_list
         .iter()
         .filter_map(|s| calculate_hurst(s, min_lag, max_lag))

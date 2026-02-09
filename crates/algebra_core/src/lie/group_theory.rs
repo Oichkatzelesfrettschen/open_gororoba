@@ -273,7 +273,7 @@ mod tests {
         assert_eq!(prime_power(8), Some((2, 3)));
         assert_eq!(prime_power(9), Some((3, 2)));
         assert_eq!(prime_power(27), Some((3, 3)));
-        assert_eq!(prime_power(6), None);  // 2 * 3
+        assert_eq!(prime_power(6), None); // 2 * 3
         assert_eq!(prime_power(12), None); // 2^2 * 3
     }
 

@@ -111,7 +111,10 @@ pub fn pg(m: usize) -> ProjectiveGeometry {
 /// For dim=32 (n=5): PG(3,2) (15 pts, 35 lines)
 /// For dim=64 (n=6): PG(4,2) (31 pts, 155 lines)
 pub fn pg_from_cd_dim(dim: usize) -> ProjectiveGeometry {
-    assert!(dim >= 16 && dim.is_power_of_two(), "dim must be 2^n with n >= 4");
+    assert!(
+        dim >= 16 && dim.is_power_of_two(),
+        "dim must be 2^n with n >= 4"
+    );
     let n = dim.trailing_zeros() as usize;
     pg(n - 2)
 }
@@ -217,10 +220,7 @@ pub fn map_components_to_pg(
 /// For each PG line {a, b, a^b}, verify that the three corresponding
 /// motif components have the expected algebraic relationship (their
 /// XOR-keys satisfy a ^ b = c).
-pub fn verify_pg_line_structure(
-    components: &[MotifComponent],
-    geom: &ProjectiveGeometry,
-) -> bool {
+pub fn verify_pg_line_structure(components: &[MotifComponent], geom: &ProjectiveGeometry) -> bool {
     let label_map: HashMap<PGPoint, usize> = components
         .iter()
         .enumerate()
@@ -234,9 +234,7 @@ pub fn verify_pg_line_structure(
             return false;
         }
         // Verify all three points correspond to actual components
-        if !label_map.contains_key(&a)
-            || !label_map.contains_key(&b)
-            || !label_map.contains_key(&c)
+        if !label_map.contains_key(&a) || !label_map.contains_key(&b) || !label_map.contains_key(&c)
         {
             return false;
         }
@@ -563,7 +561,10 @@ pub struct PGCorrespondenceResult {
 pub fn verify_pg_correspondence(dim: usize) -> PGCorrespondenceResult {
     use crate::analysis::boxkites::motif_components_for_cross_assessors;
 
-    assert!(dim >= 16 && dim.is_power_of_two(), "dim must be 2^n with n >= 4");
+    assert!(
+        dim >= 16 && dim.is_power_of_two(),
+        "dim must be 2^n with n >= 4"
+    );
     let n = dim.trailing_zeros() as usize;
     let proj_dim = n - 2;
 
@@ -1166,18 +1167,21 @@ mod tests {
 
         // Degree 1 (linear): FAILS
         let d1 = find_boolean_class_predicate(&labels, &classes, n_bits, 1);
-        assert!(d1.is_none(), "degree 1 (linear) should not separate 8/7 split");
+        assert!(
+            d1.is_none(),
+            "degree 1 (linear) should not separate 8/7 split"
+        );
 
         // Degree 2 (quadratic): FAILS
         let d2 = find_boolean_class_predicate(&labels, &classes, n_bits, 2);
-        assert!(d2.is_none(), "degree 2 (quadratic) should not separate 8/7 split");
+        assert!(
+            d2.is_none(),
+            "degree 2 (quadratic) should not separate 8/7 split"
+        );
 
         // Degree 3 (cubic): SUCCEEDS -- this is the minimum separating degree
         let d3 = find_boolean_class_predicate(&labels, &classes, n_bits, 3);
-        assert!(
-            d3.is_some(),
-            "degree 3 (cubic) must separate the 8/7 split"
-        );
+        assert!(d3.is_some(), "degree 3 (cubic) must separate the 8/7 split");
 
         // Verify the cubic predicate evaluates consistently on all points
         let monomials = d3.unwrap();

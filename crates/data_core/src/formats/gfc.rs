@@ -102,11 +102,22 @@ pub fn parse_gfc(path: &Path) -> Result<GravityField, FetchError> {
         let m = fields[2].parse::<u32>().unwrap_or(0);
         let cnm = parse_fortran_f64(fields[3]);
         let snm = parse_fortran_f64(fields[4]);
-        let sigma_cnm = fields.get(5).map(|s| parse_fortran_f64(s)).unwrap_or(f64::NAN);
-        let sigma_snm = fields.get(6).map(|s| parse_fortran_f64(s)).unwrap_or(f64::NAN);
+        let sigma_cnm = fields
+            .get(5)
+            .map(|s| parse_fortran_f64(s))
+            .unwrap_or(f64::NAN);
+        let sigma_snm = fields
+            .get(6)
+            .map(|s| parse_fortran_f64(s))
+            .unwrap_or(f64::NAN);
 
         coefficients.push(GravityCoefficient {
-            n, m, cnm, snm, sigma_cnm, sigma_snm,
+            n,
+            m,
+            cnm,
+            snm,
+            sigma_cnm,
+            sigma_snm,
         });
     }
 
@@ -193,9 +204,30 @@ mod tests {
             radius: 0.0,
             max_degree: 4,
             coefficients: vec![
-                GravityCoefficient { n: 0, m: 0, cnm: 1.0, snm: 0.0, sigma_cnm: 0.0, sigma_snm: 0.0 },
-                GravityCoefficient { n: 2, m: 0, cnm: -4.8e-4, snm: 0.0, sigma_cnm: 0.0, sigma_snm: 0.0 },
-                GravityCoefficient { n: 4, m: 3, cnm: 1e-6, snm: 2e-6, sigma_cnm: 0.0, sigma_snm: 0.0 },
+                GravityCoefficient {
+                    n: 0,
+                    m: 0,
+                    cnm: 1.0,
+                    snm: 0.0,
+                    sigma_cnm: 0.0,
+                    sigma_snm: 0.0,
+                },
+                GravityCoefficient {
+                    n: 2,
+                    m: 0,
+                    cnm: -4.8e-4,
+                    snm: 0.0,
+                    sigma_cnm: 0.0,
+                    sigma_snm: 0.0,
+                },
+                GravityCoefficient {
+                    n: 4,
+                    m: 3,
+                    cnm: 1e-6,
+                    snm: 2e-6,
+                    sigma_cnm: 0.0,
+                    sigma_snm: 0.0,
+                },
             ],
         };
         assert!(validate_gfc_degrees(&gf).is_ok());
@@ -209,9 +241,14 @@ mod tests {
             earth_gravity_constant: 0.0,
             radius: 0.0,
             max_degree: 2,
-            coefficients: vec![
-                GravityCoefficient { n: 5, m: 0, cnm: 1.0, snm: 0.0, sigma_cnm: 0.0, sigma_snm: 0.0 },
-            ],
+            coefficients: vec![GravityCoefficient {
+                n: 5,
+                m: 0,
+                cnm: 1.0,
+                snm: 0.0,
+                sigma_cnm: 0.0,
+                sigma_snm: 0.0,
+            }],
         };
         assert!(validate_gfc_degrees(&gf).is_err());
     }
@@ -223,9 +260,14 @@ mod tests {
             earth_gravity_constant: 0.0,
             radius: 0.0,
             max_degree: 10,
-            coefficients: vec![
-                GravityCoefficient { n: 3, m: 5, cnm: 1.0, snm: 0.0, sigma_cnm: 0.0, sigma_snm: 0.0 },
-            ],
+            coefficients: vec![GravityCoefficient {
+                n: 3,
+                m: 5,
+                cnm: 1.0,
+                snm: 0.0,
+                sigma_cnm: 0.0,
+                sigma_snm: 0.0,
+            }],
         };
         assert!(validate_gfc_degrees(&gf).is_err());
     }
@@ -250,7 +292,10 @@ mod tests {
             return;
         }
         let gf = parse_gfc(path).expect("failed to parse GRACE-FO GFC");
-        assert!(gf.max_degree >= 60, "GRACE-FO model should have degree >= 60");
+        assert!(
+            gf.max_degree >= 60,
+            "GRACE-FO model should have degree >= 60"
+        );
         assert!(!gf.coefficients.is_empty());
         validate_gfc_degrees(&gf).expect("degree validation should pass");
     }

@@ -143,7 +143,11 @@ fn gcd(mut a: u64, mut b: u64) -> u64 {
         b = a % b;
         a = t;
     }
-    if a == 0 { 1 } else { a }
+    if a == 0 {
+        1
+    } else {
+        a
+    }
 }
 
 /// P-adic valuation of a rational.
@@ -298,8 +302,8 @@ mod tests {
     fn test_vp_int_basic() {
         assert_eq!(vp_int(12, 2), 2); // 12 = 2^2 * 3
         assert_eq!(vp_int(12, 3), 1); // 12 = 4 * 3
-        assert_eq!(vp_int(7, 2), 0);  // 7 is odd
-        assert_eq!(vp_int(8, 2), 3);  // 8 = 2^3
+        assert_eq!(vp_int(7, 2), 0); // 7 is odd
+        assert_eq!(vp_int(8, 2), 3); // 8 = 2^3
         assert_eq!(vp_int(27, 3), 3); // 27 = 3^3
     }
 
@@ -318,7 +322,7 @@ mod tests {
     #[test]
     fn test_vp_rational() {
         let q = Rational::new(12, 9); // 4/3 in lowest terms
-        assert_eq!(vp(q, 2), 2);  // v_2(4) - v_2(3) = 2 - 0 = 2
+        assert_eq!(vp(q, 2), 2); // v_2(4) - v_2(3) = 2 - 0 = 2
         assert_eq!(vp(q, 3), -1); // v_3(4) - v_3(3) = 0 - 1 = -1
     }
 

@@ -61,7 +61,7 @@ pub struct Subspace {
 pub fn subspace_from_vectors(vectors: &[Vec<f64>]) -> Subspace {
     assert!(!vectors.is_empty(), "Need at least one vector");
     let n = vectors[0].len(); // ambient dimension
-    let k = vectors.len();     // subspace dimension
+    let k = vectors.len(); // subspace dimension
 
     // Build matrix with vectors as rows, then transpose to get columns
     let mut data = Vec::with_capacity(n * k);
@@ -415,7 +415,10 @@ mod tests {
                 if ns.len() != 4 {
                     eprintln!(
                         "ZD ({}, {}, sign={}) has annihilator dim {} (expected 4)",
-                        assessor.low, assessor.high, sign, ns.len()
+                        assessor.low,
+                        assessor.high,
+                        sign,
+                        ns.len()
                     );
                     all_ok = false;
                 }
