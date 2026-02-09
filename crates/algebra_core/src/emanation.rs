@@ -2012,6 +2012,34 @@ pub fn et_regimes(n: usize) -> HashMap<usize, Vec<usize>> {
     regimes
 }
 
+/// Compute the associative triplet count (Trip_N) for 2^N-ions.
+///
+/// Formula: Trip_N = (2^N - 1)(2^N - 2) / 6 = C(2^N - 1, 2) / 3.
+///
+/// - N=2 (quaternions): 1
+/// - N=3 (octonions): 7
+/// - N=4 (sedenions): 35
+/// - N=5 (pathions): 155
+/// - N=6 (chingons): 651
+/// - N=7 (routons): 2667
+pub fn trip_count(n: usize) -> usize {
+    let d = 1usize << n;  // 2^N
+    (d - 1) * (d - 2) / 6
+}
+
+/// The Trip-Count Two-Step: for inherited struts (S < 8), the full-fill ET
+/// decomposes into exactly Trip_{N-2} complete box-kites.
+///
+/// De Marrais (arXiv:0704.0026, Section 2): "The maximum number of Box-Kites
+/// that can fill a 2^N-ion ET = Trip_{N-2}."
+///
+/// This follows because the full-fill total_possible = K(K-2) where K = 2^{N-1} - 2,
+/// and each box-kite contributes exactly 24 directed DMZ cells to the ET.
+pub fn trip_count_two_step(n: usize) -> usize {
+    assert!(n >= 4, "Trip-Count Two-Step requires N >= 4 (sedenions)");
+    trip_count(n - 2)
+}
+
 /// Classify whether a strut constant S at doubling level N generates a "Sky"
 /// (meta-fractal skybox structure) per de Marrais (arXiv:0704.0112, 2007).
 ///
@@ -3812,6 +3840,60 @@ mod tests {
                      got {}/{}", n, power, et.dmz_count, et.total_possible);
                 power <<= 1;
             }
+        }
+    }
+
+    // ===================================================================
+    // Trip-Count Two-Step Tests
+    // ===================================================================
+
+    #[test]
+    fn test_trip_count_known_values() {
+        assert_eq!(trip_count(2), 1,   "Quaternions: 1 trip");
+        assert_eq!(trip_count(3), 7,   "Octonions: 7 trips");
+        assert_eq!(trip_count(4), 35,  "Sedenions: 35 trips");
+        assert_eq!(trip_count(5), 155, "Pathions: 155 trips");
+        assert_eq!(trip_count(6), 651, "Chingons: 651 trips");
+    }
+
+    #[test]
+    fn test_trip_count_two_step_matches_full_fill_et() {
+        // For inherited struts (S < 8), DMZ_count / 24 = Trip_{N-2}.
+        for n in 4..=7 {
+            let et = create_strutted_et(n, 1);  // S=1 is always inherited
+            let bk_count = et.dmz_count / 24;
+            let expected = trip_count_two_step(n);
+            assert_eq!(bk_count, expected,
+                "N={}: full-fill ET gives {}/24 = {} box-kites, expected Trip_{{N-2}} = {}",
+                n, et.dmz_count, bk_count, expected);
+        }
+    }
+
+    #[test]
+    fn test_trip_count_two_step_all_inherited_struts() {
+        // All inherited struts (S=1..7) should give the same box-kite count.
+        for n in 4..=7 {
+            let expected = trip_count_two_step(n);
+            for s in 1..=7 {
+                let et = create_strutted_et(n, s);
+                assert_eq!(et.dmz_count / 24, expected,
+                    "N={} S={}: expected {} box-kites", n, s, expected);
+            }
+        }
+    }
+
+    #[test]
+    fn test_trip_count_two_step_algebraic_identity() {
+        // Verify: total_possible / 24 = Trip_{N-2} for full-fill ETs.
+        // total_possible = K * (K - 2) where K = 2^{N-1} - 2.
+        // Trip_{N-2} = (2^{N-2} - 1)(2^{N-2} - 2) / 6.
+        for n in 4..=10 {
+            let k = (1usize << (n - 1)) - 2;
+            let total = k * (k - 2);
+            let trip = trip_count(n - 2);
+            assert_eq!(total, 24 * trip,
+                "N={}: K(K-2)={} should equal 24 * Trip_{{N-2}} = 24 * {} = {}",
+                n, total, trip, 24 * trip);
         }
     }
 
