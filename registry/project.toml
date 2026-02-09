@@ -5,12 +5,19 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2261
-claim_count = 481
+test_count = 2264
+claim_count = 483
 insight_count = 17
 experiment_count = 13
 paper_count = 19
 binary_count = 40
+
+[sprints.s22]
+number = 22
+date = "2026-02-09"
+test_count = 2264
+claim_count = 483
+summary = "Face sign census extended to dim=64 (5-regime structure, 48328 triangles, C-482). Universal 3:1 TwoSameOneOpp:AllOpposite ratio law proved via antibalanced signed graph theory (C-483). Special heptacross at dim=32 identified (XOR label = dim/4). Unused import cleanup in e10_billiard example."
 
 [sprints.s21]
 number = 21

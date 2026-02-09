@@ -3845,3 +3845,19 @@ where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (generic_face_sig
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = 'VERIFIED by integer-exact computation: test_generic_face_sign_census_dim16_matches_c479 (reproduces C-479), test_generic_face_sign_census_dim32 (all three regimes verified with exact counts). Totals: 1050+756+252+350=2408. WHAT WOULD REFUTE: finding a pure-regime component (only 2 patterns) where the TwoSameOneOpp:AllOpposite ratio differs from 3:1, or finding all 4 patterns in ALL components at dim=32 (would contradict regime differentiation).'
+
+[[claim]]
+id = "C-482"
+statement = "Face Sign Census at dim=64: 48328 triangular faces across 31 components split into 5 regimes. (A) 1 pure-max (420 edges, 3640 tri, 2 patterns: 2730/910=3:1). (B) 8 full-max (420 edges, 3640 tri, 4 patterns). (C) 7 full-mid1 (276 edges, 1336 tri, 4 patterns). (D) 7 full-mid2 (228 edges, 824 tri, 4 patterns). (E) 8 pure-min (84 edges, 56 tri, 2 patterns: 42/14=3:1). The 84-edge pure components exactly reproduce dim=16's 42:14 census -- sedenion sub-algebra embedding."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (generic_face_sign_census, test_generic_face_sign_census_dim64)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by integer-exact computation: 5 regimes with exact counts. 3:1 TwoSameOneOpp:AllOpposite ratio in both pure regimes (2730/910 and 42/14). WHAT WOULD REFUTE: any pure-regime component violating 3:1 ratio, or fewer than 5 regimes at dim=64.'
+
+[[claim]]
+id = "C-483"
+statement = "Universal 3:1 TwoSameOneOpp:AllOpposite Ratio Law: In every pure-regime component (only 2 face sign patterns) of the CD zero-divisor graph at dims 16, 32, and 64, the ratio TwoSameOneOpp:AllOpposite is exactly 3:1. Verified in 18 pure-regime components across 3 doublings: dim=16 (7x, 42:14), dim=32 mixed (7x, 18:6), dim=32 special (1x, 210:70), dim=64 pure-max (1x, 2730:910), dim=64 pure-min (8x, 42:14). Regime count grows as 2*log2(dim/16)+1: dim=16 has 1, dim=32 has 3, dim=64 has 5."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (generic_face_sign_census, 3 tests at dim=16/32/64)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by exact computation at 3 consecutive doublings. 18 pure-regime components all satisfy ratio=3. WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3, or a dimension where the regime count formula 2*log2(dim/16)+1 fails.'

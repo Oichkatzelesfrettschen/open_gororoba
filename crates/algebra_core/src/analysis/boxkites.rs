@@ -2798,4 +2798,247 @@ mod tests {
         assert_eq!(regime_b, 1, "1 special heptacross with 3:1 ratio");
         assert_eq!(regime_c, 7, "7 mixed components with 3:1 ratio");
     }
+
+    #[test]
+    fn test_generic_face_sign_census_dim64() {
+        // dim=64 has 31 components, each with 30 nodes.
+        // 4 motif classes by edge count.
+        let census = generic_face_sign_census(64);
+
+        assert_eq!(census.dim, 64);
+        assert_eq!(census.n_components, 31, "dim=64 has 31 components");
+
+        // Print diagnostic info
+        eprintln!("=== dim=64 face sign census ===");
+        eprintln!("Components: {}", census.n_components);
+        eprintln!("Total triangles: {}", census.total_triangles);
+        for (pat, count) in &census.total_pattern_counts {
+            eprintln!("  {:?}: {}", pat, count);
+        }
+        eprintln!("Uniform: {}", census.uniform_across_components);
+
+        // Group components by (n_edges, n_patterns) to discover regimes
+        let mut regimes: HashMap<(usize, usize), Vec<usize>> = HashMap::new();
+        for (i, comp) in census.per_component.iter().enumerate() {
+            let key = (comp.n_edges, comp.pattern_counts.len());
+            regimes.entry(key).or_default().push(i);
+        }
+        eprintln!("Regimes:");
+        for ((edges, pats), indices) in &regimes {
+            let sample = &census.per_component[indices[0]];
+            eprintln!(
+                "  ({} edges, {} patterns): {} components, {} tri/comp, sample: {:?}",
+                edges, pats, indices.len(), sample.n_triangles, sample.pattern_counts
+            );
+        }
+
+        // Totals
+        assert_eq!(census.total_triangles, 48328);
+        let two_same = census.total_pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+        let all_opp = census.total_pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+        let all_same = census.total_pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
+        let one_same = census.total_pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
+        assert_eq!(two_same, 18858);
+        assert_eq!(all_opp, 6286);
+        assert_eq!(all_same, 5796);
+        assert_eq!(one_same, 17388);
+
+        assert!(!census.uniform_across_components);
+
+        // 5 regimes at dim=64:
+        // (A) 1 pure-max (420 edges, 2 patterns, 3:1 ratio: 2730/910)
+        // (B) 8 full-max (420 edges, 4 patterns)
+        // (C) 7 full-mid1 (276 edges, 4 patterns)
+        // (D) 7 full-mid2 (228 edges, 4 patterns)
+        // (E) 8 pure-min (84 edges, 2 patterns, 3:1 ratio: 42/14)
+        let mut counts = HashMap::new();
+        for comp in &census.per_component {
+            let key = (comp.n_edges, comp.pattern_counts.len());
+            *counts.entry(key).or_insert(0usize) += 1;
+        }
+        assert_eq!(counts[&(420, 2)], 1, "1 pure-max component");
+        assert_eq!(counts[&(420, 4)], 8, "8 full-max components");
+        assert_eq!(counts[&(276, 4)], 7, "7 full-mid1 components");
+        assert_eq!(counts[&(228, 4)], 7, "7 full-mid2 components");
+        assert_eq!(counts[&(84, 2)], 8, "8 pure-min components");
+        assert_eq!(counts.len(), 5, "Exactly 5 regimes");
+
+        // 3:1 ratio holds in ALL pure-regime components
+        for comp in &census.per_component {
+            if comp.pattern_counts.len() == 2 {
+                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                assert_eq!(
+                    ts, 3 * ao,
+                    "3:1 ratio in pure component ({} edges): {} != 3*{}",
+                    comp.n_edges, ts, ao
+                );
+            }
+        }
+
+        // The 84-edge pure components reproduce dim=16's 42:14 exactly
+        for comp in &census.per_component {
+            if comp.n_edges == 84 {
+                assert_eq!(comp.n_triangles, 56);
+                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                assert_eq!(ts, 42);
+                assert_eq!(ao, 14);
+            }
+        }
+    }
+
+    #[test]
+    fn test_three_to_one_ratio_antibalanced() {
+        // The 3:1 ratio follows from three properties:
+        //
+        // (P1) Every triangle has sign product = -1 (antibalanced):
+        //      If Same=+1 and Opposite=-1, then product of 3 edge signs around
+        //      every triangle is -1. This means only odd numbers of Opposite
+        //      edges: TwoSameOneOpp (1 Opp) and AllOpposite (3 Opp).
+        //
+        // (P2) Same-edge fraction is exactly 1/2: n_Same = n_Opposite.
+        //
+        // (P3) Edge-regularity: every edge (Same or Opposite) participates in
+        //      the same number of triangles.
+        //
+        // From P1+P2+P3:
+        //   Let d = triangles per edge.
+        //   n_Same * d = 2 * TwoSameOneOpp  (each TwoSameOneOpp has 2 Same edges)
+        //   n_Opp * d = TwoSameOneOpp + 3 * AllOpposite  (1 Opp + 3 Opp edges)
+        //   With n_Same = n_Opp:
+        //     2*TwoSameOneOpp = TwoSameOneOpp + 3*AllOpposite
+        //     => TwoSameOneOpp = 3 * AllOpposite  QED
+
+        for dim in [16, 32, 64] {
+            let components = motif_components_for_cross_assessors(dim);
+            let census = generic_face_sign_census(dim);
+
+            for (i, comp) in components.iter().enumerate() {
+                let comp_census = &census.per_component[i];
+                if comp_census.pattern_counts.len() != 2 {
+                    continue;
+                }
+
+                // (P1) Every triangle has sign product -1
+                // This is implicit from the pure-regime constraint: only
+                // TwoSameOneOpp (product=-1) and AllOpposite (product=-1).
+
+                // (P2) Count Same vs Opposite edges
+                let mut n_same = 0usize;
+                let mut n_opp = 0usize;
+                for &(a, b) in &comp.edges {
+                    match edge_sign_type_exact(dim, a, b) {
+                        EdgeSignType::Same => n_same += 1,
+                        EdgeSignType::Opposite => n_opp += 1,
+                    }
+                }
+                assert_eq!(
+                    n_same, n_opp,
+                    "dim={} comp[{}]: Same-edge fraction should be exactly 1/2: {} vs {}",
+                    dim, i, n_same, n_opp
+                );
+
+                // (P3) Edge-regularity: build triangle count per edge
+                // For this, we find all triangles and count per edge.
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let adj_set: HashSet<(CrossPair, CrossPair)> = comp
+                    .edges
+                    .iter()
+                    .flat_map(|&(a, b)| [(a, b), (b, a)])
+                    .collect();
+
+                let mut edge_tri_count: HashMap<(CrossPair, CrossPair), usize> = HashMap::new();
+                for &(u, v) in &comp.edges {
+                    edge_tri_count.insert((u, v), 0);
+                }
+
+                for &(u, v) in &comp.edges {
+                    for &w in &nodes {
+                        if w <= v { continue; }
+                        if adj_set.contains(&(u, w)) && adj_set.contains(&(v, w)) {
+                            *edge_tri_count.get_mut(&(u, v)).unwrap() += 1;
+                            // Also count for (u,w) and (v,w) edges
+                            let e_uw = if u < w { (u, w) } else { (w, u) };
+                            let e_vw = if v < w { (v, w) } else { (w, v) };
+                            *edge_tri_count.entry(e_uw).or_insert(0) += 1;
+                            *edge_tri_count.entry(e_vw).or_insert(0) += 1;
+                        }
+                    }
+                }
+
+                // Verify all edges have the same triangle count
+                let tri_counts: Vec<usize> = edge_tri_count.values().copied().collect();
+                let min_tc = *tri_counts.iter().min().unwrap();
+                let max_tc = *tri_counts.iter().max().unwrap();
+
+                eprintln!(
+                    "dim={} comp[{}] ({} edges, pure): same={}, opp={}, tri_per_edge=[{},{}]",
+                    dim, i, comp.edges.len(), n_same, n_opp, min_tc, max_tc
+                );
+
+                assert_eq!(
+                    min_tc, max_tc,
+                    "dim={} comp[{}]: edge-regularity violated: tri/edge in [{},{}]",
+                    dim, i, min_tc, max_tc
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_special_heptacross_identity_dim32() {
+        // Identify which component is the "special" pure heptacross at dim=32.
+        // Uses XOR labels from projective_geometry to characterize each component.
+        use crate::analysis::projective_geometry::component_xor_label;
+
+        let components = motif_components_for_cross_assessors(32);
+        let census = generic_face_sign_census(32);
+
+        // Find the pure heptacross (84 edges, 2 patterns)
+        let mut special_idx = None;
+        for (i, comp_census) in census.per_component.iter().enumerate() {
+            if comp_census.n_edges == 84 && comp_census.pattern_counts.len() == 2 {
+                special_idx = Some(i);
+            }
+        }
+        let idx = special_idx.expect("Should find exactly 1 pure heptacross");
+
+        let special_comp = &components[idx];
+        let xor_label = component_xor_label(special_comp);
+        eprintln!(
+            "Special heptacross: component[{}], XOR label = {:?}, nodes = {}",
+            idx, xor_label, special_comp.nodes.len()
+        );
+
+        // Check if this component's XOR label is distinguishable
+        let all_labels: Vec<Option<usize>> = components
+            .iter()
+            .map(|c| component_xor_label(c))
+            .collect();
+        eprintln!("All XOR labels: {:?}", all_labels);
+
+        // The special component has XOR label 8 = dim/4 = 32/4.
+        // This is the MSB boundary of the lower-half index space.
+        assert_eq!(xor_label, Some(8), "Special heptacross has XOR label = dim/4 = 8");
+
+        // Verify all 15 components have distinct XOR labels
+        let defined: Vec<usize> = all_labels.iter().filter_map(|&l| l).collect();
+        assert_eq!(defined.len(), 15);
+        let unique: HashSet<usize> = defined.iter().copied().collect();
+        assert_eq!(unique.len(), 15, "All XOR labels are distinct");
+
+        // Verify the heptacross/mixed split by label:
+        // Labels 1-8 (XOR label <= dim/4) are heptacross (84 edges),
+        // Labels 9-15 (XOR label > dim/4) are mixed (36 edges).
+        for (i, comp) in components.iter().enumerate() {
+            let label = component_xor_label(comp).unwrap();
+            let edges = census.per_component[i].n_edges;
+            if label <= 8 {
+                assert_eq!(edges, 84, "Label {} should be heptacross (84 edges)", label);
+            } else {
+                assert_eq!(edges, 36, "Label {} should be mixed (36 edges)", label);
+            }
+        }
+    }
 }
