@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: C++ Kernels (Conan + CMake)
 
 This repo includes optional C++ kernels under `cpp/` (C++20) with Makefile targets:
@@ -30,4 +33,3 @@ make cpp-test
 
 If Conan/CMake are missing, install them via your system package manager or via
 pipx, then retry.
-

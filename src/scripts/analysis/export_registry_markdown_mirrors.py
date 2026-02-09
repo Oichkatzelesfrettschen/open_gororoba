@@ -83,6 +83,32 @@ def _narrative_map(data: dict) -> tuple[str, dict[str, str]]:
     return preamble, mapping
 
 
+def _single_overlay_body(data: dict, section_key: str) -> str:
+    section = data.get(section_key, {})
+    return str(section.get("body_markdown", "")).strip()
+
+
+def _legacy_header(sources: list[str]) -> list[str]:
+    return [
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+        f"<!-- Source of truth: {', '.join(sources)} -->",
+        "",
+    ]
+
+
+def _legacy_lines_from_body(body: str, fallback_title: str, fallback_lines: list[str]) -> list[str]:
+    lines: list[str] = []
+    if body:
+        lines.extend(body.splitlines())
+    else:
+        lines.append(f"# {fallback_title}")
+        lines.append("")
+        lines.extend(fallback_lines)
+    while lines and not lines[-1].strip():
+        lines.pop()
+    return lines
+
+
 def export_insights(repo_root: Path, out_path: Path) -> None:
     data = _load_toml(repo_root / "registry/insights.toml")
     insights = sorted(data.get("insight", []), key=lambda x: x.get("id", ""))
@@ -267,6 +293,23 @@ def export_roadmap(repo_root: Path, out_path: Path) -> None:
     _write(out_path, "\n".join(lines))
 
 
+def export_roadmap_legacy(repo_root: Path, out_path: Path) -> None:
+    narrative = _load_optional_toml(repo_root / "registry/roadmap_narrative.toml")
+    body = _single_overlay_body(narrative, "roadmap_narrative")
+    fallback = [
+        (
+            "This file is generated from `registry/roadmap.toml` "
+            "and `registry/roadmap_narrative.toml`."
+        ),
+        "",
+        "See the structured mirror at `docs/generated/ROADMAP_REGISTRY_MIRROR.md`.",
+        "",
+    ]
+    lines = _legacy_header(["registry/roadmap.toml", "registry/roadmap_narrative.toml"])
+    lines.extend(_legacy_lines_from_body(body, "ROADMAP", fallback))
+    _write(out_path, "\n".join(lines) + "\n")
+
+
 def export_todo(repo_root: Path, out_path: Path) -> None:
     data = _load_toml(repo_root / "registry/todo.toml")
     todo = data.get("todo", {})
@@ -290,6 +333,20 @@ def export_todo(repo_root: Path, out_path: Path) -> None:
             lines.append(f"  - `{ev}`")
         lines.append("")
     _write(out_path, "\n".join(lines))
+
+
+def export_todo_legacy(repo_root: Path, out_path: Path) -> None:
+    narrative = _load_optional_toml(repo_root / "registry/todo_narrative.toml")
+    body = _single_overlay_body(narrative, "todo_narrative")
+    fallback = [
+        "This file is generated from `registry/todo.toml` and `registry/todo_narrative.toml`.",
+        "",
+        "See the structured mirror at `docs/generated/TODO_REGISTRY_MIRROR.md`.",
+        "",
+    ]
+    lines = _legacy_header(["registry/todo.toml", "registry/todo_narrative.toml"])
+    lines.extend(_legacy_lines_from_body(body, "TODO", fallback))
+    _write(out_path, "\n".join(lines) + "\n")
 
 
 def export_next_actions(repo_root: Path, out_path: Path) -> None:
@@ -317,6 +374,23 @@ def export_next_actions(repo_root: Path, out_path: Path) -> None:
             lines.append(f"  - `{ref}`")
         lines.append("")
     _write(out_path, "\n".join(lines))
+
+
+def export_next_actions_legacy(repo_root: Path, out_path: Path) -> None:
+    narrative = _load_optional_toml(repo_root / "registry/next_actions_narrative.toml")
+    body = _single_overlay_body(narrative, "next_actions_narrative")
+    fallback = [
+        (
+            "This file is generated from `registry/next_actions.toml` "
+            "and `registry/next_actions_narrative.toml`."
+        ),
+        "",
+        "See the structured mirror at `docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md`.",
+        "",
+    ]
+    lines = _legacy_header(["registry/next_actions.toml", "registry/next_actions_narrative.toml"])
+    lines.extend(_legacy_lines_from_body(body, "NEXT ACTIONS", fallback))
+    _write(out_path, "\n".join(lines) + "\n")
 
 
 def export_requirements(repo_root: Path, out_path: Path) -> None:
@@ -355,6 +429,60 @@ def export_requirements(repo_root: Path, out_path: Path) -> None:
         lines.append(f"- Proposed resolution: {gap.get('proposed_resolution', '')}")
         lines.append("")
     _write(out_path, "\n".join(lines))
+
+
+def export_requirements_legacy(repo_root: Path) -> None:
+    req_data = _load_toml(repo_root / "registry/requirements.toml")
+    narrative = _load_optional_toml(repo_root / "registry/requirements_narrative.toml")
+    narrative_rows = narrative.get("document", [])
+    body_by_path = {
+        str(row.get("path", "")).strip(): str(row.get("body_markdown", "")).strip()
+        for row in narrative_rows
+        if str(row.get("path", "")).strip()
+    }
+    title_by_path = {
+        str(row.get("path", "")).strip(): str(row.get("title", "")).strip()
+        for row in narrative_rows
+        if str(row.get("path", "")).strip()
+    }
+
+    req_meta = req_data.get("requirements", {})
+    primary_markdown = str(req_meta.get("primary_markdown", "docs/REQUIREMENTS.md"))
+    target_paths = {"REQUIREMENTS.md", primary_markdown}
+    for module in req_data.get("module", []):
+        markdown_path = str(module.get("markdown", "")).strip()
+        if markdown_path:
+            target_paths.add(markdown_path)
+
+    module_by_markdown = {
+        str(module.get("markdown", "")).strip(): module for module in req_data.get("module", [])
+    }
+
+    sources = ["registry/requirements.toml", "registry/requirements_narrative.toml"]
+    for rel_path in sorted(target_paths):
+        body = body_by_path.get(rel_path, "")
+        title = title_by_path.get(rel_path, Path(rel_path).stem.replace("-", " ").title())
+        module = module_by_markdown.get(rel_path, {})
+        fallback: list[str] = [
+            f"This file is generated from `{sources[0]}` and `{sources[1]}`.",
+            "",
+            "See the structured mirror at `docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md`.",
+            "",
+        ]
+        if module:
+            fallback.append(f"- Module ID: `{module.get('id', '')}`")
+            fallback.append(f"- Module name: `{module.get('name', '')}`")
+            fallback.append(f"- Status: `{module.get('status', '')}`")
+            targets = module.get("install_targets", [])
+            if targets:
+                fallback.append("- Install targets:")
+                for target in targets:
+                    fallback.append(f"  - `{target}`")
+                fallback.append("")
+
+        lines = _legacy_header(sources)
+        lines.extend(_legacy_lines_from_body(body, title, fallback))
+        _write(repo_root / rel_path, "\n".join(lines) + "\n")
 
 
 def export_claims_tasks(repo_root: Path, out_path: Path) -> None:
@@ -659,6 +787,10 @@ def main() -> int:
     export_experiments_legacy(
         repo_root, repo_root / "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
     )
+    export_roadmap_legacy(repo_root, repo_root / "docs/ROADMAP.md")
+    export_todo_legacy(repo_root, repo_root / "docs/TODO.md")
+    export_next_actions_legacy(repo_root, repo_root / "docs/NEXT_ACTIONS.md")
+    export_requirements_legacy(repo_root)
 
     if args.legacy_claims_sync:
         export_claims_tasks_legacy(repo_root, repo_root / "docs/CLAIMS_TASKS.md")

@@ -40,7 +40,7 @@ Authoritative source: `registry/claims_tasks.toml`.
 ### CTASK-0001 (C-006, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 56
+- Source line: 20
 - Status raw: DONE
 - Canonical: `True`
 
@@ -53,7 +53,7 @@ Output artifacts:
 ### CTASK-0002 (C-006, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 57
+- Source line: 21
 - Status raw: DONE
 - Canonical: `True`
 
@@ -65,7 +65,7 @@ Output artifacts:
 ### CTASK-0003 (C-025, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 58
+- Source line: 22
 - Status raw: DONE
 - Canonical: `True`
 
@@ -80,7 +80,7 @@ Output artifacts:
 ### CTASK-0004 (C-025, TODO)
 
 - Section: Active tasks (start here)
-- Source line: 59
+- Source line: 23
 - Status raw: TODO
 - Canonical: `True`
 
@@ -94,7 +94,7 @@ Output artifacts:
 ### CTASK-0005 (C-026, PARTIAL)
 
 - Section: Active tasks (start here)
-- Source line: 60
+- Source line: 24
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -109,7 +109,7 @@ Output artifacts:
 ### CTASK-0006 (C-027, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 61
+- Source line: 25
 - Status raw: DONE
 - Canonical: `True`
 
@@ -125,7 +125,7 @@ Output artifacts:
 ### CTASK-0007 (C-047, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 62
+- Source line: 26
 - Status raw: DONE
 - Canonical: `True`
 
@@ -140,7 +140,7 @@ Output artifacts:
 ### CTASK-0008 (C-047, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 63
+- Source line: 27
 - Status raw: DONE
 - Canonical: `True`
 
@@ -152,7 +152,7 @@ Output artifacts:
 ### CTASK-0009 (C-048, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 64
+- Source line: 28
 - Status raw: DONE
 - Canonical: `True`
 
@@ -165,7 +165,7 @@ Output artifacts:
 ### CTASK-0010 (C-050, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 65
+- Source line: 29
 - Status raw: DONE
 - Canonical: `True`
 
@@ -180,7 +180,7 @@ Output artifacts:
 ### CTASK-0011 (C-007, PARTIAL)
 
 - Section: Active tasks (start here)
-- Source line: 66
+- Source line: 30
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -202,7 +202,7 @@ Output artifacts:
 ### CTASK-0012 (C-007, PARTIAL)
 
 - Section: Active tasks (start here)
-- Source line: 67
+- Source line: 31
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -225,7 +225,7 @@ Output artifacts:
 ### CTASK-0013 (C-007, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 68
+- Source line: 32
 - Status raw: DONE
 - Canonical: `True`
 
@@ -242,7 +242,7 @@ Output artifacts:
 ### CTASK-0014 (C-008, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 69
+- Source line: 33
 - Status raw: DONE
 - Canonical: `True`
 
@@ -256,7 +256,7 @@ Output artifacts:
 ### CTASK-0015 (C-009, PARTIAL)
 
 - Section: Active tasks (start here)
-- Source line: 70
+- Source line: 34
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -278,7 +278,7 @@ Output artifacts:
 ### CTASK-0016 (C-010, PARTIAL)
 
 - Section: Active tasks (start here)
-- Source line: 71
+- Source line: 35
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -313,7 +313,7 @@ Output artifacts:
 ### CTASK-0017 (C-011, PARTIAL)
 
 - Section: Active tasks (start here)
-- Source line: 72
+- Source line: 36
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -338,7 +338,7 @@ Output artifacts:
 ### CTASK-0018 (C-012, REFUTED)
 
 - Section: Active tasks (start here)
-- Source line: 73
+- Source line: 37
 - Status raw: REFUTED
 - Canonical: `True`
 
@@ -356,7 +356,7 @@ Output artifacts:
 ### CTASK-0019 (C-004, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 74
+- Source line: 38
 - Status raw: DONE
 - Canonical: `True`
 
@@ -372,7 +372,7 @@ Output artifacts:
 ### CTASK-0020 (C-005, PARTIAL)
 
 - Section: Active tasks (start here)
-- Source line: 75
+- Source line: 39
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -384,7 +384,7 @@ Output artifacts:
 ### CTASK-0021 (C-019, PARTIAL)
 
 - Section: Active tasks (start here)
-- Source line: 76
+- Source line: 40
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -397,7 +397,7 @@ Output artifacts:
 ### CTASK-0022 (C-007, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 77
+- Source line: 41
 - Status raw: DONE
 - Canonical: `True`
 
@@ -410,7 +410,7 @@ Output artifacts:
 ### CTASK-0023 (C-012, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 78
+- Source line: 42
 - Status raw: DONE
 - Canonical: `True`
 
@@ -427,8 +427,8 @@ Output artifacts:
 ### CTASK-0024 (C-009, IN_PROGRESS)
 
 - Section: Active tasks (start here)
-- Source line: 79
-- Status raw: IN PROGRESS
+- Source line: 43
+- Status raw: IN_PROGRESS
 - Canonical: `True`
 
 Multi-system tensor entropy study with pre-registered protocol (Phase 2.3).
@@ -439,7 +439,7 @@ Output artifacts:
 ### CTASK-0025 (C-010, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 80
+- Source line: 44
 - Status raw: DONE
 - Canonical: `True`
 
@@ -451,7 +451,7 @@ Output artifacts:
 ### CTASK-0026 (C-024, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 81
+- Source line: 45
 - Status raw: DONE
 - Canonical: `True`
 
@@ -465,7 +465,7 @@ Output artifacts:
 ### CTASK-0027 (C-018, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 82
+- Source line: 46
 - Status raw: DONE
 - Canonical: `True`
 
@@ -477,7 +477,7 @@ Output artifacts:
 ### CTASK-0028 (C-020, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 83
+- Source line: 47
 - Status raw: DONE
 - Canonical: `True`
 
@@ -489,7 +489,7 @@ Output artifacts:
 ### CTASK-0029 (C-021, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 84
+- Source line: 48
 - Status raw: DONE
 - Canonical: `True`
 
@@ -501,7 +501,7 @@ Output artifacts:
 ### CTASK-0030 (C-022, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 85
+- Source line: 49
 - Status raw: DONE
 - Canonical: `True`
 
@@ -515,7 +515,7 @@ Output artifacts:
 ### CTASK-0031 (C-023, DONE)
 
 - Section: Active tasks (start here)
-- Source line: 86
+- Source line: 50
 - Status raw: DONE
 - Canonical: `True`
 
@@ -529,7 +529,7 @@ Output artifacts:
 ### CTASK-0032 (C-053, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 96
+- Source line: 56
 - Status raw: DONE
 - Canonical: `True`
 
@@ -544,7 +544,7 @@ Output artifacts:
 ### CTASK-0033 (C-068, REFUTED)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 97
+- Source line: 57
 - Status raw: REFUTED
 - Canonical: `True`
 
@@ -559,7 +559,7 @@ Output artifacts:
 ### CTASK-0034 (C-070, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 98
+- Source line: 58
 - Status raw: DONE
 - Canonical: `True`
 
@@ -574,7 +574,7 @@ Output artifacts:
 ### CTASK-0035 (C-074, PARTIAL)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 99
+- Source line: 59
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -588,7 +588,7 @@ Output artifacts:
 ### CTASK-0036 (C-075, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 100
+- Source line: 60
 - Status raw: DONE
 - Canonical: `True`
 
@@ -602,7 +602,7 @@ Output artifacts:
 ### CTASK-0037 (C-077, REFUTED)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 101
+- Source line: 61
 - Status raw: REFUTED
 - Canonical: `True`
 
@@ -616,7 +616,7 @@ Output artifacts:
 ### CTASK-0038 (C-078, REFUTED)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 102
+- Source line: 62
 - Status raw: REFUTED
 - Canonical: `True`
 
@@ -630,7 +630,7 @@ Output artifacts:
 ### CTASK-0039 (C-082, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 103
+- Source line: 63
 - Status raw: DONE
 - Canonical: `True`
 
@@ -645,7 +645,7 @@ Output artifacts:
 ### CTASK-0040 (C-087, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 104
+- Source line: 64
 - Status raw: DONE
 - Canonical: `True`
 
@@ -659,7 +659,7 @@ Output artifacts:
 ### CTASK-0041 (C-094, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 105
+- Source line: 65
 - Status raw: DONE
 - Canonical: `True`
 
@@ -673,7 +673,7 @@ Output artifacts:
 ### CTASK-0042 (C-129, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 106
+- Source line: 66
 - Status raw: DONE
 - Canonical: `True`
 
@@ -688,11 +688,11 @@ Output artifacts:
 ### CTASK-0043 (C-087, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 107
+- Source line: 67
 - Status raw: DONE
 - Canonical: `True`
 
-Associator norm independence: E[||A||^2] -> 2 as d -> inf, confirmed by Monte Carlo (cross-term correlation decays monotonically). Phase 6 B3.
+Associator norm independence: E[\|\|A\|\|^2] -> 2 as d -> inf, confirmed by Monte Carlo (cross-term correlation decays monotonically). Phase 6 B3.
 
 Output artifacts:
 - `src/scripts/analysis/c087_associator_independence_audit.py`
@@ -702,7 +702,7 @@ Output artifacts:
 ### CTASK-0044 (C-090, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 108
+- Source line: 68
 - Status raw: DONE
 - Canonical: `True`
 
@@ -716,7 +716,7 @@ Output artifacts:
 ### CTASK-0045 (C-092, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 109
+- Source line: 69
 - Status raw: DONE
 - Canonical: `True`
 
@@ -730,7 +730,7 @@ Output artifacts:
 ### CTASK-0046 (C-096, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 110
+- Source line: 70
 - Status raw: DONE
 - Canonical: `True`
 
@@ -744,7 +744,7 @@ Output artifacts:
 ### CTASK-0047 (C-097, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 111
+- Source line: 71
 - Status raw: DONE
 - Canonical: `True`
 
@@ -758,7 +758,7 @@ Output artifacts:
 ### CTASK-0048 (C-099, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 112
+- Source line: 72
 - Status raw: DONE
 - Canonical: `True`
 
@@ -772,7 +772,7 @@ Output artifacts:
 ### CTASK-0049 (C-100, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 113
+- Source line: 73
 - Status raw: DONE
 - Canonical: `True`
 
@@ -784,7 +784,7 @@ Output artifacts:
 ### CTASK-0050 (C-102, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 114
+- Source line: 74
 - Status raw: DONE
 - Canonical: `True`
 
@@ -799,7 +799,7 @@ Output artifacts:
 ### CTASK-0051 (C-103, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 115
+- Source line: 75
 - Status raw: DONE
 - Canonical: `True`
 
@@ -814,7 +814,7 @@ Output artifacts:
 ### CTASK-0052 (C-108, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 116
+- Source line: 76
 - Status raw: DONE
 - Canonical: `True`
 
@@ -829,7 +829,7 @@ Output artifacts:
 ### CTASK-0053 (C-109, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 117
+- Source line: 77
 - Status raw: DONE
 - Canonical: `True`
 
@@ -844,7 +844,7 @@ Output artifacts:
 ### CTASK-0054 (C-113, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 118
+- Source line: 78
 - Status raw: DONE
 - Canonical: `True`
 
@@ -856,7 +856,7 @@ Output artifacts:
 ### CTASK-0055 (C-115, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 119
+- Source line: 79
 - Status raw: DONE
 - Canonical: `True`
 
@@ -868,7 +868,7 @@ Output artifacts:
 ### CTASK-0056 (C-120, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 120
+- Source line: 80
 - Status raw: DONE
 - Canonical: `True`
 
@@ -883,7 +883,7 @@ Output artifacts:
 ### CTASK-0057 (C-123, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 121
+- Source line: 81
 - Status raw: DONE
 - Canonical: `True`
 
@@ -898,7 +898,7 @@ Output artifacts:
 ### CTASK-0058 (C-126, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 122
+- Source line: 82
 - Status raw: DONE
 - Canonical: `True`
 
@@ -910,7 +910,7 @@ Output artifacts:
 ### CTASK-0059 (C-128, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 123
+- Source line: 83
 - Status raw: DONE
 - Canonical: `True`
 
@@ -925,7 +925,7 @@ Output artifacts:
 ### CTASK-0060 (C-130, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 124
+- Source line: 84
 - Status raw: DONE
 - Canonical: `True`
 
@@ -940,7 +940,7 @@ Output artifacts:
 ### CTASK-0061 (C-131, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 125
+- Source line: 85
 - Status raw: DONE
 - Canonical: `True`
 
@@ -952,7 +952,7 @@ Output artifacts:
 ### CTASK-0062 (C-132, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 126
+- Source line: 86
 - Status raw: DONE
 - Canonical: `True`
 
@@ -967,7 +967,7 @@ Output artifacts:
 ### CTASK-0063 (C-135, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 127
+- Source line: 87
 - Status raw: DONE
 - Canonical: `True`
 
@@ -982,7 +982,7 @@ Output artifacts:
 ### CTASK-0064 (C-136, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 128
+- Source line: 88
 - Status raw: DONE
 - Canonical: `True`
 
@@ -994,7 +994,7 @@ Output artifacts:
 ### CTASK-0065 (C-139, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 129
+- Source line: 89
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1006,7 +1006,7 @@ Output artifacts:
 ### CTASK-0066 (C-141, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 130
+- Source line: 90
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1018,7 +1018,7 @@ Output artifacts:
 ### CTASK-0067 (C-143, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 131
+- Source line: 91
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1030,7 +1030,7 @@ Output artifacts:
 ### CTASK-0068 (C-149, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 132
+- Source line: 92
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1042,7 +1042,7 @@ Output artifacts:
 ### CTASK-0069 (C-150, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 133
+- Source line: 93
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1054,7 +1054,7 @@ Output artifacts:
 ### CTASK-0070 (C-163, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 134
+- Source line: 94
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1066,7 +1066,7 @@ Output artifacts:
 ### CTASK-0071 (C-164, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 135
+- Source line: 95
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1078,7 +1078,7 @@ Output artifacts:
 ### CTASK-0072 (C-165, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 136
+- Source line: 96
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1090,7 +1090,7 @@ Output artifacts:
 ### CTASK-0073 (C-169, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 137
+- Source line: 97
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1102,7 +1102,7 @@ Output artifacts:
 ### CTASK-0074 (C-170, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 138
+- Source line: 98
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1114,7 +1114,7 @@ Output artifacts:
 ### CTASK-0075 (C-171, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 139
+- Source line: 99
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1126,7 +1126,7 @@ Output artifacts:
 ### CTASK-0076 (C-173, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 140
+- Source line: 100
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1138,7 +1138,7 @@ Output artifacts:
 ### CTASK-0077 (C-174, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 141
+- Source line: 101
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1150,7 +1150,7 @@ Output artifacts:
 ### CTASK-0078 (C-176, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 142
+- Source line: 102
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1162,7 +1162,7 @@ Output artifacts:
 ### CTASK-0079 (C-179, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 143
+- Source line: 103
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1174,7 +1174,7 @@ Output artifacts:
 ### CTASK-0080 (C-180, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 144
+- Source line: 104
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1186,7 +1186,7 @@ Output artifacts:
 ### CTASK-0081 (C-183, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 145
+- Source line: 105
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1198,7 +1198,7 @@ Output artifacts:
 ### CTASK-0082 (C-185, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 146
+- Source line: 106
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1210,7 +1210,7 @@ Output artifacts:
 ### CTASK-0083 (C-186, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 147
+- Source line: 107
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1222,7 +1222,7 @@ Output artifacts:
 ### CTASK-0084 (C-187, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 148
+- Source line: 108
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1234,7 +1234,7 @@ Output artifacts:
 ### CTASK-0085 (C-191, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 149
+- Source line: 109
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1246,7 +1246,7 @@ Output artifacts:
 ### CTASK-0086 (C-195, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 150
+- Source line: 110
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1258,7 +1258,7 @@ Output artifacts:
 ### CTASK-0087 (C-197, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 151
+- Source line: 111
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1270,7 +1270,7 @@ Output artifacts:
 ### CTASK-0088 (C-201, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 152
+- Source line: 112
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1282,7 +1282,7 @@ Output artifacts:
 ### CTASK-0089 (C-206, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 153
+- Source line: 113
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1294,7 +1294,7 @@ Output artifacts:
 ### CTASK-0090 (C-207, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 154
+- Source line: 114
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1306,7 +1306,7 @@ Output artifacts:
 ### CTASK-0091 (C-212, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 155
+- Source line: 115
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1318,7 +1318,7 @@ Output artifacts:
 ### CTASK-0092 (C-217, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 156
+- Source line: 116
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1330,7 +1330,7 @@ Output artifacts:
 ### CTASK-0093 (C-218, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 157
+- Source line: 117
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1342,7 +1342,7 @@ Output artifacts:
 ### CTASK-0094 (C-219, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 158
+- Source line: 118
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1354,7 +1354,7 @@ Output artifacts:
 ### CTASK-0095 (C-220, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 159
+- Source line: 119
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1366,7 +1366,7 @@ Output artifacts:
 ### CTASK-0096 (C-221, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 160
+- Source line: 120
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1378,7 +1378,7 @@ Output artifacts:
 ### CTASK-0097 (C-223, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 161
+- Source line: 121
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1390,7 +1390,7 @@ Output artifacts:
 ### CTASK-0098 (C-228, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 162
+- Source line: 122
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1402,7 +1402,7 @@ Output artifacts:
 ### CTASK-0099 (C-231, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 163
+- Source line: 123
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1414,7 +1414,7 @@ Output artifacts:
 ### CTASK-0100 (C-234, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 164
+- Source line: 124
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1426,7 +1426,7 @@ Output artifacts:
 ### CTASK-0101 (C-235, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 165
+- Source line: 125
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1438,7 +1438,7 @@ Output artifacts:
 ### CTASK-0102 (C-239, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 166
+- Source line: 126
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1450,7 +1450,7 @@ Output artifacts:
 ### CTASK-0103 (C-240, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 167
+- Source line: 127
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1462,7 +1462,7 @@ Output artifacts:
 ### CTASK-0104 (C-241, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 168
+- Source line: 128
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1474,7 +1474,7 @@ Output artifacts:
 ### CTASK-0105 (C-243, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 169
+- Source line: 129
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1486,7 +1486,7 @@ Output artifacts:
 ### CTASK-0106 (C-244, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 170
+- Source line: 130
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1498,7 +1498,7 @@ Output artifacts:
 ### CTASK-0107 (C-247, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 171
+- Source line: 131
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1510,7 +1510,7 @@ Output artifacts:
 ### CTASK-0108 (C-248, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 172
+- Source line: 132
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1522,7 +1522,7 @@ Output artifacts:
 ### CTASK-0109 (C-251, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 173
+- Source line: 133
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1534,7 +1534,7 @@ Output artifacts:
 ### CTASK-0110 (C-253, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 174
+- Source line: 134
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1546,7 +1546,7 @@ Output artifacts:
 ### CTASK-0111 (C-256, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 175
+- Source line: 135
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1558,7 +1558,7 @@ Output artifacts:
 ### CTASK-0112 (C-257, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 176
+- Source line: 136
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1570,7 +1570,7 @@ Output artifacts:
 ### CTASK-0113 (C-258, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 177
+- Source line: 137
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1582,7 +1582,7 @@ Output artifacts:
 ### CTASK-0114 (C-259, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 178
+- Source line: 138
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1594,7 +1594,7 @@ Output artifacts:
 ### CTASK-0115 (C-264, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 179
+- Source line: 139
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1606,7 +1606,7 @@ Output artifacts:
 ### CTASK-0116 (C-268, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 180
+- Source line: 140
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1618,7 +1618,7 @@ Output artifacts:
 ### CTASK-0117 (C-269, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 181
+- Source line: 141
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1630,7 +1630,7 @@ Output artifacts:
 ### CTASK-0118 (C-271, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 182
+- Source line: 142
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1642,7 +1642,7 @@ Output artifacts:
 ### CTASK-0119 (C-274, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 183
+- Source line: 143
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1654,7 +1654,7 @@ Output artifacts:
 ### CTASK-0120 (C-278, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 184
+- Source line: 144
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1666,7 +1666,7 @@ Output artifacts:
 ### CTASK-0121 (C-280, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 185
+- Source line: 145
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1678,7 +1678,7 @@ Output artifacts:
 ### CTASK-0122 (C-281, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 186
+- Source line: 146
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1690,7 +1690,7 @@ Output artifacts:
 ### CTASK-0123 (C-283, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 187
+- Source line: 147
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1702,7 +1702,7 @@ Output artifacts:
 ### CTASK-0124 (C-284, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 188
+- Source line: 148
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1714,7 +1714,7 @@ Output artifacts:
 ### CTASK-0125 (C-285, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 189
+- Source line: 149
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1726,7 +1726,7 @@ Output artifacts:
 ### CTASK-0126 (C-286, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 190
+- Source line: 150
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1738,7 +1738,7 @@ Output artifacts:
 ### CTASK-0127 (C-287, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 191
+- Source line: 151
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1750,7 +1750,7 @@ Output artifacts:
 ### CTASK-0128 (C-288, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 192
+- Source line: 152
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1762,7 +1762,7 @@ Output artifacts:
 ### CTASK-0129 (C-289, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 193
+- Source line: 153
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1774,7 +1774,7 @@ Output artifacts:
 ### CTASK-0130 (C-290, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 194
+- Source line: 154
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1786,7 +1786,7 @@ Output artifacts:
 ### CTASK-0131 (C-291, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 195
+- Source line: 155
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1798,7 +1798,7 @@ Output artifacts:
 ### CTASK-0132 (C-300, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 196
+- Source line: 156
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1810,7 +1810,7 @@ Output artifacts:
 ### CTASK-0133 (C-304, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 197
+- Source line: 157
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1822,7 +1822,7 @@ Output artifacts:
 ### CTASK-0134 (C-306, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 198
+- Source line: 158
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1834,7 +1834,7 @@ Output artifacts:
 ### CTASK-0135 (C-309, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 199
+- Source line: 159
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1846,7 +1846,7 @@ Output artifacts:
 ### CTASK-0136 (C-314, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 200
+- Source line: 160
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1858,7 +1858,7 @@ Output artifacts:
 ### CTASK-0137 (C-315, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 201
+- Source line: 161
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1870,7 +1870,7 @@ Output artifacts:
 ### CTASK-0138 (C-316, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 202
+- Source line: 162
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1882,7 +1882,7 @@ Output artifacts:
 ### CTASK-0139 (C-317, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 203
+- Source line: 163
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1894,7 +1894,7 @@ Output artifacts:
 ### CTASK-0140 (C-318, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 204
+- Source line: 164
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1906,7 +1906,7 @@ Output artifacts:
 ### CTASK-0141 (C-321, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 205
+- Source line: 165
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1918,7 +1918,7 @@ Output artifacts:
 ### CTASK-0142 (C-324, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 206
+- Source line: 166
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1930,7 +1930,7 @@ Output artifacts:
 ### CTASK-0143 (C-326, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 207
+- Source line: 167
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1942,7 +1942,7 @@ Output artifacts:
 ### CTASK-0144 (C-329, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 208
+- Source line: 168
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1954,7 +1954,7 @@ Output artifacts:
 ### CTASK-0145 (C-330, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 209
+- Source line: 169
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1966,7 +1966,7 @@ Output artifacts:
 ### CTASK-0146 (C-333, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 210
+- Source line: 170
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1978,7 +1978,7 @@ Output artifacts:
 ### CTASK-0147 (C-334, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 211
+- Source line: 171
 - Status raw: DONE
 - Canonical: `True`
 
@@ -1990,7 +1990,7 @@ Output artifacts:
 ### CTASK-0148 (C-335, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 212
+- Source line: 172
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2002,7 +2002,7 @@ Output artifacts:
 ### CTASK-0149 (C-338, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 213
+- Source line: 173
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2014,7 +2014,7 @@ Output artifacts:
 ### CTASK-0150 (C-339, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 214
+- Source line: 174
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2026,7 +2026,7 @@ Output artifacts:
 ### CTASK-0151 (C-340, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 215
+- Source line: 175
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2038,7 +2038,7 @@ Output artifacts:
 ### CTASK-0152 (C-341, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 216
+- Source line: 176
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2050,7 +2050,7 @@ Output artifacts:
 ### CTASK-0153 (C-342, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 217
+- Source line: 177
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2062,7 +2062,7 @@ Output artifacts:
 ### CTASK-0154 (C-343, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 218
+- Source line: 178
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2074,7 +2074,7 @@ Output artifacts:
 ### CTASK-0155 (C-346, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 219
+- Source line: 179
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2086,7 +2086,7 @@ Output artifacts:
 ### CTASK-0156 (C-349, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 220
+- Source line: 180
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2098,7 +2098,7 @@ Output artifacts:
 ### CTASK-0157 (C-354, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 221
+- Source line: 181
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2110,7 +2110,7 @@ Output artifacts:
 ### CTASK-0158 (C-355, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 222
+- Source line: 182
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2122,7 +2122,7 @@ Output artifacts:
 ### CTASK-0159 (C-358, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 223
+- Source line: 183
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2134,7 +2134,7 @@ Output artifacts:
 ### CTASK-0160 (C-362, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 224
+- Source line: 184
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2146,7 +2146,7 @@ Output artifacts:
 ### CTASK-0161 (C-363, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 225
+- Source line: 185
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2158,7 +2158,7 @@ Output artifacts:
 ### CTASK-0162 (C-366, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 226
+- Source line: 186
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2170,7 +2170,7 @@ Output artifacts:
 ### CTASK-0163 (C-374, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 227
+- Source line: 187
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2182,7 +2182,7 @@ Output artifacts:
 ### CTASK-0164 (C-375, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 228
+- Source line: 188
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2194,7 +2194,7 @@ Output artifacts:
 ### CTASK-0165 (C-378, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 229
+- Source line: 189
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2206,7 +2206,7 @@ Output artifacts:
 ### CTASK-0166 (C-379, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 230
+- Source line: 190
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2218,7 +2218,7 @@ Output artifacts:
 ### CTASK-0167 (C-380, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 231
+- Source line: 191
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2230,7 +2230,7 @@ Output artifacts:
 ### CTASK-0168 (C-381, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 232
+- Source line: 192
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2242,7 +2242,7 @@ Output artifacts:
 ### CTASK-0169 (C-385, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 233
+- Source line: 193
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2254,7 +2254,7 @@ Output artifacts:
 ### CTASK-0170 (C-386, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 234
+- Source line: 194
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2266,7 +2266,7 @@ Output artifacts:
 ### CTASK-0171 (C-387, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 235
+- Source line: 195
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2278,7 +2278,7 @@ Output artifacts:
 ### CTASK-0172 (C-390, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 236
+- Source line: 196
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2290,7 +2290,7 @@ Output artifacts:
 ### CTASK-0173 (C-391, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 237
+- Source line: 197
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2302,7 +2302,7 @@ Output artifacts:
 ### CTASK-0174 (C-394, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 238
+- Source line: 198
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2314,7 +2314,7 @@ Output artifacts:
 ### CTASK-0175 (C-396, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 239
+- Source line: 199
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2326,7 +2326,7 @@ Output artifacts:
 ### CTASK-0176 (C-399, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 240
+- Source line: 200
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2338,7 +2338,7 @@ Output artifacts:
 ### CTASK-0177 (C-401, PARTIAL)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 241
+- Source line: 201
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -2351,7 +2351,7 @@ Output artifacts:
 ### CTASK-0178 (C-403, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 242
+- Source line: 202
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2367,7 +2367,7 @@ Output artifacts:
 ### CTASK-0179 (C-404, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 243
+- Source line: 203
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2386,7 +2386,7 @@ Output artifacts:
 ### CTASK-0180 (C-405, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 244
+- Source line: 204
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2402,7 +2402,7 @@ Output artifacts:
 ### CTASK-0181 (C-406, PARTIAL)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 245
+- Source line: 205
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -2416,7 +2416,7 @@ Output artifacts:
 ### CTASK-0182 (C-407, PARTIAL)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 246
+- Source line: 206
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -2430,7 +2430,7 @@ Output artifacts:
 ### CTASK-0183 (C-408, PARTIAL)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 247
+- Source line: 207
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -2443,7 +2443,7 @@ Output artifacts:
 ### CTASK-0184 (C-410, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 248
+- Source line: 208
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2457,7 +2457,7 @@ Output artifacts:
 ### CTASK-0185 (C-411, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 249
+- Source line: 209
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2471,7 +2471,7 @@ Output artifacts:
 ### CTASK-0186 (C-417, TODO)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 250
+- Source line: 210
 - Status raw: TODO
 - Canonical: `True`
 
@@ -2484,7 +2484,7 @@ Output artifacts:
 ### CTASK-0187 (C-432, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 251
+- Source line: 211
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2497,7 +2497,7 @@ Output artifacts:
 ### CTASK-0188 (C-429, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 252
+- Source line: 212
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2510,7 +2510,7 @@ Output artifacts:
 ### CTASK-0189 (C-425, DONE)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 253
+- Source line: 213
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2523,7 +2523,7 @@ Output artifacts:
 ### CTASK-0190 (C-428, PARTIAL)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 254
+- Source line: 214
 - Status raw: PARTIAL
 - Canonical: `True`
 
@@ -2536,7 +2536,7 @@ Output artifacts:
 ### CTASK-0191 (C-426, TODO)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 255
+- Source line: 215
 - Status raw: TODO
 - Canonical: `True`
 
@@ -2550,7 +2550,7 @@ Output artifacts:
 ### CTASK-0192 (C-427, TODO)
 
 - Section: Backfill (triage) tasks (auto-generated)
-- Source line: 256
+- Source line: 216
 - Status raw: TODO
 - Canonical: `True`
 
@@ -2563,7 +2563,7 @@ Output artifacts:
 ### CTASK-0193 (C-028, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 262
+- Source line: 222
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2576,7 +2576,7 @@ Output artifacts:
 ### CTASK-0194 (C-029, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 263
+- Source line: 223
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2589,7 +2589,7 @@ Output artifacts:
 ### CTASK-0195 (C-030, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 264
+- Source line: 224
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2604,7 +2604,7 @@ Output artifacts:
 ### CTASK-0196 (C-031, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 265
+- Source line: 225
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2620,7 +2620,7 @@ Output artifacts:
 ### CTASK-0197 (C-032, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 266
+- Source line: 226
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2639,7 +2639,7 @@ Output artifacts:
 ### CTASK-0198 (C-032, BLOCKED)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 267
+- Source line: 227
 - Status raw: BLOCKED
 - Canonical: `True`
 
@@ -2652,7 +2652,7 @@ Output artifacts:
 ### CTASK-0199 (C-033, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 268
+- Source line: 228
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2670,7 +2670,7 @@ Output artifacts:
 ### CTASK-0200 (C-034, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 269
+- Source line: 229
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2688,7 +2688,7 @@ Output artifacts:
 ### CTASK-0201 (C-034, BLOCKED)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 270
+- Source line: 230
 - Status raw: BLOCKED
 - Canonical: `True`
 
@@ -2702,7 +2702,7 @@ Output artifacts:
 ### CTASK-0202 (C-035, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 271
+- Source line: 231
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2715,7 +2715,7 @@ Output artifacts:
 ### CTASK-0203 (C-036, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 272
+- Source line: 232
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2728,7 +2728,7 @@ Output artifacts:
 ### CTASK-0204 (C-037, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 273
+- Source line: 233
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2741,7 +2741,7 @@ Output artifacts:
 ### CTASK-0205 (C-038, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 274
+- Source line: 234
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2754,7 +2754,7 @@ Output artifacts:
 ### CTASK-0206 (C-039, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 275
+- Source line: 235
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2771,7 +2771,7 @@ Output artifacts:
 ### CTASK-0207 (C-040, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 276
+- Source line: 236
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2784,7 +2784,7 @@ Output artifacts:
 ### CTASK-0208 (C-041, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 277
+- Source line: 237
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2797,7 +2797,7 @@ Output artifacts:
 ### CTASK-0209 (C-042, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 278
+- Source line: 238
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2811,7 +2811,7 @@ Output artifacts:
 ### CTASK-0210 (C-043, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 279
+- Source line: 239
 - Status raw: DONE
 - Canonical: `True`
 
@@ -2827,7 +2827,7 @@ Output artifacts:
 ### CTASK-0211 (C-044, REFUTED)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 280
+- Source line: 240
 - Status raw: REFUTED
 - Canonical: `True`
 
@@ -2841,7 +2841,7 @@ Output artifacts:
 ### CTASK-0212 (C-045, DONE)
 
 - Section: Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)
-- Source line: 281
+- Source line: 241
 - Status raw: DONE
 - Canonical: `True`
 

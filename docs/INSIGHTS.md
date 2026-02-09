@@ -22,6 +22,8 @@ The Macquart relation connects FRB dispersion measures to redshift via integrate
 
 ---
 
+---
+
 ## I-002: Ultrametric Structure Lives in Representations, Not Scalars
 
 Date: 2026-02-06
@@ -29,6 +31,8 @@ Status: verified
 Claims: C-071
 
 C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using raw DM values. Ultrametricity is a property of hierarchical organization, not scalar distributions. This motivated five new analysis directions testing multi-attribute encodings, temporal cascades, and transformed coordinate spaces.
+
+---
 
 ---
 
@@ -42,6 +46,8 @@ Identified key crates preventing reimplementation: kodama 0.3.0 (dendrograms), k
 
 ---
 
+---
+
 ## I-004: Kodama Dendrogram and Real Observational Cosmology Infrastructure
 
 Date: 2026-02-06
@@ -52,6 +58,8 @@ Kodama returns Dendrogram with Step{cluster1, cluster2, dissimilarity, size}; co
 
 ---
 
+---
+
 ## I-005: Ultrametric Structure is Radio-Transient-Specific (Preliminary)
 
 Date: 2026-02-06
@@ -59,6 +67,8 @@ Status: superseded
 Claims: C-437, C-442
 
 Initial 7-catalog survey with 5K subsampling found only FRB/pulsar catalogs showing significant ultrametric excess. SUPERSEDED by I-011 (GPU 10M-triple sweep): the 5K subsampling destroyed Hipparcos galactic signal, making the conclusion too narrow. The ISM-mediation hypothesis for radio transients remains valid.
+
+---
 
 ---
 
@@ -82,6 +92,8 @@ All computed exactly (no sampling). dim=256 completes in ~2s release mode.
 
 ---
 
+---
+
 ## I-007: Kerr Geodesic Integrator Verification Summary
 
 Date: 2026-02-06
@@ -89,6 +101,8 @@ Status: verified
 Claims: C-028
 
 u=1/r regularized Kerr geodesic integrator (Dopri5, Mino time) passes: potential non-negativity, circular photon orbit at 3M, near-horizon infall, a=0.998 stability, r=500 large-distance, shadow area pi*27, asymmetry at a=0.9, coordinate/Mino time monotonicity. Hamiltonian constraint inaccessible from dense output.
+
+---
 
 ---
 
@@ -102,6 +116,8 @@ Claims: C-437
 
 ---
 
+---
+
 ## I-009: Elliptic Integral Crate Eliminates Carlson Port
 
 Date: 2026-02-06
@@ -112,6 +128,8 @@ The ellip crate (1.0.4, BSD-3-Clause) provides all 5 Carlson symmetric forms (RF
 
 ---
 
+---
+
 ## I-010: nalgebra 0.33/0.34 Version Split Blocks Autodiff
 
 Date: 2026-02-06
@@ -119,6 +137,8 @@ Status: open
 Claims: (none)
 
 num-dual 0.13.2 (autodiff via dual numbers) requires nalgebra 0.34, while workspace is pinned to 0.33. Decision: defer num-dual, use closed-form Christoffels for known metrics (Schwarzschild, Kerr, Kerr-Newman). num-dual needed only for generic connection computation on arbitrary metrics.
+
+---
 
 ---
 
@@ -137,6 +157,8 @@ The old conclusion was an artifact of 5K subsampling that destroyed spatial
 hierarchy in large catalogs.
 
 See `data/csv/c071g_exploration_gpu_10M_1000perm.csv` for full results.
+
+---
 
 ---
 
@@ -203,6 +225,8 @@ physical observable has been established. This interpretation remains at the
 - Test: `test_determine_exact_degree_dim32` in `projective_geometry.rs`
 - Ancillary: `test_boolean_predicate_dim32_motif_classes` (degree 3 or 4)
 - Data: `motif_components_for_cross_assessors(32)` in `boxkites.rs`
+
+---
 
 ---
 
@@ -275,6 +299,8 @@ This confirms the **Ultrametric Core Mining Hypothesis (UCMH)**. We can now use 
 
 ---
 
+---
+
 ## I-014: Cayley-Dickson External Data Cross-Validation
 
 **Date:** 2026-02-07
@@ -338,6 +364,8 @@ element where ZD partners cannot exist.
 
 ---
 
+---
+
 ## I-015: Monograph Theses Verification -- Lattice Codebook Filtration
 
 **Date:** 2026-02-08
@@ -396,6 +424,8 @@ lattice codebook filtration of Cayley-Dickson algebras. Results:
 - Multiplication coupling rho(b) in GL(8,Z) (C-466)
 - Extension of parity-clique and XOR partner to dim=256+ (computational)
 - Connection between lex-prefix filtration and octonion subalgebra structure
+
+---
 
 ---
 
@@ -467,5 +497,17 @@ The module follows a layered design:
 - **Brocade CPO preservation**: The CPO count is uniform across BKs but
   the actual count (0 or >0) needs algebraic explanation from Fano plane
   complementation properties.
+
+---
+
+---
+
+## I-017: Cross-Stack Locality and Coxeter Correspondence (E-011/E-012/E-013)
+
+Date: 2026-02-09
+Status: partial
+Claims: C-476, C-477
+
+Three experiments testing ALP (C-476) and Sky-Limit-Set (C-477). E-011: ALP holds for sparse constraint graphs (E10 Dynkin p=0.000, ET DMZ p=0.000) but fails for dense graphs (Sedenion ZD p=1.000, edge density 86.7%). E-012: Billiard symbolic dynamics predict spectroscopy behavior (FullFill entropy=0.0, UniformSky entropy=0.44, fill-entropy r=-0.85 at N=5). E-013: A_{N-1} Coxeter group is consistently the best match for ET skybox invariants (rank ratio=1.0, improving match scores at higher N). ALP needs sparsity refinement; Coxeter correspondence is strong but DMZ density match not yet within 10%.
 
 ---
