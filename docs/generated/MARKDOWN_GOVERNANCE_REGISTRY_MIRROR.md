@@ -7,10 +7,10 @@ Authoritative source: `registry/markdown_governance.toml`.
 
 - Generated at: deterministic
 - Document count: 233
-- TOML generated mirrors: 60
+- TOML generated mirrors: 74
 - TOML manual sources: 0
 - Generated artifacts: 59
-- Manual narratives: 114
+- Manual narratives: 100
 - Immutable transcripts: 0
 
 ## Documents
@@ -1027,101 +1027,129 @@ Authoritative source: `registry/markdown_governance.toml`.
 
 ### MDG-0138: `docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0139: `docs/external_sources/DATASET_MANIFEST.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0140: `docs/external_sources/DE_MARRAIS_BOXKITES_III.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0141: `docs/external_sources/DE_MARRAIS_CATAMARAN.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0142: `docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0143: `docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0144: `docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0145: `docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0146: `docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0147: `docs/external_sources/INVERSE_CD_FORMALISM.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0148: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0149: `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0150: `docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0151: `docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0152: `docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md`
 

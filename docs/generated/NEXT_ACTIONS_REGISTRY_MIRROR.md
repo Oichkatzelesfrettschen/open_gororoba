@@ -30,8 +30,8 @@ Authoritative source: `registry/next_actions.toml`.
 
 ### NA-003 (P1): Primary-source citation sweep for remaining claims
 
-- Status: `open`
-- Description: Append first-party citations and WHERE STATED coverage for outstanding claims.
+- Status: `done`
+- Description: COMPLETE (Sprint 25 audit). All 500/500 claims have non-empty where_stated: 118 test-function refs (23.6%), 382 document/paper refs (76.4%).
 - References:
   - `registry/claims.toml`
   - `docs/BIBLIOGRAPHY.md`

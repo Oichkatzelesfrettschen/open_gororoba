@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # C-071: FRB Ultrametric Structure -- Data Provenance
 
 ## Claim

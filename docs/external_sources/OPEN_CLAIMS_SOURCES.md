@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Open Claims Sources (Inbox)
 
 Purpose: provide a minimal, explicit external-sources anchor for open claims that are not yet

@@ -128,10 +128,24 @@ notes = "Keep as generated outputs with explicit regeneration commands; do not h
 [[domain]]
 id = "KM-007"
 name = "research_narratives"
-source_markdown = ["docs/theory/*.md", "docs/external_sources/*.md", "docs/engineering/*.md"]
+source_markdown = ["docs/theory/*.md", "docs/engineering/*.md"]
 strategy = "narrative_primary_raw_capture_backup"
 status = "active"
 notes = "Not all narrative content should be normalized into rigid schemas; raw capture in registry/knowledge/docs preserves provenance."
+
+[[domain]]
+id = "KM-012"
+name = "external_sources"
+source_markdown = ["docs/external_sources/*.md"]
+authoritative_toml = ["registry/external_sources.toml"]
+generated_mirror = [
+  "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md",
+  "docs/external_sources/*.md",
+  "docs/external_sources/INDEX.md",
+]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "External source dossiers are TOML-first; markdown under docs/external_sources is generated from registry/external_sources.toml."
 
 [[phase]]
 id = "KMP-P1"
@@ -185,6 +199,18 @@ deliverables = [
   "src/verification/verify_markdown_governance_headers.py",
   "src/verification/verify_markdown_governance_parity.py",
   "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md",
+]
+
+[[phase]]
+id = "KMP-P8"
+name = "external_sources_registry_normalization"
+status = "complete"
+deliverables = [
+  "src/scripts/analysis/normalize_external_sources_registry.py",
+  "registry/external_sources.toml",
+  "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md",
+  "docs/external_sources/*.md",
+  "docs/external_sources/INDEX.md",
 ]
 
 [[policy]]

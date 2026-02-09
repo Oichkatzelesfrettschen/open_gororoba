@@ -1,60 +1,6 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
 
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
-
 # Next Actions (Prioritized)
 
 Updated 2026-02-09 after Sprint 25 completion.

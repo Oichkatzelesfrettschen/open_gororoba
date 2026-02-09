@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Voyage by Catamaran
 
 **Full Title:** Voyage by Catamaran: Effecting Semantic Network *Bricolage* via

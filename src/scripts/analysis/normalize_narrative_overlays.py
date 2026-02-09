@@ -22,6 +22,10 @@ from pathlib import Path
 
 INSIGHT_HEADING_RE = re.compile(r"^##\s+(I-\d{3})\s*:\s*(.+?)\s*$")
 EXPERIMENT_HEADING_RE = re.compile(r"^##\s+(E-\d{3})\s*:\s*(.+?)\s*$")
+HEADER_PREFIXES = (
+    "<!-- AUTO-GENERATED:",
+    "<!-- Source of truth:",
+)
 
 
 def _assert_ascii(text: str, context: str) -> None:
@@ -66,7 +70,8 @@ def _to_toml_multiline(content: str) -> str:
 def _parse_sections(
     source_path: Path, heading_re: re.Pattern[str]
 ) -> tuple[str, list[tuple[str, str, str]]]:
-    lines = source_path.read_text(encoding="utf-8", errors="ignore").splitlines()
+    raw_lines = source_path.read_text(encoding="utf-8", errors="ignore").splitlines()
+    lines = _strip_generated_header(raw_lines)
     preamble: list[str] = []
     entries: list[tuple[str, str, list[str]]] = []
 
@@ -95,8 +100,43 @@ def _parse_sections(
         entries.append((current_id, current_title, current_body))
 
     return "\n".join(preamble).strip(), [
-        (entry_id, title, "\n".join(body).strip()) for entry_id, title, body in entries
+        (entry_id, title, _clean_entry_body("\n".join(body)))
+        for entry_id, title, body in entries
     ]
+
+
+def _strip_generated_header(lines: list[str]) -> list[str]:
+    i = 0
+    while i < len(lines):
+        stripped = lines[i].strip()
+        if not stripped:
+            i += 1
+            continue
+        if any(stripped.startswith(prefix) for prefix in HEADER_PREFIXES):
+            i += 1
+            continue
+        break
+    return lines[i:]
+
+
+def _clean_entry_body(text: str) -> str:
+    lines = text.splitlines()
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    while lines and lines[0].strip() == "---":
+        lines.pop(0)
+        while lines and not lines[0].strip():
+            lines.pop(0)
+
+    out: list[str] = []
+    for line in lines:
+        if line.strip() == "---":
+            continue
+        out.append(line)
+
+    while out and not out[-1].strip():
+        out.pop()
+    return "\n".join(out).strip()
 
 
 def _render_insights_toml(

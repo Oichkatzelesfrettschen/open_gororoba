@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/external_sources.toml -->
+
 # Reggiani 2024 manifold identifications (C-005)
 
 Access date: 2026-01-28
@@ -36,4 +39,3 @@ The paper states (paraphrase, see PDF for full proofs):
 - Algebraic checks: `tests/test_reggiani_alignment.py`, `tests/test_reggiani_standard_zero_divisors.py`
 - Manifold/isometry claims: not replicated; treat as paper claims unless a
   dedicated geometric computation or independent verification is added.
-

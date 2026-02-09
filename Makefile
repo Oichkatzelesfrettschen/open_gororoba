@@ -5,6 +5,7 @@
 .PHONY: rust-test rust-clippy rust-smoke
 .PHONY: registry registry-knowledge registry-governance registry-migrate-corpus registry-normalize-claims
 .PHONY: registry-normalize-bibliography registry-bootstrap-bibliography
+.PHONY: registry-normalize-external-sources registry-bootstrap-external-sources
 .PHONY: registry-bootstrap-claims-support
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
 .PHONY: registry-ingest-legacy registry-export-markdown registry-verify-mirrors
@@ -101,6 +102,12 @@ registry-normalize-bibliography:
 
 registry-bootstrap-bibliography: registry-normalize-bibliography
 	@echo "Bibliography markdown->TOML bootstrap completed."
+
+registry-normalize-external-sources:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py --bootstrap-from-markdown
+
+registry-bootstrap-external-sources: registry-normalize-external-sources
+	@echo "External sources markdown->TOML bootstrap completed."
 
 registry-normalize-narratives:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_narrative_overlays.py

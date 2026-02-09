@@ -32,6 +32,14 @@ MIRROR_TO_TOML = {
 }
 
 
+def _toml_backing_for_path(path: str) -> str:
+    if path in MIRROR_TO_TOML:
+        return MIRROR_TO_TOML[path]
+    if path.startswith("docs/external_sources/"):
+        return "registry/external_sources.toml"
+    return ""
+
+
 @dataclass(frozen=True)
 class DocumentRecord:
     doc_id: str
@@ -81,6 +89,8 @@ def _title_from_markdown(text: str, fallback: str) -> str:
 
 
 def _kind_for_path(path: str, text: str) -> tuple[str, str, bool]:
+    if path.startswith("docs/external_sources/"):
+        return ("markdown_mirror", "generated", True)
     if path in MIRROR_TO_TOML:
         return ("markdown_mirror", "generated", True)
     if path.startswith("convos/"):
@@ -155,7 +165,7 @@ def _record_for_path(index: int, repo_root: Path, rel_path: str) -> DocumentReco
         generated=generated,
         status=status,
         migration_priority=migration_priority,
-        toml_backing=MIRROR_TO_TOML.get(rel_path, ""),
+        toml_backing=_toml_backing_for_path(rel_path),
         sha256=sha256,
         size_bytes=path.stat().st_size,
         line_count=line_count,

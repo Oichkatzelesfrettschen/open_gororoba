@@ -156,9 +156,22 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
 - Status: `active`
 - Source markdown:
   - `docs/theory/*.md`
-  - `docs/external_sources/*.md`
   - `docs/engineering/*.md`
 - Notes: Not all narrative content should be normalized into rigid schemas; raw capture in registry/knowledge/docs preserves provenance.
+
+### KM-012: external_sources
+
+- Strategy: `toml_primary_generated_mirror`
+- Status: `complete`
+- Source markdown:
+  - `docs/external_sources/*.md`
+- Authoritative TOML:
+  - `registry/external_sources.toml`
+- Generated mirrors:
+  - `docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md`
+  - `docs/external_sources/*.md`
+  - `docs/external_sources/INDEX.md`
+- Notes: External source dossiers are TOML-first; markdown under docs/external_sources is generated from registry/external_sources.toml.
 
 ## Phases
 
@@ -217,6 +230,16 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - src/verification/verify_markdown_governance_headers.py
   - src/verification/verify_markdown_governance_parity.py
   - docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md
+
+### KMP-P8: external_sources_registry_normalization
+
+- Status: `complete`
+- Deliverables:
+  - src/scripts/analysis/normalize_external_sources_registry.py
+  - registry/external_sources.toml
+  - docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md
+  - docs/external_sources/*.md
+  - docs/external_sources/INDEX.md
 
 ## Policies
 
