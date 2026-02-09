@@ -435,6 +435,74 @@ def export_requirements(repo_root: Path, out_path: Path) -> None:
     _write(out_path, "\n".join(lines))
 
 
+def export_knowledge_migration_plan(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/knowledge_migration_plan.toml")
+    meta = data.get("migration", {})
+    domains = data.get("domain", [])
+    phases = data.get("phase", [])
+    policies = data.get("policy", [])
+    lines = _header("Knowledge Migration Plan Registry Mirror")
+    lines.append("Authoritative source: `registry/knowledge_migration_plan.toml`.")
+    lines.append("")
+    lines.append(f"- Status: `{meta.get('status', '')}`")
+    lines.append(f"- Updated: {meta.get('updated', '')}")
+    lines.append(f"- Scope: {meta.get('scope', '')}")
+    lines.append("")
+    lines.append("## Domains")
+    lines.append("")
+    for domain in domains:
+        lines.append(f"### {domain.get('id', 'KM-???')}: {domain.get('name', '(unnamed)')}")
+        lines.append("")
+        lines.append(f"- Strategy: `{domain.get('strategy', '')}`")
+        lines.append(f"- Status: `{domain.get('status', '')}`")
+        src = domain.get("source_markdown", [])
+        if src:
+            lines.append("- Source markdown:")
+            for item in src:
+                lines.append(f"  - `{item}`")
+        auth = domain.get("authoritative_toml", [])
+        if auth:
+            lines.append("- Authoritative TOML:")
+            for item in auth:
+                lines.append(f"  - `{item}`")
+        gen = domain.get("generated_mirror", [])
+        if gen:
+            lines.append("- Generated mirrors:")
+            for item in gen:
+                lines.append(f"  - `{item}`")
+        notes = str(domain.get("notes", "")).strip()
+        if notes:
+            lines.append(f"- Notes: {notes}")
+        lines.append("")
+    lines.append("## Phases")
+    lines.append("")
+    for phase in phases:
+        lines.append(f"### {phase.get('id', 'KMP-?')}: {phase.get('name', '(unnamed)')}")
+        lines.append("")
+        lines.append(f"- Status: `{phase.get('status', '')}`")
+        deliverables = phase.get("deliverables", [])
+        if deliverables:
+            lines.append("- Deliverables:")
+            for item in deliverables:
+                lines.append(f"  - {item}")
+        lines.append("")
+    if policies:
+        lines.append("## Policies")
+        lines.append("")
+        for policy in policies:
+            lines.append(f"### {policy.get('id', 'KMPOL-?')}: {policy.get('name', '(unnamed)')}")
+            lines.append("")
+            lines.append(f"- Status: `{policy.get('status', '')}`")
+            lines.append(f"- Statement: {policy.get('statement', '')}")
+            enforcement = policy.get("enforcement", [])
+            if enforcement:
+                lines.append("- Enforcement:")
+                for item in enforcement:
+                    lines.append(f"  - {item}")
+            lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
 def export_markdown_governance(repo_root: Path, out_path: Path) -> None:
     data = _load_toml(repo_root / "registry/markdown_governance.toml")
     meta = data.get("markdown_governance", {})
@@ -915,6 +983,9 @@ def main() -> int:
     export_todo(repo_root, out_dir / "TODO_REGISTRY_MIRROR.md")
     export_next_actions(repo_root, out_dir / "NEXT_ACTIONS_REGISTRY_MIRROR.md")
     export_requirements(repo_root, out_dir / "REQUIREMENTS_REGISTRY_MIRROR.md")
+    export_knowledge_migration_plan(
+        repo_root, out_dir / "KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
+    )
     export_markdown_governance(repo_root, out_dir / "MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md")
     export_claims_tasks(repo_root, out_dir / "CLAIMS_TASKS_REGISTRY_MIRROR.md")
     export_claims_domains(repo_root, out_dir / "CLAIMS_DOMAINS_REGISTRY_MIRROR.md")
