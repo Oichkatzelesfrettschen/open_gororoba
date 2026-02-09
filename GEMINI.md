@@ -20,6 +20,7 @@ Global policy is canonical in `AGENTS.md`.
    - open `AGENTS.md`
    - open relevant `registry/*.toml` sources
 3. establish quality-gate plan
+   - `PYTHONWARNINGS=error make registry-data`
    - `PYTHONWARNINGS=error make registry`
    - `PYTHONWARNINGS=error make docs-publish` for docs pipeline work
 4. build execution plan
@@ -54,6 +55,7 @@ Global policy is canonical in `AGENTS.md`.
 Core commands:
 
 ```bash
+PYTHONWARNINGS=error make registry-data
 PYTHONWARNINGS=error make registry
 PYTHONWARNINGS=error make docs-publish
 make ascii-check

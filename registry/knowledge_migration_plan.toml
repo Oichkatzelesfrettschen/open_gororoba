@@ -281,6 +281,15 @@ strategy = "toml_primary_generated_mirror"
 status = "complete"
 notes = "Navigator is TOML-first and rendered as publish output markdown."
 
+[[domain]]
+id = "KM-021"
+name = "legacy_csv_canonical_data"
+source_csv = ["data/csv/legacy/*.csv"]
+authoritative_toml = ["registry/legacy_csv_datasets.toml", "registry/data/legacy_csv/*.toml"]
+strategy = "toml_primary_data_canonicalization"
+status = "complete"
+notes = "Legacy CSV corpora is migrated into canonical TOML datasets with parity verification."
+
 [[phase]]
 id = "KMP-P1"
 name = "inventory_and_capture"
@@ -374,7 +383,7 @@ deliverables = [
 ]
 
 [[phase]]
-id = "KMP-P10"
+id = "KMP-P10B"
 name = "book_docs_registry_normalization"
 status = "complete"
 deliverables = [
@@ -427,6 +436,30 @@ deliverables = [
   "data/artifacts/reality_check_and_synthesis.md",
 ]
 
+[[phase]]
+id = "KMP-P14"
+name = "legacy_csv_canonical_toml_migration"
+status = "complete"
+deliverables = [
+  "src/scripts/analysis/build_csv_inventory_registry.py",
+  "registry/csv_inventory.toml",
+  "src/scripts/analysis/migrate_legacy_csv_to_toml.py",
+  "registry/legacy_csv_datasets.toml",
+  "registry/data/legacy_csv/*.toml",
+  "src/verification/verify_legacy_csv_toml_parity.py",
+  "Makefile registry-data targets",
+]
+
+[[phase]]
+id = "KMP-P15"
+name = "non_legacy_csv_toml_migration_wave"
+status = "pending"
+deliverables = [
+  "curated CSV classification and canonicalization plan",
+  "data/csv non-legacy generated-vs-canonical split policy",
+  "external CSV provenance-only policy with TOML index linkage",
+]
+
 [[policy]]
 id = "KMPOL-001"
 name = "bootstrap_vs_operational_authoring"
@@ -448,4 +481,15 @@ enforcement = [
   "make registry validates TOML registries without requiring tracked markdown mirrors",
   "make docs-publish generates and verifies markdown mirrors for documentation output",
   ".gitignore excludes TOML-generated markdown mirror paths from git tracking",
+]
+
+[[policy]]
+id = "KMPOL-003"
+name = "legacy_csv_toml_canonical_policy"
+status = "active"
+statement = "Legacy CSV under data/csv/legacy must be represented by canonical TOML datasets under registry/data/legacy_csv with parity verification."
+enforcement = [
+  "make registry-data builds csv inventory and migrates legacy CSV to TOML canon",
+  "verify_legacy_csv_toml_parity.py enforces full coverage and checksum/row parity",
+  "registry/legacy_csv_datasets.toml is authoritative for legacy CSV canonical map",
 ]

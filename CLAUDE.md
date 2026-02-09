@@ -22,6 +22,7 @@ Run this sequence at session start:
    - open `AGENTS.md`
    - open objective-relevant registry TOML files
 3. quality gate baseline
+   - plan to run `PYTHONWARNINGS=error make registry-data`
    - plan to run `PYTHONWARNINGS=error make registry`
    - plan to run `PYTHONWARNINGS=error make docs-publish` when docs are touched
 4. task plan
@@ -64,6 +65,7 @@ Run this sequence at session start:
 Core commands:
 
 ```bash
+PYTHONWARNINGS=error make registry-data
 PYTHONWARNINGS=error make registry
 PYTHONWARNINGS=error make docs-publish
 make ascii-check

@@ -17,6 +17,7 @@
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
 .PHONY: registry-markdown-inventory
 .PHONY: registry-verify-markdown-inventory
+.PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv registry-csv-scope registry-data
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
@@ -177,6 +178,21 @@ registry-markdown-inventory:
 registry-verify-markdown-inventory: registry-markdown-inventory
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
 
+registry-csv-inventory:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_inventory_registry.py
+
+registry-migrate-legacy-csv:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/migrate_legacy_csv_to_toml.py
+
+registry-verify-legacy-csv: registry-migrate-legacy-csv
+	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py
+
+registry-csv-scope: registry-csv-inventory
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_migration_scope_registry.py
+
+registry-data: registry-csv-inventory registry-verify-legacy-csv registry-csv-scope
+	@echo "OK: CSV data registry lane complete."
+
 registry-export-markdown: registry-refresh
 	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py
 
@@ -188,7 +204,7 @@ registry-verify-mirrors: registry-export-markdown
 	PYTHONWARNINGS=error python3 src/verification/verify_claim_ticket_mirrors.py
 	PYTHONWARNINGS=error $(MAKE) registry-verify-markdown-inventory
 
-registry: registry-refresh
+registry: registry-refresh registry-data
 	cargo run --release --bin registry-check
 
 docs-publish: registry-verify-mirrors
