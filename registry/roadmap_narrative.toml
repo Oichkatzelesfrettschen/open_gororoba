@@ -47,6 +47,12 @@ body_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/roadmap.toml, registry/roadmap_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/roadmap.toml, registry/roadmap_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/roadmap.toml, registry/roadmap_narrative.toml -->
+
 # open_gororoba Roadmap
 
 **Consolidated**: 2026-02-06
@@ -126,11 +132,10 @@ spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
 Penrose process, coordinates, null constraint, energy-conserving integrator.
 **Claims infrastructure**: COMPLETE.  Rust claims-audit + claims-verify binaries
 replace 11 Python scripts.  118 backfill items confirmed Verified (2026-02-07).
-**Test count**: 2239 Rust tests pass (unit + doc + integration), 0 clippy warnings.
+**Test count**: 2280 Rust tests pass (unit + doc + integration), 0 clippy warnings.
 gororoba_kernels removed (2026-02-06).
 **GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
-**Claims**: 477 (423 verified, 38 refuted, 2 partial, 1 inconclusive, 13 closed).
-**Insights**: I-001..I-017. **Experiments**: E-001..E-013. **Binaries**: 40.
+**Claims**: 500 (C-001..C-500). **Insights**: I-001..I-017. **Experiments**: E-001..E-013. **Binaries**: 40.
 
 ```
 open_gororoba/
@@ -645,7 +650,7 @@ Cayley-Dickson lattice codebook structure.
 | A | Codebook parity | C-458 | **Verified** (4 dims) |
 | B | Filtration nesting | C-459 | **Verified** (strict subsets) |
 | C | Prefix-cut characterization | C-460 | **Verified** (lex prefix!) |
-| D | Scalar shadow action | C-465, C-466 | **Partial** (addition verified, multiplication open) |
+| D | Scalar shadow action | C-465, C-466 | **Resolved** (addition verified, multiplication REFUTED S16) |
 | E | XOR partner law | C-462 | **Verified** (dim=64) |
 | F | Parity-clique law | C-463 | **Verified** (dims 16, 32) |
 | G | Spectral fingerprints | C-464 | **Verified** (known graphs) |
@@ -657,7 +662,7 @@ Cayley-Dickson lattice codebook structure.
 **Conversation extraction**: 12 files in convos/ processed; 3 new markdown
 extracts in docs/external_sources/ (inverse CD, wheel taxonomy, sedenion ZD).
 
-**Open question**: Multiplication coupling rho(b) in GL(8,Z) (C-466).
+~~**Open question**: Multiplication coupling rho(b) in GL(8,Z) (C-466).~~ **REFUTED** (Sprint 16).
 
 **Insight**: I-015 (monograph theses verification)
 **Test count**: ~1690+ (20 new cd_external + 3 stats_core)
@@ -691,6 +696,51 @@ brocade CPO count explanation.
 **Insight**: I-016 (De Marrais Emanation Architecture)
 **Test count**: 1806 (113 new emanation + prior 1693)
 **Claims**: C-468..C-475 (8 new, total 475)
+
+### 7.11 Face Sign Census and Double 3:1 Law (Sprint 21-24)
+
+**Goal**: Extend the box-kite face sign census to higher dimensions and discover
+universal structural laws governing face sign patterns across all motif components.
+
+| Dimension | Regimes | Triangles | Components | Time |
+|-----------|---------|-----------|------------|------|
+| 16 | 1 | 56 | 7 | <1ms |
+| 32 | 3 | 2408 | 15 | <1ms |
+| 64 | 5 | 48328 | 31 | ~10ms |
+| 128 | 9 | 821128 | 63 | ~1s |
+| 256 | 17 | 13.3M | 127 | ~16s |
+| 512 | 33 | 214M | 255 | ~275s |
+
+**Key results**:
+- Regime count formula: dim/16 + 1 for dim >= 32 (C-485)
+- Edge count extremals: E_max = C(dim/2-2,2) - (dim/4-1), E_min = 3*dim/2 - 12 (C-486)
+- Universal Double 3:1 Law: OneSameTwoOpp = 3*AllSame AND TwoSameOneOpp = 3*AllOpposite
+  in ALL components at ALL dimensions (C-487, verified across 498 components)
+- GF(2) degree = log2(dim) - 2 (C-480, +1 per doubling)
+- Fano Residue Distribution Law: dim/16 per residue with deficit at 0 (C-496)
+- Fano Projection Full Mixing: all components use all 7 Fano indices (C-497)
+
+**Claims**: C-478..C-497 (20 claims across S20-S25)
+
+### 7.12 Coset Obstruction and Filtration Gradient (Sprint 25)
+
+**Goal**: Explain the 0% closure anomaly in elevated addition on Lambda_n and
+investigate the relationship between filtration depth and ultrametric structure.
+
+**Key results**:
+- Coset Obstruction Theorem (C-498): Lambda_n vectors all have l_0=-1. Under
+  Z-addition, l_0+l_0=-2 (out of trinary range). Under F_3-addition, (-1)+(-1)=+1
+  (mod 3), mapping to the forbidden l_0=+1 coset excluded by is_in_base_universe().
+- Affine F_3 Partial Closure (C-499): The affine operation a +_3 b -_3 p preserves
+  l_0=-1 but trie-cut exclusions still break group structure, yielding only 30-47%
+  closure (base-dependent).
+- Euclidean Filtration Ultrametricity Gradient (C-500): Euclidean distance on
+  prefix-stripped lattice coordinates shows monotone gradient from anti-ultrametric
+  (Lambda_2048, z=-5.65) through a transition zone (Lambda_1024, Lambda_512) to
+  significantly ultrametric (Lambda_256, z=17.07, p<0.005).
+
+**Claims**: C-498..C-500 (3 claims)
+**Test count**: 2280 (10 new tests in S25)
 
 ---
 

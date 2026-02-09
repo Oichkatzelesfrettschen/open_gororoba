@@ -47,18 +47,31 @@ body_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
+
 # Next Actions (Prioritized)
 
-Updated 2026-02-09 after Sprint 24 completion.
+Updated 2026-02-09 after Sprint 25 completion.
 **See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and research plan.
 
-## Current State (Sprint 24, 2026-02-09)
+## Current State (Sprint 25, 2026-02-09)
 
-**Test count**: 2270 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-490 (490 total). **Insights**: I-001..I-017. **Binaries**: 40.
+**Test count**: 2280 total (unit + integration + doc), 0 clippy warnings.
+**Claims**: C-001..C-500 (500 total). **Insights**: I-001..I-017. **Binaries**: 40.
 
 ## Recent Sprint Summaries
 
+- **S25**: Dim=512 census: 33 regimes, 214M triangles, 275s (C-495). Fano Residue
+  Distribution Law: dim/16 per residue with deficit at 0 (C-496). Fano Projection Full
+  Mixing: all components use all 7 Fano indices (C-497). Layer 3/4 bridge with budget-
+  aware LightGraphInvariants O(n+e). Coset Obstruction Theorem: 0% Z/F_3 closure on
+  Lambda_n explained by l_0=-1 coset mapping to forbidden l_0=+1 (C-498). Affine F_3
+  Partial Closure 30-47% (C-499). Euclidean Filtration Ultrametricity Gradient: Lambda_256
+  z=17.07 significant, Lambda_2048 anti-ultrametric, transition at Lambda_512 (C-500).
 - **S24**: Face sign census at dim=256: 17 regimes, 13.3M triangles in ~16s (C-488).
   Regime-to-GF(2) class correspondence: regimes = edge-count classes + 1, unifying
   motif census, GF(2) projective geometry, and face sign census (C-489). Parity-
@@ -121,6 +134,8 @@ Updated 2026-02-09 after Sprint 24 completion.
 | J. Monograph layers 0-5 | DONE | S13-S15 | TypedCarrier through NullModel |
 | K. Rho(b) coupling | DONE (REFUTED) | S16 | C-466 refuted, identity only |
 | L. ALP + Sky-Limit-Set | DONE (PARTIAL) | S17-S19 | C-476/C-477 partially verified, I-017 |
+| M. Face sign census | DONE | S21-S24 | 33 regimes at dim=512, Double 3:1 Law (C-481..C-495) |
+| N. Coset / filtration | DONE | S25 | Coset obstruction (C-498), filtration gradient (C-500) |
 
 ---
 
