@@ -3,52 +3,62 @@
 
 [document]
 id = "DOC-0240"
-source_path = "reports/tscp_trial_factor_ledger.md"
-title = "TSCP Trial-Factor Ledger (2026-02-04)"
+source_path = "reports/tickets_inventory.md"
+title = "Tickets Inventory (2026-02-04)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "a9400e90899058dfa67b0f0eb96a076784ba380b01da45d57f0f4063b0a10cc0"
-source_line_count = 33
-source_size_bytes = 1437
-content_sha256 = "a9400e90899058dfa67b0f0eb96a076784ba380b01da45d57f0f4063b0a10cc0"
+source_sha256 = "5425cb4a567821533e0e6c4962296e675e2ba56cce1c8d7f9e3647f577abb445"
+source_line_count = 43
+source_size_bytes = 2028
+content_sha256 = "5425cb4a567821533e0e6c4962296e675e2ba56cce1c8d7f9e3647f577abb445"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# TSCP Trial-Factor Ledger (2026-02-04)
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-Scope: method-level multiple-testing accounting for TSCP alignment (C-407).
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-## Tuned degrees of freedom (current proxy)
+# Tickets Inventory (2026-02-04)
 
-- Reference kite index: 7 choices
-- Opposite-pair axis per kite: 3 choices (0,5), (1,3), (2,4)
-- Embedding sweep size: N_embed = 21
+Tickets dir: `docs/tickets`
+Tickets parsed: 16
 
-## Familywise alpha
+## Counts by status token
 
-- alpha_family = 0.01
+- TODO: 3
+- IN PROGRESS: 4
+- PARTIAL: 1
+- DONE: 8
 
-## Thresholds by scenario
+## Tickets (oldest first)
 
-| Scenario | N_trials | Bonferroni alpha_per | Sidak alpha_per | Notes |
-|---|---:|---:|---:|---|
-| Confirmatory: fixed embedding, per-kite scan | 7 | 1.429e-03 | 1.435e-03 | Fix embedding a priori (canonical projection), then test 7 kites. |
-| Robustness: embedding sweep (42-node score) | 21 | 4.762e-04 | 4.785e-04 | Scan 21 embeddings (reference kite * opposite-pair axis), no per-kite restriction. |
-| Exploratory: embedding sweep + per-kite scan | 147 | 6.803e-05 | 6.837e-05 | Scan 21 embeddings and 7 per-kite restrictions; report best result. |
+| Ticket | Created | Status | Path |
+|---|---|---|---|
+| A1_boxkites_replication | 2026-01-28 | DONE | `docs/tickets/A1_boxkites_replication.md` |
+| A2_reggiani_alignment | 2026-01-28 | DONE | `docs/tickets/A2_reggiani_alignment.md` |
+| A3_gwtc3_provenance | 2026-01-28 | DONE | `docs/tickets/A3_gwtc3_provenance.md` |
+| A4_mass_clumping_test | 2026-01-28 | PARTIAL | `docs/tickets/A4_mass_clumping_test.md` |
+| A5_gwtc3_selection_bias_control | 2026-01-28 | TODO | `docs/tickets/A5_gwtc3_selection_bias_control.md` |
+| A6_tensor_network_measurement_pipeline | 2026-01-28 | TODO | `docs/tickets/A6_tensor_network_measurement_pipeline.md` |
+| A7_psl_2_7_explicit_action | 2026-01-28 | TODO | `docs/tickets/A7_psl_2_7_explicit_action.md` |
+| C001_C050_claims_audit | 2026-02-02 | IN PROGRESS | `docs/tickets/C001_C050_claims_audit.md` |
+| C051_C100_claims_audit | 2026-02-02 | IN PROGRESS | `docs/tickets/C051_C100_claims_audit.md` |
+| C101_C150_claims_audit | 2026-02-02 | IN PROGRESS | `docs/tickets/C101_C150_claims_audit.md` |
+| C151_C200_claims_audit | 2026-02-02 | DONE | `docs/tickets/C151_C200_claims_audit.md` |
+| C201_C250_claims_audit | 2026-02-02 | DONE | `docs/tickets/C201_C250_claims_audit.md` |
+| C251_C300_claims_audit | 2026-02-02 | DONE | `docs/tickets/C251_C300_claims_audit.md` |
+| C301_C350_claims_audit | 2026-02-02 | DONE | `docs/tickets/C301_C350_claims_audit.md` |
+| C351_C400_claims_audit | 2026-02-02 | DONE | `docs/tickets/C351_C400_claims_audit.md` |
+| C401_C427_claims_audit | 2026-02-02 | IN PROGRESS | `docs/tickets/C401_C427_claims_audit.md` |
 
-## Source anchors (cached)
+## Parsing notes
 
-- Bonferroni/Sidak background: `data/external/papers/abdi_2007_bonferroni_sidak_corrections.pdf`
-- Holm procedure: `data/external/papers/holm_1979_sequentially_rejective_multiple_test_procedure.pdf`
-
-## Notes
-
-- Bonferroni is conservative but robust under dependence.
-- Sidak assumes independent trials; use as an informative bound only.
-- This ledger must be updated whenever additional tuned degrees of freedom are introduced (catalog cuts, smoothing scales, coordinate frames, etc.).
+- This report is a planning snapshot, not evidence.
 
 """

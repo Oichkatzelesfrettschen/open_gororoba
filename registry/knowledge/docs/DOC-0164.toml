@@ -3,350 +3,181 @@
 
 [document]
 id = "DOC-0164"
-source_path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
-title = "Knowledge Migration Plan Registry Mirror"
+source_path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
+title = "Insights Registry Mirror"
 kind = "generated_markdown"
 status = "active"
 migration_priority = "none"
 generated = true
-source_sha256 = "ead14a4be0b673323adc8a16335470040134861307b006197a9f61ad94c49af0"
-source_line_count = 331
-source_size_bytes = 9975
-content_sha256 = "ead14a4be0b673323adc8a16335470040134861307b006197a9f61ad94c49af0"
+source_sha256 = "73f371d6c441963d0225d78d750b88e84ae5f37a8157fdea3bd31cdd9a8307b5"
+source_line_count = 162
+source_size_bytes = 7730
+content_sha256 = "73f371d6c441963d0225d78d750b88e84ae5f37a8157fdea3bd31cdd9a8307b5"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Knowledge Migration Plan Registry Mirror
+# Insights Registry Mirror
 
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: TOML registry files under registry/ -->
 
-Authoritative source: `registry/knowledge_migration_plan.toml`.
+Authoritative source: `registry/insights.toml`.
 
-- Status: `active`
-- Updated: 2026-02-09
-- Scope: knowledge sources and operational trackers
+Total insights: 17
 
-## Domains
+## I-001: Macquart Relation Fills the Comoving Distance Gap
 
-### KM-001: claims
+- Date: 2026-02-06
+- Status: verified
+- Sprint: 6
+- Claims: C-071
 
-- Strategy: `toml_primary_markdown_mirror`
-- Status: `complete`
-- Source markdown:
-  - `docs/CLAIMS_EVIDENCE_MATRIX.md`
-  - `docs/CLAIMS_TASKS.md`
-- Authoritative TOML:
-  - `registry/claims.toml`
-  - `registry/claims_tasks.toml`
-- Generated mirrors:
-  - `docs/CLAIMS_EVIDENCE_MATRIX.md`
-  - `docs/CLAIMS_TASKS.md`
-  - `docs/generated/CLAIMS_REGISTRY_MIRROR.md`
-  - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
-- Notes: Claims registry and executable task ledger are TOML-first; claims matrix and claims tasks markdown are generated mirrors.
+The Macquart relation connects FRB dispersion measures to redshift via integrated baryon density: DM_cosmic(z) = 935 * integral (1+z')/E(z') dz'. Bisection inversion (DM->z) converges in ~27 iterations. Foundation for comoving distance in ultrametric analysis.
 
-### KM-008: claims_domains
+## I-002: Ultrametric Structure Lives in Representations, Not Scalars
 
-- Strategy: `toml_primary_generated_mirror`
-- Status: `complete`
-- Source markdown:
-  - `docs/claims/CLAIMS_DOMAIN_MAP.csv`
-  - `docs/claims/by_domain/*.md`
-- Authoritative TOML:
-  - `registry/claims_domains.toml`
-- Generated mirrors:
-  - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
-  - `docs/claims/INDEX.md`
-  - `docs/claims/CLAIMS_DOMAIN_MAP.csv`
-  - `docs/claims/by_domain/*.md`
-- Notes: Domain crosswalk and by-domain markdown/csv mirrors are generated from TOML.
+- Date: 2026-02-06
+- Status: verified
+- Sprint: 6
+- Claims: C-071
 
-### KM-009: claim_tickets
+C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using raw DM values. Ultrametricity is a property of hierarchical organization, not scalar distributions. This motivated five new analysis directions testing multi-attribute encodings, temporal cascades, and transformed coordinate spaces.
 
-- Strategy: `toml_primary_generated_mirror`
-- Status: `complete`
-- Source markdown:
-  - `docs/tickets/*.md`
-- Authoritative TOML:
-  - `registry/claim_tickets.toml`
-- Generated mirrors:
-  - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
-  - `docs/tickets/*.md`
-  - `docs/tickets/INDEX.md`
-- Notes: Claims audit ticket metadata and claim linkage are normalized into TOML and rendered back into docs/tickets mirrors.
+## I-003: Existing Rust Crate Ecosystem for Cosmological Analysis
 
-### KM-002: insights
+- Date: 2026-02-06
+- Status: verified
+- Sprint: 6
+- Claims: (none)
 
-- Strategy: `toml_primary_narrative_overlay`
-- Status: `complete`
-- Source markdown:
-  - `docs/INSIGHTS.md`
-- Authoritative TOML:
-  - `registry/insights.toml`
-- Generated mirrors:
-  - `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`
-- Notes: Legacy insights markdown is now generated from TOML registry + narrative overlay.
+Identified key crates preventing reimplementation: kodama 0.3.0 (dendrograms), kiddo 5.2.4 (k-d trees, AVX2), fitsrs 0.4.1 (FITS), rustfft 6.4.1 + realfft 3.5.0 (FFT), votable 0.7.0, satkit 0.9.3. Notable gaps requiring custom implementation: cophenetic correlation, Baire metric, local ultrametricity (Bradley 2025), KDE.
 
-### KM-003: experiments
+## I-004: Kodama Dendrogram and Real Observational Cosmology Infrastructure
 
-- Strategy: `toml_primary_narrative_overlay`
-- Status: `complete`
-- Source markdown:
-  - `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md`
-- Authoritative TOML:
-  - `registry/experiments.toml`
-- Generated mirrors:
-  - `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`
-- Notes: Legacy experiments markdown is now generated from TOML registry + narrative overlay.
+- Date: 2026-02-06
+- Status: verified
+- Sprint: 6
+- Claims: C-200, C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210
 
-### KM-004: operational_trackers
+Kodama returns Dendrogram with Step{cluster1, cluster2, dissimilarity, size}; cophenetic distance c(i,j) = dissimilarity at first merge, enabling cophenetic correlation. Also: first real-data joint fit of Lambda-CDM vs bounce cosmology using 1578 Pantheon+ SNe + 7 DESI DR1 BAO bins. Delta BIC = +7.37 favoring Lambda-CDM. Critical data quality fix: BGS/QSO bins are isotropic-only (not anisotropic).
 
-- Strategy: `toml_primary_markdown_overlay`
-- Status: `complete`
-- Source markdown:
-  - `docs/ROADMAP.md`
-  - `docs/TODO.md`
-  - `docs/NEXT_ACTIONS.md`
-- Authoritative TOML:
-  - `registry/roadmap.toml`
-  - `registry/todo.toml`
-  - `registry/next_actions.toml`
-- Generated mirrors:
-  - `docs/generated/ROADMAP_REGISTRY_MIRROR.md`
-  - `docs/generated/TODO_REGISTRY_MIRROR.md`
-  - `docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md`
-- Notes: Legacy operational markdown is generated from TOML registries + narrative overlays.
+## I-005: Ultrametric Structure is Radio-Transient-Specific (Preliminary)
 
-### KM-005: requirements
+- Date: 2026-02-06
+- Status: superseded
+- Sprint: 6
+- Claims: C-437, C-442
 
-- Strategy: `toml_primary_markdown_overlay`
-- Status: `complete`
-- Source markdown:
-  - `REQUIREMENTS.md`
-  - `docs/REQUIREMENTS.md`
-  - `docs/requirements/*.md`
-- Authoritative TOML:
-  - `registry/requirements.toml`
-- Generated mirrors:
-  - `docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md`
-- Notes: Requirements markdown set is generated from requirements registry + narrative overlay.
+Initial 7-catalog survey with 5K subsampling found only FRB/pulsar catalogs showing significant ultrametric excess. SUPERSEDED by I-011 (GPU 10M-triple sweep): the 5K subsampling destroyed Hipparcos galactic signal, making the conclusion too narrow. The ISM-mediation hypothesis for radio transients remains valid.
 
-### KM-010: markdown_governance
+## I-006: Motif Census Scaling Laws (dim=16..256)
 
-- Strategy: `toml_primary_policy_enforcement`
-- Status: `complete`
-- Source markdown:
-  - `docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md`
-- Authoritative TOML:
-  - `registry/markdown_governance.toml`
-- Generated mirrors:
-  - `docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md`
-- Notes: Governance registry classifies all markdown lifecycle modes and drives header/parity verifiers.
+- Date: 2026-02-06
+- Status: verified
+- Sprint: 6
+- Claims: C-126, C-127, C-128, C-129, C-130
 
-### KM-011: bibliography
+Exact scaling laws for Cayley-Dickson zero-divisor box-kite structure across 5 doublings: n_components = dim/2 - 1, nodes_per_component = dim/2 - 2, n_motif_classes = dim/16, n_K2_components = 3 + log2(dim), K2 part count = dim/4 - 1. NO octahedra beyond dim=16.
 
-- Strategy: `toml_primary_markdown_mirror`
-- Status: `complete`
-- Source markdown:
-  - `docs/BIBLIOGRAPHY.md`
-- Authoritative TOML:
-  - `registry/bibliography.toml`
-- Generated mirrors:
-  - `docs/BIBLIOGRAPHY.md`
-  - `docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md`
-- Notes: Bibliography is TOML-first with generated markdown mirrors.
+## I-007: Kerr Geodesic Integrator Verification Summary
 
-### KM-006: generated_artifacts
+- Date: 2026-02-06
+- Status: verified
+- Sprint: 6
+- Claims: C-028
 
-- Strategy: `artifact_only_no_manual_edit`
-- Status: `active`
-- Source markdown:
-  - `reports/*.md`
-  - `data/artifacts/*.md`
-  - `docs/claims/by_domain/*.md`
-  - `docs/tickets/*_claims_audit.md`
-- Notes: Keep as generated outputs with explicit regeneration commands; do not hand-edit.
+u=1/r regularized Kerr geodesic integrator (Dopri5, Mino time) passes: potential non-negativity, circular photon orbit at 3M, near-horizon infall, a=0.998 stability, r=500 large-distance, shadow area pi*27, asymmetry at a=0.9, coordinate/Mino time monotonicity. Hamiltonian constraint inaccessible from dense output.
 
-### KM-007: research_narratives
+## I-008: Cross-Domain Ultrametric Analysis (5K Subsampling)
 
-- Strategy: `narrative_primary_raw_capture_backup`
-- Status: `active`
-- Source markdown:
-  - `AGENTS.md`
-  - `CLAUDE.md`
-  - `GEMINI.md`
-  - `README.md`
-  - `curated/**/*.md`
-  - `data/csv/README.md`
-- Notes: Residual manual narratives remain for repository governance and curated inputs that should stay human-authored.
+- Date: 2026-02-06
+- Status: superseded
+- Sprint: 7
+- Claims: C-437
 
-### KM-012: external_sources
+9-catalog ultrametric fraction test with 5K subsampling: only CHIME/FRB and ATNF pulsars pass. Hipparcos at null baseline (p=0.438). SUPERSEDED by I-011: GPU sweep with 10M triples shows Hipparcos 48/114 significant at BH-FDR<0.05. The 5K subsampling destroyed the galactic spatial hierarchy signal.
 
-- Strategy: `toml_primary_generated_mirror`
-- Status: `complete`
-- Source markdown:
-  - `docs/external_sources/*.md`
-- Authoritative TOML:
-  - `registry/external_sources.toml`
-- Generated mirrors:
-  - `docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md`
-  - `docs/external_sources/*.md`
-  - `docs/external_sources/INDEX.md`
-- Notes: External source dossiers are TOML-first; markdown under docs/external_sources is generated from registry/external_sources.toml.
+## I-009: Elliptic Integral Crate Eliminates Carlson Port
 
-### KM-013: theory_engineering_narratives
+- Date: 2026-02-06
+- Status: verified
+- Sprint: 6
+- Claims: (none)
 
-- Strategy: `toml_primary_generated_mirror`
-- Status: `complete`
-- Source markdown:
-  - `docs/theory/*.md`
-  - `docs/engineering/*.md`
-- Authoritative TOML:
-  - `registry/research_narratives.toml`
-- Generated mirrors:
-  - `docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md`
-  - `docs/theory/*.md`
-  - `docs/theory/INDEX.md`
-  - `docs/engineering/*.md`
-  - `docs/engineering/INDEX.md`
-- Notes: Theory and engineering narrative dossiers are TOML-first with generated markdown mirrors.
+The ellip crate (1.0.4, BSD-3-Clause) provides all 5 Carlson symmetric forms (RF, RD, RJ, RC, RG) plus Legendre complete/incomplete integrals (K, E, Pi, D, F). Eliminates need to hand-port Carlson from C++ Blackhole codebase. Tested against Boost Math and Wolfram reference values.
 
-### KM-014: book_docs
+## I-010: nalgebra 0.33/0.34 Version Split Blocks Autodiff
 
-- Strategy: `toml_primary_generated_mirror`
-- Status: `complete`
-- Source markdown:
-  - `docs/book/src/**/*.md`
-- Authoritative TOML:
-  - `registry/book_docs.toml`
-- Generated mirrors:
-  - `docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md`
-  - `docs/book/src/**/*.md`
-- Notes: mdBook source pages are TOML-first and rendered back into docs/book/src markdown mirrors.
+- Date: 2026-02-06
+- Status: open
+- Sprint: 6
+- Claims: (none)
 
-### KM-015: docs_root_narratives
+num-dual 0.13.2 (autodiff via dual numbers) requires nalgebra 0.34, while workspace is pinned to 0.33. Decision: defer num-dual, use closed-form Christoffels for known metrics (Schwarzschild, Kerr, Kerr-Newman). num-dual needed only for generic connection computation on arbitrary metrics.
 
-- Strategy: `toml_primary_generated_mirror`
-- Status: `complete`
-- Source markdown:
-  - `docs/*.md`
-- Authoritative TOML:
-  - `registry/docs_root_narratives.toml`
-- Generated mirrors:
-  - `docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md`
-  - `docs/*.md`
-- Notes: Root-level docs narratives are TOML-first and generated back into docs/*.md.
+## I-011: GPU Ultrametric Sweep (9 catalogs)
 
-## Phases
+- Date: 2026-02-07
+- Status: verified
+- Sprint: 7
+- Claims: C-436, C-437, C-438, C-439, C-440
 
-### KMP-P1: inventory_and_capture
+10M triples x 1000 permutations x RTX 4070 Ti via cudarc 0.19. 82/472 tests significant at BH-FDR<0.05 across 7/9 catalogs. Hipparcos: 48/114 (galactic hierarchy), CHIME/FRB: 8/8 (ALL subsets), GWOSC GW: 4/66 (chirp_mass+q). Supersedes I-008 (5K subsampling bias).
 
-- Status: `complete`
-- Deliverables:
-  - registry/knowledge_sources.toml
-  - registry/knowledge/documents.toml
+## I-012: The Pathion Cubic Anomaly
 
-### KMP-P2: curated_operational_registries
+- Date: 2026-02-07
+- Status: verified
+- Sprint: 8
+- Claims: C-445, C-446, C-447, C-448
 
-- Status: `complete`
-- Deliverables:
-  - registry/roadmap.toml
-  - registry/todo.toml
-  - registry/next_actions.toml
-  - registry/requirements.toml
+dim=32 (pathion) 8/7 motif split requires degree-3 GF(2) polynomial, NOT degree 4. Degrees 1,2 fail. This proves the polynomial controlling motif-class partition is genuinely cubic.
 
-### KMP-P3: toml_to_markdown_mirror_exports
+## I-013: The Hierarchy Fingerprint Theorem
 
-- Status: `complete`
-- Deliverables:
-  - docs/generated/*_REGISTRY_MIRROR.md
+- Date: 2026-02-07
+- Status: verified
+- Sprint: 7
+- Claims: C-441, C-442, C-443, C-444, C-449
 
-### KMP-P4: claims_support_normalization
+Ultrametric fraction test is a genuine hierarchy fingerprint: catalogs with known hierarchical structure (Hipparcos proper motions, CHIME DM) show strong signal, while isotropic catalogs (Fermi GBM GRBs) show no signal. The test discriminates physical hierarchy from noise.
 
-- Status: `complete`
-- Deliverables:
-  - registry/claims_tasks.toml
-  - registry/claims_domains.toml
-  - registry/claim_tickets.toml
+## I-014: Cayley-Dickson External Data Cross-Validation
 
-### KMP-P5: policy_hardening
+- Date: 2026-02-07
+- Status: cross-validation-complete
+- Sprint: 8
+- Claims: C-450, C-451, C-452, C-453, C-454, C-455, C-456, C-457
 
-- Status: `active`
-- Deliverables:
-  - Generated-header compliance verifier for TOML mirrors
-  - Governance parity verifier (knowledge_sources vs markdown_governance)
-  - CI checks for mirror freshness
-  - Registry-first make target sequencing
-  - Ticket mirror consistency verifier (registry/claim_tickets.toml <-> docs/tickets/*.md)
+Cross-validated 68 external files against Rust integer-exact computations. Strut table: VERIFIED (C-454). E8 connection: REFUTED (C-455). 8D lattice embedding: VERIFIED at 256/512/1024/2048 (C-452, C-453).
 
-### KMP-P6: legacy_tracker_retirement
+## I-015: Monograph Theses Verification -- Lattice Codebook Filtration
 
-- Status: `pending`
-- Deliverables:
-  - Retire remaining manually-edited markdown trackers after TOML parity review
+- Date: 2026-02-08
+- Status: verified
+- Sprint: 9
+- Claims: C-458, C-459, C-460, C-461, C-462, C-463, C-464, C-465, C-466, C-467
 
-### KMP-P7: markdown_governance_registry
+8 monograph theses (A-H) verified: parity constraints, nesting, prefix-cut transitions, scalar shadow, XOR partner, parity-clique, spectral fingerprints, null-model. S_base = 2187 = 3^7.
 
-- Status: `complete`
-- Deliverables:
-  - src/scripts/analysis/build_markdown_governance_registry.py
-  - registry/markdown_governance.toml
-  - src/verification/verify_markdown_governance_headers.py
-  - src/verification/verify_markdown_governance_parity.py
-  - docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md
+## I-016: De Marrais Emanation Architecture
 
-### KMP-P8: external_sources_registry_normalization
+- Date: 2026-02-08
+- Status: verified
+- Sprint: 10
+- Claims: C-468, C-469, C-470, C-471, C-472, C-473, C-474, C-475
 
-- Status: `complete`
-- Deliverables:
-  - src/scripts/analysis/normalize_external_sources_registry.py
-  - registry/external_sources.toml
-  - docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md
-  - docs/external_sources/*.md
-  - docs/external_sources/INDEX.md
+Implemented L1-L18 emanation layers from de Marrais construction. DMZ = sign-concordance (12 edges/BK), sail-loop = Fano incidence. Oriented Trip Sync universal across all 7 BKs. 113 tests, 4400 lines.
 
-### KMP-P9: theory_engineering_registry_normalization
+## I-017: Cross-Stack Locality and Coxeter Correspondence (E-011/E-012/E-013)
 
-- Status: `complete`
-- Deliverables:
-  - src/scripts/analysis/normalize_research_narratives_registry.py
-  - registry/research_narratives.toml
-  - docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md
-  - docs/theory/*.md
-  - docs/theory/INDEX.md
-  - docs/engineering/*.md
-  - docs/engineering/INDEX.md
+- Date: 2026-02-09
+- Status: partial
+- Sprint: 19
+- Claims: C-476, C-477
 
-### KMP-P10: book_docs_registry_normalization
-
-- Status: `complete`
-- Deliverables:
-  - src/scripts/analysis/normalize_book_docs_registry.py
-  - registry/book_docs.toml
-  - docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md
-  - docs/book/src/**/*.md
-
-### KMP-P11: docs_root_narratives_registry_normalization
-
-- Status: `complete`
-- Deliverables:
-  - src/scripts/analysis/normalize_docs_root_narratives_registry.py
-  - registry/docs_root_narratives.toml
-  - docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md
-  - docs/*.md
-
-## Policies
-
-### KMPOL-001: bootstrap_vs_operational_authoring
-
-- Status: `active`
-- Statement: Markdown->TOML normalization for claims-support registries is bootstrap-only. Operational authoring is TOML-first with generated markdown mirrors.
-- Enforcement:
-  - normalize_claims_support_registries.py requires --bootstrap-from-markdown
-  - make registry excludes registry-normalize-claims from default ingest flow
-  - mirror freshness and governance verifiers run in make registry
+Three experiments testing ALP (C-476) and Sky-Limit-Set (C-477). E-011: ALP holds for sparse constraint graphs (E10 Dynkin p=0.000, ET DMZ p=0.000) but fails for dense graphs (Sedenion ZD p=1.000, edge density 86.7%). E-012: Billiard symbolic dynamics predict spectroscopy behavior (FullFill entropy=0.0, UniformSky entropy=0.44, fill-entropy r=-0.85 at N=5). E-013: A_{N-1} Coxeter group is consistently the best match for ET skybox invariants (rank ratio=1.0, improving match scores at higher N). ALP needs sparsity refinement; Coxeter correspondence is strong but DMZ density match not yet within 10%.
 
 """

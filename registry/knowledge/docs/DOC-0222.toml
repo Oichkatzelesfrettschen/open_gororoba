@@ -3,36 +3,42 @@
 
 [document]
 id = "DOC-0222"
-source_path = "reports/claims_staleness_report.md"
-title = "Claims Staleness Report (2026-02-04)"
+source_path = "reports/claims_id_inventory.md"
+title = "Claims ID Inventory (2026-02-04)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "cf13083bc09cfd789aca13ea3c51b1f9f5b5a3d78644d830389d0067071b470a"
-source_line_count = 18
-source_size_bytes = 358
-content_sha256 = "cf13083bc09cfd789aca13ea3c51b1f9f5b5a3d78644d830389d0067071b470a"
+source_sha256 = "93c01e07456ff805776f19e37ea19d191afbc2f1eae0b0ec0f450a159b9cd736"
+source_line_count = 24
+source_size_bytes = 462
+content_sha256 = "93c01e07456ff805776f19e37ea19d191afbc2f1eae0b0ec0f450a159b9cd736"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Claims Staleness Report (2026-02-04)
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
+# Claims ID Inventory (2026-02-04)
 
 Matrix: `docs/CLAIMS_EVIDENCE_MATRIX.md`
-Total claims parsed: 432
-Stale threshold (days): 30
+Total claim rows parsed: 432
 
-## Unknown last-verified dates
+- Min ID: C-001
+- Max ID: C-432
 
-Rows with missing/invalid last-verified dates, or the sentinel '1970-01-01 (unknown)'.
+## Duplicate claim IDs
 
 - None
 
-## Stale open claims
+## Gaps within min..max
 
-Open claims whose last-verified date is older than the threshold.
+These are missing numeric IDs between the minimum and maximum.
 
 - None
 

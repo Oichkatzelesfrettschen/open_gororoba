@@ -3,144 +3,231 @@
 
 [document]
 id = "DOC-0170"
-source_path = "docs/generated/TODO_REGISTRY_MIRROR.md"
-title = "TODO Registry Mirror"
+source_path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
+title = "Research Narratives Registry Mirror"
 kind = "generated_markdown"
 status = "active"
 migration_priority = "none"
 generated = true
-source_sha256 = "a67758174bfa6756c230842dfcdb642e8f4afb8109b9017baae7559e1f646848"
-source_line_count = 125
-source_size_bytes = 3468
-content_sha256 = "a67758174bfa6756c230842dfcdb642e8f4afb8109b9017baae7559e1f646848"
+source_sha256 = "74ffdb2c558c54e22166fdf7da1fbcbc02977f2e074db1d11dc7639e2894992e"
+source_line_count = 212
+source_size_bytes = 6331
+content_sha256 = "74ffdb2c558c54e22166fdf7da1fbcbc02977f2e074db1d11dc7639e2894992e"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# TODO Registry Mirror
+# Research Narratives Registry Mirror
 
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: TOML registry files under registry/ -->
 
-Authoritative source: `registry/todo.toml`.
+Authoritative source: `registry/research_narratives.toml`.
 
 - Updated: 2026-02-09
-- Sprint: S13 (TOML Centralization and Markdown Governance)
-- Sprint status: `in_progress`
+- Document count: 22
 
-## Tasks
+## Documents
 
-### S13-T01: Build markdown knowledge index
+### RN-001: Metamaterial Warp Chip: Validation Datasheet (Simulated)
 
-- Status: `done`
-- Evidence:
-  - `src/scripts/analysis/build_knowledge_sources_registry.py`
-  - `registry/knowledge_sources.toml`
+- Source markdown: `docs/engineering/DATASHEET_V2.md`
+- Domain: `engineering`
+- Status token: `NARRATIVE`
+- Content kind: `research_note`
+- Verification level: `engineering_narrative`
+- Line count: 37
 
-### S13-T02: Create raw TOML capture for non-generated markdown docs
+### RN-002: Holographic Warp-Gate Fabrication Protocol (v1.0)
 
-- Status: `done`
-- Evidence:
-  - `src/scripts/analysis/migrate_markdown_corpus_to_toml.py`
-  - `registry/knowledge/documents.toml`
+- Source markdown: `docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md`
+- Domain: `engineering`
+- Status token: `SPECIFICATION`
+- Content kind: `specification`
+- Verification level: `engineering_narrative`
+- Line count: 70
 
-### S13-T03: Define authoritative operational TOML registries
+### RN-003: Fetching External Sources (wget-first, offline reproducibility)
 
-- Status: `done`
-- Evidence:
-  - `registry/roadmap.toml`
-  - `registry/todo.toml`
-  - `registry/next_actions.toml`
-  - `registry/requirements.toml`
-  - `registry/claims_tasks.toml`
-  - `registry/claims_domains.toml`
-  - `registry/claim_tickets.toml`
+- Source markdown: `docs/engineering/FETCHING_EXTERNAL_SOURCES.md`
+- Domain: `engineering`
+- Status token: `NARRATIVE`
+- Content kind: `research_note`
+- Verification level: `engineering_narrative`
+- Line count: 66
 
-### S13-T04: Add TOML-first export path for insights markdown mirror
+### RN-004: Gap Closure Report: Repo-Wide Sample Lacunae
 
-- Status: `done`
-- Evidence:
-  - `registry/insights.toml`
-  - `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`
+- Source markdown: `docs/engineering/GAP_CLOSURE_REPORT.md`
+- Domain: `engineering`
+- Status token: `REPORT`
+- Content kind: `engineering_report`
+- Verification level: `engineering_narrative`
+- Line count: 118
 
-### S13-T05: Add TOML-first export path for experiments markdown mirror
+### RN-005: MCP and Skill Audit (2026-02-09)
 
-- Status: `done`
-- Evidence:
-  - `registry/experiments.toml`
-  - `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`
+- Source markdown: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`
+- Domain: `engineering`
+- Status token: `AUDIT`
+- Content kind: `audit_note`
+- Verification level: `engineering_narrative`
+- Line count: 206
 
-### S13-T06: Run registry and quality gates after registry schema changes
+### RN-006: Markdown and TOML Centralization Audit (2026-02-09)
 
-- Status: `partial`
-- Evidence:
-  - `make registry`
-  - `cargo run --release --bin registry-check`
-  - `python3 bin/ascii_check.py --check`
+- Source markdown: `docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md`
+- Domain: `engineering`
+- Status token: `AUDIT`
+- Content kind: `audit_note`
+- Verification level: `engineering_narrative`
+- Line count: 182
 
-### S13-T07: Normalize docs/CLAIMS_TASKS.md into claims task registry
+### RN-007: Elucidation of OptiX and Hardware Acceleration
 
-- Status: `done`
-- Evidence:
-  - `src/scripts/analysis/normalize_claims_support_registries.py`
-  - `registry/claims_tasks.toml`
-  - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
+- Source markdown: `docs/engineering/OPTIX_ELUCIDATION.md`
+- Domain: `engineering`
+- Status token: `NARRATIVE`
+- Content kind: `research_note`
+- Verification level: `engineering_narrative`
+- Line count: 32
 
-### S13-T08: Normalize claims domain map and by-domain markdown into TOML
+### RN-008: P-adic Signal Theory & Kozyrev-Sedenion Synthesis
 
-- Status: `done`
-- Evidence:
-  - `src/scripts/analysis/normalize_claims_support_registries.py`
-  - `registry/claims_domains.toml`
-  - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
+- Source markdown: `docs/engineering/PADIC_SIGNAL_THEORY.md`
+- Domain: `engineering`
+- Status token: `NARRATIVE`
+- Content kind: `theory_note`
+- Verification level: `engineering_narrative`
+- Line count: 92
 
-### S13-T09: Normalize claims audit tickets into TOML with claim linkages
+### RN-009: Phase 10: Multiphysics & Connectivity Deep Dive
 
-- Status: `done`
-- Evidence:
-  - `src/scripts/analysis/normalize_claims_support_registries.py`
-  - `registry/claim_tickets.toml`
-  - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
+- Source markdown: `docs/engineering/PHASE_10_MULTIPHYSICS.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 43
 
-### S13-T10: Remove non-deterministic timestamp churn from registry generators
+### RN-010: Phase 11 Report: Visualization & Integrity
 
-- Status: `done`
-- Evidence:
-  - `src/scripts/analysis/build_knowledge_sources_registry.py`
-  - `src/scripts/analysis/migrate_markdown_corpus_to_toml.py`
-  - `src/scripts/analysis/export_registry_markdown_mirrors.py`
+- Source markdown: `docs/engineering/PHASE_11_VISUALIZATION.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 30
 
-### S13-T11: Decide policy for legacy narrative markdown overlays
+### RN-011: Phase 12 Report: Holographic Warp Renderer
 
-- Status: `pending`
-- Evidence:
-  - `registry/knowledge_migration_plan.toml`
-  - `docs/NEXT_ACTIONS.md`
-  - `docs/ROADMAP.md`
+- Source markdown: `docs/engineering/PHASE_12_RENDERER.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 25
 
-### S13-T12: Invert make registry to TOML-first sequencing
+### RN-012: Phase 13: The Grand Critique & Synthesis
 
-- Status: `done`
-- Evidence:
-  - `Makefile`
-  - `src/scripts/analysis/export_registry_markdown_mirrors.py`
+- Source markdown: `docs/engineering/PHASE_13_GRAND_CRITIQUE.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 32
 
-### S13-T13: Generate legacy claims-support docs from TOML registries
+### RN-013: Phase 14: The \"Endless\" Deep Dive
 
-- Status: `done`
-- Evidence:
-  - `docs/CLAIMS_TASKS.md`
-  - `docs/claims/INDEX.md`
-  - `docs/claims/CLAIMS_DOMAIN_MAP.csv`
-  - `docs/claims/by_domain/algebra.md`
-  - `src/scripts/analysis/export_registry_markdown_mirrors.py`
+- Source markdown: `docs/engineering/PHASE_14_DEEP_DIVE.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 22
 
-### S13-T14: Add mirror freshness verifier to registry quality gate
+### RN-014: Phase 15: The \"Resurrection\" Report
 
-- Status: `done`
-- Evidence:
-  - `src/verification/verify_registry_mirror_freshness.py`
-  - `Makefile`
+- Source markdown: `docs/engineering/PHASE_15_RESURRECTION.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 26
+
+### RN-015: Phase 16: Final Validation & Synthesis
+
+- Source markdown: `docs/engineering/PHASE_16_FINAL_VALIDATION.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `validation_summary`
+- Line count: 25
+
+### RN-016: Phase 6 Engineering Implementation Report
+
+- Source markdown: `docs/engineering/PHASE_6_IMPLEMENTATION.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 69
+- Claim refs (3): C-042, C-050, C-400
+
+### RN-017: Phase 7 Engineering & Synthesis Report
+
+- Source markdown: `docs/engineering/PHASE_7_REPORT.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 45
+
+### RN-018: Phase 8: Holographic Warp & Sedenion Synthesis
+
+- Source markdown: `docs/engineering/PHASE_8_SYNTHESIS.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 40
+
+### RN-019: Physics Validation Report
+
+- Source markdown: `docs/engineering/PHYSICS_VALIDATION_REPORT.md`
+- Domain: `engineering`
+- Status token: `REPORT`
+- Content kind: `engineering_report`
+- Verification level: `validation_summary`
+- Line count: 23
+
+### RN-020: Warp Spaceplate: System Engineering Specification
+
+- Source markdown: `docs/engineering/WARP_SPACEPLATE_SPECS.md`
+- Domain: `engineering`
+- Status token: `SPECIFICATION`
+- Content kind: `specification`
+- Verification level: `engineering_narrative`
+- Line count: 61
+
+### RN-021: Claims Methodology and Scientific Rigor
+
+- Source markdown: `docs/theory/CLAIMS_METHODOLOGY.md`
+- Domain: `theory`
+- Status token: `METHODOLOGY`
+- Content kind: `theory_note`
+- Verification level: `theoretical`
+- Line count: 175
+- Claim refs (4): C-007, C-008, C-077, C-091
+
+### RN-022: Warp Ring Physics Reconciliation (Phase 7.0)
+
+- Source markdown: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`
+- Domain: `theory`
+- Status token: `RECONCILIATION`
+- Content kind: `theory_note`
+- Verification level: `theoretical`
+- Line count: 40
 
 """

@@ -3,61 +3,69 @@
 
 [document]
 id = "DOC-0237"
-source_path = "reports/script_contracts_inventory.md"
-title = "Script contract inventory"
+source_path = "reports/repo_inventory.md"
+title = "Repo Inventory (2026-02-01)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "5d1bc3fdab047a671d535cb442c02d24bdba1b8e1ce04a6aa2ed50ca2896174b"
-source_line_count = 42
-source_size_bytes = 3213
-content_sha256 = "5d1bc3fdab047a671d535cb442c02d24bdba1b8e1ce04a6aa2ed50ca2896174b"
+source_sha256 = "e0f8cf2eaa632194fbac0cbb9d316993bc820060b07e89932b3e9296e1cc6575"
+source_line_count = 50
+source_size_bytes = 1943
+content_sha256 = "e0f8cf2eaa632194fbac0cbb9d316993bc820060b07e89932b3e9296e1cc6575"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Script contract inventory
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-Generated from src/scripts/**.py (static scan; scripts not executed).
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-## Summary
+# Repo Inventory (2026-02-01)
 
-- Total scripts: 319
-- Networks: {\"forbidden\": 290, \"gated\": 29}
-- Scripts importing requests/astroquery: 13
+Scope: `/home/eirikr/Playground/ChatGPT Experiments`
 
-## Scripts (network != forbidden)
+## Top-level directories (depth<=2)
 
-- src/scripts/data/fetch_aflow_materials.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_agn_reverb_masses.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_atnf_pulsars_full.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_chime_frb.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_cms_dimuon.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_cms_higgs_diphoton.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_compact_objects.py: network=gated, inputs=0, outputs=2 (inferred)
-- src/scripts/data/fetch_cosmology_data.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_des_y6_shear.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_desi_dr1_bao.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_emergence_layers_sources.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_external_data.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_fermi_grb.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_gwtc3_confident.py: network=gated, inputs=0, outputs=0 (inferred)
-- src/scripts/data/fetch_gwtc3_skylocalizations_zenodo.py: network=gated, inputs=2, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_jwst_sne.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_ligo_gwpy.py: network=gated, inputs=1, outputs=1 (inferred)
-- src/scripts/data/fetch_materials_jarvis_subset.py: network=gated, inputs=1, outputs=1 (inferred)
-- src/scripts/data/fetch_materials_nomad_subset.py: network=gated, inputs=2, outputs=1 (imports-network-client, inferred)
-- src/scripts/data/fetch_mcgill_magnetars.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_nanograv_15yr.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_neutrino_params.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_o4_events.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_observatory_data.py: network=gated, inputs=3, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_pdg_particle_data.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_planck_2018_chains.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_planck_2018_spectra.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_pulsars_rigorous.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_references.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- `archive/` (legacy snapshots)
+- `benchmarks/` (microbenchmarks and study harnesses)
+- `bin/` (repo scripts and verifiers)
+- `convos/` (immutable chat transcripts, may contain Unicode)
+- `cpp/` (C++ components)
+- `curated/` (curated artifacts and theory folders)
+- `data/` (artifacts, cached externals with provenance, reproduced datasets)
+- `docker/` (container build for quantum environment)
+- `docs/` (repo-authored documentation; ASCII-only)
+  - `docs/convos/` (ASCII-only extracts derived from `convos/` PDFs)
+  - `docs/external_sources/` (external-source indices and summaries; excluded from overclaim gate)
+  - `docs/preregistered/` (preregistered plans; excluded from overclaim gate)
+- `examples/` (small runnable examples)
+- `reports/` (generated human-readable reports; ASCII-only)
+- `src/` (Python source code)
+- `tests/` (pytest suite)
+
+## File counts (approx; excludes `.git/`, `venv/`, and caches)
+
+- `src/`: ~987 files
+- `data/`: ~688 files
+- `curated/`: ~621 files
+- `tests/`: ~577 files
+- `docs/`: ~212 files
+- `convos/`: ~20 files
+
+## Repo gates (high level)
+
+- ASCII-only gate: `make ascii-check` (repo-authored content; `convos/` exempt)
+- Warnings-as-errors gate: run checks/tests with `PYTHONWARNINGS=error`
+- Overclaim-phrase gate: `src/verification/verify_no_overclaim_phrases.py`
+- External provenance coverage: `src/verification/verify_external_provenance_coverage.py`
+
+## Working tree notes
+
+If `git status` shows many modifications/deletions/untracked files, treat this as a staging area:
+the evidence-first workflow expects incremental batches, each ending with `PYTHONWARNINGS=error make check`.
 
 """
