@@ -240,6 +240,12 @@ pub use e10_octonion::{
     CayleyBasis, default_cayley_basis, verify_cayley_integer_norms,
     simple_root_products, dynkin_fano_correspondence,
     optimal_cayley_basis, dynkin_fano_null_summary,
+    // Fano overlap graph (Engine B)
+    FanoOverlapGraph, GraphEdgeComparison,
+    build_fano_overlap_graph, compare_8x8_graphs, e8_dynkin_adjacency,
+    compare_fano_dynkin, build_e8_transition_graph,
+    symmetrize_transition_graph, compare_fano_transitions,
+    optimal_fano_overlap_basis,
 };
 
 pub use billiard_stats::{
