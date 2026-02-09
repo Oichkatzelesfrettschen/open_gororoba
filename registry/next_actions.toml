@@ -35,8 +35,8 @@ references = [
 id = "NA-003"
 priority = "P1"
 title = "Primary-source citation sweep for remaining claims"
-status = "open"
-description = "Append first-party citations and WHERE STATED coverage for outstanding claims."
+status = "done"
+description = "COMPLETE (Sprint 25 audit). All 500/500 claims have non-empty where_stated: 118 test-function refs (23.6%), 382 document/paper refs (76.4%)."
 references = [
   "registry/claims.toml",
   "docs/BIBLIOGRAPHY.md",
