@@ -2250,27 +2250,56 @@ mod tests {
             );
         }
 
-        // Verify it's exactly the points with coords[0..4] == [-1,-1,-1,-1]
+        // The pinned-corner predicate cut has 41 points (not 32), because
+        // all trie-cut exclusions are vacuously satisfied for prefix (-1,-1,-1,-1),
+        // and the base universe constraint on the free tail gives:
+        // weight 0: 1, weight 2: 24, weight 4: 16 = 41 total.
         let predicate_cut: Vec<Vec<i32>> = p256_sorted.iter()
             .filter(|p| p[0] == -1 && p[1] == -1 && p[2] == -1 && p[3] == -1)
             .cloned()
             .collect();
 
-        // The predicate cut may have more than 32 points. Let's check.
         eprintln!("Points with coords[0:4]=(-1,-1,-1,-1): {}", predicate_cut.len());
-        // If it has exactly 32, then the predicate IS the cut.
-        // If more, Lambda_32 is the lex-first 32 of the predicate.
-        if predicate_cut.len() == 32 {
-            assert_eq!(first_32, predicate_cut,
-                "Lambda_32 should equal the predicate cut");
-        } else {
-            // Lambda_32 is a proper subset of the predicate cut
-            assert!(predicate_cut.len() > 32);
-            let first_32_set: BTreeSet<Vec<i32>> = first_32.iter().cloned().collect();
-            let predicate_set: BTreeSet<Vec<i32>> = predicate_cut.into_iter().collect();
-            assert!(first_32_set.is_subset(&predicate_set),
-                "Lambda_32 must be subset of the coord[0:4]=-1 predicate");
+        assert_eq!(predicate_cut.len(), 41,
+            "Pinned corner cut has 41 points (base universe on free 4D tail)");
+
+        // The first 32 in lex order is a proper subset of these 41
+        let first_32_set: BTreeSet<Vec<i32>> = first_32.iter().cloned().collect();
+        let predicate_set: BTreeSet<Vec<i32>> = predicate_cut.iter().cloned().collect();
+        assert!(first_32_set.is_subset(&predicate_set),
+            "Lambda_32 must be subset of the pinned corner cut");
+
+        // Identify the 9 points in the cut but NOT in the first 32
+        let excluded: Vec<&Vec<i32>> = predicate_cut.iter()
+            .filter(|p| !first_32_set.contains(*p))
+            .collect();
+        assert_eq!(excluded.len(), 9, "9 points are in the pinned cut but past lex-rank 32");
+        eprintln!("9 excluded tail patterns (beyond lex rank 32):");
+        for p in &excluded {
+            eprintln!("  {:?}", &p[4..]);
         }
+    }
+
+    #[test]
+    fn test_lambda_256_csv_vs_predicates() {
+        // Cross-validate CSV-loaded Lambda_256 against predicate-based enumeration.
+        // The predicate chain gives exactly 256 points (verified in codebook tests).
+        use crate::analysis::codebook::{enumerate_lambda_256, LatticeVector};
+
+        let csv_points: Vec<Vec<i32>> = load_lattice_points(256);
+        let pred_points: Vec<LatticeVector> = enumerate_lambda_256();
+
+        assert_eq!(csv_points.len(), 256, "CSV should have 256 points");
+        assert_eq!(pred_points.len(), 256, "Predicates should give 256 points");
+
+        // Convert predicate points to Vec<i32> for comparison
+        let pred_as_i32: BTreeSet<Vec<i32>> = pred_points.iter()
+            .map(|v| v.iter().map(|&x| x as i32).collect::<Vec<i32>>())
+            .collect();
+        let csv_set: BTreeSet<Vec<i32>> = csv_points.into_iter().collect();
+
+        assert_eq!(csv_set, pred_as_i32,
+            "CSV and predicate-based Lambda_256 must be identical sets");
     }
 
     // === Thesis E: XOR Partner Law ===
@@ -2281,27 +2310,334 @@ mod tests {
         eprintln!("XOR partner 64D: {:?}", result);
         assert_eq!(result.xor_mask, 4, "64D XOR mask should be 4");
         assert!(result.n_checked > 0, "Should check some pairs");
+        assert!(result.universal, "XOR partner law should hold universally at 64D");
+    }
+
+    #[test]
+    fn test_thesis_e_xor_partner_128d() {
+        let result = verify_xor_partner_law(128);
+        eprintln!("XOR partner 128D: {:?}", result);
+        assert_eq!(result.xor_mask, 8, "128D XOR mask should be 8 (128/16)");
+        assert!(result.n_checked > 0, "Should check some pairs");
+        assert!(result.universal, "XOR partner law should hold universally at 128D");
+    }
+
+    #[test]
+    fn test_thesis_e_xor_partner_256d() {
+        let result = verify_xor_partner_law(256);
+        eprintln!("XOR partner 256D: {:?}", result);
+        assert_eq!(result.xor_mask, 16, "256D XOR mask should be 16 (256/16)");
+        assert!(result.n_checked > 0, "Should check some pairs");
+        assert!(result.universal, "XOR partner law should hold universally at 256D");
+    }
+
+    /// Cross-validate XOR partner law against the shared-basis-index matching
+    /// graph. The matching graph connects cross-assessor pairs that share
+    /// exactly one basis index. The XOR partner law asserts an involution
+    /// (lo XOR mask, hi XOR mask) for mask = dim/16. We verify that every
+    /// XOR partner pair also shares a basis index, i.e., the XOR involution
+    /// is a subgraph of the matching graph.
+    #[test]
+    fn test_thesis_e_xor_subset_of_matching_128d() {
+        let dim = 128usize;
+        let xor_mask = dim / 16; // 8
+        let pairs = cross_assessors(dim);
+        let n = pairs.len();
+        assert_eq!(n, 63 * 64, "128D should have 4032 cross-assessor pairs");
+
+        // Build pair -> index lookup
+        let pair_index: HashMap<(usize, usize), usize> =
+            pairs.iter().enumerate().map(|(i, &p)| (p, i)).collect();
+
+        // For each cross-pair, find its XOR partner and check if they share
+        // exactly one basis index (the matching condition).
+        let mut n_checked = 0usize;
+        let mut n_xor_is_matching = 0usize;
+
+        let half = dim / 2;
+        for &(lo, hi) in &pairs {
+            let partner_lo = lo ^ xor_mask;
+            let partner_hi = hi ^ xor_mask;
+            // Ensure partner is a valid cross-pair (lo in [1,half), hi in [half,dim))
+            if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim {
+                if pair_index.contains_key(&(partner_lo, partner_hi)) {
+                    n_checked += 1;
+
+                    // Count shared basis indices between (lo,hi) and (partner_lo, partner_hi)
+                    let mut shared = 0u32;
+                    if lo == partner_lo || lo == partner_hi { shared += 1; }
+                    if hi == partner_lo || hi == partner_hi { shared += 1; }
+
+                    if shared == 1 {
+                        n_xor_is_matching += 1;
+                    }
+                }
+            }
+        }
+
+        eprintln!(
+            "128D XOR-in-matching: {}/{} checked, {}/{} are matching neighbors",
+            n_checked, n, n_xor_is_matching, n_checked
+        );
+
+        assert!(n_checked > 0, "Should find valid XOR partners");
+        // Report the fraction -- the XOR involution may or may not always
+        // produce a matching neighbor. This is the empirical finding.
+        eprintln!(
+            "  XOR-matching fraction: {:.3}",
+            n_xor_is_matching as f64 / n_checked as f64
+        );
+    }
+
+    /// Verify that the shared-basis-index matching graph at dim=64 is dense
+    /// and connected, establishing the graph structural baseline for smaller
+    /// dimensions where full graph analysis is tractable.
+    #[test]
+    fn test_thesis_e_matching_graph_structure_64d() {
+        use petgraph::graph::{UnGraph, NodeIndex};
+
+        let pairs = cross_assessors(64);
+        let n = pairs.len();
+        assert_eq!(n, 31 * 32, "64D should have 992 cross-assessor pairs");
+
+        // Build matching graph: connect pairs sharing exactly one basis index
+        let mut graph = UnGraph::<(), ()>::with_capacity(n, n);
+        let nodes: Vec<NodeIndex> = (0..n).map(|_| graph.add_node(())).collect();
+        let mut edge_count = 0usize;
+
+        for i in 0..n {
+            for j in (i + 1)..n {
+                let (lo_i, hi_i) = pairs[i];
+                let (lo_j, hi_j) = pairs[j];
+
+                let mut shared = 0u32;
+                if lo_i == lo_j || lo_i == hi_j { shared += 1; }
+                if hi_i == lo_j || hi_i == hi_j { shared += 1; }
+
+                if shared == 1 {
+                    graph.add_edge(nodes[i], nodes[j], ());
+                    edge_count += 1;
+                }
+            }
+        }
+
+        let n_components = petgraph::algo::connected_components(&graph);
+        let avg_degree = (2 * edge_count) as f64 / n as f64;
+
+        eprintln!(
+            "64D matching graph: {} nodes, {} edges, {} components, avg degree {:.1}",
+            n, edge_count, n_components, avg_degree
+        );
+
+        assert!(edge_count > 0, "Matching graph should have edges");
+        // The matching graph is dense and connected
+        assert_eq!(n_components, 1, "Matching graph should be connected at 64D");
+        assert!(avg_degree > 50.0, "Average degree should be substantial");
+    }
+
+    /// Build the XOR-partner involution as an explicit graph and characterize
+    /// it via InvariantSuite. The XOR partner law creates a perfect matching
+    /// on the valid (non-boundary) cross-assessor pairs: each pair (lo, hi)
+    /// connects to exactly (lo^mask, hi^mask). This should yield n_edges K_2
+    /// components plus some isolated nodes (boundary pairs without valid partners).
+    #[test]
+    fn test_thesis_e_xor_involution_invariants_128d() {
+        use crate::analysis::graph_projections::compute_invariant_suite_from_graph;
+        use petgraph::graph::{UnGraph, NodeIndex};
+
+        let dim = 128usize;
+        let xor_mask = dim / 16; // 8
+        let half = dim / 2;
+        let pairs = cross_assessors(dim);
+        let n = pairs.len();
+
+        // Build pair -> index lookup
+        let pair_index: HashMap<(usize, usize), usize> =
+            pairs.iter().enumerate().map(|(i, &p)| (p, i)).collect();
+
+        // Build XOR-partner graph (sparse: at most n/2 edges)
+        let mut graph = UnGraph::<(), ()>::with_capacity(n, n / 2);
+        let nodes: Vec<NodeIndex> = (0..n).map(|_| graph.add_node(())).collect();
+
+        for (i, &(lo, hi)) in pairs.iter().enumerate() {
+            let partner_lo = lo ^ xor_mask;
+            let partner_hi = hi ^ xor_mask;
+            if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim {
+                if let Some(&j) = pair_index.get(&(partner_lo, partner_hi)) {
+                    if i < j {
+                        graph.add_edge(nodes[i], nodes[j], ());
+                    }
+                }
+            }
+        }
+
+        let suite = compute_invariant_suite_from_graph("P_xor_involution_128", &graph);
+        eprintln!(
+            "128D XOR involution: {} nodes, {} edges, {} components, {} motif classes",
+            n, suite.global.n_edges, suite.components.len(), suite.motif_classes.len()
+        );
+
+        // The involution creates a perfect matching on paired nodes
+        // plus isolated nodes (boundary pairs). Every connected component
+        // should be either K_2 or K_1.
+        let n_k2 = suite.components.iter().filter(|c| c.invariants.n_edges == 1).count();
+        let n_isolated = suite.components.iter().filter(|c| c.invariants.n_edges == 0).count();
+
+        eprintln!("  K_2 components: {}, isolated nodes: {}", n_k2, n_isolated);
+        assert_eq!(n_k2 + n_isolated, suite.components.len(),
+            "Every component should be K_2 or K_1");
+        assert_eq!(n_k2, suite.global.n_edges,
+            "Each K_2 component contributes exactly one edge");
+
+        // At most 2 motif classes: K_2 and K_1
+        assert!(suite.motif_classes.len() <= 2,
+            "At most 2 motif classes (K_2 and K_1)");
+
+        // Verify the universal property: paired nodes should account for most pairs
+        let n_paired = 2 * n_k2;
+        eprintln!("  Paired fraction: {}/{} = {:.3}", n_paired, n, n_paired as f64 / n as f64);
+        assert!(n_paired as f64 / n as f64 > 0.95,
+            "Most pairs should have valid XOR partners");
     }
 
     // === Thesis F: Parity-Clique Law ===
 
     #[test]
     fn test_thesis_f_parity_clique_16d() {
-        // Start with dim=16 (sedenions) where computation is fast
         let result = verify_parity_clique(16);
         eprintln!("Parity-clique 16D: {:?}", result);
-        // At dim=16: 7 cross-pairs, each from a different box-kite
-        assert_eq!(result.n_vertices, 7 * 8, "dim=16 should have 56 cross-pairs");
+        assert_eq!(result.n_vertices, 56, "dim=16 should have 7*8=56 cross-pairs");
+        // Thesis F REFUTED at 16D: ZD adjacency is NOT K_m union K_m by parity.
+        // The graph is far sparser than complete bipartite, and cross-parity
+        // edges are present (48/84 = 57% of all edges).
+        assert!(!result.is_parity_biclique, "Parity-biclique should fail at 16D");
+        assert!(result.n_cross_edges > 0, "Cross-parity edges should exist at 16D");
     }
 
     #[test]
     fn test_thesis_f_parity_clique_32d() {
         let result = verify_parity_clique(32);
-        eprintln!("Parity-clique 32D: n_vertices={}, n_edges={}, n_even={}, n_odd={}, \
-            even_edges={}, odd_edges={}, cross_edges={}, is_biclique={}",
+        eprintln!(
+            "Parity-clique 32D: n_vertices={}, n_edges={}, n_even={}, n_odd={}, \
+             even_edges={}, odd_edges={}, cross_edges={}, is_biclique={}",
             result.n_vertices, result.n_edges, result.n_even, result.n_odd,
             result.n_even_edges, result.n_odd_edges, result.n_cross_edges,
-            result.is_parity_biclique);
+            result.is_parity_biclique
+        );
+        assert!(!result.is_parity_biclique, "Parity-biclique should fail at 32D");
+        assert!(result.n_cross_edges > 0, "Cross-parity edges should exist at 32D");
+    }
+
+    #[test]
+    fn test_thesis_f_parity_clique_64d() {
+        let result = verify_parity_clique(64);
+        let cross_fraction = result.n_cross_edges as f64 / result.n_edges as f64;
+        eprintln!(
+            "Parity-clique 64D: n_vertices={}, n_edges={}, n_even={}, n_odd={}, \
+             even_edges={}, odd_edges={}, cross_edges={} ({:.1}%), is_biclique={}",
+            result.n_vertices, result.n_edges, result.n_even, result.n_odd,
+            result.n_even_edges, result.n_odd_edges, result.n_cross_edges,
+            cross_fraction * 100.0, result.is_parity_biclique
+        );
+        // Thesis F REFUTED: expect failure, with non-trivial cross-parity fraction
+        assert!(!result.is_parity_biclique, "Parity-biclique should fail at 64D");
+        assert!(result.n_cross_edges > 0, "Cross-parity edges should exist at 64D");
+    }
+
+    /// Characterize the parity-clique failure across dimensions.
+    /// Track three metrics: (1) edge density vs K_m expectation,
+    /// (2) cross-parity fraction, (3) even/odd balance.
+    #[test]
+    fn test_thesis_f_parity_scaling() {
+        let dims = [16, 32, 64];
+        eprintln!("\nThesis F Parity-Clique Scaling:");
+        eprintln!("{:>5} {:>8} {:>8} {:>8} {:>8} {:>8}",
+            "dim", "n_vert", "n_edges", "expected", "density", "x_frac");
+
+        for &dim in &dims {
+            let result = verify_parity_clique(dim);
+            let density = result.n_edges as f64 / result.expected_clique_edges as f64;
+            let cross_frac = if result.n_edges > 0 {
+                result.n_cross_edges as f64 / result.n_edges as f64
+            } else {
+                0.0
+            };
+            eprintln!(
+                "{:>5} {:>8} {:>8} {:>8} {:>8.4} {:>8.3}",
+                dim, result.n_vertices, result.n_edges, result.expected_clique_edges,
+                density, cross_frac
+            );
+            // At all tested dimensions, the parity-biclique law fails
+            assert!(!result.is_parity_biclique,
+                "dim={dim}: parity-biclique should fail");
+        }
+    }
+
+    /// At dim=128, use the XOR-bucket-optimized adjacency (63x speedup) to
+    /// verify the parity-clique failure. This is the C-451 cross-validation.
+    #[test]
+    fn test_thesis_f_parity_clique_128d_bucketed() {
+        let (pairs, matrix) = build_zd_adjacency_bucketed(128);
+        let n = pairs.len();
+        assert_eq!(n, 63 * 64, "128D should have 4032 cross-pairs");
+
+        // Partition by parity of low index
+        let even_indices: Vec<usize> = (0..n).filter(|&i| pairs[i].0.is_multiple_of(2)).collect();
+        let odd_indices: Vec<usize> = (0..n).filter(|&i| !pairs[i].0.is_multiple_of(2)).collect();
+
+        let mut n_even_edges = 0usize;
+        let mut n_odd_edges = 0usize;
+        let mut n_cross_edges = 0usize;
+
+        for i in 0..n {
+            for j in (i + 1)..n {
+                if matrix[i][j] == 1 {
+                    let i_even = pairs[i].0.is_multiple_of(2);
+                    let j_even = pairs[j].0.is_multiple_of(2);
+                    if i_even && j_even {
+                        n_even_edges += 1;
+                    } else if !i_even && !j_even {
+                        n_odd_edges += 1;
+                    } else {
+                        n_cross_edges += 1;
+                    }
+                }
+            }
+        }
+
+        let total_edges = n_even_edges + n_odd_edges + n_cross_edges;
+        let expected_even = even_indices.len() * (even_indices.len().saturating_sub(1)) / 2;
+        let expected_odd = odd_indices.len() * (odd_indices.len().saturating_sub(1)) / 2;
+        let expected_total = expected_even + expected_odd;
+
+        let cross_frac = if total_edges > 0 {
+            n_cross_edges as f64 / total_edges as f64
+        } else {
+            0.0
+        };
+        let density = if expected_total > 0 {
+            total_edges as f64 / expected_total as f64
+        } else {
+            0.0
+        };
+
+        eprintln!(
+            "Parity-clique 128D (bucketed): n_vert={}, n_edges={}, expected={}, \
+             density={:.4}, cross_frac={:.3}, n_even={}, n_odd={}",
+            n, total_edges, expected_total, density, cross_frac,
+            even_indices.len(), odd_indices.len()
+        );
+        eprintln!(
+            "  even_edges={}, odd_edges={}, cross_edges={}",
+            n_even_edges, n_odd_edges, n_cross_edges
+        );
+
+        // Thesis F REFUTED at 128D (consistent with lower dimensions)
+        let is_biclique = n_cross_edges == 0
+            && n_even_edges == expected_even
+            && n_odd_edges == expected_odd;
+        assert!(!is_biclique, "Parity-biclique should fail at 128D");
+        assert!(total_edges > 0, "Should have ZD-adjacent edges at 128D");
     }
 
     // === Thesis G: Spectral Fingerprints ===

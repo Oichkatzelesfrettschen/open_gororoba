@@ -810,4 +810,211 @@ mod tests {
             assert_eq!(c.len(), 1);
         }
     }
+
+    // ====================================================================
+    // Cross-validation: InvariantSuite vs MotifComponent
+    //
+    // These tests convert each MotifComponent to a petgraph UnGraph, then
+    // compute GraphInvariants via compute_graph_invariants.  The results
+    // must match the MotifComponent's own computed invariants (spectrum,
+    // triangles, diameter, girth, degree sequence).
+    // ====================================================================
+
+    use crate::analysis::boxkites::motif_components_for_cross_assessors;
+
+    /// Helper: compare two sorted spectra within tolerance.
+    fn spectra_match(a: &[f64], b: &[f64], tol: f64) -> bool {
+        if a.len() != b.len() {
+            return false;
+        }
+        a.iter().zip(b.iter()).all(|(x, y)| (x - y).abs() < tol)
+    }
+
+    #[test]
+    fn test_cross_validate_dim16() {
+        let comps = motif_components_for_cross_assessors(16);
+        assert_eq!(comps.len(), 7, "dim=16 must have 7 components");
+
+        for (i, mc) in comps.iter().enumerate() {
+            let graph = mc.to_petgraph();
+            let inv = compute_graph_invariants(&graph);
+
+            // Structural counts
+            assert_eq!(inv.n_nodes, mc.nodes.len(),
+                "dim=16 comp {i}: node count mismatch");
+            assert_eq!(inv.n_edges, mc.edges.len(),
+                "dim=16 comp {i}: edge count mismatch");
+            assert_eq!(inv.n_components, 1,
+                "dim=16 comp {i}: must be single connected component");
+
+            // Degree sequence
+            assert_eq!(inv.degrees, mc.degree_sequence(),
+                "dim=16 comp {i}: degree sequence mismatch");
+
+            // Triangle count
+            assert_eq!(inv.triangle_count, mc.triangle_count(),
+                "dim=16 comp {i}: triangle count mismatch");
+
+            // Diameter
+            let mc_diam = mc.diameter();
+            assert_eq!(inv.diameter, Some(mc_diam),
+                "dim=16 comp {i}: diameter mismatch");
+
+            // Girth
+            let mc_girth = mc.girth();
+            let expected_girth = if mc_girth == usize::MAX { None } else { Some(mc_girth) };
+            assert_eq!(inv.girth, expected_girth,
+                "dim=16 comp {i}: girth mismatch");
+
+            // Spectrum (ascending in GraphInvariants, descending in MotifComponent)
+            let mut mc_spec = mc.spectrum();
+            mc_spec.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            assert!(spectra_match(&inv.spectrum, &mc_spec, 1e-8),
+                "dim=16 comp {i}: spectrum mismatch");
+        }
+    }
+
+    #[test]
+    fn test_cross_validate_dim32() {
+        let comps = motif_components_for_cross_assessors(32);
+        assert_eq!(comps.len(), 15, "dim=32 must have 15 components");
+
+        for (i, mc) in comps.iter().enumerate() {
+            let graph = mc.to_petgraph();
+            let inv = compute_graph_invariants(&graph);
+
+            assert_eq!(inv.n_nodes, mc.nodes.len(),
+                "dim=32 comp {i}: node count");
+            assert_eq!(inv.n_edges, mc.edges.len(),
+                "dim=32 comp {i}: edge count");
+            assert_eq!(inv.n_components, 1,
+                "dim=32 comp {i}: connected");
+            assert_eq!(inv.degrees, mc.degree_sequence(),
+                "dim=32 comp {i}: degrees");
+            assert_eq!(inv.triangle_count, mc.triangle_count(),
+                "dim=32 comp {i}: triangles");
+            assert_eq!(inv.diameter, Some(mc.diameter()),
+                "dim=32 comp {i}: diameter");
+
+            let mc_girth = mc.girth();
+            let expected_girth = if mc_girth == usize::MAX { None } else { Some(mc_girth) };
+            assert_eq!(inv.girth, expected_girth,
+                "dim=32 comp {i}: girth");
+
+            let mut mc_spec = mc.spectrum();
+            mc_spec.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            assert!(spectra_match(&inv.spectrum, &mc_spec, 1e-8),
+                "dim=32 comp {i}: spectrum");
+        }
+    }
+
+    #[test]
+    fn test_cross_validate_dim64() {
+        let comps = motif_components_for_cross_assessors(64);
+        assert_eq!(comps.len(), 31, "dim=64 must have 31 components");
+
+        for (i, mc) in comps.iter().enumerate() {
+            let graph = mc.to_petgraph();
+            let inv = compute_graph_invariants(&graph);
+
+            assert_eq!(inv.n_nodes, mc.nodes.len(),
+                "dim=64 comp {i}: node count");
+            assert_eq!(inv.n_edges, mc.edges.len(),
+                "dim=64 comp {i}: edge count");
+            assert_eq!(inv.n_components, 1,
+                "dim=64 comp {i}: connected");
+            assert_eq!(inv.degrees, mc.degree_sequence(),
+                "dim=64 comp {i}: degrees");
+            assert_eq!(inv.triangle_count, mc.triangle_count(),
+                "dim=64 comp {i}: triangles");
+            assert_eq!(inv.diameter, Some(mc.diameter()),
+                "dim=64 comp {i}: diameter");
+
+            let mc_girth = mc.girth();
+            let expected_girth = if mc_girth == usize::MAX { None } else { Some(mc_girth) };
+            assert_eq!(inv.girth, expected_girth,
+                "dim=64 comp {i}: girth");
+
+            let mut mc_spec = mc.spectrum();
+            mc_spec.sort_by(|a, b| a.partial_cmp(b).unwrap());
+            assert!(spectra_match(&inv.spectrum, &mc_spec, 1e-8),
+                "dim=64 comp {i}: spectrum");
+        }
+    }
+
+    #[test]
+    fn test_cross_validate_motif_classes_dim32() {
+        // Verify InvariantSuite's motif classification matches MotifComponent's
+        // own spectral grouping at dim=32.
+        let comps = motif_components_for_cross_assessors(32);
+
+        // Build full graph from all components
+        let mut full_graph = UnGraph::<(), ()>::new_undirected();
+        let mut all_nodes: HashMap<(usize, usize), NodeIndex> = HashMap::new();
+
+        // Collect all unique nodes across all components
+        for mc in &comps {
+            for &cp in &mc.nodes {
+                if !all_nodes.contains_key(&cp) {
+                    let idx = full_graph.add_node(());
+                    all_nodes.insert(cp, idx);
+                }
+            }
+        }
+        // Add all edges
+        for mc in &comps {
+            for &(u, v) in &mc.edges {
+                full_graph.add_edge(all_nodes[&u], all_nodes[&v], ());
+            }
+        }
+
+        let suite = compute_invariant_suite_from_graph("cross_assessor_32", &full_graph);
+
+        // 15 components, 2 motif classes at dim=32
+        assert_eq!(suite.components.len(), 15);
+        assert_eq!(suite.n_motif_classes(), 2,
+            "dim=32 should have 2 motif classes");
+
+        // Verify class sizes: 8 heptacross + 7 mixed-degree
+        let class_sizes: Vec<usize> = suite.motif_classes.iter()
+            .map(|(_, ids)| ids.len())
+            .collect();
+        assert!(class_sizes.contains(&8), "should have class of size 8");
+        assert!(class_sizes.contains(&7), "should have class of size 7");
+    }
+
+    #[test]
+    fn test_cross_validate_motif_classes_dim64() {
+        // dim=64: 4 motif classes
+        let comps = motif_components_for_cross_assessors(64);
+
+        let mut full_graph = UnGraph::<(), ()>::new_undirected();
+        let mut all_nodes: HashMap<(usize, usize), NodeIndex> = HashMap::new();
+
+        for mc in &comps {
+            for &cp in &mc.nodes {
+                if !all_nodes.contains_key(&cp) {
+                    let idx = full_graph.add_node(());
+                    all_nodes.insert(cp, idx);
+                }
+            }
+        }
+        for mc in &comps {
+            for &(u, v) in &mc.edges {
+                full_graph.add_edge(all_nodes[&u], all_nodes[&v], ());
+            }
+        }
+
+        let suite = compute_invariant_suite_from_graph("cross_assessor_64", &full_graph);
+
+        assert_eq!(suite.components.len(), 31);
+        assert_eq!(suite.n_motif_classes(), 4,
+            "dim=64 should have 4 motif classes");
+
+        // Class sizes should sum to 31
+        let total: usize = suite.motif_classes.iter()
+            .map(|(_, ids)| ids.len())
+            .sum();
+        assert_eq!(total, 31);
+    }
 }

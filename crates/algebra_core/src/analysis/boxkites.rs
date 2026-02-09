@@ -31,6 +31,7 @@
 
 use std::collections::{HashSet, HashMap, BTreeSet, VecDeque};
 use nalgebra::{DMatrix, SymmetricEigen};
+use petgraph::graph::{UnGraph, NodeIndex};
 use crate::construction::cayley_dickson::{cd_multiply, cd_norm_sq, cd_basis_mul_sign};
 use crate::analysis::zd_graphs::xor_key;
 
@@ -1112,6 +1113,26 @@ impl MotifComponent {
             }
         }
         min_cycle
+    }
+
+    /// Convert this component to a petgraph UnGraph for InvariantSuite
+    /// cross-validation.
+    ///
+    /// Nodes are remapped to 0..n in BTreeSet (sorted) order.
+    /// Undirected edges are preserved.
+    pub fn to_petgraph(&self) -> UnGraph<(), ()> {
+        let nodes: Vec<CrossPair> = self.nodes.iter().copied().collect();
+        let idx: HashMap<CrossPair, usize> =
+            nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
+
+        let mut graph = UnGraph::<(), ()>::with_capacity(nodes.len(), self.edges.len());
+        let pg_nodes: Vec<NodeIndex> =
+            (0..nodes.len()).map(|_| graph.add_node(())).collect();
+
+        for &(u, v) in &self.edges {
+            graph.add_edge(pg_nodes[idx[&u]], pg_nodes[idx[&v]], ());
+        }
+        graph
     }
 }
 
