@@ -33,39 +33,91 @@ evidence = [
 [[task]]
 id = "S13-T03"
 title = "Define authoritative operational TOML registries"
-status = "in_progress"
+status = "done"
 evidence = [
   "registry/roadmap.toml",
   "registry/todo.toml",
   "registry/next_actions.toml",
   "registry/requirements.toml",
+  "registry/claims_tasks.toml",
+  "registry/claims_domains.toml",
+  "registry/claim_tickets.toml",
 ]
 
 [[task]]
 id = "S13-T04"
 title = "Add TOML-first export path for insights markdown mirror"
-status = "pending"
+status = "done"
 evidence = [
   "registry/insights.toml",
-  "docs/INSIGHTS.md",
+  "docs/generated/INSIGHTS_REGISTRY_MIRROR.md",
 ]
 
 [[task]]
 id = "S13-T05"
 title = "Add TOML-first export path for experiments markdown mirror"
-status = "pending"
+status = "done"
 evidence = [
   "registry/experiments.toml",
-  "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
+  "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md",
 ]
 
 [[task]]
 id = "S13-T06"
 title = "Run registry and quality gates after registry schema changes"
-status = "pending"
+status = "partial"
 evidence = [
   "make registry",
   "cargo run --release --bin registry-check",
   "python3 bin/ascii_check.py --check",
 ]
 
+[[task]]
+id = "S13-T07"
+title = "Normalize docs/CLAIMS_TASKS.md into claims task registry"
+status = "done"
+evidence = [
+  "src/scripts/analysis/normalize_claims_support_registries.py",
+  "registry/claims_tasks.toml",
+  "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
+]
+
+[[task]]
+id = "S13-T08"
+title = "Normalize claims domain map and by-domain markdown into TOML"
+status = "done"
+evidence = [
+  "src/scripts/analysis/normalize_claims_support_registries.py",
+  "registry/claims_domains.toml",
+  "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
+]
+
+[[task]]
+id = "S13-T09"
+title = "Normalize claims audit tickets into TOML with claim linkages"
+status = "done"
+evidence = [
+  "src/scripts/analysis/normalize_claims_support_registries.py",
+  "registry/claim_tickets.toml",
+  "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md",
+]
+
+[[task]]
+id = "S13-T10"
+title = "Remove non-deterministic timestamp churn from registry generators"
+status = "done"
+evidence = [
+  "src/scripts/analysis/build_knowledge_sources_registry.py",
+  "src/scripts/analysis/migrate_markdown_corpus_to_toml.py",
+  "src/scripts/analysis/export_registry_markdown_mirrors.py",
+]
+
+[[task]]
+id = "S13-T11"
+title = "Decide policy for legacy narrative markdown overlays"
+status = "pending"
+evidence = [
+  "registry/knowledge_migration_plan.toml",
+  "docs/NEXT_ACTIONS.md",
+  "docs/ROADMAP.md",
+]

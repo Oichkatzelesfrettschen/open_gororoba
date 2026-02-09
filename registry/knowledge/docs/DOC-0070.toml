@@ -9,10 +9,10 @@ kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "4c78ae0056b517f67754a1bcd48bbbdd7aa9f65ff87e459d38501c0c6b3ea35a"
-source_line_count = 144
-source_size_bytes = 10027
-content_sha256 = "4c78ae0056b517f67754a1bcd48bbbdd7aa9f65ff87e459d38501c0c6b3ea35a"
+source_sha256 = "178a7fabe8e20f575f559e91d7eddb8f07502d4ba3aa32d97459f0ea8dd8c1b6"
+source_line_count = 148
+source_size_bytes = 10596
+content_sha256 = "178a7fabe8e20f575f559e91d7eddb8f07502d4ba3aa32d97459f0ea8dd8c1b6"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -44,6 +44,10 @@ Note:
 - [x] Add TOML-first export path for insights mirror (`registry/insights.toml` -> `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`).
 - [x] Add TOML-first export path for experiments mirror (`registry/experiments.toml` -> `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`).
 - [x] Add TOML-first markdown exporters for roadmap/todo/next-actions/requirements mirrors (`docs/generated/*_REGISTRY_MIRROR.md`).
+- [x] Normalize `docs/CLAIMS_TASKS.md` into `registry/claims_tasks.toml` and generate `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`.
+- [x] Normalize `docs/claims/CLAIMS_DOMAIN_MAP.csv` + `docs/claims/by_domain/*.md` into `registry/claims_domains.toml` and generate `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`.
+- [x] Normalize `docs/tickets/*.md` into `registry/claim_tickets.toml` and generate `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`.
+- [x] Remove timestamp churn from registry generators to keep `make registry` deterministic across repeated runs.
 - [ ] Decide if `docs/INSIGHTS.md` and `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md` should be fully replaced by generated mirrors or kept as narrative overlays.
 
 ## Current sprint: Sprint 10 -- De Marrais Emanation Architecture (COMPLETE)

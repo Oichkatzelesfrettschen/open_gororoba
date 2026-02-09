@@ -50,6 +50,7 @@ pub mod null_models;
 pub mod adaptive;
 pub mod subset_search;
 pub mod codebook_null;
+pub mod baire_codebook;
 #[cfg(feature = "gpu")]
 pub mod gpu;
 
@@ -83,6 +84,11 @@ pub use adaptive::{AdaptiveConfig, AdaptiveResult, StopReason, adaptive_permutat
 pub use codebook_null::{
     CodebookNullResult, extract_zd_basis_pairs, dictionary_to_column_major,
     selective_mean_squared_distance, run_codebook_null_test, codebook_null_test_from_dim,
+};
+pub use baire_codebook::{
+    CodebookBaireResult, shared_prefix_length, lattice_baire_distance,
+    lattice_baire_distance_matrix, filter_by_predicate, lattice_to_column_major,
+    lattice_attribute_specs, codebook_baire_ultrametric_test,
 };
 pub use subset_search::{
     SubsetTestResult, SubsetSearchResult, SubsetSearchConfig,
