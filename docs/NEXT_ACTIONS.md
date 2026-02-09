@@ -1,18 +1,24 @@
 # Next Actions (Prioritized)
 
-Updated 2026-02-09 after Sprint 22 completion.
+Updated 2026-02-09 after Sprint 23 completion.
 **See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and research plan.
 
-## Current State (Sprint 22, 2026-02-09)
+## Current State (Sprint 23, 2026-02-09)
 
-**Test count**: 2264 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-483 (483 total). **Insights**: I-001..I-017. **Binaries**: 40.
+**Test count**: 2267 total (unit + integration + doc), 0 clippy warnings.
+**Claims**: C-001..C-487 (487 total). **Insights**: I-001..I-017. **Binaries**: 40.
 
 ## Recent Sprint Summaries
 
+- **S23**: Face sign census at dim=128: 9 regimes, 821128 triangles in ~1s (C-484).
+  Regime count formula corrected from 2*log2(dim/16)+1 to dim/16+1 (C-485). Edge
+  count extremal formulas: E_max=C(dim/2-2,2)-(dim/4-1), E_min=3*dim/2-12 (C-486).
+  Universal Double 3:1 Law discovered: OneSameTwoOpp=3*AllSame AND TwoSameOneOpp=
+  3*AllOpposite in ALL 116 components across dims 16/32/64/128 (C-487). This
+  supersedes C-483 (pure-regime case).
 - **S22**: Face sign census extended to dim=64: 5-regime structure with 48328 triangles
-  (C-482). Universal 3:1 TwoSameOneOpp:AllOpposite ratio law proved via antibalanced
-  signed graph theory (C-483, verified across 24 pure-regime components at dims 16/32/64).
+  (C-482). Pure-regime 3:1 ratio law proved via antibalanced signed graph theory
+  (C-483, verified across 24 pure-regime components at dims 16/32/64).
   Special heptacross at dim=32 identified (XOR label = dim/4). 84-edge pure-min components
   at dim=64 exactly reproduce dim=16's 42:14 census (embedded sedenion sub-algebra).
 - **S21**: GF(2) separating degree extended to dim=128 (degree 5, +1 per doubling confirmed
