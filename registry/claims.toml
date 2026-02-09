@@ -4277,3 +4277,75 @@ where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_frustration
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: exact computation at 7 dimensions. The post-peak monotonic decrease (0.388->0.385->0.381->0.378) strongly suggests convergence. WHAT WOULD REFUTE: dim=2048 showing an increase above 0.378, breaking the post-peak monotone descent."
+
+[[claim]]
+id = "C-536"
+statement = "Legacy ZD Adjacency Matrix Cross-Validation REFUTED: The legacy CSV files 'Zero-Divisor_Adjacency_Matrix__16D/32D/64D_.csv' encode a same-parity adjacency pattern (A[i][j]=1 iff i%2==j%2 and i!=j), which does NOT correspond to any algebraic structure in Cayley-Dickson algebras. Specifically: (1) All non-identity CD basis elements ANTI-COMMUTE at every dimension >=4 (0/105 commuting pairs at dim=16, 0/465 at dim=32, 0/1953 at dim=64). (2) Same-parity adjacency agrees with anti-commutativity only ~50% of the time (53.3% at dim=16, 51.6% at dim=32, 50.8% at dim=64), which is chance level. (3) Individual basis elements are never zero-divisors (e_i*e_j = +/-e_{i XOR j} != 0); ZDs require linear combinations. The legacy matrices are an artifact of flawed analysis, not algebraic truth."
+where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_legacy_zd_adjacency_16d_is_commutativity, _32d_structure, _64d_structure)"
+status = "Refuted"
+last_verified = "2026-02-09"
+what_would_verify_refute = "REFUTED: the legacy CSV's same-parity pattern matches no known algebraic relation in CD algebras. WHAT WOULD RESURRECT: discovering a CD algebraic operation whose adjacency is exactly same-parity."
+
+[[claim]]
+id = "C-537"
+statement = "Universal Anti-Commutativity of CD Basis Elements: For all Cayley-Dickson algebras of dimension >= 4, EVERY pair of distinct non-identity basis elements anti-commutes: e_i * e_j = -e_j * e_i for all 0 < i < j < dim. Verified at dims 4 (0/3 = 0% commuting), 8 (0/21), 16 (0/105), 32 (0/465), 64 (0/1953), 128 (0/8001). This is a consequence of the doubling formula: the conjugation in (a,b)(c,d) = (ac - d*b, da + bc*) systematically produces sign inversions for all cross-half products."
+where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_commutativity_stats_across_dimensions)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exhaustive enumeration at 6 dimensions (4 through 128). WHAT WOULD REFUTE: finding any pair i,j>0 where cd_basis_mul_sign(dim,i,j) = cd_basis_mul_sign(dim,j,i)."
+
+[[claim]]
+id = "C-538"
+statement = "Quaternion Lie Bracket Structure Verified: [e_i,e_j] = e_i*e_j - e_j*e_i gives the standard su(2) Lie algebra: [i,j]=2k (vector [0,0,0,2]), [j,k]=2i (vector [0,2,0,0]), [k,i]=2j (vector [0,0,2,0]). All 3 brackets have squared norm 4.0 exactly. Legacy CSV reports 'Computed Result' as [0,1,0,1] for [i,j], which is a boolean component mask (nonzero positions) rather than coefficient values -- a documentation convention discrepancy, not a computational error."
+where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_quaternion_lie_brackets, test_quaternion_psi_matrix)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exact computation matches textbook quaternion algebra."
+
+[[claim]]
+id = "C-539"
+statement = "Octonion Associator Survey: Of 210 distinct ordered triples (i,j,k) with i!=j!=k!=i among octonion basis elements e_1..e_7, exactly 168 (80.0%) have nonzero associators [e_i,e_j,e_k] = (e_i*e_j)*e_k - e_i*(e_j*e_k). Alternativity verified: [e_a,e_a,e_b] = [e_a,e_b,e_b] = 0 for all pairs, confirming O is alternative but not associative. The Fano plane has 7 lines with 5 positive and 2 negative orientations under the standard CD construction. Legacy CSV uses a DIFFERENT multiplication table convention, producing different (ab)c and a(bc) values but the same structural properties."
+where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_octonion_full_associator_survey, test_octonion_fano_plane_from_multiplication, test_octonion_associator_computation)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exhaustive computation over all 210 distinct triples. WHAT WOULD REFUTE: any [e_a,e_a,e_b] != 0 (breaking alternativity)."
+
+[[claim]]
+id = "C-540"
+statement = "Legacy Property Retention Analysis Errata: The legacy CSV 'Dimension-by-Dimension_Property_Retention_Analysis.csv' incorrectly reports 'Contains R,C,H?' = False for all dims >= 16. CORRECTED: Every Cayley-Dickson algebra of dimension >= 4 contains R, C, and H as sub-algebras (the first 2^k basis elements form a dim-2^k sub-algebra). Additionally verified: (1) Sedenions (dim=16) are NOT alternative -- first counterexample at a=e_1+e_10, b=e_4 with ||(aa)b - a(ab)|| = 2.0. (2) Single basis elements trivially satisfy alternativity because e_i^2 = -e_0 is central; multi-component elements are required to detect the failure. (3) The legacy CSV correctly identifies normed=False and division=False for dim>=16 (Hurwitz theorem)."
+where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_property_retention_dim16_sedenions, test_legacy_property_retention_errata, test_sedenion_alternativity_failure_example)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: mathematical proof (CD embedding) + computational verification at dims 16/32/64/128. WHAT WOULD REFUTE (impossible): finding a CD algebra of dim>=4 without a quaternion sub-algebra."
+
+[[claim]]
+id = "C-541"
+statement = "Hyperquaternion Multiplication Table Cross-Validation: The legacy CSV 'Hyperquaternion_Full_Multiplication_Table.csv' is a partial 8x8 octonion table with basis {1,i,j,k,l,il,jl,kl} = {e_0..e_7}. Of 13 known (non-?) entries, 7 match our CD computation exactly and 6 have sign flips. All 6 sign flips occur at the quaternion/doubling boundary (products involving one index in {1,2,3} and one index = 4), reflecting a different Cayley-Dickson doubling convention. Our formula (a,b)(c,d) = (ac - d*b, da + bc*) gives i*l = +il, l*i = -il; the legacy uses the opposite convention. Both produce valid octonion multiplication tables among the 480 possible. Product indices (i XOR j) match exactly in all cases. The 36 unknown '?' entries were completed from CD computation."
+where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_hyperquaternion_table_completion, test_hyperquaternion_structural_properties)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: all 13 known entries have correct product indices (XOR), 6 sign flips documented as convention difference. WHAT WOULD REFUTE: finding a product index mismatch (impossible: XOR is convention-independent)."
+
+[[claim]]
+id = "C-542"
+statement = "E6-Inspired and Extended Sedenion Matrices Are NOT Multiplication Tables: The legacy CSVs 'E6-Inspired_Extended_Multiplication_Structure.csv' and 'Extended_Sedenion_Multiplication_Structure.csv' are 16x16 block matrices with continuous floating-point entries, NOT {-1,0,+1} multiplication tables. Structure: (1) upper-left 7x7 block contains dense floats with approximately orthonormal columns (eigenvector/projection decomposition), (2) row 7 is a unit vector, (3) E6 version has a lower-right 8x8 block with pattern I + 0.4*checkerboard (eigenvalues ~0.943 x7 and 1.4 x1), (4) Extended Sedenion version has the same upper-left block but zeros in the lower-right. These matrices represent some eigenvector decomposition or projection, not algebraic multiplication. The two CSVs share identical upper-left blocks, confirming they derive from the same analysis."
+where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_e6_inspired_matrix_structure, test_extended_sedenion_vs_e6)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: continuous float entries are incompatible with CD multiplication table structure. WHAT WOULD REFUTE: discovering these matrices encode multiplication in a non-standard basis (would require change-of-basis matrix to be exhibited)."
+
+[[claim]]
+id = "C-543"
+statement = "Legacy Monstrous Moonshine Claims Assessment: Four legacy CSVs claim connections between Cayley-Dickson algebras and the Monster group. Findings: (1) 'Spin Foam Amplitudes vs Monster Group Coefficients' column 'Spin Foam Amplitude' is exactly ln(n+1)/1000 -- a trivial logarithmic function unrelated to spin foams (Ponzano-Regge, Turaev-Viro, or EPRL models). (2) The 'Scaled Monster Coeffs' column correctly reproduces j-function coefficients c(1)..c(9) divided by 1e9, but c(10) has a 3.6% error (23123279 vs 22312779). (3) Comparing logarithmic growth (spin foam column) to exponential growth (j-coefficients ~ exp(4*pi*sqrt(n))) is mathematically meaningless. (4) The 'Monstrous Moonshine and Infinite-Dimensional Extensions' CSV claims Moonshine structure at CD dims 16384..262144 without exhibiting any vertex operator algebra, j-function coefficient match, or Monster group representation. (5) The Griess algebra dimension 196884 = 2^2 * 3^3 * 1823 is NOT a power of 2, so is NOT a CD algebra. (6) No j-function coefficient is a power of 2. The actual CD-Monster path goes through E8 -> Leech lattice (Borcherds), not through high-dimensional CD algebras."
+where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_moonshine_j_function_coefficients, test_moonshine_spin_foam_column_is_trivial, test_moonshine_cd_connection_assessment)"
+status = "Refuted"
+last_verified = "2026-02-09"
+what_would_verify_refute = "REFUTED: legacy claims lack computational evidence. The j-function coefficients are correct but the spin foam column is trivial. WHAT WOULD RESURRECT: exhibiting a vertex operator algebra on a power-of-2 dimensional space with Monster symmetry, or demonstrating that CD structure constants encode j-function coefficients."
+
+[[claim]]
+id = "C-544"
+statement = "Psi=1 Fraction Exact Formula: For the full (dim-1)x(dim-1) psi matrix where psi(i,j) = 0 if cd_basis_mul_sign(dim,i,j) = +1, else 1 (with 1 <= i,j < dim), the fraction of psi=1 entries is EXACTLY (n+1)/(2n) where n = dim-1. Proof: (1) All n diagonal entries have psi=1 (since e_i^2 = -e_0, sign = -1). (2) By universal anti-commutativity (C-537), sign(i,j) = -sign(j,i) for all i != j, so exactly half of the n(n-1) off-diagonal entries have psi=1, i.e., n(n-1)/2. (3) Total psi=1 = n + n(n-1)/2 = n(n+1)/2. (4) Fraction = n(n+1)/(2n^2) = (n+1)/(2n) = 0.5 + 1/(2n). This supersedes C-534's observation of 'geometric convergence with ratio ~0.5' -- the convergence ratio is exactly (dim/2-1)/(dim-1), which approaches 0.5 from below. Verified computationally at all 11 powers of 2 from dim=2 to dim=2048 with zero error."
+where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_psi_fraction_convergence_to_50_percent, test_psi_fraction_exact_values)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exact analytical formula matches computation at 11 dimensions (2 through 2048). WHAT WOULD REFUTE (impossible): the formula is a direct consequence of anti-commutativity (C-537) and e_i^2 = -e_0."
