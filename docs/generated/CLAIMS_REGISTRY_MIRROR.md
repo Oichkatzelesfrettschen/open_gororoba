@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/claims.toml`.
 
-Total claims: 501
+Total claims: 502
 
 ## C-001
 
@@ -4014,3 +4014,11 @@ Total claims: 501
 - Statement: Filtration Phase Transition at l_1=1: The ultrametricity transition between Lambda_1024 (z=-1.57) and Lambda_512 (z=9.22) is a SHARP phase transition, not a gradient. Applying the 6 Lambda_512 exclusion rules one at a time: k=0 (N=1026, z=-1.57), k=1 (N=729, z=8.56), k=2 (N=608, z=12.03), k=3 (N=568, z=7.65), k=4 (N=527, z=7.21), k=5 (N=513, z=9.60), k=6 (N=512, z=9.16). Rule 1 alone (exclude l_1=+1, removing 297 vectors) flips the system from anti-ultrametric to z=8.56 (p<0.005). Rules 2-6 maintain but do not substantially change the signal. The 297 l_1=+1 vectors are 'anti-ultrametric contaminants' whose removal reveals latent ultrametric structure.
 - Where stated: `crates/stats_core/src/ultrametric/baire_codebook.rs` (test_intermediate_filtration_gradient)
 - What would verify/refute it: VERIFIED: 200-permutation column-shuffle null at each of 7 intermediate levels with 50K triples. WHAT WOULD REFUTE: finding a gradual transition (z monotonically increasing from -1.57 to 9.22 across all 6 steps) instead of the observed sharp jump at k=1. Also: if randomly removing 297 vectors from Lambda_1024 (instead of specifically l_1=+1 vectors) produced the same z-score jump, it would refute the algebraic specificity.
+
+## C-502
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Affine F_3 Closure Hamming Weight Dependence: Full sweep over all 256 base points of Lambda_256 reveals affine F_3 closure rate depends primarily on the Hamming weight (number of nonzero coordinates) of the base point. Mean rate 37.8% (std 1.8%). Monotone trend: hw=2 gives 39.6% (max), hw=4 gives 38.5%, hw=6 gives 37.8%, hw=8 gives 36.6% (min). Distribution is bimodal: 243/256 base points cluster at 35-40%, 13/256 are outliers at 30-35%. All 13 low-closure outliers have hw=8 AND l_2=+1 (in original coordinates). Pearson correlation hw vs rate r=-0.33. Coordinate sum is uncorrelated (r=0.08). The unique hw=2 base point [-1,-1,0,0,0,0,0,0] achieves the global maximum 39.6%.
+- Where stated: `crates/algebra_core/src/analysis/codebook.rs` (test_affine_f3_closure_full_basepoint_sweep)
+- What would verify/refute it: VERIFIED: exhaustive sweep over all 256 base points with all 65536 pair evaluations per base point. WHAT WOULD REFUTE: finding any base point with closure >= 50% would indicate near-affine-subgroup structure. Finding no correlation with Hamming weight would indicate the base-point dependence is not sparsity-driven.

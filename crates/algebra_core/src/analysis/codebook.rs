@@ -3160,6 +3160,215 @@ mod tests {
         );
     }
 
+    /// Systematic base-point sweep for affine F_3 closure on Lambda_256.
+    ///
+    /// Tests ALL 256 base points to characterize how closure rate varies,
+    /// then correlates closure with lattice properties (Hamming weight,
+    /// coordinate pattern, filtration depth).
+    #[test]
+    fn test_affine_f3_closure_full_basepoint_sweep() {
+        use std::collections::HashSet;
+
+        let lambda_256 = enumerate_lambda_256();
+        let n = lambda_256.len();
+        let total_pairs = n * n;
+        let lambda_set: HashSet<LatticeVector> = lambda_256.iter().copied().collect();
+
+        eprintln!("\n=== Affine F_3 Closure: Full Base-Point Sweep on Lambda_256 ({} vectors) ===", n);
+
+        // Compute closure rate for every base point
+        let mut rates: Vec<(usize, f64, LatticeVector)> = Vec::with_capacity(n);
+        for (idx, bp) in lambda_256.iter().enumerate() {
+            let nbp = lattice_negate_f3(bp);
+            let mut count = 0usize;
+            for a in &lambda_256 {
+                for b in &lambda_256 {
+                    let ab = lattice_add_f3(a, b);
+                    let result = lattice_add_f3(&ab, &nbp);
+                    if lambda_set.contains(&result) {
+                        count += 1;
+                    }
+                }
+            }
+            let rate = count as f64 / total_pairs as f64;
+            rates.push((idx, rate, *bp));
+        }
+
+        // Sort by rate to find extremes
+        rates.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+
+        let min_rate = rates[0].1;
+        let max_rate = rates[n - 1].1;
+        let mean_rate = rates.iter().map(|r| r.1).sum::<f64>() / n as f64;
+        let std_rate = (rates.iter().map(|r| (r.1 - mean_rate).powi(2)).sum::<f64>() / n as f64).sqrt();
+
+        eprintln!("\n--- Rate Statistics ---");
+        eprintln!("  Min:  {:.4} ({:.1}%) at idx {} = {:?}", min_rate, min_rate * 100.0, rates[0].0, rates[0].2);
+        eprintln!("  Max:  {:.4} ({:.1}%) at idx {} = {:?}", max_rate, max_rate * 100.0, rates[n-1].0, rates[n-1].2);
+        eprintln!("  Mean: {:.4} ({:.1}%)", mean_rate, mean_rate * 100.0);
+        eprintln!("  Std:  {:.4}", std_rate);
+
+        // Rate histogram (by 5% bucket)
+        let mut histogram = [0usize; 20]; // 0-5%, 5-10%, ..., 95-100%
+        for r in &rates {
+            let bucket = (r.1 * 20.0).floor() as usize;
+            let bucket = bucket.min(19);
+            histogram[bucket] += 1;
+        }
+        eprintln!("\n--- Rate Histogram (5% buckets) ---");
+        for (i, &count) in histogram.iter().enumerate() {
+            if count > 0 {
+                eprintln!("  {}-{}%: {} base points", i * 5, (i + 1) * 5, count);
+            }
+        }
+
+        // Bottom 5 and top 5
+        eprintln!("\n--- Bottom 5 ---");
+        for &(idx, rate, ref v) in rates.iter().take(5) {
+            let hw: usize = v.iter().filter(|&&x| x != 0).count();
+            let cs: i32 = v.iter().map(|&x| x as i32).sum();
+            eprintln!("  idx={}: rate={:.4} ({:.1}%), hw={}, csum={}, v={:?}",
+                idx, rate, rate * 100.0, hw, cs, v);
+        }
+        eprintln!("\n--- Top 5 ---");
+        for &(idx, rate, ref v) in rates.iter().rev().take(5) {
+            let hw: usize = v.iter().filter(|&&x| x != 0).count();
+            let cs: i32 = v.iter().map(|&x| x as i32).sum();
+            eprintln!("  idx={}: rate={:.4} ({:.1}%), hw={}, csum={}, v={:?}",
+                idx, rate, rate * 100.0, hw, cs, v);
+        }
+
+        // Correlations: Hamming weight vs rate, coordinate sum vs rate
+        let hamming_weights: Vec<usize> = lambda_256.iter()
+            .map(|v| v.iter().filter(|&&x| x != 0).count())
+            .collect();
+        let coord_sums: Vec<i32> = lambda_256.iter()
+            .map(|v| v.iter().map(|&x| x as i32).sum())
+            .collect();
+
+        // Build sorted-by-index rates for correlation
+        let mut rates_by_idx = vec![0.0f64; n];
+        for &(idx, rate, _) in &rates {
+            rates_by_idx[idx] = rate;
+        }
+
+        // Spearman rank correlation (approximate via Pearson on ranks)
+        let hw_corr = pearson_correlation(
+            &hamming_weights.iter().map(|&w| w as f64).collect::<Vec<_>>(),
+            &rates_by_idx,
+        );
+        let cs_corr = pearson_correlation(
+            &coord_sums.iter().map(|&s| s as f64).collect::<Vec<_>>(),
+            &rates_by_idx,
+        );
+
+        eprintln!("\n--- Correlations ---");
+        eprintln!("  Hamming weight vs rate: r = {:.4}", hw_corr);
+        eprintln!("  Coordinate sum vs rate: r = {:.4}", cs_corr);
+
+        // Mean rate grouped by Hamming weight
+        let mut hw_groups: std::collections::HashMap<usize, Vec<f64>> = std::collections::HashMap::new();
+        for (i, &hw) in hamming_weights.iter().enumerate() {
+            hw_groups.entry(hw).or_default().push(rates_by_idx[i]);
+        }
+        let mut hw_keys: Vec<usize> = hw_groups.keys().copied().collect();
+        hw_keys.sort();
+        eprintln!("\n--- Mean Rate by Hamming Weight ---");
+        for hw in hw_keys {
+            let group = &hw_groups[&hw];
+            let mean = group.iter().sum::<f64>() / group.len() as f64;
+            eprintln!("  hw={}: mean rate={:.4} ({:.1}%), n={}", hw, mean, mean * 100.0, group.len());
+        }
+
+        // Assertions
+        assert!(min_rate > 0.0, "Some closure must exist");
+        assert!(max_rate < 1.0, "100% closure would mean affine subgroup");
+        assert!(min_rate >= 0.20, "Min rate should be at least 20%");
+        assert!(max_rate <= 0.50, "Max rate should be at most 50%");
+    }
+
+    /// Affine F_3 closure across filtration levels with representative base points.
+    ///
+    /// At Lambda_512 (512 vectors) and Lambda_1024 (1026 vectors), a full sweep
+    /// is expensive. We sample 20 base points spread evenly and compute closure
+    /// rate for each, comparing against Lambda_256's known range.
+    #[test]
+    fn test_affine_f3_closure_across_levels() {
+        use std::collections::HashSet;
+
+        let lambda_256 = enumerate_lambda_256();
+        let lambda_512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let lambda_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
+
+        let n_sample = 20;
+
+        for (name, level) in [
+            ("Lambda_256", &lambda_256),
+            ("Lambda_512", &lambda_512),
+            ("Lambda_1024", &lambda_1024),
+        ] {
+            let n = level.len();
+            let total_pairs = n * n;
+            let level_set: HashSet<LatticeVector> = level.iter().copied().collect();
+
+            // Sample n_sample base points evenly spread
+            let step = (n / n_sample).max(1);
+            let mut rates = Vec::new();
+
+            for i in 0..n_sample {
+                let idx = (i * step).min(n - 1);
+                let bp = &level[idx];
+                let nbp = lattice_negate_f3(bp);
+                let mut count = 0usize;
+                for a in level.iter() {
+                    for b in level.iter() {
+                        let ab = lattice_add_f3(a, b);
+                        let result = lattice_add_f3(&ab, &nbp);
+                        if level_set.contains(&result) {
+                            count += 1;
+                        }
+                    }
+                }
+                let rate = count as f64 / total_pairs as f64;
+                rates.push(rate);
+            }
+
+            let mean = rates.iter().sum::<f64>() / rates.len() as f64;
+            let min = rates.iter().cloned().fold(f64::INFINITY, f64::min);
+            let max = rates.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+
+            eprintln!(
+                "{} ({} vectors): mean={:.4} ({:.1}%), range=[{:.4}, {:.4}]",
+                name, n, mean, mean * 100.0, min, max
+            );
+
+            // All levels should have some closure (>20%) but not full (<60%)
+            assert!(mean > 0.20, "{} mean closure should exceed 20%", name);
+            assert!(mean < 0.60, "{} mean closure should be below 60%", name);
+        }
+    }
+
+    /// Pearson correlation coefficient for two f64 slices.
+    fn pearson_correlation(x: &[f64], y: &[f64]) -> f64 {
+        let n = x.len() as f64;
+        let mx = x.iter().sum::<f64>() / n;
+        let my = y.iter().sum::<f64>() / n;
+        let mut sxy = 0.0;
+        let mut sxx = 0.0;
+        let mut syy = 0.0;
+        for (xi, yi) in x.iter().zip(y.iter()) {
+            let dx = xi - mx;
+            let dy = yi - my;
+            sxy += dx * dy;
+            sxx += dx * dx;
+            syy += dy * dy;
+        }
+        if sxx < 1e-15 || syy < 1e-15 {
+            return 0.0;
+        }
+        sxy / (sxx * syy).sqrt()
+    }
+
     #[test]
     fn test_lattice_negate_f3_basic() {
         let v: LatticeVector = [-1, 0, 1, -1, 1, 0, -1, 1];
