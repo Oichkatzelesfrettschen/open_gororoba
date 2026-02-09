@@ -44,6 +44,7 @@ pub mod cd_external;
 pub mod emanation;
 pub mod e10_octonion;
 pub mod billiard_stats;
+pub mod billiard_sim;
 
 // Re-export core algebra functions
 pub use cayley_dickson::{
@@ -262,6 +263,11 @@ pub use billiard_stats::{
     PermutationTestResult, permutation_test_r_e8, permutation_test_mi,
     // Transition matrix analysis
     transition_matrix, stationary_distribution,
+};
+
+pub use billiard_sim::{
+    LorentzVec, BilliardState, BounceResult, ConstraintDiagnostics,
+    BilliardConfig, HyperbolicBilliard,
 };
 
 pub use emanation::{
