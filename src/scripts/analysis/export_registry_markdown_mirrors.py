@@ -131,6 +131,65 @@ def export_insights(repo_root: Path, out_path: Path) -> None:
     _write(out_path, "\n".join(lines))
 
 
+def export_claims(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/claims.toml")
+    claims = sorted(
+        data.get("claim", []), key=lambda row: _claim_sort_key(str(row.get("id", "")))
+    )
+    lines = _header("Claims Registry Mirror")
+    lines.append("Authoritative source: `registry/claims.toml`.")
+    lines.append("")
+    lines.append(f"Total claims: {len(claims)}")
+    lines.append("")
+    for row in claims:
+        claim_id = str(row.get("id", "C-???"))
+        statement = str(row.get("statement", "")).strip()
+        status = str(row.get("status", "")).strip()
+        last_verified = str(row.get("last_verified", "")).strip()
+        where_stated = str(row.get("where_stated", "")).strip()
+        verify_refute = str(row.get("what_would_verify_refute", "")).strip()
+        lines.append(f"## {claim_id}")
+        lines.append("")
+        lines.append(f"- Status: `{status}`")
+        lines.append(f"- Last verified: {last_verified}")
+        lines.append(f"- Statement: {statement}")
+        lines.append(f"- Where stated: {where_stated}")
+        lines.append(f"- What would verify/refute it: {verify_refute}")
+        lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_claims_matrix_legacy(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/claims.toml")
+    claims = sorted(
+        data.get("claim", []), key=lambda row: _claim_sort_key(str(row.get("id", "")))
+    )
+    lines: list[str] = [
+        "# Claims / Evidence Matrix (Markdown Mirror)",
+        "",
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+        "<!-- Source of truth: registry/claims.toml -->",
+        "",
+        "This file is generated from `registry/claims.toml`.",
+        "",
+        "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it |",
+        "|---:|---|---|---|---|---|",
+    ]
+    for row in claims:
+        claim_id = str(row.get("id", "C-???")).strip()
+        statement = _pipe_escape(str(row.get("statement", "")).strip())
+        where_stated = _pipe_escape(str(row.get("where_stated", "")).strip())
+        status = _pipe_escape(str(row.get("status", "")).strip())
+        last_verified = _pipe_escape(str(row.get("last_verified", "")).strip())
+        verify_refute = _pipe_escape(str(row.get("what_would_verify_refute", "")).strip())
+        lines.append(
+            f"| {claim_id} | {statement} | {where_stated} | **{status}** | "
+            f"{last_verified} | {verify_refute} |"
+        )
+    lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
 def export_insights_legacy(repo_root: Path, out_path: Path) -> None:
     registry_data = _load_toml(repo_root / "registry/insights.toml")
     narrative_data = _load_optional_toml(repo_root / "registry/insights_narrative.toml")
@@ -978,6 +1037,7 @@ def main() -> int:
         out_dir.mkdir(parents=True, exist_ok=True)
 
     export_insights(repo_root, out_dir / "INSIGHTS_REGISTRY_MIRROR.md")
+    export_claims(repo_root, out_dir / "CLAIMS_REGISTRY_MIRROR.md")
     export_experiments(repo_root, out_dir / "EXPERIMENTS_REGISTRY_MIRROR.md")
     export_roadmap(repo_root, out_dir / "ROADMAP_REGISTRY_MIRROR.md")
     export_todo(repo_root, out_dir / "TODO_REGISTRY_MIRROR.md")
@@ -1000,6 +1060,7 @@ def main() -> int:
     export_requirements_legacy(repo_root)
 
     if args.legacy_claims_sync:
+        export_claims_matrix_legacy(repo_root, repo_root / "docs/CLAIMS_EVIDENCE_MATRIX.md")
         export_claims_tasks_legacy(repo_root, repo_root / "docs/CLAIMS_TASKS.md")
         export_claims_domains_legacy(repo_root)
         export_claim_tickets_legacy(repo_root)

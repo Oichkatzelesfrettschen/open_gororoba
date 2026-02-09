@@ -28,6 +28,12 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Materials Datasets
 
 For reproducible, keyless materials-science property datasets, prefer sources with clear licensing.

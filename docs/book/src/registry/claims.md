@@ -1,6 +1,6 @@
 # Claims Evidence Matrix
 
-The claims evidence matrix tracks 475 claims (C-001 through C-475) in
+The claims evidence matrix tracks 494 claims (C-001 through C-494) in
 `registry/claims.toml`.  Each claim records a testable statement about the
 codebase's mathematical or physical results.
 
@@ -10,7 +10,7 @@ Each claim entry contains:
 
 - **id**: C-nnn identifier
 - **statement**: The testable assertion
-- **status**: One of 34 valid status tokens (Verified, Refuted, Open, Partial,
+- **status**: Canonical claim status token (Verified, Refuted, Open, Partial,
   Pending, Superseded, Established, Inconclusive, Closed/*, etc.)
 - **where\_stated**: Source reference (paper, conversation, analysis)
 - **test**: Rust test function that verifies the claim (when applicable)
@@ -39,11 +39,11 @@ cargo run --release --bin registry-check
 ## Auto-generated appendix
 
 The `generate-latex` binary produces `docs/latex/claims_appendix.tex`, a
-475-row LaTeX longtable from claims.toml.  This ensures the LaTeX documents
+claims longtable from claims.toml.  This ensures the LaTeX documents
 stay synchronized with the TOML source of truth.
 
 ## Markdown mirror
 
-`docs/CLAIMS_EVIDENCE_MATRIX.md` is a human-readable markdown mirror maintained
-alongside the TOML registry.  The `migrate-claims` binary currently imports
-markdown into TOML (md -> toml).
+`docs/CLAIMS_EVIDENCE_MATRIX.md` is a TOML-generated markdown mirror.
+Operational authoring is TOML-first (`registry/claims.toml` -> markdown export).
+`migrate-claims` is retained for explicit legacy/bootstrap import flows only.

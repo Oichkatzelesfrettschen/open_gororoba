@@ -1,6 +1,6 @@
 # Binary Catalog
 
-The `gororoba_cli` crate provides 37 analysis binaries.  Each binary is
+The `gororoba_cli` crate provides 40 binaries.  Each binary is
 registered in `registry/binaries.toml` with its description and associated
 experiment (if any).
 
@@ -24,7 +24,7 @@ experiment (if any).
 | Binary | Description |
 |--------|-------------|
 | registry-check | Validate TOML registry for internal consistency |
-| migrate-claims | Migrate claims from markdown to TOML |
+| migrate-claims | Bootstrap-import claims from legacy markdown into TOML |
 | migrate-insights | Migrate insights from markdown to TOML |
 | generate-latex | Generate LaTeX appendices from TOML registry |
 | extract-papers | Batch PDF extraction to structured TOML |

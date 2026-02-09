@@ -14,7 +14,7 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
 ### KM-001: claims
 
 - Strategy: `toml_primary_markdown_mirror`
-- Status: `active`
+- Status: `complete`
 - Source markdown:
   - `docs/CLAIMS_EVIDENCE_MATRIX.md`
   - `docs/CLAIMS_TASKS.md`
@@ -22,9 +22,11 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - `registry/claims.toml`
   - `registry/claims_tasks.toml`
 - Generated mirrors:
+  - `docs/CLAIMS_EVIDENCE_MATRIX.md`
   - `docs/CLAIMS_TASKS.md`
+  - `docs/generated/CLAIMS_REGISTRY_MIRROR.md`
   - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
-- Notes: Claims matrix and executable task ledger are TOML-first; CLAIMS_TASKS markdown is generated from TOML.
+- Notes: Claims registry and executable task ledger are TOML-first; claims matrix and claims tasks markdown are generated mirrors.
 
 ### KM-008: claims_domains
 

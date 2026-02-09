@@ -9,10 +9,10 @@ kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "b8c60b438559fc79ef8a168ed9e7faad80539b71525f0f3511e3940805270d43"
+source_sha256 = "664d3d31591fcffbfa0cdfd7f5a880d8939cf0d850f60a6150f7946858920527"
 source_line_count = 62
-source_size_bytes = 2726
-content_sha256 = "b8c60b438559fc79ef8a168ed9e7faad80539b71525f0f3511e3940805270d43"
+source_size_bytes = 2735
+content_sha256 = "664d3d31591fcffbfa0cdfd7f5a880d8939cf0d850f60a6150f7946858920527"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -20,7 +20,7 @@ content_format = "markdown"
 content_markdown = """
 # Binary Catalog
 
-The `gororoba_cli` crate provides 37 analysis binaries.  Each binary is
+The `gororoba_cli` crate provides 40 binaries.  Each binary is
 registered in `registry/binaries.toml` with its description and associated
 experiment (if any).
 
@@ -44,7 +44,7 @@ experiment (if any).
 | Binary | Description |
 |--------|-------------|
 | registry-check | Validate TOML registry for internal consistency |
-| migrate-claims | Migrate claims from markdown to TOML |
+| migrate-claims | Bootstrap-import claims from legacy markdown into TOML |
 | migrate-insights | Migrate insights from markdown to TOML |
 | generate-latex | Generate LaTeX appendices from TOML registry |
 | extract-papers | Batch PDF extraction to structured TOML |

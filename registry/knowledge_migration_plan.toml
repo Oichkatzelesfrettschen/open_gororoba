@@ -11,10 +11,15 @@ id = "KM-001"
 name = "claims"
 source_markdown = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md"]
 authoritative_toml = ["registry/claims.toml", "registry/claims_tasks.toml"]
-generated_mirror = ["docs/CLAIMS_TASKS.md", "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"]
+generated_mirror = [
+  "docs/CLAIMS_EVIDENCE_MATRIX.md",
+  "docs/CLAIMS_TASKS.md",
+  "docs/generated/CLAIMS_REGISTRY_MIRROR.md",
+  "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
+]
 strategy = "toml_primary_markdown_mirror"
-status = "active"
-notes = "Claims matrix and executable task ledger are TOML-first; CLAIMS_TASKS markdown is generated from TOML."
+status = "complete"
+notes = "Claims registry and executable task ledger are TOML-first; claims matrix and claims tasks markdown are generated mirrors."
 
 [[domain]]
 id = "KM-008"

@@ -6,8 +6,8 @@ generated_at = "deterministic"
 authoritative = true
 document_count = 231
 generated_artifact_count = 59
-manual_narrative_count = 116
-toml_generated_mirror_count = 56
+manual_narrative_count = 115
+toml_generated_mirror_count = 57
 
 [[document]]
 path = "AGENTS.md"
@@ -181,9 +181,9 @@ notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
 path = "docs/CLAIMS_EVIDENCE_MATRIX.md"
 id = "MDG-0022"
 kind = "markdown_mirror"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+mode = "toml_generated_mirror"
+header_required = true
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md"

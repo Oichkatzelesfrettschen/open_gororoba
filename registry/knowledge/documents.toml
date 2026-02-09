@@ -4,8 +4,8 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 118
-skipped_generated_count = 113
+raw_capture_count = 112
+skipped_generated_count = 119
 authoritative = false
 normalization_required = true
 
@@ -142,17 +142,6 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0021.toml"
 
 [[document]]
-id = "DOC-0022"
-source_path = "docs/CLAIMS_EVIDENCE_MATRIX.md"
-title = "Claims / Evidence Matrix (Markdown Mirror)"
-kind = "markdown_mirror"
-migration_priority = "critical"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0022.toml"
-
-[[document]]
 id = "DOC-0023"
 source_path = "docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md"
 title = "Claims / Evidence Matrix (Work-in-Progress)"
@@ -230,17 +219,6 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0030.toml"
 
 [[document]]
-id = "DOC-0031"
-source_path = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
-title = "Experiments Portfolio Shortlist"
-kind = "markdown_mirror"
-migration_priority = "critical"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0031.toml"
-
-[[document]]
 id = "DOC-0032"
 source_path = "docs/F4_CONNECTION.md"
 title = "Subdomain Expansion: The $F_4$ Connection"
@@ -294,17 +272,6 @@ raw_captured = true
 authoritative = false
 normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0036.toml"
-
-[[document]]
-id = "DOC-0037"
-source_path = "docs/INSIGHTS.md"
-title = "Insights"
-kind = "markdown_mirror"
-migration_priority = "critical"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0037.toml"
 
 [[document]]
 id = "DOC-0038"
@@ -868,39 +835,6 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0092.toml"
 
 [[document]]
-id = "DOC-0093"
-source_path = "docs/book/src/registry/claims.md"
-title = "Claims Evidence Matrix"
-kind = "markdown_mirror"
-migration_priority = "critical"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0093.toml"
-
-[[document]]
-id = "DOC-0094"
-source_path = "docs/book/src/registry/experiments.md"
-title = "Experiments Portfolio"
-kind = "markdown_mirror"
-migration_priority = "critical"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0094.toml"
-
-[[document]]
-id = "DOC-0095"
-source_path = "docs/book/src/registry/insights.md"
-title = "Insights"
-kind = "markdown_mirror"
-migration_priority = "critical"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0095.toml"
-
-[[document]]
 id = "DOC-0118"
 source_path = "docs/engineering/DATASHEET_V2.md"
 title = "Metamaterial Warp Chip: Validation Datasheet (Simulated)"
@@ -1389,10 +1323,37 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
+id = "DOC-0022"
+source_path = "docs/CLAIMS_EVIDENCE_MATRIX.md"
+title = "Claims / Evidence Matrix (Markdown Mirror)"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
 id = "DOC-0024"
 source_path = "docs/CLAIMS_TASKS.md"
 title = "Claims -> Tasks Tracker (Generated Mirror)"
 kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0031"
+source_path = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
+title = "Experiments Portfolio Shortlist"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0037"
+source_path = "docs/INSIGHTS.md"
+title = "Insights"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"
@@ -1429,6 +1390,33 @@ id = "DOC-0070"
 source_path = "docs/TODO.md"
 title = "TODO (updated 2026-02-08): executable, test-driven tracker"
 kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0093"
+source_path = "docs/book/src/registry/claims.md"
+title = "Claims Evidence Matrix"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0094"
+source_path = "docs/book/src/registry/experiments.md"
+title = "Experiments Portfolio"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0095"
+source_path = "docs/book/src/registry/insights.md"
+title = "Insights"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"
