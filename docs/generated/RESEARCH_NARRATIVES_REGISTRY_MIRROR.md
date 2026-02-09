@@ -1,0 +1,211 @@
+# Research Narratives Registry Mirror
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: TOML registry files under registry/ -->
+
+Authoritative source: `registry/research_narratives.toml`.
+
+- Updated: 2026-02-09
+- Document count: 22
+
+## Documents
+
+### RN-001: Metamaterial Warp Chip: Validation Datasheet (Simulated)
+
+- Source markdown: `docs/engineering/DATASHEET_V2.md`
+- Domain: `engineering`
+- Status token: `NARRATIVE`
+- Content kind: `research_note`
+- Verification level: `engineering_narrative`
+- Line count: 37
+
+### RN-002: Holographic Warp-Gate Fabrication Protocol (v1.0)
+
+- Source markdown: `docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md`
+- Domain: `engineering`
+- Status token: `SPECIFICATION`
+- Content kind: `specification`
+- Verification level: `engineering_narrative`
+- Line count: 70
+
+### RN-003: Fetching External Sources (wget-first, offline reproducibility)
+
+- Source markdown: `docs/engineering/FETCHING_EXTERNAL_SOURCES.md`
+- Domain: `engineering`
+- Status token: `NARRATIVE`
+- Content kind: `research_note`
+- Verification level: `engineering_narrative`
+- Line count: 66
+
+### RN-004: Gap Closure Report: Repo-Wide Sample Lacunae
+
+- Source markdown: `docs/engineering/GAP_CLOSURE_REPORT.md`
+- Domain: `engineering`
+- Status token: `REPORT`
+- Content kind: `engineering_report`
+- Verification level: `engineering_narrative`
+- Line count: 118
+
+### RN-005: MCP and Skill Audit (2026-02-09)
+
+- Source markdown: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`
+- Domain: `engineering`
+- Status token: `AUDIT`
+- Content kind: `audit_note`
+- Verification level: `engineering_narrative`
+- Line count: 206
+
+### RN-006: Markdown and TOML Centralization Audit (2026-02-09)
+
+- Source markdown: `docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md`
+- Domain: `engineering`
+- Status token: `AUDIT`
+- Content kind: `audit_note`
+- Verification level: `engineering_narrative`
+- Line count: 182
+
+### RN-007: Elucidation of OptiX and Hardware Acceleration
+
+- Source markdown: `docs/engineering/OPTIX_ELUCIDATION.md`
+- Domain: `engineering`
+- Status token: `NARRATIVE`
+- Content kind: `research_note`
+- Verification level: `engineering_narrative`
+- Line count: 32
+
+### RN-008: P-adic Signal Theory & Kozyrev-Sedenion Synthesis
+
+- Source markdown: `docs/engineering/PADIC_SIGNAL_THEORY.md`
+- Domain: `engineering`
+- Status token: `NARRATIVE`
+- Content kind: `theory_note`
+- Verification level: `engineering_narrative`
+- Line count: 92
+
+### RN-009: Phase 10: Multiphysics & Connectivity Deep Dive
+
+- Source markdown: `docs/engineering/PHASE_10_MULTIPHYSICS.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 43
+
+### RN-010: Phase 11 Report: Visualization & Integrity
+
+- Source markdown: `docs/engineering/PHASE_11_VISUALIZATION.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 30
+
+### RN-011: Phase 12 Report: Holographic Warp Renderer
+
+- Source markdown: `docs/engineering/PHASE_12_RENDERER.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 25
+
+### RN-012: Phase 13: The Grand Critique & Synthesis
+
+- Source markdown: `docs/engineering/PHASE_13_GRAND_CRITIQUE.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 32
+
+### RN-013: Phase 14: The "Endless" Deep Dive
+
+- Source markdown: `docs/engineering/PHASE_14_DEEP_DIVE.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 22
+
+### RN-014: Phase 15: The "Resurrection" Report
+
+- Source markdown: `docs/engineering/PHASE_15_RESURRECTION.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 26
+
+### RN-015: Phase 16: Final Validation & Synthesis
+
+- Source markdown: `docs/engineering/PHASE_16_FINAL_VALIDATION.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `validation_summary`
+- Line count: 25
+
+### RN-016: Phase 6 Engineering Implementation Report
+
+- Source markdown: `docs/engineering/PHASE_6_IMPLEMENTATION.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 69
+- Claim refs (3): C-042, C-050, C-400
+
+### RN-017: Phase 7 Engineering & Synthesis Report
+
+- Source markdown: `docs/engineering/PHASE_7_REPORT.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 45
+
+### RN-018: Phase 8: Holographic Warp & Sedenion Synthesis
+
+- Source markdown: `docs/engineering/PHASE_8_SYNTHESIS.md`
+- Domain: `engineering`
+- Status token: `PHASE_REPORT`
+- Content kind: `phase_execution_report`
+- Verification level: `engineering_narrative`
+- Line count: 40
+
+### RN-019: Physics Validation Report
+
+- Source markdown: `docs/engineering/PHYSICS_VALIDATION_REPORT.md`
+- Domain: `engineering`
+- Status token: `REPORT`
+- Content kind: `engineering_report`
+- Verification level: `validation_summary`
+- Line count: 23
+
+### RN-020: Warp Spaceplate: System Engineering Specification
+
+- Source markdown: `docs/engineering/WARP_SPACEPLATE_SPECS.md`
+- Domain: `engineering`
+- Status token: `SPECIFICATION`
+- Content kind: `specification`
+- Verification level: `engineering_narrative`
+- Line count: 61
+
+### RN-021: Claims Methodology and Scientific Rigor
+
+- Source markdown: `docs/theory/CLAIMS_METHODOLOGY.md`
+- Domain: `theory`
+- Status token: `METHODOLOGY`
+- Content kind: `theory_note`
+- Verification level: `theoretical`
+- Line count: 175
+- Claim refs (4): C-007, C-008, C-077, C-091
+
+### RN-022: Warp Ring Physics Reconciliation (Phase 7.0)
+
+- Source markdown: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`
+- Domain: `theory`
+- Status token: `RECONCILIATION`
+- Content kind: `theory_note`
+- Verification level: `theoretical`
+- Line count: 40

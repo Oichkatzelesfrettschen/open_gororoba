@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Gap Closure Report: Repo-Wide Sample Lacunae
 
 This document addresses the specific lacunae identified in the repo-wide review, providing the exact mathematical forms, parameter values, and definitions extracted from the codebase.

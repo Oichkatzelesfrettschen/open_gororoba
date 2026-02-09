@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 7 Engineering & Synthesis Report
 
 **Date:** 2026-02-01

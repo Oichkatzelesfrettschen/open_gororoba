@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Fetching External Sources (wget-first, offline reproducibility)
 
 Access date: 2026-02-02

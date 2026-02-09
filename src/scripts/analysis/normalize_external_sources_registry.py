@@ -41,7 +41,10 @@ SOURCE_META = {
         "content_kind": "paper_transcript",
         "authority_level": "primary_cached_paper",
         "verification_level": "source_capture",
-        "notes": "Cached transcript mirror for source auditability; not itself a verification result.",
+        "notes": (
+            "Cached transcript mirror for source auditability; "
+            "not itself a verification result."
+        ),
     },
     "DE_MARRAIS_CATAMARAN.md": {
         "status_token": "REFERENCE",

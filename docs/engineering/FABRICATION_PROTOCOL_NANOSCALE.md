@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Holographic Warp-Gate Fabrication Protocol (v1.0)
 
 **Target Device:** Nanoscale Silicon Metasurface with ENZ Inclusions.

@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Warp Ring Physics Reconciliation (Phase 7.0)
 
 ## Overview

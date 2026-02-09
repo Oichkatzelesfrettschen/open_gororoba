@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 16: Final Validation & Synthesis
 
 **Date:** 2026-02-01

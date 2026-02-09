@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Claims Methodology and Scientific Rigor
 
 This document describes the claims discipline framework used to track, verify,

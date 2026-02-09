@@ -1151,6 +1151,90 @@ def export_external_sources_legacy(repo_root: Path) -> None:
     _write(repo_root / "docs/external_sources/INDEX.md", "\n".join(index_lines))
 
 
+def export_research_narratives(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/research_narratives.toml")
+    meta = data.get("research_narratives", {})
+    docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
+    lines = _header("Research Narratives Registry Mirror")
+    lines.append("Authoritative source: `registry/research_narratives.toml`.")
+    lines.append("")
+    lines.append(f"- Updated: {meta.get('updated', '')}")
+    lines.append(f"- Document count: {meta.get('document_count', len(docs))}")
+    lines.append("")
+    lines.append("## Documents")
+    lines.append("")
+    for row in docs:
+        lines.append(f"### {row.get('id', 'RN-???')}: {row.get('title', '(untitled)')}")
+        lines.append("")
+        lines.append(f"- Source markdown: `{row.get('source_markdown', '')}`")
+        lines.append(f"- Domain: `{row.get('domain', '')}`")
+        lines.append(f"- Status token: `{row.get('status_token', '')}`")
+        lines.append(f"- Content kind: `{row.get('content_kind', '')}`")
+        lines.append(f"- Verification level: `{row.get('verification_level', '')}`")
+        lines.append(f"- Line count: {row.get('line_count', 0)}")
+        claims = row.get("claim_refs", [])
+        if claims:
+            lines.append(f"- Claim refs ({len(claims)}): {', '.join(claims)}")
+        lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_research_narratives_legacy(repo_root: Path) -> None:
+    data = _load_toml(repo_root / "registry/research_narratives.toml")
+    docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
+    theory_index = [
+        "# Theory Narratives",
+        "",
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+        "<!-- Source of truth: registry/research_narratives.toml -->",
+        "",
+        "This index and all files under `docs/theory/*.md` are generated from TOML.",
+        "",
+    ]
+    engineering_index = [
+        "# Engineering Narratives",
+        "",
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+        "<!-- Source of truth: registry/research_narratives.toml -->",
+        "",
+        "This index and all files under `docs/engineering/*.md` are generated from TOML.",
+        "",
+    ]
+
+    for row in docs:
+        rel_path = str(row.get("source_markdown", "")).strip()
+        if not rel_path:
+            continue
+        path = repo_root / rel_path
+        body = str(row.get("body_markdown", "")).strip("\n")
+        lines: list[str] = [
+            "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+            "<!-- Source of truth: registry/research_narratives.toml -->",
+            "",
+        ]
+        if body:
+            lines.extend(body.splitlines())
+        else:
+            lines.append(f"# {row.get('title', Path(rel_path).stem)}")
+            lines.append("")
+            lines.append("(No body_markdown captured in registry/research_narratives.toml.)")
+        lines.append("")
+        _write(path, "\n".join(lines))
+
+        entry_line = (
+            f"- `{row.get('id', 'RN-???')}` `{row.get('status_token', '')}`: `{rel_path}`"
+        )
+        if rel_path.startswith("docs/theory/"):
+            theory_index.append(entry_line)
+        elif rel_path.startswith("docs/engineering/"):
+            engineering_index.append(entry_line)
+
+    theory_index.append("")
+    engineering_index.append("")
+    _write(repo_root / "docs/theory/INDEX.md", "\n".join(theory_index))
+    _write(repo_root / "docs/engineering/INDEX.md", "\n".join(engineering_index))
+
+
 def main() -> int:
     global CHECK_MODE
 
@@ -1201,6 +1285,7 @@ def main() -> int:
     export_claims_domains(repo_root, out_dir / "CLAIMS_DOMAINS_REGISTRY_MIRROR.md")
     export_claim_tickets(repo_root, out_dir / "CLAIM_TICKETS_REGISTRY_MIRROR.md")
     export_external_sources(repo_root, out_dir / "EXTERNAL_SOURCES_REGISTRY_MIRROR.md")
+    export_research_narratives(repo_root, out_dir / "RESEARCH_NARRATIVES_REGISTRY_MIRROR.md")
     export_insights_legacy(repo_root, repo_root / "docs/INSIGHTS.md")
     export_experiments_legacy(
         repo_root, repo_root / "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
@@ -1217,6 +1302,7 @@ def main() -> int:
         export_claims_domains_legacy(repo_root)
         export_claim_tickets_legacy(repo_root)
         export_external_sources_legacy(repo_root)
+        export_research_narratives_legacy(repo_root)
 
     if CHECK_MODE:
         if CHANGED_PATHS:

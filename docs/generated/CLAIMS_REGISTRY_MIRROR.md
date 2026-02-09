@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/claims.toml`.
 
-Total claims: 500
+Total claims: 501
 
 ## C-001
 
@@ -4006,3 +4006,11 @@ Total claims: 500
 - Statement: Euclidean Filtration Ultrametricity Gradient: Euclidean distance on prefix-stripped lattice coordinates shows a monotone ultrametricity gradient across filtration levels. Lambda_2048 is anti-ultrametric (z=-5.65, p=1.0), Lambda_1024 is marginally anti-ultrametric (z=-1.57, p=0.96), Lambda_512 is significantly ultrametric (z=9.22, p<0.005), and Lambda_256 is very significantly ultrametric (z=17.07, p<0.005). The trie-cut filtration progressively selects lattice vectors forming a hierarchical Euclidean cluster. Baire distances are trivially 1.0 at all levels (by construction). The transition from anti- to genuine ultrametricity occurs between Lambda_1024 and Lambda_512.
 - Where stated: `crates/stats_core/src/ultrametric/baire_codebook.rs` (test_euclidean_ultrametricity_across_filtration_levels)
 - What would verify/refute it: VERIFIED: 200-permutation column-shuffle null at each level with 50K triples. Effect sizes: -0.012, -0.004, +0.024, +0.053. WHAT WOULD REFUTE: observing p<0.05 for Lambda_2048 or Lambda_1024 would indicate trie-cuts are not the source of the ultrametricity gradient.
+
+## C-501
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Filtration Phase Transition at l_1=1: The ultrametricity transition between Lambda_1024 (z=-1.57) and Lambda_512 (z=9.22) is a SHARP phase transition, not a gradient. Applying the 6 Lambda_512 exclusion rules one at a time: k=0 (N=1026, z=-1.57), k=1 (N=729, z=8.56), k=2 (N=608, z=12.03), k=3 (N=568, z=7.65), k=4 (N=527, z=7.21), k=5 (N=513, z=9.60), k=6 (N=512, z=9.16). Rule 1 alone (exclude l_1=+1, removing 297 vectors) flips the system from anti-ultrametric to z=8.56 (p<0.005). Rules 2-6 maintain but do not substantially change the signal. The 297 l_1=+1 vectors are 'anti-ultrametric contaminants' whose removal reveals latent ultrametric structure.
+- Where stated: `crates/stats_core/src/ultrametric/baire_codebook.rs` (test_intermediate_filtration_gradient)
+- What would verify/refute it: VERIFIED: 200-permutation column-shuffle null at each of 7 intermediate levels with 50K triples. WHAT WOULD REFUTE: finding a gradual transition (z monotonically increasing from -1.57 to 9.22 across all 6 steps) instead of the observed sharp jump at k=1. Also: if randomly removing 297 vectors from Lambda_1024 (instead of specifically l_1=+1 vectors) produced the same z-score jump, it would refute the algebraic specificity.

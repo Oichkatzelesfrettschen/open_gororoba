@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 14: The "Endless" Deep Dive
 
 **Date:** 2026-02-01

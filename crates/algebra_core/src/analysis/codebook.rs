@@ -134,6 +134,46 @@ pub fn is_in_lambda_512(v: &LatticeVector) -> bool {
     true
 }
 
+/// Check if a vector passes k of the 6 Lambda_512 exclusion rules
+/// (applied cumulatively in canonical order).
+///
+/// `k=0` is Lambda_1024, `k=6` is Lambda_512. Intermediate values
+/// give sub-filtration levels for studying the ultrametricity gradient.
+///
+/// The 6 rules, in order:
+///   1. l_1 = 1
+///   2. l_1=0, l_2=1
+///   3. l_1=0, l_2=0, l_3=0
+///   4. l_1=0, l_2=0, l_3=1
+///   5. l_1=0, l_2=0, l_3=-1, l_4=1
+///   6. l_1=0, l_2=0, l_3=-1, l_4=0, l_5=1, l_6=1
+pub fn is_in_lambda_1024_minus_k(v: &LatticeVector, k: usize) -> bool {
+    assert!(k <= 6, "k must be in [0, 6]");
+    if !is_in_lambda_1024(v) {
+        return false;
+    }
+    // Apply rules 1..k cumulatively
+    if k >= 1 && v[1] == 1 {
+        return false;
+    }
+    if k >= 2 && v[1] == 0 && v[2] == 1 {
+        return false;
+    }
+    if k >= 3 && v[1] == 0 && v[2] == 0 && v[3] == 0 {
+        return false;
+    }
+    if k >= 4 && v[1] == 0 && v[2] == 0 && v[3] == 1 {
+        return false;
+    }
+    if k >= 5 && v[1] == 0 && v[2] == 0 && v[3] == -1 && v[4] == 1 {
+        return false;
+    }
+    if k >= 6 && v[1] == 0 && v[2] == 0 && v[3] == -1 && v[4] == 0 && v[5] == 1 && v[6] == 1 {
+        return false;
+    }
+    true
+}
+
 /// Check if a vector is in Lambda_256 (Lambda_512 minus 6 regions).
 pub fn is_in_lambda_256(v: &LatticeVector) -> bool {
     if !is_in_lambda_512(v) {

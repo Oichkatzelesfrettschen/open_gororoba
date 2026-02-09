@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Metamaterial Warp Chip: Validation Datasheet (Simulated)
 
 **Part Number:** GEMINI-WARP-X10

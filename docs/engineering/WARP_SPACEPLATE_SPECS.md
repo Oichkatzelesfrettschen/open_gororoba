@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Warp Spaceplate: System Engineering Specification
 
 **Version:** 1.0 (Jan 2026)

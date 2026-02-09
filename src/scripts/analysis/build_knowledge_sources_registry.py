@@ -37,6 +37,8 @@ def _toml_backing_for_path(path: str) -> str:
         return MIRROR_TO_TOML[path]
     if path.startswith("docs/external_sources/"):
         return "registry/external_sources.toml"
+    if path.startswith("docs/theory/") or path.startswith("docs/engineering/"):
+        return "registry/research_narratives.toml"
     return ""
 
 
@@ -89,6 +91,8 @@ def _title_from_markdown(text: str, fallback: str) -> str:
 
 
 def _kind_for_path(path: str, text: str) -> tuple[str, str, bool]:
+    if path.startswith("docs/theory/") or path.startswith("docs/engineering/"):
+        return ("markdown_mirror", "generated", True)
     if path.startswith("docs/external_sources/"):
         return ("markdown_mirror", "generated", True)
     if path in MIRROR_TO_TOML:

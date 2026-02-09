@@ -155,9 +155,9 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
 - Strategy: `narrative_primary_raw_capture_backup`
 - Status: `active`
 - Source markdown:
-  - `docs/theory/*.md`
-  - `docs/engineering/*.md`
-- Notes: Not all narrative content should be normalized into rigid schemas; raw capture in registry/knowledge/docs preserves provenance.
+  - `docs/*.md`
+  - `docs/book/src/**/*.md`
+- Notes: Residual manual narratives remain for curated prose and book chapters not yet normalized to dedicated TOML overlays.
 
 ### KM-012: external_sources
 
@@ -172,6 +172,23 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - `docs/external_sources/*.md`
   - `docs/external_sources/INDEX.md`
 - Notes: External source dossiers are TOML-first; markdown under docs/external_sources is generated from registry/external_sources.toml.
+
+### KM-013: theory_engineering_narratives
+
+- Strategy: `toml_primary_generated_mirror`
+- Status: `complete`
+- Source markdown:
+  - `docs/theory/*.md`
+  - `docs/engineering/*.md`
+- Authoritative TOML:
+  - `registry/research_narratives.toml`
+- Generated mirrors:
+  - `docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md`
+  - `docs/theory/*.md`
+  - `docs/theory/INDEX.md`
+  - `docs/engineering/*.md`
+  - `docs/engineering/INDEX.md`
+- Notes: Theory and engineering narrative dossiers are TOML-first with generated markdown mirrors.
 
 ## Phases
 
@@ -240,6 +257,18 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md
   - docs/external_sources/*.md
   - docs/external_sources/INDEX.md
+
+### KMP-P9: theory_engineering_registry_normalization
+
+- Status: `complete`
+- Deliverables:
+  - src/scripts/analysis/normalize_research_narratives_registry.py
+  - registry/research_narratives.toml
+  - docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md
+  - docs/theory/*.md
+  - docs/theory/INDEX.md
+  - docs/engineering/*.md
+  - docs/engineering/INDEX.md
 
 ## Policies
 
