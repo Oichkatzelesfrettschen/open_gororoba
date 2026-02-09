@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/claims.toml`.
 
-Total claims: 502
+Total claims: 503
 
 ## C-001
 
@@ -4022,3 +4022,11 @@ Total claims: 502
 - Statement: Affine F_3 Closure Hamming Weight Dependence: Full sweep over all 256 base points of Lambda_256 reveals affine F_3 closure rate depends primarily on the Hamming weight (number of nonzero coordinates) of the base point. Mean rate 37.8% (std 1.8%). Monotone trend: hw=2 gives 39.6% (max), hw=4 gives 38.5%, hw=6 gives 37.8%, hw=8 gives 36.6% (min). Distribution is bimodal: 243/256 base points cluster at 35-40%, 13/256 are outliers at 30-35%. All 13 low-closure outliers have hw=8 AND l_2=+1 (in original coordinates). Pearson correlation hw vs rate r=-0.33. Coordinate sum is uncorrelated (r=0.08). The unique hw=2 base point [-1,-1,0,0,0,0,0,0] achieves the global maximum 39.6%.
 - Where stated: `crates/algebra_core/src/analysis/codebook.rs` (test_affine_f3_closure_full_basepoint_sweep)
 - What would verify/refute it: VERIFIED: exhaustive sweep over all 256 base points with all 65536 pair evaluations per base point. WHAT WOULD REFUTE: finding any base point with closure >= 50% would indicate near-affine-subgroup structure. Finding no correlation with Hamming weight would indicate the base-point dependence is not sparsity-driven.
+
+## C-503
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Lambda_512 Affine Closure l_1 Dominance: Full sweep over all 512 base points of Lambda_512 reveals affine F_3 closure rate is almost perfectly determined by l_1 (Pearson r=-0.997). l_1=-1 base points give 33.9% mean closure (N=365), l_1=0 base points give 23.5% mean closure (N=147). The bimodal histogram (147 at 20-25%, 365 at 30-35%) maps exactly to this l_1 dichotomy. Hamming weight correlation REVERSES sign relative to Lambda_256 (r=+0.30 vs r=-0.33), and is a secondary effect. This connects to C-501: l_1 encodes a hierarchy l_1=+1 (anti-ultrametric, excluded) > l_1=0 (low closure) > l_1=-1 (high closure).
+- Where stated: `crates/algebra_core/src/analysis/codebook.rs` (test_affine_f3_closure_lambda512_full_sweep)
+- What would verify/refute it: VERIFIED: exhaustive sweep over all 512 base points with all 262144 pair evaluations per base point. WHAT WOULD REFUTE: finding l_1 correlation below 0.9 would indicate the variance is NOT l_1-dominated. Finding l_1=0 base points with closure >= 30% would break the bimodal structure.
