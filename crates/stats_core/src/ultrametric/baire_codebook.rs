@@ -1125,6 +1125,225 @@ mod tests {
         }
     }
 
+    // ================================================================
+    // S_base -> Lambda_2048 Transition
+    // ================================================================
+
+    /// S_base -> Lambda_2048 intermediate gradient.
+    /// Tests whether removing the 3 forbidden prefix patterns from S_base
+    /// affects ultrametricity significantly.
+    #[test]
+    fn test_sbase_to_lambda2048_gradient() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_sbase_minus_k,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        eprintln!("\n=== S_base -> Lambda_2048 Gradient ===");
+        eprintln!("k | N vectors | prefix | eff_dim | obs_frac | null_mean | z-score | p-value");
+        eprintln!("--|----------|--------|---------|----------|-----------|---------|--------");
+
+        let mut z_scores = Vec::new();
+        let mut sizes = Vec::new();
+        let mut prev_n = 0usize;
+
+        for k in 0..=3 {
+            let vectors =
+                enumerate_lattice_by_predicate(|v| is_in_sbase_minus_k(v, k));
+            let n = vectors.len();
+            let prefix = shared_prefix_length(&vectors);
+            let d = 8 - prefix;
+
+            let (cols, _, _) = lattice_to_column_major(&vectors, prefix);
+
+            let obs_frac = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 9_000_000 + k as u64);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
+                );
+                let null_frac =
+                    matrix_free_fraction(&shuffled, n, d, n_triples, seed + 10_000_000, 0.05);
+                null_fracs.push(null_frac);
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_var = null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64;
+            let null_std = null_var.sqrt();
+
+            let n_extreme = null_fracs.iter().filter(|&&f| f >= obs_frac).count();
+            let p_value = (n_extreme as f64 + 1.0) / (n_permutations as f64 + 1.0);
+
+            let z_score = if null_std > 1e-12 {
+                (obs_frac - null_mean) / null_std
+            } else {
+                0.0
+            };
+
+            let removed = if k == 0 { 0 } else { prev_n - n };
+            eprintln!(
+                "{} | {:>8} | {:>6} | {:>7} | {:>8.4} | {:>9.4} | {:>7.2} | {:>7.4}  (removed {})",
+                k, n, prefix, d, obs_frac, null_mean, z_score, p_value, removed
+            );
+
+            z_scores.push(z_score);
+            sizes.push(n);
+            prev_n = n;
+        }
+
+        eprintln!("\n=== GRADIENT SUMMARY ===");
+        eprintln!(
+            "z-score progression: {:?}",
+            z_scores.iter().map(|z| format!("{:.2}", z)).collect::<Vec<_>>()
+        );
+
+        // Verify boundary: k=3 should match Lambda_2048
+        let k3_set = enumerate_lattice_by_predicate(|v| is_in_sbase_minus_k(v, 3));
+        let l2048_set = enumerate_lattice_by_predicate(
+            algebra_core::analysis::codebook::is_in_lambda_2048,
+        );
+        assert_eq!(k3_set.len(), l2048_set.len(), "k=3 must equal Lambda_2048");
+    }
+
+    /// Boundary consistency for is_in_sbase_minus_k.
+    #[test]
+    fn test_sbase_minus_k_consistency() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_base_universe, is_in_lambda_2048,
+            is_in_sbase_minus_k,
+        };
+
+        let k0 = enumerate_lattice_by_predicate(|v| is_in_sbase_minus_k(v, 0));
+        let sbase = enumerate_lattice_by_predicate(is_in_base_universe);
+        assert_eq!(k0.len(), sbase.len(), "k=0 must equal S_base");
+
+        let k3 = enumerate_lattice_by_predicate(|v| is_in_sbase_minus_k(v, 3));
+        let l2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+        assert_eq!(k3.len(), l2048.len(), "k=3 must equal Lambda_2048");
+
+        // Monotone containment
+        let mut prev = k0;
+        for k in 1..=3 {
+            let current = enumerate_lattice_by_predicate(|v| is_in_sbase_minus_k(v, k));
+            assert!(
+                current.len() <= prev.len(),
+                "k={}: {} must be <= {}",
+                k,
+                current.len(),
+                prev.len()
+            );
+            prev = current;
+        }
+    }
+
+    /// Investigate l_0=0 vs l_0=-1 subpopulation ultrametricity at Lambda_2048.
+    /// This tests whether l_0=0 vectors are actively anti-ultrametric
+    /// or merely neutral diluters.
+    #[test]
+    fn test_l0_subpopulation_ultrametricity() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_2048,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        let all_2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+        let l0_neg1: Vec<_> = all_2048.iter().copied().filter(|v| v[0] == -1).collect();
+        let l0_zero: Vec<_> = all_2048.iter().copied().filter(|v| v[0] == 0).collect();
+
+        eprintln!("\n=== l_0 Subpopulation Ultrametricity at Lambda_2048 ===");
+        eprintln!("Lambda_2048: N={}", all_2048.len());
+        eprintln!("  l_0=-1 subset: N={}", l0_neg1.len());
+        eprintln!("  l_0=0  subset: N={}", l0_zero.len());
+
+        // Function to compute z-score for a subset
+        let compute_z = |vectors: &[[i8; 8]], label: &str| -> f64 {
+            let n = vectors.len();
+            let prefix = shared_prefix_length(vectors);
+            let d = 8 - prefix;
+            let (cols, _, _) = lattice_to_column_major(vectors, prefix);
+
+            let obs_frac = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 11_000_000);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
+                );
+                null_fracs.push(matrix_free_fraction(
+                    &shuffled, n, d, n_triples, seed + 12_000_000, 0.05,
+                ));
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_var = null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64;
+            let null_std = null_var.sqrt();
+
+            let z = if null_std > 1e-12 {
+                (obs_frac - null_mean) / null_std
+            } else {
+                0.0
+            };
+
+            eprintln!(
+                "  {}: prefix={}, d={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, obs_frac, null_mean, null_std, z
+            );
+            z
+        };
+
+        let z_neg1 = compute_z(&l0_neg1, "l_0=-1");
+        let z_zero = compute_z(&l0_zero, "l_0=0 ");
+
+        eprintln!("\n  Difference: l_0=-1 z={:.2}, l_0=0 z={:.2}", z_neg1, z_zero);
+        eprintln!(
+            "  Interpretation: l_0=0 is {} ultrametric than l_0=-1",
+            if z_zero < z_neg1 { "LESS" } else { "MORE" }
+        );
+    }
+
+    // ================================================================
+    // Lambda_2048 -> Lambda_1024 Transition
+    // ================================================================
+
     /// Lambda_2048 -> Lambda_1024 intermediate gradient.
     /// Tests whether the l_0=-1 slice and subsequent pattern exclusions
     /// produce a monotone or discontinuous ultrametricity change.

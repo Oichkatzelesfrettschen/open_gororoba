@@ -47,6 +47,36 @@ pub fn is_in_base_universe(v: &LatticeVector) -> bool {
     true
 }
 
+/// Check if a vector passes k of the 3 Lambda_2048 exclusion rules
+/// (applied cumulatively in canonical order, starting from S_base).
+///
+/// `k=0` is S_base, `k=3` is Lambda_2048. Intermediate values
+/// give sub-filtration levels for studying the S_base -> Lambda_2048 transition.
+///
+/// The 3 rules, in order (all affect l_0=0 subtree):
+///   1. (0, 1, 1) prefix
+///   2. (0, 1, 0, 1, 1) prefix
+///   3. (0, 1, 0, 1, 0, 1) prefix
+pub fn is_in_sbase_minus_k(v: &LatticeVector, k: usize) -> bool {
+    assert!(k <= 3, "k must be in [0, 3]");
+    if !is_in_base_universe(v) {
+        return false;
+    }
+    // Rule 1: exclude (0, 1, 1) prefix
+    if k >= 1 && v[0] == 0 && v[1] == 1 && v[2] == 1 {
+        return false;
+    }
+    // Rule 2: exclude (0, 1, 0, 1, 1) prefix
+    if k >= 2 && v[0] == 0 && v[1] == 1 && v[2] == 0 && v[3] == 1 && v[4] == 1 {
+        return false;
+    }
+    // Rule 3: exclude (0, 1, 0, 1, 0, 1) prefix
+    if k >= 3 && v[0] == 0 && v[1] == 1 && v[2] == 0 && v[3] == 1 && v[4] == 0 && v[5] == 1 {
+        return false;
+    }
+    true
+}
+
 /// Check if a vector is in Lambda_2048 (Base minus 139 forbidden prefixes).
 pub fn is_in_lambda_2048(v: &LatticeVector) -> bool {
     if !is_in_base_universe(v) {
