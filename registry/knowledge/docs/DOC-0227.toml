@@ -3,16 +3,16 @@
 
 [document]
 id = "DOC-0227"
-source_path = "reports/config_audit.md"
-title = "Config Audit Notes (2026-02-01)"
+source_path = "reports/claims_status_inventory.md"
+title = "Claims Status Inventory (2026-02-04)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "fee86a8a90590603f673988366852e663bd0562eba6fdf6775f9f098c8a4924b"
-source_line_count = 31
-source_size_bytes = 1184
-content_sha256 = "fee86a8a90590603f673988366852e663bd0562eba6fdf6775f9f098c8a4924b"
+source_sha256 = "479a8e7510595bf674df61026f8232dc8a535dd994b8f39551f354f8c3a25e12"
+source_line_count = 97
+source_size_bytes = 8499
+content_sha256 = "479a8e7510595bf674df61026f8232dc8a535dd994b8f39551f354f8c3a25e12"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -27,26 +27,92 @@ content_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
-# Config Audit Notes (2026-02-01)
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-## Build entrypoints
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-- Makefile path scan: no missing `src/`/`bin/`/`docker/` script references detected (excluding venv tokens).
+# Claims Status Inventory (2026-02-04)
 
-## Pytest import path
+Matrix: `docs/CLAIMS_EVIDENCE_MATRIX.md`
+Total claims parsed: 432
 
-- `pytest.ini` uses `pythonpath` entries for `src/scripts/*` so tests can import script modules by bare name
-  (e.g., `fetch_planck_2018_spectra`, `measure_tensor_network_entropy`).
-- Name-collision fix applied: `src/scripts/analysis/spectral_triple_toy.py` was renamed to
-  `src/scripts/analysis/spectral_triple_toy_report.py` so it no longer shadows `src/spectral_triple_toy.py`.
+## Counts by canonical status token
 
-## Docker entrypoint
+- Verified: 354
+- Partially verified: 8
+- Speculative: 13
+- Modeled: 20
+- Literature: 4
+- Theoretical: 1
+- Not supported: 19
+- Refuted: 11
+- Clarified: 1
+- Established: 1
 
-- Docker wrapper script lives at `run_quantum_container.sh`; docs updated to match.
+## Open claims (oldest first)
 
-## Hygiene
+This list includes claims marked Unverified, Partially verified, Speculative, Modeled, Literature, Theoretical, or Clarified.
 
-- `__pycache__/` directories under `src/` and `tests/` are expected after running the suite; they should remain
-  untracked/ignored and can be removed via `make clean` (or manual deletion) if desired.
+- C-005 (Partially verified, last_verified=2026-01-30): \"The geometry of sedenion zero divisors\" (Reggiani, 2024) implies specific manifold identifications (e.g.,...
+- C-007 (Speculative, last_verified=2026-02-02): GWTC-3 BH mass distribution is suggestive of multimodality (Phase 2D mixture modeling); any link to \\\"negat...
+- C-008 (Speculative, last_verified=2026-02-02): Toy operator mapping: alpha = -1.5 yields abs(d_s)=2 under Convention B; physical interpretation remains sp...
+- C-010 (Speculative, last_verified=2026-02-02): Hypothesis: Cayley-Dickson (sedenion) zero-divisor motifs can be mapped to physically realizable absorber n...
+- C-011 (Speculative, last_verified=2026-02-02): Hypothesis: a Cayley-Dickson (sedenion) structure could parameterize a gravastar-like effective model, but...
+- C-022 (Modeled, last_verified=2026-02-02): Toy model: map Cayley-Dickson doubling level n to surreal birthday n and test the CD property-loss milestones.
+- C-023 (Modeled, last_verified=2026-02-02): Toy model: interpret the CD associator as a discrete connection/holonomy signal over triples.
+- C-401 (Theoretical, last_verified=2026-02-02): A Casimir cavity (1um sphere in 4um cylinder) generates the negative energy density required for a nanoscal...
+- C-403 (Speculative, last_verified=2026-02-02): Geometry from spectral data must be stated at spectral-triple strength (A,H,D_geom) or equivalent; eigenval...
+- C-406 (Partially verified, last_verified=2026-02-02): TSCP/box-kite sky mapping must be invariant under the relevant algebraic symmetries (or else explicitly enu...
+- C-407 (Partially verified, last_verified=2026-02-02): Reported sky-alignment p-values must include explicit trial-factor accounting (look-elsewhere) across tuned...
+- C-408 (Partially verified, last_verified=2026-02-02): Every thesis-level hypothesis must have symmetric falsification boundaries: a disconfirmation threshold (N_...
+- C-409 (Modeled, last_verified=2026-02-02): \"Interleaved I-Beam\" spaceplate design targets high refractive index via capacitive loading (metal/dielectr...
+- C-410 (Literature, last_verified=2026-02-02): One-loop photon-graviton mixing in constant EM fields includes non-zero tadpole contributions (Ahmadiniaz e...
+- C-411 (Literature, last_verified=2026-02-02): Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxed phase matching, enabling fla...
+- C-412 (Modeled, last_verified=2026-02-02): \"Holographic Entropy Trap\" 5-phase mechanism (Injection -> Lensing -> Sedenion Resonance -> Parton Decay ->...
+- C-417 (Speculative, last_verified=2026-02-02): Hypothesis: Ray capture efficiency in fractal metamaterials correlates with Sedenion Zero Divisor density;...
+- C-418 (Modeled, last_verified=2026-02-02): Material Database tracks temperature-dependent phase transitions (e.g., Ice Ih/VII/X) and wide-spectrum opt...
+- C-419 (Modeled, last_verified=2026-02-02): Digital Matter BOM generation pipeline produces fabrication-ready CSVs tracking layer stoichiometry, mass d...
+- C-420 (Modeled, last_verified=2026-02-02): Automated CAD generation outputs OpenSCAD geometry and SVG lithography masks for metamaterial nanostructure...
+- C-421 (Modeled, last_verified=2026-02-02): Metamaterial designs incorporate Rogers RT5880 carrier substrates and Gold/Silicon I-beam stacks to achieve...
+- C-422 (Modeled, last_verified=2026-02-02): Negative-dimension vacuum dynamics ($D \\sim k^{-3}$) coupled with attractive self-interaction spontaneously...
+- C-423 (Modeled, last_verified=2026-02-02): Grand Unified Simulator v4 integrates CUDA-based relativistic ray tracing with robust FDFD electromagnetic...
+- C-424 (Modeled, last_verified=2026-02-02): \"Holographic Warp Gate\" simulation harmonizes Alcubierre metric gradients with Kozyrev p-adic noise and Spa...
+- C-425 (Modeled, last_verified=2026-02-02): Sedenion Transport Kernel generates explicit 16x16 basis multiplication matrices for modeling non-associati...
+- C-426 (Speculative, last_verified=2026-02-02): Pathion (32D) Zero-Divisor interaction matrix diagonalization provides a testbed for algebraic mass spectru...
+- C-427 (Speculative, last_verified=2026-02-02): Algebraic Metamaterial synthesis maps Cayley-Dickson structure constants to permittivity tensors and Cliffo...
+- C-428 (Modeled, last_verified=2026-02-02): Integrated Warp Geodesic Simulation traces null rays through a Kerr metric background using 'NegDimCosmolog...
+- C-429 (Modeled, last_verified=2026-02-02): Kerr black hole shadow asymmetry due to frame dragging (a=0.99) is successfully simulated and visualized; d...
+- C-430 (Modeled, last_verified=2026-02-02): Negative Dimension Cosmology (NegDim) expansion history H(z) and luminosity distance D_L(z) deviate from st...
+- C-431 (Modeled, last_verified=2026-02-02): The Sedenion Zero Divisor manifold, when projected into 3D perturbation space (e2, e5, e14), forms a cohere...
+- C-432 (Partially verified, last_verified=2026-02-02): Kerr geodesic trajectories computed via the C++ Mino-time integrator can be compared against the analytic B...
+- C-026 (Speculative, last_verified=2026-02-03): Speculative program: if a statistically significant \"lower mass gap\" (~2.5-5 M_sun) is established, it may...
+- C-032 (Literature, last_verified=2026-02-03): Literature claim (Tang 2025 preprint): non-associative (octonionic/sedenionic) QED uses associator norms to...
+- C-033 (Partially verified, last_verified=2026-02-03): Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023).
+- C-034 (Literature, last_verified=2026-02-03): Literature claim (Chanyal 2014): a \"sedenion unified theory of gravi-electromagnetism\" expresses unified po...
+- C-039 (Speculative, last_verified=2026-02-03): Spectral dimension runs D_s: 4 -> 2 at small scales, consistent with CDT and asymptotic safety.
+- C-043 (Modeled, last_verified=2026-02-03): \"Compact Object\" populations (Pulsars, Magnetars, FRBs) can be integrated into the unified framework for mu...
+- C-047 (Clarified, last_verified=2026-02-03): E9, E10, E11 are Euclidean sphere-packing lattices.
+- C-048 (Modeled, last_verified=2026-02-03): Operator-side \"Depth Stratification\" mirrors motivic tower stratification.
+- C-050 (Modeled, last_verified=2026-02-03): Spaceplate design is structurally isomorphic to Multi-Flavor Lorentzian Threads flow allocation.
+- C-053 (Modeled, last_verified=2026-02-03): Toy mapping: Pathion (32D) tensor diagonal -> dielectric stack (TMM retrieval).
+- C-074 (Partially verified, last_verified=2026-02-03): CD associator growth law: <\\|A(a,b,c)\\|^2> = 2.00  (1 - 14.6  d^{-1.80}) for unit vectors.
+- C-087 (Partially verified, last_verified=2026-02-03): A_inf=2 follows from statistical independence of (ab)c and a(bc).
+- C-090 (Speculative, last_verified=2026-02-03): ZD eigenvalue spectrum is NOT invariant under SO(7) rotation.
+- C-404 (Speculative, last_verified=2026-02-03): Bulk locality can be organized by boundary modular data K_A=-log rho_A and entanglement wedge reconstructio...
+- C-405 (Speculative, last_verified=2026-02-03): Observers can be modeled as (approximate) correctable record algebras selected by open-system dynamics L_op...
+
+## Parsing notes
+
+- This report is a planning snapshot, not evidence.
+- If a matrix row includes extra '|' characters, parsing may skip it.
+
+## Metadata hygiene notes
+
+These are *formatting* and *traceability* issues that make claim-by-claim audits harder.
+
+- Rows with missing/weak `Where stated` pointers: 0
+- Rows with legacy inline experiment tags in claim text (contains \\\\|v): 0
 
 """

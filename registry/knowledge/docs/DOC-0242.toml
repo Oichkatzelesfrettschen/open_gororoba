@@ -3,16 +3,16 @@
 
 [document]
 id = "DOC-0242"
-source_path = "reports/tscp_trial_factor_ledger.md"
-title = "TSCP Trial-Factor Ledger (2026-02-04)"
+source_path = "reports/todo_fixme_scan.md"
+title = "TODO/FIXME Scan (2026-02-07)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "d4485ee956dc319a272d97904fe9b7b8eb13aa47535664db18b8575664638093"
-source_line_count = 42
-source_size_bytes = 1728
-content_sha256 = "d4485ee956dc319a272d97904fe9b7b8eb13aa47535664db18b8575664638093"
+source_sha256 = "35fa816d945ab34fb50b0300d27ff1d82f63db1ebad3c83b8ed90347a031b80c"
+source_line_count = 38
+source_size_bytes = 1256
+content_sha256 = "35fa816d945ab34fb50b0300d27ff1d82f63db1ebad3c83b8ed90347a031b80c"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -27,37 +27,33 @@ content_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
-# TSCP Trial-Factor Ledger (2026-02-04)
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-Scope: method-level multiple-testing accounting for TSCP alignment (C-407).
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-## Tuned degrees of freedom (current proxy)
+# TODO/FIXME Scan (2026-02-07)
 
-- Reference kite index: 7 choices
-- Opposite-pair axis per kite: 3 choices (0,5), (1,3), (2,4)
-- Embedding sweep size: N_embed = 21
+Command used (excluding venv/cache/artifact trees):
 
-## Familywise alpha
+`rg -n \"\\\\b(TODO|FIXME)\\\\b\" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'`
 
-- alpha_family = 0.01
+## High-signal hotspots
 
-## Thresholds by scenario
-
-| Scenario | N_trials | Bonferroni alpha_per | Sidak alpha_per | Notes |
-|---|---:|---:|---:|---|
-| Confirmatory: fixed embedding, per-kite scan | 7 | 1.429e-03 | 1.435e-03 | Fix embedding a priori (canonical projection), then test 7 kites. |
-| Robustness: embedding sweep (42-node score) | 21 | 4.762e-04 | 4.785e-04 | Scan 21 embeddings (reference kite * opposite-pair axis), no per-kite restriction. |
-| Exploratory: embedding sweep + per-kite scan | 147 | 6.803e-05 | 6.837e-05 | Scan 21 embeddings and 7 per-kite restrictions; report best result. |
-
-## Source anchors (cached)
-
-- Bonferroni/Sidak background: `data/external/papers/abdi_2007_bonferroni_sidak_corrections.pdf`
-- Holm procedure: `data/external/papers/holm_1979_sequentially_rejective_multiple_test_procedure.pdf`
+- Claims pipeline backlog: `docs/CLAIMS_TASKS.md` (many rows still `TODO`)
+- Global tracker: `docs/TODO.md`
+- Open ticket stubs:
+  - `docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md`
+  - `reports/tickets_inventory.md`
+- Code-level implementation TODOs:
+  - `crates/quantum_core/src/tensor_networks.rs`
+  - `crates/quantum_core/src/casimir.rs`
 
 ## Notes
 
-- Bonferroni is conservative but robust under dependence.
-- Sidak assumes independent trials; use as an informative bound only.
-- This ledger must be updated whenever additional tuned degrees of freedom are introduced (catalog cuts, smoothing scales, coordinate frames, etc.).
+- This scan is a navigation aid only. Treat each TODO as a scoped
+  hypothesis-to-check task.
+- TODO entries in docs are expected and intentionally retained for provenance.
 
 """

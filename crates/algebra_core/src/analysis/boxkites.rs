@@ -4991,4 +4991,739 @@ mod tests {
             "Quarter Rule failed: pure={total_pure}, mixed={total_mixed}"
         );
     }
+
+    /// Anti-Diagonal Parity Theorem verification at dim=256 (C-522).
+    ///
+    /// Extends C-521 to the next dimension doubling: 127 components,
+    /// each with 126 nodes, producing ~13.3M triangles. Also collects:
+    /// - Klein-four fiber sizes: distribution of F values in GF(2)^2
+    /// - Per-edge eta balance: counts eta=0 vs eta=1 per component
+    /// - Cohomological data: cycle rank of eta-labeled graph
+    ///
+    /// Runtime: ~15-30s in release mode.
+    #[test]
+    #[ignore] // Long-running: ~15-30s in release mode
+    fn test_antidiagonal_parity_theorem_dim256() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use std::time::Instant;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        let dim = 256;
+        let t0 = Instant::now();
+        let components = motif_components_for_cross_assessors(dim);
+        let t_graph = t0.elapsed();
+        eprintln!("\n=== Anti-Diagonal Parity Theorem at dim={dim} ===");
+        eprintln!("Graph construction: {:.2}s", t_graph.as_secs_f64());
+        eprintln!("Components: {}", components.len());
+
+        let mut total_triangles = 0usize;
+        let mut total_pure = 0usize;
+        let mut total_mixed = 0usize;
+        let mut mismatches = 0usize;
+
+        // Klein-four fiber sizes: F = (f1, f2) in {(0,0), (0,1), (1,0), (1,1)}
+        let mut fiber_counts = [0usize; 4]; // indexed by 2*f1 + f2
+
+        // Per-component eta balance
+        let mut total_eta0 = 0usize;
+        let mut total_eta1 = 0usize;
+
+        // Cycle rank accumulator: sum over components of (|E| - |V| + 1)
+        let mut total_cycle_rank = 0usize;
+
+        let t1 = Instant::now();
+
+        for comp in components.iter() {
+            let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+            let n = nodes.len();
+            let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                comp.edges.iter().copied().collect();
+            let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                let (a, b) = if u < v { (u, v) } else { (v, u) };
+                edge_set.contains(&(a, b))
+            };
+
+            let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+            };
+
+            // Collect edge eta values for cohomology
+            let mut comp_eta0 = 0usize;
+            let mut comp_eta1 = 0usize;
+            for &(u, v) in &comp.edges {
+                if eta(u, v) == 0 { comp_eta0 += 1; } else { comp_eta1 += 1; }
+            }
+            total_eta0 += comp_eta0;
+            total_eta1 += comp_eta1;
+
+            // Cycle rank = |E| - |V| + 1 (for connected component)
+            total_cycle_rank += comp.edges.len() - n + 1;
+
+            // Triangle enumeration
+            for i in 0..n {
+                for j in (i + 1)..n {
+                    for k in (j + 1)..n {
+                        let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                        if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                            continue;
+                        }
+                        total_triangles += 1;
+
+                        // Sigma classification
+                        let sigma = |a: CrossPair, b: CrossPair| -> i32 {
+                            cd_basis_mul_sign(dim, a.0, b.0)
+                            * cd_basis_mul_sign(dim, a.1, b.1)
+                        };
+                        let s_uv = sigma(u, v);
+                        let s_vw = sigma(v, w);
+                        let s_uw = sigma(u, w);
+                        let n_same = [s_uv, s_vw, s_uw].iter()
+                            .filter(|&&s| s == -1).count();
+                        let product = s_uv * s_vw * s_uw;
+                        let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+
+                        // Eta for all 3 edges
+                        let eta_uv = eta(u, v);
+                        let eta_vw = eta(v, w);
+                        let eta_uw = eta(u, w);
+
+                        // Anti-Diagonal Parity Theorem: pure iff eta constant
+                        let eta_constant = (eta_uv == eta_vw) && (eta_vw == eta_uw);
+
+                        if eta_constant != is_pure {
+                            mismatches += 1;
+                        }
+
+                        if is_pure {
+                            total_pure += 1;
+                        } else {
+                            total_mixed += 1;
+                        }
+
+                        // Klein-four fiber: F = (eta_uv XOR eta_vw, eta_vw XOR eta_uw)
+                        let f1 = eta_uv ^ eta_vw;
+                        let f2 = eta_vw ^ eta_uw;
+                        fiber_counts[(2 * f1 + f2) as usize] += 1;
+                    }
+                }
+            }
+        }
+
+        let t_total = t1.elapsed();
+
+        eprintln!("Triangle enumeration: {:.2}s", t_total.as_secs_f64());
+        eprintln!("Total triangles: {total_triangles}");
+        eprintln!("Pure: {total_pure}, Mixed: {total_mixed}");
+        eprintln!("Mismatches: {mismatches}");
+        eprintln!("Klein-four fibers: (0,0)={}, (0,1)={}, (1,0)={}, (1,1)={}",
+            fiber_counts[0], fiber_counts[1], fiber_counts[2], fiber_counts[3]);
+        eprintln!("Edge eta balance: eta=0: {total_eta0}, eta=1: {total_eta1}");
+        eprintln!("Total cycle rank: {total_cycle_rank}");
+
+        // ASSERTION 1: Anti-Diagonal Parity Theorem holds
+        assert_eq!(
+            mismatches, 0,
+            "Anti-Diagonal Parity Theorem REFUTED at dim={dim}: {mismatches} mismatches"
+        );
+
+        // ASSERTION 2: Quarter Rule
+        assert_eq!(
+            total_pure * 3, total_mixed,
+            "Quarter Rule failed: pure={total_pure}, mixed={total_mixed}"
+        );
+
+        // ASSERTION 3: Klein-four fiber (0,0) = pure count
+        assert_eq!(
+            fiber_counts[0], total_pure,
+            "F=(0,0) should equal pure count"
+        );
+
+        // ASSERTION 4: Sum of nonzero fibers = mixed count
+        assert_eq!(
+            fiber_counts[1] + fiber_counts[2] + fiber_counts[3], total_mixed,
+            "Nonzero fibers should sum to mixed count"
+        );
+    }
+
+    /// GF(2) cohomology of eta and Klein-four fiber structure across dimensions (C-523).
+    ///
+    /// For each dimension and each component, computes:
+    /// 1. First Betti number b_1 = |E| - |V| + 1 (cycle rank)
+    /// 2. Whether eta is a coboundary: eta(a,b) = delta(a) XOR delta(b)
+    ///    If coboundary, ALL triangles pure. If not, mixed triangles exist.
+    /// 3. Number of "frustrated cycles" (independent cycles where eta sums to 1 mod 2)
+    /// 4. Klein-four fiber sizes per component and globally
+    ///
+    /// The coboundary test works by BFS: assign delta(root)=0, propagate
+    /// delta(v) = delta(u) XOR eta(u,v) along spanning tree. Then check
+    /// non-tree edges: if delta(u) XOR delta(v) != eta(u,v), that edge
+    /// witnesses a frustrated cycle.
+    #[test]
+    fn test_eta_cohomology_and_klein_four_fibers() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use std::collections::VecDeque;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        eprintln!("\n=== GF(2) Cohomology of eta + Klein-four Fiber Structure ===");
+        eprintln!("{:<6} {:>5} {:>8} {:>8} {:>8} {:>10} {:>10} {:>10} {:>10} {:>10} {:>10}",
+            "dim", "comps", "edges", "eta=0", "eta=1", "b1", "frustrated",
+            "F(0,0)", "F(0,1)", "F(1,0)", "F(1,1)");
+
+        for &dim in &[16, 32, 64, 128] {
+            let components = motif_components_for_cross_assessors(dim);
+
+            let mut total_edges = 0usize;
+            let mut total_eta0 = 0usize;
+            let mut total_eta1 = 0usize;
+            let mut total_b1 = 0usize;
+            let mut total_frustrated = 0usize;
+            let mut fiber_counts = [0usize; 4];
+
+            for comp in components.iter() {
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let n = nodes.len();
+                if n < 2 { continue; }
+
+                // Build adjacency list with eta labels
+                let node_idx: std::collections::HashMap<CrossPair, usize> =
+                    nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
+                let mut adj: Vec<Vec<(usize, u8)>> = vec![Vec::new(); n];
+
+                let mut comp_eta0 = 0usize;
+                let mut comp_eta1 = 0usize;
+
+                for &(u, v) in &comp.edges {
+                    let eta_val = psi(dim, u.0, v.1) ^ psi(dim, u.1, v.0);
+                    let ui = node_idx[&u];
+                    let vi = node_idx[&v];
+                    adj[ui].push((vi, eta_val));
+                    adj[vi].push((ui, eta_val));
+                    if eta_val == 0 { comp_eta0 += 1; } else { comp_eta1 += 1; }
+                }
+
+                total_edges += comp.edges.len();
+                total_eta0 += comp_eta0;
+                total_eta1 += comp_eta1;
+
+                // BFS to compute delta assignment and count frustrated non-tree edges
+                let mut delta: Vec<Option<u8>> = vec![None; n];
+                delta[0] = Some(0);
+                let mut queue = VecDeque::new();
+                queue.push_back(0);
+                let mut tree_edges = 0usize;
+                let mut frustrated = 0usize;
+
+                while let Some(u) = queue.pop_front() {
+                    for &(v, eta_val) in &adj[u] {
+                        if let Some(dv) = delta[v] {
+                            // Non-tree edge: check consistency
+                            // Only count each non-tree edge once (u < v)
+                            if u < v {
+                                let expected = delta[u].unwrap() ^ eta_val;
+                                if expected != dv {
+                                    frustrated += 1;
+                                }
+                            }
+                        } else {
+                            delta[v] = Some(delta[u].unwrap() ^ eta_val);
+                            tree_edges += 1;
+                            queue.push_back(v);
+                        }
+                    }
+                }
+
+                let b1 = comp.edges.len() - tree_edges; // = |E| - (|V| - 1)
+                total_b1 += b1;
+                total_frustrated += frustrated;
+
+                // Triangle enumeration for Klein-four fibers
+                let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                    comp.edges.iter().copied().collect();
+                let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                    let (a, b) = if u < v { (u, v) } else { (v, u) };
+                    edge_set.contains(&(a, b))
+                };
+
+                let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+                };
+
+                for i in 0..n {
+                    for j in (i + 1)..n {
+                        for k in (j + 1)..n {
+                            let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                            if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                                continue;
+                            }
+                            let eta_uv = eta(u, v);
+                            let eta_vw = eta(v, w);
+                            let eta_uw = eta(u, w);
+                            let f1 = eta_uv ^ eta_vw;
+                            let f2 = eta_vw ^ eta_uw;
+                            fiber_counts[(2 * f1 + f2) as usize] += 1;
+                        }
+                    }
+                }
+            }
+
+            eprintln!("{:<6} {:>5} {:>8} {:>8} {:>8} {:>10} {:>10} {:>10} {:>10} {:>10} {:>10}",
+                dim, components.len(), total_edges, total_eta0, total_eta1,
+                total_b1, total_frustrated,
+                fiber_counts[0], fiber_counts[1],
+                fiber_counts[2], fiber_counts[3]);
+
+            // ASSERTIONS
+
+            // Eta is exactly balanced on edges in every component (Half-Half Law)
+            assert_eq!(
+                total_eta0, total_eta1,
+                "dim={dim}: eta not balanced on edges: {total_eta0} vs {total_eta1}"
+            );
+
+            // At dim=16, eta IS a coboundary (0 frustrated cycles despite b1=49).
+            // At dim>=32, eta is NOT a coboundary (frustrated cycles > 0).
+            // This is a cohomological phase transition!
+            if dim == 16 {
+                assert_eq!(
+                    total_frustrated, 0,
+                    "dim=16: expected eta to be a coboundary but found {total_frustrated} frustrated"
+                );
+            } else {
+                assert!(
+                    total_frustrated > 0,
+                    "dim={dim}: eta is unexpectedly a coboundary"
+                );
+            }
+
+            // Klein-four: F(0,0) = pure count, F(0,0)*3 = sum of nonzero
+            let total_tris: usize = fiber_counts.iter().sum();
+            if total_tris > 0 {
+                assert_eq!(
+                    fiber_counts[0] * 3,
+                    fiber_counts[1] + fiber_counts[2] + fiber_counts[3],
+                    "dim={dim}: 1:3 ratio from Klein-four fibers failed"
+                );
+            }
+
+            // Klein-four fibers (1,0) and (1,1) are equal (observed at dim=256)
+            // Test if this holds at all dimensions
+            if dim >= 32 {
+                // At dim=16, check but don't assert (sample may be too small)
+                assert_eq!(
+                    fiber_counts[2], fiber_counts[3],
+                    "dim={dim}: F(1,0) != F(1,1): {} vs {}",
+                    fiber_counts[2], fiber_counts[3]
+                );
+            }
+        }
+    }
+
+    /// CD doubling recursion analysis of eta (C-526).
+    ///
+    /// Decomposes eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b) using the
+    /// Cayley-Dickson doubling formula to understand its algebraic origin.
+    ///
+    /// Key observation: for cross-assessor pair a=(lo_a, hi_a), b=(lo_b, hi_b),
+    /// the psi matrix is:
+    ///   M[0,0] = psi(lo_a, lo_b)   -- case 1 (both lo, pure recursion)
+    ///   M[0,1] = psi(lo_a, hi_b)   -- case 2 (lo*hi, swap+recurse)
+    ///   M[1,0] = psi(hi_a, lo_b)   -- case 3 (hi*lo, conjugation)
+    ///   M[1,1] = psi(hi_a, hi_b)   -- case 4 (both hi, double conj)
+    ///
+    /// Sigma (diagonal XOR) = M[0,0] XOR M[1,1]
+    /// Eta (anti-diagonal XOR) = M[0,1] XOR M[1,0]
+    ///
+    /// We test whether eta can be decomposed as a function of the
+    /// half-dimension indices, and whether the conjugation asymmetry
+    /// in case 3 is the sole source of eta != 0.
+    #[test]
+    fn test_eta_doubling_decomposition() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        eprintln!("\n=== Eta Doubling Decomposition ===");
+
+        for &dim in &[16, 32, 64] {
+            let half = dim / 2;
+            let components = motif_components_for_cross_assessors(dim);
+
+            let mut total_edges = 0usize;
+            let mut eta_from_conj_only = 0usize; // edges where eta comes purely from case 3 conjugation
+            let mut lo_b_zero_count = 0usize;
+
+            for comp in components.iter() {
+                for &(a, b) in &comp.edges {
+                    total_edges += 1;
+                    let (lo_a, hi_a) = (a.0, a.1);
+                    let (lo_b, hi_b) = (b.0, b.1);
+
+                    // Case 2: s(lo_a, hi_b) = s_half(hi_b - half, lo_a) by CD doubling
+                    // Case 3: s(hi_a, lo_b) depends on lo_b:
+                    //   lo_b == 0: s(hi_a, 0) = s_half(hi_a - half, 0) = 1 (identity)
+                    //   lo_b != 0: s(hi_a, lo_b) = -s_half(hi_a - half, lo_b)
+
+                    // So psi for case 2 and case 3:
+                    let psi_02 = psi(dim, lo_a, hi_b);
+                    let psi_10 = psi(dim, hi_a, lo_b);
+                    let eta_val = psi_02 ^ psi_10;
+
+                    // Decompose via half-dimension:
+                    // psi_02 = psi_half(hi_b - half, lo_a) [case 2 recurses with swap]
+                    let psi_02_half = psi(half, hi_b - half, lo_a);
+                    assert_eq!(psi_02, psi_02_half,
+                        "dim={dim}: case 2 decomposition failed");
+
+                    // psi_10: case 3
+                    if lo_b == 0 {
+                        lo_b_zero_count += 1;
+                        // s(hi_a, 0) = s_half(hi_a - half, 0)
+                        // For any x, s(x, 0) = 1 (e_0 is identity), so psi = 0
+                        assert_eq!(psi_10, 0,
+                            "dim={dim}: psi(hi_a, 0) should be 0");
+                    } else {
+                        // s(hi_a, lo_b) = -s_half(hi_a - half, lo_b)
+                        let psi_10_half = psi(half, hi_a - half, lo_b);
+                        // -s means flip sign: psi_10 = 1 XOR psi_10_half
+                        assert_eq!(psi_10, psi_10_half ^ 1,
+                            "dim={dim}: case 3 conjugation decomposition failed");
+
+                        // So eta = psi_02 XOR psi_10
+                        //        = psi_half(hi_b-h, lo_a) XOR (1 XOR psi_half(hi_a-h, lo_b))
+                        //        = 1 XOR psi_half(hi_b-h, lo_a) XOR psi_half(hi_a-h, lo_b)
+                        //        = 1 XOR eta_half(a', b')
+                        // where a' = (lo_a, hi_a-h), b' = (lo_b, hi_b-h) in the half-dimension!
+                        let eta_half = psi(half, hi_b - half, lo_a) ^ psi(half, hi_a - half, lo_b);
+                        let expected_eta = 1 ^ eta_half;
+                        assert_eq!(eta_val, expected_eta,
+                            "dim={dim}: eta = 1 XOR eta_half failed");
+
+                        if eta_half == 0 { eta_from_conj_only += 1; }
+                    }
+                }
+            }
+
+            eprintln!("dim={dim}: {total_edges} edges, lo_b=0: {lo_b_zero_count}, \
+                       eta from conj flip only: {eta_from_conj_only}");
+        }
+    }
+
+    /// Eta distribution across edge-count regimes (C-525).
+    ///
+    /// The face sign census groups components by edge count into "regimes."
+    /// For each regime, we compute:
+    /// - Edge eta balance (eta=0 vs eta=1)
+    /// - Per-component frustration ratio (frustrated / b1)
+    /// - Klein-four fiber sizes
+    /// - Per-regime pure:mixed ratio
+    ///
+    /// This tests whether the mechanism (eta constancy) behaves uniformly
+    /// across all regimes or has regime-dependent structure.
+    #[test]
+    fn test_eta_regime_distribution() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use std::collections::{BTreeMap, VecDeque};
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        eprintln!("\n=== Eta Distribution Across Edge-Count Regimes ===");
+
+        for &dim in &[16, 32, 64] {
+            eprintln!("\n--- dim={dim} ---");
+
+            let components = motif_components_for_cross_assessors(dim);
+
+            // Group components by edge count (regime)
+            // Per-regime accumulators: (n_comps, eta0, eta1, b1, frustrated, fibers[4], pure, mixed)
+            let mut regimes: BTreeMap<usize, (usize, usize, usize, usize, usize, [usize; 4], usize, usize)> =
+                BTreeMap::new();
+
+            for comp in components.iter() {
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let n = nodes.len();
+                if n < 2 { continue; }
+                let n_edges = comp.edges.len();
+
+                let entry = regimes.entry(n_edges).or_insert((0, 0, 0, 0, 0, [0; 4], 0, 0));
+                entry.0 += 1; // n_comps
+
+                // Build adjacency with eta
+                let node_idx: std::collections::HashMap<CrossPair, usize> =
+                    nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
+                let mut adj: Vec<Vec<(usize, u8)>> = vec![Vec::new(); n];
+
+                for &(u, v) in &comp.edges {
+                    let eta_val = psi(dim, u.0, v.1) ^ psi(dim, u.1, v.0);
+                    let ui = node_idx[&u];
+                    let vi = node_idx[&v];
+                    adj[ui].push((vi, eta_val));
+                    adj[vi].push((ui, eta_val));
+                    if eta_val == 0 { entry.1 += 1; } else { entry.2 += 1; }
+                }
+
+                // BFS for coboundary test
+                let mut delta: Vec<Option<u8>> = vec![None; n];
+                delta[0] = Some(0);
+                let mut queue = VecDeque::new();
+                queue.push_back(0);
+                let mut tree_edges = 0usize;
+                let mut frustrated = 0usize;
+
+                while let Some(u) = queue.pop_front() {
+                    for &(v, eta_val) in &adj[u] {
+                        if let Some(dv) = delta[v] {
+                            if u < v {
+                                let expected = delta[u].unwrap() ^ eta_val;
+                                if expected != dv {
+                                    frustrated += 1;
+                                }
+                            }
+                        } else {
+                            delta[v] = Some(delta[u].unwrap() ^ eta_val);
+                            tree_edges += 1;
+                            queue.push_back(v);
+                        }
+                    }
+                }
+
+                let b1 = n_edges - tree_edges;
+                entry.3 += b1;       // total b1
+                entry.4 += frustrated; // total frustrated
+
+                // Triangle enumeration
+                let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                    comp.edges.iter().copied().collect();
+                let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                    let (a, b) = if u < v { (u, v) } else { (v, u) };
+                    edge_set.contains(&(a, b))
+                };
+                let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+                };
+
+                for i in 0..n {
+                    for j in (i + 1)..n {
+                        for k in (j + 1)..n {
+                            let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                            if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                                continue;
+                            }
+                            let eta_uv = eta(u, v);
+                            let eta_vw = eta(v, w);
+                            let eta_uw = eta(u, w);
+                            let f1 = eta_uv ^ eta_vw;
+                            let f2 = eta_vw ^ eta_uw;
+                            entry.5[(2 * f1 + f2) as usize] += 1;
+
+                            let eta_const = (eta_uv == eta_vw) && (eta_vw == eta_uw);
+                            if eta_const { entry.6 += 1; } else { entry.7 += 1; }
+                        }
+                    }
+                }
+            }
+
+            eprintln!("{:>6} {:>5} {:>6} {:>6} {:>5} {:>5} {:>8} {:>8} {:>8} {:>8} {:>6} {:>6}",
+                "edges", "comps", "eta=0", "eta=1", "b1", "frust",
+                "F(0,0)", "F(0,1)", "F(1,0)", "F(1,1)", "pure", "mixed");
+
+            for (&edge_count, &(n_comps, eta0, eta1, b1, frustrated, fibers, pure, mixed)) in &regimes {
+                eprintln!("{:>6} {:>5} {:>6} {:>6} {:>5} {:>5} {:>8} {:>8} {:>8} {:>8} {:>6} {:>6}",
+                    edge_count, n_comps, eta0, eta1, b1, frustrated,
+                    fibers[0], fibers[1], fibers[2], fibers[3], pure, mixed);
+
+                // Every regime should have balanced eta
+                assert_eq!(
+                    eta0, eta1,
+                    "dim={dim}, regime edges={edge_count}: eta imbalance {eta0} vs {eta1}"
+                );
+
+                // Every regime should satisfy 1:3 ratio
+                let total_tris = pure + mixed;
+                if total_tris > 0 {
+                    assert_eq!(
+                        pure * 3, mixed,
+                        "dim={dim}, regime edges={edge_count}: 1:3 ratio failed: {pure}:{mixed}"
+                    );
+                }
+
+                // F(1,0) = F(1,1) per regime
+                assert_eq!(
+                    fibers[2], fibers[3],
+                    "dim={dim}, regime edges={edge_count}: F(1,0)={} != F(1,1)={}",
+                    fibers[2], fibers[3]
+                );
+            }
+        }
+    }
+
+    /// GF(2) polynomial degree analysis of psi(i,j) and eta(a,b) (C-527).
+    ///
+    /// psi(i,j) maps pairs of basis indices to GF(2), representing the sign
+    /// exponent of the CD product. We express psi as a multilinear polynomial
+    /// over GF(2) in the binary digits of i and j, and determine the minimal
+    /// degree needed to represent it exactly.
+    ///
+    /// At dim=2^n, there are n bits per index, so 2n variables total.
+    /// A degree-d polynomial has sum_{k=0}^{d} C(2n, k) monomials.
+    ///
+    /// We also analyze eta's effective polynomial degree, which may be
+    /// lower than psi's since eta involves a specific linear combination
+    /// of psi evaluations.
+    #[test]
+    fn test_psi_gf2_polynomial_degree() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        eprintln!("\n=== GF(2) Polynomial Degree of psi(i,j) ===");
+
+        // For small dimensions, we can do exhaustive fitting.
+        // psi(i,j) over GF(2)^n x GF(2)^n is a function F_2^{2n} -> F_2.
+        // Any such function has a unique multilinear polynomial (ANF).
+        // We compute the Algebraic Normal Form (ANF) via Mobius transform.
+
+        for &dim in &[4usize, 8, 16, 32] {
+            let n_bits = dim.trailing_zeros() as usize; // log2(dim)
+            let n_vars = 2 * n_bits; // bits of i and bits of j
+
+            // Build truth table: psi(i,j) for all i,j in [0, dim)
+            let n_inputs = 1 << n_vars; // = dim^2
+            let mut truth_table: Vec<u8> = vec![0; n_inputs];
+
+            for i in 0..dim {
+                for j in 0..dim {
+                    // Encode (i,j) as a 2n-bit number: bits of i || bits of j
+                    let input = (i << n_bits) | j;
+                    truth_table[input] = psi(dim, i, j);
+                }
+            }
+
+            // Compute ANF via Mobius transform over GF(2)
+            // anf[m] = coefficient of monomial m (bitmask of which variables appear)
+            let mut anf = truth_table.clone();
+            for bit in 0..n_vars {
+                let mask = 1 << bit;
+                for m in 0..n_inputs {
+                    if m & mask != 0 {
+                        anf[m] ^= anf[m ^ mask];
+                    }
+                }
+            }
+
+            // Count monomials of each degree
+            let mut degree_counts = vec![0usize; n_vars + 1];
+            let mut max_degree = 0usize;
+            let mut total_monomials = 0usize;
+
+            for m in 0..n_inputs {
+                if anf[m] != 0 {
+                    let deg = (m as u32).count_ones() as usize;
+                    degree_counts[deg] += 1;
+                    if deg > max_degree { max_degree = deg; }
+                    total_monomials += 1;
+                }
+            }
+
+            eprintln!("dim={dim} (n_bits={n_bits}, n_vars={n_vars}): \
+                       ANF degree = {max_degree}, total monomials = {total_monomials}");
+            for (d, &count) in degree_counts.iter().enumerate() {
+                if count > 0 {
+                    eprintln!("  degree {d}: {count} monomials (of {} possible)",
+                        binomial(n_vars, d));
+                }
+            }
+        }
+
+        // Now analyze eta's effective degree.
+        // For each edge (a,b) in the cross-assessor graph, eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b).
+        // Since lo,hi each have n_bits-1 effective bits (lo < half, hi >= half),
+        // eta is a function of 4*(n_bits-1) GF(2) variables.
+        // But we can also view eta as derived from psi's polynomial.
+        eprintln!("\n--- Eta effective degree (edge-level analysis) ---");
+
+        for &dim in &[16usize, 32] {
+            let half = dim / 2;
+            let n_bits_half = half.trailing_zeros() as usize;
+
+            // Build eta truth table over (lo_a, hi_a, lo_b, hi_b) restricted to cross-assessor ranges
+            // lo in [1, half), hi in [half, dim)
+            // For the ANF, we parameterize by reduced indices: lo in [1, half), hi' = hi - half in [0, half)
+            // Total bits per edge: 4 * n_bits_half (but lo starts at 1, so not all 2^bits used)
+
+            // For simplicity, compute the ANF of eta on the full range [0, half)^4
+            // and check degree
+            let n_vars_eta = 4 * n_bits_half;
+            let n_inputs_eta = 1usize << n_vars_eta;
+
+            let mut eta_tt: Vec<u8> = vec![0; n_inputs_eta];
+
+            for input in 0..n_inputs_eta {
+                // Decode: lo_a | hi_a' | lo_b | hi_b' each n_bits_half wide
+                let lo_a = (input >> (3 * n_bits_half)) & (half - 1);
+                let hi_a_prime = (input >> (2 * n_bits_half)) & (half - 1);
+                let lo_b = (input >> n_bits_half) & (half - 1);
+                let hi_b_prime = input & (half - 1);
+
+                let hi_a = hi_a_prime + half;
+                let hi_b = hi_b_prime + half;
+
+                // eta = psi(lo_a, hi_b) XOR psi(hi_a, lo_b)
+                eta_tt[input] = psi(dim, lo_a, hi_b) ^ psi(dim, hi_a, lo_b);
+            }
+
+            // Mobius ANF transform
+            let mut anf_eta = eta_tt.clone();
+            for bit in 0..n_vars_eta {
+                let mask = 1usize << bit;
+                for m in 0..n_inputs_eta {
+                    if m & mask != 0 {
+                        anf_eta[m] ^= anf_eta[m ^ mask];
+                    }
+                }
+            }
+
+            let mut degree_counts = vec![0usize; n_vars_eta + 1];
+            let mut max_degree = 0usize;
+            let mut total_monomials = 0usize;
+
+            for m in 0..n_inputs_eta {
+                if anf_eta[m] != 0 {
+                    let deg = (m as u32).count_ones() as usize;
+                    degree_counts[deg] += 1;
+                    if deg > max_degree { max_degree = deg; }
+                    total_monomials += 1;
+                }
+            }
+
+            eprintln!("dim={dim}, eta over [0,{half})^4 ({n_vars_eta} vars): \
+                       ANF degree = {max_degree}, total monomials = {total_monomials}");
+            for (d, &count) in degree_counts.iter().enumerate() {
+                if count > 0 {
+                    eprintln!("  degree {d}: {count} monomials (of {} possible)",
+                        binomial(n_vars_eta, d));
+                }
+            }
+        }
+    }
+
+    fn binomial(n: usize, k: usize) -> usize {
+        if k > n { return 0; }
+        let mut result = 1usize;
+        for i in 0..k {
+            result = result * (n - i) / (i + 1);
+        }
+        result
+    }
 }

@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/insights.toml`.
 
-Total insights: 17
+Total insights: 18
 
 ## I-001: Macquart Relation Fills the Comoving Distance Gap
 
@@ -159,3 +159,12 @@ Implemented L1-L18 emanation layers from de Marrais construction. DMZ = sign-con
 - Claims: C-476, C-477
 
 Three experiments testing ALP (C-476) and Sky-Limit-Set (C-477). E-011: ALP holds for sparse constraint graphs (E10 Dynkin p=0.000, ET DMZ p=0.000) but fails for dense graphs (Sedenion ZD p=1.000, edge density 86.7%). E-012: Billiard symbolic dynamics predict spectroscopy behavior (FullFill entropy=0.0, UniformSky entropy=0.44, fill-entropy r=-0.85 at N=5). E-013: A_{N-1} Coxeter group is consistently the best match for ET skybox invariants (rank ratio=1.0, improving match scores at higher N). ALP needs sparsity refinement; Coxeter correspondence is strong but DMZ density match not yet within 10%.
+
+## I-018: Anti-Diagonal Parity Theorem: Mechanism for the Double 3:1 Law
+
+- Date: 2026-02-09
+- Status: verified
+- Sprint: 25
+- Claims: C-515, C-516, C-517, C-518, C-519, C-520, C-521, C-522, C-523, C-524, C-525, C-526, C-527
+
+Complete mechanistic explanation for the Universal Double 3:1 Law (C-487). The GF(2) twist exponent psi(i,j) forms a 2x2 matrix M_ab per edge; its anti-diagonal XOR eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) characterizes the pure/mixed partition: a triangle is pure iff eta is constant across all 3 edges. The 2-bit invariant F in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256 (13.3M+ triangles, 0 mismatches). Key supporting results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta = 1 XOR eta_half (C-526), eta ANF degree = log2(dim)-1 (C-527). The mechanism traces to the conjugation asymmetry in the Cayley-Dickson doubling formula.

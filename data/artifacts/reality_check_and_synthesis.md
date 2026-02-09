@@ -1,6 +1,12 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/data_artifact_narratives.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Reality Check & Synthesis: Aligning "Surreal-Noncommutative" Framework with Academic Consensus
 
 **Date:** January 26, 2026

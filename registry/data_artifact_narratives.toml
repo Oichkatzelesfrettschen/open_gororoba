@@ -25,8 +25,14 @@ title = "Algebraic Foundations: Re-Deriving $G_2$ Structure via Homotopy Transfe
 content_kind = "algebraic_foundations"
 claim_refs = []
 path_refs = ["m3_table_cd.py", "src/cd_hpl_example.py", "src/m3_table_cd.py", "data/csv/m3_table.csv"]
-line_count = 74
+line_count = 80
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Algebraic Foundations: Re-Deriving $G_2$ Structure via Homotopy Transfer
 
 **Date:** January 26, 2026
@@ -111,8 +117,14 @@ title = "Bibliography: Sedenion Physics, Modular Entropy, and Noncommutative Geo
 content_kind = "artifact_bibliography"
 claim_refs = []
 path_refs = []
-line_count = 52
+line_count = 58
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Bibliography: Sedenion Physics, Modular Entropy, and Noncommutative Geometry
 
 **Date:** January 26, 2026
@@ -175,8 +187,14 @@ title = "Final Technical Report: Topology, Spectral Flow, and Holography"
 content_kind = "final_report"
 claim_refs = []
 path_refs = ["src/spectral_flow_sim.py", "data/artifacts/spectral_flow_plot.png", "src/vis_4d_slicer.py", "data/artifacts/4d_entropy_mosaic.png"]
-line_count = 52
+line_count = 58
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Final Technical Report: Topology, Spectral Flow, and Holography
 
 **Date:** January 26, 2026
@@ -239,8 +257,14 @@ title = "Quantum Simulation Report: $F_4$ Symmetry Verification"
 content_kind = "quantum_report"
 claim_refs = []
 path_refs = ["sedenion_nilpotent_candidates.csv"]
-line_count = 23
+line_count = 29
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Quantum Simulation Report: $F_4$ Symmetry Verification
 
 **Date:** January 26, 2026
@@ -274,8 +298,14 @@ title = "Advanced Simulation Report: pushing the Boundaries"
 content_kind = "simulation_report"
 claim_refs = []
 path_refs = ["src/sedenion_field_sim.py", "data/artifacts/sedenion_field_3d_plot.png", "data/csv/sedenion_field_metrics_3d.csv", "src/modular_classical_sim.py", "data/artifacts/modular_chaos_plot.png", "data/csv/modular_chaos_N*.csv", "chingon_zd_edges.csv"]
-line_count = 33
+line_count = 39
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Advanced Simulation Report: pushing the Boundaries
 
 **Date:** January 26, 2026
@@ -319,8 +349,14 @@ title = "Extracted Equations from Chat Log"
 content_kind = "equation_extract"
 claim_refs = []
 path_refs = []
-line_count = 2
+line_count = 7
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Extracted Equations from Chat Log
 '''
 
@@ -332,8 +368,14 @@ title = "Reality Check & Synthesis: Aligning \"Surreal-Noncommutative\" Framewor
 content_kind = "reality_check_and_synthesis"
 claim_refs = []
 path_refs = []
-line_count = 49
+line_count = 55
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Reality Check & Synthesis: Aligning "Surreal-Noncommutative" Framework with Academic Consensus
 
 **Date:** January 26, 2026

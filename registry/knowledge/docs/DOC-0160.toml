@@ -3,63 +3,74 @@
 
 [document]
 id = "DOC-0160"
-source_path = "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md"
-title = "Docs Convos Registry Mirror"
+source_path = "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md"
+title = "Data Artifact Narratives Registry Mirror"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "415f98eb83ba337c1076a299c80f5e1a5f73721038c903e357b512e790d041d1"
-source_line_count = 44
-source_size_bytes = 1231
-content_sha256 = "415f98eb83ba337c1076a299c80f5e1a5f73721038c903e357b512e790d041d1"
+source_sha256 = "d0002bed954aa438c2473fa6a01e1e889643f24fc1c5c50230d09a4ccd48691c"
+source_line_count = 55
+source_size_bytes = 1627
+content_sha256 = "d0002bed954aa438c2473fa6a01e1e889643f24fc1c5c50230d09a4ccd48691c"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Docs Convos Registry Mirror
+# Data Artifact Narratives Registry Mirror
 
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: TOML registry files under registry/ -->
 
-Authoritative source: `registry/docs_convos.toml`.
+Authoritative source: `registry/data_artifact_narratives.toml`.
 
 - Updated: 2026-02-09
-- Source markdown glob: `docs/convos/*.md`
-- Document count: 5
+- Source markdown count: 7
+- Document count: 7
 
 ## Documents
 
-### CVX-001: Convos Claims Inbox (Triage Queue, ASCII-only)
+### ART-001: Algebraic Foundations: Re-Deriving $G_2$ Structure via Homotopy Transfer
 
-- Source markdown: `docs/convos/CONVOS_CLAIMS_INBOX.md`
-- Content kind: `claims_inbox`
-- Line count: 130
-- Claim refs (6): C-403, C-404, C-405, C-406, C-407, C-408
+- Source markdown: `data/artifacts/ALGEBRAIC_FOUNDATIONS.md`
+- Content kind: `algebraic_foundations`
+- Line count: 77
 
-### CVX-002: Convos audit workspace
+### ART-002: Bibliography: Sedenion Physics, Modular Entropy, and Noncommutative Geometry
 
-- Source markdown: `docs/convos/README.md`
-- Content kind: `convo_note`
-- Line count: 31
+- Source markdown: `data/artifacts/BIBLIOGRAPHY.md`
+- Content kind: `artifact_bibliography`
+- Line count: 55
 
-### CVX-003: Audit: convos/1_read_nonuser_lines_cont.md
+### ART-003: Final Technical Report: Topology, Spectral Flow, and Holography
 
-- Source markdown: `docs/convos/audit_1_read_nonuser_lines_cont.md`
-- Content kind: `audit_extract`
-- Line count: 1096
+- Source markdown: `data/artifacts/FINAL_REPORT.md`
+- Content kind: `final_report`
+- Line count: 55
 
-### CVX-004: Implement-next backlog (from convos/1_read_nonuser_lines_cont.md)
+### ART-004: Quantum Simulation Report: $F_4$ Symmetry Verification
 
-- Source markdown: `docs/convos/implement_next_from_1_read_nonuser_lines_cont.md`
-- Content kind: `implementation_extract`
-- Line count: 46
+- Source markdown: `data/artifacts/QUANTUM_REPORT.md`
+- Content kind: `quantum_report`
+- Line count: 26
 
-### CVX-005: Convos keyword summary: convos/1_read_nonuser_lines_cont.md
+### ART-005: Advanced Simulation Report: pushing the Boundaries
 
-- Source markdown: `docs/convos/keywords_1_read_nonuser_lines_cont.md`
-- Content kind: `keyword_extract`
-- Line count: 118
+- Source markdown: `data/artifacts/SIMULATION_REPORT.md`
+- Content kind: `simulation_report`
+- Line count: 36
+
+### ART-006: Extracted Equations from Chat Log
+
+- Source markdown: `data/artifacts/extracted_equations.md`
+- Content kind: `equation_extract`
+- Line count: 4
+
+### ART-007: Reality Check & Synthesis: Aligning \"Surreal-Noncommutative\" Framework with Academic Consensus
+
+- Source markdown: `data/artifacts/reality_check_and_synthesis.md`
+- Content kind: `reality_check_and_synthesis`
+- Line count: 52
 
 """
