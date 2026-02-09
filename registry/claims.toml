@@ -3592,7 +3592,7 @@ what_would_verify_refute = "WHERE STATED: I-013 in docs/INSIGHTS.md. VERIFIED: 1
 
 [[claim]]
 id = "C-450"
-statement = "The external 64D pathion adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node labeling that differs from our cross-assessor-pair representation. The two representations are not directly comparable without a mapping between basis-element adjacency and cross-assessor zero-product adjacency."
+statement = "The external 64D chingon adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node labeling that differs from our cross-assessor-pair representation. The two representations are not directly comparable without a mapping between basis-element adjacency and cross-assessor zero-product adjacency."
 where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_csv_64d_adjacency_vs_rust)"
 status = "Inconclusive"
 last_verified = "2026-02-07"
