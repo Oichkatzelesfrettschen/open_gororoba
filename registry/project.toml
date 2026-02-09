@@ -5,12 +5,19 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2264
-claim_count = 483
+test_count = 2267
+claim_count = 487
 insight_count = 17
 experiment_count = 13
 paper_count = 19
 binary_count = 40
+
+[sprints.s23]
+number = 23
+date = "2026-02-09"
+test_count = 2267
+claim_count = 487
+summary = "Face sign census at dim=128: 9 regimes, 821128 triangles (C-484). Regime count formula corrected to dim/16+1 (C-485). Edge count extremal formulas E_max=C(n,2)-(dim/4-1), E_min=3dim/2-12 (C-486). Universal Double 3:1 Law: OS=3*AS AND TS=3*AO in ALL 116 components across 4 dimensions (C-487). Unused import fix in e10_billiard."
 
 [sprints.s22]
 number = 22

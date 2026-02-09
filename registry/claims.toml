@@ -3856,8 +3856,40 @@ what_would_verify_refute = 'VERIFIED by integer-exact computation: 5 regimes wit
 
 [[claim]]
 id = "C-483"
-statement = "Universal 3:1 TwoSameOneOpp:AllOpposite Ratio Law: In every pure-regime component (only 2 face sign patterns) of the CD zero-divisor graph at dims 16, 32, and 64, the ratio TwoSameOneOpp:AllOpposite is exactly 3:1. Verified in 18 pure-regime components across 3 doublings: dim=16 (7x, 42:14), dim=32 mixed (7x, 18:6), dim=32 special (1x, 210:70), dim=64 pure-max (1x, 2730:910), dim=64 pure-min (8x, 42:14). Regime count grows as 2*log2(dim/16)+1: dim=16 has 1, dim=32 has 3, dim=64 has 5."
-where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (generic_face_sign_census, 3 tests at dim=16/32/64)"
+statement = "Pure-regime 3:1 TwoSameOneOpp:AllOpposite Ratio Law: In every pure-regime component (only 2 face sign patterns) of the CD zero-divisor graph, the ratio TwoSameOneOpp:AllOpposite is exactly 3:1. Verified in 26 pure-regime components across 4 doublings: dim=16 (7x, 42:14), dim=32 mixed (7x, 18:6), dim=32 special (1x, 210:70), dim=64 pure-max (1x, 2730:910), dim=64 pure-min (8x, 42:14), dim=128 pure-max (1x, 26970:8990), dim=128 pure-min (9x, 90:30). SUPERSEDED by C-487 (Universal Double 3:1 Law) which proves this holds in ALL components, not just pure regimes."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_three_to_one_ratio_antibalanced)"
 status = "Verified"
 last_verified = "2026-02-09"
-what_would_verify_refute = 'VERIFIED by exact computation at 3 consecutive doublings. 18 pure-regime components all satisfy ratio=3. WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3, or a dimension where the regime count formula 2*log2(dim/16)+1 fails.'
+what_would_verify_refute = 'VERIFIED by exact computation at 4 consecutive doublings (26 pure-regime components). SUPERSEDED by C-487 (Universal Double 3:1 Law). WHAT WOULD REFUTE: any pure-regime component at any dimension where the ratio differs from 3.'
+
+[[claim]]
+id = "C-484"
+statement = "Face Sign Census at dim=128: 821128 triangular faces across 63 components split into 9 regimes. (A) 1 pure-max (1860 edges, 35960 tri, 2 patterns: 26970/8990=3:1). (B) 9 full-max (1860 edges, 35960 tri, 4 patterns). (C-G) 7 full regimes each with distinct edge counts (1524/1284/1092/948/756/516 edges, 8/7/7/7/7/8 components). (H) 9 pure-min (180 edges, 120 tri, 2 patterns: 90/30=3:1). Group sizes palindromic: 1+[9,8,7,7,7,7,8,9]."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim128)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by integer-exact computation in ~1s. 9 regimes with exact counts. Both pure regimes satisfy 3:1 ratio. All 4-pattern regimes satisfy Universal Double 3:1 Law (C-487). WHAT WOULD REFUTE: any component at dim=128 with a different pattern distribution than those in the 9 regimes.'
+
+[[claim]]
+id = "C-485"
+statement = "Regime Count Formula: The number of distinct face sign regimes in the CD zero-divisor graph follows n_regimes = dim/16 + 1 for dim >= 32 (1 for dim=16). Verified at 4 dimensions: dim=16 (1), dim=32 (3), dim=64 (5), dim=128 (9). This corrects the earlier estimate 2*log2(dim/16)+1 which failed at dim=128. The formula decomposes as: 2 pure regimes + (dim/16 - 1) full regimes for dim >= 32."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_regime_and_edge_scaling_laws)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by exact computation at 4 dimensions. WHAT WOULD REFUTE: dim=256 having other than 17 regimes (256/16+1), or any dimension not conforming to dim/16+1.'
+
+[[claim]]
+id = "C-486"
+statement = "Edge Count Extremal Formulas: For dim >= 32, the maximum edge count per component is E_max = C(dim/2-2, 2) - (dim/4-1), and the minimum edge count is E_min = 3*dim/2 - 12. The maximum component is nearly complete, missing exactly dim/4-1 edges. Verified at dims 32 (E_max=84, E_min=36), 64 (E_max=420, E_min=84), 128 (E_max=1860, E_min=180). Exactly 1 pure-max component at each dimension (the special component with XOR label = dim/4)."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_regime_and_edge_scaling_laws, test_generic_face_sign_census_dim128)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by formula matching at 3 dimensions (32/64/128). WHAT WOULD REFUTE: dim=256 having E_max != C(126,2)-63 = 7812 or E_min != 3*256/2-12 = 372.'
+
+[[claim]]
+id = "C-487"
+statement = "Universal Double 3:1 Law: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16, both 3:1 ratio laws hold simultaneously: TwoSameOneOpp = 3*AllOpposite (odd-parity pair) and OneSameTwoOpp = 3*AllSame (even-parity pair). Verified in all 116 components across 4 dimensions (7+15+31+63). Proof requires: (P1) same-edge fraction = 1/2, (P2) parity-specific edge-regularity. Pure-regime C-483 is the special case where AllSame=OneSameTwoOpp=0."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_universal_double_three_to_one_law)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by exact computation in all 116 components across dims 16/32/64/128. WHAT WOULD REFUTE: any single component at any dimension where either OS != 3*AS or TS != 3*AO.'

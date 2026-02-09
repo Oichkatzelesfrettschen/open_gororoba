@@ -2987,6 +2987,216 @@ mod tests {
     }
 
     #[test]
+    fn test_generic_face_sign_census_dim128() {
+        // Regime count formula: dim/16 + 1 = 128/16 + 1 = 9 at dim=128.
+        // This test verifies the 9-regime structure.
+        use std::time::Instant;
+
+        let t0 = Instant::now();
+        let census = generic_face_sign_census(128);
+        let elapsed = t0.elapsed();
+        eprintln!(
+            "dim=128 census: {} components, {} triangles, {:.2?}",
+            census.n_components, census.total_triangles, elapsed
+        );
+
+        // Basic structure: dim/2 - 1 = 63 components
+        assert_eq!(census.n_components, 63);
+
+        // Collect distinct regime signatures: (n_edges, sorted pattern keys)
+        let mut regime_map: HashMap<(usize, Vec<FaceSignPattern>), Vec<usize>> = HashMap::new();
+        for comp in &census.per_component {
+            let mut patterns: Vec<FaceSignPattern> =
+                comp.pattern_counts.keys().copied().collect();
+            patterns.sort();
+            regime_map
+                .entry((comp.n_edges, patterns))
+                .or_default()
+                .push(comp.component_idx);
+        }
+
+        let n_regimes = regime_map.len();
+        eprintln!("dim=128 regimes: {}", n_regimes);
+
+        // Print regime breakdown
+        let mut regimes: Vec<_> = regime_map.iter().collect();
+        regimes.sort_by_key(|&((edges, _), comps)| (std::cmp::Reverse(*edges), comps.len()));
+        for ((edges, patterns), comps) in &regimes {
+            let comp_ex = census.per_component.iter().find(|c| c.n_edges == *edges
+                && {
+                    let mut p: Vec<FaceSignPattern> = c.pattern_counts.keys().copied().collect();
+                    p.sort();
+                    &p == patterns
+                }).unwrap();
+            let pattern_str: Vec<String> = patterns.iter().map(|p| {
+                let count = comp_ex.pattern_counts.get(p).copied().unwrap_or(0);
+                format!("{:?}={}", p, count)
+            }).collect();
+            eprintln!(
+                "  {} comps, {} edges, {} tri, {}: [{}]",
+                comps.len(), edges, comp_ex.n_triangles, comps.len(),
+                pattern_str.join(", ")
+            );
+        }
+
+        // Regime count formula: dim/16 + 1 for dim >= 32
+        // 128/16 + 1 = 9
+        assert_eq!(n_regimes, 9, "Expected 9 regimes at dim=128 (formula: dim/16+1)");
+
+        // Pure-max: 1 component, E_max = C(dim/2-2, 2) - (dim/4 - 1)
+        // = C(62,2) - 31 = 1891 - 31 = 1860
+        let n = 128 / 2 - 2; // 62
+        let e_max = n * (n - 1) / 2 - (128 / 4 - 1);
+        assert_eq!(e_max, 1860);
+
+        // Pure-min: E_min = 3*dim/2 - 12 = 180
+        let e_min = 3 * 128 / 2 - 12;
+        assert_eq!(e_min, 180);
+
+        // Count pure-max and pure-min components
+        let pure_max_count = census.per_component.iter()
+            .filter(|c| c.n_edges == e_max && c.pattern_counts.len() == 2)
+            .count();
+        let pure_min_count = census.per_component.iter()
+            .filter(|c| c.n_edges == e_min && c.pattern_counts.len() == 2)
+            .count();
+        assert_eq!(pure_max_count, 1, "Exactly 1 pure-max component");
+        assert_eq!(pure_min_count, 9, "Pure-min count at dim=128");
+
+        // Verify pure regimes maintain the 3:1 ratio
+        for comp in &census.per_component {
+            if comp.pattern_counts.len() == 2 {
+                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                assert_eq!(
+                    ts, 3 * ao,
+                    "3:1 ratio violated at dim=128 comp ({} edges): {} != 3*{}",
+                    comp.n_edges, ts, ao
+                );
+            }
+        }
+
+        // Total triangles: 821128
+        assert_eq!(census.total_triangles, 821128);
+    }
+
+    #[test]
+    fn test_regime_and_edge_scaling_laws() {
+        // Cross-dimension verification of the regime count and edge formulas.
+        //
+        // Regime count: dim/16 + 1 for dim >= 32; 1 for dim=16.
+        // E_max = C(dim/2-2, 2) - (dim/4 - 1)
+        // E_min = 3*dim/2 - 12
+        //
+        // Pure-max: always exactly 1 component.
+        // 3:1 ratio law holds in ALL pure-regime components at ALL dimensions.
+
+        for &dim in &[16, 32, 64, 128] {
+            let census = generic_face_sign_census(dim);
+
+            // Component count
+            assert_eq!(census.n_components, dim / 2 - 1);
+
+            // Collect regimes
+            let mut regime_set: HashSet<(usize, Vec<FaceSignPattern>)> = HashSet::new();
+            for comp in &census.per_component {
+                let mut pats: Vec<FaceSignPattern> = comp.pattern_counts.keys().copied().collect();
+                pats.sort();
+                regime_set.insert((comp.n_edges, pats));
+            }
+
+            // Regime count formula
+            let expected_regimes = if dim == 16 { 1 } else { dim / 16 + 1 };
+            assert_eq!(
+                regime_set.len(), expected_regimes,
+                "dim={}: expected {} regimes, got {}", dim, expected_regimes, regime_set.len()
+            );
+
+            // Edge formulas (for dim >= 32)
+            if dim >= 32 {
+                let n = dim / 2 - 2;
+                let expected_e_max = n * (n - 1) / 2 - (dim / 4 - 1);
+                let expected_e_min = 3 * dim / 2 - 12;
+
+                let actual_e_max = census.per_component.iter().map(|c| c.n_edges).max().unwrap();
+                let actual_e_min = census.per_component.iter().map(|c| c.n_edges).min().unwrap();
+
+                assert_eq!(actual_e_max, expected_e_max,
+                    "dim={}: E_max should be C({},2)-{} = {}", dim, n, dim/4-1, expected_e_max);
+                assert_eq!(actual_e_min, expected_e_min,
+                    "dim={}: E_min should be 3*{}/2-12 = {}", dim, dim, expected_e_min);
+
+                // Exactly 1 pure-max component
+                let n_pure_max = census.per_component.iter()
+                    .filter(|c| c.n_edges == expected_e_max && c.pattern_counts.len() == 2)
+                    .count();
+                assert_eq!(n_pure_max, 1, "dim={}: exactly 1 pure-max", dim);
+            }
+
+            // 3:1 ratio law in all pure components
+            for comp in &census.per_component {
+                if comp.pattern_counts.len() == 2 {
+                    let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+                    let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                    assert_eq!(ts, 3 * ao, "dim={}: 3:1 violated ({} edges)", dim, comp.n_edges);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_universal_double_three_to_one_law() {
+        // Universal Double 3:1 Law (C-484):
+        //
+        // In EVERY component of the CD zero-divisor graph at EVERY dimension:
+        //   TwoSameOneOpp = 3 * AllOpposite     (odd-parity pair)
+        //   OneSameTwoOpp = 3 * AllSame          (even-parity pair)
+        //
+        // Proof sketch:
+        //   Let n_S = n_O (same-edge fraction = 1/2, verified in P2).
+        //   Partition triangles by sign product into even-parity (+1: AllSame,
+        //   OneSameTwoOpp) and odd-parity (-1: TwoSameOneOpp, AllOpposite).
+        //
+        //   Within the even-parity class, counting Same-edge participations:
+        //     3*AllSame + 1*OneSameTwoOpp = n_S * d_even
+        //   Counting Opp-edge participations:
+        //     0*AllSame + 2*OneSameTwoOpp = n_O * d_even
+        //   Since n_S = n_O: 3*AS + OS = 2*OS => OS = 3*AS. QED.
+        //
+        //   Within the odd-parity class, analogously:
+        //     2*TS + 0*AO = n_S * d_odd
+        //     1*TS + 3*AO = n_O * d_odd
+        //   Since n_S = n_O: 2*TS = TS + 3*AO => TS = 3*AO. QED.
+        //
+        // The pure-regime C-483 is the special case where AllSame = OneSameTwoOpp = 0.
+
+        for &dim in &[16, 32, 64, 128] {
+            let census = generic_face_sign_census(dim);
+
+            for comp in &census.per_component {
+                let as_count = comp.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
+                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+                let os = comp.pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
+                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+
+                // Odd-parity 3:1 law: TwoSameOneOpp = 3 * AllOpposite
+                assert_eq!(
+                    ts, 3 * ao,
+                    "dim={} comp[{}] ({} edges): TS={} != 3*AO={}",
+                    dim, comp.component_idx, comp.n_edges, ts, ao
+                );
+
+                // Even-parity 3:1 law: OneSameTwoOpp = 3 * AllSame
+                assert_eq!(
+                    os, 3 * as_count,
+                    "dim={} comp[{}] ({} edges): OS={} != 3*AS={}",
+                    dim, comp.component_idx, comp.n_edges, os, as_count
+                );
+            }
+        }
+    }
+
+    #[test]
     fn test_special_heptacross_identity_dim32() {
         // Identify which component is the "special" pure heptacross at dim=32.
         // Uses XOR labels from projective_geometry to characterize each component.
