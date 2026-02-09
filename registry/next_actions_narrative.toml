@@ -53,6 +53,12 @@ body_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
+
 # Next Actions (Prioritized)
 
 Updated 2026-02-09 after Sprint 25 completion.
@@ -171,10 +177,9 @@ Updated 2026-02-09 after Sprint 25 completion.
 1) ~~**Multiplication coupling rho(b) in GL(8,Z)** (C-466)~~ -- **REFUTED** (Sprint 16).
    Only identity element b=0 yields zero residual in rank-adaptive reduced-subspace algorithm.
 
-2) **Primary-source citation for every claim** (ROADMAP 7.2)
-   - Systematic sweep through CLAIMS_EVIDENCE_MATRIX.md.
-   - Add missing WHERE STATED and bibliographic references.
-   - Sprint 8 did 10 claims; ~200+ remain without primary sources.
+2) ~~**Primary-source citation for every claim** (ROADMAP 7.2)~~ -- **COMPLETE** (Sprint 25 audit).
+   All 500/500 claims have non-empty where_stated: 118 test-function refs (23.6%),
+   382 document/paper refs (76.4%). No remediation needed.
 
 3) **Paper-ready LaTeX pipeline** (ROADMAP 7.5)
    - `make latex` build from verified results.

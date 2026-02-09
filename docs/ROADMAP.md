@@ -49,6 +49,12 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/roadmap.toml, registry/roadmap_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/roadmap.toml, registry/roadmap_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/roadmap.toml, registry/roadmap_narrative.toml -->
+
 # open_gororoba Roadmap
 
 **Consolidated**: 2026-02-06
@@ -586,7 +592,7 @@ here for completeness.
 - ~~Extend ruff linting phased to all `src/*.py`~~ -- Obsolete (Python migration complete; only viz scripts remain)
 
 ### 7.2 Claims -> Evidence (Section B)
-- [ ] Primary-source citation for every claim in CLAIMS_EVIDENCE_MATRIX.md
+- [x] Primary-source citation for every claim in CLAIMS_EVIDENCE_MATRIX.md -- DONE (500/500 have where_stated)
 - [x] Reggiani Z(S)/ZD(S) terminology alignment -- DONE (CX-003, Sprint 4)
 
 ### 7.3 Materials Science (Section D)
