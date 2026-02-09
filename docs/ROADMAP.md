@@ -124,17 +124,23 @@ The repository now maintains a central markdown knowledge index:
 - Generator: `src/scripts/analysis/build_knowledge_sources_registry.py`
 - Central corpus migration: `registry/knowledge/docs/*.toml` with manifest at
   `registry/knowledge/documents.toml`
-- Build hook: `make registry` now runs both markdown indexing and corpus
-  migration before `registry-check`
+- Build hook: `make registry` now runs markdown indexing, TOML corpus capture,
+  TOML-driven mirror export, mirror freshness verification, and `registry-check`
 - Claims support normalization is now TOML-first:
-  - `registry/claims_tasks.toml` from `docs/CLAIMS_TASKS.md`
-  - `registry/claims_domains.toml` from `docs/claims/CLAIMS_DOMAIN_MAP.csv` and
-    `docs/claims/by_domain/*.md`
-  - `registry/claim_tickets.toml` from `docs/tickets/*.md`
+  - `registry/claims_tasks.toml` (authoritative)
+  - `registry/claims_domains.toml` (authoritative)
+  - `registry/claim_tickets.toml` (authoritative)
+  - Legacy ingest path retained as explicit maintenance command:
+    `make registry-ingest-legacy`
 - Generated mirrors now include:
   - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
   - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
   - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
+- Legacy claims-support files are now generated from TOML:
+  - `docs/CLAIMS_TASKS.md`
+  - `docs/claims/INDEX.md`
+  - `docs/claims/CLAIMS_DOMAIN_MAP.csv`
+  - `docs/claims/by_domain/*.md`
 - Registry generators now emit deterministic stamps to avoid one-time event churn
   across repeated `make registry` runs.
 
@@ -147,10 +153,9 @@ Current policy:
 Immediate next steps:
 
 1. TOML -> markdown exporters are now in place under `docs/generated/`.
-2. TOML registries for roadmap/todo/next-actions/requirements and claims-support
-   normalization are now in place.
-3. Finalize governance decision for legacy narrative docs:
-   full replacement vs non-authoritative overlay.
+2. Claims-support legacy docs are generated from TOML during `make registry`.
+3. Finalize governance for remaining narrative overlays (`docs/INSIGHTS.md`,
+   `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md`).
 4. Keep generated markdown explicitly marked with regeneration commands.
 
 ---

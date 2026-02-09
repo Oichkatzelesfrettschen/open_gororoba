@@ -11,19 +11,25 @@ id = "KM-001"
 name = "claims"
 source_markdown = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md"]
 authoritative_toml = ["registry/claims.toml", "registry/claims_tasks.toml"]
+generated_mirror = ["docs/CLAIMS_TASKS.md", "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"]
 strategy = "toml_primary_markdown_mirror"
 status = "active"
-notes = "Claims matrix and executable task ledger are TOML-first."
+notes = "Claims matrix and executable task ledger are TOML-first; CLAIMS_TASKS markdown is generated from TOML."
 
 [[domain]]
 id = "KM-008"
 name = "claims_domains"
 source_markdown = ["docs/claims/CLAIMS_DOMAIN_MAP.csv", "docs/claims/by_domain/*.md"]
 authoritative_toml = ["registry/claims_domains.toml"]
-generated_mirror = ["docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"]
+generated_mirror = [
+  "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
+  "docs/claims/INDEX.md",
+  "docs/claims/CLAIMS_DOMAIN_MAP.csv",
+  "docs/claims/by_domain/*.md",
+]
 strategy = "toml_primary_generated_mirror"
 status = "complete"
-notes = "Domain crosswalk and by-domain mirrors are normalized into TOML."
+notes = "Domain crosswalk and by-domain markdown/csv mirrors are generated from TOML."
 
 [[domain]]
 id = "KM-009"
@@ -122,8 +128,12 @@ deliverables = ["registry/claims_tasks.toml", "registry/claims_domains.toml", "r
 [[phase]]
 id = "KMP-P5"
 name = "policy_hardening"
-status = "pending"
-deliverables = ["Decision on replacing legacy overlays vs retaining narrative overlays", "CI checks for mirror freshness"]
+status = "in_progress"
+deliverables = [
+  "Decision on replacing legacy overlays vs retaining narrative overlays",
+  "CI checks for mirror freshness",
+  "Registry-first make target sequencing",
+]
 
 [[phase]]
 id = "KMP-P6"

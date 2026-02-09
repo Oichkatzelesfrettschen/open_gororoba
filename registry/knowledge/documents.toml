@@ -4,8 +4,8 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 135
-skipped_generated_count = 93
+raw_capture_count = 133
+skipped_generated_count = 95
 authoritative = false
 normalization_required = true
 
@@ -173,17 +173,6 @@ raw_captured = true
 authoritative = false
 normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0023.toml"
-
-[[document]]
-id = "DOC-0024"
-source_path = "docs/CLAIMS_TASKS.md"
-title = "Claims -> Tasks Tracker (Executable Backlog)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0024.toml"
 
 [[document]]
 id = "DOC-0025"
@@ -967,17 +956,6 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0095.toml"
 
 [[document]]
-id = "DOC-0096"
-source_path = "docs/claims/INDEX.md"
-title = "Claims by domain"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0096.toml"
-
-[[document]]
 id = "DOC-0118"
 source_path = "docs/engineering/DATASHEET_V2.md"
 title = "Metamaterial Warp Chip: Validation Datasheet (Simulated)"
@@ -1562,6 +1540,24 @@ id = "DOC-0015"
 source_path = "data/artifacts/reality_check_and_synthesis.md"
 title = "Reality Check & Synthesis: Aligning \"Surreal-Noncommutative\" Framework with Academic Consensus"
 kind = "artifact_report"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0024"
+source_path = "docs/CLAIMS_TASKS.md"
+title = "Claims -> Tasks Tracker (Generated Mirror)"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0096"
+source_path = "docs/claims/INDEX.md"
+title = "Claims by domain"
+kind = "generated_markdown"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"

@@ -12,11 +12,12 @@ id = "NA-001"
 priority = "P0"
 title = "Complete TOML centralization for markdown mirrors"
 status = "in_progress"
-description = "Export insights and experiments markdown from TOML, and add TOML registries for roadmap/todo/next-actions/requirements."
+description = "Keep TOML-first governance: preserve mirror freshness gates, retire remaining narrative overlays where feasible, and keep legacy ingest explicit."
 references = [
   "registry/knowledge_sources.toml",
   "registry/knowledge/documents.toml",
-  "docs/NEXT_ACTIONS.md",
+  "registry/knowledge_migration_plan.toml",
+  "src/verification/verify_registry_mirror_freshness.py",
 ]
 
 [[action]]
@@ -54,4 +55,3 @@ references = [
   "registry/claims.toml",
   "registry/insights.toml",
 ]
-

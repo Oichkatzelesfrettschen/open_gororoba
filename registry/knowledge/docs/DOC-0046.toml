@@ -9,10 +9,10 @@ kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "b92abd1bc3b33cb679857b9122655ee01f7bf57f1874de48960d6b9ddaa407d0"
-source_line_count = 132
-source_size_bytes = 6288
-content_sha256 = "b92abd1bc3b33cb679857b9122655ee01f7bf57f1874de48960d6b9ddaa407d0"
+source_sha256 = "77b9483caba3f83bbf42ca3ef789d7abbad99c44ce9db9d712c150fbc39767ef"
+source_line_count = 139
+source_size_bytes = 6707
+content_sha256 = "77b9483caba3f83bbf42ca3ef789d7abbad99c44ce9db9d712c150fbc39767ef"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -79,9 +79,16 @@ Completed this sprint:
    - Claims support registries now normalized:
      `registry/claims_tasks.toml`, `registry/claims_domains.toml`,
      `registry/claim_tickets.toml`.
+   - `make registry` is now TOML-first by default; legacy markdown ingest is
+     explicit via `make registry-ingest-legacy`.
    - Exporters now generate TOML-driven markdown mirrors under
      `docs/generated/*_REGISTRY_MIRROR.md` for insights, experiments, roadmap,
      todo, next-actions, requirements, claims-tasks, claims-domains, and claim-tickets.
+   - Exporters also regenerate claims-support legacy mirrors:
+     `docs/CLAIMS_TASKS.md`, `docs/claims/INDEX.md`,
+     `docs/claims/CLAIMS_DOMAIN_MAP.csv`, and `docs/claims/by_domain/*.md`.
+   - Mirror freshness is now enforced by
+     `src/verification/verify_registry_mirror_freshness.py`.
    - Registry generators now emit deterministic stamps to avoid one-time timestamp churn.
    - Remaining policy decision: fully replace legacy narrative docs or keep
      them as non-authoritative overlays.

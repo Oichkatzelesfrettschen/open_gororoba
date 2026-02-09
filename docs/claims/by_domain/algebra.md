@@ -1,140 +1,207 @@
 # Claims: algebra
 
-Source: docs/claims/CLAIMS_DOMAIN_MAP.csv + docs/CLAIMS_EVIDENCE_MATRIX.md
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/claims_domains.toml -->
 
 Count: 67
 
-- Hypothesis C-001 (**Verified** (math), 2026-02-02): Cayley-Dickson algebras become non-associative at 8D and beyond.
+- Hypothesis C-001 (Verified (math), 2026-02-02): Cayley-Dickson algebras become non-associative at 8D and beyond.
   - Where stated: `src/verification/verify_algebra.py`, `tests/test_cayley_dickson_properties.py`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
-- Hypothesis C-002 (**Verified** (math), 2026-02-02): 16D sedenions have zero divisors and lose norm composition.
+
+- Hypothesis C-002 (Verified (math), 2026-02-02): 16D sedenions have zero divisors and lose norm composition.
   - Where stated: `docs/THE_GEMINI_PROTOCOL.md`, `tests/test_cayley_dickson_properties.py`, `docs/external_sources/DE_MARRAIS_SOURCES.md`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`
-- Hypothesis C-003 (**Verified** (math), 2026-02-02): "42 assessors" / "7 box-kites" organize primitive sedenion zero divisors.
+
+- Hypothesis C-003 (Verified (math), 2026-02-02): "42 assessors" / "7 box-kites" organize primitive sedenion zero divisors.
   - Where stated: `docs/SEDENION_ATLAS.md`, `crates/algebra_core/src/boxkites.rs`, `tests/test_de_marrais_boxkites.py`, `docs/external_sources/DE_MARRAIS_SOURCES.md`
-- Hypothesis C-004 (**Verified** (count + in-repo action on box-kites), 2026-01-28): The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs.
+
+- Hypothesis C-004 (Verified (count + in-repo action on box-kites), 2026-01-28): The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs.
   - Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/group_theory.rs`, `crates/algebra_core/src/boxkites.rs`, `tests/test_psl_2_7_action.py`, `tests/test_boxkite_symmetry_action.py`
-- Hypothesis C-005 (**Partially verified** (source-aligned; geometric invariants computed; Phase 3A), 2026-01-30): "The geometry of sedenion zero divisors" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`).
+
+- Hypothesis C-005 (Partially verified (source-aligned; geometric invariants computed; Phase 3A), 2026-01-30): "The geometry of sedenion zero divisors" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`).
   - Where stated: `docs/SEDENION_ATLAS.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `data/external/papers/reggiani_2024_2411.18881.pdf`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`
-- Hypothesis C-011 (**Speculative** (/ Obstructed (Phase 3D)), 2026-02-02): Hypothesis: a Cayley-Dickson (sedenion) structure could parameterize a gravastar-like effective model, but current analysis shows a non-associative obstruction; no physically grounded equivalence mechanism is established.
+
+- Hypothesis C-011 (Speculative (/ Obstructed (Phase 3D)), 2026-02-02): Hypothesis: a Cayley-Dickson (sedenion) structure could parameterize a gravastar-like effective model, but current analysis shows a non-associative obstruction; no physically grounded equivalence mechanism is established.
   - Where stated: `docs/NAVIGATOR.md`, `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/external_sources/GRAVASTAR_SOURCES.md`, `docs/theory/GRAVASTAR_CD_IMPOSSIBILITY_ANALYSIS.md`, `src/scripts/analysis/gravastar_eos_sweep.py`, `src/scripts/analysis/gravastar_thin_shell.py`, `src/scripts/analysis/gravastar_thin_shell_stability.py`, `src/scripts/analysis/gravastar_nonassociative_obstruction.py`, `data/csv/gravastar_eos_pressure_gradient_sweep.csv`, `data/csv/gravastar_thin_shell_matching.csv`, `data/csv/gravastar_thin_shell_stability.csv`, `data/csv/gravastar_nonassociative_obstruction.csv`, `tests/test_tov_gravastar_core.py`, `tests/test_tov_gravastar_sweep.py`, `tests/test_gravastar_thin_shell.py`, `tests/test_gravastar_thin_shell_stability.py`, `tests/test_gravastar_nonassociative_obstruction.py`
-- Hypothesis C-013 (**Verified** (math), 2026-01-28): de Marrais' GoTo "automorphemes" (from the 7 O-trips + the "8-ball" exclude rule) cover the 42 primitive assessors exactly twice; each assessor lies in exactly two automorphemes (Production Rule #3 uniqueness).
+
+- Hypothesis C-013 (Verified (math), 2026-01-28): de Marrais' GoTo "automorphemes" (from the 7 O-trips + the "8-ball" exclude rule) cover the 42 primitive assessors exactly twice; each assessor lies in exactly two automorphemes (Production Rule #3 uniqueness).
   - Where stated: `docs/DE_MARRAIS_REPLICATION.md`, `crates/algebra_core/src/boxkites.rs`
-- Hypothesis C-014 (**Verified** (math), 2026-01-28): The diagonal-form family of 84 sedenion zero divisors `(e_low +/- e_high)` (from de Marrais' 42 primitive assessors) has left and right annihilator dimension 4 (so the annihilator unit sphere is S^3 ~ SU(2)).
+
+- Hypothesis C-014 (Verified (math), 2026-01-28): The diagonal-form family of 84 sedenion zero divisors `(e_low +/- e_high)` (from de Marrais' 42 primitive assessors) has left and right annihilator dimension 4 (so the annihilator unit sphere is S^3 ~ SU(2)).
   - Where stated: `docs/REGGIANI_REPLICATION.md`, `crates/algebra_core/src/reggiani.rs`
-- Hypothesis C-015 (**Verified** (math), 2026-01-28): For each of the 84 diagonal-form zero divisors `u`, there are exactly 4 other diagonal-form zero divisors `v` with `u*v=0`, and these 4 span `Ann_L(u)`.
+
+- Hypothesis C-015 (Verified (math), 2026-01-28): For each of the 84 diagonal-form zero divisors `u`, there are exactly 4 other diagonal-form zero divisors `v` with `u*v=0`, and these 4 span `Ann_L(u)`.
   - Where stated: `docs/REGGIANI_REPLICATION.md`, `crates/algebra_core/src/reggiani.rs`
-- Hypothesis C-016 (**Verified** (math), 2026-01-28): The repo's `m3` trilinear operation on distinct octonion basis triples produces exactly 42 scalar outputs and 168 pure-imaginary outputs, and the scalar cases correspond exactly to the 7 Fano-plane lines (with parity sign flips).
+
+- Hypothesis C-016 (Verified (math), 2026-01-28): The repo's `m3` trilinear operation on distinct octonion basis triples produces exactly 42 scalar outputs and 168 pure-imaginary outputs, and the scalar cases correspond exactly to the 7 Fano-plane lines (with parity sign flips).
   - Where stated: `docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `crates/algebra_core/src/m3.rs`
-- Hypothesis C-018 (**Verified** (source + tests), 2026-01-28): "Wheels" (Carlstrom) are commutative monoid-based structures <H,0,1,+,*,/> with a total reciprocal operation and defining axioms (1)-(8) (Carlstrom 2001, Definition 1.1) that provide division-by-zero semantics without partiality.
-  - Where stated: `docs/WHEELS_DIVISION_BY_ZERO.md`, convos "wheel" mentions
-- Hypothesis C-019 (**Not supported** (rejected (rejected (Phase 2C round-trip test complete))), 2026-01-30): Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson zero-divisor phenomena at higher dimensions.
-  - Where stated: convos narrative, `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `crates/algebra_core/src/wheels.rs`, `src/scripts/analysis/cd_wheel_roundtrip_test.py`, `data/csv/cd_wheel_roundtrip_results.csv`, `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`
-- Hypothesis C-022 (**Modeled** (Toy; Phase 4A ordinal mapping), 2026-02-02): Toy model: map Cayley-Dickson doubling level n to surreal birthday n and test the CD property-loss milestones.
+
+- Hypothesis C-018 (Verified (source + tests), 2026-01-28): "Wheels" (Carlstrom) are commutative monoid-based structures <H,0,1,+,*,/> with a total reciprocal operation and defining axioms (1)-(8) (Carlstrom 2001, Definition 1.1) that provide division-by-zero semantics without partiality.
+  - Where stated: `docs/WHEELS_DIVISION_BY_ZERO.md`
+
+- Hypothesis C-019 (Not supported (rejected (rejected (Phase 2C round-trip test complete))), 2026-01-30): Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson zero-divisor phenomena at higher dimensions.
+  - Where stated: `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `crates/algebra_core/src/wheels.rs`, `src/scripts/analysis/cd_wheel_roundtrip_test.py`, `data/csv/cd_wheel_roundtrip_results.csv`, `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`
+
+- Hypothesis C-022 (Modeled (Toy; Phase 4A ordinal mapping), 2026-02-02): Toy model: map Cayley-Dickson doubling level n to surreal birthday n and test the CD property-loss milestones.
   - Where stated: `docs/theory/unified_tensor_wheel_cd_framework.md`, `src/scripts/analysis/surreal_cd_ordinal_construction.py`, `data/csv/surreal_cd_ordinal_mapping.csv`, `tests/test_surreal_cd_ordinal.py`
-- Hypothesis C-023 (**Modeled** (Toy; Phase 4B holonomy analysis), 2026-02-02): Toy model: interpret the CD associator as a discrete connection/holonomy signal over triples.
+
+- Hypothesis C-023 (Modeled (Toy; Phase 4B holonomy analysis), 2026-02-02): Toy model: interpret the CD associator as a discrete connection/holonomy signal over triples.
   - Where stated: `docs/theory/unified_tensor_wheel_cd_framework.md`, `crates/algebra_core/src/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py`, `data/csv/cd_holonomy_basis_triples.csv`, `data/csv/cd_fiber_holonomy_comparison.csv`, `tests/test_cd_holonomy.py`
-- Hypothesis C-026 (**Speculative** (mechanism missing; baseline metrics only), 2026-02-03): Speculative program: if a statistically significant "lower mass gap" (~2.5-5 M_sun) is established, it may correspond to an "algebraic tension" region between stable zero-divisor nodes in the sedenion box-kite structure.
+
+- Hypothesis C-026 (Speculative (mechanism missing; baseline metrics only), 2026-02-03): Speculative program: if a statistically significant "lower mass gap" (~2.5-5 M_sun) is established, it may correspond to an "algebraic tension" region between stable zero-divisor nodes in the sedenion box-kite structure.
   - Where stated: `docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `docs/C026_MASS_GAP_MECHANISM.md`, `docs/external_sources/C026_MASS_GAP_SOURCES.md`, `src/scripts/analysis/gwtc3_lower_mass_gap_metrics.py`, `data/csv/gwtc3_lower_mass_gap_metrics.csv`
-- Hypothesis C-028 (**Verified** (computational verification complete), 2026-01-31): Aut(S) = G2 x S3; no continuous symmetry beyond G2 emerges from sedenions. The S3 factor permutes three octonionic subalgebras.
+
+- Hypothesis C-028 (Verified (computational verification complete), 2026-01-31): Aut(S) = G2 x S3; no continuous symmetry beyond G2 emerges from sedenions. The S3 factor permutes three octonionic subalgebras.
   - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/SEDENION_FIELD_THEORY.md`
-- Hypothesis C-029 (**Verified** (structural), 2026-01-30): Three fermion generations arise from the C tensor S decomposition into three C tensor O subalgebras (Gillard & Gresnigt 2019, Gresnigt 2023).
-  - Where stated: `docs/BIBLIOGRAPHY.md` (Gillard & Gresnigt 2019; Gresnigt 2023), `docs/SEDENION_FIELD_THEORY.md`, `tests/test_sedenion_generations.py` (23 tests)
-- Hypothesis C-030 (**Verified** (math + artifact), 2026-02-03): Any sedenion-valued action/Lagrangian with products of 3+ fields must specify a bypass mechanism (explicit parenthesization, associative surrogate product, or restriction to associative subalgebras) to be uniquely defined; otherwise parenthesizations differ by the associator A(a,b,c)=(ab)c-a(bc).
+
+- Hypothesis C-029 (Verified (structural), 2026-01-30): Three fermion generations arise from the C tensor S decomposition into three C tensor O subalgebras (Gillard & Gresnigt 2019, Gresnigt 2023).
+  - Where stated: `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `tests/test_sedenion_generations.py`
+
+- Hypothesis C-030 (Verified (math + artifact), 2026-02-03): Any sedenion-valued action/Lagrangian with products of 3+ fields must specify a bypass mechanism (explicit parenthesization, associative surrogate product, or restriction to associative subalgebras) to be uniquely defined; otherwise parenthesizations differ by the associator A(a,b,c)=(ab)c-a(bc).
   - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C030_SEDENION_LAGRANGIAN_SOURCES.md`, `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`, `src/scripts/analysis/c030_sedenion_lagrangian_bypass_checks.py`, `data/csv/c030_sedenion_lagrangian_bypass_checks.csv`, `tests/test_c030_sedenion_lagrangian_bypass_checks.py`, `docs/SEDENION_FIELD_THEORY.md`
-- Hypothesis C-031 (**Verified** (math + artifact; QFT caveat), 2026-02-03): By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebras (R,C,H,O). In the CD tower at dim=16 (sedenions), norm composition fails and zero divisors exist; therefore any sedenion-valued field theory must specify an associative representation (or restrict to associative subalgebras) to define a unique action and a compatible Hilbert-space structure.
+
+- Hypothesis C-031 (Verified (math + artifact; QFT caveat), 2026-02-03): By Hurwitz theorem, only dims 1/2/4/8 admit normed division algebras (R,C,H,O). In the CD tower at dim=16 (sedenions), norm composition fails and zero divisors exist; therefore any sedenion-valued field theory must specify an associative representation (or restrict to associative subalgebras) to define a unique action and a compatible Hilbert-space structure.
   - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C031_HURWITZ_QUANTIZATION_SOURCES.md`, `src/scripts/analysis/c031_hurwitz_norm_composition_checks.py`, `data/csv/c031_hurwitz_norm_composition_checks.csv`, `tests/test_c031_hurwitz_norm_composition_checks.py`, `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`, `docs/SEDENION_FIELD_THEORY.md`
-- Hypothesis C-032 (**Verified** (source + numeric reproduction; mechanism caveats), 2026-02-04): Tang (2025 preprint): non-associative (octonionic/sedenionic) QED uses associator norms to predict charged-lepton masses/ratios at percent level without a Higgs mechanism.
-  - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang 2025), `docs/SEDENION_FIELD_THEORY.md`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py`
-- Hypothesis C-033 (**Not supported** (mapping under-specified in source), 2026-02-04): Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023).
-  - Where stated: `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)
-- Hypothesis C-034 (**Verified** (metadata+abstract; structural prerequisite reproduced), 2026-02-04): Chanyal (2014): a "sedenion unified theory of gravi-electromagnetism" expresses unified potentials/fields/currents of dyons and "gravito-dyons" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo).
-  - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Chanyal 2014), `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt`
-- Hypothesis C-046 (**Refuted** (Scalar Rescaling), 2026-01-31): "Fractal Doping" (sum x/n^beta) stabilizes zero divisors.
+
+- Hypothesis C-032 (Verified (source + numeric reproduction; mechanism caveats), 2026-02-04): Tang (2025 preprint): non-associative (octonionic/sedenionic) QED uses associator norms to predict charged-lepton masses/ratios at percent level without a Higgs mechanism.
+  - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py`
+
+- Hypothesis C-033 (Not supported (mapping under-specified in source), 2026-02-04): Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023).
+  - Where stated: `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`
+
+- Hypothesis C-034 (Verified (metadata+abstract; structural prerequisite reproduced), 2026-02-04): Chanyal (2014): a "sedenion unified theory of gravi-electromagnetism" expresses unified potentials/fields/currents of dyons and "gravito-dyons" using two 8D sectors (two eight-potentials), yielding compact generalized Dirac-Maxwell and related equations (abstract-level in repo).
+  - Where stated: `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `docs/BIBLIOGRAPHY.md`, `docs/SEDENION_FIELD_THEORY.md`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`, `data/external/traces/chanyal_2014_springer_abstract.txt`
+
+- Hypothesis C-046 (Refuted (Scalar Rescaling), 2026-01-31): "Fractal Doping" (sum x/n^beta) stabilizes zero divisors.
   - Where stated: `archive/legacy_conjectures/`
-- Hypothesis C-054 (**Verified** (Math/Code), 2026-01-31): Carlstrom's Wheel Algebra formally models information loss in non-associative CD algebras.
+
+- Hypothesis C-054 (Verified (Math/Code), 2026-01-31): Carlstrom's Wheel Algebra formally models information loss in non-associative CD algebras.
   - Where stated: `crates/algebra_core/src/wheels.rs`
-- Hypothesis C-068 (**Refuted** (degenerate spectrum), 2026-02-03): Sedenion 84-ZD interaction matrix eigenvalue spectrum matches PDG particle masses.
-  - Where stated: `src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`, `docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, inputs: `data/csv/reggiani_standard_zero_divisors.csv`
-- Hypothesis C-069 (**Not supported** (rejected (rejected)), 2026-01-31): Three octonionic subalgebra principal angles reproduce PMNS neutrino mixing angles.
+
+- Hypothesis C-068 (Refuted (degenerate spectrum), 2026-02-03): Sedenion 84-ZD interaction matrix eigenvalue spectrum matches PDG particle masses.
+  - Where stated: `src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`, `docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, `data/csv/reggiani_standard_zero_divisors.csv`
+
+- Hypothesis C-069 (Not supported (rejected (rejected)), 2026-01-31): Three octonionic subalgebra principal angles reproduce PMNS neutrino mixing angles.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments.py`, `data/csv/cd_algebraic_experiments.json`
-- Hypothesis C-076 (**Verified** (SUGGESTIVE ( math)), 2026-01-31): **Three octonionic subalgebras have exact generation symmetry (identical Casimirs, zero leakage, S3-symmetric mixing).**
+
+- Hypothesis C-076 (Verified (SUGGESTIVE ( math)), 2026-01-31): **Three octonionic subalgebras have exact generation symmetry (identical Casimirs, zero leakage, S3-symmetric mixing).**
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v3.py`, `data/csv/cd_algebraic_experiments_v3.json`
-- Hypothesis C-088 (**Verified**, 2026-01-31): Non-diagonal ZDs exist abundantly in 16D sedenion algebra.
+
+- Hypothesis C-088 (Verified, 2026-01-31): Non-diagonal ZDs exist abundantly in 16D sedenion algebra.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v5.py`, `data/csv/cd_algebraic_experiments_v5.json`
-- Hypothesis C-097 (**Verified** (Math/Code), 2026-02-03): Diagonal ZD interaction graph has exactly 3 distinct edge weights {0, 1, sqrt(2)} and decomposes into 14 connected components at threshold > 1.
+
+- Hypothesis C-097 (Verified (Math/Code), 2026-02-03): Diagonal ZD interaction graph has exactly 3 distinct edge weights {0, 1, sqrt(2)} and decomposes into 14 connected components at threshold > 1.
   - Where stated: `src/scripts/analysis/c097_zd_interaction_graph_audit.py`, `data/csv/c097_zd_interaction_graph_summary.csv`, `tests/test_c097_zd_interaction_graph_audit.py`, `data/csv/reggiani_standard_zero_divisors.csv`
-- Hypothesis C-099 (**Verified** (Monte Carlo), 2026-02-03): Non-diagonal sedenion ZDs have consistent geometry: 14 nonzero components (mode), PCA dimension 13-14, kernel dimension exactly 4, pairwise angles clustered around 77 degrees.
-  - Where stated: `src/scripts/analysis/c099_nondiag_zd_geometry_audit.py`, `data/csv/c099_nondiag_zd_geometry_summary.csv`, `tests/test_c099_nondiag_zd_geometry_audit.py`, inputs: `data/csv/cd_algebraic_experiments_v8.json` (results.W)
-- Hypothesis C-101 (**Verified**, 2026-01-31): Flexibility identity A(x,y,x)=0 holds at ALL Cayley-Dickson dimensions through 2048.
+
+- Hypothesis C-099 (Verified (Monte Carlo), 2026-02-03): Non-diagonal sedenion ZDs have consistent geometry: 14 nonzero components (mode), PCA dimension 13-14, kernel dimension exactly 4, pairwise angles clustered around 77 degrees.
+  - Where stated: `src/scripts/analysis/c099_nondiag_zd_geometry_audit.py`, `data/csv/c099_nondiag_zd_geometry_summary.csv`, `tests/test_c099_nondiag_zd_geometry_audit.py`, `data/csv/cd_algebraic_experiments_v8.json`
+
+- Hypothesis C-101 (Verified, 2026-01-31): Flexibility identity A(x,y,x)=0 holds at ALL Cayley-Dickson dimensions through 2048.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v9.py`
-- Hypothesis C-106 (**Verified**, 2026-01-31): Non-diagonal zero divisors exist at dim=32 with kernel dimension exactly 4 and 30 nonzero components.
+
+- Hypothesis C-106 (Verified, 2026-01-31): Non-diagonal zero divisors exist at dim=32 with kernel dimension exactly 4 and 30 nonzero components.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v9.py`
-- Hypothesis C-118 (**Verified**, 2026-01-31): The Jordan identity J(x^2, y, x) = (x^2*y)*x - x^2*(y*x) = 0 holds at ALL Cayley-Dickson dimensions from 2 through 1024, to machine precision.
+
+- Hypothesis C-118 (Verified, 2026-01-31): The Jordan identity J(x^2, y, x) = (x^2*y)*x - x^2*(y*x) = 0 holds at ALL Cayley-Dickson dimensions from 2 through 1024, to machine precision.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v12.py`, `data/csv/cd_algebraic_experiments_v12.json`
-- Hypothesis C-119 (**Verified**, 2026-01-31): The left and right Bol identities hold exactly through dim=8 (octonions) and are lost at dim=16 (sedenions), with L/R symmetric violations that grow with dimension.
+
+- Hypothesis C-119 (Verified, 2026-01-31): The left and right Bol identities hold exactly through dim=8 (octonions) and are lost at dim=16 (sedenions), with L/R symmetric violations that grow with dimension.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v12.py`, `data/csv/cd_algebraic_experiments_v12.json`
-- Hypothesis C-124 (**Verified**, 2026-01-31): The flexibility identity (ab)(ca) = a((bc)a) holds exactly through dim=8 (octonions) and is lost at dim=16 (sedenions), with violations growing toward ~1.7.
+
+- Hypothesis C-124 (Verified, 2026-01-31): The flexibility identity (ab)(ca) = a((bc)a) holds exactly through dim=8 (octonions) and is lost at dim=16 (sedenions), with violations growing toward ~1.7.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v13.py`, `data/csv/cd_algebraic_experiments_v13.json`
-- Hypothesis C-138 (**Verified** (math), 2026-02-01): 3-generated subalgebras become non-associative at dim=8 (octonions), while 2-generated subalgebras (Artin's theorem) fail at dim=16. A(x,y,xz)/A(x,y,z) ratio ~ 1.0, indicating mixed 3-gen associators are comparable to pure 3-gen.
+
+- Hypothesis C-138 (Verified (math), 2026-02-01): 3-generated subalgebras become non-associative at dim=8 (octonions), while 2-generated subalgebras (Artin's theorem) fail at dim=16. A(x,y,xz)/A(x,y,z) ratio ~ 1.0, indicating mixed 3-gen associators are comparable to pure 3-gen.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v15.py`, `data/csv/cd_algebraic_experiments_v15.json`
-- Hypothesis C-162 (**Verified** (math), 2026-02-01): ZD annihilator dimensions: at dim=16, diagonal-form ZDs have left/right annihilator dim in {0, 4}. At dim=32, values in {0, 8, 12}. Left and right annihilator dims are always equal. All nonzero annihilator dims are multiples of 4.
+
+- Hypothesis C-162 (Verified (math), 2026-02-01): ZD annihilator dimensions: at dim=16, diagonal-form ZDs have left/right annihilator dim in {0, 4}. At dim=32, values in {0, 8, 12}. Left and right annihilator dims are always equal. All nonzero annihilator dims are multiples of 4.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v19.py`, `data/csv/cd_algebraic_experiments_v19.json`
-- Hypothesis C-168 (**Verified** (math), 2026-02-01): ZD product spectrum at dim=128: among the first 100 diagonal-form (e_i+e_j)/sqrt(2) candidates, ZERO are actual zero divisors. This suggests the ZD structure becomes dramatically sparser at dim=128, or requires different index pairs.
+
+- Hypothesis C-168 (Verified (math), 2026-02-01): ZD product spectrum at dim=128: among the first 100 diagonal-form (e_i+e_j)/sqrt(2) candidates, ZERO are actual zero divisors. This suggests the ZD structure becomes dramatically sparser at dim=128, or requires different index pairs.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v20.py`, `data/csv/cd_algebraic_experiments_v20.json`
-- Hypothesis C-178 (**Verified** (math), 2026-02-01): Inner derivation space dimension (via D(a,b)(c) = A(a,b,c) - A(b,a,c) + A(c,a,b)): dim=0 at dim=2,4 (associative -> A=0); dim=21 at dim=8; dim=98 at dim=16; dim=383 at dim=32. Note: at dim=8 (octonions), Der(O) = g2 has dim 14, but this "inner derivation map" spans a 21-dimensional space of linear maps, not all of which satisfy the Leibniz rule.
+
+- Hypothesis C-178 (Verified (math), 2026-02-01): Inner derivation space dimension (via D(a,b)(c) = A(a,b,c) - A(b,a,c) + A(c,a,b)): dim=0 at dim=2,4 (associative -> A=0); dim=21 at dim=8; dim=98 at dim=16; dim=383 at dim=32. Note: at dim=8 (octonions), Der(O) = g2 has dim 14, but this "inner derivation map" spans a 21-dimensional space of linear maps, not all of which satisfy the Leibniz rule.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v22.py`, `data/csv/cd_algebraic_experiments_v22.json`
-- Hypothesis C-184 (**Verified** (math), 2026-02-01): Malcev identity [J(a,b,c), a] + J(a, b, [c,a]) = 0 holds EXACTLY at dim=8 (with opposite sign convention: LHS = -RHS). Trivially true at dim=4 (J=0). Fails at dim >= 16 with increasing defect. The sign flip means the octonion commutator forms a Malcev algebra under the convention J + [J,a] = 0.
+
+- Hypothesis C-184 (Verified (math), 2026-02-01): Malcev identity [J(a,b,c), a] + J(a, b, [c,a]) = 0 holds EXACTLY at dim=8 (with opposite sign convention: LHS = -RHS). Trivially true at dim=4 (J=0). Fails at dim >= 16 with increasing defect. The sign flip means the octonion commutator forms a Malcev algebra under the convention J + [J,a] = 0.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v23.py`, `data/csv/cd_algebraic_experiments_v23.json`
-- Hypothesis C-192 (**Verified** (convention), 2026-02-01): CD doubling formula: our cd_multiply_batch does NOT use the standard Cayley-Dickson doubling formula (a,b)(c,d) = (ac - d*conj(b), conj(a)*d + cb). The deviation is O(1) at all dims (mean 0.39-1.14). This is a documented convention difference, not a bug: all other algebraic properties (conjugate reversal, norm composition at dim<=8, alternativity, flexibility) are verified correct.
+
+- Hypothesis C-192 (Verified (convention), 2026-02-01): CD doubling formula: our cd_multiply_batch does NOT use the standard Cayley-Dickson doubling formula (a,b)(c,d) = (ac - d*conj(b), conj(a)*d + cb). The deviation is O(1) at all dims (mean 0.39-1.14). This is a documented convention difference, not a bug: all other algebraic properties (conjugate reversal, norm composition at dim<=8, alternativity, flexibility) are verified correct.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v24.py`, `data/csv/cd_algebraic_experiments_v24.json`
-- Hypothesis C-218 (**Verified** (math), 2026-02-01): Bilinear form B(a,b) = Re(a*conj(b)): the Gram matrix G[i,j] = B(e_i,e_j) equals the identity matrix EXACTLY at ALL CD dims 4-128. B(a,a) =\|\|a\|\|^2 EXACTLY at ALL dims. The standard basis is orthonormal under this bilinear form at every level of the Cayley-Dickson tower. This is a universal inner product structure.
+
+- Hypothesis C-218 (Verified (math), 2026-02-01): Bilinear form B(a,b) = Re(a*conj(b)): the Gram matrix G[i,j] = B(e_i,e_j) equals the identity matrix EXACTLY at ALL CD dims 4-128. B(a,a) =\|\|a\|\|^2 EXACTLY at ALL dims. The standard basis is orthonormal under this bilinear form at every level of the Cayley-Dickson tower. This is a universal inner product structure.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v28.py`, `data/csv/cd_algebraic_experiments_v28.json`
-- Hypothesis C-221 (**Verified** (math), 2026-02-01): Only trivial idempotents (0 and e_0) exist in CD algebras: e_0^2 = e_0 and 0^2 = 0 are EXACT at ALL dims 4-128. No non-trivial idempotent a^2=a found via random search (min\|\|a^2-a\|\|> 0.01 for random unit vectors) or Newton iteration (diverges to NaN at dim>=16). This is consistent with the absence of zero divisors at dim<=8 (since a^2=a implies a(a-e_0)=0).
+
+- Hypothesis C-221 (Verified (math), 2026-02-01): Only trivial idempotents (0 and e_0) exist in CD algebras: e_0^2 = e_0 and 0^2 = 0 are EXACT at ALL dims 4-128. No non-trivial idempotent a^2=a found via random search (min\|\|a^2-a\|\|> 0.01 for random unit vectors) or Newton iteration (diverges to NaN at dim>=16). This is consistent with the absence of zero divisors at dim<=8 (since a^2=a implies a(a-e_0)=0).
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`
-- Hypothesis C-224 (**Verified** (math), 2026-02-01): Inner derivation space dimension: D(a,b)(x) = A(a,b,x) - A(b,a,x) spans a 0-dim space at dim=4 (quaternions are associative, all A=0), 21-dim space at dim=8 (octonions), confirming C-203. At dim=16 and dim=32, the space saturates at 50 (limited by n_pairs=50). The 21-dim space at dim=8 contains a 14-dim Lie algebra g2 (the actual derivation algebra), with the remaining 7 dimensions failing the Leibniz rule.
+
+- Hypothesis C-224 (Verified (math), 2026-02-01): Inner derivation space dimension: D(a,b)(x) = A(a,b,x) - A(b,a,x) spans a 0-dim space at dim=4 (quaternions are associative, all A=0), 21-dim space at dim=8 (octonions), confirming C-203. At dim=16 and dim=32, the space saturates at 50 (limited by n_pairs=50). The 21-dim space at dim=8 contains a 14-dim Lie algebra g2 (the actual derivation algebra), with the remaining 7 dimensions failing the Leibniz rule.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v29.py`, `data/csv/cd_algebraic_experiments_v29.json`
-- Hypothesis C-242 (**Verified** (math), 2026-02-01): Cayley-Dickson doubling formula (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) is verified EXACTLY at all tested doubling steps: 4->8, 8->16, 16->32, 32->64, 64->128. Direct cd_multiply_batch output matches doubling reconstruction to machine precision.
+
+- Hypothesis C-242 (Verified (math), 2026-02-01): Cayley-Dickson doubling formula (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) is verified EXACTLY at all tested doubling steps: 4->8, 8->16, 16->32, 32->64, 64->128. Direct cd_multiply_batch output matches doubling reconstruction to machine precision.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v32.py`, `data/csv/cd_algebraic_experiments_v32.json`
-- Hypothesis C-246 (**Verified** (math), 2026-02-01): Nucleus N(A) = {n : A(n,x,y) = A(x,n,y) = A(x,y,n) = 0 for all x,y}. At dim=4 (quaternions, associative): nucleus = full algebra (dim 4). At dim>=8 (octonions and beyond): nucleus = R*e_0 (dim 1, scalars only). The nucleus distinguishes associative from merely alternative algebras.
+
+- Hypothesis C-246 (Verified (math), 2026-02-01): Nucleus N(A) = {n : A(n,x,y) = A(x,n,y) = A(x,y,n) = 0 for all x,y}. At dim=4 (quaternions, associative): nucleus = full algebra (dim 4). At dim>=8 (octonions and beyond): nucleus = R*e_0 (dim 1, scalars only). The nucleus distinguishes associative from merely alternative algebras.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`
-- Hypothesis C-247 (**Verified** (math), 2026-02-01): Jacobi defect: [a,[b,c]]+[b,[c,a]]+[c,[a,b]] = 0 at dim<=4 (associative: commutator forms Lie algebra). At dim=8 (octonions): Jacobi defect norm equals\|\|6*A(a,b,c)\|\|with ratio 1.0000, confirming the alternative algebra identity. At dim>=16: ratio decays from 0.93 (dim=16) to 0.84 (dim=128).
+
+- Hypothesis C-247 (Verified (math), 2026-02-01): Jacobi defect: [a,[b,c]]+[b,[c,a]]+[c,[a,b]] = 0 at dim<=4 (associative: commutator forms Lie algebra). At dim=8 (octonions): Jacobi defect norm equals\|\|6*A(a,b,c)\|\|with ratio 1.0000, confirming the alternative algebra identity. At dim>=16: ratio decays from 0.93 (dim=16) to 0.84 (dim=128).
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v33.py`, `data/csv/cd_algebraic_experiments_v33.json`
-- Hypothesis C-259 (**Verified** (math), 2026-02-01): Doubling-level associator: at dim=16, left-half elements (octonion subalgebra) have\|\|A\|\|~ 1.12 (matching octonion-level C-253), while right-half elements have\|\|A\|\|~ 1.58 (higher due to doubling conjugation terms). Right exceeds left at all tested dims. The doubling construction introduces ADDITIONAL non-associativity beyond the embedded subalgebra level.
+
+- Hypothesis C-259 (Verified (math), 2026-02-01): Doubling-level associator: at dim=16, left-half elements (octonion subalgebra) have\|\|A\|\|~ 1.12 (matching octonion-level C-253), while right-half elements have\|\|A\|\|~ 1.58 (higher due to doubling conjugation terms). Right exceeds left at all tested dims. The doubling construction introduces ADDITIONAL non-associativity beyond the embedded subalgebra level.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v35.py`, `data/csv/cd_algebraic_experiments_v35.json`
-- Hypothesis C-267 (**Verified** (math), 2026-02-01): Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufang loop). Fails at dim>=16 with violations growing from ~1.4 (dim=16) to ~2.2 (dim=64). This verifies the unit elements of R,C,H,O form a Moufang loop but sedenions and beyond do not. Combined with C-250 (Bol), C-236 (right Moufang), the full Moufang quartet is now verified.
+
+- Hypothesis C-267 (Verified (math), 2026-02-01): Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufang loop). Fails at dim>=16 with violations growing from ~1.4 (dim=16) to ~2.2 (dim=64). This verifies the unit elements of R,C,H,O form a Moufang loop but sedenions and beyond do not. Combined with C-250 (Bol), C-236 (right Moufang), the full Moufang quartet is now verified.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json`
-- Hypothesis C-278 (**Verified** (math), 2026-02-01): No nilpotent elements: x^n != 0 for any nonzero x at ALL CD dims 8-128. This follows from\|\|x^n\|\|=\|\|x\|\|^n (C-239/C-269) -- since\|\|x\|\|> 0 implies\|\|x^n\|\|> 0. CD algebras have no nilpotent elements despite having zero divisors at dim>=16. Powers always have strictly positive norm.
+
+- Hypothesis C-278 (Verified (math), 2026-02-01): No nilpotent elements: x^n != 0 for any nonzero x at ALL CD dims 8-128. This follows from\|\|x^n\|\|=\|\|x\|\|^n (C-239/C-269) -- since\|\|x\|\|> 0 implies\|\|x^n\|\|> 0. CD algebras have no nilpotent elements despite having zero divisors at dim>=16. Powers always have strictly positive norm.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v38.py`, `data/csv/cd_algebraic_experiments_v38.json`
-- Hypothesis C-301 (**Verified** (math), 2026-02-01): Derivation algebra dimension: dim(Der(R))=0, dim(Der(C))=0, dim(Der(H))=3 (=so(3)), dim(Der(O))=14 (=G2), dim(Der(S))=14 (same as O). Computed via rank of the derivation condition constraint matrix. The sedenion derivation algebra has the same dimension as the octonion derivation algebra, consistent with Der(S)=G2 embedding.
+
+- Hypothesis C-301 (Verified (math), 2026-02-01): Derivation algebra dimension: dim(Der(R))=0, dim(Der(C))=0, dim(Der(H))=3 (=so(3)), dim(Der(O))=14 (=G2), dim(Der(S))=14 (same as O). Computed via rank of the derivation condition constraint matrix. The sedenion derivation algebra has the same dimension as the octonion derivation algebra, consistent with Der(S)=G2 embedding.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v42.py`, `data/csv/cd_algebraic_experiments_v42.json`
-- Hypothesis C-322 (**Verified** (math), 2026-02-01): Left-alternative identity: (aa)b = a(ab) holds EXACTLY at dim<=8 and FAILS at dim>=16. Diffs grow: 65.6 (dim=16), 119.3 (dim=32), 245.9 (dim=64), 588.1 (dim=128). This is one of the two defining identities of alternative algebras. Combined with right-alternative (C-323), characterizes the octonions as the largest alternative CD algebra.
+
+- Hypothesis C-322 (Verified (math), 2026-02-01): Left-alternative identity: (aa)b = a(ab) holds EXACTLY at dim<=8 and FAILS at dim>=16. Diffs grow: 65.6 (dim=16), 119.3 (dim=32), 245.9 (dim=64), 588.1 (dim=128). This is one of the two defining identities of alternative algebras. Combined with right-alternative (C-323), characterizes the octonions as the largest alternative CD algebra.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`
-- Hypothesis C-327 (**Verified** (math), 2026-02-01): Left Moufang identity: a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 and FAILS at dim>=16. Moufang identities are stronger than alternating and characterize Moufang loops. The failure at dim>=16 is dramatic: diff=435 (dim=16), 1216 (dim=32), 3844 (dim=64), 10587 (dim=128). Combined with C-292 (right Moufang), verifies octonions are the largest Moufang CD algebra.
+
+- Hypothesis C-327 (Verified (math), 2026-02-01): Left Moufang identity: a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 and FAILS at dim>=16. Moufang identities are stronger than alternating and characterize Moufang loops. The failure at dim>=16 is dramatic: diff=435 (dim=16), 1216 (dim=32), 3844 (dim=64), 10587 (dim=128). Combined with C-292 (right Moufang), verifies octonions are the largest Moufang CD algebra.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v46.py`, `data/csv/cd_algebraic_experiments_v46.json`
-- Hypothesis C-337 (**Verified** (math), 2026-02-01): Inner derivation: D(a,b) = [L_a, L_b] - L_{[a,b]} = 0 at dim<=4 (associative) and D != 0 at dim>=8. At dim=8, D(a,b) generates the G2 Lie algebra of derivations of the octonions. At dim>=16, D(a,b) is nonzero but no longer a derivation of the algebra.
+
+- Hypothesis C-337 (Verified (math), 2026-02-01): Inner derivation: D(a,b) = [L_a, L_b] - L_{[a,b]} = 0 at dim<=4 (associative) and D != 0 at dim>=8. At dim=8, D(a,b) generates the G2 Lie algebra of derivations of the octonions. At dim>=16, D(a,b) is nonzero but no longer a derivation of the algebra.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json`
-- Hypothesis C-352 (**Verified** (math), 2026-02-01): Malcev identity: J(x,y,xz) = J(x,y,z)*x where J is the Jacobian of double commutators. Holds at dim<=8 (octonions form a Malcev algebra under commutator). At dim<=4 both sides are zero (Jacobi holds). At dim>=16 fails with relative errors 10-18. This is the alternative-algebra generalization of the Jacobi identity.
+
+- Hypothesis C-352 (Verified (math), 2026-02-01): Malcev identity: J(x,y,xz) = J(x,y,z)*x where J is the Jacobian of double commutators. Holds at dim<=8 (octonions form a Malcev algebra under commutator). At dim<=4 both sides are zero (Jacobi holds). At dim>=16 fails with relative errors 10-18. This is the alternative-algebra generalization of the Jacobi identity.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v51.py`, `data/csv/cd_algebraic_experiments_v51.json`
-- Hypothesis C-367 (**Verified** (math), 2026-02-01): Cayley-Dickson doubling construction: (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) verified at all dims 4-128 (doubling from 2-64). Direct multiplication at dim 2d matches the doubling formula applied to dim d halves. Universal and exact.
+
+- Hypothesis C-367 (Verified (math), 2026-02-01): Cayley-Dickson doubling construction: (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) verified at all dims 4-128 (doubling from 2-64). Direct multiplication at dim 2d matches the doubling formula applied to dim d halves. Universal and exact.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json`
-- Hypothesis C-392 (**Verified** (math), 2026-02-01): Multiplication table structure: for all CD algebras dim 2-64, every basis product e_i*e_j is exactly +/- e_k for some k. The multiplication table has exactly one nonzero entry per product, and that entry is +1 or -1. This is a fundamental property of the Cayley-Dickson construction.
+
+- Hypothesis C-392 (Verified (math), 2026-02-01): Multiplication table structure: for all CD algebras dim 2-64, every basis product e_i*e_j is exactly +/- e_k for some k. The multiplication table has exactly one nonzero entry per product, and that entry is +1 or -1. This is a fundamental property of the Cayley-Dickson construction.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v57.py`, `data/csv/cd_algebraic_experiments_v57.json`
-- Hypothesis C-397 (**Verified** (math), 2026-02-01): Zero divisor existence: no zero divisors among diagonal 2-blades at dim<=8. At dim>=16, zero divisors exist (found by systematic search). Best product norm at dim<=8 is exactly 2.0 (minimum nonzero). This reconfirms C-002 and C-003 with explicit construction.
+
+- Hypothesis C-397 (Verified (math), 2026-02-01): Zero divisor existence: no zero divisors among diagonal 2-blades at dim<=8. At dim>=16, zero divisors exist (found by systematic search). Best product norm at dim<=8 is exactly 2.0 (minimum nonzero). This reconfirms C-002 and C-003 with explicit construction.
   - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`
-- Hypothesis C-407 (**Partially verified** (method), 2026-02-02): Reported sky-alignment p-values must include explicit trial-factor accounting (look-elsewhere) across tuned degrees of freedom (e.g., box-kite choice, smoothing scale, catalog cuts).
+
+- Hypothesis C-407 (Partially verified (method), 2026-02-02): Reported sky-alignment p-values must include explicit trial-factor accounting (look-elsewhere) across tuned degrees of freedom (e.g., box-kite choice, smoothing scale, catalog cuts).
   - Where stated: `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `reports/tscp_trial_factor_ledger.md`, `tests/test_tscp_alignment_offline.py`, `tests/test_tscp_embedding_sweep.py`, `src/verification/verify_tscp_prereg_trial_factors.py`
-- Hypothesis C-412 (**Modeled** (Visualization), 2026-02-02): "Holographic Entropy Trap" 5-phase mechanism (Injection -> Lensing -> Sedenion Resonance -> Parton Decay -> Extraction) visualized in Director's Cut animation.
+
+- Hypothesis C-412 (Modeled (Visualization), 2026-02-02): "Holographic Entropy Trap" 5-phase mechanism (Injection -> Lensing -> Sedenion Resonance -> Parton Decay -> Extraction) visualized in Director's Cut animation.
   - Where stated: `data/artifacts/images/warp_pulse_animation_directors_cut.mp4`, `src/scripts/visualization/animate_warp_v7_directors_cut.py`
-- Hypothesis C-414 (**Verified** (Math), 2026-02-02): Adjoint identity `L_a^T = L_{conj(a)}` holds universally at all Cayley-Dickson dimensions (tested up to 64).
-  - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LG), `data/csv/cd_algebraic_experiments_v58.json`
-- Hypothesis C-416 (**Verified** (Math), 2026-02-02): The only idempotent elements in any Cayley-Dickson algebra are 0 and 1 (the identity).
-  - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py` (Exp LK), `data/csv/cd_algebraic_experiments_v58.json`
-- Hypothesis C-419 (**Modeled** (Engineering), 2026-02-02): Digital Matter BOM generation pipeline produces fabrication-ready CSVs tracking layer stoichiometry, mass density (ng/cm2), and specific vendor MPNs.
+
+- Hypothesis C-414 (Verified (Math), 2026-02-02): Adjoint identity `L_a^T = L_{conj(a)}` holds universally at all Cayley-Dickson dimensions (tested up to 64).
+  - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`
+
+- Hypothesis C-416 (Verified (Math), 2026-02-02): The only idempotent elements in any Cayley-Dickson algebra are 0 and 1 (the identity).
+  - Where stated: `src/scripts/analysis/cd_algebraic_experiments_v58.py`, `data/csv/cd_algebraic_experiments_v58.json`
+
+- Hypothesis C-419 (Modeled (Engineering), 2026-02-02): Digital Matter BOM generation pipeline produces fabrication-ready CSVs tracking layer stoichiometry, mass density (ng/cm2), and specific vendor MPNs.
   - Where stated: `src/scripts/engineering/generate_digital_matter_bom.py`, `data/artifacts/manufacturing/sedenion_spaceplate_bom.csv`
-- Hypothesis C-425 (**Modeled** (Math), 2026-02-02): Sedenion Transport Kernel generates explicit 16x16 basis multiplication matrices for modeling non-associative quantum evolution via Strang splitting.
+
+- Hypothesis C-425 (Modeled (Math), 2026-02-02): Sedenion Transport Kernel generates explicit 16x16 basis multiplication matrices for modeling non-associative quantum evolution via Strang splitting.
   - Where stated: `crates/algebra_core/src/hypercomplex.rs`
-- Hypothesis C-427 (**Speculative** (Design), 2026-02-02): Algebraic Metamaterial synthesis maps Cayley-Dickson structure constants to permittivity tensors and Clifford subspace dimensions to quasi-periodic layer stacks.
+
+- Hypothesis C-427 (Speculative (Design), 2026-02-02): Algebraic Metamaterial synthesis maps Cayley-Dickson structure constants to permittivity tensors and Clifford subspace dimensions to quasi-periodic layer stacks.
   - Where stated: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/materials_core/src/effective_medium.rs`
-- Hypothesis C-431 (**Modeled** (Visualization), 2026-02-02): The Sedenion Zero Divisor manifold, when projected into 3D perturbation space (e2, e5, e14), forms a coherent, non-trivial isosurface, visualizing the 'shadow' of the 16D algebraic singularity.
+
+- Hypothesis C-431 (Modeled (Visualization), 2026-02-02): The Sedenion Zero Divisor manifold, when projected into 3D perturbation space (e2, e5, e14), forms a coherent, non-trivial isosurface, visualizing the 'shadow' of the 16D algebraic singularity.
   - Where stated: `src/scripts/visualization/vis_8d_slice.py`, `data/artifacts/images/sedenion_slice_3d.png`
-- Hypothesis C-443 (**Verified** (exhaustive enumeration), 2026-02-06): Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2].
-  - Where stated: `crates/algebra_core/src/boxkites.rs`, `docs/INSIGHTS.md` (I-006)
+
+- Hypothesis C-443 (Verified (exhaustive enumeration), 2026-02-06): Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2].
+  - Where stated: `crates/algebra_core/src/boxkites.rs`, `docs/INSIGHTS.md`

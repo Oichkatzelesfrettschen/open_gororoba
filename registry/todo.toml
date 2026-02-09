@@ -121,3 +121,33 @@ evidence = [
   "docs/NEXT_ACTIONS.md",
   "docs/ROADMAP.md",
 ]
+
+[[task]]
+id = "S13-T12"
+title = "Invert make registry to TOML-first sequencing"
+status = "done"
+evidence = [
+  "Makefile",
+  "src/scripts/analysis/export_registry_markdown_mirrors.py",
+]
+
+[[task]]
+id = "S13-T13"
+title = "Generate legacy claims-support docs from TOML registries"
+status = "done"
+evidence = [
+  "docs/CLAIMS_TASKS.md",
+  "docs/claims/INDEX.md",
+  "docs/claims/CLAIMS_DOMAIN_MAP.csv",
+  "docs/claims/by_domain/algebra.md",
+  "src/scripts/analysis/export_registry_markdown_mirrors.py",
+]
+
+[[task]]
+id = "S13-T14"
+title = "Add mirror freshness verifier to registry quality gate"
+status = "done"
+evidence = [
+  "src/verification/verify_registry_mirror_freshness.py",
+  "Makefile",
+]
