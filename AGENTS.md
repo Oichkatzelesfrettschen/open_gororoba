@@ -10,17 +10,19 @@ and human contributors working in this repository.  Both `CLAUDE.md` and
 
 open_gororoba is a research-style codebase mixing:
 
-- **Rust domain crates** -- 13 workspace members under `crates/` covering
+- **Rust domain crates** -- 14 workspace members under `crates/` covering
   algebra, cosmology, GR, optics, materials, quantum, statistics, spectral,
-  LBM, control, data providers, CLI binaries, and PyO3 bindings.
+  LBM, control, data providers, documentation pipeline tooling, CLI binaries,
+  and PyO3 bindings.
 - **Python layer** -- visualization and notebooks under `src/gemini_physics/`.
 - **Artifacts** -- reproducible CSVs and plots under `data/` and `curated/`.
 - **Narrative documents** -- theoretical analysis, claims tracking, and audit
   reports under `docs/`.
 - **Formal proofs** -- Coq files under `curated/01_theory_frameworks/`.
 
-Python-to-Rust migration is COMPLETE (all 15 modules ported, 1806 Rust tests,
-0 clippy warnings).  See `docs/ROADMAP.md` for architecture and evolution.
+Python-to-Rust migration is tracked as COMPLETE in the current roadmap.
+Because test and binary counts change during active development, treat
+`docs/ROADMAP.md` and the registry files as the authoritative live snapshot.
 
 Many physics-facing statements are **hypotheses**.  Treat them as unverified
 unless backed by first-party sources and a reproducible test or artifact.
@@ -57,7 +59,7 @@ Treat warnings as failures everywhere.
 Do not treat `convos/` text as authoritative.
 
 - Every claim becomes a testable hypothesis tied to first-party sources.
-- Claims are tracked in `docs/CLAIMS_EVIDENCE_MATRIX.md` (435 rows).
+- Claims are tracked in `docs/CLAIMS_EVIDENCE_MATRIX.md` (475 rows).
 - Domain breakdowns live in `docs/claims/by_domain/*.md` (16 files).
 
 ### 4. Provenance
@@ -70,6 +72,35 @@ Do not treat `convos/` text as authoritative.
 ### 5. Citations
 
 Never delete existing sources.  Only append or clarify as validation proceeds.
+
+---
+
+## Repository Reality Checks
+
+Before editing this guide, run these quick checks to prevent count/path drift:
+
+```bash
+# Workspace crates
+ls -1 crates | wc -l
+
+# Claims and domain-map counts
+python3 - <<'PY'
+from pathlib import Path
+import re
+claims = Path("docs/CLAIMS_EVIDENCE_MATRIX.md").read_text()
+domain = Path("docs/claims/CLAIMS_DOMAIN_MAP.csv").read_text().splitlines()
+print("claims_matrix_rows", len(re.findall(r"^\\|\\s*C-\\d+", claims, flags=re.M)))
+print("claims_domain_map_rows", max(0, len(domain) - 1))
+PY
+
+# CLI binary inventory
+find crates/gororoba_cli/src/bin -maxdepth 1 -name '*.rs' | wc -l
+grep -c '^\[\[bin\]\]' crates/gororoba_cli/Cargo.toml
+grep -c '^\[\[binary\]\]' registry/binaries.toml
+```
+
+If counts differ, update this file, `registry/`, and any dependent docs together
+in the same change.
 
 ---
 
@@ -137,7 +168,7 @@ cargo test  --workspace -j$(nproc) -- --nocapture  # Tests with stdout
 **During iteration**: target only the crate you changed rather than full workspace.
 `algebra_core` is the heaviest (~240 tests, ~30-50s with opt-level=1).
 
-Individual analysis binaries (30 total in `crates/gororoba_cli/src/bin/`):
+Analysis binaries (30 total; subset of the full CLI inventory):
 
 ```
 # Algebra
@@ -187,11 +218,19 @@ cargo run --bin claims-verify      -- --help   # Claims verification runner
 cargo run --bin materials-baseline -- --help   # Materials science baselines
 cargo run --bin mass-clumping      -- --help   # GWTC mass dip test
 cargo run --bin motif-census       -- --help   # CD motif census
+
+# Registry / Documentation / Maintenance
+cargo run --bin registry-check      -- --help   # Validate TOML registry integrity
+cargo run --bin extract-papers      -- --help   # Batch PDF extraction to TOML
+cargo run --bin migrate-claims      -- --help   # Migrate claims markdown -> TOML
+cargo run --bin migrate-insights    -- --help   # Migrate insights markdown -> TOML
+cargo run --bin generate-latex      -- --help   # Generate LaTeX from registry
+cargo run --bin export-hdf5         -- --help   # Export computed data to HDF5
 ```
 
 ### Other runtimes
 
-- **Quantum/Qiskit:** use Docker (`docs/requirements/qiskit.md`).
+- **Quantum/Qiskit:** use Docker (`docs/requirements/quantum-docker.md`).
 - **Coq:** `make coq` (compiles axiom stubs for theorem inventories).
 - **LaTeX:** `make latex` (builds `MASTER_SYNTHESIS.pdf`).
 
@@ -220,7 +259,7 @@ cargo run --bin motif-census       -- --help   # CD motif census
 ## Project Layout
 
 ```
-crates/                     # Rust workspace (13 members)
+crates/                     # Rust workspace (14 members)
   algebra_core/             #   Cayley-Dickson, Clifford, E8, box-kites, Reggiani, M3
   cosmology_core/           #   TOV, bounce, dimensional geometry, observational fitting
   gr_core/                  #   Kerr geodesics, gravastar, shadow, Schwarzschild
@@ -232,8 +271,9 @@ crates/                     # Rust workspace (13 members)
   lbm_core/                 #   Lattice Boltzmann D2Q9
   control_core/             #   Control theory utilities
   data_core/                #   18 dataset providers + provenance + parsers
+  docpipe/                  #   Documentation/paper extraction and processing
   gororoba_py/              #   PyO3 bindings (thin wrappers -> domain crates)
-  gororoba_cli/             #   25 analysis binaries + fetch-datasets
+  gororoba_cli/             #   37 total CLI binaries (analysis + tooling)
 src/
   gemini_physics/           # Python layer (visualization, remaining scripts)
   scripts/                  # Analysis, reporting, visualization, simulation
@@ -271,7 +311,7 @@ reports/                    # Generated analysis reports
 
 1. Hypotheses originate from brainstorming transcripts in `convos/`.
 2. Each is formalized in `docs/CLAIMS_EVIDENCE_MATRIX.md` with a C-nnn ID.
-3. Domain mapping: `docs/claims/CLAIMS_DOMAIN_MAP.csv` (436 rows).
+3. Domain mapping: `docs/claims/CLAIMS_DOMAIN_MAP.csv` (443 rows).
 4. Per-domain breakdowns: `docs/claims/by_domain/*.md` (16 domains).
 5. Audit tickets track verification batches: `docs/tickets/C*_claims_audit.md`.
 6. Status levels: Speculative -> Modeled -> Partially verified -> Verified.
@@ -345,7 +385,7 @@ The project uses several tracking documents with distinct roles:
 | `docs/TODO.md` | Current sprint checklist (active execution) | Every work session |
 | `docs/NEXT_ACTIONS.md` | Priority queue for next sprint | Sprint boundaries |
 | `docs/ULTRA_ROADMAP.md` | Granular claim-to-evidence mapping (historical) | Append-only |
-| `docs/CLAIMS_EVIDENCE_MATRIX.md` | Master claims tracker (442 rows) | Per-claim updates |
+| `docs/CLAIMS_EVIDENCE_MATRIX.md` | Master claims tracker (475 rows) | Per-claim updates |
 | `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md` | Reproducible experiment registry (E-001..E-010) | Per-experiment |
 | `docs/MATH_CONVENTIONS.md` | Mathematical and numerical conventions | As conventions change |
 | `docs/RISKS_AND_GAPS.md` | Current technical risks and gaps | Sprint boundaries |
@@ -359,7 +399,10 @@ is the backlog for the following sprint.
 
 ## Binary Contracts
 
-All 30 analysis binaries under `crates/gororoba_cli/src/bin/`:
+All 37 CLI binaries in `crates/gororoba_cli`:
+30 analysis binaries in `crates/gororoba_cli/src/bin/`, 6 tooling binaries
+in `crates/gororoba_cli/src/bin/`, and 1 main entry binary (`gororoba`) in
+`crates/gororoba_cli/src/main.rs`.
 
 | Binary | Input | Output | Claims | Det. |
 |--------|-------|--------|--------|------|
@@ -393,6 +436,13 @@ All 30 analysis binaries under `crates/gororoba_cli/src/bin/`:
 | claims-verify | data/ | stdout | -- | Seed |
 | materials-baseline | data/external/ | stdout | C-450..C-455 | Seed |
 | mass-clumping | data/external/gwosc*.csv | data/csv/ | C-007 | Seed |
+| registry-check | registry/ | stdout | -- | Yes |
+| extract-papers | papers/ | papers/ (structured TOML output) | -- | Yes |
+| migrate-claims | docs/CLAIMS_EVIDENCE_MATRIX.md | registry/claims.toml | -- | Yes |
+| migrate-insights | docs/INSIGHTS.md | registry/insights.toml | -- | Yes |
+| generate-latex | registry/ | docs/latex/ (generated content) | -- | Yes |
+| export-hdf5 | computed outputs | data/h5/*.h5 | -- | Yes |
+| gororoba | CLI args | stdout | -- | Yes |
 
 Det. column: Yes = fully deterministic, Seed = deterministic given --seed flag.
 
@@ -415,9 +465,9 @@ Documentation commands:
 
 The `registry/` directory is the machine-parseable source of truth:
 - `registry/claims.toml` -- 475 claims (C-001..C-475)
-- `registry/insights.toml` -- 7 insights (I-006..I-016)
+- `registry/insights.toml` -- 16 insights (I-001..I-016)
 - `registry/experiments.toml` -- 10 experiments (E-001..E-010)
-- `registry/binaries.toml` -- 33 CLI binaries
+- `registry/binaries.toml` -- 37 CLI binaries
 - `registry/project.toml` -- project-level metadata and sprint history
 
 The corresponding markdown files in `docs/` remain as human-readable narratives.
@@ -435,6 +485,7 @@ the markdown files until the markdown files are fully superseded.
 - `docs/MATH_CONVENTIONS.md` -- mathematical and numerical conventions
 - `docs/RISKS_AND_GAPS.md` -- current technical risks and gaps
 - `docs/agents.md` -- visualization standards
+- `docs/requirements/quantum-docker.md` -- Docker workflow for quantum tooling
 - `docs/REPO_STRUCTURE.md` -- directory layout details
 - `registry/` -- TOML registry (claims, insights, experiments, binaries)
 - `papers/MANIFEST.toml` -- paper inventory and extraction status

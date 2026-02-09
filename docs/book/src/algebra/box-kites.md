@@ -23,7 +23,7 @@ The box-kite structure extends to an 18-layer "emanation" construction
 - **Sail-loop** = Fano incidence pattern
 - **Oriented Trip Sync** is universal across all 7 box-kites
 
-Implementation: `crates/algebra_core/src/emanation.rs` (4400 lines, 113 tests).
+Implementation: `crates/algebra_core/src/experimental/emanation.rs` (4400 lines, 113 tests).
 
 See [Emanation Architecture](./emanation.md) for details.
 

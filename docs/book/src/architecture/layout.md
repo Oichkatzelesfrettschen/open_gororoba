@@ -47,7 +47,7 @@ docs/
 ## Build commands
 
 ```sh
-# Full test suite (1828 tests)
+# Full test suite (2063 tests)
 cargo test --workspace -j$(nproc)
 
 # Clippy with warnings-as-errors

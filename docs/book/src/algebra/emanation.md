@@ -21,7 +21,7 @@ box-kite elements:
 
 ## Implementation
 
-- Source: `crates/algebra_core/src/emanation.rs`
+- Source: `crates/algebra_core/src/experimental/emanation.rs`
 - Size: 4400 lines
 - Tests: 113 dedicated tests
 - Sprint: S10
