@@ -1,15 +1,20 @@
 # Next Actions (Prioritized)
 
-Updated 2026-02-09 after Sprint 21 completion.
+Updated 2026-02-09 after Sprint 22 completion.
 **See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and research plan.
 
-## Current State (Sprint 21, 2026-02-09)
+## Current State (Sprint 22, 2026-02-09)
 
-**Test count**: 2261 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-481 (481 total). **Insights**: I-001..I-017. **Binaries**: 40.
+**Test count**: 2264 total (unit + integration + doc), 0 clippy warnings.
+**Claims**: C-001..C-483 (483 total). **Insights**: I-001..I-017. **Binaries**: 40.
 
 ## Recent Sprint Summaries
 
+- **S22**: Face sign census extended to dim=64: 5-regime structure with 48328 triangles
+  (C-482). Universal 3:1 TwoSameOneOpp:AllOpposite ratio law proved via antibalanced
+  signed graph theory (C-483, verified across 24 pure-regime components at dims 16/32/64).
+  Special heptacross at dim=32 identified (XOR label = dim/4). 84-edge pure-min components
+  at dim=64 exactly reproduce dim=16's 42:14 census (embedded sedenion sub-algebra).
 - **S21**: GF(2) separating degree extended to dim=128 (degree 5, +1 per doubling confirmed
   at 3 doublings, C-480 updated). Generic face sign census: dim=16 reproduces C-479,
   dim=32 discovers 3-regime structure with 2408 triangles (C-481). FaceSignPattern moved
