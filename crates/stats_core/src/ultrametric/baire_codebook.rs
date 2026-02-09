@@ -1577,4 +1577,220 @@ mod tests {
         eprintln!("l_0=-1, l_1!=+1:  z={:.2}", z_not1);
         eprintln!("Phase transition present: l_1!=+1 z ({:.2}) vs all z ({:.2})", z_not1, z_all);
     }
+
+    // ================================================================
+    // Recursive Simpson's Paradox at l_2 level (C-510)
+    // ================================================================
+
+    /// Test whether the Simpson's Paradox is recursive: within l_0=-1, l_1=-1
+    /// (N=365, z=+13.82 from C-509), partition by l_2 value and compute z-scores.
+    /// If each l_2 subgroup has HIGHER z than the combined l_1=-1 z, the paradox
+    /// is recursive through the entire coordinate hierarchy.
+    #[test]
+    fn test_recursive_simpsons_paradox_l2() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_2048,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        let all_2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+
+        // Build coordinate strata through 3 levels
+        let l0_neg1: Vec<_> = all_2048.iter().copied().filter(|v| v[0] == -1).collect();
+        let l0_l1_neg1: Vec<_> = l0_neg1.iter().copied().filter(|v| v[1] == -1).collect();
+
+        // Partition l_0=-1, l_1=-1 by l_2 value
+        let l2_neg1: Vec<_> = l0_l1_neg1.iter().copied().filter(|v| v[2] == -1).collect();
+        let l2_zero: Vec<_> = l0_l1_neg1.iter().copied().filter(|v| v[2] == 0).collect();
+        let l2_pos1: Vec<_> = l0_l1_neg1.iter().copied().filter(|v| v[2] == 1).collect();
+
+        eprintln!("\n=== Recursive Simpson's Paradox: l_2 level ===");
+        eprintln!("l_0=-1, l_1=-1 total: N={}", l0_l1_neg1.len());
+        eprintln!("  l_2=-1: N={}", l2_neg1.len());
+        eprintln!("  l_2=0:  N={}", l2_zero.len());
+        eprintln!("  l_2=+1: N={}", l2_pos1.len());
+
+        let compute_z = |vectors: &[[i8; 8]], label: &str, seed_offset: u64| -> f64 {
+            let n = vectors.len();
+            if n < 10 {
+                eprintln!("  {}: N={} too small, skipping", label, n);
+                return f64::NAN;
+            }
+            let prefix = shared_prefix_length(vectors);
+            let d = 8 - prefix;
+            let (cols, _, _) = lattice_to_column_major(vectors, prefix);
+
+            let obs = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 20_000_000 + seed_offset);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled, n, d,
+                    NullModel::ColumnIndependent, &mut rng,
+                );
+                null_fracs.push(matrix_free_fraction(
+                    &shuffled, n, d, n_triples, seed + 21_000_000, 0.05,
+                ));
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
+                / n_permutations as f64).sqrt();
+            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+
+            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z);
+            z
+        };
+
+        let z_combined = compute_z(&l0_l1_neg1, "l_0=-1,l_1=-1 all ", 0);
+        let z_l2_neg1 = compute_z(&l2_neg1, "l_2=-1              ", 1);
+        let z_l2_zero = compute_z(&l2_zero, "l_2=0               ", 2);
+        let z_l2_pos1 = compute_z(&l2_pos1, "l_2=+1              ", 3);
+
+        eprintln!("\n=== l_2 Recursion Summary ===");
+        eprintln!("Combined (l_0=-1, l_1=-1): z={:.2}", z_combined);
+        if !z_l2_neg1.is_nan() { eprintln!("  l_2=-1: z={:.2}", z_l2_neg1); }
+        if !z_l2_zero.is_nan() { eprintln!("  l_2=0:  z={:.2}", z_l2_zero); }
+        if !z_l2_pos1.is_nan() { eprintln!("  l_2=+1: z={:.2}", z_l2_pos1); }
+
+        // Also do l_3 level within l_0=-1, l_1=-1, l_2=-1 if large enough
+        let l3_strata: Vec<(&str, Vec<[i8; 8]>)> = vec![
+            ("l_3=-1", l2_neg1.iter().copied().filter(|v| v[3] == -1).collect()),
+            ("l_3=0 ", l2_neg1.iter().copied().filter(|v| v[3] == 0).collect()),
+            ("l_3=+1", l2_neg1.iter().copied().filter(|v| v[3] == 1).collect()),
+        ];
+
+        eprintln!("\n=== l_3 level (within l_0=-1, l_1=-1, l_2=-1) ===");
+        for (i, (label, vecs)) in l3_strata.iter().enumerate() {
+            if vecs.len() >= 10 {
+                compute_z(vecs, label, 10 + i as u64);
+            } else {
+                eprintln!("  {}: N={} too small", label, vecs.len());
+            }
+        }
+    }
+
+    // ================================================================
+    // Cross-stratum triple decomposition
+    // ================================================================
+
+    /// Decompose ultrametric fraction by triple type based on l_1 membership
+    /// within the l_0=-1 population. Classifies each triple as:
+    ///   - "same": all 3 vectors have the same l_1 value
+    ///   - "mixed": at least one vector has a different l_1 value
+    /// This directly tests whether cross-stratum triples are the source of
+    /// the anti-ultrametricity in C-508/C-509.
+    #[test]
+    fn test_cross_stratum_triple_decomposition() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_2048,
+        };
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+        use rand::seq::SliceRandom;
+
+        let n_triples = 200_000;
+        let seed = 42u64;
+
+        let all_2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+        let l0_neg1: Vec<_> = all_2048.iter().copied().filter(|v| v[0] == -1).collect();
+
+        let prefix = shared_prefix_length(&l0_neg1);
+        let d = 8 - prefix;
+        let n = l0_neg1.len();
+
+        eprintln!("\n=== Cross-Stratum Triple Decomposition ===");
+        eprintln!("l_0=-1 population: N={}, prefix={}, d={}", n, prefix, d);
+
+        // For each triple, classify by l_1 homogeneity and check ultrametric inequality
+        let mut rng = ChaCha8Rng::seed_from_u64(seed + 30_000_000);
+        let indices: Vec<usize> = (0..n).collect();
+
+        let mut same_um = 0u64;
+        let mut same_total = 0u64;
+        let mut mixed_um = 0u64;
+        let mut mixed_total = 0u64;
+
+        let epsilon = 0.05;
+
+        for _ in 0..n_triples {
+            // Sample 3 random indices
+            let mut triple = [0usize; 3];
+            triple[0] = *indices.choose(&mut rng).unwrap();
+            triple[1] = *indices.choose(&mut rng).unwrap();
+            triple[2] = *indices.choose(&mut rng).unwrap();
+
+            let v0 = &l0_neg1[triple[0]];
+            let v1 = &l0_neg1[triple[1]];
+            let v2 = &l0_neg1[triple[2]];
+
+            // Compute Euclidean distances on non-prefix coordinates
+            let dist = |a: &[i8; 8], b: &[i8; 8]| -> f64 {
+                let mut s = 0.0;
+                for k in prefix..8 {
+                    let diff = a[k] as f64 - b[k] as f64;
+                    s += diff * diff;
+                }
+                s.sqrt()
+            };
+
+            let d01 = dist(v0, v1);
+            let d02 = dist(v0, v2);
+            let d12 = dist(v1, v2);
+
+            // Sort distances
+            let mut dists = [d01, d02, d12];
+            dists.sort_by(|a, b| a.partial_cmp(b).unwrap());
+
+            // Ultrametric: max <= (1+epsilon) * second largest
+            let is_um = dists[2] <= (1.0 + epsilon) * dists[1];
+
+            // Classify triple
+            let l1_0 = v0[1];
+            let l1_1 = v1[1];
+            let l1_2 = v2[1];
+            let is_same = l1_0 == l1_1 && l1_1 == l1_2;
+
+            if is_same {
+                same_total += 1;
+                if is_um { same_um += 1; }
+            } else {
+                mixed_total += 1;
+                if is_um { mixed_um += 1; }
+            }
+        }
+
+        let same_frac = if same_total > 0 { same_um as f64 / same_total as f64 } else { 0.0 };
+        let mixed_frac = if mixed_total > 0 { mixed_um as f64 / mixed_total as f64 } else { 0.0 };
+        let overall_frac = (same_um + mixed_um) as f64 / (same_total + mixed_total) as f64;
+
+        eprintln!("Same-l_1 triples: {}/{} = {:.4} UM fraction",
+            same_um, same_total, same_frac);
+        eprintln!("Mixed-l_1 triples: {}/{} = {:.4} UM fraction",
+            mixed_um, mixed_total, mixed_frac);
+        eprintln!("Overall: {:.4}", overall_frac);
+        eprintln!("Mixed/same ratio: {:.4}", mixed_frac / same_frac);
+        eprintln!("Mixed fraction of all triples: {:.1}%",
+            100.0 * mixed_total as f64 / (same_total + mixed_total) as f64);
+
+        // The key assertion: same-l_1 triples should have higher UM fraction
+        // than mixed-l_1 triples
+        assert!(
+            same_frac > mixed_frac,
+            "Expected same-l_1 UM fraction ({}) > mixed-l_1 UM fraction ({})",
+            same_frac, mixed_frac
+        );
+    }
 }
