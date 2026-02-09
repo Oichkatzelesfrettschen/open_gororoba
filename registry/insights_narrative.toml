@@ -43,6 +43,9 @@ preamble_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/insights.toml, registry/insights_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/insights.toml, registry/insights_narrative.toml -->
+
 # Insights
 
 Source-of-truth policy:
@@ -67,6 +70,8 @@ Status: verified
 Claims: C-071
 
 The Macquart relation connects FRB dispersion measures to redshift via integrated baryon density: DM_cosmic(z) = 935 * integral (1+z')/E(z') dz'. Bisection inversion (DM->z) converges in ~27 iterations. Foundation for comoving distance in ultrametric analysis.
+
+---
 
 ---
 
@@ -138,6 +143,8 @@ C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using 
 ---
 
 ---
+
+---
 """
 
 [[entry]]
@@ -149,6 +156,8 @@ Status: verified
 Claims: (none)
 
 Identified key crates preventing reimplementation: kodama 0.3.0 (dendrograms), kiddo 5.2.4 (k-d trees, AVX2), fitsrs 0.4.1 (FITS), rustfft 6.4.1 + realfft 3.5.0 (FFT), votable 0.7.0, satkit 0.9.3. Notable gaps requiring custom implementation: cophenetic correlation, Baire metric, local ultrametricity (Bradley 2025), KDE.
+
+---
 
 ---
 
@@ -220,6 +229,8 @@ Kodama returns Dendrogram with Step{cluster1, cluster2, dissimilarity, size}; co
 ---
 
 ---
+
+---
 """
 
 [[entry]]
@@ -231,6 +242,8 @@ Status: superseded
 Claims: C-437, C-442
 
 Initial 7-catalog survey with 5K subsampling found only FRB/pulsar catalogs showing significant ultrametric excess. SUPERSEDED by I-011 (GPU 10M-triple sweep): the 5K subsampling destroyed Hipparcos galactic signal, making the conclusion too narrow. The ISM-mediation hypothesis for radio transients remains valid.
+
+---
 
 ---
 
@@ -312,6 +325,8 @@ All computed exactly (no sampling). dim=256 completes in ~2s release mode.
 ---
 
 ---
+
+---
 """
 
 [[entry]]
@@ -323,6 +338,8 @@ Status: verified
 Claims: C-028
 
 u=1/r regularized Kerr geodesic integrator (Dopri5, Mino time) passes: potential non-negativity, circular photon orbit at 3M, near-horizon infall, a=0.998 stability, r=500 large-distance, shadow area pi*27, asymmetry at a=0.9, coordinate/Mino time monotonicity. Hamiltonian constraint inaccessible from dense output.
+
+---
 
 ---
 
@@ -394,6 +411,8 @@ Claims: C-437
 ---
 
 ---
+
+---
 """
 
 [[entry]]
@@ -405,6 +424,8 @@ Status: verified
 Claims: (none)
 
 The ellip crate (1.0.4, BSD-3-Clause) provides all 5 Carlson symmetric forms (RF, RD, RJ, RC, RG) plus Legendre complete/incomplete integrals (K, E, Pi, D, F). Eliminates need to hand-port Carlson from C++ Blackhole codebase. Tested against Boost Math and Wolfram reference values.
+
+---
 
 ---
 
@@ -476,6 +497,8 @@ num-dual 0.13.2 (autodiff via dual numbers) requires nalgebra 0.34, while worksp
 ---
 
 ---
+
+---
 """
 
 [[entry]]
@@ -495,6 +518,8 @@ The old conclusion was an artifact of 5K subsampling that destroyed spatial
 hierarchy in large catalogs.
 
 See `data/csv/c071g_exploration_gpu_10M_1000perm.csv` for full results.
+
+---
 
 ---
 
@@ -592,6 +617,8 @@ physical observable has been established. This interpretation remains at the
 - Test: `test_determine_exact_degree_dim32` in `projective_geometry.rs`
 - Ancillary: `test_boolean_predicate_dim32_motif_classes` (degree 3 or 4)
 - Data: `motif_components_for_cross_assessors(32)` in `boxkites.rs`
+
+---
 
 ---
 
@@ -722,6 +749,8 @@ This confirms the **Ultrametric Core Mining Hypothesis (UCMH)**. We can now use 
 ---
 
 ---
+
+---
 """
 
 [[entry]]
@@ -784,6 +813,8 @@ element where ZD partners cannot exist.
 - Adjacency CSVs: Multiple incompatible representations, inconclusive
 - Associativity CSV: Contains errors, AI-generated
 - Comparison/qualitative CSVs: Speculative, no numerical content
+
+---
 
 ---
 
@@ -881,6 +912,8 @@ lattice codebook filtration of Cayley-Dickson algebras. Results:
 - Multiplication coupling rho(b) in GL(8,Z) (C-466)
 - Extension of parity-clique and XOR partner to dim=256+ (computational)
 - Connection between lex-prefix filtration and octonion subalgebra structure
+
+---
 
 ---
 
@@ -1013,6 +1046,8 @@ The module follows a layered design:
 ---
 
 ---
+
+---
 """
 
 [[entry]]
@@ -1024,6 +1059,8 @@ Status: partial
 Claims: C-476, C-477
 
 Three experiments testing ALP (C-476) and Sky-Limit-Set (C-477). E-011: ALP holds for sparse constraint graphs (E10 Dynkin p=0.000, ET DMZ p=0.000) but fails for dense graphs (Sedenion ZD p=1.000, edge density 86.7%). E-012: Billiard symbolic dynamics predict spectroscopy behavior (FullFill entropy=0.0, UniformSky entropy=0.44, fill-entropy r=-0.85 at N=5). E-013: A_{N-1} Coxeter group is consistently the best match for ET skybox invariants (rank ratio=1.0, improving match scores at higher N). ALP needs sparsity refinement; Coxeter correspondence is strong but DMZ density match not yet within 10%.
+
+---
 
 ---
 
