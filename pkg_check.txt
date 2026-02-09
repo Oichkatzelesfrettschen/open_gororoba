@@ -1,0 +1,2 @@
+/usr/bin/gemini is owned by gemini-cli 1:0.26.0-1.1
+ls: cannot access '/home/eirikr/.config/Claude': No such file or directory

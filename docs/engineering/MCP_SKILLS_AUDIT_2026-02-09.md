@@ -1,0 +1,206 @@
+# MCP and Skill Audit (2026-02-09)
+
+## Scope
+
+Audit and reconcile:
+
+- MCP server configurations across Codex, Gemini, Copilot, and Claude CLI/Desktop.
+- Existing skill coverage vs. `open_gororoba` repo needs.
+- Additional useful MCP servers from primary sources.
+- New granular skill pack for MCP operations and repo-specific workflows.
+
+## Key Findings
+
+### 1. Cross-client MCP topology was partially fragmented
+
+- Rich config existed in `~/.claude/.mcp.json` and `~/.config/github-copilot/mcp-servers.json`.
+- Leaner configs existed in:
+  - `~/.gemini/settings.json`
+  - `~/.copilot/mcp-config.json`
+  - `~/.config/Claude/claude_desktop_config.json`
+  - `~/.codex/mcp-config.json`
+
+### 2. Unique server inventory (all configs combined)
+
+31 unique server names were detected:
+
+- `arxiv`
+- `bash`
+- `blackarch-audit`
+- `calculator`
+- `chrome-devtools`
+- `containers`
+- `context7`
+- `desktop-commander`
+- `dotfiles-orchestrator`
+- `fetch`
+- `file-finder`
+- `filesystem`
+- `git`
+- `github`
+- `markitdown`
+- `math`
+- `memory`
+- `ollama`
+- `playwright`
+- `postgres`
+- `puppeteer`
+- `python`
+- `ripgrep`
+- `rust`
+- `rust-docs`
+- `semgrep`
+- `sequential-thinking`
+- `shell`
+- `sqlite`
+- `time`
+- `youtube-transcript`
+
+### 3. Server import completed (safe subset)
+
+Imported additional servers into the leaner configs:
+
+- `desktop-commander`
+- `dotfiles-orchestrator`
+- `calculator`
+- `file-finder`
+- `markitdown`
+- `math`
+- `puppeteer`
+- `sequential-thinking`
+- `semgrep`
+
+Updated files:
+
+- `~/.gemini/settings.json`
+- `~/.copilot/mcp-config.json`
+- `~/.config/Claude/claude_desktop_config.json`
+- `~/.codex/mcp-config.json`
+
+Backups created automatically:
+
+- `~/.gemini/settings.json.bak-20260208_221739`
+- `~/.copilot/mcp-config.json.bak-20260208_221739`
+- `~/.config/Claude/claude_desktop_config.json.bak-20260208_221739`
+- `~/.codex/mcp-config.json.bak-20260208_221739`
+
+Post-import result:
+
+- Each of the four target files now has 27 configured MCP servers.
+
+## Skills Audit
+
+### Existing skill baseline before this pass
+
+- Existing Codex skills: 37
+- MCP-focused naming coverage: limited and mostly indirect
+
+### New skill pack created in this pass
+
+30 new standardized skills were created under `~/.codex/skills` and validated:
+
+MCP granular skills (22):
+
+1. `mcp-filesystem-workflow`
+2. `mcp-bash-workflow`
+3. `mcp-git-workflow`
+4. `mcp-github-workflow`
+5. `mcp-fetch-workflow`
+6. `mcp-context7-workflow`
+7. `mcp-arxiv-workflow`
+8. `mcp-youtube-transcript-workflow`
+9. `mcp-ripgrep-workflow`
+10. `mcp-playwright-workflow`
+11. `mcp-puppeteer-workflow`
+12. `mcp-sqlite-workflow`
+13. `mcp-time-workflow`
+14. `mcp-calculator-math-workflow`
+15. `mcp-file-finder-workflow`
+16. `mcp-markitdown-workflow`
+17. `mcp-ollama-workflow`
+18. `mcp-containers-workflow`
+19. `mcp-dotfiles-workflow`
+20. `mcp-sequential-thinking-workflow`
+21. `mcp-semgrep-workflow`
+22. `mcp-shell-workflow`
+
+`open_gororoba` repo-specialized skills (8):
+
+1. `gororoba-rust-workflow`
+2. `gororoba-claims-evidence-workflow`
+3. `gororoba-registry-workflow`
+4. `gororoba-artifacts-workflow`
+5. `gororoba-provenance-workflow`
+6. `gororoba-publication-workflow`
+7. `gororoba-visualization-workflow`
+8. `gororoba-mcp-orchestrator`
+
+Validation:
+
+- All 30 pass `quick_validate.py` from the system `skill-creator` tooling.
+
+Cross-client skill sync:
+
+- The same 30 skills were mirrored to:
+  - `~/.gemini/skills/`
+  - `~/.copilot/skills/`
+
+This keeps skill semantics aligned across Codex, Gemini, and Copilot environments.
+
+### Claude agent pack for MCP workflows
+
+12 Claude agent profiles were added under `~/.claude/agents/general-purpose/`:
+
+1. `mcp-filesystem-agent.md`
+2. `mcp-bash-agent.md`
+3. `mcp-ripgrep-agent.md`
+4. `mcp-fetch-research-agent.md`
+5. `mcp-context7-agent.md`
+6. `mcp-arxiv-agent.md`
+7. `mcp-playwright-agent.md`
+8. `mcp-sqlite-agent.md`
+9. `mcp-semgrep-agent.md`
+10. `gororoba-rust-agent.md`
+11. `gororoba-claims-agent.md`
+12. `gororoba-mcp-orchestrator-agent.md`
+
+## Primary-Source MCP References Used
+
+Core MCP and server baseline:
+
+- https://github.com/modelcontextprotocol/servers
+- https://github.com/modelcontextprotocol/servers/tree/main/src/postgres
+- https://modelcontextprotocol.io/integrations
+
+Additional high-value servers and managed integrations:
+
+- https://github.com/semgrep/semgrep-mcp
+- https://docs.docker.com/manuals/mcp/
+- https://developers.notion.com/docs/mcp
+- https://linear.app/docs/mcp
+- https://docs.gitlab.com/user/gitlab_duo/mcp_server/
+- https://github.com/getsentry/sentry-mcp
+
+## Recommended Additional MCP Servers (next wave)
+
+For this repo and similar research-engineering repos, the next high-value additions are:
+
+- `postgres` (for structured evidence and experiment metadata, if `DATABASE_URL` is set)
+- `github` (when token policy is standardized across all clients)
+- managed integration servers as needed by workflow:
+  - Notion (spec and planning sync)
+  - Linear (issue and roadmap sync)
+  - GitLab MCP server (if mirrored repos or CI traces are there)
+  - Sentry MCP (if runtime observability is introduced)
+
+## Operational Notes
+
+- This pass intentionally excluded automatic import of `postgres` to the lean configs because it is env-sensitive (`DATABASE_URL`) and can fail startup if unset.
+- `shell` was also left out of the auto-import set to avoid introducing a lower-safety fallback where higher-level MCP tools already exist.
+- Codex runtime currently loads MCP from `~/.codex/config.toml`; `~/.codex/mcp-config.json` was still aligned for cross-tool parity and easier future migration.
+
+## Summary
+
+- MCP config parity significantly improved across clients.
+- 30 new skills were created and validated, including 22 granular MCP operation skills and 8 repo-specific orchestration skills.
+- Primary-source references were collected for both current and next-wave MCP integrations.

@@ -1,0 +1,12 @@
+--- WHICH GEMINI ---
+/home/eirikr/.nvm/versions/node/v22.21.0/bin/gemini
+/usr/bin/gemini
+--- GEMINI VERSION ---
+0.27.3
+--- NPM LIST ---
+/home/eirikr/.nvm/versions/node/v22.21.0/lib
+└── @google/gemini-cli@0.27.3
+
+--- PACMAN QUERY ---
+error: package 'gemini' was not found
+--- DONE ---

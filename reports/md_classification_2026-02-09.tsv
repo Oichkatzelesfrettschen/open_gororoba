@@ -1,0 +1,216 @@
+path	class	reason
+AGENTS.md	authored	manual source doc
+CLAUDE.md	authored	manual source doc
+GEMINI.md	authored	manual source doc
+README.md	authored	manual source doc
+REQUIREMENTS.md	authored	manual source doc
+curated/01_theory_frameworks/README_COQ.md	authored	manual source doc
+curated/README.md	generated_or_derived_doc	generated marker text
+data/artifacts/ALGEBRAIC_FOUNDATIONS.md	artifact_or_report	artifact/report directory
+data/artifacts/BIBLIOGRAPHY.md	artifact_or_report	artifact/report directory
+data/artifacts/FINAL_REPORT.md	artifact_or_report	artifact/report directory
+data/artifacts/QUANTUM_REPORT.md	artifact_or_report	artifact/report directory; generated marker text
+data/artifacts/README.md	artifact_or_report	artifact/report directory
+data/artifacts/SIMULATION_REPORT.md	artifact_or_report	artifact/report directory
+data/artifacts/extracted_equations.md	artifact_or_report	artifact/report directory
+data/artifacts/reality_check_and_synthesis.md	artifact_or_report	artifact/report directory
+data/csv/README.md	authored	manual source doc
+docs/AUDIT_REPORT_2026-01-27.md	authored	manual source doc
+docs/BIBLIOGRAPHY.md	authored	manual source doc
+docs/CAYLEY_DICKSON_DATA_PROVENANCE.md	generated_or_derived_doc	generated marker text
+docs/CHANGELOG_AUDIT.md	authored	manual source doc
+docs/CLAIMS_DOMAIN_TAXONOMY.md	authored	manual source doc
+docs/CLAIMS_EVIDENCE_MATRIX.md	generated_or_derived_doc	generated marker text
+docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md	authored	manual source doc
+docs/CLAIMS_TASKS.md	authored	manual source doc
+docs/CONVOS_CONCEPTS_STATUS_INDEX.md	authored	manual source doc
+docs/CORE_ABSTRACTIONS.md	authored	manual source doc
+docs/CURATED_ARTIFACTS_AUDIT.md	authored	manual source doc
+docs/DATASET_COVERAGE.md	authored	manual source doc
+docs/DE_MARRAIS_REPLICATION.md	authored	manual source doc
+docs/DIMENSIONAL_GEOMETRY.md	authored	manual source doc
+docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md	authored	manual source doc
+docs/F4_CONNECTION.md	authored	manual source doc
+docs/FINAL_MANUSCRIPT.md	generated_or_derived_doc	generated marker text
+docs/FRACTIONAL_LAPLACIAN_OPERATOR_CHOICES.md	authored	manual source doc
+docs/GAP_ANALYSIS.md	authored	manual source doc
+docs/GRAND_SYNTHESIS.md	authored	manual source doc
+docs/INSIGHTS.md	authored	manual source doc
+docs/LACUNAE.md	authored	manual source doc
+docs/MATERIALS_APPLICATIONS.md	authored	manual source doc
+docs/MATERIALS_DATASETS.md	authored	manual source doc
+docs/MATH_CONVENTIONS.md	authored	manual source doc
+docs/MATH_VALIDATION_REPORT.md	authored	manual source doc
+docs/MOTIF_CENSUS_SCHEMA.md	authored	manual source doc
+docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md	authored	manual source doc
+docs/NEXT_ACTIONS.md	authored	manual source doc
+docs/NV_ODMR_BOM.md	authored	manual source doc
+docs/PHASE_1_SUMMARY.md	authored	manual source doc
+docs/PHYSICAL_INTERPRETATION.md	authored	manual source doc
+docs/QISKIT_SETUP.md	authored	manual source doc
+docs/REGGIANI_REPLICATION.md	authored	manual source doc
+docs/REPO_OVERVIEW.md	authored	manual source doc
+docs/REPO_STRUCTURE.md	authored	manual source doc
+docs/REQUIREMENTS.md	authored	manual source doc
+docs/RESEARCH_STATUS.md	authored	manual source doc
+docs/RESEARCH_STATUS_FINAL.md	authored	manual source doc
+docs/RESEARCH_STATUS_HYPER.md	authored	manual source doc
+docs/RISKS_AND_GAPS.md	authored	manual source doc
+docs/ROADMAP.md	authored	manual source doc
+docs/SECOND_PASS_AUDIT.md	authored	manual source doc
+docs/SEDENION_ATLAS.md	authored	manual source doc
+docs/SEDENION_GRAVASTAR_EQUIVALENCE.md	authored	manual source doc
+docs/SEDENION_NILPOTENCY.md	authored	manual source doc
+docs/SUBDOMAIN_EXPANSION.md	authored	manual source doc
+docs/TERMINOLOGY_GLOSSARY.md	authored	manual source doc
+docs/THEORETICAL_ANNOTATIONS.md	authored	manual source doc
+docs/THEORETICAL_SYNTHESIS_V2.md	authored	manual source doc
+docs/THE_GEMINI_PROTOCOL.md	authored	manual source doc
+docs/THE_HYPER_STANDARD.md	authored	manual source doc
+docs/TODO.md	authored	manual source doc
+docs/ULTRA_ROADMAP.md	authored	manual source doc
+docs/UNIFIED_FRAMEWORK_V2.md	authored	manual source doc
+docs/UNIFIED_WHITEPAPER.md	authored	manual source doc
+docs/VERIFIED_CLAIMS_INDEX.md	authored	manual source doc
+docs/WHEELS_DIVISION_BY_ZERO.md	authored	manual source doc
+docs/agents.md	authored	manual source doc
+docs/agents_python_access.md	authored	manual source doc
+docs/book/src/SUMMARY.md	authored	manual source doc
+docs/book/src/algebra/box-kites.md	authored	manual source doc
+docs/book/src/algebra/emanation.md	authored	manual source doc
+docs/book/src/algebra/motif-scaling.md	authored	manual source doc
+docs/book/src/algebra/zero-divisors.md	authored	manual source doc
+docs/book/src/architecture/crates.md	authored	manual source doc
+docs/book/src/architecture/layout.md	authored	manual source doc
+docs/book/src/architecture/verification.md	authored	manual source doc
+docs/book/src/cli/catalog.md	authored	manual source doc
+docs/book/src/experiments/e001.md	authored	manual source doc
+docs/book/src/experiments/e002.md	authored	manual source doc
+docs/book/src/experiments/e003.md	authored	manual source doc
+docs/book/src/introduction.md	authored	manual source doc
+docs/book/src/papers/collection.md	authored	manual source doc
+docs/book/src/registry/claims.md	generated_doc	book registry appendix; generated marker text
+docs/book/src/registry/experiments.md	generated_doc	book registry appendix
+docs/book/src/registry/insights.md	generated_doc	book registry appendix; generated marker text
+docs/claims/INDEX.md	authored	manual source doc
+docs/claims/by_domain/algebra.md	authored	manual source doc
+docs/claims/by_domain/coq.md	authored	manual source doc
+docs/claims/by_domain/cosmology.md	authored	manual source doc
+docs/claims/by_domain/cpp.md	authored	manual source doc
+docs/claims/by_domain/datasets.md	authored	manual source doc
+docs/claims/by_domain/engineering.md	authored	manual source doc
+docs/claims/by_domain/gravitational-waves.md	authored	manual source doc
+docs/claims/by_domain/holography.md	authored	manual source doc
+docs/claims/by_domain/legacy.md	authored	manual source doc
+docs/claims/by_domain/materials.md	authored	manual source doc
+docs/claims/by_domain/meta.md	authored	manual source doc
+docs/claims/by_domain/open-systems.md	authored	manual source doc
+docs/claims/by_domain/spectral.md	authored	manual source doc
+docs/claims/by_domain/stellar-cartography.md	authored	manual source doc
+docs/claims/by_domain/tensor-networks.md	authored	manual source doc
+docs/claims/by_domain/visualization.md	authored	manual source doc
+docs/convos/CONVOS_CLAIMS_INBOX.md	source_transcript	conversation transcript
+docs/convos/README.md	source_transcript	conversation transcript
+docs/convos/audit_1_read_nonuser_lines_cont.md	source_transcript	conversation transcript
+docs/convos/implement_next_from_1_read_nonuser_lines_cont.md	source_transcript	conversation transcript
+docs/convos/keywords_1_read_nonuser_lines_cont.md	source_transcript	conversation transcript
+docs/engineering/DATASHEET_V2.md	authored	manual source doc
+docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md	authored	manual source doc
+docs/engineering/FETCHING_EXTERNAL_SOURCES.md	authored	manual source doc
+docs/engineering/GAP_CLOSURE_REPORT.md	authored	manual source doc
+docs/engineering/OPTIX_ELUCIDATION.md	authored	manual source doc
+docs/engineering/PADIC_SIGNAL_THEORY.md	authored	manual source doc
+docs/engineering/PHASE_10_MULTIPHYSICS.md	generated_or_derived_doc	generated marker text
+docs/engineering/PHASE_11_VISUALIZATION.md	authored	manual source doc
+docs/engineering/PHASE_12_RENDERER.md	authored	manual source doc
+docs/engineering/PHASE_13_GRAND_CRITIQUE.md	authored	manual source doc
+docs/engineering/PHASE_14_DEEP_DIVE.md	generated_or_derived_doc	generated marker text
+docs/engineering/PHASE_15_RESURRECTION.md	authored	manual source doc
+docs/engineering/PHASE_16_FINAL_VALIDATION.md	authored	manual source doc
+docs/engineering/PHASE_6_IMPLEMENTATION.md	authored	manual source doc
+docs/engineering/PHASE_7_REPORT.md	authored	manual source doc
+docs/engineering/PHASE_8_SYNTHESIS.md	authored	manual source doc
+docs/engineering/PHYSICS_VALIDATION_REPORT.md	authored	manual source doc
+docs/engineering/WARP_SPACEPLATE_SPECS.md	authored	manual source doc
+docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md	authored	manual source doc
+docs/external_sources/DATASET_MANIFEST.md	authored	manual source doc
+docs/external_sources/DE_MARRAIS_BOXKITES_III.md	generated_or_derived_doc	generated marker text
+docs/external_sources/DE_MARRAIS_CATAMARAN.md	authored	manual source doc
+docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md	authored	manual source doc
+docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md	generated_or_derived_doc	generated marker text
+docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md	authored	manual source doc
+docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md	authored	manual source doc
+docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md	authored	manual source doc
+docs/external_sources/INVERSE_CD_FORMALISM.md	generated_or_derived_doc	generated marker text
+docs/external_sources/OPEN_CLAIMS_SOURCES.md	authored	manual source doc
+docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md	authored	manual source doc
+docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md	authored	manual source doc
+docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md	generated_or_derived_doc	generated marker text
+docs/requirements/algebra.md	authored	manual source doc
+docs/requirements/analysis.md	authored	manual source doc
+docs/requirements/astro.md	authored	manual source doc
+docs/requirements/coq.md	authored	manual source doc
+docs/requirements/cpp.md	authored	manual source doc
+docs/requirements/latex.md	authored	manual source doc
+docs/requirements/materials.md	authored	manual source doc
+docs/requirements/particle.md	authored	manual source doc
+docs/requirements/quantum-docker.md	authored	manual source doc
+docs/theory/CLAIMS_METHODOLOGY.md	authored	manual source doc
+docs/theory/WARP_PHYSICS_RECONCILIATION.md	authored	manual source doc
+docs/tickets/C001_C050_claims_audit.md	generated_or_derived_doc	generated marker text
+docs/tickets/C051_C100_claims_audit.md	authored	manual source doc
+docs/tickets/C101_C150_claims_audit.md	generated_or_derived_doc	generated marker text
+docs/tickets/C151_C200_claims_audit.md	generated_or_derived_doc	generated marker text
+docs/tickets/C201_C250_claims_audit.md	generated_or_derived_doc	generated marker text
+docs/tickets/C251_C300_claims_audit.md	generated_or_derived_doc	generated marker text
+docs/tickets/C301_C350_claims_audit.md	generated_or_derived_doc	generated marker text
+docs/tickets/C351_C400_claims_audit.md	generated_or_derived_doc	generated marker text
+docs/tickets/C401_C427_claims_audit.md	generated_or_derived_doc	generated marker text
+docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md	authored	manual source doc
+docs/x86_SIMD_OPTIMIZATION.md	authored	manual source doc
+reports/artifacts_phase0_dryrun.md	artifact_or_report	artifact/report directory
+reports/artifacts_reorg_plan.md	artifact_or_report	artifact/report directory
+reports/audit_network_gating.md	artifact_or_report	artifact/report directory
+reports/audit_nonpython_toolchains.md	artifact_or_report	artifact/report directory
+reports/audit_provenance.md	artifact_or_report	artifact/report directory
+reports/audit_pythonpath.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C001_C050.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C001_C200.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C011_C025.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C027_C045.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C046_C060.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C046_C066.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C051_C100.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C101_C150.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C151_C200.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C201_C250.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C201_C408.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C201_C427.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C201_C430.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C201_C432.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C251_C300.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C301_C350.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C351_C400.md	artifact_or_report	artifact/report directory
+reports/claims_batch_backlog_C401_C427.md	artifact_or_report	artifact/report directory
+reports/claims_bold_tokens_inventory.md	artifact_or_report	artifact/report directory
+reports/claims_id_inventory.md	artifact_or_report	artifact/report directory
+reports/claims_priority_ranking.md	artifact_or_report	artifact/report directory
+reports/claims_staleness_report.md	artifact_or_report	artifact/report directory
+reports/claims_status_contradictions.md	artifact_or_report	artifact/report directory
+reports/claims_status_inventory.md	artifact_or_report	artifact/report directory
+reports/config_audit.md	artifact_or_report	artifact/report directory
+reports/convos_claim_candidates.md	artifact_or_report	artifact/report directory
+reports/convos_claim_candidates_prioritized.md	artifact_or_report	artifact/report directory
+reports/convos_pdf_inventory.md	artifact_or_report	artifact/report directory
+reports/non_iso_dates_inventory.md	artifact_or_report	artifact/report directory
+reports/open_claims_missing_dedicated_sources.md	artifact_or_report	artifact/report directory
+reports/open_claims_missing_test_hooks.md	artifact_or_report	artifact/report directory
+reports/package_index.md	artifact_or_report	artifact/report directory
+reports/pdf_inventory.md	artifact_or_report	artifact/report directory
+reports/pythonpath_refactor_plan.md	artifact_or_report	artifact/report directory
+reports/repo_inventory.md	artifact_or_report	artifact/report directory
+reports/repo_structure_audit.md	artifact_or_report	artifact/report directory
+reports/script_contracts_inventory.md	artifact_or_report	artifact/report directory
+reports/tickets_inventory.md	artifact_or_report	artifact/report directory
+reports/todo_fixme_scan.md	artifact_or_report	artifact/report directory
+reports/tscp_trial_factor_ledger.md	artifact_or_report	artifact/report directory

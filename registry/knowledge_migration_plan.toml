@@ -1,0 +1,101 @@
+# Curated migration strategy from markdown-first docs to TOML-first governance.
+
+[migration]
+authoritative = true
+status = "active"
+updated = "2026-02-09"
+scope = "knowledge sources and operational trackers"
+
+[[domain]]
+id = "KM-001"
+name = "claims"
+source_markdown = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md"]
+authoritative_toml = ["registry/claims.toml"]
+strategy = "toml_primary_markdown_mirror"
+status = "active"
+notes = "Claims matrix markdown is a mirror; maintain structured claims in TOML."
+
+[[domain]]
+id = "KM-002"
+name = "insights"
+source_markdown = ["docs/INSIGHTS.md"]
+authoritative_toml = ["registry/insights.toml"]
+generated_mirror = ["docs/generated/INSIGHTS_REGISTRY_MIRROR.md"]
+strategy = "toml_primary_narrative_overlay"
+status = "in_progress"
+notes = "Generated mirror exists; narrative doc remains non-authoritative until policy decision."
+
+[[domain]]
+id = "KM-003"
+name = "experiments"
+source_markdown = ["docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"]
+authoritative_toml = ["registry/experiments.toml"]
+generated_mirror = ["docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"]
+strategy = "toml_primary_narrative_overlay"
+status = "in_progress"
+notes = "Generated mirror exists; narrative doc remains non-authoritative until policy decision."
+
+[[domain]]
+id = "KM-004"
+name = "operational_trackers"
+source_markdown = ["docs/ROADMAP.md", "docs/TODO.md", "docs/NEXT_ACTIONS.md"]
+authoritative_toml = ["registry/roadmap.toml", "registry/todo.toml", "registry/next_actions.toml"]
+generated_mirror = [
+  "docs/generated/ROADMAP_REGISTRY_MIRROR.md",
+  "docs/generated/TODO_REGISTRY_MIRROR.md",
+  "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md",
+]
+strategy = "toml_primary_markdown_overlay"
+status = "in_progress"
+notes = "Registry records canonical operational state; legacy docs still contain long-form context."
+
+[[domain]]
+id = "KM-005"
+name = "requirements"
+source_markdown = ["REQUIREMENTS.md", "docs/REQUIREMENTS.md", "docs/requirements/*.md"]
+authoritative_toml = ["registry/requirements.toml"]
+generated_mirror = ["docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"]
+strategy = "toml_primary_markdown_overlay"
+status = "in_progress"
+notes = "Coverage gaps tracked in requirements registry."
+
+[[domain]]
+id = "KM-006"
+name = "generated_artifacts"
+source_markdown = ["reports/*.md", "data/artifacts/*.md", "docs/claims/by_domain/*.md", "docs/tickets/*_claims_audit.md"]
+strategy = "artifact_only_no_manual_edit"
+status = "active"
+notes = "Keep as generated outputs with explicit regeneration commands; do not hand-edit."
+
+[[domain]]
+id = "KM-007"
+name = "research_narratives"
+source_markdown = ["docs/theory/*.md", "docs/external_sources/*.md", "docs/engineering/*.md"]
+strategy = "narrative_primary_raw_capture_backup"
+status = "active"
+notes = "Not all narrative content should be normalized into rigid schemas; raw capture in registry/knowledge/docs preserves provenance."
+
+[[phase]]
+id = "KMP-P1"
+name = "inventory_and_capture"
+status = "complete"
+deliverables = ["registry/knowledge_sources.toml", "registry/knowledge/documents.toml"]
+
+[[phase]]
+id = "KMP-P2"
+name = "curated_operational_registries"
+status = "complete"
+deliverables = ["registry/roadmap.toml", "registry/todo.toml", "registry/next_actions.toml", "registry/requirements.toml"]
+
+[[phase]]
+id = "KMP-P3"
+name = "toml_to_markdown_mirror_exports"
+status = "complete"
+deliverables = ["docs/generated/*_REGISTRY_MIRROR.md"]
+
+[[phase]]
+id = "KMP-P4"
+name = "policy_hardening"
+status = "pending"
+deliverables = ["Decision on replacing legacy overlays vs retaining narrative overlays", "CI checks for mirror freshness"]
+

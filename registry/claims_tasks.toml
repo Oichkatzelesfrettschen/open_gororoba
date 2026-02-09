@@ -1,0 +1,3293 @@
+# Claims task registry (TOML-first).
+# Source markdown remains human-facing; this file is authoritative.
+
+[claims_tasks]
+authoritative = true
+updated = "2026-02-09"
+source_markdown = "docs/CLAIMS_TASKS.md"
+table_count = 3
+task_count = 212
+section_count = 20
+canonical_status_task_count = 212
+noncanonical_status_task_count = 0
+canonical_status_tokens = ["TODO", "IN_PROGRESS", "PARTIAL", "DONE", "REFUTED", "DEFERRED", "BLOCKED"]
+
+[[section]]
+id = "CTS-001"
+name = "Phase 7 Sprint 6.1: Rust Infrastructure Buildouts (2026-02-06)"
+task_count = 0
+
+[[section]]
+id = "CTS-002"
+name = "Phase 7 R6 Triage Summary (2026-02-06)"
+task_count = 0
+
+[[section]]
+id = "CTS-003"
+name = "Active tasks (start here)"
+task_count = 31
+
+[[section]]
+id = "CTS-004"
+name = "Backfill (triage) tasks (auto-generated)"
+task_count = 161
+
+[[section]]
+id = "CTS-005"
+name = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+task_count = 20
+
+[[section]]
+id = "CTS-006"
+name = "Phase 6 Batch Triage (2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-007"
+name = "Upgraded by Phase 6 work (Sprints 1-4)"
+task_count = 0
+
+[[section]]
+id = "CTS-008"
+name = "Confirmed Refuted (matrix status: \"Not supported (rejected)\")"
+task_count = 0
+
+[[section]]
+id = "CTS-009"
+name = "Remaining unresolved claims by triage category"
+task_count = 0
+
+[[section]]
+id = "CTS-010"
+name = "Conversation mining (Phase 6 C1, 2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-011"
+name = "B5: Not-supported claims final disposition (Phase 6, 2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-012"
+name = "B2: Speculative claims deep analysis (Phase 6, 2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-013"
+name = "B4: Modeled claims upgrade (Phase 6, 2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-014"
+name = "Backlog triage items (C-100 through C-399)"
+task_count = 0
+
+[[section]]
+id = "CTS-015"
+name = "Phase 7 Sprint 4: R6 400-Series Triage Summary (2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-016"
+name = "Phase 7 Rust Module Expansion (2026-02-04)"
+task_count = 0
+
+[[section]]
+id = "CTS-017"
+name = "Phase 7 Batch A Closures (2026-02-05)"
+task_count = 0
+
+[[section]]
+id = "CTS-018"
+name = "Phase 8 Rust Integration Summary (2026-02-05)"
+task_count = 0
+
+[[section]]
+id = "CTS-019"
+name = "Status Snapshot: 2026-02-07 (Sprint 8)"
+task_count = 0
+
+[[section]]
+id = "CTS-020"
+name = "Notes"
+task_count = 0
+
+[[task]]
+id = "CTASK-0001"
+claim_id = "C-006"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 1
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "GWOSC snapshot fetcher + provenance (offline-testable)."
+output_artifacts = ["bin/fetch_gwtc3_confident.py", "data/external/GWTC-3_confident.*"]
+output_artifacts_raw = "`bin/fetch_gwtc3_confident.py`, `data/external/GWTC-3_confident.*`"
+source_line = 56
+
+[[task]]
+id = "CTASK-0002"
+claim_id = "C-006"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 2
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Offline test: JSON->CSV exact match + hash checks."
+output_artifacts = ["tests/test_gwosc_eventapi_snapshot.py"]
+output_artifacts_raw = "`tests/test_gwosc_eventapi_snapshot.py`"
+source_line = 57
+
+[[task]]
+id = "CTASK-0003"
+claim_id = "C-025"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 3
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "TSCP code migration into main package + CLI entrypoints + offline-by-default loader."
+output_artifacts = ["crates/stats_core/src/claims_gates.rs", "bin/predict_stars.py", "bin/predict_stars", "bin/fetch_gwtc3_skylocalizations_zenodo.py"]
+output_artifacts_raw = "`crates/stats_core/src/claims_gates.rs`, `bin/predict_stars.py`, `bin/predict_stars`, `bin/fetch_gwtc3_skylocalizations_zenodo.py`"
+source_line = 58
+
+[[task]]
+id = "CTASK-0004"
+claim_id = "C-025"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 4
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Generate Phase 5 artifacts once Zenodo sky maps are cached (no-network in tests; record provenance; keep artifacts small)."
+output_artifacts = ["data/csv/tscp/alignment_scores.csv", "data/csv/tscp/monte_carlo_results.csv", "data/external/gwtc3/IGWN-GWTC3p0-v2-PESkyLocalizations.PROVENANCE.json"]
+output_artifacts_raw = "`data/csv/tscp/alignment_scores.csv`, `data/csv/tscp/monte_carlo_results.csv`, `data/external/gwtc3/IGWN-GWTC3p0-v2-PESkyLocalizations.PROVENANCE.json`"
+source_line = 59
+
+[[task]]
+id = "CTASK-0005"
+claim_id = "C-026"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 5
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Lower mass-gap baseline metrics + mechanism plan (no algebra->mass mapping yet)."
+output_artifacts = ["docs/external_sources/C026_MASS_GAP_SOURCES.md", "docs/C026_MASS_GAP_MECHANISM.md", "src/scripts/analysis/gwtc3_lower_mass_gap_metrics.py", "data/csv/gwtc3_lower_mass_gap_metrics.csv"]
+output_artifacts_raw = "`docs/external_sources/C026_MASS_GAP_SOURCES.md`, `docs/C026_MASS_GAP_MECHANISM.md`, `src/scripts/analysis/gwtc3_lower_mass_gap_metrics.py`, `data/csv/gwtc3_lower_mass_gap_metrics.csv`"
+source_line = 60
+
+[[task]]
+id = "CTASK-0006"
+claim_id = "C-027"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 6
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Define horizon density proxy + decision rule; generate deterministic mass-scaling artifacts; add invariant tests (toy model only)."
+output_artifacts = ["docs/C027_DEFF_HORIZON_TEST.md", "src/scripts/analysis/deff_horizon_mass_scaling.py", "data/csv/deff_horizon_mass_scaling.csv", "data/csv/deff_horizon_mass_scaling_summary.csv", "tests/test_c027_deff_horizon_mass_scaling.py"]
+output_artifacts_raw = "`docs/C027_DEFF_HORIZON_TEST.md`, `src/scripts/analysis/deff_horizon_mass_scaling.py`, `data/csv/deff_horizon_mass_scaling.csv`, `data/csv/deff_horizon_mass_scaling_summary.csv`, `tests/test_c027_deff_horizon_mass_scaling.py`"
+source_line = 61
+
+[[task]]
+id = "CTASK-0007"
+claim_id = "C-047"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 7
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Correct legacy E9/E10/E11 statement; cache primary open-access Kac-Moody anchors."
+output_artifacts = ["docs/C047_E_SERIES_KAC_MOODY_AUDIT.md", "docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md", "data/external/papers/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf", "data/external/papers/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf"]
+output_artifacts_raw = "`docs/C047_E_SERIES_KAC_MOODY_AUDIT.md`, `docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md`, `data/external/papers/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf`, `data/external/papers/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf`"
+source_line = 62
+
+[[task]]
+id = "CTASK-0008"
+claim_id = "C-047"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 8
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Offline check: E8/E9/E10/E11 Cartan signature sanity."
+output_artifacts = ["tests/test_c047_e_series_cartan_signature.py"]
+output_artifacts_raw = "`tests/test_c047_e_series_cartan_signature.py`"
+source_line = 63
+
+[[task]]
+id = "CTASK-0009"
+claim_id = "C-048"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 9
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Add motivic tower anchor sources (analogy only) and cache at least one open-access reference."
+output_artifacts = ["docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md", "data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf"]
+output_artifacts_raw = "`docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md`, `data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf`"
+source_line = 64
+
+[[task]]
+id = "CTASK-0010"
+claim_id = "C-050"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 10
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Make optimization isomorphism explicit as a toy LP equivalence; add deterministic artifact + test."
+output_artifacts = ["docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md", "src/scripts/analysis/c050_spaceplate_flow_isomorphism_toy.py", "data/csv/c050_spaceplate_flow_isomorphism_toy.csv", "tests/test_c050_spaceplate_flow_isomorphism_toy.py"]
+output_artifacts_raw = "`docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md`, `src/scripts/analysis/c050_spaceplate_flow_isomorphism_toy.py`, `data/csv/c050_spaceplate_flow_isomorphism_toy.csv`, `tests/test_c050_spaceplate_flow_isomorphism_toy.py`"
+source_line = 65
+
+[[task]]
+id = "CTASK-0011"
+claim_id = "C-007"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 11
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Falsifiable clumping metric + null-model comparison + bootstrap stability + decision rule."
+output_artifacts = ["docs/external_sources/GWTC3_MASS_CLUMPING_PLAN.md", "docs/external_sources/GWTC3_DECISION_RULE_SUMMARY.md", "crates/stats_core/src/claims_gates.rs", "src/scripts/analysis/gwtc3_mass_clumping_null_models.py", "src/scripts/analysis/gwtc3_mass_clumping_bootstrap.py", "src/scripts/analysis/gwtc3_mass_clumping_decision_rule_summary.py", "data/csv/gwtc3_mass_clumping_metrics.csv", "data/csv/gwtc3_mass_clumping_null_models.csv", "data/csv/gwtc3_mass_clumping_bootstrap_counts.csv", "data/csv/gwtc3_mass_clumping_bootstrap_summary.csv", "data/csv/gwtc3_mass_clumping_decision_rule_summary.csv"]
+output_artifacts_raw = "`docs/external_sources/GWTC3_MASS_CLUMPING_PLAN.md`, `docs/external_sources/GWTC3_DECISION_RULE_SUMMARY.md`, `crates/stats_core/src/claims_gates.rs`, `src/scripts/analysis/gwtc3_mass_clumping_null_models.py`, `src/scripts/analysis/gwtc3_mass_clumping_bootstrap.py`, `src/scripts/analysis/gwtc3_mass_clumping_decision_rule_summary.py`, `data/csv/gwtc3_mass_clumping_metrics.csv`, `data/csv/gwtc3_mass_clumping_null_models.csv`, `data/csv/gwtc3_mass_clumping_bootstrap_counts.csv`, `data/csv/gwtc3_mass_clumping_bootstrap_summary.csv`, `data/csv/gwtc3_mass_clumping_decision_rule_summary.csv`"
+source_line = 66
+
+[[task]]
+id = "CTASK-0012"
+claim_id = "C-007"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 12
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Add selection-bias control (toy proxy + decision rule; still not injection-based)."
+output_artifacts = ["docs/external_sources/GWTC3_POPULATION_SOURCES.md", "crates/stats_core/src/claims_gates.rs", "src/scripts/analysis/gwtc3_mass_clumping_selection_control.py", "src/scripts/analysis/gwtc3_selection_weight_sweep.py", "data/csv/gwtc3_selection_bias_control_metrics.csv", "data/csv/gwtc3_selection_weight_sweep.csv", "data/csv/gwtc3_selection_bias_control_metrics_o123.csv", "data/csv/gwtc3_selection_weight_sweep_o123.csv", "data/csv/gwtc3_selection_weight_sweep_o3a_altbins.csv", "data/csv/gwtc3_selection_weight_sweep_o123_altbins.csv", "data/csv/gwtc3_selection_bias_control_metrics_o3a_altbins.csv", "data/csv/gwtc3_selection_bias_control_metrics_o123_altbins.csv"]
+output_artifacts_raw = "`docs/external_sources/GWTC3_POPULATION_SOURCES.md`, `crates/stats_core/src/claims_gates.rs`, `src/scripts/analysis/gwtc3_mass_clumping_selection_control.py`, `src/scripts/analysis/gwtc3_selection_weight_sweep.py`, `data/csv/gwtc3_selection_bias_control_metrics.csv`, `data/csv/gwtc3_selection_weight_sweep.csv`, `data/csv/gwtc3_selection_bias_control_metrics_o123.csv`, `data/csv/gwtc3_selection_weight_sweep_o123.csv`, `data/csv/gwtc3_selection_weight_sweep_o3a_altbins.csv`, `data/csv/gwtc3_selection_weight_sweep_o123_altbins.csv`, `data/csv/gwtc3_selection_bias_control_metrics_o3a_altbins.csv`, `data/csv/gwtc3_selection_bias_control_metrics_o123_altbins.csv`"
+source_line = 67
+
+[[task]]
+id = "CTASK-0013"
+claim_id = "C-007"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 13
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Injection-based selection function (offline cached) + refit decision rule."
+output_artifacts = ["docs/external_sources/GWTC3_POPULATION_SOURCES.md", "docs/external_sources/GWTC3_SELECTION_FUNCTION_SPEC.md", "src/scripts/data/convert_gwtc3_injections_hdf.py", "src/scripts/analysis/gwtc3_selection_function_from_injections.py", "data/external/gwtc3_injection_summary.csv", "data/csv/gwtc3_selection_function_binned.csv"]
+output_artifacts_raw = "`docs/external_sources/GWTC3_POPULATION_SOURCES.md`, `docs/external_sources/GWTC3_SELECTION_FUNCTION_SPEC.md`, `src/scripts/data/convert_gwtc3_injections_hdf.py`, `src/scripts/analysis/gwtc3_selection_function_from_injections.py`, `data/external/gwtc3_injection_summary.csv`, `data/csv/gwtc3_selection_function_binned.csv`"
+source_line = 68
+
+[[task]]
+id = "CTASK-0014"
+claim_id = "C-008"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 14
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "CLOSED/TOY: alpha=-1.5 is a parameter choice yielding d_s=2 under Convention B; this is a dimensional-analysis coincidence, not a derivation. No physical mechanism connects fractional Laplacian alpha to d_s."
+output_artifacts = ["docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/FRACTIONAL_OPERATOR_POLICY.md", "docs/theory/PARISI_SOURLAS_ALPHA_DERIVATION.md"]
+output_artifacts_raw = "`docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/FRACTIONAL_OPERATOR_POLICY.md`, `docs/theory/PARISI_SOURLAS_ALPHA_DERIVATION.md`"
+source_line = 69
+
+[[task]]
+id = "CTASK-0015"
+claim_id = "C-009"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 15
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Add deterministic tensor-network measurement pipeline + scaling + decision artifacts."
+output_artifacts = ["docs/external_sources/TENSOR_NETWORK_SOURCES.md", "crates/quantum_core/src/tensor_networks.rs", "src/scripts/measure/measure_tensor_network_entropy.py", "src/scripts/measure/measure_tensor_network_entropy_scaling.py", "src/scripts/measure/measure_tensor_network_entropy_decision.py", "data/csv/tensor_network_entropy_metrics.csv", "data/csv/tensor_network_entropy_scaling.csv", "data/csv/tensor_network_entropy_decision.csv", "tests/test_tensor_network_entropy_tiny.py", "tests/test_tensor_network_entropy_scaling.py", "tests/test_tensor_network_entropy_decision.py"]
+output_artifacts_raw = "`docs/external_sources/TENSOR_NETWORK_SOURCES.md`, `crates/quantum_core/src/tensor_networks.rs`, `src/scripts/measure/measure_tensor_network_entropy.py`, `src/scripts/measure/measure_tensor_network_entropy_scaling.py`, `src/scripts/measure/measure_tensor_network_entropy_decision.py`, `data/csv/tensor_network_entropy_metrics.csv`, `data/csv/tensor_network_entropy_scaling.csv`, `data/csv/tensor_network_entropy_decision.csv`, `tests/test_tensor_network_entropy_tiny.py`, `tests/test_tensor_network_entropy_scaling.py`, `tests/test_tensor_network_entropy_decision.py`"
+source_line = 70
+
+[[task]]
+id = "CTASK-0016"
+claim_id = "C-010"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 16
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Materials \"perfect absorption\" claim: keep speculative; ground in absorber literature + baseline metrics."
+output_artifacts = ["docs/external_sources/METAMATERIAL_ABSORBER_SOURCES.md", "docs/C010_ABSORBER_TCMT_MAPPING.md", "docs/C010_ABSORBER_SALISBURY.md", "docs/C010_ABSORBER_RLC.md", "docs/C010_ABSORBER_CPA.md", "src/scripts/analysis/materials_absorber_tcmt.py", "src/scripts/analysis/materials_absorber_salisbury.py", "src/scripts/analysis/materials_absorber_rlc.py", "src/scripts/analysis/materials_absorber_cpa_twoport.py", "src/scripts/analysis/materials_absorber_cpa_input_sweep.py", "data/csv/c010_truncated_icosahedron_graph.csv", "data/csv/c010_tcmt_truncated_icosahedron.csv", "data/csv/c010_tcmt_truncated_icosahedron_minima.csv", "data/csv/c010_salisbury_screen.csv", "data/csv/c010_salisbury_screen_minima.csv", "data/csv/c010_rlc_surface_impedance.csv", "data/csv/c010_rlc_surface_impedance_minima.csv", "data/csv/c010_rlc_fit_summary.csv", "data/csv/c010_cpa_twoport_scan.csv", "data/csv/c010_cpa_twoport_minima.csv", "data/csv/c010_cpa_input_sweep.csv", "data/csv/c010_cpa_input_sweep_minima.csv", "data/csv/materials_baseline_metrics.csv", "data/csv/materials_embedding_benchmarks.csv"]
+output_artifacts_raw = "`docs/external_sources/METAMATERIAL_ABSORBER_SOURCES.md`, `docs/C010_ABSORBER_TCMT_MAPPING.md`, `docs/C010_ABSORBER_SALISBURY.md`, `docs/C010_ABSORBER_RLC.md`, `docs/C010_ABSORBER_CPA.md`, `src/scripts/analysis/materials_absorber_tcmt.py`, `src/scripts/analysis/materials_absorber_salisbury.py`, `src/scripts/analysis/materials_absorber_rlc.py`, `src/scripts/analysis/materials_absorber_cpa_twoport.py`, `src/scripts/analysis/materials_absorber_cpa_input_sweep.py`, `data/csv/c010_truncated_icosahedron_graph.csv`, `data/csv/c010_tcmt_truncated_icosahedron.csv`, `data/csv/c010_tcmt_truncated_icosahedron_minima.csv`, `data/csv/c010_salisbury_screen.csv`, `data/csv/c010_salisbury_screen_minima.csv`, `data/csv/c010_rlc_surface_impedance.csv`, `data/csv/c010_rlc_surface_impedance_minima.csv`, `data/csv/c010_rlc_fit_summary.csv`, `data/csv/c010_cpa_twoport_scan.csv`, `data/csv/c010_cpa_twoport_minima.csv`, `data/csv/c010_cpa_input_sweep.csv`, `data/csv/c010_cpa_input_sweep_minima.csv`, `data/csv/materials_baseline_metrics.csv`, `data/csv/materials_embedding_benchmarks.csv`"
+source_line = 71
+
+[[task]]
+id = "CTASK-0017"
+claim_id = "C-011"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 17
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Gravastar equivalence: keep speculative; add primary sources; require derivation+numeric regression."
+output_artifacts = ["docs/external_sources/GRAVASTAR_SOURCES.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "src/gravastar_tov.py", "src/scripts/analysis/gravastar_eos_sweep.py", "src/scripts/analysis/gravastar_thin_shell.py", "src/scripts/analysis/gravastar_thin_shell_stability.py", "data/csv/gravastar_eos_pressure_gradient_sweep.csv", "data/csv/gravastar_thin_shell_matching.csv", "data/csv/gravastar_thin_shell_stability.csv", "tests/test_tov_uniform_density.py", "tests/test_tov_gravastar_core.py", "tests/test_tov_gravastar_sweep.py", "tests/test_gravastar_thin_shell.py", "tests/test_gravastar_thin_shell_stability.py"]
+output_artifacts_raw = "`docs/external_sources/GRAVASTAR_SOURCES.md`, `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `src/gravastar_tov.py`, `src/scripts/analysis/gravastar_eos_sweep.py`, `src/scripts/analysis/gravastar_thin_shell.py`, `src/scripts/analysis/gravastar_thin_shell_stability.py`, `data/csv/gravastar_eos_pressure_gradient_sweep.csv`, `data/csv/gravastar_thin_shell_matching.csv`, `data/csv/gravastar_thin_shell_stability.csv`, `tests/test_tov_uniform_density.py`, `tests/test_tov_gravastar_core.py`, `tests/test_tov_gravastar_sweep.py`, `tests/test_gravastar_thin_shell.py`, `tests/test_gravastar_thin_shell_stability.py`"
+source_line = 72
+
+[[task]]
+id = "CTASK-0018"
+claim_id = "C-012"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 18
+status_token = "REFUTED"
+status_raw = "REFUTED"
+status_canonical = true
+task = "Dark energy via \"negative dimension diffusion\": REFUTED BY DATA (Phase 2.2 complete). Model with eta=0 cannot vary w from -1, making it equivalent to Lambda-CDM but penalized. Extension to free eta required for genuine test (Task #94)."
+output_artifacts = ["docs/external_sources/NEGATIVE_DIMENSION_SOURCES.md", "docs/PHYSICAL_INTERPRETATION.md", "docs/NEGATIVE_DIMENSION_DARK_ENERGY_MODEL.md", "docs/NEG_DIM_MULTIPROBE_EXPERIMENT.md", "crates/spectral_core/src/neg_dim.rs", "src/scripts/analysis/neg_dim_model_comparison.py", "data/csv/neg_dim_model_comparison_results.csv"]
+output_artifacts_raw = "`docs/external_sources/NEGATIVE_DIMENSION_SOURCES.md`, `docs/PHYSICAL_INTERPRETATION.md`, `docs/NEGATIVE_DIMENSION_DARK_ENERGY_MODEL.md`, `docs/NEG_DIM_MULTIPROBE_EXPERIMENT.md`, `crates/spectral_core/src/neg_dim.rs`, `crates/spectral_core/src/neg_dim.rs`, `src/scripts/analysis/neg_dim_model_comparison.py`, `data/csv/neg_dim_model_comparison_results.csv`"
+source_line = 73
+
+[[task]]
+id = "CTASK-0019"
+claim_id = "C-004"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 19
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "PSL(2,7) action: construct explicit 168-element action and show it permutes the 7 box-kites as subgraphs."
+output_artifacts = ["docs/external_sources/PSL_2_7_SOURCES.md", "crates/algebra_core/src/group_theory.rs", "crates/algebra_core/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py"]
+output_artifacts_raw = "`docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/group_theory.rs`, `crates/algebra_core/src/boxkites.rs`, `tests/test_psl_2_7_action.py`, `tests/test_boxkite_symmetry_action.py`"
+source_line = 74
+
+[[task]]
+id = "CTASK-0020"
+claim_id = "C-005"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 20
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Reggiani manifold identifications: extract paper-asserted statements + keep unreplicated unless a geometric check is added."
+output_artifacts = ["docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"]
+output_artifacts_raw = "`docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`"
+source_line = 75
+
+[[task]]
+id = "CTASK-0021"
+claim_id = "C-019"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 21
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Wheels->Cayley-Dickson mapping: exploratory totalized-division interpretation created (Phase 3.1.1)."
+output_artifacts = ["docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md", "crates/algebra_core/src/wheels.rs"]
+output_artifacts_raw = "`docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `crates/algebra_core/src/wheels.rs`"
+source_line = 76
+
+[[task]]
+id = "CTASK-0022"
+claim_id = "C-007"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 22
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Pre-registered Hartigan dip test for GWTC-3 mass modality (Phase 2.1) - TEST NOT EXECUTED: insufficient sample size (N=34 < 50 pre-registered minimum). Validation correctly prevented underpowered test. Mass clumping claims downgraded to exploratory status only."
+output_artifacts = ["src/scripts/analysis/gwtc3_modality_preregistered.py", "docs/preregistered/GWTC3_MODALITY_TEST.md"]
+output_artifacts_raw = "`src/scripts/analysis/gwtc3_modality_preregistered.py`, `docs/preregistered/GWTC3_MODALITY_TEST.md`"
+source_line = 77
+
+[[task]]
+id = "CTASK-0023"
+claim_id = "C-012"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 23
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Lambda-CDM baseline comparison for dark energy model (Phase 2.2) - MODEL REFUTED: Negative-dimension model (eta=0) is mathematically equivalent to Lambda-CDM (w=-1 always) but penalized for extra parameter. Delta-AIC=+11.6, Delta-BIC=+11.6 vs constant-w (best model) -> DECISIVELY REJECTED per pre-registered threshold (>=10). Constant-w finds w=-1.086 (phantom-like), improving chi2 by 11.6 over Lambda-CDM. Critical discovery: SDSS DR12 BAO observables use convention D_M*(rd,fid/rd) [Mpc], H*(rd/rd,fid) [km/s/Mpc], NOT dimensionless ratios (fixed in src/scripts/data/fix_bao_observables.py). Data: Pantheon+ (1701 SNe) + Moresco H(z) (33 points) + DR12 BAO (3 bins) = 1740 total points. Completion date: 2026-01-29."
+output_artifacts = ["src/scripts/analysis/neg_dim_model_comparison.py", "src/scripts/data/fix_bao_observables.py", "docs/preregistered/NEG_DIM_MODEL_COMPARISON.md", "docs/NEGATIVE_DIMENSION_DARK_ENERGY_MODEL.md", "docs/external_sources/ADDITIONAL_COSMOLOGICAL_DATASETS.md", "data/csv/neg_dim_model_comparison_results.csv"]
+output_artifacts_raw = "`src/scripts/analysis/neg_dim_model_comparison.py`, `src/scripts/data/fix_bao_observables.py`, `docs/preregistered/NEG_DIM_MODEL_COMPARISON.md`, `docs/NEGATIVE_DIMENSION_DARK_ENERGY_MODEL.md`, `docs/external_sources/ADDITIONAL_COSMOLOGICAL_DATASETS.md`, `data/csv/neg_dim_model_comparison_results.csv`"
+source_line = 78
+
+[[task]]
+id = "CTASK-0024"
+claim_id = "C-009"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 24
+status_token = "IN_PROGRESS"
+status_raw = "IN PROGRESS"
+status_canonical = true
+task = "Multi-system tensor entropy study with pre-registered protocol (Phase 2.3)."
+output_artifacts = ["docs/preregistered/TENSOR_ENTROPY_SCALING.md"]
+output_artifacts_raw = "`docs/preregistered/TENSOR_ENTROPY_SCALING.md`"
+source_line = 79
+
+[[task]]
+id = "CTASK-0025"
+claim_id = "C-010"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 25
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Materials baseline v2 with k-fold cross-validation (Phase 3.2)."
+output_artifacts = ["data/csv/materials_baseline_metrics.csv"]
+output_artifacts_raw = "`data/csv/materials_baseline_metrics.csv`"
+source_line = 80
+
+[[task]]
+id = "CTASK-0026"
+claim_id = "C-024"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 26
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "C++ acceleration kernels scaffold: CMake + Conan + Catch2 + pybind11 (Phase 4)."
+output_artifacts = ["cpp/", "cpp/tests/test_cd_algebra.cpp", "cpp/benchmarks/bench_cd_multiply.cpp"]
+output_artifacts_raw = "`cpp/`, `cpp/tests/test_cd_algebra.cpp`, `cpp/benchmarks/bench_cd_multiply.cpp`"
+source_line = 81
+
+[[task]]
+id = "CTASK-0027"
+claim_id = "C-018"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 27
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Wheel axioms validated on a concrete model."
+output_artifacts = ["tests/test_wheels.py"]
+output_artifacts_raw = "`tests/test_wheels.py`"
+source_line = 82
+
+[[task]]
+id = "CTASK-0028"
+claim_id = "C-020"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 28
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Legacy 16D ZD adjacency matrix: refuted as noise/hallucination."
+output_artifacts = ["docs/LEGACY_ARTIFACT_AUDIT.md"]
+output_artifacts_raw = "`docs/LEGACY_ARTIFACT_AUDIT.md`"
+source_line = 83
+
+[[task]]
+id = "CTASK-0029"
+claim_id = "C-021"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 29
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "1024D basis-to-lattice mapping: refuted as inconsistent."
+output_artifacts = ["docs/LEGACY_ARTIFACT_AUDIT.md"]
+output_artifacts_raw = "`docs/LEGACY_ARTIFACT_AUDIT.md`"
+source_line = 84
+
+[[task]]
+id = "CTASK-0030"
+claim_id = "C-022"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 30
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "CLOSED/ANALOGY: Ordinal birthday mapping only; maps CD doubling level n to surreal birthday n and tests property-loss cascade. Does not implement full Conway/Gonshor surreal arithmetic."
+output_artifacts = ["src/scripts/analysis/surreal_cd_ordinal_construction.py", "data/csv/surreal_cd_ordinal_mapping.csv", "tests/test_surreal_cd_ordinal.py"]
+output_artifacts_raw = "`src/scripts/analysis/surreal_cd_ordinal_construction.py`, `data/csv/surreal_cd_ordinal_mapping.csv`, `tests/test_surreal_cd_ordinal.py`"
+source_line = 85
+
+[[task]]
+id = "CTASK-0031"
+claim_id = "C-023"
+section = "Active tasks (start here)"
+section_index = 3
+table_index = 1
+order_index = 31
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "CLOSED/TOY: Basis-vector holonomy model; compares associator norms across CD levels and finds statistical signal (p~9.4e-8) between ZD-adjacent vs generic triples. \"Holonomy\" label is metaphorical, not geometric."
+output_artifacts = ["crates/algebra_core/src/grassmannian.rs", "data/csv/cd_fiber_holonomy_comparison.csv", "tests/test_cd_holonomy.py"]
+output_artifacts_raw = "`crates/algebra_core/src/grassmannian.rs`, `data/csv/cd_fiber_holonomy_comparison.csv`, `tests/test_cd_holonomy.py`"
+source_line = 86
+
+[[task]]
+id = "CTASK-0032"
+claim_id = "C-053"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 32
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Add dedicated sources index + deterministic toy artifact + offline unit test (diagonal-only degeneracy made explicit)."
+output_artifacts = ["docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md", "src/scripts/analysis/c053_pathion_metamaterial_mapping.py", "data/csv/c053_pathion_tmm_summary.csv", "tests/test_c053_pathion_metamaterial_mapping.py"]
+output_artifacts_raw = "`docs/external_sources/C053_PATHION_METAMATERIAL_MAPPING_SOURCES.md`, `src/scripts/analysis/c053_pathion_metamaterial_mapping.py`, `data/csv/c053_pathion_tmm_summary.csv`, `tests/test_c053_pathion_metamaterial_mapping.py`"
+source_line = 96
+
+[[task]]
+id = "CTASK-0033"
+claim_id = "C-068"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 33
+status_token = "REFUTED"
+status_raw = "REFUTED"
+status_canonical = true
+task = "Add deterministic spectrum-degeneracy reproduction (84 diagonal ZDs) + unit test; mark PDG-spectrum-match claim refuted for the standard set."
+output_artifacts = ["docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md", "src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py", "data/csv/c068_zd_interaction_eigen_summary.csv", "tests/test_c068_zd_interaction_spectrum_degeneracy.py"]
+output_artifacts_raw = "`docs/external_sources/C068_PDG_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c068_zd_interaction_spectrum_degeneracy.py`, `data/csv/c068_zd_interaction_eigen_summary.csv`, `tests/test_c068_zd_interaction_spectrum_degeneracy.py`"
+source_line = 97
+
+[[task]]
+id = "CTASK-0034"
+claim_id = "C-070"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 34
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Audit legacy Spearman-based \"shape match\" and encode decision rule as offline artifacts + test."
+output_artifacts = ["docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md", "src/scripts/analysis/c070_nanograv_shape_match_audit.py", "data/csv/c070_nanograv_shape_match_summary.csv", "tests/test_c070_nanograv_shape_match_audit.py"]
+output_artifacts_raw = "`docs/external_sources/C070_NANOGRAV_SPECTRUM_MATCH_SOURCES.md`, `src/scripts/analysis/c070_nanograv_shape_match_audit.py`, `data/csv/c070_nanograv_shape_match_summary.csv`, `tests/test_c070_nanograv_shape_match_audit.py`"
+source_line = 98
+
+[[task]]
+id = "CTASK-0035"
+claim_id = "C-074"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 35
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Anchor associator growth fit (v3 exp2) with sources index + offline fit-sanity test; leave uncertainty estimation as follow-up."
+output_artifacts = ["docs/external_sources/C074_ASSOCIATOR_GROWTH_LAW_SOURCES.md", "data/csv/cd_algebraic_experiments_v3.json", "tests/test_claim_c074_associator_growth.py"]
+output_artifacts_raw = "`docs/external_sources/C074_ASSOCIATOR_GROWTH_LAW_SOURCES.md`, `data/csv/cd_algebraic_experiments_v3.json`, `tests/test_claim_c074_associator_growth.py`"
+source_line = 99
+
+[[task]]
+id = "CTASK-0036"
+claim_id = "C-075"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 36
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Reproduce legacy v3 exp3 pathion interaction spectrum (distinct eigenvalues + log-span) with deterministic artifacts + unit test."
+output_artifacts = ["src/scripts/analysis/c075_pathion_zd_interaction_spectrum.py", "data/csv/c075_pathion_interaction_summary.csv", "tests/test_c075_pathion_zd_interaction_spectrum.py"]
+output_artifacts_raw = "`src/scripts/analysis/c075_pathion_zd_interaction_spectrum.py`, `data/csv/c075_pathion_interaction_summary.csv`, `tests/test_c075_pathion_zd_interaction_spectrum.py`"
+source_line = 100
+
+[[task]]
+id = "CTASK-0037"
+claim_id = "C-077"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 37
+status_token = "REFUTED"
+status_raw = "REFUTED"
+status_canonical = true
+task = "REFUTED: Associator mixing matrix is near-democratic (Frobenius distance 0.611 from PMNS; mean diagonal 0.314 vs PMNS 0.54). No symmetry-breaking mechanism to generate PMNS structure."
+output_artifacts = ["src/scripts/analysis/c077_associator_mixing_pmns_audit.py", "data/csv/c077_associator_mixing_summary.csv", "tests/test_c077_associator_mixing_pmns_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c077_associator_mixing_pmns_audit.py`, `data/csv/c077_associator_mixing_summary.csv`, `tests/test_c077_associator_mixing_pmns_audit.py`"
+source_line = 101
+
+[[task]]
+id = "CTASK-0038"
+claim_id = "C-078"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 38
+status_token = "REFUTED"
+status_raw = "REFUTED"
+status_canonical = true
+task = "REFUTED: 32D/64D diagonal-form ZDs yield identical spectrum diversity to 16D (66 distinct eigenvalues, 2.83-decade span). General-form ZD search required."
+output_artifacts = ["src/scripts/analysis/c078_higher_dim_zd_coverage_audit.py", "data/csv/c078_higher_dim_zd_coverage_summary.csv", "tests/test_c078_higher_dim_zd_coverage_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c078_higher_dim_zd_coverage_audit.py`, `data/csv/c078_higher_dim_zd_coverage_summary.csv`, `tests/test_c078_higher_dim_zd_coverage_audit.py`"
+source_line = 102
+
+[[task]]
+id = "CTASK-0039"
+claim_id = "C-082"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 39
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v4 expE associator-saturation fit into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c082_associator_saturation_extended_audit.py", "data/csv/c082_associator_saturation_summary.csv", "data/csv/c082_associator_saturation_by_dim.csv", "tests/test_c082_associator_saturation_extended_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c082_associator_saturation_extended_audit.py`, `data/csv/c082_associator_saturation_summary.csv`, `data/csv/c082_associator_saturation_by_dim.csv`, `tests/test_c082_associator_saturation_extended_audit.py`"
+source_line = 103
+
+[[task]]
+id = "CTASK-0040"
+claim_id = "C-087"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 40
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract v5 cross-term/independence metrics into CSV artifacts and add a unit test that enforces vanishing correlation at high dimension."
+output_artifacts = ["src/scripts/analysis/c087_associator_independence_audit.py", "data/csv/c087_associator_independence_summary.csv", "tests/test_c087_associator_independence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c087_associator_independence_audit.py`, `data/csv/c087_associator_independence_summary.csv`, `tests/test_c087_associator_independence_audit.py`"
+source_line = 104
+
+[[task]]
+id = "CTASK-0041"
+claim_id = "C-094"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 41
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v6 mixed-dimension fit degradation and record it as a guardrail against non-2^n extrapolation artifacts."
+output_artifacts = ["src/scripts/analysis/c094_non_power_two_dims_fit_audit.py", "data/csv/c094_non_power_two_dims_summary.csv", "tests/test_c094_non_power_two_dims_fit_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c094_non_power_two_dims_fit_audit.py`, `data/csv/c094_non_power_two_dims_summary.csv`, `tests/test_c094_non_power_two_dims_fit_audit.py`"
+source_line = 105
+
+[[task]]
+id = "CTASK-0042"
+claim_id = "C-129"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 42
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v13 associator-norm distribution stats into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c129_associator_distribution_concentration_audit.py", "data/csv/c129_assoc_norm_dist_summary.csv", "data/csv/c129_assoc_norm_dist_by_dim.csv", "tests/test_c129_associator_distribution_concentration_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c129_associator_distribution_concentration_audit.py`, `data/csv/c129_assoc_norm_dist_summary.csv`, `data/csv/c129_assoc_norm_dist_by_dim.csv`, `tests/test_c129_associator_distribution_concentration_audit.py`"
+source_line = 106
+
+[[task]]
+id = "CTASK-0043"
+claim_id = "C-087"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 43
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Associator norm independence: E[||A||^2] -> 2 as d -> inf, confirmed by Monte Carlo (cross-term correlation decays monotonically). Phase 6 B3."
+output_artifacts = ["src/scripts/analysis/c087_associator_independence_audit.py", "data/csv/c087_associator_independence_summary.csv", "tests/test_c087_associator_independence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c087_associator_independence_audit.py`, `data/csv/c087_associator_independence_summary.csv`, `tests/test_c087_associator_independence_audit.py` (4 tests)"
+source_line = 107
+
+[[task]]
+id = "CTASK-0044"
+claim_id = "C-090"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 44
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "SO(7) rotation drift: ZD condition broken by all non-trivial SO(7) rotations, drift grows with angle. Phase 6 B3."
+output_artifacts = ["src/scripts/analysis/c090_so7_rotation_drift_audit.py", "data/csv/c090_so7_rotation_drift_summary.csv", "tests/test_c090_so7_rotation_drift.py"]
+output_artifacts_raw = "`src/scripts/analysis/c090_so7_rotation_drift_audit.py`, `data/csv/c090_so7_rotation_drift_summary.csv`, `tests/test_c090_so7_rotation_drift.py` (4 tests)"
+source_line = 108
+
+[[task]]
+id = "CTASK-0045"
+claim_id = "C-092"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 45
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v6 orbit-classification summary and record that a \"continuous orbit\" claim is not supported under the current diagnostic."
+output_artifacts = ["src/scripts/analysis/c092_so7_orbit_structure_audit.py", "data/csv/c092_so7_orbit_structure_summary.csv", "tests/test_c092_so7_orbit_structure_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c092_so7_orbit_structure_audit.py`, `data/csv/c092_so7_orbit_structure_summary.csv`, `tests/test_c092_so7_orbit_structure_audit.py`"
+source_line = 109
+
+[[task]]
+id = "CTASK-0046"
+claim_id = "C-096"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 46
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v8 associator-tensor symmetry diagnostics (dims 4/8/16) into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c096_associator_tensor_transitions_audit.py", "data/csv/c096_associator_tensor_summary.csv", "tests/test_c096_associator_tensor_transitions_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c096_associator_tensor_transitions_audit.py`, `data/csv/c096_associator_tensor_summary.csv`, `tests/test_c096_associator_tensor_transitions_audit.py`"
+source_line = 110
+
+[[task]]
+id = "CTASK-0047"
+claim_id = "C-097"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 47
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Compute diagonal ZD interaction graph invariants (weights + components at threshold > 1) with deterministic artifacts and a unit test."
+output_artifacts = ["src/scripts/analysis/c097_zd_interaction_graph_audit.py", "data/csv/c097_zd_interaction_graph_summary.csv", "tests/test_c097_zd_interaction_graph_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c097_zd_interaction_graph_audit.py`, `data/csv/c097_zd_interaction_graph_summary.csv`, `tests/test_c097_zd_interaction_graph_audit.py`"
+source_line = 111
+
+[[task]]
+id = "CTASK-0048"
+claim_id = "C-099"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 48
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v8 non-diagonal ZD geometry summary (PCA dims, kernel, sparsity, angles) into a deterministic CSV artifact + offline unit test."
+output_artifacts = ["src/scripts/analysis/c099_nondiag_zd_geometry_audit.py", "data/csv/c099_nondiag_zd_geometry_summary.csv", "tests/test_c099_nondiag_zd_geometry_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c099_nondiag_zd_geometry_audit.py`, `data/csv/c099_nondiag_zd_geometry_summary.csv`, `tests/test_c099_nondiag_zd_geometry_audit.py`"
+source_line = 112
+
+[[task]]
+id = "CTASK-0049"
+claim_id = "C-100"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 49
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 113
+
+[[task]]
+id = "CTASK-0050"
+claim_id = "C-102"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 50
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Reproduce legacy expZ alternativity-ratio convergence into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c102_alt_ratio_convergence_audit.py", "data/csv/c102_alt_ratio_summary.csv", "data/csv/c102_alt_ratio_by_dim.csv", "tests/test_c102_alt_ratio_convergence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c102_alt_ratio_convergence_audit.py`, `data/csv/c102_alt_ratio_summary.csv`, `data/csv/c102_alt_ratio_by_dim.csv`, `tests/test_c102_alt_ratio_convergence_audit.py`"
+source_line = 114
+
+[[task]]
+id = "CTASK-0051"
+claim_id = "C-103"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 51
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Reproduce expAA percolation-style ZD connectivity transition into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c103_zd_topology_percolation_audit.py", "data/csv/c103_zd_topology_by_eps.csv", "data/csv/c103_zd_topology_summary.csv", "tests/test_c103_zd_topology_percolation_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c103_zd_topology_percolation_audit.py`, `data/csv/c103_zd_topology_by_eps.csv`, `data/csv/c103_zd_topology_summary.csv`, `tests/test_c103_zd_topology_percolation_audit.py`"
+source_line = 115
+
+[[task]]
+id = "CTASK-0052"
+claim_id = "C-108"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 52
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v10 alternativity-ratio fit into deterministic CSV artifacts and add an offline unit test."
+output_artifacts = ["src/scripts/analysis/c108_alt_ratio_convergence_audit.py", "data/csv/c108_alt_ratio_summary.csv", "data/csv/c108_alt_ratio_by_dim.csv", "tests/test_c108_alt_ratio_convergence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c108_alt_ratio_convergence_audit.py`, `data/csv/c108_alt_ratio_summary.csv`, `data/csv/c108_alt_ratio_by_dim.csv`, `tests/test_c108_alt_ratio_convergence_audit.py`"
+source_line = 116
+
+[[task]]
+id = "CTASK-0053"
+claim_id = "C-109"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 53
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v10 probing + reproduce lifted-diagonal kernel doubling into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c109_zd_construction_audit.py", "data/csv/c109_zd_construction_by_dim.csv", "data/csv/c109_zd_construction_summary.csv", "tests/test_c109_zd_construction_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c109_zd_construction_audit.py`, `data/csv/c109_zd_construction_by_dim.csv`, `data/csv/c109_zd_construction_summary.csv`, `tests/test_c109_zd_construction_audit.py`"
+source_line = 117
+
+[[task]]
+id = "CTASK-0054"
+claim_id = "C-113"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 54
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 118
+
+[[task]]
+id = "CTASK-0055"
+claim_id = "C-115"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 55
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 119
+
+[[task]]
+id = "CTASK-0056"
+claim_id = "C-120"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 56
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v12 ZD kernel scaling into deterministic CSV artifacts and add an offline unit test."
+output_artifacts = ["src/scripts/analysis/c120_zd_kernel_scaling_audit.py", "data/csv/c120_zd_kernel_scaling_summary.csv", "data/csv/c120_zd_kernel_scaling_by_dim.csv", "tests/test_c120_zd_kernel_scaling_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c120_zd_kernel_scaling_audit.py`, `data/csv/c120_zd_kernel_scaling_summary.csv`, `data/csv/c120_zd_kernel_scaling_by_dim.csv`, `tests/test_c120_zd_kernel_scaling_audit.py`"
+source_line = 120
+
+[[task]]
+id = "CTASK-0057"
+claim_id = "C-123"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 57
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v12 associator Lie bracket metrics into deterministic CSV artifacts and add an offline unit test."
+output_artifacts = ["src/scripts/analysis/c123_associator_lie_bracket_audit.py", "data/csv/c123_assoc_lie_bracket_summary.csv", "data/csv/c123_assoc_lie_bracket_by_dim.csv", "tests/test_c123_associator_lie_bracket_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c123_associator_lie_bracket_audit.py`, `data/csv/c123_assoc_lie_bracket_summary.csv`, `data/csv/c123_assoc_lie_bracket_by_dim.csv`, `tests/test_c123_associator_lie_bracket_audit.py`"
+source_line = 121
+
+[[task]]
+id = "CTASK-0058"
+claim_id = "C-126"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 58
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 122
+
+[[task]]
+id = "CTASK-0059"
+claim_id = "C-128"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 59
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v13 conjugate-inverse errors into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c128_conjugate_inverse_audit.py", "data/csv/c128_conjugate_inverse_summary.csv", "data/csv/c128_conjugate_inverse_by_dim.csv", "tests/test_c128_conjugate_inverse_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c128_conjugate_inverse_audit.py`, `data/csv/c128_conjugate_inverse_summary.csv`, `data/csv/c128_conjugate_inverse_by_dim.csv`, `tests/test_c128_conjugate_inverse_audit.py`"
+source_line = 123
+
+[[task]]
+id = "CTASK-0060"
+claim_id = "C-130"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 60
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v14 associator norm sqrt(2) metrics into deterministic CSV artifacts and add an offline unit test."
+output_artifacts = ["src/scripts/analysis/c130_associator_norm_sqrt2_audit.py", "data/csv/c130_associator_norm_sqrt2_summary.csv", "data/csv/c130_associator_norm_sqrt2_by_dim.csv", "tests/test_c130_associator_norm_sqrt2_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c130_associator_norm_sqrt2_audit.py`, `data/csv/c130_associator_norm_sqrt2_summary.csv`, `data/csv/c130_associator_norm_sqrt2_by_dim.csv`, `tests/test_c130_associator_norm_sqrt2_audit.py`"
+source_line = 124
+
+[[task]]
+id = "CTASK-0061"
+claim_id = "C-131"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 61
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 125
+
+[[task]]
+id = "CTASK-0062"
+claim_id = "C-132"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 62
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v14 commutator-norm convergence into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c132_commutator_norm_convergence_audit.py", "data/csv/c132_commutator_norm_summary.csv", "data/csv/c132_commutator_norm_by_dim.csv", "tests/test_c132_commutator_norm_convergence_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c132_commutator_norm_convergence_audit.py`, `data/csv/c132_commutator_norm_summary.csv`, `data/csv/c132_commutator_norm_by_dim.csv`, `tests/test_c132_commutator_norm_convergence_audit.py`"
+source_line = 126
+
+[[task]]
+id = "CTASK-0063"
+claim_id = "C-135"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 63
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Extract cached v14 power-norm scaling into deterministic CSV artifacts + offline unit test."
+output_artifacts = ["src/scripts/analysis/c135_power_norm_scaling_audit.py", "data/csv/c135_power_norm_summary.csv", "data/csv/c135_power_norm_by_dim_power.csv", "tests/test_c135_power_norm_scaling_audit.py"]
+output_artifacts_raw = "`src/scripts/analysis/c135_power_norm_scaling_audit.py`, `data/csv/c135_power_norm_summary.csv`, `data/csv/c135_power_norm_by_dim_power.csv`, `tests/test_c135_power_norm_scaling_audit.py`"
+source_line = 127
+
+[[task]]
+id = "CTASK-0064"
+claim_id = "C-136"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 64
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 128
+
+[[task]]
+id = "CTASK-0065"
+claim_id = "C-139"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 65
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 129
+
+[[task]]
+id = "CTASK-0066"
+claim_id = "C-141"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 66
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 130
+
+[[task]]
+id = "CTASK-0067"
+claim_id = "C-143"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 67
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 131
+
+[[task]]
+id = "CTASK-0068"
+claim_id = "C-149"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 68
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 132
+
+[[task]]
+id = "CTASK-0069"
+claim_id = "C-150"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 69
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 133
+
+[[task]]
+id = "CTASK-0070"
+claim_id = "C-163"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 70
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 134
+
+[[task]]
+id = "CTASK-0071"
+claim_id = "C-164"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 71
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 135
+
+[[task]]
+id = "CTASK-0072"
+claim_id = "C-165"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 72
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 136
+
+[[task]]
+id = "CTASK-0073"
+claim_id = "C-169"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 73
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 137
+
+[[task]]
+id = "CTASK-0074"
+claim_id = "C-170"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 74
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 138
+
+[[task]]
+id = "CTASK-0075"
+claim_id = "C-171"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 75
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 139
+
+[[task]]
+id = "CTASK-0076"
+claim_id = "C-173"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 76
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 140
+
+[[task]]
+id = "CTASK-0077"
+claim_id = "C-174"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 77
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 141
+
+[[task]]
+id = "CTASK-0078"
+claim_id = "C-176"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 78
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 142
+
+[[task]]
+id = "CTASK-0079"
+claim_id = "C-179"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 79
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 143
+
+[[task]]
+id = "CTASK-0080"
+claim_id = "C-180"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 80
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 144
+
+[[task]]
+id = "CTASK-0081"
+claim_id = "C-183"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 81
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 145
+
+[[task]]
+id = "CTASK-0082"
+claim_id = "C-185"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 82
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 146
+
+[[task]]
+id = "CTASK-0083"
+claim_id = "C-186"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 83
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 147
+
+[[task]]
+id = "CTASK-0084"
+claim_id = "C-187"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 84
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 148
+
+[[task]]
+id = "CTASK-0085"
+claim_id = "C-191"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 85
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 149
+
+[[task]]
+id = "CTASK-0086"
+claim_id = "C-195"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 86
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 150
+
+[[task]]
+id = "CTASK-0087"
+claim_id = "C-197"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 87
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 151
+
+[[task]]
+id = "CTASK-0088"
+claim_id = "C-201"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 88
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 152
+
+[[task]]
+id = "CTASK-0089"
+claim_id = "C-206"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 89
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 153
+
+[[task]]
+id = "CTASK-0090"
+claim_id = "C-207"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 90
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 154
+
+[[task]]
+id = "CTASK-0091"
+claim_id = "C-212"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 91
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 155
+
+[[task]]
+id = "CTASK-0092"
+claim_id = "C-217"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 92
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 156
+
+[[task]]
+id = "CTASK-0093"
+claim_id = "C-218"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 93
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 157
+
+[[task]]
+id = "CTASK-0094"
+claim_id = "C-219"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 94
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 158
+
+[[task]]
+id = "CTASK-0095"
+claim_id = "C-220"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 95
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 159
+
+[[task]]
+id = "CTASK-0096"
+claim_id = "C-221"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 96
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 160
+
+[[task]]
+id = "CTASK-0097"
+claim_id = "C-223"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 97
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 161
+
+[[task]]
+id = "CTASK-0098"
+claim_id = "C-228"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 98
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 162
+
+[[task]]
+id = "CTASK-0099"
+claim_id = "C-231"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 99
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 163
+
+[[task]]
+id = "CTASK-0100"
+claim_id = "C-234"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 100
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 164
+
+[[task]]
+id = "CTASK-0101"
+claim_id = "C-235"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 101
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 165
+
+[[task]]
+id = "CTASK-0102"
+claim_id = "C-239"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 102
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 166
+
+[[task]]
+id = "CTASK-0103"
+claim_id = "C-240"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 103
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 167
+
+[[task]]
+id = "CTASK-0104"
+claim_id = "C-241"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 104
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 168
+
+[[task]]
+id = "CTASK-0105"
+claim_id = "C-243"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 105
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 169
+
+[[task]]
+id = "CTASK-0106"
+claim_id = "C-244"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 106
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 170
+
+[[task]]
+id = "CTASK-0107"
+claim_id = "C-247"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 107
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 171
+
+[[task]]
+id = "CTASK-0108"
+claim_id = "C-248"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 108
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 172
+
+[[task]]
+id = "CTASK-0109"
+claim_id = "C-251"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 109
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 173
+
+[[task]]
+id = "CTASK-0110"
+claim_id = "C-253"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 110
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 174
+
+[[task]]
+id = "CTASK-0111"
+claim_id = "C-256"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 111
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 175
+
+[[task]]
+id = "CTASK-0112"
+claim_id = "C-257"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 112
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 176
+
+[[task]]
+id = "CTASK-0113"
+claim_id = "C-258"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 113
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 177
+
+[[task]]
+id = "CTASK-0114"
+claim_id = "C-259"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 114
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 178
+
+[[task]]
+id = "CTASK-0115"
+claim_id = "C-264"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 115
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 179
+
+[[task]]
+id = "CTASK-0116"
+claim_id = "C-268"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 116
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 180
+
+[[task]]
+id = "CTASK-0117"
+claim_id = "C-269"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 117
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 181
+
+[[task]]
+id = "CTASK-0118"
+claim_id = "C-271"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 118
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 182
+
+[[task]]
+id = "CTASK-0119"
+claim_id = "C-274"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 119
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 183
+
+[[task]]
+id = "CTASK-0120"
+claim_id = "C-278"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 120
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 184
+
+[[task]]
+id = "CTASK-0121"
+claim_id = "C-280"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 121
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 185
+
+[[task]]
+id = "CTASK-0122"
+claim_id = "C-281"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 122
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 186
+
+[[task]]
+id = "CTASK-0123"
+claim_id = "C-283"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 123
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 187
+
+[[task]]
+id = "CTASK-0124"
+claim_id = "C-284"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 124
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 188
+
+[[task]]
+id = "CTASK-0125"
+claim_id = "C-285"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 125
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 189
+
+[[task]]
+id = "CTASK-0126"
+claim_id = "C-286"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 126
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 190
+
+[[task]]
+id = "CTASK-0127"
+claim_id = "C-287"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 127
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 191
+
+[[task]]
+id = "CTASK-0128"
+claim_id = "C-288"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 128
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 192
+
+[[task]]
+id = "CTASK-0129"
+claim_id = "C-289"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 129
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 193
+
+[[task]]
+id = "CTASK-0130"
+claim_id = "C-290"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 130
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 194
+
+[[task]]
+id = "CTASK-0131"
+claim_id = "C-291"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 131
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 195
+
+[[task]]
+id = "CTASK-0132"
+claim_id = "C-300"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 132
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 196
+
+[[task]]
+id = "CTASK-0133"
+claim_id = "C-304"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 133
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 197
+
+[[task]]
+id = "CTASK-0134"
+claim_id = "C-306"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 134
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 198
+
+[[task]]
+id = "CTASK-0135"
+claim_id = "C-309"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 135
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 199
+
+[[task]]
+id = "CTASK-0136"
+claim_id = "C-314"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 136
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 200
+
+[[task]]
+id = "CTASK-0137"
+claim_id = "C-315"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 137
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 201
+
+[[task]]
+id = "CTASK-0138"
+claim_id = "C-316"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 138
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 202
+
+[[task]]
+id = "CTASK-0139"
+claim_id = "C-317"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 139
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 203
+
+[[task]]
+id = "CTASK-0140"
+claim_id = "C-318"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 140
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 204
+
+[[task]]
+id = "CTASK-0141"
+claim_id = "C-321"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 141
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 205
+
+[[task]]
+id = "CTASK-0142"
+claim_id = "C-324"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 142
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 206
+
+[[task]]
+id = "CTASK-0143"
+claim_id = "C-326"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 143
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 207
+
+[[task]]
+id = "CTASK-0144"
+claim_id = "C-329"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 144
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 208
+
+[[task]]
+id = "CTASK-0145"
+claim_id = "C-330"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 145
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 209
+
+[[task]]
+id = "CTASK-0146"
+claim_id = "C-333"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 146
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 210
+
+[[task]]
+id = "CTASK-0147"
+claim_id = "C-334"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 147
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 211
+
+[[task]]
+id = "CTASK-0148"
+claim_id = "C-335"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 148
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 212
+
+[[task]]
+id = "CTASK-0149"
+claim_id = "C-338"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 149
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 213
+
+[[task]]
+id = "CTASK-0150"
+claim_id = "C-339"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 150
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 214
+
+[[task]]
+id = "CTASK-0151"
+claim_id = "C-340"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 151
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 215
+
+[[task]]
+id = "CTASK-0152"
+claim_id = "C-341"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 152
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 216
+
+[[task]]
+id = "CTASK-0153"
+claim_id = "C-342"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 153
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 217
+
+[[task]]
+id = "CTASK-0154"
+claim_id = "C-343"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 154
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 218
+
+[[task]]
+id = "CTASK-0155"
+claim_id = "C-346"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 155
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 219
+
+[[task]]
+id = "CTASK-0156"
+claim_id = "C-349"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 156
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 220
+
+[[task]]
+id = "CTASK-0157"
+claim_id = "C-354"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 157
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 221
+
+[[task]]
+id = "CTASK-0158"
+claim_id = "C-355"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 158
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 222
+
+[[task]]
+id = "CTASK-0159"
+claim_id = "C-358"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 159
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 223
+
+[[task]]
+id = "CTASK-0160"
+claim_id = "C-362"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 160
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 224
+
+[[task]]
+id = "CTASK-0161"
+claim_id = "C-363"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 161
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 225
+
+[[task]]
+id = "CTASK-0162"
+claim_id = "C-366"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 162
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 226
+
+[[task]]
+id = "CTASK-0163"
+claim_id = "C-374"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 163
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 227
+
+[[task]]
+id = "CTASK-0164"
+claim_id = "C-375"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 164
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 228
+
+[[task]]
+id = "CTASK-0165"
+claim_id = "C-378"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 165
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 229
+
+[[task]]
+id = "CTASK-0166"
+claim_id = "C-379"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 166
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 230
+
+[[task]]
+id = "CTASK-0167"
+claim_id = "C-380"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 167
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 231
+
+[[task]]
+id = "CTASK-0168"
+claim_id = "C-381"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 168
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 232
+
+[[task]]
+id = "CTASK-0169"
+claim_id = "C-385"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 169
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 233
+
+[[task]]
+id = "CTASK-0170"
+claim_id = "C-386"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 170
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 234
+
+[[task]]
+id = "CTASK-0171"
+claim_id = "C-387"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 171
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 235
+
+[[task]]
+id = "CTASK-0172"
+claim_id = "C-390"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 172
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 236
+
+[[task]]
+id = "CTASK-0173"
+claim_id = "C-391"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 173
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 237
+
+[[task]]
+id = "CTASK-0174"
+claim_id = "C-394"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 174
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 238
+
+[[task]]
+id = "CTASK-0175"
+claim_id = "C-396"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 175
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 239
+
+[[task]]
+id = "CTASK-0176"
+claim_id = "C-399"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 176
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Triage: add primary sources + define validation check (test or verifier) or mark as resolved with justification."
+output_artifacts = ["docs/CLAIMS_EVIDENCE_MATRIX.md"]
+output_artifacts_raw = "See CLAIMS_EVIDENCE_MATRIX.md"
+source_line = 240
+
+[[task]]
+id = "CTASK-0177"
+claim_id = "C-401"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 177
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Triage: primary sources cached; still needs a concrete, offline validation check (or keep as blueprint-only)."
+output_artifacts = ["docs/external_sources/WARP_DRIVE_SOURCES.md", "data/external/papers/White_2021_Casimir_Warp.pdf"]
+output_artifacts_raw = "`docs/external_sources/WARP_DRIVE_SOURCES.md`, `data/external/papers/White_2021_Casimir_Warp.pdf`"
+source_line = 241
+
+[[task]]
+id = "CTASK-0178"
+claim_id = "C-403"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 178
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Source-index + define offline check for spectral-triple-strength \"geometry from spectrum\" program claims."
+output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/spectral/demo_pairs.py", "tests/test_isospectral_nonisomorphic_pair.py", "src/spectral_triple_toy.py", "tests/test_spectral_triple_toy.py"]
+output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/spectral/demo_pairs.py`, `tests/test_isospectral_nonisomorphic_pair.py`, `src/spectral_triple_toy.py`, `tests/test_spectral_triple_toy.py`"
+source_line = 242
+
+[[task]]
+id = "CTASK-0179"
+claim_id = "C-404"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 179
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Source-index + define offline check for modular-data/entanglement-wedge program claims."
+output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/scripts/data/fetch_emergence_layers_sources.py", "data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf", "data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf", "data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf", "data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf", "src/holography/maxflow.py", "tests/test_holography_bit_threads.py"]
+output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/scripts/data/fetch_emergence_layers_sources.py`, `data/external/papers/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf`, `data/external/papers/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf`, `data/external/papers/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf`, `data/external/papers/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py`"
+source_line = 243
+
+[[task]]
+id = "CTASK-0180"
+claim_id = "C-405"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 180
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Source-index + define offline check for open-systems/QEC observer program claims."
+output_artifacts = ["docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/quantum/open_systems/lindblad.py", "tests/test_open_systems_lindblad.py", "src/quantum/open_systems/redundancy.py", "tests/test_open_systems_redundancy.py"]
+output_artifacts_raw = "`docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/quantum/open_systems/lindblad.py`, `tests/test_open_systems_lindblad.py`, `src/quantum/open_systems/redundancy.py`, `tests/test_open_systems_redundancy.py`"
+source_line = 244
+
+[[task]]
+id = "CTASK-0181"
+claim_id = "C-406"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 181
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Enumerate embedding choices (symmetry proxy) and quantify invariance/trial factors for TSCP alignment."
+output_artifacts = ["docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_embedding_sweep.py", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
+output_artifacts_raw = "`docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_embedding_sweep.py`, `docs/external_sources/TSCP_METHOD_SOURCES.md`"
+source_line = 245
+
+[[task]]
+id = "CTASK-0182"
+claim_id = "C-407"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 182
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Maintain a look-elsewhere parameter ledger + global correction bounds (Bonferroni/Holm) for TSCP-style searches."
+output_artifacts = ["reports/tscp_trial_factor_ledger.md", "tests/test_tscp_embedding_sweep.py", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
+output_artifacts_raw = "`reports/tscp_trial_factor_ledger.md`, `tests/test_tscp_embedding_sweep.py`, `docs/external_sources/TSCP_METHOD_SOURCES.md`"
+source_line = 246
+
+[[task]]
+id = "CTASK-0183"
+claim_id = "C-408"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 183
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Add symmetric falsification thresholds (N_min + alpha/effect-size) for selected claims; enforce via tests/verifiers."
+output_artifacts = ["docs/preregistered/TSCP_SKY_ALIGNMENT.md", "docs/external_sources/TSCP_METHOD_SOURCES.md"]
+output_artifacts_raw = "`docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`"
+source_line = 247
+
+[[task]]
+id = "CTASK-0184"
+claim_id = "C-410"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 184
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Photon-graviton mixing scope: Schwinger B_cr=4.41e9 T verified; mixing amplitude negligible for lab fields; C-402 NOT overturned. Phase 6 task B6."
+output_artifacts = ["src/scripts/analysis/c410_photon_graviton_scope.py", "tests/test_c410_photon_graviton_scope.py", "docs/BIBLIOGRAPHY.md"]
+output_artifacts_raw = "`src/scripts/analysis/c410_photon_graviton_scope.py`, `tests/test_c410_photon_graviton_scope.py` (4 tests), `docs/BIBLIOGRAPHY.md`"
+source_line = 248
+
+[[task]]
+id = "CTASK-0185"
+claim_id = "C-411"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 185
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "SFWM thin-layer scaling: direct SFWM dominates 5.8x (phase-matching); coherence lengths match paper (33.3/3.1/3.4 um). Phase 6 task B6."
+output_artifacts = ["src/scripts/analysis/c411_sfwm_thin_layer_check.py", "tests/test_c411_sfwm_thin_layer.py", "docs/BIBLIOGRAPHY.md"]
+output_artifacts_raw = "`src/scripts/analysis/c411_sfwm_thin_layer_check.py`, `tests/test_c411_sfwm_thin_layer.py` (4 tests), `docs/BIBLIOGRAPHY.md`"
+source_line = 249
+
+[[task]]
+id = "CTASK-0186"
+claim_id = "C-417"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 186
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Turn \"Holographic Entropy Trap\" into a falsifiable metric + null; keep speculative until tied to optical-capture baselines and uncertainty."
+output_artifacts = ["src/scripts/analysis/sedenion_warp_synthesis.py", "data/artifacts/images/sedenion_capture_scaling.png"]
+output_artifacts_raw = "`src/scripts/analysis/sedenion_warp_synthesis.py`, `data/artifacts/images/sedenion_capture_scaling.png`"
+source_line = 250
+
+[[task]]
+id = "CTASK-0187"
+claim_id = "C-432"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 187
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Kerr geodesic solver + Bardeen analytic shadow boundary validated: Schwarzschild a=0 shadow radius sqrt(27) within 0.1%, photon orbit radii exact, impact parameters xi^2+eta=27, high-spin D-shape asymmetry, null geodesic escape/capture. Phase 6 task A9."
+output_artifacts = ["src/gemini_physics/gr/kerr_geodesic.py", "tests/test_kerr_shadow.py"]
+output_artifacts_raw = "`src/gemini_physics/gr/kerr_geodesic.py`, `tests/test_kerr_shadow.py` (8 tests)"
+source_line = 251
+
+[[task]]
+id = "CTASK-0188"
+claim_id = "C-429"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 188
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Kerr shadow asymmetry (a=0.99) validated: D-shape center offset > 0.1 from Schwarzschild symmetric limit. Phase 6 task A9."
+output_artifacts = ["src/gemini_physics/gr/kerr_geodesic.py", "tests/test_kerr_shadow.py::test_high_spin_shadow_asymmetric"]
+output_artifacts_raw = "`src/gemini_physics/gr/kerr_geodesic.py`, `tests/test_kerr_shadow.py::test_high_spin_shadow_asymmetric`"
+source_line = 252
+
+[[task]]
+id = "CTASK-0189"
+claim_id = "C-425"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 189
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Octonionic (8D) field Hamiltonian formulation: Fano-plane multiplication, Stormer-Verlet symplectic integrator, 7 Noether charges, free-field dispersion omega^2=k^2+m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction. Phase 6 task A10."
+output_artifacts = ["crates/algebra_core/src/octonion_field.rs", "tests/test_octonion_field.py"]
+output_artifacts_raw = "`crates/algebra_core/src/octonion_field.rs`, `tests/test_octonion_field.py` (7 tests)"
+source_line = 253
+
+[[task]]
+id = "CTASK-0190"
+claim_id = "C-428"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 190
+status_token = "PARTIAL"
+status_raw = "PARTIAL"
+status_canonical = true
+task = "Kerr geodesic infrastructure from A9 provides Boyer-Lindquist integrator + Mino-time second-order Hamiltonian form. NegDimCosmology coupling still needs validation."
+output_artifacts = ["src/gemini_physics/gr/kerr_geodesic.py", "tests/test_kerr_shadow.py"]
+output_artifacts_raw = "`src/gemini_physics/gr/kerr_geodesic.py`, `tests/test_kerr_shadow.py`"
+source_line = 254
+
+[[task]]
+id = "CTASK-0191"
+claim_id = "C-426"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 191
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Add a preregistered fit protocol (null + trial-factor ledger) for mapping ZD eigenvalues to particle masses; keep as toy until it passes robust controls."
+output_artifacts = ["crates/algebra_core/src/hypercomplex.rs", "src/scripts/analysis/pathion_particle_fit.py", "tests/test_pathion_zd_diagonalization.py"]
+output_artifacts_raw = "`crates/algebra_core/src/hypercomplex.rs`, `src/scripts/analysis/pathion_particle_fit.py`, `tests/test_pathion_zd_diagonalization.py`"
+source_line = 255
+
+[[task]]
+id = "CTASK-0192"
+claim_id = "C-427"
+section = "Backfill (triage) tasks (auto-generated)"
+section_index = 4
+table_index = 2
+order_index = 192
+status_token = "TODO"
+status_raw = "TODO"
+status_canonical = true
+task = "Add unit tests for algebraic-media tensor construction invariants (symmetry/normalization bounds) and define a minimal physical decision rule for the mapping."
+output_artifacts = ["src/gemini_physics/metamaterial.py", "src/scripts/analysis/unified_spacetime_synthesis.py"]
+output_artifacts_raw = "`src/gemini_physics/metamaterial.py`, `src/scripts/analysis/unified_spacetime_synthesis.py`"
+source_line = 256
+
+[[task]]
+id = "CTASK-0193"
+claim_id = "C-028"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 193
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Aut(S) = G2 x S3 verification (Phase 6A)."
+output_artifacts = ["crates/algebra_core/src/hypercomplex.rs", "tests/test_sedenion_automorphism.py"]
+output_artifacts_raw = "`crates/algebra_core/src/hypercomplex.rs`, `tests/test_sedenion_automorphism.py`"
+source_line = 262
+
+[[task]]
+id = "CTASK-0194"
+claim_id = "C-029"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 194
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Three-generation literature review (Phase 6B)."
+output_artifacts = ["crates/algebra_core/src/clifford.rs", "tests/test_sedenion_generations.py"]
+output_artifacts_raw = "`crates/algebra_core/src/clifford.rs`, `tests/test_sedenion_generations.py`"
+source_line = 263
+
+[[task]]
+id = "CTASK-0195"
+claim_id = "C-030"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 195
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Decision rule + offline bypass checks (associator + alternativity) for sedenion-valued actions."
+output_artifacts = ["docs/C030_SEDENION_LAGRANGIAN_BYPASS.md", "src/scripts/analysis/c030_sedenion_lagrangian_bypass_checks.py", "data/csv/c030_sedenion_lagrangian_bypass_checks.csv", "tests/test_c030_sedenion_lagrangian_bypass_checks.py"]
+output_artifacts_raw = "`docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`, `src/scripts/analysis/c030_sedenion_lagrangian_bypass_checks.py`, `data/csv/c030_sedenion_lagrangian_bypass_checks.csv`, `tests/test_c030_sedenion_lagrangian_bypass_checks.py`"
+source_line = 264
+
+[[task]]
+id = "CTASK-0196"
+claim_id = "C-031"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 196
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Hurwitz/norm-composition transition (1,2,4,8 vs 16) + zero-divisor example artifact + test."
+output_artifacts = ["docs/external_sources/C031_HURWITZ_QUANTIZATION_SOURCES.md", "src/scripts/analysis/c031_hurwitz_norm_composition_checks.py", "data/csv/c031_hurwitz_norm_composition_checks.csv", "tests/test_c031_hurwitz_norm_composition_checks.py", "docs/C030_SEDENION_LAGRANGIAN_BYPASS.md"]
+output_artifacts_raw = "`docs/external_sources/C031_HURWITZ_QUANTIZATION_SOURCES.md`, `src/scripts/analysis/c031_hurwitz_norm_composition_checks.py`, `data/csv/c031_hurwitz_norm_composition_checks.csv`, `tests/test_c031_hurwitz_norm_composition_checks.py`, `docs/C030_SEDENION_LAGRANGIAN_BYPASS.md`"
+source_line = 265
+
+[[task]]
+id = "CTASK-0197"
+claim_id = "C-032"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 197
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Tang (2025) non-associative QED: minimal offline reproduction (Table 2 extraction + subalgebra associator stats)."
+output_artifacts = ["docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "data/external/traces/tang_2025_preprints_org_landing.txt", "data/external/papers/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt", "src/scripts/analysis/c032_tang_2025_min_reproduction.py", "data/csv/c032_tang_2025_table2_lepton_masses.csv", "data/csv/c032_tang_2025_associator_subalgebra_summary.csv", "data/csv/c032_tang_2025_associator_basis_triples.csv", "tests/test_c032_tang_2025_min_reproduction.py"]
+output_artifacts_raw = "`docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/external/traces/tang_2025_preprints_org_landing.txt`, `data/external/papers/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt`, `src/scripts/analysis/c032_tang_2025_min_reproduction.py`, `data/csv/c032_tang_2025_table2_lepton_masses.csv`, `data/csv/c032_tang_2025_associator_subalgebra_summary.csv`, `data/csv/c032_tang_2025_associator_basis_triples.csv`, `tests/test_c032_tang_2025_min_reproduction.py`"
+source_line = 266
+
+[[task]]
+id = "CTASK-0198"
+claim_id = "C-032"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 198
+status_token = "BLOCKED"
+status_raw = "BLOCKED"
+status_canonical = true
+task = "Tang (2025) non-associative QED: mechanize the associator->mass mapping (BLOCKED until the source provides a complete, convention-fixed mapping and scale choice)."
+output_artifacts = ["docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "data/external/traces/tang_2025_preprints_org_landing.txt"]
+output_artifacts_raw = "`docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md`, `data/external/traces/tang_2025_preprints_org_landing.txt`"
+source_line = 267
+
+[[task]]
+id = "CTASK-0199"
+claim_id = "C-033"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 199
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "SU(5) generator basis verification complete; source does not specify a unique coefficient mapping from sedenion basis to a normalized SU(5) basis (claim demoted accordingly)."
+output_artifacts = ["data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf", "docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md", "docs/C033_SU5_MAPPING_CLOSURE.md", "crates/algebra_core/src/group_theory.rs", "src/scripts/analysis/c033_su5_generator_summary.py", "data/csv/c033_su5_generator_summary.csv", "tests/test_su5_generators.py"]
+output_artifacts_raw = "`data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py`"
+source_line = 268
+
+[[task]]
+id = "CTASK-0200"
+claim_id = "C-034"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 200
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Chanyal (2014) sedenion gravi-electromagnetism: minimal structural reproduction (two 8D sectors via CD doubling)."
+output_artifacts = ["docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/external/traces/chanyal_2014_springer_landing.txt", "data/external/traces/chanyal_2014_springer_abstract.txt", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py", "data/csv/c034_sedenion_doubling_identity_check.csv", "tests/test_c034_sedenion_doubling_identity.py"]
+output_artifacts_raw = "`docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/external/traces/chanyal_2014_springer_landing.txt`, `data/external/traces/chanyal_2014_springer_abstract.txt`, `docs/C034_CHANYAL_2014_REPRODUCTION.md`, `src/scripts/analysis/c034_chanyal_2014_structural_reproduction.py`, `data/csv/c034_sedenion_doubling_identity_check.csv`, `tests/test_c034_sedenion_doubling_identity.py`"
+source_line = 269
+
+[[task]]
+id = "CTASK-0201"
+claim_id = "C-034"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 201
+status_token = "BLOCKED"
+status_raw = "BLOCKED"
+status_canonical = true
+task = "Chanyal (2014) sedenion gravi-electromagnetism: equation-level reproduction checks (BLOCKED until a legal full-text source is cached)."
+output_artifacts = ["docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/external/traces/chanyal_2014_springer_landing.txt", "data/external/traces/chanyal_2014_springer_abstract.txt"]
+output_artifacts_raw = "`docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md`, `data/external/traces/chanyal_2014_springer_landing.txt`, `data/external/traces/chanyal_2014_springer_abstract.txt`"
+source_line = 270
+
+[[task]]
+id = "CTASK-0202"
+claim_id = "C-035"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 202
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "F4 Casimir epsilon = 1/4 (Phase 7A)."
+output_artifacts = ["crates/quantum_core/src/casimir.rs", "tests/test_f4_casimir.py"]
+output_artifacts_raw = "`crates/quantum_core/src/casimir.rs`, `tests/test_f4_casimir.py`"
+source_line = 271
+
+[[task]]
+id = "CTASK-0203"
+claim_id = "C-036"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 203
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Bigraph cosmogenesis simulation (Phase 7B)."
+output_artifacts = ["crates/cosmology_core/src/spectral.rs", "tests/test_bigraph_cosmogenesis.py"]
+output_artifacts_raw = "`crates/cosmology_core/src/spectral.rs`, `tests/test_bigraph_cosmogenesis.py`"
+source_line = 272
+
+[[task]]
+id = "CTASK-0204"
+claim_id = "C-037"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 204
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Demoted coincidence claim to Not supported; audit note defines mechanism gap and falsification requirements."
+output_artifacts = ["docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md"]
+output_artifacts_raw = "`docs/C037_NUMERICAL_COINCIDENCE_AUDIT.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+source_line = 273
+
+[[task]]
+id = "CTASK-0205"
+claim_id = "C-038"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 205
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "w0=-5/6 observational test (Phase 7C). DISFAVORED."
+output_artifacts = ["crates/cosmology_core/src/bounce.rs", "tests/test_exceptional_w0.py"]
+output_artifacts_raw = "`crates/cosmology_core/src/bounce.rs`, `tests/test_exceptional_w0.py`"
+source_line = 274
+
+[[task]]
+id = "CTASK-0206"
+claim_id = "C-039"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 206
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Spectral dimension running on bigraph (Phase 7D). Qualitative consistency with CDT."
+output_artifacts = ["crates/cosmology_core/src/spectral.rs", "src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py", "data/csv/c039_spectral_dimension_bigraph_curve.csv", "data/csv/c039_spectral_dimension_bigraph_summary.csv", "tests/test_spectral_dimension.py", "tests/test_c039_spectral_dimension_bigraph_artifacts.py"]
+output_artifacts_raw = "`crates/cosmology_core/src/spectral.rs`, `src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py`, `data/csv/c039_spectral_dimension_bigraph_curve.csv`, `data/csv/c039_spectral_dimension_bigraph_summary.csv`, `tests/test_spectral_dimension.py`, `tests/test_c039_spectral_dimension_bigraph_artifacts.py`"
+source_line = 275
+
+[[task]]
+id = "CTASK-0207"
+claim_id = "C-040"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 207
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Primordial tilt n_s comparison (Phase 7E). Post-hoc; D_eff=2.8-3.0 inconsistent with Planck via Calcagni formula."
+output_artifacts = ["crates/cosmology_core/src/spectral.rs", "tests/test_primordial_tilt.py"]
+output_artifacts_raw = "`crates/cosmology_core/src/spectral.rs`, `tests/test_primordial_tilt.py`"
+source_line = 276
+
+[[task]]
+id = "CTASK-0208"
+claim_id = "C-041"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 208
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Demote dimensional coincidence claim; record mechanism gap and decision rule."
+output_artifacts = ["docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "docs/EXCEPTIONAL_COSMOLOGY.md"]
+output_artifacts_raw = "`docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md`, `docs/EXCEPTIONAL_COSMOLOGY.md`"
+source_line = 277
+
+[[task]]
+id = "CTASK-0209"
+claim_id = "C-042"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 209
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Kozyrev p-adic wavelets: implement eigenbasis for Vladimirov operator + offline tests."
+output_artifacts = ["docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md", "crates/algebra_core/src/padic.rs", "tests/test_padic_wavelets.py"]
+output_artifacts_raw = "`docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `crates/algebra_core/src/padic.rs`, `tests/test_padic_wavelets.py`"
+source_line = 278
+
+[[task]]
+id = "CTASK-0210"
+claim_id = "C-043"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 210
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Compact object integration pipeline + unified catalog artifact + offline schema test."
+output_artifacts = ["docs/external_sources/C043_COMPACT_OBJECT_CATALOG_SOURCES.md", "src/scripts/data/fetch_compact_objects.py", "data/csv/compact_objects_catalog.csv", "data/csv/compact_objects_catalog.PROVENANCE.json", "tests/test_c043_compact_objects_catalog_artifact.py"]
+output_artifacts_raw = "`docs/external_sources/C043_COMPACT_OBJECT_CATALOG_SOURCES.md`, `src/scripts/data/fetch_compact_objects.py`, `data/csv/compact_objects_catalog.csv`, `data/csv/compact_objects_catalog.PROVENANCE.json`, `tests/test_c043_compact_objects_catalog_artifact.py`"
+source_line = 279
+
+[[task]]
+id = "CTASK-0211"
+claim_id = "C-044"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 211
+status_token = "REFUTED"
+status_raw = "REFUTED"
+status_canonical = true
+task = "Legacy zero-divisor adjacency matrices refuted; keep reproduction script as guard."
+output_artifacts = ["data/csv/legacy/", "src/scripts/reproduction/reproduce_zd_adjacency.py", "docs/LEGACY_ARTIFACT_AUDIT.md"]
+output_artifacts_raw = "`data/csv/legacy/`, `src/scripts/reproduction/reproduce_zd_adjacency.py`, `docs/LEGACY_ARTIFACT_AUDIT.md`"
+source_line = 280
+
+[[task]]
+id = "CTASK-0212"
+claim_id = "C-045"
+section = "Sedenion Field Theory and Exceptional Cosmology (Phases 6-7)"
+section_index = 5
+table_index = 3
+order_index = 212
+status_token = "DONE"
+status_raw = "DONE"
+status_canonical = true
+task = "Strang splitting convergence demo + validation smoke check."
+output_artifacts = ["examples/strang_splitting_demo.py", "src/scripts/validation/validate_strang_splitting_convergence.py", "tests/test_strang_splitting_demo.py"]
+output_artifacts_raw = "`examples/strang_splitting_demo.py`, `src/scripts/validation/validate_strang_splitting_convergence.py`, `tests/test_strang_splitting_demo.py`"
+source_line = 281

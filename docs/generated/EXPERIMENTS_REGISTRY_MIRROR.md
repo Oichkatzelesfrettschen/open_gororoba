@@ -1,0 +1,183 @@
+# Experiments Registry Mirror
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: TOML registry files under registry/ -->
+<!-- Generated at: 2026-02-09T08:38:02Z -->
+
+Authoritative source: `registry/experiments.toml`.
+
+Total experiments: 10
+
+## E-001: Cayley-Dickson Motif Census
+
+- Binary: `motif-census`
+- Input: None (purely algebraic)
+- Output: data/csv/motif_census_dim{N}.csv, data/csv/motif_census_summary.csv
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-100, C-101, C-102, C-103, C-104, C-105, C-106, C-107, C-108, C-109, C-110
+
+Method:
+Exact enumeration of connected-component structure of diagonal zero-product graph for cross-assessor pairs at each CD doubling (dim=16,32,64,128,256).
+
+Run command:
+```bash
+cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
+```
+
+## E-002: Multi-Dataset GPU Ultrametric Sweep
+
+- Binary: `multi-dataset-ultrametric`
+- Input: data/external/ (CHIME/FRB, ATNF, GWOSC, Pantheon+, Gaia DR3, SDSS DR18, Fermi GBM, Hipparcos, McGill)
+- Output: data/csv/c071g_multi_dataset_ultrametric.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `True`
+- Claims: C-071, C-436, C-437, C-438, C-439, C-440
+
+Method:
+For 9 catalogs: normalize, compute Euclidean distances, ultrametric fraction test with column-shuffled null. 10M triples x 1000 permutations. BH-FDR correction.
+
+Run command:
+```bash
+cargo run --release --bin multi-dataset-ultrametric -- --explore --n-triples 10000000 --n-permutations 1000
+```
+
+## E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)
+
+- Binary: `real-cosmo-fit`
+- Input: data/external/Pantheon+SH0ES.dat
+- Output: stdout
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-200, C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210
+
+Method:
+Joint chi-square over 1578 Pantheon+ SNe + 7 DESI DR1 BAO bins. Analytic M_B marginalization. Nelder-Mead. Lambda-CDM vs w0-CDM via delta-BIC.
+
+Run command:
+```bash
+cargo run --release --bin real-cosmo-fit
+```
+
+## E-004: Kerr Shadow Boundaries
+
+- Binary: `kerr-shadow`
+- Input: None (analytic)
+- Output: stdout or --output file
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-301, C-302, C-303, C-304, C-305, C-306, C-307, C-308, C-309, C-310
+
+Method:
+Bardeen shadow boundary (alpha, beta) for Kerr BH at given spin and inclination.
+
+Run command:
+```bash
+cargo run --release --bin kerr-shadow -- --spin 0.998 --n-points 1000 --inclination 17
+```
+
+## E-005: Zero-Divisor Graph Invariants
+
+- Binary: `zd-search`
+- Input: None (purely algebraic)
+- Output: stdout
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-050, C-051, C-052, C-053, C-054, C-055, C-056, C-057, C-058, C-059, C-060
+
+Method:
+Build sedenion ZD interaction graph, compute graph-theoretic invariants. Extend to dim=32.
+
+Run command:
+```bash
+cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000
+```
+
+## E-006: Gravastar TOV Parameter Sweep
+
+- Binary: `gravastar-sweep`
+- Input: None (parametric sweep)
+- Output: data/csv/gravastar_sweep.csv
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-400, C-401, C-402, C-403, C-404, C-405, C-406, C-407, C-408, C-409, C-410
+
+Method:
+Solve TOV for three-layer gravastar across polytropic indices and target masses.
+
+Run command:
+```bash
+cargo run --release --bin gravastar-sweep -- --n-gamma 32 --n-mass 32 --output data/csv/gravastar_sweep.csv
+```
+
+## E-007: Tensor Network / PEPS Entropy
+
+- Binary: `tensor-network`
+- Input: None (synthetic circuits)
+- Output: data/csv/entropy_scaling.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: C-350, C-351, C-352, C-353, C-354, C-355, C-356, C-357, C-358, C-359, C-360
+
+Method:
+Classical tensor network simulator: Bell/GHZ states, random circuits, SVD entropy, PEPS boundary MPS.
+
+Run command:
+```bash
+cargo run --release --bin tensor-network -- scaling --n-min 2 --n-max 12 --output data/csv/entropy_scaling.csv
+```
+
+## E-008: GWTC-3 Mass Clumping (Dip Test)
+
+- Binary: `mass-clumping`
+- Input: data/external/gwosc_all_events.csv
+- Output: data/csv/gwtc3_mass_clumping_dip.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: C-007
+
+Method:
+Hartigan dip test for multimodality of BBH mass distribution. Permutation-based p-value.
+
+Run command:
+```bash
+cargo run --release --bin mass-clumping -- --n-permutations 10000 --seed 42
+```
+
+## E-009: Negative-Dimension Eigenvalue Convergence
+
+- Binary: `neg-dim-eigen`
+- Input: None (parametric)
+- Output: data/csv/neg_dim_convergence.csv
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-420, C-421, C-422, C-423, C-424, C-425
+
+Method:
+Eigenvalues of H = T(k) + V(x) with fractional kinetic operator, imaginary-time evolution, epsilon->0 sweep.
+
+Run command:
+```bash
+cargo run --release --bin neg-dim-eigen -- sweep --alpha -1.5 --eps-start 0.5 --eps-end 0.01 --eps-steps 20 --output data/csv/neg_dim_convergence.csv
+```
+
+## E-010: Materials Science Baselines (JARVIS + AFLOW)
+
+- Binary: `materials-baseline`
+- Input: data/external/ (JARVIS JSON, AFLOW CSV)
+- Output: stdout
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: (none)
+
+Method:
+JARVIS-DFT and AFLOW datasets, Magpie-style featurization, OLS regression for formation energy and band gap.
+
+Run command:
+```bash
+cargo run --release --bin materials-baseline -- --data-dir data/external --seed 42
+```

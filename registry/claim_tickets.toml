@@ -1,0 +1,198 @@
+# Claim-ticket registry (TOML-first).
+# Tracks claims audit batches and related planning tickets.
+
+[claim_tickets]
+authoritative = true
+updated = "2026-02-09"
+source_markdown_glob = "docs/tickets/*.md"
+ticket_count = 10
+
+[[ticket]]
+id = "TICKET-C001-C050"
+title = "Ticket: Claims audit batch C-001..C-050"
+source_markdown = "docs/tickets/C001_C050_claims_audit.md"
+ticket_kind = "CLAIMS_AUDIT_BATCH"
+owner = "agent"
+created = "2026-02-02"
+status_raw = "IN PROGRESS"
+status_token = "IN_PROGRESS"
+claim_range_start = 1
+claim_range_end = 50
+claims_referenced = ["C-001", "C-005", "C-007", "C-008", "C-010", "C-011", "C-022", "C-023", "C-026", "C-027", "C-030", "C-031", "C-032", "C-033", "C-034", "C-037", "C-039", "C-040", "C-041", "C-043", "C-047", "C-048", "C-050"]
+backlog_reports = ["reports/claims_batch_backlog_C001_C050.md"]
+deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C001_C050.md", "docs/C026_MASS_GAP_MECHANISM.md", "docs/C027_DEFF_HORIZON_TEST.md", "data/csv/deff_horizon_mass_scaling*.csv", "tests/test_c027_deff_horizon_mass_scaling.py", "src/scripts/analysis/c032_tang_2025_min_reproduction.py", "docs/external_sources/C032_TANG_2025_SEDENIONIC_QED_SOURCES.md", "docs/C034_CHANYAL_2014_REPRODUCTION.md", "docs/external_sources/C034_CHANYAL_2014_GRAVI_ELECTROMAGNETISM_SOURCES.md", "data/external/papers/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf", "data/external/papers/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf", "docs/C033_SU5_MAPPING_CLOSURE.md", "data/external/traces/chanyal_2014_academia_requires_login.txt", "docs/C030_SEDENION_LAGRANGIAN_BYPASS.md", "data/csv/c030_sedenion_lagrangian_bypass_checks.csv", "data/csv/c031_hurwitz_norm_composition_checks.csv", "src/scripts/analysis/c039_spectral_dimension_bigraph_sweep.py", "data/csv/c039_spectral_dimension_bigraph_*.csv", "src/scripts/analysis/c040_primordial_tilt_deff_sweep.py", "data/csv/c040_primordial_tilt_*.csv", "docs/C041_F4_STRING_DIMENSION_COINCIDENCE_AUDIT.md", "data/csv/compact_objects_catalog.csv", "docs/C047_E_SERIES_KAC_MOODY_AUDIT.md", "docs/external_sources/C047_E_SERIES_KAC_MOODY_SOURCES.md", "tests/test_c047_e_series_cartan_signature.py", "docs/external_sources/C048_MOTIVIC_TOWER_SOURCES.md", "data/external/papers/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf", "docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md", "src/scripts/analysis/c050_spaceplate_flow_isomorphism_toy.py", "data/csv/c050_spaceplate_flow_isomorphism_toy.csv", "tests/test_c050_spaceplate_flow_isomorphism_toy.py"]
+acceptance_checks = ["PYTHONWARNINGS=error make check-parallel", "PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
+goal_summary = "Make the C-001..C-050 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` mechanically tractable for claim-by-claim auditing: - each open claim has (1) a clear scope boundary, (2) primary sources indexed and cached when possible, and (3) an offline check hook (unit test, verifier, or deterministic artifact pipeline) where feasible. This ticket does not attempt to \"prove the theory\". It upgrades traceability and falsifiability."
+done_checkboxes = 16
+open_checkboxes = 1
+
+[[ticket]]
+id = "TICKET-C051-C100"
+title = "Ticket: Claims audit batch C-051..C-100"
+source_markdown = "docs/tickets/C051_C100_claims_audit.md"
+ticket_kind = "CLAIMS_AUDIT_BATCH"
+owner = "agent"
+created = "2026-02-02"
+status_raw = "IN PROGRESS"
+status_token = "IN_PROGRESS"
+claim_range_start = 51
+claim_range_end = 100
+claims_referenced = ["C-051", "C-053", "C-068", "C-070", "C-074", "C-075", "C-077", "C-078", "C-082", "C-087", "C-090", "C-092", "C-094", "C-096", "C-097", "C-099", "C-100"]
+backlog_reports = ["reports/claims_batch_backlog_C051_C100.md"]
+deliverable_links = ["docs/external_sources/*.md", "data/external/"]
+acceptance_checks = ["PYTHONWARNINGS=error make check-parallel", "PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
+goal_summary = "Make the C-051..C-100 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` mechanically tractable for claim-by-claim auditing: - each open claim has (1) a clear scope boundary, (2) primary sources indexed and cached when possible, and (3) an offline check hook (unit test, verifier, or deterministic artifact pipeline) where feasible. This ticket is primarily about de-risking legacy/\"suggestive\" algebra-to-physics mappings by: - splitting observational vs interpretive statements, - keeping any physics links explicitly speculative unless supported by sources + robust statistics, - converting legacy experiment notes into reproducible scripts + tests where possible."
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-C101-C150"
+title = "Ticket: Claims audit batch C-101..C-150"
+source_markdown = "docs/tickets/C101_C150_claims_audit.md"
+ticket_kind = "CLAIMS_AUDIT_BATCH"
+owner = "agent"
+created = "2026-02-02"
+status_raw = "DONE"
+status_token = "DONE"
+claim_range_start = 101
+claim_range_end = 150
+claims_referenced = ["C-101", "C-102", "C-103", "C-108", "C-109", "C-120", "C-123", "C-128", "C-129", "C-130", "C-132", "C-135", "C-150"]
+backlog_reports = ["reports/claims_batch_backlog_C101_C150.md"]
+deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C101_C150.md", "src/scripts/analysis/c102_alt_ratio_convergence_audit.py", "data/csv/c102_alt_ratio_summary.csv", "tests/test_c102_alt_ratio_convergence_audit.py", "src/scripts/analysis/c103_zd_topology_percolation_audit.py", "data/csv/c103_zd_topology_summary.csv", "tests/test_c103_zd_topology_percolation_audit.py", "src/scripts/analysis/c108_alt_ratio_convergence_audit.py", "data/csv/c108_alt_ratio_summary.csv", "tests/test_c108_alt_ratio_convergence_audit.py", "src/scripts/analysis/c109_zd_construction_audit.py", "data/csv/c109_zd_construction_summary.csv", "tests/test_c109_zd_construction_audit.py", "src/scripts/analysis/c120_zd_kernel_scaling_audit.py", "data/csv/c120_zd_kernel_scaling_summary.csv", "tests/test_c120_zd_kernel_scaling_audit.py", "src/scripts/analysis/c123_associator_lie_bracket_audit.py", "data/csv/c123_assoc_lie_bracket_summary.csv", "tests/test_c123_associator_lie_bracket_audit.py", "src/scripts/analysis/c128_conjugate_inverse_audit.py", "data/csv/c128_conjugate_inverse_summary.csv", "tests/test_c128_conjugate_inverse_audit.py", "src/scripts/analysis/c129_associator_distribution_concentration_audit.py", "data/csv/c129_assoc_norm_dist_summary.csv", "tests/test_c129_associator_distribution_concentration_audit.py", "src/scripts/analysis/c130_associator_norm_sqrt2_audit.py", "data/csv/c130_associator_norm_sqrt2_summary.csv", "tests/test_c130_associator_norm_sqrt2_audit.py", "src/scripts/analysis/c132_commutator_norm_convergence_audit.py", "data/csv/c132_commutator_norm_summary.csv", "tests/test_c132_commutator_norm_convergence_audit.py", "src/scripts/analysis/c135_power_norm_scaling_audit.py", "data/csv/c135_power_norm_summary.csv", "tests/test_c135_power_norm_scaling_audit.py"]
+acceptance_checks = ["PYTHONWARNINGS=error make check-parallel", "PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
+goal_summary = "Make the C-101..C-150 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` mechanically tractable for claim-by-claim auditing: - each open claim has (1) a clear scope boundary, (2) primary sources indexed and cached when possible, and (3) an offline check hook (unit test, verifier, or deterministic artifact pipeline) where feasible. This batch is dominated by legacy high-dimension Cayley-Dickson experiment summaries. The critical work is to separate: - the computable/mathematical invariants (often already reproducible), from - physics-facing interpretations (which must remain explicitly speculative unless source-backed)."
+done_checkboxes = 11
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-C151-C200"
+title = "Ticket: Claims audit batch C-151..C-200"
+source_markdown = "docs/tickets/C151_C200_claims_audit.md"
+ticket_kind = "CLAIMS_AUDIT_BATCH"
+owner = "agent"
+created = "2026-02-02"
+status_raw = "DONE (no open claims in range)"
+status_token = "DONE"
+claim_range_start = 151
+claim_range_end = 200
+claims_referenced = ["C-151", "C-200"]
+backlog_reports = ["reports/claims_batch_backlog_C151_C200.md"]
+deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C151_C200.md"]
+acceptance_checks = ["PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
+goal_summary = "Confirm the C-151..C-200 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` remains mechanically tractable for claim-by-claim auditing. As of 2026-02-02, this range contains no open claims (all rows are Verified/Refuted/Established)."
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-C201-C250"
+title = "Ticket: Claims audit batch C-201..C-250"
+source_markdown = "docs/tickets/C201_C250_claims_audit.md"
+ticket_kind = "CLAIMS_AUDIT_BATCH"
+owner = "agent"
+created = "2026-02-02"
+status_raw = "DONE (no open claims in range)"
+status_token = "DONE"
+claim_range_start = 201
+claim_range_end = 250
+claims_referenced = ["C-201", "C-250"]
+backlog_reports = ["reports/claims_batch_backlog_C201_C250.md"]
+deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C201_C250.md"]
+acceptance_checks = ["PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
+goal_summary = "Confirm the C-201..C-250 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` remains mechanically tractable for claim-by-claim auditing. As of 2026-02-02, this range contains no open claims (all rows are Verified/Refuted/Established)."
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-C251-C300"
+title = "Ticket: Claims audit batch C-251..C-300"
+source_markdown = "docs/tickets/C251_C300_claims_audit.md"
+ticket_kind = "CLAIMS_AUDIT_BATCH"
+owner = "agent"
+created = "2026-02-02"
+status_raw = "DONE (no open claims in range)"
+status_token = "DONE"
+claim_range_start = 251
+claim_range_end = 300
+claims_referenced = ["C-251", "C-300"]
+backlog_reports = ["reports/claims_batch_backlog_C251_C300.md"]
+deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C251_C300.md"]
+acceptance_checks = ["PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
+goal_summary = "Confirm the C-251..C-300 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` remains mechanically tractable for claim-by-claim auditing. As of 2026-02-02, this range contains no open claims (all rows are Verified/Refuted/Established)."
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-C301-C350"
+title = "Ticket: Claims audit batch C-301..C-350"
+source_markdown = "docs/tickets/C301_C350_claims_audit.md"
+ticket_kind = "CLAIMS_AUDIT_BATCH"
+owner = "agent"
+created = "2026-02-02"
+status_raw = "DONE (no open claims in range)"
+status_token = "DONE"
+claim_range_start = 301
+claim_range_end = 350
+claims_referenced = ["C-301", "C-350"]
+backlog_reports = ["reports/claims_batch_backlog_C301_C350.md"]
+deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C301_C350.md"]
+acceptance_checks = ["PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
+goal_summary = "Confirm the C-301..C-350 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` remains mechanically tractable for claim-by-claim auditing. As of 2026-02-02, this range contains no open claims (all rows are Verified/Refuted/Established)."
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-C351-C400"
+title = "Ticket: Claims audit batch C-351..C-400"
+source_markdown = "docs/tickets/C351_C400_claims_audit.md"
+ticket_kind = "CLAIMS_AUDIT_BATCH"
+owner = "agent"
+created = "2026-02-02"
+status_raw = "DONE (no open claims in range)"
+status_token = "DONE"
+claim_range_start = 351
+claim_range_end = 400
+claims_referenced = ["C-351", "C-400"]
+backlog_reports = ["reports/claims_batch_backlog_C351_C400.md"]
+deliverable_links = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "reports/claims_batch_backlog_C351_C400.md"]
+acceptance_checks = ["PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
+goal_summary = "Confirm the C-351..C-400 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` remains mechanically tractable for claim-by-claim auditing. As of 2026-02-02, this range contains no open claims (all rows are Verified/Refuted/Established)."
+done_checkboxes = 0
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-C401-C427"
+title = "Ticket: Claims audit batch C-401..C-427"
+source_markdown = "docs/tickets/C401_C427_claims_audit.md"
+ticket_kind = "CLAIMS_AUDIT_BATCH"
+owner = "agent"
+created = "2026-02-02"
+status_raw = "IN PROGRESS"
+status_token = "IN_PROGRESS"
+claim_range_start = 401
+claim_range_end = 427
+claims_referenced = ["C-401", "C-403", "C-404", "C-405", "C-406", "C-407", "C-408", "C-409", "C-410", "C-411", "C-412", "C-417", "C-418", "C-419", "C-420", "C-421", "C-422", "C-423", "C-424", "C-425", "C-426", "C-427"]
+backlog_reports = ["reports/claims_batch_backlog_C401_C427.md", "reports/convos_pdf_inventory.md", "reports/tscp_trial_factor_ledger.md"]
+deliverable_links = ["docs/external_sources/*.md", "src/verification/"]
+acceptance_checks = ["PYTHONWARNINGS=error make check-parallel", "PYTHONWARNINGS=error make metadata-hygiene", "PYTHONWARNINGS=error make smoke"]
+goal_summary = "Make the C-401..C-427 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` mechanically tractable for claim-by-claim auditing: - each open claim has (1) a clear scope boundary, (2) primary sources indexed and cached when possible, and (3) an offline check hook (unit test, verifier, or deterministic artifact pipeline) where feasible. This batch contains: - method-level claims (C-406..C-408) that must be enforced by verifiers, - emergence-layer claims (C-403..C-405) that should remain programmatic unless backed by sources, - and a large \"materials/simulation\" cluster (C-409..C-427) that must be kept explicit about toy-vs-validated."
+done_checkboxes = 5
+open_checkboxes = 0
+
+[[ticket]]
+id = "TICKET-TICKET-WARP-PHYSICS-RECONCILIATION"
+title = "Plan: Warp Ring Physics Reconciliation"
+source_markdown = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
+ticket_kind = "GENERAL"
+owner = "eirikr"
+created = "2026-02-04"
+status_raw = "TODO"
+status_token = "TODO"
+claim_range_start = 0
+claim_range_end = 0
+claims_referenced = ["C-409", "C-412"]
+backlog_reports = []
+deliverable_links = ["data/external/papers/", "references/", "src/gemini_physics/optics/grin_solver.py", "src/scripts/visualization/animate_warp_v8_rigorous.py"]
+acceptance_checks = []
+goal_summary = "Elevate the \"Silicon-Gold-Ice VIII\" Warp Ring simulation from cinematic pseudo-physics to a rigorously defended Analogue Optics experiment (Phase 6.5 -> Phase 7.0)."
+done_checkboxes = 0
+open_checkboxes = 8

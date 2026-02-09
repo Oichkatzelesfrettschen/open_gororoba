@@ -1,0 +1,93 @@
+# Requirements registry (TOML-first).
+# Markdown mirrors: REQUIREMENTS.md, docs/REQUIREMENTS.md, docs/requirements/*.md
+
+[requirements]
+authoritative = true
+status = "active"
+updated = "2026-02-09"
+python_recommended = "3.11-3.12"
+python_allowed = "3.13+ (with optional extras caveats)"
+primary_markdown = "docs/REQUIREMENTS.md"
+
+[[module]]
+id = "REQ-CORE"
+name = "core"
+markdown = "docs/REQUIREMENTS.md"
+install_targets = ["make install", "PYTHONWARNINGS=error make check"]
+status = "active"
+
+[[module]]
+id = "REQ-ALGEBRA"
+name = "algebra"
+markdown = "docs/requirements/algebra.md"
+status = "active"
+
+[[module]]
+id = "REQ-ANALYSIS"
+name = "analysis"
+markdown = "docs/requirements/analysis.md"
+install_targets = ["make install-analysis"]
+status = "active"
+
+[[module]]
+id = "REQ-ASTRO"
+name = "astro"
+markdown = "docs/requirements/astro.md"
+install_targets = ["make install-astro"]
+status = "active"
+
+[[module]]
+id = "REQ-MATERIALS"
+name = "materials"
+markdown = "docs/requirements/materials.md"
+status = "active"
+
+[[module]]
+id = "REQ-PARTICLE"
+name = "particle"
+markdown = "docs/requirements/particle.md"
+install_targets = ["make install-particle"]
+status = "active"
+
+[[module]]
+id = "REQ-QUANTUM"
+name = "quantum_docker"
+markdown = "docs/requirements/quantum-docker.md"
+install_targets = ["make install-quantum", "docker-quantum-build", "docker-quantum-run"]
+status = "active"
+
+[[module]]
+id = "REQ-COQ"
+name = "coq"
+markdown = "docs/requirements/coq.md"
+install_targets = ["make coq"]
+status = "active"
+
+[[module]]
+id = "REQ-LATEX"
+name = "latex"
+markdown = "docs/requirements/latex.md"
+install_targets = ["make latex"]
+status = "active"
+
+[[module]]
+id = "REQ-CPP"
+name = "cpp"
+markdown = "docs/requirements/cpp.md"
+install_targets = ["make cpp-build", "make cpp-test"]
+status = "active"
+
+[[coverage_gap]]
+id = "REQ-GAP-001"
+area = "crate_specific_docs"
+status = "open"
+description = "Per-crate requirements markdown is missing for several Rust crates."
+proposed_resolution = "Define crate-level requirements entries in this TOML and generate markdown stubs as needed."
+
+[[coverage_gap]]
+id = "REQ-GAP-002"
+area = "operational_sync"
+status = "open"
+description = "No generator currently syncs requirements markdown from this TOML registry."
+proposed_resolution = "Add TOML -> markdown exporter and include in make registry."
+

@@ -1,0 +1,61 @@
+# Operational roadmap registry (TOML-first).
+# Markdown mirrors: docs/ROADMAP.md
+
+[roadmap]
+source_markdown = "docs/ROADMAP.md"
+consolidated_date = "2026-02-06"
+supersedes = [
+  "RUST_MIGRATION_PLAN.md",
+  "RUST_REFACTOR_PLAN.md",
+  "docs/RESEARCH_ROADMAP.md",
+]
+companion_docs = ["docs/TODO.md", "docs/NEXT_ACTIONS.md"]
+status = "active"
+authoritative = true
+
+[roadmap.sections]
+architectural_evolution = "## 1. Architectural Evolution"
+crate_ecosystem = "## 2. Crate Ecosystem"
+remaining_workstreams = "## 7. Remaining Workstreams from ULTRA_ROADMAP.md"
+long_term_vision = "## 8. Long-Term Vision"
+documentation_registry = "### 1.5 Documentation Registry Evolution (Sprint 13)"
+
+[[workstream]]
+id = "WS-REGISTRY-001"
+name = "Documentation Registry Evolution"
+priority = "high"
+status = "in_progress"
+description = "Move markdown operational docs to TOML-first authoritative registries with generated markdown mirrors."
+primary_outputs = [
+  "registry/knowledge_sources.toml",
+  "registry/knowledge/documents.toml",
+  "registry/roadmap.toml",
+  "registry/todo.toml",
+  "registry/next_actions.toml",
+  "registry/requirements.toml",
+]
+
+[[workstream]]
+id = "WS-QUALITY-001"
+name = "Warnings-As-Errors Discipline"
+priority = "high"
+status = "active"
+description = "All Python and Rust checks run with warnings treated as failures."
+primary_outputs = [
+  "Makefile",
+  "docs/REQUIREMENTS.md",
+  "AGENTS.md",
+]
+
+[[workstream]]
+id = "WS-CLAIMS-001"
+name = "Claims Evidence Governance"
+priority = "high"
+status = "active"
+description = "Maintain claim lifecycle with TOML registry authority and markdown mirrors."
+primary_outputs = [
+  "registry/claims.toml",
+  "docs/CLAIMS_EVIDENCE_MATRIX.md",
+  "docs/CLAIMS_TASKS.md",
+]
+

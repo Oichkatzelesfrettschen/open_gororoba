@@ -1,0 +1,57 @@
+# Priority queue registry (TOML-first).
+# Markdown mirror: docs/NEXT_ACTIONS.md
+
+[next_actions]
+source_markdown = "docs/NEXT_ACTIONS.md"
+authoritative = true
+status = "active"
+updated = "2026-02-09"
+
+[[action]]
+id = "NA-001"
+priority = "P0"
+title = "Complete TOML centralization for markdown mirrors"
+status = "in_progress"
+description = "Export insights and experiments markdown from TOML, and add TOML registries for roadmap/todo/next-actions/requirements."
+references = [
+  "registry/knowledge_sources.toml",
+  "registry/knowledge/documents.toml",
+  "docs/NEXT_ACTIONS.md",
+]
+
+[[action]]
+id = "NA-002"
+priority = "P1"
+title = "Resolve multiplication coupling rho(b) in GL(8,Z)"
+status = "open"
+description = "Close the open lattice-algebra dictionary item linked to C-466."
+references = [
+  "docs/NEXT_ACTIONS.md",
+  "docs/ROADMAP.md",
+]
+
+[[action]]
+id = "NA-003"
+priority = "P1"
+title = "Primary-source citation sweep for remaining claims"
+status = "open"
+description = "Append first-party citations and WHERE STATED coverage for outstanding claims."
+references = [
+  "registry/claims.toml",
+  "docs/BIBLIOGRAPHY.md",
+  "docs/CLAIMS_TASKS.md",
+]
+
+[[action]]
+id = "NA-004"
+priority = "P2"
+title = "Paper-ready LaTeX pipeline consolidation"
+status = "open"
+description = "Drive manuscript generation from verified TOML registries with reproducible sections."
+references = [
+  "docs/latex/",
+  "crates/gororoba_cli/src/bin/generate_latex.rs",
+  "registry/claims.toml",
+  "registry/insights.toml",
+]
+

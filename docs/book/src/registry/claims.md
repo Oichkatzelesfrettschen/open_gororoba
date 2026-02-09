@@ -45,4 +45,5 @@ stay synchronized with the TOML source of truth.
 ## Markdown mirror
 
 `docs/CLAIMS_EVIDENCE_MATRIX.md` is a human-readable markdown mirror maintained
-alongside the TOML registry.  The `migrate-claims` binary converts between formats.
+alongside the TOML registry.  The `migrate-claims` binary currently imports
+markdown into TOML (md -> toml).

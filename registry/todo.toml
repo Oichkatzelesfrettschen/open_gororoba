@@ -1,0 +1,71 @@
+# Sprint execution tracker (TOML-first).
+# Markdown mirror: docs/TODO.md
+
+[todo]
+source_markdown = "docs/TODO.md"
+authoritative = true
+status = "active"
+updated = "2026-02-09"
+
+[sprint]
+id = "S13"
+name = "TOML Centralization and Markdown Governance"
+status = "in_progress"
+
+[[task]]
+id = "S13-T01"
+title = "Build markdown knowledge index"
+status = "done"
+evidence = [
+  "src/scripts/analysis/build_knowledge_sources_registry.py",
+  "registry/knowledge_sources.toml",
+]
+
+[[task]]
+id = "S13-T02"
+title = "Create raw TOML capture for non-generated markdown docs"
+status = "done"
+evidence = [
+  "src/scripts/analysis/migrate_markdown_corpus_to_toml.py",
+  "registry/knowledge/documents.toml",
+]
+
+[[task]]
+id = "S13-T03"
+title = "Define authoritative operational TOML registries"
+status = "in_progress"
+evidence = [
+  "registry/roadmap.toml",
+  "registry/todo.toml",
+  "registry/next_actions.toml",
+  "registry/requirements.toml",
+]
+
+[[task]]
+id = "S13-T04"
+title = "Add TOML-first export path for insights markdown mirror"
+status = "pending"
+evidence = [
+  "registry/insights.toml",
+  "docs/INSIGHTS.md",
+]
+
+[[task]]
+id = "S13-T05"
+title = "Add TOML-first export path for experiments markdown mirror"
+status = "pending"
+evidence = [
+  "registry/experiments.toml",
+  "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
+]
+
+[[task]]
+id = "S13-T06"
+title = "Run registry and quality gates after registry schema changes"
+status = "pending"
+evidence = [
+  "make registry",
+  "cargo run --release --bin registry-check",
+  "python3 bin/ascii_check.py --check",
+]
+

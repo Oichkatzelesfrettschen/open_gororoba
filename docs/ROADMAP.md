@@ -116,6 +116,31 @@ These measurements were taken during the migration (gororoba_kernels era):
 | Motif census (dim=16) | ~3.1s (Numba) | ~0.58s | 5.3x | Pure Rust, no warmup |
 | Motif census (dim=32) | ~2.8s (Numba) | ~0.79s | 3.5x | Pure Rust, no warmup |
 
+### 1.5 Documentation Registry Evolution (Sprint 13)
+
+The repository now maintains a central markdown knowledge index:
+
+- `registry/knowledge_sources.toml` (generated, deterministic index of all tracked markdown files)
+- Generator: `src/scripts/analysis/build_knowledge_sources_registry.py`
+- Central corpus migration: `registry/knowledge/docs/*.toml` with manifest at
+  `registry/knowledge/documents.toml`
+- Build hook: `make registry` now runs both markdown indexing and corpus
+  migration before `registry-check`
+
+Current policy:
+
+- TOML remains the machine-parseable source of truth for structured registries.
+- Markdown remains human-facing narrative and mirror material.
+- Mirror docs should be generated from TOML where possible to reduce drift.
+
+Immediate next steps:
+
+1. TOML -> markdown exporters are now in place under `docs/generated/`.
+2. TOML registries for roadmap/todo/next-actions/requirements are now in place.
+3. Finalize governance decision for legacy narrative docs:
+   full replacement vs non-authoritative overlay.
+4. Keep generated markdown explicitly marked with regeneration commands.
+
 ---
 
 ## 2. Crate Ecosystem
