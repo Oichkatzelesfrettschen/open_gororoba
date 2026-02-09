@@ -3720,11 +3720,11 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis D. VERIFIED: scalar_s
 
 [[claim]]
 id = "C-466"
-statement = "Multiplication coupling lacuna (Thesis D gap): The multiplication-mode lattice coupling rho(b) in GL(8,Z) is undetermined. The scalar shadow pi(b)*ell is the validated approximation, but the full endomorphism has not been computed."
-where_stated = "`docs/ROADMAP.md` (open research question)"
-status = "Theoretical"
-last_verified = "2026-02-08"
-what_would_verify_refute = "WHERE STATED: Monograph Thesis D, identified as explicit gap. WHAT WOULD REFUTE: Computing rho(b) for all basis elements and showing it is NOT in GL(8,Z), or showing the scalar approximation is exact."
+statement = "Multiplication coupling REFUTED (Thesis D resolved): rho(b) does NOT exist as a linear endomorphism on the lattice subspace for any non-identity basis element. At dim=16 (sedenions), only b=0 (identity) has consistent coupling (1/16); at dim=32 (pathions), also 1/32. The lattice vectors span rank 5 of 8 dimensions (first 16 Lambda_256 vectors), and left-multiplication by e_b for b>=1 produces O(1) residuals in the reduced 5D subspace, not numerical noise. The scalar shadow pi(b) remains the only valid lattice-level multiplicative structure."
+where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (compute_multiplication_coupling, test_multiplication_coupling_sedenion_characterize, test_multiplication_coupling_pathion)"
+status = "Refuted"
+last_verified = "2026-02-09"
+what_would_verify_refute = "WHERE STATED: Monograph Thesis D gap, now resolved. VERIFIED BY: Computed M_b = Y_b * X^{-1} in reduced r-dimensional subspace (Gram-Schmidt projection), verified consistency on ALL dim basis vectors. Only identity element b=0 yields zero residual. WHAT WOULD RE-OPEN: Finding a different encoding (non-canonical Lambda_256 assignment) where rho(b) exists for b>=1."
 
 [[claim]]
 id = "C-467"

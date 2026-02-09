@@ -5,12 +5,19 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2189
+test_count = 2198
 claim_count = 475
 insight_count = 16
 experiment_count = 10
 paper_count = 19
 binary_count = 37
+
+[sprints.s16]
+number = 16
+date = "2026-02-09"
+test_count = 2198
+claim_count = 475
+summary = "Multiplication coupling rho(b) resolved: C-466 REFUTED, only identity has consistent linear coupling. Rank-adaptive reduced-subspace algorithm, 9 new tests"
 
 [sprints.s15]
 number = 15

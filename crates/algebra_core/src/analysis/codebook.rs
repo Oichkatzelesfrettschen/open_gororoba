@@ -1084,6 +1084,355 @@ impl EncodingDictionary {
 }
 
 // ============================================================================
+// Layer 2b: Multiplication Coupling (Thesis D, C-466)
+// ============================================================================
+
+/// Result of attempting to compute rho(b) for a single basis element.
+///
+/// For each basis b, the CD multiplication table defines a permutation
+/// mu_b(c) = index of e_b * e_c.  We ask: does the encoding dictionary
+/// Phi intertwine this permutation with a *linear* map on the subspace
+/// V = span(Phi(0), ..., Phi(dim-1)) ?
+///
+/// Since the lattice vectors may span only r < 8 dimensions (due to
+/// filtration constraints like l_0 = -1), we work in the r-dimensional
+/// reduced space and report the r x r coupling matrix.
+///
+/// Two variants are computed:
+/// - **unsigned**: Phi(mu_b(c)) = M * Phi(c) for all c
+/// - **signed**: sign(b,c) * Phi(mu_b(c)) = M * Phi(c) for all c
+#[derive(Debug, Clone)]
+pub struct BasisCouplingResult {
+    /// The basis element index b.
+    pub basis_index: usize,
+    /// Whether the unsigned coupling is consistent (residual < tolerance).
+    pub unsigned_consistent: bool,
+    /// Whether the signed coupling is consistent.
+    pub signed_consistent: bool,
+    /// Determinant of unsigned coupling matrix (in the reduced space).
+    pub unsigned_det: Option<f64>,
+    /// Determinant of signed coupling matrix (in the reduced space).
+    pub signed_det: Option<f64>,
+    /// Maximum absolute residual across all verification columns (unsigned).
+    pub unsigned_max_residual: f64,
+    /// Maximum absolute residual across all verification columns (signed).
+    pub signed_max_residual: f64,
+}
+
+/// Full multiplication coupling analysis for all basis elements of a dictionary.
+#[derive(Debug, Clone)]
+pub struct MultiplicationCoupling {
+    /// CD algebra dimension.
+    pub dim: usize,
+    /// Rank of the lattice vectors (dimension of the spanned subspace).
+    pub rank: usize,
+    /// Per-basis results (one per basis element 0..dim).
+    pub results: Vec<BasisCouplingResult>,
+    /// How many bases have consistent unsigned coupling.
+    pub unsigned_consistent_count: usize,
+    /// How many bases have consistent signed coupling.
+    pub signed_consistent_count: usize,
+    /// Determinants of all unsigned coupling matrices (for structure analysis).
+    pub unsigned_dets: Vec<(usize, f64)>,
+    /// Determinants of all signed coupling matrices.
+    pub signed_dets: Vec<(usize, f64)>,
+}
+
+/// Compute the multiplication coupling for all basis elements.
+///
+/// For each basis b in [0, dim), determines whether the permutation
+/// mu_b(c) = prod(b,c) induces a linear map on the subspace spanned
+/// by the lattice vectors Phi(0)..Phi(dim-1).
+///
+/// Since the lattice vectors may span only r < 8 dimensions (due to
+/// filtration constraints), we project into the r-dimensional subspace
+/// using an orthonormal basis Q, solve the r x r system, and verify
+/// consistency on all dim vectors.
+///
+/// Two variants: unsigned (ignoring product sign) and signed (including sign).
+pub fn compute_multiplication_coupling(
+    dict: &EncodingDictionary,
+    mult_table: &crate::construction::mult_table::CdMultTable,
+) -> MultiplicationCoupling {
+    let dim = dict.dim();
+    assert_eq!(dim, mult_table.dim, "dictionary and multiplication table dimensions must match");
+
+    let tol = 1e-8;
+
+    // Collect all lattice vectors: phi[c] = Phi(c) as f64
+    let mut phi: Vec<[f64; 8]> = vec![[0.0; 8]; dim];
+    for (idx, lv) in dict.iter() {
+        for k in 0..8 {
+            phi[idx][k] = lv[k] as f64;
+        }
+    }
+
+    // Build orthonormal basis Q for the column space of {Phi(c)}
+    // using Gram-Schmidt. Q is stored as a Vec of 8-element vectors.
+    let (q_basis, rank) = gram_schmidt_basis(&phi);
+
+    // Project all lattice vectors into the reduced space: phi_r[c] = Q^T * phi[c]
+    let phi_r: Vec<Vec<f64>> = phi.iter()
+        .map(|p| project_to_basis(p, &q_basis))
+        .collect();
+
+    // Find r linearly independent columns in the reduced space
+    let pivot_cols = find_pivot_columns_reduced(&phi_r, rank);
+    assert_eq!(pivot_cols.len(), rank,
+        "Expected {rank} pivot columns in reduced space, got {}", pivot_cols.len());
+
+    // Build the r x r input matrix X_r from pivot columns
+    let x_r = build_square_matrix(&phi_r, &pivot_cols, rank);
+    let x_r_inv = invert_nxn(&x_r, rank);
+
+    let mut results = Vec::with_capacity(dim);
+    let mut unsigned_dets = Vec::new();
+    let mut signed_dets = Vec::new();
+
+    for b in 0..dim {
+        let mut unsigned_max_res = 0.0f64;
+        let mut signed_max_res = 0.0f64;
+        let mut u_det = None;
+        let mut s_det = None;
+
+        if let Some(ref xi) = x_r_inv {
+            // Build output matrices for pivot columns
+            let mut y_u = vec![vec![0.0f64; rank]; rank];
+            let mut y_s = vec![vec![0.0f64; rank]; rank];
+
+            for (j, &c) in pivot_cols.iter().enumerate() {
+                let (sign, prod_idx) = mult_table.multiply_basis(b, c);
+                let out_r = &phi_r[prod_idx];
+                for i in 0..rank {
+                    y_u[i][j] = out_r[i];
+                    y_s[i][j] = (sign as f64) * out_r[i];
+                }
+            }
+
+            let m_u = mat_mul_nxn(&y_u, xi, rank);
+            let m_s = mat_mul_nxn(&y_s, xi, rank);
+
+            // Verify on ALL basis elements
+            for (c, phi_rc) in phi_r.iter().enumerate() {
+                let (sign, prod_idx) = mult_table.multiply_basis(b, c);
+                let phi_r_prod = &phi_r[prod_idx];
+
+                for i in 0..rank {
+                    let predicted_u: f64 = m_u[i].iter().zip(phi_rc.iter()).map(|(&m, &p)| m * p).sum();
+                    unsigned_max_res = unsigned_max_res.max((predicted_u - phi_r_prod[i]).abs());
+
+                    let predicted_s: f64 = m_s[i].iter().zip(phi_rc.iter()).map(|(&m, &p)| m * p).sum();
+                    let target_s = (sign as f64) * phi_r_prod[i];
+                    signed_max_res = signed_max_res.max((predicted_s - target_s).abs());
+                }
+            }
+
+            if unsigned_max_res < tol {
+                u_det = Some(det_nxn(&m_u, rank));
+            }
+            if signed_max_res < tol {
+                s_det = Some(det_nxn(&m_s, rank));
+            }
+        }
+
+        let unsigned_consistent = unsigned_max_res < tol;
+        let signed_consistent = signed_max_res < tol;
+
+        if let Some(d) = u_det {
+            unsigned_dets.push((b, d));
+        }
+        if let Some(d) = s_det {
+            signed_dets.push((b, d));
+        }
+
+        results.push(BasisCouplingResult {
+            basis_index: b,
+            unsigned_consistent,
+            signed_consistent,
+            unsigned_det: u_det,
+            signed_det: s_det,
+            unsigned_max_residual: unsigned_max_res,
+            signed_max_residual: signed_max_res,
+        });
+    }
+
+    let unsigned_consistent_count = results.iter().filter(|r| r.unsigned_consistent).count();
+    let signed_consistent_count = results.iter().filter(|r| r.signed_consistent).count();
+
+    MultiplicationCoupling {
+        dim,
+        rank,
+        results,
+        unsigned_consistent_count,
+        signed_consistent_count,
+        unsigned_dets,
+        signed_dets,
+    }
+}
+
+/// Build an orthonormal basis for the column space of the given vectors.
+/// Returns (basis_vectors, rank).
+fn gram_schmidt_basis(vectors: &[[f64; 8]]) -> (Vec<[f64; 8]>, usize) {
+    let mut basis: Vec<[f64; 8]> = Vec::with_capacity(8);
+
+    for v in vectors {
+        if basis.len() == 8 {
+            break;
+        }
+        let mut w = *v;
+        for b in &basis {
+            let dot: f64 = w.iter().zip(b.iter()).map(|(a, b)| a * b).sum();
+            for (wk, &bk) in w.iter_mut().zip(b.iter()) {
+                *wk -= dot * bk;
+            }
+        }
+        let norm = w.iter().map(|x| x * x).sum::<f64>().sqrt();
+        if norm > 1e-10 {
+            w.iter_mut().for_each(|x| *x /= norm);
+            basis.push(w);
+        }
+    }
+
+    let rank = basis.len();
+    (basis, rank)
+}
+
+/// Project an 8D vector onto the orthonormal basis, giving an r-dimensional vector.
+fn project_to_basis(v: &[f64; 8], basis: &[[f64; 8]]) -> Vec<f64> {
+    basis.iter()
+        .map(|b| v.iter().zip(b.iter()).map(|(&vi, &bi)| vi * bi).sum())
+        .collect()
+}
+
+/// Find r linearly independent columns from reduced-space vectors.
+fn find_pivot_columns_reduced(phi_r: &[Vec<f64>], rank: usize) -> Vec<usize> {
+    let mut pivots = Vec::with_capacity(rank);
+    let mut basis = Vec::<Vec<f64>>::with_capacity(rank);
+
+    for (c, col) in phi_r.iter().enumerate() {
+        if pivots.len() == rank {
+            break;
+        }
+
+        let mut v = col.clone();
+        for b in &basis {
+            let dot: f64 = v.iter().zip(b.iter()).map(|(a, b)| a * b).sum();
+            let norm_sq: f64 = b.iter().map(|x| x * x).sum();
+            if norm_sq > 1e-12 {
+                for (vk, &bk) in v.iter_mut().zip(b.iter()) {
+                    *vk -= (dot / norm_sq) * bk;
+                }
+            }
+        }
+
+        let norm_sq: f64 = v.iter().map(|x| x * x).sum();
+        if norm_sq > 1e-8 {
+            basis.push(v);
+            pivots.push(c);
+        }
+    }
+
+    pivots
+}
+
+/// Build an r x r matrix from selected columns.
+fn build_square_matrix(phi_r: &[Vec<f64>], pivot_cols: &[usize], rank: usize) -> Vec<Vec<f64>> {
+    let mut m = vec![vec![0.0; rank]; rank];
+    for (j, &c) in pivot_cols.iter().enumerate() {
+        for (i, row) in m.iter_mut().enumerate() {
+            row[j] = phi_r[c][i];
+        }
+    }
+    m
+}
+
+/// Invert an n x n matrix using Gauss-Jordan elimination.
+fn invert_nxn(m: &[Vec<f64>], n: usize) -> Option<Vec<Vec<f64>>> {
+    let nn = 2 * n;
+    let mut aug: Vec<Vec<f64>> = (0..n).map(|i| {
+        let mut row = vec![0.0; nn];
+        row[..n].copy_from_slice(&m[i]);
+        row[n + i] = 1.0;
+        row
+    }).collect();
+
+    for col in 0..n {
+        let max_row = aug[col..].iter()
+            .enumerate()
+            .max_by(|(_, a), (_, b)| a[col].abs().partial_cmp(&b[col].abs()).unwrap())
+            .map(|(idx, _)| idx + col)
+            .unwrap();
+
+        if aug[max_row][col].abs() < 1e-12 {
+            return None;
+        }
+
+        aug.swap(col, max_row);
+
+        let pivot = aug[col][col];
+        aug[col].iter_mut().for_each(|v| *v /= pivot);
+
+        for row in 0..n {
+            if row == col {
+                continue;
+            }
+            let factor = aug[row][col];
+            let pivot_row: Vec<f64> = aug[col].clone();
+            for (v, &p) in aug[row].iter_mut().zip(pivot_row.iter()) {
+                *v -= factor * p;
+            }
+        }
+    }
+
+    Some(aug.iter().map(|row| row[n..].to_vec()).collect())
+}
+
+/// Multiply two n x n matrices.
+fn mat_mul_nxn(a: &[Vec<f64>], b: &[Vec<f64>], n: usize) -> Vec<Vec<f64>> {
+    let mut c = vec![vec![0.0; n]; n];
+    for (c_row, a_row) in c.iter_mut().zip(a.iter()) {
+        for (j, c_val) in c_row.iter_mut().enumerate() {
+            *c_val = a_row.iter().zip(b.iter()).map(|(&a_ik, b_row)| a_ik * b_row[j]).sum();
+        }
+    }
+    c
+}
+
+/// Compute the determinant of an n x n matrix via LU decomposition.
+fn det_nxn(m: &[Vec<f64>], n: usize) -> f64 {
+    let mut a: Vec<Vec<f64>> = m.to_vec();
+    let mut sign = 1.0f64;
+
+    for col in 0..n {
+        let max_row = a[col..].iter()
+            .enumerate()
+            .max_by(|(_, ra), (_, rb)| ra[col].abs().partial_cmp(&rb[col].abs()).unwrap())
+            .map(|(idx, _)| idx + col)
+            .unwrap();
+
+        if a[max_row][col].abs() < 1e-12 {
+            return 0.0;
+        }
+
+        if max_row != col {
+            a.swap(col, max_row);
+            sign = -sign;
+        }
+
+        let pivot = a[col][col];
+        for row in (col + 1)..n {
+            let factor = a[row][col] / pivot;
+            let pivot_row: Vec<f64> = a[col].clone();
+            for (v, &p) in a[row].iter_mut().zip(pivot_row.iter()).skip(col) {
+                *v -= factor * p;
+            }
+        }
+    }
+
+    sign * a.iter().enumerate().map(|(i, row)| row[i]).product::<f64>()
+}
+
+// ============================================================================
 // Tests
 // ============================================================================
 
@@ -2094,6 +2443,216 @@ mod tests {
             assert!(matches!(r, ElevatedResult::OutOfCodebook { sum_vec }
                 if sum_vec == [0, 0, 0, 0, 0, 0, 0, 0]),
                 "a - a = 0, which is not in Lambda_256");
+        }
+    }
+
+    // ================================================================
+    // Multiplication Coupling Tests (Thesis D, C-466)
+    // ================================================================
+
+    /// Helper: build a dim=16 dictionary from the first 16 Lambda_256 vectors
+    /// and the corresponding multiplication table.
+    fn sedenion_coupling_setup() -> (EncodingDictionary, crate::construction::mult_table::CdMultTable) {
+        let lambda = enumerate_lambda_256();
+        assert!(lambda.len() >= 16);
+        let pairs: Vec<(usize, LatticeVector)> = lambda[..16]
+            .iter()
+            .enumerate()
+            .map(|(i, &v)| (i, v))
+            .collect();
+        let dict = EncodingDictionary::try_from_pairs(16, &pairs).unwrap();
+        let table = crate::construction::mult_table::CdMultTable::generate(16);
+        (dict, table)
+    }
+
+    #[test]
+    fn test_multiplication_coupling_sedenion_basic() {
+        let (dict, table) = sedenion_coupling_setup();
+        let coupling = compute_multiplication_coupling(&dict, &table);
+
+        assert_eq!(coupling.dim, 16);
+        assert_eq!(coupling.results.len(), 16);
+        assert!(coupling.rank > 0 && coupling.rank <= 8,
+            "rank should be in [1,8], got {}", coupling.rank);
+
+        // Basis 0 (e_0 = identity): multiplication is identity permutation,
+        // so rho(0) is the identity map on the subspace.
+        let r0 = &coupling.results[0];
+        assert!(r0.unsigned_consistent,
+            "e_0 * e_c = e_c, unsigned coupling must be consistent");
+        assert!(r0.signed_consistent,
+            "e_0 * e_c = +1 * e_c, signed coupling must be consistent");
+
+        // det(I_r) = 1 in the reduced space
+        let det_u = r0.unsigned_det.unwrap();
+        assert!((det_u - 1.0).abs() < 1e-6,
+            "det(rho_unsigned(0)) should be 1, got {det_u}");
+        let det_s = r0.signed_det.unwrap();
+        assert!((det_s - 1.0).abs() < 1e-6,
+            "det(rho_signed(0)) should be 1, got {det_s}");
+
+        // Report summary
+        eprintln!("=== Sedenion (dim=16) Multiplication Coupling ===");
+        eprintln!("Lattice vector rank: {}/8", coupling.rank);
+        eprintln!("Unsigned consistent: {}/16", coupling.unsigned_consistent_count);
+        eprintln!("Signed consistent:   {}/16", coupling.signed_consistent_count);
+        eprintln!("Unsigned determinants: {:?}", coupling.unsigned_dets);
+        eprintln!("Signed determinants:   {:?}", coupling.signed_dets);
+
+        for r in &coupling.results {
+            eprintln!(
+                "  b={:2}: u_ok={} u_det={:?} u_res={:.2e} | s_ok={} s_det={:?} s_res={:.2e}",
+                r.basis_index,
+                if r.unsigned_consistent { "Y" } else { "N" },
+                r.unsigned_det,
+                r.unsigned_max_residual,
+                if r.signed_consistent { "Y" } else { "N" },
+                r.signed_det,
+                r.signed_max_residual,
+            );
+        }
+    }
+
+    #[test]
+    fn test_multiplication_coupling_identity_element() {
+        let (dict, table) = sedenion_coupling_setup();
+        let coupling = compute_multiplication_coupling(&dict, &table);
+
+        let r0 = &coupling.results[0];
+        assert!(r0.unsigned_consistent);
+        assert!(r0.signed_consistent);
+        assert!((r0.unsigned_det.unwrap() - 1.0).abs() < 1e-6);
+        assert!((r0.signed_det.unwrap() - 1.0).abs() < 1e-6);
+        assert!(r0.unsigned_max_residual < 1e-10);
+        assert!(r0.signed_max_residual < 1e-10);
+    }
+
+    #[test]
+    fn test_multiplication_coupling_sedenion_characterize() {
+        let (dict, table) = sedenion_coupling_setup();
+        let coupling = compute_multiplication_coupling(&dict, &table);
+
+        let unsigned_bases: Vec<usize> = coupling.results.iter()
+            .filter(|r| r.unsigned_consistent)
+            .map(|r| r.basis_index)
+            .collect();
+        let signed_bases: Vec<usize> = coupling.results.iter()
+            .filter(|r| r.signed_consistent)
+            .map(|r| r.basis_index)
+            .collect();
+
+        // At minimum, basis 0 must always work
+        assert!(unsigned_bases.contains(&0));
+        assert!(signed_bases.contains(&0));
+
+        eprintln!("Rank: {}", coupling.rank);
+        eprintln!("Unsigned consistent bases: {:?}", unsigned_bases);
+        eprintln!("Signed consistent bases:   {:?}", signed_bases);
+        eprintln!("Unsigned dets: {:?}", coupling.unsigned_dets);
+        eprintln!("Signed dets:   {:?}", coupling.signed_dets);
+
+        // The key research question: how many basis elements have
+        // consistent linear coupling? Is it all of them, or a subset?
+        // Record the answer for C-466.
+        eprintln!("C-466 result: {}/{} unsigned, {}/{} signed",
+            coupling.unsigned_consistent_count, coupling.dim,
+            coupling.signed_consistent_count, coupling.dim);
+    }
+
+    #[test]
+    fn test_multiplication_coupling_pathion() {
+        let lambda = enumerate_lambda_256();
+        assert!(lambda.len() >= 32,
+            "Lambda_256 has {} vectors, need 32", lambda.len());
+        let pairs: Vec<(usize, LatticeVector)> = lambda[..32]
+            .iter()
+            .enumerate()
+            .map(|(i, &v)| (i, v))
+            .collect();
+        let dict = EncodingDictionary::try_from_pairs(32, &pairs).unwrap();
+        let table = crate::construction::mult_table::CdMultTable::generate(32);
+
+        let coupling = compute_multiplication_coupling(&dict, &table);
+
+        assert_eq!(coupling.dim, 32);
+        assert_eq!(coupling.results.len(), 32);
+
+        // Identity element
+        let r0 = &coupling.results[0];
+        assert!(r0.unsigned_consistent, "rho(0) must be identity for dim=32");
+        assert!((r0.unsigned_det.unwrap() - 1.0).abs() < 1e-6);
+
+        eprintln!("=== Pathion (dim=32) Multiplication Coupling ===");
+        eprintln!("Rank: {}/8", coupling.rank);
+        eprintln!("Unsigned consistent: {}/32", coupling.unsigned_consistent_count);
+        eprintln!("Signed consistent:   {}/32", coupling.signed_consistent_count);
+    }
+
+    #[test]
+    fn test_gram_schmidt_basis_rank() {
+        // Verify that gram_schmidt_basis correctly determines rank.
+        let lambda = enumerate_lambda_256();
+        let phi16: Vec<[f64; 8]> = lambda[..16].iter()
+            .map(|lv| {
+                let mut f = [0.0f64; 8];
+                for (fv, &iv) in f.iter_mut().zip(lv.iter()) {
+                    *fv = iv as f64;
+                }
+                f
+            })
+            .collect();
+        let (basis16, rank16) = gram_schmidt_basis(&phi16);
+        assert_eq!(basis16.len(), rank16);
+        assert!(rank16 >= 1 && rank16 <= 8,
+            "rank should be in [1,8], got {rank16}");
+
+        // Full Lambda_256 should span more dimensions
+        let phi_all: Vec<[f64; 8]> = lambda.iter()
+            .map(|lv| {
+                let mut f = [0.0f64; 8];
+                for (fv, &iv) in f.iter_mut().zip(lv.iter()) {
+                    *fv = iv as f64;
+                }
+                f
+            })
+            .collect();
+        let (_, rank_all) = gram_schmidt_basis(&phi_all);
+        assert!(rank_all >= rank16,
+            "full Lambda_256 rank ({rank_all}) must be >= dim=16 rank ({rank16})");
+
+        eprintln!("Rank of first 16 Lambda_256 vectors: {rank16}");
+        eprintln!("Rank of all {} Lambda_256 vectors: {rank_all}", lambda.len());
+    }
+
+    #[test]
+    fn test_invert_nxn_identity() {
+        for n in [3, 5, 8] {
+            let m: Vec<Vec<f64>> = (0..n).map(|i| {
+                let mut row = vec![0.0; n];
+                row[i] = 1.0;
+                row
+            }).collect();
+            let inv = invert_nxn(&m, n).unwrap();
+            for (i, row) in inv.iter().enumerate() {
+                for (j, &val) in row.iter().enumerate() {
+                    let expected = if i == j { 1.0 } else { 0.0 };
+                    assert!((val - expected).abs() < 1e-12,
+                        "I^-1 [{i}][{j}] = {val} for n={n}");
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_det_nxn_identity() {
+        for n in [3, 5, 8] {
+            let m: Vec<Vec<f64>> = (0..n).map(|i| {
+                let mut row = vec![0.0; n];
+                row[i] = 1.0;
+                row
+            }).collect();
+            assert!((det_nxn(&m, n) - 1.0).abs() < 1e-12,
+                "det(I_{n}) should be 1");
         }
     }
 }
