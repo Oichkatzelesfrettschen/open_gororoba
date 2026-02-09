@@ -3832,8 +3832,16 @@ what_would_verify_refute = 'VERIFIED by exhaustive computation: 56 faces across 
 
 [[claim]]
 id = "C-480"
-statement = "GF(2) Separating Degree Scaling: At dim=32 (PG(3,2), 15 points, 2 motif classes with sizes 8+7), the minimum GF(2) polynomial degree separating the classes is 3 (cubic). At dim=64 (PG(4,2), 31 points, 4 motif classes with sizes 9+8+7+7), the minimum separating degree is 4 (quartic). The degree grows as n_bits-1 = (log2(dim)-1)-1, i.e., +1 per doubling. At degree 4, all 15 non-zero class signatures in GF(2)^4 are achievable; at degree 3, the achievable signatures cannot jointly separate 4 classes. This resolves the I-012 open question."
+statement = "GF(2) Separating Degree Scaling: The minimum GF(2) polynomial degree separating motif classes equals the projective dimension m = log2(dim) - 2. Verified at three doublings: dim=32 (m=3, degree 3, 2 classes 8+7), dim=64 (m=4, degree 4, 4 classes 9+8+7+7), dim=128 (m=5, degree 5, 8 classes 10+9+8+8+7+7+7+7). At the minimum degree, ALL 2^k-1 non-zero class signatures are achievable (k = number of classes). Degree grows as +1 per doubling of the algebra dimension."
 where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs` (find_minimum_separating_degree, check_separation_at_degree, gf2_solvable)"
 status = "Verified"
 last_verified = "2026-02-09"
-what_would_verify_refute = 'VERIFIED by GF(2) Gaussian elimination: test_separating_degree_dim32_is_3 confirms d=3 (degrees 1,2 fail, 3 succeeds). test_separating_degree_dim64 confirms d=4 (degrees 1,2,3 fail, 4 succeeds with all 15 signatures achievable). test_separating_degree_dim64_diagnostic shows class structure: {420-edge:9, 84-edge:8, 228-edge:7, 276-edge:7}. WHAT WOULD REFUTE: finding a degree-3 polynomial pair that separates dim=64 classes, or a degree-2 polynomial that separates dim=32 classes.'
+what_would_verify_refute = 'VERIFIED by GF(2) Gaussian elimination at 3 doublings: test_separating_degree_dim32_is_3 (d=3), test_separating_degree_dim64 (d=4, all 15 sigs), test_separating_degree_dim128 (d=5, all 255 sigs). Class structures: dim=32 {84:8, other:7}, dim=64 {420:9, 84:8, 228:7, 276:7}, dim=128 {1860:10, 180:9, 516:8, 1524:8, 756:7, 948:7, 1092:7, 1284:7}. WHAT WOULD REFUTE: finding a degree < m polynomial system that separates the classes at any verified dimension, or a dimension where the degree differs from m.'
+
+[[claim]]
+id = "C-481"
+statement = "Face Sign Census at dim=32 (pathions): 2408 triangular faces across 15 components split into 3 regimes. (A) 7 heptacross components (84 edges, 280 triangles): all 4 FaceSignPattern realized (102 TwoSameOneOpp, 108 OneSameTwoOpp, 36 AllSame, 34 AllOpposite). (B) 1 special heptacross (84 edges, 280 triangles): only 2 patterns with 3:1 ratio (210 TwoSameOneOpp, 70 AllOpposite). (C) 7 mixed components (36 edges, 24 triangles): only 2 patterns with 3:1 ratio (18 TwoSameOneOpp, 6 AllOpposite). The 3:1 TwoSameOneOpp:AllOpposite ratio is universal in pure-regime components across dim=16 and dim=32."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (generic_face_sign_census, edge_sign_type_exact)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by integer-exact computation: test_generic_face_sign_census_dim16_matches_c479 (reproduces C-479), test_generic_face_sign_census_dim32 (all three regimes verified with exact counts). Totals: 1050+756+252+350=2408. WHAT WOULD REFUTE: finding a pure-regime component (only 2 patterns) where the TwoSameOneOpp:AllOpposite ratio differs from 3:1, or finding all 4 patterns in ALL components at dim=32 (would contradict regime differentiation).'
