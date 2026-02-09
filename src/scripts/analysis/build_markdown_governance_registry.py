@@ -88,6 +88,7 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
 def _generated_mirror_patterns() -> list[str]:
     return [
         "docs/generated/*.md",
+        "docs/CLAIMS_EVIDENCE_MATRIX.md",
         "docs/INSIGHTS.md",
         "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
         "docs/ROADMAP.md",

@@ -7,10 +7,10 @@ Authoritative source: `registry/markdown_governance.toml`.
 
 - Generated at: deterministic
 - Document count: 231
-- TOML generated mirrors: 56
+- TOML generated mirrors: 57
 - TOML manual sources: 0
 - Generated artifacts: 59
-- Manual narratives: 116
+- Manual narratives: 115
 - Immutable transcripts: 0
 
 ## Documents
@@ -165,9 +165,9 @@ Authoritative source: `registry/markdown_governance.toml`.
 ### MDG-0022: `docs/CLAIMS_EVIDENCE_MATRIX.md`
 
 - Kind: `markdown_mirror`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0023: `docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md`
 

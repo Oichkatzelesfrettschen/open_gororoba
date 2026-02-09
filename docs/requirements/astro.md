@@ -28,6 +28,12 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Astronomy Data Fetching
 
 Astro scripts depend on `astroquery` and (for some workflows) `gwpy`.

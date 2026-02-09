@@ -37,6 +37,12 @@ body_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Installation Requirements (Reproducible)
 
 This repo targets a **host Python** for non-quantum work and a **Docker Python 3.11**
@@ -92,6 +98,12 @@ make verify
 path = "docs/REQUIREMENTS.md"
 title = "Requirements for Gemini Experiments"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
@@ -212,6 +224,12 @@ Some targets rely on standard system utilities (documented here for reproducibil
 path = "docs/requirements/algebra.md"
 title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
@@ -387,6 +405,12 @@ body_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Analysis (Topology + Embeddings)
 
 These scripts use optional dependencies such as `networkx`, `ripser`, and friends.
@@ -408,6 +432,12 @@ Notes:
 path = "docs/requirements/astro.md"
 title = "Requirements: Astronomy Data Fetching"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
@@ -492,6 +522,12 @@ body_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Coq Proof Checking
 
 This repo contains `.v` files under `curated/01_theory_frameworks/`.
@@ -516,6 +552,12 @@ Notes:
 path = "docs/requirements/cpp.md"
 title = "Requirements: C++ Kernels (Conan + CMake)"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
@@ -608,6 +650,12 @@ body_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: LaTeX (PDF Build)
 
 To compile the LaTeX sources under `docs/latex/`, install a TeX distribution (e.g. TeX Live) and ensure `latexmk` is available.
@@ -626,6 +674,12 @@ Notes:
 path = "docs/requirements/materials.md"
 title = "Requirements: Materials Datasets"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
@@ -705,6 +759,12 @@ body_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Particle Data Workflows
 
 Particle workflows are optional and use Python extras:
@@ -727,6 +787,12 @@ under `data/external/` and update `docs/BIBLIOGRAPHY.md`.
 path = "docs/requirements/quantum-docker.md"
 title = "Requirements: Quantum (Qiskit via Docker)"
 body_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
