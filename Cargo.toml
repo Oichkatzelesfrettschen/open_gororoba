@@ -137,11 +137,40 @@ tempfile = "3.24"
 proptest = "1.6"
 criterion = { version = "0.5", features = ["html_reports"] }
 
+# Development: highly optimized with full debug info for flamegraph/perf.
+# Catches overflow and assertion errors while running at near-release speed.
+# Trade-off: slower compilation (O3 + thin LTO) for faster runtime + debuggability.
+[profile.dev]
+opt-level = 3
+debug = "full"              # maximal DWARF info for gdb/lldb/flamegraph/perf
+strip = "none"              # keep all symbols for profiling
+lto = "thin"                # cross-crate optimization (faster compile than fat)
+codegen-units = 16          # parallel codegen (faster compile, slight opt loss)
+incremental = true          # fast rebuilds during iteration
+overflow-checks = true      # catch integer overflow bugs at runtime
+debug-assertions = true     # catch debug_assert! failures
+
+# Test: inherits from dev, but compiles at O1 for faster test-suite turnaround.
+# Library deps still build at dev's O3; only test harness code uses O1.
+[profile.test]
+opt-level = 1
+
+# Release: maximum optimization, no debug data, stripped for distribution.
+# Use for final binaries, benchmarks against baselines, and published artifacts.
 [profile.release]
 opt-level = 3
-lto = "fat"
-codegen-units = 1
+debug = false               # no debug info in production binaries
+strip = "symbols"           # remove symbol table for smaller binary
+lto = "fat"                 # full cross-crate LTO (slowest compile, best runtime)
+codegen-units = 1           # single codegen unit = maximum LLVM optimization
+overflow-checks = false     # skip for production speed
+# NOTE: panic = "abort" is omitted because stats_core uses catch_unwind for the
+# hurst crate safety wrapper. If that dependency is removed, add panic = "abort"
+# for ~5% binary size reduction and slight speed gain from no unwinding tables.
 
+# Bench: release-level optimization with thin LTO for faster iteration.
 [profile.bench]
 opt-level = 3
-lto = "thin"
+debug = "line-tables-only"  # minimal debug info for flamegraph profiling
+lto = "thin"                # faster compile than fat, still good optimization
+codegen-units = 1           # single codegen for consistent benchmark results

@@ -18,8 +18,8 @@
 //! - Strut table cross-validation against de Marrais (unpublished)
 
 use std::collections::{HashMap, BTreeSet, HashSet};
-use crate::cayley_dickson::cd_multiply;
-use crate::boxkites::{
+use crate::construction::cayley_dickson::cd_multiply;
+use crate::analysis::boxkites::{
     find_box_kites, canonical_strut_table, Assessor,
     cross_assessors, diagonal_zero_products_exact, CrossPair,
 };
@@ -356,7 +356,7 @@ pub fn is_associative_triple(a: &[f64], b: &[f64], c: &[f64], atol: f64) -> bool
     let a_bc = cd_multiply(a, &bc);
     ab_c.iter()
         .zip(a_bc.iter())
-        .all(|(x, y)| (x - y).abs() < atol)
+        .all(|(x, y): (&f64, &f64)| (x - y).abs() < atol)
 }
 
 // ---------------------------------------------------------------------------
@@ -926,7 +926,7 @@ pub fn verify_parity_clique(dim: usize) -> ParityCliqueResult {
 /// only occur between cross-pairs sharing the same XOR key. At dim=128
 /// this reduces from ~8.1M pair checks to ~127K checks (63x speedup).
 pub fn build_zd_adjacency_bucketed(dim: usize) -> (Vec<CrossPair>, Vec<Vec<u8>>) {
-    use crate::zd_graphs::xor_key;
+    use crate::analysis::zd_graphs::xor_key;
 
     let pairs = cross_assessors(dim);
     let n = pairs.len();
@@ -988,7 +988,7 @@ pub struct CrossValidation128Result {
 /// 2. Parity-clique structure via bucket-optimized adjacency
 /// 3. Cross-validation statistics
 pub fn verify_c451_128d() -> CrossValidation128Result {
-    use crate::zd_graphs::xor_key;
+    use crate::analysis::zd_graphs::xor_key;
 
     let dim = 128;
 

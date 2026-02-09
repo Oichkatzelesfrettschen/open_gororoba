@@ -12,7 +12,7 @@
 //!   oct-field sweep --n-min 32 --n-max 256 --mass 1.0
 
 use clap::{Parser, Subcommand};
-use algebra_core::octonion_field::{
+use algebra_core::{
     FieldParams, evolve, gaussian_wave_packet, measure_dispersion,
 };
 use std::f64::consts::PI;

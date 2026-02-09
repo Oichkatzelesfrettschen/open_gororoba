@@ -34,8 +34,8 @@
 //! - Greimas (1966): Structural Semantics (semiotic square)
 
 use std::collections::{HashMap, HashSet};
-use crate::cayley_dickson::cd_basis_mul_sign;
-use crate::boxkites::{
+use crate::construction::cayley_dickson::cd_basis_mul_sign;
+use crate::analysis::boxkites::{
     Assessor, BoxKite, CrossPair, EdgeSignType,
     cross_assessors,
     find_box_kites, canonical_strut_table, edge_sign_type,
@@ -1306,7 +1306,7 @@ pub struct HjelmslevNet {
 
 /// Construct the Hjelmslev net for a Cayley-Dickson dimension.
 pub fn hjelmslev_net(dim: usize) -> HjelmslevNet {
-    use crate::projective_geometry::pg_from_cd_dim;
+    use crate::analysis::projective_geometry::pg_from_cd_dim;
     let pg = pg_from_cd_dim(dim);
     HjelmslevNet {
         proj_dim: pg.m,
@@ -1426,12 +1426,12 @@ pub fn extract_rho_matrix(
         }
 
         // Multiply by e_b
-        let product = crate::cayley_dickson::cd_multiply(&cd_vec, &e_b);
+        let product = crate::construction::cayley_dickson::cd_multiply(&cd_vec, &e_b);
 
         // Extract first 8 components as output lattice vector
         let out_ell: Vec<i32> = product.iter()
             .take(n_coords)
-            .map(|&x| x.round() as i32)
+            .map(|&x: &f64| x.round() as i32)
             .collect();
 
         // Verify integrality
@@ -2678,7 +2678,7 @@ pub fn min_level_for_strut(s: usize) -> usize {
     // G = 2^(N-1) must be > S, so N-1 > log2(S), so N > log2(S) + 1.
     // For S=0, undefined; for S=1..7, N=4 (G=8>7); for S=8..15, N=5 (G=16>15).
     assert!(s >= 1, "Strut constant must be >= 1");
-    let bits = 32 - (s as u32).leading_zeros();
+    let bits = u32::BITS - (s as u32).leading_zeros();
     (bits as usize) + 1
 }
 
@@ -3765,7 +3765,7 @@ pub fn verify_three_viziers(bk: &BoxKite, dim: usize) -> ThreeVizierResult {
 ///
 /// Returns `None` if the component has no edges.
 pub fn vizier_xor_audit(
-    component: &crate::boxkites::MotifComponent,
+    component: &crate::analysis::boxkites::MotifComponent,
 ) -> Option<VizierXorAudit> {
     if component.edges.is_empty() {
         return None;

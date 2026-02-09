@@ -41,7 +41,7 @@ fn gcd(mut a: u64, mut b: u64) -> u64 {
 ///
 /// # Example
 /// ```
-/// use algebra_core::group_theory::order_psl2_q;
+/// use algebra_core::order_psl2_q;
 /// assert_eq!(order_psl2_q(2), 6);   // PSL(2,2) = S3
 /// assert_eq!(order_psl2_q(3), 12);  // PSL(2,3) = A4
 /// assert_eq!(order_psl2_q(5), 60);  // PSL(2,5) = A5

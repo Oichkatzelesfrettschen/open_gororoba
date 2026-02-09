@@ -147,7 +147,7 @@ pub struct NilpotentAnalysis {
 ///
 /// # Example
 /// ```
-/// use algebra_core::nilpotent_orbits::nilpotency_index;
+/// use algebra_core::nilpotency_index;
 /// use nalgebra::DMatrix;
 ///
 /// // Nilpotent matrix [[0, 1], [0, 0]]
@@ -211,7 +211,7 @@ fn kernel_dimension(m: &DMatrix<f64>, tolerance: f64) -> usize {
 ///
 /// # Example
 /// ```
-/// use algebra_core::nilpotent_orbits::jordan_type_nilpotent;
+/// use algebra_core::jordan_type_nilpotent;
 /// use nalgebra::DMatrix;
 ///
 /// // Jordan block J_3: [[0,1,0],[0,0,1],[0,0,0]]

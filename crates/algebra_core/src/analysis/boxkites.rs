@@ -31,8 +31,8 @@
 
 use std::collections::{HashSet, HashMap, BTreeSet, VecDeque};
 use nalgebra::{DMatrix, SymmetricEigen};
-use crate::cayley_dickson::{cd_multiply, cd_norm_sq, cd_basis_mul_sign};
-use crate::zd_graphs::xor_key;
+use crate::construction::cayley_dickson::{cd_multiply, cd_norm_sq, cd_basis_mul_sign};
+use crate::analysis::zd_graphs::xor_key;
 
 /// An assessor: pair (low, high) with low in 1..7, high in 8..15.
 /// Represents a 2-plane of zero-divisors.
@@ -2213,7 +2213,7 @@ mod tests {
         // be a zero-divisor: there exists some other sedenion b such that
         // d*b = 0. This is verified by checking left-multiplication matrix
         // nullity.
-        use crate::annihilator::annihilator_info;
+        use crate::analysis::annihilator::annihilator_info;
         let assessors = primitive_assessors();
         for a in &assessors {
             for sign in [-1.0, 1.0] {

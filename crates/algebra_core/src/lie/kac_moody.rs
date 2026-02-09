@@ -1146,7 +1146,7 @@ impl Default for E11RootSystem {
 /// Unified interface for E-series root systems.
 #[derive(Debug, Clone)]
 pub enum ESeriesRootSystem {
-    E8(Box<crate::e8_lattice::E8Lattice>),
+    E8(Box<crate::lie::e8_lattice::E8Lattice>),
     E9(E9RootSystem),
     E10(E10RootSystem),
     E11(E11RootSystem),

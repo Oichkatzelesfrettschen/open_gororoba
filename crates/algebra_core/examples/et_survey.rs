@@ -2,7 +2,7 @@
 //!
 //! Usage: cargo run --release -p algebra_core --example et_survey
 
-use algebra_core::emanation::{create_strutted_et, et_regimes};
+use algebra_core::{create_strutted_et, et_regimes};
 
 fn main() {
     for n in 4..=7 {

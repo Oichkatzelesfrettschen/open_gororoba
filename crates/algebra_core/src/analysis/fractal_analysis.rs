@@ -105,7 +105,7 @@ pub struct DfaResult {
 ///
 /// # Example
 /// ```
-/// use algebra_core::fractal_analysis::calculate_hurst;
+/// use algebra_core::calculate_hurst;
 /// let brownian: Vec<f64> = (0..100).map(|i| (i as f64).sqrt()).collect();
 /// if let Some(result) = calculate_hurst(&brownian, 2, 20) {
 ///     println!("Hurst exponent: {:.3}", result.hurst);

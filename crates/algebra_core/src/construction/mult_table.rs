@@ -15,7 +15,7 @@
 
 use sha2::{Digest, Sha256};
 
-use crate::cayley_dickson::cd_multiply;
+use crate::construction::cayley_dickson::cd_multiply;
 
 /// Pre-computed Cayley-Dickson multiplication table.
 ///
@@ -155,7 +155,7 @@ impl CdMultTable {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::m3::OctonionTable;
+    use crate::physics::m3::OctonionTable;
 
     #[test]
     fn test_dim8_matches_octonion_table() {

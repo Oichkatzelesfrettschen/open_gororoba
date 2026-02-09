@@ -1,7 +1,7 @@
 [[claim]]
 id = "C-001"
 statement = "Cayley-Dickson algebras become non-associative at 8D and beyond."
-where_stated = "`crates/algebra_core/src/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/hypercomplex.rs` (test_non_associativity_scaling), `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`"
+where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/construction/hypercomplex.rs` (test_non_associativity_scaling), `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = "Rust tests verify associativity at dims 1/2/4 and find non-associative triples at dim >= 8; cite Baez (2002) for background."
@@ -9,7 +9,7 @@ what_would_verify_refute = "Rust tests verify associativity at dims 1/2/4 and fi
 [[claim]]
 id = "C-002"
 statement = "16D sedenions have zero divisors and lose norm composition."
-where_stated = "`crates/algebra_core/src/boxkites.rs` (test_primitive_unit_zero_divisors_count), `crates/algebra_core/src/annihilator.rs` (test_known_zero_divisor_has_nontrivial_annihilator), `docs/external_sources/DE_MARRAIS_SOURCES.md`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`"
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_primitive_unit_zero_divisors_count), `crates/algebra_core/src/analysis/annihilator.rs` (test_known_zero_divisor_has_nontrivial_annihilator), `docs/external_sources/DE_MARRAIS_SOURCES.md`, `docs/external_sources/CAYLEY_DICKSON_BASICS_SOURCES.md`"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = "Rust tests verify sedenion zero-divisor existence and norm-composition failure at dim 16; cite de Marrais (2000) and Baez (2002) for background."
@@ -17,7 +17,7 @@ what_would_verify_refute = "Rust tests verify sedenion zero-divisor existence an
 [[claim]]
 id = "C-003"
 statement = '"42 assessors" / "7 box-kites" organize primitive sedenion zero divisors.'
-where_stated = "`crates/algebra_core/src/boxkites.rs` (test_primitive_assessors_count, test_sedenion_boxkite_count, test_assessors_partition_into_boxkites), `docs/SEDENION_ATLAS.md`, `docs/external_sources/DE_MARRAIS_SOURCES.md`"
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_primitive_assessors_count, test_sedenion_boxkite_count, test_assessors_partition_into_boxkites), `docs/SEDENION_ATLAS.md`, `docs/external_sources/DE_MARRAIS_SOURCES.md`"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = "Rust tests reproduce 42 primitive assessors and 7 octahedral box-kites under the repo's sedenion multiplication convention; cite de Marrais (2000) as primary source for the construction."
@@ -25,7 +25,7 @@ what_would_verify_refute = "Rust tests reproduce 42 primitive assessors and 7 oc
 [[claim]]
 id = "C-004"
 statement = "The relevant symmetry group count is `PSL(2,7) has order 168` and an explicit 168-element action is constructed which permutes the 7 box-kites (as computed in-repo) as labeled subgraphs."
-where_stated = "`docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/group_theory.rs`, `crates/algebra_core/src/boxkites.rs` (Rust tests: test_sedenion_boxkite_structure, test_coassessor_symmetry)"
+where_stated = "`docs/SEDENION_ATLAS.md`, `docs/external_sources/PSL_2_7_SOURCES.md`, `crates/algebra_core/src/lie/group_theory.rs`, `crates/algebra_core/src/analysis/boxkites.rs` (Rust tests: test_sedenion_boxkite_structure, test_coassessor_symmetry)"
 status = "Verified"
 last_verified = "2026-01-28"
 what_would_verify_refute = """Verified: GL(3,2) (order 168, isomorphic to PSL(2,7)) acts on Fano-plane points and induces a deterministic permutation of CD indices that maps each computed box-kite to another computed box-kite, preserving assessor sets and edge sets. This validates a concrete "governs" meaning: it acts by symmetries on the box-kite family produced by this repo's CD convention."""
@@ -33,7 +33,7 @@ what_would_verify_refute = """Verified: GL(3,2) (order 168, isomorphic to PSL(2,
 [[claim]]
 id = "C-005"
 statement = '"The geometry of sedenion zero divisors" (Reggiani, 2024) implies specific manifold identifications (e.g., `G2`, `V_2(R^7)`).'
-where_stated = "`crates/algebra_core/src/grassmannian.rs` (test_c005_* tests), `data/csv/c005_grassmannian_zd_analysis.csv`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`"
+where_stated = "`crates/algebra_core/src/analysis/grassmannian.rs` (test_c005_* tests), `data/csv/c005_grassmannian_zd_analysis.csv`, `docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md`"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = "VERIFIED (Phase 7): Rust integration tests confirm Reggiani geometry claims with one correction: (1) all 84 ZDs have exactly 4-dim annihilators (CONFIRMED), (2) sign variants have ORTHOGONAL annihilators (distance=pi), NOT shared subspaces - this corrects original claim; (3) 5 distinct geodesic distance values exist (close to claimed 6; discrete structure confirms PSL(2,7) symmetry), (4) box-kite membership stratifies distances (within mean 2.77 vs across mean 2.21 - CONFIRMED). Riemannian isometry proofs (Z(S) ~ G2) remain NOT replicated but geometric invariants strongly support the structure. See `data/csv/c005_grassmannian_zd_analysis.csv`."
@@ -97,7 +97,7 @@ what_would_verify_refute = "Phase 2.2 (eta=0): Pre-registered model comparison w
 [[claim]]
 id = "C-013"
 statement = """de Marrais' GoTo "automorphemes" (from the 7 O-trips + the "8-ball" exclude rule) cover the 42 primitive assessors exactly twice; each assessor lies in exactly two automorphemes (Production Rule #3 uniqueness)."""
-where_stated = "`docs/DE_MARRAIS_REPLICATION.md`, `crates/algebra_core/src/boxkites.rs` (test_automorphemes_cover_assessors_twice, test_production_rule_3_unique_other), `docs/BIBLIOGRAPHY.md`"
+where_stated = "`docs/DE_MARRAIS_REPLICATION.md`, `crates/algebra_core/src/analysis/boxkites.rs` (test_automorphemes_cover_assessors_twice, test_production_rule_3_unique_other), `docs/BIBLIOGRAPHY.md`"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = 'Rust tests reconstruct GoTo automorphemes and validate the "exactly two" uniqueness property. Primary source: de Marrais, R. (2000) "The 42 Assessors and the Box-Kites they Fly" arXiv:math/0011260; de Marrais, R. (2004) "Placeholder Substructures II: Meta-Fractal Behavior, the (3,8)-Theorem, and the Arithmetic of Hypercomplex Numbers."'
@@ -105,7 +105,7 @@ what_would_verify_refute = 'Rust tests reconstruct GoTo automorphemes and valida
 [[claim]]
 id = "C-014"
 statement = "The diagonal-form family of 84 sedenion zero divisors `(e_low +/- e_high)` (from de Marrais' 42 primitive assessors) has left and right annihilator dimension 4 (so the annihilator unit sphere is S^3 ~ SU(2))."
-where_stated = "`docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_core/src/reggiani.rs` (test_all_standard_zds_have_nullity_4_4), `crates/algebra_core/src/annihilator.rs` (test_all_primitive_assessor_diagonals_have_nullity_4), `docs/BIBLIOGRAPHY.md`"
+where_stated = "`docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_core/src/analysis/reggiani.rs` (test_all_standard_zds_have_nullity_4_4), `crates/algebra_core/src/analysis/annihilator.rs` (test_all_primitive_assessor_diagonals_have_nullity_4), `docs/BIBLIOGRAPHY.md`"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = 'Rust tests verify nullity (4,4) for all 84 and check annihilator basis vectors annihilate. Primary sources: Reggiani, C. (2024) "Geometry of Sedenion Zero Divisors" arXiv:2411.18881; Biss, Dugger & Isaksen (2008) "Large Annihilators in Cayley-Dickson Algebras" Comm. Algebra 36(2).'
@@ -113,7 +113,7 @@ what_would_verify_refute = 'Rust tests verify nullity (4,4) for all 84 and check
 [[claim]]
 id = "C-015"
 statement = "For each of the 84 diagonal-form zero divisors `u`, there are exactly 4 other diagonal-form zero divisors `v` with `u*v=0`, and these 4 span `Ann_L(u)`."
-where_stated = "`docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_core/src/reggiani.rs` (test_standard_zd_annihilator_consistency), `docs/BIBLIOGRAPHY.md`"
+where_stated = "`docs/REGGIANI_REPLICATION.md`, `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`, `crates/algebra_core/src/analysis/reggiani.rs` (test_standard_zd_annihilator_consistency), `docs/BIBLIOGRAPHY.md`"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = 'Rust tests compute partner sets and verify the "4 partners spanning" invariant. Primary source: Reggiani, C. (2024) "Geometry of Sedenion Zero Divisors" arXiv:2411.18881.'
@@ -129,7 +129,7 @@ what_would_verify_refute = 'Rust tests validate the 42/168 split and the Fano-li
 [[claim]]
 id = "C-017"
 statement = "For diagonal 2-blades `(e_i +/- e_j)` in 16D CD, any observed zero product between two 2-blades satisfies the XOR-bucket necessary condition `(i^j) == (k^ell)`."
-where_stated = "`docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `crates/algebra_core/src/zd_graphs.rs` (test_xor_bucket_necessary_two_blade, test_xor_bucket_necessary_2v4)"
+where_stated = "`docs/CONVOS_CONCEPTS_STATUS_INDEX.md`, `crates/algebra_core/src/analysis/zd_graphs.rs` (test_xor_bucket_necessary_two_blade, test_xor_bucket_necessary_2v4)"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = "Rust tests check necessity on a deterministic sweep; do NOT claim sufficiency."
@@ -140,12 +140,12 @@ statement = '"Wheels" (Carlstrom) are commutative monoid-based structures <H,0,1
 where_stated = '`docs/WHEELS_DIVISION_BY_ZERO.md`, convos "wheel" mentions'
 status = "Verified"
 last_verified = "2026-01-28"
-what_would_verify_refute = "`docs/WHEELS_DIVISION_BY_ZERO.md` is source-aligned; `crates/algebra_core/src/wheels.rs` implements a concrete model with 11 tests (test_carlstrom_axioms, test_division_by_zero, test_reciprocal_involution, etc.) checking all 8 Carlstrom axioms on a deterministic finite set."
+what_would_verify_refute = "`docs/WHEELS_DIVISION_BY_ZERO.md` is source-aligned; `crates/algebra_core/src/construction/wheels.rs` implements a concrete model with 11 tests (test_carlstrom_axioms, test_division_by_zero, test_reciprocal_involution, etc.) checking all 8 Carlstrom axioms on a deterministic finite set."
 
 [[claim]]
 id = "C-019"
 statement = "Wheels (division-by-zero) provide a mathematically justified way to interpret some Cayley-Dickson zero-divisor phenomena at higher dimensions."
-where_stated = "convos narrative, `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `crates/algebra_core/src/wheels.rs`, `data/csv/cd_wheel_roundtrip_results.csv`, `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`"
+where_stated = "convos narrative, `docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md`, `crates/algebra_core/src/construction/wheels.rs`, `data/csv/cd_wheel_roundtrip_results.csv`, `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`"
 status = "Refuted"
 last_verified = "2026-01-30"
 what_would_verify_refute = "Phase 2C structural test: all 84 diagonal-form ZDs tested with their 336 annihilating-partner pairs. ZD detection rate 100%, but round-trip (u/v)*v recovers u in 0/336 cases (residual = sqrt(2) uniformly). The wheel framework correctly tags information loss but adds no algebraic content beyond what direct ZD detection provides. No first-party source connecting wheels to CD zero divisors has been found. H0 NOT REJECTED: the connection is notational, not mathematical. See `docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md`."
@@ -177,7 +177,7 @@ what_would_verify_refute = "CLOSED (Phase 7 Batch A): This is an ordinal/birthda
 [[claim]]
 id = "C-023"
 statement = "Toy model: interpret the CD associator as a discrete connection/holonomy signal over triples."
-where_stated = "`docs/theory/unified_tensor_wheel_cd_framework.md`, `crates/algebra_core/src/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py`, `data/csv/cd_holonomy_basis_triples.csv`, `data/csv/cd_fiber_holonomy_comparison.csv`, `tests/test_cd_holonomy.py`"
+where_stated = "`docs/theory/unified_tensor_wheel_cd_framework.md`, `crates/algebra_core/src/analysis/grassmannian.rs`, `src/scripts/analysis/cd_fiber_holonomy_analysis.py`, `data/csv/cd_holonomy_basis_triples.csv`, `data/csv/cd_fiber_holonomy_comparison.csv`, `tests/test_cd_holonomy.py`"
 status = "Closed/Toy"
 last_verified = "2026-02-05"
 what_would_verify_refute = "CLOSED (Phase 7 Batch A): This is a basis-vector holonomy model, not derivable from CD associator in any physical sense. The statistical difference between ZD-adjacent vs generic basis triples (p ~ 9.4e-8) is a discrete combinatorial signal, not a continuous fiber bundle holonomy. No connection to physical gauge theory or differential geometry established. Keep as documented toy model."
@@ -193,7 +193,7 @@ what_would_verify_refute = "C++ scaffold complete (Phase 4): CMake + Conan build
 [[claim]]
 id = "C-025"
 statement = "GWTC-3 black hole sky positions cluster around projected sedenion zero-divisor coordinates (CMB-aligned box-kite projection)."
-where_stated = "`docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `crates/algebra_core/src/boxkites.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py`, `docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md`"
+where_stated = "`docs/stellar_cartography/theory/HYPOTHESIS_DEF.md`, `crates/algebra_core/src/analysis/boxkites.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py`, `docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md`"
 status = "Refuted"
 last_verified = "2026-01-31"
 what_would_verify_refute = "Pre-registered Monte Carlo test (`src/scripts/analysis/verify_tscp_alignment.py`) executed on 35 GWTC-3 events. Observed mean min-distance: 21.26 deg. Z-score vs isotropy: -1.04 (slight alignment). P-value: 0.152. H0 (isotropy) NOT REJECTED at alpha=0.01. Evidence: `data/csv/tscp_alignment_results.csv`."
@@ -209,7 +209,7 @@ what_would_verify_refute = "CLOSED (Phase 7 Batch F): This is a RESEARCH PROGRAM
 [[claim]]
 id = "C-027"
 statement = 'Toy model: define D_eff(rho) = 3 - k*log10(rho/rho_vac). With rho_h(M) = M/((4/3)*pi*r_s^3) at r_s = 2GM/c^2 (average density inside Schwarzschild radius), D_eff(rho_h(M)) crosses 0 at a critical mass M_crit (horizon "phase transition" proxy).'
-where_stated = "`docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md`, `crates/algebra_core/src/grassmannian.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/C027_DEFF_HORIZON_TEST.md`, `src/scripts/analysis/deff_horizon_mass_scaling.py`, `data/csv/deff_horizon_mass_scaling_summary.csv`, `tests/test_c027_deff_horizon_mass_scaling.py`, `docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md`"
+where_stated = "`docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md`, `crates/algebra_core/src/analysis/grassmannian.rs`, `crates/stats_core/src/claims_gates.rs`, `docs/C027_DEFF_HORIZON_TEST.md`, `src/scripts/analysis/deff_horizon_mass_scaling.py`, `data/csv/deff_horizon_mass_scaling_summary.csv`, `tests/test_c027_deff_horizon_mass_scaling.py`, `docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md`"
 status = "Verified"
 last_verified = "2026-02-03"
 what_would_verify_refute = 'Offline consequence check: `data/csv/deff_horizon_mass_scaling_summary.csv` reports M_crit = 1.36e9 M_sun for canonical rho_vac=1e-29 kg/m^3, k=0.1, so D_eff(r_s) <= 0 holds for stellar-mass BHs but not for sufficiently massive SMBHs under this proxy. This does not validate a physical "horizon phase transition" (horizon-local density is not a GR invariant); without a derived k and a distinct observable, keep as toy narrative only.'
@@ -220,12 +220,12 @@ statement = "Aut(S) = G2 x S3; no continuous symmetry beyond G2 emerges from sed
 where_stated = "`docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/SEDENION_FIELD_THEORY.md`"
 status = "Verified"
 last_verified = "2026-01-31"
-what_would_verify_refute = "`crates/algebra_core/src/hypercomplex.rs` verifies three closed octonionic subalgebras, S3 permutation validity, and G2-consistent Fano triple counts."
+what_would_verify_refute = "`crates/algebra_core/src/construction/hypercomplex.rs` verifies three closed octonionic subalgebras, S3 permutation validity, and G2-consistent Fano triple counts."
 
 [[claim]]
 id = "C-029"
 statement = "Three fermion generations arise from the C tensor S decomposition into three C tensor O subalgebras (Gillard & Gresnigt 2019, Gresnigt 2023)."
-where_stated = "`docs/BIBLIOGRAPHY.md` (Gillard & Gresnigt 2019; Gresnigt 2023), `docs/SEDENION_FIELD_THEORY.md`, `crates/algebra_core/src/hypercomplex.rs` (test_sedenion_box_kites, test_octonion_field_fano)"
+where_stated = "`docs/BIBLIOGRAPHY.md` (Gillard & Gresnigt 2019; Gresnigt 2023), `docs/SEDENION_FIELD_THEORY.md`, `crates/algebra_core/src/construction/hypercomplex.rs` (test_sedenion_box_kites, test_octonion_field_fano)"
 status = "Verified"
 last_verified = "2026-01-30"
 what_would_verify_refute = "Subalgebras match Phase 6A identification. S3 generation permutations valid. PSL(2,7) is internal to each sub, not cross-generation."
@@ -257,7 +257,7 @@ what_would_verify_refute = """Minimal reproduction: Table 2 values were extracte
 [[claim]]
 id = "C-033"
 statement = "Sedenion basis maps to 24 generators of SU(5) (Tang & Tang 2023)."
-where_stated = "`data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)"
+where_stated = "`data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf`, `data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt`, `docs/convos/pdf_extract_3f6ee1e837d1_sedenion_valued_field_theories_action_principles_and_challenges.md`, `docs/external_sources/SEDENION_FIELD_THEORY_SOURCES.md`, `docs/BIBLIOGRAPHY.md` (Tang & Tang 2023), `docs/SEDENION_FIELD_THEORY.md`, `docs/C033_SU5_MAPPING_CLOSURE.md`, `crates/algebra_core/src/lie/group_theory.rs`, `src/scripts/analysis/c033_su5_generator_summary.py`, `data/csv/c033_su5_generator_summary.csv`, `tests/test_su5_generators.py` (29 tests)"
 status = "Closed/Source-Insufficient"
 last_verified = "2026-02-06"
 what_would_verify_refute = "CLOSED (Phase 7 Batch B): Repo verifies a canonical SU(5) generator basis in the 5D defining rep: traceless/Hermitian/normalized and Lie bracket closed (summary: `data/csv/c033_su5_generator_summary.csv`). Tang & Tang (2023, Sec. 2.6) describe a construction of 24 generalized lambda matrices via five creation/annihilation operators, but do NOT enumerate a unique coefficient mapping from sedenion basis elements to a normalized SU(5) generator basis. The source provides the algebraic framework but not the explicit mapping table (basis conventions + normalization) needed for verification. Closed as source-insufficient."
@@ -329,10 +329,10 @@ what_would_verify_refute = "A shared number (26) does not define a derivation. T
 [[claim]]
 id = "C-042"
 statement = "Kozyrev p-adic wavelets form an explicitly computable eigenbasis for the Vladimirov operator."
-where_stated = "`docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `crates/algebra_core/src/padic.rs`"
+where_stated = "`docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md`, `crates/algebra_core/src/construction/padic.rs`"
 status = "Verified"
 last_verified = "2026-01-31"
-what_would_verify_refute = "`crates/algebra_core/src/padic.rs` implements wavelet evaluation and orthogonality checks. `src/scripts/analysis/verify_kozyrev_wavelets.py` verifies correct values, orthogonality (modulo domain choices), and approximate eigenvalue action."
+what_would_verify_refute = "`crates/algebra_core/src/construction/padic.rs` implements wavelet evaluation and orthogonality checks. `src/scripts/analysis/verify_kozyrev_wavelets.py` verifies correct values, orthogonality (modulo domain choices), and approximate eigenvalue action."
 
 [[claim]]
 id = "C-043"
@@ -425,7 +425,7 @@ what_would_verify_refute = '`src/scripts/analysis/c053_pathion_metamaterial_mapp
 [[claim]]
 id = "C-054"
 statement = "Carlstrom's Wheel Algebra formally models information loss in non-associative CD algebras."
-where_stated = "`crates/algebra_core/src/wheels.rs`"
+where_stated = "`crates/algebra_core/src/construction/wheels.rs`"
 status = "Verified"
 last_verified = "2026-01-31"
 what_would_verify_refute = 'Implementation of Wheel axioms over CD algebras verifies that the "Nullity" element ($0/0$) and metadata tagging correctly capture the irreversibility of multiplication in 16D/32D.'
@@ -433,7 +433,7 @@ what_would_verify_refute = 'Implementation of Wheel axioms over CD algebras veri
 [[claim]]
 id = "C-055"
 statement = "Non-associativity is the generic (bulk) state of 16D/32D CD algebras (100% prevalence)."
-where_stated = "`crates/algebra_core/src/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/hypercomplex.rs` (test_non_associativity_scaling)"
+where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_sedenion_non_associative), `crates/algebra_core/src/construction/hypercomplex.rs` (test_non_associativity_scaling)"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = "Rust tests verify non-associativity at dim=16 (cayley_dickson.rs) and scaling with dimension (hypercomplex.rs). Original Monte Carlo ($N=100,000$) in 16D/32D showed 100% of pairs have non-zero round-trip residual."
@@ -3241,7 +3241,7 @@ what_would_verify_refute = "VERIFIED (Phase 7 Batch F): This is an ESTABLISHED T
 [[claim]]
 id = "C-406"
 statement = 'TSCP/box-kite sky mapping must be invariant under the relevant algebraic symmetries (or else explicitly enumerate tested embeddings) to avoid "picked the embedding that worked".'
-where_stated = "`docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `crates/algebra_core/src/boxkites.rs`, `tests/test_tscp_alignment_offline.py`, `tests/test_tscp_embedding_sweep.py`"
+where_stated = "`docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `crates/algebra_core/src/analysis/boxkites.rs`, `tests/test_tscp_alignment_offline.py`, `tests/test_tscp_embedding_sweep.py`"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = "VERIFIED (Phase 7 Batch E): This is a methodology standard, not a physics claim. The requirement (enumerate embeddings or prove invariance) is documented in `docs/preregistered/TSCP_SKY_ALIGNMENT.md`. The existing test suite (`tests/test_tscp_embedding_sweep.py`) implements N=10 random embedding trials. This is a pre-registration discipline standard that the repo's claims infrastructure enforces. Verified as methodology infrastructure."
@@ -3393,15 +3393,15 @@ what_would_verify_refute = "Phase 7 R6: Closed as engineering artifact. Implemen
 [[claim]]
 id = "C-425"
 statement = "Octonion-valued (8D) scalar field Hamiltonian with Stormer-Verlet symplectic integrator, 7 Noether charges from octonionic U(1) rotations, and free-field dispersion relation omega^2 = k^2 + m^2. Restricts to octonionic subalgebra to bypass C-030 non-associativity obstruction."
-where_stated = "`crates/algebra_core/src/octonion_field.rs`, `tests/test_octonion_field.py`"
+where_stated = "`crates/algebra_core/src/physics/octonion_field.rs`, `tests/test_octonion_field.py`"
 status = "Verified"
 last_verified = "2026-02-04"
-what_would_verify_refute = "Phase 6 task A10. Fano-plane structure constants for multiplication. Tests: energy conservation < 0.1% (free + quartic), dispersion within 1%, Noether charge Q_1 drift < 0.1%, non-associativity confirmed, alternativity verified, composition property ||a*b|| = ||a||*||b|| to 1e-12. Original 16D transport kernel in `crates/algebra_core/src/hypercomplex.rs` remains as Modeled."
+what_would_verify_refute = "Phase 6 task A10. Fano-plane structure constants for multiplication. Tests: energy conservation < 0.1% (free + quartic), dispersion within 1%, Noether charge Q_1 drift < 0.1%, non-associativity confirmed, alternativity verified, composition property ||a*b|| = ||a||*||b|| to 1e-12. Original 16D transport kernel in `crates/algebra_core/src/construction/hypercomplex.rs` remains as Modeled."
 
 [[claim]]
 id = "C-426"
 statement = "Pathion (32D) Zero-Divisor interaction matrix diagonalization provides a testbed for algebraic mass spectrum hypotheses (logarithmic scaling)."
-where_stated = "`docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/algebra_core/src/hypercomplex.rs`"
+where_stated = "`docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/algebra_core/src/construction/hypercomplex.rs`"
 status = "Refuted"
 last_verified = "2026-02-02"
 what_would_verify_refute = '`build_zd_interaction_matrix` and `diagonalize_zd_matrix` implement the machinery to test if ZD interaction eigenvalues map to particle masses. Current status is "Toy Model" for synthesis testing.'
@@ -3537,7 +3537,7 @@ what_would_verify_refute = 'REFUTED: The original 5K-subsampled analysis found o
 [[claim]]
 id = "C-443"
 statement = "Pathion (dim=32) zero-divisor complement graph decomposes into 15 connected components with two distinct motif types: 8 heptacross (complete 7-partite K_{2,2,2,2,2,2,2}) and 7 mixed-degree components [4^12, 12^2]. This is structurally distinct from the sedenion (dim=16) pattern of 7 octahedral K_{2,2,2} components."
-where_stated = "`crates/algebra_core/src/boxkites.rs` (motif_components_for_cross_assessors, test_motif_census_32d_summary, test_complement_graph_regression_dim16), `docs/INSIGHTS.md` (I-006)"
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (motif_components_for_cross_assessors, test_motif_census_32d_summary, test_complement_graph_regression_dim16), `docs/INSIGHTS.md` (I-006)"
 status = "Verified"
 last_verified = "2026-02-06"
 what_would_verify_refute = "VERIFIED: Exhaustive cross-assessor complement graph enumeration at dim=32. 15 components, all with exactly 14 nodes. 8 heptacross components: K_{2,2,2,2,2,2,2} (14 nodes, 84 edges, degree-12 regular). 7 mixed-degree components: 14 nodes, 36 edges, degree sequence [4^12, 12^2] (hub-spoke structure with 2 high-degree hubs). No octahedra (the dim=16 motif) appear at dim=32 -- the zero-divisor geometry completely restructures at each Cayley-Dickson doubling. The heptacross count (7 parts) equals the number of assessor types plus one, suggesting a combinatorial relationship to the doubling construction. Falsification: find an error in the Cayley-Dickson product table or cross-assessor extraction at dim=32."
@@ -3545,7 +3545,7 @@ what_would_verify_refute = "VERIFIED: Exhaustive cross-assessor complement graph
 [[claim]]
 id = "C-444"
 statement = "CD motif components at dim=2^n correspond bijectively to points of PG(n-2,2) finite projective space. At dim=16 (7 components <-> 7 PG(2,2) points), dim=32 (15 <-> PG(3,2)), dim=64 (31 <-> PG(4,2)), dim=128 (63 <-> PG(5,2)). The XOR-key of each component encodes its GF(2) label."
-where_stated = "`crates/algebra_core/src/projective_geometry.rs`, `crates/algebra_core/src/boxkites.rs`"
+where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs`, `crates/algebra_core/src/analysis/boxkites.rs`"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Saniga-Holweck-Pracna (2015) for the PG(n-2,2) correspondence; de Marrais (2000) for the 7-component sedenion structure. Our XOR-key extraction from motif_components_for_cross_assessors provides the constructive bijection. VERIFIED at dim=16,32,64,128 via verify_pg_correspondence() with bijection + line structure checks. WHAT WOULD REFUTE: A dimension where component count != 2^(n-1)-1, or where XOR-keys fail to form the point set of PG(n-2,2)."
@@ -3553,7 +3553,7 @@ what_would_verify_refute = "WHERE STATED: Saniga-Holweck-Pracna (2015) for the P
 [[claim]]
 id = "C-445"
 statement = "Motif class assignment within a given CD dimension is determined by a GF(2)-linear predicate: a weight vector w in GF(2)^(n-1) such that the inner product <w, label> mod 2 separates classes. At dim=32 the 8/7 split corresponds to a hyperplane of PG(3,2)."
-where_stated = "`crates/algebra_core/src/projective_geometry.rs`"
+where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs`"
 status = "Refuted"
 last_verified = "2026-02-07"
 what_would_verify_refute = "REFUTED: `test_determine_exact_degree_dim32` confirms the 8/7 split at dim=32 is NOT linearly separable (degree 1 fails), NOR quadratically separable (degree 2 fails). A degree-3 (cubic) GF(2) polynomial IS the minimum separating predicate. The structure is a cubic hypersurface in PG(3,2), not a hyperplane."
@@ -3561,7 +3561,7 @@ what_would_verify_refute = "REFUTED: `test_determine_exact_degree_dim32` confirm
 [[claim]]
 id = "C-446"
 statement = "Sign-twist signature (4-bit encoding of sign products for cross-pair interactions) fully determines the zero-product solution count for diagonal zero-divisor pairs."
-where_stated = "`crates/algebra_core/src/projective_geometry.rs`, `crates/algebra_core/src/boxkites.rs`"
+where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs`, `crates/algebra_core/src/analysis/boxkites.rs`"
 status = "Verified"
 last_verified = "2026-02-07"
 what_would_verify_refute = "Verified by `test_sign_twist_determines_solutions_dim16` which confirms a functional mapping from signature to solution count."
@@ -3577,7 +3577,7 @@ what_would_verify_refute = "WHERE STATED: Besag & Clifford (1991), Biometrika 78
 [[claim]]
 id = "C-448"
 statement = "The Pathion Cubic Anomaly: the zero-divisor motif partition at dim=32 (8 heptacross + 7 mixed-degree) requires a degree-3 (cubic) GF(2) polynomial for separation in PG(3,2). Degree 1 (linear) and degree 2 (quadratic) are insufficient. This establishes a non-linear geometric obstruction in the Cayley-Dickson zero-divisor hierarchy starting at the first post-sedenion doubling."
-where_stated = "`crates/algebra_core/src/projective_geometry.rs` (test_determine_exact_degree_dim32)"
+where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs` (test_determine_exact_degree_dim32)"
 status = "Verified"
 last_verified = "2026-02-07"
 what_would_verify_refute = "VERIFIED: `find_boolean_class_predicate` brute-force search over all 2^15 subsets of degree-3 GF(2) monomials on 4-bit PG(3,2) labels. Degree 1: no separator among 15 linear forms. Degree 2: no separator among 2^11 subsets of 11 quadratic+linear monomials. Degree 3: separator FOUND among 2^15 subsets of 15 cubic+quadratic+linear monomials. WHAT WOULD REFUTE: finding an error in component_xor_label mapping or the GF(2) monomial evaluation."
@@ -3593,7 +3593,7 @@ what_would_verify_refute = "WHERE STATED: I-013 in docs/INSIGHTS.md. VERIFIED: 1
 [[claim]]
 id = "C-450"
 statement = "The external 64D pathion adjacency CSV (64x64 binary matrix, 64 nonzero entries) uses a basis-element-level node labeling that differs from our cross-assessor-pair representation. The two representations are not directly comparable without a mapping between basis-element adjacency and cross-assessor zero-product adjacency."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (test_csv_64d_adjacency_vs_rust)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_csv_64d_adjacency_vs_rust)"
 status = "Inconclusive"
 last_verified = "2026-02-07"
 what_would_verify_refute = "WHERE STATED: External AI-generated CSV from convos/CayleyDickson/. WHAT WOULD REFUTE: Discovering the exact node labeling used in the CSV and showing it IS comparable to cross-assessor adjacency."
@@ -3601,7 +3601,7 @@ what_would_verify_refute = "WHERE STATED: External AI-generated CSV from convos/
 [[claim]]
 id = "C-451"
 statement = "128D Cayley-Dickson cross-validation: 4032 cross-pairs confirmed, XOR partner law universal (3968/3968 valid, mask=8), 65100 ZD edges via 64 XOR-bucket-optimized adjacency, parity-biclique does NOT hold (32640 cross-edges). Bucketed adjacency cross-validated against full O(n^2) adjacency at dim=32."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (verify_c451_128d, build_zd_adjacency_bucketed, test_c451_cross_validation_128d, test_c451_bucketed_adjacency_consistent_with_full_at_32d)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (verify_c451_128d, build_zd_adjacency_bucketed, test_c451_cross_validation_128d, test_c451_bucketed_adjacency_consistent_with_full_at_32d)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Computed from first principles via cd_multiply + cross_assessors at dim=128. VERIFIED BY: (1) XOR partner law partner(i)=i^8 universal at 128D, (2) bucket-optimized adjacency matches full adjacency at 32D (cross-validation), (3) 65100 ZD edges found via 124992 within-bucket pair checks (63x speedup over naive O(n^2)). WHAT WOULD REFUTE: Any discrepancy between bucketed and full adjacency at 128D."
@@ -3609,7 +3609,7 @@ what_would_verify_refute = "WHERE STATED: Computed from first principles via cd_
 [[claim]]
 id = "C-452"
 statement = "Cayley-Dickson basis elements at dim=256 embed into an 8-dimensional integer lattice with coordinates in {-1, 0, 1}. The mapping is consistent across all 256 basis elements as verified by parsing the external CSV and cross-checking dimensions."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (test_csv_256d_lattice_mapping_parses)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_csv_256d_lattice_mapping_parses)"
 status = "Verified"
 last_verified = "2026-02-07"
 what_would_verify_refute = "WHERE STATED: External CSV 256D_Basis-to-Extended_Lattice_Mapping.csv. VERIFIED: All 256 rows parse correctly, basis elements have 256 components, lattice points have 8 coordinates. WHAT WOULD REFUTE: Finding lattice points that do not map back to valid basis elements under the doubling-tree encoding."
@@ -3617,7 +3617,7 @@ what_would_verify_refute = "WHERE STATED: External CSV 256D_Basis-to-Extended_La
 [[claim]]
 id = "C-453"
 statement = "The 8D lattice embedding extends to dims 512, 1024, and 2048 (all use 8D lattice, NOT log2(dim)-dimensional as initially hypothesized). This suggests the octonion sub-algebra provides the fundamental lattice structure regardless of Cayley-Dickson dimension."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (test_csv_512d/1024d/2048d_lattice_mapping_parses)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_csv_512d/1024d/2048d_lattice_mapping_parses)"
 status = "Verified"
 last_verified = "2026-02-07"
 what_would_verify_refute = "WHERE STATED: External CSVs for 512D, 1024D, 2048D. VERIFIED: 512 rows (8D lattice), 1024 rows (8D lattice), 2048 rows (8D lattice). WHAT WOULD REFUTE: Finding an alternative lattice embedding that uses the full dimensionality or showing the 8D projection loses critical ZD information."
@@ -3625,7 +3625,7 @@ what_would_verify_refute = "WHERE STATED: External CSVs for 512D, 1024D, 2048D. 
 [[claim]]
 id = "C-454"
 statement = """De Marrais's strut table from "Flying Higher Than A Box-Kite" (unpublished, page 3) matches our computed strut tables for all 7 sedenion box-kites: the set of 6 assessor pairs per box-kite is identical, all 21 strut pairings (A-F, B-E, C-D) are confirmed, and the inner XOR property (low XOR high = 8 + strut_constant) holds for all 42 assessors."""
-where_stated = "`crates/algebra_core/src/cd_external.rs` (test_strut_table_matches_de_marrais_flying_higher), `crates/algebra_core/src/boxkites.rs`"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_strut_table_matches_de_marrais_flying_higher), `crates/algebra_core/src/analysis/boxkites.rs`"
 status = "Verified"
 last_verified = "2026-02-07"
 what_would_verify_refute = 'WHERE STATED: de Marrais, "Flying Higher Than A Box-Kite", page 3. VERIFIED: verify_strut_table_against_de_marrais() compares all 7 box-kites by assessor set and strut pairing. Also verified: inner XOR property, zigzag L-indices form NATO trips. WHAT WOULD REFUTE: Error in canonical_strut_table() or find_box_kites() implementations.'
@@ -3633,7 +3633,7 @@ what_would_verify_refute = 'WHERE STATED: de Marrais, "Flying Higher Than A Box-
 [[claim]]
 id = "C-455"
 statement = "Lattice-point differences between ZD-adjacent cross-assessor pairs at dim=16 (mapped to the 256D lattice) do NOT include any E8 root vectors (norm-squared = 2). The observed norm-squared values are {4, 6, 8, 10, 12, 14, 18}, with minimum separation |d|^2 = 4. The 105 unique difference vectors form their own combinatorial structure distinct from E8."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (test_256d_lattice_zd_difference_structure)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_256d_lattice_zd_difference_structure)"
 status = "Refuted"
 last_verified = "2026-02-07"
 what_would_verify_refute = "WHERE STATED: Hypothesis that ZD adjacency might correspond to E8 root system under lattice embedding. REFUTED: Zero out of 336 pairwise differences have norm-squared = 2. The minimum lattice separation for ZD-adjacent pairs is |d|^2 = 4. WHAT WOULD REFUTE THIS REFUTATION: An alternative normalization of the lattice coordinates under which the differences DO form E8 roots."
@@ -3641,7 +3641,7 @@ what_would_verify_refute = "WHERE STATED: Hypothesis that ZD adjacency might cor
 [[claim]]
 id = "C-456"
 statement = "The external 256D associativity CSV (256D_Cayley-Dickson_Basis_Properties.csv) incorrectly claims all 125 tested triples are associative. Our Rust integer-exact computation finds 4 out of 50 sampled triples are non-associative, involving basis elements e_128, e_64, e_32, and e_192. The CSV is an AI-generated error."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (test_csv_256d_basis_properties_vs_rust)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_csv_256d_basis_properties_vs_rust)"
 status = "Refuted"
 last_verified = "2026-02-07"
 what_would_verify_refute = "WHERE STATED: External CSV 256D_Cayley-Dickson_Basis_Properties.csv. REFUTED: cd_multiply is integer-exact for basis elements; (e_128 * e_64) * e_32 != e_128 * (e_64 * e_32) at dim=256. WHAT WOULD REFUTE: Finding an error in cd_multiply for high-index basis products."
@@ -3649,7 +3649,7 @@ what_would_verify_refute = "WHERE STATED: External CSV 256D_Cayley-Dickson_Basis
 [[claim]]
 id = "C-457"
 statement = "The Cayley-Dickson nested-tuple format uses a binary tree representation where (0, 0) at tree depth k represents 2^k zeros. A tree-based parser with sibling-size-balancing (padding shorter subtrees to next power of 2) correctly parses all dims from 4 (quaternions) through 2048."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (parse_nested_tuple, CdTree)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (parse_nested_tuple, CdTree)"
 status = "Verified"
 last_verified = "2026-02-07"
 what_would_verify_refute = "WHERE STATED: Format observed in external CSVs from convos/CayleyDickson/. VERIFIED: 256 + 512 + 1024 + 2048 = 3840 lattice rows + 125 associativity rows + 20 operation rows + tests for dims 4, 8. WHAT WOULD REFUTE: A nested-tuple string that our parser misinterprets (wrong index or wrong dimension)."
@@ -3657,7 +3657,7 @@ what_would_verify_refute = "WHERE STATED: Format observed in external CSVs from 
 [[claim]]
 id = "C-458"
 statement = "Codebook parity (Thesis A): All lattice codebook points at dims 256, 512, 1024, 2048 satisfy: (a) coordinates in {-1, 0, 1}, (b) coordinate sum is even, (c) number of nonzero coordinates is even, (d) first coordinate is never +1."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (verify_codebook_parity, test_thesis_a_codebook_parity_{256,512,1024,2048}d)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (verify_codebook_parity, test_thesis_a_codebook_parity_{256,512,1024,2048}d)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Monograph Thesis A. VERIFIED: verify_codebook_parity checks all 4 conditions for every row in each lattice CSV. All 3840 total rows pass. WHAT WOULD REFUTE: A lattice CSV row violating any of the 4 parity conditions."
@@ -3665,7 +3665,7 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis A. VERIFIED: verify_c
 [[claim]]
 id = "C-459"
 statement = "Lattice filtration nesting (Thesis B): Lambda_256 is a strict subset of Lambda_512, which is a strict subset of Lambda_1024, which is a strict subset of Lambda_2048. The embedding is by exact lattice-point membership."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (verify_lattice_filtration, test_thesis_b_filtration_nesting)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (verify_lattice_filtration, test_thesis_b_filtration_nesting)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Monograph Thesis B. VERIFIED: verify_lattice_filtration loads all 4 dims and confirms proper subset relationships via BTreeSet inclusion. WHAT WOULD REFUTE: A lattice point in Lambda_N that is absent from Lambda_{2N}."
@@ -3673,7 +3673,7 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis B. VERIFIED: verify_l
 [[claim]]
 id = "C-460"
 statement = "Prefix-cut characterization (Thesis C): Each filtration transition (2048->1024, 1024->512, 512->256) is a lexicographic prefix cut -- the child codebook consists of exactly the first |child| points when the parent is sorted in lexicographic order."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (learn_prefix_cut, verify_prefix_cut, test_thesis_c_*_prefix_cut)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (learn_prefix_cut, verify_prefix_cut, test_thesis_c_*_prefix_cut)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Monograph Thesis C (expected decision-trie rules; actual structure is simpler: pure lex prefix). VERIFIED: learn_prefix_cut identifies the lex-sorted cut index; verify_prefix_cut confirms the child is the exact lex-sorted prefix. WHAT WOULD REFUTE: A filtration step where the child is not a contiguous lex prefix of the parent."
@@ -3681,7 +3681,7 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis C (expected decision-
 [[claim]]
 id = "C-461"
 statement = 'Lambda_32 (the 32-row alignment) is a "pinned corner" of Lambda_256: all 32 points have first 4 coordinates equal to (-1, -1, -1, -1). It is the lex-first 32 points of Lambda_256 under lex order.'
-where_stated = "`crates/algebra_core/src/cd_external.rs` (test_lambda_32_as_predicate_cut_of_256)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_lambda_32_as_predicate_cut_of_256)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Monograph (421E slice). VERIFIED: test checks pinning predicate and lex-prefix property. WHAT WOULD REFUTE: A point in Lambda_32 whose first 4 coords differ from (-1,-1,-1,-1)."
@@ -3689,7 +3689,7 @@ what_would_verify_refute = "WHERE STATED: Monograph (421E slice). VERIFIED: test
 [[claim]]
 id = "C-462"
 statement = "XOR partner law (Thesis E): In cross-assessor pairs at dim=64, each pair index i has unique partner i XOR 4 in the matching-type adjacency. Generalizes to partner(i) = i XOR (N/16) for N = 2^n >= 64."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (verify_xor_partner_law, test_thesis_e_xor_partner_64d)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (verify_xor_partner_law, test_thesis_e_xor_partner_64d)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Monograph Thesis E. VERIFIED: verify_xor_partner_law checks that for every cross-pair (a,b) with a XOR b giving a matching edge, the XOR partner relationship holds. WHAT WOULD REFUTE: A dimension where the XOR partner relationship fails or is non-unique."
@@ -3697,7 +3697,7 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis E. VERIFIED: verify_x
 [[claim]]
 id = "C-463"
 statement = "Parity-clique law (Thesis F): ZD adjacency at dim=16 decomposes into K_4 union K_4 by parity of the lower basis index. At dim=32 it decomposes into K_8 union K_8."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (verify_parity_clique, test_thesis_f_parity_clique_{16d,32d})"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (verify_parity_clique, test_thesis_f_parity_clique_{16d,32d})"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Monograph Thesis F. VERIFIED: verify_parity_clique partitions nodes by parity of low basis index and checks that each partition forms a complete graph with no inter-partition edges. WHAT WOULD REFUTE: A ZD edge crossing the parity partition."
@@ -3705,7 +3705,7 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis F. VERIFIED: verify_p
 [[claim]]
 id = "C-464"
 statement = "Spectral fingerprints (Thesis G): Adjacency graph motif classes are distinguishable by spectral invariants (eigenvalue multiset, degree sequence, triangle count, diameter, girth). Complete graph K_m has spectrum {(m-1)^1, (-1)^{m-1}}; perfect matching r*K_2 has spectrum {(+1)^r, (-1)^r}."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (spectral_fingerprint_from_adjacency, test_thesis_g_*)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (spectral_fingerprint_from_adjacency, test_thesis_g_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Monograph Thesis G. VERIFIED: spectral_fingerprint_from_adjacency computes eigenvalues via power iteration and verifies against known spectra for K_4, K_8, K_4 union K_4, and 4*K_2 matching. WHAT WOULD REFUTE: A pair of non-isomorphic motif classes with identical spectral fingerprints (known cospectral limitation)."
@@ -3713,7 +3713,7 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis G. VERIFIED: spectral
 [[claim]]
 id = "C-465"
 statement = "Scalar shadow action (Thesis D): For each lattice point, the scalar shadow pi(b) = signum(sum(coords)) maps to {-1, 0, 1}. The addition-mode action ell_out = ell + pi(b)*ones_8 shifts lattice points by a multiple of the all-ones vector."
-where_stated = "`crates/algebra_core/src/cd_external.rs` (scalar_shadow, verify_scalar_shadow_addition, test_thesis_d_*)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (scalar_shadow, verify_scalar_shadow_addition, test_thesis_d_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = "WHERE STATED: Monograph Thesis D. VERIFIED: scalar_shadow computes sign pattern; verify_scalar_shadow_addition confirms the shift action preserves parity. WHAT WOULD REFUTE: A basis element whose scalar shadow falls outside {-1, 0, 1} or an addition-mode action that violates parity."
@@ -3728,16 +3728,16 @@ what_would_verify_refute = "WHERE STATED: Monograph Thesis D, identified as expl
 
 [[claim]]
 id = "C-467"
-statement = "Null-model identity (Thesis H): RandomRotation is an identity transformation for Euclidean-distance ultrametric tests (preserves all pairwise distances exactly). ColumnIndependent is the informative null (breaks correlations detectably). Baire distances are ultrametric by construction, making the fraction test tautological (always returns 1.0)."
-where_stated = "`crates/stats_core/src/ultrametric/null_models.rs` (test_thesis_h_*), `crates/stats_core/src/ultrametric/baire.rs` (test_baire_tautological_vs_euclidean)"
+statement = "Null-model identity (Thesis H): For Euclidean-distance ultrametric fraction, RowPermutation and RandomRotation are identity-equivalent (p=1.0), while ColumnIndependent and ToroidalShift are informative (p<<0.05 for hierarchical data). Baire distances are ultrametric by construction (fraction always 1.0)."
+where_stated = "`crates/stats_core/src/ultrametric/null_models.rs` (test_thesis_h_multi_null_comparison, test_thesis_h_no_false_positives_under_null, test_thesis_h_sensitivity_gradient, test_thesis_h_null_model_identity_rotation, test_thesis_h_column_independent_is_informative), `crates/stats_core/src/ultrametric/baire.rs` (test_baire_tautological_vs_euclidean)"
 status = "Verified"
 last_verified = "2026-02-08"
-what_would_verify_refute = "WHERE STATED: Monograph Thesis H. VERIFIED: (a) rotation preserves distances exactly, (b) column-shuffle changes ultrametric fraction, (c) Baire fraction = 1.0 always vs Euclidean fraction < 1.0 for non-hierarchical data. WHAT WOULD REFUTE: A rotation that changes pairwise Euclidean distances, or Baire distances violating the ultrametric inequality."
+what_would_verify_refute = "WHERE STATED: Monograph Thesis H. VERIFIED: (a) systematic multi-null comparison with exhaustive C(60,3) triples confirms two-class partition: {RowPerm,Rotation}=identity, {ColIndep,Toroidal}=informative, (b) no false positives on uniform random data, (c) sensitivity gradient: p-value monotonically increases as cluster separation decreases. WHAT WOULD REFUTE: RowPermutation producing p<0.5 with exhaustive triple evaluation, or ColumnIndependent failing to detect well-separated clusters."
 
 [[claim]]
 id = "C-468"
 statement = "Emanation table (dim=16): The 15x15 signed product table has 84 zero-divisor-marked cells (42 primitive assessor pairs x 2 symmetric entries). All diagonal cells have sign -1 (e_i * e_i = -1). Product indices match XOR (product_index = row XOR col)."
-where_stated = "`crates/algebra_core/src/emanation.rs` (emanation_table, test_emanation_table_dim16_*)"
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (emanation_table, test_emanation_table_dim16_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = 'WHERE STATED: de Marrais, "Flying Higher Than A Box-Kite". VERIFIED: emanation_table(16) produces correct 15x15 table with 84 ZD cells, XOR products, -1 diagonal. WHAT WOULD REFUTE: A cell where product_index != row XOR col, or ZD count != 84.'
@@ -3745,7 +3745,7 @@ what_would_verify_refute = 'WHERE STATED: de Marrais, "Flying Higher Than A Box-
 [[claim]]
 id = "C-469"
 statement = "Strutted emanation table (dim=16): For each strut constant S in {1..7}, the 6x6 strutted ET correctly partitions assessor-pair cells into DMZ (sign-concordant) and non-DMZ (sign-discordant) regions. The DMZ count is uniform across all 7 BKs by Fano plane symmetry."
-where_stated = "`crates/algebra_core/src/emanation.rs` (create_strutted_et, test_strutted_et_*)"
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (create_strutted_et, test_strutted_et_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = 'WHERE STATED: de Marrais, "Presto! Digitization" series. VERIFIED: All 7 strut tables produced, DMZ counts uniform, sign concordance verified. WHAT WOULD REFUTE: A BK whose DMZ count differs from the others.'
@@ -3753,7 +3753,7 @@ what_would_verify_refute = 'WHERE STATED: de Marrais, "Presto! Digitization" ser
 [[claim]]
 id = "C-470"
 statement = "Oriented Trip Sync: Every sedenion box-kite admits at least one PSL(2,7) orientation where the de Marrais shorthand pattern (a,b,c),(a,d,e),(d,b,f),(e,f,c) is satisfiable. Each BK has exactly 4 available O-trips and all 4 are tested as zigzag candidates."
-where_stated = "`crates/algebra_core/src/emanation.rs` (oriented_trip_sync, test_oriented_trip_sync_*)"
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (oriented_trip_sync, test_oriented_trip_sync_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = 'WHERE STATED: de Marrais, "Pathions 3" (shorthand notation). VERIFIED: All 7 BKs have has_valid_embedding=true; 4 available trips per BK; shorthand uses all 6 L-indices. WHAT WOULD REFUTE: A BK with no valid shorthand embedding.'
@@ -3761,7 +3761,7 @@ what_would_verify_refute = 'WHERE STATED: de Marrais, "Pathions 3" (shorthand no
 [[claim]]
 id = "C-471"
 statement = "Signed adjacency graph: The strutted ET encodes a signed graph where DMZ cells have sign +1 (same-slope coupling) or -1 (cross-slope coupling). All 7 BKs have the same DMZ edge count (structural invariant). Edge signs are strictly +1 or -1."
-where_stated = "`crates/algebra_core/src/emanation.rs` (extract_signed_graph, test_signed_graph_*)"
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (extract_signed_graph, test_signed_graph_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = 'WHERE STATED: de Marrais, "Presto! Digitization I" (edge-sign semantics). VERIFIED: DMZ edge count uniform across BKs; all signs in {+1,-1}; nodes are 6 distinct L-indices. WHAT WOULD REFUTE: A BK with different DMZ edge count or non-binary edge signs.'
@@ -3769,7 +3769,7 @@ what_would_verify_refute = 'WHERE STATED: de Marrais, "Presto! Digitization I" (
 [[claim]]
 id = "C-472"
 statement = 'Lanyard state-machine traversal: Face-level lanyards are extracted as state-machine traversals of the signed graph. Negative edges flip diagonal state (/\), positive edges preserve it. Each BK produces 8 face lanyards (8 triangular faces), each of cycle length 3.'
-where_stated = "`crates/algebra_core/src/emanation.rs` (traverse_lanyard, extract_lanyards_from_et, test_lanyard_*, test_extract_lanyards_*)"
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (traverse_lanyard, extract_lanyards_from_et, test_lanyard_*, test_extract_lanyards_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = 'WHERE STATED: de Marrais, "Presto! Digitization I-III" (lanyard mechanics). VERIFIED: 8 lanyards per BK; cycle length 3; zigzag (all-negative) produces /\/; trefoil (2pos+1neg) produces ///. WHAT WOULD REFUTE: A face with incorrect edge-count or a state-machine traversal that violates sign semantics.'
@@ -3777,7 +3777,7 @@ what_would_verify_refute = 'WHERE STATED: de Marrais, "Presto! Digitization I-II
 [[claim]]
 id = "C-473"
 statement = 'Delta transition function: Each S0 in {1..7} has exactly 3 strut pairs {u,v} with u XOR v = S0, u < v, u,v in {1..7}\{S0}. The 6 endpoints of the 3 pairs cover exactly {1..7}\{S0}. Delta reachability matches twist navigation reachability.'
-where_stated = "`crates/algebra_core/src/emanation.rs` (strut_pairs_for, delta_transition, verify_delta_reachability, test_strut_pairs_*, test_delta_*)"
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (strut_pairs_for, delta_transition, verify_delta_reachability, test_strut_pairs_*, test_delta_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = '''WHERE STATED: de Marrais, "Pathions 3" (Twisted Sisters automaton). VERIFIED: XOR identity, 3 pairs per S0, full coverage, delta=twist reachability. WHAT WOULD REFUTE: An S0 with fewer than 3 strut pairs, or endpoints that don't cover {1..7}\{S0}.'''
@@ -3785,7 +3785,7 @@ what_would_verify_refute = '''WHERE STATED: de Marrais, "Pathions 3" (Twisted Si
 [[claim]]
 id = "C-474"
 statement = "Brocade normalization: Each BK has exactly 4 brocade relabelings (one per O-trip in its L-set). Each central trip is a valid O-trip, and the outer indices are the exact complement of the central trip within the L-set. CPO preservation count is uniform across BKs."
-where_stated = "`crates/algebra_core/src/emanation.rs` (brocade_relabelings, verify_brocade_consistency, test_brocade_*)"
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (brocade_relabelings, verify_brocade_consistency, test_brocade_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = '''WHERE STATED: de Marrais, "Pathions 3" (brocade/slipcover normalization). VERIFIED: 4 relabelings per BK; central trips are O-trips; outer = L-set \ central; consistency across all 7 BKs. WHAT WOULD REFUTE: A BK with != 4 relabelings, or outer indices that don't complement the central trip.'''
@@ -3793,7 +3793,7 @@ what_would_verify_refute = '''WHERE STATED: de Marrais, "Pathions 3" (brocade/sl
 [[claim]]
 id = "C-475"
 statement = "Sail-loop partition (automorpheme duality): The 28 O-trip sails across all 7 BKs partition into exactly 7 loops of 4 sails each. Each loop corresponds to one automorpheme (Cawagas loop). Each BK appears in exactly 4 loops (one per O-trip face). This is the BK-automorpheme duality."
-where_stated = "`crates/algebra_core/src/emanation.rs` (sail_loop_partition, test_sail_loop_*)"
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (sail_loop_partition, test_sail_loop_*)"
 status = "Verified"
 last_verified = "2026-02-08"
 what_would_verify_refute = 'WHERE STATED: de Marrais, "Flying Higher"; Cawagas (2004) deformed octonion copies. VERIFIED: 28 sails total; 7 loops of 4; each BK in exactly 4 distinct loops; each loop has 4 distinct BKs. WHAT WOULD REFUTE: Fewer or more than 7 loops, or a loop without exactly 4 BKs from 4 distinct strut sigs.'

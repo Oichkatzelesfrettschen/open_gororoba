@@ -29,22 +29,22 @@
 //! - Furey et al. (2024): Cl(8) -> 3 generations of fermions
 //! - Tang & Tang (2023): Sedenion SU(5) mass predictions
 
-use crate::cayley_dickson::{
+use crate::construction::cayley_dickson::{
     cd_multiply, cd_conjugate, cd_norm_sq, cd_associator, cd_associator_norm,
     batch_associator_norms_parallel,
     find_zero_divisors, find_zero_divisors_parallel, find_zero_divisors_3blade,
     find_zero_divisors_general_form, count_pathion_zero_divisors,
     zd_spectrum_analysis, measure_associator_density, GeneralFormZD,
 };
-use crate::zd_graphs::{
+use crate::analysis::zd_graphs::{
     analyze_zd_graph, analyze_basis_participation, analyze_associator_graph,
     ZdGraphAnalysis, BasisParticipationResult, AssociatorGraphResult,
 };
-use crate::boxkites::{
+use crate::analysis::boxkites::{
     find_box_kites, analyze_box_kite_symmetry,
     BoxKite, BoxKiteSymmetryResult,
 };
-use crate::octonion_field::{
+use crate::physics::octonion_field::{
     Octonion, FieldParams, EvolutionResult, DispersionResult,
     FANO_TRIPLES, build_structure_constants,
     oct_multiply, oct_conjugate, oct_norm_sq,
