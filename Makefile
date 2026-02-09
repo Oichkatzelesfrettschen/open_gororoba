@@ -17,7 +17,8 @@
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
 .PHONY: registry-markdown-inventory
 .PHONY: registry-verify-markdown-inventory
-.PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv registry-csv-scope registry-data
+.PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
+.PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
@@ -187,10 +188,25 @@ registry-migrate-legacy-csv:
 registry-verify-legacy-csv: registry-migrate-legacy-csv
 	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py
 
+registry-migrate-curated-csv:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/migrate_legacy_csv_to_toml.py \
+		--source-glob 'curated/**/*.csv' \
+		--out-index registry/curated_csv_datasets.toml \
+		--out-dir registry/data/curated_csv \
+		--index-table curated_csv_datasets \
+		--dataset-prefix CU \
+		--corpus-label 'curated CSV'
+
+registry-verify-curated-csv: registry-migrate-curated-csv
+	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+		--index-path registry/curated_csv_datasets.toml \
+		--source-glob 'curated/**/*.csv' \
+		--corpus-label 'curated CSV'
+
 registry-csv-scope: registry-csv-inventory
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_migration_scope_registry.py
 
-registry-data: registry-csv-inventory registry-verify-legacy-csv registry-csv-scope
+registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope
 	@echo "OK: CSV data registry lane complete."
 
 registry-export-markdown: registry-refresh
