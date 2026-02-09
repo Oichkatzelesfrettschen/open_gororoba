@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Claims Status Inventory (2026-02-04)
 
 Matrix: `docs/CLAIMS_EVIDENCE_MATRIX.md`
@@ -79,4 +82,3 @@ These are *formatting* and *traceability* issues that make claim-by-claim audits
 
 - Rows with missing/weak `Where stated` pointers: 0
 - Rows with legacy inline experiment tags in claim text (contains \\|v): 0
-

@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Claims Batch Backlog (C-001..C-200) (2026-02-04)
 
 Purpose: planning snapshot for claim-by-claim audits (not evidence).

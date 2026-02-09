@@ -1482,4 +1482,99 @@ mod tests {
             prev = current;
         }
     }
+
+    // ================================================================
+    // l_1 Filter on l_0=-1 Subset (C-508 follow-up)
+    // ================================================================
+
+    /// Test whether applying the l_1 filter directly to the l_0=-1 subset
+    /// reveals hidden ultrametric substructure. Computes z-scores for:
+    ///   (a) l_0=-1, all l_1 (the Lambda_2048 l_0=-1 subset, z=-3.07 from C-508)
+    ///   (b) l_0=-1, l_1=-1 only
+    ///   (c) l_0=-1, l_1=0 only
+    ///   (d) l_0=-1, l_1=+1 only
+    /// If (b) or (c) show positive z while (d) shows strong negative z,
+    /// the l_1 phase transition exists within the l_0=-1 population itself.
+    #[test]
+    fn test_l1_filter_on_l0_neg1_subset() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_2048,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        let all_2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+        let l0_neg1: Vec<_> = all_2048.iter().copied().filter(|v| v[0] == -1).collect();
+
+        // Partition l_0=-1 by l_1 value
+        let l1_neg1: Vec<_> = l0_neg1.iter().copied().filter(|v| v[1] == -1).collect();
+        let l1_zero: Vec<_> = l0_neg1.iter().copied().filter(|v| v[1] == 0).collect();
+        let l1_pos1: Vec<_> = l0_neg1.iter().copied().filter(|v| v[1] == 1).collect();
+        // Also: l_1 != +1 (what Lambda_512 effectively keeps)
+        let l1_not_pos1: Vec<_> = l0_neg1.iter().copied().filter(|v| v[1] != 1).collect();
+
+        eprintln!("\n=== l_1 Filter on l_0=-1 Subset ===");
+        eprintln!("l_0=-1 total: N={}", l0_neg1.len());
+        eprintln!("  l_1=-1: N={}", l1_neg1.len());
+        eprintln!("  l_1=0:  N={}", l1_zero.len());
+        eprintln!("  l_1=+1: N={}", l1_pos1.len());
+        eprintln!("  l_1!=+1: N={}", l1_not_pos1.len());
+
+        let compute_z = |vectors: &[[i8; 8]], label: &str, seed_offset: u64| -> f64 {
+            let n = vectors.len();
+            if n < 10 {
+                eprintln!("  {}: N={} too small", label, n);
+                return 0.0;
+            }
+            let prefix = shared_prefix_length(vectors);
+            let d = 8 - prefix;
+            let (cols, _, _) = lattice_to_column_major(vectors, prefix);
+
+            let obs = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 13_000_000 + seed_offset);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled, n, d,
+                    NullModel::ColumnIndependent, &mut rng,
+                );
+                null_fracs.push(matrix_free_fraction(
+                    &shuffled, n, d, n_triples, seed + 14_000_000, 0.05,
+                ));
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
+                / n_permutations as f64).sqrt();
+            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+
+            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z);
+            z
+        };
+
+        let z_all = compute_z(&l0_neg1, "all l_1  ", 0);
+        let z_neg1 = compute_z(&l1_neg1, "l_1=-1   ", 1);
+        let z_zero = compute_z(&l1_zero, "l_1=0    ", 2);
+        let z_pos1 = compute_z(&l1_pos1, "l_1=+1   ", 3);
+        let z_not1 = compute_z(&l1_not_pos1, "l_1!=+1  ", 4);
+
+        eprintln!("\n=== Summary ===");
+        eprintln!("l_0=-1, all l_1:  z={:.2}", z_all);
+        eprintln!("l_0=-1, l_1=-1:   z={:.2}", z_neg1);
+        eprintln!("l_0=-1, l_1=0:    z={:.2}", z_zero);
+        eprintln!("l_0=-1, l_1=+1:   z={:.2}", z_pos1);
+        eprintln!("l_0=-1, l_1!=+1:  z={:.2}", z_not1);
+        eprintln!("Phase transition present: l_1!=+1 z ({:.2}) vs all z ({:.2})", z_not1, z_all);
+    }
 }

@@ -4,7 +4,9 @@ Migrate tracked markdown corpus into central TOML document database.
 
 Policy:
 - Ingest all non-generated markdown docs into registry/knowledge/docs/*.toml.
-- Keep generated markdown as artifacts (indexed but not ingested).
+- Keep most generated markdown as artifacts (indexed but not ingested).
+- Force-capture high-priority generated knowledge docs so central TOML corpus
+  remains current for claims/governance/brainstorming audits.
 - Emit a master manifest: registry/knowledge/documents.toml.
 """
 
@@ -17,6 +19,22 @@ from dataclasses import dataclass
 from pathlib import Path
 
 DETERMINISTIC_STAMP = "deterministic"
+
+FORCE_CAPTURE_EXACT = {
+    "docs/CLAIMS_EVIDENCE_MATRIX.md",
+    "docs/generated/CLAIMS_REGISTRY_MIRROR.md",
+    "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md",
+    "docs/generated/ROADMAP_REGISTRY_MIRROR.md",
+}
+
+FORCE_CAPTURE_PREFIXES = (
+    "reports/",
+    "docs/convos/",
+)
+
+FORCE_CAPTURE_SUFFIXES = (
+    "_REGISTRY_MIRROR.md",
+)
 
 
 @dataclass(frozen=True)
@@ -169,6 +187,16 @@ def _render_manifest(
     return "\n".join(lines)
 
 
+def _force_capture(path: str) -> bool:
+    if path in FORCE_CAPTURE_EXACT:
+        return True
+    if any(path.startswith(prefix) for prefix in FORCE_CAPTURE_PREFIXES):
+        return True
+    if any(path.endswith(suffix) for suffix in FORCE_CAPTURE_SUFFIXES):
+        return True
+    return False
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -216,7 +244,7 @@ def main() -> int:
     expected_outputs: set[Path] = set()
 
     for doc in docs:
-        if doc.generated:
+        if doc.generated and not _force_capture(doc.path):
             skipped.append(doc)
             continue
         source_path = repo_root / doc.path

@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
 # Audit: convos/1_read_nonuser_lines_cont.md
 
 Input file:

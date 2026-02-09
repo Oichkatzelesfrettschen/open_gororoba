@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Artifacts reorganization plan (non-destructive)
 
 This report proposes a future migration for legacy flat files under data/artifacts/.
@@ -52,4 +55,3 @@ Rule of thumb: only move files with ref_count==0 and not in the manifest first.
 2. Phase 1: for referenced files, update references then move.
 3. Phase 2: for manifested files, update ARTIFACTS_MANIFEST.csv entries (append-only policy), then move.
    If needed, keep a legacy redirect (or symlink if acceptable) during transition.
-

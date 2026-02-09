@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Open claims missing dedicated source index
 
 Definition: claim status is not resolved, and `Where stated` does not reference a
@@ -55,4 +58,3 @@ Missing dedicated source index: 47
 - C-130 (Speculative, last_verified=2026-01-31): `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
 - C-132 (Speculative, last_verified=2026-01-31): `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
 - C-135 (Speculative, last_verified=2026-01-31): `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-

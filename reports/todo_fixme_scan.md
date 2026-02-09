@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # TODO/FIXME Scan (2026-02-07)
 
 Command used (excluding venv/cache/artifact trees):

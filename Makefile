@@ -9,6 +9,8 @@
 .PHONY: registry-normalize-research-narratives registry-bootstrap-research-narratives
 .PHONY: registry-normalize-book-docs registry-bootstrap-book-docs
 .PHONY: registry-normalize-docs-root-narratives registry-bootstrap-docs-root-narratives
+.PHONY: registry-normalize-reports-narratives registry-bootstrap-reports-narratives
+.PHONY: registry-normalize-docs-convos registry-bootstrap-docs-convos
 .PHONY: registry-bootstrap-claims-support
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
 .PHONY: registry-ingest-legacy registry-export-markdown registry-verify-mirrors
@@ -130,13 +132,25 @@ registry-normalize-docs-root-narratives:
 registry-bootstrap-docs-root-narratives: registry-normalize-docs-root-narratives
 	@echo "Root docs markdown->TOML bootstrap completed."
 
+registry-normalize-reports-narratives:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown
+
+registry-bootstrap-reports-narratives: registry-normalize-reports-narratives
+	@echo "Reports markdown->TOML bootstrap completed."
+
+registry-normalize-docs-convos:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py --bootstrap-from-markdown
+
+registry-bootstrap-docs-convos: registry-normalize-docs-convos
+	@echo "docs/convos markdown->TOML bootstrap completed."
+
 registry-normalize-narratives:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_narrative_overlays.py
 
 registry-normalize-operational-narratives:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_operational_narrative_overlays.py
 
-registry-ingest-legacy: registry-normalize-narratives registry-normalize-operational-narratives
+registry-ingest-legacy: registry-normalize-narratives registry-normalize-operational-narratives registry-normalize-reports-narratives registry-normalize-docs-convos
 	@echo "Legacy markdown -> TOML ingest completed."
 
 registry-export-markdown: registry-migrate-corpus registry-ingest-legacy registry-governance
