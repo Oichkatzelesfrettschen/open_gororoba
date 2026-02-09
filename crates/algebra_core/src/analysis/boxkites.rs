@@ -1237,6 +1237,175 @@ pub fn motif_components_for_cross_assessors(dim: usize) -> Vec<MotifComponent> {
     components
 }
 
+// ===========================================================================
+// Generic face sign census (dimension-independent)
+// ===========================================================================
+
+/// Normalized face sign pattern (order-independent classification of a
+/// triangular face's three edge signs).
+///
+/// At dim=16 (sedenions), the census is 42 TwoSameOneOpp + 14 AllOpposite
+/// (C-479). This enum supports census computation at any dimension.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum FaceSignPattern {
+    /// All 3 edges Same-sign (Blues).
+    AllSame,
+    /// 2 Same + 1 Opposite (trefoil variant I).
+    TwoSameOneOpp,
+    /// 1 Same + 2 Opposite (trefoil variant II).
+    OneSameTwoOpp,
+    /// All 3 edges Opposite-sign (triple-zigzag).
+    AllOpposite,
+}
+
+/// Classify a triangular face by counting how many of its three edges
+/// are Same vs Opposite sign type.
+pub fn classify_face_pattern(signs: &[EdgeSignType; 3]) -> FaceSignPattern {
+    let n_same = signs.iter().filter(|&&s| s == EdgeSignType::Same).count();
+    match n_same {
+        3 => FaceSignPattern::AllSame,
+        2 => FaceSignPattern::TwoSameOneOpp,
+        1 => FaceSignPattern::OneSameTwoOpp,
+        0 => FaceSignPattern::AllOpposite,
+        _ => unreachable!(),
+    }
+}
+
+/// Integer-exact edge sign classification for cross-assessor pairs at any dimension.
+///
+/// Returns `Same` if solutions include (1,1) or (-1,-1), `Opposite` otherwise.
+/// Panics if the pair has no diagonal zero-products (not co-assessors).
+pub fn edge_sign_type_exact(dim: usize, a: CrossPair, b: CrossPair) -> EdgeSignType {
+    let sols = diagonal_zero_products_exact(dim, a, b);
+    assert!(
+        !sols.is_empty(),
+        "No diagonal zero-products for {:?}--{:?} at dim={}",
+        a, b, dim
+    );
+    if sols.contains(&(1, 1)) || sols.contains(&(-1, -1)) {
+        EdgeSignType::Same
+    } else {
+        EdgeSignType::Opposite
+    }
+}
+
+/// Per-component face sign census result.
+#[derive(Debug, Clone)]
+pub struct ComponentFaceCensus {
+    /// Component index in the motif component list.
+    pub component_idx: usize,
+    /// Number of nodes in this component.
+    pub n_nodes: usize,
+    /// Number of edges in this component.
+    pub n_edges: usize,
+    /// Triangular faces found (as node triples, sorted).
+    pub n_triangles: usize,
+    /// Count of each face sign pattern.
+    pub pattern_counts: HashMap<FaceSignPattern, usize>,
+}
+
+/// Complete face sign census across all motif components at a given dimension.
+#[derive(Debug, Clone)]
+pub struct GenericFaceSignCensus {
+    /// Cayley-Dickson dimension.
+    pub dim: usize,
+    /// Number of motif components.
+    pub n_components: usize,
+    /// Total triangular faces across all components.
+    pub total_triangles: usize,
+    /// Aggregate pattern counts across all components.
+    pub total_pattern_counts: HashMap<FaceSignPattern, usize>,
+    /// Per-component breakdown.
+    pub per_component: Vec<ComponentFaceCensus>,
+    /// Whether all components with triangles have the same pattern distribution.
+    pub uniform_across_components: bool,
+}
+
+/// Compute the face sign census for all motif components at a given CD dimension.
+///
+/// For each connected component of the zero-divisor graph, finds all triangular
+/// faces (3-cliques), classifies each face's three edge signs as Same or Opposite,
+/// and aggregates the face sign pattern distribution.
+///
+/// At dim=16 this reproduces C-479 (42 TwoSameOneOpp + 14 AllOpposite).
+/// At dim=32+ this extends the census to pathions and beyond.
+pub fn generic_face_sign_census(dim: usize) -> GenericFaceSignCensus {
+    let components = motif_components_for_cross_assessors(dim);
+    let mut per_component = Vec::new();
+    let mut total_counts: HashMap<FaceSignPattern, usize> = HashMap::new();
+    let mut total_triangles = 0usize;
+
+    // Track distribution of first non-trivial component for uniformity check
+    let mut first_dist: Option<HashMap<FaceSignPattern, usize>> = None;
+    let mut uniform = true;
+
+    for (comp_idx, comp) in components.iter().enumerate() {
+        // Build adjacency set for fast triangle detection
+        let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+        let adj: HashSet<(CrossPair, CrossPair)> = comp
+            .edges
+            .iter()
+            .flat_map(|&(a, b)| [(a, b), (b, a)])
+            .collect();
+
+        // Find all triangles (3-cliques): for each edge (u,v), find common neighbors w > v
+        let mut triangles: Vec<[CrossPair; 3]> = Vec::new();
+        for &(u, v) in &comp.edges {
+            for &w in &nodes {
+                if w <= v {
+                    continue;
+                }
+                if adj.contains(&(u, w)) && adj.contains(&(v, w)) {
+                    triangles.push([u, v, w]);
+                }
+            }
+        }
+
+        // Classify each triangle's edge signs
+        let mut pattern_counts: HashMap<FaceSignPattern, usize> = HashMap::new();
+        for tri in &triangles {
+            let signs = [
+                edge_sign_type_exact(dim, tri[0], tri[1]),
+                edge_sign_type_exact(dim, tri[1], tri[2]),
+                edge_sign_type_exact(dim, tri[0], tri[2]),
+            ];
+            let pattern = classify_face_pattern(&signs);
+            *pattern_counts.entry(pattern).or_insert(0) += 1;
+            *total_counts.entry(pattern).or_insert(0) += 1;
+        }
+
+        total_triangles += triangles.len();
+
+        // Uniformity check: compare to first non-empty distribution
+        if !triangles.is_empty() {
+            if let Some(ref first) = first_dist {
+                if &pattern_counts != first {
+                    uniform = false;
+                }
+            } else {
+                first_dist = Some(pattern_counts.clone());
+            }
+        }
+
+        per_component.push(ComponentFaceCensus {
+            component_idx: comp_idx,
+            n_nodes: comp.nodes.len(),
+            n_edges: comp.edges.len(),
+            n_triangles: triangles.len(),
+            pattern_counts,
+        });
+    }
+
+    GenericFaceSignCensus {
+        dim,
+        n_components: components.len(),
+        total_triangles,
+        total_pattern_counts: total_counts,
+        per_component,
+        uniform_across_components: uniform,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -2526,5 +2695,107 @@ mod tests {
                 }
             }
         }
+    }
+
+    // ================================================================
+    // Generic face sign census tests
+    // ================================================================
+
+    #[test]
+    fn test_generic_face_sign_census_dim16_matches_c479() {
+        // C-479: 56 faces = 42 TwoSameOneOpp + 14 AllOpposite, 0 AllSame, 0 OneSameTwoOpp
+        let census = generic_face_sign_census(16);
+
+        assert_eq!(census.dim, 16);
+        assert_eq!(census.n_components, 7, "dim=16 has 7 box-kite components");
+        assert_eq!(census.total_triangles, 56, "7 BKs x 8 faces = 56");
+
+        let two_same = census.total_pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+        let all_opp = census.total_pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+        let all_same = census.total_pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
+        let one_same = census.total_pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
+
+        assert_eq!(two_same, 42, "42 TwoSameOneOpp faces (trefoil lanyards)");
+        assert_eq!(all_opp, 14, "14 AllOpposite faces (triple-zigzag lanyards)");
+        assert_eq!(all_same, 0, "No AllSame (Blues) faces");
+        assert_eq!(one_same, 0, "No OneSameTwoOpp faces");
+
+        // Each component should have 8 faces
+        for comp in &census.per_component {
+            assert_eq!(comp.n_triangles, 8, "Each BK has 8 faces");
+        }
+
+        assert!(census.uniform_across_components, "Uniform: 6+2 per BK");
+    }
+
+    #[test]
+    fn test_generic_face_sign_census_dim32() {
+        // dim=32 has 15 components, each with 14 nodes.
+        // Two motif classes: 8 heptacross (84 edges) and 7 mixed (36 edges).
+        let census = generic_face_sign_census(32);
+
+        assert_eq!(census.dim, 32);
+        assert_eq!(census.n_components, 15, "dim=32 has 15 components");
+        assert_eq!(census.total_triangles, 2408);
+
+        // Aggregate pattern counts
+        let two_same = census.total_pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+        let all_opp = census.total_pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+        let all_same = census.total_pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
+        let one_same = census.total_pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
+
+        assert_eq!(two_same, 1050);
+        assert_eq!(all_opp, 350);
+        assert_eq!(all_same, 252);
+        assert_eq!(one_same, 756);
+
+        // Key structural observation: NOT uniform across components (unlike dim=16)
+        assert!(!census.uniform_across_components);
+
+        // Three distinct face-pattern regimes at dim=32:
+        // (A) 7 heptacross components (84 edges): all 4 patterns
+        //     102 TwoSameOneOpp + 108 OneSameTwoOpp + 36 AllSame + 34 AllOpposite = 280
+        // (B) 1 special heptacross (84 edges): only 2 patterns, 3:1 ratio
+        //     210 TwoSameOneOpp + 70 AllOpposite = 280
+        // (C) 7 mixed components (36 edges): only 2 patterns, 3:1 ratio
+        //     18 TwoSameOneOpp + 6 AllOpposite = 24
+
+        let mut regime_a = 0usize;
+        let mut regime_b = 0usize;
+        let mut regime_c = 0usize;
+
+        for comp in &census.per_component {
+            let n_patterns = comp.pattern_counts.len();
+            if comp.n_edges == 84 && n_patterns == 4 {
+                regime_a += 1;
+                assert_eq!(comp.n_triangles, 280);
+                assert_eq!(comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0), 102);
+                assert_eq!(comp.pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0), 108);
+                assert_eq!(comp.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0), 36);
+                assert_eq!(comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0), 34);
+            } else if comp.n_edges == 84 && n_patterns == 2 {
+                regime_b += 1;
+                assert_eq!(comp.n_triangles, 280);
+                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                assert_eq!(ts, 210);
+                assert_eq!(ao, 70);
+                assert_eq!(ts, 3 * ao, "3:1 ratio in regime B");
+            } else if comp.n_edges == 36 {
+                regime_c += 1;
+                assert_eq!(comp.n_triangles, 24);
+                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                assert_eq!(ts, 18);
+                assert_eq!(ao, 6);
+                assert_eq!(ts, 3 * ao, "3:1 ratio in regime C");
+            } else {
+                panic!("Unexpected component: {} edges, {} patterns", comp.n_edges, n_patterns);
+            }
+        }
+
+        assert_eq!(regime_a, 7, "7 heptacross components with all 4 patterns");
+        assert_eq!(regime_b, 1, "1 special heptacross with 3:1 ratio");
+        assert_eq!(regime_c, 7, "7 mixed components with 3:1 ratio");
     }
 }

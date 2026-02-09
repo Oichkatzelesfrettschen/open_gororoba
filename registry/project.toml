@@ -5,12 +5,19 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2257
-claim_count = 480
+test_count = 2261
+claim_count = 481
 insight_count = 17
 experiment_count = 13
 paper_count = 19
 binary_count = 40
+
+[sprints.s21]
+number = 21
+date = "2026-02-09"
+test_count = 2261
+claim_count = 481
+summary = "GF(2) separating degree extended to dim=128 (degree 5, C-480 updated). Generic face sign census: dim=16 reproduces C-479, dim=32 discovers 3-regime structure (C-481). FaceSignPattern moved to boxkites.rs. Parity-clique/XOR partner at dim=128 confirmed already verified."
 
 [sprints.s20]
 number = 20

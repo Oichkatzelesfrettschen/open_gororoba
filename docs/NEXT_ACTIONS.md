@@ -1,15 +1,20 @@
 # Next Actions (Prioritized)
 
-Updated 2026-02-09 after Sprint 20 completion.
+Updated 2026-02-09 after Sprint 21 completion.
 **See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and research plan.
 
-## Current State (Sprint 20, 2026-02-09)
+## Current State (Sprint 21, 2026-02-09)
 
-**Test count**: 2257 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-480 (480 total). **Insights**: I-001..I-017. **Binaries**: 40.
+**Test count**: 2261 total (unit + integration + doc), 0 clippy warnings.
+**Claims**: C-001..C-481 (481 total). **Insights**: I-001..I-017. **Binaries**: 40.
 
 ## Recent Sprint Summaries
 
+- **S21**: GF(2) separating degree extended to dim=128 (degree 5, +1 per doubling confirmed
+  at 3 doublings, C-480 updated). Generic face sign census: dim=16 reproduces C-479,
+  dim=32 discovers 3-regime structure with 2408 triangles (C-481). FaceSignPattern moved
+  to boxkites.rs (canonical home). Parity-clique/XOR partner at dim=128 confirmed
+  already verified.
 - **S20**: Twist-delta pair correspondence RESOLVED (C-478, Fano Line Pairing Theorem).
   Lanyard sign census VERIFIED (C-479, 42+14 uniform). GF(2) separating degree at
   dim=64 RESOLVED (C-480, degree 4). Stale docs updated.
@@ -113,10 +118,10 @@ Updated 2026-02-09 after Sprint 20 completion.
    - At dim=64: 4 classes (9+8+7+7), PG(4,2) with 5-bit labels.
    - At degree 4: all 15 non-zero GF(2)^4 signatures achievable.
 
-5) **Extend parity-clique and XOR partner to dim=128+** (Sprint 9 open)
-   - Parity-clique verified at dims 16, 32. XOR partner verified at dim=64.
+5) ~~**Extend parity-clique and XOR partner to dim=128+**~~ -- **VERIFIED** (Sprint 9-12).
+   - Parity-clique REFUTED at dims 16, 32, 64, 128 (density 1.6% at 128D, 50% cross-parity).
+   - XOR partner UNIVERSAL at dims 16, 32, 64, 128 (3968/3968 valid at 128D, mask=8).
    - dim=256 ZD adjacency is computationally infeasible (132M evaluations).
-   - dim=128 may be tractable with optimized code paths.
 
 6) **External data provenance automation** (B.7)
    - Query params for HEASARC fetches.

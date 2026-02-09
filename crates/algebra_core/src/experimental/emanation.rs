@@ -34,9 +34,9 @@
 //! - Greimas (1966): Structural Semantics (semiotic square)
 
 use crate::analysis::boxkites::{
-    all_diagonal_zero_products, automorpheme_assessors, canonical_strut_table, cross_assessors,
-    edge_sign_type, find_box_kites, motif_components_for_cross_assessors, Assessor, BoxKite,
-    CrossPair, EdgeSignType, O_TRIPS,
+    all_diagonal_zero_products, automorpheme_assessors, canonical_strut_table, classify_face_pattern,
+    cross_assessors, edge_sign_type, find_box_kites, motif_components_for_cross_assessors, Assessor,
+    BoxKite, CrossPair, EdgeSignType, FaceSignPattern, O_TRIPS,
 };
 use crate::construction::cayley_dickson::cd_basis_mul_sign;
 use std::collections::{HashMap, HashSet};
@@ -4209,18 +4209,7 @@ pub fn extract_lanyards_from_et(n: usize, s: usize) -> Vec<LanyardSignature> {
     lanyards
 }
 
-/// Normalized face sign pattern (order-independent).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
-pub enum FaceSignPattern {
-    /// All 3 edges Same-sign (Blues). De Marrais: not realized in sedenions.
-    AllSame,
-    /// 2 Same + 1 Opposite. De Marrais: trefoil variant I.
-    TwoSameOneOpp,
-    /// 1 Same + 2 Opposite. De Marrais: trefoil variant II.
-    OneSameTwoOpp,
-    /// All 3 edges Opposite-sign (TripleZigzag). De Marrais: zigzag face.
-    AllOpposite,
-}
+// FaceSignPattern is now defined in boxkites.rs and imported above.
 
 /// Result of one face classification.
 #[derive(Debug, Clone)]
@@ -4254,17 +4243,7 @@ pub struct CrossBkLanyardCensus {
     pub faces: Vec<FaceClassification>,
 }
 
-/// Classify a face's edge signs into a normalized pattern.
-fn classify_face_pattern(signs: &[EdgeSignType; 3]) -> FaceSignPattern {
-    let n_same = signs.iter().filter(|&&s| s == EdgeSignType::Same).count();
-    match n_same {
-        3 => FaceSignPattern::AllSame,
-        2 => FaceSignPattern::TwoSameOneOpp,
-        1 => FaceSignPattern::OneSameTwoOpp,
-        0 => FaceSignPattern::AllOpposite,
-        _ => unreachable!(),
-    }
-}
+// classify_face_pattern is now defined in boxkites.rs and imported above.
 
 /// Systematic lanyard classification across all 7 sedenion box-kites.
 ///

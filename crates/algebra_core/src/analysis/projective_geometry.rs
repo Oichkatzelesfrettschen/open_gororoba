@@ -1611,10 +1611,10 @@ mod tests {
         eprintln!("  n_achievable_sigs: {}", result.n_achievable_sigs);
         eprintln!("  degree_results: {:?}", result.degree_results);
 
-        // Record the result for claims tracking
-        assert!(
-            d <= 5,
-            "separating degree should be at most n_bits=5, got {d}"
+        // C-480: degree grows as projective_dim = log2(dim) - 2
+        assert_eq!(
+            d, 4,
+            "dim=64 minimum separating degree should be 4 (quartic = projective dim)"
         );
     }
 
@@ -1660,6 +1660,73 @@ mod tests {
             eprintln!(
                 "  Class {class_idx} ({count} comps, {edges} edges): PG labels = {labels:?}"
             );
+        }
+    }
+
+    #[test]
+    fn test_separating_degree_dim128() {
+        // Extends C-480: predict degree 5 at dim=128 (PG(5,2), 63 pts, 8 classes)
+        let result = find_minimum_separating_degree(128);
+        assert_eq!(result.n_points, 63);
+        assert_eq!(result.n_classes, 8, "dim=128 should have 8 motif classes");
+
+        assert!(
+            result.min_degree.is_some(),
+            "dim=128 must have a separating degree; degree_results: {:?}",
+            result.degree_results
+        );
+
+        let d = result.min_degree.unwrap();
+        eprintln!("=== GF(2) Separating Degree at dim=128 ===");
+        eprintln!("  n_points: {}", result.n_points);
+        eprintln!("  n_classes: {}", result.n_classes);
+        eprintln!("  class_sizes: {:?}", result.class_sizes);
+        eprintln!("  min_degree: {d}");
+        eprintln!("  n_achievable_sigs: {}", result.n_achievable_sigs);
+        eprintln!("  degree_results: {:?}", result.degree_results);
+
+        // C-480 extension: degree = projective_dim = log2(dim) - 2 = 5
+        assert_eq!(
+            d, 5,
+            "dim=128 minimum separating degree should be 5 (quintic = projective dim)"
+        );
+
+        // At min degree, ALL 255 non-zero signatures should be achievable
+        assert_eq!(
+            result.n_achievable_sigs, 255,
+            "all 2^8-1=255 signatures should be achievable at degree 5"
+        );
+    }
+
+    #[test]
+    fn test_separating_degree_dim128_diagnostic() {
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
+        let comps = motif_components_for_cross_assessors(128);
+
+        let mut edge_counts: Vec<(usize, usize)> = comps
+            .iter()
+            .enumerate()
+            .map(|(i, c)| (c.edges.len(), i))
+            .collect();
+        edge_counts.sort_unstable();
+
+        let mut current_edges = edge_counts[0].0;
+        let mut class_start = 0;
+        let mut class_info: Vec<(usize, usize)> = Vec::new();
+
+        for (idx, &(edges, _)) in edge_counts.iter().enumerate() {
+            if edges != current_edges {
+                class_info.push((current_edges, idx - class_start));
+                class_start = idx;
+                current_edges = edges;
+            }
+        }
+        class_info.push((current_edges, edge_counts.len() - class_start));
+
+        eprintln!("=== dim=128 Motif Class Diagnostic ===");
+        eprintln!("  Total components: {}", comps.len());
+        for (edges, count) in &class_info {
+            eprintln!("  Class: {count} components with {edges} edges");
         }
     }
 
