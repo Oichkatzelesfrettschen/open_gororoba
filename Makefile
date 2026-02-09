@@ -4,7 +4,7 @@
 .PHONY: verify verify-grand ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke
 .PHONY: registry registry-knowledge registry-migrate-corpus registry-normalize-claims
-.PHONY: registry-ingest-legacy registry-export-markdown registry-verify-mirrors
+.PHONY: registry-normalize-narratives registry-ingest-legacy registry-export-markdown registry-verify-mirrors
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data run coq latex
@@ -87,7 +87,10 @@ registry-migrate-corpus: registry-knowledge
 registry-normalize-claims:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py
 
-registry-ingest-legacy: registry-normalize-claims
+registry-normalize-narratives:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_narrative_overlays.py
+
+registry-ingest-legacy: registry-normalize-claims registry-normalize-narratives
 	@echo "Legacy markdown -> TOML ingest completed."
 
 registry-export-markdown: registry-migrate-corpus

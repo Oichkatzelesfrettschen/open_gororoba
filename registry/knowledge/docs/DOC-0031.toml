@@ -9,10 +9,10 @@ kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = false
-source_sha256 = "d24f895200bc564ef8634b8e43eba3740a385ff3707ce62ef0fb3242953c730d"
-source_line_count = 250
-source_size_bytes = 7786
-content_sha256 = "d24f895200bc564ef8634b8e43eba3740a385ff3707ce62ef0fb3242953c730d"
+source_sha256 = "7d14e8eebd850a6193eff7d6ca797cc3f03fea4fc2fc084bd569fcda1c3dffca"
+source_line_count = 345
+source_size_bytes = 11539
+content_sha256 = "7d14e8eebd850a6193eff7d6ca797cc3f03fea4fc2fc084bd569fcda1c3dffca"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -58,6 +58,8 @@ cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
 
 ---
 
+---
+
 ## E-002: Multi-Dataset GPU Ultrametric Sweep
 
 **Method:** For each of 9 astrophysical catalogs, normalize attributes to [0,1],
@@ -82,6 +84,8 @@ cargo run --release --bin multi-dataset-ultrametric -- \\
 
 ---
 
+---
+
 ## E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)
 
 **Method:** Joint chi-square minimization over 1578 Pantheon+ SNe Ia and 7
@@ -100,6 +104,8 @@ cargo run --release --bin real-cosmo-fit
 **Related claims:** C-200..C-210
 
 **Determinism:** Fully deterministic (no RNG in optimizer).
+
+---
 
 ---
 
@@ -123,6 +129,8 @@ cargo run --release --bin kerr-shadow -- --spin 0.998 --n-points 1000 --inclinat
 
 ---
 
+---
+
 ## E-005: Zero-Divisor Graph Invariants
 
 **Method:** Build the interaction graph of sedenion zero-divisors, compute
@@ -141,6 +149,8 @@ cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000
 **Related claims:** C-050..C-060 (ZD graph structure)
 
 **Determinism:** Fully deterministic.
+
+---
 
 ---
 
@@ -166,6 +176,8 @@ cargo run --release --bin gravastar-sweep -- \\
 
 ---
 
+---
+
 ## E-007: Tensor Network / PEPS Entropy
 
 **Method:** Classical tensor network simulator for quantum circuits.  Bell/GHZ
@@ -185,6 +197,8 @@ cargo run --release --bin tensor-network -- \\
 **Related claims:** C-350..C-360 (entanglement scaling)
 
 **Determinism:** Seed-controlled (default 42).
+
+---
 
 ---
 
@@ -209,6 +223,8 @@ cargo run --release --bin mass-clumping -- --n-permutations 10000 --seed 42
 
 ---
 
+---
+
 ## E-009: Negative-Dimension Eigenvalue Convergence
 
 **Method:** Compute eigenvalues of H = T(k) + V(x) with regularized fractional
@@ -229,6 +245,8 @@ cargo run --release --bin neg-dim-eigen -- sweep \\
 **Related claims:** C-420..C-425 (negative-dimension PDE)
 
 **Determinism:** Fully deterministic.
+
+---
 
 ---
 
@@ -267,5 +285,82 @@ cargo run --release --bin materials-baseline -- --data-dir data/external --seed 
 | E-008 | Mass Clumping Dip Test      | mass-clumping                | Seed  | No  |
 | E-009 | Neg-Dim Eigenvalue Sweep    | neg-dim-eigen                | Yes   | No  |
 | E-010 | Materials Baselines         | materials-baseline           | Seed  | No  |
+
+---
+
+## E-011: Cross-Stack Locality Comparison (Experiment A)
+
+Method: Compare adjacency-locality metrics across three independent constraint systems:
+  Stack 1 (E10 Billiard): Wall-transition sequence from HyperbolicBilliard, E10 Dynkin graph.
+    Metric: r_e8 = fraction of consecutive pairs that are E8-adjacent.
+    Null: ColumnIndependentNull (uniform random generator selection).
+  Stack 2 (ET DMZ Walk): Navigation sequences through de Marrais Emanation Table.
+    Metric: r_dmz = fraction of consecutive ET cells that share a DMZ edge.
+    Null: uniform random cell selection in the ET grid.
+  Stack 3 (CD ZD Catamaran/Twist): Twist-product navigation across zero-divisor graph.
+    Metric: r_zd = fraction of consecutive basis-pair transitions that are ZD-adjacent.
+    Null: uniform random basis-pair selection.
+  All three use the common abstract model: generator-driven piecewise geodesic dynamics
+  (generator set G, constraint graph Gamma subset G x G, sequence s_1..s_n, locality
+  ratio r = |{i : (s_i, s_{i+1}) in Gamma}| / (n-1)).
+  Prediction (ALP, C-476): all three r values significantly exceed their nulls.
+  Falsifier: one or more shows r consistent with uniform/random.
+Input: None (purely algebraic / simulation)
+Output: data/csv/cross_stack_locality_comparison.csv
+Run:
+```bash
+cargo run --release --bin cross-stack-locality -- --n-bounces 10000 --n-permutations 1000 --seed 42
+```
+
+---
+
+## E-012: ET Discrete Billiard (Experiment B)
+
+Method: Treat the Emanation Table as a discrete billiard wall set.
+  Walls: ET constraints define forbidden/allowed transitions in (S, row, col) space.
+  Reflections: when a trajectory hits an ET \"wall\" (DMZ boundary), apply the ET rule
+    update (fill/hide involution or strut-constant increment).
+  Symbolic dynamics: record the sequence of wall types hit (DMZ, label-line, empty).
+  Phase structure: compute Lyapunov exponent (or mixing time) as a function of strut
+    constant S. Compare against spectroscopy band classification (Dense/Sparse/Mixed
+    from spectroscopy_bands()).
+  Prediction: spectroscopy band transitions correspond to qualitative phase changes in
+    the toy billiard (e.g., Dense bands -> low Lyapunov, Sparse -> high Lyapunov).
+  Falsifier: no correlation between spectroscopy classification and billiard dynamics.
+Input: None (ET computation from emanation.rs)
+Output: data/csv/et_billiard_phase_structure.csv
+Run:
+```bash
+cargo run --release --bin et-billiard -- --n-levels 4,5,6 --n-steps 10000 --seed 42
+```
+
+---
+
+## E-013: Sky-Limit-Set Correspondence (Experiment C)
+
+Method: Compare ET skybox pattern invariants to Coxeter group limit set invariants.
+  Step 1: For each CD level N=4,5,6, compute the skybox (G x G grid) and extract:
+    - box-kite count (= N-1)
+    - emptiness clustering exponent (connected-component size distribution)
+    - DMZ density (fraction of cells that are DMZ)
+    - fill/hide period-doubling structure (from Four Corners rule)
+  Step 2: For candidate Coxeter groups (A_{N-1}, B_{N-1}, D_{N-1}), compute limit set
+    invariants from the Coxeter matrix:
+    - rank
+    - fractal dimension of limit set
+    - invariant measure density
+  Step 3: Compare skybox invariants (Step 1) to limit set invariants (Step 2) via
+    correlation and matching tests.
+  Prediction (C-477): systematic correspondence between skybox pattern invariants and
+    Coxeter limit set invariants at matching rank.
+  Falsifier: no Coxeter group at any rank produces invariants matching the ET skybox.
+Input: None (ET computation + Coxeter matrix computation)
+Output: data/csv/sky_limit_set_comparison.csv
+Run:
+```bash
+cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-types A,B,D
+```
+
+---
 
 """

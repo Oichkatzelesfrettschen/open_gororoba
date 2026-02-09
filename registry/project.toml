@@ -5,12 +5,19 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2198
+test_count = 2239
 claim_count = 477
 insight_count = 16
 experiment_count = 13
 paper_count = 19
 binary_count = 37
+
+[sprints.s17]
+number = 17
+date = "2026-02-09"
+test_count = 2239
+claim_count = 477
+summary = "Experiments B+C: ET discrete billiard (symbolic dynamics, entropy, phase sweep), sky-limit-set Coxeter correspondence, cross-stack locality ALP formalization, narrative registry enrichment, 41 new tests"
 
 [sprints.s16]
 number = 16

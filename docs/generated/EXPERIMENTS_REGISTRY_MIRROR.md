@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/experiments.toml`.
 
-Total experiments: 10
+Total experiments: 13
 
 ## E-001: Cayley-Dickson Motif Census
 
@@ -179,4 +179,96 @@ JARVIS-DFT and AFLOW datasets, Magpie-style featurization, OLS regression for fo
 Run command:
 ```bash
 cargo run --release --bin materials-baseline -- --data-dir data/external --seed 42
+```
+
+## E-011: Cross-Stack Locality Comparison (Experiment A)
+
+- Binary: `cross-stack-locality`
+- Input: None (purely algebraic / simulation)
+- Output: data/csv/cross_stack_locality_comparison.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: C-476
+
+Method:
+Compare adjacency-locality metrics across three independent constraint systems:
+  Stack 1 (E10 Billiard): Wall-transition sequence from HyperbolicBilliard, E10 Dynkin graph.
+    Metric: r_e8 = fraction of consecutive pairs that are E8-adjacent.
+    Null: ColumnIndependentNull (uniform random generator selection).
+  Stack 2 (ET DMZ Walk): Navigation sequences through de Marrais Emanation Table.
+    Metric: r_dmz = fraction of consecutive ET cells that share a DMZ edge.
+    Null: uniform random cell selection in the ET grid.
+  Stack 3 (CD ZD Catamaran/Twist): Twist-product navigation across zero-divisor graph.
+    Metric: r_zd = fraction of consecutive basis-pair transitions that are ZD-adjacent.
+    Null: uniform random basis-pair selection.
+  All three use the common abstract model: generator-driven piecewise geodesic dynamics
+  (generator set G, constraint graph Gamma subset G x G, sequence s_1..s_n, locality
+  ratio r = |{i : (s_i, s_{i+1}) in Gamma}| / (n-1)).
+  Prediction (ALP, C-476): all three r values significantly exceed their nulls.
+  Falsifier: one or more shows r consistent with uniform/random.
+
+Run command:
+```bash
+cargo run --release --bin cross-stack-locality -- --n-bounces 10000 --n-permutations 1000 --seed 42
+```
+
+## E-012: ET Discrete Billiard (Experiment B)
+
+- Binary: `et-billiard`
+- Input: None (ET computation from emanation.rs)
+- Output: data/csv/et_billiard_phase_structure.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: C-476, C-477
+
+Method:
+Treat the Emanation Table as a discrete billiard wall set.
+  Walls: ET constraints define forbidden/allowed transitions in (S, row, col) space.
+  Reflections: when a trajectory hits an ET "wall" (DMZ boundary), apply the ET rule
+    update (fill/hide involution or strut-constant increment).
+  Symbolic dynamics: record the sequence of wall types hit (DMZ, label-line, empty).
+  Phase structure: compute Lyapunov exponent (or mixing time) as a function of strut
+    constant S. Compare against spectroscopy band classification (Dense/Sparse/Mixed
+    from spectroscopy_bands()).
+  Prediction: spectroscopy band transitions correspond to qualitative phase changes in
+    the toy billiard (e.g., Dense bands -> low Lyapunov, Sparse -> high Lyapunov).
+  Falsifier: no correlation between spectroscopy classification and billiard dynamics.
+
+Run command:
+```bash
+cargo run --release --bin et-billiard -- --n-levels 4,5,6 --n-steps 10000 --seed 42
+```
+
+## E-013: Sky-Limit-Set Correspondence (Experiment C)
+
+- Binary: `sky-limit-set`
+- Input: None (ET computation + Coxeter matrix computation)
+- Output: data/csv/sky_limit_set_comparison.csv
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-477
+
+Method:
+Compare ET skybox pattern invariants to Coxeter group limit set invariants.
+  Step 1: For each CD level N=4,5,6, compute the skybox (G x G grid) and extract:
+    - box-kite count (= N-1)
+    - emptiness clustering exponent (connected-component size distribution)
+    - DMZ density (fraction of cells that are DMZ)
+    - fill/hide period-doubling structure (from Four Corners rule)
+  Step 2: For candidate Coxeter groups (A_{N-1}, B_{N-1}, D_{N-1}), compute limit set
+    invariants from the Coxeter matrix:
+    - rank
+    - fractal dimension of limit set
+    - invariant measure density
+  Step 3: Compare skybox invariants (Step 1) to limit set invariants (Step 2) via
+    correlation and matching tests.
+  Prediction (C-477): systematic correspondence between skybox pattern invariants and
+    Coxeter limit set invariants at matching rank.
+  Falsifier: no Coxeter group at any rank produces invariants matching the ET skybox.
+
+Run command:
+```bash
+cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-types A,B,D
 ```
