@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 13: The Grand Critique & Synthesis
 
 **Date:** 2026-02-01

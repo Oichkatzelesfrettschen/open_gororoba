@@ -6,11 +6,11 @@
 Authoritative source: `registry/markdown_governance.toml`.
 
 - Generated at: deterministic
-- Document count: 233
-- TOML generated mirrors: 74
+- Document count: 235
+- TOML generated mirrors: 98
 - TOML manual sources: 0
 - Generated artifacts: 59
-- Manual narratives: 100
+- Manual narratives: 78
 - Immutable transcripts: 0
 
 ## Documents
@@ -887,143 +887,183 @@ Authoritative source: `registry/markdown_governance.toml`.
 
 ### MDG-0118: `docs/engineering/DATASHEET_V2.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0119: `docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0120: `docs/engineering/FETCHING_EXTERNAL_SOURCES.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0121: `docs/engineering/GAP_CLOSURE_REPORT.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0122: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0123: `docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0124: `docs/engineering/OPTIX_ELUCIDATION.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0125: `docs/engineering/PADIC_SIGNAL_THEORY.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0126: `docs/engineering/PHASE_10_MULTIPHYSICS.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0127: `docs/engineering/PHASE_11_VISUALIZATION.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0128: `docs/engineering/PHASE_12_RENDERER.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0129: `docs/engineering/PHASE_13_GRAND_CRITIQUE.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0130: `docs/engineering/PHASE_14_DEEP_DIVE.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0131: `docs/engineering/PHASE_15_RESURRECTION.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0132: `docs/engineering/PHASE_16_FINAL_VALIDATION.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0133: `docs/engineering/PHASE_6_IMPLEMENTATION.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0134: `docs/engineering/PHASE_7_REPORT.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0135: `docs/engineering/PHASE_8_SYNTHESIS.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0136: `docs/engineering/PHYSICS_VALIDATION_REPORT.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0137: `docs/engineering/WARP_SPACEPLATE_SPECS.md`
 
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0138: `docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md`
 
@@ -1106,7 +1146,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/external_sources.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0147: `docs/external_sources/INVERSE_CD_FORMALISM.md`
+### MDG-0147: `docs/external_sources/INDEX.md`
 
 - Kind: `markdown_mirror`
 - Mode: `toml_generated_mirror`
@@ -1115,7 +1155,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/external_sources.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0148: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
+### MDG-0148: `docs/external_sources/INVERSE_CD_FORMALISM.md`
 
 - Kind: `markdown_mirror`
 - Mode: `toml_generated_mirror`
@@ -1124,7 +1164,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/external_sources.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0149: `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`
+### MDG-0149: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
 
 - Kind: `markdown_mirror`
 - Mode: `toml_generated_mirror`
@@ -1133,7 +1173,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/external_sources.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0150: `docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md`
+### MDG-0150: `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`
 
 - Kind: `markdown_mirror`
 - Mode: `toml_generated_mirror`
@@ -1142,7 +1182,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/external_sources.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0151: `docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md`
+### MDG-0151: `docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md`
 
 - Kind: `markdown_mirror`
 - Mode: `toml_generated_mirror`
@@ -1151,98 +1191,114 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/external_sources.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0152: `docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md`
+### MDG-0152: `docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md`
+
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/external_sources.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0153: `docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0153: `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
+### MDG-0154: `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0154: `docs/generated/CLAIMS_REGISTRY_MIRROR.md`
+### MDG-0155: `docs/generated/CLAIMS_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0155: `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
+### MDG-0156: `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0156: `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
+### MDG-0157: `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0157: `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`
+### MDG-0158: `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0158: `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`
+### MDG-0159: `docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0159: `docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md`
+### MDG-0160: `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0160: `docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md`
+### MDG-0161: `docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0161: `docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md`
+### MDG-0162: `docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0162: `docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md`
+### MDG-0163: `docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0163: `docs/generated/ROADMAP_REGISTRY_MIRROR.md`
+### MDG-0164: `docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0164: `docs/generated/TODO_REGISTRY_MIRROR.md`
+### MDG-0165: `docs/generated/ROADMAP_REGISTRY_MIRROR.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
 - Header required: `True`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0165: `docs/requirements/algebra.md`
+### MDG-0166: `docs/generated/TODO_REGISTRY_MIRROR.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0167: `docs/requirements/algebra.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
@@ -1252,7 +1308,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/requirements_narrative.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0166: `docs/requirements/analysis.md`
+### MDG-0168: `docs/requirements/analysis.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
@@ -1262,7 +1318,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/requirements_narrative.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0167: `docs/requirements/astro.md`
+### MDG-0169: `docs/requirements/astro.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
@@ -1272,7 +1328,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/requirements_narrative.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0168: `docs/requirements/coq.md`
+### MDG-0170: `docs/requirements/coq.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
@@ -1282,7 +1338,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/requirements_narrative.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0169: `docs/requirements/cpp.md`
+### MDG-0171: `docs/requirements/cpp.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
@@ -1292,7 +1348,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/requirements_narrative.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0170: `docs/requirements/latex.md`
+### MDG-0172: `docs/requirements/latex.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
@@ -1302,7 +1358,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/requirements_narrative.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0171: `docs/requirements/materials.md`
+### MDG-0173: `docs/requirements/materials.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
@@ -1312,7 +1368,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/requirements_narrative.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0172: `docs/requirements/particle.md`
+### MDG-0174: `docs/requirements/particle.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
@@ -1322,7 +1378,7 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/requirements_narrative.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0173: `docs/requirements/quantum-docker.md`
+### MDG-0175: `docs/requirements/quantum-docker.md`
 
 - Kind: `generated_markdown`
 - Mode: `toml_generated_mirror`
@@ -1332,442 +1388,446 @@ Authoritative source: `registry/markdown_governance.toml`.
   - `registry/requirements_narrative.toml`
 - Notes: Generated from TOML registries and overlays.
 
-### MDG-0174: `docs/theory/CLAIMS_METHODOLOGY.md`
+### MDG-0176: `docs/theory/CLAIMS_METHODOLOGY.md`
+
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0177: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`
+
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/research_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0178: `docs/tickets/C001_C050_claims_audit.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0179: `docs/tickets/C051_C100_claims_audit.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0180: `docs/tickets/C101_C150_claims_audit.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0181: `docs/tickets/C151_C200_claims_audit.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0182: `docs/tickets/C201_C250_claims_audit.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0183: `docs/tickets/C251_C300_claims_audit.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0184: `docs/tickets/C301_C350_claims_audit.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0185: `docs/tickets/C351_C400_claims_audit.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0186: `docs/tickets/C401_C427_claims_audit.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0187: `docs/tickets/INDEX.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0188: `docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md`
+
+- Kind: `generated_markdown`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/claim_tickets.toml`
+- Notes: Generated from TOML registries and overlays.
+
+### MDG-0189: `docs/x86_SIMD_OPTIMIZATION.md`
 
 - Kind: `manual_source`
 - Mode: `manual_narrative`
 - Header required: `False`
 - Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
 
-### MDG-0175: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`
-
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
-
-### MDG-0176: `docs/tickets/C001_C050_claims_audit.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0177: `docs/tickets/C051_C100_claims_audit.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0178: `docs/tickets/C101_C150_claims_audit.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0179: `docs/tickets/C151_C200_claims_audit.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0180: `docs/tickets/C201_C250_claims_audit.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0181: `docs/tickets/C251_C300_claims_audit.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0182: `docs/tickets/C301_C350_claims_audit.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0183: `docs/tickets/C351_C400_claims_audit.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0184: `docs/tickets/C401_C427_claims_audit.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0185: `docs/tickets/INDEX.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0186: `docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md`
-
-- Kind: `generated_markdown`
-- Mode: `toml_generated_mirror`
-- Header required: `True`
-- Source TOML refs:
-  - `registry/claim_tickets.toml`
-- Notes: Generated from TOML registries and overlays.
-
-### MDG-0187: `docs/x86_SIMD_OPTIMIZATION.md`
-
-- Kind: `manual_source`
-- Mode: `manual_narrative`
-- Header required: `False`
-- Notes: Manual narrative source; raw-captured in registry/knowledge/docs.
-
-### MDG-0188: `reports/artifacts_phase0_dryrun.md`
+### MDG-0190: `reports/artifacts_phase0_dryrun.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0189: `reports/artifacts_reorg_plan.md`
+### MDG-0191: `reports/artifacts_reorg_plan.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0190: `reports/audit_network_gating.md`
+### MDG-0192: `reports/audit_network_gating.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0191: `reports/audit_nonpython_toolchains.md`
+### MDG-0193: `reports/audit_nonpython_toolchains.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0192: `reports/audit_provenance.md`
+### MDG-0194: `reports/audit_provenance.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0193: `reports/audit_pythonpath.md`
+### MDG-0195: `reports/audit_pythonpath.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0194: `reports/claims_batch_backlog_C001_C050.md`
+### MDG-0196: `reports/claims_batch_backlog_C001_C050.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0195: `reports/claims_batch_backlog_C001_C200.md`
+### MDG-0197: `reports/claims_batch_backlog_C001_C200.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0196: `reports/claims_batch_backlog_C011_C025.md`
+### MDG-0198: `reports/claims_batch_backlog_C011_C025.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0197: `reports/claims_batch_backlog_C027_C045.md`
+### MDG-0199: `reports/claims_batch_backlog_C027_C045.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0198: `reports/claims_batch_backlog_C046_C060.md`
+### MDG-0200: `reports/claims_batch_backlog_C046_C060.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0199: `reports/claims_batch_backlog_C046_C066.md`
+### MDG-0201: `reports/claims_batch_backlog_C046_C066.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0200: `reports/claims_batch_backlog_C051_C100.md`
+### MDG-0202: `reports/claims_batch_backlog_C051_C100.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0201: `reports/claims_batch_backlog_C101_C150.md`
+### MDG-0203: `reports/claims_batch_backlog_C101_C150.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0202: `reports/claims_batch_backlog_C151_C200.md`
+### MDG-0204: `reports/claims_batch_backlog_C151_C200.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0203: `reports/claims_batch_backlog_C201_C250.md`
+### MDG-0205: `reports/claims_batch_backlog_C201_C250.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0204: `reports/claims_batch_backlog_C201_C408.md`
+### MDG-0206: `reports/claims_batch_backlog_C201_C408.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0205: `reports/claims_batch_backlog_C201_C427.md`
+### MDG-0207: `reports/claims_batch_backlog_C201_C427.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0206: `reports/claims_batch_backlog_C201_C430.md`
+### MDG-0208: `reports/claims_batch_backlog_C201_C430.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0207: `reports/claims_batch_backlog_C201_C432.md`
+### MDG-0209: `reports/claims_batch_backlog_C201_C432.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0208: `reports/claims_batch_backlog_C251_C300.md`
+### MDG-0210: `reports/claims_batch_backlog_C251_C300.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0209: `reports/claims_batch_backlog_C301_C350.md`
+### MDG-0211: `reports/claims_batch_backlog_C301_C350.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0210: `reports/claims_batch_backlog_C351_C400.md`
+### MDG-0212: `reports/claims_batch_backlog_C351_C400.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0211: `reports/claims_batch_backlog_C401_C427.md`
+### MDG-0213: `reports/claims_batch_backlog_C401_C427.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0212: `reports/claims_bold_tokens_inventory.md`
+### MDG-0214: `reports/claims_bold_tokens_inventory.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0213: `reports/claims_id_inventory.md`
+### MDG-0215: `reports/claims_id_inventory.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0214: `reports/claims_priority_ranking.md`
+### MDG-0216: `reports/claims_priority_ranking.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0215: `reports/claims_staleness_report.md`
+### MDG-0217: `reports/claims_staleness_report.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0216: `reports/claims_status_contradictions.md`
+### MDG-0218: `reports/claims_status_contradictions.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0217: `reports/claims_status_inventory.md`
+### MDG-0219: `reports/claims_status_inventory.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0218: `reports/config_audit.md`
+### MDG-0220: `reports/config_audit.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0219: `reports/convos_claim_candidates.md`
+### MDG-0221: `reports/convos_claim_candidates.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0220: `reports/convos_claim_candidates_prioritized.md`
+### MDG-0222: `reports/convos_claim_candidates_prioritized.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0221: `reports/convos_pdf_inventory.md`
+### MDG-0223: `reports/convos_pdf_inventory.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0222: `reports/non_iso_dates_inventory.md`
+### MDG-0224: `reports/non_iso_dates_inventory.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0223: `reports/open_claims_missing_dedicated_sources.md`
+### MDG-0225: `reports/open_claims_missing_dedicated_sources.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0224: `reports/open_claims_missing_test_hooks.md`
+### MDG-0226: `reports/open_claims_missing_test_hooks.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0225: `reports/package_index.md`
+### MDG-0227: `reports/package_index.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0226: `reports/pdf_inventory.md`
+### MDG-0228: `reports/pdf_inventory.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0227: `reports/pythonpath_refactor_plan.md`
+### MDG-0229: `reports/pythonpath_refactor_plan.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0228: `reports/repo_inventory.md`
+### MDG-0230: `reports/repo_inventory.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0229: `reports/repo_structure_audit.md`
+### MDG-0231: `reports/repo_structure_audit.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0230: `reports/script_contracts_inventory.md`
+### MDG-0232: `reports/script_contracts_inventory.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0231: `reports/tickets_inventory.md`
+### MDG-0233: `reports/tickets_inventory.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0232: `reports/todo_fixme_scan.md`
+### MDG-0234: `reports/todo_fixme_scan.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`
 - Header required: `False`
 - Notes: Generated artifact/report; preserve reproducibility.
 
-### MDG-0233: `reports/tscp_trial_factor_ledger.md`
+### MDG-0235: `reports/tscp_trial_factor_ledger.md`
 
 - Kind: `artifact_report`
 - Mode: `generated_artifact`

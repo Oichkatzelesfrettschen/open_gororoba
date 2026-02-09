@@ -128,10 +128,10 @@ notes = "Keep as generated outputs with explicit regeneration commands; do not h
 [[domain]]
 id = "KM-007"
 name = "research_narratives"
-source_markdown = ["docs/theory/*.md", "docs/engineering/*.md"]
+source_markdown = ["docs/*.md", "docs/book/src/**/*.md"]
 strategy = "narrative_primary_raw_capture_backup"
 status = "active"
-notes = "Not all narrative content should be normalized into rigid schemas; raw capture in registry/knowledge/docs preserves provenance."
+notes = "Residual manual narratives remain for curated prose and book chapters not yet normalized to dedicated TOML overlays."
 
 [[domain]]
 id = "KM-012"
@@ -146,6 +146,22 @@ generated_mirror = [
 strategy = "toml_primary_generated_mirror"
 status = "complete"
 notes = "External source dossiers are TOML-first; markdown under docs/external_sources is generated from registry/external_sources.toml."
+
+[[domain]]
+id = "KM-013"
+name = "theory_engineering_narratives"
+source_markdown = ["docs/theory/*.md", "docs/engineering/*.md"]
+authoritative_toml = ["registry/research_narratives.toml"]
+generated_mirror = [
+  "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md",
+  "docs/theory/*.md",
+  "docs/theory/INDEX.md",
+  "docs/engineering/*.md",
+  "docs/engineering/INDEX.md",
+]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "Theory and engineering narrative dossiers are TOML-first with generated markdown mirrors."
 
 [[phase]]
 id = "KMP-P1"
@@ -211,6 +227,20 @@ deliverables = [
   "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md",
   "docs/external_sources/*.md",
   "docs/external_sources/INDEX.md",
+]
+
+[[phase]]
+id = "KMP-P9"
+name = "theory_engineering_registry_normalization"
+status = "complete"
+deliverables = [
+  "src/scripts/analysis/normalize_research_narratives_registry.py",
+  "registry/research_narratives.toml",
+  "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md",
+  "docs/theory/*.md",
+  "docs/theory/INDEX.md",
+  "docs/engineering/*.md",
+  "docs/engineering/INDEX.md",
 ]
 
 [[policy]]

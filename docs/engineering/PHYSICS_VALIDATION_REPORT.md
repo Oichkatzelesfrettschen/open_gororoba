@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Physics Validation Report
 
 **Date:** 2026-02-01
@@ -20,4 +23,3 @@
 - **Status:** Executed.
 - **Artifact:** `data/artifacts/images/warp_pareto_frontier.png`
 - **Insight:** High Compression Ratio ($R > 4.0$) severely limits bandwidth ($B < 0.5$ GHz).
-

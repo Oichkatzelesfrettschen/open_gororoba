@@ -573,4 +573,319 @@ mod tests {
         eprintln!("Euclidean distances: see above for non-trivial ultrametricity");
         eprintln!("vs column-shuffle null at each filtration level.");
     }
+
+    // ================================================================
+    // Intermediate Filtration Gradient (C-500 follow-up)
+    // ================================================================
+
+    /// Investigate the ultrametricity transition between Lambda_1024 (z=-1.57)
+    /// and Lambda_512 (z=9.22) by applying the 6 trie-cut exclusion rules
+    /// one at a time.
+    ///
+    /// The 6 rules, applied cumulatively:
+    ///   k=0: Lambda_1024                (1026 vectors)
+    ///   k=1: exclude l_1=1              (largest cut)
+    ///   k=2: also exclude l_1=0,l_2=1
+    ///   k=3: also exclude l_1=0,l_2=0,l_3=0
+    ///   k=4: also exclude l_1=0,l_2=0,l_3=1
+    ///   k=5: also exclude l_1=0,l_2=0,l_3=-1,l_4=1
+    ///   k=6: Lambda_512                 (512 vectors)
+    #[test]
+    fn test_intermediate_filtration_gradient() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_1024_minus_k,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        eprintln!("\n=== Intermediate Filtration Gradient (C-500 follow-up) ===");
+        eprintln!("k | N vectors | prefix | eff_dim | obs_frac | null_mean | z-score | p-value");
+        eprintln!("--|----------|--------|---------|----------|-----------|---------|--------");
+
+        let mut prev_n = 0usize;
+        let mut z_scores = Vec::new();
+        let mut sizes = Vec::new();
+
+        for k in 0..=6 {
+            let vectors = enumerate_lattice_by_predicate(|v| is_in_lambda_1024_minus_k(v, k));
+            let n = vectors.len();
+            let prefix = shared_prefix_length(&vectors);
+            let d = 8 - prefix;
+
+            // Column-major, prefix-stripped
+            let (cols, _, _) = lattice_to_column_major(&vectors, prefix);
+
+            // Observed ultrametric fraction
+            let obs_frac = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            // Null distribution: column-independent shuffle
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 1_000_000 + k as u64);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
+                );
+                let null_frac =
+                    matrix_free_fraction(&shuffled, n, d, n_triples, seed + 2_000_000, 0.05);
+                null_fracs.push(null_frac);
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_var = null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64;
+            let null_std = null_var.sqrt();
+
+            let n_extreme = null_fracs.iter().filter(|&&f| f >= obs_frac).count();
+            let p_value = (n_extreme as f64 + 1.0) / (n_permutations as f64 + 1.0);
+
+            let z_score = if null_std > 1e-12 {
+                (obs_frac - null_mean) / null_std
+            } else {
+                0.0
+            };
+
+            let removed = if k == 0 { 0 } else { prev_n - n };
+            eprintln!(
+                "{} | {:>8} | {:>6} | {:>7} | {:>8.4} | {:>9.4} | {:>7.2} | {:>7.4}  (removed {})",
+                k, n, prefix, d, obs_frac, null_mean, z_score, p_value, removed
+            );
+
+            z_scores.push(z_score);
+            sizes.push(n);
+            prev_n = n;
+        }
+
+        // Structural assertions:
+        // 1. k=0 is Lambda_1024 (1026 vectors)
+        assert_eq!(sizes[0], 1026, "k=0 must be Lambda_1024");
+        // 2. k=6 is Lambda_512 (512 vectors)
+        assert_eq!(sizes[6], 512, "k=6 must be Lambda_512");
+        // 3. Sizes monotonically decrease
+        for i in 1..=6 {
+            assert!(
+                sizes[i] <= sizes[i - 1],
+                "Size must decrease: k={} has {} > k={} has {}",
+                i, sizes[i], i - 1, sizes[i - 1]
+            );
+        }
+        // 4. z-score at k=6 should be substantially higher than k=0
+        //    (Lambda_512 is ultrametric, Lambda_1024 is not)
+        assert!(
+            z_scores[6] > z_scores[0] + 2.0,
+            "Lambda_512 (k=6) z={:.2} should be >2 above Lambda_1024 (k=0) z={:.2}",
+            z_scores[6], z_scores[0]
+        );
+
+        eprintln!("\n=== GRADIENT SUMMARY ===");
+        eprintln!("z-score progression: {:?}", z_scores.iter().map(|z| format!("{:.2}", z)).collect::<Vec<_>>());
+
+        // Find the first k where z > 3.0 (strong signal)
+        if let Some(transition_k) = z_scores.iter().position(|&z| z > 3.0) {
+            eprintln!("First k with z > 3.0: {} (N={})", transition_k, sizes[transition_k]);
+        } else {
+            eprintln!("No k reached z > 3.0 (gradient is gradual)");
+        }
+    }
+
+    /// Test that is_in_lambda_1024_minus_k(v, 0) == is_in_lambda_1024(v)
+    /// and is_in_lambda_1024_minus_k(v, 6) == is_in_lambda_512(v).
+    #[test]
+    fn test_intermediate_filtration_consistency() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_1024,
+            is_in_lambda_1024_minus_k, is_in_lambda_512,
+        };
+
+        let all_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
+        let all_512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let k0 = enumerate_lattice_by_predicate(|v| is_in_lambda_1024_minus_k(v, 0));
+        let k6 = enumerate_lattice_by_predicate(|v| is_in_lambda_1024_minus_k(v, 6));
+
+        assert_eq!(all_1024.len(), k0.len(), "k=0 must equal Lambda_1024");
+        assert_eq!(all_512.len(), k6.len(), "k=6 must equal Lambda_512");
+        assert_eq!(all_1024, k0, "k=0 vectors must match Lambda_1024");
+        assert_eq!(all_512, k6, "k=6 vectors must match Lambda_512");
+
+        // Monotone containment: k_i+1 is a subset of k_i
+        let mut prev = k0;
+        for k in 1..=6 {
+            let current = enumerate_lattice_by_predicate(|v| is_in_lambda_1024_minus_k(v, k));
+            for v in &current {
+                assert!(
+                    prev.contains(v),
+                    "k={} vector {:?} not in k={} set",
+                    k, v, k - 1
+                );
+            }
+            assert!(
+                current.len() <= prev.len(),
+                "k={} has {} vectors > k={} has {}",
+                k, current.len(), k - 1, prev.len()
+            );
+            prev = current;
+        }
+    }
+
+    /// Count how many vectors each rule removes, confirming the filtration
+    /// step sizes match the trie structure.
+    #[test]
+    fn test_intermediate_filtration_step_sizes() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_1024_minus_k,
+        };
+
+        eprintln!("\n=== Filtration Step Sizes ===");
+        let mut sizes = Vec::new();
+        for k in 0..=6 {
+            let n = enumerate_lattice_by_predicate(|v| is_in_lambda_1024_minus_k(v, k)).len();
+            sizes.push(n);
+        }
+
+        eprintln!("Sizes: {:?}", sizes);
+        for k in 1..=6 {
+            let removed = sizes[k - 1] - sizes[k];
+            eprintln!(
+                "  Rule {}: {} -> {} (removed {})",
+                k, sizes[k - 1], sizes[k], removed
+            );
+        }
+
+        // k=0 is Lambda_1024 = 1026
+        assert_eq!(sizes[0], 1026);
+        // k=6 is Lambda_512 = 512
+        assert_eq!(sizes[6], 512);
+        // Total removed
+        assert_eq!(sizes[0] - sizes[6], 514, "Total removed must be 514");
+    }
+
+    /// Random-removal control: does removing 297 RANDOM vectors from
+    /// Lambda_1024 produce the same ultrametricity jump as rule 1?
+    ///
+    /// If so, the phase transition is a trivial size effect.
+    /// If not, the l_1=+1 vectors are algebraically special.
+    #[test]
+    fn test_random_removal_control() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_1024,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::prelude::*;
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let all_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
+        let n_full = all_1024.len();
+        assert_eq!(n_full, 1026);
+
+        let n_triples = 50_000;
+        let n_null_perms = 200;
+        let n_random_trials = 20;
+        let n_remove = 297; // Same count as rule 1
+
+        eprintln!("\n=== Random Removal Control (C-501 validation) ===");
+        eprintln!("Removing {} random vectors vs. the {} l_1=+1 vectors", n_remove, n_remove);
+
+        // First: compute z-score for rule-1 removal (reference)
+        let rule1_vectors: Vec<_> = all_1024.iter()
+            .copied()
+            .filter(|v| v[1] != 1)
+            .collect();
+        assert_eq!(rule1_vectors.len(), 729);
+
+        let prefix = shared_prefix_length(&rule1_vectors);
+        let d = 8 - prefix;
+        let (cols, _, _) = lattice_to_column_major(&rule1_vectors, prefix);
+        let rule1_obs = matrix_free_fraction(&cols, rule1_vectors.len(), d, n_triples, 42, 0.05);
+
+        let mut rng_null = ChaCha8Rng::seed_from_u64(1_000_042);
+        let mut null_fracs = Vec::with_capacity(n_null_perms);
+        let mut shuffled = cols.clone();
+        for _ in 0..n_null_perms {
+            shuffled.copy_from_slice(&cols);
+            apply_null_column_major(
+                &mut shuffled, rule1_vectors.len(), d,
+                NullModel::ColumnIndependent, &mut rng_null,
+            );
+            null_fracs.push(matrix_free_fraction(&shuffled, rule1_vectors.len(), d, n_triples, 2_000_042, 0.05));
+        }
+        let null_mean = null_fracs.iter().sum::<f64>() / n_null_perms as f64;
+        let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
+            / n_null_perms as f64).sqrt();
+        let rule1_z = if null_std > 1e-12 { (rule1_obs - null_mean) / null_std } else { 0.0 };
+
+        eprintln!("Rule-1 removal: N=729, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+            rule1_obs, null_mean, null_std, rule1_z);
+
+        // Now: 20 random removal trials
+        let mut random_z_scores = Vec::new();
+        let mut rng_sample = ChaCha8Rng::seed_from_u64(12345);
+
+        for trial in 0..n_random_trials {
+            let mut indices: Vec<usize> = (0..n_full).collect();
+            indices.shuffle(&mut rng_sample);
+            let keep: Vec<_> = indices[n_remove..].iter().map(|&i| all_1024[i]).collect();
+            assert_eq!(keep.len(), 729);
+
+            let prefix_r = shared_prefix_length(&keep);
+            let d_r = 8 - prefix_r;
+            let (cols_r, _, _) = lattice_to_column_major(&keep, prefix_r);
+            let obs_r = matrix_free_fraction(&cols_r, keep.len(), d_r, n_triples, 42, 0.05);
+
+            let mut rng_null_r = ChaCha8Rng::seed_from_u64(1_000_042 + trial as u64 * 1000);
+            let mut null_fracs_r = Vec::with_capacity(n_null_perms);
+            let mut shuffled_r = cols_r.clone();
+            for _ in 0..n_null_perms {
+                shuffled_r.copy_from_slice(&cols_r);
+                apply_null_column_major(
+                    &mut shuffled_r, keep.len(), d_r,
+                    NullModel::ColumnIndependent, &mut rng_null_r,
+                );
+                null_fracs_r.push(matrix_free_fraction(&shuffled_r, keep.len(), d_r, n_triples, 2_000_042, 0.05));
+            }
+            let null_mean_r = null_fracs_r.iter().sum::<f64>() / n_null_perms as f64;
+            let null_std_r = (null_fracs_r.iter().map(|f| (f - null_mean_r).powi(2)).sum::<f64>()
+                / n_null_perms as f64).sqrt();
+            let z_r = if null_std_r > 1e-12 { (obs_r - null_mean_r) / null_std_r } else { 0.0 };
+
+            eprintln!("  Random trial {:>2}: obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                trial, obs_r, null_mean_r, null_std_r, z_r);
+            random_z_scores.push(z_r);
+        }
+
+        let mean_random_z = random_z_scores.iter().sum::<f64>() / n_random_trials as f64;
+        let max_random_z = random_z_scores.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+
+        eprintln!("\n--- Control Summary ---");
+        eprintln!("Rule-1 z-score:     {:.2}", rule1_z);
+        eprintln!("Random mean z:      {:.2}", mean_random_z);
+        eprintln!("Random max z:       {:.2}", max_random_z);
+        eprintln!("Random z-scores:    {:?}",
+            random_z_scores.iter().map(|z| format!("{:.2}", z)).collect::<Vec<_>>());
+
+        // The rule-1 z-score should exceed the MEAN random z-score
+        // (if l_1=+1 vectors are special, targeted removal beats random removal).
+        // We use a generous margin since random removal still removes some l_1=+1 vectors.
+        assert!(
+            rule1_z > mean_random_z,
+            "Rule-1 z={:.2} should exceed random mean z={:.2}",
+            rule1_z, mean_random_z
+        );
+    }
 }
