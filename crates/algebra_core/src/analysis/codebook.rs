@@ -3348,6 +3348,140 @@ mod tests {
         }
     }
 
+    /// Full base-point sweep of affine F_3 closure on Lambda_512.
+    ///
+    /// Lambda_512 showed anomalous wide variance (24-34%) in the sampled test.
+    /// This test sweeps ALL 512 base points to characterize the full distribution,
+    /// and correlates with lattice properties to explain the variance.
+    #[test]
+    fn test_affine_f3_closure_lambda512_full_sweep() {
+        use std::collections::HashSet;
+
+        let lambda_512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let n = lambda_512.len();
+        assert_eq!(n, 512);
+        let total_pairs = n * n;
+        let lambda_set: HashSet<LatticeVector> = lambda_512.iter().copied().collect();
+
+        eprintln!("\n=== Affine F_3 Closure: Full Base-Point Sweep on Lambda_512 ({} vectors) ===", n);
+
+        let mut rates: Vec<(usize, f64, LatticeVector)> = Vec::with_capacity(n);
+        for (idx, bp) in lambda_512.iter().enumerate() {
+            let nbp = lattice_negate_f3(bp);
+            let mut count = 0usize;
+            for a in &lambda_512 {
+                for b in &lambda_512 {
+                    let ab = lattice_add_f3(a, b);
+                    let result = lattice_add_f3(&ab, &nbp);
+                    if lambda_set.contains(&result) {
+                        count += 1;
+                    }
+                }
+            }
+            let rate = count as f64 / total_pairs as f64;
+            rates.push((idx, rate, *bp));
+        }
+
+        rates.sort_by(|a, b| a.1.partial_cmp(&b.1).unwrap());
+
+        let min_rate = rates[0].1;
+        let max_rate = rates[n - 1].1;
+        let mean_rate = rates.iter().map(|r| r.1).sum::<f64>() / n as f64;
+        let std_rate = (rates.iter().map(|r| (r.1 - mean_rate).powi(2)).sum::<f64>() / n as f64).sqrt();
+
+        eprintln!("\n--- Rate Statistics ---");
+        eprintln!("  Min:  {:.4} ({:.1}%)", min_rate, min_rate * 100.0);
+        eprintln!("  Max:  {:.4} ({:.1}%)", max_rate, max_rate * 100.0);
+        eprintln!("  Mean: {:.4} ({:.1}%)", mean_rate, mean_rate * 100.0);
+        eprintln!("  Std:  {:.4}", std_rate);
+
+        // Rate histogram
+        let mut histogram = [0usize; 20];
+        for r in &rates {
+            let bucket = (r.1 * 20.0).floor() as usize;
+            histogram[bucket.min(19)] += 1;
+        }
+        eprintln!("\n--- Rate Histogram (5% buckets) ---");
+        for (i, &count) in histogram.iter().enumerate() {
+            if count > 0 {
+                eprintln!("  {}-{}%: {} base points", i * 5, (i + 1) * 5, count);
+            }
+        }
+
+        // Bottom 5 and top 5
+        eprintln!("\n--- Bottom 5 ---");
+        for &(idx, rate, ref v) in rates.iter().take(5) {
+            let hw: usize = v.iter().filter(|&&x| x != 0).count();
+            eprintln!("  idx={}: rate={:.4} ({:.1}%), hw={}, v={:?}", idx, rate, rate * 100.0, hw, v);
+        }
+        eprintln!("\n--- Top 5 ---");
+        for &(idx, rate, ref v) in rates.iter().rev().take(5) {
+            let hw: usize = v.iter().filter(|&&x| x != 0).count();
+            eprintln!("  idx={}: rate={:.4} ({:.1}%), hw={}, v={:?}", idx, rate, rate * 100.0, hw, v);
+        }
+
+        // Correlation with Hamming weight
+        let mut rates_by_idx = vec![0.0f64; n];
+        for &(idx, rate, _) in &rates {
+            rates_by_idx[idx] = rate;
+        }
+        let hws: Vec<f64> = lambda_512.iter()
+            .map(|v| v.iter().filter(|&&x| x != 0).count() as f64)
+            .collect();
+        let hw_corr = pearson_correlation(&hws, &rates_by_idx);
+
+        // Correlation with l_1 value (is the C-501 contaminant related?)
+        let l1_vals: Vec<f64> = lambda_512.iter()
+            .map(|v| v[1] as f64)
+            .collect();
+        let l1_corr = pearson_correlation(&l1_vals, &rates_by_idx);
+
+        // Correlation with number of +1 coordinates
+        let plus1_counts: Vec<f64> = lambda_512.iter()
+            .map(|v| v.iter().filter(|&&x| x == 1).count() as f64)
+            .collect();
+        let p1_corr = pearson_correlation(&plus1_counts, &rates_by_idx);
+
+        eprintln!("\n--- Correlations ---");
+        eprintln!("  Hamming weight vs rate:  r = {:.4}", hw_corr);
+        eprintln!("  l_1 value vs rate:       r = {:.4}", l1_corr);
+        eprintln!("  #(+1 coords) vs rate:    r = {:.4}", p1_corr);
+
+        // Mean rate grouped by Hamming weight
+        let mut hw_groups: std::collections::HashMap<usize, Vec<f64>> = std::collections::HashMap::new();
+        for (i, v) in lambda_512.iter().enumerate() {
+            let hw = v.iter().filter(|&&x| x != 0).count();
+            hw_groups.entry(hw).or_default().push(rates_by_idx[i]);
+        }
+        let mut hw_keys: Vec<usize> = hw_groups.keys().copied().collect();
+        hw_keys.sort();
+        eprintln!("\n--- Mean Rate by Hamming Weight ---");
+        for hw in hw_keys {
+            let group = &hw_groups[&hw];
+            let mean = group.iter().sum::<f64>() / group.len() as f64;
+            let std = (group.iter().map(|r| (r - mean).powi(2)).sum::<f64>() / group.len() as f64).sqrt();
+            eprintln!("  hw={}: mean={:.4} ({:.1}%), std={:.4}, n={}",
+                hw, mean, mean * 100.0, std, group.len());
+        }
+
+        // Mean rate grouped by l_1 value
+        let mut l1_groups: std::collections::HashMap<i8, Vec<f64>> = std::collections::HashMap::new();
+        for (i, v) in lambda_512.iter().enumerate() {
+            l1_groups.entry(v[1]).or_default().push(rates_by_idx[i]);
+        }
+        eprintln!("\n--- Mean Rate by l_1 Value ---");
+        for l1 in [-1i8, 0, 1] {
+            if let Some(group) = l1_groups.get(&l1) {
+                let mean = group.iter().sum::<f64>() / group.len() as f64;
+                eprintln!("  l_1={}: mean={:.4} ({:.1}%), n={}",
+                    l1, mean, mean * 100.0, group.len());
+            }
+        }
+
+        assert!(min_rate > 0.15, "Min rate should be at least 15%");
+        assert!(max_rate < 0.50, "Max rate should be at most 50%");
+    }
+
     /// Pearson correlation coefficient for two f64 slices.
     fn pearson_correlation(x: &[f64], y: &[f64]) -> f64 {
         let n = x.len() as f64;
