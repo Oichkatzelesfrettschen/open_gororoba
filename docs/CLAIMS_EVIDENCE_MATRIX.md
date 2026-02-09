@@ -528,3 +528,5 @@ Metadata policy:
 | C-504 | MISSING: claim text not found in notes (needs extraction). |  | **Unverified** | 1970-01-01 (unknown) | Recover this claim from the notes file and add sources/tests. |
 | C-505 | MISSING: claim text not found in notes (needs extraction). |  | **Unverified** | 1970-01-01 (unknown) | Recover this claim from the notes file and add sources/tests. |
 | C-506 | MISSING: claim text not found in notes (needs extraction). |  | **Unverified** | 1970-01-01 (unknown) | Recover this claim from the notes file and add sources/tests. |
+| C-507 | MISSING: claim text not found in notes (needs extraction). |  | **Unverified** | 1970-01-01 (unknown) | Recover this claim from the notes file and add sources/tests. |
+| C-508 | MISSING: claim text not found in notes (needs extraction). |  | **Unverified** | 1970-01-01 (unknown) | Recover this claim from the notes file and add sources/tests. |
