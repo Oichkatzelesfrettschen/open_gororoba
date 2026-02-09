@@ -269,6 +269,8 @@ pub use emanation::{
     trip_count, trip_count_two_step,
     // Sky classification (de Marrais erratum resolved)
     is_sky_strut, is_inherited_full_fill_strut,
+    // Sail decomposition (face classification)
+    FaceRole, ClassifiedFace, SailDecomposition, sail_decomposition,
 };
 
 // Re-export external algebra crates for convenience

@@ -2660,6 +2660,142 @@ fn try_trefoil_assignment(zig_trip: &[usize; 3], remaining: &[usize]) -> bool {
 }
 
 // ===========================================================================
+// L15b: Sail Decomposition -- Full face classification per box-kite
+// ===========================================================================
+//
+// Each box-kite octahedron has 8 triangular faces, classified by two
+// orthogonal criteria:
+//   1) Twist type: Zigzag (2 faces) vs Trefoil (6 faces)
+//   2) O-trip membership: Sail (4 faces) vs non-Sail (4 faces)
+//
+// Cross-classifying yields exactly:
+//   - 1 Zigzag Sail (all-Opposite edges, L-indices form O-trip)
+//   - 3 Trefoil Sails (mixed edges, L-indices form O-trip)
+//   - 1 Vent (all-Opposite edges, L-indices NOT an O-trip)
+//   - 3 non-Sail Trefoils (mixed edges, L-indices NOT an O-trip)
+//
+// De Marrais (2000): the 4 sails carry the quaternion subalgebra copies;
+// the Vent is the "ventilation hole" where trip sync fails locally.
+
+/// Classification of a single triangular face.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum FaceRole {
+    /// Zigzag face whose L-indices form an O-trip (the unique zigzag sail).
+    ZigzagSail,
+    /// Trefoil face whose L-indices form an O-trip (one of 3 trefoil sails).
+    TrefoilSail,
+    /// Zigzag face whose L-indices do NOT form an O-trip (the unique vent).
+    Vent,
+    /// Trefoil face whose L-indices do NOT form an O-trip.
+    NonSailTrefoil,
+}
+
+/// A classified face of the box-kite octahedron.
+#[derive(Debug, Clone)]
+pub struct ClassifiedFace {
+    /// The 3 assessor indices (into the box-kite's assessor list).
+    pub assessor_indices: [usize; 3],
+    /// The 3 L-indices (low parts of the assessors).
+    pub l_indices: [usize; 3],
+    /// The face's role in the sail decomposition.
+    pub role: FaceRole,
+    /// If this face is a sail, the index of the O-trip it corresponds to.
+    pub otrip_index: Option<usize>,
+}
+
+/// Complete sail decomposition of a box-kite.
+#[derive(Debug, Clone)]
+pub struct SailDecomposition {
+    /// The box-kite's strut signature.
+    pub strut_sig: usize,
+    /// All 8 faces, classified.
+    pub faces: Vec<ClassifiedFace>,
+    /// The unique zigzag sail (index into `faces`).
+    pub zigzag_sail_idx: usize,
+    /// The 3 trefoil sail indices (into `faces`).
+    pub trefoil_sail_indices: [usize; 3],
+    /// The unique vent index (into `faces`).
+    pub vent_idx: usize,
+    /// The 3 non-sail trefoil indices (into `faces`).
+    pub non_sail_trefoil_indices: [usize; 3],
+}
+
+/// Compute the full sail decomposition for a box-kite.
+///
+/// Cross-classifies all 8 octahedral faces by twist type (zigzag/trefoil)
+/// and O-trip membership (sail/non-sail), producing exactly:
+/// - 1 zigzag sail, 3 trefoil sails, 1 vent, 3 non-sail trefoils.
+///
+/// Panics if the box-kite does not have the expected 2+6 zigzag/trefoil split
+/// or the expected 4+4 sail/non-sail split.
+pub fn sail_decomposition(bk: &BoxKite) -> SailDecomposition {
+    let racks = tray_racks(bk);
+    assert_eq!(racks.len(), 8, "Box-kite must have exactly 8 faces");
+
+    let mut faces = Vec::with_capacity(8);
+    for rack in &racks {
+        let l_indices = [
+            bk.assessors[rack.assessors[0]].low,
+            bk.assessors[rack.assessors[1]].low,
+            bk.assessors[rack.assessors[2]].low,
+        ];
+        let otrip_idx = face_otrip_index(bk, &rack.assessors);
+        let is_sail = otrip_idx.is_some();
+        let is_zigzag = rack.twist_type == TwistType::Zigzag;
+
+        let role = match (is_zigzag, is_sail) {
+            (true, true) => FaceRole::ZigzagSail,
+            (true, false) => FaceRole::Vent,
+            (false, true) => FaceRole::TrefoilSail,
+            (false, false) => FaceRole::NonSailTrefoil,
+        };
+
+        faces.push(ClassifiedFace {
+            assessor_indices: rack.assessors,
+            l_indices,
+            role,
+            otrip_index: otrip_idx,
+        });
+    }
+
+    // Extract indices by role
+    let zigzag_sails: Vec<usize> = faces.iter().enumerate()
+        .filter(|(_, f)| f.role == FaceRole::ZigzagSail)
+        .map(|(i, _)| i)
+        .collect();
+    let trefoil_sails: Vec<usize> = faces.iter().enumerate()
+        .filter(|(_, f)| f.role == FaceRole::TrefoilSail)
+        .map(|(i, _)| i)
+        .collect();
+    let vents: Vec<usize> = faces.iter().enumerate()
+        .filter(|(_, f)| f.role == FaceRole::Vent)
+        .map(|(i, _)| i)
+        .collect();
+    let non_sail_trefoils: Vec<usize> = faces.iter().enumerate()
+        .filter(|(_, f)| f.role == FaceRole::NonSailTrefoil)
+        .map(|(i, _)| i)
+        .collect();
+
+    assert_eq!(zigzag_sails.len(), 1,
+        "BK S={}: expected 1 zigzag sail, got {}", bk.strut_signature, zigzag_sails.len());
+    assert_eq!(trefoil_sails.len(), 3,
+        "BK S={}: expected 3 trefoil sails, got {}", bk.strut_signature, trefoil_sails.len());
+    assert_eq!(vents.len(), 1,
+        "BK S={}: expected 1 vent, got {}", bk.strut_signature, vents.len());
+    assert_eq!(non_sail_trefoils.len(), 3,
+        "BK S={}: expected 3 non-sail trefoils, got {}", bk.strut_signature, non_sail_trefoils.len());
+
+    SailDecomposition {
+        strut_sig: bk.strut_signature,
+        faces,
+        zigzag_sail_idx: zigzag_sails[0],
+        trefoil_sail_indices: [trefoil_sails[0], trefoil_sails[1], trefoil_sails[2]],
+        vent_idx: vents[0],
+        non_sail_trefoil_indices: [non_sail_trefoils[0], non_sail_trefoils[1], non_sail_trefoils[2]],
+    }
+}
+
+// ===========================================================================
 // L16: ET <-> Edge-Sign <-> Lanyard Dictionary
 // ===========================================================================
 //
@@ -4446,6 +4582,148 @@ mod tests {
             assert!(found_assignment, "BK S={}: no valid shorthand assignment found",
                 bk.strut_signature);
         }
+    }
+
+    // --- L15b: Sail Decomposition Tests ---
+
+    #[test]
+    fn test_sail_decomposition_1_1_3_3_split() {
+        // Every sedenion box-kite must decompose as 1 zigzag sail + 1 vent
+        // + 3 trefoil sails + 3 non-sail trefoils.
+        let bks = find_box_kites(16, 1e-10);
+        assert_eq!(bks.len(), 7);
+        for bk in &bks {
+            let sd = sail_decomposition(bk);
+            assert_eq!(sd.strut_sig, bk.strut_signature);
+            assert_eq!(sd.faces.len(), 8);
+
+            let count = |role: FaceRole| sd.faces.iter().filter(|f| f.role == role).count();
+            assert_eq!(count(FaceRole::ZigzagSail), 1,
+                "BK S={}: expected 1 zigzag sail", bk.strut_signature);
+            assert_eq!(count(FaceRole::TrefoilSail), 3,
+                "BK S={}: expected 3 trefoil sails", bk.strut_signature);
+            assert_eq!(count(FaceRole::Vent), 1,
+                "BK S={}: expected 1 vent", bk.strut_signature);
+            assert_eq!(count(FaceRole::NonSailTrefoil), 3,
+                "BK S={}: expected 3 non-sail trefoils", bk.strut_signature);
+        }
+    }
+
+    #[test]
+    fn test_sail_decomposition_4_sails_are_otrips() {
+        // The 4 sails (1 zigzag + 3 trefoil) must all have L-indices forming O-trips.
+        let bks = find_box_kites(16, 1e-10);
+        for bk in &bks {
+            let sd = sail_decomposition(bk);
+            let sail_faces = sd.faces.iter()
+                .filter(|f| f.role == FaceRole::ZigzagSail || f.role == FaceRole::TrefoilSail);
+            for face in sail_faces {
+                assert!(face.otrip_index.is_some(),
+                    "BK S={}: sail face {:?} must have O-trip index",
+                    bk.strut_signature, face.l_indices);
+            }
+        }
+    }
+
+    #[test]
+    fn test_sail_decomposition_4_non_sails_not_otrips() {
+        // The 4 non-sails (1 vent + 3 non-sail trefoils) must NOT have L-indices forming O-trips.
+        let bks = find_box_kites(16, 1e-10);
+        for bk in &bks {
+            let sd = sail_decomposition(bk);
+            let non_sail_faces = sd.faces.iter()
+                .filter(|f| f.role == FaceRole::Vent || f.role == FaceRole::NonSailTrefoil);
+            for face in non_sail_faces {
+                assert!(face.otrip_index.is_none(),
+                    "BK S={}: non-sail face {:?} must NOT have O-trip index",
+                    bk.strut_signature, face.l_indices);
+            }
+        }
+    }
+
+    #[test]
+    fn test_sail_decomposition_4_distinct_otrips() {
+        // The 4 sails per BK must correspond to 4 distinct O-trips (matching Trip Sync).
+        let bks = find_box_kites(16, 1e-10);
+        for bk in &bks {
+            let sd = sail_decomposition(bk);
+            let otrip_indices: HashSet<usize> = sd.faces.iter()
+                .filter_map(|f| f.otrip_index)
+                .collect();
+            assert_eq!(otrip_indices.len(), 4,
+                "BK S={}: 4 sails must map to 4 distinct O-trips, got {}",
+                bk.strut_signature, otrip_indices.len());
+        }
+    }
+
+    #[test]
+    fn test_sail_decomposition_zigzag_sail_all_opposite() {
+        // The zigzag sail must have all-opposite edges (by definition of TwistType::Zigzag).
+        let bks = find_box_kites(16, 1e-10);
+        let atol = 1e-10;
+        for bk in &bks {
+            let sd = sail_decomposition(bk);
+            let zs = &sd.faces[sd.zigzag_sail_idx];
+            let signs = [
+                edge_sign_type(&bk.assessors[zs.assessor_indices[0]], &bk.assessors[zs.assessor_indices[1]], atol),
+                edge_sign_type(&bk.assessors[zs.assessor_indices[1]], &bk.assessors[zs.assessor_indices[2]], atol),
+                edge_sign_type(&bk.assessors[zs.assessor_indices[0]], &bk.assessors[zs.assessor_indices[2]], atol),
+            ];
+            assert!(signs.iter().all(|&s| s == EdgeSignType::Opposite),
+                "BK S={}: zigzag sail must have all-Opposite edges", bk.strut_signature);
+        }
+    }
+
+    #[test]
+    fn test_sail_decomposition_vent_all_opposite_no_otrip() {
+        // The vent must also have all-opposite edges but NOT form an O-trip.
+        let bks = find_box_kites(16, 1e-10);
+        let atol = 1e-10;
+        for bk in &bks {
+            let sd = sail_decomposition(bk);
+            let vent = &sd.faces[sd.vent_idx];
+            let signs = [
+                edge_sign_type(&bk.assessors[vent.assessor_indices[0]], &bk.assessors[vent.assessor_indices[1]], atol),
+                edge_sign_type(&bk.assessors[vent.assessor_indices[1]], &bk.assessors[vent.assessor_indices[2]], atol),
+                edge_sign_type(&bk.assessors[vent.assessor_indices[0]], &bk.assessors[vent.assessor_indices[2]], atol),
+            ];
+            assert!(signs.iter().all(|&s| s == EdgeSignType::Opposite),
+                "BK S={}: vent must have all-Opposite edges", bk.strut_signature);
+            assert!(vent.otrip_index.is_none(),
+                "BK S={}: vent must NOT form an O-trip", bk.strut_signature);
+        }
+    }
+
+    #[test]
+    fn test_sail_decomposition_consistent_across_all_struts() {
+        // The sail decomposition counts must be identical for all 7 strut constants.
+        let bks = find_box_kites(16, 1e-10);
+        let mut results = Vec::new();
+        for bk in &bks {
+            let sd = sail_decomposition(bk);
+            let sail_otrips: Vec<usize> = sd.faces.iter()
+                .filter_map(|f| f.otrip_index)
+                .collect();
+            results.push((bk.strut_signature, sail_otrips.len()));
+        }
+        for &(s, n) in &results {
+            assert_eq!(n, 4, "BK S={}: expected 4 sails, got {}", s, n);
+        }
+    }
+
+    #[test]
+    fn test_sail_decomposition_28_sails_total() {
+        // 7 box-kites x 4 sails each = 28 total sails (matches sail_loop_partition).
+        let bks = find_box_kites(16, 1e-10);
+        let total_sails: usize = bks.iter()
+            .map(|bk| {
+                let sd = sail_decomposition(bk);
+                sd.faces.iter().filter(|f| {
+                    f.role == FaceRole::ZigzagSail || f.role == FaceRole::TrefoilSail
+                }).count()
+            })
+            .sum();
+        assert_eq!(total_sails, 28, "7 BK x 4 sails = 28 total");
     }
 
     // --- L16: Signed Adjacency Graph & Lanyard Dictionary Tests ---
