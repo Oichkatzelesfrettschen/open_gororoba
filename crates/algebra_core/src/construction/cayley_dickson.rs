@@ -876,6 +876,138 @@ pub fn cd_basis_mul_sign(dim: usize, p: usize, q: usize) -> i32 {
     cd_basis_mul_sign(half, qh, ph)
 }
 
+/// Iterative (non-recursive) version of [`cd_basis_mul_sign`].
+///
+/// Eliminates function-call overhead by converting the 4-branch recursion
+/// into a tight while-loop with inline bit operations. Produces identical
+/// results for all inputs. At dim=2048 this is 11 loop iterations vs 11
+/// recursive calls -- removing stack frame overhead and enabling better
+/// branch prediction.
+///
+/// # Panics
+/// Debug-panics if `dim` is not a power of two, or if `p >= dim` or `q >= dim`.
+pub fn cd_basis_mul_sign_iter(dim: usize, mut p: usize, mut q: usize) -> i32 {
+    debug_assert!(dim.is_power_of_two() && dim >= 1);
+    debug_assert!(p < dim && q < dim);
+
+    let mut sign = 1i32;
+    let mut half = dim >> 1;
+
+    while half > 0 {
+        let p_hi = p >= half;
+        let q_hi = q >= half;
+
+        match (p_hi, q_hi) {
+            (false, false) => {
+                // Both in lower half: recurse(half, p, q) -- no change
+            }
+            (false, true) => {
+                // (a,0) * (0,d) = (0, d*a): swap to (q-half, p)
+                let qh = q - half;
+                q = p;
+                p = qh;
+            }
+            (true, false) => {
+                // (0,b) * (c,0) = (0, b*conj(c)): negate if q != 0
+                p -= half;
+                if q != 0 {
+                    sign = -sign;
+                }
+            }
+            (true, true) => {
+                // (0,b) * (0,d) = (-conj(d)*b, 0)
+                let qh = q - half;
+                let ph = p - half;
+                if qh == 0 {
+                    return -sign; // early return
+                }
+                // conj(e_qh) = -e_qh => -((-e_qh)*e_ph) = e_qh * e_ph
+                p = qh;
+                q = ph;
+            }
+        }
+
+        half >>= 1;
+    }
+
+    sign
+}
+
+/// Precomputed sign table for a fixed Cayley-Dickson dimension.
+///
+/// Stores the full dim x dim sign matrix as a bit-packed array:
+/// bit = 0 means sign = +1, bit = 1 means sign = -1.
+/// Total memory: dim^2 / 8 bytes (e.g., 512 KB for dim=2048).
+///
+/// Provides O(1) sign lookup after O(dim^2 * log2(dim)) construction.
+/// Use this when you need to compute signs for millions of (p,q) pairs
+/// at a fixed dimension (motif census, face sign census, psi matrix).
+#[derive(Clone)]
+pub struct SignTable {
+    dim: usize,
+    /// Bit-packed sign data. Bit at index (p * dim + q) is 1 if sign is -1.
+    bits: Vec<u64>,
+}
+
+impl SignTable {
+    /// Build the sign table for the given dimension.
+    ///
+    /// Cost: O(dim^2 * log2(dim)) time, O(dim^2 / 8) bytes.
+    /// - dim=256: 8 KB, ~0.5 ms
+    /// - dim=512: 32 KB, ~4 ms
+    /// - dim=1024: 128 KB, ~30 ms
+    /// - dim=2048: 512 KB, ~200 ms
+    pub fn new(dim: usize) -> Self {
+        assert!(dim.is_power_of_two() && dim >= 1);
+        let total_bits = dim * dim;
+        let n_words = total_bits.div_ceil(64);
+        let mut bits = vec![0u64; n_words];
+
+        for p in 0..dim {
+            for q in 0..dim {
+                let s = cd_basis_mul_sign_iter(dim, p, q);
+                if s == -1 {
+                    let idx = p * dim + q;
+                    bits[idx / 64] |= 1u64 << (idx % 64);
+                }
+            }
+        }
+
+        SignTable { dim, bits }
+    }
+
+    /// Look up the sign of e_p * e_q in O(1).
+    #[inline(always)]
+    pub fn sign(&self, p: usize, q: usize) -> i32 {
+        debug_assert!(p < self.dim && q < self.dim);
+        let idx = p * self.dim + q;
+        let word = self.bits[idx / 64];
+        let bit = (word >> (idx % 64)) & 1;
+        1 - 2 * (bit as i32) // 0 -> +1, 1 -> -1
+    }
+
+    /// The dimension this table covers.
+    pub fn dim(&self) -> usize {
+        self.dim
+    }
+
+    /// Memory usage in bytes.
+    pub fn size_bytes(&self) -> usize {
+        self.bits.len() * 8
+    }
+}
+
+impl std::fmt::Debug for SignTable {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "SignTable {{ dim={}, size={} bytes }}",
+            self.dim,
+            self.size_bytes()
+        )
+    }
+}
+
 /// Result of Monte Carlo associator independence statistics for one dimension.
 #[derive(Debug, Clone)]
 pub struct AssociatorStats {
@@ -1722,6 +1854,264 @@ mod tests {
                     }
                 }
             }
+        }
+    }
+
+    // ── Iterative sign function correctness ──────────────────────────────
+
+    #[test]
+    fn test_iter_sign_matches_recursive_small_dims() {
+        // Exhaustive check: iterative must match recursive for all (p,q)
+        // at dims 1, 2, 4, 8, 16, 32.
+        for &dim in &[1, 2, 4, 8, 16, 32] {
+            for p in 0..dim {
+                for q in 0..dim {
+                    let rec = cd_basis_mul_sign(dim, p, q);
+                    let iter = cd_basis_mul_sign_iter(dim, p, q);
+                    assert_eq!(
+                        rec, iter,
+                        "dim={dim}, p={p}, q={q}: recursive={rec}, iterative={iter}"
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_iter_sign_matches_recursive_dim64() {
+        // dim=64: 4096 pairs, exhaustive
+        let dim = 64;
+        for p in 0..dim {
+            for q in 0..dim {
+                let rec = cd_basis_mul_sign(dim, p, q);
+                let iter = cd_basis_mul_sign_iter(dim, p, q);
+                assert_eq!(
+                    rec, iter,
+                    "dim={dim}, p={p}, q={q}: recursive={rec}, iterative={iter}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_iter_sign_matches_recursive_dim256() {
+        // dim=256: 65536 pairs, exhaustive
+        let dim = 256;
+        for p in 0..dim {
+            for q in 0..dim {
+                let rec = cd_basis_mul_sign(dim, p, q);
+                let iter = cd_basis_mul_sign_iter(dim, p, q);
+                assert_eq!(
+                    rec, iter,
+                    "dim={dim}, p={p}, q={q}: recursive={rec}, iterative={iter}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_iter_sign_matches_recursive_dim1024_sampled() {
+        // dim=1024: sample ~117K pairs (exhaustive would be 1M)
+        let dim = 1024;
+        let mut mismatches = 0u64;
+        let mut checked = 0u64;
+        // Deterministic sampling: check every 10th pair
+        for p in (0..dim).step_by(3) {
+            for q in (0..dim).step_by(3) {
+                let rec = cd_basis_mul_sign(dim, p, q);
+                let iter = cd_basis_mul_sign_iter(dim, p, q);
+                if rec != iter {
+                    mismatches += 1;
+                }
+                checked += 1;
+            }
+        }
+        assert_eq!(
+            mismatches, 0,
+            "dim=1024: {mismatches}/{checked} mismatches between recursive and iterative"
+        );
+    }
+
+    // ── SignTable correctness ────────────────────────────────────────────
+
+    #[test]
+    fn test_sign_table_matches_recursive_small_dims() {
+        for &dim in &[1, 2, 4, 8, 16, 32] {
+            let table = SignTable::new(dim);
+            assert_eq!(table.dim(), dim);
+            for p in 0..dim {
+                for q in 0..dim {
+                    let rec = cd_basis_mul_sign(dim, p, q);
+                    let tab = table.sign(p, q);
+                    assert_eq!(
+                        rec, tab,
+                        "dim={dim}, p={p}, q={q}: recursive={rec}, table={tab}"
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_sign_table_matches_recursive_dim64() {
+        let dim = 64;
+        let table = SignTable::new(dim);
+        assert_eq!(table.dim(), dim);
+        for p in 0..dim {
+            for q in 0..dim {
+                let rec = cd_basis_mul_sign(dim, p, q);
+                let tab = table.sign(p, q);
+                assert_eq!(
+                    rec, tab,
+                    "dim={dim}, p={p}, q={q}: recursive={rec}, table={tab}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_sign_table_matches_recursive_dim256() {
+        let dim = 256;
+        let table = SignTable::new(dim);
+        assert_eq!(table.dim(), dim);
+        for p in 0..dim {
+            for q in 0..dim {
+                let rec = cd_basis_mul_sign(dim, p, q);
+                let tab = table.sign(p, q);
+                assert_eq!(
+                    rec, tab,
+                    "dim={dim}, p={p}, q={q}: recursive={rec}, table={tab}"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_sign_table_memory_sizes() {
+        // Verify expected memory footprint
+        for &dim in &[16, 64, 256, 512] {
+            let table = SignTable::new(dim);
+            let expected_bits = dim * dim;
+            let expected_bytes = expected_bits.div_ceil(64) * 8;
+            assert_eq!(
+                table.size_bytes(),
+                expected_bytes,
+                "dim={dim}: expected {expected_bytes} bytes, got {}",
+                table.size_bytes()
+            );
+        }
+    }
+
+    #[test]
+    fn test_sign_table_identity_row_col() {
+        // e_0 is the identity: e_0 * e_q = e_q and e_p * e_0 = e_p
+        // So sign should be +1 for the entire first row and first column.
+        for &dim in &[4, 8, 16, 32, 64] {
+            let table = SignTable::new(dim);
+            for i in 0..dim {
+                assert_eq!(
+                    table.sign(0, i),
+                    1,
+                    "dim={dim}: e_0 * e_{i} should have sign +1"
+                );
+                assert_eq!(
+                    table.sign(i, 0),
+                    1,
+                    "dim={dim}: e_{i} * e_0 should have sign +1"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_sign_table_diagonal_negative() {
+        // e_p * e_p = -1 for all p >= 1 (imaginary units square to -1)
+        for &dim in &[4, 8, 16, 32, 64] {
+            let table = SignTable::new(dim);
+            assert_eq!(table.sign(0, 0), 1, "dim={dim}: e_0^2 = +1");
+            for p in 1..dim {
+                assert_eq!(
+                    table.sign(p, p),
+                    -1,
+                    "dim={dim}: e_{p}^2 should be -1"
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_sign_table_debug_format() {
+        let table = SignTable::new(16);
+        let s = format!("{:?}", table);
+        assert!(s.contains("SignTable"));
+        assert!(s.contains("dim=16"));
+    }
+
+    /// Benchmark: compare recursive vs iterative vs table-lookup sign computation.
+    /// Not a correctness test -- prints timing results. Run with:
+    ///   cargo test -p algebra_core --release -- benchmark_sign --nocapture --ignored
+    #[test]
+    #[ignore]
+    fn benchmark_sign_computation_paths() {
+        use std::hint::black_box;
+        use std::time::Instant;
+
+        for &dim in &[64, 256, 512, 1024, 2048] {
+            let pairs: usize = dim * dim;
+
+            // 1. Table construction time
+            let t0 = Instant::now();
+            let table = SignTable::new(dim);
+            let table_build_us = t0.elapsed().as_micros();
+
+            // 2. Recursive: all (p,q) pairs
+            let t0 = Instant::now();
+            let mut sum_rec = 0i64;
+            for p in 0..dim {
+                for q in 0..dim {
+                    sum_rec += black_box(cd_basis_mul_sign(dim, p, q)) as i64;
+                }
+            }
+            let recursive_us = t0.elapsed().as_micros();
+
+            // 3. Iterative: all (p,q) pairs
+            let t0 = Instant::now();
+            let mut sum_iter = 0i64;
+            for p in 0..dim {
+                for q in 0..dim {
+                    sum_iter += black_box(cd_basis_mul_sign_iter(dim, p, q)) as i64;
+                }
+            }
+            let iterative_us = t0.elapsed().as_micros();
+
+            // 4. Table lookup: all (p,q) pairs
+            let t0 = Instant::now();
+            let mut sum_tab = 0i64;
+            for p in 0..dim {
+                for q in 0..dim {
+                    sum_tab += black_box(table.sign(p, q)) as i64;
+                }
+            }
+            let table_us = t0.elapsed().as_micros();
+
+            // Sums must match (correctness guard)
+            assert_eq!(sum_rec, sum_iter, "dim={dim}: recursive vs iterative sum mismatch");
+            assert_eq!(sum_rec, sum_tab, "dim={dim}: recursive vs table sum mismatch");
+
+            let ns_per_pair_rec = (recursive_us as f64 * 1000.0) / pairs as f64;
+            let ns_per_pair_iter = (iterative_us as f64 * 1000.0) / pairs as f64;
+            let ns_per_pair_tab = (table_us as f64 * 1000.0) / pairs as f64;
+            let speedup_iter = recursive_us as f64 / iterative_us as f64;
+            let speedup_tab = recursive_us as f64 / table_us as f64;
+
+            eprintln!(
+                "dim={dim:>5}  pairs={pairs:>9}  build={table_build_us:>8}us  \
+                 rec={recursive_us:>8}us ({ns_per_pair_rec:.1}ns/pair)  \
+                 iter={iterative_us:>8}us ({ns_per_pair_iter:.1}ns/pair) [{speedup_iter:.2}x]  \
+                 table={table_us:>8}us ({ns_per_pair_tab:.1}ns/pair) [{speedup_tab:.2}x]  \
+                 mem={:>6}B",
+                table.size_bytes()
+            );
         }
     }
 }
