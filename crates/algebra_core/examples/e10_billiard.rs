@@ -10,6 +10,7 @@
 //! hidden algebraic structures, specifically checking if the transition probabilities
 //! between walls reflect the underlying Octonion structure of the E8 subalgebra.
 
+use algebra_core::billiard_stats::{self, NullModel};
 use algebra_core::e10_octonion;
 use algebra_core::kac_moody::{E10RootSystem, KacMoodyRoot};
 use rand::prelude::*;
@@ -97,8 +98,6 @@ fn main() {
 
     // Stats
     let mut wall_hits: Vec<u64> = vec![0; n_walls];
-    let mut transition_matrix: Vec<Vec<u64>> = vec![vec![0; n_walls]; n_walls];
-    let mut last_wall: Option<usize> = None;
     let mut actual_bounces: usize = 0;
     let mut bounce_sequence: Vec<usize> = Vec::new();
 
@@ -157,10 +156,6 @@ fn main() {
 
             // Record stats
             wall_hits[wall_idx] += 1;
-            if let Some(prev) = last_wall {
-                transition_matrix[prev][wall_idx] += 1;
-            }
-            last_wall = Some(wall_idx);
             actual_bounces += 1;
             bounce_sequence.push(wall_idx);
 
@@ -199,93 +194,28 @@ fn main() {
         println!("  Wall {}: {:6} hits ({:.2}%)", i, hits, pct);
     }
 
-    // === Transition matrix analysis ===
-    println!("\n=== Transition Matrix Analysis ===");
-
-    // E8 Dynkin diagram (from actual root vector Gram matrix, branch at node 4):
-    //   0 -- 1 -- 2 -- 3 -- 4 -- 5
-    //                        |
-    //                        6 -- 7
-    // Affine node 8 connects to node 0 (via highest root).
-    // Hyperbolic node 9 connects to node 8.
-
-    // Full E10 adjacency (10 nodes, from Cartan matrix):
-    let adjacency_e10: [Vec<usize>; 10] = [
-        vec![1, 8],       // 0 -- 1, 8
-        vec![0, 2],       // 1 -- 0, 2
-        vec![1, 3],       // 2 -- 1, 3
-        vec![2, 4],       // 3 -- 2, 4
-        vec![3, 5, 6],    // 4 -- 3, 5, 6 (branch node)
-        vec![4],          // 5 -- 4
-        vec![4, 7],       // 6 -- 4, 7
-        vec![6],          // 7 -- 6
-        vec![0, 9],       // 8 -- 0, 9 (affine)
-        vec![8],          // 9 -- 8 (hyperbolic)
-    ];
-
-    // Sector-specific adjacency ratios (Claim 3: locality is sector-specific)
-    let mut e8_connected: u64 = 0;
-    let mut e8_disconnected: u64 = 0;
-    let mut mixed_transitions: u64 = 0;  // E8 <-> affine/hyperbolic
-    let mut hyp_transitions: u64 = 0;    // within {8,9}
-    let mut total_connected_e10: u64 = 0;
-    let mut total_disconnected_e10: u64 = 0;
-
-    for (i, row_i) in transition_matrix.iter().enumerate() {
-        for (j, &count) in row_i.iter().enumerate() {
-            if i == j || count == 0 { continue; }
-
-            let is_adjacent = adjacency_e10[i].contains(&j);
-            if is_adjacent {
-                total_connected_e10 += count;
-            } else {
-                total_disconnected_e10 += count;
-            }
-
-            // Sector classification
-            let i_in_e8 = i < 8;
-            let j_in_e8 = j < 8;
-            match (i_in_e8, j_in_e8) {
-                (true, true) => {
-                    if is_adjacent { e8_connected += count; } else { e8_disconnected += count; }
-                }
-                (false, false) => {
-                    hyp_transitions += count;
-                }
-                _ => {
-                    mixed_transitions += count;
-                }
-            }
-        }
-    }
-
-    println!("\nE8 sector (walls 0-7):");
-    let e8_total = e8_connected + e8_disconnected;
-    let r_e8 = if e8_total > 0 { e8_connected as f64 / e8_total as f64 } else { 0.0 };
-    println!("  Connected:    {} ({:.4})", e8_connected, r_e8);
-    println!("  Disconnected: {}", e8_disconnected);
-    // Null baseline: E8 has 7 edges out of C(8,2)=28 directed pairs -> 14/56 = 0.25
-    println!("  Null baseline (uniform): 0.2500");
-    println!("  Locality ratio r_E8/r_null: {:.4}", r_e8 / 0.25);
-
-    println!("\nMixed sector (E8 <-> affine/hyperbolic):");
-    println!("  Transitions: {}", mixed_transitions);
-
-    println!("\nHyperbolic sector (walls 8-9):");
-    println!("  Transitions: {}", hyp_transitions);
-
-    let e10_total = total_connected_e10 + total_disconnected_e10;
-    let r_e10 = if e10_total > 0 { total_connected_e10 as f64 / e10_total as f64 } else { 0.0 };
-    println!("\nFull E10 connected ratio: {:.4}", r_e10);
+    // === Locality metrics (from billiard_stats module) ===
+    println!("\n=== Locality Metrics ===");
+    let metrics = billiard_stats::compute_locality_metrics(&bounce_sequence);
+    println!("E8 adjacency ratio:      r_E8 = {:.4}", metrics.r_e8);
+    println!("E10 adjacency ratio:     r_E10 = {:.4}", metrics.r_e10);
+    println!("Null baseline (uniform): r_null = {:.4}", billiard_stats::NULL_R_E8_UNIFORM);
+    println!("Locality ratio r_E8/r_null: {:.4}", metrics.r_e8 / billiard_stats::NULL_R_E8_UNIFORM);
+    println!("E8 transitions:     {}", metrics.n_e8_transitions);
+    println!("Mixed transitions:  {}", metrics.n_mixed_transitions);
+    println!("Hyp transitions:    {}", metrics.n_hyp_transitions);
+    println!("Commutation rate:   {:.4}", metrics.commutation_rate);
+    println!("Mutual information: {:.4} nats", metrics.mutual_information);
 
     // === Graph invariants on the empirical transition graph ===
     println!("\n=== Transition Graph Invariants ===");
 
     // Build symmetric 0/1 adjacency matrix (undirected skeleton of directed transitions)
+    let trans_mat = billiard_stats::transition_matrix(&bounce_sequence);
     let mut adj_matrix = vec![vec![false; n_walls]; n_walls];
-    for (i, row_i) in transition_matrix.iter().enumerate() {
+    for (i, row_i) in trans_mat.iter().enumerate() {
         for (j, &count) in row_i.iter().enumerate() {
-            if i != j && (count > 0 || transition_matrix[j][i] > 0) {
+            if i != j && (count > 0 || trans_mat[j][i] > 0) {
                 adj_matrix[i][j] = true;
                 adj_matrix[j][i] = true;
             }
@@ -357,6 +287,45 @@ fn main() {
         }
     } else {
         println!("Too few bounces for Fano analysis (need >= 10 3-windows).");
+    }
+
+    // === Permutation tests (null model validation) ===
+    // Test observed r_E8 against 4 null models with 1000 permutations each.
+    // This validates whether the locality effect is statistically significant
+    // beyond what each null model can explain.
+    let n_perm = 1000;
+    println!("\n=== Permutation Tests (r_E8, {} permutations each) ===", n_perm);
+
+    let nulls = [
+        ("Uniform",          NullModel::Uniform),
+        ("IidEmpirical",     NullModel::IidEmpirical),
+        ("DegreePreserving", NullModel::DegreePreserving),
+        ("Markov",           NullModel::Markov),
+    ];
+
+    for (name, model) in &nulls {
+        let result = billiard_stats::permutation_test_r_e8(
+            &bounce_sequence, model, n_perm, seed + 1000,
+        );
+        println!("  {:18} | obs={:.4} null={:.4}+/-{:.4} | p={:.4} | d={:.2}",
+            name, result.observed, result.null_mean, result.null_std,
+            result.p_value, result.effect_size);
+    }
+
+    // Mutual information test (should be significant for non-trivial dynamics)
+    println!("\n=== Permutation Tests (MI, {} permutations) ===", n_perm);
+    let mi_result = billiard_stats::permutation_test_mi(
+        &bounce_sequence, &NullModel::Uniform, n_perm, seed + 2000,
+    );
+    println!("  Uniform           | obs={:.4} null={:.4}+/-{:.4} | p={:.4} | d={:.2}",
+        mi_result.observed, mi_result.null_mean, mi_result.null_std,
+        mi_result.p_value, mi_result.effect_size);
+
+    // Stationary distribution of empirical transition matrix
+    println!("\n=== Stationary Distribution (empirical Markov chain) ===");
+    let pi = billiard_stats::stationary_distribution(&trans_mat);
+    for (i, &p) in pi.iter().enumerate() {
+        println!("  pi[{}] = {:.4}", i, p);
     }
 
     println!("\nDone. Seed={}, bounces={}", seed, actual_bounces);

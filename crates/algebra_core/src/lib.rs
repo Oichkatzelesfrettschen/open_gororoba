@@ -43,6 +43,7 @@ pub mod mult_table;
 pub mod cd_external;
 pub mod emanation;
 pub mod e10_octonion;
+pub mod billiard_stats;
 
 // Re-export core algebra functions
 pub use cayley_dickson::{
@@ -235,6 +236,19 @@ pub use e10_octonion::{
     fano_completion_rate, optimal_fano_mapping, exact_pvalue,
     fano_enrichment_zscore, describe_fano_structure,
     NULL_FANO_RATE_UNIFORM,
+};
+
+pub use billiard_stats::{
+    // Constants
+    E10_ADJACENCY, N_WALLS, N_E8, NULL_R_E8_UNIFORM,
+    // Locality metrics
+    LocalityMetrics, compute_locality_metrics,
+    // Null models
+    NullModel, generate_null_sequence,
+    // Permutation tests
+    PermutationTestResult, permutation_test_r_e8, permutation_test_mi,
+    // Transition matrix analysis
+    transition_matrix, stationary_distribution,
 };
 
 // Re-export external algebra crates for convenience
