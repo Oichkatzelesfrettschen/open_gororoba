@@ -6781,6 +6781,328 @@ mod tests {
         assert!(frust_ratio < 0.41, "dim=512: frustration should not exceed 0.41");
     }
 
+    /// Quick frustration-only test at dim=1024.
+    ///
+    /// Computes ONLY the BFS coboundary frustration ratio, skipping the
+    /// expensive O(n^3) triangle enumeration. This is O(V+E) per component.
+    ///
+    /// Sequence so far: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381 (dims 16..512).
+    /// dim=1024 continues the oscillating convergence.
+    ///
+    /// Runtime: ~7-8 min in release mode (graph construction dominates:
+    /// 511 components x 510 nodes x ~129K edges each).
+    #[test]
+    #[ignore] // ~7-8 min in release mode
+    fn test_frustration_ratio_dim1024() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use std::time::Instant;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        let dim = 1024;
+        let t0 = Instant::now();
+        let components = motif_components_for_cross_assessors(dim);
+        let t_graph = t0.elapsed();
+        eprintln!("\n=== Frustration at dim={dim} ===");
+        eprintln!("Graph construction: {:.2}s", t_graph.as_secs_f64());
+        eprintln!("Components: {}", components.len());
+
+        let mut total_edges = 0usize;
+        let mut total_eta0 = 0usize;
+        let mut total_eta1 = 0usize;
+        let mut total_b1 = 0usize;
+        let mut total_frustrated = 0usize;
+
+        for comp in components.iter() {
+            let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+            let n = nodes.len();
+            total_edges += comp.edges.len();
+
+            let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+            };
+
+            // Edge eta balance
+            for &(u, v) in &comp.edges {
+                if eta(u, v) == 0 { total_eta0 += 1; } else { total_eta1 += 1; }
+            }
+
+            // BFS coboundary test
+            let node_idx: std::collections::HashMap<CrossPair, usize> =
+                nodes.iter().enumerate().map(|(i, &n)| (n, i)).collect();
+            let mut adj: Vec<Vec<(usize, u8)>> = vec![vec![]; n];
+            for &(u, v) in &comp.edges {
+                let ui = node_idx[&u];
+                let vi = node_idx[&v];
+                let e = eta(u, v);
+                adj[ui].push((vi, e));
+                adj[vi].push((ui, e));
+            }
+
+            let mut delta = vec![0u8; n];
+            let mut visited = vec![false; n];
+            visited[0] = true;
+            let mut queue = std::collections::VecDeque::new();
+            queue.push_back(0usize);
+            while let Some(u) = queue.pop_front() {
+                for &(v, e) in &adj[u] {
+                    if !visited[v] {
+                        visited[v] = true;
+                        delta[v] = delta[u] ^ e;
+                        queue.push_back(v);
+                    }
+                }
+            }
+
+            let b1 = comp.edges.len() - n + 1;
+            total_b1 += b1;
+
+            // Count frustrated edges
+            for &(u_node, v_node) in &comp.edges {
+                let ui = node_idx[&u_node];
+                let vi = node_idx[&v_node];
+                let e = eta(u_node, v_node);
+                if (delta[ui] ^ delta[vi]) != e {
+                    total_frustrated += 1;
+                }
+            }
+        }
+
+        let frust_ratio = total_frustrated as f64 / total_b1 as f64;
+        eprintln!("edges: {total_edges}, eta=0: {total_eta0}, eta=1: {total_eta1}");
+        eprintln!("b1: {total_b1}, frustrated: {total_frustrated}");
+        eprintln!("frustration ratio: {frust_ratio:.8}");
+
+        // Sequence: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381 (dims 16..512)
+        // dim=1024 should be near the same range
+        assert_eq!(total_eta0, total_eta1, "dim=1024: eta not balanced");
+        assert!(total_frustrated > 0, "dim=1024: eta should not be a coboundary");
+        assert!(frust_ratio > 0.37, "dim=1024: frustration should be near limit");
+        assert!(frust_ratio < 0.41, "dim=1024: frustration should not exceed 0.41");
+    }
+
+    /// Anti-Diagonal Parity Theorem verification at dim=1024.
+    ///
+    /// 511 components, 510 nodes each, graph density ~99.8% (near-clique).
+    /// Expected ~11.3 billion triangles across 65 regimes.
+    /// Also collects Klein-four fibers, edge eta balance, cycle rank,
+    /// and frustration ratio.
+    ///
+    /// Runtime: ~35-40 min in release mode. This is the LARGEST feasible
+    /// brute-force verification of the theorem.
+    #[test]
+    #[ignore] // VERY long-running: ~35-40 min in release mode
+    fn test_antidiagonal_parity_theorem_dim1024() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use std::time::Instant;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        let dim = 1024;
+        let t0 = Instant::now();
+        let components = motif_components_for_cross_assessors(dim);
+        let t_graph = t0.elapsed();
+        eprintln!("\n=== Anti-Diagonal Parity Theorem at dim={dim} ===");
+        eprintln!("Graph construction: {:.2}s", t_graph.as_secs_f64());
+        eprintln!("Components: {}", components.len());
+
+        let mut total_triangles = 0usize;
+        let mut total_pure = 0usize;
+        let mut total_mixed = 0usize;
+        let mut mismatches = 0usize;
+
+        // Klein-four fiber sizes
+        let mut fiber_counts = [0usize; 4];
+
+        // Eta balance and cohomology accumulators
+        let mut total_eta0 = 0usize;
+        let mut total_eta1 = 0usize;
+        let mut total_cycle_rank = 0usize;
+        let mut total_frustrated = 0usize;
+
+        let t1 = Instant::now();
+
+        for (comp_idx, comp) in components.iter().enumerate() {
+            let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+            let n = nodes.len();
+            let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                comp.edges.iter().copied().collect();
+            let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                let (a, b) = if u < v { (u, v) } else { (v, u) };
+                edge_set.contains(&(a, b))
+            };
+
+            let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+            };
+
+            // Edge eta balance
+            let mut comp_eta0 = 0usize;
+            let mut comp_eta1 = 0usize;
+            for &(u, v) in &comp.edges {
+                if eta(u, v) == 0 { comp_eta0 += 1; } else { comp_eta1 += 1; }
+            }
+            total_eta0 += comp_eta0;
+            total_eta1 += comp_eta1;
+
+            // Cycle rank and frustration (BFS coboundary test)
+            let b1 = comp.edges.len() - n + 1;
+            total_cycle_rank += b1;
+
+            // BFS for coboundary test
+            let node_idx: std::collections::HashMap<CrossPair, usize> =
+                nodes.iter().enumerate().map(|(i, &n)| (n, i)).collect();
+            let mut adj: Vec<Vec<(usize, u8)>> = vec![vec![]; n];
+            for &(u, v) in &comp.edges {
+                let ui = node_idx[&u];
+                let vi = node_idx[&v];
+                let e = eta(u, v);
+                adj[ui].push((vi, e));
+                adj[vi].push((ui, e));
+            }
+
+            let mut delta = vec![0u8; n];
+            let mut visited = vec![false; n];
+            visited[0] = true;
+            let mut queue = std::collections::VecDeque::new();
+            queue.push_back(0usize);
+            while let Some(u) = queue.pop_front() {
+                for &(v, e) in &adj[u] {
+                    if !visited[v] {
+                        visited[v] = true;
+                        delta[v] = delta[u] ^ e;
+                        queue.push_back(v);
+                    }
+                }
+            }
+
+            // Count frustrated edges (each edge counted once via canonical order)
+            for &(u_node, v_node) in &comp.edges {
+                let ui = node_idx[&u_node];
+                let vi = node_idx[&v_node];
+                let e = eta(u_node, v_node);
+                if (delta[ui] ^ delta[vi]) != e {
+                    total_frustrated += 1;
+                }
+            }
+
+            // Triangle enumeration
+            for i in 0..n {
+                for j in (i + 1)..n {
+                    for k in (j + 1)..n {
+                        let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                        if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                            continue;
+                        }
+                        total_triangles += 1;
+
+                        // Sigma classification
+                        let sigma = |a: CrossPair, b: CrossPair| -> i32 {
+                            cd_basis_mul_sign(dim, a.0, b.0)
+                            * cd_basis_mul_sign(dim, a.1, b.1)
+                        };
+                        let s_uv = sigma(u, v);
+                        let s_vw = sigma(v, w);
+                        let s_uw = sigma(u, w);
+                        let n_same = [s_uv, s_vw, s_uw].iter()
+                            .filter(|&&s| s == -1).count();
+                        let product = s_uv * s_vw * s_uw;
+                        let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+
+                        // Eta for all 3 edges
+                        let eta_uv = eta(u, v);
+                        let eta_vw = eta(v, w);
+                        let eta_uw = eta(u, w);
+
+                        // Anti-Diagonal Parity Theorem: pure iff eta constant
+                        let eta_constant = (eta_uv == eta_vw) && (eta_vw == eta_uw);
+
+                        if eta_constant != is_pure {
+                            mismatches += 1;
+                        }
+
+                        if is_pure {
+                            total_pure += 1;
+                        } else {
+                            total_mixed += 1;
+                        }
+
+                        // Klein-four fiber
+                        let f1 = eta_uv ^ eta_vw;
+                        let f2 = eta_vw ^ eta_uw;
+                        fiber_counts[(2 * f1 + f2) as usize] += 1;
+                    }
+                }
+            }
+
+            // Progress reporting every 50 components
+            if comp_idx.is_multiple_of(50) {
+                let elapsed = t1.elapsed().as_secs_f64();
+                eprintln!(
+                    "  Component {}/{}: triangles so far = {}, elapsed = {:.1}s",
+                    comp_idx + 1, components.len(), total_triangles, elapsed
+                );
+            }
+        }
+
+        let t_total = t1.elapsed();
+        let frust_ratio = total_frustrated as f64 / total_cycle_rank as f64;
+
+        eprintln!("Total time: {:.2}s", t_total.as_secs_f64());
+        eprintln!("Total triangles: {total_triangles}");
+        eprintln!("Pure: {total_pure}, Mixed: {total_mixed}");
+        eprintln!("Mismatches: {mismatches}");
+        eprintln!("Klein-four fibers: (0,0)={}, (0,1)={}, (1,0)={}, (1,1)={}",
+            fiber_counts[0], fiber_counts[1], fiber_counts[2], fiber_counts[3]);
+        eprintln!("Edge eta balance: eta=0: {total_eta0}, eta=1: {total_eta1}");
+        eprintln!("Total cycle rank: {total_cycle_rank}");
+        eprintln!("Frustration: {total_frustrated}/{total_cycle_rank} = {frust_ratio:.8}");
+
+        // ASSERTION 1: Anti-Diagonal Parity Theorem holds
+        assert_eq!(
+            mismatches, 0,
+            "Anti-Diagonal Parity Theorem REFUTED at dim={dim}: {mismatches} mismatches"
+        );
+
+        // ASSERTION 2: Quarter Rule
+        assert_eq!(
+            total_pure * 3, total_mixed,
+            "Quarter Rule failed: pure={total_pure}, mixed={total_mixed}"
+        );
+
+        // ASSERTION 3: Klein-four fiber (0,0) = pure count
+        assert_eq!(
+            fiber_counts[0], total_pure,
+            "F=(0,0) should equal pure count"
+        );
+
+        // ASSERTION 4: Sum of nonzero fibers = mixed count
+        assert_eq!(
+            fiber_counts[1] + fiber_counts[2] + fiber_counts[3], total_mixed,
+            "Nonzero fibers should sum to mixed count"
+        );
+
+        // ASSERTION 5: F(1,0) = F(1,1) (vertex-median symmetry, C-530)
+        assert_eq!(
+            fiber_counts[2], fiber_counts[3],
+            "F(1,0) should equal F(1,1)"
+        );
+
+        // ASSERTION 6: Edge eta exactly balanced
+        assert_eq!(total_eta0, total_eta1, "dim={dim}: eta not balanced");
+
+        // ASSERTION 7: Triangle count should be ~11.3B
+        assert!(total_triangles > 10_000_000_000, "Expected ~11.3B triangles");
+
+        // ASSERTION 8: Frustration ratio in range (extends C-529)
+        assert!(frust_ratio > 0.37, "dim=1024: frustration should be near limit");
+        assert!(frust_ratio < 0.41, "dim=1024: frustration should not exceed 0.41");
+    }
+
     fn binomial(n: usize, k: usize) -> usize {
         if k > n { return 0; }
         let mut result = 1usize;

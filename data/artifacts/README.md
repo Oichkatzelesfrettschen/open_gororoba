@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/entrypoint_docs.toml -->
+
 data/artifacts conventions
 =========================
 

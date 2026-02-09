@@ -759,6 +759,47 @@ def export_navigator_legacy(repo_root: Path) -> None:
     _write(repo_root / "NAVIGATOR.md", "\n".join(lines))
 
 
+def export_entrypoint_docs(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/entrypoint_docs.toml")
+    meta = data.get("entrypoint_docs", {})
+    docs = data.get("document", [])
+    lines = _header("Entrypoint Docs Registry Mirror")
+    lines.append("Authoritative source: `registry/entrypoint_docs.toml`.")
+    lines.append("")
+    lines.append(f"- Updated: {meta.get('updated', '')}")
+    lines.append(f"- Document count: {meta.get('document_count', len(docs))}")
+    lines.append("")
+    for row in docs:
+        lines.append(f"## `{row.get('path', '')}`")
+        lines.append("")
+        lines.append(f"- Title: {row.get('title', '')}")
+        body = str(row.get("body_markdown", "")).strip()
+        if body:
+            lines.append(f"- Body lines: {len(body.splitlines())}")
+        lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_entrypoint_docs_legacy(repo_root: Path) -> None:
+    data = _load_toml(repo_root / "registry/entrypoint_docs.toml")
+    docs = data.get("document", [])
+    for row in docs:
+        path = str(row.get("path", "")).strip()
+        if not path:
+            continue
+        body = str(row.get("body_markdown", "")).strip()
+        title = str(row.get("title", "")).strip() or Path(path).stem
+        lines = _legacy_header(["registry/entrypoint_docs.toml"])
+        if body:
+            lines.extend(body.splitlines())
+        else:
+            lines.append(f"# {title}")
+            lines.append("")
+            lines.append("(No body_markdown captured in registry/entrypoint_docs.toml.)")
+        lines.append("")
+        _write(repo_root / path, "\n".join(lines))
+
+
 def export_requirements_legacy(repo_root: Path) -> None:
     req_data = _load_toml(repo_root / "registry/requirements.toml")
     narrative = _load_optional_toml(repo_root / "registry/requirements_narrative.toml")
@@ -1629,6 +1670,7 @@ def main() -> int:
         repo_root, out_dir / "KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
     )
     export_navigator(repo_root, out_dir / "NAVIGATOR_REGISTRY_MIRROR.md")
+    export_entrypoint_docs(repo_root, out_dir / "ENTRYPOINT_DOCS_REGISTRY_MIRROR.md")
     export_markdown_governance(repo_root, out_dir / "MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md")
     export_claims_tasks(repo_root, out_dir / "CLAIMS_TASKS_REGISTRY_MIRROR.md")
     export_claims_domains(repo_root, out_dir / "CLAIMS_DOMAINS_REGISTRY_MIRROR.md")
@@ -1651,6 +1693,7 @@ def main() -> int:
     export_next_actions_legacy(repo_root, repo_root / "docs/NEXT_ACTIONS.md")
     export_requirements_legacy(repo_root)
     export_navigator_legacy(repo_root)
+    export_entrypoint_docs_legacy(repo_root)
     export_bibliography_legacy(repo_root, repo_root / "docs/BIBLIOGRAPHY.md")
 
     if args.legacy_claims_sync:

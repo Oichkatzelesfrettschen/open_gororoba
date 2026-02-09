@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/entrypoint_docs.toml -->
+
 # Gemini Experiments: Evidence-First Algebra/Physics Sandbox
 
 This repository is a research-style sandbox focused on reproducible, offline-checkable

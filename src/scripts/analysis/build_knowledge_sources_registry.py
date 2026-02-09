@@ -22,6 +22,17 @@ HEADING_RE = re.compile(r"^#\s+(.+?)\s*$", flags=re.M)
 BACKTICK_RE = re.compile(r"`([^`\n]+)`")
 
 MIRROR_TO_TOML = {
+    "AGENTS.md": "registry/entrypoint_docs.toml",
+    "CLAUDE.md": "registry/entrypoint_docs.toml",
+    "GEMINI.md": "registry/entrypoint_docs.toml",
+    "README.md": "registry/entrypoint_docs.toml",
+    "curated/README.md": "registry/entrypoint_docs.toml",
+    "curated/01_theory_frameworks/README_COQ.md": "registry/entrypoint_docs.toml",
+    "data/csv/README.md": "registry/entrypoint_docs.toml",
+    "data/artifacts/README.md": "registry/entrypoint_docs.toml",
+    "NAVIGATOR.md": "registry/navigator.toml",
+    "REQUIREMENTS.md": "registry/requirements.toml",
+    "docs/REQUIREMENTS.md": "registry/requirements.toml",
     "docs/CLAIMS_EVIDENCE_MATRIX.md": "registry/claims.toml",
     "docs/BIBLIOGRAPHY.md": "registry/bibliography.toml",
     "docs/INSIGHTS.md": "registry/insights.toml",

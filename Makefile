@@ -12,8 +12,10 @@
 .PHONY: registry-normalize-reports-narratives registry-bootstrap-reports-narratives
 .PHONY: registry-normalize-docs-convos registry-bootstrap-docs-convos
 .PHONY: registry-normalize-data-artifact-narratives registry-bootstrap-data-artifact-narratives
+.PHONY: registry-normalize-entrypoint-docs registry-bootstrap-entrypoint-docs
 .PHONY: registry-bootstrap-claims-support
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
+.PHONY: registry-markdown-inventory
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
@@ -151,6 +153,12 @@ registry-normalize-data-artifact-narratives:
 registry-bootstrap-data-artifact-narratives: registry-normalize-data-artifact-narratives
 	@echo "data/artifacts narrative markdown->TOML bootstrap completed."
 
+registry-normalize-entrypoint-docs:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_entrypoint_docs_registry.py --bootstrap-from-markdown
+
+registry-bootstrap-entrypoint-docs: registry-normalize-entrypoint-docs
+	@echo "Entrypoint markdown bootstrap into registry/entrypoint_docs.toml completed."
+
 registry-normalize-narratives:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_narrative_overlays.py
 
@@ -161,6 +169,9 @@ registry-ingest-legacy: registry-normalize-narratives registry-normalize-operati
 	@echo "Legacy markdown -> TOML ingest completed."
 
 registry-refresh: registry-migrate-corpus registry-ingest-legacy registry-governance
+
+registry-markdown-inventory:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py
 
 registry-export-markdown: registry-refresh
 	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py

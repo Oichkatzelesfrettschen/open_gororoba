@@ -5,69 +5,76 @@
 generated_at = "deterministic"
 authoritative = true
 document_count = 8
-generated_artifact_count = 1
-manual_narrative_count = 7
+toml_generated_mirror_count = 8
 
 [[document]]
 path = "AGENTS.md"
 id = "MDG-0001"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "CLAUDE.md"
 id = "MDG-0002"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "GEMINI.md"
 id = "MDG-0003"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "README.md"
 id = "MDG-0004"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "curated/01_theory_frameworks/README_COQ.md"
 id = "MDG-0005"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "curated/README.md"
 id = "MDG-0006"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "data/artifacts/README.md"
 id = "MDG-0007"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "data/csv/README.md"
 id = "MDG-0008"
-kind = "manual_source"
-mode = "manual_narrative"
-header_required = false
-notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."

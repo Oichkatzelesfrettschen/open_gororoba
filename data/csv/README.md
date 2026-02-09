@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/entrypoint_docs.toml -->
+
 # Data Index: CSV Datasets
 
 This directory contains raw output from various simulation runs and theoretical models related to the Surreal-Noncommutative Quantum Gravity project.
