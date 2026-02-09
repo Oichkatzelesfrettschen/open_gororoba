@@ -98,3 +98,27 @@ Authoritative source: `registry/todo.toml`.
   - `registry/knowledge_migration_plan.toml`
   - `docs/NEXT_ACTIONS.md`
   - `docs/ROADMAP.md`
+
+### S13-T12: Invert make registry to TOML-first sequencing
+
+- Status: `done`
+- Evidence:
+  - `Makefile`
+  - `src/scripts/analysis/export_registry_markdown_mirrors.py`
+
+### S13-T13: Generate legacy claims-support docs from TOML registries
+
+- Status: `done`
+- Evidence:
+  - `docs/CLAIMS_TASKS.md`
+  - `docs/claims/INDEX.md`
+  - `docs/claims/CLAIMS_DOMAIN_MAP.csv`
+  - `docs/claims/by_domain/algebra.md`
+  - `src/scripts/analysis/export_registry_markdown_mirrors.py`
+
+### S13-T14: Add mirror freshness verifier to registry quality gate
+
+- Status: `done`
+- Evidence:
+  - `src/verification/verify_registry_mirror_freshness.py`
+  - `Makefile`

@@ -31,9 +31,12 @@ Authoritative source: `registry/roadmap.toml`.
   - `registry/claims_tasks.toml`
   - `registry/claims_domains.toml`
   - `registry/claim_tickets.toml`
+  - `src/verification/verify_registry_mirror_freshness.py`
   - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
   - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
   - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
+  - `docs/CLAIMS_TASKS.md`
+  - `docs/claims/INDEX.md`
 
 ### WS-QUALITY-001: Warnings-As-Errors Discipline
 

@@ -9,10 +9,10 @@ kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "178a7fabe8e20f575f559e91d7eddb8f07502d4ba3aa32d97459f0ea8dd8c1b6"
-source_line_count = 148
-source_size_bytes = 10596
-content_sha256 = "178a7fabe8e20f575f559e91d7eddb8f07502d4ba3aa32d97459f0ea8dd8c1b6"
+source_sha256 = "c51dcd705b934a9e48f3121cb2d6588dbd415dc4119853c987d1aacde12be64d"
+source_line_count = 152
+source_size_bytes = 11060
+content_sha256 = "c51dcd705b934a9e48f3121cb2d6588dbd415dc4119853c987d1aacde12be64d"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -23,7 +23,8 @@ content_markdown = """
 Primary trackers:
 - `docs/ROADMAP.md` (consolidated roadmap: architecture, crates, migration history, GR port plan)
 - `docs/ULTRA_ROADMAP.md` (test-driven, claim->evidence oriented)
-- `docs/CLAIMS_TASKS.md` (claim-specific implementation backlog)
+- `registry/claims_tasks.toml` (claim-specific implementation backlog, authoritative)
+- `docs/CLAIMS_TASKS.md` (generated mirror)
 - `docs/NEXT_ACTIONS.md` (short priority queue)
 
 Note:
@@ -48,6 +49,9 @@ Note:
 - [x] Normalize `docs/claims/CLAIMS_DOMAIN_MAP.csv` + `docs/claims/by_domain/*.md` into `registry/claims_domains.toml` and generate `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`.
 - [x] Normalize `docs/tickets/*.md` into `registry/claim_tickets.toml` and generate `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`.
 - [x] Remove timestamp churn from registry generators to keep `make registry` deterministic across repeated runs.
+- [x] Invert `make registry` to TOML-first flow; keep markdown->TOML ingest as explicit `make registry-ingest-legacy`.
+- [x] Generate legacy claims-support mirrors (`docs/CLAIMS_TASKS.md`, `docs/claims/INDEX.md`, `docs/claims/CLAIMS_DOMAIN_MAP.csv`, `docs/claims/by_domain/*.md`) from TOML registries.
+- [x] Add mirror freshness quality gate: `src/verification/verify_registry_mirror_freshness.py`.
 - [ ] Decide if `docs/INSIGHTS.md` and `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md` should be fully replaced by generated mirrors or kept as narrative overlays.
 
 ## Current sprint: Sprint 10 -- De Marrais Emanation Architecture (COMPLETE)

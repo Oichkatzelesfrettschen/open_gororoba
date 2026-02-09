@@ -13,11 +13,12 @@ Authoritative source: `registry/next_actions.toml`.
 ### NA-001 (P0): Complete TOML centralization for markdown mirrors
 
 - Status: `in_progress`
-- Description: Export insights and experiments markdown from TOML, and add TOML registries for roadmap/todo/next-actions/requirements.
+- Description: Keep TOML-first governance: preserve mirror freshness gates, retire remaining narrative overlays where feasible, and keep legacy ingest explicit.
 - References:
   - `registry/knowledge_sources.toml`
   - `registry/knowledge/documents.toml`
-  - `docs/NEXT_ACTIONS.md`
+  - `registry/knowledge_migration_plan.toml`
+  - `src/verification/verify_registry_mirror_freshness.py`
 
 ### NA-002 (P1): Resolve multiplication coupling rho(b) in GL(8,Z)
 

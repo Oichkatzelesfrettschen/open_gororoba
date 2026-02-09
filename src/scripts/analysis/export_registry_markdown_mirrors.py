@@ -6,8 +6,13 @@ Export human-facing markdown mirrors from authoritative TOML registries.
 from __future__ import annotations
 
 import argparse
-from pathlib import Path
+import csv
 import tomllib
+from io import StringIO
+from pathlib import Path
+
+CHECK_MODE = False
+CHANGED_PATHS: list[str] = []
 
 
 def _assert_ascii(text: str, context: str) -> None:
@@ -23,6 +28,11 @@ def _load_toml(path: Path) -> dict:
 
 def _write(path: Path, text: str) -> None:
     _assert_ascii(text, str(path))
+    if CHECK_MODE:
+        existing = path.read_text(encoding="utf-8") if path.exists() else ""
+        if existing != text:
+            CHANGED_PATHS.append(str(path))
+        return
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(text, encoding="utf-8")
 
@@ -35,6 +45,24 @@ def _header(title: str) -> list[str]:
         "<!-- Source of truth: TOML registry files under registry/ -->",
         "",
     ]
+
+
+def _claim_sort_key(claim_id: str) -> int:
+    if claim_id.startswith("C-") and claim_id[2:].isdigit():
+        return int(claim_id[2:])
+    return 999999
+
+
+def _pipe_escape(text: str) -> str:
+    return text.replace("|", "\\|")
+
+
+def _render_csv(rows: list[list[str]]) -> str:
+    buf = StringIO(newline="")
+    writer = csv.writer(buf, lineterminator="\n")
+    for row in rows:
+        writer.writerow(row)
+    return buf.getvalue()
 
 
 def export_insights(repo_root: Path, out_path: Path) -> None:
@@ -95,7 +123,6 @@ def export_experiments(repo_root: Path, out_path: Path) -> None:
 def export_roadmap(repo_root: Path, out_path: Path) -> None:
     data = _load_toml(repo_root / "registry/roadmap.toml")
     roadmap = data.get("roadmap", {})
-    sections = data.get("roadmap", {})
     workstreams = data.get("workstream", [])
     lines = _header("Roadmap Registry Mirror")
     lines.append("Authoritative source: `registry/roadmap.toml`.")
@@ -121,8 +148,6 @@ def export_roadmap(repo_root: Path, out_path: Path) -> None:
         for out in ws.get("primary_outputs", []):
             lines.append(f"  - `{out}`")
         lines.append("")
-    if "sections" in data:
-        _ = sections
     _write(out_path, "\n".join(lines))
 
 
@@ -238,14 +263,18 @@ def export_claims_tasks(repo_root: Path, out_path: Path) -> None:
     lines.append("## Sections")
     lines.append("")
     for section in sections:
-        lines.append(f"- {section.get('id', '')}: {section.get('name', '')} ({section.get('task_count', 0)} tasks)")
+        section_id = section.get("id", "")
+        section_name = section.get("name", "")
+        section_count = section.get("task_count", 0)
+        lines.append(f"- {section_id}: {section_name} ({section_count} tasks)")
     lines.append("")
     lines.append("## Tasks")
     lines.append("")
     for task in sorted(tasks, key=lambda row: int(row.get("order_index", 0))):
-        lines.append(
-            f"### {task.get('id', 'CTASK-???')} ({task.get('claim_id', 'C-???')}, {task.get('status_token', 'UNKNOWN')})"
-        )
+        task_id = task.get("id", "CTASK-???")
+        claim_id = task.get("claim_id", "C-???")
+        status_token = task.get("status_token", "UNKNOWN")
+        lines.append(f"### {task_id} ({claim_id}, {status_token})")
         lines.append("")
         lines.append(f"- Section: {task.get('section', '')}")
         lines.append(f"- Source line: {task.get('source_line', '')}")
@@ -260,6 +289,52 @@ def export_claims_tasks(repo_root: Path, out_path: Path) -> None:
             for artifact in artifacts:
                 lines.append(f"- `{artifact}`")
             lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_claims_tasks_legacy(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/claims_tasks.toml")
+    sections = data.get("section", [])
+    tasks = data.get("task", [])
+
+    by_section: dict[str, list[dict]] = {}
+    for task in tasks:
+        by_section.setdefault(str(task.get("section", "unscoped")), []).append(task)
+
+    lines = [
+        "# Claims -> Tasks Tracker (Generated Mirror)",
+        "",
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+        "<!-- Source of truth: registry/claims_tasks.toml -->",
+        "",
+        "This file is generated from `registry/claims_tasks.toml`.",
+        "",
+    ]
+
+    for section in sorted(
+        sections, key=lambda row: int(row.get("id", "CTS-999").split("-")[1])
+    ):
+        name = str(section.get("name", "unscoped"))
+        section_tasks = sorted(
+            by_section.get(name, []), key=lambda row: int(row.get("order_index", 0))
+        )
+        lines.append(f"## {name}")
+        lines.append("")
+        if not section_tasks:
+            lines.append("No task rows currently in this section.")
+            lines.append("")
+            continue
+        lines.append("| Claim ID | Task | Output artifact(s) | Status |")
+        lines.append("|---|---|---|---|")
+        for task in section_tasks:
+            claim_id = str(task.get("claim_id", ""))
+            task_text = _pipe_escape(str(task.get("task", "")).strip())
+            artifacts = task.get("output_artifacts", [])
+            artifact_cell = ", ".join(f"`{item}`" for item in artifacts) if artifacts else "(none)"
+            status = str(task.get("status_token", ""))
+            lines.append(f"| {claim_id} | {task_text} | {artifact_cell} | {status} |")
+        lines.append("")
+
     _write(out_path, "\n".join(lines))
 
 
@@ -292,9 +367,89 @@ def export_claims_domains(repo_root: Path, out_path: Path) -> None:
     lines.append("## Claim Crosswalk")
     lines.append("")
     for row in sorted(claim_domains, key=lambda item: item.get("claim_id", "")):
-        lines.append(f"- {row.get('claim_id', '')}: csv={row.get('domains_csv', [])}, markdown={row.get('domains_markdown', [])}, match={row.get('domain_sets_match', False)}")
+        claim_id = row.get("claim_id", "")
+        domains_csv = row.get("domains_csv", [])
+        domains_markdown = row.get("domains_markdown", [])
+        domain_sets_match = row.get("domain_sets_match", False)
+        lines.append(
+            f"- {claim_id}: csv={domains_csv}, markdown={domains_markdown}, "
+            f"match={domain_sets_match}"
+        )
     lines.append("")
     _write(out_path, "\n".join(lines))
+
+
+def export_claims_domains_legacy(repo_root: Path) -> None:
+    data = _load_toml(repo_root / "registry/claims_domains.toml")
+    domains = sorted(data.get("domain", []), key=lambda row: row.get("id", ""))
+    claim_domains = sorted(
+        data.get("claim_domain", []), key=lambda row: row.get("claim_id", "")
+    )
+    entries = data.get("domain_entry", [])
+
+    index_lines = [
+        "# Claims by domain",
+        "",
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+        "<!-- Source of truth: registry/claims_domains.toml -->",
+        "",
+        "See also: docs/CLAIMS_DOMAIN_TAXONOMY.md",
+        "",
+    ]
+    for row in domains:
+        domain_id = str(row.get("id", ""))
+        source_markdown = str(
+            row.get("source_markdown", f"docs/claims/by_domain/{domain_id}.md")
+        )
+        count = int(row.get("markdown_claim_count", 0))
+        index_lines.append(f"- `{domain_id}` ({count}): `{source_markdown}`")
+    index_lines.append("")
+    _write(repo_root / "docs/claims/INDEX.md", "\n".join(index_lines))
+
+    csv_rows = [["claim_id", "domains"]]
+    for row in claim_domains:
+        domains_csv = row.get("domains_csv", [])
+        csv_rows.append(
+            [str(row.get("claim_id", "")), ";".join(str(item) for item in domains_csv)]
+        )
+    _write(repo_root / "docs/claims/CLAIMS_DOMAIN_MAP.csv", _render_csv(csv_rows))
+
+    entries_by_domain: dict[str, list[dict]] = {}
+    for entry in entries:
+        entries_by_domain.setdefault(str(entry.get("domain", "")), []).append(entry)
+
+    for row in domains:
+        domain_id = str(row.get("id", ""))
+        path = Path(
+            str(row.get("source_markdown", f"docs/claims/by_domain/{domain_id}.md"))
+        )
+        domain_entries = sorted(
+            entries_by_domain.get(domain_id, []),
+            key=lambda item: _claim_sort_key(str(item.get("claim_id", ""))),
+        )
+        lines = [
+            f"# Claims: {domain_id}",
+            "",
+            "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+            "<!-- Source of truth: registry/claims_domains.toml -->",
+            "",
+            f"Count: {len(domain_entries)}",
+            "",
+        ]
+        for entry in domain_entries:
+            claim_id = str(entry.get("claim_id", ""))
+            status_text = str(entry.get("status_text", ""))
+            status_date = str(entry.get("status_date", "")).strip()
+            summary = str(entry.get("summary", "")).strip()
+            where_stated = [str(item) for item in entry.get("where_stated", [])]
+            status_blob = f"{status_text}, {status_date}" if status_date else status_text
+            lines.append(f"- Hypothesis {claim_id} ({status_blob}): {summary}")
+            if where_stated:
+                where_joined = ", ".join(f"`{item}`" for item in where_stated)
+                lines.append(f"  - Where stated: {where_joined}")
+            lines.append("")
+
+        _write(repo_root / path, "\n".join(lines))
 
 
 def export_claim_tickets(repo_root: Path, out_path: Path) -> None:
@@ -321,9 +476,9 @@ def export_claim_tickets(repo_root: Path, out_path: Path) -> None:
         lines.append(
             f"- Claim range: {row.get('claim_range_start', 0)}..{row.get('claim_range_end', 0)}"
         )
-        lines.append(
-            f"- Checkbox progress: done={row.get('done_checkboxes', 0)}, open={row.get('open_checkboxes', 0)}"
-        )
+        done = row.get("done_checkboxes", 0)
+        open_checkboxes = row.get("open_checkboxes", 0)
+        lines.append(f"- Checkbox progress: done={done}, open={open_checkboxes}")
         claims = row.get("claims_referenced", [])
         if claims:
             lines.append(f"- Claims referenced ({len(claims)}): {', '.join(claims)}")
@@ -342,6 +497,8 @@ def export_claim_tickets(repo_root: Path, out_path: Path) -> None:
 
 
 def main() -> int:
+    global CHECK_MODE
+
     parser = argparse.ArgumentParser()
     parser.add_argument(
         "--repo-root",
@@ -353,11 +510,25 @@ def main() -> int:
         default="docs/generated",
         help="Output markdown mirror directory.",
     )
+    parser.add_argument(
+        "--check",
+        action="store_true",
+        help="Check mode: fail if any mirror would change.",
+    )
+    parser.add_argument(
+        "--legacy-claims-sync",
+        action=argparse.BooleanOptionalAction,
+        default=True,
+        help="Also regenerate legacy claims-support markdown/csv mirrors from TOML.",
+    )
     args = parser.parse_args()
+
+    CHECK_MODE = bool(args.check)
 
     repo_root = Path(args.repo_root).resolve()
     out_dir = (repo_root / args.out_dir).resolve()
-    out_dir.mkdir(parents=True, exist_ok=True)
+    if not CHECK_MODE:
+        out_dir.mkdir(parents=True, exist_ok=True)
 
     export_insights(repo_root, out_dir / "INSIGHTS_REGISTRY_MIRROR.md")
     export_experiments(repo_root, out_dir / "EXPERIMENTS_REGISTRY_MIRROR.md")
@@ -368,6 +539,19 @@ def main() -> int:
     export_claims_tasks(repo_root, out_dir / "CLAIMS_TASKS_REGISTRY_MIRROR.md")
     export_claims_domains(repo_root, out_dir / "CLAIMS_DOMAINS_REGISTRY_MIRROR.md")
     export_claim_tickets(repo_root, out_dir / "CLAIM_TICKETS_REGISTRY_MIRROR.md")
+
+    if args.legacy_claims_sync:
+        export_claims_tasks_legacy(repo_root, repo_root / "docs/CLAIMS_TASKS.md")
+        export_claims_domains_legacy(repo_root)
+
+    if CHECK_MODE:
+        if CHANGED_PATHS:
+            print("ERROR: TOML-driven mirrors are stale. Regenerate with make registry.")
+            for path in sorted(set(CHANGED_PATHS)):
+                print(path)
+            return 1
+        print("OK: TOML-driven mirrors are fresh.")
+        return 0
 
     print(f"Wrote TOML-driven markdown mirrors to {out_dir}.")
     return 0

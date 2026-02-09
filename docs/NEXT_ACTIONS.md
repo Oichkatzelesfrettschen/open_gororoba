@@ -59,9 +59,16 @@ Completed this sprint:
    - Claims support registries now normalized:
      `registry/claims_tasks.toml`, `registry/claims_domains.toml`,
      `registry/claim_tickets.toml`.
+   - `make registry` is now TOML-first by default; legacy markdown ingest is
+     explicit via `make registry-ingest-legacy`.
    - Exporters now generate TOML-driven markdown mirrors under
      `docs/generated/*_REGISTRY_MIRROR.md` for insights, experiments, roadmap,
      todo, next-actions, requirements, claims-tasks, claims-domains, and claim-tickets.
+   - Exporters also regenerate claims-support legacy mirrors:
+     `docs/CLAIMS_TASKS.md`, `docs/claims/INDEX.md`,
+     `docs/claims/CLAIMS_DOMAIN_MAP.csv`, and `docs/claims/by_domain/*.md`.
+   - Mirror freshness is now enforced by
+     `src/verification/verify_registry_mirror_freshness.py`.
    - Registry generators now emit deterministic stamps to avoid one-time timestamp churn.
    - Remaining policy decision: fully replace legacy narrative docs or keep
      them as non-authoritative overlays.

@@ -1,6 +1,6 @@
 # Claims: coq
 
-Source: docs/claims/CLAIMS_DOMAIN_MAP.csv + docs/CLAIMS_EVIDENCE_MATRIX.md
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/claims_domains.toml -->
 
 Count: 0
-
