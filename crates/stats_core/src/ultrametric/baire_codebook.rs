@@ -441,4 +441,136 @@ mod tests {
             assert!(!s.log_scale);
         }
     }
+
+    // ================================================================
+    // Euclidean Ultrametricity on Prefix-Stripped Lattice (C-500)
+    // ================================================================
+
+    #[test]
+    fn test_euclidean_ultrametricity_across_filtration_levels() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_2048,
+            is_in_lambda_512,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let lambda_2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+        let lambda_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
+        let lambda_512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let lambda_256 = enumerate_lambda_256();
+
+        eprintln!("=== Euclidean Ultrametricity on Prefix-Stripped Lattice ===");
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        for (name, vectors) in [
+            ("Lambda_2048", &lambda_2048),
+            ("Lambda_1024", &lambda_1024),
+            ("Lambda_512", &lambda_512),
+            ("Lambda_256", &lambda_256),
+        ] {
+            let n = vectors.len();
+            let prefix = shared_prefix_length(vectors);
+            let d = 8 - prefix;
+
+            // Convert to column-major f64 (prefix-stripped)
+            let (cols, _, _) = lattice_to_column_major(vectors, prefix);
+
+            // Observed Euclidean ultrametric fraction (epsilon=0.05)
+            let obs_frac = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            // Null: column-independent shuffle (200 permutations)
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 1_000_000);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
+                );
+                let null_frac =
+                    matrix_free_fraction(&shuffled, n, d, n_triples, seed + 2_000_000, 0.05);
+                null_fracs.push(null_frac);
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_var = null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64;
+            let null_std = null_var.sqrt();
+
+            // One-sided p-value: fraction of null >= observed
+            let n_extreme = null_fracs.iter().filter(|&&f| f >= obs_frac).count();
+            let p_value = (n_extreme as f64 + 1.0) / (n_permutations as f64 + 1.0);
+
+            let effect_size = obs_frac - null_mean;
+            let z_score = if null_std > 1e-12 {
+                effect_size / null_std
+            } else {
+                0.0
+            };
+
+            eprintln!(
+                "\n  {} ({} vectors, prefix={}, effective_dim={}):",
+                name, n, prefix, d
+            );
+            eprintln!(
+                "    Observed fraction: {:.4}",
+                obs_frac
+            );
+            eprintln!(
+                "    Null mean +/- std: {:.4} +/- {:.4}",
+                null_mean, null_std
+            );
+            eprintln!(
+                "    Effect size: {:.4}, z-score: {:.2}, p-value: {:.4}",
+                effect_size, z_score, p_value
+            );
+
+            // Sanity checks
+            assert!(
+                obs_frac >= 0.0 && obs_frac <= 1.0,
+                "Fraction must be in [0,1]"
+            );
+            assert!(
+                null_mean >= 0.0 && null_mean <= 1.0,
+                "Null mean must be in [0,1]"
+            );
+        }
+
+        // The Baire distance test MUST give fraction 1.0 (tautological)
+        let baire_dists = lattice_baire_distance_matrix(&lambda_256, 2);
+        let baire_frac = super::super::ultrametric_fraction_from_matrix(
+            &baire_dists,
+            lambda_256.len(),
+            50_000,
+            42,
+        );
+        eprintln!(
+            "\n  Baire distance on Lambda_256: fraction = {:.4} (tautological)",
+            baire_frac
+        );
+        assert!(
+            (baire_frac - 1.0).abs() < 1e-10,
+            "Baire distances are ultrametric by construction, got {}",
+            baire_frac
+        );
+
+        eprintln!("\n=== SUMMARY ===");
+        eprintln!("Baire distances: always 1.0 (trivial, by construction).");
+        eprintln!("Euclidean distances: see above for non-trivial ultrametricity");
+        eprintln!("vs column-shuffle null at each filtration level.");
+    }
 }

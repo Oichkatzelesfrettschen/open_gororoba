@@ -387,6 +387,19 @@ pub fn lattice_add_f3(a: &LatticeVector, b: &LatticeVector) -> LatticeVector {
     result
 }
 
+/// Component-wise negation in F_3 = Z/3Z.
+///
+/// Maps each coordinate x -> -x. Since the representation is {-1, 0, 1},
+/// negation is just ordinary sign flip: -(-1) = 1, -(0) = 0, -(1) = -1.
+/// The result always stays in {-1, 0, 1}^8.
+pub fn lattice_negate_f3(v: &LatticeVector) -> LatticeVector {
+    let mut result = [0i8; 8];
+    for (r, &x) in result.iter_mut().zip(v.iter()) {
+        *r = -x;
+    }
+    result
+}
+
 /// Component-wise difference of two lattice vectors in Z.
 ///
 /// a - b, coordinate by coordinate. The result may leave {-1, 0, 1}^8
@@ -2877,5 +2890,252 @@ mod tests {
                 "det(I_{n}) should be 1"
             );
         }
+    }
+
+    // ================================================================
+    // Coset Obstruction and Affine Closure Analysis (C-498, C-499)
+    // ================================================================
+
+    #[test]
+    fn test_coset_obstruction_and_affine_closure() {
+        use std::collections::HashSet;
+
+        // ---- Phase 1: Filtration level enumeration ----
+        let base_universe = enumerate_lattice_by_predicate(is_in_base_universe);
+        let lambda_2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+        let lambda_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
+        let lambda_512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let lambda_256 = enumerate_lambda_256();
+
+        eprintln!("=== Filtration Level Sizes ===");
+        eprintln!("  Base universe: {}", base_universe.len());
+        eprintln!("  Lambda_2048:   {}", lambda_2048.len());
+        eprintln!("  Lambda_1024:   {}", lambda_1024.len());
+        eprintln!("  Lambda_512:    {}", lambda_512.len());
+        eprintln!("  Lambda_256:    {}", lambda_256.len());
+
+        // Strict inclusion chain
+        assert!(lambda_256.len() < lambda_512.len());
+        assert!(lambda_512.len() < lambda_1024.len());
+        assert!(lambda_1024.len() < lambda_2048.len());
+        assert!(lambda_2048.len() < base_universe.len());
+
+        // ---- Phase 2: Coset decomposition of Lambda_2048 by l_0 ----
+        let l0_neg1: Vec<&LatticeVector> =
+            lambda_2048.iter().filter(|v| v[0] == -1).collect();
+        let l0_zero: Vec<&LatticeVector> =
+            lambda_2048.iter().filter(|v| v[0] == 0).collect();
+        let l0_pos1: Vec<&LatticeVector> =
+            lambda_2048.iter().filter(|v| v[0] == 1).collect();
+
+        eprintln!("\n=== Lambda_2048 Coset Decomposition by l_0 ===");
+        eprintln!("  l_0 = -1: {} vectors", l0_neg1.len());
+        eprintln!("  l_0 =  0: {} vectors", l0_zero.len());
+        eprintln!("  l_0 = +1: {} vectors (excluded by base universe)", l0_pos1.len());
+
+        assert_eq!(l0_pos1.len(), 0, "l_0 = +1 excluded from base universe");
+        assert_eq!(
+            l0_neg1.len() + l0_zero.len(),
+            lambda_2048.len(),
+            "Coset partition exhaustive"
+        );
+
+        // Lambda_1024 is exactly the l_0=-1 sub-lattice of Lambda_2048
+        // (minus further exclusions). All l0_neg1 satisfy is_in_lambda_2048 but
+        // not all satisfy is_in_lambda_1024 (additional exclusions).
+        assert!(lambda_1024.len() <= l0_neg1.len());
+        assert!(
+            lambda_1024.iter().all(|v| v[0] == -1),
+            "Lambda_1024 requires l_0 = -1"
+        );
+
+        // ---- Phase 3: Prove the coset obstruction ----
+        // All Lambda_256 vectors have l_0 = -1
+        assert!(
+            lambda_256.iter().all(|v| v[0] == -1),
+            "All Lambda_256 vectors have l_0 = -1"
+        );
+
+        // Z-addition: (-1) + (-1) = -2, leaving {-1,0,1}^8
+        let a0 = &lambda_256[0];
+        let b0 = &lambda_256[1];
+        let z_sum = lattice_add(a0, b0);
+        assert_eq!(z_sum[0], -2, "Z-addition: l_0 = (-1)+(-1) = -2 (out of bounds)");
+
+        // F_3-addition: (-1) + (-1) = 1, landing in forbidden coset
+        let f3_sum = lattice_add_f3(a0, b0);
+        assert_eq!(f3_sum[0], 1, "F_3: l_0 = (-1)+(-1) = 1");
+        assert!(!is_in_base_universe(&f3_sum), "l_0=1 excluded from base universe");
+
+        // Exhaustive: ALL pairs of Lambda_256 under F_3-addition give l_0=1
+        for a in &lambda_256 {
+            for b in &lambda_256 {
+                let s = lattice_add_f3(a, b);
+                assert_eq!(
+                    s[0], 1,
+                    "Every F_3 sum of Lambda_256 vectors has l_0 = 1"
+                );
+            }
+        }
+
+        eprintln!("\n=== Phase 3: Coset Obstruction Confirmed ===");
+        eprintln!("  Z-addition:  l_0 = -2 (out of bounds) for ALL pairs");
+        eprintln!("  F_3-addition: l_0 = +1 (forbidden coset) for ALL pairs");
+
+        // ---- Phase 4: F_3 closure of the l_0=0 sub-lattice of Lambda_2048 ----
+        let l0_zero_set: HashSet<LatticeVector> =
+            l0_zero.iter().copied().cloned().collect();
+        let n_zero = l0_zero.len();
+        let mut zero_closure_count = 0usize;
+        let zero_total = n_zero * n_zero;
+
+        for a in &l0_zero {
+            for b in &l0_zero {
+                let s = lattice_add_f3(a, b);
+                // In F_3: l_0 = 0+0 = 0, so sum stays in l_0=0 coset
+                assert_eq!(s[0], 0, "F_3: 0+0 = 0 for l_0 coordinate");
+                if l0_zero_set.contains(&s) {
+                    zero_closure_count += 1;
+                }
+            }
+        }
+        let zero_closure_rate = zero_closure_count as f64 / zero_total as f64;
+
+        eprintln!("\n=== Phase 4: l_0=0 Sub-lattice F_3 Closure ===");
+        eprintln!(
+            "  {}/{} pairs closed = {:.4} ({:.1}%)",
+            zero_closure_count, zero_total, zero_closure_rate, zero_closure_rate * 100.0
+        );
+        // The l_0=0 sub-lattice should have positive closure (it's an actual subgroup)
+        assert!(
+            zero_closure_count > 0,
+            "l_0=0 sub-lattice must have some closure under F_3"
+        );
+
+        // ---- Phase 5: Affine F_3 closure on Lambda_256 ----
+        // Operation: a +_3 b -_3 p, where p is a fixed base point.
+        // This maps l_0: (-1)+(-1)-(-1) = (-1)+(-1)+(+1) = 1+1 = -1 in F_3.
+        let lambda_256_set: HashSet<LatticeVector> =
+            lambda_256.iter().copied().collect();
+        let n_256 = lambda_256.len();
+        let total_256 = n_256 * n_256;
+
+        // Verify l_0 is preserved by affine operation
+        let base_point = lambda_256[0];
+        let neg_base = lattice_negate_f3(&base_point);
+        let test_affine = lattice_add_f3(&lattice_add_f3(a0, b0), &neg_base);
+        assert_eq!(
+            test_affine[0], -1,
+            "Affine F_3: l_0 = (-1)+(-1)-(-1) = -1"
+        );
+
+        // Full sweep with base point = Lambda_256[0]
+        let mut affine_closure_count = 0usize;
+        for a in &lambda_256 {
+            for b in &lambda_256 {
+                let ab = lattice_add_f3(a, b);
+                let result = lattice_add_f3(&ab, &neg_base);
+                // Verify l_0 preservation for every pair
+                assert_eq!(result[0], -1, "Affine sum preserves l_0 = -1");
+                if lambda_256_set.contains(&result) {
+                    affine_closure_count += 1;
+                }
+            }
+        }
+        let affine_rate = affine_closure_count as f64 / total_256 as f64;
+
+        eprintln!("\n=== Phase 5: Affine F_3 Closure on Lambda_256 ===");
+        eprintln!(
+            "  base = Lambda_256[0] = {:?}",
+            base_point
+        );
+        eprintln!(
+            "  {}/{} pairs closed = {:.4} ({:.1}%)",
+            affine_closure_count, total_256, affine_rate, affine_rate * 100.0
+        );
+
+        // ---- Phase 6: Test multiple base points for rate variation ----
+        let test_bases = [0, n_256 / 4, n_256 / 2, n_256 - 1];
+        let mut rates = Vec::new();
+        for &idx in &test_bases {
+            if idx >= n_256 {
+                continue;
+            }
+            let bp = lambda_256[idx];
+            let nbp = lattice_negate_f3(&bp);
+            let mut count = 0usize;
+            for a in &lambda_256 {
+                for b in &lambda_256 {
+                    let ab = lattice_add_f3(a, b);
+                    let result = lattice_add_f3(&ab, &nbp);
+                    if lambda_256_set.contains(&result) {
+                        count += 1;
+                    }
+                }
+            }
+            let rate = count as f64 / total_256 as f64;
+            rates.push((idx, count, rate));
+            eprintln!(
+                "  base[{}] = {:?}: {}/{} = {:.1}%",
+                idx, bp, count, total_256, rate * 100.0
+            );
+        }
+
+        // ---- Phase 7: Affine F_3 closure at Lambda_512 and Lambda_1024 ----
+        for (name, level) in [("Lambda_512", &lambda_512), ("Lambda_1024", &lambda_1024)]
+        {
+            let level_set: HashSet<LatticeVector> = level.iter().copied().collect();
+            let n = level.len();
+            let total = n * n;
+            let bp = level[0];
+            let nbp = lattice_negate_f3(&bp);
+            let mut count = 0usize;
+            for a in level.iter() {
+                for b in level.iter() {
+                    let ab = lattice_add_f3(a, b);
+                    let result = lattice_add_f3(&ab, &nbp);
+                    if level_set.contains(&result) {
+                        count += 1;
+                    }
+                }
+            }
+            let rate = count as f64 / total as f64;
+            eprintln!(
+                "\n  Affine F_3 on {} ({} vectors): {}/{} = {:.1}%",
+                name, n, count, total, rate * 100.0
+            );
+        }
+
+        // ---- Summary ----
+        eprintln!("\n=== COSET ANALYSIS SUMMARY ===");
+        eprintln!("C-498: Coset Obstruction -- Lambda_256 has 0% Z/F_3 closure");
+        eprintln!("  because l_0=-1 coset maps to l_0=+1 (forbidden) under addition.");
+        eprintln!(
+            "  l_0=0 sub-lattice of Lambda_2048 has {:.1}% F_3 closure (subgroup).",
+            zero_closure_rate * 100.0
+        );
+        eprintln!(
+            "  Affine F_3 on Lambda_256: {:.1}% closure (coset-corrected).",
+            affine_rate * 100.0
+        );
+    }
+
+    #[test]
+    fn test_lattice_negate_f3_basic() {
+        let v: LatticeVector = [-1, 0, 1, -1, 1, 0, -1, 1];
+        let neg = lattice_negate_f3(&v);
+        assert_eq!(neg, [1, 0, -1, 1, -1, 0, 1, -1]);
+
+        // Double negation is identity
+        let double_neg = lattice_negate_f3(&neg);
+        assert_eq!(double_neg, v);
+
+        // Negation of zero is zero
+        let zero: LatticeVector = [0, 0, 0, 0, 0, 0, 0, 0];
+        assert_eq!(lattice_negate_f3(&zero), zero);
+
+        // a + (-a) = 0 in F_3
+        let sum = lattice_add_f3(&v, &neg);
+        assert_eq!(sum, [0, 0, 0, 0, 0, 0, 0, 0]);
     }
 }
