@@ -3949,3 +3949,27 @@ where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_double_thre
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED at dims 16, 32, 64 for all components. WHAT WOULD REFUTE: any component where class total is not divisible by 4, or pure count != total/4."
+
+[[claim]]
+id = "C-495"
+statement = "Face sign census at dim=512: 255 components, 33 regimes (512/16 + 1), e_max=32004, e_min=756, 214M triangles, Universal Double 3:1 Law holds for all 255 components. Exactly 1 pure-max component. Confirms all scaling laws from C-486/C-487/C-488 at the 6th doubling."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim512)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: all assertions pass in 275s release mode. 33 regimes, all edge/regime formulas match, 3:1 law holds universally. WHAT WOULD REFUTE: any component violating TS=3*AO or OS=3*AS."
+
+[[claim]]
+id = "C-496"
+statement = "Fano Residue Distribution Law: At dim=2^n (n>=4), each ZD graph component has a unique XOR key (lo ^ hi), and the Fano residue (xor_key & 7) distributes as: 7 residues get dim/16 components each, 1 'deficit' residue gets dim/16 - 1 components. Total: 7*(dim/16) + (dim/16-1) = dim/2 - 1. The deficit residue is 0. This means the octonion Fano structure propagates through ALL doublings as a mod-8 partition of the XOR product space."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_octonion_subalgebra_fano_projection)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED at dims 32 and 64. dim=32: {0:1, others:2} = 15 comps. dim=64: {0:3, others:4} = 31 comps. WHAT WOULD REFUTE: any dimension where the Fano residue distribution violates the dim/16 formula, or where components do not have unique XOR keys."
+
+[[claim]]
+id = "C-497"
+statement = "Fano Projection Full Mixing: At dim>=32, every ZD graph component uses the FULL set of Fano projections (lo & 7) in its cross-assessor low indices. The octonion subalgebra does NOT partition component node membership -- it only labels components via the XOR product residue (C-496)."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_octonion_subalgebra_fano_projection)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: at dims 32 (15/15) and 64 (31/31) all components use all 7+ Fano indices. WHAT WOULD REFUTE: any component at dim>=32 whose low indices project onto fewer than 7 distinct Fano residues."

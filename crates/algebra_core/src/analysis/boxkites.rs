@@ -3661,4 +3661,323 @@ mod tests {
             );
         }
     }
+
+    /// Face sign census at dim=512: predicted 33 regimes (512/16 + 1).
+    ///
+    /// Predictions from established scaling laws:
+    ///   n_components = 512/2 - 1 = 255
+    ///   nodes_per_component = 512/2 - 2 = 254
+    ///   n_regimes = 512/16 + 1 = 33
+    ///   e_max = C(254,2) - (512/4 - 1) = 32131 - 127 = 32004
+    ///   e_min = 3*512/2 - 12 = 756
+    ///   Universal Double 3:1 Law holds for all components
+    ///   Exactly 1 pure-max component
+    ///
+    /// Runtime: ~30-60s in release mode (16x scaling from dim=256).
+    #[test]
+    #[ignore] // Long-running: ~30-60s in release mode
+    fn test_generic_face_sign_census_dim512() {
+        use std::time::Instant;
+
+        let t0 = Instant::now();
+        let census = generic_face_sign_census(512);
+        let elapsed = t0.elapsed();
+        eprintln!(
+            "dim=512 census: {} components, {} triangles, {:.2?}",
+            census.n_components, census.total_triangles, elapsed
+        );
+
+        // Basic structure: dim/2 - 1 = 255 components
+        assert_eq!(census.n_components, 255);
+
+        // Collect regime signatures
+        let mut regime_map: HashMap<(usize, Vec<FaceSignPattern>), Vec<usize>> = HashMap::new();
+        for comp in &census.per_component {
+            let mut patterns: Vec<FaceSignPattern> =
+                comp.pattern_counts.keys().copied().collect();
+            patterns.sort();
+            regime_map
+                .entry((comp.n_edges, patterns))
+                .or_default()
+                .push(comp.component_idx);
+        }
+
+        let n_regimes = regime_map.len();
+        eprintln!("dim=512 regimes: {}", n_regimes);
+
+        // Print regime breakdown
+        let mut regimes: Vec<_> = regime_map.iter().collect();
+        regimes.sort_by_key(|&((edges, _), comps)| (std::cmp::Reverse(*edges), comps.len()));
+        for ((edges, patterns), comps) in &regimes {
+            eprintln!(
+                "  {} comps, {} edges, {} patterns",
+                comps.len(), edges, patterns.len()
+            );
+        }
+
+        // Verify regime count: dim/16 + 1 = 33
+        assert_eq!(n_regimes, 33, "Expected 33 regimes at dim=512");
+
+        // Edge formulas
+        let n = 512 / 2 - 2; // 254
+        let e_max = n * (n - 1) / 2 - (512 / 4 - 1); // C(254,2) - 127 = 32131 - 127 = 32004
+        let e_min = 3 * 512 / 2 - 12; // 756
+        assert_eq!(
+            census.per_component.iter().map(|c| c.n_edges).max().unwrap(),
+            e_max
+        );
+        assert_eq!(
+            census.per_component.iter().map(|c| c.n_edges).min().unwrap(),
+            e_min
+        );
+
+        // Universal Double 3:1 Law
+        for comp in &census.per_component {
+            let as_count = comp.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
+            let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+            let os = comp.pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
+            let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+
+            assert_eq!(ts, 3 * ao, "dim=512 comp[{}]: TS!=3*AO", comp.component_idx);
+            assert_eq!(os, 3 * as_count, "dim=512 comp[{}]: OS!=3*AS", comp.component_idx);
+        }
+
+        // Exactly 1 pure-max component
+        let n_pure_max = census.per_component.iter()
+            .filter(|c| c.n_edges == e_max && c.pattern_counts.len() == 2)
+            .count();
+        assert_eq!(n_pure_max, 1);
+    }
+
+    /// Investigate whether ZD graph components at dim=32/64 respect the
+    /// octonion Fano plane structure inherited from the dim=8 subalgebra.
+    ///
+    /// At dim=16: 7 components correspond exactly to 7 "missing" Fano indices.
+    /// Question: does this correspondence propagate through doublings?
+    ///
+    /// Method: for each component, compute the "Fano projection" of its
+    /// cross-assessor low indices -- map lo -> lo & 7 (mod-8 residue).
+    /// Then check whether these projections cluster into Fano-related
+    /// subsets, or whether the structure fully scrambles at dim=32+.
+    #[test]
+    fn test_octonion_subalgebra_fano_projection() {
+        // Phase 1: Verify the known dim=16 Fano correspondence
+        let comps_16 = motif_components_for_cross_assessors(16);
+        assert_eq!(comps_16.len(), 7);
+
+        let mut missing_indices_16 = Vec::new();
+        for comp in &comps_16 {
+            let lo_set: HashSet<usize> = comp.nodes.iter().map(|&(lo, _hi)| lo).collect();
+            let all_lo: HashSet<usize> = (1..=7).collect();
+            let missing: Vec<usize> = all_lo.difference(&lo_set).copied().collect();
+            assert_eq!(
+                missing.len(), 1,
+                "dim=16: each component should miss exactly 1 Fano index"
+            );
+            missing_indices_16.push(missing[0]);
+        }
+        let mut sorted_missing = missing_indices_16.clone();
+        sorted_missing.sort();
+        assert_eq!(
+            sorted_missing,
+            vec![1, 2, 3, 4, 5, 6, 7],
+            "dim=16: missing indices should be exactly {{1,...,7}}"
+        );
+
+        // Phase 2: At dim=32, compute Fano projections of component low indices
+        let comps_32 = motif_components_for_cross_assessors(32);
+        assert_eq!(comps_32.len(), 15); // dim/2 - 1 = 15
+
+        eprintln!("\n=== Fano projection analysis at dim=32 ===");
+        let mut fano_projection_signatures: Vec<Vec<usize>> = Vec::new();
+
+        for (comp_idx, comp) in comps_32.iter().enumerate() {
+            // Collect all low indices in this component
+            let lo_indices: BTreeSet<usize> = comp.nodes.iter().map(|&(lo, _)| lo).collect();
+
+            // Fano projection: lo & 7 (mod-8 residue, maps to octonion imaginary)
+            let fano_proj: BTreeSet<usize> = lo_indices.iter().map(|&lo| {
+                let residue = lo & 7;
+                if residue == 0 { 8 } else { residue } // Map 0 -> 8 to distinguish
+            }).collect();
+
+            // Level decomposition: which "doubling levels" are present?
+            let levels: BTreeSet<usize> = lo_indices.iter().map(|&lo| lo >> 3).collect();
+
+            eprintln!(
+                "  comp[{}]: {} nodes, {} edges, lo_range=[{},{}], fano_proj={:?}, levels={:?}",
+                comp_idx,
+                comp.nodes.len(),
+                comp.edges.len(),
+                lo_indices.iter().next().unwrap(),
+                lo_indices.iter().last().unwrap(),
+                fano_proj,
+                levels,
+            );
+
+            let mut sig: Vec<usize> = fano_proj.iter().copied().collect();
+            sig.sort();
+            fano_projection_signatures.push(sig);
+        }
+
+        // Phase 3: Check if Fano projections at dim=32 show structure
+        //
+        // Key question: do all 7 Fano indices appear in every component's
+        // projection (fully mixed), or do some components only use subsets?
+        let all_use_full_fano = fano_projection_signatures
+            .iter()
+            .all(|sig| sig.len() >= 7);
+
+        let n_distinct_sigs = {
+            let mut sigs = fano_projection_signatures.clone();
+            sigs.sort();
+            sigs.dedup();
+            sigs.len()
+        };
+
+        eprintln!(
+            "\n  All components use full Fano set: {}",
+            all_use_full_fano
+        );
+        eprintln!("  Distinct Fano projection signatures: {}", n_distinct_sigs);
+
+        // Phase 4: XOR-key analysis -- do XOR keys respect Fano structure?
+        // For each component's edges, compute xor_key = lo ^ hi.
+        // The low 3 bits of xor_key inherit Fano structure.
+        let mut xor_fano_residues_per_comp: Vec<BTreeSet<usize>> = Vec::new();
+        for comp in &comps_32 {
+            let edge_xor_residues: BTreeSet<usize> = comp.nodes.iter().map(|&(lo, hi)| {
+                (lo ^ hi) & 7
+            }).collect();
+            xor_fano_residues_per_comp.push(edge_xor_residues);
+        }
+
+        eprintln!("\n  XOR-key Fano residues per component:");
+        for (i, residues) in xor_fano_residues_per_comp.iter().enumerate() {
+            eprintln!("    comp[{}]: {:?}", i, residues);
+        }
+
+        // Phase 5: Verify XOR-key residue distribution at dim=32
+        // Each XOR bucket has a unique xor_key = lo ^ hi. The Fano residue
+        // is xor_key & 7. By construction (XOR-bucketing), all nodes in a
+        // component share the same xor_key, hence the same Fano residue.
+        //
+        // At dim=32: 15 components should give residue distribution
+        // {0: 1, 1: 2, 2: 2, 3: 2, 4: 2, 5: 2, 6: 2, 7: 2} = 1 + 7*2 = 15
+        let mut residue_counts_32: HashMap<usize, usize> = HashMap::new();
+        let mut xor_keys_32: Vec<usize> = Vec::new();
+        for comp in &comps_32 {
+            // All nodes in a component have the same xor_key (by construction)
+            let first_node = comp.nodes.iter().next().unwrap();
+            let xor_key = first_node.0 ^ first_node.1;
+            xor_keys_32.push(xor_key);
+            let residue = xor_key & 7;
+            *residue_counts_32.entry(residue).or_insert(0) += 1;
+        }
+
+        eprintln!("\n  XOR key per component: {:?}", xor_keys_32);
+        eprintln!("  Fano residue distribution: {:?}", residue_counts_32);
+
+        // Verify: each component has a unique XOR key
+        let unique_xor_keys: HashSet<usize> = xor_keys_32.iter().copied().collect();
+        assert_eq!(
+            unique_xor_keys.len(), 15,
+            "dim=32: each of 15 components should have a unique XOR key"
+        );
+
+        // Verify: residue 0 appears once, all others appear twice
+        for residue in 0..8 {
+            let count = residue_counts_32.get(&residue).copied().unwrap_or(0);
+            let expected = if residue == 0 { 1 } else { 2 };
+            assert_eq!(
+                count, expected,
+                "dim=32: Fano residue {} should appear {} times, got {}",
+                residue, expected, count
+            );
+        }
+
+        // Phase 6: Repeat at dim=64
+        let comps_64 = motif_components_for_cross_assessors(64);
+        assert_eq!(comps_64.len(), 31);
+
+        let mut residue_counts_64: HashMap<usize, usize> = HashMap::new();
+        let mut xor_keys_64: Vec<usize> = Vec::new();
+        for comp in &comps_64 {
+            let first_node = comp.nodes.iter().next().unwrap();
+            let xor_key = first_node.0 ^ first_node.1;
+            xor_keys_64.push(xor_key);
+            let residue = xor_key & 7;
+            *residue_counts_64.entry(residue).or_insert(0) += 1;
+        }
+
+        // Verify unique XOR keys at dim=64
+        let unique_64: HashSet<usize> = xor_keys_64.iter().copied().collect();
+        assert_eq!(
+            unique_64.len(), 31,
+            "dim=64: each of 31 components should have a unique XOR key"
+        );
+
+        // At dim=64: 31 = 4*7 + 3. Predict: residue 0 has 3 components,
+        // non-zero residues have 4 each? Or residue 0 has 1 + 2 = 3,
+        // others have 2 + 2 = 4. Let's check:
+        eprintln!("\n=== dim=64 ===");
+        eprintln!("  Fano residue distribution: {:?}", residue_counts_64);
+
+        // Verify Fano residue scaling law:
+        // dim=16 (7 comps): 0->0, others->1 each (7 = 7*1 + 0)
+        // dim=32 (15 comps): 0->1, others->2 each (15 = 1 + 7*2)
+        // dim=64 (31 comps): predict 0->3, others->4 each (31 = 3 + 7*4)
+        //   OR: 0->1, others->4.28... (doesn't divide evenly)
+        //   Try: 31 = 3 + 28 = 3 + 7*4. So residue 0 gets 3, others get 4.
+        let r0_count_64 = residue_counts_64.get(&0).copied().unwrap_or(0);
+        let r_nonzero_counts: Vec<usize> = (1..8)
+            .map(|r| residue_counts_64.get(&r).copied().unwrap_or(0))
+            .collect();
+
+        eprintln!(
+            "  residue 0: {}, non-zero: {:?}",
+            r0_count_64, r_nonzero_counts
+        );
+
+        // Assert the pattern (empirical, may need adjustment):
+        // If the formula is: n_comps = dim/2 - 1, and XOR keys range over
+        // {dim/2, ..., dim-1} (one per component), then the number of keys
+        // with residue r is floor(dim/2 / 8) or ceil(dim/2 / 8).
+        // At dim=64: dim/2=32, 32/8=4, so each residue gets exactly 4.
+        // But 8*4=32 keys and only 31 components, so one key is missing.
+        // The missing key at dim=32 was key 0+16=16 (nah, that had a comp).
+        // Actually at dim=32 we had 15 comps and 16 possible keys (16..31),
+        // so one key had no component. Similarly at dim=64: 31 comps out of
+        // 32 possible keys (32..63). One key produces no component.
+
+        // For each doubling: one key out of dim/2 keys produces no component.
+        // That missing key's Fano residue gets one fewer count.
+
+        // Check that total = 31
+        let total: usize = residue_counts_64.values().sum();
+        assert_eq!(total, 31, "dim=64: total Fano residue count should be 31");
+
+        // Check that exactly one residue has count = (dim/16) - 1 = 3,
+        // and the rest have count = dim/16 = 4.
+        let expected_normal = 64 / 16; // 4
+        let n_deficit = r_nonzero_counts.iter()
+            .chain(std::iter::once(&r0_count_64))
+            .filter(|&&c| c == expected_normal - 1)
+            .count();
+        let n_normal = r_nonzero_counts.iter()
+            .chain(std::iter::once(&r0_count_64))
+            .filter(|&&c| c == expected_normal)
+            .count();
+
+        assert_eq!(
+            n_deficit, 1,
+            "dim=64: exactly one Fano residue should have {} components (deficit)",
+            expected_normal - 1
+        );
+        assert_eq!(
+            n_normal, 7,
+            "dim=64: seven Fano residues should have {} components",
+            expected_normal
+        );
+    }
 }
