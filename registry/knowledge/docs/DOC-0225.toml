@@ -3,41 +3,34 @@
 
 [document]
 id = "DOC-0225"
-source_path = "reports/config_audit.md"
-title = "Config Audit Notes (2026-02-01)"
+source_path = "reports/claims_status_contradictions.md"
+title = "Claims Status Contradictions (2026-02-04)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "e569f725e518462a294c576d209e02e7a4e6383552b57f5a7bc2bd6b295242ba"
-source_line_count = 22
-source_size_bytes = 893
-content_sha256 = "e569f725e518462a294c576d209e02e7a4e6383552b57f5a7bc2bd6b295242ba"
+source_sha256 = "0fde2aea8ae6f7c0b51618e788e106efa5f68fbc427776ce799ed22e666a5a77"
+source_line_count = 15
+source_size_bytes = 403
+content_sha256 = "0fde2aea8ae6f7c0b51618e788e106efa5f68fbc427776ce799ed22e666a5a77"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Config Audit Notes (2026-02-01)
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-## Build entrypoints
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-- Makefile path scan: no missing `src/`/`bin/`/`docker/` script references detected (excluding venv tokens).
+# Claims Status Contradictions (2026-02-04)
 
-## Pytest import path
+Matrix: `docs/CLAIMS_EVIDENCE_MATRIX.md`
+Hits: 0
 
-- `pytest.ini` uses `pythonpath` entries for `src/scripts/*` so tests can import script modules by bare name
-  (e.g., `fetch_planck_2018_spectra`, `measure_tensor_network_entropy`).
-- Name-collision fix applied: `src/scripts/analysis/spectral_triple_toy.py` was renamed to
-  `src/scripts/analysis/spectral_triple_toy_report.py` so it no longer shadows `src/spectral_triple_toy.py`.
+This report flags rows where the status cell contains multiple canonical status tokens.
 
-## Docker entrypoint
-
-- Docker wrapper script lives at `run_quantum_container.sh`; docs updated to match.
-
-## Hygiene
-
-- `__pycache__/` directories under `src/` and `tests/` are expected after running the suite; they should remain
-  untracked/ignored and can be removed via `make clean` (or manual deletion) if desired.
+No contradictions found.
 
 """

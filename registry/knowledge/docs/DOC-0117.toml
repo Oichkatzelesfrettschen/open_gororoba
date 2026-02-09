@@ -9,15 +9,21 @@ kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "eaf307473009771b0a43d58019405691c6d7ba1325379e2818971c346d8e1678"
-source_line_count = 113
-source_size_bytes = 2126
-content_sha256 = "eaf307473009771b0a43d58019405691c6d7ba1325379e2818971c346d8e1678"
+source_sha256 = "5e43014e7ba7b5617d1f7f69b0772318444bba15f35c482732728e0828ec9641"
+source_line_count = 119
+source_size_bytes = 2306
+content_sha256 = "5e43014e7ba7b5617d1f7f69b0772318444bba15f35c482732728e0828ec9641"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
 # Convos keyword summary: convos/1_read_nonuser_lines_cont.md
 
 Notes:

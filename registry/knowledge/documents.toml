@@ -4,7 +4,7 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 76
+raw_capture_count = 78
 skipped_generated_count = 164
 authoritative = false
 normalization_required = true
@@ -89,7 +89,7 @@ document_toml = "registry/knowledge/docs/DOC-0016.toml"
 [[document]]
 id = "DOC-0022"
 source_path = "docs/CLAIMS_EVIDENCE_MATRIX.md"
-title = "Claims / Evidence Matrix (Canonical)"
+title = "Claims / Evidence Matrix (Markdown Mirror)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -220,10 +220,10 @@ document_toml = "registry/knowledge/docs/DOC-0159.toml"
 
 [[document]]
 id = "DOC-0160"
-source_path = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
-title = "Docs Root Narratives Registry Mirror"
-kind = "generated_markdown"
-migration_priority = "none"
+source_path = "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md"
+title = "Docs Convos Registry Mirror"
+kind = "markdown_mirror"
+migration_priority = "critical"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
@@ -231,8 +231,8 @@ document_toml = "registry/knowledge/docs/DOC-0160.toml"
 
 [[document]]
 id = "DOC-0161"
-source_path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
-title = "Experiments Registry Mirror"
+source_path = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
+title = "Docs Root Narratives Registry Mirror"
 kind = "generated_markdown"
 migration_priority = "none"
 raw_captured = true
@@ -242,8 +242,8 @@ document_toml = "registry/knowledge/docs/DOC-0161.toml"
 
 [[document]]
 id = "DOC-0162"
-source_path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
-title = "External Sources Registry Mirror"
+source_path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
+title = "Experiments Registry Mirror"
 kind = "generated_markdown"
 migration_priority = "none"
 raw_captured = true
@@ -253,8 +253,8 @@ document_toml = "registry/knowledge/docs/DOC-0162.toml"
 
 [[document]]
 id = "DOC-0163"
-source_path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
-title = "Insights Registry Mirror"
+source_path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
+title = "External Sources Registry Mirror"
 kind = "generated_markdown"
 migration_priority = "none"
 raw_captured = true
@@ -264,8 +264,8 @@ document_toml = "registry/knowledge/docs/DOC-0163.toml"
 
 [[document]]
 id = "DOC-0164"
-source_path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
-title = "Knowledge Migration Plan Registry Mirror"
+source_path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
+title = "Insights Registry Mirror"
 kind = "generated_markdown"
 migration_priority = "none"
 raw_captured = true
@@ -275,8 +275,8 @@ document_toml = "registry/knowledge/docs/DOC-0164.toml"
 
 [[document]]
 id = "DOC-0165"
-source_path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
-title = "Markdown Governance Registry Mirror"
+source_path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
+title = "Knowledge Migration Plan Registry Mirror"
 kind = "generated_markdown"
 migration_priority = "none"
 raw_captured = true
@@ -286,8 +286,8 @@ document_toml = "registry/knowledge/docs/DOC-0165.toml"
 
 [[document]]
 id = "DOC-0166"
-source_path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
-title = "Next Actions Registry Mirror"
+source_path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
+title = "Markdown Governance Registry Mirror"
 kind = "generated_markdown"
 migration_priority = "none"
 raw_captured = true
@@ -297,8 +297,8 @@ document_toml = "registry/knowledge/docs/DOC-0166.toml"
 
 [[document]]
 id = "DOC-0167"
-source_path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
-title = "Requirements Registry Mirror"
+source_path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
+title = "Next Actions Registry Mirror"
 kind = "generated_markdown"
 migration_priority = "none"
 raw_captured = true
@@ -308,10 +308,10 @@ document_toml = "registry/knowledge/docs/DOC-0167.toml"
 
 [[document]]
 id = "DOC-0168"
-source_path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
-title = "Research Narratives Registry Mirror"
-kind = "generated_markdown"
-migration_priority = "none"
+source_path = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
+title = "Reports Narratives Registry Mirror"
+kind = "markdown_mirror"
+migration_priority = "critical"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
@@ -319,8 +319,8 @@ document_toml = "registry/knowledge/docs/DOC-0168.toml"
 
 [[document]]
 id = "DOC-0169"
-source_path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
-title = "Roadmap Registry Mirror"
+source_path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
+title = "Requirements Registry Mirror"
 kind = "generated_markdown"
 migration_priority = "none"
 raw_captured = true
@@ -330,8 +330,8 @@ document_toml = "registry/knowledge/docs/DOC-0169.toml"
 
 [[document]]
 id = "DOC-0170"
-source_path = "docs/generated/TODO_REGISTRY_MIRROR.md"
-title = "TODO Registry Mirror"
+source_path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
+title = "Research Narratives Registry Mirror"
 kind = "generated_markdown"
 migration_priority = "none"
 raw_captured = true
@@ -340,31 +340,31 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0170.toml"
 
 [[document]]
-id = "DOC-0195"
-source_path = "reports/artifacts_phase0_dryrun.md"
-title = "Artifacts Phase 0 dry-run"
-kind = "markdown_mirror"
-migration_priority = "critical"
+id = "DOC-0171"
+source_path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
+title = "Roadmap Registry Mirror"
+kind = "generated_markdown"
+migration_priority = "none"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0195.toml"
+document_toml = "registry/knowledge/docs/DOC-0171.toml"
 
 [[document]]
-id = "DOC-0196"
-source_path = "reports/artifacts_reorg_plan.md"
-title = "Artifacts reorganization plan (non-destructive)"
-kind = "markdown_mirror"
-migration_priority = "critical"
+id = "DOC-0172"
+source_path = "docs/generated/TODO_REGISTRY_MIRROR.md"
+title = "TODO Registry Mirror"
+kind = "generated_markdown"
+migration_priority = "none"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0196.toml"
+document_toml = "registry/knowledge/docs/DOC-0172.toml"
 
 [[document]]
 id = "DOC-0197"
-source_path = "reports/audit_network_gating.md"
-title = "Network Gating Audit (2026-02-06)"
+source_path = "reports/artifacts_phase0_dryrun.md"
+title = "Artifacts Phase 0 dry-run"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -374,8 +374,8 @@ document_toml = "registry/knowledge/docs/DOC-0197.toml"
 
 [[document]]
 id = "DOC-0198"
-source_path = "reports/audit_nonpython_toolchains.md"
-title = "Non-Python Toolchains Audit (2026-02-06)"
+source_path = "reports/artifacts_reorg_plan.md"
+title = "Artifacts reorganization plan (non-destructive)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -385,8 +385,8 @@ document_toml = "registry/knowledge/docs/DOC-0198.toml"
 
 [[document]]
 id = "DOC-0199"
-source_path = "reports/audit_provenance.md"
-title = "Provenance Audit (2026-02-04)"
+source_path = "reports/audit_network_gating.md"
+title = "Network Gating Audit (2026-02-06)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -396,8 +396,8 @@ document_toml = "registry/knowledge/docs/DOC-0199.toml"
 
 [[document]]
 id = "DOC-0200"
-source_path = "reports/audit_pythonpath.md"
-title = "Pythonpath Hygiene Audit (2026-02-04)"
+source_path = "reports/audit_nonpython_toolchains.md"
+title = "Non-Python Toolchains Audit (2026-02-06)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -407,8 +407,8 @@ document_toml = "registry/knowledge/docs/DOC-0200.toml"
 
 [[document]]
 id = "DOC-0201"
-source_path = "reports/claims_batch_backlog_C001_C050.md"
-title = "Claims Batch Backlog (C-001..C-050) (2026-02-03)"
+source_path = "reports/audit_provenance.md"
+title = "Provenance Audit (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -418,8 +418,8 @@ document_toml = "registry/knowledge/docs/DOC-0201.toml"
 
 [[document]]
 id = "DOC-0202"
-source_path = "reports/claims_batch_backlog_C001_C200.md"
-title = "Claims Batch Backlog (C-001..C-200) (2026-02-04)"
+source_path = "reports/audit_pythonpath.md"
+title = "Pythonpath Hygiene Audit (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -429,8 +429,8 @@ document_toml = "registry/knowledge/docs/DOC-0202.toml"
 
 [[document]]
 id = "DOC-0203"
-source_path = "reports/claims_batch_backlog_C011_C025.md"
-title = "Claims Batch Backlog (C-011..C-025) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C001_C050.md"
+title = "Claims Batch Backlog (C-001..C-050) (2026-02-03)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -440,8 +440,8 @@ document_toml = "registry/knowledge/docs/DOC-0203.toml"
 
 [[document]]
 id = "DOC-0204"
-source_path = "reports/claims_batch_backlog_C027_C045.md"
-title = "Claims Batch Backlog (C-027..C-045) (2026-02-03)"
+source_path = "reports/claims_batch_backlog_C001_C200.md"
+title = "Claims Batch Backlog (C-001..C-200) (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -451,8 +451,8 @@ document_toml = "registry/knowledge/docs/DOC-0204.toml"
 
 [[document]]
 id = "DOC-0205"
-source_path = "reports/claims_batch_backlog_C046_C060.md"
-title = "Claims Batch Backlog (C-046..C-060) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C011_C025.md"
+title = "Claims Batch Backlog (C-011..C-025) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -462,8 +462,8 @@ document_toml = "registry/knowledge/docs/DOC-0205.toml"
 
 [[document]]
 id = "DOC-0206"
-source_path = "reports/claims_batch_backlog_C046_C066.md"
-title = "Claims Batch Backlog (C-046..C-066) (2026-02-03)"
+source_path = "reports/claims_batch_backlog_C027_C045.md"
+title = "Claims Batch Backlog (C-027..C-045) (2026-02-03)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -473,8 +473,8 @@ document_toml = "registry/knowledge/docs/DOC-0206.toml"
 
 [[document]]
 id = "DOC-0207"
-source_path = "reports/claims_batch_backlog_C051_C100.md"
-title = "Claims Batch Backlog (C-051..C-100) (2026-02-03)"
+source_path = "reports/claims_batch_backlog_C046_C060.md"
+title = "Claims Batch Backlog (C-046..C-060) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -484,8 +484,8 @@ document_toml = "registry/knowledge/docs/DOC-0207.toml"
 
 [[document]]
 id = "DOC-0208"
-source_path = "reports/claims_batch_backlog_C101_C150.md"
-title = "Claims Batch Backlog (C-101..C-150) (2026-02-03)"
+source_path = "reports/claims_batch_backlog_C046_C066.md"
+title = "Claims Batch Backlog (C-046..C-066) (2026-02-03)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -495,8 +495,8 @@ document_toml = "registry/knowledge/docs/DOC-0208.toml"
 
 [[document]]
 id = "DOC-0209"
-source_path = "reports/claims_batch_backlog_C151_C200.md"
-title = "Claims Batch Backlog (C-151..C-200) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C051_C100.md"
+title = "Claims Batch Backlog (C-051..C-100) (2026-02-03)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -506,8 +506,8 @@ document_toml = "registry/knowledge/docs/DOC-0209.toml"
 
 [[document]]
 id = "DOC-0210"
-source_path = "reports/claims_batch_backlog_C201_C250.md"
-title = "Claims Batch Backlog (C-201..C-250) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C101_C150.md"
+title = "Claims Batch Backlog (C-101..C-150) (2026-02-03)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -517,8 +517,8 @@ document_toml = "registry/knowledge/docs/DOC-0210.toml"
 
 [[document]]
 id = "DOC-0211"
-source_path = "reports/claims_batch_backlog_C201_C408.md"
-title = "Claims Batch Backlog (C-201..C-408) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C151_C200.md"
+title = "Claims Batch Backlog (C-151..C-200) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -528,8 +528,8 @@ document_toml = "registry/knowledge/docs/DOC-0211.toml"
 
 [[document]]
 id = "DOC-0212"
-source_path = "reports/claims_batch_backlog_C201_C427.md"
-title = "Claims Batch Backlog (C-201..C-427) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C201_C250.md"
+title = "Claims Batch Backlog (C-201..C-250) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -539,8 +539,8 @@ document_toml = "registry/knowledge/docs/DOC-0212.toml"
 
 [[document]]
 id = "DOC-0213"
-source_path = "reports/claims_batch_backlog_C201_C430.md"
-title = "Claims Batch Backlog (C-201..C-430) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C201_C408.md"
+title = "Claims Batch Backlog (C-201..C-408) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -550,8 +550,8 @@ document_toml = "registry/knowledge/docs/DOC-0213.toml"
 
 [[document]]
 id = "DOC-0214"
-source_path = "reports/claims_batch_backlog_C201_C432.md"
-title = "Claims Batch Backlog (C-201..C-432) (2026-02-04)"
+source_path = "reports/claims_batch_backlog_C201_C427.md"
+title = "Claims Batch Backlog (C-201..C-427) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -561,8 +561,8 @@ document_toml = "registry/knowledge/docs/DOC-0214.toml"
 
 [[document]]
 id = "DOC-0215"
-source_path = "reports/claims_batch_backlog_C251_C300.md"
-title = "Claims Batch Backlog (C-251..C-300) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C201_C430.md"
+title = "Claims Batch Backlog (C-201..C-430) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -572,8 +572,8 @@ document_toml = "registry/knowledge/docs/DOC-0215.toml"
 
 [[document]]
 id = "DOC-0216"
-source_path = "reports/claims_batch_backlog_C301_C350.md"
-title = "Claims Batch Backlog (C-301..C-350) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C201_C432.md"
+title = "Claims Batch Backlog (C-201..C-432) (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -583,8 +583,8 @@ document_toml = "registry/knowledge/docs/DOC-0216.toml"
 
 [[document]]
 id = "DOC-0217"
-source_path = "reports/claims_batch_backlog_C351_C400.md"
-title = "Claims Batch Backlog (C-351..C-400) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C251_C300.md"
+title = "Claims Batch Backlog (C-251..C-300) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -594,8 +594,8 @@ document_toml = "registry/knowledge/docs/DOC-0217.toml"
 
 [[document]]
 id = "DOC-0218"
-source_path = "reports/claims_batch_backlog_C401_C427.md"
-title = "Claims Batch Backlog (C-401..C-427) (2026-02-03)"
+source_path = "reports/claims_batch_backlog_C301_C350.md"
+title = "Claims Batch Backlog (C-301..C-350) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -605,8 +605,8 @@ document_toml = "registry/knowledge/docs/DOC-0218.toml"
 
 [[document]]
 id = "DOC-0219"
-source_path = "reports/claims_bold_tokens_inventory.md"
-title = "Claims Bold-Token Inventory (2026-02-04)"
+source_path = "reports/claims_batch_backlog_C351_C400.md"
+title = "Claims Batch Backlog (C-351..C-400) (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -616,8 +616,8 @@ document_toml = "registry/knowledge/docs/DOC-0219.toml"
 
 [[document]]
 id = "DOC-0220"
-source_path = "reports/claims_id_inventory.md"
-title = "Claims ID Inventory (2026-02-04)"
+source_path = "reports/claims_batch_backlog_C401_C427.md"
+title = "Claims Batch Backlog (C-401..C-427) (2026-02-03)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -627,8 +627,8 @@ document_toml = "registry/knowledge/docs/DOC-0220.toml"
 
 [[document]]
 id = "DOC-0221"
-source_path = "reports/claims_priority_ranking.md"
-title = "Claims Priority Ranking (2026-02-02)"
+source_path = "reports/claims_bold_tokens_inventory.md"
+title = "Claims Bold-Token Inventory (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -638,8 +638,8 @@ document_toml = "registry/knowledge/docs/DOC-0221.toml"
 
 [[document]]
 id = "DOC-0222"
-source_path = "reports/claims_staleness_report.md"
-title = "Claims Staleness Report (2026-02-04)"
+source_path = "reports/claims_id_inventory.md"
+title = "Claims ID Inventory (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -649,8 +649,8 @@ document_toml = "registry/knowledge/docs/DOC-0222.toml"
 
 [[document]]
 id = "DOC-0223"
-source_path = "reports/claims_status_contradictions.md"
-title = "Claims Status Contradictions (2026-02-04)"
+source_path = "reports/claims_priority_ranking.md"
+title = "Claims Priority Ranking (2026-02-02)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -660,8 +660,8 @@ document_toml = "registry/knowledge/docs/DOC-0223.toml"
 
 [[document]]
 id = "DOC-0224"
-source_path = "reports/claims_status_inventory.md"
-title = "Claims Status Inventory (2026-02-04)"
+source_path = "reports/claims_staleness_report.md"
+title = "Claims Staleness Report (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -671,8 +671,8 @@ document_toml = "registry/knowledge/docs/DOC-0224.toml"
 
 [[document]]
 id = "DOC-0225"
-source_path = "reports/config_audit.md"
-title = "Config Audit Notes (2026-02-01)"
+source_path = "reports/claims_status_contradictions.md"
+title = "Claims Status Contradictions (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -682,8 +682,8 @@ document_toml = "registry/knowledge/docs/DOC-0225.toml"
 
 [[document]]
 id = "DOC-0226"
-source_path = "reports/convos_claim_candidates.md"
-title = "Convos Claim Candidates (Auto-Scan)"
+source_path = "reports/claims_status_inventory.md"
+title = "Claims Status Inventory (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -693,8 +693,8 @@ document_toml = "registry/knowledge/docs/DOC-0226.toml"
 
 [[document]]
 id = "DOC-0227"
-source_path = "reports/convos_claim_candidates_prioritized.md"
-title = "Convos Claim Candidates (Prioritized Shortlist, 2026-02-01)"
+source_path = "reports/config_audit.md"
+title = "Config Audit Notes (2026-02-01)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -704,8 +704,8 @@ document_toml = "registry/knowledge/docs/DOC-0227.toml"
 
 [[document]]
 id = "DOC-0228"
-source_path = "reports/convos_pdf_inventory.md"
-title = "Convos PDF inventory"
+source_path = "reports/convos_claim_candidates.md"
+title = "Convos Claim Candidates (Auto-Scan)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -715,8 +715,8 @@ document_toml = "registry/knowledge/docs/DOC-0228.toml"
 
 [[document]]
 id = "DOC-0229"
-source_path = "reports/non_iso_dates_inventory.md"
-title = "Non-ISO date inventory"
+source_path = "reports/convos_claim_candidates_prioritized.md"
+title = "Convos Claim Candidates (Prioritized Shortlist, 2026-02-01)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -726,8 +726,8 @@ document_toml = "registry/knowledge/docs/DOC-0229.toml"
 
 [[document]]
 id = "DOC-0230"
-source_path = "reports/open_claims_missing_dedicated_sources.md"
-title = "Open claims missing dedicated source index"
+source_path = "reports/convos_pdf_inventory.md"
+title = "Convos PDF inventory"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -737,8 +737,8 @@ document_toml = "registry/knowledge/docs/DOC-0230.toml"
 
 [[document]]
 id = "DOC-0231"
-source_path = "reports/open_claims_missing_test_hooks.md"
-title = "Open claims missing explicit test/verifier hook"
+source_path = "reports/non_iso_dates_inventory.md"
+title = "Non-ISO date inventory"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -748,8 +748,8 @@ document_toml = "registry/knowledge/docs/DOC-0231.toml"
 
 [[document]]
 id = "DOC-0232"
-source_path = "reports/package_index.md"
-title = "Package Index (2026-02-01)"
+source_path = "reports/open_claims_missing_dedicated_sources.md"
+title = "Open claims missing dedicated source index"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -759,8 +759,8 @@ document_toml = "registry/knowledge/docs/DOC-0232.toml"
 
 [[document]]
 id = "DOC-0233"
-source_path = "reports/pdf_inventory.md"
-title = "PDF Inventory"
+source_path = "reports/open_claims_missing_test_hooks.md"
+title = "Open claims missing explicit test/verifier hook"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -770,8 +770,8 @@ document_toml = "registry/knowledge/docs/DOC-0233.toml"
 
 [[document]]
 id = "DOC-0234"
-source_path = "reports/pythonpath_refactor_plan.md"
-title = "Pythonpath Refactor Plan (2026-02-04)"
+source_path = "reports/package_index.md"
+title = "Package Index (2026-02-01)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -781,8 +781,8 @@ document_toml = "registry/knowledge/docs/DOC-0234.toml"
 
 [[document]]
 id = "DOC-0235"
-source_path = "reports/repo_inventory.md"
-title = "Repo Inventory (2026-02-01)"
+source_path = "reports/pdf_inventory.md"
+title = "PDF Inventory"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -792,8 +792,8 @@ document_toml = "registry/knowledge/docs/DOC-0235.toml"
 
 [[document]]
 id = "DOC-0236"
-source_path = "reports/repo_structure_audit.md"
-title = "Repo Structure Audit (2026-02-04)"
+source_path = "reports/pythonpath_refactor_plan.md"
+title = "Pythonpath Refactor Plan (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -803,8 +803,8 @@ document_toml = "registry/knowledge/docs/DOC-0236.toml"
 
 [[document]]
 id = "DOC-0237"
-source_path = "reports/script_contracts_inventory.md"
-title = "Script contract inventory"
+source_path = "reports/repo_inventory.md"
+title = "Repo Inventory (2026-02-01)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -814,8 +814,8 @@ document_toml = "registry/knowledge/docs/DOC-0237.toml"
 
 [[document]]
 id = "DOC-0238"
-source_path = "reports/tickets_inventory.md"
-title = "Tickets Inventory (2026-02-04)"
+source_path = "reports/repo_structure_audit.md"
+title = "Repo Structure Audit (2026-02-04)"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -825,8 +825,8 @@ document_toml = "registry/knowledge/docs/DOC-0238.toml"
 
 [[document]]
 id = "DOC-0239"
-source_path = "reports/todo_fixme_scan.md"
-title = "TODO/FIXME Scan (2026-02-07)"
+source_path = "reports/script_contracts_inventory.md"
+title = "Script contract inventory"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -836,6 +836,28 @@ document_toml = "registry/knowledge/docs/DOC-0239.toml"
 
 [[document]]
 id = "DOC-0240"
+source_path = "reports/tickets_inventory.md"
+title = "Tickets Inventory (2026-02-04)"
+kind = "markdown_mirror"
+migration_priority = "critical"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0240.toml"
+
+[[document]]
+id = "DOC-0241"
+source_path = "reports/todo_fixme_scan.md"
+title = "TODO/FIXME Scan (2026-02-07)"
+kind = "markdown_mirror"
+migration_priority = "critical"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0241.toml"
+
+[[document]]
+id = "DOC-0242"
 source_path = "reports/tscp_trial_factor_ledger.md"
 title = "TSCP Trial-Factor Ledger (2026-02-04)"
 kind = "markdown_mirror"
@@ -843,7 +865,7 @@ migration_priority = "critical"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0240.toml"
+document_toml = "registry/knowledge/docs/DOC-0242.toml"
 
 [[document]]
 id = "DOC-0005"
@@ -2106,7 +2128,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0171"
+id = "DOC-0173"
 source_path = "docs/requirements/algebra.md"
 title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
 kind = "generated_markdown"
@@ -2115,7 +2137,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0172"
+id = "DOC-0174"
 source_path = "docs/requirements/analysis.md"
 title = "Requirements: Analysis (Topology + Embeddings)"
 kind = "generated_markdown"
@@ -2124,7 +2146,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0173"
+id = "DOC-0175"
 source_path = "docs/requirements/astro.md"
 title = "Requirements: Astronomy Data Fetching"
 kind = "generated_markdown"
@@ -2133,7 +2155,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0174"
+id = "DOC-0176"
 source_path = "docs/requirements/coq.md"
 title = "Requirements: Coq Proof Checking"
 kind = "generated_markdown"
@@ -2142,7 +2164,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0175"
+id = "DOC-0177"
 source_path = "docs/requirements/cpp.md"
 title = "Requirements: C++ Kernels (Conan + CMake)"
 kind = "generated_markdown"
@@ -2151,7 +2173,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0176"
+id = "DOC-0178"
 source_path = "docs/requirements/latex.md"
 title = "Requirements: LaTeX (PDF Build)"
 kind = "generated_markdown"
@@ -2160,7 +2182,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0177"
+id = "DOC-0179"
 source_path = "docs/requirements/materials.md"
 title = "Requirements: Materials Datasets"
 kind = "generated_markdown"
@@ -2169,7 +2191,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0178"
+id = "DOC-0180"
 source_path = "docs/requirements/particle.md"
 title = "Requirements: Particle Data Workflows"
 kind = "generated_markdown"
@@ -2178,7 +2200,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0179"
+id = "DOC-0181"
 source_path = "docs/requirements/quantum-docker.md"
 title = "Requirements: Quantum (Qiskit via Docker)"
 kind = "generated_markdown"
@@ -2187,7 +2209,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0180"
+id = "DOC-0182"
 source_path = "docs/theory/CLAIMS_METHODOLOGY.md"
 title = "Claims Methodology and Scientific Rigor"
 kind = "markdown_mirror"
@@ -2196,7 +2218,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0181"
+id = "DOC-0183"
 source_path = "docs/theory/INDEX.md"
 title = "Theory Narratives"
 kind = "markdown_mirror"
@@ -2205,7 +2227,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0182"
+id = "DOC-0184"
 source_path = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
 title = "Warp Ring Physics Reconciliation (Phase 7.0)"
 kind = "markdown_mirror"
@@ -2214,7 +2236,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0183"
+id = "DOC-0185"
 source_path = "docs/tickets/C001_C050_claims_audit.md"
 title = "Ticket: Claims audit batch C-001..C-050"
 kind = "generated_markdown"
@@ -2223,7 +2245,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0184"
+id = "DOC-0186"
 source_path = "docs/tickets/C051_C100_claims_audit.md"
 title = "Ticket: Claims audit batch C-051..C-100"
 kind = "generated_markdown"
@@ -2232,7 +2254,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0185"
+id = "DOC-0187"
 source_path = "docs/tickets/C101_C150_claims_audit.md"
 title = "Ticket: Claims audit batch C-101..C-150"
 kind = "generated_markdown"
@@ -2241,7 +2263,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0186"
+id = "DOC-0188"
 source_path = "docs/tickets/C151_C200_claims_audit.md"
 title = "Ticket: Claims audit batch C-151..C-200"
 kind = "generated_markdown"
@@ -2250,7 +2272,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0187"
+id = "DOC-0189"
 source_path = "docs/tickets/C201_C250_claims_audit.md"
 title = "Ticket: Claims audit batch C-201..C-250"
 kind = "generated_markdown"
@@ -2259,7 +2281,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0188"
+id = "DOC-0190"
 source_path = "docs/tickets/C251_C300_claims_audit.md"
 title = "Ticket: Claims audit batch C-251..C-300"
 kind = "generated_markdown"
@@ -2268,7 +2290,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0189"
+id = "DOC-0191"
 source_path = "docs/tickets/C301_C350_claims_audit.md"
 title = "Ticket: Claims audit batch C-301..C-350"
 kind = "generated_markdown"
@@ -2277,7 +2299,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0190"
+id = "DOC-0192"
 source_path = "docs/tickets/C351_C400_claims_audit.md"
 title = "Ticket: Claims audit batch C-351..C-400"
 kind = "generated_markdown"
@@ -2286,7 +2308,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0191"
+id = "DOC-0193"
 source_path = "docs/tickets/C401_C427_claims_audit.md"
 title = "Ticket: Claims audit batch C-401..C-427"
 kind = "generated_markdown"
@@ -2295,7 +2317,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0192"
+id = "DOC-0194"
 source_path = "docs/tickets/INDEX.md"
 title = "Claim Audit Tickets"
 kind = "generated_markdown"
@@ -2304,7 +2326,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0193"
+id = "DOC-0195"
 source_path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
 title = "Plan: Warp Ring Physics Reconciliation"
 kind = "generated_markdown"
@@ -2313,7 +2335,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0194"
+id = "DOC-0196"
 source_path = "docs/x86_SIMD_OPTIMIZATION.md"
 title = "x86 SIMD/FPU Optimization & History Reference"
 kind = "markdown_mirror"

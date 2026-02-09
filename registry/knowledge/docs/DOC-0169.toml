@@ -3,79 +3,117 @@
 
 [document]
 id = "DOC-0169"
-source_path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
-title = "Roadmap Registry Mirror"
+source_path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
+title = "Requirements Registry Mirror"
 kind = "generated_markdown"
 status = "active"
 migration_priority = "none"
 generated = true
-source_sha256 = "e66b887310fb28e843861986e514d0eb0406a21bcc64f2c9b5fbbf4bdf0cb873"
-source_line_count = 60
-source_size_bytes = 1686
-content_sha256 = "e66b887310fb28e843861986e514d0eb0406a21bcc64f2c9b5fbbf4bdf0cb873"
+source_sha256 = "cd14108d9933028978380689782eb61baa2888242919b007f26b875c92b240f0"
+source_line_count = 98
+source_size_bytes = 2160
+content_sha256 = "cd14108d9933028978380689782eb61baa2888242919b007f26b875c92b240f0"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Roadmap Registry Mirror
+# Requirements Registry Mirror
 
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: TOML registry files under registry/ -->
 
-Authoritative source: `registry/roadmap.toml`.
+Authoritative source: `registry/requirements.toml`.
 
-- Consolidated date: 2026-02-06
-- Source markdown: `docs/ROADMAP.md`
+- Updated: 2026-02-09
+- Python recommended: `3.11-3.12`
+- Python allowed: `3.13+ (with optional extras caveats)`
+- Primary markdown: `docs/REQUIREMENTS.md`
+
+## Modules
+
+### REQ-CORE: core
+
 - Status: `active`
+- Markdown: `docs/REQUIREMENTS.md`
+- Install targets:
+  - `make install`
+  - `PYTHONWARNINGS=error make check`
 
-## Companion Docs
+### REQ-ALGEBRA: algebra
 
-- `docs/TODO.md`
-- `docs/NEXT_ACTIONS.md`
-
-## Workstreams
-
-### WS-REGISTRY-001: Documentation Registry Evolution
-
-- Priority: `high`
-- Status: `in_progress`
-- Description: Move markdown operational docs to TOML-first authoritative registries with generated markdown mirrors.
-- Primary outputs:
-  - `registry/knowledge_sources.toml`
-  - `registry/knowledge/documents.toml`
-  - `registry/roadmap.toml`
-  - `registry/todo.toml`
-  - `registry/next_actions.toml`
-  - `registry/requirements.toml`
-  - `registry/claims_tasks.toml`
-  - `registry/claims_domains.toml`
-  - `registry/claim_tickets.toml`
-  - `src/verification/verify_registry_mirror_freshness.py`
-  - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
-  - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
-  - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
-  - `docs/CLAIMS_TASKS.md`
-  - `docs/claims/INDEX.md`
-
-### WS-QUALITY-001: Warnings-As-Errors Discipline
-
-- Priority: `high`
 - Status: `active`
-- Description: All Python and Rust checks run with warnings treated as failures.
-- Primary outputs:
-  - `Makefile`
-  - `docs/REQUIREMENTS.md`
-  - `AGENTS.md`
+- Markdown: `docs/requirements/algebra.md`
 
-### WS-CLAIMS-001: Claims Evidence Governance
+### REQ-ANALYSIS: analysis
 
-- Priority: `high`
 - Status: `active`
-- Description: Maintain claim lifecycle with TOML registry authority and markdown mirrors.
-- Primary outputs:
-  - `registry/claims.toml`
-  - `docs/CLAIMS_EVIDENCE_MATRIX.md`
-  - `docs/CLAIMS_TASKS.md`
+- Markdown: `docs/requirements/analysis.md`
+- Install targets:
+  - `make install-analysis`
+
+### REQ-ASTRO: astro
+
+- Status: `active`
+- Markdown: `docs/requirements/astro.md`
+- Install targets:
+  - `make install-astro`
+
+### REQ-MATERIALS: materials
+
+- Status: `active`
+- Markdown: `docs/requirements/materials.md`
+
+### REQ-PARTICLE: particle
+
+- Status: `active`
+- Markdown: `docs/requirements/particle.md`
+- Install targets:
+  - `make install-particle`
+
+### REQ-QUANTUM: quantum_docker
+
+- Status: `active`
+- Markdown: `docs/requirements/quantum-docker.md`
+- Install targets:
+  - `make install-quantum`
+  - `docker-quantum-build`
+  - `docker-quantum-run`
+
+### REQ-COQ: coq
+
+- Status: `active`
+- Markdown: `docs/requirements/coq.md`
+- Install targets:
+  - `make coq`
+
+### REQ-LATEX: latex
+
+- Status: `active`
+- Markdown: `docs/requirements/latex.md`
+- Install targets:
+  - `make latex`
+
+### REQ-CPP: cpp
+
+- Status: `active`
+- Markdown: `docs/requirements/cpp.md`
+- Install targets:
+  - `make cpp-build`
+  - `make cpp-test`
+
+## Coverage Gaps
+
+### REQ-GAP-001: crate_specific_docs
+
+- Status: `open`
+- Description: Per-crate requirements markdown is missing for several Rust crates.
+- Proposed resolution: Define crate-level requirements entries in this TOML and generate markdown stubs as needed.
+
+### REQ-GAP-002: operational_sync
+
+- Status: `open`
+- Description: No generator currently syncs requirements markdown from this TOML registry.
+- Proposed resolution: Add TOML -> markdown exporter and include in make registry.
 
 """

@@ -9,15 +9,21 @@ kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "f104f3accf2fcd4027b12e267f658cd945c5e732f79c8da7e03f5f75fd5108de"
-source_line_count = 26
-source_size_bytes = 912
-content_sha256 = "f104f3accf2fcd4027b12e267f658cd945c5e732f79c8da7e03f5f75fd5108de"
+source_sha256 = "f4a6f23293d71ea4a559152c4d0c1bfb6e287546b11eb096f584cf968fdfccf2"
+source_line_count = 32
+source_size_bytes = 1092
+content_sha256 = "f4a6f23293d71ea4a559152c4d0c1bfb6e287546b11eb096f584cf968fdfccf2"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
 # Convos audit workspace
 
 Policy:

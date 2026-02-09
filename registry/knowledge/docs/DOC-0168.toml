@@ -3,231 +3,334 @@
 
 [document]
 id = "DOC-0168"
-source_path = "docs/generated/RESEARCH_NARRATIVES_REGISTRY_MIRROR.md"
-title = "Research Narratives Registry Mirror"
-kind = "generated_markdown"
+source_path = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
+title = "Reports Narratives Registry Mirror"
+kind = "markdown_mirror"
 status = "active"
-migration_priority = "none"
+migration_priority = "critical"
 generated = true
-source_sha256 = "74ffdb2c558c54e22166fdf7da1fbcbc02977f2e074db1d11dc7639e2894992e"
-source_line_count = 212
-source_size_bytes = 6331
-content_sha256 = "74ffdb2c558c54e22166fdf7da1fbcbc02977f2e074db1d11dc7639e2894992e"
+source_sha256 = "41a14cda974efcc9e91b51ccb584150f3efb5009696092bdf2454ec9bc475eb7"
+source_line_count = 315
+source_size_bytes = 20722
+content_sha256 = "41a14cda974efcc9e91b51ccb584150f3efb5009696092bdf2454ec9bc475eb7"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Research Narratives Registry Mirror
+# Reports Narratives Registry Mirror
 
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: TOML registry files under registry/ -->
 
-Authoritative source: `registry/research_narratives.toml`.
+Authoritative source: `registry/reports_narratives.toml`.
 
 - Updated: 2026-02-09
-- Document count: 22
+- Source markdown glob: `reports/*.md`
+- Document count: 46
 
 ## Documents
 
-### RN-001: Metamaterial Warp Chip: Validation Datasheet (Simulated)
+### RPT-001: Artifacts Phase 0 dry-run
 
-- Source markdown: `docs/engineering/DATASHEET_V2.md`
-- Domain: `engineering`
-- Status token: `NARRATIVE`
-- Content kind: `research_note`
-- Verification level: `engineering_narrative`
+- Source markdown: `reports/artifacts_phase0_dryrun.md`
+- Category: `report`
 - Line count: 37
 
-### RN-002: Holographic Warp-Gate Fabrication Protocol (v1.0)
+### RPT-002: Artifacts reorganization plan (non-destructive)
 
-- Source markdown: `docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md`
-- Domain: `engineering`
-- Status token: `SPECIFICATION`
-- Content kind: `specification`
-- Verification level: `engineering_narrative`
-- Line count: 70
+- Source markdown: `reports/artifacts_reorg_plan.md`
+- Category: `plan`
+- Line count: 57
 
-### RN-003: Fetching External Sources (wget-first, offline reproducibility)
+### RPT-003: Network Gating Audit (2026-02-06)
 
-- Source markdown: `docs/engineering/FETCHING_EXTERNAL_SOURCES.md`
-- Domain: `engineering`
-- Status token: `NARRATIVE`
-- Content kind: `research_note`
-- Verification level: `engineering_narrative`
-- Line count: 66
+- Source markdown: `reports/audit_network_gating.md`
+- Category: `audit`
+- Line count: 29
 
-### RN-004: Gap Closure Report: Repo-Wide Sample Lacunae
+### RPT-004: Non-Python Toolchains Audit (2026-02-06)
 
-- Source markdown: `docs/engineering/GAP_CLOSURE_REPORT.md`
-- Domain: `engineering`
-- Status token: `REPORT`
-- Content kind: `engineering_report`
-- Verification level: `engineering_narrative`
-- Line count: 118
-
-### RN-005: MCP and Skill Audit (2026-02-09)
-
-- Source markdown: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`
-- Domain: `engineering`
-- Status token: `AUDIT`
-- Content kind: `audit_note`
-- Verification level: `engineering_narrative`
-- Line count: 206
-
-### RN-006: Markdown and TOML Centralization Audit (2026-02-09)
-
-- Source markdown: `docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md`
-- Domain: `engineering`
-- Status token: `AUDIT`
-- Content kind: `audit_note`
-- Verification level: `engineering_narrative`
-- Line count: 182
-
-### RN-007: Elucidation of OptiX and Hardware Acceleration
-
-- Source markdown: `docs/engineering/OPTIX_ELUCIDATION.md`
-- Domain: `engineering`
-- Status token: `NARRATIVE`
-- Content kind: `research_note`
-- Verification level: `engineering_narrative`
-- Line count: 32
-
-### RN-008: P-adic Signal Theory & Kozyrev-Sedenion Synthesis
-
-- Source markdown: `docs/engineering/PADIC_SIGNAL_THEORY.md`
-- Domain: `engineering`
-- Status token: `NARRATIVE`
-- Content kind: `theory_note`
-- Verification level: `engineering_narrative`
-- Line count: 92
-
-### RN-009: Phase 10: Multiphysics & Connectivity Deep Dive
-
-- Source markdown: `docs/engineering/PHASE_10_MULTIPHYSICS.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `engineering_narrative`
-- Line count: 43
-
-### RN-010: Phase 11 Report: Visualization & Integrity
-
-- Source markdown: `docs/engineering/PHASE_11_VISUALIZATION.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `engineering_narrative`
-- Line count: 30
-
-### RN-011: Phase 12 Report: Holographic Warp Renderer
-
-- Source markdown: `docs/engineering/PHASE_12_RENDERER.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `engineering_narrative`
-- Line count: 25
-
-### RN-012: Phase 13: The Grand Critique & Synthesis
-
-- Source markdown: `docs/engineering/PHASE_13_GRAND_CRITIQUE.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `engineering_narrative`
-- Line count: 32
-
-### RN-013: Phase 14: The \"Endless\" Deep Dive
-
-- Source markdown: `docs/engineering/PHASE_14_DEEP_DIVE.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `engineering_narrative`
-- Line count: 22
-
-### RN-014: Phase 15: The \"Resurrection\" Report
-
-- Source markdown: `docs/engineering/PHASE_15_RESURRECTION.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `engineering_narrative`
+- Source markdown: `reports/audit_nonpython_toolchains.md`
+- Category: `audit`
 - Line count: 26
 
-### RN-015: Phase 16: Final Validation & Synthesis
+### RPT-005: Provenance Audit (2026-02-04)
 
-- Source markdown: `docs/engineering/PHASE_16_FINAL_VALIDATION.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `validation_summary`
-- Line count: 25
+- Source markdown: `reports/audit_provenance.md`
+- Category: `audit`
+- Line count: 14
 
-### RN-016: Phase 6 Engineering Implementation Report
+### RPT-006: Pythonpath Hygiene Audit (2026-02-04)
 
-- Source markdown: `docs/engineering/PHASE_6_IMPLEMENTATION.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `engineering_narrative`
+- Source markdown: `reports/audit_pythonpath.md`
+- Category: `audit`
+- Line count: 99
+
+### RPT-007: Claims Batch Backlog (C-001..C-050) (2026-02-03)
+
+- Source markdown: `reports/claims_batch_backlog_C001_C050.md`
+- Category: `claims_backlog`
+- Line count: 85
+- Claim refs (50): C-001, C-002, C-003, C-004, C-005, C-006, C-007, C-008, C-009, C-010, C-011, C-012, C-013, C-014, C-015, C-016, C-017, C-018, C-019, C-020, C-021, C-022, C-023, C-024, C-025, C-026, C-027, C-028, C-029, C-030, C-031, C-032, C-033, C-034, C-035, C-036, C-037, C-038, C-039, C-040, C-041, C-042, C-043, C-044, C-045, C-046, C-047, C-048, C-049, C-050
+
+### RPT-008: Claims Batch Backlog (C-001..C-200) (2026-02-04)
+
+- Source markdown: `reports/claims_batch_backlog_C001_C200.md`
+- Category: `claims_backlog`
+- Line count: 239
+- Claim refs (200): C-001, C-002, C-003, C-004, C-005, C-006, C-007, C-008, C-009, C-010, C-011, C-012, C-013, C-014, C-015, C-016, C-017, C-018, C-019, C-020, C-021, C-022, C-023, C-024, C-025, C-026, C-027, C-028, C-029, C-030, C-031, C-032, C-033, C-034, C-035, C-036, C-037, C-038, C-039, C-040, C-041, C-042, C-043, C-044, C-045, C-046, C-047, C-048, C-049, C-050, C-051, C-052, C-053, C-054, C-055, C-056, C-057, C-058, C-059, C-060, C-061, C-062, C-063, C-064, C-065, C-066, C-067, C-068, C-069, C-070, C-071, C-072, C-073, C-074, C-075, C-076, C-077, C-078, C-079, C-080, C-081, C-082, C-083, C-084, C-085, C-086, C-087, C-088, C-089, C-090, C-091, C-092, C-093, C-094, C-095, C-096, C-097, C-098, C-099, C-100, C-101, C-102, C-103, C-104, C-105, C-106, C-107, C-108, C-109, C-110, C-111, C-112, C-113, C-114, C-115, C-116, C-117, C-118, C-119, C-120, C-121, C-122, C-123, C-124, C-125, C-126, C-127, C-128, C-129, C-130, C-131, C-132, C-133, C-134, C-135, C-136, C-137, C-138, C-139, C-140, C-141, C-142, C-143, C-144, C-145, C-146, C-147, C-148, C-149, C-150, C-151, C-152, C-153, C-154, C-155, C-156, C-157, C-158, C-159, C-160, C-161, C-162, C-163, C-164, C-165, C-166, C-167, C-168, C-169, C-170, C-171, C-172, C-173, C-174, C-175, C-176, C-177, C-178, C-179, C-180, C-181, C-182, C-183, C-184, C-185, C-186, C-187, C-188, C-189, C-190, C-191, C-192, C-193, C-194, C-195, C-196, C-197, C-198, C-199, C-200
+
+### RPT-009: Claims Batch Backlog (C-011..C-025) (2026-02-02)
+
+- Source markdown: `reports/claims_batch_backlog_C011_C025.md`
+- Category: `claims_backlog`
+- Line count: 37
+- Claim refs (15): C-011, C-012, C-013, C-014, C-015, C-016, C-017, C-018, C-019, C-020, C-021, C-022, C-023, C-024, C-025
+
+### RPT-010: Claims Batch Backlog (C-027..C-045) (2026-02-03)
+
+- Source markdown: `reports/claims_batch_backlog_C027_C045.md`
+- Category: `claims_backlog`
+- Line count: 39
+- Claim refs (19): C-027, C-028, C-029, C-030, C-031, C-032, C-033, C-034, C-035, C-036, C-037, C-038, C-039, C-040, C-041, C-042, C-043, C-044, C-045
+
+### RPT-011: Claims Batch Backlog (C-046..C-060) (2026-02-02)
+
+- Source markdown: `reports/claims_batch_backlog_C046_C060.md`
+- Category: `claims_backlog`
+- Line count: 38
+- Claim refs (15): C-046, C-047, C-048, C-049, C-050, C-051, C-052, C-053, C-054, C-055, C-056, C-057, C-058, C-059, C-060
+
+### RPT-012: Claims Batch Backlog (C-046..C-066) (2026-02-03)
+
+- Source markdown: `reports/claims_batch_backlog_C046_C066.md`
+- Category: `claims_backlog`
+- Line count: 41
+- Claim refs (21): C-046, C-047, C-048, C-049, C-050, C-051, C-052, C-053, C-054, C-055, C-056, C-057, C-058, C-059, C-060, C-061, C-062, C-063, C-064, C-065, C-066
+
+### RPT-013: Claims Batch Backlog (C-051..C-100) (2026-02-03)
+
+- Source markdown: `reports/claims_batch_backlog_C051_C100.md`
+- Category: `claims_backlog`
+- Line count: 72
+- Claim refs (49): C-051, C-052, C-053, C-054, C-055, C-056, C-057, C-058, C-059, C-060, C-061, C-062, C-063, C-064, C-065, C-066, C-067, C-068, C-069, C-070, C-071, C-072, C-073, C-074, C-075, C-076, C-077, C-078, C-079, C-080, C-081, C-083, C-084, C-085, C-086, C-087, C-088, C-089, C-090, C-091, C-092, C-093, C-094, C-095, C-096, C-097, C-098, C-099, C-100
+
+### RPT-014: Claims Batch Backlog (C-101..C-150) (2026-02-03)
+
+- Source markdown: `reports/claims_batch_backlog_C101_C150.md`
+- Category: `claims_backlog`
 - Line count: 69
-- Claim refs (3): C-042, C-050, C-400
+- Claim refs (49): C-101, C-102, C-103, C-104, C-105, C-106, C-107, C-108, C-109, C-110, C-111, C-112, C-113, C-114, C-115, C-116, C-117, C-118, C-119, C-120, C-121, C-122, C-123, C-124, C-125, C-126, C-127, C-128, C-129, C-130, C-131, C-133, C-134, C-135, C-136, C-137, C-138, C-139, C-140, C-141, C-142, C-143, C-144, C-145, C-146, C-147, C-148, C-149, C-150
 
-### RN-017: Phase 7 Engineering & Synthesis Report
+### RPT-015: Claims Batch Backlog (C-151..C-200) (2026-02-02)
 
-- Source markdown: `docs/engineering/PHASE_7_REPORT.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `engineering_narrative`
-- Line count: 45
+- Source markdown: `reports/claims_batch_backlog_C151_C200.md`
+- Category: `claims_backlog`
+- Line count: 70
+- Claim refs (50): C-151, C-152, C-153, C-154, C-155, C-156, C-157, C-158, C-159, C-160, C-161, C-162, C-163, C-164, C-165, C-166, C-167, C-168, C-169, C-170, C-171, C-172, C-173, C-174, C-175, C-176, C-177, C-178, C-179, C-180, C-181, C-182, C-183, C-184, C-185, C-186, C-187, C-188, C-189, C-190, C-191, C-192, C-193, C-194, C-195, C-196, C-197, C-198, C-199, C-200
 
-### RN-018: Phase 8: Holographic Warp & Sedenion Synthesis
+### RPT-016: Claims Batch Backlog (C-201..C-250) (2026-02-02)
 
-- Source markdown: `docs/engineering/PHASE_8_SYNTHESIS.md`
-- Domain: `engineering`
-- Status token: `PHASE_REPORT`
-- Content kind: `phase_execution_report`
-- Verification level: `engineering_narrative`
-- Line count: 40
+- Source markdown: `reports/claims_batch_backlog_C201_C250.md`
+- Category: `claims_backlog`
+- Line count: 70
+- Claim refs (50): C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210, C-211, C-212, C-213, C-214, C-215, C-216, C-217, C-218, C-219, C-220, C-221, C-222, C-223, C-224, C-225, C-226, C-227, C-228, C-229, C-230, C-231, C-232, C-233, C-234, C-235, C-236, C-237, C-238, C-239, C-240, C-241, C-242, C-243, C-244, C-245, C-246, C-247, C-248, C-249, C-250
 
-### RN-019: Physics Validation Report
+### RPT-017: Claims Batch Backlog (C-201..C-408) (2026-02-02)
 
-- Source markdown: `docs/engineering/PHYSICS_VALIDATION_REPORT.md`
-- Domain: `engineering`
-- Status token: `REPORT`
-- Content kind: `engineering_report`
-- Verification level: `validation_summary`
+- Source markdown: `reports/claims_batch_backlog_C201_C408.md`
+- Category: `claims_backlog`
+- Line count: 234
+- Claim refs (208): C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210, C-211, C-212, C-213, C-214, C-215, C-216, C-217, C-218, C-219, C-220, C-221, C-222, C-223, C-224, C-225, C-226, C-227, C-228, C-229, C-230, C-231, C-232, C-233, C-234, C-235, C-236, C-237, C-238, C-239, C-240, C-241, C-242, C-243, C-244, C-245, C-246, C-247, C-248, C-249, C-250, C-251, C-252, C-253, C-254, C-255, C-256, C-257, C-258, C-259, C-260, C-261, C-262, C-263, C-264, C-265, C-266, C-267, C-268, C-269, C-270, C-271, C-272, C-273, C-274, C-275, C-276, C-277, C-278, C-279, C-280, C-281, C-282, C-283, C-284, C-285, C-286, C-287, C-288, C-289, C-290, C-291, C-292, C-293, C-294, C-295, C-296, C-297, C-298, C-299, C-300, C-301, C-302, C-303, C-304, C-305, C-306, C-307, C-308, C-309, C-310, C-311, C-312, C-313, C-314, C-315, C-316, C-317, C-318, C-319, C-320, C-321, C-322, C-323, C-324, C-325, C-326, C-327, C-328, C-329, C-330, C-331, C-332, C-333, C-334, C-335, C-336, C-337, C-338, C-339, C-340, C-341, C-342, C-343, C-344, C-345, C-346, C-347, C-348, C-349, C-350, C-351, C-352, C-353, C-354, C-355, C-356, C-357, C-358, C-359, C-360, C-361, C-362, C-363, C-364, C-365, C-366, C-367, C-368, C-369, C-370, C-371, C-372, C-373, C-374, C-375, C-376, C-377, C-378, C-379, C-380, C-381, C-382, C-383, C-384, C-385, C-386, C-387, C-388, C-389, C-390, C-391, C-392, C-393, C-394, C-395, C-396, C-397, C-398, C-399, C-400, C-401, C-402, C-403, C-404, C-405, C-406, C-407, C-408
+
+### RPT-018: Claims Batch Backlog (C-201..C-427) (2026-02-02)
+
+- Source markdown: `reports/claims_batch_backlog_C201_C427.md`
+- Category: `claims_backlog`
+- Line count: 268
+- Claim refs (227): C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210, C-211, C-212, C-213, C-214, C-215, C-216, C-217, C-218, C-219, C-220, C-221, C-222, C-223, C-224, C-225, C-226, C-227, C-228, C-229, C-230, C-231, C-232, C-233, C-234, C-235, C-236, C-237, C-238, C-239, C-240, C-241, C-242, C-243, C-244, C-245, C-246, C-247, C-248, C-249, C-250, C-251, C-252, C-253, C-254, C-255, C-256, C-257, C-258, C-259, C-260, C-261, C-262, C-263, C-264, C-265, C-266, C-267, C-268, C-269, C-270, C-271, C-272, C-273, C-274, C-275, C-276, C-277, C-278, C-279, C-280, C-281, C-282, C-283, C-284, C-285, C-286, C-287, C-288, C-289, C-290, C-291, C-292, C-293, C-294, C-295, C-296, C-297, C-298, C-299, C-300, C-301, C-302, C-303, C-304, C-305, C-306, C-307, C-308, C-309, C-310, C-311, C-312, C-313, C-314, C-315, C-316, C-317, C-318, C-319, C-320, C-321, C-322, C-323, C-324, C-325, C-326, C-327, C-328, C-329, C-330, C-331, C-332, C-333, C-334, C-335, C-336, C-337, C-338, C-339, C-340, C-341, C-342, C-343, C-344, C-345, C-346, C-347, C-348, C-349, C-350, C-351, C-352, C-353, C-354, C-355, C-356, C-357, C-358, C-359, C-360, C-361, C-362, C-363, C-364, C-365, C-366, C-367, C-368, C-369, C-370, C-371, C-372, C-373, C-374, C-375, C-376, C-377, C-378, C-379, C-380, C-381, C-382, C-383, C-384, C-385, C-386, C-387, C-388, C-389, C-390, C-391, C-392, C-393, C-394, C-395, C-396, C-397, C-398, C-399, C-400, C-401, C-402, C-403, C-404, C-405, C-406, C-407, C-408, C-409, C-410, C-411, C-412, C-413, C-414, C-415, C-416, C-417, C-418, C-419, C-420, C-421, C-422, C-423, C-424, C-425, C-426, C-427
+
+### RPT-019: Claims Batch Backlog (C-201..C-430) (2026-02-02)
+
+- Source markdown: `reports/claims_batch_backlog_C201_C430.md`
+- Category: `claims_backlog`
+- Line count: 274
+- Claim refs (230): C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210, C-211, C-212, C-213, C-214, C-215, C-216, C-217, C-218, C-219, C-220, C-221, C-222, C-223, C-224, C-225, C-226, C-227, C-228, C-229, C-230, C-231, C-232, C-233, C-234, C-235, C-236, C-237, C-238, C-239, C-240, C-241, C-242, C-243, C-244, C-245, C-246, C-247, C-248, C-249, C-250, C-251, C-252, C-253, C-254, C-255, C-256, C-257, C-258, C-259, C-260, C-261, C-262, C-263, C-264, C-265, C-266, C-267, C-268, C-269, C-270, C-271, C-272, C-273, C-274, C-275, C-276, C-277, C-278, C-279, C-280, C-281, C-282, C-283, C-284, C-285, C-286, C-287, C-288, C-289, C-290, C-291, C-292, C-293, C-294, C-295, C-296, C-297, C-298, C-299, C-300, C-301, C-302, C-303, C-304, C-305, C-306, C-307, C-308, C-309, C-310, C-311, C-312, C-313, C-314, C-315, C-316, C-317, C-318, C-319, C-320, C-321, C-322, C-323, C-324, C-325, C-326, C-327, C-328, C-329, C-330, C-331, C-332, C-333, C-334, C-335, C-336, C-337, C-338, C-339, C-340, C-341, C-342, C-343, C-344, C-345, C-346, C-347, C-348, C-349, C-350, C-351, C-352, C-353, C-354, C-355, C-356, C-357, C-358, C-359, C-360, C-361, C-362, C-363, C-364, C-365, C-366, C-367, C-368, C-369, C-370, C-371, C-372, C-373, C-374, C-375, C-376, C-377, C-378, C-379, C-380, C-381, C-382, C-383, C-384, C-385, C-386, C-387, C-388, C-389, C-390, C-391, C-392, C-393, C-394, C-395, C-396, C-397, C-398, C-399, C-400, C-401, C-402, C-403, C-404, C-405, C-406, C-407, C-408, C-409, C-410, C-411, C-412, C-413, C-414, C-415, C-416, C-417, C-418, C-419, C-420, C-421, C-422, C-423, C-424, C-425, C-426, C-427, C-428, C-429, C-430
+
+### RPT-020: Claims Batch Backlog (C-201..C-432) (2026-02-04)
+
+- Source markdown: `reports/claims_batch_backlog_C201_C432.md`
+- Category: `claims_backlog`
+- Line count: 278
+- Claim refs (232): C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210, C-211, C-212, C-213, C-214, C-215, C-216, C-217, C-218, C-219, C-220, C-221, C-222, C-223, C-224, C-225, C-226, C-227, C-228, C-229, C-230, C-231, C-232, C-233, C-234, C-235, C-236, C-237, C-238, C-239, C-240, C-241, C-242, C-243, C-244, C-245, C-246, C-247, C-248, C-249, C-250, C-251, C-252, C-253, C-254, C-255, C-256, C-257, C-258, C-259, C-260, C-261, C-262, C-263, C-264, C-265, C-266, C-267, C-268, C-269, C-270, C-271, C-272, C-273, C-274, C-275, C-276, C-277, C-278, C-279, C-280, C-281, C-282, C-283, C-284, C-285, C-286, C-287, C-288, C-289, C-290, C-291, C-292, C-293, C-294, C-295, C-296, C-297, C-298, C-299, C-300, C-301, C-302, C-303, C-304, C-305, C-306, C-307, C-308, C-309, C-310, C-311, C-312, C-313, C-314, C-315, C-316, C-317, C-318, C-319, C-320, C-321, C-322, C-323, C-324, C-325, C-326, C-327, C-328, C-329, C-330, C-331, C-332, C-333, C-334, C-335, C-336, C-337, C-338, C-339, C-340, C-341, C-342, C-343, C-344, C-345, C-346, C-347, C-348, C-349, C-350, C-351, C-352, C-353, C-354, C-355, C-356, C-357, C-358, C-359, C-360, C-361, C-362, C-363, C-364, C-365, C-366, C-367, C-368, C-369, C-370, C-371, C-372, C-373, C-374, C-375, C-376, C-377, C-378, C-379, C-380, C-381, C-382, C-383, C-384, C-385, C-386, C-387, C-388, C-389, C-390, C-391, C-392, C-393, C-394, C-395, C-396, C-397, C-398, C-399, C-400, C-401, C-402, C-403, C-404, C-405, C-406, C-407, C-408, C-409, C-410, C-411, C-412, C-413, C-414, C-415, C-416, C-417, C-418, C-419, C-420, C-421, C-422, C-423, C-424, C-425, C-426, C-427, C-428, C-429, C-430, C-431, C-432
+
+### RPT-021: Claims Batch Backlog (C-251..C-300) (2026-02-02)
+
+- Source markdown: `reports/claims_batch_backlog_C251_C300.md`
+- Category: `claims_backlog`
+- Line count: 70
+- Claim refs (50): C-251, C-252, C-253, C-254, C-255, C-256, C-257, C-258, C-259, C-260, C-261, C-262, C-263, C-264, C-265, C-266, C-267, C-268, C-269, C-270, C-271, C-272, C-273, C-274, C-275, C-276, C-277, C-278, C-279, C-280, C-281, C-282, C-283, C-284, C-285, C-286, C-287, C-288, C-289, C-290, C-291, C-292, C-293, C-294, C-295, C-296, C-297, C-298, C-299, C-300
+
+### RPT-022: Claims Batch Backlog (C-301..C-350) (2026-02-02)
+
+- Source markdown: `reports/claims_batch_backlog_C301_C350.md`
+- Category: `claims_backlog`
+- Line count: 70
+- Claim refs (50): C-301, C-302, C-303, C-304, C-305, C-306, C-307, C-308, C-309, C-310, C-311, C-312, C-313, C-314, C-315, C-316, C-317, C-318, C-319, C-320, C-321, C-322, C-323, C-324, C-325, C-326, C-327, C-328, C-329, C-330, C-331, C-332, C-333, C-334, C-335, C-336, C-337, C-338, C-339, C-340, C-341, C-342, C-343, C-344, C-345, C-346, C-347, C-348, C-349, C-350
+
+### RPT-023: Claims Batch Backlog (C-351..C-400) (2026-02-02)
+
+- Source markdown: `reports/claims_batch_backlog_C351_C400.md`
+- Category: `claims_backlog`
+- Line count: 70
+- Claim refs (50): C-351, C-352, C-353, C-354, C-355, C-356, C-357, C-358, C-359, C-360, C-361, C-362, C-363, C-364, C-365, C-366, C-367, C-368, C-369, C-370, C-371, C-372, C-373, C-374, C-375, C-376, C-377, C-378, C-379, C-380, C-381, C-382, C-383, C-384, C-385, C-386, C-387, C-388, C-389, C-390, C-391, C-392, C-393, C-394, C-395, C-396, C-397, C-398, C-399, C-400
+
+### RPT-024: Claims Batch Backlog (C-401..C-427) (2026-02-03)
+
+- Source markdown: `reports/claims_batch_backlog_C401_C427.md`
+- Category: `claims_backlog`
+- Line count: 68
+- Claim refs (27): C-401, C-402, C-403, C-404, C-405, C-406, C-407, C-408, C-409, C-410, C-411, C-412, C-413, C-414, C-415, C-416, C-417, C-418, C-419, C-420, C-421, C-422, C-423, C-424, C-425, C-426, C-427
+
+### RPT-025: Claims Bold-Token Inventory (2026-02-04)
+
+- Source markdown: `reports/claims_bold_tokens_inventory.md`
+- Category: `inventory`
+- Line count: 22
+- Claim refs (2): C-113, C-121
+
+### RPT-026: Claims ID Inventory (2026-02-04)
+
+- Source markdown: `reports/claims_id_inventory.md`
+- Category: `inventory`
+- Line count: 20
+- Claim refs (2): C-001, C-432
+
+### RPT-027: Claims Priority Ranking (2026-02-02)
+
+- Source markdown: `reports/claims_priority_ranking.md`
+- Category: `report`
+- Line count: 99
+- Claim refs (80): C-001, C-007, C-008, C-009, C-010, C-011, C-012, C-019, C-022, C-023, C-026, C-027, C-030, C-031, C-032, C-034, C-037, C-039, C-040, C-041, C-043, C-047, C-048, C-050, C-053, C-068, C-069, C-070, C-071, C-072, C-073, C-074, C-075, C-077, C-078, C-079, C-080, C-081, C-082, C-083, C-084, C-085, C-087, C-090, C-091, C-092, C-094, C-096, C-097, C-099, C-102, C-103, C-108, C-109, C-120, C-123, C-128, C-129, C-130, C-132, C-135, C-401, C-403, C-404, C-405, C-409, C-410, C-411, C-412, C-417, C-418, C-419, C-420, C-421, C-422, C-423, C-424, C-425, C-426, C-427
+
+### RPT-028: Claims Staleness Report (2026-02-04)
+
+- Source markdown: `reports/claims_staleness_report.md`
+- Category: `report`
+- Line count: 20
+
+### RPT-029: Claims Status Contradictions (2026-02-04)
+
+- Source markdown: `reports/claims_status_contradictions.md`
+- Category: `status`
+- Line count: 11
+
+### RPT-030: Claims Status Inventory (2026-02-04)
+
+- Source markdown: `reports/claims_status_inventory.md`
+- Category: `inventory`
+- Line count: 84
+- Claim refs (47): C-005, C-007, C-008, C-010, C-011, C-022, C-023, C-026, C-032, C-033, C-034, C-039, C-043, C-047, C-048, C-050, C-053, C-074, C-087, C-090, C-401, C-403, C-404, C-405, C-406, C-407, C-408, C-409, C-410, C-411, C-412, C-417, C-418, C-419, C-420, C-421, C-422, C-423, C-424, C-425, C-426, C-427, C-428, C-429, C-430, C-431, C-432
+
+### RPT-031: Config Audit Notes (2026-02-01)
+
+- Source markdown: `reports/config_audit.md`
+- Category: `audit`
+- Line count: 24
+
+### RPT-032: Convos Claim Candidates (Auto-Scan)
+
+- Source markdown: `reports/convos_claim_candidates.md`
+- Category: `report`
+- Line count: 832
+
+### RPT-033: Convos Claim Candidates (Prioritized Shortlist, 2026-02-01)
+
+- Source markdown: `reports/convos_claim_candidates_prioritized.md`
+- Category: `report`
+- Line count: 47
+- Claim refs (3): C-403, C-404, C-405
+
+### RPT-034: Convos PDF inventory
+
+- Source markdown: `reports/convos_pdf_inventory.md`
+- Category: `inventory`
 - Line count: 23
 
-### RN-020: Warp Spaceplate: System Engineering Specification
+### RPT-035: Non-ISO date inventory
 
-- Source markdown: `docs/engineering/WARP_SPACEPLATE_SPECS.md`
-- Domain: `engineering`
-- Status token: `SPECIFICATION`
-- Content kind: `specification`
-- Verification level: `engineering_narrative`
-- Line count: 61
+- Source markdown: `reports/non_iso_dates_inventory.md`
+- Category: `inventory`
+- Line count: 10
 
-### RN-021: Claims Methodology and Scientific Rigor
+### RPT-036: Open claims missing dedicated source index
 
-- Source markdown: `docs/theory/CLAIMS_METHODOLOGY.md`
-- Domain: `theory`
-- Status token: `METHODOLOGY`
-- Content kind: `theory_note`
-- Verification level: `theoretical`
-- Line count: 175
-- Claim refs (4): C-007, C-008, C-077, C-091
+- Source markdown: `reports/open_claims_missing_dedicated_sources.md`
+- Category: `report`
+- Line count: 60
+- Claim refs (47): C-020, C-021, C-022, C-023, C-043, C-044, C-046, C-047, C-048, C-050, C-053, C-068, C-069, C-070, C-071, C-072, C-073, C-074, C-075, C-077, C-078, C-079, C-080, C-081, C-082, C-083, C-084, C-085, C-087, C-090, C-091, C-092, C-094, C-096, C-097, C-099, C-102, C-103, C-108, C-109, C-120, C-123, C-128, C-129, C-130, C-132, C-135
 
-### RN-022: Warp Ring Physics Reconciliation (Phase 7.0)
+### RPT-037: Open claims missing explicit test/verifier hook
 
-- Source markdown: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`
-- Domain: `theory`
-- Status token: `RECONCILIATION`
-- Content kind: `theory_note`
-- Verification level: `theoretical`
-- Line count: 40
+- Source markdown: `reports/open_claims_missing_test_hooks.md`
+- Category: `report`
+- Line count: 72
+- Claim refs (59): C-007, C-010, C-019, C-020, C-021, C-026, C-027, C-030, C-031, C-034, C-036, C-037, C-038, C-041, C-043, C-044, C-046, C-047, C-048, C-050, C-053, C-068, C-069, C-070, C-071, C-072, C-073, C-074, C-075, C-077, C-078, C-079, C-080, C-081, C-082, C-083, C-084, C-085, C-087, C-090, C-091, C-092, C-094, C-096, C-097, C-099, C-102, C-103, C-108, C-109, C-120, C-123, C-128, C-129, C-130, C-132, C-135, C-401, C-402
+
+### RPT-038: Package Index (2026-02-01)
+
+- Source markdown: `reports/package_index.md`
+- Category: `report`
+- Line count: 42
+
+### RPT-039: PDF Inventory
+
+- Source markdown: `reports/pdf_inventory.md`
+- Category: `inventory`
+- Line count: 223
+
+### RPT-040: Pythonpath Refactor Plan (2026-02-04)
+
+- Source markdown: `reports/pythonpath_refactor_plan.md`
+- Category: `plan`
+- Line count: 91
+
+### RPT-041: Repo Inventory (2026-02-01)
+
+- Source markdown: `reports/repo_inventory.md`
+- Category: `inventory`
+- Line count: 46
+
+### RPT-042: Repo Structure Audit (2026-02-04)
+
+- Source markdown: `reports/repo_structure_audit.md`
+- Category: `audit`
+- Line count: 62
+
+### RPT-043: Script contract inventory
+
+- Source markdown: `reports/script_contracts_inventory.md`
+- Category: `inventory`
+- Line count: 44
+
+### RPT-044: Tickets Inventory (2026-02-04)
+
+- Source markdown: `reports/tickets_inventory.md`
+- Category: `inventory`
+- Line count: 39
+
+### RPT-045: TODO/FIXME Scan (2026-02-07)
+
+- Source markdown: `reports/todo_fixme_scan.md`
+- Category: `report`
+- Line count: 25
+
+### RPT-046: TSCP Trial-Factor Ledger (2026-02-04)
+
+- Source markdown: `reports/tscp_trial_factor_ledger.md`
+- Category: `report`
+- Line count: 35
+- Claim refs (1): C-407
 
 """

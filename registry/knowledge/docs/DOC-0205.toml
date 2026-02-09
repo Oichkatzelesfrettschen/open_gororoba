@@ -3,55 +3,60 @@
 
 [document]
 id = "DOC-0205"
-source_path = "reports/claims_batch_backlog_C046_C060.md"
-title = "Claims Batch Backlog (C-046..C-060) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C011_C025.md"
+title = "Claims Batch Backlog (C-011..C-025) (2026-02-02)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "ba9aa188e295f48535bbd80fda2df7477cf245fc4357045fe57b9933cf32c33f"
-source_line_count = 36
-source_size_bytes = 5292
-content_sha256 = "ba9aa188e295f48535bbd80fda2df7477cf245fc4357045fe57b9933cf32c33f"
+source_sha256 = "ad04c57875d6e1056fa086cd553f57ef15a8825bbc71bde3f78920a089fa2d8b"
+source_line_count = 41
+source_size_bytes = 5660
+content_sha256 = "ad04c57875d6e1056fa086cd553f57ef15a8825bbc71bde3f78920a089fa2d8b"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Claims Batch Backlog (C-046..C-060) (2026-02-02)
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
+# Claims Batch Backlog (C-011..C-025) (2026-02-02)
 
 Purpose: planning snapshot for claim-by-claim audits (not evidence).
 
 - Matrix: `docs/CLAIMS_EVIDENCE_MATRIX.md`
 - Domain map: `docs/claims/CLAIMS_DOMAIN_MAP.csv`
 - Claims in range: 15
-- Open claims in range: 4
+- Open claims in range: 3
 
 ## Open claims (in-range, oldest-first by last_verified)
 
-- C-053 (Speculative, last_verified=2026-01-31, domains=materials): Pathion (32D) Algebra maps to a High-Index Metamaterial structure.
-- C-047 (Clarified, last_verified=2026-02-03, domains=legacy): E9, E10, E11 are Euclidean sphere-packing lattices.
-- C-048 (Modeled, last_verified=2026-02-03, domains=meta): Operator-side \"Depth Stratification\" mirrors motivic tower stratification.
-- C-050 (Modeled, last_verified=2026-02-03, domains=meta): Spaceplate design is structurally isomorphic to Multi-Flavor Lorentzian Threads flow allocation.
+- C-011 (Speculative, last_verified=2026-02-02, domains=algebra): Hypothesis: a Cayley-Dickson (sedenion) structure could parameterize a gravastar-like effective model, but...
+- C-022 (Modeled, last_verified=2026-02-02, domains=holography, algebra): Toy model: map Cayley-Dickson doubling level n to surreal birthday n and test the CD property-loss milestones.
+- C-023 (Modeled, last_verified=2026-02-02, domains=algebra): Toy model: interpret the CD associator as a discrete connection/holonomy signal over triples.
 
 ## Details (all claims in range)
 
 | Claim | Domains | Status | Last verified | Claim (short) | Where stated (short) | Evidence / notes (short) |
 |---|---|---|---|---|---|---|
-| C-046 | legacy, algebra | Refuted (Scalar Rescaling) | 2026-01-31 | \"Fractal Doping\" (sum x/n^beta) stabilizes zero divisors. | archive/legacy_conjectures/ | Mathematical audit (docs/theory/OPERATOR_DEPTH_STRATIFICATION.md) shows this... |
-| C-047 | legacy | Clarified (Kac-Moody) | 2026-02-03 | E9, E10, E11 are Euclidean sphere-packing lattices. | archive/legacy_conjectures/, docs/C047_E_SERIES_KAC_MOODY_AUDIT.md, docs/exte... | The legacy \"Euclidean lattice\" framing is rejected: E9 is affine/degenerate a... |
-| C-048 | meta | Modeled (Analogy) | 2026-02-03 | Operator-side \"Depth Stratification\" mirrors motivic tower stratification. | docs/theory/OPERATOR_DEPTH_STRATIFICATION.md, docs/external_sources/C048_MOTI... | The mapping is maintained as a terminology/structure analogy (tower levels vs... |
-| C-049 | meta | Established (GR) | 2026-01-31 | Lightspace and Gravitytime are distinct geometric structures (Conformal vs Sc... | docs/theory/PHASE_IV_0_2_LEDGER.md | The typed dependency graph cleanly separates the conformal causal skeleton (N... |
-| C-050 | meta | Modeled (Optimization) | 2026-02-03 | Spaceplate design is structurally isomorphic to Multi-Flavor Lorentzian Threa... | docs/theory/WARP_FLOW_ALLOCATION.md, docs/C050_SPACEPLATE_FLOW_ISOMORPHISM.md... | Scope-safe form: the delay-allocation problem and a multi-flavor flow-allocat... |
-| C-051 | meta | Verified (Simulation) | 2026-01-31 | A Pareto frontier exists for Spaceplates trading Compression (R) vs Bandwidth... | src/gemini_physics/engineering/warp_pareto.py | src/gemini_physics/engineering/warp_pareto.py sweep verifies the existence of... |
-| C-052 | holography, tensor-networks | Verified (Simulation) | 2026-01-31 | MERA (Multi-scale Entanglement Renormalization) circuit produces logarithmic... | src/scripts/analysis/verify_phase_3_tasks.py | Simulation of constructive MERA (L=4, 8, 16) detected logarithmic growth (Coe... |
-| C-053 | materials | Speculative (Supported (T... | 2026-01-31 | Pathion (32D) Algebra maps to a High-Index Metamaterial structure. | src/scripts/analysis/unified_spacetime_synthesis.py, docs/external_sources/OP... | Mapping the 32D interaction tensor diagonal to a dielectric layer stack yield... |
-| C-054 | algebra | Verified (Math/Code) | 2026-01-31 | Carlstrom's Wheel Algebra formally models information loss in non-associative... | src/gemini_physics/cd/cd_wheel_algebra.py | Implementation of Wheel axioms over CD algebras verifies that the \"Nullity\" e... |
-| C-055 | meta | Verified (Monte Carlo) | 2026-01-31 | Non-associativity is the generic (bulk) state of 16D/32D CD algebras (100% pr... | src/scripts/analysis/verify_zd_32d_count.py | Random sweeps ($N=100,000$) in 16D and 32D show 100% of pairs have non-zero r... |
-| C-056 | holography, datasets | Verified (data) | 2026-01-31 | PDG lepton/boson masses verified against experiment (electron, muon, Z, W, Hi... | src/scripts/data/fetch_pdg_particle_data.py, tests/test_pdg_particle_data.py,... | Offline tests check cached PDG values against NIST/PDG 2024 reference; coupli... |
-| C-057 | datasets | Verified (data) | 2026-01-31 | DESI Y1 BAO 7-bin measurements integrated into multi-probe pipeline. | src/scripts/data/fetch_desi_dr1_bao.py, tests/test_desi_dr1_bao.py, data/exte... | Offline test checks 7 redshift bins against DESI DR1 Table 1 (arXiv:2404.0300... |
-| C-058 | stellar-cartography, cosmology, datasets | Verified (data) | 2026-01-31 | Planck 2018 parameter summary + CMB spectra integrated. | src/scripts/data/fetch_planck_2018_chains.py, src/scripts/data/fetch_planck_2... | Tests validate parameter means (H0, Omega_m) within 1% of Planck 2018 Table 2... |
-| C-059 | datasets | Verified (data) | 2026-02-02 | NANOGrav 15yr free spectrum (log10(rho(f)) KDE) integrated. | src/scripts/data/fetch_nanograv_15yr.py, data/csv/nanograv_15yr_free_spectrum... | Cached Zenodo KDE zip (DOI: 10.5281/zenodo.8060824) and derived a 30-bin quan... |
-| C-060 | gravitational-waves, stellar-cartography, datasets | Verified (data) | 2026-01-31 | GWTC-3 sky localizations (64 events) integrated. | src/scripts/data/fetch_gwtc3_confident.py, tests/test_gwtc3_sky_localization_... | 64 confident events with sky area (deg^2), chirp mass, luminosity distance. |
+| C-011 | algebra | Speculative (/ Obstructed... | 2026-02-02 | Hypothesis: a Cayley-Dickson (sedenion) structure could parameterize a gravas... | docs/NAVIGATOR.md, docs/SEDENION_GRAVASTAR_EQUIVALENCE.md, docs/NEGATIVE_DIME... | Non-associative obstruction documented (Phase 3D): sedenion associator norms... |
+| C-012 | cosmology, datasets | Refuted (by observational... | 2026-01-30 | \"Dark Energy as Negative Dimension Diffusion\" is a defensible physical interp... | docs/NAVIGATOR.md, docs/PHYSICAL_INTERPRETATION.md, docs/external_sources/NEG... | Phase 2.2 (eta=0): Pre-registered model comparison with 1740 data points. Neg... |
+| C-013 | algebra | Verified (math) | 2026-01-28 | de Marrais' GoTo \"automorphemes\" (from the 7 O-trips + the \"8-ball\" exclude r... | docs/DE_MARRAIS_REPLICATION.md, src/gemini_physics/cd/de_marrais_boxkites.py | tests/test_de_marrais_automorphemes.py reconstructs GoTo automorphemes and va... |
+| C-014 | algebra | Verified (math) | 2026-01-28 | The diagonal-form family of 84 sedenion zero divisors (e_low +/- e_high) (fro... | docs/REGGIANI_REPLICATION.md, src/gemini_physics/cd/reggiani_replication.py | tests/test_reggiani_standard_zero_divisors.py verifies nullity (4,4) for all... |
+| C-015 | algebra | Verified (math) | 2026-01-28 | For each of the 84 diagonal-form zero divisors u, there are exactly 4 other d... | docs/REGGIANI_REPLICATION.md, src/gemini_physics/cd/reggiani_replication.py | tests/test_reggiani_standard_zero_divisors.py + src/scripts/export/export_reg... |
+| C-016 | algebra | Verified (math) | 2026-01-28 | The repo's m3 trilinear operation on distinct octonion basis triples produces... | docs/CONVOS_CONCEPTS_STATUS_INDEX.md, src/gemini_physics/cd/m3_cd_transfer.py | tests/test_m3_cd_transfer.py validates the 42/168 split and the Fano-line cri... |
+| C-017 | meta | Verified (math) | 2026-01-28 | For diagonal 2-blades (e_i +/- e_j) in 16D CD, any observed zero product betw... | docs/CONVOS_CONCEPTS_STATUS_INDEX.md, src/gemini_physics/cd/cd_xor_heuristics.py | tests/test_cd_xor_heuristics.py checks necessity on a deterministic sweep; do... |
+| C-018 | holography, algebra | Verified (source + tests) | 2026-01-28 | \"Wheels\" (Carlstrom) are commutative monoid-based structures <H,0,1,+,,/> wit... | docs/WHEELS_DIVISION_BY_ZERO.md, convos \"wheel\" mentions | docs/WHEELS_DIVISION_BY_ZERO.md is source-aligned; src/gemini_physics/algebra... |
+| C-019 | algebra | Not supported (rejected (... | 2026-01-30 | Wheels (division-by-zero) provide a mathematically justified way to interpret... | convos narrative, docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md, src... | Phase 2C structural test: all 84 diagonal-form ZDs tested with their 336 anni... |
+| C-020 | legacy | Refuted | 2026-01-28 | Legacy 16D \"Zero-Divisor Adjacency Matrix\" represents valid algebra. | data/csv/legacy/ | Verified against commutator/parity matrices; found to be noise/hallucination. |
+| C-021 | legacy | Refuted | 2026-01-28 | 1024D Basis-to-Lattice mapping is a consistent function. | data/csv/legacy/ | Analysis shows multiple mappings for same index; inconsistent sums. Label as... |
+| C-022 | holography, algebra | Modeled (Toy; Phase 4A or... | 2026-02-02 | Toy model: map Cayley-Dickson doubling level n to surreal birthday n and test... | docs/theory/unified_tensor_wheel_cd_framework.md, src/scripts/analysis/surrea... | src/scripts/analysis/surreal_cd_ordinal_construction.py writes data/csv/surre... |
+| C-023 | algebra | Modeled (Toy; Phase 4B ho... | 2026-02-02 | Toy model: interpret the CD associator as a discrete connection/holonomy sign... | docs/theory/unified_tensor_wheel_cd_framework.md, src/gemini_physics/geometry... | src/scripts/analysis/cd_fiber_holonomy_analysis.py compares basis-triple asso... |
+| C-024 | cpp, engineering | Verified (scaffold; Phase 4) | 2026-01-28 | C++ acceleration kernels reproduce Python CD multiplication results exactly (... | cpp/, cpp/tests/test_cd_algebra.cpp, cpp/benchmarks/bench_cd_multiply.cpp | C++ scaffold complete (Phase 4): CMake + Conan build, Catch2 unit tests, Goog... |
+| C-025 | gravitational-waves, stellar-cartography, holography | Refuted (/ Not Supported... | 2026-01-31 | GWTC-3 black hole sky positions cluster around projected sedenion zero-diviso... | docs/stellar_cartography/theory/HYPOTHESIS_DEF.md, src/gemini_physics/stellar... | Pre-registered Monte Carlo test (src/scripts/analysis/verify_tscp_alignment.p... |
 
 """
