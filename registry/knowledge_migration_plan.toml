@@ -120,10 +120,10 @@ notes = "Bibliography is TOML-first with generated markdown mirrors."
 [[domain]]
 id = "KM-006"
 name = "generated_artifacts"
-source_markdown = ["data/artifacts/*.md"]
+source_markdown = ["data/artifacts/README.md"]
 strategy = "artifact_only_no_manual_edit"
 status = "active"
-notes = "Keep as generated outputs with explicit regeneration commands; do not hand-edit artifact markdown."
+notes = "Keep README markdown in-place for repo navigation and artifact conventions."
 
 [[domain]]
 id = "KM-007"
@@ -214,6 +214,33 @@ generated_mirror = [
 strategy = "toml_primary_generated_mirror"
 status = "complete"
 notes = "docs/convos extracts are TOML-first and rendered back into docs/convos/*.md mirrors."
+
+[[domain]]
+id = "KM-018"
+name = "data_artifact_narratives"
+source_markdown = [
+  "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
+  "data/artifacts/BIBLIOGRAPHY.md",
+  "data/artifacts/FINAL_REPORT.md",
+  "data/artifacts/QUANTUM_REPORT.md",
+  "data/artifacts/SIMULATION_REPORT.md",
+  "data/artifacts/extracted_equations.md",
+  "data/artifacts/reality_check_and_synthesis.md",
+]
+authoritative_toml = ["registry/data_artifact_narratives.toml"]
+generated_mirror = [
+  "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md",
+  "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
+  "data/artifacts/BIBLIOGRAPHY.md",
+  "data/artifacts/FINAL_REPORT.md",
+  "data/artifacts/QUANTUM_REPORT.md",
+  "data/artifacts/SIMULATION_REPORT.md",
+  "data/artifacts/extracted_equations.md",
+  "data/artifacts/reality_check_and_synthesis.md",
+]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "Selected high-information artifact narratives are TOML-first; README remains markdown for repository conventions."
 
 [[phase]]
 id = "KMP-P1"
@@ -330,6 +357,23 @@ deliverables = [
   "registry/docs_convos.toml",
   "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md",
   "docs/convos/*.md",
+]
+
+[[phase]]
+id = "KMP-P13"
+name = "data_artifact_narratives_registry_normalization"
+status = "complete"
+deliverables = [
+  "src/scripts/analysis/normalize_data_artifact_narratives_registry.py",
+  "registry/data_artifact_narratives.toml",
+  "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md",
+  "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
+  "data/artifacts/BIBLIOGRAPHY.md",
+  "data/artifacts/FINAL_REPORT.md",
+  "data/artifacts/QUANTUM_REPORT.md",
+  "data/artifacts/SIMULATION_REPORT.md",
+  "data/artifacts/extracted_equations.md",
+  "data/artifacts/reality_check_and_synthesis.md",
 ]
 
 [[policy]]

@@ -7,6 +7,9 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Convos Claim Candidates (Prioritized Shortlist, 2026-02-01)
 
 This is a manual shortlist derived from `reports/convos_claim_candidates.md`.

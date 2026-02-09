@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Quantum Simulation Report: $F_4$ Symmetry Verification
 
 **Date:** January 26, 2026

@@ -28,6 +28,14 @@ MIRROR_TO_TOML = {
     "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md": "registry/experiments.toml",
     "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md": "registry/reports_narratives.toml",
     "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md": "registry/docs_convos.toml",
+    "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md": "registry/data_artifact_narratives.toml",
+    "data/artifacts/ALGEBRAIC_FOUNDATIONS.md": "registry/data_artifact_narratives.toml",
+    "data/artifacts/BIBLIOGRAPHY.md": "registry/data_artifact_narratives.toml",
+    "data/artifacts/FINAL_REPORT.md": "registry/data_artifact_narratives.toml",
+    "data/artifacts/QUANTUM_REPORT.md": "registry/data_artifact_narratives.toml",
+    "data/artifacts/SIMULATION_REPORT.md": "registry/data_artifact_narratives.toml",
+    "data/artifacts/extracted_equations.md": "registry/data_artifact_narratives.toml",
+    "data/artifacts/reality_check_and_synthesis.md": "registry/data_artifact_narratives.toml",
     "docs/book/src/registry/claims.md": "registry/claims.toml",
     "docs/book/src/registry/insights.md": "registry/insights.toml",
     "docs/book/src/registry/experiments.md": "registry/experiments.toml",
@@ -101,6 +109,8 @@ def _title_from_markdown(text: str, fallback: str) -> str:
 
 
 def _kind_for_path(path: str, text: str) -> tuple[str, str, bool]:
+    if path in MIRROR_TO_TOML and path.startswith("data/artifacts/"):
+        return ("markdown_mirror", "generated", True)
     if path.startswith("reports/"):
         return ("markdown_mirror", "generated", True)
     if path.startswith("docs/convos/"):

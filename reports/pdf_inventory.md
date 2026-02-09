@@ -7,6 +7,9 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # PDF Inventory
 
 Repo: `/home/eirikr/Playground/ChatGPT Experiments`

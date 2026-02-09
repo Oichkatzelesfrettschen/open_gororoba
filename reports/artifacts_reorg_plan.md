@@ -7,6 +7,9 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Artifacts reorganization plan (non-destructive)
 
 This report proposes a future migration for legacy flat files under data/artifacts/.

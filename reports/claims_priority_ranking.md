@@ -7,6 +7,9 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Claims Priority Ranking (2026-02-02)
 
 Heuristic ranking for audit triage. Higher score means:

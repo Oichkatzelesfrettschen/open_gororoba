@@ -7,6 +7,9 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # TSCP Trial-Factor Ledger (2026-02-04)
 
 Scope: method-level multiple-testing accounting for TSCP alignment (C-407).

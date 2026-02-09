@@ -15,8 +15,11 @@ title = "Convos Claims Inbox (Triage Queue, ASCII-only)"
 content_kind = "claims_inbox"
 claim_refs = ["C-403", "C-404", "C-405", "C-406", "C-407", "C-408"]
 path_refs = ["convos/", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md", "reports/convos_claim_candidates.md", "data/external/...", "reports/convos_claim_candidates_prioritized.md"]
-line_count = 130
+line_count = 133
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_convos.toml -->
 
@@ -157,8 +160,11 @@ title = "Convos audit workspace"
 content_kind = "convo_note"
 claim_refs = []
 path_refs = ["convos/", "docs/", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "docs/convos/audit_1_read_nonuser_lines_cont.md", "convos/1_read_nonuser_lines_cont.md:L<line>"]
-line_count = 31
+line_count = 34
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_convos.toml -->
 
@@ -200,8 +206,11 @@ title = "Audit: convos/1_read_nonuser_lines_cont.md"
 content_kind = "audit_extract"
 claim_refs = []
 path_refs = ["convos/1_read_nonuser_lines_cont.md", "convos/1_read_nonuser_lines_cont.md:L<line>", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/WHEELS_DIVISION_BY_ZERO.md", "networkx.laplacian_matrix", "|Tr(U^dagger V)|^2 / d^2", "dg/dlog Lambda = beta(g) + sum omega_ijk g_k", "data/external/planck/", "np.tensordot", "fft2(bulk_space).real", "pd.DataFrame(...)", "tensor_state_reduced = np.random.rand(dim, dim, spin_index)", "fft2(...).real", "np.zeros_like(mu_initial)", "plt.show()", "T_{-d}(x) = T_d(1/x)", "T_neg = exp(-(1/x)^2)", "x -> 1/x", "1/x", "edgecolors=...", "\\\\text{...}", "x in [0.5,5]", "MatplotlibDeprecationWarning: Auto-removal of grids by pcolormesh() is deprecated...", "nx.nx_agraph.graphviz_layout(..., prog='dot')", "ax.grid(False)", "data/artifacts/", "surreal_times = tan(t) * exp(-0.5 t^2)", "tan(t)*exp(-t^2/2)", "surreal_times = tan(t) * exp(-t^2/2)"]
-line_count = 1096
+line_count = 1099
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_convos.toml -->
 
@@ -1308,8 +1317,11 @@ title = "Implement-next backlog (from convos/1_read_nonuser_lines_cont.md)"
 content_kind = "implementation_extract"
 claim_refs = []
 path_refs = ["convos/1_read_nonuser_lines_cont.md", "docs/convos/audit_1_read_nonuser_lines_cont.md", "docs/convos/keywords_1_read_nonuser_lines_cont.md", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "\\\\text{...}", "plt.show()", "data/artifacts/", "src/verification/verify_generated_artifacts.py", "x -> 1/x"]
-line_count = 46
+line_count = 49
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_convos.toml -->
 
@@ -1366,8 +1378,11 @@ title = "Convos keyword summary: convos/1_read_nonuser_lines_cont.md"
 content_kind = "keyword_extract"
 claim_refs = []
 path_refs = []
-line_count = 118
+line_count = 121
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_convos.toml -->
 

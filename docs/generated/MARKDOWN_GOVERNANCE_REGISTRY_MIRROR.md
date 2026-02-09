@@ -7,9 +7,9 @@ Authoritative source: `registry/markdown_governance.toml`.
 
 - Generated at: deterministic
 - Document count: 242
-- TOML generated mirrors: 227
+- TOML generated mirrors: 234
 - TOML manual sources: 0
-- Generated artifacts: 8
+- Generated artifacts: 1
 - Manual narratives: 7
 - Immutable transcripts: 0
 
@@ -66,31 +66,39 @@ Authoritative source: `registry/markdown_governance.toml`.
 
 ### MDG-0008: `data/artifacts/ALGEBRAIC_FOUNDATIONS.md`
 
-- Kind: `artifact_report`
-- Mode: `generated_artifact`
-- Header required: `False`
-- Notes: Generated artifact/report; preserve reproducibility.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/data_artifact_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0009: `data/artifacts/BIBLIOGRAPHY.md`
 
-- Kind: `artifact_report`
-- Mode: `generated_artifact`
-- Header required: `False`
-- Notes: Generated artifact/report; preserve reproducibility.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/data_artifact_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0010: `data/artifacts/FINAL_REPORT.md`
 
-- Kind: `artifact_report`
-- Mode: `generated_artifact`
-- Header required: `False`
-- Notes: Generated artifact/report; preserve reproducibility.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/data_artifact_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0011: `data/artifacts/QUANTUM_REPORT.md`
 
-- Kind: `artifact_report`
-- Mode: `generated_artifact`
-- Header required: `False`
-- Notes: Generated artifact/report; preserve reproducibility.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/data_artifact_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0012: `data/artifacts/README.md`
 
@@ -101,24 +109,30 @@ Authoritative source: `registry/markdown_governance.toml`.
 
 ### MDG-0013: `data/artifacts/SIMULATION_REPORT.md`
 
-- Kind: `artifact_report`
-- Mode: `generated_artifact`
-- Header required: `False`
-- Notes: Generated artifact/report; preserve reproducibility.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/data_artifact_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0014: `data/artifacts/extracted_equations.md`
 
-- Kind: `artifact_report`
-- Mode: `generated_artifact`
-- Header required: `False`
-- Notes: Generated artifact/report; preserve reproducibility.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/data_artifact_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0015: `data/artifacts/reality_check_and_synthesis.md`
 
-- Kind: `artifact_report`
-- Mode: `generated_artifact`
-- Header required: `False`
-- Notes: Generated artifact/report; preserve reproducibility.
+- Kind: `markdown_mirror`
+- Mode: `toml_generated_mirror`
+- Header required: `True`
+- Source TOML refs:
+  - `registry/data_artifact_narratives.toml`
+- Notes: Generated from TOML registries and overlays.
 
 ### MDG-0016: `data/csv/README.md`
 
