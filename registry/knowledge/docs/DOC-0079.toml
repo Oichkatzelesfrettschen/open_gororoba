@@ -3,59 +3,60 @@
 
 [document]
 id = "DOC-0079"
-source_path = "docs/book/src/algebra/emanation.md"
-title = "Emanation Architecture"
+source_path = "docs/book/src/algebra/box-kites.md"
+title = "Box-Kite Structure"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "034d99d244e14766175bf798ee3bb2eb89244f4397d3dd0a72d6e1976420d8f1"
-source_line_count = 40
-source_size_bytes = 1222
-content_sha256 = "034d99d244e14766175bf798ee3bb2eb89244f4397d3dd0a72d6e1976420d8f1"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "437df7f93f698411ea1b7ade7940d2c20f449b86fd2fc1f7339192431c2a8cc9"
+source_line_count = 41
+source_size_bytes = 1422
+content_sha256 = "437df7f93f698411ea1b7ade7940d2c20f449b86fd2fc1f7339192431c2a8cc9"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Emanation Architecture
+# Box-Kite Structure
 
-The de Marrais emanation construction builds 18 layers (L1-L18) from the
-sedenion box-kite structure.  This was implemented and verified in Sprint 10
-(I-016).
+The 42 zero-divisor cross-assessors of the sedenion algebra organize into
+7 **box-kites**, a combinatorial structure first described by Robert de Marrais
+(arXiv: math/0011260, 2000).
 
-## Layers
+## Structure
 
-The 18 layers encode progressively deeper structural relationships between
-box-kite elements:
+Each box-kite contains 6 assessors arranged as 3 \"strut\" pairs.  The assessor
+interaction graph within each box-kite is the complete tripartite graph
+K(2,2,2) -- an octahedron.
 
-- **DMZ** (L1): Sign-concordance graph.  12 edges per box-kite, encoding
-  which assessor pairs share sign patterns.
+De Marrais published an explicit strut table in his 2000 paper.  Our
+computational census matches this table exactly (C-454, verified against
+the original via `test_strut_table_matches_de_marrais_flying_higher`).
 
-- **Sail-loops** (L2-L7): Fano-plane incidence patterns within each box-kite.
-  The sail structure relates to the 7-point projective plane PG(2,2).
+## Emanation architecture
 
-- **Oriented Trip Sync** (L8+): Universal across all 7 box-kites.  Every
-  box-kite exhibits the same trip synchronization pattern, suggesting a
-  deep structural invariant.
+The box-kite structure extends to an 18-layer \"emanation\" construction
+(L1-L18) also due to de Marrais.  Key properties verified:
 
-## Implementation
+- **DMZ** = sign-concordance (12 edges per box-kite)
+- **Sail-loop** = Fano incidence pattern
+- **Oriented Trip Sync** is universal across all 7 box-kites
 
-- Source: `crates/algebra_core/src/experimental/emanation.rs`
-- Size: 4400 lines
-- Tests: 113 dedicated tests
-- Sprint: S10
+Implementation: `crates/algebra_core/src/experimental/emanation.rs` (4400 lines, 113 tests).
+
+See [Emanation Architecture](./emanation.md) for details.
+
+## Beyond sedenions
+
+At dimension 32 (pathions) and beyond, octahedra disappear entirely.  The
+structure completely reorganizes into different component types.  See
+[Motif Scaling Laws](./motif-scaling.md).
 
 ## Claims
 
-C-468: DMZ sign-concordance structure.
-C-469: Sail-loop Fano incidence.
-C-470: Oriented Trip Sync universality.
-C-471 through C-475: Additional emanation layer properties.
-
-## References
-
-- de Marrais (2006), \"Presto! Digitization: Part I\" (arXiv: math/0603281)
-- de Marrais (2007), \"Catamaran Sails and Spindles\" (arXiv: 0704.0026)
+C-050 through C-060: Box-kite invariants.
+C-454: Strut table cross-validation.
+C-468 through C-475: Emanation architecture.
 
 """

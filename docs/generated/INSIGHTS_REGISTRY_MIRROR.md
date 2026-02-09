@@ -2,7 +2,6 @@
 
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: TOML registry files under registry/ -->
-<!-- Generated at: 2026-02-09T08:38:02Z -->
 
 Authoritative source: `registry/insights.toml`.
 

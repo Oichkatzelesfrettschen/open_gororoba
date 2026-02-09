@@ -3,86 +3,90 @@
 
 [document]
 id = "DOC-0119"
-source_path = "docs/engineering/FETCHING_EXTERNAL_SOURCES.md"
-title = "Fetching External Sources (wget-first, offline reproducibility)"
+source_path = "docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md"
+title = "Holographic Warp-Gate Fabrication Protocol (v1.0)"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "f665de718aa8888ea0c3db1836b9b2efb4a0c0ff0206d9beb25edff898358ab6"
-source_line_count = 67
-source_size_bytes = 2355
-content_sha256 = "f665de718aa8888ea0c3db1836b9b2efb4a0c0ff0206d9beb25edff898358ab6"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "bec2016448b05ef6ca949fa61763f19e31b09e184e6c72fe93e9ffc2355c052e"
+source_line_count = 71
+source_size_bytes = 3549
+content_sha256 = "bec2016448b05ef6ca949fa61763f19e31b09e184e6c72fe93e9ffc2355c052e"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Fetching External Sources (wget-first, offline reproducibility)
+# Holographic Warp-Gate Fabrication Protocol (v1.0)
 
-Access date: 2026-02-02
+**Target Device:** Nanoscale Silicon Metasurface with ENZ Inclusions.
+**Operating Wavelength:** 1550 nm (C-band).
+**Substrate:** Silicon-on-Insulator (SOI) or Fused Silica.
 
-This repo treats narrative text as hypotheses unless backed by:
-- primary sources (cached under `data/external/`), and/or
-- offline checks (tests/verifiers/scripts).
+## 1. Material Stack (Hypergranular BOM)
 
-Network access is therefore opt-in and must never be required by `make test` or `make check`.
+| Layer | Material | Thickness | Refractive Index | Role | Consumables |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Substrate** | Fused Silica ($SiO_2$) | 500 $\\mu m$ | 1.44 | Mechanical Support | Acetone, IPA (Cleaning) |
+| **Active 1** | Indium Tin Oxide (ITO) | 20 nm | $0.45 + 0.1i$ (ENZ) | ZD Capture / Nonlinearity | ITO Target, Ar/O2 Gas |
+| **Spacer** | $SiO_2$ (PECVD) | 50 nm | 1.44 | Buffer | $SiH_4$, $N_2O$ Gases |
+| **Structure** | Amorphous Silicon ($\\alpha$-Si) | 800 nm | 3.48 | Phase Control Pillars | $\\alpha$-Si Target |
+| **Resist** | PMMA A4 (Positive) | 200 nm | - | E-Beam Lithography | PMMA, MIBK:IPA dev |
+| **Mask** | Chromium (Cr) | 20 nm | - | Hard Mask (Optional) | Cr Etchant |
 
-## Principles
+## 2. Process Flow
 
-- Prefer `wget` (user preference) for direct PDF/CSV/JSON fetches.
-- If a source is blocked (403/WAF), cache a trace artifact and document the block.
-- Never keep empty placeholder files under `data/external/` (smoke gates reject 0-byte files).
-- After adding/removing external cached files:
-  - run `make provenance` (updates `data/external/PROVENANCE.local.json`),
-  - and (for PDFs) run `pdftotext` to create a `.txt` sidecar.
+### Step 1: Substrate Prep & ENZ Deposition
+1.  **Clean:** Ultrasonicate in Acetone (10 min) $\\to$ IPA (10 min) $\\to$ DI Water. $N_2$ blow dry.
+2.  **Sputter ITO:** RF Magnetron Sputtering.
+    *   Target: $In_2O_3/SnO_2$ (90/10 wt%).
+    *   Temp: 300 C (for ENZ activation at 1550nm).
+    *   Flow: 20 sccm Ar, 0.5 sccm $O_2$.
+    *   Pressure: 5 mTorr.
+3.  **Anneal:** Rapid Thermal Anneal (RTA) at 350 C for 10 min in $N_2$ to tune carrier density.
 
-## Common patterns
+### Step 2: Silicon Layer Deposition
+1.  **Spacer:** PECVD $SiO_2$ (50nm). Protects ITO from etching.
+2.  **a-Si:** PECVD or Sputtering of Amorphous Silicon (800nm).
+    *   Temp: 250 C.
+    *   Rate: ~20 nm/min. High uniformity required (<2% variation).
 
-### 1) Plain fetch (open access)
+### Step 3: Lithography (Patterning)
+1.  **Spin Coat:** PMMA A4 at 3000 rpm (60 sec). Bake 180 C (90 sec).
+2.  **Conductive Layer:** Spin Espacer 300Z (prevents charging on dielectric).
+3.  **Exposure:** E-Beam Lithography (Raith/Jeol).
+    *   File: `data/fab/warp_gate_ebl_mask.svg` (converted to GDSII).
+    *   Dose: ~300 $\\mu C/cm^2$.
+4.  **Develop:** Rinse Espacer (DI Water). Develop in MIBK:IPA (1:3) for 60 sec. Stop in IPA.
 
-```bash
-wget -O data/external/papers/<stable_name>.pdf 'https://arxiv.org/pdf/<id>.pdf'
-pdftotext -layout data/external/papers/<stable_name>.pdf data/external/papers/<stable_name>.txt
-PYTHONWARNINGS=error make provenance
-```
+### Step 4: Etching (Nanopillar Formation)
+1.  **Mask Deposition (Optional):** If PMMA selectivity is poor, lift-off Cr (20nm).
+2.  **Dry Etch:** ICP-RIE (Pseudo-Bosch).
+    *   Gas: $SF_6 / C_4F_8$ (cycling) or cryogenic $SF_6/O_2$.
+    *   Selectivity: > 10:1 vs PMMA/Cr.
+    *   Target Depth: 800nm (stop on $SiO_2$ spacer).
+3.  **Strip:** Remove remaining resist/mask (Oxygen Plasma / Cr Etchant).
 
-Then index the source in `docs/external_sources/<TOPIC>_SOURCES.md`.
+## 3. Metrology & Characterization
+1.  **SEM:** Verify pillar diameters (100-500nm range) and sidewall verticality.
+2.  **Ellipsometry:** Verify ITO ENZ wavelength ($n \\approx 0, k < 0.5$ at 1550nm).
+3.  **Optical Setup:**
+    *   Source: Tunable Laser (1500-1600nm).
+    *   Detector: InGaAs Camera.
+    *   Measurement: Transmission Phase & Amplitude map. Compare to `analog_warp_raytrace.png`.
 
-### 2) Tor fetch (when normal path is blocked)
+## 4. Hypergranular BOM (Consumables)
 
-Use `torsocks` with `wget` directly:
-
-```bash
-torsocks wget -O data/external/papers/<stable_name>.pdf 'https://example.com/file.pdf'
-pdftotext -layout data/external/papers/<stable_name>.pdf data/external/papers/<stable_name>.txt
-PYTHONWARNINGS=error make provenance
-```
-
-### 3) Blocked sources (paywall/WAF)
-
-If a source cannot be fetched automatically (e.g., publisher auth, Cloudflare/Akamai):
-
-1) Cache a short trace artifact under `data/external/traces/` describing:
-   - attempted URL(s)
-   - timestamp
-   - error code / block page notes
-2) Keep the claim in the appropriate status (e.g., `Literature`, `Speculative`) until the
-   primary source is cached and/or independently reproduced.
-3) If you have access as a human, manually download the PDF and place it at the documented
-   target path, then run `pdftotext` and `make provenance`.
-
-## Tor service troubleshooting (port 9050)
-
-If running `tor` manually fails with \"Address already in use\", it usually means the system
-Tor service is already running and bound to 127.0.0.1:9050.
-
-Use:
-
-```bash
-systemctl status tor
-```
-
-For repo fetches, prefer `torsocks wget` against the existing Tor service.
+| Item ID | Description | Quantity | Supplier |
+| :--- | :--- | :--- | :--- |
+| **SUB-FS-4** | Fused Silica Wafer 4\" | 10 | UniversityWafer |
+| **TGT-ITO** | ITO Sputter Target 3\" | 1 | Kurt J. Lesker |
+| **GAS-SF6** | Sulfur Hexafluoride (Etch) | 1 Cylinder | Airgas |
+| **GAS-C4F8** | Octafluorocyclobutane (Passivation) | 1 Cylinder | Airgas |
+| **RES-PMMA** | PMMA 950k A4 | 100 mL | Kayaku |
+| **DEV-MIBK** | MIBK:IPA Developer | 1 L | Kayaku |
+| **CHE-ACE** | Acetone (VLSI Grade) | 4 L | Sigma |
+| **CHE-IPA** | Isopropanol (VLSI Grade) | 4 L | Sigma |
 
 """

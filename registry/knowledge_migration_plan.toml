@@ -10,10 +10,30 @@ scope = "knowledge sources and operational trackers"
 id = "KM-001"
 name = "claims"
 source_markdown = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md"]
-authoritative_toml = ["registry/claims.toml"]
+authoritative_toml = ["registry/claims.toml", "registry/claims_tasks.toml"]
 strategy = "toml_primary_markdown_mirror"
 status = "active"
-notes = "Claims matrix markdown is a mirror; maintain structured claims in TOML."
+notes = "Claims matrix and executable task ledger are TOML-first."
+
+[[domain]]
+id = "KM-008"
+name = "claims_domains"
+source_markdown = ["docs/claims/CLAIMS_DOMAIN_MAP.csv", "docs/claims/by_domain/*.md"]
+authoritative_toml = ["registry/claims_domains.toml"]
+generated_mirror = ["docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "Domain crosswalk and by-domain mirrors are normalized into TOML."
+
+[[domain]]
+id = "KM-009"
+name = "claim_tickets"
+source_markdown = ["docs/tickets/*.md"]
+authoritative_toml = ["registry/claim_tickets.toml"]
+generated_mirror = ["docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "Claims audit ticket metadata and claim linkage are normalized into TOML."
 
 [[domain]]
 id = "KM-002"
@@ -95,7 +115,18 @@ deliverables = ["docs/generated/*_REGISTRY_MIRROR.md"]
 
 [[phase]]
 id = "KMP-P4"
+name = "claims_support_normalization"
+status = "complete"
+deliverables = ["registry/claims_tasks.toml", "registry/claims_domains.toml", "registry/claim_tickets.toml"]
+
+[[phase]]
+id = "KMP-P5"
 name = "policy_hardening"
 status = "pending"
 deliverables = ["Decision on replacing legacy overlays vs retaining narrative overlays", "CI checks for mirror freshness"]
 
+[[phase]]
+id = "KMP-P6"
+name = "legacy_tracker_retirement"
+status = "pending"
+deliverables = ["Retire remaining manually-edited markdown trackers after TOML parity review"]

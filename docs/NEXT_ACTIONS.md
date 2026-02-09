@@ -56,9 +56,13 @@ Completed this sprint:
    - `registry/knowledge/docs/*.toml` now stores raw markdown capture (non-authoritative landing layer).
    - Curated operational registries added: `registry/roadmap.toml`, `registry/todo.toml`,
      `registry/next_actions.toml`, `registry/requirements.toml`.
+   - Claims support registries now normalized:
+     `registry/claims_tasks.toml`, `registry/claims_domains.toml`,
+     `registry/claim_tickets.toml`.
    - Exporters now generate TOML-driven markdown mirrors under
      `docs/generated/*_REGISTRY_MIRROR.md` for insights, experiments, roadmap,
-     todo, next-actions, and requirements.
+     todo, next-actions, requirements, claims-tasks, claims-domains, and claim-tickets.
+   - Registry generators now emit deterministic stamps to avoid one-time timestamp churn.
    - Remaining policy decision: fully replace legacy narrative docs or keep
      them as non-authoritative overlays.
    - Keep markdown as human-facing mirrors, generated where practical.

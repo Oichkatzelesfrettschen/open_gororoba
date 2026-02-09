@@ -6,7 +6,6 @@ Export human-facing markdown mirrors from authoritative TOML registries.
 from __future__ import annotations
 
 import argparse
-from datetime import datetime, timezone
 from pathlib import Path
 import tomllib
 
@@ -29,13 +28,11 @@ def _write(path: Path, text: str) -> None:
 
 
 def _header(title: str) -> list[str]:
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     return [
         f"# {title}",
         "",
         "<!-- AUTO-GENERATED: DO NOT EDIT -->",
         "<!-- Source of truth: TOML registry files under registry/ -->",
-        f"<!-- Generated at: {now} -->",
         "",
     ]
 

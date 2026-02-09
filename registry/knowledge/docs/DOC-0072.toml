@@ -3,104 +3,77 @@
 
 [document]
 id = "DOC-0072"
-source_path = "docs/UNIFIED_WHITEPAPER.md"
-title = "Unified Mathematical Framework for Surreal-Noncommutative Algebras, Inverse Cayley-Dickson Processes, and Spectral Geometry"
+source_path = "docs/UNIFIED_FRAMEWORK_V2.md"
+title = "Unified Recursive Algebraic-Computational Framework (URACF)"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "2d67dc1c304c10e8f2845799b65701acce420db409435c770b23d8cddfdbfd38"
-source_line_count = 85
-source_size_bytes = 5169
-content_sha256 = "2d67dc1c304c10e8f2845799b65701acce420db409435c770b23d8cddfdbfd38"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "6732425675eb056422ef5c7d72fe8be88db56a9deefbe2ec0e438a304197154c"
+source_line_count = 58
+source_size_bytes = 3833
+content_sha256 = "6732425675eb056422ef5c7d72fe8be88db56a9deefbe2ec0e438a304197154c"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Unified Mathematical Framework for Surreal-Noncommutative Algebras, Inverse Cayley-Dickson Processes, and Spectral Geometry
+# Unified Recursive Algebraic-Computational Framework (URACF)
 
+**Version:** 2.0 (The \"Mega-Synthesis\")
 **Date:** January 26, 2026
-**Status:** Draft synthesis (mixed; not fully validated)
+**Status:** Draft synthesis (speculative; not validated)
 
-This whitepaper is a narrative synthesis that mixes:
-- standard mathematical facts (e.g., Cayley-Dickson property loss),
-- in-repo validated computations (tracked in `docs/MATH_VALIDATION_REPORT.md`),
-- and speculative physical interpretations (tracked in `docs/CLAIMS_EVIDENCE_MATRIX.md`).
+This document is a high-level synthesis that mixes:
+- standard mathematical facts (Cayley-Dickson properties),
+- engineering analogies (ISA evolution),
+- and speculative physics interpretations.
+Treat non-mathematical claims as hypotheses unless backed by first-party sources and reproducible
+tests (see `docs/CLAIMS_EVIDENCE_MATRIX.md`).
 
-Treat any \"validation\" language below as provisional unless it is backed by a first-party citation and a
-reproducible test or verifier under `tests/` or `src/verification/`.
+## 1. Introduction: The Isomorphism of Meltdown
+This document proposes an analogy between **algebraic dimension expansion** and **instruction set
+architecture (ISA) evolution**: both can be discussed in terms of capability (dimension/width) vs.
+structural complexity (associativity/encoding overhead). This is not a theorem.
 
-## 1. Introduction
-This whitepaper is a draft synthesis. It includes ideas that range from standard mathematics to
-speculative narrative proposals. Treat it as non-authoritative unless a statement is backed by a
-first-party citation and a reproducible test/verifier.
-*   **Cayley-Dickson Algebras ($A_n$):** Standard doubling ($\\mathbb{R} \\to \\mathbb{C} \\to \\mathbb{H} \\to \\mathbb{O} \\to \\mathbb{S}$), parallel variants (split/bi), and property degradation.
-*   **\"Inverse Cayley-Dickson\" (speculative):** a narrative \"halving\" idea used as an intuition aid.
-    It is NOT a standard, established construction. Any talk of \"fractional/negative dimension\" in
-    this repo should be interpreted as analytic continuation / dimensional-regularization style
-    parameterization (see `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`), unless and until a rigorous
-    definition and proofs are provided.
-*   **Zero-Divisor Geometry:** The emergence of \"Box-Kite\" structures at 16D ($\\mathbb{S}$) and their fractal expansion in higher dimensions.
-*   **Exceptional Structures:** The stability of $E_8$ (8D) and the Albert Algebra ($J_3(\\mathbb{O})$, 27D) as \"islands of structure\" amidst the meltdown.
-*   **Holography:** The correspondence between the recursive algebraic breakdown and modular entropy scaling in AdS/CFT.
+## 2. The Correspondence Principle
 
-## 2. Axioms & Definitions
+| Algebraic Stage | Dim | Property Loss | Computational Stage | Width | Complexity Artifact |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| **Real** ($\\mathbb{R}$) | 1 | None | **Scalar x87** | 80-bit | Stack Management |
+| **Complex** ($\\mathbb{C}$) | 2 | Ordering | **MMX** | 64-bit | State Aliasing (EMMS) |
+| **Quaternion** ($\\mathbb{H}$) | 4 | Commutativity | **SSE** | 128-bit | Distinct Registers (XMM) |
+| **Octonion** ($\\mathbb{O}$) | 8 | Associativity | **SSE2-4** | 128-bit | Horizontals / Dot Products |
+| **Sedenion** ($\\mathbb{S}$) | 16 | **Division** (Zero Divs) | **AVX** | 256-bit | VEX Prefix, Transitions |
+| **Pathion** ($\\mathbb{P}$) | 32 | Alternativity | **AVX-512** | 512-bit | Frequency/Power Throttling |
 
-### 2.1 The Generalized Dimension Parameter (speculative)
-In narrative sections, we sometimes use a \"dimension-like\" parameter $D$ as a knob in toy models.
-This is not claiming the existence of physical spaces with negative coordinate count.
-*   **Classical:** $D_{n+1} = 2 D_n$ (Doubling).
-*   **Inverse:** $D_{n+1} = \\frac{1}{2} D_n$ (Halving).
-*   **Surreal (optional, speculative):** one can parameterize $D$ using non-Archimedean number
-    systems (e.g., Conway's surreals), but this repo does not currently provide a rigorous bridge
-    from such parameterizations to the Cayley-Dickson algebra tower.
+### The \"Box-Kite\" and the VEX Prefix
+*   **Algebra:** In 16D, zero-divisors form \"Box-Kite\" adjacency graphs ($G_2$ manifolds).
+*   **Computation:** In AVX (256-bit), the VEX prefix introduces a complex encoding layer to manage non-destructive 3-operand forms.
+*   **Synthesis:** Both represent the **structural overhead** required to sustain higher-dimensional operations. The \"Zero Divisor\" is the algebraic equivalent of an \"Encoding Stall\" or \"Transition Penalty\" (VZEROUPPER).
 
-### 2.2 The Meltdown Measure ($\\mu$) (speculative)
-This is a narrative proposal for a \"coherence loss\" metric. It is not a standard invariant and is
-not validated by this repo unless explicitly tied to a computation and test.
-$$ \\mu(A) = \\frac{\\#\\{\\text{non-commuting diagrams}\\}}{\\#\\{\\text{total diagrams}\\}} $$
-*   For $\\mathbb{O}$ (8D), $\\mu = 0$ (Alternative).
-*   For $\\mathbb{S}$ (16D), $\\mu > 0$ (Associator Anomaly).
-*   As $D \\to \\infty$, $\\mu \\to 1$ (Total Chaos/Meltdown).
+## 3. Negative-Dimensional Formalism (Refined)
+We define \"Negative Dimension\" not as a geometric literalism but as an **Analytic Continuation** of the dimension parameter $d$ in the field action:
 
-## 3. Core claims (unverified unless tested)
+$$ S_{-d}[\\phi] = \\int d^{-d}x \\left( \\frac{1}{2} \\phi (-\\Delta)^{-s} \\phi - V(\\phi) \\right) $$ 
 
-### 3.1 Hurwitz / normed-division fact (standard)
-No finite-dimensional real algebra beyond 8D ($\\mathbb{O}$) can be a normed division algebra. Explicitly, zero divisors appear at 16D ($\\mathbb{S}$). 
+*   **Propagator:** $\\Delta^{-s}$ corresponds to the Fractional Laplacian (Riesz Potential).
+*   **Behavior:** For $s < 0$, the operator becomes an integral (smoothing) rather than a derivative (sharpening). This leads to **Anti-Diffusion** (Concentration), explaining the physical formation of Gravastars (Sedenion Solitons).
 
-### 3.2 \"Zero-divisor fractal law\" (speculative)
-Treat any claim that $Z(A_n)$ \"forms a fractal law\" as a hypothesis until we implement a motif census
-pipeline with deterministic sampling, exported artifacts, and tests.
+## 4. Exceptional Structures as \"Islands of Stability\"
+*   **Algebra:** The $E_8$ Lattice and Jordan Algebra ($J_3(\\mathbb{O})$) are maximal symmetries before total meltdown.
+*   **Compute:** AVX2 (with full integer support, gathers, and permutes) represents a \"Computational Island of Stability\"--a maximally efficient ISA before the fragmentation of AVX-512 subsets.
 
-### 3.3 \"Holographic entropy recursion\" (speculative)
-This is a hypothesis about toy-model scaling, not an established result. The entropy $S$ is claimed
-to satisfy:
-$$ \\lambda \\frac{dS}{d\\lambda} = -\\beta S + f(D) $$
-where $\\beta$ is the fractal dimension decay rate and $f(D)$ encodes the \"associator anomaly\" contribution (information loss due to non-associativity).
+## 5. Exploratory Observations (Unverified)
+*   **LIGO O3 mapping:** narrative alignments between catalog masses and toy spectra require controlled statistical tests and selection-effect modeling.
+*   **Genesis run:** `src/genesis_simulation.py` is a prototype visualization; it does not establish a physical mechanism without validated assumptions and benchmarks.
 
-## 4. Experimental Validation
+## 6. The \"Pre-Cayley-Dickson\" Retract
+We define the \"Pre-CD\" algebra $P_n$ as a **Retract** of $A_{n+1}$:
+$$ P_n = \\pi(A_{n+1}, \\circ_\\theta) $$ 
+This avoids violating Hurwitz's Theorem. The \"Pre-Reals\" are Dyadic/Surreal structures that map to the bit-level logic of computational arithmetic (Floating point mantissas).
 
-### 4.1 Algebraic
-*   **m3 operator (validated):** computed a specific trilinear operator `m3` and validated its 42/168
-    split on octonion basis triples (`tests/test_m3_cd_transfer.py`). This is not, by itself, a proof
-    of an $A_\\infty$ structure.
-*   **Zero-Divisors:** Explicitly constructed pairs $(e_1+e_{10})(e_5+e_{14})=0$.
-
-### 4.2 Geometric
-*   **Topology (unverified):** claimed Betti-number computations for ZD graphs need a reproducible script and tests.
-*   **Spectral flow (unverified):** claimed level-repulsion/chaos results need a reproducible script and tests.
-
-### 4.3 Holographic
-*   **Entropy PDE (unverified):** claimed entropy-scaling matches need a reproducible script and tests.
-
-## 5. Conclusion
-This repo contains toy mathematical/computational ingredients (some validated, many not) that may be
-useful for building more careful models. Any physics-facing interpretation must be treated as a
-hypothesis and tracked in `docs/CLAIMS_EVIDENCE_MATRIX.md`.
-
-**Future Directions:**
-*   **Quantum Circuit Implementation:** Verify entropy scaling on IBM Qiskit.
-*   **Strict Homotopy Transfer:** Formally derive the $A_\\infty$ relations for the $m_3$ tensor.
+---
+*Synthesized from the Universal Corpus.*
 
 """

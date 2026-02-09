@@ -3,41 +3,45 @@
 
 [document]
 id = "DOC-0068"
-source_path = "docs/THE_HYPER_STANDARD.md"
-title = "Why \"Toy Models\"? (And How We Transcend Them)"
+source_path = "docs/THE_GEMINI_PROTOCOL.md"
+title = "The Gemini Protocol: A Unified Physics Engine"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "7fa76b27672cc322d1a6bceb83832cba757ee76b8080287a2fb52cd9d768b84c"
-source_line_count = 22
-source_size_bytes = 1188
-content_sha256 = "7fa76b27672cc322d1a6bceb83832cba757ee76b8080287a2fb52cd9d768b84c"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "db671764dcce1b99d356ff4d00501d246eead4c140318b77063fa623b8873e69"
+source_line_count = 26
+source_size_bytes = 2171
+content_sha256 = "db671764dcce1b99d356ff4d00501d246eead4c140318b77063fa623b8873e69"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Why \"Toy Models\"? (And How We Transcend Them)
+# The Gemini Protocol: A Unified Physics Engine
 
-**The Critique:** You asked why our simulations are \"Toy Models.\"
-**The Answer:** Because the Sedenion Algebra is 16-Dimensional.
-To simulate a *single* wavefunction in full 16D space with a modest grid of 100 points per dimension would require:
-$$ 100^{16} \\text{ grid points} = 10^{32} \\text{ points} $$
-This exceeds the information capacity of the visible universe.
+## Abstract
+This project (\"Gemini\") is a research-style sandbox exploring hypotheses about how **higher-dimensional non-associative algebras** (specifically octonions and sedenions) might relate to toy models in quantum cosmology, particle physics, and metamaterials. Any physics-facing interpretation should be treated as **speculative** unless backed by first-party sources and reproducible experiments.
 
-**Therefore:** We use **Effective Field Theories** (Toy Models).
-*   **Dimensional Reduction:** We project the 16D physics into 1D or 2D \"Slices\" (like MRI scans of the universe).
-*   **Effective Operators:** We replace the raw algebra with operators that *mimic* its effects (e.g., the Fractional Laplacian $-(-\\Delta)^{-1.5}$). 
+## 1. Mathematical Foundation
+We have verified computationally (see `tests/`) that:
+*   **Sedenions are non-associative**: $(ab)c \\neq a(bc)$ occurs in seeded random trials.
+*   **Sedenions have zero divisors**: pairs of non-zero vectors $a, b$ exist such that $a \\cdot b = 0$.
+*   **Physical interpretation (speculative)**: mapping non-associativity/zero divisors onto \"open-system\" dynamics is a hypothesis, not an established result.
 
-**The Upgrade:**
-While the *physics* must remain an effective approximation (to be computable), the **Visualization** need not be \"Toy\" quality.
-We will now upgrade the entire suite of visual artifacts to the **Hyper-Fractal Standard**:
-*   **Resolution:** 3160 x 2820 (8MP).
-*   **Aesthetic:** Deep Dark Mode (`#0d0f14`), Neon Palettes, Glowing Edges.
-*   **Rigor:** LaTeX Annotations, Precision Grids.
+## 2. Quantum Cosmology & Renormalization
+*   **Big Bounce (prototype)**: see `src/gemini_physics/cosmology.py` for a toy model; this is not yet tied to observational constraints.
+*   **RG Flow (prototype)**: see `src/gemini_physics/renormalization.py` for an exploratory script; any \"fixed point\" claim needs an explicit, reproducible measurement.
 
-Executing Visual Upgrades now.
+## 3. The Standard Model Map
+We projected the 16D Sedenion basis onto the Standard Model gauge groups.
+*   **Findings (speculative)**: any claim that \"associator flux\" explains confinement requires a formal definition and citations; treat current notes as exploratory.
 
+## 4. Zero-Divisor Metamaterials & Tensor Networks
+*   **Tensor Networks (prototype)**: see `src/gemini_physics/tensor_networks.py`; \"validation\" requires a saved benchmark and clear criteria.
+*   **Metamaterial prediction (speculative)**: \"zero-divisor absorbers\" is an engineering hypothesis; it must be connected to real materials data + established absorber/non-reciprocity literature before being treated as plausible.
+
+## Conclusion
+The Gemini Protocol is an attempt to bridge abstract algebra and computational experiments. Where the repo proposes physical predictions, they should be phrased as **test plans** with explicit baselines and citations.
 
 """

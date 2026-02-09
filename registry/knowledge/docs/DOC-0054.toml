@@ -3,48 +3,107 @@
 
 [document]
 id = "DOC-0054"
-source_path = "docs/RESEARCH_STATUS.md"
-title = "Research Status: Toy Operator Study (Speculative \"Negative Dimension\" Mapping)"
+source_path = "docs/REQUIREMENTS.md"
+title = "Requirements for Gemini Experiments"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "6a269dc9b089030ebd7ee2b744e1412ee4489c47fc131643fff2f32be4aabd9d"
-source_line_count = 29
-source_size_bytes = 2085
-content_sha256 = "6a269dc9b089030ebd7ee2b744e1412ee4489c47fc131643fff2f32be4aabd9d"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "c3c5e0be017366745b037515debf0511fce7b08bdd637cb99575eb4b7f161618"
+source_line_count = 88
+source_size_bytes = 3264
+content_sha256 = "c3c5e0be017366745b037515debf0511fce7b08bdd637cb99575eb4b7f161618"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Research Status: Toy Operator Study (Speculative \"Negative Dimension\" Mapping)
+# Requirements for Gemini Experiments
 
-**Date:** January 27, 2026
-**Status:** Data ingested; hypothesis unvalidated
+This project follows a \"Maximal Synthesis\" protocol. Installs are designed to be reproducible,
+offline-testable by default, and compatible with warnings-as-errors.
 
-## 1. LIGO O3 Data Integration
-This repo caches a local copy of the **GWTC-3 Confident Events** catalog:
-*   **Artifact:** `data/external/GWTC-3_GWpy_Official.csv` (35 Confident Events).
-*   **Provenance (partial):** hashes are recorded in `data/external/PROVENANCE.local.json`; the authoritative catalog is hosted by GWOSC (see `docs/BIBLIOGRAPHY.md`).
-*   **Observation (unverified):** the \"clumping/mass-gap\" narrative below requires a reproducible statistical test against catalog selection effects and null models.
+If you need module-specific details, see:
+- `docs/requirements/algebra.md`
+- `docs/requirements/analysis.md`
+- `docs/requirements/astro.md`
+- `docs/requirements/materials.md`
+- `docs/requirements/quantum-docker.md`
+- `docs/requirements/coq.md`
+- `docs/requirements/latex.md`
 
-## 2. The toy \"anti-diffusion\" hypothesis
-Our `neg_dim_pde.py` simulation (`alpha = -1.5`) explores a toy operator where wavefunctions can
-**concentrate** rather than disperse under the chosen model/discretization. This is not a validated
-physical statement about literal negative-dimensional spacetime (see `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`).
-*   **Spectral Analysis (toy):** The eigenvalues in this toy setup scale as $E_n \\sim n^{-1.5}$ (as a fitted scaling law).
-*   **Mass Mapping:** If Mass $M \\sim E^{-1}$, then $M \\sim n^{1.5}$.
-    *   $n=10 \\implies M \\approx 31.6 M_{\\odot}$ (Matches Peak 1).
-    *   $n=15 \\implies M \\approx 58.0 M_{\\odot}$ (Matches Peak 2).
-*   **Hypothesis (speculative):** map catalog masses to discrete \"modes\" of this operator. This requires a falsifiable statistical model and controls for selection effects.
+## Python version policy
 
-## 3. Physical Interpretation
-*   **Standard View:** Pair-Instability Supernovae (PISN) prevent BH formation in the 50-120 $M_{\\odot}$ range.
-*   **Sedenion View (speculative):** the vacuum geometry itself (16D zero-divisor network) might constrain stable solutions via \"spectral gaps\". Treat this as an interpretive hypothesis pending validation.
+- **Recommended**: Python 3.11 or 3.12 (best wheel availability).
+- **Allowed**: Python 3.13+ for the core engine, but some optional extras may be skipped by
+  dependency markers or may not have wheels yet (use Docker or a Python 3.11/3.12 env).
 
-## 4. Next Steps
-*   **Refine the Model:** Test if $n=20$ predicts the upper mass gap edge (~120 $M_{\\odot}$).
-*   **Cosmology:** Apply this \"Anti-Diffusion\" logic to Dark Energy (repulsive gravity).
+## Quickstart (core engine)
+
+1. Create an isolated venv + install the editable package:
+   ```bash
+   make install
+   ```
+2. Run the full gate (tests + lint + verifiers) with warnings-as-errors:
+   ```bash
+   PYTHONWARNINGS=error make check
+   ```
+
+The canonical Python dependency sets live in `pyproject.toml`. Prefer using the `make install-*`
+targets (they match the extras).
+
+## Optional Python extras
+
+- **Analysis** (topology + embeddings):
+  - Install: `make install-analysis`
+  - Notes: scikit-learn is intentionally skipped on very new Python versions (see markers in
+    `pyproject.toml`); use Python 3.11/3.12 if you need it.
+- **Astronomy** (astroquery + GWpy + healpy + dataset loaders):
+  - Install: `make install-astro`
+- **Particle physics** (CMS/ROOT readers):
+  - Install: `make install-particle`
+  - Notes: `docs/requirements/particle.md`
+- **Quantum** (Qiskit):
+  - Preferred: Docker (`docs/requirements/quantum-docker.md`)
+  - Optional local install: `make install-quantum` (only on Python versions supported by wheels)
+
+Notes:
+- Extras currently defined in `pyproject.toml`: `dev`, `analysis`, `astro`, `particle`, `quantum`.
+- Some domains have requirements docs but no dedicated extra (e.g., algebra is part of core deps).
+
+## Quantum (Dockerized)
+See `docs/requirements/quantum-docker.md` and `docs/QISKIT_SETUP.md`.
+
+## C++ Acceleration Kernels
+- CMake >= 3.25
+- Conan 2.x (C++ package manager)
+- GCC 14 or Clang 18 (C++20 required)
+- Catch2 (via Conan; unit tests)
+- Google Benchmark (via Conan; micro-benchmarks)
+- pybind11 (via Conan; Python bindings)
+
+Build: `make cpp-build`, test: `make cpp-test`, bench: `make cpp-bench`.
+
+See also: `docs/requirements/cpp.md`.
+
+## System tools (non-Python)
+
+Some targets rely on standard system utilities (documented here for reproducibility):
+
+- `pdftotext` (Poppler) for `make convos-extract` and some source-caching pipelines.
+  - Arch: `poppler`
+  - Debian/Ubuntu: `poppler-utils`
+- `wget` (preferred) and/or `curl` for opt-in fetch scripts (tests remain offline).
+- `git`, `make`
+- Optional: `tor` + `torsocks` for Tor-based fetches when required.
+  - Arch: `sudo pacman -S tor torsocks` (or `paru -S tor torsocks`)
+  - Enable: `sudo systemctl enable --now tor`
+  - Note: do NOT run a second `tor` instance on `127.0.0.1:9050` if `tor.service` is already running.
+    Check: `sudo ss -lntp | rg ':9050'`
+  - Use: `torsocks wget -O <path> <url>`
+
+## Dev / Quality
+- `pytest>=7.4.0`    # Testing framework
+- `ruff>=0.6.0`      # Fast linter
 
 """

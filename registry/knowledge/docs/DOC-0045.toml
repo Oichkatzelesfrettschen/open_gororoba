@@ -3,147 +3,66 @@
 
 [document]
 id = "DOC-0045"
-source_path = "docs/NEXT_ACTIONS.md"
-title = "Next Actions (Prioritized)"
+source_path = "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md"
+title = "Negative Dimension: What We Mean (and What We Do Not Mean)"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "1e758a656db15453b790d43ccdbeb3c3271fe731ade31d9b890650fc7ff8429e"
-source_line_count = 128
-source_size_bytes = 6003
-content_sha256 = "1e758a656db15453b790d43ccdbeb3c3271fe731ade31d9b890650fc7ff8429e"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "3b6e558e98fed4a5bcca6461cb27716fcb1bec45a93d8fc58c0e3ccf291ee20b"
+source_line_count = 47
+source_size_bytes = 2538
+content_sha256 = "3b6e558e98fed4a5bcca6461cb27716fcb1bec45a93d8fc58c0e3ccf291ee20b"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Next Actions (Prioritized)
+# Negative Dimension: What We Mean (and What We Do Not Mean)
 
-Updated 2026-02-08 after Sprint 10 completion.
-**See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and research plan.
+This repo uses phrases like \"negative dimension\" in multiple places. This document makes the meaning explicit and separates (A) standard mathematics/physics usage from (B) speculative narrative.
 
-## Sprint 10 Summary (2026-02-08)
+## A) Standard meanings (\"negative dimension\" is shorthand)
 
-**Test count**: 1806 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-475 (475 total). **Insights**: I-001..I-016.
+### A1) Dimensional regularization (analytic continuation in d)
 
-Completed this sprint:
-- De Marrais emanation architecture: L1-L18 implemented in emanation.rs (~4400 lines)
-- 113 emanation tests covering signed products, ETs, twists, lanyards, Trip Sync, semiotic geometry
-- Oriented Trip Sync: all 7 BKs admit PSL(2,7) shorthand embedding
-- Signed adjacency graph + lanyard state-machine traversal
-- Delta transition function: XOR strut pairs with full reachability verification
-- Brocade normalization: 4 relabelings per BK, CPO consistency
-- Sail-loop duality: 28 sails -> 7 automorpheme loops of 4
-- 8 new claims (C-468..C-475), Insight I-016
+In dimensional regularization, one analytically continues integrals and differential operators from integer spatial dimension `d` to complex `d` as a *regulator parameter*.
 
-## Sprint 9 Summary (2026-02-08)
+Key point: `d` here is not \"a physical count of coordinates\"; it is a parameter in an analytic continuation scheme used to define otherwise divergent expressions.
 
-- Monograph theses A-H: 8/8 verified (lattice codebook filtration)
-- 10 new claims (C-458..C-467), Insight I-015. 1693 tests.
+Primary sources:
+- 't Hooft and Veltman (1972)
+- Bollini and Giambiagi (1972)
 
-## Sprint 8 Summary (2026-02-07)
+### A2) Parisi-Sourlas \"negative dimensions\"
 
-- CdMultTable, Hartigan dip test, Casimir DE, PEPS entropy
-- Cubic Anomaly (I-012), External data cross-validation (I-014)
-- License: GPL-2.0-only. 1670 tests.
+Parisi-Sourlas uses supersymmetry and dimensional reduction in disordered systems; the phrase \"negative dimensions\" appears in that literature as part of the analytic/supersymmetric framework, not as a literal geometric space with negative coordinate count.
 
----
+Primary source:
+- Parisi and Sourlas (1979)
 
-## Completed Workstreams
+## B) Non-standard / speculative meanings (must be labeled as such)
 
-| Workstream | Status | Sprint | Key Metric |
-|-----------|--------|--------|------------|
-| A. Claims -> Evidence | DONE | S4-S9 | 467 claims, 118 backfill verified |
-| B. Quality gates | DONE (except B.7 provenance CI) | S5-S9 | 0 clippy warnings, 1693 tests |
-| C. Experiments portfolio | DONE | S8 | 10 experiments documented |
-| D. Dataset pillars | DONE | S5-S6 | 30 providers, 21/21 Section H |
-| E. GR module expansion | DONE | S3-S4 | 18 modules, 394 tests |
-| F. GPU ultrametric | DONE | S4 | 82/472 sig at FDR<0.05 |
-| G. Convos extraction | DONE | S5, S9 | 104 claims + 3 extracts, convos/ removed |
-| H. Lattice codebook | DONE | S9 | 8 theses verified, I-015 |
-| I. Emanation architecture | DONE | S10 | L1-L18, 113 tests, I-016 |
+Some `convos/` text assigns fractional/negative \"dimensions\" to number systems (dyadics, surreals, p-adics) or to Cayley-Dickson algebras. Those assignments are not standard and should not be presented as established mathematics unless tied to a published definition with citations.
 
----
+Repo policy:
+- Keep these ideas in the \"speculative\" lane.
+- If we want them in the \"validated\" lane, we must (1) define them precisely, and (2) produce a reproducing computation (tests + artifacts) that implements that definition.
 
-## Open Items (Forward-Looking)
+## C) What our current code actually implements
 
-### Registry and Documentation Governance
+### C1) \"Negative diffusion\" plots
 
-0) **Complete TOML centralization for markdown mirrors** (Sprint 13)
-   - `registry/knowledge_sources.toml` now indexes all tracked markdown files.
-   - `registry/knowledge/docs/*.toml` now stores raw markdown capture (non-authoritative landing layer).
-   - Curated operational registries added: `registry/roadmap.toml`, `registry/todo.toml`,
-     `registry/next_actions.toml`, `registry/requirements.toml`.
-   - Exporters now generate TOML-driven markdown mirrors under
-     `docs/generated/*_REGISTRY_MIRROR.md` for insights, experiments, roadmap,
-     todo, next-actions, and requirements.
-   - Remaining policy decision: fully replace legacy narrative docs or keep
-     them as non-authoritative overlays.
-   - Keep markdown as human-facing mirrors, generated where practical.
+Code like `src/neg_dim_pde.py` / `src/neg_dim_spectrum.py` should be interpreted as *toy PDE operators with a continuation parameter*, not as a demonstration of physical spacetime having negative dimension.
 
-### High Priority
+### C2) Fractional powers (-Delta)^{alpha/2} and negative exponents
 
-1) **Multiplication coupling rho(b) in GL(8,Z)** (C-466, Sprint 9 open question)
-   - The scalar shadow pi(b) = signum(sum) is verified for addition mode.
-   - The full multiplication coupling rho(b) acting on lattice vectors remains open.
-   - This is the key missing piece for a complete lattice-algebra dictionary.
+Expressions like `(-Delta)^{-s}` correspond to fractional *integral* operators (Riesz potentials) on suitable domains; details depend on boundary conditions (periodic vs bounded domain).
 
-2) **Primary-source citation for every claim** (ROADMAP 7.2)
-   - Systematic sweep through CLAIMS_EVIDENCE_MATRIX.md.
-   - Add missing WHERE STATED and bibliographic references.
-   - Sprint 8 did 10 claims; ~200+ remain without primary sources.
+If a document claims a specific physical identification (e.g., \"D_eff = -1.5\"), it must be treated as a hypothesis and linked to:
+- a precise operator definition,
+- a domain/boundary specification,
+- and a validation experiment that is reproducible.
 
-3) **Paper-ready LaTeX pipeline** (ROADMAP 7.5)
-   - `make latex` build from verified results.
-   - Structured \"hypotheses + tests + results\" format.
-   - Priority target: ultrametric core mining (I-013) or lattice codebook (I-015).
-
-### Medium Priority
-
-4) **Twist-delta pair correspondence** (I-016 open question)
-   - Twist navigation targets {h,v} have h XOR v != source_strut in many cases.
-   - Need to identify which Fano-plane quantity governs each twist transition.
-   - Related to brocade normalization (different central-trip choices may align).
-
-5) **Full lanyard classification from signed graph** (I-016)
-   - L16 infrastructure is in place (signed graph -> lanyard extraction).
-   - Systematic census of all cycle types across all 7 BKs not yet done.
-   - Goal: formal bijection between ET edge signs, lanyard types, and de Marrais terminology.
-
-6) **GF(2) separating degree at dim=64** (I-012 open question)
-   - At dim=32, the 8/7 motif split needs a cubic GF(2) polynomial.
-   - At dim=64 (4 motif classes, PG(4,2)), minimum separating degree is unknown.
-   - Does the degree grow with the doubling level?
-
-5) **Extend parity-clique and XOR partner to dim=128+** (Sprint 9 open)
-   - Parity-clique verified at dims 16, 32. XOR partner verified at dim=64.
-   - dim=256 ZD adjacency is computationally infeasible (132M evaluations).
-   - dim=128 may be tractable with optimized code paths.
-
-6) **External data provenance automation** (B.7)
-   - Query params for HEASARC fetches.
-   - Automated provenance checks in CI.
-
-### Low Priority / Long-Term
-
-7) ~~**Mass \"clumping\" hypothesis test** (A.4)~~ -- DONE (Sprint 8: mass-clumping binary)
-8) ~~**Experiments portfolio shortlist** (C.9)~~ -- DONE (Sprint 8)
-9) ~~**Fast basis-element multiplication table generator** (ROADMAP 4.2)~~ -- DONE (Sprint 8: CdMultTable)
-10) ~~**Materials science second dataset** (ROADMAP 7.3)~~ -- DONE
-
-11) **Coq/Rocq formalization** (ROADMAP 7.4)
-    - Decide semantics for `has_right`/`reachable_delegation`.
-    - Prove a minimal non-trivial theorem end-to-end.
-
-12) **Lex-prefix filtration and octonion subalgebra connection** (Sprint 9 open)
-    - The 8D lattice dimension matches the octonion dimension.
-    - Is this a coincidence or does the octonion subalgebra structure
-      directly constrain the lattice embedding?
-
-13) **GPU tensor network contraction** (ROADMAP 8)
-    - Extend cudarc GPU path beyond ultrametric testing.
-    - Target: PEPS boundary contraction for larger system sizes.
 
 """

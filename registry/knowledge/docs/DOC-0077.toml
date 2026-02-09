@@ -3,60 +3,61 @@
 
 [document]
 id = "DOC-0077"
-source_path = "docs/book/src/SUMMARY.md"
-title = "Summary"
+source_path = "docs/agents_python_access.md"
+title = "Agent's Python Environment & Hardware Access"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "d463697e47cd0feb7b79c891921d2b4dfa55d6b1dc1d802482dcfa6dbbcb214a"
-source_line_count = 41
-source_size_bytes = 916
-content_sha256 = "d463697e47cd0feb7b79c891921d2b4dfa55d6b1dc1d802482dcfa6dbbcb214a"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "77b7d49d8b2fb31a10251dcebd314cc05588f44ad63d8cc69b37cf56724ddbdc"
+source_line_count = 42
+source_size_bytes = 2391
+content_sha256 = "77b7d49d8b2fb31a10251dcebd314cc05588f44ad63d8cc69b37cf56724ddbdc"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Summary
+# Agent's Python Environment & Hardware Access
 
-[Introduction](./introduction.md)
+## System Profile: \"MiniHSA\" (Heterogeneous System Architecture)
+*   **CPU:** AMD Ryzen 5 5600X3D (6 Cores, 12 Threads). 
+    *   *Optimization Note:* The 3D V-Cache is highly effective for sparse matrix operations and graph traversals (GraphBLAS, NetworkX).
+*   **GPU:** NVIDIA GeForce RTX 4070 Ti (12GB VRAM). 
+    *   *Optimization Note:* Excellent for CUDA-accelerated Numba kernels and PyTorch tensor operations. 12GB VRAM limits the maximum grid size for dense 4D/5D tensors, requiring tiling/batching.
+*   **RAM:** 32 GB DDR4 (approx. 14GB available for immediate allocation).
+*   **OS:** CachyOS Linux 6.18.7 (Optimized Arch-based).
 
-# Architecture
+## Installed Scientific Stack (Audit)
+Verified access to the following libraries (via `pacman` and `pip`):
 
-- [Project Layout](./architecture/layout.md)
-- [Crate Ecosystem](./architecture/crates.md)
-- [Verification Ladder](./architecture/verification.md)
+### Core Numerics & Data
+*   **numpy (2.4.1):** High-performance array computing.
+*   **scipy (1.17.0):** Advanced linear algebra, optimization, signal processing.
+*   **pandas (2.3.3):** Structured data analysis (useful for logging simulation metrics).
+*   **h5py (3.15.1):** HDF5 file I/O for storing massive tensor trajectories.
 
-# Cayley-Dickson Algebra
+### Acceleration & Machine Learning
+*   **numba (0.63.1) & numba-cuda (0.24.0):** JIT compilation for CPU and GPU. *Critical for custom kernels.*
+*   **torch (2.10.0):** Deep learning (useful for \"AI-Symbolic\" embedding tasks).
+*   **tensorflow (2.20.0):** Alternative ML backend.
+*   **Cython (3.2.4):** C-extensions for Python (optimization vector).
 
-- [Zero-Divisor Census](./algebra/zero-divisors.md)
-- [Box-Kite Structure](./algebra/box-kites.md)
-- [Motif Scaling Laws](./algebra/motif-scaling.md)
-- [Emanation Architecture](./algebra/emanation.md)
+### Symbolic & Graph
+*   **sympy (1.14.0):** Symbolic mathematics (verifying algebraic identities).
+*   **networkx (3.5):** Graph theory (Zero-divisor adjacency mining).
 
-# Experiments
+### Visualization
+*   **matplotlib (3.10.8):** Plotting and rendering.
 
-- [E-001: Motif Census](./experiments/e001.md)
-- [E-002: GPU Ultrametric Sweep](./experiments/e002.md)
-- [E-003: Real Cosmological Fit](./experiments/e003.md)
+## Missing / Recommended Extensions
+To fully leverage the \"MiniHSA\" architecture for the project goals:
+1.  **cupy:** Not explicitly seen in the grep. *Recommendation:* Install for NumPy-drop-in GPU acceleration without custom kernels.
+2.  **rpy2:** Detected in grep arguments but needs functional verification for R integration.
+3.  **polars:** Faster threaded dataframe alternative to Pandas for large datasets.
 
-# CLI Reference
-
-- [Binary Catalog](./cli/catalog.md)
-
-# Registry
-
-- [Claims Evidence Matrix](./registry/claims.md)
-- [Insights](./registry/insights.md)
-- [Experiments Portfolio](./registry/experiments.md)
-
-# Papers
-
-- [Paper Collection](./papers/collection.md)
-
-# Appendix
-
-- [Glossary](./glossary.md)
+## Environment Management Strategy
+Given the bleeding-edge Python 3.14.2 system python, **`venv`** is strictly recommended to avoid breaking system tools.
+*   *Action:* All future experiments will run in a dedicated venv `~/Playground/venv_gemini`.
 
 """

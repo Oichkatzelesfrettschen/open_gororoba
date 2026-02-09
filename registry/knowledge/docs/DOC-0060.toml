@@ -3,84 +3,80 @@
 
 [document]
 id = "DOC-0060"
-source_path = "docs/SEDENION_ATLAS.md"
-title = "THE SEDENION ATLAS: First-Party Math & Source Synthesis"
+source_path = "docs/SECOND_PASS_AUDIT.md"
+title = "Second-Pass Audit (2026-01-27)"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "5f1cbd06113d43eacec8427ba8e3254afc60d57cc3c0e0ac314093dab9b592ba"
-source_line_count = 65
-source_size_bytes = 4317
-content_sha256 = "5f1cbd06113d43eacec8427ba8e3254afc60d57cc3c0e0ac314093dab9b592ba"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "fdb8e352a094e3878fe55b6d2449d5d576c86b8bb39ed3885ab89aa534e3b323"
+source_line_count = 61
+source_size_bytes = 2803
+content_sha256 = "fdb8e352a094e3878fe55b6d2449d5d576c86b8bb39ed3885ab89aa534e3b323"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# THE SEDENION ATLAS: First-Party Math & Source Synthesis
+# Second-Pass Audit (2026-01-27)
 
-**Subject:** Algebraic Meltdown & Exceptional Manifolds
-**Date:** January 27, 2026
-**Current Understanding:** Mixed (some math verified; many mappings pending)
+This document records a second audit pass focused on:
+- reproducible checks (`make test`, `make verify`, `make smoke`)
+- repo-wide lint visibility (without breaking the existing kernel/test lint gate)
+- internal doc integrity (broken relative links)
+- provenance hardening for `data/external/`
+- reducing over-claiming in high-level narrative docs
 
-## 1. The 42 Assessors (de Marrais, 2000)
-**Primary Source:** Robert P. C. de Marrais, *The 42 Assessors and the Box-Kites they fly* (arXiv:math/0011260). (Mirror: https://lygeros.org/wp-content/uploads/perfections/sedenions.pdf)
-*   **Discovery:** The sedenion ($16D$) zero-divisors are not chaotic; they are organized into **7 Box-Kites**.
-*   **The Math:** Each Box-Kite is an octahedral structure of **Quartets of Assessors**.
-*   **Symmetry (partially verified):**
-    *   The group-order arithmetic `|PSL(2,7)| = 168` is standard and is checked in-repo (`tests/test_group_theory.py`).
-    *   The *mapping* \"PSL(2,7) governs box-kites\" is **unverified** until we reproduce de Marrais' construction in code and tests.
+## What was run
 
-**In-repo replication (validated):**
-- `src/gemini_physics/de_marrais_boxkites.py` computes:
-  - 42 primitive assessors (as cross-pairs that participate in diagonal zero-products),
-  - 7 box-kites as 7 connected components, each an octahedron graph (6 vertices, 12 edges, degree 4).
-- `tests/test_de_marrais_boxkites.py` verifies:
-  - the 42/7 counts,
-  - the 168 \"quartets along 42 assessors\" count via `42 * 4 = 168`,
-  - the octahedron structure and sign-solutions per edge.
+- `PYTHONWARNINGS=error make test lint verify doctor`
+- `make lint-all-stats` (visibility only; does not fail the build)
+- `PYTHONWARNINGS=error venv/bin/python3 -m compileall -q src`
+- `make verify-grand` (enforces \"grand\" resolution only for files named `*3160x2820*.png`)
+- `make smoke`
+- A markdown-local-link audit across repo docs (excluding `convos/`)
 
-## 2. Zero-Divisor Geometry (Reggiani, 2024)
-**Primary Source:** Silvio Reggiani, *The geometry of sedenion zero divisors* (arXiv:2411.18881, 2024-11-28).
-*   **Definitions (paper):**
-    *   $\\mathcal{Z}(\\mathbb{S})$: the submanifold of **normalized pairs** $(x,y) \\in \\mathbb{S}\\times\\mathbb{S}$
-        whose product equals zero ($xy=0$).
-    *   $\\operatorname{ZD}(\\mathbb{S})$: the submanifold of sedenions with **non-trivial annihilators**,
-        normalized in the paper as having Euclidean norm $\\sqrt{2}$ (see Introduction).
-*   **Claim:** $\\mathcal{Z}(\\mathbb{S})$ is isometric to the exceptional Lie group **$G_2$** equipped with a
-    naturally reductive left-invariant metric.
-*   **Claim:** $\\operatorname{ZD}(\\mathbb{S})$ is isometric to the **Stiefel manifold $V_2(\\mathbb{R}^7)$**
-    with a specific $G_2$-invariant metric.
-*   **Note:** For exact hypotheses and proofs, consult the paper directly: https://arxiv.org/abs/2411.18881
+## Changes made
 
-**In-repo alignment (validated subset):**
-- `src/gemini_physics/sedenion_annihilator.py` computes left/right annihilator dimensions via the
-  nullspace of the left/right multiplication operators.
-- `tests/test_reggiani_alignment.py` validates that a known zero divisor has a non-trivial annihilator, and
-  that a basis unit (e.g. `e1`) is not a zero divisor under this convention. The example zero divisor
-  `(e1 + e10)` has norm $\\sqrt{2}$, matching Reggiani's `ZD(S)` normalization.
-- `docs/REGGIANI_REPLICATION.md` and `tests/test_reggiani_standard_zero_divisors.py` additionally replicate
-  Reggiani's \"84 standard zero divisors\" and verify left/right annihilator nullity `(4,4)` for all of them.
+### Code / build tooling
 
-## 3. Algebraic Property Attrition
-| Dimension | Name | Property Lost | Property Retained |
-| :--- | :--- | :--- | :--- |
-| 1D | Real ($\\mathbb{R}$) | - | Ordered, Commutative, Associative |
-| 2D | Complex ($\\mathbb{C}$) | Ordering | Commutative, Associative |
-| 4D | Quaternion ($\\mathbb{H}$) | Commutativity | Associative |
-| 8D | Octonion ($\\mathbb{O}$) | Associativity | Alternative, Division |
-| 16D | Sedenion ($\\mathbb{S}$) | **Alternativity & Division** | *(unverified here; add citations/tests)* |
-| 32D+ | Pathions+ | *(varies)* | *(unverified here; add citations/tests)* |
+- Added repo-wide lint visibility targets:
+  - `make lint-all` (strict; currently fails)
+  - `make lint-all-stats` (reports counts; exit 0)
+  - `make lint-all-fix-safe` (whitespace + import-order fixes)
+- Reduced repo-wide Ruff issues from ~1000 -> ~160 by:
+  - applying safe whitespace/import-order fixes across `src/`
+  - fixing several high-visibility scripts so they are Ruff-clean
+- Added artifact compliance tooling:
+  - `make verify-grand` via `src/verification/verify_grand_images.py`
+  - `make smoke` to run compile, lint, artifact verification, and grand-image reporting
+- Added local provenance hashing:
+  - `make provenance` writes `data/external/PROVENANCE.local.json`
 
-## 4. The Silicon Isomorphism (Paper 2 Synthesis)
-**Status:** Speculative analogy (not a validated mathematical isomorphism).
-*   **x87 (Scalar):** The \"Real\" stage. Straightforward, but stack-heavy.
-*   **SSE (128-bit):** The \"Quaternion/Octonion\" stage. Highly symmetrical, normed (unit vectors), fast.
-*   **AVX (256-bit):** The \"Sedenion\" stage. Emergence of **Encoding Zero-Divisors** (VEX prefix, state transition penalties).
-*   **AVX-512:** The \"Pathion\" stage. Total Meltdown. Frequency throttling, complex mask registers, fragmented subsets.
+### Documentation integrity
 
----
-*Synthesized; partially verified. See `docs/MATH_VALIDATION_REPORT.md` for the validated subset.*
+- Fixed broken image links in `docs/FINAL_MANUSCRIPT.md` (docs-relative paths needed `../data/...`).
+- Reduced over-claiming in `docs/THE_GEMINI_PROTOCOL.md` and `docs/RESEARCH_STATUS.md` by:
+  - labeling physics interpretations as speculative unless validated
+  - pointing to the actual code paths under `src/gemini_physics/`
+- Updated `docs/BIBLIOGRAPHY.md` with additional first-party sources:
+  - GWOSC GWTC-3 event portal + data-release docs
+  - Kinyon & Sagle (2006) on sedenion subalgebras and G2 action
+- Updated `docs/CLAIMS_EVIDENCE_MATRIX.md` statuses to reflect the presence of primary sources
+  (while keeping \"implementation/replication\" work outstanding).
+
+## Current known gaps (not failures)
+
+- Repo-wide Ruff for all `src/*.py` still reports ~160 issues (mostly line length, semicolons, unused vars/imports).
+- Many images under `data/artifacts/images/` are not \"grand\" resolution; only a subset is currently enforced.
+- Several high-level physics claims remain speculative and require:
+  - strict provenance for external datasets (GWOSC/GWpy re-fetch)
+  - explicit statistical tests (selection effects, null models)
+  - clearer mapping between toy operators and physical models
+
+## Next document
+
+See `docs/NEXT_ACTIONS.md` for a prioritized, testable follow-up list.
+
 
 """

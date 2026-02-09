@@ -3,79 +3,101 @@
 
 [document]
 id = "DOC-0074"
-source_path = "docs/WHEELS_DIVISION_BY_ZERO.md"
-title = "Wheels (Division by Zero) - Source-first notes"
+source_path = "docs/VERIFIED_CLAIMS_INDEX.md"
+title = "Verified Claims Index (Test-Backed)"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "b03619ba39d13050c917b4bd8ebe32687406a73a3e095ad1f50f456bbc835e06"
-source_line_count = 60
-source_size_bytes = 2750
-content_sha256 = "b03619ba39d13050c917b4bd8ebe32687406a73a3e095ad1f50f456bbc835e06"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "219587ae57c4f514938c3269b591a59b4eae6081346e2b4501c636f4481278e8"
+source_line_count = 82
+source_size_bytes = 3785
+content_sha256 = "219587ae57c4f514938c3269b591a59b4eae6081346e2b4501c636f4481278e8"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Wheels (Division by Zero) - Source-first notes
+# Verified Claims Index (Test-Backed)
 
-Primary sources:
-- Jesper Carlstrom (2001), \"Wheels - On Division by Zero\", Research Reports in Mathematics 2001:11,
-  Stockholm University (published 2001-09-10). PDF: https://www2.math.su.se/reports/2001/11/2001-11.pdf
-- Jesper Carlstrom (2004), \"Wheels - on division by zero\", Mathematical Structures in Computer Science
-  14(1), 143-184. DOI: 10.1017/S0960129503004110.
+Cross-references: [CLAIMS_EVIDENCE_MATRIX](CLAIMS_EVIDENCE_MATRIX.md) |
+[TERMINOLOGY_GLOSSARY](TERMINOLOGY_GLOSSARY.md) |
+[BIBLIOGRAPHY](BIBLIOGRAPHY.md)
 
-This doc exists because the convos repeatedly mention a \"wheel algebra\" while mixing in graph
-language and (sometimes) operad/category language. For this repo, the intended meaning is:
-wheels as a division-by-zero algebraic structure (Carlstrom).
+This file is a quick index from high-value, test-backed claims to the exact in-repo
+validation locations (unit tests and/or verifiers).
 
-Hard rule:
-- Do not treat the word \"wheel\" as a single concept. Disambiguate:
-  - wheels (division-by-zero algebra: Carlstrom/Setzer),
-  - wheel graphs (graph theory),
-  - wheeled operads/PROPs (operad theory).
+Policy reminder: text in `convos/` is not treated as authoritative. Claims are only
+\"verified\" here when there is a reproducible check in-repo.
 
-## 1. Definition (Carlstrom 2001, Definition 1.1)
+Date: 2026-01-28 (Phase 6 harmonization)
 
-Carlstrom defines a wheel as a structure <H, 0, 1, +, *, /> with:
-- <H, 0, +> a commutative monoid, and
-- <H, 1, *, /> a commutative monoid with involution / (the \"reciprocal\").
+## Mathematics (core)
 
-The axioms are given as equations (numbering follows the report):
-1) <H, 0, +> is a commutative monoid
-2) <H, 1, *, /> is a commutative monoid with involution /
-3) (x + y)*z + 0*z = x*z + y*z
-4) x/y + z + 0*y = (x + y*z)/y
-5) 0*0 = 0
-6) (x + 0*y)*z = x*z + 0*y
-7) /(x + 0*y) = /x + 0*y
-8) x + 0/0 = 0/0
+- C-001: Cayley-Dickson becomes non-associative at 8D and beyond.
+  - Tests: `tests/test_cayley_dickson_properties.py`
+- C-002: 16D sedenions have zero divisors and lose norm composition.
+  - Tests: `tests/test_cayley_dickson_properties.py`
+- C-003: \"42 assessors\" / \"7 box-kites\" organize primitive sedenion zero divisors.
+  - Tests: `tests/test_de_marrais_boxkites.py`
+- C-013: de Marrais GoTo \"automorphemes\" cover primitive assessors twice.
+  - Tests: `tests/test_de_marrais_automorphemes.py`
+- C-014: 84 diagonal-form zero divisors have annihilator nullity (4,4).
+  - Tests: `tests/test_reggiani_standard_zero_divisors.py`
+- C-015: Each diagonal-form zero divisor has 4 diagonal partners spanning Ann_L(u).
+  - Tests: `tests/test_reggiani_standard_zero_divisors.py`
+- C-016: m3 trilinear operation has a 42/168 split aligned with Fano lines.
+  - Tests: `tests/test_m3_cd_transfer.py`
+- C-017: XOR-bucket match is a necessary condition for observed 2-blade ZD edges.
+  - Tests: `tests/test_cd_xor_heuristics.py`
+- Dimensional continuation formulas (Gamma-function based) are consistent with
+  integer-dimension identities.
+  - Tests: `tests/test_dimensional_geometry.py`
 
-Notes:
-- In wheels, 0*x = 0 does NOT hold in general (this is the key tradeoff for total division).
-- The report derives additional useful identities (e.g. /1 = 1 and x/x = 1 + 0*x/x).
+## Data + artifact integrity (local)
 
-## 2. Relation to Cayley-Dickson zero divisors (scope boundary)
+- C-006: GWTC-3 \"confident events\" CSV matches the GWOSC EventAPI jsonfull snapshot.
+  - Fetcher: `src/scripts/data/fetch_gwtc3_confident.py`
+  - Tests: `tests/test_gwosc_eventapi_snapshot.py`
+- Artifact schemas and required CSV outputs are checked for consistency.
+  - Verifier: `src/verification/verify_generated_artifacts.py`
+- \"Grand\" image resolution compliance is reported (and optionally enforceable).
+  - Verifier: `src/verification/verify_grand_images.py`
 
-Cayley-Dickson algebras (beyond 8D) are non-associative and (from 16D onward) have zero divisors:
-there exist nonzero a,b with a*b = 0. This is an internal multiplicative pathology of that algebra.
+## Algebraic structures (non-CD)
 
-Wheels are different objects:
-- They are commutative and focus on making division total.
-- They do not automatically remove or explain zero divisors in noncommutative/nonassociative algebras.
+- C-018: Carlstrom \"wheels\" axioms (1)-(8) hold for a concrete finite wheel model used here.
+  - Tests: `tests/test_wheels.py`
 
-Therefore, any claim of the form:
-\"wheels explain/resolve Cayley-Dickson zero divisors\"
-is treated as a hypothesis and must be sourced and tested before it is accepted into the repo narrative.
+## C++ acceleration kernels
 
-## 3. Minimal implementable next step
+- C-024: C++ CD multiplication reproduces Python results within float64 tolerance.
+  - Tests: `cpp/tests/test_cd_algebra.cpp` (Catch2)
+  - Benchmarks: `cpp/benchmarks/bench_cd_multiply.cpp` (Google Benchmark)
+  - Build: `make cpp-test`
 
-To bring wheels into the repo without overclaiming:
-- Implement a tiny \"wheel axioms checker\" that validates Carlstrom's axioms (3)-(8), plus the required
-  commutative-monoid/involution laws.
-- Add unit tests that confirm the axioms on at least one concrete wheel model.
-- Only after that, propose any mapping to Cayley-Dickson language as an interpretation layer, clearly
-  labeled as speculative unless a first-party source establishes the connection.
+## Sedenion field theory and exceptional cosmology (from PDF import, 2026-01-30)
+
+- C-028: Aut(S) = G2 x S3 verification (pending).
+  - Tests: `tests/test_sedenion_automorphism.py` (planned)
+- C-029: Three fermion generations via C tensor S (literature-supported).
+  - Source: Gillard & Gresnigt (2019); Gresnigt (2023).
+- C-030: Bypass mechanisms required for sedenion Lagrangians (established).
+  - Evidence: C-011 Phase 3D associator data.
+- C-035: F4 Casimir ratio epsilon = 1/4 (pending verification).
+  - Tests: `tests/test_f4_casimir.py` (planned)
+- C-036: Bigraph clustering coefficient -> 0.25 (pending verification).
+  - Tests: `tests/test_bigraph_cosmogenesis.py` (planned)
+- C-038: w0 = -5/6 observational comparison (pending; expected disfavored).
+  - Tests: `tests/test_exceptional_w0.py` (planned)
+
+## Scope guards (speculative enforcement)
+
+- C-011: Sedenion-Gravastar equivalence remains labeled speculative in its primary doc.
+  - Tests: `tests/test_gravastar_equivalence_guard.py`
+
+For narrative scope boundaries and what remains unverified, see:
+- `docs/MATH_VALIDATION_REPORT.md`
+- `docs/CLAIMS_EVIDENCE_MATRIX.md`
 
 """

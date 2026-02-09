@@ -3,81 +3,65 @@
 
 [document]
 id = "DOC-0134"
-source_path = "docs/engineering/WARP_SPACEPLATE_SPECS.md"
-title = "Warp Spaceplate: System Engineering Specification"
+source_path = "docs/engineering/PHASE_7_REPORT.md"
+title = "Phase 7 Engineering & Synthesis Report"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "55ca98a7520171aa95ce749ad78346bec421950ab0daad7bb5ea303fc613bbf7"
-source_line_count = 62
-source_size_bytes = 2751
-content_sha256 = "55ca98a7520171aa95ce749ad78346bec421950ab0daad7bb5ea303fc613bbf7"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "36b16a1f32a3824b00b0afc89ccfb2ca143539a58a8148f4df4d3b051fa99894"
+source_line_count = 46
+source_size_bytes = 3126
+content_sha256 = "36b16a1f32a3824b00b0afc89ccfb2ca143539a58a8148f4df4d3b051fa99894"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Warp Spaceplate: System Engineering Specification
+# Phase 7 Engineering & Synthesis Report
 
-**Version:** 1.0 (Jan 2026)
-**Status:** Manufacturing & Lifecycle Definition
+**Date:** 2026-02-01
+**Status:** Advanced Simulation & Integration Complete
 
-## 1. System Overview
-The Warp Spaceplate is a passive electromagnetic metamaterial device designed to compress the optical path length of signals in the X-band (8-12 GHz). It consists of a nanostructured Interleaved I-Beam array fabricated on a dielectric substrate, housed in a waveguide test fixture.
+This report documents the \"Phase 7\" recursive expansion, integrating real-world material data, advanced ray tracing, and reusable DSP libraries.
 
-### 1.1 Core Components
-*   **MM-Chip:** The active metamaterial die (Silicon/Gold stack).
-*   **Carrier:** RF-compatible substrate (Rogers RT5880) for mounting the die.
-*   **Fixture:** Aluminum WR-90 Waveguide adapter for characterization.
+## 1. Spaceplates (Real-World Optimization)
 
-## 2. Manufacturing Process
+**Status:** Optimized with experimental refractive index data.
 
-### 2.1 MM-Chip Fabrication (Nanofabrication)
-**Facility Requirement:** Class 100 Cleanroom.
-1.  **Substrate Prep:** Clean 4-inch High-Resistivity Silicon Wafer (Piranha etch).
-2.  **Base Layer:** Sputter deposition of Gold (Au) - 100 nm.
-3.  **Dielectric Deposition:** PECVD Silicon Dioxide (SiO2) or Sputtered Silicon - 50 um.
-4.  **Patterning:** Electron Beam Lithography (EBL) for I-Beam features.
-5.  **Etching:** DRIE (Deep Reactive Ion Etching) for structure definition.
-6.  **Top Layer:** Sputter deposition of Gold (Au) - 100 nm.
-7.  **Dicing:** Laser dice into 10mm x 10mm chips.
+-   **Data Source:** Fetched `SiO2` (Malitson 1965) and `TiO2` (Devore 1951) indices from RefractiveIndex.INFO (via manually constructed CSVs in `data/external/`).
+-   **Optimizer:** `src/scripts/engineering/spaceplate_pareto_optimizer.py` implements a random-search Pareto sweep using these real material dispersions.
+-   **Results:**
+    -   **Pareto Frontier:** A distinct trade-off curve between Compression Ratio ($R$) and Bandwidth ($B$) is visible in `data/artifacts/images/spaceplate_pareto_real.png`.
+    -   **Candidates:** Top designs saved to `data/bom/spaceplate_pareto_candidates.csv`.
+-   **Design:** The Bragg-stack approach remains valid with real materials, though bandwidth is constrained by the dispersion of TiO2.
 
-### 2.2 Assembly
-1.  **Bonding:** Attach MM-Chip to Carrier using conductive epoxy (Epo-Tek H20E).
-2.  **Housing:** Insert Carrier into WR-90 Fixture.
-3.  **Sealing:** Indium seal for RF continuity.
+## 2. Analog Warp Drive (Hamiltonian Ray Tracing)
 
-## 3. Quality Assurance (QA) Protocols
+**Status:** Ray-tracing simulation is consistent with the expected \"lensing\" effect.
 
-### 3.1 Incoming Inspection (IQC)
-*   **Silicon Wafers:** Resistivity > 5000 Ohm-cm. Surface roughness < 0.5 nm.
-*   **Gold Targets:** Purity 99.999%.
+-   **Simulation:** `src/scripts/engineering/analog_warp_raytracer.py` implements a 2D Hamiltonian ray tracer ($dH/dp = \\dot{q}$) for the graded index profile $n(x,y)$.
+-   **Verification:** `data/artifacts/images/analog_warp_raytrace.png` shows light rays bending around the central \"bubble\" region, confirming the effective metric's steering capability.
+-   **Physics:** The index profile $n(x,y)$ creates a \"fast\" (low-index) path outside the wall and a \"slow\" (high-index) wall, consistent with the kinematic analog of expanding/contracting space.
 
-### 3.2 In-Process Quality Control (IPQC)
-*   **Step 3 Check:** Ellipsometry to verify dielectric thickness (+/- 1%).
-*   **Step 4 Check:** SEM inspection of I-Beam dimensions.
+## 3. Kozyrev Wavelets (p-adic DSP Library)
 
-### 3.3 Final Quality Control (FQC)
-*   **VNA Test:** Measure S-parameters (S11, S21) from 8-12 GHz.
-*   **Criteria:** 
-    *   Effective Index $n_{eff} > 50$ at 10 GHz.
-    *   Insertion Loss < 3 dB.
+**Status:** Modularized and Tested.
 
-## 4. End-of-Life (EOL) Recycling Plan
+-   **Library:** `src/gemini_physics/signal/padic_dsp.py` provides a reusable `PadicSignalProcessor` class.
+-   **Feature:** Implements the Monna map (Index $\\to$ Qp) and the forward Kozyrev transform.
+-   **Validation:** Tested on a periodic pulse signal. The transform correctly identifies the hierarchical periodicity (strong coefficients at $j=2, 3$).
+-   **Integration:** Can now be applied to arbitrary 1D time-series data (e.g., FRB streams, LIGO strain) via the `kozyrev_transform` API.
 
-### 4.1 Disassembly
-*   Unscrew waveguide fixture.
-*   Heat carrier to 150C to debond epoxy.
+## 4. Synthesis & Legacy
 
-### 4.2 Material Recovery
-*   **Gold:** Aqua Regia recovery process (standard precious metal refining).
-*   **Silicon:** Grind and recycle as solar grade or abrasive.
-*   **Aluminum:** Standard metal recycling stream.
-*   **Rogers Substrate:** Hazardous waste disposal (PTFE/Fiberglass) or specialized incineration.
+-   **Legacy:** Previous legacy artifacts (`data/bom/spaceplate_pareto_candidates.csv`) were archived to `legacy/`.
+-   **Integration:** All new scripts are in `src/scripts/engineering/` and import from `src/gemini_physics/`.
+-   **Documentation:** Updated `docs/CLAIMS_EVIDENCE_MATRIX.md` (via this report) to reflect the transition from \"Verified (Toy)\" to \"Verified (Simulation with Real Data)\".
 
-## 5. Component Sourcing Strategy
-*   **Single Source Risks:** Gold Sputtering Targets (High Purity). Mitigation: Qualify secondary vendor.
-*   **Lead Times:** EBL time is the bottleneck. Strategy: Batch processing of 20 wafers.
+## Next Steps
+1.  **Fabrication:** Export the Spaceplate layer stack to a GDSII or vac-chamber recipe file.
+2.  **Hardware:** Synthesize the `kozyrev_transform.v` Verilog on an FPGA (e.g., PYNQ or DE10-Nano).
+3.  **Optics:** 3D print the Analog Warp Drive index profile using gradient-index mixing (e.g., Stratasys J750).
 
 """
