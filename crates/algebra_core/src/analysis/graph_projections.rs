@@ -681,15 +681,10 @@ impl BudgetedInvariants {
 /// into a petgraph UnGraph for invariant computation.
 ///
 /// Returns the graph and a mapping from node index to CrossPair.
-pub fn motif_component_to_petgraph(
-    comp: &MotifComponent,
-) -> (UnGraph<(), ()>, Vec<CrossPair>) {
+pub fn motif_component_to_petgraph(comp: &MotifComponent) -> (UnGraph<(), ()>, Vec<CrossPair>) {
     let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
-    let node_map: HashMap<CrossPair, usize> = nodes
-        .iter()
-        .enumerate()
-        .map(|(i, &cp)| (cp, i))
-        .collect();
+    let node_map: HashMap<CrossPair, usize> =
+        nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
 
     let mut graph = UnGraph::<(), ()>::with_capacity(nodes.len(), comp.edges.len());
     let indices: Vec<NodeIndex> = (0..nodes.len()).map(|_| graph.add_node(())).collect();
@@ -1321,11 +1316,24 @@ mod tests {
 
         for (i, comp) in comps.iter().enumerate() {
             let inv = compute_cross_assessor_invariants(comp);
-            assert!(inv.is_full(), "dim=16 components should use full invariants");
+            assert!(
+                inv.is_full(),
+                "dim=16 components should use full invariants"
+            );
             assert_eq!(inv.n_nodes(), 6, "comp[{}] should have 6 nodes", i);
-            assert_eq!(inv.n_edges(), 12, "comp[{}] should have 12 edges (octahedron)", i);
+            assert_eq!(
+                inv.n_edges(),
+                12,
+                "comp[{}] should have 12 edges (octahedron)",
+                i
+            );
             assert_eq!(inv.n_components(), 1, "comp[{}] should be connected", i);
-            assert_eq!(inv.triangle_count(), 8, "comp[{}] should have 8 triangles (octahedron)", i);
+            assert_eq!(
+                inv.triangle_count(),
+                8,
+                "comp[{}] should have 8 triangles (octahedron)",
+                i
+            );
         }
     }
 
@@ -1337,7 +1345,10 @@ mod tests {
         let comps_64 = motif_components_for_cross_assessors(64);
         for comp in &comps_64 {
             let inv = compute_cross_assessor_invariants(comp);
-            assert!(inv.is_full(), "dim=64 comps (30 nodes) should use full invariants");
+            assert!(
+                inv.is_full(),
+                "dim=64 comps (30 nodes) should use full invariants"
+            );
         }
 
         // Verify the bridge produces consistent node/edge counts

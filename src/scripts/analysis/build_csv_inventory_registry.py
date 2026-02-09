@@ -136,9 +136,25 @@ def _load_canonical_source_paths(root: Path, index_rel: str, table_name: str) ->
     for row in rows:
         if not isinstance(row, dict):
             continue
-        source = str(row.get("source_path", row.get("source_csv", ""))).strip()
+        source = str(row.get("source_path", row.get("source_csv", row.get("path", "")))).strip()
         if source:
             out.add(source)
+    return out
+
+
+def _load_project_split_classification(root: Path) -> dict[str, str]:
+    policy_path = root / "registry/project_csv_split_policy.toml"
+    if not policy_path.exists():
+        return {}
+    parsed = tomllib.loads(policy_path.read_text(encoding="utf-8"))
+    out: dict[str, str] = {}
+    for row in parsed.get("dataset", []):
+        if not isinstance(row, dict):
+            continue
+        path = str(row.get("path", "")).strip()
+        classification = str(row.get("classification", "")).strip()
+        if path and classification:
+            out[path] = classification
     return out
 
 
@@ -147,6 +163,11 @@ def _policy_with_progress(
     zone: str,
     legacy_canonical_paths: set[str],
     curated_canonical_paths: set[str],
+    project_canonical_paths: set[str],
+    project_generated_paths: set[str],
+    external_holding_paths: set[str],
+    archive_holding_paths: set[str],
+    project_split_classification: dict[str, str],
 ) -> tuple[str, str, str]:
     if zone == "legacy_csv" and path in legacy_canonical_paths:
         return (
@@ -160,6 +181,44 @@ def _policy_with_progress(
             "complete",
             "Curated CSV is already canonicalized under registry/data/curated_csv.",
         )
+    if zone == "project_csv" and path in project_canonical_paths:
+        return (
+            "canonicalized_to_toml",
+            "complete",
+            "Project canonical dataset is represented in registry/data/project_csv/canonical.",
+        )
+    if zone == "project_csv" and path in project_generated_paths:
+        return (
+            "canonicalized_to_toml_generated_artifact",
+            "complete",
+            "Project generated artifact is represented in registry/data/project_csv/generated.",
+        )
+    if zone == "external_csv" and path in external_holding_paths:
+        return (
+            "queued_for_scroll_holding",
+            "high",
+            "External CSV is queued in holding registry for TOML scroll conversion.",
+        )
+    if zone == "archive_csv" and path in archive_holding_paths:
+        return (
+            "queued_for_scroll_holding",
+            "high",
+            "Archive CSV is queued in holding registry for TOML scroll conversion.",
+        )
+    if zone == "project_csv":
+        classification = project_split_classification.get(path, "")
+        if classification == "generated_artifact":
+            return (
+                "preserve_generated_artifact",
+                "high",
+                "Project CSV classified as generated artifact and pending/retained under scroll policy.",
+            )
+        if classification == "canonical_dataset":
+            return (
+                "migrate_to_toml_canonical",
+                "high",
+                "Project CSV classified as canonical dataset pending/active TOML migration.",
+            )
     return _policy(path, zone)
 
 
@@ -171,6 +230,10 @@ def _render(docs: list[CsvDoc]) -> str:
     legacy_count = sum(1 for d in docs if d.zone == "legacy_csv")
     curated_count = sum(1 for d in docs if d.zone == "curated_csv")
     canonicalized_count = sum(1 for d in docs if d.migration_action == "canonicalized_to_toml")
+    generated_scroll_count = sum(
+        1 for d in docs if d.migration_action == "canonicalized_to_toml_generated_artifact"
+    )
+    holding_queue_count = sum(1 for d in docs if d.migration_action == "queued_for_scroll_holding")
 
     lines: list[str] = []
     lines.append("# Full CSV inventory registry (tracked/untracked/ignored/archived).")
@@ -187,6 +250,8 @@ def _render(docs: list[CsvDoc]) -> str:
     lines.append(f"legacy_count = {legacy_count}")
     lines.append(f"curated_count = {curated_count}")
     lines.append(f"canonicalized_count = {canonicalized_count}")
+    lines.append(f"generated_scroll_count = {generated_scroll_count}")
+    lines.append(f"holding_queue_count = {holding_queue_count}")
     lines.append("")
 
     for doc in docs:
@@ -235,6 +300,23 @@ def main() -> int:
     curated_canonical_paths = _load_canonical_source_paths(
         root, "registry/curated_csv_datasets.toml", "curated_csv_datasets"
     )
+    project_canonical_paths = _load_canonical_source_paths(
+        root,
+        "registry/project_csv_canonical_datasets.toml",
+        "project_csv_canonical_datasets",
+    )
+    project_generated_paths = _load_canonical_source_paths(
+        root,
+        "registry/project_csv_generated_artifacts.toml",
+        "project_csv_generated_artifacts",
+    )
+    external_holding_paths = _load_canonical_source_paths(
+        root, "registry/external_csv_holding.toml", "external_csv_holding"
+    )
+    archive_holding_paths = _load_canonical_source_paths(
+        root, "registry/archive_csv_holding.toml", "archive_csv_holding"
+    )
+    project_split_classification = _load_project_split_classification(root)
 
     files = sorted(_all_filesystem_csv(root))
 
@@ -245,15 +327,28 @@ def main() -> int:
         text = raw.decode("utf-8", errors="ignore")
         zone = _zone(rel)
         action, priority, rationale = _policy_with_progress(
-            rel, zone, legacy_canonical_paths, curated_canonical_paths
+            rel,
+            zone,
+            legacy_canonical_paths,
+            curated_canonical_paths,
+            project_canonical_paths,
+            project_generated_paths,
+            external_holding_paths,
+            archive_holding_paths,
+            project_split_classification,
         )
+        classification = project_split_classification.get(rel, "")
         docs.append(
             CsvDoc(
                 path=rel,
                 git_status=_status(rel, tracked, untracked, ignored),
                 zone=zone,
                 archived=rel.startswith("archive/") or rel.startswith("docs/archive/"),
-                generated=rel.startswith("data/csv/") and not rel.startswith("data/csv/legacy/"),
+                generated=(
+                    classification == "generated_artifact"
+                    if zone == "project_csv"
+                    else rel.startswith("data/csv/") and not rel.startswith("data/csv/legacy/")
+                ),
                 size_bytes=len(raw),
                 line_count=text.count("\n") + (1 if text else 0),
                 sha256=hashlib.sha256(raw).hexdigest(),

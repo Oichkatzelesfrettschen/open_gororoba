@@ -1280,7 +1280,9 @@ pub fn edge_sign_type_exact(dim: usize, a: CrossPair, b: CrossPair) -> EdgeSignT
     assert!(
         !sols.is_empty(),
         "No diagonal zero-products for {:?}--{:?} at dim={}",
-        a, b, dim
+        a,
+        b,
+        dim
     );
     if sols.contains(&(1, 1)) || sols.contains(&(-1, -1)) {
         EdgeSignType::Same
@@ -2710,10 +2712,26 @@ mod tests {
         assert_eq!(census.n_components, 7, "dim=16 has 7 box-kite components");
         assert_eq!(census.total_triangles, 56, "7 BKs x 8 faces = 56");
 
-        let two_same = census.total_pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-        let all_opp = census.total_pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
-        let all_same = census.total_pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
-        let one_same = census.total_pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
+        let two_same = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::TwoSameOneOpp)
+            .copied()
+            .unwrap_or(0);
+        let all_opp = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::AllOpposite)
+            .copied()
+            .unwrap_or(0);
+        let all_same = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::AllSame)
+            .copied()
+            .unwrap_or(0);
+        let one_same = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::OneSameTwoOpp)
+            .copied()
+            .unwrap_or(0);
 
         assert_eq!(two_same, 42, "42 TwoSameOneOpp faces (trefoil lanyards)");
         assert_eq!(all_opp, 14, "14 AllOpposite faces (triple-zigzag lanyards)");
@@ -2739,10 +2757,26 @@ mod tests {
         assert_eq!(census.total_triangles, 2408);
 
         // Aggregate pattern counts
-        let two_same = census.total_pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-        let all_opp = census.total_pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
-        let all_same = census.total_pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
-        let one_same = census.total_pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
+        let two_same = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::TwoSameOneOpp)
+            .copied()
+            .unwrap_or(0);
+        let all_opp = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::AllOpposite)
+            .copied()
+            .unwrap_or(0);
+        let all_same = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::AllSame)
+            .copied()
+            .unwrap_or(0);
+        let one_same = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::OneSameTwoOpp)
+            .copied()
+            .unwrap_or(0);
 
         assert_eq!(two_same, 1050);
         assert_eq!(all_opp, 350);
@@ -2769,28 +2803,71 @@ mod tests {
             if comp.n_edges == 84 && n_patterns == 4 {
                 regime_a += 1;
                 assert_eq!(comp.n_triangles, 280);
-                assert_eq!(comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0), 102);
-                assert_eq!(comp.pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0), 108);
-                assert_eq!(comp.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0), 36);
-                assert_eq!(comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0), 34);
+                assert_eq!(
+                    comp.pattern_counts
+                        .get(&FaceSignPattern::TwoSameOneOpp)
+                        .copied()
+                        .unwrap_or(0),
+                    102
+                );
+                assert_eq!(
+                    comp.pattern_counts
+                        .get(&FaceSignPattern::OneSameTwoOpp)
+                        .copied()
+                        .unwrap_or(0),
+                    108
+                );
+                assert_eq!(
+                    comp.pattern_counts
+                        .get(&FaceSignPattern::AllSame)
+                        .copied()
+                        .unwrap_or(0),
+                    36
+                );
+                assert_eq!(
+                    comp.pattern_counts
+                        .get(&FaceSignPattern::AllOpposite)
+                        .copied()
+                        .unwrap_or(0),
+                    34
+                );
             } else if comp.n_edges == 84 && n_patterns == 2 {
                 regime_b += 1;
                 assert_eq!(comp.n_triangles, 280);
-                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                let ts = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::TwoSameOneOpp)
+                    .copied()
+                    .unwrap_or(0);
+                let ao = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::AllOpposite)
+                    .copied()
+                    .unwrap_or(0);
                 assert_eq!(ts, 210);
                 assert_eq!(ao, 70);
                 assert_eq!(ts, 3 * ao, "3:1 ratio in regime B");
             } else if comp.n_edges == 36 {
                 regime_c += 1;
                 assert_eq!(comp.n_triangles, 24);
-                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                let ts = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::TwoSameOneOpp)
+                    .copied()
+                    .unwrap_or(0);
+                let ao = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::AllOpposite)
+                    .copied()
+                    .unwrap_or(0);
                 assert_eq!(ts, 18);
                 assert_eq!(ao, 6);
                 assert_eq!(ts, 3 * ao, "3:1 ratio in regime C");
             } else {
-                panic!("Unexpected component: {} edges, {} patterns", comp.n_edges, n_patterns);
+                panic!(
+                    "Unexpected component: {} edges, {} patterns",
+                    comp.n_edges, n_patterns
+                );
             }
         }
 
@@ -2828,16 +2905,36 @@ mod tests {
             let sample = &census.per_component[indices[0]];
             eprintln!(
                 "  ({} edges, {} patterns): {} components, {} tri/comp, sample: {:?}",
-                edges, pats, indices.len(), sample.n_triangles, sample.pattern_counts
+                edges,
+                pats,
+                indices.len(),
+                sample.n_triangles,
+                sample.pattern_counts
             );
         }
 
         // Totals
         assert_eq!(census.total_triangles, 48328);
-        let two_same = census.total_pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-        let all_opp = census.total_pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
-        let all_same = census.total_pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
-        let one_same = census.total_pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
+        let two_same = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::TwoSameOneOpp)
+            .copied()
+            .unwrap_or(0);
+        let all_opp = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::AllOpposite)
+            .copied()
+            .unwrap_or(0);
+        let all_same = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::AllSame)
+            .copied()
+            .unwrap_or(0);
+        let one_same = census
+            .total_pattern_counts
+            .get(&FaceSignPattern::OneSameTwoOpp)
+            .copied()
+            .unwrap_or(0);
         assert_eq!(two_same, 18858);
         assert_eq!(all_opp, 6286);
         assert_eq!(all_same, 5796);
@@ -2866,12 +2963,23 @@ mod tests {
         // 3:1 ratio holds in ALL pure-regime components
         for comp in &census.per_component {
             if comp.pattern_counts.len() == 2 {
-                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                let ts = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::TwoSameOneOpp)
+                    .copied()
+                    .unwrap_or(0);
+                let ao = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::AllOpposite)
+                    .copied()
+                    .unwrap_or(0);
                 assert_eq!(
-                    ts, 3 * ao,
+                    ts,
+                    3 * ao,
                     "3:1 ratio in pure component ({} edges): {} != 3*{}",
-                    comp.n_edges, ts, ao
+                    comp.n_edges,
+                    ts,
+                    ao
                 );
             }
         }
@@ -2880,8 +2988,16 @@ mod tests {
         for comp in &census.per_component {
             if comp.n_edges == 84 {
                 assert_eq!(comp.n_triangles, 56);
-                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                let ts = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::TwoSameOneOpp)
+                    .copied()
+                    .unwrap_or(0);
+                let ao = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::AllOpposite)
+                    .copied()
+                    .unwrap_or(0);
                 assert_eq!(ts, 42);
                 assert_eq!(ao, 14);
             }
@@ -2955,7 +3071,9 @@ mod tests {
 
                 for &(u, v) in &comp.edges {
                     for &w in &nodes {
-                        if w <= v { continue; }
+                        if w <= v {
+                            continue;
+                        }
                         if adj_set.contains(&(u, w)) && adj_set.contains(&(v, w)) {
                             *edge_tri_count.get_mut(&(u, v)).unwrap() += 1;
                             // Also count for (u,w) and (v,w) edges
@@ -2974,7 +3092,13 @@ mod tests {
 
                 eprintln!(
                     "dim={} comp[{}] ({} edges, pure): same={}, opp={}, tri_per_edge=[{},{}]",
-                    dim, i, comp.edges.len(), n_same, n_opp, min_tc, max_tc
+                    dim,
+                    i,
+                    comp.edges.len(),
+                    n_same,
+                    n_opp,
+                    min_tc,
+                    max_tc
                 );
 
                 assert_eq!(
@@ -3006,8 +3130,7 @@ mod tests {
         // Collect distinct regime signatures: (n_edges, sorted pattern keys)
         let mut regime_map: HashMap<(usize, Vec<FaceSignPattern>), Vec<usize>> = HashMap::new();
         for comp in &census.per_component {
-            let mut patterns: Vec<FaceSignPattern> =
-                comp.pattern_counts.keys().copied().collect();
+            let mut patterns: Vec<FaceSignPattern> = comp.pattern_counts.keys().copied().collect();
             patterns.sort();
             regime_map
                 .entry((comp.n_edges, patterns))
@@ -3022,26 +3145,41 @@ mod tests {
         let mut regimes: Vec<_> = regime_map.iter().collect();
         regimes.sort_by_key(|&((edges, _), comps)| (std::cmp::Reverse(*edges), comps.len()));
         for ((edges, patterns), comps) in &regimes {
-            let comp_ex = census.per_component.iter().find(|c| c.n_edges == *edges
-                && {
-                    let mut p: Vec<FaceSignPattern> = c.pattern_counts.keys().copied().collect();
-                    p.sort();
-                    &p == patterns
-                }).unwrap();
-            let pattern_str: Vec<String> = patterns.iter().map(|p| {
-                let count = comp_ex.pattern_counts.get(p).copied().unwrap_or(0);
-                format!("{:?}={}", p, count)
-            }).collect();
+            let comp_ex = census
+                .per_component
+                .iter()
+                .find(|c| {
+                    c.n_edges == *edges && {
+                        let mut p: Vec<FaceSignPattern> =
+                            c.pattern_counts.keys().copied().collect();
+                        p.sort();
+                        &p == patterns
+                    }
+                })
+                .unwrap();
+            let pattern_str: Vec<String> = patterns
+                .iter()
+                .map(|p| {
+                    let count = comp_ex.pattern_counts.get(p).copied().unwrap_or(0);
+                    format!("{:?}={}", p, count)
+                })
+                .collect();
             eprintln!(
                 "  {} comps, {} edges, {} tri, {}: [{}]",
-                comps.len(), edges, comp_ex.n_triangles, comps.len(),
+                comps.len(),
+                edges,
+                comp_ex.n_triangles,
+                comps.len(),
                 pattern_str.join(", ")
             );
         }
 
         // Regime count formula: dim/16 + 1 for dim >= 32
         // 128/16 + 1 = 9
-        assert_eq!(n_regimes, 9, "Expected 9 regimes at dim=128 (formula: dim/16+1)");
+        assert_eq!(
+            n_regimes, 9,
+            "Expected 9 regimes at dim=128 (formula: dim/16+1)"
+        );
 
         // Pure-max: 1 component, E_max = C(dim/2-2, 2) - (dim/4 - 1)
         // = C(62,2) - 31 = 1891 - 31 = 1860
@@ -3054,10 +3192,14 @@ mod tests {
         assert_eq!(e_min, 180);
 
         // Count pure-max and pure-min components
-        let pure_max_count = census.per_component.iter()
+        let pure_max_count = census
+            .per_component
+            .iter()
             .filter(|c| c.n_edges == e_max && c.pattern_counts.len() == 2)
             .count();
-        let pure_min_count = census.per_component.iter()
+        let pure_min_count = census
+            .per_component
+            .iter()
             .filter(|c| c.n_edges == e_min && c.pattern_counts.len() == 2)
             .count();
         assert_eq!(pure_max_count, 1, "Exactly 1 pure-max component");
@@ -3066,12 +3208,23 @@ mod tests {
         // Verify pure regimes maintain the 3:1 ratio
         for comp in &census.per_component {
             if comp.pattern_counts.len() == 2 {
-                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                let ts = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::TwoSameOneOpp)
+                    .copied()
+                    .unwrap_or(0);
+                let ao = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::AllOpposite)
+                    .copied()
+                    .unwrap_or(0);
                 assert_eq!(
-                    ts, 3 * ao,
+                    ts,
+                    3 * ao,
                     "3:1 ratio violated at dim=128 comp ({} edges): {} != 3*{}",
-                    comp.n_edges, ts, ao
+                    comp.n_edges,
+                    ts,
+                    ao
                 );
             }
         }
@@ -3099,8 +3252,7 @@ mod tests {
         // Collect regime signatures
         let mut regime_map: HashMap<(usize, Vec<FaceSignPattern>), Vec<usize>> = HashMap::new();
         for comp in &census.per_component {
-            let mut patterns: Vec<FaceSignPattern> =
-                comp.pattern_counts.keys().copied().collect();
+            let mut patterns: Vec<FaceSignPattern> = comp.pattern_counts.keys().copied().collect();
             patterns.sort();
             regime_map
                 .entry((comp.n_edges, patterns))
@@ -3117,7 +3269,9 @@ mod tests {
         for ((edges, patterns), comps) in &regimes {
             eprintln!(
                 "  {} comps, {} edges, {} patterns",
-                comps.len(), edges, patterns.len()
+                comps.len(),
+                edges,
+                patterns.len()
             );
         }
 
@@ -3129,27 +3283,60 @@ mod tests {
         let e_max = n * (n - 1) / 2 - (256 / 4 - 1); // C(126,2) - 63 = 7875 - 63 = 7812
         let e_min = 3 * 256 / 2 - 12; // 372
         assert_eq!(
-            census.per_component.iter().map(|c| c.n_edges).max().unwrap(),
+            census
+                .per_component
+                .iter()
+                .map(|c| c.n_edges)
+                .max()
+                .unwrap(),
             e_max
         );
         assert_eq!(
-            census.per_component.iter().map(|c| c.n_edges).min().unwrap(),
+            census
+                .per_component
+                .iter()
+                .map(|c| c.n_edges)
+                .min()
+                .unwrap(),
             e_min
         );
 
         // Universal Double 3:1 Law
         for comp in &census.per_component {
-            let as_count = comp.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
-            let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-            let os = comp.pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
-            let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+            let as_count = comp
+                .pattern_counts
+                .get(&FaceSignPattern::AllSame)
+                .copied()
+                .unwrap_or(0);
+            let ts = comp
+                .pattern_counts
+                .get(&FaceSignPattern::TwoSameOneOpp)
+                .copied()
+                .unwrap_or(0);
+            let os = comp
+                .pattern_counts
+                .get(&FaceSignPattern::OneSameTwoOpp)
+                .copied()
+                .unwrap_or(0);
+            let ao = comp
+                .pattern_counts
+                .get(&FaceSignPattern::AllOpposite)
+                .copied()
+                .unwrap_or(0);
 
             assert_eq!(ts, 3 * ao, "dim=256 comp[{}]: TS!=3*AO", comp.component_idx);
-            assert_eq!(os, 3 * as_count, "dim=256 comp[{}]: OS!=3*AS", comp.component_idx);
+            assert_eq!(
+                os,
+                3 * as_count,
+                "dim=256 comp[{}]: OS!=3*AS",
+                comp.component_idx
+            );
         }
 
         // Exactly 1 pure-max component
-        let n_pure_max = census.per_component.iter()
+        let n_pure_max = census
+            .per_component
+            .iter()
             .filter(|c| c.n_edges == e_max && c.pattern_counts.len() == 2)
             .count();
         assert_eq!(n_pure_max, 1);
@@ -3194,7 +3381,9 @@ mod tests {
             }
             for &(u, v) in &comp.edges {
                 for &w in &nodes {
-                    if w <= v { continue; }
+                    if w <= v {
+                        continue;
+                    }
                     if !adj_set.contains(&(u, w)) || !adj_set.contains(&(v, w)) {
                         continue;
                     }
@@ -3203,7 +3392,10 @@ mod tests {
                         edge_sign_type_exact(32, v, w),
                         edge_sign_type_exact(32, u, w),
                     ];
-                    let n_opp = signs.iter().filter(|&&s| s == EdgeSignType::Opposite).count();
+                    let n_opp = signs
+                        .iter()
+                        .filter(|&&s| s == EdgeSignType::Opposite)
+                        .count();
                     if n_opp % 2 == 0 {
                         let edges_of_tri = [
                             (u, v),
@@ -3226,7 +3418,10 @@ mod tests {
             }
         }
         // Confirm: parity-specific edge regularity DOES fail
-        assert!(found_violation, "Expected parity-specific edge regularity to be violated at dim=32");
+        assert!(
+            found_violation,
+            "Expected parity-specific edge regularity to be violated at dim=32"
+        );
     }
 
     #[test]
@@ -3248,18 +3443,16 @@ mod tests {
             let census = generic_face_sign_census(dim);
 
             // Edge count groups (= GF(2) classes = motif classes)
-            let edge_counts: std::collections::BTreeSet<usize> = census
-                .per_component
-                .iter()
-                .map(|c| c.n_edges)
-                .collect();
+            let edge_counts: std::collections::BTreeSet<usize> =
+                census.per_component.iter().map(|c| c.n_edges).collect();
             let n_edge_groups = edge_counts.len();
 
             // Motif class count
             let expected_motif_classes = dim / 16;
             assert_eq!(
                 n_edge_groups, expected_motif_classes,
-                "dim={}: edge-count groups should equal dim/16", dim
+                "dim={}: edge-count groups should equal dim/16",
+                dim
             );
 
             // Regime count = edge groups + 1
@@ -3270,8 +3463,10 @@ mod tests {
                 regime_set.insert((comp.n_edges, pats));
             }
             assert_eq!(
-                regime_set.len(), n_edge_groups + 1,
-                "dim={}: regimes should equal edge-groups + 1", dim
+                regime_set.len(),
+                n_edge_groups + 1,
+                "dim={}: regimes should equal edge-groups + 1",
+                dim
             );
 
             // The split occurs at max-edge: 1 pure + rest full
@@ -3281,8 +3476,14 @@ mod tests {
                 .iter()
                 .filter(|c| c.n_edges == e_max)
                 .collect();
-            let pure_max = max_edge_comps.iter().filter(|c| c.pattern_counts.len() == 2).count();
-            let full_max = max_edge_comps.iter().filter(|c| c.pattern_counts.len() == 4).count();
+            let pure_max = max_edge_comps
+                .iter()
+                .filter(|c| c.pattern_counts.len() == 2)
+                .count();
+            let full_max = max_edge_comps
+                .iter()
+                .filter(|c| c.pattern_counts.len() == 4)
+                .count();
             assert_eq!(pure_max, 1, "dim={}: exactly 1 pure-max", dim);
             assert!(full_max > 0, "dim={}: should have full-max components", dim);
 
@@ -3293,7 +3494,11 @@ mod tests {
                 .iter()
                 .filter(|c| c.n_edges == e_min)
                 .all(|c| c.pattern_counts.len() == 2);
-            assert!(min_edge_all_pure, "dim={}: all min-edge components should be pure", dim);
+            assert!(
+                min_edge_all_pure,
+                "dim={}: all min-edge components should be pure",
+                dim
+            );
         }
     }
 
@@ -3325,8 +3530,12 @@ mod tests {
             // Regime count formula
             let expected_regimes = if dim == 16 { 1 } else { dim / 16 + 1 };
             assert_eq!(
-                regime_set.len(), expected_regimes,
-                "dim={}: expected {} regimes, got {}", dim, expected_regimes, regime_set.len()
+                regime_set.len(),
+                expected_regimes,
+                "dim={}: expected {} regimes, got {}",
+                dim,
+                expected_regimes,
+                regime_set.len()
             );
 
             // Edge formulas (for dim >= 32)
@@ -3335,16 +3544,38 @@ mod tests {
                 let expected_e_max = n * (n - 1) / 2 - (dim / 4 - 1);
                 let expected_e_min = 3 * dim / 2 - 12;
 
-                let actual_e_max = census.per_component.iter().map(|c| c.n_edges).max().unwrap();
-                let actual_e_min = census.per_component.iter().map(|c| c.n_edges).min().unwrap();
+                let actual_e_max = census
+                    .per_component
+                    .iter()
+                    .map(|c| c.n_edges)
+                    .max()
+                    .unwrap();
+                let actual_e_min = census
+                    .per_component
+                    .iter()
+                    .map(|c| c.n_edges)
+                    .min()
+                    .unwrap();
 
-                assert_eq!(actual_e_max, expected_e_max,
-                    "dim={}: E_max should be C({},2)-{} = {}", dim, n, dim/4-1, expected_e_max);
-                assert_eq!(actual_e_min, expected_e_min,
-                    "dim={}: E_min should be 3*{}/2-12 = {}", dim, dim, expected_e_min);
+                assert_eq!(
+                    actual_e_max,
+                    expected_e_max,
+                    "dim={}: E_max should be C({},2)-{} = {}",
+                    dim,
+                    n,
+                    dim / 4 - 1,
+                    expected_e_max
+                );
+                assert_eq!(
+                    actual_e_min, expected_e_min,
+                    "dim={}: E_min should be 3*{}/2-12 = {}",
+                    dim, dim, expected_e_min
+                );
 
                 // Exactly 1 pure-max component
-                let n_pure_max = census.per_component.iter()
+                let n_pure_max = census
+                    .per_component
+                    .iter()
                     .filter(|c| c.n_edges == expected_e_max && c.pattern_counts.len() == 2)
                     .count();
                 assert_eq!(n_pure_max, 1, "dim={}: exactly 1 pure-max", dim);
@@ -3353,9 +3584,23 @@ mod tests {
             // 3:1 ratio law in all pure components
             for comp in &census.per_component {
                 if comp.pattern_counts.len() == 2 {
-                    let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-                    let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
-                    assert_eq!(ts, 3 * ao, "dim={}: 3:1 violated ({} edges)", dim, comp.n_edges);
+                    let ts = comp
+                        .pattern_counts
+                        .get(&FaceSignPattern::TwoSameOneOpp)
+                        .copied()
+                        .unwrap_or(0);
+                    let ao = comp
+                        .pattern_counts
+                        .get(&FaceSignPattern::AllOpposite)
+                        .copied()
+                        .unwrap_or(0);
+                    assert_eq!(
+                        ts,
+                        3 * ao,
+                        "dim={}: 3:1 violated ({} edges)",
+                        dim,
+                        comp.n_edges
+                    );
                 }
             }
         }
@@ -3383,23 +3628,49 @@ mod tests {
             let census = generic_face_sign_census(dim);
 
             for comp in &census.per_component {
-                let as_count = comp.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
-                let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-                let os = comp.pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
-                let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+                let as_count = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::AllSame)
+                    .copied()
+                    .unwrap_or(0);
+                let ts = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::TwoSameOneOpp)
+                    .copied()
+                    .unwrap_or(0);
+                let os = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::OneSameTwoOpp)
+                    .copied()
+                    .unwrap_or(0);
+                let ao = comp
+                    .pattern_counts
+                    .get(&FaceSignPattern::AllOpposite)
+                    .copied()
+                    .unwrap_or(0);
 
                 // Odd-parity 3:1 law: TwoSameOneOpp = 3 * AllOpposite
                 assert_eq!(
-                    ts, 3 * ao,
+                    ts,
+                    3 * ao,
                     "dim={} comp[{}] ({} edges): TS={} != 3*AO={}",
-                    dim, comp.component_idx, comp.n_edges, ts, ao
+                    dim,
+                    comp.component_idx,
+                    comp.n_edges,
+                    ts,
+                    ao
                 );
 
                 // Even-parity 3:1 law: OneSameTwoOpp = 3 * AllSame
                 assert_eq!(
-                    os, 3 * as_count,
+                    os,
+                    3 * as_count,
                     "dim={} comp[{}] ({} edges): OS={} != 3*AS={}",
-                    dim, comp.component_idx, comp.n_edges, os, as_count
+                    dim,
+                    comp.component_idx,
+                    comp.n_edges,
+                    os,
+                    as_count
                 );
             }
         }
@@ -3427,19 +3698,23 @@ mod tests {
         let xor_label = component_xor_label(special_comp);
         eprintln!(
             "Special heptacross: component[{}], XOR label = {:?}, nodes = {}",
-            idx, xor_label, special_comp.nodes.len()
+            idx,
+            xor_label,
+            special_comp.nodes.len()
         );
 
         // Check if this component's XOR label is distinguishable
-        let all_labels: Vec<Option<usize>> = components
-            .iter()
-            .map(|c| component_xor_label(c))
-            .collect();
+        let all_labels: Vec<Option<usize>> =
+            components.iter().map(|c| component_xor_label(c)).collect();
         eprintln!("All XOR labels: {:?}", all_labels);
 
         // The special component has XOR label 8 = dim/4 = 32/4.
         // This is the MSB boundary of the lower-half index space.
-        assert_eq!(xor_label, Some(8), "Special heptacross has XOR label = dim/4 = 8");
+        assert_eq!(
+            xor_label,
+            Some(8),
+            "Special heptacross has XOR label = dim/4 = 8"
+        );
 
         // Verify all 15 components have distinct XOR labels
         let defined: Vec<usize> = all_labels.iter().filter_map(|&l| l).collect();
@@ -3531,10 +3806,10 @@ mod tests {
                 }
 
                 // Step 2: Enumerate triangles and classify by parity class.
-                let mut n_all_opp = 0usize;     // class +1 pure
-                let mut n_two_same = 0usize;     // class +1 mixed
-                let mut n_all_same = 0usize;     // class -1 pure
-                let mut n_one_same = 0usize;     // class -1 mixed
+                let mut n_all_opp = 0usize; // class +1 pure
+                let mut n_two_same = 0usize; // class +1 mixed
+                let mut n_all_same = 0usize; // class -1 pure
+                let mut n_one_same = 0usize; // class -1 mixed
                 let mut n_triangles = 0usize;
 
                 for &(u, v) in &comp.edges {
@@ -3546,22 +3821,25 @@ mod tests {
                             let (i, j) = u;
                             let (k, l) = v;
                             let (m, n) = w;
-                            let sigma_ab = cd_basis_mul_sign(dim, i, k)
-                                * cd_basis_mul_sign(dim, j, l);
-                            let sigma_bc = cd_basis_mul_sign(dim, k, m)
-                                * cd_basis_mul_sign(dim, l, n);
-                            let sigma_ac = cd_basis_mul_sign(dim, i, m)
-                                * cd_basis_mul_sign(dim, j, n);
+                            let sigma_ab =
+                                cd_basis_mul_sign(dim, i, k) * cd_basis_mul_sign(dim, j, l);
+                            let sigma_bc =
+                                cd_basis_mul_sign(dim, k, m) * cd_basis_mul_sign(dim, l, n);
+                            let sigma_ac =
+                                cd_basis_mul_sign(dim, i, m) * cd_basis_mul_sign(dim, j, n);
 
                             let product = sigma_ab * sigma_bc * sigma_ac;
-                            let n_same =
-                                [sigma_ab, sigma_bc, sigma_ac].iter().filter(|&&s| s == -1).count();
+                            let n_same = [sigma_ab, sigma_bc, sigma_ac]
+                                .iter()
+                                .filter(|&&s| s == -1)
+                                .count();
 
                             // Verify parity identity
                             let expected_product = if n_same % 2 == 0 { 1 } else { -1 };
                             assert_eq!(
                                 product, expected_product,
-                                "dim={} comp[{}] parity mismatch", dim, comp_idx
+                                "dim={} comp[{}] parity mismatch",
+                                dim, comp_idx
                             );
 
                             match n_same {
@@ -3586,37 +3864,63 @@ mod tests {
 
                 if class_pos > 0 {
                     assert_eq!(
-                        class_pos % 4, 0,
+                        class_pos % 4,
+                        0,
                         "dim={} comp[{}] class+1 total {} not div by 4 (AO={}, TS={})",
-                        dim, comp_idx, class_pos, n_all_opp, n_two_same
+                        dim,
+                        comp_idx,
+                        class_pos,
+                        n_all_opp,
+                        n_two_same
                     );
                     assert_eq!(
-                        n_all_opp, class_pos / 4,
+                        n_all_opp,
+                        class_pos / 4,
                         "dim={} comp[{}] AllOpp {} != class_pos/4 {}",
-                        dim, comp_idx, n_all_opp, class_pos / 4
+                        dim,
+                        comp_idx,
+                        n_all_opp,
+                        class_pos / 4
                     );
                     assert_eq!(
-                        n_two_same, 3 * n_all_opp,
+                        n_two_same,
+                        3 * n_all_opp,
                         "dim={} comp[{}] TS {} != 3*AO {}",
-                        dim, comp_idx, n_two_same, 3 * n_all_opp
+                        dim,
+                        comp_idx,
+                        n_two_same,
+                        3 * n_all_opp
                     );
                 }
 
                 if class_neg > 0 {
                     assert_eq!(
-                        class_neg % 4, 0,
+                        class_neg % 4,
+                        0,
                         "dim={} comp[{}] class-1 total {} not div by 4 (AS={}, OS={})",
-                        dim, comp_idx, class_neg, n_all_same, n_one_same
+                        dim,
+                        comp_idx,
+                        class_neg,
+                        n_all_same,
+                        n_one_same
                     );
                     assert_eq!(
-                        n_all_same, class_neg / 4,
+                        n_all_same,
+                        class_neg / 4,
                         "dim={} comp[{}] AllSame {} != class_neg/4 {}",
-                        dim, comp_idx, n_all_same, class_neg / 4
+                        dim,
+                        comp_idx,
+                        n_all_same,
+                        class_neg / 4
                     );
                     assert_eq!(
-                        n_one_same, 3 * n_all_same,
+                        n_one_same,
+                        3 * n_all_same,
                         "dim={} comp[{}] OS {} != 3*AS {}",
-                        dim, comp_idx, n_one_same, 3 * n_all_same
+                        dim,
+                        comp_idx,
+                        n_one_same,
+                        3 * n_all_same
                     );
                 }
 
@@ -3655,9 +3959,13 @@ mod tests {
                 }
             }
             assert_eq!(
-                n_same, n_opp,
+                n_same,
+                n_opp,
                 "dim=128 comp[{}] Half-Half violated: Same={}, Opp={} (edges={})",
-                comp_idx, n_same, n_opp, comp.edges.len()
+                comp_idx,
+                n_same,
+                n_opp,
+                comp.edges.len()
             );
         }
     }
@@ -3693,8 +4001,7 @@ mod tests {
         // Collect regime signatures
         let mut regime_map: HashMap<(usize, Vec<FaceSignPattern>), Vec<usize>> = HashMap::new();
         for comp in &census.per_component {
-            let mut patterns: Vec<FaceSignPattern> =
-                comp.pattern_counts.keys().copied().collect();
+            let mut patterns: Vec<FaceSignPattern> = comp.pattern_counts.keys().copied().collect();
             patterns.sort();
             regime_map
                 .entry((comp.n_edges, patterns))
@@ -3711,7 +4018,9 @@ mod tests {
         for ((edges, patterns), comps) in &regimes {
             eprintln!(
                 "  {} comps, {} edges, {} patterns",
-                comps.len(), edges, patterns.len()
+                comps.len(),
+                edges,
+                patterns.len()
             );
         }
 
@@ -3723,27 +4032,60 @@ mod tests {
         let e_max = n * (n - 1) / 2 - (512 / 4 - 1); // C(254,2) - 127 = 32131 - 127 = 32004
         let e_min = 3 * 512 / 2 - 12; // 756
         assert_eq!(
-            census.per_component.iter().map(|c| c.n_edges).max().unwrap(),
+            census
+                .per_component
+                .iter()
+                .map(|c| c.n_edges)
+                .max()
+                .unwrap(),
             e_max
         );
         assert_eq!(
-            census.per_component.iter().map(|c| c.n_edges).min().unwrap(),
+            census
+                .per_component
+                .iter()
+                .map(|c| c.n_edges)
+                .min()
+                .unwrap(),
             e_min
         );
 
         // Universal Double 3:1 Law
         for comp in &census.per_component {
-            let as_count = comp.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
-            let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
-            let os = comp.pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
-            let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+            let as_count = comp
+                .pattern_counts
+                .get(&FaceSignPattern::AllSame)
+                .copied()
+                .unwrap_or(0);
+            let ts = comp
+                .pattern_counts
+                .get(&FaceSignPattern::TwoSameOneOpp)
+                .copied()
+                .unwrap_or(0);
+            let os = comp
+                .pattern_counts
+                .get(&FaceSignPattern::OneSameTwoOpp)
+                .copied()
+                .unwrap_or(0);
+            let ao = comp
+                .pattern_counts
+                .get(&FaceSignPattern::AllOpposite)
+                .copied()
+                .unwrap_or(0);
 
             assert_eq!(ts, 3 * ao, "dim=512 comp[{}]: TS!=3*AO", comp.component_idx);
-            assert_eq!(os, 3 * as_count, "dim=512 comp[{}]: OS!=3*AS", comp.component_idx);
+            assert_eq!(
+                os,
+                3 * as_count,
+                "dim=512 comp[{}]: OS!=3*AS",
+                comp.component_idx
+            );
         }
 
         // Exactly 1 pure-max component
-        let n_pure_max = census.per_component.iter()
+        let n_pure_max = census
+            .per_component
+            .iter()
             .filter(|c| c.n_edges == e_max && c.pattern_counts.len() == 2)
             .count();
         assert_eq!(n_pure_max, 1);
@@ -3771,7 +4113,8 @@ mod tests {
             let all_lo: HashSet<usize> = (1..=7).collect();
             let missing: Vec<usize> = all_lo.difference(&lo_set).copied().collect();
             assert_eq!(
-                missing.len(), 1,
+                missing.len(),
+                1,
                 "dim=16: each component should miss exactly 1 Fano index"
             );
             missing_indices_16.push(missing[0]);
@@ -3796,10 +4139,17 @@ mod tests {
             let lo_indices: BTreeSet<usize> = comp.nodes.iter().map(|&(lo, _)| lo).collect();
 
             // Fano projection: lo & 7 (mod-8 residue, maps to octonion imaginary)
-            let fano_proj: BTreeSet<usize> = lo_indices.iter().map(|&lo| {
-                let residue = lo & 7;
-                if residue == 0 { 8 } else { residue } // Map 0 -> 8 to distinguish
-            }).collect();
+            let fano_proj: BTreeSet<usize> = lo_indices
+                .iter()
+                .map(|&lo| {
+                    let residue = lo & 7;
+                    if residue == 0 {
+                        8
+                    } else {
+                        residue
+                    } // Map 0 -> 8 to distinguish
+                })
+                .collect();
 
             // Level decomposition: which "doubling levels" are present?
             let levels: BTreeSet<usize> = lo_indices.iter().map(|&lo| lo >> 3).collect();
@@ -3824,9 +4174,7 @@ mod tests {
         //
         // Key question: do all 7 Fano indices appear in every component's
         // projection (fully mixed), or do some components only use subsets?
-        let all_use_full_fano = fano_projection_signatures
-            .iter()
-            .all(|sig| sig.len() >= 7);
+        let all_use_full_fano = fano_projection_signatures.iter().all(|sig| sig.len() >= 7);
 
         let n_distinct_sigs = {
             let mut sigs = fano_projection_signatures.clone();
@@ -3846,9 +4194,8 @@ mod tests {
         // The low 3 bits of xor_key inherit Fano structure.
         let mut xor_fano_residues_per_comp: Vec<BTreeSet<usize>> = Vec::new();
         for comp in &comps_32 {
-            let edge_xor_residues: BTreeSet<usize> = comp.nodes.iter().map(|&(lo, hi)| {
-                (lo ^ hi) & 7
-            }).collect();
+            let edge_xor_residues: BTreeSet<usize> =
+                comp.nodes.iter().map(|&(lo, hi)| (lo ^ hi) & 7).collect();
             xor_fano_residues_per_comp.push(edge_xor_residues);
         }
 
@@ -3881,7 +4228,8 @@ mod tests {
         // Verify: each component has a unique XOR key
         let unique_xor_keys: HashSet<usize> = xor_keys_32.iter().copied().collect();
         assert_eq!(
-            unique_xor_keys.len(), 15,
+            unique_xor_keys.len(),
+            15,
             "dim=32: each of 15 components should have a unique XOR key"
         );
 
@@ -3913,7 +4261,8 @@ mod tests {
         // Verify unique XOR keys at dim=64
         let unique_64: HashSet<usize> = xor_keys_64.iter().copied().collect();
         assert_eq!(
-            unique_64.len(), 31,
+            unique_64.len(),
+            31,
             "dim=64: each of 31 components should have a unique XOR key"
         );
 
@@ -3960,17 +4309,20 @@ mod tests {
         // Check that exactly one residue has count = (dim/16) - 1 = 3,
         // and the rest have count = dim/16 = 4.
         let expected_normal = 64 / 16; // 4
-        let n_deficit = r_nonzero_counts.iter()
+        let n_deficit = r_nonzero_counts
+            .iter()
             .chain(std::iter::once(&r0_count_64))
             .filter(|&&c| c == expected_normal - 1)
             .count();
-        let n_normal = r_nonzero_counts.iter()
+        let n_normal = r_nonzero_counts
+            .iter()
             .chain(std::iter::once(&r0_count_64))
             .filter(|&&c| c == expected_normal)
             .count();
 
         assert_eq!(
-            n_deficit, 1,
+            n_deficit,
+            1,
             "dim=64: exactly one Fano residue should have {} components (deficit)",
             expected_normal - 1
         );
@@ -4102,7 +4454,9 @@ mod tests {
             eprintln!("\n=== Sigma Correspondence at dim={dim} ===");
             eprintln!("Edges: {total_edges}, sigma matches: {sigma_match_count}");
             eprintln!("Triangles: {total_triangles}");
-            eprintln!("Even parity (product=+1): {parity_even} (pure={even_pure}, mixed={even_mixed})");
+            eprintln!(
+                "Even parity (product=+1): {parity_even} (pure={even_pure}, mixed={even_mixed})"
+            );
             eprintln!("Odd parity (product=-1): {parity_odd} (pure={odd_pure}, mixed={odd_mixed})");
 
             if parity_even > 0 {
@@ -4120,7 +4474,8 @@ mod tests {
 
             // ASSERTION 1: sigma correspondence is exact
             assert_eq!(
-                sigma_match_count, total_edges,
+                sigma_match_count,
+                total_edges,
                 "dim={dim}: sigma correspondence failed on {}/{total_edges} edges",
                 total_edges - sigma_match_count
             );
@@ -4128,7 +4483,8 @@ mod tests {
             // ASSERTION 2: Quarter Rule on even parity class
             if parity_even > 0 {
                 assert_eq!(
-                    even_pure * 4, parity_even,
+                    even_pure * 4,
+                    parity_even,
                     "dim={dim}: even class Quarter Rule failed: \
                      pure={even_pure}, total={parity_even}, expected pure=total/4"
                 );
@@ -4137,7 +4493,8 @@ mod tests {
             // ASSERTION 3: Quarter Rule on odd parity class
             if parity_odd > 0 {
                 assert_eq!(
-                    odd_pure * 4, parity_odd,
+                    odd_pure * 4,
+                    parity_odd,
                     "dim={dim}: odd class Quarter Rule failed: \
                      pure={odd_pure}, total={parity_odd}, expected pure=total/4"
                 );
@@ -4157,12 +4514,16 @@ mod tests {
     /// (exactly half of edges have Delta_k psi = 0, half have 1).
     #[test]
     fn test_translation_derivative_and_half_half() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
         use crate::analysis::zd_graphs::xor_key;
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
         // Extract GF(2) exponent: s(i,j) = (-1)^psi(i,j) => psi = 0 if s=+1, 1 if s=-1
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         for &dim in &[16, 32, 64, 128] {
@@ -4184,7 +4545,8 @@ mod tests {
                 // Verify all nodes share the same key
                 for &(lo, hi) in &comp.nodes {
                     assert_eq!(
-                        xor_key(lo, hi), k,
+                        xor_key(lo, hi),
+                        k,
                         "dim={dim}: node ({lo},{hi}) has key {} != component key {k}",
                         xor_key(lo, hi)
                     );
@@ -4243,7 +4605,8 @@ mod tests {
 
             // ASSERTION 1: translation derivative identity is exact
             assert_eq!(
-                delta_match, total_edges,
+                delta_match,
+                total_edges,
                 "dim={dim}: Delta_k psi identity failed on {}/{total_edges}",
                 total_edges - delta_match
             );
@@ -4272,8 +4635,8 @@ mod tests {
     /// component key k.
     #[test]
     fn test_associator_obstruction_candidate_b() {
-        use crate::construction::cayley_dickson::cd_basis_mul_sign;
         use crate::analysis::zd_graphs::xor_key;
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
         // CD associator sign: A(i,j,k) = s(i,j) * s(i^j, k) * s(j,k) * s(i, j^k)
         // In {+/-1} arithmetic, division = multiplication, so this is:
@@ -4327,15 +4690,17 @@ mod tests {
                             total_triangles += 1;
 
                             // Compute sigma for edge classification
-                            let sigma_uv = cd_basis_mul_sign(dim, u.0, v.0)
-                                * cd_basis_mul_sign(dim, u.1, v.1);
-                            let sigma_vw = cd_basis_mul_sign(dim, v.0, w.0)
-                                * cd_basis_mul_sign(dim, v.1, w.1);
-                            let sigma_uw = cd_basis_mul_sign(dim, u.0, w.0)
-                                * cd_basis_mul_sign(dim, u.1, w.1);
+                            let sigma_uv =
+                                cd_basis_mul_sign(dim, u.0, v.0) * cd_basis_mul_sign(dim, u.1, v.1);
+                            let sigma_vw =
+                                cd_basis_mul_sign(dim, v.0, w.0) * cd_basis_mul_sign(dim, v.1, w.1);
+                            let sigma_uw =
+                                cd_basis_mul_sign(dim, u.0, w.0) * cd_basis_mul_sign(dim, u.1, w.1);
 
                             let n_same = [sigma_uv, sigma_vw, sigma_uw]
-                                .iter().filter(|&&s| s == -1).count();
+                                .iter()
+                                .filter(|&&s| s == -1)
+                                .count();
                             let product = sigma_uv * sigma_vw * sigma_uw;
                             let is_pure = if product == 1 {
                                 n_same == 0 // AllOpposite
@@ -4356,7 +4721,11 @@ mod tests {
                             }
 
                             if f_val == (1, 1) {
-                                if is_pure { f_pp_pure += 1; } else { f_pp_mixed += 1; }
+                                if is_pure {
+                                    f_pp_pure += 1;
+                                } else {
+                                    f_pp_mixed += 1;
+                                }
                             } else if is_pure {
                                 f_other_pure += 1;
                             } else {
@@ -4413,16 +4782,26 @@ mod tests {
                                 let sigma_uw = cd_basis_mul_sign(dim, u.0, w.0)
                                     * cd_basis_mul_sign(dim, u.1, w.1);
                                 let n_same = [sigma_uv, sigma_vw, sigma_uw]
-                                    .iter().filter(|&&s| s == -1).count();
+                                    .iter()
+                                    .filter(|&&s| s == -1)
+                                    .count();
                                 let product = sigma_uv * sigma_vw * sigma_uw;
-                                let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+                                let is_pure = if product == 1 {
+                                    n_same == 0
+                                } else {
+                                    n_same == 3
+                                };
 
                                 // Variant 1: cross lo/hi associator
                                 let a_cross1 = assoc_sign(dim, u.0, v.0, w.1);
                                 let a_cross2 = assoc_sign(dim, u.1, v.1, w.0);
                                 let fv = (a_cross1, a_cross2);
                                 let entry = v1_counts.entry(fv).or_insert([0, 0]);
-                                if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+                                if is_pure {
+                                    entry[0] += 1;
+                                } else {
+                                    entry[1] += 1;
+                                }
                             }
                         }
                     }
@@ -4437,7 +4816,8 @@ mod tests {
                 }
                 let v1_pp = v1_counts.get(&(1, 1)).copied().unwrap_or([0, 0]);
                 let v1_perfect = v1_pp[1] == 0
-                    && v1_counts.iter()
+                    && v1_counts
+                        .iter()
                         .filter(|(&k, _)| k != (1, 1))
                         .all(|(_, v)| v[0] == 0);
                 eprintln!("  Variant 1 F=(+1,+1) <=> pure: {v1_perfect}");
@@ -4447,7 +4827,8 @@ mod tests {
             let total_pure = f_pp_pure + f_other_pure;
             let total_mixed = f_pp_mixed + f_other_mixed;
             assert_eq!(
-                total_pure * 3, total_mixed,
+                total_pure * 3,
+                total_mixed,
                 "dim={dim}: 3:1 ratio check failed: pure={total_pure}, mixed={total_mixed}"
             );
         }
@@ -4471,7 +4852,11 @@ mod tests {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         // At dim=16, do an exhaustive search for a 2-bit invariant
@@ -4522,7 +4907,11 @@ mod tests {
                         let sigma_uw = m_uw[0][0] ^ m_uw[1][1];
                         let n_same = (sigma_uv + sigma_vw + sigma_uw) as usize;
                         let product_even = n_same % 2 == 0;
-                        let is_pure = if product_even { n_same == 0 } else { n_same == 3 };
+                        let is_pure = if product_even {
+                            n_same == 0
+                        } else {
+                            n_same == 3
+                        };
 
                         tris.push(TriData {
                             m: [m_uv, m_vw, m_uw],
@@ -4575,15 +4964,13 @@ mod tests {
             let f = |bits: u16| -> u8 { (bits & mask).count_ones() as u8 % 2 };
 
             // Check: f=0 on all pure
-            let all_pure_zero = encoded.iter()
-                .filter(|e| e.1)
-                .all(|e| f(e.0) == 0);
-            if !all_pure_zero { continue; }
+            let all_pure_zero = encoded.iter().filter(|e| e.1).all(|e| f(e.0) == 0);
+            if !all_pure_zero {
+                continue;
+            }
 
             // Count mixed with f=1
-            let mixed_one = encoded.iter()
-                .filter(|e| !e.1 && f(e.0) == 1)
-                .count();
+            let mixed_one = encoded.iter().filter(|e| !e.1 && f(e.0) == 1).count();
             if mixed_one > best_sep {
                 best_sep = mixed_one;
                 best_mask = mask;
@@ -4593,7 +4980,10 @@ mod tests {
             }
         }
 
-        eprintln!("Best single-bit separator: mask=0x{:03x}, separates {best_sep}/{n_mixed} mixed", best_mask);
+        eprintln!(
+            "Best single-bit separator: mask=0x{:03x}, separates {best_sep}/{n_mixed} mixed",
+            best_mask
+        );
         eprintln!("Perfect single-bit separators: {n_perfect_single}");
 
         // Also try: f=0 on all mixed, f=1 on some pure (pure = special)
@@ -4601,19 +4991,20 @@ mod tests {
         let mut best_mask2 = 0u16;
         for mask in 1u16..4096 {
             let f = |bits: u16| -> u8 { (bits & mask).count_ones() as u8 % 2 };
-            let all_mixed_zero = encoded.iter()
-                .filter(|e| !e.1)
-                .all(|e| f(e.0) == 0);
-            if !all_mixed_zero { continue; }
-            let pure_one = encoded.iter()
-                .filter(|e| e.1 && f(e.0) == 1)
-                .count();
+            let all_mixed_zero = encoded.iter().filter(|e| !e.1).all(|e| f(e.0) == 0);
+            if !all_mixed_zero {
+                continue;
+            }
+            let pure_one = encoded.iter().filter(|e| e.1 && f(e.0) == 1).count();
             if pure_one > best_sep2 {
                 best_sep2 = pure_one;
                 best_mask2 = mask;
             }
         }
-        eprintln!("Best single-bit (pure=special): mask=0x{:03x}, separates {best_sep2}/{n_pure} pure", best_mask2);
+        eprintln!(
+            "Best single-bit (pure=special): mask=0x{:03x}, separates {best_sep2}/{n_pure} pure",
+            best_mask2
+        );
 
         // Now search for 2-bit pairs that give perfect separation:
         // (f1, f2) = (0,0) iff pure
@@ -4637,7 +5028,8 @@ mod tests {
                 }
 
                 // All mixed must have (f1,f2) != (0,0)
-                let all_mixed_nonzero = encoded.iter()
+                let all_mixed_nonzero = encoded
+                    .iter()
                     .filter(|e| !e.1)
                     .all(|e| f1(e.0) != 0 || f2(e.0) != 0);
 
@@ -4660,9 +5052,18 @@ mod tests {
             let decode_mask = |mask: u16| -> String {
                 let mut parts = Vec::new();
                 let labels = [
-                    "psi(lo_a,lo_b)", "psi(lo_a,hi_b)", "psi(hi_a,lo_b)", "psi(hi_a,hi_b)",
-                    "psi(lo_b,lo_c)", "psi(lo_b,hi_c)", "psi(hi_b,lo_c)", "psi(hi_b,hi_c)",
-                    "psi(lo_a,lo_c)", "psi(lo_a,hi_c)", "psi(hi_a,lo_c)", "psi(hi_a,hi_c)",
+                    "psi(lo_a,lo_b)",
+                    "psi(lo_a,hi_b)",
+                    "psi(hi_a,lo_b)",
+                    "psi(hi_a,hi_b)",
+                    "psi(lo_b,lo_c)",
+                    "psi(lo_b,hi_c)",
+                    "psi(hi_b,lo_c)",
+                    "psi(hi_b,hi_c)",
+                    "psi(lo_a,lo_c)",
+                    "psi(lo_a,hi_c)",
+                    "psi(hi_a,lo_c)",
+                    "psi(hi_a,hi_c)",
                 ];
                 for (i, label) in labels.iter().enumerate() {
                     if mask & (1 << i) != 0 {
@@ -4680,7 +5081,11 @@ mod tests {
             for &(bits, is_pure) in &encoded {
                 let key = (f1(bits), f2(bits));
                 let entry = dist.entry(key).or_insert([0, 0]);
-                if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+                if is_pure {
+                    entry[0] += 1;
+                } else {
+                    entry[1] += 1;
+                }
             }
             for key in [(0u8, 0u8), (0, 1), (1, 0), (1, 1)] {
                 let [p, m] = dist.get(&key).copied().unwrap_or([0, 0]);
@@ -4716,7 +5121,11 @@ mod tests {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         // The "anti-diagonal XOR" per edge
@@ -4731,8 +5140,7 @@ mod tests {
 
         // The "full determinant" (det of 2x2 GF(2) matrix) = diag XOR antidet
         let det = |dim: usize, a: CrossPair, b: CrossPair| -> u8 {
-            (psi(dim, a.0, b.0) & psi(dim, a.1, b.1))
-            ^ (psi(dim, a.0, b.1) & psi(dim, a.1, b.0))
+            (psi(dim, a.0, b.0) & psi(dim, a.1, b.1)) ^ (psi(dim, a.0, b.1) & psi(dim, a.1, b.0))
         };
 
         for &dim in &[16, 32, 64] {
@@ -4785,7 +5193,11 @@ mod tests {
                             let d_uw = diag(dim, u, w);
                             let n_same = (d_uv + d_vw + d_uw) as usize;
                             let product_even = n_same % 2 == 0;
-                            let is_pure = if product_even { n_same == 0 } else { n_same == 3 };
+                            let is_pure = if product_even {
+                                n_same == 0
+                            } else {
+                                n_same == 3
+                            };
 
                             let a_uv = antidet(dim, u, v);
                             let a_vw = antidet(dim, v, w);
@@ -4799,25 +5211,45 @@ mod tests {
                             let f1_c1 = a_uv ^ a_vw ^ a_uw;
                             let f2_c1 = det_uv ^ det_vw ^ det_uw;
                             let entry = c1_counts.entry((f1_c1, f2_c1)).or_insert([0, 0]);
-                            if is_pure { entry[0] += 1; } else { entry[1] += 1; }
-                            if (f1_c1 == 0 && f2_c1 == 0) != is_pure { c1_perfect = false; }
+                            if is_pure {
+                                entry[0] += 1;
+                            } else {
+                                entry[1] += 1;
+                            }
+                            if (f1_c1 == 0 && f2_c1 == 0) != is_pure {
+                                c1_perfect = false;
+                            }
 
                             // Candidate 3: (antidet uv XOR antidet vw, antidet vw XOR antidet uw)
                             let f1_c3 = a_uv ^ a_vw;
                             let f2_c3 = a_vw ^ a_uw;
                             let entry = c3_counts.entry((f1_c3, f2_c3)).or_insert([0, 0]);
-                            if is_pure { entry[0] += 1; } else { entry[1] += 1; }
-                            if (f1_c3 == 0 && f2_c3 == 0) != is_pure { c3_perfect = false; }
+                            if is_pure {
+                                entry[0] += 1;
+                            } else {
+                                entry[1] += 1;
+                            }
+                            if (f1_c3 == 0 && f2_c3 == 0) != is_pure {
+                                c3_perfect = false;
+                            }
 
                             // Candidate 5: (sum antidet, sum diag)
                             let f1_c5 = a_uv ^ a_vw ^ a_uw;
                             let f2_c5 = d_uv ^ d_vw ^ d_uw;
                             let entry = c5_counts.entry((f1_c5, f2_c5)).or_insert([0, 0]);
-                            if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+                            if is_pure {
+                                entry[0] += 1;
+                            } else {
+                                entry[1] += 1;
+                            }
 
                             // Candidate 6: (antidet sum, det sum)
                             let entry = c6_counts.entry((f1_c1, f2_c1)).or_insert([0, 0]);
-                            if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+                            if is_pure {
+                                entry[0] += 1;
+                            } else {
+                                entry[1] += 1;
+                            }
                         }
                     }
                 }
@@ -4853,7 +5285,8 @@ mod tests {
                 "dim={dim}: Candidate 3 has {} mixed in F=(0,0) -- not perfect",
                 c3_pp[1],
             );
-            let c3_nonzero_pure: usize = c3_counts.iter()
+            let c3_nonzero_pure: usize = c3_counts
+                .iter()
                 .filter(|(&k, _)| k != (0, 0))
                 .map(|(_, v)| v[0])
                 .sum();
@@ -4880,7 +5313,11 @@ mod tests {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         let dim = 128;
@@ -4900,9 +5337,8 @@ mod tests {
                 edge_set.contains(&(a, b))
             };
 
-            let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-            };
+            let eta =
+                |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
             let mut comp_tris = 0usize;
             let mut comp_pure = 0usize;
@@ -4920,16 +5356,18 @@ mod tests {
 
                         // Compute sigma for classification
                         let sigma = |a: CrossPair, b: CrossPair| -> i32 {
-                            cd_basis_mul_sign(dim, a.0, b.0)
-                            * cd_basis_mul_sign(dim, a.1, b.1)
+                            cd_basis_mul_sign(dim, a.0, b.0) * cd_basis_mul_sign(dim, a.1, b.1)
                         };
                         let s_uv = sigma(u, v);
                         let s_vw = sigma(v, w);
                         let s_uw = sigma(u, w);
-                        let n_same = [s_uv, s_vw, s_uw].iter()
-                            .filter(|&&s| s == -1).count();
+                        let n_same = [s_uv, s_vw, s_uw].iter().filter(|&&s| s == -1).count();
                         let product = s_uv * s_vw * s_uw;
-                        let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+                        let is_pure = if product == 1 {
+                            n_same == 0
+                        } else {
+                            n_same == 3
+                        };
 
                         // Compute eta for all 3 edges
                         let eta_uv = eta(u, v);
@@ -4987,7 +5425,8 @@ mod tests {
 
         // Cross-check: Quarter Rule still holds
         assert_eq!(
-            total_pure * 3, total_mixed,
+            total_pure * 3,
+            total_mixed,
             "Quarter Rule failed: pure={total_pure}, mixed={total_mixed}"
         );
     }
@@ -5008,7 +5447,11 @@ mod tests {
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         let dim = 256;
@@ -5046,15 +5489,18 @@ mod tests {
                 edge_set.contains(&(a, b))
             };
 
-            let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-            };
+            let eta =
+                |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
             // Collect edge eta values for cohomology
             let mut comp_eta0 = 0usize;
             let mut comp_eta1 = 0usize;
             for &(u, v) in &comp.edges {
-                if eta(u, v) == 0 { comp_eta0 += 1; } else { comp_eta1 += 1; }
+                if eta(u, v) == 0 {
+                    comp_eta0 += 1;
+                } else {
+                    comp_eta1 += 1;
+                }
             }
             total_eta0 += comp_eta0;
             total_eta1 += comp_eta1;
@@ -5074,16 +5520,18 @@ mod tests {
 
                         // Sigma classification
                         let sigma = |a: CrossPair, b: CrossPair| -> i32 {
-                            cd_basis_mul_sign(dim, a.0, b.0)
-                            * cd_basis_mul_sign(dim, a.1, b.1)
+                            cd_basis_mul_sign(dim, a.0, b.0) * cd_basis_mul_sign(dim, a.1, b.1)
                         };
                         let s_uv = sigma(u, v);
                         let s_vw = sigma(v, w);
                         let s_uw = sigma(u, w);
-                        let n_same = [s_uv, s_vw, s_uw].iter()
-                            .filter(|&&s| s == -1).count();
+                        let n_same = [s_uv, s_vw, s_uw].iter().filter(|&&s| s == -1).count();
                         let product = s_uv * s_vw * s_uw;
-                        let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+                        let is_pure = if product == 1 {
+                            n_same == 0
+                        } else {
+                            n_same == 3
+                        };
 
                         // Eta for all 3 edges
                         let eta_uv = eta(u, v);
@@ -5118,8 +5566,10 @@ mod tests {
         eprintln!("Total triangles: {total_triangles}");
         eprintln!("Pure: {total_pure}, Mixed: {total_mixed}");
         eprintln!("Mismatches: {mismatches}");
-        eprintln!("Klein-four fibers: (0,0)={}, (0,1)={}, (1,0)={}, (1,1)={}",
-            fiber_counts[0], fiber_counts[1], fiber_counts[2], fiber_counts[3]);
+        eprintln!(
+            "Klein-four fibers: (0,0)={}, (0,1)={}, (1,0)={}, (1,1)={}",
+            fiber_counts[0], fiber_counts[1], fiber_counts[2], fiber_counts[3]
+        );
         eprintln!("Edge eta balance: eta=0: {total_eta0}, eta=1: {total_eta1}");
         eprintln!("Total cycle rank: {total_cycle_rank}");
 
@@ -5131,7 +5581,8 @@ mod tests {
 
         // ASSERTION 2: Quarter Rule
         assert_eq!(
-            total_pure * 3, total_mixed,
+            total_pure * 3,
+            total_mixed,
             "Quarter Rule failed: pure={total_pure}, mixed={total_mixed}"
         );
 
@@ -5143,7 +5594,8 @@ mod tests {
 
         // ASSERTION 4: Sum of nonzero fibers = mixed count
         assert_eq!(
-            fiber_counts[1] + fiber_counts[2] + fiber_counts[3], total_mixed,
+            fiber_counts[1] + fiber_counts[2] + fiber_counts[3],
+            total_mixed,
             "Nonzero fibers should sum to mixed count"
         );
     }
@@ -5167,13 +5619,28 @@ mod tests {
         use std::collections::VecDeque;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         eprintln!("\n=== GF(2) Cohomology of eta + Klein-four Fiber Structure ===");
-        eprintln!("{:<6} {:>5} {:>8} {:>8} {:>8} {:>10} {:>10} {:>10} {:>10} {:>10} {:>10}",
-            "dim", "comps", "edges", "eta=0", "eta=1", "b1", "frustrated",
-            "F(0,0)", "F(0,1)", "F(1,0)", "F(1,1)");
+        eprintln!(
+            "{:<6} {:>5} {:>8} {:>8} {:>8} {:>10} {:>10} {:>10} {:>10} {:>10} {:>10}",
+            "dim",
+            "comps",
+            "edges",
+            "eta=0",
+            "eta=1",
+            "b1",
+            "frustrated",
+            "F(0,0)",
+            "F(0,1)",
+            "F(1,0)",
+            "F(1,1)"
+        );
 
         for &dim in &[16, 32, 64, 128] {
             let components = motif_components_for_cross_assessors(dim);
@@ -5188,7 +5655,9 @@ mod tests {
             for comp in components.iter() {
                 let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
                 let n = nodes.len();
-                if n < 2 { continue; }
+                if n < 2 {
+                    continue;
+                }
 
                 // Build adjacency list with eta labels
                 let node_idx: std::collections::HashMap<CrossPair, usize> =
@@ -5204,7 +5673,11 @@ mod tests {
                     let vi = node_idx[&v];
                     adj[ui].push((vi, eta_val));
                     adj[vi].push((ui, eta_val));
-                    if eta_val == 0 { comp_eta0 += 1; } else { comp_eta1 += 1; }
+                    if eta_val == 0 {
+                        comp_eta0 += 1;
+                    } else {
+                        comp_eta1 += 1;
+                    }
                 }
 
                 total_edges += comp.edges.len();
@@ -5250,9 +5723,8 @@ mod tests {
                     edge_set.contains(&(a, b))
                 };
 
-                let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-                };
+                let eta =
+                    |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
                 for i in 0..n {
                     for j in (i + 1)..n {
@@ -5272,11 +5744,20 @@ mod tests {
                 }
             }
 
-            eprintln!("{:<6} {:>5} {:>8} {:>8} {:>8} {:>10} {:>10} {:>10} {:>10} {:>10} {:>10}",
-                dim, components.len(), total_edges, total_eta0, total_eta1,
-                total_b1, total_frustrated,
-                fiber_counts[0], fiber_counts[1],
-                fiber_counts[2], fiber_counts[3]);
+            eprintln!(
+                "{:<6} {:>5} {:>8} {:>8} {:>8} {:>10} {:>10} {:>10} {:>10} {:>10} {:>10}",
+                dim,
+                components.len(),
+                total_edges,
+                total_eta0,
+                total_eta1,
+                total_b1,
+                total_frustrated,
+                fiber_counts[0],
+                fiber_counts[1],
+                fiber_counts[2],
+                fiber_counts[3]
+            );
 
             // ASSERTIONS
 
@@ -5347,7 +5828,11 @@ mod tests {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         eprintln!("\n=== Eta Doubling Decomposition ===");
@@ -5379,22 +5864,26 @@ mod tests {
                     // Decompose via half-dimension:
                     // psi_02 = psi_half(hi_b - half, lo_a) [case 2 recurses with swap]
                     let psi_02_half = psi(half, hi_b - half, lo_a);
-                    assert_eq!(psi_02, psi_02_half,
-                        "dim={dim}: case 2 decomposition failed");
+                    assert_eq!(
+                        psi_02, psi_02_half,
+                        "dim={dim}: case 2 decomposition failed"
+                    );
 
                     // psi_10: case 3
                     if lo_b == 0 {
                         lo_b_zero_count += 1;
                         // s(hi_a, 0) = s_half(hi_a - half, 0)
                         // For any x, s(x, 0) = 1 (e_0 is identity), so psi = 0
-                        assert_eq!(psi_10, 0,
-                            "dim={dim}: psi(hi_a, 0) should be 0");
+                        assert_eq!(psi_10, 0, "dim={dim}: psi(hi_a, 0) should be 0");
                     } else {
                         // s(hi_a, lo_b) = -s_half(hi_a - half, lo_b)
                         let psi_10_half = psi(half, hi_a - half, lo_b);
                         // -s means flip sign: psi_10 = 1 XOR psi_10_half
-                        assert_eq!(psi_10, psi_10_half ^ 1,
-                            "dim={dim}: case 3 conjugation decomposition failed");
+                        assert_eq!(
+                            psi_10,
+                            psi_10_half ^ 1,
+                            "dim={dim}: case 3 conjugation decomposition failed"
+                        );
 
                         // So eta = psi_02 XOR psi_10
                         //        = psi_half(hi_b-h, lo_a) XOR (1 XOR psi_half(hi_a-h, lo_b))
@@ -5403,16 +5892,22 @@ mod tests {
                         // where a' = (lo_a, hi_a-h), b' = (lo_b, hi_b-h) in the half-dimension!
                         let eta_half = psi(half, hi_b - half, lo_a) ^ psi(half, hi_a - half, lo_b);
                         let expected_eta = 1 ^ eta_half;
-                        assert_eq!(eta_val, expected_eta,
-                            "dim={dim}: eta = 1 XOR eta_half failed");
+                        assert_eq!(
+                            eta_val, expected_eta,
+                            "dim={dim}: eta = 1 XOR eta_half failed"
+                        );
 
-                        if eta_half == 0 { eta_from_conj_only += 1; }
+                        if eta_half == 0 {
+                            eta_from_conj_only += 1;
+                        }
                     }
                 }
             }
 
-            eprintln!("dim={dim}: {total_edges} edges, lo_b=0: {lo_b_zero_count}, \
-                       eta from conj flip only: {eta_from_conj_only}");
+            eprintln!(
+                "dim={dim}: {total_edges} edges, lo_b=0: {lo_b_zero_count}, \
+                       eta from conj flip only: {eta_from_conj_only}"
+            );
         }
     }
 
@@ -5433,7 +5928,11 @@ mod tests {
         use std::collections::{BTreeMap, VecDeque};
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         eprintln!("\n=== Eta Distribution Across Edge-Count Regimes ===");
@@ -5445,16 +5944,22 @@ mod tests {
 
             // Group components by edge count (regime)
             // Per-regime accumulators: (n_comps, eta0, eta1, b1, frustrated, fibers[4], pure, mixed)
-            let mut regimes: BTreeMap<usize, (usize, usize, usize, usize, usize, [usize; 4], usize, usize)> =
-                BTreeMap::new();
+            let mut regimes: BTreeMap<
+                usize,
+                (usize, usize, usize, usize, usize, [usize; 4], usize, usize),
+            > = BTreeMap::new();
 
             for comp in components.iter() {
                 let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
                 let n = nodes.len();
-                if n < 2 { continue; }
+                if n < 2 {
+                    continue;
+                }
                 let n_edges = comp.edges.len();
 
-                let entry = regimes.entry(n_edges).or_insert((0, 0, 0, 0, 0, [0; 4], 0, 0));
+                let entry = regimes
+                    .entry(n_edges)
+                    .or_insert((0, 0, 0, 0, 0, [0; 4], 0, 0));
                 entry.0 += 1; // n_comps
 
                 // Build adjacency with eta
@@ -5468,7 +5973,11 @@ mod tests {
                     let vi = node_idx[&v];
                     adj[ui].push((vi, eta_val));
                     adj[vi].push((ui, eta_val));
-                    if eta_val == 0 { entry.1 += 1; } else { entry.2 += 1; }
+                    if eta_val == 0 {
+                        entry.1 += 1;
+                    } else {
+                        entry.2 += 1;
+                    }
                 }
 
                 // BFS for coboundary test
@@ -5497,7 +6006,7 @@ mod tests {
                 }
 
                 let b1 = n_edges - tree_edges;
-                entry.3 += b1;       // total b1
+                entry.3 += b1; // total b1
                 entry.4 += frustrated; // total frustrated
 
                 // Triangle enumeration
@@ -5507,9 +6016,8 @@ mod tests {
                     let (a, b) = if u < v { (u, v) } else { (v, u) };
                     edge_set.contains(&(a, b))
                 };
-                let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-                };
+                let eta =
+                    |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
                 for i in 0..n {
                     for j in (i + 1)..n {
@@ -5526,20 +6034,50 @@ mod tests {
                             entry.5[(2 * f1 + f2) as usize] += 1;
 
                             let eta_const = (eta_uv == eta_vw) && (eta_vw == eta_uw);
-                            if eta_const { entry.6 += 1; } else { entry.7 += 1; }
+                            if eta_const {
+                                entry.6 += 1;
+                            } else {
+                                entry.7 += 1;
+                            }
                         }
                     }
                 }
             }
 
-            eprintln!("{:>6} {:>5} {:>6} {:>6} {:>5} {:>5} {:>8} {:>8} {:>8} {:>8} {:>6} {:>6}",
-                "edges", "comps", "eta=0", "eta=1", "b1", "frust",
-                "F(0,0)", "F(0,1)", "F(1,0)", "F(1,1)", "pure", "mixed");
+            eprintln!(
+                "{:>6} {:>5} {:>6} {:>6} {:>5} {:>5} {:>8} {:>8} {:>8} {:>8} {:>6} {:>6}",
+                "edges",
+                "comps",
+                "eta=0",
+                "eta=1",
+                "b1",
+                "frust",
+                "F(0,0)",
+                "F(0,1)",
+                "F(1,0)",
+                "F(1,1)",
+                "pure",
+                "mixed"
+            );
 
-            for (&edge_count, &(n_comps, eta0, eta1, b1, frustrated, fibers, pure, mixed)) in &regimes {
-                eprintln!("{:>6} {:>5} {:>6} {:>6} {:>5} {:>5} {:>8} {:>8} {:>8} {:>8} {:>6} {:>6}",
-                    edge_count, n_comps, eta0, eta1, b1, frustrated,
-                    fibers[0], fibers[1], fibers[2], fibers[3], pure, mixed);
+            for (&edge_count, &(n_comps, eta0, eta1, b1, frustrated, fibers, pure, mixed)) in
+                &regimes
+            {
+                eprintln!(
+                    "{:>6} {:>5} {:>6} {:>6} {:>5} {:>5} {:>8} {:>8} {:>8} {:>8} {:>6} {:>6}",
+                    edge_count,
+                    n_comps,
+                    eta0,
+                    eta1,
+                    b1,
+                    frustrated,
+                    fibers[0],
+                    fibers[1],
+                    fibers[2],
+                    fibers[3],
+                    pure,
+                    mixed
+                );
 
                 // Every regime should have balanced eta
                 assert_eq!(
@@ -5551,7 +6089,8 @@ mod tests {
                 let total_tris = pure + mixed;
                 if total_tris > 0 {
                     assert_eq!(
-                        pure * 3, mixed,
+                        pure * 3,
+                        mixed,
                         "dim={dim}, regime edges={edge_count}: 1:3 ratio failed: {pure}:{mixed}"
                     );
                 }
@@ -5584,7 +6123,11 @@ mod tests {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         eprintln!("\n=== GF(2) Polynomial Degree of psi(i,j) ===");
@@ -5631,17 +6174,23 @@ mod tests {
                 if anf[m] != 0 {
                     let deg = (m as u32).count_ones() as usize;
                     degree_counts[deg] += 1;
-                    if deg > max_degree { max_degree = deg; }
+                    if deg > max_degree {
+                        max_degree = deg;
+                    }
                     total_monomials += 1;
                 }
             }
 
-            eprintln!("dim={dim} (n_bits={n_bits}, n_vars={n_vars}): \
-                       ANF degree = {max_degree}, total monomials = {total_monomials}");
+            eprintln!(
+                "dim={dim} (n_bits={n_bits}, n_vars={n_vars}): \
+                       ANF degree = {max_degree}, total monomials = {total_monomials}"
+            );
             for (d, &count) in degree_counts.iter().enumerate() {
                 if count > 0 {
-                    eprintln!("  degree {d}: {count} monomials (of {} possible)",
-                        binomial(n_vars, d));
+                    eprintln!(
+                        "  degree {d}: {count} monomials (of {} possible)",
+                        binomial(n_vars, d)
+                    );
                 }
             }
         }
@@ -5702,17 +6251,23 @@ mod tests {
                 if anf_eta[m] != 0 {
                     let deg = (m as u32).count_ones() as usize;
                     degree_counts[deg] += 1;
-                    if deg > max_degree { max_degree = deg; }
+                    if deg > max_degree {
+                        max_degree = deg;
+                    }
                     total_monomials += 1;
                 }
             }
 
-            eprintln!("dim={dim}, eta over [0,{half})^4 ({n_vars_eta} vars): \
-                       ANF degree = {max_degree}, total monomials = {total_monomials}");
+            eprintln!(
+                "dim={dim}, eta over [0,{half})^4 ({n_vars_eta} vars): \
+                       ANF degree = {max_degree}, total monomials = {total_monomials}"
+            );
             for (d, &count) in degree_counts.iter().enumerate() {
                 if count > 0 {
-                    eprintln!("  degree {d}: {count} monomials (of {} possible)",
-                        binomial(n_vars_eta, d));
+                    eprintln!(
+                        "  degree {d}: {count} monomials (of {} possible)",
+                        binomial(n_vars_eta, d)
+                    );
                 }
             }
         }
@@ -5730,13 +6285,27 @@ mod tests {
         use std::collections::VecDeque;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         eprintln!("\n=== Mechanism Depth Analysis ===");
-        eprintln!("{:<6} {:>10} {:>10} {:>10} {:>10} {:>10} {:>12} {:>10} {:>6} {:>10}",
-            "dim", "F(0,0)", "F(0,1)", "F(1,0)", "F(1,1)", "total",
-            "pure/total", "b1", "frust", "frust_rat");
+        eprintln!(
+            "{:<6} {:>10} {:>10} {:>10} {:>10} {:>10} {:>12} {:>10} {:>6} {:>10}",
+            "dim",
+            "F(0,0)",
+            "F(0,1)",
+            "F(1,0)",
+            "F(1,1)",
+            "total",
+            "pure/total",
+            "b1",
+            "frust",
+            "frust_rat"
+        );
 
         // Collect data at each dimension
         let mut dim_data: Vec<(usize, [usize; 4], usize, usize)> = Vec::new(); // (dim, fibers, b1, frustrated)
@@ -5751,7 +6320,9 @@ mod tests {
             for comp in components.iter() {
                 let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
                 let n = nodes.len();
-                if n < 2 { continue; }
+                if n < 2 {
+                    continue;
+                }
 
                 // Build adjacency list with eta labels
                 let node_idx: std::collections::HashMap<CrossPair, usize> =
@@ -5802,9 +6373,8 @@ mod tests {
                     let (a, b) = if u < v { (u, v) } else { (v, u) };
                     edge_set.contains(&(a, b))
                 };
-                let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-                };
+                let eta =
+                    |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
                 for i in 0..n {
                     for j in (i + 1)..n {
@@ -5827,15 +6397,28 @@ mod tests {
             let total_tris: usize = fiber_counts.iter().sum();
             let pure_ratio = if total_tris > 0 {
                 fiber_counts[0] as f64 / total_tris as f64
-            } else { 0.0 };
+            } else {
+                0.0
+            };
             let frust_ratio = if total_b1 > 0 {
                 total_frustrated as f64 / total_b1 as f64
-            } else { 0.0 };
+            } else {
+                0.0
+            };
 
-            eprintln!("{:<6} {:>10} {:>10} {:>10} {:>10} {:>10} {:>12.8} {:>10} {:>6} {:>10.6}",
-                dim, fiber_counts[0], fiber_counts[1],
-                fiber_counts[2], fiber_counts[3], total_tris,
-                pure_ratio, total_b1, total_frustrated, frust_ratio);
+            eprintln!(
+                "{:<6} {:>10} {:>10} {:>10} {:>10} {:>10} {:>12.8} {:>10} {:>6} {:>10.6}",
+                dim,
+                fiber_counts[0],
+                fiber_counts[1],
+                fiber_counts[2],
+                fiber_counts[3],
+                total_tris,
+                pure_ratio,
+                total_b1,
+                total_frustrated,
+                frust_ratio
+            );
 
             dim_data.push((dim, fiber_counts, total_b1, total_frustrated));
 
@@ -5859,8 +6442,10 @@ mod tests {
 
         // ---- Analysis: Quarter Rule Exactness (C-528) ----
         eprintln!("\n=== Quarter Rule Analysis ===");
-        eprintln!("{:<6} {:>12} {:>12} {:>14} {:>14}",
-            "dim", "pure", "total", "pure*4-total", "deviation");
+        eprintln!(
+            "{:<6} {:>12} {:>12} {:>14} {:>14}",
+            "dim", "pure", "total", "pure*4-total", "deviation"
+        );
 
         for &(dim, fibers, _, _) in &dim_data {
             let total: usize = fibers.iter().sum();
@@ -5868,8 +6453,14 @@ mod tests {
             // If 1:3 is exact, then pure*4 = total exactly.
             let quarter_exact = pure * 4 == total;
             let deviation = (pure as f64 * 4.0 - total as f64) / total as f64;
-            eprintln!("{:<6} {:>12} {:>12} {:>14} {:>14.10}",
-                dim, pure, total, (pure * 4) as i64 - total as i64, deviation);
+            eprintln!(
+                "{:<6} {:>12} {:>12} {:>14} {:>14.10}",
+                dim,
+                pure,
+                total,
+                (pure * 4) as i64 - total as i64,
+                deviation
+            );
             // The 1:3 ratio GUARANTEES pure*4 = total:
             // pure*3 = nonzero = total - pure => 3*pure = total - pure => 4*pure = total
             assert!(quarter_exact, "dim={dim}: Quarter Rule NOT exact");
@@ -5905,7 +6496,9 @@ mod tests {
             for comp in components.iter() {
                 let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
                 let n = nodes.len();
-                if n < 3 { continue; }
+                if n < 3 {
+                    continue;
+                }
 
                 let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
                     comp.edges.iter().copied().collect();
@@ -5913,9 +6506,8 @@ mod tests {
                     let (a, b) = if u < v { (u, v) } else { (v, u) };
                     edge_set.contains(&(a, b))
                 };
-                let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-                };
+                let eta =
+                    |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
                 let mut comp_fibers = [0usize; 4];
                 for i in 0..n {
@@ -5945,22 +6537,32 @@ mod tests {
                 }
             }
 
-            eprintln!("dim={dim}: {comp_total} components, \
+            eprintln!(
+                "dim={dim}: {comp_total} components, \
                        F(1,0)!=F(1,1) violations: {comp_violations}, \
-                       F(0,1)!=F(1,0) cases: {f01_ne_f10_count}");
+                       F(0,1)!=F(1,0) cases: {f01_ne_f10_count}"
+            );
         }
 
-        assert!(all_components_satisfy,
-            "F(1,0) = F(1,1) failed at per-component level");
+        assert!(
+            all_components_satisfy,
+            "F(1,0) = F(1,1) failed at per-component level"
+        );
         eprintln!("F(1,0) = F(1,1) holds in EVERY component at EVERY dimension.");
 
         // ---- Analysis: Frustration Asymptotics (C-529) ----
         eprintln!("\n=== Frustration Asymptotics (C-529) ===");
-        eprintln!("{:<6} {:>10} {:>10} {:>12}",
-            "dim", "b1", "frustrated", "frust/b1");
+        eprintln!(
+            "{:<6} {:>10} {:>10} {:>12}",
+            "dim", "b1", "frustrated", "frust/b1"
+        );
 
         for &(dim, _, b1, frustrated) in &dim_data {
-            let ratio = if b1 > 0 { frustrated as f64 / b1 as f64 } else { 0.0 };
+            let ratio = if b1 > 0 {
+                frustrated as f64 / b1 as f64
+            } else {
+                0.0
+            };
             eprintln!("{:<6} {:>10} {:>10} {:>12.8}", dim, b1, frustrated, ratio);
         }
 
@@ -5971,8 +6573,14 @@ mod tests {
         for &(dim, _, b1, frustrated) in &dim_data {
             if dim > 16 {
                 let ratio = frustrated as f64 / b1 as f64;
-                assert!(ratio > 0.25, "dim={dim}: frustration ratio suspiciously low");
-                assert!(ratio < 0.50, "dim={dim}: frustration ratio suspiciously high");
+                assert!(
+                    ratio > 0.25,
+                    "dim={dim}: frustration ratio suspiciously low"
+                );
+                assert!(
+                    ratio < 0.50,
+                    "dim={dim}: frustration ratio suspiciously high"
+                );
             }
         }
 
@@ -6016,7 +6624,9 @@ mod tests {
             for comp in components.iter() {
                 let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
                 let n = nodes.len();
-                if n < 3 { continue; }
+                if n < 3 {
+                    continue;
+                }
 
                 let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
                     comp.edges.iter().copied().collect();
@@ -6024,9 +6634,8 @@ mod tests {
                     let (a, b) = if u < v { (u, v) } else { (v, u) };
                     edge_set.contains(&(a, b))
                 };
-                let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-                };
+                let eta =
+                    |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
                 for i in 0..n {
                     for j in (i + 1)..n {
@@ -6058,21 +6667,26 @@ mod tests {
 
             eprintln!("dim={dim}:");
             for (ord, stats) in ordering_stats.iter().enumerate() {
-                eprintln!("  ordering {ord}: F(0,0)={} F(0,1)={} F(1,0)={} F(1,1)={}",
-                    stats[0], stats[1], stats[2], stats[3]);
+                eprintln!(
+                    "  ordering {ord}: F(0,0)={} F(0,1)={} F(1,0)={} F(1,1)={}",
+                    stats[0], stats[1], stats[2], stats[3]
+                );
             }
 
             // Key test: F(0,0) is the same for all orderings (pure count
             // is vertex-order independent)
-            assert_eq!(ordering_stats[0][0], ordering_stats[1][0],
-                "dim={dim}: pure count differs across orderings");
-            assert_eq!(ordering_stats[0][0], ordering_stats[2][0],
-                "dim={dim}: pure count differs across orderings");
+            assert_eq!(
+                ordering_stats[0][0], ordering_stats[1][0],
+                "dim={dim}: pure count differs across orderings"
+            );
+            assert_eq!(
+                ordering_stats[0][0], ordering_stats[2][0],
+                "dim={dim}: pure count differs across orderings"
+            );
 
             // Check: does F(1,0)=F(1,1) hold for each ordering?
             for (ord, stats) in ordering_stats.iter().enumerate() {
-                eprintln!("  ordering {ord}: F(1,0)==F(1,1)? {}",
-                    stats[2] == stats[3]);
+                eprintln!("  ordering {ord}: F(1,0)==F(1,1)? {}", stats[2] == stats[3]);
             }
         }
     }
@@ -6104,12 +6718,18 @@ mod tests {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         eprintln!("\n=== Vertex-Median Symmetry (C-530) ===");
-        eprintln!("{:<6} {:>10} {:>10} {:>10} {:>10} {:>10}",
-            "dim", "N_ij_odd", "N_jk_odd", "N_ik_odd", "mixed", "ratio_ij:jk");
+        eprintln!(
+            "{:<6} {:>10} {:>10} {:>10} {:>10} {:>10}",
+            "dim", "N_ij_odd", "N_jk_odd", "N_ik_odd", "mixed", "ratio_ij:jk"
+        );
 
         for &dim in &[16usize, 32, 64, 128] {
             let components = motif_components_for_cross_assessors(dim);
@@ -6121,7 +6741,9 @@ mod tests {
             for comp in components.iter() {
                 let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
                 let n = nodes.len();
-                if n < 3 { continue; }
+                if n < 3 {
+                    continue;
+                }
 
                 let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
                     comp.edges.iter().copied().collect();
@@ -6129,9 +6751,8 @@ mod tests {
                     let (a, b) = if u < v { (u, v) } else { (v, u) };
                     edge_set.contains(&(a, b))
                 };
-                let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-                };
+                let eta =
+                    |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
                 for i in 0..n {
                     for j in (i + 1)..n {
@@ -6145,36 +6766,52 @@ mod tests {
                             let c = eta(u, w); // e_ik
 
                             // Mixed triangle: not all equal
-                            if a == b && b == c { continue; }
+                            if a == b && b == c {
+                                continue;
+                            }
 
                             // Identify the odd edge
-                            if b == c && a != b { n_ij_odd += 1; }
-                            else if a == c && b != a { n_jk_odd += 1; }
-                            else if a == b && c != a { n_ik_odd += 1; }
+                            if b == c && a != b {
+                                n_ij_odd += 1;
+                            } else if a == c && b != a {
+                                n_jk_odd += 1;
+                            } else if a == b && c != a {
+                                n_ik_odd += 1;
+                            }
                         }
                     }
                 }
             }
 
             let mixed_total = n_ij_odd + n_jk_odd + n_ik_odd;
-            eprintln!("{:<6} {:>10} {:>10} {:>10} {:>10} {:>10}",
-                dim, n_ij_odd, n_jk_odd, n_ik_odd, mixed_total,
+            eprintln!(
+                "{:<6} {:>10} {:>10} {:>10} {:>10} {:>10}",
+                dim,
+                n_ij_odd,
+                n_jk_odd,
+                n_ik_odd,
+                mixed_total,
                 if n_jk_odd > 0 {
                     format!("{:.6}", n_ij_odd as f64 / n_jk_odd as f64)
                 } else {
                     "N/A".to_string()
-                });
+                }
+            );
 
             // ASSERTION: N_ij_odd = N_jk_odd (vertex-median symmetry)
-            assert_eq!(n_ij_odd, n_jk_odd,
-                "dim={dim}: vertex-median symmetry FAILED: N_ij={n_ij_odd} != N_jk={n_jk_odd}");
+            assert_eq!(
+                n_ij_odd, n_jk_odd,
+                "dim={dim}: vertex-median symmetry FAILED: N_ij={n_ij_odd} != N_jk={n_jk_odd}"
+            );
 
             // Verify correspondence: F(1,0) = N_ij_odd, F(1,1) = N_jk_odd, F(0,1) = N_ik_odd
             // (Already verified via the ordering analysis in the depth test)
         }
 
         eprintln!("Vertex-Median Symmetry VERIFIED: N_ij_odd = N_jk_odd at all dimensions.");
-        eprintln!("The \"middle vertex\" j plays a symmetric role as lower (in ij) and upper (in jk).");
+        eprintln!(
+            "The \"middle vertex\" j plays a symmetric role as lower (in ij) and upper (in jk)."
+        );
     }
 
     /// Frustration ratio at dim=256 via cohomology-only analysis (no triangle enum).
@@ -6186,7 +6823,11 @@ mod tests {
         use std::collections::VecDeque;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         let dim = 256usize;
@@ -6201,7 +6842,9 @@ mod tests {
         for comp in components.iter() {
             let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
             let n = nodes.len();
-            if n < 2 { continue; }
+            if n < 2 {
+                continue;
+            }
 
             let node_idx: std::collections::HashMap<CrossPair, usize> =
                 nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
@@ -6213,7 +6856,11 @@ mod tests {
                 let vi = node_idx[&v];
                 adj[ui].push((vi, eta_val));
                 adj[vi].push((ui, eta_val));
-                if eta_val == 0 { total_eta0 += 1; } else { total_eta1 += 1; }
+                if eta_val == 0 {
+                    total_eta0 += 1;
+                } else {
+                    total_eta1 += 1;
+                }
             }
 
             total_edges += comp.edges.len();
@@ -6259,10 +6906,19 @@ mod tests {
         // Convergence is NOT monotone -- oscillates around ~0.386-0.388!
 
         assert_eq!(total_eta0, total_eta1, "dim=256: eta not balanced");
-        assert!(total_frustrated > 0, "dim=256: eta should not be a coboundary");
+        assert!(
+            total_frustrated > 0,
+            "dim=256: eta should not be a coboundary"
+        );
         // Frustration ratio is near the dim=128 value but slightly lower (non-monotone)
-        assert!(frust_ratio > 0.38, "dim=256: frustration ratio should be near limit");
-        assert!(frust_ratio < 0.40, "dim=256: frustration ratio should be below 0.40");
+        assert!(
+            frust_ratio > 0.38,
+            "dim=256: frustration ratio should be near limit"
+        );
+        assert!(
+            frust_ratio < 0.40,
+            "dim=256: frustration ratio should be below 0.40"
+        );
     }
 
     /// Cayley-Dickson tower psi/eta analysis at dim=2,4,8 (C-532).
@@ -6281,7 +6937,11 @@ mod tests {
         use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         // ===== dim=2 (complex numbers) =====
@@ -6309,7 +6969,10 @@ mod tests {
             }
             eprintln!(
                 "  e_{}: [{} {} {}]",
-                a, psi4[a - 1][0], psi4[a - 1][1], psi4[a - 1][2]
+                a,
+                psi4[a - 1][0],
+                psi4[a - 1][1],
+                psi4[a - 1][2]
             );
         }
 
@@ -6324,7 +6987,11 @@ mod tests {
         assert_eq!(psi4[1][0], 1, "e2*e1 = -e3, so psi=1");
 
         // Count psi=1 entries
-        let psi4_ones: usize = psi4.iter().flat_map(|r| r.iter()).filter(|&&v| v == 1).count();
+        let psi4_ones: usize = psi4
+            .iter()
+            .flat_map(|r| r.iter())
+            .filter(|&&v| v == 1)
+            .count();
         let psi4_zeros: usize = 9 - psi4_ones;
         eprintln!("dim=4: psi=0: {psi4_zeros}, psi=1: {psi4_ones} (of 9 total)");
 
@@ -6376,7 +7043,11 @@ mod tests {
         }
 
         // Count psi=1 entries
-        let psi8_ones: usize = psi8.iter().flat_map(|r| r.iter()).filter(|&&v| v == 1).count();
+        let psi8_ones: usize = psi8
+            .iter()
+            .flat_map(|r| r.iter())
+            .filter(|&&v| v == 1)
+            .count();
         let psi8_zeros: usize = 49 - psi8_ones;
         eprintln!("dim=8: psi=0: {psi8_zeros}, psi=1: {psi8_ones} (of 49 total)");
 
@@ -6395,7 +7066,10 @@ mod tests {
         }
         eprintln!("dim=8 off-diagonal: {antisymmetric} antisymmetric, {symmetric} symmetric pairs");
         // All off-diagonal pairs should be antisymmetric (octonions are non-commutative)
-        assert_eq!(symmetric, 0, "Octonions: all off-diagonal psi pairs should be antisymmetric");
+        assert_eq!(
+            symmetric, 0,
+            "Octonions: all off-diagonal psi pairs should be antisymmetric"
+        );
         assert_eq!(antisymmetric, 21, "C(7,2) = 21 off-diagonal pairs");
 
         // Check quaternion antisymmetry too
@@ -6407,7 +7081,10 @@ mod tests {
                 }
             }
         }
-        assert_eq!(q_antisym, 3, "Quaternions: all 3 off-diagonal pairs antisymmetric");
+        assert_eq!(
+            q_antisym, 3,
+            "Quaternions: all 3 off-diagonal pairs antisymmetric"
+        );
 
         // Fano plane analysis at dim=8:
         // A Fano line is a triple {a,b,c} where a XOR b = c in GF(2)^3.
@@ -6431,7 +7108,11 @@ mod tests {
         }
         eprintln!("Fano line count: {}", fano_lines.len());
         // Fano plane has exactly 7 lines
-        assert_eq!(fano_lines.len(), 7, "Octonion Fano plane should have 7 lines");
+        assert_eq!(
+            fano_lines.len(),
+            7,
+            "Octonion Fano plane should have 7 lines"
+        );
 
         // Count positive vs negative orientations
         let n_positive = fano_lines.iter().filter(|l| l.3 == 1).count();
@@ -6457,8 +7138,10 @@ mod tests {
             let n = (dim as f64).log2() as usize;
             let n_imag = dim - 1;
             let total_entries = n_imag * n_imag;
-            let ones: usize = (1..dim).flat_map(|a| (1..dim).map(move |b| psi(dim, a, b)))
-                .filter(|&v| v == 1).count();
+            let ones: usize = (1..dim)
+                .flat_map(|a| (1..dim).map(move |b| psi(dim, a, b)))
+                .filter(|&v| v == 1)
+                .count();
             eprintln!(
                 "dim={dim} (n={n}): {ones}/{total_entries} psi=1 entries ({:.1}%)",
                 100.0 * ones as f64 / total_entries as f64
@@ -6486,7 +7169,11 @@ mod tests {
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         let dim = 512;
@@ -6523,15 +7210,18 @@ mod tests {
                 edge_set.contains(&(a, b))
             };
 
-            let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-            };
+            let eta =
+                |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
             // Edge eta balance
             let mut comp_eta0 = 0usize;
             let mut comp_eta1 = 0usize;
             for &(u, v) in &comp.edges {
-                if eta(u, v) == 0 { comp_eta0 += 1; } else { comp_eta1 += 1; }
+                if eta(u, v) == 0 {
+                    comp_eta0 += 1;
+                } else {
+                    comp_eta1 += 1;
+                }
             }
             total_eta0 += comp_eta0;
             total_eta1 += comp_eta1;
@@ -6589,16 +7279,18 @@ mod tests {
 
                         // Sigma classification
                         let sigma = |a: CrossPair, b: CrossPair| -> i32 {
-                            cd_basis_mul_sign(dim, a.0, b.0)
-                            * cd_basis_mul_sign(dim, a.1, b.1)
+                            cd_basis_mul_sign(dim, a.0, b.0) * cd_basis_mul_sign(dim, a.1, b.1)
                         };
                         let s_uv = sigma(u, v);
                         let s_vw = sigma(v, w);
                         let s_uw = sigma(u, w);
-                        let n_same = [s_uv, s_vw, s_uw].iter()
-                            .filter(|&&s| s == -1).count();
+                        let n_same = [s_uv, s_vw, s_uw].iter().filter(|&&s| s == -1).count();
                         let product = s_uv * s_vw * s_uw;
-                        let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+                        let is_pure = if product == 1 {
+                            n_same == 0
+                        } else {
+                            n_same == 3
+                        };
 
                         // Eta for all 3 edges
                         let eta_uv = eta(u, v);
@@ -6634,8 +7326,10 @@ mod tests {
         eprintln!("Total triangles: {total_triangles}");
         eprintln!("Pure: {total_pure}, Mixed: {total_mixed}");
         eprintln!("Mismatches: {mismatches}");
-        eprintln!("Klein-four fibers: (0,0)={}, (0,1)={}, (1,0)={}, (1,1)={}",
-            fiber_counts[0], fiber_counts[1], fiber_counts[2], fiber_counts[3]);
+        eprintln!(
+            "Klein-four fibers: (0,0)={}, (0,1)={}, (1,0)={}, (1,1)={}",
+            fiber_counts[0], fiber_counts[1], fiber_counts[2], fiber_counts[3]
+        );
         eprintln!("Edge eta balance: eta=0: {total_eta0}, eta=1: {total_eta1}");
         eprintln!("Total cycle rank: {total_cycle_rank}");
         eprintln!("Frustration: {total_frustrated}/{total_cycle_rank} = {frust_ratio:.8}");
@@ -6648,7 +7342,8 @@ mod tests {
 
         // ASSERTION 2: Quarter Rule
         assert_eq!(
-            total_pure * 3, total_mixed,
+            total_pure * 3,
+            total_mixed,
             "Quarter Rule failed: pure={total_pure}, mixed={total_mixed}"
         );
 
@@ -6660,7 +7355,8 @@ mod tests {
 
         // ASSERTION 4: Sum of nonzero fibers = mixed count
         assert_eq!(
-            fiber_counts[1] + fiber_counts[2] + fiber_counts[3], total_mixed,
+            fiber_counts[1] + fiber_counts[2] + fiber_counts[3],
+            total_mixed,
             "Nonzero fibers should sum to mixed count"
         );
 
@@ -6678,8 +7374,14 @@ mod tests {
         assert!(total_triangles > 200_000_000, "Expected ~214M triangles");
 
         // ASSERTION 8: Frustration ratio in range (extends C-529)
-        assert!(frust_ratio > 0.37, "dim=512: frustration should be near limit");
-        assert!(frust_ratio < 0.41, "dim=512: frustration should not exceed 0.41");
+        assert!(
+            frust_ratio > 0.37,
+            "dim=512: frustration should be near limit"
+        );
+        assert!(
+            frust_ratio < 0.41,
+            "dim=512: frustration should not exceed 0.41"
+        );
     }
 
     /// Quick frustration-only test at dim=512 (extends C-529).
@@ -6696,7 +7398,11 @@ mod tests {
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         let dim = 512;
@@ -6718,13 +7424,16 @@ mod tests {
             let n = nodes.len();
             total_edges += comp.edges.len();
 
-            let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-            };
+            let eta =
+                |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
             // Edge eta balance
             for &(u, v) in &comp.edges {
-                if eta(u, v) == 0 { total_eta0 += 1; } else { total_eta1 += 1; }
+                if eta(u, v) == 0 {
+                    total_eta0 += 1;
+                } else {
+                    total_eta1 += 1;
+                }
             }
 
             // BFS coboundary test
@@ -6776,9 +7485,18 @@ mod tests {
         // Sequence: 0.000, 0.307, 0.377, 0.388, 0.385 (dims 16..256)
         // dim=512 should be near the same range
         assert_eq!(total_eta0, total_eta1, "dim=512: eta not balanced");
-        assert!(total_frustrated > 0, "dim=512: eta should not be a coboundary");
-        assert!(frust_ratio > 0.37, "dim=512: frustration should be near limit");
-        assert!(frust_ratio < 0.41, "dim=512: frustration should not exceed 0.41");
+        assert!(
+            total_frustrated > 0,
+            "dim=512: eta should not be a coboundary"
+        );
+        assert!(
+            frust_ratio > 0.37,
+            "dim=512: frustration should be near limit"
+        );
+        assert!(
+            frust_ratio < 0.41,
+            "dim=512: frustration should not exceed 0.41"
+        );
     }
 
     /// Quick frustration-only test at dim=1024.
@@ -6798,7 +7516,11 @@ mod tests {
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         let dim = 1024;
@@ -6820,13 +7542,16 @@ mod tests {
             let n = nodes.len();
             total_edges += comp.edges.len();
 
-            let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-            };
+            let eta =
+                |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
             // Edge eta balance
             for &(u, v) in &comp.edges {
-                if eta(u, v) == 0 { total_eta0 += 1; } else { total_eta1 += 1; }
+                if eta(u, v) == 0 {
+                    total_eta0 += 1;
+                } else {
+                    total_eta1 += 1;
+                }
             }
 
             // BFS coboundary test
@@ -6878,9 +7603,18 @@ mod tests {
         // Sequence: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381 (dims 16..512)
         // dim=1024 should be near the same range
         assert_eq!(total_eta0, total_eta1, "dim=1024: eta not balanced");
-        assert!(total_frustrated > 0, "dim=1024: eta should not be a coboundary");
-        assert!(frust_ratio > 0.37, "dim=1024: frustration should be near limit");
-        assert!(frust_ratio < 0.41, "dim=1024: frustration should not exceed 0.41");
+        assert!(
+            total_frustrated > 0,
+            "dim=1024: eta should not be a coboundary"
+        );
+        assert!(
+            frust_ratio > 0.37,
+            "dim=1024: frustration should be near limit"
+        );
+        assert!(
+            frust_ratio < 0.41,
+            "dim=1024: frustration should not exceed 0.41"
+        );
     }
 
     /// Anti-Diagonal Parity Theorem verification at dim=1024.
@@ -6899,7 +7633,11 @@ mod tests {
         use std::time::Instant;
 
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         let dim = 1024;
@@ -6936,15 +7674,18 @@ mod tests {
                 edge_set.contains(&(a, b))
             };
 
-            let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-            };
+            let eta =
+                |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
             // Edge eta balance
             let mut comp_eta0 = 0usize;
             let mut comp_eta1 = 0usize;
             for &(u, v) in &comp.edges {
-                if eta(u, v) == 0 { comp_eta0 += 1; } else { comp_eta1 += 1; }
+                if eta(u, v) == 0 {
+                    comp_eta0 += 1;
+                } else {
+                    comp_eta1 += 1;
+                }
             }
             total_eta0 += comp_eta0;
             total_eta1 += comp_eta1;
@@ -7002,16 +7743,18 @@ mod tests {
 
                         // Sigma classification
                         let sigma = |a: CrossPair, b: CrossPair| -> i32 {
-                            cd_basis_mul_sign(dim, a.0, b.0)
-                            * cd_basis_mul_sign(dim, a.1, b.1)
+                            cd_basis_mul_sign(dim, a.0, b.0) * cd_basis_mul_sign(dim, a.1, b.1)
                         };
                         let s_uv = sigma(u, v);
                         let s_vw = sigma(v, w);
                         let s_uw = sigma(u, w);
-                        let n_same = [s_uv, s_vw, s_uw].iter()
-                            .filter(|&&s| s == -1).count();
+                        let n_same = [s_uv, s_vw, s_uw].iter().filter(|&&s| s == -1).count();
                         let product = s_uv * s_vw * s_uw;
-                        let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+                        let is_pure = if product == 1 {
+                            n_same == 0
+                        } else {
+                            n_same == 3
+                        };
 
                         // Eta for all 3 edges
                         let eta_uv = eta(u, v);
@@ -7044,7 +7787,10 @@ mod tests {
                 let elapsed = t1.elapsed().as_secs_f64();
                 eprintln!(
                     "  Component {}/{}: triangles so far = {}, elapsed = {:.1}s",
-                    comp_idx + 1, components.len(), total_triangles, elapsed
+                    comp_idx + 1,
+                    components.len(),
+                    total_triangles,
+                    elapsed
                 );
             }
         }
@@ -7056,8 +7802,10 @@ mod tests {
         eprintln!("Total triangles: {total_triangles}");
         eprintln!("Pure: {total_pure}, Mixed: {total_mixed}");
         eprintln!("Mismatches: {mismatches}");
-        eprintln!("Klein-four fibers: (0,0)={}, (0,1)={}, (1,0)={}, (1,1)={}",
-            fiber_counts[0], fiber_counts[1], fiber_counts[2], fiber_counts[3]);
+        eprintln!(
+            "Klein-four fibers: (0,0)={}, (0,1)={}, (1,0)={}, (1,1)={}",
+            fiber_counts[0], fiber_counts[1], fiber_counts[2], fiber_counts[3]
+        );
         eprintln!("Edge eta balance: eta=0: {total_eta0}, eta=1: {total_eta1}");
         eprintln!("Total cycle rank: {total_cycle_rank}");
         eprintln!("Frustration: {total_frustrated}/{total_cycle_rank} = {frust_ratio:.8}");
@@ -7070,7 +7818,8 @@ mod tests {
 
         // ASSERTION 2: Quarter Rule
         assert_eq!(
-            total_pure * 3, total_mixed,
+            total_pure * 3,
+            total_mixed,
             "Quarter Rule failed: pure={total_pure}, mixed={total_mixed}"
         );
 
@@ -7082,7 +7831,8 @@ mod tests {
 
         // ASSERTION 4: Sum of nonzero fibers = mixed count
         assert_eq!(
-            fiber_counts[1] + fiber_counts[2] + fiber_counts[3], total_mixed,
+            fiber_counts[1] + fiber_counts[2] + fiber_counts[3],
+            total_mixed,
             "Nonzero fibers should sum to mixed count"
         );
 
@@ -7096,15 +7846,26 @@ mod tests {
         assert_eq!(total_eta0, total_eta1, "dim={dim}: eta not balanced");
 
         // ASSERTION 7: Triangle count should be ~11.3B
-        assert!(total_triangles > 10_000_000_000, "Expected ~11.3B triangles");
+        assert!(
+            total_triangles > 10_000_000_000,
+            "Expected ~11.3B triangles"
+        );
 
         // ASSERTION 8: Frustration ratio in range (extends C-529)
-        assert!(frust_ratio > 0.37, "dim=1024: frustration should be near limit");
-        assert!(frust_ratio < 0.41, "dim=1024: frustration should not exceed 0.41");
+        assert!(
+            frust_ratio > 0.37,
+            "dim=1024: frustration should be near limit"
+        );
+        assert!(
+            frust_ratio < 0.41,
+            "dim=1024: frustration should not exceed 0.41"
+        );
     }
 
     fn binomial(n: usize, k: usize) -> usize {
-        if k > n { return 0; }
+        if k > n {
+            return 0;
+        }
         let mut result = 1usize;
         for i in 0..k {
             result = result * (n - i) / (i + 1);

@@ -7127,6 +7127,51 @@ standard basis construction (alpha_1 = e_1 - e_2, etc.).
 When working across both modules, remember that the node indices do NOT
 correspond: "node 4" in kac_moody.rs is NOT the same simple root as
 "node 4" in e8_lattice.rs.
+
+---
+
+## 2a. Cayley-Dickson vs Tensor Product Constructions
+
+### Standard CD Construction (Empirically Non-Commutative at dim >= 4)
+
+**File:** `crates/algebra_core/src/construction/cayley_dickson.rs` (Layer 2 tests)
+
+The standard Cayley-Dickson doubling formula produces **strictly non-commutative**
+algebras at all dimensions >= 4 for ALL choices of gamma in {-1,+1}. This is a
+**structural property** of the CD construction, not dependent on metric signature.
+
+Verification (Layer 0 + Layer 2, Sprint 26, I-019):
+- Literature search: Generalized CD constructions, p-adic variants, Jordan algebras,
+  Clifford algebras, Freudenthal-Tits, non-associative families. NO counterexamples found.
+- Computational: Exhaustively tested all 28 standard gamma signatures:
+  - Dim 4: all 4 signatures, 100% non-commutative
+  - Dim 8: all 8 signatures, 21/21 pair violations each
+  - Dim 16: all 16 signatures, 105/105 pair violations each
+  - Dim 32: 8 representative samples, 465/465 pair violations each
+  - RESULT: ZERO EXCEPTIONS. Standard CD non-commutativity confirmed.
+
+The structural cause: right component formula `d*a + b*conj(c)` contains standard
+conjugation which induces anti-symmetry independent of gamma. This distinguishes:
+- **Structural properties** (commutativity, center Z(A)=R*e_0): gamma-INVARIANT
+- **Parametric properties** (symmetric fraction, norm signature): gamma-DEPENDENT
+
+### Tensor Product Constructions (Tessarines, Commutative)
+
+**Historical:** Cockle (1848), Segre (1892 bicomplex), G. Baley Price (1991).
+
+The commutative C tensor C construction (tessarines / bicomplex numbers) uses:
+
+```
+(a1 + b1*i) TENSOR (a2 + b2*j) where i*j = j*i (commutative multiplication)
+```
+
+This is fundamentally DIFFERENT from CD doubling. Tessarines cannot be obtained
+via CD construction with any gamma parameter. The conjugation-free tensor product
+preserves commutativity; CD conjugation breaks it.
+
+**Empirical Result (C-546):** After exhaustive search, no standard CD parameter
+choice yields commutativity at dim>=4. Tessarines remain inaccessible via standard
+CD construction. No exotic CD variants permitting commutativity found in literature.
 '''
 
 [[document]]

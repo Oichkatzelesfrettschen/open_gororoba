@@ -448,12 +448,11 @@ mod tests {
 
     #[test]
     fn test_euclidean_ultrametricity_across_filtration_levels() {
-        use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_2048,
-            is_in_lambda_512,
-        };
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{apply_null_column_major, NullModel};
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_2048, is_in_lambda_512,
+        };
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -526,10 +525,7 @@ mod tests {
                 "\n  {} ({} vectors, prefix={}, effective_dim={}):",
                 name, n, prefix, d
             );
-            eprintln!(
-                "    Observed fraction: {:.4}",
-                obs_frac
-            );
+            eprintln!("    Observed fraction: {:.4}", obs_frac);
             eprintln!(
                 "    Null mean +/- std: {:.4} +/- {:.4}",
                 null_mean, null_std
@@ -592,11 +588,11 @@ mod tests {
     ///   k=6: Lambda_512                 (512 vectors)
     #[test]
     fn test_intermediate_filtration_gradient() {
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_1024_minus_k,
         };
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -681,7 +677,10 @@ mod tests {
             assert!(
                 sizes[i] <= sizes[i - 1],
                 "Size must decrease: k={} has {} > k={} has {}",
-                i, sizes[i], i - 1, sizes[i - 1]
+                i,
+                sizes[i],
+                i - 1,
+                sizes[i - 1]
             );
         }
         // 4. z-score at k=6 should be substantially higher than k=0
@@ -689,15 +688,25 @@ mod tests {
         assert!(
             z_scores[6] > z_scores[0] + 2.0,
             "Lambda_512 (k=6) z={:.2} should be >2 above Lambda_1024 (k=0) z={:.2}",
-            z_scores[6], z_scores[0]
+            z_scores[6],
+            z_scores[0]
         );
 
         eprintln!("\n=== GRADIENT SUMMARY ===");
-        eprintln!("z-score progression: {:?}", z_scores.iter().map(|z| format!("{:.2}", z)).collect::<Vec<_>>());
+        eprintln!(
+            "z-score progression: {:?}",
+            z_scores
+                .iter()
+                .map(|z| format!("{:.2}", z))
+                .collect::<Vec<_>>()
+        );
 
         // Find the first k where z > 3.0 (strong signal)
         if let Some(transition_k) = z_scores.iter().position(|&z| z > 3.0) {
-            eprintln!("First k with z > 3.0: {} (N={})", transition_k, sizes[transition_k]);
+            eprintln!(
+                "First k with z > 3.0: {} (N={})",
+                transition_k, sizes[transition_k]
+            );
         } else {
             eprintln!("No k reached z > 3.0 (gradient is gradual)");
         }
@@ -708,8 +717,8 @@ mod tests {
     #[test]
     fn test_intermediate_filtration_consistency() {
         use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_1024,
-            is_in_lambda_1024_minus_k, is_in_lambda_512,
+            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_1024_minus_k,
+            is_in_lambda_512,
         };
 
         let all_1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
@@ -730,13 +739,18 @@ mod tests {
                 assert!(
                     prev.contains(v),
                     "k={} vector {:?} not in k={} set",
-                    k, v, k - 1
+                    k,
+                    v,
+                    k - 1
                 );
             }
             assert!(
                 current.len() <= prev.len(),
                 "k={} has {} vectors > k={} has {}",
-                k, current.len(), k - 1, prev.len()
+                k,
+                current.len(),
+                k - 1,
+                prev.len()
             );
             prev = current;
         }
@@ -762,7 +776,10 @@ mod tests {
             let removed = sizes[k - 1] - sizes[k];
             eprintln!(
                 "  Rule {}: {} -> {} (removed {})",
-                k, sizes[k - 1], sizes[k], removed
+                k,
+                sizes[k - 1],
+                sizes[k],
+                removed
             );
         }
 
@@ -781,11 +798,9 @@ mod tests {
     /// If not, the l_1=+1 vectors are algebraically special.
     #[test]
     fn test_random_removal_control() {
-        use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_1024,
-        };
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{apply_null_column_major, NullModel};
+        use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_1024};
         use rand::prelude::*;
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -800,13 +815,13 @@ mod tests {
         let n_remove = 297; // Same count as rule 1
 
         eprintln!("\n=== Random Removal Control (C-501 validation) ===");
-        eprintln!("Removing {} random vectors vs. the {} l_1=+1 vectors", n_remove, n_remove);
+        eprintln!(
+            "Removing {} random vectors vs. the {} l_1=+1 vectors",
+            n_remove, n_remove
+        );
 
         // First: compute z-score for rule-1 removal (reference)
-        let rule1_vectors: Vec<_> = all_1024.iter()
-            .copied()
-            .filter(|v| v[1] != 1)
-            .collect();
+        let rule1_vectors: Vec<_> = all_1024.iter().copied().filter(|v| v[1] != 1).collect();
         assert_eq!(rule1_vectors.len(), 729);
 
         let prefix = shared_prefix_length(&rule1_vectors);
@@ -820,18 +835,38 @@ mod tests {
         for _ in 0..n_null_perms {
             shuffled.copy_from_slice(&cols);
             apply_null_column_major(
-                &mut shuffled, rule1_vectors.len(), d,
-                NullModel::ColumnIndependent, &mut rng_null,
+                &mut shuffled,
+                rule1_vectors.len(),
+                d,
+                NullModel::ColumnIndependent,
+                &mut rng_null,
             );
-            null_fracs.push(matrix_free_fraction(&shuffled, rule1_vectors.len(), d, n_triples, 2_000_042, 0.05));
+            null_fracs.push(matrix_free_fraction(
+                &shuffled,
+                rule1_vectors.len(),
+                d,
+                n_triples,
+                2_000_042,
+                0.05,
+            ));
         }
         let null_mean = null_fracs.iter().sum::<f64>() / n_null_perms as f64;
-        let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
-            / n_null_perms as f64).sqrt();
-        let rule1_z = if null_std > 1e-12 { (rule1_obs - null_mean) / null_std } else { 0.0 };
+        let null_std = (null_fracs
+            .iter()
+            .map(|f| (f - null_mean).powi(2))
+            .sum::<f64>()
+            / n_null_perms as f64)
+            .sqrt();
+        let rule1_z = if null_std > 1e-12 {
+            (rule1_obs - null_mean) / null_std
+        } else {
+            0.0
+        };
 
-        eprintln!("Rule-1 removal: N=729, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-            rule1_obs, null_mean, null_std, rule1_z);
+        eprintln!(
+            "Rule-1 removal: N=729, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+            rule1_obs, null_mean, null_std, rule1_z
+        );
 
         // Now: 20 random removal trials
         let mut random_z_scores = Vec::new();
@@ -854,30 +889,58 @@ mod tests {
             for _ in 0..n_null_perms {
                 shuffled_r.copy_from_slice(&cols_r);
                 apply_null_column_major(
-                    &mut shuffled_r, keep.len(), d_r,
-                    NullModel::ColumnIndependent, &mut rng_null_r,
+                    &mut shuffled_r,
+                    keep.len(),
+                    d_r,
+                    NullModel::ColumnIndependent,
+                    &mut rng_null_r,
                 );
-                null_fracs_r.push(matrix_free_fraction(&shuffled_r, keep.len(), d_r, n_triples, 2_000_042, 0.05));
+                null_fracs_r.push(matrix_free_fraction(
+                    &shuffled_r,
+                    keep.len(),
+                    d_r,
+                    n_triples,
+                    2_000_042,
+                    0.05,
+                ));
             }
             let null_mean_r = null_fracs_r.iter().sum::<f64>() / n_null_perms as f64;
-            let null_std_r = (null_fracs_r.iter().map(|f| (f - null_mean_r).powi(2)).sum::<f64>()
-                / n_null_perms as f64).sqrt();
-            let z_r = if null_std_r > 1e-12 { (obs_r - null_mean_r) / null_std_r } else { 0.0 };
+            let null_std_r = (null_fracs_r
+                .iter()
+                .map(|f| (f - null_mean_r).powi(2))
+                .sum::<f64>()
+                / n_null_perms as f64)
+                .sqrt();
+            let z_r = if null_std_r > 1e-12 {
+                (obs_r - null_mean_r) / null_std_r
+            } else {
+                0.0
+            };
 
-            eprintln!("  Random trial {:>2}: obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-                trial, obs_r, null_mean_r, null_std_r, z_r);
+            eprintln!(
+                "  Random trial {:>2}: obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                trial, obs_r, null_mean_r, null_std_r, z_r
+            );
             random_z_scores.push(z_r);
         }
 
         let mean_random_z = random_z_scores.iter().sum::<f64>() / n_random_trials as f64;
-        let max_random_z = random_z_scores.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+        let max_random_z = random_z_scores
+            .iter()
+            .cloned()
+            .fold(f64::NEG_INFINITY, f64::max);
 
         eprintln!("\n--- Control Summary ---");
         eprintln!("Rule-1 z-score:     {:.2}", rule1_z);
         eprintln!("Random mean z:      {:.2}", mean_random_z);
         eprintln!("Random max z:       {:.2}", max_random_z);
-        eprintln!("Random z-scores:    {:?}",
-            random_z_scores.iter().map(|z| format!("{:.2}", z)).collect::<Vec<_>>());
+        eprintln!(
+            "Random z-scores:    {:?}",
+            random_z_scores
+                .iter()
+                .map(|z| format!("{:.2}", z))
+                .collect::<Vec<_>>()
+        );
 
         // The rule-1 z-score should exceed the MEAN random z-score
         // (if l_1=+1 vectors are special, targeted removal beats random removal).
@@ -885,7 +948,8 @@ mod tests {
         assert!(
             rule1_z > mean_random_z,
             "Rule-1 z={:.2} should exceed random mean z={:.2}",
-            rule1_z, mean_random_z
+            rule1_z,
+            mean_random_z
         );
     }
 
@@ -902,11 +966,11 @@ mod tests {
     /// saturates/strengthens gradually.
     #[test]
     fn test_lambda512_to_256_intermediate_gradient() {
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_512_minus_k,
         };
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -938,17 +1002,29 @@ mod tests {
             for _ in 0..n_permutations {
                 shuffled.copy_from_slice(&cols);
                 apply_null_column_major(
-                    &mut shuffled, n, d,
-                    NullModel::ColumnIndependent, &mut rng,
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
                 );
-                null_fracs.push(
-                    matrix_free_fraction(&shuffled, n, d, n_triples, seed + 4_000_000, 0.05)
-                );
+                null_fracs.push(matrix_free_fraction(
+                    &shuffled,
+                    n,
+                    d,
+                    n_triples,
+                    seed + 4_000_000,
+                    0.05,
+                ));
             }
 
             let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
-            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
-                / n_permutations as f64).sqrt();
+            let null_std = (null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64)
+                .sqrt();
             let n_extreme = null_fracs.iter().filter(|&&f| f >= obs_frac).count();
             let p_value = (n_extreme as f64 + 1.0) / (n_permutations as f64 + 1.0);
             let z_score = if null_std > 1e-12 {
@@ -975,17 +1051,36 @@ mod tests {
             assert!(sizes[i] <= sizes[i - 1], "Sizes must decrease");
         }
         // Both endpoints should be significantly ultrametric
-        assert!(z_scores[0] > 3.0, "Lambda_512 z={:.2} should be significant", z_scores[0]);
-        assert!(z_scores[6] > 3.0, "Lambda_256 z={:.2} should be significant", z_scores[6]);
+        assert!(
+            z_scores[0] > 3.0,
+            "Lambda_512 z={:.2} should be significant",
+            z_scores[0]
+        );
+        assert!(
+            z_scores[6] > 3.0,
+            "Lambda_256 z={:.2} should be significant",
+            z_scores[6]
+        );
 
         eprintln!("\n=== GRADIENT SUMMARY ===");
-        eprintln!("z-score progression: {:?}",
-            z_scores.iter().map(|z| format!("{:.2}", z)).collect::<Vec<_>>());
+        eprintln!(
+            "z-score progression: {:?}",
+            z_scores
+                .iter()
+                .map(|z| format!("{:.2}", z))
+                .collect::<Vec<_>>()
+        );
 
         // Step sizes
         eprintln!("Step sizes:");
         for k in 1..=6 {
-            eprintln!("  Rule {}: {} -> {} (removed {})", k, sizes[k-1], sizes[k], sizes[k-1] - sizes[k]);
+            eprintln!(
+                "  Rule {}: {} -> {} (removed {})",
+                k,
+                sizes[k - 1],
+                sizes[k],
+                sizes[k - 1] - sizes[k]
+            );
         }
     }
 
@@ -994,11 +1089,9 @@ mod tests {
     /// ultrametricity than removing 147 random vectors.
     #[test]
     fn test_lambda512_to_256_random_removal_control() {
-        use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_512,
-        };
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{apply_null_column_major, NullModel};
+        use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_512};
         use rand::prelude::*;
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
@@ -1013,13 +1106,13 @@ mod tests {
         let n_remove = 147; // Same count as rule 1 (l_1=0 removal)
 
         eprintln!("\n=== Random Removal Control (C-504 validation) ===");
-        eprintln!("Removing {} random vs {} l_1=0 vectors from Lambda_512", n_remove, n_remove);
+        eprintln!(
+            "Removing {} random vs {} l_1=0 vectors from Lambda_512",
+            n_remove, n_remove
+        );
 
         // Reference: rule-1 removal (keep only l_1=-1, i.e. l_1!=0)
-        let rule1_vectors: Vec<_> = all_512.iter()
-            .copied()
-            .filter(|v| v[1] != 0)
-            .collect();
+        let rule1_vectors: Vec<_> = all_512.iter().copied().filter(|v| v[1] != 0).collect();
         assert_eq!(rule1_vectors.len(), 365);
 
         let prefix = shared_prefix_length(&rule1_vectors);
@@ -1033,18 +1126,38 @@ mod tests {
         for _ in 0..n_null_perms {
             shuffled.copy_from_slice(&cols);
             apply_null_column_major(
-                &mut shuffled, rule1_vectors.len(), d,
-                NullModel::ColumnIndependent, &mut rng_null,
+                &mut shuffled,
+                rule1_vectors.len(),
+                d,
+                NullModel::ColumnIndependent,
+                &mut rng_null,
             );
-            null_fracs.push(matrix_free_fraction(&shuffled, rule1_vectors.len(), d, n_triples, 8_000_042, 0.05));
+            null_fracs.push(matrix_free_fraction(
+                &shuffled,
+                rule1_vectors.len(),
+                d,
+                n_triples,
+                8_000_042,
+                0.05,
+            ));
         }
         let null_mean = null_fracs.iter().sum::<f64>() / n_null_perms as f64;
-        let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
-            / n_null_perms as f64).sqrt();
-        let rule1_z = if null_std > 1e-12 { (rule1_obs - null_mean) / null_std } else { 0.0 };
+        let null_std = (null_fracs
+            .iter()
+            .map(|f| (f - null_mean).powi(2))
+            .sum::<f64>()
+            / n_null_perms as f64)
+            .sqrt();
+        let rule1_z = if null_std > 1e-12 {
+            (rule1_obs - null_mean) / null_std
+        } else {
+            0.0
+        };
 
-        eprintln!("Rule-1 removal: N=365, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-            rule1_obs, null_mean, null_std, rule1_z);
+        eprintln!(
+            "Rule-1 removal: N=365, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+            rule1_obs, null_mean, null_std, rule1_z
+        );
 
         // Random removal trials
         let mut random_z_scores = Vec::new();
@@ -1067,23 +1180,46 @@ mod tests {
             for _ in 0..n_null_perms {
                 shuffled_r.copy_from_slice(&cols_r);
                 apply_null_column_major(
-                    &mut shuffled_r, keep.len(), d_r,
-                    NullModel::ColumnIndependent, &mut rng_null_r,
+                    &mut shuffled_r,
+                    keep.len(),
+                    d_r,
+                    NullModel::ColumnIndependent,
+                    &mut rng_null_r,
                 );
-                null_fracs_r.push(matrix_free_fraction(&shuffled_r, keep.len(), d_r, n_triples, 8_000_042, 0.05));
+                null_fracs_r.push(matrix_free_fraction(
+                    &shuffled_r,
+                    keep.len(),
+                    d_r,
+                    n_triples,
+                    8_000_042,
+                    0.05,
+                ));
             }
             let null_mean_r = null_fracs_r.iter().sum::<f64>() / n_null_perms as f64;
-            let null_std_r = (null_fracs_r.iter().map(|f| (f - null_mean_r).powi(2)).sum::<f64>()
-                / n_null_perms as f64).sqrt();
-            let z_r = if null_std_r > 1e-12 { (obs_r - null_mean_r) / null_std_r } else { 0.0 };
+            let null_std_r = (null_fracs_r
+                .iter()
+                .map(|f| (f - null_mean_r).powi(2))
+                .sum::<f64>()
+                / n_null_perms as f64)
+                .sqrt();
+            let z_r = if null_std_r > 1e-12 {
+                (obs_r - null_mean_r) / null_std_r
+            } else {
+                0.0
+            };
 
-            eprintln!("  Random trial {:>2}: obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-                trial, obs_r, null_mean_r, null_std_r, z_r);
+            eprintln!(
+                "  Random trial {:>2}: obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                trial, obs_r, null_mean_r, null_std_r, z_r
+            );
             random_z_scores.push(z_r);
         }
 
         let mean_random_z = random_z_scores.iter().sum::<f64>() / n_random_trials as f64;
-        let max_random_z = random_z_scores.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+        let max_random_z = random_z_scores
+            .iter()
+            .cloned()
+            .fold(f64::NEG_INFINITY, f64::max);
 
         eprintln!("\n--- Control Summary ---");
         eprintln!("Rule-1 z-score:     {:.2}", rule1_z);
@@ -1094,7 +1230,8 @@ mod tests {
         assert!(
             rule1_z > mean_random_z,
             "Rule-1 z={:.2} should exceed random mean z={:.2}",
-            rule1_z, mean_random_z
+            rule1_z,
+            mean_random_z
         );
     }
 
@@ -1102,8 +1239,8 @@ mod tests {
     #[test]
     fn test_lambda512_minus_k_consistency() {
         use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_256,
-            is_in_lambda_512, is_in_lambda_512_minus_k,
+            enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
+            is_in_lambda_512_minus_k,
         };
 
         let k0 = enumerate_lattice_by_predicate(|v| is_in_lambda_512_minus_k(v, 0));
@@ -1134,11 +1271,11 @@ mod tests {
     /// affects ultrametricity significantly.
     #[test]
     fn test_sbase_to_lambda2048_gradient() {
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_sbase_minus_k,
         };
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -1155,8 +1292,7 @@ mod tests {
         let mut prev_n = 0usize;
 
         for k in 0..=3 {
-            let vectors =
-                enumerate_lattice_by_predicate(|v| is_in_sbase_minus_k(v, k));
+            let vectors = enumerate_lattice_by_predicate(|v| is_in_sbase_minus_k(v, k));
             let n = vectors.len();
             let prefix = shared_prefix_length(&vectors);
             let d = 8 - prefix;
@@ -1214,14 +1350,16 @@ mod tests {
         eprintln!("\n=== GRADIENT SUMMARY ===");
         eprintln!(
             "z-score progression: {:?}",
-            z_scores.iter().map(|z| format!("{:.2}", z)).collect::<Vec<_>>()
+            z_scores
+                .iter()
+                .map(|z| format!("{:.2}", z))
+                .collect::<Vec<_>>()
         );
 
         // Verify boundary: k=3 should match Lambda_2048
         let k3_set = enumerate_lattice_by_predicate(|v| is_in_sbase_minus_k(v, 3));
-        let l2048_set = enumerate_lattice_by_predicate(
-            algebra_core::analysis::codebook::is_in_lambda_2048,
-        );
+        let l2048_set =
+            enumerate_lattice_by_predicate(algebra_core::analysis::codebook::is_in_lambda_2048);
         assert_eq!(k3_set.len(), l2048_set.len(), "k=3 must equal Lambda_2048");
     }
 
@@ -1261,11 +1399,9 @@ mod tests {
     /// or merely neutral diluters.
     #[test]
     fn test_l0_subpopulation_ultrametricity() {
-        use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_2048,
-        };
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{apply_null_column_major, NullModel};
+        use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -1305,7 +1441,12 @@ mod tests {
                     &mut rng,
                 );
                 null_fracs.push(matrix_free_fraction(
-                    &shuffled, n, d, n_triples, seed + 12_000_000, 0.05,
+                    &shuffled,
+                    n,
+                    d,
+                    n_triples,
+                    seed + 12_000_000,
+                    0.05,
                 ));
             }
 
@@ -1333,7 +1474,10 @@ mod tests {
         let z_neg1 = compute_z(&l0_neg1, "l_0=-1");
         let z_zero = compute_z(&l0_zero, "l_0=0 ");
 
-        eprintln!("\n  Difference: l_0=-1 z={:.2}, l_0=0 z={:.2}", z_neg1, z_zero);
+        eprintln!(
+            "\n  Difference: l_0=-1 z={:.2}, l_0=0 z={:.2}",
+            z_neg1, z_zero
+        );
         eprintln!(
             "  Interpretation: l_0=0 is {} ultrametric than l_0=-1",
             if z_zero < z_neg1 { "LESS" } else { "MORE" }
@@ -1349,11 +1493,11 @@ mod tests {
     /// produce a monotone or discontinuous ultrametricity change.
     #[test]
     fn test_lambda2048_to_1024_intermediate_gradient() {
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_2048_minus_k,
         };
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -1370,8 +1514,7 @@ mod tests {
         let mut prev_n = 0usize;
 
         for k in 0..=4 {
-            let vectors =
-                enumerate_lattice_by_predicate(|v| is_in_lambda_2048_minus_k(v, k));
+            let vectors = enumerate_lattice_by_predicate(|v| is_in_lambda_2048_minus_k(v, k));
             let n = vectors.len();
             let prefix = shared_prefix_length(&vectors);
             let d = 8 - prefix;
@@ -1429,7 +1572,10 @@ mod tests {
         eprintln!("\n=== GRADIENT SUMMARY ===");
         eprintln!(
             "z-score progression: {:?}",
-            z_scores.iter().map(|z| format!("{:.2}", z)).collect::<Vec<_>>()
+            z_scores
+                .iter()
+                .map(|z| format!("{:.2}", z))
+                .collect::<Vec<_>>()
         );
         eprintln!("Step sizes:");
         for k in 1..=4 {
@@ -1444,12 +1590,9 @@ mod tests {
 
         // Verify boundary: k=4 should match Lambda_1024
         let k4_set = enumerate_lattice_by_predicate(|v| is_in_lambda_2048_minus_k(v, 4));
-        let l1024_set = enumerate_lattice_by_predicate(algebra_core::analysis::codebook::is_in_lambda_1024);
-        assert_eq!(
-            k4_set.len(),
-            l1024_set.len(),
-            "k=4 must equal Lambda_1024"
-        );
+        let l1024_set =
+            enumerate_lattice_by_predicate(algebra_core::analysis::codebook::is_in_lambda_1024);
+        assert_eq!(k4_set.len(), l1024_set.len(), "k=4 must equal Lambda_1024");
     }
 
     /// Boundary consistency for is_in_lambda_2048_minus_k.
@@ -1497,11 +1640,9 @@ mod tests {
     /// the l_1 phase transition exists within the l_0=-1 population itself.
     #[test]
     fn test_l1_filter_on_l0_neg1_subset() {
-        use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_2048,
-        };
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{apply_null_column_major, NullModel};
+        use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -1545,21 +1686,39 @@ mod tests {
             for _ in 0..n_permutations {
                 shuffled.copy_from_slice(&cols);
                 apply_null_column_major(
-                    &mut shuffled, n, d,
-                    NullModel::ColumnIndependent, &mut rng,
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
                 );
                 null_fracs.push(matrix_free_fraction(
-                    &shuffled, n, d, n_triples, seed + 14_000_000, 0.05,
+                    &shuffled,
+                    n,
+                    d,
+                    n_triples,
+                    seed + 14_000_000,
+                    0.05,
                 ));
             }
 
             let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
-            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
-                / n_permutations as f64).sqrt();
-            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+            let null_std = (null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64)
+                .sqrt();
+            let z = if null_std > 1e-12 {
+                (obs - null_mean) / null_std
+            } else {
+                0.0
+            };
 
-            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-                label, prefix, d, n, obs, null_mean, null_std, z);
+            eprintln!(
+                "  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z
+            );
             z
         };
 
@@ -1575,7 +1734,10 @@ mod tests {
         eprintln!("l_0=-1, l_1=0:    z={:.2}", z_zero);
         eprintln!("l_0=-1, l_1=+1:   z={:.2}", z_pos1);
         eprintln!("l_0=-1, l_1!=+1:  z={:.2}", z_not1);
-        eprintln!("Phase transition present: l_1!=+1 z ({:.2}) vs all z ({:.2})", z_not1, z_all);
+        eprintln!(
+            "Phase transition present: l_1!=+1 z ({:.2}) vs all z ({:.2})",
+            z_not1, z_all
+        );
     }
 
     // ================================================================
@@ -1588,11 +1750,9 @@ mod tests {
     /// is recursive through the entire coordinate hierarchy.
     #[test]
     fn test_recursive_simpsons_paradox_l2() {
-        use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_2048,
-        };
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{apply_null_column_major, NullModel};
+        use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -1636,21 +1796,39 @@ mod tests {
             for _ in 0..n_permutations {
                 shuffled.copy_from_slice(&cols);
                 apply_null_column_major(
-                    &mut shuffled, n, d,
-                    NullModel::ColumnIndependent, &mut rng,
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
                 );
                 null_fracs.push(matrix_free_fraction(
-                    &shuffled, n, d, n_triples, seed + 21_000_000, 0.05,
+                    &shuffled,
+                    n,
+                    d,
+                    n_triples,
+                    seed + 21_000_000,
+                    0.05,
                 ));
             }
 
             let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
-            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
-                / n_permutations as f64).sqrt();
-            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+            let null_std = (null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64)
+                .sqrt();
+            let z = if null_std > 1e-12 {
+                (obs - null_mean) / null_std
+            } else {
+                0.0
+            };
 
-            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-                label, prefix, d, n, obs, null_mean, null_std, z);
+            eprintln!(
+                "  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z
+            );
             z
         };
 
@@ -1661,15 +1839,30 @@ mod tests {
 
         eprintln!("\n=== l_2 Recursion Summary ===");
         eprintln!("Combined (l_0=-1, l_1=-1): z={:.2}", z_combined);
-        if !z_l2_neg1.is_nan() { eprintln!("  l_2=-1: z={:.2}", z_l2_neg1); }
-        if !z_l2_zero.is_nan() { eprintln!("  l_2=0:  z={:.2}", z_l2_zero); }
-        if !z_l2_pos1.is_nan() { eprintln!("  l_2=+1: z={:.2}", z_l2_pos1); }
+        if !z_l2_neg1.is_nan() {
+            eprintln!("  l_2=-1: z={:.2}", z_l2_neg1);
+        }
+        if !z_l2_zero.is_nan() {
+            eprintln!("  l_2=0:  z={:.2}", z_l2_zero);
+        }
+        if !z_l2_pos1.is_nan() {
+            eprintln!("  l_2=+1: z={:.2}", z_l2_pos1);
+        }
 
         // Also do l_3 level within l_0=-1, l_1=-1, l_2=-1 if large enough
         let l3_strata: Vec<(&str, Vec<[i8; 8]>)> = vec![
-            ("l_3=-1", l2_neg1.iter().copied().filter(|v| v[3] == -1).collect()),
-            ("l_3=0 ", l2_neg1.iter().copied().filter(|v| v[3] == 0).collect()),
-            ("l_3=+1", l2_neg1.iter().copied().filter(|v| v[3] == 1).collect()),
+            (
+                "l_3=-1",
+                l2_neg1.iter().copied().filter(|v| v[3] == -1).collect(),
+            ),
+            (
+                "l_3=0 ",
+                l2_neg1.iter().copied().filter(|v| v[3] == 0).collect(),
+            ),
+            (
+                "l_3=+1",
+                l2_neg1.iter().copied().filter(|v| v[3] == 1).collect(),
+            ),
         ];
 
         eprintln!("\n=== l_3 level (within l_0=-1, l_1=-1, l_2=-1) ===");
@@ -1694,12 +1887,10 @@ mod tests {
     /// the anti-ultrametricity in C-508/C-509.
     #[test]
     fn test_cross_stratum_triple_decomposition() {
-        use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_2048,
-        };
+        use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
+        use rand::seq::SliceRandom;
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
-        use rand::seq::SliceRandom;
 
         let n_triples = 200_000;
         let seed = 42u64;
@@ -1765,32 +1956,51 @@ mod tests {
 
             if is_same {
                 same_total += 1;
-                if is_um { same_um += 1; }
+                if is_um {
+                    same_um += 1;
+                }
             } else {
                 mixed_total += 1;
-                if is_um { mixed_um += 1; }
+                if is_um {
+                    mixed_um += 1;
+                }
             }
         }
 
-        let same_frac = if same_total > 0 { same_um as f64 / same_total as f64 } else { 0.0 };
-        let mixed_frac = if mixed_total > 0 { mixed_um as f64 / mixed_total as f64 } else { 0.0 };
+        let same_frac = if same_total > 0 {
+            same_um as f64 / same_total as f64
+        } else {
+            0.0
+        };
+        let mixed_frac = if mixed_total > 0 {
+            mixed_um as f64 / mixed_total as f64
+        } else {
+            0.0
+        };
         let overall_frac = (same_um + mixed_um) as f64 / (same_total + mixed_total) as f64;
 
-        eprintln!("Same-l_1 triples: {}/{} = {:.4} UM fraction",
-            same_um, same_total, same_frac);
-        eprintln!("Mixed-l_1 triples: {}/{} = {:.4} UM fraction",
-            mixed_um, mixed_total, mixed_frac);
+        eprintln!(
+            "Same-l_1 triples: {}/{} = {:.4} UM fraction",
+            same_um, same_total, same_frac
+        );
+        eprintln!(
+            "Mixed-l_1 triples: {}/{} = {:.4} UM fraction",
+            mixed_um, mixed_total, mixed_frac
+        );
         eprintln!("Overall: {:.4}", overall_frac);
         eprintln!("Mixed/same ratio: {:.4}", mixed_frac / same_frac);
-        eprintln!("Mixed fraction of all triples: {:.1}%",
-            100.0 * mixed_total as f64 / (same_total + mixed_total) as f64);
+        eprintln!(
+            "Mixed fraction of all triples: {:.1}%",
+            100.0 * mixed_total as f64 / (same_total + mixed_total) as f64
+        );
 
         // The key assertion: same-l_1 triples should have higher UM fraction
         // than mixed-l_1 triples
         assert!(
             same_frac > mixed_frac,
             "Expected same-l_1 UM fraction ({}) > mixed-l_1 UM fraction ({})",
-            same_frac, mixed_frac
+            same_frac,
+            mixed_frac
         );
     }
 
@@ -1804,11 +2014,9 @@ mod tests {
     /// l_0 strata.
     #[test]
     fn test_l0_zero_simpsons_paradox() {
-        use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_2048,
-        };
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{apply_null_column_major, NullModel};
+        use algebra_core::analysis::codebook::{enumerate_lattice_by_predicate, is_in_lambda_2048};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -1849,21 +2057,39 @@ mod tests {
             for _ in 0..n_permutations {
                 shuffled.copy_from_slice(&cols);
                 apply_null_column_major(
-                    &mut shuffled, n, d,
-                    NullModel::ColumnIndependent, &mut rng,
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
                 );
                 null_fracs.push(matrix_free_fraction(
-                    &shuffled, n, d, n_triples, seed + 41_000_000, 0.05,
+                    &shuffled,
+                    n,
+                    d,
+                    n_triples,
+                    seed + 41_000_000,
+                    0.05,
                 ));
             }
 
             let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
-            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
-                / n_permutations as f64).sqrt();
-            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+            let null_std = (null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64)
+                .sqrt();
+            let z = if null_std > 1e-12 {
+                (obs - null_mean) / null_std
+            } else {
+                0.0
+            };
 
-            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-                label, prefix, d, n, obs, null_mean, null_std, z);
+            eprintln!(
+                "  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z
+            );
             z
         };
 
@@ -1882,8 +2108,12 @@ mod tests {
         let strata_z = [z_neg1, z_zero, z_pos1];
         let valid_strata: Vec<f64> = strata_z.iter().copied().filter(|z| !z.is_nan()).collect();
         let min_stratum = valid_strata.iter().cloned().fold(f64::INFINITY, f64::min);
-        eprintln!("Paradox present: all strata z > combined z? min_stratum={:.2} vs combined={:.2}: {}",
-            min_stratum, z_all, min_stratum > z_all);
+        eprintln!(
+            "Paradox present: all strata z > combined z? min_stratum={:.2} vs combined={:.2}: {}",
+            min_stratum,
+            z_all,
+            min_stratum > z_all
+        );
     }
 
     // ================================================================
@@ -1896,11 +2126,11 @@ mod tests {
     /// structure rather than specific to Lambda_2048.
     #[test]
     fn test_dimensional_universality_simpsons_paradox() {
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
         use algebra_core::analysis::codebook::{
             enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
         };
-        use super::super::baire::matrix_free_fraction;
-        use super::super::null_models::{apply_null_column_major, NullModel};
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -1927,36 +2157,62 @@ mod tests {
             for _ in 0..n_permutations {
                 shuffled.copy_from_slice(&cols);
                 apply_null_column_major(
-                    &mut shuffled, n, d,
-                    NullModel::ColumnIndependent, &mut rng,
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
                 );
                 null_fracs.push(matrix_free_fraction(
-                    &shuffled, n, d, n_triples, seed + 51_000_000, 0.05,
+                    &shuffled,
+                    n,
+                    d,
+                    n_triples,
+                    seed + 51_000_000,
+                    0.05,
                 ));
             }
 
             let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
-            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
-                / n_permutations as f64).sqrt();
-            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+            let null_std = (null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64)
+                .sqrt();
+            let z = if null_std > 1e-12 {
+                (obs - null_mean) / null_std
+            } else {
+                0.0
+            };
 
-            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-                label, prefix, d, n, obs, null_mean, null_std, z);
+            eprintln!(
+                "  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z
+            );
             z
         };
 
         // --- Lambda_256 (dim=32, should be strongly ultrametric: z=17.07 from C-500) ---
         let l256 = enumerate_lattice_by_predicate(is_in_lambda_256);
         let l256_l0_neg1: Vec<_> = l256.iter().copied().filter(|v| v[0] == -1).collect();
-        let l256_l1_neg1: Vec<_> = l256_l0_neg1.iter().copied().filter(|v| v[1] == -1).collect();
+        let l256_l1_neg1: Vec<_> = l256_l0_neg1
+            .iter()
+            .copied()
+            .filter(|v| v[1] == -1)
+            .collect();
         let l256_l1_zero: Vec<_> = l256_l0_neg1.iter().copied().filter(|v| v[1] == 0).collect();
         let l256_l1_pos1: Vec<_> = l256_l0_neg1.iter().copied().filter(|v| v[1] == 1).collect();
 
         eprintln!("\n=== Lambda_256 (dim=32) Paradox Test ===");
         eprintln!("Lambda_256 total: N={}", l256.len());
         eprintln!("l_0=-1 subset: N={}", l256_l0_neg1.len());
-        eprintln!("  l_1=-1: N={}, l_1=0: N={}, l_1=+1: N={}",
-            l256_l1_neg1.len(), l256_l1_zero.len(), l256_l1_pos1.len());
+        eprintln!(
+            "  l_1=-1: N={}, l_1=0: N={}, l_1=+1: N={}",
+            l256_l1_neg1.len(),
+            l256_l1_zero.len(),
+            l256_l1_pos1.len()
+        );
 
         let z_256_all = compute_z(&l256, "Lambda_256 all   ", 0);
         let z_256_l0 = compute_z(&l256_l0_neg1, "l_0=-1 all       ", 1);
@@ -1966,22 +2222,36 @@ mod tests {
 
         eprintln!("\nLambda_256 summary:");
         eprintln!("  Full: z={:.2}, l_0=-1: z={:.2}", z_256_all, z_256_l0);
-        if !z_256_l1n.is_nan() { eprintln!("  l_1=-1: z={:.2}", z_256_l1n); }
-        if !z_256_l1z.is_nan() { eprintln!("  l_1=0: z={:.2}", z_256_l1z); }
-        if !z_256_l1p.is_nan() { eprintln!("  l_1=+1: z={:.2}", z_256_l1p); }
+        if !z_256_l1n.is_nan() {
+            eprintln!("  l_1=-1: z={:.2}", z_256_l1n);
+        }
+        if !z_256_l1z.is_nan() {
+            eprintln!("  l_1=0: z={:.2}", z_256_l1z);
+        }
+        if !z_256_l1p.is_nan() {
+            eprintln!("  l_1=+1: z={:.2}", z_256_l1p);
+        }
 
         // --- Lambda_512 (dim=64) ---
         let l512 = enumerate_lattice_by_predicate(is_in_lambda_512);
         let l512_l0_neg1: Vec<_> = l512.iter().copied().filter(|v| v[0] == -1).collect();
-        let l512_l1_neg1: Vec<_> = l512_l0_neg1.iter().copied().filter(|v| v[1] == -1).collect();
+        let l512_l1_neg1: Vec<_> = l512_l0_neg1
+            .iter()
+            .copied()
+            .filter(|v| v[1] == -1)
+            .collect();
         let l512_l1_zero: Vec<_> = l512_l0_neg1.iter().copied().filter(|v| v[1] == 0).collect();
         let l512_l1_pos1: Vec<_> = l512_l0_neg1.iter().copied().filter(|v| v[1] == 1).collect();
 
         eprintln!("\n=== Lambda_512 (dim=64) Paradox Test ===");
         eprintln!("Lambda_512 total: N={}", l512.len());
         eprintln!("l_0=-1 subset: N={}", l512_l0_neg1.len());
-        eprintln!("  l_1=-1: N={}, l_1=0: N={}, l_1=+1: N={}",
-            l512_l1_neg1.len(), l512_l1_zero.len(), l512_l1_pos1.len());
+        eprintln!(
+            "  l_1=-1: N={}, l_1=0: N={}, l_1=+1: N={}",
+            l512_l1_neg1.len(),
+            l512_l1_zero.len(),
+            l512_l1_pos1.len()
+        );
 
         let z_512_all = compute_z(&l512, "Lambda_512 all   ", 10);
         let z_512_l0 = compute_z(&l512_l0_neg1, "l_0=-1 all       ", 11);
@@ -1991,9 +2261,15 @@ mod tests {
 
         eprintln!("\nLambda_512 summary:");
         eprintln!("  Full: z={:.2}, l_0=-1: z={:.2}", z_512_all, z_512_l0);
-        if !z_512_l1n.is_nan() { eprintln!("  l_1=-1: z={:.2}", z_512_l1n); }
-        if !z_512_l1z.is_nan() { eprintln!("  l_1=0: z={:.2}", z_512_l1z); }
-        if !z_512_l1p.is_nan() { eprintln!("  l_1=+1: z={:.2}", z_512_l1p); }
+        if !z_512_l1n.is_nan() {
+            eprintln!("  l_1=-1: z={:.2}", z_512_l1n);
+        }
+        if !z_512_l1z.is_nan() {
+            eprintln!("  l_1=0: z={:.2}", z_512_l1z);
+        }
+        if !z_512_l1p.is_nan() {
+            eprintln!("  l_1=+1: z={:.2}", z_512_l1p);
+        }
     }
 
     // ================================================================
@@ -2006,12 +2282,12 @@ mod tests {
     /// comprehensive table across all 4 filtration levels.
     #[test]
     fn test_lambda1024_stratum_paradox_and_summary() {
-        use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
-            is_in_lambda_1024, is_in_lambda_2048,
-        };
         use super::super::baire::matrix_free_fraction;
         use super::super::null_models::{apply_null_column_major, NullModel};
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_2048, is_in_lambda_256,
+            is_in_lambda_512,
+        };
         use rand::SeedableRng;
         use rand_chacha::ChaCha8Rng;
 
@@ -2038,21 +2314,39 @@ mod tests {
             for _ in 0..n_permutations {
                 shuffled.copy_from_slice(&cols);
                 apply_null_column_major(
-                    &mut shuffled, n, d,
-                    NullModel::ColumnIndependent, &mut rng,
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut rng,
                 );
                 null_fracs.push(matrix_free_fraction(
-                    &shuffled, n, d, n_triples, seed + 61_000_000, 0.05,
+                    &shuffled,
+                    n,
+                    d,
+                    n_triples,
+                    seed + 61_000_000,
+                    0.05,
                 ));
             }
 
             let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
-            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
-                / n_permutations as f64).sqrt();
-            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+            let null_std = (null_fracs
+                .iter()
+                .map(|f| (f - null_mean).powi(2))
+                .sum::<f64>()
+                / n_permutations as f64)
+                .sqrt();
+            let z = if null_std > 1e-12 {
+                (obs - null_mean) / null_std
+            } else {
+                0.0
+            };
 
-            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
-                label, prefix, d, n, obs, null_mean, null_std, z);
+            eprintln!(
+                "  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z
+            );
             z
         };
 
@@ -2060,15 +2354,35 @@ mod tests {
         let l1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
         let l1024_l0_neg1: Vec<_> = l1024.iter().copied().filter(|v| v[0] == -1).collect();
         let l1024_l0_zero: Vec<_> = l1024.iter().copied().filter(|v| v[0] == 0).collect();
-        let l1024_l1_neg1: Vec<_> = l1024_l0_neg1.iter().copied().filter(|v| v[1] == -1).collect();
-        let l1024_l1_zero: Vec<_> = l1024_l0_neg1.iter().copied().filter(|v| v[1] == 0).collect();
-        let l1024_l1_pos1: Vec<_> = l1024_l0_neg1.iter().copied().filter(|v| v[1] == 1).collect();
+        let l1024_l1_neg1: Vec<_> = l1024_l0_neg1
+            .iter()
+            .copied()
+            .filter(|v| v[1] == -1)
+            .collect();
+        let l1024_l1_zero: Vec<_> = l1024_l0_neg1
+            .iter()
+            .copied()
+            .filter(|v| v[1] == 0)
+            .collect();
+        let l1024_l1_pos1: Vec<_> = l1024_l0_neg1
+            .iter()
+            .copied()
+            .filter(|v| v[1] == 1)
+            .collect();
 
         eprintln!("\n=== Lambda_1024 (dim=128) Stratum Analysis ===");
         eprintln!("Total: N={}", l1024.len());
-        eprintln!("l_0=-1: N={}, l_0=0: N={}", l1024_l0_neg1.len(), l1024_l0_zero.len());
-        eprintln!("  l_1=-1: N={}, l_1=0: N={}, l_1=+1: N={}",
-            l1024_l1_neg1.len(), l1024_l1_zero.len(), l1024_l1_pos1.len());
+        eprintln!(
+            "l_0=-1: N={}, l_0=0: N={}",
+            l1024_l0_neg1.len(),
+            l1024_l0_zero.len()
+        );
+        eprintln!(
+            "  l_1=-1: N={}, l_1=0: N={}, l_1=+1: N={}",
+            l1024_l1_neg1.len(),
+            l1024_l1_zero.len(),
+            l1024_l1_pos1.len()
+        );
 
         // Count total strata
         let n_l0_strata = if l1024_l0_neg1.is_empty() { 0 } else { 1 }
@@ -2077,8 +2391,10 @@ mod tests {
             + if l1024_l1_zero.is_empty() { 0 } else { 1 }
             + if l1024_l1_pos1.is_empty() { 0 } else { 1 };
         let total_strata = n_l0_strata * n_l1_strata;
-        eprintln!("l_0 strata: {}, l_1 strata: {}, total: {}",
-            n_l0_strata, n_l1_strata, total_strata);
+        eprintln!(
+            "l_0 strata: {}, l_1 strata: {}, total: {}",
+            n_l0_strata, n_l1_strata, total_strata
+        );
 
         let z_full = compute_z(&l1024, "Lambda_1024 all  ", 0);
         let _z_l0 = compute_z(&l1024_l0_neg1, "l_0=-1 all       ", 1);
@@ -2095,61 +2411,86 @@ mod tests {
         let z256 = compute_z(&l256, "Lambda_256       ", 10);
         let l256_l0n = l256.iter().filter(|v| v[0] == -1).count();
         let l256_l0z = l256.iter().filter(|v| v[0] == 0).count();
-        let l256_l1vals: Vec<_> = [-1i8, 0, 1].iter()
+        let l256_l1vals: Vec<_> = [-1i8, 0, 1]
+            .iter()
             .filter(|&&val| l256.iter().any(|v| v[0] == -1 && v[1] == val))
             .collect();
-        eprintln!("Lambda_256 | {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
+        eprintln!(
+            "Lambda_256 | {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
             l256.len(),
             if l256_l0n > 0 && l256_l0z > 0 { 2 } else { 1 },
             l256_l1vals.len(),
             (if l256_l0n > 0 && l256_l0z > 0 { 2 } else { 1 }) * l256_l1vals.len(),
-            z256);
+            z256
+        );
 
         // Lambda_512
         let l512 = enumerate_lattice_by_predicate(is_in_lambda_512);
         let z512 = compute_z(&l512, "Lambda_512       ", 11);
         let l512_l0n = l512.iter().filter(|v| v[0] == -1).count();
         let l512_l0z = l512.iter().filter(|v| v[0] == 0).count();
-        let l512_l1vals: Vec<_> = [-1i8, 0, 1].iter()
+        let l512_l1vals: Vec<_> = [-1i8, 0, 1]
+            .iter()
             .filter(|&&val| l512.iter().any(|v| v[0] == -1 && v[1] == val))
             .collect();
-        eprintln!("Lambda_512 | {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
+        eprintln!(
+            "Lambda_512 | {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
             l512.len(),
             if l512_l0n > 0 && l512_l0z > 0 { 2 } else { 1 },
             l512_l1vals.len(),
             (if l512_l0n > 0 && l512_l0z > 0 { 2 } else { 1 }) * l512_l1vals.len(),
-            z512);
+            z512
+        );
 
         // Lambda_1024
-        eprintln!("Lambda_1024| {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
-            l1024.len(), n_l0_strata, n_l1_strata, total_strata, z_full);
+        eprintln!(
+            "Lambda_1024| {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
+            l1024.len(),
+            n_l0_strata,
+            n_l1_strata,
+            total_strata,
+            z_full
+        );
 
         // Lambda_2048
         let l2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
         let z2048 = compute_z(&l2048, "Lambda_2048      ", 12);
         let l2048_l0n = l2048.iter().filter(|v| v[0] == -1).count();
         let l2048_l0z = l2048.iter().filter(|v| v[0] == 0).count();
-        let l2048_l1vals: Vec<_> = [-1i8, 0, 1].iter()
+        let l2048_l1vals: Vec<_> = [-1i8, 0, 1]
+            .iter()
             .filter(|&&val| l2048.iter().any(|v| v[0] == -1 && v[1] == val))
             .collect();
-        eprintln!("Lambda_2048| {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
+        eprintln!(
+            "Lambda_2048| {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
             l2048.len(),
             if l2048_l0n > 0 && l2048_l0z > 0 { 2 } else { 1 },
             l2048_l1vals.len(),
             (if l2048_l0n > 0 && l2048_l0z > 0 { 2 } else { 1 }) * l2048_l1vals.len(),
-            z2048);
+            z2048
+        );
 
         eprintln!("\nLambda_1024 l_1 strata z-scores:");
-        if !z_l1n.is_nan() { eprintln!("  l_1=-1: z={:.2} (N={})", z_l1n, l1024_l1_neg1.len()); }
-        if !z_l1z.is_nan() { eprintln!("  l_1=0:  z={:.2} (N={})", z_l1z, l1024_l1_zero.len()); }
-        if !z_l1p.is_nan() { eprintln!("  l_1=+1: z={:.2} (N={})", z_l1p, l1024_l1_pos1.len()); }
+        if !z_l1n.is_nan() {
+            eprintln!("  l_1=-1: z={:.2} (N={})", z_l1n, l1024_l1_neg1.len());
+        }
+        if !z_l1z.is_nan() {
+            eprintln!("  l_1=0:  z={:.2} (N={})", z_l1z, l1024_l1_zero.len());
+        }
+        if !z_l1p.is_nan() {
+            eprintln!("  l_1=+1: z={:.2} (N={})", z_l1p, l1024_l1_pos1.len());
+        }
 
         let strata_z = [z_l1n, z_l1z, z_l1p];
         let valid: Vec<f64> = strata_z.iter().copied().filter(|z| !z.is_nan()).collect();
         if !valid.is_empty() {
             let min_stratum = valid.iter().cloned().fold(f64::INFINITY, f64::min);
-            eprintln!("Paradox present: min stratum z ({:.2}) > combined z ({:.2}): {}",
-                min_stratum, z_full, min_stratum > z_full);
+            eprintln!(
+                "Paradox present: min stratum z ({:.2}) > combined z ({:.2}): {}",
+                min_stratum,
+                z_full,
+                min_stratum > z_full
+            );
         }
     }
 
@@ -2163,8 +2504,8 @@ mod tests {
     #[test]
     fn test_stratum_count_analytical_model() {
         use algebra_core::analysis::codebook::{
-            enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
-            is_in_lambda_1024, is_in_lambda_2048,
+            enumerate_lattice_by_predicate, is_in_lambda_1024, is_in_lambda_2048, is_in_lambda_256,
+            is_in_lambda_512,
         };
 
         // For each filtration level, compute actual stratum sizes and Herfindahl index
@@ -2205,8 +2546,15 @@ mod tests {
         eprintln!("------------|----|---------|---------|-----------|--------------");
 
         for &(name, z, h, k, ref sizes) in &data {
-            eprintln!("{:<12}| {:>2} | {:>7.2} | {:>7.4} | {:>9.4}  | {:?}",
-                name, k, z, h, 1.0 - h, sizes);
+            eprintln!(
+                "{:<12}| {:>2} | {:>7.2} | {:>7.4} | {:>9.4}  | {:?}",
+                name,
+                k,
+                z,
+                h,
+                1.0 - h,
+                sizes
+            );
         }
 
         // Linear model: z = a * H + b (where H = Herfindahl same-triple fraction)
@@ -2229,25 +2577,39 @@ mod tests {
             let z_pred = a * h + b;
             let err = z_obs - z_pred;
             total_sq_err += err * err;
-            eprintln!("  {}: H={:.4}, predicted={:.2}, observed={:.2}, error={:.2}",
-                name, h, z_pred, z_obs, err);
+            eprintln!(
+                "  {}: H={:.4}, predicted={:.2}, observed={:.2}, error={:.2}",
+                name, h, z_pred, z_obs, err
+            );
         }
         let rmse = (total_sq_err / n).sqrt();
 
         // Pearson correlation
         let mean_h = sum_h / n;
         let mean_z = sum_z / n;
-        let cov: f64 = data.iter().map(|d| (d.2 - mean_h) * (d.1 - mean_z)).sum::<f64>() / n;
+        let cov: f64 = data
+            .iter()
+            .map(|d| (d.2 - mean_h) * (d.1 - mean_z))
+            .sum::<f64>()
+            / n;
         let std_h = (data.iter().map(|d| (d.2 - mean_h).powi(2)).sum::<f64>() / n).sqrt();
         let std_z = (data.iter().map(|d| (d.1 - mean_z).powi(2)).sum::<f64>() / n).sqrt();
         let r = cov / (std_h * std_z);
 
-        eprintln!("\nRMSE: {:.2}, R^2: {:.4}, Pearson r: {:.4}", rmse, r * r, r);
+        eprintln!(
+            "\nRMSE: {:.2}, R^2: {:.4}, Pearson r: {:.4}",
+            rmse,
+            r * r,
+            r
+        );
 
         // Sign transition: z=0 when a*H + b = 0 => H = -b/a
         let h_transition = -b / a;
         eprintln!("Sign transition at H = {:.4}", h_transition);
-        eprintln!("This corresponds to ~{:.1} equal-sized strata", (1.0 / h_transition).cbrt());
+        eprintln!(
+            "This corresponds to ~{:.1} equal-sized strata",
+            (1.0 / h_transition).cbrt()
+        );
 
         // Key assertion: the Herfindahl model should have R^2 > 0.9
         assert!(r * r > 0.9, "Model R^2 = {:.4}, expected > 0.9", r * r);

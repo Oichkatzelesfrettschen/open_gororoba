@@ -11,7 +11,9 @@ ignored_count = 268
 archived_count = 5
 legacy_count = 200
 curated_count = 557
-canonicalized_count = 757
+canonicalized_count = 813
+generated_scroll_count = 30
+holding_queue_count = 31
 
 [[document]]
 path = ".playwright-mcp/sorce-tsi-24hr-l3.csv"
@@ -35,9 +37,9 @@ generated = false
 size_bytes = 282
 line_count = 42
 sha256 = "df0b1c02406ed3a6c2e7025c05a2ee8eb9429a0ee1be19534e2ead025bf3a40e"
-migration_action = "review_archive_policy"
-migration_priority = "low"
-rationale = "Archived CSV may be retained as historical snapshots."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "archive/8086_legacy/8086_and_8087_Precision_Capabilities.csv"
@@ -48,9 +50,9 @@ generated = false
 size_bytes = 989
 line_count = 12
 sha256 = "c6f76d5d71f87bfe4863b0a5c3c726ccdbc28d7acee6e7f6e208c0009b6d49b7"
-migration_action = "review_archive_policy"
-migration_priority = "low"
-rationale = "Archived CSV may be retained as historical snapshots."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "archive/8086_legacy/Comparative_CPU_Instruction_Cycle_Counts__8086_to_80486_.csv"
@@ -61,9 +63,9 @@ generated = false
 size_bytes = 879
 line_count = 42
 sha256 = "ef28a9d71a2adbfc4c7e31f22b18c83aaebcec9932b1b518dfe55bc4a1bb15d2"
-migration_action = "review_archive_policy"
-migration_priority = "low"
-rationale = "Archived CSV may be retained as historical snapshots."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "archive/8086_legacy/Comparative_FPU_Instruction_Cycle_Counts__8087_to_80487_.csv"
@@ -74,9 +76,9 @@ generated = false
 size_bytes = 738
 line_count = 24
 sha256 = "f99d538b9b5dfee6ba23d103d2e04269594243706c5cfc6f9ec013edc6add7ec"
-migration_action = "review_archive_policy"
-migration_priority = "low"
-rationale = "Archived CSV may be retained as historical snapshots."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "archive/8086_legacy/Updated_Comparative_CPU_Instruction_Cycle_Counts__8086_to_V30_.csv"
@@ -87,9 +89,9 @@ generated = false
 size_bytes = 1190
 line_count = 42
 sha256 = "f91048eb059da4e2f8734e058603d0b9014c328500b21c786f706a7947655bb0"
-migration_action = "review_archive_policy"
-migration_priority = "low"
-rationale = "Archived CSV may be retained as historical snapshots."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
@@ -7740,364 +7742,364 @@ path = "data/csv/64D_Pathion_Adjacency_Matrix.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 8374
 line_count = 66
 sha256 = "74446154412b6640c459ec8817aedc624a0302bd9a50dc47316de5f28957287d"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/bounce_cosmology_fit_results.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 365
 line_count = 4
 sha256 = "dadd2c00fa1fc5e48d46a43ce59473a7f0eb71974ecb627eaa211e2f8bc639c7"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c005_grassmannian_zd_analysis.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 1710
 line_count = 39
 sha256 = "0f44a5977ca90b306edf47bdedb6ad138ee606fee0480c47bb395ecc6200ed0c"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071_frb_ultrametric.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 1444
 line_count = 8
 sha256 = "24ac0521efa856a6d22d86fd86e79f5101e3e8d44d72f743f16da84eeea9259c"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071_frb_ultrametric_cat1.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 891
 line_count = 5
 sha256 = "772b818af4d6a8621d52a2c22455e59606df8a6b114307fc0fdc37748e6823ad"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071_frb_ultrametric_cat2.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 894
 line_count = 5
 sha256 = "ebbffd4610c945456562ace09d3e9d24f50f0dd4c03bddba5c1f36e88210d59b"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071b_dm_comoving_ultrametric.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 417
 line_count = 7
 sha256 = "443c752c01291978f6ba8320c078e0a7a4a3f337770fd34e1158c6e37a9e3057"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071c_baire_compact_ultrametric.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 382
 line_count = 6
 sha256 = "6543bdc4223424edea1e90d138113c48624e20c0628a8ce589874295b16e4762"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071d_frb_cascades_ultrametric.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 3092
 line_count = 42
 sha256 = "d37f6c8a077476abe0eb1f75e662802af4eb99d03ba3f02cd7cc549ce7f22858"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071e_gw_merger_ultrametric.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 468
 line_count = 10
 sha256 = "8ee626925f077a88c60dbc437f2eff95d9d51b901b46a2041360f8c8530b1922"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071e_gw_merger_ultrametric_v2.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 468
 line_count = 10
 sha256 = "671f480c51621e7b99955b38349c23c2b7768016ff4666abc09e5738b20aa6fd"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071f_cosmic_dendrogram.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 268
 line_count = 7
 sha256 = "61d2c836bfe8582ec4f65f1c4d49df8cf9d22509280e58ebac7235b4bde4abea"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071g_exploration.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 50346
 line_count = 474
 sha256 = "922b90995bac49cf2496c4e67c056a706c4033bde5b5ee58d53f10a3910aa6fe"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071g_exploration_gpu_10M_1000perm.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 50346
 line_count = 474
 sha256 = "922b90995bac49cf2496c4e67c056a706c4033bde5b5ee58d53f10a3910aa6fe"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071g_exploration_gpu_10M_200perm.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 50358
 line_count = 474
 sha256 = "009f842a5b801ef864955d5478c87ce9d10817184f2e6a7b8b8e55a8292a70c3"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c071g_multi_dataset_ultrametric.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 829
 line_count = 11
 sha256 = "115af9f63e0540a4ff25ef2460c1dc13fd64e277ee7dbfdacb2c01a3b683257a"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c074_associator_growth_empirical.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 920
 line_count = 23
 sha256 = "ba7ca89819bf4327b8dcceed709a5f4240f9da9f5d422d36eaf48e7f2ddc9867"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c087_associator_independence_summary.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 763
 line_count = 8
 sha256 = "fb16ecdb1e6c03158fff37defbbca95705efb2578ec2a243fcfccb3c8eb47953"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c090_so7_rotation_drift_summary.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 400
 line_count = 9
 sha256 = "e4f9a1a93562e9ba2b20a491dd033581d588e5084284a1724ec42d135a5008a5"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/1024d_lattice_mapping.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 140298
 line_count = 1026
 sha256 = "b90971a600b5febb5571800ffa96fb8ec865c9c13ef4064cdabedce98b732e30"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/2048d_lattice_mapping.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 299803
 line_count = 2050
 sha256 = "2665af21788ae81e134ade860d906be30cbe42210d57d9fbb2f752b0564db61b"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/256d_basis_properties.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 30268
 line_count = 127
 sha256 = "3f341b860713e79eda8606505666b32e7bb96a699e607e226e6cda54ce8f2e44"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/256d_lattice_mapping.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 30280
 line_count = 258
 sha256 = "80adc13d38f78ff6e95434a351ec8c41944bbd399f86b56125d0a238e1dd4530"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/256d_structural_analysis.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 25716
 line_count = 258
 sha256 = "b62c0dfcb5b06450d2950af04cd7475df1d84a5cc82af558c0e200a214e3e54f"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/512d_lattice_mapping.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 65402
 line_count = 514
 sha256 = "f40a9f688839ed07b621495bc910ddfe06d8280b6a73d25f376acd6652574f94"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/512d_structural_analysis.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 51203
 line_count = 514
 sha256 = "b21fea64e3e9bfdfe8162917d448aedee55191fd37a930d744138bde14721b97"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/64d_128d_operation_results.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 2890852
 line_count = 25157
 sha256 = "baa325569250ade8380757367fd8dfc654f57f5e039ba9b63e24b1d8b9de7dba"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/64d_chingon_adjacency.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 8374
 line_count = 66
 sha256 = "74446154412b6640c459ec8817aedc624a0302bd9a50dc47316de5f28957287d"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cd_motif_components_128d.csv"
@@ -8108,9 +8110,9 @@ generated = true
 size_bytes = 3881
 line_count = 65
 sha256 = "38f74b07400b7189aec39ec7dddf24c18aa16f9f94b06938f277e965f81154d9"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_components_16d.csv"
@@ -8121,9 +8123,9 @@ generated = true
 size_bytes = 432
 line_count = 9
 sha256 = "33e8b7d10318118c71bc5745360e0d9cb864bcf2c2a3d5b6e3c7922552c0382b"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_components_256d.csv"
@@ -8134,9 +8136,9 @@ generated = true
 size_bytes = 8057
 line_count = 129
 sha256 = "12973cb60e0063644c03f2ac602560f48d9a3840655f3d983f16b7a17c5586d3"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_components_32d.csv"
@@ -8147,9 +8149,9 @@ generated = true
 size_bytes = 914
 line_count = 17
 sha256 = "ac0d86c94842b2a4a855357404960e4ce4e9b371e79ad21487ab8f52b6232fb1"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_components_64d.csv"
@@ -8160,9 +8162,9 @@ generated = true
 size_bytes = 1573
 line_count = 33
 sha256 = "d88fd46827c0b2f9bd333bae2c082e904d3bd6bd535aa888cdee796b6e6a9f29"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_edges_128d.csv"
@@ -8173,9 +8175,9 @@ generated = true
 size_bytes = 1259407
 line_count = 65102
 sha256 = "b8226e8470f5921e4e85f8b564c94d3f647511ddb92240c8ee4975d93aaa88fc"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_edges_16d.csv"
@@ -8186,9 +8188,9 @@ generated = true
 size_bytes = 1279
 line_count = 86
 sha256 = "a2cfa6217b23de00c90e200acfb33c277c3360a0da0089a4b47d9ace4656fd29"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_edges_32d.csv"
@@ -8199,9 +8201,9 @@ generated = true
 size_bytes = 14851
 line_count = 926
 sha256 = "ae7bcbd6554a18c47eb15b4cf1a97ee3ad25f5e91240e7fafd0464e580d1ceb6"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_edges_64d.csv"
@@ -8212,9 +8214,9 @@ generated = true
 size_bytes = 135523
 line_count = 7982
 sha256 = "f99b0180fd80d48300af86fb85ad5386de224bdb7d5bc5817a5ee520056f8d9d"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_nodes_128d.csv"
@@ -8225,9 +8227,9 @@ generated = true
 size_bytes = 51362
 line_count = 3908
 sha256 = "f6a567d060aa9e7b044917803cd13969f3a11d89e6b6322abadb23412a6f972a"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_nodes_16d.csv"
@@ -8238,9 +8240,9 @@ generated = true
 size_bytes = 440
 line_count = 44
 sha256 = "e0ad86d3c20d3be288bc76c97465f4851506134cfb5e71dcdada41b9d8e3e0af"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_nodes_32d.csv"
@@ -8251,9 +8253,9 @@ generated = true
 size_bytes = 2280
 line_count = 212
 sha256 = "91ea422c681af6cac67e5c6e590ba7fd47eb769e4496259f07ff6d4b13e429ed"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_nodes_64d.csv"
@@ -8264,9 +8266,9 @@ generated = true
 size_bytes = 10616
 line_count = 932
 sha256 = "3656369046f772aa6b1786be70def9b20589c4a96054797dd2bf173ebf55c314"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_motif_summary_by_dim.csv"
@@ -8277,35 +8279,35 @@ generated = true
 size_bytes = 349
 line_count = 7
 sha256 = "51634b044c02df2cd6d92d8015d85b10f4aff865153c0b7533b4e5229a28a603"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/cd_zd_absorber_mapping.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 1408
 line_count = 22
 sha256 = "c9749fda49d5b1bcd66a8b70bc284a3d96161821ce49d54c05673b737d2f10a7"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cross_stack_locality_comparison.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 537
 line_count = 5
 sha256 = "24c8395a40f3890500b7ad0048012f17952b4671e2eef902c02845c5cd38949b"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/de_marrais_assessors.csv"
@@ -8316,9 +8318,9 @@ generated = true
 size_bytes = 213
 line_count = 44
 sha256 = "1aec9ed590f94b07fce72b7733b3986609715b1b84198e326ba654745582c24b"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/de_marrais_boxkite_edges.csv"
@@ -8329,9 +8331,9 @@ generated = true
 size_bytes = 3832
 line_count = 86
 sha256 = "09702fde47074061477fcc4f016cdaa83f8be3dd1b991dcb23cf41bfe7110dd9"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/de_marrais_boxkites.csv"
@@ -8342,9 +8344,9 @@ generated = true
 size_bytes = 406
 line_count = 44
 sha256 = "0698205613408a2d1ddf4c270ee50a106d47054a07c72e9f01dcaebf628ecfa9"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/de_marrais_strut_table.csv"
@@ -8355,9 +8357,9 @@ generated = true
 size_bytes = 335
 line_count = 9
 sha256 = "cc9d06b756802af667466309ec2926b121d3cc98370f40308afca570755af870"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/dimensional_geometry_-4_to_16.csv"
@@ -8368,9 +8370,9 @@ generated = true
 size_bytes = 301644
 line_count = 4003
 sha256 = "c439a73849d5313f0021ffcc7ee6760ec21fe08b849ec4dfa6cf151fc70d8cef"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/dimensional_geometry_0_to_32.csv"
@@ -8381,165 +8383,165 @@ generated = true
 size_bytes = 300109
 line_count = 4003
 sha256 = "a0dba8b3274848599bc79137b6e3af8d00833790e36ba18b293632807a9d6ff3"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/et_billiard_phase_structure.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 1135
 line_count = 9
 sha256 = "22f1e97cda02ab487ffbf33240ad93eb51d8d6bd3b5ac744807b81b8fe93b8f7"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/fractal_cosmology_comparison.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 134471
 line_count = 1002
 sha256 = "ccbe5d150cf7e3f389da4ecd351ea57217fb6f710dd0313695a385ccd9b794f9"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/fractional_schrodinger_benchmark_errors.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 708
 line_count = 11
 sha256 = "317e5fee2914b0189a756dc54432fa1d566416b355c629b3bb5e1a04ed46554e"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/genesis_gravastar_bridge.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 11127
 line_count = 92
 sha256 = "f8e03344e517845d01dd56f818944be7a1d4459ff8119326a3e1b9ac8fc9b8bc"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/genesis_soliton_extraction.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 2731
 line_count = 32
 sha256 = "3a0da7d8b64cec8aa2073f9917bb03498590dc4c2dc1f0f9839a2ede7d734a52"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/gravastar_anisotropic_stability.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 3919
 line_count = 32
 sha256 = "62701fc820f6ef5b05303a47266dd5877adb77c2296326c0ea811c6ab9c51cfa"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/gravastar_ligo_mass_sweep.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 4828
 line_count = 57
 sha256 = "1bdab79813efcda1b428c8aef6f1be6b4b2842198296874bde027a781a0a1831"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/gravastar_polytropic_sweep.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 47210
 line_count = 352
 sha256 = "f517f14d5b03d093e71701977ecfcc914e34d5ae2ba0d89939970239d3e4c800"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/gravastar_radial_stability.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 9156
 line_count = 57
 sha256 = "c6e7f2c7effdd22ee2993e5f7ac77486c59c721ac4a20893cc87b82349cff916"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/grin_benchmark_convergence.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 218
 line_count = 6
 sha256 = "54da584d242d6d92cad27b6bc7f5e2390a6920a55f3ba2a7298c7dfb4778048a"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/gwtc3_mass_clumping_dip.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 236
 line_count = 5
 sha256 = "11829c7d1c1ec042b61fdd6db858a0e1985ad546ea45169e78593dd3b1a47585"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/lbm_poiseuille_profile.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 1604
 line_count = 43
 sha256 = "8259c3576ae09e4e181285840f26d8147ace5f63779a2ac4b384945f4075decf"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/legacy/1024D_Basis_to_Extended_Lattice_Mapping 2.csv"
@@ -11150,9 +11152,9 @@ generated = true
 size_bytes = 6170
 line_count = 345
 sha256 = "e8f8366e47867a9b75b9b4581bd675e1b7180d022b8d164d9c49c87e701bb8e6"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/materials_embedding_benchmarks.csv"
@@ -11163,9 +11165,9 @@ generated = true
 size_bytes = 227
 line_count = 6
 sha256 = "f264b06fefee10fed7d56ad439e9ee8fcd41e7f604b8b1a008b9a3ed0d2da44a"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/materials_jarvis_subset.csv"
@@ -11176,35 +11178,35 @@ generated = true
 size_bytes = 16000
 line_count = 202
 sha256 = "04c5f12d7d41eac081bf2a5dd7ddf7469b6605c5a721520799e50416443a8e37"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/mera_entropy_scaling.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 135
 line_count = 7
 sha256 = "c0f8cf7e2e20d563ec730011105e6481bd7318aaecd1959d196c4c9fd9741ea4"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/mera_verification_summary.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 215
 line_count = 8
 sha256 = "26dfc1f1e3d69e101e55ba0b5ee20e2c1702d83d2877a1ac579e322259126e3d"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/modular_chaos_N256.csv"
@@ -11215,9 +11217,9 @@ generated = true
 size_bytes = 1802
 line_count = 102
 sha256 = "927d2a068c78416717f4d293455f297e6883c016cf045ee9452fd5344941cda2"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/modular_chaos_N257.csv"
@@ -11228,87 +11230,87 @@ generated = true
 size_bytes = 3616
 line_count = 102
 sha256 = "c4c1d9d37d3a8516cad45ada09f08681923ecd01e45d3d1672c1edaf67d23081"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/multiplication_table_16D.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 1075
 line_count = 18
 sha256 = "b00edcfb9dccd877012099b968402924cf0e2f9d1c630a3a70cead3607b711d7"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/multiplication_table_8D.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 259
 line_count = 10
 sha256 = "eb02889fe7f1345c7399215aa53b9fe050beff53dd2e0e3a9c01f0f94e783da2"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/neg_dim_convergence_metrics.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 1803
 line_count = 42
 sha256 = "1ce9d32411cb621beb45a19ba62acd6f7121f02e24d1f8a8eba375fce2bd1ef1"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/neg_dim_wavefunction_alpha_-1.5.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 274648
 line_count = 258
 sha256 = "199ab98d2687c4459a869268c5e0561703f7456f3aaba4dc6d53c02ea9bfa1f1"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/nonlocal_slopes.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 371
 line_count = 14
 sha256 = "24ea2cdf3bd78958a03d5fa9caf2ceaf83b5022156c0d653f32ec15b612a5e14"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/pathion_zd_edges.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 212916
 line_count = 3656
 sha256 = "9e0b89de8d2b6c8fd9fee4c9834c0a8f634504ad35e23bbe637e721f2e62c90b"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/reggiani_annihilator_nullity_distribution.csv"
@@ -11319,9 +11321,9 @@ generated = true
 size_bytes = 40
 line_count = 3
 sha256 = "665c14bc58affeebb86e538b274737cde2f29c70ea503896d6e6653df14d30a3"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/reggiani_standard_zero_divisor_pairs.csv"
@@ -11332,9 +11334,9 @@ generated = true
 size_bytes = 4984
 line_count = 338
 sha256 = "41da21824eb1531e84edc1c1cc78191d06f5b05ca9042b4fbf6c27881f74c727"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/reggiani_standard_zero_divisors.csv"
@@ -11345,22 +11347,22 @@ generated = true
 size_bytes = 1371
 line_count = 86
 sha256 = "47dc94ad441b77327e1b40a29312abd6fef8f6aaf1b5956ceca7a178b76af345"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/sedenion_box_kites_clustered.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 522
 line_count = 44
 sha256 = "682d5d45275d0cd803b03af74d52ea1bde21c88968a34e8ee7e501b8e6c9a20f"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/sedenion_field_metrics_3D.csv"
@@ -11371,74 +11373,74 @@ generated = true
 size_bytes = 1297
 line_count = 52
 sha256 = "90d65ffe98a811eed45b5f260381609fde163e3853e19804dcad2a25355ed64f"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/csv/sedenion_mass_spectrum.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 1053
 line_count = 52
 sha256 = "fa013de9b8736a99b615624f0afa3add52db60f712a3934a28dd0e46e1ef16f3"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/sedenion_nilpotent_candidates.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 23836
 line_count = 1541
 sha256 = "71814fe5374d1f6fe89fe4eead6d7ab9d262b3baed049eb245c3e9de816694e7"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/sedenion_zd_edges.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 10966
 line_count = 362
 sha256 = "749c4fff6d41296f3600572777d137bf5c5d3fbe0a6a105e0aae0e833bbe57aa"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/sky_limit_set_comparison.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 1273
 line_count = 11
 sha256 = "bc247f26aec4f8d8ae0fc4b9b61c204ddd853fc2d71aaed6e345737fea35930f"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/spectral_exponent_comparisons.csv"
 git_status = "tracked"
 zone = "project_csv"
 archived = false
-generated = true
+generated = false
 size_bytes = 227
 line_count = 6
 sha256 = "876e30ca004a3ef40fa2f55f4ac3563b1760498a5f63b69f176f02515464a8e6"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/spectral_flow.csv"
@@ -11449,9 +11451,9 @@ generated = true
 size_bytes = 4939
 line_count = 32
 sha256 = "3771a611244cc9a0b7bb168e41a25e1f8b4447274d0c6e2d99923915752eea7e"
-migration_action = "evaluate_for_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV may be generated artifacts or transition candidates."
+migration_action = "canonicalized_to_toml_generated_artifact"
+migration_priority = "complete"
+rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
 
 [[document]]
 path = "data/external/DESI_QSO.csv"
@@ -11462,9 +11464,9 @@ generated = false
 size_bytes = 153
 line_count = 8
 sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/GWTC-3.csv"
@@ -11475,9 +11477,9 @@ generated = false
 size_bytes = 232
 line_count = 8
 sha256 = "b6ee03773b806a3eb25c26f9fd5f2487c382cdcaf5af4bdc9f0a9ef82664ddb3"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/GWTC-3_GWpy_Official.csv"
@@ -11488,9 +11490,9 @@ generated = false
 size_bytes = 997
 line_count = 37
 sha256 = "bb5ab708f5d9ef68639dd5a7a09f05e5191af8fc04211c40b55c0715ef727080"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/GWTC-3_confident.csv"
@@ -11501,9 +11503,9 @@ generated = false
 size_bytes = 11323
 line_count = 37
 sha256 = "96b5292325bef325a3df686f21e3103560f625933f63aec684ba8c28ff7bb0eb"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/GWTC-3_synthetic.csv"
@@ -11514,9 +11516,9 @@ generated = false
 size_bytes = 7479
 line_count = 102
 sha256 = "8ffe88c10b50e491792f76b6eba45f19dfbed0497dd69b0568afb7bbd096ed94"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/HST_UDF_Metadata.csv"
@@ -11527,9 +11529,9 @@ generated = false
 size_bytes = 365
 line_count = 2
 sha256 = "e0aca08526d149b25ce2c0ddfd4e914f6b0c0d9f7c0cf183f015173bd9bfddac"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/SDSS_DR16Q.csv"
@@ -11540,9 +11542,9 @@ generated = false
 size_bytes = 196
 line_count = 8
 sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/SDSS_Quasars_Astroquery.csv"
@@ -11553,9 +11555,9 @@ generated = false
 size_bytes = 24975
 line_count = 502
 sha256 = "d18266f5dd06970c9678c1639e0771d1ba90c8a98e05dea1ee7f4b989f881428"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/TESS_Metadata.csv"
@@ -11566,9 +11568,9 @@ generated = false
 size_bytes = 5483734
 line_count = 11457
 sha256 = "392072233e722cc1c0b31c2cbfedfbc8c77480514f8a42e28b4a15173685da79"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/atnf_pulsars.csv"
@@ -11579,9 +11581,9 @@ generated = false
 size_bytes = 253509
 line_count = 4357
 sha256 = "3a5987bca6ecc3c22dcaa00060acd6c8f483ca6c98820e653f08b5af022b324b"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/chime_frb_cat1.csv"
@@ -11592,9 +11594,9 @@ generated = false
 size_bytes = 221007
 line_count = 602
 sha256 = "affd86573fee8fe94be9d0d85e73cc787fa260b2497ccec5d9d93e1d26610ed5"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/chime_frb_cat2.csv"
@@ -11605,9 +11607,9 @@ generated = false
 size_bytes = 4057396
 line_count = 5047
 sha256 = "5108ada779d279a2547d9f9e73ae25bfdd40d8496d6ba7255ec29c6629057a48"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv"
@@ -11618,9 +11620,9 @@ generated = false
 size_bytes = 3913
 line_count = 48
 sha256 = "80da16e314d7f0ec205412173bd96950c6ebb3685bbabb57753eaf4ef87549b8"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/cms_oo_raa/table1_pp_spectra.csv"
@@ -11631,9 +11633,9 @@ generated = false
 size_bytes = 4083
 line_count = 58
 sha256 = "339b4bed5db62555210863da82b7ff3bd1180a5aca1e508eb03e1ce86a72ac14"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/cms_oo_raa/table2_oo_spectra.csv"
@@ -11644,9 +11646,9 @@ generated = false
 size_bytes = 3938
 line_count = 58
 sha256 = "3f5cc4c5dbaabf85c2b9720b5ced8c080e1763ef92fc33b88097be018bedef1a"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/cms_oo_raa/table3_oo_raa.csv"
@@ -11657,9 +11659,9 @@ generated = false
 size_bytes = 3477
 line_count = 58
 sha256 = "136f109ea7a42b9983004bb9428fc7874b02ecf66f53d1ce43ea2ff8776e2e01"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/fermi_gbm_grbs.csv"
@@ -11670,9 +11672,9 @@ generated = false
 size_bytes = 1314567
 line_count = 4205
 sha256 = "e8d1646caac69621ef4a79cdb36aabaabbadae0c12648b721e20e51926776d59"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/gaia_dr3_nearby.csv"
@@ -11683,9 +11685,9 @@ generated = false
 size_bytes = 8260573
 line_count = 50002
 sha256 = "80a19453135d44e616c068c635c210bc9de5324dfe2d269d43f9bef5e410b1a7"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/gwosc_all_events.csv"
@@ -11696,9 +11698,9 @@ generated = false
 size_bytes = 64080
 line_count = 221
 sha256 = "61deadfe0008420ce830b71a3995c45e1ba2cf54423a48fcf1366524861de19f"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/jpl_planets_2020_2030.csv"
@@ -11709,9 +11711,9 @@ generated = false
 size_bytes = 20521
 line_count = 855
 sha256 = "707537ad2babc9741c20526f10e098d9bad1d274f15b2f7ad686ea1e5c0d3d97"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/mcgill_magnetars.csv"
@@ -11722,9 +11724,9 @@ generated = false
 size_bytes = 7296
 line_count = 33
 sha256 = "cb89a085a4e49b6a5130f1fda59d4d616b6e8384fa2b2d9de594b69a41fd60f6"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/nanograv_15yr_freespectrum.csv"
@@ -11735,9 +11737,9 @@ generated = false
 size_bytes = 886
 line_count = 32
 sha256 = "a730304cdb50058d95be822a1ac87d0bdff5d396b69bc4eb2d9612de74b4304c"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/sdss_dr18_quasars.csv"
@@ -11748,9 +11750,9 @@ generated = false
 size_bytes = 4921394
 line_count = 50003
 sha256 = "77af32d7e312b820a20cadba45bfa76fce398df626a84473ed74a7fc534911ab"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/sorce_tsi_daily.csv"
@@ -11761,9 +11763,9 @@ generated = false
 size_bytes = 933249
 line_count = 6345
 sha256 = "2eb0f129d82a9597d89db795407780fe2c763e012c6250776d2ba768c8c4e9e6"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/swarm_magnetic_sample.csv"
@@ -11774,9 +11776,9 @@ generated = false
 size_bytes = 219390
 line_count = 1876
 sha256 = "c105769b39327436413ac13a4221dc3e26207cd2e4fe491392aaecbc96495695"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "data/external/tsis1_tsi_daily.csv"
@@ -11787,9 +11789,9 @@ generated = false
 size_bytes = 305975
 line_count = 2948
 sha256 = "28bcd17fa35962af1dec2e2a64fcdd7be65158deba186bc358c4b8c79905e32b"
-migration_action = "track_provenance_only"
-migration_priority = "medium"
-rationale = "External CSV remains provenance-managed input unless explicitly curated."
+migration_action = "queued_for_scroll_holding"
+migration_priority = "high"
+rationale = "External CSV is queued in holding registry for TOML scroll conversion."
 
 [[document]]
 path = "docs/claims/CLAIMS_DOMAIN_MAP.csv"

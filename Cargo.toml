@@ -10,6 +10,7 @@ members = [
     "crates/cosmology_core",
     "crates/data_core",
     "crates/docpipe",
+    "crates/scrolls_core",
     "crates/materials_core",
     "crates/optics_core",
     "crates/quantum_core",

@@ -2699,10 +2699,7 @@ mod tests {
             let expected_isolated = expected_boundary;
             let expected_components = expected_k2 + expected_isolated;
 
-            assert_eq!(
-                n, expected_total,
-                "dim={}: cross-pair count mismatch", dim
-            );
+            assert_eq!(n, expected_total, "dim={}: cross-pair count mismatch", dim);
 
             // Build XOR-partner graph
             let pair_index: HashMap<(usize, usize), usize> =
@@ -2719,11 +2716,7 @@ mod tests {
                     actual_boundary += 1;
                     continue;
                 }
-                if partner_lo >= 1
-                    && partner_lo < half
-                    && partner_hi >= half
-                    && partner_hi < dim
-                {
+                if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim {
                     if let Some(&j) = pair_index.get(&(partner_lo, partner_hi)) {
                         if i < j {
                             graph.add_edge(nodes[i], nodes[j], ());
@@ -2734,18 +2727,22 @@ mod tests {
 
             assert_eq!(
                 actual_boundary, expected_boundary,
-                "dim={}: boundary count mismatch", dim
+                "dim={}: boundary count mismatch",
+                dim
             );
             assert_eq!(
-                graph.edge_count(), expected_edges,
-                "dim={}: partner edge count mismatch", dim
+                graph.edge_count(),
+                expected_edges,
+                "dim={}: partner edge count mismatch",
+                dim
             );
 
             // Lightweight component count (O(n+e), not O(n^3))
             let n_comps = connected_components(&graph);
             assert_eq!(
                 n_comps, expected_components,
-                "dim={}: component count mismatch", dim
+                "dim={}: component count mismatch",
+                dim
             );
 
             // Verify every edge connects two nodes of degree 1 (K_2 check)
@@ -2759,18 +2756,23 @@ mod tests {
                     1 => n_deg1 += 1,
                     d => panic!(
                         "dim={}: node {} has degree {} (expected 0 or 1)",
-                        dim, ni.index(), d
+                        dim,
+                        ni.index(),
+                        d
                     ),
                 }
             }
 
             assert_eq!(
                 n_deg0, expected_isolated,
-                "dim={}: isolated count mismatch", dim
+                "dim={}: isolated count mismatch",
+                dim
             );
             assert_eq!(
-                n_deg1, 2 * expected_k2,
-                "dim={}: paired node count mismatch", dim
+                n_deg1,
+                2 * expected_k2,
+                "dim={}: paired node count mismatch",
+                dim
             );
         }
     }

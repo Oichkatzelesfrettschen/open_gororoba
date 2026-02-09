@@ -19,6 +19,9 @@
 .PHONY: registry-verify-markdown-inventory
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
+.PHONY: registry-project-csv-split registry-csv-holdings
+.PHONY: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated registry-scroll-archive-csv-holding
+.PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-wave3
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
@@ -203,10 +206,66 @@ registry-verify-curated-csv: registry-migrate-curated-csv
 		--source-glob 'curated/**/*.csv' \
 		--corpus-label 'curated CSV'
 
+registry-project-csv-split:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_project_csv_split_policy_registry.py
+
+registry-csv-holdings:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_holding_registries.py
+
+registry-scroll-project-csv-canonical: registry-project-csv-split
+	cargo run --release --bin scrollify-csv -- \
+		--source-manifest registry/manifests/project_csv_canonical_manifest.txt \
+		--out-index registry/project_csv_canonical_datasets.toml \
+		--out-dir registry/data/project_csv/canonical \
+		--index-table project_csv_canonical_datasets \
+		--dataset-prefix PC \
+		--corpus-label 'project CSV canonical dataset' \
+		--dataset-class canonical-dataset
+
+registry-scroll-project-csv-generated: registry-project-csv-split
+	cargo run --release --bin scrollify-csv -- \
+		--source-manifest registry/manifests/project_csv_generated_manifest.txt \
+		--out-index registry/project_csv_generated_artifacts.toml \
+		--out-dir registry/data/project_csv/generated \
+		--index-table project_csv_generated_artifacts \
+		--dataset-prefix PG \
+		--corpus-label 'project CSV generated artifact' \
+		--dataset-class generated-artifact
+
+registry-scroll-archive-csv-holding: registry-csv-holdings
+	cargo run --release --bin scrollify-csv -- \
+		--source-manifest registry/manifests/archive_csv_holding_manifest.txt \
+		--out-index registry/archive_csv_holding_datasets.toml \
+		--out-dir registry/data/archive_csv_holding \
+		--index-table archive_csv_holding_datasets \
+		--dataset-prefix AH \
+		--corpus-label 'archive CSV holding queue' \
+		--dataset-class holding-archive
+
+registry-verify-project-csv-split: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated
+	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+		--index-path registry/project_csv_canonical_datasets.toml \
+		--source-manifest registry/manifests/project_csv_canonical_manifest.txt \
+		--corpus-label 'project CSV canonical dataset'
+	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+		--index-path registry/project_csv_generated_artifacts.toml \
+		--source-manifest registry/manifests/project_csv_generated_manifest.txt \
+		--corpus-label 'project CSV generated artifact'
+	PYTHONWARNINGS=error python3 src/verification/verify_project_csv_split_policy.py
+
+registry-verify-csv-holdings: registry-csv-holdings registry-scroll-archive-csv-holding
+	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+		--index-path registry/archive_csv_holding_datasets.toml \
+		--source-manifest registry/manifests/archive_csv_holding_manifest.txt \
+		--corpus-label 'archive CSV holding queue'
+	PYTHONWARNINGS=error python3 src/verification/verify_csv_holding_registries.py
+
+registry-wave3: registry-project-csv-split registry-csv-holdings registry-verify-project-csv-split registry-verify-csv-holdings
+
 registry-csv-scope: registry-csv-inventory
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_migration_scope_registry.py
 
-registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope
+registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-wave3 registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope
 	@echo "OK: CSV data registry lane complete."
 
 registry-export-markdown: registry-refresh

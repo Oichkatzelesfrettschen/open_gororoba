@@ -34,9 +34,10 @@
 //! - Greimas (1966): Structural Semantics (semiotic square)
 
 use crate::analysis::boxkites::{
-    all_diagonal_zero_products, automorpheme_assessors, canonical_strut_table, classify_face_pattern,
-    cross_assessors, edge_sign_type, find_box_kites, motif_components_for_cross_assessors, Assessor,
-    BoxKite, CrossPair, EdgeSignType, FaceSignPattern, O_TRIPS,
+    all_diagonal_zero_products, automorpheme_assessors, canonical_strut_table,
+    classify_face_pattern, cross_assessors, edge_sign_type, find_box_kites,
+    motif_components_for_cross_assessors, Assessor, BoxKite, CrossPair, EdgeSignType,
+    FaceSignPattern, O_TRIPS,
 };
 use crate::construction::cayley_dickson::cd_basis_mul_sign;
 use std::collections::{HashMap, HashSet};
@@ -4544,8 +4545,7 @@ pub fn vent_pairing_analysis() -> Vec<VentPairingAnalysis> {
             let twist = twist_table.iter().find(|t| {
                 t.source_strut == s
                     && ((t.tray_rack_label[0] == perp[0] && t.tray_rack_label[1] == perp[1])
-                        || (t.tray_rack_label[0] == perp[1]
-                            && t.tray_rack_label[1] == perp[0]))
+                        || (t.tray_rack_label[0] == perp[1] && t.tray_rack_label[1] == perp[0]))
             });
 
             let current_targets = twist.map_or((0, 0), |t| (t.h_star_target, t.v_star_target));
@@ -8852,7 +8852,10 @@ mod tests {
             );
         }
         // If XOR doesn't hold, look for alternate Fano-plane quantities
-        let xor_fails: Vec<_> = comparisons.iter().filter(|c| !c.xor_matches_source).collect();
+        let xor_fails: Vec<_> = comparisons
+            .iter()
+            .filter(|c| !c.xor_matches_source)
+            .collect();
         if !xor_fails.is_empty() {
             eprintln!("\n=== XOR Failures Analysis ===");
             for c in &xor_fails {
@@ -8861,8 +8864,15 @@ mod tests {
                 // Check all possible Fano-plane relationships
                 eprintln!(
                     "S={} TrayRack=[{},{}]: h={}  v={}  h^v={}  h^s={}  v^s={}  h^v^s={}",
-                    s, c.tray_rack_label[0], c.tray_rack_label[1],
-                    h, v, h ^ v, h ^ s, v ^ s, h ^ v ^ s
+                    s,
+                    c.tray_rack_label[0],
+                    c.tray_rack_label[1],
+                    h,
+                    v,
+                    h ^ v,
+                    h ^ s,
+                    v ^ s,
+                    h ^ v ^ s
                 );
             }
         }
@@ -8912,7 +8922,10 @@ mod tests {
             }
         }
 
-        assert!(all_consistent, "All pairings should have consistent XOR values");
+        assert!(
+            all_consistent,
+            "All pairings should have consistent XOR values"
+        );
         eprintln!(
             "Current twist pairing distribution: S={}, perp0={}, perp1={}",
             role_counts[0], role_counts[1], role_counts[2]
@@ -8924,14 +8937,22 @@ mod tests {
         // 7 BKs x 8 faces = 56 total face lanyards.
         let census = cross_bk_lanyard_census();
         assert_eq!(census.n_bks, 7);
-        assert_eq!(census.total_faces, 56, "Expected 56 faces, got {}", census.total_faces);
+        assert_eq!(
+            census.total_faces, 56,
+            "Expected 56 faces, got {}",
+            census.total_faces
+        );
     }
 
     #[test]
     fn test_cross_bk_lanyard_no_blues() {
         // No AllSame (Blues) faces should exist in sedenions.
         let census = cross_bk_lanyard_census();
-        let blues = census.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
+        let blues = census
+            .pattern_counts
+            .get(&FaceSignPattern::AllSame)
+            .copied()
+            .unwrap_or(0);
         assert_eq!(blues, 0, "Expected 0 Blues faces in sedenions");
     }
 
@@ -8939,8 +8960,16 @@ mod tests {
     fn test_cross_bk_lanyard_zigzag_count() {
         // AllOpposite (TripleZigzag): 7 BKs x 2 zigzag faces = 14.
         let census = cross_bk_lanyard_census();
-        let zigzag = census.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
-        assert_eq!(zigzag, 14, "Expected 14 AllOpposite faces (7x2), got {}", zigzag);
+        let zigzag = census
+            .pattern_counts
+            .get(&FaceSignPattern::AllOpposite)
+            .copied()
+            .unwrap_or(0);
+        assert_eq!(
+            zigzag, 14,
+            "Expected 14 AllOpposite faces (7x2), got {}",
+            zigzag
+        );
     }
 
     #[test]
