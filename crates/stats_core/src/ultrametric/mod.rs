@@ -83,7 +83,8 @@ pub use null_models::{
 pub use adaptive::{AdaptiveConfig, AdaptiveResult, StopReason, adaptive_permutation_test};
 pub use codebook_null::{
     CodebookNullResult, extract_zd_basis_pairs, dictionary_to_column_major,
-    selective_mean_squared_distance, run_codebook_null_test, codebook_null_test_from_dim,
+    selective_mean_squared_distance, run_codebook_null_test,
+    run_codebook_null_test_with_strategy, codebook_null_test_from_dim,
 };
 pub use baire_codebook::{
     CodebookBaireResult, shared_prefix_length, lattice_baire_distance,
