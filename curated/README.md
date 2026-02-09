@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/entrypoint_docs.toml -->
+
 # Curated Artifacts (Legacy / Mixed Provenance)
 
 `curated/` is a legacy artifact store that predates the repo's current reproducibility guardrails.
@@ -23,4 +26,3 @@ Treat anything in `curated/` as **non-authoritative** unless it is:
 - `curated/03_benchmarks_numeric/`: numeric benchmark tables (largely not yet reproducible).
 - `curated/04_observational_datasets/`: "observational" CSVs (requires cross-checking against first-party sources).
 - `curated/05_summaries_indexes/`: summary/index artifacts.
-

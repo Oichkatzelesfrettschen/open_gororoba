@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/entrypoint_docs.toml -->
+
 # Claude Overlay for open_gororoba
 
 This file is a Claude-specific overlay.

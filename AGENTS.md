@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/entrypoint_docs.toml -->
+
 # Agent and Contributor Operating Manual
 
 This is the canonical policy and operating contract for all assistants and
@@ -47,7 +50,7 @@ Research claims are hypotheses unless backed by:
 ### 3.3 TOML-first documentation
 - Authoritative state lives in `registry/*.toml`.
 - Markdown in `docs/`, `reports/`, and `data/artifacts/` is generated or mirror
-  output unless explicitly listed as tracked manual exception.
+  output and is never the authoritative source.
 - Do not treat mirrors as authoritative.
 
 ### 3.4 Source-first claims discipline

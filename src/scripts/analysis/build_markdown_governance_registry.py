@@ -52,7 +52,7 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
         if isinstance(obj, dict):
             for key, value in obj.items():
                 lk = key.lower()
-                if lk in {"source_markdown", "markdown"}:
+                if lk in {"source_markdown", "markdown", "path"}:
                     if isinstance(value, str):
                         add(value, src)
                     elif isinstance(value, list):
@@ -87,6 +87,15 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
 
 def _generated_mirror_patterns() -> list[str]:
     return [
+        "AGENTS.md",
+        "CLAUDE.md",
+        "GEMINI.md",
+        "README.md",
+        "curated/README.md",
+        "curated/01_theory_frameworks/README_COQ.md",
+        "data/csv/README.md",
+        "data/artifacts/README.md",
+        "NAVIGATOR.md",
         "docs/generated/*.md",
         "docs/CLAIMS_EVIDENCE_MATRIX.md",
         "docs/BIBLIOGRAPHY.md",

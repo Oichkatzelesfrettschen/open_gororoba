@@ -242,6 +242,45 @@ strategy = "toml_primary_generated_mirror"
 status = "complete"
 notes = "Selected high-information artifact narratives are TOML-first; README remains markdown for repository conventions."
 
+[[domain]]
+id = "KM-019"
+name = "entrypoint_docs"
+source_markdown = [
+  "AGENTS.md",
+  "CLAUDE.md",
+  "GEMINI.md",
+  "README.md",
+  "curated/README.md",
+  "curated/01_theory_frameworks/README_COQ.md",
+  "data/csv/README.md",
+  "data/artifacts/README.md",
+]
+authoritative_toml = ["registry/entrypoint_docs.toml"]
+generated_mirror = [
+  "AGENTS.md",
+  "CLAUDE.md",
+  "GEMINI.md",
+  "README.md",
+  "curated/README.md",
+  "curated/01_theory_frameworks/README_COQ.md",
+  "data/csv/README.md",
+  "data/artifacts/README.md",
+  "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md",
+]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "Tracked entrypoint markdown files are now generated from registry/entrypoint_docs.toml."
+
+[[domain]]
+id = "KM-020"
+name = "navigator"
+source_markdown = ["NAVIGATOR.md"]
+authoritative_toml = ["registry/navigator.toml"]
+generated_mirror = ["NAVIGATOR.md", "docs/generated/NAVIGATOR_REGISTRY_MIRROR.md"]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "Navigator is TOML-first and rendered as publish output markdown."
+
 [[phase]]
 id = "KMP-P1"
 name = "inventory_and_capture"
@@ -320,6 +359,18 @@ deliverables = [
   "docs/theory/INDEX.md",
   "docs/engineering/*.md",
   "docs/engineering/INDEX.md",
+]
+
+[[phase]]
+id = "KMP-P10"
+name = "global_markdown_inventory_and_entrypoint_conversion"
+status = "complete"
+deliverables = [
+  "src/scripts/analysis/build_markdown_inventory_registry.py",
+  "registry/markdown_inventory.toml",
+  "src/scripts/analysis/normalize_entrypoint_docs_registry.py",
+  "registry/entrypoint_docs.toml",
+  "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md",
 ]
 
 [[phase]]

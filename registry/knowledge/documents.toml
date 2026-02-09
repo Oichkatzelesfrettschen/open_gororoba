@@ -4,8 +4,8 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 7
-skipped_generated_count = 1
+raw_capture_count = 0
+skipped_generated_count = 8
 authoritative = false
 normalization_required = true
 
@@ -13,84 +13,70 @@ normalization_required = true
 id = "DOC-0001"
 source_path = "AGENTS.md"
 title = "Agent and Contributor Operating Manual"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
+kind = "markdown_mirror"
+raw_captured = false
 authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0001.toml"
+skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
 id = "DOC-0002"
 source_path = "CLAUDE.md"
 title = "Claude Overlay for open_gororoba"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
+kind = "markdown_mirror"
+raw_captured = false
 authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0002.toml"
+skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
 id = "DOC-0003"
 source_path = "GEMINI.md"
 title = "Gemini Overlay for open_gororoba"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
+kind = "markdown_mirror"
+raw_captured = false
 authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0003.toml"
+skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
 id = "DOC-0004"
 source_path = "README.md"
 title = "Gemini Experiments: Evidence-First Algebra/Physics Sandbox"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
+kind = "markdown_mirror"
+raw_captured = false
 authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0004.toml"
+skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
 id = "DOC-0005"
 source_path = "curated/01_theory_frameworks/README_COQ.md"
 title = "Coq Proofs: The Computational Substrate"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
+kind = "markdown_mirror"
+raw_captured = false
 authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0005.toml"
+skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
 id = "DOC-0006"
 source_path = "curated/README.md"
 title = "Curated Artifacts (Legacy / Mixed Provenance)"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
+kind = "markdown_mirror"
+raw_captured = false
 authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0006.toml"
-
-[[document]]
-id = "DOC-0008"
-source_path = "data/csv/README.md"
-title = "Data Index: CSV Datasets"
-kind = "manual_source"
-migration_priority = "medium"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0008.toml"
+skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
 id = "DOC-0007"
 source_path = "data/artifacts/README.md"
 title = "README"
-kind = "artifact_report"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0008"
+source_path = "data/csv/README.md"
+title = "Data Index: CSV Datasets"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"
