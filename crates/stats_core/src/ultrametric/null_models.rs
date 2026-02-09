@@ -292,6 +292,47 @@ pub enum NullModel {
     RandomRotation,
 }
 
+// ---------------------------------------------------------------------------
+// NullModelStrategy trait (Layer 5 abstraction)
+// ---------------------------------------------------------------------------
+
+/// Polymorphic interface for null model strategies.
+///
+/// Implementing this trait allows external crates to define custom null models
+/// (e.g., codebook-specific nulls in algebra_core) that integrate with the
+/// adaptive permutation testing framework without modifying stats_core.
+///
+/// # Required methods
+///
+/// - [`name()`](NullModelStrategy::name): Human-readable identifier for logging.
+/// - [`apply()`](NullModelStrategy::apply): Transform column-major data under
+///   the null hypothesis.
+///
+/// # Optional methods
+///
+/// - [`is_euclidean_identity()`](NullModelStrategy::is_euclidean_identity):
+///   Whether this null preserves all pairwise Euclidean distances.
+pub trait NullModelStrategy: Send + Sync {
+    /// Short human-readable name (e.g., "ColumnIndependent").
+    fn name(&self) -> &str;
+
+    /// Apply the null model transformation to column-major data in-place.
+    ///
+    /// `cols` is column-major: `cols[c * n + i]` = value of attribute `c`
+    /// for observation `i`. The array has length `n * d`.
+    fn apply(&self, cols: &mut [f64], n: usize, d: usize, rng: &mut ChaCha8Rng);
+
+    /// Whether this null model is identity-equivalent for Euclidean-distance
+    /// statistics (the transformation is an isometry or relabeling).
+    ///
+    /// If `true`, permutation tests based on pairwise Euclidean distances
+    /// yield trivial p-values (~1.0). Callers can skip such tests to save
+    /// computation.
+    fn is_euclidean_identity(&self) -> bool {
+        false
+    }
+}
+
 /// Apply a null model transformation to column-major data in-place.
 ///
 /// `cols`: flat column-major array of shape `[d][n]`, i.e. `cols[col * n + row]`.
@@ -479,6 +520,216 @@ fn determinant_sign(mat: &[f64], d: usize) -> f64 {
         }
     }
     sign
+}
+
+// ---------------------------------------------------------------------------
+// NullModelStrategy implementations for the 4 built-in null models
+// ---------------------------------------------------------------------------
+
+/// Column-independent shuffle null model.
+///
+/// Shuffles each attribute column independently, destroying inter-attribute
+/// correlations while preserving each attribute's marginal distribution.
+/// This is the universally informative null for distance-based ultrametric
+/// tests.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct ColumnIndependentNull;
+
+impl NullModelStrategy for ColumnIndependentNull {
+    fn name(&self) -> &str {
+        "ColumnIndependent"
+    }
+
+    fn apply(&self, cols: &mut [f64], n: usize, d: usize, rng: &mut ChaCha8Rng) {
+        for col in 0..d {
+            let start = col * n;
+            cols[start..start + n].shuffle(rng);
+        }
+    }
+}
+
+/// Row permutation null model.
+///
+/// Permutes entire rows, preserving joint distributions within each
+/// observation but destroying row ordering. Identity-equivalent for
+/// set-based distance statistics; informative only when row order
+/// encodes temporal or spatial structure.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct RowPermutationNull;
+
+impl NullModelStrategy for RowPermutationNull {
+    fn name(&self) -> &str {
+        "RowPermutation"
+    }
+
+    fn apply(&self, cols: &mut [f64], n: usize, d: usize, rng: &mut ChaCha8Rng) {
+        let mut perm: Vec<usize> = (0..n).collect();
+        perm.shuffle(rng);
+        let mut buf = vec![0.0_f64; n];
+        for col in 0..d {
+            let start = col * n;
+            for (i, &pi) in perm.iter().enumerate() {
+                buf[i] = cols[start + pi];
+            }
+            cols[start..start + n].copy_from_slice(&buf);
+        }
+    }
+
+    fn is_euclidean_identity(&self) -> bool {
+        true
+    }
+}
+
+/// Toroidal shift null model.
+///
+/// Applies a random circular shift independently per column, preserving
+/// marginal distributions and within-column autocorrelation structure
+/// while destroying cross-column alignment.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct ToroidalShiftNull;
+
+impl NullModelStrategy for ToroidalShiftNull {
+    fn name(&self) -> &str {
+        "ToroidalShift"
+    }
+
+    fn apply(&self, cols: &mut [f64], n: usize, d: usize, rng: &mut ChaCha8Rng) {
+        let mut buf = vec![0.0_f64; n];
+        for col in 0..d {
+            let shift = rng.gen_range(0..n);
+            let start = col * n;
+            for i in 0..n {
+                buf[i] = cols[start + (i + shift) % n];
+            }
+            cols[start..start + n].copy_from_slice(&buf);
+        }
+    }
+}
+
+/// Random rotation null model.
+///
+/// Applies a Haar-distributed SO(d) rotation, preserving the covariance
+/// ellipsoid and all pairwise Euclidean distances (isometry). Identity-
+/// equivalent for Euclidean-distance statistics; informative only for
+/// axis-aligned metrics like Baire encoding.
+#[derive(Debug, Clone, Copy, Default)]
+pub struct RandomRotationNull;
+
+impl NullModelStrategy for RandomRotationNull {
+    fn name(&self) -> &str {
+        "RandomRotation"
+    }
+
+    fn apply(&self, cols: &mut [f64], n: usize, d: usize, rng: &mut ChaCha8Rng) {
+        if d < 2 {
+            return;
+        }
+        let rot = haar_random_so_d(d, rng);
+        let old = cols.to_vec();
+        for i in 0..n {
+            for c in 0..d {
+                let mut val = 0.0;
+                for k in 0..d {
+                    val += rot[c * d + k] * old[k * n + i];
+                }
+                cols[c * n + i] = val;
+            }
+        }
+    }
+
+    fn is_euclidean_identity(&self) -> bool {
+        true
+    }
+}
+
+// ---------------------------------------------------------------------------
+// Bridge: NullModel enum <-> NullModelStrategy trait
+// ---------------------------------------------------------------------------
+
+impl NullModel {
+    /// Convert this enum variant to the corresponding trait object.
+    pub fn to_strategy(&self) -> Box<dyn NullModelStrategy> {
+        match self {
+            NullModel::ColumnIndependent => Box::new(ColumnIndependentNull),
+            NullModel::RowPermutation => Box::new(RowPermutationNull),
+            NullModel::ToroidalShift => Box::new(ToroidalShiftNull),
+            NullModel::RandomRotation => Box::new(RandomRotationNull),
+        }
+    }
+}
+
+/// All four built-in null model strategies.
+///
+/// Useful for systematic comparison (Thesis H pattern) or for running
+/// all null models in sequence to classify identity-equivalent vs
+/// informative nulls for a given test statistic.
+pub fn all_strategies() -> Vec<Box<dyn NullModelStrategy>> {
+    vec![
+        Box::new(ColumnIndependentNull),
+        Box::new(RowPermutationNull),
+        Box::new(ToroidalShiftNull),
+        Box::new(RandomRotationNull),
+    ]
+}
+
+// ---------------------------------------------------------------------------
+// Adaptive null test integration
+// ---------------------------------------------------------------------------
+
+/// Configuration for an adaptive null model test.
+///
+/// Bundles a null model strategy with the adaptive engine configuration
+/// and RNG seed, keeping the `run_adaptive_null_test` signature clean.
+pub struct NullTestConfig<'a> {
+    /// Null model strategy to apply.
+    pub strategy: &'a dyn NullModelStrategy,
+    /// Adaptive stopping configuration.
+    pub adaptive: &'a super::adaptive::AdaptiveConfig,
+    /// RNG seed for reproducibility.
+    pub seed: u64,
+}
+
+/// Run a one-sided permutation test combining a null model strategy with
+/// the adaptive stopping engine.
+///
+/// Repeatedly applies the null model to generate null-distributed data,
+/// computes the test statistic on each null realization, and counts how
+/// many null statistics meet or exceed the observed value. The adaptive
+/// engine (Besag & Clifford 1991) handles batching and early stopping.
+///
+/// # Arguments
+///
+/// * `data` - Column-major data `[d][n]` (flat array, length `n * d`)
+/// * `n` - Number of observations (rows)
+/// * `d` - Number of attributes (columns)
+/// * `observed_statistic` - Pre-computed test statistic on the original data
+/// * `statistic_fn` - Function computing the test statistic from (cols, n, d)
+/// * `config` - Null test configuration (strategy + adaptive + seed)
+pub fn run_adaptive_null_test(
+    data: &[f64],
+    n: usize,
+    d: usize,
+    observed_statistic: f64,
+    statistic_fn: &dyn Fn(&[f64], usize, usize) -> f64,
+    config: &NullTestConfig,
+) -> super::adaptive::AdaptiveResult {
+    use super::adaptive::adaptive_permutation_test;
+
+    let mut rng = ChaCha8Rng::seed_from_u64(config.seed);
+    let mut null_data = data.to_vec();
+
+    adaptive_permutation_test(config.adaptive, |batch_size| {
+        let mut n_extreme = 0usize;
+        for _ in 0..batch_size {
+            null_data.copy_from_slice(data);
+            config.strategy.apply(&mut null_data, n, d, &mut rng);
+            let null_stat = statistic_fn(&null_data, n, d);
+            if null_stat >= observed_statistic {
+                n_extreme += 1;
+            }
+        }
+        n_extreme
+    })
 }
 
 #[cfg(test)]
@@ -1057,5 +1308,255 @@ mod tests {
             p_values[0].0, p_values[0].1,
             p_values[3].0, p_values[3].1,
         );
+    }
+
+    // === NullModelStrategy trait tests ===
+
+    #[test]
+    fn test_all_strategies_returns_four() {
+        let strategies = all_strategies();
+        assert_eq!(strategies.len(), 4);
+        assert_eq!(strategies[0].name(), "ColumnIndependent");
+        assert_eq!(strategies[1].name(), "RowPermutation");
+        assert_eq!(strategies[2].name(), "ToroidalShift");
+        assert_eq!(strategies[3].name(), "RandomRotation");
+    }
+
+    #[test]
+    fn test_euclidean_identity_flags() {
+        assert!(!ColumnIndependentNull.is_euclidean_identity());
+        assert!(RowPermutationNull.is_euclidean_identity());
+        assert!(!ToroidalShiftNull.is_euclidean_identity());
+        assert!(RandomRotationNull.is_euclidean_identity());
+    }
+
+    #[test]
+    fn test_trait_matches_enum_column_independent() {
+        let n = 50;
+        let d = 3;
+        let data = make_test_data(n, d, 42);
+
+        // Trait-based
+        let mut v1 = data.clone();
+        let mut rng1 = ChaCha8Rng::seed_from_u64(77);
+        ColumnIndependentNull.apply(&mut v1, n, d, &mut rng1);
+
+        // Enum-based
+        let mut v2 = data.clone();
+        let mut rng2 = ChaCha8Rng::seed_from_u64(77);
+        apply_null_column_major(&mut v2, n, d, NullModel::ColumnIndependent, &mut rng2);
+
+        for (a, b) in v1.iter().zip(v2.iter()) {
+            assert!(
+                (a - b).abs() < 1e-15,
+                "Trait and enum should produce identical results",
+            );
+        }
+    }
+
+    #[test]
+    fn test_trait_matches_enum_row_permutation() {
+        let n = 50;
+        let d = 3;
+        let data = make_test_data(n, d, 42);
+
+        let mut v1 = data.clone();
+        let mut rng1 = ChaCha8Rng::seed_from_u64(77);
+        RowPermutationNull.apply(&mut v1, n, d, &mut rng1);
+
+        let mut v2 = data.clone();
+        let mut rng2 = ChaCha8Rng::seed_from_u64(77);
+        apply_null_column_major(&mut v2, n, d, NullModel::RowPermutation, &mut rng2);
+
+        for (a, b) in v1.iter().zip(v2.iter()) {
+            assert!(
+                (a - b).abs() < 1e-15,
+                "Trait and enum should produce identical results",
+            );
+        }
+    }
+
+    #[test]
+    fn test_trait_matches_enum_toroidal_shift() {
+        let n = 50;
+        let d = 3;
+        let data = make_test_data(n, d, 42);
+
+        let mut v1 = data.clone();
+        let mut rng1 = ChaCha8Rng::seed_from_u64(77);
+        ToroidalShiftNull.apply(&mut v1, n, d, &mut rng1);
+
+        let mut v2 = data.clone();
+        let mut rng2 = ChaCha8Rng::seed_from_u64(77);
+        apply_null_column_major(&mut v2, n, d, NullModel::ToroidalShift, &mut rng2);
+
+        for (a, b) in v1.iter().zip(v2.iter()) {
+            assert!(
+                (a - b).abs() < 1e-15,
+                "Trait and enum should produce identical results",
+            );
+        }
+    }
+
+    #[test]
+    fn test_trait_matches_enum_random_rotation() {
+        let n = 30;
+        let d = 4;
+        let data = make_test_data(n, d, 42);
+
+        let mut v1 = data.clone();
+        let mut rng1 = ChaCha8Rng::seed_from_u64(77);
+        RandomRotationNull.apply(&mut v1, n, d, &mut rng1);
+
+        let mut v2 = data.clone();
+        let mut rng2 = ChaCha8Rng::seed_from_u64(77);
+        apply_null_column_major(&mut v2, n, d, NullModel::RandomRotation, &mut rng2);
+
+        for (a, b) in v1.iter().zip(v2.iter()) {
+            assert!(
+                (a - b).abs() < 1e-10,
+                "Trait and enum should produce identical results",
+            );
+        }
+    }
+
+    #[test]
+    fn test_to_strategy_bridge() {
+        let n = 40;
+        let d = 2;
+        let data = make_test_data(n, d, 42);
+
+        for model in [
+            NullModel::ColumnIndependent,
+            NullModel::RowPermutation,
+            NullModel::ToroidalShift,
+            NullModel::RandomRotation,
+        ] {
+            let strategy = model.to_strategy();
+
+            let mut v1 = data.clone();
+            let mut rng1 = ChaCha8Rng::seed_from_u64(99);
+            strategy.apply(&mut v1, n, d, &mut rng1);
+
+            let mut v2 = data.clone();
+            let mut rng2 = ChaCha8Rng::seed_from_u64(99);
+            apply_null_column_major(&mut v2, n, d, model, &mut rng2);
+
+            for (a, b) in v1.iter().zip(v2.iter()) {
+                assert!(
+                    (a - b).abs() < 1e-10,
+                    "to_strategy() for {:?} should match enum dispatch",
+                    model,
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_run_adaptive_null_test_significant() {
+        // Clustered data: ColumnIndependent should detect significance.
+        let n_clusters = 4;
+        let pts_per = 15;
+        let d = 3;
+        let n = n_clusters * pts_per;
+        let cols = make_clustered_data(n_clusters, pts_per, d, 42);
+
+        let obs_frac = exhaustive_euclidean_ultrametric_fraction(&cols, n, d, 0.05);
+
+        let adaptive = super::super::adaptive::AdaptiveConfig {
+            batch_size: 50,
+            max_permutations: 500,
+            alpha: 0.05,
+            confidence: 0.99,
+            min_permutations: 100,
+        };
+
+        let config = NullTestConfig {
+            strategy: &ColumnIndependentNull,
+            adaptive: &adaptive,
+            seed: 42,
+        };
+
+        let result = run_adaptive_null_test(
+            &cols,
+            n,
+            d,
+            obs_frac,
+            &|data, nn, dd| exhaustive_euclidean_ultrametric_fraction(data, nn, dd, 0.05),
+            &config,
+        );
+
+        assert!(
+            result.p_value < 0.05,
+            "Clustered data should be significant under ColumnIndependent, p = {:.4}",
+            result.p_value,
+        );
+    }
+
+    #[test]
+    fn test_run_adaptive_null_test_identity_null() {
+        // Clustered data: RowPermutation (identity-equivalent) should yield p ~ 1.0.
+        let n_clusters = 4;
+        let pts_per = 15;
+        let d = 3;
+        let n = n_clusters * pts_per;
+        let cols = make_clustered_data(n_clusters, pts_per, d, 42);
+
+        let obs_frac = exhaustive_euclidean_ultrametric_fraction(&cols, n, d, 0.05);
+
+        let adaptive = super::super::adaptive::AdaptiveConfig {
+            batch_size: 50,
+            max_permutations: 200,
+            alpha: 0.05,
+            confidence: 0.99,
+            min_permutations: 100,
+        };
+
+        let config = NullTestConfig {
+            strategy: &RowPermutationNull,
+            adaptive: &adaptive,
+            seed: 42,
+        };
+
+        let result = run_adaptive_null_test(
+            &cols,
+            n,
+            d,
+            obs_frac,
+            &|data, nn, dd| exhaustive_euclidean_ultrametric_fraction(data, nn, dd, 0.05),
+            &config,
+        );
+
+        assert!(
+            result.p_value > 0.5,
+            "RowPermutation should be identity-equivalent, p = {:.4}",
+            result.p_value,
+        );
+    }
+
+    #[test]
+    fn test_strategy_trait_is_object_safe() {
+        // Verify the trait can be used as a trait object (dyn dispatch).
+        let strategies: Vec<Box<dyn NullModelStrategy>> = vec![
+            Box::new(ColumnIndependentNull),
+            Box::new(RowPermutationNull),
+        ];
+
+        let n = 20;
+        let d = 2;
+        let data = make_test_data(n, d, 42);
+
+        for strategy in &strategies {
+            let mut v = data.clone();
+            let mut rng = ChaCha8Rng::seed_from_u64(99);
+            strategy.apply(&mut v, n, d, &mut rng);
+            // Verify data was modified (not all zeros or unchanged)
+            let changed = v.iter().zip(data.iter()).any(|(a, b)| (a - b).abs() > 1e-15);
+            assert!(
+                changed,
+                "Strategy '{}' should modify data",
+                strategy.name(),
+            );
+        }
     }
 }
