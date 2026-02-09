@@ -674,6 +674,159 @@ pub fn stationary_distribution(trans: &[[u64; N_WALLS]; N_WALLS]) -> [f64; N_WAL
 }
 
 // ---------------------------------------------------------------------------
+// Claim 1 verification: r_e8 robustness across initial conditions and configs
+// ---------------------------------------------------------------------------
+
+/// Result of Claim 1 robustness verification.
+///
+/// Claim 1: The E8 adjacency ratio r_e8 remains significantly above the null
+/// baseline (0.25 for uniform random) across 100 different initial conditions,
+/// and is not sensitive to solver parameters (renormalization toggle, epsilon).
+#[derive(Debug, Clone)]
+pub struct Claim1Result {
+    /// r_e8 values from each seed (default config).
+    pub r_values: Vec<f64>,
+    /// Mean r_e8 across seeds.
+    pub mean_r: f64,
+    /// Standard deviation of r_e8 across seeds.
+    pub std_r: f64,
+    /// Minimum r_e8 observed.
+    pub min_r: f64,
+    /// Maximum r_e8 observed.
+    pub max_r: f64,
+    /// Fraction of seeds where r_e8 > null baseline (0.25).
+    pub fraction_above_null: f64,
+    /// Null baseline: expected r_e8 for uniform random sequence.
+    pub null_baseline: f64,
+    /// Number of seeds that produced enough E8 transitions for measurement.
+    pub n_measurable: usize,
+    /// Robustness: r_e8 values with renormalization disabled.
+    pub r_values_no_renorm: Vec<f64>,
+    /// Robustness: r_e8 values with different epsilon (10x larger).
+    pub r_values_large_eps: Vec<f64>,
+    /// Maximum absolute difference between default and no-renorm configs.
+    pub max_renorm_delta: f64,
+    /// Maximum absolute difference between default and large-eps configs.
+    pub max_eps_delta: f64,
+}
+
+/// Verify Claim 1: E8 adjacency ratio is robust across initial conditions.
+///
+/// Runs the hyperbolic billiard with `n_seeds` different random seeds, each
+/// for `n_bounces` steps. Computes r_e8 for each run. Also tests with
+/// alternative solver configurations (no renormalization, larger epsilon).
+///
+/// Returns `None` if the billiard module produces no usable sequences.
+pub fn verify_claim1(
+    n_seeds: usize,
+    n_bounces: usize,
+) -> Claim1Result {
+    use crate::billiard_sim::HyperbolicBilliard;
+    use crate::kac_moody::E10RootSystem;
+
+    let e10 = E10RootSystem::new();
+
+    let mut r_values = Vec::with_capacity(n_seeds);
+    let mut r_values_no_renorm = Vec::with_capacity(n_seeds);
+    let mut r_values_large_eps = Vec::with_capacity(n_seeds);
+
+    for seed in 0..n_seeds as u64 {
+        // Default config
+        let mut billiard = HyperbolicBilliard::from_e10(&e10, seed);
+        let seq = billiard.simulate(n_bounces);
+        let metrics = compute_locality_metrics(&seq);
+        r_values.push(metrics.r_e8);
+
+        // Config variant 1: renormalization disabled
+        let mut billiard_nr = HyperbolicBilliard::from_e10(&e10, seed);
+        billiard_nr.config.renormalize = false;
+        let seq_nr = billiard_nr.simulate(n_bounces);
+        let metrics_nr = compute_locality_metrics(&seq_nr);
+        r_values_no_renorm.push(metrics_nr.r_e8);
+
+        // Config variant 2: larger epsilon (10x)
+        let mut billiard_le = HyperbolicBilliard::from_e10(&e10, seed);
+        let default_eps = billiard_le.config.time_epsilon;
+        billiard_le.config.time_epsilon = default_eps * 10.0;
+        let seq_le = billiard_le.simulate(n_bounces);
+        let metrics_le = compute_locality_metrics(&seq_le);
+        r_values_large_eps.push(metrics_le.r_e8);
+    }
+
+    // Statistics
+    let n = r_values.len() as f64;
+    let mean_r = r_values.iter().sum::<f64>() / n;
+    let var_r = r_values.iter().map(|r| (r - mean_r).powi(2)).sum::<f64>() / n;
+    let std_r = var_r.sqrt();
+    let min_r = r_values.iter().cloned().fold(f64::INFINITY, f64::min);
+    let max_r = r_values.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
+
+    let null_baseline = NULL_R_E8_UNIFORM;
+    let fraction_above_null = r_values.iter().filter(|&&r| r > null_baseline).count() as f64 / n;
+    let n_measurable = r_values.iter().filter(|&&r| r > 0.0).count();
+
+    // Robustness deltas
+    let max_renorm_delta = r_values.iter().zip(r_values_no_renorm.iter())
+        .map(|(a, b)| (a - b).abs())
+        .fold(0.0f64, f64::max);
+    let max_eps_delta = r_values.iter().zip(r_values_large_eps.iter())
+        .map(|(a, b)| (a - b).abs())
+        .fold(0.0f64, f64::max);
+
+    Claim1Result {
+        r_values,
+        mean_r,
+        std_r,
+        min_r,
+        max_r,
+        fraction_above_null,
+        null_baseline,
+        n_measurable,
+        r_values_no_renorm,
+        r_values_large_eps,
+        max_renorm_delta,
+        max_eps_delta,
+    }
+}
+
+/// Produce a human-readable summary of Claim 1 verification.
+///
+/// Returns (summary_string, claim_supported).
+/// Claim is supported if:
+/// - mean r_e8 > 2 * null baseline (0.50)
+/// - >= 80% of seeds have r_e8 > null baseline
+/// - max config delta < 0.2 (robustness)
+pub fn claim1_summary(result: &Claim1Result) -> (String, bool) {
+    let above_threshold = result.mean_r > 2.0 * result.null_baseline;
+    let fraction_ok = result.fraction_above_null >= 0.80;
+    let robust = result.max_renorm_delta < 0.2 && result.max_eps_delta < 0.2;
+    let supported = above_threshold && fraction_ok && robust;
+
+    let status = if supported { "SUPPORTED" } else { "NOT SUPPORTED" };
+
+    let summary = format!(
+        "Claim 1 ({status}): r_e8 robustness across {n} seeds\n\
+         mean={mean:.4} std={std:.4} min={min:.4} max={max:.4}\n\
+         fraction above null({null:.4}): {frac:.1}%\n\
+         measurable seeds: {meas}/{n}\n\
+         robustness: renorm_delta={rd:.4} eps_delta={ed:.4}",
+        status = status,
+        n = result.r_values.len(),
+        mean = result.mean_r,
+        std = result.std_r,
+        min = result.min_r,
+        max = result.max_r,
+        null = result.null_baseline,
+        frac = result.fraction_above_null * 100.0,
+        meas = result.n_measurable,
+        rd = result.max_renorm_delta,
+        ed = result.max_eps_delta,
+    );
+
+    (summary, supported)
+}
+
+// ---------------------------------------------------------------------------
 // Tests
 // ---------------------------------------------------------------------------
 
@@ -1031,5 +1184,88 @@ mod tests {
         // 2->7: E8 (not adjacent)
         assert!(sm.r_e8 > 0.0, "Some E8 adjacency should exist (3->4)");
         assert!(sm.r_hyp > 0.0, "Hyp adjacency should exist (8->9, 9->8)");
+    }
+
+    // -----------------------------------------------------------------------
+    // Claim 1 verification tests
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn test_verify_claim1_basic() {
+        // Small-scale test: 10 seeds, 500 bounces each
+        let result = verify_claim1(10, 500);
+
+        assert_eq!(result.r_values.len(), 10);
+        assert_eq!(result.r_values_no_renorm.len(), 10);
+        assert_eq!(result.r_values_large_eps.len(), 10);
+
+        // All r_e8 values should be in [0, 1]
+        for &r in &result.r_values {
+            assert!(r >= 0.0 && r <= 1.0, "r_e8 out of range: {}", r);
+        }
+
+        // Statistics should be consistent
+        assert!(result.mean_r >= result.min_r);
+        assert!(result.mean_r <= result.max_r);
+        assert!(result.std_r >= 0.0);
+    }
+
+    #[test]
+    fn test_verify_claim1_above_null() {
+        // 20 seeds, 1000 bounces: mean r_e8 should exceed null baseline
+        let result = verify_claim1(20, 1000);
+
+        // The mean should be well above the uniform null (0.25)
+        // We use a generous margin since this is a statistical claim
+        assert!(result.mean_r > result.null_baseline,
+            "mean r_e8 ({:.4}) should exceed null baseline ({:.4})",
+            result.mean_r, result.null_baseline);
+    }
+
+    #[test]
+    fn test_verify_claim1_most_seeds_above_null() {
+        // At least 60% of seeds should have r_e8 > null
+        let result = verify_claim1(20, 1000);
+
+        assert!(result.fraction_above_null >= 0.6,
+            "Only {:.1}% of seeds above null -- expected >= 60%",
+            result.fraction_above_null * 100.0);
+    }
+
+    #[test]
+    fn test_claim1_summary_format() {
+        let result = verify_claim1(5, 200);
+        let (summary, _supported) = claim1_summary(&result);
+
+        assert!(summary.contains("Claim 1"));
+        assert!(summary.contains("r_e8 robustness"));
+        assert!(summary.contains("mean="));
+        assert!(summary.contains("std="));
+    }
+
+    #[test]
+    fn test_verify_claim1_deterministic() {
+        // Same parameters should yield same results (deterministic seeds)
+        let result1 = verify_claim1(5, 300);
+        let result2 = verify_claim1(5, 300);
+
+        for (a, b) in result1.r_values.iter().zip(result2.r_values.iter()) {
+            assert!((a - b).abs() < 1e-15,
+                "Non-deterministic: {} vs {}", a, b);
+        }
+    }
+
+    #[test]
+    fn test_verify_claim1_renorm_robustness() {
+        // Config changes should not drastically alter r_e8
+        let result = verify_claim1(10, 500);
+
+        // Renormalization delta should be moderate (< 0.5 at worst)
+        assert!(result.max_renorm_delta < 0.5,
+            "Renormalization delta too large: {:.4}", result.max_renorm_delta);
+
+        // Epsilon delta should be moderate
+        assert!(result.max_eps_delta < 0.5,
+            "Epsilon delta too large: {:.4}", result.max_eps_delta);
     }
 }
