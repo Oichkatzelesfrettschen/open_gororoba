@@ -214,6 +214,16 @@ crate = "gororoba_cli"
 description = "Export computed data to HDF5 format (feature-gated)"
 
 [[binary]]
+name = "cd-tower-report"
+crate = "gororoba_cli"
+description = "Comprehensive CD tower analysis: property retention, psi/eta convergence, ZD geometry, face sign census, frustration ratios, split-CD, scaling laws"
+
+[[binary]]
+name = "scrollify-csv"
+crate = "gororoba_cli"
+description = "Convert CSV corpora to TOML scroll datasets and canonical index manifests"
+
+[[binary]]
 name = "cross-stack-locality"
 crate = "gororoba_cli"
 description = "ALP cross-stack locality comparison across E10, ET DMZ, and ZD constraint systems"
