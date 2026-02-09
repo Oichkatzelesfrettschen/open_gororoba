@@ -5,12 +5,26 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2063
+test_count = 2148
 claim_count = 475
 insight_count = 16
 experiment_count = 10
 paper_count = 19
 binary_count = 37
+
+[sprints.s14]
+number = 14
+date = "2026-02-08"
+test_count = 2148
+claim_count = 475
+summary = "Monograph Layers 0-4: TypedCarrier, EncodingDictionary, elevated addition, InvariantSuite cross-validation, 46 new tests"
+
+[sprints.s13]
+number = 13
+date = "2026-02-08"
+test_count = 2102
+claim_count = 475
+summary = "Monograph layers 0-4 (TypedCarrier, EncodingDictionary, GraphPredicate, InvariantSuite), terminology normalization, glossary, Dynkin Convention 10"
 
 [sprints.s12]
 number = 12

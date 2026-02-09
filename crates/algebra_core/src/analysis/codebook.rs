@@ -148,6 +148,239 @@ pub fn is_in_lambda_256(v: &LatticeVector) -> bool {
     true
 }
 
+// ============================================================================
+// 2048D Forbidden Prefix Enumeration
+// ============================================================================
+
+/// Which of the 3 forbidden prefix families a base universe point matches.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum ForbiddenFamily {
+    /// Prefix (0, 1, 1): 3-coordinate prefix, free tail of length 5.
+    Prefix011,
+    /// Prefix (0, 1, 0, 1, 1): 5-coordinate prefix, free tail of length 3.
+    Prefix01011,
+    /// Prefix (0, 1, 0, 1, 0, 1): 6-coordinate prefix, free tail of length 2.
+    Prefix010101,
+}
+
+/// A base universe point excluded from Lambda_2048, tagged with its family.
+#[derive(Debug, Clone)]
+pub struct ForbiddenPoint {
+    /// The lattice vector.
+    pub vector: LatticeVector,
+    /// Which forbidden prefix family it belongs to.
+    pub family: ForbiddenFamily,
+}
+
+/// Classify which forbidden family a base universe point belongs to.
+/// Returns `None` if the point is in Lambda_2048 (not forbidden).
+pub fn classify_forbidden(v: &LatticeVector) -> Option<ForbiddenFamily> {
+    if !is_in_base_universe(v) {
+        return None;
+    }
+    // Check the 3 forbidden prefix patterns (mutually exclusive by construction:
+    // Pattern 1 requires l_2=1, patterns 2 & 3 require l_2=0;
+    // Pattern 2 requires l_4=1, pattern 3 requires l_4=0.)
+    if v[0] == 0 && v[1] == 1 && v[2] == 1 {
+        return Some(ForbiddenFamily::Prefix011);
+    }
+    if v[0] == 0 && v[1] == 1 && v[2] == 0 && v[3] == 1 && v[4] == 1 {
+        return Some(ForbiddenFamily::Prefix01011);
+    }
+    if v[0] == 0 && v[1] == 1 && v[2] == 0 && v[3] == 1 && v[4] == 0 && v[5] == 1 {
+        return Some(ForbiddenFamily::Prefix010101);
+    }
+    None
+}
+
+/// Enumerate all base universe points excluded from Lambda_2048.
+///
+/// Exhaustively scans {-1, 0, 1}^8 (6561 vectors), filters for base
+/// universe membership, then identifies points matching one of the
+/// 3 forbidden prefix families. Returns tagged forbidden points.
+pub fn enumerate_forbidden_2048() -> Vec<ForbiddenPoint> {
+    let mut forbidden = Vec::new();
+    // Enumerate all {-1, 0, 1}^8 vectors via base-3 encoding
+    for code in 0..3u32.pow(8) {
+        let mut v = [0i8; 8];
+        let mut c = code;
+        for coord in &mut v {
+            *coord = (c % 3) as i8 - 1; // map 0->-1, 1->0, 2->1
+            c /= 3;
+        }
+        if let Some(family) = classify_forbidden(&v) {
+            forbidden.push(ForbiddenPoint { vector: v, family });
+        }
+    }
+    forbidden
+}
+
+// ============================================================================
+// Lambda Enumeration from Predicates
+// ============================================================================
+
+/// Enumerate all lattice vectors in {-1, 0, 1}^8 satisfying a predicate.
+///
+/// Performs exhaustive scan of 3^8 = 6561 trinary vectors, returning those
+/// that pass `pred`. Results are sorted in lexicographic order (with -1 < 0 < 1).
+pub fn enumerate_lattice_by_predicate(
+    pred: impl Fn(&LatticeVector) -> bool,
+) -> Vec<LatticeVector> {
+    let mut result = Vec::new();
+    for code in 0..3u32.pow(8) {
+        let mut v = [0i8; 8];
+        let mut c = code;
+        for coord in &mut v {
+            *coord = (c % 3) as i8 - 1; // map 0->-1, 1->0, 2->1
+            c /= 3;
+        }
+        if pred(&v) {
+            result.push(v);
+        }
+    }
+    result.sort();
+    result
+}
+
+/// Enumerate all Lambda_256 lattice vectors from predicates alone.
+///
+/// Returns exactly those {-1, 0, 1}^8 vectors passing `is_in_lambda_256`.
+/// This is the pure-predicate analog of loading from CSV data files.
+pub fn enumerate_lambda_256() -> Vec<LatticeVector> {
+    enumerate_lattice_by_predicate(is_in_lambda_256)
+}
+
+/// Characterization of the "pinned corner" slice of Lambda_256.
+///
+/// The slice is defined as { v in Lambda_256 : v[0..k] = (-1, ..., -1) }
+/// for some prefix length k. When the prefix is all -1s, every trie-cut
+/// exclusion rule in the filtration chain is vacuously satisfied, so the
+/// slice reduces to the base universe constraint (even sum + even weight)
+/// applied to the tail coordinates.
+#[derive(Debug, Clone)]
+pub struct SliceCharacterization {
+    /// Number of points in the slice.
+    pub count: usize,
+    /// The prefix length (how many leading -1s are pinned).
+    pub prefix_len: usize,
+    /// All tail coordinate patterns (the free coordinates after the prefix).
+    pub tail_patterns: Vec<LatticeVector>,
+    /// Number of distinct nonzero counts (weights) in the tail.
+    pub tail_weight_histogram: Vec<(usize, usize)>,
+    /// Pairwise squared-distance histogram: (d^2, count).
+    pub distance_histogram: Vec<(i32, usize)>,
+    /// Inner product histogram: (ip, count).
+    pub inner_product_histogram: Vec<(i32, usize)>,
+}
+
+/// Characterize the pinned-corner slice of Lambda_256 with a given prefix
+/// of k leading -1 coordinates.
+///
+/// The slice consists of all Lambda_256 points whose first `prefix_len`
+/// coordinates are -1. The characterization includes the count, tail
+/// weight distribution, and pairwise distance/inner-product histograms.
+pub fn characterize_pinned_slice(prefix_len: usize) -> SliceCharacterization {
+    assert!(prefix_len <= 8, "prefix_len must be at most 8");
+
+    let all_256 = enumerate_lambda_256();
+    let prefix = [-1i8; 8]; // we only use the first prefix_len entries
+
+    let slice_points: Vec<LatticeVector> = all_256
+        .into_iter()
+        .filter(|v| v[..prefix_len] == prefix[..prefix_len])
+        .collect();
+
+    // Extract tail patterns (zero out the prefix for clarity)
+    let tail_patterns: Vec<LatticeVector> = slice_points
+        .iter()
+        .map(|v| {
+            let mut tail = [0i8; 8];
+            tail[prefix_len..8].copy_from_slice(&v[prefix_len..8]);
+            tail
+        })
+        .collect();
+
+    // Weight histogram (nonzero count in tail)
+    let mut weight_counts = std::collections::HashMap::new();
+    for v in &slice_points {
+        let w = v[prefix_len..].iter().filter(|&&x| x != 0).count();
+        *weight_counts.entry(w).or_insert(0usize) += 1;
+    }
+    let mut tail_weight_histogram: Vec<(usize, usize)> =
+        weight_counts.into_iter().collect();
+    tail_weight_histogram.sort();
+
+    // Pairwise squared distances and inner products
+    let n = slice_points.len();
+    let mut dist_counts = std::collections::HashMap::new();
+    let mut ip_counts = std::collections::HashMap::new();
+    for i in 0..n {
+        for j in (i + 1)..n {
+            let mut d2 = 0i32;
+            let mut ip = 0i32;
+            for (&a, &b) in slice_points[i].iter().zip(slice_points[j].iter()) {
+                let diff = a as i32 - b as i32;
+                d2 += diff * diff;
+                ip += a as i32 * b as i32;
+            }
+            *dist_counts.entry(d2).or_insert(0usize) += 1;
+            *ip_counts.entry(ip).or_insert(0usize) += 1;
+        }
+    }
+    let mut distance_histogram: Vec<(i32, usize)> =
+        dist_counts.into_iter().collect();
+    distance_histogram.sort();
+
+    let mut inner_product_histogram: Vec<(i32, usize)> =
+        ip_counts.into_iter().collect();
+    inner_product_histogram.sort();
+
+    SliceCharacterization {
+        count: slice_points.len(),
+        prefix_len,
+        tail_patterns,
+        tail_weight_histogram,
+        distance_histogram,
+        inner_product_histogram,
+    }
+}
+
+/// Component-wise addition in F_3 = Z/3Z (the field with 3 elements).
+///
+/// Maps {-1, 0, 1} to F_3 via x -> x mod 3, adds, and maps back.
+/// This is the natural group operation on trinary vectors that always
+/// preserves the trinary constraint. In F_3:
+///   -1 + -1 = 1,  -1 + 0 = -1,  -1 + 1 = 0
+///    0 +  0 = 0,   0 + 1 = 1,    1 + 1 = -1
+pub fn lattice_add_f3(a: &LatticeVector, b: &LatticeVector) -> LatticeVector {
+    let mut result = [0i8; 8];
+    for (r, (&x, &y)) in result.iter_mut().zip(a.iter().zip(b.iter())) {
+        // Compute (x + y) mod 3, keeping in {-1, 0, 1}
+        let s = x as i32 + y as i32;
+        *r = match s {
+            -2 => 1,   // wraps: -1 + -1 = 1 in F_3
+            -1 => -1,
+            0 => 0,
+            1 => 1,
+            2 => -1,   // wraps: 1 + 1 = -1 in F_3
+            _ => unreachable!("sum of two trinary values is in [-2, 2]"),
+        };
+    }
+    result
+}
+
+/// Component-wise difference of two lattice vectors in Z.
+///
+/// a - b, coordinate by coordinate. The result may leave {-1, 0, 1}^8
+/// when opposite-sign coordinates are subtracted (e.g., 1 - (-1) = 2).
+pub fn lattice_diff(a: &LatticeVector, b: &LatticeVector) -> [i32; 8] {
+    let mut result = [0i32; 8];
+    for (r, (&x, &y)) in result.iter_mut().zip(a.iter().zip(b.iter())) {
+        *r = x as i32 - y as i32;
+    }
+    result
+}
+
 /// Apply the Scalar Shadow action to a lattice vector.
 ///
 /// Addition mode: l_out = l + a * 1_8
@@ -505,6 +738,352 @@ impl EncodingDictionary {
 }
 
 // ============================================================================
+// Layer 2: Elevated Addition
+// ============================================================================
+
+/// Component-wise addition of two lattice vectors in Z^8.
+///
+/// This is ordinary integer addition. The result may leave the trinary
+/// set {-1, 0, 1}^8, which is why elevated addition must check membership
+/// before decoding.
+pub fn lattice_add(a: &LatticeVector, b: &LatticeVector) -> [i32; 8] {
+    let mut result = [0i32; 8];
+    for (r, (&x, &y)) in result.iter_mut().zip(a.iter().zip(b.iter())) {
+        *r = x as i32 + y as i32;
+    }
+    result
+}
+
+/// Try to narrow a Z^8 vector back to a trinary lattice vector.
+/// Returns None if any coordinate is outside [-1, 1].
+pub fn try_narrow_to_lattice(v: &[i32; 8]) -> Option<LatticeVector> {
+    let mut result = [0i8; 8];
+    for (r, &x) in result.iter_mut().zip(v.iter()) {
+        if !(-1..=1).contains(&x) {
+            return None;
+        }
+        *r = x as i8;
+    }
+    Some(result)
+}
+
+/// Result of an elevated addition Phi(a) + Phi(b).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ElevatedResult {
+    /// The sum lands in the codebook and decodes to basis element c.
+    InCodebook {
+        sum_vec: LatticeVector,
+        decoded_index: usize,
+    },
+    /// The sum is a valid trinary vector but not in the codebook.
+    OutOfCodebook {
+        sum_vec: LatticeVector,
+    },
+    /// The sum leaves {-1, 0, 1}^8 entirely (some coordinate exceeds bounds).
+    OutOfBounds {
+        sum_vec: [i32; 8],
+    },
+}
+
+/// Statistics for the elevated addition table.
+#[derive(Debug, Clone)]
+pub struct ElevatedAdditionStats {
+    /// Total number of ordered pairs (a, b) tested.
+    pub total_pairs: usize,
+    /// Number of pairs where Phi(a)+Phi(b) decodes to some c in the dictionary.
+    pub in_codebook: usize,
+    /// Number of pairs where sum is trinary but not in codebook.
+    pub out_of_codebook: usize,
+    /// Number of pairs where sum leaves {-1,0,1}^8.
+    pub out_of_bounds: usize,
+    /// Closure rate: in_codebook / total_pairs.
+    pub closure_rate: f64,
+    /// Whether the operation is commutative (Phi(a)+Phi(b) = Phi(b)+Phi(a) always).
+    pub is_commutative: bool,
+    /// Number of basis elements b that act as identity (Phi(a)+Phi(b)=Phi(a) for all a).
+    pub identity_count: usize,
+}
+
+/// Result of an F_3-elevated addition Phi(a) +_3 Phi(b).
+///
+/// Unlike Z-elevated addition, F_3-addition always stays in {-1,0,1}^8
+/// (it wraps around), so there is no OutOfBounds variant.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub enum ElevatedResultF3 {
+    /// The F_3-sum lands in the codebook and decodes to basis element c.
+    InCodebook {
+        sum_vec: LatticeVector,
+        decoded_index: usize,
+    },
+    /// The F_3-sum is a valid trinary vector but not in the codebook.
+    OutOfCodebook {
+        sum_vec: LatticeVector,
+    },
+}
+
+/// Statistics for the F_3-elevated addition table.
+#[derive(Debug, Clone)]
+pub struct ElevatedAdditionStatsF3 {
+    /// Total number of ordered pairs (a, b) tested.
+    pub total_pairs: usize,
+    /// Number of pairs where Phi(a)+_3 Phi(b) decodes to some c.
+    pub in_codebook: usize,
+    /// Number of pairs where F_3-sum is trinary but not in codebook.
+    pub out_of_codebook: usize,
+    /// Closure rate: in_codebook / total_pairs.
+    pub closure_rate: f64,
+    /// Whether F_3-addition is commutative on this codebook.
+    pub is_commutative: bool,
+    /// Number of basis elements that act as identity.
+    pub identity_count: usize,
+    /// Fraction of tested triples where (a+b)+c = a+(b+c) in F_3.
+    pub associativity_rate: f64,
+    /// Number of triples tested for associativity.
+    pub associativity_triples_tested: usize,
+}
+
+impl EncodingDictionary {
+    /// Perform elevated addition: compute Phi(a) + Phi(b) and try to decode.
+    ///
+    /// Returns an `ElevatedResult` describing where the sum lands:
+    /// - `InCodebook`: the sum is in the dictionary and decodes to basis index c
+    /// - `OutOfCodebook`: the sum is trinary but not a codeword
+    /// - `OutOfBounds`: the sum has coordinates outside [-1, 1]
+    pub fn elevated_add(&self, a: usize, b: usize) -> Option<ElevatedResult> {
+        let lv_a = self.encode(a)?;
+        let lv_b = self.encode(b)?;
+        let sum = lattice_add(lv_a, lv_b);
+
+        match try_narrow_to_lattice(&sum) {
+            Some(narrow) => {
+                match self.decode(&narrow) {
+                    Some(c) => Some(ElevatedResult::InCodebook {
+                        sum_vec: narrow,
+                        decoded_index: c,
+                    }),
+                    None => Some(ElevatedResult::OutOfCodebook {
+                        sum_vec: narrow,
+                    }),
+                }
+            },
+            None => Some(ElevatedResult::OutOfBounds { sum_vec: sum }),
+        }
+    }
+
+    /// Compute the full elevated addition table for all ordered pairs (a, b).
+    ///
+    /// Returns an n x n table where table[a][b] = elevated_add(a, b).
+    /// This table captures the complete lattice-addition structure of the codebook.
+    pub fn elevated_addition_table(&self) -> Vec<Vec<ElevatedResult>> {
+        let n = self.dim();
+        let mut table = Vec::with_capacity(n);
+        for a in 0..n {
+            let mut row = Vec::with_capacity(n);
+            for b in 0..n {
+                row.push(
+                    self.elevated_add(a, b)
+                        .expect("basis indices should be valid")
+                );
+            }
+            table.push(row);
+        }
+        table
+    }
+
+    /// Compute summary statistics for the elevated addition table.
+    pub fn elevated_addition_stats(&self) -> ElevatedAdditionStats {
+        let n = self.dim();
+        let mut in_codebook = 0usize;
+        let mut out_of_codebook = 0usize;
+        let mut out_of_bounds = 0usize;
+        let mut is_commutative = true;
+        // Build the table for commutativity check
+        let table = self.elevated_addition_table();
+
+        for (a, row_a) in table.iter().enumerate() {
+            for (b, result) in row_a.iter().enumerate() {
+                match result {
+                    ElevatedResult::InCodebook { .. } => in_codebook += 1,
+                    ElevatedResult::OutOfCodebook { .. } => out_of_codebook += 1,
+                    ElevatedResult::OutOfBounds { .. } => out_of_bounds += 1,
+                }
+                // Commutativity: check table[a][b] == table[b][a]
+                if a < b && *result != table[b][a] {
+                    is_commutative = false;
+                }
+            }
+        }
+
+        // Identity check: b is identity if Phi(a)+Phi(b) decodes to a for all a
+        let identity_count = (0..n)
+            .filter(|&b| {
+                table.iter().enumerate().all(|(a, row)| {
+                    matches!(&row[b],
+                        ElevatedResult::InCodebook { decoded_index, .. }
+                        if *decoded_index == a
+                    )
+                })
+            })
+            .count();
+
+        let total_pairs = n * n;
+        ElevatedAdditionStats {
+            total_pairs,
+            in_codebook,
+            out_of_codebook,
+            out_of_bounds,
+            closure_rate: in_codebook as f64 / total_pairs as f64,
+            is_commutative,
+            identity_count,
+        }
+    }
+
+    /// For a given basis element b, compute the "translation orbit":
+    /// the set of basis elements a for which Phi(a) + Phi(b) is in the codebook.
+    pub fn translation_orbit(&self, b: usize) -> Vec<(usize, usize)> {
+        let n = self.dim();
+        let mut orbit = Vec::new();
+        for a in 0..n {
+            if let Some(ElevatedResult::InCodebook { decoded_index, .. }) =
+                self.elevated_add(a, b)
+            {
+                orbit.push((a, decoded_index));
+            }
+        }
+        orbit
+    }
+
+    /// Perform F_3-elevated addition: Phi(a) +_3 Phi(b) mod 3, then decode.
+    ///
+    /// Unlike Z-addition, F_3-addition always produces a trinary vector
+    /// (it wraps around: -1+(-1)=1, 1+1=-1). The result is always either
+    /// InCodebook or OutOfCodebook, never OutOfBounds.
+    pub fn elevated_add_f3(&self, a: usize, b: usize) -> Option<ElevatedResultF3> {
+        let lv_a = self.encode(a)?;
+        let lv_b = self.encode(b)?;
+        let sum = lattice_add_f3(lv_a, lv_b);
+
+        match self.decode(&sum) {
+            Some(c) => Some(ElevatedResultF3::InCodebook {
+                sum_vec: sum,
+                decoded_index: c,
+            }),
+            None => Some(ElevatedResultF3::OutOfCodebook { sum_vec: sum }),
+        }
+    }
+
+    /// Compute the F_3-elevated addition table and statistics.
+    pub fn elevated_addition_stats_f3(&self) -> ElevatedAdditionStatsF3 {
+        let n = self.dim();
+        let mut in_codebook = 0usize;
+        let mut out_of_codebook = 0usize;
+        let mut is_commutative = true;
+        // Precompute all results for commutativity check
+        let mut table: Vec<Vec<ElevatedResultF3>> = Vec::with_capacity(n);
+        for a in 0..n {
+            let mut row = Vec::with_capacity(n);
+            for b in 0..n {
+                row.push(
+                    self.elevated_add_f3(a, b)
+                        .expect("basis indices should be valid")
+                );
+            }
+            table.push(row);
+        }
+
+        for (a, row_a) in table.iter().enumerate() {
+            for (b, result) in row_a.iter().enumerate() {
+                match result {
+                    ElevatedResultF3::InCodebook { .. } => in_codebook += 1,
+                    ElevatedResultF3::OutOfCodebook { .. } => out_of_codebook += 1,
+                }
+                if a < b && *result != table[b][a] {
+                    is_commutative = false;
+                }
+            }
+        }
+
+        // Identity check in F_3
+        let identity_count = (0..n)
+            .filter(|&b| {
+                table.iter().enumerate().all(|(a, row)| {
+                    matches!(&row[b],
+                        ElevatedResultF3::InCodebook { decoded_index, .. }
+                        if *decoded_index == a
+                    )
+                })
+            })
+            .count();
+
+        // Associativity check (sample-based for large dictionaries)
+        let mut associative_triples = 0usize;
+        let mut total_triples = 0usize;
+        let limit = n.min(32); // sample at most 32^3 triples
+        for a in 0..limit {
+            for b in 0..limit {
+                for c in 0..limit {
+                    total_triples += 1;
+                    // (a + b) + c vs a + (b + c)
+                    let ab = lattice_add_f3(
+                        self.encode(a).unwrap(),
+                        self.encode(b).unwrap(),
+                    );
+                    let abc_left = lattice_add_f3(&ab, self.encode(c).unwrap());
+
+                    let bc = lattice_add_f3(
+                        self.encode(b).unwrap(),
+                        self.encode(c).unwrap(),
+                    );
+                    let abc_right = lattice_add_f3(self.encode(a).unwrap(), &bc);
+
+                    if abc_left == abc_right {
+                        associative_triples += 1;
+                    }
+                }
+            }
+        }
+
+        let total_pairs = n * n;
+        ElevatedAdditionStatsF3 {
+            total_pairs,
+            in_codebook,
+            out_of_codebook,
+            closure_rate: in_codebook as f64 / total_pairs as f64,
+            is_commutative,
+            identity_count,
+            associativity_rate: associative_triples as f64 / total_triples as f64,
+            associativity_triples_tested: total_triples,
+        }
+    }
+
+    /// Compute the F_3-elevated difference: Phi(a) - Phi(b) in Z, then decode.
+    ///
+    /// Returns InCodebook if the difference is trinary and in the dictionary,
+    /// OutOfCodebook if trinary but not in dictionary, OutOfBounds if
+    /// difference leaves {-1,0,1}^8.
+    pub fn elevated_diff(&self, a: usize, b: usize) -> Option<ElevatedResult> {
+        let lv_a = self.encode(a)?;
+        let lv_b = self.encode(b)?;
+        let diff = lattice_diff(lv_a, lv_b);
+
+        match try_narrow_to_lattice(&diff) {
+            Some(narrow) => {
+                match self.decode(&narrow) {
+                    Some(c) => Some(ElevatedResult::InCodebook {
+                        sum_vec: narrow,
+                        decoded_index: c,
+                    }),
+                    None => Some(ElevatedResult::OutOfCodebook {
+                        sum_vec: narrow,
+                    }),
+                }
+            },
+            None => Some(ElevatedResult::OutOfBounds { sum_vec: diff }),
+        }
+    }
+}
+
+// ============================================================================
 // Tests
 // ============================================================================
 
@@ -788,5 +1367,733 @@ mod tests {
         assert_eq!(entries[1].0, 1);
         assert_eq!(entries[2].0, 2);
         assert_eq!(entries[3].0, 3);
+    }
+
+    // ================================================================
+    // 2048D Forbidden Prefix Enumeration Tests
+    // ================================================================
+
+    #[test]
+    fn test_forbidden_2048_count() {
+        let forbidden = enumerate_forbidden_2048();
+        eprintln!("Forbidden 2048D points: {}", forbidden.len());
+        assert_eq!(forbidden.len(), 139,
+            "Base universe minus Lambda_2048 should have exactly 139 points");
+    }
+
+    #[test]
+    fn test_forbidden_2048_all_in_base_universe() {
+        let forbidden = enumerate_forbidden_2048();
+        for fp in &forbidden {
+            assert!(is_in_base_universe(&fp.vector),
+                "Forbidden point {:?} should be in base universe", fp.vector);
+        }
+    }
+
+    #[test]
+    fn test_forbidden_2048_none_in_lambda() {
+        let forbidden = enumerate_forbidden_2048();
+        for fp in &forbidden {
+            assert!(!is_in_lambda_2048(&fp.vector),
+                "Forbidden point {:?} should NOT be in Lambda_2048", fp.vector);
+        }
+    }
+
+    #[test]
+    fn test_forbidden_2048_family_counts() {
+        let forbidden = enumerate_forbidden_2048();
+        let n_p1 = forbidden.iter().filter(|f| f.family == ForbiddenFamily::Prefix011).count();
+        let n_p2 = forbidden.iter().filter(|f| f.family == ForbiddenFamily::Prefix01011).count();
+        let n_p3 = forbidden.iter().filter(|f| f.family == ForbiddenFamily::Prefix010101).count();
+
+        eprintln!("Forbidden families: Prefix011={}, Prefix01011={}, Prefix010101={}",
+            n_p1, n_p2, n_p3);
+        eprintln!("  Total: {} (= {} + {} + {})", n_p1 + n_p2 + n_p3, n_p1, n_p2, n_p3);
+
+        // All families should be non-empty
+        assert!(n_p1 > 0, "Prefix011 family should be non-empty");
+        assert!(n_p2 > 0, "Prefix01011 family should be non-empty");
+        assert!(n_p3 > 0, "Prefix010101 family should be non-empty");
+
+        // Families should partition the forbidden set (mutually exclusive)
+        assert_eq!(n_p1 + n_p2 + n_p3, 139,
+            "Three families should partition all 139 forbidden points");
+    }
+
+    #[test]
+    fn test_forbidden_2048_families_mutually_exclusive() {
+        let forbidden = enumerate_forbidden_2048();
+        // Verify mutual exclusivity by construction:
+        // Pattern 1 has l_2=1, patterns 2 & 3 have l_2=0
+        // Pattern 2 has l_4=1, pattern 3 has l_4=0
+        for fp in &forbidden {
+            let v = &fp.vector;
+            match fp.family {
+                ForbiddenFamily::Prefix011 => {
+                    assert_eq!(v[0], 0);
+                    assert_eq!(v[1], 1);
+                    assert_eq!(v[2], 1);
+                },
+                ForbiddenFamily::Prefix01011 => {
+                    assert_eq!(v[0], 0);
+                    assert_eq!(v[1], 1);
+                    assert_eq!(v[2], 0);
+                    assert_eq!(v[3], 1);
+                    assert_eq!(v[4], 1);
+                },
+                ForbiddenFamily::Prefix010101 => {
+                    assert_eq!(v[0], 0);
+                    assert_eq!(v[1], 1);
+                    assert_eq!(v[2], 0);
+                    assert_eq!(v[3], 1);
+                    assert_eq!(v[4], 0);
+                    assert_eq!(v[5], 1);
+                },
+            }
+        }
+    }
+
+    #[test]
+    fn test_forbidden_2048_exhaustive_coverage() {
+        // Verify that enumerate_forbidden_2048 and is_in_lambda_2048 are consistent:
+        // every base universe point is either in Lambda_2048 OR in the forbidden set.
+        let forbidden = enumerate_forbidden_2048();
+        let forbidden_set: std::collections::HashSet<LatticeVector> =
+            forbidden.iter().map(|f| f.vector).collect();
+
+        let mut n_base = 0usize;
+        let mut n_lambda = 0usize;
+        let mut n_forbidden = 0usize;
+
+        for code in 0..3u32.pow(8) {
+            let mut v = [0i8; 8];
+            let mut c = code;
+            for coord in &mut v {
+                *coord = (c % 3) as i8 - 1;
+                c /= 3;
+            }
+            if is_in_base_universe(&v) {
+                n_base += 1;
+                if is_in_lambda_2048(&v) {
+                    n_lambda += 1;
+                    assert!(!forbidden_set.contains(&v),
+                        "Lambda_2048 point should not be in forbidden set");
+                } else {
+                    n_forbidden += 1;
+                    assert!(forbidden_set.contains(&v),
+                        "Non-Lambda_2048 base point should be in forbidden set");
+                }
+            }
+        }
+
+        eprintln!("Exhaustive scan: base={}, lambda_2048={}, forbidden={}",
+            n_base, n_lambda, n_forbidden);
+        assert_eq!(n_forbidden, 139);
+        assert_eq!(n_base, n_lambda + n_forbidden);
+    }
+
+    // ================================================================
+    // Lambda enumeration from predicates
+    // ================================================================
+
+    #[test]
+    fn test_enumerate_lambda_256_count() {
+        // Enumerate Lambda_256 from predicates alone (no CSV data).
+        // The predicate chain is an approximation of the true trie filtration;
+        // the CSV-based ground truth has exactly 256 points. This test documents
+        // how many the predicate gives.
+        let points = enumerate_lambda_256();
+        eprintln!("Lambda_256 from predicates: {} points", points.len());
+
+        // The predicates may not give exactly 256 due to omitted singleton
+        // exceptions (see lambda_1024 line 98 comment). Document the count.
+        // If the predicate is exact, this will be 256.
+        assert!(
+            points.len() >= 256,
+            "Predicates should accept at least 256 points (supersets are expected)"
+        );
+        // Upper bound: no more than Lambda_512's count (which should be <= 512).
+        let p512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        eprintln!("Lambda_512 from predicates: {} points", p512.len());
+        assert!(
+            points.len() <= p512.len(),
+            "Lambda_256 must be a subset of Lambda_512"
+        );
+    }
+
+    #[test]
+    fn test_enumerate_filtration_nesting() {
+        // Verify strict nesting Lambda_256 <= Lambda_512 <= Lambda_1024 <= Lambda_2048 <= Base
+        let base = enumerate_lattice_by_predicate(is_in_base_universe);
+        let l2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+        let l1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
+        let l512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let l256 = enumerate_lambda_256();
+
+        eprintln!(
+            "Filtration counts: base={}, 2048={}, 1024={}, 512={}, 256={}",
+            base.len(), l2048.len(), l1024.len(), l512.len(), l256.len()
+        );
+
+        // Strict nesting
+        assert!(l256.len() < l512.len(), "Lambda_256 < Lambda_512");
+        assert!(l512.len() < l1024.len(), "Lambda_512 < Lambda_1024");
+        assert!(l1024.len() < l2048.len(), "Lambda_1024 < Lambda_2048");
+        assert!(l2048.len() < base.len(), "Lambda_2048 < Base");
+
+        // Subset inclusion
+        let l2048_set: std::collections::HashSet<LatticeVector> =
+            l2048.iter().copied().collect();
+        for v in &l1024 {
+            assert!(l2048_set.contains(v), "Lambda_1024 point not in Lambda_2048");
+        }
+        let l512_set: std::collections::HashSet<LatticeVector> =
+            l512.iter().copied().collect();
+        for v in &l256 {
+            assert!(l512_set.contains(v), "Lambda_256 point not in Lambda_512");
+        }
+    }
+
+    // ================================================================
+    // 32-point slice characterization (Task #115)
+    // ================================================================
+
+    #[test]
+    fn test_pinned_slice_prefix_4_count() {
+        // The "pinned corner" with prefix (-1,-1,-1,-1) and free tail in {-1,0,1}^4.
+        // Since all trie-cut exclusions are vacuously satisfied for this prefix,
+        // the slice = base_universe restricted to {l[0..4]=(-1,-1,-1,-1)}.
+        //
+        // The tail must have: even sum AND even nonzero count.
+        // Weight 0: (0,0,0,0) -- 1 vector
+        // Weight 2: C(4,2)*2^2 = 24 vectors (all even sum automatically)
+        // Weight 4: 2^4 = 16 vectors (all even sum automatically)
+        // Total: 41 points.
+        let char = characterize_pinned_slice(4);
+        eprintln!("Pinned-corner prefix=4: {} points", char.count);
+        eprintln!("Tail weight histogram: {:?}", char.tail_weight_histogram);
+
+        // The count should be 41 (not 32) from pure predicates.
+        // The "32-point slice" in the literature is the lex-first 32 of
+        // Lambda_256 from CSV data, which happens to be a subset of these 41.
+        assert_eq!(char.count, 41,
+            "Pinned prefix (-1,-1,-1,-1) slice should have 41 points");
+
+        // Weight distribution: w=0 -> 1, w=2 -> 24, w=4 -> 16
+        assert_eq!(char.tail_weight_histogram, vec![(0, 1), (2, 24), (4, 16)]);
+    }
+
+    #[test]
+    fn test_pinned_slice_prefix_4_geometry() {
+        // Characterize the geometric structure of the 41-point slice.
+        // All points share the common prefix (-1,-1,-1,-1), so pairwise
+        // distances only depend on the tail coordinates (l_4..l_7).
+        let char = characterize_pinned_slice(4);
+
+        eprintln!("Distance histogram (d^2, count): {:?}", char.distance_histogram);
+        eprintln!("Inner product histogram (ip, count): {:?}", char.inner_product_histogram);
+
+        // All pairs: C(41,2) = 820
+        let total_pairs: usize = char.distance_histogram.iter().map(|(_, c)| c).sum();
+        assert_eq!(total_pairs, 41 * 40 / 2, "Should have C(41,2) pairs");
+
+        // The prefix contributes 4 to the squared distance between any two
+        // distinct points (since the prefix is identical). Wait -- no, the prefix
+        // is IDENTICAL so it contributes 0 to squared distance. The distance
+        // is entirely from the tail differences.
+        //
+        // Minimum nonzero d^2 = 2 (two tail coords differ by 1 each).
+        // Maximum d^2 = 4*4 = 16 (all four tail coords differ by 2 each).
+        //
+        // But actually d^2 computed over the full 8D vector: since prefix is identical,
+        // the first 4 coords contribute 0, and we only get distance from the tail.
+
+        // Verify all distances are from tail-only differences
+        for &(d2, _count) in &char.distance_histogram {
+            assert!(d2 > 0, "No zero distances (points are distinct)");
+            assert!(d2 <= 16, "Max d^2 = 4*2^2 = 16 (all tail coords differ by 2)");
+        }
+    }
+
+    #[test]
+    fn test_pinned_slice_prefix_4_tail_structure() {
+        // The 41 tail patterns in {-1,0,1}^4 with even sum and even weight
+        // form a recognizable combinatorial object.
+        //
+        // The weight-4 subset (16 points in {-1,+1}^4 with even sum) is
+        // exactly the D4 root system: the 8 vectors with an even number of
+        // minus signs, plus the 8 with an odd number = all 16 of {-1,+1}^4.
+        // Actually {-1,+1}^4 has all even sums (sum is always even for 4 terms
+        // of +/-1), so all 16 qualify. This is the vertex set of a 4-cube (tesseract).
+        //
+        // The weight-2 subset (24 points with exactly 2 nonzeros in {-1,+1})
+        // corresponds to the edge midpoints of the tesseract.
+        //
+        // The weight-0 subset is just the origin.
+        let char = characterize_pinned_slice(4);
+
+        // Extract the weight-4 tail patterns
+        let w4: Vec<&LatticeVector> = char.tail_patterns.iter()
+            .filter(|t| t[4..].iter().filter(|&&x| x != 0).count() == 4)
+            .collect();
+        assert_eq!(w4.len(), 16, "16 weight-4 tail patterns (full tesseract vertices)");
+
+        // Verify these are exactly {-1,+1}^4 (with prefix positions zeroed)
+        for t in &w4 {
+            for i in 4..8 {
+                assert!(t[i] == -1 || t[i] == 1,
+                    "Weight-4 tail should be +/-1 in free coordinates");
+            }
+        }
+
+        // Extract weight-2 patterns: C(4,2) * 4 = 24
+        let w2: Vec<&LatticeVector> = char.tail_patterns.iter()
+            .filter(|t| t[4..].iter().filter(|&&x| x != 0).count() == 2)
+            .collect();
+        assert_eq!(w2.len(), 24, "24 weight-2 tail patterns");
+
+        // Each weight-2 pattern has exactly 2 nonzero coords in positions 4-7
+        for t in &w2 {
+            let nz_positions: Vec<usize> = (4..8).filter(|&i| t[i] != 0).collect();
+            assert_eq!(nz_positions.len(), 2);
+        }
+    }
+
+    #[test]
+    fn test_pinned_slice_prefix_4_inner_products() {
+        // Analyze inner products to detect polytope structure.
+        // For the full 8D vectors, <v, w> = (-1)^2 * 4 + <tail_v, tail_w>
+        //                                = 4 + <tail_v, tail_w>
+        // So the inner product structure is shifted by +4 from the tail-only products.
+        let char = characterize_pinned_slice(4);
+
+        // Verify the shift: all inner products should be >= 4 - 4 = 0
+        // (tail inner product minimum is -4 when all signs flip).
+        // Actually: min tail ip is -4 (w4 vs w4 with all signs flipped),
+        // so min full ip = 4 + (-4) = 0.
+        for &(ip, _count) in &char.inner_product_histogram {
+            assert!(ip >= 0,
+                "Full inner product should be >= 0 (prefix contributes +4)");
+        }
+
+        // The inner product with self is: 4 + sum(tail_i^2).
+        // For weight-4: self-ip = 4 + 4 = 8
+        // For weight-2: self-ip = 4 + 2 = 6
+        // For weight-0: self-ip = 4 + 0 = 4
+        // (Self inner products are not in the histogram since we skip i==j)
+
+        // The maximum inter-point ip should be 8 (two weight-4 vectors that agree)
+        // minus the common prefix = wait, two identical weight-4 vectors ARE the
+        // same point. The max inter-point ip for distinct points:
+        // weight-4 vs weight-4 with 3 signs matching, 1 flipped: ip = 4 + (3-1) = 6
+        // Actually: if tail_v and tail_w are both in {-1,+1}^4, their ip = n_agree - n_disagree
+        // where n_agree + n_disagree = 4.
+        // ip = n_agree - (4 - n_agree) = 2*n_agree - 4.
+        // Max (distinct): n_agree=3 -> ip=2, so full ip = 4+2 = 6.
+        // Min: n_agree=0 -> ip=-4, so full ip = 4-4 = 0.
+        // Cross (w4 vs w2): tail ip can be at most 2 (2 nonzeros agree).
+        eprintln!("Inner product histogram: {:?}", char.inner_product_histogram);
+    }
+
+    #[test]
+    fn test_pinned_slice_trie_vacuity() {
+        // Verify the key mathematical claim: for any vector with l[0..4] = (-1,-1,-1,-1),
+        // the trie-cut exclusions at EVERY level are vacuously satisfied.
+        // Therefore is_in_lambda_256(v) reduces to is_in_base_universe(v).
+        let mut n_tested = 0usize;
+        let mut n_agree = 0usize;
+
+        for code in 0..3u32.pow(4) {
+            let mut v = [-1i8, -1, -1, -1, 0, 0, 0, 0];
+            let mut c = code;
+            for i in 4..8 {
+                v[i] = (c % 3) as i8 - 1;
+                c /= 3;
+            }
+            n_tested += 1;
+            let in_base = is_in_base_universe(&v);
+            let in_256 = is_in_lambda_256(&v);
+            if in_base == in_256 {
+                n_agree += 1;
+            }
+        }
+
+        eprintln!("Trie vacuity check: {}/{} agree", n_agree, n_tested);
+        assert_eq!(n_agree, n_tested,
+            "For prefix (-1,-1,-1,-1), is_in_lambda_256 == is_in_base_universe everywhere");
+    }
+
+    #[test]
+    fn test_pinned_slice_weight4_is_tesseract() {
+        // The 16 weight-4 tail vectors are the vertices of a 4-dimensional
+        // hypercube (tesseract) centered at the origin, with vertices at {-1,+1}^4.
+        //
+        // The tesseract has these graph-theoretic properties:
+        // - 16 vertices
+        // - Each vertex has 4 nearest neighbors (Hamming distance 1 = flip one sign)
+        // - 32 edges (16 * 4 / 2)
+        // - The adjacency graph is the 4-cube graph Q_4
+        let _char = characterize_pinned_slice(4);
+
+        // Extract weight-4 points (full 8D vectors)
+        let all_256 = enumerate_lambda_256();
+        let w4_points: Vec<LatticeVector> = all_256.iter()
+            .filter(|v| v[..4] == [-1, -1, -1, -1])
+            .filter(|v| v[4..].iter().filter(|&&x| x != 0).count() == 4)
+            .copied()
+            .collect();
+
+        assert_eq!(w4_points.len(), 16);
+
+        // Compute adjacency: two vertices are adjacent if they differ in exactly
+        // one tail coordinate (squared distance = 4 in that coordinate = 2^2).
+        // Full 8D d^2 = 0 (prefix) + 4 (one flip) = 4.
+        let mut edge_count = 0usize;
+        let mut degree_counts = vec![0usize; 16];
+        for i in 0..16 {
+            for j in (i + 1)..16 {
+                let d2: i32 = (0..8)
+                    .map(|k| {
+                        let d = w4_points[i][k] as i32 - w4_points[j][k] as i32;
+                        d * d
+                    })
+                    .sum();
+                if d2 == 4 {
+                    edge_count += 1;
+                    degree_counts[i] += 1;
+                    degree_counts[j] += 1;
+                }
+            }
+        }
+
+        eprintln!("Tesseract verification: {} vertices, {} edges", 16, edge_count);
+        assert_eq!(edge_count, 32, "Tesseract has 32 edges");
+        for (idx, &deg) in degree_counts.iter().enumerate() {
+            assert_eq!(deg, 4, "Vertex {} has degree {} (expected 4)", idx, deg);
+        }
+    }
+
+    // ================================================================
+    // Layer 2: Elevated addition tests
+    // ================================================================
+
+    /// Build a small synthetic dictionary for testing elevated addition.
+    /// Uses 4 basis elements mapping to distinct Lambda_256 vectors.
+    fn make_test_dictionary_4() -> EncodingDictionary {
+        // Pick 4 vectors from Lambda_256 that are well-separated
+        let pairs: Vec<(usize, LatticeVector)> = vec![
+            (0, [-1, -1, -1, -1, 0, 0, 0, 0]),  // weight 4, sum -4
+            (1, [-1, -1, -1, -1, -1, -1, 0, 0]), // weight 6, sum -6
+            (2, [-1, -1, -1, -1, -1, 1, 0, 0]),  // weight 6, sum -4
+            (3, [-1, -1, -1, -1, 0, 0, -1, -1]), // weight 6, sum -6
+        ];
+        EncodingDictionary::try_from_pairs(4, &pairs).unwrap()
+    }
+
+    #[test]
+    fn test_lattice_add_basic() {
+        let a: LatticeVector = [-1, -1, 0, 0, 0, 0, 0, 0];
+        let b: LatticeVector = [0, 0, -1, -1, 0, 0, 0, 0];
+        let sum = lattice_add(&a, &b);
+        assert_eq!(sum, [-1, -1, -1, -1, 0, 0, 0, 0]);
+    }
+
+    #[test]
+    fn test_lattice_add_overflow() {
+        // Two -1s add to -2, which leaves {-1,0,1}^8
+        let a: LatticeVector = [-1, -1, 0, 0, 0, 0, 0, 0];
+        let b: LatticeVector = [-1, -1, 0, 0, 0, 0, 0, 0];
+        let sum = lattice_add(&a, &b);
+        assert_eq!(sum[0], -2, "Sum should be -2, outside trinary range");
+        assert!(try_narrow_to_lattice(&sum).is_none());
+    }
+
+    #[test]
+    fn test_try_narrow_to_lattice() {
+        assert_eq!(
+            try_narrow_to_lattice(&[-1, 0, 1, 0, 0, 0, 0, 0]),
+            Some([-1, 0, 1, 0, 0, 0, 0, 0])
+        );
+        assert!(try_narrow_to_lattice(&[2, 0, 0, 0, 0, 0, 0, 0]).is_none());
+        assert!(try_narrow_to_lattice(&[0, 0, 0, 0, 0, 0, 0, -2]).is_none());
+    }
+
+    #[test]
+    fn test_elevated_add_in_codebook() {
+        let dict = make_test_dictionary_4();
+        // Phi(0) = (-1,-1,-1,-1,0,0,0,0) + Phi(0) = (-2,-2,-2,-2,0,0,0,0)
+        // This overflows trinary -> OutOfBounds
+        let r = dict.elevated_add(0, 0).unwrap();
+        assert!(matches!(r, ElevatedResult::OutOfBounds { .. }),
+            "Self-addition of (-1,-1,-1,-1,...) overflows");
+    }
+
+    #[test]
+    fn test_elevated_add_commutativity() {
+        // lattice_add is inherently commutative (integer addition)
+        let dict = make_test_dictionary_4();
+        for a in 0..4 {
+            for b in 0..4 {
+                let r_ab = dict.elevated_add(a, b).unwrap();
+                let r_ba = dict.elevated_add(b, a).unwrap();
+                assert_eq!(r_ab, r_ba,
+                    "Elevated addition should be commutative: ({}, {})", a, b);
+            }
+        }
+    }
+
+    #[test]
+    fn test_elevated_addition_stats_synthetic() {
+        let dict = make_test_dictionary_4();
+        let stats = dict.elevated_addition_stats();
+
+        eprintln!("Synthetic 4-element dictionary stats:");
+        eprintln!("  total_pairs={}, in_codebook={}, out_of_codebook={}, out_of_bounds={}",
+            stats.total_pairs, stats.in_codebook, stats.out_of_codebook, stats.out_of_bounds);
+        eprintln!("  closure_rate={:.3}, commutative={}, identities={}",
+            stats.closure_rate, stats.is_commutative, stats.identity_count);
+
+        assert_eq!(stats.total_pairs, 16, "4x4 = 16 pairs");
+        assert!(stats.is_commutative, "Lattice addition is commutative");
+        assert_eq!(stats.in_codebook + stats.out_of_codebook + stats.out_of_bounds, 16);
+    }
+
+    #[test]
+    fn test_translation_orbit() {
+        let dict = make_test_dictionary_4();
+        for b in 0..4 {
+            let orbit = dict.translation_orbit(b);
+            eprintln!("Translation orbit of b={}: {} pairs in codebook", b, orbit.len());
+            // Each orbit entry (a, c) means Phi(a) + Phi(b) = Phi(c)
+            for &(a, c) in &orbit {
+                assert!(c < 4, "Decoded index should be valid");
+                let result = dict.elevated_add(a, b).unwrap();
+                assert!(matches!(result, ElevatedResult::InCodebook { decoded_index, .. }
+                    if decoded_index == c));
+            }
+        }
+    }
+
+    #[test]
+    fn test_elevated_add_with_lambda_256_vectors() {
+        // Build a dictionary from the first 8 vectors of Lambda_256.
+        // This uses the predicate-enumerated points as a realistic test.
+        let all_256 = enumerate_lambda_256();
+        assert!(all_256.len() >= 8);
+
+        let pairs: Vec<(usize, LatticeVector)> = all_256[..8]
+            .iter()
+            .enumerate()
+            .map(|(i, &v)| (i, v))
+            .collect();
+
+        let dict = EncodingDictionary::try_from_pairs(8, &pairs).unwrap();
+        let stats = dict.elevated_addition_stats();
+
+        eprintln!("Lambda_256 first-8 dictionary stats:");
+        eprintln!("  total_pairs={}, in_codebook={}, out_of_codebook={}, out_of_bounds={}",
+            stats.total_pairs, stats.in_codebook, stats.out_of_codebook, stats.out_of_bounds);
+        eprintln!("  closure_rate={:.4}, commutative={}, identities={}",
+            stats.closure_rate, stats.is_commutative, stats.identity_count);
+
+        assert_eq!(stats.total_pairs, 64, "8x8 = 64 pairs");
+        assert!(stats.is_commutative);
+        // With vectors from the deep negative corner, most sums will overflow
+        assert!(stats.out_of_bounds > 0,
+            "Some sums should overflow trinary range");
+    }
+
+    #[test]
+    fn test_elevated_add_zero_vector() {
+        // If the dictionary contains the zero vector [0,0,0,0,0,0,0,0],
+        // it should act as identity for lattice addition.
+        // Note: [0,0,...,0] IS in base_universe (sum=0 even, weight=0 even),
+        // and it IS in Lambda_256 (prefix is all 0, but l_0 != 1, l_0 = 0).
+        // Actually: is_in_base_universe requires l_0 != 1, and 0 != 1, so OK.
+        // But is_in_lambda_2048: forbidden (0,1,1) -- only if l_0=0 AND l_1=1 AND l_2=1.
+        // Zero vec has l_1=0, so no forbidden prefix fires.
+        // is_in_lambda_1024: requires l_0=-1. Zero vec has l_0=0. FAILS.
+        // So the zero vector is NOT in Lambda_256 (it fails at Lambda_1024).
+        //
+        // This means there's no additive identity in the Lambda_256 codebook.
+        // Verify this:
+        let all_256 = enumerate_lambda_256();
+        let zero_present = all_256.iter().any(|v| v.iter().all(|&x| x == 0));
+        assert!(!zero_present,
+            "Zero vector is NOT in Lambda_256 (fails l_0=-1 for Lambda_1024)");
+    }
+
+    // ================================================================
+    // Layer 2: F_3 elevated addition tests
+    // ================================================================
+
+    #[test]
+    fn test_lattice_add_f3_basic() {
+        // F_3 wrapping: -1 + -1 = 1 (mod 3)
+        let a: LatticeVector = [-1, -1, 0, 0, 0, 0, 0, 0];
+        let b: LatticeVector = [-1, -1, 0, 0, 0, 0, 0, 0];
+        let sum = lattice_add_f3(&a, &b);
+        assert_eq!(sum[0], 1, "-1 + -1 = 1 in F_3");
+        assert_eq!(sum[1], 1, "-1 + -1 = 1 in F_3");
+    }
+
+    #[test]
+    fn test_lattice_add_f3_identity() {
+        // Zero is the identity in F_3
+        let a: LatticeVector = [-1, 1, 0, -1, 1, 0, -1, 1];
+        let zero: LatticeVector = [0, 0, 0, 0, 0, 0, 0, 0];
+        assert_eq!(lattice_add_f3(&a, &zero), a);
+        assert_eq!(lattice_add_f3(&zero, &a), a);
+    }
+
+    #[test]
+    fn test_lattice_add_f3_inverse() {
+        // In F_3: the additive inverse of x is -x (i.e., 2x mod 3).
+        // -(-1) = 1, -(0) = 0, -(1) = -1
+        let a: LatticeVector = [-1, 1, 0, -1, 1, 0, -1, 1];
+        let neg_a: LatticeVector = [1, -1, 0, 1, -1, 0, 1, -1];
+        let sum = lattice_add_f3(&a, &neg_a);
+        assert_eq!(sum, [0, 0, 0, 0, 0, 0, 0, 0],
+            "a + (-a) = 0 in F_3");
+    }
+
+    #[test]
+    fn test_f3_associativity_on_raw_vectors() {
+        // F_3 addition is inherently associative (it's a group).
+        let a: LatticeVector = [-1, 1, 0, -1, 1, 0, -1, 1];
+        let b: LatticeVector = [1, 1, -1, 0, 0, -1, -1, 0];
+        let c: LatticeVector = [0, -1, 1, 1, -1, 0, 0, -1];
+
+        let ab = lattice_add_f3(&a, &b);
+        let abc_left = lattice_add_f3(&ab, &c);
+
+        let bc = lattice_add_f3(&b, &c);
+        let abc_right = lattice_add_f3(&a, &bc);
+
+        assert_eq!(abc_left, abc_right,
+            "F_3 addition is associative on raw vectors");
+    }
+
+    #[test]
+    fn test_elevated_add_f3_synthetic() {
+        let dict = make_test_dictionary_4();
+        // F_3: Phi(0) +_3 Phi(0) = (-1,-1,-1,-1,0,0,0,0) +_3 same
+        //      = (1,1,1,1,0,0,0,0) -- this is trinary but may not be in dict
+        let r = dict.elevated_add_f3(0, 0).unwrap();
+        match &r {
+            ElevatedResultF3::InCodebook { sum_vec, .. } => {
+                assert_eq!(*sum_vec, [1, 1, 1, 1, 0, 0, 0, 0]);
+            }
+            ElevatedResultF3::OutOfCodebook { sum_vec } => {
+                assert_eq!(*sum_vec, [1, 1, 1, 1, 0, 0, 0, 0]);
+            }
+        }
+    }
+
+    #[test]
+    fn test_elevated_add_f3_commutativity() {
+        let dict = make_test_dictionary_4();
+        for a in 0..4 {
+            for b in 0..4 {
+                let r_ab = dict.elevated_add_f3(a, b).unwrap();
+                let r_ba = dict.elevated_add_f3(b, a).unwrap();
+                assert_eq!(r_ab, r_ba,
+                    "F_3 elevated addition should be commutative: ({}, {})", a, b);
+            }
+        }
+    }
+
+    #[test]
+    fn test_elevated_addition_stats_f3_synthetic() {
+        let dict = make_test_dictionary_4();
+        let stats = dict.elevated_addition_stats_f3();
+
+        eprintln!("F_3 synthetic 4-element dictionary stats:");
+        eprintln!("  total_pairs={}, in_codebook={}, out_of_codebook={}",
+            stats.total_pairs, stats.in_codebook, stats.out_of_codebook);
+        eprintln!("  closure_rate={:.3}, commutative={}, identities={}",
+            stats.closure_rate, stats.is_commutative, stats.identity_count);
+        eprintln!("  associativity_rate={:.3} ({} triples tested)",
+            stats.associativity_rate, stats.associativity_triples_tested);
+
+        assert_eq!(stats.total_pairs, 16);
+        assert!(stats.is_commutative);
+        assert_eq!(stats.in_codebook + stats.out_of_codebook, 16,
+            "No out-of-bounds in F_3");
+        // F_3 on raw vectors is always associative
+        assert!((stats.associativity_rate - 1.0).abs() < 1e-10,
+            "F_3 is inherently associative");
+    }
+
+    #[test]
+    fn test_elevated_add_f3_lambda_256() {
+        // Test F_3 addition on a realistic Lambda_256 sub-dictionary.
+        let all_256 = enumerate_lambda_256();
+
+        let pairs: Vec<(usize, LatticeVector)> = all_256[..16]
+            .iter()
+            .enumerate()
+            .map(|(i, &v)| (i, v))
+            .collect();
+
+        let dict = EncodingDictionary::try_from_pairs(16, &pairs).unwrap();
+        let stats = dict.elevated_addition_stats_f3();
+
+        eprintln!("F_3 Lambda_256 first-16 dictionary stats:");
+        eprintln!("  total_pairs={}, in_codebook={}, out_of_codebook={}",
+            stats.total_pairs, stats.in_codebook, stats.out_of_codebook);
+        eprintln!("  closure_rate={:.4}, commutative={}, identities={}",
+            stats.closure_rate, stats.is_commutative, stats.identity_count);
+        eprintln!("  associativity_rate={:.4} ({} triples tested)",
+            stats.associativity_rate, stats.associativity_triples_tested);
+
+        assert_eq!(stats.total_pairs, 256, "16x16 = 256 pairs");
+        assert!(stats.is_commutative);
+        assert!((stats.associativity_rate - 1.0).abs() < 1e-10,
+            "F_3 is always associative");
+        // The closure rate should be > 0 (F_3 wraps instead of overflowing)
+        eprintln!("  F_3 closure rate: {:.1}% ({}/{})",
+            stats.closure_rate * 100.0, stats.in_codebook, stats.total_pairs);
+    }
+
+    #[test]
+    fn test_elevated_diff_lambda_256() {
+        // Z-difference on Lambda_256 sub-dictionary.
+        // Since all l_0 = -1, difference gives l_0 = 0 (always in trinary range).
+        let all_256 = enumerate_lambda_256();
+
+        let pairs: Vec<(usize, LatticeVector)> = all_256[..8]
+            .iter()
+            .enumerate()
+            .map(|(i, &v)| (i, v))
+            .collect();
+
+        let dict = EncodingDictionary::try_from_pairs(8, &pairs).unwrap();
+
+        let mut in_codebook = 0usize;
+        let mut out_of_codebook = 0usize;
+        let mut out_of_bounds = 0usize;
+
+        for a in 0..8 {
+            for b in 0..8 {
+                match dict.elevated_diff(a, b).unwrap() {
+                    ElevatedResult::InCodebook { .. } => in_codebook += 1,
+                    ElevatedResult::OutOfCodebook { .. } => out_of_codebook += 1,
+                    ElevatedResult::OutOfBounds { .. } => out_of_bounds += 1,
+                }
+            }
+        }
+
+        eprintln!("Z-difference Lambda_256 first-8: in_codebook={}, out_of_codebook={}, out_of_bounds={}",
+            in_codebook, out_of_codebook, out_of_bounds);
+
+        // The self-difference a - a = 0 always, but 0 is NOT in Lambda_256.
+        // So self-differences should all be OutOfCodebook.
+        for a in 0..8 {
+            let r = dict.elevated_diff(a, a).unwrap();
+            assert!(matches!(r, ElevatedResult::OutOfCodebook { sum_vec }
+                if sum_vec == [0, 0, 0, 0, 0, 0, 0, 0]),
+                "a - a = 0, which is not in Lambda_256");
+        }
     }
 }
