@@ -1793,4 +1793,206 @@ mod tests {
             same_frac, mixed_frac
         );
     }
+
+    // ================================================================
+    // l_0=0 Simpson's Paradox (C-511)
+    // ================================================================
+
+    /// Test whether the l_0=0 population (N=954, z=+2.73 from C-508) also
+    /// exhibits the Simpson's Paradox when partitioned by l_1. Compare with
+    /// l_0=-1 result (C-509) to determine if the paradox is universal across
+    /// l_0 strata.
+    #[test]
+    fn test_l0_zero_simpsons_paradox() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_2048,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        let all_2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+        let l0_zero: Vec<_> = all_2048.iter().copied().filter(|v| v[0] == 0).collect();
+
+        // Partition by l_1
+        let l1_neg1: Vec<_> = l0_zero.iter().copied().filter(|v| v[1] == -1).collect();
+        let l1_zero: Vec<_> = l0_zero.iter().copied().filter(|v| v[1] == 0).collect();
+        let l1_pos1: Vec<_> = l0_zero.iter().copied().filter(|v| v[1] == 1).collect();
+
+        eprintln!("\n=== l_0=0 Simpson's Paradox Test ===");
+        eprintln!("l_0=0 total: N={}", l0_zero.len());
+        eprintln!("  l_1=-1: N={}", l1_neg1.len());
+        eprintln!("  l_1=0:  N={}", l1_zero.len());
+        eprintln!("  l_1=+1: N={}", l1_pos1.len());
+
+        let compute_z = |vectors: &[[i8; 8]], label: &str, seed_offset: u64| -> f64 {
+            let n = vectors.len();
+            if n < 10 {
+                eprintln!("  {}: N={} too small", label, n);
+                return f64::NAN;
+            }
+            let prefix = shared_prefix_length(vectors);
+            let d = 8 - prefix;
+            let (cols, _, _) = lattice_to_column_major(vectors, prefix);
+
+            let obs = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 40_000_000 + seed_offset);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled, n, d,
+                    NullModel::ColumnIndependent, &mut rng,
+                );
+                null_fracs.push(matrix_free_fraction(
+                    &shuffled, n, d, n_triples, seed + 41_000_000, 0.05,
+                ));
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
+                / n_permutations as f64).sqrt();
+            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+
+            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z);
+            z
+        };
+
+        let z_all = compute_z(&l0_zero, "all l_1  ", 0);
+        let z_neg1 = compute_z(&l1_neg1, "l_1=-1   ", 1);
+        let z_zero = compute_z(&l1_zero, "l_1=0    ", 2);
+        let z_pos1 = compute_z(&l1_pos1, "l_1=+1   ", 3);
+
+        eprintln!("\n=== l_0=0 Summary ===");
+        eprintln!("l_0=0, all l_1:  z={:.2} (cf C-508: z=+2.73)", z_all);
+        eprintln!("l_0=0, l_1=-1:   z={:.2}", z_neg1);
+        eprintln!("l_0=0, l_1=0:    z={:.2}", z_zero);
+        eprintln!("l_0=0, l_1=+1:   z={:.2}", z_pos1);
+
+        // Check if paradox occurs: do l_1 strata have higher z than combined?
+        let strata_z = [z_neg1, z_zero, z_pos1];
+        let valid_strata: Vec<f64> = strata_z.iter().copied().filter(|z| !z.is_nan()).collect();
+        let min_stratum = valid_strata.iter().cloned().fold(f64::INFINITY, f64::min);
+        eprintln!("Paradox present: all strata z > combined z? min_stratum={:.2} vs combined={:.2}: {}",
+            min_stratum, z_all, min_stratum > z_all);
+    }
+
+    // ================================================================
+    // Dimensional universality: Lambda_256 / Lambda_512 paradox test (C-512)
+    // ================================================================
+
+    /// Test whether the Simpson's Paradox occurs for Lambda_256 (dim=32) and
+    /// Lambda_512 (dim=64) codebooks. If the paradox is universal across
+    /// dimensions, it confirms the mechanism is intrinsic to the ternary lattice
+    /// structure rather than specific to Lambda_2048.
+    #[test]
+    fn test_dimensional_universality_simpsons_paradox() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        let compute_z = |vectors: &[[i8; 8]], label: &str, seed_offset: u64| -> f64 {
+            let n = vectors.len();
+            if n < 10 {
+                eprintln!("  {}: N={} too small", label, n);
+                return f64::NAN;
+            }
+            let prefix = shared_prefix_length(vectors);
+            let d = 8 - prefix;
+            let (cols, _, _) = lattice_to_column_major(vectors, prefix);
+
+            let obs = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 50_000_000 + seed_offset);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled, n, d,
+                    NullModel::ColumnIndependent, &mut rng,
+                );
+                null_fracs.push(matrix_free_fraction(
+                    &shuffled, n, d, n_triples, seed + 51_000_000, 0.05,
+                ));
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
+                / n_permutations as f64).sqrt();
+            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+
+            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z);
+            z
+        };
+
+        // --- Lambda_256 (dim=32, should be strongly ultrametric: z=17.07 from C-500) ---
+        let l256 = enumerate_lattice_by_predicate(is_in_lambda_256);
+        let l256_l0_neg1: Vec<_> = l256.iter().copied().filter(|v| v[0] == -1).collect();
+        let l256_l1_neg1: Vec<_> = l256_l0_neg1.iter().copied().filter(|v| v[1] == -1).collect();
+        let l256_l1_zero: Vec<_> = l256_l0_neg1.iter().copied().filter(|v| v[1] == 0).collect();
+        let l256_l1_pos1: Vec<_> = l256_l0_neg1.iter().copied().filter(|v| v[1] == 1).collect();
+
+        eprintln!("\n=== Lambda_256 (dim=32) Paradox Test ===");
+        eprintln!("Lambda_256 total: N={}", l256.len());
+        eprintln!("l_0=-1 subset: N={}", l256_l0_neg1.len());
+        eprintln!("  l_1=-1: N={}, l_1=0: N={}, l_1=+1: N={}",
+            l256_l1_neg1.len(), l256_l1_zero.len(), l256_l1_pos1.len());
+
+        let z_256_all = compute_z(&l256, "Lambda_256 all   ", 0);
+        let z_256_l0 = compute_z(&l256_l0_neg1, "l_0=-1 all       ", 1);
+        let z_256_l1n = compute_z(&l256_l1_neg1, "l_0=-1,l_1=-1    ", 2);
+        let z_256_l1z = compute_z(&l256_l1_zero, "l_0=-1,l_1=0     ", 3);
+        let z_256_l1p = compute_z(&l256_l1_pos1, "l_0=-1,l_1=+1    ", 4);
+
+        eprintln!("\nLambda_256 summary:");
+        eprintln!("  Full: z={:.2}, l_0=-1: z={:.2}", z_256_all, z_256_l0);
+        if !z_256_l1n.is_nan() { eprintln!("  l_1=-1: z={:.2}", z_256_l1n); }
+        if !z_256_l1z.is_nan() { eprintln!("  l_1=0: z={:.2}", z_256_l1z); }
+        if !z_256_l1p.is_nan() { eprintln!("  l_1=+1: z={:.2}", z_256_l1p); }
+
+        // --- Lambda_512 (dim=64) ---
+        let l512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let l512_l0_neg1: Vec<_> = l512.iter().copied().filter(|v| v[0] == -1).collect();
+        let l512_l1_neg1: Vec<_> = l512_l0_neg1.iter().copied().filter(|v| v[1] == -1).collect();
+        let l512_l1_zero: Vec<_> = l512_l0_neg1.iter().copied().filter(|v| v[1] == 0).collect();
+        let l512_l1_pos1: Vec<_> = l512_l0_neg1.iter().copied().filter(|v| v[1] == 1).collect();
+
+        eprintln!("\n=== Lambda_512 (dim=64) Paradox Test ===");
+        eprintln!("Lambda_512 total: N={}", l512.len());
+        eprintln!("l_0=-1 subset: N={}", l512_l0_neg1.len());
+        eprintln!("  l_1=-1: N={}, l_1=0: N={}, l_1=+1: N={}",
+            l512_l1_neg1.len(), l512_l1_zero.len(), l512_l1_pos1.len());
+
+        let z_512_all = compute_z(&l512, "Lambda_512 all   ", 10);
+        let z_512_l0 = compute_z(&l512_l0_neg1, "l_0=-1 all       ", 11);
+        let z_512_l1n = compute_z(&l512_l1_neg1, "l_0=-1,l_1=-1    ", 12);
+        let z_512_l1z = compute_z(&l512_l1_zero, "l_0=-1,l_1=0     ", 13);
+        let z_512_l1p = compute_z(&l512_l1_pos1, "l_0=-1,l_1=+1    ", 14);
+
+        eprintln!("\nLambda_512 summary:");
+        eprintln!("  Full: z={:.2}, l_0=-1: z={:.2}", z_512_all, z_512_l0);
+        if !z_512_l1n.is_nan() { eprintln!("  l_1=-1: z={:.2}", z_512_l1n); }
+        if !z_512_l1z.is_nan() { eprintln!("  l_1=0: z={:.2}", z_512_l1z); }
+        if !z_512_l1p.is_nan() { eprintln!("  l_1=+1: z={:.2}", z_512_l1p); }
+    }
 }
