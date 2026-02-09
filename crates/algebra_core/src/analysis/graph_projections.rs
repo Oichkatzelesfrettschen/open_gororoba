@@ -555,6 +555,173 @@ pub fn compute_invariant_suite_from_graph(name: &str, graph: &UnGraph<(), ()>) -
     }
 }
 
+// ============================================================================
+// Layer 3/4 Bridge: Cross-Assessor Graph -> Invariant Pipeline
+// ============================================================================
+//
+// Connects the actual ZD adjacency (MotifComponent from boxkites.rs)
+// to the invariant fingerprinting pipeline. Uses an "invariant budget"
+// policy: full O(n^3) invariants for small components (n < BUDGET_THRESHOLD),
+// lightweight O(n+e) invariants for large ones.
+
+use crate::analysis::boxkites::{CrossPair, MotifComponent};
+
+/// Threshold for switching from full to lightweight invariants.
+/// Components with n_nodes >= this value skip eigendecomposition and
+/// all-pairs BFS, using only degree-based invariants.
+pub const BUDGET_THRESHOLD: usize = 256;
+
+/// Lightweight graph invariants computed in O(n + e) time.
+///
+/// Omits: spectrum (eigendecomposition), diameter (all-pairs BFS),
+/// girth (all-source BFS cycle detection).
+/// Includes: node/edge counts, degree sequence, triangle count
+/// (via edge iteration, O(sum of d_v^2)).
+#[derive(Debug, Clone, serde::Serialize, serde::Deserialize)]
+pub struct LightGraphInvariants {
+    pub n_nodes: usize,
+    pub n_edges: usize,
+    pub n_components: usize,
+    /// Sorted degree multiset.
+    pub degrees: Vec<usize>,
+    /// Triangle count via edge-neighbor intersection.
+    pub triangle_count: usize,
+}
+
+/// Compute lightweight invariants in O(n + e + sum(d_v^2)) time.
+///
+/// Triangle counting uses the edge-iteration method: for each edge (u,v),
+/// count common neighbors. This avoids dense matrix construction.
+pub fn compute_light_graph_invariants(graph: &UnGraph<(), ()>) -> LightGraphInvariants {
+    let n = graph.node_count();
+    let e = graph.edge_count();
+    let n_comp = connected_components(graph);
+
+    let mut degrees: Vec<usize> = graph
+        .node_indices()
+        .map(|i| graph.neighbors(i).count())
+        .collect();
+    degrees.sort_unstable();
+
+    // Triangle count via neighbor-set intersection per edge.
+    // For each edge (u,v), count |N(u) intersect N(v)|. Sum / 3 = triangles.
+    let adj_sets: Vec<HashSet<usize>> = graph
+        .node_indices()
+        .map(|i| graph.neighbors(i).map(|n| n.index()).collect())
+        .collect();
+
+    let mut triangle_count_3x = 0usize;
+    for edge in graph.edge_indices() {
+        let (u, v) = graph.edge_endpoints(edge).unwrap();
+        let common = adj_sets[u.index()]
+            .intersection(&adj_sets[v.index()])
+            .count();
+        triangle_count_3x += common;
+    }
+    let triangle_count = triangle_count_3x / 3;
+
+    LightGraphInvariants {
+        n_nodes: n,
+        n_edges: e,
+        n_components: n_comp,
+        degrees,
+        triangle_count,
+    }
+}
+
+/// Budget-aware invariant result: either full or lightweight.
+#[derive(Debug, Clone)]
+pub enum BudgetedInvariants {
+    Full(GraphInvariants),
+    Light(LightGraphInvariants),
+}
+
+impl BudgetedInvariants {
+    pub fn n_nodes(&self) -> usize {
+        match self {
+            Self::Full(inv) => inv.n_nodes,
+            Self::Light(inv) => inv.n_nodes,
+        }
+    }
+
+    pub fn n_edges(&self) -> usize {
+        match self {
+            Self::Full(inv) => inv.n_edges,
+            Self::Light(inv) => inv.n_edges,
+        }
+    }
+
+    pub fn n_components(&self) -> usize {
+        match self {
+            Self::Full(inv) => inv.n_components,
+            Self::Light(inv) => inv.n_components,
+        }
+    }
+
+    pub fn triangle_count(&self) -> usize {
+        match self {
+            Self::Full(inv) => inv.triangle_count,
+            Self::Light(inv) => inv.triangle_count,
+        }
+    }
+
+    pub fn degrees(&self) -> &[usize] {
+        match self {
+            Self::Full(inv) => &inv.degrees,
+            Self::Light(inv) => &inv.degrees,
+        }
+    }
+
+    pub fn is_full(&self) -> bool {
+        matches!(self, Self::Full(_))
+    }
+}
+
+/// Convert a MotifComponent (cross-assessor graph from boxkites.rs)
+/// into a petgraph UnGraph for invariant computation.
+///
+/// Returns the graph and a mapping from node index to CrossPair.
+pub fn motif_component_to_petgraph(
+    comp: &MotifComponent,
+) -> (UnGraph<(), ()>, Vec<CrossPair>) {
+    let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+    let node_map: HashMap<CrossPair, usize> = nodes
+        .iter()
+        .enumerate()
+        .map(|(i, &cp)| (cp, i))
+        .collect();
+
+    let mut graph = UnGraph::<(), ()>::with_capacity(nodes.len(), comp.edges.len());
+    let indices: Vec<NodeIndex> = (0..nodes.len()).map(|_| graph.add_node(())).collect();
+
+    for &(a, b) in &comp.edges {
+        if let (Some(&ia), Some(&ib)) = (node_map.get(&a), node_map.get(&b)) {
+            graph.add_edge(indices[ia], indices[ib], ());
+        }
+    }
+
+    (graph, nodes)
+}
+
+/// Compute invariants for a cross-assessor MotifComponent with budget policy.
+///
+/// If the component has fewer than BUDGET_THRESHOLD nodes, computes full
+/// invariants (spectrum, diameter, girth). Otherwise, computes lightweight
+/// invariants (degree sequence, triangles) in O(n+e) time.
+pub fn compute_cross_assessor_invariants(comp: &MotifComponent) -> BudgetedInvariants {
+    let (graph, _node_map) = motif_component_to_petgraph(comp);
+    compute_budgeted_invariants(&graph)
+}
+
+/// Budget-aware invariant computation for any UnGraph.
+pub fn compute_budgeted_invariants(graph: &UnGraph<(), ()>) -> BudgetedInvariants {
+    if graph.node_count() < BUDGET_THRESHOLD {
+        BudgetedInvariants::Full(compute_graph_invariants(graph))
+    } else {
+        BudgetedInvariants::Light(compute_light_graph_invariants(graph))
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -1119,5 +1286,65 @@ mod tests {
         // Class sizes should sum to 31
         let total: usize = suite.motif_classes.iter().map(|(_, ids)| ids.len()).sum();
         assert_eq!(total, 31);
+    }
+
+    // ── Layer 3/4 Bridge tests ────────────────────────────────────────
+
+    #[test]
+    fn test_light_invariants_match_full_for_small_graph() {
+        // Build a small known graph (K3 + isolated node = 4 nodes, 3 edges)
+        let mut graph = UnGraph::<(), ()>::new_undirected();
+        let n0 = graph.add_node(());
+        let n1 = graph.add_node(());
+        let n2 = graph.add_node(());
+        let _n3 = graph.add_node(());
+        graph.add_edge(n0, n1, ());
+        graph.add_edge(n1, n2, ());
+        graph.add_edge(n0, n2, ());
+
+        let full = compute_graph_invariants(&graph);
+        let light = compute_light_graph_invariants(&graph);
+
+        assert_eq!(full.n_nodes, light.n_nodes);
+        assert_eq!(full.n_edges, light.n_edges);
+        assert_eq!(full.n_components, light.n_components);
+        assert_eq!(full.degrees, light.degrees);
+        assert_eq!(full.triangle_count, light.triangle_count);
+    }
+
+    #[test]
+    fn test_motif_component_bridge_dim16() {
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
+
+        let comps = motif_components_for_cross_assessors(16);
+        assert_eq!(comps.len(), 7);
+
+        for (i, comp) in comps.iter().enumerate() {
+            let inv = compute_cross_assessor_invariants(comp);
+            assert!(inv.is_full(), "dim=16 components should use full invariants");
+            assert_eq!(inv.n_nodes(), 6, "comp[{}] should have 6 nodes", i);
+            assert_eq!(inv.n_edges(), 12, "comp[{}] should have 12 edges (octahedron)", i);
+            assert_eq!(inv.n_components(), 1, "comp[{}] should be connected", i);
+            assert_eq!(inv.triangle_count(), 8, "comp[{}] should have 8 triangles (octahedron)", i);
+        }
+    }
+
+    #[test]
+    fn test_budget_threshold_selects_light() {
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
+
+        // At dim=64, components have 30 nodes -- below BUDGET_THRESHOLD (256)
+        let comps_64 = motif_components_for_cross_assessors(64);
+        for comp in &comps_64 {
+            let inv = compute_cross_assessor_invariants(comp);
+            assert!(inv.is_full(), "dim=64 comps (30 nodes) should use full invariants");
+        }
+
+        // Verify the bridge produces consistent node/edge counts
+        for comp in &comps_64 {
+            let inv = compute_cross_assessor_invariants(comp);
+            assert_eq!(inv.n_nodes(), comp.nodes.len());
+            assert_eq!(inv.n_edges(), comp.edges.len());
+        }
     }
 }

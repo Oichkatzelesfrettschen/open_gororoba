@@ -2676,9 +2676,12 @@ mod tests {
     ///   n_isolated = boundary_count = half
     ///   n_components_total = n_partner_edges + half
     ///   motif_classes = exactly 2 (K_2 and K_1)
+    ///
+    /// Uses lightweight petgraph component counting (NOT the full invariant
+    /// suite) to avoid O(n^3) spectrum computation at large dimensions.
     #[test]
     fn test_thesis_e_closed_form_theorem() {
-        use crate::analysis::graph_projections::compute_invariant_suite_from_graph;
+        use petgraph::algo::connected_components;
         use petgraph::graph::{NodeIndex, UnGraph};
 
         for dim in [64, 128, 256] {
@@ -2738,37 +2741,36 @@ mod tests {
                 "dim={}: partner edge count mismatch", dim
             );
 
-            let suite = compute_invariant_suite_from_graph(
-                &format!("P_xor_involution_{}", dim),
-                &graph,
+            // Lightweight component count (O(n+e), not O(n^3))
+            let n_comps = connected_components(&graph);
+            assert_eq!(
+                n_comps, expected_components,
+                "dim={}: component count mismatch", dim
             );
 
-            let n_k2 = suite
-                .components
-                .iter()
-                .filter(|c| c.invariants.n_edges == 1)
-                .count();
-            let n_iso = suite
-                .components
-                .iter()
-                .filter(|c| c.invariants.n_edges == 0)
-                .count();
+            // Verify every edge connects two nodes of degree 1 (K_2 check)
+            // and count degree-0 nodes (isolated = boundary)
+            let mut n_deg0 = 0usize;
+            let mut n_deg1 = 0usize;
+            for ni in graph.node_indices() {
+                let deg = graph.neighbors(ni).count();
+                match deg {
+                    0 => n_deg0 += 1,
+                    1 => n_deg1 += 1,
+                    d => panic!(
+                        "dim={}: node {} has degree {} (expected 0 or 1)",
+                        dim, ni.index(), d
+                    ),
+                }
+            }
 
             assert_eq!(
-                n_k2, expected_k2,
-                "dim={}: K_2 component count mismatch", dim
+                n_deg0, expected_isolated,
+                "dim={}: isolated count mismatch", dim
             );
             assert_eq!(
-                n_iso, expected_isolated,
-                "dim={}: isolated node count mismatch", dim
-            );
-            assert_eq!(
-                suite.components.len(), expected_components,
-                "dim={}: total component count mismatch", dim
-            );
-            assert_eq!(
-                suite.motif_classes.len(), 2,
-                "dim={}: should have exactly 2 motif classes (K_2, K_1)", dim
+                n_deg1, 2 * expected_k2,
+                "dim={}: paired node count mismatch", dim
             );
         }
     }
