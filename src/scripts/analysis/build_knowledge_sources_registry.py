@@ -23,6 +23,7 @@ BACKTICK_RE = re.compile(r"`([^`\n]+)`")
 
 MIRROR_TO_TOML = {
     "docs/CLAIMS_EVIDENCE_MATRIX.md": "registry/claims.toml",
+    "docs/BIBLIOGRAPHY.md": "registry/bibliography.toml",
     "docs/INSIGHTS.md": "registry/insights.toml",
     "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md": "registry/experiments.toml",
     "docs/book/src/registry/claims.md": "registry/claims.toml",

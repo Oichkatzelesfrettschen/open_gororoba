@@ -159,6 +159,73 @@ def export_claims(repo_root: Path, out_path: Path) -> None:
     _write(out_path, "\n".join(lines))
 
 
+def export_bibliography(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/bibliography.toml")
+    meta = data.get("bibliography", {})
+    groups = data.get("group", [])
+    entries = data.get("entry", [])
+    lines = _header("Bibliography Registry Mirror")
+    lines.append("Authoritative source: `registry/bibliography.toml`.")
+    lines.append("")
+    lines.append(f"- Updated: {meta.get('updated', '')}")
+    lines.append(f"- Source markdown: `{meta.get('source_markdown', '')}`")
+    lines.append(f"- Group count: {meta.get('group_count', len(groups))}")
+    lines.append(f"- Entry count: {meta.get('entry_count', len(entries))}")
+    lines.append("")
+
+    for group in groups:
+        group_name = str(group.get("name", "(group)"))
+        lines.append(f"## {group_name}")
+        lines.append("")
+        group_entries = [row for row in entries if str(row.get("group", "")) == group_name]
+        for row in sorted(group_entries, key=lambda item: int(item.get("order_index", 0))):
+            lines.append(f"- {row.get('citation_markdown', '')}")
+            for note in row.get("notes", []):
+                lines.append(f"  - {note}")
+        lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_bibliography_legacy(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/bibliography.toml")
+    groups = data.get("group", [])
+    entries = data.get("entry", [])
+    lines: list[str] = [
+        "# Unified Bibliography",
+        "",
+        "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+        "<!-- Source of truth: registry/bibliography.toml -->",
+        "",
+        "This file is generated from `registry/bibliography.toml`.",
+        "",
+    ]
+    for group in groups:
+        group_name = str(group.get("name", "")).strip()
+        lines.append(f"## {group_name}")
+        lines.append("")
+        section_names = []
+        for row in entries:
+            if str(row.get("group", "")) != group_name:
+                continue
+            section_name = str(row.get("section", "Unscoped")).strip()
+            if section_name not in section_names:
+                section_names.append(section_name)
+        for section_name in section_names:
+            lines.append(f"### {section_name}")
+            section_entries = [
+                row
+                for row in entries
+                if str(row.get("group", "")) == group_name
+                and str(row.get("section", "Unscoped")).strip() == section_name
+            ]
+            for row in sorted(section_entries, key=lambda item: int(item.get("order_index", 0))):
+                lines.append(f"*   {row.get('citation_markdown', '')}")
+                for note in row.get("notes", []):
+                    lines.append(f"    *   {note}")
+            lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
 def export_claims_matrix_legacy(repo_root: Path, out_path: Path) -> None:
     data = _load_toml(repo_root / "registry/claims.toml")
     claims = sorted(
@@ -1038,6 +1105,7 @@ def main() -> int:
 
     export_insights(repo_root, out_dir / "INSIGHTS_REGISTRY_MIRROR.md")
     export_claims(repo_root, out_dir / "CLAIMS_REGISTRY_MIRROR.md")
+    export_bibliography(repo_root, out_dir / "BIBLIOGRAPHY_REGISTRY_MIRROR.md")
     export_experiments(repo_root, out_dir / "EXPERIMENTS_REGISTRY_MIRROR.md")
     export_roadmap(repo_root, out_dir / "ROADMAP_REGISTRY_MIRROR.md")
     export_todo(repo_root, out_dir / "TODO_REGISTRY_MIRROR.md")
@@ -1058,6 +1126,7 @@ def main() -> int:
     export_todo_legacy(repo_root, repo_root / "docs/TODO.md")
     export_next_actions_legacy(repo_root, repo_root / "docs/NEXT_ACTIONS.md")
     export_requirements_legacy(repo_root)
+    export_bibliography_legacy(repo_root, repo_root / "docs/BIBLIOGRAPHY.md")
 
     if args.legacy_claims_sync:
         export_claims_matrix_legacy(repo_root, repo_root / "docs/CLAIMS_EVIDENCE_MATRIX.md")

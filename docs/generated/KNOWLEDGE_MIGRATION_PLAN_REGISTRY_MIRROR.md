@@ -126,6 +126,19 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - `docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md`
 - Notes: Governance registry classifies all markdown lifecycle modes and drives header/parity verifiers.
 
+### KM-011: bibliography
+
+- Strategy: `toml_primary_markdown_mirror`
+- Status: `complete`
+- Source markdown:
+  - `docs/BIBLIOGRAPHY.md`
+- Authoritative TOML:
+  - `registry/bibliography.toml`
+- Generated mirrors:
+  - `docs/BIBLIOGRAPHY.md`
+  - `docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md`
+- Notes: Bibliography is TOML-first with generated markdown mirrors.
+
 ### KM-006: generated_artifacts
 
 - Strategy: `artifact_only_no_manual_edit`

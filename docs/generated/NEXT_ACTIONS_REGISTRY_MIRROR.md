@@ -22,8 +22,8 @@ Authoritative source: `registry/next_actions.toml`.
 
 ### NA-002 (P1): Resolve multiplication coupling rho(b) in GL(8,Z)
 
-- Status: `open`
-- Description: Close the open lattice-algebra dictionary item linked to C-466.
+- Status: `done`
+- Description: REFUTED (Sprint 16). Only identity element b=0 yields zero residual in rank-adaptive reduced-subspace algorithm. C-466 refuted.
 - References:
   - `docs/NEXT_ACTIONS.md`
   - `docs/ROADMAP.md`

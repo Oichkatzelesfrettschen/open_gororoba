@@ -34,6 +34,15 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Quantum (Qiskit via Docker)
 
 Host Python may be too new for Qiskit wheels. Use Docker.
