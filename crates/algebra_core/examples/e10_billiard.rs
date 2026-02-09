@@ -289,6 +289,23 @@ fn main() {
         println!("Too few bounces for Fano analysis (need >= 10 3-windows).");
     }
 
+    // === Cayley integer bridge: Dynkin-Fano correspondence ===
+    // Test whether E8 Dynkin adjacency corresponds to Fano triple membership
+    // when simple roots are mapped to Cayley integers (octonions).
+    println!("\n=== Cayley Integer Bridge (Dynkin-Fano Correspondence) ===");
+    let (best_basis, best_fano, total_adj, all_counts) =
+        e10_octonion::optimal_cayley_basis();
+    let (null_mean, null_std) = e10_octonion::dynkin_fano_null_summary(&all_counts);
+    let pval_count = all_counts.iter().filter(|&&c| c >= best_fano).count();
+    let pval = pval_count as f64 / all_counts.len() as f64;
+    println!("E8 Dynkin edges: {}", total_adj);
+    println!("Optimal basis permutation: {:?}", best_basis.perm);
+    println!("Fano-connected Dynkin edges: {}/{} ({:.3})",
+        best_fano, total_adj, best_fano as f64 / total_adj as f64);
+    println!("Null distribution: mean={:.3}, std={:.3}", null_mean, null_std);
+    println!("Z-score: {:.2}", (best_fano as f64 - null_mean) / null_std);
+    println!("Exact p-value (rank among 40320 perms): {:.6}", pval);
+
     // === Sector-specific analysis (Claim 3 verification) ===
     println!("\n=== Sector-Specific Metrics ===");
     let sector = billiard_stats::compute_sector_metrics(&bounce_sequence);
