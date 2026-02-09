@@ -256,6 +256,17 @@ pub use billiard_stats::{
     transition_matrix, stationary_distribution,
 };
 
+pub use emanation::{
+    // Core ET types
+    ToneRow, StruttedEtCell, StruttedEmanationTable, StrutSpectrum,
+    // ET construction
+    generate_tone_row, create_strutted_et,
+    // Regime spectroscopy
+    et_sparsity_spectroscopy, et_regimes,
+    // CDP signed product (integer-exact)
+    cdp_signed_product,
+};
+
 // Re-export external algebra crates for convenience
 pub use wheel as ext_wheel;
 pub use padic as ext_padic;
