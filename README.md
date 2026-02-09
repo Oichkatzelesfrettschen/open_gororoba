@@ -9,15 +9,26 @@ an in-repo check (test/verifier/script + artifact).
 
 ## Start here
 
-- Requirements: `docs/REQUIREMENTS.md`
-- Repo structure and conventions: `docs/REPO_STRUCTURE.md`
-- Claims and evidence hooks: `docs/CLAIMS_EVIDENCE_MATRIX.md`
-- Task tracker: `docs/CLAIMS_TASKS.md`
+- Canonical source of truth: `registry/*.toml` (authoring happens here)
+- Generate docs mirrors for browsing: `PYTHONWARNINGS=error make docs-publish`
+- Validate TOML registries only (no mirror tracking required): `PYTHONWARNINGS=error make registry`
+
+README entry points (tracked and maintained):
+
+- Contributor/agent contract: `AGENTS.md`
+- Assistant compatibility shim: `CLAUDE.md`
+- Assistant compatibility shim: `GEMINI.md`
+- Curated datasets and theory index: `curated/README.md`
+- Coq workflow entrypoint: `curated/01_theory_frameworks/README_COQ.md`
+- Artifact conventions and provenance policy: `data/artifacts/README.md`
+- CSV data conventions: `data/csv/README.md`
 
 Quick commands:
 
 - Full gate (tests + lint + verifiers): `PYTHONWARNINGS=error make check`
 - Verification-only gate (no artifact generation): `PYTHONWARNINGS=error make smoke`
+- Registry-only gate (TOML authority): `PYTHONWARNINGS=error make registry`
+- Publish docs mirrors from TOML registries: `PYTHONWARNINGS=error make docs-publish`
 - Full gate, parallel pytest workers (opt-in): `PYTHONWARNINGS=error make check-parallel`
 - Tests only, parallel pytest workers (opt-in): `PYTHONWARNINGS=error make test-parallel`
 - Opt-in experiments/simulations smoke: `PYTHONWARNINGS=error make experiments-smoke`
