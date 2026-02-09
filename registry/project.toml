@@ -5,18 +5,25 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2239
-claim_count = 477
+test_count = 2257
+claim_count = 480
 insight_count = 17
 experiment_count = 13
 paper_count = 19
 binary_count = 40
 
+[sprints.s20]
+number = 20
+date = "2026-02-09"
+test_count = 2257
+claim_count = 480
+summary = "Twist-delta pair correspondence RESOLVED (C-478, Fano Line Pairing Theorem, HashSet nondeterminism fix). Lanyard sign census VERIFIED (C-479, 42 TwoSameOneOpp + 14 AllOpposite, uniform). GF(2) separating degree at dim=64 RESOLVED (C-480, degree 4 quartic, +1 per doubling). Stale docs updated."
+
 [sprints.s19]
 number = 19
 date = "2026-02-09"
 test_count = 2239
-claim_count = 477
+claim_count = 480
 insight_count = 17
 summary = "Run experiments E-011/E-012/E-013 with production parameters. C-476 (ALP) partially verified (sparse graphs only). C-477 (Sky-Limit-Set) partially verified (A_{N-1} best Coxeter match, improving with N). New insight I-017."
 
@@ -24,7 +31,7 @@ summary = "Run experiments E-011/E-012/E-013 with production parameters. C-476 (
 number = 18
 date = "2026-02-09"
 test_count = 2239
-claim_count = 477
+claim_count = 480
 binary_count = 40
 summary = "Experiment binaries E-011/E-012/E-013: cross-stack-locality, et-billiard, sky-limit-set CLIs with CSV output. 40 binaries, all 3 produce verified output."
 
@@ -32,7 +39,7 @@ summary = "Experiment binaries E-011/E-012/E-013: cross-stack-locality, et-billi
 number = 17
 date = "2026-02-09"
 test_count = 2239
-claim_count = 477
+claim_count = 480
 summary = "Experiments B+C: ET discrete billiard (symbolic dynamics, entropy, phase sweep), sky-limit-set Coxeter correspondence, cross-stack locality ALP formalization, narrative registry enrichment, 41 new tests"
 
 [sprints.s16]
