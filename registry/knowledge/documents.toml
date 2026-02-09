@@ -4,8 +4,8 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 112
-skipped_generated_count = 119
+raw_capture_count = 111
+skipped_generated_count = 121
 authoritative = false
 normalization_required = true
 
@@ -96,17 +96,6 @@ raw_captured = true
 authoritative = false
 normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0017.toml"
-
-[[document]]
-id = "DOC-0018"
-source_path = "docs/BIBLIOGRAPHY.md"
-title = "Unified Bibliography"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0018.toml"
 
 [[document]]
 id = "DOC-0019"
@@ -1209,20 +1198,9 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0151.toml"
 
 [[document]]
-id = "DOC-0172"
+id = "DOC-0173"
 source_path = "docs/theory/CLAIMS_METHODOLOGY.md"
 title = "Claims Methodology and Scientific Rigor"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0172.toml"
-
-[[document]]
-id = "DOC-0173"
-source_path = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
-title = "Warp Ring Physics Reconciliation (Phase 7.0)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1231,7 +1209,18 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0173.toml"
 
 [[document]]
-id = "DOC-0185"
+id = "DOC-0174"
+source_path = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
+title = "Warp Ring Physics Reconciliation (Phase 7.0)"
+kind = "manual_source"
+migration_priority = "high"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0174.toml"
+
+[[document]]
+id = "DOC-0186"
 source_path = "docs/x86_SIMD_OPTIMIZATION.md"
 title = "x86 SIMD/FPU Optimization & History Reference"
 kind = "manual_source"
@@ -1239,7 +1228,7 @@ migration_priority = "high"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0185.toml"
+document_toml = "registry/knowledge/docs/DOC-0186.toml"
 
 [[document]]
 id = "DOC-0005"
@@ -1318,6 +1307,15 @@ id = "DOC-0015"
 source_path = "data/artifacts/reality_check_and_synthesis.md"
 title = "Reality Check & Synthesis: Aligning \"Surreal-Noncommutative\" Framework with Academic Consensus"
 kind = "artifact_report"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0018"
+source_path = "docs/BIBLIOGRAPHY.md"
+title = "Unified Bibliography"
+kind = "markdown_mirror"
 raw_captured = false
 authoritative = false
 skip_reason = "generated_markdown_or_artifact"
@@ -1630,6 +1628,15 @@ skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
 id = "DOC-0153"
+source_path = "docs/generated/CLAIMS_REGISTRY_MIRROR.md"
+title = "Claims Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0154"
 source_path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
 title = "Claims Tasks Registry Mirror"
 kind = "generated_markdown"
@@ -1638,7 +1645,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0154"
+id = "DOC-0155"
 source_path = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
 title = "Claim Tickets Registry Mirror"
 kind = "generated_markdown"
@@ -1647,7 +1654,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0155"
+id = "DOC-0156"
 source_path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
 title = "Experiments Registry Mirror"
 kind = "generated_markdown"
@@ -1656,7 +1663,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0156"
+id = "DOC-0157"
 source_path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
 title = "Insights Registry Mirror"
 kind = "generated_markdown"
@@ -1665,7 +1672,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0157"
+id = "DOC-0158"
 source_path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
 title = "Knowledge Migration Plan Registry Mirror"
 kind = "generated_markdown"
@@ -1674,7 +1681,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0158"
+id = "DOC-0159"
 source_path = "docs/generated/MARKDOWN_GOVERNANCE_REGISTRY_MIRROR.md"
 title = "Markdown Governance Registry Mirror"
 kind = "generated_markdown"
@@ -1683,7 +1690,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0159"
+id = "DOC-0160"
 source_path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
 title = "Next Actions Registry Mirror"
 kind = "generated_markdown"
@@ -1692,7 +1699,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0160"
+id = "DOC-0161"
 source_path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
 title = "Requirements Registry Mirror"
 kind = "generated_markdown"
@@ -1701,7 +1708,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0161"
+id = "DOC-0162"
 source_path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
 title = "Roadmap Registry Mirror"
 kind = "generated_markdown"
@@ -1710,7 +1717,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0162"
+id = "DOC-0163"
 source_path = "docs/generated/TODO_REGISTRY_MIRROR.md"
 title = "TODO Registry Mirror"
 kind = "generated_markdown"
@@ -1719,7 +1726,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0163"
+id = "DOC-0164"
 source_path = "docs/requirements/algebra.md"
 title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
 kind = "generated_markdown"
@@ -1728,7 +1735,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0164"
+id = "DOC-0165"
 source_path = "docs/requirements/analysis.md"
 title = "Requirements: Analysis (Topology + Embeddings)"
 kind = "generated_markdown"
@@ -1737,7 +1744,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0165"
+id = "DOC-0166"
 source_path = "docs/requirements/astro.md"
 title = "Requirements: Astronomy Data Fetching"
 kind = "generated_markdown"
@@ -1746,7 +1753,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0166"
+id = "DOC-0167"
 source_path = "docs/requirements/coq.md"
 title = "Requirements: Coq Proof Checking"
 kind = "generated_markdown"
@@ -1755,7 +1762,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0167"
+id = "DOC-0168"
 source_path = "docs/requirements/cpp.md"
 title = "Requirements: C++ Kernels (Conan + CMake)"
 kind = "generated_markdown"
@@ -1764,7 +1771,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0168"
+id = "DOC-0169"
 source_path = "docs/requirements/latex.md"
 title = "Requirements: LaTeX (PDF Build)"
 kind = "generated_markdown"
@@ -1773,7 +1780,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0169"
+id = "DOC-0170"
 source_path = "docs/requirements/materials.md"
 title = "Requirements: Materials Datasets"
 kind = "generated_markdown"
@@ -1782,7 +1789,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0170"
+id = "DOC-0171"
 source_path = "docs/requirements/particle.md"
 title = "Requirements: Particle Data Workflows"
 kind = "generated_markdown"
@@ -1791,7 +1798,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0171"
+id = "DOC-0172"
 source_path = "docs/requirements/quantum-docker.md"
 title = "Requirements: Quantum (Qiskit via Docker)"
 kind = "generated_markdown"
@@ -1800,7 +1807,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0174"
+id = "DOC-0175"
 source_path = "docs/tickets/C001_C050_claims_audit.md"
 title = "Ticket: Claims audit batch C-001..C-050"
 kind = "generated_markdown"
@@ -1809,7 +1816,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0175"
+id = "DOC-0176"
 source_path = "docs/tickets/C051_C100_claims_audit.md"
 title = "Ticket: Claims audit batch C-051..C-100"
 kind = "generated_markdown"
@@ -1818,7 +1825,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0176"
+id = "DOC-0177"
 source_path = "docs/tickets/C101_C150_claims_audit.md"
 title = "Ticket: Claims audit batch C-101..C-150"
 kind = "generated_markdown"
@@ -1827,7 +1834,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0177"
+id = "DOC-0178"
 source_path = "docs/tickets/C151_C200_claims_audit.md"
 title = "Ticket: Claims audit batch C-151..C-200"
 kind = "generated_markdown"
@@ -1836,7 +1843,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0178"
+id = "DOC-0179"
 source_path = "docs/tickets/C201_C250_claims_audit.md"
 title = "Ticket: Claims audit batch C-201..C-250"
 kind = "generated_markdown"
@@ -1845,7 +1852,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0179"
+id = "DOC-0180"
 source_path = "docs/tickets/C251_C300_claims_audit.md"
 title = "Ticket: Claims audit batch C-251..C-300"
 kind = "generated_markdown"
@@ -1854,7 +1861,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0180"
+id = "DOC-0181"
 source_path = "docs/tickets/C301_C350_claims_audit.md"
 title = "Ticket: Claims audit batch C-301..C-350"
 kind = "generated_markdown"
@@ -1863,7 +1870,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0181"
+id = "DOC-0182"
 source_path = "docs/tickets/C351_C400_claims_audit.md"
 title = "Ticket: Claims audit batch C-351..C-400"
 kind = "generated_markdown"
@@ -1872,7 +1879,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0182"
+id = "DOC-0183"
 source_path = "docs/tickets/C401_C427_claims_audit.md"
 title = "Ticket: Claims audit batch C-401..C-427"
 kind = "generated_markdown"
@@ -1881,7 +1888,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0183"
+id = "DOC-0184"
 source_path = "docs/tickets/INDEX.md"
 title = "Claim Audit Tickets"
 kind = "generated_markdown"
@@ -1890,7 +1897,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0184"
+id = "DOC-0185"
 source_path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
 title = "Plan: Warp Ring Physics Reconciliation"
 kind = "generated_markdown"
@@ -1899,7 +1906,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0186"
+id = "DOC-0187"
 source_path = "reports/artifacts_phase0_dryrun.md"
 title = "Artifacts Phase 0 dry-run"
 kind = "artifact_report"
@@ -1908,7 +1915,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0187"
+id = "DOC-0188"
 source_path = "reports/artifacts_reorg_plan.md"
 title = "Artifacts reorganization plan (non-destructive)"
 kind = "artifact_report"
@@ -1917,7 +1924,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0188"
+id = "DOC-0189"
 source_path = "reports/audit_network_gating.md"
 title = "Network Gating Audit (2026-02-06)"
 kind = "artifact_report"
@@ -1926,7 +1933,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0189"
+id = "DOC-0190"
 source_path = "reports/audit_nonpython_toolchains.md"
 title = "Non-Python Toolchains Audit (2026-02-06)"
 kind = "artifact_report"
@@ -1935,7 +1942,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0190"
+id = "DOC-0191"
 source_path = "reports/audit_provenance.md"
 title = "Provenance Audit (2026-02-04)"
 kind = "artifact_report"
@@ -1944,7 +1951,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0191"
+id = "DOC-0192"
 source_path = "reports/audit_pythonpath.md"
 title = "Pythonpath Hygiene Audit (2026-02-04)"
 kind = "artifact_report"
@@ -1953,7 +1960,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0192"
+id = "DOC-0193"
 source_path = "reports/claims_batch_backlog_C001_C050.md"
 title = "Claims Batch Backlog (C-001..C-050) (2026-02-03)"
 kind = "artifact_report"
@@ -1962,7 +1969,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0193"
+id = "DOC-0194"
 source_path = "reports/claims_batch_backlog_C001_C200.md"
 title = "Claims Batch Backlog (C-001..C-200) (2026-02-04)"
 kind = "artifact_report"
@@ -1971,7 +1978,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0194"
+id = "DOC-0195"
 source_path = "reports/claims_batch_backlog_C011_C025.md"
 title = "Claims Batch Backlog (C-011..C-025) (2026-02-02)"
 kind = "artifact_report"
@@ -1980,7 +1987,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0195"
+id = "DOC-0196"
 source_path = "reports/claims_batch_backlog_C027_C045.md"
 title = "Claims Batch Backlog (C-027..C-045) (2026-02-03)"
 kind = "artifact_report"
@@ -1989,7 +1996,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0196"
+id = "DOC-0197"
 source_path = "reports/claims_batch_backlog_C046_C060.md"
 title = "Claims Batch Backlog (C-046..C-060) (2026-02-02)"
 kind = "artifact_report"
@@ -1998,7 +2005,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0197"
+id = "DOC-0198"
 source_path = "reports/claims_batch_backlog_C046_C066.md"
 title = "Claims Batch Backlog (C-046..C-066) (2026-02-03)"
 kind = "artifact_report"
@@ -2007,7 +2014,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0198"
+id = "DOC-0199"
 source_path = "reports/claims_batch_backlog_C051_C100.md"
 title = "Claims Batch Backlog (C-051..C-100) (2026-02-03)"
 kind = "artifact_report"
@@ -2016,7 +2023,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0199"
+id = "DOC-0200"
 source_path = "reports/claims_batch_backlog_C101_C150.md"
 title = "Claims Batch Backlog (C-101..C-150) (2026-02-03)"
 kind = "artifact_report"
@@ -2025,7 +2032,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0200"
+id = "DOC-0201"
 source_path = "reports/claims_batch_backlog_C151_C200.md"
 title = "Claims Batch Backlog (C-151..C-200) (2026-02-02)"
 kind = "artifact_report"
@@ -2034,7 +2041,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0201"
+id = "DOC-0202"
 source_path = "reports/claims_batch_backlog_C201_C250.md"
 title = "Claims Batch Backlog (C-201..C-250) (2026-02-02)"
 kind = "artifact_report"
@@ -2043,7 +2050,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0202"
+id = "DOC-0203"
 source_path = "reports/claims_batch_backlog_C201_C408.md"
 title = "Claims Batch Backlog (C-201..C-408) (2026-02-02)"
 kind = "artifact_report"
@@ -2052,7 +2059,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0203"
+id = "DOC-0204"
 source_path = "reports/claims_batch_backlog_C201_C427.md"
 title = "Claims Batch Backlog (C-201..C-427) (2026-02-02)"
 kind = "artifact_report"
@@ -2061,7 +2068,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0204"
+id = "DOC-0205"
 source_path = "reports/claims_batch_backlog_C201_C430.md"
 title = "Claims Batch Backlog (C-201..C-430) (2026-02-02)"
 kind = "artifact_report"
@@ -2070,7 +2077,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0205"
+id = "DOC-0206"
 source_path = "reports/claims_batch_backlog_C201_C432.md"
 title = "Claims Batch Backlog (C-201..C-432) (2026-02-04)"
 kind = "artifact_report"
@@ -2079,7 +2086,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0206"
+id = "DOC-0207"
 source_path = "reports/claims_batch_backlog_C251_C300.md"
 title = "Claims Batch Backlog (C-251..C-300) (2026-02-02)"
 kind = "artifact_report"
@@ -2088,7 +2095,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0207"
+id = "DOC-0208"
 source_path = "reports/claims_batch_backlog_C301_C350.md"
 title = "Claims Batch Backlog (C-301..C-350) (2026-02-02)"
 kind = "artifact_report"
@@ -2097,7 +2104,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0208"
+id = "DOC-0209"
 source_path = "reports/claims_batch_backlog_C351_C400.md"
 title = "Claims Batch Backlog (C-351..C-400) (2026-02-02)"
 kind = "artifact_report"
@@ -2106,7 +2113,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0209"
+id = "DOC-0210"
 source_path = "reports/claims_batch_backlog_C401_C427.md"
 title = "Claims Batch Backlog (C-401..C-427) (2026-02-03)"
 kind = "artifact_report"
@@ -2115,7 +2122,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0210"
+id = "DOC-0211"
 source_path = "reports/claims_bold_tokens_inventory.md"
 title = "Claims Bold-Token Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -2124,7 +2131,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0211"
+id = "DOC-0212"
 source_path = "reports/claims_id_inventory.md"
 title = "Claims ID Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -2133,7 +2140,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0212"
+id = "DOC-0213"
 source_path = "reports/claims_priority_ranking.md"
 title = "Claims Priority Ranking (2026-02-02)"
 kind = "artifact_report"
@@ -2142,7 +2149,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0213"
+id = "DOC-0214"
 source_path = "reports/claims_staleness_report.md"
 title = "Claims Staleness Report (2026-02-04)"
 kind = "artifact_report"
@@ -2151,7 +2158,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0214"
+id = "DOC-0215"
 source_path = "reports/claims_status_contradictions.md"
 title = "Claims Status Contradictions (2026-02-04)"
 kind = "artifact_report"
@@ -2160,7 +2167,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0215"
+id = "DOC-0216"
 source_path = "reports/claims_status_inventory.md"
 title = "Claims Status Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -2169,7 +2176,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0216"
+id = "DOC-0217"
 source_path = "reports/config_audit.md"
 title = "Config Audit Notes (2026-02-01)"
 kind = "artifact_report"
@@ -2178,7 +2185,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0217"
+id = "DOC-0218"
 source_path = "reports/convos_claim_candidates.md"
 title = "Convos Claim Candidates (Auto-Scan)"
 kind = "artifact_report"
@@ -2187,7 +2194,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0218"
+id = "DOC-0219"
 source_path = "reports/convos_claim_candidates_prioritized.md"
 title = "Convos Claim Candidates (Prioritized Shortlist, 2026-02-01)"
 kind = "artifact_report"
@@ -2196,7 +2203,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0219"
+id = "DOC-0220"
 source_path = "reports/convos_pdf_inventory.md"
 title = "Convos PDF inventory"
 kind = "artifact_report"
@@ -2205,7 +2212,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0220"
+id = "DOC-0221"
 source_path = "reports/non_iso_dates_inventory.md"
 title = "Non-ISO date inventory"
 kind = "artifact_report"
@@ -2214,7 +2221,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0221"
+id = "DOC-0222"
 source_path = "reports/open_claims_missing_dedicated_sources.md"
 title = "Open claims missing dedicated source index"
 kind = "artifact_report"
@@ -2223,7 +2230,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0222"
+id = "DOC-0223"
 source_path = "reports/open_claims_missing_test_hooks.md"
 title = "Open claims missing explicit test/verifier hook"
 kind = "artifact_report"
@@ -2232,7 +2239,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0223"
+id = "DOC-0224"
 source_path = "reports/package_index.md"
 title = "Package Index (2026-02-01)"
 kind = "artifact_report"
@@ -2241,7 +2248,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0224"
+id = "DOC-0225"
 source_path = "reports/pdf_inventory.md"
 title = "PDF Inventory"
 kind = "artifact_report"
@@ -2250,7 +2257,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0225"
+id = "DOC-0226"
 source_path = "reports/pythonpath_refactor_plan.md"
 title = "Pythonpath Refactor Plan (2026-02-04)"
 kind = "artifact_report"
@@ -2259,7 +2266,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0226"
+id = "DOC-0227"
 source_path = "reports/repo_inventory.md"
 title = "Repo Inventory (2026-02-01)"
 kind = "artifact_report"
@@ -2268,7 +2275,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0227"
+id = "DOC-0228"
 source_path = "reports/repo_structure_audit.md"
 title = "Repo Structure Audit (2026-02-04)"
 kind = "artifact_report"
@@ -2277,7 +2284,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0228"
+id = "DOC-0229"
 source_path = "reports/script_contracts_inventory.md"
 title = "Script contract inventory"
 kind = "artifact_report"
@@ -2286,7 +2293,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0229"
+id = "DOC-0230"
 source_path = "reports/tickets_inventory.md"
 title = "Tickets Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -2295,7 +2302,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0230"
+id = "DOC-0231"
 source_path = "reports/todo_fixme_scan.md"
 title = "TODO/FIXME Scan (2026-02-07)"
 kind = "artifact_report"
@@ -2304,7 +2311,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0231"
+id = "DOC-0232"
 source_path = "reports/tscp_trial_factor_ledger.md"
 title = "TSCP Trial-Factor Ledger (2026-02-04)"
 kind = "artifact_report"

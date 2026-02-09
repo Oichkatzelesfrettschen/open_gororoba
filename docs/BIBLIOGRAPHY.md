@@ -1,5 +1,10 @@
 # Unified Bibliography
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/bibliography.toml -->
+
+This file is generated from `registry/bibliography.toml`.
+
 ## Primary Research & Data Sources
 
 ### Astrophysics & Cosmology
@@ -409,8 +414,3 @@
 *   **EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. V. Physical Origin of the Asymmetric Ring*. ApJL 875, L5.
 *   **EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. VI. The Shadow and Mass of the Central Black Hole*. ApJL 875, L6.
     *   *Papers I-VI of the first EHT M87 results. Our eht.rs providers fetch data products from these releases.*
-
-### Internal Project Artifacts
-*   `data/external/GWTC-3_GWpy_Official.csv`: Confident Events Catalog.
-*   `data/csv/sedenion_nilpotent_candidates.csv`: Identified Zero-Divisors.
-*   `docs/latex/MATHEMATICAL_FORMALISM.tex`: Formal derivations.

@@ -34,6 +34,15 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Installation Requirements (Reproducible)
 
 This repo targets a **host Python** for non-quantum work and a **Docker Python 3.11**

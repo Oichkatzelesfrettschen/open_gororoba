@@ -89,6 +89,7 @@ def _generated_mirror_patterns() -> list[str]:
     return [
         "docs/generated/*.md",
         "docs/CLAIMS_EVIDENCE_MATRIX.md",
+        "docs/BIBLIOGRAPHY.md",
         "docs/INSIGHTS.md",
         "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
         "docs/ROADMAP.md",

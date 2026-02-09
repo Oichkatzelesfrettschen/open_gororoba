@@ -105,6 +105,19 @@ status = "complete"
 notes = "Governance registry classifies all markdown lifecycle modes and drives header/parity verifiers."
 
 [[domain]]
+id = "KM-011"
+name = "bibliography"
+source_markdown = ["docs/BIBLIOGRAPHY.md"]
+authoritative_toml = ["registry/bibliography.toml"]
+generated_mirror = [
+  "docs/BIBLIOGRAPHY.md",
+  "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md",
+]
+strategy = "toml_primary_markdown_mirror"
+status = "complete"
+notes = "Bibliography is TOML-first with generated markdown mirrors."
+
+[[domain]]
 id = "KM-006"
 name = "generated_artifacts"
 source_markdown = ["reports/*.md", "data/artifacts/*.md", "docs/claims/by_domain/*.md", "docs/tickets/*_claims_audit.md"]

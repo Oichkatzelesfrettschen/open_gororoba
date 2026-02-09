@@ -24,8 +24,8 @@ references = [
 id = "NA-002"
 priority = "P1"
 title = "Resolve multiplication coupling rho(b) in GL(8,Z)"
-status = "open"
-description = "Close the open lattice-algebra dictionary item linked to C-466."
+status = "done"
+description = "REFUTED (Sprint 16). Only identity element b=0 yields zero residual in rank-adaptive reduced-subspace algorithm. C-466 refuted."
 references = [
   "docs/NEXT_ACTIONS.md",
   "docs/ROADMAP.md",
