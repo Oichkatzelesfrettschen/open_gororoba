@@ -2195,6 +2195,151 @@ pub fn regime_count(n: usize) -> usize {
 }
 
 // ===========================================================================
+// L9c: Hide/Fill Involution -- DMZ Row-Degree Invariance
+// ===========================================================================
+//
+// Within each regime (same regime_address), all strut constants produce ETs
+// with the same sorted row-degree distribution. This is a stronger invariant
+// than just DMZ count: it constrains the *shape* of the fill pattern.
+//
+// Key properties verified:
+//   1. Mandala regime is always "full fill" (every addressable cell is DMZ,
+//      uniform row degree = K-2 where K = 2^(N-1) - 2).
+//   2. Sky struts have non-uniform row degrees: some rows keep full fill,
+//      others drop to a lower degree.
+//   3. The row-degree distribution is a regime invariant: permuted by S
+//      but identical when sorted.
+//   4. Sky UNION covers all addressable cells (collective coverage).
+//
+// De Marrais calls this "hide/fill": mandala shows all; crossing into the
+// sky band "hides" cells from certain rows; the hidden pattern permutes
+// across strut constants within the regime.
+
+/// The sorted row-degree distribution of a strutted ET.
+///
+/// For a K x K ET, this is a vector of length K where entry i is the
+/// number of DMZ cells in the i-th row (after sorting ascending).
+/// Two ETs with the same sorted row-degree distribution have the same
+/// "fill shape" even if individual cell positions differ.
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct RowDegreeDistribution {
+    /// Sorted ascending row degrees.
+    pub degrees: Vec<usize>,
+    /// Total DMZ count (sum of degrees).
+    pub dmz_total: usize,
+    /// Grid size K.
+    pub k: usize,
+}
+
+/// Compute the sorted row-degree distribution of a strutted ET.
+pub fn row_degree_distribution(et: &StruttedEmanationTable) -> RowDegreeDistribution {
+    let k = et.tone_row.k;
+    let mut degrees = vec![0usize; k];
+    for (r, row) in et.cells.iter().enumerate() {
+        for cell in row.iter().flatten() {
+            if cell.is_dmz {
+                degrees[r] += 1;
+            }
+        }
+    }
+    let dmz_total = degrees.iter().sum();
+    degrees.sort();
+    RowDegreeDistribution { degrees, dmz_total, k }
+}
+
+/// Result of the hide/fill analysis for a single regime.
+#[derive(Debug, Clone)]
+pub struct HideFillResult {
+    /// The regime address.
+    pub regime_addr: Vec<u8>,
+    /// Number of strut constants in this regime.
+    pub n_struts: usize,
+    /// DMZ count (same for all struts in regime).
+    pub dmz_count: usize,
+    /// Sorted row-degree distribution (same for all struts in regime).
+    pub row_degrees: Vec<usize>,
+    /// Whether this regime is "full fill" (all addressable cells are DMZ).
+    pub is_full_fill: bool,
+    /// Number of cells in the core (DMZ in ALL struts of this regime).
+    pub core_size: usize,
+    /// Number of cells in the union (DMZ in ANY strut of this regime).
+    pub union_size: usize,
+    /// Total addressable cells (K*(K-1) - K = K^2 - 2K, minus strut-opposites).
+    pub total_addressable: usize,
+}
+
+/// Perform the hide/fill analysis for all regimes at CD level `n`.
+///
+/// Returns one `HideFillResult` per regime, sorted by regime address.
+pub fn hide_fill_analysis(n: usize) -> Vec<HideFillResult> {
+    use std::collections::{BTreeMap, BTreeSet};
+
+    let max_s = (1usize << (n - 1)) - 1;
+    // Group strut constants by regime address
+    let mut regime_struts: BTreeMap<Vec<u8>, Vec<usize>> = BTreeMap::new();
+    for s in 1..=max_s {
+        let addr = regime_address(n, s);
+        regime_struts.entry(addr).or_default().push(s);
+    }
+
+    let mut results = Vec::new();
+
+    for (addr, struts) in &regime_struts {
+        // Compute row-degree distribution for each strut
+        let first_et = create_strutted_et(n, struts[0]);
+        let first_dist = row_degree_distribution(&first_et);
+        let total_addressable = first_et.total_possible;
+
+        // Verify all struts have same distribution
+        for &s in &struts[1..] {
+            let et = create_strutted_et(n, s);
+            let dist = row_degree_distribution(&et);
+            debug_assert_eq!(dist, first_dist,
+                "N={}, S={}: row-degree differs from S={}", n, s, struts[0]);
+        }
+
+        // Compute core (intersection) and union across all struts
+        let sets: Vec<BTreeSet<(usize, usize)>> = struts.iter()
+            .map(|&s| {
+                let et = create_strutted_et(n, s);
+                let k = et.tone_row.k;
+                let mut set = BTreeSet::new();
+                for r in 0..k {
+                    for c in 0..k {
+                        if let Some(cell) = &et.cells[r][c] {
+                            if cell.is_dmz {
+                                set.insert((r, c));
+                            }
+                        }
+                    }
+                }
+                set
+            })
+            .collect();
+
+        let core: BTreeSet<_> = sets.iter().skip(1)
+            .fold(sets[0].clone(), |acc, s| acc.intersection(s).copied().collect());
+        let union: BTreeSet<_> = sets.iter().skip(1)
+            .fold(sets[0].clone(), |acc, s| acc.union(s).copied().collect());
+
+        let is_full_fill = first_dist.dmz_total == total_addressable;
+
+        results.push(HideFillResult {
+            regime_addr: addr.clone(),
+            n_struts: struts.len(),
+            dmz_count: first_dist.dmz_total,
+            row_degrees: first_dist.degrees,
+            is_full_fill,
+            core_size: core.len(),
+            union_size: union.len(),
+            total_addressable,
+        });
+    }
+
+    results
+}
+
+// ===========================================================================
 // L10: CT Boundary / A7 Star -- Twist as Double Transfer
 // ===========================================================================
 //
@@ -5617,6 +5762,138 @@ mod tests {
             assert_eq!(regime_address(6, s), vec![1, 1],
                 "N=6, S={}: expected [1,1]", s);
         }
+    }
+
+    // --- L9c: Hide/Fill Involution Tests ---
+
+    #[test]
+    fn test_hide_fill_n4_single_full_fill_regime() {
+        // Sedenions: 1 regime, full fill, all 7 struts identical
+        let results = hide_fill_analysis(4);
+        assert_eq!(results.len(), 1);
+        let r = &results[0];
+        assert_eq!(r.regime_addr, Vec::<u8>::new());
+        assert!(r.is_full_fill, "sedenion regime must be full fill");
+        assert_eq!(r.dmz_count, r.total_addressable);
+        assert_eq!(r.core_size, r.union_size, "full fill => core == union");
+        assert_eq!(r.n_struts, 7);
+    }
+
+    #[test]
+    fn test_hide_fill_n5_two_regimes() {
+        let results = hide_fill_analysis(5);
+        assert_eq!(results.len(), 2, "N=5 must have 2 regimes");
+
+        // Mandala [0]: full fill
+        let mandala = results.iter().find(|r| r.regime_addr == vec![0]).unwrap();
+        assert!(mandala.is_full_fill, "mandala must be full fill");
+        assert_eq!(mandala.dmz_count, 168);
+        assert_eq!(mandala.core_size, 168, "full fill => core == total");
+
+        // Sky [1]: partial fill
+        let sky = results.iter().find(|r| r.regime_addr == vec![1]).unwrap();
+        assert!(!sky.is_full_fill, "sky must NOT be full fill");
+        assert_eq!(sky.dmz_count, 72);
+        // Sky union covers all addressable cells
+        assert_eq!(sky.union_size, sky.total_addressable,
+            "sky union must cover all addressable cells");
+        // Sky core is 0 (no cell is DMZ in ALL sky struts)
+        assert_eq!(sky.core_size, 0, "sky core must be empty");
+    }
+
+    #[test]
+    fn test_hide_fill_n6_four_regimes() {
+        let results = hide_fill_analysis(6);
+        assert_eq!(results.len(), 4, "N=6 must have 4 regimes");
+
+        let m = results.iter().find(|r| r.regime_addr == vec![0, 0]).unwrap();
+        let sky = results.iter().find(|r| r.regime_addr == vec![0, 1]).unwrap();
+        let um = results.iter().find(|r| r.regime_addr == vec![1, 0]).unwrap();
+        let us = results.iter().find(|r| r.regime_addr == vec![1, 1]).unwrap();
+
+        // Mandala: full fill
+        assert!(m.is_full_fill);
+        assert_eq!(m.dmz_count, 840);
+        assert_eq!(m.n_struts, 9); // S=1..8, 16
+
+        // Sky: partial fill
+        assert!(!sky.is_full_fill);
+        assert_eq!(sky.dmz_count, 456);
+        assert_eq!(sky.n_struts, 7);
+
+        // Upper mandala: sparse fill
+        assert!(!um.is_full_fill);
+        assert_eq!(um.dmz_count, 168);
+        assert_eq!(um.n_struts, 8);
+
+        // Upper sky: intermediate fill
+        assert!(!us.is_full_fill);
+        assert_eq!(us.dmz_count, 552);
+        assert_eq!(us.n_struts, 7);
+    }
+
+    #[test]
+    fn test_hide_fill_row_degree_invariant_n5() {
+        // All mandala struts must have uniform row degree = 12 (= K-2 = 14-2)
+        let results = hide_fill_analysis(5);
+        let mandala = results.iter().find(|r| r.regime_addr == vec![0]).unwrap();
+        assert!(mandala.row_degrees.iter().all(|&d| d == 12),
+            "mandala row degrees must all be 12, got {:?}", mandala.row_degrees);
+
+        // Sky struts: 12 rows with degree 4, 2 rows with degree 12
+        let sky = results.iter().find(|r| r.regime_addr == vec![1]).unwrap();
+        let n_full = sky.row_degrees.iter().filter(|&&d| d == 12).count();
+        let n_sparse = sky.row_degrees.iter().filter(|&&d| d == 4).count();
+        assert_eq!(n_full, 2, "sky must have 2 full rows");
+        assert_eq!(n_sparse, 12, "sky must have 12 sparse rows");
+    }
+
+    #[test]
+    fn test_hide_fill_row_degree_invariant_n6() {
+        let results = hide_fill_analysis(6);
+
+        // Mandala: all rows degree 28
+        let m = results.iter().find(|r| r.regime_addr == vec![0, 0]).unwrap();
+        assert!(m.row_degrees.iter().all(|&d| d == 28),
+            "mandala row degrees must all be 28");
+
+        // Sky [0,1]: 24 rows at 12, 6 rows at 28
+        let sky = results.iter().find(|r| r.regime_addr == vec![0, 1]).unwrap();
+        assert_eq!(sky.row_degrees.iter().filter(|&&d| d == 12).count(), 24);
+        assert_eq!(sky.row_degrees.iter().filter(|&&d| d == 28).count(), 6);
+
+        // Upper mandala [1,0]: 28 rows at 4, 2 rows at 28
+        let um = results.iter().find(|r| r.regime_addr == vec![1, 0]).unwrap();
+        assert_eq!(um.row_degrees.iter().filter(|&&d| d == 4).count(), 28);
+        assert_eq!(um.row_degrees.iter().filter(|&&d| d == 28).count(), 2);
+
+        // Upper sky [1,1]: 4 rows at 4, 24 rows at 20, 2 rows at 28
+        let us = results.iter().find(|r| r.regime_addr == vec![1, 1]).unwrap();
+        assert_eq!(us.row_degrees.iter().filter(|&&d| d == 4).count(), 4);
+        assert_eq!(us.row_degrees.iter().filter(|&&d| d == 20).count(), 24);
+        assert_eq!(us.row_degrees.iter().filter(|&&d| d == 28).count(), 2);
+    }
+
+    #[test]
+    fn test_hide_fill_union_covers_all_n6() {
+        // Every regime's union must cover all addressable cells
+        let results = hide_fill_analysis(6);
+        for r in &results {
+            assert_eq!(r.union_size, r.total_addressable,
+                "regime {:?}: union {} != total {}", r.regime_addr, r.union_size, r.total_addressable);
+        }
+    }
+
+    #[test]
+    fn test_hide_fill_sky_core_n6() {
+        // At N=6, sky core = 168 = upper mandala DMZ count
+        let results = hide_fill_analysis(6);
+        let sky = results.iter().find(|r| r.regime_addr == vec![0, 1]).unwrap();
+        let um = results.iter().find(|r| r.regime_addr == vec![1, 0]).unwrap();
+        assert_eq!(sky.core_size, 168,
+            "sky core must be 168 (the mandala DMZ count from one level down)");
+        assert_eq!(sky.core_size, um.dmz_count,
+            "sky core must equal upper mandala DMZ count");
     }
 
     // --- L16: Signed Adjacency Graph & Lanyard Dictionary Tests ---

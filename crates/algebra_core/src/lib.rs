@@ -275,6 +275,9 @@ pub use emanation::{
     StrutClass, StrutSpectroscopyEntry, classify_strut, strut_spectroscopy,
     // (s,g)-Modularity -- recursive regime address
     regime_address, regime_count,
+    // Hide/Fill involution -- row-degree invariance
+    RowDegreeDistribution, row_degree_distribution,
+    HideFillResult, hide_fill_analysis,
     // Three Vizier XOR relationships (de Marrais 2007)
     ThreeVizierResult, verify_three_viziers,
     VizierXorAudit, vizier_xor_audit,
