@@ -33,6 +33,12 @@ primary_outputs = [
   "registry/todo.toml",
   "registry/next_actions.toml",
   "registry/requirements.toml",
+  "registry/claims_tasks.toml",
+  "registry/claims_domains.toml",
+  "registry/claim_tickets.toml",
+  "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
+  "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
+  "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md",
 ]
 
 [[workstream]]
@@ -58,4 +64,3 @@ primary_outputs = [
   "docs/CLAIMS_EVIDENCE_MATRIX.md",
   "docs/CLAIMS_TASKS.md",
 ]
-

@@ -27,31 +27,74 @@ Authoritative source: `registry/todo.toml`.
 
 ### S13-T03: Define authoritative operational TOML registries
 
-- Status: `in_progress`
+- Status: `done`
 - Evidence:
   - `registry/roadmap.toml`
   - `registry/todo.toml`
   - `registry/next_actions.toml`
   - `registry/requirements.toml`
+  - `registry/claims_tasks.toml`
+  - `registry/claims_domains.toml`
+  - `registry/claim_tickets.toml`
 
 ### S13-T04: Add TOML-first export path for insights markdown mirror
 
-- Status: `pending`
+- Status: `done`
 - Evidence:
   - `registry/insights.toml`
-  - `docs/INSIGHTS.md`
+  - `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`
 
 ### S13-T05: Add TOML-first export path for experiments markdown mirror
 
-- Status: `pending`
+- Status: `done`
 - Evidence:
   - `registry/experiments.toml`
-  - `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md`
+  - `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`
 
 ### S13-T06: Run registry and quality gates after registry schema changes
 
-- Status: `pending`
+- Status: `partial`
 - Evidence:
   - `make registry`
   - `cargo run --release --bin registry-check`
   - `python3 bin/ascii_check.py --check`
+
+### S13-T07: Normalize docs/CLAIMS_TASKS.md into claims task registry
+
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/normalize_claims_support_registries.py`
+  - `registry/claims_tasks.toml`
+  - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
+
+### S13-T08: Normalize claims domain map and by-domain markdown into TOML
+
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/normalize_claims_support_registries.py`
+  - `registry/claims_domains.toml`
+  - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
+
+### S13-T09: Normalize claims audit tickets into TOML with claim linkages
+
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/normalize_claims_support_registries.py`
+  - `registry/claim_tickets.toml`
+  - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
+
+### S13-T10: Remove non-deterministic timestamp churn from registry generators
+
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/build_knowledge_sources_registry.py`
+  - `src/scripts/analysis/migrate_markdown_corpus_to_toml.py`
+  - `src/scripts/analysis/export_registry_markdown_mirrors.py`
+
+### S13-T11: Decide policy for legacy narrative markdown overlays
+
+- Status: `pending`
+- Evidence:
+  - `registry/knowledge_migration_plan.toml`
+  - `docs/NEXT_ACTIONS.md`
+  - `docs/ROADMAP.md`

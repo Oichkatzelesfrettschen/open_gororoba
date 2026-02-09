@@ -24,6 +24,10 @@ Note:
 - [x] Add TOML-first export path for insights mirror (`registry/insights.toml` -> `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`).
 - [x] Add TOML-first export path for experiments mirror (`registry/experiments.toml` -> `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`).
 - [x] Add TOML-first markdown exporters for roadmap/todo/next-actions/requirements mirrors (`docs/generated/*_REGISTRY_MIRROR.md`).
+- [x] Normalize `docs/CLAIMS_TASKS.md` into `registry/claims_tasks.toml` and generate `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`.
+- [x] Normalize `docs/claims/CLAIMS_DOMAIN_MAP.csv` + `docs/claims/by_domain/*.md` into `registry/claims_domains.toml` and generate `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`.
+- [x] Normalize `docs/tickets/*.md` into `registry/claim_tickets.toml` and generate `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`.
+- [x] Remove timestamp churn from registry generators to keep `make registry` deterministic across repeated runs.
 - [ ] Decide if `docs/INSIGHTS.md` and `docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md` should be fully replaced by generated mirrors or kept as narrative overlays.
 
 ## Current sprint: Sprint 10 -- De Marrais Emanation Architecture (COMPLETE)

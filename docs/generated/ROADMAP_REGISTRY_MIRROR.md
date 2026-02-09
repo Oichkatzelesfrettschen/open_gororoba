@@ -28,6 +28,12 @@ Authoritative source: `registry/roadmap.toml`.
   - `registry/todo.toml`
   - `registry/next_actions.toml`
   - `registry/requirements.toml`
+  - `registry/claims_tasks.toml`
+  - `registry/claims_domains.toml`
+  - `registry/claim_tickets.toml`
+  - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
+  - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
+  - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
 
 ### WS-QUALITY-001: Warnings-As-Errors Discipline
 

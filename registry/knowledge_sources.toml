@@ -1257,13 +1257,13 @@ authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "high"
-sha256 = "4c78ae0056b517f67754a1bcd48bbbdd7aa9f65ff87e459d38501c0c6b3ea35a"
-size_bytes = 10027
-line_count = 144
+sha256 = "178a7fabe8e20f575f559e91d7eddb8f07502d4ba3aa32d97459f0ea8dd8c1b6"
+size_bytes = 10596
+line_count = 148
 claim_ref_count = 15
 insight_ref_count = 6
 experiment_ref_count = 0
-link_count = 35
+link_count = 44
 link_sample = ["RUST_MIGRATION_PLAN.md", "RUST_REFACTOR_PLAN.md", "curated/01_theory_frameworks/README_COQ.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md", "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md", "docs/INSIGHTS.md", "docs/NEXT_ACTIONS.md"]
 
 [[document]]
@@ -2842,14 +2842,14 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "8e374bee81e79f061714aa047b9ed77e40df4a815e1bdb3ff55e6e420abb4437"
-size_bytes = 1309
-line_count = 51
+sha256 = "e2875aba1db433a64319fe2ba6b6b1f9d63f768bb98678dfc8efc40e2dd91940"
+size_bytes = 1573
+line_count = 57
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 18
-link_sample = ["AGENTS.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md", "docs/NEXT_ACTIONS.md", "docs/REQUIREMENTS.md", "docs/ROADMAP.md", "docs/TODO.md", "registry/claims.toml"]
+link_count = 24
+link_sample = ["AGENTS.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CLAIMS_TASKS.md", "docs/NEXT_ACTIONS.md", "docs/REQUIREMENTS.md", "docs/ROADMAP.md", "docs/TODO.md", "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"]
 
 [[document]]
 id = "DOC-0160"
@@ -2860,14 +2860,14 @@ authoring_mode = "generated"
 generated = true
 status = "active"
 migration_priority = "none"
-sha256 = "2a9700c7e3b5cb0b9592963d9236aeb4a89bbbf35dc6142ee897e783dadb1e69"
-size_bytes = 1444
-line_count = 58
+sha256 = "5edff001ac8661f4fb7391b6fb73e3d25a804320864c64a24afdeb019ee60ab6"
+size_bytes = 2830
+line_count = 101
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 18
-link_sample = ["docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md", "docs/INSIGHTS.md", "python3 bin/ascii_check.py --check", "registry/experiments.toml", "registry/insights.toml", "registry/knowledge/documents.toml", "registry/knowledge_sources.toml", "registry/next_actions.toml"]
+link_count = 30
+link_sample = ["docs/NEXT_ACTIONS.md", "docs/ROADMAP.md", "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md", "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md", "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md", "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md", "docs/generated/INSIGHTS_REGISTRY_MIRROR.md", "python3 bin/ascii_check.py --check"]
 
 [[document]]
 id = "DOC-0161"
