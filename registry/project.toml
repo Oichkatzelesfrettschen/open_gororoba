@@ -7,10 +7,18 @@ description = "Research workbench for Cayley-Dickson algebra and physics applica
 license = "GPL-2.0-only"
 test_count = 2239
 claim_count = 477
-insight_count = 16
+insight_count = 17
 experiment_count = 13
 paper_count = 19
 binary_count = 40
+
+[sprints.s19]
+number = 19
+date = "2026-02-09"
+test_count = 2239
+claim_count = 477
+insight_count = 17
+summary = "Run experiments E-011/E-012/E-013 with production parameters. C-476 (ALP) partially verified (sparse graphs only). C-477 (Sky-Limit-Set) partially verified (A_{N-1} best Coxeter match, improving with N). New insight I-017."
 
 [sprints.s18]
 number = 18
