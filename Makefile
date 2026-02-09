@@ -16,6 +16,7 @@
 .PHONY: registry-bootstrap-claims-support
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
 .PHONY: registry-markdown-inventory
+.PHONY: registry-verify-markdown-inventory
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
@@ -173,6 +174,9 @@ registry-refresh: registry-migrate-corpus registry-ingest-legacy registry-govern
 registry-markdown-inventory:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py
 
+registry-verify-markdown-inventory: registry-markdown-inventory
+	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
+
 registry-export-markdown: registry-refresh
 	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py
 
@@ -182,6 +186,7 @@ registry-verify-mirrors: registry-export-markdown
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_parity.py
 	PYTHONWARNINGS=error python3 src/verification/verify_toml_generated_mirror_immutability.py
 	PYTHONWARNINGS=error python3 src/verification/verify_claim_ticket_mirrors.py
+	PYTHONWARNINGS=error $(MAKE) registry-verify-markdown-inventory
 
 registry: registry-refresh
 	cargo run --release --bin registry-check
