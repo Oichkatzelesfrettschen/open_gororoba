@@ -134,6 +134,42 @@ pub fn is_in_lambda_512(v: &LatticeVector) -> bool {
     true
 }
 
+/// Check if a vector passes k of the 4 Lambda_1024 exclusion rules
+/// (applied cumulatively in canonical order, starting from Lambda_2048).
+///
+/// `k=0` is Lambda_2048, `k=4` is Lambda_1024. Intermediate values
+/// give sub-filtration levels for studying the ultrametricity gradient
+/// across the Lambda_2048 -> Lambda_1024 transition.
+///
+/// The 4 rules, in order:
+///   1. l_0 != -1 (slice to l_0=-1; removes l_0=0 vectors -- biggest single cut)
+///   2. l_1=1, l_2=1, l_3=1
+///   3. l_1=1, l_2=1, l_3=0, l_4=0
+///   4. l_1=1, l_2=1, l_3=0, l_4=1
+pub fn is_in_lambda_2048_minus_k(v: &LatticeVector, k: usize) -> bool {
+    assert!(k <= 4, "k must be in [0, 4]");
+    if !is_in_lambda_2048(v) {
+        return false;
+    }
+    // Rule 1: slice to l_0 = -1
+    if k >= 1 && v[0] != -1 {
+        return false;
+    }
+    // Rule 2: exclude (-1, 1, 1, 1)
+    if k >= 2 && v[1] == 1 && v[2] == 1 && v[3] == 1 {
+        return false;
+    }
+    // Rule 3: exclude (-1, 1, 1, 0, 0)
+    if k >= 3 && v[1] == 1 && v[2] == 1 && v[3] == 0 && v[4] == 0 {
+        return false;
+    }
+    // Rule 4: exclude (-1, 1, 1, 0, 1)
+    if k >= 4 && v[1] == 1 && v[2] == 1 && v[3] == 0 && v[4] == 1 {
+        return false;
+    }
+    true
+}
+
 /// Check if a vector passes k of the 6 Lambda_512 exclusion rules
 /// (applied cumulatively in canonical order).
 ///
