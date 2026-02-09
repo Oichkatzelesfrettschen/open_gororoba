@@ -5,12 +5,19 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2267
-claim_count = 487
+test_count = 2270
+claim_count = 490
 insight_count = 17
 experiment_count = 13
 paper_count = 19
 binary_count = 40
+
+[sprints.s24]
+number = 24
+date = "2026-02-09"
+test_count = 2270
+claim_count = 490
+summary = "Face sign census at dim=256: 17 regimes, 13.3M triangles in 16s (C-488). Regime-GF(2) Class Correspondence: regimes = edge-count classes + 1, pure-max split at XOR=dim/4 (C-489). Parity-specific edge regularity REFUTED in non-pure regimes (C-490). Double 3:1 Law now verified across 243 components at 5 dimensions."
 
 [sprints.s23]
 number = 23

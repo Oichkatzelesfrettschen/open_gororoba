@@ -1,15 +1,21 @@
 # Next Actions (Prioritized)
 
-Updated 2026-02-09 after Sprint 23 completion.
+Updated 2026-02-09 after Sprint 24 completion.
 **See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and research plan.
 
-## Current State (Sprint 23, 2026-02-09)
+## Current State (Sprint 24, 2026-02-09)
 
-**Test count**: 2267 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-487 (487 total). **Insights**: I-001..I-017. **Binaries**: 40.
+**Test count**: 2270 total (unit + integration + doc), 0 clippy warnings.
+**Claims**: C-001..C-490 (490 total). **Insights**: I-001..I-017. **Binaries**: 40.
 
 ## Recent Sprint Summaries
 
+- **S24**: Face sign census at dim=256: 17 regimes, 13.3M triangles in ~16s (C-488).
+  Regime-to-GF(2) class correspondence: regimes = edge-count classes + 1, unifying
+  motif census, GF(2) projective geometry, and face sign census (C-489). Parity-
+  specific edge regularity REFUTED in non-pure regimes -- the Double 3:1 Law's
+  algebraic mechanism is deeper than graph-theoretic counting (C-490). Universal
+  Double 3:1 Law now verified across 243 components at 5 dimensions.
 - **S23**: Face sign census at dim=128: 9 regimes, 821128 triangles in ~1s (C-484).
   Regime count formula corrected from 2*log2(dim/16)+1 to dim/16+1 (C-485). Edge
   count extremal formulas: E_max=C(dim/2-2,2)-(dim/4-1), E_min=3*dim/2-12 (C-486).
