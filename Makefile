@@ -20,7 +20,8 @@
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
 .PHONY: registry-project-csv-split registry-csv-holdings
-.PHONY: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated registry-scroll-archive-csv-holding
+.PHONY: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated
+.PHONY: registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
 .PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-wave3
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
@@ -242,6 +243,16 @@ registry-scroll-archive-csv-holding: registry-csv-holdings
 		--corpus-label 'archive CSV holding queue' \
 		--dataset-class holding-archive
 
+registry-scroll-external-csv-holding: registry-csv-holdings
+	cargo run --release --bin scrollify-csv -- \
+		--source-manifest registry/manifests/external_csv_holding_manifest.txt \
+		--out-index registry/external_csv_holding_datasets.toml \
+		--out-dir registry/data/external_csv_holding \
+		--index-table external_csv_holding_datasets \
+		--dataset-prefix EH \
+		--corpus-label 'external CSV holding queue' \
+		--dataset-class holding-external
+
 registry-verify-project-csv-split: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated
 	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
 		--index-path registry/project_csv_canonical_datasets.toml \
@@ -253,7 +264,12 @@ registry-verify-project-csv-split: registry-scroll-project-csv-canonical registr
 		--corpus-label 'project CSV generated artifact'
 	PYTHONWARNINGS=error python3 src/verification/verify_project_csv_split_policy.py
 
-registry-verify-csv-holdings: registry-csv-holdings registry-scroll-archive-csv-holding
+registry-verify-csv-holdings: registry-csv-holdings registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
+	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
+		--index-path registry/external_csv_holding_datasets.toml \
+		--source-manifest registry/manifests/external_csv_holding_manifest.txt \
+		--corpus-label 'external CSV holding queue' \
+		--coverage-only
 	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
 		--index-path registry/archive_csv_holding_datasets.toml \
 		--source-manifest registry/manifests/archive_csv_holding_manifest.txt \

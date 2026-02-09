@@ -141,7 +141,7 @@ def main() -> int:
         1
         for row in docs
         if str(row.get("zone", "")) in {"external_csv", "archive_csv"}
-        and str(row.get("migration_action", "")) == "queued_for_scroll_holding"
+        and str(row.get("migration_action", "")) == "canonicalized_to_toml_holding"
     )
 
     lines.append("[next_waves]")
@@ -155,7 +155,7 @@ def main() -> int:
         f"wave_3 = {_esc(_wave_state(project_total, project_done, 'project_csv split/migration', 'project_csv split-and-scroll complete'))}"
     )
     lines.append(
-        f"wave_4 = {_esc(_wave_state(holding_total, holding_done, 'external/archive holding queue', 'external+archive holding queued'))}"
+        f"wave_4 = {_esc(_wave_state(holding_total, holding_done, 'external/archive holding conversion', 'external+archive holding scrollified'))}"
     )
     lines.append("")
 

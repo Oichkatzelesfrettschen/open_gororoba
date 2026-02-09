@@ -13,7 +13,8 @@ legacy_count = 200
 curated_count = 557
 canonicalized_count = 813
 generated_scroll_count = 30
-holding_queue_count = 31
+holding_scroll_count = 31
+holding_queue_count = 0
 
 [[document]]
 path = ".playwright-mcp/sorce-tsi-24hr-l3.csv"
@@ -37,9 +38,9 @@ generated = false
 size_bytes = 282
 line_count = 42
 sha256 = "df0b1c02406ed3a6c2e7025c05a2ee8eb9429a0ee1be19534e2ead025bf3a40e"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "Archive CSV holding source is represented in registry/data/archive_csv_holding."
 
 [[document]]
 path = "archive/8086_legacy/8086_and_8087_Precision_Capabilities.csv"
@@ -50,9 +51,9 @@ generated = false
 size_bytes = 989
 line_count = 12
 sha256 = "c6f76d5d71f87bfe4863b0a5c3c726ccdbc28d7acee6e7f6e208c0009b6d49b7"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "Archive CSV holding source is represented in registry/data/archive_csv_holding."
 
 [[document]]
 path = "archive/8086_legacy/Comparative_CPU_Instruction_Cycle_Counts__8086_to_80486_.csv"
@@ -63,9 +64,9 @@ generated = false
 size_bytes = 879
 line_count = 42
 sha256 = "ef28a9d71a2adbfc4c7e31f22b18c83aaebcec9932b1b518dfe55bc4a1bb15d2"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "Archive CSV holding source is represented in registry/data/archive_csv_holding."
 
 [[document]]
 path = "archive/8086_legacy/Comparative_FPU_Instruction_Cycle_Counts__8087_to_80487_.csv"
@@ -76,9 +77,9 @@ generated = false
 size_bytes = 738
 line_count = 24
 sha256 = "f99d538b9b5dfee6ba23d103d2e04269594243706c5cfc6f9ec013edc6add7ec"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "Archive CSV holding source is represented in registry/data/archive_csv_holding."
 
 [[document]]
 path = "archive/8086_legacy/Updated_Comparative_CPU_Instruction_Cycle_Counts__8086_to_V30_.csv"
@@ -89,9 +90,9 @@ generated = false
 size_bytes = 1190
 line_count = 42
 sha256 = "f91048eb059da4e2f8734e058603d0b9014c328500b21c786f706a7947655bb0"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "Archive CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "Archive CSV holding source is represented in registry/data/archive_csv_holding."
 
 [[document]]
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
@@ -11464,9 +11465,9 @@ generated = false
 size_bytes = 153
 line_count = 8
 sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/GWTC-3.csv"
@@ -11477,9 +11478,9 @@ generated = false
 size_bytes = 232
 line_count = 8
 sha256 = "b6ee03773b806a3eb25c26f9fd5f2487c382cdcaf5af4bdc9f0a9ef82664ddb3"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/GWTC-3_GWpy_Official.csv"
@@ -11490,9 +11491,9 @@ generated = false
 size_bytes = 997
 line_count = 37
 sha256 = "bb5ab708f5d9ef68639dd5a7a09f05e5191af8fc04211c40b55c0715ef727080"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/GWTC-3_confident.csv"
@@ -11503,9 +11504,9 @@ generated = false
 size_bytes = 11323
 line_count = 37
 sha256 = "96b5292325bef325a3df686f21e3103560f625933f63aec684ba8c28ff7bb0eb"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/GWTC-3_synthetic.csv"
@@ -11516,9 +11517,9 @@ generated = false
 size_bytes = 7479
 line_count = 102
 sha256 = "8ffe88c10b50e491792f76b6eba45f19dfbed0497dd69b0568afb7bbd096ed94"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/HST_UDF_Metadata.csv"
@@ -11529,9 +11530,9 @@ generated = false
 size_bytes = 365
 line_count = 2
 sha256 = "e0aca08526d149b25ce2c0ddfd4e914f6b0c0d9f7c0cf183f015173bd9bfddac"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/SDSS_DR16Q.csv"
@@ -11542,9 +11543,9 @@ generated = false
 size_bytes = 196
 line_count = 8
 sha256 = "80c3fe2ae1062abf56456f52518bd670f9ec3917b7f85e152b347ac6b6faf880"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/SDSS_Quasars_Astroquery.csv"
@@ -11555,9 +11556,9 @@ generated = false
 size_bytes = 24975
 line_count = 502
 sha256 = "d18266f5dd06970c9678c1639e0771d1ba90c8a98e05dea1ee7f4b989f881428"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/TESS_Metadata.csv"
@@ -11568,9 +11569,9 @@ generated = false
 size_bytes = 5483734
 line_count = 11457
 sha256 = "392072233e722cc1c0b31c2cbfedfbc8c77480514f8a42e28b4a15173685da79"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/atnf_pulsars.csv"
@@ -11581,9 +11582,9 @@ generated = false
 size_bytes = 253509
 line_count = 4357
 sha256 = "3a5987bca6ecc3c22dcaa00060acd6c8f483ca6c98820e653f08b5af022b324b"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/chime_frb_cat1.csv"
@@ -11594,9 +11595,9 @@ generated = false
 size_bytes = 221007
 line_count = 602
 sha256 = "affd86573fee8fe94be9d0d85e73cc787fa260b2497ccec5d9d93e1d26610ed5"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/chime_frb_cat2.csv"
@@ -11607,9 +11608,9 @@ generated = false
 size_bytes = 4057396
 line_count = 5047
 sha256 = "5108ada779d279a2547d9f9e73ae25bfdd40d8496d6ba7255ec29c6629057a48"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv"
@@ -11620,9 +11621,9 @@ generated = false
 size_bytes = 3913
 line_count = 48
 sha256 = "80da16e314d7f0ec205412173bd96950c6ebb3685bbabb57753eaf4ef87549b8"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/cms_oo_raa/table1_pp_spectra.csv"
@@ -11633,9 +11634,9 @@ generated = false
 size_bytes = 4083
 line_count = 58
 sha256 = "339b4bed5db62555210863da82b7ff3bd1180a5aca1e508eb03e1ce86a72ac14"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/cms_oo_raa/table2_oo_spectra.csv"
@@ -11646,9 +11647,9 @@ generated = false
 size_bytes = 3938
 line_count = 58
 sha256 = "3f5cc4c5dbaabf85c2b9720b5ced8c080e1763ef92fc33b88097be018bedef1a"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/cms_oo_raa/table3_oo_raa.csv"
@@ -11659,9 +11660,9 @@ generated = false
 size_bytes = 3477
 line_count = 58
 sha256 = "136f109ea7a42b9983004bb9428fc7874b02ecf66f53d1ce43ea2ff8776e2e01"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/fermi_gbm_grbs.csv"
@@ -11672,9 +11673,9 @@ generated = false
 size_bytes = 1314567
 line_count = 4205
 sha256 = "e8d1646caac69621ef4a79cdb36aabaabbadae0c12648b721e20e51926776d59"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/gaia_dr3_nearby.csv"
@@ -11685,9 +11686,9 @@ generated = false
 size_bytes = 8260573
 line_count = 50002
 sha256 = "80a19453135d44e616c068c635c210bc9de5324dfe2d269d43f9bef5e410b1a7"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/gwosc_all_events.csv"
@@ -11698,9 +11699,9 @@ generated = false
 size_bytes = 64080
 line_count = 221
 sha256 = "61deadfe0008420ce830b71a3995c45e1ba2cf54423a48fcf1366524861de19f"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/jpl_planets_2020_2030.csv"
@@ -11711,9 +11712,9 @@ generated = false
 size_bytes = 20521
 line_count = 855
 sha256 = "707537ad2babc9741c20526f10e098d9bad1d274f15b2f7ad686ea1e5c0d3d97"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/mcgill_magnetars.csv"
@@ -11724,9 +11725,9 @@ generated = false
 size_bytes = 7296
 line_count = 33
 sha256 = "cb89a085a4e49b6a5130f1fda59d4d616b6e8384fa2b2d9de594b69a41fd60f6"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/nanograv_15yr_freespectrum.csv"
@@ -11737,9 +11738,9 @@ generated = false
 size_bytes = 886
 line_count = 32
 sha256 = "a730304cdb50058d95be822a1ac87d0bdff5d396b69bc4eb2d9612de74b4304c"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/sdss_dr18_quasars.csv"
@@ -11750,9 +11751,9 @@ generated = false
 size_bytes = 4921394
 line_count = 50003
 sha256 = "77af32d7e312b820a20cadba45bfa76fce398df626a84473ed74a7fc534911ab"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/sorce_tsi_daily.csv"
@@ -11763,9 +11764,9 @@ generated = false
 size_bytes = 933249
 line_count = 6345
 sha256 = "2eb0f129d82a9597d89db795407780fe2c763e012c6250776d2ba768c8c4e9e6"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/swarm_magnetic_sample.csv"
@@ -11776,9 +11777,9 @@ generated = false
 size_bytes = 219390
 line_count = 1876
 sha256 = "c105769b39327436413ac13a4221dc3e26207cd2e4fe491392aaecbc96495695"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "data/external/tsis1_tsi_daily.csv"
@@ -11789,9 +11790,9 @@ generated = false
 size_bytes = 305975
 line_count = 2948
 sha256 = "28bcd17fa35962af1dec2e2a64fcdd7be65158deba186bc358c4b8c79905e32b"
-migration_action = "queued_for_scroll_holding"
-migration_priority = "high"
-rationale = "External CSV is queued in holding registry for TOML scroll conversion."
+migration_action = "canonicalized_to_toml_holding"
+migration_priority = "complete"
+rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
 path = "docs/claims/CLAIMS_DOMAIN_MAP.csv"

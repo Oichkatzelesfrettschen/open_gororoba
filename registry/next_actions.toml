@@ -1,94 +1,38 @@
-# Priority queue registry (TOML-first).
-# Markdown mirror: docs/NEXT_ACTIONS.md
+# Next Actions Registry (TOML-first)
+# Markdown mirrors: docs/NEXT_ACTIONS.md
 
-[next_actions]
-source_markdown = "docs/NEXT_ACTIONS.md"
-authoritative = true
-status = "active"
+[meta]
 updated = "2026-02-09"
-sprint_current = 26
-test_count = 2314
-claim_count = 544
-insight_count = 18
+status = "active"
 
 [[action]]
 id = "NA-001"
-priority = "P0"
-title = "Complete TOML centralization for markdown mirrors"
-status = "done"
-description = "COMPLETE (commit 85b360b). All TOML-generated markdown mirrors untracked from git. TOML registry is sole source of truth. `make publish-docs` regenerates on demand."
-references = [
-  "registry/knowledge_sources.toml",
-  "registry/knowledge/documents.toml",
-  "registry/knowledge_migration_plan.toml",
-  "src/verification/verify_registry_mirror_freshness.py",
-]
+area = "integration"
+title = "Wire Optics into Warp Ring"
+description = "Connect `crates/optics_core` (GRIN raytracing, Kerr nonlinearity) to `warp_ring_integration.rs`. Visualize the 'warp' effect on background stars or the ring itself."
+priority = "high"
+status = "todo"
 
 [[action]]
 id = "NA-002"
-priority = "P1"
-title = "Resolve multiplication coupling rho(b) in GL(8,Z)"
-status = "done"
-description = "REFUTED (Sprint 16). Only identity element b=0 yields zero residual in rank-adaptive reduced-subspace algorithm. C-466 refuted."
-references = [
-  "docs/NEXT_ACTIONS.md",
-  "docs/ROADMAP.md",
-]
+area = "math"
+title = "Implement Betti Numbers"
+description = "Add homology computation to `stats_core/hypergraph.rs`. Use `petgraph` or a specialized crate to compute Betti-0 (components) and Betti-1 (cycles) of the triad graph."
+priority = "medium"
+status = "todo"
 
 [[action]]
 id = "NA-003"
-priority = "P1"
-title = "Primary-source citation sweep for remaining claims"
-status = "done"
-description = "COMPLETE (Sprint 25 audit). All 530/530 claims have non-empty where_stated."
-references = [
-  "registry/claims.toml",
-  "docs/BIBLIOGRAPHY.md",
-  "docs/CLAIMS_TASKS.md",
-]
+area = "registry"
+title = "Registry Validation Script"
+description = "Create a Rust test or script that deserializes all `registry/*.toml` files using `data_core::registry` structs to ensure schema compliance."
+priority = "medium"
+status = "todo"
 
 [[action]]
 id = "NA-004"
-priority = "P2"
-title = "Paper-ready LaTeX pipeline consolidation"
-status = "open"
-description = "Drive manuscript generation from verified TOML registries with reproducible sections. Priority target: Anti-Diagonal Parity Theorem (I-018) or ultrametric hierarchy fingerprint (I-013)."
-references = [
-  "docs/latex/",
-  "crates/gororoba_cli/src/bin/generate_latex.rs",
-  "registry/claims.toml",
-  "registry/insights.toml",
-]
-
-[[action]]
-id = "NA-005"
-priority = "P1"
-title = "Anti-Diagonal Parity Mechanism for Double 3:1 Law"
-status = "done"
-description = "COMPLETE (Sprint 25). Complete mechanistic explanation for the Universal Double 3:1 Law (C-487) via the Anti-Diagonal Parity Theorem. The GF(2) twist exponent psi(i,j) forms a 2x2 matrix per edge; its anti-diagonal XOR eta characterizes the pure/mixed partition. F invariant in GF(2)^2 has 1 zero state (pure) and 3 nonzero (mixed), forcing 1:3 combinatorially. Verified at dims 16/32/64/128/256 (13.3M+ triangles, 0 mismatches). Key claims: C-515..C-527, I-018."
-references = [
-  "registry/claims.toml",
-  "registry/insights.toml",
-  "crates/algebra_core/src/analysis/boxkites.rs",
-]
-
-[[action]]
-id = "NA-006"
-priority = "P3"
-title = "Coq/Rocq formalization of CD properties"
-status = "open"
-description = "Decide semantics for has_right/reachable_delegation. Prove a minimal non-trivial theorem end-to-end in Rocq."
-references = [
-  "docs/ROADMAP.md",
-]
-
-[[action]]
-id = "NA-007"
-priority = "P3"
-title = "GPU tensor network contraction"
-status = "open"
-description = "Extend cudarc GPU path beyond ultrametric testing. Target: PEPS boundary contraction for larger system sizes."
-references = [
-  "crates/stats_core/src/ultrametric/gpu.rs",
-  "crates/quantum_core/",
-]
+area = "optics"
+title = "Refine Kerr Lens Model"
+description = "Use `optics_core::tcmt` to model the Kerr effect in the warp ring's optical path, simulating non-linear refractive index changes."
+priority = "low"
+status = "todo"

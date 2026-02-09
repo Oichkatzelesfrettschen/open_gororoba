@@ -3705,14 +3705,14 @@ mod tests {
         // Expected result: 0/8 commutative (100% non-commutative).
 
         let gammas_options: Vec<[i32; 3]> = vec![
-            [-1, -1, -1],  // standard octonion
-            [-1, -1, 1],   // mixed
-            [-1, 1, -1],   // mixed
-            [-1, 1, 1],    // mixed
-            [1, -1, -1],   // mixed
-            [1, -1, 1],    // mixed
-            [1, 1, -1],    // mixed
-            [1, 1, 1],     // split octonion
+            [-1, -1, -1], // standard octonion
+            [-1, -1, 1],  // mixed
+            [-1, 1, -1],  // mixed
+            [-1, 1, 1],   // mixed
+            [1, -1, -1],  // mixed
+            [1, -1, 1],   // mixed
+            [1, 1, -1],   // mixed
+            [1, 1, 1],    // split octonion
         ];
 
         let dim = 8;
@@ -3733,11 +3733,8 @@ mod tests {
                     let ei_ej = cd_multiply_split(&ei, &ej, &sig);
                     let ej_ei = cd_multiply_split(&ej, &ei, &sig);
 
-                    let diff: Vec<f64> = ei_ej
-                        .iter()
-                        .zip(ej_ei.iter())
-                        .map(|(a, b)| a - b)
-                        .collect();
+                    let diff: Vec<f64> =
+                        ei_ej.iter().zip(ej_ei.iter()).map(|(a, b)| a - b).collect();
                     let norm: f64 = diff.iter().map(|x| x * x).sum::<f64>().sqrt();
 
                     if norm > 1e-10 {

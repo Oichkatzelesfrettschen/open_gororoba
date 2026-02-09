@@ -3,7 +3,7 @@
 
 [roadmap]
 source_markdown = "docs/ROADMAP.md"
-consolidated_date = "2026-02-06"
+consolidated_date = "2026-02-09"
 supersedes = [
   "RUST_MIGRATION_PLAN.md",
   "RUST_REFACTOR_PLAN.md",
@@ -36,6 +36,8 @@ primary_outputs = [
   "registry/claims_tasks.toml",
   "registry/claims_domains.toml",
   "registry/claim_tickets.toml",
+  "registry/lacunae.toml",
+  "registry/monograph.toml",
   "src/verification/verify_registry_mirror_freshness.py",
   "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md",
   "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md",
@@ -94,3 +96,18 @@ primary_outputs = [
   "crates/algebra_core/src/analysis/boxkites.rs",
 ]
 claims = ["C-478", "C-479", "C-480", "C-481", "C-482", "C-483", "C-484", "C-485", "C-486", "C-487", "C-488", "C-489", "C-490", "C-491", "C-492", "C-493", "C-494", "C-495", "C-496", "C-497"]
+
+[[workstream]]
+id = "WS-ALGEBRA-FLUID-001"
+name = "Algebra-Fluid Duality Integration"
+priority = "high"
+status = "in_progress"
+description = "Synthesize E7 Lie Algebra roots and Navier-Stokes turbulence triads (k+p+q=0) into a unified visual and mathematical framework. Includes spectral analysis, hypergraph metrics (Clustering, Betti), and Kerr-optics lensing."
+primary_outputs = [
+  "crates/gororoba_cli/src/bin/warp_ring_integration.rs",
+  "crates/algebra_core/src/lie/e7_geometry.rs",
+  "crates/lbm_core/src/turbulence.rs",
+  "registry/monograph.toml",
+  "registry/lacunae.toml",
+]
+lacunae = ["L-001", "L-002", "L-003", "L-004", "L-005"]

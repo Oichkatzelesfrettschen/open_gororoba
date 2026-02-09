@@ -1,0 +1,35 @@
+[dataset]
+id = "EH-0001"
+slug = "desi_qso"
+source_csv = "data/external/DESI_QSO.csv"
+source_sha256 = "c375e42b6328de1880de1424a93267d573a1afa2ed37f72a35d8218f6880dd58"
+source_size_bytes = 153
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 6
+column_count = 1
+header_value_sha256 = "e8900afb97251c5a0931f1b86d6334a438784e3f73715a75b9037c6a4cfcb88a"
+row_value_sha256 = "190280eff6efa1d07b930e024961f22dced0f6354f9da01e580b10bb2a48d815"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = ["html"]
+original_header = ["<html>"]
+rows = [
+    ["<head><title>404 Not Found</title></head>"],
+    ["<body>"],
+    ["<center><h1>404 Not Found</h1></center>"],
+    ["<hr><center>nginx/1.28.0</center>"],
+    ["</body>"],
+    ["</html>"],
+]
+
+[[column]]
+index = 1
+name = "html"
+original_name = "<html>"
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0

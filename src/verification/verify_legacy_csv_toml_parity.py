@@ -188,6 +188,11 @@ def main() -> int:
         default=DEFAULT_CORPUS_LABEL,
         help="Human-readable label for output messages.",
     )
+    parser.add_argument(
+        "--coverage-only",
+        action="store_true",
+        help="Verify index/source/canonical coverage only, without row-level semantic parity checks.",
+    )
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
@@ -241,6 +246,9 @@ def main() -> int:
         source_sha = hashlib.sha256(source_path.read_bytes()).hexdigest()
         if source_sha != str(row.get("source_sha256", "")):
             failures.append(f"{source_csv}: source_sha256 mismatch in index")
+
+        if args.coverage_only:
+            continue
 
         canon = tomllib.loads(canon_path.read_text(encoding="utf-8"))
         dataset = canon.get("dataset", {})

@@ -192,8 +192,7 @@ mod tests {
 
         for triad in &triads {
             for d in 0..8 {
-                let sum =
-                    triad.k.root.coords[d] + triad.p.root.coords[d] + triad.q.root.coords[d];
+                let sum = triad.k.root.coords[d] + triad.p.root.coords[d] + triad.q.root.coords[d];
                 assert!(
                     sum.abs() < 1e-10,
                     "Triad closure violated: k+p+q[{}] = {}",

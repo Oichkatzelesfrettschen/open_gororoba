@@ -1,0 +1,243 @@
+[dataset]
+id = "EH-0022"
+slug = "nanograv_15yr_freespectrum"
+source_csv = "data/external/nanograv_15yr_freespectrum.csv"
+source_sha256 = "a730304cdb50058d95be822a1ac87d0bdff5d396b69bc4eb2d9612de74b4304c"
+source_size_bytes = 886
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 30
+column_count = 4
+header_value_sha256 = "648ea2923e7b0dc905f4aba767823b9058364f7bf9337ff0ea5e2b4db7b187b4"
+row_value_sha256 = "ef4e2f49bf4bf6b520e7db2d1cf6ffcf2e3dcc0fe3d4999dae7b071928e0f72b"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = [
+    "frequency",
+    "log10_rho",
+    "log10_rho_lo",
+    "log10_rho_hi",
+]
+original_header = [
+    "frequency",
+    "log10_rho",
+    "log10_rho_lo",
+    "log10_rho_hi",
+]
+rows = [
+    [
+    "1.9768264576e-9",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "3.9536529151e-9",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "5.9304793727e-9",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "7.9073058303e-9",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "9.8841322878e-9",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "1.1860958745e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "1.3837785203e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "1.5814611661e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "1.7791438118e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "1.9768264576e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "2.1745091033e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "2.3721917491e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "2.5698743948e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "2.7675570406e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "2.9652396864e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "3.1629223321e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "3.3606049779e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "3.5582876236e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "3.7559702694e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "3.9536529151e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "4.1513355609e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "4.3490182066e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "4.5467008524e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "4.7443834982e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "4.9420661439e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "5.1397487897e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "5.3374314354e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "5.5351140812e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "5.7327967269e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+    [
+    "5.9304793727e-8",
+    "NaN",
+    "NaN",
+    "NaN",
+],
+]
+
+[[column]]
+index = 1
+name = "frequency"
+original_name = "frequency"
+inferred_type = "float"
+non_empty_count = 30
+empty_count = 0
+
+[[column]]
+index = 2
+name = "log10_rho"
+original_name = "log10_rho"
+inferred_type = "string"
+non_empty_count = 30
+empty_count = 0
+
+[[column]]
+index = 3
+name = "log10_rho_lo"
+original_name = "log10_rho_lo"
+inferred_type = "string"
+non_empty_count = 30
+empty_count = 0
+
+[[column]]
+index = 4
+name = "log10_rho_hi"
+original_name = "log10_rho_hi"
+inferred_type = "string"
+non_empty_count = 30
+empty_count = 0

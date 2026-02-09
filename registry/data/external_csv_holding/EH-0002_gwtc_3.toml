@@ -1,0 +1,35 @@
+[dataset]
+id = "EH-0002"
+slug = "gwtc_3"
+source_csv = "data/external/GWTC-3.csv"
+source_sha256 = "b6ee03773b806a3eb25c26f9fd5f2487c382cdcaf5af4bdc9f0a9ef82664ddb3"
+source_size_bytes = 232
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 6
+column_count = 1
+header_value_sha256 = "676efd464d1f306b9179c5eedc39acf92053f3f8981b68243d64db4f2c0b73db"
+row_value_sha256 = "e1fe9b2e4ddb51c8b63b0609529ca5ea3e9fd1f67d3b33fb8a373c3f2c9706fc"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = ["doctype_html_public_ietf_dtd_html_2_0_en"]
+original_header = ['<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">']
+rows = [
+    ["<html><head>"],
+    ["<title>302 Found</title>"],
+    ["</head><body>"],
+    ["<h1>Found</h1>"],
+    ['<p>The document has moved <a href="https://gwosc.org/eventapi/csv/GWTC-3-confident/">here</a>.</p>'],
+    ["</body></html>"],
+]
+
+[[column]]
+index = 1
+name = "doctype_html_public_ietf_dtd_html_2_0_en"
+original_name = '<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML 2.0//EN">'
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0

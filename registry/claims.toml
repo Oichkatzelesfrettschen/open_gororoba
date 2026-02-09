@@ -4413,3 +4413,19 @@ where_stated = "`docs/ALGEBRA_FAMILY_TAXONOMY.md` (Phase 2d documentation), cros
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: Exhaustive CD search + literature review found NO CD variant yielding commutativity at dim=4. Tessarines require C tensor C. WHAT WOULD REFUTE: discovering a CD gamma choice that yields commutative 4D algebra, or a tensor product that yields non-commutative 4D algebra (none found after exhaustive search)."
+
+[[claim]]
+id = "C-553"
+statement = "Octonion Family Commutativity Census: ALL 8 Standard Gamma Signatures at dim=8 are Non-Commutative (Structural Property). Exhaustive testing of all gamma in {-1,+1}^3 shows 100% non-commutativity across octonions, matching the quaternion result (C-550). Standard octonions ([-1,-1,-1]), split octonions ([+1,+1,+1]), and all mixed signatures exhibit non-commutativity. This confirms non-commutativity is a STRUCTURAL property of CD doubling at dim >= 4, independent of metric signature (gamma parameter)."
+where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_octonion_family_all_signatures_commutativity)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: All 8 octonion gamma signatures tested; 0/8 commutative (100% non-commutative). Test scope: 28 basis element pairs sampled per signature for commutator violation detection. Cross-validation: consistent with quaternion result (C-550) and theory (non-commutativity is construction-inherent). WHAT WOULD REFUTE: finding any gamma in {-1,+1}^3 where e_i * e_j = e_j * e_i for all i,j at dim=8 (none found)."
+
+[[claim]]
+id = "C-554"
+statement = "Octonion Zero-Divisor Landscape: Metric Signature (Gamma) Controls ZD Count, Not Commutativity. Standard octonions ([-1,-1,-1]) are a division algebra with zero 2-blade zero-divisor pairs, while split octonions ([+1,+1,+1]) and mixed signatures exhibit non-zero ZD counts. This mirrors the quaternion pattern (C-551) and confirms that metric signature (gamma parameter) is the PRIMARY determinant of zero-divisor distribution, while algebraic properties like commutativity remain gamma-invariant (structural). Composition law ||ab||^2 = ||a||^2 ||b||^2 holds for standard octonions and may be violated for split/mixed signatures."
+where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_octonion_zero_divisor_census_all_signatures, test_octonion_composition_law_across_signatures)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: Standard octonions have 0 ZD 2-blade pairs (division algebra); split and mixed signatures show non-zero ZD counts. Composition law verified for standard octonions. Scaling hypothesis: ZD count monotone non-decreasing in count(gamma[i] = +1). WHAT WOULD REFUTE: finding a split-like signature with zero ZD pairs, or a mixed signature with lower ZD counts than standard, or standard octonions failing composition law (none found in census)."

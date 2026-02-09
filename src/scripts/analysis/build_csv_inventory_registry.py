@@ -167,6 +167,8 @@ def _policy_with_progress(
     project_generated_paths: set[str],
     external_holding_paths: set[str],
     archive_holding_paths: set[str],
+    external_holding_scroll_paths: set[str],
+    archive_holding_scroll_paths: set[str],
     project_split_classification: dict[str, str],
 ) -> tuple[str, str, str]:
     if zone == "legacy_csv" and path in legacy_canonical_paths:
@@ -192,6 +194,18 @@ def _policy_with_progress(
             "canonicalized_to_toml_generated_artifact",
             "complete",
             "Project generated artifact is represented in registry/data/project_csv/generated.",
+        )
+    if zone == "external_csv" and path in external_holding_scroll_paths:
+        return (
+            "canonicalized_to_toml_holding",
+            "complete",
+            "External CSV holding source is represented in registry/data/external_csv_holding.",
+        )
+    if zone == "archive_csv" and path in archive_holding_scroll_paths:
+        return (
+            "canonicalized_to_toml_holding",
+            "complete",
+            "Archive CSV holding source is represented in registry/data/archive_csv_holding.",
         )
     if zone == "external_csv" and path in external_holding_paths:
         return (
@@ -233,6 +247,9 @@ def _render(docs: list[CsvDoc]) -> str:
     generated_scroll_count = sum(
         1 for d in docs if d.migration_action == "canonicalized_to_toml_generated_artifact"
     )
+    holding_scroll_count = sum(
+        1 for d in docs if d.migration_action == "canonicalized_to_toml_holding"
+    )
     holding_queue_count = sum(1 for d in docs if d.migration_action == "queued_for_scroll_holding")
 
     lines: list[str] = []
@@ -251,6 +268,7 @@ def _render(docs: list[CsvDoc]) -> str:
     lines.append(f"curated_count = {curated_count}")
     lines.append(f"canonicalized_count = {canonicalized_count}")
     lines.append(f"generated_scroll_count = {generated_scroll_count}")
+    lines.append(f"holding_scroll_count = {holding_scroll_count}")
     lines.append(f"holding_queue_count = {holding_queue_count}")
     lines.append("")
 
@@ -316,6 +334,12 @@ def main() -> int:
     archive_holding_paths = _load_canonical_source_paths(
         root, "registry/archive_csv_holding.toml", "archive_csv_holding"
     )
+    external_holding_scroll_paths = _load_canonical_source_paths(
+        root, "registry/external_csv_holding_datasets.toml", "external_csv_holding_datasets"
+    )
+    archive_holding_scroll_paths = _load_canonical_source_paths(
+        root, "registry/archive_csv_holding_datasets.toml", "archive_csv_holding_datasets"
+    )
     project_split_classification = _load_project_split_classification(root)
 
     files = sorted(_all_filesystem_csv(root))
@@ -335,6 +359,8 @@ def main() -> int:
             project_generated_paths,
             external_holding_paths,
             archive_holding_paths,
+            external_holding_scroll_paths,
+            archive_holding_scroll_paths,
             project_split_classification,
         )
         classification = project_split_classification.get(rel, "")
