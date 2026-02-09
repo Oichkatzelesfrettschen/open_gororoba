@@ -246,6 +246,8 @@ pub use e10_octonion::{
     compare_fano_dynkin, build_e8_transition_graph,
     symmetrize_transition_graph, compare_fano_transitions,
     optimal_fano_overlap_basis,
+    // Claim 4 verification (Engine B)
+    Claim4Result, verify_claim4, claim4_summary,
 };
 
 pub use billiard_stats::{
