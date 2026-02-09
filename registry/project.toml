@@ -5,7 +5,7 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2352
+test_count = 2361
 claim_count = 544
 insight_count = 18
 experiment_count = 13
@@ -15,7 +15,7 @@ binary_count = 40
 [sprints.s26]
 number = 26
 date = "2026-02-09"
-test_count = 2352
+test_count = 2361
 claim_count = 544
 insight_count = 18
 summary = "dim=512 Anti-Diagonal Parity Theorem verified (214M triangles, 0 mismatches, C-531). psi/eta tower extended to dim=2/4/8: quaternion antisymmetry, octonion Fano plane (7 lines, 5+/2-), psi=1 fraction converges to 50% (C-532..C-534). dim=1024 frustration ratio 0.37849 (C-535): post-peak monotonic decrease confirms convergence toward 3/8. Legacy CSV cross-validation (C-536..C-544): ZD adjacency matrices REFUTED (same-parity artifact), universal anti-commutativity of CD basis elements VERIFIED (0% commuting at all dims 4-128), quaternion Lie brackets VERIFIED, octonion associators VERIFIED (168/210=80% nonzero, alternativity confirmed), property retention errata documented (legacy incorrectly says dim>=16 lacks R,C,H sub-algebras), hyperquaternion table completed (6 sign flips = doubling convention), E6/Extended matrices NOT multiplication tables (eigenvector decompositions), Moonshine-CD connection REFUTED (C-543), psi=1 exact formula (n+1)/(2n) proved (C-544). Bit-parallel iterative cd_basis_mul_sign_iter (1.2x) and bit-packed SignTable (17x speedup, O(1) lookup). 26 legacy cross-validation tests, 11 sign optimization tests."
