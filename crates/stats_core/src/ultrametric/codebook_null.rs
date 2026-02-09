@@ -26,7 +26,7 @@
 use std::collections::HashSet;
 use algebra_core::analysis::codebook::EncodingDictionary;
 use algebra_core::construction::cayley_dickson::find_zero_divisors;
-use super::null_models::{RowPermutationNull, NullTestConfig, run_adaptive_null_test};
+use super::null_models::{NullModelStrategy, RowPermutationNull, NullTestConfig, run_adaptive_null_test};
 use super::adaptive::{AdaptiveConfig, AdaptiveResult};
 
 /// Result of a codebook null test.
@@ -114,19 +114,23 @@ pub fn selective_mean_squared_distance(
     total / pairs.len() as f64
 }
 
-/// Run a codebook null test with pre-computed ZD basis pairs.
+/// Run a codebook null test with a custom null model strategy.
 ///
-/// Tests whether the specific basis->lattice assignment creates
-/// shorter (or longer) ZD-pair lattice distances than a random
-/// permutation of the assignment would.
+/// This is the generalized Layer 5 API: any `NullModelStrategy` can be
+/// used to generate the null distribution. The test statistic is the
+/// mean squared Euclidean distance between lattice vectors of
+/// ZD-connected basis pairs.
 ///
-/// The null model permutes which basis element maps to which lattice
-/// vector, keeping the point cloud fixed but randomizing the algebraic
-/// labeling. A small p-value means the observed assignment is
-/// geometrically "special" with respect to the ZD network.
-pub fn run_codebook_null_test(
+/// Different null models test different hypotheses:
+/// - `RowPermutationNull`: is the basis->lattice *labeling* special?
+/// - `ColumnIndependentNull`: is the inter-attribute correlation special?
+///
+/// A small p-value means the observed assignment is geometrically
+/// "special" with respect to the ZD network under the given null.
+pub fn run_codebook_null_test_with_strategy(
     dict: &EncodingDictionary,
     zd_basis_pairs: &[(usize, usize)],
+    strategy: &dyn NullModelStrategy,
     adaptive_config: &AdaptiveConfig,
     seed: u64,
 ) -> CodebookNullResult {
@@ -136,9 +140,8 @@ pub fn run_codebook_null_test(
 
     let observed = selective_mean_squared_distance(&data, n, d, zd_basis_pairs);
 
-    let strategy = RowPermutationNull;
     let null_config = NullTestConfig {
-        strategy: &strategy,
+        strategy,
         adaptive: adaptive_config,
         seed,
     };
@@ -162,6 +165,23 @@ pub fn run_codebook_null_test(
     }
 }
 
+/// Run a codebook null test with pre-computed ZD basis pairs.
+///
+/// Uses `RowPermutationNull` as the default strategy: tests whether
+/// the specific basis->lattice labeling creates shorter (or longer)
+/// ZD-pair lattice distances than a random relabeling would.
+///
+/// For other null models, use `run_codebook_null_test_with_strategy`.
+pub fn run_codebook_null_test(
+    dict: &EncodingDictionary,
+    zd_basis_pairs: &[(usize, usize)],
+    adaptive_config: &AdaptiveConfig,
+    seed: u64,
+) -> CodebookNullResult {
+    let strategy = RowPermutationNull;
+    run_codebook_null_test_with_strategy(dict, zd_basis_pairs, &strategy, adaptive_config, seed)
+}
+
 /// Convenience: extract ZD basis pairs from a CD algebra dimension
 /// and run the codebook null test.
 ///
@@ -183,7 +203,9 @@ pub fn codebook_null_test_from_dim(
 #[cfg(test)]
 mod tests {
     use super::*;
-    use algebra_core::analysis::codebook::LatticeVector;
+    use algebra_core::analysis::codebook::{LatticeVector, enumerate_lambda_256};
+    use super::super::null_models::ColumnIndependentNull;
+    use super::super::adaptive::StopReason;
 
     /// Build a small (dim=4) dictionary with known lattice vectors.
     fn sample_dictionary_4() -> EncodingDictionary {
@@ -386,5 +408,204 @@ mod tests {
         assert_eq!(result.statistic_name, "mean_zd_pair_squared_distance");
         assert_eq!(result.n_basis, 4);
         assert_eq!(result.n_zd_pairs, 1);
+    }
+
+    // ====================================================================
+    // Thesis I: Layer 5 integration validation tests
+    // ====================================================================
+    //
+    // These tests validate that the NullModel abstraction (Layer 5)
+    // correctly integrates with the encoding dictionary (Layer 1) and
+    // ZD graph structure (Layer 3) through the adaptive sequential
+    // testing framework. Each test exercises the full L0-L5 pipeline.
+
+    /// Build a dim=16 (sedenion) dictionary from the first 16 Lambda_256
+    /// lattice vectors. Sedenions are the smallest CD algebra with
+    /// zero divisors, making them ideal for integration testing.
+    fn sample_sedenion_dictionary() -> EncodingDictionary {
+        let lambda = enumerate_lambda_256();
+        assert!(lambda.len() >= 16, "Lambda_256 must have at least 16 vectors");
+        let pairs: Vec<(usize, LatticeVector)> = lambda[..16]
+            .iter()
+            .enumerate()
+            .map(|(i, &v)| (i, v))
+            .collect();
+        EncodingDictionary::try_from_pairs(16, &pairs).unwrap()
+    }
+
+    #[test]
+    fn test_thesis_i_codebook_null_column_independent() {
+        // Thesis I test 4: Run codebook null test with ColumnIndependent
+        // null via the generalized strategy API (Layer 5 trait dispatch).
+        //
+        // ColumnIndependent shuffles each lattice coordinate independently,
+        // destroying inter-coordinate correlation. For lattice vectors in
+        // {-1,0,1}^8, this creates chimeric vectors that break the
+        // specific distance relationships between ZD-connected pairs.
+        //
+        // This test validates:
+        // - L0/L1: EncodingDictionary construction from Lambda_256
+        // - L3: ZD basis pair extraction from find_zero_divisors
+        // - L5: NullModelStrategy trait dispatch with ColumnIndependentNull
+        // - L5: Adaptive stopping engine integration
+        let dict = sample_sedenion_dictionary();
+        let zd_pairs = extract_zd_basis_pairs(16);
+        assert!(
+            !zd_pairs.is_empty(),
+            "sedenions must have ZD-connected basis pairs"
+        );
+
+        let strategy = ColumnIndependentNull;
+        let config = AdaptiveConfig {
+            batch_size: 50,
+            max_permutations: 500,
+            alpha: 0.05,
+            confidence: 0.95,
+            min_permutations: 100,
+        };
+
+        let result = run_codebook_null_test_with_strategy(
+            &dict, &zd_pairs, &strategy, &config, 42,
+        );
+
+        assert_eq!(result.n_basis, 16);
+        assert_eq!(result.n_zd_pairs, zd_pairs.len());
+        assert_eq!(result.dim, 16);
+        assert!(result.observed_value > 0.0, "ZD pairs must have positive distance");
+        assert!(
+            result.adaptive_result.p_value > 0.0,
+            "Phipson-Smyth guarantees p > 0"
+        );
+        assert!(
+            result.adaptive_result.p_value <= 1.0,
+            "p-value must be at most 1"
+        );
+        assert!(
+            result.adaptive_result.n_permutations_used >= 100,
+            "must run at least min_permutations"
+        );
+    }
+
+    #[test]
+    fn test_thesis_i_multi_null_codebook_comparison() {
+        // Thesis I test 5: Compare ColumnIndependent vs RowPermutation
+        // nulls on the same codebook data.
+        //
+        // For the selective_mean_squared_distance statistic on ZD-connected
+        // pairs, BOTH nulls are informative (unlike the global fraction
+        // statistic where RowPermutation is identity-equivalent):
+        //
+        // - ColumnIndependent: shuffles coordinates, creating chimeric
+        //   lattice vectors. This breaks BOTH the labeling AND the point
+        //   cloud structure, testing whether the observed correlation
+        //   pattern is special.
+        //
+        // - RowPermutation: permutes which basis maps to which lattice
+        //   point. This keeps the point cloud identical but randomizes
+        //   which pair is "ZD-connected", testing whether the algebraic
+        //   labeling is geometrically imprinted.
+        //
+        // Both should give valid p-values, but they test different
+        // hypotheses about the encoding dictionary.
+        let dict = sample_sedenion_dictionary();
+        let zd_pairs = extract_zd_basis_pairs(16);
+
+        let config = AdaptiveConfig {
+            batch_size: 50,
+            max_permutations: 500,
+            alpha: 0.05,
+            confidence: 0.95,
+            min_permutations: 100,
+        };
+
+        // ColumnIndependent null
+        let ci_strategy = ColumnIndependentNull;
+        let ci_result = run_codebook_null_test_with_strategy(
+            &dict, &zd_pairs, &ci_strategy, &config, 42,
+        );
+
+        // RowPermutation null (same as default run_codebook_null_test)
+        let rp_result = run_codebook_null_test(&dict, &zd_pairs, &config, 42);
+
+        // Both must produce valid results
+        assert!(ci_result.adaptive_result.p_value > 0.0);
+        assert!(ci_result.adaptive_result.p_value <= 1.0);
+        assert!(rp_result.adaptive_result.p_value > 0.0);
+        assert!(rp_result.adaptive_result.p_value <= 1.0);
+
+        // Both must have the same observed statistic (same data, same pairs)
+        assert!(
+            (ci_result.observed_value - rp_result.observed_value).abs() < 1e-15,
+            "observed statistic must be identical regardless of null model"
+        );
+
+        // Verify the strategy name propagates correctly
+        assert_eq!(ci_result.statistic_name, "mean_zd_pair_squared_distance");
+        assert_eq!(rp_result.statistic_name, "mean_zd_pair_squared_distance");
+    }
+
+    #[test]
+    fn test_thesis_i_adaptive_speedup_invariant_statistic() {
+        // Thesis I test 6: Verify adaptive engine stops early when the
+        // test statistic is invariant under the null model.
+        //
+        // When ALL C(n,2) pairs are included, the mean squared distance
+        // is a symmetric function of the pairwise distance multiset.
+        // Under RowPermutation, all pairwise distances are preserved
+        // (row permutation is a relabeling), so the statistic is
+        // literally unchanged every permutation.
+        //
+        // The adaptive engine should detect this quickly: every null
+        // realization yields null_stat == observed, so r/k ~ 1.0 and
+        // p ~ 1.0, causing early stopping as NonSignificantEarly.
+        let dict = sample_dictionary_4();
+        let all_pairs: Vec<(usize, usize)> = (0..4)
+            .flat_map(|i| ((i + 1)..4).map(move |j| (i, j)))
+            .collect();
+
+        let config = AdaptiveConfig {
+            batch_size: 20,
+            max_permutations: 2000,
+            alpha: 0.05,
+            confidence: 0.95,
+            min_permutations: 40,
+        };
+
+        let result = run_codebook_null_test(&dict, &all_pairs, &config, 42);
+
+        // p-value should be very high (statistic is invariant)
+        assert!(
+            result.adaptive_result.p_value > 0.5,
+            "invariant statistic must yield high p, got {}",
+            result.adaptive_result.p_value
+        );
+
+        // Adaptive should stop early (not exhaust all 2000 permutations)
+        assert!(
+            result.adaptive_result.stopped_early,
+            "adaptive engine should stop early on invariant statistic"
+        );
+        assert!(
+            result.adaptive_result.n_permutations_used < config.max_permutations,
+            "used {} of {} permutations -- should have stopped early",
+            result.adaptive_result.n_permutations_used,
+            config.max_permutations
+        );
+        assert_eq!(
+            result.adaptive_result.stop_reason,
+            StopReason::NonSignificantEarly,
+            "stop reason should be NonSignificantEarly for invariant statistic"
+        );
+
+        // Verify substantial speedup: should use far fewer than max
+        let speedup_ratio =
+            config.max_permutations as f64 / result.adaptive_result.n_permutations_used as f64;
+        assert!(
+            speedup_ratio > 2.0,
+            "expected at least 2x speedup, got {:.1}x ({} of {} perms)",
+            speedup_ratio,
+            result.adaptive_result.n_permutations_used,
+            config.max_permutations
+        );
     }
 }
