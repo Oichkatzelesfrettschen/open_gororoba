@@ -65,6 +65,24 @@ def _render_csv(rows: list[list[str]]) -> str:
     return buf.getvalue()
 
 
+def _load_optional_toml(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    return _load_toml(path)
+
+
+def _narrative_map(data: dict) -> tuple[str, dict[str, str]]:
+    section = data.get("insights_narrative") or data.get("experiments_narrative") or {}
+    preamble = str(section.get("preamble_markdown", "")).strip()
+    mapping: dict[str, str] = {}
+    for row in data.get("entry", []):
+        entry_id = str(row.get("id", "")).strip()
+        body = str(row.get("body_markdown", "")).strip()
+        if entry_id:
+            mapping[entry_id] = body
+    return preamble, mapping
+
+
 def export_insights(repo_root: Path, out_path: Path) -> None:
     data = _load_toml(repo_root / "registry/insights.toml")
     insights = sorted(data.get("insight", []), key=lambda x: x.get("id", ""))
@@ -85,6 +103,54 @@ def export_insights(repo_root: Path, out_path: Path) -> None:
         lines.append(row.get("summary", "").strip())
         lines.append("")
     _write(out_path, "\n".join(lines))
+
+
+def export_insights_legacy(repo_root: Path, out_path: Path) -> None:
+    registry_data = _load_toml(repo_root / "registry/insights.toml")
+    narrative_data = _load_optional_toml(repo_root / "registry/insights_narrative.toml")
+    preamble, body_by_id = _narrative_map(narrative_data)
+    insights = sorted(registry_data.get("insight", []), key=lambda x: x.get("id", ""))
+
+    lines: list[str] = []
+    if preamble:
+        lines.extend(preamble.splitlines())
+    else:
+        lines.extend(
+            [
+                "# Insights",
+                "",
+                "Source-of-truth policy:",
+                "- Authoritative machine-readable registry: `registry/insights.toml`",
+                "- Narrative overlay registry: `registry/insights_narrative.toml`",
+                "- TOML-driven markdown mirror: `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`",
+                "- This file is generated from TOML sources.",
+                "",
+            ]
+        )
+    lines.append("")
+
+    for row in insights:
+        insight_id = str(row.get("id", "I-???"))
+        title = str(row.get("title", "(untitled)"))
+        lines.append(f"## {insight_id}: {title}")
+        lines.append("")
+        body = body_by_id.get(insight_id, "").strip()
+        if body:
+            lines.extend(body.splitlines())
+        else:
+            claims = ", ".join(row.get("claims", [])) if row.get("claims") else "(none)"
+            lines.append(f"Date: {row.get('date', '')}")
+            lines.append(f"Status: {row.get('status', '')}")
+            lines.append(f"Claims: {claims}")
+            lines.append("")
+            lines.append(str(row.get("summary", "")).strip())
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+
+    while lines and not lines[-1].strip():
+        lines.pop()
+    _write(out_path, "\n".join(lines) + "\n")
 
 
 def export_experiments(repo_root: Path, out_path: Path) -> None:
@@ -118,6 +184,56 @@ def export_experiments(repo_root: Path, out_path: Path) -> None:
         lines.append("```")
         lines.append("")
     _write(out_path, "\n".join(lines))
+
+
+def export_experiments_legacy(repo_root: Path, out_path: Path) -> None:
+    registry_data = _load_toml(repo_root / "registry/experiments.toml")
+    narrative_data = _load_optional_toml(repo_root / "registry/experiments_narrative.toml")
+    preamble, body_by_id = _narrative_map(narrative_data)
+    experiments = sorted(registry_data.get("experiment", []), key=lambda x: x.get("id", ""))
+
+    lines: list[str] = []
+    if preamble:
+        lines.extend(preamble.splitlines())
+    else:
+        lines.extend(
+            [
+                "# Experiments Portfolio Shortlist",
+                "",
+                "Source-of-truth policy:",
+                "- Authoritative machine-readable registry: `registry/experiments.toml`",
+                "- Narrative overlay registry: `registry/experiments_narrative.toml`",
+                "- TOML-driven markdown mirror: `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`",
+                "- This file is generated from TOML sources.",
+                "",
+            ]
+        )
+    lines.append("")
+
+    for row in experiments:
+        experiment_id = str(row.get("id", "E-???"))
+        title = str(row.get("title", "(untitled)"))
+        lines.append(f"## {experiment_id}: {title}")
+        lines.append("")
+        body = body_by_id.get(experiment_id, "").strip()
+        if body:
+            lines.extend(body.splitlines())
+        else:
+            lines.append(f"Method: {row.get('method', '')}")
+            lines.append(f"Input: {row.get('input', '')}")
+            outputs = ", ".join(row.get("output", [])) if row.get("output") else "(none)"
+            lines.append(f"Output: {outputs}")
+            lines.append("Run:")
+            lines.append("```bash")
+            lines.append(str(row.get("run", "")).strip())
+            lines.append("```")
+        lines.append("")
+        lines.append("---")
+        lines.append("")
+
+    while lines and not lines[-1].strip():
+        lines.pop()
+    _write(out_path, "\n".join(lines) + "\n")
 
 
 def export_roadmap(repo_root: Path, out_path: Path) -> None:
@@ -539,6 +655,10 @@ def main() -> int:
     export_claims_tasks(repo_root, out_dir / "CLAIMS_TASKS_REGISTRY_MIRROR.md")
     export_claims_domains(repo_root, out_dir / "CLAIMS_DOMAINS_REGISTRY_MIRROR.md")
     export_claim_tickets(repo_root, out_dir / "CLAIM_TICKETS_REGISTRY_MIRROR.md")
+    export_insights_legacy(repo_root, repo_root / "docs/INSIGHTS.md")
+    export_experiments_legacy(
+        repo_root, repo_root / "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
+    )
 
     if args.legacy_claims_sync:
         export_claims_tasks_legacy(repo_root, repo_root / "docs/CLAIMS_TASKS.md")
