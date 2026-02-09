@@ -4021,3 +4021,11 @@ where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (test_affine_f3_c
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: exhaustive sweep over all 512 base points with all 262144 pair evaluations per base point. WHAT WOULD REFUTE: finding l_1 correlation below 0.9 would indicate the variance is NOT l_1-dominated. Finding l_1=0 base points with closure >= 30% would break the bimodal structure."
+
+[[claim]]
+id = "C-504"
+statement = "Lambda_512->Lambda_256 Monotone Ultrametric Gradient: Applying the 6 Lambda_256 exclusion rules cumulatively to Lambda_512 (via is_in_lambda_512_minus_k) produces a MONOTONICALLY INCREASING ultrametricity gradient. z-scores: k=0: 9.93 (N=512), k=1: 12.53 (N=365, removed 147 l_1=0), k=2: 16.25 (N=324), k=3: 16.30 (N=284), k=4: 14.69 (N=270), k=5: 18.23 (N=257), k=6: 17.73 (N=256). This CONTRASTS with C-501 (Lambda_1024->Lambda_512), which showed a sharp PHASE TRANSITION at rule 1. The difference is that Lambda_512 already excludes anti-ultrametric l_1=+1 vectors, so subsequent cuts refine the signal rather than creating it. Rule 1 (exclude l_1=0) has the largest effect (removing 147 vectors), consistent with C-503 l_1 hierarchy."
+where_stated = "`crates/stats_core/src/ultrametric/baire_codebook.rs` (test_lambda512_to_256_intermediate_gradient)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 200 permutations per level, all z-scores above 9.0, monotone overall trend. WHAT WOULD REFUTE: finding a sharp discontinuous jump (z-score flip from negative to positive) at any intermediate step would indicate a phase transition rather than monotone refinement. Finding z < 5 at any step would weaken the gradient claim."

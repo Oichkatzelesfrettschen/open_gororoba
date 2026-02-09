@@ -888,4 +888,131 @@ mod tests {
             rule1_z, mean_random_z
         );
     }
+
+    // ================================================================
+    // Lambda_512 -> Lambda_256 Intermediate Gradient
+    // ================================================================
+
+    /// Investigate the ultrametricity transition between Lambda_512 (z=9.22)
+    /// and Lambda_256 (z=17.07) by applying the 6 Lambda_256 exclusion rules
+    /// one at a time.
+    ///
+    /// Tests whether there is a second phase transition (analogous to C-501's
+    /// Lambda_1024->Lambda_512 jump at rule 1), or whether ultrametricity
+    /// saturates/strengthens gradually.
+    #[test]
+    fn test_lambda512_to_256_intermediate_gradient() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_512_minus_k,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        eprintln!("\n=== Lambda_512 -> Lambda_256 Intermediate Gradient ===");
+        eprintln!("k | N vectors | prefix | eff_dim | obs_frac | null_mean | z-score | p-value");
+        eprintln!("--|----------|--------|---------|----------|-----------|---------|--------");
+
+        let mut prev_n = 0usize;
+        let mut z_scores = Vec::new();
+        let mut sizes = Vec::new();
+
+        for k in 0..=6 {
+            let vectors = enumerate_lattice_by_predicate(|v| is_in_lambda_512_minus_k(v, k));
+            let n = vectors.len();
+            let prefix = shared_prefix_length(&vectors);
+            let d = 8 - prefix;
+
+            let (cols, _, _) = lattice_to_column_major(&vectors, prefix);
+            let obs_frac = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 3_000_000 + k as u64);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled, n, d,
+                    NullModel::ColumnIndependent, &mut rng,
+                );
+                null_fracs.push(
+                    matrix_free_fraction(&shuffled, n, d, n_triples, seed + 4_000_000, 0.05)
+                );
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
+                / n_permutations as f64).sqrt();
+            let n_extreme = null_fracs.iter().filter(|&&f| f >= obs_frac).count();
+            let p_value = (n_extreme as f64 + 1.0) / (n_permutations as f64 + 1.0);
+            let z_score = if null_std > 1e-12 {
+                (obs_frac - null_mean) / null_std
+            } else {
+                0.0
+            };
+
+            let removed = if k == 0 { 0 } else { prev_n - n };
+            eprintln!(
+                "{} | {:>8} | {:>6} | {:>7} | {:>8.4} | {:>9.4} | {:>7.2} | {:>7.4}  (removed {})",
+                k, n, prefix, d, obs_frac, null_mean, z_score, p_value, removed
+            );
+
+            z_scores.push(z_score);
+            sizes.push(n);
+            prev_n = n;
+        }
+
+        // Structural assertions
+        assert_eq!(sizes[0], 512, "k=0 must be Lambda_512");
+        assert_eq!(sizes[6], 256, "k=6 must be Lambda_256");
+        for i in 1..=6 {
+            assert!(sizes[i] <= sizes[i - 1], "Sizes must decrease");
+        }
+        // Both endpoints should be significantly ultrametric
+        assert!(z_scores[0] > 3.0, "Lambda_512 z={:.2} should be significant", z_scores[0]);
+        assert!(z_scores[6] > 3.0, "Lambda_256 z={:.2} should be significant", z_scores[6]);
+
+        eprintln!("\n=== GRADIENT SUMMARY ===");
+        eprintln!("z-score progression: {:?}",
+            z_scores.iter().map(|z| format!("{:.2}", z)).collect::<Vec<_>>());
+
+        // Step sizes
+        eprintln!("Step sizes:");
+        for k in 1..=6 {
+            eprintln!("  Rule {}: {} -> {} (removed {})", k, sizes[k-1], sizes[k], sizes[k-1] - sizes[k]);
+        }
+    }
+
+    /// Consistency test for is_in_lambda_512_minus_k boundaries.
+    #[test]
+    fn test_lambda512_minus_k_consistency() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_256,
+            is_in_lambda_512, is_in_lambda_512_minus_k,
+        };
+
+        let k0 = enumerate_lattice_by_predicate(|v| is_in_lambda_512_minus_k(v, 0));
+        let k6 = enumerate_lattice_by_predicate(|v| is_in_lambda_512_minus_k(v, 6));
+        let all_512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let all_256 = enumerate_lattice_by_predicate(is_in_lambda_256);
+
+        assert_eq!(k0.len(), all_512.len(), "k=0 must equal Lambda_512");
+        assert_eq!(k6.len(), all_256.len(), "k=6 must equal Lambda_256");
+        assert_eq!(k0, all_512);
+        assert_eq!(k6, all_256);
+
+        // Monotone containment
+        let mut prev = k0;
+        for k in 1..=6 {
+            let current = enumerate_lattice_by_predicate(|v| is_in_lambda_512_minus_k(v, k));
+            assert!(current.len() <= prev.len(), "Must decrease");
+            prev = current;
+        }
+    }
 }
