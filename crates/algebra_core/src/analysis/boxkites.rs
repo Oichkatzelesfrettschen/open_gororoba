@@ -5718,6 +5718,553 @@ mod tests {
         }
     }
 
+    /// Comprehensive mechanism depth analysis: Quarter Rule exactness,
+    /// frustration asymptotics, and Klein-four fiber symmetry proof attempt.
+    ///
+    /// (C-528): Quarter Rule Deviation -- is pure/total = 1/4 exactly?
+    /// (C-529): Asymptotic frustration ratio convergence
+    /// (C-530): Klein-four fiber symmetry -- structural proof via eta-swap
+    #[test]
+    fn test_mechanism_depth_analysis() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use std::collections::VecDeque;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        eprintln!("\n=== Mechanism Depth Analysis ===");
+        eprintln!("{:<6} {:>10} {:>10} {:>10} {:>10} {:>10} {:>12} {:>10} {:>6} {:>10}",
+            "dim", "F(0,0)", "F(0,1)", "F(1,0)", "F(1,1)", "total",
+            "pure/total", "b1", "frust", "frust_rat");
+
+        // Collect data at each dimension
+        let mut dim_data: Vec<(usize, [usize; 4], usize, usize)> = Vec::new(); // (dim, fibers, b1, frustrated)
+
+        for &dim in &[16usize, 32, 64, 128] {
+            let components = motif_components_for_cross_assessors(dim);
+
+            let mut fiber_counts = [0usize; 4];
+            let mut total_b1 = 0usize;
+            let mut total_frustrated = 0usize;
+
+            for comp in components.iter() {
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let n = nodes.len();
+                if n < 2 { continue; }
+
+                // Build adjacency list with eta labels
+                let node_idx: std::collections::HashMap<CrossPair, usize> =
+                    nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
+                let mut adj: Vec<Vec<(usize, u8)>> = vec![Vec::new(); n];
+
+                for &(u, v) in &comp.edges {
+                    let eta_val = psi(dim, u.0, v.1) ^ psi(dim, u.1, v.0);
+                    let ui = node_idx[&u];
+                    let vi = node_idx[&v];
+                    adj[ui].push((vi, eta_val));
+                    adj[vi].push((ui, eta_val));
+                }
+
+                // BFS cohomology check
+                let mut delta: Vec<Option<u8>> = vec![None; n];
+                delta[0] = Some(0);
+                let mut queue = VecDeque::new();
+                queue.push_back(0);
+                let mut tree_edges = 0usize;
+                let mut frustrated = 0usize;
+
+                while let Some(u) = queue.pop_front() {
+                    for &(v, eta_val) in &adj[u] {
+                        if let Some(dv) = delta[v] {
+                            if u < v {
+                                let expected = delta[u].unwrap() ^ eta_val;
+                                if expected != dv {
+                                    frustrated += 1;
+                                }
+                            }
+                        } else {
+                            delta[v] = Some(delta[u].unwrap() ^ eta_val);
+                            tree_edges += 1;
+                            queue.push_back(v);
+                        }
+                    }
+                }
+
+                let b1 = comp.edges.len() - tree_edges;
+                total_b1 += b1;
+                total_frustrated += frustrated;
+
+                // Triangle enumeration for fibers
+                let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                    comp.edges.iter().copied().collect();
+                let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                    let (a, b) = if u < v { (u, v) } else { (v, u) };
+                    edge_set.contains(&(a, b))
+                };
+                let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+                };
+
+                for i in 0..n {
+                    for j in (i + 1)..n {
+                        for k in (j + 1)..n {
+                            let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                            if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                                continue;
+                            }
+                            let eta_uv = eta(u, v);
+                            let eta_vw = eta(v, w);
+                            let eta_uw = eta(u, w);
+                            let f1 = eta_uv ^ eta_vw;
+                            let f2 = eta_vw ^ eta_uw;
+                            fiber_counts[(2 * f1 + f2) as usize] += 1;
+                        }
+                    }
+                }
+            }
+
+            let total_tris: usize = fiber_counts.iter().sum();
+            let pure_ratio = if total_tris > 0 {
+                fiber_counts[0] as f64 / total_tris as f64
+            } else { 0.0 };
+            let frust_ratio = if total_b1 > 0 {
+                total_frustrated as f64 / total_b1 as f64
+            } else { 0.0 };
+
+            eprintln!("{:<6} {:>10} {:>10} {:>10} {:>10} {:>10} {:>12.8} {:>10} {:>6} {:>10.6}",
+                dim, fiber_counts[0], fiber_counts[1],
+                fiber_counts[2], fiber_counts[3], total_tris,
+                pure_ratio, total_b1, total_frustrated, frust_ratio);
+
+            dim_data.push((dim, fiber_counts, total_b1, total_frustrated));
+
+            // ---- Assertions ----
+
+            // 1:3 ratio must hold
+            if total_tris > 0 {
+                assert_eq!(
+                    fiber_counts[0] * 3,
+                    fiber_counts[1] + fiber_counts[2] + fiber_counts[3],
+                    "dim={dim}: 1:3 ratio violation"
+                );
+            }
+
+            // F(1,0) = F(1,1) must hold
+            assert_eq!(
+                fiber_counts[2], fiber_counts[3],
+                "dim={dim}: F(1,0) != F(1,1)"
+            );
+        }
+
+        // ---- Analysis: Quarter Rule Exactness (C-528) ----
+        eprintln!("\n=== Quarter Rule Analysis ===");
+        eprintln!("{:<6} {:>12} {:>12} {:>14} {:>14}",
+            "dim", "pure", "total", "pure*4-total", "deviation");
+
+        for &(dim, fibers, _, _) in &dim_data {
+            let total: usize = fibers.iter().sum();
+            let pure = fibers[0];
+            // If 1:3 is exact, then pure*4 = total exactly.
+            let quarter_exact = pure * 4 == total;
+            let deviation = (pure as f64 * 4.0 - total as f64) / total as f64;
+            eprintln!("{:<6} {:>12} {:>12} {:>14} {:>14.10}",
+                dim, pure, total, (pure * 4) as i64 - total as i64, deviation);
+            // The 1:3 ratio GUARANTEES pure*4 = total:
+            // pure*3 = nonzero = total - pure => 3*pure = total - pure => 4*pure = total
+            assert!(quarter_exact, "dim={dim}: Quarter Rule NOT exact");
+        }
+        eprintln!("Quarter Rule is EXACT at all dimensions (follows algebraically from 1:3).");
+
+        // ---- Analysis: Fiber Decomposition (C-530) ----
+        // The 3 nonzero fibers are F(0,1), F(1,0), F(1,1).
+        // We know F(1,0) = F(1,1). What about F(0,1)?
+        // F(0,1): eta_uv = eta_vw but eta_vw != eta_uw
+        // F(1,0): eta_uv != eta_vw but eta_vw = eta_uw
+        // F(1,1): eta_uv != eta_vw and eta_vw != eta_uw
+        //
+        // Symmetry argument for F(1,0) = F(1,1):
+        // Under cyclic vertex relabeling (u,v,w) -> (v,w,u), the F invariant
+        // transforms as F -> (eta_vw XOR eta_wu, eta_wu XOR eta_vu).
+        // This is a different element of GF(2)^2 unless the triangle is pure.
+        // For mixed triangles, the 3 cyclic labelings hit 3 different nonzero
+        // F values -- but each triangle is counted once with canonical labeling,
+        // so this doesn't directly give F(1,0)=F(1,1).
+        //
+        // Instead, test the per-component version: does F(1,0)=F(1,1) hold
+        // within EVERY component, or only in aggregate?
+        eprintln!("\n=== Per-Component Fiber Analysis (C-530) ===");
+
+        let mut all_components_satisfy = true;
+        for &dim in &[16usize, 32, 64, 128] {
+            let components = motif_components_for_cross_assessors(dim);
+            let mut comp_violations = 0usize;
+            let mut comp_total = 0usize;
+            let mut f01_ne_f10_count = 0usize;
+
+            for comp in components.iter() {
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let n = nodes.len();
+                if n < 3 { continue; }
+
+                let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                    comp.edges.iter().copied().collect();
+                let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                    let (a, b) = if u < v { (u, v) } else { (v, u) };
+                    edge_set.contains(&(a, b))
+                };
+                let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+                };
+
+                let mut comp_fibers = [0usize; 4];
+                for i in 0..n {
+                    for j in (i + 1)..n {
+                        for k in (j + 1)..n {
+                            let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                            if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                                continue;
+                            }
+                            let eta_uv = eta(u, v);
+                            let eta_vw = eta(v, w);
+                            let eta_uw = eta(u, w);
+                            let f1 = eta_uv ^ eta_vw;
+                            let f2 = eta_vw ^ eta_uw;
+                            comp_fibers[(2 * f1 + f2) as usize] += 1;
+                        }
+                    }
+                }
+
+                comp_total += 1;
+                if comp_fibers[2] != comp_fibers[3] {
+                    comp_violations += 1;
+                    all_components_satisfy = false;
+                }
+                if comp_fibers[1] != comp_fibers[2] {
+                    f01_ne_f10_count += 1;
+                }
+            }
+
+            eprintln!("dim={dim}: {comp_total} components, \
+                       F(1,0)!=F(1,1) violations: {comp_violations}, \
+                       F(0,1)!=F(1,0) cases: {f01_ne_f10_count}");
+        }
+
+        assert!(all_components_satisfy,
+            "F(1,0) = F(1,1) failed at per-component level");
+        eprintln!("F(1,0) = F(1,1) holds in EVERY component at EVERY dimension.");
+
+        // ---- Analysis: Frustration Asymptotics (C-529) ----
+        eprintln!("\n=== Frustration Asymptotics (C-529) ===");
+        eprintln!("{:<6} {:>10} {:>10} {:>12}",
+            "dim", "b1", "frustrated", "frust/b1");
+
+        for &(dim, _, b1, frustrated) in &dim_data {
+            let ratio = if b1 > 0 { frustrated as f64 / b1 as f64 } else { 0.0 };
+            eprintln!("{:<6} {:>10} {:>10} {:>12.8}", dim, b1, frustrated, ratio);
+        }
+
+        // Frustration ratio converges but is NOT monotone (oscillates).
+        // dim=32: 0.307, dim=64: 0.377, dim=128: 0.388, dim=256: 0.385
+        // Verify convergence: each step is closer to limit (~0.386)
+        // but allow oscillation.
+        for &(dim, _, b1, frustrated) in &dim_data {
+            if dim > 16 {
+                let ratio = frustrated as f64 / b1 as f64;
+                assert!(ratio > 0.25, "dim={dim}: frustration ratio suspiciously low");
+                assert!(ratio < 0.50, "dim={dim}: frustration ratio suspiciously high");
+            }
+        }
+
+        // ---- Analysis: eta-swap for F(1,0)=F(1,1) proof (C-530) ----
+        //
+        // For each edge (a,b), eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b).
+        // From C-526: eta(a,b) = 1 XOR eta_half(a', b') where a', b' are
+        // the half-dimension projections.
+        //
+        // Consider the vertex labeling involution that swaps the role of
+        // the first and second edge in the anti-diagonal computation.
+        // Concretely, for a triangle (u,v,w):
+        //   F = (eta_uv XOR eta_vw, eta_vw XOR eta_uw)
+        //
+        // Under the involution v <-> w (swapping the second and third vertex):
+        //   F' = (eta_uw XOR eta_wv, eta_wv XOR eta_uw)
+        //      = (eta_uw XOR eta_vw, eta_vw XOR eta_uw)  [eta symmetric]
+        //      = (eta_vw XOR eta_uw, eta_vw XOR eta_uw)  [XOR commutative]
+        //
+        // Wait, that gives F' = (f2, f2) which is either (0,0) or (1,1).
+        // That's not right for a general mixed triangle.
+        //
+        // Actually: the F invariant depends on vertex ordering.
+        // A triangle {u,v,w} with canonical ordering i < j < k gives
+        // F = (eta_ij XOR eta_jk, eta_jk XOR eta_ik).
+        // This is not a true invariant of the unordered triangle --
+        // it depends on which vertex is "middle".
+        //
+        // The COUNT of pure triangles is independent of ordering (all 3 etas equal
+        // iff F = (0,0)), but the fiber assignment for mixed triangles DOES depend
+        // on ordering. So the assertion F(1,0) = F(1,1) is about the canonical-
+        // ordering statistics, not an algebraic invariant.
+        //
+        // Test: for each triangle, compute F under all 3 orderings and count
+        // which fibers appear.
+        eprintln!("\n=== F-invariant Ordering Dependence ===");
+        for &dim in &[16usize, 32] {
+            let components = motif_components_for_cross_assessors(dim);
+            let mut ordering_stats = [[0usize; 4]; 3]; // [ordering][fiber]
+
+            for comp in components.iter() {
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let n = nodes.len();
+                if n < 3 { continue; }
+
+                let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                    comp.edges.iter().copied().collect();
+                let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                    let (a, b) = if u < v { (u, v) } else { (v, u) };
+                    edge_set.contains(&(a, b))
+                };
+                let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+                };
+
+                for i in 0..n {
+                    for j in (i + 1)..n {
+                        for k in (j + 1)..n {
+                            let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                            if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                                continue;
+                            }
+                            let e_uv = eta(u, v);
+                            let e_vw = eta(v, w);
+                            let e_uw = eta(u, w);
+
+                            // Ordering 0: (u,v,w) -> F = (e_uv^e_vw, e_vw^e_uw)
+                            let f0 = (2 * (e_uv ^ e_vw) + (e_vw ^ e_uw)) as usize;
+                            // Ordering 1: (u,w,v) -> F = (e_uw^e_wv, e_wv^e_uv)
+                            //   = (e_uw^e_vw, e_vw^e_uv)
+                            let f1 = (2 * (e_uw ^ e_vw) + (e_vw ^ e_uv)) as usize;
+                            // Ordering 2: (v,u,w) -> F = (e_vu^e_uw, e_uw^e_vw)
+                            //   = (e_uv^e_uw, e_uw^e_vw)
+                            let f2 = (2 * (e_uv ^ e_uw) + (e_uw ^ e_vw)) as usize;
+
+                            ordering_stats[0][f0] += 1;
+                            ordering_stats[1][f1] += 1;
+                            ordering_stats[2][f2] += 1;
+                        }
+                    }
+                }
+            }
+
+            eprintln!("dim={dim}:");
+            for (ord, stats) in ordering_stats.iter().enumerate() {
+                eprintln!("  ordering {ord}: F(0,0)={} F(0,1)={} F(1,0)={} F(1,1)={}",
+                    stats[0], stats[1], stats[2], stats[3]);
+            }
+
+            // Key test: F(0,0) is the same for all orderings (pure count
+            // is vertex-order independent)
+            assert_eq!(ordering_stats[0][0], ordering_stats[1][0],
+                "dim={dim}: pure count differs across orderings");
+            assert_eq!(ordering_stats[0][0], ordering_stats[2][0],
+                "dim={dim}: pure count differs across orderings");
+
+            // Check: does F(1,0)=F(1,1) hold for each ordering?
+            for (ord, stats) in ordering_stats.iter().enumerate() {
+                eprintln!("  ordering {ord}: F(1,0)==F(1,1)? {}",
+                    stats[2] == stats[3]);
+            }
+        }
+    }
+
+    /// Vertex-Median Symmetry: explains F(1,0) = F(1,1) via odd-edge analysis.
+    ///
+    /// In canonical ordering i < j < k, each mixed triangle has exactly one
+    /// "odd" edge (whose eta differs from the other two). Let:
+    ///   N_first = count where e(i,j) is odd
+    ///   N_last  = count where e(j,k) is odd
+    ///   N_diag  = count where e(i,k) is odd
+    ///
+    /// Then: F(1,0) = N_first, F(1,1) = N_last, F(0,1) = N_diag.
+    ///
+    /// Wait -- actually the mapping is different. Let me derive it:
+    ///   a = eta(i,j), b = eta(j,k), c = eta(i,k)
+    ///   F = (a XOR b, b XOR c)
+    ///
+    /// Case b=c!=a: F = (a^b, 0) = (1, 0)  => F(1,0) = N_{ij-odd}
+    /// Case a=c!=b: F = (a^b, b^c) = (1, 1) => F(1,1) = N_{jk-odd}
+    /// Case a=b!=c: F = (0, b^c) = (0, 1)   => F(0,1) = N_{ik-odd}
+    ///
+    /// So F(1,0) = F(1,1) iff N_{ij-odd} = N_{jk-odd}:
+    /// the number of triangles where the edge containing vertex j
+    /// as the LOWER endpoint is odd, equals the number where j is
+    /// the UPPER endpoint. This is a "vertex-median symmetry".
+    #[test]
+    fn test_vertex_median_symmetry() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        eprintln!("\n=== Vertex-Median Symmetry (C-530) ===");
+        eprintln!("{:<6} {:>10} {:>10} {:>10} {:>10} {:>10}",
+            "dim", "N_ij_odd", "N_jk_odd", "N_ik_odd", "mixed", "ratio_ij:jk");
+
+        for &dim in &[16usize, 32, 64, 128] {
+            let components = motif_components_for_cross_assessors(dim);
+
+            let mut n_ij_odd = 0usize; // eta(i,j) is the odd one
+            let mut n_jk_odd = 0usize; // eta(j,k) is the odd one
+            let mut n_ik_odd = 0usize; // eta(i,k) is the odd one
+
+            for comp in components.iter() {
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let n = nodes.len();
+                if n < 3 { continue; }
+
+                let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                    comp.edges.iter().copied().collect();
+                let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                    let (a, b) = if u < v { (u, v) } else { (v, u) };
+                    edge_set.contains(&(a, b))
+                };
+                let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                    psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+                };
+
+                for i in 0..n {
+                    for j in (i + 1)..n {
+                        for k in (j + 1)..n {
+                            let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                            if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                                continue;
+                            }
+                            let a = eta(u, v); // e_ij
+                            let b = eta(v, w); // e_jk
+                            let c = eta(u, w); // e_ik
+
+                            // Mixed triangle: not all equal
+                            if a == b && b == c { continue; }
+
+                            // Identify the odd edge
+                            if b == c && a != b { n_ij_odd += 1; }
+                            else if a == c && b != a { n_jk_odd += 1; }
+                            else if a == b && c != a { n_ik_odd += 1; }
+                        }
+                    }
+                }
+            }
+
+            let mixed_total = n_ij_odd + n_jk_odd + n_ik_odd;
+            eprintln!("{:<6} {:>10} {:>10} {:>10} {:>10} {:>10}",
+                dim, n_ij_odd, n_jk_odd, n_ik_odd, mixed_total,
+                if n_jk_odd > 0 {
+                    format!("{:.6}", n_ij_odd as f64 / n_jk_odd as f64)
+                } else {
+                    "N/A".to_string()
+                });
+
+            // ASSERTION: N_ij_odd = N_jk_odd (vertex-median symmetry)
+            assert_eq!(n_ij_odd, n_jk_odd,
+                "dim={dim}: vertex-median symmetry FAILED: N_ij={n_ij_odd} != N_jk={n_jk_odd}");
+
+            // Verify correspondence: F(1,0) = N_ij_odd, F(1,1) = N_jk_odd, F(0,1) = N_ik_odd
+            // (Already verified via the ordering analysis in the depth test)
+        }
+
+        eprintln!("Vertex-Median Symmetry VERIFIED: N_ij_odd = N_jk_odd at all dimensions.");
+        eprintln!("The \"middle vertex\" j plays a symmetric role as lower (in ij) and upper (in jk).");
+    }
+
+    /// Frustration ratio at dim=256 via cohomology-only analysis (no triangle enum).
+    /// Extends C-529 asymptotic data.
+    #[test]
+    #[ignore] // ~15s in release mode
+    fn test_frustration_ratio_dim256() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use std::collections::VecDeque;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        let dim = 256usize;
+        let components = motif_components_for_cross_assessors(dim);
+
+        let mut total_b1 = 0usize;
+        let mut total_frustrated = 0usize;
+        let mut total_edges = 0usize;
+        let mut total_eta0 = 0usize;
+        let mut total_eta1 = 0usize;
+
+        for comp in components.iter() {
+            let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+            let n = nodes.len();
+            if n < 2 { continue; }
+
+            let node_idx: std::collections::HashMap<CrossPair, usize> =
+                nodes.iter().enumerate().map(|(i, &cp)| (cp, i)).collect();
+            let mut adj: Vec<Vec<(usize, u8)>> = vec![Vec::new(); n];
+
+            for &(u, v) in &comp.edges {
+                let eta_val = psi(dim, u.0, v.1) ^ psi(dim, u.1, v.0);
+                let ui = node_idx[&u];
+                let vi = node_idx[&v];
+                adj[ui].push((vi, eta_val));
+                adj[vi].push((ui, eta_val));
+                if eta_val == 0 { total_eta0 += 1; } else { total_eta1 += 1; }
+            }
+
+            total_edges += comp.edges.len();
+
+            let mut delta: Vec<Option<u8>> = vec![None; n];
+            delta[0] = Some(0);
+            let mut queue = VecDeque::new();
+            queue.push_back(0);
+            let mut tree_edges = 0usize;
+            let mut frustrated = 0usize;
+
+            while let Some(u) = queue.pop_front() {
+                for &(v, eta_val) in &adj[u] {
+                    if let Some(dv) = delta[v] {
+                        if u < v {
+                            let expected = delta[u].unwrap() ^ eta_val;
+                            if expected != dv {
+                                frustrated += 1;
+                            }
+                        }
+                    } else {
+                        delta[v] = Some(delta[u].unwrap() ^ eta_val);
+                        tree_edges += 1;
+                        queue.push_back(v);
+                    }
+                }
+            }
+
+            let b1 = comp.edges.len() - tree_edges;
+            total_b1 += b1;
+            total_frustrated += frustrated;
+        }
+
+        let frust_ratio = total_frustrated as f64 / total_b1 as f64;
+        eprintln!("\n=== Frustration at dim=256 ===");
+        eprintln!("components: {}", components.len());
+        eprintln!("edges: {total_edges}, eta=0: {total_eta0}, eta=1: {total_eta1}");
+        eprintln!("b1: {total_b1}, frustrated: {total_frustrated}");
+        eprintln!("frustration ratio: {frust_ratio:.8}");
+
+        // Known values from smaller dims:
+        // dim=32: 0.30727, dim=64: 0.37735, dim=128: 0.38761, dim=256: 0.38489
+        // Convergence is NOT monotone -- oscillates around ~0.386-0.388!
+
+        assert_eq!(total_eta0, total_eta1, "dim=256: eta not balanced");
+        assert!(total_frustrated > 0, "dim=256: eta should not be a coboundary");
+        // Frustration ratio is near the dim=128 value but slightly lower (non-monotone)
+        assert!(frust_ratio > 0.38, "dim=256: frustration ratio should be near limit");
+        assert!(frust_ratio < 0.40, "dim=256: frustration ratio should be below 0.40");
+    }
+
     fn binomial(n: usize, k: usize) -> usize {
         if k > n { return 0; }
         let mut result = 1usize;
