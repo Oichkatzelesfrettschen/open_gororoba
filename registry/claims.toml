@@ -3973,3 +3973,27 @@ where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_octonion_su
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: at dims 32 (15/15) and 64 (31/31) all components use all 7+ Fano indices. WHAT WOULD REFUTE: any component at dim>=32 whose low indices project onto fewer than 7 distinct Fano residues."
+
+[[claim]]
+id = "C-498"
+statement = "Coset Obstruction Theorem: Lambda_n (n <= 1024) has exactly 0% closure under both Z-addition and F_3-addition because all lattice vectors have l_0 = -1. Z-addition gives l_0 = (-1)+(-1) = -2, leaving the trinary range {-1,0,1}. F_3-addition gives l_0 = (-1)+(-1) = +1 (mod 3), mapping to the forbidden l_0=+1 coset excluded by is_in_base_universe(). This applies to ALL pairs without exception. The zero vector [0,...,0] is NOT in any Lambda_n (fails l_0=-1 at Lambda_1024), so there is no additive identity."
+where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (test_coset_obstruction_and_affine_closure)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exhaustive check over all 65536 pairs of Lambda_256 vectors confirms l_0=+1 for every F_3 sum and l_0=-2 for every Z sum. WHAT WOULD REFUTE: existence of any Lambda_n vector with l_0 != -1 (structurally impossible by Lambda_1024 definition)."
+
+[[claim]]
+id = "C-499"
+statement = "Affine F_3 Partial Closure: The affine F_3 operation a +_3 b -_3 p (for fixed base point p) preserves l_0=-1 and achieves partial closure on Lambda sets. Measured rates: Lambda_256 = 30-39% (base-dependent), Lambda_512 = 34%, Lambda_1024 = 47%, Lambda_2048 l_0=0 sub-lattice = 45%. Rates are below 100% at all levels because forbidden prefix exclusions break F_3 group structure. Rates vary with base point, confirming Lambda_n sets are NOT affine subgroups of F_3^8."
+where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (test_coset_obstruction_and_affine_closure)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: measured with 4 base points on Lambda_256 (range 30.2%-38.8%), Lambda_512 (33.7%), Lambda_1024 (46.9%), and l_0=0 sub-lattice of Lambda_2048 (44.8%). WHAT WOULD REFUTE: finding any Lambda_n with 100% affine F_3 closure would mean it IS an affine subgroup, contradicting the trie-cut exclusion mechanism."
+
+[[claim]]
+id = "C-500"
+statement = "Euclidean Filtration Ultrametricity Gradient: Euclidean distance on prefix-stripped lattice coordinates shows a monotone ultrametricity gradient across filtration levels. Lambda_2048 is anti-ultrametric (z=-5.65, p=1.0), Lambda_1024 is marginally anti-ultrametric (z=-1.57, p=0.96), Lambda_512 is significantly ultrametric (z=9.22, p<0.005), and Lambda_256 is very significantly ultrametric (z=17.07, p<0.005). The trie-cut filtration progressively selects lattice vectors forming a hierarchical Euclidean cluster. Baire distances are trivially 1.0 at all levels (by construction). The transition from anti- to genuine ultrametricity occurs between Lambda_1024 and Lambda_512."
+where_stated = "`crates/stats_core/src/ultrametric/baire_codebook.rs` (test_euclidean_ultrametricity_across_filtration_levels)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 200-permutation column-shuffle null at each level with 50K triples. Effect sizes: -0.012, -0.004, +0.024, +0.053. WHAT WOULD REFUTE: observing p<0.05 for Lambda_2048 or Lambda_1024 would indicate trie-cuts are not the source of the ultrametricity gradient."
