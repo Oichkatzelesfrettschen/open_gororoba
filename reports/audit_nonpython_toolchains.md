@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Non-Python Toolchains Audit (2026-02-06)
 
 Goal: ensure non-Python targets have minimal reproducible setup guidance.
@@ -21,4 +24,3 @@ Goal: ensure non-Python targets have minimal reproducible setup guidance.
 - [ ] Each target above has a matching requirements doc entry.
 - [ ] Targets are opt-in (not part of `make smoke` or `make check`).
 - [ ] Version/pinning guidance exists where feasible.
-

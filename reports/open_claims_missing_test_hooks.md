@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Open claims missing explicit test/verifier hook
 
 Heuristic: claim is open and neither `Where stated` nor `What would verify/refute it`
@@ -67,4 +70,3 @@ Missing explicit test/verifier hook: 59
 - C-135 (Speculative, last_verified=2026-01-31): `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
 - C-401 (Theoretical, last_verified=2026-01-31): `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`
 - C-402 (Refuted, last_verified=2026-01-31): `docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md`
-

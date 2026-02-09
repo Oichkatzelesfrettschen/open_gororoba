@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Script contract inventory
 
 Generated from src/scripts/**.py (static scan; scripts not executed).

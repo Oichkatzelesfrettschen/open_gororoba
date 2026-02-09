@@ -120,10 +120,10 @@ notes = "Bibliography is TOML-first with generated markdown mirrors."
 [[domain]]
 id = "KM-006"
 name = "generated_artifacts"
-source_markdown = ["reports/*.md", "data/artifacts/*.md", "docs/claims/by_domain/*.md", "docs/tickets/*_claims_audit.md"]
+source_markdown = ["data/artifacts/*.md"]
 strategy = "artifact_only_no_manual_edit"
 status = "active"
-notes = "Keep as generated outputs with explicit regeneration commands; do not hand-edit."
+notes = "Keep as generated outputs with explicit regeneration commands; do not hand-edit artifact markdown."
 
 [[domain]]
 id = "KM-007"
@@ -188,6 +188,32 @@ generated_mirror = [
 strategy = "toml_primary_generated_mirror"
 status = "complete"
 notes = "Root-level docs narratives are TOML-first and generated back into docs/*.md."
+
+[[domain]]
+id = "KM-016"
+name = "reports_narratives"
+source_markdown = ["reports/*.md"]
+authoritative_toml = ["registry/reports_narratives.toml"]
+generated_mirror = [
+  "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md",
+  "reports/*.md",
+]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "Reports narratives are TOML-first and rendered back into reports/*.md mirrors."
+
+[[domain]]
+id = "KM-017"
+name = "docs_convos_narratives"
+source_markdown = ["docs/convos/*.md"]
+authoritative_toml = ["registry/docs_convos.toml"]
+generated_mirror = [
+  "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md",
+  "docs/convos/*.md",
+]
+strategy = "toml_primary_generated_mirror"
+status = "complete"
+notes = "docs/convos extracts are TOML-first and rendered back into docs/convos/*.md mirrors."
 
 [[phase]]
 id = "KMP-P1"
@@ -289,6 +315,21 @@ deliverables = [
   "registry/docs_root_narratives.toml",
   "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md",
   "docs/*.md",
+]
+
+[[phase]]
+id = "KMP-P12"
+name = "reports_and_docs_convos_registry_normalization"
+status = "complete"
+deliverables = [
+  "src/scripts/analysis/normalize_reports_narratives_registry.py",
+  "registry/reports_narratives.toml",
+  "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md",
+  "reports/*.md",
+  "src/scripts/analysis/normalize_docs_convos_registry.py",
+  "registry/docs_convos.toml",
+  "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md",
+  "docs/convos/*.md",
 ]
 
 [[policy]]

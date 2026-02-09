@@ -26,6 +26,8 @@ MIRROR_TO_TOML = {
     "docs/BIBLIOGRAPHY.md": "registry/bibliography.toml",
     "docs/INSIGHTS.md": "registry/insights.toml",
     "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md": "registry/experiments.toml",
+    "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md": "registry/reports_narratives.toml",
+    "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md": "registry/docs_convos.toml",
     "docs/book/src/registry/claims.md": "registry/claims.toml",
     "docs/book/src/registry/insights.md": "registry/insights.toml",
     "docs/book/src/registry/experiments.md": "registry/experiments.toml",
@@ -35,6 +37,10 @@ MIRROR_TO_TOML = {
 def _toml_backing_for_path(path: str) -> str:
     if path in MIRROR_TO_TOML:
         return MIRROR_TO_TOML[path]
+    if path.startswith("reports/"):
+        return "registry/reports_narratives.toml"
+    if path.startswith("docs/convos/"):
+        return "registry/docs_convos.toml"
     if path.startswith("docs/") and path.count("/") == 1:
         return "registry/docs_root_narratives.toml"
     if path.startswith("docs/book/src/"):
@@ -95,6 +101,10 @@ def _title_from_markdown(text: str, fallback: str) -> str:
 
 
 def _kind_for_path(path: str, text: str) -> tuple[str, str, bool]:
+    if path.startswith("reports/"):
+        return ("markdown_mirror", "generated", True)
+    if path.startswith("docs/convos/"):
+        return ("markdown_mirror", "generated", True)
     if path.startswith("docs/") and path.count("/") == 1:
         return ("markdown_mirror", "generated", True)
     if path.startswith("docs/book/src/"):
@@ -107,9 +117,7 @@ def _kind_for_path(path: str, text: str) -> tuple[str, str, bool]:
         return ("markdown_mirror", "generated", True)
     if path.startswith("convos/"):
         return ("transcript_input", "manual", False)
-    if path.startswith("docs/convos/"):
-        return ("generated_markdown", "generated", True)
-    if path.startswith("reports/") or path.startswith("data/artifacts/"):
+    if path.startswith("data/artifacts/"):
         return ("artifact_report", "generated", True)
     if path.startswith("docs/claims/by_domain/"):
         return ("generated_markdown", "generated", True)

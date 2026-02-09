@@ -144,11 +144,8 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
 - Strategy: `artifact_only_no_manual_edit`
 - Status: `active`
 - Source markdown:
-  - `reports/*.md`
   - `data/artifacts/*.md`
-  - `docs/claims/by_domain/*.md`
-  - `docs/tickets/*_claims_audit.md`
-- Notes: Keep as generated outputs with explicit regeneration commands; do not hand-edit.
+- Notes: Keep as generated outputs with explicit regeneration commands; do not hand-edit artifact markdown.
 
 ### KM-007: research_narratives
 
@@ -219,6 +216,32 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - `docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md`
   - `docs/*.md`
 - Notes: Root-level docs narratives are TOML-first and generated back into docs/*.md.
+
+### KM-016: reports_narratives
+
+- Strategy: `toml_primary_generated_mirror`
+- Status: `complete`
+- Source markdown:
+  - `reports/*.md`
+- Authoritative TOML:
+  - `registry/reports_narratives.toml`
+- Generated mirrors:
+  - `docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md`
+  - `reports/*.md`
+- Notes: Reports narratives are TOML-first and rendered back into reports/*.md mirrors.
+
+### KM-017: docs_convos_narratives
+
+- Strategy: `toml_primary_generated_mirror`
+- Status: `complete`
+- Source markdown:
+  - `docs/convos/*.md`
+- Authoritative TOML:
+  - `registry/docs_convos.toml`
+- Generated mirrors:
+  - `docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md`
+  - `docs/convos/*.md`
+- Notes: docs/convos extracts are TOML-first and rendered back into docs/convos/*.md mirrors.
 
 ## Phases
 
@@ -317,6 +340,19 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - registry/docs_root_narratives.toml
   - docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md
   - docs/*.md
+
+### KMP-P12: reports_and_docs_convos_registry_normalization
+
+- Status: `complete`
+- Deliverables:
+  - src/scripts/analysis/normalize_reports_narratives_registry.py
+  - registry/reports_narratives.toml
+  - docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md
+  - reports/*.md
+  - src/scripts/analysis/normalize_docs_convos_registry.py
+  - registry/docs_convos.toml
+  - docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md
+  - docs/convos/*.md
 
 ## Policies
 

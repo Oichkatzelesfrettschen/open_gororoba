@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Package Index (2026-02-01)
 
 This is a lightweight inventory of Python packages as discovered by `setuptools.find_packages()`
