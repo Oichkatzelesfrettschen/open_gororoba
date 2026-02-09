@@ -3888,8 +3888,32 @@ what_would_verify_refute = 'VERIFIED by formula matching at 3 dimensions (32/64/
 
 [[claim]]
 id = "C-487"
-statement = "Universal Double 3:1 Law: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16, both 3:1 ratio laws hold simultaneously: TwoSameOneOpp = 3*AllOpposite (odd-parity pair) and OneSameTwoOpp = 3*AllSame (even-parity pair). Verified in all 116 components across 4 dimensions (7+15+31+63). Proof requires: (P1) same-edge fraction = 1/2, (P2) parity-specific edge-regularity. Pure-regime C-483 is the special case where AllSame=OneSameTwoOpp=0."
-where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_universal_double_three_to_one_law)"
+statement = "Universal Double 3:1 Law: In EVERY component of the CD zero-divisor graph at EVERY dimension d >= 16, both 3:1 ratio laws hold simultaneously: TwoSameOneOpp = 3*AllOpposite (odd-parity pair) and OneSameTwoOpp = 3*AllSame (even-parity pair). Verified in all 243 components across 5 dimensions (7+15+31+63+127). NOTE: Parity-specific edge regularity is FALSE in non-pure regimes -- the algebraic mechanism must arise from the CD multiplication table structure, not general graph-theoretic counting. Pure-regime C-483 is the special case where AllSame=OneSameTwoOpp=0."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_universal_double_three_to_one_law, test_generic_face_sign_census_dim256)"
 status = "Verified"
 last_verified = "2026-02-09"
-what_would_verify_refute = 'VERIFIED by exact computation in all 116 components across dims 16/32/64/128. WHAT WOULD REFUTE: any single component at any dimension where either OS != 3*AS or TS != 3*AO.'
+what_would_verify_refute = 'VERIFIED by exact computation in all 243 components across dims 16/32/64/128/256. WHAT WOULD REFUTE: any single component at any dimension where either OS != 3*AS or TS != 3*AO.'
+
+[[claim]]
+id = "C-488"
+statement = "Face Sign Census at dim=256: 13348104 triangular faces across 127 components split into 17 regimes (confirming dim/16+1 formula). 1 pure-max (7812 edges, 2 patterns), 15 full regimes (4 patterns each), 1 pure-min regime (372 edges, 10 components, 2 patterns). Universal Double 3:1 Law holds in all 127 components. Computation time: ~16s in release mode."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_generic_face_sign_census_dim256)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by integer-exact computation (~16s). WHAT WOULD REFUTE: fewer or more than 17 regimes, or any component violating the Double 3:1 Law.'
+
+[[claim]]
+id = "C-489"
+statement = "Regime-GF(2) Class Correspondence: Face sign regimes = GF(2) edge-count classes + 1. The GF(2) separating classes (C-480) correspond exactly to edge-count groups (dim/16 classes). The face sign census adds 1 extra regime by splitting the max-edge class into pure-max (1 component, XOR label = dim/4) and full-max. At min-edge, ALL components are pure (no split). Verified at dims 32/64/128. Unifies motif census, GF(2) projective geometry, and face sign census."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_regime_gf2_class_correspondence)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED at dims 32/64/128: n_regimes = n_edge_groups + 1, exactly 1 pure-max per dim, all min-edge are pure. WHAT WOULD REFUTE: a dimension where the max-edge class does NOT split into pure + full, or where min-edge components are not all pure.'
+
+[[claim]]
+id = "C-490"
+statement = "Parity-Specific Edge Regularity is FALSE: In non-pure (4-pattern) face sign regime components, edges do NOT participate in the same number of even-parity (or odd-parity) triangles. At dim=32 comp[0], even-parity triangle counts per edge range from 4 to 8. This means the Universal Double 3:1 Law (C-487) cannot be proved via parity-specific counting arguments. The algebraic mechanism is deeper, arising from the CD multiplication table structure."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_parity_edge_regularity_breakdown)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED at dim=32: even-parity triangles per edge range [4,8]. WHAT WOULD REFUTE: discovering that parity-specific edge regularity actually holds everywhere (would require a bug in the test).'

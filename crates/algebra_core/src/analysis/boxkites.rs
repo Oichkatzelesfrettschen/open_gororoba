@@ -3081,6 +3081,223 @@ mod tests {
     }
 
     #[test]
+    fn test_generic_face_sign_census_dim256() {
+        // Regime count formula: dim/16 + 1 = 256/16 + 1 = 17 at dim=256.
+        use std::time::Instant;
+
+        let t0 = Instant::now();
+        let census = generic_face_sign_census(256);
+        let elapsed = t0.elapsed();
+        eprintln!(
+            "dim=256 census: {} components, {} triangles, {:.2?}",
+            census.n_components, census.total_triangles, elapsed
+        );
+
+        // Basic structure: dim/2 - 1 = 127 components
+        assert_eq!(census.n_components, 127);
+
+        // Collect regime signatures
+        let mut regime_map: HashMap<(usize, Vec<FaceSignPattern>), Vec<usize>> = HashMap::new();
+        for comp in &census.per_component {
+            let mut patterns: Vec<FaceSignPattern> =
+                comp.pattern_counts.keys().copied().collect();
+            patterns.sort();
+            regime_map
+                .entry((comp.n_edges, patterns))
+                .or_default()
+                .push(comp.component_idx);
+        }
+
+        let n_regimes = regime_map.len();
+        eprintln!("dim=256 regimes: {}", n_regimes);
+
+        // Print regime breakdown
+        let mut regimes: Vec<_> = regime_map.iter().collect();
+        regimes.sort_by_key(|&((edges, _), comps)| (std::cmp::Reverse(*edges), comps.len()));
+        for ((edges, patterns), comps) in &regimes {
+            eprintln!(
+                "  {} comps, {} edges, {} patterns",
+                comps.len(), edges, patterns.len()
+            );
+        }
+
+        // Verify regime count: dim/16 + 1 = 17
+        assert_eq!(n_regimes, 17, "Expected 17 regimes at dim=256");
+
+        // Edge formulas
+        let n = 256 / 2 - 2; // 126
+        let e_max = n * (n - 1) / 2 - (256 / 4 - 1); // C(126,2) - 63 = 7875 - 63 = 7812
+        let e_min = 3 * 256 / 2 - 12; // 372
+        assert_eq!(
+            census.per_component.iter().map(|c| c.n_edges).max().unwrap(),
+            e_max
+        );
+        assert_eq!(
+            census.per_component.iter().map(|c| c.n_edges).min().unwrap(),
+            e_min
+        );
+
+        // Universal Double 3:1 Law
+        for comp in &census.per_component {
+            let as_count = comp.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
+            let ts = comp.pattern_counts.get(&FaceSignPattern::TwoSameOneOpp).copied().unwrap_or(0);
+            let os = comp.pattern_counts.get(&FaceSignPattern::OneSameTwoOpp).copied().unwrap_or(0);
+            let ao = comp.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+
+            assert_eq!(ts, 3 * ao, "dim=256 comp[{}]: TS!=3*AO", comp.component_idx);
+            assert_eq!(os, 3 * as_count, "dim=256 comp[{}]: OS!=3*AS", comp.component_idx);
+        }
+
+        // Exactly 1 pure-max component
+        let n_pure_max = census.per_component.iter()
+            .filter(|c| c.n_edges == e_max && c.pattern_counts.len() == 2)
+            .count();
+        assert_eq!(n_pure_max, 1);
+    }
+
+    #[test]
+    fn test_parity_edge_regularity_breakdown() {
+        // Discovery: parity-specific edge-regularity is VIOLATED in non-pure
+        // regimes. Even-parity triangle counts per edge vary (e.g., 4 to 8 at
+        // dim=32 comp[0]). Odd-parity may also vary.
+        //
+        // This means the Universal Double 3:1 Law (C-487) is NOT explained by
+        // parity-specific edge regularity. The proof mechanism is deeper --
+        // it must arise from the algebraic structure of the CD multiplication
+        // table itself, not from general graph-theoretic properties.
+        //
+        // What IS true: total (all-parity) edge regularity in pure regimes.
+        // What IS true: the Double 3:1 law holds in ALL components (C-487).
+        // What is FALSE: parity-specific edge regularity in non-pure regimes.
+
+        // Verify that parity-specific regularity DOES fail (documenting the breakdown)
+        let components = motif_components_for_cross_assessors(32);
+        let census = generic_face_sign_census(32);
+
+        let mut found_violation = false;
+        for (i, comp) in components.iter().enumerate() {
+            let comp_census = &census.per_component[i];
+            if comp_census.pattern_counts.len() != 4 {
+                continue;
+            }
+
+            let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+            let adj_set: HashSet<(CrossPair, CrossPair)> = comp
+                .edges
+                .iter()
+                .flat_map(|&(a, b)| [(a, b), (b, a)])
+                .collect();
+
+            let mut even_per_edge: HashMap<(CrossPair, CrossPair), usize> = HashMap::new();
+            for &(u, v) in &comp.edges {
+                even_per_edge.insert((u, v), 0);
+            }
+            for &(u, v) in &comp.edges {
+                for &w in &nodes {
+                    if w <= v { continue; }
+                    if !adj_set.contains(&(u, w)) || !adj_set.contains(&(v, w)) {
+                        continue;
+                    }
+                    let signs = [
+                        edge_sign_type_exact(32, u, v),
+                        edge_sign_type_exact(32, v, w),
+                        edge_sign_type_exact(32, u, w),
+                    ];
+                    let n_opp = signs.iter().filter(|&&s| s == EdgeSignType::Opposite).count();
+                    if n_opp % 2 == 0 {
+                        let edges_of_tri = [
+                            (u, v),
+                            (std::cmp::min(v, w), std::cmp::max(v, w)),
+                            (std::cmp::min(u, w), std::cmp::max(u, w)),
+                        ];
+                        for e in &edges_of_tri {
+                            *even_per_edge.entry(*e).or_insert(0) += 1;
+                        }
+                    }
+                }
+            }
+
+            let even_counts: Vec<usize> = even_per_edge.values().copied().collect();
+            let even_min = *even_counts.iter().min().unwrap();
+            let even_max = *even_counts.iter().max().unwrap();
+            if even_min != even_max {
+                found_violation = true;
+                break;
+            }
+        }
+        // Confirm: parity-specific edge regularity DOES fail
+        assert!(found_violation, "Expected parity-specific edge regularity to be violated at dim=32");
+    }
+
+    #[test]
+    fn test_regime_gf2_class_correspondence() {
+        // The GF(2) separating classes (C-480) correspond exactly to edge-count
+        // groups. Face sign regimes = GF(2) classes + 1 for dim >= 32, because
+        // the max-edge class splits into pure-max (1 component) + full-max.
+        //
+        // At the min-edge class, ALL components are pure -- no split occurs.
+        // The split only happens at max-edge because the special component
+        // (XOR label = dim/4) has a different face-sign distribution.
+        //
+        // Unification: three independent scaling laws converge:
+        //   n_motif_classes (motif census) = dim/16
+        //   n_GF2_classes (projective geometry) = dim/16
+        //   n_face_regimes (face sign census) = dim/16 + 1
+
+        for &dim in &[32, 64, 128] {
+            let census = generic_face_sign_census(dim);
+
+            // Edge count groups (= GF(2) classes = motif classes)
+            let edge_counts: std::collections::BTreeSet<usize> = census
+                .per_component
+                .iter()
+                .map(|c| c.n_edges)
+                .collect();
+            let n_edge_groups = edge_counts.len();
+
+            // Motif class count
+            let expected_motif_classes = dim / 16;
+            assert_eq!(
+                n_edge_groups, expected_motif_classes,
+                "dim={}: edge-count groups should equal dim/16", dim
+            );
+
+            // Regime count = edge groups + 1
+            let mut regime_set: HashSet<(usize, Vec<FaceSignPattern>)> = HashSet::new();
+            for comp in &census.per_component {
+                let mut pats: Vec<FaceSignPattern> = comp.pattern_counts.keys().copied().collect();
+                pats.sort();
+                regime_set.insert((comp.n_edges, pats));
+            }
+            assert_eq!(
+                regime_set.len(), n_edge_groups + 1,
+                "dim={}: regimes should equal edge-groups + 1", dim
+            );
+
+            // The split occurs at max-edge: 1 pure + rest full
+            let e_max = *edge_counts.iter().max().unwrap();
+            let max_edge_comps: Vec<&ComponentFaceCensus> = census
+                .per_component
+                .iter()
+                .filter(|c| c.n_edges == e_max)
+                .collect();
+            let pure_max = max_edge_comps.iter().filter(|c| c.pattern_counts.len() == 2).count();
+            let full_max = max_edge_comps.iter().filter(|c| c.pattern_counts.len() == 4).count();
+            assert_eq!(pure_max, 1, "dim={}: exactly 1 pure-max", dim);
+            assert!(full_max > 0, "dim={}: should have full-max components", dim);
+
+            // At min-edge: ALL are pure (no split)
+            let e_min = *edge_counts.iter().min().unwrap();
+            let min_edge_all_pure = census
+                .per_component
+                .iter()
+                .filter(|c| c.n_edges == e_min)
+                .all(|c| c.pattern_counts.len() == 2);
+            assert!(min_edge_all_pure, "dim={}: all min-edge components should be pure", dim);
+        }
+    }
+
+    #[test]
     fn test_regime_and_edge_scaling_laws() {
         // Cross-dimension verification of the regime count and edge formulas.
         //
@@ -3146,27 +3363,19 @@ mod tests {
 
     #[test]
     fn test_universal_double_three_to_one_law() {
-        // Universal Double 3:1 Law (C-484):
+        // Universal Double 3:1 Law (C-487):
         //
         // In EVERY component of the CD zero-divisor graph at EVERY dimension:
         //   TwoSameOneOpp = 3 * AllOpposite     (odd-parity pair)
         //   OneSameTwoOpp = 3 * AllSame          (even-parity pair)
         //
-        // Proof sketch:
-        //   Let n_S = n_O (same-edge fraction = 1/2, verified in P2).
-        //   Partition triangles by sign product into even-parity (+1: AllSame,
-        //   OneSameTwoOpp) and odd-parity (-1: TwoSameOneOpp, AllOpposite).
+        // STATUS: Empirically verified across 116 components at dims 16/32/64/128.
         //
-        //   Within the even-parity class, counting Same-edge participations:
-        //     3*AllSame + 1*OneSameTwoOpp = n_S * d_even
-        //   Counting Opp-edge participations:
-        //     0*AllSame + 2*OneSameTwoOpp = n_O * d_even
-        //   Since n_S = n_O: 3*AS + OS = 2*OS => OS = 3*AS. QED.
-        //
-        //   Within the odd-parity class, analogously:
-        //     2*TS + 0*AO = n_S * d_odd
-        //     1*TS + 3*AO = n_O * d_odd
-        //   Since n_S = n_O: 2*TS = TS + 3*AO => TS = 3*AO. QED.
+        // NOTE: The original proof sketch via parity-specific edge regularity
+        // is WRONG -- parity-specific edge regularity does NOT hold in non-pure
+        // regimes (see test_parity_edge_regularity_breakdown). The 3:1 law
+        // must arise from the algebraic structure of the CD multiplication
+        // table itself, not from general graph-theoretic counting arguments.
         //
         // The pure-regime C-483 is the special case where AllSame = OneSameTwoOpp = 0.
 
