@@ -325,4 +325,121 @@ mod tests {
         let result = adaptive_permutation_test(&config, |_| 0);
         assert!(result.n_permutations_used >= 200);
     }
+
+    /// Monte Carlo test: verify that the adaptive test preserves the
+    /// type-I error rate at the nominal alpha level.
+    ///
+    /// Under the null hypothesis, each permutation is extreme with some
+    /// true probability p_true. For a valid test, the fraction of trials
+    /// where the adaptive p-value < alpha should not exceed alpha + margin.
+    #[test]
+    fn test_type_i_error_rate_preserved() {
+        use rand::rngs::StdRng;
+        use rand::{Rng, SeedableRng};
+
+        let n_trials = 2000;
+        let alpha = 0.05;
+        let config = AdaptiveConfig {
+            batch_size: 50,
+            max_permutations: 1000,
+            alpha,
+            confidence: 0.99,
+            min_permutations: 100,
+        };
+
+        let mut rng = StdRng::seed_from_u64(42);
+        let mut rejections = 0usize;
+
+        for _ in 0..n_trials {
+            // Under the null: draw a true p-value uniformly from [0,1].
+            // Each permutation is extreme with probability p_true.
+            let p_true: f64 = rng.gen();
+            let mut trial_rng = StdRng::seed_from_u64(rng.gen());
+
+            let result = adaptive_permutation_test(&config, |batch_size| {
+                let mut extreme = 0usize;
+                for _ in 0..batch_size {
+                    if trial_rng.gen::<f64>() < p_true {
+                        extreme += 1;
+                    }
+                }
+                extreme
+            });
+
+            if result.p_value < alpha {
+                rejections += 1;
+            }
+        }
+
+        let observed_rate = rejections as f64 / n_trials as f64;
+        // Standard error of the binomial proportion
+        let se = (alpha * (1.0 - alpha) / n_trials as f64).sqrt();
+
+        // The rejection rate should be within alpha +/- 3*SE (conservative).
+        // With 2000 trials, SE ~ 0.0049, so 3*SE ~ 0.015.
+        let margin = 3.0 * se;
+        assert!(
+            observed_rate <= alpha + margin,
+            "Type-I error rate {observed_rate:.4} exceeds alpha + 3*SE = {:.4} \
+             ({rejections}/{n_trials} rejections)",
+            alpha + margin,
+        );
+    }
+
+    /// Verify that adaptive testing achieves substantial efficiency gains:
+    /// clearly non-significant tests should use far fewer than max_permutations.
+    #[test]
+    fn test_efficiency_clearly_nonsignificant() {
+        use rand::rngs::StdRng;
+        use rand::{Rng, SeedableRng};
+
+        let n_trials = 500;
+        let config = AdaptiveConfig {
+            batch_size: 50,
+            max_permutations: 10_000,
+            alpha: 0.05,
+            confidence: 0.99,
+            min_permutations: 100,
+        };
+
+        let mut rng = StdRng::seed_from_u64(123);
+        let mut total_perms_used = 0usize;
+        let mut n_early_stopped = 0usize;
+
+        for _ in 0..n_trials {
+            // Clearly non-significant: true p ~ 0.5 (half of perms are extreme)
+            let p_true = 0.4 + rng.gen::<f64>() * 0.2; // p in [0.4, 0.6]
+            let mut trial_rng = StdRng::seed_from_u64(rng.gen());
+
+            let result = adaptive_permutation_test(&config, |batch_size| {
+                let mut extreme = 0usize;
+                for _ in 0..batch_size {
+                    if trial_rng.gen::<f64>() < p_true {
+                        extreme += 1;
+                    }
+                }
+                extreme
+            });
+
+            total_perms_used += result.n_permutations_used;
+            if result.stopped_early {
+                n_early_stopped += 1;
+            }
+        }
+
+        let mean_perms = total_perms_used as f64 / n_trials as f64;
+        let fraction_early = n_early_stopped as f64 / n_trials as f64;
+
+        // For clearly non-significant tests (p ~ 0.5), the adaptive test
+        // should stop early most of the time and use far less than max.
+        assert!(
+            mean_perms < config.max_permutations as f64 * 0.5,
+            "Mean perms {mean_perms:.0} should be < 50% of max {}",
+            config.max_permutations,
+        );
+        assert!(
+            fraction_early > 0.90,
+            "At least 90% should stop early, got {fraction_early:.2}",
+        );
+    }
 }

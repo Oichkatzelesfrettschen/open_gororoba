@@ -524,6 +524,112 @@ pub fn find_boolean_class_predicate(
 }
 
 // ============================================================================
+// C-444: Comprehensive PG(n-2,2) correspondence verification
+// ============================================================================
+
+/// Result of verifying the PG(n-2,2) <-> ZD motif correspondence at a given dim.
+#[derive(Debug, Clone)]
+pub struct PGCorrespondenceResult {
+    /// Cayley-Dickson algebra dimension (must be 2^n with n >= 4).
+    pub dim: usize,
+    /// Projective dimension m = n-2.
+    pub proj_dim: usize,
+    /// Number of motif components found.
+    pub n_components: usize,
+    /// Number of PG(m,2) points (expected = 2^{m+1} - 1).
+    pub n_pg_points: usize,
+    /// Whether every component has a unique, uniform XOR-key.
+    pub all_keys_uniform: bool,
+    /// Whether the XOR-key set equals the PG point set (bijection).
+    pub bijection_holds: bool,
+    /// Number of PG lines verified (all three points present as components).
+    pub n_lines_verified: usize,
+    /// Total PG lines.
+    pub n_lines_total: usize,
+    /// Whether all PG lines are accounted for in the component structure.
+    pub line_structure_holds: bool,
+    /// Overall verdict: bijection AND line structure both hold.
+    pub verified: bool,
+}
+
+/// Verify the full C-444 PG(n-2,2) correspondence at a given dimension.
+///
+/// This checks three properties:
+/// 1. **Component count**: n_components == 2^{n-1} - 1 == |PG(n-2,2)|
+/// 2. **Bijection**: XOR-key labels form exactly the point set of PG(n-2,2)
+/// 3. **Line structure**: For every PG line {a, b, a^b}, all three components exist
+///
+/// References: Saniga-Holweck-Pracna (2015), de Marrais (2000)
+pub fn verify_pg_correspondence(dim: usize) -> PGCorrespondenceResult {
+    use crate::boxkites::motif_components_for_cross_assessors;
+
+    assert!(dim >= 16 && dim.is_power_of_two(), "dim must be 2^n with n >= 4");
+    let n = dim.trailing_zeros() as usize;
+    let proj_dim = n - 2;
+
+    let comps = motif_components_for_cross_assessors(dim);
+    let geom = pg_from_cd_dim(dim);
+
+    let n_components = comps.len();
+    let n_pg_points = geom.points.len();
+
+    // Check uniform XOR keys
+    let labels: Vec<Option<PGPoint>> = comps.iter().map(component_xor_label).collect();
+    let all_keys_uniform = labels.iter().all(|l| l.is_some());
+
+    // Check bijection
+    let bijection_holds = if all_keys_uniform {
+        map_components_to_pg(&comps, &geom).is_some()
+    } else {
+        false
+    };
+
+    // Check line structure
+    let line_structure_holds = if all_keys_uniform {
+        verify_pg_line_structure(&comps, &geom)
+    } else {
+        false
+    };
+
+    let n_lines_verified = if line_structure_holds {
+        geom.lines.len()
+    } else {
+        // Count how many lines are verified even if not all
+        let label_set: HashSet<PGPoint> = labels.iter().filter_map(|l| *l).collect();
+        geom.lines
+            .iter()
+            .filter(|line| line.points.iter().all(|p| label_set.contains(p)))
+            .count()
+    };
+
+    PGCorrespondenceResult {
+        dim,
+        proj_dim,
+        n_components,
+        n_pg_points,
+        all_keys_uniform,
+        bijection_holds,
+        n_lines_verified,
+        n_lines_total: geom.lines.len(),
+        line_structure_holds,
+        verified: bijection_holds && line_structure_holds,
+    }
+}
+
+/// Produce a human-readable summary of the PG correspondence verification.
+pub fn pg_correspondence_summary(r: &PGCorrespondenceResult) -> String {
+    let status = if r.verified { "VERIFIED" } else { "FAILED" };
+    format!(
+        "C-444 PG({},{}) at dim={}: {} | components={}/{} | bijection={} | lines={}/{} | line_structure={}",
+        r.proj_dim, 2, r.dim, status,
+        r.n_components, r.n_pg_points,
+        r.bijection_holds,
+        r.n_lines_verified, r.n_lines_total,
+        r.line_structure_holds,
+    )
+}
+
+// ============================================================================
 // Sign-twist cancellation predicate (A5)
 // ============================================================================
 
@@ -853,6 +959,107 @@ mod tests {
         let comps = motif_components_for_cross_assessors(32);
         let geom = pg_from_cd_dim(32);
         assert!(verify_pg_line_structure(&comps, &geom));
+    }
+
+    // ====================================================================
+    // C-444: Extended PG correspondence verification (dim=64, 128)
+    // ====================================================================
+
+    #[test]
+    fn test_bijection_dim64() {
+        use crate::boxkites::motif_components_for_cross_assessors;
+        let comps = motif_components_for_cross_assessors(64);
+        let geom = pg_from_cd_dim(64);
+        assert_eq!(comps.len(), 31, "64D should have 31 motif components");
+        assert_eq!(geom.points.len(), 31, "PG(4,2) should have 31 points");
+        let mapping = map_components_to_pg(&comps, &geom);
+        assert!(mapping.is_some(), "bijection should exist at dim=64");
+    }
+
+    #[test]
+    fn test_pg_line_structure_dim64() {
+        use crate::boxkites::motif_components_for_cross_assessors;
+        let comps = motif_components_for_cross_assessors(64);
+        let geom = pg_from_cd_dim(64);
+        assert!(
+            verify_pg_line_structure(&comps, &geom),
+            "PG(4,2) line structure should hold at dim=64"
+        );
+        // PG(4,2) has 155 lines; all must be accounted for
+        assert_eq!(geom.lines.len(), 155);
+    }
+
+    #[test]
+    fn test_bijection_dim128() {
+        use crate::boxkites::motif_components_for_cross_assessors;
+        let comps = motif_components_for_cross_assessors(128);
+        let geom = pg_from_cd_dim(128);
+        assert_eq!(comps.len(), 63, "128D should have 63 motif components");
+        assert_eq!(geom.points.len(), 63, "PG(5,2) should have 63 points");
+        let mapping = map_components_to_pg(&comps, &geom);
+        assert!(mapping.is_some(), "bijection should exist at dim=128");
+    }
+
+    #[test]
+    fn test_pg_line_structure_dim128() {
+        use crate::boxkites::motif_components_for_cross_assessors;
+        let comps = motif_components_for_cross_assessors(128);
+        let geom = pg_from_cd_dim(128);
+        assert!(
+            verify_pg_line_structure(&comps, &geom),
+            "PG(5,2) line structure should hold at dim=128"
+        );
+        // PG(5,2) has 651 lines
+        assert_eq!(geom.lines.len(), 651);
+    }
+
+    #[test]
+    fn test_verify_pg_correspondence_dim16() {
+        let r = verify_pg_correspondence(16);
+        assert!(r.verified, "C-444 must hold at dim=16: {:?}", r);
+        assert_eq!(r.n_components, 7);
+        assert_eq!(r.n_pg_points, 7);
+        assert_eq!(r.proj_dim, 2);
+        assert_eq!(r.n_lines_total, 7);
+    }
+
+    #[test]
+    fn test_verify_pg_correspondence_dim32() {
+        let r = verify_pg_correspondence(32);
+        assert!(r.verified, "C-444 must hold at dim=32: {:?}", r);
+        assert_eq!(r.n_components, 15);
+        assert_eq!(r.n_pg_points, 15);
+        assert_eq!(r.proj_dim, 3);
+        assert_eq!(r.n_lines_total, 35);
+    }
+
+    #[test]
+    fn test_verify_pg_correspondence_dim64() {
+        let r = verify_pg_correspondence(64);
+        assert!(r.verified, "C-444 must hold at dim=64: {:?}", r);
+        assert_eq!(r.n_components, 31);
+        assert_eq!(r.n_pg_points, 31);
+        assert_eq!(r.proj_dim, 4);
+        assert_eq!(r.n_lines_total, 155);
+    }
+
+    #[test]
+    fn test_verify_pg_correspondence_dim128() {
+        let r = verify_pg_correspondence(128);
+        assert!(r.verified, "C-444 must hold at dim=128: {:?}", r);
+        assert_eq!(r.n_components, 63);
+        assert_eq!(r.n_pg_points, 63);
+        assert_eq!(r.proj_dim, 5);
+        assert_eq!(r.n_lines_total, 651);
+    }
+
+    #[test]
+    fn test_pg_correspondence_summary_format() {
+        let r = verify_pg_correspondence(16);
+        let s = pg_correspondence_summary(&r);
+        assert!(s.contains("VERIFIED"));
+        assert!(s.contains("dim=16"));
+        assert!(s.contains("PG(2,2)"));
     }
 
     // ====================================================================

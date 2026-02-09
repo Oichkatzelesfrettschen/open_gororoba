@@ -219,6 +219,8 @@ pub use projective_geometry::{
     find_linear_class_predicate, find_affine_class_predicate,
     find_boolean_class_predicate,
     sign_twist_signature, verify_signature_determines_solutions,
+    // C-444 correspondence verification
+    PGCorrespondenceResult, verify_pg_correspondence, pg_correspondence_summary,
 };
 
 pub use stochastic::{
