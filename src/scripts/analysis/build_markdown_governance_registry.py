@@ -40,6 +40,7 @@ def _assert_ascii(text: str, context: str) -> None:
 def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
     refs: dict[str, set[str]] = {}
     reg_files = sorted((root / "registry").glob("*.toml"))
+    declarative_only = {"knowledge_migration_plan.toml"}
 
     def add(path: str, src: str) -> None:
         path = path.strip()
@@ -76,6 +77,8 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
                 walk(item, src)
 
     for reg in reg_files:
+        if reg.name in declarative_only:
+            continue
         data = tomllib.loads(reg.read_text(encoding="utf-8"))
         walk(data, reg.relative_to(root).as_posix())
 

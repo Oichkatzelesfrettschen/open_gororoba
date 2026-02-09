@@ -25,6 +25,9 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/todo.toml, registry/todo_narrative.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/todo.toml, registry/todo_narrative.toml -->
+
 # TODO (updated 2026-02-08): executable, test-driven tracker
 
 Primary trackers:
