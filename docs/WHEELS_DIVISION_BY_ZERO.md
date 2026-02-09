@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Wheels (Division by Zero) - Source-first notes
 
 Primary sources:

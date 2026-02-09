@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Lacunae Report: The Gaps in the Gemini Project
 
 ## 1. The "Black Box" Artifacts

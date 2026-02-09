@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Unified Recursive Algebraic-Computational Framework (URACF)
 
 **Version:** 2.0 (The "Mega-Synthesis")

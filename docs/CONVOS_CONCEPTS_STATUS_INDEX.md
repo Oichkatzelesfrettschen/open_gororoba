@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Convos -> Concepts -> Status -> What to Implement Next
 
 This document distills convo-derived mathematical ideas into a reproducible engineering backlog.

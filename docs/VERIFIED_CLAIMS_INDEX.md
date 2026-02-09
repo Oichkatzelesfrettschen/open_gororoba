@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Verified Claims Index (Test-Backed)
 
 Cross-references: [CLAIMS_EVIDENCE_MATRIX](CLAIMS_EVIDENCE_MATRIX.md) |

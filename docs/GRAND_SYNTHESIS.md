@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Grand Synthesis: Algebraic Structures, Analogue Gravity, and Emergent Physics
 
 **Status:** Working draft -- Phase 8 migration complete; Sprint 6 integration complete

@@ -1,0 +1,257 @@
+#!/usr/bin/env python3
+"""
+Bootstrap root-level docs/*.md narratives into a TOML-first registry.
+
+Input:
+- docs/*.md (manual root narratives; generated mirrors excluded)
+
+Output:
+- registry/docs_root_narratives.toml
+"""
+
+from __future__ import annotations
+
+import argparse
+import re
+from dataclasses import dataclass
+from pathlib import Path
+
+CLAIM_RE = re.compile(r"\bC-\d{3}\b")
+HEADING_RE = re.compile(r"^#\s+(.+?)\s*$", flags=re.M)
+BACKTICK_RE = re.compile(r"`([^`\n]+)`")
+
+EXCLUDED_GENERATED_ROOT_DOCS = {
+    "BIBLIOGRAPHY.md",
+    "CLAIMS_EVIDENCE_MATRIX.md",
+    "CLAIMS_TASKS.md",
+    "EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
+    "INSIGHTS.md",
+    "NEXT_ACTIONS.md",
+    "REQUIREMENTS.md",
+    "ROADMAP.md",
+    "TODO.md",
+}
+
+
+@dataclass(frozen=True)
+class RootDoc:
+    doc_id: str
+    source_markdown: str
+    slug: str
+    title: str
+    status_token: str
+    content_kind: str
+    claim_refs: list[str]
+    path_refs: list[str]
+    line_count: int
+    body_markdown: str
+
+
+def _assert_ascii(text: str, context: str) -> None:
+    bad = sorted({ch for ch in text if ord(ch) > 127})
+    if bad:
+        sample = "".join(bad[:20])
+        raise SystemExit(f"ERROR: Non-ASCII output in {context}: {sample!r}")
+
+
+def _ascii_sanitize(text: str) -> str:
+    replacements = {
+        "\u2018": "'",
+        "\u2019": "'",
+        "\u201c": '"',
+        "\u201d": '"',
+        "\u2013": "-",
+        "\u2014": "-",
+        "\u2026": "...",
+        "\u00a0": " ",
+    }
+    out: list[str] = []
+    for ch in text:
+        mapped = replacements.get(ch, ch)
+        for item in mapped:
+            code = ord(item)
+            if item in {"\n", "\r", "\t"}:
+                out.append(item)
+            elif code < 32:
+                out.append(" ")
+            elif code <= 127:
+                out.append(item)
+            else:
+                out.append(f"<U+{code:04X}>")
+    return "".join(out)
+
+
+def _escape(text: str) -> str:
+    escaped = (
+        text.replace("\\", "\\\\")
+        .replace('"', '\\"')
+        .replace("\n", "\\n")
+        .replace("\r", "\\r")
+        .replace("\t", "\\t")
+    )
+    return f'"{escaped}"'
+
+
+def _render_list(values: list[str]) -> str:
+    if not values:
+        return "[]"
+    return "[" + ", ".join(_escape(value) for value in values) + "]"
+
+
+def _render_multiline(text: str) -> str:
+    if "'''" not in text:
+        return "'''\n" + text + "\n'''"
+    escaped = (
+        text.replace("\\", "\\\\")
+        .replace('"', '\\"')
+        .replace("\n", "\\n")
+        .replace("\r", "\\r")
+        .replace("\t", "\\t")
+    )
+    return f'"{escaped}"'
+
+
+def _title_from_text(text: str, fallback: str) -> str:
+    match = HEADING_RE.search(text)
+    if match:
+        return match.group(1).strip()
+    return fallback
+
+
+def _extract_paths(text: str) -> list[str]:
+    out: list[str] = []
+    seen: set[str] = set()
+    for raw in BACKTICK_RE.findall(text):
+        token = raw.strip()
+        if not token:
+            continue
+        if token.startswith("http://") or token.startswith("https://"):
+            continue
+        if "/" not in token and "." not in token:
+            continue
+        if token in seen:
+            continue
+        seen.add(token)
+        out.append(token)
+    return out
+
+
+def _status_token(filename: str) -> str:
+    upper = filename.upper()
+    if "AUDIT" in upper:
+        return "AUDIT"
+    if "REPORT" in upper:
+        return "REPORT"
+    if "STATUS" in upper:
+        return "STATUS"
+    if "ANALYSIS" in upper:
+        return "ANALYSIS"
+    if "GLOSSARY" in upper:
+        return "GLOSSARY"
+    return "NARRATIVE"
+
+
+def _content_kind(filename: str) -> str:
+    upper = filename.upper()
+    if "TAXONOMY" in upper or "GLOSSARY" in upper:
+        return "taxonomy_or_glossary"
+    if "REPLICATION" in upper or "VALIDATION" in upper:
+        return "validation_note"
+    if "PROVENANCE" in upper:
+        return "provenance_note"
+    if "ROADMAP" in upper or "STATUS" in upper:
+        return "status_note"
+    if "ANALYSIS" in upper or "SYNTHESIS" in upper:
+        return "analysis_note"
+    return "research_note"
+
+
+def _parse_doc(index: int, rel_path: Path, text: str) -> RootDoc:
+    sanitized = _ascii_sanitize(text)
+    filename = rel_path.name
+    return RootDoc(
+        doc_id=f"DRN-{index:03d}",
+        source_markdown=rel_path.as_posix(),
+        slug=rel_path.stem.lower(),
+        title=_title_from_text(sanitized, rel_path.stem),
+        status_token=_status_token(filename),
+        content_kind=_content_kind(filename),
+        claim_refs=sorted(set(CLAIM_RE.findall(sanitized))),
+        path_refs=_extract_paths(sanitized),
+        line_count=len(sanitized.splitlines()),
+        body_markdown=sanitized.rstrip("\n"),
+    )
+
+
+def _render_toml(records: list[RootDoc]) -> str:
+    lines: list[str] = []
+    lines.append("# Root docs narratives registry (TOML-first).")
+    lines.append(
+        "# Generated by src/scripts/analysis/normalize_docs_root_narratives_registry.py"
+    )
+    lines.append("")
+    lines.append("[docs_root_narratives]")
+    lines.append('updated = "2026-02-09"')
+    lines.append("authoritative = true")
+    lines.append('source_markdown_glob = "docs/*.md"')
+    lines.append(f"document_count = {len(records)}")
+    lines.append("")
+    for rec in records:
+        lines.append("[[document]]")
+        lines.append(f"id = {_escape(rec.doc_id)}")
+        lines.append(f"source_markdown = {_escape(rec.source_markdown)}")
+        lines.append(f"slug = {_escape(rec.slug)}")
+        lines.append(f"title = {_escape(rec.title)}")
+        lines.append(f"status_token = {_escape(rec.status_token)}")
+        lines.append(f"content_kind = {_escape(rec.content_kind)}")
+        lines.append(f"claim_refs = {_render_list(rec.claim_refs)}")
+        lines.append(f"path_refs = {_render_list(rec.path_refs)}")
+        lines.append(f"line_count = {rec.line_count}")
+        lines.append(f"body_markdown = {_render_multiline(rec.body_markdown)}")
+        lines.append("")
+    return "\n".join(lines)
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--repo-root",
+        default=str(Path(__file__).resolve().parents[3]),
+        help="Repository root.",
+    )
+    parser.add_argument(
+        "--bootstrap-from-markdown",
+        action="store_true",
+        help="Required flag to ingest markdown into TOML registry.",
+    )
+    parser.add_argument(
+        "--out",
+        default="registry/docs_root_narratives.toml",
+        help="Output TOML registry path.",
+    )
+    args = parser.parse_args()
+
+    if not args.bootstrap_from_markdown:
+        raise SystemExit("ERROR: pass --bootstrap-from-markdown to ingest markdown sources")
+
+    root = Path(args.repo_root).resolve()
+    files = sorted((root / "docs").glob("*.md"))
+    files = [path for path in files if path.name not in EXCLUDED_GENERATED_ROOT_DOCS]
+    if not files:
+        raise SystemExit("ERROR: no candidate docs/*.md files found")
+
+    records: list[RootDoc] = []
+    for idx, path in enumerate(files, start=1):
+        text = path.read_text(encoding="utf-8", errors="ignore")
+        records.append(_parse_doc(idx, path.relative_to(root), text))
+
+    rendered = _render_toml(records)
+    out_path = root / args.out
+    _assert_ascii(rendered, str(out_path))
+    out_path.write_text(rendered, encoding="utf-8")
+    print(f"Wrote {out_path} with {len(records)} documents.")
+    return 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

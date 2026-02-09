@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Negative Dimension: What We Mean (and What We Do Not Mean)
 
 This repo uses phrases like "negative dimension" in multiple places. This document makes the meaning explicit and separates (A) standard mathematics/physics usage from (B) speculative narrative.
@@ -43,4 +46,3 @@ If a document claims a specific physical identification (e.g., "D_eff = -1.5"), 
 - a precise operator definition,
 - a domain/boundary specification,
 - and a validation experiment that is reproducible.
-

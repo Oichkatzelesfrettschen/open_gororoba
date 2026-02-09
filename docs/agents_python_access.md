@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Agent's Python Environment & Hardware Access
 
 ## System Profile: "MiniHSA" (Heterogeneous System Architecture)

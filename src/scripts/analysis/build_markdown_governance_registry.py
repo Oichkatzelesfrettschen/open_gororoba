@@ -188,7 +188,7 @@ def main() -> int:
         kind = str(row.get("kind", ""))
         source_refs = sorted(refs.get(path, set()))
 
-        if _is_generated_mirror(path):
+        if (path.startswith("docs/") and path.count("/") == 1) or _is_generated_mirror(path):
             mode = "toml_generated_mirror"
             header_required = True
             notes = "Generated from TOML registries and overlays."

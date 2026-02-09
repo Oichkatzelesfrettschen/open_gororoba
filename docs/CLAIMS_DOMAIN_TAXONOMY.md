@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Claims Domain Taxonomy
 
 Goal: make the C-001..C-427 claim audit mechanically tractable by grouping claims into a small

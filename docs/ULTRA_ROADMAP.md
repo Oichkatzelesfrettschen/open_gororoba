@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Ultra Roadmap (Granular, Test-Driven)
 
 **Date:** 2026-01-27 (updated 2026-02-06)

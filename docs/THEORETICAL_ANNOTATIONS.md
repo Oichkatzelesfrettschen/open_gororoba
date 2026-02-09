@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Theoretical Annotations & Interpretations
 
 **Companion to:** `docs/latex/MATHEMATICAL_FORMALISM.tex`

@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Cayley-Dickson Motif Census: CSV Schemas
 
 This repo treats "motif census" as a reproducible export of connected components of a

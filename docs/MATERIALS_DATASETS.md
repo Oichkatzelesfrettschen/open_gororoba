@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Materials Datasets (Real Properties, Reproducible)
 
 This repo now includes a reproducible pipeline for pulling a **small, redistributable subset** of

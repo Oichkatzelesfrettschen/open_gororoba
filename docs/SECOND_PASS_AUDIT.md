@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Second-Pass Audit (2026-01-27)
 
 This document records a second audit pass focused on:
@@ -57,4 +60,3 @@ This document records a second audit pass focused on:
 ## Next document
 
 See `docs/NEXT_ACTIONS.md` for a prioritized, testable follow-up list.
-

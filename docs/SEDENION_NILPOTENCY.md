@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # THE SEDENION NILPOTENCY: E6 Root Search
 
 **Objective:** Verify Sedenion nilpotency and map to $E_6$ roots.
