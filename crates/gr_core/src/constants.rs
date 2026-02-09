@@ -76,8 +76,7 @@ pub const T_GRAV_PER_MSUN: f64 = G_CGS * M_SUN_CGS / (C_CGS * C_CGS * C_CGS);
 
 /// Hawking temperature per solar mass: T_H = hbar c^3 / (8 pi G M k_B) [K]
 pub const T_HAWKING_PER_MSUN: f64 =
-    HBAR_CGS * C_CGS * C_CGS * C_CGS
-    / (8.0 * std::f64::consts::PI * G_CGS * M_SUN_CGS * K_B_CGS);
+    HBAR_CGS * C_CGS * C_CGS * C_CGS / (8.0 * std::f64::consts::PI * G_CGS * M_SUN_CGS * K_B_CGS);
 
 /// Eddington luminosity per solar mass: L_Edd = 4 pi G M m_p c / sigma_T [erg/s]
 pub const L_EDDINGTON_PER_MSUN: f64 =

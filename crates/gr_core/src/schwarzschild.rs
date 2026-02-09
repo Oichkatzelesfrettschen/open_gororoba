@@ -311,9 +311,7 @@ impl SpacetimeMetric for Schwarzschild {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::metric::{
-        full_curvature, ricci_from_riemann, riemann_from_christoffel,
-    };
+    use crate::metric::{full_curvature, ricci_from_riemann, riemann_from_christoffel};
 
     const TOL: f64 = 1e-10;
 
@@ -350,7 +348,9 @@ mod tests {
                     assert!(
                         g[i][j].abs() < TOL,
                         "g[{}][{}] = {} (expected 0)",
-                        i, j, g[i][j]
+                        i,
+                        j,
+                        g[i][j]
                     );
                 }
             }
@@ -369,7 +369,11 @@ mod tests {
             assert!(
                 (product - 1.0).abs() < TOL,
                 "g[{}][{}] * g_inv[{}][{}] = {} (expected 1)",
-                i, i, i, i, product
+                i,
+                i,
+                i,
+                i,
+                product
             );
         }
     }
@@ -438,7 +442,14 @@ mod tests {
                     assert!(
                         (gamma[a][m][n] - gamma[a][n][m]).abs() < TOL,
                         "Gamma^{}_{}{} != Gamma^{}_{}{} ({} vs {})",
-                        a, m, n, a, n, m, gamma[a][m][n], gamma[a][n][m]
+                        a,
+                        m,
+                        n,
+                        a,
+                        n,
+                        m,
+                        gamma[a][m][n],
+                        gamma[a][n][m]
                     );
                 }
             }
@@ -460,7 +471,12 @@ mod tests {
                     assert!(
                         diff / scale < 1e-4,
                         "Gamma^{}_{}{}: exact={}, numerical={}, diff={}",
-                        a, m, n, exact[a][m][n], numerical[a][m][n], diff
+                        a,
+                        m,
+                        n,
+                        exact[a][m][n],
+                        numerical[a][m][n],
+                        diff
                     );
                 }
             }
@@ -482,7 +498,9 @@ mod tests {
                 assert!(
                     ricci[mu][nu].abs() < 0.01,
                     "R_{}{} = {} (expected 0 for vacuum)",
-                    mu, nu, ricci[mu][nu]
+                    mu,
+                    nu,
+                    ricci[mu][nu]
                 );
             }
         }
@@ -503,7 +521,10 @@ mod tests {
         assert!(
             relative_error < 0.05,
             "Kretschner at r={}: got {}, expected {}, relative error={}",
-            r, result.kretschner, expected, relative_error
+            r,
+            result.kretschner,
+            expected,
+            relative_error
         );
     }
 
@@ -574,9 +595,7 @@ mod tests {
         let s10 = Schwarzschild::new(10.0);
         assert!((s10.isco() / s1.isco() - 10.0).abs() < TOL);
         assert!((s10.photon_sphere() / s1.photon_sphere() - 10.0).abs() < TOL);
-        assert!(
-            (s10.schwarzschild_radius() / s1.schwarzschild_radius() - 10.0).abs() < TOL
-        );
+        assert!((s10.schwarzschild_radius() / s1.schwarzschild_radius() - 10.0).abs() < TOL);
     }
 
     // -- Gravitational deflection --
@@ -634,7 +653,10 @@ mod tests {
         let s2 = Schwarzschild::new(2.0);
         let dt1 = s1.shapiro_delay(100.0, 100.0, 10.0);
         let dt2 = s2.shapiro_delay(100.0, 100.0, 10.0);
-        assert!((dt2 / dt1 - 2.0).abs() < 1e-10, "Delay should scale linearly with M");
+        assert!(
+            (dt2 / dt1 - 2.0).abs() < 1e-10,
+            "Delay should scale linearly with M"
+        );
     }
 
     #[test]
@@ -642,7 +664,10 @@ mod tests {
         let s = bh();
         let dt1 = s.shapiro_delay(50.0, 100.0, 10.0);
         let dt2 = s.shapiro_delay(100.0, 50.0, 10.0);
-        assert!((dt1 - dt2).abs() < TOL, "Delay should be symmetric in r1, r2");
+        assert!(
+            (dt1 - dt2).abs() < TOL,
+            "Delay should be symmetric in r1, r2"
+        );
     }
 
     // -- Time dilation --
@@ -667,7 +692,10 @@ mod tests {
         // sqrt(1 - 2/10) = sqrt(0.8) ~ 0.894
         let td = s.time_dilation_factor(10.0);
         let expected = (0.8_f64).sqrt();
-        assert!((td - expected).abs() < TOL, "td(r=10) = {td}, expected {expected}");
+        assert!(
+            (td - expected).abs() < TOL,
+            "td(r=10) = {td}, expected {expected}"
+        );
     }
 
     // -- Null radial equation --

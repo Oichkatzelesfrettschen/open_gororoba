@@ -98,8 +98,7 @@ pub fn blandford_znajek_power(mass_g: f64, a_star: f64, b_gauss: f64) -> f64 {
 /// Inverts the BZ formula: for P_BZ = L_Edd, find B.
 pub fn bz_eddington_field(mass_g: f64, a_star: f64) -> f64 {
     let a_star = a_star.abs().clamp(0.0, 0.998);
-    let l_edd =
-        4.0 * PI * G_CGS * mass_g * M_PROTON_CGS * C_CGS / SIGMA_THOMSON;
+    let l_edd = 4.0 * PI * G_CGS * mass_g * M_PROTON_CGS * C_CGS / SIGMA_THOMSON;
 
     let m_geo = G_CGS * mass_g / (C_CGS * C_CGS);
     let r_plus = m_geo * (1.0 + (1.0 - a_star * a_star).sqrt());
@@ -141,12 +140,7 @@ pub fn is_superradiant(omega: f64, m_mode: i32, mass_g: f64, a_star: f64) -> boo
 /// a simplified estimate proportional to (m*Omega_H - omega) / (m*Omega_H).
 ///
 /// Returns 1.0 if no superradiance (omega >= m * Omega_H).
-pub fn superradiant_amplification(
-    omega: f64,
-    m_mode: i32,
-    mass_g: f64,
-    a_star: f64,
-) -> f64 {
+pub fn superradiant_amplification(omega: f64, m_mode: i32, mass_g: f64, a_star: f64) -> f64 {
     let a_star = a_star.abs().clamp(0.0, 0.998);
     let omega_h = horizon_angular_velocity_cgs(mass_g, a_star);
     let m_omega_h = f64::from(m_mode) * omega_h;
@@ -207,10 +201,7 @@ mod tests {
         // For a*=1: M_irr = M/sqrt(2) ~ 0.707 M
         let m_irr = irreducible_mass_cgs(M_SUN_CGS, 1.0);
         let expected = M_SUN_CGS / 2.0_f64.sqrt();
-        assert!(
-            (m_irr - expected).abs() / expected < TOL,
-            "M_irr = {m_irr}"
-        );
+        assert!((m_irr - expected).abs() / expected < TOL, "M_irr = {m_irr}");
     }
 
     #[test]
@@ -262,7 +253,8 @@ mod tests {
         let ratio = b100 / b10;
         assert!(
             (ratio - 10.0_f64.sqrt()).abs() < 0.1,
-            "ratio = {ratio}, expected {}", 10.0_f64.sqrt()
+            "ratio = {ratio}, expected {}",
+            10.0_f64.sqrt()
         );
         assert!(b10 > 0.0 && b10.is_finite());
     }

@@ -8,9 +8,8 @@ use crate::{Equation, PaperMetadata, Section};
 // Regex patterns compiled once via LazyLock.
 
 /// Matches section headers like "1. Introduction" or "2 Preliminaries"
-static SECTION_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?m)^(\d+(?:\.\d+)*)[.\s]+([A-Z][^\n]{2,80})$").unwrap()
-});
+static SECTION_RE: LazyLock<Regex> =
+    LazyLock::new(|| Regex::new(r"(?m)^(\d+(?:\.\d+)*)[.\s]+([A-Z][^\n]{2,80})$").unwrap());
 
 /// Matches display equations: $$...$$ or \begin{equation}...\end{equation}
 static DISPLAY_EQ_RE: LazyLock<Regex> = LazyLock::new(|| {
@@ -19,14 +18,10 @@ static DISPLAY_EQ_RE: LazyLock<Regex> = LazyLock::new(|| {
 });
 
 /// Matches inline equations: $...$
-static INLINE_EQ_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"(?s)\$([^$]+?)\$").unwrap()
-});
+static INLINE_EQ_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"(?s)\$([^$]+?)\$").unwrap());
 
 /// Matches equation labels: \label{eq:...}
-static LABEL_RE: LazyLock<Regex> = LazyLock::new(|| {
-    Regex::new(r"\\label\{([^}]+)\}").unwrap()
-});
+static LABEL_RE: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"\\label\{([^}]+)\}").unwrap());
 
 /// Split extracted text into sections based on numbered headings.
 pub fn split_sections(text: &str) -> Vec<Section> {

@@ -51,9 +51,7 @@ pub fn extract_full_text(path: &Path) -> Result<String> {
     #[cfg(not(any(feature = "pdfium", feature = "fallback")))]
     {
         let _ = path;
-        Err(DocpipeError::Extraction(
-            "no PDF backend enabled".into(),
-        ))
+        Err(DocpipeError::Extraction("no PDF backend enabled".into()))
     }
 }
 
@@ -72,9 +70,7 @@ pub fn page_count(path: &Path) -> Result<usize> {
     #[cfg(not(any(feature = "pdfium", feature = "fallback")))]
     {
         let _ = path;
-        Err(DocpipeError::Extraction(
-            "no PDF backend enabled".into(),
-        ))
+        Err(DocpipeError::Extraction("no PDF backend enabled".into()))
     }
 }
 
@@ -93,9 +89,7 @@ pub fn extract_images(path: &Path) -> Result<Vec<PdfImage>> {
     #[cfg(not(any(feature = "pdfium", feature = "fallback")))]
     {
         let _ = path;
-        Err(DocpipeError::Extraction(
-            "no PDF backend enabled".into(),
-        ))
+        Err(DocpipeError::Extraction("no PDF backend enabled".into()))
     }
 }
 

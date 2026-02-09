@@ -22,7 +22,6 @@
 //! - Adams, "Lectures on Exceptional Lie Groups"
 //! - UOR Foundation (2024): Atlas of Resonance Classes (DOI: 10.5281/zenodo.17289540)
 
-
 /// An E8 root vector (8 components).
 #[derive(Debug, Clone, PartialEq)]
 pub struct E8Root {
@@ -46,7 +45,8 @@ impl E8Root {
 
     /// Inner product with another root.
     pub fn inner_product(&self, other: &E8Root) -> f64 {
-        self.coords.iter()
+        self.coords
+            .iter()
             .zip(other.coords.iter())
             .map(|(a, b)| a * b)
             .sum()
@@ -118,14 +118,14 @@ pub fn e8_cartan_matrix() -> [[i32; 8]; 8] {
     // index 4, optimized for E9/E10 affine extensions. Both are isomorphic
     // -- just a relabeling of the Dynkin diagram nodes.
     [
-        [ 2, -1,  0,  0,  0,  0,  0,  0],
-        [-1,  2, -1,  0,  0,  0,  0,  0],
-        [ 0, -1,  2, -1,  0,  0,  0, -1],
-        [ 0,  0, -1,  2, -1,  0,  0,  0],
-        [ 0,  0,  0, -1,  2, -1,  0,  0],
-        [ 0,  0,  0,  0, -1,  2, -1,  0],
-        [ 0,  0,  0,  0,  0, -1,  2,  0],
-        [ 0,  0, -1,  0,  0,  0,  0,  2],
+        [2, -1, 0, 0, 0, 0, 0, 0],
+        [-1, 2, -1, 0, 0, 0, 0, 0],
+        [0, -1, 2, -1, 0, 0, 0, -1],
+        [0, 0, -1, 2, -1, 0, 0, 0],
+        [0, 0, 0, -1, 2, -1, 0, 0],
+        [0, 0, 0, 0, -1, 2, -1, 0],
+        [0, 0, 0, 0, 0, -1, 2, 0],
+        [0, 0, -1, 0, 0, 0, 0, 2],
     ]
 }
 
@@ -226,7 +226,8 @@ impl E8Lattice {
 
     /// Get roots at a given inner product distance from a reference root.
     pub fn roots_at_distance(&self, ref_root: &E8Root, target_ip: i32) -> Vec<&E8Root> {
-        self.roots.iter()
+        self.roots
+            .iter()
             .filter(|r| (r.inner_product(ref_root).round() as i32) == target_ip)
             .collect()
     }
@@ -266,8 +267,8 @@ pub struct AtlasE8CrossValidation {
 /// The atlas-embeddings crate uses exact arithmetic (HalfInteger), while we use f64.
 /// This function verifies consistency between the two approaches.
 pub fn cross_validate_with_atlas() -> AtlasE8CrossValidation {
-    use atlas_embeddings::e8::E8RootSystem;
     use atlas_embeddings::atlas::Atlas;
+    use atlas_embeddings::e8::E8RootSystem;
 
     // Get atlas-embeddings E8 root system
     let atlas_e8 = E8RootSystem::new();
@@ -495,12 +496,12 @@ impl MagicSquareLieAlgebra {
     /// Number of roots (positive + negative).
     pub fn root_count(&self) -> usize {
         match self {
-            Self::A1 => 2,      // A_n has n(n+1) roots
+            Self::A1 => 2, // A_n has n(n+1) roots
             Self::A2 => 6,
-            Self::A2xA2 => 12,  // 6 + 6
+            Self::A2xA2 => 12, // 6 + 6
             Self::A5 => 30,
-            Self::C3 => 18,     // C_n has 2n^2 roots
-            Self::D6 => 60,     // D_n has 2n(n-1) roots
+            Self::C3 => 18, // C_n has 2n^2 roots
+            Self::D6 => 60, // D_n has 2n(n-1) roots
             Self::F4 => 48,
             Self::E6 => 72,
             Self::E7 => 126,
@@ -698,11 +699,7 @@ mod tests {
     fn test_simple_roots_valid() {
         let simple = e8_simple_roots();
         for (i, root) in simple.iter().enumerate() {
-            assert!(
-                root.is_valid_root(),
-                "Simple root {} has invalid norm",
-                i
-            );
+            assert!(root.is_valid_root(), "Simple root {} has invalid norm", i);
         }
     }
 
@@ -719,11 +716,7 @@ mod tests {
 
         // Inner products should be in {-2, -1, 0, 1, 2}
         for (ip, _count) in &ip_counts {
-            assert!(
-                *ip >= -2 && *ip <= 2,
-                "Unexpected inner product {}",
-                ip
-            );
+            assert!(*ip >= -2 && *ip <= 2, "Unexpected inner product {}", ip);
         }
     }
 
@@ -752,17 +745,21 @@ mod tests {
         let validation = cross_validate_with_atlas();
 
         // Root counts must match
-        assert!(validation.counts_match,
+        assert!(
+            validation.counts_match,
             "Root counts differ: ours={}, atlas={}",
-            validation.our_root_count, validation.atlas_root_count);
+            validation.our_root_count, validation.atlas_root_count
+        );
 
         // Should have all 240 roots
         assert_eq!(validation.our_root_count, 240);
         assert_eq!(validation.atlas_root_count, 240);
 
         // Inner product structure should match (3-5 distinct values: {-2, -1, 0, 1} for pairs)
-        assert!(validation.inner_products_match,
-            "Inner product distribution should have 3-5 distinct values");
+        assert!(
+            validation.inner_products_match,
+            "Inner product distribution should have 3-5 distinct values"
+        );
 
         // Atlas should have 96 vertices and 48 sign classes
         assert_eq!(validation.atlas_vertices, 96);
@@ -774,8 +771,11 @@ mod tests {
         let info = get_atlas_embedding_info();
 
         // Atlas has exactly 96 vertices
-        assert_eq!(info.atlas_vertex_count, 96,
-            "Atlas should have 96 vertices, got {}", info.atlas_vertex_count);
+        assert_eq!(
+            info.atlas_vertex_count, 96,
+            "Atlas should have 96 vertices, got {}",
+            info.atlas_vertex_count
+        );
 
         // Embedding should be certified
         assert!(info.embedding_verified, "Embedding should be certified");
@@ -783,8 +783,10 @@ mod tests {
 
     #[test]
     fn test_cartan_matrix_matches_atlas() {
-        assert!(verify_cartan_matrix_with_atlas(),
-            "Our Cartan matrix should match atlas-embeddings");
+        assert!(
+            verify_cartan_matrix_with_atlas(),
+            "Our Cartan matrix should match atlas-embeddings"
+        );
     }
 
     #[test]
@@ -799,8 +801,8 @@ mod tests {
         assert_eq!(groups.e8_roots, 240, "E8 has 240 roots");
 
         // Total: 12 + 48 + 72 + 126 + 240 = 498
-        let total = groups.g2_roots + groups.f4_roots + groups.e6_roots
-            + groups.e7_roots + groups.e8_roots;
+        let total =
+            groups.g2_roots + groups.f4_roots + groups.e6_roots + groups.e7_roots + groups.e8_roots;
         assert_eq!(total, 498, "Total exceptional group roots");
     }
 
@@ -875,10 +877,10 @@ mod tests {
         use MagicSquareLieAlgebra::*;
 
         // Verify key dimension formulas
-        assert_eq!(A1.dim(), 3);   // sl(2)
-        assert_eq!(A2.dim(), 8);   // sl(3)
-        assert_eq!(F4.dim(), 52);  // Exceptional
-        assert_eq!(E6.dim(), 78);  // Exceptional
+        assert_eq!(A1.dim(), 3); // sl(2)
+        assert_eq!(A2.dim(), 8); // sl(3)
+        assert_eq!(F4.dim(), 52); // Exceptional
+        assert_eq!(E6.dim(), 78); // Exceptional
         assert_eq!(E7.dim(), 133); // Exceptional
         assert_eq!(E8.dim(), 248); // Exceptional (largest)
     }

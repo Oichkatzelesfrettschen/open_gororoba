@@ -211,11 +211,7 @@ fn write_summary_csv(summaries: &[DimSummary], path: &Path) -> std::io::Result<(
     Ok(())
 }
 
-fn run_census(
-    dim: usize,
-    max_nodes: usize,
-    seed: u64,
-) -> (Vec<MotifComponent>, bool) {
+fn run_census(dim: usize, max_nodes: usize, seed: u64) -> (Vec<MotifComponent>, bool) {
     let all_nodes = cross_assessors(dim);
     let sampled = max_nodes > 0 && all_nodes.len() > max_nodes;
 
@@ -256,10 +252,7 @@ fn main() {
 
     for &dim in &args.dims {
         if !validate_dim(dim) {
-            eprintln!(
-                "Error: dimension {} is not a power of 2 >= 16",
-                dim
-            );
+            eprintln!("Error: dimension {} is not a power of 2 >= 16", dim);
             std::process::exit(1);
         }
     }
@@ -277,7 +270,10 @@ fn main() {
         let total_nodes: usize = components.iter().map(|c| c.nodes.len()).sum();
         let max_nodes_comp = components.iter().map(|c| c.nodes.len()).max().unwrap_or(0);
         let max_edges_comp = components.iter().map(|c| c.edges.len()).max().unwrap_or(0);
-        let oct_count = components.iter().filter(|c| c.is_octahedron_graph()).count();
+        let oct_count = components
+            .iter()
+            .filter(|c| c.is_octahedron_graph())
+            .count();
         let cuboct_count = components
             .iter()
             .filter(|c| c.is_cuboctahedron_graph())
@@ -338,13 +334,11 @@ fn main() {
 
             if args.details {
                 let node_path = out_dir.join(format!("cd_motif_nodes_{}d.csv", dim));
-                write_node_csv(&components, dim, &node_path)
-                    .expect("failed to write node CSV");
+                write_node_csv(&components, dim, &node_path).expect("failed to write node CSV");
                 eprintln!("    -> {}", node_path.display());
 
                 let edge_path = out_dir.join(format!("cd_motif_edges_{}d.csv", dim));
-                write_edge_csv(&components, dim, &edge_path)
-                    .expect("failed to write edge CSV");
+                write_edge_csv(&components, dim, &edge_path).expect("failed to write edge CSV");
                 eprintln!("    -> {}", edge_path.display());
             }
         }

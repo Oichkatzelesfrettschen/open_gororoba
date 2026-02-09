@@ -14,9 +14,9 @@
 //! - Orus (2014): A practical introduction to tensor networks
 
 use nalgebra::DMatrix;
+use rand::distributions::{Distribution, Standard};
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
-use rand::distributions::{Distribution, Standard};
 
 /// Classical tensor network state.
 ///
@@ -60,9 +60,7 @@ impl TensorNetworkState {
             None => ChaCha8Rng::seed_from_u64(42),
         };
 
-        let mut data: Vec<f64> = (0..size)
-            .map(|_| Standard.sample(&mut rng))
-            .collect();
+        let mut data: Vec<f64> = (0..size).map(|_| Standard.sample(&mut rng)).collect();
 
         // Normalize
         let norm: f64 = data.iter().map(|x| x * x).sum::<f64>().sqrt();
@@ -109,7 +107,7 @@ impl TensorNetworkState {
 
         for i in 0..n {
             let i0 = i & !bit_mask; // qubit target = 0
-            let i1 = i | bit_mask;  // qubit target = 1
+            let i1 = i | bit_mask; // qubit target = 1
 
             if i & bit_mask == 0 {
                 // |0> -> (|0> + |1>) / sqrt(2)
@@ -208,17 +206,17 @@ impl TensorNetworkState {
         let singular_values = svd.singular_values;
 
         // Filter small values and compute probabilities
-        let schmidt: Vec<f64> = singular_values.iter()
+        let schmidt: Vec<f64> = singular_values
+            .iter()
             .filter(|&&s| s > 1e-15)
             .copied()
             .collect();
 
         let norm_sq: f64 = schmidt.iter().map(|s| s * s).sum();
-        let probs: Vec<f64> = schmidt.iter()
-            .map(|s| s * s / norm_sq)
-            .collect();
+        let probs: Vec<f64> = schmidt.iter().map(|s| s * s / norm_sq).collect();
 
-        let entropy: f64 = -probs.iter()
+        let entropy: f64 = -probs
+            .iter()
             .filter(|&&p| p > 0.0)
             .map(|p| p * p.ln())
             .sum::<f64>();
@@ -373,7 +371,11 @@ mod tests {
         let state = TensorNetworkState::new_zero_state(4);
         let result = state.measure_entropy(2);
         // Product state has zero entanglement entropy
-        assert!(result.entropy < 1e-10, "Product state entropy = {}", result.entropy);
+        assert!(
+            result.entropy < 1e-10,
+            "Product state entropy = {}",
+            result.entropy
+        );
     }
 
     #[test]

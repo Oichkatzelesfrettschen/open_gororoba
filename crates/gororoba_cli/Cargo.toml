@@ -131,6 +131,18 @@ name = "mass-clumping"
 path = "src/bin/mass_clumping.rs"
 
 [[bin]]
+name = "cross-stack-locality"
+path = "src/bin/cross_stack_locality.rs"
+
+[[bin]]
+name = "et-billiard"
+path = "src/bin/et_billiard.rs"
+
+[[bin]]
+name = "sky-limit-set"
+path = "src/bin/sky_limit_set.rs"
+
+[[bin]]
 name = "extract-papers"
 path = "src/bin/extract_papers.rs"
 

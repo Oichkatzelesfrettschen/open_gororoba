@@ -196,16 +196,16 @@ fn get_crystal_structure(z: u8) -> Option<CrystalStructure> {
 /// Get lattice constant in Angstroms for select elements.
 fn get_lattice_constant(z: u8) -> Option<f64> {
     match z {
-        6 => Some(3.567),   // Diamond (C)
-        13 => Some(4.050),  // Aluminum
-        14 => Some(5.431),  // Silicon
-        26 => Some(2.867),  // Iron (BCC)
-        28 => Some(3.524),  // Nickel
-        29 => Some(3.615),  // Copper
-        32 => Some(5.658),  // Germanium
-        47 => Some(4.086),  // Silver
-        79 => Some(4.078),  // Gold
-        78 => Some(3.924),  // Platinum
+        6 => Some(3.567),  // Diamond (C)
+        13 => Some(4.050), // Aluminum
+        14 => Some(5.431), // Silicon
+        26 => Some(2.867), // Iron (BCC)
+        28 => Some(3.524), // Nickel
+        29 => Some(3.615), // Copper
+        32 => Some(5.658), // Germanium
+        47 => Some(4.086), // Silver
+        79 => Some(4.078), // Gold
+        78 => Some(3.924), // Platinum
         _ => None,
     }
 }
@@ -213,17 +213,17 @@ fn get_lattice_constant(z: u8) -> Option<f64> {
 /// Get density in g/cm^3 for select elements.
 fn get_density(z: u8) -> Option<f64> {
     match z {
-        1 => Some(0.00008988),  // H (gas)
-        6 => Some(3.513),       // Diamond
-        13 => Some(2.70),       // Al
-        14 => Some(2.33),       // Si
-        26 => Some(7.87),       // Fe
-        28 => Some(8.90),       // Ni
-        29 => Some(8.96),       // Cu
-        32 => Some(5.32),       // Ge
-        47 => Some(10.49),      // Ag
-        79 => Some(19.30),      // Au
-        78 => Some(21.45),      // Pt
+        1 => Some(0.00008988), // H (gas)
+        6 => Some(3.513),      // Diamond
+        13 => Some(2.70),      // Al
+        14 => Some(2.33),      // Si
+        26 => Some(7.87),      // Fe
+        28 => Some(8.90),      // Ni
+        29 => Some(8.96),      // Cu
+        32 => Some(5.32),      // Ge
+        47 => Some(10.49),     // Ag
+        79 => Some(19.30),     // Au
+        78 => Some(21.45),     // Pt
         _ => None,
     }
 }
@@ -231,17 +231,17 @@ fn get_density(z: u8) -> Option<f64> {
 /// Get first ionization energy in eV.
 fn get_ionization_energy(z: u8) -> Option<f64> {
     match z {
-        1 => Some(13.598),   // H
-        2 => Some(24.587),   // He
-        6 => Some(11.260),   // C
-        7 => Some(14.534),   // N
-        8 => Some(13.618),   // O
-        13 => Some(5.986),   // Al
-        14 => Some(8.152),   // Si
-        26 => Some(7.902),   // Fe
-        29 => Some(7.726),   // Cu
-        47 => Some(7.576),   // Ag
-        79 => Some(9.226),   // Au
+        1 => Some(13.598), // H
+        2 => Some(24.587), // He
+        6 => Some(11.260), // C
+        7 => Some(14.534), // N
+        8 => Some(13.618), // O
+        13 => Some(5.986), // Al
+        14 => Some(8.152), // Si
+        26 => Some(7.902), // Fe
+        29 => Some(7.726), // Cu
+        47 => Some(7.576), // Ag
+        79 => Some(9.226), // Au
         _ => None,
     }
 }
@@ -249,17 +249,17 @@ fn get_ionization_energy(z: u8) -> Option<f64> {
 /// Get electron affinity in eV.
 fn get_electron_affinity(z: u8) -> Option<f64> {
     match z {
-        1 => Some(0.754),    // H
-        6 => Some(1.263),    // C
-        7 => Some(-0.07),    // N (negative = requires energy)
-        8 => Some(1.461),    // O
-        9 => Some(3.401),    // F
-        14 => Some(1.389),   // Si
-        16 => Some(2.077),   // S
-        17 => Some(3.613),   // Cl
-        29 => Some(1.235),   // Cu
-        47 => Some(1.302),   // Ag
-        79 => Some(2.309),   // Au
+        1 => Some(0.754),  // H
+        6 => Some(1.263),  // C
+        7 => Some(-0.07),  // N (negative = requires energy)
+        8 => Some(1.461),  // O
+        9 => Some(3.401),  // F
+        14 => Some(1.389), // Si
+        16 => Some(2.077), // S
+        17 => Some(3.613), // Cl
+        29 => Some(1.235), // Cu
+        47 => Some(1.302), // Ag
+        79 => Some(2.309), // Au
         _ => None,
     }
 }
@@ -332,20 +332,20 @@ pub mod metamaterial {
     /// Used in Clausius-Mossotti relation for effective medium theory.
     pub fn polarizability_a3(z: u8) -> Option<f64> {
         match z {
-            1 => Some(0.667),    // H
-            2 => Some(0.205),    // He
-            6 => Some(1.76),     // C
-            7 => Some(1.10),     // N
-            8 => Some(0.802),    // O
-            13 => Some(6.80),    // Al
-            14 => Some(5.38),    // Si
-            26 => Some(8.4),     // Fe
-            28 => Some(6.8),     // Ni
-            29 => Some(6.1),     // Cu
-            32 => Some(6.07),    // Ge
-            47 => Some(7.2),     // Ag
-            79 => Some(5.8),     // Au
-            78 => Some(6.5),     // Pt
+            1 => Some(0.667), // H
+            2 => Some(0.205), // He
+            6 => Some(1.76),  // C
+            7 => Some(1.10),  // N
+            8 => Some(0.802), // O
+            13 => Some(6.80), // Al
+            14 => Some(5.38), // Si
+            26 => Some(8.4),  // Fe
+            28 => Some(6.8),  // Ni
+            29 => Some(6.1),  // Cu
+            32 => Some(6.07), // Ge
+            47 => Some(7.2),  // Ag
+            79 => Some(5.8),  // Au
+            78 => Some(6.5),  // Pt
             _ => None,
         }
     }
@@ -355,14 +355,14 @@ pub mod metamaterial {
     /// Important for photoemission and plasmonic threshold.
     pub fn work_function_ev(z: u8) -> Option<f64> {
         match z {
-            13 => Some(4.28),    // Al
-            26 => Some(4.50),    // Fe
-            28 => Some(5.15),    // Ni
-            29 => Some(4.65),    // Cu
-            47 => Some(4.26),    // Ag
-            78 => Some(5.65),    // Pt
-            79 => Some(5.10),    // Au
-            74 => Some(4.55),    // W
+            13 => Some(4.28), // Al
+            26 => Some(4.50), // Fe
+            28 => Some(5.15), // Ni
+            29 => Some(4.65), // Cu
+            47 => Some(4.26), // Ag
+            78 => Some(5.65), // Pt
+            79 => Some(5.10), // Au
+            74 => Some(4.55), // W
             _ => None,
         }
     }
@@ -372,8 +372,8 @@ pub mod metamaterial {
     /// For semiconductors, determines optical absorption.
     pub fn effective_mass(z: u8) -> Option<f64> {
         match z {
-            14 => Some(0.26),    // Si (electron)
-            32 => Some(0.22),    // Ge (electron)
+            14 => Some(0.26), // Si (electron)
+            32 => Some(0.22), // Ge (electron)
             _ => None,
         }
     }
@@ -383,16 +383,16 @@ pub mod metamaterial {
     /// Characterizes phonon spectrum for thermal properties.
     pub fn debye_temperature_k(z: u8) -> Option<f64> {
         match z {
-            6 => Some(2230.0),   // Diamond
-            13 => Some(428.0),   // Al
-            14 => Some(645.0),   // Si
-            26 => Some(470.0),   // Fe
-            28 => Some(450.0),   // Ni
-            29 => Some(343.0),   // Cu
-            32 => Some(374.0),   // Ge
-            47 => Some(225.0),   // Ag
-            79 => Some(165.0),   // Au
-            78 => Some(240.0),   // Pt
+            6 => Some(2230.0), // Diamond
+            13 => Some(428.0), // Al
+            14 => Some(645.0), // Si
+            26 => Some(470.0), // Fe
+            28 => Some(450.0), // Ni
+            29 => Some(343.0), // Cu
+            32 => Some(374.0), // Ge
+            47 => Some(225.0), // Ag
+            79 => Some(165.0), // Au
+            78 => Some(240.0), // Pt
             _ => None,
         }
     }
@@ -402,10 +402,10 @@ pub mod metamaterial {
     /// For RF/microwave metamaterial design.
     pub fn skin_depth_1ghz_um(z: u8) -> Option<f64> {
         match z {
-            13 => Some(2.6),     // Al
-            29 => Some(2.1),     // Cu
-            47 => Some(2.5),     // Ag
-            79 => Some(2.6),     // Au
+            13 => Some(2.6), // Al
+            29 => Some(2.1), // Cu
+            47 => Some(2.5), // Ag
+            79 => Some(2.6), // Au
             _ => None,
         }
     }
@@ -415,9 +415,9 @@ pub mod metamaterial {
     /// Approximate peak for spherical nanoparticles.
     pub fn plasmon_resonance_nm(z: u8) -> Option<f64> {
         match z {
-            47 => Some(400.0),   // Ag (strong, sharp)
-            79 => Some(520.0),   // Au (strong)
-            29 => Some(580.0),   // Cu (weaker)
+            47 => Some(400.0), // Ag (strong, sharp)
+            79 => Some(520.0), // Au (strong)
+            29 => Some(580.0), // Cu (weaker)
             _ => None,
         }
     }
@@ -492,11 +492,11 @@ mod tests {
     fn test_valence_electrons() {
         // Alkali metals
         assert_eq!(compute_valence_electrons(11), 1); // Na
-        // Halogens
+                                                      // Halogens
         assert_eq!(compute_valence_electrons(17), 7); // Cl
-        // Carbon group
+                                                      // Carbon group
         assert_eq!(compute_valence_electrons(14), 4); // Si
-        // Noble gases
+                                                      // Noble gases
         assert_eq!(compute_valence_electrons(18), 8); // Ar
     }
 
@@ -534,9 +534,9 @@ mod tests {
         use metamaterial::polarizability_a3;
         // Noble gases have small polarizability
         assert!(polarizability_a3(2).unwrap() < 0.5); // He
-        // Metals have larger polarizability
+                                                      // Metals have larger polarizability
         assert!(polarizability_a3(79).unwrap() > 5.0); // Au
-        // Silicon
+                                                       // Silicon
         let si_alpha = polarizability_a3(14).unwrap();
         assert!((si_alpha - 5.38).abs() < 0.1);
         // Invalid element

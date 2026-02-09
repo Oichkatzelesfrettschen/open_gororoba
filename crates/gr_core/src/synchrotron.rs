@@ -62,7 +62,9 @@ pub fn gyroradius(gamma: f64, b_gauss: f64) -> f64 {
 pub fn critical_frequency(gamma: f64, b_gauss: f64, pitch_angle: f64) -> f64 {
     let sin_a = pitch_angle.sin();
     (3.0 / (4.0 * PI)) * (E_CHARGE_CGS * b_gauss.abs()) / (M_ELECTRON_CGS * C_CGS)
-        * gamma * gamma * sin_a
+        * gamma
+        * gamma
+        * sin_a
 }
 
 /// Peak synchrotron frequency [Hz].
@@ -105,8 +107,7 @@ pub fn cooling_lorentz_factor(b_gauss: f64, t_s: f64) -> f64 {
     if t_s < 1e-50 || b_gauss.abs() < 1e-30 {
         return f64::INFINITY;
     }
-    6.0 * PI * M_ELECTRON_CGS * C_CGS
-        / (SIGMA_THOMSON * b_gauss * b_gauss * t_s)
+    6.0 * PI * M_ELECTRON_CGS * C_CGS / (SIGMA_THOMSON * b_gauss * b_gauss * t_s)
 }
 
 // ============================================================================
@@ -153,10 +154,7 @@ pub fn synchrotron_g(x: f64) -> f64 {
     if x > 10.0 {
         return (PI / 2.0).sqrt() * x.sqrt() * (-x).exp();
     }
-    1.3541
-        * x.powf(1.0 / 3.0)
-        * (-x).exp()
-        * (1.0 + 0.6 * x.powf(2.0 / 3.0))
+    1.3541 * x.powf(1.0 / 3.0) * (-x).exp() * (1.0 + 0.6 * x.powf(2.0 / 3.0))
 }
 
 /// Synchrotron polarization degree Pi = G(x)/F(x).
@@ -195,13 +193,7 @@ pub fn electron_index_from_spectral(alpha: f64) -> f64 {
 ///   nu < nu_min: self-absorbed, F ~ nu^{5/2}
 ///   nu_min < nu < nu_max: power-law, F ~ nu^{-(p-1)/2}
 ///   nu > nu_max: exponential cutoff
-pub fn spectrum_power_law(
-    nu: f64,
-    b_gauss: f64,
-    gamma_min: f64,
-    gamma_max: f64,
-    p: f64,
-) -> f64 {
+pub fn spectrum_power_law(nu: f64, b_gauss: f64, gamma_min: f64, gamma_max: f64, p: f64) -> f64 {
     let nu_min = critical_frequency(gamma_min, b_gauss, PI / 2.0);
     let nu_max = critical_frequency(gamma_max, b_gauss, PI / 2.0);
     if nu <= 0.0 {

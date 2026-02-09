@@ -36,7 +36,10 @@ pub fn export_lattice_data(
     }
 
     let n_coords = lattice_points[0].len();
-    let flat: Vec<i8> = lattice_points.iter().flat_map(|p| p.iter().copied()).collect();
+    let flat: Vec<i8> = lattice_points
+        .iter()
+        .flat_map(|p| p.iter().copied())
+        .collect();
 
     let dataset = group
         .new_dataset::<i8>()
@@ -45,9 +48,21 @@ pub fn export_lattice_data(
     dataset.write_raw(&flat)?;
 
     // Metadata
-    dataset.new_attr::<usize>().shape(()).create("dim")?.write_scalar(&dim)?;
-    dataset.new_attr::<usize>().shape(()).create("n_points")?.write_scalar(&lattice_points.len())?;
-    dataset.new_attr::<usize>().shape(()).create("n_coords")?.write_scalar(&n_coords)?;
+    dataset
+        .new_attr::<usize>()
+        .shape(())
+        .create("dim")?
+        .write_scalar(&dim)?;
+    dataset
+        .new_attr::<usize>()
+        .shape(())
+        .create("n_points")?
+        .write_scalar(&lattice_points.len())?;
+    dataset
+        .new_attr::<usize>()
+        .shape(())
+        .create("n_coords")?
+        .write_scalar(&n_coords)?;
 
     Ok(())
 }
@@ -66,9 +81,21 @@ pub fn export_motif_census(
     let group_name = format!("motifs/dim{dim}");
     let group = file.create_group(&group_name)?;
 
-    group.new_attr::<usize>().shape(()).create("n_components")?.write_scalar(&n_components)?;
-    group.new_attr::<usize>().shape(()).create("nodes_per_component")?.write_scalar(&nodes_per_component)?;
-    group.new_attr::<usize>().shape(()).create("n_motif_classes")?.write_scalar(&n_motif_classes)?;
+    group
+        .new_attr::<usize>()
+        .shape(())
+        .create("n_components")?
+        .write_scalar(&n_components)?;
+    group
+        .new_attr::<usize>()
+        .shape(())
+        .create("nodes_per_component")?
+        .write_scalar(&nodes_per_component)?;
+    group
+        .new_attr::<usize>()
+        .shape(())
+        .create("n_motif_classes")?
+        .write_scalar(&n_motif_classes)?;
 
     Ok(())
 }
@@ -77,11 +104,7 @@ pub fn export_motif_census(
 ///
 /// Writes claim IDs, statuses as variable-length string datasets under
 /// `/registry/claims/`.
-pub fn export_claims_summary(
-    path: &Path,
-    ids: &[String],
-    statuses: &[String],
-) -> hdf5::Result<()> {
+pub fn export_claims_summary(path: &Path, ids: &[String], statuses: &[String]) -> hdf5::Result<()> {
     let file = H5File::append(path)?;
     let group = file.create_group("registry/claims")?;
 
@@ -90,23 +113,22 @@ pub fn export_claims_summary(
         .new_dataset::<hdf5::types::VarLenUnicode>()
         .shape([ids.len()])
         .create("id")?;
-    let id_data: Vec<hdf5::types::VarLenUnicode> = ids
-        .iter()
-        .map(|s| s.parse().unwrap())
-        .collect();
+    let id_data: Vec<hdf5::types::VarLenUnicode> = ids.iter().map(|s| s.parse().unwrap()).collect();
     id_ds.write(&id_data)?;
 
     let status_ds = group
         .new_dataset::<hdf5::types::VarLenUnicode>()
         .shape([statuses.len()])
         .create("status")?;
-    let status_data: Vec<hdf5::types::VarLenUnicode> = statuses
-        .iter()
-        .map(|s| s.parse().unwrap())
-        .collect();
+    let status_data: Vec<hdf5::types::VarLenUnicode> =
+        statuses.iter().map(|s| s.parse().unwrap()).collect();
     status_ds.write(&status_data)?;
 
-    group.new_attr::<usize>().shape(()).create("count")?.write_scalar(&ids.len())?;
+    group
+        .new_attr::<usize>()
+        .shape(())
+        .create("count")?
+        .write_scalar(&ids.len())?;
 
     Ok(())
 }

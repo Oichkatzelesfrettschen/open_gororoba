@@ -319,7 +319,12 @@ BatchStart\n\
 BatchEnd\n";
         let csv = convert_pipe_to_csv(input);
         let lines: Vec<&str> = csv.lines().collect();
-        assert_eq!(lines.len(), 3, "Should have header + 2 data rows, got: {:?}", lines);
+        assert_eq!(
+            lines.len(),
+            3,
+            "Should have header + 2 data rows, got: {:?}",
+            lines
+        );
         assert_eq!(lines[0], "name,ra,dec");
         assert_eq!(lines[1], "GRB080714086,12.34,56.78");
         assert_eq!(lines[2], "GRB090101,98.10,-12.3");

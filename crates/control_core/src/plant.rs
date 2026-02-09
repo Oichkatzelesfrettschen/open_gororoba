@@ -7,7 +7,7 @@
 //!
 //! The Plant trait abstracts this for use with feedback controllers.
 
-use nalgebra::{DVector, DMatrix};
+use nalgebra::{DMatrix, DVector};
 
 /// A physical system that can be controlled.
 ///
@@ -187,12 +187,24 @@ pub struct SecondOrderPlant {
 impl SecondOrderPlant {
     /// Create a new second-order plant.
     pub fn new(m: f64, c: f64, k: f64, dt: f64) -> Self {
-        Self { m, c, k, state: (0.0, 0.0), dt }
+        Self {
+            m,
+            c,
+            k,
+            state: (0.0, 0.0),
+            dt,
+        }
     }
 
     /// Create with initial conditions.
     pub fn with_initial(m: f64, c: f64, k: f64, x0: f64, v0: f64, dt: f64) -> Self {
-        Self { m, c, k, state: (x0, v0), dt }
+        Self {
+            m,
+            c,
+            k,
+            state: (x0, v0),
+            dt,
+        }
     }
 
     /// Get position.
@@ -316,7 +328,14 @@ impl StateSpacePlant {
         x0: DVector<f64>,
         dt: f64,
     ) -> Self {
-        Self { a, b, c, d, x: x0, dt }
+        Self {
+            a,
+            b,
+            c,
+            d,
+            x: x0,
+            dt,
+        }
     }
 }
 

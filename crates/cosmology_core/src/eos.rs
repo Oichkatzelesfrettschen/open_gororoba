@@ -285,10 +285,7 @@ mod tests {
         let eos = Polytrope::stiff(1.0);
         for &rho in &[0.01, 0.1, 1.0, 10.0, 100.0, 1e6] {
             let cs2 = eos.sound_speed_sq(rho);
-            assert!(
-                cs2 < 1.0,
-                "c_s^2 = {cs2} at rho = {rho} (should be < 1)"
-            );
+            assert!(cs2 < 1.0, "c_s^2 = {cs2} at rho = {rho} (should be < 1)");
         }
     }
 
@@ -298,7 +295,10 @@ mod tests {
         let eos = Polytrope::stiff(1.0);
         let cs2_low = eos.sound_speed_sq(0.01);
         let cs2_high = eos.sound_speed_sq(1e10);
-        assert!(cs2_high > cs2_low, "Sound speed should increase with density");
+        assert!(
+            cs2_high > cs2_low,
+            "Sound speed should increase with density"
+        );
         assert!(cs2_high > 0.99, "c_s^2 at high density should approach 1");
     }
 

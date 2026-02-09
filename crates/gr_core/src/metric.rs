@@ -189,8 +189,7 @@ pub fn riemann_from_christoffel<M: SpacetimeMetric + ?Sized>(
         for a in 0..DIM {
             for b in 0..DIM {
                 for c in 0..DIM {
-                    dgamma[a][b][c][d] =
-                        (gamma_plus[a][b][c] - gamma_minus[a][b][c]) / (2.0 * h);
+                    dgamma[a][b][c][d] = (gamma_plus[a][b][c] - gamma_minus[a][b][c]) / (2.0 * h);
                 }
             }
         }
@@ -202,8 +201,7 @@ pub fn riemann_from_christoffel<M: SpacetimeMetric + ?Sized>(
         for beta in 0..DIM {
             for mu in 0..DIM {
                 for nu in 0..DIM {
-                    let mut val =
-                        dgamma[alpha][beta][nu][mu] - dgamma[alpha][beta][mu][nu];
+                    let mut val = dgamma[alpha][beta][nu][mu] - dgamma[alpha][beta][mu][nu];
                     for sigma in 0..DIM {
                         val += gamma[alpha][sigma][mu] * gamma[sigma][beta][nu]
                             - gamma[alpha][sigma][nu] * gamma[sigma][beta][mu];
@@ -307,10 +305,7 @@ pub fn kretschner_scalar(
 }
 
 /// Compute all curvature tensors at a spacetime point.
-pub fn full_curvature<M: SpacetimeMetric + ?Sized>(
-    metric: &M,
-    x: &[f64; DIM],
-) -> CurvatureResult {
+pub fn full_curvature<M: SpacetimeMetric + ?Sized>(metric: &M, x: &[f64; DIM]) -> CurvatureResult {
     let g = metric.metric_components(x);
     let g_inv = metric.inverse_metric(x);
     let christoffel = metric.christoffel(x);
@@ -373,10 +368,8 @@ fn step_size(x_val: f64, coord_index: usize) -> f64 {
 pub fn invert_4x4_symmetric(m: &MetricComponents) -> MetricComponents {
     // Use nalgebra for the inversion to avoid a 100-line cofactor expansion
     let mat = nalgebra::Matrix4::new(
-        m[0][0], m[0][1], m[0][2], m[0][3],
-        m[1][0], m[1][1], m[1][2], m[1][3],
-        m[2][0], m[2][1], m[2][2], m[2][3],
-        m[3][0], m[3][1], m[3][2], m[3][3],
+        m[0][0], m[0][1], m[0][2], m[0][3], m[1][0], m[1][1], m[1][2], m[1][3], m[2][0], m[2][1],
+        m[2][2], m[2][3], m[3][0], m[3][1], m[3][2], m[3][3],
     );
 
     let inv = mat
@@ -430,7 +423,10 @@ mod tests {
                     assert!(
                         gamma[a][b][c].abs() < 1e-8,
                         "Minkowski Gamma^{}_{}{} = {} (expected 0)",
-                        a, b, c, gamma[a][b][c]
+                        a,
+                        b,
+                        c,
+                        gamma[a][b][c]
                     );
                 }
             }
@@ -449,7 +445,11 @@ mod tests {
                         assert!(
                             riemann[a][b][c][d].abs() < 1e-4,
                             "Minkowski R^{}_{}{}{} = {} (expected 0)",
-                            a, b, c, d, riemann[a][b][c][d]
+                            a,
+                            b,
+                            c,
+                            d,
+                            riemann[a][b][c][d]
                         );
                     }
                 }
@@ -468,7 +468,9 @@ mod tests {
                 assert!(
                     ricci[mu][nu].abs() < 1e-4,
                     "Minkowski R_{}{} = {} (expected 0)",
-                    mu, nu, ricci[mu][nu]
+                    mu,
+                    nu,
+                    ricci[mu][nu]
                 );
             }
         }

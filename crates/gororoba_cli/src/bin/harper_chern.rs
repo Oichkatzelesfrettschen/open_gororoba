@@ -93,9 +93,13 @@ fn main() {
 
     match args.command {
         Commands::Spectrum { p, q, json } => run_spectrum(p, q, json),
-        Commands::Butterfly { q_max, output, chern, n_grid, json } => {
-            run_butterfly(q_max, output, chern, n_grid, json)
-        },
+        Commands::Butterfly {
+            q_max,
+            output,
+            chern,
+            n_grid,
+            json,
+        } => run_butterfly(q_max, output, chern, n_grid, json),
         Commands::Chern { p, q, n_grid, json } => run_chern(p, q, n_grid, json),
         Commands::Fractions { q_max } => run_fractions(q_max),
     }
@@ -114,10 +118,14 @@ fn run_spectrum(p: u32, q: u32, json: bool) {
         println!("  \"q\": {},", q);
         println!("  \"alpha\": {},", alpha);
         println!("  \"n_bands\": {},", q);
-        println!("  \"energies\": [{}]", energies.iter()
-            .map(|e| format!("{:.8}", e))
-            .collect::<Vec<_>>()
-            .join(", "));
+        println!(
+            "  \"energies\": [{}]",
+            energies
+                .iter()
+                .map(|e| format!("{:.8}", e))
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
         println!("}}");
     } else {
         println!("Harper-Hofstadter Spectrum");
@@ -135,13 +143,19 @@ fn run_spectrum(p: u32, q: u32, json: bool) {
         // Band gaps
         println!("Band gaps:");
         for i in 1..energies.len() {
-            let gap = energies[i] - energies[i-1];
-            println!("  Gap {} (E_{} - E_{}): {:.6}", i, i, i-1, gap);
+            let gap = energies[i] - energies[i - 1];
+            println!("  Gap {} (E_{} - E_{}): {:.6}", i, i, i - 1, gap);
         }
     }
 }
 
-fn run_butterfly(q_max: u32, output: Option<String>, include_chern: bool, n_grid: usize, json: bool) {
+fn run_butterfly(
+    q_max: u32,
+    output: Option<String>,
+    include_chern: bool,
+    n_grid: usize,
+    json: bool,
+) {
     let fracs = reduced_fractions(q_max);
 
     if json {
@@ -155,19 +169,29 @@ fn run_butterfly(q_max: u32, output: Option<String>, include_chern: bool, n_grid
             let result = fhs_chern_numbers(p, q, n_grid);
             let alpha = p as f64 / q as f64;
 
-            print!("    {{\"p\": {}, \"q\": {}, \"alpha\": {:.8}, \"energies\": [{}]",
-                p, q, alpha,
-                result.energies_gamma.iter()
+            print!(
+                "    {{\"p\": {}, \"q\": {}, \"alpha\": {:.8}, \"energies\": [{}]",
+                p,
+                q,
+                alpha,
+                result
+                    .energies_gamma
+                    .iter()
                     .map(|e| format!("{:.8}", e))
                     .collect::<Vec<_>>()
-                    .join(", "));
+                    .join(", ")
+            );
 
             if include_chern {
-                print!(", \"chern\": [{}]",
-                    result.band_cherns.iter()
+                print!(
+                    ", \"chern\": [{}]",
+                    result
+                        .band_cherns
+                        .iter()
                         .map(|c| format!("{}", c))
                         .collect::<Vec<_>>()
-                        .join(", "));
+                        .join(", ")
+                );
             }
 
             if idx < fracs.len() - 1 {
@@ -189,8 +213,14 @@ fn run_butterfly(q_max: u32, output: Option<String>, include_chern: bool, n_grid
         println!();
 
         if include_chern {
-            println!("{:>5}  {:>5}  {:>10}  {:>8}  Chern numbers", "p", "q", "alpha", "sum(C)");
-            println!("{:-<5}  {:-<5}  {:-<10}  {:-<8}  {:-<30}", "", "", "", "", "");
+            println!(
+                "{:>5}  {:>5}  {:>10}  {:>8}  Chern numbers",
+                "p", "q", "alpha", "sum(C)"
+            );
+            println!(
+                "{:-<5}  {:-<5}  {:-<10}  {:-<8}  {:-<30}",
+                "", "", "", "", ""
+            );
         } else {
             println!("{:>5}  {:>5}  {:>10}  Energies", "p", "q", "alpha");
             println!("{:-<5}  {:-<5}  {:-<10}  {:-<40}", "", "", "", "");
@@ -202,10 +232,14 @@ fn run_butterfly(q_max: u32, output: Option<String>, include_chern: bool, n_grid
 
             if include_chern {
                 let sum: i32 = result.band_cherns.iter().sum();
-                println!("{:5}  {:5}  {:10.6}  {:8}  {:?}",
-                    p, q, alpha, sum, result.band_cherns);
+                println!(
+                    "{:5}  {:5}  {:10.6}  {:8}  {:?}",
+                    p, q, alpha, sum, result.band_cherns
+                );
             } else {
-                let e_str: String = result.energies_gamma.iter()
+                let e_str: String = result
+                    .energies_gamma
+                    .iter()
                     .map(|e| format!("{:+.3}", e))
                     .collect::<Vec<_>>()
                     .join(", ");
@@ -218,12 +252,16 @@ fn run_butterfly(q_max: u32, output: Option<String>, include_chern: bool, n_grid
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
 
         if include_chern {
-            wtr.write_record(["p", "q", "alpha", "band", "energy", "chern"]).unwrap();
+            wtr.write_record(["p", "q", "alpha", "band", "energy", "chern"])
+                .unwrap();
             for &(p, q) in &fracs {
                 let result = fhs_chern_numbers(p, q, n_grid);
                 let alpha = p as f64 / q as f64;
-                for (band, (&e, &c)) in result.energies_gamma.iter()
-                    .zip(result.band_cherns.iter()).enumerate()
+                for (band, (&e, &c)) in result
+                    .energies_gamma
+                    .iter()
+                    .zip(result.band_cherns.iter())
+                    .enumerate()
                 {
                     wtr.write_record(&[
                         p.to_string(),
@@ -232,11 +270,13 @@ fn run_butterfly(q_max: u32, output: Option<String>, include_chern: bool, n_grid
                         band.to_string(),
                         e.to_string(),
                         c.to_string(),
-                    ]).unwrap();
+                    ])
+                    .unwrap();
                 }
             }
         } else {
-            wtr.write_record(["p", "q", "alpha", "band", "energy"]).unwrap();
+            wtr.write_record(["p", "q", "alpha", "band", "energy"])
+                .unwrap();
             for &(p, q) in &fracs {
                 let result = fhs_chern_numbers(p, q, 3);
                 let alpha = p as f64 / q as f64;
@@ -247,7 +287,8 @@ fn run_butterfly(q_max: u32, output: Option<String>, include_chern: bool, n_grid
                         alpha.to_string(),
                         band.to_string(),
                         e.to_string(),
-                    ]).unwrap();
+                    ])
+                    .unwrap();
                 }
             }
         }
@@ -269,23 +310,42 @@ fn run_chern(p: u32, q: u32, n_grid: usize, json: bool) {
         println!("  \"q\": {},", q);
         println!("  \"alpha\": {},", alpha);
         println!("  \"n_grid\": {},", n_grid);
-        println!("  \"band_cherns\": [{}],", result.band_cherns.iter()
-            .map(|c| format!("{}", c))
-            .collect::<Vec<_>>()
-            .join(", "));
-        println!("  \"gap_cherns\": [{}],", result.gap_cherns.iter()
-            .map(|c| format!("{}", c))
-            .collect::<Vec<_>>()
-            .join(", "));
+        println!(
+            "  \"band_cherns\": [{}],",
+            result
+                .band_cherns
+                .iter()
+                .map(|c| format!("{}", c))
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+        println!(
+            "  \"gap_cherns\": [{}],",
+            result
+                .gap_cherns
+                .iter()
+                .map(|c| format!("{}", c))
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
         println!("  \"sum_zero\": {},", sum_zero);
-        println!("  \"diophantine\": [{}],", diophantine.iter()
-            .map(|b| if *b { "true" } else { "false" })
-            .collect::<Vec<_>>()
-            .join(", "));
-        println!("  \"energies\": [{}]", result.energies_gamma.iter()
-            .map(|e| format!("{:.8}", e))
-            .collect::<Vec<_>>()
-            .join(", "));
+        println!(
+            "  \"diophantine\": [{}],",
+            diophantine
+                .iter()
+                .map(|b| if *b { "true" } else { "false" })
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+        println!(
+            "  \"energies\": [{}]",
+            result
+                .energies_gamma
+                .iter()
+                .map(|e| format!("{:.8}", e))
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
         println!("}}");
     } else {
         println!("FHS Chern Number Calculation");
@@ -305,9 +365,11 @@ fn run_chern(p: u32, q: u32, n_grid: usize, json: bool) {
         }
         println!();
         println!("Verification:");
-        println!("  Sum of band Cherns = {} (should be 0): {}",
+        println!(
+            "  Sum of band Cherns = {} (should be 0): {}",
             result.band_cherns.iter().sum::<i32>(),
-            if sum_zero { "PASS" } else { "FAIL" });
+            if sum_zero { "PASS" } else { "FAIL" }
+        );
 
         println!("  Diophantine equation: {:?}", diophantine);
         println!();

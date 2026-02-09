@@ -21,8 +21,8 @@
 //! -1 -> 0, 0 -> 1, 1 -> 2. The Baire distance is then 3^{-k} where
 //! k is the 1-indexed position of the first differing digit.
 
-use algebra_core::analysis::codebook::LatticeVector;
 use super::baire::AttributeSpec;
+use algebra_core::analysis::codebook::LatticeVector;
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
@@ -64,11 +64,7 @@ pub fn shared_prefix_length(vectors: &[LatticeVector]) -> usize {
 ///
 /// `skip_prefix`: number of leading coordinates to ignore (e.g., 2 for
 /// Lambda_256 where l_0 and l_1 are always -1).
-pub fn lattice_baire_distance(
-    a: &LatticeVector,
-    b: &LatticeVector,
-    skip_prefix: usize,
-) -> f64 {
+pub fn lattice_baire_distance(a: &LatticeVector, b: &LatticeVector, skip_prefix: usize) -> f64 {
     for pos in skip_prefix..8 {
         if a[pos] != b[pos] {
             let effective_pos = pos - skip_prefix + 1; // 1-indexed
@@ -84,16 +80,17 @@ pub fn lattice_baire_distance(
 /// = i * n - i*(i+1)/2 + j - i - 1.
 ///
 /// `skip_prefix`: coordinates to skip (auto-detect with `shared_prefix_length`).
-pub fn lattice_baire_distance_matrix(
-    vectors: &[LatticeVector],
-    skip_prefix: usize,
-) -> Vec<f64> {
+pub fn lattice_baire_distance_matrix(vectors: &[LatticeVector], skip_prefix: usize) -> Vec<f64> {
     let n = vectors.len();
     let n_pairs = n * (n - 1) / 2;
     let mut dists = Vec::with_capacity(n_pairs);
     for i in 0..n {
         for j in (i + 1)..n {
-            dists.push(lattice_baire_distance(&vectors[i], &vectors[j], skip_prefix));
+            dists.push(lattice_baire_distance(
+                &vectors[i],
+                &vectors[j],
+                skip_prefix,
+            ));
         }
     }
     dists
@@ -185,9 +182,7 @@ pub fn codebook_baire_ultrametric_test(
     let dist_matrix = lattice_baire_distance_matrix(vectors, prefix_len);
     let n = vectors.len();
 
-    let obs_frac = super::ultrametric_fraction_from_matrix(
-        &dist_matrix, n, n_triples, seed,
-    );
+    let obs_frac = super::ultrametric_fraction_from_matrix(&dist_matrix, n, n_triples, seed);
 
     // Null: shuffle each tail coordinate independently, recompute Baire distances
     let mut rng = ChaCha8Rng::seed_from_u64(seed + 1_000_000);
@@ -207,9 +202,8 @@ pub fn codebook_baire_ultrametric_test(
         }
 
         let null_dists = lattice_baire_distance_matrix(&shuffled, prefix_len);
-        let null_frac = super::ultrametric_fraction_from_matrix(
-            &null_dists, n, n_triples, seed + 2_000_000,
-        );
+        let null_frac =
+            super::ultrametric_fraction_from_matrix(&null_dists, n, n_triples, seed + 2_000_000);
         null_fracs.push(null_frac);
     }
 
@@ -263,7 +257,10 @@ mod tests {
         let lambda_256 = enumerate_lambda_256();
         let prefix = shared_prefix_length(&lambda_256);
         // Lambda_256 vectors all have l_0=-1, l_1=-1
-        assert_eq!(prefix, 2, "Lambda_256 should have 2-coordinate shared prefix");
+        assert_eq!(
+            prefix, 2,
+            "Lambda_256 should have 2-coordinate shared prefix"
+        );
     }
 
     #[test]
@@ -280,10 +277,7 @@ mod tests {
 
     #[test]
     fn test_shared_prefix_length_no_shared() {
-        let vecs = vec![
-            [-1, 0, 0, 0, 0, 0, 0, 0],
-            [0, 0, 0, 0, 0, 0, 0, 0],
-        ];
+        let vecs = vec![[-1, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0]];
         assert_eq!(shared_prefix_length(&vecs), 0);
     }
 
@@ -342,9 +336,9 @@ mod tests {
     #[test]
     fn test_filter_by_predicate() {
         let vecs: Vec<LatticeVector> = vec![
-            [-1, -1, -1, -1, 0, 0, 0, 0],  // in Lambda_256
-            [0, -1, 0, -1, 0, -1, 0, -1],   // NOT in Lambda_256 (l_0=0)
-            [-1, -1, -1, 0, -1, 0, 0, 0],   // might be in Lambda_256
+            [-1, -1, -1, -1, 0, 0, 0, 0], // in Lambda_256
+            [0, -1, 0, -1, 0, -1, 0, -1], // NOT in Lambda_256 (l_0=0)
+            [-1, -1, -1, 0, -1, 0, 0, 0], // might be in Lambda_256
         ];
         let filtered = filter_by_predicate(&vecs, is_in_lambda_256);
         // At minimum, the first vector should pass
@@ -368,10 +362,7 @@ mod tests {
 
     #[test]
     fn test_lattice_to_column_major() {
-        let vecs: Vec<LatticeVector> = vec![
-            [-1, -1, 0, 1, 0, 0, 0, 0],
-            [-1, -1, 1, 0, 0, 0, 0, 0],
-        ];
+        let vecs: Vec<LatticeVector> = vec![[-1, -1, 0, 1, 0, 0, 0, 0], [-1, -1, 1, 0, 0, 0, 0, 0]];
         let (data, n, d) = lattice_to_column_major(&vecs, 2);
         assert_eq!(n, 2);
         assert_eq!(d, 6);

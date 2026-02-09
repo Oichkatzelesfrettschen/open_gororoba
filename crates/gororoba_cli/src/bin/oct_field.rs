@@ -11,10 +11,8 @@
 //!   oct-field dispersion --n 128 --n-modes 5 --mass 1.0
 //!   oct-field sweep --n-min 32 --n-max 256 --mass 1.0
 
+use algebra_core::{evolve, gaussian_wave_packet, measure_dispersion, FieldParams};
 use clap::{Parser, Subcommand};
-use algebra_core::{
-    FieldParams, evolve, gaussian_wave_packet, measure_dispersion,
-};
 use std::f64::consts::PI;
 
 #[derive(Parser)]
@@ -113,13 +111,34 @@ fn main() {
     let args = Args::parse();
 
     match args.command {
-        Commands::Evolve { n, domain, t_final, mass, coupling, dt, output, json } => {
+        Commands::Evolve {
+            n,
+            domain,
+            t_final,
+            mass,
+            coupling,
+            dt,
+            output,
+            json,
+        } => {
             run_evolve(n, domain, t_final, mass, coupling, dt, output, json);
         }
-        Commands::Dispersion { n, domain, n_modes, mass, output } => {
+        Commands::Dispersion {
+            n,
+            domain,
+            n_modes,
+            mass,
+            output,
+        } => {
             run_dispersion(n, domain, n_modes, mass, output);
         }
-        Commands::Sweep { n_min, n_max, n_samples, mass, output } => {
+        Commands::Sweep {
+            n_min,
+            n_max,
+            n_samples,
+            mass,
+            output,
+        } => {
             run_sweep(n_min, n_max, n_samples, mass, output);
         }
     }
@@ -150,11 +169,15 @@ fn run_evolve(
 
     let e0 = result.energies[0];
     let e_final = result.energies.last().copied().unwrap_or(e0);
-    let max_drift: f64 = result.energies.iter()
+    let max_drift: f64 = result
+        .energies
+        .iter()
         .map(|&e| (e - e0).abs() / e0)
         .fold(0.0_f64, f64::max);
 
-    let charge_drifts: Vec<f64> = result.charges_initial.iter()
+    let charge_drifts: Vec<f64> = result
+        .charges_initial
+        .iter()
         .zip(result.charges_final.iter())
         .map(|(q0, qf)| {
             let scale = q0.abs().max(1e-10);
@@ -192,8 +215,14 @@ fn run_evolve(
         println!("  max|dE/E| = {:.2e}", max_drift);
         println!();
         println!("Noether Charges Q_k (k=1..7):");
-        println!("  Initial: {:?}", result.charges_initial.map(|x| format!("{:.4}", x)));
-        println!("  Final:   {:?}", result.charges_final.map(|x| format!("{:.4}", x)));
+        println!(
+            "  Initial: {:?}",
+            result.charges_initial.map(|x| format!("{:.4}", x))
+        );
+        println!(
+            "  Final:   {:?}",
+            result.charges_final.map(|x| format!("{:.4}", x))
+        );
         println!("  max|dQ/Q| = {:.2e}", max_charge_drift);
     }
 
@@ -201,11 +230,8 @@ fn run_evolve(
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
         wtr.write_record(["step", "time", "energy"]).unwrap();
         for (i, &e) in result.energies.iter().enumerate() {
-            wtr.write_record(&[
-                i.to_string(),
-                (i as f64 * dt).to_string(),
-                e.to_string(),
-            ]).unwrap();
+            wtr.write_record(&[i.to_string(), (i as f64 * dt).to_string(), e.to_string()])
+                .unwrap();
         }
         wtr.flush().unwrap();
         eprintln!("Wrote {} energy samples to {}", result.energies.len(), path);
@@ -231,8 +257,10 @@ fn run_dispersion(n: usize, domain: f64, n_modes: usize, mass: f64, output: Opti
     println!("mode  k          omega_exact  omega_meas   rel_error");
     println!("----  ---------  -----------  -----------  ---------");
     for r in &results {
-        println!("{:4}  {:9.4}  {:11.6}  {:11.6}  {:9.2e}",
-            r.mode, r.k, r.omega_exact, r.omega_measured, r.rel_error);
+        println!(
+            "{:4}  {:9.4}  {:11.6}  {:11.6}  {:9.2e}",
+            r.mode, r.k, r.omega_exact, r.omega_measured, r.rel_error
+        );
     }
 
     let avg_error: f64 = results.iter().map(|r| r.rel_error).sum::<f64>() / results.len() as f64;
@@ -241,7 +269,8 @@ fn run_dispersion(n: usize, domain: f64, n_modes: usize, mass: f64, output: Opti
 
     if let Some(path) = output {
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
-        wtr.write_record(["mode", "k", "omega_exact", "omega_measured", "rel_error"]).unwrap();
+        wtr.write_record(["mode", "k", "omega_exact", "omega_measured", "rel_error"])
+            .unwrap();
         for r in &results {
             wtr.write_record(&[
                 r.mode.to_string(),
@@ -249,7 +278,8 @@ fn run_dispersion(n: usize, domain: f64, n_modes: usize, mass: f64, output: Opti
                 r.omega_exact.to_string(),
                 r.omega_measured.to_string(),
                 r.rel_error.to_string(),
-            ]).unwrap();
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         eprintln!("Wrote {} modes to {}", results.len(), path);
@@ -259,7 +289,10 @@ fn run_dispersion(n: usize, domain: f64, n_modes: usize, mass: f64, output: Opti
 fn run_sweep(n_min: usize, n_max: usize, n_samples: usize, mass: f64, output: Option<String>) {
     println!("Lattice Size Convergence Sweep");
     println!("==============================");
-    println!("  N = {} to {}, samples = {}, mass = {}", n_min, n_max, n_samples, mass);
+    println!(
+        "  N = {} to {}, samples = {}, mass = {}",
+        n_min, n_max, n_samples, mass
+    );
     println!();
 
     let sizes: Vec<usize> = (0..n_samples)
@@ -292,24 +325,31 @@ fn run_sweep(n_min: usize, n_max: usize, n_samples: usize, mass: f64, output: Op
         let (phi0, pi0) = gaussian_wave_packet(&params);
         let result = evolve(&phi0, &pi0, &params, 100);
         let e0 = result.energies[0];
-        let max_drift: f64 = result.energies.iter()
+        let max_drift: f64 = result
+            .energies
+            .iter()
             .map(|&e| (e - e0).abs() / e0)
             .fold(0.0_f64, f64::max);
 
-        println!("{:6}  {:11.2e}   {:11.2e}   {:12.2e}", n, err1, err2, max_drift);
+        println!(
+            "{:6}  {:11.2e}   {:11.2e}   {:12.2e}",
+            n, err1, err2, max_drift
+        );
         records.push((n, err1, err2, max_drift));
     }
 
     if let Some(path) = output {
         let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
-        wtr.write_record(["n_sites", "mode1_error", "mode2_error", "energy_drift"]).unwrap();
+        wtr.write_record(["n_sites", "mode1_error", "mode2_error", "energy_drift"])
+            .unwrap();
         for (n, e1, e2, drift) in &records {
             wtr.write_record(&[
                 n.to_string(),
                 e1.to_string(),
                 e2.to_string(),
                 drift.to_string(),
-            ]).unwrap();
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         eprintln!("Wrote {} records to {}", records.len(), path);

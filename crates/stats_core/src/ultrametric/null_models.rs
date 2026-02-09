@@ -197,10 +197,16 @@ fn sampled_euclidean_ultrametric_fraction(
         // Sample three distinct indices
         let i = rng.gen_range(0..n);
         let mut j = rng.gen_range(0..n - 1);
-        if j >= i { j += 1; }
+        if j >= i {
+            j += 1;
+        }
         let mut k = rng.gen_range(0..n - 2);
-        if k >= i.min(j) { k += 1; }
-        if k >= i.max(j) { k += 1; }
+        if k >= i.min(j) {
+            k += 1;
+        }
+        if k >= i.max(j) {
+            k += 1;
+        }
 
         // Compute pairwise Euclidean distances
         let dij = euclidean_dist_col_major(cols, n, d, i, j);
@@ -216,7 +222,9 @@ fn sampled_euclidean_ultrametric_fraction(
         }
     }
 
-    if n_tested == 0 { return 0.0; }
+    if n_tested == 0 {
+        return 0.0;
+    }
     n_ultra as f64 / n_tested as f64
 }
 
@@ -254,7 +262,9 @@ fn exhaustive_euclidean_ultrametric_fraction(
         }
     }
 
-    if n_tested == 0 { return 0.0; }
+    if n_tested == 0 {
+        return 0.0;
+    }
     n_ultra as f64 / n_tested as f64
 }
 
@@ -786,9 +796,7 @@ mod tests {
         let mut shuf_rows = extract_rows(&shuffled);
 
         // Sort rows for comparison (each row is a unique multiset)
-        let row_key = |r: &Vec<f64>| -> Vec<u64> {
-            r.iter().map(|x| x.to_bits()).collect()
-        };
+        let row_key = |r: &Vec<f64>| -> Vec<u64> { r.iter().map(|x| x.to_bits()).collect() };
         orig_rows.sort_by(|a, b| row_key(a).cmp(&row_key(b)));
         shuf_rows.sort_by(|a, b| row_key(a).cmp(&row_key(b)));
 
@@ -817,7 +825,10 @@ mod tests {
             orig_col.sort_by(|a, b| a.partial_cmp(b).unwrap());
             shif_col.sort_by(|a, b| a.partial_cmp(b).unwrap());
             for (a, b) in orig_col.iter().zip(shif_col.iter()) {
-                assert!((a - b).abs() < 1e-15, "Toroidal shift changed column {col} values");
+                assert!(
+                    (a - b).abs() < 1e-15,
+                    "Toroidal shift changed column {col} values"
+                );
             }
         }
     }
@@ -877,7 +888,10 @@ mod tests {
 
         // Should be identical
         for (a, b) in v1.iter().zip(v2.iter()) {
-            assert!((a - b).abs() < 1e-15, "Column-independent should match legacy");
+            assert!(
+                (a - b).abs() < 1e-15,
+                "Column-independent should match legacy"
+            );
         }
     }
 
@@ -953,7 +967,8 @@ mod tests {
             assert!(
                 (d_orig - d_rot).abs() < 1e-8,
                 "Rotation changed distance: {:.8} -> {:.8}",
-                d_orig, d_rot
+                d_orig,
+                d_rot
             );
         }
 
@@ -964,7 +979,8 @@ mod tests {
         assert!(
             (uf_orig - uf_rot).abs() < 1e-10,
             "Thesis H violated: ultrametric fraction changed by rotation: {} -> {}",
-            uf_orig, uf_rot
+            uf_orig,
+            uf_rot
         );
     }
 
@@ -1013,7 +1029,9 @@ mod tests {
         // depends on chance but should generally differ.
         eprintln!(
             "Thesis H: UF original={:.4}, UF shuffled={:.4}, diff={:.4}",
-            uf_orig, uf_shuf, (uf_orig - uf_shuf).abs()
+            uf_orig,
+            uf_shuf,
+            (uf_orig - uf_shuf).abs()
         );
     }
 
@@ -1129,13 +1147,9 @@ mod tests {
         let cols = make_clustered_data(n_clusters, pts_per, d, 42);
 
         let result = multi_null_comparison(
-            &cols,
-            n,
-            d,
-            5000,   // ignored when n<=100 (exhaustive mode)
-            500,    // 500 permutations per null model
-            42,
-            0.05,   // 5% relative tolerance
+            &cols, n, d, 5000, // ignored when n<=100 (exhaustive mode)
+            500,  // 500 permutations per null model
+            42, 0.05, // 5% relative tolerance
         );
 
         eprintln!(
@@ -1143,7 +1157,10 @@ mod tests {
             n, d, pts_per
         );
         eprintln!("  Observed UF = {:.4}", result.observed_fraction);
-        eprintln!("  p(ColumnIndependent) = {:.4}", result.p_column_independent);
+        eprintln!(
+            "  p(ColumnIndependent) = {:.4}",
+            result.p_column_independent
+        );
         eprintln!("  p(RowPermutation)    = {:.4}", result.p_row_permutation);
         eprintln!("  p(ToroidalShift)     = {:.4}", result.p_toroidal_shift);
         eprintln!("  p(RandomRotation)    = {:.4}", result.p_random_rotation);
@@ -1199,21 +1216,16 @@ mod tests {
         let d = 3;
         let cols = make_test_data(n, d, 123);
 
-        let result = multi_null_comparison(
-            &cols,
-            n,
-            d,
-            5000,
-            200,
-            123,
-            0.05,
-        );
+        let result = multi_null_comparison(&cols, n, d, 5000, 200, 123, 0.05);
 
         eprintln!(
             "Multi-null (uniform random, no structure): UF = {:.4}",
             result.observed_fraction,
         );
-        eprintln!("  p(ColumnIndependent) = {:.4}", result.p_column_independent);
+        eprintln!(
+            "  p(ColumnIndependent) = {:.4}",
+            result.p_column_independent
+        );
         eprintln!("  p(RowPermutation)    = {:.4}", result.p_row_permutation);
         eprintln!("  p(RandomRotation)    = {:.4}", result.p_random_rotation);
 
@@ -1262,9 +1274,7 @@ mod tests {
             let mut rng = ChaCha8Rng::seed_from_u64(42);
 
             for cluster in 0..n_clusters {
-                let center: Vec<f64> = (0..d)
-                    .map(|_| (cluster as f64) * separation)
-                    .collect();
+                let center: Vec<f64> = (0..d).map(|_| (cluster as f64) * separation).collect();
                 for p in 0..pts_per {
                     let row = cluster * pts_per + p;
                     for c in 0..d {
@@ -1275,20 +1285,20 @@ mod tests {
 
             // Only test ColumnIndependent (the informative null)
             let mut null_rng = ChaCha8Rng::seed_from_u64(99);
-            let obs_frac = exhaustive_euclidean_ultrametric_fraction(
-                &cols, n, d, 0.05,
-            );
+            let obs_frac = exhaustive_euclidean_ultrametric_fraction(&cols, n, d, 0.05);
             let mut n_extreme = 0usize;
             let mut shuffled = cols.clone();
 
             for _ in 0..200 {
                 shuffled.copy_from_slice(&cols);
                 apply_null_column_major(
-                    &mut shuffled, n, d, NullModel::ColumnIndependent, &mut null_rng,
+                    &mut shuffled,
+                    n,
+                    d,
+                    NullModel::ColumnIndependent,
+                    &mut null_rng,
                 );
-                let null_frac = exhaustive_euclidean_ultrametric_fraction(
-                    &shuffled, n, d, 0.05,
-                );
+                let null_frac = exhaustive_euclidean_ultrametric_fraction(&shuffled, n, d, 0.05);
                 if null_frac >= obs_frac {
                     n_extreme += 1;
                 }
@@ -1305,8 +1315,10 @@ mod tests {
         assert!(
             p_values[0].1 < p_values[3].1,
             "p-value should increase as clusters merge: sep={:.1} p={:.4} vs sep={:.1} p={:.4}",
-            p_values[0].0, p_values[0].1,
-            p_values[3].0, p_values[3].1,
+            p_values[0].0,
+            p_values[0].1,
+            p_values[3].0,
+            p_values[3].1,
         );
     }
 
@@ -1551,12 +1563,11 @@ mod tests {
             let mut rng = ChaCha8Rng::seed_from_u64(99);
             strategy.apply(&mut v, n, d, &mut rng);
             // Verify data was modified (not all zeros or unchanged)
-            let changed = v.iter().zip(data.iter()).any(|(a, b)| (a - b).abs() > 1e-15);
-            assert!(
-                changed,
-                "Strategy '{}' should modify data",
-                strategy.name(),
-            );
+            let changed = v
+                .iter()
+                .zip(data.iter())
+                .any(|(a, b)| (a - b).abs() > 1e-15);
+            assert!(changed, "Strategy '{}' should modify data", strategy.name(),);
         }
     }
 }

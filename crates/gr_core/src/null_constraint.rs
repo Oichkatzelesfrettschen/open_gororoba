@@ -18,7 +18,7 @@
 //! - Misner, Thorne, Wheeler (1973): Gravitation, Ch. 25 (geodesic integration)
 //! - Press (2007): Numerical Recipes 3rd ed., Ch. 17 (ODE error control)
 
-use crate::metric::{MetricComponents, DIM, T, R, THETA, PHI};
+use crate::metric::{MetricComponents, DIM, PHI, R, T, THETA};
 
 // ============================================================================
 // Constraint evaluation
@@ -72,10 +72,9 @@ pub fn is_timelike(g: &MetricComponents, v: &[f64; DIM], m: f64, tol: f64) -> bo
 ///
 /// Returns the renormalized 4-velocity.
 pub fn renormalize_null_diagonal(g: &MetricComponents, v: &[f64; DIM]) -> [f64; DIM] {
-    let spatial_norm =
-        g[R][R] * v[R] * v[R] +
-        g[THETA][THETA] * v[THETA] * v[THETA] +
-        g[PHI][PHI] * v[PHI] * v[PHI];
+    let spatial_norm = g[R][R] * v[R] * v[R]
+        + g[THETA][THETA] * v[THETA] * v[THETA]
+        + g[PHI][PHI] * v[PHI] * v[PHI];
 
     // g_tt v0^2 = -spatial_norm => v0 = sqrt(spatial_norm / (-g_tt))
     let new_vt = (spatial_norm / (-g[T][T])).sqrt();

@@ -23,11 +23,13 @@
 //! - Monograph Layer 5: NullModel abstraction with adaptive sequential testing
 //! - Uses Besag & Clifford (1991) adaptive stopping via `run_adaptive_null_test`
 
-use std::collections::HashSet;
+use super::adaptive::{AdaptiveConfig, AdaptiveResult};
+use super::null_models::{
+    run_adaptive_null_test, NullModelStrategy, NullTestConfig, RowPermutationNull,
+};
 use algebra_core::analysis::codebook::EncodingDictionary;
 use algebra_core::construction::cayley_dickson::find_zero_divisors;
-use super::null_models::{NullModelStrategy, RowPermutationNull, NullTestConfig, run_adaptive_null_test};
-use super::adaptive::{AdaptiveConfig, AdaptiveResult};
+use std::collections::HashSet;
 
 /// Result of a codebook null test.
 #[derive(Debug, Clone)]
@@ -151,9 +153,8 @@ pub fn run_codebook_null_test_with_strategy(
         selective_mean_squared_distance(d_slice, n_rows, n_cols, &pairs_for_closure)
     };
 
-    let adaptive_result = run_adaptive_null_test(
-        &data, n, d, observed, &statistic_fn, &null_config,
-    );
+    let adaptive_result =
+        run_adaptive_null_test(&data, n, d, observed, &statistic_fn, &null_config);
 
     CodebookNullResult {
         statistic_name: "mean_zd_pair_squared_distance".to_string(),
@@ -202,10 +203,10 @@ pub fn codebook_null_test_from_dim(
 
 #[cfg(test)]
 mod tests {
-    use super::*;
-    use algebra_core::analysis::codebook::{LatticeVector, enumerate_lambda_256};
-    use super::super::null_models::ColumnIndependentNull;
     use super::super::adaptive::StopReason;
+    use super::super::null_models::ColumnIndependentNull;
+    use super::*;
+    use algebra_core::analysis::codebook::{enumerate_lambda_256, LatticeVector};
 
     /// Build a small (dim=4) dictionary with known lattice vectors.
     fn sample_dictionary_4() -> EncodingDictionary {
@@ -424,7 +425,10 @@ mod tests {
     /// zero divisors, making them ideal for integration testing.
     fn sample_sedenion_dictionary() -> EncodingDictionary {
         let lambda = enumerate_lambda_256();
-        assert!(lambda.len() >= 16, "Lambda_256 must have at least 16 vectors");
+        assert!(
+            lambda.len() >= 16,
+            "Lambda_256 must have at least 16 vectors"
+        );
         let pairs: Vec<(usize, LatticeVector)> = lambda[..16]
             .iter()
             .enumerate()
@@ -464,14 +468,15 @@ mod tests {
             min_permutations: 100,
         };
 
-        let result = run_codebook_null_test_with_strategy(
-            &dict, &zd_pairs, &strategy, &config, 42,
-        );
+        let result = run_codebook_null_test_with_strategy(&dict, &zd_pairs, &strategy, &config, 42);
 
         assert_eq!(result.n_basis, 16);
         assert_eq!(result.n_zd_pairs, zd_pairs.len());
         assert_eq!(result.dim, 16);
-        assert!(result.observed_value > 0.0, "ZD pairs must have positive distance");
+        assert!(
+            result.observed_value > 0.0,
+            "ZD pairs must have positive distance"
+        );
         assert!(
             result.adaptive_result.p_value > 0.0,
             "Phipson-Smyth guarantees p > 0"
@@ -520,9 +525,8 @@ mod tests {
 
         // ColumnIndependent null
         let ci_strategy = ColumnIndependentNull;
-        let ci_result = run_codebook_null_test_with_strategy(
-            &dict, &zd_pairs, &ci_strategy, &config, 42,
-        );
+        let ci_result =
+            run_codebook_null_test_with_strategy(&dict, &zd_pairs, &ci_strategy, &config, 42);
 
         // RowPermutation null (same as default run_codebook_null_test)
         let rp_result = run_codebook_null_test(&dict, &zd_pairs, &config, 42);

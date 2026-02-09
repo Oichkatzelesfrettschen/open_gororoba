@@ -3,7 +3,7 @@
 //! Usage: mera-entropy --l-max 64 --chi 4 --output entropy.csv
 
 use clap::Parser;
-use quantum_core::{mera_entropy_estimate, bekenstein_bound_bits};
+use quantum_core::{bekenstein_bound_bits, mera_entropy_estimate};
 
 #[derive(Parser)]
 #[command(name = "mera-entropy")]
@@ -41,7 +41,10 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    eprintln!("MERA entropy scaling: L_max = {}, chi = {}", args.l_max, args.chi);
+    eprintln!(
+        "MERA entropy scaling: L_max = {}, chi = {}",
+        args.l_max, args.chi
+    );
 
     // Compute entropy for powers of 2 up to l_max
     let mut results: Vec<(usize, f64)> = Vec::new();
@@ -66,13 +69,21 @@ fn main() {
     let slope = (n * sum_xy - sum_x * sum_y) / (n * sum_xx - sum_x * sum_x);
     let intercept = (sum_y - slope * sum_x) / n;
 
-    eprintln!("Log scaling fit: S = {:.4} * log(L) + {:.4}", slope, intercept);
-    eprintln!("Central charge estimate: c ~ {:.2} (from c/3 * log(L))", 3.0 * slope);
+    eprintln!(
+        "Log scaling fit: S = {:.4} * log(L) + {:.4}",
+        slope, intercept
+    );
+    eprintln!(
+        "Central charge estimate: c ~ {:.2} (from c/3 * log(L))",
+        3.0 * slope
+    );
 
     if args.bekenstein {
         let bek_bound = bekenstein_bound_bits(args.radius, args.energy);
-        eprintln!("Bekenstein bound (R={} nm, E={} eV): S_max = {:.2e} bits",
-            args.radius, args.energy, bek_bound);
+        eprintln!(
+            "Bekenstein bound (R={} nm, E={} eV): S_max = {:.2e} bits",
+            args.radius, args.energy, bek_bound
+        );
     }
 
     if args.json {
@@ -98,7 +109,8 @@ fn main() {
                 s.to_string(),
                 log_l.to_string(),
                 s_fit.to_string(),
-            ]).unwrap();
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} points to {}", results.len(), path);

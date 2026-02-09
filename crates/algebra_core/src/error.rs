@@ -3,10 +3,7 @@ use thiserror::Error;
 #[derive(Error, Debug)]
 pub enum AlgebraError {
     #[error("Dimension mismatch: expected {expected}, got {found}")]
-    DimensionMismatch {
-        expected: usize,
-        found: usize,
-    },
+    DimensionMismatch { expected: usize, found: usize },
 
     #[error("Division by zero")]
     ZeroDivision,
@@ -15,10 +12,7 @@ pub enum AlgebraError {
     ZeroDivisorFound(Vec<f64>),
 
     #[error("Invalid basis index: {index} for dimension {dim}")]
-    InvalidBasisIndex {
-        index: usize,
-        dim: usize,
-    },
+    InvalidBasisIndex { index: usize, dim: usize },
 
     #[error("Operation not supported for dimension {0}")]
     UnsupportedDimension(usize),

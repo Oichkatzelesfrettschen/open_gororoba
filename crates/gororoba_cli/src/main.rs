@@ -212,7 +212,7 @@ fn main() {
 }
 
 fn handle_algebra(cmd: AlgebraCmd) {
-    use algebra_core::{find_zero_divisors, generate_e8_roots, find_box_kites};
+    use algebra_core::{find_box_kites, find_zero_divisors, generate_e8_roots};
 
     match cmd {
         AlgebraCmd::ZdSearch { dim, atol, output } => {
@@ -230,7 +230,8 @@ fn handle_algebra(cmd: AlgebraCmd) {
                         k.to_string(),
                         l.to_string(),
                         norm.to_string(),
-                    ]).unwrap();
+                    ])
+                    .unwrap();
                 }
                 wtr.flush().unwrap();
                 println!("Wrote {} records to {}", zds.len(), path);
@@ -249,9 +250,11 @@ fn handle_algebra(cmd: AlgebraCmd) {
 
             if let Some(path) = output {
                 let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
-                wtr.write_record(["x0", "x1", "x2", "x3", "x4", "x5", "x6", "x7"]).unwrap();
+                wtr.write_record(["x0", "x1", "x2", "x3", "x4", "x5", "x6", "x7"])
+                    .unwrap();
                 for root in &roots {
-                    wtr.write_record(root.coords.map(|x| x.to_string())).unwrap();
+                    wtr.write_record(root.coords.map(|x| x.to_string()))
+                        .unwrap();
                 }
                 wtr.flush().unwrap();
                 println!("Wrote {} roots to {}", roots.len(), path);
@@ -269,7 +272,11 @@ fn handle_gr(cmd: GrCmd) {
     use std::f64::consts::FRAC_PI_2;
 
     match cmd {
-        GrCmd::Shadow { spin, n_points, output } => {
+        GrCmd::Shadow {
+            spin,
+            n_points,
+            output,
+        } => {
             eprintln!("Computing Kerr shadow for a = {}...", spin);
             let (alpha, beta) = shadow_boundary(spin, n_points, FRAC_PI_2);
 
@@ -283,16 +290,35 @@ fn handle_gr(cmd: GrCmd) {
                 println!("Wrote {} points to {}", alpha.len(), path);
             } else {
                 println!("Shadow boundary has {} points", alpha.len());
-                println!("Alpha range: [{:.3}, {:.3}]",
+                println!(
+                    "Alpha range: [{:.3}, {:.3}]",
                     alpha.iter().cloned().fold(f64::INFINITY, f64::min),
-                    alpha.iter().cloned().fold(f64::NEG_INFINITY, f64::max));
+                    alpha.iter().cloned().fold(f64::NEG_INFINITY, f64::max)
+                );
             }
         }
-        GrCmd::Geodesic { spin, angular_momentum, carter, r0, output } => {
-            eprintln!("Tracing geodesic: a={}, L={}, Q={}, r0={}", spin, angular_momentum, carter, r0);
+        GrCmd::Geodesic {
+            spin,
+            angular_momentum,
+            carter,
+            r0,
+            output,
+        } => {
+            eprintln!(
+                "Tracing geodesic: a={}, L={}, Q={}, r0={}",
+                spin, angular_momentum, carter, r0
+            );
             let result = trace_null_geodesic(
-                spin, 1.0, angular_momentum, carter,
-                r0, FRAC_PI_2, 100.0, -1.0, 0.0, 2000
+                spin,
+                1.0,
+                angular_momentum,
+                carter,
+                r0,
+                FRAC_PI_2,
+                100.0,
+                -1.0,
+                0.0,
+                2000,
             );
 
             if let Some(path) = output {
@@ -305,23 +331,34 @@ fn handle_gr(cmd: GrCmd) {
                         result.r[i].to_string(),
                         result.theta[i].to_string(),
                         result.phi[i].to_string(),
-                    ]).unwrap();
+                    ])
+                    .unwrap();
                 }
                 wtr.flush().unwrap();
                 println!("Wrote {} points to {}", result.lam.len(), path);
             } else {
-                println!("Geodesic: {} points, terminated={}, reason={}",
-                    result.lam.len(), result.terminated, result.termination_reason);
+                println!(
+                    "Geodesic: {} points, terminated={}, reason={}",
+                    result.lam.len(),
+                    result.terminated,
+                    result.termination_reason
+                );
             }
         }
     }
 }
 
 fn handle_optics(cmd: OpticsCmd) {
-    use optics_core::{Ray, trace_ray, GrinFiber};
+    use optics_core::{trace_ray, GrinFiber, Ray};
 
     match cmd {
-        OpticsCmd::Fiber { n0, g, step, max_steps, output } => {
+        OpticsCmd::Fiber {
+            n0,
+            g,
+            step,
+            max_steps,
+            output,
+        } => {
             let medium = GrinFiber {
                 n0,
                 g,
@@ -337,34 +374,50 @@ fn handle_optics(cmd: OpticsCmd) {
 
             if let Some(path) = output {
                 let mut wtr = csv::Writer::from_path(&path).expect("Failed to create CSV");
-                wtr.write_record(["s", "x", "y", "z", "dx", "dy", "dz"]).unwrap();
+                wtr.write_record(["s", "x", "y", "z", "dx", "dy", "dz"])
+                    .unwrap();
                 for i in 0..result.positions.len() {
                     let p = result.positions[i];
                     let d = result.directions[i];
                     wtr.write_record(&[
                         result.arc_lengths[i].to_string(),
-                        p[0].to_string(), p[1].to_string(), p[2].to_string(),
-                        d[0].to_string(), d[1].to_string(), d[2].to_string(),
-                    ]).unwrap();
+                        p[0].to_string(),
+                        p[1].to_string(),
+                        p[2].to_string(),
+                        d[0].to_string(),
+                        d[1].to_string(),
+                        d[2].to_string(),
+                    ])
+                    .unwrap();
                 }
                 wtr.flush().unwrap();
                 println!("Wrote {} points to {}", result.positions.len(), path);
             } else {
-                println!("Traced {} points, final position: ({:.4}, {:.4}, {:.4})",
+                println!(
+                    "Traced {} points, final position: ({:.4}, {:.4}, {:.4})",
                     result.positions.len(),
                     result.positions.last().unwrap()[0],
                     result.positions.last().unwrap()[1],
-                    result.positions.last().unwrap()[2]);
+                    result.positions.last().unwrap()[2]
+                );
             }
         }
     }
 }
 
 fn handle_cosmology(cmd: CosmologyCmd) {
-    use cosmology_core::{solve_gravastar, GravastarConfig, PolytropicEos, AnisotropicParams};
+    use cosmology_core::{solve_gravastar, AnisotropicParams, GravastarConfig, PolytropicEos};
 
     match cmd {
-        CosmologyCmd::Gravastar { m_target, r_v: _, r1, rho_v: _, rho_shell: _, gamma, k_poly } => {
+        CosmologyCmd::Gravastar {
+            m_target,
+            r_v: _,
+            r1,
+            rho_v: _,
+            rho_shell: _,
+            gamma,
+            k_poly,
+        } => {
             eprintln!("Solving gravastar: M={}, gamma={}", m_target, gamma);
 
             let config = GravastarConfig {
@@ -397,16 +450,28 @@ fn handle_cosmology(cmd: CosmologyCmd) {
 }
 
 fn handle_quantum(cmd: QuantumCmd) {
-    use quantum_core::{mera_entropy_estimate, bekenstein_bound_bits};
+    use quantum_core::{bekenstein_bound_bits, mera_entropy_estimate};
 
     match cmd {
-        QuantumCmd::Mera { subsystem_size, chi } => {
+        QuantumCmd::Mera {
+            subsystem_size,
+            chi,
+        } => {
             let entropy = mera_entropy_estimate(subsystem_size, chi, 42);
-            println!("MERA entropy estimate for L={}, chi={}: S = {:.6}", subsystem_size, chi, entropy);
+            println!(
+                "MERA entropy estimate for L={}, chi={}: S = {:.6}",
+                subsystem_size, chi, entropy
+            );
         }
-        QuantumCmd::Bekenstein { radius_nm, energy_ev } => {
+        QuantumCmd::Bekenstein {
+            radius_nm,
+            energy_ev,
+        } => {
             let bits = bekenstein_bound_bits(radius_nm, energy_ev);
-            println!("Bekenstein bound: R={} nm, E={} eV -> S_max = {:.2e} bits", radius_nm, energy_ev, bits);
+            println!(
+                "Bekenstein bound: R={} nm, E={} eV -> S_max = {:.2e} bits",
+                radius_nm, energy_ev, bits
+            );
         }
     }
 }
@@ -414,9 +479,9 @@ fn handle_quantum(cmd: QuantumCmd) {
 fn handle_plot(cmd: PlotCmd) {
     use algebra_core::generate_e8_roots;
     use gr_core::shadow_boundary;
-    use viz::{line_plot_svg, scatter_plot_svg, heatmap_svg, colors, Colormap};
     use std::f64::consts::FRAC_PI_2;
     use std::io::BufRead;
+    use viz::{colors, heatmap_svg, line_plot_svg, scatter_plot_svg, Colormap};
 
     match cmd {
         PlotCmd::E8 { output } => {
@@ -429,8 +494,10 @@ fn handle_plot(cmd: PlotCmd) {
                 .iter()
                 .map(|r| {
                     // Simple projection: sum pairs of coordinates
-                    let x = r.coords[0] + 0.5 * r.coords[2] + 0.25 * r.coords[4] + 0.125 * r.coords[6];
-                    let y = r.coords[1] + 0.5 * r.coords[3] + 0.25 * r.coords[5] + 0.125 * r.coords[7];
+                    let x =
+                        r.coords[0] + 0.5 * r.coords[2] + 0.25 * r.coords[4] + 0.125 * r.coords[6];
+                    let y =
+                        r.coords[1] + 0.5 * r.coords[3] + 0.25 * r.coords[5] + 0.125 * r.coords[7];
                     (x, y)
                 })
                 .collect();
@@ -443,7 +510,8 @@ fn handle_plot(cmd: PlotCmd) {
                 &points,
                 colors::INDIGO,
                 4,
-            ).expect("Failed to create plot");
+            )
+            .expect("Failed to create plot");
             println!("Wrote {} roots to {}", roots.len(), output);
         }
 
@@ -456,7 +524,9 @@ fn handle_plot(cmd: PlotCmd) {
             let mut data = Vec::new();
 
             for (i, line) in reader.lines().enumerate() {
-                if i == 0 { continue; } // Skip header
+                if i == 0 {
+                    continue;
+                } // Skip header
                 let line = line.expect("Failed to read line");
                 let parts: Vec<&str> = line.split(',').collect();
                 if parts.len() >= 2 {
@@ -473,11 +543,16 @@ fn handle_plot(cmd: PlotCmd) {
                 "Entropy",
                 &data,
                 colors::PURPLE,
-            ).expect("Failed to create plot");
+            )
+            .expect("Failed to create plot");
             println!("Plotted {} points to {}", data.len(), output);
         }
 
-        PlotCmd::Heatmap { input, output, title } => {
+        PlotCmd::Heatmap {
+            input,
+            output,
+            title,
+        } => {
             eprintln!("Plotting heatmap from {} to {}", input, output);
 
             // Read CSV as matrix
@@ -486,7 +561,9 @@ fn handle_plot(cmd: PlotCmd) {
             let mut matrix: Vec<Vec<f64>> = Vec::new();
 
             for (i, line) in reader.lines().enumerate() {
-                if i == 0 { continue; } // Skip header
+                if i == 0 {
+                    continue;
+                } // Skip header
                 let line = line.expect("Failed to read line");
                 let row: Vec<f64> = line
                     .split(',')
@@ -499,17 +576,24 @@ fn handle_plot(cmd: PlotCmd) {
 
             heatmap_svg(&output, &title, &matrix, Colormap::Inferno)
                 .expect("Failed to create heatmap");
-            println!("Plotted {}x{} heatmap to {}",
+            println!(
+                "Plotted {}x{} heatmap to {}",
                 matrix.len(),
                 matrix.first().map(|r| r.len()).unwrap_or(0),
-                output);
+                output
+            );
         }
 
-        PlotCmd::Shadow { spin, n_points, output } => {
+        PlotCmd::Shadow {
+            spin,
+            n_points,
+            output,
+        } => {
             eprintln!("Plotting Kerr shadow for a={} to {}", spin, output);
             let (alpha, beta) = shadow_boundary(spin, n_points, FRAC_PI_2);
 
-            let points: Vec<(f64, f64)> = alpha.iter()
+            let points: Vec<(f64, f64)> = alpha
+                .iter()
                 .zip(beta.iter())
                 .map(|(&a, &b)| (a, b))
                 .collect();
@@ -522,7 +606,8 @@ fn handle_plot(cmd: PlotCmd) {
                 &points,
                 colors::CRIMSON,
                 2,
-            ).expect("Failed to create plot");
+            )
+            .expect("Failed to create plot");
             println!("Plotted {} points to {}", points.len(), output);
         }
     }

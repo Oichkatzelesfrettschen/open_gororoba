@@ -389,7 +389,11 @@ pub fn cyclohedron_vertices(n: usize) -> usize {
 pub fn a_infinity_sign(i: usize, j: usize, k: usize) -> i32 {
     // Sign is (-1)^{ij + k}
     let exp = (i * j + k) % 2;
-    if exp == 0 { 1 } else { -1 }
+    if exp == 0 {
+        1
+    } else {
+        -1
+    }
 }
 
 /// L-infinity relation verification.
@@ -414,7 +418,11 @@ fn shuffle_sign(shuffle: &[usize]) -> i32 {
             }
         }
     }
-    if inversions % 2 == 0 { 1 } else { -1 }
+    if inversions % 2 == 0 {
+        1
+    } else {
+        -1
+    }
 }
 
 /// Minimal model of an A-infinity algebra.
@@ -575,7 +583,8 @@ impl StringFieldTheory {
             algebra_type: HomotopyAlgebraType::AInfinity,
             interpretation: "Witten's cubic string field theory with higher vertices \
                             forms an A-infinity algebra. The string field is \
-                            degree 1, and m_2 gives the * product.".to_string(),
+                            degree 1, and m_2 gives the * product."
+                .to_string(),
         }
     }
 
@@ -586,7 +595,8 @@ impl StringFieldTheory {
             algebra_type: HomotopyAlgebraType::LInfinity,
             interpretation: "Zwiebach's closed string field theory forms an \
                             L-infinity algebra. The vertices come from \
-                            Riemann surfaces with punctures.".to_string(),
+                            Riemann surfaces with punctures."
+                .to_string(),
         }
     }
 
@@ -596,7 +606,8 @@ impl StringFieldTheory {
             string_type: StringType::OpenClosed,
             algebra_type: HomotopyAlgebraType::BVInfinity,
             interpretation: "Open-closed string field theory combines both \
-                            structures with additional compatibility.".to_string(),
+                            structures with additional compatibility."
+                .to_string(),
         }
     }
 }

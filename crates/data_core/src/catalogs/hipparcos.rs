@@ -151,7 +151,7 @@ mod tests {
         fields.push("+01 05 20.4".to_string()); // Dec
         fields.push(" 9.10".to_string()); // Vmag
         fields.push(" ".to_string()); // var flag
-        // Fill remaining 71 fields: need to reach exact width
+                                      // Fill remaining 71 fields: need to reach exact width
         let partial = fields.join("|");
         let partial_len = partial.len();
         // We need 71 more fields with 71 pipes.
@@ -258,7 +258,6 @@ mod tests {
             HIPPARCOS_EXPECTED_ROWS
         );
         // Validate format of first 100 lines
-        validate_hipparcos_format(path, 100)
-            .expect("Hipparcos format validation should pass");
+        validate_hipparcos_format(path, 100).expect("Hipparcos format validation should pass");
     }
 }

@@ -97,24 +97,31 @@ fn main() {
     eprintln!("Available columns: {:?}", headers);
 
     // Read all records
-    let records: Vec<csv::StringRecord> = reader
-        .records()
-        .filter_map(|r| r.ok())
-        .collect();
+    let records: Vec<csv::StringRecord> = reader.records().filter_map(|r| r.ok()).collect();
     eprintln!("Total records: {}", records.len());
 
     // Set up output CSV writer
-    let mut csv_writer = args.output.as_ref().map(|path| {
-        csv::Writer::from_path(path).expect("Failed to create output CSV")
-    });
+    let mut csv_writer = args
+        .output
+        .as_ref()
+        .map(|path| csv::Writer::from_path(path).expect("Failed to create output CSV"));
 
     // Write header if CSV output
     if let Some(ref mut wtr) = csv_writer {
         let mut header = vec![
-            "catalog", "dm_column", "n_events", "n_triples",
-            "ultrametric_fraction", "null_fraction_mean", "null_fraction_std",
-            "fraction_p_value", "fraction_ci_lower", "fraction_ci_upper",
-            "mean_defect", "null_mean_defect", "defect_p_value",
+            "catalog",
+            "dm_column",
+            "n_events",
+            "n_triples",
+            "ultrametric_fraction",
+            "null_fraction_mean",
+            "null_fraction_std",
+            "fraction_p_value",
+            "fraction_ci_lower",
+            "fraction_ci_upper",
+            "mean_defect",
+            "null_mean_defect",
+            "defect_p_value",
         ];
         // Add p-adic columns
         for p in &primes {
@@ -124,10 +131,19 @@ fn main() {
         }
         // Actually write a proper header with dynamic prime columns
         let mut full_header: Vec<String> = vec![
-            "catalog".into(), "dm_column".into(), "n_events".into(), "n_triples".into(),
-            "ultrametric_fraction".into(), "null_fraction_mean".into(), "null_fraction_std".into(),
-            "fraction_p_value".into(), "fraction_ci_lower".into(), "fraction_ci_upper".into(),
-            "mean_defect".into(), "null_mean_defect".into(), "defect_p_value".into(),
+            "catalog".into(),
+            "dm_column".into(),
+            "n_events".into(),
+            "n_triples".into(),
+            "ultrametric_fraction".into(),
+            "null_fraction_mean".into(),
+            "null_fraction_std".into(),
+            "fraction_p_value".into(),
+            "fraction_ci_lower".into(),
+            "fraction_ci_upper".into(),
+            "mean_defect".into(),
+            "null_mean_defect".into(),
+            "defect_p_value".into(),
         ];
         for p in &primes {
             full_header.push(format!("padic_p{}_p_value", p));
@@ -162,7 +178,8 @@ fn main() {
         let values: Vec<f64> = records
             .iter()
             .filter_map(|record| {
-                record.get(col_idx)
+                record
+                    .get(col_idx)
                     .and_then(|s| s.trim().parse::<f64>().ok())
                     .filter(|v| v.is_finite() && *v > 0.0)
             })
@@ -172,7 +189,10 @@ fn main() {
         eprintln!("Valid events: {} / {}", values.len(), records.len());
 
         if values.len() < 10 {
-            eprintln!("ERROR: Too few valid values ({}) for analysis, skipping", values.len());
+            eprintln!(
+                "ERROR: Too few valid values ({}) for analysis, skipping",
+                values.len()
+            );
             continue;
         }
 
@@ -180,26 +200,30 @@ fn main() {
         let analysis = run_ultrametric_analysis(&values, &config);
 
         // Print results
-        eprintln!("Ultrametric fraction: {:.6} (null: {:.6} +/- {:.6})",
+        eprintln!(
+            "Ultrametric fraction: {:.6} (null: {:.6} +/- {:.6})",
             analysis.fraction_result.ultrametric_fraction,
             analysis.fraction_result.null_fraction_mean,
             analysis.fraction_result.null_fraction_std,
         );
         eprintln!("Fraction p-value: {:.6}", analysis.fraction_result.p_value);
-        eprintln!("Bootstrap 95% CI: [{:.6}, {:.6}]",
-            analysis.fraction_result.bootstrap_ci.0,
-            analysis.fraction_result.bootstrap_ci.1,
+        eprintln!(
+            "Bootstrap 95% CI: [{:.6}, {:.6}]",
+            analysis.fraction_result.bootstrap_ci.0, analysis.fraction_result.bootstrap_ci.1,
         );
-        eprintln!("Mean defect: {:.6} (null: {:.6})",
-            analysis.defect_result.mean_defect,
-            analysis.defect_result.null_mean_defect,
+        eprintln!(
+            "Mean defect: {:.6} (null: {:.6})",
+            analysis.defect_result.mean_defect, analysis.defect_result.null_mean_defect,
         );
-        eprintln!("Defect p-value: {:.6}", analysis.defect_result.defect_p_value);
+        eprintln!(
+            "Defect p-value: {:.6}",
+            analysis.defect_result.defect_p_value
+        );
 
         for pr in &analysis.padic_results {
-            eprintln!("P-adic p={}: fraction={:.6} (null={:.6}), p-value={:.6}",
-                pr.prime, pr.padic_ultrametric_fraction,
-                pr.null_ultrametric_fraction, pr.p_value,
+            eprintln!(
+                "P-adic p={}: fraction={:.6} (null={:.6}), p-value={:.6}",
+                pr.prime, pr.padic_ultrametric_fraction, pr.null_ultrametric_fraction, pr.p_value,
             );
         }
 

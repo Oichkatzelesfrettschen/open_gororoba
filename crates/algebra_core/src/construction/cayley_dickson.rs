@@ -75,9 +75,7 @@ pub fn cd_norm_sq(a: &[f64]) -> f64 {
 /// Check if two slices are element-wise close within tolerance.
 #[inline]
 fn allclose(a: &[f64], b: &[f64], atol: f64) -> bool {
-    a.iter()
-        .zip(b.iter())
-        .all(|(x, y)| (x - y).abs() <= atol)
+    a.iter().zip(b.iter()).all(|(x, y)| (x - y).abs() <= atol)
 }
 
 // ============================================================================
@@ -246,7 +244,12 @@ pub fn cd_multiply_into(a: &[f64], b: &[f64], res: &mut [f64], workspace: &mut [
     let dim = a.len();
     assert_eq!(b.len(), dim);
     assert_eq!(res.len(), dim);
-    assert!(workspace.len() >= dim * 2, "Workspace too small: need {}, got {}", dim * 2, workspace.len());
+    assert!(
+        workspace.len() >= dim * 2,
+        "Workspace too small: need {}, got {}",
+        dim * 2,
+        workspace.len()
+    );
 
     if dim == 1 {
         res[0] = a[0] * b[0];
@@ -300,7 +303,9 @@ pub fn cd_multiply_into(a: &[f64], b: &[f64], res: &mut [f64], workspace: &mut [
     let mut conj_b_r = vec![0.0; half]; // Fallback allocation for clarity, can be optimized later
     conj_b_r.copy_from_slice(b_r);
     if half > 0 {
-        for x in conj_b_r[1..].iter_mut() { *x = -*x; }
+        for x in conj_b_r[1..].iter_mut() {
+            *x = -*x;
+        }
         // For first element, it's real part of the *half* vector.
         // But b_r is the imaginary part of the parent.
         // In CD construction, conjugation of (a,b) is (a*, -b).
@@ -321,7 +326,9 @@ pub fn cd_multiply_into(a: &[f64], b: &[f64], res: &mut [f64], workspace: &mut [
     let mut conj_b_l = vec![0.0; half];
     conj_b_l.copy_from_slice(b_l);
     if half > 0 {
-        for x in conj_b_l[1..].iter_mut() { *x = -*x; }
+        for x in conj_b_l[1..].iter_mut() {
+            *x = -*x;
+        }
     }
 
     cd_multiply_into(a_r, &conj_b_l, temp_buf, recurse_ws);
@@ -403,7 +410,7 @@ pub struct GeneralFormZD {
     pub a: Vec<f64>,
     pub b: Vec<f64>,
     pub norm: f64,
-    pub blade_order: usize,  // Number of nonzero components in a
+    pub blade_order: usize, // Number of nonzero components in a
 }
 
 /// Search for zero-divisor pairs in a dim-dimensional CD algebra.
@@ -788,12 +795,7 @@ pub fn find_zero_divisors_parallel(
 /// (ab)c != a(bc) within tolerance `atol`. Returns (density%, failures).
 ///
 /// Seeded PRNG ensures reproducibility.
-pub fn measure_associator_density(
-    dim: usize,
-    trials: usize,
-    seed: u64,
-    atol: f64,
-) -> (f64, usize) {
+pub fn measure_associator_density(dim: usize, trials: usize, seed: u64, atol: f64) -> (f64, usize) {
     use rand::prelude::*;
     use rand::rngs::StdRng;
 
@@ -930,7 +932,13 @@ pub fn associator_independence_stats(dim: usize, n_trials: usize, seed: u64) -> 
         assoc_sq.push(cd_norm_sq(&assoc_vec));
         ab_c_sq.push(cd_norm_sq(&ab_c_vec));
         a_bc_sq.push(cd_norm_sq(&a_bc_vec));
-        cross.push(ab_c_vec.iter().zip(&a_bc_vec).map(|(l, r)| l * r).sum::<f64>());
+        cross.push(
+            ab_c_vec
+                .iter()
+                .zip(&a_bc_vec)
+                .map(|(l, r)| l * r)
+                .sum::<f64>(),
+        );
     }
 
     let n = n_trials as f64;
@@ -939,7 +947,11 @@ pub fn associator_independence_stats(dim: usize, n_trials: usize, seed: u64) -> 
     let mean_a_bc = a_bc_sq.iter().sum::<f64>() / n;
     let mean_cross = cross.iter().sum::<f64>() / n;
 
-    let var_assoc = assoc_sq.iter().map(|x| (x - mean_assoc).powi(2)).sum::<f64>() / n;
+    let var_assoc = assoc_sq
+        .iter()
+        .map(|x| (x - mean_assoc).powi(2))
+        .sum::<f64>()
+        / n;
 
     let corr = if mean_ab_c > 0.0 && mean_a_bc > 0.0 {
         mean_cross / (mean_ab_c * mean_a_bc).sqrt()
@@ -1159,9 +1171,9 @@ mod tests {
             "Sedenions should have 2-blade zero divisors",
         );
         // Verify the canonical pair: a = e1+e10, b = e4-e15.
-        let has_canonical = results.iter().any(|&(i, j, k, l, _)| {
-            i == 1 && j == 10 && k == 4 && l == 15
-        });
+        let has_canonical = results
+            .iter()
+            .any(|&(i, j, k, l, _)| i == 1 && j == 10 && k == 4 && l == 15);
         assert!(
             has_canonical,
             "Should find canonical ZD pair (e1+e10, e4-e15)",
@@ -1431,12 +1443,19 @@ mod tests {
                     assert!(
                         (product[target_idx].abs() - 1.0).abs() < 1e-12,
                         "dim={}, p={}, q={}: product[{}] = {}, expected +/-1",
-                        dim, p, q, target_idx, product[target_idx],
+                        dim,
+                        p,
+                        q,
+                        target_idx,
+                        product[target_idx],
                     );
                     assert_eq!(
-                        product[target_idx].signum() as i32, expected_sign,
+                        product[target_idx].signum() as i32,
+                        expected_sign,
                         "dim={}, p={}, q={}: sign mismatch",
-                        dim, p, q,
+                        dim,
+                        p,
+                        q,
                     );
                 }
             }
@@ -1494,9 +1513,11 @@ mod tests {
         for u in 1..g {
             let sign = cd_basis_mul_sign(dim, u, g);
             assert_eq!(
-                sign, 1,
+                sign,
+                1,
                 "Rule 1 (Q->O): e_{u} * e_{g} should be +e_{}, got sign={}",
-                u + g, sign
+                u + g,
+                sign
             );
             // Also verify the product index is u XOR g = u + g (since u < g)
             assert_eq!(u ^ g, u + g, "u XOR g should equal u + g when u < g");
@@ -1512,9 +1533,11 @@ mod tests {
         for u in 1..g {
             let sign = cd_basis_mul_sign(dim, u, g);
             assert_eq!(
-                sign, 1,
+                sign,
+                1,
                 "Rule 1 (O->S): e_{u} * e_{g} should be +e_{}, got sign={}",
-                u + g, sign
+                u + g,
+                sign
             );
         }
     }
@@ -1550,9 +1573,13 @@ mod tests {
         for (a, b, c) in fano_triples {
             // e_a * e_b should give +/- e_c (i.e., a XOR b = c)
             assert_eq!(
-                a ^ b, c,
+                a ^ b,
+                c,
                 "XOR check: {} ^ {} = {}, expected {}",
-                a, b, a ^ b, c
+                a,
+                b,
+                a ^ b,
+                c
             );
 
             let sign = cd_basis_mul_sign(dim, a, b);
@@ -1572,7 +1599,8 @@ mod tests {
             pair_to_third.insert((b.min(c), b.max(c)), a);
         }
         assert_eq!(
-            pair_to_third.len(), 21,
+            pair_to_third.len(),
+            21,
             "Every pair of distinct imaginary indices should appear exactly once"
         );
     }
@@ -1589,8 +1617,13 @@ mod tests {
 
         // All 7 octonion Fano triples
         let oct_triples: [(usize, usize, usize); 7] = [
-            (1, 2, 3), (1, 4, 5), (2, 4, 6), (3, 4, 7),
-            (1, 6, 7), (2, 5, 7), (3, 5, 6),
+            (1, 2, 3),
+            (1, 4, 5),
+            (2, 4, 6),
+            (3, 4, 7),
+            (1, 6, 7),
+            (2, 5, 7),
+            (3, 5, 6),
         ];
 
         let mut all_triples = Vec::new();
@@ -1646,7 +1679,8 @@ mod tests {
         }
         // C(15,2) = 105 pairs, each on exactly one triple (35 * 3 = 105)
         assert_eq!(
-            covered_pairs.len(), 105,
+            covered_pairs.len(),
+            105,
             "All C(15,2)=105 pairs should be covered by 35 triples"
         );
     }

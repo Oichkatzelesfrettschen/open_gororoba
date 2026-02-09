@@ -417,7 +417,8 @@ pub fn polytropic_stability_sweep(
     }
 
     // Find critical gamma
-    let gamma_critical = gammas.iter()
+    let gamma_critical = gammas
+        .iter()
         .zip(stable_at_gamma.iter())
         .find(|(_, &s)| s)
         .map(|(&g, _)| g);
@@ -550,7 +551,10 @@ mod tests {
         let sol = solution.unwrap();
         assert!(sol.r2 > sol.r1, "R2 > R1");
         assert!(sol.mass > 0.0, "Positive mass");
-        assert!(sol.compactness > 0.0 && sol.compactness < 1.0, "Physical compactness");
+        assert!(
+            sol.compactness > 0.0 && sol.compactness < 1.0,
+            "Physical compactness"
+        );
     }
 
     #[test]
@@ -586,12 +590,12 @@ mod tests {
     #[test]
     fn test_polytropic_stability_sweep() {
         let result = polytropic_stability_sweep(
-            5.0,   // r1
-            10.0,  // m_target
-            0.6,   // compactness
-            1.0,   // gamma_min
-            2.5,   // gamma_max
-            10,    // n_gamma
+            5.0,  // r1
+            10.0, // m_target
+            0.6,  // compactness
+            1.0,  // gamma_min
+            2.5,  // gamma_max
+            10,   // n_gamma
         );
 
         assert_eq!(result.gammas.len(), 10);

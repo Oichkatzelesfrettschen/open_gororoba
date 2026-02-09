@@ -7,7 +7,7 @@
 //! Source: ICGEM, http://icgem.gfz-potsdam.de/
 //! Reference: Lemoine et al. (2014), JGR Planets 119, 1698
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::PathBuf;
 
 /// ICGEM URL for GRGM1200B truncated to degree 360 (~3 MB).
@@ -22,7 +22,9 @@ const GRAIL_URLS: &[&str] = &[
 pub struct GrailGrgm1200bProvider;
 
 impl DatasetProvider for GrailGrgm1200bProvider {
-    fn name(&self) -> &str { "GRAIL GRGM1200B Lunar Gravity" }
+    fn name(&self) -> &str {
+        "GRAIL GRGM1200B Lunar Gravity"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("GRGM1200B.gfc");

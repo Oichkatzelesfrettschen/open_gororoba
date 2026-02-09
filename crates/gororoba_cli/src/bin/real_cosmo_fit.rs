@@ -11,12 +11,10 @@
 //!   real-cosmo-fit --json             # JSON output
 
 use clap::Parser;
-use cosmology_core::{
-    compare_models, desi_to_real_bao, filter_pantheon_data, RealBaoData,
-};
-use data_core::fetcher::{DatasetProvider, FetchConfig};
+use cosmology_core::{compare_models, desi_to_real_bao, filter_pantheon_data, RealBaoData};
 use data_core::catalogs::desi_bao::desi_dr1_bao;
 use data_core::catalogs::pantheon::{parse_pantheon_dat, PantheonProvider};
+use data_core::fetcher::{DatasetProvider, FetchConfig};
 use std::path::PathBuf;
 
 #[derive(Parser)]
@@ -108,9 +106,7 @@ fn main() {
     );
     eprintln!(
         "      After filtering (z_min={}, excl. calibrators={}): {} SNe",
-        args.z_min,
-        !args.include_calibrators,
-        sn_data.n_sne,
+        args.z_min, !args.include_calibrators, sn_data.n_sne,
     );
 
     if sn_data.n_sne == 0 {
@@ -131,10 +127,17 @@ fn main() {
         &desi.iter().map(|b| b.dh_over_rd).collect::<Vec<f64>>(),
         &desi.iter().map(|b| b.dh_over_rd_err).collect::<Vec<f64>>(),
         &desi.iter().map(|b| b.rho).collect::<Vec<f64>>(),
-        &desi.iter().map(|b| b.tracer.clone()).collect::<Vec<String>>(),
+        &desi
+            .iter()
+            .map(|b| b.tracer.clone())
+            .collect::<Vec<String>>(),
     );
     let n_bao_data = cosmology_core::bao_data_point_count(&bao_data);
-    eprintln!("      Loaded {} BAO bins ({} data points)", bao_data.z_eff.len(), n_bao_data);
+    eprintln!(
+        "      Loaded {} BAO bins ({} data points)",
+        bao_data.z_eff.len(),
+        n_bao_data
+    );
     for b in &desi {
         if b.is_isotropic {
             eprintln!(
@@ -144,8 +147,13 @@ fn main() {
         } else {
             eprintln!(
                 "        z={:.3} ({:>10}): DM/rd={:.2}+/-{:.2}, DH/rd={:.2}+/-{:.2}, rho={:.3}",
-                b.z_eff, b.tracer, b.dm_over_rd, b.dm_over_rd_err,
-                b.dh_over_rd, b.dh_over_rd_err, b.rho
+                b.z_eff,
+                b.tracer,
+                b.dm_over_rd,
+                b.dm_over_rd_err,
+                b.dh_over_rd,
+                b.dh_over_rd_err,
+                b.rho
             );
         }
     }
@@ -176,7 +184,11 @@ fn print_report(c: &cosmology_core::ModelComparison, n_sne: usize, n_bao: usize)
     println!();
     println!("Data summary:");
     println!("  Pantheon+ SN Ia:     {} supernovae", n_sne);
-    println!("  DESI DR1 BAO:        {} bins (5 anisotropic + 2 isotropic = {} data pts)", n_bao, n_data_total - n_sne);
+    println!(
+        "  DESI DR1 BAO:        {} bins (5 anisotropic + 2 isotropic = {} data pts)",
+        n_bao,
+        n_data_total - n_sne
+    );
     println!("  Total data points:   {}", n_data_total);
     println!();
     println!("----------------------------------------------------------------");
@@ -187,7 +199,12 @@ fn print_report(c: &cosmology_core::ModelComparison, n_sne: usize, n_bao: usize)
     println!("  chi2_total    = {:.2}", c.lcdm.chi2_total);
     println!("    chi2_SN     = {:.2}", c.lcdm.chi2_sn);
     println!("    chi2_BAO    = {:.2}", c.lcdm.chi2_bao);
-    println!("  chi2/dof      = {:.3} ({:.0}/{:.0})", c.lcdm.chi2_total / dof_lcdm, c.lcdm.chi2_total, dof_lcdm);
+    println!(
+        "  chi2/dof      = {:.3} ({:.0}/{:.0})",
+        c.lcdm.chi2_total / dof_lcdm,
+        c.lcdm.chi2_total,
+        dof_lcdm
+    );
     println!("  AIC           = {:.2}", c.lcdm.aic);
     println!("  BIC           = {:.2}", c.lcdm.bic);
     println!();
@@ -200,7 +217,12 @@ fn print_report(c: &cosmology_core::ModelComparison, n_sne: usize, n_bao: usize)
     println!("  chi2_total    = {:.2}", c.bounce.chi2_total);
     println!("    chi2_SN     = {:.2}", c.bounce.chi2_sn);
     println!("    chi2_BAO    = {:.2}", c.bounce.chi2_bao);
-    println!("  chi2/dof      = {:.3} ({:.0}/{:.0})", c.bounce.chi2_total / dof_bounce, c.bounce.chi2_total, dof_bounce);
+    println!(
+        "  chi2/dof      = {:.3} ({:.0}/{:.0})",
+        c.bounce.chi2_total / dof_bounce,
+        c.bounce.chi2_total,
+        dof_bounce
+    );
     println!("  AIC           = {:.2}", c.bounce.aic);
     println!("  BIC           = {:.2}", c.bounce.bic);
     println!("  n_s (bounce)  = {:.4}", c.n_s_bounce);

@@ -192,11 +192,7 @@ pub const VEGA_V_FLUX: f64 = 3.64e-20;
 ///   band: the spectral band to integrate through
 ///
 /// Returns band-integrated flux [erg s^-1 cm^-2].
-pub fn integrate_through_band(
-    frequencies: &[f64],
-    fluxes: &[f64],
-    band: &SpectralBand,
-) -> f64 {
+pub fn integrate_through_band(frequencies: &[f64], fluxes: &[f64], band: &SpectralBand) -> f64 {
     if frequencies.len() < 2 || fluxes.len() < 2 {
         return 0.0;
     }
@@ -254,10 +250,7 @@ mod tests {
     fn test_1kev_frequency() {
         // 1 keV ~ 2.418e17 Hz
         let nu = energy_kev_to_frequency(1.0);
-        assert!(
-            (nu - 2.418e17).abs() / 2.418e17 < 0.01,
-            "1 keV = {nu} Hz"
-        );
+        assert!((nu - 2.418e17).abs() / 2.418e17 < 0.01, "1 keV = {nu} Hz");
     }
 
     #[test]
@@ -361,11 +354,7 @@ mod tests {
         // 5 magnitudes difference = factor of 100 in flux
         let f1 = magnitude_to_flux(0.0, VEGA_V_FLUX);
         let f2 = magnitude_to_flux(5.0, VEGA_V_FLUX);
-        assert!(
-            (f1 / f2 - 100.0).abs() < 1e-6,
-            "5 mag ratio = {}",
-            f1 / f2
-        );
+        assert!((f1 / f2 - 100.0).abs() < 1e-6, "5 mag ratio = {}", f1 / f2);
     }
 
     #[test]

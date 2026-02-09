@@ -9,34 +9,31 @@
 //! - Quantum algorithms (Grover, MPS, PEPS, hypothesis search)
 //! - Quantum hardware profiles
 
-use pyo3::prelude::*;
+use numpy::{IntoPyArray, PyArray1};
 use pyo3::exceptions::PyValueError;
-use numpy::{PyArray1, IntoPyArray};
+use pyo3::prelude::*;
 
 // Re-export core crates
 use algebra_core::{
-    cd_multiply, cd_conjugate, cd_norm_sq, cd_associator_norm,
-    find_zero_divisors, generate_e8_roots, e8_cartan_matrix,
-    e8_weyl_group_order, find_box_kites, analyze_box_kite_symmetry,
+    analyze_box_kite_symmetry, cd_associator_norm, cd_conjugate, cd_multiply, cd_norm_sq,
+    e8_cartan_matrix, e8_weyl_group_order, find_box_kites, find_zero_divisors, generate_e8_roots,
+};
+use cosmology_core::bounce::{
+    chi2_distance_modulus, luminosity_distance, simulate_bounce, BounceParams,
 };
 use gr_core::{
-    kerr_metric_quantities, photon_orbit_radius, impact_parameters,
-    shadow_boundary, trace_null_geodesic,
+    impact_parameters, kerr_metric_quantities, photon_orbit_radius, shadow_boundary,
+    trace_null_geodesic,
 };
-use cosmology_core::bounce::{simulate_bounce, BounceParams, chi2_distance_modulus, luminosity_distance};
 use lbm_core::simulate_poiseuille;
+use materials_core::{build_absorber_stack, canonical_sedenion_zd_pairs};
+use quantum_core::{
+    grover_search_indices, optimal_iterations, GroverConfig, HardwareProfile, MatrixProductState,
+    NeutralAtomProfile, QuantumHypothesisSearch, SuperconductingProfile, ThresholdOracle,
+    TrappedIonProfile,
+};
 use spectral_core::fractional_laplacian_periodic_1d;
 use stats_core::frechet_distance;
-use materials_core::{
-    build_absorber_stack, canonical_sedenion_zd_pairs,
-};
-use quantum_core::{
-    grover_search_indices, optimal_iterations, GroverConfig,
-    ThresholdOracle, QuantumHypothesisSearch,
-    MatrixProductState,
-    NeutralAtomProfile, SuperconductingProfile, TrappedIonProfile,
-    HardwareProfile,
-};
 
 // ============================================================================
 // Algebra Module
@@ -47,7 +44,9 @@ use quantum_core::{
 #[pyo3(signature = (a, b))]
 fn py_cd_multiply(py: Python<'_>, a: Vec<f64>, b: Vec<f64>) -> PyResult<Py<PyArray1<f64>>> {
     if a.len() != b.len() || !a.len().is_power_of_two() {
-        return Err(PyValueError::new_err("Arrays must have same power-of-two length"));
+        return Err(PyValueError::new_err(
+            "Arrays must have same power-of-two length",
+        ));
     }
     let result = cd_multiply(&a, &b);
     Ok(result.into_pyarray(py).to_owned().into())
@@ -76,7 +75,9 @@ fn py_cd_norm(a: Vec<f64>) -> PyResult<f64> {
 #[pyfunction]
 fn py_cd_associator_norm(a: Vec<f64>, b: Vec<f64>, c: Vec<f64>) -> PyResult<f64> {
     if a.len() != b.len() || b.len() != c.len() || !a.len().is_power_of_two() {
-        return Err(PyValueError::new_err("Arrays must have same power-of-two length"));
+        return Err(PyValueError::new_err(
+            "Arrays must have same power-of-two length",
+        ));
     }
     Ok(cd_associator_norm(&a, &b, &c))
 }
@@ -85,9 +86,14 @@ fn py_cd_associator_norm(a: Vec<f64>, b: Vec<f64>, c: Vec<f64>) -> PyResult<f64>
 #[allow(clippy::type_complexity)]
 #[pyfunction]
 #[pyo3(signature = (dim, atol = 1e-10))]
-fn py_find_zero_divisors(dim: usize, atol: f64) -> PyResult<Vec<(usize, usize, usize, usize, f64)>> {
+fn py_find_zero_divisors(
+    dim: usize,
+    atol: f64,
+) -> PyResult<Vec<(usize, usize, usize, usize, f64)>> {
     if !dim.is_power_of_two() || dim < 16 {
-        return Err(PyValueError::new_err("Dimension must be power of two >= 16"));
+        return Err(PyValueError::new_err(
+            "Dimension must be power of two >= 16",
+        ));
     }
     Ok(find_zero_divisors(dim, atol))
 }
@@ -117,7 +123,9 @@ fn py_weyl_group_order() -> u64 {
 #[pyo3(signature = (dim, atol = 1e-10))]
 fn py_find_box_kites(dim: usize, atol: f64) -> PyResult<usize> {
     if !dim.is_power_of_two() || dim < 16 {
-        return Err(PyValueError::new_err("Dimension must be power of two >= 16"));
+        return Err(PyValueError::new_err(
+            "Dimension must be power of two >= 16",
+        ));
     }
     let box_kites = find_box_kites(dim, atol);
     Ok(box_kites.len())
@@ -128,7 +136,9 @@ fn py_find_box_kites(dim: usize, atol: f64) -> PyResult<usize> {
 #[pyo3(signature = (dim, atol = 1e-10))]
 fn py_analyze_box_kite_symmetry(dim: usize, atol: f64) -> PyResult<(usize, usize)> {
     if !dim.is_power_of_two() || dim < 16 {
-        return Err(PyValueError::new_err("Dimension must be power of two >= 16"));
+        return Err(PyValueError::new_err(
+            "Dimension must be power of two >= 16",
+        ));
     }
     let result = analyze_box_kite_symmetry(dim, atol);
     Ok((result.n_boxkites, result.n_assessors))
@@ -159,9 +169,17 @@ fn py_impact_parameters(r_ph: f64, a: f64) -> (f64, f64) {
 /// Compute Kerr black hole shadow boundary.
 #[pyfunction]
 #[pyo3(signature = (a, n_points = 500, theta_o = std::f64::consts::FRAC_PI_2))]
-fn py_shadow_boundary(py: Python<'_>, a: f64, n_points: usize, theta_o: f64) -> (Py<PyArray1<f64>>, Py<PyArray1<f64>>) {
+fn py_shadow_boundary(
+    py: Python<'_>,
+    a: f64,
+    n_points: usize,
+    theta_o: f64,
+) -> (Py<PyArray1<f64>>, Py<PyArray1<f64>>) {
     let (alpha, beta) = shadow_boundary(a, n_points, theta_o);
-    (alpha.into_pyarray(py).to_owned().into(), beta.into_pyarray(py).to_owned().into())
+    (
+        alpha.into_pyarray(py).to_owned().into(),
+        beta.into_pyarray(py).to_owned().into(),
+    )
 }
 
 /// Trace a null geodesic in Kerr spacetime.
@@ -180,7 +198,13 @@ fn py_trace_geodesic(
     sgn_r: f64,
     sgn_theta: f64,
     n_steps: usize,
-) -> (Py<PyArray1<f64>>, Py<PyArray1<f64>>, Py<PyArray1<f64>>, Py<PyArray1<f64>>, Py<PyArray1<f64>>) {
+) -> (
+    Py<PyArray1<f64>>,
+    Py<PyArray1<f64>>,
+    Py<PyArray1<f64>>,
+    Py<PyArray1<f64>>,
+    Py<PyArray1<f64>>,
+) {
     let result = trace_null_geodesic(a, e, l, q, r0, theta0, lam_max, sgn_r, sgn_theta, n_steps);
     (
         result.t.into_pyarray(py).to_owned().into(),
@@ -209,22 +233,28 @@ fn py_frechet_distance(p: Vec<f64>, q: Vec<f64>) -> f64 {
 #[allow(clippy::type_complexity)]
 #[pyfunction]
 #[pyo3(signature = (max_layers = 10, base_n = 1.5))]
-fn py_build_absorber_stack(max_layers: usize, base_n: f64) -> Vec<(usize, usize, usize, usize, f64, f64, f64, f64)> {
+fn py_build_absorber_stack(
+    max_layers: usize,
+    base_n: f64,
+) -> Vec<(usize, usize, usize, usize, f64, f64, f64, f64)> {
     let zd_pairs = canonical_sedenion_zd_pairs();
     let stack = build_absorber_stack(&zd_pairs, max_layers, base_n);
 
-    stack.iter().map(|m| {
-        (
-            m.zd_indices.0,
-            m.zd_indices.1,
-            m.zd_indices.2,
-            m.zd_indices.3,
-            m.layer.n_real,
-            m.layer.n_imag,
-            m.layer.thickness_nm,
-            m.product_norm,
-        )
-    }).collect()
+    stack
+        .iter()
+        .map(|m| {
+            (
+                m.zd_indices.0,
+                m.zd_indices.1,
+                m.zd_indices.2,
+                m.zd_indices.3,
+                m.layer.n_real,
+                m.layer.n_imag,
+                m.layer.thickness_nm,
+                m.product_norm,
+            )
+        })
+        .collect()
 }
 
 // ============================================================================
@@ -244,7 +274,12 @@ fn py_simulate_bounce(
     omega_m: f64,
     omega_l: f64,
     q_corr: f64,
-) -> (Py<PyArray1<f64>>, Py<PyArray1<f64>>, Py<PyArray1<f64>>, Py<PyArray1<f64>>) {
+) -> (
+    Py<PyArray1<f64>>,
+    Py<PyArray1<f64>>,
+    Py<PyArray1<f64>>,
+    Py<PyArray1<f64>>,
+) {
     let params = BounceParams {
         omega_m,
         omega_l,
@@ -345,7 +380,11 @@ fn py_grover_search(
         top_k,
     };
     let result = grover_search_indices(n_qubits, &marked_indices, config);
-    Ok((result.iterations, result.success_probability, result.top_candidates))
+    Ok((
+        result.iterations,
+        result.success_probability,
+        result.top_candidates,
+    ))
 }
 
 /// Compute optimal Grover iterations for given search space and marked count.
@@ -397,7 +436,11 @@ fn py_quantum_grid_search(
             search.mark_with_oracle(&oracle);
             search.search(GroverConfig::default())
         }
-        _ => return Err(PyValueError::new_err("score_fn must be 'sum', 'norm', 'max', or 'min'")),
+        _ => {
+            return Err(PyValueError::new_err(
+                "score_fn must be 'sum', 'norm', 'max', or 'min'",
+            ))
+        }
     };
 
     let solutions: Vec<Vec<f64>> = result
@@ -427,7 +470,13 @@ fn py_neutral_atom_profile(n_qubits: usize) -> (usize, f64, f64, f64, f64) {
     let profile = NeutralAtomProfile::new(n_qubits);
     let coherence = profile.coherence_times();
     let errors = profile.error_rates();
-    (n_qubits, coherence.t1_us, coherence.t2_us, errors.single_qubit, errors.two_qubit)
+    (
+        n_qubits,
+        coherence.t1_us,
+        coherence.t2_us,
+        errors.single_qubit,
+        errors.two_qubit,
+    )
 }
 
 /// Get superconducting hardware profile (IBM Eagle topology).
@@ -450,7 +499,10 @@ fn py_superconducting_ibm_profile(n_qubits: usize) -> (usize, String, f64, f64, 
 /// Get superconducting hardware profile (Google Sycamore 2D grid).
 /// Returns (rows, cols, vendor, t1_us, t2_us, single_qubit_error, two_qubit_error).
 #[pyfunction]
-fn py_superconducting_google_profile(rows: usize, cols: usize) -> (usize, usize, String, f64, f64, f64, f64) {
+fn py_superconducting_google_profile(
+    rows: usize,
+    cols: usize,
+) -> (usize, usize, String, f64, f64, f64, f64) {
     let profile = SuperconductingProfile::google(rows, cols);
     let coherence = profile.coherence_times();
     let errors = profile.error_rates();

@@ -12,8 +12,8 @@
 //! - Stillwell (1992): "The word problem and repetitions in groups"
 //! - Krasnov (2020): "A dimensional approach to Casimir effects"
 
-use std::f64::consts::PI;
 use statrs::function::gamma::ln_gamma;
+use std::f64::consts::PI;
 
 /// Surface area of the unit (d-1)-sphere embedded in R^d.
 ///

@@ -20,9 +20,13 @@ pub fn extract_backtick_paths(line: &str) -> Vec<String> {
             let candidate = &after_tick[..end];
             // Must look like a file path: contains '/' or '.' and no spaces
             // Also filter out things that look like code fragments
-            if (candidate.contains('/') || candidate.ends_with(".md") || candidate.ends_with(".rs")
-                || candidate.ends_with(".py") || candidate.ends_with(".csv")
-                || candidate.ends_with(".json") || candidate.ends_with(".txt"))
+            if (candidate.contains('/')
+                || candidate.ends_with(".md")
+                || candidate.ends_with(".rs")
+                || candidate.ends_with(".py")
+                || candidate.ends_with(".csv")
+                || candidate.ends_with(".json")
+                || candidate.ends_with(".txt"))
                 && !candidate.contains(' ')
                 && !candidate.starts_with("http")
                 && !candidate.starts_with("--")
@@ -40,10 +44,7 @@ pub fn extract_backtick_paths(line: &str) -> Vec<String> {
 /// Check which paths from a list actually exist relative to a root directory.
 ///
 /// Returns (existing, missing) as two vectors.
-pub fn check_paths_exist(
-    paths: &[String],
-    root: &Path,
-) -> (Vec<String>, Vec<String>) {
+pub fn check_paths_exist(paths: &[String], root: &Path) -> (Vec<String>, Vec<String>) {
     let mut existing = Vec::new();
     let mut missing = Vec::new();
     for p in paths {
@@ -62,12 +63,13 @@ mod tests {
 
     #[test]
     fn test_extract_backtick_paths_basic() {
-        let line = "| C-001 | text | `crates/algebra_core/src/foo.rs` (test_bar), `docs/STUFF.md` | ok |";
+        let line =
+            "| C-001 | text | `crates/algebra_core/src/foo.rs` (test_bar), `docs/STUFF.md` | ok |";
         let paths = extract_backtick_paths(line);
-        assert_eq!(paths, vec![
-            "crates/algebra_core/src/foo.rs",
-            "docs/STUFF.md",
-        ]);
+        assert_eq!(
+            paths,
+            vec!["crates/algebra_core/src/foo.rs", "docs/STUFF.md",]
+        );
     }
 
     #[test]
@@ -81,10 +83,13 @@ mod tests {
     fn test_extract_backtick_paths_csv_and_json() {
         let line = "`data/csv/results.csv`, `data/external/PROVENANCE.local.json`";
         let paths = extract_backtick_paths(line);
-        assert_eq!(paths, vec![
-            "data/csv/results.csv",
-            "data/external/PROVENANCE.local.json",
-        ]);
+        assert_eq!(
+            paths,
+            vec![
+                "data/csv/results.csv",
+                "data/external/PROVENANCE.local.json",
+            ]
+        );
     }
 
     #[test]
@@ -165,7 +170,9 @@ mod tests {
         assert!(
             rust_rate > 95.0,
             "Rust crate path resolution rate too low: {:.1}% ({} missing of {})",
-            rust_rate, rust_missing, rust_paths
+            rust_rate,
+            rust_missing,
+            rust_paths
         );
     }
 }

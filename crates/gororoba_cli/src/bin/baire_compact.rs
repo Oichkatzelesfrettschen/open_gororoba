@@ -30,13 +30,13 @@ use clap::Parser;
 use std::path::PathBuf;
 
 use data_core::catalogs::chime::parse_chime_csv;
-use stats_core::ultrametric::baire::{
-    BaireEncoder, AttributeSpec, euclidean_ultrametric_test,
-};
+use stats_core::ultrametric::baire::{euclidean_ultrametric_test, AttributeSpec, BaireEncoder};
 
 #[derive(Parser)]
 #[command(name = "baire-compact")]
-#[command(about = "Direction 2: Test ultrametric structure in compact object multi-attribute space")]
+#[command(
+    about = "Direction 2: Test ultrametric structure in compact object multi-attribute space"
+)]
 struct Cli {
     /// Path to CHIME FRB CSV.
     #[arg(long, default_value = "data/external/chime_frb_cat2.csv")]
@@ -74,11 +74,10 @@ struct Cli {
 /// Extract [DM, gl, gb] from a dataset, returning (data_rows, population_label).
 fn extract_frb_data(cli: &Cli) -> (Vec<Vec<f64>>, String) {
     eprintln!("Loading FRBs from {}...", cli.frbs.display());
-    let frb_events = parse_chime_csv(&cli.frbs)
-        .unwrap_or_else(|e| {
-            eprintln!("Failed to parse CHIME CSV: {}", e);
-            std::process::exit(1);
-        });
+    let frb_events = parse_chime_csv(&cli.frbs).unwrap_or_else(|e| {
+        eprintln!("Failed to parse CHIME CSV: {}", e);
+        std::process::exit(1);
+    });
 
     eprintln!("Loaded {} FRB events", frb_events.len());
 
@@ -89,8 +88,12 @@ fn extract_frb_data(cli: &Cli) -> (Vec<Vec<f64>>, String) {
         let gl = event.gl;
         let gb = event.gb;
 
-        if dm.is_nan() || dm <= 0.0 { continue; }
-        if gl.is_nan() || gb.is_nan() { continue; }
+        if dm.is_nan() || dm <= 0.0 {
+            continue;
+        }
+        if gl.is_nan() || gb.is_nan() {
+            continue;
+        }
 
         data.push(vec![dm, gl, gb]);
     }
@@ -101,16 +104,19 @@ fn extract_frb_data(cli: &Cli) -> (Vec<Vec<f64>>, String) {
 
 fn load_pulsars(path: &std::path::Path) -> Vec<Vec<f64>> {
     eprintln!("Loading pulsars from {}...", path.display());
-    let pulsars = data_core::catalogs::atnf::parse_atnf_csv(path)
-        .unwrap_or_else(|e| {
-            eprintln!("Failed to parse ATNF CSV: {}", e);
-            Vec::new()
-        });
+    let pulsars = data_core::catalogs::atnf::parse_atnf_csv(path).unwrap_or_else(|e| {
+        eprintln!("Failed to parse ATNF CSV: {}", e);
+        Vec::new()
+    });
 
     let mut data: Vec<Vec<f64>> = Vec::new();
     for p in &pulsars {
-        if p.dm.is_nan() || p.dm <= 0.0 { continue; }
-        if p.gl.is_nan() || p.gb.is_nan() { continue; }
+        if p.dm.is_nan() || p.dm <= 0.0 {
+            continue;
+        }
+        if p.gl.is_nan() || p.gb.is_nan() {
+            continue;
+        }
         data.push(vec![p.dm, p.gl, p.gb]);
     }
 
@@ -120,16 +126,19 @@ fn load_pulsars(path: &std::path::Path) -> Vec<Vec<f64>> {
 
 fn load_magnetars(path: &std::path::Path) -> Vec<Vec<f64>> {
     eprintln!("Loading magnetars from {}...", path.display());
-    let magnetars = data_core::catalogs::mcgill::parse_mcgill_csv(path)
-        .unwrap_or_else(|e| {
-            eprintln!("Failed to parse McGill CSV: {}", e);
-            Vec::new()
-        });
+    let magnetars = data_core::catalogs::mcgill::parse_mcgill_csv(path).unwrap_or_else(|e| {
+        eprintln!("Failed to parse McGill CSV: {}", e);
+        Vec::new()
+    });
 
     let mut data: Vec<Vec<f64>> = Vec::new();
     for m in &magnetars {
-        if m.dm.is_nan() || m.dm <= 0.0 { continue; }
-        if m.gl.is_nan() || m.gb.is_nan() { continue; }
+        if m.dm.is_nan() || m.dm <= 0.0 {
+            continue;
+        }
+        if m.gl.is_nan() || m.gb.is_nan() {
+            continue;
+        }
         data.push(vec![m.dm, m.gl, m.gb]);
     }
 
@@ -143,15 +152,21 @@ fn run_test(
     cli: &Cli,
 ) -> Option<stats_core::ultrametric::baire::BaireTestResult> {
     if data.len() < 10 {
-        eprintln!("  {} -- too few objects ({}) for analysis", label, data.len());
+        eprintln!(
+            "  {} -- too few objects ({}) for analysis",
+            label,
+            data.len()
+        );
         return None;
     }
 
     // Compute attribute ranges from this dataset
-    let dm_range = data.iter().map(|r| r[0]).fold(
-        (f64::INFINITY, f64::NEG_INFINITY),
-        |(lo, hi), v| (lo.min(v), hi.max(v)),
-    );
+    let dm_range = data
+        .iter()
+        .map(|r| r[0])
+        .fold((f64::INFINITY, f64::NEG_INFINITY), |(lo, hi), v| {
+            (lo.min(v), hi.max(v))
+        });
 
     let attributes = vec![
         AttributeSpec {
@@ -176,14 +191,12 @@ fn run_test(
 
     let encoder = BaireEncoder::new(attributes, cli.base, cli.n_digits);
 
-    eprintln!("  {} -- testing {} objects, 3 attributes (DM, gl, gb)...", label, data.len());
-    let result = euclidean_ultrametric_test(
-        &encoder,
-        data,
-        cli.n_triples,
-        cli.n_permutations,
-        42,
+    eprintln!(
+        "  {} -- testing {} objects, 3 attributes (DM, gl, gb)...",
+        label,
+        data.len()
     );
+    let result = euclidean_ultrametric_test(&encoder, data, cli.n_triples, cli.n_permutations, 42);
 
     eprintln!(
         "  {} -- frac={:.4}, null={:.4}+/-{:.4}, p={:.4}",
@@ -219,10 +232,12 @@ fn main() {
 
     let frb_result = run_test("FRB", &frb_data, &cli);
 
-    let pulsar_result = pulsar_data.as_ref()
+    let pulsar_result = pulsar_data
+        .as_ref()
         .and_then(|d| run_test("Pulsar", d, &cli));
 
-    let magnetar_result = magnetar_data.as_ref()
+    let magnetar_result = magnetar_data
+        .as_ref()
         .and_then(|d| run_test("Magnetar", d, &cli));
 
     // 3. Combined cross-population test
@@ -245,18 +260,18 @@ fn main() {
     // 4. DM-only test for comparison
     eprintln!("\n--- DM-only baseline ---");
     let dm_only_data: Vec<Vec<f64>> = frb_data.iter().map(|r| vec![r[0]]).collect();
-    let dm_range = dm_only_data.iter().map(|r| r[0]).fold(
-        (f64::INFINITY, f64::NEG_INFINITY),
-        |(lo, hi), v| (lo.min(v), hi.max(v)),
-    );
-    let dm_attrs = vec![
-        AttributeSpec {
-            name: "DM".into(),
-            min: dm_range.0,
-            max: dm_range.1,
-            log_scale: true,
-        },
-    ];
+    let dm_range = dm_only_data
+        .iter()
+        .map(|r| r[0])
+        .fold((f64::INFINITY, f64::NEG_INFINITY), |(lo, hi), v| {
+            (lo.min(v), hi.max(v))
+        });
+    let dm_attrs = vec![AttributeSpec {
+        name: "DM".into(),
+        min: dm_range.0,
+        max: dm_range.1,
+        log_scale: true,
+    }];
     let dm_encoder = BaireEncoder::new(dm_attrs, cli.base, cli.n_digits);
     let dm_result = euclidean_ultrametric_test(
         &dm_encoder,
@@ -267,9 +282,7 @@ fn main() {
     );
     eprintln!(
         "  DM-only: frac={:.4}, null={:.4}, p={:.4}",
-        dm_result.ultrametric_fraction,
-        dm_result.null_fraction_mean,
-        dm_result.p_value,
+        dm_result.ultrametric_fraction, dm_result.null_fraction_mean, dm_result.p_value,
     );
 
     // 5. Write results CSV
@@ -289,12 +302,17 @@ fn main() {
         "null_fraction_std",
         "p_value",
         "verdict",
-    ]).unwrap();
+    ])
+    .unwrap();
 
     let write_row = |wtr: &mut csv::Writer<std::fs::File>,
                      label: &str,
                      result: &stats_core::ultrametric::baire::BaireTestResult| {
-        let verdict = if result.p_value < 0.05 { "Pass" } else { "Fail" };
+        let verdict = if result.p_value < 0.05 {
+            "Pass"
+        } else {
+            "Fail"
+        };
         wtr.write_record([
             label,
             &result.n_objects.to_string(),
@@ -306,7 +324,8 @@ fn main() {
             &format!("{:.6}", result.null_fraction_std),
             &format!("{:.6}", result.p_value),
             verdict,
-        ]).unwrap();
+        ])
+        .unwrap();
     };
 
     if let Some(ref r) = frb_result {

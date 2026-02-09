@@ -28,20 +28,13 @@ use std::path::{Path, PathBuf};
 use std::sync::Arc;
 
 use stats_core::ultrametric::baire::{
-    AttributeSpec, BaireEncoder, BaireTestResult,
-    euclidean_distance_matrix, euclidean_ultrametric_test,
-    matrix_free_ultrametric_test, matrix_free_tolerance_curve,
-    normalize_data_column_major,
+    euclidean_distance_matrix, euclidean_ultrametric_test, matrix_free_tolerance_curve,
+    matrix_free_ultrametric_test, normalize_data_column_major, AttributeSpec, BaireEncoder,
+    BaireTestResult,
 };
-use stats_core::ultrametric::{
-    benjamini_hochberg,
-};
-use stats_core::ultrametric::dendrogram::{
-    multi_linkage_test,
-};
-use stats_core::ultrametric::gpu::{
-    GpuUltrametricEngine, to_f32_column_major,
-};
+use stats_core::ultrametric::benjamini_hochberg;
+use stats_core::ultrametric::dendrogram::multi_linkage_test;
+use stats_core::ultrametric::gpu::{to_f32_column_major, GpuUltrametricEngine};
 
 #[derive(Parser)]
 #[command(name = "multi-dataset-ultrametric")]
@@ -150,7 +143,12 @@ fn project_data(
         .iter()
         .enumerate()
         .map(|(new_col, &old_col)| {
-            attr(&specs[old_col].name, &projected, new_col, specs[old_col].log_scale)
+            attr(
+                &specs[old_col].name,
+                &projected,
+                new_col,
+                specs[old_col].log_scale,
+            )
         })
         .collect();
     (projected, proj_specs)
@@ -204,7 +202,12 @@ fn explore_dataset(
 
                 // GPU: single call computes fraction + tolerance curve together
                 match gpu_engine.ultrametric_test(
-                    &mut cols_f32, n, d, n_triples, n_perms, base_seed,
+                    &mut cols_f32,
+                    n,
+                    d,
+                    n_triples,
+                    n_perms,
+                    base_seed,
                 ) {
                     Ok(result) => {
                         // 1. Main fraction test
@@ -215,8 +218,7 @@ fn explore_dataset(
                             n_objects: actual_n,
                             value: result.ultrametric_fraction,
                             null_mean: result.null_fraction_mean,
-                            effect_size: result.ultrametric_fraction
-                                - result.null_fraction_mean,
+                            effect_size: result.ultrametric_fraction - result.null_fraction_mean,
                             raw_p: result.p_value,
                             adj_p: f64::NAN,
                             significant: false,
@@ -263,8 +265,7 @@ fn explore_dataset(
                             n_objects: actual_n,
                             value: dr.cophenetic_correlation,
                             null_mean: dr.null_cophenetic_mean,
-                            effect_size: dr.cophenetic_correlation
-                                - dr.null_cophenetic_mean,
+                            effect_size: dr.cophenetic_correlation - dr.null_cophenetic_mean,
                             raw_p: dr.p_value,
                             adj_p: f64::NAN,
                             significant: false,
@@ -294,7 +295,11 @@ fn explore_dataset(
 
                 // 1. Matrix-free fraction test
                 let baire_result: BaireTestResult = matrix_free_ultrametric_test(
-                    &encoder, &proj_data, n_triples, n_perms.min(200), base_seed,
+                    &encoder,
+                    &proj_data,
+                    n_triples,
+                    n_perms.min(200),
+                    base_seed,
                 );
                 subset_rows.push(ExploreRow {
                     dataset: name.to_string(),
@@ -336,12 +341,8 @@ fn explore_dataset(
                 if actual_n <= 500 {
                     let dist_matrix = euclidean_distance_matrix(&encoder, &proj_data);
                     let n = proj_data.len();
-                    let ml = multi_linkage_test(
-                        &dist_matrix,
-                        n,
-                        n_perms.min(50),
-                        base_seed + 2_000_000,
-                    );
+                    let ml =
+                        multi_linkage_test(&dist_matrix, n, n_perms.min(50), base_seed + 2_000_000);
                     for dr in &ml.results {
                         subset_rows.push(ExploreRow {
                             dataset: name.to_string(),
@@ -350,8 +351,7 @@ fn explore_dataset(
                             n_objects: actual_n,
                             value: dr.cophenetic_correlation,
                             null_mean: dr.null_cophenetic_mean,
-                            effect_size: dr.cophenetic_correlation
-                                - dr.null_cophenetic_mean,
+                            effect_size: dr.cophenetic_correlation - dr.null_cophenetic_mean,
                             raw_p: dr.p_value,
                             adj_p: f64::NAN,
                             significant: false,
@@ -436,9 +436,15 @@ fn load_atnf_pulsars(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> 
             continue;
         }
         let fields: Vec<&str> = trimmed.split(delim).collect();
-        let dm = idx_dm.and_then(|i| fields.get(i)).and_then(|s| s.trim().parse::<f64>().ok());
-        let gl = idx_gl.and_then(|i| fields.get(i)).and_then(|s| s.trim().parse::<f64>().ok());
-        let gb = idx_gb.and_then(|i| fields.get(i)).and_then(|s| s.trim().parse::<f64>().ok());
+        let dm = idx_dm
+            .and_then(|i| fields.get(i))
+            .and_then(|s| s.trim().parse::<f64>().ok());
+        let gl = idx_gl
+            .and_then(|i| fields.get(i))
+            .and_then(|s| s.trim().parse::<f64>().ok());
+        let gb = idx_gb
+            .and_then(|i| fields.get(i))
+            .and_then(|s| s.trim().parse::<f64>().ok());
         if let (Some(dm), Some(gl), Some(gb)) = (dm, gl, gb) {
             if dm > 0.0 {
                 rows.push(vec![dm.log10(), gl, gb]);
@@ -471,8 +477,10 @@ fn load_gwtc3(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
     let events = data_core::catalogs::gwtc::parse_gwtc3_csv(&gwtc3_path).ok()?;
     let mut rows = Vec::new();
     for e in &events {
-        if e.chirp_mass_source.is_nan() || e.redshift.is_nan()
-            || e.mass_1_source.is_nan() || e.mass_2_source.is_nan()
+        if e.chirp_mass_source.is_nan()
+            || e.redshift.is_nan()
+            || e.mass_1_source.is_nan()
+            || e.mass_2_source.is_nan()
         {
             continue;
         }
@@ -527,11 +535,14 @@ fn load_gwosc_csv(path: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
         }
         let fields: Vec<&str> = trimmed.split(',').collect();
         let parse = |idx: Option<usize>| -> Option<f64> {
-            idx.and_then(|i| fields.get(i))
-                .and_then(|s| {
-                    let s = s.trim();
-                    if s.is_empty() || s == "None" { None } else { s.parse().ok() }
-                })
+            idx.and_then(|i| fields.get(i)).and_then(|s| {
+                let s = s.trim();
+                if s.is_empty() || s == "None" {
+                    None
+                } else {
+                    s.parse().ok()
+                }
+            })
         };
         let mc = parse(idx_mc);
         let z = parse(idx_z);
@@ -635,7 +646,11 @@ fn parse_ra_sexa(s: &str) -> Option<f64> {
     }
     let h: f64 = parts[0].parse().ok()?;
     let m: f64 = parts[1].parse().ok()?;
-    let sec: f64 = if parts.len() >= 3 { parts[2].parse().unwrap_or(0.0) } else { 0.0 };
+    let sec: f64 = if parts.len() >= 3 {
+        parts[2].parse().unwrap_or(0.0)
+    } else {
+        0.0
+    };
     Some((h + m / 60.0 + sec / 3600.0) * 15.0)
 }
 
@@ -647,8 +662,16 @@ fn parse_dec_sexa(s: &str) -> Option<f64> {
     }
     let d: f64 = parts[0].parse().ok()?;
     let m: f64 = parts[1].parse().ok()?;
-    let sec: f64 = if parts.len() >= 3 { parts[2].parse().unwrap_or(0.0) } else { 0.0 };
-    let sign = if d < 0.0 || parts[0].starts_with('-') { -1.0 } else { 1.0 };
+    let sec: f64 = if parts.len() >= 3 {
+        parts[2].parse().unwrap_or(0.0)
+    } else {
+        0.0
+    };
+    let sign = if d < 0.0 || parts[0].starts_with('-') {
+        -1.0
+    } else {
+        1.0
+    };
     Some(sign * (d.abs() + m / 60.0 + sec / 3600.0))
 }
 
@@ -687,11 +710,14 @@ fn load_fermi_gbm(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
         }
         let fields: Vec<&str> = trimmed.split(',').collect();
         let parse_num = |idx: Option<usize>| -> Option<f64> {
-            idx.and_then(|i| fields.get(i))
-                .and_then(|s| {
-                    let s = s.trim();
-                    if s.is_empty() || s == "NaN" { None } else { s.parse().ok() }
-                })
+            idx.and_then(|i| fields.get(i)).and_then(|s| {
+                let s = s.trim();
+                if s.is_empty() || s == "NaN" {
+                    None
+                } else {
+                    s.parse().ok()
+                }
+            })
         };
         let t90 = parse_num(idx_t90);
         let fluence = parse_num(idx_fluence);
@@ -745,10 +771,18 @@ fn load_mcgill(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
             let cols: Vec<&str> = trimmed.split(',').collect();
             for (i, c) in cols.iter().enumerate() {
                 let lc = c.trim().to_lowercase();
-                if lc == "ra" { idx_ra = Some(i); }
-                if lc == "decl" || lc == "dec" { idx_dec = Some(i); }
-                if lc == "period" { idx_period = Some(i); }
-                if lc == "b" || lc == "b_dipole" { idx_b = Some(i); }
+                if lc == "ra" {
+                    idx_ra = Some(i);
+                }
+                if lc == "decl" || lc == "dec" {
+                    idx_dec = Some(i);
+                }
+                if lc == "period" {
+                    idx_period = Some(i);
+                }
+                if lc == "b" || lc == "b_dipole" {
+                    idx_b = Some(i);
+                }
             }
             header_seen = true;
             continue;
@@ -760,12 +794,14 @@ fn load_mcgill(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
         let dec = idx_dec
             .and_then(|i| fields.get(i))
             .and_then(|s| parse_dec_sexa(s));
-        let period = idx_period
-            .and_then(|i| fields.get(i))
-            .and_then(|s| { let s = s.trim(); s.parse::<f64>().ok() });
-        let b = idx_b
-            .and_then(|i| fields.get(i))
-            .and_then(|s| { let s = s.trim(); s.parse::<f64>().ok() });
+        let period = idx_period.and_then(|i| fields.get(i)).and_then(|s| {
+            let s = s.trim();
+            s.parse::<f64>().ok()
+        });
+        let b = idx_b.and_then(|i| fields.get(i)).and_then(|s| {
+            let s = s.trim();
+            s.parse::<f64>().ok()
+        });
 
         if let (Some(ra), Some(dec), Some(period), Some(b)) = (ra, dec, period, b) {
             if period > 0.0 && b > 0.0 {
@@ -793,8 +829,11 @@ fn load_sdss(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
     let qsos = data_core::catalogs::sdss::parse_sdss_quasar_csv(&path).ok()?;
     let mut rows = Vec::new();
     for q in &qsos {
-        if q.z.is_nan() || q.mag_u.is_nan() || q.mag_g.is_nan()
-            || q.mag_r.is_nan() || q.mag_i.is_nan()
+        if q.z.is_nan()
+            || q.mag_u.is_nan()
+            || q.mag_g.is_nan()
+            || q.mag_r.is_nan()
+            || q.mag_i.is_nan()
         {
             continue;
         }
@@ -835,12 +874,20 @@ fn load_hipparcos(dir: &Path) -> Option<(Vec<Vec<f64>>, Vec<AttributeSpec>)> {
         }
         let parse = |s: &str| -> Option<f64> {
             let s = s.trim();
-            if s.is_empty() { None } else { s.parse().ok() }
+            if s.is_empty() {
+                None
+            } else {
+                s.parse().ok()
+            }
         };
-        let (Some(plx), Some(pmra), Some(pmdec), Some(vmag), Some(ra), Some(dec)) =
-            (parse(fields[11]), parse(fields[12]), parse(fields[13]),
-             parse(fields[5]), parse(fields[8]), parse(fields[9]))
-        else {
+        let (Some(plx), Some(pmra), Some(pmdec), Some(vmag), Some(ra), Some(dec)) = (
+            parse(fields[11]),
+            parse(fields[12]),
+            parse(fields[13]),
+            parse(fields[5]),
+            parse(fields[8]),
+            parse(fields[9]),
+        ) else {
             continue;
         };
         // Filter: positive parallax, reasonable magnitude
@@ -938,14 +985,17 @@ fn run_test(
 
     eprintln!(
         "    N={}, frac={:.4}, null={:.4}, p={:.3} -> {}",
-        actual_n, result.ultrametric_fraction, result.null_fraction_mean,
-        result.p_value, verdict
+        actual_n, result.ultrametric_fraction, result.null_fraction_mean, result.p_value, verdict
     );
 
     DatasetResult {
         name: name.to_string(),
         n_objects: actual_n,
-        attributes: specs.iter().map(|s| s.name.as_str()).collect::<Vec<_>>().join("+"),
+        attributes: specs
+            .iter()
+            .map(|s| s.name.as_str())
+            .collect::<Vec<_>>()
+            .join("+"),
         um_fraction: result.ultrametric_fraction,
         null_mean: result.null_fraction_mean,
         null_std: result.null_fraction_std,
@@ -976,11 +1026,9 @@ fn main() {
     };
 
     // Set n_triples: GPU default 10M, CPU default 100K
-    let n_triples = args.n_triples.unwrap_or(if gpu.is_some() {
-        10_000_000
-    } else {
-        100_000
-    });
+    let n_triples = args
+        .n_triples
+        .unwrap_or(if gpu.is_some() { 10_000_000 } else { 100_000 });
     eprintln!("n_triples: {}", n_triples);
 
     // Load and test each dataset
@@ -1052,13 +1100,15 @@ fn run_exploration(
     for (name, loader) in loaders {
         match loader(dir) {
             Some((data, specs)) => {
-                eprintln!("  Exploring {} ({} objects, {} attrs -> {} subsets)...",
-                    name, data.len(), specs.len(),
+                eprintln!(
+                    "  Exploring {} ({} objects, {} attrs -> {} subsets)...",
+                    name,
+                    data.len(),
+                    specs.len(),
                     attribute_subsets(specs.len(), 2).len(),
                 );
-                let rows = explore_dataset(
-                    name, &data, &specs, n_triples, args.n_permutations, gpu,
-                );
+                let rows =
+                    explore_dataset(name, &data, &specs, n_triples, args.n_permutations, gpu);
                 eprintln!("    {} tests generated", rows.len());
                 all_rows.extend(rows);
             }
@@ -1078,7 +1128,11 @@ fn run_exploration(
     }
 
     // Sort by adjusted p-value (most significant first)
-    all_rows.sort_by(|a, b| a.adj_p.partial_cmp(&b.adj_p).unwrap_or(std::cmp::Ordering::Equal));
+    all_rows.sort_by(|a, b| {
+        a.adj_p
+            .partial_cmp(&b.adj_p)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
 
     // Print ranked table
     eprintln!();
@@ -1091,29 +1145,47 @@ fn run_exploration(
         let sig_mark = if row.significant { "*" } else { "" };
         println!(
             "{:<22} {:<25} {:<20} {:>6} {:>10.4} {:>10.4} {:>8.4} {:>8.4} {:>4}",
-            row.dataset, row.subset, row.metric, row.n_objects,
-            row.value, row.effect_size, row.raw_p, row.adj_p, sig_mark,
+            row.dataset,
+            row.subset,
+            row.metric,
+            row.n_objects,
+            row.value,
+            row.effect_size,
+            row.raw_p,
+            row.adj_p,
+            sig_mark,
         );
     }
 
     println!();
     println!(
         "Total tests: {}  Significant (FDR<0.05): {}",
-        all_rows.len(), fdr.n_significant,
+        all_rows.len(),
+        fdr.n_significant,
     );
 
     // Write exploration CSV
     let explore_path = args.output.with_file_name("c071g_exploration.csv");
     let mut wtr = std::fs::File::create(&explore_path).expect("Failed to create CSV");
     use std::io::Write;
-    writeln!(wtr, "dataset,subset,metric,n_objects,value,null_mean,effect_size,raw_p,adj_p,significant")
-        .expect("CSV header");
+    writeln!(
+        wtr,
+        "dataset,subset,metric,n_objects,value,null_mean,effect_size,raw_p,adj_p,significant"
+    )
+    .expect("CSV header");
     for row in &all_rows {
         writeln!(
             wtr,
             "{},{},{},{},{:.6},{:.6},{:.6},{:.6},{:.6},{}",
-            row.dataset, row.subset, row.metric, row.n_objects,
-            row.value, row.null_mean, row.effect_size, row.raw_p, row.adj_p,
+            row.dataset,
+            row.subset,
+            row.metric,
+            row.n_objects,
+            row.value,
+            row.null_mean,
+            row.effect_size,
+            row.raw_p,
+            row.adj_p,
             row.significant,
         )
         .expect("CSV row");
@@ -1130,8 +1202,7 @@ fn print_table(results: &[DatasetResult]) {
     for r in results {
         println!(
             "{:<22} {:>7} {:<30} {:>10.4} {:>10.4} {:>8.3} {:>8}",
-            r.name, r.n_objects, r.attributes, r.um_fraction, r.null_mean,
-            r.p_value, r.verdict
+            r.name, r.n_objects, r.attributes, r.um_fraction, r.null_mean, r.p_value, r.verdict
         );
     }
     println!();
@@ -1152,8 +1223,15 @@ fn print_json(results: &[DatasetResult]) {
             "  {{\"dataset\": \"{}\", \"n\": {}, \"attributes\": \"{}\", \
              \"um_fraction\": {:.6}, \"null_mean\": {:.6}, \"null_std\": {:.6}, \
              \"p_value\": {:.4}, \"verdict\": \"{}\"}}{}",
-            r.name, r.n_objects, r.attributes, r.um_fraction, r.null_mean,
-            r.null_std, r.p_value, r.verdict, comma
+            r.name,
+            r.n_objects,
+            r.attributes,
+            r.um_fraction,
+            r.null_mean,
+            r.null_std,
+            r.p_value,
+            r.verdict,
+            comma
         );
     }
     println!("]");
@@ -1163,12 +1241,20 @@ fn write_csv(path: &Path, results: &[DatasetResult]) {
     if let Some(parent) = path.parent() {
         std::fs::create_dir_all(parent).ok();
     }
-    let mut out = String::from("dataset,n_objects,attributes,um_fraction,null_mean,null_std,p_value,verdict\n");
+    let mut out = String::from(
+        "dataset,n_objects,attributes,um_fraction,null_mean,null_std,p_value,verdict\n",
+    );
     for r in results {
         out.push_str(&format!(
             "{},{},{},{:.6},{:.6},{:.6},{:.4},{}\n",
-            r.name, r.n_objects, r.attributes, r.um_fraction, r.null_mean,
-            r.null_std, r.p_value, r.verdict
+            r.name,
+            r.n_objects,
+            r.attributes,
+            r.um_fraction,
+            r.null_mean,
+            r.null_std,
+            r.p_value,
+            r.verdict
         ));
     }
     std::fs::write(path, &out).unwrap_or_else(|e| {

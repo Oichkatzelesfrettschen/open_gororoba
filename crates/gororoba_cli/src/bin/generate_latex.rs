@@ -154,9 +154,16 @@ fn main() {
         let tex = generate_claims_appendix(&registry.claim);
         let out_path = args.output_dir.join("claims_appendix.tex");
         std::fs::write(&out_path, &tex).unwrap();
-        println!("Wrote {} claims to {}", registry.claim.len(), out_path.display());
+        println!(
+            "Wrote {} claims to {}",
+            registry.claim.len(),
+            out_path.display()
+        );
     } else {
-        eprintln!("WARNING: {} not found, skipping claims appendix", claims_path.display());
+        eprintln!(
+            "WARNING: {} not found, skipping claims appendix",
+            claims_path.display()
+        );
     }
 
     // --- Insights ---
@@ -167,8 +174,15 @@ fn main() {
         let tex = generate_insights_appendix(&registry.insight);
         let out_path = args.output_dir.join("insights_appendix.tex");
         std::fs::write(&out_path, &tex).unwrap();
-        println!("Wrote {} insights to {}", registry.insight.len(), out_path.display());
+        println!(
+            "Wrote {} insights to {}",
+            registry.insight.len(),
+            out_path.display()
+        );
     } else {
-        eprintln!("WARNING: {} not found, skipping insights appendix", insights_path.display());
+        eprintln!(
+            "WARNING: {} not found, skipping insights appendix",
+            insights_path.display()
+        );
     }
 }

@@ -23,7 +23,7 @@
 //! - Misner, Thorne, Wheeler (1973): Gravitation, Ch. 25, 33
 //! - Carter (1968): Phys. Rev. 174, 1559 (constants of motion)
 
-use crate::metric::{MetricComponents, ChristoffelComponents, DIM, T, R, THETA, PHI};
+use crate::metric::{ChristoffelComponents, MetricComponents, DIM, PHI, R, T, THETA};
 use crate::null_constraint;
 
 // ============================================================================
@@ -74,12 +74,7 @@ pub fn compute_angular_momentum(g: &MetricComponents, v: &[f64; DIM]) -> f64 {
 /// where p_theta = g_{theta theta} v^theta.
 ///
 /// Returns 0 for equatorial orbits (theta = pi/2). Clamps to Q >= 0.
-pub fn compute_carter_constant(
-    g: &MetricComponents,
-    v: &[f64; DIM],
-    theta: f64,
-    a: f64,
-) -> f64 {
+pub fn compute_carter_constant(g: &MetricComponents, v: &[f64; DIM], theta: f64, a: f64) -> f64 {
     let sin_th = theta.sin();
     let cos_th = theta.cos();
     let cos2 = cos_th * cos_th;
@@ -508,7 +503,11 @@ mod tests {
 
         // Should have radial acceleration (gravitational attraction)
         // a^r = -Gamma^r_{tt} (v^t)^2 = -M*f/r^2 * 1/(-g_tt) = -M/r^2 (Newtonian limit)
-        assert!(accel[R] < 0.0, "a^r = {} (should be negative = inward)", accel[R]);
+        assert!(
+            accel[R] < 0.0,
+            "a^r = {} (should be negative = inward)",
+            accel[R]
+        );
         assert!(accel[THETA].abs() < 1e-14, "a^theta should be zero");
         assert!(accel[PHI].abs() < 1e-14, "a^phi should be zero");
     }
@@ -520,15 +519,16 @@ mod tests {
         let state = radial_null_state(20.0);
         let h = 0.1;
 
-        let new_state = rk4_geodesic_step(
-            &state,
-            h,
-            schwarzschild_metric,
-            schwarzschild_christoffel,
-        );
+        let new_state =
+            rk4_geodesic_step(&state, h, schwarzschild_metric, schwarzschild_christoffel);
 
         // Ingoing: r should decrease
-        assert!(new_state.x[R] < state.x[R], "r should decrease: {} -> {}", state.x[R], new_state.x[R]);
+        assert!(
+            new_state.x[R] < state.x[R],
+            "r should decrease: {} -> {}",
+            state.x[R],
+            new_state.x[R]
+        );
         // t should increase (future-directed)
         assert!(new_state.x[T] > state.x[T], "t should increase");
     }
@@ -538,12 +538,8 @@ mod tests {
         let state = radial_null_state(20.0);
         let h = 0.01;
 
-        let new_state = rk4_geodesic_step(
-            &state,
-            h,
-            schwarzschild_metric,
-            schwarzschild_christoffel,
-        );
+        let new_state =
+            rk4_geodesic_step(&state, h, schwarzschild_metric, schwarzschild_christoffel);
 
         let g = schwarzschild_metric(&new_state.x);
         let c = null_constraint::null_constraint(&g, &new_state.v);
@@ -561,7 +557,10 @@ mod tests {
         // Perturb v^r slightly to break the null condition
         let v_bad = [state.v[T], state.v[R] * 1.01, state.v[THETA], state.v[PHI]];
         let c_before = null_constraint::null_constraint(&g, &v_bad);
-        assert!(c_before.abs() > 1e-4, "should be non-null before correction");
+        assert!(
+            c_before.abs() > 1e-4,
+            "should be non-null before correction"
+        );
 
         let v_fixed = apply_constraint_correction(&g, &v_bad, 0.0);
         let c_after = null_constraint::null_constraint(&g, &v_fixed);
@@ -622,7 +621,8 @@ mod tests {
         );
 
         let g_final = schwarzschild_metric(&final_state.x);
-        let q_final = extract_conserved_quantities(&g_final, &final_state.v, final_state.x[THETA], 0.0);
+        let q_final =
+            extract_conserved_quantities(&g_final, &final_state.v, final_state.x[THETA], 0.0);
 
         let e_drift = relative_energy_drift(&q0, &q_final);
         assert!(e_drift < 0.01, "energy drift = {e_drift} (should be < 1%)");
@@ -721,7 +721,11 @@ mod tests {
         assert!(q.energy > 0.0, "E = {}", q.energy);
         assert!(q.metric_norm.abs() < 1e-10, "norm = {}", q.metric_norm);
         // Radial orbit: L = 0 (no phi velocity)
-        assert!(q.angular_momentum.abs() < 1e-12, "L = {}", q.angular_momentum);
+        assert!(
+            q.angular_momentum.abs() < 1e-12,
+            "L = {}",
+            q.angular_momentum
+        );
     }
 
     // -- Relative drift functions --

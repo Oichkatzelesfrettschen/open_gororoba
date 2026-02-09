@@ -33,6 +33,9 @@ pub mod provenance;
 pub use fetcher::{compute_sha256, download_to_file, download_to_string};
 pub use fetcher::{DatasetProvider, FetchConfig, FetchError};
 
+pub use catalogs::aflow::{
+    fetch_aflow_dataset, parse_aflow_json, parse_aflow_records, AflowMaterial, AflowProvider,
+};
 pub use catalogs::atnf::{parse_atnf_csv, Pulsar};
 pub use catalogs::chime::{extract_repeaters, parse_chime_csv, FrbEvent};
 pub use catalogs::desi_bao::{desi_dr1_bao, BaoMeasurement};
@@ -40,6 +43,10 @@ pub use catalogs::fermi_gbm::{parse_fermi_gbm_csv, GrbEvent};
 pub use catalogs::gaia::{parse_gaia_csv, GaiaSource};
 pub use catalogs::gwtc::{parse_gwtc3_csv, GwEvent};
 pub use catalogs::hipparcos::hipparcos_row_count;
+pub use catalogs::jarvis::{
+    fetch_jarvis_json, list_figshare_files, parse_jarvis_json, sample_materials, FigshareFile,
+    JarvisMaterial, JarvisProvider,
+};
 pub use catalogs::landsat::looks_like_landsat_stac_json;
 pub use catalogs::mcgill::{parse_mcgill_csv, Magnetar};
 pub use catalogs::nanograv::{parse_nanograv_free_spectrum, FreeSpectrumPoint};
@@ -48,13 +55,6 @@ pub use catalogs::planck::bestfit as planck2018;
 pub use catalogs::sdss::{parse_sdss_quasar_csv, SdssQuasar};
 pub use catalogs::sorce::{parse_sorce_csv, SorceMeasurement};
 pub use catalogs::tsi::{parse_tsi_csv, TsiMeasurement};
-pub use catalogs::jarvis::{
-    JarvisMaterial, JarvisProvider, FigshareFile, list_figshare_files, fetch_jarvis_json,
-    parse_jarvis_json, sample_materials,
-};
-pub use catalogs::aflow::{
-    AflowMaterial, AflowProvider, parse_aflow_json, parse_aflow_records, fetch_aflow_dataset,
-};
 pub use catalogs::union3::parse_union3_chain;
 
 /// All dataset provider names that should appear in the manifest.
@@ -104,7 +104,13 @@ pub const DATASET_COUNT: usize = 32;
 
 /// The 8 scientific pillars that organize datasets.
 pub const PILLARS: &[&str] = &[
-    "candle", "gravitational", "electromagnetic", "survey", "cmb", "solar", "geophysical",
+    "candle",
+    "gravitational",
+    "electromagnetic",
+    "survey",
+    "cmb",
+    "solar",
+    "geophysical",
     "materials",
 ];
 
@@ -112,10 +118,18 @@ pub const PILLARS: &[&str] = &[
 pub fn provider_pillar(name: &str) -> &'static str {
     match name {
         "Pantheon+ SH0ES" | "Union3 Legacy SN Ia" => "candle",
-        "GWTC-3 confident events" | "GWOSC combined GWTC (O1-O4a)" | "NANOGrav 15yr Free Spectrum" => "gravitational",
-        "Fermi GBM Burst Catalog" | "EHT M87 2018 Data Bundle" | "EHT SgrA 2022 Data Bundle" => "electromagnetic",
-        "CHIME/FRB Catalog 2" | "ATNF Pulsar Catalogue" | "McGill Magnetar Catalog"
-        | "SDSS DR18 Quasars" | "Gaia DR3 Nearby Stars" | "Hipparcos Legacy Catalog" => "survey",
+        "GWTC-3 confident events"
+        | "GWOSC combined GWTC (O1-O4a)"
+        | "NANOGrav 15yr Free Spectrum" => "gravitational",
+        "Fermi GBM Burst Catalog" | "EHT M87 2018 Data Bundle" | "EHT SgrA 2022 Data Bundle" => {
+            "electromagnetic"
+        }
+        "CHIME/FRB Catalog 2"
+        | "ATNF Pulsar Catalogue"
+        | "McGill Magnetar Catalog"
+        | "SDSS DR18 Quasars"
+        | "Gaia DR3 Nearby Stars"
+        | "Hipparcos Legacy Catalog" => "survey",
         "Planck 2018 Summary" | "WMAP 9yr MCMC Chains" | "Planck 2018 MCMC Chains" => "cmb",
         "TSIS-1 TSI Daily" | "SORCE TSI Daily" => "solar",
         "JARVIS-DFT 3D" | "AFLOW Materials Database" => "materials",
@@ -126,7 +140,9 @@ pub fn provider_pillar(name: &str) -> &'static str {
 /// Claim IDs backed by each dataset. Returns empty slice for infrastructure datasets.
 pub fn claims_for_provider(name: &str) -> &'static [&'static str] {
     match name {
-        "CHIME/FRB Catalog 2" => &["C-043", "C-062", "C-071", "C-080", "C-436", "C-437", "C-438", "C-440"],
+        "CHIME/FRB Catalog 2" => &[
+            "C-043", "C-062", "C-071", "C-080", "C-436", "C-437", "C-438", "C-440",
+        ],
         "ATNF Pulsar Catalogue" => &["C-043", "C-063", "C-437"],
         "McGill Magnetar Catalog" => &["C-043", "C-063", "C-437"],
         "SDSS DR18 Quasars" => &["C-437"],
@@ -163,11 +179,7 @@ mod tests {
         let mut sorted = names.clone();
         sorted.sort();
         sorted.dedup();
-        assert_eq!(
-            sorted.len(),
-            names.len(),
-            "provider names must be unique"
-        );
+        assert_eq!(sorted.len(), names.len(), "provider names must be unique");
     }
 
     #[test]
@@ -177,7 +189,8 @@ mod tests {
             assert!(
                 PILLARS.contains(&pillar),
                 "Provider {:?} mapped to unknown pillar {:?}",
-                name, pillar
+                name,
+                pillar
             );
         }
     }
@@ -189,11 +202,7 @@ mod tests {
                 .iter()
                 .filter(|n| provider_pillar(n) == *pillar)
                 .count();
-            assert!(
-                count > 0,
-                "Pillar {:?} has no providers",
-                pillar
-            );
+            assert!(count > 0, "Pillar {:?} has no providers", pillar);
         }
     }
 

@@ -24,15 +24,12 @@ use tar::Archive;
 // ---------------------------------------------------------------------------
 
 // M87 2018 (2024-D01-01, branch: main)
-const EHT_M87_2018_CSV: &[&str] = &[
-    "https://github.com/eventhorizontelescope/2024-D01-01/raw/main/EHTC_M872018_csv.tgz",
-];
-const EHT_M87_2018_UVFITS: &[&str] = &[
-    "https://github.com/eventhorizontelescope/2024-D01-01/raw/main/EHTC_M872018_uvfits.tgz",
-];
-const EHT_M87_2018_TXT: &[&str] = &[
-    "https://github.com/eventhorizontelescope/2024-D01-01/raw/main/EHTC_M872018_txt.tgz",
-];
+const EHT_M87_2018_CSV: &[&str] =
+    &["https://github.com/eventhorizontelescope/2024-D01-01/raw/main/EHTC_M872018_csv.tgz"];
+const EHT_M87_2018_UVFITS: &[&str] =
+    &["https://github.com/eventhorizontelescope/2024-D01-01/raw/main/EHTC_M872018_uvfits.tgz"];
+const EHT_M87_2018_TXT: &[&str] =
+    &["https://github.com/eventhorizontelescope/2024-D01-01/raw/main/EHTC_M872018_txt.tgz"];
 
 // M87 2017 -- first image (2019-D01-01, branch: master)
 const EHT_M87_2017_CSV: &[&str] = &[
@@ -276,10 +273,7 @@ impl DatasetProvider for Eht3c279Provider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config
-            .output_dir
-            .join("eht_3c279_2017_uvfits.tgz")
-            .exists()
+        config.output_dir.join("eht_3c279_2017_uvfits.tgz").exists()
     }
 }
 
@@ -305,10 +299,7 @@ impl DatasetProvider for EhtCenAProvider {
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config
-            .output_dir
-            .join("eht_cena_2017_uvfits.tgz")
-            .exists()
+        config.output_dir.join("eht_cena_2017_uvfits.tgz").exists()
     }
 }
 
@@ -390,10 +381,7 @@ mod tests {
         let dir = std::env::temp_dir().join("eht_validate_uvfits_test");
         std::fs::create_dir_all(&dir).unwrap();
         let path = dir.join("uv.tgz");
-        create_test_tgz(
-            &path,
-            &["hops_lo/M87_b1.uvfits", "hops_hi/M87_b2.uvfits"],
-        );
+        create_test_tgz(&path, &["hops_lo/M87_b1.uvfits", "hops_hi/M87_b2.uvfits"]);
 
         assert!(validate_eht_archive(&path, "m87").is_ok());
         std::fs::remove_dir_all(&dir).ok();

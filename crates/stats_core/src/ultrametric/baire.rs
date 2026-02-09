@@ -25,7 +25,7 @@
 use rand::prelude::*;
 use rand_chacha::ChaCha8Rng;
 
-use super::null_models::{NullModel, apply_null_column_major};
+use super::null_models::{apply_null_column_major, NullModel};
 
 /// Specification for a single attribute in the Baire encoding.
 #[derive(Debug, Clone)]
@@ -168,10 +168,7 @@ impl BaireEncoder {
 ///
 /// `data`: each row is one object, each column is one attribute value.
 /// Returns a flat upper-triangle distance matrix.
-pub fn baire_distance_matrix(
-    encoder: &BaireEncoder,
-    data: &[Vec<f64>],
-) -> Vec<f64> {
+pub fn baire_distance_matrix(encoder: &BaireEncoder, data: &[Vec<f64>]) -> Vec<f64> {
     let n = data.len();
     let n_pairs = n * (n - 1) / 2;
 
@@ -194,19 +191,20 @@ pub fn baire_distance_matrix(
 /// Each attribute is normalized to [0,1] using the encoder's attribute specs
 /// (respecting log_scale settings), then standard Euclidean distance is computed.
 /// Returns a flat upper-triangle distance matrix.
-pub fn euclidean_distance_matrix(
-    encoder: &BaireEncoder,
-    data: &[Vec<f64>],
-) -> Vec<f64> {
+pub fn euclidean_distance_matrix(encoder: &BaireEncoder, data: &[Vec<f64>]) -> Vec<f64> {
     let n = data.len();
     let n_pairs = n * (n - 1) / 2;
     let n_attrs = encoder.attributes.len();
 
     // Normalize all rows
-    let normalized: Vec<Vec<f64>> = data.iter().map(|row| {
-        (0..n_attrs).map(|a| encoder.normalize(row[a], &encoder.attributes[a]))
-            .collect()
-    }).collect();
+    let normalized: Vec<Vec<f64>> = data
+        .iter()
+        .map(|row| {
+            (0..n_attrs)
+                .map(|a| encoder.normalize(row[a], &encoder.attributes[a]))
+                .collect()
+        })
+        .collect();
 
     let mut dists = Vec::with_capacity(n_pairs);
     for i in 0..n {
@@ -245,9 +243,7 @@ pub fn euclidean_ultrametric_test(
     let dist_matrix = euclidean_distance_matrix(encoder, data);
 
     // Observed ultrametric fraction
-    let obs_frac = super::ultrametric_fraction_from_matrix(
-        &dist_matrix, n, n_triples, seed,
-    );
+    let obs_frac = super::ultrametric_fraction_from_matrix(&dist_matrix, n, n_triples, seed);
 
     // Null: shuffle each column independently
     let mut rng = ChaCha8Rng::seed_from_u64(seed + 1_000_000);
@@ -264,9 +260,8 @@ pub fn euclidean_ultrametric_test(
         }
 
         let null_dists = euclidean_distance_matrix(encoder, &shuffled_data);
-        let null_frac = super::ultrametric_fraction_from_matrix(
-            &null_dists, n, n_triples, seed + 2_000_000,
-        );
+        let null_frac =
+            super::ultrametric_fraction_from_matrix(&null_dists, n, n_triples, seed + 2_000_000);
         null_fracs.push(null_frac);
     }
 
@@ -278,10 +273,7 @@ pub fn euclidean_ultrametric_test(
         / n_permutations as f64;
     let null_std = null_var.sqrt();
 
-    let n_extreme = null_fracs
-        .iter()
-        .filter(|&&f| f >= obs_frac)
-        .count();
+    let n_extreme = null_fracs.iter().filter(|&&f| f >= obs_frac).count();
     let p_value = (n_extreme as f64 + 1.0) / (n_permutations as f64 + 1.0);
 
     BaireTestResult {
@@ -320,9 +312,7 @@ pub fn baire_ultrametric_test(
     let dist_matrix = baire_distance_matrix(encoder, data);
 
     // Observed ultrametric fraction
-    let obs_frac = super::ultrametric_fraction_from_matrix(
-        &dist_matrix, n, n_triples, seed,
-    );
+    let obs_frac = super::ultrametric_fraction_from_matrix(&dist_matrix, n, n_triples, seed);
 
     // Null: shuffle each column independently to break inter-attribute correlations
     let mut rng = ChaCha8Rng::seed_from_u64(seed + 1_000_000);
@@ -340,9 +330,8 @@ pub fn baire_ultrametric_test(
         }
 
         let null_dists = baire_distance_matrix(encoder, &shuffled_data);
-        let null_frac = super::ultrametric_fraction_from_matrix(
-            &null_dists, n, n_triples, seed + 2_000_000,
-        );
+        let null_frac =
+            super::ultrametric_fraction_from_matrix(&null_dists, n, n_triples, seed + 2_000_000);
         null_fracs.push(null_frac);
     }
 
@@ -460,10 +449,16 @@ pub fn matrix_free_fraction(
     for _ in 0..n_triples {
         let i = rng.gen_range(0..n);
         let mut j = rng.gen_range(0..n - 1);
-        if j >= i { j += 1; }
+        if j >= i {
+            j += 1;
+        }
         let mut k = rng.gen_range(0..n - 2);
-        if k >= i.min(j) { k += 1; }
-        if k >= i.max(j) { k += 1; }
+        if k >= i.min(j) {
+            k += 1;
+        }
+        if k >= i.max(j) {
+            k += 1;
+        }
 
         // Work with squared distances (no sqrt needed)
         let d_ij_sq = euclidean_dist_sq_colmajor(cols, n, d, i, j);
@@ -501,7 +496,12 @@ pub fn matrix_free_ultrametric_test(
     seed: u64,
 ) -> BaireTestResult {
     matrix_free_ultrametric_test_with_null(
-        encoder, data, n_triples, n_permutations, seed, NullModel::default(),
+        encoder,
+        data,
+        n_triples,
+        n_permutations,
+        seed,
+        NullModel::default(),
     )
 }
 
@@ -543,9 +543,8 @@ pub fn matrix_free_ultrametric_test_with_null(
     for _ in 0..n_permutations {
         shuffled_cols.copy_from_slice(&cols);
         apply_null_column_major(&mut shuffled_cols, n, d, null_model, &mut rng);
-        let null_frac = matrix_free_fraction(
-            &shuffled_cols, n, d, n_triples, seed + 2_000_000, 0.05,
-        );
+        let null_frac =
+            matrix_free_fraction(&shuffled_cols, n, d, n_triples, seed + 2_000_000, 0.05);
         null_fracs.push(null_frac);
     }
 
@@ -587,7 +586,12 @@ pub fn matrix_free_tolerance_curve(
     seed: u64,
 ) -> super::ToleranceCurveResult {
     matrix_free_tolerance_curve_with_null(
-        encoder, data, n_triples, n_permutations, seed, NullModel::default(),
+        encoder,
+        data,
+        n_triples,
+        n_permutations,
+        seed,
+        NullModel::default(),
     )
 }
 
@@ -632,9 +636,8 @@ pub fn matrix_free_tolerance_curve_with_null(
         shuffled_cols.copy_from_slice(&cols);
         apply_null_column_major(&mut shuffled_cols, n, d, null_model, &mut rng);
         for (ei, &eps) in epsilons.iter().enumerate() {
-            let null_frac = matrix_free_fraction(
-                &shuffled_cols, n, d, n_triples, seed + 2_000_000, eps,
-            );
+            let null_frac =
+                matrix_free_fraction(&shuffled_cols, n, d, n_triples, seed + 2_000_000, eps);
             null_means[ei] += null_frac;
         }
     }
@@ -681,8 +684,18 @@ mod tests {
     #[test]
     fn test_baire_encoder_identical_objects() {
         let spec = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 100.0, log_scale: false },
-            AttributeSpec { name: "y".into(), min: 0.0, max: 100.0, log_scale: false },
+            AttributeSpec {
+                name: "x".into(),
+                min: 0.0,
+                max: 100.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "y".into(),
+                min: 0.0,
+                max: 100.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(spec, 10, 4);
 
@@ -694,9 +707,12 @@ mod tests {
 
     #[test]
     fn test_baire_encoder_different_first_digit() {
-        let spec = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 100.0, log_scale: false },
-        ];
+        let spec = vec![AttributeSpec {
+            name: "x".into(),
+            min: 0.0,
+            max: 100.0,
+            log_scale: false,
+        }];
         let encoder = BaireEncoder::new(spec, 10, 4);
 
         // 10.0/100.0 = 0.1 -> digits [1, 0, 0, 0]
@@ -714,8 +730,18 @@ mod tests {
         // Baire distances are inherently ultrametric by construction.
         // All triples should satisfy the ultrametric inequality exactly.
         let spec = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 100.0, log_scale: false },
-            AttributeSpec { name: "y".into(), min: 0.0, max: 100.0, log_scale: false },
+            AttributeSpec {
+                name: "x".into(),
+                min: 0.0,
+                max: 100.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "y".into(),
+                min: 0.0,
+                max: 100.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(spec, 10, 4);
 
@@ -749,7 +775,15 @@ mod tests {
                     assert!(
                         d_ik <= max_pair + 1e-15,
                         "Ultrametric violated: d({},{})={}, d({},{})={}, d({},{})={}",
-                        i, j, d_ij, j, k, d_jk, i, k, d_ik
+                        i,
+                        j,
+                        d_ij,
+                        j,
+                        k,
+                        d_jk,
+                        i,
+                        k,
+                        d_ik
                     );
                 }
             }
@@ -758,9 +792,12 @@ mod tests {
 
     #[test]
     fn test_baire_log_scale() {
-        let spec = vec![
-            AttributeSpec { name: "period".into(), min: 0.001, max: 10.0, log_scale: true },
-        ];
+        let spec = vec![AttributeSpec {
+            name: "period".into(),
+            min: 0.001,
+            max: 10.0,
+            log_scale: true,
+        }];
         let encoder = BaireEncoder::new(spec, 10, 4);
 
         // 0.001 and 10.0 should map to extremes of the normalized range
@@ -774,9 +811,12 @@ mod tests {
 
     #[test]
     fn test_baire_distance_matrix_size() {
-        let spec = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 1.0, log_scale: false },
-        ];
+        let spec = vec![AttributeSpec {
+            name: "x".into(),
+            min: 0.0,
+            max: 1.0,
+            log_scale: false,
+        }];
         let encoder = BaireEncoder::new(spec, 10, 3);
 
         let data: Vec<Vec<f64>> = (0..5).map(|i| vec![i as f64 * 0.2]).collect();
@@ -790,8 +830,18 @@ mod tests {
         // Verify that matrix-free fraction gives the same result as the
         // matrix-based version (same seed, same data, same epsilon).
         let specs = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 10.0, log_scale: false },
-            AttributeSpec { name: "y".into(), min: 0.0, max: 10.0, log_scale: false },
+            AttributeSpec {
+                name: "x".into(),
+                min: 0.0,
+                max: 10.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "y".into(),
+                min: 0.0,
+                max: 10.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(999);
@@ -802,7 +852,11 @@ mod tests {
         // Matrix-based
         let dm = euclidean_distance_matrix(&encoder, &data);
         let frac_matrix = crate::ultrametric::ultrametric_fraction_from_matrix_eps(
-            &dm, data.len(), 10_000, 42, 0.05,
+            &dm,
+            data.len(),
+            10_000,
+            42,
+            0.05,
         );
 
         // Matrix-free
@@ -818,8 +872,18 @@ mod tests {
     #[test]
     fn test_matrix_free_ultrametric_test_runs() {
         let specs = vec![
-            AttributeSpec { name: "a".into(), min: 0.0, max: 1.0, log_scale: false },
-            AttributeSpec { name: "b".into(), min: 0.0, max: 1.0, log_scale: false },
+            AttributeSpec {
+                name: "a".into(),
+                min: 0.0,
+                max: 1.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "b".into(),
+                min: 0.0,
+                max: 1.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(77);
@@ -836,8 +900,18 @@ mod tests {
     #[test]
     fn test_matrix_free_tolerance_curve_structure() {
         let specs = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 1.0, log_scale: false },
-            AttributeSpec { name: "y".into(), min: 0.0, max: 1.0, log_scale: false },
+            AttributeSpec {
+                name: "x".into(),
+                min: 0.0,
+                max: 1.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "y".into(),
+                min: 0.0,
+                max: 1.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(specs, 10, 4);
         let mut rng = ChaCha8Rng::seed_from_u64(55);
@@ -852,7 +926,8 @@ mod tests {
             assert!(
                 w[1].observed >= w[0].observed - 1e-10,
                 "Fraction must increase with epsilon: {} -> {}",
-                w[0].observed, w[1].observed,
+                w[0].observed,
+                w[1].observed,
             );
         }
     }
@@ -860,8 +935,18 @@ mod tests {
     #[test]
     fn test_column_major_layout() {
         let specs = vec![
-            AttributeSpec { name: "x".into(), min: 0.0, max: 10.0, log_scale: false },
-            AttributeSpec { name: "y".into(), min: 0.0, max: 10.0, log_scale: false },
+            AttributeSpec {
+                name: "x".into(),
+                min: 0.0,
+                max: 10.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "y".into(),
+                min: 0.0,
+                max: 10.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(specs, 10, 4);
         let data = vec![vec![2.0, 8.0], vec![4.0, 6.0], vec![6.0, 4.0]];
@@ -874,7 +959,7 @@ mod tests {
         assert!((cols[0] - 0.2).abs() < 1e-10); // x[0] = 2/10
         assert!((cols[1] - 0.4).abs() < 1e-10); // x[1] = 4/10
         assert!((cols[2] - 0.6).abs() < 1e-10); // x[2] = 6/10
-        // Column 1 (y): normalized values of [8, 6, 4] in range [0, 10]
+                                                // Column 1 (y): normalized values of [8, 6, 4] in range [0, 10]
         assert!((cols[3] - 0.8).abs() < 1e-10); // y[0] = 8/10
         assert!((cols[4] - 0.6).abs() < 1e-10); // y[1] = 6/10
         assert!((cols[5] - 0.4).abs() < 1e-10); // y[2] = 4/10
@@ -891,9 +976,24 @@ mod tests {
     #[test]
     fn test_baire_tautological_vs_euclidean() {
         let specs = vec![
-            AttributeSpec { name: "a".into(), min: 0.0, max: 100.0, log_scale: false },
-            AttributeSpec { name: "b".into(), min: 0.0, max: 100.0, log_scale: false },
-            AttributeSpec { name: "c".into(), min: 0.0, max: 100.0, log_scale: false },
+            AttributeSpec {
+                name: "a".into(),
+                min: 0.0,
+                max: 100.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "b".into(),
+                min: 0.0,
+                max: 100.0,
+                log_scale: false,
+            },
+            AttributeSpec {
+                name: "c".into(),
+                min: 0.0,
+                max: 100.0,
+                log_scale: false,
+            },
         ];
         let encoder = BaireEncoder::new(specs, 10, 4);
 
@@ -912,9 +1012,8 @@ mod tests {
         // Baire distances -> ultrametric fraction must be exactly 1.0
         let baire_dists = baire_distance_matrix(&encoder, &data);
         let n = data.len();
-        let baire_frac = crate::ultrametric::ultrametric_fraction_from_matrix(
-            &baire_dists, n, 500, 42,
-        );
+        let baire_frac =
+            crate::ultrametric::ultrametric_fraction_from_matrix(&baire_dists, n, 500, 42);
         assert!(
             (baire_frac - 1.0).abs() < 1e-12,
             "Baire distances are ultrametric by construction, fraction must be 1.0, got {}",
@@ -923,9 +1022,8 @@ mod tests {
 
         // Euclidean distances on same data -> fraction will be < 1.0 for non-hierarchical data
         let euclid_dists = euclidean_distance_matrix(&encoder, &data);
-        let euclid_frac = crate::ultrametric::ultrametric_fraction_from_matrix(
-            &euclid_dists, n, 500, 42,
-        );
+        let euclid_frac =
+            crate::ultrametric::ultrametric_fraction_from_matrix(&euclid_dists, n, 500, 42);
         // Non-hierarchical random data should have Euclidean fraction well below 1.0
         assert!(
             euclid_frac < 0.95,

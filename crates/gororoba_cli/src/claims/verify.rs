@@ -20,12 +20,8 @@ use std::collections::BTreeSet;
 use std::path::Path;
 use std::sync::LazyLock;
 
-use super::parser::{
-    extract_backtick_paths, iter_table_rows, parse_claim_rows, parse_table_line,
-};
-use super::schema::{
-    is_canonical_domain, is_canonical_status, is_canonical_task_status,
-};
+use super::parser::{extract_backtick_paths, iter_table_rows, parse_claim_rows, parse_table_line};
+use super::schema::{is_canonical_domain, is_canonical_status, is_canonical_task_status};
 
 /// Verify claims matrix metadata hygiene.
 ///
@@ -165,16 +161,13 @@ pub fn verify_where_stated_pointers(matrix_text: &str) -> Vec<String> {
 /// - Table rows have 4 columns
 /// - Task status uses canonical tokens
 pub fn verify_tasks_metadata(tasks_text: &str) -> Vec<String> {
-    static DATE_HEADER_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"^Date:\s*(\d{4}-\d{2}-\d{2})").expect("valid regex")
-    });
+    static DATE_HEADER_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"^Date:\s*(\d{4}-\d{2}-\d{2})").expect("valid regex"));
 
     let mut failures = Vec::new();
 
     // Check for Date: header.
-    let has_date = tasks_text
-        .lines()
-        .any(|line| DATE_HEADER_RE.is_match(line));
+    let has_date = tasks_text.lines().any(|line| DATE_HEADER_RE.is_match(line));
     if !has_date {
         failures.push("Missing Date: YYYY-MM-DD header".to_string());
     }
@@ -186,9 +179,8 @@ pub fn verify_tasks_metadata(tasks_text: &str) -> Vec<String> {
             continue; // Skip non-data rows.
         }
         // Task rows should have a claim ID in the first column.
-        static TASK_CID_RE: LazyLock<Regex> = LazyLock::new(|| {
-            Regex::new(r"C-\d{3}").expect("valid regex")
-        });
+        static TASK_CID_RE: LazyLock<Regex> =
+            LazyLock::new(|| Regex::new(r"C-\d{3}").expect("valid regex"));
         if !TASK_CID_RE.is_match(&row.cells[0]) {
             continue;
         }
@@ -207,17 +199,13 @@ pub fn verify_tasks_metadata(tasks_text: &str) -> Vec<String> {
 /// Verify consistency between CLAIMS_EVIDENCE_MATRIX.md and CLAIMS_TASKS.md.
 ///
 /// Checks that open claims have corresponding task entries.
-pub fn verify_tasks_consistency(
-    matrix_text: &str,
-    tasks_text: &str,
-) -> Vec<String> {
+pub fn verify_tasks_consistency(matrix_text: &str, tasks_text: &str) -> Vec<String> {
     let mut failures = Vec::new();
     let claims = parse_claim_rows(matrix_text);
 
     // Extract claim IDs mentioned in the tasks file.
-    static TASK_CID_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"\bC-\d{3}\b").expect("valid regex")
-    });
+    static TASK_CID_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"\bC-\d{3}\b").expect("valid regex"));
     let task_ids: BTreeSet<String> = TASK_CID_RE
         .find_iter(tasks_text)
         .map(|m| m.as_str().to_string())
@@ -237,10 +225,7 @@ pub fn verify_tasks_consistency(
 }
 
 /// Verify CLAIMS_DOMAIN_MAP.csv covers all claims and uses canonical domains.
-pub fn verify_domain_mapping(
-    matrix_text: &str,
-    domain_csv_text: &str,
-) -> Vec<String> {
+pub fn verify_domain_mapping(matrix_text: &str, domain_csv_text: &str) -> Vec<String> {
     let mut failures = Vec::new();
     let claims = parse_claim_rows(matrix_text);
     let claim_ids: BTreeSet<String> = claims.iter().map(|c| c.claim_id.clone()).collect();
@@ -314,13 +299,9 @@ pub fn verify_task_artifact_links(tasks_text: &str, repo_root: &Path) -> Vec<Str
 ///
 /// Cross-checks DATASET_MANIFEST.md provider names against those registered
 /// in fetch_datasets.rs.
-pub fn verify_dataset_providers(
-    manifest_text: &str,
-    fetch_source: &str,
-) -> Vec<String> {
-    static PROVIDER_RE: LazyLock<Regex> = LazyLock::new(|| {
-        Regex::new(r"Box::new\(\s*([A-Za-z0-9_]+Provider)").expect("valid regex")
-    });
+pub fn verify_dataset_providers(manifest_text: &str, fetch_source: &str) -> Vec<String> {
+    static PROVIDER_RE: LazyLock<Regex> =
+        LazyLock::new(|| Regex::new(r"Box::new\(\s*([A-Za-z0-9_]+Provider)").expect("valid regex"));
 
     let mut failures = Vec::new();
 

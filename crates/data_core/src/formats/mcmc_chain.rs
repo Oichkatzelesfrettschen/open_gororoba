@@ -60,10 +60,7 @@ pub fn parse_paramnames(path: &Path) -> Result<(Vec<String>, Vec<String>), Fetch
 ///
 /// Chain file format: whitespace-delimited, no header.
 /// Column 0 = weight, column 1 = -log(like), columns 2..N = parameters.
-pub fn parse_cosmomc_chains(
-    paramnames: &Path,
-    chains: &[&Path],
-) -> Result<McmcChain, FetchError> {
+pub fn parse_cosmomc_chains(paramnames: &Path, chains: &[&Path]) -> Result<McmcChain, FetchError> {
     let (param_names, param_labels) = parse_paramnames(paramnames)?;
     let n_params = param_names.len();
 
@@ -72,8 +69,9 @@ pub fn parse_cosmomc_chains(
     let mut param_values = Vec::new();
 
     for chain_path in chains {
-        let content = std::fs::read_to_string(chain_path)
-            .map_err(|e| FetchError::Validation(format!("Read chain {}: {}", chain_path.display(), e)))?;
+        let content = std::fs::read_to_string(chain_path).map_err(|e| {
+            FetchError::Validation(format!("Read chain {}: {}", chain_path.display(), e))
+        })?;
 
         for line in content.lines() {
             let trimmed = line.trim();
@@ -95,11 +93,7 @@ pub fn parse_cosmomc_chains(
             neg_log_like.push(fields[1]);
 
             // Take up to n_params parameter values
-            let params: Vec<f64> = fields[2..]
-                .iter()
-                .take(n_params)
-                .copied()
-                .collect();
+            let params: Vec<f64> = fields[2..].iter().take(n_params).copied().collect();
             param_values.push(params);
         }
     }
@@ -140,10 +134,13 @@ impl McmcChain {
             return None;
         }
 
-        let mean: f64 = self.weights.iter()
+        let mean: f64 = self
+            .weights
+            .iter()
             .zip(self.param_values.iter())
             .filter_map(|(w, params)| params.get(param_idx).map(|v| w * v))
-            .sum::<f64>() / total_w;
+            .sum::<f64>()
+            / total_w;
 
         Some(mean)
     }
@@ -156,12 +153,13 @@ impl McmcChain {
             return None;
         }
 
-        let var: f64 = self.weights.iter()
+        let var: f64 = self
+            .weights
+            .iter()
             .zip(self.param_values.iter())
-            .filter_map(|(w, params)| {
-                params.get(param_idx).map(|v| w * (v - mean).powi(2))
-            })
-            .sum::<f64>() / total_w;
+            .filter_map(|(w, params)| params.get(param_idx).map(|v| w * (v - mean).powi(2)))
+            .sum::<f64>()
+            / total_w;
 
         Some(var.sqrt())
     }
@@ -216,7 +214,12 @@ mod tests {
         // Weighted mean of omegabh2: (1*0.02237 + 2*0.02240 + 1*0.02235) / 4
         let mean = mc.weighted_mean(0).unwrap();
         let expected = (1.0 * 0.02237 + 2.0 * 0.02240 + 1.0 * 0.02235) / 4.0;
-        assert!((mean - expected).abs() < 1e-10, "mean={} expected={}", mean, expected);
+        assert!(
+            (mean - expected).abs() < 1e-10,
+            "mean={} expected={}",
+            mean,
+            expected
+        );
         std::fs::remove_dir_all(&dir).ok();
     }
 

@@ -143,7 +143,9 @@ fn main() {
             n_eig,
             output,
         } => {
-            run_sweep(alpha, eps_start, eps_end, eps_steps, n, domain, n_eig, output);
+            run_sweep(
+                alpha, eps_start, eps_end, eps_steps, n, domain, n_eig, output,
+            );
         }
         Commands::CaffarelliSilvestre {
             s,

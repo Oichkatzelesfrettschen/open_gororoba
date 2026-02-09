@@ -8,15 +8,14 @@
 //! - Fractal analysis (Hurst exponent, fBm generation)
 //! - fBm algorithm comparison (Hosking vs diffusionx)
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
 use algebra_core::{
-    cd_multiply, cd_multiply_simd, cd_associator, cd_associator_norm,
-    batch_associator_norms, batch_associator_norms_parallel,
-    find_zero_divisors,
-    oct_multiply, stormer_verlet_step, gaussian_wave_packet, FieldParams,
+    batch_associator_norms, batch_associator_norms_parallel, cd_associator, cd_associator_norm,
+    cd_multiply, cd_multiply_simd, find_zero_divisors,
     fractal_analysis::{calculate_hurst, generate_fbm},
+    gaussian_wave_packet, oct_multiply, stormer_verlet_step, FieldParams,
 };
-use diffusionx::simulation::{prelude::*, continuous::FBm};
+use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
+use diffusionx::simulation::{continuous::FBm, prelude::*};
 
 /// Benchmark Cayley-Dickson multiplication at various dimensions.
 fn bench_cd_multiply(c: &mut Criterion) {
@@ -28,9 +27,7 @@ fn bench_cd_multiply(c: &mut Criterion) {
         let b: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.2).cos()).collect();
 
         group.bench_with_input(BenchmarkId::new("dim", dim), &dim, |bench, _| {
-            bench.iter(|| {
-                cd_multiply(black_box(&a), black_box(&b))
-            });
+            bench.iter(|| cd_multiply(black_box(&a), black_box(&b)));
         });
     }
 
@@ -46,15 +43,11 @@ fn bench_cd_multiply_simd(c: &mut Criterion) {
         let b: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.2).cos()).collect();
 
         group.bench_with_input(BenchmarkId::new("scalar", dim), &dim, |bench, _| {
-            bench.iter(|| {
-                cd_multiply(black_box(&a), black_box(&b))
-            });
+            bench.iter(|| cd_multiply(black_box(&a), black_box(&b)));
         });
 
         group.bench_with_input(BenchmarkId::new("simd", dim), &dim, |bench, _| {
-            bench.iter(|| {
-                cd_multiply_simd(black_box(&a), black_box(&b))
-            });
+            bench.iter(|| cd_multiply_simd(black_box(&a), black_box(&b)));
         });
     }
 
@@ -71,15 +64,11 @@ fn bench_associator(c: &mut Criterion) {
         let d: Vec<f64> = (0..dim).map(|i| (i as f64 * 0.3).sin()).collect();
 
         group.bench_with_input(BenchmarkId::new("single/dim", dim), &dim, |bench, _| {
-            bench.iter(|| {
-                cd_associator(black_box(&a), black_box(&b), black_box(&d))
-            });
+            bench.iter(|| cd_associator(black_box(&a), black_box(&b), black_box(&d)));
         });
 
         group.bench_with_input(BenchmarkId::new("norm/dim", dim), &dim, |bench, _| {
-            bench.iter(|| {
-                cd_associator_norm(black_box(&a), black_box(&b), black_box(&d))
-            });
+            bench.iter(|| cd_associator_norm(black_box(&a), black_box(&b), black_box(&d)));
         });
     }
 
@@ -138,9 +127,7 @@ fn bench_zero_divisor_search(c: &mut Criterion) {
 
     for dim in [16, 32] {
         group.bench_with_input(BenchmarkId::new("dim", dim), &dim, |bench, &dim| {
-            bench.iter(|| {
-                find_zero_divisors(black_box(dim), black_box(1e-10))
-            });
+            bench.iter(|| find_zero_divisors(black_box(dim), black_box(1e-10)));
         });
     }
 
@@ -153,9 +140,7 @@ fn bench_octonion_multiply(c: &mut Criterion) {
     let b = [0.8, 0.2, 0.4, 0.5, 0.3, 0.1, 0.2, 0.9];
 
     c.bench_function("oct_multiply", |bench| {
-        bench.iter(|| {
-            oct_multiply(black_box(&a), black_box(&b))
-        });
+        bench.iter(|| oct_multiply(black_box(&a), black_box(&b)));
     });
 }
 
@@ -174,17 +159,21 @@ fn bench_stormer_verlet(c: &mut Criterion) {
 
         let (phi, pi) = gaussian_wave_packet(&params);
 
-        group.bench_with_input(BenchmarkId::new("n_sites", n_sites), &n_sites, |bench, _| {
-            let mut phi_mut = phi.clone();
-            let mut pi_mut = pi.clone();
-            bench.iter(|| {
-                stormer_verlet_step(
-                    black_box(&mut phi_mut),
-                    black_box(&mut pi_mut),
-                    black_box(&params),
-                );
-            });
-        });
+        group.bench_with_input(
+            BenchmarkId::new("n_sites", n_sites),
+            &n_sites,
+            |bench, _| {
+                let mut phi_mut = phi.clone();
+                let mut pi_mut = pi.clone();
+                bench.iter(|| {
+                    stormer_verlet_step(
+                        black_box(&mut phi_mut),
+                        black_box(&mut pi_mut),
+                        black_box(&params),
+                    );
+                });
+            },
+        );
     }
 
     group.finish();
@@ -201,9 +190,7 @@ fn bench_hurst_exponent(c: &mut Criterion) {
             .collect();
 
         group.bench_with_input(BenchmarkId::new("n", n), &n, |bench, _| {
-            bench.iter(|| {
-                calculate_hurst(black_box(&series), black_box(2), black_box(n / 4))
-            });
+            bench.iter(|| calculate_hurst(black_box(&series), black_box(2), black_box(n / 4)));
         });
     }
 
@@ -217,9 +204,7 @@ fn bench_fbm_generation(c: &mut Criterion) {
 
     for n in [128, 256, 512] {
         group.bench_with_input(BenchmarkId::new("n", n), &n, |bench, &n| {
-            bench.iter(|| {
-                generate_fbm(black_box(n), black_box(0.7), black_box(42))
-            });
+            bench.iter(|| generate_fbm(black_box(n), black_box(0.7), black_box(42)));
         });
     }
 
@@ -228,9 +213,7 @@ fn bench_fbm_generation(c: &mut Criterion) {
     for h in [0.3, 0.5, 0.7, 0.9] {
         let h_str = format!("{:.1}", h);
         group.bench_with_input(BenchmarkId::new("H", &h_str), &h, |bench, &h| {
-            bench.iter(|| {
-                generate_fbm(black_box(n), black_box(h), black_box(42))
-            });
+            bench.iter(|| generate_fbm(black_box(n), black_box(h), black_box(42)));
         });
     }
 
@@ -250,17 +233,13 @@ fn bench_fbm_comparison(c: &mut Criterion) {
 
         // Our Hosking implementation
         group.bench_with_input(BenchmarkId::new("hosking", n), &n, |bench, &n| {
-            bench.iter(|| {
-                generate_fbm(black_box(n), black_box(h), black_box(42))
-            });
+            bench.iter(|| generate_fbm(black_box(n), black_box(h), black_box(42)));
         });
 
         // diffusionx FBm (time-step based: duration = n-1, step = 1.0 -> n samples)
         group.bench_with_input(BenchmarkId::new("diffusionx", n), &n, |bench, &n| {
             let fbm = FBm::new(0.0, h).expect("valid Hurst exponent");
-            bench.iter(|| {
-                fbm.simulate(black_box((n - 1) as f64), black_box(1.0))
-            });
+            bench.iter(|| fbm.simulate(black_box((n - 1) as f64), black_box(1.0)));
         });
     }
 

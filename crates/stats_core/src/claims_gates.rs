@@ -23,8 +23,8 @@
 //! Gates output structured JSON for CI parsing.
 
 use crate::{
-    bootstrap_ci, frechet_null_test, two_sample_test,
-    BootstrapCIResult, FrechetNullTestResult, TwoSampleTestResult,
+    bootstrap_ci, frechet_null_test, two_sample_test, BootstrapCIResult, FrechetNullTestResult,
+    TwoSampleTestResult,
 };
 use std::fmt;
 
@@ -164,13 +164,19 @@ pub fn pvalue_gate(
         GateResult::pass(
             claim_id,
             evidence,
-            &format!("{}: p={:.4} < {:.2} (significant)", description, p_value, threshold),
+            &format!(
+                "{}: p={:.4} < {:.2} (significant)",
+                description, p_value, threshold
+            ),
         )
     } else {
         GateResult::fail(
             claim_id,
             evidence,
-            &format!("{}: p={:.4} >= {:.2} (not significant)", description, p_value, threshold),
+            &format!(
+                "{}: p={:.4} >= {:.2} (not significant)",
+                description, p_value, threshold
+            ),
         )
     }
 }
@@ -196,13 +202,19 @@ pub fn inverse_pvalue_gate(
         GateResult::pass(
             claim_id,
             evidence,
-            &format!("{}: p={:.4} >= {:.2} (null not rejected)", description, p_value, threshold),
+            &format!(
+                "{}: p={:.4} >= {:.2} (null not rejected)",
+                description, p_value, threshold
+            ),
         )
     } else {
         GateResult::fail(
             claim_id,
             evidence,
-            &format!("{}: p={:.4} < {:.2} (unexpected significance)", description, p_value, threshold),
+            &format!(
+                "{}: p={:.4} < {:.2} (unexpected significance)",
+                description, p_value, threshold
+            ),
         )
     }
 }
@@ -326,9 +338,7 @@ pub fn two_sample_gate(
             evidence,
             &format!(
                 "{}: {} tests significant (ED p={:.4}, MMD p={:.4})",
-                description, logic,
-                result.energy_distance.p_value,
-                result.mmd.p_value
+                description, logic, result.energy_distance.p_value, result.mmd.p_value
             ),
         )
     } else {
@@ -337,9 +347,7 @@ pub fn two_sample_gate(
             evidence,
             &format!(
                 "{}: {} tests not significant (ED p={:.4}, MMD p={:.4})",
-                description, logic,
-                result.energy_distance.p_value,
-                result.mmd.p_value
+                description, logic, result.energy_distance.p_value, result.mmd.p_value
             ),
         )
     }
@@ -438,7 +446,13 @@ where
     F: Fn(&[f64]) -> f64,
 {
     let result = bootstrap_ci(data, statistic_fn, n_bootstrap, 0.95, seed);
-    bootstrap_ci_gate(claim_id, &result, expected_range, uncertain_threshold, description)
+    bootstrap_ci_gate(
+        claim_id,
+        &result,
+        expected_range,
+        uncertain_threshold,
+        description,
+    )
 }
 
 // ============================================================================
@@ -454,7 +468,9 @@ pub struct GateRegistry {
 impl GateRegistry {
     /// Create new empty registry.
     pub fn new() -> Self {
-        GateRegistry { results: Vec::new() }
+        GateRegistry {
+            results: Vec::new(),
+        }
     }
 
     /// Add a gate result.
@@ -469,17 +485,26 @@ impl GateRegistry {
 
     /// Count passing gates.
     pub fn pass_count(&self) -> usize {
-        self.results.iter().filter(|r| r.verdict == Verdict::Pass).count()
+        self.results
+            .iter()
+            .filter(|r| r.verdict == Verdict::Pass)
+            .count()
     }
 
     /// Count failing gates.
     pub fn fail_count(&self) -> usize {
-        self.results.iter().filter(|r| r.verdict == Verdict::Fail).count()
+        self.results
+            .iter()
+            .filter(|r| r.verdict == Verdict::Fail)
+            .count()
     }
 
     /// Count uncertain gates.
     pub fn uncertain_count(&self) -> usize {
-        self.results.iter().filter(|r| r.verdict == Verdict::Uncertain).count()
+        self.results
+            .iter()
+            .filter(|r| r.verdict == Verdict::Uncertain)
+            .count()
     }
 
     /// Check if all gates pass (no failures, uncertains are ok).

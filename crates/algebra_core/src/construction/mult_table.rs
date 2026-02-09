@@ -170,7 +170,12 @@ mod tests {
                     (cd_sign as i32, cd_idx),
                     (oct_sign, oct_idx),
                     "Mismatch at e_{} * e_{}: CD=({}, {}), Oct=({}, {})",
-                    i, j, cd_sign, cd_idx, oct_sign, oct_idx
+                    i,
+                    j,
+                    cd_sign,
+                    cd_idx,
+                    oct_sign,
+                    oct_idx
                 );
             }
         }
@@ -186,13 +191,11 @@ mod tests {
                 assert!(
                     s == 1 || s == -1,
                     "Sign at ({}, {}) is {}, expected +/-1",
-                    i, j, s
+                    i,
+                    j,
+                    s
                 );
-                assert!(
-                    k < 16,
-                    "Index at ({}, {}) is {}, expected < 16",
-                    i, j, k
-                );
+                assert!(k < 16, "Index at ({}, {}) is {}, expected < 16", i, j, k);
             }
         }
     }
@@ -202,10 +205,12 @@ mod tests {
         let table = CdMultTable::generate(16);
 
         // Test with specific elements
-        let a = vec![1.0, 2.0, -1.5, 0.5, 0.0, 3.0, -2.0, 1.0,
-                     0.5, -0.5, 1.0, 0.0, 2.0, -1.0, 0.0, 0.5];
-        let b = vec![0.5, -1.0, 2.0, 0.0, 1.5, -0.5, 0.0, 1.0,
-                     -1.0, 0.5, 0.0, 2.0, -0.5, 1.0, -1.5, 0.0];
+        let a = vec![
+            1.0, 2.0, -1.5, 0.5, 0.0, 3.0, -2.0, 1.0, 0.5, -0.5, 1.0, 0.0, 2.0, -1.0, 0.0, 0.5,
+        ];
+        let b = vec![
+            0.5, -1.0, 2.0, 0.0, 1.5, -0.5, 0.0, 1.0, -1.0, 0.5, 0.0, 2.0, -0.5, 1.0, -1.5, 0.0,
+        ];
 
         let result_table = table.multiply_via_table(&a, &b);
         let result_cd = cd_multiply(&a, &b);
@@ -214,7 +219,9 @@ mod tests {
             assert!(
                 (result_table[k] - result_cd[k]).abs() < 1e-14,
                 "Component {} differs: table={}, cd={}",
-                k, result_table[k], result_cd[k]
+                k,
+                result_table[k],
+                result_cd[k]
             );
         }
     }
@@ -232,7 +239,10 @@ mod tests {
     #[test]
     fn test_verify_succeeds() {
         let table = CdMultTable::generate(16);
-        assert!(table.verify(), "Verification should succeed for freshly generated table");
+        assert!(
+            table.verify(),
+            "Verification should succeed for freshly generated table"
+        );
     }
 
     #[test]

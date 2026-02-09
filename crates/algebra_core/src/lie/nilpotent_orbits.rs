@@ -106,7 +106,9 @@ impl JordanType {
             }
         }
 
-        JordanType { blocks: dual_blocks }
+        JordanType {
+            blocks: dual_blocks,
+        }
     }
 }
 

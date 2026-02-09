@@ -1,11 +1,11 @@
-pub mod zd_graphs;
-pub mod boxkites;
 pub mod annihilator;
-pub mod reggiani;
+pub mod boxkites;
+pub mod codebook;
 pub mod fractal_analysis;
-pub mod stochastic;
+pub mod graph_projections;
 pub mod grassmannian;
 pub mod homotopy_algebra;
 pub mod projective_geometry;
-pub mod codebook;
-pub mod graph_projections;
+pub mod reggiani;
+pub mod stochastic;
+pub mod zd_graphs;

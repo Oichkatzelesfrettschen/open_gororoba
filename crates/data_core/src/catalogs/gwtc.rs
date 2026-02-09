@@ -6,7 +6,7 @@
 //! Source: https://gwosc.org/eventapi/json/GWTC-3-confident/
 //! Reference: Abbott et al. (2023), PRX 13, 041039
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
 
 /// A gravitational wave event from GWTC-3.
@@ -70,12 +70,9 @@ pub fn parse_gwtc3_csv(path: &Path) -> Result<Vec<GwEvent>, FetchError> {
 
     // Find column indices -- case-insensitive with fallbacks for both
     // v1 (eventapi) and v2 (api/v2) CSV formats.
-    let col = |name: &str| -> Option<usize> {
-        headers.iter().position(|h| h == name)
-    };
-    let col_ci = |name: &str| -> Option<usize> {
-        headers.iter().position(|h| h.eq_ignore_ascii_case(name))
-    };
+    let col = |name: &str| -> Option<usize> { headers.iter().position(|h| h == name) };
+    let col_ci =
+        |name: &str| -> Option<usize> { headers.iter().position(|h| h.eq_ignore_ascii_case(name)) };
 
     // v1 has "id", v2 has "name"
     let idx_id = col("id").or_else(|| col("name"));
@@ -95,18 +92,14 @@ pub fn parse_gwtc3_csv(path: &Path) -> Result<Vec<GwEvent>, FetchError> {
     let idx_z = col("redshift");
     let idx_z_lo = col("redshift_lower");
     let idx_z_up = col("redshift_upper");
-    let idx_snr = col("network_matched_filter_snr")
-        .or_else(|| col_ci("network_matched_filter_snr"));
+    let idx_snr =
+        col("network_matched_filter_snr").or_else(|| col_ci("network_matched_filter_snr"));
     let idx_p = col("p_astro").or_else(|| col_ci("p_astro"));
-    let idx_total = col("total_mass_source")
-        .or_else(|| col_ci("total_mass_source"));
-    let idx_final = col("final_mass_source")
-        .or_else(|| col_ci("final_mass_source"));
+    let idx_total = col("total_mass_source").or_else(|| col_ci("total_mass_source"));
+    let idx_final = col("final_mass_source").or_else(|| col_ci("final_mass_source"));
 
     let get = |record: &csv::StringRecord, idx: Option<usize>| -> String {
-        idx.and_then(|i| record.get(i))
-            .unwrap_or("")
-            .to_string()
+        idx.and_then(|i| record.get(i)).unwrap_or("").to_string()
     };
 
     let get_f64 = |record: &csv::StringRecord, idx: Option<usize>| -> f64 {
@@ -117,8 +110,8 @@ pub fn parse_gwtc3_csv(path: &Path) -> Result<Vec<GwEvent>, FetchError> {
 
     let mut events = Vec::new();
     for result in reader.records() {
-        let record = result
-            .map_err(|e| FetchError::Validation(format!("Record parse error: {}", e)))?;
+        let record =
+            result.map_err(|e| FetchError::Validation(format!("Record parse error: {}", e)))?;
 
         let m1 = get_f64(&record, idx_m1);
         let m2 = get_f64(&record, idx_m2);
@@ -157,9 +150,7 @@ pub fn parse_gwtc3_csv(path: &Path) -> Result<Vec<GwEvent>, FetchError> {
     Ok(events)
 }
 
-const GWTC3_URLS: &[&str] = &[
-    "https://gwosc.org/eventapi/csv/GWTC-3-confident/",
-];
+const GWTC3_URLS: &[&str] = &["https://gwosc.org/eventapi/csv/GWTC-3-confident/"];
 
 /// GWTC-3 dataset provider (35 confident O3b events only).
 pub struct Gwtc3Provider;
@@ -199,7 +190,12 @@ impl DatasetProvider for GwoscCombinedProvider {
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("gwosc_all_events.csv");
-        download_with_fallbacks(self.name(), GWOSC_COMBINED_URLS, &output, config.skip_existing)
+        download_with_fallbacks(
+            self.name(),
+            GWOSC_COMBINED_URLS,
+            &output,
+            config.skip_existing,
+        )
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
@@ -225,9 +221,21 @@ mod tests {
 
         // Verify all events have positive masses and distances
         for ev in &events {
-            assert!(ev.mass_1_source > 0.0, "mass_1 should be positive: {}", ev.id);
-            assert!(ev.mass_2_source > 0.0, "mass_2 should be positive: {}", ev.id);
-            assert!(ev.luminosity_distance > 0.0, "d_L should be positive: {}", ev.id);
+            assert!(
+                ev.mass_1_source > 0.0,
+                "mass_1 should be positive: {}",
+                ev.id
+            );
+            assert!(
+                ev.mass_2_source > 0.0,
+                "mass_2 should be positive: {}",
+                ev.id
+            );
+            assert!(
+                ev.luminosity_distance > 0.0,
+                "d_L should be positive: {}",
+                ev.id
+            );
         }
 
         eprintln!("Parsed {} GWTC-3 events", events.len());
@@ -248,11 +256,15 @@ mod tests {
         eprintln!("Parsed {} combined GWOSC events", events.len());
 
         // Verify that events with mass data have positive values
-        let with_mass: Vec<_> = events.iter()
+        let with_mass: Vec<_> = events
+            .iter()
             .filter(|e| e.mass_1_source > 0.0 && e.mass_2_source > 0.0)
             .collect();
-        assert!(with_mass.len() > 50, "Should have >50 events with mass data, got {}",
-            with_mass.len());
+        assert!(
+            with_mass.len() > 50,
+            "Should have >50 events with mass data, got {}",
+            with_mass.len()
+        );
         eprintln!("Events with valid mass data: {}", with_mass.len());
     }
 }

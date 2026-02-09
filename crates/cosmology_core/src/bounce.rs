@@ -17,7 +17,6 @@
 //! - Peter & Pinto-Neto (2008), PRD 78, 063506 [Bohmian bounce]
 //! - Eisenstein & Hu (1998), ApJ 496, 605 [BAO fitting formulae]
 
-
 /// Speed of light in km/s.
 pub const C_KM_S: f64 = 299792.458;
 
@@ -120,12 +119,7 @@ fn rk4_step(state: BounceState, dt: f64, params: &BounceParams) -> BounceState {
 /// Simulate bounce cosmology using RK4 integration.
 ///
 /// Starts at the bounce point (a=a0, H=0) and evolves forward in time.
-pub fn simulate_bounce(
-    params: &BounceParams,
-    t_end: f64,
-    steps: usize,
-    a0: f64,
-) -> BounceResult {
+pub fn simulate_bounce(params: &BounceParams, t_end: f64, steps: usize, a0: f64) -> BounceResult {
     let dt = t_end / steps as f64;
     let mut time = Vec::with_capacity(steps + 1);
     let mut a = Vec::with_capacity(steps + 1);
@@ -308,28 +302,31 @@ pub struct SyntheticBaoData {
 ///
 /// Mimics Pantheon+ distribution: redshifts in [0.01, 2.3] with
 /// Gaussian distance modulus errors of 0.10-0.15 mag.
-pub fn generate_synthetic_sn_data(n_sn: usize, omega_m_true: f64, h0_true: f64, seed: u64) -> SyntheticSnData {
+pub fn generate_synthetic_sn_data(
+    n_sn: usize,
+    omega_m_true: f64,
+    h0_true: f64,
+    seed: u64,
+) -> SyntheticSnData {
     use rand::prelude::*;
     use rand_distr::Normal;
 
     let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
 
     // Uniform redshifts in [0.01, 2.3], then sorted
-    let mut z: Vec<f64> = (0..n_sn)
-        .map(|_| rng.gen::<f64>() * 2.29 + 0.01)
-        .collect();
+    let mut z: Vec<f64> = (0..n_sn).map(|_| rng.gen::<f64>() * 2.29 + 0.01).collect();
     z.sort_by(|a: &f64, b: &f64| a.partial_cmp(b).unwrap());
 
-    let mu_true: Vec<f64> = z.iter()
+    let mu_true: Vec<f64> = z
+        .iter()
         .map(|&zi| distance_modulus(zi, omega_m_true, h0_true, 0.0))
         .collect();
 
     // Errors uniform in [0.10, 0.15]
-    let mu_err: Vec<f64> = (0..n_sn)
-        .map(|_| rng.gen::<f64>() * 0.05 + 0.10)
-        .collect();
+    let mu_err: Vec<f64> = (0..n_sn).map(|_| rng.gen::<f64>() * 0.05 + 0.10).collect();
 
-    let mu_obs: Vec<f64> = mu_true.iter()
+    let mu_obs: Vec<f64> = mu_true
+        .iter()
         .zip(mu_err.iter())
         .map(|(&mt, &me)| {
             let noise = Normal::new(0.0, me).unwrap();
@@ -352,19 +349,23 @@ pub fn generate_synthetic_bao_data(omega_m_true: f64, h0_true: f64, seed: u64) -
     let z_eff = vec![0.30, 0.51, 0.71, 0.93, 1.32, 1.49, 2.33];
     let r_d = bao_sound_horizon(omega_m_true, h0_true);
 
-    let dv_rd_true: Vec<f64> = z_eff.iter().map(|&zi| {
-        let d_l = luminosity_distance(zi, omega_m_true, h0_true, 0.0);
-        let d_c = d_l / (1.0 + zi);
-        let e_val = hubble_e_lcdm(zi, omega_m_true);
-        let d_h = C_KM_S / (h0_true * e_val);
-        let d_v = (zi * d_c * d_c * d_h).powf(1.0 / 3.0);
-        d_v / r_d
-    }).collect();
+    let dv_rd_true: Vec<f64> = z_eff
+        .iter()
+        .map(|&zi| {
+            let d_l = luminosity_distance(zi, omega_m_true, h0_true, 0.0);
+            let d_c = d_l / (1.0 + zi);
+            let e_val = hubble_e_lcdm(zi, omega_m_true);
+            let d_h = C_KM_S / (h0_true * e_val);
+            let d_v = (zi * d_c * d_c * d_h).powf(1.0 / 3.0);
+            d_v / r_d
+        })
+        .collect();
 
     // 2% errors
     let dv_rd_err: Vec<f64> = dv_rd_true.iter().map(|&v| 0.02 * v).collect();
 
-    let dv_rd_obs: Vec<f64> = dv_rd_true.iter()
+    let dv_rd_obs: Vec<f64> = dv_rd_true
+        .iter()
         .zip(dv_rd_err.iter())
         .map(|(&vt, &ve)| {
             let noise = Normal::new(0.0, ve).unwrap();
@@ -372,7 +373,11 @@ pub fn generate_synthetic_bao_data(omega_m_true: f64, h0_true: f64, seed: u64) -
         })
         .collect();
 
-    SyntheticBaoData { z_eff, dv_rd_obs, dv_rd_err }
+    SyntheticBaoData {
+        z_eff,
+        dv_rd_obs,
+        dv_rd_err,
+    }
 }
 
 // ---------------------------------------------------------------------------
@@ -397,7 +402,8 @@ pub fn chi2_bao(omega_m: f64, h0: f64, q_corr: f64, bao: &SyntheticBaoData) -> f
 
     let r_d = bao_sound_horizon(omega_m, h0);
 
-    bao.z_eff.iter()
+    bao.z_eff
+        .iter()
         .zip(bao.dv_rd_obs.iter())
         .zip(bao.dv_rd_err.iter())
         .map(|((&zi, &obs), &err)| {
@@ -457,8 +463,8 @@ fn bounded_nelder_mead<F: Fn(&[f64]) -> f64>(
 
     let alpha = 1.0; // reflection
     let gamma = 2.0; // expansion
-    let rho = 0.5;   // contraction
-    let sigma = 0.5;  // shrink
+    let rho = 0.5; // contraction
+    let sigma = 0.5; // shrink
 
     for _ in 0..max_iter {
         // Sort by function value
@@ -529,7 +535,8 @@ fn bounded_nelder_mead<F: Fn(&[f64]) -> f64>(
     }
 
     // Return best
-    let best_idx = fvals.iter()
+    let best_idx = fvals
+        .iter()
         .enumerate()
         .min_by(|(_, a), (_, b)| a.partial_cmp(b).unwrap())
         .unwrap()
@@ -547,11 +554,7 @@ fn bounded_nelder_mead<F: Fn(&[f64]) -> f64>(
 /// For "bounce": fits [omega_m, h0, q_corr].
 ///
 /// Returns a FitResult with best-fit parameters, chi2, AIC, and BIC.
-pub fn fit_model(
-    sn: &SyntheticSnData,
-    bao: &SyntheticBaoData,
-    is_bounce: bool,
-) -> FitResult {
+pub fn fit_model(sn: &SyntheticSnData, bao: &SyntheticBaoData, is_bounce: bool) -> FitResult {
     let n_data = sn.z.len() + bao.z_eff.len();
 
     if is_bounce {
@@ -565,7 +568,15 @@ pub fn fit_model(
         let n_params = 3;
         let aic = chi2_val + 2.0 * n_params as f64;
         let bic = chi2_val + n_params as f64 * (n_data as f64).ln();
-        FitResult { omega_m: best[0], h0: best[1], q_corr: best[2], chi2: chi2_val, n_params, aic, bic }
+        FitResult {
+            omega_m: best[0],
+            h0: best[1],
+            q_corr: best[2],
+            chi2: chi2_val,
+            n_params,
+            aic,
+            bic,
+        }
     } else {
         let (best, chi2_val) = bounded_nelder_mead(
             |p| chi2_sn(p[0], p[1], 0.0, sn) + chi2_bao(p[0], p[1], 0.0, bao),
@@ -577,7 +588,15 @@ pub fn fit_model(
         let n_params = 2;
         let aic = chi2_val + 2.0 * n_params as f64;
         let bic = chi2_val + n_params as f64 * (n_data as f64).ln();
-        FitResult { omega_m: best[0], h0: best[1], q_corr: 0.0, chi2: chi2_val, n_params, aic, bic }
+        FitResult {
+            omega_m: best[0],
+            h0: best[1],
+            q_corr: 0.0,
+            chi2: chi2_val,
+            n_params,
+            aic,
+            bic,
+        }
     }
 }
 
@@ -711,7 +730,10 @@ mod tests {
     #[test]
     fn test_chi2_calculation() {
         let z = vec![0.1, 0.5, 1.0];
-        let mu_true: Vec<f64> = z.iter().map(|&zi| distance_modulus(zi, 0.3, 70.0, 0.0)).collect();
+        let mu_true: Vec<f64> = z
+            .iter()
+            .map(|&zi| distance_modulus(zi, 0.3, 70.0, 0.0))
+            .collect();
         let mu_err = vec![0.1, 0.1, 0.1];
 
         // With true parameters, chi2 should be 0

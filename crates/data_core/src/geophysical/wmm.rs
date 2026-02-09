@@ -7,7 +7,7 @@
 //! Source: NOAA/NCEI, https://www.ncei.noaa.gov/products/world-magnetic-model
 //! Reference: Chulliat et al. (2024), NOAA Technical Report
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::PathBuf;
 
 /// WMM 2025 coefficient file URLs.
@@ -22,7 +22,9 @@ const WMM_URLS: &[&str] = &[
 pub struct Wmm2025Provider;
 
 impl DatasetProvider for Wmm2025Provider {
-    fn name(&self) -> &str { "WMM 2025 Coefficients" }
+    fn name(&self) -> &str {
+        "WMM 2025 Coefficients"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("wmm2025.zip");

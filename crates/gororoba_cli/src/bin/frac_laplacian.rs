@@ -5,8 +5,8 @@
 use clap::{Parser, ValueEnum};
 use ndarray::{Array2, Array3};
 use spectral_core::{
-    fractional_laplacian_periodic_1d, fractional_laplacian_dirichlet_1d,
-    fractional_laplacian_periodic_2d, fractional_laplacian_dirichlet_2d,
+    fractional_laplacian_dirichlet_1d, fractional_laplacian_dirichlet_2d,
+    fractional_laplacian_periodic_1d, fractional_laplacian_periodic_2d,
     fractional_laplacian_periodic_3d,
 };
 use std::f64::consts::PI;
@@ -118,7 +118,10 @@ fn run_1d(args: &Args) {
     let l2_u: f64 = u.iter().map(|x| x * x).sum::<f64>().sqrt();
     let l2_result: f64 = result.iter().map(|x| x * x).sum::<f64>().sqrt();
 
-    eprintln!("max|u| = {:.6e}, max|(-Delta)^s u| = {:.6e}", max_u, max_result);
+    eprintln!(
+        "max|u| = {:.6e}, max|(-Delta)^s u| = {:.6e}",
+        max_u, max_result
+    );
     eprintln!("L2(u) = {:.6e}, L2(result) = {:.6e}", l2_u, l2_result);
 
     if args.json {
@@ -139,7 +142,8 @@ fn run_1d(args: &Args) {
                 x_coords[i].to_string(),
                 u[i].to_string(),
                 result[i].to_string(),
-            ]).unwrap();
+            ])
+            .unwrap();
         }
         wtr.flush().unwrap();
         println!("Wrote {} points to {}", n, path);
@@ -199,8 +203,10 @@ fn run_2d(args: &Args) {
     let max_u: f64 = u.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
     let max_result: f64 = result.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
 
-    eprintln!("2D grid {}x{}, max|u| = {:.6e}, max|result| = {:.6e}",
-        n, n, max_u, max_result);
+    eprintln!(
+        "2D grid {}x{}, max|u| = {:.6e}, max|result| = {:.6e}",
+        n, n, max_u, max_result
+    );
 
     if args.json {
         println!("{{");
@@ -248,8 +254,10 @@ fn run_3d(args: &Args) {
     let max_u: f64 = u.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
     let max_result: f64 = result.iter().cloned().fold(f64::NEG_INFINITY, f64::max);
 
-    eprintln!("3D grid {}x{}x{}, max|u| = {:.6e}, max|result| = {:.6e}",
-        n, n, n, max_u, max_result);
+    eprintln!(
+        "3D grid {}x{}x{}, max|u| = {:.6e}, max|result| = {:.6e}",
+        n, n, n, max_u, max_result
+    );
 
     if args.json {
         println!("{{");

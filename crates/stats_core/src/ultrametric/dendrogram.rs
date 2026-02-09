@@ -143,10 +143,7 @@ pub fn cophenetic_distance_matrix(
 }
 
 /// Compute Pearson correlation between two flat upper-triangle matrices.
-pub fn cophenetic_correlation(
-    original_dists: &[f64],
-    cophenetic_dists: &[f64],
-) -> f64 {
+pub fn cophenetic_correlation(original_dists: &[f64], cophenetic_dists: &[f64]) -> f64 {
     assert_eq!(original_dists.len(), cophenetic_dists.len());
     let n = original_dists.len() as f64;
 
@@ -187,7 +184,11 @@ pub fn hierarchical_ultrametric_test(
     seed: u64,
 ) -> DendrogramResult {
     hierarchical_ultrametric_test_with_method(
-        dist_matrix, n_points, n_permutations, seed, Method::Single,
+        dist_matrix,
+        n_points,
+        n_permutations,
+        seed,
+        Method::Single,
     )
 }
 
@@ -223,7 +224,10 @@ pub fn hierarchical_ultrametric_test_with_method(
 
     // Ultrametric fraction on original distances
     let obs_frac = super::ultrametric_fraction_from_matrix(
-        dist_matrix, n_points, 100_000.min(n_pairs * 10), seed,
+        dist_matrix,
+        n_points,
+        100_000.min(n_pairs * 10),
+        seed,
     );
 
     // Null distribution: shuffle the distance matrix labels
@@ -243,8 +247,7 @@ pub fn hierarchical_ultrametric_test_with_method(
         let mut perm_dists = vec![0.0; n_pairs];
         for i in 0..n_points {
             for j in (i + 1)..n_points {
-                perm_dists[idx(i, j, n_points)] =
-                    dist_matrix[idx(perm[i], perm[j], n_points)];
+                perm_dists[idx(i, j, n_points)] = dist_matrix[idx(perm[i], perm[j], n_points)];
             }
         }
 
@@ -303,19 +306,31 @@ pub fn multi_linkage_test(
     n_permutations: usize,
     seed: u64,
 ) -> MultiLinkageResult {
-    let methods = [Method::Single, Method::Complete, Method::Average, Method::Ward];
+    let methods = [
+        Method::Single,
+        Method::Complete,
+        Method::Average,
+        Method::Ward,
+    ];
 
     let results: Vec<DendrogramResult> = methods
         .iter()
         .enumerate()
         .map(|(i, &m)| {
             hierarchical_ultrametric_test_with_method(
-                dist_matrix, n_points, n_permutations, seed + i as u64 * 100, m,
+                dist_matrix,
+                n_points,
+                n_permutations,
+                seed + i as u64 * 100,
+                m,
             )
         })
         .collect();
 
-    let n_pass = results.iter().filter(|r| r.verdict == Verdict::Pass).count();
+    let n_pass = results
+        .iter()
+        .filter(|r| r.verdict == Verdict::Pass)
+        .count();
     let linkage_stable = n_pass >= 2;
 
     MultiLinkageResult {
@@ -391,11 +406,13 @@ mod tests {
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let n = 20;
         let coords: Vec<(f64, f64, f64)> = (0..n)
-            .map(|_| (
-                rng.gen_range(0.0..100.0),
-                rng.gen_range(0.0..100.0),
-                rng.gen_range(0.0..100.0),
-            ))
+            .map(|_| {
+                (
+                    rng.gen_range(0.0..100.0),
+                    rng.gen_range(0.0..100.0),
+                    rng.gen_range(0.0..100.0),
+                )
+            })
             .collect();
 
         let dists = euclidean_distance_matrix_3d(&coords);
@@ -425,11 +442,13 @@ mod tests {
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let n = 10;
         let coords: Vec<(f64, f64, f64)> = (0..n)
-            .map(|_| (
-                rng.gen_range(0.0..100.0),
-                rng.gen_range(0.0..100.0),
-                rng.gen_range(0.0..100.0),
-            ))
+            .map(|_| {
+                (
+                    rng.gen_range(0.0..100.0),
+                    rng.gen_range(0.0..100.0),
+                    rng.gen_range(0.0..100.0),
+                )
+            })
             .collect();
 
         let dists = euclidean_distance_matrix_3d(&coords);
@@ -469,11 +488,13 @@ mod tests {
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let n = 15;
         let coords: Vec<(f64, f64, f64)> = (0..n)
-            .map(|_| (
-                rng.gen_range(0.0..100.0),
-                rng.gen_range(0.0..100.0),
-                rng.gen_range(0.0..100.0),
-            ))
+            .map(|_| {
+                (
+                    rng.gen_range(0.0..100.0),
+                    rng.gen_range(0.0..100.0),
+                    rng.gen_range(0.0..100.0),
+                )
+            })
             .collect();
 
         let dists = euclidean_distance_matrix_3d(&coords);
@@ -497,7 +518,11 @@ mod tests {
         let result = multi_linkage_test(&dist_matrix, 4, 20, 42);
 
         assert_eq!(result.results.len(), 4);
-        let methods: Vec<&str> = result.results.iter().map(|r| r.linkage_method.as_str()).collect();
+        let methods: Vec<&str> = result
+            .results
+            .iter()
+            .map(|r| r.linkage_method.as_str())
+            .collect();
         assert!(methods.contains(&"single"));
         assert!(methods.contains(&"complete"));
         assert!(methods.contains(&"average"));
@@ -508,9 +533,8 @@ mod tests {
     fn test_complete_linkage_on_ultrametric() {
         // Perfect ultrametric should work well under complete linkage too
         let dist_matrix = vec![1.0, 2.0, 2.0, 2.0, 2.0, 1.0];
-        let result = hierarchical_ultrametric_test_with_method(
-            &dist_matrix, 4, 20, 42, Method::Complete,
-        );
+        let result =
+            hierarchical_ultrametric_test_with_method(&dist_matrix, 4, 20, 42, Method::Complete);
 
         assert!(
             result.cophenetic_correlation > 0.9,

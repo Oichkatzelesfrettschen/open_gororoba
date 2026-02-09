@@ -205,11 +205,7 @@ pub fn force(phi: &[Octonion], params: &FieldParams) -> Vec<Octonion> {
 }
 
 /// One Stormer-Verlet (leapfrog) step, second-order symplectic.
-pub fn stormer_verlet_step(
-    phi: &mut [Octonion],
-    pi: &mut [Octonion],
-    params: &FieldParams,
-) {
+pub fn stormer_verlet_step(phi: &mut [Octonion], pi: &mut [Octonion], params: &FieldParams) {
     let n = phi.len();
     let dt = params.dt;
 
@@ -314,7 +310,11 @@ pub fn gaussian_wave_packet(params: &FieldParams) -> (Vec<Octonion>, Vec<Octonio
 }
 
 /// Initialize a standing wave in e_1 direction.
-pub fn standing_wave(params: &FieldParams, mode: usize, amplitude: f64) -> (Vec<Octonion>, Vec<Octonion>) {
+pub fn standing_wave(
+    params: &FieldParams,
+    mode: usize,
+    amplitude: f64,
+) -> (Vec<Octonion>, Vec<Octonion>) {
     let n = params.n;
     let l = params.l;
     let dx = l / n as f64;
@@ -387,8 +387,8 @@ pub fn measure_dispersion(params: &FieldParams, n_modes: usize) -> Vec<Dispersio
 
 /// Simple FFT peak frequency finder (using real FFT approximation).
 fn fft_peak_frequency(signal: &[f64], dt: f64) -> f64 {
-    use rustfft::FftPlanner;
     use num_complex::Complex64;
+    use rustfft::FftPlanner;
 
     let n = signal.len();
     let mut planner = FftPlanner::new();
@@ -444,7 +444,12 @@ mod tests {
         let ba = oct_multiply(&e2, &e1);
         // ab = -ba for imaginary units
         for i in 0..8 {
-            assert!((ab[i] + ba[i]).abs() < 1e-10, "ab[{0}] + ba[{0}] = {1}", i, ab[i] + ba[i]);
+            assert!(
+                (ab[i] + ba[i]).abs() < 1e-10,
+                "ab[{0}] + ba[{0}] = {1}",
+                i,
+                ab[i] + ba[i]
+            );
         }
     }
 
@@ -458,7 +463,12 @@ mod tests {
         let norm_b = oct_norm_sq(&b).sqrt();
         let norm_ab = oct_norm_sq(&ab).sqrt();
         let expected = norm_a * norm_b;
-        assert!((norm_ab - expected).abs() < 1e-10, "||ab|| = {} vs ||a||*||b|| = {}", norm_ab, expected);
+        assert!(
+            (norm_ab - expected).abs() < 1e-10,
+            "||ab|| = {} vs ||a||*||b|| = {}",
+            norm_ab,
+            expected
+        );
     }
 
     #[test]
@@ -484,7 +494,9 @@ mod tests {
         let result = evolve(&phi0, &pi0, &params, 100);
 
         let e0 = result.energies[0];
-        let max_drift: f64 = result.energies.iter()
+        let max_drift: f64 = result
+            .energies
+            .iter()
             .map(|&e| (e - e0).abs() / e0)
             .fold(0.0_f64, f64::max);
 
@@ -516,7 +528,12 @@ mod tests {
         let results = measure_dispersion(&params, 2);
 
         for r in &results {
-            assert!(r.rel_error < 0.05, "Mode {} rel_error = {}", r.mode, r.rel_error);
+            assert!(
+                r.rel_error < 0.05,
+                "Mode {} rel_error = {}",
+                r.mode,
+                r.rel_error
+            );
         }
     }
 }

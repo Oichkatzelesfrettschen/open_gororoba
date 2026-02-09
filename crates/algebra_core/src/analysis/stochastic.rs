@@ -85,9 +85,9 @@ pub struct GBMParams {
 impl Default for GBMParams {
     fn default() -> Self {
         Self {
-            mu: 0.05,    // 5% drift
-            sigma: 0.2,  // 20% volatility
-            s0: 100.0,   // Initial price
+            mu: 0.05,   // 5% drift
+            sigma: 0.2, // 20% volatility
+            s0: 100.0,  // Initial price
         }
     }
 }
@@ -138,7 +138,7 @@ pub struct LevyParams {
 impl Default for LevyParams {
     fn default() -> Self {
         Self {
-            alpha: 1.5,   // Heavy-tailed but not Cauchy
+            alpha: 1.5, // Heavy-tailed but not Cauchy
             scale: 1.0,
             x0: 0.0,
         }
@@ -180,7 +180,8 @@ pub fn generate_levy_flight(n: usize, params: LevyParams, seed: u64) -> Vec<f64>
             // General stable case
             let t = u * alpha;
             let s = (1.0 + t.tan().powi(2)).powf(1.0 / (2.0 * alpha));
-            s * (t / (u.cos().powf(1.0 / alpha))) * ((u.cos() - t.cos()) / w).powf((1.0 - alpha) / alpha)
+            s * (t / (u.cos().powf(1.0 / alpha)))
+                * ((u.cos() - t.cos()) / w).powf((1.0 - alpha) / alpha)
         };
 
         x += params.scale * step;
@@ -253,12 +254,20 @@ pub fn fit_ou_parameters(data: &[f64], dt: f64) -> MeanReversionResult {
     let cov_xdx = sum_xdx / n_f - mean_x * mean_dx;
     let var_x = sum_xx / n_f - mean_x * mean_x;
 
-    let b = if var_x.abs() > 1e-12 { cov_xdx / var_x } else { 0.0 };
+    let b = if var_x.abs() > 1e-12 {
+        cov_xdx / var_x
+    } else {
+        0.0
+    };
     let a = mean_dx - b * mean_x;
 
     // Extract parameters
     let theta = -b / dt;
-    let mu = if theta.abs() > 1e-12 { a / (theta * dt) } else { mean_x };
+    let mu = if theta.abs() > 1e-12 {
+        a / (theta * dt)
+    } else {
+        mean_x
+    };
 
     // Estimate sigma from residual variance
     let mut ss_res = 0.0;
@@ -271,8 +280,16 @@ pub fn fit_ou_parameters(data: &[f64], dt: f64) -> MeanReversionResult {
     }
 
     let sigma = (ss_res / n_f / dt).sqrt();
-    let r_squared = if ss_tot > 1e-12 { 1.0 - ss_res / ss_tot } else { 0.0 };
-    let half_life = if theta > 0.0 { 2.0_f64.ln() / theta } else { f64::INFINITY };
+    let r_squared = if ss_tot > 1e-12 {
+        1.0 - ss_res / ss_tot
+    } else {
+        0.0
+    };
+    let half_life = if theta > 0.0 {
+        2.0_f64.ln() / theta
+    } else {
+        f64::INFINITY
+    };
 
     MeanReversionResult {
         theta: theta.max(0.0),
@@ -380,7 +397,11 @@ pub fn analyze_anomalous_diffusion(trajectory: &[f64]) -> AnomalousDiffusionResu
         ss_tot += (log_msd[i] - mean_y).powi(2);
         ss_res += (log_msd[i] - y_pred).powi(2);
     }
-    let r_squared = if ss_tot > 1e-12 { 1.0 - ss_res / ss_tot } else { 0.0 };
+    let r_squared = if ss_tot > 1e-12 {
+        1.0 - ss_res / ss_tot
+    } else {
+        0.0
+    };
 
     let diffusion_type = if alpha < 0.5 {
         DiffusionType::StronglySubdiffusive
@@ -420,7 +441,10 @@ mod tests {
 
         // Mean should approach mu over time
         let late_mean: f64 = path[500..].iter().sum::<f64>() / 500.0;
-        assert!((late_mean - params.mu).abs() < 2.0, "OU should mean-revert to mu");
+        assert!(
+            (late_mean - params.mu).abs() < 2.0,
+            "OU should mean-revert to mu"
+        );
     }
 
     #[test]
@@ -429,7 +453,10 @@ mod tests {
         let path = generate_gbm(100, 0.01, params, 123);
 
         assert_eq!(path.len(), 100);
-        assert!(path.iter().all(|&x| x > 0.0), "GBM should always be positive");
+        assert!(
+            path.iter().all(|&x| x > 0.0),
+            "GBM should always be positive"
+        );
         assert!((path[0] - params.s0).abs() < 1e-10);
     }
 
@@ -455,8 +482,11 @@ mod tests {
         let diffusion = analyze_anomalous_diffusion(&path);
 
         // Should be close to normal diffusion
-        assert!(diffusion.alpha > 0.7 && diffusion.alpha < 1.3,
-            "Gaussian limit should give alpha near 1, got {}", diffusion.alpha);
+        assert!(
+            diffusion.alpha > 0.7 && diffusion.alpha < 1.3,
+            "Gaussian limit should give alpha near 1, got {}",
+            diffusion.alpha
+        );
     }
 
     #[test]
@@ -472,8 +502,12 @@ mod tests {
         let fitted = fit_ou_parameters(&path, 0.01);
 
         // Fitted parameters should be close to true values
-        assert!((fitted.mu - true_params.mu).abs() < 1.0,
-            "Fitted mu {} should be close to {}", fitted.mu, true_params.mu);
+        assert!(
+            (fitted.mu - true_params.mu).abs() < 1.0,
+            "Fitted mu {} should be close to {}",
+            fitted.mu,
+            true_params.mu
+        );
         assert!(fitted.r_squared > 0.0);
     }
 
@@ -484,8 +518,11 @@ mod tests {
         let result = analyze_anomalous_diffusion(&fbm);
 
         // For fBm, MSD ~ t^{2H}, so alpha should be near 2*H = 1.6
-        assert!(result.alpha > 1.0,
-            "fBm with H=0.8 should be superdiffusive, got alpha={}", result.alpha);
+        assert!(
+            result.alpha > 1.0,
+            "fBm with H=0.8 should be superdiffusive, got alpha={}",
+            result.alpha
+        );
     }
 
     #[test]

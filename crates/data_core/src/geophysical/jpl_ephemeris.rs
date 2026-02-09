@@ -6,7 +6,7 @@
 //! Source: JPL Horizons, https://ssd.jpl.nasa.gov/horizons/
 //! Reference: Giorgini et al. (1996), Bull. AAS 28, 1158
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_to_string};
+use crate::fetcher::{download_to_string, DatasetProvider, FetchConfig, FetchError};
 use std::fs;
 use std::path::{Path, PathBuf};
 
@@ -30,12 +30,7 @@ pub struct EphemerisPoint {
 /// Build a Horizons REST API URL for a single body.
 ///
 /// Queries observer table (OBS_TABLE) for geocentric apparent RA/Dec.
-pub fn horizons_query_url(
-    body_id: &str,
-    start: &str,
-    stop: &str,
-    step: &str,
-) -> String {
+pub fn horizons_query_url(body_id: &str, start: &str, stop: &str, step: &str) -> String {
     format!(
         "https://ssd.jpl.nasa.gov/api/horizons.api?\
          format=text&\
@@ -127,7 +122,9 @@ const PLANET_IDS: &[(&str, &str)] = &[
 pub struct JplEphemerisProvider;
 
 impl DatasetProvider for JplEphemerisProvider {
-    fn name(&self) -> &str { "JPL Horizons Planetary Ephemeris" }
+    fn name(&self) -> &str {
+        "JPL Horizons Planetary Ephemeris"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("jpl_planets_2020_2030.csv");
@@ -136,7 +133,10 @@ impl DatasetProvider for JplEphemerisProvider {
             return Ok(output);
         }
 
-        eprintln!("  Fetching {} from JPL Horizons (8 planets)...", self.name());
+        eprintln!(
+            "  Fetching {} from JPL Horizons (8 planets)...",
+            self.name()
+        );
         let mut all_lines = vec!["body,jd,date,ra,dec,delta".to_string()];
 
         for (body_id, body_name) in PLANET_IDS {
@@ -146,10 +146,7 @@ impl DatasetProvider for JplEphemerisProvider {
             }
 
             eprintln!("    Querying {}...", body_name);
-            let points = fetch_horizons(
-                body_id, body_name,
-                "2020-01-01", "2030-01-01", "30d",
-            )?;
+            let points = fetch_horizons(body_id, body_name, "2020-01-01", "2030-01-01", "30d")?;
 
             for pt in &points {
                 all_lines.push(format!(
@@ -186,9 +183,8 @@ pub fn parse_jpl_ephemeris_csv(path: &Path) -> Result<Vec<EphemerisPoint>, Fetch
         .map_err(|e| FetchError::Validation(format!("Header read error: {}", e)))?
         .clone();
 
-    let col = |name: &str| -> Option<usize> {
-        headers.iter().position(|h| h.eq_ignore_ascii_case(name))
-    };
+    let col =
+        |name: &str| -> Option<usize> { headers.iter().position(|h| h.eq_ignore_ascii_case(name)) };
 
     let idx_body = col("body");
     let idx_jd = col("jd");

@@ -75,12 +75,18 @@ fn parse_one_record(rec: &serde_json::Value) -> Option<AflowMaterial> {
 
     let nspecies = rec
         .get("nspecies")
-        .and_then(|v| v.as_u64().or_else(|| v.as_str().and_then(|s| s.parse().ok())))
+        .and_then(|v| {
+            v.as_u64()
+                .or_else(|| v.as_str().and_then(|s| s.parse().ok()))
+        })
         .unwrap_or(species.len() as u64) as usize;
 
     let natoms = rec
         .get("natoms")
-        .and_then(|v| v.as_u64().or_else(|| v.as_str().and_then(|s| s.parse().ok())))
+        .and_then(|v| {
+            v.as_u64()
+                .or_else(|| v.as_str().and_then(|s| s.parse().ok()))
+        })
         .unwrap_or(0) as usize;
 
     let enthalpy_formation_atom = parse_f64_field(rec, "enthalpy_formation_atom")?;
@@ -90,7 +96,10 @@ fn parse_one_record(rec: &serde_json::Value) -> Option<AflowMaterial> {
 
     let spacegroup = rec
         .get("spacegroup_relax")
-        .and_then(|v| v.as_u64().or_else(|| v.as_str().and_then(|s| s.parse().ok())))
+        .and_then(|v| {
+            v.as_u64()
+                .or_else(|| v.as_str().and_then(|s| s.parse().ok()))
+        })
         .map(|n| n as u32);
 
     let pearson_symbol = rec
@@ -177,10 +186,9 @@ pub fn fetch_aflow_dataset(config: &FetchConfig) -> Result<PathBuf, FetchError> 
     loop {
         eprintln!("  AFLOW page {page} ...");
         let body = fetch_aflow_page(page)?;
-        let page_records: Vec<serde_json::Value> = serde_json::from_str(&body)
-            .map_err(|e| {
-                FetchError::Validation(format!("AFLOW page {page} JSON parse error: {e}"))
-            })?;
+        let page_records: Vec<serde_json::Value> = serde_json::from_str(&body).map_err(|e| {
+            FetchError::Validation(format!("AFLOW page {page} JSON parse error: {e}"))
+        })?;
 
         if page_records.is_empty() {
             break;
@@ -344,7 +352,11 @@ mod tests {
         .to_string();
 
         let records = parse_aflow_records(&json).unwrap();
-        assert_eq!(records.len(), 0, "records with empty species should be skipped");
+        assert_eq!(
+            records.len(),
+            0,
+            "records with empty species should be skipped"
+        );
     }
 
     #[test]
@@ -375,7 +387,11 @@ mod tests {
         );
         // All records should have non-empty species
         for rec in &records {
-            assert!(!rec.species.is_empty(), "Record {} has empty species", rec.auid);
+            assert!(
+                !rec.species.is_empty(),
+                "Record {} has empty species",
+                rec.auid
+            );
         }
     }
 

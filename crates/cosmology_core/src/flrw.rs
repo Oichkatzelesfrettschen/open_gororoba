@@ -107,12 +107,7 @@ impl FlatLCDM {
         if z <= 0.0 {
             return 0.0;
         }
-        let integral = gl_integrate(
-            |zp| 1.0 / hubble_e_lcdm(zp, self.omega_m),
-            0.0,
-            z,
-            50,
-        );
+        let integral = gl_integrate(|zp| 1.0 / hubble_e_lcdm(zp, self.omega_m), 0.0, z, 50);
         self.hubble_length() * integral
     }
 
@@ -503,7 +498,10 @@ mod tests {
         let d_exact = cosmo.comoving_distance(z);
         let d_linear = cosmo.comoving_distance_linear(z);
         let rel_err = (d_exact - d_linear).abs() / d_exact;
-        assert!(rel_err < 0.01, "Linear approx error at z=0.01: {rel_err:.4}");
+        assert!(
+            rel_err < 0.01,
+            "Linear approx error at z=0.01: {rel_err:.4}"
+        );
     }
 
     #[test]
@@ -796,13 +794,19 @@ mod tests {
         let z = 2.5;
         let lambda_obs = apply_redshift_to_wavelength(lambda_emit, z);
         let z_recovered = wavelength_to_redshift(lambda_obs, lambda_emit);
-        assert!((z_recovered - z).abs() < 1e-14, "z_recovered = {z_recovered}");
+        assert!(
+            (z_recovered - z).abs() < 1e-14,
+            "z_recovered = {z_recovered}"
+        );
     }
 
     #[test]
     fn test_apply_redshift_increases_wavelength() {
         let lambda_obs = apply_redshift_to_wavelength(500.0, 1.0);
-        assert!((lambda_obs - 1000.0).abs() < 1e-10, "lambda_obs = {lambda_obs}");
+        assert!(
+            (lambda_obs - 1000.0).abs() < 1e-10,
+            "lambda_obs = {lambda_obs}"
+        );
     }
 
     #[test]
@@ -842,6 +846,9 @@ mod tests {
         let z = 2.0;
         let expected = 1.0 / (3.0_f64.powi(4)); // (1+2)^{-4} = 1/81
         let f = redshift_flux_dimming(z);
-        assert!((f - expected).abs() < 1e-15, "f(z=2) = {f}, expected {expected}");
+        assert!(
+            (f - expected).abs() < 1e-15,
+            "f(z=2) = {f}, expected {expected}"
+        );
     }
 }

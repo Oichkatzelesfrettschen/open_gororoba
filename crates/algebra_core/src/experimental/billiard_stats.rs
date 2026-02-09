@@ -46,18 +46,27 @@ use rand::prelude::*;
 pub const E10_ADJACENCY: [[bool; 10]; 10] = {
     let mut a = [[false; 10]; 10];
     // E8 spine: 0-1-2-3-4-5
-    a[0][1] = true; a[1][0] = true;
-    a[1][2] = true; a[2][1] = true;
-    a[2][3] = true; a[3][2] = true;
-    a[3][4] = true; a[4][3] = true;
-    a[4][5] = true; a[5][4] = true;
+    a[0][1] = true;
+    a[1][0] = true;
+    a[1][2] = true;
+    a[2][1] = true;
+    a[2][3] = true;
+    a[3][2] = true;
+    a[3][4] = true;
+    a[4][3] = true;
+    a[4][5] = true;
+    a[5][4] = true;
     // E8 branch: 4-6-7
-    a[4][6] = true; a[6][4] = true;
-    a[6][7] = true; a[7][6] = true;
+    a[4][6] = true;
+    a[6][4] = true;
+    a[6][7] = true;
+    a[7][6] = true;
     // Affine: 0-8
-    a[0][8] = true; a[8][0] = true;
+    a[0][8] = true;
+    a[8][0] = true;
     // Hyperbolic: 8-9
-    a[8][9] = true; a[9][8] = true;
+    a[8][9] = true;
+    a[9][8] = true;
     a
 };
 
@@ -142,17 +151,21 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
     // Transition counts for MI and CMI
     let mut trans_counts = [[0u64; N_WALLS]; N_WALLS];
     let mut from_counts = [0u64; N_WALLS];
-    
+
     // Triple counts for CMI: N[i, j, k] where S_{t-1}=i, S_t=j, S_{t+1}=k
     let mut triple_counts = [[[0u64; N_WALLS]; N_WALLS]; N_WALLS];
     let mut pair_counts = [[0u64; N_WALLS]; N_WALLS]; // N[i, j] for S_{t-1}=i, S_t=j
 
     for (t, pair) in sequence.windows(2).enumerate() {
         let (i, j) = (pair[0], pair[1]);
-        if i >= N_WALLS || j >= N_WALLS { continue; }
+        if i >= N_WALLS || j >= N_WALLS {
+            continue;
+        }
 
         let adjacent = E10_ADJACENCY[i][j];
-        if adjacent { e10_connected += 1; }
+        if adjacent {
+            e10_connected += 1;
+        }
         e10_total += 1;
 
         // Sector classification
@@ -162,11 +175,17 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
             (true, true) => {
                 if i != j {
                     e8_total += 1;
-                    if adjacent { e8_connected += 1; }
+                    if adjacent {
+                        e8_connected += 1;
+                    }
                 }
             }
-            (false, false) => { hyp += 1; }
-            _ => { mixed += 1; }
+            (false, false) => {
+                hyp += 1;
+            }
+            _ => {
+                mixed += 1;
+            }
         }
 
         // Commutation: A_{ij} = 0 iff not adjacent and i != j
@@ -188,23 +207,39 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
         }
     }
 
-    let r_e8 = if e8_total > 0 { e8_connected as f64 / e8_total as f64 } else { 0.0 };
-    let r_e10 = if e10_total > 0 { e10_connected as f64 / e10_total as f64 } else { 0.0 };
-    let commutation_rate = if n_trans > 0 { commuting as f64 / n_trans as f64 } else { 0.0 };
+    let r_e8 = if e8_total > 0 {
+        e8_connected as f64 / e8_total as f64
+    } else {
+        0.0
+    };
+    let r_e10 = if e10_total > 0 {
+        e10_connected as f64 / e10_total as f64
+    } else {
+        0.0
+    };
+    let commutation_rate = if n_trans > 0 {
+        commuting as f64 / n_trans as f64
+    } else {
+        0.0
+    };
 
     // Mutual information: I(S_t; S_{t+1}) = sum_{i,j} p(i,j) log(p(i,j) / (p(i) * p(j)))
     let total_f = n_trans as f64;
     let mut to_counts = [0u64; N_WALLS];
     for pair in sequence.windows(2) {
         let j = pair[1];
-        if j < N_WALLS { to_counts[j] += 1; }
+        if j < N_WALLS {
+            to_counts[j] += 1;
+        }
     }
 
     let mut mi = 0.0;
     for i in 0..N_WALLS {
         for j in 0..N_WALLS {
             let nij = trans_counts[i][j];
-            if nij == 0 { continue; }
+            if nij == 0 {
+                continue;
+            }
             let p_ij = nij as f64 / total_f;
             let p_i = from_counts[i] as f64 / total_f;
             let p_j = to_counts[j] as f64 / total_f;
@@ -217,8 +252,12 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
     // Conditional Mutual Information: I(S_{t+1}; S_{t-1} | S_t)
     // CMI = sum_{i,j,k} p(i,j,k) log( p(j)p(i,j,k) / (p(i,j)p(j,k)) )
     let mut cmi = 0.0;
-    let n_triples = if sequence.len() >= 3 { (sequence.len() - 2) as f64 } else { 0.0 };
-    
+    let n_triples = if sequence.len() >= 3 {
+        (sequence.len() - 2) as f64
+    } else {
+        0.0
+    };
+
     if n_triples > 0.0 {
         // We need marginals for triples
         let mut p_j = [0.0; N_WALLS];
@@ -227,14 +266,20 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
         }
 
         for j in 0..N_WALLS {
-            if p_j[j] <= 0.0 { continue; }
+            if p_j[j] <= 0.0 {
+                continue;
+            }
             for i in 0..N_WALLS {
                 let nij = pair_counts[i][j];
-                if nij == 0 { continue; }
+                if nij == 0 {
+                    continue;
+                }
                 let p_ij = nij as f64 / n_triples;
 
                 for (k, &nijk) in triple_counts[i][j].iter().enumerate() {
-                    if nijk == 0 { continue; }
+                    if nijk == 0 {
+                        continue;
+                    }
                     let p_ijk = nijk as f64 / n_triples;
 
                     // We need p(j,k) for the same triple set
@@ -243,7 +288,7 @@ pub fn compute_locality_metrics(sequence: &[usize]) -> LocalityMetrics {
                     let p_jk = njk as f64 / n_triples;
 
                     if p_ij > 0.0 && p_jk > 0.0 {
-                        cmi += p_ijk * ( (p_j[j] * p_ijk) / (p_ij * p_jk) ).ln();
+                        cmi += p_ijk * ((p_j[j] * p_ijk) / (p_ij * p_jk)).ln();
                     }
                 }
             }
@@ -302,9 +347,7 @@ pub fn generate_null_sequence(
     rng: &mut impl Rng,
 ) -> Vec<usize> {
     match model {
-        NullModel::Uniform => {
-            (0..length).map(|_| rng.gen_range(0..N_WALLS)).collect()
-        }
+        NullModel::Uniform => (0..length).map(|_| rng.gen_range(0..N_WALLS)).collect(),
         NullModel::IidEmpirical => {
             let freq = wall_frequencies(empirical);
             let dist = cumulative_distribution(&freq);
@@ -324,9 +367,7 @@ pub fn generate_null_sequence(
             }
             shuffled
         }
-        NullModel::Markov => {
-            generate_markov_sequence(empirical, length, rng)
-        }
+        NullModel::Markov => generate_markov_sequence(empirical, length, rng),
         NullModel::CommutationShuffle(passes) => {
             generate_commutation_shuffle(empirical, length, *passes, rng)
         }
@@ -337,7 +378,9 @@ pub fn generate_null_sequence(
 fn wall_frequencies(sequence: &[usize]) -> [f64; N_WALLS] {
     let mut counts = [0u64; N_WALLS];
     for &w in sequence {
-        if w < N_WALLS { counts[w] += 1; }
+        if w < N_WALLS {
+            counts[w] += 1;
+        }
     }
     let total = counts.iter().sum::<u64>() as f64;
     let mut freq = [0.0; N_WALLS];
@@ -378,11 +421,7 @@ fn sample_from_cdf(cdf: &[f64; N_WALLS], rng: &mut impl Rng) -> usize {
 }
 
 /// Generate a first-order Markov sequence from empirical transition matrix.
-fn generate_markov_sequence(
-    empirical: &[usize],
-    length: usize,
-    rng: &mut impl Rng,
-) -> Vec<usize> {
+fn generate_markov_sequence(empirical: &[usize], length: usize, rng: &mut impl Rng) -> Vec<usize> {
     if empirical.is_empty() || length == 0 {
         return vec![];
     }
@@ -503,8 +542,13 @@ pub struct SectorMetrics {
 pub fn compute_sector_metrics(sequence: &[usize]) -> SectorMetrics {
     if sequence.len() < 2 {
         return SectorMetrics {
-            r_e8: 0.0, r_e10: 0.0, r_mixed: 0.0, r_hyp: 0.0,
-            e8_fraction: 0.0, mixed_fraction: 0.0, hyp_fraction: 0.0,
+            r_e8: 0.0,
+            r_e10: 0.0,
+            r_mixed: 0.0,
+            r_hyp: 0.0,
+            e8_fraction: 0.0,
+            mixed_fraction: 0.0,
+            hyp_fraction: 0.0,
         };
     }
 
@@ -519,39 +563,77 @@ pub fn compute_sector_metrics(sequence: &[usize]) -> SectorMetrics {
 
     for pair in sequence.windows(2) {
         let (i, j) = (pair[0], pair[1]);
-        if i >= N_WALLS || j >= N_WALLS || i == j { continue; }
+        if i >= N_WALLS || j >= N_WALLS || i == j {
+            continue;
+        }
 
         let adjacent = E10_ADJACENCY[i][j];
         e10_total += 1;
-        if adjacent { e10_adj += 1; }
+        if adjacent {
+            e10_adj += 1;
+        }
 
         let i_e8 = i < N_E8;
         let j_e8 = j < N_E8;
         match (i_e8, j_e8) {
             (true, true) => {
                 e8_total += 1;
-                if adjacent { e8_adj += 1; }
+                if adjacent {
+                    e8_adj += 1;
+                }
             }
             (false, false) => {
                 hyp_total += 1;
-                if adjacent { hyp_adj += 1; }
+                if adjacent {
+                    hyp_adj += 1;
+                }
             }
             _ => {
                 mixed_total += 1;
-                if adjacent { mixed_adj += 1; }
+                if adjacent {
+                    mixed_adj += 1;
+                }
             }
         }
     }
 
     let total = e10_total as f64;
     SectorMetrics {
-        r_e8: if e8_total > 0 { e8_adj as f64 / e8_total as f64 } else { 0.0 },
-        r_e10: if e10_total > 0 { e10_adj as f64 / e10_total as f64 } else { 0.0 },
-        r_mixed: if mixed_total > 0 { mixed_adj as f64 / mixed_total as f64 } else { 0.0 },
-        r_hyp: if hyp_total > 0 { hyp_adj as f64 / hyp_total as f64 } else { 0.0 },
-        e8_fraction: if total > 0.0 { e8_total as f64 / total } else { 0.0 },
-        mixed_fraction: if total > 0.0 { mixed_total as f64 / total } else { 0.0 },
-        hyp_fraction: if total > 0.0 { hyp_total as f64 / total } else { 0.0 },
+        r_e8: if e8_total > 0 {
+            e8_adj as f64 / e8_total as f64
+        } else {
+            0.0
+        },
+        r_e10: if e10_total > 0 {
+            e10_adj as f64 / e10_total as f64
+        } else {
+            0.0
+        },
+        r_mixed: if mixed_total > 0 {
+            mixed_adj as f64 / mixed_total as f64
+        } else {
+            0.0
+        },
+        r_hyp: if hyp_total > 0 {
+            hyp_adj as f64 / hyp_total as f64
+        } else {
+            0.0
+        },
+        e8_fraction: if total > 0.0 {
+            e8_total as f64 / total
+        } else {
+            0.0
+        },
+        mixed_fraction: if total > 0.0 {
+            mixed_total as f64 / total
+        } else {
+            0.0
+        },
+        hyp_fraction: if total > 0.0 {
+            hyp_total as f64 / total
+        } else {
+            0.0
+        },
     }
 }
 
@@ -629,7 +711,10 @@ pub fn permutation_test_mi(
 }
 
 /// Summarize a permutation test from observed value and null distribution.
-pub(crate) fn summarize_permutation_test(observed: f64, null_values: &[f64]) -> PermutationTestResult {
+pub(crate) fn summarize_permutation_test(
+    observed: f64,
+    null_values: &[f64],
+) -> PermutationTestResult {
     let k = null_values.len();
     if k == 0 {
         return PermutationTestResult {
@@ -659,7 +744,11 @@ pub(crate) fn summarize_permutation_test(observed: f64, null_values: &[f64]) -> 
     let ci_lower = sorted[(0.025 * k as f64) as usize];
     let ci_upper = sorted[((0.975 * k as f64) as usize).min(k - 1)];
 
-    let effect_size = if std > 1e-15 { (observed - mean) / std } else { 0.0 };
+    let effect_size = if std > 1e-15 {
+        (observed - mean) / std
+    } else {
+        0.0
+    };
 
     PermutationTestResult {
         observed,
@@ -772,12 +861,9 @@ pub struct Claim1Result {
 /// alternative solver configurations (no renormalization, larger epsilon).
 ///
 /// Returns `None` if the billiard module produces no usable sequences.
-pub fn verify_claim1(
-    n_seeds: usize,
-    n_bounces: usize,
-) -> Claim1Result {
-    use crate::physics::billiard_sim::HyperbolicBilliard;
+pub fn verify_claim1(n_seeds: usize, n_bounces: usize) -> Claim1Result {
     use crate::lie::kac_moody::E10RootSystem;
+    use crate::physics::billiard_sim::HyperbolicBilliard;
 
     let e10 = E10RootSystem::new();
 
@@ -821,10 +907,14 @@ pub fn verify_claim1(
     let n_measurable = r_values.iter().filter(|&&r| r > 0.0).count();
 
     // Robustness deltas
-    let max_renorm_delta = r_values.iter().zip(r_values_no_renorm.iter())
+    let max_renorm_delta = r_values
+        .iter()
+        .zip(r_values_no_renorm.iter())
         .map(|(a, b)| (a - b).abs())
         .fold(0.0f64, f64::max);
-    let max_eps_delta = r_values.iter().zip(r_values_large_eps.iter())
+    let max_eps_delta = r_values
+        .iter()
+        .zip(r_values_large_eps.iter())
         .map(|(a, b)| (a - b).abs())
         .fold(0.0f64, f64::max);
 
@@ -857,7 +947,11 @@ pub fn claim1_summary(result: &Claim1Result) -> (String, bool) {
     let robust = result.max_renorm_delta < 0.2 && result.max_eps_delta < 0.2;
     let supported = above_threshold && fraction_ok && robust;
 
-    let status = if supported { "SUPPORTED" } else { "NOT SUPPORTED" };
+    let status = if supported {
+        "SUPPORTED"
+    } else {
+        "NOT SUPPORTED"
+    };
 
     let summary = format!(
         "Claim 1 ({status}): r_e8 robustness across {n} seeds\n\
@@ -984,8 +1078,8 @@ pub fn fano_structure_analysis(
     n_bounces: usize,
     n_permutations: usize,
 ) -> FanoStructureAnalysis {
-    use crate::physics::billiard_sim::HyperbolicBilliard;
     use crate::lie::kac_moody::E10RootSystem;
+    use crate::physics::billiard_sim::HyperbolicBilliard;
 
     let e10 = E10RootSystem::new();
     let mut billiard = HyperbolicBilliard::from_e10(&e10, seed);
@@ -1003,10 +1097,10 @@ pub fn fano_structure_analysis_from_sequence(
     let locality = compute_locality_metrics(sequence);
     let sectors = compute_sector_metrics(sequence);
     let chi_squared = chi_squared_e8_transitions(sequence);
-    let perm_test_uniform = permutation_test_r_e8(
-        sequence, &NullModel::Uniform, n_permutations, seed);
-    let perm_test_empirical = permutation_test_r_e8(
-        sequence, &NullModel::IidEmpirical, n_permutations, seed + 1);
+    let perm_test_uniform =
+        permutation_test_r_e8(sequence, &NullModel::Uniform, n_permutations, seed);
+    let perm_test_empirical =
+        permutation_test_r_e8(sequence, &NullModel::IidEmpirical, n_permutations, seed + 1);
     let trans = transition_matrix(sequence);
     let stationary = stationary_distribution(&trans);
 
@@ -1084,8 +1178,10 @@ pub fn fano_analysis_report(a: &FanoStructureAnalysis) -> String {
         eu = a.perm_test_uniform.effect_size,
         pe = a.perm_test_empirical.p_value,
         ee = a.perm_test_empirical.effect_size,
-        freq = (0..N_E8).map(|i| format!("  w{i}={:.3}", a.e8_wall_freq[i]))
-            .collect::<Vec<_>>().join("\n"),
+        freq = (0..N_E8)
+            .map(|i| format!("  w{i}={:.3}", a.e8_wall_freq[i]))
+            .collect::<Vec<_>>()
+            .join("\n"),
     )
 }
 
@@ -1104,7 +1200,8 @@ mod tests {
             for j in 0..N_WALLS {
                 assert_eq!(
                     E10_ADJACENCY[i][j], E10_ADJACENCY[j][i],
-                    "Asymmetric at ({}, {})", i, j
+                    "Asymmetric at ({}, {})",
+                    i, j
                 );
             }
             // No self-loops
@@ -1159,7 +1256,10 @@ mod tests {
         // All 5 transitions are E8-internal and connected
         assert_eq!(m.n_e8_transitions, 5);
         assert!((m.r_e8 - 1.0).abs() < 1e-10, "All connected => r_e8 = 1.0");
-        assert!(m.commutation_rate < 1e-10, "All adjacent => commutation = 0");
+        assert!(
+            m.commutation_rate < 1e-10,
+            "All adjacent => commutation = 0"
+        );
     }
 
     #[test]
@@ -1170,7 +1270,10 @@ mod tests {
         assert_eq!(m.n_e8_transitions, 5);
         // None of these are adjacent in E8
         assert!(m.r_e8 < 1e-10, "No adjacent pairs => r_e8 = 0.0");
-        assert!((m.commutation_rate - 1.0).abs() < 1e-10, "All non-adjacent => commutation = 1.0");
+        assert!(
+            (m.commutation_rate - 1.0).abs() < 1e-10,
+            "All non-adjacent => commutation = 1.0"
+        );
     }
 
     #[test]
@@ -1184,8 +1287,8 @@ mod tests {
         // 8->0: mixed (adjacent! 0-8 edge)
         // 0->1: E8 connected
         assert_eq!(m.n_mixed_transitions, 2); // 3->8, 8->0
-        assert_eq!(m.n_hyp_transitions, 2);    // 8->9, 9->8
-        assert_eq!(m.n_e8_transitions, 1);     // 0->1
+        assert_eq!(m.n_hyp_transitions, 2); // 8->9, 9->8
+        assert_eq!(m.n_e8_transitions, 1); // 0->1
     }
 
     #[test]
@@ -1194,8 +1297,11 @@ mod tests {
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let seq: Vec<usize> = (0..10000).map(|_| rng.gen_range(0..N_WALLS)).collect();
         let m = compute_locality_metrics(&seq);
-        assert!(m.mutual_information < 0.05,
-            "MI for iid should be near 0, got {}", m.mutual_information);
+        assert!(
+            m.mutual_information < 0.05,
+            "MI for iid should be near 0, got {}",
+            m.mutual_information
+        );
     }
 
     #[test]
@@ -1203,8 +1309,11 @@ mod tests {
         // Cycling 0-1-0-1-0-1 has high MI
         let seq: Vec<usize> = (0..1000).map(|i| i % 2).collect();
         let m = compute_locality_metrics(&seq);
-        assert!(m.mutual_information > 0.5,
-            "MI for deterministic cycle should be high, got {}", m.mutual_information);
+        assert!(
+            m.mutual_information > 0.5,
+            "MI for deterministic cycle should be high, got {}",
+            m.mutual_information
+        );
     }
 
     #[test]
@@ -1223,8 +1332,10 @@ mod tests {
         let empirical: Vec<usize> = (0..1000).map(|i| i % 4).collect();
         let null = generate_null_sequence(&NullModel::IidEmpirical, 5000, &empirical, &mut rng);
         assert_eq!(null.len(), 5000);
-        assert!(null.iter().all(|&w| w < 4),
-            "IidEmpirical should respect empirical support");
+        assert!(
+            null.iter().all(|&w| w < 4),
+            "IidEmpirical should respect empirical support"
+        );
     }
 
     #[test]
@@ -1235,7 +1346,10 @@ mod tests {
         empirical.extend(vec![1; 300]);
         empirical.extend(vec![2; 200]);
         let null = generate_null_sequence(
-            &NullModel::DegreePreserving, empirical.len(), &empirical, &mut rng,
+            &NullModel::DegreePreserving,
+            empirical.len(),
+            &empirical,
+            &mut rng,
         );
         assert_eq!(null.len(), empirical.len());
         // Count wall 0 in null (should be exactly 500 since it's a shuffle)
@@ -1251,13 +1365,17 @@ mod tests {
         let null = generate_null_sequence(&NullModel::Markov, 1000, &empirical, &mut rng);
         assert_eq!(null.len(), 1000);
         // Most transitions should be 0->1 or 1->0 (the Markov chain learned this)
-        let alternating: usize = null.windows(2)
+        let alternating: usize = null
+            .windows(2)
             .filter(|w| (w[0] == 0 && w[1] == 1) || (w[0] == 1 && w[1] == 0))
             .count();
         let total = null.len() - 1;
-        assert!(alternating as f64 / total as f64 > 0.8,
+        assert!(
+            alternating as f64 / total as f64 > 0.8,
             "Markov null should reproduce alternating pattern, got {}/{}",
-            alternating, total);
+            alternating,
+            total
+        );
     }
 
     #[test]
@@ -1265,10 +1383,15 @@ mod tests {
         // E8 spine sequence (highly connected): should be significant vs uniform
         let seq: Vec<usize> = (0..500).map(|i| i % 6).collect(); // 0-1-2-3-4-5 cycle
         let result = permutation_test_r_e8(&seq, &NullModel::Uniform, 200, 42);
-        assert!(result.p_value < 0.05,
-            "Connected sequence should be significant vs uniform, p={}", result.p_value);
-        assert!(result.observed > result.null_mean,
-            "Observed r should exceed null mean");
+        assert!(
+            result.p_value < 0.05,
+            "Connected sequence should be significant vs uniform, p={}",
+            result.p_value
+        );
+        assert!(
+            result.observed > result.null_mean,
+            "Observed r should exceed null mean"
+        );
     }
 
     #[test]
@@ -1278,25 +1401,39 @@ mod tests {
         let seq: Vec<usize> = (0..500).map(|_| rng.gen_range(0..N_WALLS)).collect();
         let result = permutation_test_r_e8(&seq, &NullModel::IidEmpirical, 200, 456);
         // p-value should be moderate (not extremely low)
-        assert!(result.p_value > 0.01,
-            "Random vs IidEmpirical should not be highly significant, p={}", result.p_value);
+        assert!(
+            result.p_value > 0.01,
+            "Random vs IidEmpirical should not be highly significant, p={}",
+            result.p_value
+        );
     }
 
     #[test]
     fn test_permutation_test_phipson_smyth() {
         // p-value is never exactly 0 (Phipson-Smyth correction)
         // Use a sequence that is maximally connected
-        let seq: Vec<usize> = (0..1000).map(|i| {
-            // Traverse E8 spine back and forth
-            let phase = i % 10;
-            if phase < 6 { phase } else { 10 - phase }
-        }).collect();
+        let seq: Vec<usize> = (0..1000)
+            .map(|i| {
+                // Traverse E8 spine back and forth
+                let phase = i % 10;
+                if phase < 6 {
+                    phase
+                } else {
+                    10 - phase
+                }
+            })
+            .collect();
         let result = permutation_test_r_e8(&seq, &NullModel::Uniform, 100, 42);
-        assert!(result.p_value > 0.0,
-            "p-value must never be exactly 0 (Phipson-Smyth)");
+        assert!(
+            result.p_value > 0.0,
+            "p-value must never be exactly 0 (Phipson-Smyth)"
+        );
         // Should be very small though
-        assert!(result.p_value < 0.02,
-            "Highly connected sequence should have p < 0.02, got {}", result.p_value);
+        assert!(
+            result.p_value < 0.02,
+            "Highly connected sequence should have p < 0.02, got {}",
+            result.p_value
+        );
     }
 
     #[test]
@@ -1323,7 +1460,11 @@ mod tests {
         }
         let pi = stationary_distribution(&trans);
         for &p in &pi {
-            assert!((p - 0.1).abs() < 1e-6, "Expected uniform stationary, got {}", p);
+            assert!(
+                (p - 0.1).abs() < 1e-6,
+                "Expected uniform stationary, got {}",
+                p
+            );
         }
     }
 
@@ -1335,17 +1476,27 @@ mod tests {
             row[0] = 1;
         }
         let pi = stationary_distribution(&trans);
-        assert!(pi[0] > 0.99, "Absorbing state 0 should have pi[0] ~ 1.0, got {}", pi[0]);
+        assert!(
+            pi[0] > 0.99,
+            "Absorbing state 0 should have pi[0] ~ 1.0, got {}",
+            pi[0]
+        );
     }
 
     #[test]
     fn test_effect_size_sign() {
         // Positive effect size when observed > null mean
         let result = summarize_permutation_test(0.5, &vec![0.2, 0.3, 0.25, 0.22, 0.28]);
-        assert!(result.effect_size > 0.0, "Observed > mean => positive effect size");
+        assert!(
+            result.effect_size > 0.0,
+            "Observed > mean => positive effect size"
+        );
 
         let result2 = summarize_permutation_test(0.1, &vec![0.5, 0.6, 0.55, 0.52, 0.58]);
-        assert!(result2.effect_size < 0.0, "Observed < mean => negative effect size");
+        assert!(
+            result2.effect_size < 0.0,
+            "Observed < mean => negative effect size"
+        );
     }
 
     #[test]
@@ -1354,7 +1505,10 @@ mod tests {
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let empirical = vec![0, 1, 2, 3, 4, 5, 6, 7, 0, 1, 2, 3];
         let null = generate_null_sequence(
-            &NullModel::CommutationShuffle(100), empirical.len(), &empirical, &mut rng,
+            &NullModel::CommutationShuffle(100),
+            empirical.len(),
+            &empirical,
+            &mut rng,
         );
         assert_eq!(null.len(), empirical.len());
         // Same elements (sorted)
@@ -1362,8 +1516,10 @@ mod tests {
         let mut sorted_null = null.clone();
         sorted_emp.sort_unstable();
         sorted_null.sort_unstable();
-        assert_eq!(sorted_emp, sorted_null,
-            "CommutationShuffle must preserve element multiset");
+        assert_eq!(
+            sorted_emp, sorted_null,
+            "CommutationShuffle must preserve element multiset"
+        );
     }
 
     #[test]
@@ -1373,11 +1529,16 @@ mod tests {
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let empirical = vec![0, 1, 2, 3, 4, 5]; // all consecutive are adjacent in E8
         let null = generate_null_sequence(
-            &NullModel::CommutationShuffle(100), empirical.len(), &empirical, &mut rng,
+            &NullModel::CommutationShuffle(100),
+            empirical.len(),
+            &empirical,
+            &mut rng,
         );
         // Should be identical since no commuting pairs exist
-        assert_eq!(null, empirical,
-            "All-adjacent sequence should be invariant under CommutationShuffle");
+        assert_eq!(
+            null, empirical,
+            "All-adjacent sequence should be invariant under CommutationShuffle"
+        );
     }
 
     #[test]
@@ -1387,11 +1548,21 @@ mod tests {
         let mut rng = ChaCha8Rng::seed_from_u64(42);
         let empirical = vec![0, 5, 0, 5, 0, 5, 0, 5, 0, 5];
         let null = generate_null_sequence(
-            &NullModel::CommutationShuffle(100), empirical.len(), &empirical, &mut rng,
+            &NullModel::CommutationShuffle(100),
+            empirical.len(),
+            &empirical,
+            &mut rng,
         );
         // At least some positions should differ (with high probability)
-        let diffs: usize = empirical.iter().zip(null.iter()).filter(|(&a, &b)| a != b).count();
-        assert!(diffs > 0, "CommutationShuffle should swap some commuting pairs");
+        let diffs: usize = empirical
+            .iter()
+            .zip(null.iter())
+            .filter(|(&a, &b)| a != b)
+            .count();
+        assert!(
+            diffs > 0,
+            "CommutationShuffle should swap some commuting pairs"
+        );
     }
 
     #[test]
@@ -1401,13 +1572,15 @@ mod tests {
         // so CommutationShuffle has NO non-adjacent pairs to swap.
         let pattern = [0, 1, 2, 1];
         let seq: Vec<usize> = (0..100).map(|i| pattern[i % 4]).collect();
-        let result = permutation_test_r_e8(
-            &seq, &NullModel::CommutationShuffle(50), 100, 42,
-        );
+        let result = permutation_test_r_e8(&seq, &NullModel::CommutationShuffle(50), 100, 42);
         // r_E8 should be identical: shuffle cannot swap any pairs
-        assert!((result.observed - result.null_mean).abs() < 1e-10,
+        assert!(
+            (result.observed - result.null_mean).abs() < 1e-10,
             "CommutationShuffle on all-adjacent should not change r_E8, \
-             obs={}, null={}", result.observed, result.null_mean);
+             obs={}, null={}",
+            result.observed,
+            result.null_mean
+        );
     }
 
     #[test]
@@ -1426,8 +1599,8 @@ mod tests {
         let seq = vec![0, 8, 9];
         let sm = compute_sector_metrics(&seq);
         assert_eq!(sm.mixed_fraction, 0.5); // 0->8 is mixed
-        assert_eq!(sm.hyp_fraction, 0.5);   // 8->9 is hyp
-        // r_mixed: 0->8 is adjacent (0-8 edge), so r_mixed = 1.0
+        assert_eq!(sm.hyp_fraction, 0.5); // 8->9 is hyp
+                                          // r_mixed: 0->8 is adjacent (0-8 edge), so r_mixed = 1.0
         assert!((sm.r_mixed - 1.0).abs() < 1e-10);
         // r_hyp: 8->9 is adjacent, so r_hyp = 1.0
         assert!((sm.r_hyp - 1.0).abs() < 1e-10);
@@ -1480,9 +1653,12 @@ mod tests {
 
         // The mean should be well above the uniform null (0.25)
         // We use a generous margin since this is a statistical claim
-        assert!(result.mean_r > result.null_baseline,
+        assert!(
+            result.mean_r > result.null_baseline,
             "mean r_e8 ({:.4}) should exceed null baseline ({:.4})",
-            result.mean_r, result.null_baseline);
+            result.mean_r,
+            result.null_baseline
+        );
     }
 
     #[test]
@@ -1490,9 +1666,11 @@ mod tests {
         // At least 60% of seeds should have r_e8 > null
         let result = verify_claim1(20, 1000);
 
-        assert!(result.fraction_above_null >= 0.6,
+        assert!(
+            result.fraction_above_null >= 0.6,
             "Only {:.1}% of seeds above null -- expected >= 60%",
-            result.fraction_above_null * 100.0);
+            result.fraction_above_null * 100.0
+        );
     }
 
     #[test]
@@ -1513,8 +1691,7 @@ mod tests {
         let result2 = verify_claim1(5, 300);
 
         for (a, b) in result1.r_values.iter().zip(result2.r_values.iter()) {
-            assert!((a - b).abs() < 1e-15,
-                "Non-deterministic: {} vs {}", a, b);
+            assert!((a - b).abs() < 1e-15, "Non-deterministic: {} vs {}", a, b);
         }
     }
 
@@ -1524,12 +1701,18 @@ mod tests {
         let result = verify_claim1(10, 500);
 
         // Renormalization delta should be moderate (< 0.5 at worst)
-        assert!(result.max_renorm_delta < 0.5,
-            "Renormalization delta too large: {:.4}", result.max_renorm_delta);
+        assert!(
+            result.max_renorm_delta < 0.5,
+            "Renormalization delta too large: {:.4}",
+            result.max_renorm_delta
+        );
 
         // Epsilon delta should be moderate
-        assert!(result.max_eps_delta < 0.5,
-            "Epsilon delta too large: {:.4}", result.max_eps_delta);
+        assert!(
+            result.max_eps_delta < 0.5,
+            "Epsilon delta too large: {:.4}",
+            result.max_eps_delta
+        );
     }
 
     // -----------------------------------------------------------------------
@@ -1548,8 +1731,11 @@ mod tests {
         assert!(result.expected_per_cell > 0.0);
         // For truly uniform, chi-squared should be moderate (not extremely large)
         // With 10K samples, we expect chi2 ~ df = 55 under null
-        assert!(result.chi_sq < 200.0,
-            "chi2={:.1} too large for near-uniform sequence", result.chi_sq);
+        assert!(
+            result.chi_sq < 200.0,
+            "chi2={:.1} too large for near-uniform sequence",
+            result.chi_sq
+        );
     }
 
     #[test]
@@ -1560,8 +1746,11 @@ mod tests {
 
         // Only 0->1 and 1->0 transitions exist; rest are 0
         // This should give very high chi-squared
-        assert!(result.chi_sq > 100.0,
-            "chi2={:.1} should be large for deterministic alternation", result.chi_sq);
+        assert!(
+            result.chi_sq > 100.0,
+            "chi2={:.1} should be large for deterministic alternation",
+            result.chi_sq
+        );
     }
 
     #[test]
@@ -1589,8 +1778,11 @@ mod tests {
         // Wall frequencies should sum to ~1.0
         let freq_sum: f64 = analysis.e8_wall_freq.iter().sum();
         if freq_sum > 0.0 {
-            assert!((freq_sum - 1.0).abs() < 1e-10,
-                "E8 wall frequencies should sum to 1.0, got {:.6}", freq_sum);
+            assert!(
+                (freq_sum - 1.0).abs() < 1e-10,
+                "E8 wall frequencies should sum to 1.0, got {:.6}",
+                freq_sum
+            );
         }
     }
 

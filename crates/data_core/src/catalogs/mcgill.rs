@@ -7,7 +7,7 @@
 //! Source: http://www.physics.mcgill.ca/~pulsar/magnetar/main.html
 //! Reference: Olausen & Kaspi (2014), ApJS 212, 6
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
 
 /// A magnetar from the McGill catalog.
@@ -84,7 +84,9 @@ pub fn parse_mcgill_csv(path: &Path) -> Result<Vec<Magnetar>, FetchError> {
     let idx_gb = col("gb").or_else(|| col("b"));
     let idx_p = col("period").or_else(|| col("p0"));
     let idx_pdot = col("pdot").or_else(|| col("p1"));
-    let idx_b = col("dipole").or_else(|| col("bfield")).or_else(|| col("b_"));
+    let idx_b = col("dipole")
+        .or_else(|| col("bfield"))
+        .or_else(|| col("b_"));
     let idx_age = col("age");
     let idx_edot = col("edot").or_else(|| col("lsd"));
     let idx_dist = col("dist");
@@ -139,15 +141,15 @@ pub fn parse_mcgill_csv(path: &Path) -> Result<Vec<Magnetar>, FetchError> {
 /// Number of fields in the Magnetar struct.
 pub const MAGNETAR_FIELD_COUNT: usize = 13;
 
-const MCGILL_URLS: &[&str] = &[
-    "http://www.physics.mcgill.ca/~pulsar/magnetar/TabO1.csv",
-];
+const MCGILL_URLS: &[&str] = &["http://www.physics.mcgill.ca/~pulsar/magnetar/TabO1.csv"];
 
 /// McGill magnetar catalog dataset provider.
 pub struct McgillProvider;
 
 impl DatasetProvider for McgillProvider {
-    fn name(&self) -> &str { "McGill Magnetar Catalog" }
+    fn name(&self) -> &str {
+        "McGill Magnetar Catalog"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("mcgill_magnetars.csv");
@@ -204,8 +206,11 @@ SGR TEST,0,0,0,0,5.0,0,0,0,0,3.0-5.0,0,0
         let magnetars = parse_mcgill_csv(f.path()).unwrap();
         assert_eq!(magnetars.len(), 1);
         // Distance should be midpoint of 3.0 and 5.0
-        assert!((magnetars[0].distance - 4.0).abs() < 0.01,
-            "range midpoint should be 4.0, got {}", magnetars[0].distance);
+        assert!(
+            (magnetars[0].distance - 4.0).abs() < 0.01,
+            "range midpoint should be 4.0, got {}",
+            magnetars[0].distance
+        );
     }
 
     #[test]

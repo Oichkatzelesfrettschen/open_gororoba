@@ -109,9 +109,18 @@ fn main() {
 
     // 2. Extract mass columns
     let columns: Vec<(&str, Vec<f64>)> = vec![
-        ("mass_1_source", extract_mass_column(&events, |e| e.mass_1_source, "mass_1_source")),
-        ("mass_2_source", extract_mass_column(&events, |e| e.mass_2_source, "mass_2_source")),
-        ("chirp_mass_source", extract_mass_column(&events, |e| e.chirp_mass_source, "chirp_mass_source")),
+        (
+            "mass_1_source",
+            extract_mass_column(&events, |e| e.mass_1_source, "mass_1_source"),
+        ),
+        (
+            "mass_2_source",
+            extract_mass_column(&events, |e| e.mass_2_source, "mass_2_source"),
+        ),
+        (
+            "chirp_mass_source",
+            extract_mass_column(&events, |e| e.chirp_mass_source, "chirp_mass_source"),
+        ),
     ];
 
     // 3. Run dip tests
@@ -129,8 +138,12 @@ fn main() {
             continue;
         }
 
-        eprintln!("  Running dip test on {} (N={}, {} permutations)...",
-            name, values.len(), cli.n_permutations);
+        eprintln!(
+            "  Running dip test on {} (N={}, {} permutations)...",
+            name,
+            values.len(),
+            cli.n_permutations
+        );
 
         let result = hartigan_dip_test(values, cli.n_permutations, &mut rng);
 
@@ -164,8 +177,15 @@ fn main() {
         std::process::exit(1);
     });
 
-    wtr.write_record(["column", "n_events", "dip_statistic", "p_value", "n_permutations", "verdict"])
-        .expect("Failed to write CSV header");
+    wtr.write_record([
+        "column",
+        "n_events",
+        "dip_statistic",
+        "p_value",
+        "n_permutations",
+        "verdict",
+    ])
+    .expect("Failed to write CSV header");
 
     for (name, n, dip, p, n_perm) in &results {
         let verdict = if *p < 0.05 { "MULTIMODAL" } else { "UNIMODAL" };

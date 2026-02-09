@@ -11,8 +11,8 @@
 //! # Literature
 //! - Reggiani (2024): Geometry of sedenion zero divisors
 
-use nalgebra::{DMatrix, SVD};
 use crate::construction::cayley_dickson::cd_multiply;
+use nalgebra::{DMatrix, SVD};
 
 /// Dimensions of left and right annihilator subspaces.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -136,7 +136,10 @@ mod tests {
         b[15] = -1.0;
 
         let prod = cd_multiply(&a, &b);
-        assert!(prod.iter().all(|&x| x.abs() < 1e-12), "Should be zero product");
+        assert!(
+            prod.iter().all(|&x| x.abs() < 1e-12),
+            "Should be zero product"
+        );
 
         let info = annihilator_info(&a, 16, 1e-12);
         assert!(info.left_nullity >= 1, "Left nullity should be >= 1");

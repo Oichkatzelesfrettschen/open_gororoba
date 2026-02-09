@@ -8,8 +8,7 @@
 //! Chains: https://pla.esac.esa.int/
 
 use crate::fetcher::{
-    DatasetProvider, FetchConfig, FetchError,
-    download_with_fallbacks, extract_tar_gz,
+    download_with_fallbacks, extract_tar_gz, DatasetProvider, FetchConfig, FetchError,
 };
 use std::path::PathBuf;
 
@@ -78,19 +77,25 @@ const PLANCK_CHAIN_URLS: &[&str] = &[
 /// WMAP 9-year full MCMC chain URLs.
 ///
 /// WMAP 9-year MCMC chains from LAMBDA. ~100 MB.
-const WMAP9_CHAIN_URLS: &[&str] = &[
-    "https://lambda.gsfc.nasa.gov/data/map/dr5/dcp/chains/wmap_lcdm_wmap9_chains_v5.tar.gz",
-];
+const WMAP9_CHAIN_URLS: &[&str] =
+    &["https://lambda.gsfc.nasa.gov/data/map/dr5/dcp/chains/wmap_lcdm_wmap9_chains_v5.tar.gz"];
 
 /// Planck full MCMC chains dataset provider.
 pub struct PlanckChainsProvider;
 
 impl DatasetProvider for PlanckChainsProvider {
-    fn name(&self) -> &str { "Planck 2018 MCMC Chains" }
+    fn name(&self) -> &str {
+        "Planck 2018 MCMC Chains"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("planck2018_chains.zip");
-        download_with_fallbacks(self.name(), PLANCK_CHAIN_URLS, &output, config.skip_existing)
+        download_with_fallbacks(
+            self.name(),
+            PLANCK_CHAIN_URLS,
+            &output,
+            config.skip_existing,
+        )
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
@@ -102,7 +107,9 @@ impl DatasetProvider for PlanckChainsProvider {
 pub struct Wmap9ChainsProvider;
 
 impl DatasetProvider for Wmap9ChainsProvider {
-    fn name(&self) -> &str { "WMAP 9yr MCMC Chains" }
+    fn name(&self) -> &str {
+        "WMAP 9yr MCMC Chains"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("wmap9_chains.tar.gz");
@@ -136,15 +143,25 @@ const PLANCK_SUMMARY_URLS: &[&str] = &[
 pub struct PlanckSummaryProvider;
 
 impl DatasetProvider for PlanckSummaryProvider {
-    fn name(&self) -> &str { "Planck 2018 Summary" }
+    fn name(&self) -> &str {
+        "Planck 2018 Summary"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("planck2018_base_params.txt");
-        download_with_fallbacks(self.name(), PLANCK_SUMMARY_URLS, &output, config.skip_existing)
+        download_with_fallbacks(
+            self.name(),
+            PLANCK_SUMMARY_URLS,
+            &output,
+            config.skip_existing,
+        )
     }
 
     fn is_cached(&self, config: &FetchConfig) -> bool {
-        config.output_dir.join("planck2018_base_params.txt").exists()
+        config
+            .output_dir
+            .join("planck2018_base_params.txt")
+            .exists()
     }
 }
 
@@ -152,9 +169,7 @@ impl DatasetProvider for PlanckSummaryProvider {
 ///
 /// The .margestats file has a header line followed by rows:
 /// `param_name  mean  sddev  ...`
-pub fn parse_margestats(
-    content: &str,
-) -> Vec<(String, f64, f64)> {
+pub fn parse_margestats(content: &str) -> Vec<(String, f64, f64)> {
     let mut results = Vec::new();
     let mut header_seen = false;
 

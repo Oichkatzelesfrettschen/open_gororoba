@@ -206,7 +206,9 @@ pub fn permutation_test_generic<C: ConstraintSystem + ?Sized>(
 pub struct E10DynkinSystem;
 
 impl ConstraintSystem for E10DynkinSystem {
-    fn n_generators(&self) -> usize { 10 }
+    fn n_generators(&self) -> usize {
+        10
+    }
 
     fn adjacent(&self, i: usize, j: usize) -> bool {
         if i == j || i >= 10 || j >= 10 {
@@ -215,7 +217,9 @@ impl ConstraintSystem for E10DynkinSystem {
         super::billiard_stats::E10_ADJACENCY[i][j]
     }
 
-    fn name(&self) -> &str { "E10 Dynkin billiard" }
+    fn name(&self) -> &str {
+        "E10 Dynkin billiard"
+    }
 }
 
 /// Sedenion (dim=16) zero-divisor adjacency constraint system.
@@ -256,7 +260,7 @@ impl SedenionZdSystem {
             // Collect all unique basis indices from this box-kite's assessors
             let mut indices = Vec::new();
             for a in &bk.assessors {
-                indices.push(a.low);  // 1-7
+                indices.push(a.low); // 1-7
                 indices.push(a.high); // 8-15
             }
             indices.sort();
@@ -281,7 +285,9 @@ impl SedenionZdSystem {
 }
 
 impl ConstraintSystem for SedenionZdSystem {
-    fn n_generators(&self) -> usize { 15 }
+    fn n_generators(&self) -> usize {
+        15
+    }
 
     fn adjacent(&self, i: usize, j: usize) -> bool {
         if i == j || i >= 15 || j >= 15 {
@@ -290,7 +296,9 @@ impl ConstraintSystem for SedenionZdSystem {
         self.zd_adjacent[i][j]
     }
 
-    fn name(&self) -> &str { "Sedenion ZD adjacency" }
+    fn name(&self) -> &str {
+        "Sedenion ZD adjacency"
+    }
 }
 
 /// ET DMZ adjacency constraint system for a given CD level.
@@ -357,7 +365,9 @@ impl EtDmzSystem {
 }
 
 impl ConstraintSystem for EtDmzSystem {
-    fn n_generators(&self) -> usize { self.n_cells }
+    fn n_generators(&self) -> usize {
+        self.n_cells
+    }
 
     fn adjacent(&self, i: usize, j: usize) -> bool {
         if i == j || i >= self.n_cells || j >= self.n_cells {
@@ -366,7 +376,9 @@ impl ConstraintSystem for EtDmzSystem {
         self.dmz_adjacent[i][j]
     }
 
-    fn name(&self) -> &str { "ET DMZ adjacency" }
+    fn name(&self) -> &str {
+        "ET DMZ adjacency"
+    }
 }
 
 /// Twist-product navigation constraint system for sedenion box-kites.
@@ -397,8 +409,10 @@ impl TwistNavigationSystem {
 
         let mut adj = [[false; 7]; 7];
         for e in &edges {
-            if let (Some(i), Some(j)) = (strut_to_index.get(e.from_strut).copied().flatten(),
-                                          strut_to_index.get(e.to_strut).copied().flatten()) {
+            if let (Some(i), Some(j)) = (
+                strut_to_index.get(e.from_strut).copied().flatten(),
+                strut_to_index.get(e.to_strut).copied().flatten(),
+            ) {
                 adj[i][j] = true;
                 adj[j][i] = true; // symmetrize for undirected ConstraintSystem
             }
@@ -429,7 +443,9 @@ impl Default for TwistNavigationSystem {
 }
 
 impl ConstraintSystem for TwistNavigationSystem {
-    fn n_generators(&self) -> usize { 7 }
+    fn n_generators(&self) -> usize {
+        7
+    }
 
     fn adjacent(&self, i: usize, j: usize) -> bool {
         if i == j || i >= 7 || j >= 7 {
@@ -438,7 +454,9 @@ impl ConstraintSystem for TwistNavigationSystem {
         self.twist_adjacent[i][j]
     }
 
-    fn name(&self) -> &str { "Twist navigation (Twisted Sisters)" }
+    fn name(&self) -> &str {
+        "Twist navigation (Twisted Sisters)"
+    }
 }
 
 // =====================================================================
@@ -673,12 +691,7 @@ pub struct EtBilliardTrajectory {
 /// (out-of-bounds or absent), rotate 90 degrees CW and try again, up to
 /// 4 attempts (full rotation). If all 4 directions are blocked, stay in place
 /// and reverse direction.
-pub fn simulate_et_billiard(
-    n: usize,
-    s: usize,
-    n_steps: usize,
-    seed: u64,
-) -> EtBilliardTrajectory {
+pub fn simulate_et_billiard(n: usize, s: usize, n_steps: usize, seed: u64) -> EtBilliardTrajectory {
     use super::emanation::create_strutted_et;
     use rand::prelude::*;
     use rand_chacha::ChaCha8Rng;
@@ -711,7 +724,9 @@ pub fn simulate_et_billiard(
     let n_valid = valid_cells.len();
     if n_valid == 0 || n_steps == 0 {
         return EtBilliardTrajectory {
-            n, s, k,
+            n,
+            s,
+            k,
             n_steps: 0,
             symbolic_dynamics: Vec::new(),
             n_distinct_cells: 0,
@@ -722,7 +737,11 @@ pub fn simulate_et_billiard(
             dmz_transition_rate: 0.0,
             n_valid_cells: n_valid,
             n_dmz_cells: n_dmz,
-            fill_ratio: if n_valid > 0 { n_dmz as f64 / n_valid as f64 } else { 0.0 },
+            fill_ratio: if n_valid > 0 {
+                n_dmz as f64 / n_valid as f64
+            } else {
+                0.0
+            },
         };
     }
 
@@ -740,12 +759,19 @@ pub fn simulate_et_billiard(
 
     // Record starting cell
     let start_is_dmz = cell_types[row][col].unwrap_or(false);
-    symbolic.push(if start_is_dmz { BilliardCellType::Dmz } else { BilliardCellType::NonDmz });
+    symbolic.push(if start_is_dmz {
+        BilliardCellType::Dmz
+    } else {
+        BilliardCellType::NonDmz
+    });
     visited.insert((row, col));
 
     // Helper: check if (r, c) is a valid (non-absent) cell
     let is_valid = |r: isize, c: isize| -> bool {
-        r >= 0 && r < k as isize && c >= 0 && c < k as isize
+        r >= 0
+            && r < k as isize
+            && c >= 0
+            && c < k as isize
             && cell_types[r as usize][c as usize].is_some()
     };
 
@@ -785,7 +811,11 @@ pub fn simulate_et_billiard(
 
         // Record symbolic dynamics
         let is_dmz = cell_types[row][col].unwrap_or(false);
-        let cell_type = if is_dmz { BilliardCellType::Dmz } else { BilliardCellType::NonDmz };
+        let cell_type = if is_dmz {
+            BilliardCellType::Dmz
+        } else {
+            BilliardCellType::NonDmz
+        };
 
         // Count DMZ transitions
         if let Some(last) = symbolic.last() {
@@ -813,7 +843,9 @@ pub fn simulate_et_billiard(
     };
 
     EtBilliardTrajectory {
-        n, s, k,
+        n,
+        s,
+        k,
         n_steps: actual_steps,
         symbolic_dynamics: symbolic,
         n_distinct_cells: visited.len(),
@@ -824,7 +856,11 @@ pub fn simulate_et_billiard(
         dmz_transition_rate,
         n_valid_cells: n_valid,
         n_dmz_cells: n_dmz,
-        fill_ratio: if n_valid > 0 { n_dmz as f64 / n_valid as f64 } else { 0.0 },
+        fill_ratio: if n_valid > 0 {
+            n_dmz as f64 / n_valid as f64
+        } else {
+            0.0
+        },
     }
 }
 
@@ -898,11 +934,7 @@ pub struct EtBilliardPhaseSweep {
 /// For each S in 1..G (where G = 2^{N-1}), simulate a billiard trajectory
 /// and record dynamical metrics. Returns aggregate statistics including
 /// correlation between fill ratio and dynamical measures.
-pub fn et_billiard_phase_sweep(
-    n: usize,
-    n_steps: usize,
-    seed: u64,
-) -> EtBilliardPhaseSweep {
+pub fn et_billiard_phase_sweep(n: usize, n_steps: usize, seed: u64) -> EtBilliardPhaseSweep {
     assert!(n >= 4, "Need at least sedenions (N >= 4)");
     let g = 1usize << (n - 1);
     let mut trajectories = Vec::with_capacity(g - 1);
@@ -914,12 +946,24 @@ pub fn et_billiard_phase_sweep(
 
     // Compute correlations
     let fill_entropy_correlation = pearson_correlation(
-        &trajectories.iter().map(|t| t.fill_ratio).collect::<Vec<_>>(),
-        &trajectories.iter().map(|t| t.entropy_rate).collect::<Vec<_>>(),
+        &trajectories
+            .iter()
+            .map(|t| t.fill_ratio)
+            .collect::<Vec<_>>(),
+        &trajectories
+            .iter()
+            .map(|t| t.entropy_rate)
+            .collect::<Vec<_>>(),
     );
     let fill_mfp_correlation = pearson_correlation(
-        &trajectories.iter().map(|t| t.fill_ratio).collect::<Vec<_>>(),
-        &trajectories.iter().map(|t| t.mean_free_path).collect::<Vec<_>>(),
+        &trajectories
+            .iter()
+            .map(|t| t.fill_ratio)
+            .collect::<Vec<_>>(),
+        &trajectories
+            .iter()
+            .map(|t| t.mean_free_path)
+            .collect::<Vec<_>>(),
     );
 
     EtBilliardPhaseSweep {
@@ -1017,7 +1061,9 @@ pub fn experiment_b_billiard_vs_spectroscopy(
 
     for band in &spec.bands {
         // Collect trajectories whose S falls in this band
-        let band_trajs: Vec<&EtBilliardTrajectory> = sweep.trajectories.iter()
+        let band_trajs: Vec<&EtBilliardTrajectory> = sweep
+            .trajectories
+            .iter()
             .filter(|t| t.s >= band.s_lo && t.s <= band.s_hi)
             .collect();
 
@@ -1028,15 +1074,21 @@ pub fn experiment_b_billiard_vs_spectroscopy(
         let n_t = band_trajs.len() as f64;
         let mean_entropy = band_trajs.iter().map(|t| t.entropy_rate).sum::<f64>() / n_t;
         let std_entropy = if band_trajs.len() > 1 {
-            let var = band_trajs.iter()
+            let var = band_trajs
+                .iter()
                 .map(|t| (t.entropy_rate - mean_entropy).powi(2))
-                .sum::<f64>() / (n_t - 1.0);
+                .sum::<f64>()
+                / (n_t - 1.0);
             var.sqrt()
         } else {
             0.0
         };
         let mean_mfp = band_trajs.iter().map(|t| t.mean_free_path).sum::<f64>() / n_t;
-        let mean_dmz_tr = band_trajs.iter().map(|t| t.dmz_transition_rate).sum::<f64>() / n_t;
+        let mean_dmz_tr = band_trajs
+            .iter()
+            .map(|t| t.dmz_transition_rate)
+            .sum::<f64>()
+            / n_t;
         let mean_cov = band_trajs.iter().map(|t| t.coverage).sum::<f64>() / n_t;
         let mean_fill = band_trajs.iter().map(|t| t.fill_ratio).sum::<f64>() / n_t;
 
@@ -1169,7 +1221,9 @@ pub fn extract_skybox_invariants(n: usize, s: usize) -> SkyboxInvariants {
     };
 
     SkyboxInvariants {
-        n, s, edge,
+        n,
+        s,
+        edge,
         dmz_density: sb.dmz_count as f64 / total as f64,
         dmz_count: sb.dmz_count,
         n_structural_empty: n_structural,
@@ -1225,7 +1279,9 @@ pub fn coxeter_invariants(group_type: CoxeterType, rank: usize) -> CoxeterInvari
             let spectral_radius = 2.0 * (std::f64::consts::PI / h as f64).cos();
             let det = (rank + 1) as f64; // det(Cartan A_n) = n+1
             CoxeterInvariants {
-                group_type, rank, coxeter_number: h,
+                group_type,
+                rank,
+                coxeter_number: h,
                 group_order: order,
                 n_positive_roots: n_pos,
                 spectral_radius,
@@ -1239,7 +1295,9 @@ pub fn coxeter_invariants(group_type: CoxeterType, rank: usize) -> CoxeterInvari
             let spectral_radius = 2.0 * (std::f64::consts::PI / h as f64).cos();
             let det = 2.0; // det(Cartan B_n) = 2
             CoxeterInvariants {
-                group_type, rank, coxeter_number: h,
+                group_type,
+                rank,
+                coxeter_number: h,
                 group_order: order,
                 n_positive_roots: n_pos,
                 spectral_radius,
@@ -1258,7 +1316,9 @@ pub fn coxeter_invariants(group_type: CoxeterType, rank: usize) -> CoxeterInvari
             };
             let det = 4.0; // det(Cartan D_n) = 4
             CoxeterInvariants {
-                group_type, rank, coxeter_number: h,
+                group_type,
+                rank,
+                coxeter_number: h,
                 group_order: order,
                 n_positive_roots: n_pos,
                 spectral_radius,
@@ -1311,9 +1371,7 @@ pub struct CoxeterMatchEntry {
 /// 3. Compare via rank matching and structural correspondence
 ///
 /// Returns a comparison table per level.
-pub fn experiment_c_sky_limit_set(
-    levels: &[usize],
-) -> Vec<SkyLimitSetComparison> {
+pub fn experiment_c_sky_limit_set(levels: &[usize]) -> Vec<SkyLimitSetComparison> {
     let mut results = Vec::new();
 
     for &n in levels {
@@ -1334,7 +1392,8 @@ pub fn experiment_c_sky_limit_set(
 
         let mean_dmz = dmz_densities.iter().sum::<f64>() / dmz_densities.len() as f64;
         let mean_empty = n_empty_comps.iter().sum::<f64>() / n_empty_comps.len() as f64;
-        let mean_interior = interior_densities.iter().sum::<f64>() / interior_densities.len() as f64;
+        let mean_interior =
+            interior_densities.iter().sum::<f64>() / interior_densities.len() as f64;
         let bk_count = if n >= 4 { n - 1 } else { 0 };
 
         // Compare against Coxeter groups at matching rank
@@ -1364,13 +1423,18 @@ pub fn experiment_c_sky_limit_set(
                 coxeter: cox,
                 rank_ratio,
                 density_root_ratio,
-                spectral_radius: coxeter_invariants(group_type, candidate_rank.max(1)).spectral_radius,
+                spectral_radius: coxeter_invariants(group_type, candidate_rank.max(1))
+                    .spectral_radius,
                 match_score,
             });
         }
 
         // Sort by match score (best match first)
-        comparisons.sort_by(|a, b| a.match_score.partial_cmp(&b.match_score).unwrap_or(std::cmp::Ordering::Equal));
+        comparisons.sort_by(|a, b| {
+            a.match_score
+                .partial_cmp(&b.match_score)
+                .unwrap_or(std::cmp::Ordering::Equal)
+        });
 
         results.push(SkyLimitSetComparison {
             n,
@@ -1413,7 +1477,11 @@ mod tests {
         let sys = E10DynkinSystem;
         // E10 has 9 edges, 10 nodes => r_null = 2*9 / (10*9) = 18/90 = 0.2
         let r = compute_r_null(&sys);
-        assert!((r - 0.2).abs() < 1e-10, "E10 r_null should be 0.2, got {}", r);
+        assert!(
+            (r - 0.2).abs() < 1e-10,
+            "E10 r_null should be 0.2, got {}",
+            r
+        );
     }
 
     #[test]
@@ -1502,7 +1570,11 @@ mod tests {
         // A sequence with many adjacent pairs should have low p-value
         let seq = vec![0, 1, 2, 3, 4, 5, 4, 6, 7, 6, 4, 3, 2, 1, 0, 8, 9];
         let p = permutation_test_generic(&sys, &seq, 100, 42);
-        assert!(p < 0.1, "Highly local sequence should have low p-value, got {}", p);
+        assert!(
+            p < 0.1,
+            "Highly local sequence should have low p-value, got {}",
+            p
+        );
     }
 
     // === Walk generator tests ===
@@ -1524,7 +1596,11 @@ mod tests {
         let seq = neighbor_walk(&sys, 1000, 42);
         let m = compute_generic_locality(&sys, &seq);
         // Neighbor walk should produce high locality (close to 1.0)
-        assert!(m.r > 0.8, "Neighbor walk should be highly local, got r={}", m.r);
+        assert!(
+            m.r > 0.8,
+            "Neighbor walk should be highly local, got r={}",
+            m.r
+        );
     }
 
     #[test]
@@ -1535,7 +1611,9 @@ mod tests {
         // Uniform random should be close to r_null = 0.2
         assert!(
             (m.r - m.r_null).abs() < 0.05,
-            "Uniform random r={:.4} should be near r_null={:.4}", m.r, m.r_null
+            "Uniform random r={:.4} should be near r_null={:.4}",
+            m.r,
+            m.r_null
         );
     }
 
@@ -1556,7 +1634,11 @@ mod tests {
         assert_eq!(seq.len(), 500);
         let m = compute_generic_locality(&sys, &seq);
         // Should be highly local on a dense graph
-        assert!(m.r > 0.5, "ZD neighbor walk r={:.4} should be substantial", m.r);
+        assert!(
+            m.r > 0.5,
+            "ZD neighbor walk r={:.4} should be substantial",
+            m.r
+        );
     }
 
     #[test]
@@ -1577,7 +1659,9 @@ mod tests {
             assert!(
                 wm.r > nm.r,
                 "{}: walk r={:.4} should exceed null r={:.4}",
-                wm.system_name, wm.r, nm.r
+                wm.system_name,
+                wm.r,
+                nm.r
             );
         }
     }
@@ -1611,7 +1695,11 @@ mod tests {
         assert_eq!(sys.name(), "Twist navigation (Twisted Sisters)");
         // All 7 struts should be mapped
         for &s in &[1, 3, 5, 7, 9, 11, 13] {
-            assert!(sys.strut_index(s).is_some(), "Strut {} should be indexed", s);
+            assert!(
+                sys.strut_index(s).is_some(),
+                "Strut {} should be indexed",
+                s
+            );
         }
         // Even numbers should not be mapped
         assert!(sys.strut_index(2).is_none());
@@ -1660,7 +1748,9 @@ mod tests {
             assert!(
                 wm.r > nm.r,
                 "{}: walk r={:.4} should exceed null r={:.4}",
-                wm.system_name, wm.r, nm.r
+                wm.system_name,
+                wm.r,
+                nm.r
             );
         }
     }
@@ -1670,7 +1760,10 @@ mod tests {
     #[test]
     fn test_billiard_direction_rotation() {
         assert_eq!(BilliardDirection::Up.rotate_cw(), BilliardDirection::Right);
-        assert_eq!(BilliardDirection::Right.rotate_cw(), BilliardDirection::Down);
+        assert_eq!(
+            BilliardDirection::Right.rotate_cw(),
+            BilliardDirection::Down
+        );
         assert_eq!(BilliardDirection::Down.rotate_cw(), BilliardDirection::Left);
         assert_eq!(BilliardDirection::Left.rotate_cw(), BilliardDirection::Up);
     }
@@ -1754,7 +1847,11 @@ mod tests {
         // All-DMZ sequence: entropy should be 0 (only one bigram type)
         let seq: Vec<BilliardCellType> = vec![BilliardCellType::Dmz; 100];
         let h = compute_bigram_entropy(&seq);
-        assert!(h.abs() < 1e-10, "Constant sequence entropy should be 0, got {}", h);
+        assert!(
+            h.abs() < 1e-10,
+            "Constant sequence entropy should be 0, got {}",
+            h
+        );
     }
 
     #[test]
@@ -1762,22 +1859,36 @@ mod tests {
         // Alternating DMZ/NonDmz: high entropy (both bigram types equally likely)
         let mut seq = Vec::new();
         for i in 0..200 {
-            seq.push(if i % 2 == 0 { BilliardCellType::Dmz } else { BilliardCellType::NonDmz });
+            seq.push(if i % 2 == 0 {
+                BilliardCellType::Dmz
+            } else {
+                BilliardCellType::NonDmz
+            });
         }
         let h = compute_bigram_entropy(&seq);
         // Alternating: bigrams are always Dmz->NonDmz or NonDmz->Dmz
         // H(X_{t+1}|X_t) = 0 because the next symbol is deterministic given current
-        assert!(h.abs() < 1e-10, "Alternating sequence has 0 conditional entropy, got {}", h);
+        assert!(
+            h.abs() < 1e-10,
+            "Alternating sequence has 0 conditional entropy, got {}",
+            h
+        );
     }
 
     #[test]
     fn test_bigram_entropy_random_mix() {
         // Random-ish mix: should have positive entropy
         use BilliardCellType::*;
-        let seq = vec![Dmz, Dmz, NonDmz, Dmz, NonDmz, NonDmz, Dmz, NonDmz, Dmz, Dmz,
-                       NonDmz, NonDmz, Dmz, Dmz, Dmz, NonDmz, NonDmz, Dmz, NonDmz, Dmz];
+        let seq = vec![
+            Dmz, Dmz, NonDmz, Dmz, NonDmz, NonDmz, Dmz, NonDmz, Dmz, Dmz, NonDmz, NonDmz, Dmz, Dmz,
+            Dmz, NonDmz, NonDmz, Dmz, NonDmz, Dmz,
+        ];
         let h = compute_bigram_entropy(&seq);
-        assert!(h > 0.0, "Mixed sequence should have positive entropy, got {}", h);
+        assert!(
+            h > 0.0,
+            "Mixed sequence should have positive entropy, got {}",
+            h
+        );
     }
 
     #[test]
@@ -1785,7 +1896,10 @@ mod tests {
         // Run full Experiment B at N=4 with short trajectories
         let result = experiment_b_billiard_vs_spectroscopy(4, 200, 42);
         assert_eq!(result.n, 4);
-        assert!(!result.entries.is_empty(), "Should have at least one band entry");
+        assert!(
+            !result.entries.is_empty(),
+            "Should have at least one band entry"
+        );
         // Check that all entries have valid metrics
         for entry in &result.entries {
             assert!(entry.mean_entropy_rate >= 0.0);
@@ -1799,11 +1913,19 @@ mod tests {
         let x = vec![1.0, 2.0, 3.0, 4.0, 5.0];
         let y = vec![2.0, 4.0, 6.0, 8.0, 10.0];
         let r = pearson_correlation(&x, &y);
-        assert!((r - 1.0).abs() < 1e-10, "Perfect positive correlation, got {}", r);
+        assert!(
+            (r - 1.0).abs() < 1e-10,
+            "Perfect positive correlation, got {}",
+            r
+        );
 
         let y_neg = vec![10.0, 8.0, 6.0, 4.0, 2.0];
         let r_neg = pearson_correlation(&x, &y_neg);
-        assert!((r_neg + 1.0).abs() < 1e-10, "Perfect negative correlation, got {}", r_neg);
+        assert!(
+            (r_neg + 1.0).abs() < 1e-10,
+            "Perfect negative correlation, got {}",
+            r_neg
+        );
     }
 
     #[test]
@@ -1811,7 +1933,11 @@ mod tests {
         let x = vec![5.0, 5.0, 5.0];
         let y = vec![1.0, 2.0, 3.0];
         let r = pearson_correlation(&x, &y);
-        assert!(r.abs() < 1e-10, "Zero variance should give 0 correlation, got {}", r);
+        assert!(
+            r.abs() < 1e-10,
+            "Zero variance should give 0 correlation, got {}",
+            r
+        );
     }
 
     // === Sky-Limit-Set Correspondence tests (Experiment C) ===
@@ -1822,7 +1948,7 @@ mod tests {
         assert_eq!(inv.n, 4);
         assert_eq!(inv.s, 3);
         assert_eq!(inv.edge, 8); // G = 2^3 = 8
-        // DMZ density should be between 0 and 1
+                                 // DMZ density should be between 0 and 1
         assert!(inv.dmz_density >= 0.0 && inv.dmz_density <= 1.0);
         // Structural empties: diagonal + anti-diagonal = 2*8 - 2 (center counted once if edge even)
         assert!(inv.n_structural_empty > 0);
@@ -1885,7 +2011,7 @@ mod tests {
         let r = &results[0];
         assert_eq!(r.n, 4);
         assert_eq!(r.box_kite_count, 3); // N-1 = 3
-        // Should have 3 Coxeter comparisons (A_3, B_3, D_3)
+                                         // Should have 3 Coxeter comparisons (A_3, B_3, D_3)
         assert_eq!(r.coxeter_comparisons.len(), 3);
         // Best match should have a finite match score
         assert!(r.coxeter_comparisons[0].match_score.is_finite());
@@ -1900,8 +2026,11 @@ mod tests {
         let r = &results[0];
         // All comparisons should have rank_ratio = 1.0 (since we use bk_count as rank)
         for comp in &r.coxeter_comparisons {
-            assert!((comp.rank_ratio - 1.0).abs() < 1e-10,
-                "Rank ratio should be 1.0, got {}", comp.rank_ratio);
+            assert!(
+                (comp.rank_ratio - 1.0).abs() < 1e-10,
+                "Rank ratio should be 1.0, got {}",
+                comp.rank_ratio
+            );
         }
     }
 }

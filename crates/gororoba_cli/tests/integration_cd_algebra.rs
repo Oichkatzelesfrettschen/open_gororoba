@@ -3,11 +3,8 @@
 //! Tests cross-crate workflows between algebra_core (CD multiplication, ZD search)
 //! and stats_core (statistical validation of algebraic properties).
 
-use algebra_core::{
-    cd_multiply, cd_conjugate, cd_norm_sq, cd_associator_norm,
-    find_zero_divisors,
-};
 use algebra_core::construction::cayley_dickson::find_zero_divisors_general_form;
+use algebra_core::{cd_associator_norm, cd_conjugate, cd_multiply, cd_norm_sq, find_zero_divisors};
 
 /// Test that quaternion multiplication is associative.
 #[test]
@@ -27,7 +24,9 @@ fn test_quaternion_associativity() {
         assert!(
             (ab_c[i] - a_bc[i]).abs() < 1e-12,
             "Quaternion associativity violated at component {}: {} != {}",
-            i, ab_c[i], a_bc[i]
+            i,
+            ab_c[i],
+            a_bc[i]
         );
     }
 }
@@ -195,7 +194,8 @@ fn test_zd_norms_are_small() {
         assert!(
             *norm < 1e-8,
             "ZD pair {} has norm {} which is not near zero",
-            i, norm
+            i,
+            norm
         );
     }
 

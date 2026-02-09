@@ -79,9 +79,7 @@ pub fn g_phph(r: f64, theta: f64, m: f64, a: f64, lambda: f64) -> f64 {
     let sig = sigma(r, theta, a);
     let sin_th = theta.sin();
     let sin2 = sin_th * sin_th;
-    (r * r + a * a + 2.0 * m * r * a * a * sin2 / sig
-        - lambda * r * r * r * r * sin2 / 3.0)
-        * sin2
+    (r * r + a * a + 2.0 * m * r * a * a * sin2 / sig - lambda * r * r * r * r * sin2 / 3.0) * sin2
 }
 
 /// g_{t phi} = -2Mar sin^2(theta) / Sigma.
@@ -263,10 +261,7 @@ mod tests {
     fn test_lambda_expands_event_horizon() {
         let r_kerr = event_horizon(1.0, 0.5, 0.0);
         let r_kds = event_horizon(1.0, 0.5, 1e-4);
-        assert!(
-            r_kds > r_kerr,
-            "Lambda should push event horizon outward"
-        );
+        assert!(r_kds > r_kerr, "Lambda should push event horizon outward");
     }
 
     // -- Delta modified by Lambda --

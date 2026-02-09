@@ -19,7 +19,10 @@ use std::process;
 use gororoba_cli::claims::verify;
 
 #[derive(Parser)]
-#[command(name = "claims-verify", about = "Verify claims infrastructure integrity")]
+#[command(
+    name = "claims-verify",
+    about = "Verify claims infrastructure integrity"
+)]
 struct Cli {
     /// Repository root directory.
     #[arg(long, default_value = ".")]
@@ -76,26 +79,24 @@ fn main() {
     let mut all_ok = true;
 
     match check_type {
-        "all" => {
-            match verify::run_all_verifications(&repo_root) {
-                Ok(summary) => {
-                    eprintln!("OK: all verification checks passed");
-                    eprintln!("{summary}");
-                }
-                Err(failures) => {
-                    for (i, msg) in failures.iter().enumerate() {
-                        if i < 100 {
-                            eprintln!("FAIL: {msg}");
-                        }
-                    }
-                    if failures.len() > 100 {
-                        eprintln!("... plus {} more", failures.len() - 100);
-                    }
-                    eprintln!("\nTotal failures: {}", failures.len());
-                    all_ok = false;
-                }
+        "all" => match verify::run_all_verifications(&repo_root) {
+            Ok(summary) => {
+                eprintln!("OK: all verification checks passed");
+                eprintln!("{summary}");
             }
-        }
+            Err(failures) => {
+                for (i, msg) in failures.iter().enumerate() {
+                    if i < 100 {
+                        eprintln!("FAIL: {msg}");
+                    }
+                }
+                if failures.len() > 100 {
+                    eprintln!("... plus {} more", failures.len() - 100);
+                }
+                eprintln!("\nTotal failures: {}", failures.len());
+                all_ok = false;
+            }
+        },
         "metadata" => {
             let matrix_text = read_matrix();
             let f = verify::verify_matrix_metadata(&matrix_text);

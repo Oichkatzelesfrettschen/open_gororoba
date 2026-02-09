@@ -60,7 +60,13 @@ struct DatasetEntry {
 }
 
 const VALID_PILLARS: &[&str] = &[
-    "candle", "gravitational", "electromagnetic", "survey", "cmb", "solar", "geophysical",
+    "candle",
+    "gravitational",
+    "electromagnetic",
+    "survey",
+    "cmb",
+    "solar",
+    "geophysical",
     "materials",
 ];
 
@@ -345,10 +351,7 @@ fn main() {
     let targets: Vec<&DatasetEntry> = if args.all {
         registry.iter().collect()
     } else if let Some(ref p) = args.pillar {
-        registry
-            .iter()
-            .filter(|e| e.pillar == p.as_str())
-            .collect()
+        registry.iter().filter(|e| e.pillar == p.as_str()).collect()
     } else if let Some(ref cat) = args.category {
         registry
             .iter()

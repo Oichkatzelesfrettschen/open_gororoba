@@ -355,7 +355,9 @@ mod tests {
                                 assert!((1..=7).contains(&index));
                                 assert_eq!(value.unsigned_abs(), 2);
                             }
-                            _ => panic!("Non-Fano triple ({i},{j},{k}) should be vector, got {cls:?}"),
+                            _ => panic!(
+                                "Non-Fano triple ({i},{j},{k}) should be vector, got {cls:?}"
+                            ),
                         }
                     }
                 }

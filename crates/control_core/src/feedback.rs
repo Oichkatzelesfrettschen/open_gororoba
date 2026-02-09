@@ -9,19 +9,11 @@ use thiserror::Error;
 pub enum ControlError {
     /// Control input saturated.
     #[error("Control saturated: requested {requested:.4}, limited to [{min:.4}, {max:.4}]")]
-    Saturation {
-        requested: f64,
-        min: f64,
-        max: f64,
-    },
+    Saturation { requested: f64, min: f64, max: f64 },
 
     /// Reference signal out of range.
     #[error("Reference out of range: {value:.4} not in [{min:.4}, {max:.4}]")]
-    ReferenceOutOfRange {
-        value: f64,
-        min: f64,
-        max: f64,
-    },
+    ReferenceOutOfRange { value: f64, min: f64, max: f64 },
 
     /// Unstable oscillation detected.
     #[error("Instability detected: oscillation amplitude {amplitude:.4} exceeds threshold")]
@@ -45,7 +37,12 @@ pub enum ReferenceSignal {
     Ramp { from: f64, to: f64, duration: f64 },
 
     /// Sinusoidal reference.
-    Sinusoid { amplitude: f64, frequency: f64, phase: f64, offset: f64 },
+    Sinusoid {
+        amplitude: f64,
+        frequency: f64,
+        phase: f64,
+        offset: f64,
+    },
 
     /// Custom trajectory (time -> value).
     Trajectory(Vec<(f64, f64)>),
@@ -58,7 +55,11 @@ impl ReferenceSignal {
             ReferenceSignal::Constant(v) => *v,
 
             ReferenceSignal::Step { from, to, time } => {
-                if t < *time { *from } else { *to }
+                if t < *time {
+                    *from
+                } else {
+                    *to
+                }
             }
 
             ReferenceSignal::Ramp { from, to, duration } => {
@@ -71,9 +72,12 @@ impl ReferenceSignal {
                 }
             }
 
-            ReferenceSignal::Sinusoid { amplitude, frequency, phase, offset } => {
-                offset + amplitude * (2.0 * std::f64::consts::PI * frequency * t + phase).sin()
-            }
+            ReferenceSignal::Sinusoid {
+                amplitude,
+                frequency,
+                phase,
+                offset,
+            } => offset + amplitude * (2.0 * std::f64::consts::PI * frequency * t + phase).sin(),
 
             ReferenceSignal::Trajectory(points) => {
                 // Linear interpolation
@@ -238,7 +242,9 @@ where
                 return Ok(i + 1);
             }
         }
-        Err(ControlError::ConvergenceFailure { iterations: max_steps })
+        Err(ControlError::ConvergenceFailure {
+            iterations: max_steps,
+        })
     }
 
     /// Reset the feedback loop.
@@ -276,7 +282,8 @@ where
             return 0.0;
         }
 
-        let max_output = self.output_history
+        let max_output = self
+            .output_history
             .iter()
             .map(|(_, y)| *y)
             .fold(f64::NEG_INFINITY, f64::max);
@@ -306,7 +313,10 @@ impl ProportionalController {
 
     /// Create with output limits.
     pub fn with_limits(kp: f64, min: f64, max: f64) -> Self {
-        Self { kp, limits: Some((min, max)) }
+        Self {
+            kp,
+            limits: Some((min, max)),
+        }
     }
 }
 
@@ -346,14 +356,22 @@ mod tests {
 
     #[test]
     fn test_reference_step() {
-        let r = ReferenceSignal::Step { from: 0.0, to: 1.0, time: 1.0 };
+        let r = ReferenceSignal::Step {
+            from: 0.0,
+            to: 1.0,
+            time: 1.0,
+        };
         assert_eq!(r.at(0.5), 0.0);
         assert_eq!(r.at(1.5), 1.0);
     }
 
     #[test]
     fn test_reference_ramp() {
-        let r = ReferenceSignal::Ramp { from: 0.0, to: 10.0, duration: 2.0 };
+        let r = ReferenceSignal::Ramp {
+            from: 0.0,
+            to: 10.0,
+            duration: 2.0,
+        };
         assert_eq!(r.at(0.0), 0.0);
         assert_eq!(r.at(1.0), 5.0);
         assert_eq!(r.at(2.0), 10.0);

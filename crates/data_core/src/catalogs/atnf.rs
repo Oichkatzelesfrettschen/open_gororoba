@@ -6,7 +6,7 @@
 //! Source: https://www.atnf.csiro.au/research/pulsar/psrcat/
 //! HEASARC mirror: https://heasarc.gsfc.nasa.gov/xamin/
 
-use crate::fetcher::{DatasetProvider, FetchConfig, FetchError, download_with_fallbacks};
+use crate::fetcher::{download_with_fallbacks, DatasetProvider, FetchConfig, FetchError};
 use std::path::{Path, PathBuf};
 
 /// A pulsar from the ATNF catalogue.
@@ -155,7 +155,9 @@ const ATNF_URLS: &[&str] = &[
 pub struct AtnfProvider;
 
 impl DatasetProvider for AtnfProvider {
-    fn name(&self) -> &str { "ATNF Pulsar Catalogue" }
+    fn name(&self) -> &str {
+        "ATNF Pulsar Catalogue"
+    }
 
     fn fetch(&self, config: &FetchConfig) -> Result<PathBuf, FetchError> {
         let output = config.output_dir.join("atnf_pulsars.csv");

@@ -37,8 +37,7 @@ const LAMBDA_COMPTON: f64 = 2.426_310_239e-10;
 ///
 /// SSA dominates at low radio frequencies in magnetized plasma.
 pub fn synchrotron_self_absorption(nu: f64, b_gauss: f64, n_e: f64, temp_k: f64) -> f64 {
-    let nu_c = E_CHARGE_CGS * b_gauss.abs()
-        / (2.0 * PI * M_ELECTRON_CGS * C_CGS);
+    let nu_c = E_CHARGE_CGS * b_gauss.abs() / (2.0 * PI * M_ELECTRON_CGS * C_CGS);
 
     let alpha_ssa = (n_e * SIGMA_THOMSON / 2.0) * (nu_c * nu_c) / (nu * nu);
 
@@ -65,9 +64,7 @@ pub fn free_free_absorption(nu: f64, n_e: f64, temp_k: f64) -> f64 {
     let k_ff = 3.68e8; // prefactor [cm^5 / K^{3/2} / s^{-2}]
 
     // Debye length [cm]
-    let lambda_d = (K_B_CGS * temp_k
-        / (4.0 * PI * n_e * E_CHARGE_CGS * E_CHARGE_CGS))
-    .sqrt();
+    let lambda_d = (K_B_CGS * temp_k / (4.0 * PI * n_e * E_CHARGE_CGS * E_CHARGE_CGS)).sqrt();
 
     // Approximate Gaunt factor
     let gaunt = (lambda_d / LAMBDA_COMPTON + 1.0).ln();
@@ -160,7 +157,7 @@ pub fn optical_depth_threshold_frequency(
     path_length_cm: f64,
     mode: AbsorptionMode,
 ) -> f64 {
-    let mut nu_low = 1e8_f64;  // 100 MHz
+    let mut nu_low = 1e8_f64; // 100 MHz
     let mut nu_high = 1e20_f64; // 100 EeV
 
     for _ in 0..60 {
@@ -202,12 +199,7 @@ pub fn optical_depth_threshold_frequency(
 /// Limits:
 /// - Optically thin (tau << 1): I ~ I_0 + j * ds
 /// - Optically thick (tau >> 1): I ~ S_nu (LTE)
-pub fn radiative_transfer_step(
-    i_in: f64,
-    j_nu: f64,
-    alpha_nu: f64,
-    ds: f64,
-) -> f64 {
+pub fn radiative_transfer_step(i_in: f64, j_nu: f64, alpha_nu: f64, ds: f64) -> f64 {
     let tau = alpha_nu * ds;
 
     if tau < 1e-8 {
@@ -390,7 +382,10 @@ mod tests {
         // ensure the SSA optical depth exceeds 1 at low frequencies and falls
         // below 1 at high frequencies, so the bisection converges.
         let nu_th = optical_depth_threshold_frequency(
-            1000.0, 1e8, 1e9, 1e15,
+            1000.0,
+            1e8,
+            1e9,
+            1e15,
             AbsorptionMode::SynchrotronSelfAbsorption,
         );
         // Should be between 100 MHz and 100 GHz

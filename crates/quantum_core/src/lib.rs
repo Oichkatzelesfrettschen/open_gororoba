@@ -18,119 +18,137 @@
 //! - Xu et al., Nature Communications 13, 6148 (2022): Casimir transistor
 //! - Grover (1996): Quantum search algorithm
 
-pub mod mera;
-pub mod holographic;
+pub mod casimir;
 pub mod fractional_schrodinger;
-pub mod tensor_network_classical;
+pub mod grover;
+pub mod hardware;
 pub mod harper_chern;
+pub mod holographic;
+pub mod hypothesis_search;
+pub mod mera;
 pub mod mps;
 pub mod peps;
-pub mod tensor_networks;
-pub mod casimir;
-pub mod grover;
-pub mod hypothesis_search;
-pub mod hardware;
 pub mod qua_ten_net_bridge;
+pub mod tensor_network_classical;
+pub mod tensor_networks;
 
 pub use mera::{
-    build_mera_structure, von_neumann_entropy, mera_entropy_estimate,
-    fit_log_scaling, mera_entropy_scaling_analysis, bootstrap_slope_ci,
-    MeraLayer, MeraScalingResult,
+    bootstrap_slope_ci, build_mera_structure, fit_log_scaling, mera_entropy_estimate,
+    mera_entropy_scaling_analysis, von_neumann_entropy, MeraLayer, MeraScalingResult,
 };
 
 pub use holographic::{
-    bekenstein_bound_bits, verify_bekenstein_bound,
-    absorber_channel_capacity, absorber_effective_radius, absorber_energy,
-    RTLattice, compute_min_cut, analyze_entropy_scaling, verify_area_law,
-    BekensteinBoundResult, MinCutResult, EntropyScalingResult, AreaLawResult,
-    AbsorberLayer,
+    absorber_channel_capacity, absorber_effective_radius, absorber_energy, analyze_entropy_scaling,
+    bekenstein_bound_bits, compute_min_cut, verify_area_law, verify_bekenstein_bound,
+    AbsorberLayer, AreaLawResult, BekensteinBoundResult, EntropyScalingResult, MinCutResult,
+    RTLattice,
 };
 
 pub use fractional_schrodinger::{
-    levy_propagator, gaussian_propagator, propagator_l2_error,
-    split_operator_evolve, imaginary_time_ground_state, variational_ground_state,
-    EvolutionResult, VariationalResult, PropagatorResult,
+    gaussian_propagator, imaginary_time_ground_state, levy_propagator, propagator_l2_error,
+    split_operator_evolve, variational_ground_state, EvolutionResult, PropagatorResult,
+    VariationalResult,
 };
 
 pub use tensor_network_classical::{
-    TensorNetworkState, EntropyResult, CircuitEvolutionResult,
-    simulate_random_circuit, prepare_bell_state, prepare_ghz_state,
-    bell_state_entropy, ghz_state_entropy,
+    bell_state_entropy, ghz_state_entropy, prepare_bell_state, prepare_ghz_state,
+    simulate_random_circuit, CircuitEvolutionResult, EntropyResult, TensorNetworkState,
 };
 
 pub use harper_chern::{
-    ChernResult, ButterflyResult,
-    reduced_fractions, harper_hamiltonian, fhs_chern_numbers,
-    hofstadter_chern_map, verify_chern_sum_zero, verify_diophantine,
+    fhs_chern_numbers, harper_hamiltonian, hofstadter_chern_map, reduced_fractions,
+    verify_chern_sum_zero, verify_diophantine, ButterflyResult, ChernResult,
 };
 
-pub use mps::{
-    MatrixProductState, MpsTensor,
-};
+pub use mps::{MatrixProductState, MpsTensor};
 
-pub use peps::{
-    Peps, PepsTensor,
-};
+pub use peps::{Peps, PepsTensor};
 
-pub use tensor_networks::{
-    EntanglementMeasure, estimate_memory_bytes, suggest_representation,
-};
+pub use tensor_networks::{estimate_memory_bytes, suggest_representation, EntanglementMeasure};
 
 pub use qua_ten_net_bridge::{
-    TruncatedSVD, truncated_svd, contract_network, tensor_contract,
-    truncate_mps_bond, estimate_contraction_cost,
+    contract_network, estimate_contraction_cost, tensor_contract, truncate_mps_bond, truncated_svd,
+    TruncatedSVD,
 };
 
 pub use casimir::{
-    Sphere, Plate, SpherePlateSphere,
-    CasimirForceResult, TransistorResult, SweepResult,
-    casimir_force_pfa, casimir_energy_pfa, pfa_is_valid, pfa_is_valid_at_accuracy,
-    compute_casimir_forces, analyze_transistor, sweep_source_gap,
-    casimir_force_with_corrections, finite_conductivity_correction, thermal_correction,
-    // Additivity API (Xu et al. 2022)
-    PfaAccuracy, AdditivityResult,
-    force_sps_additive, cross_coupling_additive, transistor_gain_additive,
-    nonadditivity_correction,
-    // PFA validity guard system (Emig et al. 2006)
-    CasimirError, PfaValidityInfo,
-    check_pfa_validity, casimir_force_guarded, casimir_force_with_validity,
+    analyze_transistor,
+    casimir_energy_pfa,
+    casimir_force_guarded,
+    casimir_force_pfa,
+    casimir_force_with_corrections,
+    casimir_force_with_de,
+    casimir_force_with_validity,
     casimir_spring_constant_guarded,
-    // Derivative expansion error estimates (Fosco et al. 2024)
-    DeCoefficients, DerivativeExpansionResult,
-    casimir_force_with_de, estimate_de_error, max_gap_for_error,
-    // Strict spring constant / gain modes with error amplification
-    SPRING_CONSTANT_ERROR_FACTOR, SpringConstantResult,
-    spring_constant_strict, transistor_gain_strict,
+    check_pfa_validity,
+    compute_casimir_forces,
+    cross_coupling_additive,
+    estimate_de_error,
+    finite_conductivity_correction,
+    force_sps_additive,
+    fresnel_te_imaginary,
+    fresnel_tm_imaginary,
+    lifshitz_force_ratio,
+    lifshitz_force_sphere_plate,
+    lifshitz_pressure_plates,
+    lifshitz_sphere_plate,
+    matsubara_frequency,
+    max_gap_for_error,
+    nonadditivity_correction,
+    pfa_is_valid,
+    pfa_is_valid_at_accuracy,
+    spring_constant_strict,
     spring_constant_with_diagnostics,
+    sweep_source_gap,
+    thermal_correction,
+    thermal_wavelength,
+    three_body_casimir_dynamics,
+    three_body_gain_quasistatic,
+    three_body_gain_strict,
+    transistor_gain_additive,
+    transistor_gain_strict,
+    AdditivityResult,
+    // PFA validity guard system (Emig et al. 2006)
+    CasimirError,
+    CasimirForceResult,
+    // Derivative expansion error estimates (Fosco et al. 2024)
+    DeCoefficients,
+    DerivativeExpansionResult,
+    // Lifshitz theory with dielectric functions
+    DielectricModel,
+    LifshitzResult,
+    // Additivity API (Xu et al. 2022)
+    PfaAccuracy,
+    PfaValidityInfo,
+    Plate,
+    Sphere,
+    SpherePlateSphere,
+    SpringConstantResult,
+    SweepResult,
     // Three-body transistor dynamics
     ThreeBodyResult,
-    three_body_casimir_dynamics, three_body_gain_quasistatic, three_body_gain_strict,
-    // Lifshitz theory with dielectric functions
-    DielectricModel, LifshitzResult,
-    fresnel_tm_imaginary, fresnel_te_imaginary,
-    lifshitz_pressure_plates, lifshitz_force_sphere_plate,
-    lifshitz_force_ratio, lifshitz_sphere_plate,
-    matsubara_frequency, thermal_wavelength,
-    CASIMIR_COEFF, HBAR, C,
+    TransistorResult,
+    C,
+    CASIMIR_COEFF,
+    HBAR,
+    // Strict spring constant / gain modes with error amplification
+    SPRING_CONSTANT_ERROR_FACTOR,
 };
 
 pub use grover::{
-    GroverResult, GroverConfig,
-    optimal_iterations, uniform_superposition,
-    apply_oracle, apply_diffusion, grover_iterate,
-    success_probability, top_candidates,
-    grover_search, grover_search_indices, amplitude_amplification,
-    theoretical_amplitude, theoretical_success_probability,
+    amplitude_amplification, apply_diffusion, apply_oracle, grover_iterate, grover_search,
+    grover_search_indices, optimal_iterations, success_probability, theoretical_amplitude,
+    theoretical_success_probability, top_candidates, uniform_superposition, GroverConfig,
+    GroverResult,
 };
 
 pub use hypothesis_search::{
-    Hypothesis, OraclePredicate, ThresholdOracle,
-    HypothesisSearchResult, QuantumHypothesisSearch,
-    quantum_hypothesis_search, quantum_grid_search,
+    quantum_grid_search, quantum_hypothesis_search, Hypothesis, HypothesisSearchResult,
+    OraclePredicate, QuantumHypothesisSearch, ThresholdOracle,
 };
 
 pub use hardware::{
-    QubitTopology, NativeGate, GateTiming, ErrorRates, CoherenceTimes,
-    HardwareProfile, IdealHardware,
-    NeutralAtomProfile, SuperconductingProfile, SuperconductingVendor, TrappedIonProfile,
+    CoherenceTimes, ErrorRates, GateTiming, HardwareProfile, IdealHardware, NativeGate,
+    NeutralAtomProfile, QubitTopology, SuperconductingProfile, SuperconductingVendor,
+    TrappedIonProfile,
 };

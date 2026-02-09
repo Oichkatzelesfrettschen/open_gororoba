@@ -89,7 +89,6 @@ impl MpsTensor {
         let idx = l * (self.physical_dim * self.chi_right) + p * self.chi_right + r;
         self.data[idx] = val;
     }
-
 }
 
 /// Matrix Product State representation of an n-qubit quantum state.
@@ -483,10 +482,22 @@ impl MatrixProductState {
         // CNOT matrix: |00> -> |00>, |01> -> |01>, |10> -> |11>, |11> -> |10>
         // Row order: 00, 01, 10, 11
         let cnot = [
-            c64::new(1.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0),
-            c64::new(0.0, 0.0), c64::new(1.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0),
-            c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(1.0, 0.0),
-            c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(1.0, 0.0), c64::new(0.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
         ];
         self.apply_two_qubit_gate(control, target, &cnot);
     }
@@ -494,10 +505,22 @@ impl MatrixProductState {
     /// Apply CZ (controlled-Z) gate.
     pub fn apply_cz(&mut self, site1: usize, site2: usize) {
         let cz = [
-            c64::new(1.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0),
-            c64::new(0.0, 0.0), c64::new(1.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0),
-            c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(1.0, 0.0), c64::new(0.0, 0.0),
-            c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(-1.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(-1.0, 0.0),
         ];
         self.apply_two_qubit_gate(site1, site2, &cz);
     }
@@ -505,17 +528,30 @@ impl MatrixProductState {
     /// Apply SWAP gate.
     pub fn apply_swap(&mut self, site1: usize, site2: usize) {
         let swap = [
-            c64::new(1.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0),
-            c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(1.0, 0.0), c64::new(0.0, 0.0),
-            c64::new(0.0, 0.0), c64::new(1.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0),
-            c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(0.0, 0.0), c64::new(1.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(1.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(0.0, 0.0),
+            c64::new(1.0, 0.0),
         ];
         self.apply_two_qubit_gate(site1, site2, &swap);
     }
 
     /// Get the maximum bond dimension in the MPS.
     pub fn max_bond_dimension(&self) -> usize {
-        self.tensors.iter()
+        self.tensors
+            .iter()
             .flat_map(|t| [t.chi_left, t.chi_right])
             .max()
             .unwrap_or(1)
@@ -909,10 +945,18 @@ mod tests {
         let inv_sqrt2 = std::f64::consts::FRAC_1_SQRT_2;
 
         // Bell state: (|00> + |11>) / sqrt(2)
-        assert!((coeffs[0].re - inv_sqrt2).abs() < 1e-10, "|00> = {}", coeffs[0].re);
+        assert!(
+            (coeffs[0].re - inv_sqrt2).abs() < 1e-10,
+            "|00> = {}",
+            coeffs[0].re
+        );
         assert!((coeffs[1].re).abs() < 1e-10, "|01> = {}", coeffs[1].re);
         assert!((coeffs[2].re).abs() < 1e-10, "|10> = {}", coeffs[2].re);
-        assert!((coeffs[3].re - inv_sqrt2).abs() < 1e-10, "|11> = {}", coeffs[3].re);
+        assert!(
+            (coeffs[3].re - inv_sqrt2).abs() < 1e-10,
+            "|11> = {}",
+            coeffs[3].re
+        );
     }
 
     #[test]
@@ -945,18 +989,23 @@ mod tests {
         // Note: After SVD-based gate application, the MPS bond structure may not
         // exactly reproduce the ideal entropy. The key test is that entropy > 0
         // (indicating entanglement was created) and is in the right ballpark.
-        assert!(entropy > 0.3, "Bell state should have significant entropy, got {}", entropy);
-        assert!(entropy < 1.0, "Bell entropy should be < ln(2) = 0.693, got {}", entropy);
+        assert!(
+            entropy > 0.3,
+            "Bell state should have significant entropy, got {}",
+            entropy
+        );
+        assert!(
+            entropy < 1.0,
+            "Bell entropy should be < ln(2) = 0.693, got {}",
+            entropy
+        );
     }
 
     #[test]
     fn test_mps_from_state_vector() {
         // Create |+> state manually
         let inv_sqrt2 = std::f64::consts::FRAC_1_SQRT_2;
-        let coeffs = [
-            c64::new(inv_sqrt2, 0.0),
-            c64::new(inv_sqrt2, 0.0),
-        ];
+        let coeffs = [c64::new(inv_sqrt2, 0.0), c64::new(inv_sqrt2, 0.0)];
 
         let mps = MatrixProductState::from_state_vector(&coeffs, 1);
         let reconstructed = mps.to_state_vector();
@@ -976,7 +1025,11 @@ mod tests {
         let coeffs = mps.to_state_vector();
         // Should be |01>
         assert!((coeffs[0].re).abs() < 1e-10);
-        assert!((coeffs[1].re - 1.0).abs() < 1e-10, "|01> = {}", coeffs[1].re);
+        assert!(
+            (coeffs[1].re - 1.0).abs() < 1e-10,
+            "|01> = {}",
+            coeffs[1].re
+        );
         assert!((coeffs[2].re).abs() < 1e-10);
         assert!((coeffs[3].re).abs() < 1e-10);
     }

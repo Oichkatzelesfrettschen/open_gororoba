@@ -14,9 +14,8 @@
 pub mod neg_dim;
 
 pub use neg_dim::{
-    EigenResult, ConvergenceResult,
-    build_kinetic_operator, eigenvalues_imaginary_time,
-    epsilon_convergence_sweep, caffarelli_silvestre_eigenvalues,
+    build_kinetic_operator, caffarelli_silvestre_eigenvalues, eigenvalues_imaginary_time,
+    epsilon_convergence_sweep, ConvergenceResult, EigenResult,
 };
 
 use ndarray::{Array2, Array3, Axis};
@@ -55,7 +54,11 @@ pub fn fractional_laplacian_periodic_1d(u: &[f64], s: f64, length: f64) -> Vec<f
     let _dx = length / n as f64;
     for (i, val) in buffer.iter_mut().enumerate() {
         // Frequency in cycles per unit length, then angular frequency
-        let freq = if i <= n / 2 { i as f64 } else { i as f64 - n as f64 };
+        let freq = if i <= n / 2 {
+            i as f64
+        } else {
+            i as f64 - n as f64
+        };
         let k = 2.0 * PI * freq / length;
         let mult = k.abs().powf(2.0 * s);
         *val *= mult;
@@ -137,9 +140,7 @@ fn dst_i(x: &[f64]) -> Vec<f64> {
 
     // Extract imaginary parts (scaled)
     let scale = (2.0 / (n + 1) as f64).sqrt() / 2.0;
-    (1..=n)
-        .map(|k| -extended[k].im * scale)
-        .collect()
+    (1..=n).map(|k| -extended[k].im * scale).collect()
 }
 
 /// Inverse Discrete Sine Transform Type I (orthonormal).
@@ -165,18 +166,11 @@ fn idst_i(x: &[f64]) -> Vec<f64> {
     fft.process(&mut extended);
 
     let scale = (2.0 / (n + 1) as f64).sqrt() / 2.0;
-    (1..=n)
-        .map(|k| -extended[k].im * scale)
-        .collect()
+    (1..=n).map(|k| -extended[k].im * scale).collect()
 }
 
 /// Compute discrete 2D periodic (-Delta)^s via FFT multiplier.
-pub fn fractional_laplacian_periodic_2d(
-    u: &Array2<f64>,
-    s: f64,
-    lx: f64,
-    ly: f64,
-) -> Array2<f64> {
+pub fn fractional_laplacian_periodic_2d(u: &Array2<f64>, s: f64, lx: f64, ly: f64) -> Array2<f64> {
     let (nx, ny) = u.dim();
     if nx < 2 || ny < 2 {
         return Array2::zeros((nx, ny));
@@ -213,8 +207,16 @@ pub fn fractional_laplacian_periodic_2d(
 
     // Apply multiplier |k|^{2s}
     for ((i, j), val) in buffer.indexed_iter_mut() {
-        let kx_freq = if i <= nx / 2 { i as f64 } else { i as f64 - nx as f64 };
-        let ky_freq = if j <= ny / 2 { j as f64 } else { j as f64 - ny as f64 };
+        let kx_freq = if i <= nx / 2 {
+            i as f64
+        } else {
+            i as f64 - nx as f64
+        };
+        let ky_freq = if j <= ny / 2 {
+            j as f64
+        } else {
+            j as f64 - ny as f64
+        };
         let kx = 2.0 * PI * kx_freq / lx;
         let ky = 2.0 * PI * ky_freq / ly;
         let k2 = kx * kx + ky * ky;
@@ -297,9 +299,21 @@ pub fn fractional_laplacian_periodic_3d(
 
     // Apply multiplier
     for ((i, j, k), val) in buffer.indexed_iter_mut() {
-        let kx_freq = if i <= nx / 2 { i as f64 } else { i as f64 - nx as f64 };
-        let ky_freq = if j <= ny / 2 { j as f64 } else { j as f64 - ny as f64 };
-        let kz_freq = if k <= nz / 2 { k as f64 } else { k as f64 - nz as f64 };
+        let kx_freq = if i <= nx / 2 {
+            i as f64
+        } else {
+            i as f64 - nx as f64
+        };
+        let ky_freq = if j <= ny / 2 {
+            j as f64
+        } else {
+            j as f64 - ny as f64
+        };
+        let kz_freq = if k <= nz / 2 {
+            k as f64
+        } else {
+            k as f64 - nz as f64
+        };
         let kx = 2.0 * PI * kx_freq / lx;
         let ky = 2.0 * PI * ky_freq / ly;
         let kz = 2.0 * PI * kz_freq / lz;
@@ -494,9 +508,7 @@ mod tests {
         let h = l / (n + 1) as f64;
 
         // First eigenfunction on interior points
-        let u: Vec<f64> = (1..=n)
-            .map(|i| (PI * i as f64 * h / l).sin())
-            .collect();
+        let u: Vec<f64> = (1..=n).map(|i| (PI * i as f64 * h / l).sin()).collect();
 
         let eigenvalues = dirichlet_laplacian_eigenvalues_1d(n, l);
         let s = 0.5;

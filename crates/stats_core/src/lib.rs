@@ -23,10 +23,9 @@ pub mod dip;
 pub mod ultrametric;
 
 pub use claims_gates::{
-    Verdict, Evidence, GateResult, GateRegistry,
-    pvalue_gate, inverse_pvalue_gate, bootstrap_ci_gate, frechet_gate,
-    two_sample_gate, metric_gate,
-    run_frechet_gate, run_two_sample_gate, run_bootstrap_ci_gate,
+    bootstrap_ci_gate, frechet_gate, inverse_pvalue_gate, metric_gate, pvalue_gate,
+    run_bootstrap_ci_gate, run_frechet_gate, run_two_sample_gate, two_sample_gate, Evidence,
+    GateRegistry, GateResult, Verdict,
 };
 
 // C-074 fitting types are defined inline below (AssociatorGrowthFitResult,
@@ -659,8 +658,7 @@ pub fn fit_power_law_with_ci(
     let r_squared = 1.0 - ss_res / ss_tot;
 
     // Uncertain if CI width > 50% of estimate
-    let uncertain =
-        exponent_ci.ci_width_relative > 0.5 || amplitude_ci.ci_width_relative > 0.5;
+    let uncertain = exponent_ci.ci_width_relative > 0.5 || amplitude_ci.ci_width_relative > 0.5;
 
     PowerLawFitResult {
         amplitude: amplitude_ci,
@@ -873,7 +871,10 @@ pub fn c074_decision_rule(fit: &AssociatorGrowthFitResult) -> (bool, String) {
     }
 
     if reasons.is_empty() {
-        (true, "Claim supported: parameters match within tolerance".to_string())
+        (
+            true,
+            "Claim supported: parameters match within tolerance".to_string(),
+        )
     } else {
         (false, reasons.join("; "))
     }
@@ -940,7 +941,13 @@ impl DistanceMatrices {
             }
         }
 
-        Self { dxx, dyy, dxy, nx, ny }
+        Self {
+            dxx,
+            dyy,
+            dxy,
+            nx,
+            ny,
+        }
     }
 }
 
@@ -1115,7 +1122,13 @@ impl KernelMatrices {
             }
         }
 
-        Self { kxx, kyy, kxy, nx, ny }
+        Self {
+            kxx,
+            kyy,
+            kxy,
+            nx,
+            ny,
+        }
     }
 }
 
@@ -1571,7 +1584,10 @@ mod tests {
         // Distances: 1, 1, sqrt(2), 1, sqrt(2), 1
         // Sorted: 1, 1, 1, 1, 1.41, 1.41
         // Median ~ 1
-        assert!(sigma > 0.9 && sigma < 1.5, "Median heuristic should be reasonable");
+        assert!(
+            sigma > 0.9 && sigma < 1.5,
+            "Median heuristic should be reasonable"
+        );
     }
 
     #[test]
@@ -1621,7 +1637,11 @@ mod tests {
         // Should recover parameters close to original
         assert!((a_inf - 2.0).abs() < 0.1, "A_inf={} not near 2.0", a_inf);
         assert!((b - 14.6).abs() < 2.0, "B={} not near 14.6", b);
-        assert!((alpha - (-1.8)).abs() < 0.15, "alpha={} not near -1.8", alpha);
+        assert!(
+            (alpha - (-1.8)).abs() < 0.15,
+            "alpha={} not near -1.8",
+            alpha
+        );
     }
 
     #[test]
@@ -1656,7 +1676,7 @@ mod tests {
             ci_upper: upper,
             ci_width: width,
             ci_width_relative: width / point.abs(),
-            standard_error: width / 3.92,  // Approx SE from 95% CI width
+            standard_error: width / 3.92, // Approx SE from 95% CI width
             n_bootstrap: 1000,
         }
     }
@@ -1682,14 +1702,18 @@ mod tests {
         let result = super::AssociatorGrowthFitResult {
             a_inf: make_ci(2.0, 1.9, 2.1),
             b_coeff: make_ci(14.6, 12.0, 17.0),
-            alpha: make_ci(-2.5, -3.0, -2.0),  // CI excludes -1.80
+            alpha: make_ci(-2.5, -3.0, -2.0), // CI excludes -1.80
             r_squared: 0.98,
             uncertain: false,
         };
 
         let (matches, reason) = super::c074_decision_rule(&result);
         assert!(!matches, "Should fail due to alpha CI");
-        assert!(reason.contains("excludes -1.80"), "Reason should mention alpha: {}", reason);
+        assert!(
+            reason.contains("excludes -1.80"),
+            "Reason should mention alpha: {}",
+            reason
+        );
     }
 
     #[test]
@@ -1699,13 +1723,17 @@ mod tests {
             a_inf: make_ci(2.0, 1.9, 2.1),
             b_coeff: make_ci(14.6, 12.0, 17.0),
             alpha: make_ci(-1.80, -2.0, -1.6),
-            r_squared: 0.85,  // Below 0.95 threshold
+            r_squared: 0.85, // Below 0.95 threshold
             uncertain: false,
         };
 
         let (matches, reason) = super::c074_decision_rule(&result);
         assert!(!matches, "Should fail due to low R^2");
-        assert!(reason.contains("R^2"), "Reason should mention R^2: {}", reason);
+        assert!(
+            reason.contains("R^2"),
+            "Reason should mention R^2: {}",
+            reason
+        );
     }
 
     // ========================================================================
@@ -1729,7 +1757,7 @@ mod tests {
         // Octonions (dim=8) are only alternative (non-associative with zero associator
         // for certain special cases but generally non-zero).
         let dimensions: Vec<usize> = vec![8, 16, 32, 64];
-        let n_samples = 500;  // Number of random triples per dimension
+        let n_samples = 500; // Number of random triples per dimension
         let seed = 12345u64;
 
         let mut rng = StdRng::seed_from_u64(seed);
@@ -1764,27 +1792,32 @@ mod tests {
 
         // Print diagnostic information
         eprintln!("\nC-074 Fit Results:");
-        eprintln!("  A_inf: {:.4} [{:.4}, {:.4}]",
-            result.a_inf.point_estimate,
-            result.a_inf.ci_lower,
-            result.a_inf.ci_upper
+        eprintln!(
+            "  A_inf: {:.4} [{:.4}, {:.4}]",
+            result.a_inf.point_estimate, result.a_inf.ci_lower, result.a_inf.ci_upper
         );
-        eprintln!("  B:     {:.4} [{:.4}, {:.4}]",
-            result.b_coeff.point_estimate,
-            result.b_coeff.ci_lower,
-            result.b_coeff.ci_upper
+        eprintln!(
+            "  B:     {:.4} [{:.4}, {:.4}]",
+            result.b_coeff.point_estimate, result.b_coeff.ci_lower, result.b_coeff.ci_upper
         );
-        eprintln!("  alpha: {:.4} [{:.4}, {:.4}]",
-            result.alpha.point_estimate,
-            result.alpha.ci_lower,
-            result.alpha.ci_upper
+        eprintln!(
+            "  alpha: {:.4} [{:.4}, {:.4}]",
+            result.alpha.point_estimate, result.alpha.ci_lower, result.alpha.ci_upper
         );
         eprintln!("  R^2:   {:.4}", result.r_squared);
         eprintln!("  Uncertain: {}", result.uncertain);
 
         // Apply the decision rule
         let (matches, reason) = super::c074_decision_rule(&result);
-        eprintln!("\nDecision: {} - {}", if matches { "VERIFIED" } else { "NEEDS REVISION" }, reason);
+        eprintln!(
+            "\nDecision: {} - {}",
+            if matches {
+                "VERIFIED"
+            } else {
+                "NEEDS REVISION"
+            },
+            reason
+        );
 
         // Core assertions for the integration test:
         // 1. R-squared should be high (model fits the data well)

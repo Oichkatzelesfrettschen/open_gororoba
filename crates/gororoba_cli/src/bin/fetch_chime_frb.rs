@@ -123,8 +123,10 @@ fn download_catalog(name: &str, urls: &[&str], output_path: &Path) {
     eprintln!();
     eprintln!("Alternatively, use the cfod Python package:");
     eprintln!("  pip install cfod");
-    eprintln!("  python -c \"from cfod.catalog1 import catalog; catalog.as_dataframe().to_csv('{}')\"",
-        output_path.display());
+    eprintln!(
+        "  python -c \"from cfod.catalog1 import catalog; catalog.as_dataframe().to_csv('{}')\"",
+        output_path.display()
+    );
     eprintln!();
     std::process::exit(1);
 }

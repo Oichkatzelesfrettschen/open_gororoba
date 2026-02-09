@@ -175,8 +175,7 @@ pub fn hawking_spectrum(nu: f64, mass_g: f64) -> f64 {
     let r_s = 2.0 * G_CGS * mass_g / (C_CGS * C_CGS);
     let area = 4.0 * PI * r_s * r_s;
     // Planck spectral radiance B_nu = 2 h nu^3 / c^2 / (exp(h nu / kT) - 1)
-    let b_nu = 2.0 * 2.0 * PI * HBAR_CGS * nu * nu * nu / (C_CGS * C_CGS)
-        / (x.exp() - 1.0);
+    let b_nu = 2.0 * 2.0 * PI * HBAR_CGS * nu * nu * nu / (C_CGS * C_CGS) / (x.exp() - 1.0);
     area * PI * b_nu
 }
 

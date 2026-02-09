@@ -27,10 +27,7 @@ pub fn random_unitary(d: usize, rng: &mut ChaCha8Rng) -> ComplexMatrix {
     let mut a: ComplexMatrix = vec![vec![Complex64::new(0.0, 0.0); d]; d];
     for row in &mut a {
         for elem in row.iter_mut() {
-            *elem = Complex64::new(
-                rng.gen_range(-1.0..1.0),
-                rng.gen_range(-1.0..1.0),
-            );
+            *elem = Complex64::new(rng.gen_range(-1.0..1.0), rng.gen_range(-1.0..1.0));
         }
     }
 
@@ -65,10 +62,7 @@ fn gram_schmidt_orthonormalize(a: &mut ComplexMatrix) {
 
 /// Complex inner product <u, v>.
 fn inner_product(u: &[Complex64], v: &[Complex64]) -> Complex64 {
-    u.iter()
-        .zip(v.iter())
-        .map(|(ui, vi)| ui.conj() * vi)
-        .sum()
+    u.iter().zip(v.iter()).map(|(ui, vi)| ui.conj() * vi).sum()
 }
 
 /// Vector norm ||v||.
@@ -112,7 +106,8 @@ pub fn build_mera_structure(l: usize) -> Vec<MeraLayer> {
 ///
 /// S = -Tr(rho * log2(rho))
 pub fn von_neumann_entropy(eigenvalues: &[f64]) -> f64 {
-    eigenvalues.iter()
+    eigenvalues
+        .iter()
         .filter(|&&ev| ev > 1e-15)
         .map(|&ev| -ev * ev.log2())
         .sum()
@@ -130,9 +125,7 @@ pub fn mera_entropy_estimate(subsystem_size: usize, d: usize, seed: u64) -> f64 
 
     // Generate random "density matrix" eigenvalues
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
-    let mut eigenvalues: Vec<f64> = (0..dim)
-        .map(|_| rng.gen::<f64>())
-        .collect();
+    let mut eigenvalues: Vec<f64> = (0..dim).map(|_| rng.gen::<f64>()).collect();
 
     // Normalize to sum to 1 (valid density matrix)
     let sum: f64 = eigenvalues.iter().sum();
@@ -176,12 +169,9 @@ pub struct MeraScalingResult {
 /// Analyze MERA entropy scaling (C-009).
 ///
 /// Verifies that entropy scales as S ~ (c/3) * log(L) + const.
-pub fn mera_entropy_scaling_analysis(
-    l_values: &[usize],
-    d: usize,
-    seed: u64,
-) -> MeraScalingResult {
-    let entropies: Vec<f64> = l_values.iter()
+pub fn mera_entropy_scaling_analysis(l_values: &[usize], d: usize, seed: u64) -> MeraScalingResult {
+    let entropies: Vec<f64> = l_values
+        .iter()
         .enumerate()
         .map(|(i, &l)| mera_entropy_estimate(l, d, seed + i as u64))
         .collect();
@@ -212,11 +202,7 @@ pub fn bootstrap_slope_ci(
     let mut slopes = Vec::with_capacity(n_bootstrap);
 
     for i in 0..n_bootstrap {
-        let result = mera_entropy_scaling_analysis(
-            l_values,
-            d,
-            base_seed + (i * 1000) as u64,
-        );
+        let result = mera_entropy_scaling_analysis(l_values, d, base_seed + (i * 1000) as u64);
         slopes.push(result.slope);
     }
 
@@ -271,8 +257,10 @@ mod tests {
         let eigenvalues: Vec<f64> = vec![1.0 / d as f64; d];
         let s = von_neumann_entropy(&eigenvalues);
         let expected = (d as f64).log2();
-        assert!((s - expected).abs() < 1e-10,
-            "Maximally mixed state should have S = log2(d)");
+        assert!(
+            (s - expected).abs() < 1e-10,
+            "Maximally mixed state should have S = log2(d)"
+        );
     }
 
     #[test]
@@ -289,7 +277,8 @@ mod tests {
     fn test_fit_log_scaling() {
         // Test with known data: S = 0.5 * log2(L) + 1.0
         let l_values = vec![2, 4, 8, 16];
-        let entropies: Vec<f64> = l_values.iter()
+        let entropies: Vec<f64> = l_values
+            .iter()
             .map(|&l| 0.5 * (l as f64).log2() + 1.0)
             .collect();
 

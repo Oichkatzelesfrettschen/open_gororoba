@@ -136,7 +136,8 @@ pub fn build_absorber_stack(
     let mut sorted_pairs = zd_pairs.to_vec();
     sorted_pairs.sort_by(|a, b| a.4.partial_cmp(&b.4).unwrap());
 
-    sorted_pairs.iter()
+    sorted_pairs
+        .iter()
         .take(max_layers)
         .enumerate()
         .map(|(layer_id, &zd)| map_zd_pair_to_layer(zd, layer_id, base_n))
@@ -162,13 +163,16 @@ pub fn verify_physical_realizability(stack: &[ZdToLayerMapping]) -> Verification
     let n_total = stack.len();
     let n_physical = stack.iter().filter(|m| m.is_physical).count();
 
-    let n_dielectric = stack.iter()
+    let n_dielectric = stack
+        .iter()
         .filter(|m| m.layer.material_type == MaterialType::Dielectric)
         .count();
-    let n_plasmonic = stack.iter()
+    let n_plasmonic = stack
+        .iter()
         .filter(|m| m.layer.material_type == MaterialType::Plasmonic)
         .count();
-    let n_hyperbolic = stack.iter()
+    let n_hyperbolic = stack
+        .iter()
         .filter(|m| m.layer.material_type == MaterialType::Hyperbolic)
         .count();
 

@@ -21,9 +21,9 @@
 //! - m_e / m_tau = 1/3477.3
 
 use algebra_core::cd_associator_norm;
+use rand::Rng;
 use rand::SeedableRng;
 use rand_chacha::ChaCha8Rng;
-use rand::Rng;
 
 /// Physical lepton masses in MeV (PDG 2024).
 pub const M_ELECTRON: f64 = 0.510998950;
@@ -31,9 +31,9 @@ pub const M_MUON: f64 = 105.6583755;
 pub const M_TAU: f64 = 1776.86;
 
 /// Lepton mass ratios.
-pub const RATIO_E_MU: f64 = M_ELECTRON / M_MUON;    // ~0.00484
-pub const RATIO_MU_TAU: f64 = M_MUON / M_TAU;       // ~0.0595
-pub const RATIO_E_TAU: f64 = M_ELECTRON / M_TAU;    // ~0.000288
+pub const RATIO_E_MU: f64 = M_ELECTRON / M_MUON; // ~0.00484
+pub const RATIO_MU_TAU: f64 = M_MUON / M_TAU; // ~0.0595
+pub const RATIO_E_TAU: f64 = M_ELECTRON / M_TAU; // ~0.000288
 
 /// A generation assignment: maps lepton to basis element triple.
 #[derive(Debug, Clone)]
@@ -52,9 +52,9 @@ pub struct MassRatioPrediction {
     /// Assignment used
     pub assignment: GenerationAssignment,
     /// Associator norms for each generation
-    pub norms: (f64, f64, f64),  // (electron, muon, tau)
+    pub norms: (f64, f64, f64), // (electron, muon, tau)
     /// Predicted mass ratios from norm ratios
-    pub predicted_ratios: (f64, f64, f64),  // (e/mu, mu/tau, e/tau)
+    pub predicted_ratios: (f64, f64, f64), // (e/mu, mu/tau, e/tau)
     /// Deviation from PDG values
     pub pdg_deviation: (f64, f64, f64),
     /// Root-mean-square deviation
@@ -105,15 +105,15 @@ pub fn canonical_sedenion_assignments() -> Vec<GenerationAssignment> {
     vec![
         // Assignment 1: Based on index progression
         GenerationAssignment {
-            electron: (1, 2, 3),   // Low indices, near-associative
-            muon: (4, 5, 6),       // Mid indices
-            tau: (8, 9, 10),      // High indices, sedenion-specific
+            electron: (1, 2, 3), // Low indices, near-associative
+            muon: (4, 5, 6),     // Mid indices
+            tau: (8, 9, 10),     // High indices, sedenion-specific
         },
         // Assignment 2: Based on Fano plane structure
         GenerationAssignment {
-            electron: (1, 2, 4),   // Fano triple
-            muon: (3, 5, 6),       // Another Fano triple
-            tau: (7, 8, 15),      // Sedenion extension
+            electron: (1, 2, 4), // Fano triple
+            muon: (3, 5, 6),     // Another Fano triple
+            tau: (7, 8, 15),     // Sedenion extension
         },
         // Assignment 3: Gresnigt-style (2023)
         GenerationAssignment {
@@ -132,8 +132,14 @@ pub fn canonical_sedenion_assignments() -> Vec<GenerationAssignment> {
 
 /// Predict mass ratios from a generation assignment.
 pub fn predict_mass_ratios(dim: usize, assignment: &GenerationAssignment) -> MassRatioPrediction {
-    let norm_e = basis_associator_norm(dim, assignment.electron.0, assignment.electron.1, assignment.electron.2);
-    let norm_mu = basis_associator_norm(dim, assignment.muon.0, assignment.muon.1, assignment.muon.2);
+    let norm_e = basis_associator_norm(
+        dim,
+        assignment.electron.0,
+        assignment.electron.1,
+        assignment.electron.2,
+    );
+    let norm_mu =
+        basis_associator_norm(dim, assignment.muon.0, assignment.muon.1, assignment.muon.2);
     let norm_tau = basis_associator_norm(dim, assignment.tau.0, assignment.tau.1, assignment.tau.2);
 
     // If all norms are zero (associative), return degenerate prediction
@@ -152,19 +158,47 @@ pub fn predict_mass_ratios(dim: usize, assignment: &GenerationAssignment) -> Mas
     let _total = norm_e + norm_mu + norm_tau;
     let inv_norm_e = if norm_e > 1e-15 { 1.0 / norm_e } else { 1e15 };
     let inv_norm_mu = if norm_mu > 1e-15 { 1.0 / norm_mu } else { 1e15 };
-    let inv_norm_tau = if norm_tau > 1e-15 { 1.0 / norm_tau } else { 1e15 };
+    let inv_norm_tau = if norm_tau > 1e-15 {
+        1.0 / norm_tau
+    } else {
+        1e15
+    };
 
     // Normalize to get predicted ratios
     // smaller norm -> smaller inverse -> smaller predicted mass -> better for electron
-    let _predicted_e_mu = if inv_norm_mu > 1e-15 { inv_norm_e / inv_norm_mu } else { 0.0 };
-    let _predicted_mu_tau = if inv_norm_tau > 1e-15 { inv_norm_mu / inv_norm_tau } else { 0.0 };
-    let _predicted_e_tau = if inv_norm_tau > 1e-15 { inv_norm_e / inv_norm_tau } else { 0.0 };
+    let _predicted_e_mu = if inv_norm_mu > 1e-15 {
+        inv_norm_e / inv_norm_mu
+    } else {
+        0.0
+    };
+    let _predicted_mu_tau = if inv_norm_tau > 1e-15 {
+        inv_norm_mu / inv_norm_tau
+    } else {
+        0.0
+    };
+    let _predicted_e_tau = if inv_norm_tau > 1e-15 {
+        inv_norm_e / inv_norm_tau
+    } else {
+        0.0
+    };
 
     // Alternative: direct norm ratios (larger norm = heavier)
     // If norm_e < norm_mu < norm_tau, then mass_e < mass_mu < mass_tau
-    let pred_e_mu_direct = if norm_mu > 1e-15 { norm_e / norm_mu } else { 0.0 };
-    let pred_mu_tau_direct = if norm_tau > 1e-15 { norm_mu / norm_tau } else { 0.0 };
-    let pred_e_tau_direct = if norm_tau > 1e-15 { norm_e / norm_tau } else { 0.0 };
+    let pred_e_mu_direct = if norm_mu > 1e-15 {
+        norm_e / norm_mu
+    } else {
+        0.0
+    };
+    let pred_mu_tau_direct = if norm_tau > 1e-15 {
+        norm_mu / norm_tau
+    } else {
+        0.0
+    };
+    let pred_e_tau_direct = if norm_tau > 1e-15 {
+        norm_e / norm_tau
+    } else {
+        0.0
+    };
 
     // Use direct ratios (matches Tang interpretation better)
     let predicted_ratios = (pred_e_mu_direct, pred_mu_tau_direct, pred_e_tau_direct);
@@ -211,9 +245,15 @@ pub fn find_best_assignment(dim: usize, n_samples: usize, seed: u64) -> MassRati
         let k3 = rng.gen_range(1..dim);
 
         // Ensure distinct indices within each triple
-        if i1 == j1 || j1 == k1 || i1 == k1 { continue; }
-        if i2 == j2 || j2 == k2 || i2 == k2 { continue; }
-        if i3 == j3 || j3 == k3 || i3 == k3 { continue; }
+        if i1 == j1 || j1 == k1 || i1 == k1 {
+            continue;
+        }
+        if i2 == j2 || j2 == k2 || i2 == k2 {
+            continue;
+        }
+        if i3 == j3 || j3 == k3 || i3 == k3 {
+            continue;
+        }
 
         let assignment = GenerationAssignment {
             electron: (i1, j1, k1),
@@ -231,11 +271,7 @@ pub fn find_best_assignment(dim: usize, n_samples: usize, seed: u64) -> MassRati
 }
 
 /// Run null hypothesis test: do random assignments do worse than the best?
-pub fn mass_ratio_null_test(
-    dim: usize,
-    n_permutations: usize,
-    seed: u64,
-) -> MassNullTestResult {
+pub fn mass_ratio_null_test(dim: usize, n_permutations: usize, seed: u64) -> MassNullTestResult {
     let mut rng = ChaCha8Rng::seed_from_u64(seed);
 
     // Get the best assignment's RMS
@@ -257,9 +293,15 @@ pub fn mass_ratio_null_test(
         let j3 = rng.gen_range(1..dim);
         let k3 = rng.gen_range(1..dim);
 
-        if i1 == j1 || j1 == k1 || i1 == k1 { continue; }
-        if i2 == j2 || j2 == k2 || i2 == k2 { continue; }
-        if i3 == j3 || j3 == k3 || i3 == k3 { continue; }
+        if i1 == j1 || j1 == k1 || i1 == k1 {
+            continue;
+        }
+        if i2 == j2 || j2 == k2 || i2 == k2 {
+            continue;
+        }
+        if i3 == j3 || j3 == k3 || i3 == k3 {
+            continue;
+        }
 
         let assignment = GenerationAssignment {
             electron: (i1, j1, k1),
@@ -274,11 +316,18 @@ pub fn mass_ratio_null_test(
     // Compute statistics
     let n = null_rms_values.len() as f64;
     let mean_null = null_rms_values.iter().sum::<f64>() / n;
-    let variance = null_rms_values.iter().map(|x| (x - mean_null).powi(2)).sum::<f64>() / (n - 1.0);
+    let variance = null_rms_values
+        .iter()
+        .map(|x| (x - mean_null).powi(2))
+        .sum::<f64>()
+        / (n - 1.0);
     let std_null = variance.sqrt();
 
     // p-value: fraction of null values <= observed
-    let n_better_or_equal = null_rms_values.iter().filter(|&&x| x <= observed_rms).count();
+    let n_better_or_equal = null_rms_values
+        .iter()
+        .filter(|&&x| x <= observed_rms)
+        .count();
     let p_value = n_better_or_equal as f64 / n;
 
     MassNullTestResult {
@@ -363,7 +412,10 @@ mod tests {
     #[test]
     fn test_canonical_assignments() {
         let assignments = canonical_sedenion_assignments();
-        assert!(assignments.len() >= 3, "Should have multiple canonical assignments");
+        assert!(
+            assignments.len() >= 3,
+            "Should have multiple canonical assignments"
+        );
     }
 
     #[test]
@@ -430,11 +482,14 @@ mod tests {
     fn test_octonion_gives_correct_order() {
         // In octonions, all basis triples have same associator norm (sqrt(2))
         // So mass ratios should be ~1 (degenerate)
-        let pred = predict_mass_ratios(8, &GenerationAssignment {
-            electron: (1, 2, 4),
-            muon: (1, 3, 5),
-            tau: (2, 3, 6),
-        });
+        let pred = predict_mass_ratios(
+            8,
+            &GenerationAssignment {
+                electron: (1, 2, 4),
+                muon: (1, 3, 5),
+                tau: (2, 3, 6),
+            },
+        );
 
         // Norms should be similar (all sqrt(2) for standard octonion triples)
         let norm_range = pred.norms.2 - pred.norms.0;

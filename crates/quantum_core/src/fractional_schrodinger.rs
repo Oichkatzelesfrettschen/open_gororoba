@@ -74,12 +74,13 @@ pub fn levy_propagator(
     k_max: f64,
 ) -> PropagatorResult {
     let dk = 2.0 * k_max / n_k as f64;
-    let k_vals: Vec<f64> = (0..n_k)
-        .map(|i| -k_max + (i as f64 + 0.5) * dk)
-        .collect();
+    let k_vals: Vec<f64> = (0..n_k).map(|i| -k_max + (i as f64 + 0.5) * dk).collect();
 
     // Precompute phase factors in k-space
-    let phase_k: Vec<f64> = k_vals.iter().map(|&k| -d * k.abs().powf(alpha) * t).collect();
+    let phase_k: Vec<f64> = k_vals
+        .iter()
+        .map(|&k| -d * k.abs().powf(alpha) * t)
+        .collect();
 
     let mut propagator = Vec::with_capacity(x.len());
     for &xj in x {
@@ -119,8 +120,18 @@ pub fn gaussian_propagator(x: &[f64], t: f64, m: f64) -> PropagatorResult {
 /// L2 error between Levy and Gaussian propagators.
 ///
 /// At alpha=2, D=1/(2m), the Levy propagator should recover the Gaussian.
-pub fn propagator_l2_error(alpha: f64, d: f64, t: f64, n_x: usize, l: f64, n_k: usize, k_max: f64) -> f64 {
-    let x: Vec<f64> = (0..n_x).map(|i| -l + 2.0 * l * i as f64 / n_x as f64).collect();
+pub fn propagator_l2_error(
+    alpha: f64,
+    d: f64,
+    t: f64,
+    n_x: usize,
+    l: f64,
+    n_k: usize,
+    k_max: f64,
+) -> f64 {
+    let x: Vec<f64> = (0..n_x)
+        .map(|i| -l + 2.0 * l * i as f64 / n_x as f64)
+        .collect();
     let levy = levy_propagator(&x, t, alpha, d, n_k, k_max);
 
     let m = 1.0 / (2.0 * d);
@@ -170,7 +181,11 @@ pub fn split_operator_evolve(
     // Build k-space grid
     let k: Vec<f64> = (0..n)
         .map(|i| {
-            let freq = if i <= n / 2 { i as f64 } else { i as f64 - n as f64 };
+            let freq = if i <= n / 2 {
+                i as f64
+            } else {
+                i as f64 - n as f64
+            };
             2.0 * PI * freq / (n as f64 * dx)
         })
         .collect();
@@ -268,14 +283,21 @@ pub fn imaginary_time_ground_state(
     // Build k-space grid
     let k: Vec<f64> = (0..n)
         .map(|i| {
-            let freq = if i <= n / 2 { i as f64 } else { i as f64 - n as f64 };
+            let freq = if i <= n / 2 {
+                i as f64
+            } else {
+                i as f64 - n as f64
+            };
             2.0 * PI * freq / (n as f64 * dx)
         })
         .collect();
 
     // Precompute exponentials (real for imaginary time)
     let exp_v_half: Vec<f64> = v.iter().map(|&vi| (-vi * tau / 2.0).exp()).collect();
-    let exp_t: Vec<f64> = k.iter().map(|&ki| (-d * ki.abs().powf(alpha) * tau).exp()).collect();
+    let exp_t: Vec<f64> = k
+        .iter()
+        .map(|&ki| (-d * ki.abs().powf(alpha) * tau).exp())
+        .collect();
 
     let mut planner = FftPlanner::new();
     let fft = planner.plan_fft_forward(n);
@@ -324,7 +346,12 @@ pub fn imaginary_time_ground_state(
         * dx
         / n as f64;
 
-    let v_exp: f64 = psi.iter().zip(v.iter()).map(|(&p, &vi)| vi * p * p).sum::<f64>() * dx;
+    let v_exp: f64 = psi
+        .iter()
+        .zip(v.iter())
+        .map(|(&p, &vi)| vi * p * p)
+        .sum::<f64>()
+        * dx;
 
     (psi, t_exp + v_exp)
 }
@@ -352,9 +379,7 @@ pub fn variational_ground_state(alpha: f64, d: f64, omega: f64, m: f64) -> Varia
     let mut b: f64 = 100.0;
     let phi = (1.0 + 5.0_f64.sqrt()) / 2.0;
 
-    let energy = |beta: f64| -> f64 {
-        coeff_t * beta.powf(alpha / 2.0) + coeff_v / beta
-    };
+    let energy = |beta: f64| -> f64 { coeff_t * beta.powf(alpha / 2.0) + coeff_v / beta };
 
     for _ in 0..100 {
         let c = b - (b - a) / phi;
@@ -445,7 +470,10 @@ mod tests {
         let v: Vec<f64> = x.iter().map(|&xi| 0.5 * xi * xi).collect();
 
         // Initial Gaussian wavepacket
-        let psi0: Vec<Complex64> = x.iter().map(|&xi| Complex64::new((-xi * xi / 2.0).exp(), 0.0)).collect();
+        let psi0: Vec<Complex64> = x
+            .iter()
+            .map(|&xi| Complex64::new((-xi * xi / 2.0).exp(), 0.0))
+            .collect();
 
         let result = split_operator_evolve(&psi0, &x, &v, 2.0, 0.5, 0.01, 100, true);
         assert_relative_eq!(result.norm, 1.0, epsilon = 0.05);
@@ -469,8 +497,16 @@ mod tests {
         // At alpha=2, D=0.5, m=1, omega=1, exact E_0 = omega/2 = 0.5
         let result = variational_ground_state(2.0, 0.5, 1.0, 1.0);
         // Variational bound is upper bound, should be close to 0.5
-        assert!(result.energy > 0.45, "E = {} should be > 0.45", result.energy);
-        assert!(result.energy < 0.55, "E = {} should be < 0.55", result.energy);
+        assert!(
+            result.energy > 0.45,
+            "E = {} should be > 0.45",
+            result.energy
+        );
+        assert!(
+            result.energy < 0.55,
+            "E = {} should be < 0.55",
+            result.energy
+        );
     }
 
     #[test]

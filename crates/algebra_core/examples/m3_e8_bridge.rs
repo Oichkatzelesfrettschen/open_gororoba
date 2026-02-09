@@ -5,7 +5,7 @@
 //! structure or reveals specific "scalar" (Fano) vs "vector" (Non-Fano) modes.
 
 use algebra_core::{generate_e8_roots, E8Root};
-use algebra_core::{Octonion, oct_multiply, oct_conjugate, oct_norm_sq};
+use algebra_core::{oct_conjugate, oct_multiply, oct_norm_sq, Octonion};
 
 fn main() {
     println!("=== M3-E8 Bridge: Algebraic Topology Probe ===");
@@ -38,7 +38,7 @@ fn main() {
         let m3_wuv = compute_m3(&w, &u, &v);
 
         let sum = add(&add(&m3_uvw, &m3_vwu), &m3_wuv);
-        
+
         if oct_norm_sq(&sum) > 1e-9 {
             bianchi_failures += 1;
         }
@@ -51,8 +51,14 @@ fn main() {
         }
     }
 
-    println!("Bianchi Identity Failures: {} / {}", bianchi_failures, iterations);
-    println!("Antisymmetry Failures: {} / {}", antisymmetric_failures, iterations);
+    println!(
+        "Bianchi Identity Failures: {} / {}",
+        bianchi_failures, iterations
+    );
+    println!(
+        "Antisymmetry Failures: {} / {}",
+        antisymmetric_failures, iterations
+    );
 
     // 3. Test M3 Output on E8 Lattice
     println!("\n--- Testing E8 Lattice Closure ---");
@@ -137,19 +143,19 @@ struct Sedenion {
 
 fn s_mul(u: &Sedenion, v: &Sedenion) -> Sedenion {
     // (A,B)(C,D) = (AC - D*B, DA + BC*)
-    
+
     let ac = oct_multiply(&u.low, &v.low);
     let d_conj = oct_conjugate(&v.high);
     let db = oct_multiply(&d_conj, &u.high); // D* B
-    
+
     let low = sub(&ac, &db); // AC - D*B
-    
+
     let da = oct_multiply(&v.high, &u.low);
     let c_conj = oct_conjugate(&v.low);
     let bc = oct_multiply(&u.high, &c_conj); // B C*
-    
+
     let high = add(&da, &bc); // DA + BC*
-    
+
     Sedenion { low, high }
 }
 
@@ -158,7 +164,10 @@ fn h_map(s: &Sedenion) -> Sedenion {
     let diff = sub(&s.low, &s.high);
     let half_diff = scale(&diff, 0.5);
     let neg_half_diff = scale(&half_diff, -1.0);
-    Sedenion { low: half_diff, high: neg_half_diff }
+    Sedenion {
+        low: half_diff,
+        high: neg_half_diff,
+    }
 }
 
 fn p_map(s: &Sedenion) -> Octonion {
@@ -172,19 +181,19 @@ fn compute_m3(x: &Octonion, y: &Octonion, z: &Octonion) -> Octonion {
     let big_x = Sedenion { low: *x, high: *x };
     let big_y = Sedenion { low: *y, high: *y };
     let big_z = Sedenion { low: *z, high: *z };
-    
+
     // term1 = p(h(xy)z)
     let xy = s_mul(&big_x, &big_y);
     let h_xy = h_map(&xy);
     let h_xy_z = s_mul(&h_xy, &big_z);
     let term1 = p_map(&h_xy_z);
-    
+
     // term2 = p(x h(yz))
     let yz = s_mul(&big_y, &big_z);
     let h_yz = h_map(&yz);
     let x_h_yz = s_mul(&big_x, &h_yz);
     let term2 = p_map(&x_h_yz);
-    
+
     sub(&term1, &term2)
 }
 
@@ -192,17 +201,19 @@ fn is_in_e8_lattice(o: &Octonion) -> bool {
     // E8 definition:
     // 1. All coords integer, sum even.
     // 2. All coords half-integer, sum even.
-    
+
     let coords = o;
-    
+
     let is_int = coords.iter().all(|x| (x.round() - x).abs() < 1e-5);
-    
+
     if is_int {
         let sum: i64 = coords.iter().map(|x| x.round() as i64).sum();
         return sum % 2 == 0;
     }
-    
-    let is_half = coords.iter().all(|x| ((x*2.0).round() - x*2.0).abs() < 1e-5 && (x.round() - x).abs() > 0.1);
+
+    let is_half = coords
+        .iter()
+        .all(|x| ((x * 2.0).round() - x * 2.0).abs() < 1e-5 && (x.round() - x).abs() > 0.1);
     if is_half {
         let sum: f64 = coords.iter().sum();
         // sum of half-integers: must be integer with even sum?
@@ -212,6 +223,6 @@ fn is_in_e8_lattice(o: &Octonion) -> bool {
         // E8 condition for half-integers: sum is even.
         return (sum.round() as i64) % 2 == 0;
     }
-    
+
     false
 }

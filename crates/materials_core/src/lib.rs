@@ -17,64 +17,74 @@
 //! - Gresnigt 2023: Unified sedenion lepton model
 //! - Palik (1998): Handbook of Optical Constants
 
-pub mod metamaterial;
-pub mod effective_medium;
-pub mod tang_mass;
-pub mod periodic_table;
-pub mod optical_database;
-pub mod featurizer;
 pub mod baselines;
+pub mod effective_medium;
+pub mod featurizer;
+pub mod metamaterial;
+pub mod optical_database;
+pub mod periodic_table;
+pub mod tang_mass;
 
 pub use metamaterial::{
-    map_zd_to_refractive_index, map_zd_norm_to_thickness, classify_material_type,
-    map_zd_pair_to_layer, build_absorber_stack, verify_physical_realizability,
-    canonical_sedenion_zd_pairs, MetamaterialLayer, ZdToLayerMapping,
-    MaterialType, VerificationResult,
+    build_absorber_stack, canonical_sedenion_zd_pairs, classify_material_type,
+    map_zd_norm_to_thickness, map_zd_pair_to_layer, map_zd_to_refractive_index,
+    verify_physical_realizability, MaterialType, MetamaterialLayer, VerificationResult,
+    ZdToLayerMapping,
 };
 
 pub use tang_mass::{
-    M_ELECTRON, M_MUON, M_TAU, RATIO_E_MU, RATIO_MU_TAU, RATIO_E_TAU,
-    GenerationAssignment, MassRatioPrediction, MassNullTestResult,
-    DimensionScalingResult, basis_associator_norm, canonical_sedenion_assignments,
-    predict_mass_ratios, find_best_assignment, mass_ratio_null_test,
-    dimension_scaling_analysis,
+    basis_associator_norm, canonical_sedenion_assignments, dimension_scaling_analysis,
+    find_best_assignment, mass_ratio_null_test, predict_mass_ratios, DimensionScalingResult,
+    GenerationAssignment, MassNullTestResult, MassRatioPrediction, M_ELECTRON, M_MUON, M_TAU,
+    RATIO_E_MU, RATIO_E_TAU, RATIO_MU_TAU,
 };
 
 pub use effective_medium::{
-    maxwell_garnett, maxwell_garnett_array,
-    bruggeman, bruggeman_array,
-    drude, drude_lorentz, LorentzOscillator,
-    kramers_kronig_check, KramersKronigResult,
-    tmm_reflection, tmm_spectrum, TmmResult,
+    bruggeman, bruggeman_array, drude, drude_lorentz, kramers_kronig_check, maxwell_garnett,
+    maxwell_garnett_array, tmm_reflection, tmm_spectrum, KramersKronigResult, LorentzOscillator,
+    TmmResult,
 };
 
-pub use periodic_table::{
-    Element, CrystalStructure,
-    get_element, get_element_by_z,
-};
+pub use periodic_table::{get_element, get_element_by_z, CrystalStructure, Element};
 
 pub use featurizer::{
-    parse_formula, composition_fractions, featurize,
-    CompositionFeatures, PropertyStats, feature_vector, feature_names,
+    composition_fractions, feature_names, feature_vector, featurize, parse_formula,
+    CompositionFeatures, PropertyStats,
 };
 
-pub use baselines::{
-    train_test_split, ols_fit, run_baseline, RegressionResult,
-};
+pub use baselines::{ols_fit, run_baseline, train_test_split, RegressionResult};
 
 pub use optical_database::{
-    // Constants
-    EV_TO_RADS, C, HBAR_EV_S,
-    // Conversions
-    wavelength_to_omega, ev_to_omega, omega_to_ev,
-    // Models
-    DrudeParams, DrudeLorentzParams, LorentzOscillator as OpticalLorentzOscillator,
+    aluminum_drude,
+    copper_drude,
+    ev_to_omega,
+    germanium_optical,
+    get_material,
     // Pre-defined materials
-    gold_drude, gold_drude_lorentz, silver_drude, silver_drude_lorentz,
-    copper_drude, aluminum_drude, silicon_optical, silica_optical,
-    germanium_optical, silicon_nitride_optical,
+    gold_drude,
+    gold_drude_lorentz,
+    lifshitz_integrand_te,
+    list_materials,
+    omega_to_ev,
     // Casimir utilities
-    reflection_te, reflection_tm, lifshitz_integrand_te,
+    reflection_te,
+    reflection_tm,
+    silica_optical,
+    silicon_nitride_optical,
+    silicon_optical,
+    silver_drude,
+    silver_drude_lorentz,
+    // Conversions
+    wavelength_to_omega,
+    DrudeLorentzParams,
+    // Models
+    DrudeParams,
+    LorentzOscillator as OpticalLorentzOscillator,
     // Database
-    MaterialEntry, MaterialType as OpticalMaterialType, get_material, list_materials,
+    MaterialEntry,
+    MaterialType as OpticalMaterialType,
+    C,
+    // Constants
+    EV_TO_RADS,
+    HBAR_EV_S,
 };

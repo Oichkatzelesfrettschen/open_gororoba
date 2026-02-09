@@ -101,10 +101,7 @@ mod tests {
     #[test]
     fn test_mixing_amplitude_zero_field() {
         let (_b_cr, _kappa, ratio) = mixing_amplitude_estimate(0.0);
-        assert!(
-            ratio == 0.0,
-            "Zero field should give zero mixing amplitude"
-        );
+        assert!(ratio == 0.0, "Zero field should give zero mixing amplitude");
     }
 
     #[test]

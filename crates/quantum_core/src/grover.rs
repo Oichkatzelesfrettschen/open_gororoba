@@ -237,12 +237,7 @@ pub fn grover_search_indices(
     let n_marked = marked_indices.len();
     let marked_set: std::collections::HashSet<usize> = marked_indices.iter().cloned().collect();
 
-    grover_search(
-        n_qubits,
-        |x| marked_set.contains(&x),
-        n_marked,
-        config,
-    )
+    grover_search(n_qubits, |x| marked_set.contains(&x), n_marked, config)
 }
 
 /// Amplitude amplification for arbitrary initial state.

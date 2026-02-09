@@ -43,12 +43,7 @@ pub fn comoving_distance(z: f64, omega_m: f64, h0: f64) -> f64 {
         return 0.0;
     }
 
-    let integral = gl_integrate(
-        |zp| 1.0 / hubble_e_lcdm(zp, omega_m),
-        0.0,
-        z,
-        50,
-    );
+    let integral = gl_integrate(|zp| 1.0 / hubble_e_lcdm(zp, omega_m), 0.0, z, 50);
 
     (C_KM_S / h0) * integral
 }
@@ -80,18 +75,13 @@ pub fn macquart_dm_cosmic(z: f64, omega_m: f64, omega_b: f64, h0: f64) -> f64 {
     let m_p = 1.67262192e-24; // g
     let f_igm = 0.83; // Macquart+ 2020
 
-    let prefactor = 3.0 * c_cgs * h0_s * omega_b * f_igm
-        / (8.0 * std::f64::consts::PI * g_cgs * m_p);
+    let prefactor =
+        3.0 * c_cgs * h0_s * omega_b * f_igm / (8.0 * std::f64::consts::PI * g_cgs * m_p);
 
     // Convert to pc/cm^3: 1 pc = 3.0857e18 cm
     let prefactor_pc = prefactor / 3.0857e18;
 
-    let integral = gl_integrate(
-        |zp| (1.0 + zp) / hubble_e_lcdm(zp, omega_m),
-        0.0,
-        z,
-        50,
-    );
+    let integral = gl_integrate(|zp| (1.0 + zp) / hubble_e_lcdm(zp, omega_m), 0.0, z, 50);
 
     prefactor_pc * integral
 }
@@ -311,10 +301,6 @@ mod tests {
     fn test_planck2018_constants() {
         // Flat universe check
         let total = planck2018::OMEGA_M + planck2018::OMEGA_LAMBDA;
-        assert!(
-            (total - 1.0).abs() < 0.01,
-            "Planck flatness: {}",
-            total
-        );
+        assert!((total - 1.0).abs() < 0.01, "Planck flatness: {}", total);
     }
 }

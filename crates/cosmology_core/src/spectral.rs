@@ -74,14 +74,16 @@ pub fn parisi_sourlas_spectrum_exponent(d: usize) -> f64 {
 
 /// Batch computation of Calcagni spectral dimension.
 pub fn batch_calcagni_d_s(k_values: &[f64], alpha: f64) -> Vec<f64> {
-    k_values.iter()
+    k_values
+        .iter()
         .map(|&k| calcagni_spectral_dimension(k, alpha))
         .collect()
 }
 
 /// Batch computation of CDT spectral dimension.
 pub fn batch_cdt_d_s(k_values: &[f64], k_pl: f64) -> Vec<f64> {
-    k_values.iter()
+    k_values
+        .iter()
         .map(|&k| cdt_spectral_dimension(k, k_pl))
         .collect()
 }
@@ -91,7 +93,8 @@ pub fn rms_deviation_log(spectrum1: &[f64], spectrum2: &[f64]) -> f64 {
     assert_eq!(spectrum1.len(), spectrum2.len());
 
     let n = spectrum1.len() as f64;
-    let sum_sq: f64 = spectrum1.iter()
+    let sum_sq: f64 = spectrum1
+        .iter()
         .zip(spectrum2.iter())
         .map(|(&s1, &s2)| {
             let log1 = s1.max(1e-30).log10();
@@ -133,12 +136,16 @@ pub fn analyze_k_minus_3_origin(k_min: f64, k_max: f64, n_points: usize) -> Spec
     let k_minus_3: Vec<f64> = k_values.iter().map(|&k| k_minus_3_spectrum(k)).collect();
 
     // Compute comparison spectra
-    let kraichnan: Vec<f64> = k_values.iter().map(|&k| kraichnan_enstrophy_spectrum(k)).collect();
+    let kraichnan: Vec<f64> = k_values
+        .iter()
+        .map(|&k| kraichnan_enstrophy_spectrum(k))
+        .collect();
     let kolmogorov: Vec<f64> = k_values.iter().map(|&k| kolmogorov_spectrum(k)).collect();
 
     // Calcagni: use spectral density P(k) ~ k^{d_S(k) - 1}
     let alpha = 0.5;
-    let calcagni: Vec<f64> = k_values.iter()
+    let calcagni: Vec<f64> = k_values
+        .iter()
         .map(|&k| {
             let d_s = calcagni_spectral_dimension(k, alpha);
             k.powf(d_s - 1.0)
@@ -191,8 +198,11 @@ mod tests {
         for k in [0.1, 1.0, 10.0, 100.0] {
             let kraichnan = kraichnan_enstrophy_spectrum(k);
             let k_m3 = k_minus_3_spectrum(k);
-            assert!((kraichnan - k_m3).abs() < 1e-10,
-                "Kraichnan should equal k^{{-3}} at k={}", k);
+            assert!(
+                (kraichnan - k_m3).abs() < 1e-10,
+                "Kraichnan should equal k^{{-3}} at k={}",
+                k
+            );
         }
     }
 
@@ -201,8 +211,10 @@ mod tests {
         let k = 10.0;
         let kolm = kolmogorov_spectrum(k);
         let k_m3 = k_minus_3_spectrum(k);
-        assert!((kolm - k_m3).abs() > 0.01,
-            "Kolmogorov should differ from k^{{-3}}");
+        assert!(
+            (kolm - k_m3).abs() > 0.01,
+            "Kolmogorov should differ from k^{{-3}}"
+        );
     }
 
     #[test]
@@ -226,6 +238,9 @@ mod tests {
         assert!(!result.calcagni_matches, "Calcagni should NOT match");
 
         // Parisi-Sourlas should NOT match
-        assert!(!result.parisi_sourlas_matches, "Parisi-Sourlas should NOT match");
+        assert!(
+            !result.parisi_sourlas_matches,
+            "Parisi-Sourlas should NOT match"
+        );
     }
 }

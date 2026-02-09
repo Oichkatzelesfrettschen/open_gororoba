@@ -45,21 +45,18 @@ pub fn extract_text(path: &Path) -> Result<Vec<PageText>> {
 /// Extract text as a single concatenated string.
 pub fn extract_full_text(path: &Path) -> Result<String> {
     let bytes = std::fs::read(path)?;
-    pdf_extract::extract_text_from_mem(&bytes)
-        .map_err(|e| DocpipeError::PdfParse(format!("{e}")))
+    pdf_extract::extract_text_from_mem(&bytes).map_err(|e| DocpipeError::PdfParse(format!("{e}")))
 }
 
 /// Get page count using lopdf.
 pub fn page_count(path: &Path) -> Result<usize> {
-    let doc = lopdf::Document::load(path)
-        .map_err(|e| DocpipeError::PdfParse(format!("{e}")))?;
+    let doc = lopdf::Document::load(path).map_err(|e| DocpipeError::PdfParse(format!("{e}")))?;
     Ok(doc.get_pages().len())
 }
 
 /// Extract images from a PDF using lopdf object traversal.
 pub fn extract_images(path: &Path) -> Result<Vec<PdfImage>> {
-    let doc =
-        lopdf::Document::load(path).map_err(|e| DocpipeError::PdfParse(format!("{e}")))?;
+    let doc = lopdf::Document::load(path).map_err(|e| DocpipeError::PdfParse(format!("{e}")))?;
 
     let mut images = Vec::new();
     let pages = doc.get_pages();

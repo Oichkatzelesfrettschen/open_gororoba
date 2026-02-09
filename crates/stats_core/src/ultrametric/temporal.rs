@@ -103,11 +103,7 @@ pub fn waiting_time_statistics(timestamps: &[f64]) -> WaitingTimeStats {
     }
 
     let mean_dt = dts.iter().sum::<f64>() / n_intervals as f64;
-    let var_dt = dts
-        .iter()
-        .map(|dt| (dt - mean_dt).powi(2))
-        .sum::<f64>()
-        / n_intervals as f64;
+    let var_dt = dts.iter().map(|dt| (dt - mean_dt).powi(2)).sum::<f64>() / n_intervals as f64;
     let std_dt = var_dt.sqrt();
 
     dts.sort_by(|a, b| a.partial_cmp(b).unwrap());
@@ -115,11 +111,7 @@ pub fn waiting_time_statistics(timestamps: &[f64]) -> WaitingTimeStats {
     let min_dt = dts[0];
     let max_dt = dts[n_intervals - 1];
 
-    let cv = if mean_dt > 0.0 {
-        std_dt / mean_dt
-    } else {
-        0.0
-    };
+    let cv = if mean_dt > 0.0 { std_dt / mean_dt } else { 0.0 };
 
     WaitingTimeStats {
         n_bursts: n,
@@ -271,9 +263,8 @@ pub fn analyze_temporal_cascade(
             }
         }
 
-        let null_frac = super::ultrametric_fraction_from_matrix(
-            &null_dists, n, n_triples, seed + 4_000_000,
-        );
+        let null_frac =
+            super::ultrametric_fraction_from_matrix(&null_dists, n, n_triples, seed + 4_000_000);
         null_fracs.push(null_frac);
     }
 

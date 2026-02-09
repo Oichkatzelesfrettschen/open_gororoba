@@ -22,20 +22,11 @@ pub fn pauli_matrices() -> (GammaMatrix, GammaMatrix, GammaMatrix) {
     let one = Complex64::new(1.0, 0.0);
     let i = Complex64::new(0.0, 1.0);
 
-    let sigma_1 = GammaMatrix::from_row_slice(2, 2, &[
-        zero, one,
-        one, zero,
-    ]);
+    let sigma_1 = GammaMatrix::from_row_slice(2, 2, &[zero, one, one, zero]);
 
-    let sigma_2 = GammaMatrix::from_row_slice(2, 2, &[
-        zero, -i,
-        i, zero,
-    ]);
+    let sigma_2 = GammaMatrix::from_row_slice(2, 2, &[zero, -i, i, zero]);
 
-    let sigma_3 = GammaMatrix::from_row_slice(2, 2, &[
-        one, zero,
-        zero, -one,
-    ]);
+    let sigma_3 = GammaMatrix::from_row_slice(2, 2, &[one, zero, zero, -one]);
 
     (sigma_1, sigma_2, sigma_3)
 }

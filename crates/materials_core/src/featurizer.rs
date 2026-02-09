@@ -108,11 +108,11 @@ fn element_property(elem: &Element, index: usize) -> f64 {
 }
 
 /// Compute composition-weighted property statistics.
-fn compute_property_stats(
-    elements: &[(Element, f64)],
-    prop_index: usize,
-) -> PropertyStats {
-    let values: Vec<f64> = elements.iter().map(|(e, _)| element_property(e, prop_index)).collect();
+fn compute_property_stats(elements: &[(Element, f64)], prop_index: usize) -> PropertyStats {
+    let values: Vec<f64> = elements
+        .iter()
+        .map(|(e, _)| element_property(e, prop_index))
+        .collect();
     let weights: Vec<f64> = elements.iter().map(|(_, w)| *w).collect();
     let total_weight: f64 = weights.iter().sum();
 
@@ -154,16 +154,12 @@ pub fn featurize(formula: &str) -> Result<CompositionFeatures, String> {
     // Look up each element
     let mut elements: Vec<(Element, f64)> = Vec::with_capacity(fractions.len());
     for (symbol, frac) in &fractions {
-        let elem = get_element(symbol)
-            .ok_or_else(|| format!("Unknown element: {symbol}"))?;
+        let elem = get_element(symbol).ok_or_else(|| format!("Unknown element: {symbol}"))?;
         elements.push((elem, *frac));
     }
 
     let n_elements = elements.len() as f64;
-    let total_atoms: f64 = parse_formula(formula)?
-        .iter()
-        .map(|(_, c)| c)
-        .sum();
+    let total_atoms: f64 = parse_formula(formula)?.iter().map(|(_, c)| c).sum();
 
     // Metal/semiconductor fractions (by composition fraction, not count)
     let metal_fraction: f64 = elements

@@ -10,8 +10,8 @@
 use clap::Parser;
 use data_core::catalogs::aflow;
 use data_core::catalogs::jarvis;
-use materials_core::featurizer;
 use materials_core::baselines;
+use materials_core::featurizer;
 use std::path::PathBuf;
 
 #[derive(Parser, Debug)]
@@ -177,12 +177,29 @@ fn main() {
         let feats: Vec<Vec<f64>> = jarvis_samples.iter().map(|s| s.features.clone()).collect();
 
         let fe_targets: Vec<f64> = jarvis_samples.iter().map(|s| s.formation_energy).collect();
-        run_and_report("JARVIS", "formation_energy", &feats, &fe_targets, args.test_fraction, args.seed);
+        run_and_report(
+            "JARVIS",
+            "formation_energy",
+            &feats,
+            &fe_targets,
+            args.test_fraction,
+            args.seed,
+        );
 
         let bg_targets: Vec<f64> = jarvis_samples.iter().map(|s| s.band_gap).collect();
-        run_and_report("JARVIS", "band_gap", &feats, &bg_targets, args.test_fraction, args.seed);
+        run_and_report(
+            "JARVIS",
+            "band_gap",
+            &feats,
+            &bg_targets,
+            args.test_fraction,
+            args.seed,
+        );
     } else {
-        eprintln!("  JARVIS: too few samples ({}), skipping", jarvis_samples.len());
+        eprintln!(
+            "  JARVIS: too few samples ({}), skipping",
+            jarvis_samples.len()
+        );
     }
 
     // AFLOW baselines
@@ -190,12 +207,29 @@ fn main() {
         let feats: Vec<Vec<f64>> = aflow_samples.iter().map(|s| s.features.clone()).collect();
 
         let fe_targets: Vec<f64> = aflow_samples.iter().map(|s| s.formation_energy).collect();
-        run_and_report("AFLOW", "formation_energy", &feats, &fe_targets, args.test_fraction, args.seed);
+        run_and_report(
+            "AFLOW",
+            "formation_energy",
+            &feats,
+            &fe_targets,
+            args.test_fraction,
+            args.seed,
+        );
 
         let bg_targets: Vec<f64> = aflow_samples.iter().map(|s| s.band_gap).collect();
-        run_and_report("AFLOW", "band_gap", &feats, &bg_targets, args.test_fraction, args.seed);
+        run_and_report(
+            "AFLOW",
+            "band_gap",
+            &feats,
+            &bg_targets,
+            args.test_fraction,
+            args.seed,
+        );
     } else {
-        eprintln!("  AFLOW: too few samples ({}), skipping", aflow_samples.len());
+        eprintln!(
+            "  AFLOW: too few samples ({}), skipping",
+            aflow_samples.len()
+        );
     }
 
     // -- Cross-validation: overlapping formulas --

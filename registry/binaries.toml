@@ -166,6 +166,24 @@ description = "GWTC-3 mass distribution dip test for multimodality"
 experiment = "E-008"
 
 [[binary]]
+name = "cross-stack-locality"
+crate = "gororoba_cli"
+description = "Cross-stack locality comparison across E10, ET DMZ, and ZD systems"
+experiment = "E-011"
+
+[[binary]]
+name = "et-billiard"
+crate = "gororoba_cli"
+description = "ET discrete billiard sweep and spectroscopy-band phase comparison"
+experiment = "E-012"
+
+[[binary]]
+name = "sky-limit-set"
+crate = "gororoba_cli"
+description = "Skybox invariant vs Coxeter invariant correspondence analysis"
+experiment = "E-013"
+
+[[binary]]
 name = "extract-papers"
 crate = "gororoba_cli"
 description = "Batch PDF extraction to structured TOML via docpipe"
@@ -194,3 +212,21 @@ description = "Generate LaTeX appendices from TOML registry (claims table, insig
 name = "export-hdf5"
 crate = "gororoba_cli"
 description = "Export computed data to HDF5 format (feature-gated)"
+
+[[binary]]
+name = "cross-stack-locality"
+crate = "gororoba_cli"
+description = "ALP cross-stack locality comparison across E10, ET DMZ, and ZD constraint systems"
+experiment = "E-011"
+
+[[binary]]
+name = "et-billiard"
+crate = "gororoba_cli"
+description = "ET discrete billiard phase structure: symbolic dynamics vs spectroscopy bands"
+experiment = "E-012"
+
+[[binary]]
+name = "sky-limit-set"
+crate = "gororoba_cli"
+description = "Compare ET skybox pattern invariants to Coxeter group limit set invariants"
+experiment = "E-013"

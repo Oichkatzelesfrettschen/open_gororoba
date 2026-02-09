@@ -13,10 +13,12 @@
 //! 2. **Basis Participation Graph**: Nodes are basis indices, edges weighted by ZD involvement
 //! 3. **Associator Triad Graph**: Nodes are basis elements, edges are non-zero associators
 
-use petgraph::graph::{DiGraph, UnGraph};
+use crate::construction::cayley_dickson::{
+    cd_associator_norm, cd_basis_mul_sign, find_zero_divisors,
+};
 use petgraph::algo::{connected_components, dijkstra, tarjan_scc};
+use petgraph::graph::{DiGraph, UnGraph};
 use std::collections::{HashMap, HashSet};
-use crate::construction::cayley_dickson::{find_zero_divisors, cd_associator_norm, cd_basis_mul_sign};
 
 /// A zero-divisor pair: indices (i, j, k, l) where (e_i + e_j) * (e_k +/- e_l) ~ 0.
 pub type ZdPair = (usize, usize, usize, usize, f64);
@@ -127,7 +129,8 @@ pub fn analyze_zd_graph(dim: usize, atol: f64) -> ZdGraphAnalysis {
     let n_components = connected_components(&graph);
 
     // Degree statistics
-    let degrees: Vec<usize> = graph.node_indices()
+    let degrees: Vec<usize> = graph
+        .node_indices()
         .map(|n| graph.edges(n).count())
         .collect();
 
@@ -224,7 +227,8 @@ pub fn analyze_basis_participation(dim: usize, atol: f64) -> BasisParticipationR
     // Shannon entropy
     let entropy = if total > 0 {
         let total_f = total as f64;
-        counts.iter()
+        counts
+            .iter()
             .filter(|&&c| c > 0)
             .map(|&c| {
                 let p = c as f64 / total_f;
@@ -240,7 +244,8 @@ pub fn analyze_basis_participation(dim: usize, atol: f64) -> BasisParticipationR
     sorted_counts.sort();
     let n = sorted_counts.len() as f64;
     let gini = if total > 0 {
-        let sum_indexed: f64 = sorted_counts.iter()
+        let sum_indexed: f64 = sorted_counts
+            .iter()
             .enumerate()
             .map(|(i, &c)| (i + 1) as f64 * c as f64)
             .sum();
@@ -251,8 +256,13 @@ pub fn analyze_basis_participation(dim: usize, atol: f64) -> BasisParticipationR
     };
 
     // Hub indices
-    let mean_count = if dim > 0 { total as f64 / dim as f64 } else { 0.0 };
-    let hub_indices: Vec<usize> = counts.iter()
+    let mean_count = if dim > 0 {
+        total as f64 / dim as f64
+    } else {
+        0.0
+    };
+    let hub_indices: Vec<usize> = counts
+        .iter()
         .enumerate()
         .filter(|(_, &c)| c as f64 >= 2.0 * mean_count)
         .map(|(i, _)| i)
@@ -289,13 +299,19 @@ pub fn build_associator_graph(dim: usize, threshold: f64) -> DiGraph<usize, f64>
     // Check all triples for non-zero associators
     let mut associators: Vec<((usize, usize, usize), f64)> = Vec::new();
 
-    for i in 1..dim {  // Skip e_0 = 1
+    for i in 1..dim {
+        // Skip e_0 = 1
         for j in 1..dim {
-            if j == i { continue; }
+            if j == i {
+                continue;
+            }
             for k in 1..dim {
-                if k == i || k == j { continue; }
+                if k == i || k == j {
+                    continue;
+                }
 
-                let norm = cd_associator_norm(&basis_vectors[i], &basis_vectors[j], &basis_vectors[k]);
+                let norm =
+                    cd_associator_norm(&basis_vectors[i], &basis_vectors[j], &basis_vectors[k]);
                 if norm > threshold {
                     associators.push(((i, j, k), norm));
                     // Add edge from j to k weighted by associator norm
@@ -325,11 +341,16 @@ pub fn analyze_associator_graph(dim: usize, threshold: f64) -> AssociatorGraphRe
 
     for i in 1..dim {
         for j in 1..dim {
-            if j == i { continue; }
+            if j == i {
+                continue;
+            }
             for k in 1..dim {
-                if k == i || k == j { continue; }
+                if k == i || k == j {
+                    continue;
+                }
 
-                let norm = cd_associator_norm(&basis_vectors[i], &basis_vectors[j], &basis_vectors[k]);
+                let norm =
+                    cd_associator_norm(&basis_vectors[i], &basis_vectors[j], &basis_vectors[k]);
                 if norm > threshold {
                     associators.push(((i, j, k), norm));
                 }
@@ -386,7 +407,9 @@ pub fn zd_shortest_path(
     // Use Dijkstra with inverse weights (more shared = shorter)
     let distances = dijkstra(&graph, start, Some(end), |e| 1.0 / e.weight());
 
-    distances.get(&end).map(|&d| (d, vec![pair1_idx, pair2_idx]))
+    distances
+        .get(&end)
+        .map(|&d| (d, vec![pair1_idx, pair2_idx]))
 }
 
 /// Compute the "algebraic diameter" of the ZD graph (max shortest path).
@@ -459,7 +482,8 @@ pub fn xor_balanced_four_tuple(a: usize, b: usize, c: usize, d: usize) -> bool {
 pub fn xor_pairing_buckets(a: usize, b: usize, c: usize, d: usize) -> [usize; 3] {
     assert!(
         xor_balanced_four_tuple(a, b, c, d),
-        "Expected XOR-balanced 4-tuple (a^b^c^d == 0), got {}", a ^ b ^ c ^ d,
+        "Expected XOR-balanced 4-tuple (a^b^c^d == 0), got {}",
+        a ^ b ^ c ^ d,
     );
     [a ^ b, a ^ c, a ^ d]
 }
@@ -471,8 +495,12 @@ pub fn xor_pairing_buckets(a: usize, b: usize, c: usize, d: usize) -> [usize; 3]
 ///
 /// Returns false if the 4-tuple is not XOR-balanced.
 pub fn xor_bucket_necessary_2v4(
-    i: usize, j: usize,
-    a: usize, b: usize, c: usize, d: usize,
+    i: usize,
+    j: usize,
+    a: usize,
+    b: usize,
+    c: usize,
+    d: usize,
 ) -> bool {
     if !xor_balanced_four_tuple(a, b, c, d) {
         return false;
@@ -558,7 +586,12 @@ pub struct FourBladeSpec {
 pub fn zero_product_2blade_x_4blade(dim: usize, two: &TwoBladeSpec, four: &FourBladeSpec) -> bool {
     let mut coeffs: HashMap<usize, i32> = HashMap::new();
     let (a, b, c, d) = four.indices;
-    let blades = [(a, four.signs[0]), (b, four.signs[1]), (c, four.signs[2]), (d, four.signs[3])];
+    let blades = [
+        (a, four.signs[0]),
+        (b, four.signs[1]),
+        (c, four.signs[2]),
+        (d, four.signs[3]),
+    ];
     for &(bk, tk) in &blades {
         // e_i * e_{bk} = sign_i * e_{i^bk}
         let target_i = two.i ^ bk;
@@ -579,7 +612,10 @@ pub enum BladeNode {
     /// 2-blade: `e_i + s*e_j` where s = +1 or -1, i < j, both in [1, dim)
     TwoBlade { i: usize, j: usize, sign: i32 },
     /// 4-blade: `s1*e_a + s2*e_b + s3*e_c + s4*e_d` with even-parity signing
-    FourBlade { indices: (usize, usize, usize, usize), signs: [i32; 4] },
+    FourBlade {
+        indices: (usize, usize, usize, usize),
+        signs: [i32; 4],
+    },
 }
 
 /// Result of the mixed-blade zero-product search.
@@ -665,9 +701,19 @@ pub fn build_mixed_blade_graph(dim: usize) -> MixedBladeGraphResult {
                 }
                 if coeffs.values().all(|&v| v == 0) {
                     n_edges_2x2 += 1;
-                    let node_a = BladeNode::TwoBlade { i: i1, j: j1, sign: s1 };
-                    let node_b = BladeNode::TwoBlade { i: i2, j: j2, sign: s2 };
-                    adj.entry(node_a.clone()).or_default().insert(node_b.clone());
+                    let node_a = BladeNode::TwoBlade {
+                        i: i1,
+                        j: j1,
+                        sign: s1,
+                    };
+                    let node_b = BladeNode::TwoBlade {
+                        i: i2,
+                        j: j2,
+                        sign: s2,
+                    };
+                    adj.entry(node_a.clone())
+                        .or_default()
+                        .insert(node_b.clone());
                     adj.entry(node_b).or_default().insert(node_a);
                 }
             }
@@ -691,7 +737,10 @@ pub fn build_mixed_blade_graph(dim: usize) -> MixedBladeGraphResult {
             // Test each even-parity signing
             let two_spec = TwoBladeSpec { i, j, sign: s };
             for &ep in &ep_signs {
-                let four_spec = FourBladeSpec { indices: (a, b, c, d), signs: ep };
+                let four_spec = FourBladeSpec {
+                    indices: (a, b, c, d),
+                    signs: ep,
+                };
                 if zero_product_2blade_x_4blade(dim, &two_spec, &four_spec) {
                     n_edges_2x4 += 1;
                     let node_2 = BladeNode::TwoBlade { i, j, sign: s };
@@ -699,7 +748,9 @@ pub fn build_mixed_blade_graph(dim: usize) -> MixedBladeGraphResult {
                         indices: (a, b, c, d),
                         signs: ep,
                     };
-                    adj.entry(node_2.clone()).or_default().insert(node_4.clone());
+                    adj.entry(node_2.clone())
+                        .or_default()
+                        .insert(node_4.clone());
                     adj.entry(node_4).or_default().insert(node_2);
                 }
             }
@@ -777,12 +828,8 @@ pub fn xor_necessity_statistics(dim: usize) -> (usize, usize, f64) {
                     for s in [1i32, -1] {
                         for t in [1i32, -1] {
                             let mut coeffs: HashMap<usize, i32> = HashMap::new();
-                            let terms = [
-                                (i, k, 1i32, 1i32),
-                                (i, l, 1, t),
-                                (j, k, s, 1),
-                                (j, l, s, t),
-                            ];
+                            let terms =
+                                [(i, k, 1i32, 1i32), (i, l, 1, t), (j, k, s, 1), (j, l, s, t)];
                             for &(p, q, sp, sq) in &terms {
                                 let target = p ^ q;
                                 let sign = cd_basis_mul_sign(dim, p, q);
@@ -860,7 +907,10 @@ mod tests {
     fn test_associator_graph_octonions() {
         // Octonions are non-associative
         let result = analyze_associator_graph(8, 1e-10);
-        assert!(result.n_nonzero_pairs > 0, "Octonions should have non-zero associators");
+        assert!(
+            result.n_nonzero_pairs > 0,
+            "Octonions should have non-zero associators"
+        );
         assert!(result.mean_norm > 0.0);
     }
 
@@ -913,14 +963,14 @@ mod tests {
         assert!(xor_bucket_necessary_2v4(1, 2, a, b, c, d)); // bucket 3
         assert!(xor_bucket_necessary_2v4(1, 4, a, b, c, d)); // bucket 5
         assert!(xor_bucket_necessary_2v4(1, 7, a, b, c, d)); // bucket 6
-        // Non-matching bucket
+                                                             // Non-matching bucket
         assert!(!xor_bucket_necessary_2v4(1, 3, a, b, c, d)); // bucket 2
     }
 
     #[test]
     fn test_xor_bucket_necessary_two_blade() {
         // (i^j) must equal (k^l) for zero-product possibility
-        assert!(xor_bucket_necessary_for_two_blade(1, 10, 2, 9));  // 11 == 11
+        assert!(xor_bucket_necessary_for_two_blade(1, 10, 2, 9)); // 11 == 11
         assert!(!xor_bucket_necessary_for_two_blade(1, 10, 2, 10)); // 11 != 8
     }
 
@@ -931,15 +981,24 @@ mod tests {
         let tuples = enumerate_xor_balanced_4tuples(16);
         // All must satisfy XOR-balance
         for &(a, b, c, d) in &tuples {
-            assert!(xor_balanced_four_tuple(a, b, c, d),
-                "Tuple ({},{},{},{}) is not XOR-balanced", a, b, c, d);
+            assert!(
+                xor_balanced_four_tuple(a, b, c, d),
+                "Tuple ({},{},{},{}) is not XOR-balanced",
+                a,
+                b,
+                c,
+                d
+            );
             assert!(a < b && b < c && c < d, "Tuple not sorted");
             assert!(a >= 1 && d < 16, "Indices out of range");
         }
         // Known count: choosing 3 of 15 indices determines the 4th via XOR,
         // and it must be > c and < 16. The convo states 105 for dim=16.
-        assert_eq!(tuples.len(), 105,
-            "Sedenion should have 105 XOR-balanced 4-tuples");
+        assert_eq!(
+            tuples.len(),
+            105,
+            "Sedenion should have 105 XOR-balanced 4-tuples"
+        );
     }
 
     #[test]
@@ -950,8 +1009,10 @@ mod tests {
             assert!(a < b && b < c && c < d && d < 32);
         }
         // Should be significantly more than sedenion (105)
-        assert!(tuples.len() > 105,
-            "Pathion should have more XOR-balanced 4-tuples than sedenion");
+        assert!(
+            tuples.len() > 105,
+            "Pathion should have more XOR-balanced 4-tuples than sedenion"
+        );
     }
 
     #[test]
@@ -961,15 +1022,26 @@ mod tests {
         assert_eq!(vecs.len(), 8, "Should have 8 even-parity sign vectors");
         for v in &vecs {
             let n_neg = v.iter().filter(|&&s| s == -1).count();
-            assert!(n_neg % 2 == 0, "Even parity violated: {:?} has {} negatives", v, n_neg);
+            assert!(
+                n_neg % 2 == 0,
+                "Even parity violated: {:?} has {} negatives",
+                v,
+                n_neg
+            );
             for &s in v {
                 assert!(s == 1 || s == -1, "Signs must be +/-1");
             }
         }
         // Must include all-positive
-        assert!(vecs.contains(&[1, 1, 1, 1]), "Must include all-positive signing");
+        assert!(
+            vecs.contains(&[1, 1, 1, 1]),
+            "Must include all-positive signing"
+        );
         // Must include all-negative (4 negatives = even)
-        assert!(vecs.contains(&[-1, -1, -1, -1]), "Must include all-negative signing");
+        assert!(
+            vecs.contains(&[-1, -1, -1, -1]),
+            "Must include all-negative signing"
+        );
     }
 
     #[test]
@@ -982,10 +1054,17 @@ mod tests {
         // the 4-blade (1,2,9,10). Let's check exhaustively.
         let dim = 16;
         let ep = even_parity_sign_vectors();
-        let two = TwoBladeSpec { i: 1, j: 10, sign: 1 };
+        let two = TwoBladeSpec {
+            i: 1,
+            j: 10,
+            sign: 1,
+        };
         let mut found_zero = false;
         for &signs in &ep {
-            let four = FourBladeSpec { indices: (1, 2, 9, 10), signs };
+            let four = FourBladeSpec {
+                indices: (1, 2, 9, 10),
+                signs,
+            };
             if zero_product_2blade_x_4blade(dim, &two, &four) {
                 found_zero = true;
                 break;
@@ -1004,10 +1083,19 @@ mod tests {
         let all_plus = [1, 1, 1, 1];
         // Test with a 2-blade that does NOT share a pairing bucket
         // (1,3) has bucket 2, pairing buckets of (1,2,4,7) are {3,5,6}
-        let two = TwoBladeSpec { i: 1, j: 3, sign: 1 };
-        let four = FourBladeSpec { indices: (1, 2, 4, 7), signs: all_plus };
-        assert!(!zero_product_2blade_x_4blade(dim, &two, &four),
-            "Non-bucket-matching 2-blade should not give zero product");
+        let two = TwoBladeSpec {
+            i: 1,
+            j: 3,
+            sign: 1,
+        };
+        let four = FourBladeSpec {
+            indices: (1, 2, 4, 7),
+            signs: all_plus,
+        };
+        assert!(
+            !zero_product_2blade_x_4blade(dim, &two, &four),
+            "Non-bucket-matching 2-blade should not give zero product"
+        );
     }
 
     #[test]
@@ -1022,10 +1110,14 @@ mod tests {
         assert_eq!(result.n_xor_balanced_tuples, 105);
 
         // Exact edge counts (deterministic, integer-exact arithmetic)
-        assert_eq!(result.n_edges_2x2, 168,
-            "168 zero-product edges between signed 2-blades");
-        assert_eq!(result.n_edges_2x4, 672,
-            "672 zero-product edges between 2-blades and even-parity 4-blades");
+        assert_eq!(
+            result.n_edges_2x2, 168,
+            "168 zero-product edges between signed 2-blades"
+        );
+        assert_eq!(
+            result.n_edges_2x4, 672,
+            "672 zero-product edges between 2-blades and even-parity 4-blades"
+        );
 
         // 7 components (one per box-kite), largest has 60 nodes
         assert_eq!(result.n_components, 7);
@@ -1041,10 +1133,14 @@ mod tests {
         // Octonions have no zero-divisors, so the mixed graph should
         // have no edges at all
         let result = build_mixed_blade_graph(8);
-        assert_eq!(result.n_edges_2x2, 0,
-            "Octonions should have no zero-product edges");
-        assert_eq!(result.n_edges_2x4, 0,
-            "Octonions should have no 2x4 zero-product edges");
+        assert_eq!(
+            result.n_edges_2x2, 0,
+            "Octonions should have no zero-product edges"
+        );
+        assert_eq!(
+            result.n_edges_2x4, 0,
+            "Octonions should have no 2x4 zero-product edges"
+        );
     }
 
     #[test]
@@ -1060,8 +1156,11 @@ mod tests {
         // Strictly < 1.0 confirms "necessary but NOT sufficient"
         let expected_ratio = 168.0 / 315.0;
         assert!((ratio - expected_ratio).abs() < 1e-10);
-        assert!(ratio < 1.0,
-            "XOR bucket is necessary but not sufficient: ratio={:.4}", ratio);
+        assert!(
+            ratio < 1.0,
+            "XOR bucket is necessary but not sufficient: ratio={:.4}",
+            ratio
+        );
     }
 
     #[test]
@@ -1082,12 +1181,8 @@ mod tests {
                         for s in [1i32, -1] {
                             for t in [1i32, -1] {
                                 let mut coeffs: HashMap<usize, i32> = HashMap::new();
-                                let terms = [
-                                    (i, k, 1i32, 1i32),
-                                    (i, l, 1, t),
-                                    (j, k, s, 1),
-                                    (j, l, s, t),
-                                ];
+                                let terms =
+                                    [(i, k, 1i32, 1i32), (i, l, 1, t), (j, k, s, 1), (j, l, s, t)];
                                 for &(p, q, sp, sq) in &terms {
                                     let target = p ^ q;
                                     let sign = cd_basis_mul_sign(dim, p, q);
@@ -1114,8 +1209,12 @@ mod tests {
         // Verify count increases with dimension
         let count_16 = enumerate_xor_balanced_4tuples(16).len();
         let count_32 = enumerate_xor_balanced_4tuples(32).len();
-        assert!(count_32 > count_16,
-            "Count should increase: dim=16: {}, dim=32: {}", count_16, count_32);
+        assert!(
+            count_32 > count_16,
+            "Count should increase: dim=16: {}, dim=32: {}",
+            count_16,
+            count_32
+        );
 
         // For dim=16: 105 (verified against convo)
         assert_eq!(count_16, 105);
@@ -1148,7 +1247,14 @@ mod tests {
             // To get key g, we need l ^ u = 0, so u = l.
             // Since l is in 1..g-1, we can pick u = l in 1..g-1.
             // So g is indeed reachable.
-            assert_eq!(keys.len(), g, "dim={} should have {} buckets, got {}", dim, g, keys.len());
+            assert_eq!(
+                keys.len(),
+                g,
+                "dim={} should have {} buckets, got {}",
+                dim,
+                g,
+                keys.len()
+            );
         }
     }
 }
