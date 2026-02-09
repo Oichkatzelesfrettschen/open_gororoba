@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/claims.toml`.
 
-Total claims: 512
+Total claims: 513
 
 ## C-001
 
@@ -4102,3 +4102,11 @@ Total claims: 512
 - Statement: Dimensional Universality and Stratum Counting: The Simpson's Paradox occurs at EVERY filtration level with >1 l_1 stratum. Lambda_256 (dim=32) has ALL 256 vectors at l_0=-1, l_1=-1 (mono-stratum, z=19.5, no paradox possible). Lambda_512 (dim=64) has l_0=-1 only, with 2 l_1 strata (l_1=-1: N=365 z=13.63, l_1=0: N=147 z=22.22, NO l_1=+1), combined z=10.3 -- paradox present. Lambda_2048 (dim=256) has 2 l_0 strata x 3 l_1 strata -- maximal mixing, anti-ultrametric. The filtration chain strips strata one at a time: Lambda_2048(2x3) -> Lambda_1024(1x3) -> Lambda_512(1x2) -> Lambda_256(1x1). Each step reduces cross-stratum contamination. The number of active strata completely determines the sign and magnitude of ultrametricity: 1 stratum -> z~19, 2 strata -> z~10, 3 strata -> z~-1.6, 6 strata -> z~-5. This is a COMPLETE MECHANISTIC EXPLANATION of the three-regime filtration picture from C-505.
 - Where stated: `crates/stats_core/src/ultrametric/baire_codebook.rs` (test_dimensional_universality_simpsons_paradox)
 - What would verify/refute it: VERIFIED: 200 permutations x 50K triples at Lambda_256 and Lambda_512. WHAT WOULD REFUTE: finding Lambda_256 has multiple l_1 strata would invalidate the mono-stratum claim. Finding Lambda_512 paradox absent (strata z < combined z) would show the mechanism is dimension-dependent. Finding a non-monotone relationship between stratum count and z-score would weaken the stratum-counting explanation.
+
+## C-513
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Complete Stratum Counting Table and Lambda_1024 Paradox: Lambda_1024 (dim=128) has N=1026, l_0=-1 only (1 l_0 stratum), with 3 l_1 strata: l_1=-1 (N=365), l_1=0 (N=364), l_1=+1 (N=297). Combined z=-1.50, but each l_1 stratum has z=12.50/13.75/13.46 -- paradox confirmed. The complete stratum counting table across all 4 levels is: Lambda_256 (1 stratum, z=+18.31), Lambda_512 (2 strata, z=+9.46), Lambda_1024 (3 strata, z=-1.50), Lambda_2048 (6 strata, z=-5.51). The relationship is strictly monotone decreasing: more strata = lower z-score. The sign transition from positive to negative z occurs between 2 and 3 strata. This is quantitatively consistent with the cross-stratum contamination mechanism: at 3 strata, 89% of triples are cross-stratum (volume = 1 - 3*(1/3)^3 = 8/9), each with ~10% lower UM fraction, which is sufficient to reverse the sign.
+- Where stated: `crates/stats_core/src/ultrametric/baire_codebook.rs` (test_lambda1024_stratum_paradox_and_summary)
+- What would verify/refute it: VERIFIED: 200 permutations x 50K triples at all 4 filtration levels. WHAT WOULD REFUTE: finding Lambda_1024 has only 2 l_1 strata would invalidate the 3-stratum claim. Finding Lambda_1024 l_1 strata with z < combined z would refute the paradox. Finding the stratum count -> z-score relationship non-monotone would weaken the counting explanation.

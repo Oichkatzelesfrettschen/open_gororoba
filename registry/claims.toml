@@ -4093,3 +4093,11 @@ where_stated = "`crates/stats_core/src/ultrametric/baire_codebook.rs` (test_dime
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: 200 permutations x 50K triples at Lambda_256 and Lambda_512. WHAT WOULD REFUTE: finding Lambda_256 has multiple l_1 strata would invalidate the mono-stratum claim. Finding Lambda_512 paradox absent (strata z < combined z) would show the mechanism is dimension-dependent. Finding a non-monotone relationship between stratum count and z-score would weaken the stratum-counting explanation."
+
+[[claim]]
+id = "C-513"
+statement = "Complete Stratum Counting Table and Lambda_1024 Paradox: Lambda_1024 (dim=128) has N=1026, l_0=-1 only (1 l_0 stratum), with 3 l_1 strata: l_1=-1 (N=365), l_1=0 (N=364), l_1=+1 (N=297). Combined z=-1.50, but each l_1 stratum has z=12.50/13.75/13.46 -- paradox confirmed. The complete stratum counting table across all 4 levels is: Lambda_256 (1 stratum, z=+18.31), Lambda_512 (2 strata, z=+9.46), Lambda_1024 (3 strata, z=-1.50), Lambda_2048 (6 strata, z=-5.51). The relationship is strictly monotone decreasing: more strata = lower z-score. The sign transition from positive to negative z occurs between 2 and 3 strata. This is quantitatively consistent with the cross-stratum contamination mechanism: at 3 strata, 89% of triples are cross-stratum (volume = 1 - 3*(1/3)^3 = 8/9), each with ~10% lower UM fraction, which is sufficient to reverse the sign."
+where_stated = "`crates/stats_core/src/ultrametric/baire_codebook.rs` (test_lambda1024_stratum_paradox_and_summary)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 200 permutations x 50K triples at all 4 filtration levels. WHAT WOULD REFUTE: finding Lambda_1024 has only 2 l_1 strata would invalidate the 3-stratum claim. Finding Lambda_1024 l_1 strata with z < combined z would refute the paradox. Finding the stratum count -> z-score relationship non-monotone would weaken the counting explanation."

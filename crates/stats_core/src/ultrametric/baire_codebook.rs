@@ -1995,4 +1995,161 @@ mod tests {
         if !z_512_l1z.is_nan() { eprintln!("  l_1=0: z={:.2}", z_512_l1z); }
         if !z_512_l1p.is_nan() { eprintln!("  l_1=+1: z={:.2}", z_512_l1p); }
     }
+
+    // ================================================================
+    // Lambda_1024 stratum structure and paradox (C-513)
+    // ================================================================
+
+    /// Test the Lambda_1024 (dim=128) stratum structure: should have l_0=-1 only
+    /// and 3 l_1 strata. The model predicts z~-1.6 combined and z>10 per stratum.
+    /// Also tests the stratum count -> z-score relationship by computing a
+    /// comprehensive table across all 4 filtration levels.
+    #[test]
+    fn test_lambda1024_stratum_paradox_and_summary() {
+        use algebra_core::analysis::codebook::{
+            enumerate_lattice_by_predicate, is_in_lambda_256, is_in_lambda_512,
+            is_in_lambda_1024, is_in_lambda_2048,
+        };
+        use super::super::baire::matrix_free_fraction;
+        use super::super::null_models::{apply_null_column_major, NullModel};
+        use rand::SeedableRng;
+        use rand_chacha::ChaCha8Rng;
+
+        let n_triples = 50_000;
+        let n_permutations = 200;
+        let seed = 42u64;
+
+        let compute_z = |vectors: &[[i8; 8]], label: &str, seed_offset: u64| -> f64 {
+            let n = vectors.len();
+            if n < 10 {
+                eprintln!("  {}: N={} too small", label, n);
+                return f64::NAN;
+            }
+            let prefix = shared_prefix_length(vectors);
+            let d = 8 - prefix;
+            let (cols, _, _) = lattice_to_column_major(vectors, prefix);
+
+            let obs = matrix_free_fraction(&cols, n, d, n_triples, seed, 0.05);
+
+            let mut rng = ChaCha8Rng::seed_from_u64(seed + 60_000_000 + seed_offset);
+            let mut null_fracs = Vec::with_capacity(n_permutations);
+            let mut shuffled = cols.clone();
+
+            for _ in 0..n_permutations {
+                shuffled.copy_from_slice(&cols);
+                apply_null_column_major(
+                    &mut shuffled, n, d,
+                    NullModel::ColumnIndependent, &mut rng,
+                );
+                null_fracs.push(matrix_free_fraction(
+                    &shuffled, n, d, n_triples, seed + 61_000_000, 0.05,
+                ));
+            }
+
+            let null_mean = null_fracs.iter().sum::<f64>() / n_permutations as f64;
+            let null_std = (null_fracs.iter().map(|f| (f - null_mean).powi(2)).sum::<f64>()
+                / n_permutations as f64).sqrt();
+            let z = if null_std > 1e-12 { (obs - null_mean) / null_std } else { 0.0 };
+
+            eprintln!("  {}: prefix={}, d={}, N={}, obs={:.4}, null={:.4}+/-{:.4}, z={:.2}",
+                label, prefix, d, n, obs, null_mean, null_std, z);
+            z
+        };
+
+        // --- Lambda_1024 stratum analysis ---
+        let l1024 = enumerate_lattice_by_predicate(is_in_lambda_1024);
+        let l1024_l0_neg1: Vec<_> = l1024.iter().copied().filter(|v| v[0] == -1).collect();
+        let l1024_l0_zero: Vec<_> = l1024.iter().copied().filter(|v| v[0] == 0).collect();
+        let l1024_l1_neg1: Vec<_> = l1024_l0_neg1.iter().copied().filter(|v| v[1] == -1).collect();
+        let l1024_l1_zero: Vec<_> = l1024_l0_neg1.iter().copied().filter(|v| v[1] == 0).collect();
+        let l1024_l1_pos1: Vec<_> = l1024_l0_neg1.iter().copied().filter(|v| v[1] == 1).collect();
+
+        eprintln!("\n=== Lambda_1024 (dim=128) Stratum Analysis ===");
+        eprintln!("Total: N={}", l1024.len());
+        eprintln!("l_0=-1: N={}, l_0=0: N={}", l1024_l0_neg1.len(), l1024_l0_zero.len());
+        eprintln!("  l_1=-1: N={}, l_1=0: N={}, l_1=+1: N={}",
+            l1024_l1_neg1.len(), l1024_l1_zero.len(), l1024_l1_pos1.len());
+
+        // Count total strata
+        let n_l0_strata = if l1024_l0_neg1.is_empty() { 0 } else { 1 }
+            + if l1024_l0_zero.is_empty() { 0 } else { 1 };
+        let n_l1_strata = if l1024_l1_neg1.is_empty() { 0 } else { 1 }
+            + if l1024_l1_zero.is_empty() { 0 } else { 1 }
+            + if l1024_l1_pos1.is_empty() { 0 } else { 1 };
+        let total_strata = n_l0_strata * n_l1_strata;
+        eprintln!("l_0 strata: {}, l_1 strata: {}, total: {}",
+            n_l0_strata, n_l1_strata, total_strata);
+
+        let z_full = compute_z(&l1024, "Lambda_1024 all  ", 0);
+        let _z_l0 = compute_z(&l1024_l0_neg1, "l_0=-1 all       ", 1);
+        let z_l1n = compute_z(&l1024_l1_neg1, "l_0=-1,l_1=-1    ", 2);
+        let z_l1z = compute_z(&l1024_l1_zero, "l_0=-1,l_1=0     ", 3);
+        let z_l1p = compute_z(&l1024_l1_pos1, "l_0=-1,l_1=+1    ", 4);
+
+        eprintln!("\n=== COMPLETE STRATUM COUNTING TABLE ===");
+        eprintln!("Level      | N    | l_0 strata | l_1 strata | Total | z-score");
+        eprintln!("-----------|------|------------|------------|-------|--------");
+
+        // Lambda_256
+        let l256 = enumerate_lattice_by_predicate(is_in_lambda_256);
+        let z256 = compute_z(&l256, "Lambda_256       ", 10);
+        let l256_l0n = l256.iter().filter(|v| v[0] == -1).count();
+        let l256_l0z = l256.iter().filter(|v| v[0] == 0).count();
+        let l256_l1vals: Vec<_> = [-1i8, 0, 1].iter()
+            .filter(|&&val| l256.iter().any(|v| v[0] == -1 && v[1] == val))
+            .collect();
+        eprintln!("Lambda_256 | {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
+            l256.len(),
+            if l256_l0n > 0 && l256_l0z > 0 { 2 } else { 1 },
+            l256_l1vals.len(),
+            (if l256_l0n > 0 && l256_l0z > 0 { 2 } else { 1 }) * l256_l1vals.len(),
+            z256);
+
+        // Lambda_512
+        let l512 = enumerate_lattice_by_predicate(is_in_lambda_512);
+        let z512 = compute_z(&l512, "Lambda_512       ", 11);
+        let l512_l0n = l512.iter().filter(|v| v[0] == -1).count();
+        let l512_l0z = l512.iter().filter(|v| v[0] == 0).count();
+        let l512_l1vals: Vec<_> = [-1i8, 0, 1].iter()
+            .filter(|&&val| l512.iter().any(|v| v[0] == -1 && v[1] == val))
+            .collect();
+        eprintln!("Lambda_512 | {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
+            l512.len(),
+            if l512_l0n > 0 && l512_l0z > 0 { 2 } else { 1 },
+            l512_l1vals.len(),
+            (if l512_l0n > 0 && l512_l0z > 0 { 2 } else { 1 }) * l512_l1vals.len(),
+            z512);
+
+        // Lambda_1024
+        eprintln!("Lambda_1024| {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
+            l1024.len(), n_l0_strata, n_l1_strata, total_strata, z_full);
+
+        // Lambda_2048
+        let l2048 = enumerate_lattice_by_predicate(is_in_lambda_2048);
+        let z2048 = compute_z(&l2048, "Lambda_2048      ", 12);
+        let l2048_l0n = l2048.iter().filter(|v| v[0] == -1).count();
+        let l2048_l0z = l2048.iter().filter(|v| v[0] == 0).count();
+        let l2048_l1vals: Vec<_> = [-1i8, 0, 1].iter()
+            .filter(|&&val| l2048.iter().any(|v| v[0] == -1 && v[1] == val))
+            .collect();
+        eprintln!("Lambda_2048| {:>4} | {:>10} | {:>10} | {:>5} | {:.2}",
+            l2048.len(),
+            if l2048_l0n > 0 && l2048_l0z > 0 { 2 } else { 1 },
+            l2048_l1vals.len(),
+            (if l2048_l0n > 0 && l2048_l0z > 0 { 2 } else { 1 }) * l2048_l1vals.len(),
+            z2048);
+
+        eprintln!("\nLambda_1024 l_1 strata z-scores:");
+        if !z_l1n.is_nan() { eprintln!("  l_1=-1: z={:.2} (N={})", z_l1n, l1024_l1_neg1.len()); }
+        if !z_l1z.is_nan() { eprintln!("  l_1=0:  z={:.2} (N={})", z_l1z, l1024_l1_zero.len()); }
+        if !z_l1p.is_nan() { eprintln!("  l_1=+1: z={:.2} (N={})", z_l1p, l1024_l1_pos1.len()); }
+
+        let strata_z = [z_l1n, z_l1z, z_l1p];
+        let valid: Vec<f64> = strata_z.iter().copied().filter(|z| !z.is_nan()).collect();
+        if !valid.is_empty() {
+            let min_stratum = valid.iter().cloned().fold(f64::INFINITY, f64::min);
+            eprintln!("Paradox present: min stratum z ({:.2}) > combined z ({:.2}): {}",
+                min_stratum, z_full, min_stratum > z_full);
+        }
+    }
 }
