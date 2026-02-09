@@ -166,6 +166,14 @@ path = "src/bin/generate_latex.rs"
 name = "export-hdf5"
 path = "src/bin/export_hdf5.rs"
 
+[[bin]]
+name = "cd-tower-report"
+path = "src/bin/cd_tower_report.rs"
+
+[[bin]]
+name = "scrollify-csv"
+path = "src/bin/scrollify_csv.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe" }
 algebra_core = { path = "../algebra_core" }
@@ -178,6 +186,7 @@ spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
 stats_core = { path = "../stats_core", features = ["gpu"] }
 data_core = { path = "../data_core" }
+scrolls_core = { path = "../scrolls_core" }
 ndarray = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
