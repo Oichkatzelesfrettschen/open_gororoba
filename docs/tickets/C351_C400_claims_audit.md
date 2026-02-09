@@ -1,23 +1,37 @@
 # Ticket: Claims audit batch C-351..C-400
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/claim_tickets.toml -->
+
 Owner: agent
 Created: 2026-02-02
 Status: DONE (no open claims in range)
 
 ## Goal
 
-Confirm the C-351..C-400 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` remains mechanically tractable for
-claim-by-claim auditing.
+Confirm the C-351..C-400 segment of `docs/CLAIMS_EVIDENCE_MATRIX.md` remains mechanically tractable for claim-by-claim auditing. As of 2026-02-02, this range contains no open claims (all rows are Verified/Refuted/Established).
 
-As of 2026-02-02, this range contains no open claims (all rows are Verified/Refuted/Established).
+## Scope
 
-## Planning snapshot (auto-generated)
+- Ticket ID: `TICKET-C351-C400`
+- Kind: `CLAIMS_AUDIT_BATCH`
+- Status token: `DONE`
+- Claim range: C-351..C-400
+- Claims referenced (2): C-351, C-400
 
-- Backlog report: `reports/claims_batch_backlog_C351_C400.md`
-- Open claims in-range: (none)
+## Deliverables
+
+- `docs/CLAIMS_EVIDENCE_MATRIX.md`
+- `reports/claims_batch_backlog_C351_C400.md`
 
 ## Acceptance checks
 
-- `PYTHONWARNINGS=error make smoke`
 - `PYTHONWARNINGS=error make metadata-hygiene`
+- `PYTHONWARNINGS=error make smoke`
 
+## Progress snapshot
+
+- Completed checkboxes: 0
+- Open checkboxes: 0
+- Backlog reports:
+  - `reports/claims_batch_backlog_C351_C400.md`

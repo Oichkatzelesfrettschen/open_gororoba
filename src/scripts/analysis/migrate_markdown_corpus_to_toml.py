@@ -12,10 +12,9 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import tomllib
 from dataclasses import dataclass
 from pathlib import Path
-import tomllib
-
 
 DETERMINISTIC_STAMP = "deterministic"
 
@@ -192,6 +191,14 @@ def main() -> int:
         default="registry/knowledge/documents.toml",
         help="Output manifest path.",
     )
+    parser.add_argument(
+        "--prune-stale",
+        action="store_true",
+        help=(
+            "Delete stale registry/knowledge/docs/DOC-*.toml files. "
+            "Default keeps historical raw captures for non-reproducible context preservation."
+        ),
+    )
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
@@ -224,9 +231,12 @@ def main() -> int:
         out_path.write_text(rendered, encoding="utf-8")
         ingested.append((doc, rel_out))
 
-    # Remove stale generated files when the tracked markdown set changes.
+    stale_count = 0
     for existing in out_dir.glob("DOC-*.toml"):
-        if existing.resolve() not in expected_outputs:
+        if existing.resolve() in expected_outputs:
+            continue
+        stale_count += 1
+        if args.prune_stale:
             existing.unlink()
 
     manifest = _render_manifest(ingested, skipped)
@@ -235,7 +245,8 @@ def main() -> int:
 
     print(
         f"Raw-captured {len(ingested)} markdown docs into TOML; "
-        f"skipped {len(skipped)} generated docs."
+        f"skipped {len(skipped)} generated docs; "
+        f"stale captures {'pruned' if args.prune_stale else 'retained'}={stale_count}."
     )
     return 0
 

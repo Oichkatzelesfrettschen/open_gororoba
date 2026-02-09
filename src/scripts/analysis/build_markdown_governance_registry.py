@@ -93,6 +93,8 @@ def _generated_mirror_patterns() -> list[str]:
         "docs/CLAIMS_TASKS.md",
         "docs/claims/INDEX.md",
         "docs/claims/by_domain/*.md",
+        "docs/tickets/*.md",
+        "docs/tickets/INDEX.md",
         "REQUIREMENTS.md",
         "docs/REQUIREMENTS.md",
         "docs/requirements/*.md",

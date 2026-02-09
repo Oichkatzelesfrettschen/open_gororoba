@@ -3,60 +3,195 @@
 
 [document]
 id = "DOC-0171"
-source_path = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
-title = "Warp Ring Physics Reconciliation (Phase 7.0)"
+source_path = "docs/theory/CLAIMS_METHODOLOGY.md"
+title = "Claims Methodology and Scientific Rigor"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "de7ad5db6be0c2e9223f028b0b10c2c64a204711df0f3c89dee6e85ac036c10f"
-source_line_count = 41
-source_size_bytes = 2455
-content_sha256 = "de7ad5db6be0c2e9223f028b0b10c2c64a204711df0f3c89dee6e85ac036c10f"
+source_sha256 = "1aa30df3279b54bdb0bf523e6448356e5f20e893c2f81aef15ecba81f0556a18"
+source_line_count = 176
+source_size_bytes = 6336
+content_sha256 = "1aa30df3279b54bdb0bf523e6448356e5f20e893c2f81aef15ecba81f0556a18"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Warp Ring Physics Reconciliation (Phase 7.0)
+# Claims Methodology and Scientific Rigor
 
-## Overview
-This manifest formalizes the three-layer physical model for the \"Warp Ring\" analogue gravity experiment, reconciling the cinematic \"Silicon-Gold-Ice VIII\" narrative with literature-supported optical constants and numerical methods.
+This document describes the claims discipline framework used to track, verify,
+and disposition scientific claims throughout the project.
 
-## Layer A: Ray Dynamics (Hamiltonian Optics)
-We solve the ray equation for isotropic gradient-index (GRIN) media as parameterized by arclength $s$:
+## 1. Claims Taxonomy
 
-$$\\frac{d}{ds} \\left( n \\mathbf{T} \\right) = \\nabla n$$
+Every claim is assigned one of these canonical status tokens:
 
-where $\\mathbf{T} = \\frac{d\\mathbf{r}}{ds}$ is the unit tangent vector to the ray. 
+| Status | Definition | Action Required |
+|--------|------------|-----------------|
+| **Verified** | Reproducible computation or cited first-party source | None (closed) |
+| **Refuted** | Contradicted by evidence or established constraints | None (closed) |
+| **Modeled** | Implemented as toy model; may not be physically validated | Document limitations |
+| **Closed/Toy** | Parameter coincidence, not derived from first principles | None (closed) |
+| **Closed/Analogy** | Notational mapping only, not a derivation | None (closed) |
+| **Established** | Standard background result; cite sources | None (closed) |
+| **Clarified** | Corrected/renamed to avoid false statements | May need follow-up |
+| **Speculative** | Conjecture awaiting data or derivation | Define falsification boundary |
+| **Not supported** | In-repo checks found insufficient signal | Document negative result |
+| **Partially verified** | Some evidence exists but gaps remain | Complete verification |
+| **Theoretical** | Blueprint exists, device unbuilt/untested | Await experimental data |
+| **Literature** | Literature claim not yet reproduced in-repo | Reproduce or cite |
+| **Unverified** | No reliable evidence yet | Add sources + tests |
 
-### Numerical Implementation
-- **Integrator**: 4th-order Runge-Kutta (RK4) for stable ray bending in high-gradient regions.
-- **Adaptive Stepping**: $dt$ is controlled by both the distance to the torus surface (SDF) and the local curvature curvature $|
-abla n|/n$.
+## 2. Verification Ladder
 
-## Layer B: Material Constants (1550 nm)
-The \"Silicon-Gold-Sapphire\" stack is modeled using homogenized effective medium constants.
+Claims progress through verification levels (Roy 2003 framework adapted):
 
-| Material | Interpreted Role | Literature Value (n) | Model Value (Used) |
-| :--- | :--- | :--- | :--- |
-| **Silicon** | Front Lens (Contraction) | 3.476 (Li, 1980) | 3.48 |
-| **Gold** | Resonant Trap (Ergoregion) | 0.19 + i 10.35 (Babar, 2015) | $\\epsilon = -107.1 + 3.9i$ |
-| **Sapphire** | Dielectric Matrix | 1.746 (Malitson, 1962) | 1.746 (Rigorous) |
+### Level 0: Conjecture
+- Stated informally in conversation or notes
+- No code or data artifacts
+- Action: Formalize as numbered claim (C-xxx)
 
-*Note: The \"Cinematic\" n=2.5 for Ice VIII is deprecated in favor of the Sapphire literature value (n=1.746).*
+### Level 1: Formalized
+- Entered in CLAIMS_EVIDENCE_MATRIX.md
+- Has \"What would verify/refute it\" column filled
+- Action: Add primary sources and define test
 
-## Layer C: The \"Plasmon -> Parton\" Power Pipeline
-Instead of stochastic state changes, we implement a field-based energy bookkeeping model.
+### Level 2: Sourced
+- Primary literature citations cached in `data/external/papers/`
+- Sources indexed in `docs/external_sources/`
+- Action: Implement validation test
 
-1. **Absorption**: When a ray intersects the gold torus, energy is deposited based on the Fresnel absorption coefficient $\\alpha \\propto \\text{Im}(\\epsilon)$.
-2. **Surface Mode (Plasmon)**: Absorbed energy populates a surface field $P(\\theta, \\phi)$ that advects tangentially along the ring with group velocity $v_{spp}$.
-3. **Vacuum Decay (Parton)**: The $P$ field drives a secondary, fast-decaying jitter field $Q$. $Q$ is rendered as the high-entropy red \"Parton\" shower, representing the breakdown of the analogue vacuum.
+### Level 3: Tested
+- Unit test or verifier script exists
+- Test is deterministic and offline
+- Action: Run test, record result
 
-## References
-- [CSC KTH (Ray Theory)](../../data/external/papers/CSC_KTH_Ray_Tracing.pdf)
-- [Babar & Weaver (Gold n/k)](../../data/external/papers/Babar_Weaver_Gold_Optical.pdf)
-- [NIST (Silicon n)](../../data/external/papers/NIST_Silicon.pdf)
-- [Malitson (Sapphire)](../../data/external/papers/refractiveindex_info_sapphire.html)
+### Level 4: Verified/Refuted
+- Test passes (Verified) or fails decisively (Refuted)
+- Result recorded with ISO date in matrix
+- Action: None (closed)
+
+## 3. Pre-Registration Protocol
+
+For claims involving statistical tests on data:
+
+1. **Define hypothesis** before looking at data
+2. **Specify test statistic** and decision rule (e.g., p < 0.05)
+3. **Document sample size** requirements (e.g., N >= 50)
+4. **Record in** `docs/preregistered/CLAIM_NAME.md`
+5. **Execute test** only after pre-registration
+6. **Report result** including effect size and confidence interval
+
+Example: GWTC-3 mass modality test (C-007) was pre-registered with N >= 50
+requirement; test NOT executed because N=34 < 50 (validation correctly
+prevented underpowered test).
+
+## 4. Falsification Boundaries
+
+Speculative claims MUST have explicit falsification boundaries:
+
+```
+Claim: C-008 neg-dim toy operator (alpha=-1.5, d_s=2)
+Falsification: Provide a derivation (not parameter match) connecting
+               fractional Laplacian alpha to physical d_s, or close.
+```
+
+If the boundary is not crossed within a defined timeframe, the claim is
+closed as \"Closed/Toy\" or \"Speculative (obstructed)\".
+
+## 5. Null Hypothesis Testing
+
+All statistical claims require null hypothesis comparison:
+
+1. **Generate null distribution** via permutation, bootstrap, or parametric model
+2. **Compute test statistic** on observed data
+3. **Report p-value** with correction for multiple comparisons (Bonferroni/Holm)
+4. **Apply decision rule** consistently
+
+Example: Zero-divisor eigenvalue mass matching (C-091) refuted because
+null P(>=9/12 matches) = 1.0 (148 eigenvalues trivially cover 12 masses).
+
+## 6. Trial Factor Ledger
+
+For exploratory searches (e.g., TSCP sky alignment), maintain:
+
+- Count of embedding choices tried
+- Count of distance metrics evaluated
+- Count of significance thresholds checked
+- Global correction factor = product of trial counts
+
+Report uncorrected AND corrected p-values.
+
+## 7. Artifact Requirements
+
+Every verified claim must have:
+
+1. **Deterministic test** in `tests/test_*.py` or `crates/*/tests/`
+2. **CSV artifact** in `data/csv/` (if quantitative)
+3. **Source index** in `docs/external_sources/` (if literature-based)
+4. **Provenance** for any external data (`.PROVENANCE.json`)
+
+Tests must be:
+- Offline (no network calls)
+- Seeded (reproducible RNG)
+- Fast (< 60s on CI)
+
+## 8. Negative Result Policy
+
+Negative results (Not supported, Refuted) are valuable:
+
+1. **Document fully** in CLAIMS_EVIDENCE_MATRIX.md
+2. **Keep test code** as regression guard
+3. **Explain why** the claim failed
+4. **Identify rescue conditions** if salvageable
+
+Example: C-077 PMNS mixing refuted (Frobenius distance 0.611) but rescue
+condition documented: \"needs symmetry-breaking mechanism + explicit null\".
+
+## 9. Review Checklist
+
+Before marking a claim Verified:
+
+- [ ] Primary source cited with DOI/arXiv
+- [ ] Test exists and passes
+- [ ] Test is deterministic (seeded RNG)
+- [ ] Test is offline (no network)
+- [ ] Result matches literature (if applicable)
+- [ ] Uncertainty quantified (if statistical)
+- [ ] Last verified date updated (ISO format)
+
+## 10. References
+
+- Roy, S. N. (2003). *Some Aspects of Multivariate Analysis*. Wiley.
+  (Adapted framework for multi-claim verification discipline)
+
+- Simmons, J. P., Nelson, L. D., & Simonsohn, U. (2011). *False-Positive
+  Psychology*. Psychological Science, 22(11), 1359-1366.
+  (Researcher degrees of freedom; pre-registration importance)
+
+- Ioannidis, J. P. A. (2005). *Why Most Published Research Findings Are False*.
+  PLoS Medicine, 2(8), e124.
+  (Base rate considerations for exploratory claims)
+
+- Gelman, A., & Loken, E. (2014). *The Statistical Crisis in Science*.
+  American Scientist, 102(6), 460-465.
+  (Garden of forking paths; importance of pre-registration)
+
+---
+
+## Appendix: Claims Statistics (2026-02-06)
+
+| Status | Count | Percentage |
+|--------|-------|------------|
+| Verified | 371 | 85.3% |
+| Refuted | 30 | 6.9% |
+| Modeled | 14 | 3.2% |
+| Closed | 6 | 1.4% |
+| Speculative | 10 | 2.3% |
+| Other | 4 | 0.9% |
+| **Total** | **435** | **100%** |
+
+Resolution rate: 421/435 = **96.8%**
 
 """

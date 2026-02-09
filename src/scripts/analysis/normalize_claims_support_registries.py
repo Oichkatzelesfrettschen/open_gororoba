@@ -326,7 +326,9 @@ def parse_claims_domain_map(csv_path: Path) -> dict[str, list[str]]:
     return out
 
 
-def parse_by_domain_markdown(markdown_path: Path, source_markdown: str) -> tuple[int, list[DomainEntry]]:
+def parse_by_domain_markdown(
+    markdown_path: Path, source_markdown: str
+) -> tuple[int, list[DomainEntry]]:
     domain = markdown_path.stem
     lines = markdown_path.read_text(encoding="utf-8", errors="ignore").splitlines()
     declared_count = 0
@@ -493,7 +495,9 @@ def parse_ticket(path: Path, repo_root: Path) -> TicketRecord:
     backlog_reports = sorted(set(re.findall(r"reports/[A-Za-z0-9_./-]+\.md", text)))
 
     deliverables_block = "\n".join(_extract_ticket_section(lines, "## Deliverables"))
-    deliverable_links = [item for item in _extract_backtick_paths(deliverables_block) if _is_path_like(item)]
+    deliverable_links = [
+        item for item in _extract_backtick_paths(deliverables_block) if _is_path_like(item)
+    ]
     if not deliverable_links:
         deliverable_links = [item for item in _extract_backtick_paths(text) if _is_path_like(item)]
 
@@ -601,7 +605,10 @@ def render_claims_domains_toml(
     markdown_claim_domains: dict[str, set[str]] = {}
     for entry in entries:
         markdown_claim_domains.setdefault(entry.claim_id, set()).add(entry.domain)
-    all_claim_ids = sorted(set(csv_map.keys()) | set(markdown_claim_domains.keys()), key=_claim_sort_key)
+    all_claim_ids = sorted(
+        set(csv_map.keys()) | set(markdown_claim_domains.keys()),
+        key=_claim_sort_key,
+    )
 
     lines: list[str] = []
     lines.append("# Claims domain registry (TOML-first).")
@@ -637,10 +644,16 @@ def render_claims_domains_toml(
         lines.append(f"claim_id = {_escape_toml(claim_id)}")
         lines.append(f"domains_csv = {_render_list(csv_domains)}")
         lines.append(f"domains_markdown = {_render_list(markdown_domains)}")
-        lines.append(f"domain_sets_match = {'true' if csv_domains == markdown_domains else 'false'}")
+        lines.append(
+            f"domain_sets_match = {'true' if csv_domains == markdown_domains else 'false'}"
+        )
         lines.append("")
 
-    for entry in sorted(entries, key=lambda item: (item.domain, _claim_sort_key(item.claim_id), item.source_line)):
+    sorted_entries = sorted(
+        entries,
+        key=lambda item: (item.domain, _claim_sort_key(item.claim_id), item.source_line),
+    )
+    for entry in sorted_entries:
         lines.append("[[domain_entry]]")
         lines.append(f"domain = {_escape_toml(entry.domain)}")
         lines.append(f"claim_id = {_escape_toml(entry.claim_id)}")
@@ -717,7 +730,22 @@ def main() -> int:
         default="registry/claim_tickets.toml",
         help="Output path for claim tickets registry.",
     )
+    parser.add_argument(
+        "--bootstrap-from-markdown",
+        action="store_true",
+        help=(
+            "Explicitly allow markdown->TOML bootstrap for claim-support registries. "
+            "Without this flag, the command exits to protect TOML-first authoring mode."
+        ),
+    )
     args = parser.parse_args()
+
+    if not args.bootstrap_from_markdown:
+        print(
+            "SKIP: normalize_claims_support_registries.py is bootstrap-only. "
+            "Use --bootstrap-from-markdown for one-time or explicit re-bootstrap operations."
+        )
+        return 0
 
     repo_root = Path(args.repo_root).resolve()
     claims_tasks_md = repo_root / "docs/CLAIMS_TASKS.md"
@@ -726,7 +754,9 @@ def main() -> int:
     tickets_dir = repo_root / "docs/tickets"
 
     tasks, sections, table_count = parse_claims_tasks(claims_tasks_md)
-    domain_records, entries, csv_map = parse_domains(claims_domain_map_csv, claims_by_domain_dir, repo_root)
+    domain_records, entries, csv_map = parse_domains(
+        claims_domain_map_csv, claims_by_domain_dir, repo_root
+    )
     tickets = parse_tickets(tickets_dir)
 
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -746,7 +776,9 @@ def main() -> int:
     print(
         "Wrote claims support registries: "
         f"{claims_tasks_out}, {claims_domains_out}, {claim_tickets_out}. "
-        f"Tasks={len(tasks)}, Domains={len(domain_records)}, DomainEntries={len(entries)}, Tickets={len(tickets)}."
+        "Tasks="
+        f"{len(tasks)}, Domains={len(domain_records)}, "
+        f"DomainEntries={len(entries)}, Tickets={len(tickets)}."
     )
     return 0
 
