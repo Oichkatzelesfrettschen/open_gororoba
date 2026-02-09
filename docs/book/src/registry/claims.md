@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Claims Evidence Matrix
 
 The claims evidence matrix tracks 494 claims (C-001 through C-494) in

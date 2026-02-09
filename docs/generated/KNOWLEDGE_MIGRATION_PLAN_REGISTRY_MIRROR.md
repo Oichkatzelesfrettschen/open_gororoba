@@ -156,8 +156,7 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
 - Status: `active`
 - Source markdown:
   - `docs/*.md`
-  - `docs/book/src/**/*.md`
-- Notes: Residual manual narratives remain for curated prose and book chapters not yet normalized to dedicated TOML overlays.
+- Notes: Residual manual narratives remain for curated prose not yet normalized to dedicated TOML overlays.
 
 ### KM-012: external_sources
 
@@ -189,6 +188,19 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - `docs/engineering/*.md`
   - `docs/engineering/INDEX.md`
 - Notes: Theory and engineering narrative dossiers are TOML-first with generated markdown mirrors.
+
+### KM-014: book_docs
+
+- Strategy: `toml_primary_generated_mirror`
+- Status: `complete`
+- Source markdown:
+  - `docs/book/src/**/*.md`
+- Authoritative TOML:
+  - `registry/book_docs.toml`
+- Generated mirrors:
+  - `docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md`
+  - `docs/book/src/**/*.md`
+- Notes: mdBook source pages are TOML-first and rendered back into docs/book/src markdown mirrors.
 
 ## Phases
 
@@ -269,6 +281,15 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - docs/theory/INDEX.md
   - docs/engineering/*.md
   - docs/engineering/INDEX.md
+
+### KMP-P10: book_docs_registry_normalization
+
+- Status: `complete`
+- Deliverables:
+  - src/scripts/analysis/normalize_book_docs_registry.py
+  - registry/book_docs.toml
+  - docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md
+  - docs/book/src/**/*.md
 
 ## Policies
 

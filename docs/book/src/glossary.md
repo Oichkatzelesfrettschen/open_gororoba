@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Glossary
 
 Terminology used throughout the open_gororoba codebase, organized by domain.

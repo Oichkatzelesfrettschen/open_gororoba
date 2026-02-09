@@ -1235,6 +1235,57 @@ def export_research_narratives_legacy(repo_root: Path) -> None:
     _write(repo_root / "docs/engineering/INDEX.md", "\n".join(engineering_index))
 
 
+def export_book_docs(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/book_docs.toml")
+    meta = data.get("book_docs", {})
+    docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
+    lines = _header("Book Docs Registry Mirror")
+    lines.append("Authoritative source: `registry/book_docs.toml`.")
+    lines.append("")
+    lines.append(f"- Updated: {meta.get('updated', '')}")
+    lines.append(f"- Source markdown glob: `{meta.get('source_markdown_glob', '')}`")
+    lines.append(f"- Document count: {meta.get('document_count', len(docs))}")
+    lines.append("")
+    lines.append("## Documents")
+    lines.append("")
+    for row in docs:
+        lines.append(f"### {row.get('id', 'BOOK-???')}: {row.get('title', '(untitled)')}")
+        lines.append("")
+        lines.append(f"- Source markdown: `{row.get('source_markdown', '')}`")
+        lines.append(f"- Section: `{row.get('section', '')}`")
+        lines.append(f"- Slug: `{row.get('slug', '')}`")
+        lines.append(f"- Line count: {row.get('line_count', 0)}")
+        claims = row.get("claim_refs", [])
+        if claims:
+            lines.append(f"- Claim refs ({len(claims)}): {', '.join(claims)}")
+        lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_book_docs_legacy(repo_root: Path) -> None:
+    data = _load_toml(repo_root / "registry/book_docs.toml")
+    docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
+    for row in docs:
+        rel_path = str(row.get("source_markdown", "")).strip()
+        if not rel_path:
+            continue
+        path = repo_root / rel_path
+        body = str(row.get("body_markdown", "")).strip("\n")
+        lines: list[str] = [
+            "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+            "<!-- Source of truth: registry/book_docs.toml -->",
+            "",
+        ]
+        if body:
+            lines.extend(body.splitlines())
+        else:
+            lines.append(f"# {row.get('title', Path(rel_path).stem)}")
+            lines.append("")
+            lines.append("(No body_markdown captured in registry/book_docs.toml.)")
+        lines.append("")
+        _write(path, "\n".join(lines))
+
+
 def main() -> int:
     global CHECK_MODE
 
@@ -1286,6 +1337,7 @@ def main() -> int:
     export_claim_tickets(repo_root, out_dir / "CLAIM_TICKETS_REGISTRY_MIRROR.md")
     export_external_sources(repo_root, out_dir / "EXTERNAL_SOURCES_REGISTRY_MIRROR.md")
     export_research_narratives(repo_root, out_dir / "RESEARCH_NARRATIVES_REGISTRY_MIRROR.md")
+    export_book_docs(repo_root, out_dir / "BOOK_DOCS_REGISTRY_MIRROR.md")
     export_insights_legacy(repo_root, repo_root / "docs/INSIGHTS.md")
     export_experiments_legacy(
         repo_root, repo_root / "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
@@ -1303,6 +1355,7 @@ def main() -> int:
         export_claim_tickets_legacy(repo_root)
         export_external_sources_legacy(repo_root)
         export_research_narratives_legacy(repo_root)
+        export_book_docs_legacy(repo_root)
 
     if CHECK_MODE:
         if CHANGED_PATHS:

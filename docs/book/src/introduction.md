@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # open_gororoba
 
 A research workbench exploring whether algebraic structure in Cayley-Dickson

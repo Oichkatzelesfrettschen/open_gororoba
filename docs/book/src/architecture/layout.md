@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Project Layout
 
 open\_gororoba is organized as a Rust workspace with 15 member crates under

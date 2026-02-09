@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Crate Ecosystem
 
 The workspace uses 30+ external crates for numerical computation, data formats,

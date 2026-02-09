@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Emanation Architecture
 
 The de Marrais emanation construction builds 18 layers (L1-L18) from the

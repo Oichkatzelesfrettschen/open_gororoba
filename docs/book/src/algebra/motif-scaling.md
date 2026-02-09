@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/book_docs.toml -->
+
 # Motif Scaling Laws
 
 Exact enumeration of the zero-product graph's connected components across
