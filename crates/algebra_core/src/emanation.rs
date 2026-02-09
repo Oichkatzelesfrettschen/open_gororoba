@@ -2012,6 +2012,34 @@ pub fn et_regimes(n: usize) -> HashMap<usize, Vec<usize>> {
     regimes
 }
 
+/// Classify whether a strut constant S at doubling level N generates a "Sky"
+/// (meta-fractal skybox structure) per de Marrais (arXiv:0704.0112, 2007).
+///
+/// A Sky occurs when S > 8 AND S is not a power of 2.  Powers of 2 are
+/// generator-inherited struts that always yield 100% ET fill.  S <= 8 struts
+/// are "sand mandala" struts inherited from lower doublings.
+///
+/// Note: the Complex Systems (2006) abstract erroneously states "< 8";
+/// all other de Marrais sources consistently say "> 8".
+pub fn is_sky_strut(s: usize) -> bool {
+    s > 8 && !s.is_power_of_two()
+}
+
+/// Classify whether a strut constant S at level N is "inherited" from a
+/// lower doubling and therefore guaranteed to have full ET fill (DMZ = total_possible).
+///
+/// A strut is inherited if it is a power of 2 (generator of some sub-doubling).
+/// At level N, the inherited full-fill struts are: 1, 2, 4, ..., G/2, where
+/// G = 2^(N-1).  Additionally, S = 1..7 are always full-fill at any N.
+pub fn is_inherited_full_fill_strut(n: usize, s: usize) -> bool {
+    // Powers of 2 less than G are always full fill
+    if s.is_power_of_two() && s < (1usize << (n - 1)) {
+        return true;
+    }
+    // S = 1..7 (sedenion struts) are always full fill at any N
+    s <= 7
+}
+
 // ===========================================================================
 // L10: CT Boundary / A7 Star -- Twist as Double Transfer
 // ===========================================================================
@@ -3785,6 +3813,65 @@ mod tests {
                 power <<= 1;
             }
         }
+    }
+
+    // ===================================================================
+    // Sky Classification Tests (de Marrais erratum resolution)
+    // ===================================================================
+
+    #[test]
+    fn test_is_sky_strut_basic() {
+        // S <= 8 are never Skies
+        for s in 1..=8 {
+            assert!(!is_sky_strut(s), "S={} should NOT be a Sky strut", s);
+        }
+        // S > 8, not power of 2: ARE Skies
+        for s in [9, 10, 11, 12, 13, 14, 15, 17, 18, 19, 20, 21, 22, 23, 24, 25] {
+            assert!(is_sky_strut(s), "S={} should be a Sky strut", s);
+        }
+        // Powers of 2 > 8: NOT Skies (generator-inherited)
+        for s in [16, 32, 64] {
+            assert!(!is_sky_strut(s), "S={} (power of 2) should NOT be a Sky strut", s);
+        }
+    }
+
+    #[test]
+    fn test_sky_struts_always_sparse_n5_to_n7() {
+        // Every Sky strut (S > 8, not power of 2) must have DMZ < total_possible.
+        // Every non-Sky strut must have DMZ == total_possible (full fill).
+        for n in 5..=7 {
+            let g = 1usize << (n - 1);
+            for s in 1..g {
+                let et = create_strutted_et(n, s);
+                if is_sky_strut(s) {
+                    assert!(et.dmz_count < et.total_possible,
+                        "N={} S={}: Sky strut should be sparse, got {}/{}",
+                        n, s, et.dmz_count, et.total_possible);
+                } else if is_inherited_full_fill_strut(n, s) {
+                    assert_eq!(et.dmz_count, et.total_possible,
+                        "N={} S={}: inherited strut should be full fill, got {}/{}",
+                        n, s, et.dmz_count, et.total_possible);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_erratum_resolved_gt8_not_lt8() {
+        // The "Complex Systems" abstract erroneously states "less than 8".
+        // All other de Marrais sources say "> 8 and not a power of 2".
+        //
+        // Verification: S=9 at N=5 (the first Sky strut) is sparse (72 < 168).
+        let et = create_strutted_et(5, 9);
+        assert!(et.dmz_count < et.total_possible,
+            "S=9 at N=5 is sparse (a Sky), confirming > 8 condition");
+        assert_eq!(et.dmz_count, 72,
+            "S=9 N=5: exact DMZ count should be 72");
+
+        // S=8 at N=5 is NOT sparse (full fill, confirming 8 is the boundary).
+        let et8 = create_strutted_et(5, 8);
+        assert_eq!(et8.dmz_count, et8.total_possible,
+            "S=8 at N=5 is full fill, confirming 8 is the last non-Sky strut");
     }
 
     // ===================================================================
