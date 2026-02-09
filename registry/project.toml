@@ -6,9 +6,9 @@ version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
 test_count = 2198
-claim_count = 475
+claim_count = 477
 insight_count = 16
-experiment_count = 10
+experiment_count = 13
 paper_count = 19
 binary_count = 37
 

@@ -123,3 +123,80 @@ claims = []
 deterministic = false
 seed = 42
 gpu = false
+
+[[experiment]]
+id = "E-011"
+title = "Cross-Stack Locality Comparison (Experiment A)"
+binary = "cross-stack-locality"
+method = """Compare adjacency-locality metrics across three independent constraint systems:
+  Stack 1 (E10 Billiard): Wall-transition sequence from HyperbolicBilliard, E10 Dynkin graph.
+    Metric: r_e8 = fraction of consecutive pairs that are E8-adjacent.
+    Null: ColumnIndependentNull (uniform random generator selection).
+  Stack 2 (ET DMZ Walk): Navigation sequences through de Marrais Emanation Table.
+    Metric: r_dmz = fraction of consecutive ET cells that share a DMZ edge.
+    Null: uniform random cell selection in the ET grid.
+  Stack 3 (CD ZD Catamaran/Twist): Twist-product navigation across zero-divisor graph.
+    Metric: r_zd = fraction of consecutive basis-pair transitions that are ZD-adjacent.
+    Null: uniform random basis-pair selection.
+  All three use the common abstract model: generator-driven piecewise geodesic dynamics
+  (generator set G, constraint graph Gamma subset G x G, sequence s_1..s_n, locality
+  ratio r = |{i : (s_i, s_{i+1}) in Gamma}| / (n-1)).
+  Prediction (ALP, C-476): all three r values significantly exceed their nulls.
+  Falsifier: one or more shows r consistent with uniform/random."""
+input = "None (purely algebraic / simulation)"
+output = ["data/csv/cross_stack_locality_comparison.csv"]
+run = "cargo run --release --bin cross-stack-locality -- --n-bounces 10000 --n-permutations 1000 --seed 42"
+claims = ["C-476"]
+deterministic = false
+seed = 42
+gpu = false
+
+[[experiment]]
+id = "E-012"
+title = "ET Discrete Billiard (Experiment B)"
+binary = "et-billiard"
+method = """Treat the Emanation Table as a discrete billiard wall set.
+  Walls: ET constraints define forbidden/allowed transitions in (S, row, col) space.
+  Reflections: when a trajectory hits an ET "wall" (DMZ boundary), apply the ET rule
+    update (fill/hide involution or strut-constant increment).
+  Symbolic dynamics: record the sequence of wall types hit (DMZ, label-line, empty).
+  Phase structure: compute Lyapunov exponent (or mixing time) as a function of strut
+    constant S. Compare against spectroscopy band classification (Dense/Sparse/Mixed
+    from spectroscopy_bands()).
+  Prediction: spectroscopy band transitions correspond to qualitative phase changes in
+    the toy billiard (e.g., Dense bands -> low Lyapunov, Sparse -> high Lyapunov).
+  Falsifier: no correlation between spectroscopy classification and billiard dynamics."""
+input = "None (ET computation from emanation.rs)"
+output = ["data/csv/et_billiard_phase_structure.csv"]
+run = "cargo run --release --bin et-billiard -- --n-levels 4,5,6 --n-steps 10000 --seed 42"
+claims = ["C-476", "C-477"]
+deterministic = false
+seed = 42
+gpu = false
+
+[[experiment]]
+id = "E-013"
+title = "Sky-Limit-Set Correspondence (Experiment C)"
+binary = "sky-limit-set"
+method = """Compare ET skybox pattern invariants to Coxeter group limit set invariants.
+  Step 1: For each CD level N=4,5,6, compute the skybox (G x G grid) and extract:
+    - box-kite count (= N-1)
+    - emptiness clustering exponent (connected-component size distribution)
+    - DMZ density (fraction of cells that are DMZ)
+    - fill/hide period-doubling structure (from Four Corners rule)
+  Step 2: For candidate Coxeter groups (A_{N-1}, B_{N-1}, D_{N-1}), compute limit set
+    invariants from the Coxeter matrix:
+    - rank
+    - fractal dimension of limit set
+    - invariant measure density
+  Step 3: Compare skybox invariants (Step 1) to limit set invariants (Step 2) via
+    correlation and matching tests.
+  Prediction (C-477): systematic correspondence between skybox pattern invariants and
+    Coxeter limit set invariants at matching rank.
+  Falsifier: no Coxeter group at any rank produces invariants matching the ET skybox."""
+input = "None (ET computation + Coxeter matrix computation)"
+output = ["data/csv/sky_limit_set_comparison.csv"]
+run = "cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-types A,B,D"
+claims = ["C-477"]
+deterministic = true
+gpu = false
