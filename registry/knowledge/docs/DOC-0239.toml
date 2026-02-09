@@ -3,16 +3,16 @@
 
 [document]
 id = "DOC-0239"
-source_path = "reports/script_contracts_inventory.md"
-title = "Script contract inventory"
+source_path = "reports/repo_structure_audit.md"
+title = "Repo Structure Audit (2026-02-04)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "35f6a3ddb5a568ed1eff441fd5a3b90176e5d13cffa7e592d67f52e15dfa448c"
-source_line_count = 51
-source_size_bytes = 3504
-content_sha256 = "35f6a3ddb5a568ed1eff441fd5a3b90176e5d13cffa7e592d67f52e15dfa448c"
+source_sha256 = "a82ffde618f72c454ee9cf51fdaf53016804b292ba21582ae399a9f28eb7dd10"
+source_line_count = 75
+source_size_bytes = 2940
+content_sha256 = "a82ffde618f72c454ee9cf51fdaf53016804b292ba21582ae399a9f28eb7dd10"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -27,46 +27,70 @@ content_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
-# Script contract inventory
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-Generated from src/scripts/**.py (static scan; scripts not executed).
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-## Summary
+# Repo Structure Audit (2026-02-04)
 
-- Total scripts: 319
-- Networks: {\"forbidden\": 290, \"gated\": 29}
-- Scripts importing requests/astroquery: 13
+Scope: `/home/eirikr/Playground/ChatGPT Experiments`
 
-## Scripts (network != forbidden)
+## Top-level directories
 
-- src/scripts/data/fetch_aflow_materials.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_agn_reverb_masses.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_atnf_pulsars_full.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_chime_frb.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_cms_dimuon.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_cms_higgs_diphoton.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_compact_objects.py: network=gated, inputs=0, outputs=2 (inferred)
-- src/scripts/data/fetch_cosmology_data.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_des_y6_shear.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_desi_dr1_bao.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_emergence_layers_sources.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_external_data.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_fermi_grb.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_gwtc3_confident.py: network=gated, inputs=0, outputs=0 (inferred)
-- src/scripts/data/fetch_gwtc3_skylocalizations_zenodo.py: network=gated, inputs=2, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_jwst_sne.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_ligo_gwpy.py: network=gated, inputs=1, outputs=1 (inferred)
-- src/scripts/data/fetch_materials_jarvis_subset.py: network=gated, inputs=1, outputs=1 (inferred)
-- src/scripts/data/fetch_materials_nomad_subset.py: network=gated, inputs=2, outputs=1 (imports-network-client, inferred)
-- src/scripts/data/fetch_mcgill_magnetars.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_nanograv_15yr.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_neutrino_params.py: network=gated, inputs=1, outputs=0 (inferred)
-- src/scripts/data/fetch_o4_events.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_observatory_data.py: network=gated, inputs=3, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_pdg_particle_data.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_planck_2018_chains.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_planck_2018_spectra.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_pulsars_rigorous.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
-- src/scripts/data/fetch_references.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- `.github/`: 1 files, 1 dirs, ~1.17 KB
+- `.mamba/`: 26612 files, 2482 dirs, ~2.17 GB
+- `archive/`: 25 files, 7 dirs, ~60.26 KB
+- `benchmarks/`: 9 files, 2 dirs, ~51.75 KB
+- `bin/`: 30 files, 0 dirs, ~16.80 MB
+- `convos/`: 20 files, 0 dirs, ~30.88 MB
+- `cpp/`: 360 files, 67 dirs, ~8.51 MB
+- `curated/`: 611 files, 6 dirs, ~38.27 MB
+- `data/`: 13129 files, 56 dirs, ~3.41 GB
+- `docker/`: 1 files, 0 dirs, ~852 B
+- `docs/`: 321 files, 19 dirs, ~6.23 MB
+- `examples/`: 8 files, 1 dirs, ~37.80 KB
+- `legacy/`: 1 files, 0 dirs, ~429 B
+- `reports/`: 50 files, 0 dirs, ~1.41 GB
+- `src/`: 595 files, 57 dirs, ~3.69 MB
+- `tests/`: 242 files, 1 dirs, ~1.10 MB
+
+## Structure signals (quick checks)
+
+- `src/` exists: yes
+- `tests/` exists: yes
+- `docs/` exists: yes
+- `data/` exists: yes
+- `data/artifacts/` exists: yes
+- `data/artifacts/ARTIFACTS_MANIFEST.csv` exists: yes
+- `src/scripts/` exists: yes
+- `src/verification/` exists: yes
+- `src/gemini_physics/` exists: yes
+
+## Notes: what is `gemini_physics`?
+
+- `src/gemini_physics/` is the primary Python package for domain code (algebra, cosmology,
+  materials, etc.). It exists to keep reusable library code separate from runnable scripts.
+- `src/scripts/**` holds entrypoints and one-off pipelines; scripts import from `gemini_physics`
+  (and other packages) rather than duplicating logic.
+- Keeping domain code inside a package (instead of flat files under `src/`) improves testability,
+  import hygiene, and reproducibility (e.g., network gating and determinism policies can be
+  enforced centrally).
+
+## Notes: current `src/` layout (high level)
+
+- `src/gemini_physics/`: primary package for research code.
+- `src/scripts/`: runnable scripts with contract headers (inputs/outputs/network).
+- `src/verification/`: verifiers for repo contracts and reproducibility gates.
+- Other packages under `src/` (for now) may represent legacy or domain-specific modules that
+  are candidates for consolidation into `gemini_physics/` once import paths and tests are
+  updated safely (phase-gated refactor).
+
+## Suggested repo type classification
+
+- This is a reproducible research monorepo: code + tests + docs + datasets + generated artifacts
+  with strict provenance and offline-default behavior. Best practice is to keep generation
+  explicit (artifact targets) and keep smoke/check verification-only.
 
 """

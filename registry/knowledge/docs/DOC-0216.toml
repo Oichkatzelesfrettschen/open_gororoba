@@ -3,16 +3,16 @@
 
 [document]
 id = "DOC-0216"
-source_path = "reports/claims_batch_backlog_C201_C432.md"
-title = "Claims Batch Backlog (C-201..C-432) (2026-02-04)"
+source_path = "reports/claims_batch_backlog_C201_C430.md"
+title = "Claims Batch Backlog (C-201..C-430) (2026-02-02)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "02cc2e80ab63be7a48894caa5e96745cb2663b401db8c80f5a4d105271c40065"
-source_line_count = 285
-source_size_bytes = 76018
-content_sha256 = "02cc2e80ab63be7a48894caa5e96745cb2663b401db8c80f5a4d105271c40065"
+source_sha256 = "cb76640e7580ed775195f37dfd6c3321f23d475325198dbd43002b6b8423905b"
+source_line_count = 287
+source_size_bytes = 75160
+content_sha256 = "cb76640e7580ed775195f37dfd6c3321f23d475325198dbd43002b6b8423905b"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -27,14 +27,20 @@ content_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
-# Claims Batch Backlog (C-201..C-432) (2026-02-04)
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
+# Claims Batch Backlog (C-201..C-430) (2026-02-02)
 
 Purpose: planning snapshot for claim-by-claim audits (not evidence).
 
 - Matrix: `docs/CLAIMS_EVIDENCE_MATRIX.md`
 - Domain map: `docs/claims/CLAIMS_DOMAIN_MAP.csv`
-- Claims in range: 232
-- Open claims in range: 27
+- Claims in range: 230
+- Open claims in range: 25
 
 ## Open claims (in-range, oldest-first by last_verified)
 
@@ -61,8 +67,6 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 - C-428 (Modeled, last_verified=2026-02-02, domains=cosmology, engineering, visualization): Integrated Warp Geodesic Simulation traces null rays through a Kerr metric background using 'NegDimCosmolog...
 - C-429 (Modeled, last_verified=2026-02-02, domains=cosmology, visualization): Kerr black hole shadow asymmetry due to frame dragging (a=0.99) is successfully simulated and visualized; d...
 - C-430 (Modeled, last_verified=2026-02-02, domains=cosmology, visualization): Negative Dimension Cosmology (NegDim) expansion history H(z) and luminosity distance D_L(z) deviate from st...
-- C-431 (Modeled, last_verified=2026-02-02, domains=algebra, visualization): The Sedenion Zero Divisor manifold, when projected into 3D perturbation space (e2, e5, e14), forms a cohere...
-- C-432 (Partially verified, last_verified=2026-02-02, domains=cosmology, cpp, visualization): Kerr geodesic trajectories computed via the C++ Mino-time integrator can be compared against the analytic B...
 - C-404 (Speculative, last_verified=2026-02-03, domains=holography): Bulk locality can be organized by boundary modular data K_A=-log rho_A and entanglement wedge reconstructio...
 - C-405 (Speculative, last_verified=2026-02-03, domains=open-systems): Observers can be modeled as (approximate) correctable record algebras selected by open-system dynamics L_op...
 
@@ -282,9 +286,9 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-410 | datasets | Literature (perturbative... | 2026-02-02 | One-loop photon-graviton mixing in constant EM fields includes non-zero tadpo... | docs/BIBLIOGRAPHY.md (Ahmadiniaz 2026), data/external/papers/arxiv_2601.23279... | Paper establishes 3rd diagram (tadpole) relevance. Updates theoretical backgr... |
 | C-411 | datasets | Literature (Experimental) | 2026-02-02 | Spontaneous four-wave mixing (SFWM) dominates in thin LN layers due to relaxe... | docs/BIBLIOGRAPHY.md (Son & Chekhova 2026), data/external/papers/arxiv_2601.2... | Validates \"flat platform\" source hypothesis for integrated quantum optics. Re... |
 | C-412 | holography, visualization, algebra | Modeled (Visualization) | 2026-02-02 | \"Holographic Entropy Trap\" 5-phase mechanism (Injection -> Lensing -> Sedenio... | data/artifacts/images/warp_pulse_animation_directors_cut.mp4, src/scripts/vis... | Rendered 45s/120fps physics-driven animation. Visualizes ray-tracing (Optics)... |
-| C-413 | meta | Verified (Math) | 2026-02-02 | Determinant of left-multiplication operator det(L_a) equals \\|\\|a\\|\\|^dim exa... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LF), data/csv/cd_al... | Verifies that L_a is a scaled isometry only for composition algebras. The \"vo... |
+| C-413 | meta | Verified (Math) | 2026-02-02 | Determinant of left-multiplication operator det(L_a) equals ||a||^dim exactly... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LF), data/csv/cd_al... | Verifies that L_a is a scaled isometry only for composition algebras. The \"vo... |
 | C-414 | algebra | Verified (Math) | 2026-02-02 | Adjoint identity L_a^T = L_{conj(a)} holds universally at all Cayley-Dickson... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LG), data/csv/cd_al... | Universal structural identity connecting the transpose of the multiplication... |
-| C-415 | meta | Verified (Math) | 2026-02-02 | Gram spectrum L_a L_a^T is a scalar multiple of identity \\|\\|a\\|\\|^2 I iff di... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LH), data/csv/cd_al... | Indicates loss of orthogonality in the left-regular representation for sedeni... |
+| C-415 | meta | Verified (Math) | 2026-02-02 | Gram spectrum L_a L_a^T is a scalar multiple of identity ||a||^2 I iff dim <=... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LH), data/csv/cd_al... | Indicates loss of orthogonality in the left-regular representation for sedeni... |
 | C-416 | algebra | Verified (Math) | 2026-02-02 | The only idempotent elements in any Cayley-Dickson algebra are 0 and 1 (the i... | src/scripts/analysis/cd_algebraic_experiments_v58.py (Exp LK), data/csv/cd_al... | Derived from the universal quadratic identity. Verified numerically at dims 4... |
 | C-417 | materials, holography, visualization | Speculative (Synthesis) | 2026-02-02 | Hypothesis: Ray capture efficiency in fractal metamaterials correlates with S... | docs/external_sources/OPEN_CLAIMS_SOURCES.md, src/scripts/analysis/sedenion_w... | Proposed physical mechanism: algebraic zero-divisors act as sinks for optical... |
 | C-418 | datasets | Modeled (Database) | 2026-02-02 | Material Database tracks temperature-dependent phase transitions (e.g., Ice I... | src/gemini_physics/materials/database.py, data/external/SiO2_refractive_index... | Implemented MaterialDatabase with explicit Sellmeier models for Quartz/Sapphi... |
@@ -300,7 +304,5 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-428 | cosmology, engineering, visualization | Modeled (Simulation) | 2026-02-02 | Integrated Warp Geodesic Simulation traces null rays through a Kerr metric ba... | src/scripts/simulation/integrated_warp_geodesic.py, data/artifacts/images/ker... | Simulation combines NegDimCosmology and Kerr metrics to trace photon trajecto... |
 | C-429 | cosmology, visualization | Modeled (Simulation) | 2026-02-02 | Kerr black hole shadow asymmetry due to frame dragging (a=0.99) is successful... | src/scripts/simulation/frame_dragging_demo.py, data/artifacts/images/kerr_sha... | Ray-tracing simulation src/scripts/simulation/frame_dragging_demo.py computes... |
 | C-430 | cosmology, visualization | Modeled (Analytic) | 2026-02-02 | Negative Dimension Cosmology (NegDim) expansion history H(z) and luminosity d... | src/scripts/analysis/cosmology_comparison.py, data/artifacts/images/cosmology... | Comparison script src/scripts/analysis/cosmology_comparison.py generates Hubb... |
-| C-431 | algebra, visualization | Modeled (Visualization) | 2026-02-02 | The Sedenion Zero Divisor manifold, when projected into 3D perturbation space... | src/scripts/visualization/vis_8d_slice.py, data/artifacts/images/sedenion_sli... | The script src/scripts/visualization/vis_8d_slice.py generates a volumetric s... |
-| C-432 | cosmology, cpp, visualization | Partially verified (Ray-t... | 2026-02-02 | Kerr geodesic trajectories computed via the C++ Mino-time integrator can be c... | docs/external_sources/OPEN_CLAIMS_SOURCES.md, src/scripts/simulation/integrat... | Current evidence is limited to ray-tracing outputs from src/scripts/simulatio... |
 
 """

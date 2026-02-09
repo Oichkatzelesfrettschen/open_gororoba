@@ -10,6 +10,12 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_convos.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_convos.toml -->
+
 # Convos Claims Inbox (Triage Queue, ASCII-only)
 
 Purpose: extract claim-like content from `convos/` and convert it into

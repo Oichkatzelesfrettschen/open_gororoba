@@ -196,6 +196,9 @@ def main() -> int:
             continue
         kind = str(row.get("kind", ""))
         source_refs = sorted(refs.get(path, set()))
+        toml_backing = str(row.get("toml_backing", "")).strip()
+        if toml_backing:
+            source_refs = [toml_backing] + [ref for ref in source_refs if ref != toml_backing]
 
         if (path.startswith("docs/") and path.count("/") == 1) or _is_generated_mirror(path):
             mode = "toml_generated_mirror"

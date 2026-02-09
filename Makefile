@@ -167,6 +167,7 @@ registry-verify-mirrors: registry-export-markdown
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_mirror_freshness.py
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_headers.py
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_parity.py
+	PYTHONWARNINGS=error python3 src/verification/verify_toml_generated_mirror_immutability.py
 	PYTHONWARNINGS=error python3 src/verification/verify_claim_ticket_mirrors.py
 
 registry: registry-verify-mirrors

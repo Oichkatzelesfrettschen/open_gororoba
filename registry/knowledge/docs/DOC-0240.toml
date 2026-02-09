@@ -3,16 +3,16 @@
 
 [document]
 id = "DOC-0240"
-source_path = "reports/tickets_inventory.md"
-title = "Tickets Inventory (2026-02-04)"
+source_path = "reports/script_contracts_inventory.md"
+title = "Script contract inventory"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "880e85b5e3e39294bf16cfd044a501ec928df71fcba87c02c3e01a53faa4463b"
-source_line_count = 46
-source_size_bytes = 2125
-content_sha256 = "880e85b5e3e39294bf16cfd044a501ec928df71fcba87c02c3e01a53faa4463b"
+source_sha256 = "4e3a333eefa9044186777f583b4d5115769ddfa5c40f661f34c66e55c7e6e964"
+source_line_count = 57
+source_size_bytes = 3698
+content_sha256 = "4e3a333eefa9044186777f583b4d5115769ddfa5c40f661f34c66e55c7e6e964"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -27,41 +27,52 @@ content_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
-# Tickets Inventory (2026-02-04)
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-Tickets dir: `docs/tickets`
-Tickets parsed: 16
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
 
-## Counts by status token
+# Script contract inventory
 
-- TODO: 3
-- IN PROGRESS: 4
-- PARTIAL: 1
-- DONE: 8
+Generated from src/scripts/**.py (static scan; scripts not executed).
 
-## Tickets (oldest first)
+## Summary
 
-| Ticket | Created | Status | Path |
-|---|---|---|---|
-| A1_boxkites_replication | 2026-01-28 | DONE | `docs/tickets/A1_boxkites_replication.md` |
-| A2_reggiani_alignment | 2026-01-28 | DONE | `docs/tickets/A2_reggiani_alignment.md` |
-| A3_gwtc3_provenance | 2026-01-28 | DONE | `docs/tickets/A3_gwtc3_provenance.md` |
-| A4_mass_clumping_test | 2026-01-28 | PARTIAL | `docs/tickets/A4_mass_clumping_test.md` |
-| A5_gwtc3_selection_bias_control | 2026-01-28 | TODO | `docs/tickets/A5_gwtc3_selection_bias_control.md` |
-| A6_tensor_network_measurement_pipeline | 2026-01-28 | TODO | `docs/tickets/A6_tensor_network_measurement_pipeline.md` |
-| A7_psl_2_7_explicit_action | 2026-01-28 | TODO | `docs/tickets/A7_psl_2_7_explicit_action.md` |
-| C001_C050_claims_audit | 2026-02-02 | IN PROGRESS | `docs/tickets/C001_C050_claims_audit.md` |
-| C051_C100_claims_audit | 2026-02-02 | IN PROGRESS | `docs/tickets/C051_C100_claims_audit.md` |
-| C101_C150_claims_audit | 2026-02-02 | IN PROGRESS | `docs/tickets/C101_C150_claims_audit.md` |
-| C151_C200_claims_audit | 2026-02-02 | DONE | `docs/tickets/C151_C200_claims_audit.md` |
-| C201_C250_claims_audit | 2026-02-02 | DONE | `docs/tickets/C201_C250_claims_audit.md` |
-| C251_C300_claims_audit | 2026-02-02 | DONE | `docs/tickets/C251_C300_claims_audit.md` |
-| C301_C350_claims_audit | 2026-02-02 | DONE | `docs/tickets/C301_C350_claims_audit.md` |
-| C351_C400_claims_audit | 2026-02-02 | DONE | `docs/tickets/C351_C400_claims_audit.md` |
-| C401_C427_claims_audit | 2026-02-02 | IN PROGRESS | `docs/tickets/C401_C427_claims_audit.md` |
+- Total scripts: 319
+- Networks: {\"forbidden\": 290, \"gated\": 29}
+- Scripts importing requests/astroquery: 13
 
-## Parsing notes
+## Scripts (network != forbidden)
 
-- This report is a planning snapshot, not evidence.
+- src/scripts/data/fetch_aflow_materials.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_agn_reverb_masses.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_atnf_pulsars_full.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_chime_frb.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_cms_dimuon.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_cms_higgs_diphoton.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_compact_objects.py: network=gated, inputs=0, outputs=2 (inferred)
+- src/scripts/data/fetch_cosmology_data.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_des_y6_shear.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_desi_dr1_bao.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_emergence_layers_sources.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_external_data.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_fermi_grb.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_gwtc3_confident.py: network=gated, inputs=0, outputs=0 (inferred)
+- src/scripts/data/fetch_gwtc3_skylocalizations_zenodo.py: network=gated, inputs=2, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_jwst_sne.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_ligo_gwpy.py: network=gated, inputs=1, outputs=1 (inferred)
+- src/scripts/data/fetch_materials_jarvis_subset.py: network=gated, inputs=1, outputs=1 (inferred)
+- src/scripts/data/fetch_materials_nomad_subset.py: network=gated, inputs=2, outputs=1 (imports-network-client, inferred)
+- src/scripts/data/fetch_mcgill_magnetars.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_nanograv_15yr.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_neutrino_params.py: network=gated, inputs=1, outputs=0 (inferred)
+- src/scripts/data/fetch_o4_events.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_observatory_data.py: network=gated, inputs=3, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_pdg_particle_data.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_planck_2018_chains.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_planck_2018_spectra.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_pulsars_rigorous.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
+- src/scripts/data/fetch_references.py: network=gated, inputs=1, outputs=0 (imports-network-client, inferred)
 
 """

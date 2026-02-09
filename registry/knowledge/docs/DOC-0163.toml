@@ -3,238 +3,294 @@
 
 [document]
 id = "DOC-0163"
-source_path = "docs/generated/EXTERNAL_SOURCES_REGISTRY_MIRROR.md"
-title = "External Sources Registry Mirror"
+source_path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
+title = "Experiments Registry Mirror"
 kind = "generated_markdown"
 status = "active"
 migration_priority = "none"
 generated = true
-source_sha256 = "402e5276e07a505cb1335106575e9625285d36fde37a1e37f224cf485776e9bc"
-source_line_count = 219
-source_size_bytes = 8040
-content_sha256 = "402e5276e07a505cb1335106575e9625285d36fde37a1e37f224cf485776e9bc"
+source_sha256 = "ab11befeb67558a0a5ec4e42f966091908364b872429234cfe9834490519a6f5"
+source_line_count = 275
+source_size_bytes = 9232
+content_sha256 = "ab11befeb67558a0a5ec4e42f966091908364b872429234cfe9834490519a6f5"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# External Sources Registry Mirror
+# Experiments Registry Mirror
 
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: TOML registry files under registry/ -->
 
-Authoritative source: `registry/external_sources.toml`.
+Authoritative source: `registry/experiments.toml`.
 
-- Updated: 2026-02-09
-- Source markdown glob: `docs/external_sources/*.md`
-- Document count: 14
+Total experiments: 13
 
-## Documents
+## E-001: Cayley-Dickson Motif Census
 
-### XS-001: C-071: FRB Ultrametric Structure -- Data Provenance
+- Binary: `motif-census`
+- Input: None (purely algebraic)
+- Output: data/csv/motif_census_dim{N}.csv, data/csv/motif_census_summary.csv
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-100, C-101, C-102, C-103, C-104, C-105, C-106, C-107, C-108, C-109, C-110
 
-- Source markdown: `docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md`
-- Slug: `c071_frb_ultrametric_sources`
-- Status token: `REFUTED`
-- Content kind: `claim_dataset_provenance`
-- Authority level: `primary_dataset_index`
-- Verification level: `computed_refutation`
-- Has full transcript: `False`
-- Line count: 73
-- Claim refs (2): C-071, C-080
-- URL refs (2):
-  - `https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog1/chimefrbcat1.csv`
-  - `https://storage.googleapis.com/chimefrb-dev.appspot.com/catalog2/chimefrbcat2.csv`
-- Notes: Claim C-071 outcome is explicitly refuted with reproducible dataset hashes.
+Method:
+Exact enumeration of connected-component structure of diagonal zero-product graph for cross-assessor pairs at each CD doubling (dim=16,32,64,128,256).
 
-### XS-002: Dataset Manifest
+Run command:
+```bash
+cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
+```
 
-- Source markdown: `docs/external_sources/DATASET_MANIFEST.md`
-- Slug: `dataset_manifest`
-- Status token: `ACTIVE`
-- Content kind: `dataset_manifest`
-- Authority level: `provider_manifest`
-- Verification level: `operational`
-- Has full transcript: `False`
-- Line count: 94
-- Notes: Operational provider and source manifest for fetch-datasets registry alignment.
+## E-002: Multi-Dataset GPU Ultrametric Sweep
 
-### XS-003: 2004 Math0403113 Boxkites Iii
+- Binary: `multi-dataset-ultrametric`
+- Input: data/external/ (CHIME/FRB, ATNF, GWOSC, Pantheon+, Gaia DR3, SDSS DR18, Fermi GBM, Hipparcos, McGill)
+- Output: data/csv/c071g_multi_dataset_ultrametric.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `True`
+- Claims: C-071, C-436, C-437, C-438, C-439, C-440
 
-- Source markdown: `docs/external_sources/DE_MARRAIS_BOXKITES_III.md`
-- Slug: `de_marrais_boxkites_iii`
-- Status token: `REFERENCE`
-- Content kind: `paper_transcript`
-- Authority level: `primary_cached_paper`
-- Verification level: `source_capture`
-- Has full transcript: `True`
-- Line count: 575
-- URL refs (6):
-  - `http://arXiv.org/abs/math.GM/0011260`
-  - `http://arXiv.org/abs/math.RA/0207003`
-  - `http://arxiv.org/abs/hep-th/9501007`
-  - `http://arXiv.org/abs/hep-th/9506080`
-  - `http://arXiv.org/abs/math.DG/0203158`
-  - `http://arXiv.org/abs/q-alg/9710013`
-- Notes: Cached transcript mirror for source auditability; not itself a verification result.
+Method:
+For 9 catalogs: normalize, compute Euclidean distances, ultrametric fraction test with column-shuffled null. 10M triples x 1000 permutations. BH-FDR correction.
 
-### XS-004: Voyage by Catamaran
+Run command:
+```bash
+cargo run --release --bin multi-dataset-ultrametric -- --explore --n-triples 10000000 --n-permutations 1000
+```
 
-- Source markdown: `docs/external_sources/DE_MARRAIS_CATAMARAN.md`
-- Slug: `de_marrais_catamaran`
-- Status token: `REFERENCE`
-- Content kind: `paper_summary`
-- Authority level: `primary_paper_summary`
-- Verification level: `source_capture`
-- Has full transcript: `False`
-- Line count: 75
-- Notes: Structured summary of a primary paper with claims-supporting context.
+## E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)
 
-### XS-005: Flying Higher Than A Box-Kite
+- Binary: `real-cosmo-fit`
+- Input: data/external/Pantheon+SH0ES.dat
+- Output: stdout
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-200, C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210
 
-- Source markdown: `docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md`
-- Slug: `de_marrais_flying_higher`
-- Status token: `REFERENCE`
-- Content kind: `paper_transcript`
-- Authority level: `primary_cached_paper`
-- Verification level: `source_capture`
-- Has full transcript: `True`
-- Line count: 4113
-- URL refs (2):
-  - `http://matu1.math.auckland.ac.nz/~king/Preprints/Chaoq.htm`
-  - `http://exo.com/~palmer/ISSS2000ab.html`
-- Notes: Contains large transcript and summary notes for downstream claims triage.
+Method:
+Joint chi-square over 1578 Pantheon+ SNe + 7 DESI DR1 BAO bins. Analytic M_B marginalization. Nelder-Mead. Lambda-CDM vs w0-CDM via delta-BIC.
 
-### XS-006: Placeholder Substructures I
+Run command:
+```bash
+cargo run --release --bin real-cosmo-fit
+```
 
-- Source markdown: `docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md`
-- Slug: `de_marrais_placeholder_i`
-- Status token: `REFERENCE`
-- Content kind: `paper_transcript`
-- Authority level: `primary_cached_paper`
-- Verification level: `source_capture`
-- Has full transcript: `True`
-- Line count: 1020
-- URL refs (4):
-  - `http://arXiv.org/abs/q-alg/9710013`
-  - `http://arXiv.org/abs/math.GM/0011260`
-  - `http://www.innerx.net/~tsmith/Ndalg.html`
-  - `http://arXiv.org/abs/math.QA/9802116`
-- Notes: Revision-aware source capture for placeholder substructure literature.
+## E-004: Kerr Shadow Boundaries
 
-### XS-007: Placeholder Substructures III
+- Binary: `kerr-shadow`
+- Input: None (analytic)
+- Output: stdout or --output file
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-301, C-302, C-303, C-304, C-305, C-306, C-307, C-308, C-309, C-310
 
-- Source markdown: `docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md`
-- Slug: `de_marrais_placeholder_iii`
-- Status token: `REFERENCE`
-- Content kind: `paper_summary`
-- Authority level: `primary_paper_summary`
-- Verification level: `source_capture`
-- Has full transcript: `False`
-- Line count: 36
-- Notes: Short-form summary and key-result extraction from placeholder III source.
+Method:
+Bardeen shadow boundary (alpha, beta) for Kerr BH at given spin and inclination.
 
-### XS-008: Presto! Digitization: Part I
+Run command:
+```bash
+cargo run --release --bin kerr-shadow -- --spin 0.998 --n-points 1000 --inclination 17
+```
 
-- Source markdown: `docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md`
-- Slug: `de_marrais_presto_digitization`
-- Status token: `REFERENCE`
-- Content kind: `paper_transcript`
-- Authority level: `primary_cached_paper`
-- Verification level: `source_capture`
-- Has full transcript: `True`
-- Line count: 1754
-- URL refs (6):
-  - `http://www-groups.dcs.st-and.ac.uk/~history/Quotations/Laplace.html`
-  - `http://arXiv.org.abs/q-alg/9710013`
-  - `http://arXiv.org/abs/math.RA/0403113`
-  - `http://arXiv.org/abs/math.GM/0011260`
-  - `http://arXiv.org/abs/math.RA/0207003`
-  - `http://www.wolframscience.com/conference/2004/presentations/materials/rdemarrais.pdf`
-- Notes: Primary transcript with explicit rule extraction for Cayley-Dickson references.
+## E-005: Zero-Divisor Graph Invariants
 
-### XS-009: 2004 Wolfram Science Slides
+- Binary: `zd-search`
+- Input: None (purely algebraic)
+- Output: stdout
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-050, C-051, C-052, C-053, C-054, C-055, C-056, C-057, C-058, C-059, C-060
 
-- Source markdown: `docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md`
-- Slug: `de_marrais_wolfram_slides`
-- Status token: `REFERENCE`
-- Content kind: `slides_transcript`
-- Authority level: `primary_cached_slides`
-- Verification level: `source_capture`
-- Has full transcript: `True`
-- Line count: 884
-- URL refs (5):
-  - `http://arXiv.org/abs/q-alg/9710013`
-  - `http://arXiv.org/abs/math.GM/0011260`
-  - `http://arXiv.org/abs/math.RA/0207003`
-  - `http://arXiv.org/abs.math.RA/0403113`
-  - `http://arxiv.org/abs/astro-ph/9801276`
-- Notes: Slide transcript capture; interpretation remains separate from source capture.
+Method:
+Build sedenion ZD interaction graph, compute graph-theoretic invariants. Extend to dim=32.
 
-### XS-010: Inverse Cayley-Dickson Formalism
+Run command:
+```bash
+cargo run --release --bin zd-search -- --dim 16 --max-pairs 5000
+```
 
-- Source markdown: `docs/external_sources/INVERSE_CD_FORMALISM.md`
-- Slug: `inverse_cd_formalism`
-- Status token: `UNVERIFIED`
-- Content kind: `conversation_extraction`
-- Authority level: `derived_conversation_note`
-- Verification level: `unverified_hypothesis`
-- Has full transcript: `False`
-- Line count: 156
-- Notes: Conversation-derived formalism notes flagged as unverified in-file.
+## E-006: Gravastar TOV Parameter Sweep
 
-### XS-011: Open Claims Sources (Inbox)
+- Binary: `gravastar-sweep`
+- Input: None (parametric sweep)
+- Output: data/csv/gravastar_sweep.csv
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-400, C-401, C-402, C-403, C-404, C-405, C-406, C-407, C-408, C-409, C-410
 
-- Source markdown: `docs/external_sources/OPEN_CLAIMS_SOURCES.md`
-- Slug: `open_claims_sources`
-- Status token: `ACTIVE`
-- Content kind: `claims_inbox_index`
-- Authority level: `project_tracking_index`
-- Verification level: `workflow_control`
-- Has full transcript: `False`
-- Line count: 34
-- Claim refs (22): C-043, C-082, C-087, C-092, C-094, C-096, C-099, C-102, C-103, C-108, C-109, C-120, C-123, C-128, C-129, C-130, C-132, C-135, C-417, C-426, C-427, C-432
-- Notes: Inbox index for open claims pending dedicated source dossiers.
+Method:
+Solve TOV for three-layer gravastar across polytropic indices and target masses.
 
-### XS-012: Reggiani 2024 manifold identifications (C-005)
+Run command:
+```bash
+cargo run --release --bin gravastar-sweep -- --n-gamma 32 --n-mass 32 --output data/csv/gravastar_sweep.csv
+```
 
-- Source markdown: `docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md`
-- Slug: `reggiani_manifold_claims`
-- Status token: `PARTIALLY_VERIFIED`
-- Content kind: `paper_claim_bridge`
-- Authority level: `primary_paper_bridge`
-- Verification level: `partial_replication`
-- Has full transcript: `False`
-- Line count: 39
-- Claim refs (1): C-005
-- URL refs (1):
-  - `https://arxiv.org/abs/2411.18881`
-- Notes: Distinguishes paper-asserted manifold claims from replicated algebraic checks.
+## E-007: Tensor Network / PEPS Entropy
 
-### XS-013: Sedenion Zero-Divisor Experimental Connections
+- Binary: `tensor-network`
+- Input: None (synthetic circuits)
+- Output: data/csv/entropy_scaling.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: C-350, C-351, C-352, C-353, C-354, C-355, C-356, C-357, C-358, C-359, C-360
 
-- Source markdown: `docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md`
-- Slug: `sedenion_zd_experimental`
-- Status token: `MIXED`
-- Content kind: `evidence_synthesis`
-- Authority level: `mixed_primary_and_conversation`
-- Verification level: `mixed`
-- Has full transcript: `False`
-- Line count: 99
-- URL refs (1):
-  - `https://github.com/silvioreggiani/sedenion-zero-div`
-- Notes: Combines primary-source statements with codebase verification references.
+Method:
+Classical tensor network simulator: Bell/GHZ states, random circuits, SVD entropy, PEPS boundary MPS.
 
-### XS-014: Wheel Algebra Taxonomy
+Run command:
+```bash
+cargo run --release --bin tensor-network -- scaling --n-min 2 --n-max 12 --output data/csv/entropy_scaling.csv
+```
 
-- Source markdown: `docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md`
-- Slug: `wheel_algebra_taxonomy`
-- Status token: `UNVERIFIED`
-- Content kind: `conversation_extraction`
-- Authority level: `derived_conversation_note`
-- Verification level: `unverified_hypothesis`
-- Has full transcript: `False`
-- Line count: 124
-- Notes: Conversation-extracted taxonomy with explicit naming-collision warning.
+## E-008: GWTC-3 Mass Clumping (Dip Test)
+
+- Binary: `mass-clumping`
+- Input: data/external/gwosc_all_events.csv
+- Output: data/csv/gwtc3_mass_clumping_dip.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: C-007
+
+Method:
+Hartigan dip test for multimodality of BBH mass distribution. Permutation-based p-value.
+
+Run command:
+```bash
+cargo run --release --bin mass-clumping -- --n-permutations 10000 --seed 42
+```
+
+## E-009: Negative-Dimension Eigenvalue Convergence
+
+- Binary: `neg-dim-eigen`
+- Input: None (parametric)
+- Output: data/csv/neg_dim_convergence.csv
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-420, C-421, C-422, C-423, C-424, C-425
+
+Method:
+Eigenvalues of H = T(k) + V(x) with fractional kinetic operator, imaginary-time evolution, epsilon->0 sweep.
+
+Run command:
+```bash
+cargo run --release --bin neg-dim-eigen -- sweep --alpha -1.5 --eps-start 0.5 --eps-end 0.01 --eps-steps 20 --output data/csv/neg_dim_convergence.csv
+```
+
+## E-010: Materials Science Baselines (JARVIS + AFLOW)
+
+- Binary: `materials-baseline`
+- Input: data/external/ (JARVIS JSON, AFLOW CSV)
+- Output: stdout
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: (none)
+
+Method:
+JARVIS-DFT and AFLOW datasets, Magpie-style featurization, OLS regression for formation energy and band gap.
+
+Run command:
+```bash
+cargo run --release --bin materials-baseline -- --data-dir data/external --seed 42
+```
+
+## E-011: Cross-Stack Locality Comparison (Experiment A)
+
+- Binary: `cross-stack-locality`
+- Input: None (purely algebraic / simulation)
+- Output: data/csv/cross_stack_locality_comparison.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: C-476
+
+Method:
+Compare adjacency-locality metrics across three independent constraint systems:
+  Stack 1 (E10 Billiard): Wall-transition sequence from HyperbolicBilliard, E10 Dynkin graph.
+    Metric: r_e8 = fraction of consecutive pairs that are E8-adjacent.
+    Null: ColumnIndependentNull (uniform random generator selection).
+  Stack 2 (ET DMZ Walk): Navigation sequences through de Marrais Emanation Table.
+    Metric: r_dmz = fraction of consecutive ET cells that share a DMZ edge.
+    Null: uniform random cell selection in the ET grid.
+  Stack 3 (CD ZD Catamaran/Twist): Twist-product navigation across zero-divisor graph.
+    Metric: r_zd = fraction of consecutive basis-pair transitions that are ZD-adjacent.
+    Null: uniform random basis-pair selection.
+  All three use the common abstract model: generator-driven piecewise geodesic dynamics
+  (generator set G, constraint graph Gamma subset G x G, sequence s_1..s_n, locality
+  ratio r = |{i : (s_i, s_{i+1}) in Gamma}| / (n-1)).
+  Prediction (ALP, C-476): all three r values significantly exceed their nulls.
+  Falsifier: one or more shows r consistent with uniform/random.
+
+Run command:
+```bash
+cargo run --release --bin cross-stack-locality -- --n-bounces 10000 --n-permutations 1000 --seed 42
+```
+
+## E-012: ET Discrete Billiard (Experiment B)
+
+- Binary: `et-billiard`
+- Input: None (ET computation from emanation.rs)
+- Output: data/csv/et_billiard_phase_structure.csv
+- Deterministic: `False`
+- Seed: `42`
+- GPU: `False`
+- Claims: C-476, C-477
+
+Method:
+Treat the Emanation Table as a discrete billiard wall set.
+  Walls: ET constraints define forbidden/allowed transitions in (S, row, col) space.
+  Reflections: when a trajectory hits an ET \"wall\" (DMZ boundary), apply the ET rule
+    update (fill/hide involution or strut-constant increment).
+  Symbolic dynamics: record the sequence of wall types hit (DMZ, label-line, empty).
+  Phase structure: compute Lyapunov exponent (or mixing time) as a function of strut
+    constant S. Compare against spectroscopy band classification (Dense/Sparse/Mixed
+    from spectroscopy_bands()).
+  Prediction: spectroscopy band transitions correspond to qualitative phase changes in
+    the toy billiard (e.g., Dense bands -> low Lyapunov, Sparse -> high Lyapunov).
+  Falsifier: no correlation between spectroscopy classification and billiard dynamics.
+
+Run command:
+```bash
+cargo run --release --bin et-billiard -- --n-levels 4,5,6 --n-steps 10000 --seed 42
+```
+
+## E-013: Sky-Limit-Set Correspondence (Experiment C)
+
+- Binary: `sky-limit-set`
+- Input: None (ET computation + Coxeter matrix computation)
+- Output: data/csv/sky_limit_set_comparison.csv
+- Deterministic: `True`
+- GPU: `False`
+- Claims: C-477
+
+Method:
+Compare ET skybox pattern invariants to Coxeter group limit set invariants.
+  Step 1: For each CD level N=4,5,6, compute the skybox (G x G grid) and extract:
+    - box-kite count (= N-1)
+    - emptiness clustering exponent (connected-component size distribution)
+    - DMZ density (fraction of cells that are DMZ)
+    - fill/hide period-doubling structure (from Four Corners rule)
+  Step 2: For candidate Coxeter groups (A_{N-1}, B_{N-1}, D_{N-1}), compute limit set
+    invariants from the Coxeter matrix:
+    - rank
+    - fractal dimension of limit set
+    - invariant measure density
+  Step 3: Compare skybox invariants (Step 1) to limit set invariants (Step 2) via
+    correlation and matching tests.
+  Prediction (C-477): systematic correspondence between skybox pattern invariants and
+    Coxeter limit set invariants at matching rank.
+  Falsifier: no Coxeter group at any rank produces invariants matching the ET skybox.
+
+Run command:
+```bash
+cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-types A,B,D
+```
 
 """

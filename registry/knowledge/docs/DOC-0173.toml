@@ -3,195 +3,144 @@
 
 [document]
 id = "DOC-0173"
-source_path = "docs/theory/CLAIMS_METHODOLOGY.md"
-title = "Claims Methodology and Scientific Rigor"
-kind = "manual_source"
+source_path = "docs/generated/TODO_REGISTRY_MIRROR.md"
+title = "TODO Registry Mirror"
+kind = "generated_markdown"
 status = "active"
-migration_priority = "high"
-generated = false
-source_sha256 = "1aa30df3279b54bdb0bf523e6448356e5f20e893c2f81aef15ecba81f0556a18"
-source_line_count = 176
-source_size_bytes = 6336
-content_sha256 = "1aa30df3279b54bdb0bf523e6448356e5f20e893c2f81aef15ecba81f0556a18"
+migration_priority = "none"
+generated = true
+source_sha256 = "a67758174bfa6756c230842dfcdb642e8f4afb8109b9017baae7559e1f646848"
+source_line_count = 125
+source_size_bytes = 3468
+content_sha256 = "a67758174bfa6756c230842dfcdb642e8f4afb8109b9017baae7559e1f646848"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Claims Methodology and Scientific Rigor
+# TODO Registry Mirror
 
-This document describes the claims discipline framework used to track, verify,
-and disposition scientific claims throughout the project.
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: TOML registry files under registry/ -->
 
-## 1. Claims Taxonomy
+Authoritative source: `registry/todo.toml`.
 
-Every claim is assigned one of these canonical status tokens:
+- Updated: 2026-02-09
+- Sprint: S13 (TOML Centralization and Markdown Governance)
+- Sprint status: `in_progress`
 
-| Status | Definition | Action Required |
-|--------|------------|-----------------|
-| **Verified** | Reproducible computation or cited first-party source | None (closed) |
-| **Refuted** | Contradicted by evidence or established constraints | None (closed) |
-| **Modeled** | Implemented as toy model; may not be physically validated | Document limitations |
-| **Closed/Toy** | Parameter coincidence, not derived from first principles | None (closed) |
-| **Closed/Analogy** | Notational mapping only, not a derivation | None (closed) |
-| **Established** | Standard background result; cite sources | None (closed) |
-| **Clarified** | Corrected/renamed to avoid false statements | May need follow-up |
-| **Speculative** | Conjecture awaiting data or derivation | Define falsification boundary |
-| **Not supported** | In-repo checks found insufficient signal | Document negative result |
-| **Partially verified** | Some evidence exists but gaps remain | Complete verification |
-| **Theoretical** | Blueprint exists, device unbuilt/untested | Await experimental data |
-| **Literature** | Literature claim not yet reproduced in-repo | Reproduce or cite |
-| **Unverified** | No reliable evidence yet | Add sources + tests |
+## Tasks
 
-## 2. Verification Ladder
+### S13-T01: Build markdown knowledge index
 
-Claims progress through verification levels (Roy 2003 framework adapted):
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/build_knowledge_sources_registry.py`
+  - `registry/knowledge_sources.toml`
 
-### Level 0: Conjecture
-- Stated informally in conversation or notes
-- No code or data artifacts
-- Action: Formalize as numbered claim (C-xxx)
+### S13-T02: Create raw TOML capture for non-generated markdown docs
 
-### Level 1: Formalized
-- Entered in CLAIMS_EVIDENCE_MATRIX.md
-- Has \"What would verify/refute it\" column filled
-- Action: Add primary sources and define test
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/migrate_markdown_corpus_to_toml.py`
+  - `registry/knowledge/documents.toml`
 
-### Level 2: Sourced
-- Primary literature citations cached in `data/external/papers/`
-- Sources indexed in `docs/external_sources/`
-- Action: Implement validation test
+### S13-T03: Define authoritative operational TOML registries
 
-### Level 3: Tested
-- Unit test or verifier script exists
-- Test is deterministic and offline
-- Action: Run test, record result
+- Status: `done`
+- Evidence:
+  - `registry/roadmap.toml`
+  - `registry/todo.toml`
+  - `registry/next_actions.toml`
+  - `registry/requirements.toml`
+  - `registry/claims_tasks.toml`
+  - `registry/claims_domains.toml`
+  - `registry/claim_tickets.toml`
 
-### Level 4: Verified/Refuted
-- Test passes (Verified) or fails decisively (Refuted)
-- Result recorded with ISO date in matrix
-- Action: None (closed)
+### S13-T04: Add TOML-first export path for insights markdown mirror
 
-## 3. Pre-Registration Protocol
+- Status: `done`
+- Evidence:
+  - `registry/insights.toml`
+  - `docs/generated/INSIGHTS_REGISTRY_MIRROR.md`
 
-For claims involving statistical tests on data:
+### S13-T05: Add TOML-first export path for experiments markdown mirror
 
-1. **Define hypothesis** before looking at data
-2. **Specify test statistic** and decision rule (e.g., p < 0.05)
-3. **Document sample size** requirements (e.g., N >= 50)
-4. **Record in** `docs/preregistered/CLAIM_NAME.md`
-5. **Execute test** only after pre-registration
-6. **Report result** including effect size and confidence interval
+- Status: `done`
+- Evidence:
+  - `registry/experiments.toml`
+  - `docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md`
 
-Example: GWTC-3 mass modality test (C-007) was pre-registered with N >= 50
-requirement; test NOT executed because N=34 < 50 (validation correctly
-prevented underpowered test).
+### S13-T06: Run registry and quality gates after registry schema changes
 
-## 4. Falsification Boundaries
+- Status: `partial`
+- Evidence:
+  - `make registry`
+  - `cargo run --release --bin registry-check`
+  - `python3 bin/ascii_check.py --check`
 
-Speculative claims MUST have explicit falsification boundaries:
+### S13-T07: Normalize docs/CLAIMS_TASKS.md into claims task registry
 
-```
-Claim: C-008 neg-dim toy operator (alpha=-1.5, d_s=2)
-Falsification: Provide a derivation (not parameter match) connecting
-               fractional Laplacian alpha to physical d_s, or close.
-```
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/normalize_claims_support_registries.py`
+  - `registry/claims_tasks.toml`
+  - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
 
-If the boundary is not crossed within a defined timeframe, the claim is
-closed as \"Closed/Toy\" or \"Speculative (obstructed)\".
+### S13-T08: Normalize claims domain map and by-domain markdown into TOML
 
-## 5. Null Hypothesis Testing
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/normalize_claims_support_registries.py`
+  - `registry/claims_domains.toml`
+  - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
 
-All statistical claims require null hypothesis comparison:
+### S13-T09: Normalize claims audit tickets into TOML with claim linkages
 
-1. **Generate null distribution** via permutation, bootstrap, or parametric model
-2. **Compute test statistic** on observed data
-3. **Report p-value** with correction for multiple comparisons (Bonferroni/Holm)
-4. **Apply decision rule** consistently
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/normalize_claims_support_registries.py`
+  - `registry/claim_tickets.toml`
+  - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
 
-Example: Zero-divisor eigenvalue mass matching (C-091) refuted because
-null P(>=9/12 matches) = 1.0 (148 eigenvalues trivially cover 12 masses).
+### S13-T10: Remove non-deterministic timestamp churn from registry generators
 
-## 6. Trial Factor Ledger
+- Status: `done`
+- Evidence:
+  - `src/scripts/analysis/build_knowledge_sources_registry.py`
+  - `src/scripts/analysis/migrate_markdown_corpus_to_toml.py`
+  - `src/scripts/analysis/export_registry_markdown_mirrors.py`
 
-For exploratory searches (e.g., TSCP sky alignment), maintain:
+### S13-T11: Decide policy for legacy narrative markdown overlays
 
-- Count of embedding choices tried
-- Count of distance metrics evaluated
-- Count of significance thresholds checked
-- Global correction factor = product of trial counts
+- Status: `pending`
+- Evidence:
+  - `registry/knowledge_migration_plan.toml`
+  - `docs/NEXT_ACTIONS.md`
+  - `docs/ROADMAP.md`
 
-Report uncorrected AND corrected p-values.
+### S13-T12: Invert make registry to TOML-first sequencing
 
-## 7. Artifact Requirements
+- Status: `done`
+- Evidence:
+  - `Makefile`
+  - `src/scripts/analysis/export_registry_markdown_mirrors.py`
 
-Every verified claim must have:
+### S13-T13: Generate legacy claims-support docs from TOML registries
 
-1. **Deterministic test** in `tests/test_*.py` or `crates/*/tests/`
-2. **CSV artifact** in `data/csv/` (if quantitative)
-3. **Source index** in `docs/external_sources/` (if literature-based)
-4. **Provenance** for any external data (`.PROVENANCE.json`)
+- Status: `done`
+- Evidence:
+  - `docs/CLAIMS_TASKS.md`
+  - `docs/claims/INDEX.md`
+  - `docs/claims/CLAIMS_DOMAIN_MAP.csv`
+  - `docs/claims/by_domain/algebra.md`
+  - `src/scripts/analysis/export_registry_markdown_mirrors.py`
 
-Tests must be:
-- Offline (no network calls)
-- Seeded (reproducible RNG)
-- Fast (< 60s on CI)
+### S13-T14: Add mirror freshness verifier to registry quality gate
 
-## 8. Negative Result Policy
-
-Negative results (Not supported, Refuted) are valuable:
-
-1. **Document fully** in CLAIMS_EVIDENCE_MATRIX.md
-2. **Keep test code** as regression guard
-3. **Explain why** the claim failed
-4. **Identify rescue conditions** if salvageable
-
-Example: C-077 PMNS mixing refuted (Frobenius distance 0.611) but rescue
-condition documented: \"needs symmetry-breaking mechanism + explicit null\".
-
-## 9. Review Checklist
-
-Before marking a claim Verified:
-
-- [ ] Primary source cited with DOI/arXiv
-- [ ] Test exists and passes
-- [ ] Test is deterministic (seeded RNG)
-- [ ] Test is offline (no network)
-- [ ] Result matches literature (if applicable)
-- [ ] Uncertainty quantified (if statistical)
-- [ ] Last verified date updated (ISO format)
-
-## 10. References
-
-- Roy, S. N. (2003). *Some Aspects of Multivariate Analysis*. Wiley.
-  (Adapted framework for multi-claim verification discipline)
-
-- Simmons, J. P., Nelson, L. D., & Simonsohn, U. (2011). *False-Positive
-  Psychology*. Psychological Science, 22(11), 1359-1366.
-  (Researcher degrees of freedom; pre-registration importance)
-
-- Ioannidis, J. P. A. (2005). *Why Most Published Research Findings Are False*.
-  PLoS Medicine, 2(8), e124.
-  (Base rate considerations for exploratory claims)
-
-- Gelman, A., & Loken, E. (2014). *The Statistical Crisis in Science*.
-  American Scientist, 102(6), 460-465.
-  (Garden of forking paths; importance of pre-registration)
-
----
-
-## Appendix: Claims Statistics (2026-02-06)
-
-| Status | Count | Percentage |
-|--------|-------|------------|
-| Verified | 371 | 85.3% |
-| Refuted | 30 | 6.9% |
-| Modeled | 14 | 3.2% |
-| Closed | 6 | 1.4% |
-| Speculative | 10 | 2.3% |
-| Other | 4 | 0.9% |
-| **Total** | **435** | **100%** |
-
-Resolution rate: 421/435 = **96.8%**
+- Status: `done`
+- Evidence:
+  - `src/verification/verify_registry_mirror_freshness.py`
+  - `Makefile`
 
 """

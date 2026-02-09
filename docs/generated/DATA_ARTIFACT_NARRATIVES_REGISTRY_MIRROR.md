@@ -15,40 +15,40 @@ Authoritative source: `registry/data_artifact_narratives.toml`.
 
 - Source markdown: `data/artifacts/ALGEBRAIC_FOUNDATIONS.md`
 - Content kind: `algebraic_foundations`
-- Line count: 74
+- Line count: 80
 
 ### ART-002: Bibliography: Sedenion Physics, Modular Entropy, and Noncommutative Geometry
 
 - Source markdown: `data/artifacts/BIBLIOGRAPHY.md`
 - Content kind: `artifact_bibliography`
-- Line count: 52
+- Line count: 58
 
 ### ART-003: Final Technical Report: Topology, Spectral Flow, and Holography
 
 - Source markdown: `data/artifacts/FINAL_REPORT.md`
 - Content kind: `final_report`
-- Line count: 52
+- Line count: 58
 
 ### ART-004: Quantum Simulation Report: $F_4$ Symmetry Verification
 
 - Source markdown: `data/artifacts/QUANTUM_REPORT.md`
 - Content kind: `quantum_report`
-- Line count: 23
+- Line count: 29
 
 ### ART-005: Advanced Simulation Report: pushing the Boundaries
 
 - Source markdown: `data/artifacts/SIMULATION_REPORT.md`
 - Content kind: `simulation_report`
-- Line count: 33
+- Line count: 39
 
 ### ART-006: Extracted Equations from Chat Log
 
 - Source markdown: `data/artifacts/extracted_equations.md`
 - Content kind: `equation_extract`
-- Line count: 2
+- Line count: 7
 
 ### ART-007: Reality Check & Synthesis: Aligning "Surreal-Noncommutative" Framework with Academic Consensus
 
 - Source markdown: `data/artifacts/reality_check_and_synthesis.md`
 - Content kind: `reality_check_and_synthesis`
-- Line count: 49
+- Line count: 55

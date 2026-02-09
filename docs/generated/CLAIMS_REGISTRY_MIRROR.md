@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/claims.toml`.
 
-Total claims: 521
+Total claims: 527
 
 ## C-001
 
@@ -4174,3 +4174,51 @@ Total claims: 521
 - Statement: Anti-Diagonal Parity Theorem at dim=128: The Anti-Diagonal Parity Theorem (C-520) holds at dim=128 with ZERO mismatches across 821,128 triangles in 63 components. Pure count = 205,282, Mixed count = 615,846 (exact 1:3 ratio). This provides the complete algebraic mechanism for the Double 3:1 Law (C-487): the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, with exactly 1 zero element and 3 nonzero elements. Pure triangles are the zero-element fiber. The nonzero fibers need not be equally sized (confirming the non-uniform distribution observed in face sign census data). The mechanism is purely algebraic: eta depends only on cd_basis_mul_sign via the off-diagonal terms of the edge psi matrix.
 - Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_antidiagonal_parity_theorem_dim128)
 - What would verify/refute it: VERIFIED: 821128 triangles, 63 components, 0 mismatches. WHAT WOULD REFUTE: any mismatch at dim=128 or higher. Verification at dim=256+ would strengthen but requires significant compute (13.3M triangles at dim=256).
+
+## C-522
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Anti-Diagonal Parity Theorem at dim=256: Verified with ZERO mismatches across 13,348,104 triangles in 127 components (6.84s in release mode). Pure=3,337,026, Mixed=10,011,078 (exact 1:3 ratio). Klein-four fiber sizes: F(0,0)=3,337,026, F(0,1)=3,196,470, F(1,0)=3,407,304, F(1,1)=3,407,304. Edge eta balance: exactly 261,702 / 261,702 (50/50). Cycle rank (first GF(2) Betti number): 507,529.
+- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_antidiagonal_parity_theorem_dim256)
+- What would verify/refute it: VERIFIED: 13.3M triangles, 0 mismatches. Extends C-521 to the next dimension doubling. WHAT WOULD REFUTE: any mismatch at dim=256.
+
+## C-523
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: GF(2) Coboundary Phase Transition: At dim=16, eta is a GF(2) coboundary (0 frustrated cycles out of b1=49 independent cycles). At dim>=32, eta is NOT a coboundary: dim=32 has 224/729 frustrated cycles (30.7%), dim=64 has 2672/7081 (37.7%), dim=128 has 23744/61257 (38.8%). The frustration ratio appears to converge to ~39%. Additionally, within each dimension's regime structure, the pure-min regime (lowest edge count) always has frustrated=0, meaning eta restricted to pure-min components is a coboundary at ALL dimensions. Only higher-edge-count regimes contribute frustration.
+- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_eta_cohomology_and_klein_four_fibers, test_eta_regime_distribution)
+- What would verify/refute it: VERIFIED: BFS coboundary test at dims 16/32/64/128. WHAT WOULD REFUTE: finding frustration at dim=16 or no frustration at dim>=32.
+
+## C-524
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Klein-Four Fiber Symmetry Law: The two nonzero-f1 fibers F(1,0) and F(1,1) of the 2-bit invariant F have EXACTLY equal sizes at all dimensions and within every edge-count regime. Dim=16: 13=13, dim=32: 622=622, dim=64: 12596=12596, dim=128: 212048=212048, dim=256: 3407304=3407304. This symmetry holds per-regime as well (verified at dims 16/32/64). The F(0,0)/F(0,1) pair is NOT symmetric.
+- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_eta_cohomology_and_klein_four_fibers, test_eta_regime_distribution)
+- What would verify/refute it: VERIFIED: exact equality at all 5 tested dimensions, per-regime at 3 dims. WHAT WOULD REFUTE: any dimension where F(1,0) != F(1,1).
+
+## C-525
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Eta Regime Independence: Within each edge-count regime (face sign census grouping), the following properties hold independently: (1) eta is exactly balanced on edges (eta=0 = eta=1), (2) the 1:3 pure:mixed ratio is exact, (3) F(1,0) = F(1,1) exactly. The eta mechanism operates identically across all regimes -- the regime structure does not affect the mechanism's ratio. However, the coboundary property IS regime-dependent: pure-min regimes have frustrated=0 while higher-edge regimes do not.
+- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_eta_regime_distribution)
+- What would verify/refute it: VERIFIED: all assertions pass at dims 16/32/64. WHAT WOULD REFUTE: any regime failing eta balance, 1:3 ratio, or fiber symmetry.
+
+## C-526
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: Eta Doubling Recursion: For any cross-assessor edge (a,b) at dimension dim, eta(a,b) = 1 XOR eta_half(a',b') where eta_half uses psi at dimension dim/2 and a'=(lo_a, hi_a-half), b'=(lo_b, hi_b-half). This follows from the Cayley-Dickson doubling formula: case 2 (lo*hi) gives psi_half(hi_b-h, lo_a), case 3 (hi*lo) gives 1 XOR psi_half(hi_a-h, lo_b) due to conjugation. The '1 XOR' flip from conjugation is the sole algebraic origin of eta's non-triviality. lo_b=0 never occurs in cross-assessor pairs. The recursion immediately implies the Half-Half Edge Law: the flip inverts eta_half's balance.
+- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_eta_doubling_decomposition)
+- What would verify/refute it: VERIFIED: all decomposition assertions pass at dims 16/32/64. WHAT WOULD REFUTE: any edge where the recursion formula fails.
+
+## C-527
+
+- Status: `Verified`
+- Last verified: 2026-02-09
+- Statement: GF(2) Polynomial Degree of psi and eta: psi(i,j) has Algebraic Normal Form (ANF) degree exactly log2(dim): dim=4 degree 2, dim=8 degree 3, dim=16 degree 4, dim=32 degree 5. eta(a,b) has ANF degree exactly log2(dim)-1: dim=16 degree 3, dim=32 degree 4. The anti-diagonal XOR extraction reduces the effective polynomial degree by 1. psi has no degree-0 or degree-1 terms; eta has degree-1 terms (3 at dim=16, 4 at dim=32). The degree-2 monomials of psi equal C(log2(dim), 2) exactly.
+- Where stated: `crates/algebra_core/src/analysis/boxkites.rs` (test_psi_gf2_polynomial_degree)
+- What would verify/refute it: VERIFIED: ANF computed via Mobius transform at dims 4/8/16/32 for psi, 16/32 for eta. WHAT WOULD REFUTE: any dimension where degree(psi) != log2(dim) or degree(eta) != log2(dim)-1.

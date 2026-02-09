@@ -3,16 +3,16 @@
 
 [document]
 id = "DOC-0215"
-source_path = "reports/claims_batch_backlog_C201_C430.md"
-title = "Claims Batch Backlog (C-201..C-430) (2026-02-02)"
+source_path = "reports/claims_batch_backlog_C201_C427.md"
+title = "Claims Batch Backlog (C-201..C-427) (2026-02-02)"
 kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "dcf24fac60dd1ae4d4f9e28c65ebee7e8a7181baa4dcedd390900d2e13f70c5f"
+source_sha256 = "c17940cc04558e453f24b24ca8d25565573cb1c3efd6af5ffa62d1491fcf9d36"
 source_line_count = 281
-source_size_bytes = 74966
-content_sha256 = "dcf24fac60dd1ae4d4f9e28c65ebee7e8a7181baa4dcedd390900d2e13f70c5f"
+source_size_bytes = 73600
+content_sha256 = "c17940cc04558e453f24b24ca8d25565573cb1c3efd6af5ffa62d1491fcf9d36"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -27,14 +27,20 @@ content_markdown = """
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
-# Claims Batch Backlog (C-201..C-430) (2026-02-02)
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
+# Claims Batch Backlog (C-201..C-427) (2026-02-02)
 
 Purpose: planning snapshot for claim-by-claim audits (not evidence).
 
 - Matrix: `docs/CLAIMS_EVIDENCE_MATRIX.md`
 - Domain map: `docs/claims/CLAIMS_DOMAIN_MAP.csv`
-- Claims in range: 230
-- Open claims in range: 25
+- Claims in range: 227
+- Open claims in range: 22
 
 ## Open claims (in-range, oldest-first by last_verified)
 
@@ -58,9 +64,6 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 - C-425 (Modeled, last_verified=2026-02-02, domains=holography, algebra): Sedenion Transport Kernel generates explicit 16x16 basis multiplication matrices for modeling non-associati...
 - C-426 (Speculative, last_verified=2026-02-02, domains=holography): Pathion (32D) Zero-Divisor interaction matrix diagonalization provides a testbed for algebraic mass spectru...
 - C-427 (Speculative, last_verified=2026-02-02, domains=materials, algebra): Algebraic Metamaterial synthesis maps Cayley-Dickson structure constants to permittivity tensors and Cliffo...
-- C-428 (Modeled, last_verified=2026-02-02, domains=cosmology, engineering, visualization): Integrated Warp Geodesic Simulation traces null rays through a Kerr metric background using 'NegDimCosmolog...
-- C-429 (Modeled, last_verified=2026-02-02, domains=cosmology, visualization): Kerr black hole shadow asymmetry due to frame dragging (a=0.99) is successfully simulated and visualized; d...
-- C-430 (Modeled, last_verified=2026-02-02, domains=cosmology, visualization): Negative Dimension Cosmology (NegDim) expansion history H(z) and luminosity distance D_L(z) deviate from st...
 - C-404 (Speculative, last_verified=2026-02-03, domains=holography): Bulk locality can be organized by boundary modular data K_A=-log rho_A and entanglement wedge reconstructio...
 - C-405 (Speculative, last_verified=2026-02-03, domains=open-systems): Observers can be modeled as (approximate) correctable record algebras selected by open-system dynamics L_op...
 
@@ -295,8 +298,5 @@ Purpose: planning snapshot for claim-by-claim audits (not evidence).
 | C-425 | holography, algebra | Modeled (Math) | 2026-02-02 | Sedenion Transport Kernel generates explicit 16x16 basis multiplication matri... | src/gemini_physics/numerical/sedenion_transport.py | generate_sedenion_matrices constructs the full set of left-multiplication ope... |
 | C-426 | holography | Speculative (Toy Model) | 2026-02-02 | Pathion (32D) Zero-Divisor interaction matrix diagonalization provides a test... | docs/external_sources/OPEN_CLAIMS_SOURCES.md, src/gemini_physics/particles/pa... | build_zd_interaction_matrix and diagonalize_zd_matrix implement the machinery... |
 | C-427 | materials, algebra | Speculative (Design) | 2026-02-02 | Algebraic Metamaterial synthesis maps Cayley-Dickson structure constants to p... | docs/external_sources/OPEN_CLAIMS_SOURCES.md, src/gemini_physics/metamaterial... | generate_algebraic_tensor and clifford_spinor_layers define specific mappings... |
-| C-428 | cosmology, engineering, visualization | Modeled (Simulation) | 2026-02-02 | Integrated Warp Geodesic Simulation traces null rays through a Kerr metric ba... | src/scripts/simulation/integrated_warp_geodesic.py, data/artifacts/images/ker... | Simulation combines NegDimCosmology and Kerr metrics to trace photon trajecto... |
-| C-429 | cosmology, visualization | Modeled (Simulation) | 2026-02-02 | Kerr black hole shadow asymmetry due to frame dragging (a=0.99) is successful... | src/scripts/simulation/frame_dragging_demo.py, data/artifacts/images/kerr_sha... | Ray-tracing simulation src/scripts/simulation/frame_dragging_demo.py computes... |
-| C-430 | cosmology, visualization | Modeled (Analytic) | 2026-02-02 | Negative Dimension Cosmology (NegDim) expansion history H(z) and luminosity d... | src/scripts/analysis/cosmology_comparison.py, data/artifacts/images/cosmology... | Comparison script src/scripts/analysis/cosmology_comparison.py generates Hubb... |
 
 """
