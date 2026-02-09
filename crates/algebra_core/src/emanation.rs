@@ -4923,6 +4923,174 @@ mod tests {
         assert_eq!(total_sails, 28, "7 BK x 4 sails = 28 total");
     }
 
+    // --- Edge-Sign Cross-Validation: ET vs Box-Kite Geometry ---
+
+    #[test]
+    fn test_et_edge_sign_vs_boxkite_consistent_mapping() {
+        // Cross-validate: the ET cell edge_sign and boxkites.rs edge_sign_type
+        // must have a consistent 1:1 mapping across all edges of all 7 box-kites.
+        //
+        // The ET edge_sign is computed from integer-exact CDP products:
+        //   +1 if sgn(H_row * L_col) == sgn(L_row * H_col) ("same quadrant concordance")
+        //   -1 otherwise ("cross quadrant discordance")
+        //
+        // EdgeSignType is computed from zero-product solution signs:
+        //   Same if (+,+) or (-,-) are solutions
+        //   Opposite if (+,-) or (-,+) are solutions
+        //
+        // The mapping turns out to be: ET +1 <-> Opposite, ET -1 <-> Same.
+        // This is because the X-pattern concordance relates to how the product
+        // *vanishes*, and the zero-product sign convention is reversed.
+        let bks = find_box_kites(16, 1e-10);
+        let atol = 1e-10;
+
+        for s in 1..=7 {
+            let et = create_strutted_et(4, s);
+            let bk = bks.iter().find(|b| b.strut_signature == s).unwrap();
+            let graph = extract_signed_graph(&et);
+
+            let et_sign_map: HashMap<(usize, usize), i32> = graph.edges.iter()
+                .flat_map(|e| [
+                    ((e.lo_a, e.lo_b), e.sign),
+                    ((e.lo_b, e.lo_a), e.sign),
+                ])
+                .collect();
+
+            for i in 0..6 {
+                for j in (i + 1)..6 {
+                    let a = &bk.assessors[i];
+                    let b = &bk.assessors[j];
+
+                    if let Some(&et_sign) = et_sign_map.get(&(a.low, b.low)) {
+                        let bk_sign = edge_sign_type(a, b, atol);
+                        // Inverted mapping: ET +1 <-> Opposite, ET -1 <-> Same
+                        let expected_bk_sign = if et_sign > 0 {
+                            EdgeSignType::Opposite
+                        } else {
+                            EdgeSignType::Same
+                        };
+                        assert_eq!(bk_sign, expected_bk_sign,
+                            "S={}: edge ({},{})--({},{}) ET sign={} but BK says {:?}",
+                            s, a.low, a.high, b.low, b.high, et_sign, bk_sign);
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_et_dmz_edges_count_12_per_sedenion_bk() {
+        // At N=4 (sedenions), each BK has 12 edges in the octahedron.
+        // All edges should be DMZ (full fill). Verify the ET captures all 12.
+        for s in 1..=7 {
+            let et = create_strutted_et(4, s);
+            let graph = extract_signed_graph(&et);
+            assert_eq!(graph.edges.len(), 12,
+                "S={}: sedenion BK should have 12 DMZ edges (complete octahedron), got {}",
+                s, graph.edges.len());
+        }
+    }
+
+    #[test]
+    fn test_et_sign_partition_6_6() {
+        // Each sedenion BK has 12 DMZ edges partitioned evenly: 6 positive, 6 negative.
+        // This is consistent with the octahedron having 12 edges where:
+        // - 6 edges connect non-strut-opposite pairs with "same quadrant" concordance
+        // - 6 edges connect non-strut-opposite pairs with "cross quadrant" concordance
+        for s in 1..=7 {
+            let et = create_strutted_et(4, s);
+            let graph = extract_signed_graph(&et);
+            assert_eq!(graph.n_positive + graph.n_negative, 12,
+                "S={}: total edges should be 12", s);
+            assert_eq!(graph.n_positive, 6,
+                "S={}: expected 6 positive edges, got {}", s, graph.n_positive);
+            assert_eq!(graph.n_negative, 6,
+                "S={}: expected 6 negative edges, got {}", s, graph.n_negative);
+        }
+    }
+
+    #[test]
+    fn test_zigzag_face_edges_all_positive_in_et() {
+        // Zigzag faces have all 3 edges Opposite (in BK geometry).
+        // Due to the sign inversion: BK Opposite <-> ET +1.
+        // So zigzag face edges should all be +1 in the ET signed graph.
+        let bks = find_box_kites(16, 1e-10);
+        for s in 1..=7 {
+            let et = create_strutted_et(4, s);
+            let graph = extract_signed_graph(&et);
+            let bk = bks.iter().find(|b| b.strut_signature == s).unwrap();
+            let sd = sail_decomposition(bk);
+
+            let et_sign_map: HashMap<(usize, usize), i32> = graph.edges.iter()
+                .flat_map(|e| [
+                    ((e.lo_a, e.lo_b), e.sign),
+                    ((e.lo_b, e.lo_a), e.sign),
+                ])
+                .collect();
+
+            // Check both zigzag faces (zigzag sail + vent)
+            for &idx in &[sd.zigzag_sail_idx, sd.vent_idx] {
+                let face = &sd.faces[idx];
+                let ls = face.l_indices;
+                let signs = [
+                    et_sign_map.get(&(ls[0], ls[1])).copied(),
+                    et_sign_map.get(&(ls[1], ls[2])).copied(),
+                    et_sign_map.get(&(ls[0], ls[2])).copied(),
+                ];
+                for (i, sign) in signs.iter().enumerate() {
+                    if let Some(s_val) = sign {
+                        assert_eq!(*s_val, 1,
+                            "S={}: zigzag face {:?} edge {} should be positive in ET, got {}",
+                            s, ls, i, s_val);
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_trefoil_face_has_mixed_signs_in_et() {
+        // Trefoil faces have mixed Same/Opposite edges.
+        // Specifically: at least one positive and at least one negative edge.
+        let bks = find_box_kites(16, 1e-10);
+        for s in 1..=7 {
+            let et = create_strutted_et(4, s);
+            let graph = extract_signed_graph(&et);
+            let bk = bks.iter().find(|b| b.strut_signature == s).unwrap();
+            let sd = sail_decomposition(bk);
+
+            let et_sign_map: HashMap<(usize, usize), i32> = graph.edges.iter()
+                .flat_map(|e| [
+                    ((e.lo_a, e.lo_b), e.sign),
+                    ((e.lo_b, e.lo_a), e.sign),
+                ])
+                .collect();
+
+            // Check all 6 trefoil faces (3 trefoil sails + 3 non-sail trefoils)
+            let trefoil_indices: Vec<usize> = sd.trefoil_sail_indices.iter()
+                .chain(sd.non_sail_trefoil_indices.iter())
+                .copied()
+                .collect();
+            for idx in trefoil_indices {
+                let face = &sd.faces[idx];
+                let ls = face.l_indices;
+                let signs: Vec<i32> = [
+                    et_sign_map.get(&(ls[0], ls[1])),
+                    et_sign_map.get(&(ls[1], ls[2])),
+                    et_sign_map.get(&(ls[0], ls[2])),
+                ].iter().filter_map(|s| s.copied()).collect();
+
+                if signs.len() == 3 {
+                    let has_positive = signs.iter().any(|&s| s > 0);
+                    let has_negative = signs.iter().any(|&s| s < 0);
+                    assert!(has_positive && has_negative,
+                        "S={}: trefoil face {:?} must have mixed signs, got {:?}",
+                        s, ls, signs);
+                }
+            }
+        }
+    }
+
     // --- L16: Signed Adjacency Graph & Lanyard Dictionary Tests ---
 
     #[test]
