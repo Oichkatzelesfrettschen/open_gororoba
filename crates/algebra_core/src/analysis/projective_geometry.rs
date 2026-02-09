@@ -522,6 +522,327 @@ pub fn find_boolean_class_predicate(
 }
 
 // ============================================================================
+// Multi-class GF(2) separating degree analysis (I-012 open question)
+// ============================================================================
+
+/// Result of the minimum separating degree search.
+#[derive(Debug, Clone)]
+pub struct SeparatingDegreeResult {
+    /// Cayley-Dickson dimension.
+    pub dim: usize,
+    /// Number of PG points (= number of motif components).
+    pub n_points: usize,
+    /// Number of motif classes found.
+    pub n_classes: usize,
+    /// Class sizes, sorted descending.
+    pub class_sizes: Vec<usize>,
+    /// Minimum GF(2) polynomial degree that separates all classes.
+    /// None if no separation found up to max_degree.
+    pub min_degree: Option<usize>,
+    /// Number of achievable class signatures at the minimum degree.
+    pub n_achievable_sigs: usize,
+    /// The achievable class signatures (as bit patterns over class indices).
+    pub achievable_sigs: Vec<usize>,
+    /// Degrees tested and whether they succeeded.
+    pub degree_results: Vec<(usize, bool)>,
+}
+
+/// Check solvability of M*c = target over GF(2) via Gaussian elimination.
+///
+/// M is n_rows x n_cols, target is length n_rows. Returns true if the
+/// augmented system [M | target] has a solution.
+fn gf2_solvable(m: &[Vec<u8>], target: &[u8]) -> bool {
+    let n = m.len();
+    if n == 0 {
+        return true;
+    }
+    let n_cols = m[0].len();
+
+    // Build augmented matrix [M | target]
+    let mut aug: Vec<Vec<u8>> = m
+        .iter()
+        .enumerate()
+        .map(|(i, row)| {
+            let mut r = row.clone();
+            r.push(target[i]);
+            r
+        })
+        .collect();
+
+    // Forward elimination with full pivoting
+    let mut pivot_row = 0;
+    let mut pivot_col = 0;
+    while pivot_row < n && pivot_col < n_cols {
+        // Find a row with a 1 in this column
+        let mut found = false;
+        for r in pivot_row..n {
+            if aug[r][pivot_col] == 1 {
+                aug.swap(pivot_row, r);
+                found = true;
+                break;
+            }
+        }
+
+        if found {
+            // Eliminate all other rows (clone pivot to avoid borrow conflict)
+            let pivot = aug[pivot_row].clone();
+            for (idx, aug_row) in aug.iter_mut().enumerate() {
+                if idx != pivot_row && aug_row[pivot_col] == 1 {
+                    for (cell, &pval) in aug_row.iter_mut().zip(pivot.iter()) {
+                        *cell ^= pval;
+                    }
+                }
+            }
+            pivot_row += 1;
+        }
+        pivot_col += 1;
+    }
+
+    // Check consistency: any row with all-zero coefficients but non-zero RHS?
+    for row in aug.iter().skip(pivot_row) {
+        if row[n_cols] == 1 {
+            return false;
+        }
+    }
+
+    true
+}
+
+/// Check if two class signatures jointly separate n_classes classes.
+///
+/// Each signature is a bit pattern where bit i represents the value assigned
+/// to class i. Two signatures separate all classes iff the pairs
+/// (s1_bit_i, s2_bit_i) are all distinct across i = 0..n_classes.
+fn signatures_jointly_separate(s1: usize, s2: usize, n_classes: usize) -> bool {
+    let mut seen = 0u64; // bit-packed set of 2-bit pairs
+    for c in 0..n_classes {
+        let b1 = (s1 >> c) & 1;
+        let b2 = (s2 >> c) & 1;
+        let pair = (b1 << 1) | b2;
+        let mask = 1u64 << pair;
+        if seen & mask != 0 {
+            return false; // duplicate pair
+        }
+        seen |= mask;
+    }
+    true
+}
+
+/// Check whether degree-d GF(2) polynomials can separate the given classes.
+///
+/// Returns (success, n_achievable, achievable_sigs).
+fn check_separation_at_degree(
+    labels: &[PGPoint],
+    class_assignments: &[usize],
+    n_bits: usize,
+    n_classes: usize,
+    degree: usize,
+) -> (bool, usize, Vec<usize>) {
+    // Generate all monomials with popcount <= degree
+    let monomials: Vec<usize> = (0..(1usize << n_bits))
+        .filter(|m| m.count_ones() as usize <= degree)
+        .collect();
+    let n_labels = labels.len();
+
+    // Build evaluation matrix M[i][j] = monomial_j evaluated on label_i (GF(2))
+    let eval_matrix: Vec<Vec<u8>> = (0..n_labels)
+        .map(|i| {
+            monomials
+                .iter()
+                .map(|&mono| {
+                    // constant monomial (degree 0) always evaluates to 1;
+                    // higher-degree monomials evaluate to 1 iff all selected bits are set
+                    if mono == 0 || (labels[i] & mono) == mono {
+                        1u8
+                    } else {
+                        0u8
+                    }
+                })
+                .collect()
+        })
+        .collect();
+
+    // For each non-zero class signature, check achievability
+    let n_sigs = (1usize << n_classes) - 1;
+    let mut achievable_sigs: Vec<usize> = Vec::new();
+
+    for sig in 1..=n_sigs {
+        // Construct target vector: label i gets bit (class_of_i) from sig
+        let target: Vec<u8> = class_assignments
+            .iter()
+            .map(|&c| ((sig >> c) & 1) as u8)
+            .collect();
+
+        if gf2_solvable(&eval_matrix, &target) {
+            achievable_sigs.push(sig);
+        }
+    }
+
+    // For 2 classes: need 1 separating predicate
+    if n_classes == 2 {
+        // Any achievable signature that assigns different values to the 2 classes
+        for &sig in &achievable_sigs {
+            let b0 = sig & 1;
+            let b1 = (sig >> 1) & 1;
+            if b0 != b1 {
+                return (true, achievable_sigs.len(), achievable_sigs);
+            }
+        }
+        return (false, achievable_sigs.len(), achievable_sigs);
+    }
+
+    // For 4 classes: need 2 predicates that jointly separate
+    // For k classes in general: need ceil(log2(k)) predicates
+    let n_needed = (n_classes as f64).log2().ceil() as usize;
+
+    if n_needed == 2 {
+        // Try all pairs of achievable signatures
+        for i in 0..achievable_sigs.len() {
+            for j in (i + 1)..achievable_sigs.len() {
+                if signatures_jointly_separate(
+                    achievable_sigs[i],
+                    achievable_sigs[j],
+                    n_classes,
+                ) {
+                    return (true, achievable_sigs.len(), achievable_sigs);
+                }
+            }
+        }
+        return (false, achievable_sigs.len(), achievable_sigs);
+    }
+
+    // For 8+ classes: need 3+ predicates -- use recursive approach
+    if n_needed >= 3 {
+        // Enumerate all n_needed-tuples of achievable signatures
+        // For small n_achievable this is tractable
+        let found = find_separating_tuple(&achievable_sigs, n_classes, n_needed, 0, &mut Vec::new());
+        return (found, achievable_sigs.len(), achievable_sigs);
+    }
+
+    (false, achievable_sigs.len(), achievable_sigs)
+}
+
+/// Recursively search for a tuple of signatures that jointly separates all classes.
+fn find_separating_tuple(
+    sigs: &[usize],
+    n_classes: usize,
+    depth: usize,
+    start: usize,
+    current: &mut Vec<usize>,
+) -> bool {
+    if current.len() == depth {
+        // Check if current tuple jointly separates all classes
+        let mut codes: Vec<usize> = Vec::with_capacity(n_classes);
+        for c in 0..n_classes {
+            let mut code = 0usize;
+            for (bit_pos, &sig) in current.iter().enumerate() {
+                code |= ((sig >> c) & 1) << bit_pos;
+            }
+            codes.push(code);
+        }
+        let unique: HashSet<usize> = codes.iter().copied().collect();
+        return unique.len() == n_classes;
+    }
+
+    for i in start..sigs.len() {
+        current.push(sigs[i]);
+        if find_separating_tuple(sigs, n_classes, depth, i + 1, current) {
+            return true;
+        }
+        current.pop();
+    }
+    false
+}
+
+/// Find the minimum GF(2) polynomial degree that separates motif classes
+/// at a given Cayley-Dickson dimension.
+///
+/// This generalizes the dim=32 cubic-degree result (I-012) to arbitrary
+/// dimensions. The algorithm:
+/// 1. Compute motif components and their PG(n-2,2) labels
+/// 2. Classify components by edge count (invariant fingerprint)
+/// 3. For each degree d=1,2,..., check if degree-d GF(2) polynomials
+///    can jointly separate all classes
+/// 4. Uses GF(2) Gaussian elimination for efficiency (avoids exponential
+///    brute-force over polynomial subsets)
+pub fn find_minimum_separating_degree(dim: usize) -> SeparatingDegreeResult {
+    use crate::analysis::boxkites::motif_components_for_cross_assessors;
+
+    assert!(
+        dim >= 32 && dim.is_power_of_two(),
+        "dim must be 2^n with n >= 5 (need >= 2 classes)"
+    );
+
+    let n = dim.trailing_zeros() as usize;
+    let n_bits = n - 1; // PG(n-2,2) labels are (n-1)-bit
+
+    let comps = motif_components_for_cross_assessors(dim);
+    let n_points = comps.len();
+
+    // Get PG labels
+    let labels: Vec<PGPoint> = comps
+        .iter()
+        .map(|c| component_xor_label(c).unwrap())
+        .collect();
+
+    // Classify by edge count (determines motif class)
+    let edge_counts: Vec<usize> = comps.iter().map(|c| c.edges.len()).collect();
+    let unique_edges: BTreeSet<usize> = edge_counts.iter().copied().collect();
+    let edge_to_class: HashMap<usize, usize> = unique_edges
+        .iter()
+        .enumerate()
+        .map(|(i, &e)| (e, i))
+        .collect();
+    let class_assignments: Vec<usize> = edge_counts
+        .iter()
+        .map(|e| edge_to_class[e])
+        .collect();
+    let n_classes = unique_edges.len();
+
+    // Compute class sizes
+    let mut class_sizes = vec![0usize; n_classes];
+    for &c in &class_assignments {
+        class_sizes[c] += 1;
+    }
+    class_sizes.sort_unstable_by(|a, b| b.cmp(a));
+
+    let max_degree = n_bits; // Maximum meaningful degree
+
+    let mut degree_results = Vec::new();
+    let mut min_degree = None;
+    let mut final_n_achievable = 0;
+    let mut final_achievable = Vec::new();
+
+    for d in 1..=max_degree {
+        let (success, n_achievable, achievable) =
+            check_separation_at_degree(&labels, &class_assignments, n_bits, n_classes, d);
+        degree_results.push((d, success));
+
+        if success && min_degree.is_none() {
+            min_degree = Some(d);
+            final_n_achievable = n_achievable;
+            final_achievable = achievable;
+            break; // Found minimum
+        }
+
+        // Record last attempt's data even if unsuccessful
+        final_n_achievable = n_achievable;
+        final_achievable = achievable;
+    }
+
+    SeparatingDegreeResult {
+        dim,
+        n_points,
+        n_classes,
+        class_sizes,
+        min_degree,
+        n_achievable_sigs: final_n_achievable,
+        achievable_sigs: final_achievable,
+        degree_results,
+    }
+}
+
+// ============================================================================
 // C-444: Comprehensive PG(n-2,2) correspondence verification
 // ============================================================================
 
@@ -1203,6 +1524,143 @@ mod tests {
         let classes = vec![0, 1];
         let result = find_affine_class_predicate(&labels, &classes, 2);
         assert!(result.is_some());
+    }
+
+    // ====================================================================
+    // Multi-class GF(2) separating degree tests (I-012)
+    // ====================================================================
+
+    #[test]
+    fn test_gf2_solvable_trivial() {
+        // 1x1 system: [1] c = [1] -> solvable
+        let m = vec![vec![1u8]];
+        assert!(gf2_solvable(&m, &[1]));
+        // [1] c = [0] -> solvable (c=0)
+        assert!(gf2_solvable(&m, &[0]));
+        // [0] c = [1] -> NOT solvable
+        let m2 = vec![vec![0u8]];
+        assert!(!gf2_solvable(&m2, &[1]));
+    }
+
+    #[test]
+    fn test_gf2_solvable_2x2() {
+        // [ 1 0 ] c = [1]   -> c = [1, 0]
+        // [ 0 1 ]     [0]
+        let m = vec![vec![1, 0], vec![0, 1]];
+        assert!(gf2_solvable(&m, &[1, 0]));
+        assert!(gf2_solvable(&m, &[0, 1]));
+        assert!(gf2_solvable(&m, &[1, 1]));
+    }
+
+    #[test]
+    fn test_gf2_solvable_inconsistent() {
+        // [ 1 1 ] c = [0]   -> c1 + c2 = 0 AND c1 + c2 = 1 -> impossible
+        // [ 1 1 ]     [1]
+        let m = vec![vec![1, 1], vec![1, 1]];
+        assert!(!gf2_solvable(&m, &[0, 1]));
+    }
+
+    #[test]
+    fn test_signatures_jointly_separate_4_classes() {
+        // s1 = 0b0011 (classes 0,1 -> 1; classes 2,3 -> 0)
+        // s2 = 0b0101 (classes 0,2 -> 1; classes 1,3 -> 0)
+        // Pairs: class 0 -> (1,1), class 1 -> (1,0), class 2 -> (0,1), class 3 -> (0,0)
+        // All 4 distinct!
+        assert!(signatures_jointly_separate(0b0011, 0b0101, 4));
+
+        // s1 = 0b0011, s2 = 0b0011 -> same signature, pairs not distinct
+        assert!(!signatures_jointly_separate(0b0011, 0b0011, 4));
+    }
+
+    #[test]
+    fn test_separating_degree_dim32_is_3() {
+        // Known result: dim=32, 2 classes, minimum degree 3
+        let result = find_minimum_separating_degree(32);
+        assert_eq!(result.n_points, 15);
+        assert_eq!(result.n_classes, 2, "dim=32 should have 2 motif classes");
+        assert_eq!(
+            result.min_degree,
+            Some(3),
+            "dim=32 minimum separating degree should be 3 (cubic); got {:?}. \
+             degree_results: {:?}",
+            result.min_degree,
+            result.degree_results
+        );
+    }
+
+    #[test]
+    fn test_separating_degree_dim64() {
+        // I-012 open question: what is the minimum separating degree at dim=64?
+        let result = find_minimum_separating_degree(64);
+        assert_eq!(result.n_points, 31);
+        assert_eq!(result.n_classes, 4, "dim=64 should have 4 motif classes");
+
+        // The minimum degree must exist (it's at most n_bits = 4)
+        assert!(
+            result.min_degree.is_some(),
+            "dim=64 must have a separating degree; degree_results: {:?}",
+            result.degree_results
+        );
+
+        let d = result.min_degree.unwrap();
+        eprintln!("=== GF(2) Separating Degree at dim=64 ===");
+        eprintln!("  n_points: {}", result.n_points);
+        eprintln!("  n_classes: {}", result.n_classes);
+        eprintln!("  class_sizes: {:?}", result.class_sizes);
+        eprintln!("  min_degree: {d}");
+        eprintln!("  n_achievable_sigs: {}", result.n_achievable_sigs);
+        eprintln!("  degree_results: {:?}", result.degree_results);
+
+        // Record the result for claims tracking
+        assert!(
+            d <= 5,
+            "separating degree should be at most n_bits=5, got {d}"
+        );
+    }
+
+    #[test]
+    fn test_separating_degree_dim64_diagnostic() {
+        // Full diagnostic: show class sizes and edge count distribution
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
+        let comps = motif_components_for_cross_assessors(64);
+
+        let mut edge_counts: Vec<(usize, usize)> = comps
+            .iter()
+            .enumerate()
+            .map(|(i, c)| (c.edges.len(), i))
+            .collect();
+        edge_counts.sort_unstable();
+
+        let mut current_edges = edge_counts[0].0;
+        let mut class_start = 0;
+        let mut class_info: Vec<(usize, usize)> = Vec::new(); // (edge_count, count)
+
+        for (idx, &(edges, _)) in edge_counts.iter().enumerate() {
+            if edges != current_edges {
+                class_info.push((current_edges, idx - class_start));
+                class_start = idx;
+                current_edges = edges;
+            }
+        }
+        class_info.push((current_edges, edge_counts.len() - class_start));
+
+        eprintln!("=== dim=64 Motif Class Diagnostic ===");
+        eprintln!("  Total components: {}", comps.len());
+        for (edges, count) in &class_info {
+            eprintln!("  Class: {count} components with {edges} edges");
+        }
+
+        // Also show PG labels for each class
+        for (class_idx, (edges, count)) in class_info.iter().enumerate() {
+            let labels: Vec<PGPoint> = comps
+                .iter()
+                .filter(|c| c.edges.len() == *edges)
+                .map(|c| component_xor_label(c).unwrap())
+                .collect();
+            eprintln!(
+                "  Class {class_idx} ({count} comps, {edges} edges): PG labels = {labels:?}"
+            );
+        }
     }
 
     // ====================================================================

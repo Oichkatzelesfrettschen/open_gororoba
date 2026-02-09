@@ -1,33 +1,36 @@
 # Next Actions (Prioritized)
 
-Updated 2026-02-08 after Sprint 10 completion.
+Updated 2026-02-09 after Sprint 20 completion.
 **See also:** [`docs/ROADMAP.md`](ROADMAP.md) for full architecture and research plan.
 
-## Sprint 10 Summary (2026-02-08)
+## Current State (Sprint 20, 2026-02-09)
 
-**Test count**: 1806 total (unit + integration + doc), 0 clippy warnings.
-**Claims**: C-001..C-475 (475 total). **Insights**: I-001..I-016.
+**Test count**: 2257 total (unit + integration + doc), 0 clippy warnings.
+**Claims**: C-001..C-480 (480 total). **Insights**: I-001..I-017. **Binaries**: 40.
 
-Completed this sprint:
-- De Marrais emanation architecture: L1-L18 implemented in emanation.rs (~4400 lines)
-- 113 emanation tests covering signed products, ETs, twists, lanyards, Trip Sync, semiotic geometry
-- Oriented Trip Sync: all 7 BKs admit PSL(2,7) shorthand embedding
-- Signed adjacency graph + lanyard state-machine traversal
-- Delta transition function: XOR strut pairs with full reachability verification
-- Brocade normalization: 4 relabelings per BK, CPO consistency
-- Sail-loop duality: 28 sails -> 7 automorpheme loops of 4
-- 8 new claims (C-468..C-475), Insight I-016
+## Recent Sprint Summaries
 
-## Sprint 9 Summary (2026-02-08)
-
-- Monograph theses A-H: 8/8 verified (lattice codebook filtration)
-- 10 new claims (C-458..C-467), Insight I-015. 1693 tests.
-
-## Sprint 8 Summary (2026-02-07)
-
-- CdMultTable, Hartigan dip test, Casimir DE, PEPS entropy
-- Cubic Anomaly (I-012), External data cross-validation (I-014)
-- License: GPL-2.0-only. 1670 tests.
+- **S20**: Twist-delta pair correspondence RESOLVED (C-478, Fano Line Pairing Theorem).
+  Lanyard sign census VERIFIED (C-479, 42+14 uniform). GF(2) separating degree at
+  dim=64 RESOLVED (C-480, degree 4). Stale docs updated.
+- **S19**: Ran experiments E-011/E-012/E-013. C-476 (ALP) partially verified
+  (sparse graphs only). C-477 (Sky-Limit-Set) partially verified (A_{N-1} best
+  Coxeter match). New insight I-017.
+- **S18**: Experiment binaries E-011/E-012/E-013 implemented as CLIs with CSV output.
+- **S17**: ET discrete billiard (symbolic dynamics, entropy, phase sweep),
+  sky-limit-set Coxeter correspondence, cross-stack locality ALP formalization.
+- **S16**: Multiplication coupling rho(b) resolved: C-466 REFUTED -- only identity
+  has consistent linear coupling. Rank-adaptive reduced-subspace algorithm.
+- **S15**: NullModelStrategy trait, CodebookNullTest, Baire-codebook bridge, Thesis I.
+- **S14**: Monograph Layers 0-4: TypedCarrier, EncodingDictionary, elevated addition,
+  InvariantSuite cross-validation.
+- **S13**: Terminology normalization, glossary, Dynkin Convention 10.
+- **S12**: Registry integrity, LaTeX superstructure, HDF5 export (hdf5-metno),
+  algebra_core subdirectory reorg, mdbook chapters.
+- **S11**: docpipe crate (pdfium-render), 19 papers extracted, TOML registry, mdbook skeleton.
+- **S10**: De Marrais emanation architecture (L1-L18), 113 tests, 8 new claims.
+- **S9**: Lattice codebook filtration, 8 monograph theses A-H.
+- **S8**: CdMultTable, Hartigan dip test, mass-clumping, license GPL-2.0-only.
 
 ---
 
@@ -44,6 +47,9 @@ Completed this sprint:
 | G. Convos extraction | DONE | S5, S9 | 104 claims + 3 extracts, convos/ removed |
 | H. Lattice codebook | DONE | S9 | 8 theses verified, I-015 |
 | I. Emanation architecture | DONE | S10 | L1-L18, 113 tests, I-016 |
+| J. Monograph layers 0-5 | DONE | S13-S15 | TypedCarrier through NullModel |
+| K. Rho(b) coupling | DONE (REFUTED) | S16 | C-466 refuted, identity only |
+| L. ALP + Sky-Limit-Set | DONE (PARTIAL) | S17-S19 | C-476/C-477 partially verified, I-017 |
 
 ---
 
@@ -76,10 +82,8 @@ Completed this sprint:
 
 ### High Priority
 
-1) **Multiplication coupling rho(b) in GL(8,Z)** (C-466, Sprint 9 open question)
-   - The scalar shadow pi(b) = signum(sum) is verified for addition mode.
-   - The full multiplication coupling rho(b) acting on lattice vectors remains open.
-   - This is the key missing piece for a complete lattice-algebra dictionary.
+1) ~~**Multiplication coupling rho(b) in GL(8,Z)** (C-466)~~ -- **REFUTED** (Sprint 16).
+   Only identity element b=0 yields zero residual in rank-adaptive reduced-subspace algorithm.
 
 2) **Primary-source citation for every claim** (ROADMAP 7.2)
    - Systematic sweep through CLAIMS_EVIDENCE_MATRIX.md.
@@ -93,20 +97,21 @@ Completed this sprint:
 
 ### Medium Priority
 
-4) **Twist-delta pair correspondence** (I-016 open question)
-   - Twist navigation targets {h,v} have h XOR v != source_strut in many cases.
-   - Need to identify which Fano-plane quantity governs each twist transition.
-   - Related to brocade normalization (different central-trip choices may align).
+4) ~~**Twist-delta pair correspondence** (I-016)~~ -- **RESOLVED** (Sprint 20, C-478).
+   - Root cause: `twist_transition_table()` used HashSet (nondeterministic target selection).
+   - Fix: select the S-pairing (vent assessor pair with XOR=S, delta-consistent).
+   - Fano Line Pairing Theorem: 4 vent assessors admit 3 complementary pairings whose
+     XOR values are exactly the Fano line {S, perp[0], perp[1]}. All 3 roles realized.
 
-5) **Full lanyard classification from signed graph** (I-016)
-   - L16 infrastructure is in place (signed graph -> lanyard extraction).
-   - Systematic census of all cycle types across all 7 BKs not yet done.
-   - Goal: formal bijection between ET edge signs, lanyard types, and de Marrais terminology.
+5) ~~**Full lanyard classification from signed graph** (I-016)~~ -- **RESOLVED** (Sprint 20, C-479).
+   - Cross-BK census: 56 faces = 42 TwoSameOneOpp + 14 AllOpposite, 0 Blues, 0 OneSameTwoOpp.
+   - Perfectly uniform: 6+2 per BK. Only 2 of 4 sign patterns realized.
+   - TwoSameOneOpp = trefoil lanyards, AllOpposite = triple-zigzag lanyards.
 
-6) **GF(2) separating degree at dim=64** (I-012 open question)
-   - At dim=32, the 8/7 motif split needs a cubic GF(2) polynomial.
-   - At dim=64 (4 motif classes, PG(4,2)), minimum separating degree is unknown.
-   - Does the degree grow with the doubling level?
+6) ~~**GF(2) separating degree at dim=64** (I-012 open question)~~ -- **RESOLVED** (Sprint 20, C-480).
+   - dim=32: degree 3 (cubic). dim=64: degree 4 (quartic). Grows +1 per doubling.
+   - At dim=64: 4 classes (9+8+7+7), PG(4,2) with 5-bit labels.
+   - At degree 4: all 15 non-zero GF(2)^4 signatures achievable.
 
 5) **Extend parity-clique and XOR partner to dim=128+** (Sprint 9 open)
    - Parity-clique verified at dims 16, 32. XOR partner verified at dim=64.

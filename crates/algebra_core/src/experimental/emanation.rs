@@ -792,26 +792,40 @@ pub fn twist_transition_table() -> Vec<TwistTransition> {
         ];
 
         for (perp_pair, vent_indices) in &strut_pairs {
-            // The twist target strut constants come from the vent assessor L-indices.
-            // De Marrais: H* target S = one vent index, V* target S = another.
-            // The two distinct targets (among the vent indices, excluding the
-            // source S and the tray-rack's own strut pair) form the H*/V* pair.
+            // The twist target strut constants come from vent assessor L-indices.
+            // The 4 vent assessors admit 3 complementary 2+2 pairings whose
+            // XOR values are exactly the Fano line {S, perp[0], perp[1]}.
+            //
+            // We select the S-pairing: the pair {u,v} with u^v=S. This makes
+            // twist targets consistent with delta strut pairs (Fano XOR law).
+            //
+            // The two non-S pairings (XOR=perp[0] and XOR=perp[1]) represent
+            // cross-perpendicular relations and may encode additional structure.
             let source_s = bk.strut_signature;
-            let targets: Vec<usize> = vent_indices
+            let mut unique_vents: Vec<usize> = vent_indices
                 .iter()
                 .copied()
                 .filter(|&v| v != source_s && v != 0)
                 .collect::<HashSet<_>>()
                 .into_iter()
                 .collect();
+            unique_vents.sort();
 
-            // The two twist targets (among the L-indices of vent assessors)
-            let h_target = if !targets.is_empty() { targets[0] } else { 0 };
-            let v_target = if targets.len() >= 2 {
-                targets[1]
-            } else {
-                h_target
-            };
+            // Find the S-pairing: the pair whose XOR equals source_s
+            let mut h_target = 0;
+            let mut v_target = 0;
+            for i in 0..unique_vents.len() {
+                for j in (i + 1)..unique_vents.len() {
+                    if (unique_vents[i] ^ unique_vents[j]) == source_s {
+                        h_target = unique_vents[i];
+                        v_target = unique_vents[j];
+                        break;
+                    }
+                }
+                if h_target != 0 {
+                    break;
+                }
+            }
 
             transitions.push(TwistTransition {
                 source_strut: source_s,
@@ -4195,6 +4209,146 @@ pub fn extract_lanyards_from_et(n: usize, s: usize) -> Vec<LanyardSignature> {
     lanyards
 }
 
+/// Normalized face sign pattern (order-independent).
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum FaceSignPattern {
+    /// All 3 edges Same-sign (Blues). De Marrais: not realized in sedenions.
+    AllSame,
+    /// 2 Same + 1 Opposite. De Marrais: trefoil variant I.
+    TwoSameOneOpp,
+    /// 1 Same + 2 Opposite. De Marrais: trefoil variant II.
+    OneSameTwoOpp,
+    /// All 3 edges Opposite-sign (TripleZigzag). De Marrais: zigzag face.
+    AllOpposite,
+}
+
+/// Result of one face classification.
+#[derive(Debug, Clone)]
+pub struct FaceClassification {
+    /// Source BK strut constant.
+    pub strut: usize,
+    /// The 3 assessor L-indices forming this face.
+    pub face_indices: [usize; 3],
+    /// The 3 edge sign types.
+    pub edge_signs: [EdgeSignType; 3],
+    /// Normalized sign pattern (order-independent).
+    pub pattern: FaceSignPattern,
+    /// Traversal signature (order-dependent, for reference).
+    pub traversal_sig: String,
+}
+
+/// Complete cross-BK lanyard classification result.
+#[derive(Debug, Clone)]
+pub struct CrossBkLanyardCensus {
+    /// Number of BKs analyzed (should be 7 at dim=16).
+    pub n_bks: usize,
+    /// Total faces analyzed (should be 56 = 7 x 8).
+    pub total_faces: usize,
+    /// Count of each normalized sign pattern.
+    pub pattern_counts: HashMap<FaceSignPattern, usize>,
+    /// Per-BK pattern distribution.
+    pub per_bk_patterns: Vec<(usize, Vec<FaceSignPattern>)>,
+    /// Whether all BKs have the same pattern distribution.
+    pub uniform_across_bks: bool,
+    /// Detailed per-face classifications.
+    pub faces: Vec<FaceClassification>,
+}
+
+/// Classify a face's edge signs into a normalized pattern.
+fn classify_face_pattern(signs: &[EdgeSignType; 3]) -> FaceSignPattern {
+    let n_same = signs.iter().filter(|&&s| s == EdgeSignType::Same).count();
+    match n_same {
+        3 => FaceSignPattern::AllSame,
+        2 => FaceSignPattern::TwoSameOneOpp,
+        1 => FaceSignPattern::OneSameTwoOpp,
+        0 => FaceSignPattern::AllOpposite,
+        _ => unreachable!(),
+    }
+}
+
+/// Systematic lanyard classification across all 7 sedenion box-kites.
+///
+/// For each BK (strut 1..7), classifies all 8 triangular faces by their
+/// normalized edge-sign pattern. The pattern census is:
+/// - AllSame (Blues): 0 (not realized in sedenions)
+/// - TwoSameOneOpp (Trefoil I): expected ~42 total
+/// - OneSameTwoOpp (Trefoil II): expected ~0-14
+/// - AllOpposite (TripleZigzag): expected 14 (7 x 2)
+///
+/// Also extracts traversal signatures for reference (these are
+/// order-dependent and vary by starting assessor).
+pub fn cross_bk_lanyard_census() -> CrossBkLanyardCensus {
+    let bks = find_box_kites(16, 1e-10);
+    let atol = 1e-10;
+    let mut all_patterns: HashMap<FaceSignPattern, usize> = HashMap::new();
+    let mut per_bk = Vec::new();
+    let mut faces = Vec::new();
+    let mut total_faces = 0;
+    let mut first_dist: Option<HashMap<FaceSignPattern, usize>> = None;
+    let mut uniform = true;
+
+    for bk in &bks {
+        let s = bk.strut_signature;
+        let bk_faces = boxkite_faces(bk);
+        let et = create_strutted_et(4, s);
+        let graph = extract_signed_graph(&et);
+        let mut bk_patterns = Vec::new();
+        let mut bk_dist: HashMap<FaceSignPattern, usize> = HashMap::new();
+
+        for face in &bk_faces {
+            let assessors: [Assessor; 3] = [
+                bk.assessors[face[0]],
+                bk.assessors[face[1]],
+                bk.assessors[face[2]],
+            ];
+            let face_lows = [assessors[0].low, assessors[1].low, assessors[2].low];
+
+            let signs = [
+                edge_sign_type(&assessors[0], &assessors[1], atol),
+                edge_sign_type(&assessors[1], &assessors[2], atol),
+                edge_sign_type(&assessors[0], &assessors[2], atol),
+            ];
+            let pattern = classify_face_pattern(&signs);
+
+            let sig = traverse_lanyard(&graph, face_lows.as_ref(), true);
+
+            *all_patterns.entry(pattern).or_insert(0) += 1;
+            *bk_dist.entry(pattern).or_insert(0) += 1;
+            bk_patterns.push(pattern);
+
+            faces.push(FaceClassification {
+                strut: s,
+                face_indices: face_lows,
+                edge_signs: signs,
+                pattern,
+                traversal_sig: sig.signature_string,
+            });
+
+            total_faces += 1;
+        }
+
+        bk_patterns.sort();
+        per_bk.push((s, bk_patterns));
+
+        if let Some(ref first) = first_dist {
+            if &bk_dist != first {
+                uniform = false;
+            }
+        } else {
+            first_dist = Some(bk_dist);
+        }
+    }
+
+    CrossBkLanyardCensus {
+        n_bks: 7,
+        total_faces,
+        pattern_counts: all_patterns,
+        per_bk_patterns: per_bk,
+        uniform_across_bks: uniform,
+        faces,
+    }
+}
+
 // ===========================================================================
 // L17: Twisted Sisters Delta Transition Function
 // ===========================================================================
@@ -4253,6 +4407,194 @@ pub fn strut_pairs_for(s0: usize) -> [StrutPair; 3] {
 /// strut constants (one per parallel set in the catamaran).
 pub fn delta_transition(_s0: usize, pair: &StrutPair) -> (usize, usize) {
     (pair.u, pair.v)
+}
+
+/// Result of comparing one twist transition to the delta strut-pair structure.
+#[derive(Debug, Clone)]
+pub struct TwistDeltaComparison {
+    /// Source box-kite strut constant.
+    pub source_strut: usize,
+    /// Tray-rack label (the perpendicular pair).
+    pub tray_rack_label: [usize; 2],
+    /// Twist targets {h_star, v_star}.
+    pub twist_targets: (usize, usize),
+    /// Whether h_star XOR v_star == source_strut (Fano XOR law).
+    pub xor_matches_source: bool,
+    /// Which delta strut pair (if any) matches the twist targets as a set.
+    pub matching_strut_pair: Option<StrutPair>,
+    /// The Fano line containing {source, h_star, v_star}, if any.
+    pub fano_line: Option<[usize; 3]>,
+}
+
+/// Exhaustively compare twist transitions against delta strut pairs.
+///
+/// For each BK and each tray-rack, checks:
+/// 1. Whether {h_star, v_star} satisfies h XOR v == source_strut
+/// 2. Whether {h_star, v_star} matches one of the 3 delta strut pairs
+/// 3. Which Fano line (if any) contains {source, h_star, v_star}
+pub fn twist_delta_correspondence() -> Vec<TwistDeltaComparison> {
+    let twist_table = twist_transition_table();
+    let mut results = Vec::new();
+
+    for t in &twist_table {
+        let s = t.source_strut;
+        let h = t.h_star_target;
+        let v = t.v_star_target;
+
+        // Check XOR law: h XOR v should equal s (Fano plane constraint)
+        let xor_matches = (h ^ v) == s;
+
+        // Check if {h, v} matches a delta strut pair for this source
+        let pairs = strut_pairs_for(s);
+        let pair_set = (h.min(v), h.max(v));
+        let matching = pairs
+            .iter()
+            .find(|p| (p.u.min(p.v), p.u.max(p.v)) == pair_set)
+            .copied();
+
+        // Find the Fano line containing {s, h, v}
+        let mut triple = [s, h, v];
+        triple.sort();
+        let fano = O_TRIPS
+            .iter()
+            .find(|ot| {
+                let mut sorted = **ot;
+                sorted.sort();
+                sorted == triple
+            })
+            .copied();
+
+        results.push(TwistDeltaComparison {
+            source_strut: s,
+            tray_rack_label: t.tray_rack_label,
+            twist_targets: (h, v),
+            xor_matches_source: xor_matches,
+            matching_strut_pair: matching,
+            fano_line: fano,
+        });
+    }
+
+    results
+}
+
+/// Result of detailed vent-assessor analysis for a single tray-rack.
+#[derive(Debug, Clone)]
+pub struct VentPairingAnalysis {
+    /// Source strut constant.
+    pub source_strut: usize,
+    /// Perpendicular pair L-indices [a.low, f.low] for this tray-rack.
+    pub perp_pair: [usize; 2],
+    /// All 4 vent assessor L-indices in this tray-rack.
+    pub vent_indices: [usize; 4],
+    /// Three possible pairings of the 4 vent indices, with their XOR values.
+    /// Each pairing is ((i1,i2,xor12), (i3,i4,xor34)).
+    /// Type alias for a pairing entry: ((idx1, idx2, xor), (idx3, idx4, xor)).
+    #[allow(clippy::type_complexity)]
+    pub pairings: [((usize, usize, usize), (usize, usize, usize)); 3],
+    /// Which Fano line element each pairing's XOR corresponds to:
+    /// 0 = source_strut (S), 1 = perp[0], 2 = perp[1].
+    pub pairing_fano_roles: [usize; 3],
+    /// The twist targets currently computed by twist_transition_table().
+    pub current_twist_targets: (usize, usize),
+    /// Which pairing the current twist targets fall into (0, 1, or 2).
+    pub current_pairing_index: Option<usize>,
+}
+
+/// For each tray-rack, analyze all three possible pairings of vent assessors.
+///
+/// The 4 vent assessors of a tray-rack partition into 2+2 in three ways.
+/// Each pairing produces a consistent XOR value that lies on the Fano line
+/// {S, perp[0], perp[1]}. This function documents which pairing the
+/// twist_transition_table currently selects and whether it's consistent.
+pub fn vent_pairing_analysis() -> Vec<VentPairingAnalysis> {
+    let bks = find_box_kites(16, 1e-10);
+    let twist_table = twist_transition_table();
+    let atol = 1e-10;
+    let mut results = Vec::new();
+
+    for bk in &bks {
+        let tab = canonical_strut_table(bk, atol);
+        let s = bk.strut_signature;
+
+        // Three tray-racks with their perpendicular pairs and vent assessors
+        let tray_racks: [([usize; 2], [usize; 4]); 3] = [
+            (
+                [tab.a.low, tab.f.low],
+                [tab.b.low, tab.c.low, tab.d.low, tab.e.low],
+            ),
+            (
+                [tab.b.low, tab.e.low],
+                [tab.a.low, tab.c.low, tab.f.low, tab.d.low],
+            ),
+            (
+                [tab.c.low, tab.d.low],
+                [tab.a.low, tab.b.low, tab.f.low, tab.e.low],
+            ),
+        ];
+
+        for (perp, vents) in &tray_racks {
+            let v = *vents;
+            // Three possible 2+2 pairings of 4 elements {v0,v1,v2,v3}:
+            // P0: {v0,v1} + {v2,v3}
+            // P1: {v0,v2} + {v1,v3}
+            // P2: {v0,v3} + {v1,v2}
+            let pairings = [
+                ((v[0], v[1], v[0] ^ v[1]), (v[2], v[3], v[2] ^ v[3])),
+                ((v[0], v[2], v[0] ^ v[2]), (v[1], v[3], v[1] ^ v[3])),
+                ((v[0], v[3], v[0] ^ v[3]), (v[1], v[2], v[1] ^ v[2])),
+            ];
+
+            // For each pairing, both sub-pairs should XOR to the SAME value
+            // (this is a theorem about Fano plane structure).
+            // That value is one of {S, perp[0], perp[1]}.
+            let fano_line = [s, perp[0], perp[1]];
+            let pairing_roles: [usize; 3] = std::array::from_fn(|i| {
+                let xor_val = pairings[i].0 .2;
+                if xor_val == fano_line[0] {
+                    0
+                } else if xor_val == fano_line[1] {
+                    1
+                } else if xor_val == fano_line[2] {
+                    2
+                } else {
+                    usize::MAX // unexpected
+                }
+            });
+
+            // Find current twist targets for this tray-rack
+            let twist = twist_table.iter().find(|t| {
+                t.source_strut == s
+                    && ((t.tray_rack_label[0] == perp[0] && t.tray_rack_label[1] == perp[1])
+                        || (t.tray_rack_label[0] == perp[1]
+                            && t.tray_rack_label[1] == perp[0]))
+            });
+
+            let current_targets = twist.map_or((0, 0), |t| (t.h_star_target, t.v_star_target));
+
+            // Determine which pairing the current targets fall into
+            let target_set = (
+                current_targets.0.min(current_targets.1),
+                current_targets.0.max(current_targets.1),
+            );
+            let current_idx = pairings.iter().position(|p| {
+                let s1 = (p.0 .0.min(p.0 .1), p.0 .0.max(p.0 .1));
+                let s2 = (p.1 .0.min(p.1 .1), p.1 .0.max(p.1 .1));
+                target_set == s1 || target_set == s2
+            });
+
+            results.push(VentPairingAnalysis {
+                source_strut: s,
+                perp_pair: *perp,
+                vent_indices: *vents,
+                pairings,
+                pairing_fano_roles: pairing_roles,
+                current_twist_targets: current_targets,
+                current_pairing_index: current_idx,
+            });
+        }
+    }
+
+    results
 }
 
 /// Build the complete delta transition table for all S0 in {1..7}.
@@ -8447,5 +8789,253 @@ mod tests {
         }
         // Document the actual count for the claim
         // (Fano plane: complement of line in 6-point restriction)
+    }
+
+    // --- L17+: Twist-Delta Pair Correspondence Tests ---
+
+    #[test]
+    fn test_twist_delta_xor_law_universal() {
+        // The Fano XOR Law: for every twist transition, h XOR v == source_strut.
+        // This was an open question (I-016); resolved by fixing the S-pairing
+        // selection in twist_transition_table(). The 4 vent assessors admit 3
+        // pairings with XOR values {S, perp[0], perp[1]}; the correct twist
+        // targets use the S-pairing (delta-consistent).
+        let comparisons = twist_delta_correspondence();
+        assert_eq!(comparisons.len(), 21, "7 BKs x 3 tray-racks = 21");
+        for c in &comparisons {
+            assert!(
+                c.xor_matches_source,
+                "S={} TrayRack=[{},{}]: h^v={} != S",
+                c.source_strut,
+                c.tray_rack_label[0],
+                c.tray_rack_label[1],
+                c.twist_targets.0 ^ c.twist_targets.1
+            );
+        }
+    }
+
+    #[test]
+    fn test_twist_delta_strut_pair_match_universal() {
+        // Every twist target pair {h,v} must match a delta strut pair.
+        let comparisons = twist_delta_correspondence();
+        for c in &comparisons {
+            assert!(
+                c.matching_strut_pair.is_some(),
+                "S={} TrayRack=[{},{}]: targets ({},{}) not a delta strut pair",
+                c.source_strut,
+                c.tray_rack_label[0],
+                c.tray_rack_label[1],
+                c.twist_targets.0,
+                c.twist_targets.1
+            );
+        }
+    }
+
+    #[test]
+    fn test_twist_delta_fano_lines_universal() {
+        // Every twist transition {S, h, v} must lie on a Fano line (O-trip).
+        let comparisons = twist_delta_correspondence();
+        for c in &comparisons {
+            assert!(
+                c.fano_line.is_some(),
+                "S={} TrayRack=[{},{}]: triple ({},{},{}) not a Fano line",
+                c.source_strut,
+                c.tray_rack_label[0],
+                c.tray_rack_label[1],
+                c.source_strut,
+                c.twist_targets.0,
+                c.twist_targets.1
+            );
+        }
+    }
+
+    #[test]
+    fn test_twist_delta_full_diagnostic() {
+        // Print the complete twist-delta comparison table for analysis.
+        let comparisons = twist_delta_correspondence();
+        eprintln!("\n=== Twist-Delta Correspondence Table ===");
+        eprintln!(
+            "{:>3} {:>10} {:>7} {:>7} {:>10} {:>12} {:>10}",
+            "S", "TrayRack", "h*", "v*", "h^v", "XOR==S?", "Fano?"
+        );
+        for c in &comparisons {
+            let (h, v) = c.twist_targets;
+            let xor_val = h ^ v;
+            eprintln!(
+                "{:>3} {:>10} {:>7} {:>7} {:>10} {:>12} {:>10}",
+                c.source_strut,
+                format!("[{},{}]", c.tray_rack_label[0], c.tray_rack_label[1]),
+                h,
+                v,
+                xor_val,
+                if c.xor_matches_source { "YES" } else { "NO" },
+                if c.fano_line.is_some() { "YES" } else { "NO" },
+            );
+        }
+        // If XOR doesn't hold, look for alternate Fano-plane quantities
+        let xor_fails: Vec<_> = comparisons.iter().filter(|c| !c.xor_matches_source).collect();
+        if !xor_fails.is_empty() {
+            eprintln!("\n=== XOR Failures Analysis ===");
+            for c in &xor_fails {
+                let (h, v) = c.twist_targets;
+                let s = c.source_strut;
+                // Check all possible Fano-plane relationships
+                eprintln!(
+                    "S={} TrayRack=[{},{}]: h={}  v={}  h^v={}  h^s={}  v^s={}  h^v^s={}",
+                    s, c.tray_rack_label[0], c.tray_rack_label[1],
+                    h, v, h ^ v, h ^ s, v ^ s, h ^ v ^ s
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_vent_pairing_three_fano_roles() {
+        // Verify that the 3 pairings of 4 vent assessors give XOR values
+        // lying exactly on the Fano line {S, perp[0], perp[1]}.
+        let analyses = vent_pairing_analysis();
+        assert_eq!(analyses.len(), 21, "7 BKs x 3 tray-racks = 21");
+
+        let mut all_consistent = true;
+        let mut role_counts = [0usize; 3]; // how many are S, perp0, perp1
+
+        eprintln!("\n=== Vent Pairing Analysis ===");
+        for a in &analyses {
+            // Verify both sub-pairs in each pairing have the same XOR
+            for (i, p) in a.pairings.iter().enumerate() {
+                let xor1 = p.0 .2;
+                let xor2 = p.1 .2;
+                if xor1 != xor2 {
+                    eprintln!(
+                        "INCONSISTENT: S={} perp=[{},{}] pairing {}: xor1={} != xor2={}",
+                        a.source_strut, a.perp_pair[0], a.perp_pair[1], i, xor1, xor2
+                    );
+                    all_consistent = false;
+                }
+            }
+
+            // Verify all 3 pairing roles are distinct {0,1,2}
+            let mut roles = a.pairing_fano_roles;
+            roles.sort();
+            assert_eq!(
+                roles,
+                [0, 1, 2],
+                "S={} perp=[{},{}]: pairings should cover all 3 Fano line roles, got {:?}",
+                a.source_strut,
+                a.perp_pair[0],
+                a.perp_pair[1],
+                a.pairing_fano_roles
+            );
+
+            // Track which role the current twist targets selected
+            if let Some(idx) = a.current_pairing_index {
+                role_counts[a.pairing_fano_roles[idx]] += 1;
+            }
+        }
+
+        assert!(all_consistent, "All pairings should have consistent XOR values");
+        eprintln!(
+            "Current twist pairing distribution: S={}, perp0={}, perp1={}",
+            role_counts[0], role_counts[1], role_counts[2]
+        );
+    }
+
+    #[test]
+    fn test_cross_bk_lanyard_census_total() {
+        // 7 BKs x 8 faces = 56 total face lanyards.
+        let census = cross_bk_lanyard_census();
+        assert_eq!(census.n_bks, 7);
+        assert_eq!(census.total_faces, 56, "Expected 56 faces, got {}", census.total_faces);
+    }
+
+    #[test]
+    fn test_cross_bk_lanyard_no_blues() {
+        // No AllSame (Blues) faces should exist in sedenions.
+        let census = cross_bk_lanyard_census();
+        let blues = census.pattern_counts.get(&FaceSignPattern::AllSame).copied().unwrap_or(0);
+        assert_eq!(blues, 0, "Expected 0 Blues faces in sedenions");
+    }
+
+    #[test]
+    fn test_cross_bk_lanyard_zigzag_count() {
+        // AllOpposite (TripleZigzag): 7 BKs x 2 zigzag faces = 14.
+        let census = cross_bk_lanyard_census();
+        let zigzag = census.pattern_counts.get(&FaceSignPattern::AllOpposite).copied().unwrap_or(0);
+        assert_eq!(zigzag, 14, "Expected 14 AllOpposite faces (7x2), got {}", zigzag);
+    }
+
+    #[test]
+    fn test_cross_bk_lanyard_uniform_patterns() {
+        // Normalized sign patterns (order-independent) should be uniform
+        // across all 7 BKs.
+        let census = cross_bk_lanyard_census();
+        assert!(
+            census.uniform_across_bks,
+            "Normalized pattern distribution should be uniform across all 7 BKs"
+        );
+    }
+
+    #[test]
+    fn test_cross_bk_lanyard_full_classification() {
+        // Complete classification: print all patterns for documentation.
+        let census = cross_bk_lanyard_census();
+        eprintln!("\n=== Cross-BK Normalized Lanyard Census ===");
+        eprintln!("Total faces: {}", census.total_faces);
+
+        let mut patterns: Vec<_> = census.pattern_counts.iter().collect();
+        patterns.sort_by_key(|(p, _)| **p);
+        for (pattern, count) in &patterns {
+            eprintln!("  {:?}: {} (per BK: {})", pattern, count, *count / 7);
+        }
+        eprintln!("Uniform: {}", census.uniform_across_bks);
+
+        // Per-BK breakdown
+        eprintln!("\nPer-BK breakdown:");
+        for (s, pats) in &census.per_bk_patterns {
+            eprintln!("  S={}: {:?}", s, pats);
+        }
+
+        // Verify: AllSame + AllOpposite + TwoSameOneOpp + OneSameTwoOpp = 56
+        let total: usize = census.pattern_counts.values().sum();
+        assert_eq!(total, 56);
+    }
+
+    #[test]
+    fn test_vent_pairing_detail_table() {
+        // Print the full pairing analysis for manual inspection.
+        let analyses = vent_pairing_analysis();
+        eprintln!("\n=== Vent Pairing Detail Table ===");
+        for a in &analyses {
+            let fano_names = ["S", "p0", "p1"];
+            eprintln!(
+                "\nS={}, perp=[{},{}], vents=[{},{},{},{}], twist=({},{})",
+                a.source_strut,
+                a.perp_pair[0],
+                a.perp_pair[1],
+                a.vent_indices[0],
+                a.vent_indices[1],
+                a.vent_indices[2],
+                a.vent_indices[3],
+                a.current_twist_targets.0,
+                a.current_twist_targets.1,
+            );
+            for (i, p) in a.pairings.iter().enumerate() {
+                let role = a.pairing_fano_roles[i];
+                let role_name = if role < 3 { fano_names[role] } else { "??" };
+                let selected = a.current_pairing_index == Some(i);
+                eprintln!(
+                    "  P{}: {{{},{}}}(^{}) + {{{},{}}}(^{}) -> {} {}",
+                    i,
+                    p.0 .0,
+                    p.0 .1,
+                    p.0 .2,
+                    p.1 .0,
+                    p.1 .1,
+                    p.1 .2,
+                    role_name,
+                    if selected { "<-- SELECTED" } else { "" }
+                );
+            }
+        }
     }
 }

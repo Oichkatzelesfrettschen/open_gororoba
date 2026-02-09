@@ -77,13 +77,15 @@ spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
 Penrose process, coordinates, null constraint, energy-conserving integrator.
 **Claims infrastructure**: COMPLETE.  Rust claims-audit + claims-verify binaries
 replace 11 Python scripts.  118 backfill items confirmed Verified (2026-02-07).
-**Test count**: 1693 Rust tests pass (unit + doc + integration), 0 clippy warnings.
+**Test count**: 2239 Rust tests pass (unit + doc + integration), 0 clippy warnings.
 gororoba_kernels removed (2026-02-06).
 **GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
+**Claims**: 477 (423 verified, 38 refuted, 2 partial, 1 inconclusive, 13 closed).
+**Insights**: I-001..I-017. **Experiments**: E-001..E-013. **Binaries**: 40.
 
 ```
 open_gororoba/
-  Cargo.toml                  # Workspace root (13 members)
+  Cargo.toml                  # Workspace root (15 members)
   crates/
     algebra_core/             # Cayley-Dickson, Clifford, E8, box-kites, Reggiani, annihilator, M3
     cosmology_core/           # TOV, spectral dimensions, bounce, dimensional geometry, observational
@@ -97,7 +99,8 @@ open_gororoba/
     control_core/             # Control theory utilities
     data_core/                # 18 dataset providers + provenance + parsers
     gororoba_py/              # PyO3 bindings (thin wrappers -> domain crates)
-    gororoba_cli/             # 25 analysis binaries + fetch-datasets
+    docpipe/                  # PDF/document extraction pipeline
+    gororoba_cli/             # 40 analysis binaries + fetch-datasets
   src/gemini_physics/         # Remaining Python (visualization, notebooks)
   data/external/              # Cached datasets + PROVENANCE.local.json
   docs/                       # Claims, bibliography, insights, roadmaps

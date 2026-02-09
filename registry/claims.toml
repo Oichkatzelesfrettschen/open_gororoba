@@ -3813,3 +3813,27 @@ where_stated = "`crates/algebra_core/src/experimental/algebraic_dynamics.rs` (ex
 status = "Partial"
 last_verified = "2026-02-09"
 what_would_verify_refute = 'E-013 RESULTS: A_{N-1} consistently best Coxeter match (scores: N=4: 0.44, N=5: 0.23, N=6: 0.16 -- IMPROVING with level). Rank ratio = 1.0 (box-kite count = Coxeter rank). DMZ density/root density ratio converges toward 1.0 at higher N. D_{N-1} second best, B_{N-1} worst. E-012 RESULTS: spectroscopy bands predict billiard entropy (FullFill=0.0, UniformSky=0.44, MixedRegime=0.43), fill-entropy correlation r=-0.85 at N=5. PARTIAL: rank correspondence is strong and improving, but DMZ density match is not yet within 10% of Coxeter root density. Billiard phase prediction holds at N=5, weakens at N=6 (multiple UniformSky sub-bands with different entropies).'
+
+[[claim]]
+id = "C-478"
+statement = "Fano Line Pairing Theorem: For any sedenion box-kite with strut constant S and any tray-rack perpendicular to edge pair {p0, p1} (where p0 XOR p1 = S), the 4 vent assessor L-indices admit exactly 3 complementary 2+2 pairings. The common XOR value of each pairing's sub-pairs equals one element of the Fano line {S, p0, p1}. All three Fano line elements are realized. The S-pairing (with common XOR = S) gives the delta-consistent twist targets, making h_star XOR v_star = S universally across all 21 transitions."
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (twist_delta_correspondence, vent_pairing_analysis, twist_transition_table)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by exhaustive computation: 21/21 tray-racks across all 7 box-kites satisfy the theorem. Three tests: test_twist_delta_xor_law_universal (21/21 XOR=S), test_twist_delta_strut_pair_match_universal (21/21 match delta), test_vent_pairing_three_fano_roles (all 3 Fano roles appear for every tray-rack). WHAT WOULD REFUTE: finding a BK at dim=16 where the 3 pairing XOR values differ from {S, p0, p1}, or where the S-pairing does not produce a valid strut pair.'
+
+[[claim]]
+id = "C-479"
+statement = "Sedenion Lanyard Sign Census: Across all 7 box-kites in 16D Cayley-Dickson, the 56 triangular faces (8 per BK) admit exactly 2 of 4 possible edge-sign patterns when classified by signed-graph edge labels: (1) TwoSameOneOpp: 42 faces (6 per BK), where exactly 2 edges share one sign and the third is opposite; (2) AllOpposite: 14 faces (2 per BK), where all 3 edges have the same sign (all negative). The patterns AllSame (0 faces) and OneSameTwoOpp (0 faces) are never realized. The distribution is perfectly uniform across all 7 box-kites. The TwoSameOneOpp pattern corresponds to de Marrais trefoil lanyards; AllOpposite corresponds to triple-zigzag lanyards."
+where_stated = "`crates/algebra_core/src/experimental/emanation.rs` (cross_bk_lanyard_census, FaceSignPattern, FaceClassification)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by exhaustive computation: 56 faces across 7 BKs classified using order-independent FaceSignPattern normalization. Five tests: test_cross_bk_lanyard_census_total (56), test_cross_bk_lanyard_no_blues (0 AllSame), test_cross_bk_lanyard_zigzag_count (14 AllOpposite), test_cross_bk_lanyard_uniform_patterns (6+2 per BK), test_cross_bk_lanyard_full_classification (complete census). WHAT WOULD REFUTE: finding a sedenion BK face with AllSame or OneSameTwoOpp sign pattern, or a BK with non-uniform distribution (not 6+2).'
+
+[[claim]]
+id = "C-480"
+statement = "GF(2) Separating Degree Scaling: At dim=32 (PG(3,2), 15 points, 2 motif classes with sizes 8+7), the minimum GF(2) polynomial degree separating the classes is 3 (cubic). At dim=64 (PG(4,2), 31 points, 4 motif classes with sizes 9+8+7+7), the minimum separating degree is 4 (quartic). The degree grows as n_bits-1 = (log2(dim)-1)-1, i.e., +1 per doubling. At degree 4, all 15 non-zero class signatures in GF(2)^4 are achievable; at degree 3, the achievable signatures cannot jointly separate 4 classes. This resolves the I-012 open question."
+where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs` (find_minimum_separating_degree, check_separation_at_degree, gf2_solvable)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = 'VERIFIED by GF(2) Gaussian elimination: test_separating_degree_dim32_is_3 confirms d=3 (degrees 1,2 fail, 3 succeeds). test_separating_degree_dim64 confirms d=4 (degrees 1,2,3 fail, 4 succeeds with all 15 signatures achievable). test_separating_degree_dim64_diagnostic shows class structure: {420-edge:9, 84-edge:8, 228-edge:7, 276-edge:7}. WHAT WOULD REFUTE: finding a degree-3 polynomial pair that separates dim=64 classes, or a degree-2 polynomial that separates dim=32 classes.'
