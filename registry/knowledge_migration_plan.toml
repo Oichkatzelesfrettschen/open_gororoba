@@ -452,12 +452,26 @@ deliverables = [
 
 [[phase]]
 id = "KMP-P15"
-name = "non_legacy_csv_toml_migration_wave"
+name = "curated_csv_canonical_toml_migration_wave"
+status = "complete"
+deliverables = [
+  "registry/curated_csv_datasets.toml",
+  "registry/data/curated_csv/*.toml",
+  "src/scripts/analysis/migrate_legacy_csv_to_toml.py (corpus-parameterized)",
+  "src/verification/verify_legacy_csv_toml_parity.py (corpus-parameterized)",
+  "src/scripts/analysis/build_csv_inventory_registry.py (canonicalized progress classification)",
+  "src/scripts/analysis/build_csv_migration_scope_registry.py (wave status from counts)",
+  "registry/csv_migration_scope.toml wave_2 complete",
+]
+
+[[phase]]
+id = "KMP-P16"
+name = "project_external_archive_csv_policy_wave"
 status = "pending"
 deliverables = [
-  "curated CSV classification and canonicalization plan",
-  "data/csv non-legacy generated-vs-canonical split policy",
-  "external CSV provenance-only policy with TOML index linkage",
+  "project_csv generated-vs-canonical split policy",
+  "external_csv provenance-only index policy refinement",
+  "archive_csv retention and optional TOML-lift policy",
 ]
 
 [[policy]]

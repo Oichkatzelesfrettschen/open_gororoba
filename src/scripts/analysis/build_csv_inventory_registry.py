@@ -12,6 +12,7 @@ import argparse
 import hashlib
 import json
 import subprocess
+import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -119,12 +120,57 @@ def _policy(path: str, zone: str) -> tuple[str, str, str]:
     )
 
 
+def _load_canonical_source_paths(root: Path, index_rel: str, table_name: str) -> set[str]:
+    index_path = root / index_rel
+    if not index_path.exists():
+        return set()
+    parsed = tomllib.loads(index_path.read_text(encoding="utf-8"))
+    # Registry metadata lives under [table_name], while records are emitted
+    # as top-level [[dataset]] arrays by migration tooling.
+    rows = parsed.get("dataset", [])
+    if not rows:
+        table_value = parsed.get(table_name, [])
+        if isinstance(table_value, list):
+            rows = table_value
+    out: set[str] = set()
+    for row in rows:
+        if not isinstance(row, dict):
+            continue
+        source = str(row.get("source_path", row.get("source_csv", ""))).strip()
+        if source:
+            out.add(source)
+    return out
+
+
+def _policy_with_progress(
+    path: str,
+    zone: str,
+    legacy_canonical_paths: set[str],
+    curated_canonical_paths: set[str],
+) -> tuple[str, str, str]:
+    if zone == "legacy_csv" and path in legacy_canonical_paths:
+        return (
+            "canonicalized_to_toml",
+            "complete",
+            "Legacy CSV is already canonicalized under registry/data/legacy_csv.",
+        )
+    if zone == "curated_csv" and path in curated_canonical_paths:
+        return (
+            "canonicalized_to_toml",
+            "complete",
+            "Curated CSV is already canonicalized under registry/data/curated_csv.",
+        )
+    return _policy(path, zone)
+
+
 def _render(docs: list[CsvDoc]) -> str:
     tracked_count = sum(1 for d in docs if d.git_status == "tracked")
     untracked_count = sum(1 for d in docs if d.git_status == "untracked")
     ignored_count = sum(1 for d in docs if d.git_status == "ignored")
     archived_count = sum(1 for d in docs if d.archived)
     legacy_count = sum(1 for d in docs if d.zone == "legacy_csv")
+    curated_count = sum(1 for d in docs if d.zone == "curated_csv")
+    canonicalized_count = sum(1 for d in docs if d.migration_action == "canonicalized_to_toml")
 
     lines: list[str] = []
     lines.append("# Full CSV inventory registry (tracked/untracked/ignored/archived).")
@@ -139,6 +185,8 @@ def _render(docs: list[CsvDoc]) -> str:
     lines.append(f"ignored_count = {ignored_count}")
     lines.append(f"archived_count = {archived_count}")
     lines.append(f"legacy_count = {legacy_count}")
+    lines.append(f"curated_count = {curated_count}")
+    lines.append(f"canonicalized_count = {canonicalized_count}")
     lines.append("")
 
     for doc in docs:
@@ -181,6 +229,12 @@ def main() -> int:
         root,
         ["ls-files", "--others", "--ignored", "--exclude-standard", "*.csv"],
     )
+    legacy_canonical_paths = _load_canonical_source_paths(
+        root, "registry/legacy_csv_datasets.toml", "legacy_csv_datasets"
+    )
+    curated_canonical_paths = _load_canonical_source_paths(
+        root, "registry/curated_csv_datasets.toml", "curated_csv_datasets"
+    )
 
     files = sorted(_all_filesystem_csv(root))
 
@@ -190,7 +244,9 @@ def main() -> int:
         raw = path.read_bytes()
         text = raw.decode("utf-8", errors="ignore")
         zone = _zone(rel)
-        action, priority, rationale = _policy(rel, zone)
+        action, priority, rationale = _policy_with_progress(
+            rel, zone, legacy_canonical_paths, curated_canonical_paths
+        )
         docs.append(
             CsvDoc(
                 path=rel,

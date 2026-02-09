@@ -29,6 +29,15 @@ def _esc(value: str) -> str:
     return json.dumps(value, ensure_ascii=True)
 
 
+def _wave_state(total: int, done: int, pending_label: str, done_label: str) -> str:
+    if total <= 0:
+        return "n/a: no records"
+    if done >= total:
+        return f"complete: {done}/{total} {done_label}"
+    remaining = total - done
+    return f"in_progress: {done}/{total} done, {remaining} pending ({pending_label})"
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -103,11 +112,36 @@ def main() -> int:
         lines.append(f"{key} = {priority_counter[key]}")
     lines.append("")
 
+    legacy_total = zone_counter.get("legacy_csv", 0)
+    legacy_done = sum(
+        1
+        for row in docs
+        if str(row.get("zone", "")) == "legacy_csv"
+        and str(row.get("migration_action", "")) == "canonicalized_to_toml"
+    )
+    curated_total = zone_counter.get("curated_csv", 0)
+    curated_done = sum(
+        1
+        for row in docs
+        if str(row.get("zone", "")) == "curated_csv"
+        and str(row.get("migration_action", "")) == "canonicalized_to_toml"
+    )
+    project_total = zone_counter.get("project_csv", 0)
+    archive_total = zone_counter.get("archive_csv", 0)
+
     lines.append("[next_waves]")
-    lines.append('wave_1 = "complete: legacy_csv -> registry/data/legacy_csv"')
-    lines.append('wave_2 = "pending: curated_csv canonicalization strategy and conversion"')
-    lines.append('wave_3 = "pending: project_csv split (generated artifact vs canonical dataset)"')
-    lines.append('wave_4 = "pending: archive_csv retention policy and optional canonical lift"')
+    lines.append(
+        f"wave_1 = {_esc(_wave_state(legacy_total, legacy_done, 'migrate_to_toml_canonical', 'legacy_csv canonicalized'))}"
+    )
+    lines.append(
+        f"wave_2 = {_esc(_wave_state(curated_total, curated_done, 'plan_curated_ingest', 'curated_csv canonicalized'))}"
+    )
+    lines.append(
+        f"wave_3 = {_esc(f'pending: project_csv triage {project_total} records')}"
+    )
+    lines.append(
+        f"wave_4 = {_esc(f'pending: archive_csv retention review {archive_total} records')}"
+    )
     lines.append("")
 
     lines.append("high_priority_path_sample = [")

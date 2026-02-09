@@ -4349,3 +4349,43 @@ where_stated = "`crates/algebra_core/src/analysis/legacy_crossval.rs` (test_psi_
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: exact analytical formula matches computation at 11 dimensions (2 through 2048). WHAT WOULD REFUTE (impossible): the formula is a direct consequence of anti-commutativity (C-537) and e_i^2 = -e_0."
+
+[[claim]]
+id = "C-545"
+statement = "Split-Complex j^2 = +1 and Zero-Divisors: The split Cayley-Dickson construction at dim=2 (gamma=+1) produces the split-complex numbers where the imaginary unit j satisfies j^2 = +1 (vs i^2 = -1 for standard complex). Consequence: (1+j)/2 * (1-j)/2 = 0, giving zero-divisors at dim=2 (vs no zero-divisors until dim=16 in standard construction)."
+where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_split_complex_j_squared_plus_one, test_split_complex_zero_divisors)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: direct computation confirms j^2=+1 and (1+j)/2*(1-j)/2=0. WHAT WOULD REFUTE: impossible given the CD formula with gamma=+1."
+
+[[claim]]
+id = "C-546"
+statement = "CD Construction Always Non-Commutative at dim >= 4: The Cayley-Dickson doubling construction produces non-commutative algebras at dim >= 4 for ALL choices of gamma parameters. This is because the right component formula c_r*a_l + a_r*conj(c_l) involves conjugation which introduces anti-symmetry. Tessarines (bicomplex numbers, which ARE commutative) cannot be obtained via CD doubling -- they require the tensor product construction C tensor C instead."
+where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_mixed_signature_coquaternion, test_split_quaternion_noncommutativity)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: e_1*e_2 = e_3 but e_2*e_1 = -e_3 for ALL gamma signatures at dim=4. WHAT WOULD REFUTE: finding a gamma vector where e_i*e_j = e_j*e_i for all i,j (impossible, traced to conjugation in right component)."
+
+[[claim]]
+id = "C-547"
+statement = "Split-Octonion Signature (4,3) and 128 Zero-Divisor Pairs: The split-octonion (dim=8, all gamma=+1) has basis element squares [+1, +1, +1, -1, +1, -1, -1, +1], giving signature (4,3) for imaginary units (4 positive, 3 negative). Exhaustive search finds 128 zero-product 2-blade pairs. Standard octonions have 0 zero-product 2-blade pairs. For comparison, standard sedenions (dim=16) have their first zero-divisors -- the split construction introduces zero-divisors 1 doubling step earlier."
+where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_split_octonion_basis_squares_signature, test_split_octonion_zero_divisor_census, test_split_octonion_has_zero_divisors)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exhaustive search over all 2-blade pairs at dim=8. WHAT WOULD REFUTE: finding a zero-product pair in standard octonions (impossible, octonions are a normed division algebra)."
+
+[[claim]]
+id = "C-548"
+statement = "Dim=4 Signature Scan: Zero-Divisors in All Non-Standard Quaternion Signatures: At dim=4, there are 4 possible gamma vectors: [-1,-1] (standard), [-1,+1], [+1,-1], [+1,+1]. Standard quaternions have 0 zero-divisor 2-blade pairs. ALL three non-standard signatures have exactly 16 zero-divisor pairs each. Basis element squares: [-1,-1] -> [-1,-1,-1], [-1,+1] -> [-1,+1,+1], [+1,-1] -> [+1,-1,+1], [+1,+1] -> [+1,+1,-1]. Each non-standard variant has signature (1,2) or (2,1), explaining the zero-divisors via indefinite norm."
+where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_split_all_signatures_dim4)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exhaustive enumeration of all 4 gamma vectors and all 2-blade products. WHAT WOULD REFUTE: finding a non-standard dim=4 signature without zero-divisors (impossible, indefinite norm always permits them)."
+
+[[claim]]
+id = "C-549"
+statement = "Split-Octonion psi=1 Fraction Equals 3/8: The full-matrix psi=1 fraction for split-octonions (dim=8, all gamma=+1) is exactly 24/64 = 3/8 = 0.375. This is the SAME value that the standard CD frustration ratio converges toward in the large-dim limit (C-529/C-535: 0.378 at dim=512, 0.37849 at dim=1024, monotonically decreasing toward 3/8). The coincidence is striking: the split construction at dim=8 produces a sign matrix whose negative-entry fraction exactly equals the asymptotic frustration ratio of the standard construction at dim -> infinity."
+where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_split_vs_standard_sedenion_psi_comparison)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 24 of 64 entries in the dim=8 split sign matrix are -1. WHAT WOULD REFUTE the coincidence: if the frustration ratio converges to a value other than 3/8 (currently observed at 0.375-0.385 range, converging monotonically from above). The connection between split-octonion structure and standard CD asymptotics is OPEN for theoretical explanation."
