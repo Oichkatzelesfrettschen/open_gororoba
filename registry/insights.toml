@@ -199,3 +199,12 @@ status = "verified"
 summary = "Multiple 4D algebra families exist (Hamilton quaternions H, split-quaternions ell, dual quaternions, biquaternions C tensor H, tessarines C tensor C, coquaternions mixed). Construction method (CD doubling vs tensor product vs complexification vs extension) is the PRIMARY determinant of algebraic properties (commutativity, divisibility, norm composition). Dimension alone is insufficient: same dim=4 achievable via different constructions with different properties. Key result: tessarines are commutative but inaccessible via any CD gamma choice, proving construction method gates access to property families. Extended verification (Phase 2d): documented full 4D algebra landscape in ALGEBRA_FAMILY_TAXONOMY.md. Supports C-552 claim that construction method >> dimension >> gamma parameter in determining algebra properties."
 claims = ["C-552"]
 sprint = 27
+
+[[insight]]
+id = "I-023"
+title = "Phase 2b: Octonion Family Commutativity Census Confirms Structural Non-Commutativity at dim=8"
+date = "2026-02-09"
+status = "verified"
+summary = "Exhaustive testing of all 8 gamma signatures at dim=8 (3 doubling levels) confirms ALL octonion algebras are non-commutative, matching Phase 2a quaternion result (I-020). Test scope: test_octonion_family_all_signatures_commutativity examines all 8 CD octonion variants; test_octonion_zero_divisor_census_all_signatures measures ZD distribution; test_octonion_composition_law_across_signatures verifies composition law. Result: 0/8 signatures commutative (100% non-commutative); standard octonions ([-1,-1,-1]) have 0 ZD pairs (division algebra); composition law holds for standard, may break for split/mixed. This extends the structural property hierarchy: construction method >> dimension (now verified at dim=4 AND dim=8) >> gamma parameter. Non-commutativity is DIMENSION-DEPENDENT (via CD doubling formula) but GAMMA-INVARIANT (metric signature irrelevant). Zero-divisor count is GAMMA-DEPENDENT (metric-signature-controlled). Supports C-553, C-554 and fundamental principle that structural algebraic properties differ from metric properties."
+claims = ["C-553", "C-554"]
+sprint = 27

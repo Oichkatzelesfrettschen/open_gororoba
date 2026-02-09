@@ -1,0 +1,372 @@
+[dataset]
+id = "EH-0006"
+slug = "hst_udf_metadata"
+source_csv = "data/external/HST_UDF_Metadata.csv"
+source_sha256 = "e0aca08526d149b25ce2c0ddfd4e914f6b0c0d9f7c0cf183f015173bd9bfddac"
+source_size_bytes = 365
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 0
+column_count = 35
+header_value_sha256 = "0e4b92dcd2e9c30ef2a4a663382310dac4cc2484a7004f24450f91584e4056f8"
+row_value_sha256 = "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_external_csv"
+corpus_label = "external CSV holding queue"
+header = [
+    "intenttype",
+    "obs_collection",
+    "provenance_name",
+    "instrument_name",
+    "project",
+    "filters",
+    "wavelength_region",
+    "target_name",
+    "target_classification",
+    "obs_id",
+    "s_ra",
+    "s_dec",
+    "dataproduct_type",
+    "proposal_pi",
+    "calib_level",
+    "t_min",
+    "t_max",
+    "t_exptime",
+    "em_min",
+    "em_max",
+    "obs_title",
+    "t_obs_release",
+    "proposal_id",
+    "proposal_type",
+    "sequence_number",
+    "s_region",
+    "jpegurl",
+    "dataurl",
+    "datarights",
+    "mtflag",
+    "srcden",
+    "obsid",
+    "objid",
+    "objid1",
+    "distance",
+]
+original_header = [
+    "intentType",
+    "obs_collection",
+    "provenance_name",
+    "instrument_name",
+    "project",
+    "filters",
+    "wavelength_region",
+    "target_name",
+    "target_classification",
+    "obs_id",
+    "s_ra",
+    "s_dec",
+    "dataproduct_type",
+    "proposal_pi",
+    "calib_level",
+    "t_min",
+    "t_max",
+    "t_exptime",
+    "em_min",
+    "em_max",
+    "obs_title",
+    "t_obs_release",
+    "proposal_id",
+    "proposal_type",
+    "sequence_number",
+    "s_region",
+    "jpegURL",
+    "dataURL",
+    "dataRights",
+    "mtFlag",
+    "srcDen",
+    "obsid",
+    "objID",
+    "objID1",
+    "distance",
+]
+rows = []
+
+[[column]]
+index = 1
+name = "intenttype"
+original_name = "intentType"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 2
+name = "obs_collection"
+original_name = "obs_collection"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 3
+name = "provenance_name"
+original_name = "provenance_name"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 4
+name = "instrument_name"
+original_name = "instrument_name"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 5
+name = "project"
+original_name = "project"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 6
+name = "filters"
+original_name = "filters"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 7
+name = "wavelength_region"
+original_name = "wavelength_region"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 8
+name = "target_name"
+original_name = "target_name"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 9
+name = "target_classification"
+original_name = "target_classification"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 10
+name = "obs_id"
+original_name = "obs_id"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 11
+name = "s_ra"
+original_name = "s_ra"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 12
+name = "s_dec"
+original_name = "s_dec"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 13
+name = "dataproduct_type"
+original_name = "dataproduct_type"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 14
+name = "proposal_pi"
+original_name = "proposal_pi"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 15
+name = "calib_level"
+original_name = "calib_level"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 16
+name = "t_min"
+original_name = "t_min"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 17
+name = "t_max"
+original_name = "t_max"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 18
+name = "t_exptime"
+original_name = "t_exptime"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 19
+name = "em_min"
+original_name = "em_min"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 20
+name = "em_max"
+original_name = "em_max"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 21
+name = "obs_title"
+original_name = "obs_title"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 22
+name = "t_obs_release"
+original_name = "t_obs_release"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 23
+name = "proposal_id"
+original_name = "proposal_id"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 24
+name = "proposal_type"
+original_name = "proposal_type"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 25
+name = "sequence_number"
+original_name = "sequence_number"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 26
+name = "s_region"
+original_name = "s_region"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 27
+name = "jpegurl"
+original_name = "jpegURL"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 28
+name = "dataurl"
+original_name = "dataURL"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 29
+name = "datarights"
+original_name = "dataRights"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 30
+name = "mtflag"
+original_name = "mtFlag"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 31
+name = "srcden"
+original_name = "srcDen"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 32
+name = "obsid"
+original_name = "obsid"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 33
+name = "objid"
+original_name = "objID"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 34
+name = "objid1"
+original_name = "objID1"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0
+
+[[column]]
+index = 35
+name = "distance"
+original_name = "distance"
+inferred_type = "empty"
+non_empty_count = 0
+empty_count = 0

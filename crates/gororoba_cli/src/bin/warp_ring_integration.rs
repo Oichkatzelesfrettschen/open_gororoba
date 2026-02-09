@@ -9,46 +9,116 @@
 use algebra_core::lie::e7_geometry::{generate_e7_roots, find_e7_triads, project_to_plane};
 use lbm_core::turbulence::{power_spectrum, extract_dominant_triads};
 use stats_core::hypergraph::TriadHypergraph;
+use optics_core::grin::{trace_ray, GrinMedium, Ray, RayState, Vec3};
 use plotters::prelude::*;
 use plotters::style::full_palette::GREY;
 use ndarray::Array2;
 use log::info;
+use rand::{Rng, SeedableRng};
+use std::f64::consts::PI;
+
+/// A simple GRIN medium representing a "warp" potential.
+/// n(r) = 1.0 + A * exp(-r^2 / sigma^2)
+struct WarpMedium {
+    amplitude: f64,
+    sigma: f64,
+}
+
+impl GrinMedium for WarpMedium {
+    fn refractive_index(&self, pos: Vec3) -> f64 {
+        let r2 = pos.x*pos.x + pos.y*pos.y + pos.z*pos.z; // Simple spherical for now, or cylindrical
+        1.0 + self.amplitude * (-r2 / (self.sigma * self.sigma)).exp()
+    }
+
+    fn gradient_n(&self, pos: Vec3) -> Vec3 {
+        let n_val = self.refractive_index(pos);
+        // grad(n) = n(r) * (-2r / sigma^2) * (pos / r) ? No
+        // n = 1 + A exp(-r2/s2)
+        // dn/dx = A exp(...) * (-2x/s2)
+        // grad n = (n - 1) * (-2 pos / s2)
+        let factor = (n_val - 1.0) * (-2.0 / (self.sigma * self.sigma));
+        Vec3 {
+            x: pos.x * factor,
+            y: pos.y * factor,
+            z: pos.z * factor,
+        }
+    }
+}
+
+/// Generate 2D field with Kolmogorov-like power spectrum k^(-5/3).
+fn generate_kolmogorov_field(nx: usize, ny: usize, seed: u64) -> Array2<f64> {
+    let mut rng = rand::rngs::StdRng::seed_from_u64(seed);
+    let mut field = Array2::<f64>::zeros((nx, ny));
+
+    // Superposition of waves
+    // u(x) = sum A(k) cos(k.x + phi)
+    // A(k) ~ k^(-5/6) for 1D energy spectrum k^(-5/3)
+    // In 2D, energy E(k) ~ |u_k|^2 * k. If E(k) ~ k^(-5/3), then |u_k|^2 ~ k^(-8/3), so |u_k| ~ k^(-4/3).
+
+    let n_modes = 1000;
+    for _ in 0..n_modes {
+        let kx: f64 = rng.gen_range(-10.0..10.0);
+        let ky: f64 = rng.gen_range(-10.0..10.0);
+        let k = (kx * kx + ky * ky).sqrt();
+
+        if k < 0.1 {
+            continue;
+        }
+
+        let amplitude = k.powf(-4.0 / 3.0);
+        let phase = rng.gen_range(0.0..2.0 * PI);
+
+        for i in 0..nx {
+            for j in 0..ny {
+                let x = i as f64 / nx as f64 * 2.0 * PI;
+                let y = j as f64 / ny as f64 * 2.0 * PI;
+                field[[i, j]] += amplitude * (kx * x + ky * y + phase).cos();
+            }
+        }
+    }
+
+    // Normalize
+    let max_val = field.iter().fold(f64::NEG_INFINITY, |a: f64, b| a.max(*b));
+    let min_val = field.iter().fold(f64::INFINITY, |a: f64, b| a.min(*b));
+    let span = max_val - min_val;
+    if span > 0.0 {
+        field.mapv_inplace(|x| (x - min_val) / span);
+    }
+
+    field
+}
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     env_logger::init();
     info!("=== Warp Ring Integration ===");
-    
-    // 1. Simulate Turbulence (Mock)
-    info!("[1/4] Simulating Turbulence...");    let nx = 64;
+
+    // 1. Simulate Turbulence (Mock with Kolmogorov Noise)
+    info!("[1/4] Simulating Turbulence (Kolmogorov Spectrum)...");
+    let nx = 64;
     let ny = 64;
-    // In a real run, we'd step the LBM here.
-    // For now, generate random "velocity" fields
-    let u = Array2::from_elem((nx, ny), 1.0); // Dummy
-    let v = Array2::from_elem((nx, ny), 0.5); // Dummy
+    let u = generate_kolmogorov_field(nx, ny, 42);
+    let v = generate_kolmogorov_field(nx, ny, 1337);
+    let (_k_axis, power) = power_spectrum(&u);
+    if let Some(p0) = power.get(1).copied() {
+        info!("      Spectrum diagnostic: P(k=1) = {:.6}", p0);
+    }
 
-        // 2. Extract Triads
+    // 2. Extract Triads
+    info!("[2/4] Extracting Spectral Triads...");
+    let spectral_triads = extract_dominant_triads(&u, &v, 50.0);
+    info!("      Found {} spectral triads.", spectral_triads.len());
 
-        info!("[2/4] Extracting Spectral Triads...");
+    // 3. Map to E7
+    info!("[3/4] Mapping to E7 Geometry...");
+    let e7_roots = generate_e7_roots();
+    let algebra_triads = find_e7_triads(&e7_roots);
+    info!(
+        "      E7 Reference: {} roots, {} structural triads.",
+        e7_roots.len(),
+        algebra_triads.len()
+    );
 
-        let spectral_triads = extract_dominant_triads(&u, &v, 50.0);
-
-        info!("      Found {} spectral triads.", spectral_triads.len());
-
-        
-
-        // 3. Map to E7
-
-        info!("[3/4] Mapping to E7 Geometry...");
-
-        let e7_roots = generate_e7_roots();
-
-        let algebra_triads = find_e7_triads(&e7_roots);
-
-        info!("      E7 Reference: {} roots, {} structural triads.", e7_roots.len(), algebra_triads.len());
-
-        
-
-        // Build Hypergraph for Analysis
+    // Build Hypergraph for Analysis
     let mut hg = TriadHypergraph::new();
     // For demo, we add algebraic triads to the hypergraph
     // In reality, we'd map spectral modes to root indices first
@@ -56,14 +126,20 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         // Map root index to vertex ID
         hg.add_triad(i, (i + 1) % 126, (i + 2) % 126); // Dummy mapping for topo structure
     }
-    info!("      Hypergraph Clustering Coeff: {:.4}", hg.clustering_coefficient());
-    
+    info!(
+        "      Hypergraph Clustering Coeff: {:.4}",
+        hg.clustering_coefficient()
+    );
+
     // Mapping Logic:
     // We map the "energy transfer" of a spectral triad to the "interaction strength"
     // of an algebraic triad.
     // Simple heuristic: Take top N algebraic triads to represent the active flow.
-    let active_algebra_triads = algebra_triads.into_iter().take(spectral_triads.len() * 10).collect::<Vec<_>>();
-    
+    let active_algebra_triads = algebra_triads
+        .into_iter()
+        .take(spectral_triads.len() * 10)
+        .collect::<Vec<_>>();
+
     // 4. Visualize
     info!("[4/4] Rendering Warp Ring...");
     let root = BitMapBackend::new("warp_ring_integration.png", (1024, 1024)).into_drawing_area();
@@ -106,14 +182,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ))?;
     }
 
-    
-
     root.present()?;
-
     info!("Done. Output saved to 'warp_ring_integration.png'.");
-
-    
-
     Ok(())
-
 }

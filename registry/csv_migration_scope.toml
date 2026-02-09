@@ -18,52 +18,20 @@ project_csv = 86
 [action_counts]
 canonicalized_to_toml = 813
 canonicalized_to_toml_generated_artifact = 30
+canonicalized_to_toml_holding = 31
 manual_triage = 37
-queued_for_scroll_holding = 31
 
 [priority_counts]
-complete = 843
-high = 31
+complete = 874
 medium = 37
 
 [next_waves]
 wave_1 = "complete: 200/200 legacy_csv canonicalized"
 wave_2 = "complete: 557/557 curated_csv canonicalized"
 wave_3 = "complete: 86/86 project_csv split-and-scroll complete"
-wave_4 = "complete: 31/31 external+archive holding queued"
+wave_4 = "complete: 31/31 external+archive holding scrollified"
 
 high_priority_path_sample = [
-  "archive/8086_legacy/8086_Instruction_Cycle_Counts.csv",
-  "archive/8086_legacy/8086_and_8087_Precision_Capabilities.csv",
-  "archive/8086_legacy/Comparative_CPU_Instruction_Cycle_Counts__8086_to_80486_.csv",
-  "archive/8086_legacy/Comparative_FPU_Instruction_Cycle_Counts__8087_to_80487_.csv",
-  "archive/8086_legacy/Updated_Comparative_CPU_Instruction_Cycle_Counts__8086_to_V30_.csv",
-  "data/external/DESI_QSO.csv",
-  "data/external/GWTC-3.csv",
-  "data/external/GWTC-3_GWpy_Official.csv",
-  "data/external/GWTC-3_confident.csv",
-  "data/external/GWTC-3_synthetic.csv",
-  "data/external/HST_UDF_Metadata.csv",
-  "data/external/SDSS_DR16Q.csv",
-  "data/external/SDSS_Quasars_Astroquery.csv",
-  "data/external/TESS_Metadata.csv",
-  "data/external/atnf_pulsars.csv",
-  "data/external/chime_frb_cat1.csv",
-  "data/external/chime_frb_cat2.csv",
-  "data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv",
-  "data/external/cms_oo_raa/table1_pp_spectra.csv",
-  "data/external/cms_oo_raa/table2_oo_spectra.csv",
-  "data/external/cms_oo_raa/table3_oo_raa.csv",
-  "data/external/fermi_gbm_grbs.csv",
-  "data/external/gaia_dr3_nearby.csv",
-  "data/external/gwosc_all_events.csv",
-  "data/external/jpl_planets_2020_2030.csv",
-  "data/external/mcgill_magnetars.csv",
-  "data/external/nanograv_15yr_freespectrum.csv",
-  "data/external/sdss_dr18_quasars.csv",
-  "data/external/sorce_tsi_daily.csv",
-  "data/external/swarm_magnetic_sample.csv",
-  "data/external/tsis1_tsi_daily.csv",
 ]
 
 medium_priority_path_sample = [
