@@ -2068,6 +2068,78 @@ pub fn is_inherited_full_fill_strut(n: usize, s: usize) -> bool {
     s <= 7
 }
 
+/// Classification of a strut constant within a Cayley-Dickson level.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub enum StrutClass {
+    /// Generator-inherited: S is a power of 2. Always full-fill.
+    Generator,
+    /// Mandala-inherited: S <= 7, inherited from sedenion level. Full-fill.
+    Mandala,
+    /// Sky: S > 8 and not a power of 2. Sparse fill (Sand Mandala pattern).
+    Sky,
+}
+
+/// Detailed spectroscopy result for a single strut constant.
+#[derive(Debug, Clone)]
+pub struct StrutSpectroscopyEntry {
+    /// Strut constant.
+    pub s: usize,
+    /// Classification.
+    pub class: StrutClass,
+    /// DMZ count.
+    pub dmz_count: usize,
+    /// Total possible cells.
+    pub total_possible: usize,
+    /// Fill ratio.
+    pub fill_ratio: f64,
+    /// Number of "effective box-kites": dmz_count / 24 (exact when divisible).
+    pub effective_bk_count: usize,
+    /// Whether this strut has full fill (DMZ = total_possible).
+    pub is_full_fill: bool,
+}
+
+/// Classify a strut constant at level N.
+pub fn classify_strut(n: usize, s: usize) -> StrutClass {
+    let g = 1usize << (n - 1);
+    assert!(s >= 1 && s < g, "S must be in [1, G)");
+    if s.is_power_of_two() {
+        StrutClass::Generator
+    } else if s <= 7 {
+        StrutClass::Mandala
+    } else {
+        StrutClass::Sky
+    }
+}
+
+/// Compute detailed spectroscopy for all strut constants at level N.
+///
+/// For each strut S in [1, G), returns its classification, DMZ count,
+/// effective box-kite count, and whether it has full fill.
+pub fn strut_spectroscopy(n: usize) -> Vec<StrutSpectroscopyEntry> {
+    assert!(n >= 4, "Need at least sedenions");
+    let g = 1usize << (n - 1);
+
+    let mut entries = Vec::new();
+    for s in 1..g {
+        let et = create_strutted_et(n, s);
+        let fill_ratio = if et.total_possible > 0 {
+            et.dmz_count as f64 / et.total_possible as f64
+        } else {
+            0.0
+        };
+        entries.push(StrutSpectroscopyEntry {
+            s,
+            class: classify_strut(n, s),
+            dmz_count: et.dmz_count,
+            total_possible: et.total_possible,
+            fill_ratio,
+            effective_bk_count: et.dmz_count / 24,
+            is_full_fill: et.dmz_count == et.total_possible,
+        });
+    }
+    entries
+}
+
 // ===========================================================================
 // L10: CT Boundary / A7 Star -- Twist as Double Transfer
 // ===========================================================================
@@ -4090,6 +4162,131 @@ mod tests {
         let et8 = create_strutted_et(5, 8);
         assert_eq!(et8.dmz_count, et8.total_possible,
             "S=8 at N=5 is full fill, confirming 8 is the last non-Sky strut");
+    }
+
+    // ===================================================================
+    // Strut Spectroscopy Tests (N=5 Sky Struts)
+    // ===================================================================
+
+    #[test]
+    fn test_classify_strut_n5_generators() {
+        // At N=5 (G=16): powers of 2 in [1,16) are generators.
+        assert_eq!(classify_strut(5, 1), StrutClass::Generator);
+        assert_eq!(classify_strut(5, 2), StrutClass::Generator);
+        assert_eq!(classify_strut(5, 4), StrutClass::Generator);
+        assert_eq!(classify_strut(5, 8), StrutClass::Generator);
+    }
+
+    #[test]
+    fn test_classify_strut_n5_mandala() {
+        // S=3,5,6,7 are mandala-inherited (S<=7, not power of 2).
+        assert_eq!(classify_strut(5, 3), StrutClass::Mandala);
+        assert_eq!(classify_strut(5, 5), StrutClass::Mandala);
+        assert_eq!(classify_strut(5, 6), StrutClass::Mandala);
+        assert_eq!(classify_strut(5, 7), StrutClass::Mandala);
+    }
+
+    #[test]
+    fn test_classify_strut_n5_sky() {
+        // S=9..15 (>8, non-power-of-2) are all Sky.
+        for s in 9..=15 {
+            assert_eq!(classify_strut(5, s), StrutClass::Sky,
+                "S={} should be Sky at N=5", s);
+        }
+    }
+
+    #[test]
+    fn test_spectroscopy_n5_class_counts() {
+        // N=5 has 15 struts: 4 Generator + 4 Mandala + 7 Sky.
+        let entries = strut_spectroscopy(5);
+        assert_eq!(entries.len(), 15);
+        let gen_count = entries.iter().filter(|e| e.class == StrutClass::Generator).count();
+        let man_count = entries.iter().filter(|e| e.class == StrutClass::Mandala).count();
+        let sky_count = entries.iter().filter(|e| e.class == StrutClass::Sky).count();
+        assert_eq!(gen_count, 4, "4 generators (1,2,4,8)");
+        assert_eq!(man_count, 4, "4 mandala-inherited (3,5,6,7)");
+        assert_eq!(sky_count, 7, "7 sky struts (9..15)");
+    }
+
+    #[test]
+    fn test_spectroscopy_n5_generators_full_fill() {
+        // All generators at N=5 must have full fill.
+        let entries = strut_spectroscopy(5);
+        for e in entries.iter().filter(|e| e.class == StrutClass::Generator) {
+            assert!(e.is_full_fill,
+                "Generator S={} must have full fill", e.s);
+            assert_eq!(e.dmz_count, 168,
+                "Generator S={}: expected DMZ=168", e.s);
+        }
+    }
+
+    #[test]
+    fn test_spectroscopy_n5_mandala_full_fill() {
+        // All mandala struts at N=5 must have full fill.
+        let entries = strut_spectroscopy(5);
+        for e in entries.iter().filter(|e| e.class == StrutClass::Mandala) {
+            assert!(e.is_full_fill,
+                "Mandala S={} must have full fill", e.s);
+            assert_eq!(e.dmz_count, 168,
+                "Mandala S={}: expected DMZ=168", e.s);
+        }
+    }
+
+    #[test]
+    fn test_spectroscopy_n5_sky_struts_sparse_dmz_72() {
+        // All 7 Sky struts at N=5 must have DMZ=72 (42.9% fill).
+        let entries = strut_spectroscopy(5);
+        for e in entries.iter().filter(|e| e.class == StrutClass::Sky) {
+            assert!(!e.is_full_fill,
+                "Sky S={} must NOT have full fill", e.s);
+            assert_eq!(e.dmz_count, 72,
+                "Sky S={}: expected DMZ=72, got {}", e.s, e.dmz_count);
+        }
+    }
+
+    #[test]
+    fn test_spectroscopy_n5_sky_effective_bk_count_3() {
+        // DMZ=72 / 24 = 3 effective box-kites for Sky struts.
+        // This means 3 of 7 Fano-plane lines survive the Sky transition.
+        let entries = strut_spectroscopy(5);
+        for e in entries.iter().filter(|e| e.class == StrutClass::Sky) {
+            assert_eq!(e.effective_bk_count, 3,
+                "Sky S={}: expected 3 effective BKs, got {}", e.s, e.effective_bk_count);
+        }
+    }
+
+    #[test]
+    fn test_spectroscopy_n5_full_fill_effective_bk_count_7() {
+        // DMZ=168 / 24 = 7 effective box-kites for inherited struts.
+        let entries = strut_spectroscopy(5);
+        for e in entries.iter().filter(|e| e.is_full_fill) {
+            assert_eq!(e.effective_bk_count, 7,
+                "Full-fill S={}: expected 7 effective BKs, got {}", e.s, e.effective_bk_count);
+        }
+    }
+
+    #[test]
+    fn test_spectroscopy_n5_sky_fill_ratio_3_7() {
+        // Sky struts at N=5 have fill ratio 72/168 = 3/7.
+        let entries = strut_spectroscopy(5);
+        for e in entries.iter().filter(|e| e.class == StrutClass::Sky) {
+            let expected = 72.0 / 168.0; // = 3/7
+            assert!((e.fill_ratio - expected).abs() < 1e-10,
+                "Sky S={}: expected fill ratio 3/7, got {:.6}", e.s, e.fill_ratio);
+        }
+    }
+
+    #[test]
+    fn test_spectroscopy_n6_class_counts() {
+        // N=6 has 31 struts: 5 Generator (1,2,4,8,16) + 4 Mandala (3,5,6,7) + 22 Sky.
+        let entries = strut_spectroscopy(6);
+        assert_eq!(entries.len(), 31);
+        let gen_count = entries.iter().filter(|e| e.class == StrutClass::Generator).count();
+        let man_count = entries.iter().filter(|e| e.class == StrutClass::Mandala).count();
+        let sky_count = entries.iter().filter(|e| e.class == StrutClass::Sky).count();
+        assert_eq!(gen_count, 5, "5 generators (1,2,4,8,16)");
+        assert_eq!(man_count, 4, "4 mandala-inherited (3,5,6,7)");
+        assert_eq!(sky_count, 22, "22 sky struts");
     }
 
     // ===================================================================
