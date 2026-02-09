@@ -828,13 +828,13 @@ authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "high"
-sha256 = "77b9483caba3f83bbf42ca3ef789d7abbad99c44ce9db9d712c150fbc39767ef"
-size_bytes = 6707
-line_count = 139
-claim_ref_count = 6
+sha256 = "2b229f0143a9d7158cb819e45ca05872997e83386bd40548025fa46b94e4cc20"
+size_bytes = 9482
+line_count = 166
+claim_ref_count = 17
 insight_ref_count = 6
-experiment_ref_count = 0
-link_count = 21
+experiment_ref_count = 3
+link_count = 22
 link_sample = ["docs/CLAIMS_TASKS.md", "docs/ROADMAP.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv", "docs/claims/INDEX.md", "docs/claims/by_domain/*.md", "docs/generated/*_REGISTRY_MIRROR.md", "registry/claim_tickets.toml", "registry/claims_domains.toml"]
 
 [[document]]
@@ -1061,12 +1061,12 @@ authoring_mode = "manual"
 generated = false
 status = "active"
 migration_priority = "high"
-sha256 = "c775680e049c79dedfc914d8638704926421499936531ba9a4badfbdfc25beb9"
-size_bytes = 32201
-line_count = 687
+sha256 = "889a1647b2f338d2847eabf535cbf8fefe2547e2f8a3abe42491c83316e2b149"
+size_bytes = 32425
+line_count = 690
 claim_ref_count = 23
-insight_ref_count = 6
-experiment_ref_count = 0
+insight_ref_count = 8
+experiment_ref_count = 2
 link_count = 71
 link_sample = ["Cargo.toml", "MATHEMATICAL_FORMALISM.tex", "RUST_MIGRATION_PLAN.md", "RUST_REFACTOR_PLAN.md", "[workspace.dependencies]", "crates/algebra_core/src/emanation.rs", "crates/gr_core/", "data/csv/c071g_exploration.csv"]
 

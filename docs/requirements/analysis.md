@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements: Analysis (Topology + Embeddings)
 
 These scripts use optional dependencies such as `networkx`, `ripser`, and friends.

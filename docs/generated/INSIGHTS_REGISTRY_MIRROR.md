@@ -5,7 +5,7 @@
 
 Authoritative source: `registry/insights.toml`.
 
-Total insights: 16
+Total insights: 17
 
 ## I-001: Macquart Relation Fills the Comoving Distance Gap
 
@@ -150,3 +150,12 @@ Cross-validated 68 external files against Rust integer-exact computations. Strut
 - Claims: C-468, C-469, C-470, C-471, C-472, C-473, C-474, C-475
 
 Implemented L1-L18 emanation layers from de Marrais construction. DMZ = sign-concordance (12 edges/BK), sail-loop = Fano incidence. Oriented Trip Sync universal across all 7 BKs. 113 tests, 4400 lines.
+
+## I-017: Cross-Stack Locality and Coxeter Correspondence (E-011/E-012/E-013)
+
+- Date: 2026-02-09
+- Status: partial
+- Sprint: 19
+- Claims: C-476, C-477
+
+Three experiments testing ALP (C-476) and Sky-Limit-Set (C-477). E-011: ALP holds for sparse constraint graphs (E10 Dynkin p=0.000, ET DMZ p=0.000) but fails for dense graphs (Sedenion ZD p=1.000, edge density 86.7%). E-012: Billiard symbolic dynamics predict spectroscopy behavior (FullFill entropy=0.0, UniformSky entropy=0.44, fill-entropy r=-0.85 at N=5). E-013: A_{N-1} Coxeter group is consistently the best match for ET skybox invariants (rank ratio=1.0, improving match scores at higher N). ALP needs sparsity refinement; Coxeter correspondence is strong but DMZ density match not yet within 10%.

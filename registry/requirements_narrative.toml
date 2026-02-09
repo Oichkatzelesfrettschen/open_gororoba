@@ -1,0 +1,481 @@
+# Requirements narrative overlay registry (TOML-first).
+
+[requirements_narrative]
+authoritative = true
+updated = "2026-02-09"
+source_markdown_glob = "docs/requirements/*.md"
+document_count = 11
+
+[[document]]
+path = "REQUIREMENTS.md"
+title = "Installation Requirements (Reproducible)"
+body_markdown = """
+# Installation Requirements (Reproducible)
+
+This repo targets a **host Python** for non-quantum work and a **Docker Python 3.11**
+environment for Qiskit.
+
+Canonical (more detailed) requirements live in `docs/REQUIREMENTS.md`. This file is a short
+top-level entrypoint.
+
+Maintenance note: when requirements guidance drifts, update `docs/REQUIREMENTS.md` first and
+keep this file as a stable pointer + minimal quickstart.
+
+## 1) Core (Python >=3.11)
+
+```bash
+make install
+make check
+make doctor
+```
+
+Notes:
+- `make check` runs `make test`, `make lint`, and `make smoke` (warnings-as-errors).
+- `make smoke` also runs `make ascii-check` (repo-authored ASCII-only gate).
+- Some doc/source extraction utilities rely on system tools like `pdftotext`; see `docs/REQUIREMENTS.md`.
+- Optional modules may not install cleanly on very new Python versions; use a Python 3.11/3.12 env or Docker when needed.
+- In particular, the `analysis` extra conditionally installs `scikit-learn` only for Python <3.14 (see `pyproject.toml`).
+- System-installed Python packages (e.g., Arch/AUR) are not visible inside this repo's default venv unless you use `--system-site-packages` or install the pip equivalents.
+- Editable installs may create `src/*.egg-info/`; these are gitignored and should never be committed.
+
+## 2) Optional Modules
+
+- Analysis/Topology/Embeddings: see `docs/requirements/analysis.md`
+- Astronomy data fetching: see `docs/requirements/astro.md`
+- Algebra engine / sedenion replications: see `docs/requirements/algebra.md`
+- Particle physics (PDG/CMS toy spectra): see `docs/requirements/particle.md`
+- Quantum (Qiskit, Aer): see `docs/requirements/quantum-docker.md`
+- C++ kernels (Conan + CMake): see `docs/requirements/cpp.md`
+- Coq proofs: see `docs/requirements/coq.md`
+- LaTeX / paper build: see `docs/requirements/latex.md`
+- Materials datasets: see `docs/requirements/materials.md`
+
+## 3) Artifact generation (optional)
+
+```bash
+make artifacts-dimensional
+make artifacts-materials
+make artifacts-motifs
+make artifacts-motifs-big
+make verify
+```
+"""
+
+[[document]]
+path = "docs/REQUIREMENTS.md"
+title = "Requirements for Gemini Experiments"
+body_markdown = """
+# Requirements for Gemini Experiments
+
+This project follows a \"Maximal Synthesis\" protocol. Installs are designed to be reproducible,
+offline-testable by default, and compatible with warnings-as-errors.
+
+If you need module-specific details, see:
+- `docs/requirements/algebra.md`
+- `docs/requirements/analysis.md`
+- `docs/requirements/astro.md`
+- `docs/requirements/materials.md`
+- `docs/requirements/quantum-docker.md`
+- `docs/requirements/coq.md`
+- `docs/requirements/latex.md`
+
+## Python version policy
+
+- **Recommended**: Python 3.11 or 3.12 (best wheel availability).
+- **Allowed**: Python 3.13+ for the core engine, but some optional extras may be skipped by
+  dependency markers or may not have wheels yet (use Docker or a Python 3.11/3.12 env).
+
+## Quickstart (core engine)
+
+1. Create an isolated venv + install the editable package:
+   ```bash
+   make install
+   ```
+2. Run the full gate (tests + lint + verifiers) with warnings-as-errors:
+   ```bash
+   PYTHONWARNINGS=error make check
+   ```
+
+The canonical Python dependency sets live in `pyproject.toml`. Prefer using the `make install-*`
+targets (they match the extras).
+
+## Optional Python extras
+
+- **Analysis** (topology + embeddings):
+  - Install: `make install-analysis`
+  - Notes: scikit-learn is intentionally skipped on very new Python versions (see markers in
+    `pyproject.toml`); use Python 3.11/3.12 if you need it.
+- **Astronomy** (astroquery + GWpy + healpy + dataset loaders):
+  - Install: `make install-astro`
+- **Particle physics** (CMS/ROOT readers):
+  - Install: `make install-particle`
+  - Notes: `docs/requirements/particle.md`
+- **Quantum** (Qiskit):
+  - Preferred: Docker (`docs/requirements/quantum-docker.md`)
+  - Optional local install: `make install-quantum` (only on Python versions supported by wheels)
+
+Notes:
+- Extras currently defined in `pyproject.toml`: `dev`, `analysis`, `astro`, `particle`, `quantum`.
+- Some domains have requirements docs but no dedicated extra (e.g., algebra is part of core deps).
+
+## Quantum (Dockerized)
+See `docs/requirements/quantum-docker.md` and `docs/QISKIT_SETUP.md`.
+
+## C++ Acceleration Kernels
+- CMake >= 3.25
+- Conan 2.x (C++ package manager)
+- GCC 14 or Clang 18 (C++20 required)
+- Catch2 (via Conan; unit tests)
+- Google Benchmark (via Conan; micro-benchmarks)
+- pybind11 (via Conan; Python bindings)
+
+Build: `make cpp-build`, test: `make cpp-test`, bench: `make cpp-bench`.
+
+See also: `docs/requirements/cpp.md`.
+
+## System tools (non-Python)
+
+Some targets rely on standard system utilities (documented here for reproducibility):
+
+- `pdftotext` (Poppler) for `make convos-extract` and some source-caching pipelines.
+  - Arch: `poppler`
+  - Debian/Ubuntu: `poppler-utils`
+- `wget` (preferred) and/or `curl` for opt-in fetch scripts (tests remain offline).
+- `git`, `make`
+- Optional: `tor` + `torsocks` for Tor-based fetches when required.
+  - Arch: `sudo pacman -S tor torsocks` (or `paru -S tor torsocks`)
+  - Enable: `sudo systemctl enable --now tor`
+  - Note: do NOT run a second `tor` instance on `127.0.0.1:9050` if `tor.service` is already running.
+    Check: `sudo ss -lntp | rg ':9050'`
+  - Use: `torsocks wget -O <path> <url>`
+
+## Dev / Quality
+- `pytest>=7.4.0`    # Testing framework
+- `ruff>=0.6.0`      # Fast linter
+"""
+
+[[document]]
+path = "docs/requirements/algebra.md"
+title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
+body_markdown = """
+# Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)
+
+These components live under `src/gemini_physics/` and are exercised by the unit tests.
+
+Install:
+```bash
+make install
+make test
+```
+
+Notes:
+- The core algebra replication/validation code depends only on the base install extras (NumPy/SciPy/SymPy/Numba).
+- Keep `PYTHONWARNINGS=error` enabled in scripts/CI; treat warnings as errors.
+- Artifact generation entrypoints:
+  - `make artifacts-boxkites` (de Marrais exports)
+  - `make artifacts-reggiani` (Reggiani exports)
+  - `make artifacts-motifs` (motif census baseline: 16D/32D + plot)
+  - `make artifacts-motifs-big` (motif census extended: 64D/128D exact + 256D sampled + plot)
+
+## Optional: advanced quaternion + math foundations (system + pip)
+
+The repo's default workflow uses an isolated venv (`make install`). If you want to use additional
+math foundations, install them into the venv with pip (recommended) even if you also have them
+installed system-wide (Arch/AUR).
+
+### Quaternion / geometry
+
+- euclid3
+  - Arch pkg: `python-euclid3`
+  - pip: `euclid3`
+  - import: `euclid3`
+- numpy-quaternion
+  - Arch pkg: `python-numpy-quaternion`
+  - pip: `numpy-quaternion`
+  - import: `quaternion`
+- pyquaternion
+  - Arch pkg: `python-pyquaternion`
+  - pip: `pyquaternion`
+  - import: `pyquaternion`
+- quaternionic (provider-dependent)
+  - Arch pkg: `python-quaternionic`
+  - pip: `quaternionic` (verify on install)
+  - import: usually `quaternionic` (verify on install)
+
+### Multidimensional numerics / inference
+
+- findiff (finite-difference derivatives, N dimensions)
+  - Arch pkg: `python-findiff`
+  - pip: `findiff`
+  - import: `findiff`
+- ipfn (iterative proportional fitting, N dimensions)
+  - Arch pkg: `python-ipfn`
+  - pip: `ipfn`
+  - import: `ipfn`
+- MultiNest Python bindings
+  - Arch pkg: `python-multinest`
+  - pip: commonly `pymultinest` (verify on install)
+  - import: commonly `pymultinest` (verify on install)
+- typedunits (units + dimensions with static checking)
+  - Arch pkg: `python-typedunits`
+  - pip: `typedunits` (verify on install)
+  - import: `typedunits` (verify on install)
+- mutatorMath (piecewise linear interpolation in multiple dimensions)
+  - Arch pkg: `python-mutatormath-git`
+  - pip: `MutatorMath` / `mutatorMath` (verify on install)
+  - import: commonly `mutatorMath` (verify on install)
+
+### Utility (non-math but sometimes needed in pipelines)
+
+- unicodedata2
+  - Arch pkg: `python-unicodedata2`
+  - pip: `unicodedata2`
+  - import: `unicodedata2`
+- defcon / fontMath (font tooling)
+  - Arch pkgs: `python-defcon`, `python-fontmath`
+  - pip: `defcon`, `fontMath`
+  - imports: `defcon`, `fontMath`
+  - warning: some transitive deps currently emit deprecation warnings on Python 3.14; avoid
+    importing these in `PYTHONWARNINGS=error` test paths unless the warnings are resolved upstream.
+
+## Deprecation note: pyfilesystem2 (`fs`) importing `pkg_resources`
+
+On this machine, the system `fs` package currently calls `pkg_resources.declare_namespace(...)`
+at import time. Newer `pkg_resources` emits a deprecation warning, which becomes a hard error under
+`PYTHONWARNINGS=error`.
+
+Workarounds (prefer reproducible venv-based ones):
+- Use a venv and pin `setuptools<81` (avoids the warning, but does not remove the underlying
+  dependency on `pkg_resources`).
+- Patch `fs` to avoid `pkg_resources` at import time (recommended if you must use `fs`):
+  `make patch-pyfilesystem2`
+  This applies the small `pkgutil.extend_path(...)` replacement in venv site-packages.
+
+Important:
+- This repo's `make` targets create an isolated venv via `python3 -m venv venv` which does NOT
+  see system site-packages by default.
+- To use these from the venv, either:
+  - install the pip equivalents into `venv` (preferred for reproducibility), or
+  - create the venv with system packages enabled (less reproducible):
+    `python3 -m venv --system-site-packages venv`
+
+Suggested venv install (edit as needed for your environment):
+```bash
+venv/bin/pip install euclid3 numpy-quaternion pyquaternion quaternionic findiff ipfn
+venv/bin/pip install typedunits pymultinest
+```
+
+Sanity-check note (this machine, system `python3` = 3.14.2, verified 2026-01-28):
+- Venv (`venv/bin/python3`): none of these are installed by default.
+- System `python3` import matrix with `PYTHONWARNINGS=error`:
+  - OK: `euclid3`, `quaternion` (numpy-quaternion), `pyquaternion`, `mutatorMath`, `ipfn`, `unicodedata2`, `fontMath`
+  - Missing: `quaternionic`, `typedunits`, `findiff`
+  - NOT warnings-as-errors safe: `defcon` (raises a `pkg_resources` deprecation warning at import time)
+
+If you need deterministic availability inside the repo build, install the pip equivalents into the venv.
+"""
+
+[[document]]
+path = "docs/requirements/analysis.md"
+title = "Requirements: Analysis (Topology + Embeddings)"
+body_markdown = """
+# Requirements: Analysis (Topology + Embeddings)
+
+These scripts use optional dependencies such as `networkx`, `ripser`, and friends.
+
+```bash
+make install-analysis
+```
+
+Notes:
+- Common entrypoints that require these extras:
+  - `src/topology_analysis.py` (ripser/persim)
+  - `src/vis_box_kites.py` (scikit-learn)
+  - `src/vis_advanced_projections.py` (scikit-learn, networkx)
+  - `src/holo_tensor_net.py`, `src/vis_hyper_mera*.py` (networkx)
+- Some scientific wheels may not exist for very new Python versions; if installs fail, use a container (or a Python 3.11/3.12 env) for this module.
+"""
+
+[[document]]
+path = "docs/requirements/astro.md"
+title = "Requirements: Astronomy Data Fetching"
+body_markdown = """
+# Requirements: Astronomy Data Fetching
+
+Astro scripts depend on `astroquery` and (for some workflows) `gwpy`.
+
+```bash
+make install-astro
+```
+
+Rust-based unified fetcher for cosmology/astro/geophysical pillars:
+
+```bash
+cargo run --bin fetch-datasets -- --list
+cargo run --bin fetch-datasets -- --all --skip-existing
+```
+
+If a dataset is missing, fetch it explicitly and record provenance in:
+- `data/external/PROVENANCE.local.json` (`make provenance`)
+- `docs/BIBLIOGRAPHY.md`
+- `docs/external_sources/DATASET_MANIFEST.md`
+
+Common entrypoints:
+- `src/fetch_observatory_data.py` (MAST, SDSS)
+- `src/fetch_pulsars_rigorous.py`, `src/map_cosmic_objects.py` (VizieR)
+- `src/fetch_ligo_gwpy.py` (GWpy)
+"""
+
+[[document]]
+path = "docs/requirements/coq.md"
+title = "Requirements: Coq Proof Checking"
+body_markdown = """
+# Requirements: Coq Proof Checking
+
+This repo contains `.v` files under `curated/01_theory_frameworks/`.
+
+Install Coq (example using `opam`):
+```bash
+opam install coq
+```
+
+Then run:
+```bash
+make coq
+```
+
+Notes:
+- The Makefile checks for `coqc` on PATH (Rocq/Coq compiler).
+- The current `confine_theorems_*.v` are statement inventories without proofs.
+- `make coq` generates `confine_theorems_*_axioms.v` (gitignored) to typecheck the interface.
+"""
+
+[[document]]
+path = "docs/requirements/cpp.md"
+title = "Requirements: C++ Kernels (Conan + CMake)"
+body_markdown = """
+# Requirements: C++ Kernels (Conan + CMake)
+
+This repo includes optional C++ kernels under `cpp/` (C++20) with Makefile targets:
+
+- `make cpp-deps`
+- `make cpp-build`
+- `make cpp-test`
+- `make cpp-bench`
+- `make cpp-clean`
+
+## Toolchain
+
+Typical requirements:
+- CMake >= 3.25
+- Conan 2.x
+- A C++20 compiler (GCC or Clang)
+
+Notes:
+- Conan profiles are machine-specific. Prefer keeping profiles local and avoid
+  committing machine-specific paths.
+- This is an optional acceleration layer; core correctness should remain covered
+  by Python tests and verifiers.
+
+## Build (example)
+
+```bash
+make cpp-build
+make cpp-test
+```
+
+If Conan/CMake are missing, install them via your system package manager or via
+pipx, then retry.
+"""
+
+[[document]]
+path = "docs/requirements/latex.md"
+title = "Requirements: LaTeX (PDF Build)"
+body_markdown = """
+# Requirements: LaTeX (PDF Build)
+
+To compile the LaTeX sources under `docs/latex/`, install a TeX distribution (e.g. TeX Live) and ensure `latexmk` is available.
+
+```bash
+make latex
+```
+
+Notes:
+- The Makefile checks for `latexmk` on PATH.
+- Output is written under `docs/latex/out/`.
+- Treat LaTeX as an opt-in toolchain: it is not part of `make smoke` or `make check`.
+"""
+
+[[document]]
+path = "docs/requirements/materials.md"
+title = "Requirements: Materials Datasets"
+body_markdown = """
+# Requirements: Materials Datasets
+
+For reproducible, keyless materials-science property datasets, prefer sources with clear licensing.
+
+Recommended starting points (see `docs/BIBLIOGRAPHY.md` for provenance and citations):
+- JARVIS-DFT (CC BY 4.0)
+- OQMD (CC BY 4.0, API/OPTiMaDe)
+- NOMAD (public archive, CC BY 4.0)
+
+This repo provides scripts to download and cache small, test-friendly subsets.
+
+```bash
+make install
+make artifacts-materials
+```
+
+References:
+- JARVIS paper: https://www.nature.com/articles/s41524-020-00440-1
+- JARVIS-DFT data (Figshare): https://figshare.com/articles/dataset/JARVIS-DFT_Database/6815699
+"""
+
+[[document]]
+path = "docs/requirements/particle.md"
+title = "Requirements: Particle Data Workflows"
+body_markdown = """
+# Requirements: Particle Data Workflows
+
+Particle workflows are optional and use Python extras:
+
+```bash
+make install-particle
+```
+
+This installs:
+- `uproot` for ROOT file reading in pure Python
+- `awkward` for columnar event arrays
+- `vector` for Lorentz-vector convenience types
+
+Use this module only for offline analyses against cached/open data snapshots.
+Do not add network calls to tests. Record provenance for any imported snapshots
+under `data/external/` and update `docs/BIBLIOGRAPHY.md`.
+"""
+
+[[document]]
+path = "docs/requirements/quantum-docker.md"
+title = "Requirements: Quantum (Qiskit via Docker)"
+body_markdown = """
+# Requirements: Quantum (Qiskit via Docker)
+
+Host Python may be too new for Qiskit wheels. Use Docker.
+
+```bash
+docker build -t qiskit-env -f docker/Dockerfile .
+./run_quantum_container.sh src/quantum/local_test.py
+```
+
+Makefile equivalents:
+```bash
+make docker-quantum-build
+make docker-quantum-run ARGS=\"src/quantum/local_test.py\"
+```
+
+Optional local install (Python 3.11/3.12 only; markers skip installs on >=3.13):
+```bash
+make install-quantum
+```
+
+See also: `docs/QISKIT_SETUP.md`.
+"""

@@ -5,7 +5,7 @@
 authoritative = true
 updated = "2026-02-09"
 source_markdown = "docs/INSIGHTS.md"
-entry_count = 7
+entry_count = 16
 preamble_markdown = """
 # Insights
 
@@ -23,65 +23,233 @@ ladder in CLAUDE.md.
 """
 
 [[entry]]
-id = "I-014"
-title = "Cayley-Dickson External Data Cross-Validation"
+id = "I-001"
+title = "Macquart Relation Fills the Comoving Distance Gap"
+body_markdown = """
+Date: 2026-02-06
+Status: verified
+Claims: C-071
+
+The Macquart relation connects FRB dispersion measures to redshift via integrated baryon density: DM_cosmic(z) = 935 * integral (1+z')/E(z') dz'. Bisection inversion (DM->z) converges in ~27 iterations. Foundation for comoving distance in ultrametric analysis.
+
+---
+"""
+
+[[entry]]
+id = "I-002"
+title = "Ultrametric Structure Lives in Representations, Not Scalars"
+body_markdown = """
+Date: 2026-02-06
+Status: verified
+Claims: C-071
+
+C-071 (FRB DMs exhibit p-adic ultrametric structure) definitively refuted using raw DM values. Ultrametricity is a property of hierarchical organization, not scalar distributions. This motivated five new analysis directions testing multi-attribute encodings, temporal cascades, and transformed coordinate spaces.
+
+---
+"""
+
+[[entry]]
+id = "I-003"
+title = "Existing Rust Crate Ecosystem for Cosmological Analysis"
+body_markdown = """
+Date: 2026-02-06
+Status: verified
+Claims: (none)
+
+Identified key crates preventing reimplementation: kodama 0.3.0 (dendrograms), kiddo 5.2.4 (k-d trees, AVX2), fitsrs 0.4.1 (FITS), rustfft 6.4.1 + realfft 3.5.0 (FFT), votable 0.7.0, satkit 0.9.3. Notable gaps requiring custom implementation: cophenetic correlation, Baire metric, local ultrametricity (Bradley 2025), KDE.
+
+---
+"""
+
+[[entry]]
+id = "I-004"
+title = "Kodama Dendrogram and Real Observational Cosmology Infrastructure"
+body_markdown = """
+Date: 2026-02-06
+Status: verified
+Claims: C-200, C-201, C-202, C-203, C-204, C-205, C-206, C-207, C-208, C-209, C-210
+
+Kodama returns Dendrogram with Step{cluster1, cluster2, dissimilarity, size}; cophenetic distance c(i,j) = dissimilarity at first merge, enabling cophenetic correlation. Also: first real-data joint fit of Lambda-CDM vs bounce cosmology using 1578 Pantheon+ SNe + 7 DESI DR1 BAO bins. Delta BIC = +7.37 favoring Lambda-CDM. Critical data quality fix: BGS/QSO bins are isotropic-only (not anisotropic).
+
+---
+"""
+
+[[entry]]
+id = "I-005"
+title = "Ultrametric Structure is Radio-Transient-Specific (Preliminary)"
+body_markdown = """
+Date: 2026-02-06
+Status: superseded
+Claims: C-437, C-442
+
+Initial 7-catalog survey with 5K subsampling found only FRB/pulsar catalogs showing significant ultrametric excess. SUPERSEDED by I-011 (GPU 10M-triple sweep): the 5K subsampling destroyed Hipparcos galactic signal, making the conclusion too narrow. The ISM-mediation hypothesis for radio transients remains valid.
+
+---
+"""
+
+[[entry]]
+id = "I-006"
+title = "Motif Census Scaling Laws (dim=16..256)"
+body_markdown = """
+**Date:** 2026-02-06
+**Status:** Verified (exact enumeration)
+**Claims:** C-100..C-110, C-443
+
+Scaling laws verified across 5 doublings (dim=16, 32, 64, 128, 256):
+
+- n_components = dim/2 - 1
+- nodes_per_component = dim/2 - 2
+- n_motif_classes = dim/16 (doubles each time)
+- n_K2_components = 3 + log2(dim) (+1 per doubling)
+- NO octahedra beyond dim=16
+
+All computed exactly (no sampling). dim=256 completes in ~2s release mode.
+
+---
+
+---
+"""
+
+[[entry]]
+id = "I-007"
+title = "Kerr Geodesic Integrator Verification Summary"
+body_markdown = """
+Date: 2026-02-06
+Status: verified
+Claims: C-028
+
+u=1/r regularized Kerr geodesic integrator (Dopri5, Mino time) passes: potential non-negativity, circular photon orbit at 3M, near-horizon infall, a=0.998 stability, r=500 large-distance, shadow area pi*27, asymmetry at a=0.9, coordinate/Mino time monotonicity. Hamiltonian constraint inaccessible from dense output.
+
+---
+"""
+
+[[entry]]
+id = "I-008"
+title = "Cross-Domain Ultrametric Analysis (5K Subsampling)"
+body_markdown = """
+Date: 2026-02-06
+Status: superseded
+Claims: C-437
+
+9-catalog ultrametric fraction test with 5K subsampling: only CHIME/FRB and ATNF pulsars pass. Hipparcos at null baseline (p=0.438). SUPERSEDED by I-011: GPU sweep with 10M triples shows Hipparcos 48/114 significant at BH-FDR<0.05. The 5K subsampling destroyed the galactic spatial hierarchy signal.
+
+---
+"""
+
+[[entry]]
+id = "I-009"
+title = "Elliptic Integral Crate Eliminates Carlson Port"
+body_markdown = """
+Date: 2026-02-06
+Status: verified
+Claims: (none)
+
+The ellip crate (1.0.4, BSD-3-Clause) provides all 5 Carlson symmetric forms (RF, RD, RJ, RC, RG) plus Legendre complete/incomplete integrals (K, E, Pi, D, F). Eliminates need to hand-port Carlson from C++ Blackhole codebase. Tested against Boost Math and Wolfram reference values.
+
+---
+"""
+
+[[entry]]
+id = "I-010"
+title = "nalgebra 0.33/0.34 Version Split Blocks Autodiff"
+body_markdown = """
+Date: 2026-02-06
+Status: open
+Claims: (none)
+
+num-dual 0.13.2 (autodiff via dual numbers) requires nalgebra 0.34, while workspace is pinned to 0.33. Decision: defer num-dual, use closed-form Christoffels for known metrics (Schwarzschild, Kerr, Kerr-Newman). num-dual needed only for generic connection computation on arbitrary metrics.
+
+---
+"""
+
+[[entry]]
+id = "I-011"
+title = "GPU Ultrametric Sweep (9 catalogs)"
+body_markdown = """
+**Date:** 2026-02-06
+**Status:** Verified (supersedes I-008)
+**Claims:** C-071, C-436..C-440, C-442
+
+10M triples x 1000 permutations x RTX 4070 Ti via cudarc 0.19.1.
+82/472 tests significant at BH-FDR < 0.05 across 7/9 catalogs.
+
+Key result: the dominant ultrametric signal is galactic kinematics (Hipparcos
+48/114, Gaia 12/114), NOT radio-transient ISM as previously concluded (I-008).
+The old conclusion was an artifact of 5K subsampling that destroyed spatial
+hierarchy in large catalogs.
+
+See `data/csv/c071g_exploration_gpu_10M_1000perm.csv` for full results.
+
+---
+
+---
+"""
+
+[[entry]]
+id = "I-012"
+title = "The Pathion Cubic Anomaly"
 body_markdown = """
 **Date:** 2026-02-07
-**Status:** Cross-Validation Complete
-**Claims:** C-450 through C-457
+**Status:** Verified algebraic phenomenon. Physical interpretation: speculative.
+**Claims:** C-443 (verified), C-444 (verified), C-445 (refuted), C-448 (verified)
 
-### Summary
+### Finding
 
-Cross-validated 68 external files (5 de Marrais PDFs, 36 unique CSVs after
-deduplication) from an AI-generated Cayley-Dickson data set against our Rust
-integer-exact computations. Key results:
+At dimension 32 (pathions), the zero-divisor motif graph decomposes into 15
+connected components mapping bijectively to PG(3,2). These components split
+into two topological classes:
 
-### Verified
+- **8 heptacross** (K_{2,2,2,2,2,2,2}): 14 nodes, 84 edges, degree-12 regular
+- **7 mixed-degree**: 14 nodes, 36 edges, degree sequence [4^12, 12^2]
 
-1. **Strut table (C-454):** De Marrais's published strut table for all 7
-   sedenion box-kites matches our `canonical_strut_table()` output exactly.
-   All 42 assessor pairs, all 21 strut pairings, and the inner XOR property
-   confirmed.
+The minimum GF(2) polynomial degree that separates this 8/7 partition is **3
+(cubic)**. This was established by exhaustive Boolean function search:
 
-2. **8D lattice embedding (C-452, C-453):** Cayley-Dickson basis elements at
-   dims 256, 512, 1024, and 2048 all embed into the same 8-dimensional
-   integer lattice with coordinates in {-1, 0, 1}. The lattice dimension does
-   NOT grow with log2(dim) as originally hypothesized. This is consistent with
-   the octonion sub-algebra (8D) providing the fundamental lattice structure.
+| Degree | Monomial count | Search space | Result |
+|--------|---------------|--------------|--------|
+| 1 (linear) | 5 | 2^5 = 32 | No separator |
+| 2 (quadratic) | 11 | 2^11 = 2048 | No separator |
+| 3 (cubic) | 15 | 2^15 = 32768 | **Separator found** |
 
-3. **Nested-tuple parser (C-457):** A tree-based parser correctly handles the
-   Cayley-Dickson doubling-tree representation across 4476 rows spanning 5
-   dimensions.
+The separator is a cubic GF(2) polynomial on the 4-bit PG(3,2) labels.
 
-### Refuted
+### Algebraic significance (verified)
 
-1. **E8 lattice-ZD connection (C-455):** Lattice differences between
-   ZD-adjacent pairs at dim=16 have norm-squared values {4, 6, 8, 10, 12,
-   14, 18} but never 2. E8 roots (norm^2 = 2) are completely absent. The
-   minimum ZD separation in the 8D lattice is |d|^2 = 4.
+- The 8/7 split is NOT a hyperplane (linear subspace) of PG(3,2). This refutes
+  the naive AG(3,2) / hyperplane-at-infinity interpretation (C-445 refuted).
+- The split IS a cubic hypersurface. Point 8 (binary 1000) has bit 3 set but
+  belongs to the heptacross class (along with points 1-7), breaking any
+  linear or quadratic classifier.
+- At dim=16 (sedenions), the 7 box-kite components are structurally uniform
+  (all octahedral K_{2,2,2}), so no class separation question arises.
+  The cubic obstruction is specific to the first post-sedenion doubling.
 
-2. **256D associativity CSV (C-456):** The external CSV incorrectly claims all
-   125 tested triples are associative. Our Rust computation identifies 4/50
-   non-associative triples involving high-index basis elements (e_128 * e_64 *
-   e_32, etc.). This confirms the CSV is AI-generated with errors.
+### Open questions
 
-### Structural Finding
+1. What is the minimum separating degree at dim=64 (4 motif classes, PG(4,2))?
+   Does the degree grow with the doubling level?
+2. Is the cubic polynomial unique (up to GF(2) equivalence), or are there
+   multiple independent cubics that separate the classes?
+3. Does the cubic structure persist at dim=128 and dim=256 for the analogous
+   binary partition (most-edges class vs rest)?
 
-The 105 unique lattice-difference vectors between ZD-adjacent pairs distribute
-across 7 distinct norm-squared values. The peak at |d|^2 = 6 (84 occurrences)
-suggests that ZD adjacency preferentially connects basis elements that differ
-in 3 lattice coordinates by 1 each plus some additional structure. The absence
-of |d|^2 = 0 (no self-adjacency) and |d|^2 = 2 (no nearest-neighbor
-adjacency) creates a \"forbidden zone\" in lattice space around each basis
-element where ZD partners cannot exist.
+### Physical interpretation (speculative)
 
-### Data Quality
+The zero-divisor geometry could be mapped to a holographic coding basis where
+the PG(n-2,2) labels encode vacuum sector indices. Under this (unverified)
+mapping, the cubic obstruction would mean that post-sedenion vacuum sectors
+cannot be distinguished by linear probes -- a non-linear measurement is
+required. However, NO direct connection to Hamiltonian dynamics, GR, or any
+physical observable has been established. This interpretation remains at the
+\"speculative\" tier of the verification ladder.
 
-- PDFs: Authentic, verified (strut table matches)
-- Lattice CSVs: High quality, verified at all 4 dimensions
-- Adjacency CSVs: Multiple incompatible representations, inconclusive
-- Associativity CSV: Contains errors, AI-generated
-- Comparison/qualitative CSVs: Speculative, no numerical content
+### Verification
+
+- Test: `test_determine_exact_degree_dim32` in `projective_geometry.rs`
+- Ancillary: `test_boolean_predicate_dim32_motif_classes` (degree 3 or 4)
+- Data: `motif_components_for_cross_assessors(32)` in `boxkites.rs`
+
+---
 
 ---
 """
@@ -152,113 +320,72 @@ This confirms the **Ultrametric Core Mining Hypothesis (UCMH)**. We can now use 
 2.  **Integrity Check:** If a pipeline update changes the Cores of a standard catalog, it implies a geometry-altering bug.
 
 ---
+
+---
 """
 
 [[entry]]
-id = "I-012"
-title = "The Pathion Cubic Anomaly"
+id = "I-014"
+title = "Cayley-Dickson External Data Cross-Validation"
 body_markdown = """
 **Date:** 2026-02-07
-**Status:** Verified algebraic phenomenon. Physical interpretation: speculative.
-**Claims:** C-443 (verified), C-444 (verified), C-445 (refuted), C-448 (verified)
+**Status:** Cross-Validation Complete
+**Claims:** C-450 through C-457
 
-### Finding
+### Summary
 
-At dimension 32 (pathions), the zero-divisor motif graph decomposes into 15
-connected components mapping bijectively to PG(3,2). These components split
-into two topological classes:
+Cross-validated 68 external files (5 de Marrais PDFs, 36 unique CSVs after
+deduplication) from an AI-generated Cayley-Dickson data set against our Rust
+integer-exact computations. Key results:
 
-- **8 heptacross** (K_{2,2,2,2,2,2,2}): 14 nodes, 84 edges, degree-12 regular
-- **7 mixed-degree**: 14 nodes, 36 edges, degree sequence [4^12, 12^2]
+### Verified
 
-The minimum GF(2) polynomial degree that separates this 8/7 partition is **3
-(cubic)**. This was established by exhaustive Boolean function search:
+1. **Strut table (C-454):** De Marrais's published strut table for all 7
+   sedenion box-kites matches our `canonical_strut_table()` output exactly.
+   All 42 assessor pairs, all 21 strut pairings, and the inner XOR property
+   confirmed.
 
-| Degree | Monomial count | Search space | Result |
-|--------|---------------|--------------|--------|
-| 1 (linear) | 5 | 2^5 = 32 | No separator |
-| 2 (quadratic) | 11 | 2^11 = 2048 | No separator |
-| 3 (cubic) | 15 | 2^15 = 32768 | **Separator found** |
+2. **8D lattice embedding (C-452, C-453):** Cayley-Dickson basis elements at
+   dims 256, 512, 1024, and 2048 all embed into the same 8-dimensional
+   integer lattice with coordinates in {-1, 0, 1}. The lattice dimension does
+   NOT grow with log2(dim) as originally hypothesized. This is consistent with
+   the octonion sub-algebra (8D) providing the fundamental lattice structure.
 
-The separator is a cubic GF(2) polynomial on the 4-bit PG(3,2) labels.
+3. **Nested-tuple parser (C-457):** A tree-based parser correctly handles the
+   Cayley-Dickson doubling-tree representation across 4476 rows spanning 5
+   dimensions.
 
-### Algebraic significance (verified)
+### Refuted
 
-- The 8/7 split is NOT a hyperplane (linear subspace) of PG(3,2). This refutes
-  the naive AG(3,2) / hyperplane-at-infinity interpretation (C-445 refuted).
-- The split IS a cubic hypersurface. Point 8 (binary 1000) has bit 3 set but
-  belongs to the heptacross class (along with points 1-7), breaking any
-  linear or quadratic classifier.
-- At dim=16 (sedenions), the 7 box-kite components are structurally uniform
-  (all octahedral K_{2,2,2}), so no class separation question arises.
-  The cubic obstruction is specific to the first post-sedenion doubling.
+1. **E8 lattice-ZD connection (C-455):** Lattice differences between
+   ZD-adjacent pairs at dim=16 have norm-squared values {4, 6, 8, 10, 12,
+   14, 18} but never 2. E8 roots (norm^2 = 2) are completely absent. The
+   minimum ZD separation in the 8D lattice is |d|^2 = 4.
 
-### Open questions
+2. **256D associativity CSV (C-456):** The external CSV incorrectly claims all
+   125 tested triples are associative. Our Rust computation identifies 4/50
+   non-associative triples involving high-index basis elements (e_128 * e_64 *
+   e_32, etc.). This confirms the CSV is AI-generated with errors.
 
-1. What is the minimum separating degree at dim=64 (4 motif classes, PG(4,2))?
-   Does the degree grow with the doubling level?
-2. Is the cubic polynomial unique (up to GF(2) equivalence), or are there
-   multiple independent cubics that separate the classes?
-3. Does the cubic structure persist at dim=128 and dim=256 for the analogous
-   binary partition (most-edges class vs rest)?
+### Structural Finding
 
-### Physical interpretation (speculative)
+The 105 unique lattice-difference vectors between ZD-adjacent pairs distribute
+across 7 distinct norm-squared values. The peak at |d|^2 = 6 (84 occurrences)
+suggests that ZD adjacency preferentially connects basis elements that differ
+in 3 lattice coordinates by 1 each plus some additional structure. The absence
+of |d|^2 = 0 (no self-adjacency) and |d|^2 = 2 (no nearest-neighbor
+adjacency) creates a \"forbidden zone\" in lattice space around each basis
+element where ZD partners cannot exist.
 
-The zero-divisor geometry could be mapped to a holographic coding basis where
-the PG(n-2,2) labels encode vacuum sector indices. Under this (unverified)
-mapping, the cubic obstruction would mean that post-sedenion vacuum sectors
-cannot be distinguished by linear probes -- a non-linear measurement is
-required. However, NO direct connection to Hamiltonian dynamics, GR, or any
-physical observable has been established. This interpretation remains at the
-\"speculative\" tier of the verification ladder.
+### Data Quality
 
-### Verification
-
-- Test: `test_determine_exact_degree_dim32` in `projective_geometry.rs`
-- Ancillary: `test_boolean_predicate_dim32_motif_classes` (degree 3 or 4)
-- Data: `motif_components_for_cross_assessors(32)` in `boxkites.rs`
+- PDFs: Authentic, verified (strut table matches)
+- Lattice CSVs: High quality, verified at all 4 dimensions
+- Adjacency CSVs: Multiple incompatible representations, inconclusive
+- Associativity CSV: Contains errors, AI-generated
+- Comparison/qualitative CSVs: Speculative, no numerical content
 
 ---
-"""
-
-[[entry]]
-id = "I-011"
-title = "GPU Ultrametric Sweep (9 catalogs)"
-body_markdown = """
-**Date:** 2026-02-06
-**Status:** Verified (supersedes I-008)
-**Claims:** C-071, C-436..C-440, C-442
-
-10M triples x 1000 permutations x RTX 4070 Ti via cudarc 0.19.1.
-82/472 tests significant at BH-FDR < 0.05 across 7/9 catalogs.
-
-Key result: the dominant ultrametric signal is galactic kinematics (Hipparcos
-48/114, Gaia 12/114), NOT radio-transient ISM as previously concluded (I-008).
-The old conclusion was an artifact of 5K subsampling that destroyed spatial
-hierarchy in large catalogs.
-
-See `data/csv/c071g_exploration_gpu_10M_1000perm.csv` for full results.
-
----
-"""
-
-[[entry]]
-id = "I-006"
-title = "Motif Census Scaling Laws (dim=16..256)"
-body_markdown = """
-**Date:** 2026-02-06
-**Status:** Verified (exact enumeration)
-**Claims:** C-100..C-110, C-443
-
-Scaling laws verified across 5 doublings (dim=16, 32, 64, 128, 256):
-
-- n_components = dim/2 - 1
-- nodes_per_component = dim/2 - 2
-- n_motif_classes = dim/16 (doubles each time)
-- n_K2_components = 3 + log2(dim) (+1 per doubling)
-- NO octahedra beyond dim=16
-
-All computed exactly (no sampling). dim=256 completes in ~2s release mode.
 
 ---
 """
@@ -325,11 +452,13 @@ lattice codebook filtration of Cayley-Dickson algebras. Results:
 - Connection between lex-prefix filtration and octonion subalgebra structure
 
 ---
+
+---
 """
 
 [[entry]]
 id = "I-016"
-title = "De Marrais Emanation Architecture (Sprint 10, 2026-02-08)"
+title = "De Marrais Emanation Architecture"
 body_markdown = """
 **Claims**: C-468..C-475
 **Module**: `crates/algebra_core/src/emanation.rs` (~4400 lines, 113 tests)
@@ -395,4 +524,6 @@ The module follows a layered design:
 - **Brocade CPO preservation**: The CPO count is uniform across BKs but
   the actual count (0 or >0) needs algebraic explanation from Fano plane
   complementation properties.
+
+---
 """

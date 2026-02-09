@@ -1,6 +1,10 @@
-<!-- AUTO-GENERATED: DO NOT EDIT -->
-<!-- Source of truth: registry/next_actions.toml, registry/next_actions_narrative.toml -->
+# Next Actions Narrative narrative overlay registry (TOML-first).
 
+[next_actions_narrative]
+authoritative = true
+updated = "2026-02-09"
+source_markdown = "docs/NEXT_ACTIONS.md"
+body_markdown = """
 # Next Actions (Prioritized)
 
 Updated 2026-02-09 after Sprint 24 completion.
@@ -117,7 +121,7 @@ Updated 2026-02-09 after Sprint 24 completion.
 
 3) **Paper-ready LaTeX pipeline** (ROADMAP 7.5)
    - `make latex` build from verified results.
-   - Structured "hypotheses + tests + results" format.
+   - Structured \"hypotheses + tests + results\" format.
    - Priority target: ultrametric core mining (I-013) or lattice codebook (I-015).
 
 ### Medium Priority
@@ -149,7 +153,7 @@ Updated 2026-02-09 after Sprint 24 completion.
 
 ### Low Priority / Long-Term
 
-7) ~~**Mass "clumping" hypothesis test** (A.4)~~ -- DONE (Sprint 8: mass-clumping binary)
+7) ~~**Mass \"clumping\" hypothesis test** (A.4)~~ -- DONE (Sprint 8: mass-clumping binary)
 8) ~~**Experiments portfolio shortlist** (C.9)~~ -- DONE (Sprint 8)
 9) ~~**Fast basis-element multiplication table generator** (ROADMAP 4.2)~~ -- DONE (Sprint 8: CdMultTable)
 10) ~~**Materials science second dataset** (ROADMAP 7.3)~~ -- DONE
@@ -166,3 +170,4 @@ Updated 2026-02-09 after Sprint 24 completion.
 13) **GPU tensor network contraction** (ROADMAP 8)
     - Extend cudarc GPU path beyond ultrametric testing.
     - Target: PEPS boundary contraction for larger system sizes.
+"""

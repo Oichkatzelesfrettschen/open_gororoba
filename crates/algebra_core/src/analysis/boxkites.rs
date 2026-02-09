@@ -3460,4 +3460,168 @@ mod tests {
             }
         }
     }
+
+    /// Algebraic mechanism of the Universal Double 3:1 Law (C-487).
+    ///
+    /// For each edge between cross-assessors a=(i,j) and b=(k,l), define
+    /// sigma_ab = cd_basis_mul_sign(dim, i, k) * cd_basis_mul_sign(dim, j, l).
+    /// Then sigma_ab = -1 iff the edge is Same-type.
+    ///
+    /// For a triangle (a,b,c), the product sigma_ab * sigma_bc * sigma_ac
+    /// determines a parity class:
+    ///   product = +1 => n_same is even: {AllOpposite, TwoSameOneOpp}
+    ///   product = -1 => n_same is odd:  {AllSame, OneSameTwoOpp}
+    ///
+    /// Within each class, there are exactly 4 possible sign tuples
+    /// (3 "mixed" + 1 "pure"). If these 4 tuples are equally represented
+    /// across all triangles in a component, the 3:1 ratio follows from
+    /// C(3,2):C(3,0) = C(3,1):C(3,3) = 3.
+    ///
+    /// This test verifies: (1) sigma = -1 iff Same, (2) parity product
+    /// determines the face class, (3) the 4 sign tuples within each class
+    /// are equally represented per component.
+    #[test]
+    fn test_double_three_to_one_algebraic_mechanism() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        for dim in [16, 32, 64] {
+            let components = motif_components_for_cross_assessors(dim);
+
+            for (comp_idx, comp) in components.iter().enumerate() {
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let adj: HashSet<(CrossPair, CrossPair)> = comp
+                    .edges
+                    .iter()
+                    .flat_map(|&(a, b)| [(a, b), (b, a)])
+                    .collect();
+
+                // Step 1: Verify sigma = -1 iff Same for every edge.
+                for &(a, b) in &comp.edges {
+                    let (i, j) = a;
+                    let (k, l) = b;
+                    let sigma = cd_basis_mul_sign(dim, i, k) * cd_basis_mul_sign(dim, j, l);
+                    let edge_type = edge_sign_type_exact(dim, a, b);
+                    match edge_type {
+                        EdgeSignType::Same => assert_eq!(
+                            sigma, -1,
+                            "dim={} comp[{}] edge {:?}--{:?}: Same but sigma={}",
+                            dim, comp_idx, a, b, sigma
+                        ),
+                        EdgeSignType::Opposite => assert_eq!(
+                            sigma, 1,
+                            "dim={} comp[{}] edge {:?}--{:?}: Opposite but sigma={}",
+                            dim, comp_idx, a, b, sigma
+                        ),
+                    }
+                }
+
+                // Step 2: Enumerate triangles and classify by sigma product.
+                // sigma tuple for a triangle: (sigma_ab, sigma_bc, sigma_ac)
+                // Count each of the 8 possible tuples per component.
+                let mut tuple_counts: HashMap<(i32, i32, i32), usize> = HashMap::new();
+                let mut n_triangles = 0usize;
+
+                for &(u, v) in &comp.edges {
+                    for &w in &nodes {
+                        if w <= v {
+                            continue;
+                        }
+                        if adj.contains(&(u, w)) && adj.contains(&(v, w)) {
+                            let (i, j) = u; // a
+                            let (k, l) = v; // b
+                            let (m, n) = w; // c
+                            let sigma_ab = cd_basis_mul_sign(dim, i, k) * cd_basis_mul_sign(dim, j, l);
+                            let sigma_bc = cd_basis_mul_sign(dim, k, m) * cd_basis_mul_sign(dim, l, n);
+                            let sigma_ac = cd_basis_mul_sign(dim, i, m) * cd_basis_mul_sign(dim, j, n);
+
+                            let product = sigma_ab * sigma_bc * sigma_ac;
+                            // n_same = number of sigma=-1 edges
+                            let n_same = [sigma_ab, sigma_bc, sigma_ac].iter().filter(|&&s| s == -1).count();
+
+                            // Verify parity: product = (-1)^n_same
+                            let expected_product = if n_same % 2 == 0 { 1 } else { -1 };
+                            assert_eq!(
+                                product, expected_product,
+                                "dim={} comp[{}] tri ({:?},{:?},{:?}): product={} but n_same={}",
+                                dim, comp_idx, u, v, w, product, n_same
+                            );
+
+                            *tuple_counts.entry((sigma_ab, sigma_bc, sigma_ac)).or_insert(0) += 1;
+                            n_triangles += 1;
+                        }
+                    }
+                }
+
+                if n_triangles == 0 {
+                    continue;
+                }
+
+                // Step 3: Check equal representation within each parity class.
+                // Class +1 (even n_same): tuples (+,+,+), (-,-,+), (-,+,-), (+,-,-)
+                let class_pos = [
+                    (1, 1, 1),    // AllOpposite
+                    (-1, -1, 1),  // TwoSameOneOpp (ab,bc Same, ac Opp)
+                    (-1, 1, -1),  // TwoSameOneOpp (ab,ac Same, bc Opp)
+                    (1, -1, -1),  // TwoSameOneOpp (bc,ac Same, ab Opp)
+                ];
+                // Class -1 (odd n_same): tuples (-,-,-), (+,+,-), (+,-,+), (-,+,+)
+                let class_neg = [
+                    (-1, -1, -1), // AllSame
+                    (1, 1, -1),   // OneSameTwoOpp (ac Same)
+                    (1, -1, 1),   // OneSameTwoOpp (bc Same)
+                    (-1, 1, 1),   // OneSameTwoOpp (ab Same)
+                ];
+
+                let pos_counts: Vec<usize> = class_pos
+                    .iter()
+                    .map(|t| tuple_counts.get(t).copied().unwrap_or(0))
+                    .collect();
+                let neg_counts: Vec<usize> = class_neg
+                    .iter()
+                    .map(|t| tuple_counts.get(t).copied().unwrap_or(0))
+                    .collect();
+
+                let pos_total: usize = pos_counts.iter().sum();
+                let neg_total: usize = neg_counts.iter().sum();
+
+                // Within class +1: verify all 4 tuples have equal count.
+                if pos_total > 0 {
+                    let expected = pos_total / 4;
+                    assert_eq!(
+                        pos_total % 4, 0,
+                        "dim={} comp[{}] class+1 total {} not divisible by 4. Counts: {:?}",
+                        dim, comp_idx, pos_total, pos_counts
+                    );
+                    for (idx, &cnt) in pos_counts.iter().enumerate() {
+                        assert_eq!(
+                            cnt, expected,
+                            "dim={} comp[{}] class+1 tuple {} has count {} != expected {}. All counts: {:?}",
+                            dim, comp_idx, idx, cnt, expected, pos_counts
+                        );
+                    }
+                }
+
+                // Within class -1: verify all 4 tuples have equal count.
+                if neg_total > 0 {
+                    let expected = neg_total / 4;
+                    assert_eq!(
+                        neg_total % 4, 0,
+                        "dim={} comp[{}] class-1 total {} not divisible by 4. Counts: {:?}",
+                        dim, comp_idx, neg_total, neg_counts
+                    );
+                    for (idx, &cnt) in neg_counts.iter().enumerate() {
+                        assert_eq!(
+                            cnt, expected,
+                            "dim={} comp[{}] class-1 tuple {} has count {} != expected {}. All counts: {:?}",
+                            dim, comp_idx, idx, cnt, expected, neg_counts
+                        );
+                    }
+                }
+
+                // The 3:1 ratio now follows automatically:
+                // Class +1: TwoSameOneOpp = 3*expected, AllOpposite = expected -> ratio 3:1
+                // Class -1: OneSameTwoOpp = 3*expected, AllSame = expected -> ratio 3:1
+            }
+        }
+    }
 }

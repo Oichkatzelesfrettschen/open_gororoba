@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/requirements.toml, registry/requirements_narrative.toml -->
+
 # Requirements for Gemini Experiments
 
 This project follows a "Maximal Synthesis" protocol. Installs are designed to be reproducible,
