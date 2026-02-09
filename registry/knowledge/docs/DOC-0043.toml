@@ -3,84 +3,116 @@
 
 [document]
 id = "DOC-0043"
-source_path = "docs/MOTIF_CENSUS_SCHEMA.md"
-title = "Cayley-Dickson Motif Census: CSV Schemas"
+source_path = "docs/MATH_VALIDATION_REPORT.md"
+title = "Mathematical Validation Report"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "4a867f82231b84cf3c6a27092d6938954c3b8576316e0841ab63c31bfec2b16f"
-source_line_count = 65
-source_size_bytes = 2138
-content_sha256 = "4a867f82231b84cf3c6a27092d6938954c3b8576316e0841ab63c31bfec2b16f"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "7f82b84e97fb5fd1a4d1d1b82da1f69cfa4909f6f348f9d3c832c4009f634a55"
+source_line_count = 97
+source_size_bytes = 4329
+content_sha256 = "7f82b84e97fb5fd1a4d1d1b82da1f69cfa4909f6f348f9d3c832c4009f634a55"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Cayley-Dickson Motif Census: CSV Schemas
+# Mathematical Validation Report
 
-This repo treats \"motif census\" as a reproducible export of connected components of a
-diagonal-zero-product graph built from sparse 2-blades.
+**Date:** 2026-01-27
 
-For a given dimension `dim = 2^n` we define the cross-assessor family:
-- nodes are pairs `(low, high)` with `low in [1, dim/2 - 1]` and `high in [dim/2, dim-1]`.
-- the two diagonals correspond to `(e_low +/- e_high)`.
-- an undirected edge exists between assessors `a` and `b` if **any** sign choice makes the product
-  exactly zero under the repo's CD multiplication convention.
+This report summarizes which *mathematical* statements in this repository are:
+- supported by reproducible computations/tests in-repo, and
+- consistent with well-known published results (with citations).
 
-Export entrypoint:
-- `src/export_cd_motif_census.py`
+It also highlights gaps where the repo's narrative exceeds what has been validated.
 
-## `data/csv/cd_motif_components_{dim}d.csv`
+## 1) Scope
 
-One row per connected component.
+This document covers the \"hard math\" layer:
+- Cayley-Dickson construction properties (associativity, norm composition, zero divisors)
+- a minimal group-theory fact used in docs (`|PSL(2,7)| = 168`)
+- dimensional-geometry formulas implemented via analytic continuation (Gamma function)
 
-Columns:
-- `dim` (int)
-- `component_id` (int, 0-based within that `dim`)
-- `node_count` (int)
-- `edge_count` (int)
-- `degree_min` (int)
-- `degree_max` (int)
-- `degree_mean` (float)
-- `is_octahedron_k222` (bool) -- octahedron graph / K_{2,2,2}: 6 nodes, 12 edges, degree 4
-- `k2_multipartite_part_count` (int) -- if nonzero, the component is a complete multipartite graph
-  with all parts of size 2 (complement is a perfect matching); value is the number of 2-vertex parts
-- `is_cuboctahedron` (bool) -- 12 nodes, 24 edges, degree 4
-- `sampled` (bool) -- true if `--max-nodes` sampling was used
-- `sample_max_nodes` (int or empty)
-- `seed` (int)
+It does **not** claim physical validation (astrophysics/cosmology/metamaterials), which requires
+separate empirical and modeling work.
 
-## `data/csv/cd_motif_nodes_{dim}d.csv`
+## 2) Cayley-Dickson algebra: what is validated here
 
-One row per node occurrence (nodes are unique per component).
+Key references:
+- Baez (2002), *The Octonions*: https://arxiv.org/abs/math/0105155
+- de Marrais (c. 2002), *The 42 Assessors and the Box-Kites they fly*: https://arxiv.org/abs/math/0011260
 
-Columns:
-- `dim` (int)
-- `component_id` (int)
-- `low` (int)
-- `high` (int)
+### 2.1 Non-associativity appears at 8D (octonions)
 
-This file is written only when `src/export_cd_motif_census.py` is run without `--summary-only`.
+**Published result:** octonions are non-associative (but alternative). See Baez (2002).  
+**Repo validation:** `tests/test_cayley_dickson_properties.py` checks:
+- associativity holds for dimensions 1,2,4 (reals/complex/quaternions)
+- a counterexample is found in 8D via seeded random search
 
-## `data/csv/cd_motif_edges_{dim}d.csv`
+### 2.2 Norm composition holds through 8D and fails at 16D
 
-One row per undirected edge.
+**Published result:** Hurwitz-style classification implies multiplicative norms only for
+dimensions 1,2,4,8. See Baez (2002).  
+**Repo validation:** `tests/test_cayley_dickson_properties.py` checks:
+- `||ab||^2 = ||a||^2 ||b||^2` for many random pairs in 8D
+- the identity fails for some pairs in 16D (sedenions)
 
-Columns:
-- `dim` (int)
-- `component_id` (int)
-- `a_low` (int)
-- `a_high` (int)
-- `b_low` (int)
-- `b_high` (int)
+### 2.3 Explicit sedenion zero divisors exist
 
-This file is written only when `src/export_cd_motif_census.py` is run without `--summary-only`.
+**Published result:** sedenions have zero divisors; de Marrais develops explicit \"assessor/box-kite\"
+structure for primitive zero divisors (de Marrais, c. 2002; see `docs/BIBLIOGRAPHY.md`).  
+**Repo validation:** `tests/test_cayley_dickson_properties.py` includes an explicit identity under
+the repo's basis convention:
 
-Notes:
-- This export intentionally omits per-edge sign-solution lists for now (keeps schema stable and
-  small). If/when sign classes are needed (trefoil/zigzag generalizations), add a new column with a
-  clearly versioned encoding.
+`(e1 + e10) * (e4 - e15) = 0`
+
+This is computed with `gemini_physics.optimized_algebra.cd_multiply_jit` using the same
+canonical Cayley-Dickson multiplication convention (e.g. `e1*e2=e3`).
+
+### 2.4 de Marrais \"42 assessors / 7 box-kites\" structure (replicated)
+
+**Published result (de Marrais, abstract):** 168 primitive unit zero divisors are arranged as quartets
+along 42 assessors; assessors organize into seven \"box-kites\" (octahedral vertex structures). See
+arXiv:math/0011260.
+
+**Repo validation:**
+- `src/gemini_physics/de_marrais_boxkites.py` computes primitive assessors and box-kites from the
+  repo's sedenion multiplication convention.
+- `tests/test_de_marrais_boxkites.py` verifies:
+  - 42 primitive assessors (subset of the 56 cross-pairs),
+  - `42 * 4 = 168` unit points on assessor diagonals,
+  - 7 connected components, each the octahedron graph (6 vertices, 12 edges, degree 4),
+  - every edge corresponds to at least one diagonal sign pairing with product exactly 0.
+
+## 3) Group-theory fact used in the narrative
+
+### 3.1 Order of PSL(2,7)
+
+**Published/standard result:** `|PSL(2,q)| = q(q^2-1)/gcd(2,q-1)` for q a prime power; for `q=7`
+this gives 168.
+
+**Repo validation:** `tests/test_group_theory.py` checks `order_psl2_q(7) == 168` via
+`gemini_physics.group_theory.order_psl2_q`.
+
+**Important caveat:** This does **not** validate the *mapping* from `PSL(2,7)` to box-kite geometry;
+it only validates the group order arithmetic.
+
+## 4) Dimensional continuation (analytic continuation)
+
+**Published result:** sphere/ball volumes and related formulas extend to non-integer dimension via
+Gamma functions, with poles at non-positive even integers, etc. (Standard special-function facts.)
+
+**Repo validation:** `tests/test_dimensional_geometry.py` verifies integer-dimension identities
+and consistency checks for `src/gemini_physics/dimensional_geometry.py`.
+
+## 5) What remains unvalidated (math-facing)
+
+High-impact items still requiring explicit replication from primary sources:
+- De Marrais \"42 assessors / 7 box-kites / PSL(2,7) action\" reproduction as code + tests
+- Reggiani (2024) definitions of `ZD(S)`/geometry reproduced precisely and aligned to repo terms
+
+See `docs/NEXT_ACTIONS.md`.
 
 """

@@ -13,9 +13,11 @@ from __future__ import annotations
 import argparse
 import hashlib
 from dataclasses import dataclass
-from datetime import datetime, timezone
 from pathlib import Path
 import tomllib
+
+
+DETERMINISTIC_STAMP = "deterministic"
 
 
 @dataclass(frozen=True)
@@ -100,7 +102,7 @@ def _to_toml_multiline(content: str) -> str:
     return '"""\n' + "".join(out) + '\n"""'
 
 
-def _render_doc_toml(source: SourceDoc, content: str, migrated_at: str) -> str:
+def _render_doc_toml(source: SourceDoc, content: str) -> str:
     content_hash = _hash(content)
     lines: list[str] = []
     lines.append("# Markdown source migrated to TOML document store.")
@@ -118,7 +120,7 @@ def _render_doc_toml(source: SourceDoc, content: str, migrated_at: str) -> str:
     lines.append(f"source_line_count = {source.line_count}")
     lines.append(f"source_size_bytes = {source.size_bytes}")
     lines.append(f"content_sha256 = {_escape_toml(content_hash)}")
-    lines.append(f"migrated_at = {_escape_toml(migrated_at)}")
+    lines.append(f"migrated_at = {_escape_toml(DETERMINISTIC_STAMP)}")
     lines.append("capture_mode = \"raw_markdown_capture\"")
     lines.append("authoritative = false")
     lines.append("content_format = \"markdown\"")
@@ -130,7 +132,6 @@ def _render_doc_toml(source: SourceDoc, content: str, migrated_at: str) -> str:
 def _render_manifest(
     ingested: list[tuple[SourceDoc, str]],
     skipped: list[SourceDoc],
-    generated_at: str,
 ) -> str:
     lines: list[str] = []
     lines.append("# Central document manifest for TOML-backed markdown knowledge corpus.")
@@ -138,7 +139,7 @@ def _render_manifest(
     lines.append("# This is a raw capture layer, not a normalized authoritative schema.")
     lines.append("")
     lines.append("[knowledge_documents]")
-    lines.append(f"generated_at = {_escape_toml(generated_at)}")
+    lines.append(f"generated_at = {_escape_toml(DETERMINISTIC_STAMP)}")
     lines.append(f"raw_capture_count = {len(ingested)}")
     lines.append(f"skipped_generated_count = {len(skipped)}")
     lines.append("authoritative = false")
@@ -202,8 +203,6 @@ def main() -> int:
     out_dir.mkdir(parents=True, exist_ok=True)
     manifest_path.parent.mkdir(parents=True, exist_ok=True)
 
-    now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
     ingested: list[tuple[SourceDoc, str]] = []
     skipped: list[SourceDoc] = []
 
@@ -217,7 +216,7 @@ def main() -> int:
         if not source_path.exists():
             continue
         content = source_path.read_text(encoding="utf-8", errors="ignore")
-        rendered = _render_doc_toml(doc, content, now)
+        rendered = _render_doc_toml(doc, content)
         rel_out = f"registry/knowledge/docs/{doc.doc_id}.toml"
         out_path = repo_root / rel_out
         expected_outputs.add(out_path.resolve())
@@ -230,7 +229,7 @@ def main() -> int:
         if existing.resolve() not in expected_outputs:
             existing.unlink()
 
-    manifest = _render_manifest(ingested, skipped, now)
+    manifest = _render_manifest(ingested, skipped)
     _assert_ascii(manifest, str(manifest_path))
     manifest_path.write_text(manifest, encoding="utf-8")
 

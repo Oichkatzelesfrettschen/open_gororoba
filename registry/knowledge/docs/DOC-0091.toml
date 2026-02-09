@@ -3,81 +3,77 @@
 
 [document]
 id = "DOC-0091"
-source_path = "docs/book/src/papers/collection.md"
-title = "Paper Collection"
+source_path = "docs/book/src/introduction.md"
+title = "open_gororoba"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "ca50910629a26321ee5e1b98f2fdaf3166589bc3db712bfa11d166931bcd3bd9"
-source_line_count = 62
-source_size_bytes = 2472
-content_sha256 = "ca50910629a26321ee5e1b98f2fdaf3166589bc3db712bfa11d166931bcd3bd9"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "485dc909e429d5bcc6c09c15c6af3901ba271f74f3e462296e73a087c6cbe0b6"
+source_line_count = 58
+source_size_bytes = 1836
+content_sha256 = "485dc909e429d5bcc6c09c15c6af3901ba271f74f3e462296e73a087c6cbe0b6"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Paper Collection
+# open_gororoba
 
-The project maintains a curated collection of 19 research papers relevant to
-Cayley-Dickson algebra and its applications.  Papers are stored as PDFs under
-`papers/pdf/` with structured TOML extractions under `papers/extracted/`.
+A research workbench exploring whether algebraic structure in Cayley-Dickson
+algebras (real -> complex -> quaternion -> octonion -> sedenion -> ...) can
+explain or predict phenomena in quantum gravity, particle physics, and cosmology.
 
-## De Marrais papers (8)
+## Key Numbers
 
-| Year | Title | arXiv |
-|------|-------|-------|
-| 2000 | The 42 Assessors and the Box-Kites they Fly | math/0011260 |
-| 2002 | Placeholder Substructures I | math/0207003 |
-| 2004 | Placeholder Substructures III | math/0403113 |
-| 2004 | Wolfram Science Conference slides | -- |
-| 2006 | Presto! Digitization: Part I | math/0603281 |
-| 2007 | Placeholder Substructures III (revised) | math/0703745 |
-| 2007 | Catamaran Sails and Spindles | 0704.0026 |
-| 2007 | SedenionsXOR: Things Barely Thought of Fly High | 0704.0112 |
+- **2063** Rust tests (0 failures)
+- **475** tracked claims (C-001..C-475)
+- **16** insights (I-001..I-016)
+- **10** reproducible experiments (E-001..E-010)
+- **37** CLI binaries
+- **19** extracted research papers
+- **15** workspace crates
 
-## Moreno papers (2)
-
-| Year | Title | arXiv |
-|------|-------|-------|
-| 2005 | Zero Divisors of 2^n-ions | math/0512517 |
-| 2005 | The Zero Divisors of the CD Algebras over R | math/0512516 |
-
-## Reggiani papers (3)
-
-| Year | Title | arXiv |
-|------|-------|-------|
-| 2024 | Cayley-Dickson Algebras and Projective Planes | 2411.18881 |
-| 2025 | Automorphisms of the Sedenions and Beyond | 2512.07210 |
-| 2025 | Cayley-Dickson Algebras: Structure and Applications | 2512.13002 |
-
-## Additional papers (6)
-
-| Year | Authors | Title | arXiv |
-|------|---------|-------|-------|
-| 2002 | Baez | The Octonions | math/0105155 |
-| 2009 | Cawagas et al. | Subalgebra Structure of the Trigintaduonions | 0907.2047 |
-| 2023 | Tang & Tang | Sedenion Extension of the Standard Model | 2308.14768 |
-| 2024 | Brown & Pumpluen | Flipped Polynomial Rings and CD Construction | 2403.03763 |
-| 2025 | -- | The Structure of Cayley-Dickson Algebras | 2505.11747 |
-| 2025 | -- | A Mnemonic for the Cayley-Dickson Tower | 2512.22134 |
-
-## Extraction pipeline
-
-Papers are extracted using the `docpipe` crate (pdfium-render backend).
-The extraction produces structured TOML with title, authors, abstract,
-sections, and definitions.
-
-**Limitation:** Equation extraction from PDF OCR text is structurally unable
-to find LaTeX-formatted equations because the OCR output contains plain text
-without `$` or `\\begin{equation}` delimiters.  All 19 paper TOML files have
-`equations = []`.  Genuine equation extraction would require downloading
-arXiv LaTeX source files (future work).
+## Quick Start
 
 ```sh
-# Extract a specific paper
+# Build everything
+cargo build --workspace -j$(nproc)
+
+# Run tests
+cargo test --workspace -j$(nproc)
+
+# Run clippy (warnings-as-errors)
+cargo clippy --workspace -j$(nproc) -- -D warnings
+
+# Check registry integrity
+cargo run --release --bin registry-check
+
+# Extract a paper to TOML
 cargo run --release --bin extract-papers -- --only demarrais-2000-math0011260
+```
+
+## Codebase Structure
+
+```
+crates/
+  algebra_core/     Cayley-Dickson, Clifford, wheels, p-adic, groups
+  cosmology_core/   FLRW, bouncing models, dark energy
+  gr_core/          Schwarzschild, Kerr, Novikov-Thorne, spectral bands
+  materials_core/   Periodic table, metamaterial models
+  optics_core/      GRIN lenses, ray tracing
+  quantum_core/     Casimir, tensor networks, Grover
+  stats_core/       Ultrametric, dip test, bootstrap, GPU
+  spectral_core/    Fractional PDE, negative dimensions
+  lbm_core/         Lattice Boltzmann
+  control_core/     Control theory
+  data_core/        Data loading, benchmarks
+  docpipe/          PDF extraction (pdfium-render primary)
+  gororoba_py/      PyO3 bindings (thin wrappers)
+  gororoba_cli/     37 analysis binaries
+registry/           TOML registry (claims, insights, experiments)
+papers/             PDF collection + TOML extractions
+docs/               Documentation and tracking
 ```
 
 """

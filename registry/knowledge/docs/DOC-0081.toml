@@ -3,54 +3,67 @@
 
 [document]
 id = "DOC-0081"
-source_path = "docs/book/src/algebra/zero-divisors.md"
-title = "Zero-Divisor Census"
+source_path = "docs/book/src/algebra/motif-scaling.md"
+title = "Motif Scaling Laws"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "8c5300de54cb38c1c0fe80bf8c02814532302c021cd598b0c73953027958d873"
-source_line_count = 35
-source_size_bytes = 1210
-content_sha256 = "8c5300de54cb38c1c0fe80bf8c02814532302c021cd598b0c73953027958d873"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "56a8130a9a0fa4ae3bed645f712be987e085d6c7a99d87aff539bf5f4331b974"
+source_line_count = 48
+source_size_bytes = 1437
+content_sha256 = "56a8130a9a0fa4ae3bed645f712be987e085d6c7a99d87aff539bf5f4331b974"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Zero-Divisor Census
+# Motif Scaling Laws
 
-At dimension 16 (sedenions) and beyond, Cayley-Dickson algebras contain
-zero divisors: nonzero elements whose product is zero.  The zero-divisor
-census enumerates and classifies these elements.
+Exact enumeration of the zero-product graph's connected components across
+5 Cayley-Dickson doublings reveals strict scaling laws (I-006).
 
-## Key results
+## Scaling formulas
 
-The sedenion algebra has **42 primitive cross-assessor pairs** that produce
-zero when multiplied.  These are pairs of 2-blade elements (sums of two
-basis vectors with specific signs) whose product vanishes under the
-Cayley-Dickson multiplication rule.
+| Invariant | Formula | Verified dims |
+|-----------|---------|---------------|
+| Components | dim/2 - 1 | 16--256 |
+| Nodes per component | dim/2 - 2 | 16--256 |
+| Motif classes | dim/16 | 16--256 |
+| K2 components | 3 + log2(dim) | 16--256 |
+| K2 part count | dim/4 - 1 | 16--256 |
 
-The census is computed using integer-exact arithmetic to avoid
-floating-point error entirely.  The implementation lives in
-`crates/algebra_core/src/boxkites.rs`.
+## Key observations
 
-## The XOR filter
+- **No octahedra beyond dim=16.**  The K(2,2,2) structure that characterizes
+  sedenion box-kites vanishes at the first doubling.
 
-A necessary (but not sufficient) condition for a zero-product pair is
-the XOR filter: basis indices must satisfy GF(2)-linear conditions.
+- **Complete restructuring at each doubling.**  At dim=32, the structure
+  reorganizes into 8 heptacross K(2,2,2,2,2,2,2) and 7 mixed-degree
+  components.
 
-- 315 pairs pass the XOR filter
-- 168 pairs are actual zero products
-- Ratio: 0.533 (XOR is necessary, NOT sufficient)
-- Zero false negatives confirmed (C-445)
+- **The pathion cubic anomaly** (I-012): The dim=32 8/7 motif split requires
+  a degree-3 GF(2) polynomial, NOT degree 4.  Degrees 1 and 2 fail.
 
-See also: [Box-Kite Structure](./box-kites.md) for how zero divisors
-organize into combinatorial structures.
+## Computation
+
+All motif census computations are exact (not sampled) and complete in under
+2 seconds for dim=256 in release mode.  The census binary:
+
+```sh
+cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
+```
+
+Implementation: `crates/algebra_core/src/boxkites.rs` (16 regression tests
+covering dim=64,128,256).
 
 ## Claims
 
-C-050 through C-060: Zero-divisor graph invariants (E-005).
-C-445 through C-448: XOR balanced search extension (I-012).
+C-126 through C-130: Scaling law formulas.
+C-445 through C-448: XOR filter properties.
+
+## Experiment
+
+[E-001: Cayley-Dickson Motif Census](../experiments/e001.md)
 
 """

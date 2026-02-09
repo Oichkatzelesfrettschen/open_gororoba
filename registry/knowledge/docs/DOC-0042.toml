@@ -3,116 +3,244 @@
 
 [document]
 id = "DOC-0042"
-source_path = "docs/MATH_VALIDATION_REPORT.md"
-title = "Mathematical Validation Report"
+source_path = "docs/MATH_CONVENTIONS.md"
+title = "Mathematical Conventions"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "7f82b84e97fb5fd1a4d1d1b82da1f69cfa4909f6f348f9d3c832c4009f634a55"
-source_line_count = 97
-source_size_bytes = 4329
-content_sha256 = "7f82b84e97fb5fd1a4d1d1b82da1f69cfa4909f6f348f9d3c832c4009f634a55"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "8de554b7b72d83e08df8d86e1c151d91dba15fe6ca25b9de7f638ee341087c80"
+source_line_count = 225
+source_size_bytes = 6956
+content_sha256 = "8de554b7b72d83e08df8d86e1c151d91dba15fe6ca25b9de7f638ee341087c80"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Mathematical Validation Report
+# Mathematical Conventions
 
-**Date:** 2026-01-27
+This document records the mathematical and numerical conventions used
+throughout the open_gororoba codebase.  All code should follow these
+conventions for consistency.
 
-This report summarizes which *mathematical* statements in this repository are:
-- supported by reproducible computations/tests in-repo, and
-- consistent with well-known published results (with citations).
+---
 
-It also highlights gaps where the repo's narrative exceeds what has been validated.
+## 1. Cayley-Dickson Doubling Formula
 
-## 1) Scope
+**File:** `crates/algebra_core/src/cayley_dickson.rs:31-67`
 
-This document covers the \"hard math\" layer:
-- Cayley-Dickson construction properties (associativity, norm composition, zero divisors)
-- a minimal group-theory fact used in docs (`|PSL(2,7)| = 168`)
-- dimensional-geometry formulas implemented via analytic continuation (Gamma function)
+The Cayley-Dickson multiplication uses the standard doubling construction:
 
-It does **not** claim physical validation (astrophysics/cosmology/metamaterials), which requires
-separate empirical and modeling work.
+```
+(a, b) * (c, d) = (ac - d*b, da + bc*)
+```
 
-## 2) Cayley-Dickson algebra: what is validated here
+where `*` denotes conjugation (negate all imaginary components).
 
-Key references:
-- Baez (2002), *The Octonions*: https://arxiv.org/abs/math/0105155
-- de Marrais (c. 2002), *The 42 Assessors and the Box-Kites they fly*: https://arxiv.org/abs/math/0011260
+Conjugation: `x* = (x_0, -x_1, -x_2, ..., -x_{n-1})`
 
-### 2.1 Non-associativity appears at 8D (octonions)
+This is the same convention as Baez (2002), \"The Octonions,\" Bull. AMS 39(2).
 
-**Published result:** octonions are non-associative (but alternative). See Baez (2002).  
-**Repo validation:** `tests/test_cayley_dickson_properties.py` checks:
-- associativity holds for dimensions 1,2,4 (reals/complex/quaternions)
-- a counterexample is found in 8D via seeded random search
+---
 
-### 2.2 Norm composition holds through 8D and fails at 16D
+## 2. Basis Ordering
 
-**Published result:** Hurwitz-style classification implies multiplicative norms only for
-dimensions 1,2,4,8. See Baez (2002).  
-**Repo validation:** `tests/test_cayley_dickson_properties.py` checks:
-- `||ab||^2 = ||a||^2 ||b||^2` for many random pairs in 8D
-- the identity fails for some pairs in 16D (sedenions)
+**File:** `crates/algebra_core/src/cayley_dickson.rs:266-289`
 
-### 2.3 Explicit sedenion zero divisors exist
+All Cayley-Dickson algebra elements are represented as `Vec<f64>` or `&[f64]`
+with the following ordering:
 
-**Published result:** sedenions have zero divisors; de Marrais develops explicit \"assessor/box-kite\"
-structure for primitive zero divisors (de Marrais, c. 2002; see `docs/BIBLIOGRAPHY.md`).  
-**Repo validation:** `tests/test_cayley_dickson_properties.py` includes an explicit identity under
-the repo's basis convention:
+- Component 0: Real (scalar) part
+- Components 1..dim: Imaginary basis elements e_1, e_2, ..., e_{dim-1}
 
-`(e1 + e10) * (e4 - e15) = 0`
+Matrices are stored in row-major order.  The left-multiplication operator
+L_a has entries `L_a[i][j] = (a * e_j)_i`.
 
-This is computed with `gemini_physics.optimized_algebra.cd_multiply_jit` using the same
-canonical Cayley-Dickson multiplication convention (e.g. `e1*e2=e3`).
+The algebra tower, from `hypercomplex.rs`:
 
-### 2.4 de Marrais \"42 assessors / 7 box-kites\" structure (replicated)
+| Dim | Name        | Associative | Commutative | Division |
+|-----|-------------|-------------|-------------|----------|
+| 1   | Reals (R)   | Yes         | Yes         | Yes      |
+| 2   | Complex (C) | Yes         | Yes         | Yes      |
+| 4   | Quaternions (H) | Yes     | No          | Yes      |
+| 8   | Octonions (O) | No (alternative) | No  | Yes      |
+| 16  | Sedenions (S) | No        | No          | No       |
+| 32  | Pathions (P) | No         | No          | No       |
+| 64+ | Higher CD   | No         | No          | No       |
 
-**Published result (de Marrais, abstract):** 168 primitive unit zero divisors are arranged as quartets
-along 42 assessors; assessors organize into seven \"box-kites\" (octahedral vertex structures). See
-arXiv:math/0011260.
+---
 
-**Repo validation:**
-- `src/gemini_physics/de_marrais_boxkites.py` computes primitive assessors and box-kites from the
-  repo's sedenion multiplication convention.
-- `tests/test_de_marrais_boxkites.py` verifies:
-  - 42 primitive assessors (subset of the 56 cross-pairs),
-  - `42 * 4 = 168` unit points on assessor diagonals,
-  - 7 connected components, each the octahedron graph (6 vertices, 12 edges, degree 4),
-  - every edge corresponds to at least one diagonal sign pairing with product exactly 0.
+## 3. Fano Plane Triples (Octonion Multiplication)
 
-## 3) Group-theory fact used in the narrative
+**File:** `crates/algebra_core/src/octonion_field.rs:23-31`
 
-### 3.1 Order of PSL(2,7)
+The 7 oriented Fano triples define the octonion multiplication table:
 
-**Published/standard result:** `|PSL(2,q)| = q(q^2-1)/gcd(2,q-1)` for q a prime power; for `q=7`
-this gives 168.
+```
+(1,2,3), (1,4,5), (1,7,6), (2,4,6), (2,5,7), (3,4,7), (3,6,5)
+```
 
-**Repo validation:** `tests/test_group_theory.py` checks `order_psl2_q(7) == 168` via
-`gemini_physics.group_theory.order_psl2_q`.
+For triple (i,j,k): `e_i * e_j = +e_k` (cyclic permutations positive,
+anti-cyclic negative).  Additionally, `e_i * e_i = -e_0` for all i >= 1.
 
-**Important caveat:** This does **not** validate the *mapping* from `PSL(2,7)` to box-kite geometry;
-it only validates the group order arithmetic.
+The structure constants are built by `build_structure_constants()` in
+`octonion_field.rs:36-52`.
 
-## 4) Dimensional continuation (analytic continuation)
+---
 
-**Published result:** sphere/ball volumes and related formulas extend to non-integer dimension via
-Gamma functions, with poles at non-positive even integers, etc. (Standard special-function facts.)
+## 4. Deterministic Seeding Pattern
 
-**Repo validation:** `tests/test_dimensional_geometry.py` verifies integer-dimension identities
-and consistency checks for `src/gemini_physics/dimensional_geometry.py`.
+**Crate:** `rand_chacha 0.3` (workspace dependency)
 
-## 5) What remains unvalidated (math-facing)
+All stochastic computations use `ChaCha8Rng::seed_from_u64(seed)` for
+reproducibility.  The default seed across the codebase is **42**.
 
-High-impact items still requiring explicit replication from primary sources:
-- De Marrais \"42 assessors / 7 box-kites / PSL(2,7) action\" reproduction as code + tests
-- Reggiani (2024) definitions of `ZD(S)`/geometry reproduced precisely and aligned to repo terms
+Standard usage pattern:
 
-See `docs/NEXT_ACTIONS.md`.
+```rust
+use rand::SeedableRng;
+use rand_chacha::ChaCha8Rng;
+
+let mut rng = ChaCha8Rng::seed_from_u64(seed);
+```
+
+CLI binaries expose `--seed` flags.  The `UltrametricConfig::default()`
+uses seed=42.  All tests with randomness must use fixed seeds.
+
+Note: uses `rng.gen::<f64>()` (rand 0.8 API), not `rng.random()` (rand 0.9).
+
+---
+
+## 5. Tolerance Tiers
+
+Numerical tolerances follow a four-tier system:
+
+| Tier | Tolerance | Usage | Example files |
+|------|-----------|-------|---------------|
+| **Exact** | 1e-12 | Coordinate transforms, identity checks | `coordinates.rs`, `casimir.rs` |
+| **Algebraic** | 1e-10 | GR tensor verification, algebra identities | `schwarzschild.rs`, `cayley_dickson.rs` |
+| **Numerical** | 1e-6 | Finite-difference derivatives, convergence | `schwarzschild.rs:559`, `spectral_bands.rs` |
+| **Statistical** | 1e-2 (1%) | Relative tolerances for physical models | `novikov_thorne.rs:379`, `octonion_field.rs` |
+
+The tier should match the expected precision of the computation:
+- Algebraic identities that hold exactly in infinite precision use 1e-10.
+- Numerical derivatives with step size h use tolerance ~ O(h).
+- Statistical tests with finite samples use percentage-level tolerance.
+
+---
+
+## 6. GR Metric Signature and Coordinates
+
+**File:** `crates/gr_core/src/metric.rs:14-18`
+
+Signature: **(-,+,+,+)** (West Coast / particle physics convention)
+
+Coordinates: `[t, r, theta, phi]` (Boyer-Lindquist for Kerr family)
+
+Natural units: `G = c = 1`, mass M as a free parameter.
+
+Coordinate indices:
+
+```
+T = 0 (time), R = 1 (radial), THETA = 2 (polar), PHI = 3 (azimuthal)
+```
+
+Tensor storage:
+- Metric: `g_{mu nu}` as `[[f64; 4]; 4]` (symmetric)
+- Christoffel: `Gamma^a_{mn}` as `[[[f64; 4]; 4]; 4]` (symmetric in lower)
+- Riemann: `R^a_{bmn}` as `[[[[f64; 4]; 4]; 4]; 4]`
+
+Literature: MTW (1973), Wald (1984), Carroll (2004).
+
+---
+
+## 7. Physical Constants (CGS)
+
+**File:** `crates/gr_core/src/constants.rs:1-106`
+
+All physical constants use CGS units with CODATA 2018 / NIST 2024 values:
+
+| Constant | Symbol | Value | Unit |
+|----------|--------|-------|------|
+| Speed of light | c | 2.997924580e10 | cm/s |
+| Gravitational constant | G | 6.67430e-8 | cm^3 g^-1 s^-2 |
+| Reduced Planck | hbar | 1.054571817e-27 | erg s |
+| Boltzmann | k_B | 1.380649e-16 | erg K^-1 |
+| Solar mass | M_sun | 1.98841e33 | g |
+| Solar radius | R_sun | 6.957e10 | cm |
+
+Derived GR quantities (per solar mass):
+- Schwarzschild radius: `r_s = 2GM/c^2`
+- Gravitational radius: `r_g = GM/c^2`
+- ISCO (Schwarzschild): `6 r_g`
+- Hawking temperature: `T_H = hbar c^3 / (8 pi G M k_B)`
+
+Source: IAU 2015 nominal solar parameters (Prsa et al. 2016).
+
+---
+
+## 8. Norm Convention
+
+**File:** `crates/algebra_core/src/cayley_dickson.rs:69-73`
+
+The norm used throughout is the Euclidean (L2) norm squared:
+
+```
+||x||^2 = sum_{i=0}^{dim-1} x_i^2
+```
+
+This equals `x * x*` (product with conjugate) for all Cayley-Dickson algebras
+through octonions (composition algebra property).  For sedenions and beyond,
+`||ab||^2 != ||a||^2 ||b||^2` in general (loss of norm composition).
+
+---
+
+## 9. Statistical Testing Conventions
+
+**File:** `crates/stats_core/src/`
+
+- **P-value correction:** Benjamini-Hochberg FDR at alpha=0.05
+- **Permutation p-value:** `(count_ge + 1) / (n_perm + 1)` (Phipson & Smyth 2010)
+- **Default significance:** alpha = 0.05 (two-sided)
+- **Minimum sample size:** Pre-registered per claim (typically N >= 50)
+- **Bootstrap CI:** Percentile method, 10000 replicates default
+
+---
+
+## 10. Dynkin Node Numbering (E8 Family)
+
+Two valid conventions for E8 Dynkin diagram node numbering coexist in this
+codebase. Both are isomorphic -- they differ only in which node gets which
+index.
+
+**Convention A (kac_moody.rs):** 0-indexed, branch at node 4.
+
+```
+0 -- 1 -- 2 -- 3 -- 4 -- 5
+                     |
+                     6 -- 7
+```
+
+Coxeter labels: [2, 3, 4, 5, 6, 3, 4, 2].  Optimized for E9/E10 affine
+extension: node 8 attaches to node 0 at the far end of the long arm,
+making the E10 diagram a simple linear chain with one branch.
+
+**Convention B (e8_lattice.rs):** Bourbaki numbering, branch at node 2
+(0-indexed).
+
+```
+0 -- 1 -- 2 -- 3 -- 4 -- 5 -- 6
+           |
+           7
+```
+
+This is the standard numbering from Bourbaki's \"Lie Groups and Lie
+Algebras\" and most reference tables.  The simple roots here use the
+standard basis construction (alpha_1 = e_1 - e_2, etc.).
+
+When working across both modules, remember that the node indices do NOT
+correspond: \"node 4\" in kac_moody.rs is NOT the same simple root as
+\"node 4\" in e8_lattice.rs.
 
 """

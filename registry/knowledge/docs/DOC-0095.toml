@@ -3,40 +3,57 @@
 
 [document]
 id = "DOC-0095"
-source_path = "docs/claims/INDEX.md"
-title = "Claims by domain"
-kind = "manual_source"
+source_path = "docs/book/src/registry/insights.md"
+title = "Insights"
+kind = "markdown_mirror"
 status = "active"
-migration_priority = "high"
+migration_priority = "critical"
 generated = false
-source_sha256 = "f01d108329c7e0fab354904e28e2d7697a8fa6b1a2734a6128ca89bc70c0aade"
-source_line_count = 21
-source_size_bytes = 993
-content_sha256 = "f01d108329c7e0fab354904e28e2d7697a8fa6b1a2734a6128ca89bc70c0aade"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "6ff400499940046e1d7c1cda658b59a4809a1a19a0df597b4581fa1b8555b3ad"
+source_line_count = 38
+source_size_bytes = 1856
+content_sha256 = "6ff400499940046e1d7c1cda658b59a4809a1a19a0df597b4581fa1b8555b3ad"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Claims by domain
+# Insights
 
-See also: docs/CLAIMS_DOMAIN_TAXONOMY.md
+The insights registry tracks 16 discoveries (I-001 through I-016) in
+`registry/insights.toml`.  Each insight records a significant finding or
+interpretation from the computational census.
 
-- `meta` (214): `docs/claims/by_domain/meta.md`
-- `algebra` (66): `docs/claims/by_domain/algebra.md`
-- `spectral` (14): `docs/claims/by_domain/spectral.md`
-- `holography` (135): `docs/claims/by_domain/holography.md`
-- `open-systems` (1): `docs/claims/by_domain/open-systems.md`
-- `tensor-networks` (3): `docs/claims/by_domain/tensor-networks.md`
-- `cosmology` (12): `docs/claims/by_domain/cosmology.md`
-- `gravitational-waves` (6): `docs/claims/by_domain/gravitational-waves.md`
-- `stellar-cartography` (6): `docs/claims/by_domain/stellar-cartography.md`
-- `materials` (12): `docs/claims/by_domain/materials.md`
-- `engineering` (2): `docs/claims/by_domain/engineering.md`
-- `datasets` (26): `docs/claims/by_domain/datasets.md`
-- `visualization` (12): `docs/claims/by_domain/visualization.md`
-- `cpp` (2): `docs/claims/by_domain/cpp.md`
-- `coq` (0): `docs/claims/by_domain/coq.md`
-- `legacy` (13): `docs/claims/by_domain/legacy.md`
+## Insight catalog
+
+| ID | Title | Status | Sprint |
+|----|-------|--------|--------|
+| I-001 | Macquart Relation Fills the Comoving Distance Gap | Verified | S6 |
+| I-002 | Ultrametric Structure Lives in Representations, Not Scalars | Verified | S6 |
+| I-003 | Existing Rust Crate Ecosystem for Cosmological Analysis | Verified | S6 |
+| I-004 | Kodama Dendrogram and Real Observational Cosmology | Verified | S6 |
+| I-005 | Ultrametric Structure is Radio-Transient-Specific | Superseded | S6 |
+| I-006 | Motif Census Scaling Laws (dim=16..256) | Verified | S6 |
+| I-007 | Kerr Geodesic Integrator Verification Summary | Verified | S6 |
+| I-008 | Cross-Domain Ultrametric Analysis (5K Subsampling) | Superseded | S7 |
+| I-009 | Elliptic Integral Crate Eliminates Carlson Port | Verified | S6 |
+| I-010 | nalgebra 0.33/0.34 Version Split Blocks Autodiff | Open | S6 |
+| I-011 | GPU Ultrametric Sweep (9 catalogs) | Verified | S7 |
+| I-012 | The Pathion Cubic Anomaly | Verified | S8 |
+| I-013 | The Hierarchy Fingerprint Theorem | Verified | S7 |
+| I-014 | Cayley-Dickson External Data Cross-Validation | Cross-validated | S8 |
+| I-015 | Monograph Theses Verification (Lattice Codebook) | Verified | S9 |
+| I-016 | De Marrais Emanation Architecture | Verified | S10 |
+
+## Supersession chain
+
+I-005 and I-008 are marked **superseded** because the GPU sweep (I-011) with
+10 million triples revealed that 5K subsampling destroyed the Hipparcos galactic
+spatial signal, making the earlier \"radio-transient-specific\" conclusion too narrow.
+
+## Auto-generated appendix
+
+The `generate-latex` binary produces `docs/latex/insights_appendix.tex` from
+insights.toml.
 
 """

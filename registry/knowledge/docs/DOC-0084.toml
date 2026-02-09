@@ -3,81 +3,91 @@
 
 [document]
 id = "DOC-0084"
-source_path = "docs/book/src/architecture/verification.md"
-title = "Verification Ladder"
+source_path = "docs/book/src/architecture/layout.md"
+title = "Project Layout"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "288853d823386e0b4ecca305eb6a7e9b9bf1511d278118d80f2ced34bef4b275"
-source_line_count = 62
-source_size_bytes = 2236
-content_sha256 = "288853d823386e0b4ecca305eb6a7e9b9bf1511d278118d80f2ced34bef4b275"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "bacd3e3dd038226bcfba7967b9dfa205dd8a8737f264de3657952b1126b41c5a"
+source_line_count = 72
+source_size_bytes = 2458
+content_sha256 = "bacd3e3dd038226bcfba7967b9dfa205dd8a8737f264de3657952b1126b41c5a"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Verification Ladder
+# Project Layout
 
-Every result in open\\_gororoba is classified on a four-tier verification ladder.
-This prevents conflation of proven algebra with speculative physics.
+open\\_gororoba is organized as a Rust workspace with 15 member crates under
+`crates/`, a TOML registry under `registry/`, and a PDF research collection
+under `papers/`.
 
-## Tier 1: Algebraic (verified)
+## Directory structure
 
-Deterministic tests against known results from the literature.
+```
+crates/
+  algebra_core/       Cayley-Dickson, Clifford, wheels, p-adic, groups, box-kites
+  cosmology_core/     FLRW, bouncing models, dark energy
+  gr_core/            Schwarzschild, Kerr, Novikov-Thorne, spectral bands
+  materials_core/     Periodic table, metamaterial models
+  optics_core/        GRIN lenses, ray tracing
+  quantum_core/       Casimir, tensor networks, Grover
+  stats_core/         Ultrametric, dip test, bootstrap, GPU (cudarc)
+  spectral_core/      Fractional PDE, negative dimensions
+  lbm_core/           Lattice Boltzmann
+  control_core/       Control theory
+  data_core/          Data loading, benchmarks, HDF5 export
+  docpipe/            PDF extraction (pdfium-render)
+  gororoba_py/        PyO3 bindings (thin wrappers)
+  gororoba_cli/       37 analysis binaries
 
-**Examples:**
-- Cayley-Dickson multiplication tables (C-001 through C-006)
-- Zero-divisor census: 42 assessors, 7 box-kites (C-050 through C-060)
-- De Marrais strut table match (C-454)
-- Motif scaling laws at dim=16..256 (C-126 through C-130)
-- Emanation architecture L1-L18 (C-468 through C-475)
+registry/
+  claims.toml         475 tracked claims (C-001..C-475)
+  insights.toml       16 insights (I-001..I-016)
+  experiments.toml    10 reproducible experiments (E-001..E-010)
+  binaries.toml       37 CLI binaries
+  project.toml        Version, counts, sprint history
 
-**Standard:** Unit tests using integer-exact arithmetic.  Every algebraic
-claim has a corresponding `#[test]` function.
+papers/
+  pdf/                19 research PDFs
+  bib/                BibTeX database (cayley_dickson.bib)
+  extracted/          Structured TOML extractions per paper
+  MANIFEST.toml       Paper metadata registry
 
-## Tier 2: Mathematical (partially verified)
+docs/
+  latex/              MASTER_SYNTHESIS.tex, MATHEMATICAL_FORMALISM.tex
+  book/               This mdbook
+  CLAIMS_EVIDENCE_MATRIX.md   Markdown mirror of claims.toml
+  INSIGHTS.md                 Markdown mirror of insights.toml
+  MATH_CONVENTIONS.md         9 mathematical conventions
+```
 
-Tests plus literature cross-check, with some gaps remaining.
+## Build commands
 
-**Examples:**
-- Lattice codebook filtration (8 monograph theses A-H, C-458 through C-467)
-- E8 root system connection (REFUTED, C-455)
-- XOR balanced search extension (C-445 through C-448)
+```sh
+# Full test suite (2063 tests)
+cargo test --workspace -j$(nproc)
 
-**Standard:** Cross-validation against external data files.  Null-model
-rejection where applicable.
+# Clippy with warnings-as-errors
+cargo clippy --workspace -j$(nproc) -- -D warnings
 
-## Tier 3: Statistical (modeled)
+# Registry validation
+cargo run --release --bin registry-check
 
-Permutation-tested hypotheses with Benjamini-Hochberg FDR correction.
+# LaTeX documents (requires texlive)
+make latex
 
-**Examples:**
-- Ultrametric hierarchy fingerprint across 9 catalogs (I-011, I-013)
-- GWTC-3 mass distribution multimodality (E-008)
-- Temporal cascade analysis for FRB repeaters (C-438)
+# GPU tests (requires CUDA + RTX 4070 Ti or similar)
+cargo test --workspace -j$(nproc) --features gpu
+```
 
-**Standard:** p-values from permutation null, BH-FDR correction at 0.05.
-Results classified as Verified, Refuted, or Partial.
+## Dependency management
 
-## Tier 4: Speculative (hypothetical)
-
-Exploratory code with explicitly tracked falsification criteria.
-
-**Examples:**
-- Gravastar TOV parameter sweep (C-400 through C-410)
-- Bounce cosmology vs Lambda-CDM (C-200 through C-210, Delta BIC = +7.37)
-- Negative-dimension eigenvalue convergence (C-420 through C-425)
-
-**Standard:** Claims tracked in `registry/claims.toml` with `where_stated`
-and falsification criteria.  No claim of physical validity.
-
-## Claims workflow
-
-1. New physical hypothesis gets a C-nnn entry in `claims.toml`
-2. Entry includes: statement, status, where\\_stated, test function
-3. Status progresses through: Pending -> Verified / Refuted / Partial
-4. `registry-check` validates all entries for consistency
+All external crates are declared at the workspace level in the root `Cargo.toml`
+under `[workspace.dependencies]` and referenced by sub-crates with
+`workspace = true`.  This prevents version conflicts and keeps the dependency
+tree consistent.
 
 """

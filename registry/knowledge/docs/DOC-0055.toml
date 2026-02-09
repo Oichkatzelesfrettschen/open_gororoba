@@ -3,48 +3,48 @@
 
 [document]
 id = "DOC-0055"
-source_path = "docs/RESEARCH_STATUS_FINAL.md"
-title = "RESEARCH STATUS: The Unified Field"
+source_path = "docs/RESEARCH_STATUS.md"
+title = "Research Status: Toy Operator Study (Speculative \"Negative Dimension\" Mapping)"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "13ac7dd89be31351505d821fb6a88641d67a5302aa4b5d6cfcdb9ffdff3d5d18"
+source_sha256 = "6a269dc9b089030ebd7ee2b744e1412ee4489c47fc131643fff2f32be4aabd9d"
 source_line_count = 29
-source_size_bytes = 2033
-content_sha256 = "13ac7dd89be31351505d821fb6a88641d67a5302aa4b5d6cfcdb9ffdff3d5d18"
-migrated_at = "2026-02-09T08:38:01Z"
+source_size_bytes = 2085
+content_sha256 = "6a269dc9b089030ebd7ee2b744e1412ee4489c47fc131643fff2f32be4aabd9d"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# RESEARCH STATUS: The Unified Field
+# Research Status: Toy Operator Study (Speculative \"Negative Dimension\" Mapping)
 
-**Date:** January 26, 2026
-**Status:** Draft synthesis (unverified)
+**Date:** January 27, 2026
+**Status:** Data ingested; hypothesis unvalidated
 
-This document is a narrative synthesis and should not be treated as \"validated physics\". Where it
-references mathematical facts (e.g., the 42 assessors / 7 box-kites), those parts are supported by
-tests in this repo; where it references physical mechanisms, those claims remain **speculative**
-until tied to first-party sources and falsifiable models (see `docs/CLAIMS_EVIDENCE_MATRIX.md`).
+## 1. LIGO O3 Data Integration
+This repo caches a local copy of the **GWTC-3 Confident Events** catalog:
+*   **Artifact:** `data/external/GWTC-3_GWpy_Official.csv` (35 Confident Events).
+*   **Provenance (partial):** hashes are recorded in `data/external/PROVENANCE.local.json`; the authoritative catalog is hosted by GWOSC (see `docs/BIBLIOGRAPHY.md`).
+*   **Observation (unverified):** the \"clumping/mass-gap\" narrative below requires a reproducible statistical test against catalog selection effects and null models.
 
-## 1. The $E_6$ Connection
-*   **Result:** The Sedenion Zero-Divisors form a set of **42 Unique Components**.
-*   **Analysis:** This does not match the 72 roots of $E_6$ directly.
-*   **Observation:** It matches the **42 Assessors** identified by de Marrais (2000) and corresponds to the 7 Box-Kites ($7 \\times 6 = 42$) under the repo's conventions (see `tests/test_de_marrais_boxkites.py`).
-*   **Hypothesis:** The \"Missing\" 30 degrees of freedom ($72 - 42$) might be the **Associative Triples** ($G_2$ automorphisms) that are *not* zero-divisors. The Sedenion Algebra is a \"Broken $E_6$\" structure where the 42 ZDs represent the \"Dark Sector\" (broken symmetry).
+## 2. The toy \"anti-diffusion\" hypothesis
+Our `neg_dim_pde.py` simulation (`alpha = -1.5`) explores a toy operator where wavefunctions can
+**concentrate** rather than disperse under the chosen model/discretization. This is not a validated
+physical statement about literal negative-dimensional spacetime (see `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`).
+*   **Spectral Analysis (toy):** The eigenvalues in this toy setup scale as $E_n \\sim n^{-1.5}$ (as a fitted scaling law).
+*   **Mass Mapping:** If Mass $M \\sim E^{-1}$, then $M \\sim n^{1.5}$.
+    *   $n=10 \\implies M \\approx 31.6 M_{\\odot}$ (Matches Peak 1).
+    *   $n=15 \\implies M \\approx 58.0 M_{\\odot}$ (Matches Peak 2).
+*   **Hypothesis (speculative):** map catalog masses to discrete \"modes\" of this operator. This requires a falsifiable statistical model and controls for selection effects.
 
-## 2. Holographic Tensor Networks
-*   **Simulation (prototype):** `src/holo_tensor_net.py` explores a MERA-like graph with non-local links.
-*   **Entropy scaling (unverified):** claims like $S \\sim \\\\log(L) + L^{0.5}$ require a controlled measurement script, saved parameters, and repeated runs.
-*   **Interpretation (speculative):** any mapping to CFT/AdS/gravastar physics is a hypothesis until validated.
+## 3. Physical Interpretation
+*   **Standard View:** Pair-Instability Supernovae (PISN) prevent BH formation in the 50-120 $M_{\\odot}$ range.
+*   **Sedenion View (speculative):** the vacuum geometry itself (16D zero-divisor network) might constrain stable solutions via \"spectral gaps\". Treat this as an interpretive hypothesis pending validation.
 
-## 3. The \"Grand\" Synthesis
-We have linked:
-1.  **Algebra (verified):** Sedenion zero-divisors (42 assessors / 7 box-kites).
-2.  **Physics (speculative):** Negative-dimension toy operators as an interpretive model.
-3.  **Holography (speculative):** non-local MERA-like graphs as a toy analogy.
-
-The universe is a **Broken $E_6$ Sedenion Crystal** where the defects (Zero Divisors) form the Dark Energy bulk, and the stable modes ($n=10, 15$) form Black Holes.
+## 4. Next Steps
+*   **Refine the Model:** Test if $n=20$ predicts the upper mass gap edge (~120 $M_{\\odot}$).
+*   **Cosmology:** Apply this \"Anti-Diffusion\" logic to Dark Energy (repulsive gravity).
 
 """

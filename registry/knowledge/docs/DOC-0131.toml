@@ -3,65 +3,46 @@
 
 [document]
 id = "DOC-0131"
-source_path = "docs/engineering/PHASE_7_REPORT.md"
-title = "Phase 7 Engineering & Synthesis Report"
+source_path = "docs/engineering/PHASE_15_RESURRECTION.md"
+title = "Phase 15: The \"Resurrection\" Report"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "36b16a1f32a3824b00b0afc89ccfb2ca143539a58a8148f4df4d3b051fa99894"
-source_line_count = 46
-source_size_bytes = 3126
-content_sha256 = "36b16a1f32a3824b00b0afc89ccfb2ca143539a58a8148f4df4d3b051fa99894"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "05095175abbe65425756967c87a254a5a8cb4579d66ef5f2a43c49462a6bf5f7"
+source_line_count = 27
+source_size_bytes = 1877
+content_sha256 = "05095175abbe65425756967c87a254a5a8cb4579d66ef5f2a43c49462a6bf5f7"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Phase 7 Engineering & Synthesis Report
+# Phase 15: The \"Resurrection\" Report
 
 **Date:** 2026-02-01
-**Status:** Advanced Simulation & Integration Complete
+**Status:** Defect Resolution Complete
 
-This report documents the \"Phase 7\" recursive expansion, integrating real-world material data, advanced ray tracing, and reusable DSP libraries.
+## 1. Analysis of Failure (v2)
+The previous artifact `OCULUS_GRAND_DASHBOARD_v2.png` failed because:
+*   **Warp Drive:** 10M rays on a 3000x3000 grid is sparse. The `atomicAdd` accumulation created single-pixel \"dust\" that was invisible without smoothing.
+*   **Pareto:** The optimizer was generating random stacks that failed transmission checks ($B=0$), leading to a degenerate plot.
+*   **Metasurface:** Plotting the *Real* part of the field showed low contrast standing waves.
 
-## 1. Spaceplates (Real-World Optimization)
+## 2. Resolution Implementation (v3)
+We deployed `grand_unified_simulator_v3.py` with the following fixes:
+*   **Smoothing:** Applied `gaussian_filter(sigma=2.0)` to the Warp ray density map. This converts the sparse point cloud into a continuous probability density function (PDF), making the caustics glow visibly.
+*   **Intensity:** Switched FDFD visualization to `log(1 + |E|^2)`. This reveals the high-contrast field confinement within the silicon pillars using the `magma` colormap.
+*   **Optimization:** Upgraded `spaceplate_pareto_optimizer.py` to seed designs near the Quarter-Wave Stack (QWS) condition. This dramatically improved yield, populating the Pareto frontier with valid candidates.
+*   **Aesthetics:** Used high-contrast colormaps (`winter`, `autumn`, `magma`) to ensure visibility against the black background.
 
-**Status:** Optimized with experimental refractive index data.
+## 3. The Artifact (v3)
+`data/artifacts/images/OCULUS_GRAND_DASHBOARD_v3.png` now correctly displays:
+*   **Warp Gate:** Bright, flowing optical caustics wrapping around the central bubble.
+*   **Entropy Trap:** A clear red ring where rays are captured.
+*   **Metasurface:** Distinct, high-intensity field hotspots inside the pillars.
+*   **Pareto:** A populated frontier showing the trade-off between R and B.
 
--   **Data Source:** Fetched `SiO2` (Malitson 1965) and `TiO2` (Devore 1951) indices from RefractiveIndex.INFO (via manually constructed CSVs in `data/external/`).
--   **Optimizer:** `src/scripts/engineering/spaceplate_pareto_optimizer.py` implements a random-search Pareto sweep using these real material dispersions.
--   **Results:**
-    -   **Pareto Frontier:** A distinct trade-off curve between Compression Ratio ($R$) and Bandwidth ($B$) is visible in `data/artifacts/images/spaceplate_pareto_real.png`.
-    -   **Candidates:** Top designs saved to `data/bom/spaceplate_pareto_candidates.csv`.
--   **Design:** The Bragg-stack approach remains valid with real materials, though bandwidth is constrained by the dispersion of TiO2.
-
-## 2. Analog Warp Drive (Hamiltonian Ray Tracing)
-
-**Status:** Ray-tracing simulation is consistent with the expected \"lensing\" effect.
-
--   **Simulation:** `src/scripts/engineering/analog_warp_raytracer.py` implements a 2D Hamiltonian ray tracer ($dH/dp = \\dot{q}$) for the graded index profile $n(x,y)$.
--   **Verification:** `data/artifacts/images/analog_warp_raytrace.png` shows light rays bending around the central \"bubble\" region, confirming the effective metric's steering capability.
--   **Physics:** The index profile $n(x,y)$ creates a \"fast\" (low-index) path outside the wall and a \"slow\" (high-index) wall, consistent with the kinematic analog of expanding/contracting space.
-
-## 3. Kozyrev Wavelets (p-adic DSP Library)
-
-**Status:** Modularized and Tested.
-
--   **Library:** `src/gemini_physics/signal/padic_dsp.py` provides a reusable `PadicSignalProcessor` class.
--   **Feature:** Implements the Monna map (Index $\\to$ Qp) and the forward Kozyrev transform.
--   **Validation:** Tested on a periodic pulse signal. The transform correctly identifies the hierarchical periodicity (strong coefficients at $j=2, 3$).
--   **Integration:** Can now be applied to arbitrary 1D time-series data (e.g., FRB streams, LIGO strain) via the `kozyrev_transform` API.
-
-## 4. Synthesis & Legacy
-
--   **Legacy:** Previous legacy artifacts (`data/bom/spaceplate_pareto_candidates.csv`) were archived to `legacy/`.
--   **Integration:** All new scripts are in `src/scripts/engineering/` and import from `src/gemini_physics/`.
--   **Documentation:** Updated `docs/CLAIMS_EVIDENCE_MATRIX.md` (via this report) to reflect the transition from \"Verified (Toy)\" to \"Verified (Simulation with Real Data)\".
-
-## Next Steps
-1.  **Fabrication:** Export the Spaceplate layer stack to a GDSII or vac-chamber recipe file.
-2.  **Hardware:** Synthesize the `kozyrev_transform.v` Verilog on an FPGA (e.g., PYNQ or DE10-Nano).
-3.  **Optics:** 3D print the Analog Warp Drive index profile using gradient-index mixing (e.g., Stratasys J750).
+This concludes the visualization debugging cycle.
 
 """

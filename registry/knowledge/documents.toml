@@ -3,9 +3,9 @@
 # This is a raw capture layer, not a normalized authoritative schema.
 
 [knowledge_documents]
-generated_at = "2026-02-09T08:38:01Z"
-raw_capture_count = 132
-skipped_generated_count = 84
+generated_at = "deterministic"
+raw_capture_count = 135
+skipped_generated_count = 93
 authoritative = false
 normalization_required = true
 
@@ -363,8 +363,8 @@ document_toml = "registry/knowledge/docs/DOC-0040.toml"
 
 [[document]]
 id = "DOC-0041"
-source_path = "docs/MATH_CONVENTIONS.md"
-title = "Mathematical Conventions"
+source_path = "docs/MATH_ANALYSIS.md"
+title = "Unified Algebra-Lattice-Graph Monograph"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -374,8 +374,8 @@ document_toml = "registry/knowledge/docs/DOC-0041.toml"
 
 [[document]]
 id = "DOC-0042"
-source_path = "docs/MATH_VALIDATION_REPORT.md"
-title = "Mathematical Validation Report"
+source_path = "docs/MATH_CONVENTIONS.md"
+title = "Mathematical Conventions"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -385,8 +385,8 @@ document_toml = "registry/knowledge/docs/DOC-0042.toml"
 
 [[document]]
 id = "DOC-0043"
-source_path = "docs/MOTIF_CENSUS_SCHEMA.md"
-title = "Cayley-Dickson Motif Census: CSV Schemas"
+source_path = "docs/MATH_VALIDATION_REPORT.md"
+title = "Mathematical Validation Report"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -396,8 +396,8 @@ document_toml = "registry/knowledge/docs/DOC-0043.toml"
 
 [[document]]
 id = "DOC-0044"
-source_path = "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md"
-title = "Negative Dimension: What We Mean (and What We Do Not Mean)"
+source_path = "docs/MOTIF_CENSUS_SCHEMA.md"
+title = "Cayley-Dickson Motif Census: CSV Schemas"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -407,8 +407,8 @@ document_toml = "registry/knowledge/docs/DOC-0044.toml"
 
 [[document]]
 id = "DOC-0045"
-source_path = "docs/NEXT_ACTIONS.md"
-title = "Next Actions (Prioritized)"
+source_path = "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md"
+title = "Negative Dimension: What We Mean (and What We Do Not Mean)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -418,8 +418,8 @@ document_toml = "registry/knowledge/docs/DOC-0045.toml"
 
 [[document]]
 id = "DOC-0046"
-source_path = "docs/NV_ODMR_BOM.md"
-title = "NV ODMR / OPU BOM (Jan 2026) -- Local Staging"
+source_path = "docs/NEXT_ACTIONS.md"
+title = "Next Actions (Prioritized)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -429,8 +429,8 @@ document_toml = "registry/knowledge/docs/DOC-0046.toml"
 
 [[document]]
 id = "DOC-0047"
-source_path = "docs/PHASE_1_SUMMARY.md"
-title = "Phase 1 Summary: The Assessor Field Theory"
+source_path = "docs/NV_ODMR_BOM.md"
+title = "NV ODMR / OPU BOM (Jan 2026) -- Local Staging"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -440,8 +440,8 @@ document_toml = "registry/knowledge/docs/DOC-0047.toml"
 
 [[document]]
 id = "DOC-0048"
-source_path = "docs/PHYSICAL_INTERPRETATION.md"
-title = "Physical Interpretation: The Sedenion Vacuum & Mass Quantization"
+source_path = "docs/PHASE_1_SUMMARY.md"
+title = "Phase 1 Summary: The Assessor Field Theory"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -451,8 +451,8 @@ document_toml = "registry/knowledge/docs/DOC-0048.toml"
 
 [[document]]
 id = "DOC-0049"
-source_path = "docs/QISKIT_SETUP.md"
-title = "Qiskit Environment Setup & Troubleshooting"
+source_path = "docs/PHYSICAL_INTERPRETATION.md"
+title = "Physical Interpretation: The Sedenion Vacuum & Mass Quantization"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -462,8 +462,8 @@ document_toml = "registry/knowledge/docs/DOC-0049.toml"
 
 [[document]]
 id = "DOC-0050"
-source_path = "docs/REGGIANI_REPLICATION.md"
-title = "Reggiani Alignment & Replication (Computational)"
+source_path = "docs/QISKIT_SETUP.md"
+title = "Qiskit Environment Setup & Troubleshooting"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -473,8 +473,8 @@ document_toml = "registry/knowledge/docs/DOC-0050.toml"
 
 [[document]]
 id = "DOC-0051"
-source_path = "docs/REPO_OVERVIEW.md"
-title = "Repository Overview (Honest Audit)"
+source_path = "docs/REGGIANI_REPLICATION.md"
+title = "Reggiani Alignment & Replication (Computational)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -484,8 +484,8 @@ document_toml = "registry/knowledge/docs/DOC-0051.toml"
 
 [[document]]
 id = "DOC-0052"
-source_path = "docs/REPO_STRUCTURE.md"
-title = "Repository structure"
+source_path = "docs/REPO_OVERVIEW.md"
+title = "Repository Overview (Honest Audit)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -495,8 +495,8 @@ document_toml = "registry/knowledge/docs/DOC-0052.toml"
 
 [[document]]
 id = "DOC-0053"
-source_path = "docs/REQUIREMENTS.md"
-title = "Requirements for Gemini Experiments"
+source_path = "docs/REPO_STRUCTURE.md"
+title = "Repository structure"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -506,8 +506,8 @@ document_toml = "registry/knowledge/docs/DOC-0053.toml"
 
 [[document]]
 id = "DOC-0054"
-source_path = "docs/RESEARCH_STATUS.md"
-title = "Research Status: Toy Operator Study (Speculative \"Negative Dimension\" Mapping)"
+source_path = "docs/REQUIREMENTS.md"
+title = "Requirements for Gemini Experiments"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -517,8 +517,8 @@ document_toml = "registry/knowledge/docs/DOC-0054.toml"
 
 [[document]]
 id = "DOC-0055"
-source_path = "docs/RESEARCH_STATUS_FINAL.md"
-title = "RESEARCH STATUS: The Unified Field"
+source_path = "docs/RESEARCH_STATUS.md"
+title = "Research Status: Toy Operator Study (Speculative \"Negative Dimension\" Mapping)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -528,8 +528,8 @@ document_toml = "registry/knowledge/docs/DOC-0055.toml"
 
 [[document]]
 id = "DOC-0056"
-source_path = "docs/RESEARCH_STATUS_HYPER.md"
-title = "Unified Research Status: The Hyper-Standard"
+source_path = "docs/RESEARCH_STATUS_FINAL.md"
+title = "RESEARCH STATUS: The Unified Field"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -539,8 +539,8 @@ document_toml = "registry/knowledge/docs/DOC-0056.toml"
 
 [[document]]
 id = "DOC-0057"
-source_path = "docs/RISKS_AND_GAPS.md"
-title = "Risks and Gaps (Open Items)"
+source_path = "docs/RESEARCH_STATUS_HYPER.md"
+title = "Unified Research Status: The Hyper-Standard"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -550,8 +550,8 @@ document_toml = "registry/knowledge/docs/DOC-0057.toml"
 
 [[document]]
 id = "DOC-0058"
-source_path = "docs/ROADMAP.md"
-title = "open_gororoba Roadmap"
+source_path = "docs/RISKS_AND_GAPS.md"
+title = "Risks and Gaps (Open Items)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -561,8 +561,8 @@ document_toml = "registry/knowledge/docs/DOC-0058.toml"
 
 [[document]]
 id = "DOC-0059"
-source_path = "docs/SECOND_PASS_AUDIT.md"
-title = "Second-Pass Audit (2026-01-27)"
+source_path = "docs/ROADMAP.md"
+title = "open_gororoba Roadmap"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -572,8 +572,8 @@ document_toml = "registry/knowledge/docs/DOC-0059.toml"
 
 [[document]]
 id = "DOC-0060"
-source_path = "docs/SEDENION_ATLAS.md"
-title = "THE SEDENION ATLAS: First-Party Math & Source Synthesis"
+source_path = "docs/SECOND_PASS_AUDIT.md"
+title = "Second-Pass Audit (2026-01-27)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -583,8 +583,8 @@ document_toml = "registry/knowledge/docs/DOC-0060.toml"
 
 [[document]]
 id = "DOC-0061"
-source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
-title = "The Sedenion-Gravastar Equivalence Principle"
+source_path = "docs/SEDENION_ATLAS.md"
+title = "THE SEDENION ATLAS: First-Party Math & Source Synthesis"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -594,8 +594,8 @@ document_toml = "registry/knowledge/docs/DOC-0061.toml"
 
 [[document]]
 id = "DOC-0062"
-source_path = "docs/SEDENION_NILPOTENCY.md"
-title = "THE SEDENION NILPOTENCY: E6 Root Search"
+source_path = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
+title = "The Sedenion-Gravastar Equivalence Principle"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -605,8 +605,8 @@ document_toml = "registry/knowledge/docs/DOC-0062.toml"
 
 [[document]]
 id = "DOC-0063"
-source_path = "docs/SUBDOMAIN_EXPANSION.md"
-title = "Subdomain Expansion: Sedenion Physics & Mathematics"
+source_path = "docs/SEDENION_NILPOTENCY.md"
+title = "THE SEDENION NILPOTENCY: E6 Root Search"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -616,8 +616,8 @@ document_toml = "registry/knowledge/docs/DOC-0063.toml"
 
 [[document]]
 id = "DOC-0064"
-source_path = "docs/TERMINOLOGY_GLOSSARY.md"
-title = "Terminology Glossary (Standardized)"
+source_path = "docs/SUBDOMAIN_EXPANSION.md"
+title = "Subdomain Expansion: Sedenion Physics & Mathematics"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -627,8 +627,8 @@ document_toml = "registry/knowledge/docs/DOC-0064.toml"
 
 [[document]]
 id = "DOC-0065"
-source_path = "docs/THEORETICAL_ANNOTATIONS.md"
-title = "Theoretical Annotations & Interpretations"
+source_path = "docs/TERMINOLOGY_GLOSSARY.md"
+title = "Terminology Glossary (Standardized)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -638,8 +638,8 @@ document_toml = "registry/knowledge/docs/DOC-0065.toml"
 
 [[document]]
 id = "DOC-0066"
-source_path = "docs/THEORETICAL_SYNTHESIS_V2.md"
-title = "Theoretical Synthesis V2: Harmonizing the Reverse Cayley-Dickson Framework"
+source_path = "docs/THEORETICAL_ANNOTATIONS.md"
+title = "Theoretical Annotations & Interpretations"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -649,8 +649,8 @@ document_toml = "registry/knowledge/docs/DOC-0066.toml"
 
 [[document]]
 id = "DOC-0067"
-source_path = "docs/THE_GEMINI_PROTOCOL.md"
-title = "The Gemini Protocol: A Unified Physics Engine"
+source_path = "docs/THEORETICAL_SYNTHESIS_V2.md"
+title = "Theoretical Synthesis V2: Harmonizing the Reverse Cayley-Dickson Framework"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -660,8 +660,8 @@ document_toml = "registry/knowledge/docs/DOC-0067.toml"
 
 [[document]]
 id = "DOC-0068"
-source_path = "docs/THE_HYPER_STANDARD.md"
-title = "Why \"Toy Models\"? (And How We Transcend Them)"
+source_path = "docs/THE_GEMINI_PROTOCOL.md"
+title = "The Gemini Protocol: A Unified Physics Engine"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -671,8 +671,8 @@ document_toml = "registry/knowledge/docs/DOC-0068.toml"
 
 [[document]]
 id = "DOC-0069"
-source_path = "docs/TODO.md"
-title = "TODO (updated 2026-02-08): executable, test-driven tracker"
+source_path = "docs/THE_HYPER_STANDARD.md"
+title = "Why \"Toy Models\"? (And How We Transcend Them)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -682,8 +682,8 @@ document_toml = "registry/knowledge/docs/DOC-0069.toml"
 
 [[document]]
 id = "DOC-0070"
-source_path = "docs/ULTRA_ROADMAP.md"
-title = "Ultra Roadmap (Granular, Test-Driven)"
+source_path = "docs/TODO.md"
+title = "TODO (updated 2026-02-08): executable, test-driven tracker"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -693,8 +693,8 @@ document_toml = "registry/knowledge/docs/DOC-0070.toml"
 
 [[document]]
 id = "DOC-0071"
-source_path = "docs/UNIFIED_FRAMEWORK_V2.md"
-title = "Unified Recursive Algebraic-Computational Framework (URACF)"
+source_path = "docs/ULTRA_ROADMAP.md"
+title = "Ultra Roadmap (Granular, Test-Driven)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -704,8 +704,8 @@ document_toml = "registry/knowledge/docs/DOC-0071.toml"
 
 [[document]]
 id = "DOC-0072"
-source_path = "docs/UNIFIED_WHITEPAPER.md"
-title = "Unified Mathematical Framework for Surreal-Noncommutative Algebras, Inverse Cayley-Dickson Processes, and Spectral Geometry"
+source_path = "docs/UNIFIED_FRAMEWORK_V2.md"
+title = "Unified Recursive Algebraic-Computational Framework (URACF)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -715,8 +715,8 @@ document_toml = "registry/knowledge/docs/DOC-0072.toml"
 
 [[document]]
 id = "DOC-0073"
-source_path = "docs/VERIFIED_CLAIMS_INDEX.md"
-title = "Verified Claims Index (Test-Backed)"
+source_path = "docs/UNIFIED_WHITEPAPER.md"
+title = "Unified Mathematical Framework for Surreal-Noncommutative Algebras, Inverse Cayley-Dickson Processes, and Spectral Geometry"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -726,8 +726,8 @@ document_toml = "registry/knowledge/docs/DOC-0073.toml"
 
 [[document]]
 id = "DOC-0074"
-source_path = "docs/WHEELS_DIVISION_BY_ZERO.md"
-title = "Wheels (Division by Zero) - Source-first notes"
+source_path = "docs/VERIFIED_CLAIMS_INDEX.md"
+title = "Verified Claims Index (Test-Backed)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -737,8 +737,8 @@ document_toml = "registry/knowledge/docs/DOC-0074.toml"
 
 [[document]]
 id = "DOC-0075"
-source_path = "docs/agents.md"
-title = "Visualization Standards and Guidelines"
+source_path = "docs/WHEELS_DIVISION_BY_ZERO.md"
+title = "Wheels (Division by Zero) - Source-first notes"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -748,8 +748,8 @@ document_toml = "registry/knowledge/docs/DOC-0075.toml"
 
 [[document]]
 id = "DOC-0076"
-source_path = "docs/agents_python_access.md"
-title = "Agent's Python Environment & Hardware Access"
+source_path = "docs/agents.md"
+title = "Visualization Standards and Guidelines"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -759,8 +759,8 @@ document_toml = "registry/knowledge/docs/DOC-0076.toml"
 
 [[document]]
 id = "DOC-0077"
-source_path = "docs/book/src/SUMMARY.md"
-title = "Summary"
+source_path = "docs/agents_python_access.md"
+title = "Agent's Python Environment & Hardware Access"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -770,8 +770,8 @@ document_toml = "registry/knowledge/docs/DOC-0077.toml"
 
 [[document]]
 id = "DOC-0078"
-source_path = "docs/book/src/algebra/box-kites.md"
-title = "Box-Kite Structure"
+source_path = "docs/book/src/SUMMARY.md"
+title = "Summary"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -781,8 +781,8 @@ document_toml = "registry/knowledge/docs/DOC-0078.toml"
 
 [[document]]
 id = "DOC-0079"
-source_path = "docs/book/src/algebra/emanation.md"
-title = "Emanation Architecture"
+source_path = "docs/book/src/algebra/box-kites.md"
+title = "Box-Kite Structure"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -792,8 +792,8 @@ document_toml = "registry/knowledge/docs/DOC-0079.toml"
 
 [[document]]
 id = "DOC-0080"
-source_path = "docs/book/src/algebra/motif-scaling.md"
-title = "Motif Scaling Laws"
+source_path = "docs/book/src/algebra/emanation.md"
+title = "Emanation Architecture"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -803,8 +803,8 @@ document_toml = "registry/knowledge/docs/DOC-0080.toml"
 
 [[document]]
 id = "DOC-0081"
-source_path = "docs/book/src/algebra/zero-divisors.md"
-title = "Zero-Divisor Census"
+source_path = "docs/book/src/algebra/motif-scaling.md"
+title = "Motif Scaling Laws"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -814,8 +814,8 @@ document_toml = "registry/knowledge/docs/DOC-0081.toml"
 
 [[document]]
 id = "DOC-0082"
-source_path = "docs/book/src/architecture/crates.md"
-title = "Crate Ecosystem"
+source_path = "docs/book/src/algebra/zero-divisors.md"
+title = "Zero-Divisor Census"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -825,8 +825,8 @@ document_toml = "registry/knowledge/docs/DOC-0082.toml"
 
 [[document]]
 id = "DOC-0083"
-source_path = "docs/book/src/architecture/layout.md"
-title = "Project Layout"
+source_path = "docs/book/src/architecture/crates.md"
+title = "Crate Ecosystem"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -836,8 +836,8 @@ document_toml = "registry/knowledge/docs/DOC-0083.toml"
 
 [[document]]
 id = "DOC-0084"
-source_path = "docs/book/src/architecture/verification.md"
-title = "Verification Ladder"
+source_path = "docs/book/src/architecture/layout.md"
+title = "Project Layout"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -847,8 +847,8 @@ document_toml = "registry/knowledge/docs/DOC-0084.toml"
 
 [[document]]
 id = "DOC-0085"
-source_path = "docs/book/src/cli/catalog.md"
-title = "Binary Catalog"
+source_path = "docs/book/src/architecture/verification.md"
+title = "Verification Ladder"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -858,8 +858,8 @@ document_toml = "registry/knowledge/docs/DOC-0085.toml"
 
 [[document]]
 id = "DOC-0086"
-source_path = "docs/book/src/experiments/e001.md"
-title = "E-001: Cayley-Dickson Motif Census"
+source_path = "docs/book/src/cli/catalog.md"
+title = "Binary Catalog"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -869,8 +869,8 @@ document_toml = "registry/knowledge/docs/DOC-0086.toml"
 
 [[document]]
 id = "DOC-0087"
-source_path = "docs/book/src/experiments/e002.md"
-title = "E-002: Multi-Dataset GPU Ultrametric Sweep"
+source_path = "docs/book/src/experiments/e001.md"
+title = "E-001: Cayley-Dickson Motif Census"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -880,8 +880,8 @@ document_toml = "registry/knowledge/docs/DOC-0087.toml"
 
 [[document]]
 id = "DOC-0088"
-source_path = "docs/book/src/experiments/e003.md"
-title = "E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)"
+source_path = "docs/book/src/experiments/e002.md"
+title = "E-002: Multi-Dataset GPU Ultrametric Sweep"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -891,8 +891,8 @@ document_toml = "registry/knowledge/docs/DOC-0088.toml"
 
 [[document]]
 id = "DOC-0089"
-source_path = "docs/book/src/glossary.md"
-title = "Glossary"
+source_path = "docs/book/src/experiments/e003.md"
+title = "E-003: Real Cosmological Fit (Pantheon+ / DESI BAO)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -902,8 +902,8 @@ document_toml = "registry/knowledge/docs/DOC-0089.toml"
 
 [[document]]
 id = "DOC-0090"
-source_path = "docs/book/src/introduction.md"
-title = "open_gororoba"
+source_path = "docs/book/src/glossary.md"
+title = "Glossary"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -913,8 +913,8 @@ document_toml = "registry/knowledge/docs/DOC-0090.toml"
 
 [[document]]
 id = "DOC-0091"
-source_path = "docs/book/src/papers/collection.md"
-title = "Paper Collection"
+source_path = "docs/book/src/introduction.md"
+title = "open_gororoba"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -924,10 +924,10 @@ document_toml = "registry/knowledge/docs/DOC-0091.toml"
 
 [[document]]
 id = "DOC-0092"
-source_path = "docs/book/src/registry/claims.md"
-title = "Claims Evidence Matrix"
-kind = "markdown_mirror"
-migration_priority = "critical"
+source_path = "docs/book/src/papers/collection.md"
+title = "Paper Collection"
+kind = "manual_source"
+migration_priority = "high"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
@@ -935,8 +935,8 @@ document_toml = "registry/knowledge/docs/DOC-0092.toml"
 
 [[document]]
 id = "DOC-0093"
-source_path = "docs/book/src/registry/experiments.md"
-title = "Experiments Portfolio"
+source_path = "docs/book/src/registry/claims.md"
+title = "Claims Evidence Matrix"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -946,8 +946,8 @@ document_toml = "registry/knowledge/docs/DOC-0093.toml"
 
 [[document]]
 id = "DOC-0094"
-source_path = "docs/book/src/registry/insights.md"
-title = "Insights"
+source_path = "docs/book/src/registry/experiments.md"
+title = "Experiments Portfolio"
 kind = "markdown_mirror"
 migration_priority = "critical"
 raw_captured = true
@@ -957,6 +957,17 @@ document_toml = "registry/knowledge/docs/DOC-0094.toml"
 
 [[document]]
 id = "DOC-0095"
+source_path = "docs/book/src/registry/insights.md"
+title = "Insights"
+kind = "markdown_mirror"
+migration_priority = "critical"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0095.toml"
+
+[[document]]
+id = "DOC-0096"
 source_path = "docs/claims/INDEX.md"
 title = "Claims by domain"
 kind = "manual_source"
@@ -964,23 +975,12 @@ migration_priority = "high"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0095.toml"
-
-[[document]]
-id = "DOC-0117"
-source_path = "docs/engineering/DATASHEET_V2.md"
-title = "Metamaterial Warp Chip: Validation Datasheet (Simulated)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0117.toml"
+document_toml = "registry/knowledge/docs/DOC-0096.toml"
 
 [[document]]
 id = "DOC-0118"
-source_path = "docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md"
-title = "Holographic Warp-Gate Fabrication Protocol (v1.0)"
+source_path = "docs/engineering/DATASHEET_V2.md"
+title = "Metamaterial Warp Chip: Validation Datasheet (Simulated)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -990,8 +990,8 @@ document_toml = "registry/knowledge/docs/DOC-0118.toml"
 
 [[document]]
 id = "DOC-0119"
-source_path = "docs/engineering/FETCHING_EXTERNAL_SOURCES.md"
-title = "Fetching External Sources (wget-first, offline reproducibility)"
+source_path = "docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md"
+title = "Holographic Warp-Gate Fabrication Protocol (v1.0)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1001,8 +1001,8 @@ document_toml = "registry/knowledge/docs/DOC-0119.toml"
 
 [[document]]
 id = "DOC-0120"
-source_path = "docs/engineering/GAP_CLOSURE_REPORT.md"
-title = "Gap Closure Report: Repo-Wide Sample Lacunae"
+source_path = "docs/engineering/FETCHING_EXTERNAL_SOURCES.md"
+title = "Fetching External Sources (wget-first, offline reproducibility)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1012,8 +1012,8 @@ document_toml = "registry/knowledge/docs/DOC-0120.toml"
 
 [[document]]
 id = "DOC-0121"
-source_path = "docs/engineering/OPTIX_ELUCIDATION.md"
-title = "Elucidation of OptiX and Hardware Acceleration"
+source_path = "docs/engineering/GAP_CLOSURE_REPORT.md"
+title = "Gap Closure Report: Repo-Wide Sample Lacunae"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1023,8 +1023,8 @@ document_toml = "registry/knowledge/docs/DOC-0121.toml"
 
 [[document]]
 id = "DOC-0122"
-source_path = "docs/engineering/PADIC_SIGNAL_THEORY.md"
-title = "P-adic Signal Theory & Kozyrev-Sedenion Synthesis"
+source_path = "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md"
+title = "MCP and Skill Audit (2026-02-09)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1034,8 +1034,8 @@ document_toml = "registry/knowledge/docs/DOC-0122.toml"
 
 [[document]]
 id = "DOC-0123"
-source_path = "docs/engineering/PHASE_10_MULTIPHYSICS.md"
-title = "Phase 10: Multiphysics & Connectivity Deep Dive"
+source_path = "docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md"
+title = "Markdown and TOML Centralization Audit (2026-02-09)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1045,8 +1045,8 @@ document_toml = "registry/knowledge/docs/DOC-0123.toml"
 
 [[document]]
 id = "DOC-0124"
-source_path = "docs/engineering/PHASE_11_VISUALIZATION.md"
-title = "Phase 11 Report: Visualization & Integrity"
+source_path = "docs/engineering/OPTIX_ELUCIDATION.md"
+title = "Elucidation of OptiX and Hardware Acceleration"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1056,8 +1056,8 @@ document_toml = "registry/knowledge/docs/DOC-0124.toml"
 
 [[document]]
 id = "DOC-0125"
-source_path = "docs/engineering/PHASE_12_RENDERER.md"
-title = "Phase 12 Report: Holographic Warp Renderer"
+source_path = "docs/engineering/PADIC_SIGNAL_THEORY.md"
+title = "P-adic Signal Theory & Kozyrev-Sedenion Synthesis"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1067,8 +1067,8 @@ document_toml = "registry/knowledge/docs/DOC-0125.toml"
 
 [[document]]
 id = "DOC-0126"
-source_path = "docs/engineering/PHASE_13_GRAND_CRITIQUE.md"
-title = "Phase 13: The Grand Critique & Synthesis"
+source_path = "docs/engineering/PHASE_10_MULTIPHYSICS.md"
+title = "Phase 10: Multiphysics & Connectivity Deep Dive"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1078,8 +1078,8 @@ document_toml = "registry/knowledge/docs/DOC-0126.toml"
 
 [[document]]
 id = "DOC-0127"
-source_path = "docs/engineering/PHASE_14_DEEP_DIVE.md"
-title = "Phase 14: The \"Endless\" Deep Dive"
+source_path = "docs/engineering/PHASE_11_VISUALIZATION.md"
+title = "Phase 11 Report: Visualization & Integrity"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1089,8 +1089,8 @@ document_toml = "registry/knowledge/docs/DOC-0127.toml"
 
 [[document]]
 id = "DOC-0128"
-source_path = "docs/engineering/PHASE_15_RESURRECTION.md"
-title = "Phase 15: The \"Resurrection\" Report"
+source_path = "docs/engineering/PHASE_12_RENDERER.md"
+title = "Phase 12 Report: Holographic Warp Renderer"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1100,8 +1100,8 @@ document_toml = "registry/knowledge/docs/DOC-0128.toml"
 
 [[document]]
 id = "DOC-0129"
-source_path = "docs/engineering/PHASE_16_FINAL_VALIDATION.md"
-title = "Phase 16: Final Validation & Synthesis"
+source_path = "docs/engineering/PHASE_13_GRAND_CRITIQUE.md"
+title = "Phase 13: The Grand Critique & Synthesis"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1111,8 +1111,8 @@ document_toml = "registry/knowledge/docs/DOC-0129.toml"
 
 [[document]]
 id = "DOC-0130"
-source_path = "docs/engineering/PHASE_6_IMPLEMENTATION.md"
-title = "Phase 6 Engineering Implementation Report"
+source_path = "docs/engineering/PHASE_14_DEEP_DIVE.md"
+title = "Phase 14: The \"Endless\" Deep Dive"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1122,8 +1122,8 @@ document_toml = "registry/knowledge/docs/DOC-0130.toml"
 
 [[document]]
 id = "DOC-0131"
-source_path = "docs/engineering/PHASE_7_REPORT.md"
-title = "Phase 7 Engineering & Synthesis Report"
+source_path = "docs/engineering/PHASE_15_RESURRECTION.md"
+title = "Phase 15: The \"Resurrection\" Report"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1133,8 +1133,8 @@ document_toml = "registry/knowledge/docs/DOC-0131.toml"
 
 [[document]]
 id = "DOC-0132"
-source_path = "docs/engineering/PHASE_8_SYNTHESIS.md"
-title = "Phase 8: Holographic Warp & Sedenion Synthesis"
+source_path = "docs/engineering/PHASE_16_FINAL_VALIDATION.md"
+title = "Phase 16: Final Validation & Synthesis"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1144,8 +1144,8 @@ document_toml = "registry/knowledge/docs/DOC-0132.toml"
 
 [[document]]
 id = "DOC-0133"
-source_path = "docs/engineering/PHYSICS_VALIDATION_REPORT.md"
-title = "Physics Validation Report"
+source_path = "docs/engineering/PHASE_6_IMPLEMENTATION.md"
+title = "Phase 6 Engineering Implementation Report"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1155,8 +1155,8 @@ document_toml = "registry/knowledge/docs/DOC-0133.toml"
 
 [[document]]
 id = "DOC-0134"
-source_path = "docs/engineering/WARP_SPACEPLATE_SPECS.md"
-title = "Warp Spaceplate: System Engineering Specification"
+source_path = "docs/engineering/PHASE_7_REPORT.md"
+title = "Phase 7 Engineering & Synthesis Report"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1166,8 +1166,8 @@ document_toml = "registry/knowledge/docs/DOC-0134.toml"
 
 [[document]]
 id = "DOC-0135"
-source_path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
-title = "C-071: FRB Ultrametric Structure -- Data Provenance"
+source_path = "docs/engineering/PHASE_8_SYNTHESIS.md"
+title = "Phase 8: Holographic Warp & Sedenion Synthesis"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1177,8 +1177,8 @@ document_toml = "registry/knowledge/docs/DOC-0135.toml"
 
 [[document]]
 id = "DOC-0136"
-source_path = "docs/external_sources/DATASET_MANIFEST.md"
-title = "Dataset Manifest"
+source_path = "docs/engineering/PHYSICS_VALIDATION_REPORT.md"
+title = "Physics Validation Report"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1188,8 +1188,8 @@ document_toml = "registry/knowledge/docs/DOC-0136.toml"
 
 [[document]]
 id = "DOC-0137"
-source_path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
-title = "2004 Math0403113 Boxkites Iii"
+source_path = "docs/engineering/WARP_SPACEPLATE_SPECS.md"
+title = "Warp Spaceplate: System Engineering Specification"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1199,8 +1199,8 @@ document_toml = "registry/knowledge/docs/DOC-0137.toml"
 
 [[document]]
 id = "DOC-0138"
-source_path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
-title = "Voyage by Catamaran"
+source_path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
+title = "C-071: FRB Ultrametric Structure -- Data Provenance"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1210,8 +1210,8 @@ document_toml = "registry/knowledge/docs/DOC-0138.toml"
 
 [[document]]
 id = "DOC-0139"
-source_path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
-title = "Flying Higher Than A Box-Kite"
+source_path = "docs/external_sources/DATASET_MANIFEST.md"
+title = "Dataset Manifest"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1221,8 +1221,8 @@ document_toml = "registry/knowledge/docs/DOC-0139.toml"
 
 [[document]]
 id = "DOC-0140"
-source_path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
-title = "Placeholder Substructures I"
+source_path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
+title = "2004 Math0403113 Boxkites Iii"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1232,8 +1232,8 @@ document_toml = "registry/knowledge/docs/DOC-0140.toml"
 
 [[document]]
 id = "DOC-0141"
-source_path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
-title = "Placeholder Substructures III"
+source_path = "docs/external_sources/DE_MARRAIS_CATAMARAN.md"
+title = "Voyage by Catamaran"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1243,8 +1243,8 @@ document_toml = "registry/knowledge/docs/DOC-0141.toml"
 
 [[document]]
 id = "DOC-0142"
-source_path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
-title = "Presto! Digitization: Part I"
+source_path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
+title = "Flying Higher Than A Box-Kite"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1254,8 +1254,8 @@ document_toml = "registry/knowledge/docs/DOC-0142.toml"
 
 [[document]]
 id = "DOC-0143"
-source_path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
-title = "2004 Wolfram Science Slides"
+source_path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
+title = "Placeholder Substructures I"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1265,8 +1265,8 @@ document_toml = "registry/knowledge/docs/DOC-0143.toml"
 
 [[document]]
 id = "DOC-0144"
-source_path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
-title = "Inverse Cayley-Dickson Formalism"
+source_path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"
+title = "Placeholder Substructures III"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1276,8 +1276,8 @@ document_toml = "registry/knowledge/docs/DOC-0144.toml"
 
 [[document]]
 id = "DOC-0145"
-source_path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
-title = "Open Claims Sources (Inbox)"
+source_path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
+title = "Presto! Digitization: Part I"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1287,8 +1287,8 @@ document_toml = "registry/knowledge/docs/DOC-0145.toml"
 
 [[document]]
 id = "DOC-0146"
-source_path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
-title = "Reggiani 2024 manifold identifications (C-005)"
+source_path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
+title = "2004 Wolfram Science Slides"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1298,8 +1298,8 @@ document_toml = "registry/knowledge/docs/DOC-0146.toml"
 
 [[document]]
 id = "DOC-0147"
-source_path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
-title = "Sedenion Zero-Divisor Experimental Connections"
+source_path = "docs/external_sources/INVERSE_CD_FORMALISM.md"
+title = "Inverse Cayley-Dickson Formalism"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1309,8 +1309,8 @@ document_toml = "registry/knowledge/docs/DOC-0147.toml"
 
 [[document]]
 id = "DOC-0148"
-source_path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
-title = "Wheel Algebra Taxonomy"
+source_path = "docs/external_sources/OPEN_CLAIMS_SOURCES.md"
+title = "Open Claims Sources (Inbox)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1320,8 +1320,8 @@ document_toml = "registry/knowledge/docs/DOC-0148.toml"
 
 [[document]]
 id = "DOC-0149"
-source_path = "docs/requirements/algebra.md"
-title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
+source_path = "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md"
+title = "Reggiani 2024 manifold identifications (C-005)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1331,8 +1331,8 @@ document_toml = "registry/knowledge/docs/DOC-0149.toml"
 
 [[document]]
 id = "DOC-0150"
-source_path = "docs/requirements/analysis.md"
-title = "Requirements: Analysis (Topology + Embeddings)"
+source_path = "docs/external_sources/SEDENION_ZD_EXPERIMENTAL.md"
+title = "Sedenion Zero-Divisor Experimental Connections"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1342,8 +1342,8 @@ document_toml = "registry/knowledge/docs/DOC-0150.toml"
 
 [[document]]
 id = "DOC-0151"
-source_path = "docs/requirements/astro.md"
-title = "Requirements: Astronomy Data Fetching"
+source_path = "docs/external_sources/WHEEL_ALGEBRA_TAXONOMY.md"
+title = "Wheel Algebra Taxonomy"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1352,7 +1352,40 @@ normalization_status = "pending"
 document_toml = "registry/knowledge/docs/DOC-0151.toml"
 
 [[document]]
-id = "DOC-0152"
+id = "DOC-0161"
+source_path = "docs/requirements/algebra.md"
+title = "Requirements: Algebra Engine (Cayley-Dickson, de Marrais, Reggiani)"
+kind = "manual_source"
+migration_priority = "high"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0161.toml"
+
+[[document]]
+id = "DOC-0162"
+source_path = "docs/requirements/analysis.md"
+title = "Requirements: Analysis (Topology + Embeddings)"
+kind = "manual_source"
+migration_priority = "high"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0162.toml"
+
+[[document]]
+id = "DOC-0163"
+source_path = "docs/requirements/astro.md"
+title = "Requirements: Astronomy Data Fetching"
+kind = "manual_source"
+migration_priority = "high"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0163.toml"
+
+[[document]]
+id = "DOC-0164"
 source_path = "docs/requirements/coq.md"
 title = "Requirements: Coq Proof Checking"
 kind = "manual_source"
@@ -1360,10 +1393,10 @@ migration_priority = "high"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0152.toml"
+document_toml = "registry/knowledge/docs/DOC-0164.toml"
 
 [[document]]
-id = "DOC-0153"
+id = "DOC-0165"
 source_path = "docs/requirements/cpp.md"
 title = "Requirements: C++ Kernels (Conan + CMake)"
 kind = "manual_source"
@@ -1371,10 +1404,10 @@ migration_priority = "high"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0153.toml"
+document_toml = "registry/knowledge/docs/DOC-0165.toml"
 
 [[document]]
-id = "DOC-0154"
+id = "DOC-0166"
 source_path = "docs/requirements/latex.md"
 title = "Requirements: LaTeX (PDF Build)"
 kind = "manual_source"
@@ -1382,10 +1415,10 @@ migration_priority = "high"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0154.toml"
+document_toml = "registry/knowledge/docs/DOC-0166.toml"
 
 [[document]]
-id = "DOC-0155"
+id = "DOC-0167"
 source_path = "docs/requirements/materials.md"
 title = "Requirements: Materials Datasets"
 kind = "manual_source"
@@ -1393,10 +1426,10 @@ migration_priority = "high"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0155.toml"
+document_toml = "registry/knowledge/docs/DOC-0167.toml"
 
 [[document]]
-id = "DOC-0156"
+id = "DOC-0168"
 source_path = "docs/requirements/particle.md"
 title = "Requirements: Particle Data Workflows"
 kind = "manual_source"
@@ -1404,45 +1437,12 @@ migration_priority = "high"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0156.toml"
-
-[[document]]
-id = "DOC-0157"
-source_path = "docs/requirements/quantum-docker.md"
-title = "Requirements: Quantum (Qiskit via Docker)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0157.toml"
-
-[[document]]
-id = "DOC-0158"
-source_path = "docs/theory/CLAIMS_METHODOLOGY.md"
-title = "Claims Methodology and Scientific Rigor"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0158.toml"
-
-[[document]]
-id = "DOC-0159"
-source_path = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
-title = "Warp Ring Physics Reconciliation (Phase 7.0)"
-kind = "manual_source"
-migration_priority = "high"
-raw_captured = true
-authoritative = false
-normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0159.toml"
+document_toml = "registry/knowledge/docs/DOC-0168.toml"
 
 [[document]]
 id = "DOC-0169"
-source_path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
-title = "Plan: Warp Ring Physics Reconciliation"
+source_path = "docs/requirements/quantum-docker.md"
+title = "Requirements: Quantum (Qiskit via Docker)"
 kind = "manual_source"
 migration_priority = "high"
 raw_captured = true
@@ -1452,6 +1452,39 @@ document_toml = "registry/knowledge/docs/DOC-0169.toml"
 
 [[document]]
 id = "DOC-0170"
+source_path = "docs/theory/CLAIMS_METHODOLOGY.md"
+title = "Claims Methodology and Scientific Rigor"
+kind = "manual_source"
+migration_priority = "high"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0170.toml"
+
+[[document]]
+id = "DOC-0171"
+source_path = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
+title = "Warp Ring Physics Reconciliation (Phase 7.0)"
+kind = "manual_source"
+migration_priority = "high"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0171.toml"
+
+[[document]]
+id = "DOC-0181"
+source_path = "docs/tickets/TICKET_WARP_PHYSICS_RECONCILIATION.md"
+title = "Plan: Warp Ring Physics Reconciliation"
+kind = "manual_source"
+migration_priority = "high"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0181.toml"
+
+[[document]]
+id = "DOC-0182"
 source_path = "docs/x86_SIMD_OPTIMIZATION.md"
 title = "x86 SIMD/FPU Optimization & History Reference"
 kind = "manual_source"
@@ -1459,7 +1492,7 @@ migration_priority = "high"
 raw_captured = true
 authoritative = false
 normalization_status = "pending"
-document_toml = "registry/knowledge/docs/DOC-0170.toml"
+document_toml = "registry/knowledge/docs/DOC-0182.toml"
 
 [[document]]
 id = "DOC-0008"
@@ -1534,7 +1567,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0096"
+id = "DOC-0097"
 source_path = "docs/claims/by_domain/algebra.md"
 title = "Claims: algebra"
 kind = "generated_markdown"
@@ -1543,7 +1576,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0097"
+id = "DOC-0098"
 source_path = "docs/claims/by_domain/coq.md"
 title = "Claims: coq"
 kind = "generated_markdown"
@@ -1552,7 +1585,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0098"
+id = "DOC-0099"
 source_path = "docs/claims/by_domain/cosmology.md"
 title = "Claims: cosmology"
 kind = "generated_markdown"
@@ -1561,7 +1594,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0099"
+id = "DOC-0100"
 source_path = "docs/claims/by_domain/cpp.md"
 title = "Claims: cpp"
 kind = "generated_markdown"
@@ -1570,7 +1603,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0100"
+id = "DOC-0101"
 source_path = "docs/claims/by_domain/datasets.md"
 title = "Claims: datasets"
 kind = "generated_markdown"
@@ -1579,7 +1612,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0101"
+id = "DOC-0102"
 source_path = "docs/claims/by_domain/engineering.md"
 title = "Claims: engineering"
 kind = "generated_markdown"
@@ -1588,7 +1621,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0102"
+id = "DOC-0103"
 source_path = "docs/claims/by_domain/gravitational-waves.md"
 title = "Claims: gravitational-waves"
 kind = "generated_markdown"
@@ -1597,7 +1630,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0103"
+id = "DOC-0104"
 source_path = "docs/claims/by_domain/holography.md"
 title = "Claims: holography"
 kind = "generated_markdown"
@@ -1606,7 +1639,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0104"
+id = "DOC-0105"
 source_path = "docs/claims/by_domain/legacy.md"
 title = "Claims: legacy"
 kind = "generated_markdown"
@@ -1615,7 +1648,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0105"
+id = "DOC-0106"
 source_path = "docs/claims/by_domain/materials.md"
 title = "Claims: materials"
 kind = "generated_markdown"
@@ -1624,7 +1657,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0106"
+id = "DOC-0107"
 source_path = "docs/claims/by_domain/meta.md"
 title = "Claims: meta"
 kind = "generated_markdown"
@@ -1633,7 +1666,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0107"
+id = "DOC-0108"
 source_path = "docs/claims/by_domain/open-systems.md"
 title = "Claims: open-systems"
 kind = "generated_markdown"
@@ -1642,7 +1675,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0108"
+id = "DOC-0109"
 source_path = "docs/claims/by_domain/spectral.md"
 title = "Claims: spectral"
 kind = "generated_markdown"
@@ -1651,7 +1684,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0109"
+id = "DOC-0110"
 source_path = "docs/claims/by_domain/stellar-cartography.md"
 title = "Claims: stellar-cartography"
 kind = "generated_markdown"
@@ -1660,7 +1693,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0110"
+id = "DOC-0111"
 source_path = "docs/claims/by_domain/tensor-networks.md"
 title = "Claims: tensor-networks"
 kind = "generated_markdown"
@@ -1669,7 +1702,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0111"
+id = "DOC-0112"
 source_path = "docs/claims/by_domain/visualization.md"
 title = "Claims: visualization"
 kind = "generated_markdown"
@@ -1678,7 +1711,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0112"
+id = "DOC-0113"
 source_path = "docs/convos/CONVOS_CLAIMS_INBOX.md"
 title = "Convos Claims Inbox (Triage Queue, ASCII-only)"
 kind = "generated_markdown"
@@ -1687,7 +1720,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0113"
+id = "DOC-0114"
 source_path = "docs/convos/README.md"
 title = "Convos audit workspace"
 kind = "generated_markdown"
@@ -1696,7 +1729,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0114"
+id = "DOC-0115"
 source_path = "docs/convos/audit_1_read_nonuser_lines_cont.md"
 title = "Audit: convos/1_read_nonuser_lines_cont.md"
 kind = "generated_markdown"
@@ -1705,7 +1738,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0115"
+id = "DOC-0116"
 source_path = "docs/convos/implement_next_from_1_read_nonuser_lines_cont.md"
 title = "Implement-next backlog (from convos/1_read_nonuser_lines_cont.md)"
 kind = "generated_markdown"
@@ -1714,7 +1747,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0116"
+id = "DOC-0117"
 source_path = "docs/convos/keywords_1_read_nonuser_lines_cont.md"
 title = "Convos keyword summary: convos/1_read_nonuser_lines_cont.md"
 kind = "generated_markdown"
@@ -1723,7 +1756,88 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
+id = "DOC-0152"
+source_path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
+title = "Claims Domains Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0153"
+source_path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
+title = "Claims Tasks Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0154"
+source_path = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
+title = "Claim Tickets Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0155"
+source_path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
+title = "Experiments Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0156"
+source_path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
+title = "Insights Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0157"
+source_path = "docs/generated/NEXT_ACTIONS_REGISTRY_MIRROR.md"
+title = "Next Actions Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0158"
+source_path = "docs/generated/REQUIREMENTS_REGISTRY_MIRROR.md"
+title = "Requirements Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0159"
+source_path = "docs/generated/ROADMAP_REGISTRY_MIRROR.md"
+title = "Roadmap Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
 id = "DOC-0160"
+source_path = "docs/generated/TODO_REGISTRY_MIRROR.md"
+title = "TODO Registry Mirror"
+kind = "generated_markdown"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0172"
 source_path = "docs/tickets/C001_C050_claims_audit.md"
 title = "Ticket: Claims audit batch C-001..C-050"
 kind = "generated_markdown"
@@ -1732,7 +1846,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0161"
+id = "DOC-0173"
 source_path = "docs/tickets/C051_C100_claims_audit.md"
 title = "Ticket: Claims audit batch C-051..C-100"
 kind = "generated_markdown"
@@ -1741,7 +1855,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0162"
+id = "DOC-0174"
 source_path = "docs/tickets/C101_C150_claims_audit.md"
 title = "Ticket: Claims audit batch C-101..C-150"
 kind = "generated_markdown"
@@ -1750,7 +1864,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0163"
+id = "DOC-0175"
 source_path = "docs/tickets/C151_C200_claims_audit.md"
 title = "Ticket: Claims audit batch C-151..C-200"
 kind = "generated_markdown"
@@ -1759,7 +1873,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0164"
+id = "DOC-0176"
 source_path = "docs/tickets/C201_C250_claims_audit.md"
 title = "Ticket: Claims audit batch C-201..C-250"
 kind = "generated_markdown"
@@ -1768,7 +1882,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0165"
+id = "DOC-0177"
 source_path = "docs/tickets/C251_C300_claims_audit.md"
 title = "Ticket: Claims audit batch C-251..C-300"
 kind = "generated_markdown"
@@ -1777,7 +1891,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0166"
+id = "DOC-0178"
 source_path = "docs/tickets/C301_C350_claims_audit.md"
 title = "Ticket: Claims audit batch C-301..C-350"
 kind = "generated_markdown"
@@ -1786,7 +1900,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0167"
+id = "DOC-0179"
 source_path = "docs/tickets/C351_C400_claims_audit.md"
 title = "Ticket: Claims audit batch C-351..C-400"
 kind = "generated_markdown"
@@ -1795,7 +1909,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0168"
+id = "DOC-0180"
 source_path = "docs/tickets/C401_C427_claims_audit.md"
 title = "Ticket: Claims audit batch C-401..C-427"
 kind = "generated_markdown"
@@ -1804,7 +1918,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0171"
+id = "DOC-0183"
 source_path = "reports/artifacts_phase0_dryrun.md"
 title = "Artifacts Phase 0 dry-run"
 kind = "artifact_report"
@@ -1813,7 +1927,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0172"
+id = "DOC-0184"
 source_path = "reports/artifacts_reorg_plan.md"
 title = "Artifacts reorganization plan (non-destructive)"
 kind = "artifact_report"
@@ -1822,7 +1936,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0173"
+id = "DOC-0185"
 source_path = "reports/audit_network_gating.md"
 title = "Network Gating Audit (2026-02-06)"
 kind = "artifact_report"
@@ -1831,7 +1945,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0174"
+id = "DOC-0186"
 source_path = "reports/audit_nonpython_toolchains.md"
 title = "Non-Python Toolchains Audit (2026-02-06)"
 kind = "artifact_report"
@@ -1840,7 +1954,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0175"
+id = "DOC-0187"
 source_path = "reports/audit_provenance.md"
 title = "Provenance Audit (2026-02-04)"
 kind = "artifact_report"
@@ -1849,7 +1963,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0176"
+id = "DOC-0188"
 source_path = "reports/audit_pythonpath.md"
 title = "Pythonpath Hygiene Audit (2026-02-04)"
 kind = "artifact_report"
@@ -1858,7 +1972,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0177"
+id = "DOC-0189"
 source_path = "reports/claims_batch_backlog_C001_C050.md"
 title = "Claims Batch Backlog (C-001..C-050) (2026-02-03)"
 kind = "artifact_report"
@@ -1867,7 +1981,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0178"
+id = "DOC-0190"
 source_path = "reports/claims_batch_backlog_C001_C200.md"
 title = "Claims Batch Backlog (C-001..C-200) (2026-02-04)"
 kind = "artifact_report"
@@ -1876,7 +1990,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0179"
+id = "DOC-0191"
 source_path = "reports/claims_batch_backlog_C011_C025.md"
 title = "Claims Batch Backlog (C-011..C-025) (2026-02-02)"
 kind = "artifact_report"
@@ -1885,7 +1999,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0180"
+id = "DOC-0192"
 source_path = "reports/claims_batch_backlog_C027_C045.md"
 title = "Claims Batch Backlog (C-027..C-045) (2026-02-03)"
 kind = "artifact_report"
@@ -1894,7 +2008,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0181"
+id = "DOC-0193"
 source_path = "reports/claims_batch_backlog_C046_C060.md"
 title = "Claims Batch Backlog (C-046..C-060) (2026-02-02)"
 kind = "artifact_report"
@@ -1903,7 +2017,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0182"
+id = "DOC-0194"
 source_path = "reports/claims_batch_backlog_C046_C066.md"
 title = "Claims Batch Backlog (C-046..C-066) (2026-02-03)"
 kind = "artifact_report"
@@ -1912,7 +2026,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0183"
+id = "DOC-0195"
 source_path = "reports/claims_batch_backlog_C051_C100.md"
 title = "Claims Batch Backlog (C-051..C-100) (2026-02-03)"
 kind = "artifact_report"
@@ -1921,7 +2035,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0184"
+id = "DOC-0196"
 source_path = "reports/claims_batch_backlog_C101_C150.md"
 title = "Claims Batch Backlog (C-101..C-150) (2026-02-03)"
 kind = "artifact_report"
@@ -1930,7 +2044,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0185"
+id = "DOC-0197"
 source_path = "reports/claims_batch_backlog_C151_C200.md"
 title = "Claims Batch Backlog (C-151..C-200) (2026-02-02)"
 kind = "artifact_report"
@@ -1939,7 +2053,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0186"
+id = "DOC-0198"
 source_path = "reports/claims_batch_backlog_C201_C250.md"
 title = "Claims Batch Backlog (C-201..C-250) (2026-02-02)"
 kind = "artifact_report"
@@ -1948,7 +2062,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0187"
+id = "DOC-0199"
 source_path = "reports/claims_batch_backlog_C201_C408.md"
 title = "Claims Batch Backlog (C-201..C-408) (2026-02-02)"
 kind = "artifact_report"
@@ -1957,7 +2071,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0188"
+id = "DOC-0200"
 source_path = "reports/claims_batch_backlog_C201_C427.md"
 title = "Claims Batch Backlog (C-201..C-427) (2026-02-02)"
 kind = "artifact_report"
@@ -1966,7 +2080,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0189"
+id = "DOC-0201"
 source_path = "reports/claims_batch_backlog_C201_C430.md"
 title = "Claims Batch Backlog (C-201..C-430) (2026-02-02)"
 kind = "artifact_report"
@@ -1975,7 +2089,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0190"
+id = "DOC-0202"
 source_path = "reports/claims_batch_backlog_C201_C432.md"
 title = "Claims Batch Backlog (C-201..C-432) (2026-02-04)"
 kind = "artifact_report"
@@ -1984,7 +2098,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0191"
+id = "DOC-0203"
 source_path = "reports/claims_batch_backlog_C251_C300.md"
 title = "Claims Batch Backlog (C-251..C-300) (2026-02-02)"
 kind = "artifact_report"
@@ -1993,7 +2107,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0192"
+id = "DOC-0204"
 source_path = "reports/claims_batch_backlog_C301_C350.md"
 title = "Claims Batch Backlog (C-301..C-350) (2026-02-02)"
 kind = "artifact_report"
@@ -2002,7 +2116,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0193"
+id = "DOC-0205"
 source_path = "reports/claims_batch_backlog_C351_C400.md"
 title = "Claims Batch Backlog (C-351..C-400) (2026-02-02)"
 kind = "artifact_report"
@@ -2011,7 +2125,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0194"
+id = "DOC-0206"
 source_path = "reports/claims_batch_backlog_C401_C427.md"
 title = "Claims Batch Backlog (C-401..C-427) (2026-02-03)"
 kind = "artifact_report"
@@ -2020,7 +2134,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0195"
+id = "DOC-0207"
 source_path = "reports/claims_bold_tokens_inventory.md"
 title = "Claims Bold-Token Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -2029,7 +2143,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0196"
+id = "DOC-0208"
 source_path = "reports/claims_id_inventory.md"
 title = "Claims ID Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -2038,7 +2152,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0197"
+id = "DOC-0209"
 source_path = "reports/claims_priority_ranking.md"
 title = "Claims Priority Ranking (2026-02-02)"
 kind = "artifact_report"
@@ -2047,7 +2161,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0198"
+id = "DOC-0210"
 source_path = "reports/claims_staleness_report.md"
 title = "Claims Staleness Report (2026-02-04)"
 kind = "artifact_report"
@@ -2056,7 +2170,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0199"
+id = "DOC-0211"
 source_path = "reports/claims_status_contradictions.md"
 title = "Claims Status Contradictions (2026-02-04)"
 kind = "artifact_report"
@@ -2065,7 +2179,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0200"
+id = "DOC-0212"
 source_path = "reports/claims_status_inventory.md"
 title = "Claims Status Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -2074,7 +2188,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0201"
+id = "DOC-0213"
 source_path = "reports/config_audit.md"
 title = "Config Audit Notes (2026-02-01)"
 kind = "artifact_report"
@@ -2083,7 +2197,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0202"
+id = "DOC-0214"
 source_path = "reports/convos_claim_candidates.md"
 title = "Convos Claim Candidates (Auto-Scan)"
 kind = "artifact_report"
@@ -2092,7 +2206,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0203"
+id = "DOC-0215"
 source_path = "reports/convos_claim_candidates_prioritized.md"
 title = "Convos Claim Candidates (Prioritized Shortlist, 2026-02-01)"
 kind = "artifact_report"
@@ -2101,7 +2215,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0204"
+id = "DOC-0216"
 source_path = "reports/convos_pdf_inventory.md"
 title = "Convos PDF inventory"
 kind = "artifact_report"
@@ -2110,7 +2224,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0205"
+id = "DOC-0217"
 source_path = "reports/non_iso_dates_inventory.md"
 title = "Non-ISO date inventory"
 kind = "artifact_report"
@@ -2119,7 +2233,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0206"
+id = "DOC-0218"
 source_path = "reports/open_claims_missing_dedicated_sources.md"
 title = "Open claims missing dedicated source index"
 kind = "artifact_report"
@@ -2128,7 +2242,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0207"
+id = "DOC-0219"
 source_path = "reports/open_claims_missing_test_hooks.md"
 title = "Open claims missing explicit test/verifier hook"
 kind = "artifact_report"
@@ -2137,7 +2251,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0208"
+id = "DOC-0220"
 source_path = "reports/package_index.md"
 title = "Package Index (2026-02-01)"
 kind = "artifact_report"
@@ -2146,7 +2260,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0209"
+id = "DOC-0221"
 source_path = "reports/pdf_inventory.md"
 title = "PDF Inventory"
 kind = "artifact_report"
@@ -2155,7 +2269,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0210"
+id = "DOC-0222"
 source_path = "reports/pythonpath_refactor_plan.md"
 title = "Pythonpath Refactor Plan (2026-02-04)"
 kind = "artifact_report"
@@ -2164,7 +2278,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0211"
+id = "DOC-0223"
 source_path = "reports/repo_inventory.md"
 title = "Repo Inventory (2026-02-01)"
 kind = "artifact_report"
@@ -2173,7 +2287,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0212"
+id = "DOC-0224"
 source_path = "reports/repo_structure_audit.md"
 title = "Repo Structure Audit (2026-02-04)"
 kind = "artifact_report"
@@ -2182,7 +2296,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0213"
+id = "DOC-0225"
 source_path = "reports/script_contracts_inventory.md"
 title = "Script contract inventory"
 kind = "artifact_report"
@@ -2191,7 +2305,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0214"
+id = "DOC-0226"
 source_path = "reports/tickets_inventory.md"
 title = "Tickets Inventory (2026-02-04)"
 kind = "artifact_report"
@@ -2200,7 +2314,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0215"
+id = "DOC-0227"
 source_path = "reports/todo_fixme_scan.md"
 title = "TODO/FIXME Scan (2026-02-07)"
 kind = "artifact_report"
@@ -2209,7 +2323,7 @@ authoritative = false
 skip_reason = "generated_markdown_or_artifact"
 
 [[document]]
-id = "DOC-0216"
+id = "DOC-0228"
 source_path = "reports/tscp_trial_factor_ledger.md"
 title = "TSCP Trial-Factor Ledger (2026-02-04)"
 kind = "artifact_report"

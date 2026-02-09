@@ -3,903 +3,1039 @@
 
 [document]
 id = "DOC-0143"
-source_path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
-title = "2004 Wolfram Science Slides"
+source_path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
+title = "Placeholder Substructures I"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "ace9663f034392ee658eef507e121c28cabbb03719de52080d1a124e7807c65f"
-source_line_count = 885
-source_size_bytes = 75184
-content_sha256 = "ace9663f034392ee658eef507e121c28cabbb03719de52080d1a124e7807c65f"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "5a7397eb1a8899b813b2c233d47e778e549513c362271edd68011242b911a6a5"
+source_line_count = 1021
+source_size_bytes = 75389
+content_sha256 = "5a7397eb1a8899b813b2c233d47e778e549513c362271edd68011242b911a6a5"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# 2004 Wolfram Science Slides
+# Placeholder Substructures I
 
-**Source:** data/external/papers/de_marrais_2004_wolfram_science_slides.pdf
+**Full Title:** The \"Placeholder\" Substructures of the \"Box-Kite Group\":
+Connecting Simplicial Dynamics to Number Theory via the Sedenion ZD's
 
+**Author:** Robert P. C. de Marrais
+
+**arXiv:** math/0703745v3 (this file is version 3; version 1 cited in
+BIBLIOGRAPHY.md as arXiv:math/0207003)
+
+**Source:** convos/CayleyDickson/0703745v3.pdf (151 KB)
+
+**Note:** This is a later revision of the already-cited paper. Version 3
+includes corrections and expanded proofs.
+
+---
+
+## Key Content
+
+### Box-Kite Group Structure
+
+The 7 box-kites in the sedenions are organized by a group structure inherited
+from the octonion multiplication rules. The \"placeholder\" substructures are
+specific arrangements of assessor indices that reveal deep number-theoretic
+connections.
+
+### Connection to Simplicial Dynamics
+
+The paper connects the combinatorial structure of box-kite vertices and edges
+to simplicial dynamics, showing that the topology of the ZD interaction graph
+has interpretable dynamical properties.
+
+### Key Theorem
+
+The 42 primitive assessors partition into exactly 7 isomorphic octahedral
+structures (box-kites), each characterized by a unique \"missing\" octonion
+index (the strut constant). This is a concrete realization of Moreno's
+abstract G_2 homomorphism result.
 
 
 ## Full Transcript
 
 ```text
-The \u201CSomething From Nothing\u201D Insertion Point: Where NKS Research
- into Physics Foundations Can Expect the \u201CMost Bang for the Buck\u201D
-                      Robert de Marrais rdemarrais@alum.mit.edu
+                                  Flying Higher Than A Box-Kite:
 
-1: Introducing the \u201CBox-Kite Papers\u201D and Zero-Divisors Generally
-         The focus of this presentation is the largely unexplored subject of \u201Czero-divisors,\u201D
-(henceforth, \u201CZD's\u201D) which are forms of (hypercomplex) imaginary numbers with the
-peculiar property that two such, if chosen properly, are both substantial quantities \u2013 yet
-they have, as their product, nothing. Like the gnarly \u201Ccoastline curves\u201D classical analysis
-dismissed as \u201Cmonstrosities\u201D until Mandelbrot tamed them, then generalized \u201Cfractals\u201D
-from the examples they offered, such algebraic beasts have been deemed \u201Cpathological\u201D
-ever since a celebrated proof of Hurwitz's showed, a little over a century ago, that such
-entities are not just oddballs, but unavoidable.1 (And, a little less than seven years ago,
-the Mexican mathematician Guillermo Moreno2 showed more: in the 16-D imaginaries
-called \u201CSedenions\u201D where we're first forced to deal with them, ZD's conform to some
-remarkably familiar algebraic patterns which have echoes in all higher, 2N-dimensional,
-extensions of imaginaries. This led immediately to my own research, and a series of three
-monographs and counting which I call, for visually intuitive reasons I'll get to in short
-order, the \u201Cbox-kite papers,\u201D shorthanded herein as BK1, BK2, and BK3 respectively.3)
-         What Hurwitz showed in 1896 marked the end, in one key sense, of the revolution
-begun in the 1810's by taking those entities Descartes had derisively deemed \u201Cimaginary\u201D
-seriously. The stupendously deep rethinking of all mathematics they facilitated in the
-hands of Gauss, Galois, Fourier, Reimann, et al., led some people to suspect a general
-strategy: after many years' frustration, William Rowan Hamilton was able to generalize
-the 2-D algebraic geometry of the complex plane to the 4-D context which the science of
-mechanics, as he envisioned it, required: in a fit of inspiration, he carved the famous
-formula \u201Ci2 = j2 = k2 = ijk = -1\u201D with a penknife on the bridge he was crossing. What
-made finding this easy equation so difficult is this codicil: ij = -ji, and ditto for jk (and
--kj) and ki (and -ik), which is to say Quaternion multiplication is anti-commutative.
-         Those familiar with the Feynman lectures will know, though, that this is precisely
-what's required for a basis of vectors describing the way real forces work (which the great
-Brooklyn physicist was wont to demonstrate by rotating books and other objects in two
-different senses, in differing sequence, in class). If losing the commutative law of mul-
-tiplication is the price you pay, then, for the calculus of dot and cross products (without
-which Maxwell's equations, among other things, would hardly be thinkable), why com-
-plain? And some contemporaries of Hamilton not only didn't grumble, but they sought to
-push the envelope even further, which led Cayley and Dickson and Graves to double
-dimension once again, yielding the 8-D Octonions, wherein even the associative law
-breaks down. This means, among other things, that their symmetries can't even be codi-
-fied with group theory, since simple expressions like \u201Cabc\u201D become suddenly problema-
-tic: for, generally speaking, a\u00B7(b\u00B7c) and (a\u00B7b)\u00B7c may well have opposite signs! (Hence,
-algebraists concerned with such things speak of \u201Cloops\u201D not groups, which do for
-nonassociative operations what groups ought to do but can't!4)
+                              Kite-Chain Middens, Sand Mandalas,
+                                and Zero-Divisor Patterns in the
+                                  2n-ions Beyond the Sedenions
 
-
-R. de Marrais                              Page 1               \u201CSomething From Nothing\u201D
-\u000C        Algebraically, the number fields of Imaginaries, Quaternions, and Octonions (usu-
-ally indicated by C for complex, H for Hamilton, and O) all conform to a \u201Csquares rule\u201D:
-expressing, say, an arbitrary complex number as z = a + bi, and another as z' = c + di, we
-take for granted that the absolute value of their product is equal to the product of their ab-
-solute values (i.e., it \u201Chas a norm\u201D); alternatively, writing things out in terms of compo-
-nents, we get a relationship between squares (i.e., \u201Cthe product of one sum of two squares
-by another is a sum of two squares as well\u201D): (ac \u2013 bd)2 + (ad + bc)2 = (a2 + b2)(c2 + d2)
-        This generalizes to sums of 4 and 8 squares, for Quaternions and Octonions in that
-order, and the formulas, while excruciatingly tedious to calculate in the pre-computer
-days when Cayley and company were investigating all this, are conceptually, at least,
-rather easy to grasp. People naturally wanted to keep doubling dimensions, to find even
-weirder and niftier number fauna, but Hurwitz spoiled their fun by showing that one more
-doubling to 16-D induces the loss of something even more critical than associativity: the
-very notion of a norm (and hence possibility of a straightforward \u201Csquares rule\u201D5) goes out
-the window. That is, defining a metric (and hence, standard \u201Cfield\u201D structure) becomes
-problematic; corollarily, you get zero-divisors (i.e., number-theoretic \u201Cblack holes\u201D).
-        That last parenthetical remark, though, suggests a context wherein Sedenions, and
-even higher 2N-ions, might prove of real use: studying quantum gravity. Of the many
-aspects of the latter that make it hard to integrate with standard QM, one in particular
-makes the breakdown of norms spring to mind: the index of what we might call an
-electron's \u201Cself-absorption,\u201D the \u201Cfine structure constant\u201D of 1/137, has analogues for the
-weak and strong forces, but for gravity the \u201Cconstant\u201D in fact is a variable! A survey by
-three Estonian physicists of Nonassociative Algebras in Physics frames this in terms of
-\u201Cinfobarriers,\u201D or \u201Ccertain limits in obtaining information\u201D \u2013 related to the degree of
-\u201Chypercomplexity\u201Drequired to study their limit-case phenomena (linked in turn to certain
-limit-case constants, such as Einstein's c and Planck's h, for C and H respectively):
-
-       Complex numbers seem to have a fundamental connection with the special
-       theory of relativity allowing to introduce the light cone and a
-       nondetermined interval for events. The noncommutativity of QM is
-       related to the uncertainty relations and the complementarity principle, and
-       is characteristically represented by the quaternion units satisfying the same
-       commutation relations as do the angular momentum operators.6
-
-         The authors also discuss Octonionic arguments advanced since the 1970's to
-model a third infobarrier, associated with the strong force: quark confinement. And
-clearly, Octonionic modeling has been running rampant since the advent of superstrings
-and M-Theory, where a stress that sometimes verges on \u201Cnegative theology\u201D is placed
-upon the implications of certain kinds of non-observability.7 But more germane here is a
-brief \u201Cblue sky\u201D piece by Andrei Sakharov8 concerning an underlying spacetime \u201Clattice\u201D
-structure (the lattice constant being the Planck length) subtending gravity, linked to a
-spontaneous, post-Big Bang, phase transition \u2013 with gravity as some kind of elasticity of
-this lattice (and hence of its \u201Cmetric\u201D). Our Estonian authors see a role here in studying
-this fourth infobarrier involving the Sedenions \u2013 at which point, their book ends, and my
-own thoughts (with progressively emerging links to NKS modeling) begin . . .
-
-R. de Marrais                              Page 2               \u201CSomething From Nothing\u201D
-\u000C         The Estonians play with various preparations of Sedenions which serve to mute or
-suppress their distinctive zero-divisor features: \u201Cbinary\u201D and \u201Cternary\u201D Sedenion schemes
-which can be almost tamed by matrix methods, etc. This is understandable, as they were
-thinking about \u201Cinfobarriers\u201D at a time when ZD's still seemed \u201Cpathological.\u201D But the
-history of the hypercomplex should suggest to us that even the loss of structure implicit in
-ZD's portends some unsuspected gain in other aspects. Just what might this be? The
-answer is quite surprising: contrary to a century's intuition in this area, what I find is a
-tendency toward spontaneous cobbling together of ever more elaborate structure as the N
-in 2N-ions gets bigger; more, that this \u201Cmustering\u201D (and its reverse process, which I think
-of \u2013 to continue the military analogy \u2013 as \u201Cdemobilizing\u201D) is necessarily interlinked with
-the survival of \u201Cclassical\u201D structures (specifically, associative triplets, clones of the Qua-
-ternions' \u201Ci, j, k\u201D , which interpenetrate in a manner at once remarkably simple, yet ex-
-ceedingly rich from a modeler's vantage), in cloistered algebraic \u201Csafe-houses\u201D whose
-building blocks are the octahedral lattices of ZD's I call \u201Cbox-kites.\u201D
-         From here on out, I will have much less to say about physics per se, and much
-more about mustering as a general NKS phenomenon. Indeed, the title of this presenta-
-tion was submitted while I was still framing BK3 \u2013 but, much to my surprise, the physics
-focus of the results presented therein took shape much more quickly than anticipated,
-leading me to feel far less interested in regurgitating results just written up. So I only
-note briefly two key themes. First, the algebraic \u201Chomomorphism\u201D Moreno found was to
-the automorphism group of the Octonions, known in Dynkin-diagram argot as \u201CG2\u201D; but
-this is the same 7-fold-symmetric patterning which Dominic Joyce has used to model the
-7 \u201Ccurled up\u201D dimensions of \u201Cgauge forces\u201D in M-Theory \u2013 and this \u201CJoyce manifold\u201D is
-built upon 35 equations. (Also the number of associative triplets in the Sedenions: the
-Octonions have 7; the Quaternions, but 1; and 2N-ions in general have (2N-1)(2N-2)/(3!).)
-Second, the breakdown of the \u201Csquares law\u201D beyond the Octonions opens out on a way of
-thinking surprisingly akin to renormalization: if the product of a pair of 2N-ions seems to
-need the number of dimensions in which 2N+1-ions live, and if \u201Clook-alike\u201D algebras incor-
-porate \u201Csleeper-cell structures\u201D (i.e., dormant ZD's whose ZD-ness is unobservable as
-such), with the same multiplication tables as Quaternions and Octonions, but with their
-probabilistic nature implicit in (not superimposed upon) their workings . . . if such ideas
-are of interest to you, please go to BK3. For I'll have no more to say about them here.
-         What I do want from physics, to start with, is what one philosopher of science has
-called a \u201Cremote analogy\u201D9: one which, if not taken too literally, can help guide our
-thoughts into the strange terrain we're entering. I refer to the cosmological notion which
-has only been taken seriously for about 4 years now, known as \u201Cco-evolution.\u201D Since
-John Kormandy's presentation at the June, 2000, AAS meeting, it has suddenly become a
-mainstream notion to see supermassive black holes as \u201Cgalactic sculptors\u201D \u2013 that is,
-necessary ingredients in galactic evolution, at least for elliptic galaxies like ours, with a
-clear correlation between the size of the central black hole and the galaxy itself.10 I invite
-you to jettison the \u201Ccommon wisdom\u201D of ZD's as \u201Cpathological,\u201D and imagine an indefi-
-nitely large (in theory, up to infinite-dimensional) space of ZD's \u2013 replete with a vast
-potential for \u201Cmustering\u201D and \u201Cdemobilizing\u201D structures, be they evanescent or long-term,
-guided by a \u201Cdark matter halo\u201D of NKS protocols still to be determined \u2013 as the \u201Csuper-
-massive black holes\u201D which center and structure the galaxies of number.
-
-R. de Marrais                              Page 3               \u201CSomething From Nothing\u201D
-\u000C                        No
-2: The Theory of Everything: Starter-Kit Concepts
-        BK3 ends with two pages presenting and generalizing from a \u201Csynchronization
-table\u201D displaying a fundamental property I call \u201Ctrip-sync,\u201D for short for synchronization
-of associative triplets (a.k.a., systems of mutually interpenetrating Quaternion copies).
-Other phenomena (in particular, the \u201Csand mandalas\u201D in the 32-D \u201CPathions,\u201D whose
-graphical sequencing in BK2 \u2013 reproduced below \u2013 was the first clue to NKS behaviors)
-suggested complexity in the NKS sense. But the \u201Cspin control\u201D implicit in the \u201Cslippage\u201D
-between triplets sharing Box-Kite pathways shows us where it's hiding and what it feeds
-on. As happens surprisingly often in mathematics, being an inch away from a Big Idea
-can feel like a mile until you get there, so while the closing thought in BK3 was that it
-was an open question whether the Trip-Sync property holds for ZD patterns in all 2n-ions,
-n > 3, it turned out to be embarrassingly easy to prove it in full generality, using nothing
-much more than the defining properties of Box-Kite lattices themselves. So Trip-Sync's
-deployment will mark the end-point of the presentation here of the \u201Cstarter-kit concepts\u201D
-\u2013 after which, the \u201Cwork in progress\u201D of \u201Cmustering theory\u201D proper can be broached.
-        To get to a point where \u201Ctrip-sync\u201D will seem a natural thing to contemplate, we
-need to consider, first, notation; next, the Cayley-Dixon Process (or CDP), the algorithm
-which allows us to build 2N+1-ions from 2N-ions for N arbitrarily large; then, Box-Kites
-themselves, which the right notation will make easy to explain, and ensembles of which,
-in higher-than-16 dimensions, CDP machinery will let us investigate and navigate with
-minimal pain.
-        While the Quaternions have but two distinct representations, hence two labeling
-schemes (ij = k, or ik = j), the Octonions have no fewer than 480, and the Sedenions a
-few hundred billion. Nor are all the Octonionic schemes simply \u201Cequivalent\u201D in all situa-
-tions; nor are arbitrary labeling schemes for the Sedenions necessarily useful or even
-feasible for our purposes. (For details, see BK1.) Some culling is in order, and a guiding
-principle to motivate it. It is found in an outrageously simple-minded convention \u2013
-highly suggestive, in formal outline, of the definition of \u201Cnorm\u201D governing number forms
-less \u201Chyper\u201D than Sedenions: for the 2N units in a given universe of 2N-ions, label their
-axes with subscripts running from 0 (for the reals) to 2N-1, so that products of two such
-units will have indices equal to the XOR of the indices of their factors. This is not only
-do-able for all N, but simple to work with to boot.
-        For the Quaternions, the rule is trivial: instead of i, j, k, write i1 , i2 , i3; and, since
-1 xor 2 = 3, the product of any pair of axes yields the third. What's not so trivial is the
-sign, though, of the resultant unit. And since, with the Octonions, multiple labeling
-schemes conforming to our XOR rule are possible (and actually in use), we choose that
-one which results from the most straightforward deployment of CDP. For more than you
-probably care to know about this algorithm, see the background discussion and \u201Cbit-twid-
-dling\u201D proofs in BK2. For now, I'll just provide a standard, readily generalized, way of
-writing Octonion triplets, then expand my interest to embrace the Sedenion multiplication
-table; the iterative procedure one can point to in moving from the one to the other will
-suggest a very simple set of rules (even dumber than those I reduced things to in BK2) for
-any 2N-ion tabulations, which I'll describe in ready-to-implement pseudocode fashion.
-
-
-R. de Marrais                                 Page 4                 \u201CSomething From Nothing\u201D
-\u000C       As composing strings of subscripted \u201Ci\u201D's is quite tedious, let's just write the
-indices in comma-delimited, parenthesized lists of 3, in cyclical order. Put the lowest
-index number first, then the index whose product with it yields the positive value of the
-third. The Quaternions' \u201Ci, j, k\u201D hence gets signified this way: (1, 2, 3). The seven
-associative triplets (henceforth, \u201CO-trips\u201D) found in the Octonions are written thus:
-
-              (1, 2, 3); (1, 4, 5); (1, 7, 6); (2, 4, 6); (2, 5, 7); (3, 4, 7); (3, 6, 5)
-
-         Note two things: first, each such triplet is clearly \u201CXOR compliant\u201D per my ear-
-lier remarks \u2013 scanning the list right to left, 3 xor 6 ( = 011 xor 110 = 101) = 5; 3 xor 4
-( = 011 xor 100 = 111) = 7; ... Second, this particular mode of XOR compliance displays
-2 triplets (bolded in red) where counting and cyclical orders differ: (1, 7, 6) and (3, 6, 5)
-yield the wrong signs as we cycle through their products if we write them (1, 6, 7) and (3,
-5, 6). Labelings are possible (and actually in use among some physicists) where only one
-triplet is written \u201Cout of order\u201D; it is not possible, however, to come up with a labeling
-where counting order and product signing are in accord in all 7 instances.
-         The Sedenions include the 7 O-trips, but also contain 28 other associative triplets
-(henceforth, \u201CS-trips\u201D) which I now list (again red-bolding those \u201Cout of order\u201D):
-
-       (1, 8, 9)                 (1, 11, 10)               (1, 13, 12)               (1, 14, 15)
-       (2, 8, 10)                (2, 9, 11)                (2, 14, 12)               (2, 15, 13)
-       (3, 8, 11)                (3, 10, 9)                (3, 15, 12)               (3, 13, 14)
-       (4, 8, 12)                (4, 9, 13)                (4, 10, 14)               (4, 11, 15)
-       (5, 8, 13)                (5, 12, 9)                (5, 10, 15)               (5, 14, 11)
-       (6, 8, 14)                (6, 15, 9)                (6, 12, 10)               (6, 11, 13)
-       (7, 8, 15)                (7, 9, 14)                (7, 13, 10)               (7, 12, 11)
-
-         For the first column only, all triplets display both counting and signing order, so
-that the xor of the smaller pair of indices is identical to their sum. This is directly related
-to the workings of CDP: for the key is the middle term in each, namely 8 = 23. The unit
-corresponding to this index is the CDP generator: in general, to get 2N+1-ions from their
-predecessor 2N-ions, you affix a unit of index 2N and produce 2N-1 triplets as above. All
-such generator-containing triplets are, from the vantage of ZD creation, sterile. Indeed, it
-is this sterility which leads to the very simple production rule for creating arbitrary zero-
-divisors: take any arbitrary Octonion of index o (7 choices); then take any Sedenion of
-index S, such that S is neither 8 nor the xor of o with 8 (6 choices); the diagonal lines in
-the ( o, S ) plane (one of the 7\u00B76 = \u201C42 Assessors\u201D) will have all their points be ZD's.
-         The tricky part is figuring out which diagonals zero-divide with which. This is
-quite different from the situation found in standard QM, where a special (and, from our
-purview, degenerate) case of ZD's has a crucial role to play. If we de-reify the usual
-operator formalism to reveal the \u201Cinner number theory\u201D trying to get out, we can see that
-the \u201Cprojection operators\u201D underwriting spin-up vs. spin-down options, for instance, are
-idempotents which just happen to mutually annihilate each other when multiplied (i.e.,
-they're ZD's with respect to each other). They define two diagonal lines, with each point
-of one zero-dividing each point of the other. Now let's say this again, in simpler English.
-
-R. de Marrais                                  Page 5                    \u201CSomething From Nothing\u201D
-\u000C        We know that a Complex \u201Cline\u201D is really a plane; the product of two such lines,
-then, is really a 4-space. This space is not navigated by the Quaternions, since it's pro-
-duced by 2 real axes and 2 imaginaries; but: in one of the great magic acts of modern
-mathematics, this \u201Cbicomplex\u201D 4-space (as navigated by the \u201Cunitary rotation group\u201D
-\u201CSU2\u201D) is isomorphic to the Quaternions. The \u201Cbicomplex\u201D space is also the simplest
-interesting case of the general associative vector space called a Clifford algebra (the one
-dubbed \u201CCl2,\u201D since it has 22 dimensions, to be precise). Its axes include the usual real
-and imaginary; but the other two are \u201Cmirror numbers\u201D (they square to +1, not \u2013 1), and a
-form of i which operates commutatively on the other axes' units. This last is represented
-by 2 x 2 matrices with the usual i replacing the 1's in the identity matrix. And since
-Wolfgang Pauli's day, the \u201Cmirror numbers\u201D (one kind corresponding to each Quaternion
-unit) have been represented by the trio of 2 x 2 \u201CPauli spin matrices.\u201D (All 3 of these, plus
-the Quaternions, plus the \u201Ccommutative imaginaries,\u201D together span the 8-D space called
-\u201CCl3\u201D; we won't be needing to know about this here, though, fortunately!)
-        If we signify \u201Cmirror numbers\u201D by the letter m, then the standard projection opera-
-tors can be written thus: \u00BD(1 + m). It's easy to show that, for each of these quantities,
-raising it to any arbitrary power leaves it unchanged; hence, each operates along its diago-
-nal in the (1, m) plane like the '1' on the real axis \u2013 which is to say, it's idempotent. It's
-also easy to see that their product (and hence that of any point on the one diagonal times
-any on the other) displays nilpotency as well, since (1 + m)(1 \u2013 m) = 1 + m \u2013 m \u2013 1 = 0.
-        The diagonals of the 42 planes I've called \u201CAssessors\u201D in the Sedenions are like-
-wise ZD's, but with a difference: they never mutually zero-divide, and they only zero-
-divide with points on one or the other (but never both) diagonals in some other Assessors.
-And we can narrow this down further: they only zero-divide with four other Assessors, in
-such a manner that points on the \u201C\\\u201D diagonal in one will zero-divide with points on one
-of another Assessor's diagonals, while the \u201C/\u201D diagonal will zero-divide with the other.
-        More specific yet: unlike \u201Cprojection operators,\u201D which always come in pairs,
-Assessor planes containing mutually zero-dividing diagonals come in threes. And, since
-each Assessor participates in two such (otherwise unconnected) trios, it turns out that the
-simplest layout is actually the one followed: i.e., the ZD activity of each Assessor is con-
-strained within an octahedral arrangement of four \u201CCo-Assessor trios,\u201D where each vertex
-represents an Assessor plane, and the trios only share vertices, not edges, with each other.
-        Note, too, the \u201Cedge signs,\u201D indicating which diagonals form ZD's with which,
-when two Assessors joined by an edge are considered: if diagonals must have the same
-orientation (\u201C \\ \u00B7 \\ \u201D or \u201C / \u00B7 / \u201D), mark the edge \u201C+\u201D; otherwise, write \u201C\u2013 \u201D. Then color in
-the 4 triangles whose edges form \u201Cclosed cycles\u201D (for vertices A, B, C, each Assessor
-pairing \u201Cemanates\u201D the third: e.g., ( SA , oA ) \u00B7 ( SB , oB ) = + ( SC , oC ) \u2013 ( SC , oC ) = 0) and
-call them \u201CSails.\u201D Call the other 4 \u201CVents,\u201D and you get an octahedral \u201CBox-Kite\u201D which
-can fly in Sedenion winds. 7 such, all isomorphic, partition the 42 Assessors, each taking
-6; from these simple structures, the entire \u201Cpathology\u201D of Sedenion ZD's can be grasped.
-        The monicker \u201CBox-Kite\u201D is further justified by the fact that while the real-world
-variety have wooden struts separating opposite vertices, thereby creating support and sta-
-bility sufficient to let them fly, \u201Cstruts\u201D provide the crucial ingredient in our ethereal Box-
-Kites as well: the 3 pairs of Assessors joined by \u201Cstruts\u201D do not mutually zero-divide!
-
-R. de Marrais                                 Page 6                 \u201CSomething From Nothing\u201D
-\u000C       SEDENION \u201CSTRUT TABLE\u201D
-
-Read off struts in \u201Cnested parentheses\u201D fashion:
-
-        AF, BE, CD = the 3 Struts
-    ABC, ADE, FCE, FDB = the 4 Sails
-      (with ABC the \u201CZigzag\u201D Sail)
-
-Box- Goto11
-Kite #'s      A       B        C     D     E              F .
-I    7,6,4,5 3, 10 6, 15     5, 12 4, 13 7, 14          2, 11
-II   3,2,6,7 1, 11 7, 13    6, 12 4, 14 5, 15           3, 9
-III 5,4,2,3 2, 9 5, 14      7, 12 4, 15 6, 13           1, 10
-IV 1,3,5,7 1, 13 2, 14      3, 15 7, 11 6, 10           5, 9
-V   4,1,6,3 2, 15 4, 9      6, 11 3, 14 1, 12           7, 10
-VI 6,1,2,5 3, 13 4, 10       7, 9 1, 15 2, 12           5, 11
-VII 2,1,4,7 1, 14 4, 11     5, 10 2, 13 3, 12           6, 9
-
-         Struts have another major property: products of all 3 \u201Cstrut pairs\u201D in a Box-Kite
-obey the same pattern; the (o, S) multiplications always yield the generator (the index-8
-unit in the Sedenions); the (o, o) and (S, S) pairings, though, always result in the \u201Cmissing
-Octonion\u201D (since an Octonion index resides at each vertex, of which there are 6, one must
-be absent!) which serves as the signature, or \u201Cstrut constant,\u201D of the Box-Kite in question.
-To differentiate it from an index proper, I write it with a Roman numeral, as shown in the
-left-most column in the \u201CStrut Table\u201D above.
-         The 12 \u201Cedge-signs,\u201D drawn above right on the Box-Kite, evenly divide between
-\u201C+\u201D and \u201C\u2013 \u201D; but \u201C\u2013 \u201D's cluster in such a manner as to form the edges of two opposite
-faces of the octahedron, one of which is a Vent, the other a Sail. The convention here is
-to assume this Sail is ABC (making its corresponding Vent DEF). This special Sail I call
-the \u201CZigzag,\u201D since traversing the edges so that one always \u201Cmakes zero\u201D creates a 6-cycle
-of flipflopped traversals: multiply mutual ZD's from A and B, then B and C, then C and
-A, and begin, say, with the \u201C\\\u201D; the lines picked will keep switching like this: \u201C\\ / \\ / \\ /\u201D.
-         Let's make this concrete: consider the Zigzag of Box-Kite I. Start with the \u201C/\u201D
-diagonal in A's plane (which the table tells us is spanned by i3 and i10 ), and proceed as just
-indicated. Here's the actual 6-cycle of ZD products (ignoring constants, since any points
-on the indicated lines will serve as well as any others):
-                           (i3 + i10)(i6 \u2013 i15) = (i6 \u2013 i15)(i5 + i12) = (i5 + i12)(i3 \u2013 i10) =
-                        (i3 \u2013 i10)(i6 + i15) = (i6 + i15)(i5 \u2013 i12) = (i5 \u2013 i12)(i3 + i10) = 0.
-
-        The other 3 Sails (ADE, FCE and FDB) all have 2 \u201C+\u201D's and just one \u201C\u2013 \u201D for
-edge-signs. Their 6-cycle patterns \u2013 \u201C\\ \\ \\ / / /\u201D or \u201C/ / / \\ \\ \\\u201D \u2013 suggest the knots they're
-named for: Trefoils. This Zigzag/Trefoil difference is the basis of the Trip-Sync property;
-all we need do now is consider the O-trips and S-trips which Sails are made of, and \u201Cblow
-up\u201D each Sail into a kindred \u201CBox-Kite\u201D layout. Only on these, \u201CSails\u201D now represent the
-4 distinct triplets weaving through a Co-Assessor trio, with the sole O-trip cast in the
-\u201CZigzag\u201D role, and the 3 (o, S) pairs which span Assessor planes bounding the \u201Cstruts.\u201D
-
-R. de Marrais                                           Page 7                         \u201CSomething From Nothing\u201D
-\u000C        This is much easier to follow by seeing it than hearing it described. So let's take
-as for-instance the Zigzag of Box-Kite I. Its 3 Assessors' ( o, S ) pairs have the indices
-given in the prior page's \u201CStrut Table\u201D: (3, 10); (6,15); and (5, 12). The 3 o's comprise
-one of the standard O-trips; but the \u201Crecursive Box-Kite\u201D described last paragraph (or
-\u201CRbox\u201D for short) shows that each of these 3 o's forms an S-trip with the other two trio
-members' Sedenions. Hence (3, 15, 12); (10, 6, 12); (10, 15, 5) \u2013 written in A, B, C order
-with the Octonions in bold \u2013 are all S-trips we can find in the listings given above.
-        Two differences should be noted between a Sedenion Box-Kite (\u201CSbox\u201D) and the
-Rboxes one can build on its Sails. First, \u201Cdouble covering\u201D: the Sbox \u201CSails\u201D are 6-
-cycles, those of an Rbox are 3-cycles. Second, \u201Cmutual mirroring\u201D: the orientation of the
-cycling (as indicated by the arrows inscribed along the diagram's edges) is reversed when
-one moves between Rbox and Sbox representations. This is a side-effect of two things
-which are ultimately the same thing: \u201Cbit-twiddling\u201D (pure Sedenions must be written
-with an extra bit when we XOR them, so that the XOR of two S's is always an o); and,
-diagonal skewing (the Sbox places S-terms, which flow with the o-term's cycle in the
-Sbox, on the other end of the strut the o and S terms span in the Rbox).
-        The \u201Cmutual mirroring,\u201D then, is an artefact of the Rbox representation. But it
-serves to indicate the nature of the property we're after: for orientation-reversal is what
-Trip-Sync is all about. Reverting to the Sbox we started with, the o's at each vertex of a
-Sail belong to 2 different triplets; in the Zigzag's case, irregardless of the added \u201Cweight\u201D
-the S-trips carry (an extra bit to the left when we write their indices in binary), the orien-
-tation is unchanged as we move from O-trip to S-trip. Hence, we could imagine a sort of
-\u201Cslippage\u201D as we define Quaternionic orbits deformable into the simple i,j,k cycling round
-ABC, wherein the extra bit is \u201Cadded\u201D or \u201Cdropped\u201D without our being cognizant of that
-fact. If the two orientations be thought akin to QM-like \u201Cspin up\u201D vs. \u201Cspin down,\u201D we
-could even claim there was an \u201Cinfobarrier\u201D forbidding us to detect which case obtained.
-        We cannot say the same, though, in the general case: for, with Trefoils, S-trip to
-O-trip \u201Cslippage\u201D causes a reversal of orientation, whenever the o shared between them is
-not one of the Zigzag's trio (i.e., 2 times out of 3). Consider, for instance, the ADE Sail
-in Box-Kite I. Writing the S-trips per above (with O-trip components in bold), we get
-this: (3, 13, 14); (10, 4, 14); (10, 13, 7), with each triplet in A, D, E order. A quick look
-at the earlier listing indicates that the second and third of these are written in backwards
-order, whereas the first (which shares the 3 with ABC) can be \u201Clet slip\u201D without our notic-
-ing it. This is the ground floor, then, of observability (and, as such, bears a deep relation-
-ship to Penrose's \u201Cspin networks: a topic for another time). What is more, it holds true
-for all Box-Kites, in all 2N-ions. This is the Trip-Sync property. Proving it is easy.
-        Let's write any S index using uppercase, and any o in lowercase; let's further write
-\u201Csg\u201D to designate a binary variable equal to +1. Then any Assessors (K, k) and (L, l), if
-joined by an edge-sign marked \u201C\u2013\u201D, will have product (K + sg\u00B7k) \u00B7 (L \u2013 sg\u00B7l) = (KL \u2013 sg\u00B7Kl
-+ sg\u00B7kL \u2013 kl) = 0. Since KL and kl = o's, and Kl and kL = S's, then KL = kl = m, and Kl =
-kL = M, where (M, m) is the third Assessor in the Sail. If the edge-sign be \u201C+,\u201D then the
-opposite obtains: KL = \u2013kl = \u2013m, so S-trip (K, L, m) has opposite sense from O-trip (k,
-l, m). Since the edge-signs leading out from a Zigzag vertex in a Trefoil must be \u201C+,\u201D the
-edge opposite said vertex in the Trefoil will be marked \u201C\u2013\u201D; hence only the lone S-trip in
-this Trefoil which includes a Zigzag o will \u201Clet things slide.\u201D (QED \u2013 no kidding!)
-
-R. de Marrais                              Page 8               \u201CSomething From Nothing\u201D
-\u000C        This may not seem like such a big deal: at least, not within the Sedenions. But as
-early as the 32-D Pathions, larger ensembles present themselves \u2013 seven Box-Kite septets
-I call \u201CPl\u00E9iades\u201D emerge, which interconnect 14 Assessors, each of which belongs to 3
-Box-Kites and 6 Sails. Sharing these properties but not others is the \u201Cmiddleman\u201D be-
-tween them and the \u201CSand Mandalas,\u201D which I call the \u201CMuster Master.\u201D Each of its 7
-Box-Kite Zigzags is exclusively mapped to an O-trip \u2013 which means, if we treat \u201Cspin-
-flips\u201D as units of attractive or repulsive force, the Muster Master can round up (or chase
-off) any and all Sedenion Box-Kites by an extension of Trip-Sync slippage.
-        Given its unique holding capacity (harboring 1 copy each of every O- and S-trip
-appearing in any Sedenion Box-Kite), the Muster Master effectively serves, then, as a
-Pathion \u201CAtlas\u201D for all ZD patterns on the other side of the 24-ion/25-ion divide. Given,
-further, that the word derives from the name of the Titan in Greek myth who kept the
-earth and heavens separated by brute strength \u2013 and who also fathered the seven sisters
-called the \u201CPl\u00E9iades\u201D \u2013 we could even say \u201CAtlas\u201D is the \u201CMuster Master\u201D's proper name!
-        If we assume, as well, that Box-Kites are free-floating, each with its own copy of
-(or window on) Zero, and its own clones of appropriate 2N-ion units acting as \u201Cinternal
-coordinates,\u201D wild \u201Cpopulation dynamics,\u201D with all sorts of \u201Cclumpings\u201D and \u201Cschisms\u201D in
-evidence, suggest themselves. Further, given the simplicity of the latticework connecting
-Assessors and their composites, and the binary nature of the \u201Cspin control\u201D we can put in
-play among them, the simplest approach to their study seems to mandate NKS setups.
-The final pages will provide broad and sharp-edged guidelines for pursuing them.
-        The remainder of this presentation will be focused on three tasks. First, if we
-must (rather literally) \u201Credouble\u201D our efforts by moving from Sedenions to higher reaches
-(to the 32-D Pathions at least, where \u201CSand Mandalas,\u201D \u201CPl\u00E9iades,\u201D and the \u201CMuster Mas-
-ter\u201D live), we'll need to redeem an earlier promissory note, and provide some \u201Cpseudo-
-code\u201D-level detail concerning general 2N-ion multiplication. Next, we'll probe the pheno-
-mena just alluded to in 32-D, wherein NKS patterns respectively were first suspected, and
-NKS tactics seem most clearly motivated. Then we'll hone in on a surprisingly deep con-
-nection between ZD's and Boolean logic, which I'm only beginning to grasp myself \u2013
-which will lead me to rough-sketch a promising possibility for fusion of methods.
-        At April's conference, my own poster was situated a few feet away from Rodrigo
-Obando's in the presentation gallery, and what I gathered of his work from discussions
-there and later surprised and excited me. Certain \u201Cmagic numbers\u201D were common to both
-our approaches, for reasons neither of us clearly understands yet. The order of the second
-\u201Csimple group,\u201D 168, plays a critical role in his Boolean-function approach toward gener-
-ating (r = 2) NKS complexity from logical \u201Cfirst principles\u201D (it's the number of both iso-
-and anti- tone functions with 4 variables, a result which goes all the way back to Dede-
-kind). In my own eliciting of ZD \u201Chead counts,\u201D 42 Assessors implies168 oriented lines
-of ZD's, as well as the same number of \u201Cedge currents\u201D (2 per edge, 12 edges per Box-
-Kite), both echoing the order of PSL(2,7), the finite projective triangle which houses
-Octonion labeling schemes \u2013 and pops up again when investigating fixed \u201Cstrut-constant\u201D
-slices of the Pathion pie . . . about which, I can't say anything further until I've deployed
-the arguments just promised. But I can say that such surprising \u201Chybrid fusion,\u201D between
-such disparate points of view, is what conferences like NKS 2004 are meant to facilitate.
-What better theme, then, could present itself for bringing these pages to a close?
-
-R. de Marrais                              Page 9               \u201CSomething From Nothing\u201D
-\u000C3: Revisiting the CDP Algorithm; Invading the 32-D of the Pathions
-         Let's return to the scene of the crime: the triplet listings on page 5. Recall that the
-first of the 4 columns of S-trips has all its length-3 lists in counting and signing order (be-
-cause the '8' in the middle is the generator). What to make of the apparently random way
-disordered lists display in the columns to the right? Reading from the left, there are 4, 5,
-and 3 in successive columns: half the 28 \u201C8-less\u201D O- and S- trips. Where is the pattern in
-this? The answer is found in the relation of the rows (one per o) to the 3 O-trips implicit,
-via \u201Cslippage,\u201D in the o-harboring S-trips listed across each row's \u201C8-less\u201D columns.
-         If you left-multiply i8 by any io, you get + i(8+o) \u2013 which is an S. Likewise, multi-
-plying i8 on the left by any S will yield a negative o \u2013 of index (S \u2013 8). Apply this obvious
-logic to the triplets on the left, operating on those in the rows whose leading o's form an
-O-trip. In the cycle (1, 2, 3), two consecutive terms have xor equal to the third, with pos-
-itive sign; the rightmost terms in the same rows, though, while not forming a cycle as
-written, imply one upon xoring and sign-flipping. Paralleling 2 xor 3 = 1, we have 10 xor
-11 = 1, but with sign reversed. Whence the S-trip at the top of the 1st column, (1, 11, 10).
-By cycling according to the same logic, (3 xor 1 = 11 xor 9 = 2) \u2192 (2, 9, 11), and (1 xor 2
-= 9 xor 10 = 3) \u2192 (3, 10, 9). By proceeding similarly with (1, 4, 5), rows 1 of the 2nd
-column, and rows 4 and 5 of the 1st, get filled in, while working with (1, 7, 6) completes
-the 1st row and 1st column. Conducting the same sort of business with the next two O-
-trips \u2013 (2, 4, 6) and (2, 5, 7) \u2013 suffices to finish the tabulation.
-         This procedure can be extended to 2N-ions, N any integer: just replace 8 with the
-appropriate generator, g = 2N-1, and create a first column with g \u2013 1 triplets, one per row.
-The number of columns will correspond to the number of L- (no longer just O-) trips,
-where L indicates indices lower than g (with U indicating those we'd now signify with
-uppercase lettering, the way we used S for Sedenion indices > 8, which indices appear in
-U-trips). For the Pathions, this means 7 columns to the right \u2013 the number of Octonion
-units. For 2N-ions generally, the number of columns to the right of the g-containing one
-equals the count of imaginary units in the 2N-2-ions: 0 for H, 1 for O; 3 for S; 7 for P...
-         This table-building strategy is not only easy to implement, but it's a lot simpler
-than the way the CDP algorithm is typically explained \u2013 which means, perhaps, it should
-be dubbed the \u201CFast CDP.\u201D And it also suggests a table-free method for calculating the
-products of any two imaginaries of arbitrary indices. It can be summarized in 3 rules:
-         Triple Negatives Rule: For the general product of two units whose indices are r
-and c (for row and column, where we read off the left- and right-hand terms to the multi-
-plication in an imagined table of product indices, ranging from 0 to 2N+1 - 1), if both are
-less than the generator g = 2N, the value in cell (r, c) of the table = r\u00B7c. If one term > g (it
-doesn't matter which), the index and sign of their product is just [\u2013(2N + r\u00B7c)]. If both
-terms > g, XOR-ing kills the 2N, leaving just [\u2013r\u00B7c].
-         Trident Rule: Multiplying g on the left (right) by any unit whose index > g re-
-sults in a unit whose index is their sum, with same (opposite) sign. Diagonal entries in
-quadrants of the table (the result of products where r = c) are + g below the main diagonal
-(whose \u201Cindex 0\u201D entries, all squares of imaginaries, evaluate to \u20131), and \u2013 g above it (but
-for the 1st row, which is just the trivial, all-positive, products with the real unit).
-         Recursive Bottoming: Successive use of these two rules resolves all products.
-
-R. de Marrais                              Page 10                \u201CSomething From Nothing\u201D
-\u000C         The reader is encouraged to pore over the Sedenion multiplication table, the better
-to see how it conforms to these rules, taking g variously as 1, 2 or 3. A version with
-checkerboard shading, to make two levels of \u201Cquadrants\u201D easier to see, can be reached by
-clicking the \u201CBK1\u201D URL in the 3rd endnote and going to page 6. As a way to gain rapid
-entry into higher dimensions, however, the reader is invited to consider another rule,
-which can generate properly signed triplets in arbitrarily high dimension.
-         Zero-Stuffing: Insert 0's in the same position in the binary representation of a
-triplet, and you'll get another, similarly signed. Taking the H-spanning triplet (1, 2, 3)
-and stuffing 0's to the right, then the middle, yields the O-trips (2, 4, 6) and (1, 4, 5). This
-plus the sign-flipping effect of adding 1-bits to the left of, then xoring, doublets \u2013 (1, 2);
-(2, 3); (3, 1) giving (3, 6, 5); (1, 7, 6); (2, 5, 7) \u2013 yields up all the O-trips save (3, 4, 7).
-         Zero-stuffing can generate an infinite series of \u201Charmonics\u201D of any given triplet;
-and, by extension, it can give us a similarly infinite \u201Covertone series\u201D of Box-Kites. This
-fact, plus a simple generalization of the \u201Cstrut constant\u201D notion, makes generating and
-classifying Box-Kites in the Pathions fairly straightforward (up to a point, as I'll shortly
-spell out). Take the four O-trips of one of the seven Sedenion Box-Kites, and make them
-the L-trips for a \u201Cbase-line\u201D Pathion Box-Kite by stuffing a zero to the right of the left-
-most 1-bit in each Assessor's S term: the strut constant remains unchanged, but the S
-terms become U terms, with indices increased by 8.
-         In the Sedenions, though, each strut constant, by dint of being a \u201Cmissing Octon-
-ion,\u201D implicated 3 pairs of strut-opposite Assessors (one per each O-trip containing it).
-But 7 S-trips contain the Octonion, and each of these must be accommodated when we set
-about constructing Box-Kites in the Pathions. The upshot is that each strut constant now
-collects 7 Box-Kites, as there are now 24-2 Assessors to choose from: each of these will
-zero-divide all but itself and its strut-opposite, for 168 ZD products \u2013 and, as the 4 Sails
-of a Box-Kite each mandate 6 such products, we get 168 / 24 = 7 Box-Kites in all.
-         Consider the 4 Pathion L-trips which are S-trips, associated with strut constant s =
-1: (1, 8, 9); (1, 11, 10); (1, 13, 12); (1, 14, 15). We get 8 Assessors out of them by first
-throwing away the 1's, then taking one of the remaining terms as given, and adding a 1-bit
-to the left of the other: (8, 25) and (9, 24) form a pair of strut-opposites, as do (11, 26)
-and (10, 27); (13, 28) and (12, 29); and (14, 31) and (15, 30). We then build Zigzags by
-keeping one O-strut, moving it into the A, F slots if not there to start with, and picking
-two S-trip Assessors among the four pair just listed which form L-trips at (A, B, C) and
-(A, D, E). Zero-stuffing and 1-bit appending make picking and arranging fairly easy.
-         For instance, keeping with the ongoing example, the L-terms at the vertices for the
-base-line Box-Kite with s = 1 are (3, 6, 5, 4, 7, 2). Keep 3 and 2 at A and F: appending
-8's to the left of the (B, C), then (D, E), terms reverses their order, giving us this new
-Box-Kite: (3, 13, 14, 15, 12, 2). Stuffing zeros to the left of the 21 bit, meanwhile, keeps
-terms in their places, but changes the L-terms at the vertices to read this way: (3, 10, 9, 8,
-11, 3). Rotating the (B, E) and (C, D) L-pairs to (A, F) scrambles the ordering a bit, but
-the same basic principle applies: with (6, 5) at (A, F), the \u201CL-bit trick\u201D gives us (after
-some rearrange) this list: (6, 11, 13, 12, 10, 7); the second Box-Kite with (6, 5) on the A-
-F strut, though, requires both tricks to isolate an appropriate match with the right S-trip
-Assessors: zero-stuffing sends (5, 4) to (9, 8); but applying the \u201CL-bit trick\u201D twice is
-required to send (3, 2) to (15, 14), the last available S-trip Assessors.
-
-R. de Marrais                               Page 11               \u201CSomething From Nothing\u201D
-\u000C         This last example suggests a problem: with the Sedenions, s ranges from 1 to 7 \u2013
-this last being one less than the generator, g. For the Pathions, g = 16, so there are 15
-values possible for s. But one of these = the Sedenions' g (which we might call the Path-
-ions' \u201Csubgenerator,\u201D g-1), and 7 exceed it. If multiple \u201CL-bit trick\u201D applications are need-
-ed frequently, might we not risk \u201Ccarry-bit overflow\u201D as s grows? The answer is yes.
-         The reference four paragraphs back to a 14 x 14 multiplication table is not quite
-exact, since the product of mutual ZD's, strictly speaking, is zero by definition. To be
-informative, the table's cells show emanations: per the earlier definition, diagonals of
-Assessors which mutually act as ZD's in fact engage in \u201Cpair production\u201D of two opposite-
-ly signed copies of the third Assessor in their Sail. The L-term index for this third Asses-
-sor is what's shown in the \u201Cemanation table,\u201D with an underbar if the edge-sign joining its
-producing Assessors (whose L-term indices are shown on the row and column headings)
-is \u201C\u2013\u201D. Such a table has blank diagonals (since Assessors never make ZD's between their
-own diagonals, or with those of their strut-opposite), hence 142 \u2013 2\u00B714 = 168 filled-in
-cells. When s = g-1, though, the edge-signs cluster so that all cells in the upper left and
-lower right quadrants are \u201C\u2013\u201D, while those in the opposite quadrants are all \u201C+\u201D.
-         When s > g-1, however, the ZD population suddenly collapses: only 72 cells are
-filled in in each, meaning 3, not 7, Box-Kites. Consider the first such case (s = 9):
-
-                                  A      B       C       D      E        F
-Base-Line Box-Kite:            (2, 27) (8, 17) (10,19) (3, 26)(1, 24) (11, 18)
-\u201CFirst Harmonic\u201D:              (4, 29) (8, 17) (12,21) (5, 28)(1, 24) (13, 20)
-\u201CSecond Harmonic\u201D:             (7, 30) (8, 17) (15,22) (6, 31)(1, 24) (14, 23)
-
-        It is tempting to assume the 6 Assessors arrayed in the columns D and A, after
-minor rearrangement, form another in the \u201Covertone series\u201D of our s = 1 \u201Cbaseline Box-
-Kite\u201D: but \u201Ccarrybit overflow\u201D is at work, so that left-appending 1-bits to all U-terms \u2013
-converting (3, 10) into (3, 10+16 = 26) and so on, thereby reversing signs on all 3 mem-
-bers (an odd number) of each triplet \u2013 suffices, in this case, to kill off all the ZD's we'd
-expect to see. Just as surprising, the triplet (1, 8, 9), \u201Csterile\u201D in the Sedenion context,
-provides the doublet from which the Assessors that triply repeat at B and E are fabricated.
-        A mystery, finally, is placed before us when the 7 (s > g-1 ) tables, collectively
-dubbed \u201CSand Mandalas\u201D after the Tibetan meditative drawings they resemble, are view-
-ed in \u201Cflip-book\u201D style: while the (o, 8, o+s) repeaters cluster inside the array, all other
-emanations are confined to the perimeter, with this square's edges pulling back in unison
-from the table's boundaries by one cell with each increment to s (while the \u201Crepeaters\u201D
-reconfigure), until we're left in the last still-shot with a 2-cell-thick cross whose ends are
-joined up by the \u201Crepeaters\u201D \u2013 which have rearranged themselves into diagonals.
-        It was this behavior (whose necessity was proven, after the fact of stumbling on it,
-explicitly via elaborate bit-twiddling in \u201CBK2\u201D on p. 16) which first suggested something
-like cellular automata at work. More peculiar still, if one folds the table over like a hand-
-kerchief, along both horizontal and vertical midlines, the L-terms in the \u201Cshrinking box\u201D
-coalesce to form the O- and S- terms of the 6 Assessors in the Sedenion Box-Kites whose
-strut constants = the differences of the table's s and g-1 terms ( i.e., 1 - 7); the \u201Crepeaters,\u201D
-meanwhile, coalesce to form the \u201Cforbidden doublet\u201D of the Sedenion Box-Kite's s and g!
-
-R. de Marrais                               Page 12                \u201CSomething From Nothing\u201D
-\u000C    \u201CMuster Master\u201D and \u201CSand Mandala\u201D Emanation Tables (s = 8 through 15)
+                                             Robert P. C. de Marrais
 
 
 
 
-         The above graphics are reproduced from p. 15 of \u201CBK2,\u201D and should be read from
-left to right, top to bottom: the first \u201Cemanation table\u201D is for s = 8; the last, for s = 15.
-Rows, columns, and cell contents show L-index numbers of the associated Assessors in
-hex (since values range from 1 to 15). Rows and columns are further arranged so that
-strut-opposites appear in \u201Cnested parentheses\u201D format, in otherwise ascending order, as
-with the earlier Sedenion strut table. Since diagonals will always be empty of emanations,
-they are simply left blank; in all but the first table, the majority of non-diagonal cells are
-also unfilled, and these are left empty, but with light gray background. Cells which form
-into the 3 Box-Kites' (o, 8, 8+o) \u201Crepeaters\u201D are daubed green; the others are painted red.
-         As one might expect, as the N in 2N-ion increases, \u201Ccarry-bit overflow\u201D becomes
-even more pronounced, with patterns that look progressively more \u201Cfractal\u201D than those
-shown: at high s, as cells become more numerous, boundaries become crenelated, and
-box-kites even break up into pieces. It is unclear what happens for very large N: does the
-density of ZD's \u2192 0 as N \u2192 \u221E? Would that imply (and quite counterintuitively) that
-high-s , high-N spaces become \u201Ctame,\u201D perhaps with something like a Hilbert space as a
-limit; or, do they instead \u201Cmerely\u201D become unwieldy and chaotic? Abolutely nothing is
-know at present \u2013 including whether or not these are good questions!
-         The heading for the graphics indicates that the \u201CMuster Master\u201D is also on display.
-Clearly, it's the upper leftmost, s = 8, table: ironically, the same index plagued with ZD-
-sterility when it's the generator becomes the most \u201Comnivoyant\u201D of all configurations
-when it is \u201Cdemoted\u201D to subgenerator status in the next round of CDP expansionism. Pre-
-cisely because it's excluded, all the Octonions are included among the L-trips \u2013 leading to
-7 Box-Kites each of whose Zigzag has an O-trip for lower indices . . . meaning \u201Cslippage\u201D
-between U-trips and O-trips could be effected \u201Cionically\u201D or \u201Ccovalently\u201D between the
-Muster Master and any Sedenion Box-Kite, and in an\u201Cunobservable\u201D manner, thanks to
-Zigzag involvement. But Sedenion S-trips can be Pathion L-trips, so \u201Cbonding\u201D is subtle.
-
-
-R. de Marrais                             Page 13               \u201CSomething From Nothing\u201D
-\u000C        We could, in fact, describe the situation, using the argot of object-oriented pro-
-gramming, as perfect \u201Cdesign-hiding\u201D: for while the o's in the ABC positions (and hence,
-the Zigzag) of each Sedenion Box-Kite exactly match the Zigzag L-trip of exactly one of
-the 7 component Box-Kites of the Muster Master, it is the S's in the former's DEF posi-
-tions which get promoted to L-trip status in the latter. Hence, Trefoil L-trips \u201Cresonate\u201D
-with the U-trips of the lower-order Box-Kites \u2013 but only with those that share their sing-
-leton o with the Zigzag! The Muster Master Box-Kite which shares Zigzag L-trips with a
-given Sedenion Box-Kite cannot have its actions observed at all from the latter's purview.
-        This is not the whole story, though: in Sedenion Box-Kite IV, for instance, the S-
-trip (13, 11, 6) \u2013 which we'll write (A, D, e) to obey our casing convention \u2013 \u201Cresonates\u201D
-with (f, d, b) of the Muster Master's Zigzag-match to Sedenion Box-Kite I, and this inter-
-action is a Trip-Sync \u201Cobservable.\u201D Below is a synthesis of data from the \u201CSynchroniza-
-tion Table By Box-Kite and Sail\u201D on the penultimate page of \u201CBK3,\u201D and the component
-Box-Kites of the Muster Master, listed by their Sedenion Zigzag-matches' strut constants
-(shorthanded \u201CZM#\u201D in the table). Note that vertex locations are rotated ( \u00AE ) in 4 of the
-7 Muster Master components: this affects labeling (e.g., Trefoils might switch places and
-their cyclings shift in phase), but not triplet orientation, and so can be ignored.
-
-                         Trip-Sync Observables in
-                Muster Master / Sedenion Box-Kite Interactions
-                                  MM L-trips Observable (or not) in BK#... As ...
-ZM#    A B C D E F               (ade)           (fce)             (fdb)          _
-I      3 6 5 13 14 11            (3,13,14)       (11,5,14)        (11,13, 6)
-                                 II:fDB;VII:ADe II:ADe; IV:fDB IV:ADe;VII:fDB
-                                 (IV:ABc)        (VII:ABc)        (II:ABc)
-II \u00AE 6      1   7   15   9 14     (6, 15, 9)     (14, 7, 9)       (14,15, 1)
-                                 III:ADe; IV:FCe IV:FdB;V:fDB III:FDb; V:ADe
-                                 (V:ABc)         (III:ABc)       (IV:aBC)
-III \u00AE 7     2   5   13 10 15     (7,13,10)       (15,5,10)        (15,13, 2)
-                                 I:ADe; IV:AdE IV:fCE; VI:fDB I:fDB;VI:ADe
-                                 (VI:ABc)        (I:ABc)          (IV:AbC)
-IV      1   2   3   11 10    9   (1,11,10)       (9, 3, 10)       ( 9, 11, 2)
-                                 V:FCe; VI:FdB V:FdB;VII:FCe VI:FCe; VII:FdB
-                                 (VII:aBC)       (VI:aBC)        (V:aBC)
-V       2   4   6   14 12 10     (2,14,12)       (10,6,12)        (10,14, 4)
-                                  I:fCE; VII:AdE III:FCe; VII:fCE I:AdE; III:FdB
-                                 (III:aBC)       (I:AbC)          (VII:AbC)
-VI \u00AE 4      7   3   11 15 12     (4,11,15)       (12,3,15)        (12,11, 7)
-                                  I:FdB; II:AdE II:fCE; V:AdE I:FCe; V:fCE
-                                  (V:AbC)        (I:aBC)          (II:AbC)
-VII \u00AE 5     1   4   12   9 13     (5, 12, 9)     (13, 4, 9)       (13, 12, 1)
-                                  II:FCe; VI:fCE II:FdB; III:AdE III:fCE; VI:AdE
-                                  (III:aBC)       (VI:AbC)         (II:aBC)
-
-R. de Marrais                            Page 14              \u201CSomething From Nothing\u201D
-\u000C       Before analyzing the results of the table above, some backgrounding concerning
-the Muster Master is in order, the better to make the results we'll be discussing seem all
-the sharper. For completeness' sake, here's a listing of the full set of the Muster Master's
-14 Assessors, showing both L- and U- indices, with strut-pairs arrayed vertically:
-
-       (1, 25)   ( 2, 26)    ( 3, 27)   ( 4, 28)    ( 5, 29)   ( 6, 30)    ( 7, 31)
-       (9, 17)   (10, 18)    (11, 19)   (12, 20)    (13, 21)   (14, 22)    (15, 23)
-
-        The utter simplicity of this deployment belies the complexities implied in the
-table. It would greatly aid intuition to have some way to picture the synergy between the
-7 component Box-Kites of this highly symmetric \u201Cfather\u201D to the Pathion \u201CPl\u00E9iades,\u201D
-whose 7 \u201Cnymph\u201D Assessors with o's for L-terms nicely echo the 7 \u201Cstars\u201D with L-term S's
-who form their strut-partners. The two descriptive pieces of this last sentence each will
-lead us to investigate a different graphical depiction. Let's begin, first of all, with a way
-to envision 14 Assessors, each in 3 of the 7 \u201Ccleanly partitioned\u201D Box-Kites (by which I
-mean, no edges are shared between them), appearing thereby in twice 3 = 6 Sails. The
-following is lifted from a paper describing \u201Coctahedral fractal\u201D models12 \u2013 a topic which
-has no direct bearing here, although the graphic fits our themes perfectly.
-        We can scan this as 7 stacks of 3 Box-Kites\u2013 3 trios including the central one, and
-4 more joined by the dashed lines. Assume stacking suggestive of a voltaic pile for the
-centrally coordinated sets: if the Assessor at the top of the vertical stack, for instance, is
-\u201CA,\u201D it would be replaced in its position in the next-lower Box-Kite by its strut-opposite,
-\u201CF,\u201D so that the sequence of descending labels for the trio would be this: A, F=F, A=A, F;
-similarly for the perpendicular lines of Box-Kites in the central horizontal plane. For the
-other 4 trios, assume vertices joined by dotted lines from the central squares are strut-op-
-posites as well. There's a lot of rotating and translating you have to deal with to make a
-                                          consistent labeling scheme; putting in indices, too,
-                                putt p would induce a truly noxious degree of cluttering,
-                                          so I won't even try. The idea, I hope, will suffice!
-                                                  While this graphic, then, serves to present
-                                          an image of the interconnectedness of Assessors
-                                          in the Pl\u00E9iades scheme, it gives no clear feeling
-                                          for Assessor-level detail: a way to picture the
-                                          indices without the distraction of 3-D would be
-                                          a useful thing. Here, we can adapt the tactic,
-                                          mentioned in passing at the end of the last section,
-                                          of representing triplets as intersecting lines, via
-                                          finite projective groups: a \u201Cstereo\u201D version of
-                                          of the PSL(2,7) layout of labeling schemes for
-                                          the Octonions which was championed by the late
-                                          great Canadian geometer Harry Coxeter. The
-                                          interrelations among indices for Atlas and his
-                                          Pl\u00E9iades can be cleanly displayed in this manner,
-                                          and \u201Cloop algebra\u201D subtleties framed naturally, in
-                                          their turn, by referencing these diagram-pairings.
-
-R. de Marrais                             Page 15               \u201CSomething From Nothing\u201D
-\u000C                                      PSL(2,7) expresses the symmetries of the simplest non-
-                                  trivial finite projective plane, known by Fano's name. In
-                                  projective geometry, lines and circles are equivalent, so
-                                  this diagram should be interpreted as comprising 7 lines,
-                                  including the apparent \u201Ccircle\u201D in the middle. The lines
-                                  intersect in 7 points, the Octonion units: the cross-overs
-                                  with no nodes or labels are illusions of the projection
-                                  process. In this elegant rendering (from Ref. 1, p. 46),
-                                  Quaternion units are in lower case (the standard \u201Ci,j,k\u201D)
-                                  and make the central cycle. The (index-4) generator is at
-their circle's center, E. The triangle's vertices are just the products of their lower-case
-equivalents with E, so that lines through E are oriented from lower to upper case letters.
-Similarly, all three edges on the perimeter flow clockwise, while the central \u201Ci,j,k\u201D flows
-likewise. The symmetry group of this 2-D configuration of 7 lines, each being intersected
-by 3 others (or equivalently, thanks to projective duality, 7 points, where each \u201Ccycle\u201D is
-determined by 3 of them) is just 7 x 3 x 23 (the number of possible signing conventions
-per triplet), or 168. But this is precisely the total symmetry of \u201CBox-Kite space\u201D as well,
-since we have 7 of them, each with 4 3-cycles or \u201CSails\u201D(which means they obey the 24-
-element rotational symmetry of their Octahedral container). If you have stereo glasses
-available, you can \u201Csee\u201D this from Buckland Polster's Fano Plane graphic from The Ma-
-thematical Intelligencer 21 (1999) 38-43: here, the 7 \u201Clines\u201D are just the 3 Struts and 4
-Sails, with the 7 \u201Cpoints\u201D being the vertices plus the Zero (which we assume is \u201Cpiped in\u201D
-to the centers of each Assessor-plane \u201Cscreen\u201D by Strut-connected \u201Ccable TV\u201D!)
+Abstract Methods for studying zero-divisors (ZD\u2019s) in 2n -ions generated by Cayley-Dickson process beyond the
+Sedenions are explored. Prior work showed a ZD system in the Sedenions, based on 7 octahedral lattices (\u201CBox-
+Kites\u201D), whose 6 vertices collect and partition the \u201C42 Assessors\u201D (pairs of diagonals in planes spanned by pure
+imaginaries, one a pure Octonion, hence of subscript < 8, the other a Sedenion of subscript > 8 and not the XOR
+with 8 of the chosen Octonion). Potential connections to fundamental objects in physics (e.g., the curvature tensor
+and pair creation) are suggested. Structures found in the 32-ions (\u201CPathions\u201D) are elicited next. Harmonics of Box-
+Kites, called here \u201CKite-Chain Middens,\u201D are shown to extend indefinitely into higher forms of 2n -ions. All non-
+Midden-collected ZD diagonals in the Pathions, meanwhile, are seen belonging to a set of 15 \u201Cemanation tables,\u201D
+dubbed \u201Csand mandalas.\u201D Showcasing the workings of the DMZ\u2019s (dyads making zero) among the products of each
+of their 14 Asses sors with each other, they house 168 fillable cells each (the number of elements in the simple group
+PSL(2,7) governing Octonion multiplication). 7 of these emanation tables, whose \u201Cinner XOR\u201D of their axis -pairs\u2019
+indices exceed 24, indicate modes of collapsing from higher to lower 2n -ion forms, as they can be \u201Cfolded up\u201D in a 1-
+to-1 manner onto the 7 Sedenion Box-Kites. These same 7 also display surprising patterns of DMZ sparsity (with
+but 72 of 168 available cells filled), with the animation-like sequencing obtaining between these 7 \u201Cstill-shots\u201D
+indicating an entry-point for cellular-automata-like thinking into the foundations of number theory.
 
 
 
 
-        What I have in mind here is another sort of \u201Cstereo,\u201D with the 14 Assessors in any
-given Pl\u00E9iade being partitioned across two such layouts. Just as the PSL(2,7) triangle
-above can have its letters removed and relabeled by myriad different indexing schemes,
-with the arrows also having their orientations switched accordingly, so too with our
-\u201Cstereo Fano\u201D manner of showing Pl\u00E9iade symmetries. In the little table at the top of the
-next page, I'll just give the index-number equivalents for the letters, and assume you can
-figure out the O- trip and S-trip orientations without my help at this point.
+    If, upon reading this paper, you wish to be included in a mailing list I\u2019m contemplating on the subject, then
+    send e-mail to: rdemarrais@alum.mit.edu and include \u201C[42]\u201D in the subject line.
 
-R. de Marrais                            Page 16               \u201CSomething From Nothing\u201D
-\u000C         \u201CStereo Fano\u201D Synergies on Display (7 Pl\u00E9iades + \u201CAtlas\u201D)
-Pathion         \u201C7 Nymphs\u201D        ... turned into ...    \u201C7 Stars\u201D
-Strut   (3-cycles = mostly \u201CZigzags\u201D)            (Strut Opposites of Nymphs)
-Const. i    j    k   E     I   J     K          i     j  k   E     I   J  K
 
-  I       8     14   6   13    5     3    11           9 15 7         12 4       2     10
- II       8     15   7   14    6     1     9          10 13 5         12 4       3     11
-III       8     13   5   15    7     2    10          11 14 6         12 4       1      9
-IV        8     10   2   11    3     1     9          12 14 6         15 7       1      9
- V        8     12   4   14    6     2    10          13 9   1        11 3       7     15
-VI        8     12   4   15    7     3    11          14 10 2          9  1      5     13
-VII       8     12   4   13    5     1     9          15 11 3         10 2       6     14
-VIII      6      4   2    5    3     1     7          14 12 10        13 11      9     15
 
-        For all but \u201CAtlas,\u201D the 7 L-trips in each line of the lefthand listing split up so that
-4 of the component Box-Kites are represented by their Zigzags, and 3 (all and only those
-containing an \u201C8,\u201D always situated at \u201CD\u201D) by their ADE Trefoils. This is the Pathions'
-equivalent of the \u201CStrut Table\u201D provided for Sedenions. The fact that a fully functional
-copy of PSL(2,7) can uniquely serve to integrate all a Pl\u00E9iade's Box-Kites (with its \u201Csha-
-dow\u201D on the right providing \u201Cstereo vision\u201D by housing, vertex by vertex, the lefthand
-terms' strut opposites) gives striking proof of the Pleiades' fundamental synergies as en-
-sembles: they are by no means loose affilations of independent entities, \u201Ccat-herded\u201D op-
-portunistically. (Exercise: draw all 7 Kites for each line, properly orienting the edges!)
-        Now it is time to turn our attention, at last, to the \u201CTrip-Sync Observables Table\u201D
-on Page 14. The first thing to stress is that there is an exact, one-to-one correspondence
-between Sails on the Sedenion \u201Creceiving end\u201D and the Pathion \u201Csending end\u201D of any
-transactions between them: tautologically, each ZM# indicates a Zigzag-to-Zigzag
-matchup of the \u201Cunobservable\u201D kind; but there is also precisely one \u201Cunobservable\u201D link-
-up, from each Muster Master component's Trefoil Sail L-trip, to some specific S-trip in
-some Sedenion Zigzag. And there are also precisely two \u201Cobservable\u201D connections from
-Trefoil-based Muster Master L-trips to specific Sedenion Trefoil S-trips. Such extreme
-orderliness and specialization of connection indicates we're dealing with a very stable,
-well-articulated platform for doing something.
-        But doing what, exactly? Here is where I see the next line of research, which will,
-I hope, be ripe for presenting at NKS 2005. Viewed in full generality, we have this for a
-setup: a latticework of connected Assessors, where Sedenion Box-Kites can \u201Cchannel\u201D a
-quartet of independent inputs from the Pathions' \u201Chigher plane\u201D; these inputs are effect-
-ively binary, and there is one output, also binary. We have also seen, from many angles
-now, the critical role of 168-fold symmetry in all these workings. It is at this point that
-Rodrigo Obando's ongoing work13 on applying Boolean function theory to NKS systems
-shouts for our attention: for there are 168 4-variable monotone functions, and the same
-number of complements, which he first indicated at NKS 2003 can provide the key to
-determining the classification of NKS behaviors displayed by arbitrary rules. His basic
-tactic (and its clear \u201Cresonance\u201D with ZD setups) goes like this.
 
-R. de Marrais                              Page 17                \u201CSomething From Nothing\u201D
-\u000C         Split the bit representation of a rule into two \u201Cprimitives.\u201D One string contains bits
-indicative of an initial input combination that has the central cell's value = 0. The other
-contains those telling what happens if said cell value = 1. For the (r=2) situation that
-clearly obtains with the Trip-Sync linkup of Pathions to Sedenions, the possible rules
-equal 2 raised to the (25 = ) 32nd power, which is more than 4 billion rules altogether \u2013
-an awful lot to have to wade through if we've no initial notion of which ones are Class 1
-(boringly homogenous outcomes), which are Class 2 (evolving into simply separated peri-
-odic structures), which yield up chaotic aperiodic patterns (Class 3), and which \u2013 the real
-\u201Cmoney shot\u201D here \u2013 generate truly complex \u201CClass 4\u201D patterns of localized structures.
-         But Obando's work strongly suggests (with some specific examples to buttress his
-claims) that we can, indeed, predict what sort of behavior a rule will display, and even say
-which will be Class 4. First, partition a rule into \u201Cprimitives,\u201D then see if their bit repre-
-sentations are Boolean monotones. Because the \u201Cprimitives\u201D have half the string each,
-this means we're dealing with the much more manageable count of 216 logical express-
-ions, or 65,536 possibilities, that each \u201Chalf-rule\u201D can display. If the primitives are pro-
-perly chosen from the two \u201Cmonotonous\u201D sets of 168 \u2013 each created recursively, by bit-
-string and-ing and or-ing, out of Oneness and Nothing \u2013 we'll get Class 4 complexity.
-         But meanwhile, we have two sets of 168 ZD \u201Cprimitives,\u201D on opposite sides of the
-Sedenion/Pathion \u201Cinfobarrier\u201D: one, then, from each party to our \u201Cchanneling.\u201D And
-each Box-Kite \u201Cedge current,\u201D if encoded as a string of 0's and 1's, can be uniquely speci-
-fied by precisely 16 bits. Consider it this way (and there are other ways as well): any
-\u201Csuccessful\u201D ZD product entails the involvement of 2 Assessors, which for the Sedenion
-\u201Ctarget\u201D (and isomorphically for Pathion \u201Cbroadcaster\u201D) means 4 bits for each S index, 3
-for each o, and 2 extra bits \u201Cleft over.\u201D Suppose we say these latter determine the diago-
-nals \u2013 \u201C\\ or /?\u201D \u2013 as specified at the two ends of the connecting edge. (N.B.: the edge
-sign's value itself is not an independent variable, so can't be counted!)
-         Now we need to tweak this (or is it \u201Ckludge things up\u201D?) a bit. The problem is,
-stating just this much means we get two distinct strings for each \u201Cedge-current,\u201D depend-
-ing upon which Assessor we write out first. But rather than get worked up about this
-double-count of strings, let's make use of this implicit positional information, in this way:
-if the first Assessor is \u201Cless than\u201D the second (the o index is lower, say, or it has an earlier
-birthday: it doesn't matter how, just that it's \u201Cless than\u201D), then assume they both employ
-the \u201C/ \u201D diagonal. If the first written down is the greater, however, assume \u201C \\ \u201D. Next,
-use the first of our leftovers for a \u201Cswitch bit\u201D in this sense: if \u201C0,\u201D do nothing; if \u201C1,\u201D
-switch the diagonal used by the second in sequence, not size. Which leaves us with one
-last \u201Cextra\u201D to interpret: I call this bit the \u201Cspigot,\u201D since I envision it as turning the
-\u201Cedge-current\u201D on or off \u2013 something I have trouble imagining not playing a role!
-         And while the \u201C168\u201D in the ZD universe are most definitely not Boolean mono-
-tone functions by any stretch of the imagination \u2013 their fundamental workings, after all,
-are defined by XORing, which is not an allowable operation in monotone string-building
-\u2013 there most definitely is very good reason to expect a rich harvest of transformations
-between the two mathematical languages. Let me put this another way: even though I
-don't carry an AARP card yet, I still can remember when the idea of \u201CChaotic number
-theory\u201D would have seemed too insane to bear contemplating; by the next NKS confer-
-ence, I hope to make the case that the problem with that notion is, it's just too tame.
+                                                       Page 1
+\u000C{0} Review of Prior Results, Motivations for Future Work: Zero divisors (ZD\u2019s), like
+the \u201Cmonsters\u201D of analysis before Mandelbrot tamed them into fractals, have been largely
+avoided as pathological by number theorists. In the last handful of years, however, there
+has been a shift (largely driven by the needs of physics) toward taking them more seri-
+ously. Guillermo Moreno, in 1997, pushed Lie algebraic tactics to the limit of their use-
+fulness and discerned that the ZD\u2019s in the 16-D extension, by Cayley-Dickson process, of
+the Octonions, conform to a pattern homomorphic to the Octonion\u2019s automorphism group
+(and the derivation group of all higher 2n -ions from their 2n-1 -ion precursors), G2 .1 His
+approach, however, was that of an \u201Carmchair theorist,\u201D in that only a single instance of an
+actual pair of mutually zero-dividing numbers in the Sedenions was given. K. and Mari
+Imaeda, meanwhile, focused on manipulating arbitrary (hence complicated) Sedenion ex-
+pressions, uncovering the ZD\u2019s within them, eliciting their general function theory, etc.2
+          Simultaneous with the Imaedas\u2019 \u201Ctop-down\u201D tactics, R. de Marrais took a comple-
+mentary \u201Cbottom-up\u201D approach, isolating underlying structures from which all complicat-
+ed ZD expressions and spaces in the Sedenions must be composed \u2013 structures which \u201Cfly
+under the radar\u201D of classical techniques, requiring an initial calculation-heavy \u201Cdirtying of
+hands\u201D to be elicited and studied.3 A set of 3 simple \u201Cproduction rules\u201D \u2013 and one even
+simpler generic procedure \u2013 were found to suffice for creation of all basic patterns. All
+points on the pairs of diagonal line elements of 3\u00BD dozen planes (dubbed the \u201C42 Asses-
+sors\u201D) in Sedenion space mutually zero-divide all other such points on certain other such
+diagonals. Using the familiar convention of \u201CXOR indexing\u201D (the index of the unit of
+each of the 15 imaginary axes would equal the XOR of the indices of any 2 units whose
+product was equal to it), any combination of a pure Octonion (index < 8), and a pure Se-
+denion (index > 8) which was not the XOR of the Octonion with 8, yielded one of 7 x 6
+= 42 possible axis-pairs to span Assessor planes.
+          Representing each such plane by a unique vertex, on one of 7 isomorphic octahed-
+ral lattices, resulted in a set of \u201Cbox-kites\u201D whose 8 triangular faces represented either 4
+\u201Csails\u201D sharing vertices with each other but no edges, or 4 empty \u201Cvents\u201D in the remaining
+4 faces. Tracing an edge along a \u201Csail\u201D connected two mutually zero-dividing diagonals
+in different Assessors (with points on different diagonals belonging to the same Assessor
+never zero-dividing each other). The orthogonal diagonals \u201C/\u201D and \u201C\\\u201D of an Assessor\u2019s
+\u201CX,\u201D spanned, say, by imaginary axes iA and iB , would be shorthanded (A+B) and (A-B)
+respectively, with the Assessor pair as such simply indicated as (A, B).
+          The multiplication indicated by a box-kite edge would connect two mutually zero-
+dividing numbers of either same (\u201C/ /\u201D or \u201C\\ \\\u201D) or different (\u201C/ \\\u201D or \u201C\\ /\u201D) orientation,
+respectively indicated by a \u201C+\u201D or \u201C\u2013 \u201D drawn on the joining path. By continuing to trace
+along a sail\u2019s edges, a sequence of mutually zero-dividing pairs (henceforth, \u201CDMZ\u2019s,\u201D
+for dyads making zero) would be indicated. By tracing all edges of a sail twice over, in
+the manner of a spinor\u2019s \u201Cdouble covering,\u201D all 6 diagonals (each making zero with one
+each from the other two Assessors) would be involved in a single 6-cyclic sequence of
+DMZ\u2019s, in one of two varieties: the 4 sails of any box-kite would partition into 1 \u201Ctriple
+zigzag\u201D (\u201C/ \\ / \\ / \\\u201D: i.e., \u201C\u2013 \u201D signs on all edges; also the case for the opposite-face \u201Cvent\u201D)
+and 3 \u201Ctrefoils\u201D (\u201C/ / / \\ \\ \\\u201D: i.e., \u201C+\u201D-signs on all but 1 edge), leading to a total of 6 edges
+of each sign per box-kite. Other such patterns connecting DMZ sequences, both within
+and between box-kites, were elicited, and rules were determined for constructing higher-
+dimensional spaces, all of whose points would zero-divide those of other such spaces.
 
-R. de Marrais                              Page 18                \u201CSomething From Nothing\u201D
-\u000C1 I. L. Kantor and A. S. Solodovnikov, Hypercomplex Numbers: An Elementary Introduction to Algebras (Springer-
-   Verlag: New York, 1989) provides an elegant introduction (aimed at \u201Csmart high school students\u201D as these were
-   understood in Soviet-era Moscow) to the whole theme of hypercomplex numbers, all building up to the formulation, in
-   Chapter 17, of Hurwitz's 1896 proof that \u201CEvery normed algebra with an identity is isomorphic to one of following four
-   algebras: the real numbers, the complex numbers, the quaternions, and the Cayley numbers.\u201D
-2 R. Guillermo Moreno, \u201CThe zero divisors of the Cayley-Dickson algebras over the real numbers,\u201D Bol. Soc. Mat. Mex.
-   (3) 4:1 (1998), 13-28; http://arXiv.org/abs/q-alg/9710013. The key result was his finding that ZD's in the Sedenions
-   obey a structure homomorphic to the Lie algebra indicated by the Dynkin Diagram \u201CG2\u201D; but homo- is not iso- morphic,
-   and only a single concrete instance of a pair of ZD's was given . . . which led to my own radically constructivist, almost
-   \u201Cpunk-rock\u201D-like simplicity of 3 production rules and one octahedral-lattice-based \u201Cbox-kite\u201D graphic to summarize the
-   workings of the entirety of 16-D ZD's. (Moreno notes, too, that \u201CG2\u201D also implies a powerful scaling of results into
-   higher 2N-D number forms, since \u201CG2\u201D \u2013 the automorphism group of the Octonions \u2013 is the \u201Cderivation algebra\u201D of each
-   2N+1-ion number system from the 2N-ions which generate it by the \u201CCayley-Dickson process.\u201D
-3 Robert P. C. de Marrais, \u201CThe 42 Assessors and the Box-Kites they fly: Diagonal Axis-Pair Systems of Zero-Divisors in
-   the Sedenions' 16 Dimenions\u201D (\u201CBK1\u201D), http://arXiv.org/abs/math.GM/0011260 ; \u201CFlying Higher Than a Box-Kite:
-   Kite-Chain Middens, Sand Mandalas, and Zero-Divisor Patterns in 2N-ions Beyond the Sedenions\u201D (\u201CBK2\u201D),
-   http://arXiv.org/abs/math.RA/0207003; and, \u201CQuizzical Quaternions, Mock Octonions, and Other Zero-Divisor-
-   Suppressing 'Sleeper Cell' Structures in the Sedenions and 2N-ions\u201D (\u201CBK3\u201D), http://arXiv.org/abs.math.RA/0403113.
-4 R. E. Cawagas, \u201CLoops Embedded in Generalized Cayley Algebras of Dimension 2r, r > 2,\u201D Int. J. Math. Math. Sci. 28:3
-   (2001), 181-187. Prof. Cawagas' \u201CFinitas\u201D software, which he makes freely available, lets one calculate loops and other
-   nonassociative structures rather easily in higher-dimensional contexts; he in fact found an equivalent manner of express-
-   ing my tabulations from BK1 in \u201Cloop language,\u201D which he presented in a paper of this year to the National Research
-   Council of the Philippines, \u201COn the Structure and Zero Divisors of the Sedenion Algebra\u201D; the correspondence which
-   ensued after he communicated this to me proved delightfully engaging, and was the direct trigger for \u201CBK3.\u201D
-5 Trickier \u201Csquares rules,\u201D though, abound, as do esoteric algebras concerned with them, such as \u201CPfister forms\u201D; A. R.
-   Rajwade, in fact, has devoted a whole book to them: Squares (Cambridge U. P.: Cambridge UK, 1993). Using his
-   convenient shorthand, the standard rules have form (2n, 2n, 2n) where n < 4; for 16-D, though, two 16-D numbers, com-
-   prising 16 squares each, generally have a product representable by 32 squares (16, 16, 32). But stranger results are also
-   possible: (9, 16, 16) and (10, 10, 16) also work \u2013 which may \u201Cmean something very significant\u201D as far as Sedenions are
-   concerned (except, whatever it is, no one's discovered it is yet!).
-6 Jaak L\u00F5hmus, Eugene Paal, Leo Sorgsepp, Nonassociative Algebras in Physics (Hadronic Press: Palm Harbor FL,
-   1994), p. 242.
-7 The clearest exposition I've found of this \u201Cunobservability principle\u201D \u2013 which the authors actually relate to St. Augus-
-   tine's views on the origins of Space and Time! \u2013 is contained in the string-theoretic (but not yet M-theory aware) text by
-   Q. Ho-Kim, N. Kumar, and C. S. Lam, Invitation to Contemporary Physics (World Scientific: River Edge NJ, 1991),
-   442-446. (Their discussion also indicates why 1-D \u201Cstrings\u201D \u2013 but not yet why \u201Cp-branes,\u201D p > 1 \u2013 in the first place!)
-8 A. D. Sakharov, \u201CVacuum quantum fluctuations in curved space and the theory of gravitation.\u201D Dokl. Akad. Nauk SSSR,
-   177:1 (1967), 70-71 (Russian); English translation in Sov. Phys. Dokl. 11:3 (1968), 381.
-9 Agnes Arber, The Mind and the Eye (Cambridge U.P.: Cambridge UK, 1964), 41: \u201CEvery grade can be traced between
-   remote analogies, and analogies which are so close that they pass into identities, and \u2013 paradoxically enough \u2013 it is often
-   the remote analogies which have the greatest value, while it is the close analogies of which we have to beware. The
-   misuse of an analogy by pressing it to the point at which it is confused with an identity, is one to which biological
-   thought is peculiarly liable.\u201D Where Ms. Arber says \u201Cbiological,\u201D though, we can just as well speak of any heavily
-   qualitative and/or speculative area of science (viz., cosmology) where metrics are hard to come by.
-10 Robert Ray Britt, \u201CThe New History of Black Holes: 'Co-Evolution' Dramatically Alters Dark Reputation,\u201D
-   www.space.com/scienceastronomy/blackhole_history_030128_1.html (January 28, 2003)
-11 For completeness, I list in the \u201CStrut Table\u201D's second column a set of indices I call \u201CGoto numbers\u201D in BK1, 4 per Box-
-   Kite (and 1 per Sail). These refer to the 7 \u201Cdeformed\u201D Octonion copies the Sedenions contain, which I variously called
-   \u201CMoreno counterfeits\u201D and \u201Cautomorphemes\u201D (the latter being a name only someone overly fond of L\u00E9vi-Strauss's struc-
-   turalism could love). It was these which, by other means, Cawagas showed corresponded to instances of a hitherto unre-
-   cognized variety of ZD-harboring \u201Cloop.\u201D Each of these 7 loops contains 4 \u201CCo-Assessor trio\u201D 6-cycles, each of which
-   appears in exactly one Box-Kite as a \u201CSail.\u201D (Making a \u201Cremote analogy,\u201D think of a Box-Kite, then, as a tetrad of
-   parental chromosomes, with the \u201CZigzag\u201D as the father's \u201CY\u201D and the \u201CTrefoils\u201D as the 3 \u201CX's.\u201D)
-12 E. Battamer, \u201CThe fractal octahedral network of the large scale structure,\u201D http://arxiv.org/abs/astro-ph/9801276, p. 2.
-   The caption on the graphic reads: \u201C7 small octahedra inside a large octahedron when size ratio =3.\u201D
-13 Rodrigo A. Obando, \u201CPartitioning of Cellular Automata Rule Space,\u201D Complex Systems 14 (2003), 1-14.
+
+
+                                               Page 2
+\u000C         One more simple property of box-kites must be indicated in this overview: each
+of the 7 is uniquely associated with the one Octonion which does not appear among its 6
+vertices. The vertex pairs on opposite ends of any of the 3 orthogonal \u201Cstruts\u201D stabilizing
+the framework (like the wooden sticks of a \u201Creal-world\u201D box-kite) do not form DMZ\u2019s \u2013
+and these are the only non-DMZ pairings in a box-kite. Moreover, the products of all 3
+of these opposite pairs, depending on the \u201Cedge-signs\u201D we might imagine on their struts,
+display either a pair of the units of index 8 which, per Cayley-Dickson process, generate
+the Sedenions from the Octonions; or, a pair whose index is the \u201Cmissing Octonion\u201D \u2013
+henceforth dubbed the given box-kite\u2019s \u201Cstrut constant.\u201D And, as is easily checked, the
+\u201Cinner XOR\u201D of the Octonion and Sedenion pairs defining the Assessors at each box-kite
+vertex will always equal \u20188\u2019 plus this strut constant.
+         In the table below, the strut constant for each box-kite is listed in the first cell of
+each row, with each vertex\u2019s Assessor index-pair listed in the 6 columns that follow. The
+Octonion indices of the vertices A, B, C are in bold-face: their Assessors form a box-
+kite\u2019s sole triple-zigzag (orange in the diagram, with trefoils red, blue, green). They also
+form an associative triplet, in \u201CNATO\u201D format (for natural ascending triplet order, mean-
+ing written so that AB = +C, BC = +A, CA = +B). In fact, each sail\u2019s Octonions, read
+aright, form NATO triplets, viz.: A, D, E; F, D, B; and F, C, E. (Conversely, the 4 trip-
+lets contained in any set of 6 Octonions each imply a sail in the box-kite whose strut
+constant is the 7th.) Note, too, that in each plane spanned by 2 of the 3 orthogonal strut
+pairs (A, F; B, E; C,D), a circuit of its square frame yields a sequence of 4 DMZ\u2019s; but,
+due to the alternation of signs on the edges, it takes two such non-intersecting trips, each
+linking with a different diagonal in each Assessor, to tour all the square\u2019s 8 ZD\u2019s.
+
+
+
+
+                Strut   Assessors at Box-Kite Vertices
+                Const A    B       C     D      E      F .
+
+                1        3, 10   6, 15    5, 12      4, 13   7, 14   2, 11
+
+                2        1, 11   7, 13    6, 12      4, 14   5, 15   3, 9
+
+                3        2, 9    5, 14    7, 12      4, 15   6, 13   1, 10
+
+                4        1, 13   2, 14    3, 15      7, 11   6, 10   5, 9
+
+                5        2, 15   4, 9     6, 11      3, 14   1, 12   7, 10
+
+                6        3, 13   4, 10    7, 9       1, 15   2, 12   5, 11
+
+                7        1, 14   4, 11    5, 10      2, 13   3, 12   6, 9
+
+
+
+                                                  Page 3
+\u000C         Before offering more pictures and describing further properties, let\u2019s consider just
+how peculiar (and hence, perhaps useful) the results just described truly are. Specifically,
+let\u2019s see how radically they differ from the only zero-dividing entities familiar (indeed,
+indispensable) in fundamental physics. Though their couching in operator or Clifford
+algebra formalism may hide their ultimate nature as number types from casual view, the
+\u201Cprojection\u201D operators of quantum mechanics are, in fact, hybrid units in a toroidal
+number space. (Imaginary, Quaternion, Octonion, and higher 2n -ion units, by contrast,
+run through their paces in 2-, 4-, 8-, and 2n - dimensional spherical spaces.)
+         The simplest such number-form torus is just the Cartesian product of two imagi-
+nary orbits: the study of the 4-D result of two 2-D spaces containing the unit circles of
+the Argand diagram. The Italian geometer Corrado Segr\u00E8 first studied these \u201Cbicomplex\u201D
+numbers in the 1890\u2019s4 ; G. Baley Price wrote the first full-length text studying them as
+such, and in depth, only in the 1990\u2019s.5 (They also are implicit in Roger Penrose\u2019s well-
+known \u201Ctwistor\u201D formalism6 , and were the starting point of Charles Mus\u00E8s\u2019 less well-
+known \u201Chypernumber\u201D program.7 ) Segr\u00E8 noted the 4 axes defining their context were
+generated by 2 imaginary units, the real unit, and a fourth \u201Cmirror number\u201D whose unit
+was a square root of +1 but not itself equal to +1. This last is well-known in its own
+right: a space-spanning system of 3 such, mutually noncommuting in the manner of the
+Quaternions from which one can derive them, are commonly called the \u201CPauli spin-matri-
+ces.\u201D And as Mus\u00E8s\u2019 work (and the detail-work of the 8-D Clifford algebra Cl3 8 ) under-
+scores, a \u201Cnormal\u201D imaginary (or quaternion) unit doesn\u2019t commute with any such \u201Cmir-
+ror units\u201D \u2013 but Segr\u00E8\u2019s second imaginary (represented by the 2 x 2 identity matrix, but
+with the usual i replacing each real unit on the main diagonal) commutes with both sorts.
+         If we call the mirror unit m, the two diagonals in the (1,m) plane each have a
+point which is idempotent: [\u00BD(1+m)]2 = \u00BC (1 + 2m + 1) = \u00BD (1+m); moreover, the
+bracketed quantities, raised to arbitrary powers, remain unchanged, allowing for expo-
+nential and other functions to be defined along the diagonals which have these points as
+their \u201Cunits\u201D in a manner isomorphic to the workings of the real number line. These
+points also have two other properties of note: 1) they are the centers of mutually orthogo-
+nal Argand-diagram-like \u201Cpower orbit\u201D circles, with diameters extending from +m to +1,
+allowing them to provide a second \u201CS1 x S1\u201D representation of the generation of the torus
+containing them; and, 2) the product of these mutually orthogonal idempotents, as is
+readily checked, is zero \u2013 making them nilpotent as well. In this latter aspect, they are
+easily recognized as the number-form basis for \u201Cprojection\u201D operators.
+         Such toroidal numbers, far from being \u201Cartificial,\u201D are forced upon us by nature\u2019s
+penchant for balanced bookkeeping: they\u2019re what you get when you contemplate the
+phase curves defined by linear equations with purely imaginary eigenvalues (e.g., in the
+theory of oscillations of conservative systems). But perhaps it\u2019s artificial to consider
+such projections into the Quantum Void as necessarily built up from such zero-divisor
+dyads. Perhaps this restriction has something to do with the scandal of the universe\u2019s
+\u201C90% missing mass\u201D? Spherical number forms, beginning with the Sedenions, have ZD\u2019s
+on diagonals, too \u2013 but they\u2019re never idempotents, have no real components, obey a ter-
+nary not binary logic, and those composed from the same units will never (as opposed to
+always) form DMZ\u2019s. The difference between these two approaches is as radical as that
+between the renormalization tactics used in plus-or-minus-charged, photon-gauged,
+electromagnetism, and the three-color \u201Cstrong force\u201D of quarks and gluons.
+
+
+
+                                              Page 4
+\u000C          Among other possibilities, this just indicated difference has a bearing on how one
+interprets the well-known \u201Czero-point fluctuations\u201D (ZPF) of the vacuum \u2013 as manifest in
+the experimentally well-attested \u201CCasimir force,\u201D which allows actual extraction of ener-
+gy (admittedly in minuscule quantities!) from the Void. And this, in turn, soon involves
+one in foundation questions concerning the interrelations of the quantum and general
+relativistic realms. Standard quantum field theory represents ZPF via standard creation
+and annihilation operators acting on the vacuum; and, as part of the same gesture, gravity
+is treated as an exchange of so-called \u201Cgravitons\u201D in flat [sic] spacetime.
+          Alternative approaches are numerous; we note but two, which point back indepen-
+dently to a 1968 \u201Cblue sky\u201D piece by Andrei Sakharov9 . First is the deep investigation
+initiated by Haisch, Rueda and Putoff,10 of a non-Machian, zero-point basis for inertia,
+developed using the classical, Poynting-vector-based tools of stochastic electrodynamics.
+In their view, mass can be seen as a way of characterizing the resistance due to the ZPF
+(and general Quantum Vacuum) \u201Cmolasses\u201D that kicks in upon acceleration. (The asym-
+metric distortion induced in the ZPF by accelerating bodies was demonstrated, as they
+note, by Davies and Unruh in the mid-\u201970s, building on Hawking\u2019s \u201Cblack-hole evapora-
+tion\u201D model.) They hypothesize that rest mass would similarly be associated with the
+fundamental \u201Crestlessness\u201D of a particle (Schr\u00F6dinger\u2019s \u201Czwitterbewegung\u201D), attaining to
+resonance at the Compton frequency, thereby finding the origin of de Broglie\u2019s \u201Cmatter
+waves\u201D in Doppler shifts of the ZPF spectrum. They further suggest expanding their
+approach to peel back, in a manner first suggested by Sakharov, the formalism of general
+relativity itself. Which segu\u00E9s into the second alternative approach.
+          In a book-length investigation of Nonassociative Algebras in Physics, Jaak L\u00F5h-
+mus, Eugene Paal and Leo Sorgsepp note two patterns they assume are interconnected.11
+On the one hand, they observe that modern physics has built itself upon the recognition of
+a sequence of \u201Cinfobarriers\u201D associated with ever less regular notions of number: with
+relativity, imaginaries are associated with the restrictive causality of the light-cone; the
+Heisenberg uncertainty relations depend upon the Quaternions\u2019 noncommutativity; argu-
+ments are made for such phenomena as \u201Cexact color symmetry\u201D and its concomitant
+quark confinement being side-effects of the Octonions\u2019 nonassociativity.
+          On the other hand, they note that attempts to quantize gravity largely fail due to
+the unique nature of the gravitational force: the analog of the \u201Cfine-structure constant\u201D is
+in fact a variable. Phenomena at the ultra-small scale of the Planck length require a sec-
+ond kind of quantization \u2013 not of action, but of distance itself, leading to a notion of a
+spacetime \u201Ccrystalline\u201D structure. But it is almost tautological that this latticework is
+volatile: below the Planck length, it decays, and \u201Cmultiplicands\u201D are somehow \u201Celastic.\u201D
+          Putting these two threads together, it seems hardly outrageous to suggest that
+Sakharov\u2019s \u201Cmetrical elasticity\u201D underwriting gravity is directly connected to the next
+breakdown of properties \u2013 the loss of a field-theoretic notion of norm by which ZD\u2019s are
+spawned. Since all points of a ZD diagonal make DMZ\u2019s with any points of any other
+suitably box-kite-connected ZD, can we not say a study focused on the \u201Cpre-metric\u201D lat-
+ticework of ZD\u2019s, in the Sedenions and beyond, provides the only logical way to explore
+such phenomena \u2013 and, perhaps identically, the phenomenology of the \u201CCreation press-
+ure\u201D leading up to the Big Bang? The connection, after all, of the Sedenions to the Dirac
+equation, and hence quantum mechanics, is well known; and a link from the Sedenions\u2019
+ZD substrate to general relativity can also be strongly suggested, thanks to box-kites.
+
+
+
+                                             Page 5
+\u000C          The following diagram of a box-kite doesn\u2019t have signed edges, and has peculiar
+symbols on its vertices, and its \u201Csails\u201D lack coloring; it is otherwise, however, indistin-
+guishable from that provided above. This was hardly the intent of its creator, though: for
+it is an aid in visualizing a key proof concerning the symmetries of the curvature tensor
+in John Milnor\u2019s classic lecture notes on Morse Theory.12 Using the notation of affine
+connections, Milnor states in a lemma that a Riemannian manifold\u2019s curvature tensor sat-
+isfies four relations: (1) it is skew-symmetric (R(X,Y)Z + R(Y,X)Z = 0); (2) cyclically
+ordered such triples of vector fields sum to zero (R(X,Y)Z + R(Y,Z)X + R(Z,X)Y = 0);
+(3) bracket relations are skew-symmetric (<R(X,Y)Z,W> + <R(X,Y)W,Z> = 0) in outer
+symbols, but (4) unchanged when inner and outer symbols are exchanged (<R(X,Y)Z,W>
+= <R(Z,W)X,Y>). The fourth property is the most difficult, its proof requiring use of the
+other three \u2013 and leading to the diagram as an aid to its following. Says Milnor:
+
+        Formula (2) asserts that the sum of the quantities at the vertices of shaded
+        triangle W is zero. Similarly (making use of (1) and (3)) the sum of the
+        vertices of each of the other shaded triangles is zero. Adding these
+        identities for the top two shaded triangles, and subtracting the identities for
+        the bottom ones, this means that twice the top vertex minus twice the
+        bottom vertex is zero. This proves (4), and completes the proof.
+
+
+
+
+         With Sedenion-based box-kites, of course, the shaded triangles comprise the sails,
+and the products along each of their edges are zero; the terms at opposed ends of struts,
+meanwhile, obey a different relation from those connected to each other in a sail \u2013 not
+their sums, but their differences, must be attended to. Can a small number of \u201Csymmetry
+breaks\u201D and/or \u201Ccategorical removes\u201D serve to link these radically different uses of the
+box-kite diagram? The question is a deep one, and will be treated in follow-up studies.
+For now, consider that: (1) tensor notation replaced the now largely extinct approach of
+Dyads and Nonions; (2) J. J. Sylvester\u2019s Nonions focused on a number notion he thought,
+from the vantage of determinant theory, exactly analogous to Quaternions, but involving
+cube roots of +1 rather than square roots of \u20131, entailing 3 x 3 arrays of monomials asso-
+ciated with 3 x 3 matrix representatives whose non-zero entries were 1\u2019s and imaginary
+cube roots of unity13 ; (3) the monomials are precisely those which \u201CSiersma\u2019s Trick\u201D in
+Catastrophe Theory displays for the Double Cusp14 ; (4) ZPF \u201Cdrag force\u201D is a third order
+effect; and (5) while un-normed Sedenions do not obey an \u201Cn-squares law\u201D like the Ima-
+ginaries\u2019 (2, 2, 2), they permit, among other relations of interest, a (9, 16, 16) variant.15
+
+
+                                             Page 6
+\u000C          Only the general context of that fifth and last consideration will be dealt with
+herein. For, properly appreciated, it suggests a \u201Cmetalevel\u201D from which to view quantum
+phenomena comparable to that provided for viewing general relativity and the relation of
+mass to inertia in the above discussion. The problem of \u201Cn-squares laws\u201D generalizes the
+Pythagorean theorem and its application to higher-dimensional analogs of distance: the
+(2, 2, 2) rule for Imaginaries merely says, firstly, that any Imaginary can be construed as
+a point on a circle, hence at a distance of a \u201Cradius\u201D from the origin, so that the radius\u2019
+square is the sum of the squares of the abscissa and ordinate values of the same point;
+and, secondly, that the product of two such points can itself be understood the same way.
+          More elaborate extensions of the same Pythagorean logic lead to the (4, 4, 4) rule
+for Quaternions (the product of one sum of four squares times another is yet another sum
+of four squares), and, more elaborate still, to the (8, 8, 8) rule for Octonions. Hurwitz\u2019s
+classic proof, though, of the breakdown of the norm (and hence field structure) beyond 8
+dimensions, means that Sedenions are most readily assimilated to a (16, 16, 32) rule:
+since any Sedenion can be partitioned into two sets of 8 coordinates A and B, the product
+of two can be written (A+B) \u00B7 (A\u2019+B\u2019) = AA\u2019 + AB\u2019 + BA\u2019 + BB\u2019 = 4 x 8 = 32 dimen-
+sions required. And as Cayley\u2019s friend, the Rev. T. Kirkman, showed more than a centu-
+ry and a half ago, products of three or more Sedenions actually require a backdrop of 64
+dimensions!16 All of which suggests that the indefinite cascades of virtual particles,
+handled by renormalization methods, may perhaps signify something else entirely, but
+\u201Cseen through a glass darkly\u201D: viz., the 8D-chunked (or, \u201Cgoing toroidal\u201D in E8 x E8
+superstring style, 8D + 8D-chunked) side effect of a \u201CBizarro World\u201D mutation of Hilbert
+space thinking, where a proliferation of ever more multiply connected ZD-nets of 2n -ions,
+n approaching infinity, provides (at least the \u201Ccover story\u201D for) the \u201Chidden agenda.\u201D
+          We will return to the general architectural issues implied here at the end of this
+monograph, when we consider the Artificial-Life- or neural-net- like simulation-work
+suggested by such blue-sky \u201CCreation Pressure\u201D thematics. What is clear here, though, is
+that even broaching such topics makes adherence to the tried and true (and badly aging)
+Lie algebraic toolkit seem (if not exactly laughable) inadequate. The best way to make
+this patently obvious is to thoroughly and concretely investigate the realities being only
+vaguely indicated by the highly useful (but clearly limited) \u201CG2 \u201D results of Moreno. In
+later work than that cited earlier, he determines that the automorphism group of the ZD\u2019s
+of all 2n -ions derived from the Cayley-Dickson process, from the Sedenions on up, obey a
+simple pattern: for n > 4, this group has the form G2 x (n-3) x S3 (this last being the stan-
+dard order-6 permutation group on 3 elements).17
+          This says the automorphism group of the Sedenions\u2019 ZD\u2019s has order 14 x 1 x 6 =
+84: the number of diagonal line elements, all of whose points form DMZ\u2019s only with
+other such line elements, contained in the 42 Assessors. Let\u2019s expand our horizons to the
+32-D and 64-D cases and give them names (since they currently don\u2019t have any!). Fol-
+lowing the convention adopted by Tony Smith, who has called the 28 -ions Voudons after
+the 256 deities of the Ifa pantheon of Voodoo or Voudon, we\u2019ll call these Pathions (for
+the \u201C32 Paths\u201D of Kabbalah) and Chingons (for the 64 Hexagrams of the I Ching or Book
+of Changes). For completeness\u2019 sake, we name the 27 -ions too, dubbing them Routons,
+after that legendary source of high-tech innovativeness, Route 128 of the \u201CMassachusetts
+Miracle\u201D that paralleled Silicon Valley\u2019s on the \u201CLeft Coast\u201D of this country. From Reals
+to Voudons, then, we extend the standard shorthand thus: R, C, H, O, S, P, X, U, V.
+
+
+
+                                             Page 7
+\u000C{1} Using \u201CTable-Driven\u201D Cayley-Dickson to Excavate the Kite-Chain Midden:
+         What is meant by \u201Ctable-driven\u201D: in the early days of the PC Revolution (the one
+focused on computing, not \u201Ccorrectness\u201D), dBase II allowed you to do easy database pro-
+gramming, but largely confined you to handling data at the record level. When the next
+wave of tools emerged, Paradox (the precursor of the networked, SQL-based juggernaut
+that Oracle launched) let you use a simple logic of columnar links and commands to op-
+erate on entire tables of data. In the transition phase between technologies, it was not
+uncommon to take dBase programs that took an hour to run and replace them with Para-
+dox routines that did the same job in under a minute. The moral of this story is: the way
+the Cayley-Dickson process (henceforth, CDP) is typically presented (and, apparently,
+used) is like dBase II. If we\u2019re to do anything interesting with ZD patterns in 2n -ions, n
+large, we must follow the example of Paradox. (And, of course, we must also drop our
+pencils at some not so far off point and write programs!) We will soon see that the
+\u201Ctable-driven\u201D approach to the CDP is ridiculously easy to employ and explain.
+         What the \u201CKite-Chain\u201D (pronounced \u201Ckitchen\u201D) \u201CMidden\u201D is: the PC Revolution
+was roughly contemporary with the spread of the \u201Cobject-oriented programming,\u201D or
+\u201COOP\u201D paradigm. Its way of viewing things provides a handy (and deep-running) meta-
+phor for thinking about zero divisors. Two key notions in OOP lore are design-hiding
+and garbage-collecting (the latter conveniently built into the Java language). The first
+embodies the precept that a maintainable and reusable design module will \u201Cprivatize\u201D key
+variables, denying external users direct access to them. Beginning at least with \u201Cquark
+confinement,\u201D Nature seems to make its innermost secrets likewise difficult of access.
+However, Nature \u2013 from the panda\u2019s thumb to the microwave background radiation of the
+cosmos \u2013 also does an imperfect job at covering up its tracks: pragmatic trade-offs being
+what they are, allocation and deallocation of memory is never perfectly handled by any
+\u201Cgarbage collection\u201D algorithm, in Nature or in software. Indeed, one way of looking at
+archaeology (and in this sense, cosmologists studying the faint traces of the Big Bang\u2019s
+aftershocks are engaged in it) is that this imperfection makes it possible.
+         A midden, in Old English, comes from the word for \u201Cdung heap,\u201D and has come to
+mean, to archaeologists, a specific thing: the heaps of broken dishes, worn-out cutlery,
+sabre-tooth tiger bones, and other refuse tossed into deep recesses of inhabited caves or
+other primitive dwelling sites over the millennia: such kitchen middens provide a trea-
+sure trove of information on our ancestors\u2019 digestive tracts, sophistication of toolcraft,
+and countless other matters that students of the past crave to (literally) unearth.
+         Divisors of zero are likewise a \u201Cdung heap\u201D of number-theory leavings which no
+one\u2019s had much use for; yet it is possible to excavate their layers and find some surprising
+patterns which extend indefinitely into remote reaches not of antiquity, but of \u201C2n -ionity\u201D
+(which indeed might signify the ultimate antiquity of things leading up to and immediate-
+ly out of the Big Bang anyway). The endless succession of layers in this \u201Cdig\u201D takes the
+form of a never-completed chain of box-kite-like entities, hence the \u201Ckite-chain\u201D (said
+\u201Ckitchen\u201D) qualifier on the \u201Cmidden.\u201D With a table-driven CDP in hand, the intricacies of
+the kite-chain midden will be easy to elicit. And once we\u2019ve grasped their workings, the
+patterns they reveal to us will make us doubt the generality of the \u201CG2 \u201D approach! (Espe-
+cially when we see, in the section after this one, that as badly as Moreno\u2019s \u201Cupper bound\u201D
+is exceeded by the kite-chain midden, a slew of more elaborate ZD structures we\u2019ll call
+\u201Csand mandalas,\u201D first appearing in the Pathions, exceed such limits even more!)
+
+
+
+                                             Page 8
+\u000C          How the CDP works: like the route to Chaos we think the CDP resembles, there
+is a \u201Cperiod-doubling\u201D (here, doubling of dimension) which the CDP algorithm captures
+by partitioning the numeric entities of its next level up in two parts: units whose indices
+are contained in the starting-point 2n -ions go to the left of the comma, and those whose
+indices range from 2n to 2n+1 -1, go to its right \u2013 but with 2n subtracted from them. The
+complex numbers, to start (as the CDP does) with the simplest case, have n = 0, and are
+inscribed (a,b), with a and b scalars multiplying the units i0 and i1 \u2013 reals and imaginaries.
+          The product of two complex numbers, written (a,b) and (c,d), expands and recon-
+tracts as follows: (ai0 + bi1 )(ci0 + di1 ) = (ac \u2013 bd)i0 + (ad + bc)i1 = (ac \u2013 bd, ad + bc).
+CDP doubling yields the Quaternions, which obey much the same pattern. But since their
+units don\u2019t commute, order matters. And since there\u2019s more than one imaginary unit to
+deal with, indices must be made explicit, and so must the higher-dimensional analog of
+complex conjugates. With simple imaginaries, the conjugate of C = (ai0 + bi) is just C* =
+(ai0 \u2013 bi), so that C\u00B7C* = a2 + b2 ; for general Quaternion Q = (ai0 + bi1 + ci2 + di3 ), the
+conjugate Q* is likewise (ai0 \u2013 bi1 \u2013 ci2 \u2013 di3 ), and Q\u00B7Q* = a2 + b2 + c2 + d2 . In CDP
+notation, we get (a + bi1, c + di1 ) and (a \u2013 bi1, \u2013c \u2013di1 ) respectively. For general 2n -ions,
+the M and M* always have equal components, of opposite sign for non-real terms only.
+          Here, we see that the i2 term (and, more generally, the term whose index is the
+next-higher power of 2) acts as the generator of the new units appearing at the next level
+(hence, has the same index \u2013 0 \u2013 on the right of the comma that the real unit has on the
+left); as such, a generator always produces same-signed resultants when applied on the
+same side of an arbitrary unit among the 2n -ions it generates. Given that one can\u2019t index
+even the Octonions so that all NATO triplets are also in counting order \u2013 (1, 7, 6) and
+(3, 6, 5) are out of order in the usual XOR indexing scheme, for instance \u2013 this implies
+that no imaginary unit except the generator will always produce a same-signed resultant
+with arbitrary other units multiplied from the same side. This special feature of genera-
+tors has far from trivial ramifications with higher 2n -ions, as we\u2019ll see soon enough.
+          We need note one more general feature before giving the standard iterative CDP
+algorithm, for it\u2019s more general than we need. We can generate higher-order systems of
+mirror, imaginary, or \u201Cdual\u201D numbers (which square to 0), by setting a parameter to +1 or
+\u2013 1 or 0 respectively, and create mixes of such systems by varying the parameter at each
+successive CDP iteration. (One can even set the last of 4 parameters to a radical, to em-
+bed the Sedenions in an extension field which has no zero divisors at all. More generally
+still, one can exploit the theory of so-called \u201CPfister forms\u201D \u2013 or engage in category theo-
+retics to similar effect \u2013 and define the CDP over polynomial fields, expunging zero-divi-
+sors and tying 2n -ions to quantum groups in one fell swoop18 : such nifty tricks, however,
+won\u2019t concern us.) For our purposes, all parameters will be \u20131\u2019s; for completeness, we
+give the general expression, with the most recently iterated parameter written p:
+
+                     X \u00B7 Y = (A,B) \u00B7 (C,D) = (AC + p(D*)B, B(C*) + DA)
+
+        If the component parts are not complicated admixtures, but simple sets of non-0-
+indexed imaginary units with unit coefficients, we can treat conjugation as just negation,
+and write only indices and signs (M \u2013 N, instead a\u00B7iM + b*\u00B7iN). Which gives us this:
+
+                         X \u00B7 Y = (A,B) \u00B7 (C,D) = (AC + DB, DA \u2013 BC )
+
+
+
+                                               Page 9
+\u000C        Before we go into \u201Ctable-drive,\u201D let\u2019s make this real with a worked example.
+Going back to the Box-Kite diagram and its associated table, let\u2019s take a random path
+between vertices \u2013 BC, say, on the triple zigzag ABC. Now, let\u2019s pick a random strut
+constant: 6, for instance. The table says B then equates to the Assessor (4,10), and C to
+(7,9). The sign on the edge is minus, so let\u2019s flip a coin and pick the \u201C+\u201D diagonal to be
+B, the \u201C\u2013\u201D to be C: this means multiply (i4 + i10 ) by (i7 \u2013 i9 ). By the formula, we get:
+
+                     (4, 2) \u00B7 (7, \u20131) = ( [(4)(7) \u2013 (1)(2)], [\u2013 (1)(4) \u2013 (2)(7)] )
+
+         Refer to the relevant \u201CNATO triplets\u201D: (3, 4, 7); (1, 2, 3); (1, 4, 5); (2, 5, 7). The
+CDP comma separates O\u2019s from S\u2019s, the latter generated from the former by the unit in-
+dexed 23 = 8, so we get (3 \u2013 3, \u20135 \u2013 (\u20135)) = (+i3 \u2013 i13 ) + (\u2013 i3 + i13 ). For \u201Chard\u201D parenthe-
+ses, \u201Cpair creation from the Quantum Void\u201D is suggested; for \u201Csoft,\u201D we just have 0.
+         Note that 3 xor 13 = 6, the strut constant, as required. Furthermore, (3, 13) has
+edge sign \u201C\u2013\u201D, so we can continue edge-multiplying and get further zeros in a DMZ 6-
+cycle, and say that the Assessor (3, 13) at vertex A is \u201Cemanated\u201D by Assessors (4, 10)
+and (7, 9), with (4 + 10)\u00B7(3 \u2013 13) = (3 \u2013 13)\u00B7(7 + 9) = [pair creation or] 0, and so on.
+         It\u2019s easy to find multiplication tables for the Octonions, and also easy to build one
+for the Sedenions; no higher tables have been published that we know of, but we don\u2019t
+need them. All we need do is realize that the table for 2n+1 -ions is comprised of 4 tables
+of the same size as that for the 2n -ions, with the latter table constituting the upper left
+quadrant of the larger ensemble, its row and column values running from 0 to 2n \u2013 1.
+Calling this quadrant \u201CI,\u201D and continuing to designate the other 3 by successive Roman
+numerals in clockwise order, we can fill in all values of each of these by a simple trans-
+formation of the ensemble of 2n -ion values in I.
+         Quadrant II: Row values same as I ; column values of nth column of II = those
+for n column of I + 2n . Hence if product of row-unit r and column-unit c in I is written
+     th
+
+(r, 0)(c, 0) = (rc + 0, 0\u00B7r \u2013 0\u00B7c) = rc = entry in cell (r, c), then cell (r, 2n + c) in II will be
+(r, 0)(0, c) = (r\u00B70 + c\u00B70, c\u00B7r \u2013 0) = (0, \u2013rc) = \u2013(2n + rc), with \u201Cspecial handling\u201D for r or c
+= 0 or r = c. In the last case, since any in 2 is negative unity, the cell entry will be the odd-
+looking \u201C\u20130\u201D (short for \u2013i0 = \u20131) in the long diagonal of I. The peculiar status of the gen-
+erator \u2013 any smaller-indexed positive unit u multiplying it on the left yields the positively
+signed unit whose index is 2n + u \u2013 means that the corresponding long diagonal in II will
+show (\u2013 2n ) for all entries save the first row\u2019s. Corollarily, all entries in the first row and
+column will be positive, with content 2n greater than the corresponding cell in I.
+         To simplify, collectively refer to the extension of the top row, the first new (2nth )
+column, and the main diagonal of II the \u201Ctrident\u201Dof II (with tridents in all quadrants de-
+fined analogously). Then we can sum up this way: the index-values in cells (r, 2n +c) =
+2n + (r, c); sign of cells (r, 2n +c) = same as for (r, c) if in trident, opposite otherwise.
+         Quadrant III: by similar arguments, cell entries in trident of III are identical in
+content to corresponding entries in trident of I, and same in sign except for the leftmost
+(2nth ) column, where signs are reversed; for all other cells, (2n + r, 2n + c) = same in
+content and opposite in sign as (r, c).
+         Quadrant IV: for each entry (2n + r, c) content is identical to that in correspond-
+ing cell (r, 2n + c) of II, with signs reversed in the trident (except for the extension of 0th
+column), but the same everywhere else.
+
+
+
+                                               Page 10
+\u000C         Naturally, the best way to grasp the iterative workings of this process is to exam-
+ine a concrete for-instance where it\u2019s been applied multiple times. On the next page, we
+give the multiplication table for the Sedenions (the Pathions\u2019 32 x 32 array won\u2019t fit), us-
+ing a checkerboard scheme of shading alternate Quaternion-sized blocks of cell entries, to
+make the iterative structure easier to parse visually. Beneath this table, we give a listing
+of the (25 -1)(25 -2)/3! = 155 NATO triplets in the Pathions (which we\u2019ll be focused on
+most), with the triplets first appearing in the Octonions and Sedenions broken out separ-
+ately at the top of the listing. Beyond the Pathions, even a listing of triplets becomes un-
+manageable, as there are (26 -1)(26 -2)/3! = 651 of them for the Chingons alone, so readers
+interested in checking calculations involving them later in this argument will need to feed
+Pathion triplets into the CDP formula (or write code!).
+         One crucial matter the \u201Ctable-driven\u201D approach makes obvious: since no box-kite
+vertices have \u201Ctrident\u201D entries, one gets box-kite \u201Charmonics\u201D simply by adding 16 (or 32,
+or 48 \u2026 ) to their indices. These entities are not \u201Cstand-alone,\u201D however: for o, o\u2019, o\u201D
+Octonions; S, S\u2019, S\u201D Sedenions; n an integer; two \u201CAssessor harmonics\u201D with indices (o +
+16n, S + 16n) and (o\u2019 + 16n, S\u2019 + 16n) will emanate some (o\u201D [ = o xor o\u2019 = S xor S\u2019 ], S\u201D
+[ = o xor S\u2019 = S xor o\u2019 ] ) contained in the basic box-kite. Each of the 12 paths in such a
+harmonic, then, will have its \u201Csail\u201D completed by the Assessor in the \u201Cbase-line\u201D box-kite
+whose harmonic, by visual logic, \u201Cought to\u201D complete its sail, but doesn\u2019t.
+         Stranger still, if we consider all 3 harmonics allowed when we double domains up
+to the 64-D Chingons, not only will the base-line box-kite complete sails in each, but the
+first harmonic will form an \u201Covertone series\u201D with the second and third: \u201Csails,\u201D that is,
+will have one \u201CAssessor harmonic\u201D from each! For example, if the base-line is the box-
+kite with strut constant 3, its Assessor strut-pairs are (2, 9) and (1, 10), (5, 14) and (6, 13),
+and (7, 12) and (4, 15) \u2013 the first-listed in these pairings forming the box-kite\u2019s triple-zig-
+zag. The \u201CAssessor harmonics\u201D for n = 1, 2, 3 respectively are therefore, in same order:
+
+     (18, 25) and (17, 26)            (21, 30) and (22, 29)             (23, 28) and (20, 31)
+     (34, 41) and (33, 42)            (37, 46) and (38, 45)             (39, 44) and (36, 47)
+     (50, 57) and (49, 58)            (53, 62) and (54, 61)             (55, 60) and (52, 63)
+
+        \u201CSails\u201D involving all 3 of these harmonics can be constructed in sets of four, each
+set completed by one of the 6 Assessors in the first harmonic. For the lowest-index
+instance, the four sails are these:
+
+             (17, 26) \u2013 (36, 47) \u2013 (53, 62)             (17, 26) \u2013 (37, 47) \u2013 (52, 63)
+             (17, 26) \u2013 (38, 45) \u2013 (55, 60)             (17, 26) \u2013 (39, 44) \u2013 (54, 61)
+
+         If we only consider the first harmonic \u2013 all we get with just the Pathions \u2013 we
+have a system of twice the number of ZD-diagonals in a base-line box-kite, all inter-
+related in the manner just described. This fits quite nicely with Moreno\u2019s assessment of
+the total count of \u201Cirreducible\u201D zero-divisors we should have: per his formula, 25 -ions
+should have (5-3) x 84 = 168 such entities. But clearly, the formula breaks down with
+one more doubling: when the kite-chain midden is extended to 26 -ions, we get not 3 x
+84, but 4 x 84 = 336 ZD-diagonals: the maximal symmetry of Felix Klein\u2019s famous
+figure that Poincar\u00E9 determined was a tessellation by triangles of the hyperbolic plane.19
+
+
+
+                                              Page 11
+\u000C     0    1       2     3     4     5       6       7       8    9     10    11    12    13    14    15
+
+0    0    1       2     3     4     5       6        7      8    9     10    11    12    13    14    15
+
+1    1    -0      3     -2    5     -4      -7       6      9    -8    -11   10    -13   12    15    -14
+
+2    2    -3      -0    1     6     7       -4      -5      10   11    -8    -9    -14   -15   12    13
+
+3    3    2       -1    -0    7     -6      5       -4      11   -10   9     -8    -15   14    -13   12
+
+4    4    -5      -6    -7    -0    1       2        3      12   13    14    15    -8    -9    -10   -11
+
+5    5    4       -7    6     -1    -0      -3       2      13   -12   15    -14   9     -8    11    -10
+
+6    6    7       4     -5    -2    3       -0      -1      14   -15   -12   13    10    -11   -8    9
+
+7    7    -6      5     4     -3    -2      1       -0      15   14    -13   -12   11    10    -9    -8
+
+8    8    -9      -10   -11   -12   -13     -14     -15     -0   1     2     3     4     5     6     7
+
+9    9        8   -11   10    -13   12      15      -14     -1   -0    -3    2     -5    4     7     -6
+
+10   10   11      8     -9    -14   -15     12      13      -2   3     -0    -1    -6    -7    4     5
+
+11   11   -10     9     8     -15   14      -13     12      -3   -2    1     -0    -7    6     -5    4
+
+12   12   13      14    15    8     -9      -10     -11     -4   5     6     7     -0    -1    -2    -3
+
+13   13   -12     15    -14   9         8   11      -10     -5   -4    7     -6    1     -0    3     -2
+
+14   14   -15     -12   13    10    -11         8       9   -6   -7    -4    5     2     -3    -0    1
+
+15   15   14      -13   -12   11    10      -9          8   -7   6     -5    -4    3     2     -1    -0
+
+Octonions (1 2 3)      (1 4 5)    (1 7 6)     (2 4 6)    (2 5 7)     (3 4 7) (3 6 5)
+Sedenions                                    (1 8 9) (1 11 10) (1 13 12) (1 14 15)
+(2 8 10) (2 9 11) (2 14 12) (2 15 13) (3 8 11) (3 10 9) (3 13 14) (3 15 12)
+(4 8 12) (4 9 13) (4 10 14) (4 11 15) (5 8 13) (5 10 15) (5 12 9) (5 14 11)
+(6 8 14) (6 11 13) (6 12 10) (6 15 9) (7 8 15) (7 9 14) (7 12 11) (7 13 10)
+Pathions
+( 1 16 17) (1 19 18) (1 21 20) (1 22 23) (1 25 24) (1 26 27) (1 28 29) (1 31 30)
+( 2 16 18) (2 17 19) (2 22 20) (2 23 21) (2 26 24) (2 27 25) (2 28 30) (2 29 31)
+( 3 16 19) (3 18 17) (3 21 22) (3 23 20) (3 25 26) (3 27 24) (3 28 31) (3 30 29)
+( 4 16 20) (4 17 21) (4 18 22) (4 19 23) (4 28 24) (4 29 25) (4 30 26) (4 31 27)
+( 5 16 21) (5 18 23) (5 20 17) (5 22 19) (5 25 28) (5 27 30) (5 29 24) (5 31 26)
+( 6 16 22) (6 19 21) (6 20 18) (6 23 17) (6 25 31) (6 26 28) (6 29 27) (6 30 24)
+( 7 16 23) (7 17 22) (7 20 19) (7 21 18) (7 26 29) (7 27 28) (7 30 25) (7 31 24)
+( 8 16 24) (8 17 25) (8 18 26) (8 19 27) (8 20 28) (8 21 29) (8 22 30) (8 23 31)
+( 9 16 25) (9 18 27) (9 20 29) (9 23 30) (9 24 17) (9 26 19) (9 28 21) (9 31 22)
+(10 16 26) (10 19 25) (10 20 30) (10 21 31) (10 24 18) (10 27 17) (10 28 22) (10 29 23)
+(11 16 27) (11 17 26) (11 20 31) (11 22 29) (11 24 19) (11 25 18) (11 28 23) (11 30 21)
+(12 16 28) (12 21 25) (12 22 26) (12 23 27) (12 24 20) (12 29 17) (12 30 18) (12 31 19)
+(13 16 19) (13 17 28) (13 19 30) (13 23 26) (13 24 21) (13 25 20) (13 27 22) (13 31 18)
+(14 16 30) (14 17 31) (14 18 28) (14 21 27) (14 24 22) (14 25 23) (14 26 20) (14 29 19)
+(15 16 31) (15 18 29) (15 19 28) (15 22 25) (15 24 23) (15 26 21) (15 27 20) (15 30 17)
+
+
+                                                    Page 12
+\u000C{2} The Pathions\u2019 \u201CSand Mandalas\u201D (Surprises in Symmetry and Degeneracy): In
+the listing of triplets just given, those none of whose 3 pairings can act as Assessors (i.e.,
+contribute ZD\u2019s) are rendered in italics. These include all the Octonions, all Sedenions
+with an \u20188,\u2019 and all Pathions with a \u201816.\u2019 And, just as each of the 7 x 3 \u201C8-less\u201D Sedenion
+triplets of form (O, S, S\u2019) produced two Assessor index-pairs \u2013 (O, S) and (O, S\u2019) \u2013 mak-
+ing 42 in all, so the Pathions have 15 x 7 = 105 \u201C16-less\u201D triplets of form (O or S, P, P\u2019),
+and which yield 210 \u201CAssessors\u201D organized in 15 ensembles which are the Pathion equi-
+valent of Box-Kites. In addition, as implied in the above discussion of kite-chain mid-
+dens, 42 of the (P, P\u2019) pairings are ZD\u2019s as well, which makes 252 x 2 diagonals in each
+= 504 \u201Cirreducible\u201D ZD\u2019s specific to the Pathions. Add in the 84 first showing in the Se-
+denions, and we have 588 in all: 3\u00BD times the count Moreno\u2019s formula would allow.
+          The 15 Pathion ensembles of Assessors have many features we\u2019ve already seen in
+box-kites: Assessors at all 14 vertices of the analogous lattice have the same inner xor,
+its value \u2013 one of 15 possible (O or) S indices \u2013 acting as the ensemble\u2019s signature. This
+signature plays the role of \u201Cstrut constant\u201D as well, so that the Assessors at the 14 vertices
+are arrayed in opposing pairs which do not form DMZ\u2019s, since their products include
+non-canceling pairs of strut-constant-indexed and index-16 imaginaries. And, as with
+box-kites, not just the (here, index- 16 instead of 8) generator, but the Assessor whose
+Pathion is the xor of the strut constant with it, is also excluded from the lattice.
+          While this much is easy to see, visualizing the connectedness of these ensembles
+is hard: with each having 14 vertices, possibly forming DMZ\u2019s with all but 1 of the
+others, we have 84 edges, forming (14 x 12)/3! = 28 \u201Csails,\u201D divvied out among 7 Box-
+Kites, each of which shares each of its 3 strut with 2 of the others. We say \u201Cpossibly
+forming\u201D advisedly: one of the most surprising features of these ensembles \u2013 and why, as
+we\u2019ll see, we call them \u201Csand mandalas\u201D \u2013 is that the full count of 168 DMZ\u2019s is only ob-
+tained when the strut constant is 8 or less. And, when it is precisely 8, we get a peculiar
+phenomenon we\u2019ll call \u201Cedge polarization.\u201D To grasp these things, however, a different
+sort of visualizing strategy is called for. In a partial generalization of the table appended
+to the box-kite diagram toward the start of this paper, we\u2019ll display the behaviors of the
+sand mandalas in 14 x 14 spreadsheet-like layouts we\u2019ll call emanation tables.
+          As with the column headings there, indices will be arranged to best satisfy two
+sometimes conflicting constraints. First, Assessors on opposite ends of a strut are given
+symmetrically opposite placement, so that indices have \u201Cnested parentheses\u201D ordering
+(just as columns A and F, B and E, and C and D formed strut-opposed pairings in the
+earlier table). Second, when this first constraint allows (as it does for the first half of the
+column heads for all sand mandalas with strut constants of 8 or greater), the lower-
+indexed Assessors from all strut-pairs should have their O or S terms placed atop the
+columns in ascending left-to-right order (and top-to-bottom order on the rows).
+          When arranged in this manner, all cells of both long diagonals of the table will
+always be empty: those running from the upper left toward the bottom right represent
+products of an Assessor\u2019s diagonals with themselves, and these can never form DMZ\u2019s;
+those running downward from the upper right, meanwhile, represent products of \u201Cstrut
+opposites,\u201D and these will always contain pairs of index-16 and strut-constant-indexed
+imaginaries. The remaining 142 \u2013 (2 x 14) = 168 cell entries are assumed, by convention,
+to be the O or S indices of the ZD \u201Cemanated\u201D by multiplying the row-head\u2019s Assessor
+times the column-head\u2019s, with appropriate edge-sign prefixing the entry.
+
+
+
+                                             Page 13
+\u000C        We\u2019ll construct the first \u201Cemanation table,\u201D for strut constant = 1, now. All the
+Assessors have inner xor 17, units indexed 1 and 16 are excluded, and \u201Cnested parenthe-
+ses\u201D plus left-right (top-bottom) ordering give us the Sedenions listed in the first line as
+column and row headings, associated with the Pathions of index > 16 listed below them:
+
+           2    4        6    8       10       12   14       15   13    11    9     7    5     3
+          19   21       23   25       27       29   31       30   28    26   24    22   20    18
+
+      2    4   6    8    A   C    E   F    D    B   9    7    5   3
+
+  2        6   4    A    8   E    C   D    F    9   B    5    7
+                                                                                For compactness of presenta-
+  4                                                                    tion, edge signs associated with ema-
+      6        2    C    E   8    A   B    9    F   D    3        7
+                                                                       nating the Assessors in the cell entries
+  6   4    2        E    C   A    8   9    B    D   F         3   5
+                                                                       are indicated by putting their Sedeni-
+  8   A    C   E         2   4    6   7    5    3        F    D   B    on indices in underscored italics, with
+  A   8    E   C    2        6    4   5    7        3    D    F   9    hex notation used for indices > 9: Se-
+  C   E    8   A    4    6        2   3         7   5    B    9   F    denions 10 through 15 display as let-
+  E   C    A   8    6    4   2             3    5   7    9    B   D    ters A through F. Our table will then
+  F   D    B   9    7    5   3             2    4   6    8    A   C    look as shown at left.
+  D   F    9   B    5    7        3   2         6   4    A    8   E
+                                                                                Cell-entry values are deployed
+  B                                                                    with mirror symmetry about the void
+      9    F   D    3        7    5   4    6        2    C    E   8
+  9
+                                                                       diagonals; they also show reverse-or-
+      B    D   F         3   5    7   6    4    2        E    C   A
+                                                                       der symmetry in opposite rows: e.g.,
+  7   5    3        F    D   B    9   8    A    C   E         2   4
+                                                                       entries for the leftmost 2nd \u2013 7th cells
+  5   7        3    D    F   9    B   A    8    E   C    2        6    of the top row echo those for the 14th
+  3        7   5    B    9   F    D   C    E    8   A    4    6        \u2013 8th on the bottom-most row.
+
+         Note that all 168 available cell-entries are filled with emanations: save for the
+diagonals, all row-listed ZD\u2019s form DMZ\u2019s with all column-listed ZD\u2019s. As a harbinger
+of things to come, however, the eighth such table (strut constant indexing the Sedenions\u2019
+generator) shows a peculiar alignment: in each quadrant, all edge-signs are identical. In
+upper left and lower right, they\u2019re negative, and positive otherwise. As is readily shown
+by writing products in CDP form and recalling that all inner xor\u2019s will equal 16 + 8, this
+is a side-effect of the peculiar characteristic of generators mentioned earlier: namely, all
+their products with lower-indexed units, if taken on the same side, have the same sign.
+         More subtle, and far more surprising, is an effect ultimately attributable to the
+same root cause, but by a less transparent route: when the strut constant gets bigger than
+the generator\u2019s index, only 72 of the available cell-entries contain emanations. Even
+more mysterious, if we subtract 8 from the strut constant and call this the \u201Cexcess,\u201D then
+48 of these cell entries saturate the rows and columns at a distance of the excess from the
+outer boundary: hence, for strut constant 9, all the outermost cells save for the 4 corners
+are filled, and for 15, a cross of central rows and columns (minus the central square the
+diagonals make) is formed, with contents evenly divided among allowed row- and col-
+umn- heading Sedenions, save for \u20188\u2019 and the excess. Instead, these excepted entries are
+equally dispersed among the remaining 24 filled cells, with the edge-signs always nega-
+tive for entries of index \u20188\u2019 (and always positive for index equal to the excess), and re-
+stricted to the same quadrants as the \u2018/\u2019 and \u2018\\\u2019 empty diagonals respectively.
+
+
+
+                                                         Page 14
+\u000C         Viewed in sequence, these tables suggest the patterns made by cellular automata;
+seen individually, they suggest nothing so much as the short-shelf-life \u201Csand mandalas\u201D
+of Tibetan Buddhist ritual, made by monks on large flat surfaces with colored sands or
+powdered flowers, minerals, or even gemstones. To best convey this sensibility, all 7 of
+the 72-entry tables (prefaced by the \u201Cedge-polarized\u201D table generated by strut constant 8)
+are arrayed in two rows of four each, to be scanned left to right, top row first. They have
+also been color-coded: the void diagonals are left empty; the cells which \u201Cshould\u201D be
+filled but are magically left content-free are painted gray; the 24 entries made of strut-
+constant components are green; the 48 which contain all other allowed entries are ren-
+dered in red. (Rendered originally in MS Word tables, the cell-entry contents are quite
+readable at 200% zoom in their native application; they become muddy, however, and
+hard to read, when zoomed in the PDF format they were ported to, for which we offer our
+apologies. In one sense, though, this \u201Cbug\u201D is a \u201Cfeature\u201D: it demands you attend to the
+overall patterning, which is obviously what matters most here!)
+
+
+
+
+          We\u2019re not yet done with surprises: for just as Kite-Chain Middens indicate a way
+in which low-level structure can be echoed higher up the endless 2n -ion ladder, the seven
+72-cell sand mandalas show us the way to collapse from one level of form to that native
+to a level lower down. If we fold any of their tables along their row and column mid-
+lines, the red cells of the sand mandala in question will overlay precisely and only those
+O\u2019s and S\u2019s which form the vertices of the Box-Kite whose strut constant is equal to the
+\u201Cexcess.\u201D The cells painted green, on the other hand, will adjoin the Sedenions\u2019 index-8
+generators and the Box Kite\u2019s own strut constant in a trio of ensembles, one per strut \u2013 or,
+said another way, one for each \u201Cforbidden\u201D O-triplet containing the strut constant.
+          We can imagine the Pathion units associated uniquely with each emanation-table
+entry being \u201Cboiled off\u201D by some reductive process, the possible nature of which must be
+left for future contemplation. We can also, of course, imagine \u201CSand-Mandala-Chain
+Middens,\u201D echoing their basic structure in a modulo-32 rhythm. And we can imagine
+even richer possibilities with the 31 emanation tables associated with the Chingons . . .
+\u201Crestless triplet\u201D cyclings connecting all such systems . . . and so on.
+
+
+                                            Page 15
+\u000C        To reach an understanding of the happenings in higher reaches, a more formal
+grasp of the simplicities underlying the surprises in the Pathions would stand us well. We
+know that units indexed g = 2n \u2013 hence, any generators of the next (2n -1) units via CDP \u2013
+operate in a uniquely uniform way. For all units iu , u < g, iu \u00B7 ig = + i(u+g) . In the upper
+left (\u201CNW\u201D) quadrant of the emanation table, meanwhile, all row and column index-pairs
+can be written (r, R) and (c, C) respectively, where lower-case indices all are O\u2019s, and
+upper-case are P\u2019s (all > 16). Specifically, for all 72-celled sand mandalas, each Asses-
+sor\u2019s inner xor (\u201Cix\u201D) = 24 + \u039E , where \u039E (\u201Cxi\u201D) is the \u201Cexcess\u201D in the range of 1 to 7.
+        But 24 is the sum of the first two generators which yield ZD behavior. Multiplied
+with O\u2019s, the combined effect of the unilateral signing behavior of each taken separately
+is reversed: i24 \u00B7 iu = + i(24+u) . Further, if iu \u00B7 iv = + iw makes an O triplet, i(24 + u) \u00B7 i(24 + v) =
++ iw also. (By CDP, we get (\u2013 i(8 + u) \u00B7 i(8 + v) ); this gives + iw by the \u201CQuadrant III\u201D rule
+applied to generation of S\u2019s from O\u2019s.) Hence, for all u = r or c in the NW box, the term-
+by-term signing of the two pairs of units in the product (r, 24 + r*) \u00B7 (c, 24 + c*) will be
+the same as for (r, r*) \u00B7 (c, c*). But this latter just involves O\u2019s, and so lacks the sign-
+canceling among like-indexed terms DMZ\u2019s require \u2013 and so, therefore, must the former!
+        The only way around this null result is for one of the indices of R, C, or R xor C
+to be precisely 24, with corresponding index r, c, or r xor c precisely the excess \u039E . Say r
+= \u039E , left-multiply (c, C) by (r, R), and leave a sign-variable sg(..) = \u00B1 (..) undetermined:
+
+         (\u039E , 24) \u00B7 (c, 24 + c*), where c \u00B7 c* = sg( \u039E ), and hence \u039E \u00B7 c = sg( c* )
+
+         Left-multiplying by \u039E , then 24, we get these indices in successive output lines:
+
+         \u039E \u00B7 c \u00E0 sg( c* ),          \u039E \u00B7 (24 + c*) \u00E0 24 + (\u039E \u00B7 c*) = ( \u2013 sg(24 + c) )
+         24 \u00B7 c \u00E0 (24 + c),         24 \u00B7 (24 + c*) \u00E0 (\u2013 c* )
+
+          Comparing cross-terms in the two lines, it\u2019s clear we have a zero product, with the
+edge between (r, R) and (c, C) being signed the same as sg. Supposing c is \u039E instead
+leads to the same result with a change of labels; slightly more work is called for if \u039E is in
+the product instead of either multiplier. By symmetry, the same ZD criteria just demon-
+strated can be appropriately interpreted in all quadrants. The 72-count (not just of non-
+void cell entries, but of distinct DMZ pairings of ZD diagonals) follows trivially.
+          That last parenthetical remark is a signal one: in Sedenion Box-Kites, the 12 ZD
+diagonals in each, each belong to 2 Sails, making 24 DMZ\u2019s in all. In this, they conform
+to the same formula we can generalize from the sand mandalas with \u039E > 0: for 2n -ions,
+n>3, the ZD-pairings formula, up to Voudons, gives 6 \u00B7 (2n-1 -4) = 24, 72, 168, 360, 744.
+Alone in this series, the pairings for Pathions are a simple multiple of their predecessors\u2019.
+A little investigation shows us why: each of the 7 \u201Cexcessive\u201D sand mandalas can in fact
+be partitioned into 3 Box-Kites, all sharing the same strut constant, but otherwise exactly
+like those in the Sedenions \u2013 save for their each containing an \u201Cimpossible\u201D 8 as the low
+index in one Assessor, forming a triple zigzag with two Assessors whose low-index terms
+are an O and its xor with 8! So not only can we \u201Cfold over\u201D its emanation table to get a
+Sedenion Box-Kite; we can see it as housing 3 \u201Charmonics\u201D of it of a special kind. The
+analogy to the Hyperbolic vs. Elliptic Umbilic Catastrophes\u2019 1 to 3 Cusps, vis \u00E0 vis 1
+triple-zigzag to 3 trefoil Sails, was explored in our prior paper. How deep does it go?
+
+
+                                                 Page 16
+\u000C          In Catastrophe Theory, the D4 singularity takes on two forms when projected
+from the complex to the real domains, and these are the two Umbilics just named. More,
+it is also well-known, thanks to the \u201CA-D-E Problem,\u201D20 that the D4 pattern relates to
+close-packing in 4-D, yielding the \u201CFeynman checkerboard\u201D of 24 unit hyperspheres in
+each other\u2019s immediate proximity (the same pattern giving the 24-element group of
+integer Quaternions). The Hyperbolic Umbilic, meanwhile, has its 2-D \u201Cbehavior plane\u201D
+\u2013 when its definitive control variable is zero \u2013 degenerate into the 4-to-1 collapsing of
+quadrants topologists call \u201Cfolding the handkerchief.\u201D The similarity of this process to
+the \u201Cfolding over\u201D of emanation tables \u2013 plus the special significance of 24 here \u2013 seems
+hardly accidental. (And 72, for what it\u2019s worth, is the \u201Cclosest-packing number\u201D associ-
+ated with the singularity E6 \u2013 the basis of the mysterious \u201Ctrance tunnel\u201D geometry stu-
+died by James Callahan in a series of seminal papers modeling emotional affect re-
+sponse.21 ) How might these patterns echo in higher number forms? We have not, for
+instance, considered the \u201Cpathologies\u201D awaiting in higher 2n -ions, when not 2, but 3 or
+more such \u201Chypernumbers\u201D are multiplied. (Will we need, perhaps, to contemplate \u201Cema-
+nation solids\u201D? And does the fact that both the Sedenions\u2019 24 and the Pathions\u2019 72 are
+contained as simple factors of the Routons\u2019 \u201CBabylonian\u201D 360 mean anything special? In
+this domain, so little is known, and so much computation will be required to learn more,
+that we can truly deem this brand of mathematics an \u201Cexperimental\u201D discipline.)
+          Let\u2019s wind down with something more concrete to mull on: the emanation table
+shown as the last on the right of the top row in the prior illustration (with \u039E = 3) will be
+exemplified. Its \u201Cgreen cell\u201D units of 3 and 8 indicate a \u201Cfolding over\u201D into the Sedenion
+Box-Kite with strut constant 3; the low-end indices shown in the emanation table do in-
+deed \u201Cfold over\u201D in the manner described above so that strut-opposed terms form Sedeni-
+on Assessors (2, 9), (1, 10), (7, 12), (6, 13), (5,14), (4,15) as required. Meanwhile, if you
+check the first table presented in this paper to corroborate that statement, you\u2019ll recall the
+format of presentation (Assessors A, B, C forming a triple-zigzag, etc.). That format can
+be retrieved (sans the now-redundant strut constant in the left-most column) to present
+the 3 \u201Cimpossible\u201D Box-Kites the emanation table in question partitions into (each of
+whose triple-zigzags\u2019 bolded lower-index terms form hard-working, Box-Kite-sustaining
+\u201Cmule-trains\u201D of \u201Csterile\u201D triplets which can never form ZD\u2019s in their own right). This
+emanation table partitions into 3 Box-Kites with strut constant 11 as follows:
+
+                           A      B       C       D       E        F .
+
+                        1, 26   8, 19    9, 18   2, 25   3, 24   10, 17
+
+                        4, 31   8, 19   12, 23   7, 28   3, 24   15, 20
+
+                        6, 29   8, 19   14, 21   5, 30   3, 24   13, 22
+
+        Note that the common appearance of the (8, 19) and (3, 24) Assessors in each of
+these 3 Box-Kites would seem to belie the assertion that they partition the 72 DMZ cells
+cleanly: but this shared pair of Assessors are strut-opposites, and we are now viewing
+these Box-Kites not as collections of 12 ZD diagonals, but of 24 DMZ-pairings; so, as
+such, there\u2019s no sharing of any terms between them! From all we\u2019ve seen of the Pathions
+and their patterns of emanation, this distinction, while subtle, is obviously a crucial one.
+
+
+
+                                              Page 17
+\u000C          But this suggests the 7 interconnected Box-Kites of the 168-cell emanation tables
+may be viewed in a similar manner, making their interconnectedness not hard to deal
+with, but simple. Consider the first table\u2019s Assessor list given atop page 14: take the
+lower-index items in the first of its two lines as given, and pick the leftmost value (2).
+The two successive pairs that follow each complete a triple with it. Add in their 3 strut-
+opposites on the right, and we\u2019ve got the lower-index scheme for the first 3 Box-Kites:
+(2, 4, 6, 7, 5, 3); (2, 8, 10, 11, 9, 3); (2, 12, 14, 15, 13, 3). Now move right, pick the (4),
+and form 2 new triples with it from the left of the line; including opposites from the right
+gives 2 more Box-Kites: (4, 8, 12, 13, 9, 5); (4, 10, 14, 15, 11, 5). Shift again, pick the
+(6), perform the same trick: (6, 8, 14, 15, 9, 7); (6, 10, 12, 13, 11, 7).
+          Parting thought anent \u201CMule-Trains\u201D: the attentive reader may already have fig-
+ured out that if each \u039E -high (henceforth, \u201CSky-High\u201D) emanation table splits into 3 Box-
+Kites, each with 2 sails based on one of the 7 overworked \u201CMule-Train\u201D triplets, 7 x 3 x 2
+= 42. The MT-Sails, then, play a role in Sky-Highs akin to the Sedenions\u2019 42 Assessors
+\u2013 or, perhaps more precisely, to the 42 inscriptions of the similarly \u201Csterile\u201D Octonions on
+Box-Kite vertices therein. In this sense, each Sky-High\u2019s excluding but one Mule-Train
+(the triplet completing the \u201Cgreen cell\u201D pairings) is like the ban of the strut-constant Octo-
+nions in the Sedenion context, which also act as \u201Csignatures.\u201D Is all this the beginning of
+a \u201CJordan-Holder\u201D sort of theory of lattice hierarchies in the ZD-Net? Tune in next
+monograph, same text archive, same font of speculation, for the next exciting episode . . .
+
+{3} Simulating \u201CCreation Pressure\u201D ( Cellular Automata Underneath Number?): In
+the early days of neural networks, random Booleans operator values were strewn across
+gate arrays, while researchers \u201Cwatched what happened.\u201D Differently weighting different
+levels of 2n -ions suggests itself, with further study of the harmonics and collapses, first in
+evidence with the Pathions as just discussed, calling for a more programmatic approach.
+The possibility of underwriting such a \u201CZD-net\u201D with cellular-automata-like rules \u2013 and
+hence, seeing Number itself as their side-effect in some deep senses \u2013 merits serious con-
+sideration as well. Steve Wolfram\u2019s \u201CRule 30,\u201D22 for instance \u2013 if a term and its right-
+hand neighbor share a property, they switch its value to that held by the neighbor on their
+left \u2013 might prove a good starting point in exploring \u201Ctriplet-switch effects\u201D: for any As-
+sessor, in any Sail, its lower-order (O, say) index will form a triplet with the other lower-
+order indices in the same Sail; but it will also form a triplet with its adjacent Assessors\u2019
+higher-order (S or P, say) indices.
+          Meanwhile, collapsing a Sky-High onto a Sedenion box-kite leaves all Assessors
+properly indexed, but since the strut-opposite cell contents from which they were engen-
+dered in the Pathions always have opposite edge-signs, their own edge-signs are left inde-
+finite, and hence any interrupted cyclings may perhaps be left hanging (and vulnerable,
+thereby, to \u201Cdigression pressure\u201D) . . . at least for the moment of symmetry-breaking when
+Pathions are \u201Cboiled off.\u201D
+          Then too, kite-chain midden harmonics allow for ever greater \u201Cswitching yard\u201D
+complexities as the n in 2n -ion gets bigger. What underlying restlessness of triplets, or
+overarching \u201Cgantry-work\u201D for growing n, might lead all these systems to \u201Ccross-pollin-
+ate\u201D? To what effect? By induction, and in conclusion, one can easily imagine things in
+the general case getting wacky with alacrity. Where, then, one must wonder, might we
+go with this?
+
+
+
+                                             Page 18
+\u000C1
+  R. Guillermo Moreno, \u201CThe zero divisors of the Cayley-Dickson algebras over the real numbers,\u201D Bol.
+Soc. Mat. Mexicana (3), 4 , 1 (1998), 13-28; preprint available as http://arXiv.org/abs/q-alg/9710013 .
+2
+  K. and Mari Imaeda, \u201CSedenions: Algebra and analysis,\u201D Appl. Math. Comput., 115, 2/3 (October 2000),
+77-88.
+3
+  Robert de Marrais, \u201CThe 42 Assessors and the Box-Kites they fly: Diagonal axis -pair systems of zero-
+divisors in the Sedenions\u2019 16 dimensions,\u201D preprint available as http://arXiv.org/abs/math.GM/0011260 .
+(November, 2000)
+4
+  Corrado Segr\u00E8, in Math. Ann., 40 (1892), 413-167, and in Segr\u00E8\u2019s Opere, I, Edizione cremonese, 1957.
+5
+  G. Baley Price,Introduction to Multicomplex Spaces and Functions, Marcel Dekker, New York, 1991.
+6
+  R. Penrose and W. Rindler, Spinors and Space-Time, Vol. 1: Two-Spinor Calculus and Relativistic
+Fields, Cambridge University Press, Cambridge \u2013 London \u2013 New York, 1984.
+7
+  Charles Mus\u00E8s, \u201CApplied Hypernumbers: Computational Concepts,\u201D Appl. Math. Comput., 3 (1976),
+211-226; \u201CHypernumbers \u2013 II. Further Concepts and Computational Applications,\u201D Appl. Math. Comput.,
+4 (1978), 45-66; \u201CHypernumbers and Quantum Field Theory with a Summary of Physically Applicable
+Hypernumber Arithmetics and their Geometries,\u201D Appl. Math. Comput., 6 (1980), 63-94.
+8
+  Pertti Lounesto, Clifford Algebras and Spinors, Cambridge University Press, Cambridge \u2013 New York \u2013
+Melbourne, 1997, 207-8.
+9
+  Andrei Sakharov, \u201CVacuum quantum fluctuations in curved space and the theory of gravitation,\u201D Dokl.
+Acad. Nauk. SSSR 177 (1967), 70-71; translated in Sov. Phys. Dokl. 12 (1968), 1040-1041.
+10
+   H. E. Putoff, Phys. Review A, 39 (1989), 2223; B. Haisch, A. Rueda, H. E. Putoff, Phys. Review A, 49
+(1994), 678; B. Haisch, A. Rueda, Phys. Review A, 268 (2000), 224; Y. Dobyns, A. Rueda, B. Haisch,
+xxx.lanl.gov/gr_qc/0002069 (February, 2000), to appear in Foundations of Physics.
+11
+    Jaak L\u00F5hmus, Eugene Paal, Leo Sorgsepp, Nonassociative Algebras in Physics, Hadronic Press, Palm
+Harbor FL, 1994. Geoffrey Dixon\u2019s extension of the Standard Model based on the tensor product of the
+Complex, Quaternion and Octonion algebras, where electric, weak, and strong forces naturally arise from
+these 3 factors respectively, suggests the next \u201Cbig break\u201D \u2013 allowing zero-divisors \u2013 would point toward
+including gravity (and that nothing less than this could hope to). See Dixon\u2019s Division Algebras: Octo-
+nions, Quaternions, Complex Numbers and the Algebraic Design of Physics, Kluwer, Dordrecht, 1994.
+12
+    John Milnor, Morse Theory, based on lecture notes by M. Spivak and R. Wells, Princeton University
+Press, Princeton NJ, 1969. Diagram and quote from p. 54, at the end of \u201C\u00A79. The Curvature Tensor.\u201D
+13
+   J. J. Sylvester, \u201COn quaternions, nonions, sedenions etc.\u201D, Johns Hopkins Univer. Circular, 3:7-9, 1889;
+this and earlier pieces on Nonions are in his Collected Works, III, 647-650; and IV, 122-132.
+14
+    D. Siersma, \u201CSingularities of C8 functions of right-codimension smaller or equal than eight,\u201D Indag.
+Math. 74 (1973), 31-37; simply explained and motivated in Tim Poston and Ian Stewart, Catastrophe
+Theory and its Applications, Pitman Publishing, Boston \u2013 London \u2013 Melbourne, 1978, pp. 162-170.
+15
+    A. R. Rajwade, Squares, Cambridge University Press, Cambridge \u2013 New York \u2013 Melbourne, 1993.
+16
+    T. Kirkman, \u201COn pluquaternions and homoid products of sums of n squares,\u201D Philos. Mag. (Ser. 3) 33
+(1848), 447-459; 494-509.
+17
+    I\u2019ve yet to find the actual paper, \u201CThe algebraic set of the zero divisors in the Cayley-Dickson algebras,\u201D
+but its results are cited at http://www.innerx.net/~tsmith/Ndalg.html -- Tony Smith\u2019s well-traveled math
+and physics website. A brief abstract of Moreno\u2019s talk, in which he presents the results cited above as \u201Cup-
+per bounds\u201D on the number of \u201Cirreducible components\u201D (a point of much interest to us) can be found at
+www.matmor.unam.mx/events/ams -smm/EN/SESIONES/sessionR1/sesionR1.pdf .
+18
+    Helena Albuquerque and Shahn Majid, \u201CQuasialgebra structure of the octonions,\u201D preprint available as
+http://arXiv.org/abs/math.QA/9802116 . (February, 1998)
+19
+    Moreno\u2019s formula is identical to that derived by Hurwitz in a superficially unrelated context: the
+classification of compact Riemann surfaces of genus g > 2 have automorphism groups of size 84(g-1).
+And, as the smallest order such group is a simple group, there is no Hurwitz group of order 84 \u2013 so the first
+instance is analogous to the Pathion harmonic just described, while higher instances are no longer general!
+(But indeed, even the Pathions\u2019 case isn\u2019t truly general either, as we\u2019ll see next section!) See Gareth A.
+Jones and David Singerman, Complex Functions: An Algebraic and Geometric Viewpoint, Cambridge
+University Press, Cambridge \u2013 New York \u2013 Melbourne, 1987, Chapters 5 and 6.
+20
+    M. Hazewinkel, W. Hesselink, D. Siersma, F. D. Veldkamp, \u201CThe ubiquity of Coxeter-Dynkin diagrams
+(an introduction to the A-D-E problem), Nieuw Arch. Wisk. 25 (1977), 255-307. The A-D-E problem
+arose in the work of V. I. Arnol\u2019d as a result of his sensing the connection between singularity theory and
+
+
+                                                  Page 19
+\u000Cthe classic \u201CA, D, E\u201D of Dynkin diagrams. See his Catastrophe Theory (3nd revised and expanded edi-
+tion),Springer-Verlag, Berlin Heidelberg New York Toronto, 1992, especially the concluding chapter. An
+updated roster of links on the subject is maintained by Tony Smith at the website cited earlier.
+21
+   James Callahan, \u201CA Geometric Model of Anorexia and Its Treatment,\u201D Behavioral Science, 27, 1982,
+140-154, is where the E6 dynamics of the \u201Ctrance tunnel\u201D were first reported; these were embedded in the
+full dimensionality of the Double Cusp in a pair of papers written with psychoanalyst Jerome I. Sashin,
+\u201CModels of Affect-Response and Anorexia Nervosa,\u201D in S. H. Koslow, A. J. Mandell, M. F. Shlesinger,
+eds., Conference on Perspectives in Biological Dynamics and Theoretical Medicine. Annals N. Y. Acad.
+Sci., 504, 1986, 241-259; \u201CPredictive Models in Psychoanalysis,\u201D Behavioral Science, 35, 1990, 60-76.
+22
+   Steve Wolfram, A New Kind of Science, Wolfram Media Inc., www.stevewolfram.com , 2002.
+
+
+
+
+                                                 Page 20
 \u000C
 ```
 

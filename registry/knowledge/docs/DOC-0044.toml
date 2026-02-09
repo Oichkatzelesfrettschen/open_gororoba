@@ -3,66 +3,84 @@
 
 [document]
 id = "DOC-0044"
-source_path = "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md"
-title = "Negative Dimension: What We Mean (and What We Do Not Mean)"
+source_path = "docs/MOTIF_CENSUS_SCHEMA.md"
+title = "Cayley-Dickson Motif Census: CSV Schemas"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "3b6e558e98fed4a5bcca6461cb27716fcb1bec45a93d8fc58c0e3ccf291ee20b"
-source_line_count = 47
-source_size_bytes = 2538
-content_sha256 = "3b6e558e98fed4a5bcca6461cb27716fcb1bec45a93d8fc58c0e3ccf291ee20b"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "4a867f82231b84cf3c6a27092d6938954c3b8576316e0841ab63c31bfec2b16f"
+source_line_count = 65
+source_size_bytes = 2138
+content_sha256 = "4a867f82231b84cf3c6a27092d6938954c3b8576316e0841ab63c31bfec2b16f"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Negative Dimension: What We Mean (and What We Do Not Mean)
+# Cayley-Dickson Motif Census: CSV Schemas
 
-This repo uses phrases like \"negative dimension\" in multiple places. This document makes the meaning explicit and separates (A) standard mathematics/physics usage from (B) speculative narrative.
+This repo treats \"motif census\" as a reproducible export of connected components of a
+diagonal-zero-product graph built from sparse 2-blades.
 
-## A) Standard meanings (\"negative dimension\" is shorthand)
+For a given dimension `dim = 2^n` we define the cross-assessor family:
+- nodes are pairs `(low, high)` with `low in [1, dim/2 - 1]` and `high in [dim/2, dim-1]`.
+- the two diagonals correspond to `(e_low +/- e_high)`.
+- an undirected edge exists between assessors `a` and `b` if **any** sign choice makes the product
+  exactly zero under the repo's CD multiplication convention.
 
-### A1) Dimensional regularization (analytic continuation in d)
+Export entrypoint:
+- `src/export_cd_motif_census.py`
 
-In dimensional regularization, one analytically continues integrals and differential operators from integer spatial dimension `d` to complex `d` as a *regulator parameter*.
+## `data/csv/cd_motif_components_{dim}d.csv`
 
-Key point: `d` here is not \"a physical count of coordinates\"; it is a parameter in an analytic continuation scheme used to define otherwise divergent expressions.
+One row per connected component.
 
-Primary sources:
-- 't Hooft and Veltman (1972)
-- Bollini and Giambiagi (1972)
+Columns:
+- `dim` (int)
+- `component_id` (int, 0-based within that `dim`)
+- `node_count` (int)
+- `edge_count` (int)
+- `degree_min` (int)
+- `degree_max` (int)
+- `degree_mean` (float)
+- `is_octahedron_k222` (bool) -- octahedron graph / K_{2,2,2}: 6 nodes, 12 edges, degree 4
+- `k2_multipartite_part_count` (int) -- if nonzero, the component is a complete multipartite graph
+  with all parts of size 2 (complement is a perfect matching); value is the number of 2-vertex parts
+- `is_cuboctahedron` (bool) -- 12 nodes, 24 edges, degree 4
+- `sampled` (bool) -- true if `--max-nodes` sampling was used
+- `sample_max_nodes` (int or empty)
+- `seed` (int)
 
-### A2) Parisi-Sourlas \"negative dimensions\"
+## `data/csv/cd_motif_nodes_{dim}d.csv`
 
-Parisi-Sourlas uses supersymmetry and dimensional reduction in disordered systems; the phrase \"negative dimensions\" appears in that literature as part of the analytic/supersymmetric framework, not as a literal geometric space with negative coordinate count.
+One row per node occurrence (nodes are unique per component).
 
-Primary source:
-- Parisi and Sourlas (1979)
+Columns:
+- `dim` (int)
+- `component_id` (int)
+- `low` (int)
+- `high` (int)
 
-## B) Non-standard / speculative meanings (must be labeled as such)
+This file is written only when `src/export_cd_motif_census.py` is run without `--summary-only`.
 
-Some `convos/` text assigns fractional/negative \"dimensions\" to number systems (dyadics, surreals, p-adics) or to Cayley-Dickson algebras. Those assignments are not standard and should not be presented as established mathematics unless tied to a published definition with citations.
+## `data/csv/cd_motif_edges_{dim}d.csv`
 
-Repo policy:
-- Keep these ideas in the \"speculative\" lane.
-- If we want them in the \"validated\" lane, we must (1) define them precisely, and (2) produce a reproducing computation (tests + artifacts) that implements that definition.
+One row per undirected edge.
 
-## C) What our current code actually implements
+Columns:
+- `dim` (int)
+- `component_id` (int)
+- `a_low` (int)
+- `a_high` (int)
+- `b_low` (int)
+- `b_high` (int)
 
-### C1) \"Negative diffusion\" plots
+This file is written only when `src/export_cd_motif_census.py` is run without `--summary-only`.
 
-Code like `src/neg_dim_pde.py` / `src/neg_dim_spectrum.py` should be interpreted as *toy PDE operators with a continuation parameter*, not as a demonstration of physical spacetime having negative dimension.
-
-### C2) Fractional powers (-Delta)^{alpha/2} and negative exponents
-
-Expressions like `(-Delta)^{-s}` correspond to fractional *integral* operators (Riesz potentials) on suitable domains; details depend on boundary conditions (periodic vs bounded domain).
-
-If a document claims a specific physical identification (e.g., \"D_eff = -1.5\"), it must be treated as a hypothesis and linked to:
-- a precise operator definition,
-- a domain/boundary specification,
-- and a validation experiment that is reproducible.
-
+Notes:
+- This export intentionally omits per-edge sign-solution lists for now (keeps schema stable and
+  small). If/when sign classes are needed (trefoil/zigzag generalizations), add a new column with a
+  clearly versioned encoding.
 
 """

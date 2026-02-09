@@ -3,52 +3,40 @@
 
 [document]
 id = "DOC-0047"
-source_path = "docs/PHASE_1_SUMMARY.md"
-title = "Phase 1 Summary: The Assessor Field Theory"
+source_path = "docs/NV_ODMR_BOM.md"
+title = "NV ODMR / OPU BOM (Jan 2026) -- Local Staging"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "b07ad255805d3d2610f53344e87bb8357863f09bd8f31709d65101e90c553592"
-source_line_count = 33
-source_size_bytes = 1949
-content_sha256 = "b07ad255805d3d2610f53344e87bb8357863f09bd8f31709d65101e90c553592"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "a4d98bb6b2db233887f1c186140738e2bd2ac1b35723928ab85bdb51b4929fe4"
+source_line_count = 21
+source_size_bytes = 817
+content_sha256 = "a4d98bb6b2db233887f1c186140738e2bd2ac1b35723928ab85bdb51b4929fe4"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Phase 1 Summary: The Assessor Field Theory
+# NV ODMR / OPU BOM (Jan 2026) -- Local Staging
 
-**Date:** January 26, 2026
-**Status:** Math replication (verified); physics narrative unverified
+This repo has a locally staged bill-of-materials spreadsheet:
 
-## 1. The Narrative Arc
-We began with broad hypotheses around \"sedenion physics\" and \"negative dimensionality.\" The most
-concrete result so far is a replicable, literature-linked discrete structure inside the sedenions:
-**the 42 primitive assessors** (de Marrais).
+- Source (outside repo): `~/Playground/HeadOfPreparedness/NV_ODMR_OPU_BOM_Jan2026.xlsx`
+- Local copy (gitignored): `data/external/nv_odmr/NV_ODMR_OPU_BOM_Jan2026.xlsx`
 
-### Key Milestones
-1.  **Deterministic replication:** `tests/test_de_marrais_boxkites.py` reproduces exactly **42 primitive assessors** and **7 box-kites** under the repo's conventions.
-2.  **Geometric identification:** These correspond to 7 octahedral \"box-kite\" components (6 vertices each).
-3.  **Quantum validation:** Pending; any Qiskit encoding or symmetry verification should be marked as future work until it is reproducible and tested here.
+The local copy is **not committed** (it may be personal/private). The filename + hash are recorded in:
 
-## 2. Rescoping the Project
-The vague goal of \"Sedenion QFT\" is now refined to **\"Assessor Field Theory\" (AFT)**.
+- `data/external/PROVENANCE.local.json`
 
-*   **Old Goal:** Find $E_6$ (72 roots).
-*   **New Reality:** The geometry naturally stabilizes at 42.
-*   **Implication (hypothesis):** links to $E_6$, $F_4$, or $G_2$ structure are speculative until a precise mapping is defined and validated.
+To refresh hashes after updating local spreadsheets, run:
 
-## 3. The Path Forward (Phase 2)
-We must now prove the *structure* of these 42 elements.
-1.  **Cluster Analysis:** Verify they form 7 distinct groups of 6 (The Box-Kites).
-2.  **Quantum Permutation:** Implement a circuit that permutes elements *within* a Box-Kite and test for invariant subspaces.
-3.  **Physical Mapping:** Map the 42 Assessors to the 42 DoF of a potential pre-Standard Model lagrangian (e.g., 3 generations of 14 DoF?).
+- `python3 bin/record_external_hashes.py`
 
-## 4. Gap Analysis
-*   **Missing:** Explicit adjacency list of the 7 clusters.
-*   **Missing:** A quantum operator that respects the Box-Kite symmetry (Swap within cluster).
-*   **Action:** We need to cluster the `sedenion_nilpotent_candidates.csv` data before running more quantum sims.
+## Contents (sheet summary)
+
+- `BOM` (24x14): line items, vendors, URLs, notes, and estimated totals.
+- `Known_Gaps` (9x7): explicit gaps and proposed actions (prioritized).
+- `PeerReviewed_Sources` (19x9): citations supporting design decisions (OPU optics, ODMR builds, detectors, etc.).
 
 """

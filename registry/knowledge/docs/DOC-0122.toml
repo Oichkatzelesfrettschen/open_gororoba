@@ -3,112 +3,226 @@
 
 [document]
 id = "DOC-0122"
-source_path = "docs/engineering/PADIC_SIGNAL_THEORY.md"
-title = "P-adic Signal Theory & Kozyrev-Sedenion Synthesis"
+source_path = "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md"
+title = "MCP and Skill Audit (2026-02-09)"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "6df1c680590e19bddef9a257144f4220e800c3e1634d0d2c3d771751982392bd"
-source_line_count = 93
-source_size_bytes = 5597
-content_sha256 = "6df1c680590e19bddef9a257144f4220e800c3e1634d0d2c3d771751982392bd"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "5e2b0c18589a3031a0c4115fb319ff5bc2e2dbeaf273dfc2bbb32b2ef36c4ca8"
+source_line_count = 207
+source_size_bytes = 5810
+content_sha256 = "5e2b0c18589a3031a0c4115fb319ff5bc2e2dbeaf273dfc2bbb32b2ef36c4ca8"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# P-adic Signal Theory & Kozyrev-Sedenion Synthesis
+# MCP and Skill Audit (2026-02-09)
 
-**Date:** 2026-02-01
-**Source:** Feedback on `padic_synthesis.py`
-**Status:** Theoretical Framework for Simulation Kernels
+## Scope
 
-This document interprets and formalizes the \"Kozyrev-Sedenion\" signal generation framework used in the Warp Drive simulations, based on rigorous mathematical reverse-engineering.
+Audit and reconcile:
 
-## 1. The Core Synthesis Model
+- MCP server configurations across Codex, Gemini, Copilot, and Claude CLI/Desktop.
+- Existing skill coverage vs. `open_gororoba` repo needs.
+- Additional useful MCP servers from primary sources.
+- New granular skill pack for MCP operations and repo-specific workflows.
 
-The framework constructs a signal $x[n]$ by combining a **Lacunary Spectral Backbone** (Fractal/Weierstrass) with **Ultrametric Modulation** (p-adic Number Theory).
+## Key Findings
 
-$$ x[n] = \\sum_{k=0}^{K-1} \\underbrace{A_k \\cdot M[n]}_{\\text{Intermittency}} \\cdot \\cos\\left(2\\pi f_k t_n + \\underbrace{\\Phi[n]}_{\\text{Entropy}} + \\phi_k\\right) $$ 
+### 1. Cross-client MCP topology was partially fragmented
 
-### A. The Backbone (Real Topology)
-This provides the continuous, scale-invariant structure (the \"landscape\").
-*   **Frequencies:** Geometric progression $f_k = f_0 \\cdot p^k$. This creates a \"Weierstrass spectrum\" with no characteristic scale.
-*   **Amplitudes:** Power law decay parameterized by the **Hurst Exponent ($H$)**:
-    $$ A_k = p^{-kH} $$ 
-    *   $H$ controls roughness. $H \\approx 0.5$ is Brownian-like; $H < 0.5$ is anti-persistent (rough).
+- Rich config existed in `~/.claude/.mcp.json` and `~/.config/github-copilot/mcp-servers.json`.
+- Leaner configs existed in:
+  - `~/.gemini/settings.json`
+  - `~/.copilot/mcp-config.json`
+  - `~/.config/Claude/claude_desktop_config.json`
+  - `~/.codex/mcp-config.json`
 
-### B. Amplitude Mode: Event Hierarchy (p-adic Valuation)
-This imposes an ultrametric \"clock\" on the system, creating hierarchical bursting (Intermittency).
-*   **Valuation $v_p(n)$:** The exponent of the highest power of $p$ dividing $n$.
-*   **Modulation $M[n]$:**
-    $$ M[n] = 1 + \\alpha_M (p^{v_p(n)} - 1) $$ 
-*   **Physics Interpretation:** High-valuation indices (multiples of $p, p^2, \\dots$) represent \"Resonance Times\" in the Sedenion algebra where Zero Divisors align, allowing energy release.
-*   **Constraint:** For large primes (e.g., $p=137$), the hierarchy collapses for finite $N$ because $p^2 > N$ often. This creates sparse, periodic spikes rather than a fractal cascade.
+### 2. Unique server inventory (all configs combined)
 
-### C. Phase Mode: Deterministic Entropy (Monna Map)
-This injects deterministic but information-dense \"noise\" (Kozyrev Time Density).
-*   **Monna Map $\\phi_p(n)$:** The radical inverse function mapping integer $n$ (p-adic topology) to real interval $[0,1]$ (Euclidean topology).
-    $$ n = \\sum a_i p^i \\implies \\phi_p(n) = \\sum a_i p^{-i-1} $$ 
-*   **Modulation $\\Phi[n]$:**
-    $$ \\Phi[n] = 2\\pi \\cdot \\alpha_\\phi \\cdot \\phi_p(n) $$ 
-*   **Physics Interpretation:** This \"pulls back\" p-adic ultrametric structure into the real-domain phase. It broadens the spectrum (increasing spectral entropy) without using random number generators, consistent with Kozyrev's causal mechanics.
+31 unique server names were detected:
 
-## 2. Experimental Controls (Failure Modes)
+- `arxiv`
+- `bash`
+- `blackarch-audit`
+- `calculator`
+- `chrome-devtools`
+- `containers`
+- `context7`
+- `desktop-commander`
+- `dotfiles-orchestrator`
+- `fetch`
+- `file-finder`
+- `filesystem`
+- `git`
+- `github`
+- `markitdown`
+- `math`
+- `memory`
+- `ollama`
+- `playwright`
+- `postgres`
+- `puppeteer`
+- `python`
+- `ripgrep`
+- `rust`
+- `rust-docs`
+- `semgrep`
+- `sequential-thinking`
+- `shell`
+- `sqlite`
+- `time`
+- `youtube-transcript`
 
-To ensure the simulation simulates *physics* and not *digital artifacts*, the following controls are mandatory:
+### 3. Server import completed (safe subset)
 
-1.  **Aliasing Control (Nyquist Limit):**
-The highest frequency component must not exceed the Nyquist frequency.
-    $$ p^{K-1} \\le \\frac{N}{2} $$ 
-    *   *Correction:* For $p=137$, $K$ must be very small (1 or 2) to avoid aliasing. For $p=2$, $K$ can be large.
+Imported additional servers into the leaner configs:
 
-2.  **Roughness Normalization:**
-When comparing different primes $p$, we must fix $H$, not the raw decay factor.
-    $$ \\text{decay} = p^{-H} $$ 
+- `desktop-commander`
+- `dotfiles-orchestrator`
+- `calculator`
+- `file-finder`
+- `markitdown`
+- `math`
+- `puppeteer`
+- `sequential-thinking`
+- `semgrep`
 
-3.  **Finite-Depth Reality:**
-For large $p$, the \"fractal\" depth is minimal. The \"Sedenion\" behavior ($p=137$) is characterized by **sparse, high-contrast pulses**, whereas \"Kozyrev\" behavior ($p=2,3$) is characterized by **dense, multifractal noise**.
+Updated files:
 
-## 3. Integration into Warp Physics
+- `~/.gemini/settings.json`
+- `~/.copilot/mcp-config.json`
+- `~/.config/Claude/claude_desktop_config.json`
+- `~/.codex/mcp-config.json`
 
-We apply this theory to the **Refractive Index Kernel** $n(x,y)$ in the FDTD/Raytracing engine:
+Backups created automatically:
 
-$$ n_{\\text{total}}(x,y) = n_{\\text{bubble}}(x,y) + \\epsilon \\cdot K_{\\text{padic}}(x,y) $$ 
+- `~/.gemini/settings.json.bak-20260208_221739`
+- `~/.copilot/mcp-config.json.bak-20260208_221739`
+- `~/.config/Claude/claude_desktop_config.json.bak-20260208_221739`
+- `~/.codex/mcp-config.json.bak-20260208_221739`
 
-*   **$K_{\\text{padic}}$** is generated using a 2D extension of the Monna map (e.g., Halton sequence).
-*   This replaces the ad-hoc sinusoidal noise with a rigorous **Deterministic Ultrametric Field**, creating \"micro-caustics\" that reflect the underlying non-Archimedean geometry of the vacuum.
+Post-import result:
 
-## 4. Exact Implementation Specifications
+- Each of the four target files now has 27 configured MCP servers.
 
-This section documents the specific mathematical formulas implemented in `src/gemini_physics/signal_processing/padic_synthesis.py` to serve as the rigorous experimental record.
+## Skills Audit
 
-### Phase Modulation ($\\Phi$)
-The phase perturbation is confirmed to be **time-varying** and scale-dependent:
-$$ \\Phi[n, k] = 2\\pi \\cdot (k+1) \\cdot \\phi_p(n) $$
-*   $\\phi_p(n)$: Monna map of time index $n$.
-*   Dependence on $n$ ensures spectral broadening (sideband generation).
-*   Dependence on $k$ ensures scale-distinct scrambling.
+### Existing skill baseline before this pass
 
-### Amplitude Modulation ($M$)
-*   **Phase Mode:** $M[n] = 1.0$ (Constant).
-*   **Amp Mode:** Soft modulation based on p-adic norm:
-    $$ M[n] = 1.0 + 2.0 \\cdot \\mathbb{I}(|n|_p \\le p^{-k}) $$
-*   **Hybrid Mode:** Coupled to valuation norm:
-    $$ M[n] = \\sqrt{|n|_p + 0.1} $$
+- Existing Codex skills: 37
+- MCP-focused naming coverage: limited and mostly indirect
 
-### Singularity Handling ($n=0$)
-To prevent infinite valuation artifacts at the origin:
-*   **Code Implementation:** `if n == 0: return 0` (for valuation).
-*   **Result:** $|0|_p \\to 0.0$, $\\phi_p(0) \\to 0.0$.
-*   **Effect:** This effectively treats $t=0$ as a standard point rather than a singularity in the ultrametric topology.
+### New skill pack created in this pass
 
-### Aliasing & Scaling
-*   **Aliasing:** The code **does not** explicitly clamp $f_k < f_s/2$.
-    *   *Constraint:* For $p=137$, user must strictly limit `depth` ($K \\le 2$) to avoid massive aliasing folding.
-*   **Scaling (H vs decay):** The code accepts `decay` as a raw parameter.
-    *   *Relation:* $\\text{decay} = p^{-H}$.
-    *   *Implication:* Varying $p$ while holding `decay` constant **changes the Hurst exponent $H$**. To perform a rigorous \"p-comparison,\" the user must manually adjust `decay` for each $p$.
+30 new standardized skills were created under `~/.codex/skills` and validated:
+
+MCP granular skills (22):
+
+1. `mcp-filesystem-workflow`
+2. `mcp-bash-workflow`
+3. `mcp-git-workflow`
+4. `mcp-github-workflow`
+5. `mcp-fetch-workflow`
+6. `mcp-context7-workflow`
+7. `mcp-arxiv-workflow`
+8. `mcp-youtube-transcript-workflow`
+9. `mcp-ripgrep-workflow`
+10. `mcp-playwright-workflow`
+11. `mcp-puppeteer-workflow`
+12. `mcp-sqlite-workflow`
+13. `mcp-time-workflow`
+14. `mcp-calculator-math-workflow`
+15. `mcp-file-finder-workflow`
+16. `mcp-markitdown-workflow`
+17. `mcp-ollama-workflow`
+18. `mcp-containers-workflow`
+19. `mcp-dotfiles-workflow`
+20. `mcp-sequential-thinking-workflow`
+21. `mcp-semgrep-workflow`
+22. `mcp-shell-workflow`
+
+`open_gororoba` repo-specialized skills (8):
+
+1. `gororoba-rust-workflow`
+2. `gororoba-claims-evidence-workflow`
+3. `gororoba-registry-workflow`
+4. `gororoba-artifacts-workflow`
+5. `gororoba-provenance-workflow`
+6. `gororoba-publication-workflow`
+7. `gororoba-visualization-workflow`
+8. `gororoba-mcp-orchestrator`
+
+Validation:
+
+- All 30 pass `quick_validate.py` from the system `skill-creator` tooling.
+
+Cross-client skill sync:
+
+- The same 30 skills were mirrored to:
+  - `~/.gemini/skills/`
+  - `~/.copilot/skills/`
+
+This keeps skill semantics aligned across Codex, Gemini, and Copilot environments.
+
+### Claude agent pack for MCP workflows
+
+12 Claude agent profiles were added under `~/.claude/agents/general-purpose/`:
+
+1. `mcp-filesystem-agent.md`
+2. `mcp-bash-agent.md`
+3. `mcp-ripgrep-agent.md`
+4. `mcp-fetch-research-agent.md`
+5. `mcp-context7-agent.md`
+6. `mcp-arxiv-agent.md`
+7. `mcp-playwright-agent.md`
+8. `mcp-sqlite-agent.md`
+9. `mcp-semgrep-agent.md`
+10. `gororoba-rust-agent.md`
+11. `gororoba-claims-agent.md`
+12. `gororoba-mcp-orchestrator-agent.md`
+
+## Primary-Source MCP References Used
+
+Core MCP and server baseline:
+
+- https://github.com/modelcontextprotocol/servers
+- https://github.com/modelcontextprotocol/servers/tree/main/src/postgres
+- https://modelcontextprotocol.io/integrations
+
+Additional high-value servers and managed integrations:
+
+- https://github.com/semgrep/semgrep-mcp
+- https://docs.docker.com/manuals/mcp/
+- https://developers.notion.com/docs/mcp
+- https://linear.app/docs/mcp
+- https://docs.gitlab.com/user/gitlab_duo/mcp_server/
+- https://github.com/getsentry/sentry-mcp
+
+## Recommended Additional MCP Servers (next wave)
+
+For this repo and similar research-engineering repos, the next high-value additions are:
+
+- `postgres` (for structured evidence and experiment metadata, if `DATABASE_URL` is set)
+- `github` (when token policy is standardized across all clients)
+- managed integration servers as needed by workflow:
+  - Notion (spec and planning sync)
+  - Linear (issue and roadmap sync)
+  - GitLab MCP server (if mirrored repos or CI traces are there)
+  - Sentry MCP (if runtime observability is introduced)
+
+## Operational Notes
+
+- This pass intentionally excluded automatic import of `postgres` to the lean configs because it is env-sensitive (`DATABASE_URL`) and can fail startup if unset.
+- `shell` was also left out of the auto-import set to avoid introducing a lower-safety fallback where higher-level MCP tools already exist.
+- Codex runtime currently loads MCP from `~/.codex/config.toml`; `~/.codex/mcp-config.json` was still aligned for cross-tool parity and easier future migration.
+
+## Summary
+
+- MCP config parity significantly improved across clients.
+- 30 new skills were created and validated, including 22 granular MCP operation skills and 8 repo-specific orchestration skills.
+- Primary-source references were collected for both current and next-wave MCP integrations.
 
 """

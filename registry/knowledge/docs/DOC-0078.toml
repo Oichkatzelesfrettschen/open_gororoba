@@ -3,60 +3,60 @@
 
 [document]
 id = "DOC-0078"
-source_path = "docs/book/src/algebra/box-kites.md"
-title = "Box-Kite Structure"
+source_path = "docs/book/src/SUMMARY.md"
+title = "Summary"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "437df7f93f698411ea1b7ade7940d2c20f449b86fd2fc1f7339192431c2a8cc9"
+source_sha256 = "d463697e47cd0feb7b79c891921d2b4dfa55d6b1dc1d802482dcfa6dbbcb214a"
 source_line_count = 41
-source_size_bytes = 1422
-content_sha256 = "437df7f93f698411ea1b7ade7940d2c20f449b86fd2fc1f7339192431c2a8cc9"
-migrated_at = "2026-02-09T08:38:01Z"
+source_size_bytes = 916
+content_sha256 = "d463697e47cd0feb7b79c891921d2b4dfa55d6b1dc1d802482dcfa6dbbcb214a"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Box-Kite Structure
+# Summary
 
-The 42 zero-divisor cross-assessors of the sedenion algebra organize into
-7 **box-kites**, a combinatorial structure first described by Robert de Marrais
-(arXiv: math/0011260, 2000).
+[Introduction](./introduction.md)
 
-## Structure
+# Architecture
 
-Each box-kite contains 6 assessors arranged as 3 \"strut\" pairs.  The assessor
-interaction graph within each box-kite is the complete tripartite graph
-K(2,2,2) -- an octahedron.
+- [Project Layout](./architecture/layout.md)
+- [Crate Ecosystem](./architecture/crates.md)
+- [Verification Ladder](./architecture/verification.md)
 
-De Marrais published an explicit strut table in his 2000 paper.  Our
-computational census matches this table exactly (C-454, verified against
-the original via `test_strut_table_matches_de_marrais_flying_higher`).
+# Cayley-Dickson Algebra
 
-## Emanation architecture
+- [Zero-Divisor Census](./algebra/zero-divisors.md)
+- [Box-Kite Structure](./algebra/box-kites.md)
+- [Motif Scaling Laws](./algebra/motif-scaling.md)
+- [Emanation Architecture](./algebra/emanation.md)
 
-The box-kite structure extends to an 18-layer \"emanation\" construction
-(L1-L18) also due to de Marrais.  Key properties verified:
+# Experiments
 
-- **DMZ** = sign-concordance (12 edges per box-kite)
-- **Sail-loop** = Fano incidence pattern
-- **Oriented Trip Sync** is universal across all 7 box-kites
+- [E-001: Motif Census](./experiments/e001.md)
+- [E-002: GPU Ultrametric Sweep](./experiments/e002.md)
+- [E-003: Real Cosmological Fit](./experiments/e003.md)
 
-Implementation: `crates/algebra_core/src/experimental/emanation.rs` (4400 lines, 113 tests).
+# CLI Reference
 
-See [Emanation Architecture](./emanation.md) for details.
+- [Binary Catalog](./cli/catalog.md)
 
-## Beyond sedenions
+# Registry
 
-At dimension 32 (pathions) and beyond, octahedra disappear entirely.  The
-structure completely reorganizes into different component types.  See
-[Motif Scaling Laws](./motif-scaling.md).
+- [Claims Evidence Matrix](./registry/claims.md)
+- [Insights](./registry/insights.md)
+- [Experiments Portfolio](./registry/experiments.md)
 
-## Claims
+# Papers
 
-C-050 through C-060: Box-kite invariants.
-C-454: Strut table cross-validation.
-C-468 through C-475: Emanation architecture.
+- [Paper Collection](./papers/collection.md)
+
+# Appendix
+
+- [Glossary](./glossary.md)
 
 """

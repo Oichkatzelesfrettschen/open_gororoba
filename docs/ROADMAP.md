@@ -126,6 +126,17 @@ The repository now maintains a central markdown knowledge index:
   `registry/knowledge/documents.toml`
 - Build hook: `make registry` now runs both markdown indexing and corpus
   migration before `registry-check`
+- Claims support normalization is now TOML-first:
+  - `registry/claims_tasks.toml` from `docs/CLAIMS_TASKS.md`
+  - `registry/claims_domains.toml` from `docs/claims/CLAIMS_DOMAIN_MAP.csv` and
+    `docs/claims/by_domain/*.md`
+  - `registry/claim_tickets.toml` from `docs/tickets/*.md`
+- Generated mirrors now include:
+  - `docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md`
+  - `docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md`
+  - `docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md`
+- Registry generators now emit deterministic stamps to avoid one-time event churn
+  across repeated `make registry` runs.
 
 Current policy:
 
@@ -136,7 +147,8 @@ Current policy:
 Immediate next steps:
 
 1. TOML -> markdown exporters are now in place under `docs/generated/`.
-2. TOML registries for roadmap/todo/next-actions/requirements are now in place.
+2. TOML registries for roadmap/todo/next-actions/requirements and claims-support
+   normalization are now in place.
 3. Finalize governance decision for legacy narrative docs:
    full replacement vs non-authoritative overlay.
 4. Keep generated markdown explicitly marked with regeneration commands.

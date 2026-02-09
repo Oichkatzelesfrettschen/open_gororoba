@@ -3,67 +3,59 @@
 
 [document]
 id = "DOC-0080"
-source_path = "docs/book/src/algebra/motif-scaling.md"
-title = "Motif Scaling Laws"
+source_path = "docs/book/src/algebra/emanation.md"
+title = "Emanation Architecture"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "56a8130a9a0fa4ae3bed645f712be987e085d6c7a99d87aff539bf5f4331b974"
-source_line_count = 48
-source_size_bytes = 1437
-content_sha256 = "56a8130a9a0fa4ae3bed645f712be987e085d6c7a99d87aff539bf5f4331b974"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "034d99d244e14766175bf798ee3bb2eb89244f4397d3dd0a72d6e1976420d8f1"
+source_line_count = 40
+source_size_bytes = 1222
+content_sha256 = "034d99d244e14766175bf798ee3bb2eb89244f4397d3dd0a72d6e1976420d8f1"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Motif Scaling Laws
+# Emanation Architecture
 
-Exact enumeration of the zero-product graph's connected components across
-5 Cayley-Dickson doublings reveals strict scaling laws (I-006).
+The de Marrais emanation construction builds 18 layers (L1-L18) from the
+sedenion box-kite structure.  This was implemented and verified in Sprint 10
+(I-016).
 
-## Scaling formulas
+## Layers
 
-| Invariant | Formula | Verified dims |
-|-----------|---------|---------------|
-| Components | dim/2 - 1 | 16--256 |
-| Nodes per component | dim/2 - 2 | 16--256 |
-| Motif classes | dim/16 | 16--256 |
-| K2 components | 3 + log2(dim) | 16--256 |
-| K2 part count | dim/4 - 1 | 16--256 |
+The 18 layers encode progressively deeper structural relationships between
+box-kite elements:
 
-## Key observations
+- **DMZ** (L1): Sign-concordance graph.  12 edges per box-kite, encoding
+  which assessor pairs share sign patterns.
 
-- **No octahedra beyond dim=16.**  The K(2,2,2) structure that characterizes
-  sedenion box-kites vanishes at the first doubling.
+- **Sail-loops** (L2-L7): Fano-plane incidence patterns within each box-kite.
+  The sail structure relates to the 7-point projective plane PG(2,2).
 
-- **Complete restructuring at each doubling.**  At dim=32, the structure
-  reorganizes into 8 heptacross K(2,2,2,2,2,2,2) and 7 mixed-degree
-  components.
+- **Oriented Trip Sync** (L8+): Universal across all 7 box-kites.  Every
+  box-kite exhibits the same trip synchronization pattern, suggesting a
+  deep structural invariant.
 
-- **The pathion cubic anomaly** (I-012): The dim=32 8/7 motif split requires
-  a degree-3 GF(2) polynomial, NOT degree 4.  Degrees 1 and 2 fail.
+## Implementation
 
-## Computation
-
-All motif census computations are exact (not sampled) and complete in under
-2 seconds for dim=256 in release mode.  The census binary:
-
-```sh
-cargo run --release --bin motif-census -- --dims 16,32,64,128,256 --details
-```
-
-Implementation: `crates/algebra_core/src/boxkites.rs` (16 regression tests
-covering dim=64,128,256).
+- Source: `crates/algebra_core/src/experimental/emanation.rs`
+- Size: 4400 lines
+- Tests: 113 dedicated tests
+- Sprint: S10
 
 ## Claims
 
-C-126 through C-130: Scaling law formulas.
-C-445 through C-448: XOR filter properties.
+C-468: DMZ sign-concordance structure.
+C-469: Sail-loop Fano incidence.
+C-470: Oriented Trip Sync universality.
+C-471 through C-475: Additional emanation layer properties.
 
-## Experiment
+## References
 
-[E-001: Cayley-Dickson Motif Census](../experiments/e001.md)
+- de Marrais (2006), \"Presto! Digitization: Part I\" (arXiv: math/0603281)
+- de Marrais (2007), \"Catamaran Sails and Spindles\" (arXiv: 0704.0026)
 
 """

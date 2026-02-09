@@ -3,101 +3,104 @@
 
 [document]
 id = "DOC-0073"
-source_path = "docs/VERIFIED_CLAIMS_INDEX.md"
-title = "Verified Claims Index (Test-Backed)"
+source_path = "docs/UNIFIED_WHITEPAPER.md"
+title = "Unified Mathematical Framework for Surreal-Noncommutative Algebras, Inverse Cayley-Dickson Processes, and Spectral Geometry"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "219587ae57c4f514938c3269b591a59b4eae6081346e2b4501c636f4481278e8"
-source_line_count = 82
-source_size_bytes = 3785
-content_sha256 = "219587ae57c4f514938c3269b591a59b4eae6081346e2b4501c636f4481278e8"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "2d67dc1c304c10e8f2845799b65701acce420db409435c770b23d8cddfdbfd38"
+source_line_count = 85
+source_size_bytes = 5169
+content_sha256 = "2d67dc1c304c10e8f2845799b65701acce420db409435c770b23d8cddfdbfd38"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Verified Claims Index (Test-Backed)
+# Unified Mathematical Framework for Surreal-Noncommutative Algebras, Inverse Cayley-Dickson Processes, and Spectral Geometry
 
-Cross-references: [CLAIMS_EVIDENCE_MATRIX](CLAIMS_EVIDENCE_MATRIX.md) |
-[TERMINOLOGY_GLOSSARY](TERMINOLOGY_GLOSSARY.md) |
-[BIBLIOGRAPHY](BIBLIOGRAPHY.md)
+**Date:** January 26, 2026
+**Status:** Draft synthesis (mixed; not fully validated)
 
-This file is a quick index from high-value, test-backed claims to the exact in-repo
-validation locations (unit tests and/or verifiers).
+This whitepaper is a narrative synthesis that mixes:
+- standard mathematical facts (e.g., Cayley-Dickson property loss),
+- in-repo validated computations (tracked in `docs/MATH_VALIDATION_REPORT.md`),
+- and speculative physical interpretations (tracked in `docs/CLAIMS_EVIDENCE_MATRIX.md`).
 
-Policy reminder: text in `convos/` is not treated as authoritative. Claims are only
-\"verified\" here when there is a reproducible check in-repo.
+Treat any \"validation\" language below as provisional unless it is backed by a first-party citation and a
+reproducible test or verifier under `tests/` or `src/verification/`.
 
-Date: 2026-01-28 (Phase 6 harmonization)
+## 1. Introduction
+This whitepaper is a draft synthesis. It includes ideas that range from standard mathematics to
+speculative narrative proposals. Treat it as non-authoritative unless a statement is backed by a
+first-party citation and a reproducible test/verifier.
+*   **Cayley-Dickson Algebras ($A_n$):** Standard doubling ($\\mathbb{R} \\to \\mathbb{C} \\to \\mathbb{H} \\to \\mathbb{O} \\to \\mathbb{S}$), parallel variants (split/bi), and property degradation.
+*   **\"Inverse Cayley-Dickson\" (speculative):** a narrative \"halving\" idea used as an intuition aid.
+    It is NOT a standard, established construction. Any talk of \"fractional/negative dimension\" in
+    this repo should be interpreted as analytic continuation / dimensional-regularization style
+    parameterization (see `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`), unless and until a rigorous
+    definition and proofs are provided.
+*   **Zero-Divisor Geometry:** The emergence of \"Box-Kite\" structures at 16D ($\\mathbb{S}$) and their fractal expansion in higher dimensions.
+*   **Exceptional Structures:** The stability of $E_8$ (8D) and the Albert Algebra ($J_3(\\mathbb{O})$, 27D) as \"islands of structure\" amidst the meltdown.
+*   **Holography:** The correspondence between the recursive algebraic breakdown and modular entropy scaling in AdS/CFT.
 
-## Mathematics (core)
+## 2. Axioms & Definitions
 
-- C-001: Cayley-Dickson becomes non-associative at 8D and beyond.
-  - Tests: `tests/test_cayley_dickson_properties.py`
-- C-002: 16D sedenions have zero divisors and lose norm composition.
-  - Tests: `tests/test_cayley_dickson_properties.py`
-- C-003: \"42 assessors\" / \"7 box-kites\" organize primitive sedenion zero divisors.
-  - Tests: `tests/test_de_marrais_boxkites.py`
-- C-013: de Marrais GoTo \"automorphemes\" cover primitive assessors twice.
-  - Tests: `tests/test_de_marrais_automorphemes.py`
-- C-014: 84 diagonal-form zero divisors have annihilator nullity (4,4).
-  - Tests: `tests/test_reggiani_standard_zero_divisors.py`
-- C-015: Each diagonal-form zero divisor has 4 diagonal partners spanning Ann_L(u).
-  - Tests: `tests/test_reggiani_standard_zero_divisors.py`
-- C-016: m3 trilinear operation has a 42/168 split aligned with Fano lines.
-  - Tests: `tests/test_m3_cd_transfer.py`
-- C-017: XOR-bucket match is a necessary condition for observed 2-blade ZD edges.
-  - Tests: `tests/test_cd_xor_heuristics.py`
-- Dimensional continuation formulas (Gamma-function based) are consistent with
-  integer-dimension identities.
-  - Tests: `tests/test_dimensional_geometry.py`
+### 2.1 The Generalized Dimension Parameter (speculative)
+In narrative sections, we sometimes use a \"dimension-like\" parameter $D$ as a knob in toy models.
+This is not claiming the existence of physical spaces with negative coordinate count.
+*   **Classical:** $D_{n+1} = 2 D_n$ (Doubling).
+*   **Inverse:** $D_{n+1} = \\frac{1}{2} D_n$ (Halving).
+*   **Surreal (optional, speculative):** one can parameterize $D$ using non-Archimedean number
+    systems (e.g., Conway's surreals), but this repo does not currently provide a rigorous bridge
+    from such parameterizations to the Cayley-Dickson algebra tower.
 
-## Data + artifact integrity (local)
+### 2.2 The Meltdown Measure ($\\mu$) (speculative)
+This is a narrative proposal for a \"coherence loss\" metric. It is not a standard invariant and is
+not validated by this repo unless explicitly tied to a computation and test.
+$$ \\mu(A) = \\frac{\\#\\{\\text{non-commuting diagrams}\\}}{\\#\\{\\text{total diagrams}\\}} $$
+*   For $\\mathbb{O}$ (8D), $\\mu = 0$ (Alternative).
+*   For $\\mathbb{S}$ (16D), $\\mu > 0$ (Associator Anomaly).
+*   As $D \\to \\infty$, $\\mu \\to 1$ (Total Chaos/Meltdown).
 
-- C-006: GWTC-3 \"confident events\" CSV matches the GWOSC EventAPI jsonfull snapshot.
-  - Fetcher: `src/scripts/data/fetch_gwtc3_confident.py`
-  - Tests: `tests/test_gwosc_eventapi_snapshot.py`
-- Artifact schemas and required CSV outputs are checked for consistency.
-  - Verifier: `src/verification/verify_generated_artifacts.py`
-- \"Grand\" image resolution compliance is reported (and optionally enforceable).
-  - Verifier: `src/verification/verify_grand_images.py`
+## 3. Core claims (unverified unless tested)
 
-## Algebraic structures (non-CD)
+### 3.1 Hurwitz / normed-division fact (standard)
+No finite-dimensional real algebra beyond 8D ($\\mathbb{O}$) can be a normed division algebra. Explicitly, zero divisors appear at 16D ($\\mathbb{S}$). 
 
-- C-018: Carlstrom \"wheels\" axioms (1)-(8) hold for a concrete finite wheel model used here.
-  - Tests: `tests/test_wheels.py`
+### 3.2 \"Zero-divisor fractal law\" (speculative)
+Treat any claim that $Z(A_n)$ \"forms a fractal law\" as a hypothesis until we implement a motif census
+pipeline with deterministic sampling, exported artifacts, and tests.
 
-## C++ acceleration kernels
+### 3.3 \"Holographic entropy recursion\" (speculative)
+This is a hypothesis about toy-model scaling, not an established result. The entropy $S$ is claimed
+to satisfy:
+$$ \\lambda \\frac{dS}{d\\lambda} = -\\beta S + f(D) $$
+where $\\beta$ is the fractal dimension decay rate and $f(D)$ encodes the \"associator anomaly\" contribution (information loss due to non-associativity).
 
-- C-024: C++ CD multiplication reproduces Python results within float64 tolerance.
-  - Tests: `cpp/tests/test_cd_algebra.cpp` (Catch2)
-  - Benchmarks: `cpp/benchmarks/bench_cd_multiply.cpp` (Google Benchmark)
-  - Build: `make cpp-test`
+## 4. Experimental Validation
 
-## Sedenion field theory and exceptional cosmology (from PDF import, 2026-01-30)
+### 4.1 Algebraic
+*   **m3 operator (validated):** computed a specific trilinear operator `m3` and validated its 42/168
+    split on octonion basis triples (`tests/test_m3_cd_transfer.py`). This is not, by itself, a proof
+    of an $A_\\infty$ structure.
+*   **Zero-Divisors:** Explicitly constructed pairs $(e_1+e_{10})(e_5+e_{14})=0$.
 
-- C-028: Aut(S) = G2 x S3 verification (pending).
-  - Tests: `tests/test_sedenion_automorphism.py` (planned)
-- C-029: Three fermion generations via C tensor S (literature-supported).
-  - Source: Gillard & Gresnigt (2019); Gresnigt (2023).
-- C-030: Bypass mechanisms required for sedenion Lagrangians (established).
-  - Evidence: C-011 Phase 3D associator data.
-- C-035: F4 Casimir ratio epsilon = 1/4 (pending verification).
-  - Tests: `tests/test_f4_casimir.py` (planned)
-- C-036: Bigraph clustering coefficient -> 0.25 (pending verification).
-  - Tests: `tests/test_bigraph_cosmogenesis.py` (planned)
-- C-038: w0 = -5/6 observational comparison (pending; expected disfavored).
-  - Tests: `tests/test_exceptional_w0.py` (planned)
+### 4.2 Geometric
+*   **Topology (unverified):** claimed Betti-number computations for ZD graphs need a reproducible script and tests.
+*   **Spectral flow (unverified):** claimed level-repulsion/chaos results need a reproducible script and tests.
 
-## Scope guards (speculative enforcement)
+### 4.3 Holographic
+*   **Entropy PDE (unverified):** claimed entropy-scaling matches need a reproducible script and tests.
 
-- C-011: Sedenion-Gravastar equivalence remains labeled speculative in its primary doc.
-  - Tests: `tests/test_gravastar_equivalence_guard.py`
+## 5. Conclusion
+This repo contains toy mathematical/computational ingredients (some validated, many not) that may be
+useful for building more careful models. Any physics-facing interpretation must be treated as a
+hypothesis and tracked in `docs/CLAIMS_EVIDENCE_MATRIX.md`.
 
-For narrative scope boundaries and what remains unverified, see:
-- `docs/MATH_VALIDATION_REPORT.md`
-- `docs/CLAIMS_EVIDENCE_MATRIX.md`
+**Future Directions:**
+*   **Quantum Circuit Implementation:** Verify entropy scaling on IBM Qiskit.
+*   **Strict Homotopy Transfer:** Formally derive the $A_\\infty$ relations for the $m_3$ tensor.
 
 """

@@ -3,107 +3,258 @@
 
 [document]
 id = "DOC-0053"
-source_path = "docs/REQUIREMENTS.md"
-title = "Requirements for Gemini Experiments"
+source_path = "docs/REPO_STRUCTURE.md"
+title = "Repository structure"
 kind = "manual_source"
 status = "active"
 migration_priority = "high"
 generated = false
-source_sha256 = "c3c5e0be017366745b037515debf0511fce7b08bdd637cb99575eb4b7f161618"
-source_line_count = 88
-source_size_bytes = 3264
-content_sha256 = "c3c5e0be017366745b037515debf0511fce7b08bdd637cb99575eb4b7f161618"
-migrated_at = "2026-02-09T08:38:01Z"
+source_sha256 = "cabeafe5b6240ca8d661ca4f84fc6c6a5845e5b9036c32fa4c4ef991f6c9fb07"
+source_line_count = 239
+source_size_bytes = 10471
+content_sha256 = "cabeafe5b6240ca8d661ca4f84fc6c6a5845e5b9036c32fa4c4ef991f6c9fb07"
+migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
-# Requirements for Gemini Experiments
+# Repository structure
 
-This project follows a \"Maximal Synthesis\" protocol. Installs are designed to be reproducible,
-offline-testable by default, and compatible with warnings-as-errors.
+This repository is a reproducible research compendium / scientific software monorepo.
+It combines:
+- A first-party Python library (core kernels)
+- Runnable scripts (experiments, analysis, fetchers)
+- Tests and repo-integrity verifiers
+- Documentation as an audited lab notebook
+- Cached external sources with explicit provenance
+- Optional C++ acceleration kernels
 
-If you need module-specific details, see:
-- `docs/requirements/algebra.md`
-- `docs/requirements/analysis.md`
-- `docs/requirements/astro.md`
-- `docs/requirements/materials.md`
-- `docs/requirements/quantum-docker.md`
-- `docs/requirements/coq.md`
-- `docs/requirements/latex.md`
+What kind of repo is this?
+--------------------------
 
-## Python version policy
+This is closer to an \"open lab notebook + software\" repository than a typical
+single-purpose application repo. Related patterns in the wild include:
 
-- **Recommended**: Python 3.11 or 3.12 (best wheel availability).
-- **Allowed**: Python 3.13+ for the core engine, but some optional extras may be skipped by
-  dependency markers or may not have wheels yet (use Docker or a Python 3.11/3.12 env).
+- Research compendia / reproducible papers: code + data + figures + narrative.
+- Scientific software monorepos: multiple subdomains, shared tooling, one gate.
+- Audit-driven repositories: claims are tracked, sources are indexed, and checks
+  enforce that everything remains falsifiable and reproducible.
 
-## Quickstart (core engine)
+Best-practice targets for this style:
 
-1. Create an isolated venv + install the editable package:
-   ```bash
-   make install
-   ```
-2. Run the full gate (tests + lint + verifiers) with warnings-as-errors:
-   ```bash
-   PYTHONWARNINGS=error make check
-   ```
+- One primary gate (`make smoke` / `make check`) that is deterministic and offline.
+- Explicit generation targets (`make artifacts-*`, `make fetch-*`) that opt in to
+  producing artifacts or using the network.
+- Clear separation between: inputs (convos), cached externals (data/external),
+  generated artifacts (data/artifacts), and narrative docs (docs/).
 
-The canonical Python dependency sets live in `pyproject.toml`. Prefer using the `make install-*`
-targets (they match the extras).
+Hard constraints (see `AGENTS.md`)
+---------------------------------
 
-## Optional Python extras
+- ASCII-only for repo-authored code and docs (except inputs under `convos/`).
+- Warnings-as-errors for Python (`PYTHONWARNINGS=error`).
+- No network in tests; fetchers are separate, opt-in scripts.
+- External downloads must be cached under `data/external/` with provenance recorded.
 
-- **Analysis** (topology + embeddings):
-  - Install: `make install-analysis`
-  - Notes: scikit-learn is intentionally skipped on very new Python versions (see markers in
-    `pyproject.toml`); use Python 3.11/3.12 if you need it.
-- **Astronomy** (astroquery + GWpy + healpy + dataset loaders):
-  - Install: `make install-astro`
-- **Particle physics** (CMS/ROOT readers):
-  - Install: `make install-particle`
-  - Notes: `docs/requirements/particle.md`
-- **Quantum** (Qiskit):
-  - Preferred: Docker (`docs/requirements/quantum-docker.md`)
-  - Optional local install: `make install-quantum` (only on Python versions supported by wheels)
+Top-level directories
+---------------------
+
+- `src/`: importable Python code and runnable scripts (src-layout).
+  - `src/gemini_physics/`: core kernels used by experiments and tests.
+  - `src/verification/`: repo-integrity verifiers used by `make smoke` / `make check`.
+  - `src/scripts/`: runnable scripts grouped by purpose (analysis, data, export, etc.).
+  - Other focused modules: `src/spectral/`, `src/tensor_networks/`, `src/holography/`,
+    `src/quantum/`.
+- `tests/`: unit/behavior tests (must be offline and deterministic).
+- `docs/`: audited narrative and research artifacts (policy docs, reports, claims matrices).
+- `data/`: datasets, cached external sources, and generated artifacts.
+  - `data/external/`: cached downloads (must be covered by provenance JSON).
+  - `data/artifacts/`: generated outputs (plots, reports, intermediate CSVs).
+- `cpp/`: optional C++ kernels (built via CMake/Conan; invoked from Makefile targets).
+- `convos/`: raw conversational inputs (treated as inputs, not authoritative sources).
+- `curated/`: curated theory frameworks and other structured reference material.
+
+Build and quality gates
+-----------------------
+
+This repo uses a single top-level orchestrator (`Makefile`) with two primary gates:
+- `make ascii-check`: fail if repo-authored files contain non-ASCII bytes.
+- `PYTHONWARNINGS=error make check`: run tests, lint, and verifiers.
 
 Notes:
-- Extras currently defined in `pyproject.toml`: `dev`, `analysis`, `astro`, `particle`, `quantum`.
-- Some domains have requirements docs but no dedicated extra (e.g., algebra is part of core deps).
+- Running `make check` uses an editable install and may create local build artifacts
+  (e.g. `*.egg-info`, `__pycache__`). The Makefile cleans these at the end of the run.
 
-## Quantum (Dockerized)
-See `docs/requirements/quantum-docker.md` and `docs/QISKIT_SETUP.md`.
+Conventions for adding new work
+-------------------------------
 
-## C++ Acceleration Kernels
-- CMake >= 3.25
-- Conan 2.x (C++ package manager)
-- GCC 14 or Clang 18 (C++20 required)
-- Catch2 (via Conan; unit tests)
-- Google Benchmark (via Conan; micro-benchmarks)
-- pybind11 (via Conan; Python bindings)
+Library code:
+- Put reusable code under `src/gemini_physics/<subdomain>/...` (or another library package
+  if it is clearly separate).
+- Keep modules small and importable; prefer functions/classes that tests can call directly.
 
-Build: `make cpp-build`, test: `make cpp-test`, bench: `make cpp-bench`.
+Scripts:
+- Put runnable scripts under `src/scripts/<category>/...`.
+- Scripts may import from `gemini_physics` and should write outputs to `data/artifacts/`
+  (and/or `data/csv/`) with stable filenames.
+- Network access belongs only in fetcher scripts and should be opt-in (never in tests).
 
-See also: `docs/requirements/cpp.md`.
+Tests:
+- Put tests under `tests/` and keep them offline.
+- Prefer testing library functions, not shelling out to scripts.
+  (It is OK for tests to import helper functions from `scripts.*` if they are stable and
+  explicitly treated as supported.)
 
-## System tools (non-Python)
+Generated outputs:
+- Generated plots/reports/CSVs go under `data/artifacts/` and `data/csv/`.
+- External downloads go under `data/external/` and must be listed in a provenance registry.
 
-Some targets rely on standard system utilities (documented here for reproducibility):
+Artifact manifests and provenance sidecars
+-----------------------------------------
 
-- `pdftotext` (Poppler) for `make convos-extract` and some source-caching pipelines.
-  - Arch: `poppler`
-  - Debian/Ubuntu: `poppler-utils`
-- `wget` (preferred) and/or `curl` for opt-in fetch scripts (tests remain offline).
-- `git`, `make`
-- Optional: `tor` + `torsocks` for Tor-based fetches when required.
-  - Arch: `sudo pacman -S tor torsocks` (or `paru -S tor torsocks`)
-  - Enable: `sudo systemctl enable --now tor`
-  - Note: do NOT run a second `tor` instance on `127.0.0.1:9050` if `tor.service` is already running.
-    Check: `sudo ss -lntp | rg ':9050'`
-  - Use: `torsocks wget -O <path> <url>`
+This repo treats many generated outputs as first-class, reproducible research artifacts.
+To keep them auditable, artifacts referenced by canonical docs/verifiers must be indexed
+in a single manifest:
 
-## Dev / Quality
-- `pytest>=7.4.0`    # Testing framework
-- `ruff>=0.6.0`      # Fast linter
+- `data/artifacts/ARTIFACTS_MANIFEST.csv`
+
+Some artifacts also carry per-file provenance sidecars:
+
+- `data/artifacts/<domain>/<name>.<ext>.PROVENANCE.json`
+
+Sidecars are required only for selected high-value artifacts (for now) so we do not
+retroactively force provenance onto the full historical artifact pile. The verifier
+`src/verification/verify_artifacts_manifest.py` enforces manifest coverage and validates
+required sidecars.
+
+Script contract headers
+-----------------------
+
+Each Python script under `src/scripts/**` must declare a machine-readable contract on
+the first line:
+
+- `# SCRIPT_CONTRACT: {...json...}`
+
+This is used for static (offline) auditing: what the script reads/writes, and whether
+it is allowed to use the network. Contracts start as best-effort/inferred and can be
+tightened as scripts are actively maintained.
+
+The verifier `src/verification/verify_script_contracts.py` checks that contracts are
+present and parseable and that artifact outputs follow the `data/artifacts/<domain>/...`
+convention for file outputs.
+
+Contract keys are defined by the verifier (currently version 1). In brief:
+- `version`: 1
+- `network`: \"forbidden\" | \"gated\" | \"allowed\"
+- `network_env`: required; \"GEMINI_ALLOW_NETWORK=1\" for gated scripts, otherwise empty
+- `inputs`: list of repo-relative paths (must be under `data/`)
+- `outputs`: list of repo-relative paths (must be under `data/`)
+- `inferred`: whether the contract was inferred (tighten to false as scripts stabilize)
+
+Smoke vs full (verification vs generation)
+------------------------------------------
+
+- `make smoke` is pure verification: it must not generate or update research artifacts.
+- Artifact generation is explicit via `make artifacts-*` targets (and other opt-in
+  targets such as `make fetch-*`).
+
+This separation keeps CI/review loops stable and ensures artifacts only change when the
+user intentionally regenerates them.
+
+Related opt-in targets (write under data/ or reports/ and are not part of smoke):
+- `make metadata-hygiene` (writes planning reports under `reports/`)
+- `make audit-*` (writes audit visibility reports under `reports/`)
+- `make artifacts-*` (writes/rebuilds artifacts under `data/artifacts/` and related dirs)
+
+Determinism knobs
+-----------------
+
+When writing scripts/tests/verifiers, prefer deterministic defaults:
+
+- Default random seeds where relevant.
+- Stable sorting when iterating over sets/dicts or filesystem paths.
+- Explicit time zone where timestamps might be used.
+- Fixed numpy print options for stable textual outputs.
+
+The repo exports `PYTHONHASHSEED` and `TZ` from the `Makefile`, and tests configure
+default RNG seeds and `TZ=UTC` in `tests/conftest.py`.
+
+Network hygiene
+---------------
+
+No network is allowed in tests or `make smoke`. Network access is opt-in with:
+
+- `GEMINI_ALLOW_NETWORK=1`
+
+Scripts can declare `network: \"gated\"` in their `SCRIPT_CONTRACT`. Library helpers that
+use `requests` must also be gated (see `src/gemini_physics/network.py`). The verifier
+`src/verification/verify_network_gates.py` statically checks gating for library modules.
+
+Script network guards
+---------------------
+
+Scripts are allowed to access the network only if they opt in and clearly gate access.
+The verifier `src/verification/verify_script_network_guards.py` performs a static scan:
+
+- If a script imports network clients (requests/astroquery/urllib.request), it must not
+  claim `network=forbidden`.
+- If a script shells out to common downloaders (curl/wget/aria2c), it must not claim
+  `network=forbidden`.
+- If a script claims `network=gated`, it must visibly gate network usage with
+  `GEMINI_ALLOW_NETWORK` or `gemini_physics.network.{allow_network,require_network}`.
+
+Opt-in reorganization planning
+------------------------------
+
+The repository contains historical flat artifacts directly under `data/artifacts/`.
+Do not move these casually. Instead, generate a migration plan first:
+
+- `make artifacts-reorg-plan` -> `reports/artifacts_reorg_plan.md`
+
+If Phase 0 moves are desired (only files that are unreferenced and unmanifested),
+use the Phase 0 mover which is non-destructive by default and supports rollback:
+
+- Dry-run: `make artifacts-phase0-dry`
+- Apply: `make artifacts-phase0-apply`
+- Rollback: `make artifacts-phase0-rollback LOG=reports/artifacts_phase0_moves_<ts>.json`
+
+Always refresh the plan first and keep Phase 0 limited: it is intentionally scoped
+to avoid breaking any code/docs that reference historical artifacts.
+
+Rollback guidance:
+- The apply step writes a timestamped move log under `reports/` (JSON).
+- Rollback uses that log to move files back and restore mtimes.
+- Prefer doing moves on a staging branch so the diff is reviewable.
+
+Opt-in audit reports
+--------------------
+
+The repo also provides opt-in \"audit visibility\" reports under `reports/` that do
+not run in `make smoke`:
+
+- `make repo-structure-report` -> `reports/repo_structure_audit.md`
+- `make audit-network-gating` -> `reports/audit_network_gating.md`
+- `make audit-pythonpath` -> `reports/audit_pythonpath.md`
+- `make audit-provenance` -> `reports/audit_provenance.md`
+
+Structure hygiene
+-----------------
+
+`src/verification/verify_src_layout.py` enforces that `src/` stays organized:
+- Only expected top-level packages/modules live directly under `src/`.
+- No `src/src` nesting.
+- No generated artifacts under `src/` at the end of a check run.
+
+Scripts as modules (current state)
+----------------------------------
+
+For historical reasons, `pytest.ini` currently injects several `src/scripts/*`
+directories into `pythonpath` so tests can import selected scripts as modules.
+This is not ideal for long-term hygiene, but it keeps many offline tests stable
+while scripts are being refactored into `src/gemini_physics/` modules.
+
+If you want to migrate to strict src-layout imports, use:
+- `make audit-pythonpath` -> reports/audit_pythonpath.md
+- `make pythonpath-refactor-plan` -> reports/pythonpath_refactor_plan.md
 
 """
