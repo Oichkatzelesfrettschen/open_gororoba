@@ -243,6 +243,7 @@ pub use billiard_stats::{
     E10_ADJACENCY, N_WALLS, N_E8, NULL_R_E8_UNIFORM,
     // Locality metrics
     LocalityMetrics, compute_locality_metrics,
+    SectorMetrics, compute_sector_metrics,
     // Null models
     NullModel, generate_null_sequence,
     // Permutation tests

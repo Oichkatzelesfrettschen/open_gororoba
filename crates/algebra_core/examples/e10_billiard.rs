@@ -289,6 +289,24 @@ fn main() {
         println!("Too few bounces for Fano analysis (need >= 10 3-windows).");
     }
 
+    // === Sector-specific analysis (Claim 3 verification) ===
+    println!("\n=== Sector-Specific Metrics ===");
+    let sector = billiard_stats::compute_sector_metrics(&bounce_sequence);
+    println!("E8 adjacency ratio:   r_E8 = {:.4}", sector.r_e8);
+    println!("Mixed adjacency ratio: r_mix = {:.4}", sector.r_mixed);
+    println!("Hyp adjacency ratio:  r_hyp = {:.4}", sector.r_hyp);
+    println!("Sector fractions: E8={:.3} mixed={:.3} hyp={:.3}",
+        sector.e8_fraction, sector.mixed_fraction, sector.hyp_fraction);
+    // Null baselines by sector:
+    // E8: 14/56 = 0.25 (7 edges, 8 nodes)
+    // Mixed: 2/32 = 0.0625 (only 0-8 edge, 8*2+2*8=32 directed pairs)
+    // Hyp: 2/2 = 1.0 (only 8-9 edge, 2 directed pairs among 2 nodes)
+    let null_mixed = 2.0 / 32.0;
+    println!("Null baselines: E8=0.2500, mixed={:.4}, hyp=1.0000", null_mixed);
+    println!("Enrichment: E8={:.2}x, mixed={:.2}x",
+        sector.r_e8 / 0.25,
+        if null_mixed > 0.0 { sector.r_mixed / null_mixed } else { 0.0 });
+
     // === Permutation tests (null model validation) ===
     // Test observed r_E8 against 4 null models with 1000 permutations each.
     // This validates whether the locality effect is statistically significant
@@ -296,11 +314,12 @@ fn main() {
     let n_perm = 1000;
     println!("\n=== Permutation Tests (r_E8, {} permutations each) ===", n_perm);
 
-    let nulls = [
-        ("Uniform",          NullModel::Uniform),
-        ("IidEmpirical",     NullModel::IidEmpirical),
-        ("DegreePreserving", NullModel::DegreePreserving),
-        ("Markov",           NullModel::Markov),
+    let nulls: Vec<(&str, NullModel)> = vec![
+        ("Uniform",            NullModel::Uniform),
+        ("IidEmpirical",       NullModel::IidEmpirical),
+        ("DegreePreserving",   NullModel::DegreePreserving),
+        ("Markov",             NullModel::Markov),
+        ("CommutShuffle(100)", NullModel::CommutationShuffle(100)),
     ];
 
     for (name, model) in &nulls {
