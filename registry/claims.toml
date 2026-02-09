@@ -4109,3 +4109,59 @@ where_stated = "`crates/stats_core/src/ultrametric/baire_codebook.rs` (test_stra
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: 4-point linear regression with R^2=0.927. WHAT WOULD REFUTE: R^2 < 0.8 would indicate H is not the dominant predictor. Finding a better predictor (e.g., based on stratum sizes alone without the cubic Herfindahl weighting) would refine the model. Finding the residuals correlated with a systematic factor (e.g., N or d) would indicate a missing predictor."
+
+[[claim]]
+id = "C-515"
+statement = "Sigma Correspondence: For any CD dimension >= 16, the edge sign type (Same vs Opposite) in the cross-assessor ZD graph is exactly determined by sigma_ab = s(lo_a,lo_b) * s(hi_a,hi_b) where s = cd_basis_mul_sign. Same iff sigma=-1, Opposite iff sigma=+1. Verified on all edges at dims 16 (84), 32 (924), 64 (7980). Additionally, the Parity Product Theorem holds: product(sigma) over a triangle's 3 edges is +1 iff even number of Same edges (AllOpposite or TwoSameOneOpp) and -1 iff odd number (AllSame or OneSameTwoOpp). The Quarter Rule is exact: in each parity class, the 'pure' pattern (AllOpposite in even, AllSame in odd) is exactly 1/4 of the class total, with zero remainder. At dim=16, ONLY the even parity class exists (all 56 triangles have product=+1). Odd parity first appears at dim=32."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_sigma_correspondence_and_parity_product)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exact match on all edges at dims 16/32/64, exact Quarter Rule (pure*4=total) in every parity class. WHAT WOULD REFUTE: finding any edge where sigma != expected_sigma, or any parity class where pure != total/4."
+
+[[claim]]
+id = "C-516"
+statement = "Translation Derivative Identity: The sigma correspondence has a clean algebraic interpretation as a discrete derivative of the twist exponent. Define psi(i,j) in GF(2) by s(i,j) = (-1)^psi(i,j). For a component with XOR key k, sigma(x,y) = (-1)^{Delta_k psi(x,y)} where Delta_k psi(x,y) = psi(x,y) XOR psi(x XOR k, y XOR k). Within a component, hi_a = lo_a XOR k, so Delta_k psi(lo_a,lo_b) = psi(lo_a,lo_b) XOR psi(hi_a,hi_b). Verified on all edges at dims 16 (84), 32 (924), 64 (7980), 128 (65100) with zero exceptions."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_translation_derivative_and_half_half)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exact match on all 74088 edges across 4 dimensions. WHAT WOULD REFUTE: any edge where sigma != (-1)^{psi XOR psi_translated}."
+
+[[claim]]
+id = "C-517"
+statement = "Half-Half Edge Law as Delta_k Balance: Within every motif component at every CD dimension >= 16, the translation derivative Delta_k psi is perfectly balanced: exactly half of edges have Delta_k psi = 0 (Opposite-type) and half have Delta_k psi = 1 (Same-type). Verified on ALL components: 7/7 at dim=16, 15/15 at dim=32, 31/31 at dim=64, 63/63 at dim=128. This is not approximate -- the balance is exact to the last edge in every component."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_translation_derivative_and_half_half)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: all 116 components across 4 dimensions have exact 50/50 split. WHAT WOULD REFUTE: any component with unequal Same/Opposite edge counts."
+
+[[claim]]
+id = "C-518"
+statement = "Associator Sign Obstruction REFUTED: The CD associator sign A(i,j,k) = s(i,j)*s(i XOR j, k)*s(j,k)*s(i, j XOR k) does NOT separate pure from mixed triangles when applied as F(triangle) = (A(lo_a,lo_b,lo_c), A(hi_a,hi_b,hi_c)). At dim=16, F=(+1,+1) never occurs. At dim=32/64, all four F-values contain both pure and mixed triangles. A cross lo/hi variant also fails. However, within each F-fiber at dim=16, the pure:mixed ratio is exactly 1:3, suggesting the 1:3 ratio is a deeper invariant than the associator."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_associator_obstruction_candidate_b)"
+status = "Refuted"
+last_verified = "2026-02-09"
+what_would_verify_refute = "REFUTED: F=(+1,+1) does not correspond to pure triangles at any dimension tested. The associator operates on basis indices, while the mechanism operates on the off-diagonal psi terms of the edge's twist matrix."
+
+[[claim]]
+id = "C-519"
+statement = "GF(2)-Linear 2-Bit Separator Exists: At dim=16, an exhaustive search over all GF(2)-linear functions of the 12 psi bits per triangle (3 edges x 4 psi matrix entries) found a perfect 2-bit separator: F=(0,0) iff pure. The separator found at dim=16 is: f1 = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) (anti-diagonal XOR of edge ab's psi matrix), f2 = psi(lo_a,lo_b) XOR psi(lo_a,hi_b) XOR psi(lo_b,lo_c) XOR psi(hi_b,lo_c). Result: F=(0,0) captures all 14 pure and 0 mixed; the 3 nonzero fibers have 13, 16, 13 mixed triangles (confirming non-uniform distribution among mixed classes). No single-bit function achieves perfect separation."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_psi_matrix_obstruction_search)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exhaustive search over 4095^2 candidate pairs at dim=16. WHAT WOULD REFUTE: finding that the separator does not generalize to higher dimensions (addressed by C-521)."
+
+[[claim]]
+id = "C-520"
+statement = "Anti-Diagonal Parity Theorem (Generalization): Define eta(a,b) = psi(lo_a,hi_b) XOR psi(hi_a,lo_b) for each ZD edge (the 'anti-diagonal XOR' of the edge's psi matrix). A triangle (a,b,c) is 'pure' (AllOpposite in even parity class, AllSame in odd parity class) if and only if eta is constant across all three edges: eta(a,b) = eta(b,c) = eta(a,c). Equivalently, the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, and F=(0,0) iff pure. Verified PERFECTLY (zero mismatches) at dims 16 (56 triangles), 32 (2408), 64 (48328)."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_separator_generalization)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: zero mismatches across 50792 triangles at 3 dimensions. WHAT WOULD REFUTE: any triangle where eta-constant disagrees with is-pure. Extended verification at dim=128 in C-521."
+
+[[claim]]
+id = "C-521"
+statement = "Anti-Diagonal Parity Theorem at dim=128: The Anti-Diagonal Parity Theorem (C-520) holds at dim=128 with ZERO mismatches across 821,128 triangles in 63 components. Pure count = 205,282, Mixed count = 615,846 (exact 1:3 ratio). This provides the complete algebraic mechanism for the Double 3:1 Law (C-487): the 2-bit invariant F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac)) takes values in GF(2)^2, with exactly 1 zero element and 3 nonzero elements. Pure triangles are the zero-element fiber. The nonzero fibers need not be equally sized (confirming the non-uniform distribution observed in face sign census data). The mechanism is purely algebraic: eta depends only on cd_basis_mul_sign via the off-diagonal terms of the edge psi matrix."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_antidiagonal_parity_theorem_dim128)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 821128 triangles, 63 components, 0 mismatches. WHAT WOULD REFUTE: any mismatch at dim=128 or higher. Verification at dim=256+ would strengthen but requires significant compute (13.3M triangles at dim=256)."

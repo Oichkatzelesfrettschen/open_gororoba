@@ -3980,4 +3980,1015 @@ mod tests {
             expected_normal
         );
     }
+
+    /// C-515: Sigma Correspondence -- verify sigma_ab = s(lo_a,lo_b)*s(hi_a,hi_b)
+    /// matches Same/Opposite classification for all edges at dims 16, 32, 64.
+    ///
+    /// Also verifies the sigma-to-parity identity:
+    /// sigma = -1 iff Same-type, sigma = +1 iff Opposite-type.
+    ///
+    /// Additionally tests the Parity Product Theorem:
+    /// product(sigma) over triangle edges determines face sign class.
+    #[test]
+    fn test_sigma_correspondence_and_parity_product() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        for &dim in &[16, 32, 64] {
+            let components = motif_components_for_cross_assessors(dim);
+
+            let mut total_edges = 0usize;
+            let mut sigma_match_count = 0usize;
+            let mut total_triangles = 0usize;
+            // Parity class counts: (product=+1, product=-1)
+            let mut parity_even = 0usize;
+            let mut parity_odd = 0usize;
+            // Within each parity class, count pure vs mixed
+            // Even class: AllOpposite is "pure" (all sigma=+1)
+            // Odd class: AllSame is "pure" (all sigma=-1)
+            let mut even_pure = 0usize; // AllOpposite in even class
+            let mut even_mixed = 0usize; // TwoSameOneOpp in even class
+            let mut odd_pure = 0usize; // AllSame in odd class
+            let mut odd_mixed = 0usize; // OneSameTwoOpp in odd class
+
+            for comp in &components {
+                // Check sigma correspondence on every edge
+                for &(a, b) in &comp.edges {
+                    let (lo_a, hi_a) = a;
+                    let (lo_b, hi_b) = b;
+
+                    // Compute sigma_ab = s(lo_a, lo_b) * s(hi_a, hi_b)
+                    let s_lo = cd_basis_mul_sign(dim, lo_a, lo_b);
+                    let s_hi = cd_basis_mul_sign(dim, hi_a, hi_b);
+                    let sigma = s_lo * s_hi;
+
+                    // Get the established Same/Opposite classification
+                    let edge_type = edge_sign_type_exact(dim, a, b);
+
+                    // Verify: sigma = -1 iff Same, sigma = +1 iff Opposite
+                    let expected_sigma = match edge_type {
+                        EdgeSignType::Same => -1,
+                        EdgeSignType::Opposite => 1,
+                    };
+
+                    if sigma == expected_sigma {
+                        sigma_match_count += 1;
+                    }
+                    total_edges += 1;
+                }
+
+                // Enumerate triangles and check parity product
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                    comp.edges.iter().copied().collect();
+                let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                    let (a, b) = if u < v { (u, v) } else { (v, u) };
+                    edge_set.contains(&(a, b))
+                };
+
+                for i in 0..nodes.len() {
+                    for j in (i + 1)..nodes.len() {
+                        for k in (j + 1)..nodes.len() {
+                            let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                            if has_edge(u, v) && has_edge(v, w) && has_edge(u, w) {
+                                total_triangles += 1;
+
+                                // Compute sigma for each edge
+                                let sigma_uv = cd_basis_mul_sign(dim, u.0, v.0)
+                                    * cd_basis_mul_sign(dim, u.1, v.1);
+                                let sigma_vw = cd_basis_mul_sign(dim, v.0, w.0)
+                                    * cd_basis_mul_sign(dim, v.1, w.1);
+                                let sigma_uw = cd_basis_mul_sign(dim, u.0, w.0)
+                                    * cd_basis_mul_sign(dim, u.1, w.1);
+
+                                let product = sigma_uv * sigma_vw * sigma_uw;
+
+                                // Count Same-type edges in this triangle
+                                let n_same = [sigma_uv, sigma_vw, sigma_uw]
+                                    .iter()
+                                    .filter(|&&s| s == -1)
+                                    .count();
+
+                                if product == 1 {
+                                    // Even parity: 0 or 2 Same edges
+                                    parity_even += 1;
+                                    assert!(
+                                        n_same == 0 || n_same == 2,
+                                        "Even parity but n_same={n_same}"
+                                    );
+                                    if n_same == 0 {
+                                        even_pure += 1; // AllOpposite
+                                    } else {
+                                        even_mixed += 1; // TwoSameOneOpp
+                                    }
+                                } else {
+                                    // Odd parity: 1 or 3 Same edges
+                                    parity_odd += 1;
+                                    assert!(
+                                        n_same == 1 || n_same == 3,
+                                        "Odd parity but n_same={n_same}"
+                                    );
+                                    if n_same == 3 {
+                                        odd_pure += 1; // AllSame
+                                    } else {
+                                        odd_mixed += 1; // OneSameTwoOpp
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            eprintln!("\n=== Sigma Correspondence at dim={dim} ===");
+            eprintln!("Edges: {total_edges}, sigma matches: {sigma_match_count}");
+            eprintln!("Triangles: {total_triangles}");
+            eprintln!("Even parity (product=+1): {parity_even} (pure={even_pure}, mixed={even_mixed})");
+            eprintln!("Odd parity (product=-1): {parity_odd} (pure={odd_pure}, mixed={odd_mixed})");
+
+            if parity_even > 0 {
+                let quarter = parity_even as f64 / 4.0;
+                let pure_frac = even_pure as f64 / parity_even as f64;
+                eprintln!("Even class Quarter Rule: pure/total = {pure_frac:.4} (expected 0.25)");
+                eprintln!("  pure={even_pure}, expected={quarter:.1}");
+            }
+            if parity_odd > 0 {
+                let quarter = parity_odd as f64 / 4.0;
+                let pure_frac = odd_pure as f64 / parity_odd as f64;
+                eprintln!("Odd class Quarter Rule: pure/total = {pure_frac:.4} (expected 0.25)");
+                eprintln!("  pure={odd_pure}, expected={quarter:.1}");
+            }
+
+            // ASSERTION 1: sigma correspondence is exact
+            assert_eq!(
+                sigma_match_count, total_edges,
+                "dim={dim}: sigma correspondence failed on {}/{total_edges} edges",
+                total_edges - sigma_match_count
+            );
+
+            // ASSERTION 2: Quarter Rule on even parity class
+            if parity_even > 0 {
+                assert_eq!(
+                    even_pure * 4, parity_even,
+                    "dim={dim}: even class Quarter Rule failed: \
+                     pure={even_pure}, total={parity_even}, expected pure=total/4"
+                );
+            }
+
+            // ASSERTION 3: Quarter Rule on odd parity class
+            if parity_odd > 0 {
+                assert_eq!(
+                    odd_pure * 4, parity_odd,
+                    "dim={dim}: odd class Quarter Rule failed: \
+                     pure={odd_pure}, total={parity_odd}, expected pure=total/4"
+                );
+            }
+        }
+    }
+
+    /// C-516: Translation Derivative Identity -- verify that sigma_ab equals
+    /// the "finite difference" of the twist exponent psi across the component key k.
+    ///
+    /// For a component with XOR key k:
+    ///   sigma(x,y) = (-1)^{Delta_k psi(x,y)}
+    /// where Delta_k psi(x,y) = psi(x,y) XOR psi(x^k, y^k)
+    /// and s(i,j) = (-1)^{psi(i,j)}.
+    ///
+    /// Also verifies C-517: Half-Half Edge Law = Delta_k psi is balanced
+    /// (exactly half of edges have Delta_k psi = 0, half have 1).
+    #[test]
+    fn test_translation_derivative_and_half_half() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use crate::analysis::zd_graphs::xor_key;
+
+        // Extract GF(2) exponent: s(i,j) = (-1)^psi(i,j) => psi = 0 if s=+1, 1 if s=-1
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        for &dim in &[16, 32, 64, 128] {
+            let components = motif_components_for_cross_assessors(dim);
+            let mut total_edges = 0usize;
+            let mut delta_match = 0usize;
+            let mut total_balanced_comps = 0usize;
+            let mut total_nontrivial_comps = 0usize;
+
+            for comp in &components {
+                if comp.edges.is_empty() {
+                    continue;
+                }
+
+                // Determine the component key k = lo ^ hi for any node
+                let first_node = comp.nodes.iter().next().unwrap();
+                let k = xor_key(first_node.0, first_node.1);
+
+                // Verify all nodes share the same key
+                for &(lo, hi) in &comp.nodes {
+                    assert_eq!(
+                        xor_key(lo, hi), k,
+                        "dim={dim}: node ({lo},{hi}) has key {} != component key {k}",
+                        xor_key(lo, hi)
+                    );
+                }
+
+                let mut n_delta_zero = 0usize;
+                let mut n_delta_one = 0usize;
+
+                for &(a, b) in &comp.edges {
+                    let (lo_a, hi_a) = a;
+                    let (lo_b, hi_b) = b;
+
+                    // Compute sigma via cd_basis_mul_sign
+                    let s_lo = cd_basis_mul_sign(dim, lo_a, lo_b);
+                    let s_hi = cd_basis_mul_sign(dim, hi_a, hi_b);
+                    let sigma = s_lo * s_hi;
+
+                    // Compute Delta_k psi(lo_a, lo_b) = psi(lo_a, lo_b) XOR psi(lo_a^k, lo_b^k)
+                    // But within a component, hi_a = lo_a ^ k, hi_b = lo_b ^ k
+                    // So Delta_k psi(lo_a, lo_b) = psi(lo_a, lo_b) XOR psi(hi_a, hi_b)
+                    let psi_lo = psi(dim, lo_a, lo_b);
+                    let psi_hi = psi(dim, hi_a, hi_b);
+                    let delta_k = psi_lo ^ psi_hi;
+
+                    // sigma = (-1)^{delta_k} means:
+                    // delta_k=0 => sigma=+1 (Opposite), delta_k=1 => sigma=-1 (Same)
+                    let expected_sigma: i32 = if delta_k == 0 { 1 } else { -1 };
+
+                    if sigma == expected_sigma {
+                        delta_match += 1;
+                    }
+                    total_edges += 1;
+
+                    if delta_k == 0 {
+                        n_delta_zero += 1;
+                    } else {
+                        n_delta_one += 1;
+                    }
+                }
+
+                total_nontrivial_comps += 1;
+                if n_delta_zero == n_delta_one {
+                    total_balanced_comps += 1;
+                }
+
+                eprintln!(
+                    "dim={dim} comp k={k}: edges={}, delta_0={n_delta_zero}, delta_1={n_delta_one}, balanced={}",
+                    comp.edges.len(),
+                    n_delta_zero == n_delta_one
+                );
+            }
+
+            eprintln!("\n=== Translation Derivative at dim={dim} ===");
+            eprintln!("Total edges: {total_edges}, Delta_k matches: {delta_match}");
+            eprintln!("Balanced components: {total_balanced_comps}/{total_nontrivial_comps}");
+
+            // ASSERTION 1: translation derivative identity is exact
+            assert_eq!(
+                delta_match, total_edges,
+                "dim={dim}: Delta_k psi identity failed on {}/{total_edges}",
+                total_edges - delta_match
+            );
+
+            // ASSERTION 2: Half-Half Edge Law (all components balanced)
+            assert_eq!(
+                total_balanced_comps, total_nontrivial_comps,
+                "dim={dim}: Half-Half failed: {total_balanced_comps}/{total_nontrivial_comps} balanced"
+            );
+        }
+    }
+
+    /// C-518: Associator-Based 2-Bit Obstruction (Candidate B mechanism test).
+    ///
+    /// Tests whether the CD associator sign provides a GF(2)^2-valued invariant
+    /// F(triangle) = (A_lo, A_hi) that exactly classifies "pure" vs "mixed"
+    /// triangles within each parity class.
+    ///
+    /// The associator sign: A(i,j,k) = s(i,j) * s(i^j, k) * s(j,k) * s(i, j^k)
+    /// where s = cd_basis_mul_sign and ^ = XOR.
+    ///
+    /// Prediction: F=(+1,+1) iff triangle is "pure" (AllOpposite in even class,
+    /// AllSame in odd class).
+    ///
+    /// If this fails, we also test variant constructions involving the
+    /// component key k.
+    #[test]
+    fn test_associator_obstruction_candidate_b() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+        use crate::analysis::zd_graphs::xor_key;
+
+        // CD associator sign: A(i,j,k) = s(i,j) * s(i^j, k) * s(j,k) * s(i, j^k)
+        // In {+/-1} arithmetic, division = multiplication, so this is:
+        // s(i,j) * s(i XOR j, k) / (s(j,k) * s(i, j XOR k))
+        // = s(i,j) * s(i^j,k) * s(j,k) * s(i, j^k) since all values are +/-1
+        let assoc_sign = |dim: usize, i: usize, j: usize, k: usize| -> i32 {
+            let s_ij = cd_basis_mul_sign(dim, i, j);
+            let s_ij_xor_k = cd_basis_mul_sign(dim, i ^ j, k);
+            let s_jk = cd_basis_mul_sign(dim, j, k);
+            let s_i_jk = cd_basis_mul_sign(dim, i, j ^ k);
+            s_ij * s_ij_xor_k * s_jk * s_i_jk
+        };
+
+        for &dim in &[16, 32, 64] {
+            let components = motif_components_for_cross_assessors(dim);
+            let mut total_triangles = 0usize;
+
+            // Count how many triangles have F=(+1,+1) and are "pure"
+            // F values: (A_lo, A_hi) where each is +1 or -1
+            let mut f_pp_pure = 0usize; // F=(+1,+1), pure triangle
+            let mut f_pp_mixed = 0usize; // F=(+1,+1), mixed triangle
+            let mut f_other_pure = 0usize; // F != (+1,+1), pure triangle
+            let mut f_other_mixed = 0usize; // F != (+1,+1), mixed triangle
+
+            // Also try variant: use A(lo_a, lo_b, lo_c) with vertex lo indices
+            // and separately A with hi indices
+            let mut f_counts: std::collections::HashMap<(i32, i32), [usize; 2]> =
+                std::collections::HashMap::new();
+
+            for comp in &components {
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                    comp.edges.iter().copied().collect();
+                let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                    let (a, b) = if u < v { (u, v) } else { (v, u) };
+                    edge_set.contains(&(a, b))
+                };
+
+                let _k = {
+                    let first = comp.nodes.iter().next().unwrap();
+                    xor_key(first.0, first.1)
+                };
+
+                for i in 0..nodes.len() {
+                    for j in (i + 1)..nodes.len() {
+                        for ki in (j + 1)..nodes.len() {
+                            let (u, v, w) = (nodes[i], nodes[j], nodes[ki]);
+                            if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                                continue;
+                            }
+                            total_triangles += 1;
+
+                            // Compute sigma for edge classification
+                            let sigma_uv = cd_basis_mul_sign(dim, u.0, v.0)
+                                * cd_basis_mul_sign(dim, u.1, v.1);
+                            let sigma_vw = cd_basis_mul_sign(dim, v.0, w.0)
+                                * cd_basis_mul_sign(dim, v.1, w.1);
+                            let sigma_uw = cd_basis_mul_sign(dim, u.0, w.0)
+                                * cd_basis_mul_sign(dim, u.1, w.1);
+
+                            let n_same = [sigma_uv, sigma_vw, sigma_uw]
+                                .iter().filter(|&&s| s == -1).count();
+                            let product = sigma_uv * sigma_vw * sigma_uw;
+                            let is_pure = if product == 1 {
+                                n_same == 0 // AllOpposite
+                            } else {
+                                n_same == 3 // AllSame
+                            };
+
+                            // Compute F = (A(lo_a, lo_b, lo_c), A(hi_a, hi_b, hi_c))
+                            let a_lo = assoc_sign(dim, u.0, v.0, w.0);
+                            let a_hi = assoc_sign(dim, u.1, v.1, w.1);
+
+                            let f_val = (a_lo, a_hi);
+                            let entry = f_counts.entry(f_val).or_insert([0, 0]);
+                            if is_pure {
+                                entry[0] += 1;
+                            } else {
+                                entry[1] += 1;
+                            }
+
+                            if f_val == (1, 1) {
+                                if is_pure { f_pp_pure += 1; } else { f_pp_mixed += 1; }
+                            } else if is_pure {
+                                f_other_pure += 1;
+                            } else {
+                                f_other_mixed += 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            eprintln!("\n=== Candidate B (Associator Obstruction) at dim={dim} ===");
+            eprintln!("Total triangles: {total_triangles}");
+            eprintln!("F=(+1,+1): pure={f_pp_pure}, mixed={f_pp_mixed}");
+            eprintln!("F!=(+1,+1): pure={f_other_pure}, mixed={f_other_mixed}");
+
+            let mut f_keys: Vec<(i32, i32)> = f_counts.keys().copied().collect();
+            f_keys.sort();
+            for fk in &f_keys {
+                let [p, m] = f_counts[fk];
+                eprintln!("  F={:?}: pure={p}, mixed={m}, total={}", fk, p + m);
+            }
+
+            // Check if F=(+1,+1) <=> pure (the ideal outcome)
+            let perfect = f_pp_mixed == 0 && f_other_pure == 0;
+            eprintln!("F=(+1,+1) <=> pure: {perfect}");
+
+            if !perfect {
+                // Try variant: F includes mixed lo/hi terms
+                // Variant 1: A(lo_a, lo_b, hi_c) and A(hi_a, hi_b, lo_c)
+                let mut v1_counts: std::collections::HashMap<(i32, i32), [usize; 2]> =
+                    std::collections::HashMap::new();
+
+                for comp in &components {
+                    let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                    let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                        comp.edges.iter().copied().collect();
+                    let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                        let (a, b) = if u < v { (u, v) } else { (v, u) };
+                        edge_set.contains(&(a, b))
+                    };
+
+                    for i in 0..nodes.len() {
+                        for j in (i + 1)..nodes.len() {
+                            for ki in (j + 1)..nodes.len() {
+                                let (u, v, w) = (nodes[i], nodes[j], nodes[ki]);
+                                if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                                    continue;
+                                }
+
+                                let sigma_uv = cd_basis_mul_sign(dim, u.0, v.0)
+                                    * cd_basis_mul_sign(dim, u.1, v.1);
+                                let sigma_vw = cd_basis_mul_sign(dim, v.0, w.0)
+                                    * cd_basis_mul_sign(dim, v.1, w.1);
+                                let sigma_uw = cd_basis_mul_sign(dim, u.0, w.0)
+                                    * cd_basis_mul_sign(dim, u.1, w.1);
+                                let n_same = [sigma_uv, sigma_vw, sigma_uw]
+                                    .iter().filter(|&&s| s == -1).count();
+                                let product = sigma_uv * sigma_vw * sigma_uw;
+                                let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+
+                                // Variant 1: cross lo/hi associator
+                                let a_cross1 = assoc_sign(dim, u.0, v.0, w.1);
+                                let a_cross2 = assoc_sign(dim, u.1, v.1, w.0);
+                                let fv = (a_cross1, a_cross2);
+                                let entry = v1_counts.entry(fv).or_insert([0, 0]);
+                                if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+                            }
+                        }
+                    }
+                }
+
+                eprintln!("\n  Variant 1 (cross lo/hi associator):");
+                let mut v1_keys: Vec<(i32, i32)> = v1_counts.keys().copied().collect();
+                v1_keys.sort();
+                for fk in &v1_keys {
+                    let [p, m] = v1_counts[fk];
+                    eprintln!("    F={:?}: pure={p}, mixed={m}", fk);
+                }
+                let v1_pp = v1_counts.get(&(1, 1)).copied().unwrap_or([0, 0]);
+                let v1_perfect = v1_pp[1] == 0
+                    && v1_counts.iter()
+                        .filter(|(&k, _)| k != (1, 1))
+                        .all(|(_, v)| v[0] == 0);
+                eprintln!("  Variant 1 F=(+1,+1) <=> pure: {v1_perfect}");
+            }
+
+            // Regardless of which variant works, the Quarter Rule must hold
+            let total_pure = f_pp_pure + f_other_pure;
+            let total_mixed = f_pp_mixed + f_other_mixed;
+            assert_eq!(
+                total_pure * 3, total_mixed,
+                "dim={dim}: 3:1 ratio check failed: pure={total_pure}, mixed={total_mixed}"
+            );
+        }
+    }
+
+    /// C-519: Per-edge psi matrix search for 2-bit obstruction.
+    ///
+    /// For each edge (a,b) in a component, the twist gives a 2x2 matrix:
+    ///   M_ab = [[psi(lo_a,lo_b), psi(lo_a,hi_b)],
+    ///           [psi(hi_a,lo_b), psi(hi_a,hi_b)]]
+    /// in GF(2). sigma uses only the diagonal XOR (M[0][0] ^ M[1][1]).
+    ///
+    /// For a triangle with 3 edges, we have 3 such matrices (12 GF(2) bits total).
+    /// Search for a 2-bit function of these bits that separates pure from mixed.
+    ///
+    /// Specifically, try: for each pair of "off-diagonal" bit combinations,
+    /// check if combining them with the sigma gives a 4-state invariant
+    /// where "pure = zero state".
+    #[test]
+    fn test_psi_matrix_obstruction_search() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        // At dim=16, do an exhaustive search for a 2-bit invariant
+        let dim = 16;
+        let components = motif_components_for_cross_assessors(dim);
+
+        // Collect all triangles with their full psi data
+        struct TriData {
+            // Per-edge psi matrices (3 edges, each a 2x2 GF(2) matrix)
+            // m[edge][row][col] where row=0=>lo_left, row=1=>hi_left, col=0=>lo_right, col=1=>hi_right
+            m: [[[u8; 2]; 2]; 3],
+            is_pure: bool,
+            _parity_even: bool,
+        }
+
+        let mut tris = Vec::new();
+        for comp in &components {
+            let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+            let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                comp.edges.iter().copied().collect();
+            let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                let (a, b) = if u < v { (u, v) } else { (v, u) };
+                edge_set.contains(&(a, b))
+            };
+
+            for i in 0..nodes.len() {
+                for j in (i + 1)..nodes.len() {
+                    for k in (j + 1)..nodes.len() {
+                        let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                        if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                            continue;
+                        }
+
+                        // Compute 2x2 psi matrix for each edge
+                        let edge_psi = |a: CrossPair, b: CrossPair| -> [[u8; 2]; 2] {
+                            [
+                                [psi(dim, a.0, b.0), psi(dim, a.0, b.1)],
+                                [psi(dim, a.1, b.0), psi(dim, a.1, b.1)],
+                            ]
+                        };
+                        let m_uv = edge_psi(u, v);
+                        let m_vw = edge_psi(v, w);
+                        let m_uw = edge_psi(u, w);
+
+                        // Compute sigma = (-1)^(m[0][0] ^ m[1][1])
+                        let sigma_uv = m_uv[0][0] ^ m_uv[1][1];
+                        let sigma_vw = m_vw[0][0] ^ m_vw[1][1];
+                        let sigma_uw = m_uw[0][0] ^ m_uw[1][1];
+                        let n_same = (sigma_uv + sigma_vw + sigma_uw) as usize;
+                        let product_even = n_same % 2 == 0;
+                        let is_pure = if product_even { n_same == 0 } else { n_same == 3 };
+
+                        tris.push(TriData {
+                            m: [m_uv, m_vw, m_uw],
+                            is_pure,
+                            _parity_even: product_even,
+                        });
+                    }
+                }
+            }
+        }
+
+        eprintln!("\n=== Psi Matrix Obstruction Search at dim={dim} ===");
+        eprintln!("Total triangles: {}", tris.len());
+
+        // Each edge has 4 psi bits; 3 edges = 12 bits per triangle.
+        // We want a 2-bit GF(2)-linear function of these 12 bits that
+        // maps pure to (0,0) and mixed to non-(0,0).
+        //
+        // Strategy: try all pairs of GF(2)-linear combinations of the 12 bits.
+        // A linear combination is a subset S of {0..11}, mapping to XOR of bits in S.
+        // We want two such subsets (f1, f2) such that (f1(tri), f2(tri)) = (0,0) iff pure.
+
+        // Encode each triangle as a 12-bit vector
+        let encode = |tri: &TriData| -> u16 {
+            let mut bits = 0u16;
+            for (e, m) in tri.m.iter().enumerate() {
+                for r in 0..2 {
+                    for c in 0..2 {
+                        bits |= (m[r][c] as u16) << (e * 4 + r * 2 + c);
+                    }
+                }
+            }
+            bits
+        };
+
+        let encoded: Vec<(u16, bool)> = tris.iter().map(|t| (encode(t), t.is_pure)).collect();
+
+        let n_pure = encoded.iter().filter(|e| e.1).count();
+        let n_mixed = encoded.iter().filter(|e| !e.1).count();
+        eprintln!("Pure: {n_pure}, Mixed: {n_mixed}");
+
+        // Try all 2^12 - 1 = 4095 non-zero linear functions for f1
+        // For each f1, check: does f1(tri)=0 for all pure and f1(tri)=1 for some mixed?
+        // That would give us a single-bit partial separator.
+        let mut best_sep = 0usize;
+        let mut best_mask = 0u16;
+        let mut n_perfect_single = 0usize;
+
+        for mask in 1u16..4096 {
+            let f = |bits: u16| -> u8 { (bits & mask).count_ones() as u8 % 2 };
+
+            // Check: f=0 on all pure
+            let all_pure_zero = encoded.iter()
+                .filter(|e| e.1)
+                .all(|e| f(e.0) == 0);
+            if !all_pure_zero { continue; }
+
+            // Count mixed with f=1
+            let mixed_one = encoded.iter()
+                .filter(|e| !e.1 && f(e.0) == 1)
+                .count();
+            if mixed_one > best_sep {
+                best_sep = mixed_one;
+                best_mask = mask;
+            }
+            if mixed_one == n_mixed {
+                n_perfect_single += 1;
+            }
+        }
+
+        eprintln!("Best single-bit separator: mask=0x{:03x}, separates {best_sep}/{n_mixed} mixed", best_mask);
+        eprintln!("Perfect single-bit separators: {n_perfect_single}");
+
+        // Also try: f=0 on all mixed, f=1 on some pure (pure = special)
+        let mut best_sep2 = 0usize;
+        let mut best_mask2 = 0u16;
+        for mask in 1u16..4096 {
+            let f = |bits: u16| -> u8 { (bits & mask).count_ones() as u8 % 2 };
+            let all_mixed_zero = encoded.iter()
+                .filter(|e| !e.1)
+                .all(|e| f(e.0) == 0);
+            if !all_mixed_zero { continue; }
+            let pure_one = encoded.iter()
+                .filter(|e| e.1 && f(e.0) == 1)
+                .count();
+            if pure_one > best_sep2 {
+                best_sep2 = pure_one;
+                best_mask2 = mask;
+            }
+        }
+        eprintln!("Best single-bit (pure=special): mask=0x{:03x}, separates {best_sep2}/{n_pure} pure", best_mask2);
+
+        // Now search for 2-bit pairs that give perfect separation:
+        // (f1, f2) = (0,0) iff pure
+        let mut found_pair = false;
+        let mut pair_mask = (0u16, 0u16);
+
+        'outer: for m1 in 1u16..4096 {
+            let f1 = |bits: u16| -> u8 { (bits & m1).count_ones() as u8 % 2 };
+
+            // All pure must have f1=0
+            if !encoded.iter().filter(|e| e.1).all(|e| f1(e.0) == 0) {
+                continue;
+            }
+
+            for m2 in (m1 + 1)..4096 {
+                let f2 = |bits: u16| -> u8 { (bits & m2).count_ones() as u8 % 2 };
+
+                // All pure must have f2=0
+                if !encoded.iter().filter(|e| e.1).all(|e| f2(e.0) == 0) {
+                    continue;
+                }
+
+                // All mixed must have (f1,f2) != (0,0)
+                let all_mixed_nonzero = encoded.iter()
+                    .filter(|e| !e.1)
+                    .all(|e| f1(e.0) != 0 || f2(e.0) != 0);
+
+                if all_mixed_nonzero {
+                    found_pair = true;
+                    pair_mask = (m1, m2);
+                    break 'outer;
+                }
+            }
+        }
+
+        if found_pair {
+            let (m1, m2) = pair_mask;
+            let f1 = |bits: u16| -> u8 { (bits & m1).count_ones() as u8 % 2 };
+            let f2 = |bits: u16| -> u8 { (bits & m2).count_ones() as u8 % 2 };
+
+            eprintln!("\nFOUND 2-bit separator: m1=0x{:03x}, m2=0x{:03x}", m1, m2);
+
+            // Decode masks into human-readable form
+            let decode_mask = |mask: u16| -> String {
+                let mut parts = Vec::new();
+                let labels = [
+                    "psi(lo_a,lo_b)", "psi(lo_a,hi_b)", "psi(hi_a,lo_b)", "psi(hi_a,hi_b)",
+                    "psi(lo_b,lo_c)", "psi(lo_b,hi_c)", "psi(hi_b,lo_c)", "psi(hi_b,hi_c)",
+                    "psi(lo_a,lo_c)", "psi(lo_a,hi_c)", "psi(hi_a,lo_c)", "psi(hi_a,hi_c)",
+                ];
+                for (i, label) in labels.iter().enumerate() {
+                    if mask & (1 << i) != 0 {
+                        parts.push(*label);
+                    }
+                }
+                parts.join(" XOR ")
+            };
+            eprintln!("f1 = {}", decode_mask(m1));
+            eprintln!("f2 = {}", decode_mask(m2));
+
+            // Show the distribution
+            let mut dist: std::collections::HashMap<(u8, u8), [usize; 2]> =
+                std::collections::HashMap::new();
+            for &(bits, is_pure) in &encoded {
+                let key = (f1(bits), f2(bits));
+                let entry = dist.entry(key).or_insert([0, 0]);
+                if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+            }
+            for key in [(0u8, 0u8), (0, 1), (1, 0), (1, 1)] {
+                let [p, m] = dist.get(&key).copied().unwrap_or([0, 0]);
+                eprintln!("  F={:?}: pure={p}, mixed={m}", key);
+            }
+        } else {
+            eprintln!("\nNo 2-bit GF(2)-linear separator found in 12-bit space.");
+        }
+
+        // The test passes regardless -- this is exploratory.
+        // The key assertion is the Quarter Rule from the parent test.
+        assert_eq!(n_pure * 3, n_mixed, "Quarter Rule check");
+    }
+
+    /// C-520: Test the dim=16 2-bit separator at dim=32 and dim=64.
+    ///
+    /// At dim=16, the obstruction is:
+    ///   f1(ab) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b)  ("anti-diagonal XOR")
+    ///   f2 = psi(lo_a, lo_b) XOR psi(lo_a, hi_b) XOR psi(lo_b, lo_c) XOR psi(hi_b, lo_c)
+    ///
+    /// A triangle is "pure" iff f1=0 AND f2=0 for ALL its edges/vertex combinations.
+    ///
+    /// But f1 depends on a single edge and can be rewritten as:
+    ///   f1(ab) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b)
+    /// The "anti-diagonal XOR" or "GF(2) determinant" of the edge's psi matrix.
+    ///
+    /// Hypothesis: a triangle is "pure" iff the XOR sum of f1 over its 3 edges is 0
+    /// AND some second condition involving cross-edge terms is 0.
+    ///
+    /// Alternative approach: per-component search for universal invariant.
+    #[test]
+    fn test_separator_generalization() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        // The "anti-diagonal XOR" per edge
+        let antidet = |dim: usize, a: CrossPair, b: CrossPair| -> u8 {
+            psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+        };
+
+        // The "diagonal XOR" = sigma exponent per edge (Same iff 1)
+        let diag = |dim: usize, a: CrossPair, b: CrossPair| -> u8 {
+            psi(dim, a.0, b.0) ^ psi(dim, a.1, b.1)
+        };
+
+        // The "full determinant" (det of 2x2 GF(2) matrix) = diag XOR antidet
+        let det = |dim: usize, a: CrossPair, b: CrossPair| -> u8 {
+            (psi(dim, a.0, b.0) & psi(dim, a.1, b.1))
+            ^ (psi(dim, a.0, b.1) & psi(dim, a.1, b.0))
+        };
+
+        for &dim in &[16, 32, 64] {
+            let components = motif_components_for_cross_assessors(dim);
+            let mut total_triangles = 0usize;
+
+            // Test several candidate 2-bit functions on triangles:
+            // Candidate 1: (XOR of antidet, XOR of det) over 3 edges
+            // Candidate 2: (antidet(ab), antidet(bc)) -- first 2 edges
+            // Candidate 3: (antidet(ab) XOR antidet(bc), antidet(bc) XOR antidet(ac))
+            // Candidate 4: (XOR of antidet, XOR of (diag*antidet)) over edges
+            // Candidate 5: per-component approach -- sum of ALL psi cross-terms
+
+            let mut c1_perfect = true;
+            let mut c3_perfect = true;
+
+            let mut c1_counts: std::collections::HashMap<(u8, u8), [usize; 2]> =
+                std::collections::HashMap::new();
+            let mut c3_counts: std::collections::HashMap<(u8, u8), [usize; 2]> =
+                std::collections::HashMap::new();
+
+            // Also try: the sum of all 3 anti-diagonals XOR sum of all 3 diagonals
+            let mut c5_counts: std::collections::HashMap<(u8, u8), [usize; 2]> =
+                std::collections::HashMap::new();
+
+            // And: (antidet_sum, det_sum)
+            let mut c6_counts: std::collections::HashMap<(u8, u8), [usize; 2]> =
+                std::collections::HashMap::new();
+
+            for comp in &components {
+                let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+                let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                    comp.edges.iter().copied().collect();
+                let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                    let (a, b) = if u < v { (u, v) } else { (v, u) };
+                    edge_set.contains(&(a, b))
+                };
+
+                for i in 0..nodes.len() {
+                    for j in (i + 1)..nodes.len() {
+                        for k in (j + 1)..nodes.len() {
+                            let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                            if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                                continue;
+                            }
+                            total_triangles += 1;
+
+                            let d_uv = diag(dim, u, v);
+                            let d_vw = diag(dim, v, w);
+                            let d_uw = diag(dim, u, w);
+                            let n_same = (d_uv + d_vw + d_uw) as usize;
+                            let product_even = n_same % 2 == 0;
+                            let is_pure = if product_even { n_same == 0 } else { n_same == 3 };
+
+                            let a_uv = antidet(dim, u, v);
+                            let a_vw = antidet(dim, v, w);
+                            let a_uw = antidet(dim, u, w);
+
+                            let det_uv = det(dim, u, v);
+                            let det_vw = det(dim, v, w);
+                            let det_uw = det(dim, u, w);
+
+                            // Candidate 1: (sum antidet, sum det)
+                            let f1_c1 = a_uv ^ a_vw ^ a_uw;
+                            let f2_c1 = det_uv ^ det_vw ^ det_uw;
+                            let entry = c1_counts.entry((f1_c1, f2_c1)).or_insert([0, 0]);
+                            if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+                            if (f1_c1 == 0 && f2_c1 == 0) != is_pure { c1_perfect = false; }
+
+                            // Candidate 3: (antidet uv XOR antidet vw, antidet vw XOR antidet uw)
+                            let f1_c3 = a_uv ^ a_vw;
+                            let f2_c3 = a_vw ^ a_uw;
+                            let entry = c3_counts.entry((f1_c3, f2_c3)).or_insert([0, 0]);
+                            if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+                            if (f1_c3 == 0 && f2_c3 == 0) != is_pure { c3_perfect = false; }
+
+                            // Candidate 5: (sum antidet, sum diag)
+                            let f1_c5 = a_uv ^ a_vw ^ a_uw;
+                            let f2_c5 = d_uv ^ d_vw ^ d_uw;
+                            let entry = c5_counts.entry((f1_c5, f2_c5)).or_insert([0, 0]);
+                            if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+
+                            // Candidate 6: (antidet sum, det sum)
+                            let entry = c6_counts.entry((f1_c1, f2_c1)).or_insert([0, 0]);
+                            if is_pure { entry[0] += 1; } else { entry[1] += 1; }
+                        }
+                    }
+                }
+            }
+
+            eprintln!("\n=== Separator Generalization at dim={dim} ===");
+            eprintln!("Total triangles: {total_triangles}");
+
+            eprintln!("\nCandidate 1 (antidet_sum, det_sum):");
+            for key in [(0u8, 0u8), (0, 1), (1, 0), (1, 1)] {
+                let [p, m] = c1_counts.get(&key).copied().unwrap_or([0, 0]);
+                eprintln!("  ({},{}): pure={p}, mixed={m}", key.0, key.1);
+            }
+            eprintln!("  Perfect: {c1_perfect}");
+
+            eprintln!("\nCandidate 3 (antidet_ab^antidet_bc, antidet_bc^antidet_ac):");
+            for key in [(0u8, 0u8), (0, 1), (1, 0), (1, 1)] {
+                let [p, m] = c3_counts.get(&key).copied().unwrap_or([0, 0]);
+                eprintln!("  ({},{}): pure={p}, mixed={m}", key.0, key.1);
+            }
+            eprintln!("  Perfect: {c3_perfect}");
+
+            eprintln!("\nCandidate 5 (antidet_sum, diag_sum=parity):");
+            for key in [(0u8, 0u8), (0, 1), (1, 0), (1, 1)] {
+                let [p, m] = c5_counts.get(&key).copied().unwrap_or([0, 0]);
+                eprintln!("  ({},{}): pure={p}, mixed={m}", key.0, key.1);
+            }
+
+            // ASSERTION: Candidate 3 must be perfect at every dimension
+            let c3_pp = c3_counts.get(&(0, 0)).copied().unwrap_or([0, 0]);
+            assert_eq!(
+                c3_pp[1], 0,
+                "dim={dim}: Candidate 3 has {} mixed in F=(0,0) -- not perfect",
+                c3_pp[1],
+            );
+            let c3_nonzero_pure: usize = c3_counts.iter()
+                .filter(|(&k, _)| k != (0, 0))
+                .map(|(_, v)| v[0])
+                .sum();
+            assert_eq!(
+                c3_nonzero_pure, 0,
+                "dim={dim}: Candidate 3 has {c3_nonzero_pure} pure in F!=(0,0)"
+            );
+        }
+    }
+
+    /// C-521: Anti-Diagonal Parity Theorem -- definitive verification at dim=128.
+    ///
+    /// The theorem: define eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b)
+    /// for each ZD edge. A triangle (a,b,c) is "pure" iff eta is constant
+    /// across all three edges: eta(a,b) = eta(b,c) = eta(a,c).
+    ///
+    /// This is equivalent to saying: the 2-bit invariant
+    ///   F = (eta(ab) XOR eta(bc), eta(bc) XOR eta(ac))
+    /// satisfies F=(0,0) iff the triangle is pure.
+    ///
+    /// We verify this at dim=128 per-component for full confidence.
+    #[test]
+    fn test_antidiagonal_parity_theorem_dim128() {
+        use crate::construction::cayley_dickson::cd_basis_mul_sign;
+
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        let dim = 128;
+        let components = motif_components_for_cross_assessors(dim);
+        let mut total_triangles = 0usize;
+        let mut total_pure = 0usize;
+        let mut total_mixed = 0usize;
+        let mut mismatches = 0usize;
+        let mut comp_results: Vec<(usize, usize, usize, bool)> = Vec::new();
+
+        for (comp_idx, comp) in components.iter().enumerate() {
+            let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+            let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                comp.edges.iter().copied().collect();
+            let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                let (a, b) = if u < v { (u, v) } else { (v, u) };
+                edge_set.contains(&(a, b))
+            };
+
+            let eta = |a: CrossPair, b: CrossPair| -> u8 {
+                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
+            };
+
+            let mut comp_tris = 0usize;
+            let mut comp_pure = 0usize;
+            let mut _comp_mixed = 0usize;
+            let mut comp_ok = true;
+
+            for i in 0..nodes.len() {
+                for j in (i + 1)..nodes.len() {
+                    for k in (j + 1)..nodes.len() {
+                        let (u, v, w) = (nodes[i], nodes[j], nodes[k]);
+                        if !has_edge(u, v) || !has_edge(v, w) || !has_edge(u, w) {
+                            continue;
+                        }
+                        comp_tris += 1;
+
+                        // Compute sigma for classification
+                        let sigma = |a: CrossPair, b: CrossPair| -> i32 {
+                            cd_basis_mul_sign(dim, a.0, b.0)
+                            * cd_basis_mul_sign(dim, a.1, b.1)
+                        };
+                        let s_uv = sigma(u, v);
+                        let s_vw = sigma(v, w);
+                        let s_uw = sigma(u, w);
+                        let n_same = [s_uv, s_vw, s_uw].iter()
+                            .filter(|&&s| s == -1).count();
+                        let product = s_uv * s_vw * s_uw;
+                        let is_pure = if product == 1 { n_same == 0 } else { n_same == 3 };
+
+                        // Compute eta for all 3 edges
+                        let eta_uv = eta(u, v);
+                        let eta_vw = eta(v, w);
+                        let eta_uw = eta(u, w);
+
+                        // Anti-Diagonal Parity Theorem: pure iff eta constant
+                        let eta_constant = (eta_uv == eta_vw) && (eta_vw == eta_uw);
+
+                        if is_pure {
+                            comp_pure += 1;
+                            total_pure += 1;
+                        } else {
+                            _comp_mixed += 1;
+                            total_mixed += 1;
+                        }
+
+                        if eta_constant != is_pure {
+                            mismatches += 1;
+                            comp_ok = false;
+                        }
+                    }
+                }
+            }
+
+            total_triangles += comp_tris;
+            if comp_tris > 0 {
+                comp_results.push((comp_idx, comp_tris, comp_pure, comp_ok));
+            }
+        }
+
+        eprintln!("\n=== Anti-Diagonal Parity Theorem at dim={dim} ===");
+        eprintln!("Components with triangles: {}", comp_results.len());
+        eprintln!("Total triangles: {total_triangles}");
+        eprintln!("Pure: {total_pure}, Mixed: {total_mixed}");
+        eprintln!("Mismatches: {mismatches}");
+
+        let n_ok = comp_results.iter().filter(|r| r.3).count();
+        let n_fail = comp_results.iter().filter(|r| !r.3).count();
+        eprintln!("Components perfect: {n_ok}, failed: {n_fail}");
+
+        if n_fail > 0 {
+            for &(idx, tris, pure, ok) in &comp_results {
+                if !ok {
+                    eprintln!("  FAIL: comp[{idx}] tris={tris}, pure={pure}");
+                }
+            }
+        }
+
+        // ASSERTION: theorem holds perfectly (zero mismatches)
+        assert_eq!(
+            mismatches, 0,
+            "Anti-Diagonal Parity Theorem REFUTED at dim={dim}: {mismatches} mismatches"
+        );
+
+        // Cross-check: Quarter Rule still holds
+        assert_eq!(
+            total_pure * 3, total_mixed,
+            "Quarter Rule failed: pure={total_pure}, mixed={total_mixed}"
+        );
+    }
 }
