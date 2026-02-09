@@ -1370,4 +1370,215 @@ mod tests {
             stats_64.correlation_coeff,
         );
     }
+
+    // -------------------------------------------------------------------
+    // CDP "Two-Rule Kit" verification (de Marrais, task #62)
+    // -------------------------------------------------------------------
+
+    #[test]
+    fn test_cdp_rule1_quaternion_to_octonion() {
+        // Rule 1: e_u * e_G = +e_{u+G} for all u in 1..G, G = new generator.
+        // At the quaternion->octonion step: G = 4.
+        // e_1 * e_4 = +e_5, e_2 * e_4 = +e_6, e_3 * e_4 = +e_7.
+        let dim = 8;
+        let g = 4;
+        for u in 1..g {
+            let sign = cd_basis_mul_sign(dim, u, g);
+            assert_eq!(
+                sign, 1,
+                "Rule 1 (Q->O): e_{u} * e_{g} should be +e_{}, got sign={}",
+                u + g, sign
+            );
+            // Also verify the product index is u XOR g = u + g (since u < g)
+            assert_eq!(u ^ g, u + g, "u XOR g should equal u + g when u < g");
+        }
+    }
+
+    #[test]
+    fn test_cdp_rule1_octonion_to_sedenion() {
+        // Rule 1 at the octonion->sedenion step: G = 8.
+        // e_u * e_8 = +e_{u+8} for all u in 1..8.
+        let dim = 16;
+        let g = 8;
+        for u in 1..g {
+            let sign = cd_basis_mul_sign(dim, u, g);
+            assert_eq!(
+                sign, 1,
+                "Rule 1 (O->S): e_{u} * e_{g} should be +e_{}, got sign={}",
+                u + g, sign
+            );
+        }
+    }
+
+    #[test]
+    fn test_cdp_rule2_quaternion_triples_lift_to_octonion() {
+        // Rule 2: From quaternion triple (1,2,3) where e_1*e_2 = +e_3,
+        // adding G=4 to two of the three indices produces new valid triples
+        // in the octonion algebra.
+        //
+        // From (1,2,3), the three "lifts" adding G to pairs are:
+        //   (1, 2+4, 3+4) = (1, 6, 7): e_1*e_6 should yield +/-e_7
+        //   (1+4, 2, 3+4) = (5, 2, 7): e_5*e_2 should yield +/-e_7
+        //   (1+4, 2+4, 3) = (5, 6, 3): e_5*e_6 should yield +/-e_3
+        //
+        // But the KEY prediction is that after Rule 1 gives us triples
+        // (1,4,5), (2,4,6), (3,4,7), Rule 2 from (1,2,3) gives
+        // the remaining Fano triples. Let's verify all 7.
+
+        let dim = 8;
+
+        // The 7 expected Fano triples of the octonions:
+        let fano_triples = [
+            (1, 2, 3), // original quaternion triple
+            (1, 4, 5), // Rule 1: e_1 * e_4
+            (2, 4, 6), // Rule 1: e_2 * e_4
+            (3, 4, 7), // Rule 1: e_3 * e_4
+            (1, 6, 7), // Rule 2: (1, 2+4, 3+4)
+            (2, 5, 7), // Rule 2: (1+4, 2, 3+4) rearranged
+            (3, 5, 6), // Rule 2: (1+4, 2+4, 3) rearranged
+        ];
+
+        for (a, b, c) in fano_triples {
+            // e_a * e_b should give +/- e_c (i.e., a XOR b = c)
+            assert_eq!(
+                a ^ b, c,
+                "XOR check: {} ^ {} = {}, expected {}",
+                a, b, a ^ b, c
+            );
+
+            let sign = cd_basis_mul_sign(dim, a, b);
+            // Sign should be +1 or -1 (both are valid triples)
+            assert!(
+                sign == 1 || sign == -1,
+                "e_{a} * e_{b}: sign should be +/-1, got {sign}"
+            );
+        }
+
+        // Verify we have all 7 Fano triples by checking all 21 pairs
+        // of distinct imaginary indices lie on exactly one triple.
+        let mut pair_to_third = std::collections::HashMap::new();
+        for &(a, b, c) in &fano_triples {
+            pair_to_third.insert((a.min(b), a.max(b)), c);
+            pair_to_third.insert((a.min(c), a.max(c)), b);
+            pair_to_third.insert((b.min(c), b.max(c)), a);
+        }
+        assert_eq!(
+            pair_to_third.len(), 21,
+            "Every pair of distinct imaginary indices should appear exactly once"
+        );
+    }
+
+    #[test]
+    fn test_cdp_rule2_octonion_triples_lift_to_sedenion() {
+        // Rule 2 at the sedenion level: from each octonion triple (a,b,c),
+        // adding G=8 to two indices produces new sedenion triples.
+        // Total: 7 original + 7*3 = 21 new from Rule 2 = 28.
+        // Plus 7 from Rule 1 (u, 8, u+8 for u=1..7) = 35 total.
+        // The sedenion has C(15,2)/3 = 35 triples.
+        let dim = 16;
+        let g = 8;
+
+        // All 7 octonion Fano triples
+        let oct_triples: [(usize, usize, usize); 7] = [
+            (1, 2, 3), (1, 4, 5), (2, 4, 6), (3, 4, 7),
+            (1, 6, 7), (2, 5, 7), (3, 5, 6),
+        ];
+
+        let mut all_triples = Vec::new();
+
+        // Original octonion triples (still valid in sedenion)
+        for &(a, b, c) in &oct_triples {
+            assert_eq!(a ^ b, c);
+            let sign = cd_basis_mul_sign(dim, a, b);
+            assert!(sign == 1 || sign == -1);
+            all_triples.push((a, b, c));
+        }
+
+        // Rule 1 triples: (u, 8, u+8) for u = 1..8
+        for u in 1..g {
+            let sign = cd_basis_mul_sign(dim, u, g);
+            assert_eq!(sign, 1, "Rule 1: e_{u} * e_{g} should be +1");
+            all_triples.push((u, g, u + g));
+        }
+
+        // Rule 2: lift each octonion triple by adding G to two indices
+        for &(a, b, c) in &oct_triples {
+            // Lift 1: (a, b+G, c+G)
+            let t1 = (a, b + g, c + g);
+            assert_eq!(t1.0 ^ t1.1, t1.2, "Rule 2 lift 1 XOR: {:?}", t1);
+            let s1 = cd_basis_mul_sign(dim, t1.0, t1.1);
+            assert!(s1 == 1 || s1 == -1, "Rule 2 lift 1 sign: {s1}");
+            all_triples.push(t1);
+
+            // Lift 2: (a+G, b, c+G)
+            let t2 = (a + g, b, c + g);
+            assert_eq!(t2.0 ^ t2.1, t2.2, "Rule 2 lift 2 XOR: {:?}", t2);
+            let s2 = cd_basis_mul_sign(dim, t2.0, t2.1);
+            assert!(s2 == 1 || s2 == -1, "Rule 2 lift 2 sign: {s2}");
+            all_triples.push(t2);
+
+            // Lift 3: (a+G, b+G, c)
+            let t3 = (a + g, b + g, c);
+            assert_eq!(t3.0 ^ t3.1, t3.2, "Rule 2 lift 3 XOR: {:?}", t3);
+            let s3 = cd_basis_mul_sign(dim, t3.0, t3.1);
+            assert!(s3 == 1 || s3 == -1, "Rule 2 lift 3 sign: {s3}");
+            all_triples.push(t3);
+        }
+
+        // Total: 7 (original) + 7 (Rule 1) + 21 (Rule 2) = 35
+        assert_eq!(all_triples.len(), 35, "sedenion should have 35 triples");
+
+        // Verify ALL pairs of distinct nonzero indices 1..15 are covered
+        let mut covered_pairs = std::collections::HashSet::new();
+        for &(a, b, c) in &all_triples {
+            covered_pairs.insert((a.min(b), a.max(b)));
+            covered_pairs.insert((a.min(c), a.max(c)));
+            covered_pairs.insert((b.min(c), b.max(c)));
+        }
+        // C(15,2) = 105 pairs, each on exactly one triple (35 * 3 = 105)
+        assert_eq!(
+            covered_pairs.len(), 105,
+            "All C(15,2)=105 pairs should be covered by 35 triples"
+        );
+    }
+
+    #[test]
+    fn test_cdp_xor_index_universality() {
+        // Fundamental property: for any dim = 2^n and any basis indices p,q,
+        // e_p * e_q = sign * e_{p XOR q}. Verify for all pairs up to dim=32.
+        for &dim in &[4, 8, 16, 32] {
+            for p in 0..dim {
+                for q in 0..dim {
+                    let sign = cd_basis_mul_sign(dim, p, q);
+                    assert!(
+                        sign == 1 || sign == -1,
+                        "dim={dim}, e_{p} * e_{q}: sign should be +/-1, got {sign}"
+                    );
+
+                    // Cross-check with floating-point multiplication
+                    let mut a = vec![0.0; dim];
+                    let mut b = vec![0.0; dim];
+                    a[p] = 1.0;
+                    b[q] = 1.0;
+                    let prod = cd_multiply(&a, &b);
+
+                    // Product should be nonzero only at index p XOR q
+                    let target = p ^ q;
+                    for (k, &v) in prod.iter().enumerate() {
+                        if k == target {
+                            assert!(
+                                (v - sign as f64).abs() < 1e-10,
+                                "dim={dim}, e_{p}*e_{q}: prod[{k}]={v}, expected {sign}"
+                            );
+                        } else {
+                            assert!(
+                                v.abs() < 1e-10,
+                                "dim={dim}, e_{p}*e_{q}: prod[{k}]={v}, should be 0"
+                            );
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
