@@ -49,6 +49,7 @@ pub mod dendrogram;
 pub mod null_models;
 pub mod adaptive;
 pub mod subset_search;
+pub mod codebook_null;
 #[cfg(feature = "gpu")]
 pub mod gpu;
 
@@ -79,6 +80,10 @@ pub use null_models::{
     ToroidalShiftNull, RandomRotationNull, all_strategies, run_adaptive_null_test,
 };
 pub use adaptive::{AdaptiveConfig, AdaptiveResult, StopReason, adaptive_permutation_test};
+pub use codebook_null::{
+    CodebookNullResult, extract_zd_basis_pairs, dictionary_to_column_major,
+    selective_mean_squared_distance, run_codebook_null_test, codebook_null_test_from_dim,
+};
 pub use subset_search::{
     SubsetTestResult, SubsetSearchResult, SubsetSearchConfig,
     attribute_subsets, project_data, subset_search,
