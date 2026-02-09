@@ -7,6 +7,9 @@
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 # Convos Claim Candidates (Auto-Scan)
 
 Purpose: provide an inbox for triage into `docs/CLAIMS_EVIDENCE_MATRIX.md`.

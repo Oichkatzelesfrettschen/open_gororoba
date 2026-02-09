@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Bibliography: Sedenion Physics, Modular Entropy, and Noncommutative Geometry
 
 **Date:** January 26, 2026

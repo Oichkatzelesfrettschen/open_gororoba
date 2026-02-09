@@ -9,15 +9,18 @@ kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "e41f87f5f326b2491a2ef4d9742d74856c220b6ca7e0c56c2d8829b9632fcd27"
-source_line_count = 74
-source_size_bytes = 15627
-content_sha256 = "e41f87f5f326b2491a2ef4d9742d74856c220b6ca7e0c56c2d8829b9632fcd27"
+source_sha256 = "a1e68fd9de6c43ae4a6b5f7a2861476e18e0f1cf0d72fe66d227ba88397ec712"
+source_line_count = 77
+source_size_bytes = 15724
+content_sha256 = "a1e68fd9de6c43ae4a6b5f7a2861476e18e0f1cf0d72fe66d227ba88397ec712"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
 content_format = "markdown"
 content_markdown = """
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/reports_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/reports_narratives.toml -->
 

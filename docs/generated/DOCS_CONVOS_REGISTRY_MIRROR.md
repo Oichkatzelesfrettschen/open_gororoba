@@ -15,29 +15,29 @@ Authoritative source: `registry/docs_convos.toml`.
 
 - Source markdown: `docs/convos/CONVOS_CLAIMS_INBOX.md`
 - Content kind: `claims_inbox`
-- Line count: 130
+- Line count: 133
 - Claim refs (6): C-403, C-404, C-405, C-406, C-407, C-408
 
 ### CVX-002: Convos audit workspace
 
 - Source markdown: `docs/convos/README.md`
 - Content kind: `convo_note`
-- Line count: 31
+- Line count: 34
 
 ### CVX-003: Audit: convos/1_read_nonuser_lines_cont.md
 
 - Source markdown: `docs/convos/audit_1_read_nonuser_lines_cont.md`
 - Content kind: `audit_extract`
-- Line count: 1096
+- Line count: 1099
 
 ### CVX-004: Implement-next backlog (from convos/1_read_nonuser_lines_cont.md)
 
 - Source markdown: `docs/convos/implement_next_from_1_read_nonuser_lines_cont.md`
 - Content kind: `implementation_extract`
-- Line count: 46
+- Line count: 49
 
 ### CVX-005: Convos keyword summary: convos/1_read_nonuser_lines_cont.md
 
 - Source markdown: `docs/convos/keywords_1_read_nonuser_lines_cont.md`
 - Content kind: `keyword_extract`
-- Line count: 118
+- Line count: 121

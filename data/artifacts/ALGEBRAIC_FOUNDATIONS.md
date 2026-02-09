@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Algebraic Foundations: Re-Deriving $G_2$ Structure via Homotopy Transfer
 
 **Date:** January 26, 2026

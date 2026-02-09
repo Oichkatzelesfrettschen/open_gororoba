@@ -144,8 +144,8 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
 - Strategy: `artifact_only_no_manual_edit`
 - Status: `active`
 - Source markdown:
-  - `data/artifacts/*.md`
-- Notes: Keep as generated outputs with explicit regeneration commands; do not hand-edit artifact markdown.
+  - `data/artifacts/README.md`
+- Notes: Keep README markdown in-place for repo navigation and artifact conventions.
 
 ### KM-007: research_narratives
 
@@ -242,6 +242,31 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - `docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md`
   - `docs/convos/*.md`
 - Notes: docs/convos extracts are TOML-first and rendered back into docs/convos/*.md mirrors.
+
+### KM-018: data_artifact_narratives
+
+- Strategy: `toml_primary_generated_mirror`
+- Status: `complete`
+- Source markdown:
+  - `data/artifacts/ALGEBRAIC_FOUNDATIONS.md`
+  - `data/artifacts/BIBLIOGRAPHY.md`
+  - `data/artifacts/FINAL_REPORT.md`
+  - `data/artifacts/QUANTUM_REPORT.md`
+  - `data/artifacts/SIMULATION_REPORT.md`
+  - `data/artifacts/extracted_equations.md`
+  - `data/artifacts/reality_check_and_synthesis.md`
+- Authoritative TOML:
+  - `registry/data_artifact_narratives.toml`
+- Generated mirrors:
+  - `docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md`
+  - `data/artifacts/ALGEBRAIC_FOUNDATIONS.md`
+  - `data/artifacts/BIBLIOGRAPHY.md`
+  - `data/artifacts/FINAL_REPORT.md`
+  - `data/artifacts/QUANTUM_REPORT.md`
+  - `data/artifacts/SIMULATION_REPORT.md`
+  - `data/artifacts/extracted_equations.md`
+  - `data/artifacts/reality_check_and_synthesis.md`
+- Notes: Selected high-information artifact narratives are TOML-first; README remains markdown for repository conventions.
 
 ## Phases
 
@@ -353,6 +378,21 @@ Authoritative source: `registry/knowledge_migration_plan.toml`.
   - registry/docs_convos.toml
   - docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md
   - docs/convos/*.md
+
+### KMP-P13: data_artifact_narratives_registry_normalization
+
+- Status: `complete`
+- Deliverables:
+  - src/scripts/analysis/normalize_data_artifact_narratives_registry.py
+  - registry/data_artifact_narratives.toml
+  - docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md
+  - data/artifacts/ALGEBRAIC_FOUNDATIONS.md
+  - data/artifacts/BIBLIOGRAPHY.md
+  - data/artifacts/FINAL_REPORT.md
+  - data/artifacts/QUANTUM_REPORT.md
+  - data/artifacts/SIMULATION_REPORT.md
+  - data/artifacts/extracted_equations.md
+  - data/artifacts/reality_check_and_synthesis.md
 
 ## Policies
 

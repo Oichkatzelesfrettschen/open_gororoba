@@ -9,10 +9,10 @@ kind = "markdown_mirror"
 status = "active"
 migration_priority = "critical"
 generated = true
-source_sha256 = "ab4e4f6c7c0c56dd47706c0083ba06bf3537f2ff09a3b460e14779c42c2f2273"
+source_sha256 = "415f98eb83ba337c1076a299c80f5e1a5f73721038c903e357b512e790d041d1"
 source_line_count = 44
 source_size_bytes = 1231
-content_sha256 = "ab4e4f6c7c0c56dd47706c0083ba06bf3537f2ff09a3b460e14779c42c2f2273"
+content_sha256 = "415f98eb83ba337c1076a299c80f5e1a5f73721038c903e357b512e790d041d1"
 migrated_at = "deterministic"
 capture_mode = "raw_markdown_capture"
 authoritative = false
@@ -35,31 +35,31 @@ Authoritative source: `registry/docs_convos.toml`.
 
 - Source markdown: `docs/convos/CONVOS_CLAIMS_INBOX.md`
 - Content kind: `claims_inbox`
-- Line count: 127
+- Line count: 130
 - Claim refs (6): C-403, C-404, C-405, C-406, C-407, C-408
 
 ### CVX-002: Convos audit workspace
 
 - Source markdown: `docs/convos/README.md`
 - Content kind: `convo_note`
-- Line count: 28
+- Line count: 31
 
 ### CVX-003: Audit: convos/1_read_nonuser_lines_cont.md
 
 - Source markdown: `docs/convos/audit_1_read_nonuser_lines_cont.md`
 - Content kind: `audit_extract`
-- Line count: 1093
+- Line count: 1096
 
 ### CVX-004: Implement-next backlog (from convos/1_read_nonuser_lines_cont.md)
 
 - Source markdown: `docs/convos/implement_next_from_1_read_nonuser_lines_cont.md`
 - Content kind: `implementation_extract`
-- Line count: 43
+- Line count: 46
 
 ### CVX-005: Convos keyword summary: convos/1_read_nonuser_lines_cont.md
 
 - Source markdown: `docs/convos/keywords_1_read_nonuser_lines_cont.md`
 - Content kind: `keyword_extract`
-- Line count: 115
+- Line count: 118
 
 """

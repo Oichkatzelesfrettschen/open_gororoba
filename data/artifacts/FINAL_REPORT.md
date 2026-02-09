@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/data_artifact_narratives.toml -->
+
 # Final Technical Report: Topology, Spectral Flow, and Holography
 
 **Date:** January 26, 2026

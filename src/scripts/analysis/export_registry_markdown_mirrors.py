@@ -1338,6 +1338,56 @@ def export_docs_root_narratives_legacy(repo_root: Path) -> None:
         _write(path, "\n".join(lines))
 
 
+def export_data_artifact_narratives(repo_root: Path, out_path: Path) -> None:
+    data = _load_toml(repo_root / "registry/data_artifact_narratives.toml")
+    meta = data.get("data_artifact_narratives", {})
+    docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
+    lines = _header("Data Artifact Narratives Registry Mirror")
+    lines.append("Authoritative source: `registry/data_artifact_narratives.toml`.")
+    lines.append("")
+    lines.append(f"- Updated: {meta.get('updated', '')}")
+    lines.append(f"- Source markdown count: {meta.get('source_markdown_count', len(docs))}")
+    lines.append(f"- Document count: {meta.get('document_count', len(docs))}")
+    lines.append("")
+    lines.append("## Documents")
+    lines.append("")
+    for row in docs:
+        lines.append(f"### {row.get('id', 'ART-???')}: {row.get('title', '(untitled)')}")
+        lines.append("")
+        lines.append(f"- Source markdown: `{row.get('source_markdown', '')}`")
+        lines.append(f"- Content kind: `{row.get('content_kind', '')}`")
+        lines.append(f"- Line count: {row.get('line_count', 0)}")
+        claims = row.get("claim_refs", [])
+        if claims:
+            lines.append(f"- Claim refs ({len(claims)}): {', '.join(claims)}")
+        lines.append("")
+    _write(out_path, "\n".join(lines))
+
+
+def export_data_artifact_narratives_legacy(repo_root: Path) -> None:
+    data = _load_toml(repo_root / "registry/data_artifact_narratives.toml")
+    docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
+    for row in docs:
+        rel_path = str(row.get("source_markdown", "")).strip()
+        if not rel_path:
+            continue
+        path = repo_root / rel_path
+        body = str(row.get("body_markdown", "")).strip("\n")
+        lines: list[str] = [
+            "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+            "<!-- Source of truth: registry/data_artifact_narratives.toml -->",
+            "",
+        ]
+        if body:
+            lines.extend(body.splitlines())
+        else:
+            lines.append(f"# {row.get('title', Path(rel_path).stem)}")
+            lines.append("")
+            lines.append("(No body_markdown captured in registry/data_artifact_narratives.toml.)")
+        lines.append("")
+        _write(path, "\n".join(lines))
+
+
 def export_reports_narratives(repo_root: Path, out_path: Path) -> None:
     data = _load_toml(repo_root / "registry/reports_narratives.toml")
     meta = data.get("reports_narratives", {})
@@ -1491,6 +1541,9 @@ def main() -> int:
     export_research_narratives(repo_root, out_dir / "RESEARCH_NARRATIVES_REGISTRY_MIRROR.md")
     export_book_docs(repo_root, out_dir / "BOOK_DOCS_REGISTRY_MIRROR.md")
     export_docs_root_narratives(repo_root, out_dir / "DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md")
+    export_data_artifact_narratives(
+        repo_root, out_dir / "DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md"
+    )
     export_reports_narratives(repo_root, out_dir / "REPORTS_NARRATIVES_REGISTRY_MIRROR.md")
     export_docs_convos(repo_root, out_dir / "DOCS_CONVOS_REGISTRY_MIRROR.md")
     export_insights_legacy(repo_root, repo_root / "docs/INSIGHTS.md")
@@ -1512,6 +1565,7 @@ def main() -> int:
         export_research_narratives_legacy(repo_root)
         export_book_docs_legacy(repo_root)
         export_docs_root_narratives_legacy(repo_root)
+        export_data_artifact_narratives_legacy(repo_root)
         export_reports_narratives_legacy(repo_root)
         export_docs_convos_legacy(repo_root)
 

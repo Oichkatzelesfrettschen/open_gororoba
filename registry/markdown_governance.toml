@@ -5,9 +5,9 @@
 generated_at = "deterministic"
 authoritative = true
 document_count = 242
-generated_artifact_count = 8
+generated_artifact_count = 1
 manual_narrative_count = 7
-toml_generated_mirror_count = 227
+toml_generated_mirror_count = 234
 
 [[document]]
 path = "AGENTS.md"
@@ -68,34 +68,38 @@ notes = "Manual narrative source; raw-captured in registry/knowledge/docs."
 [[document]]
 path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
 id = "MDG-0008"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/data_artifact_narratives.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "data/artifacts/BIBLIOGRAPHY.md"
 id = "MDG-0009"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/data_artifact_narratives.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "data/artifacts/FINAL_REPORT.md"
 id = "MDG-0010"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/data_artifact_narratives.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "data/artifacts/QUANTUM_REPORT.md"
 id = "MDG-0011"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/data_artifact_narratives.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "data/artifacts/README.md"
@@ -108,26 +112,29 @@ notes = "Generated artifact/report; preserve reproducibility."
 [[document]]
 path = "data/artifacts/SIMULATION_REPORT.md"
 id = "MDG-0013"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/data_artifact_narratives.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "data/artifacts/extracted_equations.md"
 id = "MDG-0014"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/data_artifact_narratives.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "data/artifacts/reality_check_and_synthesis.md"
 id = "MDG-0015"
-kind = "artifact_report"
-mode = "generated_artifact"
-header_required = false
-notes = "Generated artifact/report; preserve reproducibility."
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/data_artifact_narratives.toml"]
+notes = "Generated from TOML registries and overlays."
 
 [[document]]
 path = "data/csv/README.md"
