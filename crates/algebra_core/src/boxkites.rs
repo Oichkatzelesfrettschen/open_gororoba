@@ -2147,6 +2147,138 @@ mod tests {
         }
     }
 
+    // -----------------------------------------------------------------------
+    // De Marrais primitive ZD structure verification (task #63)
+    // -----------------------------------------------------------------------
+
+    #[test]
+    fn test_intra_assessor_diagonals_never_zero_divide() {
+        // De Marrais: the two diagonals (V,/) and (V,\) within the SAME
+        // assessor plane do NOT zero-divide each other. This is because
+        // they span the same 2-plane and their product is pure-imaginary
+        // (not zero).
+        let assessors = primitive_assessors();
+        for a in &assessors {
+            let d_plus = a.diagonal(1.0);
+            let d_minus = a.diagonal(-1.0);
+
+            // Forward product: d+ * d-
+            let prod_fwd = cd_multiply(&d_plus, &d_minus);
+            let norm_fwd = cd_norm_sq(&prod_fwd).sqrt();
+
+            // Reverse product: d- * d+
+            let prod_rev = cd_multiply(&d_minus, &d_plus);
+            let norm_rev = cd_norm_sq(&prod_rev).sqrt();
+
+            assert!(
+                norm_fwd > 0.1,
+                "Intra-assessor ({},{}) forward product should be non-zero, got norm={}",
+                a.low, a.high, norm_fwd
+            );
+            assert!(
+                norm_rev > 0.1,
+                "Intra-assessor ({},{}) reverse product should be non-zero, got norm={}",
+                a.low, a.high, norm_rev
+            );
+        }
+    }
+
+    #[test]
+    fn test_every_boxkite_edge_has_zero_product() {
+        // Every edge (co-assessor pair) in every box-kite must have at
+        // least one sign combination (s,t) such that diag(s)*diag(t) = 0.
+        let boxkites = find_box_kites(16, 1e-10);
+        assert_eq!(boxkites.len(), 7);
+
+        for bk in &boxkites {
+            assert_eq!(bk.edges.len(), 12, "octahedron has 12 edges");
+            for &(i, j) in &bk.edges {
+                let has_zp = diagonal_zero_product(
+                    &bk.assessors[i], &bk.assessors[j], 1e-10,
+                );
+                assert!(
+                    has_zp.is_some(),
+                    "Edge ({},{})--({},{}) in box-kite {} should have a zero-product",
+                    bk.assessors[i].low, bk.assessors[i].high,
+                    bk.assessors[j].low, bk.assessors[j].high,
+                    bk.strut_signature,
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_each_diagonal_is_zero_divisor() {
+        // Each diagonal direction d = (e_low +/- e_high)/sqrt(2) should
+        // be a zero-divisor: there exists some other sedenion b such that
+        // d*b = 0. This is verified by checking left-multiplication matrix
+        // nullity.
+        use crate::annihilator::annihilator_info;
+        let assessors = primitive_assessors();
+        for a in &assessors {
+            for sign in [-1.0, 1.0] {
+                let d = a.diagonal(sign);
+                let info = annihilator_info(&d, 16, 1e-10);
+                assert!(
+                    info.left_nullity > 0,
+                    "Diagonal ({},{}) sign={} should be a left zero-divisor, \
+                     but left_nullity={}",
+                    a.low, a.high, sign as i8, info.left_nullity
+                );
+                assert!(
+                    info.right_nullity > 0,
+                    "Diagonal ({},{}) sign={} should be a right zero-divisor, \
+                     but right_nullity={}",
+                    a.low, a.high, sign as i8, info.right_nullity
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_intra_assessor_product_is_pure_basis() {
+        // Within an assessor (low, high), the product d+*d- should be
+        // a pure basis element (up to sign). Since (e_l + e_h)(e_l - e_h)
+        // = e_l^2 - e_h*e_l + e_l*e_h - e_h^2 = -1 + [e_l, e_h] - (-1)
+        // = [e_l, e_h] (the commutator), which for sedenion basis elements
+        // is +/- 2*e_{l XOR h}. After normalization by 1/sqrt(2)^2 = 1/2,
+        // we get +/- e_{l XOR h}.
+        let assessors = primitive_assessors();
+        for a in &assessors {
+            let d_plus = a.diagonal(1.0);
+            let d_minus = a.diagonal(-1.0);
+            let prod = cd_multiply(&d_plus, &d_minus);
+
+            // Product should have exactly one nonzero component
+            let nonzero: Vec<(usize, f64)> = prod.iter().enumerate()
+                .filter(|(_, &v)| v.abs() > 1e-10)
+                .map(|(i, &v)| (i, v))
+                .collect();
+
+            assert_eq!(
+                nonzero.len(), 1,
+                "Intra-assessor ({},{}) product should have exactly 1 nonzero \
+                 component, got {:?}",
+                a.low, a.high, nonzero
+            );
+
+            // That component should be at index low XOR high
+            let expected_idx = a.low ^ a.high;
+            assert_eq!(
+                nonzero[0].0, expected_idx,
+                "Nonzero component at index {}, expected {} (= {} XOR {})",
+                nonzero[0].0, expected_idx, a.low, a.high
+            );
+
+            // Value should be +/- 1 (since (1/sqrt2)^2 * 2 = 1)
+            assert!(
+                (nonzero[0].1.abs() - 1.0).abs() < 1e-10,
+                "Component magnitude should be 1.0, got {}",
+                nonzero[0].1.abs()
+            );
+        }
+    }
+
     #[test]
     fn test_adjacency_matrix_symmetry() {
         let comps = motif_components_for_cross_assessors(16);
