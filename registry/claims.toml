@@ -4213,3 +4213,27 @@ where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_psi_gf2_pol
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: ANF computed via Mobius transform at dims 4/8/16/32 for psi, 16/32 for eta. WHAT WOULD REFUTE: any dimension where degree(psi) != log2(dim) or degree(eta) != log2(dim)-1."
+
+[[claim]]
+id = "C-528"
+statement = "Quarter Rule Exactness: pure * 4 = total EXACTLY at every dimension (not approximate, not asymptotic). This is a trivial algebraic consequence of the 1:3 ratio: if pure * 3 = nonpure = total - pure, then 4 * pure = total. Verified at dims 16, 32, 64, 128 with zero deviation."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_mechanism_depth_analysis)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: pure*4-total = 0 at dims 16/32/64/128. Follows algebraically from the 1:3 ratio (C-520). Cannot be refuted independently."
+
+[[claim]]
+id = "C-529"
+statement = "Frustration Oscillation: the GF(2) cohomological frustration ratio (frustrated non-tree edges / b1) does NOT converge monotonically. The sequence is 0.000 (dim=16), 0.307 (dim=32), 0.377 (dim=64), 0.388 (dim=128), 0.385 (dim=256). It oscillates around approximately 0.386, with the dim=128->256 transition being a DECREASE."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_mechanism_depth_analysis, test_frustration_ratio_dim256)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exact computation at 5 dimensions. WHAT WOULD REFUTE: dim=512 data showing the ratio diverges from the ~0.386 neighborhood."
+
+[[claim]]
+id = "C-530"
+statement = "Vertex-Median Symmetry: F(1,0) = F(1,1) in canonical ordering (i<j<k) is explained by the symmetric role of the middle vertex j. Each mixed triangle has one 'odd' edge; N_{ij-odd} = N_{jk-odd} because both edges contain vertex j. Under cyclic vertex relabeling, the nonzero fiber counts {F(0,1), F(1,0), F(1,1)} cyclically permute. The real invariant is: two of the three nonzero fibers are always equal, and the unequal one corresponds to the 'diagonal' edge that skips the middle vertex. Verified at dims 16/32/64/128."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_vertex_median_symmetry, test_mechanism_depth_analysis)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: exact N_ij_odd = N_jk_odd at 4 dimensions, cyclic permutation of fibers under reordering at dims 16/32. WHAT WOULD REFUTE: any dimension where N_ij_odd != N_jk_odd."
