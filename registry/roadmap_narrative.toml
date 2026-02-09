@@ -84,10 +84,10 @@ spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
 Penrose process, coordinates, null constraint, energy-conserving integrator.
 **Claims infrastructure**: COMPLETE.  Rust claims-audit + claims-verify binaries
 replace 11 Python scripts.  118 backfill items confirmed Verified (2026-02-07).
-**Test count**: 2280 Rust tests pass (unit + doc + integration), 0 clippy warnings.
+**Test count**: 2312 Rust tests pass (unit + doc + integration), 0 clippy warnings.
 gororoba_kernels removed (2026-02-06).
 **GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
-**Claims**: 500 (C-001..C-500). **Insights**: I-001..I-017. **Experiments**: E-001..E-013. **Binaries**: 40.
+**Claims**: 527 (C-001..C-527). **Insights**: I-001..I-018. **Experiments**: E-001..E-013. **Binaries**: 40.
 
 ```
 open_gororoba/
@@ -692,7 +692,39 @@ investigate the relationship between filtration depth and ultrametric structure.
   significantly ultrametric (Lambda_256, z=17.07, p<0.005).
 
 **Claims**: C-498..C-500 (3 claims)
-**Test count**: 2280 (10 new tests in S25)
+**Test count**: 2280 (10 new tests in S25 first phase)
+
+### 7.13 Anti-Diagonal Parity Mechanism (Sprint 25)
+
+**Goal**: Derive the complete mechanistic explanation for the Universal Double 3:1 Law
+(C-487) from the Cayley-Dickson doubling construction.
+
+**Key results**:
+- Sigma correspondence (C-515): Within each box-kite, the sigma invariant
+  (product of non-assessor signs per face) exactly determines the face sign pattern.
+- Half-Half Edge Law (C-517): eta=0 and eta=1 edges are exactly balanced in every
+  component at every dimension.
+- Anti-Diagonal Parity Theorem (C-520, C-521): The GF(2) twist exponent psi(i,j)
+  forms a 2x2 matrix M_ab per edge. Its anti-diagonal XOR eta(a,b) = psi(lo_a,hi_b)
+  XOR psi(hi_a,lo_b) characterizes the pure/mixed partition. Per triangle, the
+  Klein-four invariant F = (eta_ab XOR eta_bc, eta_bc XOR eta_ac) in GF(2)^2 has
+  1 zero state (pure) and 3 nonzero states (mixed), forcing 1:3 combinatorially.
+  Verified at dims 16/32/64/128/256 (13.3M+ triangles, 0 mismatches).
+- GF(2) coboundary phase transition (C-523): At dim=16 (sedenions), eta is a GF(2)
+  coboundary (0 frustrated cycles). At dim>=32, eta is NOT a coboundary. Frustration
+  ratio converges toward ~39%.
+- Klein-four fiber symmetry (C-524): F(1,0) = F(1,1) exactly at all dimensions
+  and within every edge-count regime. This constrains the 3 nonzero fibers.
+- Eta regime independence (C-525): The 1:3 ratio, eta balance, and fiber symmetry
+  all hold independently within each edge-count regime.
+- CD doubling recursion (C-526): eta = 1 XOR eta_half, traced to the conjugation
+  asymmetry in the Cayley-Dickson doubling formula (case 3: hi*lo = -s_half).
+- GF(2) polynomial degree (C-527): psi ANF degree = log2(dim), eta ANF degree =
+  log2(dim)-1. The anti-diagonal XOR reduces effective degree by 1.
+
+**Claims**: C-501..C-527 (27 claims)
+**Insight**: I-018 (Anti-Diagonal Parity Theorem)
+**Test count**: 2312 (32 new tests in S25 second phase)
 
 ---
 

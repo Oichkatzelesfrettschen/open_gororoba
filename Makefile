@@ -14,7 +14,7 @@
 .PHONY: registry-normalize-data-artifact-narratives registry-bootstrap-data-artifact-narratives
 .PHONY: registry-bootstrap-claims-support
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
-.PHONY: registry-ingest-legacy registry-export-markdown registry-verify-mirrors
+.PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data run coq latex
@@ -157,10 +157,12 @@ registry-normalize-narratives:
 registry-normalize-operational-narratives:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_operational_narrative_overlays.py
 
-registry-ingest-legacy: registry-normalize-narratives registry-normalize-operational-narratives registry-normalize-reports-narratives registry-normalize-docs-convos registry-normalize-data-artifact-narratives
+registry-ingest-legacy: registry-normalize-narratives registry-normalize-operational-narratives
 	@echo "Legacy markdown -> TOML ingest completed."
 
-registry-export-markdown: registry-migrate-corpus registry-ingest-legacy registry-governance
+registry-refresh: registry-migrate-corpus registry-ingest-legacy registry-governance
+
+registry-export-markdown: registry-refresh
 	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py
 
 registry-verify-mirrors: registry-export-markdown
@@ -170,8 +172,11 @@ registry-verify-mirrors: registry-export-markdown
 	PYTHONWARNINGS=error python3 src/verification/verify_toml_generated_mirror_immutability.py
 	PYTHONWARNINGS=error python3 src/verification/verify_claim_ticket_mirrors.py
 
-registry: registry-verify-mirrors
+registry: registry-refresh
 	cargo run --release --bin registry-check
+
+docs-publish: registry-verify-mirrors
+	@echo "OK: TOML-driven markdown mirrors generated and verified for publishing."
 
 ascii-check:
 	python3 bin/ascii_check.py --check

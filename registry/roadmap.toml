@@ -67,3 +67,30 @@ primary_outputs = [
   "docs/CLAIMS_EVIDENCE_MATRIX.md",
   "docs/CLAIMS_TASKS.md",
 ]
+
+[[workstream]]
+id = "WS-MECHANISM-001"
+name = "Anti-Diagonal Parity Mechanism"
+priority = "high"
+status = "done"
+sprint = "S25"
+description = "Complete mechanistic explanation for the Universal Double 3:1 Law (C-487). The GF(2) twist exponent psi(i,j) per edge yields a 2-bit anti-diagonal XOR invariant eta. Per triangle, the Klein-four invariant F = (eta_ab XOR eta_bc, eta_bc XOR eta_ac) in GF(2)^2 has 1 zero state (pure) and 3 nonzero states (mixed), forcing the 1:3 ratio combinatorially. Verified at dims 16/32/64/128/256. Key sub-results: sigma correspondence (C-515), Half-Half Edge Law (C-517), GF(2) coboundary phase transition at dim=16 (C-523), Klein-four fiber symmetry F(1,0)=F(1,1) universal (C-524), eta regime independence (C-525), CD doubling recursion eta=1 XOR eta_half (C-526), psi ANF degree=log2(dim) and eta degree=log2(dim)-1 (C-527)."
+primary_outputs = [
+  "crates/algebra_core/src/analysis/boxkites.rs",
+  "registry/claims.toml",
+  "registry/insights.toml",
+]
+claims = ["C-515", "C-516", "C-517", "C-518", "C-519", "C-520", "C-521", "C-522", "C-523", "C-524", "C-525", "C-526", "C-527"]
+insight = "I-018"
+
+[[workstream]]
+id = "WS-FACESIGN-001"
+name = "Face Sign Census and Double 3:1 Law"
+priority = "high"
+status = "done"
+sprint = "S20-S25"
+description = "Extended box-kite face sign census from dim=16 to dim=512 (33 regimes, 214M triangles). Discovered the Universal Double 3:1 Law (C-487): OneSameTwoOpp=3*AllSame AND TwoSameOneOpp=3*AllOpposite in ALL components at ALL dimensions. Derived the mechanism via Anti-Diagonal Parity Theorem (WS-MECHANISM-001)."
+primary_outputs = [
+  "crates/algebra_core/src/analysis/boxkites.rs",
+]
+claims = ["C-478", "C-479", "C-480", "C-481", "C-482", "C-483", "C-484", "C-485", "C-486", "C-487", "C-488", "C-489", "C-490", "C-491", "C-492", "C-493", "C-494", "C-495", "C-496", "C-497"]
