@@ -1111,6 +1111,352 @@ fn random_unit_vec(dim: usize, rng: &mut impl rand::Rng) -> Vec<f64> {
     v.iter().map(|x| x / norm).collect()
 }
 
+// ============================================================================
+// Parameterized Cayley-Dickson construction (split / mixed signatures)
+// ============================================================================
+
+/// Signature for a parameterized Cayley-Dickson algebra.
+///
+/// Each entry `gamma_k` controls the sign at the k-th doubling step:
+/// - A_0 = R
+/// - A_{k+1} = CD(A_k, gamma_{k+1})
+///
+/// The multiplication formula at each level is:
+///   (a,b)(c,d) = (ac + gamma * conj(d) * b, d * a + b * conj(c))
+///
+/// Standard algebras: all gamma = -1 (R -> C -> H -> O -> S -> ...)
+/// Split algebras:    all gamma = +1 (R -> split-C -> split-H -> split-O -> ...)
+/// Mixed: e.g., [-1, +1] at dim=4 gives tessarines (bicomplex numbers)
+#[derive(Clone, Debug, PartialEq, Eq)]
+pub struct CdSignature {
+    /// Twist values, one per doubling level. Index 0 = R->dim2, index 1 = dim2->dim4, etc.
+    gammas: Vec<i32>,
+}
+
+impl CdSignature {
+    /// Create a signature for the given dimension with all gammas set to `gamma`.
+    ///
+    /// `gamma = -1` gives the standard Cayley-Dickson algebra.
+    /// `gamma = +1` gives the split Cayley-Dickson algebra.
+    pub fn uniform(dim: usize, gamma: i32) -> Self {
+        assert!(dim.is_power_of_two() && dim >= 2);
+        assert!(gamma == -1 || gamma == 1);
+        let n = dim.trailing_zeros() as usize;
+        CdSignature {
+            gammas: vec![gamma; n],
+        }
+    }
+
+    /// Standard Cayley-Dickson signature (all gamma = -1).
+    pub fn standard(dim: usize) -> Self {
+        Self::uniform(dim, -1)
+    }
+
+    /// Split Cayley-Dickson signature (all gamma = +1).
+    pub fn split(dim: usize) -> Self {
+        Self::uniform(dim, 1)
+    }
+
+    /// Create a signature from explicit per-level gammas.
+    ///
+    /// `gammas[0]` = R -> dim2 twist, `gammas[1]` = dim2 -> dim4 twist, etc.
+    /// All values must be -1 or +1. Dimension is `2^gammas.len()`.
+    pub fn from_gammas(gammas: &[i32]) -> Self {
+        assert!(!gammas.is_empty());
+        assert!(gammas.iter().all(|&g| g == -1 || g == 1));
+        CdSignature {
+            gammas: gammas.to_vec(),
+        }
+    }
+
+    /// The algebra dimension: 2^n where n = number of doubling levels.
+    pub fn dim(&self) -> usize {
+        1 << self.gammas.len()
+    }
+
+    /// Number of doubling levels (= log2(dim)).
+    pub fn n_levels(&self) -> usize {
+        self.gammas.len()
+    }
+
+    /// The gamma value at doubling level k (0-indexed, 0 = innermost).
+    pub fn gamma(&self, level: usize) -> i32 {
+        self.gammas[level]
+    }
+
+    /// Whether this is the standard (all -1) signature.
+    pub fn is_standard(&self) -> bool {
+        self.gammas.iter().all(|&g| g == -1)
+    }
+
+    /// Whether this is the all-split (all +1) signature.
+    pub fn is_split(&self) -> bool {
+        self.gammas.iter().all(|&g| g == 1)
+    }
+}
+
+/// Sign of the basis product e_p * e_q in a parameterized CD algebra.
+///
+/// Generalizes [`cd_basis_mul_sign`] with per-level twist parameters.
+/// When `sig` is the standard signature (all -1), this produces identical
+/// results to `cd_basis_mul_sign`.
+///
+/// The recursion is the same as standard CD except in the (p >= half, q >= half)
+/// branch, where gamma at the current level modifies the sign:
+/// - Standard (gamma = -1): (0,b)(0,d) = -conj(d)*b
+/// - Split (gamma = +1): (0,b)(0,d) = +conj(d)*b
+pub fn cd_basis_mul_sign_split(dim: usize, p: usize, q: usize, sig: &CdSignature) -> i32 {
+    debug_assert!(dim.is_power_of_two() && dim >= 1);
+    debug_assert_eq!(dim, sig.dim());
+    debug_assert!(p < dim && q < dim);
+
+    cd_basis_mul_sign_split_inner(dim, p, q, &sig.gammas)
+}
+
+/// Inner recursive implementation with gamma slice.
+/// gammas is indexed [inner, ..., outer] -- gammas.last() is the current level.
+fn cd_basis_mul_sign_split_inner(dim: usize, p: usize, q: usize, gammas: &[i32]) -> i32 {
+    if dim == 1 {
+        return 1;
+    }
+
+    let half = dim / 2;
+    let gamma = gammas[gammas.len() - 1]; // outermost level
+    let inner = &gammas[..gammas.len() - 1];
+
+    if p < half && q < half {
+        return cd_basis_mul_sign_split_inner(half, p, q, inner);
+    }
+
+    if p < half && q >= half {
+        // (a,0) * (0,d) = (0, d*a)
+        return cd_basis_mul_sign_split_inner(half, q - half, p, inner);
+    }
+
+    if p >= half && q < half {
+        // (0,b) * (c,0) = (0, b*conj(c))
+        let s = cd_basis_mul_sign_split_inner(half, p - half, q, inner);
+        return if q == 0 { s } else { -s };
+    }
+
+    // p >= half && q >= half
+    // (0,b) * (0,d) = gamma * conj(d) * b
+    let qh = q - half;
+    let ph = p - half;
+    if qh == 0 {
+        // conj(e_0) = e_0, so gamma * e_0 * e_ph = gamma * e_ph
+        return gamma;
+    }
+    // conj(e_qh) = -e_qh when qh != 0
+    // gamma * (-e_qh) * e_ph = -gamma * (e_qh * e_ph)
+    -gamma * cd_basis_mul_sign_split_inner(half, qh, ph, inner)
+}
+
+/// Iterative version of [`cd_basis_mul_sign_split`].
+///
+/// Same loop structure as [`cd_basis_mul_sign_iter`] but reads gamma
+/// from the signature at each iteration level.
+pub fn cd_basis_mul_sign_split_iter(
+    dim: usize,
+    mut p: usize,
+    mut q: usize,
+    sig: &CdSignature,
+) -> i32 {
+    debug_assert!(dim.is_power_of_two() && dim >= 1);
+    debug_assert_eq!(dim, sig.dim());
+    debug_assert!(p < dim && q < dim);
+
+    let mut sign = 1i32;
+    let mut half = dim >> 1;
+    let n = sig.n_levels();
+    let mut level = n; // current level index (counts down from n to 1)
+
+    while half > 0 {
+        level -= 1;
+        let gamma = sig.gammas[level]; // gammas indexed inner-to-outer, level goes outer-to-inner
+        let p_hi = p >= half;
+        let q_hi = q >= half;
+
+        match (p_hi, q_hi) {
+            (false, false) => {}
+            (false, true) => {
+                let qh = q - half;
+                q = p;
+                p = qh;
+            }
+            (true, false) => {
+                p -= half;
+                if q != 0 {
+                    sign = -sign;
+                }
+            }
+            (true, true) => {
+                let qh = q - half;
+                let ph = p - half;
+                if qh == 0 {
+                    return gamma * sign;
+                }
+                // gamma * (-e_qh * e_ph) = -gamma * (e_qh * e_ph)
+                sign *= -gamma;
+                p = qh;
+                q = ph;
+            }
+        }
+
+        half >>= 1;
+    }
+
+    sign
+}
+
+/// Cayley-Dickson multiplication with configurable signature.
+///
+/// Generalizes [`cd_multiply`] with per-level twist parameters.
+/// The only change from standard is in the left component:
+///   L = a_l * c_l + gamma * conj(c_r) * a_r
+/// (standard uses gamma = -1, i.e., subtraction).
+pub fn cd_multiply_split(a: &[f64], b: &[f64], sig: &CdSignature) -> Vec<f64> {
+    let dim = a.len();
+    debug_assert_eq!(a.len(), b.len());
+    debug_assert_eq!(dim, sig.dim());
+
+    cd_multiply_split_inner(a, b, &sig.gammas)
+}
+
+fn cd_multiply_split_inner(a: &[f64], b: &[f64], gammas: &[i32]) -> Vec<f64> {
+    let dim = a.len();
+
+    if dim == 1 {
+        return vec![a[0] * b[0]];
+    }
+
+    let half = dim / 2;
+    let gamma = gammas[gammas.len() - 1] as f64;
+    let inner = &gammas[..gammas.len() - 1];
+
+    let (a_l, a_r) = a.split_at(half);
+    let (c_l, c_r) = b.split_at(half);
+
+    // L = a_l * c_l + gamma * conj(c_r) * a_r
+    let conj_c_r = cd_conjugate(c_r);
+    let term1 = cd_multiply_split_inner(a_l, c_l, inner);
+    let term2 = cd_multiply_split_inner(&conj_c_r, a_r, inner);
+
+    // R = c_r * a_l + a_r * conj(c_l)
+    let conj_c_l = cd_conjugate(c_l);
+    let term3 = cd_multiply_split_inner(c_r, a_l, inner);
+    let term4 = cd_multiply_split_inner(a_r, &conj_c_l, inner);
+
+    let mut result = Vec::with_capacity(dim);
+    for i in 0..half {
+        result.push(term1[i] + gamma * term2[i]);
+    }
+    for i in 0..half {
+        result.push(term3[i] + term4[i]);
+    }
+    result
+}
+
+/// Compute the full multiplication table for a parameterized CD algebra.
+///
+/// Returns a dim x dim matrix where entry (i,j) is the result index
+/// and sign of e_i * e_j = sign * e_k. Specifically returns (k, sign).
+pub fn cd_mul_table_split(sig: &CdSignature) -> Vec<Vec<(usize, i32)>> {
+    let dim = sig.dim();
+    let mut table = Vec::with_capacity(dim);
+    for p in 0..dim {
+        let mut row = Vec::with_capacity(dim);
+        for q in 0..dim {
+            // e_p * e_q: compute via split multiplication
+            let mut ep = vec![0.0; dim];
+            ep[p] = 1.0;
+            let mut eq = vec![0.0; dim];
+            eq[q] = 1.0;
+            let result = cd_multiply_split(&ep, &eq, sig);
+
+            // Find the nonzero entry
+            let mut idx = 0;
+            let mut s = 1i32;
+            for (k, &v) in result.iter().enumerate() {
+                if v.abs() > 0.5 {
+                    idx = k;
+                    s = if v > 0.0 { 1 } else { -1 };
+                    break;
+                }
+            }
+            row.push((idx, s));
+        }
+        table.push(row);
+    }
+    table
+}
+
+/// Precomputed sign table for a parameterized CD algebra.
+///
+/// Same as [`SignTable`] but built from a [`CdSignature`].
+#[derive(Clone)]
+pub struct SplitSignTable {
+    dim: usize,
+    sig: CdSignature,
+    bits: Vec<u64>,
+}
+
+impl SplitSignTable {
+    /// Build the sign table for the given signature.
+    pub fn new(sig: &CdSignature) -> Self {
+        let dim = sig.dim();
+        let total_bits = dim * dim;
+        let n_words = total_bits.div_ceil(64);
+        let mut bits = vec![0u64; n_words];
+
+        for p in 0..dim {
+            for q in 0..dim {
+                let s = cd_basis_mul_sign_split_iter(dim, p, q, sig);
+                if s == -1 {
+                    let idx = p * dim + q;
+                    bits[idx / 64] |= 1u64 << (idx % 64);
+                }
+            }
+        }
+
+        SplitSignTable {
+            dim,
+            sig: sig.clone(),
+            bits,
+        }
+    }
+
+    /// Look up the sign of e_p * e_q in O(1).
+    #[inline(always)]
+    pub fn sign(&self, p: usize, q: usize) -> i32 {
+        debug_assert!(p < self.dim && q < self.dim);
+        let idx = p * self.dim + q;
+        let word = self.bits[idx / 64];
+        let bit = (word >> (idx % 64)) & 1;
+        1 - 2 * (bit as i32)
+    }
+
+    /// The signature this table was built from.
+    pub fn signature(&self) -> &CdSignature {
+        &self.sig
+    }
+
+    /// The dimension.
+    pub fn dim(&self) -> usize {
+        self.dim
+    }
+}
+
+impl std::fmt::Debug for SplitSignTable {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(
+            f,
+            "SplitSignTable {{ dim={}, sig={:?} }}",
+            self.dim, self.sig
+        )
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -2019,6 +2365,706 @@ mod tests {
                     1,
                     "dim={dim}: e_{i} * e_0 should have sign +1"
                 );
+            }
+        }
+    }
+
+    // ====================================================================
+    // Split / parameterized Cayley-Dickson tests
+    // ====================================================================
+
+    #[test]
+    fn test_split_signature_standard_matches_original() {
+        // Standard signature must produce identical signs to cd_basis_mul_sign.
+        for &dim in &[2, 4, 8, 16, 32, 64] {
+            let sig = CdSignature::standard(dim);
+            for p in 0..dim {
+                for q in 0..dim {
+                    let expected = cd_basis_mul_sign(dim, p, q);
+                    let got_rec = cd_basis_mul_sign_split(dim, p, q, &sig);
+                    let got_iter = cd_basis_mul_sign_split_iter(dim, p, q, &sig);
+                    assert_eq!(
+                        expected, got_rec,
+                        "dim={dim} p={p} q={q}: recursive split vs standard"
+                    );
+                    assert_eq!(
+                        expected, got_iter,
+                        "dim={dim} p={p} q={q}: iterative split vs standard"
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_split_sign_recursive_vs_iterative() {
+        // Both implementations must agree for all signatures at small dims.
+        for &dim in &[2, 4, 8, 16] {
+            for sig in &[
+                CdSignature::standard(dim),
+                CdSignature::split(dim),
+            ] {
+                for p in 0..dim {
+                    for q in 0..dim {
+                        let rec = cd_basis_mul_sign_split(dim, p, q, sig);
+                        let iter = cd_basis_mul_sign_split_iter(dim, p, q, sig);
+                        assert_eq!(
+                            rec, iter,
+                            "dim={dim} sig={:?} p={p} q={q}: recursive vs iterative",
+                            sig
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_split_complex_j_squared_plus_one() {
+        // Split-complex numbers: j^2 = +1 (vs standard i^2 = -1).
+        let sig = CdSignature::split(2);
+        let j = [0.0, 1.0]; // e_1
+        let jj = cd_multiply_split(&j, &j, &sig);
+        // j^2 = +1 in split-complex
+        assert!(
+            (jj[0] - 1.0).abs() < 1e-14 && jj[1].abs() < 1e-14,
+            "split-complex: j^2 should be +1, got {:?}",
+            jj
+        );
+
+        // Verify standard i^2 = -1 for comparison
+        let sig_std = CdSignature::standard(2);
+        let ii = cd_multiply_split(&j, &j, &sig_std);
+        assert!(
+            (ii[0] + 1.0).abs() < 1e-14 && ii[1].abs() < 1e-14,
+            "standard complex: i^2 should be -1, got {:?}",
+            ii
+        );
+    }
+
+    #[test]
+    fn test_split_complex_zero_divisors() {
+        // Split-complex: (1+j)/2 * (1-j)/2 = 0.
+        let sig = CdSignature::split(2);
+        let a = [0.5, 0.5]; // (1+j)/2
+        let b = [0.5, -0.5]; // (1-j)/2
+        let ab = cd_multiply_split(&a, &b, &sig);
+        assert!(
+            ab[0].abs() < 1e-14 && ab[1].abs() < 1e-14,
+            "split-complex: (1+j)/2 * (1-j)/2 should be zero, got {:?}",
+            ab
+        );
+    }
+
+    #[test]
+    fn test_split_quaternion_basis_products() {
+        // Split-quaternions have e_1^2 = +1, e_2^2 = +1, e_3^2 = -1.
+        // (With all-split signature: e_k^2 = sign for each k.)
+        let sig = CdSignature::split(4);
+
+        // e_1^2:
+        let e1 = [0.0, 1.0, 0.0, 0.0];
+        let e1e1 = cd_multiply_split(&e1, &e1, &sig);
+        // In split-quaternion, e_1^2 depends on the doubling formula.
+        // For all-split sig: first doubling (R->C) has gamma=+1, so i^2=+1.
+        // Second doubling (C->H) has gamma=+1.
+        // e_1 is in the lower half of the lower doubling, so e_1^2 = +1.
+        assert!(
+            (e1e1[0] - 1.0).abs() < 1e-14,
+            "split-quat: e_1^2 should be +1, got {:?}",
+            e1e1
+        );
+
+        // e_2 and e_3:
+        let e2 = [0.0, 0.0, 1.0, 0.0];
+        let e3 = [0.0, 0.0, 0.0, 1.0];
+        let e2e2 = cd_multiply_split(&e2, &e2, &sig);
+        let e3e3 = cd_multiply_split(&e3, &e3, &sig);
+
+        // e_2 is in the upper half (high bit), so (0,b)(0,d) formula applies
+        // with gamma=+1 at the outer level.
+        // (0,e_0)(0,e_0) = gamma * conj(e_0) * e_0 = gamma * 1 = +1
+        assert!(
+            (e2e2[0] - 1.0).abs() < 1e-14,
+            "split-quat: e_2^2 should be +1, got {:?}",
+            e2e2
+        );
+
+        // e_3 = (0, e_1): (0,e_1)(0,e_1) = gamma * conj(e_1) * e_1
+        // = gamma * (-e_1) * e_1 = gamma * (-e_1^2)
+        // Inner level e_1^2 = gamma_inner * 1 = +1 (split at inner level)
+        // So e_3^2 = +1 * (-(+1)) = -1
+        assert!(
+            (e3e3[0] + 1.0).abs() < 1e-14,
+            "split-quat: e_3^2 should be -1, got {:?}",
+            e3e3
+        );
+    }
+
+    #[test]
+    fn test_split_quaternion_noncommutativity() {
+        // Split-quaternions should still be non-commutative.
+        let sig = CdSignature::split(4);
+        let e1 = [0.0, 1.0, 0.0, 0.0];
+        let e2 = [0.0, 0.0, 1.0, 0.0];
+        let e1e2 = cd_multiply_split(&e1, &e2, &sig);
+        let e2e1 = cd_multiply_split(&e2, &e1, &sig);
+
+        // They should differ (non-commutative)
+        let diff: f64 = e1e2
+            .iter()
+            .zip(e2e1.iter())
+            .map(|(a, b)| (a - b).abs())
+            .sum();
+        assert!(
+            diff > 0.5,
+            "split-quat should be non-commutative: e1*e2={:?}, e2*e1={:?}",
+            e1e2,
+            e2e1
+        );
+    }
+
+    #[test]
+    fn test_split_octonion_nonassociativity() {
+        // Split-octonions should be non-associative.
+        let sig = CdSignature::split(8);
+        let e1 = {
+            let mut v = vec![0.0; 8];
+            v[1] = 1.0;
+            v
+        };
+        let e2 = {
+            let mut v = vec![0.0; 8];
+            v[2] = 1.0;
+            v
+        };
+        let e4 = {
+            let mut v = vec![0.0; 8];
+            v[4] = 1.0;
+            v
+        };
+
+        let e1e2 = cd_multiply_split(&e1, &e2, &sig);
+        let left = cd_multiply_split(&e1e2, &e4, &sig); // (e1*e2)*e4
+        let e2e4 = cd_multiply_split(&e2, &e4, &sig);
+        let right = cd_multiply_split(&e1, &e2e4, &sig); // e1*(e2*e4)
+
+        let diff: f64 = left
+            .iter()
+            .zip(right.iter())
+            .map(|(a, b)| (a - b).abs())
+            .sum();
+        assert!(
+            diff > 0.5,
+            "split-octonion should be non-associative: left={:?}, right={:?}",
+            left,
+            right
+        );
+    }
+
+    #[test]
+    fn test_split_multiply_vs_sign_function() {
+        // Verify cd_multiply_split and cd_basis_mul_sign_split agree on basis products.
+        for &dim in &[2, 4, 8, 16] {
+            for sig in &[CdSignature::standard(dim), CdSignature::split(dim)] {
+                for p in 0..dim {
+                    let mut ep = vec![0.0; dim];
+                    ep[p] = 1.0;
+                    for q in 0..dim {
+                        let mut eq_vec = vec![0.0; dim];
+                        eq_vec[q] = 1.0;
+                        let product = cd_multiply_split(&ep, &eq_vec, sig);
+
+                        let sign_expected = cd_basis_mul_sign_split(dim, p, q, sig);
+
+                        // The product should have exactly one nonzero entry
+                        let nonzero: Vec<(usize, f64)> = product
+                            .iter()
+                            .enumerate()
+                            .filter(|(_, &v)| v.abs() > 0.5)
+                            .map(|(i, &v)| (i, v))
+                            .collect();
+
+                        assert_eq!(
+                            nonzero.len(),
+                            1,
+                            "dim={dim} sig={:?} e_{p}*e_{q}: expected 1 nonzero, got {:?}",
+                            sig,
+                            nonzero
+                        );
+
+                        let (_got_idx, got_val) = nonzero[0];
+                        let got_sign = if got_val > 0.0 { 1 } else { -1 };
+                        assert_eq!(
+                            got_sign, sign_expected,
+                            "dim={dim} sig={:?} e_{p}*e_{q}: sign mismatch",
+                            sig
+                        );
+                    }
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_mixed_signature_coquaternion() {
+        // Mixed signature gammas = [-1, +1] gives coquaternions (split-quaternions).
+        // Inner: standard (i^2 = -1). Outer: split (j^2 = +1).
+        // NOTE: The CD construction is ALWAYS non-commutative at dim >= 4,
+        // regardless of gamma. Tessarines (bicomplex, commutative) cannot be
+        // obtained via CD doubling -- they require tensor products.
+        let sig = CdSignature::from_gammas(&[-1, 1]);
+        assert_eq!(sig.dim(), 4);
+
+        let e1 = [0.0, 1.0, 0.0, 0.0]; // i
+        let e2 = [0.0, 0.0, 1.0, 0.0]; // j
+        let e3 = [0.0, 0.0, 0.0, 1.0]; // k = ij
+
+        let e1e1 = cd_multiply_split(&e1, &e1, &sig);
+        let e2e2 = cd_multiply_split(&e2, &e2, &sig);
+        let e3e3 = cd_multiply_split(&e3, &e3, &sig);
+
+        // Signature: i^2 = -1, j^2 = +1, k^2 = +1
+        assert!(
+            (e1e1[0] + 1.0).abs() < 1e-14,
+            "coquaternion: i^2 should be -1, got {:?}",
+            e1e1
+        );
+        assert!(
+            (e2e2[0] - 1.0).abs() < 1e-14,
+            "coquaternion: j^2 should be +1, got {:?}",
+            e2e2
+        );
+        // k = (0, e_1): k^2 = gamma_outer * conj(e_1) * e_1 = (+1)*(-e_1)*e_1 = -(i^2) = +1
+        assert!(
+            (e3e3[0] - 1.0).abs() < 1e-14,
+            "coquaternion: k^2 should be +1, got {:?}",
+            e3e3
+        );
+
+        // CD construction is non-commutative at dim >= 4 for ALL gamma choices.
+        let e1e2 = cd_multiply_split(&e1, &e2, &sig);
+        let e2e1 = cd_multiply_split(&e2, &e1, &sig);
+        let comm_diff: f64 = e1e2
+            .iter()
+            .zip(e2e1.iter())
+            .map(|(a, b)| (a - b).abs())
+            .sum();
+        assert!(
+            comm_diff > 0.5,
+            "coquaternion should be non-commutative: e1*e2={:?}, e2*e1={:?}",
+            e1e2,
+            e2e1
+        );
+    }
+
+    #[test]
+    fn test_split_sign_table_matches_iterative() {
+        // SplitSignTable must match cd_basis_mul_sign_split_iter for all entries.
+        for &dim in &[2, 4, 8, 16] {
+            let sig = CdSignature::split(dim);
+            let table = SplitSignTable::new(&sig);
+            for p in 0..dim {
+                for q in 0..dim {
+                    let expected = cd_basis_mul_sign_split_iter(dim, p, q, &sig);
+                    let got = table.sign(p, q);
+                    assert_eq!(
+                        expected, got,
+                        "dim={dim} p={p} q={q}: table vs iterative"
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_split_octonion_has_zero_divisors() {
+        // Split-octonions (dim=8) should have zero-divisors, unlike standard octonions.
+        let sig = CdSignature::split(8);
+        let dim = 8;
+
+        // Search for zero-divisor pairs among sums of basis elements.
+        let mut found_zd = false;
+        for i in 1..dim {
+            for j in (i + 1)..dim {
+                // Try a = e_0 + e_i, b = e_0 + e_j (where e_0 = 1)
+                // These are nonzero if both have nonzero norm
+                let mut a = vec![0.0; dim];
+                a[0] = 1.0;
+                a[i] = 1.0;
+                let mut b = vec![0.0; dim];
+                b[0] = 1.0;
+                b[j] = 1.0;
+                let ab = cd_multiply_split(&a, &b, &sig);
+                let norm_ab: f64 = ab.iter().map(|x| x * x).sum();
+
+                // Also try a = e_i + e_j, b = e_i - e_j (if they give zero)
+                let mut c = vec![0.0; dim];
+                c[i] = 1.0;
+                c[j] = 1.0;
+                let mut d = vec![0.0; dim];
+                d[i] = 1.0;
+                d[j] = -1.0;
+                let cd_prod = cd_multiply_split(&c, &d, &sig);
+                let norm_cd: f64 = cd_prod.iter().map(|x| x * x).sum();
+
+                if norm_ab < 1e-10 || norm_cd < 1e-10 {
+                    found_zd = true;
+                    break;
+                }
+            }
+            if found_zd {
+                break;
+            }
+        }
+
+        // If simple combinations don't work, try the known formula for split algebras:
+        // In split-octonion, (1+e_4)/2 * (1-e_4)/2 should give a zero-divisor
+        // (since e_4 is the "split" direction at the outermost level).
+        if !found_zd {
+            let mut a = vec![0.0; dim];
+            a[0] = 0.5;
+            a[4] = 0.5; // (1 + e_4)/2
+            let mut b = vec![0.0; dim];
+            b[0] = 0.5;
+            b[4] = -0.5; // (1 - e_4)/2
+            let ab = cd_multiply_split(&a, &b, &sig);
+            let norm_ab: f64 = ab.iter().map(|x| x * x).sum();
+            if norm_ab < 1e-10 {
+                found_zd = true;
+            }
+        }
+
+        assert!(
+            found_zd,
+            "split-octonion should have zero-divisors, but none found"
+        );
+
+        // Verify standard octonions do NOT have zero-divisors among basis sums.
+        let sig_std = CdSignature::standard(8);
+        let mut std_has_zd = false;
+        for i in 1..dim {
+            for j in (i + 1)..dim {
+                let mut a = vec![0.0; dim];
+                a[i] = 1.0;
+                a[j] = 1.0;
+                let mut b = vec![0.0; dim];
+                b[i] = 1.0;
+                b[j] = -1.0;
+                let ab = cd_multiply_split(&a, &b, &sig_std);
+                let norm: f64 = ab.iter().map(|x| x * x).sum();
+                if norm < 1e-10 {
+                    std_has_zd = true;
+                    break;
+                }
+            }
+        }
+        assert!(
+            !std_has_zd,
+            "standard octonions should NOT have zero-divisors among 2-blade sums"
+        );
+    }
+
+    #[test]
+    fn test_split_vs_standard_identity_element() {
+        // e_0 should still be the identity in all signatures.
+        for &dim in &[2, 4, 8] {
+            for sig in &[CdSignature::standard(dim), CdSignature::split(dim)] {
+                let e0: Vec<f64> = {
+                    let mut v = vec![0.0; dim];
+                    v[0] = 1.0;
+                    v
+                };
+                for i in 0..dim {
+                    let mut ei = vec![0.0; dim];
+                    ei[i] = 1.0;
+                    let left = cd_multiply_split(&e0, &ei, sig);
+                    let right = cd_multiply_split(&ei, &e0, sig);
+                    assert!(
+                        allclose(&left, &ei, 1e-14),
+                        "dim={dim} sig={:?}: e_0 * e_{i} != e_{i}, got {:?}",
+                        sig,
+                        left
+                    );
+                    assert!(
+                        allclose(&right, &ei, 1e-14),
+                        "dim={dim} sig={:?}: e_{i} * e_0 != e_{i}, got {:?}",
+                        sig,
+                        right
+                    );
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_split_octonion_zero_divisor_census() {
+        // Exhaustive search for zero-divisor pairs among 2-blade elements
+        // in split-octonions (dim=8). Compare with standard sedenion (dim=16)
+        // zero-divisor structure.
+        let dim = 8;
+        let sig = CdSignature::split(dim);
+        let table = SplitSignTable::new(&sig);
+
+        // Find all 2-blade zero-product pairs: e_i + s*e_j where s in {-1, +1}
+        // that annihilate another 2-blade.
+        let mut zd_pairs: Vec<((usize, i32, usize), (usize, i32, usize))> = Vec::new();
+
+        for i in 0..dim {
+            for si in &[-1i32, 1] {
+                for j in (i + 1)..dim {
+                    // a = e_i + si * e_j (nonzero by construction since i != j)
+                    for k in 0..dim {
+                        for sk in &[-1i32, 1] {
+                            for l in (k + 1)..dim {
+                                // b = e_k + sk * e_l
+                                // Compute a*b using the sign table
+                                let mut product = vec![0.0; dim];
+                                // (e_i + si*e_j)(e_k + sk*e_l)
+                                // = e_i*e_k + sk*e_i*e_l + si*e_j*e_k + si*sk*e_j*e_l
+                                for &(p, sp, q, sq) in &[
+                                    (i, 1i32, k, 1i32),
+                                    (i, 1, l, *sk),
+                                    (j, *si, k, 1),
+                                    (j, *si, l, *sk),
+                                ] {
+                                    // e_p * e_q: find target and sign from multiplication
+                                    let mut ep = vec![0.0; dim];
+                                    ep[p] = 1.0;
+                                    let mut eq = vec![0.0; dim];
+                                    eq[q] = 1.0;
+                                    let prod = cd_multiply_split(&ep, &eq, &sig);
+                                    let coeff = sp * sq;
+                                    for (idx, val) in prod.iter().enumerate() {
+                                        product[idx] += coeff as f64 * val;
+                                    }
+                                }
+
+                                let norm: f64 = product.iter().map(|x| x * x).sum();
+                                if norm < 1e-10 {
+                                    zd_pairs.push(((i, *si, j), (k, *sk, l)));
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // Split-octonions must have zero-divisors.
+        assert!(
+            !zd_pairs.is_empty(),
+            "split-octonion: expected zero-divisor 2-blade pairs, found none"
+        );
+
+        // Count distinct zero-product pairs.
+        let n_zd = zd_pairs.len();
+        eprintln!("split-octonion dim=8: found {n_zd} zero-product 2-blade pairs");
+
+        // Verify standard octonions have NO zero-divisor 2-blade pairs.
+        let sig_std = CdSignature::standard(8);
+        let mut std_zd_count = 0;
+        for i in 0..dim {
+            for si in &[-1i32, 1] {
+                for j in (i + 1)..dim {
+                    for k in 0..dim {
+                        for sk in &[-1i32, 1] {
+                            for l in (k + 1)..dim {
+                                let mut product = vec![0.0; dim];
+                                for &(p, sp, q, sq) in &[
+                                    (i, 1i32, k, 1i32),
+                                    (i, 1, l, *sk),
+                                    (j, *si, k, 1),
+                                    (j, *si, l, *sk),
+                                ] {
+                                    let mut ep = vec![0.0; dim];
+                                    ep[p] = 1.0;
+                                    let mut eq = vec![0.0; dim];
+                                    eq[q] = 1.0;
+                                    let prod = cd_multiply_split(&ep, &eq, &sig_std);
+                                    let coeff = sp * sq;
+                                    for (idx, val) in prod.iter().enumerate() {
+                                        product[idx] += coeff as f64 * val;
+                                    }
+                                }
+                                let norm: f64 = product.iter().map(|x| x * x).sum();
+                                if norm < 1e-10 {
+                                    std_zd_count += 1;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        assert_eq!(
+            std_zd_count, 0,
+            "standard octonion: expected 0 zero-product 2-blade pairs, found {std_zd_count}"
+        );
+    }
+
+    #[test]
+    fn test_split_octonion_basis_squares_signature() {
+        // Compute e_k^2 for all basis elements in split-octonion.
+        // Standard octonion: e_k^2 = -1 for all k >= 1 (negative-definite).
+        // Split-octonion: mixed signs -- some e_k^2 = +1, some e_k^2 = -1.
+        let dim = 8;
+        let sig_std = CdSignature::standard(dim);
+        let sig_split = CdSignature::split(dim);
+
+        let mut std_squares = Vec::new();
+        let mut split_squares = Vec::new();
+
+        for k in 0..dim {
+            let s_std = cd_basis_mul_sign_split(dim, k, k, &sig_std);
+            let s_split = cd_basis_mul_sign_split(dim, k, k, &sig_split);
+            std_squares.push(s_std);
+            split_squares.push(s_split);
+        }
+
+        // Standard: [+1, -1, -1, -1, -1, -1, -1, -1] (signature (1,7))
+        assert_eq!(std_squares[0], 1);
+        for k in 1..dim {
+            assert_eq!(
+                std_squares[k], -1,
+                "standard octonion: e_{k}^2 should be -1"
+            );
+        }
+
+        // Split: should have some +1 entries among k >= 1.
+        let n_positive = split_squares[1..].iter().filter(|&&s| s == 1).count();
+        let n_negative = split_squares[1..].iter().filter(|&&s| s == -1).count();
+        eprintln!(
+            "split-octonion basis squares: {:?} ({n_positive} positive, {n_negative} negative)",
+            split_squares
+        );
+
+        // Must have mixed signature (some positive, some negative).
+        assert!(
+            n_positive > 0 && n_negative > 0,
+            "split-octonion should have mixed signature, got {} positive, {} negative",
+            n_positive,
+            n_negative
+        );
+    }
+
+    #[test]
+    fn test_split_vs_standard_sedenion_psi_comparison() {
+        // Compare the "psi matrix" (sign function) structure between:
+        // (1) Split-octonions (dim=8, split signature)
+        // (2) Standard sedenions (dim=16, standard signature)
+        // Both have zero-divisors. Do they share structural features?
+
+        // Compute psi matrices (0 if sign=+1, 1 if sign=-1).
+        let dim_split = 8;
+        let sig_split = CdSignature::split(dim_split);
+
+        let dim_std = 16;
+
+        // Count psi=1 entries (negative signs) for each.
+        let mut psi1_split = 0usize;
+        let mut psi1_std = 0usize;
+        let total_split = dim_split * dim_split;
+        let total_std = dim_std * dim_std;
+
+        for p in 0..dim_split {
+            for q in 0..dim_split {
+                if cd_basis_mul_sign_split(dim_split, p, q, &sig_split) == -1 {
+                    psi1_split += 1;
+                }
+            }
+        }
+        for p in 0..dim_std {
+            for q in 0..dim_std {
+                if cd_basis_mul_sign(dim_std, p, q) == -1 {
+                    psi1_std += 1;
+                }
+            }
+        }
+
+        let frac_split = psi1_split as f64 / total_split as f64;
+        let frac_std = psi1_std as f64 / total_std as f64;
+
+        eprintln!(
+            "psi=1 fraction: split-oct {psi1_split}/{total_split} = {frac_split:.4}, \
+             std-sed {psi1_std}/{total_std} = {frac_std:.4}"
+        );
+
+        // The psi=1 exact formula for standard is (n+1)/(2n) where n=dim-1.
+        // For dim=16: (16)/(2*15) = 16/30 = 0.5333...
+        let expected_std = 16.0 / 30.0;
+        assert!(
+            (frac_std - expected_std).abs() < 0.01,
+            "std sedenion psi=1 fraction should be ~{expected_std:.4}, got {frac_std:.4}"
+        );
+
+        // For split-octonion, the fraction will differ from the standard formula.
+        // Just record it for now.
+        assert!(
+            frac_split > 0.0 && frac_split < 1.0,
+            "split-oct psi=1 fraction should be between 0 and 1"
+        );
+    }
+
+    #[test]
+    fn test_split_all_signatures_dim4() {
+        // Enumerate all 4 possible signatures at dim=4 (2 gamma values, 2 levels).
+        // Check which ones have zero-divisors among 2-blades.
+        let gammas_options: Vec<[i32; 2]> = vec![[-1, -1], [-1, 1], [1, -1], [1, 1]];
+
+        for gammas in &gammas_options {
+            let sig = CdSignature::from_gammas(gammas);
+            let dim = 4;
+
+            // Compute basis element squares
+            let squares: Vec<i32> = (0..dim)
+                .map(|k| cd_basis_mul_sign_split(dim, k, k, &sig))
+                .collect();
+
+            // Count 2-blade zero-product pairs
+            let mut zd_count = 0;
+            for i in 0..dim {
+                for si in &[-1i32, 1] {
+                    for j in (i + 1)..dim {
+                        for k in 0..dim {
+                            for sk in &[-1i32, 1] {
+                                for l in (k + 1)..dim {
+                                    let mut product = vec![0.0; dim];
+                                    for &(p, sp, q, sq) in &[
+                                        (i, 1i32, k, 1i32),
+                                        (i, 1, l, *sk),
+                                        (j, *si, k, 1),
+                                        (j, *si, l, *sk),
+                                    ] {
+                                        let mut ep = vec![0.0; dim];
+                                        ep[p] = 1.0;
+                                        let mut eq_v = vec![0.0; dim];
+                                        eq_v[q] = 1.0;
+                                        let prod = cd_multiply_split(&ep, &eq_v, &sig);
+                                        let coeff = sp * sq;
+                                        for (idx, val) in prod.iter().enumerate() {
+                                            product[idx] += coeff as f64 * val;
+                                        }
+                                    }
+                                    let norm: f64 = product.iter().map(|x| x * x).sum();
+                                    if norm < 1e-10 {
+                                        zd_count += 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            eprintln!(
+                "dim=4 gammas={:?}: squares={:?}, zd_pairs={}",
+                gammas, squares, zd_count
+            );
+
+            // Standard quaternion [-1,-1] should have no zero-divisors.
+            if *gammas == [-1, -1] {
+                assert_eq!(zd_count, 0, "standard quaternion should have no ZDs");
             }
         }
     }
