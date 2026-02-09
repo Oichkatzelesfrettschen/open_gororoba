@@ -2141,6 +2141,60 @@ pub fn strut_spectroscopy(n: usize) -> Vec<StrutSpectroscopyEntry> {
 }
 
 // ===========================================================================
+// L9b: (s,g)-Modularity -- Recursive Regime Address
+// ===========================================================================
+//
+// The DMZ count of a strut constant S at CD level N is determined by a
+// recursive "regime address" -- a binary vector of length N-4.
+//
+// At each level k (from N down to 5), the "half-generator" g_k = 2^(k-2)
+// splits S into a lower band (S <= g_k) and upper band (S > g_k):
+//   - Lower band: inherit regime from level k-1
+//   - Upper band: new regime, sub-classified by regime(k-1, S - g_k)
+//   - Powers of 2 >= 8 are generators, always full-fill (merge with mandala)
+//
+// This produces exactly 2^(N-4) regime classes, with regime count doubling
+// at each CD level (de Marrais's "regime-doubling cascade").
+//
+// The address [b_{N-4}, ..., b_1] records at which level each "sky crossing"
+// occurred: b_k = 1 means S crossed into the upper band at level k+4.
+
+/// Compute the recursive regime address for strut constant `s` at CD level `n`.
+///
+/// Returns a binary vector of length `n - 4` (empty for sedenions).
+/// Two struts with the same regime address always have the same DMZ count.
+pub fn regime_address(n: usize, s: usize) -> Vec<u8> {
+    if n <= 4 {
+        return vec![];
+    }
+    let g = 1usize << (n - 2); // Half-generator = generator of level N-1
+
+    // Generators (powers of 2 >= 8) always full-fill.
+    // Map to S=3 (an unambiguous mandala value) to avoid recursion issues.
+    if s >= 8 && s.is_power_of_two() {
+        return regime_address(n, 3);
+    }
+
+    if s <= g {
+        let mut addr = vec![0u8];
+        addr.extend(regime_address(n - 1, s));
+        addr
+    } else {
+        let remainder = s - g;
+        let mut addr = vec![1u8];
+        addr.extend(regime_address(n - 1, remainder));
+        addr
+    }
+}
+
+/// Number of distinct DMZ regimes at CD level `n`.
+///
+/// Returns 2^(n-4): sedenions have 1, pathions 2, chingons 4, routons 8.
+pub fn regime_count(n: usize) -> usize {
+    1usize << n.saturating_sub(4)
+}
+
+// ===========================================================================
 // L10: CT Boundary / A7 Star -- Twist as Double Transfer
 // ===========================================================================
 //
@@ -5404,6 +5458,164 @@ mod tests {
                 assert_eq!(audit.vz2_value, Some(16),
                     "VZ2 value should be G=16 at dim=32");
             }
+        }
+    }
+
+    // --- L9b: (s,g)-Modularity Regime Address Tests ---
+
+    #[test]
+    fn test_regime_count_doubling_law() {
+        // regime_count(N) = 2^(N-4): 1, 2, 4, 8, 16, ...
+        assert_eq!(regime_count(4), 1);
+        assert_eq!(regime_count(5), 2);
+        assert_eq!(regime_count(6), 4);
+        assert_eq!(regime_count(7), 8);
+        assert_eq!(regime_count(8), 16);
+        // Edge case: n < 4 saturates to 1
+        assert_eq!(regime_count(3), 1);
+        assert_eq!(regime_count(0), 1);
+    }
+
+    #[test]
+    fn test_regime_address_length() {
+        // Address length = N - 4 for all valid strut constants
+        for n in 4..=7 {
+            let max_s = (1usize << (n - 1)) - 1;
+            for s in 1..=max_s {
+                let addr = regime_address(n, s);
+                assert_eq!(addr.len(), n - 4,
+                    "N={}, S={}: address length {} != {}", n, s, addr.len(), n - 4);
+            }
+        }
+    }
+
+    #[test]
+    fn test_regime_address_binary_values() {
+        // Every element of the address vector must be 0 or 1
+        for n in 4..=7 {
+            let max_s = (1usize << (n - 1)) - 1;
+            for s in 1..=max_s {
+                let addr = regime_address(n, s);
+                for (i, &b) in addr.iter().enumerate() {
+                    assert!(b <= 1,
+                        "N={}, S={}: addr[{}] = {} (must be 0 or 1)", n, s, i, b);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_regime_address_sedenion_trivial() {
+        // At N=4 (sedenions), all addresses are empty -- single regime
+        for s in 1..=7 {
+            assert_eq!(regime_address(4, s), Vec::<u8>::new(),
+                "S={}: sedenion address must be empty", s);
+        }
+    }
+
+    #[test]
+    fn test_regime_address_generators_equal_mandala() {
+        // Powers of 2 >= 8 (generators) always map to same address as S=3
+        for n in 5..=7 {
+            let mandala_addr = regime_address(n, 3);
+            for k in 3..n {
+                let gen = 1usize << k; // 8, 16, 32, ...
+                let max_s = (1usize << (n - 1)) - 1;
+                if gen <= max_s {
+                    assert_eq!(regime_address(n, gen), mandala_addr,
+                        "N={}, S={}: generator must map to mandala address", n, gen);
+                }
+            }
+        }
+    }
+
+    #[test]
+    fn test_regime_address_distinct_count_matches_formula() {
+        // Number of distinct addresses at level N must equal regime_count(N)
+        use std::collections::BTreeSet;
+        for n in 4..=7 {
+            let max_s = (1usize << (n - 1)) - 1;
+            let mut addrs = BTreeSet::new();
+            for s in 1..=max_s {
+                addrs.insert(regime_address(n, s));
+            }
+            assert_eq!(addrs.len(), regime_count(n),
+                "N={}: distinct addresses {} != regime_count {}", n, addrs.len(), regime_count(n));
+        }
+    }
+
+    #[test]
+    fn test_regime_address_uniformity_n5() {
+        // N=5 (pathions): 2 regimes, same-address struts have same DMZ count.
+        // et_regimes returns HashMap<dmz_count, Vec<strut_constants>>.
+        use std::collections::BTreeMap;
+        let regimes = et_regimes(5);
+        let mut addr_to_dmz: BTreeMap<Vec<u8>, Vec<usize>> = BTreeMap::new();
+        for (&dmz, struts) in &regimes {
+            for &s in struts {
+                let addr = regime_address(5, s);
+                addr_to_dmz.entry(addr).or_default().push(dmz);
+            }
+        }
+        for (addr, dmzs) in &addr_to_dmz {
+            let first = dmzs[0];
+            for &d in dmzs {
+                assert_eq!(d, first,
+                    "N=5, addr={:?}: DMZ counts not uniform", addr);
+            }
+        }
+        assert_eq!(addr_to_dmz.len(), 2, "N=5 must have exactly 2 regime addresses");
+    }
+
+    #[test]
+    fn test_regime_address_uniformity_n6() {
+        // N=6 (chingons): 4 regimes, same-address struts have same DMZ count.
+        use std::collections::BTreeMap;
+        let regimes = et_regimes(6);
+        let mut addr_to_dmz: BTreeMap<Vec<u8>, Vec<usize>> = BTreeMap::new();
+        for (&dmz, struts) in &regimes {
+            for &s in struts {
+                let addr = regime_address(6, s);
+                addr_to_dmz.entry(addr).or_default().push(dmz);
+            }
+        }
+        for (addr, dmzs) in &addr_to_dmz {
+            let first = dmzs[0];
+            for &d in dmzs {
+                assert_eq!(d, first,
+                    "N=6, addr={:?}: DMZ counts not uniform", addr);
+            }
+        }
+        assert_eq!(addr_to_dmz.len(), 4, "N=6 must have exactly 4 regime addresses");
+    }
+
+    #[test]
+    fn test_regime_address_n6_specific_bands() {
+        // Verify the specific N=6 regime structure from exploration:
+        // [0,0] -> S in {1..8, 16}  (mandala full-fill, 9 struts)
+        // [0,1] -> S in {9..15}     (sky regime, 7 struts)
+        // [1,0] -> S in {17..24}    (new upper band, 8 struts)
+        // [1,1] -> S in {25..31}    (upper sky, 7 struts)
+        let mandala: Vec<usize> = (1..=8).chain(std::iter::once(16)).collect();
+        let sky_lower: Vec<usize> = (9..=15).collect();
+        let upper_mandala: Vec<usize> = (17..=24).collect();
+        let upper_sky: Vec<usize> = (25..=31).collect();
+
+        for &s in &mandala {
+            assert_eq!(regime_address(6, s), vec![0, 0],
+                "N=6, S={}: expected [0,0]", s);
+        }
+        for &s in &sky_lower {
+            assert_eq!(regime_address(6, s), vec![0, 1],
+                "N=6, S={}: expected [0,1]", s);
+        }
+        for &s in &upper_mandala {
+            assert_eq!(regime_address(6, s), vec![1, 0],
+                "N=6, S={}: expected [1,0]", s);
+        }
+        for &s in &upper_sky {
+            assert_eq!(regime_address(6, s), vec![1, 1],
+                "N=6, S={}: expected [1,1]", s);
         }
     }
 
