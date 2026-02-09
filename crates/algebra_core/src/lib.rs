@@ -271,6 +271,8 @@ pub use emanation::{
     is_sky_strut, is_inherited_full_fill_strut,
     // Sail decomposition (face classification)
     FaceRole, ClassifiedFace, SailDecomposition, sail_decomposition,
+    // Strut spectroscopy (detailed classification)
+    StrutClass, StrutSpectroscopyEntry, classify_strut, strut_spectroscopy,
 };
 
 // Re-export external algebra crates for convenience
