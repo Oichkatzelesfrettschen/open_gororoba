@@ -1,0 +1,171 @@
+[dataset]
+id = "PC-0008"
+slug = "c071c_baire_compact_ultrametric"
+source_csv = "data/csv/c071c_baire_compact_ultrametric.csv"
+source_sha256 = "6543bdc4223424edea1e90d138113c48624e20c0628a8ce589874295b16e4762"
+source_size_bytes = 382
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 4
+column_count = 10
+header_value_sha256 = "4736016413f5adcd2a9b6ba93736b8f29886903570a89905f21dd8419de21c72"
+row_value_sha256 = "0a85075c3f27d9189c7e3864fec5751f66636c5b91165ee1182a678623a292bd"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "encoding",
+    "n_objects",
+    "n_attributes",
+    "base",
+    "n_digits",
+    "ultrametric_fraction",
+    "null_fraction_mean",
+    "null_fraction_std",
+    "p_value",
+    "verdict",
+]
+original_header = [
+    "encoding",
+    "n_objects",
+    "n_attributes",
+    "base",
+    "n_digits",
+    "ultrametric_fraction",
+    "null_fraction_mean",
+    "null_fraction_std",
+    "p_value",
+    "verdict",
+]
+rows = [
+    [
+    "FRB_3attr",
+    "5008",
+    "3",
+    "10",
+    "4",
+    "0.157410",
+    "0.138183",
+    "0.001087",
+    "0.004975",
+    "Pass",
+],
+    [
+    "Pulsar_3attr",
+    "4233",
+    "3",
+    "10",
+    "4",
+    "0.220420",
+    "0.213256",
+    "0.001523",
+    "0.004975",
+    "Pass",
+],
+    [
+    "Combined_3attr",
+    "9241",
+    "3",
+    "10",
+    "4",
+    "0.160830",
+    "0.145718",
+    "0.001199",
+    "0.004975",
+    "Pass",
+],
+    [
+    "FRB_DM_only",
+    "5008",
+    "1",
+    "10",
+    "4",
+    "0.110100",
+    "0.109880",
+    "0.000988",
+    "0.442786",
+    "Fail",
+],
+]
+
+[[column]]
+index = 1
+name = "encoding"
+original_name = "encoding"
+inferred_type = "string"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 2
+name = "n_objects"
+original_name = "n_objects"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 3
+name = "n_attributes"
+original_name = "n_attributes"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 4
+name = "base"
+original_name = "base"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 5
+name = "n_digits"
+original_name = "n_digits"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 6
+name = "ultrametric_fraction"
+original_name = "ultrametric_fraction"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 7
+name = "null_fraction_mean"
+original_name = "null_fraction_mean"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 8
+name = "null_fraction_std"
+original_name = "null_fraction_std"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 9
+name = "p_value"
+original_name = "p_value"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 10
+name = "verdict"
+original_name = "verdict"
+inferred_type = "string"
+non_empty_count = 4
+empty_count = 0

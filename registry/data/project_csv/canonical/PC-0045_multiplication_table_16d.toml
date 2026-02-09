@@ -1,0 +1,497 @@
+[dataset]
+id = "PC-0045"
+slug = "multiplication_table_16d"
+source_csv = "data/csv/multiplication_table_16D.csv"
+source_sha256 = "b00edcfb9dccd877012099b968402924cf0e2f9d1c630a3a70cead3607b711d7"
+source_size_bytes = 1075
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 16
+column_count = 17
+header_value_sha256 = "4f42573c4ce4db935966750aa3c4366b030f474ff703da2b6143666905e833f1"
+row_value_sha256 = "6fc750bae91263773d9e40e9ec0605ff7bd10c479f6e97a4f4c40489c7a495b3"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "col_1",
+    "col_1_2",
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+]
+original_header = [
+    "",
+    "1",
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+]
+rows = [
+    [
+    "1",
+    "1",
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+    "e8",
+    "e9",
+    "e10",
+    "e11",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+],
+    [
+    "e1",
+    "e1",
+    "-1",
+    "e3",
+    "-e2",
+    "e5",
+    "-e4",
+    "-e7",
+    "e6",
+    "e9",
+    "-e8",
+    "-e11",
+    "e10",
+    "-e13",
+    "e12",
+    "e15",
+    "-e14",
+],
+    [
+    "e2",
+    "e2",
+    "-e3",
+    "-1",
+    "e1",
+    "e6",
+    "e7",
+    "-e4",
+    "-e5",
+    "e10",
+    "e11",
+    "-e8",
+    "-e9",
+    "-e14",
+    "-e15",
+    "e12",
+    "e13",
+],
+    [
+    "e3",
+    "e3",
+    "e2",
+    "-e1",
+    "-1",
+    "e7",
+    "-e6",
+    "e5",
+    "-e4",
+    "e11",
+    "-e10",
+    "e9",
+    "-e8",
+    "-e15",
+    "e14",
+    "-e13",
+    "e12",
+],
+    [
+    "e4",
+    "e4",
+    "-e5",
+    "-e6",
+    "-e7",
+    "-1",
+    "e1",
+    "e2",
+    "e3",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "-e8",
+    "-e9",
+    "-e10",
+    "-e11",
+],
+    [
+    "e5",
+    "e5",
+    "e4",
+    "-e7",
+    "e6",
+    "-e1",
+    "-1",
+    "-e3",
+    "e2",
+    "e13",
+    "-e12",
+    "e15",
+    "-e14",
+    "e9",
+    "-e8",
+    "e11",
+    "-e10",
+],
+    [
+    "e6",
+    "e6",
+    "e7",
+    "e4",
+    "-e5",
+    "-e2",
+    "e3",
+    "-1",
+    "-e1",
+    "e14",
+    "-e15",
+    "-e12",
+    "e13",
+    "e10",
+    "-e11",
+    "-e8",
+    "e9",
+],
+    [
+    "e7",
+    "e7",
+    "-e6",
+    "e5",
+    "e4",
+    "-e3",
+    "-e2",
+    "e1",
+    "-1",
+    "e15",
+    "e14",
+    "-e13",
+    "-e12",
+    "e11",
+    "e10",
+    "-e9",
+    "-e8",
+],
+    [
+    "e8",
+    "e8",
+    "-e9",
+    "-e10",
+    "-e11",
+    "-e12",
+    "-e13",
+    "-e14",
+    "-e15",
+    "-1",
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+],
+    [
+    "e9",
+    "e9",
+    "e8",
+    "-e11",
+    "e10",
+    "-e13",
+    "e12",
+    "e15",
+    "-e14",
+    "-e1",
+    "-1",
+    "-e3",
+    "e2",
+    "-e5",
+    "e4",
+    "e7",
+    "-e6",
+],
+    [
+    "e10",
+    "e10",
+    "e11",
+    "e8",
+    "-e9",
+    "-e14",
+    "-e15",
+    "e12",
+    "e13",
+    "-e2",
+    "e3",
+    "-1",
+    "-e1",
+    "-e6",
+    "-e7",
+    "e4",
+    "e5",
+],
+    [
+    "e11",
+    "e11",
+    "-e10",
+    "e9",
+    "e8",
+    "-e15",
+    "e14",
+    "-e13",
+    "e12",
+    "-e3",
+    "-e2",
+    "e1",
+    "-1",
+    "-e7",
+    "e6",
+    "-e5",
+    "e4",
+],
+    [
+    "e12",
+    "e12",
+    "e13",
+    "e14",
+    "e15",
+    "e8",
+    "-e9",
+    "-e10",
+    "-e11",
+    "-e4",
+    "e5",
+    "e6",
+    "e7",
+    "-1",
+    "-e1",
+    "-e2",
+    "-e3",
+],
+    [
+    "e13",
+    "e13",
+    "-e12",
+    "e15",
+    "-e14",
+    "e9",
+    "e8",
+    "e11",
+    "-e10",
+    "-e5",
+    "-e4",
+    "e7",
+    "-e6",
+    "e1",
+    "-1",
+    "e3",
+    "-e2",
+],
+    [
+    "e14",
+    "e14",
+    "-e15",
+    "-e12",
+    "e13",
+    "e10",
+    "-e11",
+    "e8",
+    "e9",
+    "-e6",
+    "-e7",
+    "-e4",
+    "e5",
+    "e2",
+    "-e3",
+    "-1",
+    "e1",
+],
+    [
+    "e15",
+    "e15",
+    "e14",
+    "-e13",
+    "-e12",
+    "e11",
+    "e10",
+    "-e9",
+    "e8",
+    "-e7",
+    "e6",
+    "-e5",
+    "-e4",
+    "e3",
+    "e2",
+    "-e1",
+    "-1",
+],
+]
+
+[[column]]
+index = 1
+name = "col_1"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_1_2"
+original_name = "1"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 3
+name = "e1"
+original_name = "e1"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 4
+name = "e2"
+original_name = "e2"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 5
+name = "e3"
+original_name = "e3"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 6
+name = "e4"
+original_name = "e4"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 7
+name = "e5"
+original_name = "e5"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 8
+name = "e6"
+original_name = "e6"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 9
+name = "e7"
+original_name = "e7"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 10
+name = "e8"
+original_name = "e8"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 11
+name = "e9"
+original_name = "e9"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 12
+name = "e10"
+original_name = "e10"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 13
+name = "e11"
+original_name = "e11"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 14
+name = "e12"
+original_name = "e12"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 15
+name = "e13"
+original_name = "e13"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 16
+name = "e14"
+original_name = "e14"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0
+
+[[column]]
+index = 17
+name = "e15"
+original_name = "e15"
+inferred_type = "string"
+non_empty_count = 16
+empty_count = 0

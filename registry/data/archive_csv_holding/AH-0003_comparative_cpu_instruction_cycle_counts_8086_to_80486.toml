@@ -1,0 +1,503 @@
+[dataset]
+id = "AH-0003"
+slug = "comparative_cpu_instruction_cycle_counts_8086_to_80486"
+source_csv = "archive/8086_legacy/Comparative_CPU_Instruction_Cycle_Counts__8086_to_80486_.csv"
+source_sha256 = "ef28a9d71a2adbfc4c7e31f22b18c83aaebcec9932b1b518dfe55bc4a1bb15d2"
+source_size_bytes = 879
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 40
+column_count = 8
+header_value_sha256 = "5ce35f6a81fef63967f344cb6c458deed171dc9a514f8d6d02007546bf1780a8"
+row_value_sha256 = "4d5b116ee6757bae1b9e264eee49f8bab08eaf5747f1ad95eb37843716b2089b"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_archive_csv"
+corpus_label = "archive CSV holding queue"
+header = [
+    "instruction",
+    "col_8086_cycles",
+    "col_8088_cycles",
+    "col_80186_cycles",
+    "col_80188_cycles",
+    "col_80286_cycles",
+    "col_80386_cycles",
+    "col_80486_cycles",
+]
+original_header = [
+    "Instruction",
+    "8086 (cycles)",
+    "8088 (cycles)",
+    "80186 (cycles)",
+    "80188 (cycles)",
+    "80286 (cycles)",
+    "80386 (cycles)",
+    "80486 (cycles)",
+]
+rows = [
+    [
+    "AAA",
+    "8",
+    "8",
+    "6",
+    "6",
+    "3",
+    "4",
+    "3",
+],
+    [
+    "AAM",
+    "83",
+    "83",
+    "60",
+    "60",
+    "14",
+    "19",
+    "14",
+],
+    [
+    "AAS",
+    "8",
+    "8",
+    "6",
+    "6",
+    "3",
+    "4",
+    "3",
+],
+    [
+    "DAA",
+    "60",
+    "60",
+    "40",
+    "40",
+    "14",
+    "19",
+    "14",
+],
+    [
+    "DAS",
+    "16",
+    "16",
+    "12",
+    "12",
+    "3",
+    "4",
+    "3",
+],
+    [
+    "ADC",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "ADD",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "AND",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "CMP",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "NEG",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "NOT",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "OR",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "SBB",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "SUB",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "TEST",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "XOR",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "DEC",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "INC",
+    "3",
+    "4",
+    "2",
+    "2",
+    "3",
+    "3",
+    "1",
+],
+    [
+    "DIV",
+    "70",
+    "80",
+    "50",
+    "50",
+    "7",
+    "6",
+    "3",
+],
+    [
+    "IDIV",
+    "100",
+    "110",
+    "80",
+    "80",
+    "7",
+    "6",
+    "3",
+],
+    [
+    "IMUL",
+    "70",
+    "80",
+    "50",
+    "50",
+    "7",
+    "6",
+    "3",
+],
+    [
+    "MUL",
+    "80",
+    "90",
+    "60",
+    "60",
+    "7",
+    "6",
+    "3",
+],
+    [
+    "SAL/SHL",
+    "4",
+    "5",
+    "3",
+    "3",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "SAR",
+    "4",
+    "5",
+    "3",
+    "3",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "SHR",
+    "4",
+    "5",
+    "3",
+    "3",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "RCL",
+    "4",
+    "5",
+    "3",
+    "3",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "RCR",
+    "4",
+    "5",
+    "3",
+    "3",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "ROL",
+    "4",
+    "5",
+    "3",
+    "3",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "ROR",
+    "4",
+    "5",
+    "3",
+    "3",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "BT",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "BTC",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "BTR",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "BTS",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "CBW",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "CWDE",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "CWD",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "CDQ",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "BSF",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "BSR",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+    [
+    "BSWAP",
+    "3",
+    "4",
+    "2",
+    "2",
+    "2",
+    "1",
+    "1",
+],
+]
+
+[[column]]
+index = 1
+name = "instruction"
+original_name = "Instruction"
+inferred_type = "string"
+non_empty_count = 40
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_8086_cycles"
+original_name = "8086 (cycles)"
+inferred_type = "int"
+non_empty_count = 40
+empty_count = 0
+
+[[column]]
+index = 3
+name = "col_8088_cycles"
+original_name = "8088 (cycles)"
+inferred_type = "int"
+non_empty_count = 40
+empty_count = 0
+
+[[column]]
+index = 4
+name = "col_80186_cycles"
+original_name = "80186 (cycles)"
+inferred_type = "int"
+non_empty_count = 40
+empty_count = 0
+
+[[column]]
+index = 5
+name = "col_80188_cycles"
+original_name = "80188 (cycles)"
+inferred_type = "int"
+non_empty_count = 40
+empty_count = 0
+
+[[column]]
+index = 6
+name = "col_80286_cycles"
+original_name = "80286 (cycles)"
+inferred_type = "int"
+non_empty_count = 40
+empty_count = 0
+
+[[column]]
+index = 7
+name = "col_80386_cycles"
+original_name = "80386 (cycles)"
+inferred_type = "int"
+non_empty_count = 40
+empty_count = 0
+
+[[column]]
+index = 8
+name = "col_80486_cycles"
+original_name = "80486 (cycles)"
+inferred_type = "int"
+non_empty_count = 40
+empty_count = 0

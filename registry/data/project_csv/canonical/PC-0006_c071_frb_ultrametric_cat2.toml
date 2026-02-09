@@ -1,0 +1,315 @@
+[dataset]
+id = "PC-0006"
+slug = "c071_frb_ultrametric_cat2"
+source_csv = "data/csv/c071_frb_ultrametric_cat2.csv"
+source_sha256 = "ebbffd4610c945456562ace09d3e9d24f50f0dd4c03bddba5c1f36e88210d59b"
+source_size_bytes = 894
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 3
+column_count = 22
+header_value_sha256 = "4f9c1b0d42b563ca25c8f6c101843e8873f68d621b05da0a98be04aca1c828e5"
+row_value_sha256 = "a61ae372937707d0d91901d96cb256b21bd109e8e058d975951d914cf3cfdd57"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "catalog",
+    "dm_column",
+    "n_events",
+    "n_triples",
+    "ultrametric_fraction",
+    "null_fraction_mean",
+    "null_fraction_std",
+    "fraction_p_value",
+    "fraction_ci_lower",
+    "fraction_ci_upper",
+    "mean_defect",
+    "null_mean_defect",
+    "defect_p_value",
+    "padic_p2_p_value",
+    "padic_p3_p_value",
+    "padic_p5_p_value",
+    "padic_p7_p_value",
+    "padic_p11_p_value",
+    "padic_p13_p_value",
+    "bonferroni_threshold",
+    "any_significant",
+    "verdict",
+]
+original_header = [
+    "catalog",
+    "dm_column",
+    "n_events",
+    "n_triples",
+    "ultrametric_fraction",
+    "null_fraction_mean",
+    "null_fraction_std",
+    "fraction_p_value",
+    "fraction_ci_lower",
+    "fraction_ci_upper",
+    "mean_defect",
+    "null_mean_defect",
+    "defect_p_value",
+    "padic_p2_p_value",
+    "padic_p3_p_value",
+    "padic_p5_p_value",
+    "padic_p7_p_value",
+    "padic_p11_p_value",
+    "padic_p13_p_value",
+    "bonferroni_threshold",
+    "any_significant",
+    "verdict",
+]
+rows = [
+    [
+    "cat2",
+    "bonsai_dm",
+    "5045",
+    "100000",
+    "0.130500",
+    "0.130506",
+    "0.001028",
+    "0.995005",
+    "0.124700",
+    "0.136800",
+    "0.361350",
+    "0.363230",
+    "0.020979",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "0.006250",
+    "false",
+    "FAIL",
+],
+    [
+    "cat2",
+    "dm_exc_ne2001",
+    "5045",
+    "100000",
+    "0.121310",
+    "0.121885",
+    "0.001029",
+    "0.589411",
+    "0.115000",
+    "0.128500",
+    "0.368243",
+    "0.370097",
+    "0.021978",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "0.006250",
+    "false",
+    "FAIL",
+],
+    [
+    "cat2",
+    "dm_exc_ymw16",
+    "5045",
+    "100000",
+    "0.116410",
+    "0.118273",
+    "0.000983",
+    "0.052947",
+    "0.112300",
+    "0.124800",
+    "0.373114",
+    "0.374162",
+    "0.117882",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "1.000000",
+    "0.006250",
+    "false",
+    "FAIL",
+],
+]
+
+[[column]]
+index = 1
+name = "catalog"
+original_name = "catalog"
+inferred_type = "string"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 2
+name = "dm_column"
+original_name = "dm_column"
+inferred_type = "string"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 3
+name = "n_events"
+original_name = "n_events"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 4
+name = "n_triples"
+original_name = "n_triples"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 5
+name = "ultrametric_fraction"
+original_name = "ultrametric_fraction"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 6
+name = "null_fraction_mean"
+original_name = "null_fraction_mean"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 7
+name = "null_fraction_std"
+original_name = "null_fraction_std"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 8
+name = "fraction_p_value"
+original_name = "fraction_p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 9
+name = "fraction_ci_lower"
+original_name = "fraction_ci_lower"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 10
+name = "fraction_ci_upper"
+original_name = "fraction_ci_upper"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 11
+name = "mean_defect"
+original_name = "mean_defect"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 12
+name = "null_mean_defect"
+original_name = "null_mean_defect"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 13
+name = "defect_p_value"
+original_name = "defect_p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 14
+name = "padic_p2_p_value"
+original_name = "padic_p2_p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 15
+name = "padic_p3_p_value"
+original_name = "padic_p3_p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 16
+name = "padic_p5_p_value"
+original_name = "padic_p5_p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 17
+name = "padic_p7_p_value"
+original_name = "padic_p7_p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 18
+name = "padic_p11_p_value"
+original_name = "padic_p11_p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 19
+name = "padic_p13_p_value"
+original_name = "padic_p13_p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 20
+name = "bonferroni_threshold"
+original_name = "bonferroni_threshold"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 21
+name = "any_significant"
+original_name = "any_significant"
+inferred_type = "bool"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 22
+name = "verdict"
+original_name = "verdict"
+inferred_type = "string"
+non_empty_count = 3
+empty_count = 0

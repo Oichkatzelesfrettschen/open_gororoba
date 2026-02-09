@@ -1,0 +1,203 @@
+[dataset]
+id = "AH-0001"
+slug = "8086_instruction_cycle_counts"
+source_csv = "archive/8086_legacy/8086_Instruction_Cycle_Counts.csv"
+source_sha256 = "df0b1c02406ed3a6c2e7025c05a2ee8eb9429a0ee1be19534e2ead025bf3a40e"
+source_size_bytes = 282
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 40
+column_count = 2
+header_value_sha256 = "79285fd57ef8ca90c27437ddd8a6ff52fdef481b02a9501e511fbb75dbae562a"
+row_value_sha256 = "ab73e6b0661d16fce456c4e1dc5782934324f3aa8254846506b32fc78fc742a0"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_archive_csv"
+corpus_label = "archive CSV holding queue"
+header = [
+    "instruction",
+    "col_8086_cycles",
+]
+original_header = [
+    "Instruction",
+    "8086 (cycles)",
+]
+rows = [
+    [
+    "AAA",
+    "8",
+],
+    [
+    "AAM",
+    "83",
+],
+    [
+    "AAS",
+    "8",
+],
+    [
+    "DAA",
+    "60",
+],
+    [
+    "DAS",
+    "16",
+],
+    [
+    "ADC",
+    "3",
+],
+    [
+    "ADD",
+    "3",
+],
+    [
+    "AND",
+    "3",
+],
+    [
+    "CMP",
+    "3",
+],
+    [
+    "NEG",
+    "3",
+],
+    [
+    "NOT",
+    "3",
+],
+    [
+    "OR",
+    "3",
+],
+    [
+    "SBB",
+    "3",
+],
+    [
+    "SUB",
+    "3",
+],
+    [
+    "TEST",
+    "3",
+],
+    [
+    "XOR",
+    "3",
+],
+    [
+    "DEC",
+    "3",
+],
+    [
+    "INC",
+    "3",
+],
+    [
+    "DIV",
+    "70",
+],
+    [
+    "IDIV",
+    "100",
+],
+    [
+    "IMUL",
+    "70",
+],
+    [
+    "MUL",
+    "80",
+],
+    [
+    "SAL/SHL",
+    "4",
+],
+    [
+    "SAR",
+    "4",
+],
+    [
+    "SHR",
+    "4",
+],
+    [
+    "RCL",
+    "4",
+],
+    [
+    "RCR",
+    "4",
+],
+    [
+    "ROL",
+    "4",
+],
+    [
+    "ROR",
+    "4",
+],
+    [
+    "BT",
+    "3",
+],
+    [
+    "BTC",
+    "3",
+],
+    [
+    "BTR",
+    "3",
+],
+    [
+    "BTS",
+    "3",
+],
+    [
+    "CBW",
+    "3",
+],
+    [
+    "CWDE",
+    "3",
+],
+    [
+    "CWD",
+    "3",
+],
+    [
+    "CDQ",
+    "3",
+],
+    [
+    "BSF",
+    "3",
+],
+    [
+    "BSR",
+    "3",
+],
+    [
+    "BSWAP",
+    "3",
+],
+]
+
+[[column]]
+index = 1
+name = "instruction"
+original_name = "Instruction"
+inferred_type = "string"
+non_empty_count = 40
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_8086_cycles"
+original_name = "8086 (cycles)"
+inferred_type = "int"
+non_empty_count = 40
+empty_count = 0

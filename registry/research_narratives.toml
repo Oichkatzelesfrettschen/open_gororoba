@@ -4,8 +4,8 @@
 [research_narratives]
 updated = "2026-02-09"
 authoritative = true
-source_markdown_globs = ["docs/theory/*.md", "docs/engineering/*.md"]
-document_count = 22
+source_markdown_globs = ["docs/theory/*.md", "docs/engineering/*.md", "docs/research/*.md"]
+document_count = 25
 
 [[document]]
 id = "RN-001"
@@ -19,8 +19,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 37
+line_count = 40
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Metamaterial Warp Chip: Validation Datasheet (Simulated)
 
 **Part Number:** GEMINI-WARP-X10
@@ -72,8 +75,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["data/fab/warp_gate_ebl_mask.svg", "analog_warp_raytrace.png"]
-line_count = 70
+line_count = 73
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Holographic Warp-Gate Fabrication Protocol (v1.0)
 
 **Target Device:** Nanoscale Silicon Metasurface with ENZ Inclusions.
@@ -158,8 +164,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = ["https://arxiv.org/pdf/<id", "https://example.com/file.pdf'"]
 path_refs = ["data/external/", "data/external/PROVENANCE.local.json", ".txt", "docs/external_sources/<TOPIC>_SOURCES.md", "data/external/traces/"]
-line_count = 66
+line_count = 69
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Fetching External Sources (wget-first, offline reproducibility)
 
 Access date: 2026-02-02
@@ -240,8 +249,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["src/gemini_physics/engineering/analog_warp_drive.py", "20.0", "10.0", "1.5", "0.5", "src/scripts/engineering/holographic_warp_renderer.py", "cpp/src_cuda/sedenion_warp.cu", "src/gemini_physics/engineering/warp_pareto.py", "src/scripts/engineering/metasurface_multiphysics.py", "src/scripts/simulation/genesis_simulation_v2.py", "-1.5", "fabsf(dot - cross_mag) < 0.1"]
-line_count = 118
+line_count = 121
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Gap Closure Report: Repo-Wide Sample Lacunae
 
 This document addresses the specific lacunae identified in the repo-wide review, providing the exact mathematical forms, parameter values, and definitions extracted from the codebase.
@@ -364,6 +376,49 @@ Based on code analysis and theoretical alignment:
 
 [[document]]
 id = "RN-005"
+source_markdown = "docs/engineering/INDEX.md"
+domain = "engineering"
+slug = "index"
+title = "Engineering Narratives"
+status_token = "NARRATIVE"
+content_kind = "research_note"
+verification_level = "engineering_narrative"
+claim_refs = []
+url_refs = []
+path_refs = ["docs/engineering/*.md", "docs/engineering/DATASHEET_V2.md", "docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md", "docs/engineering/FETCHING_EXTERNAL_SOURCES.md", "docs/engineering/GAP_CLOSURE_REPORT.md", "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md", "docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md", "docs/engineering/OPTIX_ELUCIDATION.md", "docs/engineering/PADIC_SIGNAL_THEORY.md", "docs/engineering/PHASE_10_MULTIPHYSICS.md", "docs/engineering/PHASE_11_VISUALIZATION.md", "docs/engineering/PHASE_12_RENDERER.md", "docs/engineering/PHASE_13_GRAND_CRITIQUE.md", "docs/engineering/PHASE_14_DEEP_DIVE.md", "docs/engineering/PHASE_15_RESURRECTION.md", "docs/engineering/PHASE_16_FINAL_VALIDATION.md", "docs/engineering/PHASE_6_IMPLEMENTATION.md", "docs/engineering/PHASE_7_REPORT.md", "docs/engineering/PHASE_8_SYNTHESIS.md", "docs/engineering/PHYSICS_VALIDATION_REPORT.md", "docs/engineering/WARP_SPACEPLATE_SPECS.md"]
+line_count = 27
+body_markdown = '''
+# Engineering Narratives
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+This index and all files under `docs/engineering/*.md` are generated from TOML.
+
+- `RN-001` `NARRATIVE`: `docs/engineering/DATASHEET_V2.md`
+- `RN-002` `SPECIFICATION`: `docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md`
+- `RN-003` `NARRATIVE`: `docs/engineering/FETCHING_EXTERNAL_SOURCES.md`
+- `RN-004` `REPORT`: `docs/engineering/GAP_CLOSURE_REPORT.md`
+- `RN-005` `AUDIT`: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`
+- `RN-006` `AUDIT`: `docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md`
+- `RN-007` `NARRATIVE`: `docs/engineering/OPTIX_ELUCIDATION.md`
+- `RN-008` `NARRATIVE`: `docs/engineering/PADIC_SIGNAL_THEORY.md`
+- `RN-009` `PHASE_REPORT`: `docs/engineering/PHASE_10_MULTIPHYSICS.md`
+- `RN-010` `PHASE_REPORT`: `docs/engineering/PHASE_11_VISUALIZATION.md`
+- `RN-011` `PHASE_REPORT`: `docs/engineering/PHASE_12_RENDERER.md`
+- `RN-012` `PHASE_REPORT`: `docs/engineering/PHASE_13_GRAND_CRITIQUE.md`
+- `RN-013` `PHASE_REPORT`: `docs/engineering/PHASE_14_DEEP_DIVE.md`
+- `RN-014` `PHASE_REPORT`: `docs/engineering/PHASE_15_RESURRECTION.md`
+- `RN-015` `PHASE_REPORT`: `docs/engineering/PHASE_16_FINAL_VALIDATION.md`
+- `RN-016` `PHASE_REPORT`: `docs/engineering/PHASE_6_IMPLEMENTATION.md`
+- `RN-017` `PHASE_REPORT`: `docs/engineering/PHASE_7_REPORT.md`
+- `RN-018` `PHASE_REPORT`: `docs/engineering/PHASE_8_SYNTHESIS.md`
+- `RN-019` `REPORT`: `docs/engineering/PHYSICS_VALIDATION_REPORT.md`
+- `RN-020` `SPECIFICATION`: `docs/engineering/WARP_SPACEPLATE_SPECS.md`
+'''
+
+[[document]]
+id = "RN-006"
 source_markdown = "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md"
 domain = "engineering"
 slug = "mcp_skills_audit_2026-02-09"
@@ -374,8 +429,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = ["https://github.com/modelcontextprotocol/servers", "https://github.com/modelcontextprotocol/servers/tree/main/src/postgres", "https://modelcontextprotocol.io/integrations", "https://github.com/semgrep/semgrep-mcp", "https://docs.docker.com/manuals/mcp/", "https://developers.notion.com/docs/mcp", "https://linear.app/docs/mcp", "https://docs.gitlab.com/user/gitlab_duo/mcp_server/", "https://github.com/getsentry/sentry-mcp"]
 path_refs = ["~/.claude/.mcp.json", "~/.config/github-copilot/mcp-servers.json", "~/.gemini/settings.json", "~/.copilot/mcp-config.json", "~/.config/Claude/claude_desktop_config.json", "~/.codex/mcp-config.json", "~/.gemini/settings.json.bak-20260208_221739", "~/.copilot/mcp-config.json.bak-20260208_221739", "~/.config/Claude/claude_desktop_config.json.bak-20260208_221739", "~/.codex/mcp-config.json.bak-20260208_221739", "~/.codex/skills", "quick_validate.py", "~/.gemini/skills/", "~/.copilot/skills/", "~/.claude/agents/general-purpose/", "mcp-filesystem-agent.md", "mcp-bash-agent.md", "mcp-ripgrep-agent.md", "mcp-fetch-research-agent.md", "mcp-context7-agent.md", "mcp-arxiv-agent.md", "mcp-playwright-agent.md", "mcp-sqlite-agent.md", "mcp-semgrep-agent.md", "gororoba-rust-agent.md", "gororoba-claims-agent.md", "gororoba-mcp-orchestrator-agent.md", "~/.codex/config.toml"]
-line_count = 206
+line_count = 209
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # MCP and Skill Audit (2026-02-09)
 
 ## Scope
@@ -585,7 +643,7 @@ For this repo and similar research-engineering repos, the next high-value additi
 '''
 
 [[document]]
-id = "RN-006"
+id = "RN-007"
 source_markdown = "docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md"
 domain = "engineering"
 slug = "md_toml_centralization_audit_2026-02-09"
@@ -596,8 +654,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["git ls-files '*.md'", "git ls-files '*.toml'", "registry/knowledge_sources.toml", "crates/gororoba_cli/src/bin/migrate_claims.rs", "crates/gororoba_cli/src/bin/migrate_insights.rs", "crates/gororoba_cli/src/bin/registry_check.rs", "crates/gororoba_cli/src/bin/generate_latex.rs", "registry/", "registry/claims.toml", "docs/CLAIMS_EVIDENCE_MATRIX.md", "registry/insights.toml", "docs/INSIGHTS.md", "export_registry_markdown_mirrors.py", "registry/experiments.toml", "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md", "registry/binaries.toml", "registry/project.toml", "docs/latex/claims_appendix.tex", "docs/latex/insights_appendix.tex", "src/scripts/analysis/build_knowledge_sources_registry.py", "src/scripts/analysis/migrate_markdown_corpus_to_toml.py", "src/scripts/analysis/export_registry_markdown_mirrors.py", "registry/knowledge/documents.toml", "registry/knowledge/docs/DOC-*.toml", "docs/generated/*_REGISTRY_MIRROR.md", "registry/roadmap.toml", "registry/todo.toml", "registry/next_actions.toml", "registry/requirements.toml", "registry/knowledge_migration_plan.toml", "docs/claims/CLAIMS_DOMAIN_MAP.csv", "docs/TODO.md", "docs/NEXT_ACTIONS.md", "docs/ROADMAP.md"]
-line_count = 182
+line_count = 185
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Markdown and TOML Centralization Audit (2026-02-09)
 
 ## Scope
@@ -783,7 +844,7 @@ python3 bin/ascii_check.py --check
 '''
 
 [[document]]
-id = "RN-007"
+id = "RN-008"
 source_markdown = "docs/engineering/OPTIX_ELUCIDATION.md"
 domain = "engineering"
 slug = "optix_elucidation"
@@ -794,8 +855,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["holographic_warp_gate.py"]
-line_count = 32
+line_count = 35
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Elucidation of OptiX and Hardware Acceleration
 
 **Date:** 2026-02-01
@@ -831,7 +895,7 @@ The result is a **Holographic Warp-Gate**: a flat, structured-index lens that st
 '''
 
 [[document]]
-id = "RN-008"
+id = "RN-009"
 source_markdown = "docs/engineering/PADIC_SIGNAL_THEORY.md"
 domain = "engineering"
 slug = "padic_signal_theory"
@@ -842,8 +906,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["padic_synthesis.py", "src/gemini_physics/signal_processing/padic_synthesis.py"]
-line_count = 92
+line_count = 95
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # P-adic Signal Theory & Kozyrev-Sedenion Synthesis
 
 **Date:** 2026-02-01
@@ -939,7 +1006,7 @@ To prevent infinite valuation artifacts at the origin:
 '''
 
 [[document]]
-id = "RN-009"
+id = "RN-010"
 source_markdown = "docs/engineering/PHASE_10_MULTIPHYSICS.md"
 domain = "engineering"
 slug = "phase_10_multiphysics"
@@ -950,8 +1017,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["src/gemini_physics/numerical/fdfd_2d.py", "nanoscale_connectivity_field.png", "src/gemini_physics/materials/drude_lorentz.py", "ito_thermal_load.png", "docs/engineering/packaging_mount.scad"]
-line_count = 43
+line_count = 46
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 10: Multiphysics & Connectivity Deep Dive
 
 **Date:** 2026-02-01
@@ -998,7 +1068,7 @@ The device is theoretically sound, manufacturable, and mechanically integrable.
 '''
 
 [[document]]
-id = "RN-010"
+id = "RN-011"
 source_markdown = "docs/engineering/PHASE_11_VISUALIZATION.md"
 domain = "engineering"
 slug = "phase_11_visualization"
@@ -1009,8 +1079,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["src/gemini_physics/visualization/viz_engine.py", "src/gemini_physics/numerical/fdfd_2d_robust.py", "nanoscale_connectivity_field.png", "ito_thermal_load.png", "src/scripts/engineering/analog_warp_raytracer_refactored.py", "analog_warp_raytrace_highres.png"]
-line_count = 30
+line_count = 33
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 11 Report: Visualization & Integrity
 
 **Date:** 2026-02-01
@@ -1044,7 +1117,7 @@ The "Middle School Lab" aesthetic has been replaced with professional, high-reso
 '''
 
 [[document]]
-id = "RN-011"
+id = "RN-012"
 source_markdown = "docs/engineering/PHASE_12_RENDERER.md"
 domain = "engineering"
 slug = "phase_12_renderer"
@@ -1055,8 +1128,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["holographic_warp_renderer.py", "holographic_warp_renderer.png"]
-line_count = 25
+line_count = 28
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 12 Report: Holographic Warp Renderer
 
 **Date:** 2026-02-01
@@ -1085,7 +1161,7 @@ The resulting image acts as both a rigorous engineering output (focal points, sa
 '''
 
 [[document]]
-id = "RN-012"
+id = "RN-013"
 source_markdown = "docs/engineering/PHASE_13_GRAND_CRITIQUE.md"
 domain = "engineering"
 slug = "phase_13_grand_critique"
@@ -1096,8 +1172,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["nanoscale_connectivity_field.png", "holographic_warp_renderer.png", "src/gemini_physics/visualization/oculus.py", "src/scripts/engineering/grand_unified_simulator.py", "OCULUS_GRAND_DASHBOARD.png"]
-line_count = 32
+line_count = 35
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 13: The Grand Critique & Synthesis
 
 **Date:** 2026-02-01
@@ -1133,7 +1212,7 @@ This is the "Fully Recursive" synthesis requested.
 '''
 
 [[document]]
-id = "RN-013"
+id = "RN-014"
 source_markdown = "docs/engineering/PHASE_14_DEEP_DIVE.md"
 domain = "engineering"
 slug = "phase_14_deep_dive"
@@ -1144,8 +1223,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["spaceplate_pareto_candidates.csv", "src/scripts/engineering/grand_unified_simulator_v2.py", "data/artifacts/images/OCULUS_GRAND_DASHBOARD_v2.png", "docs/theory/DERIVATION_DEEP_DIVE.md"]
-line_count = 22
+line_count = 25
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 14: The "Endless" Deep Dive
 
 **Date:** 2026-02-01
@@ -1171,7 +1253,7 @@ The repository has survived the "scathing critique." The simulation is massive (
 '''
 
 [[document]]
-id = "RN-014"
+id = "RN-015"
 source_markdown = "docs/engineering/PHASE_15_RESURRECTION.md"
 domain = "engineering"
 slug = "phase_15_resurrection"
@@ -1182,8 +1264,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["OCULUS_GRAND_DASHBOARD_v2.png", "grand_unified_simulator_v3.py", "gaussian_filter(sigma=2.0)", "spaceplate_pareto_optimizer.py", "data/artifacts/images/OCULUS_GRAND_DASHBOARD_v3.png"]
-line_count = 26
+line_count = 29
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 15: The "Resurrection" Report
 
 **Date:** 2026-02-01
@@ -1213,7 +1298,7 @@ This concludes the visualization debugging cycle.
 '''
 
 [[document]]
-id = "RN-015"
+id = "RN-016"
 source_markdown = "docs/engineering/PHASE_16_FINAL_VALIDATION.md"
 domain = "engineering"
 slug = "phase_16_final_validation"
@@ -1224,8 +1309,11 @@ verification_level = "validation_summary"
 claim_refs = []
 url_refs = []
 path_refs = ["grand_unified_simulator_v4.py", "spaceplate_pareto_optimizer_robust.py", "density.max() > 0", "OCULUS_GRAND_DASHBOARD_v4.png"]
-line_count = 25
+line_count = 28
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 16: Final Validation & Synthesis
 
 **Date:** 2026-02-01
@@ -1254,7 +1342,7 @@ The system is now fully functional, rigorously derived, and visually compliant.
 '''
 
 [[document]]
-id = "RN-016"
+id = "RN-017"
 source_markdown = "docs/engineering/PHASE_6_IMPLEMENTATION.md"
 domain = "engineering"
 slug = "phase_6_implementation"
@@ -1265,8 +1353,11 @@ verification_level = "engineering_narrative"
 claim_refs = ["C-042", "C-050", "C-400"]
 url_refs = []
 path_refs = ["src/gemini_physics/engineering/spaceplate_design.py", "docs/engineering/spaceplate_stack.scad", "data/bom/spaceplate_bom.csv", "src/gemini_physics/engineering/analog_warp_drive.py", "docs/engineering/analog_warp_design.png", "data/bom/analog_warp_bom.csv", "src/scripts/analysis/kozyrev_gwtc3_analysis.py", "data/analysis/kozyrev_gwtc3_p2.csv", "src/gemini_physics/engineering/kozyrev_transform.v"]
-line_count = 69
+line_count = 72
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 6 Engineering Implementation Report
 
 **Date:** 2026-02-01
@@ -1339,7 +1430,7 @@ These outputs are ready for prototype manufacturing or FPGA synthesis.
 '''
 
 [[document]]
-id = "RN-017"
+id = "RN-018"
 source_markdown = "docs/engineering/PHASE_7_REPORT.md"
 domain = "engineering"
 slug = "phase_7_report"
@@ -1350,8 +1441,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["data/external/", "src/scripts/engineering/spaceplate_pareto_optimizer.py", "data/artifacts/images/spaceplate_pareto_real.png", "data/bom/spaceplate_pareto_candidates.csv", "src/scripts/engineering/analog_warp_raytracer.py", "data/artifacts/images/analog_warp_raytrace.png", "src/gemini_physics/signal/padic_dsp.py", "legacy/", "src/scripts/engineering/", "src/gemini_physics/", "docs/CLAIMS_EVIDENCE_MATRIX.md", "kozyrev_transform.v"]
-line_count = 45
+line_count = 48
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 7 Engineering & Synthesis Report
 
 **Date:** 2026-02-01
@@ -1400,7 +1494,7 @@ This report documents the "Phase 7" recursive expansion, integrating real-world 
 '''
 
 [[document]]
-id = "RN-018"
+id = "RN-019"
 source_markdown = "docs/engineering/PHASE_8_SYNTHESIS.md"
 domain = "engineering"
 slug = "phase_8_synthesis"
@@ -1411,8 +1505,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["cpp/src_cuda/sedenion_warp.cu", "sedenion_warp.cu"]
-line_count = 40
+line_count = 43
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Phase 8: Holographic Warp & Sedenion Synthesis
 
 **Date:** 2026-02-01
@@ -1456,7 +1553,7 @@ This represents the "Grand Synthesis": a device that uses **Cosmological Geometr
 '''
 
 [[document]]
-id = "RN-019"
+id = "RN-020"
 source_markdown = "docs/engineering/PHYSICS_VALIDATION_REPORT.md"
 domain = "engineering"
 slug = "physics_validation_report"
@@ -1467,8 +1564,11 @@ verification_level = "validation_summary"
 claim_refs = []
 url_refs = []
 path_refs = ["data/artifacts/images/holographic_warp_renderer.png", "data/artifacts/images/genesis_simulation_grand.png", "data/artifacts/images/warp_pareto_frontier.png"]
-line_count = 23
+line_count = 25
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Physics Validation Report
 
 **Date:** 2026-02-01
@@ -1494,7 +1594,7 @@ body_markdown = '''
 '''
 
 [[document]]
-id = "RN-020"
+id = "RN-021"
 source_markdown = "docs/engineering/WARP_SPACEPLATE_SPECS.md"
 domain = "engineering"
 slug = "warp_spaceplate_specs"
@@ -1505,8 +1605,11 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 61
+line_count = 64
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Warp Spaceplate: System Engineering Specification
 
 **Version:** 1.0 (Jan 2026)
@@ -1571,7 +1674,64 @@ The Warp Spaceplate is a passive electromagnetic metamaterial device designed to
 '''
 
 [[document]]
-id = "RN-021"
+id = "RN-022"
+source_markdown = "docs/research/algebra_fluid_roadmap.md"
+domain = "research"
+slug = "algebra_fluid_roadmap"
+title = "Algebra-Fluid Turbulence Roadmap: E7 Geometry & Triad Dynamics"
+status_token = "NARRATIVE"
+content_kind = "research_note"
+verification_level = "engineering_narrative"
+claim_refs = []
+url_refs = []
+path_refs = ["triad_hypergraph_metrics.py"]
+line_count = 41
+body_markdown = '''
+# Algebra-Fluid Turbulence Roadmap: E7 Geometry & Triad Dynamics
+
+## Abstract
+This roadmap outlines the integration of Exceptional Lie Algebra (E7) geometry with Fluid Turbulence statistics, specifically focusing on triad interactions in Navier-Stokes equations and their mapping to the geometry of E7 roots and weights.
+
+## 1. Theoretical Framework
+*   **E7 Lie Algebra**: Utilize the 56-dimensional representation of E7 to model the state space of fluid elements.
+*   **Triad Interactions**: Map the energy transfer triads ($k, p, q$ with $k+p+q=0$) to the root system structure of E7.
+*   **Hypergraph Metrics**: Use hypergraph analysis to quantify the density and topology of these interactions.
+
+## 2. Implementation Plan (Pure Rust)
+
+### Phase 1: Core Algebra (crates/algebra_core)
+*   [ ] Implement E7 root system generator.
+*   [ ] Implement weight lattice projections.
+*   [ ] Create `Triad` struct representing 3-vector interactions.
+
+### Phase 2: Fluid Dynamics (crates/lbm_core)
+*   [ ] Extend `lbm_core` to support spectral analysis (via `rustfft`).
+*   [ ] Implement "Triad Extractor" to identify active triads in the flow field.
+*   [ ] Calculate energy transfer rates $T(k,p,q)$.
+
+### Phase 3: Analysis & Metrics (crates/stats_core)
+*   [ ] Port `triad_hypergraph_metrics.py` logic to Rust.
+*   [ ] Compute:
+    *   Clustering coefficients of the triad graph.
+    *   Betti numbers (topology) of the interaction manifold.
+    *   Hurst exponents of the energy cascade.
+
+### Phase 4: Visualization (crates/gororoba_cli)
+*   [ ] Add `viz_warp_ring` command.
+*   [ ] Render 3D projections of the E7 polytope overlaid with flow vectors.
+*   [ ] Output formats: SVG, HDF5 (for external renderers).
+
+## 3. Integration & Validation
+*   **Validation**: Compare E7-predicted cascades with Kolmogorov K41 scaling ($k^{-5/3}$).
+*   **Integration**: Ensure `gororoba_cli` can run a pipeline: `Simulate -> Extract Triads -> Map to E7 -> Visualize`.
+
+## References
+*   *The Road from NKS to Scale-Free Networks is Paved with Zero-Divisors* (Marrais)
+*   *On Quaternions and Octonions* (Conway & Smith)
+'''
+
+[[document]]
+id = "RN-023"
 source_markdown = "docs/theory/CLAIMS_METHODOLOGY.md"
 domain = "theory"
 slug = "claims_methodology"
@@ -1582,8 +1742,11 @@ verification_level = "theoretical"
 claim_refs = ["C-007", "C-008", "C-077", "C-091"]
 url_refs = []
 path_refs = ["data/external/papers/", "docs/external_sources/", "docs/preregistered/CLAIM_NAME.md", "tests/test_*.py", "crates/*/tests/", "data/csv/", ".PROVENANCE.json"]
-line_count = 175
+line_count = 178
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Claims Methodology and Scientific Rigor
 
 This document describes the claims discipline framework used to track, verify,
@@ -1762,7 +1925,32 @@ Resolution rate: 421/435 = **96.8%**
 '''
 
 [[document]]
-id = "RN-022"
+id = "RN-024"
+source_markdown = "docs/theory/INDEX.md"
+domain = "theory"
+slug = "index"
+title = "Theory Narratives"
+status_token = "NARRATIVE"
+content_kind = "research_note"
+verification_level = "theoretical"
+claim_refs = []
+url_refs = []
+path_refs = ["docs/theory/*.md", "docs/theory/CLAIMS_METHODOLOGY.md", "docs/theory/WARP_PHYSICS_RECONCILIATION.md"]
+line_count = 9
+body_markdown = '''
+# Theory Narratives
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+This index and all files under `docs/theory/*.md` are generated from TOML.
+
+- `RN-021` `METHODOLOGY`: `docs/theory/CLAIMS_METHODOLOGY.md`
+- `RN-022` `RECONCILIATION`: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`
+'''
+
+[[document]]
+id = "RN-025"
 source_markdown = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
 domain = "theory"
 slug = "warp_physics_reconciliation"
@@ -1773,8 +1961,11 @@ verification_level = "theoretical"
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 40
+line_count = 43
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Warp Ring Physics Reconciliation (Phase 7.0)
 
 ## Overview

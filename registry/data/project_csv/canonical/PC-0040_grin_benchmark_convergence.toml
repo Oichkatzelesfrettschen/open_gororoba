@@ -1,0 +1,73 @@
+[dataset]
+id = "PC-0040"
+slug = "grin_benchmark_convergence"
+source_csv = "data/csv/grin_benchmark_convergence.csv"
+source_sha256 = "54da584d242d6d92cad27b6bc7f5e2390a6920a55f3ba2a7298c7dfb4778048a"
+source_size_bytes = 218
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 4
+column_count = 3
+header_value_sha256 = "f194cfbeb7e60661af608baf70e45dcbff0a19995b6424dcd35ceec7a9ee8db6"
+row_value_sha256 = "f03bcd24ca1af2a83124d40beb050ba21ffb2aafaa29dbba4f709a9004264a1f"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "dt",
+    "position_error",
+    "convergence_rate",
+]
+original_header = [
+    "dt",
+    "position_error",
+    "convergence_rate",
+]
+rows = [
+    [
+    "2.0",
+    "2.9634767399200346e-06",
+    "3.9743876518492933",
+],
+    [
+    "1.0",
+    "1.9861558561706794e-07",
+    "3.9743876518492933",
+],
+    [
+    "0.5",
+    "1.275300529068879e-08",
+    "3.9743876518492933",
+],
+    [
+    "0.25",
+    "7.607386109942382e-10",
+    "3.9743876518492933",
+],
+]
+
+[[column]]
+index = 1
+name = "dt"
+original_name = "dt"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 2
+name = "position_error"
+original_name = "position_error"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 3
+name = "convergence_rate"
+original_name = "convergence_rate"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0

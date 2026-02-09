@@ -1,0 +1,280 @@
+[dataset]
+id = "PC-0003"
+slug = "c005_grassmannian_zd_analysis"
+source_csv = "data/csv/c005_grassmannian_zd_analysis.csv"
+source_sha256 = "0f44a5977ca90b306edf47bdedb6ad138ee606fee0480c47bb395ecc6200ed0c"
+source_size_bytes = 1710
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 37
+column_count = 4
+header_value_sha256 = "5b0a1d6ebd18880b7177416583adc8313746f9b3009435e7e920c099b98ad76e"
+row_value_sha256 = "eb921167039cd8779e5f1b15256dce5903d607a07b6c03fbd4b8ae3b6d3648e0"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "c_005_grassmannian_zd_annihilator_analysis",
+    "col_2",
+    "col_3",
+    "col_4",
+]
+original_header = ["# C-005 Grassmannian ZD Annihilator Analysis"]
+rows = [
+    [
+    "# Generated: 2026-02-06 via algebra_core Rust integration tests",
+    "",
+    "",
+    "",
+],
+    [
+    '# Reference: Reggiani (2024) "The geometry of sedenion zero divisors" arXiv:2411.18881',
+    "",
+    "",
+    "",
+],
+    [
+    "#",
+    "",
+    "",
+    "",
+],
+    [
+    "# Key Findings:",
+    "",
+    "",
+    "",
+],
+    [
+    "# 1. All 84 standard ZDs have exactly 4-dimensional left annihilators",
+    "",
+    "",
+    "",
+],
+    [
+    "# 2. Sign variants (+/-) have ORTHOGONAL annihilator subspaces (distance = pi)",
+    "",
+    "",
+    "",
+],
+    [
+    '#    This contradicts the claim "sign variants share subspace"',
+    "",
+    "",
+    "",
+],
+    [
+    "# 3. 42 distinct subspaces (one per assessor",
+    " using + sign representative)",
+    "",
+    "",
+],
+    [
+    "# 4. 5 distinct geodesic distance values among 861 subspace pairs",
+    "",
+    "",
+    "",
+],
+    [
+    "# 5. Box-kite membership stratifies distances significantly",
+    "",
+    "",
+    "",
+],
+    [
+    "#",
+    "",
+    "",
+    "",
+],
+    [
+    "metric",
+    "value",
+    "notes",
+    "",
+],
+    [
+    "n_assessors",
+    "42",
+    "primitive assessors from de Marrais construction",
+    "",
+],
+    [
+    "n_zds",
+    "84",
+    "2 sign variants per assessor",
+    "",
+],
+    [
+    "annihilator_dim",
+    "4",
+    "all ZDs have 4D annihilator (verified)",
+    "",
+],
+    [
+    "n_distinct_subspaces",
+    "42",
+    "one per assessor (+ representative)",
+    "",
+],
+    [
+    "sign_variant_distance",
+    "3.1416",
+    "pi - orthogonal subspaces",
+    "",
+],
+    [
+    "n_distinct_distances",
+    "5",
+    "among 42 subspaces (claim: 6)",
+    "",
+],
+    [
+    "within_boxkite_mean_dist",
+    "2.7735",
+    "mean distance within same box-kite",
+    "",
+],
+    [
+    "across_boxkite_mean_dist",
+    "2.2092",
+    "mean distance across box-kites",
+    "",
+],
+    [
+    "stratification_delta",
+    "0.5643",
+    "within - across (significant)",
+    "",
+],
+    [
+    "within_boxkite_pairs",
+    "105",
+    "C(6",
+    "2) * 7 = 15*7",
+],
+    [
+    "across_boxkite_pairs",
+    "756",
+    "C(42",
+    "2) - 105 = 861 - 105",
+],
+    [
+    "#",
+    "",
+    "",
+    "",
+],
+    [
+    "# Distance histogram (values rounded to 1e-4):",
+    "",
+    "",
+    "",
+],
+    [
+    "# 1.5708 (pi/2): 84 pairs",
+    "",
+    "",
+    "",
+],
+    [
+    "# 2.0944 (2pi/3): 336 pairs",
+    "",
+    "",
+    "",
+],
+    [
+    "# 2.2214: 42 pairs",
+    "",
+    "",
+    "",
+],
+    [
+    "# 2.4836: 336 pairs",
+    "",
+    "",
+    "",
+],
+    [
+    "# 3.1416 (pi): 63 pairs",
+    "",
+    "",
+    "",
+],
+    [
+    "#",
+    "",
+    "",
+    "",
+],
+    [
+    "# Status: VERIFIED with corrections",
+    "",
+    "",
+    "",
+],
+    [
+    "# - Annihilator dimensions: CONFIRMED",
+    "",
+    "",
+    "",
+],
+    [
+    "# - Sign variant sharing: REFUTED (they are orthogonal)",
+    "",
+    "",
+    "",
+],
+    [
+    "# - Distinct distances: CLOSE (5 vs claimed 6)",
+    "",
+    "",
+    "",
+],
+    [
+    "# - Box-kite stratification: CONFIRMED",
+    "",
+    "",
+    "",
+],
+    [
+    "# - PSL(2",
+    "7) symmetry evidence: STRONG (discrete distance structure)",
+    "",
+    "",
+],
+]
+
+[[column]]
+index = 1
+name = "c_005_grassmannian_zd_annihilator_analysis"
+original_name = "# C-005 Grassmannian ZD Annihilator Analysis"
+inferred_type = "string"
+non_empty_count = 37
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_2"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 14
+empty_count = 23
+
+[[column]]
+index = 3
+name = "col_3"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 12
+empty_count = 25
+
+[[column]]
+index = 4
+name = "col_4"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 2
+empty_count = 35

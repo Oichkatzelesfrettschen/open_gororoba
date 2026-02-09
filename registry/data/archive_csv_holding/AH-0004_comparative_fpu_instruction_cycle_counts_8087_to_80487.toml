@@ -1,0 +1,227 @@
+[dataset]
+id = "AH-0004"
+slug = "comparative_fpu_instruction_cycle_counts_8087_to_80487"
+source_csv = "archive/8086_legacy/Comparative_FPU_Instruction_Cycle_Counts__8087_to_80487_.csv"
+source_sha256 = "f99d538b9b5dfee6ba23d103d2e04269594243706c5cfc6f9ec013edc6add7ec"
+source_size_bytes = 738
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 22
+column_count = 5
+header_value_sha256 = "c5835eba3c958bcb820375d7e4826884a5859327197cce4445b505044ee0949b"
+row_value_sha256 = "0d09c95463353b90732c2aadcfb61112d3d96258ea7c3294e269f822ea13c4c5"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "holding_archive_csv"
+corpus_label = "archive CSV holding queue"
+header = [
+    "instruction",
+    "col_8087_cycles",
+    "col_80287_cycles",
+    "col_80387_cycles",
+    "col_80487_cycles",
+]
+original_header = [
+    "Instruction",
+    "8087 (cycles)",
+    "80287 (cycles)",
+    "80387 (cycles)",
+    "80487 (cycles)",
+]
+rows = [
+    [
+    "FADD",
+    "110-168",
+    "110-168",
+    "29-82",
+    "8-35",
+],
+    [
+    "FMUL",
+    "110-168",
+    "110-168",
+    "29-82",
+    "11-27",
+],
+    [
+    "FDIV",
+    "191-243",
+    "191-243",
+    "88-140",
+    "8-89",
+],
+    [
+    "FSQRT",
+    "681-810",
+    "180-186",
+    "122-129",
+    "83-87",
+],
+    [
+    "FSIN",
+    "N/A",
+    "N/A",
+    "122-771",
+    "193-279",
+],
+    [
+    "FCOS",
+    "N/A",
+    "N/A",
+    "194-809",
+    "243-329",
+],
+    [
+    "FSINCOS",
+    "N/A",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "FPTAN",
+    "54-370",
+    "30-450",
+    "191-497",
+    "200-273",
+],
+    [
+    "FPATAN",
+    "250-800",
+    "250-800",
+    "314-487",
+    "218-303",
+],
+    [
+    "F2XM1",
+    "310-630",
+    "310-630",
+    "211-476",
+    "140-279",
+],
+    [
+    "FYL2X",
+    "N/A",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "FYL2XP1",
+    "N/A",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "FPREM",
+    "91-517",
+    "15-190",
+    "74-155",
+    "70-138",
+],
+    [
+    "FPREM1",
+    "N/A",
+    "N/A",
+    "95-185",
+    "72-167",
+],
+    [
+    "FRNDINT",
+    "50-617",
+    "16-50",
+    "66-80",
+    "21-30",
+],
+    [
+    "FSCALE",
+    "83-237",
+    "32-38",
+    "67-86",
+    "30-32",
+],
+    [
+    "FST",
+    "15-540",
+    "15-540",
+    "11-534",
+    "3-176",
+],
+    [
+    "FSTP",
+    "15-540",
+    "15-540",
+    "11-534",
+    "3-176",
+],
+    [
+    "FLD",
+    "17-310",
+    "17-310",
+    "14-275",
+    "3-103",
+],
+    [
+    "FLDZ",
+    "71-117",
+    "11-17",
+    "20",
+    "4",
+],
+    [
+    "FLD1",
+    "12-517",
+    "15-21",
+    "24",
+    "4",
+],
+    [
+    "FLDPI",
+    "22-617",
+    "16-22",
+    "40",
+    "8",
+],
+]
+
+[[column]]
+index = 1
+name = "instruction"
+original_name = "Instruction"
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_8087_cycles"
+original_name = "8087 (cycles)"
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 0
+
+[[column]]
+index = 3
+name = "col_80287_cycles"
+original_name = "80287 (cycles)"
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 0
+
+[[column]]
+index = 4
+name = "col_80387_cycles"
+original_name = "80387 (cycles)"
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 0
+
+[[column]]
+index = 5
+name = "col_80487_cycles"
+original_name = "80487 (cycles)"
+inferred_type = "string"
+non_empty_count = 22
+empty_count = 0

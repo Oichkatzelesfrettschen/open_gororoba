@@ -1,0 +1,87 @@
+[dataset]
+id = "PC-0056"
+slug = "spectral_exponent_comparisons"
+source_csv = "data/csv/spectral_exponent_comparisons.csv"
+source_sha256 = "876e30ca004a3ef40fa2f55f4ac3563b1760498a5f63b69f176f02515464a8e6"
+source_size_bytes = 227
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 4
+column_count = 4
+header_value_sha256 = "ea223764858500076bb0200c3a78d0dc50a33336f538d1a723242dcd3333a06b"
+row_value_sha256 = "1ef4ec6f1de16a9bb9a99f7d908c146dd7d2e488533312017f6c234b2bace923"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "framework",
+    "exponent",
+    "rms_deviation_from_k_minus_3",
+    "matches",
+]
+original_header = [
+    "framework",
+    "exponent",
+    "rms_deviation_from_k_minus_3",
+    "matches",
+]
+rows = [
+    [
+    "kolmogorov",
+    "-1.6666666666666667",
+    "1.54114340083979",
+    "False",
+],
+    [
+    "kraichnan_enstrophy",
+    "-3",
+    "0.0",
+    "True",
+],
+    [
+    "calcagni",
+    "running (1 to 3)",
+    "5.833529261178719",
+    "False",
+],
+    [
+    "parisi_sourlas_D4",
+    "1",
+    "N/A",
+    "False",
+],
+]
+
+[[column]]
+index = 1
+name = "framework"
+original_name = "framework"
+inferred_type = "string"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 2
+name = "exponent"
+original_name = "exponent"
+inferred_type = "string"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 3
+name = "rms_deviation_from_k_minus_3"
+original_name = "rms_deviation_from_k_minus_3"
+inferred_type = "string"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 4
+name = "matches"
+original_name = "matches"
+inferred_type = "bool"
+non_empty_count = 4
+empty_count = 0

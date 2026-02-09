@@ -1,0 +1,153 @@
+[dataset]
+id = "PC-0007"
+slug = "c071b_dm_comoving_ultrametric"
+source_csv = "data/csv/c071b_dm_comoving_ultrametric.csv"
+source_sha256 = "443c752c01291978f6ba8320c078e0a7a4a3f337770fd34e1158c6e37a9e3057"
+source_size_bytes = 417
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 5
+column_count = 8
+header_value_sha256 = "4f583b715c6f0d98c16f02f1793e19f0edb37df96a5c982bbdc1cdfe7c0f8c32"
+row_value_sha256 = "114d584501f8fc672c964e66f99c68c5bb85e6d21f29913a1c0ad889e6188c71"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "test_type",
+    "epsilon_mpc",
+    "n_points",
+    "n_testable",
+    "metric_value",
+    "null_mean",
+    "p_value",
+    "verdict",
+]
+original_header = [
+    "test_type",
+    "epsilon_mpc",
+    "n_points",
+    "n_testable",
+    "metric_value",
+    "null_mean",
+    "p_value",
+    "verdict",
+]
+rows = [
+    [
+    "local_ultrametricity",
+    "50",
+    "4996",
+    "1504",
+    "0.334346",
+    "0.333838",
+    "0.039604",
+    "Pass",
+],
+    [
+    "local_ultrametricity",
+    "100",
+    "4996",
+    "2163",
+    "0.303302",
+    "0.303254",
+    "0.465347",
+    "Fail",
+],
+    [
+    "local_ultrametricity",
+    "200",
+    "4996",
+    "3499",
+    "0.293005",
+    "0.293355",
+    "0.960396",
+    "Fail",
+],
+    [
+    "local_ultrametricity",
+    "500",
+    "4996",
+    "4744",
+    "0.247384",
+    "0.247395",
+    "0.564356",
+    "Fail",
+],
+    [
+    "dendrogram_cophenetic",
+    "global",
+    "200",
+    "200",
+    "0.764533",
+    "0.764533",
+    "0.435644",
+    "Fail",
+],
+]
+
+[[column]]
+index = 1
+name = "test_type"
+original_name = "test_type"
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 2
+name = "epsilon_mpc"
+original_name = "epsilon_mpc"
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 3
+name = "n_points"
+original_name = "n_points"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 4
+name = "n_testable"
+original_name = "n_testable"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 5
+name = "metric_value"
+original_name = "metric_value"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 6
+name = "null_mean"
+original_name = "null_mean"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 7
+name = "p_value"
+original_name = "p_value"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 8
+name = "verdict"
+original_name = "verdict"
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 0

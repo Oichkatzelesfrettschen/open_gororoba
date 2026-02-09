@@ -1,0 +1,211 @@
+[dataset]
+id = "PG-0015"
+slug = "de_marrais_assessors"
+source_csv = "data/csv/de_marrais_assessors.csv"
+source_sha256 = "1aec9ed590f94b07fce72b7733b3986609715b1b84198e326ba654745582c24b"
+source_size_bytes = 213
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 42
+column_count = 2
+header_value_sha256 = "631ff454d5646d72e0c40afcb4c2eacc867d3472d60b34a644703a4276ddc116"
+row_value_sha256 = "a15edae6d06de8f45099135c91bf21c60253d624a0786a40991b3147f30354cc"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "generated_artifact"
+corpus_label = "project CSV generated artifact"
+header = [
+    "low",
+    "high",
+]
+original_header = [
+    "low",
+    "high",
+]
+rows = [
+    [
+    "1",
+    "10",
+],
+    [
+    "1",
+    "11",
+],
+    [
+    "1",
+    "12",
+],
+    [
+    "1",
+    "13",
+],
+    [
+    "1",
+    "14",
+],
+    [
+    "1",
+    "15",
+],
+    [
+    "2",
+    "9",
+],
+    [
+    "2",
+    "11",
+],
+    [
+    "2",
+    "12",
+],
+    [
+    "2",
+    "13",
+],
+    [
+    "2",
+    "14",
+],
+    [
+    "2",
+    "15",
+],
+    [
+    "3",
+    "9",
+],
+    [
+    "3",
+    "10",
+],
+    [
+    "3",
+    "12",
+],
+    [
+    "3",
+    "13",
+],
+    [
+    "3",
+    "14",
+],
+    [
+    "3",
+    "15",
+],
+    [
+    "4",
+    "9",
+],
+    [
+    "4",
+    "10",
+],
+    [
+    "4",
+    "11",
+],
+    [
+    "4",
+    "13",
+],
+    [
+    "4",
+    "14",
+],
+    [
+    "4",
+    "15",
+],
+    [
+    "5",
+    "9",
+],
+    [
+    "5",
+    "10",
+],
+    [
+    "5",
+    "11",
+],
+    [
+    "5",
+    "12",
+],
+    [
+    "5",
+    "14",
+],
+    [
+    "5",
+    "15",
+],
+    [
+    "6",
+    "9",
+],
+    [
+    "6",
+    "10",
+],
+    [
+    "6",
+    "11",
+],
+    [
+    "6",
+    "12",
+],
+    [
+    "6",
+    "13",
+],
+    [
+    "6",
+    "15",
+],
+    [
+    "7",
+    "9",
+],
+    [
+    "7",
+    "10",
+],
+    [
+    "7",
+    "11",
+],
+    [
+    "7",
+    "12",
+],
+    [
+    "7",
+    "13",
+],
+    [
+    "7",
+    "14",
+],
+]
+
+[[column]]
+index = 1
+name = "low"
+original_name = "low"
+inferred_type = "int"
+non_empty_count = 42
+empty_count = 0
+
+[[column]]
+index = 2
+name = "high"
+original_name = "high"
+inferred_type = "int"
+non_empty_count = 42
+empty_count = 0

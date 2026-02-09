@@ -1,0 +1,113 @@
+[dataset]
+id = "PC-0049"
+slug = "nonlocal_slopes"
+source_csv = "data/csv/nonlocal_slopes.csv"
+source_sha256 = "24ea2cdf3bd78958a03d5fa9caf2ceaf83b5022156c0d653f32ec15b612a5e14"
+source_size_bytes = 371
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 12
+column_count = 3
+header_value_sha256 = "c90ede4d50bb72818bd99f0ebc5f4043a3f48bd07a273bc3cb634384a2e5b3da"
+row_value_sha256 = "67f74266df3ea5e0776bb36a66f0787ca5caff4916afa6f0136469d673105e79"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "geometry",
+    "alpha",
+    "slope",
+]
+original_header = [
+    "Geometry",
+    "Alpha",
+    "Slope",
+]
+rows = [
+    [
+    "1D_8",
+    "0.5",
+    "4.159740113124566",
+],
+    [
+    "1D_8",
+    "1.0",
+    "2.938355401872839",
+],
+    [
+    "1D_8",
+    "2.0",
+    "1.8951312209929896",
+],
+    [
+    "1D_8",
+    "3.0",
+    "1.6783463038468445",
+],
+    [
+    "2D_4x2",
+    "0.5",
+    "4.910345508900786",
+],
+    [
+    "2D_4x2",
+    "1.0",
+    "4.362615010981865",
+],
+    [
+    "2D_4x2",
+    "2.0",
+    "3.634651137572859",
+],
+    [
+    "2D_4x2",
+    "3.0",
+    "3.361490882472796",
+],
+    [
+    "3D_2x2x2",
+    "0.5",
+    "5.392690372262687",
+],
+    [
+    "3D_2x2x2",
+    "1.0",
+    "5.765380592168261",
+],
+    [
+    "3D_2x2x2",
+    "2.0",
+    "6.132479835806574",
+],
+    [
+    "3D_2x2x2",
+    "3.0",
+    "6.313808100651193",
+],
+]
+
+[[column]]
+index = 1
+name = "geometry"
+original_name = "Geometry"
+inferred_type = "string"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 2
+name = "alpha"
+original_name = "Alpha"
+inferred_type = "float"
+non_empty_count = 12
+empty_count = 0
+
+[[column]]
+index = 3
+name = "slope"
+original_name = "Slope"
+inferred_type = "float"
+non_empty_count = 12
+empty_count = 0
