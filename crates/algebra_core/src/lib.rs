@@ -284,6 +284,9 @@ pub use emanation::{
     Theorem11Result, verify_theorem11,
     // Balloon ride -- fixed-S, increasing-N sequence
     BalloonRideStep, BalloonRide, min_level_for_strut, balloon_ride,
+    // Spectroscopy bands -- fixed-N, all-S band structure
+    BandBehavior, FlipBookFrame, SpectroscopyBand, SpectroscopyResult,
+    spectroscopy_bands,
     // Three Vizier XOR relationships (de Marrais 2007)
     ThreeVizierResult, verify_three_viziers,
     VizierXorAudit, vizier_xor_audit,
