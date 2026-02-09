@@ -240,3 +240,8 @@ name = "sky-limit-set"
 crate = "gororoba_cli"
 description = "Compare ET skybox pattern invariants to Coxeter group limit set invariants"
 experiment = "E-013"
+
+[[binary]]
+name = "warp-ring-integration"
+crate = "gororoba_cli"
+description = "Integrate turbulence triads and E7 geometry into warp-ring projection and visualization"

@@ -4,7 +4,7 @@
 [entrypoint_docs]
 authoritative = true
 updated = "2026-02-09"
-document_count = 11
+document_count = 8
 
 [[document]]
 path = "AGENTS.md"
@@ -436,79 +436,6 @@ Every final handoff should include:
 - next recommended steps
 '''
 
-
-[[document]]
-path = "docs/monograph/01_foundations.md"
-title = "Volume I: Algebraic Foundations of Flow"
-body_markdown = '''
-# Volume I: Algebraic Foundations of Flow
-
-## 1.1 The Geometry of Interaction
-We posit that the nonlinear advection term $(u \cdot \nabla) u$ in the Navier-Stokes equations can be mapped to the root system of the E7 Lie algebra.
-
-### 1.1.1 The E7 Root System
-The E7 root system $\Phi_{E7}$ consists of 126 vectors in $\mathbb{R}^7$. It is a subsystem of the E8 lattice, specifically the set of roots orthogonal to a fixed root $\alpha \in \Phi_{E8}$.
-
-**Definition 1.1:** Let $\Phi_{E8}$ be the set of 240 roots of E8. Let $\xi \in \Phi_{E8}$ be a fixed reference root. The E7 root system is defined as:
-$$ \Phi_{E7} = \{ \alpha \in \Phi_{E8} \mid (\alpha, \xi) = 0 \} $$
-
-This projection preserves the inner product structure and the crystallographic property.
-
-## 1.2 Triad Dynamics
-In spectral space, turbulence is driven by triad interactions satisfying $k + p + q = 0$.
-
-**Theorem 1.2 (Conjecture):** The set of active triads in fully developed turbulence maps isomorphically to the set of structure constants $N_{\alpha,\beta}$ in the E7 Lie algebra, where $\alpha, \beta, \gamma \in \Phi_{E7}$ and $\alpha + \beta + \gamma = 0$.
-
-### 1.2.1 The Structure Tensor
-The interaction strength is given by the structure tensor $T_{kpq}$. In our algebraic model, this corresponds to the projection of the E7 structure constants onto the flow manifold.
-'''
-
-[[document]]
-path = "docs/monograph/02_turbulence.md"
-title = "Volume II: Turbulence and Spectral Theory"
-body_markdown = '''
-# Volume II: Turbulence and Spectral Theory
-
-## 2.1 The Spectral Landscape
-We analyze the energy cascade through the lens of hypergraph theory.
-
-### 2.1.1 Spectral Triads
-A spectral triad is a tuple $(k, p, q)$ of wavevectors.
-The energy transfer function $T(k)$ is the sum over all such triads:
-$$ \frac{\partial E(k)}{\partial t} = \sum_{k+p+q=0} T(k,p,q) - 2\nu k^2 E(k) + F(k) $$
-
-## 2.2 Hypergraph Metrics
-We define the **Triad Hypergraph** $H = (V, E)$ where $V$ is the set of active wavemodes and $E$ is the set of interacting triads.
-
-**Metric 2.2.1 (Clustering Coefficient):**
-$$ C = \frac{3 \times \text{Number of triangles}}{\text{Number of connected triplets}} $$
-A high clustering coefficient indicates a dense, local interaction network, characteristic of the inertial range.
-
-**Metric 2.2.2 (Betti Numbers):**
-The topology of the interaction manifold is characterized by its Betti numbers $\beta_k$. We observe that $\beta_1$ peaks at the dissipation scale, indicating a topological phase transition in the flow.
-'''
-
-[[document]]
-path = "docs/monograph/03_synthesis.md"
-title = "Volume III: Synthesis - The Warp Ring"
-body_markdown = '''
-# Volume III: Synthesis - The Warp Ring
-
-## 3.1 The Warp Ring Hypothesis
-The "Warp Ring" is the visual manifestation of the E7 polytope projected onto the turbulent flow field. It represents the "event horizon" of energy transfer—the boundary between the inertial range and the dissipation range.
-
-### 3.1.1 Visualization
-By projecting the 56-dimensional E7 weight space onto a 2D plane (the Coxeter plane), we observe a ring-like structure. When overlaid with the spectral energy density of the fluid, active triads cluster along the vertices of this projection.
-
-## 3.2 Unified Field Theory
-We propose that the Navier-Stokes equations are a low-energy effective theory of a higher-dimensional algebraic structure governed by E7 geometry.
-
-**Conjecture 3.2:** The intermittency exponents $\zeta_p$ of turbulence are eigenvalues of the E7 Casimir operators.
-
-## 3.3 Conclusion
-This monograph synthesizes the algebraic rigor of Lie theory with the statistical chaos of fluid dynamics. The resulting framework—the "Algebra-Fluid Duality"—provides a novel pathway for solving the closure problem of turbulence.
-'''
-
 [[document]]
 path = "README.md"
 title = "Gemini Experiments: Evidence-First Algebra/Physics Sandbox"
@@ -566,7 +493,7 @@ Quick commands:
 - ASCII-only: repo-authored docs/code should remain ASCII-only (immutable transcripts under `convos/` are exempt).
 - Warnings-as-errors: run checks/tests with `PYTHONWARNINGS=error` to catch fragile imports and deprecations early.
 - Parallel tests + GPU notes: `docs/COMPUTING_SPECS.md`
-- Naming: repo title is \"Gemini Experiments\"; the Python package name is `gemini-experiments` (see `pyproject.toml`).
+- Naming: repo title is "Gemini Experiments"; the Python package name is `gemini-experiments` (see `pyproject.toml`).
 
 ### Artifact: Annotated Grand Warp Ring
 - File: `data/artifacts/images/warp_ring_annotated.png` (~1.5 MB)
@@ -593,7 +520,7 @@ Treat anything in `curated/` as **non-authoritative** unless it is:
 ## Provenance snapshot
 
 - `curated/PROVENANCE.local.json` records SHA256 + size + mtime for every file currently under `curated/`.
-  This supports \"what changed?\" audits but does **not** by itself establish scientific provenance.
+  This supports "what changed?" audits but does **not** by itself establish scientific provenance.
 
 ## Directory notes
 
@@ -601,7 +528,7 @@ Treat anything in `curated/` as **non-authoritative** unless it is:
 - `curated/02_simulations_pde_quantum/`: simulation/plot artifacts (some scripts write here, but most CSVs
   are not yet backed by validated models).
 - `curated/03_benchmarks_numeric/`: numeric benchmark tables (largely not yet reproducible).
-- `curated/04_observational_datasets/`: \"observational\" CSVs (requires cross-checking against first-party sources).
+- `curated/04_observational_datasets/`: "observational" CSVs (requires cross-checking against first-party sources).
 - `curated/05_summaries_indexes/`: summary/index artifacts.
 '''
 
@@ -613,21 +540,21 @@ body_markdown = '''
 
 ## Overview
 These `.v` files (`confine_theorems_*.v`) are a **large inventory of theorem statements** about a
-proposed \"Discrete Causal Lattice\" model (threads, rights, delegation).
+proposed "Discrete Causal Lattice" model (threads, rights, delegation).
 
 Important: the `confine_theorems_*.v` files in this repo currently contain **statements only** (no
-definitions and no proofs). The `make coq` workflow compiles a generated \"axioms\" version of these
+definitions and no proofs). The `make coq` workflow compiles a generated "axioms" version of these
 statements so that the Coq toolchain can at least typecheck the declarations and keep the interface
 stable while proper proofs are developed.
 
 ## Physical Interpretation
-While phrased in Computer Science terms (\"Threads\", \"Rights\"), this model corresponds to a **Discrete Spacetime** where:
+While phrased in Computer Science terms ("Threads", "Rights"), this model corresponds to a **Discrete Spacetime** where:
 *   **Thread** = A Point in Spacetime (Event).
 *   **Send/Receive** = Causal Connection (Light Cone).
 *   **Right/Grant** = Conservation of Information (No Signaling Condition).
 
 ## Lacunae & Resolution
-*   **Original Claim**: These proofs verify \"Quantum Gravity\".
+*   **Original Claim**: These proofs verify "Quantum Gravity".
 *   **Correction**: At present, they do **not** provide such proofs. They are a structured set of claims
     that would need (1) a formal model and (2) actual proofs.
 
@@ -641,8 +568,8 @@ This generates `confine_theorems_*_axioms.v` (ignored by git) and compiles them 
 
 ## Next Steps
 To make this physically rigorous, we define the mapping:
-$$ \\text{Thread}_i \\leftrightarrow x^\\mu_i \\in \\mathcal{M} $$
-$$ \\text{reachable}(i, j) \\iff \\Delta s^2_{ij} \\ge 0 $$
+$$ \text{Thread}_i \leftrightarrow x^\mu_i \in \mathcal{M} $$
+$$ \text{reachable}(i, j) \iff \Delta s^2_{ij} \ge 0 $$
 '''
 
 [[document]]
@@ -660,12 +587,12 @@ This directory contains raw output from various simulation runs and theoretical 
 
 ## 2. Legacy/Static Data (Contextual)
 *   **`Zero-Divisor_Adjacency_Matrix__*.csv`**: Adjacency lists for the zero-divisor graphs of Sedenions (16D), Pathions (32D), and Chingons (64D).
-*   **`Spectrum_*.csv`**: Various FFT and spectral analysis dumps from previous \"Gemini\" sessions (e.g., `fft_2d_spectrum.csv`).
-*   **`Refined_*.csv`**: Post-processed datasets from earlier \"Refinement\" phases.
+*   **`Spectrum_*.csv`**: Various FFT and spectral analysis dumps from previous "Gemini" sessions (e.g., `fft_2d_spectrum.csv`).
+*   **`Refined_*.csv`**: Post-processed datasets from earlier "Refinement" phases.
 
 ## 3. Missing Metadata (Gaps)
 *   **Units**: Most files lack headers specifying physical units (e.g., $t$ in seconds vs steps).
-*   **Parameters**: Filenames often don't capture full parameter sets (e.g., coupling constants $J$, $\\alpha$). Use the corresponding `src/` scripts to trace provenance.
+*   **Parameters**: Filenames often don't capture full parameter sets (e.g., coupling constants $J$, \alpha$). Use the corresponding `src/` scripts to trace provenance.
 '''
 
 [[document]]
@@ -714,7 +641,7 @@ data/artifacts/images/foo.png.PROVENANCE.json
 
 Schema (minimal):
 - provenance_version: 1
-- artifact_path: \"data/artifacts/<domain>/<name>.<ext>\"
+- artifact_path: "data/artifacts/<domain>/<name>.<ext>"
 - generator: path to the generating script (usually under src/scripts/)
 - inputs: list of input paths (strings)
 - parameters: JSON object (dict) of relevant knobs
@@ -748,6 +675,6 @@ Phase 1 (suggested):
 Phase 2 (suggested):
 - Only after Phase 1 coverage exists, migrate referenced artifacts into
   data/artifacts/<domain>/... and update ALL references (docs, scripts, tests).
-- Consider keeping a short \"compatibility window\" by leaving copies at old paths
+- Consider keeping a short "compatibility window" by leaving copies at old paths
   temporarily, but avoid long-lived duplication.
 '''

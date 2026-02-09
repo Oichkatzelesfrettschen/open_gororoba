@@ -128,6 +128,11 @@ clap_mangen = "0.2"              # Manpage generation from clap App structs
 plotters = "0.3"
 plotters-svg = "0.3"
 
+# Logging and Config
+log = "0.4"
+env_logger = "0.11"
+config = "0.14"
+
 # Python bindings
 pyo3 = { version = "0.25", features = ["extension-module"] }
 numpy = "0.25"

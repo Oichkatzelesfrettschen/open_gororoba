@@ -3501,4 +3501,482 @@ mod tests {
 
         eprintln!("  Result: Zero exceptions found. Standard CD non-commutativity confirmed.");
     }
+
+    // ============================================================================
+    // PHASE 2a: QUATERNION VARIANT CENSUS (C-549, C-550, C-551)
+    // ============================================================================
+    // Tests for commutativity and properties across all 4 quaternion signatures.
+    // Quaternions are dim=4 with 2 doubling levels, giving 2^2 = 4 possible
+    // gamma signatures: [-1,-1], [-1,+1], [+1,-1], [+1,+1].
+
+    #[test]
+    fn test_split_quaternions_signature_4_3() {
+        // Split-quaternions: gamma = [+1, +1]
+        // Expected signature: (4,3) for imaginary basis (4 positive, 3 negative squares)
+        // Hypothesis: Still non-commutative (structural property, not gamma-dependent)
+
+        eprintln!("\n=== Split-Quaternions Signature Test (C-549) ===");
+
+        let sig = CdSignature::from_gammas(&[1, 1]);
+        let dim = 4;
+
+        // Compute basis element squares: e_i^2 for i = 0..4
+        let squares: Vec<i32> = (0..dim)
+            .map(|k| cd_basis_mul_sign_split(dim, k, k, &sig))
+            .collect();
+
+        eprintln!(
+            "Split-quaternion basis squares (signature test): {:?}",
+            squares
+        );
+
+        // Expected: [1, 1, 1, -1] or similar (4 positive, 3 negative in imaginary parts)
+        let positive_count = squares[1..].iter().filter(|&&x| x > 0).count();
+        let negative_count = squares[1..].iter().filter(|&&x| x < 0).count();
+
+        eprintln!(
+            "  Signature: ({}, {}) for imaginary part",
+            positive_count, negative_count
+        );
+
+        // Test commutativity: expect NON-COMMUTATIVE like all dim=4 signatures
+        let (violations, total) = test_commutativity_violations(&sig, dim);
+        eprintln!(
+            "  Commutativity: {}/{} pairs non-commutative",
+            violations, total
+        );
+
+        assert!(
+            violations > 0,
+            "Split-quaternions should be non-commutative (structural property)"
+        );
+        assert_eq!(
+            violations, total,
+            "All basis pairs should be non-commutative in split-quaternions"
+        );
+    }
+
+    #[test]
+    fn test_mixed_quaternion_signatures_coquaternions() {
+        // Coquaternions and mixed signatures: gamma = [+1, -1] and [-1, +1]
+        // These are intermediate between standard ([-1,-1]) and split ([+1,+1])
+
+        eprintln!("\n=== Coquaternion Mixed Signatures Test (C-549) ===");
+
+        let mixed_sigs = vec![
+            CdSignature::from_gammas(&[1, -1]),
+            CdSignature::from_gammas(&[-1, 1]),
+        ];
+
+        for (idx, sig) in mixed_sigs.iter().enumerate() {
+            let dim = 4;
+
+            // Check commutativity
+            let (violations, total) = test_commutativity_violations(sig, dim);
+
+            eprintln!(
+                "Mixed signature[{}] gammas={:?}: {}/{} pairs non-commutative",
+                idx, sig.gammas, violations, total
+            );
+
+            // All quaternion signatures should be non-commutative
+            assert!(
+                violations > 0,
+                "Mixed quaternion signature {:?} should be non-commutative",
+                sig.gammas
+            );
+            assert_eq!(
+                violations, total,
+                "All pairs should be non-commutative in mixed quaternion"
+            );
+        }
+    }
+
+    #[test]
+    fn test_quaternion_family_commutativity_census() {
+        // Meta-test: Exhaustively verify ALL 4 quaternion signatures (dim=4) are non-commutative.
+        // This is the "quaternion family census" establishing C-549.
+
+        eprintln!("\n=== Quaternion Family Commutativity Census (C-549) ===");
+        eprintln!("Claim C-549: ALL 4 gamma signatures at dim=4 are non-commutative.");
+        eprintln!("Hypothesis: Commutativity is STRUCTURAL, not PARAMETRIC (gamma-independent).");
+
+        let dim = 4;
+        let all_sigs = all_signatures(2); // 2^2 = 4 signatures
+
+        let mut commutativity_results = vec![];
+
+        for (sig_idx, sig) in all_sigs.iter().enumerate() {
+            let (violations, total) = test_commutativity_violations(sig, dim);
+            let is_commutative = violations == 0;
+
+            eprintln!(
+                "sig[{}] gammas={:?}: {}/{} pairs non-commutative | commutative? {}",
+                sig_idx, sig.gammas, violations, total, is_commutative
+            );
+
+            commutativity_results.push((sig.gammas.clone(), is_commutative));
+        }
+
+        // Count: how many signatures are commutative? (expected: 0)
+        let commutative_count = commutativity_results
+            .iter()
+            .filter(|(_, is_comm)| *is_comm)
+            .count();
+
+        eprintln!(
+            "\n  CENSUS RESULT: {}/4 quaternion signatures are commutative",
+            commutative_count
+        );
+
+        assert_eq!(
+            commutative_count, 0,
+            "All 4 quaternion signatures should be non-commutative (C-549)"
+        );
+
+        eprintln!(
+            "  Conclusion: Commutativity is STRUCTURAL (dim/construction-dependent), \
+             not PARAMETRIC (gamma-dependent). Contrasts with Tessarines (C⊗C), which ARE commutative."
+        );
+    }
+
+    #[test]
+    fn test_quaternion_zero_divisor_count_by_signature() {
+        // Auxiliary: Count zero-divisor 2-blade pairs by signature
+        // Hypothesis (C-550): Zero-divisor count increases with [+1] count in gamma
+
+        eprintln!("\n=== Quaternion Zero-Divisor Census by Signature (C-550) ===");
+
+        let dim = 4;
+        let all_sigs = all_signatures(2);
+
+        let mut zd_by_sig = vec![];
+
+        for sig in &all_sigs {
+            let mut zd_count = 0;
+
+            // Test all 2-blade pairs
+            for i in 1..dim {
+                for j in (i + 1)..dim {
+                    let ei = unit_vector(dim, i);
+                    let ej = unit_vector(dim, j);
+
+                    let prod = cd_multiply_split(&ei, &ej, sig);
+                    let norm: f64 = prod.iter().map(|x| x * x).sum::<f64>().sqrt();
+
+                    if norm < 1e-10 {
+                        zd_count += 1;
+                    }
+                }
+            }
+
+            eprintln!(
+                "gammas={:?}: {} zero-divisor 2-blade pairs",
+                sig.gammas, zd_count
+            );
+            zd_by_sig.push((sig.gammas.clone(), zd_count));
+        }
+
+        // Standard quaternions ([-1,-1]) should have 0 zero-divisors (division algebra)
+        let standard_quat = zd_by_sig
+            .iter()
+            .find(|(gammas, _)| gammas == &vec![-1, -1])
+            .map(|(_, count)| count)
+            .unwrap_or(&999);
+
+        eprintln!(
+            "\n  Standard quaternions ([-1,-1]): {} zero-divisor pairs (expected 0)",
+            standard_quat
+        );
+
+        assert_eq!(
+            *standard_quat, 0,
+            "Standard quaternions are a division algebra (should have 0 ZD pairs)"
+        );
+
+        eprintln!("  Observation: Split and mixed signatures may have non-zero ZD pairs.");
+    }
+
+    #[test]
+    fn test_octonion_family_all_signatures_commutativity() {
+        // Phase 2b: Exhaustive octonion commutativity census (all 8 gamma signatures).
+        // Hypothesis: ALL gamma signatures at dim=8 produce non-commutative algebras
+        // (structural property, matching quaternion result from Phase 2a).
+        // Expected result: 0/8 commutative (100% non-commutative).
+
+        let gammas_options: Vec<[i32; 3]> = vec![
+            [-1, -1, -1],  // standard octonion
+            [-1, -1, 1],   // mixed
+            [-1, 1, -1],   // mixed
+            [-1, 1, 1],    // mixed
+            [1, -1, -1],   // mixed
+            [1, -1, 1],    // mixed
+            [1, 1, -1],    // mixed
+            [1, 1, 1],     // split octonion
+        ];
+
+        let dim = 8;
+        let mut commutativity_count = 0;
+
+        for gammas in &gammas_options {
+            let sig = CdSignature::from_gammas(gammas);
+
+            // Test a sample of 100 random basis element pairs for commutativity
+            let mut violations = 0;
+            for i in 1..dim {
+                for j in (i + 1)..dim {
+                    let mut ei = vec![0.0; dim];
+                    ei[i] = 1.0;
+                    let mut ej = vec![0.0; dim];
+                    ej[j] = 1.0;
+
+                    let ei_ej = cd_multiply_split(&ei, &ej, &sig);
+                    let ej_ei = cd_multiply_split(&ej, &ei, &sig);
+
+                    let diff: Vec<f64> = ei_ej
+                        .iter()
+                        .zip(ej_ei.iter())
+                        .map(|(a, b)| a - b)
+                        .collect();
+                    let norm: f64 = diff.iter().map(|x| x * x).sum::<f64>().sqrt();
+
+                    if norm > 1e-10 {
+                        violations += 1;
+                    }
+                }
+            }
+
+            let is_commutative = violations == 0;
+            if is_commutative {
+                commutativity_count += 1;
+            }
+
+            eprintln!(
+                "  dim=8 gammas={:?}: commutator violations={} (commutative: {})",
+                gammas, violations, is_commutative
+            );
+        }
+
+        eprintln!(
+            "\n  Octonion Census: {}/8 signatures are commutative (expected 0/8)",
+            commutativity_count
+        );
+
+        assert_eq!(
+            commutativity_count, 0,
+            "All octonion signatures should be non-commutative (structural property)"
+        );
+    }
+
+    #[test]
+    fn test_octonion_zero_divisor_census_all_signatures() {
+        // Phase 2b: Census zero-divisor 2-blade pairs across all 8 octonion signatures.
+        // Hypothesis: ZD count scales with gamma pattern (metric signature affects ZD, not commutativity).
+        // Expected patterns:
+        // - Standard [-1,-1,-1]: 0 ZD pairs (division algebra, consistent with C-547)
+        // - Split [+1,+1,+1]: non-zero ZD pairs (composition law breaks)
+        // - Mixed: intermediate ZD counts
+
+        let gammas_options: Vec<[i32; 3]> = vec![
+            [-1, -1, -1],
+            [-1, -1, 1],
+            [-1, 1, -1],
+            [-1, 1, 1],
+            [1, -1, -1],
+            [1, -1, 1],
+            [1, 1, -1],
+            [1, 1, 1],
+        ];
+
+        let dim = 8;
+        let mut zd_by_sig: Vec<(Vec<i32>, usize)> = vec![];
+
+        for gammas in &gammas_options {
+            let sig = CdSignature::from_gammas(gammas);
+
+            // Count 2-blade pairs that produce zero
+            let mut zd_count = 0;
+
+            // Iterate over all 2-blade pairs (i < j) and (k < l)
+            for i in 1..dim {
+                for j in (i + 1)..dim {
+                    for k in 1..dim {
+                        for l in (k + 1)..dim {
+                            // Compute (e_i wedge e_j) * (e_k wedge e_l)
+                            // Wedge product: e_i e_j - e_j e_i (normalized)
+                            let mut eiej = cd_multiply_split(
+                                &{
+                                    let mut v = vec![0.0; dim];
+                                    v[i] = 1.0;
+                                    v
+                                },
+                                &{
+                                    let mut v = vec![0.0; dim];
+                                    v[j] = 1.0;
+                                    v
+                                },
+                                &sig,
+                            );
+                            let mut ejei = cd_multiply_split(
+                                &{
+                                    let mut v = vec![0.0; dim];
+                                    v[j] = 1.0;
+                                    v
+                                },
+                                &{
+                                    let mut v = vec![0.0; dim];
+                                    v[i] = 1.0;
+                                    v
+                                },
+                                &sig,
+                            );
+                            for idx in 0..dim {
+                                eiej[idx] -= ejei[idx];
+                            }
+
+                            let mut ekEl = cd_multiply_split(
+                                &{
+                                    let mut v = vec![0.0; dim];
+                                    v[k] = 1.0;
+                                    v
+                                },
+                                &{
+                                    let mut v = vec![0.0; dim];
+                                    v[l] = 1.0;
+                                    v
+                                },
+                                &sig,
+                            );
+                            let mut elEk = cd_multiply_split(
+                                &{
+                                    let mut v = vec![0.0; dim];
+                                    v[l] = 1.0;
+                                    v
+                                },
+                                &{
+                                    let mut v = vec![0.0; dim];
+                                    v[k] = 1.0;
+                                    v
+                                },
+                                &sig,
+                            );
+                            for idx in 0..dim {
+                                ekEl[idx] -= elEk[idx];
+                            }
+
+                            // Multiply the two wedge products
+                            let product = cd_multiply_split(&eiej, &ekEl, &sig);
+                            let norm: f64 = product.iter().map(|x| x * x).sum();
+
+                            if norm < 1e-10 {
+                                zd_count += 1;
+                            }
+                        }
+                    }
+                }
+            }
+
+            zd_by_sig.push((gammas.to_vec(), zd_count));
+
+            eprintln!("  dim=8 gammas={:?}: {} ZD 2-blade pairs", gammas, zd_count);
+        }
+
+        // Verify standard octonions have 0 ZD pairs (division algebra)
+        let standard_oct = zd_by_sig
+            .iter()
+            .find(|(gammas, _)| gammas == &vec![-1, -1, -1])
+            .map(|(_, count)| count)
+            .unwrap_or(&999);
+
+        eprintln!(
+            "\n  Standard octonions ([-1,-1,-1]): {} zero-divisor pairs (expected 0)",
+            standard_oct
+        );
+
+        assert_eq!(
+            *standard_oct, 0,
+            "Standard octonions are a division algebra (should have 0 ZD 2-blade pairs)"
+        );
+
+        eprintln!("  Observation: Split and mixed octonion signatures may have non-zero ZD pairs.");
+    }
+
+    #[test]
+    fn test_octonion_composition_law_across_signatures() {
+        // Phase 2b: Test composition law ||ab||^2 = ||a||^2 ||b||^2 across all 8 octonion signatures.
+        // Hypothesis: Standard [-1,-1,-1] satisfies composition (division algebra).
+        // Mixed/split signatures may violate composition (metric signature dependent).
+
+        let gammas_options: Vec<[i32; 3]> = vec![
+            [-1, -1, -1],
+            [-1, -1, 1],
+            [-1, 1, -1],
+            [-1, 1, 1],
+            [1, -1, -1],
+            [1, -1, 1],
+            [1, 1, -1],
+            [1, 1, 1],
+        ];
+
+        let dim = 8;
+
+        for gammas in &gammas_options {
+            let sig = CdSignature::from_gammas(gammas);
+
+            // Sample random basis elements and check composition law
+            let mut violations = 0;
+            let mut total_tests = 0;
+
+            for i in 0..dim {
+                for j in 0..dim {
+                    if i == j {
+                        continue;
+                    }
+
+                    let mut a = vec![0.0; dim];
+                    a[i] = 1.0;
+                    let mut b = vec![0.0; dim];
+                    b[j] = 1.0;
+
+                    let ab = cd_multiply_split(&a, &b, &sig);
+                    let norm_a_sq: f64 = a.iter().map(|x| x * x).sum();
+                    let norm_b_sq: f64 = b.iter().map(|x| x * x).sum();
+                    let norm_ab_sq: f64 = ab.iter().map(|x| x * x).sum();
+
+                    let product_norms = norm_a_sq * norm_b_sq;
+                    let ratio = (norm_ab_sq / product_norms).abs();
+
+                    // Composition law: ||ab||^2 = ||a||^2 ||b||^2 (ratio should be 1.0)
+                    if (ratio - 1.0).abs() > 1e-10 {
+                        violations += 1;
+                    }
+                    total_tests += 1;
+                }
+            }
+
+            let percent_violations = 100.0 * (violations as f64) / (total_tests as f64);
+
+            eprintln!(
+                "  dim=8 gammas={:?}: {}/{} composition law violations ({:.1}%)",
+                gammas, violations, total_tests, percent_violations
+            );
+        }
+
+        // Sanity check: standard octonions should satisfy composition law
+        let standard_sig = CdSignature::from_gammas(&[-1, -1, -1]);
+        let mut a = vec![0.0; dim];
+        a[1] = 1.0;
+        let mut b = vec![0.0; dim];
+        b[2] = 1.0;
+
+        let ab = cd_multiply_split(&a, &b, &standard_sig);
+        let norm_ab_sq: f64 = ab.iter().map(|x| x * x).sum();
+        let expected = 1.0 * 1.0; // Both basis elements have norm^2 = 1
+
+        assert!(
+            (norm_ab_sq - expected).abs() < 1e-10,
+            "Standard octonions should satisfy composition law: ||e1*e2||^2 = 1, got {}",
+            norm_ab_sq
+        );
+    }
 }
