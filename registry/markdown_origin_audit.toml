@@ -5,17 +5,36 @@
 updated = "deterministic"
 authoritative = true
 source_inventory = "registry/markdown_inventory.toml"
-document_count = 245
+document_count = 247
 generated_verified_count = 245
-needs_consolidation_count = 0
+needs_consolidation_count = 2
 
 [scope_counts]
 data_artifacts = 9
-docs = 189
+docs = 191
 reports = 47
 
 [origin_status_counts]
 generated_from_repo_process = 245
+non_generated_needs_consolidation = 2
+
+[[consolidation_queue]]
+rank = 1
+path = "docs/ALGEBRA_CONSTRUCTION_COMPARISON.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 324
+
+[[consolidation_queue]]
+rank = 2
+path = "docs/PHASE3B_IMPLEMENTATION_PLAN.md"
+origin_status = "non_generated_needs_consolidation"
+classification = "toml_destination_exists_manual_markdown"
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 274
 
 [[document]]
 path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
@@ -160,6 +179,21 @@ source_of_truth_raw = "registry/data_artifact_narratives.toml"
 source_of_truth_paths = ["registry/data_artifact_narratives.toml"]
 consolidation_action = "none"
 line_count = 59
+
+[[document]]
+path = "docs/ALGEBRA_CONSTRUCTION_COMPARISON.md"
+scope = "docs"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "unknown"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/docs_root_narratives.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 324
 
 [[document]]
 path = "docs/ALGEBRA_CRATES_SURVEY.md"
@@ -688,6 +722,21 @@ source_of_truth_raw = "registry/docs_root_narratives.toml"
 source_of_truth_paths = ["registry/docs_root_narratives.toml"]
 consolidation_action = "none"
 line_count = 30
+
+[[document]]
+path = "docs/PHASE3B_IMPLEMENTATION_PLAN.md"
+scope = "docs"
+classification = "toml_destination_exists_manual_markdown"
+git_status = "ignored"
+origin_status = "non_generated_needs_consolidation"
+origin_process = "unknown"
+destination_exists = true
+header_auto_generated = false
+header_source_of_truth = false
+toml_destination = "registry/docs_root_narratives.toml"
+source_of_truth_paths = []
+consolidation_action = "migrate_to_toml_registry_and_regenerate"
+line_count = 274
 
 [[document]]
 path = "docs/PHASE_1_SUMMARY.md"
