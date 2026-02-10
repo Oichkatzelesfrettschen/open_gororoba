@@ -71,7 +71,7 @@ impl JordanAlgebra for JordanA1 {
         vec![a[0] * b[0]]
     }
 
-    fn commutator(&self, a: &[f64], b: &[f64]) -> Vec<f64> {
+    fn commutator(&self, _a: &[f64], _b: &[f64]) -> Vec<f64> {
         // For scalars: [a,b] = (ab - ba) / 2 = 0 (always)
         vec![0.0]
     }
@@ -110,50 +110,37 @@ impl JordanAlgebra for JordanA2 {
         // Jordan product: (AB + BA) / 2
 
         // Full matrix reconstructions
-        let a_mat = vec![
-            vec![a[0], a[2]],
-            vec![a[2], a[1]],
-        ];
-
-        let b_mat = vec![
-            vec![b[0], b[2]],
-            vec![b[2], b[1]],
-        ];
+        let a_mat = [[a[0], a[2]], [a[2], a[1]]];
+        let b_mat = [[b[0], b[2]], [b[2], b[1]]];
 
         // Matrix multiplication: AB
-        let ab = vec![
-            vec![
+        let ab = [
+            [
                 a_mat[0][0] * b_mat[0][0] + a_mat[0][1] * b_mat[1][0],
                 a_mat[0][0] * b_mat[0][1] + a_mat[0][1] * b_mat[1][1],
             ],
-            vec![
+            [
                 a_mat[1][0] * b_mat[0][0] + a_mat[1][1] * b_mat[1][0],
                 a_mat[1][0] * b_mat[0][1] + a_mat[1][1] * b_mat[1][1],
             ],
         ];
 
         // Matrix multiplication: BA
-        let ba = vec![
-            vec![
+        let ba = [
+            [
                 b_mat[0][0] * a_mat[0][0] + b_mat[0][1] * a_mat[1][0],
                 b_mat[0][0] * a_mat[0][1] + b_mat[0][1] * a_mat[1][1],
             ],
-            vec![
+            [
                 b_mat[1][0] * a_mat[0][0] + b_mat[1][1] * a_mat[1][0],
                 b_mat[1][0] * a_mat[0][1] + b_mat[1][1] * a_mat[1][1],
             ],
         ];
 
         // Jordan product: (AB + BA) / 2
-        let result = vec![
-            vec![
-                (ab[0][0] + ba[0][0]) / 2.0,
-                (ab[0][1] + ba[0][1]) / 2.0,
-            ],
-            vec![
-                (ab[1][0] + ba[1][0]) / 2.0,
-                (ab[1][1] + ba[1][1]) / 2.0,
-            ],
+        let result = [
+            [(ab[0][0] + ba[0][0]) / 2.0, (ab[0][1] + ba[0][1]) / 2.0],
+            [(ab[1][0] + ba[1][0]) / 2.0, (ab[1][1] + ba[1][1]) / 2.0],
         ];
 
         // Extract back to 3D representation (must be symmetric)
@@ -162,37 +149,28 @@ impl JordanAlgebra for JordanA2 {
 
     fn commutator(&self, a: &[f64], b: &[f64]) -> Vec<f64> {
         // [a,b] = (ab - ba) / 2
-        let ab = self.jordan_product(a, b);
-
         // Reconstruct matrices
-        let a_mat = vec![
-            vec![a[0], a[2]],
-            vec![a[2], a[1]],
-        ];
-
-        let b_mat = vec![
-            vec![b[0], b[2]],
-            vec![b[2], b[1]],
-        ];
+        let a_mat = [[a[0], a[2]], [a[2], a[1]]];
+        let b_mat = [[b[0], b[2]], [b[2], b[1]]];
 
         // AB - BA
-        let ab_mat = vec![
-            vec![
+        let ab_mat = [
+            [
                 a_mat[0][0] * b_mat[0][0] + a_mat[0][1] * b_mat[1][0],
                 a_mat[0][0] * b_mat[0][1] + a_mat[0][1] * b_mat[1][1],
             ],
-            vec![
+            [
                 a_mat[1][0] * b_mat[0][0] + a_mat[1][1] * b_mat[1][0],
                 a_mat[1][0] * b_mat[0][1] + a_mat[1][1] * b_mat[1][1],
             ],
         ];
 
-        let ba_mat = vec![
-            vec![
+        let ba_mat = [
+            [
                 b_mat[0][0] * a_mat[0][0] + b_mat[0][1] * a_mat[1][0],
                 b_mat[0][0] * a_mat[0][1] + b_mat[0][1] * a_mat[1][1],
             ],
-            vec![
+            [
                 b_mat[1][0] * a_mat[0][0] + b_mat[1][1] * a_mat[1][0],
                 b_mat[1][0] * a_mat[0][1] + b_mat[1][1] * a_mat[1][1],
             ],

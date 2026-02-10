@@ -4,15 +4,15 @@
 [toml_inventory]
 updated = "deterministic"
 authoritative = true
-document_count = 1167
-tracked_count = 1166
+document_count = 1171
+tracked_count = 1170
 untracked_count = 0
 ignored_count = 1
 parse_error_count = 0
 
 [git_status_counts]
 ignored = 1
-tracked = 1166
+tracked = 1170
 
 [role_counts]
 cargo_crate_manifest = 15
@@ -21,7 +21,7 @@ cargo_workspace_manifest = 1
 dataset_scroll = 874
 papers_registry = 20
 python_project_config = 1
-registry_control_plane = 253
+registry_control_plane = 257
 toml_other = 2
 
 [zone_counts]
@@ -29,7 +29,7 @@ crate_manifest = 15
 other = 2
 papers = 20
 python_config = 1
-registry_control = 253
+registry_control = 257
 registry_dataset = 874
 toolchain_config = 1
 workspace_manifest = 1
@@ -674,9 +674,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 433461
-line_count = 4512
-sha256 = "903690fda5e152d9ee0df5908d52ab3e1036dc0f27a4c098937ce2c4d796bd96"
+size_bytes = 441522
+line_count = 4582
+sha256 = "85e96b2e4351739ac9094c15fa0ccecac2e2fdbea229d8030f46c2465c363397"
 
 [[document]]
 id = "TOML-0047"
@@ -13021,10 +13021,10 @@ zone = "registry_control"
 parse_ok = true
 has_authoritative = true
 table_count = 2
-markdown_ref_count = 56
-size_bytes = 783293
-line_count = 10735
-sha256 = "066f9c2b1a0ef18331584235b98a71c51ab7c4bb286605fa3aacea99f26c5963"
+markdown_ref_count = 60
+size_bytes = 854531
+line_count = 12549
+sha256 = "8ddf9ad791536cd123cda9c4db68d4d08e6a0f63bef5ac7b7b03869ae0393026"
 
 [[document]]
 id = "TOML-0929"
@@ -13120,9 +13120,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 22964
-line_count = 268
-sha256 = "89b97fe6a40a8d6b89a6ff15a440ddb2b1acfef64492cc8cb00e0605487247ff"
+size_bytes = 26703
+line_count = 295
+sha256 = "c00e7a7002dfdcc96706fb7e84e15eb4000d18cfea8b440999e3ab2b139d5aa4"
 
 [[document]]
 id = "TOML-0936"
@@ -13140,6 +13140,20 @@ sha256 = "5895bf6c34f895ecaac9e5658e272202aff5b7286be8d7c42741fb4bc221b46e"
 
 [[document]]
 id = "TOML-0937"
+path = "registry/knowledge/claim_atoms.toml"
+git_status = "tracked"
+role = "registry_control_plane"
+zone = "registry_control"
+parse_ok = true
+has_authoritative = true
+table_count = 2
+markdown_ref_count = 0
+size_bytes = 398520
+line_count = 7353
+sha256 = "efbe0228c2dd0afc12614cd5aa62626790c082f678db0e1f0f5e28b024cdd265"
+
+[[document]]
+id = "TOML-0938"
 path = "registry/knowledge/docs/DOC-0001.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13153,7 +13167,7 @@ line_count = 278
 sha256 = "4753e07b0faa84e3495de22811dc3646a08e0653f975dcc0b7a68fcf813721b9"
 
 [[document]]
-id = "TOML-0938"
+id = "TOML-0939"
 path = "registry/knowledge/docs/DOC-0002.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13167,7 +13181,7 @@ line_count = 100
 sha256 = "78f6bbbb6b37274bea684b7cec8c4eb3461db0b7e2b2eb41048d75331dd4116d"
 
 [[document]]
-id = "TOML-0939"
+id = "TOML-0940"
 path = "registry/knowledge/docs/DOC-0003.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13181,7 +13195,7 @@ line_count = 88
 sha256 = "dd308449195a093ff01bf27c0e49828192f907e2ea67b494b7c2200ebff8c2d1"
 
 [[document]]
-id = "TOML-0940"
+id = "TOML-0941"
 path = "registry/knowledge/docs/DOC-0004.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13195,7 +13209,7 @@ line_count = 82
 sha256 = "320aacf914f7c343bfe9863be0b334e5397ce9b526fa6a6e20d1b590ea1d5415"
 
 [[document]]
-id = "TOML-0941"
+id = "TOML-0942"
 path = "registry/knowledge/docs/DOC-0005.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13209,7 +13223,7 @@ line_count = 57
 sha256 = "54134aa6534cfabc9519f39f6d645fc08296aa7788d9c652637fd36e19f37c89"
 
 [[document]]
-id = "TOML-0942"
+id = "TOML-0943"
 path = "registry/knowledge/docs/DOC-0006.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13223,7 +13237,7 @@ line_count = 49
 sha256 = "ccbe5792c3f0c8cf199d3c18c78cf0110c75b4deac17aa9e27c81b574b81a903"
 
 [[document]]
-id = "TOML-0943"
+id = "TOML-0944"
 path = "registry/knowledge/docs/DOC-0007.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13237,7 +13251,7 @@ line_count = 49
 sha256 = "ea32a9a949e266042998fe36721590b4af6a1e994192f8d626ccd81de939a3d7"
 
 [[document]]
-id = "TOML-0944"
+id = "TOML-0945"
 path = "registry/knowledge/docs/DOC-0008.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13251,7 +13265,7 @@ line_count = 40
 sha256 = "77821432e41daf32d9a18a427859c809c47feba1ff92d4f5beda75dba23d894d"
 
 [[document]]
-id = "TOML-0945"
+id = "TOML-0946"
 path = "registry/knowledge/docs/DOC-0016.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13265,7 +13279,7 @@ line_count = 40
 sha256 = "0aaa8d4c98aac82708e1844b1de11d7079cf264061b9ebb799fdc6868a87fa7d"
 
 [[document]]
-id = "TOML-0946"
+id = "TOML-0947"
 path = "registry/knowledge/docs/DOC-0017.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13279,7 +13293,7 @@ line_count = 118
 sha256 = "55879f3e64be2770ac765f71c03f8005a320fee75152386873e7d8abb0d44a63"
 
 [[document]]
-id = "TOML-0947"
+id = "TOML-0948"
 path = "registry/knowledge/docs/DOC-0018.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13293,7 +13307,7 @@ line_count = 439
 sha256 = "886f526747f90f92b7392b9ab828446c419b2a018558115c396befdf863d2eaa"
 
 [[document]]
-id = "TOML-0948"
+id = "TOML-0949"
 path = "registry/knowledge/docs/DOC-0019.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13307,7 +13321,7 @@ line_count = 210
 sha256 = "19814425afca45d76cb65cf965eeda2d34c389b1a81c029420da384695250083"
 
 [[document]]
-id = "TOML-0949"
+id = "TOML-0950"
 path = "registry/knowledge/docs/DOC-0020.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13321,7 +13335,7 @@ line_count = 38
 sha256 = "4465a604a64e0a044facea3052c08dbb261e9de88c9f9d072309411eba7c8cb8"
 
 [[document]]
-id = "TOML-0950"
+id = "TOML-0951"
 path = "registry/knowledge/docs/DOC-0021.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13335,7 +13349,7 @@ line_count = 60
 sha256 = "4e4588400902d40b027c7592abdf9cc8aac6531f974afd90f678264a87e4e789"
 
 [[document]]
-id = "TOML-0951"
+id = "TOML-0952"
 path = "registry/knowledge/docs/DOC-0022.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13349,7 +13363,7 @@ line_count = 553
 sha256 = "70e02c62062511ce5cec07d70a24b5742750a83ad320a987b02eb13539d89a24"
 
 [[document]]
-id = "TOML-0952"
+id = "TOML-0953"
 path = "registry/knowledge/docs/DOC-0023.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13363,7 +13377,7 @@ line_count = 3505
 sha256 = "b5d92248ee4183301ffa4836902edebd13393e690f7b27cbb97a826dbb5bccb3"
 
 [[document]]
-id = "TOML-0953"
+id = "TOML-0954"
 path = "registry/knowledge/docs/DOC-0025.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13377,7 +13391,7 @@ line_count = 606
 sha256 = "2f8149078fd50f7ec86243211f98b628261a0043a72c9d3d02dbc526b83c10ce"
 
 [[document]]
-id = "TOML-0954"
+id = "TOML-0955"
 path = "registry/knowledge/docs/DOC-0026.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13391,7 +13405,7 @@ line_count = 486
 sha256 = "8c416cc79cfde1fce76cee1670c9a939b5ba9a483cd46d2e227d22768a23ac91"
 
 [[document]]
-id = "TOML-0955"
+id = "TOML-0956"
 path = "registry/knowledge/docs/DOC-0027.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13405,7 +13419,7 @@ line_count = 61
 sha256 = "3061211d8cfa10aab73e361603b2c486a4de187597ee57b32744912f7445d0d2"
 
 [[document]]
-id = "TOML-0956"
+id = "TOML-0957"
 path = "registry/knowledge/docs/DOC-0028.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13419,7 +13433,7 @@ line_count = 141
 sha256 = "f104486a4ca6a47d1ebc946bf25d503bc54fe136fe59d3ba67ec6c80076b1564"
 
 [[document]]
-id = "TOML-0957"
+id = "TOML-0958"
 path = "registry/knowledge/docs/DOC-0029.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13433,7 +13447,7 @@ line_count = 151
 sha256 = "21d9cf9ed469f6bd6082718f70d70d0a38a6047d2288ad73101afe9428ba89ae"
 
 [[document]]
-id = "TOML-0958"
+id = "TOML-0959"
 path = "registry/knowledge/docs/DOC-0030.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13447,7 +13461,7 @@ line_count = 67
 sha256 = "c18d6dcc59972d2cc68b8a5b8048d61e1fab4146942bbc0b3754c094d59ea67d"
 
 [[document]]
-id = "TOML-0959"
+id = "TOML-0960"
 path = "registry/knowledge/docs/DOC-0031.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13461,7 +13475,7 @@ line_count = 622
 sha256 = "b4f0edfcaceb10269326ed2792fc45165109b31acf3b5d775f8b383e1cac48e2"
 
 [[document]]
-id = "TOML-0960"
+id = "TOML-0961"
 path = "registry/knowledge/docs/DOC-0032.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13475,7 +13489,7 @@ line_count = 44
 sha256 = "4f0ddddec7855e207cd4b1991d92419e7c59afa52a4b94cf8906f5e318b51291"
 
 [[document]]
-id = "TOML-0961"
+id = "TOML-0962"
 path = "registry/knowledge/docs/DOC-0033.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13489,7 +13503,7 @@ line_count = 400
 sha256 = "c3639594a3aa7e59a7472d80c664b9f975f209d66e30f22237c77c4b3c183aa0"
 
 [[document]]
-id = "TOML-0962"
+id = "TOML-0963"
 path = "registry/knowledge/docs/DOC-0034.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13503,7 +13517,7 @@ line_count = 82
 sha256 = "eebc1be6505b1b18312df1734d0ce4d8de74c7484ef6e4988f97ea69d6bed7d0"
 
 [[document]]
-id = "TOML-0963"
+id = "TOML-0964"
 path = "registry/knowledge/docs/DOC-0035.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13517,7 +13531,7 @@ line_count = 45
 sha256 = "09d7cc3983bf3d6f0d8e9d9486dbdfdf8da8c9ae73f8af4a2e78f69101261220"
 
 [[document]]
-id = "TOML-0964"
+id = "TOML-0965"
 path = "registry/knowledge/docs/DOC-0036.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13531,7 +13545,7 @@ line_count = 815
 sha256 = "5af1cce54b6ae8dca7824d4cc279634ac5b525265fe1609bb03f9491c103d73b"
 
 [[document]]
-id = "TOML-0965"
+id = "TOML-0966"
 path = "registry/knowledge/docs/DOC-0037.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13545,7 +13559,7 @@ line_count = 832
 sha256 = "63ea1e5754f19fc0e3ec8d11a81d89bd438791cc394dfe6ffe03a3a70a14e9e7"
 
 [[document]]
-id = "TOML-0966"
+id = "TOML-0967"
 path = "registry/knowledge/docs/DOC-0038.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13559,7 +13573,7 @@ line_count = 78
 sha256 = "8b7e7cd25a176a4925938c3f21277525ce5a84eb20e64507e1b5e1482a75710c"
 
 [[document]]
-id = "TOML-0967"
+id = "TOML-0968"
 path = "registry/knowledge/docs/DOC-0039.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13573,7 +13587,7 @@ line_count = 47
 sha256 = "6d2a459df78cc6196ef4d53bb851363b1b57f349faaca89717748f7a693af198"
 
 [[document]]
-id = "TOML-0968"
+id = "TOML-0969"
 path = "registry/knowledge/docs/DOC-0040.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13587,7 +13601,7 @@ line_count = 69
 sha256 = "aeaeca36a6b0f4fe34013d6edb93e6a5107ea047bdca770e6fcec9af1770bd55"
 
 [[document]]
-id = "TOML-0969"
+id = "TOML-0970"
 path = "registry/knowledge/docs/DOC-0041.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13601,7 +13615,7 @@ line_count = 67
 sha256 = "ac9d68790efa73c0560c897f1fe0d20642ab58a15211c5d796ca15f407aaf79f"
 
 [[document]]
-id = "TOML-0970"
+id = "TOML-0971"
 path = "registry/knowledge/docs/DOC-0042.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13615,7 +13629,7 @@ line_count = 247
 sha256 = "76e318035783a7d64f930e38d79b6445ddc0ad8e017d0b55fd85977b94a711d2"
 
 [[document]]
-id = "TOML-0971"
+id = "TOML-0972"
 path = "registry/knowledge/docs/DOC-0043.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13629,7 +13643,7 @@ line_count = 119
 sha256 = "8c5110805aa555ac279cfad68ad3e27231f5ebb7aa99a80b08a257de2dfd86c3"
 
 [[document]]
-id = "TOML-0972"
+id = "TOML-0973"
 path = "registry/knowledge/docs/DOC-0044.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13643,7 +13657,7 @@ line_count = 87
 sha256 = "38f292f4f97ee317fb79cf73bbf277bfe1380da194b682be2163778a8c57c348"
 
 [[document]]
-id = "TOML-0973"
+id = "TOML-0974"
 path = "registry/knowledge/docs/DOC-0045.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13657,7 +13671,7 @@ line_count = 69
 sha256 = "ce1e40215871a449ee0f8e657efe62c87b7feaac3aa1608b8374b5cc94d99949"
 
 [[document]]
-id = "TOML-0974"
+id = "TOML-0975"
 path = "registry/knowledge/docs/DOC-0047.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13671,7 +13685,7 @@ line_count = 43
 sha256 = "47e2b681b09a845fc1bbb4e4f15e60ff7eb9071604ccdcf74d673d78fa0a03a0"
 
 [[document]]
-id = "TOML-0975"
+id = "TOML-0976"
 path = "registry/knowledge/docs/DOC-0048.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13685,7 +13699,7 @@ line_count = 55
 sha256 = "8ecc97e3690f0eb65f299e6781e40a397ed7dc73ab5ff5620b6d71f1a337e3b1"
 
 [[document]]
-id = "TOML-0976"
+id = "TOML-0977"
 path = "registry/knowledge/docs/DOC-0049.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13699,7 +13713,7 @@ line_count = 63
 sha256 = "06dbe9a6b000a79aee0670694459ad6cfd3ec59b03db0ab43b71ceefba9722fe"
 
 [[document]]
-id = "TOML-0977"
+id = "TOML-0978"
 path = "registry/knowledge/docs/DOC-0050.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13713,7 +13727,7 @@ line_count = 67
 sha256 = "8e641e39106c011b758c9bf888cf69a76f5bcd53765c584d8fde612d49fdf193"
 
 [[document]]
-id = "TOML-0978"
+id = "TOML-0979"
 path = "registry/knowledge/docs/DOC-0051.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13727,7 +13741,7 @@ line_count = 85
 sha256 = "e5b70eddd86778c05f9f4cff31f735b86cbc20b68ce01529509df1b0d3f237b2"
 
 [[document]]
-id = "TOML-0979"
+id = "TOML-0980"
 path = "registry/knowledge/docs/DOC-0052.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13741,7 +13755,7 @@ line_count = 72
 sha256 = "deb385520d627294f3880f7eea54da69a05be67eb6b5ee02173bc08273a3942b"
 
 [[document]]
-id = "TOML-0980"
+id = "TOML-0981"
 path = "registry/knowledge/docs/DOC-0053.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13755,7 +13769,7 @@ line_count = 261
 sha256 = "a135151fc4b958babdc015621f089d6c3baa1c66a3bb8bbda49268ae442bf5fd"
 
 [[document]]
-id = "TOML-0981"
+id = "TOML-0982"
 path = "registry/knowledge/docs/DOC-0055.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13769,7 +13783,7 @@ line_count = 51
 sha256 = "d875a16fd47243ece44a264211b3f506f89d6687d51284003503a9bfa17c5603"
 
 [[document]]
-id = "TOML-0982"
+id = "TOML-0983"
 path = "registry/knowledge/docs/DOC-0056.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13783,7 +13797,7 @@ line_count = 51
 sha256 = "49132701db7e68ae340fd82fe818095d74f764d52632d7e170c065905a01c89f"
 
 [[document]]
-id = "TOML-0983"
+id = "TOML-0984"
 path = "registry/knowledge/docs/DOC-0057.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13797,7 +13811,7 @@ line_count = 46
 sha256 = "ad27dd0bfa0fd7654fe3cfa89532f9a7edb3da63d1db53724204889683e6e9f2"
 
 [[document]]
-id = "TOML-0984"
+id = "TOML-0985"
 path = "registry/knowledge/docs/DOC-0058.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13811,7 +13825,7 @@ line_count = 89
 sha256 = "cd78ebdd82797c4f4639b8e4f6ec8d1a7432fcb9a5c0d936decd08920a038455"
 
 [[document]]
-id = "TOML-0985"
+id = "TOML-0986"
 path = "registry/knowledge/docs/DOC-0060.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13825,7 +13839,7 @@ line_count = 83
 sha256 = "2884b630c36497454c05c8b23851f0091c3f5558625225346b369c5b117f5143"
 
 [[document]]
-id = "TOML-0986"
+id = "TOML-0987"
 path = "registry/knowledge/docs/DOC-0061.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13839,7 +13853,7 @@ line_count = 87
 sha256 = "d525213bb12c0920f8218330063239483a5ebfc96fc02cff7ec425fbb00f843c"
 
 [[document]]
-id = "TOML-0987"
+id = "TOML-0988"
 path = "registry/knowledge/docs/DOC-0062.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13853,7 +13867,7 @@ line_count = 71
 sha256 = "4a3f7f48bd34ebb96e62cd510054fea4b9d7fa8a77420edbf4452969a60a1513"
 
 [[document]]
-id = "TOML-0988"
+id = "TOML-0989"
 path = "registry/knowledge/docs/DOC-0063.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13867,7 +13881,7 @@ line_count = 45
 sha256 = "5cf9be0a83bb23802e627d032e45d66c4365cccea2f85aa39c8ad1c4ee01a7e1"
 
 [[document]]
-id = "TOML-0989"
+id = "TOML-0990"
 path = "registry/knowledge/docs/DOC-0064.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13881,7 +13895,7 @@ line_count = 60
 sha256 = "1cf1d4d51fdffde913ea2a3834ec00aab8ab02f0681db1123d55d8b961a6269c"
 
 [[document]]
-id = "TOML-0990"
+id = "TOML-0991"
 path = "registry/knowledge/docs/DOC-0065.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13895,7 +13909,7 @@ line_count = 105
 sha256 = "9662b2dc86154194403b71bdecd0b0740394d34394d6ab2fff91b4179ae7e09f"
 
 [[document]]
-id = "TOML-0991"
+id = "TOML-0992"
 path = "registry/knowledge/docs/DOC-0066.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13909,7 +13923,7 @@ line_count = 56
 sha256 = "15274a85fcb6cf432e2f5f9237cd05022eaa9aebe6498e6f2901e9db10de4cca"
 
 [[document]]
-id = "TOML-0992"
+id = "TOML-0993"
 path = "registry/knowledge/docs/DOC-0067.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13923,7 +13937,7 @@ line_count = 78
 sha256 = "a287a25780b8e218d517760505a50df00016e36f1e0cc85a0fb3b57ce6a1aa48"
 
 [[document]]
-id = "TOML-0993"
+id = "TOML-0994"
 path = "registry/knowledge/docs/DOC-0068.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13937,7 +13951,7 @@ line_count = 48
 sha256 = "adbdc7cebf06adbcf2591a9debc736fc0df8aa2a0fd4fd2b5688373e87f52cb4"
 
 [[document]]
-id = "TOML-0994"
+id = "TOML-0995"
 path = "registry/knowledge/docs/DOC-0069.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13951,7 +13965,7 @@ line_count = 44
 sha256 = "c43c734f36359cc367d90447ba6aeed2650e76ac6ca6d97e30c39a7b810f64c2"
 
 [[document]]
-id = "TOML-0995"
+id = "TOML-0996"
 path = "registry/knowledge/docs/DOC-0071.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13965,7 +13979,7 @@ line_count = 138
 sha256 = "e70735ae8fff828e9e4ba5ab738992271f624b7bcffbd0bd62c4b876549dd177"
 
 [[document]]
-id = "TOML-0996"
+id = "TOML-0997"
 path = "registry/knowledge/docs/DOC-0072.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13979,7 +13993,7 @@ line_count = 80
 sha256 = "154411e849a6d27b29969906bfb6bdb10298ce61a297ed85224e7f0dcadf621f"
 
 [[document]]
-id = "TOML-0997"
+id = "TOML-0998"
 path = "registry/knowledge/docs/DOC-0073.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -13993,7 +14007,7 @@ line_count = 107
 sha256 = "422d8f715239a0fdf15787f4bebae292932ba7002ab17a8ae719ee64c3cd1811"
 
 [[document]]
-id = "TOML-0998"
+id = "TOML-0999"
 path = "registry/knowledge/docs/DOC-0074.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14007,7 +14021,7 @@ line_count = 104
 sha256 = "e027634e9d9ea860df14c7b3f5fdbfa785fbc2f3295c815cc24c5245dc0d55ba"
 
 [[document]]
-id = "TOML-0999"
+id = "TOML-1000"
 path = "registry/knowledge/docs/DOC-0075.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14021,7 +14035,7 @@ line_count = 82
 sha256 = "686426b8dc4b100def4b8dcdd12c2cdf74767b007bd430a95654fd9d742555e1"
 
 [[document]]
-id = "TOML-1000"
+id = "TOML-1001"
 path = "registry/knowledge/docs/DOC-0076.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14035,7 +14049,7 @@ line_count = 119
 sha256 = "d1821d2ac94725f628e046a7240db4b9bafd4980f6b0196667c39a76ead272e0"
 
 [[document]]
-id = "TOML-1001"
+id = "TOML-1002"
 path = "registry/knowledge/docs/DOC-0077.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14049,7 +14063,7 @@ line_count = 64
 sha256 = "315d4e65ab18062442fb1ec975243ffd840f80e3181246e9c6f552db1fe6b937"
 
 [[document]]
-id = "TOML-1002"
+id = "TOML-1003"
 path = "registry/knowledge/docs/DOC-0078.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14063,7 +14077,7 @@ line_count = 63
 sha256 = "a49dccfcc3e707ac418eb27455fbc71e402a8dd5234cd059b7a5ca43b2041830"
 
 [[document]]
-id = "TOML-1003"
+id = "TOML-1004"
 path = "registry/knowledge/docs/DOC-0079.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14077,7 +14091,7 @@ line_count = 63
 sha256 = "8ff2ebd2487654caacab6a0390172dcee0c8c78a531caad615fd0a3e5da14be0"
 
 [[document]]
-id = "TOML-1004"
+id = "TOML-1005"
 path = "registry/knowledge/docs/DOC-0080.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14091,7 +14105,7 @@ line_count = 62
 sha256 = "448e1fff208c3d64bea912edb6b379e5391c6551e6a1efb7c8fcb49944cee346"
 
 [[document]]
-id = "TOML-1005"
+id = "TOML-1006"
 path = "registry/knowledge/docs/DOC-0081.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14105,7 +14119,7 @@ line_count = 70
 sha256 = "b61748ba3d4b50549e2c4fa37042cd30cefbd73c943da8b1b1e96eb2db5bfb26"
 
 [[document]]
-id = "TOML-1006"
+id = "TOML-1007"
 path = "registry/knowledge/docs/DOC-0082.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14119,7 +14133,7 @@ line_count = 57
 sha256 = "b0b8af94f30e3e72f705a12a6fef7626b7b9216279869657b924ed8584c7eb5c"
 
 [[document]]
-id = "TOML-1007"
+id = "TOML-1008"
 path = "registry/knowledge/docs/DOC-0083.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14133,7 +14147,7 @@ line_count = 75
 sha256 = "6548ec67b6d3d92e5d0a8bab22d53d2a41b20e3b19e90d726024c3d11a8864d3"
 
 [[document]]
-id = "TOML-1008"
+id = "TOML-1009"
 path = "registry/knowledge/docs/DOC-0084.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14147,7 +14161,7 @@ line_count = 94
 sha256 = "d3c9ff0be993deaee5161a85a880ae8ad30156755ab4f02c705e87f996fb5afb"
 
 [[document]]
-id = "TOML-1009"
+id = "TOML-1010"
 path = "registry/knowledge/docs/DOC-0085.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14161,7 +14175,7 @@ line_count = 84
 sha256 = "c15b50577c8e3b61c8eb245e1623391062ae14c8e7ae8ea11b9b8d5aa7be3e77"
 
 [[document]]
-id = "TOML-1010"
+id = "TOML-1011"
 path = "registry/knowledge/docs/DOC-0086.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14175,7 +14189,7 @@ line_count = 84
 sha256 = "546ee934c5c59b397717efe83a018e47e860b366e6bdf3aec38fdb59417f7412"
 
 [[document]]
-id = "TOML-1011"
+id = "TOML-1012"
 path = "registry/knowledge/docs/DOC-0087.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14189,7 +14203,7 @@ line_count = 61
 sha256 = "c7be70b51e86c1e397e7d64ac8478bb28401c323b0771bce996875e0f00e9dc7"
 
 [[document]]
-id = "TOML-1012"
+id = "TOML-1013"
 path = "registry/knowledge/docs/DOC-0088.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14203,7 +14217,7 @@ line_count = 68
 sha256 = "2f4a61a9e746c491b87a55e4d5fba4e94a52939c0169358fc588aef7a0725db6"
 
 [[document]]
-id = "TOML-1013"
+id = "TOML-1014"
 path = "registry/knowledge/docs/DOC-0089.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14217,7 +14231,7 @@ line_count = 56
 sha256 = "e2abf6ab1f3caeb24fe6bdc142dadb6bcc912b7832a32530fb3c5dcff9d2f48f"
 
 [[document]]
-id = "TOML-1014"
+id = "TOML-1015"
 path = "registry/knowledge/docs/DOC-0090.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14231,7 +14245,7 @@ line_count = 204
 sha256 = "92f51745cccf8f0bf34480d5e015be8b76338f0ba263ac226384c32a039b744e"
 
 [[document]]
-id = "TOML-1015"
+id = "TOML-1016"
 path = "registry/knowledge/docs/DOC-0091.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14245,7 +14259,7 @@ line_count = 80
 sha256 = "758574fbdc3e30b28be17e52d0f305e72ecedd60829461ed5ba067f77ed3fa06"
 
 [[document]]
-id = "TOML-1016"
+id = "TOML-1017"
 path = "registry/knowledge/docs/DOC-0092.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14259,7 +14273,7 @@ line_count = 84
 sha256 = "db71dba90bb64af3865b74e89fe75cdef6e97e9cc2ef41a759116cd2ca4b2217"
 
 [[document]]
-id = "TOML-1017"
+id = "TOML-1018"
 path = "registry/knowledge/docs/DOC-0093.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14273,7 +14287,7 @@ line_count = 72
 sha256 = "7e18c1f9e0e5e8c60d32e95f7dc0135bbdce5b64dbe2aea1f10fb6585b62693f"
 
 [[document]]
-id = "TOML-1018"
+id = "TOML-1019"
 path = "registry/knowledge/docs/DOC-0094.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14287,7 +14301,7 @@ line_count = 64
 sha256 = "ddba469a48f15820e63488426d2a05b7c0c6d8e2f6cec83e83dbc58ea24d0706"
 
 [[document]]
-id = "TOML-1019"
+id = "TOML-1020"
 path = "registry/knowledge/docs/DOC-0095.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14301,7 +14315,7 @@ line_count = 60
 sha256 = "2a119c856b2e231a8659be7e37e6eeeb2cc20927031750e923ecc3aa57d4046a"
 
 [[document]]
-id = "TOML-1020"
+id = "TOML-1021"
 path = "registry/knowledge/docs/DOC-0113.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14315,7 +14329,7 @@ line_count = 162
 sha256 = "6426de676f66236d3081ccadfcf70a4fbd753d2e2766a2485787ec94bb59c4e4"
 
 [[document]]
-id = "TOML-1021"
+id = "TOML-1022"
 path = "registry/knowledge/docs/DOC-0114.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14329,7 +14343,7 @@ line_count = 63
 sha256 = "83ef9201304937dddcef2558f77b48629e3122ebb48c92b12f3fe41643a327a7"
 
 [[document]]
-id = "TOML-1022"
+id = "TOML-1023"
 path = "registry/knowledge/docs/DOC-0115.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14343,7 +14357,7 @@ line_count = 1128
 sha256 = "2b89e2147ee3173d6a944104c971c87e8fad628b35384e3ca5a78f757b3852c4"
 
 [[document]]
-id = "TOML-1023"
+id = "TOML-1024"
 path = "registry/knowledge/docs/DOC-0116.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14357,7 +14371,7 @@ line_count = 78
 sha256 = "edab33b02900a1acb65d323f90c085a30ed76292514430180cbf73e91e7445e2"
 
 [[document]]
-id = "TOML-1024"
+id = "TOML-1025"
 path = "registry/knowledge/docs/DOC-0117.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14371,7 +14385,7 @@ line_count = 150
 sha256 = "6142a6ab8d3bcd8e53232294d8d3fc051532b0cc8087d9a21080ca8d9b1dfeb9"
 
 [[document]]
-id = "TOML-1025"
+id = "TOML-1026"
 path = "registry/knowledge/docs/DOC-0118.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14385,7 +14399,7 @@ line_count = 60
 sha256 = "cb2bb1198da33e6cb0b0e61320feb556caee600771d2f03c3e9793bde04bf5bb"
 
 [[document]]
-id = "TOML-1026"
+id = "TOML-1027"
 path = "registry/knowledge/docs/DOC-0119.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14399,7 +14413,7 @@ line_count = 93
 sha256 = "d207952f0bf4daa2d162cc665ae531f834fbac066363ae4839603c47e2186c5e"
 
 [[document]]
-id = "TOML-1027"
+id = "TOML-1028"
 path = "registry/knowledge/docs/DOC-0120.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14413,7 +14427,7 @@ line_count = 89
 sha256 = "d67dfa81df90816986db17225a3a397a82458b0d5360b70ff3c33024aef836a1"
 
 [[document]]
-id = "TOML-1028"
+id = "TOML-1029"
 path = "registry/knowledge/docs/DOC-0121.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14427,7 +14441,7 @@ line_count = 141
 sha256 = "ce64fd2d3db826ae34da2d565838070aba4d5273bdb15aca3a94b0819df02f9f"
 
 [[document]]
-id = "TOML-1029"
+id = "TOML-1030"
 path = "registry/knowledge/docs/DOC-0122.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14441,7 +14455,7 @@ line_count = 229
 sha256 = "2627a6d599482b4c7e47e9a78003691049926657a45803f03a673e6ee99ddb05"
 
 [[document]]
-id = "TOML-1030"
+id = "TOML-1031"
 path = "registry/knowledge/docs/DOC-0123.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14455,7 +14469,7 @@ line_count = 205
 sha256 = "1a6299f829180e6ab98b1237297c161714446d2db60b6352cd76cd98b5117ce6"
 
 [[document]]
-id = "TOML-1031"
+id = "TOML-1032"
 path = "registry/knowledge/docs/DOC-0124.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14469,7 +14483,7 @@ line_count = 55
 sha256 = "3ac9bce0747f95c85be7310ebd9822acbe0884ed69598c5f2db138103b5c4a26"
 
 [[document]]
-id = "TOML-1032"
+id = "TOML-1033"
 path = "registry/knowledge/docs/DOC-0125.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14483,7 +14497,7 @@ line_count = 115
 sha256 = "8563b4ddb0d59dcdce62db9981fdf7fe90523cc0d84141c3bc68e35c936e0f51"
 
 [[document]]
-id = "TOML-1033"
+id = "TOML-1034"
 path = "registry/knowledge/docs/DOC-0126.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14497,7 +14511,7 @@ line_count = 66
 sha256 = "064ceb7504417b088ffc1040ec6fbb787173ec4536b2d31904e6c64f37551744"
 
 [[document]]
-id = "TOML-1034"
+id = "TOML-1035"
 path = "registry/knowledge/docs/DOC-0127.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14511,7 +14525,7 @@ line_count = 53
 sha256 = "0c10d05a2bc3f7958f8f37b54dbc0a4959df01feee88f9582fee01ec3ae3b7ef"
 
 [[document]]
-id = "TOML-1035"
+id = "TOML-1036"
 path = "registry/knowledge/docs/DOC-0128.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14525,7 +14539,7 @@ line_count = 48
 sha256 = "67d19a883b0dd5b7458226b25c4ca9f3b2b53c01b45b74e3fc0583a1493881b4"
 
 [[document]]
-id = "TOML-1036"
+id = "TOML-1037"
 path = "registry/knowledge/docs/DOC-0129.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14539,7 +14553,7 @@ line_count = 55
 sha256 = "74be540f3d63c4637316367808c25a132bc4e0f66a34b145c560ec7e083970af"
 
 [[document]]
-id = "TOML-1037"
+id = "TOML-1038"
 path = "registry/knowledge/docs/DOC-0130.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14553,7 +14567,7 @@ line_count = 45
 sha256 = "90217f243ea662879962c9d1083bee672c0054155451f102cd1fc823a619e119"
 
 [[document]]
-id = "TOML-1038"
+id = "TOML-1039"
 path = "registry/knowledge/docs/DOC-0131.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14567,7 +14581,7 @@ line_count = 49
 sha256 = "5461f752e67a1caf03100e18f2321138a218ad556fca2e6f04c646566d99fc9c"
 
 [[document]]
-id = "TOML-1039"
+id = "TOML-1040"
 path = "registry/knowledge/docs/DOC-0132.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14581,7 +14595,7 @@ line_count = 48
 sha256 = "321220cc52b05a9fe91fc6ea8f3faca74d0fabc317439153cb6cd1b55f63aaac"
 
 [[document]]
-id = "TOML-1040"
+id = "TOML-1041"
 path = "registry/knowledge/docs/DOC-0133.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14595,7 +14609,7 @@ line_count = 92
 sha256 = "9528307540dc8268ac6b0d9f53631e15be30f897323be24d317de4056188ab3e"
 
 [[document]]
-id = "TOML-1041"
+id = "TOML-1042"
 path = "registry/knowledge/docs/DOC-0134.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14609,7 +14623,7 @@ line_count = 68
 sha256 = "893cc0489c46d335877dbab679519576817d5d9cd2edcfaeb3ce0f2086601f06"
 
 [[document]]
-id = "TOML-1042"
+id = "TOML-1043"
 path = "registry/knowledge/docs/DOC-0135.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14623,7 +14637,7 @@ line_count = 63
 sha256 = "31e3071ee04846e584e5124427767591146665961161c2886d284d7ff71a89aa"
 
 [[document]]
-id = "TOML-1043"
+id = "TOML-1044"
 path = "registry/knowledge/docs/DOC-0136.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14637,7 +14651,7 @@ line_count = 46
 sha256 = "7c83dc402ceaa5b085193264e83a05ab69a91cbcc03e1fca00f9d152125a3503"
 
 [[document]]
-id = "TOML-1044"
+id = "TOML-1045"
 path = "registry/knowledge/docs/DOC-0137.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14651,7 +14665,7 @@ line_count = 84
 sha256 = "973706495981acc579c38ddab84310f8e96cde1f96151044ba8f6d77ea765f54"
 
 [[document]]
-id = "TOML-1045"
+id = "TOML-1046"
 path = "registry/knowledge/docs/DOC-0138.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14665,7 +14679,7 @@ line_count = 96
 sha256 = "68dc60324dcb8416a9c818c5676499f26923fd31456f19c4ada1de4ae3f450d5"
 
 [[document]]
-id = "TOML-1046"
+id = "TOML-1047"
 path = "registry/knowledge/docs/DOC-0139.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14679,7 +14693,7 @@ line_count = 117
 sha256 = "4e01cfb1f3fd7c10ac3480c9c9ddcce74b6a21d025ba49052991d6457e55c26f"
 
 [[document]]
-id = "TOML-1047"
+id = "TOML-1048"
 path = "registry/knowledge/docs/DOC-0140.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14693,7 +14707,7 @@ line_count = 598
 sha256 = "5e97ac1ff3688122575fa72c420355f26b2d75c8fa185830af5660d07ce36bf0"
 
 [[document]]
-id = "TOML-1048"
+id = "TOML-1049"
 path = "registry/knowledge/docs/DOC-0141.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14707,7 +14721,7 @@ line_count = 98
 sha256 = "ba59b185cf06214004cd9925607def3d4f7daa4b1098f4b15500285b874dc4b4"
 
 [[document]]
-id = "TOML-1049"
+id = "TOML-1050"
 path = "registry/knowledge/docs/DOC-0142.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14721,7 +14735,7 @@ line_count = 4136
 sha256 = "e16a6d5a12fb11eed7d56fdbe17d38d98c5ad42ab1f0d2874bf5cef28e53f6cb"
 
 [[document]]
-id = "TOML-1050"
+id = "TOML-1051"
 path = "registry/knowledge/docs/DOC-0143.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14735,7 +14749,7 @@ line_count = 1043
 sha256 = "c675d87c1562f7ca620dcc52fb3cb69232607e8501bc21d6f7e9c357581f1bd1"
 
 [[document]]
-id = "TOML-1051"
+id = "TOML-1052"
 path = "registry/knowledge/docs/DOC-0144.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14749,7 +14763,7 @@ line_count = 59
 sha256 = "84a4693c9171fef84eaac7549e0ea9c2e1ef0f72357f100ec9df92d66f2250cd"
 
 [[document]]
-id = "TOML-1052"
+id = "TOML-1053"
 path = "registry/knowledge/docs/DOC-0145.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14763,7 +14777,7 @@ line_count = 1777
 sha256 = "3f97ddbce944cc938a33c58b22bdb2899a4189e2a75159665b9fff7e39eea972"
 
 [[document]]
-id = "TOML-1053"
+id = "TOML-1054"
 path = "registry/knowledge/docs/DOC-0146.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14777,7 +14791,7 @@ line_count = 907
 sha256 = "3470619ab6b173d0518f52ca8a386506ff95aa322b59210fd7c071f3cc614170"
 
 [[document]]
-id = "TOML-1054"
+id = "TOML-1055"
 path = "registry/knowledge/docs/DOC-0147.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14791,7 +14805,7 @@ line_count = 179
 sha256 = "8516b75acda4cda3be38713a543317121cb0f3b7b118878324d78ccdf3d58de5"
 
 [[document]]
-id = "TOML-1055"
+id = "TOML-1056"
 path = "registry/knowledge/docs/DOC-0148.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14805,7 +14819,7 @@ line_count = 57
 sha256 = "2ce32ebbfadebaf172403c19de454ccde6019ff327f899e23c63c2eb6028ad97"
 
 [[document]]
-id = "TOML-1056"
+id = "TOML-1057"
 path = "registry/knowledge/docs/DOC-0149.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14819,7 +14833,7 @@ line_count = 62
 sha256 = "0ad15e67e96a6e47b420b44154cea4e616a494672a8763ec0479d6fec333f73c"
 
 [[document]]
-id = "TOML-1057"
+id = "TOML-1058"
 path = "registry/knowledge/docs/DOC-0150.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14833,7 +14847,7 @@ line_count = 122
 sha256 = "d74a3de8b726daf1ae0fff62651c3f613e3518f2419f1e91a7c6dd32f466fb57"
 
 [[document]]
-id = "TOML-1058"
+id = "TOML-1059"
 path = "registry/knowledge/docs/DOC-0151.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14847,7 +14861,7 @@ line_count = 147
 sha256 = "2873960d7b4e1943af01b3b548480e97415d2a8c585f3dd4636b3acc8e4ff296"
 
 [[document]]
-id = "TOML-1059"
+id = "TOML-1060"
 path = "registry/knowledge/docs/DOC-0154.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14861,7 +14875,7 @@ line_count = 381
 sha256 = "148ffb02fd21bf1cb984efdf020b7e534ca2c1b025d578623e9f7e861bce56e7"
 
 [[document]]
-id = "TOML-1060"
+id = "TOML-1061"
 path = "registry/knowledge/docs/DOC-0155.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14875,7 +14889,7 @@ line_count = 173
 sha256 = "b76066d2859abfc87c058042f11ff3cb80a5abd0092bbd268f7c50dc252e5ff6"
 
 [[document]]
-id = "TOML-1061"
+id = "TOML-1062"
 path = "registry/knowledge/docs/DOC-0156.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14889,7 +14903,7 @@ line_count = 627
 sha256 = "0bc463e3794d3ab16c9d6a3556365381f8b212d28b10d1356c461066e961e09d"
 
 [[document]]
-id = "TOML-1062"
+id = "TOML-1063"
 path = "registry/knowledge/docs/DOC-0157.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14903,7 +14917,7 @@ line_count = 4199
 sha256 = "8ebd8278b6757ea4b126d9fb4a74de8f512114dddafd69c8bb6ba444c1461589"
 
 [[document]]
-id = "TOML-1063"
+id = "TOML-1064"
 path = "registry/knowledge/docs/DOC-0158.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14917,7 +14931,7 @@ line_count = 2876
 sha256 = "2d03db8f4e5e73ba51fafadd5c7a8dde77b60af16c498192f00341840c67554c"
 
 [[document]]
-id = "TOML-1064"
+id = "TOML-1065"
 path = "registry/knowledge/docs/DOC-0159.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14931,7 +14945,7 @@ line_count = 196
 sha256 = "a4d7312e62cd741706311f9d459edf7ab482ac11811f3314ce723a2caff73ec7"
 
 [[document]]
-id = "TOML-1065"
+id = "TOML-1066"
 path = "registry/knowledge/docs/DOC-0160.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14945,7 +14959,7 @@ line_count = 77
 sha256 = "3fd24b9b535bd514c151d9c427c0bec039f4949436a69a1799004671ab113282"
 
 [[document]]
-id = "TOML-1066"
+id = "TOML-1067"
 path = "registry/knowledge/docs/DOC-0161.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14959,7 +14973,7 @@ line_count = 66
 sha256 = "3202845d9dd700aa5cd499486037d4ee165074119c19fd8b141cc6e8c41184b6"
 
 [[document]]
-id = "TOML-1067"
+id = "TOML-1068"
 path = "registry/knowledge/docs/DOC-0162.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14973,7 +14987,7 @@ line_count = 470
 sha256 = "ca4a3d1b0672785733451782302eb62b54ed22b37f29a0ffc28d88a7c7cf0b2b"
 
 [[document]]
-id = "TOML-1068"
+id = "TOML-1069"
 path = "registry/knowledge/docs/DOC-0163.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -14987,7 +15001,7 @@ line_count = 297
 sha256 = "97534d1b613ae43ae725ac4abebb4e5886a3b252371721386c1956d06b2f22b8"
 
 [[document]]
-id = "TOML-1069"
+id = "TOML-1070"
 path = "registry/knowledge/docs/DOC-0164.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15001,7 +15015,7 @@ line_count = 241
 sha256 = "c096760bd0587004cd6a44ca1a5ec4e92342ca76659d3de94bb2223e2a2c0c98"
 
 [[document]]
-id = "TOML-1070"
+id = "TOML-1071"
 path = "registry/knowledge/docs/DOC-0165.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15015,7 +15029,7 @@ line_count = 184
 sha256 = "bcd4437c97b34e432da45fa8c7658d9fea8851c6856f5967727474761e9e9005"
 
 [[document]]
-id = "TOML-1071"
+id = "TOML-1072"
 path = "registry/knowledge/docs/DOC-0166.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15029,7 +15043,7 @@ line_count = 429
 sha256 = "e6eb2d808026c7b8a0fea7e016f516ca5c8ecf47228b4717cf0975ed3334b8cd"
 
 [[document]]
-id = "TOML-1072"
+id = "TOML-1073"
 path = "registry/knowledge/docs/DOC-0167.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15043,7 +15057,7 @@ line_count = 2186
 sha256 = "4c351b1156e9f1d148b210fd706915c189fd78602a55e97889d93e7f34d4f746"
 
 [[document]]
-id = "TOML-1073"
+id = "TOML-1074"
 path = "registry/knowledge/docs/DOC-0168.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15057,7 +15071,7 @@ line_count = 71
 sha256 = "6c5d9a67582817944891068ee30733ddd12f9aa5a49d81e7003b6b945839424b"
 
 [[document]]
-id = "TOML-1074"
+id = "TOML-1075"
 path = "registry/knowledge/docs/DOC-0169.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15071,7 +15085,7 @@ line_count = 337
 sha256 = "83c9afb211efab499aecf134008f7bf5d23403b95b68547d4605126d6301b853"
 
 [[document]]
-id = "TOML-1075"
+id = "TOML-1076"
 path = "registry/knowledge/docs/DOC-0170.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15085,7 +15099,7 @@ line_count = 120
 sha256 = "99cc7f23e48f84245e3b49674b47c74dcd715fa2fd65627647c63b1c6e7794d7"
 
 [[document]]
-id = "TOML-1076"
+id = "TOML-1077"
 path = "registry/knowledge/docs/DOC-0171.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15099,7 +15113,7 @@ line_count = 234
 sha256 = "d30a30fb8ba928e9fb492fc10035137811c6a02157b91155e13ff73689b2f5b6"
 
 [[document]]
-id = "TOML-1077"
+id = "TOML-1078"
 path = "registry/knowledge/docs/DOC-0172.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15113,7 +15127,7 @@ line_count = 82
 sha256 = "bfe00291de756406aa866eaf5c4c3009c01f4e7f9c3f130525816d3444f9555b"
 
 [[document]]
-id = "TOML-1078"
+id = "TOML-1079"
 path = "registry/knowledge/docs/DOC-0173.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15127,7 +15141,7 @@ line_count = 147
 sha256 = "9408f2d87d4fb5a5e3e3a90f699362ce0907011e0ef211a162030c68ad558ec9"
 
 [[document]]
-id = "TOML-1079"
+id = "TOML-1080"
 path = "registry/knowledge/docs/DOC-0174.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15141,7 +15155,7 @@ line_count = 198
 sha256 = "5e55b354d5845f612df68c21d5e838548400bcee75f4124b82e9c90b0c79b0fe"
 
 [[document]]
-id = "TOML-1080"
+id = "TOML-1081"
 path = "registry/knowledge/docs/DOC-0175.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15155,7 +15169,7 @@ line_count = 63
 sha256 = "a83249332b044a8a4ca0e35f7df005d09b0cce16f931edc885d2f853338d3611"
 
 [[document]]
-id = "TOML-1081"
+id = "TOML-1082"
 path = "registry/knowledge/docs/DOC-0181.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15169,7 +15183,7 @@ line_count = 59
 sha256 = "1cd0feaba9a4668da83955fa79a3247d8de263ac05b6547353b4af1eb8b1468f"
 
 [[document]]
-id = "TOML-1082"
+id = "TOML-1083"
 path = "registry/knowledge/docs/DOC-0182.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15183,7 +15197,7 @@ line_count = 72
 sha256 = "9c5cbe423dd1c091f5e0a747dce3ad9e3ed7ed1672443998f68660ec850ed22f"
 
 [[document]]
-id = "TOML-1083"
+id = "TOML-1084"
 path = "registry/knowledge/docs/DOC-0183.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15197,7 +15211,7 @@ line_count = 72
 sha256 = "f1d15c43f64ddaf99790970da40b658c4c8cebd8f3d75471949515ba7624a93b"
 
 [[document]]
-id = "TOML-1084"
+id = "TOML-1085"
 path = "registry/knowledge/docs/DOC-0184.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15211,7 +15225,7 @@ line_count = 72
 sha256 = "b2200c8b09b4f87e1811bbf0c6f182083a55f9fb75afc5b8958048d4c9c642ab"
 
 [[document]]
-id = "TOML-1085"
+id = "TOML-1086"
 path = "registry/knowledge/docs/DOC-0185.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15225,7 +15239,7 @@ line_count = 72
 sha256 = "ee5df55815a0d769deb2f48db565db8bd3a54ea7ba6420c86edc80e1a260d2b4"
 
 [[document]]
-id = "TOML-1086"
+id = "TOML-1087"
 path = "registry/knowledge/docs/DOC-0186.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15239,7 +15253,7 @@ line_count = 72
 sha256 = "c619f391e63318852fd47d9d1c38befef1179d40fe0bc540829809c90d24d1bc"
 
 [[document]]
-id = "TOML-1087"
+id = "TOML-1088"
 path = "registry/knowledge/docs/DOC-0187.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15253,7 +15267,7 @@ line_count = 72
 sha256 = "16cb41065132731e920f45fd5d20970a948723ae208acaccc4afcf2e9b285dcf"
 
 [[document]]
-id = "TOML-1088"
+id = "TOML-1089"
 path = "registry/knowledge/docs/DOC-0189.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15267,7 +15281,7 @@ line_count = 72
 sha256 = "41576db05ec90d39fd47ac9e106abb31ba11cf04c40a6b5608dbee35e05e42bf"
 
 [[document]]
-id = "TOML-1089"
+id = "TOML-1090"
 path = "registry/knowledge/docs/DOC-0192.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15281,7 +15295,7 @@ line_count = 72
 sha256 = "9f46e6074ee716f6b246e09057973b8db33f9ff576be7349993390468be347c3"
 
 [[document]]
-id = "TOML-1090"
+id = "TOML-1091"
 path = "registry/knowledge/docs/DOC-0195.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15295,7 +15309,7 @@ line_count = 57
 sha256 = "0f4aaac645d8627077ff39f3d13027c21d623826bd4b3e4fdb1bf34b40e84a1d"
 
 [[document]]
-id = "TOML-1091"
+id = "TOML-1092"
 path = "registry/knowledge/docs/DOC-0196.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15309,7 +15323,7 @@ line_count = 78
 sha256 = "4f5125d4efb96afd41d60aed6e056446acf609f286ae510ba7300518dc001516"
 
 [[document]]
-id = "TOML-1092"
+id = "TOML-1093"
 path = "registry/knowledge/docs/DOC-0197.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15323,7 +15337,7 @@ line_count = 66
 sha256 = "4a4f15343017da2845b3650039343d2ac2b3f6d1281a6812c9f79bae47000e1d"
 
 [[document]]
-id = "TOML-1093"
+id = "TOML-1094"
 path = "registry/knowledge/docs/DOC-0198.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15337,7 +15351,7 @@ line_count = 72
 sha256 = "a2865bef29baa768cdc316b9de6ad92c39bb0b7e08c7593733efa02f8cccb1a5"
 
 [[document]]
-id = "TOML-1094"
+id = "TOML-1095"
 path = "registry/knowledge/docs/DOC-0199.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15351,7 +15365,7 @@ line_count = 92
 sha256 = "c738e467b993aaced873b1a36521549de67620e6b662f0d63948f9b0cc7a1ae1"
 
 [[document]]
-id = "TOML-1095"
+id = "TOML-1096"
 path = "registry/knowledge/docs/DOC-0200.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15365,7 +15379,7 @@ line_count = 64
 sha256 = "0d27048ecc6c32042c1b6e1cd5a9948d6b56dedb20f7076882b48a010731e93e"
 
 [[document]]
-id = "TOML-1096"
+id = "TOML-1097"
 path = "registry/knowledge/docs/DOC-0201.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15379,7 +15393,7 @@ line_count = 61
 sha256 = "111f9005640e386f3003d01d56d5eb1809f1a5c9364eb00494d6fb36533b7f4b"
 
 [[document]]
-id = "TOML-1097"
+id = "TOML-1098"
 path = "registry/knowledge/docs/DOC-0202.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15393,7 +15407,7 @@ line_count = 49
 sha256 = "e326b8af10aa2fd80fb8fc5f15180c2035380c6cc4f865b02fa1a999dcf3e379"
 
 [[document]]
-id = "TOML-1098"
+id = "TOML-1099"
 path = "registry/knowledge/docs/DOC-0203.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15407,7 +15421,7 @@ line_count = 134
 sha256 = "f4e0fd1d6614b54cb2b174fcea8fdebff0378c2ae08250b3c4ffb5475a9992ec"
 
 [[document]]
-id = "TOML-1099"
+id = "TOML-1100"
 path = "registry/knowledge/docs/DOC-0204.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15421,7 +15435,7 @@ line_count = 120
 sha256 = "16268362caa94cb57aa4a518367123b9f33c908cd587fa4dfe51f5887ba7e4a9"
 
 [[document]]
-id = "TOML-1100"
+id = "TOML-1101"
 path = "registry/knowledge/docs/DOC-0205.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15435,7 +15449,7 @@ line_count = 274
 sha256 = "a63ce54f530ca05bbc461e9251ae4d8ecc27cf90e4bee96ba00fe0ca5eee148d"
 
 [[document]]
-id = "TOML-1101"
+id = "TOML-1102"
 path = "registry/knowledge/docs/DOC-0206.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15449,7 +15463,7 @@ line_count = 72
 sha256 = "1883dd975b0e49112f05501e2a7f7a7d7b7a8c48f158aee93cacf44f4627b00a"
 
 [[document]]
-id = "TOML-1102"
+id = "TOML-1103"
 path = "registry/knowledge/docs/DOC-0207.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15463,7 +15477,7 @@ line_count = 74
 sha256 = "9b3bcb15b53770d1e826c2e0dbd2e4086bbd78996e7cd45e6e40f01128041061"
 
 [[document]]
-id = "TOML-1103"
+id = "TOML-1104"
 path = "registry/knowledge/docs/DOC-0208.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15477,7 +15491,7 @@ line_count = 73
 sha256 = "35f76cfc8c74080141e756cff881afb025b2f606de581a3a44380ac4a53f3890"
 
 [[document]]
-id = "TOML-1104"
+id = "TOML-1105"
 path = "registry/knowledge/docs/DOC-0209.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15491,7 +15505,7 @@ line_count = 76
 sha256 = "71da0ce5ac19217ba36dff064607032aea567c05c5d9d365ec94e6a77f678516"
 
 [[document]]
-id = "TOML-1105"
+id = "TOML-1106"
 path = "registry/knowledge/docs/DOC-0210.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15505,7 +15519,7 @@ line_count = 107
 sha256 = "82411df2433c6ad1731a28c96af6f60f93936fe240ed6223d29f18cb31c334a7"
 
 [[document]]
-id = "TOML-1106"
+id = "TOML-1107"
 path = "registry/knowledge/docs/DOC-0211.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15519,7 +15533,7 @@ line_count = 104
 sha256 = "d524e81489e627f46467f1c98448da730ddeb3db522da911da8be8270c1005c7"
 
 [[document]]
-id = "TOML-1107"
+id = "TOML-1108"
 path = "registry/knowledge/docs/DOC-0212.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15533,7 +15547,7 @@ line_count = 105
 sha256 = "9fec148b2cd0aae09eb9baf427f88c980c067309af5e58f9274e0595129569e5"
 
 [[document]]
-id = "TOML-1108"
+id = "TOML-1109"
 path = "registry/knowledge/docs/DOC-0213.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15547,7 +15561,7 @@ line_count = 105
 sha256 = "dbe9c292760df9f21c960a19d4c0a8eefa92fde83b8a3a854340b9f35a8993a6"
 
 [[document]]
-id = "TOML-1109"
+id = "TOML-1110"
 path = "registry/knowledge/docs/DOC-0214.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15561,7 +15575,7 @@ line_count = 269
 sha256 = "4ee356429d14d9b036bfbdf4549e19680fd3663d1857d1268323b5479ede1a42"
 
 [[document]]
-id = "TOML-1110"
+id = "TOML-1111"
 path = "registry/knowledge/docs/DOC-0215.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15575,7 +15589,7 @@ line_count = 303
 sha256 = "7b03dbb1eb6cade45822ab4608569e50219010c4f469819cfdee1ee374a20c73"
 
 [[document]]
-id = "TOML-1111"
+id = "TOML-1112"
 path = "registry/knowledge/docs/DOC-0216.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15589,7 +15603,7 @@ line_count = 309
 sha256 = "d6a4210e831a5e7128067a83721e5f80f85ec03842b5f21007db2e059b38377e"
 
 [[document]]
-id = "TOML-1112"
+id = "TOML-1113"
 path = "registry/knowledge/docs/DOC-0217.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15603,7 +15617,7 @@ line_count = 313
 sha256 = "bdaa0cda1b797da8b166f782c8cc2015ae74b5d62936328c350e30e96658f38d"
 
 [[document]]
-id = "TOML-1113"
+id = "TOML-1114"
 path = "registry/knowledge/docs/DOC-0218.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15617,7 +15631,7 @@ line_count = 105
 sha256 = "0c0080bbb5eba3bf5faad6fb4a4a543bca1c93ec589a65b7c4dba7119492190a"
 
 [[document]]
-id = "TOML-1114"
+id = "TOML-1115"
 path = "registry/knowledge/docs/DOC-0219.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15631,7 +15645,7 @@ line_count = 105
 sha256 = "b6cb554adc9d15c337901849022d1c9167d1fe4667b890bd964e5ef7ffb1eee4"
 
 [[document]]
-id = "TOML-1115"
+id = "TOML-1116"
 path = "registry/knowledge/docs/DOC-0220.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15645,7 +15659,7 @@ line_count = 105
 sha256 = "7f3495d9414e410d4274e743ae0254fd159f8fb6e876b3b55b12ae4538ad1ee6"
 
 [[document]]
-id = "TOML-1116"
+id = "TOML-1117"
 path = "registry/knowledge/docs/DOC-0221.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15659,7 +15673,7 @@ line_count = 103
 sha256 = "e91cf666f667bba5eb9d9ec852c56cee3cbaa5dc74b98e4700f839306b31bf21"
 
 [[document]]
-id = "TOML-1117"
+id = "TOML-1118"
 path = "registry/knowledge/docs/DOC-0222.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15673,7 +15687,7 @@ line_count = 57
 sha256 = "d96242b949a958f015e43c53723afef127a8d54664cfce553be146baffa43c60"
 
 [[document]]
-id = "TOML-1118"
+id = "TOML-1119"
 path = "registry/knowledge/docs/DOC-0223.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15687,7 +15701,7 @@ line_count = 55
 sha256 = "3b5ffe7f2beef525e4c69981bbf2988ab3d9470a1faeef3397193fbb50d71e62"
 
 [[document]]
-id = "TOML-1119"
+id = "TOML-1120"
 path = "registry/knowledge/docs/DOC-0224.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15701,7 +15715,7 @@ line_count = 134
 sha256 = "33969d577dc6736ffe6c04168c9216281f84bb6c65806bad884e1d8882d2d59e"
 
 [[document]]
-id = "TOML-1120"
+id = "TOML-1121"
 path = "registry/knowledge/docs/DOC-0225.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15715,7 +15729,7 @@ line_count = 55
 sha256 = "f9cd31a5ebfaaf72f2bff015a78ee083b894b0b7f63f480303f1c8719aeffbdb"
 
 [[document]]
-id = "TOML-1121"
+id = "TOML-1122"
 path = "registry/knowledge/docs/DOC-0226.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15729,7 +15743,7 @@ line_count = 46
 sha256 = "341bbe5ee182f032f2d37976ef5c9b7e6db11b37231d4b5c368540cf2404ec06"
 
 [[document]]
-id = "TOML-1122"
+id = "TOML-1123"
 path = "registry/knowledge/docs/DOC-0227.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15743,7 +15757,7 @@ line_count = 119
 sha256 = "7eb33441ff5f7d71e2af7ee68f80e539423734068051bff805d8ce7178314022"
 
 [[document]]
-id = "TOML-1123"
+id = "TOML-1124"
 path = "registry/knowledge/docs/DOC-0228.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15757,7 +15771,7 @@ line_count = 59
 sha256 = "440a05724abd51a3dadef4739a140adde39e05bf36023caa699570a3f25bce0e"
 
 [[document]]
-id = "TOML-1124"
+id = "TOML-1125"
 path = "registry/knowledge/docs/DOC-0229.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15771,7 +15785,7 @@ line_count = 867
 sha256 = "cbc6b89ef4443eb94033bc56c953d321ad90282cdf0b161d55b97668e7f2cbb5"
 
 [[document]]
-id = "TOML-1125"
+id = "TOML-1126"
 path = "registry/knowledge/docs/DOC-0230.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15785,7 +15799,7 @@ line_count = 82
 sha256 = "9fcf88ca4f9519002a8e078486ec96a2047ef4153293e9456e482b6e37de8f4c"
 
 [[document]]
-id = "TOML-1126"
+id = "TOML-1127"
 path = "registry/knowledge/docs/DOC-0231.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15799,7 +15813,7 @@ line_count = 58
 sha256 = "65aa856396f4c03e7f4bce654749a219410b85fc21f736848e7c037cc87dab3e"
 
 [[document]]
-id = "TOML-1127"
+id = "TOML-1128"
 path = "registry/knowledge/docs/DOC-0232.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15813,7 +15827,7 @@ line_count = 45
 sha256 = "cb2692e3960b46f6217f9f14c2a1bdee26fedc9b9088acf44b108296d7ca2b84"
 
 [[document]]
-id = "TOML-1128"
+id = "TOML-1129"
 path = "registry/knowledge/docs/DOC-0233.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15827,7 +15841,7 @@ line_count = 95
 sha256 = "de9bd7df6f836036e68df573ff1a04560d0338fed0bb0bfe3e89cd3c1b9660fb"
 
 [[document]]
-id = "TOML-1129"
+id = "TOML-1130"
 path = "registry/knowledge/docs/DOC-0234.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15841,7 +15855,7 @@ line_count = 107
 sha256 = "44bc8d254cf511a05e9c71e36f395f6064bdb2356f47218aabfc3c3c8678b2e5"
 
 [[document]]
-id = "TOML-1130"
+id = "TOML-1131"
 path = "registry/knowledge/docs/DOC-0235.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15855,7 +15869,7 @@ line_count = 77
 sha256 = "829091700e53afd779d6a1318b364279b37be7e79472c812c05f7e988a0e66bd"
 
 [[document]]
-id = "TOML-1131"
+id = "TOML-1132"
 path = "registry/knowledge/docs/DOC-0236.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15869,7 +15883,7 @@ line_count = 258
 sha256 = "1fd85bdb045657ba8e27a4a3ef837dd6283543f7957a08dba5c7f9bc538ad03a"
 
 [[document]]
-id = "TOML-1132"
+id = "TOML-1133"
 path = "registry/knowledge/docs/DOC-0237.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15883,7 +15897,7 @@ line_count = 126
 sha256 = "6ba167323ad5a32a2f23a836f329de607d12ae67e23215f62c5a9dbc590f89f7"
 
 [[document]]
-id = "TOML-1133"
+id = "TOML-1134"
 path = "registry/knowledge/docs/DOC-0238.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15897,7 +15911,7 @@ line_count = 81
 sha256 = "8296d10dcca1e18d2da614efe810cff2043090c1d9f39bfdd3714197b762c1e6"
 
 [[document]]
-id = "TOML-1134"
+id = "TOML-1135"
 path = "registry/knowledge/docs/DOC-0239.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15911,7 +15925,7 @@ line_count = 97
 sha256 = "892c466c2ee8bd8d8a179f2030dcb37abc632ca12f3b20192668d70ae7b2029d"
 
 [[document]]
-id = "TOML-1135"
+id = "TOML-1136"
 path = "registry/knowledge/docs/DOC-0240.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15925,7 +15939,7 @@ line_count = 79
 sha256 = "40d871c79cd886e5ea84798e44b172ea83ed1b834b4e1f90f897dbdfc18f4716"
 
 [[document]]
-id = "TOML-1136"
+id = "TOML-1137"
 path = "registry/knowledge/docs/DOC-0241.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15939,7 +15953,7 @@ line_count = 74
 sha256 = "8b2c7bacb68649d28f6ce2b732cba442b94a8f3225b5645b80040ec196f858bd"
 
 [[document]]
-id = "TOML-1137"
+id = "TOML-1138"
 path = "registry/knowledge/docs/DOC-0242.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15953,7 +15967,7 @@ line_count = 60
 sha256 = "239f576a94c20d0ac9551d871f8313780a2b766dc655972f94717fa572002150"
 
 [[document]]
-id = "TOML-1138"
+id = "TOML-1139"
 path = "registry/knowledge/docs/DOC-0243.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15967,7 +15981,7 @@ line_count = 70
 sha256 = "79464f3cecec3a9397e793d7cbb7cef8a59802516f34e1293724b91cfa2e1728"
 
 [[document]]
-id = "TOML-1139"
+id = "TOML-1140"
 path = "registry/knowledge/documents.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15981,7 +15995,49 @@ line_count = 83
 sha256 = "6094f1c1a3de5fe3102710ae3a9a3bb951496530f4faefa6f0ac739fd37e8f05"
 
 [[document]]
-id = "TOML-1140"
+id = "TOML-1141"
+path = "registry/knowledge/equation_atoms.toml"
+git_status = "tracked"
+role = "registry_control_plane"
+zone = "registry_control"
+parse_ok = true
+has_authoritative = true
+table_count = 2
+markdown_ref_count = 0
+size_bytes = 481558
+line_count = 14139
+sha256 = "510b5974def21f03bf2f1bd80fe54dd9e9008ef794b6548a3a977e847cba1095"
+
+[[document]]
+id = "TOML-1142"
+path = "registry/knowledge/proof_atoms.toml"
+git_status = "tracked"
+role = "registry_control_plane"
+zone = "registry_control"
+parse_ok = true
+has_authoritative = true
+table_count = 2
+markdown_ref_count = 0
+size_bytes = 87584
+line_count = 739
+sha256 = "6cc333914246a37d7f4f702c011fad99b63586bee6f5fd63e9d7223d0e832997"
+
+[[document]]
+id = "TOML-1143"
+path = "registry/knowledge/structured_corpora.toml"
+git_status = "tracked"
+role = "registry_control_plane"
+zone = "registry_control"
+parse_ok = true
+has_authoritative = true
+table_count = 2
+markdown_ref_count = 0
+size_bytes = 19553
+line_count = 555
+sha256 = "1c427f87c8e9028aabdd9575c95917513f18a42faa3f6fece35d54378e15efb3"
+
+[[document]]
+id = "TOML-1144"
 path = "registry/knowledge_migration_plan.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -15995,7 +16051,7 @@ line_count = 532
 sha256 = "9b6d3b1e093983d6ad4d470f440c3990c99315c9ffdf17da1ee005aa174a3511"
 
 [[document]]
-id = "TOML-1141"
+id = "TOML-1145"
 path = "registry/knowledge_sources.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16009,7 +16065,7 @@ line_count = 165
 sha256 = "ef1791348b7a4b07bf814b6af3b08c3f036d2245907e8ccb6e8f04b173fba167"
 
 [[document]]
-id = "TOML-1142"
+id = "TOML-1146"
 path = "registry/lacunae.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16023,7 +16079,7 @@ line_count = 47
 sha256 = "50c424d28bbf52bece8be666c5bdfa05ee17d034986a84e3623d7686c19248f9"
 
 [[document]]
-id = "TOML-1143"
+id = "TOML-1147"
 path = "registry/legacy_csv_datasets.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16037,7 +16093,7 @@ line_count = 3010
 sha256 = "3f1d17c83f987a56e31afdf3490cba61f4aeb30e2553bd6ca8006256e1b118eb"
 
 [[document]]
-id = "TOML-1144"
+id = "TOML-1148"
 path = "registry/markdown_corpus_registry.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16046,12 +16102,12 @@ parse_ok = true
 has_authoritative = true
 table_count = 7
 markdown_ref_count = 0
-size_bytes = 105976
-line_count = 4150
-sha256 = "808287b8ef2a2ea8a01e3ea69649720a2db7a432420872f7877273b5fafe2fa9"
+size_bytes = 109398
+line_count = 4271
+sha256 = "ff099f8a8250b0296c7d5719317dfb26b3db95dc7d2fc66d587f68f62d230b9d"
 
 [[document]]
-id = "TOML-1145"
+id = "TOML-1149"
 path = "registry/markdown_governance.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16065,7 +16121,7 @@ line_count = 81
 sha256 = "88f287e697b2410dbc26697960a2f47668c2c3d5d7bd4d7b3bf3e4844e8c04d8"
 
 [[document]]
-id = "TOML-1146"
+id = "TOML-1150"
 path = "registry/markdown_inventory.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16074,12 +16130,12 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 177790
-line_count = 5971
-sha256 = "1255b458ce5ccdd11180d4dc5d08bca73ce3d42bbc9da8bf82f22ebc99208662"
+size_bytes = 180661
+line_count = 6063
+sha256 = "28ec18299cdc76807054fb18ea20add2978ddb2b27d5c4555e745a119f8bab5a"
 
 [[document]]
-id = "TOML-1147"
+id = "TOML-1151"
 path = "registry/markdown_origin_audit.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16088,12 +16144,12 @@ parse_ok = true
 has_authoritative = true
 table_count = 4
 markdown_ref_count = 0
-size_bytes = 142562
-line_count = 3939
-sha256 = "4e06ef601aa1ab7ab092d637c52b458694748c0a759617f32c163f613763d0c9"
+size_bytes = 144942
+line_count = 4003
+sha256 = "c35e1601925bc9fa829f244105d07863f9a540912f1e750091768f8bb55f65d7"
 
 [[document]]
-id = "TOML-1148"
+id = "TOML-1152"
 path = "registry/markdown_owner_map.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16102,12 +16158,12 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 95152
-line_count = 2214
-sha256 = "9343e75d4d178a8317f3acca5e2d88deecacb3cd21ef769470cc21327fdaf3aa"
+size_bytes = 96769
+line_count = 2250
+sha256 = "b571579a69d1c502f58220584595844f5723241c1e50eb3fe206bc5276799178"
 
 [[document]]
-id = "TOML-1149"
+id = "TOML-1153"
 path = "registry/monograph.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16121,7 +16177,7 @@ line_count = 93
 sha256 = "839a5925f5ab148654024abb0d6fc327c2cf1522aa6eacedbd73442e0e6958c2"
 
 [[document]]
-id = "TOML-1150"
+id = "TOML-1154"
 path = "registry/navigator.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16135,7 +16191,7 @@ line_count = 120
 sha256 = "f7e4107bcd89fc95e5c8b174122fda28593f17ee6aee9d4b9736a0c87dcf544d"
 
 [[document]]
-id = "TOML-1151"
+id = "TOML-1155"
 path = "registry/next_actions.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16149,7 +16205,7 @@ line_count = 38
 sha256 = "d9e1c4e006890d0f960660f9cfe9ede562d0292a81a9740344d1b451f930be26"
 
 [[document]]
-id = "TOML-1152"
+id = "TOML-1156"
 path = "registry/next_actions_narrative.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16163,7 +16219,7 @@ line_count = 182
 sha256 = "be966c361192eb1cf1465cbd361f2486e792901f93e55dbbf3a2f9cc09a5fec6"
 
 [[document]]
-id = "TOML-1153"
+id = "TOML-1157"
 path = "registry/project.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16174,10 +16230,10 @@ table_count = 2
 markdown_ref_count = 0
 size_bytes = 9035
 line_count = 160
-sha256 = "a0a9e8f3947b088588d716ad495f14be3b807b8631dee472b6f245fda2564d79"
+sha256 = "c70722dc6ee398b16a7a85bbf9cf8af14cce722c2a884092c3abf86b044a5955"
 
 [[document]]
-id = "TOML-1154"
+id = "TOML-1158"
 path = "registry/project_csv_canonical_datasets.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16191,7 +16247,7 @@ line_count = 906
 sha256 = "48a0354ed66c0e7f0a92bb583ceb4bbe9dca02058374202bef5a5499ca53972d"
 
 [[document]]
-id = "TOML-1155"
+id = "TOML-1159"
 path = "registry/project_csv_generated_artifacts.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16205,7 +16261,7 @@ line_count = 490
 sha256 = "70995d17398a56365b5fd5df60e25f1ed2b2a071076d2709f5852b28e2b7ac18"
 
 [[document]]
-id = "TOML-1156"
+id = "TOML-1160"
 path = "registry/project_csv_split_policy.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16219,7 +16275,7 @@ line_count = 1134
 sha256 = "72dcde13a18087e184078b201a4648b33cf265d25fb451daec3bebac61a88e5a"
 
 [[document]]
-id = "TOML-1157"
+id = "TOML-1161"
 path = "registry/reports_narratives.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16233,7 +16289,7 @@ line_count = 5605
 sha256 = "dbb874ea7f17a1ce8077a2177f2fd0e5ef0c89b6f65a87091c7bc8d428f6e5ea"
 
 [[document]]
-id = "TOML-1158"
+id = "TOML-1162"
 path = "registry/requirements.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16247,7 +16303,7 @@ line_count = 94
 sha256 = "c84daf41f1f98679136e5057d89cd185c26f31e1b0d8d28a4815b4d999499369"
 
 [[document]]
-id = "TOML-1159"
+id = "TOML-1163"
 path = "registry/requirements_narrative.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16261,7 +16317,7 @@ line_count = 482
 sha256 = "cbc9d0dc45e05a1b5eddb9159a1f4dc29f9ce6f2a557bda31f850f0921edfaa1"
 
 [[document]]
-id = "TOML-1160"
+id = "TOML-1164"
 path = "registry/research_narratives.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16275,7 +16331,7 @@ line_count = 2148
 sha256 = "efe438b3bbb7232d7252d5a3ad7db124e93f3934a6dcb02c705e5ffb0b1cace6"
 
 [[document]]
-id = "TOML-1161"
+id = "TOML-1165"
 path = "registry/roadmap.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16289,7 +16345,7 @@ line_count = 113
 sha256 = "0862e92e259b35abc5e4449504b606a38af21e5ff5855de7163cac0d0497012e"
 
 [[document]]
-id = "TOML-1162"
+id = "TOML-1166"
 path = "registry/roadmap_narrative.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16303,7 +16359,7 @@ line_count = 774
 sha256 = "eb6ce0ef978e375c10de796d4335086aec3bd42c9fb90eb433c610b1e6eb4196"
 
 [[document]]
-id = "TOML-1163"
+id = "TOML-1167"
 path = "registry/todo.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16317,7 +16373,7 @@ line_count = 46
 sha256 = "2f7b101cdce4e5bc0aeff02a3c606022db305b493581b42096a93f8774cfbc9d"
 
 [[document]]
-id = "TOML-1164"
+id = "TOML-1168"
 path = "registry/todo_narrative.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16331,7 +16387,7 @@ line_count = 160
 sha256 = "5c5a5b9794aa0585311c7c760c5f5ffc9cb04065e2b823e26acee0ec98b85708"
 
 [[document]]
-id = "TOML-1165"
+id = "TOML-1169"
 path = "registry/toml_inventory.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16340,12 +16396,12 @@ parse_ok = true
 has_authoritative = true
 table_count = 5
 markdown_ref_count = 0
-size_bytes = 443920
-line_count = 16374
-sha256 = "1aa5c31c7be493511a3229423d12d6df1e4947d1956fc63fec250bb22c8ae492"
+size_bytes = 445331
+line_count = 16430
+sha256 = "2a6399d169ccd422f774ab204a2f1253f4597d3bc74a18b15bff036496ccc1c2"
 
 [[document]]
-id = "TOML-1166"
+id = "TOML-1170"
 path = "registry/wave4_roadmap.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16359,7 +16415,7 @@ line_count = 260
 sha256 = "59c159c64c389e96ef750120196ad0cf59d35e797eeb25d4f7ae2852811f7697"
 
 [[document]]
-id = "TOML-1167"
+id = "TOML-1171"
 path = "venv/lib/python3.14/site-packages/pandas/pyproject.toml"
 git_status = "ignored"
 role = "toml_other"
