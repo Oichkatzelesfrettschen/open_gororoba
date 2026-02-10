@@ -200,13 +200,15 @@ artifacts = [
 
 [[task]]
 id = "W5-016"
-status = "pending"
+status = "done"
 priority = "medium"
 title = "Experiment metadata normalization"
 description = "Align experiment schemas with dataset lineage, claim links, and deterministic replay metadata."
 artifacts = [
   "registry/experiments.toml",
   "registry/experiment_lineage.toml",
+  "src/scripts/analysis/build_wave5_batch4_registries.py",
+  "src/verification/verify_wave5_batch4_registries.py",
 ]
 
 [[task]]
@@ -256,7 +258,7 @@ artifacts = [
 
 [[task]]
 id = "W5-021"
-status = "pending"
+status = "done"
 priority = "medium"
 title = "Roadmap/todo/action schema hardening"
 description = "Constrain planning registries with status enums, dependencies, and acceptance criteria fields."
@@ -264,17 +266,21 @@ artifacts = [
   "registry/roadmap.toml",
   "registry/todo.toml",
   "registry/next_actions.toml",
+  "src/scripts/analysis/build_wave5_batch4_registries.py",
+  "src/verification/verify_wave5_batch4_registries.py",
 ]
 
 [[task]]
 id = "W5-022"
-status = "pending"
+status = "done"
 priority = "medium"
 title = "Module requirements decomposition"
 description = "Represent installation/runtime requirements as package-level tables with reproducible commands."
 artifacts = [
   "registry/requirements.toml",
   "registry/module_requirements.toml",
+  "src/scripts/analysis/build_wave5_batch4_registries.py",
+  "src/verification/verify_wave5_batch4_registries.py",
 ]
 
 [[task]]
@@ -300,6 +306,7 @@ artifacts = [
   "registry-wave5-batch1",
   "registry-wave5-batch2",
   "registry-wave5-batch3",
+  "registry-wave5-batch4",
 ]
 
 [[task]]

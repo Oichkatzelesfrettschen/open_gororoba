@@ -17,6 +17,10 @@ INSIGHT_RE = re.compile(r"\bI-\d{3}\b")
 EXPERIMENT_RE = re.compile(r"\bE-\d{3}\b")
 SOURCE_RE = re.compile(r"\bXS-\d{3}\b")
 DATASET_RE = re.compile(r"\b(?:PC|PG|EX|AR|CU)-\d{4}\b")
+WORKSTREAM_RE = re.compile(r"\bWS-[A-Z0-9-]+\b")
+TODO_RE = re.compile(r"\bT-\d{3}\b")
+ACTION_RE = re.compile(r"\bNA-\d{3}\b")
+REQ_RE = re.compile(r"\bREQ-[A-Z0-9-]+\b")
 
 
 def _load(path: Path) -> dict:
@@ -37,6 +41,7 @@ def _collect_dataset_ids(root: Path) -> set[str]:
     out: set[str] = set()
     candidate_files = [
         "registry/project_csv_canonical_datasets.toml",
+        "registry/project_csv_generated_artifacts.toml",
         "registry/project_csv_generated_datasets.toml",
         "registry/external_csv_datasets.toml",
         "registry/archive_csv_datasets.toml",
@@ -73,6 +78,12 @@ def main() -> int:
         "registry/claims.toml",
         "registry/insights.toml",
         "registry/experiments.toml",
+        "registry/experiment_lineage.toml",
+        "registry/roadmap.toml",
+        "registry/todo.toml",
+        "registry/next_actions.toml",
+        "registry/requirements.toml",
+        "registry/module_requirements.toml",
         "registry/external_sources.toml",
         "registry/claims_atoms.toml",
         "registry/claims_evidence_edges.toml",
@@ -86,6 +97,15 @@ def main() -> int:
     claims = _load(root / "registry/claims.toml").get("claim", [])
     insights = _load(root / "registry/insights.toml").get("insight", [])
     experiments = _load(root / "registry/experiments.toml").get("experiment", [])
+    lineage_rows = _load(root / "registry/experiment_lineage.toml").get("lineage", [])
+    lineage_edges = _load(root / "registry/experiment_lineage.toml").get("edge", [])
+    roadmap_rows = _load(root / "registry/roadmap.toml").get("workstream", [])
+    todo_rows = _load(root / "registry/todo.toml").get("item", [])
+    action_rows = _load(root / "registry/next_actions.toml").get("action", [])
+    requirements_rows = _load(root / "registry/requirements.toml").get("module", [])
+    module_requirements_rows = _load(root / "registry/module_requirements.toml").get("module", [])
+    module_requirements_packages = _load(root / "registry/module_requirements.toml").get("package", [])
+    module_requirements_commands = _load(root / "registry/module_requirements.toml").get("command", [])
     sources = _load(root / "registry/external_sources.toml").get("document", [])
     claim_atoms = _load(root / "registry/claims_atoms.toml").get("atom", [])
     claim_edges = _load(root / "registry/claims_evidence_edges.toml").get("edge", [])
@@ -102,9 +122,15 @@ def main() -> int:
     claim_ids = {str(row.get("id", "")) for row in claims}
     insight_ids = {str(row.get("id", "")) for row in insights}
     experiment_ids = {str(row.get("id", "")) for row in experiments}
+    workstream_ids = {str(row.get("id", "")) for row in roadmap_rows}
+    todo_ids = {str(row.get("id", "")) for row in todo_rows}
+    action_ids = {str(row.get("id", "")) for row in action_rows}
+    req_ids = {str(row.get("id", "")) for row in requirements_rows}
+    module_req_ids = {str(row.get("id", "")) for row in module_requirements_rows}
     source_ids = {str(row.get("id", "")) for row in sources}
     dataset_ids = _collect_dataset_ids(root)
     marker_ids = {str(row.get("id", "")) for row in conflict_rows}
+    lineage_ids = {str(row.get("id", "")) for row in lineage_rows}
 
     failures: list[str] = []
     counters = {
@@ -129,6 +155,37 @@ def main() -> int:
             _record_fail(failures, where, f"unknown source {rid}")
         elif kind == "datasets" and rid not in dataset_ids:
             _record_fail(failures, where, f"unknown dataset {rid}")
+
+    def check_dependency(dep: str, where: str) -> None:
+        value = str(dep).strip()
+        if not value:
+            return
+        if CLAIM_RE.fullmatch(value):
+            check_id("claims", value, where)
+            return
+        if INSIGHT_RE.fullmatch(value):
+            check_id("insights", value, where)
+            return
+        if EXPERIMENT_RE.fullmatch(value):
+            check_id("experiments", value, where)
+            return
+        if WORKSTREAM_RE.fullmatch(value):
+            if value not in workstream_ids:
+                _record_fail(failures, where, f"unknown workstream {value}")
+            return
+        if TODO_RE.fullmatch(value):
+            if value not in todo_ids:
+                _record_fail(failures, where, f"unknown todo {value}")
+            return
+        if ACTION_RE.fullmatch(value):
+            if value not in action_ids:
+                _record_fail(failures, where, f"unknown action {value}")
+            return
+        if REQ_RE.fullmatch(value):
+            if value not in req_ids:
+                _record_fail(failures, where, f"unknown requirement module {value}")
+            return
+        _record_fail(failures, where, f"malformed dependency id {value}")
 
     # Structured refs: insights/experiments/sources
     for row in insights:
@@ -212,6 +269,139 @@ def main() -> int:
         pid = str(row.get("id", ""))
         for cid in row.get("claim_refs", []):
             check_id("claims", str(cid), f"narrative_paragraph_atoms[{pid}].claim_refs")
+
+    # experiment lineage
+    for row in lineage_rows:
+        lid = str(row.get("id", ""))
+        check_id("experiments", str(row.get("experiment_id", "")), f"experiment_lineage[{lid}].experiment_id")
+        for cid in row.get("claim_refs", []):
+            check_id("claims", str(cid), f"experiment_lineage[{lid}].claim_refs")
+        for did in row.get("dataset_refs", []):
+            check_id("datasets", str(did), f"experiment_lineage[{lid}].dataset_refs")
+
+    for row in lineage_edges:
+        eid = str(row.get("id", ""))
+        lid = str(row.get("lineage_id", ""))
+        if lid not in lineage_ids:
+            _record_fail(failures, f"experiment_lineage.edge[{eid}].lineage_id", f"unknown lineage {lid}")
+        check_id("experiments", str(row.get("from_id", "")), f"experiment_lineage.edge[{eid}].from_id")
+        to_ref = str(row.get("to_ref", ""))
+        to_kind = str(row.get("to_kind", ""))
+        if to_kind == "claim":
+            check_id("claims", to_ref, f"experiment_lineage.edge[{eid}].to_ref")
+        elif to_kind == "dataset":
+            check_id("datasets", to_ref, f"experiment_lineage.edge[{eid}].to_ref")
+
+    # planning registries
+    for row in roadmap_rows:
+        wid = str(row.get("id", ""))
+        for dep in row.get("dependencies", []):
+            check_dependency(str(dep), f"roadmap.workstream[{wid}].dependencies")
+        for cid in row.get("claims", []):
+            check_id("claims", str(cid), f"roadmap.workstream[{wid}].claims")
+        insight = str(row.get("insight", ""))
+        if insight:
+            check_id("insights", insight, f"roadmap.workstream[{wid}].insight")
+        for value in row.get("evidence_refs", []):
+            refs = _extract_refs(str(value))
+            for rid in refs["claims"]:
+                check_id("claims", rid, f"roadmap.workstream[{wid}].evidence_refs")
+            for rid in refs["insights"]:
+                check_id("insights", rid, f"roadmap.workstream[{wid}].evidence_refs")
+            for rid in refs["experiments"]:
+                check_id("experiments", rid, f"roadmap.workstream[{wid}].evidence_refs")
+            for rid in refs["sources"]:
+                check_id("sources", rid, f"roadmap.workstream[{wid}].evidence_refs")
+            for rid in refs["datasets"]:
+                check_id("datasets", rid, f"roadmap.workstream[{wid}].evidence_refs")
+
+    for row in todo_rows:
+        tid = str(row.get("id", ""))
+        for dep in row.get("dependencies", []):
+            check_dependency(str(dep), f"todo.item[{tid}].dependencies")
+
+    for row in action_rows:
+        aid = str(row.get("id", ""))
+        for dep in row.get("dependencies", []):
+            check_dependency(str(dep), f"next_actions.action[{aid}].dependencies")
+        for value in row.get("evidence_refs", []):
+            refs = _extract_refs(str(value))
+            for rid in refs["claims"]:
+                check_id("claims", rid, f"next_actions.action[{aid}].evidence_refs")
+            for rid in refs["insights"]:
+                check_id("insights", rid, f"next_actions.action[{aid}].evidence_refs")
+            for rid in refs["experiments"]:
+                check_id("experiments", rid, f"next_actions.action[{aid}].evidence_refs")
+            for rid in refs["sources"]:
+                check_id("sources", rid, f"next_actions.action[{aid}].evidence_refs")
+            for rid in refs["datasets"]:
+                check_id("datasets", rid, f"next_actions.action[{aid}].evidence_refs")
+
+    # requirements registries
+    for row in requirements_rows:
+        rid = str(row.get("id", ""))
+        for mid in row.get("requires_modules", []):
+            module_id = str(mid)
+            if module_id not in req_ids:
+                _record_fail(
+                    failures,
+                    f"requirements.module[{rid}].requires_modules",
+                    f"unknown requirement module {module_id}",
+                )
+
+    for row in module_requirements_rows:
+        rid = str(row.get("id", ""))
+        if rid not in req_ids:
+            _record_fail(failures, "module_requirements.module", f"missing requirements module {rid}")
+        for mid in row.get("requires_modules", []):
+            module_id = str(mid)
+            if module_id not in module_req_ids:
+                _record_fail(
+                    failures,
+                    f"module_requirements.module[{rid}].requires_modules",
+                    f"unknown module {module_id}",
+                )
+
+    package_ids = {str(row.get("id", "")) for row in module_requirements_packages}
+    command_ids = {str(row.get("id", "")) for row in module_requirements_commands}
+    for row in module_requirements_rows:
+        rid = str(row.get("id", ""))
+        for pid in row.get("package_refs", []):
+            package_id = str(pid)
+            if package_id not in package_ids:
+                _record_fail(
+                    failures,
+                    f"module_requirements.module[{rid}].package_refs",
+                    f"unknown package {package_id}",
+                )
+        for cid in row.get("command_refs", []):
+            command_id = str(cid)
+            if command_id not in command_ids:
+                _record_fail(
+                    failures,
+                    f"module_requirements.module[{rid}].command_refs",
+                    f"unknown command {command_id}",
+                )
+
+    for row in module_requirements_packages:
+        pid = str(row.get("id", ""))
+        module_id = str(row.get("module_id", ""))
+        if module_id not in module_req_ids:
+            _record_fail(
+                failures,
+                f"module_requirements.package[{pid}].module_id",
+                f"unknown module {module_id}",
+            )
+
+    for row in module_requirements_commands:
+        cid = str(row.get("id", ""))
+        module_id = str(row.get("module_id", ""))
+        if module_id not in module_req_ids:
+            _record_fail(
+                failures,
+                f"module_requirements.command[{cid}].module_id",
+                f"unknown module {module_id}",
+            )
 
     # conflict markers + lacunae
     for row in conflict_rows:

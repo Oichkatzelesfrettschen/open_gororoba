@@ -23,6 +23,7 @@
 .PHONY: registry-wave5-batch1-build registry-verify-wave5-batch1 registry-wave5-batch1
 .PHONY: registry-wave5-batch2-build registry-verify-wave5-batch2 registry-wave5-batch2 registry-wave5
 .PHONY: registry-wave5-batch3-build registry-verify-wave5-batch3 registry-wave5-batch3
+.PHONY: registry-wave5-batch4-build registry-verify-wave5-batch4 registry-wave5-batch4
 .PHONY: registry-verify-schema-signatures registry-verify-crossrefs
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
@@ -265,7 +266,17 @@ registry-verify-wave5-batch3: registry-wave5-batch3-build
 registry-wave5-batch3: registry-verify-wave5-batch3
 	@echo "OK: Wave 5 batch 3 strict TOML registries complete."
 
-registry-wave5: registry-wave5-batch1 registry-wave5-batch2 registry-wave5-batch3
+registry-wave5-batch4-build:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_wave5_batch4_registries.py
+
+registry-verify-wave5-batch4: registry-wave5-batch4-build
+	PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch4_registries.py
+	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
+
+registry-wave5-batch4: registry-verify-wave5-batch4
+	@echo "OK: Wave 5 batch 4 strict TOML registries complete."
+
+registry-wave5: registry-wave5-batch1 registry-wave5-batch2 registry-wave5-batch3 registry-wave5-batch4
 	@echo "OK: Wave 5 acceptance gate complete."
 
 registry-csv-inventory:
@@ -595,7 +606,8 @@ help:
 	@echo "    make registry-wave5-batch1 Build+verify strict claims/equation/proof/payload TOML registries"
 	@echo "    make registry-wave5-batch2 Build+verify strict derivation/bibliography/provenance/paragraph TOML registries"
 	@echo "    make registry-wave5-batch3 Build+verify strict contradiction/signature/crossref TOML registries"
-	@echo "    make registry-wave5       Run full Wave 5 acceptance gate (batch1 + batch2)"
+	@echo "    make registry-wave5-batch4 Build+verify strict experiment/planning/requirements TOML registries"
+	@echo "    make registry-wave5       Run full Wave 5 acceptance gate (batch1 + batch2 + batch3 + batch4)"
 	@echo "    make registry-verify-schema-signatures Verify critical registry schema signatures"
 	@echo "    make registry-verify-crossrefs Verify dangling cross-registry references"
 	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"

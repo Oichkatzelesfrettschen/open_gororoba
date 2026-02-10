@@ -4,7 +4,7 @@
 [claims_evidence_edges]
 updated = "deterministic"
 authoritative = true
-edge_count = 1804
+edge_count = 1822
 
 [[edge]]
 id = "CED-00001"
@@ -12633,3 +12633,129 @@ claim_id = "C-591"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/construction/cayley_dickson.rs"
 target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01805"
+claim_id = "C-592"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01806"
+claim_id = "C-592"
+edge_role = "where_stated"
+target_ref = "registry/phase8_census.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01807"
+claim_id = "C-593"
+edge_role = "cross_reference"
+target_ref = "C-592"
+target_kind = "claim_ref"
+
+[[edge]]
+id = "CED-01808"
+claim_id = "C-593"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01809"
+claim_id = "C-593"
+edge_role = "where_stated"
+target_ref = "registry/phase8_census.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01810"
+claim_id = "C-594"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01811"
+claim_id = "C-594"
+edge_role = "where_stated"
+target_ref = "registry/phase8_census.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01812"
+claim_id = "C-595"
+edge_role = "cross_reference"
+target_ref = "C-593"
+target_kind = "claim_ref"
+
+[[edge]]
+id = "CED-01813"
+claim_id = "C-595"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01814"
+claim_id = "C-595"
+edge_role = "where_stated"
+target_ref = "registry/phase8_census.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01815"
+claim_id = "C-596"
+edge_role = "cross_reference"
+target_ref = "C-532"
+target_kind = "claim_ref"
+
+[[edge]]
+id = "CED-01816"
+claim_id = "C-596"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01817"
+claim_id = "C-596"
+edge_role = "where_stated"
+target_ref = "registry/phase8_census.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01818"
+claim_id = "C-597"
+edge_role = "cross_reference"
+target_ref = "C-591"
+target_kind = "claim_ref"
+
+[[edge]]
+id = "CED-01819"
+claim_id = "C-597"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01820"
+claim_id = "C-597"
+edge_role = "where_stated"
+target_ref = "registry/phase8_census.toml"
+target_kind = "registry_path"
+
+[[edge]]
+id = "CED-01821"
+claim_id = "C-598"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/tests/test_low_dimensional_survey.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01822"
+claim_id = "C-598"
+edge_role = "where_stated"
+target_ref = "registry/phase8_census.toml"
+target_kind = "registry_path"

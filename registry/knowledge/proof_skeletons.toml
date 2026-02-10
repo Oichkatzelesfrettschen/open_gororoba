@@ -4,7 +4,7 @@
 [knowledge_proof_skeletons]
 updated = "deterministic"
 authoritative = true
-skeleton_count = 634
+skeleton_count = 641
 
 [[skeleton]]
 id = "PRS-00001"
@@ -11417,3 +11417,129 @@ line_start = 0
 line_end = 0
 claim_refs = ["C-591"]
 evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
+
+[[skeleton]]
+id = "PRS-00635"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-592"
+claim_id = "C-592"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-592."]
+derivation_steps = ["VERIFIED (Phase 8): Exhaustive enumeration of all simple 2-blade pairs (e_i + s*e_j) for dim=2 signature gamma=+1", "Found exactly 2 zero-divisors among 8 pairs", "This confirms split-complex is NOT a division algebra, unlike standard complex (gamma=-1)"]
+decision_rule = "VERIFIED (Phase 8): Exhaustive enumeration of all simple 2-blade pairs (e_i + s*e_j) for dim=2 signature gamma=+1. Found exactly 2 zero-divisors among 8 pairs. This confirms split-complex is NOT a division algebra, unlike standard complex (gamma=-1)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-592"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-592"]
+evidence_refs = ["crates/algebra_core/tests/test_low_dimensional_survey.rs", "registry/phase8_census.toml"]
+
+[[skeleton]]
+id = "PRS-00636"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-593"
+claim_id = "C-593"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-593."]
+derivation_steps = ["VERIFIED (Phase 8): Exhaustive census of all 4 gamma-signatures at dim=4: standard (0 ZDs), mixed +-1 (16 ZDs), mixed -1+ (16 ZDs), split ++ (16 ZDs)", "Confirms Hurwitz theorem: ONLY the standard Euclidean signature produces a division algebra at dim=4", "Cross-validates C-592 pattern at higher dimension"]
+decision_rule = "VERIFIED (Phase 8): Exhaustive census of all 4 gamma-signatures at dim=4: standard (0 ZDs), mixed +-1 (16 ZDs), mixed -1+ (16 ZDs), split ++ (16 ZDs). Confirms Hurwitz theorem: ONLY the standard Euclidean signature produces a division algebra at dim=4. Cross-validates C-592 pattern at higher dimension."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-593"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-592", "C-593"]
+evidence_refs = ["C-592", "crates/algebra_core/tests/test_low_dimensional_survey.rs", "registry/phase8_census.toml"]
+
+[[skeleton]]
+id = "PRS-00637"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-594"
+claim_id = "C-594"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-594."]
+derivation_steps = ["VERIFIED (Phase 8): Tested 50 random element pairs in each of 15 algebras", "Standard signatures (R, C, H, O) showed 100% norm multiplicativity", "All signatures containing gamma=+1 showed <5% success rate", "This explains the geometric difference: Euclidean metrics preserve composition, indefinite metrics do not"]
+decision_rule = "VERIFIED (Phase 8): Tested 50 random element pairs in each of 15 algebras. Standard signatures (R, C, H, O) showed 100% norm multiplicativity. All signatures containing gamma=+1 showed <5% success rate. This explains the geometric difference: Euclidean metrics preserve composition, indefinite metrics do not."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-594"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-594"]
+evidence_refs = ["crates/algebra_core/tests/test_low_dimensional_survey.rs", "registry/phase8_census.toml"]
+
+[[skeleton]]
+id = "PRS-00638"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-595"
+claim_id = "C-595"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-595."]
+derivation_steps = ["VERIFIED (Phase 8): Observed 100% invertibility only in 4 division algebras (R,C,H,O)", "All 11 non-division algebras showed 0% invertibility, correlating with presence of null vectors", "The correlation is actually deterministic: ZD count > 0 iff invertibility_fraction < 1", "0, refining C-593"]
+decision_rule = "VERIFIED (Phase 8): Observed 100% invertibility only in 4 division algebras (R,C,H,O). All 11 non-division algebras showed 0% invertibility, correlating with presence of null vectors. The correlation is actually deterministic: ZD count > 0 iff invertibility_fraction < 1.0, refining C-593."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-595"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-593", "C-595"]
+evidence_refs = ["C-593", "crates/algebra_core/tests/test_low_dimensional_survey.rs", "registry/phase8_census.toml"]
+
+[[skeleton]]
+id = "PRS-00639"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-596"
+claim_id = "C-596"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-596."]
+derivation_steps = ["VERIFIED (Phase 8): Examined psi matrices for all 15 algebras", "REFUTED initial hypothesis: psi IS gamma-dependent at dims 2,4,8", "However, the dependency follows a clear pattern: sign depends on gamma path through recursion tree, not on local basis indices", "This cross-validates C-532 (psi/eta framework) at low dimensions, revealing how gamma parameters propagate through the structure", "Key finding: psi[-1] and psi[+1] are related by systematic negation patterns"]
+decision_rule = "VERIFIED (Phase 8): Examined psi matrices for all 15 algebras. REFUTED initial hypothesis: psi IS gamma-dependent at dims 2,4,8. However, the dependency follows a clear pattern: sign depends on gamma path through recursion tree, not on local basis indices. This cross-validates C-532 (psi/eta framework) at low dimensions, revealing how gamma parameters propagate through the structure. Key finding: psi[-1] and psi[+1] are related by systematic negation patterns."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-596"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-532", "C-596"]
+evidence_refs = ["C-532", "crates/algebra_core/tests/test_low_dimensional_survey.rs", "registry/phase8_census.toml"]
+
+[[skeleton]]
+id = "PRS-00640"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-597"
+claim_id = "C-597"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-597."]
+derivation_steps = ["VERIFIED (Phase 8): Tested 4 quaternion signatures (all showed 3 violations), 8 octonion signatures (all showed 21 violations)", "Zero exceptions", "Confirms Phase 6 result (C-591) that non-commutativity is a structural consequence of the conjugation asymmetry in the doubling formula, independent of metric signature", "Strengthens claim that the Cayley-Dickson doubling mechanism itself forces non-commutativity at dim>=4"]
+decision_rule = "VERIFIED (Phase 8): Tested 4 quaternion signatures (all showed 3 violations), 8 octonion signatures (all showed 21 violations). Zero exceptions. Confirms Phase 6 result (C-591) that non-commutativity is a structural consequence of the conjugation asymmetry in the doubling formula, independent of metric signature. Strengthens claim that the Cayley-Dickson doubling mechanism itself forces non-commutativity at dim>=4."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-597"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-591", "C-597"]
+evidence_refs = ["C-591", "crates/algebra_core/tests/test_low_dimensional_survey.rs", "registry/phase8_census.toml"]
+
+[[skeleton]]
+id = "PRS-00641"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-598"
+claim_id = "C-598"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-598."]
+derivation_steps = ["VERIFIED (Phase 8): Computational census of 15 algebras (all power-of-2 dims up to 8, all 2^n gamma-vectors) found exactly 4 division algebras, matching Hurwitz's classical theorem", "Extends classical result by confirming it holds not just for 'standard' CD algebras but as a universal property: modifying even ONE gamma parameter from -1 to +1 destroys the division algebra structure", "This is the definitive algebraic obstruction to quaternion/octonion generalization"]
+decision_rule = "VERIFIED (Phase 8): Computational census of 15 algebras (all power-of-2 dims up to 8, all 2^n gamma-vectors) found exactly 4 division algebras, matching Hurwitz's classical theorem. Extends classical result by confirming it holds not just for 'standard' CD algebras but as a universal property: modifying even ONE gamma parameter from -1 to +1 destroys the division algebra structure. This is the definitive algebraic obstruction to quaternion/octonion generalization."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-598"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-598"]
+evidence_refs = ["crates/algebra_core/tests/test_low_dimensional_survey.rs", "registry/phase8_census.toml"]
