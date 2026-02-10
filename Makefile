@@ -22,6 +22,8 @@
 .PHONY: registry-verify-markdown-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-wave4 registry-wave4
 .PHONY: registry-wave5-batch1-build registry-verify-wave5-batch1 registry-wave5-batch1
 .PHONY: registry-wave5-batch2-build registry-verify-wave5-batch2 registry-wave5-batch2 registry-wave5
+.PHONY: registry-wave5-batch3-build registry-verify-wave5-batch3 registry-wave5-batch3
+.PHONY: registry-verify-schema-signatures registry-verify-crossrefs
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
 .PHONY: registry-project-csv-split registry-csv-holdings
@@ -246,7 +248,24 @@ registry-verify-wave5-batch2: registry-wave5-batch2-build
 registry-wave5-batch2: registry-verify-wave5-batch2
 	@echo "OK: Wave 5 batch 2 strict TOML registries complete."
 
-registry-wave5: registry-wave5-batch1 registry-wave5-batch2
+registry-wave5-batch3-build:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_wave5_batch3_registries.py
+
+registry-verify-schema-signatures:
+	PYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py
+
+registry-verify-crossrefs:
+	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
+
+registry-verify-wave5-batch3: registry-wave5-batch3-build
+	PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch3_registries.py
+	PYTHONWARNINGS=error python3 src/verification/verify_registry_schema_signatures.py
+	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
+
+registry-wave5-batch3: registry-verify-wave5-batch3
+	@echo "OK: Wave 5 batch 3 strict TOML registries complete."
+
+registry-wave5: registry-wave5-batch1 registry-wave5-batch2 registry-wave5-batch3
 	@echo "OK: Wave 5 acceptance gate complete."
 
 registry-csv-inventory:
@@ -575,7 +594,10 @@ help:
 	@echo "    make registry-wave3       Validate project/external/archive CSV scroll pipeline lanes"
 	@echo "    make registry-wave5-batch1 Build+verify strict claims/equation/proof/payload TOML registries"
 	@echo "    make registry-wave5-batch2 Build+verify strict derivation/bibliography/provenance/paragraph TOML registries"
+	@echo "    make registry-wave5-batch3 Build+verify strict contradiction/signature/crossref TOML registries"
 	@echo "    make registry-wave5       Run full Wave 5 acceptance gate (batch1 + batch2)"
+	@echo "    make registry-verify-schema-signatures Verify critical registry schema signatures"
+	@echo "    make registry-verify-crossrefs Verify dangling cross-registry references"
 	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"
 	@echo ""
 	@echo "  Artifacts:"

@@ -96,6 +96,23 @@ def verify_c010(errors: list[str]) -> list[str]:
         errors,
         "C-010: all absorber bridge rows should be marked physical.",
     )
+    layer_ids = sorted(int(row["layer_id"]) for row in mapping_rows)
+    _check(
+        layer_ids == list(range(len(mapping_rows))),
+        errors,
+        "C-010: expected contiguous layer_id values 0..N-1.",
+    )
+    thicknesses = [float(row["thickness_nm"]) for row in mapping_rows]
+    _check(
+        all(isclose(value, 10.0, rel_tol=0.0, abs_tol=1e-12) for value in thicknesses),
+        errors,
+        "C-010: expected fixed 10 nm bridge layers in canonical table.",
+    )
+    _check(
+        all(float(row["n_real"]) > 0.0 and float(row["n_imag"]) >= 0.0 for row in mapping_rows),
+        errors,
+        "C-010: expected physically admissible refractive-index parameters.",
+    )
 
     pair_edges = set()
     undirected_edges = set()
@@ -187,10 +204,20 @@ def verify_c011(errors: list[str]) -> list[str]:
     radial_csv = REPO_ROOT / "data/csv/gravastar_radial_stability.csv"
 
     bridge_rows = _load_csv(bridge_csv)
+    _check(
+        len(bridge_rows) == 90,
+        errors,
+        "C-011: expected 90 bridge rows (30 soliton groups x 3 gammas).",
+    )
     grouped: dict[tuple[str, str], list[dict[str, str]]] = defaultdict(list)
     for row in bridge_rows:
         grouped[(row["seed"], row["soliton_id"])].append(row)
     _check(bool(grouped), errors, "C-011: bridge table has no soliton groups.")
+    _check(
+        len(grouped) == 30,
+        errors,
+        "C-011: expected 30 unique (seed, soliton_id) bridge groups.",
+    )
 
     ratio_samples: list[float] = []
     for key, group in grouped.items():
@@ -207,7 +234,7 @@ def verify_c011(errors: list[str]) -> list[str]:
         r1 = float(ordered[0]["R1"])
         rho_v = [float(row["rho_v"]) for row in ordered]
         rho_shell = [float(row["rho_shell"]) for row in ordered]
-        contrast = [vac / shell for vac, shell in zip(rho_v, rho_shell)]
+        contrast = [vac / shell for vac, shell in zip(rho_v, rho_shell, strict=True)]
         ratio_samples.extend(contrast)
 
         _check(

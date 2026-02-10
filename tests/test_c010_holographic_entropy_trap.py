@@ -13,6 +13,7 @@ from __future__ import annotations
 import csv
 import re
 from collections import Counter
+from math import isclose
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -63,6 +64,17 @@ def test_c010_absorber_mapping_requires_cross_cluster_links() -> None:
     assert all(
         row["is_physical"].strip().lower() == "true" for row in mapping_rows
     ), "All canonical bridge rows should be physical."
+    layer_ids = sorted(int(row["layer_id"]) for row in mapping_rows)
+    assert layer_ids == list(range(len(mapping_rows))), (
+        "Expected contiguous layer IDs from 0..N-1 in canonical bridge table."
+    )
+    thicknesses = [float(row["thickness_nm"]) for row in mapping_rows]
+    assert all(isclose(value, 10.0, rel_tol=0.0, abs_tol=1e-12) for value in thicknesses), (
+        "Canonical bridge table should keep fixed 10 nm layer thickness."
+    )
+    assert all(
+        float(row["n_real"]) > 0.0 and float(row["n_imag"]) >= 0.0 for row in mapping_rows
+    ), "Expected physically admissible refractive-index parameters."
 
     edge_pairs = set()
     undirected_edges = set()

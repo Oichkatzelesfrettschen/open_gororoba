@@ -23,12 +23,14 @@ RADIAL_STABILITY_CSV = REPO_ROOT / "data/csv/gravastar_radial_stability.csv"
 def test_c011_bridge_triplets_show_monotone_gamma_collapse() -> None:
     with GENESIS_BRIDGE_CSV.open("r", encoding="utf-8", newline="") as handle:
         rows = list(csv.DictReader(handle))
+    assert len(rows) == 90, "Expected 90 bridge rows (30 groups x 3 gamma values)."
 
     grouped: dict[tuple[str, str], list[dict[str, str]]] = defaultdict(list)
     for row in rows:
         grouped[(row["seed"], row["soliton_id"])].append(row)
 
     assert grouped, "Bridge table should contain at least one soliton group."
+    assert len(grouped) == 30, "Expected exactly 30 unique (seed, soliton_id) groups."
 
     ratio_samples: list[float] = []
     for key, group in grouped.items():
@@ -41,7 +43,7 @@ def test_c011_bridge_triplets_show_monotone_gamma_collapse() -> None:
         r1 = float(ordered[0]["R1"])
         rho_v = [float(row["rho_v"]) for row in ordered]
         rho_shell = [float(row["rho_shell"]) for row in ordered]
-        contrast = [vac / shell for vac, shell in zip(rho_v, rho_shell)]
+        contrast = [vac / shell for vac, shell in zip(rho_v, rho_shell, strict=True)]
         ratio_samples.extend(contrast)
 
         assert masses[0] > masses[1] > masses[2], (
