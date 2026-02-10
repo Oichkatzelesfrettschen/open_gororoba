@@ -391,8 +391,8 @@ pub fn simulate_kolmogorov_flow(
             let cx = CX[i] as f64;
             for x in 0..nx {
                 for y in 0..ny {
-                    let fy_force = force_amp
-                        * (2.0 * PI * force_mode as f64 * y as f64 / ny as f64).sin();
+                    let fy_force =
+                        force_amp * (2.0 * PI * force_mode as f64 * y as f64 / ny as f64).sin();
                     sim.f[[i, x, y]] += 3.0 * W[i] * cx * fy_force * rho[[x, y]];
                 }
             }
@@ -594,11 +594,7 @@ mod tests {
     fn test_kolmogorov_develops_flow() {
         let result = simulate_kolmogorov_flow(32, 32, 0.8, 1e-4, 1, 500);
         // After 500 steps with forcing, velocity field should be nonzero
-        let max_ux: f64 = result
-            .ux
-            .iter()
-            .map(|x| x.abs())
-            .fold(0.0_f64, f64::max);
+        let max_ux: f64 = result.ux.iter().map(|x| x.abs()).fold(0.0_f64, f64::max);
         assert!(
             max_ux > 1e-8,
             "Flow should develop: max |ux| = {:.2e}",

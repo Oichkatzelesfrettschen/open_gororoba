@@ -1,0 +1,193 @@
+[dataset]
+id = "PC-0017"
+slug = "c071g_multi_dataset_ultrametric"
+source_csv = "data/csv/c071g_multi_dataset_ultrametric.csv"
+source_sha256 = "115af9f63e0540a4ff25ef2460c1dc13fd64e277ee7dbfdacb2c01a3b683257a"
+source_size_bytes = 829
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 9
+column_count = 8
+header_value_sha256 = "f7ed2948ecc528d23a74ef02a352c90773e9d16fd5f3e46c46a67c4def35b9f1"
+row_value_sha256 = "c59a35bac3e2fcf8b49ed736b19e3be22e8a935caeac6408039117ebfe95987c"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "dataset",
+    "n_objects",
+    "attributes",
+    "um_fraction",
+    "null_mean",
+    "null_std",
+    "p_value",
+    "verdict",
+]
+original_header = [
+    "dataset",
+    "n_objects",
+    "attributes",
+    "um_fraction",
+    "null_mean",
+    "null_std",
+    "p_value",
+    "verdict",
+]
+rows = [
+    [
+    "CHIME/FRB Cat 2",
+    "5000",
+    "log_DM+gl+gb",
+    "0.156060",
+    "0.135342",
+    "0.001141",
+    "0.0050",
+    "PASS",
+],
+    [
+    "ATNF Pulsars",
+    "4233",
+    "log_DM+gl+gb",
+    "0.222200",
+    "0.213066",
+    "0.001598",
+    "0.0050",
+    "PASS",
+],
+    [
+    "McGill Magnetars",
+    "20",
+    "log_period+log_B_dipole+ra+dec",
+    "0.196050",
+    "0.172233",
+    "0.016031",
+    "0.0796",
+    "FAIL",
+],
+    [
+    "GWOSC GW Events",
+    "176",
+    "log_chirp_mass+z+q+chi_eff",
+    "0.153230",
+    "0.161145",
+    "0.002788",
+    "0.9950",
+    "FAIL",
+],
+    [
+    "Pantheon+ SN Ia",
+    "1588",
+    "z_cmb+mu+x1+c",
+    "0.147450",
+    "0.163199",
+    "0.001500",
+    "1.0000",
+    "FAIL",
+],
+    [
+    "Gaia DR3 Stars",
+    "5000",
+    "parallax+pmra+pmdec+rv+G_mag+bp_rp",
+    "0.123550",
+    "0.143741",
+    "0.001095",
+    "1.0000",
+    "FAIL",
+],
+    [
+    "SDSS DR18 Quasars",
+    "5000",
+    "z+u_mag+g_mag+r_mag+i_mag",
+    "0.128360",
+    "0.136868",
+    "0.001137",
+    "1.0000",
+    "FAIL",
+],
+    [
+    "Fermi GBM GRBs",
+    "4202",
+    "log_t90+log_fluence+ra+dec",
+    "0.150730",
+    "0.151377",
+    "0.001238",
+    "0.6816",
+    "FAIL",
+],
+    [
+    "Hipparcos Stars",
+    "5000",
+    "parallax+pmra+pmdec+Vmag+ra+dec",
+    "0.140150",
+    "0.139922",
+    "0.001273",
+    "0.4378",
+    "FAIL",
+],
+]
+
+[[column]]
+index = 1
+name = "dataset"
+original_name = "dataset"
+inferred_type = "string"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 2
+name = "n_objects"
+original_name = "n_objects"
+inferred_type = "int"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 3
+name = "attributes"
+original_name = "attributes"
+inferred_type = "string"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 4
+name = "um_fraction"
+original_name = "um_fraction"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 5
+name = "null_mean"
+original_name = "null_mean"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 6
+name = "null_std"
+original_name = "null_std"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 7
+name = "p_value"
+original_name = "p_value"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 8
+name = "verdict"
+original_name = "verdict"
+inferred_type = "string"
+non_empty_count = 9
+empty_count = 0

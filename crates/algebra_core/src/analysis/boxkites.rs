@@ -7896,9 +7896,8 @@ mod tests {
             let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
             let n = nodes.len();
 
-            let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-            };
+            let eta =
+                |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
             // Edge eta balance
             for &(u, v) in &comp.edges {
@@ -7951,34 +7950,20 @@ mod tests {
         }
 
         let frust_ratio = total_frustrated as f64 / total_b1 as f64;
-        eprintln!(
-            "eta=0: {}, eta=1: {}",
-            total_eta0, total_eta1
-        );
+        eprintln!("eta=0: {}, eta=1: {}", total_eta0, total_eta1);
         eprintln!("b1: {}, frustrated: {}", total_b1, total_frustrated);
         eprintln!("frustration ratio: {:.8}", frust_ratio);
 
         // Verify eta balance (Half-Half Edge Law, C-517)
-        assert_eq!(
-            total_eta0, total_eta1,
-            "dim=512: eta not balanced"
-        );
+        assert_eq!(total_eta0, total_eta1, "dim=512: eta not balanced");
 
         // Verify frustration ratio is reasonable (dim=512 should be between dim=256 and dim=1024)
         // Sequence: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381, 0.378 (dims 16..1024)
         // dim=512 should be around 0.381-0.385
-        assert!(
-            frust_ratio > 0.37,
-            "dim=512: frustration ratio too low"
-        );
-        assert!(
-            frust_ratio < 0.39,
-            "dim=512: frustration ratio too high"
-        );
+        assert!(frust_ratio > 0.37, "dim=512: frustration ratio too low");
+        assert!(frust_ratio < 0.39, "dim=512: frustration ratio too high");
 
-        eprintln!(
-            "PASS: Frustration ratio and eta balance verified at dim=512"
-        );
+        eprintln!("PASS: Frustration ratio and eta balance verified at dim=512");
     }
 
     /// Pathion-specific verifications: dimension scaling laws at practical limits.
@@ -8017,7 +8002,9 @@ mod tests {
 
             eprintln!(
                 "dim={:4}: {} components, {} nodes/comp -> PASS",
-                dim, components.len(), expected_nodes
+                dim,
+                components.len(),
+                expected_nodes
             );
         }
 
@@ -8056,9 +8043,8 @@ mod tests {
             let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
                 comp.edges.iter().copied().collect();
 
-            let eta = |a: CrossPair, b: CrossPair| -> u8 {
-                psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0)
-            };
+            let eta =
+                |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
             // Enumerate triangles
             for (i, &a) in nodes.iter().enumerate() {
@@ -8176,10 +8162,21 @@ mod tests {
         let components = motif_components_for_cross_assessors(dim);
 
         // At dim=16 (sedenions), expect 7 box-kites
-        assert_eq!(components.len(), 7, "dim=16 should have exactly 7 components");
+        assert_eq!(
+            components.len(),
+            7,
+            "dim=16 should have exactly 7 components"
+        );
         let total_nodes: usize = components.iter().map(|c| c.nodes.len()).sum();
-        assert_eq!(total_nodes, 42, "dim=16 should have 42 total cross-assessor nodes");
-        eprintln!("dim=16: {} components (box-kites), {} nodes", components.len(), total_nodes);
+        assert_eq!(
+            total_nodes, 42,
+            "dim=16 should have 42 total cross-assessor nodes"
+        );
+        eprintln!(
+            "dim=16: {} components (box-kites), {} nodes",
+            components.len(),
+            total_nodes
+        );
     }
 
     /// TIER 1: Fast test (dim 32) - <15s
@@ -8193,7 +8190,11 @@ mod tests {
 
         // Run APT census verification
         let psi = |dim: usize, i: usize, j: usize| -> u8 {
-            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+            if cd_basis_mul_sign(dim, i, j) == 1 {
+                0
+            } else {
+                1
+            }
         };
 
         let mut total_triangles = 0usize;
@@ -8252,7 +8253,11 @@ mod tests {
             total_triangles, pure_triangles, ratio
         );
         // APT guarantees exactly 1:3 pure:mixed => ratio = 0.25
-        assert!((ratio - 0.25).abs() < 0.001, "dim=32 pure ratio should be exactly 0.25, got {:.6}", ratio);
+        assert!(
+            (ratio - 0.25).abs() < 0.001,
+            "dim=32 pure ratio should be exactly 0.25, got {:.6}",
+            ratio
+        );
     }
 
     /// TIER 2: Slow tests (dims 64, 128, 256) - ignored in standard CI
@@ -8292,7 +8297,10 @@ mod tests {
         let dim = 512;
         let components = motif_components_for_cross_assessors(dim);
         assert!(!components.is_empty(), "dim=512 should have components");
-        eprintln!("dim=512: {} components found (exhaustive CPU census ~128min)", components.len());
+        eprintln!(
+            "dim=512: {} components found (exhaustive CPU census ~128min)",
+            components.len()
+        );
     }
 
     #[test]
@@ -8301,7 +8309,10 @@ mod tests {
         let dim = 1024;
         let components = motif_components_for_cross_assessors(dim);
         assert!(!components.is_empty(), "dim=1024 should have components");
-        eprintln!("dim=1024: {} components found (exhaustive CPU census ~17hr)", components.len());
+        eprintln!(
+            "dim=1024: {} components found (exhaustive CPU census ~17hr)",
+            components.len()
+        );
     }
 
     /// TIER 4: GPU-required tests (dims 2048, 4096)

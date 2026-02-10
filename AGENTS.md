@@ -289,3 +289,65 @@ cargo clippy --workspace -j$(nproc) -- -D warnings
 - `src/verification/verify_markdown_owner_map.py` - markdown owner mapping gate
 - `src/verification/verify_csv_corpus_coverage.py` - CSV zone coverage gate
 - `registry/` - canonical machine-readable project state
+
+## 14. Rust-Maximal and PyO3 Bridge Policy (Appended)
+
+This section is append-only and clarifies the intended long-term architecture:
+maximize Rust for domain logic, and route Python through PyO3 bindings.
+
+### 14.1 Rust-maximal implementation policy
+- Rust-maximal execution is the default architecture policy for this repository.
+- Every Python core algorithm MUST have a mapped Rust crate target and a PyO3 binding plan in registry TOML before merge.
+- New production computation should be implemented in Rust workspace crates.
+- Python-only implementations of core numerical or physics logic are not a final
+  state and must be treated as transitional.
+- If logic affects claims/evidence outputs, canonical implementation belongs in Rust.
+
+### 14.2 Python usage policy via PyO3
+- Python integration should call Rust through `crates/gororoba_py`.
+- Python code may orchestrate workflows, visualization, and notebook ergonomics,
+  but heavy computation and canonical algorithms should execute in Rust.
+- When Python is necessary, wire bindings so Python and Rust use one shared
+  implementation path instead of duplicated logic.
+
+### 14.3 Wiring and acceptance requirements
+- Expose Rust APIs with stable typed inputs/outputs and deterministic behavior.
+- Bind APIs in `gororoba_py` with explicit function/class docs and error mapping.
+- Add parity tests where feasible:
+  - Rust-side tests for core behavior.
+  - Python-side tests that call PyO3 bindings and validate expected outputs.
+- Do not maintain divergent equation/model implementations in both Python and
+  Rust without an explicit migration plan.
+
+### 14.4 Transitional exceptions and migration discipline
+- Existing Python verification/orchestration scripts can remain during migration.
+- For each Python-heavy module retained, track:
+  - target Rust crate/module,
+  - binding plan in `gororoba_py`,
+  - validation and parity criteria,
+  - migration status in TOML planning registries.
+- Migration work should preserve reproducibility and warnings-as-errors gates.
+
+### 14.5 Recommended validation lane for Rust+PyO3 changes
+- Rust quality:
+  - `cargo build --workspace -j$(nproc)`
+  - `cargo test --workspace -j$(nproc)`
+  - `cargo clippy --workspace -j$(nproc) -- -D warnings`
+- Python binding lane (when touched):
+  - `PYTHONWARNINGS=error make test`
+  - targeted tests invoking `gororoba_py` bindings
+- Registry/documentation lane:
+  - update canonical TOML first, then regenerate optional projections as needed.
+
+### 14.6 Hard verifier and canonical mapping registry
+- Canonical mapping registry:
+  - `registry/python_core_algorithms.toml`
+- Hard gate verifier:
+  - `PYTHONWARNINGS=error python3 src/verification/verify_python_core_algorithms_pyo3.py`
+  - `PYTHONWARNINGS=error make verify-python-core-algorithms`
+- Enforcement rule:
+  - any new in-scope Python core algorithm file must have a mapping entry with:
+    - `rust_crate`
+    - `rust_module`
+    - `pyo3_binding_plan` (must reference `gororoba_py`)
+    - valid `binding_status` token

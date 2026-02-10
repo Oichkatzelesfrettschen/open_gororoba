@@ -1,0 +1,3 @@
+dim,n_components,n_nodes,n_triangles,pure_count,mixed_count,pure_ratio,fiber_00,fiber_01,fiber_10,fiber_11,method,elapsed_ms
+32,15,210,100000,25188,74812,0.251880,25188,25208,24873,24731,monte_carlo_100000_accepted_100000,77
+64,31,930,100000,24903,75097,0.249030,24903,24946,24862,25289,monte_carlo_100000_accepted_100000,121

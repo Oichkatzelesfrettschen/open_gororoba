@@ -4,14 +4,14 @@
 [csv_inventory]
 updated = "2026-02-09"
 authoritative = true
-document_count = 945
+document_count = 946
 tracked_count = 644
-untracked_count = 0
+untracked_count = 1
 ignored_count = 301
 archived_count = 5
 legacy_count = 200
 curated_count = 557
-canonicalized_count = 813
+canonicalized_count = 814
 generated_scroll_count = 30
 holding_scroll_count = 31
 holding_queue_count = 0
@@ -7747,6 +7747,19 @@ generated = false
 size_bytes = 8374
 line_count = 66
 sha256 = "74446154412b6640c459ec8817aedc624a0302bd9a50dc47316de5f28957287d"
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
+
+[[document]]
+path = "data/csv/apt_dimensional_census_summary.csv"
+git_status = "untracked"
+zone = "project_csv"
+archived = false
+generated = false
+size_bytes = 326
+line_count = 4
+sha256 = "e612cc4e32ecd95ecda5d8c051f205e0177e803d505c49465f0836821579b527"
 migration_action = "canonicalized_to_toml"
 migration_priority = "complete"
 rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."

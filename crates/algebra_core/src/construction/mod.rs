@@ -1,9 +1,12 @@
 pub mod cayley_dickson;
 pub mod clifford;
+pub mod e8_root_system;
+pub mod g2_automorphisms;
 pub mod hypercomplex;
 pub mod jordan;
 pub mod mult_table;
 pub mod non_associative;
 pub mod octonion;
+pub mod octonion_geometry;
 pub mod padic;
 pub mod wheels;

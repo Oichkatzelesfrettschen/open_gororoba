@@ -1,4 +1,5 @@
 data/csv/64D_Pathion_Adjacency_Matrix.csv
+data/csv/apt_dimensional_census_summary.csv
 data/csv/bounce_cosmology_fit_results.csv
 data/csv/c005_grassmannian_zd_analysis.csv
 data/csv/c071_frb_ultrametric.csv

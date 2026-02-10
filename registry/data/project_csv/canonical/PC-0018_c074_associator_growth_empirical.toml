@@ -1,0 +1,184 @@
+[dataset]
+id = "PC-0018"
+slug = "c074_associator_growth_empirical"
+source_csv = "data/csv/c074_associator_growth_empirical.csv"
+source_sha256 = "ba7ca89819bf4327b8dcceed709a5f4240f9da9f5d422d36eaf48e7f2ddc9867"
+source_size_bytes = 920
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 21
+column_count = 4
+header_value_sha256 = "158e51038ff5ad33fe1fc81f2bd04b40e0e159ed8603305d5e075b2a25de9df2"
+row_value_sha256 = "7505814b6dcbe7f1d85a9608ce293d1206dd80f0437212cc027bfdcaa39636dd"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "c_074_associator_growth_law_empirical_verification",
+    "col_2",
+    "col_3",
+    "col_4",
+]
+original_header = ["# C-074 Associator Growth Law Empirical Verification"]
+rows = [
+    [
+    "# Generated: 2026-02-06 via stats_core Rust integration test",
+    "",
+    "",
+    "",
+],
+    [
+    "# Claim: E[||A(a",
+    "b",
+    "c)||^2] = 2.00 * (1 - 14.6 * d^{-1.80})",
+    "",
+],
+    [
+    "# Method: 500 random unit vector triples per dimension",
+    " seeded PRNG (12345)",
+    "",
+    "",
+],
+    [
+    "# Reference: C-074 in CLAIMS_EVIDENCE_MATRIX.md",
+    "",
+    "",
+    "",
+],
+    [
+    "#",
+    "",
+    "",
+    "",
+],
+    [
+    "dimension",
+    "mean_sq_norm",
+    "predicted_claim",
+    "residual",
+],
+    [
+    "8",
+    "1.285124",
+    "1.172872",
+    "0.112252",
+],
+    [
+    "16",
+    "1.781824",
+    "1.725576",
+    "0.056248",
+],
+    [
+    "32",
+    "1.958849",
+    "1.906644",
+    "0.052205",
+],
+    [
+    "64",
+    "1.974664",
+    "1.965956",
+    "0.008708",
+],
+    [
+    "#",
+    "",
+    "",
+    "",
+],
+    [
+    "# Fit Results:",
+    "",
+    "",
+    "",
+],
+    [
+    "# A_inf = 2.0142 (claim: 2.00",
+    " delta: +0.7%)",
+    "",
+    "",
+],
+    [
+    "# B = 12.4397 (claim: 14.6",
+    " delta: -14.8%)",
+    "",
+    "",
+],
+    [
+    "# alpha = -1.7000 (claim: -1.80",
+    " delta: +5.6%)",
+    "",
+    "",
+],
+    [
+    "# R^2 = 0.9981 (excellent fit)",
+    "",
+    "",
+    "",
+],
+    [
+    "#",
+    "",
+    "",
+    "",
+],
+    [
+    "# Decision: VERIFIED (point estimates match claim within 15%)",
+    "",
+    "",
+    "",
+],
+    [
+    "# Note: Bootstrap CIs are wide due to only 4 data points; this is a",
+    "",
+    "",
+    "",
+],
+    [
+    "# methodological limitation",
+    " not a physics issue. The functional form",
+    "",
+    "",
+],
+    [
+    "# y = A_inf * (1 - B * d^alpha) is strongly supported by R^2 > 0.99.",
+    "",
+    "",
+    "",
+],
+]
+
+[[column]]
+index = 1
+name = "c_074_associator_growth_law_empirical_verification"
+original_name = "# C-074 Associator Growth Law Empirical Verification"
+inferred_type = "string"
+non_empty_count = 21
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_2"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 11
+empty_count = 10
+
+[[column]]
+index = 3
+name = "col_3"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 15
+
+[[column]]
+index = 4
+name = "col_4"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 16

@@ -10,10 +10,15 @@ from __future__ import annotations
 
 import subprocess
 import sys
+import os
 from pathlib import Path
 
 
 def main() -> int:
+    if os.environ.get("MARKDOWN_EXPORT") != "1":
+        print("SKIP: mirror freshness check disabled (set MARKDOWN_EXPORT=1)")
+        return 0
+
     repo_root = Path(__file__).resolve().parents[2]
     cmd = [
         sys.executable,

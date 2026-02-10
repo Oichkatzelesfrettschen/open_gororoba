@@ -93,13 +93,21 @@ GENERATED_PATTERNS = (
 )
 
 DESTINATION_OVERRIDES = {
+    "data/artifacts/ALGEBRAIC_FOUNDATIONS.md": "registry/artifact_scrolls.toml",
+    "data/artifacts/BIBLIOGRAPHY.md": "registry/artifact_scrolls.toml",
+    "data/artifacts/FINAL_REPORT.md": "registry/artifact_scrolls.toml",
+    "data/artifacts/QUANTUM_REPORT.md": "registry/artifact_scrolls.toml",
+    "data/artifacts/SIMULATION_REPORT.md": "registry/artifact_scrolls.toml",
+    "data/artifacts/WARP_RING_REPORT.md": "registry/artifact_scrolls.toml",
+    "data/artifacts/extracted_equations.md": "registry/artifact_scrolls.toml",
+    "data/artifacts/reality_check_and_synthesis.md": "registry/artifact_scrolls.toml",
     "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md": "registry/bibliography.toml",
     "docs/generated/BOOK_DOCS_REGISTRY_MIRROR.md": "registry/book_docs.toml",
     "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md": "registry/claims_domains.toml",
     "docs/generated/CLAIMS_REGISTRY_MIRROR.md": "registry/claims.toml",
     "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md": "registry/claims_tasks.toml",
     "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md": "registry/claim_tickets.toml",
-    "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md": "registry/data_artifact_narratives.toml",
+    "docs/generated/DATA_ARTIFACT_NARRATIVES_REGISTRY_MIRROR.md": "registry/artifact_scrolls.toml",
     "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md": "registry/docs_convos.toml",
     "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md": "registry/docs_root_narratives.toml",
     "docs/generated/ENTRYPOINT_DOCS_REGISTRY_MIRROR.md": "registry/entrypoint_docs.toml",

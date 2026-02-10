@@ -221,7 +221,11 @@ fn exhaustive_census(dim: usize) -> (DimResult, Vec<ComponentResult>) {
 
 /// Monte Carlo APT census for a single dimension.
 /// Uses rejection sampling: random node triples, keep only graph triangles.
-fn monte_carlo_census(dim: usize, n_samples: usize, seed: u64) -> (DimResult, Vec<ComponentResult>) {
+fn monte_carlo_census(
+    dim: usize,
+    n_samples: usize,
+    seed: u64,
+) -> (DimResult, Vec<ComponentResult>) {
     let start = Instant::now();
     let components = motif_components_for_cross_assessors(dim);
     let n_nodes_total: usize = components.iter().map(|c| c.nodes.len()).sum();
@@ -441,12 +445,12 @@ fn main() {
     });
 
     eprintln!("=== Dimensional APT Census ===");
-    eprintln!(
-        "Dimensions: {:?}",
-        dims
-    );
+    eprintln!("Dimensions: {:?}", dims);
     if args.monte_carlo > 0 {
-        eprintln!("Method: Monte Carlo ({} samples, seed={})", args.monte_carlo, args.seed);
+        eprintln!(
+            "Method: Monte Carlo ({} samples, seed={})",
+            args.monte_carlo, args.seed
+        );
     } else {
         eprintln!("Method: exhaustive");
     }
@@ -501,7 +505,10 @@ fn main() {
 
     // Print frustration-like convergence table
     eprintln!("\n=== Pure Ratio Convergence ===");
-    eprintln!("{:<8} {:<12} {:<12} {:<12}", "dim", "pure_ratio", "deviation", "method");
+    eprintln!(
+        "{:<8} {:<12} {:<12} {:<12}",
+        "dim", "pure_ratio", "deviation", "method"
+    );
     for r in &summary_results {
         let deviation = r.pure_ratio - 0.25;
         eprintln!(

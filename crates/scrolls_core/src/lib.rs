@@ -134,6 +134,22 @@ fn escape_json_ascii(value: &str) -> String {
     out
 }
 
+fn normalize_ascii_text(value: &str) -> String {
+    let mut out = String::with_capacity(value.len());
+    for ch in value.chars() {
+        if ch.is_ascii() {
+            out.push(ch);
+        } else {
+            let mut units = [0u16; 2];
+            let encoded = ch.encode_utf16(&mut units);
+            for unit in encoded {
+                out.push_str(&format!("\\u{:04X}", unit));
+            }
+        }
+    }
+    out
+}
+
 fn json_ascii_header(header: &[String]) -> String {
     let mut out = String::from("[");
     for (idx, value) in header.iter().enumerate() {
@@ -307,7 +323,12 @@ fn parse_csv(path: &Path) -> Result<ParsedCsv, ScrollError> {
         if parsed.is_empty() && !values.is_empty() {
             values[0] = values[0].trim_start_matches('\u{feff}').to_string();
         }
-        parsed.push(values);
+        parsed.push(
+            values
+                .into_iter()
+                .map(|value| normalize_ascii_text(&value))
+                .collect(),
+        );
     }
 
     let has_header = if parsed.len() >= 2 {

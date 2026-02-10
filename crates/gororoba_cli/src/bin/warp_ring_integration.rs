@@ -18,7 +18,8 @@ use lbm_core::simulate_kolmogorov_flow;
 use lbm_core::turbulence::{extract_dominant_triads, power_spectrum};
 use log::info;
 use materials_core::{
-    build_absorber_stack, canonical_sedenion_zd_pairs, tmm_reflection, verify_physical_realizability,
+    build_absorber_stack, canonical_sedenion_zd_pairs, tmm_reflection,
+    verify_physical_realizability,
 };
 use num_complex::Complex64;
 use optics_core::grin::{trace_ray, GrinMedium, Ray};
@@ -58,8 +59,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // -- Configuration --
     let warp_config = WarpRingConfig {
         prime: 2,
-        alpha: -0.5,     // Negative-dimension: anti-diffusive smoothing
-        epsilon: 0.01,   // IR regularization
+        alpha: -0.5,   // Negative-dimension: anti-diffusive smoothing
+        epsilon: 0.01, // IR regularization
         domain_size: 2.0 * PI,
     };
 
@@ -88,27 +89,39 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     // -- Step 2: Extract Standard Spectral Triads --
     info!("[2/7] Extracting spectral triads...");
     let spectral_triads = extract_dominant_triads(&u, &v, 50.0);
-    info!("      Found {} spectral triads (standard).", spectral_triads.len());
+    info!(
+        "      Found {} spectral triads (standard).",
+        spectral_triads.len()
+    );
 
     // -- Step 3: Warp Physics -- P-adic Modulation + Neg-Dim Kernel --
-    info!("[3/7] Applying warp physics (p={}, alpha={:.1}, eps={:.3})...",
-        warp_config.prime, warp_config.alpha, warp_config.epsilon);
+    info!(
+        "[3/7] Applying warp physics (p={}, alpha={:.1}, eps={:.3})...",
+        warp_config.prime, warp_config.alpha, warp_config.epsilon
+    );
 
     // FFT the u-field (real -> complex -> 2D FFT via ndrustfft)
     let u_hat = fft_2d(&real_to_complex_2d(&u));
 
     // Apply negative-dimension kernel
     let u_hat_warp = apply_neg_dim_kernel(&u_hat, &warp_config);
-    info!("      Neg-dim kernel applied: DC gain = {:.2}x",
-        u_hat_warp[[0, 0]].norm() / u_hat[[0, 0]].norm().max(1e-30));
+    info!(
+        "      Neg-dim kernel applied: DC gain = {:.2}x",
+        u_hat_warp[[0, 0]].norm() / u_hat[[0, 0]].norm().max(1e-30)
+    );
 
     // Extract warp triads (with p-adic + neg-dim weights)
     let warp_triads = extract_warp_triads(&u_hat, &warp_config, 1.0);
-    info!("      Found {} warp triads (p-adic + neg-dim weighted).", warp_triads.len());
+    info!(
+        "      Found {} warp triads (p-adic + neg-dim weighted).",
+        warp_triads.len()
+    );
 
     if let Some(top) = warp_triads.first() {
-        info!("      Top triad: k={:?}, padic_w={:.4}, negdim_w={:.4}, warp_w={:.4}",
-            top.k, top.padic_weight, top.neg_dim_weight, top.warp_weight);
+        info!(
+            "      Top triad: k={:?}, padic_w={:.4}, negdim_w={:.4}, warp_w={:.4}",
+            top.k, top.padic_weight, top.neg_dim_weight, top.warp_weight
+        );
     }
 
     // P-adic modulated power spectrum
@@ -141,7 +154,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut material_weights = vec![1.0_f64; n_spec];
     if !stack.is_empty() {
         let n_layers: Vec<Complex64> = std::iter::once(Complex64::new(1.0, 0.0)) // incidence medium (air)
-            .chain(stack.iter().map(|m| Complex64::new(m.layer.n_real, m.layer.n_imag)))
+            .chain(
+                stack
+                    .iter()
+                    .map(|m| Complex64::new(m.layer.n_real, m.layer.n_imag)),
+            )
             .chain(std::iter::once(Complex64::new(1.5, 0.0))) // substrate
             .collect();
         let d_layers: Vec<f64> = std::iter::once(0.0) // incidence (semi-infinite)
@@ -190,7 +207,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("[5/8] Mapping to E7 geometry...");
     let e7_roots = generate_e7_roots();
     let algebra_triads = find_e7_triads(&e7_roots);
-    info!("      E7: {} roots, {} structural triads.", e7_roots.len(), algebra_triads.len());
+    info!(
+        "      E7: {} roots, {} structural triads.",
+        e7_roots.len(),
+        algebra_triads.len()
+    );
 
     // -- Step 6: Build Hypergraph + Topological Invariants --
     info!("[6/8] Building hypergraph...");
@@ -213,17 +234,21 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
     }
 
-    info!("      Hypergraph: {} vertices, {} edges", hg.vertex_count(), hg.edge_count());
-    info!("      Clustering coefficient: {:.4}", hg.clustering_coefficient());
+    info!(
+        "      Hypergraph: {} vertices, {} edges",
+        hg.vertex_count(),
+        hg.edge_count()
+    );
+    info!(
+        "      Clustering coefficient: {:.4}",
+        hg.clustering_coefficient()
+    );
     info!("      Betti-0 (components): {}", hg.betti_0());
     info!("      Betti-1 (cycles): {}", hg.betti_1());
 
     // Select active algebraic triads proportional to warp triad count
     let active_count = warp_triads.len().min(algebra_triads.len()) * 3;
-    let active_algebra_triads: Vec<_> = algebra_triads
-        .into_iter()
-        .take(active_count)
-        .collect();
+    let active_algebra_triads: Vec<_> = algebra_triads.into_iter().take(active_count).collect();
 
     // -- Step 7: Warp Lensing (GRIN Optics) --
     info!("[7/8] Simulating warp lensing...");
@@ -321,11 +346,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     info!("  LBM: {}x{}, tau={}, {} steps", nx, ny, lbm_tau, lbm_steps);
     info!("  Spectral triads (standard): {}", spectral_triads.len());
     info!("  Warp triads (p-adic + neg-dim): {}", warp_triads.len());
-    info!("  Materials: {} ZD layers, {} physical", verification.n_total, verification.n_physical);
+    info!(
+        "  Materials: {} ZD layers, {} physical",
+        verification.n_total, verification.n_physical
+    );
     info!("  E7 algebraic triads: {}", active_algebra_triads.len());
-    info!("  Hypergraph: V={}, E={}, C={:.4}, b0={}, b1={}",
-        hg.vertex_count(), hg.edge_count(), hg.clustering_coefficient(),
-        hg.betti_0(), hg.betti_1());
+    info!(
+        "  Hypergraph: V={}, E={}, C={:.4}, b0={}, b1={}",
+        hg.vertex_count(),
+        hg.edge_count(),
+        hg.clustering_coefficient(),
+        hg.betti_0(),
+        hg.betti_1()
+    );
 
     Ok(())
 }

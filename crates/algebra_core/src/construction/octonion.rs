@@ -1,10 +1,10 @@
 //! Octonion algebra: the unique 8-dimensional normed composition algebra.
 //!
 //! Octonions O form the final level in the Cayley-Dickson construction hierarchy:
-//! R (1D) → C (2D) → H (4D) → O (8D).
+//! R (1D) -> C (2D) -> H (4D) -> O (8D).
 //!
 //! Key properties:
-//! - Normed division algebra: N(xy) = N(x)N(y) where N(x) = ||x||²
+//! - Normed division algebra: N(xy) = N(x)N(y) where N(x) = ||x||^2
 //! - Non-associative but alternative: satisfies Moufang identities
 //! - Basis: {1, e1, e2, ..., e7} with multiplication governed by Fano plane mnemonic
 //! - Automorphism group: G2 (14-dimensional exceptional Lie group)
@@ -43,7 +43,7 @@ impl Octonion {
         }
     }
 
-    /// Basis element e_i where i ∈ {0..7}.
+    /// Basis element e_i where i in {0..7}.
     /// e_0 = 1 (scalar), e_1...e_7 = imaginary units.
     pub fn basis(i: usize) -> Self {
         assert!(i < 8, "Basis index must be 0-7");
@@ -65,13 +65,13 @@ impl Octonion {
     /// Conjugate: c0 - c1*e1 - ... - c7*e7
     pub fn conjugate(&self) -> Octonion {
         let mut conj = self.components;
-        for i in 1..8 {
-            conj[i] = -conj[i];
+        for c in conj.iter_mut().skip(1) {
+            *c = -*c;
         }
         Octonion { components: conj }
     }
 
-    /// Norm squared: N(x) = x*conj(x) = c0² + c1² + ... + c7²
+    /// Norm squared: N(x) = x*conj(x) = c0^2 + c1^2 + ... + c7^2
     pub fn norm_squared(&self) -> f64 {
         self.components.iter().map(|c| c * c).sum()
     }
@@ -112,68 +112,72 @@ impl Octonion {
     /// Structure: three orthogonal complex planes (e1,e2,e3), (e4,e5,e6), (e0=1,e7)
     /// with cyclic identities and sign patterns.
     fn fano_multiply(i: usize, j: usize) -> (usize, i32) {
-        // (i, j) -> (basis_index, sign)
-        // Fano plane encodes all non-trivial products via 480 octonion algebras
-        // Using standard representation: multiplication table computed from Fano lines
+        // Multiplication table derived from Cayley-Dickson construction.
+        // Basis: e0=1, e1=i, e2=j, e3=k (quaternion), e4=l, e5=il, e6=jl, e7=kl.
+        // CD formula: (a,b)(c,d) = (ac - d*b, da + bc*) where * = quaternion conjugation.
+        //
+        // 7 Fano lines (positive cyclic direction):
+        // {1,2,3}  {1,4,5}  {1,7,6}  {2,4,6}  {2,5,7}  {3,4,7}  {3,6,5}
         match (i, j) {
             // Scalar multiplication (e0 = 1)
             (0, j) => (j, 1),
             (i, 0) => (i, 1),
             // Diagonal elements: e_i * e_i = -1 for i >= 1
-            (1, 1) | (2, 2) | (3, 3) | (4, 4) | (5, 5) | (6, 6) | (7, 7) => (0, -1),
-            // Fano line 1: (e1, e2, e3) cyclic with sign
-            (1, 2) => (3, 1),   // e1*e2 = e3
-            (2, 1) => (3, -1),  // e2*e1 = -e3
-            (2, 3) => (1, 1),   // e2*e3 = e1
-            (3, 2) => (1, -1),  // e3*e2 = -e1
-            (3, 1) => (2, 1),   // e3*e1 = e2
-            (1, 3) => (2, -1),  // e1*e3 = -e2
-            // Fano line 2: (e4, e5, e6) cyclic with sign
-            (4, 5) => (6, 1),   // e4*e5 = e6
-            (5, 4) => (6, -1),  // e5*e4 = -e6
-            (5, 6) => (4, 1),   // e5*e6 = e4
-            (6, 5) => (4, -1),  // e6*e5 = -e4
-            (6, 4) => (5, 1),   // e6*e4 = e5
-            (4, 6) => (5, -1),  // e4*e6 = -e5
-            // Fano line 3: (e7, e1, e4) and cyclic
-            (7, 1) => (4, 1),   // e7*e1 = e4
-            (1, 7) => (4, -1),  // e1*e7 = -e4
-            (1, 4) => (7, 1),   // e1*e4 = e7
-            (4, 1) => (7, -1),  // e4*e1 = -e7
-            (4, 7) => (1, 1),   // e4*e7 = e1
-            (7, 4) => (1, -1),  // e7*e4 = -e1
-            // Fano line 4: (e7, e2, e5)
-            (7, 2) => (5, 1),   // e7*e2 = e5
-            (2, 7) => (5, -1),  // e2*e7 = -e5
-            (2, 5) => (7, 1),   // e2*e5 = e7
-            (5, 2) => (7, -1),  // e5*e2 = -e7
-            (5, 7) => (2, 1),   // e5*e7 = e2
-            (7, 5) => (2, -1),  // e7*e5 = -e2
-            // Fano line 5: (e7, e3, e6)
-            (7, 3) => (6, 1),   // e7*e3 = e6
-            (3, 7) => (6, -1),  // e3*e7 = -e6
-            (3, 6) => (7, 1),   // e3*e6 = e7
-            (6, 3) => (7, -1),  // e6*e3 = -e7
-            (6, 7) => (3, 1),   // e6*e7 = e3
-            (7, 6) => (3, -1),  // e7*e6 = -e3
-            // Remaining cross products (derived from Fano plane structure)
-            (1, 5) => (6, -1),  // e1*e5 = -e6
-            (5, 1) => (6, 1),   // e5*e1 = e6
-            (2, 4) => (6, 1),   // e2*e4 = e6
-            (4, 2) => (6, -1),  // e4*e2 = -e6
-            (3, 5) => (7, -1),  // e3*e5 = -e7
-            (5, 3) => (7, 1),   // e5*e3 = e7
-            (1, 6) => (5, 1),   // e1*e6 = e5
-            (6, 1) => (5, -1),  // e6*e1 = -e5
-            (2, 6) => (4, -1),  // e2*e6 = -e4
-            (6, 2) => (4, 1),   // e6*e2 = e4
-            (3, 4) => (5, -1),  // e3*e4 = -e5
-            (4, 3) => (5, 1),   // e4*e3 = e5
+            (i, j) if i == j => (0, -1),
+            // {1,2,3}: e1*e2=e3, e2*e3=e1, e3*e1=e2
+            (1, 2) => (3, 1),
+            (2, 3) => (1, 1),
+            (3, 1) => (2, 1),
+            (2, 1) => (3, -1),
+            (3, 2) => (1, -1),
+            (1, 3) => (2, -1),
+            // {1,4,5}: e1*e4=e5, e4*e5=e1, e5*e1=e4
+            (1, 4) => (5, 1),
+            (4, 5) => (1, 1),
+            (5, 1) => (4, 1),
+            (4, 1) => (5, -1),
+            (5, 4) => (1, -1),
+            (1, 5) => (4, -1),
+            // {1,7,6}: e1*e7=e6, e7*e6=e1, e6*e1=e7
+            (1, 7) => (6, 1),
+            (7, 6) => (1, 1),
+            (6, 1) => (7, 1),
+            (7, 1) => (6, -1),
+            (6, 7) => (1, -1),
+            (1, 6) => (7, -1),
+            // {2,4,6}: e2*e4=e6, e4*e6=e2, e6*e2=e4
+            (2, 4) => (6, 1),
+            (4, 6) => (2, 1),
+            (6, 2) => (4, 1),
+            (4, 2) => (6, -1),
+            (6, 4) => (2, -1),
+            (2, 6) => (4, -1),
+            // {2,5,7}: e2*e5=e7, e5*e7=e2, e7*e2=e5
+            (2, 5) => (7, 1),
+            (5, 7) => (2, 1),
+            (7, 2) => (5, 1),
+            (5, 2) => (7, -1),
+            (7, 5) => (2, -1),
+            (2, 7) => (5, -1),
+            // {3,4,7}: e3*e4=e7, e4*e7=e3, e7*e3=e4
+            (3, 4) => (7, 1),
+            (4, 7) => (3, 1),
+            (7, 3) => (4, 1),
+            (4, 3) => (7, -1),
+            (7, 4) => (3, -1),
+            (3, 7) => (4, -1),
+            // {3,6,5}: e3*e6=e5, e6*e5=e3, e5*e3=e6
+            (3, 6) => (5, 1),
+            (6, 5) => (3, 1),
+            (5, 3) => (6, 1),
+            (6, 3) => (5, -1),
+            (5, 6) => (3, -1),
+            (3, 5) => (6, -1),
             _ => (0, 0),
         }
     }
 
-    /// Octonion multiplication: (c0 + Σc_i*e_i) * (d0 + Σd_j*e_j)
+    /// Octonion multiplication: (c0 + sumc_i*e_i) * (d0 + sumd_j*e_j)
     /// Uses Fano plane mnemonic to encode the multiplication table.
     pub fn multiply(&self, other: &Octonion) -> Octonion {
         let mut result = [0.0; 8];
@@ -195,14 +199,15 @@ impl Octonion {
         Octonion { components: result }
     }
 
-    /// Check if self satisfies Moufang identity: a(x(ay)) = (axa)y
+    /// Check if self satisfies left Moufang identity: a(x(ay)) = ((ax)a)y
     pub fn moufang_identity_left(&self, x: &Octonion, y: &Octonion, tolerance: f64) -> bool {
         let ay = self.multiply(y);
         let xay = x.multiply(&ay);
         let lhs = self.multiply(&xay);
 
-        let axa = self.multiply(self);
-        let rhs = axa.multiply(x).multiply(y);
+        let ax = self.multiply(x);
+        let axa = ax.multiply(self);
+        let rhs = axa.multiply(y);
 
         let diff: f64 = lhs
             .components
@@ -234,8 +239,12 @@ impl Octonion {
 
     /// Flexibility identity: (xy)x = x(yx)
     pub fn flexibility_identity(&self, y: &Octonion, tolerance: f64) -> bool {
-        let lhs = self.multiply(y).multiply(self);
-        let rhs = self.multiply(y.multiply(self));
+        let xy = self.multiply(y);
+        let lhs = xy.multiply(self);
+
+        let yx = y.multiply(self);
+        let rhs = self.multiply(&yx);
+
         let diff: f64 = lhs
             .components
             .iter()
@@ -243,6 +252,49 @@ impl Octonion {
             .map(|(a, b)| (a - b).abs())
             .sum();
         diff < tolerance
+    }
+
+    /// Add two octonions component-wise.
+    pub fn add(&self, other: &Octonion) -> Octonion {
+        Octonion {
+            components: std::array::from_fn(|i| self.components[i] + other.components[i]),
+        }
+    }
+
+    /// Subtract two octonions component-wise.
+    pub fn sub(&self, other: &Octonion) -> Octonion {
+        Octonion {
+            components: std::array::from_fn(|i| self.components[i] - other.components[i]),
+        }
+    }
+
+    /// Scale by a real scalar.
+    pub fn scale(&self, s: f64) -> Octonion {
+        Octonion {
+            components: self.components.map(|c| c * s),
+        }
+    }
+
+    /// Inner product: <x, y> = Re(conj(x) * y) = sum of component-wise products.
+    pub fn inner_product(&self, other: &Octonion) -> f64 {
+        self.components
+            .iter()
+            .zip(other.components.iter())
+            .map(|(a, b)| a * b)
+            .sum()
+    }
+
+    /// Commutator bracket: [x, y] = xy - yx.
+    pub fn commutator(&self, other: &Octonion) -> Octonion {
+        let xy = self.multiply(other);
+        let yx = other.multiply(self);
+        xy.sub(&yx)
+    }
+
+    /// Cross product on imaginary octonions: x * y = [x,y]/2.
+    /// Only meaningful when both x and y are purely imaginary.
+    pub fn cross_product(&self, other: &Octonion) -> Octonion {
+        self.commutator(other).scale(0.5)
     }
 
     /// Associator: [x, y, z] = (xy)z - x(yz).
@@ -314,7 +366,7 @@ mod tests {
     fn test_octonion_norm() {
         let oct = Octonion::new([3.0, 4.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]);
         let n_sq = oct.norm_squared();
-        assert!((n_sq - 25.0).abs() < 1e-10); // 3² + 4² = 25
+        assert!((n_sq - 25.0).abs() < 1e-10); // 3^2 + 4^2 = 25
         assert!((oct.norm() - 5.0).abs() < 1e-10);
     }
 
@@ -377,7 +429,10 @@ mod tests {
         let assoc = e1.associator(&e2, &e4);
         // Associator should be nonzero for most octonion triples
         let norm = assoc.norm();
-        assert!(norm > 1e-10, "Associator should be nonzero for generic octonions");
+        assert!(
+            norm > 1e-10,
+            "Associator should be nonzero for generic octonions"
+        );
     }
 
     #[test]

@@ -21,13 +21,13 @@ generated = true
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "6cc4ed18cb5ec09514a9be47d3da0d013d4dcb524060d18554d755f04bd3620a"
-size_bytes = 9645
-line_count = 292
+sha256 = "e16b0d35d1483f5a66c5146b3716351c1b8084c223c02b3f4772759309b1a789"
+size_bytes = 11924
+line_count = 339
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 72
+link_count = 75
 link_sample = ["/init", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "NAVIGATOR.md", "README.md", "REQUIREMENTS.md", "convos/"]
 
 [[document]]

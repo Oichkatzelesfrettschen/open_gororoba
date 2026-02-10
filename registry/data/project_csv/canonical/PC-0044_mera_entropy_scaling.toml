@@ -1,0 +1,78 @@
+[dataset]
+id = "PC-0044"
+slug = "mera_entropy_scaling"
+source_csv = "data/csv/mera_entropy_scaling.csv"
+source_sha256 = "c0f8cf7e2e20d563ec730011105e6481bd7318aaecd1959d196c4c9fd9741ea4"
+source_size_bytes = 135
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 5
+column_count = 3
+header_value_sha256 = "779b9f07187e27c2ea104edcda276619648ae30dd3253a664029200a59428174"
+row_value_sha256 = "9558e9ff65a8ec2ae0a1278bde99a991fc41110ba6bd211920656d6e5b38e207"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "l",
+    "log2_l",
+    "s_entropy",
+]
+original_header = [
+    "L",
+    "log2_L",
+    "S_entropy",
+]
+rows = [
+    [
+    "2",
+    "1.0",
+    "2.0",
+],
+    [
+    "4",
+    "2.0",
+    "3.999999999999999",
+],
+    [
+    "8",
+    "3.0",
+    "3.9999999999999987",
+],
+    [
+    "16",
+    "4.0",
+    "3.9999999999999982",
+],
+    [
+    "32",
+    "5.0",
+    "3.999999999999998",
+],
+]
+
+[[column]]
+index = 1
+name = "l"
+original_name = "L"
+inferred_type = "int"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 2
+name = "log2_l"
+original_name = "log2_L"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 3
+name = "s_entropy"
+original_name = "S_entropy"
+inferred_type = "float"
+non_empty_count = 5
+empty_count = 0

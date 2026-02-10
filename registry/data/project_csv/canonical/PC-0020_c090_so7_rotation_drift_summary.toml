@@ -1,0 +1,122 @@
+[dataset]
+id = "PC-0020"
+slug = "c090_so7_rotation_drift_summary"
+source_csv = "data/csv/c090_so7_rotation_drift_summary.csv"
+source_sha256 = "e4f9a1a93562e9ba2b20a491dd033581d588e5084284a1724ec42d135a5008a5"
+source_size_bytes = 400
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 7
+column_count = 5
+header_value_sha256 = "f9e051480331c7968208a4785f24a38906c445b8dcf954454361da68f2415daf"
+row_value_sha256 = "38b78b164022f43a1f5c2d20aab526b2f14b4481e933cd561226cc44a83462ab"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "angle_scale",
+    "n_rotations",
+    "mean_product_norm",
+    "max_product_norm",
+    "fraction_broken",
+]
+original_header = [
+    "angle_scale",
+    "n_rotations",
+    "mean_product_norm",
+    "max_product_norm",
+    "fraction_broken",
+]
+rows = [
+    [
+    "0.0",
+    "50",
+    "0.0",
+    "0.0",
+    "0.0",
+],
+    [
+    "0.01",
+    "50",
+    "0.0308583596109102",
+    "0.056491666292647826",
+    "1.0",
+],
+    [
+    "0.05",
+    "50",
+    "0.15391771887994726",
+    "0.2798666711415506",
+    "1.0",
+],
+    [
+    "0.1",
+    "50",
+    "0.30622646478402754",
+    "0.5504773645100016",
+    "1.0",
+],
+    [
+    "0.2",
+    "50",
+    "0.6016442583753009",
+    "1.0465242852713903",
+    "1.0",
+],
+    [
+    "0.5",
+    "50",
+    "1.346236236224998",
+    "1.9435670932301976",
+    "1.0",
+],
+    [
+    "1.0",
+    "50",
+    "1.8975609748609634",
+    "2.597704993200801",
+    "1.0",
+],
+]
+
+[[column]]
+index = 1
+name = "angle_scale"
+original_name = "angle_scale"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 2
+name = "n_rotations"
+original_name = "n_rotations"
+inferred_type = "int"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 3
+name = "mean_product_norm"
+original_name = "mean_product_norm"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 4
+name = "max_product_norm"
+original_name = "max_product_norm"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
+
+[[column]]
+index = 5
+name = "fraction_broken"
+original_name = "fraction_broken"
+inferred_type = "float"
+non_empty_count = 7
+empty_count = 0
