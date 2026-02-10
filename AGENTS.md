@@ -70,6 +70,14 @@ Research claims are hypotheses unless backed by:
 - Track external data provenance and hashes.
 - Tests must not rely on network.
 
+### 3.6 Build profile parity and optimization discipline
+- Keep dev, test, and production build semantics as aligned as feasible.
+- Allowed profile divergence is limited to debug info and essential test harness
+  instrumentation.
+- Enforce warnings-as-errors in development and CI.
+- Release optimization baseline is native CPU tuning with fat LTO; maintain a
+  PGO-capable lane for final production calibration.
+
 ## 4. `/init` Procedure (Mandatory Session Startup)
 
 Every agent session should follow this exact initialization flow.
@@ -211,7 +219,51 @@ Update policy:
 - Never edit generated mirrors as source.
 - If mirror content is wrong, fix source TOML and regenerate.
 
-## 9. LLM Overlay Files Contract
+## 9. TOML-First Iterative Update Workflow (W6-021)
+
+When updating project state (claims, insights, experiments, registries):
+
+### 9.1 Canonical TOML update cycle
+1. **Identify** the canonical TOML source(s)
+   - `registry/claims.toml` for claims
+   - `registry/insights.toml` for insights
+   - `registry/experiments.toml` for experiments
+   - `registry/[domain]_*.toml` for domain-specific data
+2. **Edit** TOML directly (surgical, targeted changes)
+   - No markdown edits as primary source
+   - Comments in TOML explain WHY, not markdown narrative
+3. **Regenerate** derivatives
+   - Run `PYTHONWARNINGS=error make registry` (regenerates all mirrors/scrolls)
+   - Or `PYTHONWARNINGS=error make registry-data` (data canon only)
+4. **Verify** gates pass
+   - Cross-references: `PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py`
+   - Ownership: `PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py`
+   - Freshness: `python3 src/verification/verify_registry_mirror_freshness.py`
+5. **Commit** atomically with WHY/WHAT/HOW notes
+   - Commit message documents the change rationale
+   - References relevant TOML keys/sections modified
+
+### 9.2 Markdown is generated, never authored
+- Generate from TOML: `PYTHONWARNINGS=error make docs-publish`
+- Never edit generated `.md` files as source
+- Manual markdown edits are lost on regeneration
+- Exception: `README.md`, `CLAUDE.md`, `GEMINI.md` (special overlay files)
+
+### 9.3 When to trigger regeneration
+- Any TOML registry edit → `make registry`
+- Narrative/structured corpus changes → `make registry-knowledge`
+- Claims/insights/proofs → `make registry`
+- CSV conversions → `make registry-csv-scroll-pipeline`
+
+### 9.4 Validation ordering
+1. TOML syntax valid (implicit in edit, explicit in `make registry-data`)
+2. Cross-references resolve (verify_registry_crossrefs.py)
+3. Schema integrity holds (verify_registry_schema_signatures.py)
+4. Markdown owners known (verify_markdown_inventory_toml_first.py)
+5. Mirrors are fresh (verify_registry_mirror_freshness.py)
+6. Full suite: `make wave6-gate`
+
+## 10. LLM Overlay Files Contract
 
 `CLAUDE.md` and `GEMINI.md` must contain:
 - assistant-specific operating notes
