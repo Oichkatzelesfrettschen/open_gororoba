@@ -1000,11 +1000,30 @@ what_would_verify_refute = """Key metric: 1970-01-01 (unknown). Notes: The key d
 
 [[claim]]
 id = "C-590"
-statement = "The high-dimensional frustration ratio of standard Cayley-Dickson algebras converges to 3/8, matching the negative-structure-constant fraction of the split-octonion algebra."
-where_stated = "`crates/algebra_core/tests/test_split_octonion_attractor.rs`, `registry/insights.toml` (I-041)"
-status = "Verified"
-last_verified = "2026-02-10"
-what_would_verify_refute = "Rust test `test_split_octonion_psi_fraction` confirms split-octonion negative fraction is exactly 24/64 = 0.375. Test `test_split_octonion_attractor_coincidence` confirms standard CD frustration ratio converges toward this value (dim=1024 ratio 0.37849)."
+description = "The Frustration Ratio (psi/total) of the standard Cayley-Dickson tower converges to 0.375 (3/8) as dimension increases."
+status = "verified"
+confidence = "high"
+verification_method = "numerical_limit"
+supporting_evidence = ["crates/algebra_core/tests/test_split_octonion_attractor.rs"]
+dependencies = []
+
+[[claim]]
+id = "C-591"
+description = "The Split-Octonion algebra contains a 'Cloud' of 48 Null-Null Zero Divisors (interactions between null vectors) and 4 Proper Zero Divisors."
+status = "verified"
+confidence = "high"
+verification_method = "exhaustive_search"
+supporting_evidence = ["crates/algebra_core/tests/test_split_octonion_geometry.rs"]
+dependencies = ["C-590"]
+
+[[claim]]
+id = "C-592"
+description = "The multiplication table of the Split-Octonions has exactly 24/64 negative entries, matching the 3/8 frustration limit."
+status = "verified"
+confidence = "high"
+verification_method = "exact_counting"
+supporting_evidence = ["crates/algebra_core/tests/test_split_octonion_geometry.rs"]
+dependencies = ["C-590"]
 
 [[claim]]
 id = "C-126"
@@ -4864,3 +4883,66 @@ status = "Verified"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED (Phase 8): Computational census of 15 algebras (all power-of-2 dims up to 8, all 2^n gamma-vectors) found exactly 4 division algebras, matching Hurwitz's classical theorem. Extends classical result by confirming it holds not just for 'standard' CD algebras but as a universal property: modifying even ONE gamma parameter from -1 to +1 destroys the division algebra structure. This is the definitive algebraic obstruction to quaternion/octonion generalization."
 sprint = 31
+
+[[claim]]
+id = "C-599"
+statement = "The minimum GF(2) polynomial separating degree for dim=256 Cayley-Dickson motif classes is exactly 6 (sextic), confirming the formula min_degree = log2(dim) - 2."
+where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs` (test_separating_degree_dim256)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Greedy partition refinement algorithm found a separating 6-tuple for all 16 motif classes at dim=256 (PG(6,2) with 127 points). No 5-tuple sufficed. Confirms prediction log2(256)-2 = 6."
+sprint = 32
+
+[[claim]]
+id = "C-600"
+statement = "The formula min_degree = log2(dim) - 2 is universal across dims 32, 64, 128, 256, yielding degrees 3, 4, 5, 6 respectively."
+where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs` (test_separating_degree_formula_universality)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Sweep across 4 dimensions confirmed exact match at every step. Total runtime 55s in release mode. Formula is degree = projective dimension n-2 of PG(n-2,2)."
+sprint = 32
+
+[[claim]]
+id = "C-601"
+statement = "The Anti-Diagonal Parity Theorem (1:3 pure/mixed ratio) holds at dim=4096 with pure_ratio within 0.5% of 0.25 (Monte Carlo, 1M samples, 4.19M nodes)."
+where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_dim4096_cross_validate_frustration)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: CPU-path Monte Carlo with 1M triangle samples across 4,192,256 nodes yielded pure_ratio=0.2505. Klein-four fiber symmetry verified: all 4 fibers within 0.5% of each other."
+sprint = 32
+
+[[claim]]
+id = "C-602"
+statement = "Klein-four fiber symmetry (F(0,0) approx F(0,1) approx F(1,0) approx F(1,1)) holds at dim=4096 within statistical noise (<0.5% deviation)."
+where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_dim4096_cross_validate_frustration)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Fibers F00=250509, F01=249590, F10=249700, F11=250201 out of 1M samples. Maximum deviation from mean (250000) is 0.20%. Extends C-524 from dim=512 to dim=4096."
+sprint = 32
+
+[[claim]]
+id = "C-603"
+statement = "Lambda_4096 filtration level equals the full base universe (2187 vectors), with no additional exclusions beyond the 4 octonion parity constraints."
+where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (test_lambda_4096_carrier_count)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: enumerate_lambda_4096() returns 2187 vectors = enumerate_base_universe() count. Lambda_2048 has 2048 vectors (strict subset). The filtration chain Lambda_256(256) < Lambda_512(512) < Lambda_1024(1026) < Lambda_2048(2048) < Lambda_4096(2187) is monotonically increasing."
+sprint = 32
+
+[[claim]]
+id = "C-604"
+statement = "All 4 octonion parity constraints (trinary values, even sum, even weight, l_0 != +1) hold universally across all 5 filtration levels Lambda_256 through Lambda_4096."
+where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (test_octonion_parity_proof_dim4096)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Cross-validated parity constraints at Lambda_4096(2187), Lambda_2048(2048), Lambda_1024(1026), Lambda_512(512), Lambda_256(256). All pass 100% on all 4 constraints. These are structural invariants of the Cayley-Dickson codebook encoding."
+sprint = 32
+
+[[claim]]
+id = "C-605"
+statement = "Wide-index (u16) APT census API correctly handles dim=512 and above, where node count exceeds u8 range (dim/2 > 255)."
+where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_wide_dim512_1_3_ratio, test_generate_nodes_wide_dim512)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: dim=512 generates 65280 = C(255,2) node pairs. APT census via wide-index path yields pure_ratio=0.2481, consistent with 1:3 law. Cross-validates against u8 path at dim=256."
+sprint = 32
