@@ -101,6 +101,7 @@ struct ParsedCsv {
     header: Vec<String>,
     original_header: Vec<String>,
     rows: Vec<Vec<String>>,
+    rows_semantic: Vec<Vec<String>>,
 }
 
 fn sha_text_ascii(blob: &str) -> String {
@@ -146,6 +147,56 @@ fn normalize_ascii_text(value: &str) -> String {
                 out.push_str(&format!("\\u{:04X}", unit));
             }
         }
+    }
+    out
+}
+
+fn is_unicode_escape_sequence(value: &str) -> bool {
+    if value.is_empty() || !value.len().is_multiple_of(6) {
+        return false;
+    }
+    let bytes = value.as_bytes();
+    let mut idx = 0usize;
+    while idx < bytes.len() {
+        if bytes[idx] != b'\\' || bytes[idx + 1] != b'u' {
+            return false;
+        }
+        if !bytes[idx + 2..idx + 6]
+            .iter()
+            .all(|b| b.is_ascii_hexdigit())
+        {
+            return false;
+        }
+        idx += 6;
+    }
+    true
+}
+
+fn canonicalize_unicode_escape_literals(rendered_toml: &str) -> String {
+    let mut out = String::with_capacity(rendered_toml.len());
+    let bytes = rendered_toml.as_bytes();
+    let mut idx = 0usize;
+    while idx < bytes.len() {
+        if bytes[idx] == b'\'' {
+            let start = idx + 1;
+            if let Some(end_rel) = rendered_toml[start..].find('\'') {
+                let end = start + end_rel;
+                let inner = &rendered_toml[start..end];
+                if is_unicode_escape_sequence(inner) {
+                    out.push('"');
+                    out.push_str(inner);
+                    out.push('"');
+                    idx = end + 1;
+                    continue;
+                }
+            }
+        }
+        let ch = rendered_toml[idx..]
+            .chars()
+            .next()
+            .expect("valid UTF-8 while canonicalizing rendered TOML");
+        out.push(ch);
+        idx += ch.len_utf8();
     }
     out
 }
@@ -316,36 +367,49 @@ fn parse_csv(path: &Path) -> Result<ParsedCsv, ScrollError> {
         .flexible(true)
         .from_reader(raw.as_slice());
 
-    let mut parsed: Vec<Vec<String>> = Vec::new();
+    let mut parsed_semantic: Vec<Vec<String>> = Vec::new();
+    let mut parsed_normalized: Vec<Vec<String>> = Vec::new();
     for record in reader.records() {
         let row = record?;
-        let mut values: Vec<String> = row.iter().map(str::to_string).collect();
-        if parsed.is_empty() && !values.is_empty() {
-            values[0] = values[0].trim_start_matches('\u{feff}').to_string();
+        let mut values_semantic: Vec<String> = row.iter().map(str::to_string).collect();
+        if parsed_semantic.is_empty() && !values_semantic.is_empty() {
+            values_semantic[0] = values_semantic[0].trim_start_matches('\u{feff}').to_string();
         }
-        parsed.push(
-            values
-                .into_iter()
-                .map(|value| normalize_ascii_text(&value))
-                .collect(),
-        );
+        let values_normalized: Vec<String> = values_semantic
+            .iter()
+            .map(|value| normalize_ascii_text(value))
+            .collect();
+        parsed_semantic.push(values_semantic);
+        parsed_normalized.push(values_normalized);
     }
 
-    let has_header = if parsed.len() >= 2 {
-        looks_like_header(&parsed[0], &parsed[1])
+    let has_header = if parsed_semantic.len() >= 2 {
+        looks_like_header(&parsed_semantic[0], &parsed_semantic[1])
     } else {
         true
     };
 
-    let (original_header, data_rows): (Vec<String>, Vec<Vec<String>>) =
-        if has_header && !parsed.is_empty() {
-            (parsed[0].clone(), parsed.into_iter().skip(1).collect())
+    let (original_header_semantic, data_rows_semantic): (Vec<String>, Vec<Vec<String>>) =
+        if has_header && !parsed_semantic.is_empty() {
+            (
+                parsed_semantic[0].clone(),
+                parsed_semantic.into_iter().skip(1).collect(),
+            )
         } else {
-            (Vec::new(), parsed)
+            (Vec::new(), parsed_semantic)
+        };
+    let (original_header_normalized, data_rows_normalized): (Vec<String>, Vec<Vec<String>>) =
+        if has_header && !parsed_normalized.is_empty() {
+            (
+                parsed_normalized[0].clone(),
+                parsed_normalized.into_iter().skip(1).collect(),
+            )
+        } else {
+            (Vec::new(), parsed_normalized)
         };
 
-    let mut max_cols = original_header.len();
-    for row in &data_rows {
+    let mut max_cols = original_header_normalized.len();
+    for row in &data_rows_normalized {
         if row.len() > max_cols {
             max_cols = row.len();
         }
@@ -354,7 +418,7 @@ fn parse_csv(path: &Path) -> Result<ParsedCsv, ScrollError> {
     let header_tokens: Vec<String> = if max_cols == 0 {
         Vec::new()
     } else if has_header {
-        let mut padded = original_header.clone();
+        let mut padded = original_header_normalized.clone();
         while padded.len() < max_cols {
             padded.push(String::new());
         }
@@ -370,14 +434,29 @@ fn parse_csv(path: &Path) -> Result<ParsedCsv, ScrollError> {
     };
     let header = make_unique(&header_tokens);
 
-    let mut rows = Vec::with_capacity(data_rows.len());
-    for row in data_rows {
+    let mut rows = Vec::with_capacity(data_rows_normalized.len());
+    for row in data_rows_normalized {
         let mut padded = row;
         while padded.len() < max_cols {
             padded.push(String::new());
         }
         padded.truncate(max_cols);
         rows.push(padded);
+    }
+
+    let mut rows_semantic = Vec::with_capacity(data_rows_semantic.len());
+    for row in data_rows_semantic {
+        let mut padded = row;
+        while padded.len() < max_cols {
+            padded.push(String::new());
+        }
+        padded.truncate(max_cols);
+        rows_semantic.push(padded);
+    }
+
+    let mut original_header = original_header_semantic;
+    while original_header.len() < max_cols {
+        original_header.push(String::new());
     }
 
     Ok(ParsedCsv {
@@ -387,6 +466,7 @@ fn parse_csv(path: &Path) -> Result<ParsedCsv, ScrollError> {
         header,
         original_header,
         rows,
+        rows_semantic,
     })
 }
 
@@ -420,7 +500,7 @@ pub fn convert_csv_to_scroll(
     let parsed = parse_csv(path)?;
     let source_sha256 = format!("{:x}", Sha256::digest(&raw));
     let header_value_sha256 = sha_text_ascii(&json_ascii_header(&parsed.header));
-    let row_value_sha256 = sha_text_ascii(&json_ascii_rows(&parsed.rows));
+    let row_value_sha256 = sha_text_ascii(&json_ascii_rows(&parsed.rows_semantic));
     let row_count = parsed.rows.len();
     let column_count = parsed.header.len();
 
@@ -468,7 +548,8 @@ pub fn convert_csv_to_scroll(
         column: columns,
     };
 
-    let rendered_dataset_toml = toml::to_string_pretty(&dataset)?;
+    let rendered_dataset_toml_raw = toml::to_string_pretty(&dataset)?;
+    let rendered_dataset_toml = canonicalize_unicode_escape_literals(&rendered_dataset_toml_raw);
 
     let index_entry = ScrollIndexEntry {
         id: spec.dataset_id.to_string(),
@@ -588,5 +669,14 @@ mod tests {
         assert!(converted
             .rendered_dataset_toml
             .contains("dataset_class = \"canonical_dataset\""));
+    }
+
+    #[test]
+    fn canonicalize_unicode_escape_literals_rewrites_escape_only_literals() {
+        let input = "a = '\\u22A5'\nb = '\\u00A9\\u03B1'\nc = 'not_rewritten'\n";
+        let output = canonicalize_unicode_escape_literals(input);
+        assert!(output.contains("a = \"\\u22A5\""));
+        assert!(output.contains("b = \"\\u00A9\\u03B1\""));
+        assert!(output.contains("c = 'not_rewritten'"));
     }
 }

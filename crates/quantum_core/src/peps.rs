@@ -345,16 +345,25 @@ impl Peps {
     /// Each row-MPS tensor has shape [chi_left * chi_right * physical_dim].
     /// For product states (chi=1), contraction is element-wise multiplication.
     /// For general chi, we do a proper tensor product contraction.
+    ///
+    /// When compiled with the `gpu` feature, attempts GPU acceleration; otherwise
+    /// falls back to CPU. CPU path is always available as fallback.
     fn contract_rows(&self, upper: &[Vec<c64>], lower: &[Vec<c64>]) -> Vec<Vec<c64>> {
-        // For product states and small chi, we multiply corresponding entries
-        // site by site.  Each site's MPS data has length chi_l * chi_r * phys_dim.
-        // When chi_up = chi_down = 1 (the common case after row_to_mps which already
-        // contracted vertical indices), the contraction reduces to element-wise product.
         upper
             .iter()
             .zip(lower.iter())
             .map(|(u, l)| {
                 if u.len() == l.len() {
+                    #[cfg(feature = "gpu")]
+                    {
+                        // Try GPU acceleration for large tensors
+                        if u.len() > 1000 {
+                            let result = crate::gpu::peps::gpu_contract_rows_peps(u, l);
+                            return result;
+                        }
+                    }
+
+                    // CPU path (always available)
                     u.iter()
                         .zip(l.iter())
                         .map(|(a, b)| {

@@ -25,6 +25,13 @@ qua_ten_net = { workspace = true }
 # Physics constants
 physical_constants = { workspace = true }
 
+# GPU acceleration (optional)
+cudarc = { workspace = true, optional = true }
+
+[features]
+default = []
+gpu = ["cudarc"]
+
 [dev-dependencies]
 approx = { workspace = true }
 criterion = { workspace = true }

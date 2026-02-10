@@ -3287,4 +3287,49 @@ mod tests {
         assert_eq!(p1024.difference(&p512).count(), 512);
         assert_eq!(p2048.difference(&p1024).count(), 1024);
     }
+
+    #[test]
+    fn test_c453_filtration_layers_are_disjoint_and_partition_2048() {
+        let p256: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(256).into_iter().collect();
+        let p512: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(512).into_iter().collect();
+        let p1024: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(1024).into_iter().collect();
+        let p2048: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(2048).into_iter().collect();
+
+        let l0: std::collections::BTreeSet<Vec<i32>> = p256.clone();
+        let l1: std::collections::BTreeSet<Vec<i32>> = p512.difference(&p256).cloned().collect();
+        let l2: std::collections::BTreeSet<Vec<i32>> = p1024.difference(&p512).cloned().collect();
+        let l3: std::collections::BTreeSet<Vec<i32>> = p2048.difference(&p1024).cloned().collect();
+
+        assert_eq!(l0.len(), 256, "L0 size mismatch");
+        assert_eq!(l1.len(), 256, "L1 size mismatch");
+        assert_eq!(l2.len(), 512, "L2 size mismatch");
+        assert_eq!(l3.len(), 1024, "L3 size mismatch");
+
+        assert!(l0.is_disjoint(&l1), "L0 and L1 must be disjoint");
+        assert!(l0.is_disjoint(&l2), "L0 and L2 must be disjoint");
+        assert!(l0.is_disjoint(&l3), "L0 and L3 must be disjoint");
+        assert!(l1.is_disjoint(&l2), "L1 and L2 must be disjoint");
+        assert!(l1.is_disjoint(&l3), "L1 and L3 must be disjoint");
+        assert!(l2.is_disjoint(&l3), "L2 and L3 must be disjoint");
+
+        let union_l01: std::collections::BTreeSet<Vec<i32>> = l0.union(&l1).cloned().collect();
+        let union_l012: std::collections::BTreeSet<Vec<i32>> =
+            union_l01.union(&l2).cloned().collect();
+        let union_all: std::collections::BTreeSet<Vec<i32>> =
+            union_l012.union(&l3).cloned().collect();
+
+        assert_eq!(
+            union_all.len(),
+            2048,
+            "Layer union must contain exactly 2048 unique points"
+        );
+        assert_eq!(
+            union_all, p2048,
+            "Layer union must reconstruct 2048D embedding exactly"
+        );
+    }
 }
