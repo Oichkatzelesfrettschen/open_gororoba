@@ -16,7 +16,8 @@
 .PHONY: registry-bootstrap-claims-support
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
 .PHONY: registry-markdown-inventory registry-markdown-corpus registry-toml-inventory
-.PHONY: registry-verify-markdown-inventory registry-verify-wave4 registry-wave4
+.PHONY: registry-markdown-origin-audit
+.PHONY: registry-verify-markdown-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-wave4 registry-wave4
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
 .PHONY: registry-project-csv-split registry-csv-holdings
@@ -186,10 +187,19 @@ registry-markdown-corpus: registry-markdown-inventory
 registry-toml-inventory: registry-markdown-corpus
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_toml_inventory_registry.py
 
+registry-markdown-origin-audit: registry-markdown-inventory
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_origin_audit.py
+
 registry-verify-markdown-inventory: registry-markdown-inventory
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
 
-registry-verify-wave4: registry-markdown-corpus registry-toml-inventory
+registry-verify-markdown-origin: registry-markdown-origin-audit
+	PYTHONWARNINGS=error python3 src/verification/verify_markdown_origin_audit.py
+
+registry-verify-markdown-owner: registry-markdown-inventory
+	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
+
+registry-verify-wave4: registry-markdown-corpus registry-toml-inventory registry-verify-markdown-origin registry-verify-markdown-owner
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_corpus_registry.py
 	PYTHONWARNINGS=error python3 src/verification/verify_toml_inventory_registry.py
 

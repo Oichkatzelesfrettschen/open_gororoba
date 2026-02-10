@@ -19,8 +19,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 40
+line_count = 46
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -75,8 +81,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["data/fab/warp_gate_ebl_mask.svg", "analog_warp_raytrace.png"]
-line_count = 73
+line_count = 79
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -164,8 +176,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = ["https://arxiv.org/pdf/<id", "https://example.com/file.pdf'"]
 path_refs = ["data/external/", "data/external/PROVENANCE.local.json", ".txt", "docs/external_sources/<TOPIC>_SOURCES.md", "data/external/traces/"]
-line_count = 69
+line_count = 75
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -249,8 +267,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["src/gemini_physics/engineering/analog_warp_drive.py", "20.0", "10.0", "1.5", "0.5", "src/scripts/engineering/holographic_warp_renderer.py", "cpp/src_cuda/sedenion_warp.cu", "src/gemini_physics/engineering/warp_pareto.py", "src/scripts/engineering/metasurface_multiphysics.py", "src/scripts/simulation/genesis_simulation_v2.py", "-1.5", "fabsf(dot - cross_mag) < 0.1"]
-line_count = 121
+line_count = 127
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -399,22 +423,22 @@ This index and all files under `docs/engineering/*.md` are generated from TOML.
 - `RN-002` `SPECIFICATION`: `docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md`
 - `RN-003` `NARRATIVE`: `docs/engineering/FETCHING_EXTERNAL_SOURCES.md`
 - `RN-004` `REPORT`: `docs/engineering/GAP_CLOSURE_REPORT.md`
-- `RN-005` `AUDIT`: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`
-- `RN-006` `AUDIT`: `docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md`
-- `RN-007` `NARRATIVE`: `docs/engineering/OPTIX_ELUCIDATION.md`
-- `RN-008` `NARRATIVE`: `docs/engineering/PADIC_SIGNAL_THEORY.md`
-- `RN-009` `PHASE_REPORT`: `docs/engineering/PHASE_10_MULTIPHYSICS.md`
-- `RN-010` `PHASE_REPORT`: `docs/engineering/PHASE_11_VISUALIZATION.md`
-- `RN-011` `PHASE_REPORT`: `docs/engineering/PHASE_12_RENDERER.md`
-- `RN-012` `PHASE_REPORT`: `docs/engineering/PHASE_13_GRAND_CRITIQUE.md`
-- `RN-013` `PHASE_REPORT`: `docs/engineering/PHASE_14_DEEP_DIVE.md`
-- `RN-014` `PHASE_REPORT`: `docs/engineering/PHASE_15_RESURRECTION.md`
-- `RN-015` `PHASE_REPORT`: `docs/engineering/PHASE_16_FINAL_VALIDATION.md`
-- `RN-016` `PHASE_REPORT`: `docs/engineering/PHASE_6_IMPLEMENTATION.md`
-- `RN-017` `PHASE_REPORT`: `docs/engineering/PHASE_7_REPORT.md`
-- `RN-018` `PHASE_REPORT`: `docs/engineering/PHASE_8_SYNTHESIS.md`
-- `RN-019` `REPORT`: `docs/engineering/PHYSICS_VALIDATION_REPORT.md`
-- `RN-020` `SPECIFICATION`: `docs/engineering/WARP_SPACEPLATE_SPECS.md`
+- `RN-006` `AUDIT`: `docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md`
+- `RN-007` `AUDIT`: `docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md`
+- `RN-008` `NARRATIVE`: `docs/engineering/OPTIX_ELUCIDATION.md`
+- `RN-009` `NARRATIVE`: `docs/engineering/PADIC_SIGNAL_THEORY.md`
+- `RN-010` `PHASE_REPORT`: `docs/engineering/PHASE_10_MULTIPHYSICS.md`
+- `RN-011` `PHASE_REPORT`: `docs/engineering/PHASE_11_VISUALIZATION.md`
+- `RN-012` `PHASE_REPORT`: `docs/engineering/PHASE_12_RENDERER.md`
+- `RN-013` `PHASE_REPORT`: `docs/engineering/PHASE_13_GRAND_CRITIQUE.md`
+- `RN-014` `PHASE_REPORT`: `docs/engineering/PHASE_14_DEEP_DIVE.md`
+- `RN-015` `PHASE_REPORT`: `docs/engineering/PHASE_15_RESURRECTION.md`
+- `RN-016` `PHASE_REPORT`: `docs/engineering/PHASE_16_FINAL_VALIDATION.md`
+- `RN-017` `PHASE_REPORT`: `docs/engineering/PHASE_6_IMPLEMENTATION.md`
+- `RN-018` `PHASE_REPORT`: `docs/engineering/PHASE_7_REPORT.md`
+- `RN-019` `PHASE_REPORT`: `docs/engineering/PHASE_8_SYNTHESIS.md`
+- `RN-020` `REPORT`: `docs/engineering/PHYSICS_VALIDATION_REPORT.md`
+- `RN-021` `SPECIFICATION`: `docs/engineering/WARP_SPACEPLATE_SPECS.md`
 '''
 
 [[document]]
@@ -429,8 +453,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = ["https://github.com/modelcontextprotocol/servers", "https://github.com/modelcontextprotocol/servers/tree/main/src/postgres", "https://modelcontextprotocol.io/integrations", "https://github.com/semgrep/semgrep-mcp", "https://docs.docker.com/manuals/mcp/", "https://developers.notion.com/docs/mcp", "https://linear.app/docs/mcp", "https://docs.gitlab.com/user/gitlab_duo/mcp_server/", "https://github.com/getsentry/sentry-mcp"]
 path_refs = ["~/.claude/.mcp.json", "~/.config/github-copilot/mcp-servers.json", "~/.gemini/settings.json", "~/.copilot/mcp-config.json", "~/.config/Claude/claude_desktop_config.json", "~/.codex/mcp-config.json", "~/.gemini/settings.json.bak-20260208_221739", "~/.copilot/mcp-config.json.bak-20260208_221739", "~/.config/Claude/claude_desktop_config.json.bak-20260208_221739", "~/.codex/mcp-config.json.bak-20260208_221739", "~/.codex/skills", "quick_validate.py", "~/.gemini/skills/", "~/.copilot/skills/", "~/.claude/agents/general-purpose/", "mcp-filesystem-agent.md", "mcp-bash-agent.md", "mcp-ripgrep-agent.md", "mcp-fetch-research-agent.md", "mcp-context7-agent.md", "mcp-arxiv-agent.md", "mcp-playwright-agent.md", "mcp-sqlite-agent.md", "mcp-semgrep-agent.md", "gororoba-rust-agent.md", "gororoba-claims-agent.md", "gororoba-mcp-orchestrator-agent.md", "~/.codex/config.toml"]
-line_count = 209
+line_count = 215
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -654,8 +684,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["git ls-files '*.md'", "git ls-files '*.toml'", "registry/knowledge_sources.toml", "crates/gororoba_cli/src/bin/migrate_claims.rs", "crates/gororoba_cli/src/bin/migrate_insights.rs", "crates/gororoba_cli/src/bin/registry_check.rs", "crates/gororoba_cli/src/bin/generate_latex.rs", "registry/", "registry/claims.toml", "docs/CLAIMS_EVIDENCE_MATRIX.md", "registry/insights.toml", "docs/INSIGHTS.md", "export_registry_markdown_mirrors.py", "registry/experiments.toml", "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md", "registry/binaries.toml", "registry/project.toml", "docs/latex/claims_appendix.tex", "docs/latex/insights_appendix.tex", "src/scripts/analysis/build_knowledge_sources_registry.py", "src/scripts/analysis/migrate_markdown_corpus_to_toml.py", "src/scripts/analysis/export_registry_markdown_mirrors.py", "registry/knowledge/documents.toml", "registry/knowledge/docs/DOC-*.toml", "docs/generated/*_REGISTRY_MIRROR.md", "registry/roadmap.toml", "registry/todo.toml", "registry/next_actions.toml", "registry/requirements.toml", "registry/knowledge_migration_plan.toml", "docs/claims/CLAIMS_DOMAIN_MAP.csv", "docs/TODO.md", "docs/NEXT_ACTIONS.md", "docs/ROADMAP.md"]
-line_count = 185
+line_count = 191
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -855,8 +891,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["holographic_warp_gate.py"]
-line_count = 35
+line_count = 41
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -906,8 +948,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["padic_synthesis.py", "src/gemini_physics/signal_processing/padic_synthesis.py"]
-line_count = 95
+line_count = 101
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1017,8 +1065,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["src/gemini_physics/numerical/fdfd_2d.py", "nanoscale_connectivity_field.png", "src/gemini_physics/materials/drude_lorentz.py", "ito_thermal_load.png", "docs/engineering/packaging_mount.scad"]
-line_count = 46
+line_count = 52
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1079,8 +1133,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["src/gemini_physics/visualization/viz_engine.py", "src/gemini_physics/numerical/fdfd_2d_robust.py", "nanoscale_connectivity_field.png", "ito_thermal_load.png", "src/scripts/engineering/analog_warp_raytracer_refactored.py", "analog_warp_raytrace_highres.png"]
-line_count = 33
+line_count = 39
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1128,8 +1188,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["holographic_warp_renderer.py", "holographic_warp_renderer.png"]
-line_count = 28
+line_count = 34
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1172,8 +1238,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["nanoscale_connectivity_field.png", "holographic_warp_renderer.png", "src/gemini_physics/visualization/oculus.py", "src/scripts/engineering/grand_unified_simulator.py", "OCULUS_GRAND_DASHBOARD.png"]
-line_count = 35
+line_count = 41
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1223,8 +1295,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["spaceplate_pareto_candidates.csv", "src/scripts/engineering/grand_unified_simulator_v2.py", "data/artifacts/images/OCULUS_GRAND_DASHBOARD_v2.png", "docs/theory/DERIVATION_DEEP_DIVE.md"]
-line_count = 25
+line_count = 31
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1264,8 +1342,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["OCULUS_GRAND_DASHBOARD_v2.png", "grand_unified_simulator_v3.py", "gaussian_filter(sigma=2.0)", "spaceplate_pareto_optimizer.py", "data/artifacts/images/OCULUS_GRAND_DASHBOARD_v3.png"]
-line_count = 29
+line_count = 35
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1309,8 +1393,14 @@ verification_level = "validation_summary"
 claim_refs = []
 url_refs = []
 path_refs = ["grand_unified_simulator_v4.py", "spaceplate_pareto_optimizer_robust.py", "density.max() > 0", "OCULUS_GRAND_DASHBOARD_v4.png"]
-line_count = 28
+line_count = 34
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1353,8 +1443,14 @@ verification_level = "engineering_narrative"
 claim_refs = ["C-042", "C-050", "C-400"]
 url_refs = []
 path_refs = ["src/gemini_physics/engineering/spaceplate_design.py", "docs/engineering/spaceplate_stack.scad", "data/bom/spaceplate_bom.csv", "src/gemini_physics/engineering/analog_warp_drive.py", "docs/engineering/analog_warp_design.png", "data/bom/analog_warp_bom.csv", "src/scripts/analysis/kozyrev_gwtc3_analysis.py", "data/analysis/kozyrev_gwtc3_p2.csv", "src/gemini_physics/engineering/kozyrev_transform.v"]
-line_count = 72
+line_count = 78
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1441,8 +1537,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["data/external/", "src/scripts/engineering/spaceplate_pareto_optimizer.py", "data/artifacts/images/spaceplate_pareto_real.png", "data/bom/spaceplate_pareto_candidates.csv", "src/scripts/engineering/analog_warp_raytracer.py", "data/artifacts/images/analog_warp_raytrace.png", "src/gemini_physics/signal/padic_dsp.py", "legacy/", "src/scripts/engineering/", "src/gemini_physics/", "docs/CLAIMS_EVIDENCE_MATRIX.md", "kozyrev_transform.v"]
-line_count = 48
+line_count = 54
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1505,8 +1607,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["cpp/src_cuda/sedenion_warp.cu", "sedenion_warp.cu"]
-line_count = 43
+line_count = 49
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1564,8 +1672,14 @@ verification_level = "validation_summary"
 claim_refs = []
 url_refs = []
 path_refs = ["data/artifacts/images/holographic_warp_renderer.png", "data/artifacts/images/genesis_simulation_grand.png", "data/artifacts/images/warp_pareto_frontier.png"]
-line_count = 25
+line_count = 31
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1605,8 +1719,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 64
+line_count = 70
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1685,8 +1805,14 @@ verification_level = "engineering_narrative"
 claim_refs = []
 url_refs = []
 path_refs = ["triad_hypergraph_metrics.py"]
-line_count = 41
+line_count = 47
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 # Algebra-Fluid Turbulence Roadmap: E7 Geometry & Triad Dynamics
 
 ## Abstract
@@ -1742,8 +1868,14 @@ verification_level = "theoretical"
 claim_refs = ["C-007", "C-008", "C-077", "C-091"]
 url_refs = []
 path_refs = ["data/external/papers/", "docs/external_sources/", "docs/preregistered/CLAIM_NAME.md", "tests/test_*.py", "crates/*/tests/", "data/csv/", ".PROVENANCE.json"]
-line_count = 178
+line_count = 184
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 
@@ -1945,8 +2077,8 @@ body_markdown = '''
 
 This index and all files under `docs/theory/*.md` are generated from TOML.
 
-- `RN-021` `METHODOLOGY`: `docs/theory/CLAIMS_METHODOLOGY.md`
-- `RN-022` `RECONCILIATION`: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`
+- `RN-026` `METHODOLOGY`: `docs/theory/CLAIMS_METHODOLOGY.md`
+- `RN-028` `RECONCILIATION`: `docs/theory/WARP_PHYSICS_RECONCILIATION.md`
 '''
 
 [[document]]
@@ -1961,8 +2093,14 @@ verification_level = "theoretical"
 claim_refs = []
 url_refs = []
 path_refs = []
-line_count = 43
+line_count = 49
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/research_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/research_narratives.toml -->
 

@@ -4,15 +4,15 @@
 [toml_inventory]
 updated = "deterministic"
 authoritative = true
-document_count = 1164
-tracked_count = 1161
-untracked_count = 3
+document_count = 1165
+tracked_count = 1164
+untracked_count = 1
 ignored_count = 0
 parse_error_count = 0
 
 [git_status_counts]
-tracked = 1161
-untracked = 3
+tracked = 1164
+untracked = 1
 
 [role_counts]
 cargo_crate_manifest = 15
@@ -21,7 +21,7 @@ cargo_workspace_manifest = 1
 dataset_scroll = 874
 papers_registry = 20
 python_project_config = 1
-registry_control_plane = 251
+registry_control_plane = 252
 toml_other = 1
 
 [zone_counts]
@@ -29,7 +29,7 @@ crate_manifest = 15
 other = 1
 papers = 20
 python_config = 1
-registry_control = 251
+registry_control = 252
 registry_dataset = 874
 toolchain_config = 1
 workspace_manifest = 1
@@ -254,9 +254,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 3
 markdown_ref_count = 0
-size_bytes = 347
-line_count = 16
-sha256 = "d6f3fa9880682174b2e8b879eddd115c0c1b557cb50d0794c76277bf5cb008f1"
+size_bytes = 391
+line_count = 17
+sha256 = "7f4a894615bc1043dcd29c8216e88e95bcd147043b838a82923f5ef4844f5391"
 
 [[document]]
 id = "TOML-0017"
@@ -632,9 +632,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 6309
-line_count = 248
-sha256 = "4e2f81640b3c0fd0fe8990831e3b5aed40d642d1ff9fad06ad85086356159cf9"
+size_bytes = 5861
+line_count = 230
+sha256 = "445bd8b5f9b17ce6ae87d9894946efe162818ffb8819e0c0ab55d20bce7a2b62"
 
 [[document]]
 id = "TOML-0044"
@@ -674,9 +674,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 425665
-line_count = 4448
-sha256 = "cab3baf8d8e231772ee7cb7817cbdfd1758ccc9007f86ff12cf90431f30604fa"
+size_bytes = 429485
+line_count = 4479
+sha256 = "7f2b8d1ea69b70b049462dc36eaa2666b87909a9dac2694f1bec7f92290ccbfe"
 
 [[document]]
 id = "TOML-0047"
@@ -13021,10 +13021,10 @@ zone = "registry_control"
 parse_ok = true
 has_authoritative = true
 table_count = 2
-markdown_ref_count = 54
-size_bytes = 737398
-line_count = 9455
-sha256 = "11a6ad254f85ff611e33992c7d744b79e900405cfeeb5f438734162568d6bf6b"
+markdown_ref_count = 55
+size_bytes = 758326
+line_count = 9993
+sha256 = "a84ecb3ec774a7e2def3de4acfd1a4c8d69e8f66d4f05823eef2f6279f6cb553"
 
 [[document]]
 id = "TOML-0929"
@@ -13120,9 +13120,9 @@ parse_ok = true
 has_authoritative = false
 table_count = 1
 markdown_ref_count = 0
-size_bytes = 16760
-line_count = 220
-sha256 = "0fa53adaa9b50dd661ef9c7ce327d2be27bb42ba3cd1076830b9eb3ce4b52a67"
+size_bytes = 18459
+line_count = 241
+sha256 = "ad78ed4ee303a98c805d2dd6deb422f33f17cbe0903657977a3b3a366a3a7e70"
 
 [[document]]
 id = "TOML-0936"
@@ -16039,16 +16039,16 @@ sha256 = "3f1d17c83f987a56e31afdf3490cba61f4aeb30e2553bd6ca8006256e1b118eb"
 [[document]]
 id = "TOML-1144"
 path = "registry/markdown_corpus_registry.toml"
-git_status = "untracked"
+git_status = "tracked"
 role = "registry_control_plane"
 zone = "registry_control"
 parse_ok = true
 has_authoritative = true
 table_count = 7
 markdown_ref_count = 0
-size_bytes = 106141
-line_count = 4128
-sha256 = "deefcd812e0a4e89af2f79cbb61c7b4c47dea8a3f6d0db06e4b7b71259e36249"
+size_bytes = 105238
+line_count = 4123
+sha256 = "aa96c83005ef9ff6e085d6b8df89024c7e1aeba2b1b9913fe6efb25678287c8c"
 
 [[document]]
 id = "TOML-1145"
@@ -16060,9 +16060,9 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 3408
+size_bytes = 3447
 line_count = 81
-sha256 = "d5e7c6b77bb1513edf080f0318fbd1da77507dc5a157f8f8bb9f38d88de9e1f1"
+sha256 = "043ae75c6587f12d7a52d45b2988fc96002b610b2c64f27ce64a1605d4a3ea10"
 
 [[document]]
 id = "TOML-1146"
@@ -16074,12 +16074,26 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 0
-size_bytes = 177978
-line_count = 5953
-sha256 = "939da130a723c34f168ee352b417d3d5ecbf9ff0965cae3e83acb0a8abbd01e0"
+size_bytes = 177102
+line_count = 5948
+sha256 = "7ee05e7809d3bf8e0187e09be0fa6b357044ffbc250a79ab9c2475a590be3341"
 
 [[document]]
 id = "TOML-1147"
+path = "registry/markdown_origin_audit.toml"
+git_status = "untracked"
+role = "registry_control_plane"
+zone = "registry_control"
+parse_ok = true
+has_authoritative = true
+table_count = 4
+markdown_ref_count = 0
+size_bytes = 141980
+line_count = 3923
+sha256 = "1dcf3669be1cbb1b4767337b537dd2be364f7a5fded20ce4c4ea0f3d17c4a6f8"
+
+[[document]]
+id = "TOML-1148"
 path = "registry/monograph.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16093,7 +16107,7 @@ line_count = 93
 sha256 = "839a5925f5ab148654024abb0d6fc327c2cf1522aa6eacedbd73442e0e6958c2"
 
 [[document]]
-id = "TOML-1148"
+id = "TOML-1149"
 path = "registry/navigator.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16107,7 +16121,7 @@ line_count = 120
 sha256 = "f7e4107bcd89fc95e5c8b174122fda28593f17ee6aee9d4b9736a0c87dcf544d"
 
 [[document]]
-id = "TOML-1149"
+id = "TOML-1150"
 path = "registry/next_actions.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16121,7 +16135,7 @@ line_count = 38
 sha256 = "d9e1c4e006890d0f960660f9cfe9ede562d0292a81a9740344d1b451f930be26"
 
 [[document]]
-id = "TOML-1150"
+id = "TOML-1151"
 path = "registry/next_actions_narrative.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16135,7 +16149,7 @@ line_count = 182
 sha256 = "be966c361192eb1cf1465cbd361f2486e792901f93e55dbbf3a2f9cc09a5fec6"
 
 [[document]]
-id = "TOML-1151"
+id = "TOML-1152"
 path = "registry/project.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16146,10 +16160,10 @@ table_count = 2
 markdown_ref_count = 0
 size_bytes = 9035
 line_count = 160
-sha256 = "defc9a03ad1a3fc6ff74982a4ed69d6fe2c5346ec56be40b5ddbd13755eb7fb0"
+sha256 = "66273396a708b242e6589915f234cbb0b14fb222a734d004a86d6a8df1d56414"
 
 [[document]]
-id = "TOML-1152"
+id = "TOML-1153"
 path = "registry/project_csv_canonical_datasets.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16163,7 +16177,7 @@ line_count = 906
 sha256 = "48a0354ed66c0e7f0a92bb583ceb4bbe9dca02058374202bef5a5499ca53972d"
 
 [[document]]
-id = "TOML-1153"
+id = "TOML-1154"
 path = "registry/project_csv_generated_artifacts.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16177,7 +16191,7 @@ line_count = 490
 sha256 = "70995d17398a56365b5fd5df60e25f1ed2b2a071076d2709f5852b28e2b7ac18"
 
 [[document]]
-id = "TOML-1154"
+id = "TOML-1155"
 path = "registry/project_csv_split_policy.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16191,7 +16205,7 @@ line_count = 1134
 sha256 = "72dcde13a18087e184078b201a4648b33cf265d25fb451daec3bebac61a88e5a"
 
 [[document]]
-id = "TOML-1155"
+id = "TOML-1156"
 path = "registry/reports_narratives.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16199,13 +16213,13 @@ zone = "registry_control"
 parse_ok = true
 has_authoritative = true
 table_count = 2
-markdown_ref_count = 47
-size_bytes = 837111
-line_count = 5398
-sha256 = "1fcf1ea82df76e5d0114bc35492b33529e85504c626a27158cb4101ff08a5e96"
+markdown_ref_count = 48
+size_bytes = 845674
+line_count = 5605
+sha256 = "dbb874ea7f17a1ce8077a2177f2fd0e5ef0c89b6f65a87091c7bc8d428f6e5ea"
 
 [[document]]
-id = "TOML-1156"
+id = "TOML-1157"
 path = "registry/requirements.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16219,7 +16233,7 @@ line_count = 94
 sha256 = "c84daf41f1f98679136e5057d89cd185c26f31e1b0d8d28a4815b4d999499369"
 
 [[document]]
-id = "TOML-1157"
+id = "TOML-1158"
 path = "registry/requirements_narrative.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16233,7 +16247,7 @@ line_count = 482
 sha256 = "cbc9d0dc45e05a1b5eddb9159a1f4dc29f9ce6f2a557bda31f850f0921edfaa1"
 
 [[document]]
-id = "TOML-1158"
+id = "TOML-1159"
 path = "registry/research_narratives.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16242,12 +16256,12 @@ parse_ok = true
 has_authoritative = true
 table_count = 2
 markdown_ref_count = 28
-size_bytes = 91837
-line_count = 2010
-sha256 = "71e8986521864330e3cf405c878e3e128bbc8d070571c3b0cc48b4a8fb0c439a"
+size_bytes = 96346
+line_count = 2148
+sha256 = "efe438b3bbb7232d7252d5a3ad7db124e93f3934a6dcb02c705e5ffb0b1cace6"
 
 [[document]]
-id = "TOML-1159"
+id = "TOML-1160"
 path = "registry/roadmap.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16261,7 +16275,7 @@ line_count = 113
 sha256 = "0862e92e259b35abc5e4449504b606a38af21e5ff5855de7163cac0d0497012e"
 
 [[document]]
-id = "TOML-1160"
+id = "TOML-1161"
 path = "registry/roadmap_narrative.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16275,7 +16289,7 @@ line_count = 774
 sha256 = "eb6ce0ef978e375c10de796d4335086aec3bd42c9fb90eb433c610b1e6eb4196"
 
 [[document]]
-id = "TOML-1161"
+id = "TOML-1162"
 path = "registry/todo.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16289,7 +16303,7 @@ line_count = 46
 sha256 = "2f7b101cdce4e5bc0aeff02a3c606022db305b493581b42096a93f8774cfbc9d"
 
 [[document]]
-id = "TOML-1162"
+id = "TOML-1163"
 path = "registry/todo_narrative.toml"
 git_status = "tracked"
 role = "registry_control_plane"
@@ -16303,23 +16317,23 @@ line_count = 160
 sha256 = "5c5a5b9794aa0585311c7c760c5f5ffc9cb04065e2b823e26acee0ec98b85708"
 
 [[document]]
-id = "TOML-1163"
+id = "TOML-1164"
 path = "registry/toml_inventory.toml"
-git_status = "untracked"
+git_status = "tracked"
 role = "registry_control_plane"
 zone = "registry_control"
 parse_ok = true
 has_authoritative = true
 table_count = 5
 markdown_ref_count = 0
-size_bytes = 442881
-line_count = 16332
-sha256 = "a996b774a183534583477e160db6d5276a3fb5a2e201b251d9b09b5c41dfce84"
+size_bytes = 443228
+line_count = 16346
+sha256 = "891895a2271108847aad9f26b69ce709a353604d7984afaa3373e6c7fe66ca62"
 
 [[document]]
-id = "TOML-1164"
+id = "TOML-1165"
 path = "registry/wave4_roadmap.toml"
-git_status = "untracked"
+git_status = "tracked"
 role = "registry_control_plane"
 zone = "registry_control"
 parse_ok = true

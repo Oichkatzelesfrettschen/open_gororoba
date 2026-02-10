@@ -212,6 +212,11 @@ def _iter_registry_refs(root: Path) -> dict[str, set[str]]:
     non_destination_registries = {
         "registry/knowledge_migration_plan.toml",
         "registry/markdown_inventory.toml",
+        "registry/markdown_corpus_registry.toml",
+        "registry/toml_inventory.toml",
+        "registry/wave4_roadmap.toml",
+        "registry/markdown_origin_audit.toml",
+        "registry/markdown_owner_map.toml",
     }
 
     def add(path: str, src: str) -> None:
