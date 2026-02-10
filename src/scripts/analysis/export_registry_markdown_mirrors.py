@@ -27,6 +27,7 @@ def _load_toml(path: Path) -> dict:
 
 
 def _write(path: Path, text: str) -> None:
+    text = _ascii_sanitize(text)
     _assert_ascii(text, str(path))
     if CHECK_MODE:
         existing = path.read_text(encoding="utf-8") if path.exists() else ""
