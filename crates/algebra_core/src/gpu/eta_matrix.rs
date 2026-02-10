@@ -30,17 +30,17 @@ __device__ int cd_basis_mul_sign(unsigned int dim, unsigned int p, unsigned int 
         unsigned int p_hi = (p >= half) ? 1 : 0;
         unsigned int q_hi = (q >= half) ? 1 : 0;
 
-        // Combine bits to determine case: 0=(F,F), 1=(F,T), 2=(T,F), 3=(T,T)
-        unsigned int case = (p_hi << 1) | q_hi;
+        // Combine bits to determine branch: 0=(F,F), 1=(F,T), 2=(T,F), 3=(T,T)
+        unsigned int branch = (p_hi << 1) | q_hi;
 
-        if (case == 0) {
+        if (branch == 0) {
             // (false, false): both in lower half, no change
-        } else if (case == 1) {
+        } else if (branch == 1) {
             // (false, true): (a,0) * (0,d) = (0, d*a)
             unsigned int qh = q - half;
             q = p;
             p = qh;
-        } else if (case == 2) {
+        } else if (branch == 2) {
             // (true, false): (0,b) * (c,0) = (0, b*conj(c))
             p -= half;
             if (q != 0) {
@@ -199,7 +199,7 @@ impl EtaMatrixGpu {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use crate::construction::cd_basis_mul_sign;
+    use crate::construction::cayley_dickson::cd_basis_mul_sign;
 
     // Real psi function from cd_basis_mul_sign
     fn real_psi(dim: usize, i: usize, j: usize) -> u8 {
