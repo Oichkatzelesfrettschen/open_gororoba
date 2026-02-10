@@ -103,26 +103,12 @@ sprint = 7
 
 [[insight]]
 id = "I-012"
-title = "The Pathion Cubic Anomaly and Anti-Diagonal Parity Mechanism"
-date = "2026-02-09"
+title = "The Pathion Cubic Anomaly"
+date = "2026-02-07"
 status = "verified"
-summary = """The Pathion Cubic Anomaly (C-448): dim=32 zero-divisor motif partition (8 heptacross + 7 mixed-degree) requires degree-3 GF(2) polynomial for separation in PG(3,2). Degrees 1 and 2 are insufficient. This establishes a non-linear geometric obstruction at the first post-sedenion doubling.
-
-Complete Mechanism (Sprints 20-26): The anti-diagonal parity theorem (C-520) provides the algebraic mechanism. For any triangle (a,b,c) of cross-assessor ZD pairs, define eta(x,y) = psi(lo_x,hi_y) XOR psi(hi_x,lo_y). The triangle is pure iff eta is constant across all three edges. The 2-bit invariant F in GF(2)^2 produces exact 1:3 pure:mixed ratio via Klein-four fiber structure (C-524). Verified with zero mismatches across 50.3M+ triangles at dims 128,256 combined.
-
-Dimensional Extensions (Sprint 27): Frustration oscillation (C-529) peaks at dim=128 (0.388), then monotonically decreases toward 3/8 limit (0.378 at dim=1024, 0.381 at dim=512). GF(2) polynomial degree scales as log2(dim) (C-527). Component scaling laws (dim/2-1 components, dim/2-2 nodes each) verified across 6 dimensions (16-512). psi=1 fraction converges toward 50% (C-534)."""
-claims = [
-  "C-443", "C-444", "C-445", "C-446", "C-447", "C-448",
-  "C-480", "C-481", "C-489",
-  "C-515", "C-516", "C-517", "C-519", "C-520", "C-521", "C-522",
-  "C-523", "C-524", "C-525", "C-526", "C-527",
-  "C-528", "C-529", "C-530",
-  "C-532", "C-533", "C-534", "C-535",
-  "C-557", "C-558", "C-559"
-]
+summary = "dim=32 (pathion) 8/7 motif split requires degree-3 GF(2) polynomial, NOT degree 4. Degrees 1,2 fail. This proves the polynomial controlling motif-class partition is genuinely cubic."
+claims = ["C-445", "C-446", "C-447", "C-448"]
 sprint = 8
-mechanism_sprint = 25
-extension_sprint = 27
 
 [[insight]]
 id = "I-013"
@@ -231,10 +217,3 @@ status = "verified"
 summary = "Phase 2c tests representative sedenion signatures (4 of 16 possible gamma vectors) at dim=16, confirming the universal non-commutativity property extends to sedenions. Test scope: test_sedenion_family_all_signatures_commutativity (commutativity check); test_sedenion_zero_divisor_landscape (ZD census, sampled subset). Results: 0/4 representative signatures commutative (100% non-commutative, consistent with dims 4-8); split sedenions show monotonically >= ZD pairs vs standard sedenions. Key findings: (1) Non-commutativity is now verified at dim=4 (quaternions), dim=8 (octonions), and dim=16 (sedenions) - a structural property of the CD doubling formula, NOT metric-dependent. (2) Zero-divisor count exhibits monotonic gamma-dependence across all tested dimensions: signatures with more +1 entries tend to have more ZD pairs. (3) Unlike octonions (division algebra at standard [-1,-1,-1]), full sedenion landscape requires exhaustive enum (O(dim^4) pairs); Phase 2c uses targeted sampling. Supports C-555, C-556 and the complete architecture hierarchy: Construction Method >> Dimension >> Gamma Parameter. Transitioning from Phase 2 empirical census to Phase 2d documentation."
 claims = ["C-555", "C-556"]
 sprint = 27
-
-# RESERVED: I-025 through I-035 for Phase 3a-3d (Algebra Construction Methods Census)
-# Phase 3a: Clifford Algebra Insights (I-025-026)
-# Phase 3b: Jordan Algebra Insights (I-027-029)
-# Phase 3c: Exceptional Algebra Insights (I-030-031, conditional)
-# Phase 3d: Synthesis Insights (I-032-035, conditional)
-# These placeholders are PENDING implementation and will be populated as Phase 3 executes.

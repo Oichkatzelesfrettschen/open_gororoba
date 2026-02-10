@@ -13,6 +13,7 @@
 //! - Guo, Zheng & Shi, PRE 65 (2002) 046308 (forcing scheme)
 
 use ndarray::{Array2, Array3};
+use std::f64::consts::PI;
 
 pub mod turbulence;
 
@@ -311,6 +312,109 @@ pub fn simulate_poiseuille(
     }
 }
 
+/// Results from Kolmogorov flow simulation (sinusoidal forcing, fully periodic).
+#[derive(Clone)]
+pub struct KolmogorovFlowResult {
+    /// Final x-velocity field
+    pub ux: Array2<f64>,
+    /// Final y-velocity field
+    pub uy: Array2<f64>,
+    /// Final density field
+    pub rho: Array2<f64>,
+    /// Mass history over time
+    pub mass_history: Vec<f64>,
+    /// Mean enstrophy (mean square vorticity)
+    pub enstrophy: f64,
+    /// Kinematic viscosity
+    pub viscosity: f64,
+}
+
+/// Compute mean enstrophy from velocity fields using finite differences.
+///
+/// Enstrophy = <|omega|^2> where omega = duy/dx - dux/dy (2D vorticity).
+fn compute_enstrophy(ux: &Array2<f64>, uy: &Array2<f64>) -> f64 {
+    let (nx, ny) = ux.dim();
+    let mut total = 0.0;
+    for x in 0..nx {
+        for y in 0..ny {
+            let xp = (x + 1) % nx;
+            let yp = (y + 1) % ny;
+            // Central differences with periodic wrapping
+            let duy_dx = (uy[[xp, y]] - uy[[(x + nx - 1) % nx, y]]) / 2.0;
+            let dux_dy = (ux[[x, yp]] - ux[[x, (y + ny - 1) % ny]]) / 2.0;
+            let omega = duy_dx - dux_dy;
+            total += omega * omega;
+        }
+    }
+    total / (nx * ny) as f64
+}
+
+/// Simulate 2D Kolmogorov flow: sinusoidal forcing in a fully periodic domain.
+///
+/// The Kolmogorov flow applies a body force `fx(y) = A * sin(2*pi*n*y/ny)`
+/// in the x-direction at wavenumber `force_mode`. This is the standard setup
+/// for studying 2D turbulence transition:
+///
+/// - At low Re, the flow is a simple sinusoidal profile (laminar).
+/// - At Re > ~40 (for force_mode=1), secondary instabilities appear.
+/// - At higher Re, the flow becomes chaotic with broadband energy spectrum.
+///
+/// # Arguments
+/// - `nx`, `ny`: Grid dimensions
+/// - `tau`: BGK relaxation time (viscosity = (tau - 0.5) / 3)
+/// - `force_amp`: Amplitude of the sinusoidal forcing
+/// - `force_mode`: Wavenumber of the forcing (1 = fundamental, 2 = second harmonic)
+/// - `n_steps`: Number of LBM timesteps
+pub fn simulate_kolmogorov_flow(
+    nx: usize,
+    ny: usize,
+    tau: f64,
+    force_amp: f64,
+    force_mode: usize,
+    n_steps: usize,
+) -> KolmogorovFlowResult {
+    let mut sim = D2Q9::new(nx, ny, tau);
+    let nu = sim.viscosity();
+    let mut mass_history = Vec::with_capacity(n_steps / 10 + 1);
+
+    for step in 0..n_steps {
+        if step % 10 == 0 {
+            mass_history.push(sim.total_mass());
+        }
+
+        // BGK collision on all nodes (fully periodic, no walls)
+        sim.collide(0, ny);
+
+        // Apply sinusoidal Kolmogorov forcing: fx(y) = A * sin(2*pi*n*y/ny)
+        let (rho, _, _) = sim.macroscopic();
+        for i in 0..9 {
+            let cx = CX[i] as f64;
+            for x in 0..nx {
+                for y in 0..ny {
+                    let fy_force = force_amp
+                        * (2.0 * PI * force_mode as f64 * y as f64 / ny as f64).sin();
+                    sim.f[[i, x, y]] += 3.0 * W[i] * cx * fy_force * rho[[x, y]];
+                }
+            }
+        }
+
+        // Streaming (periodic boundaries, no bounce-back)
+        sim.stream();
+    }
+
+    let (rho, ux, uy) = sim.macroscopic();
+    let enstrophy = compute_enstrophy(&ux, &uy);
+
+    KolmogorovFlowResult {
+        ux,
+        uy,
+        rho,
+        mass_history,
+        enstrophy,
+        viscosity: nu,
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -467,5 +571,109 @@ mod tests {
 
         let sim2 = D2Q9::new(4, 4, 0.8);
         assert_relative_eq!(sim2.viscosity(), 0.3 / 3.0, epsilon = 1e-14);
+    }
+
+    // -- Kolmogorov flow tests -----------------------------------------------
+
+    #[test]
+    fn test_kolmogorov_mass_conservation() {
+        let result = simulate_kolmogorov_flow(16, 16, 0.8, 1e-5, 1, 200);
+        let initial = result.mass_history[0];
+        let final_mass = *result.mass_history.last().unwrap();
+        // Mass conservation: forcing adds momentum but not mass
+        // (Guo forcing preserves mass to machine precision)
+        let rel_drift = (final_mass - initial).abs() / initial;
+        assert!(
+            rel_drift < 1e-6,
+            "Mass drift {:.2e} exceeds tolerance",
+            rel_drift
+        );
+    }
+
+    #[test]
+    fn test_kolmogorov_develops_flow() {
+        let result = simulate_kolmogorov_flow(32, 32, 0.8, 1e-4, 1, 500);
+        // After 500 steps with forcing, velocity field should be nonzero
+        let max_ux: f64 = result
+            .ux
+            .iter()
+            .map(|x| x.abs())
+            .fold(0.0_f64, f64::max);
+        assert!(
+            max_ux > 1e-8,
+            "Flow should develop: max |ux| = {:.2e}",
+            max_ux
+        );
+    }
+
+    #[test]
+    fn test_kolmogorov_sinusoidal_profile() {
+        // With low Re forcing, steady state should be approximately sinusoidal
+        let ny = 32;
+        let result = simulate_kolmogorov_flow(8, ny, 0.9, 1e-5, 1, 2000);
+        // At steady state, ux(y) ~ A * sin(2*pi*y/ny)
+        // Check: mid-channel should have larger velocity than near boundaries
+        let mid = ny / 2; // y = ny/4 is peak of sin
+        let quarter = ny / 4;
+        let ux_mid: f64 = (0..8).map(|x| result.ux[[x, mid]]).sum::<f64>() / 8.0;
+        let ux_quarter: f64 = (0..8).map(|x| result.ux[[x, quarter]]).sum::<f64>() / 8.0;
+        // For sin(2*pi*y/ny): peak at y=ny/4, zero crossing at y=ny/2
+        // So ux_quarter should be larger in magnitude than ux_mid
+        assert!(
+            ux_quarter.abs() > ux_mid.abs(),
+            "Sinusoidal profile: |ux(ny/4)|={:.6} should exceed |ux(ny/2)|={:.6}",
+            ux_quarter.abs(),
+            ux_mid.abs()
+        );
+    }
+
+    #[test]
+    fn test_kolmogorov_enstrophy_positive() {
+        let result = simulate_kolmogorov_flow(16, 16, 0.8, 1e-4, 1, 300);
+        assert!(
+            result.enstrophy > 0.0,
+            "Enstrophy should be positive after forcing"
+        );
+        assert!(result.enstrophy.is_finite());
+    }
+
+    #[test]
+    fn test_kolmogorov_viscosity_stored() {
+        let tau = 0.75;
+        let result = simulate_kolmogorov_flow(8, 8, tau, 1e-5, 1, 10);
+        let expected_nu = (tau - 0.5) / 3.0;
+        assert_relative_eq!(result.viscosity, expected_nu, epsilon = 1e-14);
+    }
+
+    #[test]
+    fn test_compute_enstrophy_zero_field() {
+        let ux = Array2::zeros((8, 8));
+        let uy = Array2::zeros((8, 8));
+        assert_eq!(compute_enstrophy(&ux, &uy), 0.0);
+    }
+
+    #[test]
+    fn test_compute_enstrophy_sinusoidal_flow() {
+        // Periodic sinusoidal flow: ux = A*sin(2*pi*y/N), uy = 0
+        // Vorticity = -dux/dy = -A*(2*pi/N)*cos(2*pi*y/N)
+        // Enstrophy = A^2*(2*pi/N)^2 * <cos^2> = A^2*(2*pi/N)^2 * 0.5
+        let n = 64;
+        let amp = 0.1;
+        let mut ux = Array2::zeros((n, n));
+        let uy = Array2::zeros((n, n));
+        for x in 0..n {
+            for y in 0..n {
+                ux[[x, y]] = amp * (2.0 * PI * y as f64 / n as f64).sin();
+            }
+        }
+        let enst = compute_enstrophy(&ux, &uy);
+        let k = 2.0 * PI / n as f64;
+        let expected = amp * amp * k * k * 0.5;
+        assert!(
+            (enst - expected).abs() / expected < 0.01,
+            "Enstrophy {:.6e} should be near {:.6e} (1% tolerance)",
+            enst,
+            expected
+        );
     }
 }

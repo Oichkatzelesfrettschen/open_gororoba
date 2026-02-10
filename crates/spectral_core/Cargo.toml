@@ -10,6 +10,7 @@ num-complex = { workspace = true }
 ndarray = { workspace = true }
 rustfft = { workspace = true }
 ndrustfft = { workspace = true }
+algebra_core = { path = "../algebra_core" }
 
 [dev-dependencies]
 approx = { workspace = true }

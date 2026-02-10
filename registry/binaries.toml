@@ -224,24 +224,6 @@ crate = "gororoba_cli"
 description = "Convert CSV corpora to TOML scroll datasets and canonical index manifests"
 
 [[binary]]
-name = "cross-stack-locality"
-crate = "gororoba_cli"
-description = "ALP cross-stack locality comparison across E10, ET DMZ, and ZD constraint systems"
-experiment = "E-011"
-
-[[binary]]
-name = "et-billiard"
-crate = "gororoba_cli"
-description = "ET discrete billiard phase structure: symbolic dynamics vs spectroscopy bands"
-experiment = "E-012"
-
-[[binary]]
-name = "sky-limit-set"
-crate = "gororoba_cli"
-description = "Compare ET skybox pattern invariants to Coxeter group limit set invariants"
-experiment = "E-013"
-
-[[binary]]
 name = "warp-ring-integration"
 crate = "gororoba_cli"
-description = "Integrate turbulence triads and E7 geometry into warp-ring projection and visualization"
+description = "8-step pipeline: D2Q9 LBM -> spectral triads -> p-adic/neg-dim warp -> metamaterial TMM filter -> E7 algebra -> hypergraph topology -> GRIN lensing -> visualization"

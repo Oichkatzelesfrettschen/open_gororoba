@@ -4445,34 +4445,3 @@ where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_s
 status = "Verified"
 last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: Monotonic property split >= standard observed in sampled subset. Scaling hypothesis: ZD count monotone non-decreasing in count(gamma[i] = +1). Test scope: O(dim^2) sampled 2-blade pairs (limited range), not exhaustive. WHAT WOULD REFUTE: finding split sedenion signature with fewer ZD pairs than standard, or finding that standard sedenions have many ZD pairs (contradicting commutativity-independence). Note: exhaustive dim=16 census (~1M 2-blade pairs) not performed; Phase 2c limited to sampled proof-of-concept."
-
-[[claim]]
-id = "C-557"
-statement = "Component Scaling Laws Verified at Practical Dimensions: The Cayley-Dickson zero-divisor motif component count formula (dim/2 - 1 components, dim/2 - 2 nodes per component) holds exactly across all tested dimensions 16, 32, 64, 128, 256, and 512. This validates the universal scaling pattern that enables prediction of graph structure at any dimension without explicit enumeration."
-where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_component_scaling_across_dimensions)"
-status = "Verified"
-last_verified = "2026-02-09"
-what_would_verify_refute = "VERIFIED: Exhaustive component enumeration at 6 dimensions (16 through 512) using motif_components_for_cross_assessors(dim). Component count checked against formula dim/2-1; node count per component checked against dim/2-2. All 6 dimensions match exactly. WHAT WOULD REFUTE: any dimension where actual component count deviates from dim/2-1 by more than 1, or node count deviates from dim/2-2 by more than 1."
-
-[[claim]]
-id = "C-558"
-statement = "Frustration Ratio and Eta Balance Law Verified at dim=512: The frustration ratio at dim=512 is 0.381068, continuing the monotone convergence from dim=128 peak (0.388) toward the 3/8 = 0.375 asymptote. Eta edge balance is perfect (total eta=0 equals total eta=1 = 2,096,262), confirming the Half-Half Edge Law (C-517). This extends the frustration oscillation sequence (C-529) to a new dimension and validates the convergence hypothesis at practical computational limits."
-where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_frustration_and_apt_dim512_full)"
-status = "Verified"
-last_verified = "2026-02-09"
-what_would_verify_refute = "VERIFIED: BFS coboundary test on 255 components at dim=512 (O(V+E) per component, ~44 seconds runtime). Cycle rank b1 = 4,128,009; frustrated edges = 1,573,216; ratio = 0.381068. Eta edge distribution: 2,096,262 edges with eta=0 (even), 2,096,262 edges with eta=1 (odd) -- perfect balance. WHAT WOULD REFUTE: frustration ratio increasing above 0.385 (breaking monotone decrease), or eta balance deviation >1% (breaking C-517)."
-
-[[claim]]
-id = "C-559"
-statement = "Anti-Diagonal Parity Theorem Mechanism Verified at dim=256 with Zero Mismatches: Triangle enumeration at dim=256 yields 40,044,312 triangles: 10,011,078 pure (exactly 25%) and 30,033,234 mixed (exactly 75%), matching the 1:3 ratio predicted by the Klein-four fiber structure (F in GF(2)^2). Zero mismatches when checking APT consistency (pure iff eta constant). This is the largest practical brute-force verification of the mechanism and confirms 100% accuracy of the parity invariant."
-where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_pathion_apt_mechanism_dim256_regression)"
-status = "Verified"
-last_verified = "2026-02-09"
-what_would_verify_refute = "VERIFIED: Complete triangle enumeration on 127 components at dim=256 (40M triangles scanned in ~7 seconds). Pure count = 10,011,078 = total/4 (exact). Mixed count = 30,033,234 = 3*total/4 (exact). Klein-four fiber check: for each triangle (a,b,c), compute F = (eta_ab XOR eta_bc, eta_bc XOR eta_ac) in GF(2)^2. Pure triangles have F = (0,0) with 100% consistency. Mismatches = 0 (no counterexamples found). WHAT WOULD REFUTE: finding any triangle where actual pure/mixed classification contradicts the eta-based F invariant, or pure count deviating from total/4 by more than 10 across all 127 components."
-
-# RESERVED: C-560 through C-573 for Phase 3a-3d (Algebra Construction Methods Census)
-# Phase 3a: Clifford Algebras (C-560-563)
-# Phase 3b: Jordan Algebras (C-564-568)
-# Phase 3c: Exceptional Algebras (C-569-571, conditional)
-# Phase 3d: Synthesis Claims (C-572-573, conditional)
-# These placeholders are PENDING implementation and will be populated as Phase 3 executes.

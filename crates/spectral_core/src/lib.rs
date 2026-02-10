@@ -13,6 +13,7 @@
 
 pub mod ndfft;
 pub mod neg_dim;
+pub mod warp_physics;
 
 pub use neg_dim::{
     build_kinetic_operator, caffarelli_silvestre_eigenvalues, eigenvalues_imaginary_time,

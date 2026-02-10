@@ -71,6 +71,33 @@ def _load_optional_toml(path: Path) -> dict:
     return _load_toml(path)
 
 
+def _ascii_sanitize(text: str) -> str:
+    replacements = {
+        "\u2018": "'",
+        "\u2019": "'",
+        "\u201c": '"',
+        "\u201d": '"',
+        "\u2013": "-",
+        "\u2014": "-",
+        "\u2026": "...",
+        "\u00a0": " ",
+    }
+    out: list[str] = []
+    for ch in text:
+        mapped = replacements.get(ch, ch)
+        for item in mapped:
+            code = ord(item)
+            if item in {"\n", "\r", "\t"}:
+                out.append(item)
+            elif code < 32:
+                out.append(" ")
+            elif code <= 127:
+                out.append(item)
+            else:
+                out.append(f"<U+{code:04X}>")
+    return "".join(out)
+
+
 def _narrative_map(data: dict) -> tuple[str, dict[str, str]]:
     section = data.get("insights_narrative") or data.get("experiments_narrative") or {}
     preamble = str(section.get("preamble_markdown", "")).strip()
@@ -1529,6 +1556,30 @@ def export_data_artifact_narratives_legacy(repo_root: Path) -> None:
         _write(path, "\n".join(lines))
 
 
+def export_monograph_legacy(repo_root: Path) -> None:
+    data = _load_toml(repo_root / "registry/monograph.toml")
+    docs = sorted(data.get("document", []), key=lambda item: item.get("path", ""))
+    for row in docs:
+        rel_path = str(row.get("path", "")).strip()
+        if not rel_path:
+            continue
+        path = repo_root / rel_path
+        body = _ascii_sanitize(str(row.get("body_markdown", "")).strip("\n"))
+        lines: list[str] = [
+            "<!-- AUTO-GENERATED: DO NOT EDIT -->",
+            "<!-- Source of truth: registry/monograph.toml -->",
+            "",
+        ]
+        if body:
+            lines.extend(body.splitlines())
+        else:
+            lines.append(f"# {row.get('title', Path(rel_path).stem)}")
+            lines.append("")
+            lines.append("(No body_markdown captured in registry/monograph.toml.)")
+        lines.append("")
+        _write(path, "\n".join(lines))
+
+
 def export_reports_narratives(repo_root: Path, out_path: Path) -> None:
     data = _load_toml(repo_root / "registry/reports_narratives.toml")
     meta = data.get("reports_narratives", {})
@@ -1711,6 +1762,7 @@ def main() -> int:
         export_book_docs_legacy(repo_root)
         export_docs_root_narratives_legacy(repo_root)
         export_data_artifact_narratives_legacy(repo_root)
+        export_monograph_legacy(repo_root)
         export_reports_narratives_legacy(repo_root)
         export_docs_convos_legacy(repo_root)
 
