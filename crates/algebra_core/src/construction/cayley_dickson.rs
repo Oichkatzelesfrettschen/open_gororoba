@@ -3831,7 +3831,7 @@ mod tests {
                                 eiej[idx] -= ejei[idx];
                             }
 
-                            let mut ekEl = cd_multiply_split(
+                            let ek_el = cd_multiply_split(
                                 &{
                                     let mut v = vec![0.0; dim];
                                     v[k] = 1.0;
@@ -3858,7 +3858,7 @@ mod tests {
                                 &sig,
                             );
                             for idx in 0..dim {
-                                ekEl[idx] -= elEk[idx];
+                                ek_el[idx] -= el_ek[idx];
                             }
 
                             // Multiply the two wedge products
@@ -4107,7 +4107,7 @@ mod tests {
                                 eiej[idx] -= ejei[idx];
                             }
 
-                            let mut ekEl = cd_multiply_split(
+                            let ek_el = cd_multiply_split(
                                 &{
                                     let mut v = vec![0.0; dim];
                                     v[k] = 1.0;
@@ -4134,7 +4134,7 @@ mod tests {
                                 &sig,
                             );
                             for idx in 0..dim {
-                                ekEl[idx] -= elEk[idx];
+                                ek_el[idx] -= el_ek[idx];
                             }
 
                             let product = cd_multiply_split(&eiej, &ekEl, &sig);
