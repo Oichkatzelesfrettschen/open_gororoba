@@ -361,3 +361,95 @@ output_path_refs = ["data/csv/separating_degree_formula_sweep.csv"]
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
 
+[[experiment]]
+id = "E-016"
+title = "A-infinity Homotopy Gravastar Obstruction Sweep"
+binary = "gravastar-sweep"
+binary_registered = true
+binary_experiment_declared = ""
+method = "Construct a SedenionAInfinity algebra (m_2=CD product, m_3=associator) and compute the obstruction norm (Frobenius / dim^{3/2}). Map obstruction to Bowers-Liang anisotropy parameter lambda via linear coupling. Sweep coupling from 0 to 0.5 and solve the anisotropic gravastar TOV equation at each point to find the stability window."
+input = "None (sedenion structure table + polytropic EOS computed on the fly)"
+output = ["data/csv/gravastar_homotopy_obstruction_sweep.csv"]
+run = "cargo test -p cosmology_core --release --lib -- homotopy_bridge --nocapture"
+run_command_sha256 = ""
+claims = ["C-611", "C-612", "C-613", "C-614", "C-615"]
+claim_refs = ["C-611", "C-612", "C-613", "C-614", "C-615"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-016"
+input_path_refs = []
+output_path_refs = ["data/csv/gravastar_homotopy_obstruction_sweep.csv"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-017"
+title = "7-Clique Multi-Resonator Entropy Trap Simulation"
+binary = "entropy-trap"
+binary_registered = false
+binary_experiment_declared = ""
+method = "Build a 7-channel TCMT multi-resonator system from sedenion box-kite components. Each channel is an independent KerrCavity with resonance frequency offset by the component index. Verify zero crosstalk for uncoupled channels, compute per-channel Shannon entropy and pairwise mutual information via 2D histogram binning, and sweep absorption spectrum across all 7 resonance frequencies."
+input = "None (box-kite structure + normalized cavity parameters computed on the fly)"
+output = ["data/csv/entropy_trap_7clique_absorption.csv", "data/csv/entropy_trap_7clique_summary.csv"]
+run = "cargo test -p optics_core --release --lib -- entropy_trap --nocapture"
+run_command_sha256 = ""
+claims = ["C-616", "C-617", "C-618", "C-619", "C-620"]
+claim_refs = ["C-616", "C-617", "C-618", "C-619", "C-620"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-017"
+input_path_refs = []
+output_path_refs = ["data/csv/entropy_trap_7clique_absorption.csv", "data/csv/entropy_trap_7clique_summary.csv"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-018"
+title = "He-4 BEC Thermodynamics and Two-Fluid Dynamics"
+binary = "he4-superfluid"
+binary_registered = false
+binary_experiment_declared = ""
+method = "Compute ideal BEC critical temperature via zeta(3/2) formula, verify condensate fraction law 1-(T/T_c)^(3/2), validate Landau superfluid density fraction with exponent 5.6, and simulate 0D two-fluid relaxation dynamics using RK4 with relaxation timescales tau_rho = 1 us, tau_t = 100 us. Verify mass conservation, equilibrium relaxation, and thermal relaxation through the lambda transition."
+input = "None (physical constants for He-4 at SVP)"
+output = ["data/csv/he4_bec_condensate_fraction.csv", "data/csv/he4_two_fluid_evolution.csv"]
+run = "cargo test -p quantum_core --release --lib -- superfluid --nocapture && cargo test -p quantum_core --release --lib -- two_fluid --nocapture"
+run_command_sha256 = ""
+claims = ["C-621", "C-622", "C-623", "C-624", "C-625", "C-626", "C-627"]
+claim_refs = ["C-621", "C-622", "C-623", "C-624", "C-625", "C-626", "C-627"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-018"
+input_path_refs = []
+output_path_refs = ["data/csv/he4_bec_condensate_fraction.csv", "data/csv/he4_two_fluid_evolution.csv"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-019"
+title = "Gross-Pitaevskii Ground State and Vortex Calculation"
+binary = "he4-superfluid"
+binary_registered = false
+binary_experiment_declared = ""
+method = "Solve the Gross-Pitaevskii equation using Strang split-operator method with FFT-based kinetic evolution. Compute ground states via imaginary-time propagation in a harmonic trap (omega=1), verifying energy recovery E=omega/2 for the linear case (g=0). Test that repulsive interactions (g=50) raise the energy above the linear value. Verify norm preservation during real-time evolution and density centering on the trap."
+input = "None (harmonic trap potential, interaction parameter g)"
+output = ["data/csv/he4_gpe_ground_state.csv"]
+run = "cargo test -p quantum_core --release --lib -- gross_pitaevskii --nocapture"
+run_command_sha256 = ""
+claims = ["C-628", "C-629"]
+claim_refs = ["C-628", "C-629"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-019"
+input_path_refs = []
+output_path_refs = ["data/csv/he4_gpe_ground_state.csv"]
+dataset_refs = []
+reproducibility_class = "deterministic_replay"
+

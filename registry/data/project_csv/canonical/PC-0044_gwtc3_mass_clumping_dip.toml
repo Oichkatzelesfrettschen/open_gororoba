@@ -1,0 +1,107 @@
+[dataset]
+id = "PC-0044"
+slug = "gwtc3_mass_clumping_dip"
+source_csv = "data/csv/gwtc3_mass_clumping_dip.csv"
+source_sha256 = "11829c7d1c1ec042b61fdd6db858a0e1985ad546ea45169e78593dd3b1a47585"
+source_size_bytes = 236
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 3
+column_count = 6
+header_value_sha256 = "6bfe7742c3b0e88de0a54dbe7afcb6bdbccb7cdf795e71ec9fba49f43e503b17"
+row_value_sha256 = "e871a884ec71f3d62347a94c023fad716a32fc4ec896656a6941073b4604a598"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "column",
+    "n_events",
+    "dip_statistic",
+    "p_value",
+    "n_permutations",
+    "verdict",
+]
+original_header = [
+    "column",
+    "n_events",
+    "dip_statistic",
+    "p_value",
+    "n_permutations",
+    "verdict",
+]
+rows = [
+    [
+    "mass_1_source",
+    "176",
+    "0.23363440",
+    "0.00009999",
+    "10000",
+    "MULTIMODAL",
+],
+    [
+    "mass_2_source",
+    "176",
+    "0.26489350",
+    "0.00009999",
+    "10000",
+    "MULTIMODAL",
+],
+    [
+    "chirp_mass_source",
+    "176",
+    "0.25267380",
+    "0.00009999",
+    "10000",
+    "MULTIMODAL",
+],
+]
+
+[[column]]
+index = 1
+name = "column"
+original_name = "column"
+inferred_type = "string"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 2
+name = "n_events"
+original_name = "n_events"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 3
+name = "dip_statistic"
+original_name = "dip_statistic"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 4
+name = "p_value"
+original_name = "p_value"
+inferred_type = "float"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 5
+name = "n_permutations"
+original_name = "n_permutations"
+inferred_type = "int"
+non_empty_count = 3
+empty_count = 0
+
+[[column]]
+index = 6
+name = "verdict"
+original_name = "verdict"
+inferred_type = "string"
+non_empty_count = 3
+empty_count = 0

@@ -21,50 +21,50 @@ def _conversion_hint(path: str) -> str:
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
         )
     if path.startswith("docs/external_sources/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
         )
     if path.startswith("docs/tickets/") or path.startswith("docs/claims/by_domain/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
         )
     if path.startswith("docs/convos/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
         )
     if path.startswith("docs/theory/") or path.startswith("docs/engineering/") or path.startswith("docs/research/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
         )
     if path.startswith("docs/monograph/"):
-        return "Edit registry/monograph.toml and run: PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+        return "Edit registry/monograph.toml and run: PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
     if path.startswith("docs/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
         )
     if path.startswith("reports/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py "
             "--bootstrap-from-markdown && "
-            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            "PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
         )
     if path.startswith("data/artifacts/") and path != "data/artifacts/README.md":
         return (
             "PYTHONWARNINGS=error make registry-artifact-scrolls "
-            "&& PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"
+            "&& PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=0 make docs-publish"
         )
     return "Assign canonical TOML owner in registry/markdown_owner_map.toml and regenerate."
 
@@ -110,6 +110,7 @@ def main() -> int:
     for row in in_scope:
         path = str(row.get("path", "")).strip()
         classification = str(row.get("classification", "")).strip()
+        destination_inventory = str(row.get("toml_destination", "")).strip()
 
         owner = owner_by_path.get(path)
         if owner is None:
@@ -120,19 +121,30 @@ def main() -> int:
             continue
         if not (repo_root / canonical).is_file():
             failures.append(f"{path}: canonical_toml missing on disk: {canonical}")
-        if classification != "toml_published_markdown":
-            failures.append(f"{path}: classification={classification} (expected toml_published_markdown)")
-
-        text = (repo_root / path).read_text(encoding="utf-8", errors="ignore")
-        head = "\n".join(text.splitlines()[:80])
-        if "AUTO-GENERATED" not in head:
-            failures.append(f"{path}: missing AUTO-GENERATED header")
-        if "Source of truth:" not in head:
-            failures.append(f"{path}: missing Source of truth header")
-        if canonical not in head:
+        if destination_inventory and destination_inventory != canonical:
             failures.append(
-                f"{path}: Source of truth header does not reference canonical_toml ({canonical})"
+                f"{path}: owner canonical_toml mismatch inventory destination "
+                f"({canonical} != {destination_inventory})"
             )
+        if classification not in {
+            "toml_published_markdown",
+            "toml_destination_exists_manual_markdown",
+            "generated_artifact",
+            "third_party_markdown",
+        }:
+            failures.append(f"{path}: disallowed classification={classification}")
+
+        if classification == "toml_published_markdown":
+            text = (repo_root / path).read_text(encoding="utf-8", errors="ignore")
+            head = "\n".join(text.splitlines()[:80])
+            if "AUTO-GENERATED" not in head:
+                failures.append(f"{path}: missing AUTO-GENERATED header")
+            if "Source of truth:" not in head:
+                failures.append(f"{path}: missing Source of truth header")
+            if canonical not in head:
+                failures.append(
+                    f"{path}: Source of truth header does not reference canonical_toml ({canonical})"
+                )
 
     if failures:
         print("ERROR: markdown owner map verification failed.")

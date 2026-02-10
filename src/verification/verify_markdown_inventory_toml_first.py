@@ -3,7 +3,9 @@
 Verify that markdown inventory remains TOML-first.
 
 Policy:
-- Project markdown must classify as toml_published_markdown.
+- Tracked project markdown must classify as toml_published_markdown.
+- Ignored project markdown may classify as toml_destination_exists_manual_markdown
+  while migration is in progress, but must have explicit TOML destination.
 - Non-project markdown may classify as third_party_markdown.
 - No unbacked manual markdown is allowed.
 """
@@ -14,7 +16,12 @@ from pathlib import Path
 import tomllib
 
 
-ALLOWED = {"toml_published_markdown", "third_party_markdown", "generated_artifact"}
+ALLOWED = {
+    "toml_published_markdown",
+    "toml_destination_exists_manual_markdown",
+    "third_party_markdown",
+    "generated_artifact",
+}
 TRACKED_ALLOWLIST = {
     "AGENTS.md",
     "CLAUDE.md",
@@ -61,10 +68,20 @@ def main() -> int:
             if git_status == "tracked":
                 failures.append(f"{path}: generated_artifact must not be tracked")
             continue
+        if classification == "toml_destination_exists_manual_markdown":
+            if git_status == "tracked":
+                failures.append(
+                    f"{path}: manual markdown with TOML destination must not be tracked"
+                )
+            if not destination:
+                failures.append(f"{path}: missing toml_destination for manual markdown")
+            elif not (repo_root / destination).is_file():
+                failures.append(f"{path}: missing toml_destination file {destination}")
+            continue
         if git_status == "tracked" and path not in TRACKED_ALLOWLIST:
             failures.append(f"{path}: tracked markdown outside allowlist")
         if classification == "toml_published_markdown":
-            if not generated_declared:
+            if not generated_declared and not path.startswith("build/docs/generated/"):
                 failures.append(
                     f"{path}: toml_published_markdown without explicit generated marker header"
                 )

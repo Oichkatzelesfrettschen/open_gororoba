@@ -20,6 +20,7 @@
 
 pub mod casimir;
 pub mod fractional_schrodinger;
+pub mod gross_pitaevskii;
 pub mod grover;
 pub mod hardware;
 pub mod harper_chern;
@@ -30,8 +31,10 @@ pub mod mps;
 pub mod peps;
 pub mod qua_ten_net_bridge;
 pub mod spinor_mechanics;
+pub mod superfluid;
 pub mod tensor_network_classical;
 pub mod tensor_networks;
+pub mod two_fluid;
 
 #[cfg(feature = "gpu")]
 pub mod gpu;

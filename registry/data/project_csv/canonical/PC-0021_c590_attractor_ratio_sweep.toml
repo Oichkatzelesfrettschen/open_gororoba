@@ -1,0 +1,131 @@
+[dataset]
+id = "PC-0021"
+slug = "c590_attractor_ratio_sweep"
+source_csv = "data/csv/c590_attractor_ratio_sweep.csv"
+source_sha256 = "51ed2d971ac9db2a675b5108b69e1bea5b1343e1759eb8ed56737ab6fc1e046f"
+source_size_bytes = 462
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 6
+column_count = 6
+header_value_sha256 = "8132bbef746d66e8a444561cf3d8a66244f4b1dc059b653c6a9cd230cf009b4d"
+row_value_sha256 = "4bf9ce5131d358ba5fce112e8719aaca32f59cc6206a92714cd9304ada7ed51a"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "profile_tag",
+    "dim",
+    "frustration_ratio",
+    "delta_to_three_eighths",
+    "elapsed_seconds",
+    "run_unix_seconds",
+]
+original_header = [
+    "profile_tag",
+    "dim",
+    "frustration_ratio",
+    "delta_to_three_eighths",
+    "elapsed_seconds",
+    "run_unix_seconds",
+]
+rows = [
+    [
+    "release",
+    "16",
+    "0.000000000000",
+    "-0.375000000000",
+    "0.000262",
+    "1770754046",
+],
+    [
+    "release",
+    "32",
+    "0.307270233196",
+    "-0.067729766804",
+    "0.002320",
+    "1770754046",
+],
+    [
+    "release",
+    "64",
+    "0.377347832227",
+    "0.002347832227",
+    "0.024800",
+    "1770754046",
+],
+    [
+    "release",
+    "128",
+    "0.387612844246",
+    "0.012612844246",
+    "0.276505",
+    "1770754046",
+],
+    [
+    "release",
+    "256",
+    "0.384892291869",
+    "0.009892291869",
+    "3.414233",
+    "1770754046",
+],
+    [
+    "release",
+    "512",
+    "0.381107696228",
+    "0.006107696228",
+    "48.095240",
+    "1770754046",
+],
+]
+
+[[column]]
+index = 1
+name = "profile_tag"
+original_name = "profile_tag"
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 2
+name = "dim"
+original_name = "dim"
+inferred_type = "int"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 3
+name = "frustration_ratio"
+original_name = "frustration_ratio"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 4
+name = "delta_to_three_eighths"
+original_name = "delta_to_three_eighths"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 5
+name = "elapsed_seconds"
+original_name = "elapsed_seconds"
+inferred_type = "float"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 6
+name = "run_unix_seconds"
+original_name = "run_unix_seconds"
+inferred_type = "int"
+non_empty_count = 6
+empty_count = 0

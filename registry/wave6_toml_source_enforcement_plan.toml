@@ -1,0 +1,277 @@
+# Wave 6 plan: TOML-source enforcement and markdown dependency burn-down.
+# Generated and updated manually during Wave 6 execution.
+
+[wave6]
+id = "wave6"
+status = "active"
+updated = "2026-02-10"
+objective = "Enforce TOML as canonical source, reduce markdown dependency, and harden provenance gates."
+
+[[task]]
+id = "W6-001"
+status = "done"
+priority = "high"
+title = "Harden markdown generated-origin semantics"
+description = "Treat markdown as generated only when pipeline-backed, not solely via headers or broad path patterns."
+artifacts = [
+  "src/scripts/analysis/build_markdown_inventory_registry.py",
+  "src/verification/verify_markdown_inventory_toml_first.py",
+  "registry/markdown_inventory.toml",
+]
+
+[[task]]
+id = "W6-002"
+status = "done"
+priority = "high"
+title = "Regenerate markdown inventory under strict origin rules"
+description = "Rebuild inventory and owner map so manual vs generated classes reflect strict provenance."
+artifacts = [
+  "registry/markdown_inventory.toml",
+  "registry/markdown_owner_map.toml",
+  "registry/markdown_origin_audit.toml",
+]
+
+[[task]]
+id = "W6-003"
+status = "done"
+priority = "high"
+title = "Verify TOML-first policy with strict origin model"
+description = "Run inventory and owner-map verifiers and fix any violations."
+artifacts = [
+  "src/verification/verify_markdown_inventory_toml_first.py",
+  "src/verification/verify_markdown_owner_map.py",
+]
+
+[[task]]
+id = "W6-004"
+status = "pending"
+priority = "high"
+title = "Artifact corpus markdown dependency cutover"
+description = "Ensure artifact scrolls build exclusively from TOML sources and do not require markdown files."
+artifacts = [
+  "registry/data_artifact_narratives.toml",
+  "registry/artifact_scrolls.toml",
+  "src/scripts/analysis/build_artifact_scrolls_registry.py",
+]
+
+[[task]]
+id = "W6-005"
+status = "pending"
+priority = "high"
+title = "Claims matrix decomposition tightening"
+description = "Further atomize claims into statement, evidence, contradiction, and verification structures."
+artifacts = [
+  "registry/claims.toml",
+  "registry/claims_atoms.toml",
+  "registry/claims_evidence_edges.toml",
+]
+
+[[task]]
+id = "W6-006"
+status = "pending"
+priority = "medium"
+title = "Equation corpus schema v3 draft"
+description = "Add derivation links, assumptions, and parameter sweep metadata to equation atoms."
+artifacts = [
+  "registry/knowledge/equation_atoms_v2.toml",
+  "registry/knowledge/equation_symbol_table.toml",
+]
+
+[[task]]
+id = "W6-007"
+status = "pending"
+priority = "high"
+title = "Proof skeleton lineage links"
+description = "Normalize proof skeleton references to claims, equations, and experiments with edge integrity checks."
+artifacts = [
+  "registry/knowledge/proof_skeletons.toml",
+  "src/verification/verify_registry_crossrefs.py",
+]
+
+[[task]]
+id = "W6-008"
+status = "pending"
+priority = "high"
+title = "Roadmap and tracker strict enums"
+description = "Constrain roadmap, todo, and next-actions fields to strict enums and dependency edge checks."
+artifacts = [
+  "registry/roadmap.toml",
+  "registry/todo.toml",
+  "registry/next_actions.toml",
+]
+
+[[task]]
+id = "W6-009"
+status = "pending"
+priority = "high"
+title = "Module requirements command normalization"
+description = "Normalize requirements command objects and machine-checkable prerequisites in TOML."
+artifacts = [
+  "registry/module_requirements.toml",
+  "registry/requirements.toml",
+]
+
+[[task]]
+id = "W6-010"
+status = "pending"
+priority = "high"
+title = "Python core algorithm hard gate expansion"
+description = "Enforce Rust crate plus PyO3 plan for new Python core algorithms."
+artifacts = [
+  "src/verification/verify_python_rust_bridge_coverage.py",
+  "registry/python_to_rust_bridge.toml",
+]
+
+[[task]]
+id = "W6-011"
+status = "pending"
+priority = "medium"
+title = "Third-party markdown quarantine index"
+description = "Separate third-party markdown cache inventory from project markdown governance records."
+artifacts = [
+  "registry/markdown_inventory.toml",
+  "registry/third_party_markdown_cache.toml",
+]
+
+[[task]]
+id = "W6-012"
+status = "pending"
+priority = "high"
+title = "CSV canonical vs generated split enforcement"
+description = "Harden project CSV split policy and edge checks for canonical datasets versus generated artifacts."
+artifacts = [
+  "registry/project_csv_inventory.toml",
+  "registry/project_csv_canonical.toml",
+  "registry/project_csv_generated_artifacts.toml",
+]
+
+[[task]]
+id = "W6-013"
+status = "pending"
+priority = "medium"
+title = "CSV-to-scroll conversion metadata"
+description = "Add conversion metadata for canonical CSV rows persisted into TOML dataset scrolls."
+artifacts = [
+  "registry/csv_scroll_pipeline.toml",
+  "registry/data/project_csv/canonical",
+]
+
+[[task]]
+id = "W6-014"
+status = "pending"
+priority = "medium"
+title = "Mermaid and SVG canonical scroll coverage"
+description = "Normalize mermaid/svg payloads into TOML with deterministic emit contracts."
+artifacts = [
+  "registry/visual_payloads.toml",
+  "crates/gororoba_cli/src/bin/registry_emit.rs",
+]
+
+[[task]]
+id = "W6-015"
+status = "pending"
+priority = "medium"
+title = "Registry schema signature expansion"
+description = "Expand signature coverage to additional canonical registries and enforce in CI."
+artifacts = [
+  "registry/schema_signatures.toml",
+  "src/verification/verify_registry_schema_signatures.py",
+]
+
+[[task]]
+id = "W6-016"
+status = "pending"
+priority = "medium"
+title = "Dangling reference gate expansion"
+description = "Expand cross-registry reference checks to artifact scrolls and narrative registries."
+artifacts = [
+  "src/verification/verify_registry_crossrefs.py",
+]
+
+[[task]]
+id = "W6-017"
+status = "pending"
+priority = "medium"
+title = "Conflict and lacuna lifecycle fields"
+description = "Add resolution lifecycle metadata for contradiction markers and lacunae."
+artifacts = [
+  "registry/conflict_markers.toml",
+  "registry/lacunae.toml",
+]
+
+[[task]]
+id = "W6-018"
+status = "pending"
+priority = "medium"
+title = "Experiment lineage edge strength"
+description = "Normalize lineage edge types and replay metadata for stronger experiment traceability."
+artifacts = [
+  "registry/experiment_lineage.toml",
+  "registry/experiments.toml",
+]
+
+[[task]]
+id = "W6-019"
+status = "pending"
+priority = "high"
+title = "No-legacy-markdown publish default hardening"
+description = "Keep legacy markdown emission off by default and guard against accidental in-repo mirror writes."
+artifacts = [
+  "Makefile",
+  "src/scripts/analysis/export_registry_markdown_mirrors.py",
+]
+
+[[task]]
+id = "W6-020"
+status = "pending"
+priority = "high"
+title = "Canonical markdown source removal policy"
+description = "Define and enforce policy for removing markdown files once their TOML source is canonicalized."
+artifacts = [
+  "registry/markdown_governance.toml",
+  "src/verification/verify_markdown_inventory_toml_first.py",
+]
+
+[[task]]
+id = "W6-021"
+status = "pending"
+priority = "medium"
+title = "Documentation of TOML-first workflow in AGENTS overlays"
+description = "Append explicit TOML-first iterative update workflow and agent/tool routing details."
+artifacts = [
+  "AGENTS.md",
+  "CLAUDE.md",
+  "GEMINI.md",
+]
+
+[[task]]
+id = "W6-022"
+status = "pending"
+priority = "medium"
+title = "Registry emit API profile draft"
+description = "Draft canonical emit profile and CLI knobs for markdown/tex/bibtex/pgfplots/svg/mermaid outputs."
+artifacts = [
+  "registry/emit_profiles.toml",
+  "crates/gororoba_cli/src/bin/registry_emit.rs",
+]
+
+[[task]]
+id = "W6-023"
+status = "pending"
+priority = "medium"
+title = "Wave 6 acceptance gate"
+description = "Compose strict Wave 6 make target with inventory, owner, schema, crossref, and emitter tests."
+artifacts = [
+  "Makefile",
+]
+
+[[task]]
+id = "W6-024"
+status = "pending"
+priority = "high"
+title = "Wave 6 checkpoint commit and push"
+description = "Commit all in-scope changes, run warnings-as-errors checks, and push to origin/main."
+artifacts = [
+  "git commit",
+  "git push",
+]

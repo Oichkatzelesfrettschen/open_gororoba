@@ -1,0 +1,201 @@
+[dataset]
+id = "PC-0049"
+slug = "multiplication_table_8d"
+source_csv = "data/csv/multiplication_table_8D.csv"
+source_sha256 = "eb02889fe7f1345c7399215aa53b9fe050beff53dd2e0e3a9c01f0f94e783da2"
+source_size_bytes = 259
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 8
+column_count = 9
+header_value_sha256 = "baca0dc04d7567e81ec7f20f0c1fb304ade6f1656b37afffee71fc3f9dd1bef2"
+row_value_sha256 = "12b555622ff93afb6af143705f496aba211ee20850166b5cf57f603b2f0e70b7"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "col_1",
+    "col_1_2",
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+]
+original_header = [
+    "",
+    "1",
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+]
+rows = [
+    [
+    "1",
+    "1",
+    "e1",
+    "e2",
+    "e3",
+    "e4",
+    "e5",
+    "e6",
+    "e7",
+],
+    [
+    "e1",
+    "e1",
+    "-1",
+    "e3",
+    "-e2",
+    "e5",
+    "-e4",
+    "-e7",
+    "e6",
+],
+    [
+    "e2",
+    "e2",
+    "-e3",
+    "-1",
+    "e1",
+    "e6",
+    "e7",
+    "-e4",
+    "-e5",
+],
+    [
+    "e3",
+    "e3",
+    "e2",
+    "-e1",
+    "-1",
+    "e7",
+    "-e6",
+    "e5",
+    "-e4",
+],
+    [
+    "e4",
+    "e4",
+    "-e5",
+    "-e6",
+    "-e7",
+    "-1",
+    "e1",
+    "e2",
+    "e3",
+],
+    [
+    "e5",
+    "e5",
+    "e4",
+    "-e7",
+    "e6",
+    "-e1",
+    "-1",
+    "-e3",
+    "e2",
+],
+    [
+    "e6",
+    "e6",
+    "e7",
+    "e4",
+    "-e5",
+    "-e2",
+    "e3",
+    "-1",
+    "-e1",
+],
+    [
+    "e7",
+    "e7",
+    "-e6",
+    "e5",
+    "e4",
+    "-e3",
+    "-e2",
+    "e1",
+    "-1",
+],
+]
+
+[[column]]
+index = 1
+name = "col_1"
+original_name = ""
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 2
+name = "col_1_2"
+original_name = "1"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 3
+name = "e1"
+original_name = "e1"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 4
+name = "e2"
+original_name = "e2"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 5
+name = "e3"
+original_name = "e3"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 6
+name = "e4"
+original_name = "e4"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 7
+name = "e5"
+original_name = "e5"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 8
+name = "e6"
+original_name = "e6"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
+
+[[column]]
+index = 9
+name = "e7"
+original_name = "e7"
+inferred_type = "string"
+non_empty_count = 8
+empty_count = 0
