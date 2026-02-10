@@ -4,10 +4,10 @@
 [csv_inventory]
 updated = "2026-02-09"
 authoritative = true
-document_count = 911
-tracked_count = 643
+document_count = 945
+tracked_count = 644
 untracked_count = 0
-ignored_count = 268
+ignored_count = 301
 archived_count = 5
 legacy_count = 200
 curated_count = 557
@@ -11795,6 +11795,19 @@ migration_priority = "complete"
 rationale = "External CSV holding source is represented in registry/data/external_csv_holding."
 
 [[document]]
+path = "docs/ALGEBRA_CRATES_QUICK_REFERENCE.csv"
+git_status = "tracked"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 4046
+line_count = 19
+sha256 = "86594b7ffa8e7e029289d3861f55bee22913462f307e5811795514376deef82d"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
 path = "docs/claims/CLAIMS_DOMAIN_MAP.csv"
 git_status = "tracked"
 zone = "other_csv"
@@ -11855,6 +11868,435 @@ generated = false
 size_bytes = 363
 line_count = 3
 sha256 = "3a0aae43330c77437834f5deff24a8ff245cf822a819aa0fb7492dacaee01e5e"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/Stocks.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 67924
+line_count = 527
+sha256 = "ef6f3bf1a64d5c6c5de702ef154c3fae78fe9df83882ab6bb9c6638bec3cdf47"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/data_x_x2_x3.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 132
+line_count = 12
+sha256 = "034494ddbb8e506853f8d23fe8b43aa7bd1f152214de22c5760cefceb291e921"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/msft.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 3211
+line_count = 66
+sha256 = "180aca6f43b70e029946c29d25fea55f7acc49ff8f09e908881a0b35d805ecc9"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 61365
+line_count = 1430
+sha256 = "c81973f2be919e701885d9686f3186a3614a63e0e849341a3f6eb2f35dfc6b72"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccosh.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 61365
+line_count = 1430
+sha256 = "d065deed71b56778d701c2be3a5128b7f0dfdcc7ad0d04a56e6dcc27ffe23109"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsin.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 61339
+line_count = 1430
+sha256 = "c3f4afd8d0e7fa62d9480a9be7a253da0e1ba81cf16008a179d5b11ee7fcdae5"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsinh.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 60289
+line_count = 1430
+sha256 = "0d9acc6286596723350c3c97354c52973c7a6ce81a8e74522d6033c5c3dc93c9"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctan.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 60305
+line_count = 1430
+sha256 = "d1aa2c5d9fbd0d84e8a74963e1b7dc04dc1856f8d9756d7785b3114d1453995d"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctanh.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 61339
+line_count = 1430
+sha256 = "1c42bd78fc753a42ab5c82a4314574231ae6b03a8896029d76223e2ef176276d"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cbrt.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 60846
+line_count = 1430
+sha256 = "bfce7931366287e7d9a7f1ae103b2ddaa688b315386bbbe501b788272db12a97"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cos.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 59122
+line_count = 1376
+sha256 = "d0f3670ea2a4a2467b11154381b7acf0a35973e21226b65495565ce4b916d7c1"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cosh.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 60869
+line_count = 1430
+sha256 = "24a0b89caaf7c13cc0fd7352890bd552af73918cb8763bedbb6fa3e1967fece7"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 17491
+line_count = 413
+sha256 = "ad401621bbf278a87dacf7e9da7d19abb00aabf9ef1e981b8332e3025961b1e9"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp2.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 58624
+line_count = 1430
+sha256 = "763a2c4feddf4e988dfdfff658eba680cbae2a00bf5e1a553be42c505c08eae5"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-expm1.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 60299
+line_count = 1430
+sha256 = "2bb8cbe8de0a4065fbd5f8f986f624cdc31793b32641eb3c170acd7f2acfa605"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 11692
+line_count = 272
+sha256 = "ca7cdb55b2b1173c56170c479f15fb1699bebdad3da08de82b5fe54ded7d838c"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log10.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 68922
+line_count = 1630
+sha256 = "34e043fab39623f14f1b85666f3bb726d5fd500f37f1fd80683140fb06a2a860"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log1p.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 60303
+line_count = 1430
+sha256 = "b5d6d858fa96233f0111b232925ca787fb69409ce8f7bd0475de1e93a0ec3dbf"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log2.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 68917
+line_count = 1630
+sha256 = "dfd1140f4bc531bc32a17a0e8600a689de8d78401053b15fed01633ec54e6c81"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sin.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 58611
+line_count = 1371
+sha256 = "f0f5239d0fd87e6c456f8d9726bbe9be691e4a910e9445d298dbc82b85607c03"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sinh.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 60293
+line_count = 1430
+sha256 = "5ceb0152e3dc32388efe97af31a96999dd2246fda09a787dbbb6d5f592cb83c2"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tan.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 60299
+line_count = 1430
+sha256 = "1efd9650c22c71fbd0279639062a6e1e4e28138558e9029b429fe4351742a984"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tanh.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 60299
+line_count = 1430
+sha256 = "8a895917f30ec964606126be4ac0f875fe669f214ad7cceb20223be34496a137"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-1.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 15844
+line_count = 1002
+sha256 = "5e479fe34d80541f9e660610915b68c444479317df080f49cadfe831bb491b06"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-2.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 15825
+line_count = 1002
+sha256 = "9ec04440d9df7fe6858c760ae2d863bd42b8c525c349fbf96936dc139f693a41"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-1.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 23839
+line_count = 1002
+sha256 = "c41d340e99271944d30b10ebf4be9a368f47b3eb1fcc431b5124b8b75d534df1"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-2.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 23845
+line_count = 1002
+sha256 = "3537734cabc6d94eff5b253f228414b4ccd4de412f0c7dfd0a09d1e95ce14e4c"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-1.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 23833
+line_count = 1002
+sha256 = "bcd4944fe8174bfa04c3f6b04773b7d338953b8b1e34f52fd54219d3549f5672"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-2.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 23839
+line_count = 1002
+sha256 = "bb2952f0f536008299d7ce4e0b4e1106bfce78fc1e191b6f9fe744e18374c980"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-1.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 23852
+line_count = 1002
+sha256 = "49e751688cb9cc569d9a4ef59caac6c42159e81c0acfc83503df8e669dc89246"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-2.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 23838
+line_count = 1002
+sha256 = "756102b7eb1b7ef69288af3e620a7902aca3a0de62dba5443ab5ea834d6b9378"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-1.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 23840
+line_count = 1002
+sha256 = "887b3a897e8a47c6f11b02a4fb7b5e74074c3f3e995bcb250d25040a402a0bc4"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
+
+[[document]]
+path = "venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-2.csv"
+git_status = "ignored"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 23833
+line_count = 1002
+sha256 = "1480c80c509a3d97d6512c6c24c01ee7c84f36632b536ee409df45842118b7f9"
 migration_action = "manual_triage"
 migration_priority = "medium"
 rationale = "CSV outside expected zones; requires classification."

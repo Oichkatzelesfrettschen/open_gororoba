@@ -23,7 +23,7 @@
 .PHONY: registry-project-csv-split registry-csv-holdings
 .PHONY: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated
 .PHONY: registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
-.PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-wave3
+.PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-wave3
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
@@ -300,7 +300,10 @@ registry-verify-csv-holdings: registry-csv-holdings registry-scroll-external-csv
 		--corpus-label 'archive CSV holding queue'
 	PYTHONWARNINGS=error python3 src/verification/verify_csv_holding_registries.py
 
-registry-wave3: registry-project-csv-split registry-csv-holdings registry-verify-project-csv-split registry-verify-csv-holdings
+registry-verify-csv-corpus-coverage: registry-csv-inventory registry-verify-project-csv-split registry-verify-csv-holdings
+	PYTHONWARNINGS=error python3 src/verification/verify_csv_corpus_coverage.py
+
+registry-wave3: registry-project-csv-split registry-csv-holdings registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage
 
 registry-csv-scope: registry-csv-inventory
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_migration_scope_registry.py
