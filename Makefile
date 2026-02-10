@@ -20,6 +20,7 @@
 .PHONY: registry-knowledge-atoms registry-verify-knowledge-atoms
 .PHONY: registry-artifact-scrolls registry-verify-artifact-scrolls
 .PHONY: registry-verify-markdown-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-wave4 registry-wave4
+.PHONY: registry-verify-markdown-toml-first
 .PHONY: registry-wave5-batch1-build registry-verify-wave5-batch1 registry-wave5-batch1
 .PHONY: registry-wave5-batch2-build registry-verify-wave5-batch2 registry-wave5-batch2 registry-wave5
 .PHONY: registry-wave5-batch3-build registry-verify-wave5-batch3 registry-wave5-batch3
@@ -45,6 +46,9 @@ VENV ?= venv
 PYTHON := $(VENV)/bin/python3
 PIP := $(VENV)/bin/pip
 MARKDOWN_EXPORT ?= 0
+MARKDOWN_EXPORT_OUT_DIR ?= build/docs/generated
+MARKDOWN_EXPORT_EMIT_LEGACY ?= 0
+MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC ?= 1
 
 # ---- Environment setup ----
 
@@ -223,6 +227,9 @@ registry-verify-markdown-origin: registry-markdown-origin-audit
 registry-verify-markdown-owner: registry-markdown-inventory
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
 
+registry-verify-markdown-toml-first: registry-verify-markdown-inventory registry-verify-markdown-owner
+	@echo "OK: markdown TOML-first owner/inventory gates verified."
+
 registry-verify-wave4: registry-markdown-corpus registry-toml-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms registry-verify-artifact-scrolls
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_corpus_registry.py
 	PYTHONWARNINGS=error python3 src/verification/verify_toml_inventory_registry.py
@@ -269,9 +276,11 @@ registry-wave5-batch3: registry-verify-wave5-batch3
 registry-wave5-batch4-build:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_wave5_batch4_registries.py
 
-registry-verify-wave5-batch4: registry-wave5-batch4-build
+registry-verify-wave5-batch4: registry-wave5-batch4-build registry-markdown-inventory
 	PYTHONWARNINGS=error python3 src/verification/verify_wave5_batch4_registries.py
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_crossrefs.py
+	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
+	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
 
 registry-wave5-batch4: registry-verify-wave5-batch4
 	@echo "OK: Wave 5 batch 4 strict TOML registries complete."
@@ -395,19 +404,31 @@ registry-export-markdown: registry-refresh
 		echo "SKIP: markdown export disabled (set MARKDOWN_EXPORT=1)"; \
 		exit 0; \
 	fi
-	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py
+	@legacy_flag="--no-emit-legacy"; \
+	if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then legacy_flag="--emit-legacy"; fi; \
+	claims_flag="--legacy-claims-sync"; \
+	if [ "$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" = "0" ]; then claims_flag="--no-legacy-claims-sync"; fi; \
+	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py \
+		--out-dir "$(MARKDOWN_EXPORT_OUT_DIR)" $$legacy_flag $$claims_flag
 
 registry-verify-mirrors: registry-export-markdown
 	@if [ "$(MARKDOWN_EXPORT)" != "1" ]; then \
 		echo "SKIP: mirror verification disabled (set MARKDOWN_EXPORT=1)"; \
 		exit 0; \
 	fi
+	MARKDOWN_EXPORT_OUT_DIR="$(MARKDOWN_EXPORT_OUT_DIR)" \
+	MARKDOWN_EXPORT_EMIT_LEGACY="$(MARKDOWN_EXPORT_EMIT_LEGACY)" \
+	MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC="$(MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC)" \
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_mirror_freshness.py
-	PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_headers.py
-	PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_parity.py
-	PYTHONWARNINGS=error python3 src/verification/verify_toml_generated_mirror_immutability.py
-	PYTHONWARNINGS=error python3 src/verification/verify_claim_ticket_mirrors.py
-	PYTHONWARNINGS=error $(MAKE) registry-verify-markdown-inventory
+	PYTHONWARNINGS=error $(MAKE) registry-verify-markdown-toml-first
+	@if [ "$(MARKDOWN_EXPORT_EMIT_LEGACY)" = "1" ]; then \
+		PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_headers.py; \
+		PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_parity.py; \
+		PYTHONWARNINGS=error python3 src/verification/verify_toml_generated_mirror_immutability.py; \
+		PYTHONWARNINGS=error python3 src/verification/verify_claim_ticket_mirrors.py; \
+	else \
+		echo "SKIP: legacy mirror immutability checks disabled in strict markdown-free publish profile."; \
+	fi
 
 registry: registry-refresh registry-data
 	cargo run --release --bin registry-check
@@ -611,6 +632,8 @@ help:
 	@echo "    make registry-verify-schema-signatures Verify critical registry schema signatures"
 	@echo "    make registry-verify-crossrefs Verify dangling cross-registry references"
 	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"
+	@echo "    make registry-verify-markdown-toml-first Verify markdown owner/inventory TOML-first hard gate"
+	@echo "    MARKDOWN_EXPORT=1 make docs-publish Export mirrors in strict mode (out-of-tree, no legacy writes)"
 	@echo ""
 	@echo "  Artifacts:"
 	@echo "    make artifacts            Regenerate all core artifact sets"

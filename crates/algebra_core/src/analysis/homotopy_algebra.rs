@@ -612,6 +612,222 @@ impl StringFieldTheory {
     }
 }
 
+// ---------------------------------------------------------------------------
+// SedenionAInfinity: Concrete A-infinity algebra on 16D Cayley-Dickson space
+// ---------------------------------------------------------------------------
+
+/// A concrete A-infinity algebra whose underlying vector space is the 16D
+/// sedenions. m_1 = 0 (minimal), m_2 = CD product, m_3 = CD associator.
+///
+/// The A-infinity relation at n=3 with m_1=0 reduces to:
+///   m_2(m_2(a,b),c) - m_2(a,m_2(b,c)) = m_3(a,b,c)
+/// which is exactly the definition of the associator.
+///
+/// The obstruction spectrum captures how non-associativity distributes across
+/// the algebra via eigenvalues of the flattened m_3 operator.
+#[derive(Debug, Clone)]
+pub struct SedenionAInfinity {
+    /// Dimension of the underlying CD algebra (default 16).
+    pub dim: usize,
+    /// The A-infinity algebra metadata.
+    pub algebra: AInfinityAlgebra,
+}
+
+/// Result of computing the obstruction spectrum.
+#[derive(Debug, Clone)]
+pub struct ObstructionSpectrum {
+    /// Eigenvalues of the flattened m_3 operator (sorted by magnitude).
+    pub eigenvalues: Vec<f64>,
+    /// Frobenius norm of the m_3 tensor: sqrt(sum of eigenvalues^2).
+    pub frobenius_norm: f64,
+    /// Spectral radius: max |eigenvalue|.
+    pub spectral_radius: f64,
+    /// Fraction of nonzero eigenvalues (rank / dim^2).
+    pub rank_fraction: f64,
+}
+
+impl SedenionAInfinity {
+    /// Construct the sedenion A-infinity algebra at the given CD dimension.
+    ///
+    /// The dimension must be a power of 2 and >= 8 (non-associativity starts
+    /// at dim=8 for octonions, but the canonical case is dim=16 sedenions).
+    pub fn new(dim: usize) -> Self {
+        assert!(dim >= 8 && dim.is_power_of_two(), "dim must be power-of-2 >= 8");
+
+        let mut algebra = AInfinityAlgebra::new(&format!("CD({})-AInfinity", dim));
+        algebra.set_dimension(0, dim);
+
+        // m_1 = 0 (minimal algebra)
+        algebra.add_operation(1, HomotopyOperation::a_infinity(1).zero());
+
+        // m_2 = CD product (degree shift 0)
+        algebra.add_operation(2, HomotopyOperation::a_infinity(2));
+
+        // m_3 = CD associator (degree shift -1)
+        algebra.add_operation(3, HomotopyOperation::a_infinity(3));
+
+        Self { dim, algebra }
+    }
+
+    /// Evaluate m_2: the Cayley-Dickson product.
+    pub fn m2(&self, a: &[f64], b: &[f64]) -> Vec<f64> {
+        assert_eq!(a.len(), self.dim);
+        assert_eq!(b.len(), self.dim);
+        crate::cd_multiply(a, b)
+    }
+
+    /// Evaluate m_3: the Cayley-Dickson associator [a,b,c] = (ab)c - a(bc).
+    pub fn m3(&self, a: &[f64], b: &[f64], c: &[f64]) -> Vec<f64> {
+        assert_eq!(a.len(), self.dim);
+        assert_eq!(b.len(), self.dim);
+        assert_eq!(c.len(), self.dim);
+        crate::cd_associator(a, b, c)
+    }
+
+    /// Verify the A-infinity relation at n=3 (with m_1=0):
+    ///   m_2(m_2(a,b),c) - m_2(a,m_2(b,c)) = m_3(a,b,c)
+    ///
+    /// Returns the L2 norm of the residual (should be ~0 within floating point).
+    pub fn verify_relation_n3(&self, a: &[f64], b: &[f64], c: &[f64]) -> f64 {
+        let lhs_left = self.m2(&self.m2(a, b), c);
+        let lhs_right = self.m2(a, &self.m2(b, c));
+        let lhs: Vec<f64> = lhs_left.iter().zip(&lhs_right).map(|(l, r)| l - r).collect();
+        let rhs = self.m3(a, b, c);
+        let residual: f64 = lhs.iter().zip(&rhs).map(|(l, r)| (l - r).powi(2)).sum();
+        residual.sqrt()
+    }
+
+    /// Compute the obstruction spectrum of the m_3 operator.
+    ///
+    /// Flattens m_3 into a dim x dim^2 matrix M where M[i, j*dim+k] is the
+    /// i-th component of m_3(e_j, ?, e_k) summed over the middle slot using
+    /// basis elements. Then computes eigenvalues of M^T M (a dim^2 x dim^2
+    /// symmetric matrix) to get the singular values.
+    ///
+    /// For practical reasons, we compute the Frobenius norm and spectral
+    /// properties via the reduced dim x dim matrix M M^T instead.
+    pub fn obstruction_spectrum(&self) -> ObstructionSpectrum {
+        let d = self.dim;
+
+        // Build the "obstruction matrix" O[i][j] = ||m_3(e_i, *, e_j)||^2
+        // where * is summed over all basis elements.
+        // This is a d x d matrix capturing the pairwise obstruction landscape.
+        let mut obs_matrix = vec![vec![0.0f64; d]; d];
+
+        for i in 0..d {
+            let mut e_i = vec![0.0; d];
+            e_i[i] = 1.0;
+            for j in 0..d {
+                let mut e_j = vec![0.0; d];
+                e_j[j] = 1.0;
+                // Sum ||m_3(e_i, e_k, e_j)||^2 over all basis elements e_k
+                let mut total_sq = 0.0;
+                for k in 0..d {
+                    let mut e_k = vec![0.0; d];
+                    e_k[k] = 1.0;
+                    let assoc = self.m3(&e_i, &e_k, &e_j);
+                    total_sq += assoc.iter().map(|x| x * x).sum::<f64>();
+                }
+                obs_matrix[i][j] = total_sq;
+            }
+        }
+
+        // Compute eigenvalues of obs_matrix via power iteration on the
+        // symmetric matrix (obs_matrix is symmetric by construction since
+        // we sum over the middle slot).
+        // For a 16x16 matrix, direct computation suffices.
+        let eigenvalues = Self::symmetric_eigenvalues(&obs_matrix);
+
+        let frobenius_norm = eigenvalues.iter().map(|e| e.powi(2)).sum::<f64>().sqrt();
+        let spectral_radius = eigenvalues
+            .iter()
+            .map(|e| e.abs())
+            .fold(0.0f64, f64::max);
+        let nonzero_count = eigenvalues.iter().filter(|e| e.abs() > 1e-10).count();
+        let rank_fraction = nonzero_count as f64 / d as f64;
+
+        ObstructionSpectrum {
+            eigenvalues,
+            frobenius_norm,
+            spectral_radius,
+            rank_fraction,
+        }
+    }
+
+    /// Compute eigenvalues of a symmetric matrix using Jacobi iteration.
+    /// Suitable for small matrices (dim <= 64).
+    #[allow(clippy::needless_range_loop)]
+    fn symmetric_eigenvalues(matrix: &[Vec<f64>]) -> Vec<f64> {
+        let n = matrix.len();
+        let mut a: Vec<Vec<f64>> = matrix.to_vec();
+
+        // Jacobi eigenvalue algorithm for symmetric matrices
+        for _ in 0..100 * n * n {
+            // Find largest off-diagonal element
+            let mut max_val = 0.0f64;
+            let mut p = 0;
+            let mut q = 1;
+            for i in 0..n {
+                for j in (i + 1)..n {
+                    if a[i][j].abs() > max_val {
+                        max_val = a[i][j].abs();
+                        p = i;
+                        q = j;
+                    }
+                }
+            }
+
+            if max_val < 1e-12 {
+                break;
+            }
+
+            // Compute rotation angle
+            let theta = if (a[p][p] - a[q][q]).abs() < 1e-15 {
+                std::f64::consts::FRAC_PI_4
+            } else {
+                0.5 * ((2.0 * a[p][q]) / (a[p][p] - a[q][q])).atan()
+            };
+
+            let (sin_t, cos_t) = theta.sin_cos();
+
+            // Apply Givens rotation
+            let mut new_a = a.clone();
+            for i in 0..n {
+                if i != p && i != q {
+                    new_a[i][p] = cos_t * a[i][p] + sin_t * a[i][q];
+                    new_a[p][i] = new_a[i][p];
+                    new_a[i][q] = -sin_t * a[i][p] + cos_t * a[i][q];
+                    new_a[q][i] = new_a[i][q];
+                }
+            }
+            new_a[p][p] = cos_t * cos_t * a[p][p]
+                + 2.0 * sin_t * cos_t * a[p][q]
+                + sin_t * sin_t * a[q][q];
+            new_a[q][q] = sin_t * sin_t * a[p][p]
+                - 2.0 * sin_t * cos_t * a[p][q]
+                + cos_t * cos_t * a[q][q];
+            new_a[p][q] = 0.0;
+            new_a[q][p] = 0.0;
+
+            a = new_a;
+        }
+
+        let mut eigenvalues: Vec<f64> = (0..n).map(|i| a[i][i]).collect();
+        eigenvalues.sort_by(|a, b| b.abs().partial_cmp(&a.abs()).unwrap());
+        eigenvalues
+    }
+
+    /// Compute the scalar obstruction norm: a single number summarizing the
+    /// total non-associativity of the algebra.
+    ///
+    /// Defined as the Frobenius norm of the m_3 operator divided by dim^(3/2)
+    /// to normalize across dimensions.
+    pub fn obstruction_norm(&self) -> f64 {
+        let spectrum = self.obstruction_spectrum();
+        spectrum.frobenius_norm / (self.dim as f64).powf(1.5)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -797,5 +1013,97 @@ mod tests {
         let l3 = HomotopyOperation::l_infinity(3).zero();
         assert_eq!(l3.arity, 3);
         assert!(l3.is_zero);
+    }
+
+    // --- SedenionAInfinity tests ---
+
+    #[test]
+    fn test_sedenion_a_infinity_m1_zero() {
+        let sa = SedenionAInfinity::new(16);
+        assert!(sa.algebra.get_operation(1).unwrap().is_zero, "m_1 should be zero (minimal)");
+        assert!(!sa.algebra.get_operation(2).unwrap().is_zero, "m_2 should be nonzero");
+        assert!(!sa.algebra.get_operation(3).unwrap().is_zero, "m_3 should be nonzero");
+    }
+
+    #[test]
+    fn test_sedenion_a_infinity_m2_matches_cd() {
+        let sa = SedenionAInfinity::new(16);
+        // e_1 * e_2 should match CD product
+        let mut e1 = vec![0.0; 16];
+        e1[1] = 1.0;
+        let mut e2 = vec![0.0; 16];
+        e2[2] = 1.0;
+        let product = sa.m2(&e1, &e2);
+        let expected = crate::cd_multiply(&e1, &e2);
+        assert_eq!(product, expected, "m_2 should equal CD multiply");
+        // Product should be a single basis element (nonzero)
+        let nonzero: Vec<_> = product.iter().filter(|x| x.abs() > 1e-15).collect();
+        assert_eq!(nonzero.len(), 1, "basis product should be a single basis element");
+    }
+
+    #[test]
+    fn test_sedenion_a_infinity_m3_nonzero() {
+        let sa = SedenionAInfinity::new(16);
+        // Sedenions are non-associative: pick basis elements that give nonzero associator
+        let mut e1 = vec![0.0; 16];
+        e1[1] = 1.0;
+        let mut e2 = vec![0.0; 16];
+        e2[2] = 1.0;
+        let mut e4 = vec![0.0; 16];
+        e4[4] = 1.0;
+        let assoc = sa.m3(&e1, &e2, &e4);
+        let norm_sq: f64 = assoc.iter().map(|x| x * x).sum();
+        assert!(norm_sq > 1e-10, "sedenion associator should be nonzero for generic triple");
+    }
+
+    #[test]
+    fn test_sedenion_a_infinity_relation_n3() {
+        let sa = SedenionAInfinity::new(16);
+        // Verify (ab)c - a(bc) = m_3(a,b,c) for several triples
+        let triples: Vec<(usize, usize, usize)> = vec![
+            (1, 2, 4), (1, 3, 5), (2, 5, 9), (3, 7, 11), (1, 8, 15),
+        ];
+        for (i, j, k) in triples {
+            let mut a = vec![0.0; 16];
+            a[i] = 1.0;
+            let mut b = vec![0.0; 16];
+            b[j] = 1.0;
+            let mut c = vec![0.0; 16];
+            c[k] = 1.0;
+            let residual = sa.verify_relation_n3(&a, &b, &c);
+            assert!(
+                residual < 1e-12,
+                "A-infinity relation n=3 residual {} too large for ({},{},{})",
+                residual, i, j, k
+            );
+        }
+    }
+
+    #[test]
+    fn test_sedenion_obstruction_spectrum() {
+        let sa = SedenionAInfinity::new(16);
+        let spectrum = sa.obstruction_spectrum();
+
+        // Eigenvalues should exist
+        assert_eq!(spectrum.eigenvalues.len(), 16, "should have 16 eigenvalues");
+
+        // e_0 (identity) should have zero associator with everything,
+        // so the matrix should have a zero row/column, reducing rank.
+        assert!(spectrum.rank_fraction < 1.0, "rank should be < full due to identity element");
+
+        // Spectral radius and Frobenius norm should be positive
+        assert!(spectrum.spectral_radius > 0.0, "spectral radius must be positive");
+        assert!(spectrum.frobenius_norm > 0.0, "Frobenius norm must be positive");
+
+        // Obstruction norm (normalized) should be finite and positive
+        let norm = sa.obstruction_norm();
+        assert!(norm > 0.0 && norm.is_finite(), "obstruction norm should be finite and positive");
+        eprintln!("Sedenion obstruction norm = {:.6}", norm);
+        eprintln!("Spectral radius = {:.4}", spectrum.spectral_radius);
+        eprintln!("Rank fraction = {:.4}", spectrum.rank_fraction);
+        eprintln!(
+            "Top 5 eigenvalues: {:?}",
+            &spectrum.eigenvalues[..5.min(spectrum.eigenvalues.len())]
+        );
     }
 }

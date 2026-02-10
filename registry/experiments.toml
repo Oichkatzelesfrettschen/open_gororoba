@@ -4,8 +4,8 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 14
-deterministic_count = 8
+experiment_count = 15
+deterministic_count = 9
 gpu_count = 1
 seeded_count = 6
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
@@ -336,5 +336,28 @@ lineage_id = "XL-014"
 input_path_refs = []
 output_path_refs = ["data/csv/apt_dimensional_census_summary.csv", "data/csv/apt_dimensional_census_details.csv"]
 dataset_refs = ["PC-0002"]
+reproducibility_class = "deterministic_replay"
+
+[[experiment]]
+id = "E-015"
+title = "GF(2) Separating Degree Formula Verification (dim 32-256)"
+binary = "dimensional-census"
+binary_registered = true
+binary_experiment_declared = ""
+method = "For each Cayley-Dickson dimension d in {32, 64, 128, 256}, compute the minimum-degree GF(2) polynomial that separates all motif classes in PG(log2(d)-2, 2). Uses greedy partition refinement for d=256 where brute-force is infeasible (16 classes, C(127,6) candidate tuples). Verifies the formula min_degree = log2(d) - 2 at each step."
+input = "None (Cayley-Dickson structure tables computed on the fly)"
+output = ["data/csv/separating_degree_formula_sweep.csv"]
+run = "cargo test -p algebra_core --release --lib -- test_separating_degree_formula_universality --nocapture"
+run_command_sha256 = "14fdeb04854fd5796e3e9e39d81ec504b61eb83076dad30cc7813352db6c7dd0"
+claims = ["C-599", "C-600"]
+claim_refs = ["C-599", "C-600"]
+deterministic = true
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-015"
+input_path_refs = []
+output_path_refs = ["data/csv/separating_degree_formula_sweep.csv"]
+dataset_refs = []
 reproducibility_class = "deterministic_replay"
 

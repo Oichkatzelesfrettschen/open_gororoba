@@ -18,7 +18,9 @@
 //! - Di Leonardo et al., Opt. Express 15, 1913 (2007): WGS algorithm
 //! - Manetsch et al., arXiv:2403.12021 (2025): Large-scale tweezer arrays
 
+pub mod entropy_trap;
 pub mod grin;
+pub mod multi_resonator;
 pub mod optics_algebra_bridge;
 pub mod phase_retrieval;
 pub mod sfwm;
@@ -64,6 +66,12 @@ pub use tcmt::{
     TurningPoint,
     TurningPointBranch,
 };
+
+pub use multi_resonator::{
+    MultiResonatorState, MultiResonatorSystem, MultiResonatorTrace, ResonatorChannel,
+};
+
+pub use entropy_trap::{absorption_spectrum, detect_entropy_trap, EntropyTrapResult};
 
 pub use phase_retrieval::{
     gs_continuous, wgs_discrete, zernike_phase, InitialPhase, TargetSpot, WgsConfig, WgsResult,

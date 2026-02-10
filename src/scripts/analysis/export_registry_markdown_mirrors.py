@@ -1749,6 +1749,12 @@ def main() -> int:
         default=True,
         help="Also regenerate legacy claims-support markdown/csv mirrors from TOML.",
     )
+    parser.add_argument(
+        "--emit-legacy",
+        action=argparse.BooleanOptionalAction,
+        default=False,
+        help="Emit legacy markdown/csv mirrors inside repo paths (disabled by default).",
+    )
     args = parser.parse_args()
 
     CHECK_MODE = bool(args.check)
@@ -1784,31 +1790,32 @@ def main() -> int:
     )
     export_reports_narratives(repo_root, out_dir / "REPORTS_NARRATIVES_REGISTRY_MIRROR.md")
     export_docs_convos(repo_root, out_dir / "DOCS_CONVOS_REGISTRY_MIRROR.md")
-    export_insights_legacy(repo_root, repo_root / "docs/INSIGHTS.md")
-    export_experiments_legacy(
-        repo_root, repo_root / "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
-    )
-    export_roadmap_legacy(repo_root, repo_root / "docs/ROADMAP.md")
-    export_todo_legacy(repo_root, repo_root / "docs/TODO.md")
-    export_next_actions_legacy(repo_root, repo_root / "docs/NEXT_ACTIONS.md")
-    export_requirements_legacy(repo_root)
-    export_navigator_legacy(repo_root)
-    export_entrypoint_docs_legacy(repo_root)
-    export_bibliography_legacy(repo_root, repo_root / "docs/BIBLIOGRAPHY.md")
+    if args.emit_legacy:
+        export_insights_legacy(repo_root, repo_root / "docs/INSIGHTS.md")
+        export_experiments_legacy(
+            repo_root, repo_root / "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
+        )
+        export_roadmap_legacy(repo_root, repo_root / "docs/ROADMAP.md")
+        export_todo_legacy(repo_root, repo_root / "docs/TODO.md")
+        export_next_actions_legacy(repo_root, repo_root / "docs/NEXT_ACTIONS.md")
+        export_requirements_legacy(repo_root)
+        export_navigator_legacy(repo_root)
+        export_entrypoint_docs_legacy(repo_root)
+        export_bibliography_legacy(repo_root, repo_root / "docs/BIBLIOGRAPHY.md")
 
-    if args.legacy_claims_sync:
-        export_claims_matrix_legacy(repo_root, repo_root / "docs/CLAIMS_EVIDENCE_MATRIX.md")
-        export_claims_tasks_legacy(repo_root, repo_root / "docs/CLAIMS_TASKS.md")
-        export_claims_domains_legacy(repo_root)
-        export_claim_tickets_legacy(repo_root)
-        export_external_sources_legacy(repo_root)
-        export_research_narratives_legacy(repo_root)
-        export_book_docs_legacy(repo_root)
-        export_docs_root_narratives_legacy(repo_root)
-        export_data_artifact_narratives_legacy(repo_root)
-        export_monograph_legacy(repo_root)
-        export_reports_narratives_legacy(repo_root)
-        export_docs_convos_legacy(repo_root)
+        if args.legacy_claims_sync:
+            export_claims_matrix_legacy(repo_root, repo_root / "docs/CLAIMS_EVIDENCE_MATRIX.md")
+            export_claims_tasks_legacy(repo_root, repo_root / "docs/CLAIMS_TASKS.md")
+            export_claims_domains_legacy(repo_root)
+            export_claim_tickets_legacy(repo_root)
+            export_external_sources_legacy(repo_root)
+            export_research_narratives_legacy(repo_root)
+            export_book_docs_legacy(repo_root)
+            export_docs_root_narratives_legacy(repo_root)
+            export_data_artifact_narratives_legacy(repo_root)
+            export_monograph_legacy(repo_root)
+            export_reports_narratives_legacy(repo_root)
+            export_docs_convos_legacy(repo_root)
 
     if CHECK_MODE:
         if CHANGED_PATHS:

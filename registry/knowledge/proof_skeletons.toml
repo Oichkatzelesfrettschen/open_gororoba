@@ -4,7 +4,7 @@
 [knowledge_proof_skeletons]
 updated = "deterministic"
 authoritative = true
-skeleton_count = 641
+skeleton_count = 653
 
 [[skeleton]]
 id = "PRS-00001"
@@ -10615,8 +10615,8 @@ theorem_label = "C-547"
 claim_id = "C-547"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-547."]
-derivation_steps = ["VERIFIED: exhaustive search over all 2-blade pairs at dim=8", "WHAT WOULD REFUTE: finding a zero-product pair in standard octonions (impossible, octonions are a normed division algebra)"]
-decision_rule = "VERIFIED: exhaustive search over all 2-blade pairs at dim=8. WHAT WOULD REFUTE: finding a zero-product pair in standard octonions (impossible, octonions are a normed division algebra)."
+derivation_steps = ["VERIFIED: exhaustive search over all wedge 2-blade pairs at dim=8 (full census) yields 128 zero-product pairs", "CLARIFYING NOTE: the auxiliary geometry test `test_split_octonion_zero_divisor_census` in `crates/algebra_core/tests/test_split_octonion_geometry", "rs` reports a restricted simple-blade census (`e_i +/- e_j` only), giving 52 pairs (4 proper + 48 null-involving)", "that restricted diagnostic is not the full 2-blade count used by this claim", "WHAT WOULD REFUTE: finding a zero-product pair in standard octonions (impossible, octonions are a normed division algebra)"]
+decision_rule = "VERIFIED: exhaustive search over all wedge 2-blade pairs at dim=8 (full census) yields 128 zero-product pairs. CLARIFYING NOTE: the auxiliary geometry test `test_split_octonion_zero_divisor_census` in `crates/algebra_core/tests/test_split_octonion_geometry.rs` reports a restricted simple-blade census (`e_i +/- e_j` only), giving 52 pairs (4 proper + 48 null-involving); that restricted diagnostic is not the full 2-blade count used by this claim. WHAT WOULD REFUTE: finding a zero-product pair in standard octonions (impossible, octonions are a normed division algebra)."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-547"
 source_registry = "registry/claims.toml"
@@ -10624,7 +10624,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-547"]
-evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
+evidence_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs", "crates/algebra_core/tests/test_split_octonion_geometry.rs", "e_i +/- e_j"]
 
 [[skeleton]]
 id = "PRS-00591"
@@ -11389,8 +11389,8 @@ theorem_label = "C-590"
 claim_id = "C-590"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-590."]
-derivation_steps = ["Rust test `test_split_octonion_psi_fraction` confirms split-octonion negative fraction is exactly 24/64 = 0", "375", "Test `test_split_octonion_attractor_coincidence` confirms standard CD frustration ratio converges toward this value (dim=1024 ratio 0", "37849)"]
-decision_rule = "Rust test `test_split_octonion_psi_fraction` confirms split-octonion negative fraction is exactly 24/64 = 0.375. Test `test_split_octonion_attractor_coincidence` confirms standard CD frustration ratio converges toward this value (dim=1024 ratio 0.37849)."
+derivation_steps = ["VERIFIED: `test_split_octonion_psi_fraction` establishes exact split target 24/64 = 3/8, while `test_split_octonion_attractor_coincidence` and `test_split_octonion_attractor_regression_dim_128_256_guarded` verify low/high-dimensional trajectories remain above 3/8 and near the attractor with runtime guards (`CD_ATTRACTOR_*`)", "Artifact script `src/scripts/analysis/c590_build_attractor_artifacts", "sh` emits tracked CSV outputs (`data/csv/c590_attractor_runtime_baseline", "csv`, `data/csv/c590_attractor_ratio_sweep", "csv`) using `c590_attractor_sweep` with script-level guard knobs (`C590_SWEEP_DIMS`, `C590_INCLUDE_DIM1024`, `C590_TIMEOUT_S`) for reproducible ratio/runtime snapshots under bounded runtime", "REFUTE if guarded tests fail or emitted sweeps depart from the documented attractor envelope"]
+decision_rule = "VERIFIED: `test_split_octonion_psi_fraction` establishes exact split target 24/64 = 3/8, while `test_split_octonion_attractor_coincidence` and `test_split_octonion_attractor_regression_dim_128_256_guarded` verify low/high-dimensional trajectories remain above 3/8 and near the attractor with runtime guards (`CD_ATTRACTOR_*`). Artifact script `src/scripts/analysis/c590_build_attractor_artifacts.sh` emits tracked CSV outputs (`data/csv/c590_attractor_runtime_baseline.csv`, `data/csv/c590_attractor_ratio_sweep.csv`) using `c590_attractor_sweep` with script-level guard knobs (`C590_SWEEP_DIMS`, `C590_INCLUDE_DIM1024`, `C590_TIMEOUT_S`) for reproducible ratio/runtime snapshots under bounded runtime. REFUTE if guarded tests fail or emitted sweeps depart from the documented attractor envelope."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-590"
 source_registry = "registry/claims.toml"
@@ -11398,7 +11398,7 @@ source_path = "registry/claims.toml"
 line_start = 0
 line_end = 0
 claim_refs = ["C-590", "I-041"]
-evidence_refs = ["I-041", "crates/algebra_core/tests/test_split_octonion_attractor.rs", "registry/insights.toml"]
+evidence_refs = ["I-041", "crates/algebra_core/tests/test_split_octonion_attractor.rs", "crates/gororoba_cli/src/bin/c590_attractor_sweep.rs", "data/csv/c590_attractor_ratio_sweep.csv", "data/csv/c590_attractor_runtime_baseline.csv", "registry/insights.toml", "src/scripts/analysis/c590_build_attractor_artifacts.sh"]
 
 [[skeleton]]
 id = "PRS-00634"
@@ -11543,3 +11543,219 @@ line_start = 0
 line_end = 0
 claim_refs = ["C-598"]
 evidence_refs = ["crates/algebra_core/tests/test_low_dimensional_survey.rs", "registry/phase8_census.toml"]
+
+[[skeleton]]
+id = "PRS-00642"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-599"
+claim_id = "C-599"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-599."]
+derivation_steps = ["VERIFIED: Greedy partition refinement algorithm found a separating 6-tuple for all 16 motif classes at dim=256 (PG(6,2) with 127 points)", "No 5-tuple sufficed", "Confirms prediction log2(256)-2 = 6"]
+decision_rule = "VERIFIED: Greedy partition refinement algorithm found a separating 6-tuple for all 16 motif classes at dim=256 (PG(6,2) with 127 points). No 5-tuple sufficed. Confirms prediction log2(256)-2 = 6."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-599"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-599"]
+evidence_refs = ["crates/algebra_core/src/analysis/projective_geometry.rs"]
+
+[[skeleton]]
+id = "PRS-00643"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-600"
+claim_id = "C-600"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-600."]
+derivation_steps = ["VERIFIED: Sweep across 4 dimensions confirmed exact match at every step", "Total runtime 55s in release mode", "Formula is degree = projective dimension n-2 of PG(n-2,2)"]
+decision_rule = "VERIFIED: Sweep across 4 dimensions confirmed exact match at every step. Total runtime 55s in release mode. Formula is degree = projective dimension n-2 of PG(n-2,2)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-600"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-600"]
+evidence_refs = ["crates/algebra_core/src/analysis/projective_geometry.rs"]
+
+[[skeleton]]
+id = "PRS-00644"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-601"
+claim_id = "C-601"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-601."]
+derivation_steps = ["VERIFIED: CPU-path Monte Carlo with 1M triangle samples across 4,192,256 nodes yielded pure_ratio=0", "2505", "Klein-four fiber symmetry verified: all 4 fibers within 0", "5% of each other"]
+decision_rule = "VERIFIED: CPU-path Monte Carlo with 1M triangle samples across 4,192,256 nodes yielded pure_ratio=0.2505. Klein-four fiber symmetry verified: all 4 fibers within 0.5% of each other."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-601"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-601"]
+evidence_refs = ["crates/algebra_core/src/gpu/dimensional.rs"]
+
+[[skeleton]]
+id = "PRS-00645"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-602"
+claim_id = "C-602"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-602."]
+derivation_steps = ["VERIFIED: Fibers F00=250509, F01=249590, F10=249700, F11=250201 out of 1M samples", "Maximum deviation from mean (250000) is 0", "20%", "Extends C-524 from dim=512 to dim=4096"]
+decision_rule = "VERIFIED: Fibers F00=250509, F01=249590, F10=249700, F11=250201 out of 1M samples. Maximum deviation from mean (250000) is 0.20%. Extends C-524 from dim=512 to dim=4096."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-602"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-524", "C-602"]
+evidence_refs = ["C-524", "crates/algebra_core/src/gpu/dimensional.rs"]
+
+[[skeleton]]
+id = "PRS-00646"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-603"
+claim_id = "C-603"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-603."]
+derivation_steps = ["VERIFIED: enumerate_lambda_4096() returns 2187 vectors = enumerate_base_universe() count", "Lambda_2048 has 2048 vectors (strict subset)", "The filtration chain Lambda_256(256) < Lambda_512(512) < Lambda_1024(1026) < Lambda_2048(2048) < Lambda_4096(2187) is monotonically increasing"]
+decision_rule = "VERIFIED: enumerate_lambda_4096() returns 2187 vectors = enumerate_base_universe() count. Lambda_2048 has 2048 vectors (strict subset). The filtration chain Lambda_256(256) < Lambda_512(512) < Lambda_1024(1026) < Lambda_2048(2048) < Lambda_4096(2187) is monotonically increasing."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-603"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-603"]
+evidence_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+
+[[skeleton]]
+id = "PRS-00647"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-604"
+claim_id = "C-604"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-604."]
+derivation_steps = ["VERIFIED: Cross-validated parity constraints at Lambda_4096(2187), Lambda_2048(2048), Lambda_1024(1026), Lambda_512(512), Lambda_256(256)", "All pass 100% on all 4 constraints", "These are structural invariants of the Cayley-Dickson codebook encoding"]
+decision_rule = "VERIFIED: Cross-validated parity constraints at Lambda_4096(2187), Lambda_2048(2048), Lambda_1024(1026), Lambda_512(512), Lambda_256(256). All pass 100% on all 4 constraints. These are structural invariants of the Cayley-Dickson codebook encoding."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-604"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-604"]
+evidence_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+
+[[skeleton]]
+id = "PRS-00648"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-605"
+claim_id = "C-605"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-605."]
+derivation_steps = ["VERIFIED: dim=512 generates 65280 = C(255,2) node pairs", "APT census via wide-index path yields pure_ratio=0", "2481, consistent with 1:3 law", "Cross-validates against u8 path at dim=256"]
+decision_rule = "VERIFIED: dim=512 generates 65280 = C(255,2) node pairs. APT census via wide-index path yields pure_ratio=0.2481, consistent with 1:3 law. Cross-validates against u8 path at dim=256."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-605"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-605"]
+evidence_refs = ["crates/algebra_core/src/gpu/dimensional.rs"]
+
+[[skeleton]]
+id = "PRS-00649"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-606"
+claim_id = "C-606"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-606."]
+derivation_steps = ["VERIFIED (Phase 9): Tessarines use tensor product construction (z1, z2) with component-wise multiplication (a1,a2)(b1,b2)=(a1*b1, a2*b2), while CD algebras use recursive doubling (a,b)(c,d)=(ac-d*b, da+bc*)", "Component-wise means tessarines ALWAYS commute, while doubling formula forces non-commutativity at dim>=4", "Cannot transform one into the other via gamma parameters"]
+decision_rule = "VERIFIED (Phase 9): Tessarines use tensor product construction (z1, z2) with component-wise multiplication (a1,a2)(b1,b2)=(a1*b1, a2*b2), while CD algebras use recursive doubling (a,b)(c,d)=(ac-d*b, da+bc*). Component-wise means tessarines ALWAYS commute, while doubling formula forces non-commutativity at dim>=4. Cannot transform one into the other via gamma parameters."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-606"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-606"]
+evidence_refs = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs"]
+
+[[skeleton]]
+id = "PRS-00650"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-607"
+claim_id = "C-607"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-607."]
+derivation_steps = ["VERIFIED (Phase 9): Sampled 100 pseudo-random tessarines, all nonzero samples had inverses", "Each component inverted independently: (z1, z2)^{-1} = (z1^{-1}, z2^{-1}) where zi^{-1} = conj(zi)/", "zi", "^2", "Returns identity (1, 1) for all valid pairs", "Non-invertibility only occurs if either component is exactly zero (measure zero set)"]
+decision_rule = "VERIFIED (Phase 9): Sampled 100 pseudo-random tessarines, all nonzero samples had inverses. Each component inverted independently: (z1, z2)^{-1} = (z1^{-1}, z2^{-1}) where zi^{-1} = conj(zi)/|zi|^2. Returns identity (1, 1) for all valid pairs. Non-invertibility only occurs if either component is exactly zero (measure zero set)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-607"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-607"]
+evidence_refs = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs"]
+
+[[skeleton]]
+id = "PRS-00651"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-608"
+claim_id = "C-608"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-608."]
+derivation_steps = ["VERIFIED (Phase 9): For (a1,a2)(b1,b2)=(a1*b1, a2*b2), we have", "product", "\\u00B2=", "a1*b1", "\\u00B2+", "a2*b2", "\\u00B2 (no cross terms), but", "a"]
+decision_rule = "VERIFIED (Phase 9): For (a1,a2)(b1,b2)=(a1*b1, a2*b2), we have ||product||\\u00B2=|a1*b1|\\u00B2+|a2*b2|\\u00B2 (no cross terms), but ||a||\\u00B2||b||\\u00B2=(|a1|\\u00B2+|a2|\\u00B2)(|b1|\\u00B2+|b2|\\u00B2) includes cross terms |a1|\\u00B2|b2|\\u00B2 + |a2|\\u00B2|b1|\\u00B2. These ALWAYS differ (verified on 50 random pairs). This explains why tessarines are a division algebra (100% invertible) despite lacking norm multiplicativity."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-608"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-608"]
+evidence_refs = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs"]
+
+[[skeleton]]
+id = "PRS-00652"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-609"
+claim_id = "C-609"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-609."]
+derivation_steps = ["VERIFIED (Phase 9): All basis element products satisfy ab=ba (no violations) and (ab)c=a(bc) (no violations)", "Contrasts sharply with quaternions (ab \\u2260 ba for 3 independent pairs) and octonions (non-associative)", "This structural difference from CD algebras follows directly from component-wise (commutative ring operations) vs doubling formula (inherently non-commutative)"]
+decision_rule = "VERIFIED (Phase 9): All basis element products satisfy ab=ba (no violations) and (ab)c=a(bc) (no violations). Contrasts sharply with quaternions (ab \\u2260 ba for 3 independent pairs) and octonions (non-associative). This structural difference from CD algebras follows directly from component-wise (commutative ring operations) vs doubling formula (inherently non-commutative)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-609"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-609"]
+evidence_refs = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs"]
+
+[[skeleton]]
+id = "PRS-00653"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-610"
+claim_id = "C-610"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-610."]
+derivation_steps = ["VERIFIED (Phase 9): Quaternions (Hamilton, 1843) satisfy (2), (3), (4) but FAIL (1) - non-commutative", "Tessarines (Cockle, 1847) satisfy all 4", "Split quaternions fail (3)", "This establishes a clear taxonomy: different construction methods over C \\u00D7 C (tensor product) vs C via Cayley-Dickson produce different algebraic landscapes", "Phase 9 discovery bridges the 'missing' 4D algebra between C\\u00B2 (ordered pairs, zero-divisors) and H (quaternions, non-commutative)"]
+decision_rule = "VERIFIED (Phase 9): Quaternions (Hamilton, 1843) satisfy (2), (3), (4) but FAIL (1) - non-commutative. Tessarines (Cockle, 1847) satisfy all 4. Split quaternions fail (3). This establishes a clear taxonomy: different construction methods over C \\u00D7 C (tensor product) vs C via Cayley-Dickson produce different algebraic landscapes. Phase 9 discovery bridges the 'missing' 4D algebra between C\\u00B2 (ordered pairs, zero-divisors) and H (quaternions, non-commutative)."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-610"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-610"]
+evidence_refs = ["crates/algebra_core/tests/test_tessarines_census.rs"]

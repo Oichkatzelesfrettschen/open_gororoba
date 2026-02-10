@@ -14,7 +14,7 @@ from pathlib import Path
 import tomllib
 
 
-ALLOWED = {"toml_published_markdown", "third_party_markdown"}
+ALLOWED = {"toml_published_markdown", "third_party_markdown", "generated_artifact"}
 TRACKED_ALLOWLIST = {
     "AGENTS.md",
     "CLAUDE.md",
@@ -53,6 +53,14 @@ def main() -> int:
         generated_declared = bool(row.get("generated_declared", False))
         if classification not in ALLOWED:
             failures.append(f"{path}: disallowed classification={classification}")
+        if classification == "generated_artifact":
+            if not path.startswith("build/docs/generated/"):
+                failures.append(
+                    f"{path}: generated_artifact allowed only under build/docs/generated/"
+                )
+            if git_status == "tracked":
+                failures.append(f"{path}: generated_artifact must not be tracked")
+            continue
         if git_status == "tracked" and path not in TRACKED_ALLOWLIST:
             failures.append(f"{path}: tracked markdown outside allowlist")
         if classification == "toml_published_markdown":

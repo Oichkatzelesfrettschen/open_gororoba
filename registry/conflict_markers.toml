@@ -4,9 +4,9 @@
 [conflict_markers]
 updated = "2026-02-10"
 authoritative = true
-marker_count = 154
+marker_count = 149
 high_severity_count = 63
-medium_severity_count = 91
+medium_severity_count = 86
 low_severity_count = 0
 kind_count = 2
 
@@ -2323,8 +2323,8 @@ claim_refs = ["C-453", "C-455", "C-458"]
 source_registry = "registry/docs_root_narratives.toml"
 source_document = "docs/PHASE_5_6_CONSOLIDATION.md"
 section_label = "5b. Octonion-Lattice Connection (C-589, I-040)"
-line_start = 26
-line_end = 51
+line_start = 29
+line_end = 54
 positive_evidence = ["verified"]
 negative_evidence = ["refuted"]
 jaccard_overlap = 0.000000
@@ -2339,8 +2339,8 @@ claim_refs = ["C-453", "C-455", "C-458", "C-546", "C-550", "C-552", "C-589", "C-
 source_registry = "registry/docs_root_narratives.toml"
 source_document = "docs/PHASE_5_6_CONSOLIDATION.md"
 section_label = "3. Cross-Validation Matrix"
-line_start = 112
-line_end = 143
+line_start = 115
+line_end = 146
 positive_evidence = ["supported", "valid", "verified"]
 negative_evidence = ["refuted"]
 jaccard_overlap = 0.000000
@@ -2348,86 +2348,6 @@ notes = "Section contains both positive and negative validation language."
 
 [[marker]]
 id = "CM-0147"
-marker_kind = "section_polarity_conflict"
-severity = "medium"
-status = "open"
-claim_refs = []
-source_registry = "registry/research_narratives.toml"
-source_document = "docs/theory/CLAIMS_METHODOLOGY.md"
-section_label = "1. Claims Taxonomy"
-line_start = 15
-line_end = 34
-positive_evidence = ["established", "reproduced", "supported", "valid", "verified"]
-negative_evidence = ["insufficient", "refuted"]
-jaccard_overlap = 0.000000
-notes = "Section contains both positive and negative validation language."
-
-[[marker]]
-id = "CM-0148"
-marker_kind = "section_polarity_conflict"
-severity = "medium"
-status = "open"
-claim_refs = []
-source_registry = "registry/research_narratives.toml"
-source_document = "docs/theory/CLAIMS_METHODOLOGY.md"
-section_label = "Level 4: Verified/Refuted"
-line_start = 59
-line_end = 63
-positive_evidence = ["verified"]
-negative_evidence = ["fails", "refuted"]
-jaccard_overlap = 0.000000
-notes = "Section contains both positive and negative validation language."
-
-[[marker]]
-id = "CM-0149"
-marker_kind = "section_polarity_conflict"
-severity = "medium"
-status = "open"
-claim_refs = ["C-091"]
-source_registry = "registry/research_narratives.toml"
-source_document = "docs/theory/CLAIMS_METHODOLOGY.md"
-section_label = "5. Null Hypothesis Testing"
-line_start = 92
-line_end = 103
-positive_evidence = ["consistent"]
-negative_evidence = ["refuted"]
-jaccard_overlap = 0.000000
-notes = "Section contains both positive and negative validation language."
-
-[[marker]]
-id = "CM-0150"
-marker_kind = "section_polarity_conflict"
-severity = "medium"
-status = "open"
-claim_refs = ["C-077"]
-source_registry = "registry/research_narratives.toml"
-source_document = "docs/theory/CLAIMS_METHODOLOGY.md"
-section_label = "8. Negative Result Policy"
-line_start = 129
-line_end = 140
-positive_evidence = ["supported"]
-negative_evidence = ["refuted"]
-jaccard_overlap = 0.000000
-notes = "Section contains both positive and negative validation language."
-
-[[marker]]
-id = "CM-0151"
-marker_kind = "section_polarity_conflict"
-severity = "medium"
-status = "open"
-claim_refs = []
-source_registry = "registry/research_narratives.toml"
-source_document = "docs/theory/CLAIMS_METHODOLOGY.md"
-section_label = "Appendix: Claims Statistics (2026-02-06)"
-line_start = 172
-line_end = 184
-positive_evidence = ["verified"]
-negative_evidence = ["refuted"]
-jaccard_overlap = 0.000000
-notes = "Section contains both positive and negative validation language."
-
-[[marker]]
-id = "CM-0152"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -2443,7 +2363,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0153"
+id = "CM-0148"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"
@@ -2459,7 +2379,7 @@ jaccard_overlap = 0.000000
 notes = "Section contains both positive and negative validation language."
 
 [[marker]]
-id = "CM-0154"
+id = "CM-0149"
 marker_kind = "section_polarity_conflict"
 severity = "medium"
 status = "open"

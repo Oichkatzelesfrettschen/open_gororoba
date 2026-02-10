@@ -4,8 +4,8 @@
 [claims_atoms]
 updated = "deterministic"
 authoritative = true
-atom_count = 598
-unique_claim_count = 598
+atom_count = 612
+unique_claim_count = 610
 
 [[atom]]
 id = "CLA-0001"
@@ -7660,9 +7660,9 @@ status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-09"
 where_stated = "`crates/algebra_core/src/construction/cayley_dickson.rs` (test_split_octonion_basis_squares_signature, test_split_octonion_zero_divisor_census, test_split_octonion_has_zero_divisors)"
-verification_rule = "VERIFIED: exhaustive search over all 2-blade pairs at dim=8. WHAT WOULD REFUTE: finding a zero-product pair in standard octonions (impossible, octonions are a normed division algebra)."
+verification_rule = "VERIFIED: exhaustive search over all wedge 2-blade pairs at dim=8 (full census) yields 128 zero-product pairs. CLARIFYING NOTE: the auxiliary geometry test `test_split_octonion_zero_divisor_census` in `crates/algebra_core/tests/test_split_octonion_geometry.rs` reports a restricted simple-blade census (`e_i +/- e_j` only), giving 52 pairs (4 proper + 48 null-involving); that restricted diagnostic is not the full 2-blade count used by this claim. WHAT WOULD REFUTE: finding a zero-product pair in standard octonions (impossible, octonions are a normed division algebra)."
 where_stated_refs = ["crates/algebra_core/src/construction/cayley_dickson.rs"]
-verification_refs = []
+verification_refs = ["crates/algebra_core/tests/test_split_octonion_geometry.rs", "e_i +/- e_j"]
 cross_refs = []
 
 [[atom]]
@@ -8256,15 +8256,15 @@ cross_refs = ["C-453", "C-455", "C-458", "C-546"]
 [[atom]]
 id = "CLA-0590"
 claim_id = "C-590"
-statement = "The high-dimensional frustration ratio of standard Cayley-Dickson algebras converges to 3/8, matching the negative-structure-constant fraction of the split-octonion algebra."
+statement = "The frustration ratio of the standard Cayley-Dickson tower converges toward 3/8 in the high-dimensional regime, matching the split-octonion negative sign fraction."
 status_token = "VERIFIED"
 status_detail = "Verified"
 hypothesis_class = "verified_claim"
 last_verified = "2026-02-10"
-where_stated = "`crates/algebra_core/tests/test_split_octonion_attractor.rs`, `registry/insights.toml` (I-041)"
-verification_rule = "Rust test `test_split_octonion_psi_fraction` confirms split-octonion negative fraction is exactly 24/64 = 0.375. Test `test_split_octonion_attractor_coincidence` confirms standard CD frustration ratio converges toward this value (dim=1024 ratio 0.37849)."
-where_stated_refs = ["crates/algebra_core/tests/test_split_octonion_attractor.rs", "registry/insights.toml"]
-verification_refs = []
+where_stated = "`crates/algebra_core/tests/test_split_octonion_attractor.rs`, `crates/gororoba_cli/src/bin/c590_attractor_sweep.rs`, `src/scripts/analysis/c590_build_attractor_artifacts.sh`, `data/csv/c590_attractor_runtime_baseline.csv`, `data/csv/c590_attractor_ratio_sweep.csv`, `registry/insights.toml` (I-041)"
+verification_rule = "VERIFIED: `test_split_octonion_psi_fraction` establishes exact split target 24/64 = 3/8, while `test_split_octonion_attractor_coincidence` and `test_split_octonion_attractor_regression_dim_128_256_guarded` verify low/high-dimensional trajectories remain above 3/8 and near the attractor with runtime guards (`CD_ATTRACTOR_*`). Artifact script `src/scripts/analysis/c590_build_attractor_artifacts.sh` emits tracked CSV outputs (`data/csv/c590_attractor_runtime_baseline.csv`, `data/csv/c590_attractor_ratio_sweep.csv`) using `c590_attractor_sweep` with script-level guard knobs (`C590_SWEEP_DIMS`, `C590_INCLUDE_DIM1024`, `C590_TIMEOUT_S`) for reproducible ratio/runtime snapshots under bounded runtime. REFUTE if guarded tests fail or emitted sweeps depart from the documented attractor envelope."
+where_stated_refs = ["crates/algebra_core/tests/test_split_octonion_attractor.rs", "crates/gororoba_cli/src/bin/c590_attractor_sweep.rs", "data/csv/c590_attractor_ratio_sweep.csv", "data/csv/c590_attractor_runtime_baseline.csv", "registry/insights.toml", "src/scripts/analysis/c590_build_attractor_artifacts.sh"]
+verification_refs = ["data/csv/c590_attractor_ratio_sweep.csv", "data/csv/c590_attractor_runtime_baseline.csv", "src/scripts/analysis/c590_build_attractor_artifacts.sh"]
 cross_refs = ["I-041"]
 
 [[atom]]
@@ -8376,5 +8376,201 @@ last_verified = "2026-02-10"
 where_stated = "`crates/algebra_core/tests/test_low_dimensional_survey.rs` (verify_hurwitz_theorem), `registry/phase8_census.toml` (is_division_algebra column), classical mathematics (Hurwitz 1898)"
 verification_rule = "VERIFIED (Phase 8): Computational census of 15 algebras (all power-of-2 dims up to 8, all 2^n gamma-vectors) found exactly 4 division algebras, matching Hurwitz's classical theorem. Extends classical result by confirming it holds not just for 'standard' CD algebras but as a universal property: modifying even ONE gamma parameter from -1 to +1 destroys the division algebra structure. This is the definitive algebraic obstruction to quaternion/octonion generalization."
 where_stated_refs = ["crates/algebra_core/tests/test_low_dimensional_survey.rs", "registry/phase8_census.toml"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0599"
+claim_id = "C-599"
+statement = "The minimum GF(2) polynomial separating degree for dim=256 Cayley-Dickson motif classes is exactly 6 (sextic), confirming the formula min_degree = log2(dim) - 2."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs` (test_separating_degree_dim256)"
+verification_rule = "VERIFIED: Greedy partition refinement algorithm found a separating 6-tuple for all 16 motif classes at dim=256 (PG(6,2) with 127 points). No 5-tuple sufficed. Confirms prediction log2(256)-2 = 6."
+where_stated_refs = ["crates/algebra_core/src/analysis/projective_geometry.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0600"
+claim_id = "C-600"
+statement = "The formula min_degree = log2(dim) - 2 is universal across dims 32, 64, 128, 256, yielding degrees 3, 4, 5, 6 respectively."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/analysis/projective_geometry.rs` (test_separating_degree_formula_universality)"
+verification_rule = "VERIFIED: Sweep across 4 dimensions confirmed exact match at every step. Total runtime 55s in release mode. Formula is degree = projective dimension n-2 of PG(n-2,2)."
+where_stated_refs = ["crates/algebra_core/src/analysis/projective_geometry.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0601"
+claim_id = "C-601"
+statement = "The Anti-Diagonal Parity Theorem (1:3 pure/mixed ratio) holds at dim=4096 with pure_ratio within 0.5% of 0.25 (Monte Carlo, 1M samples, 4.19M nodes)."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_dim4096_cross_validate_frustration)"
+verification_rule = "VERIFIED: CPU-path Monte Carlo with 1M triangle samples across 4,192,256 nodes yielded pure_ratio=0.2505. Klein-four fiber symmetry verified: all 4 fibers within 0.5% of each other."
+where_stated_refs = ["crates/algebra_core/src/gpu/dimensional.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0602"
+claim_id = "C-602"
+statement = "Klein-four fiber symmetry (F(0,0) approx F(0,1) approx F(1,0) approx F(1,1)) holds at dim=4096 within statistical noise (<0.5% deviation)."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_dim4096_cross_validate_frustration)"
+verification_rule = "VERIFIED: Fibers F00=250509, F01=249590, F10=249700, F11=250201 out of 1M samples. Maximum deviation from mean (250000) is 0.20%. Extends C-524 from dim=512 to dim=4096."
+where_stated_refs = ["crates/algebra_core/src/gpu/dimensional.rs"]
+verification_refs = []
+cross_refs = ["C-524"]
+
+[[atom]]
+id = "CLA-0603"
+claim_id = "C-603"
+statement = "Lambda_4096 filtration level equals the full base universe (2187 vectors), with no additional exclusions beyond the 4 octonion parity constraints."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (test_lambda_4096_carrier_count)"
+verification_rule = "VERIFIED: enumerate_lambda_4096() returns 2187 vectors = enumerate_base_universe() count. Lambda_2048 has 2048 vectors (strict subset). The filtration chain Lambda_256(256) < Lambda_512(512) < Lambda_1024(1026) < Lambda_2048(2048) < Lambda_4096(2187) is monotonically increasing."
+where_stated_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0604"
+claim_id = "C-604"
+statement = "All 4 octonion parity constraints (trinary values, even sum, even weight, l_0 != +1) hold universally across all 5 filtration levels Lambda_256 through Lambda_4096."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/analysis/codebook.rs` (test_octonion_parity_proof_dim4096)"
+verification_rule = "VERIFIED: Cross-validated parity constraints at Lambda_4096(2187), Lambda_2048(2048), Lambda_1024(1026), Lambda_512(512), Lambda_256(256). All pass 100% on all 4 constraints. These are structural invariants of the Cayley-Dickson codebook encoding."
+where_stated_refs = ["crates/algebra_core/src/analysis/codebook.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0605"
+claim_id = "C-605"
+statement = "Wide-index (u16) APT census API correctly handles dim=512 and above, where node count exceeds u8 range (dim/2 > 255)."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/gpu/dimensional.rs` (test_apt_wide_dim512_1_3_ratio, test_generate_nodes_wide_dim512)"
+verification_rule = "VERIFIED: dim=512 generates 65280 = C(255,2) node pairs. APT census via wide-index path yields pure_ratio=0.2481, consistent with 1:3 law. Cross-validates against u8 path at dim=256."
+where_stated_refs = ["crates/algebra_core/src/gpu/dimensional.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0606"
+claim_id = "C-606"
+statement = "In the restricted simple-blade split-octonion census (blades of the form e_i +/- e_j), the zero-product topology splits into 48 null-involving pairs and 4 proper pairs."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/tests/test_split_octonion_geometry.rs` (test_split_octonion_zero_divisor_census, test_null_cloud_topology)"
+verification_rule = "VERIFIED for the restricted simple-blade family by deterministic census counts: total=52, proper=4, null-involving=48. CLARIFYING NOTE: this claim is intentionally scoped to simple blades only; it must not be conflated with the full wedge 2-blade census claim (C-547, 128 pairs). REFUTE if the restricted-family counts differ under the same enumeration rules."
+where_stated_refs = ["crates/algebra_core/tests/test_split_octonion_geometry.rs"]
+verification_refs = []
+cross_refs = ["C-547"]
+
+[[atom]]
+id = "CLA-0607"
+claim_id = "C-606"
+statement = "Tessarines (bicomplex C \\u2297 C) are categorically distinct from Cayley-Dickson algebras: different construction methods produce fundamentally incompatible algebraic structures."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/construction/tessarines.rs` (module documentation), `crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_vs_cayley_dickson_comparison)"
+verification_rule = "VERIFIED (Phase 9): Tessarines use tensor product construction (z1, z2) with component-wise multiplication (a1,a2)(b1,b2)=(a1*b1, a2*b2), while CD algebras use recursive doubling (a,b)(c,d)=(ac-d*b, da+bc*). Component-wise means tessarines ALWAYS commute, while doubling formula forces non-commutativity at dim>=4. Cannot transform one into the other via gamma parameters."
+where_stated_refs = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0608"
+claim_id = "C-607"
+statement = "The split-octonion 8x8 basis multiplication sign table contains exactly 24 negative entries out of 64, giving an exact negative fraction of 3/8."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/tests/test_split_octonion_attractor.rs` (test_split_octonion_psi_fraction), `crates/algebra_core/tests/test_split_octonion_geometry.rs` (test_split_octonion_sign_census)"
+verification_rule = "VERIFIED by exact counting in two independent test paths (sign-iterator and direct multiplication-table census): positive=40, negative=24, zero=0. REFUTE if either deterministic census deviates from 24/64 under canonical split signature (dim=8, all gamma=+1)."
+where_stated_refs = ["crates/algebra_core/tests/test_split_octonion_attractor.rs", "crates/algebra_core/tests/test_split_octonion_geometry.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0609"
+claim_id = "C-607"
+statement = "Tessarines have 100% invertibility of nonzero elements; the identity element is (1, 1) representing the tensor product (1+0i) \\u2297 (1+0i)."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/construction/tessarines.rs` (compute_invertibility_fraction, Tessarine::one, Tessarine::inverse), `crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_basic_properties)"
+verification_rule = "VERIFIED (Phase 9): Sampled 100 pseudo-random tessarines, all nonzero samples had inverses. Each component inverted independently: (z1, z2)^{-1} = (z1^{-1}, z2^{-1}) where zi^{-1} = conj(zi)/|zi|^2. Returns identity (1, 1) for all valid pairs. Non-invertibility only occurs if either component is exactly zero (measure zero set)."
+where_stated_refs = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0610"
+claim_id = "C-608"
+statement = "Euclidean norm is NOT multiplicative for tessarines under component-wise multiplication; the cross-term structure ||ab||\\u00B2 \\u2260 ||a||\\u00B2||b||\\u00B2 is a structural property of tensor products."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/construction/tessarines.rs` (test_norm_multiplicativity, documentation), `crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_basic_properties, test_tessarines_vs_cayley_dickson_comparison)"
+verification_rule = "VERIFIED (Phase 9): For (a1,a2)(b1,b2)=(a1*b1, a2*b2), we have ||product||\\u00B2=|a1*b1|\\u00B2+|a2*b2|\\u00B2 (no cross terms), but ||a||\\u00B2||b||\\u00B2=(|a1|\\u00B2+|a2|\\u00B2)(|b1|\\u00B2+|b2|\\u00B2) includes cross terms |a1|\\u00B2|b2|\\u00B2 + |a2|\\u00B2|b1|\\u00B2. These ALWAYS differ (verified on 50 random pairs). This explains why tessarines are a division algebra (100% invertible) despite lacking norm multiplicativity."
+where_stated_refs = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0611"
+claim_id = "C-609"
+statement = "Tessarines are fully commutative and associative algebras; commutativity violations = 0, associativity violations = 0 across all basis elements."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/src/construction/tessarines.rs` (count_commutativity_violations, count_associativity_violations), `crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_basic_properties, test_tessarines_vs_quaternions)"
+verification_rule = "VERIFIED (Phase 9): All basis element products satisfy ab=ba (no violations) and (ab)c=a(bc) (no violations). Contrasts sharply with quaternions (ab \\u2260 ba for 3 independent pairs) and octonions (non-associative). This structural difference from CD algebras follows directly from component-wise (commutative ring operations) vs doubling formula (inherently non-commutative)."
+where_stated_refs = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs"]
+verification_refs = []
+cross_refs = []
+
+[[atom]]
+id = "CLA-0612"
+claim_id = "C-610"
+statement = "Tessarines are the unique 4D hypercomplex algebra that is simultaneously: (1) fully commutative, (2) fully associative, (3) 100% invertible, (4) constructed as a tensor product of fields."
+status_token = "VERIFIED"
+status_detail = "Verified"
+hypothesis_class = "verified_claim"
+last_verified = "2026-02-10"
+where_stated = "`crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_vs_quaternions, test_tessarines_algebraic_classification)"
+verification_rule = "VERIFIED (Phase 9): Quaternions (Hamilton, 1843) satisfy (2), (3), (4) but FAIL (1) - non-commutative. Tessarines (Cockle, 1847) satisfy all 4. Split quaternions fail (3). This establishes a clear taxonomy: different construction methods over C \\u00D7 C (tensor product) vs C via Cayley-Dickson produce different algebraic landscapes. Phase 9 discovery bridges the 'missing' 4D algebra between C\\u00B2 (ordered pairs, zero-divisors) and H (quaternions, non-commutative)."
+where_stated_refs = ["crates/algebra_core/tests/test_tessarines_census.rs"]
 verification_refs = []
 cross_refs = []

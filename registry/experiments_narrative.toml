@@ -5,7 +5,7 @@
 authoritative = true
 updated = "2026-02-09"
 source_markdown = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
-entry_count = 14
+entry_count = 15
 preamble_markdown = """
 # Experiments Portfolio Shortlist
 
@@ -369,5 +369,18 @@ Output: data/csv/apt_dimensional_census_summary.csv, data/csv/apt_dimensional_ce
 Run:
 ```bash
 cargo run --release --bin dimensional-census -- --slow --details
+```
+"""
+
+[[entry]]
+id = "E-015"
+title = "GF(2) Separating Degree Formula Verification (dim 32-256)"
+body_markdown = """
+Method: For each Cayley-Dickson dimension d in {32, 64, 128, 256}, compute the minimum-degree GF(2) polynomial that separates all motif classes in PG(log2(d)-2, 2). Uses greedy partition refinement for d=256 where brute-force is infeasible (16 classes, C(127,6) candidate tuples). Verifies the formula min_degree = log2(d) - 2 at each step.
+Input: None (Cayley-Dickson structure tables computed on the fly)
+Output: data/csv/separating_degree_formula_sweep.csv
+Run:
+```bash
+cargo test -p algebra_core --release --lib -- test_separating_degree_formula_universality --nocapture
 ```
 """

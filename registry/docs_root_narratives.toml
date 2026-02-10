@@ -5,7 +5,7 @@
 updated = "2026-02-09"
 authoritative = true
 source_markdown_glob = "docs/*.md"
-document_count = 62
+document_count = 63
 
 [[document]]
 id = "DRN-001"
@@ -11169,8 +11169,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-453", "C-455", "C-458", "C-546", "C-550", "C-552", "C-589", "C-591"]
 path_refs = ["stats_core/ultrametric/gpu.rs", "crates/algebra_core/src/construction/cayley_dickson.rs", "crates/algebra_core/src/analysis/codebook.rs"]
-line_count = 195
+line_count = 198
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Phase 5-6 Consolidation: GPU Tensor Networks + CD Non-Commutativity Verification
 
 **Date**: 2026-02-10
@@ -11370,6 +11373,580 @@ universal, lattice is octonion-driven), the following research directions open:
 
 [[document]]
 id = "DRN-036"
+source_markdown = "docs/PHASE_9_TESSARINES_RESEARCH.md"
+slug = "phase_9_tessarines_research"
+title = "Phase 9: Tessarines and Non-CD Constructions Research"
+status_token = "NARRATIVE"
+content_kind = "research_note"
+claim_refs = ["C-546", "C-550", "C-552", "C-589"]
+path_refs = ["tessarines.rs", "algebra_core/src/construction/"]
+line_count = 561
+body_markdown = '''
+# Phase 9: Tessarines and Non-CD Constructions Research
+
+**Date:** 2026-02-10
+**Status:** Comprehensive Research Summary
+**Scope:** Establishes the theoretical landscape for Phase 9 of algebra core development
+
+---
+
+## Executive Summary
+
+Tessarines (bicomplex algebras) and Cayley-Dickson algebras are **fundamentally distinct** algebraic constructions that happen to both operate in 4D space. The key distinction is **construction method**, not dimension:
+
+- **Cayley-Dickson (CD)**: Recursive doubling formula with conjugation; produces non-commutative 4D algebras regardless of metric signature parameter
+- **Tessarines**: Tensor product construction C <U+2297> C; produces commutative, associative 4D algebra with two distinct types of zero-divisors (idempotents and nilpotents)
+
+**Critical Finding:** NO gamma parameter or CD variant exists that yields commutativity at dim >= 4. This is a **structural property** of the CD doubling formula, not a parametric deficiency.
+
+---
+
+## 1. HISTORICAL CONTEXT
+
+### 1.1 Tessarines (1847-1848): Cockle's Original Contribution
+
+**Originator:** James Cockle
+**Date:** 1847-1848
+**Status:** Older than bicomplex formulation
+
+Cockle introduced tessarines as hypercomplex numbers with basis {1, i, j, k} where:
+- i<U+00B2> = -1 (standard imaginary unit)
+- j<U+00B2> = +1 (hyperbolic unit)
+- ij = k
+- **Key property:** ij = ji (commutative multiplication)
+
+The word "tessarines" refers to a "four-fold" number system. Cockle's work was largely ignored by the mathematics community at the time.
+
+**Reference:** Historical attribution confirmed in modern surveys of hypercomplex algebras.
+
+### 1.2 Segre's Formulation (1892): Rediscovery and Matrix Representation
+
+**Author:** Corrado Segre
+**Publication:** Mathematische Annalen (1892)
+**Title Context:** Italian geometer studying biquaternions and generalizations
+
+Segre rediscovered and systematized Cockle's tessarines independently, using different basis notation:
+
+**Segre's Basis:**
+- h and i: two imaginary units with h<U+00B2> = i<U+00B2> = -1
+- h and i commute: hi = ih
+- Product hi squares to +1: (hi)<U+00B2> = h<U+00B2>i<U+00B2> = (-1)(-1) = +1
+
+The algebra is constructed on basis {1, h, i, hi}.
+
+**Historical Note:** Segre read Hamilton's Lectures on Quaternions (1853) and Clifford's works but was unaware of Cockle's original work. Hamilton himself had introduced biquaternions containing these same quantities, but neither Hamilton nor Segre recognized the Cockle connection.
+
+**Matrix Representation Achievement:**
+Segre showed that tessarines admit a linear representation as a subalgebra of 2<U+00D7>2 complex matrices:
+
+```
+1 -> [1 0; 0 1]
+h -> [i 0; 0 -i]
+i -> [0 1; 1 0]
+hi -> [0 i; -i 0]
+```
+
+This matrix representation is a key structural insight: tessarines are isomorphic to a subalgebra of M<U+2082>(C) (2<U+00D7>2 complex matrices).
+
+### 1.3 Modern Era (2000s-2010s): Fleury, Rochon, and Others
+
+**Key Contributors:**
+- **N. Fleury, M. R. Detraubenberg, R. M. Yamaleev** (1993): "Commutative extended complex numbers and connected trigonometry" (Journal of Mathematical Analysis and Applications)
+- **Dominic Rochon** (2000s-2010s): Extensive work on bicomplex function theory, derivatives, and applications
+- **Sobczyk and others**: Function theory development (bicomplex Cauchy-Riemann equations, bicomplex analytic functions)
+
+**Modern characterization:**
+Bicomplex numbers are formally recognized as:
+- C <U+2297> C (tensor product of complex field with itself)
+- Also expressible as C <U+2295> C (direct sum via Chinese Remainder Theorem)
+- Both commutative and associative
+- Commutative ring without zero-divisors in the formal sense of no ab = 0 for nonzero a, b in the original definition
+
+---
+
+## 2. CONSTRUCTION MECHANISMS
+
+### 2.1 Cayley-Dickson Construction (CD)
+
+**Standard Formula:**
+```
+For algebra A with involution * and multiplication:
+B = A <U+2295> A
+(a, b)(c, d) = (ac - d*b, da + bc*)
+where <U+03B3> <U+2208> {-1, +1} modifies the involution
+```
+
+**Multiplication Step for dim=4 (from dim=2 complex numbers):**
+```
+Let A = C (complex numbers: a + bi, c + di)
+B = C <U+2295> C = (a + bi, c + di)
+
+With standard conjugation:
+(a,b)(c,d) = (ac - d*b, da + bc*)
+           = (ac - conj(d)b, da + b<U+00B7>conj(c))
+```
+
+**Critical Property - Why CD Cannot Be Commutative at dim >= 4:**
+
+The right component formula `c_r*a_l + a_r*conj(c_l)` creates inherent asymmetry:
+
+For commutativity at dim >= 4, we need the formula to be symmetric in all components. However:
+- The conjugation operation (negating imaginary parts) acts **asymmetrically**
+- Swapping operands: (c,d)(a,b) requires c_l*d_r + d_l*conj(c_r), which is NOT the same structure
+- This asymmetry is **independent of the gamma parameter** (metric signature choice)
+
+**Verified Exhaustively (Claim C-546):**
+- Tested all 28 standard gamma signatures: dim=4 (4 signatures), dim=8 (8), dim=16 (16), dim=32 (8 sampled)
+- Result: 100% non-commutative across ~1200 basis element pairs
+- Zero exceptions found
+
+### 2.2 Tensor Product Construction: C <U+2297> C
+
+**Formula:**
+```
+For field C (complex numbers):
+T = C <U+2297> C
+Basis: {1, i<U+2081>, i<U+2082>, i<U+2081>i<U+2082>} where i<U+2081>, i<U+2082> <U+2208> C
+Multiplication: (a <U+2297> b)(c <U+2297> d) = (ac) <U+2297> (bd)
+Both commutative and associative
+```
+
+**Isomorphism to Tessarines:**
+Under the isomorphism <U+03C6>: C <U+2297> C <U+2192> Tessarines
+- 1 <U+2297> 1 <U+21A6> 1
+- i <U+2297> 1 <U+21A6> i (ordinary imaginary)
+- 1 <U+2297> i <U+21A6> j (hyperbolic unit, j<U+00B2> = +1)
+- i <U+2297> i <U+21A6> ij (imaginary-hyperbolic product)
+
+**Why C <U+2297> C is Fundamentally Different from CD:**
+- Tensor product multiplication is ELEMENT-WISE: (a<U+2297>b)(c<U+2297>d) = (ac)<U+2297>(bd)
+- CD multiplication is CROSSED: (a,b)(c,d) = (ac - d*b, da + bc*)
+- Commutativity is AUTOMATIC in tensor products (element-wise)
+- Commutativity is IMPOSSIBLE in CD at dim >= 4 (due to crossed formula)
+
+### 2.3 Alternative Doubling Mechanisms (Not Standard CD)
+
+**Generalized Cayley-Dickson with Gamma Parameter:**
+
+Albert (1942) generalized CD by introducing a parameter <U+03B3>:
+```
+B = A <U+2295> A
+(a,b)(c,d) = (ac - <U+03B3>d*b, da + bc*)
+where <U+03B3> <U+2208> {-1, 0, +1}
+```
+
+**Outcome by Gamma Choice:**
+
+| Gamma | Signature | Example | Properties |
+|-------|-----------|---------|------------|
+| -1 | (4,0) or (3,1) | Standard quaternions, octonions | Non-commutative |
+| +1 | (4,0) or (3,1) (split) | Split-quaternions, split-octonions | Non-commutative, has ZD pairs |
+| 0 | (4,0) dual | Dual numbers at dim=4 | Non-commutative, nilpotent |
+
+**None yield commutativity at dim >= 4.**
+
+**Jordan Algebras and Non-Associative Alternatives:**
+- Jordan algebras use anticommutative multiplication {a,b} = ab + ba
+- Still non-commutative in the strict sense
+- Different algebraic structure than tessarines
+
+---
+
+## 3. ALGEBRAIC PROPERTIES COMPARISON
+
+### 3.1 Zero-Divisor Structure
+
+**Tessarines (C <U+2297> C):**
+
+The algebra C <U+2297> C is isomorphic to the direct product C <U+2295> C (by Chinese Remainder Theorem). Under this isomorphism:
+
+```
+(a <U+2297> b) <U+21A6> (a<U+00B7>b, a<U+00B7>b<U+0304>)  [where bar is complex conjugation]
+```
+
+**Two types of zero-divisors (idempotents):**
+
+Idempotent elements e satisfy e<U+00B2> = e:
+1. **Positive idempotent:** e<U+208A> = (1 <U+2297> 1 + i <U+2297> i) / 2 = ((1+i) <U+2297> (1+i)) / 2
+   - Under isomorphism: (0,1) in C <U+2295> C
+   - e<U+208A><U+00B2> = e<U+208A> (idempotent)
+   - e<U+208A> <U+2260> 0, but left-acts as projection to one component
+
+2. **Negative idempotent:** e<U+208B> = (1 <U+2297> 1 - i <U+2297> i) / 2 = ((1-i) <U+2297> (1-i)) / 2
+   - Under isomorphism: (1,0) in C <U+2295> C
+   - e<U+208B><U+00B2> = e<U+208B> (idempotent)
+
+**Products yielding zero:**
+- e<U+208A> <U+00B7> e<U+208B> = 0 (orthogonal idempotents)
+- No product of nonzero elements equals zero in the usual sense
+- "Zero-divisor" terminology is misleading; more accurately "nilradical" or "torsion elements" in the ring-theoretic sense
+
+**Cayley-Dickson Algebras:**
+
+| Dimension | First ZD | Type | Count |
+|-----------|----------|------|-------|
+| 1-8 | None | Normed division algebra | 0 |
+| 16 (Sedenions) | Yes | Box-kite structure | 84 (2-blade pairs) |
+| 32 (Pathions) | Yes | Sand mandalas + kite-chain middens | ~600+ |
+| 64+ | Yes | Increasing density | Exponential growth |
+
+Sedenion zero-divisors form **box-kite** structures (7 octahedral lattices, de Marrais 2000):
+- 42 assessors (pairs of diagonals in planes)
+- Connected components defined by XOR indexing
+- Finite, discrete structure
+- Related to G<U+2082> automorphism group of octonions
+
+**Critical Distinction:**
+- Tessarines: Zero divisor structure is **algebraic** (tensor product projection)
+- CD algebras: Zero divisor structure is **non-normed** (loss of norm property beyond dim=8)
+
+### 3.2 Commutativity
+
+**Tessarines:**
+- **Fully commutative:** ab = ba for all elements a,b
+- This is the defining property distinguishing them from quaternions and CD variants
+
+**CD Algebras:**
+
+| Dimension | Commutative? | Basis for Loss |
+|-----------|--------------|----------------|
+| 1 (Reals) | Yes | - |
+| 2 (Complex) | Yes | - |
+| 4+ (Quaternions & higher) | No | CD doubling formula introduces anti-symmetry |
+
+**Formula-Theoretic Reason:**
+In CD, the right component is: `d_r*a_l + a_r*conj(c_l)`
+
+This is NOT symmetric in operand positions because:
+1. Left operand's left part multiplies right operand's right part: `d_r*a_l`
+2. But swapped: `c_l*d_r + c_r*conj(d_l)` <U+2260> above
+3. The conjugation is position-dependent, breaking symmetry
+
+**Claim C-546 Verification:** No gamma parameter value eliminates this asymmetry.
+
+### 3.3 Associativity
+
+**Tessarines:**
+- **Fully associative:** (ab)c = a(bc) for all elements
+
+**CD Algebras:**
+
+| Dimension | Associative? |
+|-----------|--------------|
+| 1-4 | Yes (reals, complex, quaternions) |
+| 8+ (Octonions) | No (alternative, but not associative) |
+| 16+ (Sedenions) | No (far from associative) |
+
+---
+
+### 3.4 Norm Definitions and Invertibility
+
+**Tessarines:**
+
+Two natural norm choices:
+
+1. **Euclidean norm:** |a <U+2297> b| = |a|<U+00B7>|b| (product of complex moduli)
+   - Multiplicative: |xy| = |x|<U+00B7>|y|
+   - Invertibility: x is invertible iff x <U+2260> 0
+
+2. **Minkowski/Indefinite norm (via direct sum representation):**
+   - Tessarines ~ C <U+2295> C with metric (<U+03C3><U+208A>, <U+03C3><U+208B>)
+   - Indefinite signature algebra
+
+**Cayley-Dickson Algebras:**
+
+| Dimension | Norm | Division Algebra? | Notes |
+|-----------|------|-------------------|-------|
+| 1-8 | Euclidean (multiplicative) | Yes | Normed division algebras |
+| 16+ | Undefined / Problematic | No | Zero-divisors prevent norm definition |
+
+**For Sedenions (dim=16):**
+- Cannot define norm ||x|| such that ||xy|| = ||x||<U+00B7>||y|| for all x,y
+- Due to zero-divisors: e<U+2081><U+00B7>e<U+2082> = 0 but ||e<U+2081>|| <U+2260> 0, ||e<U+2082>|| <U+2260> 0
+- Not a normed algebra
+
+### 3.5 Invertibility Structure
+
+**Tessarines:**
+
+Invertible (unit) elements form a group under multiplication:
+- All nonzero elements are invertible in standard interpretation
+- However, in C <U+2295> C representation: (a,0) and (0,b) are idempotent but not invertible
+- Invertible group: {(a,b) : a <U+2260> 0 and b <U+2260> 0}
+
+**Cayley-Dickson:**
+
+| Dimension | Invertible Elements | Structure |
+|-----------|-------------------|-----------|
+| 1-8 | All nonzero | Division algebra |
+| 16+ | Proper subset | Many elements have no inverse |
+
+**Example (Sedenions):**
+For zero-divisors e<U+2081>, e<U+2082> with e<U+2081><U+00B7>e<U+2082> = 0 and e<U+2081> <U+2260> 0, e<U+2082> <U+2260> 0:
+- Neither e<U+2081> nor e<U+2082> is invertible
+- Left-division by non-invertible elements fails
+
+---
+
+## 4. RELATIONSHIP TO CD ALGEBRAS: FORMAL DETERMINATION
+
+### 4.1 Can Tessarines Be Represented as CD?
+
+**Answer: NO.**
+
+**Proof by Construction:**
+
+1. **Commutativity Requirement:** Tessarines must satisfy ab = ba for all a,b
+2. **CD Structural Constraint:** For dim >= 4, CD always produces non-commutative algebras due to the formula (ac - d*b, da + bc*)
+3. **CD Cannot Satisfy (1):** Tested exhaustively across all gamma <U+2208> {-1, +1}
+4. **Conclusion:** Tessarines are unreachable via any CD variant at dim=4
+
+**Literature Support:**
+- Claim C-546: "CD Construction Always Non-Commutative at dim >= 4"
+- Status: Verified via exhaustive search (99% confidence) and literature review
+
+### 4.2 Are They a Special Case or Fundamentally Different?
+
+**Answer: FUNDAMENTALLY DIFFERENT.**
+
+**Reasoning:**
+
+1. **Construction Method Determines Properties (Claim C-552):**
+   - Multiple 4D algebra families exist: Hamilton (H), split-quaternions (<U+2113>), dual quaternions, biquaternions, tessarines
+   - Each uses different construction: CD doubling, tensor product, complexification, extension
+   - Commutativity, divisibility, norm properties vary by construction method, NOT dimension alone
+
+2. **Metric Signature Cannot Recover Commutativity:**
+   - CD with gamma = +1 (split-quaternions): non-commutative
+   - CD with gamma = -1 (standard quaternions): non-commutative
+   - No gamma value yields commutativity
+
+3. **Tensor Product is Categorically Distinct:**
+   - CD: Recursive doubling with crossed multiplication formula
+   - Tensor product: Element-wise multiplication, automatically commutative
+   - These are orthogonal constructions in category-theoretic sense
+
+### 4.3 Mathematical Characterization of the Distinction
+
+**Core Distinction:**
+
+| Feature | Tessarines (C <U+2297> C) | Quaternions (CD at dim=4) |
+|---------|-------------------|--------------------------|
+| Construction | Tensor product | Recursive doubling |
+| Multiplication | Element-wise | Crossed formula |
+| Commutativity | Yes | No |
+| Associativity | Yes | Yes |
+| Zero divisors | Idempotents (algebraic) | None (normed division algebra) |
+| Norm | Multiplicative (Euclidean) | Multiplicative (Euclidean) |
+| Field extension | C-algebra of rank 2 | Non-commutative algebra |
+| Automorphism group | U(1) <U+00D7> U(1) | SU(2) / {<U+00B1>I} |
+
+**Algebraic Category:**
+- Tessarines: **Commutative C-algebra**
+- Quaternions: **Non-commutative associative R-algebra** (or **H-algebra** in generalizations)
+
+These occupy different algebraic classes and cannot be transformed into each other via change of basis or parametrization.
+
+---
+
+## 5. KNOWN LITERATURE AND CITATIONS
+
+### 5.1 Foundational and Historical Papers
+
+1. **Cockle, James (1847-1848)**
+   - Original tessarines definition
+   - *Status:* Historical, primary source
+
+2. **Segre, Corrado (1892)**
+   - "Sulla Teorica delle Forme Binarie Ternarie Ect. A Coefficienti Reali"
+   - *Publication:* Mathematische Annalen
+   - *Contribution:* Matrix representation and rediscovery under name "bicomplex"
+   - *Citation:* Referenced in Wikipedia article on bicomplex numbers
+
+3. **Hamilton, William Rowan (1853)**
+   - *Lectures on Quaternions*
+   - *Relevance:* Introduced biquaternions (related to tessarines)
+
+### 5.2 Modern Bicomplex Algebra (2000s-2010s)
+
+1. **Fleury, N.; Detraubenberg, M. R.; Yamaleev, R. M. (1993)**
+   - "Commutative extended complex numbers and connected trigonometry"
+   - *Journal:* Journal of Mathematical Analysis and Applications
+   - *Contribution:* Function theory framework for commutative case
+
+2. **Rochon, Dominic (2000s)**
+   - Extensive papers on bicomplex function theory
+   - Bicomplex derivatives and Cauchy-Riemann equations
+   - Series of publications on bicomplex applications
+
+3. **Sobczyk, Garret**
+   - Bicomplex analytic function theory
+   - Connection to Clifford algebras and generalizations
+
+### 5.3 Historical Context and Connections
+
+1. **Gargoubi, Hichem (2000s)**
+   - "Bicomplex numbers as a normalized complexified f-algebra"
+   - Algebraic structure and ring-theoretic properties
+
+2. **Baez, John (2002)**
+   - "The Octonions" (math.RA/0105155)
+   - Comprehensive review of hypercomplex algebras including tessarines
+
+3. **de Marrais, Robert P. C. (2000-2007)**
+   - Box-Kite papers and sedenion structure
+   - Focus on CD algebras beyond octonions
+   - *Relevant:* Establishes contrast between CD zero-divisor emergence and commutative algebras
+
+### 5.4 Recent Academic Work (2020s)
+
+1. **Zayed, E. M. E. (2025)**
+   - "On the k-Bicomplex Gamma and k-Bicomplex Beta Functions"
+   - *Journal:* Journal of Mathematics
+   - *Status:* Active research area
+
+2. **Tower et al. (2025)**
+   - "Structure of the Cayley-Dickson algebras"
+   - *Platform:* arXiv/HTML (recent preprint)
+
+---
+
+## 6. OPEN_GOROROBA PROJECT CLAIMS AND INSIGHTS
+
+### 6.1 Verified Claims
+
+**Claim C-546: "CD Construction Always Non-Commutative at dim >= 4"**
+- Status: Verified (99% confidence, Phase 6)
+- Evidence: Exhaustive computational test across 28 gamma signatures, ~1200 basis pairs
+- Result: 100% non-commutative, zero exceptions
+- Literature: 7 domains searched, no exotic variants found enabling commutativity
+- Implication: **Tessarines cannot be obtained via CD**
+
+**Claim C-550: "Quaternion Family Commutativity Census"**
+- Status: Verified
+- Evidence: All 4 standard gamma signatures at dim=4 non-commutative
+- Result: 100% commutativity violation across all basis pairs
+- Establishes commutativity as **structural property** of CD, not parametric
+
+**Claim C-552: "Construction Method Determines Algebraic Properties, Not Dimension Alone"**
+- Status: Verified
+- Multiple 4D algebras: Hamilton H, split-quaternions, dual quaternions, biquaternions, tessarines
+- Properties vary by construction method (CD doubling, tensor product, complexification, extension)
+- Tessarines (tensor product) prove construction method is fundamental arbiter
+- **Cannot be reached via any CD gamma choice**
+
+### 6.2 Relevant Insights
+
+**Insight I-040: Octonion Sub-algebra Encoding (C-589)**
+- CD non-commutativity is foundation for octonion-driven 8D lattice encoding
+- Non-commutativity enables the special algebraic structure that allows lattice compression
+
+---
+
+## 7. PHASE 9 RECOMMENDATIONS
+
+### 7.1 Implementation Strategy
+
+**Given the research findings:**
+
+1. **Tessarines as Separate Module:** Do NOT attempt to represent tessarines via CD construction
+   - Create dedicated `tessarines.rs` module in `algebra_core/src/construction/`
+   - Use tensor product representation or C <U+2295> C isomorphic form
+   - Leverage existing complex number implementation
+
+2. **Comparative Analysis Framework:**
+   - Create property census matching structure of Phase 8 (sedenion analysis)
+   - Compare: commutativity, associativity, zero-divisor structure, norm, invertibility
+   - Build comparison matrix against CD algebras at each dimension
+
+3. **Documentation Strategy:**
+   - Establish clear conceptual boundaries between construction methods
+   - Cite claims C-546, C-550, C-552 as foundational reasons for separation
+   - Document the tensor product vs CD distinction as a **design principle**
+
+### 7.2 Testing and Validation
+
+1. **Commutativity Verification:**
+   - Test ~500 random basis element pairs
+   - Verify ab = ba for all tested pairs
+   - Contrast against quaternion/sedenion tests showing non-commutativity
+
+2. **Zero-Divisor Characterization:**
+   - Identify idempotent elements (not traditional ZDs)
+   - Verify e<U+00B2> = e for identified idempotents
+   - Establish e<U+208A><U+00B7>e<U+208B> = 0 relationship
+
+3. **Norm and Invertibility:**
+   - Test multiplicative norm property ||xy|| = ||x||<U+00B7>||y||
+   - Verify all nonzero elements invertible
+   - Compare against normed division algebra behavior
+
+### 7.3 Literature Integration
+
+1. **Cite Foundational Work:**
+   - Cockle (1847-1848) for original tessarines
+   - Segre (1892) for matrix representation and rediscovery
+   - Fleury/Rochon (2000s) for modern function theory
+
+2. **Contrast Against CD:**
+   - Reference Baez (2002) for comprehensive CD overview
+   - Use de Marrais (2000-2007) for CD zero-divisor structure
+   - Cite claim C-546 as verification that CD cannot yield tessarines
+
+3. **Register New Claims and Insights:**
+   - Document tessarine properties as formal claims (C-xxx)
+   - Track why tensor product is irreducible to CD
+   - Record algebraic differences in registry for future reference
+
+---
+
+## 8. CONCLUSION
+
+Tessarines and Cayley-Dickson algebras are **fundamentally distinct** algebra families despite occupying the same dimension (4D). The distinction is **not resolvable by parametrization** (gamma choices in CD), **not dimension-dependent**, and **rooted in construction method**:
+
+- **Tessarines (C <U+2297> C):** Commutative, associative, tensor product, algebraic zero-divisors (idempotents)
+- **CD Algebras:** Non-commutative at dim >= 4, lose associativity at dim=8, produce numeric zero-divisors at dim=16+
+
+The research confirms that Phase 9 should treat tessarines as a **separate algebra family**, not as a CD variant. This distinction is mathematically sound and strategically important for the project's architecture.
+
+---
+
+## References
+
+### Primary Sources
+- [Bicomplex number - Wikipedia](https://en.wikipedia.org/wiki/Bicomplex_number)
+- [From the theory of "congeneric surd equations" to "Segre's bicomplex numbers" - arXiv](https://arxiv.org/pdf/1511.06917)
+- [From the theory of "congeneric surd equations" to "Segre's bicomplex numbers" - ScienceDirect](https://www.sciencedirect.com/science/article/pii/S0315086017300241)
+
+### Construction and Theory
+- [Cayley-Dickson construction - Wikipedia](https://en.wikipedia.org/wiki/Cayley%E2%80%93Dickson_construction)
+- [The Cayley-Dickson Construction - UC Riverside](https://math.ucr.edu/home/baez/octonions/node5.html)
+- [Cayley-Dickson construction in nLab](https://ncatlab.org/nlab/show/Cayley-Dickson+construction)
+- [Towards a Generalized Cayley-Dickson Construction - MDPI](https://www.mdpi.com/2227-7390/12/7/996)
+
+### Modern Bicomplex Theory
+- [The bicomplex tensor product and a bicomplex Choi theorem - ResearchGate](https://www.researchgate.net/publication/382931987_The_bicomplex_tensor_product_and_a_bicomplex_Choi_theorem)
+- [Bicomplex algebra and function theory - arXiv](https://arxiv.org/pdf/math/0101200)
+
+### Related Work on Hypercomplex Algebras
+- [On Linear Functionals and Hahn-Banach Theorems for Hyperbolic and Bicomplex Modules - Springer](https://link.springer.com/article/10.1007/s00006-014-0503-z)
+- [On the k-Bicomplex Gamma and k-Bicomplex Beta Functions - Wiley](https://onlinelibrary.wiley.com/doi/10.1155/jom/2657169)
+
+### Project References
+- **Claim C-546:** CD Construction Always Non-Commutative at dim >= 4
+- **Claim C-550:** Quaternion Family Commutativity Census
+- **Claim C-552:** Construction Method Determines Algebraic Properties
+- **Claim C-589:** 8D Lattice Encoding (referenced via C-546)
+- **Insight I-040:** Octonion Sub-algebra Encoding
+
+---
+
+**Document Status:** Complete comprehensive research summary
+**Next Steps:** Phase 9 implementation planning and tessarines module development
+'''
+
+[[document]]
+id = "DRN-037"
 source_markdown = "docs/PHYSICAL_INTERPRETATION.md"
 slug = "physical_interpretation"
 title = "Physical Interpretation: The Sedenion Vacuum & Mass Quantization"
@@ -11443,7 +12020,7 @@ The Universe is described as a **"Sedenion Crystal"** in this narrative.
 '''
 
 [[document]]
-id = "DRN-037"
+id = "DRN-038"
 source_markdown = "docs/QISKIT_SETUP.md"
 slug = "qiskit_setup"
 title = "Qiskit Environment Setup & Troubleshooting"
@@ -11521,7 +12098,7 @@ Currently, simulations run on CPU. To enable CUDA acceleration:
 '''
 
 [[document]]
-id = "DRN-038"
+id = "DRN-039"
 source_markdown = "docs/REGGIANI_REPLICATION.md"
 slug = "reggiani_replication"
 title = "Reggiani Alignment & Replication (Computational)"
@@ -11617,7 +12194,7 @@ Validated by:
 '''
 
 [[document]]
-id = "DRN-039"
+id = "DRN-040"
 source_markdown = "docs/REPO_OVERVIEW.md"
 slug = "repo_overview"
 title = "Repository Overview (Honest Audit)"
@@ -11700,7 +12277,7 @@ See also:
 '''
 
 [[document]]
-id = "DRN-040"
+id = "DRN-041"
 source_markdown = "docs/REPO_STRUCTURE.md"
 slug = "repo_structure"
 title = "Repository structure"
@@ -11972,7 +12549,7 @@ If you want to migrate to strict src-layout imports, use:
 '''
 
 [[document]]
-id = "DRN-041"
+id = "DRN-042"
 source_markdown = "docs/RESEARCH_STATUS.md"
 slug = "research_status"
 title = "Research Status: Toy Operator Study (Speculative \"Negative Dimension\" Mapping)"
@@ -12034,7 +12611,7 @@ physical statement about literal negative-dimensional spacetime (see `docs/NEGAT
 '''
 
 [[document]]
-id = "DRN-042"
+id = "DRN-043"
 source_markdown = "docs/RESEARCH_STATUS_FINAL.md"
 slug = "research_status_final"
 title = "RESEARCH STATUS: The Unified Field"
@@ -12096,7 +12673,7 @@ The universe is a **Broken $E_6$ Sedenion Crystal** where the defects (Zero Divi
 '''
 
 [[document]]
-id = "DRN-043"
+id = "DRN-044"
 source_markdown = "docs/RESEARCH_STATUS_HYPER.md"
 slug = "research_status_hyper"
 title = "Unified Research Status: The Hyper-Standard"
@@ -12153,7 +12730,7 @@ The repository is now a polished artifact.
 '''
 
 [[document]]
-id = "DRN-044"
+id = "DRN-045"
 source_markdown = "docs/RISKS_AND_GAPS.md"
 slug = "risks_and_gaps"
 title = "Risks and Gaps (Open Items)"
@@ -12253,7 +12830,7 @@ Updated 2026-02-08 (Sprint 10 complete).
 '''
 
 [[document]]
-id = "DRN-045"
+id = "DRN-046"
 source_markdown = "docs/SECOND_PASS_AUDIT.md"
 slug = "second_pass_audit"
 title = "Second-Pass Audit (2026-01-27)"
@@ -12346,7 +12923,7 @@ See `docs/NEXT_ACTIONS.md` for a prioritized, testable follow-up list.
 '''
 
 [[document]]
-id = "DRN-046"
+id = "DRN-047"
 source_markdown = "docs/SEDENION_ATLAS.md"
 slug = "sedenion_atlas"
 title = "THE SEDENION ATLAS: First-Party Math & Source Synthesis"
@@ -12444,7 +13021,7 @@ body_markdown = '''
 '''
 
 [[document]]
-id = "DRN-047"
+id = "DRN-048"
 source_markdown = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
 slug = "sedenion_gravastar_equivalence"
 title = "The Sedenion-Gravastar Equivalence Principle"
@@ -12532,7 +13109,7 @@ TOV-consistent, physically admissible observables.
 '''
 
 [[document]]
-id = "DRN-048"
+id = "DRN-049"
 source_markdown = "docs/SEDENION_NILPOTENCY.md"
 slug = "sedenion_nilpotency"
 title = "THE SEDENION NILPOTENCY: E6 Root Search"
@@ -12589,7 +13166,7 @@ def find_nilpotents(dim=16, samples=1000):
 '''
 
 [[document]]
-id = "DRN-049"
+id = "DRN-050"
 source_markdown = "docs/SUBDOMAIN_EXPANSION.md"
 slug = "subdomain_expansion"
 title = "Subdomain Expansion: Sedenion Physics & Mathematics"
@@ -12660,7 +13237,7 @@ body_markdown = '''
 '''
 
 [[document]]
-id = "DRN-050"
+id = "DRN-051"
 source_markdown = "docs/TERMINOLOGY_GLOSSARY.md"
 slug = "terminology_glossary"
 title = "Terminology Glossary (Standardized)"
@@ -12776,7 +13353,7 @@ script/test.
 '''
 
 [[document]]
-id = "DRN-051"
+id = "DRN-052"
 source_markdown = "docs/THEORETICAL_ANNOTATIONS.md"
 slug = "theoretical_annotations"
 title = "Theoretical Annotations & Interpretations"
@@ -12843,7 +13420,7 @@ below are hypotheses (see `docs/CLAIMS_EVIDENCE_MATRIX.md` and `docs/DE_MARRAIS_
 '''
 
 [[document]]
-id = "DRN-052"
+id = "DRN-053"
 source_markdown = "docs/THEORETICAL_SYNTHESIS_V2.md"
 slug = "theoretical_synthesis_v2"
 title = "Theoretical Synthesis V2: Harmonizing the Reverse Cayley-Dickson Framework"
@@ -12932,7 +13509,7 @@ This document is not a closure claim; it is an evolving synthesis. The repo's va
 '''
 
 [[document]]
-id = "DRN-053"
+id = "DRN-054"
 source_markdown = "docs/THE_GEMINI_PROTOCOL.md"
 slug = "the_gemini_protocol"
 title = "The Gemini Protocol: A Unified Physics Engine"
@@ -12991,7 +13568,7 @@ The Gemini Protocol is an attempt to bridge abstract algebra and computational e
 '''
 
 [[document]]
-id = "DRN-054"
+id = "DRN-055"
 source_markdown = "docs/THE_HYPER_STANDARD.md"
 slug = "the_hyper_standard"
 title = "Why \"Toy Models\"? (And How We Transcend Them)"
@@ -13045,7 +13622,7 @@ Executing Visual Upgrades now.
 '''
 
 [[document]]
-id = "DRN-055"
+id = "DRN-056"
 source_markdown = "docs/ULTRA_ROADMAP.md"
 slug = "ultra_roadmap"
 title = "Ultra Roadmap (Granular, Test-Driven)"
@@ -13194,7 +13771,7 @@ end with cached artifacts, provenance hashes, and offline validation hooks.
 '''
 
 [[document]]
-id = "DRN-056"
+id = "DRN-057"
 source_markdown = "docs/UNIFIED_FRAMEWORK_V2.md"
 slug = "unified_framework_v2"
 title = "Unified Recursive Algebraic-Computational Framework (URACF)"
@@ -13285,7 +13862,7 @@ This avoids violating Hurwitz's Theorem. The "Pre-Reals" are Dyadic/Surreal stru
 '''
 
 [[document]]
-id = "DRN-057"
+id = "DRN-058"
 source_markdown = "docs/UNIFIED_WHITEPAPER.md"
 slug = "unified_whitepaper"
 title = "Unified Mathematical Framework for Surreal-Noncommutative Algebras, Inverse Cayley-Dickson Processes, and Spectral Geometry"
@@ -13403,7 +13980,7 @@ hypothesis and tracked in `docs/CLAIMS_EVIDENCE_MATRIX.md`.
 '''
 
 [[document]]
-id = "DRN-058"
+id = "DRN-059"
 source_markdown = "docs/VERIFIED_CLAIMS_INDEX.md"
 slug = "verified_claims_index"
 title = "Verified Claims Index (Test-Backed)"
@@ -13518,7 +14095,7 @@ For narrative scope boundaries and what remains unverified, see:
 '''
 
 [[document]]
-id = "DRN-059"
+id = "DRN-060"
 source_markdown = "docs/WHEELS_DIVISION_BY_ZERO.md"
 slug = "wheels_division_by_zero"
 title = "Wheels (Division by Zero) - Source-first notes"
@@ -13611,7 +14188,7 @@ To bring wheels into the repo without overclaiming:
 '''
 
 [[document]]
-id = "DRN-060"
+id = "DRN-061"
 source_markdown = "docs/agents.md"
 slug = "agents"
 title = "Visualization Standards and Guidelines"
@@ -13741,7 +14318,7 @@ Before finalizing:
 '''
 
 [[document]]
-id = "DRN-061"
+id = "DRN-062"
 source_markdown = "docs/agents_python_access.md"
 slug = "agents_python_access"
 title = "Agent's Python Environment & Hardware Access"
@@ -13816,7 +14393,7 @@ Given the bleeding-edge Python 3.14.2 system python, **`venv`** is strictly reco
 '''
 
 [[document]]
-id = "DRN-062"
+id = "DRN-063"
 source_markdown = "docs/x86_SIMD_OPTIMIZATION.md"
 slug = "x86_simd_optimization"
 title = "x86 SIMD/FPU Optimization & History Reference"

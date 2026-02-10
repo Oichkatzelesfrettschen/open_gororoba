@@ -11,7 +11,7 @@
 //!
 //! All GPU operations have CPU fallback implementations.
 
-#[cfg(feature = "gpu")]
+// dimensional module is always available (has CPU fallback + wide-index API)
 pub mod dimensional;
 #[cfg(feature = "gpu")]
 mod eta_matrix;
@@ -20,8 +20,7 @@ mod frustration;
 #[cfg(feature = "gpu")]
 mod graph_construction;
 
-#[cfg(feature = "gpu")]
-pub use dimensional::GpuDimensionalEngine;
+pub use dimensional::{GpuAptResult, GpuAptResultWide, GpuDimensionalEngine};
 #[cfg(feature = "gpu")]
 pub use eta_matrix::EtaMatrixGpu;
 #[cfg(feature = "gpu")]

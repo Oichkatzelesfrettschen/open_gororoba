@@ -33,6 +33,7 @@ pub mod distances;
 pub mod eos;
 pub mod flrw;
 pub mod gravastar;
+pub mod homotopy_bridge;
 pub mod observational;
 pub mod spectral;
 pub mod tov;
@@ -98,6 +99,11 @@ pub use tov::{
     combined_tidal_deformability, integrate_neutron_star, mass_radius_relation,
     tidal_deformability, tidal_love_number_k2, tov_maximum_mass, MassRadiusPoint,
     NeutronStarProfile,
+};
+
+pub use homotopy_bridge::{
+    homotopy_lambda, homotopy_stress_energy, solve_gravastar_homotopy, sweep_obstruction_coupling,
+    HomotopyStressEnergy, ObstructionSweepResult, SweepConfig,
 };
 
 pub use flrw::{
