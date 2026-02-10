@@ -61,6 +61,10 @@ Research claims are hypotheses unless backed by:
 - Markdown in `docs/`, `reports/`, and `data/artifacts/` is generated or mirror
   output and is never the authoritative source.
 - Do not treat mirrors as authoritative.
+- Any new in-scope markdown file must have an explicit canonical TOML owner in
+  `registry/markdown_owner_map.toml` and generated provenance headers.
+- Unmapped in-scope markdown is a hard failure via:
+  `PYTHONWARNINGS=error make registry-verify-markdown-owner`.
 
 ### 3.4 Source-first claims discipline
 - Do not treat narrative text as proof.
@@ -184,10 +188,24 @@ Update policy:
   - `registry/legacy_csv_datasets.toml`
   - `registry/data/legacy_csv/*.toml`
   - `registry/csv_inventory.toml`
+- markdown ownership and origin governance:
+  - `registry/markdown_owner_map.toml`
+  - `registry/markdown_origin_audit.toml`
+  - `registry/markdown_inventory.toml`
+- CSV scroll lanes:
+  - `registry/project_csv_split_policy.toml`
+  - `registry/project_csv_canonical_datasets.toml`
+  - `registry/project_csv_generated_artifacts.toml`
+  - `registry/external_csv_holding_datasets.toml`
+  - `registry/archive_csv_holding_datasets.toml`
 
 ### 8.2 Build and publish flow
 - Validate data canon:
   - `PYTHONWARNINGS=error make registry-data`
+- Validate markdown ownership gate:
+  - `PYTHONWARNINGS=error make registry-verify-markdown-owner`
+- Validate CSV corpus lane coverage:
+  - `PYTHONWARNINGS=error make registry-verify-csv-corpus-coverage`
 - Validate registries:
   - `PYTHONWARNINGS=error make registry`
 - Publish mirrors:
@@ -235,6 +253,8 @@ Core:
 
 Registry/docs:
 - `PYTHONWARNINGS=error make registry-data`
+- `PYTHONWARNINGS=error make registry-verify-markdown-owner`
+- `PYTHONWARNINGS=error make registry-verify-csv-corpus-coverage`
 - `PYTHONWARNINGS=error make registry`
 - `PYTHONWARNINGS=error make docs-publish`
 
@@ -275,6 +295,8 @@ cargo clippy --workspace -j$(nproc) -- -D warnings
 - `src/verification/verify_registry_mirror_freshness.py` - freshness gate
 - `src/scripts/analysis/migrate_legacy_csv_to_toml.py` - legacy CSV canonicalizer
 - `src/verification/verify_legacy_csv_toml_parity.py` - CSV parity/fidelity verifier
+- `src/verification/verify_markdown_owner_map.py` - markdown owner mapping gate
+- `src/verification/verify_csv_corpus_coverage.py` - CSV zone coverage gate
 - `registry/` - canonical machine-readable project state
 '''
 

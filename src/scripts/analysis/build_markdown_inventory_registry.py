@@ -39,6 +39,11 @@ THIRD_PARTY_PATTERNS = (
     "*/site-packages/*/licenses/*.md",
 )
 
+IGNORED_PREFIXES = (
+    "venv/",
+    ".venv/",
+)
+
 GENERATED_PATTERNS = (
     "docs/generated/*.md",
     "docs/CLAIMS_EVIDENCE_MATRIX.md",
@@ -176,8 +181,14 @@ def _all_filesystem_markdown(root: Path) -> set[str]:
         rel = path.relative_to(root).as_posix()
         if rel.startswith(".git/"):
             continue
+        if any(rel.startswith(prefix) for prefix in IGNORED_PREFIXES):
+            continue
         out.add(rel)
     return out
+
+
+def _skip_path(path: str) -> bool:
+    return any(path.startswith(prefix) for prefix in IGNORED_PREFIXES)
 
 
 def _is_archived(path: str) -> bool:
@@ -488,7 +499,9 @@ def main() -> int:
     )
     fs_all = _all_filesystem_markdown(root)
 
-    all_paths = sorted(tracked | untracked | ignored | fs_all)
+    all_paths = sorted(
+        path for path in (tracked | untracked | ignored | fs_all) if not _skip_path(path)
+    )
     refs = _iter_registry_refs(root)
 
     docs: list[Doc] = []
