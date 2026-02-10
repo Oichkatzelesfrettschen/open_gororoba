@@ -124,11 +124,10 @@ Every agent session should follow this exact initialization flow.
 
 Preferred order:
 1. MCP filesystem/ripgrep/git tools for deterministic local operations
-2. MCP bash tools (`run`, `run_background`) for build/test execution
+2. shell commands for build/test execution
 3. network tools only when required by objective
 
 Rules:
-- Use MCP `run` instead of the legacy `run_shell_command`.
 - Use ripgrep for repo search.
 - Parallelize independent reads/searches.
 - Avoid destructive git commands unless explicitly requested.

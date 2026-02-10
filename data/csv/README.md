@@ -17,4 +17,4 @@ This directory contains raw output from various simulation runs and theoretical 
 
 ## 3. Missing Metadata (Gaps)
 *   **Units**: Most files lack headers specifying physical units (e.g., $t$ in seconds vs steps).
-*   **Parameters**: Filenames often don't capture full parameter sets (e.g., coupling constants $J$, $\alpha$). Use the corresponding `src/` scripts to trace provenance.
+*   **Parameters**: Filenames often don't capture full parameter sets (e.g., coupling constants $J$, \alpha$). Use the corresponding `src/` scripts to trace provenance.

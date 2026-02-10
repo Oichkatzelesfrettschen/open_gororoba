@@ -10,7 +10,7 @@
 //! {v,w}, {w,u}. The clustering coefficient is then computed on
 //! this projected graph.
 
-use std::collections::{HashMap, HashSet};
+use std::collections::{HashMap, HashSet, VecDeque};
 
 /// A 3-uniform hypergraph for triad interaction networks.
 ///
@@ -75,13 +75,11 @@ impl TriadHypergraph {
         dist
     }
 
-    /// Compute clustering coefficient of the projected simple graph.
-    ///
-    /// The hypergraph is projected to a simple graph via clique expansion
-    /// (each triad becomes a triangle). The clustering coefficient is:
-    ///   C = (number of triangles found) / (number of connected triplets)
-    /// where each vertex contributes deg*(deg-1)/2 connected triplets.
+    /// Compute clustering coefficient.
     pub fn clustering_coefficient(&self) -> f64 {
+        if self.edges.is_empty() {
+            return 0.0;
+        }
         let adj = self.project_to_graph();
         let mut triangles = 0usize;
         let mut triplets = 0usize;
@@ -94,7 +92,6 @@ impl TriadHypergraph {
                 }
 
                 triplets += deg * (deg - 1) / 2;
-
                 let neighbors_vec: Vec<_> = neighbors.iter().collect();
                 for i in 0..deg {
                     for j in (i + 1)..deg {
@@ -111,21 +108,59 @@ impl TriadHypergraph {
         if triplets == 0 {
             0.0
         } else {
-            // Each triangle is counted once per vertex (3 times total),
-            // and each connected triplet that forms a triangle is counted
-            // once per vertex. The ratio gives the clustering coefficient.
             (triangles as f64) / (triplets as f64)
         }
     }
 
-    /// Project hypergraph to simple graph via clique expansion.
+    /// Compute Betti-0: number of connected components in the projected graph.
     ///
-    /// Each hyperedge {u, v, w} becomes three undirected edges
-    /// {u,v}, {v,w}, {w,u} in the projected graph.
+    /// Uses BFS on the clique-expansion projection.
+    pub fn betti_0(&self) -> usize {
+        if self.vertices.is_empty() {
+            return 0;
+        }
+        let adj = self.project_to_graph();
+        let mut visited = HashSet::new();
+        let mut components = 0usize;
+
+        for &start in &self.vertices {
+            if visited.contains(&start) {
+                continue;
+            }
+            components += 1;
+            let mut queue = VecDeque::new();
+            queue.push_back(start);
+            visited.insert(start);
+            while let Some(v) = queue.pop_front() {
+                if let Some(neighbors) = adj.get(&v) {
+                    for &n in neighbors {
+                        if visited.insert(n) {
+                            queue.push_back(n);
+                        }
+                    }
+                }
+            }
+        }
+        components
+    }
+
+    /// Compute Betti-1: number of independent cycles in the projected graph.
+    ///
+    /// For a graph: beta_1 = |E| - |V| + beta_0 (Euler characteristic).
+    pub fn betti_1(&self) -> usize {
+        let adj = self.project_to_graph();
+        let simple_edges: usize = adj.values().map(|s| s.len()).sum::<usize>() / 2;
+        let v = self.vertices.len();
+        let b0 = self.betti_0();
+        simple_edges.saturating_sub(v) + b0
+    }
+
+    /// Project hypergraph to simple graph via clique expansion.
     fn project_to_graph(&self) -> HashMap<usize, HashSet<usize>> {
         let mut adj: HashMap<usize, HashSet<usize>> = HashMap::new();
-        for &[u, v, w] in &self.edges {
-            for &(a, b) in &[(u, v), (v, w), (w, u)] {
+        for triad in &self.edges {
+            let [u, v, w] = triad;
+            for &(a, b) in &[(*u, *v), (*v, *w), (*w, *u)] {
                 adj.entry(a).or_default().insert(b);
                 adj.entry(b).or_default().insert(a);
             }
@@ -234,5 +269,53 @@ mod tests {
         // Projected graph is K4 (complete graph on 4 vertices).
         // Clustering coefficient of K4 = 1.0
         assert!((hg.clustering_coefficient() - 1.0).abs() < 1e-14);
+    }
+
+    #[test]
+    fn test_betti_0_empty() {
+        let hg = TriadHypergraph::new();
+        assert_eq!(hg.betti_0(), 0);
+    }
+
+    #[test]
+    fn test_betti_0_connected() {
+        let mut hg = TriadHypergraph::new();
+        hg.add_triad(0, 1, 2);
+        assert_eq!(hg.betti_0(), 1);
+    }
+
+    #[test]
+    fn test_betti_0_disjoint() {
+        let mut hg = TriadHypergraph::new();
+        hg.add_triad(0, 1, 2);
+        hg.add_triad(3, 4, 5);
+        assert_eq!(hg.betti_0(), 2);
+    }
+
+    #[test]
+    fn test_betti_0_shared_vertex() {
+        let mut hg = TriadHypergraph::new();
+        hg.add_triad(0, 1, 2);
+        hg.add_triad(2, 3, 4);
+        assert_eq!(hg.betti_0(), 1); // connected through vertex 2
+    }
+
+    #[test]
+    fn test_betti_1_triangle() {
+        let mut hg = TriadHypergraph::new();
+        hg.add_triad(0, 1, 2);
+        // Projected: 3 edges, 3 vertices, 1 component => beta_1 = 3 - 3 + 1 = 1
+        assert_eq!(hg.betti_1(), 1);
+    }
+
+    #[test]
+    fn test_betti_1_k4() {
+        let mut hg = TriadHypergraph::new();
+        hg.add_triad(0, 1, 2);
+        hg.add_triad(0, 1, 3);
+        hg.add_triad(0, 2, 3);
+        hg.add_triad(1, 2, 3);
+        // K4: 6 edges, 4 vertices, 1 component => beta_1 = 6 - 4 + 1 = 3
+        assert_eq!(hg.betti_1(), 3);
     }
 }

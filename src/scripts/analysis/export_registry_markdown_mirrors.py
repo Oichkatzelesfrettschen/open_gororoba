@@ -1318,6 +1318,7 @@ def export_research_narratives(repo_root: Path, out_path: Path) -> None:
 def export_research_narratives_legacy(repo_root: Path) -> None:
     data = _load_toml(repo_root / "registry/research_narratives.toml")
     docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
+    generated_index_paths = {"docs/theory/INDEX.md", "docs/engineering/INDEX.md"}
     theory_index = [
         "# Theory Narratives",
         "",
@@ -1340,6 +1341,10 @@ def export_research_narratives_legacy(repo_root: Path) -> None:
     for row in docs:
         rel_path = str(row.get("source_markdown", "")).strip()
         if not rel_path:
+            continue
+        if rel_path in generated_index_paths:
+            # These index files are generated at the end of this function from the
+            # collected entries and should not be rewritten from body_markdown.
             continue
         path = repo_root / rel_path
         body = str(row.get("body_markdown", "")).strip("\n")

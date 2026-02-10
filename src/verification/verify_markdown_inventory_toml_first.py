@@ -15,6 +15,16 @@ import tomllib
 
 
 ALLOWED = {"toml_published_markdown", "third_party_markdown"}
+TRACKED_ALLOWLIST = {
+    "AGENTS.md",
+    "CLAUDE.md",
+    "GEMINI.md",
+    "README.md",
+    "curated/README.md",
+    "curated/01_theory_frameworks/README_COQ.md",
+    "data/artifacts/README.md",
+    "data/csv/README.md",
+}
 
 
 def main() -> int:
@@ -28,12 +38,27 @@ def main() -> int:
         failures.append(
             f"unbacked_manual_count={summary.get('unbacked_manual_count')} (expected 0)"
         )
+    if int(summary.get("untracked_count", 0)) != 0:
+        failures.append(f"untracked_count={summary.get('untracked_count')} (expected 0)")
+    if int(summary.get("filesystem_only_count", 0)) != 0:
+        failures.append(
+            f"filesystem_only_count={summary.get('filesystem_only_count')} (expected 0)"
+        )
 
     for row in data.get("document", []):
         path = str(row.get("path", "")).strip()
+        git_status = str(row.get("git_status", "")).strip()
         classification = str(row.get("classification", "")).strip()
+        destination = str(row.get("toml_destination", "")).strip()
         if classification not in ALLOWED:
             failures.append(f"{path}: disallowed classification={classification}")
+        if git_status == "tracked" and path not in TRACKED_ALLOWLIST:
+            failures.append(f"{path}: tracked markdown outside allowlist")
+        if classification == "toml_published_markdown":
+            if not destination:
+                failures.append(f"{path}: toml_published_markdown without toml_destination")
+            elif not (repo_root / destination).is_file():
+                failures.append(f"{path}: missing toml_destination file {destination}")
 
     if failures:
         print("ERROR: markdown inventory violates TOML-first policy.")

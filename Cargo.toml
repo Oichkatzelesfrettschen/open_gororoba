@@ -60,6 +60,8 @@ kiddo = "5.2.4"              # High-performance k-d trees (AVX2/SIMD)
 # FFT and spectral analysis
 rustfft = "6.4.1"            # High-performance FFT (pure Rust, AVX/SSE)
 realfft = "3.5.0"            # Real-to-complex FFT wrapper for rustfft
+ndrustfft = "0.5.0"          # N-dimensional FFT on ndarray (C2C, R2C, DCT)
+rustdct = "0.7"              # Discrete Cosine Transforms (required by ndrustfft)
 
 # Astronomical data formats and coordinates
 fitsrs = "0.4.1"             # Pure Rust FITS file reader (CDS Strasbourg)

@@ -15,8 +15,8 @@
 .PHONY: registry-normalize-entrypoint-docs registry-bootstrap-entrypoint-docs
 .PHONY: registry-bootstrap-claims-support
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
-.PHONY: registry-markdown-inventory
-.PHONY: registry-verify-markdown-inventory
+.PHONY: registry-markdown-inventory registry-markdown-corpus registry-toml-inventory
+.PHONY: registry-verify-markdown-inventory registry-verify-wave4 registry-wave4
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
 .PHONY: registry-project-csv-split registry-csv-holdings
@@ -180,8 +180,21 @@ registry-refresh: registry-migrate-corpus registry-ingest-legacy registry-govern
 registry-markdown-inventory:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py
 
+registry-markdown-corpus: registry-markdown-inventory
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_corpus_registry.py
+
+registry-toml-inventory: registry-markdown-corpus
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_toml_inventory_registry.py
+
 registry-verify-markdown-inventory: registry-markdown-inventory
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py
+
+registry-verify-wave4: registry-markdown-corpus registry-toml-inventory
+	PYTHONWARNINGS=error python3 src/verification/verify_markdown_corpus_registry.py
+	PYTHONWARNINGS=error python3 src/verification/verify_toml_inventory_registry.py
+
+registry-wave4: registry-verify-wave4
+	@echo "OK: Wave 4 control-plane registry lane complete."
 
 registry-csv-inventory:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_inventory_registry.py
@@ -281,7 +294,7 @@ registry-wave3: registry-project-csv-split registry-csv-holdings registry-verify
 registry-csv-scope: registry-csv-inventory
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_migration_scope_registry.py
 
-registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-wave3 registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope
+registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry-wave3 registry-csv-inventory registry-verify-legacy-csv registry-verify-curated-csv registry-csv-scope registry-wave4
 	@echo "OK: CSV data registry lane complete."
 
 registry-export-markdown: registry-refresh
