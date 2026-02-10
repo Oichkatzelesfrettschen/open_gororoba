@@ -50,11 +50,16 @@ def main() -> int:
         git_status = str(row.get("git_status", "")).strip()
         classification = str(row.get("classification", "")).strip()
         destination = str(row.get("toml_destination", "")).strip()
+        generated_declared = bool(row.get("generated_declared", False))
         if classification not in ALLOWED:
             failures.append(f"{path}: disallowed classification={classification}")
         if git_status == "tracked" and path not in TRACKED_ALLOWLIST:
             failures.append(f"{path}: tracked markdown outside allowlist")
         if classification == "toml_published_markdown":
+            if not generated_declared:
+                failures.append(
+                    f"{path}: toml_published_markdown without explicit generated marker header"
+                )
             if not destination:
                 failures.append(f"{path}: toml_published_markdown without toml_destination")
             elif not (repo_root / destination).is_file():

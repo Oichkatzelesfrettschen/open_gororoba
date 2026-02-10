@@ -1,0 +1,67 @@
+[dataset]
+id = "PC-0045"
+slug = "mera_verification_summary"
+source_csv = "data/csv/mera_verification_summary.csv"
+source_sha256 = "26dfc1f1e3d69e101e55ba0b5ee20e2c1702d83d2877a1ac579e322259126e3d"
+source_size_bytes = 215
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 6
+column_count = 2
+header_value_sha256 = "738de41415be4d67e19ddb1e8a31234b84744a929253b1280bd4610546c4b73e"
+row_value_sha256 = "bb960420d2faa6b8167b4bcfb5ee2d6ae5b5fb509751bed3d470e569f7a3a0ab"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "metric",
+    "value",
+]
+original_header = [
+    "metric",
+    "value",
+]
+rows = [
+    [
+    "slope",
+    "0.39999999999999963",
+],
+    [
+    "intercept",
+    "2.3999999999999995",
+],
+    [
+    "central_charge_estimate",
+    "1.1999999999999988",
+],
+    [
+    "slope_ci_lower",
+    "0.39999999999999963",
+],
+    [
+    "slope_ci_upper",
+    "0.39999999999999963",
+],
+    [
+    "log_scaling_confirmed",
+    "True",
+],
+]
+
+[[column]]
+index = 1
+name = "metric"
+original_name = "metric"
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0
+
+[[column]]
+index = 2
+name = "value"
+original_name = "value"
+inferred_type = "string"
+non_empty_count = 6
+empty_count = 0

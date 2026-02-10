@@ -1,7 +1,7 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify
-.PHONY: verify verify-grand ascii-check doctor provenance patch-pyfilesystem2
+.PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke
 .PHONY: registry registry-knowledge registry-governance registry-migrate-corpus registry-normalize-claims
 .PHONY: registry-normalize-bibliography registry-bootstrap-bibliography
@@ -18,6 +18,7 @@
 .PHONY: registry-markdown-inventory registry-markdown-corpus registry-toml-inventory
 .PHONY: registry-markdown-origin-audit
 .PHONY: registry-knowledge-atoms registry-verify-knowledge-atoms
+.PHONY: registry-artifact-scrolls registry-verify-artifact-scrolls
 .PHONY: registry-verify-markdown-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-wave4 registry-wave4
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
@@ -27,6 +28,7 @@
 .PHONY: registry-csv-scroll-pipeline registry-verify-csv-scroll-pipeline
 .PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-wave3
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
+.PHONY: verify-python-core-algorithms
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
 .PHONY: artifacts-reggiani artifacts-m3 artifacts-motifs artifacts-motifs-big
 .PHONY: fetch-data run coq latex
@@ -37,6 +39,7 @@
 VENV ?= venv
 PYTHON := $(VENV)/bin/python3
 PIP := $(VENV)/bin/pip
+MARKDOWN_EXPORT ?= 0
 
 # ---- Environment setup ----
 
@@ -85,6 +88,7 @@ smoke: install
 	$(PYTHON) -m ruff check src --statistics --exit-zero
 	$(PYTHON) bin/ascii_check.py --check
 	$(MAKE) registry-verify-markdown-owner
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_python_core_algorithms_pyo3.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_dataset_manifest_providers.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
@@ -187,6 +191,12 @@ registry-knowledge-atoms:
 registry-verify-knowledge-atoms: registry-knowledge-atoms
 	PYTHONWARNINGS=error python3 src/verification/verify_structured_knowledge_atoms.py
 
+registry-artifact-scrolls: registry-knowledge-atoms
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_artifact_scrolls_registry.py
+
+registry-verify-artifact-scrolls: registry-artifact-scrolls
+	PYTHONWARNINGS=error python3 src/verification/verify_artifact_scrolls_registry.py
+
 registry-markdown-inventory:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py
 
@@ -208,7 +218,7 @@ registry-verify-markdown-origin: registry-markdown-origin-audit
 registry-verify-markdown-owner: registry-markdown-inventory
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
 
-registry-verify-wave4: registry-markdown-corpus registry-toml-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms
+registry-verify-wave4: registry-markdown-corpus registry-toml-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms registry-verify-artifact-scrolls
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_corpus_registry.py
 	PYTHONWARNINGS=error python3 src/verification/verify_toml_inventory_registry.py
 
@@ -300,7 +310,8 @@ registry-verify-project-csv-split: registry-scroll-project-csv-canonical registr
 		--index-path registry/project_csv_generated_artifacts.toml \
 		--source-manifest registry/manifests/project_csv_generated_manifest.txt \
 		--corpus-label 'project CSV generated artifact'
-	PYTHONWARNINGS=error python3 src/verification/verify_project_csv_split_policy.py
+	cargo run --release --bin verify-project-csv-split -- \
+		--repo-root .
 
 registry-verify-csv-holdings: registry-csv-holdings registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
 	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
@@ -326,9 +337,17 @@ registry-data: registry-migrate-legacy-csv registry-migrate-curated-csv registry
 	@echo "OK: CSV data registry lane complete."
 
 registry-export-markdown: registry-refresh
+	@if [ "$(MARKDOWN_EXPORT)" != "1" ]; then \
+		echo "SKIP: markdown export disabled (set MARKDOWN_EXPORT=1)"; \
+		exit 0; \
+	fi
 	PYTHONWARNINGS=error python3 src/scripts/analysis/export_registry_markdown_mirrors.py
 
 registry-verify-mirrors: registry-export-markdown
+	@if [ "$(MARKDOWN_EXPORT)" != "1" ]; then \
+		echo "SKIP: mirror verification disabled (set MARKDOWN_EXPORT=1)"; \
+		exit 0; \
+	fi
 	PYTHONWARNINGS=error python3 src/verification/verify_registry_mirror_freshness.py
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_headers.py
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_governance_parity.py
@@ -350,6 +369,12 @@ verify: install
 
 verify-grand: install
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
+
+verify-c010-c011-theses:
+	PYTHONWARNINGS=error python3 src/verification/verify_c010_c011_theses.py
+
+verify-python-core-algorithms:
+	PYTHONWARNINGS=error python3 src/verification/verify_python_core_algorithms_pyo3.py
 
 doctor: install
 	$(PYTHON) bin/doctor.py

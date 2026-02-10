@@ -1,0 +1,123 @@
+[dataset]
+id = "PC-0013"
+slug = "c071f_cosmic_dendrogram"
+source_csv = "data/csv/c071f_cosmic_dendrogram.csv"
+source_sha256 = "61d2c836bfe8582ec4f65f1c4d49df8cf9d22509280e58ebac7235b4bde4abea"
+source_size_bytes = 268
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 5
+column_count = 6
+header_value_sha256 = "6016c7f7cef5f36e75790fa371ffd6d24efa0f206dc5d69f5f9efb5dabe6dfb6"
+row_value_sha256 = "92d742ac4166848ca998f750c9c070f5b328cc1ad5f485685f176de32dc99003"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "metric",
+    "value",
+    "null_mean",
+    "null_std",
+    "p_value",
+    "verdict",
+]
+original_header = [
+    "metric",
+    "value",
+    "null_mean",
+    "null_std",
+    "p_value",
+    "verdict",
+]
+rows = [
+    [
+    "cophenetic_correlation",
+    "0.830734",
+    "0.830734",
+    "0.000000",
+    "0.910448",
+    "Fail",
+],
+    [
+    "ultrametric_fraction",
+    "0.173870",
+    "N/A",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "n_frbs",
+    "4996",
+    "N/A",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "n_gw_events",
+    "35",
+    "N/A",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+    [
+    "redshift_range",
+    "[0.0029, 13.3878]",
+    "N/A",
+    "N/A",
+    "N/A",
+    "N/A",
+],
+]
+
+[[column]]
+index = 1
+name = "metric"
+original_name = "metric"
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 2
+name = "value"
+original_name = "value"
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 3
+name = "null_mean"
+original_name = "null_mean"
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 4
+name = "null_std"
+original_name = "null_std"
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 5
+name = "p_value"
+original_name = "p_value"
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 0
+
+[[column]]
+index = 6
+name = "verdict"
+original_name = "verdict"
+inferred_type = "string"
+non_empty_count = 5
+empty_count = 0

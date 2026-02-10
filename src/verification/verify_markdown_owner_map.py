@@ -20,45 +20,44 @@ def _conversion_hint(path: str) -> str:
     if path.startswith("docs/book/src/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_book_docs_registry.py "
-            "--bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+            "--bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 make docs-publish"
         )
     if path.startswith("docs/external_sources/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_external_sources_registry.py "
-            "--bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+            "--bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 make docs-publish"
         )
     if path.startswith("docs/tickets/") or path.startswith("docs/claims/by_domain/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_claims_support_registries.py "
-            "--bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+            "--bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 make docs-publish"
         )
     if path.startswith("docs/convos/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_convos_registry.py "
-            "--bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+            "--bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 make docs-publish"
         )
     if path.startswith("docs/theory/") or path.startswith("docs/engineering/") or path.startswith("docs/research/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_research_narratives_registry.py "
-            "--bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+            "--bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 make docs-publish"
         )
     if path.startswith("docs/monograph/"):
-        return "Edit registry/monograph.toml and run: PYTHONWARNINGS=error make docs-publish"
+        return "Edit registry/monograph.toml and run: PYTHONWARNINGS=error MARKDOWN_EXPORT=1 make docs-publish"
     if path.startswith("docs/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py "
-            "--bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+            "--bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 make docs-publish"
         )
     if path.startswith("reports/"):
         return (
             "PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py "
-            "--bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+            "--bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 make docs-publish"
         )
     if path.startswith("data/artifacts/") and path != "data/artifacts/README.md":
         return (
-            "PYTHONWARNINGS=error python3 "
-            "src/scripts/analysis/normalize_data_artifact_narratives_registry.py "
-            "--bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+            "PYTHONWARNINGS=error make registry-artifact-scrolls "
+            "&& PYTHONWARNINGS=error MARKDOWN_EXPORT=1 make docs-publish"
         )
     return "Assign canonical TOML owner in registry/markdown_owner_map.toml and regenerate."
 

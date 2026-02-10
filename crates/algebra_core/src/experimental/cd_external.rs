@@ -2190,6 +2190,42 @@ mod tests {
         fields
     }
 
+    fn lattice_csv_path(dim: usize) -> String {
+        format!(
+            "{}/../../data/csv/cayley_dickson/{}d_lattice_mapping.csv",
+            env!("CARGO_MANIFEST_DIR"),
+            dim
+        )
+    }
+
+    fn parse_lattice_csv_records(dim: usize) -> Vec<(usize, Vec<i32>)> {
+        let csv_path = lattice_csv_path(dim);
+        let content = std::fs::read_to_string(&csv_path)
+            .unwrap_or_else(|_| panic!("Lattice CSV not found: {}", csv_path));
+        let mut lines = content.lines();
+        let _header = lines.next().expect("CSV must have header");
+        let mut records = Vec::new();
+
+        for line in lines {
+            let fields = parse_csv_line(line);
+            assert!(
+                fields.len() >= 2,
+                "Expected at least 2 fields in lattice row: {}",
+                line
+            );
+
+            let basis = parse_nested_tuple(&fields[0])
+                .unwrap_or_else(|| panic!("Failed to parse basis tuple in row: {}", line));
+            let idx = vec_to_basis_index(&basis)
+                .unwrap_or_else(|| panic!("Row does not decode to unique basis index: {}", line));
+            let lattice = parse_lattice_point(&fields[1])
+                .unwrap_or_else(|| panic!("Failed to parse lattice vector in row: {}", line));
+            records.push((idx, lattice));
+        }
+
+        records
+    }
+
     // === Thesis A: Codebook Parity Verification ===
 
     #[test]
@@ -3095,5 +3131,160 @@ mod tests {
         assert!(coupled.is_some(), "Dictionary coupling should succeed");
         let result = coupled.unwrap();
         assert_eq!(result.len(), 8, "Result should be 8D");
+    }
+
+    #[test]
+    fn test_c452_c453_lattice_header_schema_stability() {
+        let dims = [256usize, 512, 1024, 2048];
+        let mut headers = Vec::new();
+
+        for &dim in &dims {
+            let csv_path = lattice_csv_path(dim);
+            let content = std::fs::read_to_string(&csv_path)
+                .unwrap_or_else(|_| panic!("Lattice CSV not found: {}", csv_path));
+            let header = content
+                .lines()
+                .next()
+                .unwrap_or_else(|| panic!("CSV {} missing header", csv_path));
+            let fields = parse_csv_line(header);
+            assert_eq!(
+                fields.len(),
+                4,
+                "Expected 4 header fields for {}D lattice CSV",
+                dim
+            );
+            assert!(
+                fields[0].contains("Basis Element"),
+                "Header[0] should contain 'Basis Element' for {}D",
+                dim
+            );
+            assert_eq!(
+                fields[1], "Mapped Lattice Point",
+                "Header[1] mismatch for {}D",
+                dim
+            );
+            assert_eq!(fields[2], "Lattice Sum", "Header[2] mismatch for {}D", dim);
+            assert_eq!(
+                fields[3], "Consistent Sum",
+                "Header[3] mismatch for {}D",
+                dim
+            );
+            headers.push(fields);
+        }
+
+        // Freeze current external CSV header schema across all dimensions.
+        for header in headers.iter().skip(1) {
+            assert_eq!(
+                header, &headers[0],
+                "Lattice CSV headers drifted across dims"
+            );
+        }
+    }
+
+    #[test]
+    fn test_c452_c453_embedding_is_injective_and_roundtrip() {
+        let dims = [256usize, 512, 1024, 2048];
+
+        for &dim in &dims {
+            let records = parse_lattice_csv_records(dim);
+            assert_eq!(
+                records.len(),
+                dim,
+                "Expected {} rows in {}D lattice CSV",
+                dim,
+                dim
+            );
+
+            let mut seen_idx = std::collections::HashSet::new();
+            let mut seen_lattice = std::collections::HashSet::new();
+            for (idx, lattice) in &records {
+                assert!(
+                    seen_idx.insert(*idx),
+                    "Duplicate basis index {} in {}D lattice mapping",
+                    idx,
+                    dim
+                );
+                assert!(
+                    seen_lattice.insert(lattice.clone()),
+                    "Duplicate lattice vector {:?} in {}D mapping",
+                    lattice,
+                    dim
+                );
+            }
+            assert_eq!(
+                seen_idx.len(),
+                dim,
+                "Missing basis indices in {}D mapping",
+                dim
+            );
+            assert_eq!(
+                seen_lattice.len(),
+                dim,
+                "Embedding not injective in {}D mapping",
+                dim
+            );
+
+            let reverse: std::collections::HashMap<Vec<i32>, usize> = records
+                .iter()
+                .map(|(idx, lattice)| (lattice.clone(), *idx))
+                .collect();
+            for (idx, lattice) in &records {
+                assert_eq!(
+                    reverse.get(lattice),
+                    Some(idx),
+                    "Round-trip lattice->index failed for {}D index {}",
+                    dim,
+                    idx
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_c452_c453_codomain_and_index_coverage_all_dims() {
+        let dims = [256usize, 512, 1024, 2048];
+
+        for &dim in &dims {
+            let lattice_map = load_lattice_map(dim);
+            assert_eq!(lattice_map.len(), dim, "Expected full map for {}D", dim);
+
+            for idx in 0..dim {
+                assert!(
+                    lattice_map.contains_key(&idx),
+                    "Missing basis index {} in {}D lattice map",
+                    idx,
+                    dim
+                );
+            }
+
+            for lattice in lattice_map.values() {
+                assert_eq!(lattice.len(), 8, "Lattice vector must be 8D");
+                assert!(
+                    lattice.iter().all(|&x| (-1..=1).contains(&x)),
+                    "Lattice vector {:?} not in trinary codomain",
+                    lattice
+                );
+            }
+        }
+    }
+
+    #[test]
+    fn test_c453_filtration_growth_has_expected_new_points() {
+        let p256: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(256).into_iter().collect();
+        let p512: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(512).into_iter().collect();
+        let p1024: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(1024).into_iter().collect();
+        let p2048: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(2048).into_iter().collect();
+
+        assert!(p256.is_subset(&p512));
+        assert!(p512.is_subset(&p1024));
+        assert!(p1024.is_subset(&p2048));
+
+        assert_eq!(p512.difference(&p256).count(), 256);
+        assert_eq!(p1024.difference(&p512).count(), 512);
+        assert_eq!(p2048.difference(&p1024).count(), 1024);
     }
 }

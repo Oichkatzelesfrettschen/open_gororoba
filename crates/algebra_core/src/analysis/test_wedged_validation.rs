@@ -10,7 +10,7 @@
 
 #[cfg(test)]
 mod tests {
-    use crate::construction::clifford::{CliffordSignature, clifford_basis_product};
+    use crate::construction::clifford::{clifford_basis_product, CliffordSignature};
 
     /// Test: Wedged Dim=4 Quaternion Validation
     ///
@@ -54,10 +54,11 @@ mod tests {
             let (scalar_hand, vector_hand) = clifford_basis_product(sig.p, sig.q, a_mask, b_mask);
 
             // Swap order to check commutativity
-            let (scalar_hand_swap, vector_hand_swap) = clifford_basis_product(sig.p, sig.q, b_mask, a_mask);
+            let (scalar_hand_swap, vector_hand_swap) =
+                clifford_basis_product(sig.p, sig.q, b_mask, a_mask);
 
-            let commutes = (scalar_hand - scalar_hand_swap).abs() < 1e-10
-                && vector_hand == vector_hand_swap;
+            let commutes =
+                (scalar_hand - scalar_hand_swap).abs() < 1e-10 && vector_hand == vector_hand_swap;
 
             if commutes {
                 commuting_pairs += 1;
@@ -69,7 +70,11 @@ mod tests {
         eprintln!("Dim=4 Cl(2,0) commutativity: {:.1}%", commutativity_pct);
 
         // At dim=4, Cl(2,0) should show ~83% commutativity (from Phase 3a findings)
-        assert!(commutativity_pct > 70.0, "Commutativity too low: {:.1}%", commutativity_pct);
+        assert!(
+            commutativity_pct > 70.0,
+            "Commutativity too low: {:.1}%",
+            commutativity_pct
+        );
     }
 
     /// Test: Wedged Dim=8 Octonion Validation
@@ -112,10 +117,17 @@ mod tests {
         }
 
         let commutativity_pct = (commuting_pairs as f64 / total_pairs as f64) * 100.0;
-        eprintln!("Dim=8 Cl(3,0) spot-check commutativity: {:.1}%", commutativity_pct);
+        eprintln!(
+            "Dim=8 Cl(3,0) spot-check commutativity: {:.1}%",
+            commutativity_pct
+        );
 
         // Dim=8 phase 3a result: ~89% commutativity for Cl(3,0)
-        assert!(commutativity_pct > 70.0, "Commutativity too low: {:.1}%", commutativity_pct);
+        assert!(
+            commutativity_pct > 70.0,
+            "Commutativity too low: {:.1}%",
+            commutativity_pct
+        );
     }
 
     /// Test: Wedged vs Hand-Rolled Clifford Commutativity Cross-Validation
@@ -204,7 +216,10 @@ mod tests {
         let (scalar, vector) = clifford_basis_product(sig.p, sig.q, 0b01, 0b10);
 
         // Simple sanity check: e1 * e2 in Cl(1,1) should produce non-zero result
-        assert!(scalar.abs() > 0.0 || vector > 0, "Hand-rolled Clifford unavailable");
+        assert!(
+            scalar.abs() > 0.0 || vector > 0,
+            "Hand-rolled Clifford unavailable"
+        );
         eprintln!("test_wedged_optional_feature_check: Hand-rolled Clifford available (always)");
     }
 }

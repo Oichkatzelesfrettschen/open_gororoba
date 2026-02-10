@@ -5,17 +5,17 @@
 updated = "deterministic"
 authoritative = true
 source_inventory = "registry/markdown_inventory.toml"
-document_count = 249
-generated_verified_count = 249
+document_count = 250
+generated_verified_count = 250
 needs_consolidation_count = 0
 
 [scope_counts]
 data_artifacts = 9
-docs = 193
+docs = 194
 reports = 47
 
 [origin_status_counts]
-generated_from_repo_process = 249
+generated_from_repo_process = 250
 
 [[document]]
 path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
@@ -27,7 +27,7 @@ origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::lega
 destination_exists = true
 header_auto_generated = true
 header_source_of_truth = true
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "registry/data_artifact_narratives.toml"
 source_of_truth_paths = ["registry/data_artifact_narratives.toml"]
 consolidation_action = "none"
@@ -43,7 +43,7 @@ origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::lega
 destination_exists = true
 header_auto_generated = true
 header_source_of_truth = true
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "registry/data_artifact_narratives.toml"
 source_of_truth_paths = ["registry/data_artifact_narratives.toml"]
 consolidation_action = "none"
@@ -59,7 +59,7 @@ origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::lega
 destination_exists = true
 header_auto_generated = true
 header_source_of_truth = true
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "registry/data_artifact_narratives.toml"
 source_of_truth_paths = ["registry/data_artifact_narratives.toml"]
 consolidation_action = "none"
@@ -75,7 +75,7 @@ origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::lega
 destination_exists = true
 header_auto_generated = true
 header_source_of_truth = true
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "registry/data_artifact_narratives.toml"
 source_of_truth_paths = ["registry/data_artifact_narratives.toml"]
 consolidation_action = "none"
@@ -107,7 +107,7 @@ origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::lega
 destination_exists = true
 header_auto_generated = true
 header_source_of_truth = true
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "registry/data_artifact_narratives.toml"
 source_of_truth_paths = ["registry/data_artifact_narratives.toml"]
 consolidation_action = "none"
@@ -123,7 +123,7 @@ origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::lega
 destination_exists = true
 header_auto_generated = true
 header_source_of_truth = true
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "registry/data_artifact_narratives.toml"
 source_of_truth_paths = ["registry/data_artifact_narratives.toml"]
 consolidation_action = "none"
@@ -139,7 +139,7 @@ origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::lega
 destination_exists = true
 header_auto_generated = true
 header_source_of_truth = true
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "registry/data_artifact_narratives.toml"
 source_of_truth_paths = ["registry/data_artifact_narratives.toml"]
 consolidation_action = "none"
@@ -155,7 +155,7 @@ origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::lega
 destination_exists = true
 header_auto_generated = true
 header_source_of_truth = true
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "registry/data_artifact_narratives.toml"
 source_of_truth_paths = ["registry/data_artifact_narratives.toml"]
 consolidation_action = "none"
@@ -319,7 +319,7 @@ toml_destination = "registry/docs_root_narratives.toml"
 source_of_truth_raw = "registry/docs_root_narratives.toml"
 source_of_truth_paths = ["registry/docs_root_narratives.toml"]
 consolidation_action = "none"
-line_count = 3501
+line_count = 3491
 
 [[document]]
 path = "docs/CLAIMS_TASKS.md"
@@ -559,7 +559,7 @@ toml_destination = "registry/docs_root_narratives.toml"
 source_of_truth_raw = "registry/insights.toml, registry/insights_narrative.toml"
 source_of_truth_paths = ["registry/insights.toml", "registry/insights_narrative.toml"]
 consolidation_action = "none"
-line_count = 606
+line_count = 646
 
 [[document]]
 path = "docs/LACUNAE.md"
@@ -752,6 +752,22 @@ source_of_truth_raw = "registry/docs_root_narratives.toml"
 source_of_truth_paths = ["registry/docs_root_narratives.toml"]
 consolidation_action = "none"
 line_count = 241
+
+[[document]]
+path = "docs/PHASE4A_NON_ASSOCIATIVE_RECONNAISSANCE.md"
+scope = "docs"
+classification = "toml_published_markdown"
+git_status = "ignored"
+origin_status = "generated_from_repo_process"
+origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::legacy_exports"
+destination_exists = true
+header_auto_generated = true
+header_source_of_truth = true
+toml_destination = "registry/docs_root_narratives.toml"
+source_of_truth_raw = "registry/docs_root_narratives.toml"
+source_of_truth_paths = ["registry/docs_root_narratives.toml"]
+consolidation_action = "none"
+line_count = 251
 
 [[document]]
 path = "docs/PHASE_1_SUMMARY.md"
@@ -991,7 +1007,7 @@ toml_destination = "registry/docs_root_narratives.toml"
 source_of_truth_raw = "registry/docs_root_narratives.toml"
 source_of_truth_paths = ["registry/docs_root_narratives.toml"]
 consolidation_action = "none"
-line_count = 67
+line_count = 73
 
 [[document]]
 path = "docs/SEDENION_NILPOTENCY.md"
@@ -2527,7 +2543,7 @@ toml_destination = "registry/claims_tasks.toml"
 source_of_truth_raw = "TOML registry files under registry/"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 2854
+line_count = 2840
 
 [[document]]
 path = "docs/generated/CLAIM_TICKETS_REGISTRY_MIRROR.md"
@@ -2555,7 +2571,7 @@ origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::mirr
 destination_exists = true
 header_auto_generated = true
 header_source_of_truth = true
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 source_of_truth_raw = "TOML registry files under registry/"
 source_of_truth_paths = []
 consolidation_action = "none"
@@ -2655,7 +2671,7 @@ toml_destination = "registry/insights.toml"
 source_of_truth_raw = "TOML registry files under registry/"
 source_of_truth_paths = []
 consolidation_action = "none"
-line_count = 283
+line_count = 319
 
 [[document]]
 path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"

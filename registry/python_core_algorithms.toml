@@ -1,0 +1,217 @@
+# Canonical mapping of Python core algorithms to Rust crate ownership and PyO3 bridge plans.
+# This registry is authoritative for Python->Rust migration governance.
+
+[python_core_algorithms_policy]
+authoritative = true
+updated = "2026-02-10"
+description = "Hard gate: new in-scope Python core algorithm files must be mapped to a Rust crate/module and a PyO3 binding plan."
+watch_globs = [
+  "src/*.py",
+  "src/quantum/**/*.py",
+  "src/quantum_runtime/**/*.py",
+  "src/gemini_physics/**/*.py",
+]
+exclude_globs = [
+  "src/**/__init__.py",
+  "src/vis_*.py",
+  "src/assemble_manuscript.py",
+  "src/analyze_full_chat_log.py",
+  "src/map_cosmic_objects.py",
+  "src/fetch_ligo_gwpy.py",
+  "src/quantum/local_test.py",
+  "src/quantum/benchmarks/**",
+]
+allowed_binding_status = ["planned", "in_progress", "bound", "complete", "exempt"]
+mapping_count = 24
+
+[[mapping]]
+id = "PYALG-0001"
+python_path = "src/entropy_pde_fit.py"
+rust_crate = "spectral_core"
+rust_module = "entropy_pde"
+binding_status = "planned"
+pyo3_binding_plan = "Add `py_entropy_pde_fit(...)` bridge in crates/gororoba_py/src/lib.rs, reusing spectral_core solver outputs."
+
+[[mapping]]
+id = "PYALG-0002"
+python_path = "src/genesis_simulation.py"
+rust_crate = "cosmology_core"
+rust_module = "genesis_simulation"
+binding_status = "planned"
+pyo3_binding_plan = "Expose `py_genesis_simulation(...)` in gororoba_py as a thin wrapper over cosmology_core kernels."
+
+[[mapping]]
+id = "PYALG-0003"
+python_path = "src/genesis_simulation_v2.py"
+rust_crate = "cosmology_core"
+rust_module = "genesis_simulation_v2"
+binding_status = "planned"
+pyo3_binding_plan = "Expose `py_genesis_simulation_v2(...)` in gororoba_py, preserving deterministic seed and parameter controls."
+
+[[mapping]]
+id = "PYALG-0004"
+python_path = "src/holo_tensor_net.py"
+rust_crate = "quantum_core"
+rust_module = "tensor_networks"
+binding_status = "planned"
+pyo3_binding_plan = "Expose `py_holo_tensor_net(...)` through gororoba_py and route heavy contraction logic to quantum_core."
+
+[[mapping]]
+id = "PYALG-0005"
+python_path = "src/materials_embedding_experiments.py"
+rust_crate = "materials_core"
+rust_module = "embedding_experiments"
+binding_status = "planned"
+pyo3_binding_plan = "Add `py_materials_embedding_experiments(...)` wrapper in crates/gororoba_py/src/lib.rs and keep plotting/output orchestration in Python only."
+
+[[mapping]]
+id = "PYALG-0006"
+python_path = "src/modular_classical_sim.py"
+rust_crate = "algebra_core"
+rust_module = "modular_classical_sim"
+binding_status = "planned"
+pyo3_binding_plan = "Expose `py_modular_classical_sim(...)` from gororoba_py with algebra_core as canonical compute path."
+
+[[mapping]]
+id = "PYALG-0007"
+python_path = "src/neg_dim_spectrum.py"
+rust_crate = "spectral_core"
+rust_module = "neg_dim_spectrum"
+binding_status = "planned"
+pyo3_binding_plan = "Add `py_neg_dim_spectrum(...)` binding to spectral_core routines in gororoba_py."
+
+[[mapping]]
+id = "PYALG-0008"
+python_path = "src/nonlocal_long_range_ZZ.py"
+rust_crate = "quantum_core"
+rust_module = "nonlocal_long_range_zz"
+binding_status = "planned"
+pyo3_binding_plan = "Bridge as `py_nonlocal_long_range_zz(...)` in gororoba_py; maintain Python-side experiment orchestration only."
+
+[[mapping]]
+id = "PYALG-0009"
+python_path = "src/quantum/advanced/absorber_pareto.py"
+rust_crate = "materials_core"
+rust_module = "absorber_pareto"
+binding_status = "planned"
+pyo3_binding_plan = "Expose Pareto compute kernel via gororoba_py and call from Python for report/plot assembly."
+
+[[mapping]]
+id = "PYALG-0010"
+python_path = "src/quantum/advanced/fractal_css_expanded.py"
+rust_crate = "quantum_core"
+rust_module = "fractal_css_expanded"
+binding_status = "planned"
+pyo3_binding_plan = "Add gororoba_py bridge for fractal CSS computation paths and parity tests."
+
+[[mapping]]
+id = "PYALG-0011"
+python_path = "src/quantum/advanced/kk_mskk2.py"
+rust_crate = "quantum_core"
+rust_module = "kk_mskk2"
+binding_status = "planned"
+pyo3_binding_plan = "Bridge KK/MSKK2 kernels into gororoba_py and keep Python wrappers minimal."
+
+[[mapping]]
+id = "PYALG-0012"
+python_path = "src/quantum/advanced/projector_fhs_polar.py"
+rust_crate = "quantum_core"
+rust_module = "projector_fhs_polar"
+binding_status = "planned"
+pyo3_binding_plan = "Expose projector/FHS polar routines in gororoba_py with deterministic numeric settings."
+
+[[mapping]]
+id = "PYALG-0013"
+python_path = "src/quantum/advanced/pseudospectrum_slice.py"
+rust_crate = "quantum_core"
+rust_module = "pseudospectrum_slice"
+binding_status = "planned"
+pyo3_binding_plan = "Add `py_pseudospectrum_slice(...)` bridge in gororoba_py and move spectral core numerics to Rust."
+
+[[mapping]]
+id = "PYALG-0014"
+python_path = "src/quantum/box_kite_symmetry.py"
+rust_crate = "algebra_core"
+rust_module = "boxkites"
+binding_status = "planned"
+pyo3_binding_plan = "Use algebra_core symmetry APIs through gororoba_py wrapper for Python-facing workflows."
+
+[[mapping]]
+id = "PYALG-0015"
+python_path = "src/quantum/f4_symmetry_circuit.py"
+rust_crate = "quantum_core"
+rust_module = "f4_symmetry_circuit"
+binding_status = "planned"
+pyo3_binding_plan = "Expose F4 symmetry circuit kernels via gororoba_py for Python orchestration and benchmarking."
+
+[[mapping]]
+id = "PYALG-0016"
+python_path = "src/quantum/fractional_schrodinger.py"
+rust_crate = "quantum_core"
+rust_module = "fractional_schrodinger"
+binding_status = "planned"
+pyo3_binding_plan = "Add `py_fractional_schrodinger(...)` binding in gororoba_py and keep Python layer as orchestration."
+
+[[mapping]]
+id = "PYALG-0017"
+python_path = "src/quantum/fractional_schrodinger_benchmarks.py"
+rust_crate = "quantum_core"
+rust_module = "fractional_schrodinger_benchmarks"
+binding_status = "planned"
+pyo3_binding_plan = "Expose benchmark kernels in gororoba_py; benchmark harness may remain Python."
+
+[[mapping]]
+id = "PYALG-0018"
+python_path = "src/quantum/fracton_code.py"
+rust_crate = "quantum_core"
+rust_module = "fracton_code"
+binding_status = "planned"
+pyo3_binding_plan = "Route fracton computations to quantum_core and expose via gororoba_py."
+
+[[mapping]]
+id = "PYALG-0019"
+python_path = "src/quantum/harper_chern.py"
+rust_crate = "quantum_core"
+rust_module = "harper_chern"
+binding_status = "planned"
+pyo3_binding_plan = "Wrap harper/hern numerics through gororoba_py and keep plotting in Python."
+
+[[mapping]]
+id = "PYALG-0020"
+python_path = "src/quantum/sim_f4_circuit.py"
+rust_crate = "quantum_core"
+rust_module = "sim_f4_circuit"
+binding_status = "planned"
+pyo3_binding_plan = "Expose sim_f4_circuit execution path in gororoba_py with deterministic seeds."
+
+[[mapping]]
+id = "PYALG-0021"
+python_path = "src/quantum_runtime/ibm_bridge.py"
+rust_crate = "quantum_core"
+rust_module = "runtime_ibm_bridge"
+binding_status = "planned"
+pyo3_binding_plan = "Define gororoba_py bridge surface for runtime payload preparation and result decoding."
+
+[[mapping]]
+id = "PYALG-0022"
+python_path = "src/sedenion_field_sim.py"
+rust_crate = "algebra_core"
+rust_module = "sedenion_field"
+binding_status = "planned"
+pyo3_binding_plan = "Expose sedenion field simulation kernels via gororoba_py for Python-side workflow control."
+
+[[mapping]]
+id = "PYALG-0023"
+python_path = "src/spectral_flow_sim.py"
+rust_crate = "spectral_core"
+rust_module = "spectral_flow"
+binding_status = "planned"
+pyo3_binding_plan = "Add `py_spectral_flow_sim(...)` wrapper in gororoba_py over spectral_core routines."
+
+[[mapping]]
+id = "PYALG-0024"
+python_path = "src/topology_analysis.py"
+rust_crate = "algebra_core"
+rust_module = "topology_analysis"
+binding_status = "planned"
+pyo3_binding_plan = "Expose topology analysis kernel APIs in gororoba_py and keep Python report assembly thin."

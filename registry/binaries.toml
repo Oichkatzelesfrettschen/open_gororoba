@@ -224,6 +224,16 @@ crate = "gororoba_cli"
 description = "Convert CSV corpora to TOML scroll datasets and canonical index manifests"
 
 [[binary]]
+name = "verify-project-csv-split"
+crate = "gororoba_cli"
+description = "Verify project_csv split policy parity across inventory, manifests, and TOML scroll indexes"
+
+[[binary]]
+name = "registry-emit"
+crate = "gororoba_cli"
+description = "Emit optional non-canonical views (markdown, bibtex, tex, pgfplots, svg, mermaid) from TOML registries"
+
+[[binary]]
 name = "warp-ring-integration"
 crate = "gororoba_cli"
 description = "8-step pipeline: D2Q9 LBM -> spectral triads -> p-adic/neg-dim warp -> metamaterial TMM filter -> E7 algebra -> hypergraph topology -> GRIN lensing -> visualization"

@@ -5,8 +5,8 @@
 updated = "2026-02-09"
 authoritative = true
 source_inventory = "registry/csv_inventory.toml"
-dataset_count = 86
-canonical_dataset_count = 56
+dataset_count = 87
+canonical_dataset_count = 57
 generated_artifact_count = 30
 
 generated_evidence_refs = [
@@ -21,6 +21,19 @@ queue_for_scroll_conversion = true
 size_bytes = 8374
 source_sha256 = "74446154412b6640c459ec8817aedc624a0302bd9a50dc47316de5f28957287d"
 git_status = "tracked"
+rationale = "Not listed in generated artifact contracts; treat as canonical project dataset for TOML-first scroll conversion."
+evidence_refs = [
+  "Makefile:357",
+  "src/verification/verify_generated_artifacts.py:37",
+]
+
+[[dataset]]
+path = "data/csv/apt_dimensional_census_summary.csv"
+classification = "canonical_dataset"
+queue_for_scroll_conversion = true
+size_bytes = 326
+source_sha256 = "e612cc4e32ecd95ecda5d8c051f205e0177e803d505c49465f0836821579b527"
+git_status = "untracked"
 rationale = "Not listed in generated artifact contracts; treat as canonical project dataset for TOML-first scroll conversion."
 evidence_refs = [
   "Makefile:357",

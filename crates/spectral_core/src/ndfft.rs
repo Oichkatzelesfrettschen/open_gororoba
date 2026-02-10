@@ -376,8 +376,7 @@ mod tests {
         let (nx, ny) = (8, 12);
         let input = Array2::from_shape_fn((nx, ny), |(i, j)| {
             Complex64::new(
-                (2.0 * PI * i as f64 / nx as f64).sin()
-                    * (4.0 * PI * j as f64 / ny as f64).cos(),
+                (2.0 * PI * i as f64 / nx as f64).sin() * (4.0 * PI * j as f64 / ny as f64).cos(),
                 0.0,
             )
         });
@@ -394,11 +393,7 @@ mod tests {
         let (nx, ny, nz) = (4, 4, 4);
         let input = Array3::from_elem((nx, ny, nz), Complex64::new(1.0, 0.0));
         let output = fft_3d(&input);
-        assert_relative_eq!(
-            output[[0, 0, 0]].re,
-            (nx * ny * nz) as f64,
-            epsilon = 1e-10
-        );
+        assert_relative_eq!(output[[0, 0, 0]].re, (nx * ny * nz) as f64, epsilon = 1e-10);
     }
 
     #[test]

@@ -239,10 +239,26 @@ pub fn extract_warp_triads(
                     }
 
                     // Fetch Fourier coefficients
-                    let ki = if kx < 0 { (kx + nx as i32) as usize } else { kx as usize };
-                    let kj = if ky < 0 { (ky + ny as i32) as usize } else { ky as usize };
-                    let pi = if px < 0 { (px + nx as i32) as usize } else { px as usize };
-                    let pj = if py < 0 { (py + ny as i32) as usize } else { py as usize };
+                    let ki = if kx < 0 {
+                        (kx + nx as i32) as usize
+                    } else {
+                        kx as usize
+                    };
+                    let kj = if ky < 0 {
+                        (ky + ny as i32) as usize
+                    } else {
+                        ky as usize
+                    };
+                    let pi = if px < 0 {
+                        (px + nx as i32) as usize
+                    } else {
+                        px as usize
+                    };
+                    let pj = if py < 0 {
+                        (py + ny as i32) as usize
+                    } else {
+                        py as usize
+                    };
 
                     let uk = field_hat[[ki, kj]];
                     let up = field_hat[[pi, pj]];
@@ -282,7 +298,11 @@ pub fn extract_warp_triads(
     }
 
     // Sort by warp weight descending
-    triads.sort_by(|a, b| b.warp_weight.partial_cmp(&a.warp_weight).unwrap_or(std::cmp::Ordering::Equal));
+    triads.sort_by(|a, b| {
+        b.warp_weight
+            .partial_cmp(&a.warp_weight)
+            .unwrap_or(std::cmp::Ordering::Equal)
+    });
     triads
 }
 
@@ -293,11 +313,7 @@ pub fn extract_warp_triads(
 ///
 /// For alpha < 0, this enhances low-k (large-scale) modes and suppresses
 /// high-k modes, modeling the effect of inverse cascade in the warp geometry.
-pub fn warp_spectral_density(
-    k_bins: &[f64],
-    power: &[f64],
-    config: &WarpRingConfig,
-) -> Vec<f64> {
+pub fn warp_spectral_density(k_bins: &[f64], power: &[f64], config: &WarpRingConfig) -> Vec<f64> {
     k_bins
         .iter()
         .zip(power.iter())
@@ -317,7 +333,12 @@ mod tests {
         // k=4=2^2, p=8=2^3, q=12: max valuation is 3 (from p=8)
         let w = padic_triad_weight(4.0, 8.0, 12.0, 2);
         let expected = 2.0_f64.powi(-3); // 0.125
-        assert!((w - expected).abs() < 1e-14, "Expected {}, got {}", expected, w);
+        assert!(
+            (w - expected).abs() < 1e-14,
+            "Expected {}, got {}",
+            expected,
+            w
+        );
     }
 
     #[test]
@@ -385,7 +406,10 @@ mod tests {
             assert!(
                 warp[i] < warp[i - 1],
                 "Warp density should decrease with k: warp[{}]={} >= warp[{}]={}",
-                i, warp[i], i - 1, warp[i - 1]
+                i,
+                warp[i],
+                i - 1,
+                warp[i - 1]
             );
         }
     }

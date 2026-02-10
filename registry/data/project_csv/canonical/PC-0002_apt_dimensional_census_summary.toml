@@ -1,0 +1,183 @@
+[dataset]
+id = "PC-0002"
+slug = "apt_dimensional_census_summary"
+source_csv = "data/csv/apt_dimensional_census_summary.csv"
+source_sha256 = "e612cc4e32ecd95ecda5d8c051f205e0177e803d505c49465f0836821579b527"
+source_size_bytes = 326
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 2
+column_count = 13
+header_value_sha256 = "a69cd1c0cc637b12b30c41718588b48a18b31c4af94e1f0cc65124d6892983db"
+row_value_sha256 = "106023c3a9a526309e2f332c0e8de6dbd9e0b6c1db55154e8241ea2c478db3b5"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "dim",
+    "n_components",
+    "n_nodes",
+    "n_triangles",
+    "pure_count",
+    "mixed_count",
+    "pure_ratio",
+    "fiber_00",
+    "fiber_01",
+    "fiber_10",
+    "fiber_11",
+    "method",
+    "elapsed_ms",
+]
+original_header = [
+    "dim",
+    "n_components",
+    "n_nodes",
+    "n_triangles",
+    "pure_count",
+    "mixed_count",
+    "pure_ratio",
+    "fiber_00",
+    "fiber_01",
+    "fiber_10",
+    "fiber_11",
+    "method",
+    "elapsed_ms",
+]
+rows = [
+    [
+    "32",
+    "15",
+    "210",
+    "100000",
+    "25188",
+    "74812",
+    "0.251880",
+    "25188",
+    "25208",
+    "24873",
+    "24731",
+    "monte_carlo_100000_accepted_100000",
+    "77",
+],
+    [
+    "64",
+    "31",
+    "930",
+    "100000",
+    "24903",
+    "75097",
+    "0.249030",
+    "24903",
+    "24946",
+    "24862",
+    "25289",
+    "monte_carlo_100000_accepted_100000",
+    "121",
+],
+]
+
+[[column]]
+index = 1
+name = "dim"
+original_name = "dim"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 2
+name = "n_components"
+original_name = "n_components"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 3
+name = "n_nodes"
+original_name = "n_nodes"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 4
+name = "n_triangles"
+original_name = "n_triangles"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 5
+name = "pure_count"
+original_name = "pure_count"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 6
+name = "mixed_count"
+original_name = "mixed_count"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 7
+name = "pure_ratio"
+original_name = "pure_ratio"
+inferred_type = "float"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 8
+name = "fiber_00"
+original_name = "fiber_00"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 9
+name = "fiber_01"
+original_name = "fiber_01"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 10
+name = "fiber_10"
+original_name = "fiber_10"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 11
+name = "fiber_11"
+original_name = "fiber_11"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 12
+name = "method"
+original_name = "method"
+inferred_type = "string"
+non_empty_count = 2
+empty_count = 0
+
+[[column]]
+index = 13
+name = "elapsed_ms"
+original_name = "elapsed_ms"
+inferred_type = "int"
+non_empty_count = 2
+empty_count = 0

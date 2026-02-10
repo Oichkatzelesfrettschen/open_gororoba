@@ -55,8 +55,7 @@ fn bench_basis_mul_sign(c: &mut Criterion) {
                 let mut sum = 0i64;
                 for i in 1..half.min(32) {
                     for j in half..dim.min(half + 32) {
-                        sum += cd_basis_mul_sign(black_box(dim), black_box(i), black_box(j))
-                            as i64;
+                        sum += cd_basis_mul_sign(black_box(dim), black_box(i), black_box(j)) as i64;
                     }
                 }
                 sum

@@ -1512,7 +1512,10 @@ def export_data_artifact_narratives(repo_root: Path, out_path: Path) -> None:
     meta = data.get("data_artifact_narratives", {})
     docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
     lines = _header("Data Artifact Narratives Registry Mirror")
-    lines.append("Authoritative source: `registry/data_artifact_narratives.toml`.")
+    lines.append(
+        "Authoritative source: `registry/artifact_scrolls.toml` "
+        "(with per-document scrolls under `registry/knowledge/artifacts/`)."
+    )
     lines.append("")
     lines.append(f"- Updated: {meta.get('updated', '')}")
     lines.append(f"- Source markdown count: {meta.get('source_markdown_count', len(docs))}")
@@ -1535,24 +1538,64 @@ def export_data_artifact_narratives(repo_root: Path, out_path: Path) -> None:
 
 def export_data_artifact_narratives_legacy(repo_root: Path) -> None:
     data = _load_toml(repo_root / "registry/data_artifact_narratives.toml")
+    artifact_index_path = repo_root / "registry/artifact_scrolls.toml"
+    artifact_index = _load_optional_toml(artifact_index_path)
+    scroll_by_source: dict[str, str] = {}
+    for row in artifact_index.get("scroll", []):
+        source_markdown = str(row.get("source_markdown", "")).strip()
+        scroll_path = str(row.get("scroll_path", "")).strip()
+        if source_markdown and scroll_path:
+            scroll_by_source[source_markdown] = scroll_path
+
+    def _render_from_scroll(scroll_data: dict) -> list[str]:
+        out: list[str] = []
+        sections = scroll_data.get("section", [])
+        for section in sections:
+            title = str(section.get("title", "")).strip()
+            level_raw = int(section.get("level", 0))
+            body = _ascii_sanitize(str(section.get("body_text", "")).strip("\n"))
+            if title and title != "(root)":
+                level = max(1, min(6, level_raw))
+                out.append(f"{'#' * level} {title}")
+                out.append("")
+            if body:
+                out.extend(body.splitlines())
+                out.append("")
+        while out and not out[-1].strip():
+            out.pop()
+        return out
+
     docs = sorted(data.get("document", []), key=lambda item: item.get("source_markdown", ""))
     for row in docs:
         rel_path = str(row.get("source_markdown", "")).strip()
         if not rel_path:
             continue
         path = repo_root / rel_path
-        body = str(row.get("body_markdown", "")).strip("\n")
+        body = _ascii_sanitize(str(row.get("body_markdown", "")).strip("\n"))
         lines: list[str] = [
             "<!-- AUTO-GENERATED: DO NOT EDIT -->",
-            "<!-- Source of truth: registry/data_artifact_narratives.toml -->",
+            "<!-- Source of truth: registry/artifact_scrolls.toml -->",
             "",
         ]
-        if body:
-            lines.extend(body.splitlines())
-        else:
-            lines.append(f"# {row.get('title', Path(rel_path).stem)}")
-            lines.append("")
-            lines.append("(No body_markdown captured in registry/data_artifact_narratives.toml.)")
+        rendered_from_scroll = False
+        scroll_rel = scroll_by_source.get(rel_path, "")
+        if scroll_rel:
+            scroll_file = repo_root / scroll_rel
+            if scroll_file.exists():
+                scroll_data = _load_toml(scroll_file)
+                rendered = _render_from_scroll(scroll_data)
+                if rendered:
+                    lines.extend(rendered)
+                    rendered_from_scroll = True
+        if not rendered_from_scroll:
+            if body:
+                lines.extend(body.splitlines())
+            else:
+                lines.append(f"# {row.get('title', Path(rel_path).stem)}")
+                lines.append("")
+                lines.append(
+                    "(No section/body content captured in registry/artifact_scrolls.toml.)"
+                )
         lines.append("")
         _write(path, "\n".join(lines))
 
@@ -1769,7 +1812,10 @@ def main() -> int:
 
     if CHECK_MODE:
         if CHANGED_PATHS:
-            print("ERROR: TOML-driven mirrors are stale. Regenerate with make registry.")
+            print(
+                "ERROR: TOML-driven mirrors are stale. "
+                "Regenerate with MARKDOWN_EXPORT=1 make registry-export-markdown."
+            )
             for path in sorted(set(CHANGED_PATHS)):
                 print(path)
             return 1

@@ -448,8 +448,7 @@ impl GpuDimensionalEngine {
             let bk = bk as usize;
 
             // Nodes are cross-assessor pairs in dimension indices (not normalized to [0, dim/2))
-            if ai < dim && bi < dim && aj < dim && bj < dim && ak < dim && bk < dim
-            {
+            if ai < dim && bi < dim && aj < dim && bj < dim && ak < dim && bk < dim {
                 let eta_ij = psi(dim, ai, aj) ^ psi(dim, bi, bj);
                 let eta_ik = psi(dim, ai, ak) ^ psi(dim, bi, bk);
                 let eta_jk = psi(dim, aj, ak) ^ psi(dim, bj, bk);
@@ -523,7 +522,11 @@ mod tests {
             .flat_map(|comp| comp.nodes.iter().map(|&(a, b)| (a as u8, b as u8)))
             .collect();
 
-        eprintln!("dim=32: {} components, {} nodes total", components.len(), nodes.len());
+        eprintln!(
+            "dim=32: {} components, {} nodes total",
+            components.len(),
+            nodes.len()
+        );
 
         if nodes.is_empty() {
             eprintln!("No nodes found; skipping test");

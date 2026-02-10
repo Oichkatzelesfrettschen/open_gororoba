@@ -1,0 +1,136 @@
+[dataset]
+id = "PC-0034"
+slug = "fractional_schrodinger_benchmark_errors"
+source_csv = "data/csv/fractional_schrodinger_benchmark_errors.csv"
+source_sha256 = "317e5fee2914b0189a756dc54432fa1d566416b355c629b3bb5e1a04ed46554e"
+source_size_bytes = 708
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 9
+column_count = 5
+header_value_sha256 = "acbd4cf78ea1de6c2a3f5f1a3a5203120e906d7dcd365d5bdce50cf31abbc016"
+row_value_sha256 = "3bd6fc94813a4fc7b05c6557ec6d87101b558d479d2e9a855d79fb40332f3b36"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "benchmark",
+    "alpha",
+    "metric",
+    "value",
+    "pass",
+]
+original_header = [
+    "benchmark",
+    "alpha",
+    "metric",
+    "value",
+    "pass",
+]
+rows = [
+    [
+    "free_particle_propagator",
+    "2.0",
+    "l2_error_vs_gaussian",
+    "0.008030560864514884",
+    "True",
+],
+    [
+    "free_particle_propagator",
+    "1.5",
+    "l2_error_vs_gaussian",
+    "2.258760928783644",
+    "True",
+],
+    [
+    "free_particle_propagator",
+    "1.2",
+    "l2_error_vs_gaussian",
+    "2.257583154381497",
+    "True",
+],
+    [
+    "harmonic_oscillator_variational",
+    "2.0",
+    "E_ground_state",
+    "0.5000000000000011",
+    "True",
+],
+    [
+    "harmonic_oscillator_variational",
+    "2.0",
+    "rel_error_vs_exact",
+    "2.220446049250313e-15",
+    "True",
+],
+    [
+    "harmonic_oscillator_variational",
+    "1.5",
+    "E_ground_state",
+    "0.5013137281386424",
+    "True",
+],
+    [
+    "harmonic_oscillator_variational",
+    "1.2",
+    "E_ground_state",
+    "0.506408055837245",
+    "True",
+],
+    [
+    "harmonic_oscillator_imag_time",
+    "2.0",
+    "E_ground_state",
+    "0.5000000000390614",
+    "True",
+],
+    [
+    "harmonic_oscillator_imag_time",
+    "1.5",
+    "E_ground_state",
+    "0.5005436564999899",
+    "True",
+],
+]
+
+[[column]]
+index = 1
+name = "benchmark"
+original_name = "benchmark"
+inferred_type = "string"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 2
+name = "alpha"
+original_name = "alpha"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 3
+name = "metric"
+original_name = "metric"
+inferred_type = "string"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 4
+name = "value"
+original_name = "value"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 5
+name = "pass"
+original_name = "pass"
+inferred_type = "bool"
+non_empty_count = 9
+empty_count = 0

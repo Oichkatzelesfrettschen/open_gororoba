@@ -1,0 +1,307 @@
+[dataset]
+id = "PC-0056"
+slug = "sky_limit_set_comparison"
+source_csv = "data/csv/sky_limit_set_comparison.csv"
+source_sha256 = "bc247f26aec4f8d8ae0fc4b9b61c204ddd853fc2d71aaed6e345737fea35930f"
+source_size_bytes = 1273
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 9
+column_count = 14
+header_value_sha256 = "216cd33bdf8e41cf73e57c57e8582e55f1f94cb11c2151ab236b0c569a72355f"
+row_value_sha256 = "0cb2c157b6a8860785d8e41718f66e09e432c08f6277d0a56b145962b91d149a"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "n",
+    "box_kite_count",
+    "mean_dmz_density",
+    "mean_n_empty_components",
+    "mean_interior_dmz_density",
+    "coxeter_type",
+    "coxeter_rank",
+    "coxeter_number",
+    "n_positive_roots",
+    "spectral_radius",
+    "cartan_determinant",
+    "rank_ratio",
+    "density_root_ratio",
+    "match_score",
+]
+original_header = [
+    "n",
+    "box_kite_count",
+    "mean_dmz_density",
+    "mean_n_empty_components",
+    "mean_interior_dmz_density",
+    "coxeter_type",
+    "coxeter_rank",
+    "coxeter_number",
+    "n_positive_roots",
+    "spectral_radius",
+    "cartan_determinant",
+    "rank_ratio",
+    "density_root_ratio",
+    "match_score",
+]
+rows = [
+    [
+    "4",
+    "3",
+    "0.3750000000",
+    "4.0000000000",
+    "1.0000000000",
+    "A",
+    "3",
+    "4",
+    "6",
+    "1.4142135624",
+    "4.0000000000",
+    "1.0000000000",
+    "0.5625000000",
+    "0.4375000000",
+],
+    [
+    "4",
+    "3",
+    "0.3750000000",
+    "4.0000000000",
+    "1.0000000000",
+    "D",
+    "3",
+    "4",
+    "6",
+    "1.4142135624",
+    "4.0000000000",
+    "1.0000000000",
+    "0.5625000000",
+    "0.4375000000",
+],
+    [
+    "4",
+    "3",
+    "0.3750000000",
+    "4.0000000000",
+    "1.0000000000",
+    "B",
+    "3",
+    "6",
+    "9",
+    "1.7320508076",
+    "2.0000000000",
+    "1.0000000000",
+    "0.3750000000",
+    "0.6250000000",
+],
+    [
+    "5",
+    "4",
+    "0.4812500000",
+    "9.3333333333",
+    "0.7333333333",
+    "A",
+    "4",
+    "5",
+    "10",
+    "1.6180339887",
+    "5.0000000000",
+    "1.0000000000",
+    "0.7700000000",
+    "0.2300000000",
+],
+    [
+    "5",
+    "4",
+    "0.4812500000",
+    "9.3333333333",
+    "0.7333333333",
+    "D",
+    "4",
+    "6",
+    "12",
+    "1.7320508076",
+    "4.0000000000",
+    "1.0000000000",
+    "0.6416666667",
+    "0.3583333333",
+],
+    [
+    "5",
+    "4",
+    "0.4812500000",
+    "9.3333333333",
+    "0.7333333333",
+    "B",
+    "4",
+    "8",
+    "16",
+    "1.8477590650",
+    "2.0000000000",
+    "1.0000000000",
+    "0.4812500000",
+    "0.5187500000",
+],
+    [
+    "6",
+    "5",
+    "0.5027721774",
+    "40.2580645161",
+    "0.6129032258",
+    "A",
+    "5",
+    "6",
+    "15",
+    "1.7320508076",
+    "6.0000000000",
+    "1.0000000000",
+    "0.8379536290",
+    "0.1620463710",
+],
+    [
+    "6",
+    "5",
+    "0.5027721774",
+    "40.2580645161",
+    "0.6129032258",
+    "D",
+    "5",
+    "8",
+    "20",
+    "1.8477590650",
+    "4.0000000000",
+    "1.0000000000",
+    "0.6284652218",
+    "0.3715347782",
+],
+    [
+    "6",
+    "5",
+    "0.5027721774",
+    "40.2580645161",
+    "0.6129032258",
+    "B",
+    "5",
+    "10",
+    "25",
+    "1.9021130326",
+    "2.0000000000",
+    "1.0000000000",
+    "0.5027721774",
+    "0.4972278226",
+],
+]
+
+[[column]]
+index = 1
+name = "n"
+original_name = "n"
+inferred_type = "int"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 2
+name = "box_kite_count"
+original_name = "box_kite_count"
+inferred_type = "int"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 3
+name = "mean_dmz_density"
+original_name = "mean_dmz_density"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 4
+name = "mean_n_empty_components"
+original_name = "mean_n_empty_components"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 5
+name = "mean_interior_dmz_density"
+original_name = "mean_interior_dmz_density"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 6
+name = "coxeter_type"
+original_name = "coxeter_type"
+inferred_type = "string"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 7
+name = "coxeter_rank"
+original_name = "coxeter_rank"
+inferred_type = "int"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 8
+name = "coxeter_number"
+original_name = "coxeter_number"
+inferred_type = "int"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 9
+name = "n_positive_roots"
+original_name = "n_positive_roots"
+inferred_type = "int"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 10
+name = "spectral_radius"
+original_name = "spectral_radius"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 11
+name = "cartan_determinant"
+original_name = "cartan_determinant"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 12
+name = "rank_ratio"
+original_name = "rank_ratio"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 13
+name = "density_root_ratio"
+original_name = "density_root_ratio"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
+
+[[column]]
+index = 14
+name = "match_score"
+original_name = "match_score"
+inferred_type = "float"
+non_empty_count = 9
+empty_count = 0
