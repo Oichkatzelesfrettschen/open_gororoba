@@ -69,11 +69,16 @@ fn test_split_octonion_attractor_coincidence() {
     // dim=64: ~0.377 (Overshoot/Peak approach)
     assert!((ratios[2] - 0.377).abs() < 0.01);
 
+    // Low-dim trajectory should rise as non-associative structure develops.
+    assert!(ratios[1] > ratios[0], "dim=32 ratio must exceed dim=16");
+    assert!(ratios[2] > ratios[1], "dim=64 ratio must exceed dim=32");
+
     // The insight (I-040/C-529) claims convergence to ~0.375 from above after peaking.
     // We assert that the dim=64 value is close to the split target.
     let diff_64 = (ratios[2] - split_target).abs();
     println!("Diff at dim=64: {:.6}", diff_64);
-    
-    // This confirms the values are in the same neighborhood.
-    // The "Attractor" hypothesis is that Limit(Frustration(Standard_N)) = PsiFraction(Split_8).
+
+    // At dim=64, the ratio should still sit above the split target but already be close.
+    assert!(ratios[2] > split_target, "dim=64 should approach 3/8 from above");
+    assert!(diff_64 < 0.01, "dim=64 should be within 0.01 of 3/8");
 }

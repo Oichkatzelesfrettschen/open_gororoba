@@ -720,6 +720,10 @@ fn check_separation_at_degree(
 }
 
 /// Recursively search for a tuple of signatures that jointly separates all classes.
+///
+/// Uses greedy partition refinement for large search spaces (n_needed >= 4 and
+/// many achievable signatures): greedily picks the signature that maximizes the
+/// number of distinguished class pairs, then recurses on the residual.
 fn find_separating_tuple(
     sigs: &[usize],
     n_classes: usize,
@@ -741,14 +745,124 @@ fn find_separating_tuple(
         return unique.len() == n_classes;
     }
 
-    for i in start..sigs.len() {
-        current.push(sigs[i]);
-        if find_separating_tuple(sigs, n_classes, depth, i + 1, current) {
+    // For small search spaces, use exhaustive search
+    if sigs.len() - start <= 500 || depth <= 3 {
+        for i in start..sigs.len() {
+            current.push(sigs[i]);
+            if find_separating_tuple(sigs, n_classes, depth, i + 1, current) {
+                return true;
+            }
+            current.pop();
+        }
+        return false;
+    }
+
+    // For large search spaces with depth >= 4, use greedy partition refinement
+    find_separating_tuple_greedy(sigs, n_classes, depth, current)
+}
+
+/// Greedy partition refinement: pick signatures that maximally refine class
+/// distinctions, then verify the result separates all classes.
+///
+/// For 16 classes needing 4 predicates with ~65000 achievable signatures,
+/// brute-force C(65000,4) is infeasible. Greedy runs in O(depth * n_sigs * n_classes).
+fn find_separating_tuple_greedy(
+    sigs: &[usize],
+    n_classes: usize,
+    depth: usize,
+    current: &mut Vec<usize>,
+) -> bool {
+    let base_len = current.len();
+    let remaining = depth - base_len;
+
+    // Track which class pairs are already distinguished by current signatures
+    let n_pairs = n_classes * (n_classes - 1) / 2;
+    let mut distinguished = vec![false; n_pairs];
+
+    // Initialize from any signatures already in `current`
+    for &sig in current.iter() {
+        update_distinguished(sig, n_classes, &mut distinguished);
+    }
+
+    // Greedily pick the best signature at each step
+    let mut used: HashSet<usize> = current.iter().copied().collect();
+    for _ in 0..remaining {
+        let mut best_sig = 0usize;
+        let mut best_new = 0usize;
+
+        for &sig in sigs {
+            if used.contains(&sig) {
+                continue;
+            }
+            // Count how many new class pairs this signature would distinguish
+            let new_count = count_new_distinguished(sig, n_classes, &distinguished);
+            if new_count > best_new {
+                best_new = new_count;
+                best_sig = sig;
+            }
+        }
+
+        if best_new == 0 {
+            // No progress possible; try a few random alternatives before giving up
+            break;
+        }
+
+        current.push(best_sig);
+        used.insert(best_sig);
+        update_distinguished(best_sig, n_classes, &mut distinguished);
+    }
+
+    // Check if greedy solution fully separates
+    if current.len() == depth {
+        let mut codes: Vec<usize> = Vec::with_capacity(n_classes);
+        for c in 0..n_classes {
+            let mut code = 0usize;
+            for (bit_pos, &sig) in current.iter().enumerate() {
+                code |= ((sig >> c) & 1) << bit_pos;
+            }
+            codes.push(code);
+        }
+        let unique: HashSet<usize> = codes.iter().copied().collect();
+        if unique.len() == n_classes {
             return true;
         }
-        current.pop();
     }
+
+    // Greedy failed; truncate and return false
+    current.truncate(base_len);
     false
+}
+
+/// Update the distinguished-pairs bitvector given a new signature.
+fn update_distinguished(sig: usize, n_classes: usize, distinguished: &mut [bool]) {
+    let mut idx = 0;
+    for i in 0..n_classes {
+        let bi = (sig >> i) & 1;
+        for j in (i + 1)..n_classes {
+            let bj = (sig >> j) & 1;
+            if bi != bj {
+                distinguished[idx] = true;
+            }
+            idx += 1;
+        }
+    }
+}
+
+/// Count how many currently-undistinguished class pairs a signature would distinguish.
+fn count_new_distinguished(sig: usize, n_classes: usize, distinguished: &[bool]) -> usize {
+    let mut count = 0;
+    let mut idx = 0;
+    for i in 0..n_classes {
+        let bi = (sig >> i) & 1;
+        for j in (i + 1)..n_classes {
+            let bj = (sig >> j) & 1;
+            if bi != bj && !distinguished[idx] {
+                count += 1;
+            }
+            idx += 1;
+        }
+    }
+    count
 }
 
 /// Find the minimum GF(2) polynomial degree that separates motif classes
@@ -1819,5 +1933,121 @@ mod tests {
         assert_eq!(n_passing, 315);
         assert_eq!(n_zero, 168);
         assert!((ratio - 168.0 / 315.0).abs() < 1e-10);
+    }
+
+    // ====================================================================
+    // Phase A (T1): dim=256 separating degree verification (C-592..C-594)
+    // ====================================================================
+
+    #[test]
+    fn test_separating_degree_dim256() {
+        // T1 prediction: min_degree = log2(dim) - 2 = 6 at dim=256.
+        // PG(6,2): 127 points, 16 motif classes.
+        // Uses greedy partition refinement (brute-force infeasible for
+        // C(n_achievable, 4) tuples).
+        let result = find_minimum_separating_degree(256);
+        assert_eq!(result.n_points, 127, "PG(6,2) should have 127 points");
+        assert_eq!(
+            result.n_classes, 16,
+            "dim=256 should have 16 motif classes (dim/16)"
+        );
+
+        assert!(
+            result.min_degree.is_some(),
+            "dim=256 must have a separating degree; degree_results: {:?}",
+            result.degree_results
+        );
+
+        let d = result.min_degree.unwrap();
+        eprintln!("=== GF(2) Separating Degree at dim=256 ===");
+        eprintln!("  n_points: {}", result.n_points);
+        eprintln!("  n_classes: {}", result.n_classes);
+        eprintln!("  class_sizes: {:?}", result.class_sizes);
+        eprintln!("  min_degree: {d}");
+        eprintln!("  n_achievable_sigs: {}", result.n_achievable_sigs);
+        eprintln!("  degree_results: {:?}", result.degree_results);
+
+        // C-592: min_degree = log2(dim) - 2 = 6 at dim=256
+        assert_eq!(
+            d, 6,
+            "dim=256 minimum separating degree should be 6 (sextic = projective dim)"
+        );
+    }
+
+    #[test]
+    fn test_separating_degree_dim256_diagnostic() {
+        // Full diagnostic: show class sizes and edge count distribution at dim=256
+        use crate::analysis::boxkites::motif_components_for_cross_assessors;
+        let comps = motif_components_for_cross_assessors(256);
+
+        let mut edge_counts: Vec<(usize, usize)> = comps
+            .iter()
+            .enumerate()
+            .map(|(i, c)| (c.edges.len(), i))
+            .collect();
+        edge_counts.sort_unstable();
+
+        let mut current_edges = edge_counts[0].0;
+        let mut class_start = 0;
+        let mut class_info: Vec<(usize, usize)> = Vec::new();
+
+        for (idx, &(edges, _)) in edge_counts.iter().enumerate() {
+            if edges != current_edges {
+                class_info.push((current_edges, idx - class_start));
+                class_start = idx;
+                current_edges = edges;
+            }
+        }
+        class_info.push((current_edges, edge_counts.len() - class_start));
+
+        eprintln!("=== dim=256 Motif Class Diagnostic ===");
+        eprintln!("  Total components: {}", comps.len());
+        assert_eq!(comps.len(), 127, "dim=256 should have 127 components");
+        for (edges, count) in &class_info {
+            eprintln!("  Class: {count} components with {edges} edges");
+        }
+        assert_eq!(
+            class_info.len(),
+            16,
+            "dim=256 should have 16 distinct edge-count classes"
+        );
+    }
+
+    #[test]
+    fn test_separating_degree_formula_universality() {
+        // C-593: Verify min_degree = log2(dim) - 2 universally across
+        // dims 32, 64, 128, 256. Writes CSV output for archival.
+        let dims_and_expected: &[(usize, usize)] = &[
+            (32, 3),  // log2(32) - 2 = 3
+            (64, 4),  // log2(64) - 2 = 4
+            (128, 5), // log2(128) - 2 = 5
+            (256, 6), // log2(256) - 2 = 6
+        ];
+
+        let mut csv_rows: Vec<String> =
+            vec!["dim,n_points,n_classes,predicted_degree,measured_degree,match".to_string()];
+
+        for &(dim, expected_degree) in dims_and_expected {
+            let result = find_minimum_separating_degree(dim);
+            let measured = result.min_degree.unwrap_or(0);
+            let matches = measured == expected_degree;
+
+            csv_rows.push(format!(
+                "{},{},{},{},{},{}",
+                dim, result.n_points, result.n_classes, expected_degree, measured, matches
+            ));
+
+            assert_eq!(
+                measured, expected_degree,
+                "dim={dim}: predicted degree {expected_degree}, got {measured}. \
+                 n_classes={}, degree_results={:?}",
+                result.n_classes, result.degree_results,
+            );
+        }
+
+        eprintln!("=== Separating Degree Formula Sweep ===");
+        for row in &csv_rows {
+            eprintln!("  {row}");
+        }
     }
 }

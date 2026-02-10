@@ -5,10 +5,10 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/knowledge/proof_skeletons.toml"
-step_count = 2674
-skeleton_count = 634
-skeleton_with_steps_count = 634
-claim_linked_step_count = 2522
+step_count = 2700
+skeleton_count = 641
+skeleton_with_steps_count = 641
+claim_linked_step_count = 2548
 max_steps_per_skeleton = 8
 
 [[step]]
@@ -53488,6 +53488,526 @@ symbol_refs = []
 numeric_constants = ["1", "2", "3", "4"]
 key_tokens = ["CAN", "CD", "Cayley", "Dickson", "Discovery", "REFUTE", "WHAT", "WOULD", "algebras", "all", "basis", "commutative", "commutativity", "commute", "conjugation", "construction", "dim", "doubling", "enabling", "exotic"]
 depends_on_step_ids = ["DS-002673"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002675"
+skeleton_id = "PRS-00635"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-592"
+claim_id = "C-592"
+claim_refs = ["C-592"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 8): Exhaustive enumeration of all simple 2-blade pairs (e_i + s*e_j) for dim=2 signature gamma=+1"
+text_sha256 = "6fa101808ee06a8a68b3fa62ba677685d9bc32eb35317ad5081776ff1dcc2412"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "2", "8"]
+key_tokens = ["Exhaustive", "Phase", "VERIFIED", "all", "blade", "dim", "e_i", "e_j", "enumeration", "gamma", "pairs", "signature", "simple"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002676"
+skeleton_id = "PRS-00635"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-592"
+claim_id = "C-592"
+claim_refs = ["C-592"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Found exactly 2 zero-divisors among 8 pairs"
+text_sha256 = "8ea8ee5a26a07fce27471099d51a8593bcf2f3d0684e43bf84284b6e9b22f355"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2", "8"]
+key_tokens = ["Found", "among", "divisors", "exactly", "pairs", "zero"]
+depends_on_step_ids = ["DS-002675"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002677"
+skeleton_id = "PRS-00635"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-592"
+claim_id = "C-592"
+claim_refs = ["C-592"]
+step_index = 3
+step_kind = "derivation_step"
+text = "This confirms split-complex is NOT a division algebra, unlike standard complex (gamma=-1)"
+text_sha256 = "28f487954d2feccb2ce97baa72f04a7a5d7a24180b6da8b238cdd0d7ccd46456"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["NOT", "algebra", "complex", "confirms", "division", "gamma", "split", "standard", "unlike"]
+depends_on_step_ids = ["DS-002676"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002678"
+skeleton_id = "PRS-00636"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-593"
+claim_id = "C-593"
+claim_refs = ["C-592", "C-593"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 8): Exhaustive census of all 4 gamma-signatures at dim=4: standard (0 ZDs), mixed +-1 (16 ZDs), mixed -1+ (16 ZDs), split ++ (16 ZDs)"
+text_sha256 = "7a704e433d819efbf3046dd0fdb4160d0df55831e9e61c7f4c2b7dfbbded60df"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "1", "16", "4", "8"]
+key_tokens = ["Exhaustive", "Phase", "VERIFIED", "ZDs", "all", "census", "dim", "gamma", "mixed", "signatures", "split", "standard"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002679"
+skeleton_id = "PRS-00636"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-593"
+claim_id = "C-593"
+claim_refs = ["C-592", "C-593"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Confirms Hurwitz theorem: ONLY the standard Euclidean signature produces a division algebra at dim=4"
+text_sha256 = "acad2443f62dc9c5673c62714e855913dcac27816b7c330ba07eb63e80cb6782"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["4"]
+key_tokens = ["Confirms", "Euclidean", "Hurwitz", "ONLY", "algebra", "dim", "division", "produces", "signature", "standard", "theorem"]
+depends_on_step_ids = ["DS-002678"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002680"
+skeleton_id = "PRS-00636"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-593"
+claim_id = "C-593"
+claim_refs = ["C-592", "C-593"]
+step_index = 3
+step_kind = "derivation_step"
+text = "Cross-validates C-592 pattern at higher dimension"
+text_sha256 = "8c6987d60e852a927422f9a064a97250d3a42f776cd32d47b2f84b7201eafcb4"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["592"]
+key_tokens = ["Cross", "dimension", "higher", "pattern", "validates"]
+depends_on_step_ids = ["DS-002679"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002681"
+skeleton_id = "PRS-00637"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-594"
+claim_id = "C-594"
+claim_refs = ["C-594"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 8): Tested 50 random element pairs in each of 15 algebras"
+text_sha256 = "f53a3a1a038dd29d264e962f4ce05a64212a1c0fa67a3b74806fefd6366642ec"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["15", "50", "8"]
+key_tokens = ["Phase", "Tested", "VERIFIED", "algebras", "each", "element", "pairs", "random"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002682"
+skeleton_id = "PRS-00637"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-594"
+claim_id = "C-594"
+claim_refs = ["C-594"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Standard signatures (R, C, H, O) showed 100% norm multiplicativity"
+text_sha256 = "d1aa6d58804ff8c72cb9d65b7cd4f5a680dba85ad22b3b28d8b302f3cd095a61"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["100"]
+key_tokens = ["Standard", "multiplicativity", "norm", "showed", "signatures"]
+depends_on_step_ids = ["DS-002681"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002683"
+skeleton_id = "PRS-00637"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-594"
+claim_id = "C-594"
+claim_refs = ["C-594"]
+step_index = 3
+step_kind = "derivation_step"
+text = "All signatures containing gamma=+1 showed <5% success rate"
+text_sha256 = "a4c45b2ac0897c82834fafcb79ed7eeb0d00057ae6cffa225731cf42ebff4cd4"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "5"]
+key_tokens = ["All", "containing", "gamma", "rate", "showed", "signatures", "success"]
+depends_on_step_ids = ["DS-002682"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002684"
+skeleton_id = "PRS-00637"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-594"
+claim_id = "C-594"
+claim_refs = ["C-594"]
+step_index = 4
+step_kind = "derivation_step"
+text = "This explains the geometric difference: Euclidean metrics preserve composition, indefinite metrics do not"
+text_sha256 = "08d1e3b81714260bf7b049f237151c7cf99a6d284306ec3eb5baa28c0b434bf4"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Euclidean", "composition", "difference", "do", "explains", "geometric", "indefinite", "metrics", "not", "preserve"]
+depends_on_step_ids = ["DS-002683"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002685"
+skeleton_id = "PRS-00638"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-595"
+claim_id = "C-595"
+claim_refs = ["C-593", "C-595"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 8): Observed 100% invertibility only in 4 division algebras (R,C,H,O)"
+text_sha256 = "fef719b5631ecfd56c519f8fa680dff8428bce60a3271c2fc2261a294a664b5a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["100", "4", "8"]
+key_tokens = ["Observed", "Phase", "VERIFIED", "algebras", "division", "invertibility", "only"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002686"
+skeleton_id = "PRS-00638"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-595"
+claim_id = "C-595"
+claim_refs = ["C-593", "C-595"]
+step_index = 2
+step_kind = "derivation_step"
+text = "All 11 non-division algebras showed 0% invertibility, correlating with presence of null vectors"
+text_sha256 = "852a3b278aa7bf4bbe990b526b6bb75afe516f4f8ef17978a91406b3f89c29b6"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "11"]
+key_tokens = ["All", "algebras", "correlating", "division", "invertibility", "non", "null", "presence", "showed", "vectors"]
+depends_on_step_ids = ["DS-002685"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002687"
+skeleton_id = "PRS-00638"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-595"
+claim_id = "C-595"
+claim_refs = ["C-593", "C-595"]
+step_index = 3
+step_kind = "derivation_step"
+text = "The correlation is actually deterministic: ZD count > 0 iff invertibility_fraction < 1"
+text_sha256 = "25361e75fe0946b3035b6aaaea766f593e7321bdacfcb309166fe025b87319d2"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "1"]
+key_tokens = ["ZD", "actually", "correlation", "count", "deterministic", "iff", "invertibility_fraction"]
+depends_on_step_ids = ["DS-002686"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002688"
+skeleton_id = "PRS-00638"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-595"
+claim_id = "C-595"
+claim_refs = ["C-593", "C-595"]
+step_index = 4
+step_kind = "derivation_step"
+text = "0, refining C-593"
+text_sha256 = "3ba91485fe51a7e8d58ad87fa680639ba62663431307fee7db9d95f3c7487642"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "593"]
+key_tokens = ["refining"]
+depends_on_step_ids = ["DS-002687"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002689"
+skeleton_id = "PRS-00639"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-596"
+claim_id = "C-596"
+claim_refs = ["C-532", "C-596"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 8): Examined psi matrices for all 15 algebras"
+text_sha256 = "787af6170b361203c7ebc047348d26ae963b18dbd8c88224610f7f9344607143"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["15", "8"]
+key_tokens = ["Examined", "Phase", "VERIFIED", "algebras", "all", "matrices", "psi"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002690"
+skeleton_id = "PRS-00639"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-596"
+claim_id = "C-596"
+claim_refs = ["C-532", "C-596"]
+step_index = 2
+step_kind = "status_update"
+text = "REFUTED initial hypothesis: psi IS gamma-dependent at dims 2,4,8"
+text_sha256 = "55afe6771287850d83c8ea003a77cf18e9d8d247d2c0f3cb15b82e14a26d48c6"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2", "4", "8"]
+key_tokens = ["REFUTED", "dependent", "dims", "gamma", "hypothesis", "initial", "psi"]
+depends_on_step_ids = ["DS-002689"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002691"
+skeleton_id = "PRS-00639"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-596"
+claim_id = "C-596"
+claim_refs = ["C-532", "C-596"]
+step_index = 3
+step_kind = "derivation_step"
+text = "However, the dependency follows a clear pattern: sign depends on gamma path through recursion tree, not on local basis indices"
+text_sha256 = "60e8635abffd188dae890841a3f2b7535d54ac842eb2bfdd0d80f64cd015cf9b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["However", "basis", "clear", "dependency", "depends", "follows", "gamma", "indices", "local", "not", "path", "pattern", "recursion", "sign", "through", "tree"]
+depends_on_step_ids = ["DS-002690"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002692"
+skeleton_id = "PRS-00639"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-596"
+claim_id = "C-596"
+claim_refs = ["C-532", "C-596"]
+step_index = 4
+step_kind = "derivation_step"
+text = "This cross-validates C-532 (psi/eta framework) at low dimensions, revealing how gamma parameters propagate through the structure"
+text_sha256 = "8837746888a5636261ecc855ee2204648fce9aa1cfe5961fb6ee445c4a0cfff7"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["532"]
+key_tokens = ["cross", "dimensions", "eta", "framework", "gamma", "how", "low", "parameters", "propagate", "psi", "revealing", "structure", "through", "validates"]
+depends_on_step_ids = ["DS-002691"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002693"
+skeleton_id = "PRS-00639"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-596"
+claim_id = "C-596"
+claim_refs = ["C-532", "C-596"]
+step_index = 5
+step_kind = "derivation_step"
+text = "Key finding: psi[-1] and psi[+1] are related by systematic negation patterns"
+text_sha256 = "f2c126d02ce985f339a87d14c62d13c0aa679650a83069ffde0433420f09049f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["Key", "are", "finding", "negation", "patterns", "psi", "related", "systematic"]
+depends_on_step_ids = ["DS-002692"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002694"
+skeleton_id = "PRS-00640"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-597"
+claim_id = "C-597"
+claim_refs = ["C-591", "C-597"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 8): Tested 4 quaternion signatures (all showed 3 violations), 8 octonion signatures (all showed 21 violations)"
+text_sha256 = "9dd86c1f8d7cb505e9ab84918ddaacb2957ea24465229f194574591526e204f0"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["21", "3", "4", "8"]
+key_tokens = ["Phase", "Tested", "VERIFIED", "all", "octonion", "quaternion", "showed", "signatures", "violations"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002695"
+skeleton_id = "PRS-00640"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-597"
+claim_id = "C-597"
+claim_refs = ["C-591", "C-597"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Zero exceptions"
+text_sha256 = "0ef43e4e659848a428ebecd7b028de1bfa6487f1c39415d75f710066dde83583"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Zero", "exceptions"]
+depends_on_step_ids = ["DS-002694"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002696"
+skeleton_id = "PRS-00640"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-597"
+claim_id = "C-597"
+claim_refs = ["C-591", "C-597"]
+step_index = 3
+step_kind = "derivation_step"
+text = "Confirms Phase 6 result (C-591) that non-commutativity is a structural consequence of the conjugation asymmetry in the doubling formula, independent of metric signature"
+text_sha256 = "677676336139703fb32f0eab5cc9ce2930c81b9de15fa35364d580fd76d113c8"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["591", "6"]
+key_tokens = ["Confirms", "Phase", "asymmetry", "commutativity", "conjugation", "consequence", "doubling", "formula", "independent", "metric", "non", "result", "signature", "structural"]
+depends_on_step_ids = ["DS-002695"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002697"
+skeleton_id = "PRS-00640"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-597"
+claim_id = "C-597"
+claim_refs = ["C-591", "C-597"]
+step_index = 4
+step_kind = "derivation_step"
+text = "Strengthens claim that the Cayley-Dickson doubling mechanism itself forces non-commutativity at dim>=4"
+text_sha256 = "9a5a3665b3933204230e9e4d3714ff0f8979c7d06d810ec83802e353aea8b0b1"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["4"]
+key_tokens = ["Cayley", "Dickson", "Strengthens", "claim", "commutativity", "dim", "doubling", "forces", "itself", "mechanism", "non"]
+depends_on_step_ids = ["DS-002696"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002698"
+skeleton_id = "PRS-00641"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-598"
+claim_id = "C-598"
+claim_refs = ["C-598"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 8): Computational census of 15 algebras (all power-of-2 dims up to 8, all 2^n gamma-vectors) found exactly 4 division algebras, matching Hurwitz's classical theorem"
+text_sha256 = "dbad8dff0103df2704fd55cb79d702cc5ed139ee3c67da5055612bb632f2f357"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["15", "2", "4", "8"]
+key_tokens = ["Computational", "Hurwitz", "Phase", "VERIFIED", "algebras", "all", "census", "classical", "dims", "division", "exactly", "found", "gamma", "matching", "power", "theorem", "up", "vectors"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002699"
+skeleton_id = "PRS-00641"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-598"
+claim_id = "C-598"
+claim_refs = ["C-598"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Extends classical result by confirming it holds not just for 'standard' CD algebras but as a universal property: modifying even ONE gamma parameter from -1 to +1 destroys the division algebra structure"
+text_sha256 = "f96ae62abbb897936ef37cdb2eaff669f29564b8719ea115adfeabef39997090"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["CD", "Extends", "ONE", "algebra", "algebras", "but", "classical", "confirming", "destroys", "division", "even", "gamma", "holds", "just", "modifying", "not", "parameter", "property", "result", "standard"]
+depends_on_step_ids = ["DS-002698"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002700"
+skeleton_id = "PRS-00641"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-598"
+claim_id = "C-598"
+claim_refs = ["C-598"]
+step_index = 3
+step_kind = "derivation_step"
+text = "This is the definitive algebraic obstruction to quaternion/octonion generalization"
+text_sha256 = "756ca5bb0eb1ecdab8e97ea01bad74b8b94e96b030e75435d094e0b0fd3afc9c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["algebraic", "definitive", "generalization", "obstruction", "octonion", "quaternion"]
+depends_on_step_ids = ["DS-002699"]
 line_start = 0
 line_end = 0
 

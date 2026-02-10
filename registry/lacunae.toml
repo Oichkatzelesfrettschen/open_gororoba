@@ -5,12 +5,12 @@
 updated = "2026-02-10"
 authoritative = true
 status = "active"
-lacuna_count = 162
-open_count = 161
+lacuna_count = 166
+open_count = 165
 high_priority_count = 68
-medium_priority_count = 93
+medium_priority_count = 97
 low_priority_count = 1
-origin_kind_count = 1
+origin_kind_count = 2
 
 [[lacuna]]
 id = "L-001"
@@ -1955,4 +1955,52 @@ status = "open"
 claim_refs = []
 source_refs = []
 related_marker_ids = []
+
+[[lacuna]]
+id = "L-CM-0151"
+origin = "conflict_marker_scan"
+area = "consistency"
+title = "Resolve conflict marker CM-0151"
+description = "Section contains both positive and negative validation language."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = ["registry/research_narratives.toml", "docs/theory/CLAIMS_METHODOLOGY.md"]
+related_marker_ids = ["CM-0151"]
+
+[[lacuna]]
+id = "L-CM-0152"
+origin = "conflict_marker_scan"
+area = "consistency"
+title = "Resolve conflict marker CM-0152"
+description = "Section contains both positive and negative validation language."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = ["registry/external_sources.toml", "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"]
+related_marker_ids = ["CM-0152"]
+
+[[lacuna]]
+id = "L-CM-0153"
+origin = "conflict_marker_scan"
+area = "consistency"
+title = "Resolve conflict marker CM-0153"
+description = "Section contains both positive and negative validation language."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = ["registry/external_sources.toml", "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"]
+related_marker_ids = ["CM-0153"]
+
+[[lacuna]]
+id = "L-CM-0154"
+origin = "conflict_marker_scan"
+area = "consistency"
+title = "Resolve conflict marker CM-0154"
+description = "Section contains both positive and negative validation language."
+priority = "medium"
+status = "open"
+claim_refs = []
+source_refs = ["registry/external_sources.toml", "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"]
+related_marker_ids = ["CM-0154"]
 

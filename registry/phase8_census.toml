@@ -1,0 +1,169 @@
+# Phase 8: Low-Dimensional Cayley-Dickson Algebra Census
+# Dimension: 1, 2, 4, 8
+# Total algebras: 15 (1 reals + 1 complex + 2 quaternions + 4 split-quaternions + 8 octonion-variants)
+# Generated from crates/algebra_core/tests/test_low_dimensional_survey.rs
+
+[[algebra]]
+dimension = 1
+gammas = []
+name = "Reals"
+zero_divisor_count = 0
+norm_multiplicative = true
+invertibility_fraction = 1.0000
+is_division_algebra = true
+psi_matrix = []
+commutator_violations = 0
+
+[[algebra]]
+dimension = 2
+gammas = [-1]
+name = "Complex Numbers"
+zero_divisor_count = 0
+norm_multiplicative = true
+invertibility_fraction = 1.0000
+is_division_algebra = true
+psi_matrix = [[-1]]
+commutator_violations = 0
+
+[[algebra]]
+dimension = 2
+gammas = [1]
+name = "Split-Complex (Hyperbolic)"
+zero_divisor_count = 2
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[1]]
+commutator_violations = 0
+
+[[algebra]]
+dimension = 4
+gammas = [-1, -1]
+name = "Quaternions (Hamilton)"
+zero_divisor_count = 0
+norm_multiplicative = true
+invertibility_fraction = 1.0000
+is_division_algebra = true
+psi_matrix = [[-1, 1, -1], [-1, -1, 1], [1, -1, -1]]
+commutator_violations = 3
+
+[[algebra]]
+dimension = 4
+gammas = [1, -1]
+name = "Mixed Quaternion (1)"
+zero_divisor_count = 16
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[1, 1, 1], [-1, -1, 1], [-1, -1, 1]]
+commutator_violations = 3
+
+[[algebra]]
+dimension = 4
+gammas = [-1, 1]
+name = "Mixed Quaternion (2)"
+zero_divisor_count = 16
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[-1, 1, -1], [-1, 1, -1], [1, 1, 1]]
+commutator_violations = 3
+
+[[algebra]]
+dimension = 4
+gammas = [1, 1]
+name = "Split-Quaternions"
+zero_divisor_count = 16
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[1, 1, 1], [-1, 1, -1], [-1, 1, -1]]
+commutator_violations = 3
+
+[[algebra]]
+dimension = 8
+gammas = [-1, -1, -1]
+name = "Octonions (Cayley-Graves)"
+zero_divisor_count = 0
+norm_multiplicative = true
+invertibility_fraction = 1.0000
+is_division_algebra = true
+psi_matrix = [[-1, 1, -1, 1, -1, -1, 1], [-1, -1, 1, 1, 1, -1, -1], [1, -1, -1, 1, -1, 1, -1], [-1, -1, -1, -1, 1, 1, 1], [1, -1, 1, -1, -1, -1, 1], [1, 1, -1, -1, 1, -1, -1], [-1, 1, 1, -1, -1, 1, -1]]
+commutator_violations = 21
+
+[[algebra]]
+dimension = 8
+gammas = [1, -1, -1]
+name = "Split-Octonion Variant (1)"
+zero_divisor_count = 128
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[1, 1, 1, 1, 1, -1, -1], [-1, -1, 1, 1, 1, -1, -1], [-1, -1, 1, 1, 1, 1, 1], [-1, -1, -1, -1, 1, 1, 1], [-1, -1, -1, -1, 1, -1, -1], [1, 1, -1, -1, 1, -1, -1], [1, 1, -1, -1, 1, 1, 1]]
+commutator_violations = 21
+
+[[algebra]]
+dimension = 8
+gammas = [-1, 1, -1]
+name = "Split-Octonion Variant (2)"
+zero_divisor_count = 128
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[-1, 1, -1, 1, -1, -1, 1], [-1, 1, -1, 1, 1, 1, 1], [1, 1, 1, 1, -1, -1, 1], [-1, -1, -1, -1, 1, 1, 1], [1, -1, 1, -1, -1, -1, 1], [1, -1, 1, -1, 1, 1, 1], [-1, -1, -1, -1, -1, -1, 1]]
+commutator_violations = 21
+
+[[algebra]]
+dimension = 8
+gammas = [1, 1, -1]
+name = "Split-Octonion Variant (5)"
+zero_divisor_count = 128
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[1, 1, 1, 1, 1, -1, -1], [-1, 1, -1, 1, 1, 1, 1], [-1, 1, -1, 1, 1, -1, -1], [-1, -1, -1, -1, 1, 1, 1], [-1, -1, -1, -1, 1, -1, -1], [1, -1, 1, -1, 1, 1, 1], [1, -1, 1, -1, 1, -1, -1]]
+commutator_violations = 21
+
+[[algebra]]
+dimension = 8
+gammas = [-1, -1, 1]
+name = "Octonion Variant --+"
+zero_divisor_count = 128
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[-1, 1, -1, 1, -1, -1, 1], [-1, -1, 1, 1, 1, -1, -1], [1, -1, -1, 1, -1, 1, -1], [-1, -1, -1, 1, -1, -1, -1], [1, -1, 1, 1, 1, 1, -1], [1, 1, -1, 1, -1, 1, 1], [-1, 1, 1, 1, 1, -1, 1]]
+commutator_violations = 21
+
+[[algebra]]
+dimension = 8
+gammas = [1, -1, 1]
+name = "Split-Octonion Variant (4)"
+zero_divisor_count = 128
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[1, 1, 1, 1, 1, -1, -1], [-1, -1, 1, 1, 1, -1, -1], [-1, -1, 1, 1, 1, 1, 1], [-1, -1, -1, 1, -1, -1, -1], [-1, -1, -1, 1, -1, 1, 1], [1, 1, -1, 1, -1, 1, 1], [1, 1, -1, 1, -1, -1, -1]]
+commutator_violations = 21
+
+[[algebra]]
+dimension = 8
+gammas = [-1, 1, 1]
+name = "Split-Octonion Variant (3)"
+zero_divisor_count = 128
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[-1, 1, -1, 1, -1, -1, 1], [-1, 1, -1, 1, 1, 1, 1], [1, 1, 1, 1, -1, -1, 1], [-1, -1, -1, 1, -1, -1, -1], [1, -1, 1, 1, 1, 1, -1], [1, -1, 1, 1, -1, -1, -1], [-1, -1, -1, 1, 1, 1, -1]]
+commutator_violations = 21
+
+[[algebra]]
+dimension = 8
+gammas = [1, 1, 1]
+name = "Split-Octonions (Full Split)"
+zero_divisor_count = 128
+norm_multiplicative = false
+invertibility_fraction = 0.0000
+is_division_algebra = false
+psi_matrix = [[1, 1, 1, 1, 1, -1, -1], [-1, 1, -1, 1, 1, 1, 1], [-1, 1, -1, 1, 1, -1, -1], [-1, -1, -1, 1, -1, -1, -1], [-1, -1, -1, 1, -1, 1, 1], [1, -1, 1, 1, -1, -1, -1], [1, -1, 1, 1, -1, 1, 1]]
+commutator_violations = 21

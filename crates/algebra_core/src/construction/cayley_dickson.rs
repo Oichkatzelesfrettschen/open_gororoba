@@ -1193,6 +1193,11 @@ impl CdSignature {
     pub fn is_split(&self) -> bool {
         self.gammas.iter().all(|&g| g == 1)
     }
+
+    /// Returns a reference to the gamma vector (twist parameters per doubling level).
+    pub fn gammas(&self) -> &[i32] {
+        &self.gammas
+    }
 }
 
 /// Sign of the basis product e_p * e_q in a parameterized CD algebra.
