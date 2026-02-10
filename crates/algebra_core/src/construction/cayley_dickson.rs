@@ -3831,7 +3831,7 @@ mod tests {
                                 eiej[idx] -= ejei[idx];
                             }
 
-                            let ek_el = cd_multiply_split(
+                            let mut ek_el = cd_multiply_split(
                                 &{
                                     let mut v = vec![0.0; dim];
                                     v[k] = 1.0;
@@ -3862,7 +3862,7 @@ mod tests {
                             }
 
                             // Multiply the two wedge products
-                            let product = cd_multiply_split(&eiej, &ekEl, &sig);
+                            let product = cd_multiply_split(&eiej, &ek_el, &sig);
                             let norm: f64 = product.iter().map(|x| x * x).sum();
 
                             if norm < 1e-10 {
@@ -4107,7 +4107,7 @@ mod tests {
                                 eiej[idx] -= ejei[idx];
                             }
 
-                            let ek_el = cd_multiply_split(
+                            let mut ek_el = cd_multiply_split(
                                 &{
                                     let mut v = vec![0.0; dim];
                                     v[k] = 1.0;
@@ -4137,7 +4137,7 @@ mod tests {
                                 ek_el[idx] -= el_ek[idx];
                             }
 
-                            let product = cd_multiply_split(&eiej, &ekEl, &sig);
+                            let product = cd_multiply_split(&eiej, &ek_el, &sig);
                             let norm: f64 = product.iter().map(|x| x * x).sum();
 
                             if norm < 1e-10 {
