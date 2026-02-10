@@ -13,6 +13,12 @@ section_title = "Formal Falsifiable Hypotheses (Phase 4B)"
 section_level = 2
 line_start = 104
 line_end = 111
+step_count = 5
+supports_claim = true
+assumption_lines = ["Each claim above is paired with a null hypothesis (H0), alternative hypothesis (H1),"]
+decision_lines = ["a decision rule, and required evidence. Claims already verified as pure math (C-001", "computational decision rules."]
+conclusion_lines = ["a decision rule, and required evidence. Claims already verified as pure math (C-001", "statistical tests. Speculative and unverified claims carry statistical or"]
+inference_markers = []
 assumption_text = "Each claim above is paired with a null hypothesis (H0), alternative hypothesis (H1),"
 decision_rule_text = "a decision rule, and required evidence. Claims already verified as pure math (C-001 | computational decision rules."
 conclusion_text = "a decision rule, and required evidence. Claims already verified as pure math (C-001 | statistical tests. Speculative and unverified claims carry statistical or"
@@ -30,6 +36,12 @@ section_title = "C-001: CD algebras non-associative at 8D+"
 section_level = 3
 line_start = 112
 line_end = 120
+step_count = 6
+supports_claim = false
+assumption_lines = ["- **H0**: The Cayley-Dickson product at dimension >= 8 is associative.", "- **H1**: There exist triples (a, b, c) in CD(8D+) with (a*b)*c != a*(b*c)."]
+decision_lines = ["- **Decision rule**: Exhibit one concrete counterexample triple; proof obligation."]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: The Cayley-Dickson product at dimension >= 8 is associative. | - **H1**: There exist triples (a, b, c) in CD(8D+) with (a*b)*c != a*(b*c)."
 decision_rule_text = "- **Decision rule**: Exhibit one concrete counterexample triple; proof obligation."
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
@@ -47,6 +59,12 @@ section_title = "C-002: 16D sedenions have zero divisors"
 section_level = 3
 line_start = 121
 line_end = 129
+step_count = 6
+supports_claim = false
+assumption_lines = ["- **H0**: All nonzero sedenions have multiplicative inverses (no zero divisors).", "- **H1**: There exist nonzero a, b in S(16) with a*b = 0."]
+decision_lines = ["- **Decision rule**: Exhibit one explicit zero-divisor pair; proof obligation."]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: All nonzero sedenions have multiplicative inverses (no zero divisors). | - **H1**: There exist nonzero a, b in S(16) with a*b = 0."
 decision_rule_text = "- **Decision rule**: Exhibit one explicit zero-divisor pair; proof obligation."
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
@@ -64,10 +82,16 @@ section_title = "C-003: 42 assessors / 7 box-kites organize primitive sedenion Z
 section_level = 3
 line_start = 130
 line_end = 139
+step_count = 7
+supports_claim = false
+assumption_lines = ["- **H0**: The primitive sedenion zero divisors do not decompose into exactly 42", "- **H1**: Exactly 42 primitive assessors exist, organized into 7 box-kites."]
+decision_lines = ["- **Decision rule**: Exhaustive enumeration; proof obligation."]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: The primitive sedenion zero divisors do not decompose into exactly 42 | - **H1**: Exactly 42 primitive assessors exist, organized into 7 box-kites."
 decision_rule_text = "- **Decision rule**: Exhaustive enumeration; proof obligation."
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
-excerpt = "- **H0**: The primitive sedenion zero divisors do not decompose into exactly 42 || assessors forming 7 octahedral box-kites. || - **H1**: Exactly 42 primitive assessors exist, organized into 7 box-kites. || - **Decision rule**: Exhaustive enumeration; proof obligation. || - **Required evidence**: `tests/test_de_marrais_boxkites.py` reproduces counts. || Cite de Marrais (2000). || - **Status**: H0 REJECTED (verified)."
+excerpt = "- **H0**: The primitive sedenion zero divisors do not decompose into exactly 42 || assessors forming 7 octahedral box-kites. || - **H1**: Exactly 42 primitive assessors exist, organized into 7 box-kites. || - **Decision rule**: Exhaustive enumeration; proof obligation. || - **Required evidence**: `tests/test_de_marrais_boxkites.py` reproduces counts. || Cite de Marrais (2000)."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -81,10 +105,16 @@ section_title = "C-004: PSL(2,7) order-168 action permutes box-kites"
 section_level = 3
 line_start = 140
 line_end = 151
+step_count = 9
+supports_claim = false
+assumption_lines = ["- **H0**: No GL(3,2)-isomorphic group acts on the repo's box-kite family by", "- **H1**: An explicit 168-element action permutes box-kites preserving assessor"]
+decision_lines = ["- **Decision rule**: Construct the action and verify deterministically on all 168"]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: No GL(3,2)-isomorphic group acts on the repo's box-kite family by | - **H1**: An explicit 168-element action permutes box-kites preserving assessor"
 decision_rule_text = "- **Decision rule**: Construct the action and verify deterministically on all 168"
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
-excerpt = "- **H0**: No GL(3,2)-isomorphic group acts on the repo's box-kite family by || permutation of assessor and edge sets. || - **H1**: An explicit 168-element action permutes box-kites preserving assessor || and edge sets. || - **Decision rule**: Construct the action and verify deterministically on all 168 || elements; proof obligation. || - **Required evidence**: `tests/test_psl_2_7_action.py`, || `tests/test_boxkite_symmetry_action.py`. || - **Status**: H0 REJECTED (verified)."
+excerpt = "- **H0**: No GL(3,2)-isomorphic group acts on the repo's box-kite family by || permutation of assessor and edge sets. || - **H1**: An explicit 168-element action permutes box-kites preserving assessor || and edge sets. || - **Decision rule**: Construct the action and verify deterministically on all 168 || elements; proof obligation."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -98,10 +128,16 @@ section_title = "C-005: Reggiani (2024) manifold identifications (G2, V_2(R^7))"
 section_level = 3
 line_start = 152
 line_end = 175
+step_count = 21
+supports_claim = false
+assumption_lines = ["- **H0**: The algebraic invariants computed in-repo are inconsistent with", "- **H1**: In-repo invariants (nullity, annihilator dimensions, subspace"]
+decision_lines = ["- **Decision rule**: Numerical invariants match paper's stated values for all 84"]
+conclusion_lines = ["- **Status**: H0 REJECTED for algebraic and geometric invariants; Riemannian", "proofs NOT replicated (partially verified)."]
+inference_markers = ["but sharing implies LARGER distance (opposite to naive expectation)."]
 assumption_text = "- **H0**: The algebraic invariants computed in-repo are inconsistent with | - **H1**: In-repo invariants (nullity, annihilator dimensions, subspace"
 decision_rule_text = "- **Decision rule**: Numerical invariants match paper's stated values for all 84"
 conclusion_text = "- **Status**: H0 REJECTED for algebraic and geometric invariants; Riemannian | proofs NOT replicated (partially verified)."
-excerpt = "- **H0**: The algebraic invariants computed in-repo are inconsistent with || Reggiani's manifold claims. || - **H1**: In-repo invariants (nullity, annihilator dimensions, subspace || geometry) align with Reggiani's stated identifications. || - **Decision rule**: Numerical invariants match paper's stated values for all 84 || diagonal-form ZDs; Riemannian proof not replicated (out of scope). || - **Required evidence**: `tests/test_reggiani_standard_zero_divisors.py`, || `tests/test_reggiani_geometric_invariants.py`, || `src/scripts/analysis/reggiani_geometric_invariants.py`. || Source: Reggiani (2024), arXiv:2411.18881."
+excerpt = "- **H0**: The algebraic invariants computed in-repo are inconsistent with || Reggiani's manifold claims. || - **H1**: In-repo invariants (nullity, annihilator dimensions, subspace || geometry) align with Reggiani's stated identifications. || - **Decision rule**: Numerical invariants match paper's stated values for all 84 || diagonal-form ZDs; Riemannian proof not replicated (out of scope)."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -115,6 +151,12 @@ section_title = "C-006: GWTC-3 confident events snapshot reproducibility"
 section_level = 3
 line_start = 176
 line_end = 184
+step_count = 6
+supports_claim = false
+assumption_lines = ["- **H0**: The CSV in `data/external/GWTC-3_confident.csv` does not match the", "- **H1**: JSON-to-CSV conversion is lossless and reproducible."]
+decision_lines = ["- **Decision rule**: Round-trip equivalence check passes (all fields match)."]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: The CSV in `data/external/GWTC-3_confident.csv` does not match the | - **H1**: JSON-to-CSV conversion is lossless and reproducible."
 decision_rule_text = "- **Decision rule**: Round-trip equivalence check passes (all fields match)."
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
@@ -132,10 +174,16 @@ section_title = "C-007: GWTC-3 BH mass clumping supports neg-dim eigenmode hypot
 section_level = 3
 line_start = 185
 line_end = 228
+step_count = 41
+supports_claim = true
+assumption_lines = ["- **H0**: GWTC-3 chirp-mass distribution is consistent with a unimodal", "- **H1**: The chirp-mass distribution is genuinely multimodal, with statistically", "does NOT validate the \"negative dimension eigenmodes\" hypothesis."]
+decision_lines = ["- **Decision rule (Phase 2.1, Hartigan)**: Pre-registered Hartigan dip test.", "- **Decision rule (Phase 2D, Bayesian mixture)**: BIC comparison of"]
+conclusion_lines = ["- **Status**: **REFUTED / NOISE** (Augmented test p=0.99; small-sample structure does not survive scaling)."]
+inference_markers = []
 assumption_text = "- **H0**: GWTC-3 chirp-mass distribution is consistent with a unimodal | - **H1**: The chirp-mass distribution is genuinely multimodal, with statistically | does NOT validate the \"negative dimension eigenmodes\" hypothesis."
 decision_rule_text = "- **Decision rule (Phase 2.1, Hartigan)**: Pre-registered Hartigan dip test. | - **Decision rule (Phase 2D, Bayesian mixture)**: BIC comparison of"
 conclusion_text = "- **Status**: **REFUTED / NOISE** (Augmented test p=0.99; small-sample structure does not survive scaling)."
-excerpt = "- **H0**: GWTC-3 chirp-mass distribution is consistent with a unimodal || (power-law + peak) population model; observed multimodality is a selection || artifact. || - **H1**: The chirp-mass distribution is genuinely multimodal, with statistically || significant clumping at ~30-40 and ~60-70 M_sun that cannot be explained by || selection effects alone. || - **Decision rule (Phase 2.1, Hartigan)**: Pre-registered Hartigan dip test. || Reject H0 if dip-test p < 0.05 after selection-function reweighting. || INFEASIBLE: N=34 < minimum 50 events required. || - **Decision rule (Phase 2D, Bayesian mixture)**: BIC comparison of"
+excerpt = "- **H0**: GWTC-3 chirp-mass distribution is consistent with a unimodal || (power-law + peak) population model; observed multimodality is a selection || artifact. || - **H1**: The chirp-mass distribution is genuinely multimodal, with statistically || significant clumping at ~30-40 and ~60-70 M_sun that cannot be explained by || selection effects alone."
 claim_refs = ["C-056", "C-058", "C-060", "C-061"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -149,10 +197,16 @@ section_title = "C-008: Fractional Schrodinger alpha=-1.5 maps to neg-dim physic
 section_level = 3
 line_start = 229
 line_end = 255
+step_count = 24
+supports_claim = false
+assumption_lines = ["- **H0**: The alpha=-1.5 fractional Laplacian has no unique connection to", "- **H1**: A first-principles derivation connects fractional order alpha=-1.5"]
+decision_lines = ["- **Decision rule**: Require a published or in-repo derivation that maps"]
+conclusion_lines = ["- **Status**: H0 NOT REJECTED (dimensional-analysis exercise only;"]
+inference_markers = []
 assumption_text = "- **H0**: The alpha=-1.5 fractional Laplacian has no unique connection to | - **H1**: A first-principles derivation connects fractional order alpha=-1.5"
 decision_rule_text = "- **Decision rule**: Require a published or in-repo derivation that maps"
 conclusion_text = "- **Status**: H0 NOT REJECTED (dimensional-analysis exercise only;"
-excerpt = "- **H0**: The alpha=-1.5 fractional Laplacian has no unique connection to || negative-dimension physics beyond notational analogy. || - **H1**: A first-principles derivation connects fractional order alpha=-1.5 || to a negative-dimensional continuation of Schrodinger dynamics. || - **Decision rule**: Require a published or in-repo derivation that maps || alpha to dimension d with d < 0 via an accepted spectral or path-integral || argument. Absent such derivation, H0 stands. || - **Required evidence**: First-party derivation (currently absent). || `docs/FRACTIONAL_OPERATOR_POLICY.md` documents operator choices. || `tests/test_fractional_laplacian_extension.py` tests operator behavior."
+excerpt = "- **H0**: The alpha=-1.5 fractional Laplacian has no unique connection to || negative-dimension physics beyond notational analogy. || - **H1**: A first-principles derivation connects fractional order alpha=-1.5 || to a negative-dimensional continuation of Schrodinger dynamics. || - **Decision rule**: Require a published or in-repo derivation that maps || alpha to dimension d with d < 0 via an accepted spectral or path-integral"
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -166,10 +220,16 @@ section_title = "C-009: Tensor-network entropy scaling S ~ log(L) + L^{0.5}"
 section_level = 3
 line_start = 256
 line_end = 284
+step_count = 26
+supports_claim = false
+assumption_lines = ["- **H0**: Entanglement entropy in the tensor-network experiment follows pure", "- **H1**: Entropy scaling includes a statistically significant anomalous", "the hypothesis holds for conformal systems."]
+decision_lines = ["- **Decision rule**: Fit both models (pure log vs log + power-law correction)"]
+conclusion_lines = ["- **Status**: **REJECTED for brickwork circuit** (Phase 2A complete)."]
+inference_markers = ["- **H0**: Entanglement entropy in the tensor-network experiment follows pure"]
 assumption_text = "- **H0**: Entanglement entropy in the tensor-network experiment follows pure | - **H1**: Entropy scaling includes a statistically significant anomalous | the hypothesis holds for conformal systems."
 decision_rule_text = "- **Decision rule**: Fit both models (pure log vs log + power-law correction)"
 conclusion_text = "- **Status**: **REJECTED for brickwork circuit** (Phase 2A complete)."
-excerpt = "- **H0**: Entanglement entropy in the tensor-network experiment follows pure || logarithmic scaling S = a * log(L) + b, with no anomalous sub-extensive || correction. || - **H1**: Entropy scaling includes a statistically significant anomalous || correction term, i.e., S = a * log(L) + c * L^{gamma} + b with c != 0 || and gamma > 0. || - **Decision rule**: Fit both models (pure log vs log + power-law correction) || to multi-system data. Reject H0 if the anomalous coefficient c has 95% || confidence interval excluding zero AND the corrected model improves AIC by || >= 6 over pure-log."
+excerpt = "- **H0**: Entanglement entropy in the tensor-network experiment follows pure || logarithmic scaling S = a * log(L) + b, with no anomalous sub-extensive || correction. || - **H1**: Entropy scaling includes a statistically significant anomalous || correction term, i.e., S = a * log(L) + c * L^{gamma} + b with c != 0 || and gamma > 0."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -183,10 +243,16 @@ section_title = "C-010: Sedenionic metamaterials yield perfect absorption via al
 section_level = 3
 line_start = 285
 line_end = 313
+step_count = 26
+supports_claim = true
+assumption_lines = ["- **H0**: No valid mapping from Cayley-Dickson zero-divisor algebra to a", "- **H1**: A CD-to-absorber mapping can be constructed such that the algebraic"]
+decision_lines = ["- **Decision rule**: Reject H0 if: (1) an explicit mapping from CD algebraic"]
+conclusion_lines = ["- **Status**: H0 NOT REJECTED (speculative; no validated mapping exists)."]
+inference_markers = []
 assumption_text = "- **H0**: No valid mapping from Cayley-Dickson zero-divisor algebra to a | - **H1**: A CD-to-absorber mapping can be constructed such that the algebraic"
 decision_rule_text = "- **Decision rule**: Reject H0 if: (1) an explicit mapping from CD algebraic"
 conclusion_text = "- **Status**: H0 NOT REJECTED (speculative; no validated mapping exists)."
-excerpt = "- **H0**: No valid mapping from Cayley-Dickson zero-divisor algebra to a || physically realizable metamaterial absorber design exists; the algebraic || structure provides no predictive advantage over standard absorber engineering || (Salisbury, RLC, CPA baselines). || - **H1**: A CD-to-absorber mapping can be constructed such that the algebraic || zero-divisor condition predicts absorption resonances, and FDTD or TMM || simulation yields absorption coefficient > 0.99 at predicted frequencies. || - **Decision rule**: Reject H0 if: (1) an explicit mapping from CD algebraic || parameters to physical layer parameters is defined, (2) FDTD or transfer-matrix || simulation of the mapped design achieves absorption > 0.99 at one or more"
+excerpt = "- **H0**: No valid mapping from Cayley-Dickson zero-divisor algebra to a || physically realizable metamaterial absorber design exists; the algebraic || structure provides no predictive advantage over standard absorber engineering || (Salisbury, RLC, CPA baselines). || - **H1**: A CD-to-absorber mapping can be constructed such that the algebraic || zero-divisor condition predicts absorption resonances, and FDTD or TMM"
 claim_refs = ["C-056", "C-067"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -200,10 +266,16 @@ section_title = "C-011: Sedenion-Gravastar equivalence is physically grounded"
 section_level = 3
 line_start = 314
 line_end = 348
+step_count = 32
+supports_claim = false
+assumption_lines = ["- **H0**: No Cayley-Dickson source term can be derived from a consistent", "- **H1**: An explicit action functional incorporating CD algebraic structure"]
+decision_lines = ["- **Decision rule**: Reject H0 if: (1) an explicit Lagrangian/action is"]
+conclusion_lines = ["- **Status**: H0 NOT REJECTED (speculative; no action functional derived)."]
+inference_markers = []
 assumption_text = "- **H0**: No Cayley-Dickson source term can be derived from a consistent | - **H1**: An explicit action functional incorporating CD algebraic structure"
 decision_rule_text = "- **Decision rule**: Reject H0 if: (1) an explicit Lagrangian/action is"
 conclusion_text = "- **Status**: H0 NOT REJECTED (speculative; no action functional derived)."
-excerpt = "- **H0**: No Cayley-Dickson source term can be derived from a consistent || variational principle (action) that modifies the TOV equations in a way || consistent with gravastar interior boundary conditions. || - **H1**: An explicit action functional incorporating CD algebraic structure || yields modified TOV equations whose solutions include gravastar-like || configurations (de Sitter interior, thin shell, Schwarzschild exterior). || - **Decision rule**: Reject H0 if: (1) an explicit Lagrangian/action is || written down, (2) Euler-Lagrange variation produces modified TOV with || CD-derived terms, (3) numerical integration yields a stable thin-shell || solution, and (4) stability analysis (Darmois-Israel) yields bounded"
+excerpt = "- **H0**: No Cayley-Dickson source term can be derived from a consistent || variational principle (action) that modifies the TOV equations in a way || consistent with gravastar interior boundary conditions. || - **H1**: An explicit action functional incorporating CD algebraic structure || yields modified TOV equations whose solutions include gravastar-like || configurations (de Sitter interior, thin shell, Schwarzschild exterior)."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -217,10 +289,16 @@ section_title = "C-012: Neg-dim dark energy model as a physical interpretation"
 section_level = 3
 line_start = 349
 line_end = 384
+step_count = 33
+supports_claim = true
+assumption_lines = ["- **H0**: The negative-dimension diffusion model fits cosmological data at", "- **H1**: Lambda-CDM or constant-w dark energy provides a better fit to"]
+decision_lines = ["- **Decision rule**: Pre-registered model comparison. REFUTE the neg-dim"]
+conclusion_lines = ["but penalized for the extra alpha parameter. DECISIVELY REJECTED.", "- **Status**: **H0 REFUTED** -- neg-dim model refuted in both forms.", "The eta=0 form is decisively rejected (Phase 2.2). The free-eta form"]
+inference_markers = []
 assumption_text = "- **H0**: The negative-dimension diffusion model fits cosmological data at | - **H1**: Lambda-CDM or constant-w dark energy provides a better fit to"
 decision_rule_text = "- **Decision rule**: Pre-registered model comparison. REFUTE the neg-dim"
 conclusion_text = "but penalized for the extra alpha parameter. DECISIVELY REJECTED. | - **Status**: **H0 REFUTED** -- neg-dim model refuted in both forms. | The eta=0 form is decisively rejected (Phase 2.2). The free-eta form"
-excerpt = "- **H0**: The negative-dimension diffusion model fits cosmological data at || least as well as Lambda-CDM (flat prior; no AIC/BIC penalty). || - **H1**: Lambda-CDM or constant-w dark energy provides a better fit to || multi-probe cosmological data (SNe + H(z) + BAO). || - **Decision rule**: Pre-registered model comparison. REFUTE the neg-dim || model if Delta-AIC >= 10 or Delta-BIC >= 10 relative to the best-fit model || (following Burnham & Anderson (2002) \"essentially no support\" threshold). || - **Required evidence**: || - `src/scripts/analysis/neg_dim_model_comparison.py` (executed Phase 2.2) || - `src/scripts/analysis/neg_dim_free_eta_comparison.py` (executed Phase 2B)"
+excerpt = "- **H0**: The negative-dimension diffusion model fits cosmological data at || least as well as Lambda-CDM (flat prior; no AIC/BIC penalty). || - **H1**: Lambda-CDM or constant-w dark energy provides a better fit to || multi-probe cosmological data (SNe + H(z) + BAO). || - **Decision rule**: Pre-registered model comparison. REFUTE the neg-dim || model if Delta-AIC >= 10 or Delta-BIC >= 10 relative to the best-fit model"
 claim_refs = ["C-057", "C-058", "C-059"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -234,10 +312,16 @@ section_title = "C-013: de Marrais GoTo automorphemes cover 42 assessors exactly
 section_level = 3
 line_start = 385
 line_end = 394
+step_count = 7
+supports_claim = false
+assumption_lines = ["- **H0**: The GoTo automorpheme construction does not produce exact double", "- **H1**: Each primitive assessor lies in exactly two automorphemes."]
+decision_lines = ["- **Decision rule**: Exhaustive enumeration; proof obligation."]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: The GoTo automorpheme construction does not produce exact double | - **H1**: Each primitive assessor lies in exactly two automorphemes."
 decision_rule_text = "- **Decision rule**: Exhaustive enumeration; proof obligation."
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
-excerpt = "- **H0**: The GoTo automorpheme construction does not produce exact double || coverage of the 42 primitive assessors. || - **H1**: Each primitive assessor lies in exactly two automorphemes. || - **Decision rule**: Exhaustive enumeration; proof obligation. || - **Required evidence**: `tests/test_de_marrais_automorphemes.py`. || Cite de Marrais GoTo table. || - **Status**: H0 REJECTED (verified)."
+excerpt = "- **H0**: The GoTo automorpheme construction does not produce exact double || coverage of the 42 primitive assessors. || - **H1**: Each primitive assessor lies in exactly two automorphemes. || - **Decision rule**: Exhaustive enumeration; proof obligation. || - **Required evidence**: `tests/test_de_marrais_automorphemes.py`. || Cite de Marrais GoTo table."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -251,10 +335,16 @@ section_title = "C-014: Diagonal-form ZDs have annihilator dimension 4"
 section_level = 3
 line_start = 395
 line_end = 404
+step_count = 7
+supports_claim = false
+assumption_lines = ["- **H0**: Some diagonal-form sedenion ZDs have left or right annihilator", "- **H1**: All 84 diagonal-form ZDs have nullity (4, 4)."]
+decision_lines = ["- **Decision rule**: Exhaustive computation over all 84; proof obligation."]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: Some diagonal-form sedenion ZDs have left or right annihilator | - **H1**: All 84 diagonal-form ZDs have nullity (4, 4)."
 decision_rule_text = "- **Decision rule**: Exhaustive computation over all 84; proof obligation."
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
-excerpt = "- **H0**: Some diagonal-form sedenion ZDs have left or right annihilator || dimension != 4. || - **H1**: All 84 diagonal-form ZDs have nullity (4, 4). || - **Decision rule**: Exhaustive computation over all 84; proof obligation. || - **Required evidence**: `tests/test_reggiani_standard_zero_divisors.py`. || Cite Reggiani (2024). || - **Status**: H0 REJECTED (verified)."
+excerpt = "- **H0**: Some diagonal-form sedenion ZDs have left or right annihilator || dimension != 4. || - **H1**: All 84 diagonal-form ZDs have nullity (4, 4). || - **Decision rule**: Exhaustive computation over all 84; proof obligation. || - **Required evidence**: `tests/test_reggiani_standard_zero_divisors.py`. || Cite Reggiani (2024)."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -268,6 +358,12 @@ section_title = "C-015: Each diagonal-form ZD has exactly 4 annihilating partner
 section_level = 3
 line_start = 405
 line_end = 413
+step_count = 6
+supports_claim = false
+assumption_lines = ["- **H0**: Some diagonal-form ZD u has != 4 diagonal-form partners v with u*v=0.", "- **H1**: Every diagonal-form ZD has exactly 4 such partners, spanning Ann_L(u)."]
+decision_lines = ["- **Decision rule**: Exhaustive computation; proof obligation."]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: Some diagonal-form ZD u has != 4 diagonal-form partners v with u*v=0. | - **H1**: Every diagonal-form ZD has exactly 4 such partners, spanning Ann_L(u)."
 decision_rule_text = "- **Decision rule**: Exhaustive computation; proof obligation."
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
@@ -285,10 +381,16 @@ section_title = "C-016: m3 trilinear on octonion triples yields 42 scalar / 168 
 section_level = 3
 line_start = 414
 line_end = 424
+step_count = 8
+supports_claim = false
+assumption_lines = ["- **H0**: The m3 trilinear does not produce the 42/168 split or fails to align", "- **H1**: Exactly 42 scalar and 168 pure-imaginary outputs; scalar cases"]
+decision_lines = ["- **Decision rule**: Exhaustive enumeration over all distinct basis triples;"]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: The m3 trilinear does not produce the 42/168 split or fails to align | - **H1**: Exactly 42 scalar and 168 pure-imaginary outputs; scalar cases"
 decision_rule_text = "- **Decision rule**: Exhaustive enumeration over all distinct basis triples;"
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
-excerpt = "- **H0**: The m3 trilinear does not produce the 42/168 split or fails to align || with Fano-plane lines. || - **H1**: Exactly 42 scalar and 168 pure-imaginary outputs; scalar cases || correspond to 7 Fano lines with parity signs. || - **Decision rule**: Exhaustive enumeration over all distinct basis triples; || proof obligation. || - **Required evidence**: `tests/test_m3_cd_transfer.py`. || - **Status**: H0 REJECTED (verified)."
+excerpt = "- **H0**: The m3 trilinear does not produce the 42/168 split or fails to align || with Fano-plane lines. || - **H1**: Exactly 42 scalar and 168 pure-imaginary outputs; scalar cases || correspond to 7 Fano lines with parity signs. || - **Decision rule**: Exhaustive enumeration over all distinct basis triples; || proof obligation."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -302,6 +404,12 @@ section_title = "C-017: XOR-bucket necessary condition for diagonal 2-blade ZD p
 section_level = 3
 line_start = 425
 line_end = 433
+step_count = 6
+supports_claim = false
+assumption_lines = ["- **H0**: Some zero product of diagonal 2-blades violates (i^j) == (k^l).", "- **H1**: Every observed zero product satisfies the XOR condition (necessity)."]
+decision_lines = ["- **Decision rule**: Deterministic sweep over all pairs; proof obligation."]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified; necessity only)."]
+inference_markers = []
 assumption_text = "- **H0**: Some zero product of diagonal 2-blades violates (i^j) == (k^l). | - **H1**: Every observed zero product satisfies the XOR condition (necessity)."
 decision_rule_text = "- **Decision rule**: Deterministic sweep over all pairs; proof obligation."
 conclusion_text = "- **Status**: H0 REJECTED (verified; necessity only)."
@@ -319,10 +427,16 @@ section_title = "C-018: Wheels (Carlstrom) axioms hold on finite concrete model"
 section_level = 3
 line_start = 434
 line_end = 443
+step_count = 7
+supports_claim = false
+assumption_lines = ["- **H0**: The finite model in `crates/algebra_core/src/wheels.rs` violates one or", "- **H1**: All 8 axioms hold on the concrete finite model."]
+decision_lines = ["- **Decision rule**: Exhaustive check of all axioms on all elements; proof"]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: The finite model in `crates/algebra_core/src/wheels.rs` violates one or | - **H1**: All 8 axioms hold on the concrete finite model."
 decision_rule_text = "- **Decision rule**: Exhaustive check of all axioms on all elements; proof"
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
-excerpt = "- **H0**: The finite model in `crates/algebra_core/src/wheels.rs` violates one or || more of Carlstrom's axioms (1)-(8). || - **H1**: All 8 axioms hold on the concrete finite model. || - **Decision rule**: Exhaustive check of all axioms on all elements; proof || obligation. || - **Required evidence**: `tests/test_wheels.py`. Cite Carlstrom (2001). || - **Status**: H0 REJECTED (verified)."
+excerpt = "- **H0**: The finite model in `crates/algebra_core/src/wheels.rs` violates one or || more of Carlstrom's axioms (1)-(8). || - **H1**: All 8 axioms hold on the concrete finite model. || - **Decision rule**: Exhaustive check of all axioms on all elements; proof || obligation. || - **Required evidence**: `tests/test_wheels.py`. Cite Carlstrom (2001)."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -336,10 +450,16 @@ section_title = "C-019: Wheels interpret CD zero-divisor phenomena"
 section_level = 3
 line_start = 444
 line_end = 467
+step_count = 21
+supports_claim = false
+assumption_lines = ["- **H0**: No rigorous mathematical connection exists between wheel structures", "- **H1**: A published result or first-party proof verifies that CD zero"]
+decision_lines = ["- **Decision rule**: Require either (1) a first-party source explicitly"]
+conclusion_lines = ["- **Status**: **H0 NOT REJECTED** (not supported; connection is notational only)."]
+inference_markers = []
 assumption_text = "- **H0**: No rigorous mathematical connection exists between wheel structures | - **H1**: A published result or first-party proof verifies that CD zero"
 decision_rule_text = "- **Decision rule**: Require either (1) a first-party source explicitly"
 conclusion_text = "- **Status**: **H0 NOT REJECTED** (not supported; connection is notational only)."
-excerpt = "- **H0**: No rigorous mathematical connection exists between wheel structures || and Cayley-Dickson zero divisors beyond notational analogy. || - **H1**: A published result or first-party proof verifies that CD zero || divisors embed into or are explained by wheel-theoretic operations. || - **Decision rule**: Require either (1) a first-party source explicitly || connecting wheels to CD zero divisors, or (2) a proof that CD ZD || multiplication factors through wheel operations preserving algebraic || invariants. || - **Required evidence**: || - `crates/algebra_core/src/wheels.rs` (exploratory implementation)"
+excerpt = "- **H0**: No rigorous mathematical connection exists between wheel structures || and Cayley-Dickson zero divisors beyond notational analogy. || - **H1**: A published result or first-party proof verifies that CD zero || divisors embed into or are explained by wheel-theoretic operations. || - **Decision rule**: Require either (1) a first-party source explicitly || connecting wheels to CD zero divisors, or (2) a proof that CD ZD"
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -353,6 +473,12 @@ section_title = "C-020: Legacy 16D ZD adjacency matrix represents valid algebra"
 section_level = 3
 line_start = 468
 line_end = 476
+step_count = 6
+supports_claim = false
+assumption_lines = ["- **H0**: The legacy adjacency matrix is consistent with the repo's CD", "- **H1**: The matrix contains entries inconsistent with computed ZD products."]
+decision_lines = ["- **Decision rule**: Cross-check against commutator/parity matrices."]
+conclusion_lines = ["- **Status**: **H1 CONFIRMED** -- legacy matrix refuted as noise/hallucination."]
+inference_markers = []
 assumption_text = "- **H0**: The legacy adjacency matrix is consistent with the repo's CD | - **H1**: The matrix contains entries inconsistent with computed ZD products."
 decision_rule_text = "- **Decision rule**: Cross-check against commutator/parity matrices."
 conclusion_text = "- **Status**: **H1 CONFIRMED** -- legacy matrix refuted as noise/hallucination."
@@ -370,6 +496,12 @@ section_title = "C-021: 1024D basis-to-lattice mapping is consistent"
 section_level = 3
 line_start = 477
 line_end = 484
+step_count = 5
+supports_claim = false
+assumption_lines = ["- **H0**: The mapping is a well-defined function (each index maps to one value).", "- **H1**: Multiple mappings exist for the same index; function is inconsistent."]
+decision_lines = ["- **Decision rule**: Check injectivity on index domain."]
+conclusion_lines = ["- **Status**: **H1 CONFIRMED** -- mapping is inconsistent (refuted)."]
+inference_markers = []
 assumption_text = "- **H0**: The mapping is a well-defined function (each index maps to one value). | - **H1**: Multiple mappings exist for the same index; function is inconsistent."
 decision_rule_text = "- **Decision rule**: Check injectivity on index domain."
 conclusion_text = "- **Status**: **H1 CONFIRMED** -- mapping is inconsistent (refuted)."
@@ -387,10 +519,16 @@ section_title = "C-022: Surreal time dynamics via dyadic rationals"
 section_level = 3
 line_start = 485
 line_end = 500
+step_count = 13
+supports_claim = false
+assumption_lines = ["- **H0**: The dyadic-rational surreal model fails to produce well-ordered", "- **H1**: The model correctly implements dyadic arithmetic and visualizes"]
+decision_lines = ["- **Decision rule**: Numerical validation of dyadic operations."]
+conclusion_lines = ["- **Status**: H0 REJECTED (toy model verified; Phase 4A ordinal extension)."]
+inference_markers = []
 assumption_text = "- **H0**: The dyadic-rational surreal model fails to produce well-ordered | - **H1**: The model correctly implements dyadic arithmetic and visualizes"
 decision_rule_text = "- **Decision rule**: Numerical validation of dyadic operations."
 conclusion_text = "- **Status**: H0 REJECTED (toy model verified; Phase 4A ordinal extension)."
-excerpt = "- **H0**: The dyadic-rational surreal model fails to produce well-ordered || transfinite transitions. || - **H1**: The model correctly implements dyadic arithmetic and visualizes || limit-ordinal transitions. || - **Decision rule**: Numerical validation of dyadic operations. || - **Required evidence**: `src/surreal_matmul_bench.py`, || `src/scripts/visualization/vis_grand_synthesis.py`. || - **Phase 4A extension (2026-01-30)**: CD-indexed ordinal construction || implemented in `src/scripts/analysis/surreal_cd_ordinals.py`. Maps || CD dimension 2^n to surreal ordinal omega^n and verifies ordinal"
+excerpt = "- **H0**: The dyadic-rational surreal model fails to produce well-ordered || transfinite transitions. || - **H1**: The model correctly implements dyadic arithmetic and visualizes || limit-ordinal transitions. || - **Decision rule**: Numerical validation of dyadic operations. || - **Required evidence**: `src/surreal_matmul_bench.py`,"
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -404,10 +542,16 @@ section_title = "C-023: Projective Lie algebra fibers and CD associator holonomy
 section_level = 3
 line_start = 501
 line_end = 524
+step_count = 21
+supports_claim = false
+assumption_lines = ["- **H0**: Fiber rotation under base flow does not correlate with policy", "- **H1**: The Lie-fiber simulation shows convergence aligned with fiber"]
+decision_lines = ["- **Decision rule**: Toy-model only for Lie-fiber; permutation test"]
+conclusion_lines = ["- **Status**: PARTIAL SUPPORT (Lie-fiber toy model runs; Phase 4B"]
+inference_markers = []
 assumption_text = "- **H0**: Fiber rotation under base flow does not correlate with policy | - **H1**: The Lie-fiber simulation shows convergence aligned with fiber"
 decision_rule_text = "- **Decision rule**: Toy-model only for Lie-fiber; permutation test"
 conclusion_text = "- **Status**: PARTIAL SUPPORT (Lie-fiber toy model runs; Phase 4B"
-excerpt = "- **H0**: Fiber rotation under base flow does not correlate with policy || convergence in the toy model. The CD associator has no measurable || geometric distinction between ZD-adjacent and generic triples. || - **H1**: The Lie-fiber simulation shows convergence aligned with fiber || rotation dynamics. ZD-adjacent triples have statistically different || associator norms from generic triples. || - **Decision rule**: Toy-model only for Lie-fiber; permutation test || (p < 0.01) for associator norm comparison. || - **Required evidence**: `crates/algebra_core/src/homotopy_algebra.rs`, || `crates/algebra_core/src/grassmannian.rs`,"
+excerpt = "- **H0**: Fiber rotation under base flow does not correlate with policy || convergence in the toy model. The CD associator has no measurable || geometric distinction between ZD-adjacent and generic triples. || - **H1**: The Lie-fiber simulation shows convergence aligned with fiber || rotation dynamics. ZD-adjacent triples have statistically different || associator norms from generic triples."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -421,10 +565,16 @@ section_title = "C-024: C++ kernels reproduce Python CD multiplication exactly"
 section_level = 3
 line_start = 525
 line_end = 534
+step_count = 7
+supports_claim = false
+assumption_lines = ["- **H0**: C++ CD multiplication produces results differing from Python by", "- **H1**: All C++ results match Python within float64 tolerance."]
+decision_lines = ["- **Decision rule**: Exhaustive cross-validation on basis-element products"]
+conclusion_lines = ["- **Status**: H0 REJECTED (verified)."]
+inference_markers = []
 assumption_text = "- **H0**: C++ CD multiplication produces results differing from Python by | - **H1**: All C++ results match Python within float64 tolerance."
 decision_rule_text = "- **Decision rule**: Exhaustive cross-validation on basis-element products"
 conclusion_text = "- **Status**: H0 REJECTED (verified)."
-excerpt = "- **H0**: C++ CD multiplication produces results differing from Python by || more than float64 machine epsilon (2^-52 relative error per component). || - **H1**: All C++ results match Python within float64 tolerance. || - **Decision rule**: Exhaustive cross-validation on basis-element products || plus random triples; max relative error < 1e-12. || - **Required evidence**: `cpp/tests/test_cd_algebra.cpp`, `make cpp-test`. || - **Status**: H0 REJECTED (verified)."
+excerpt = "- **H0**: C++ CD multiplication produces results differing from Python by || more than float64 machine epsilon (2^-52 relative error per component). || - **H1**: All C++ results match Python within float64 tolerance. || - **Decision rule**: Exhaustive cross-validation on basis-element products || plus random triples; max relative error < 1e-12. || - **Required evidence**: `cpp/tests/test_cd_algebra.cpp`, `make cpp-test`."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -438,10 +588,16 @@ section_title = "C-025: ZD sky alignment -- BH positions cluster near projected 
 section_level = 3
 line_start = 535
 line_end = 577
+step_count = 40
+supports_claim = true
+assumption_lines = ["- **H0**: GWTC-3 black hole sky positions are consistent with isotropy", "- **H1**: BH positions cluster around projected ZD coordinates, producing a"]
+decision_lines = ["- **Decision rule**: Monte Carlo test with 1000 isotropic randomizations."]
+conclusion_lines = ["- **Status**: PENDING EXECUTION (pre-registered; pipeline validated offline;"]
+inference_markers = []
 assumption_text = "- **H0**: GWTC-3 black hole sky positions are consistent with isotropy | - **H1**: BH positions cluster around projected ZD coordinates, producing a"
 decision_rule_text = "- **Decision rule**: Monte Carlo test with 1000 isotropic randomizations."
 conclusion_text = "- **Status**: PENDING EXECUTION (pre-registered; pipeline validated offline;"
-excerpt = "- **H0**: GWTC-3 black hole sky positions are consistent with isotropy || (mean angular distance to nearest projected ZD node is no smaller than || expected from random sky positions). || - **H1**: BH positions cluster around projected ZD coordinates, producing a || mean angular distance significantly smaller than isotropic expectation. || - **Decision rule**: Monte Carlo test with 1000 isotropic randomizations. || Reject H0 if p < 0.01 after Bonferroni correction for 7 box-kite choices || (effective threshold p < 0.01/7 = 0.00143 per kite). The test selects the || box-kite that minimizes alignment error; only the best-kite p-value is || reported, corrected for multiple comparisons."
+excerpt = "- **H0**: GWTC-3 black hole sky positions are consistent with isotropy || (mean angular distance to nearest projected ZD node is no smaller than || expected from random sky positions). || - **H1**: BH positions cluster around projected ZD coordinates, producing a || mean angular distance significantly smaller than isotropic expectation. || - **Decision rule**: Monte Carlo test with 1000 isotropic randomizations."
 claim_refs = ["C-060", "C-061", "C-062", "C-063"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -455,10 +611,16 @@ section_title = "C-026: Mass gap from algebraic tension between ZD nodes"
 section_level = 3
 line_start = 578
 line_end = 593
+step_count = 13
+supports_claim = false
+assumption_lines = ["- **H0**: The observed BH/NS mass gap (~2.5-5 M_sun) has no connection to", "- **H1**: A quantitative mapping from ZD algebraic invariants to mass scales"]
+decision_lines = ["- **Decision rule**: Require: (1) explicit formula mapping algebraic"]
+conclusion_lines = ["- **Status**: H0 NOT REJECTED (no mechanism proposed; speculative only)."]
+inference_markers = []
 assumption_text = "- **H0**: The observed BH/NS mass gap (~2.5-5 M_sun) has no connection to | - **H1**: A quantitative mapping from ZD algebraic invariants to mass scales"
 decision_rule_text = "- **Decision rule**: Require: (1) explicit formula mapping algebraic"
 conclusion_text = "- **Status**: H0 NOT REJECTED (no mechanism proposed; speculative only)."
-excerpt = "- **H0**: The observed BH/NS mass gap (~2.5-5 M_sun) has no connection to || sedenion zero-divisor algebraic structure; it is fully explained by || standard stellar evolution (pair-instability supernovae, core-collapse || physics). || - **H1**: A quantitative mapping from ZD algebraic invariants to mass scales || predicts the mass-gap boundaries. || - **Decision rule**: Require: (1) explicit formula mapping algebraic || invariant(s) to mass in solar masses, (2) predicted gap boundaries within || 1 M_sun of observed values, (3) the mapping is non-trivially constrained || (fewer free parameters than data points)."
+excerpt = "- **H0**: The observed BH/NS mass gap (~2.5-5 M_sun) has no connection to || sedenion zero-divisor algebraic structure; it is fully explained by || standard stellar evolution (pair-instability supernovae, core-collapse || physics). || - **H1**: A quantitative mapping from ZD algebraic invariants to mass scales || predicts the mass-gap boundaries."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -472,10 +634,16 @@ section_title = "C-027: D_eff phase transition at event horizon"
 section_level = 3
 line_start = 594
 line_end = 610
+step_count = 14
+supports_claim = true
+assumption_lines = ["- **H0**: The effective-dimension parameterization D_eff = 3 - k*log10(rho/rho_vac)", "- **H1**: The D_eff parameterization predicts a specific observable"]
+decision_lines = ["- **Decision rule**: Require: (1) derivation of k from first principles"]
+conclusion_lines = ["- Overlaps C-012 (w(D) dark energy coupling, already refuted for eta=0)", "- **Status**: H0 NOT REJECTED (toy parameterization; no unique prediction)."]
+inference_markers = []
 assumption_text = "- **H0**: The effective-dimension parameterization D_eff = 3 - k*log10(rho/rho_vac) | - **H1**: The D_eff parameterization predicts a specific observable"
 decision_rule_text = "- **Decision rule**: Require: (1) derivation of k from first principles"
 conclusion_text = "- Overlaps C-012 (w(D) dark energy coupling, already refuted for eta=0) | - **Status**: H0 NOT REJECTED (toy parameterization; no unique prediction)."
-excerpt = "- **H0**: The effective-dimension parameterization D_eff = 3 - k*log10(rho/rho_vac) || has no unique physical content beyond a logarithmic density rescaling; || it does not predict any observable that standard GR does not. || - **H1**: The D_eff parameterization predicts a specific observable || (e.g., horizon radius correction, dark energy coupling) that differs || from GR and can be tested. || - **Decision rule**: Require: (1) derivation of k from first principles || (CD algebraic structure or other), (2) at least one falsifiable prediction || distinct from GR, (3) comparison against observational data. || - **Required evidence**:"
+excerpt = "- **H0**: The effective-dimension parameterization D_eff = 3 - k*log10(rho/rho_vac) || has no unique physical content beyond a logarithmic density rescaling; || it does not predict any observable that standard GR does not. || - **H1**: The D_eff parameterization predicts a specific observable || (e.g., horizon radius correction, dark energy coupling) that differs || from GR and can be tested."
 claim_refs = ["C-012"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -489,10 +657,16 @@ section_title = "C-028: Aut(S) = G2 x S3; no continuous symmetry beyond G2"
 section_level = 3
 line_start = 611
 line_end = 620
+step_count = 7
+supports_claim = false
+assumption_lines = ["- **H0**: Sedenions have continuous automorphisms beyond G2 (e.g., larger Lie group).", "- **H1**: Aut(S) = G2 x S3 exactly; S3 permutes three octonionic subalgebras."]
+decision_lines = ["- **Decision rule**: Computational verification: enumerate G2 generators acting on"]
+conclusion_lines = ["- **Status**: PENDING VERIFICATION."]
+inference_markers = []
 assumption_text = "- **H0**: Sedenions have continuous automorphisms beyond G2 (e.g., larger Lie group). | - **H1**: Aut(S) = G2 x S3 exactly; S3 permutes three octonionic subalgebras."
 decision_rule_text = "- **Decision rule**: Computational verification: enumerate G2 generators acting on"
 conclusion_text = "- **Status**: PENDING VERIFICATION."
-excerpt = "- **H0**: Sedenions have continuous automorphisms beyond G2 (e.g., larger Lie group). || - **H1**: Aut(S) = G2 x S3 exactly; S3 permutes three octonionic subalgebras. || - **Decision rule**: Computational verification: enumerate G2 generators acting on || each subalgebra, verify S3 permutation, check no additional continuous generators. || - **Required evidence**: `crates/algebra_core/src/hypercomplex.rs`, || `tests/test_sedenion_automorphism.py`. || - **Status**: PENDING VERIFICATION."
+excerpt = "- **H0**: Sedenions have continuous automorphisms beyond G2 (e.g., larger Lie group). || - **H1**: Aut(S) = G2 x S3 exactly; S3 permutes three octonionic subalgebras. || - **Decision rule**: Computational verification: enumerate G2 generators acting on || each subalgebra, verify S3 permutation, check no additional continuous generators. || - **Required evidence**: `crates/algebra_core/src/hypercomplex.rs`, || `tests/test_sedenion_automorphism.py`."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -506,10 +680,16 @@ section_title = "C-029: Three generations via C tensor S decomposition"
 section_level = 3
 line_start = 621
 line_end = 631
+step_count = 8
+supports_claim = false
+assumption_lines = ["- **H0**: The sedenion algebra does not decompose into three octonionic subalgebras.", "- **H1**: C tensor S ~ 3 x (C tensor O), yielding three-generation structure."]
+decision_lines = ["- **Decision rule**: Computational: identify three disjoint octonionic subalgebras"]
+conclusion_lines = ["- **Status**: VERIFIED (structural). 23 tests passing."]
+inference_markers = []
 assumption_text = "- **H0**: The sedenion algebra does not decompose into three octonionic subalgebras. | - **H1**: C tensor S ~ 3 x (C tensor O), yielding three-generation structure."
 decision_rule_text = "- **Decision rule**: Computational: identify three disjoint octonionic subalgebras"
 conclusion_text = "- **Status**: VERIFIED (structural). 23 tests passing."
-excerpt = "- **H0**: The sedenion algebra does not decompose into three octonionic subalgebras. || - **H1**: C tensor S ~ 3 x (C tensor O), yielding three-generation structure. || - **Decision rule**: Computational: identify three disjoint octonionic subalgebras || in S; verify each is closed under multiplication (modulo associator). || - **Required evidence**: Literature (Gillard & Gresnigt 2019; Gresnigt 2023). || Computational confirmation via `crates/algebra_core/src/hypercomplex.rs` || and `tests/test_sedenion_generations.py`. || - **Status**: VERIFIED (structural). 23 tests passing."
+excerpt = "- **H0**: The sedenion algebra does not decompose into three octonionic subalgebras. || - **H1**: C tensor S ~ 3 x (C tensor O), yielding three-generation structure. || - **Decision rule**: Computational: identify three disjoint octonionic subalgebras || in S; verify each is closed under multiplication (modulo associator). || - **Required evidence**: Literature (Gillard & Gresnigt 2019; Gresnigt 2023). || Computational confirmation via `crates/algebra_core/src/hypercomplex.rs`"
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -523,10 +703,16 @@ section_title = "C-030: Sedenion Lagrangians require bypass mechanisms"
 section_level = 3
 line_start = 632
 line_end = 643
+step_count = 9
+supports_claim = true
+assumption_lines = ["- **H0**: A consistent polynomial sedenion Lagrangian can be written without", "- **H1**: Non-associativity and non-alternativity make naive Lagrangians"]
+decision_lines = ["- **Decision rule**: Theoretical argument + computational demonstration that"]
+conclusion_lines = ["- **Status**: ESTABLISHED (theoretical; computational support from C-011)."]
+inference_markers = []
 assumption_text = "- **H0**: A consistent polynomial sedenion Lagrangian can be written without | - **H1**: Non-associativity and non-alternativity make naive Lagrangians"
 decision_rule_text = "- **Decision rule**: Theoretical argument + computational demonstration that"
 conclusion_text = "- **Status**: ESTABLISHED (theoretical; computational support from C-011)."
-excerpt = "- **H0**: A consistent polynomial sedenion Lagrangian can be written without || matrix embedding, subalgebra constraints, or higher-gauge scaffolding. || - **H1**: Non-associativity and non-alternativity make naive Lagrangians || ill-defined; bypass mechanisms are necessary. || - **Decision rule**: Theoretical argument + computational demonstration that || delta(Phi*Psi) != (delta Phi)*Psi + Phi*(delta Psi) generically. || - **Required evidence**: Associator norm computation (connects to C-011 Phase 3D || obstruction data showing mean associator norm ~ 1.32). || - **Status**: ESTABLISHED (theoretical; computational support from C-011)."
+excerpt = "- **H0**: A consistent polynomial sedenion Lagrangian can be written without || matrix embedding, subalgebra constraints, or higher-gauge scaffolding. || - **H1**: Non-associativity and non-alternativity make naive Lagrangians || ill-defined; bypass mechanisms are necessary. || - **Decision rule**: Theoretical argument + computational demonstration that || delta(Phi*Psi) != (delta Phi)*Psi + Phi*(delta Psi) generically."
 claim_refs = ["C-011"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -540,6 +726,12 @@ section_title = "C-031: Hurwitz theorem blocks standard sedenion quantization"
 section_level = 3
 line_start = 644
 line_end = 652
+step_count = 6
+supports_claim = true
+assumption_lines = ["- **H0**: Sedenion fields can be consistently quantized using standard methods.", "- **H1**: Zero-norm states from ZDs threaten unitarity without matrix embedding."]
+decision_lines = ["- **Decision rule**: Proof obligation (Hurwitz theorem is a mathematical theorem)."]
+conclusion_lines = ["- **Required evidence**: C-002 (verified).", "- **Status**: THEORETICAL (mathematical theorem; QFT implications speculative)."]
+inference_markers = []
 assumption_text = "- **H0**: Sedenion fields can be consistently quantized using standard methods. | - **H1**: Zero-norm states from ZDs threaten unitarity without matrix embedding."
 decision_rule_text = "- **Decision rule**: Proof obligation (Hurwitz theorem is a mathematical theorem)."
 conclusion_text = "- **Required evidence**: C-002 (verified). | - **Status**: THEORETICAL (mathematical theorem; QFT implications speculative)."
@@ -557,6 +749,12 @@ section_title = "C-035: F4 Casimir ratio epsilon = 1/4"
 section_level = 3
 line_start = 653
 line_end = 661
+step_count = 6
+supports_claim = false
+assumption_lines = ["- **H0**: C2(26)/|Delta+(F4)| != 6/24.", "- **H1**: epsilon = C2(26)/|Delta+(F4)| = 6/24 = 1/4 exactly."]
+decision_lines = ["- **Decision rule**: Compute both quantities from F4 Dynkin data; proof obligation."]
+conclusion_lines = ["- **Status**: PENDING VERIFICATION."]
+inference_markers = []
 assumption_text = "- **H0**: C2(26)/|Delta+(F4)| != 6/24. | - **H1**: epsilon = C2(26)/|Delta+(F4)| = 6/24 = 1/4 exactly."
 decision_rule_text = "- **Decision rule**: Compute both quantities from F4 Dynkin data; proof obligation."
 conclusion_text = "- **Status**: PENDING VERIFICATION."
@@ -574,10 +772,16 @@ section_title = "C-036: Bigraph clustering coefficient -> 0.25"
 section_level = 3
 line_start = 662
 line_end = 672
+step_count = 8
+supports_claim = false
+assumption_lines = ["- **H0**: Triality-governed attachment does not stabilize clustering at 0.25;", "- **H1**: C -> 0.25 (+/- 0.05) at N >= 5000 nodes."]
+decision_lines = ["- **Decision rule**: Monte Carlo simulation with N=100, 1000, 5000. Report"]
+conclusion_lines = ["- **Status**: PENDING VERIFICATION."]
+inference_markers = []
 assumption_text = "- **H0**: Triality-governed attachment does not stabilize clustering at 0.25; | - **H1**: C -> 0.25 (+/- 0.05) at N >= 5000 nodes."
 decision_rule_text = "- **Decision rule**: Monte Carlo simulation with N=100, 1000, 5000. Report"
 conclusion_text = "- **Status**: PENDING VERIFICATION."
-excerpt = "- **H0**: Triality-governed attachment does not stabilize clustering at 0.25; || clustering either diverges, goes to 0, or converges to a different value. || - **H1**: C -> 0.25 (+/- 0.05) at N >= 5000 nodes. || - **Decision rule**: Monte Carlo simulation with N=100, 1000, 5000. Report || mean C at N=5000 with 95% CI. Reject H0 if CI excludes 0.25. || - **Required evidence**: `crates/cosmology_core/src/spectral.rs`, || `tests/test_bigraph_cosmogenesis.py`. || - **Status**: PENDING VERIFICATION."
+excerpt = "- **H0**: Triality-governed attachment does not stabilize clustering at 0.25; || clustering either diverges, goes to 0, or converges to a different value. || - **H1**: C -> 0.25 (+/- 0.05) at N >= 5000 nodes. || - **Decision rule**: Monte Carlo simulation with N=100, 1000, 5000. Report || mean C at N=5000 with 95% CI. Reject H0 if CI excludes 0.25. || - **Required evidence**: `crates/cosmology_core/src/spectral.rs`,"
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -591,10 +795,16 @@ section_title = "C-038: Dark energy w0 = -5/6 from twist sectors"
 section_level = 3
 line_start = 673
 line_end = 684
+step_count = 8
+supports_claim = false
+assumption_lines = ["- **H0**: w0 = -5/6 is consistent with observational data (BAO + SNe + H(z)).", "- **H1**: Observational data disfavor w0 = -5/6 compared to w = -1 (Lambda-CDM)."]
+decision_lines = ["- **Decision rule**: Compute chi2 and BIC for w = -0.8333 vs w = -1 vs best-fit w"]
+conclusion_lines = ["- **Status**: PENDING VERIFICATION (expected: disfavored at ~5.6 sigma)."]
+inference_markers = []
 assumption_text = "- **H0**: w0 = -5/6 is consistent with observational data (BAO + SNe + H(z)). | - **H1**: Observational data disfavor w0 = -5/6 compared to w = -1 (Lambda-CDM)."
 decision_rule_text = "- **Decision rule**: Compute chi2 and BIC for w = -0.8333 vs w = -1 vs best-fit w"
 conclusion_text = "- **Status**: PENDING VERIFICATION (expected: disfavored at ~5.6 sigma)."
-excerpt = "- **H0**: w0 = -5/6 is consistent with observational data (BAO + SNe + H(z)). || - **H1**: Observational data disfavor w0 = -5/6 compared to w = -1 (Lambda-CDM). || - **Decision rule**: Compute chi2 and BIC for w = -0.8333 vs w = -1 vs best-fit w || using existing cosmological datasets. Report delta-BIC and sigma tension. || - **Required evidence**: `crates/cosmology_core/src/bounce.rs`, || `tests/test_exceptional_w0.py`. || - **Status**: PENDING VERIFICATION (expected: disfavored at ~5.6 sigma). || ---"
+excerpt = "- **H0**: w0 = -5/6 is consistent with observational data (BAO + SNe + H(z)). || - **H1**: Observational data disfavor w0 = -5/6 compared to w = -1 (Lambda-CDM). || - **Decision rule**: Compute chi2 and BIC for w = -0.8333 vs w = -1 vs best-fit w || using existing cosmological datasets. Report delta-BIC and sigma tension. || - **Required evidence**: `crates/cosmology_core/src/bounce.rs`, || `tests/test_exceptional_w0.py`."
 claim_refs = []
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -608,10 +818,16 @@ section_title = "v36 Claims: Trilinearity, Inverses, and Derivations (GD-GI)"
 section_level = 2
 line_start = 2351
 line_end = 2361
+step_count = 8
+supports_claim = true
+assumption_lines = []
+decision_lines = []
+conclusion_lines = ["| ID | Claim | Where stated | Status | Last verified | What would verify/refute it |", "| C-262 | Associator trilinearity: A(a+b,c,d) = A(a,c,d) + A(b,c,d) and A(alpha*a,c,d) = alpha*A(a,c,d), likewise in 2nd and 3rd arguments. Holds EXACTLY at ALL CD dims 4-256. This is a structural consequence of bilinearity of the CD product. The associator is a trilinear map at every level of the CD tower. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGDAssociatorTrilinearity` (5 tests). All dims exact. |", "| C-263 | Product of inverses: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 (composition algebras). Fails at dim>=16 with relative errors ~0.4-0.75. This identity requires norm multiplicativity and alternativity, both of which break at dim>=16. The failure magnitude stabilizes rather than growing with dimension. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGEProductOfInverses` (5 tests). Exact at dim<=8; fails beyond. |", "| C-264 | Commutator-to-associator norm ratio:\\|\\|[a,b]\\|\\|/\\|\\|A(a,b,c)\\|\\|-> sqrt(2) ~ 1.414 as dim -> infinity. This follows from\\|\\|[a,b]\\|\\|-> 2.0 (C-222) and\\|\\|A\\|\\|-> sqrt(2) (C-253), giving ratio 2/sqrt(2) = sqrt(2). Convergence is monotonic from ~1.58 at dim=8 to ~1.41 at dim>=128. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGFCommutatorAssociatorRatio` (5 tests). Converges to sqrt(2). |", "| C-265 | Inner derivation D(a,b)(x) = [[a,b],x] - 3*A(a,b,x) satisfies the Leibniz rule D(xy) = D(x)y + xD(y) at dim<=8 (alternative algebras). Fails at dim>=16 with Leibniz violations growing to ~4-6. This verifies D(a,b) is a proper derivation exactly on the alternative/composition algebras. The derivation algebra Der(O) is 14-dimensional (= g2). | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGGInnerDerivation` (6 tests). Leibniz at dim<=8; fails beyond. |", "| C-266 | Flexible nucleus = full algebra at ALL CD dims 4-128. Every element satisfies (xa)x = x(ax), confirming universal flexibility (C-215) via direct element-by-element sampling. This is a defining property of the entire CD tower. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGHFlexibleNucleus` (3 tests). 100% pass rate at all dims. |", "| C-267 | Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufang loop). Fails at dim>=16 with violations growing from ~1.4 (dim=16) to ~2.2 (dim=64). This verifies the unit elements of R,C,H,O form a Moufang loop but sedenions and beyond do not. Combined with C-250 (Bol), C-236 (right Moufang), the full Moufang quartet is now verified. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGIMoufangIdentity` (5 tests). Holds at dim<=8; fails beyond. |"]
+inference_markers = ["| C-264 | Commutator-to-associator norm ratio:\\|\\|[a,b]\\|\\|/\\|\\|A(a,b,c)\\|\\|-> sqrt(2) ~ 1.414 as dim -> infinity. This follows from\\|\\|[a,b]\\|\\|-> 2.0 (C-222) and\\|\\|A\\|\\|-> sqrt(2) (C-253), giving ratio 2/sqrt(2) = sqrt(2). Convergence is monotonic from ~1.58 at dim=8 to ~1.41 at dim>=128. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGFCommutatorAssociatorRatio` (5 tests). Converges to sqrt(2). |"]
 assumption_text = ""
 decision_rule_text = ""
 conclusion_text = "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it | | | C-262 | Associator trilinearity: A(a+b,c,d) = A(a,c,d) + A(b,c,d) and A(alpha*a,c,d) = alpha*A(a,c,d), likewise in 2nd and 3rd arguments. Holds EXACTLY at ALL CD dims 4-256. This is a structural consequence of bilinearity of the CD product. The associator is a trilinear map at every level of the CD tower. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGDAssociatorTrilinearity` (5 tests). All dims exact. | | | C-263 | Product of inverses: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 (composition algebras). Fails at dim>=16 with relative errors ~0.4-0.75. This identity requires norm multiplicativity and alternativity, both of which break at dim>=16. The failure magnitude stabilizes rather than growing with dimension. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGEProductOfInverses` (5 tests). Exact at dim<=8; fails beyond. | | | C-264 | Commutator-to-associator norm ratio:\\|\\|[a,b]\\|\\|/\\|\\|A(a,b,c)\\|\\|-> sqrt(2) ~ 1.414 as dim -> infinity. This follows from\\|\\|[a,b]\\|\\|-> 2.0 (C-222) and\\|\\|A\\|\\|-> sqrt(2) (C-253), giving ratio 2/sqrt(2) = sqrt(2). Convergence is monotonic from ~1.58 at dim=8 to ~1.41 at dim>=128. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGFCommutatorAssociatorRatio` (5 tests). Converges to sqrt(2). | | | C-265 | Inner derivation D(a,b)(x) = [[a,b],x] - 3*A(a,b,x) satisfies the Leibniz rule D(xy) = D(x)y + xD(y) at dim<=8 (alternative algebras). Fails at dim>=16 with Leibniz violations growing to ~4-6. This verifies D(a,b) is a proper derivation exactly on the alternative/composition algebras. The derivation algebra Der(O) is 14-dimensional (= g2). | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGGInnerDerivation` (6 tests). Leibniz at dim<=8; fails beyond. | | | C-266 | Flexible nucleus = full algebra at ALL CD dims 4-128. Every element satisfies (xa)x = x(ax), confirming universal flexibility (C-215) via direct element-by-element sampling. This is a defining property of the entire CD tower. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGHFlexibleNucleus` (3 tests). 100% pass rate at all dims. | | | C-267 | Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufang loop). Fails at dim>=16 with violations growing from ~1.4 (dim=16) to ~2.2 (dim=64). This verifies the unit elements of R,C,H,O form a Moufang loop but sedenions and beyond do not. Combined with C-250 (Bol), C-236 (right Moufang), the full Moufang quartet is now verified. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGIMoufangIdentity` (5 tests). Holds at dim<=8; fails beyond. |"
-excerpt = "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it | || |---:|---|---|---|---|---| || | C-262 | Associator trilinearity: A(a+b,c,d) = A(a,c,d) + A(b,c,d) and A(alpha*a,c,d) = alpha*A(a,c,d), likewise in 2nd and 3rd arguments. Holds EXACTLY at ALL CD dims 4-256. This is a structural consequence of bilinearity of the CD product. The associator is a trilinear map at every level of the CD tower. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGDAssociatorTrilinearity` (5 tests). All dims exact. | || | C-263 | Product of inverses: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 (composition algebras). Fails at dim>=16 with relative errors ~0.4-0.75. This identity requires norm multiplicativity and alternativity, both of which break at dim>=16. The failure magnitude stabilizes rather than growing with dimension. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGEProductOfInverses` (5 tests). Exact at dim<=8; fails beyond. | || | C-264 | Commutator-to-associator norm ratio:\\|\\|[a,b]\\|\\|/\\|\\|A(a,b,c)\\|\\|-> sqrt(2) ~ 1.414 as dim -> infinity. This follows from\\|\\|[a,b]\\|\\|-> 2.0 (C-222) and\\|\\|A\\|\\|-> sqrt(2) (C-253), giving ratio 2/sqrt(2) = sqrt(2). Convergence is monotonic from ~1.58 at dim=8 to ~1.41 at dim>=128. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGFCommutatorAssociatorRatio` (5 tests). Converges to sqrt(2). | || | C-265 | Inner derivation D(a,b)(x) = [[a,b],x] - 3*A(a,b,x) satisfies the Leibniz rule D(xy) = D(x)y + xD(y) at dim<=8 (alternative algebras). Fails at dim>=16 with Leibniz violations growing to ~4-6. This verifies D(a,b) is a proper derivation exactly on the alternative/composition algebras. The derivation algebra Der(O) is 14-dimensional (= g2). | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGGInnerDerivation` (6 tests). Leibniz at dim<=8; fails beyond. | || | C-266 | Flexible nucleus = full algebra at ALL CD dims 4-128. Every element satisfies (xa)x = x(ax), confirming universal flexibility (C-215) via direct element-by-element sampling. This is a defining property of the entire CD tower. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGHFlexibleNucleus` (3 tests). 100% pass rate at all dims. | || | C-267 | Moufang identity a(b(ac)) = ((ab)a)c holds EXACTLY at dim<=8 (Moufang loop). Fails at dim>=16 with violations growing from ~1.4 (dim=16) to ~2.2 (dim=64). This verifies the unit elements of R,C,H,O form a Moufang loop but sedenions and beyond do not. Combined with C-250 (Bol), C-236 (right Moufang), the full Moufang quartet is now verified. | `src/scripts/analysis/cd_algebraic_experiments_v36.py`, `data/csv/cd_algebraic_experiments_v36.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v30.py::TestGIMoufangIdentity` (5 tests). Holds at dim<=8; fails beyond. |"
+excerpt = "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it | || |---:|---|---|---|---|---| || | C-262 | Associator trilinearity: A(a+b,c,d) = A(a,c,d) + A(b,c,d) and A(alpha*a,c,d) = alpha*A(a,c,d), likewise in ... || | C-263 | Product of inverses: (ab)^{-1} = b^{-1}*a^{-1} holds EXACTLY at dim<=8 (composition algebras). Fails at dim... || | C-264 | Commutator-to-associator norm ratio:\\|\\|[a,b]\\|\\|/\\|\\|A(a,b,c)\\|\\|-> sqrt(2) ~ 1.414 as dim -> infinity. Th... || | C-265 | Inner derivation D(a,b)(x) = [[a,b],x] - 3*A(a,b,x) satisfies the Leibniz rule D(xy) = D(x)y + xD(y) at dim..."
 claim_refs = ["C-215", "C-222", "C-236", "C-250", "C-253", "C-262", "C-263", "C-264", "C-265", "C-266", "C-267"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -625,10 +841,16 @@ section_title = "v41 Claims (Forty-first Generation -- Derivations, Bilinear For
 section_level = 2
 line_start = 2592
 line_end = 2602
+step_count = 8
+supports_claim = true
+assumption_lines = []
+decision_lines = []
+conclusion_lines = ["| Claim ID | Statement | Evidence | Status | Date | Test Coverage |", "| C-292 | Moufang identity a(b(ac)) = (a(ba))c holds EXACTLY at dim<=8 (Moufang loop) and FAILS at dim>=16. The failure ratio increases monotonically: 0.80 (dim=16), 1.21 (dim=32), 1.48 (dim=64), 1.58 (dim=128). The Moufang property is a composition algebra boundary phenomenon. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHHMoufangLoopFailure` (4 tests). Moufang iff dim<=8; ratio monotone. |", "| C-293 | Conjugate anti-automorphism: conj(ab) = conj(b)*conj(a) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This is a structural identity of the CD construction itself -- conjugation reverses multiplication order. It holds because CD doubling defines conj by component negation. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHIConjugateAntiAutomorphism` (4 tests). Bitwise exact at all dims. |", "| C-294 | Center of CD algebra: Z(A) = full algebra at dim=2 (C is commutative); Z(A) = R*e_0 (scalars only) at dim>=4. Verified by testing that scalar elements commute with all elements, while nonscalar elements always fail to commute at dim>=4. The center shrinks from full to minimal at the first non-commutative step. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHJCenter` (4 tests). Full center at dim=2; scalar-only at dim>=4. |", "| C-295 | Cyclic associator sum: A(a,b,c) + A(b,c,a) + A(c,a,b) = 0 at dim<=4 (associative), = 3*A(a,b,c) EXACTLY at dim=8 (alternative, ratio=3.000), and deviates below 3 at dim>=16: 2.80 (dim=16), 2.65 (dim=32), 2.59 (dim=64), 2.52 (dim=128). At dim=8 the ratio is exactly 3 because the associator is totally antisymmetric and cyclic permutations are even. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHKCyclicAssociatorSum` (6 tests). Zero/triple/deviate pattern. |", "| C-296 | Left-right multiplication intertwining: xa = conj(conj(a)*conj(x)) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This identity expresses right multiplication as left multiplication conjugated by the involution. It is a structural consequence of the CD construction. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHLLRIntertwining` (3 tests). Bitwise exact at all dims. |", "| C-297 | Product of conjugates: conj(a)*conj(b) = conj(ba) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This is equivalent to the anti-automorphism property (C-293) but tested in the reverse direction. Both orderings of the anti-automorphism identity are verified. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHMProductOfConjugates` (3 tests). Bitwise exact at all dims. |"]
+inference_markers = []
 assumption_text = ""
 decision_rule_text = ""
 conclusion_text = "| Claim ID | Statement | Evidence | Status | Date | Test Coverage | | | C-292 | Moufang identity a(b(ac)) = (a(ba))c holds EXACTLY at dim<=8 (Moufang loop) and FAILS at dim>=16. The failure ratio increases monotonically: 0.80 (dim=16), 1.21 (dim=32), 1.48 (dim=64), 1.58 (dim=128). The Moufang property is a composition algebra boundary phenomenon. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHHMoufangLoopFailure` (4 tests). Moufang iff dim<=8; ratio monotone. | | | C-293 | Conjugate anti-automorphism: conj(ab) = conj(b)*conj(a) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This is a structural identity of the CD construction itself -- conjugation reverses multiplication order. It holds because CD doubling defines conj by component negation. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHIConjugateAntiAutomorphism` (4 tests). Bitwise exact at all dims. | | | C-294 | Center of CD algebra: Z(A) = full algebra at dim=2 (C is commutative); Z(A) = R*e_0 (scalars only) at dim>=4. Verified by testing that scalar elements commute with all elements, while nonscalar elements always fail to commute at dim>=4. The center shrinks from full to minimal at the first non-commutative step. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHJCenter` (4 tests). Full center at dim=2; scalar-only at dim>=4. | | | C-295 | Cyclic associator sum: A(a,b,c) + A(b,c,a) + A(c,a,b) = 0 at dim<=4 (associative), = 3*A(a,b,c) EXACTLY at dim=8 (alternative, ratio=3.000), and deviates below 3 at dim>=16: 2.80 (dim=16), 2.65 (dim=32), 2.59 (dim=64), 2.52 (dim=128). At dim=8 the ratio is exactly 3 because the associator is totally antisymmetric and cyclic permutations are even. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHKCyclicAssociatorSum` (6 tests). Zero/triple/deviate pattern. | | | C-296 | Left-right multiplication intertwining: xa = conj(conj(a)*conj(x)) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This identity expresses right multiplication as left multiplication conjugated by the involution. It is a structural consequence of the CD construction. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHLLRIntertwining` (3 tests). Bitwise exact at all dims. | | | C-297 | Product of conjugates: conj(a)*conj(b) = conj(ba) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This is equivalent to the anti-automorphism property (C-293) but tested in the reverse direction. Both orderings of the anti-automorphism identity are verified. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHMProductOfConjugates` (3 tests). Bitwise exact at all dims. |"
-excerpt = "| Claim ID | Statement | Evidence | Status | Date | Test Coverage | || |---|---|---|---|---|---| || | C-292 | Moufang identity a(b(ac)) = (a(ba))c holds EXACTLY at dim<=8 (Moufang loop) and FAILS at dim>=16. The failure ratio increases monotonically: 0.80 (dim=16), 1.21 (dim=32), 1.48 (dim=64), 1.58 (dim=128). The Moufang property is a composition algebra boundary phenomenon. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHHMoufangLoopFailure` (4 tests). Moufang iff dim<=8; ratio monotone. | || | C-293 | Conjugate anti-automorphism: conj(ab) = conj(b)*conj(a) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This is a structural identity of the CD construction itself -- conjugation reverses multiplication order. It holds because CD doubling defines conj by component negation. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHIConjugateAntiAutomorphism` (4 tests). Bitwise exact at all dims. | || | C-294 | Center of CD algebra: Z(A) = full algebra at dim=2 (C is commutative); Z(A) = R*e_0 (scalars only) at dim>=4. Verified by testing that scalar elements commute with all elements, while nonscalar elements always fail to commute at dim>=4. The center shrinks from full to minimal at the first non-commutative step. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHJCenter` (4 tests). Full center at dim=2; scalar-only at dim>=4. | || | C-295 | Cyclic associator sum: A(a,b,c) + A(b,c,a) + A(c,a,b) = 0 at dim<=4 (associative), = 3*A(a,b,c) EXACTLY at dim=8 (alternative, ratio=3.000), and deviates below 3 at dim>=16: 2.80 (dim=16), 2.65 (dim=32), 2.59 (dim=64), 2.52 (dim=128). At dim=8 the ratio is exactly 3 because the associator is totally antisymmetric and cyclic permutations are even. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHKCyclicAssociatorSum` (6 tests). Zero/triple/deviate pattern. | || | C-296 | Left-right multiplication intertwining: xa = conj(conj(a)*conj(x)) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This identity expresses right multiplication as left multiplication conjugated by the involution. It is a structural consequence of the CD construction. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHLLRIntertwining` (3 tests). Bitwise exact at all dims. | || | C-297 | Product of conjugates: conj(a)*conj(b) = conj(ba) holds at ALL CD dims 2-256 with EXACT zero error (bitwise identical). This is equivalent to the anti-automorphism property (C-293) but tested in the reverse direction. Both orderings of the anti-automorphism identity are verified. | `src/scripts/analysis/cd_algebraic_experiments_v41.py`, `data/csv/cd_algebraic_experiments_v41.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v35.py::TestHMProductOfConjugates` (3 tests). Bitwise exact at all dims. |"
+excerpt = "| Claim ID | Statement | Evidence | Status | Date | Test Coverage | || |---|---|---|---|---|---| || | C-292 | Moufang identity a(b(ac)) = (a(ba))c holds EXACTLY at dim<=8 (Moufang loop) and FAILS at dim>=16. The failu... || | C-293 | Conjugate anti-automorphism: conj(ab) = conj(b)*conj(a) holds at ALL CD dims 2-256 with EXACT zero error (b... || | C-294 | Center of CD algebra: Z(A) = full algebra at dim=2 (C is commutative); Z(A) = R*e_0 (scalars only) at dim>=... || | C-295 | Cyclic associator sum: A(a,b,c) + A(b,c,a) + A(c,a,b) = 0 at dim<=4 (associative), = 3*A(a,b,c) EXACTLY at ..."
 claim_refs = ["C-292", "C-293", "C-294", "C-295", "C-296", "C-297"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -642,10 +864,16 @@ section_title = "v48: Exponential Map, Traces, and Derivations (IX-JC)"
 section_level = 2
 line_start = 2919
 line_end = 2929
+step_count = 8
+supports_claim = true
+assumption_lines = []
+decision_lines = []
+conclusion_lines = ["| Claim ID | Statement | Evidence | Status | Date | Tests |", "| C-334 | Exponential map: for purely imaginary unit u (Re(u)=0, \\\\|\\\\|u\\\\|\\\\|=1), exp(t*u) = cos(t)*e_0 + sin(t)*u. Verified via 20-term power series at ALL CD dims 4-128. This follows from u^2 = -e_0, giving the same series as complex exponential. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIXExponentialMap` (3 tests). Exact at all dims. |", "| C-335 | Squaring Lipschitz constant: \\\\|\\\\|a^2 - b^2\\\\|\\\\|<= C*\\\\|\\\\|a-b\\\\|\\\\|*(\\\\|\\\\|a\\\\|\\\\|+\\\\|\\\\|b\\\\|\\\\|) with C<=1 at dim<=8 and C decreasing with dim: 0.98 (dim=4), 0.86 (dim=8), 0.61 (dim=16), 0.27 (dim=64), 0.15 (dim=256). The squaring map becomes MORE Lipschitz-stable at high dim due to concentration of measure. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIYSquaringLipschitz` (4 tests). C bounded and decreasing. |", "| C-336 | Trace of left multiplication: Tr(L_a) = dim*Re(a) at ALL CD dims 2-128. Each diagonal entry L_a[j,j] = Re(a) because (a*e_j)_j = Re(a) for all j. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIZTraceLa` (3 tests). Exact at all dims. |", "| C-337 | Inner derivation: D(a,b) = [L_a, L_b] - L_{[a,b]} = 0 at dim<=4 (associative) and D != 0 at dim>=8. At dim=8, D(a,b) generates the G2 Lie algebra of derivations of the octonions. At dim>=16, D(a,b) is nonzero but no longer a derivation of the algebra. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJAInnerDerivation` (5 tests). Zero iff associative. |", "| C-338 | Pythagorean decomposition: \\\\|\\\\|a\\\\|\\\\|^2 = Re(a)^2 + \\\\|\\\\|Im(a)\\\\|\\\\|^2 at ALL CD dims 2-256. This is trivially the Euclidean norm decomposition a = (Re(a), Im_1(a), ..., Im_{d-1}(a)). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJBPythagorean` (3 tests). Exact at all dims. |", "| C-339 | Imaginary square: for purely imaginary u (Re(u)=0), u^2 = -\\\\|\\\\|u\\\\|\\\\|^2*e_0 at ALL CD dims 2-256. This follows from the quadratic identity (C-321) with Re(u)=0. Every purely imaginary unit element squares to -e_0, generalizing i^2 = -1. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJCImaginarySquare` (3 tests). Exact at all dims. |"]
+inference_markers = ["| C-334 | Exponential map: for purely imaginary unit u (Re(u)=0, \\\\|\\\\|u\\\\|\\\\|=1), exp(t*u) = cos(t)*e_0 + sin(t)*u. Verified via 20-term power series at ALL CD dims 4-128. This follows from u^2 = -e_0, giving the same series as complex exponential. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIXExponentialMap` (3 tests). Exact at all dims. |", "| C-339 | Imaginary square: for purely imaginary u (Re(u)=0), u^2 = -\\\\|\\\\|u\\\\|\\\\|^2*e_0 at ALL CD dims 2-256. This follows from the quadratic identity (C-321) with Re(u)=0. Every purely imaginary unit element squares to -e_0, generalizing i^2 = -1. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJCImaginarySquare` (3 tests). Exact at all dims. |"]
 assumption_text = ""
 decision_rule_text = ""
 conclusion_text = "| Claim ID | Statement | Evidence | Status | Date | Tests | | | C-334 | Exponential map: for purely imaginary unit u (Re(u)=0, \\\\|\\\\|u\\\\|\\\\|=1), exp(t*u) = cos(t)*e_0 + sin(t)*u. Verified via 20-term power series at ALL CD dims 4-128. This follows from u^2 = -e_0, giving the same series as complex exponential. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIXExponentialMap` (3 tests). Exact at all dims. | | | C-335 | Squaring Lipschitz constant: \\\\|\\\\|a^2 - b^2\\\\|\\\\|<= C*\\\\|\\\\|a-b\\\\|\\\\|*(\\\\|\\\\|a\\\\|\\\\|+\\\\|\\\\|b\\\\|\\\\|) with C<=1 at dim<=8 and C decreasing with dim: 0.98 (dim=4), 0.86 (dim=8), 0.61 (dim=16), 0.27 (dim=64), 0.15 (dim=256). The squaring map becomes MORE Lipschitz-stable at high dim due to concentration of measure. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIYSquaringLipschitz` (4 tests). C bounded and decreasing. | | | C-336 | Trace of left multiplication: Tr(L_a) = dim*Re(a) at ALL CD dims 2-128. Each diagonal entry L_a[j,j] = Re(a) because (a*e_j)_j = Re(a) for all j. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIZTraceLa` (3 tests). Exact at all dims. | | | C-337 | Inner derivation: D(a,b) = [L_a, L_b] - L_{[a,b]} = 0 at dim<=4 (associative) and D != 0 at dim>=8. At dim=8, D(a,b) generates the G2 Lie algebra of derivations of the octonions. At dim>=16, D(a,b) is nonzero but no longer a derivation of the algebra. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJAInnerDerivation` (5 tests). Zero iff associative. | | | C-338 | Pythagorean decomposition: \\\\|\\\\|a\\\\|\\\\|^2 = Re(a)^2 + \\\\|\\\\|Im(a)\\\\|\\\\|^2 at ALL CD dims 2-256. This is trivially the Euclidean norm decomposition a = (Re(a), Im_1(a), ..., Im_{d-1}(a)). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJBPythagorean` (3 tests). Exact at all dims. | | | C-339 | Imaginary square: for purely imaginary u (Re(u)=0), u^2 = -\\\\|\\\\|u\\\\|\\\\|^2*e_0 at ALL CD dims 2-256. This follows from the quadratic identity (C-321) with Re(u)=0. Every purely imaginary unit element squares to -e_0, generalizing i^2 = -1. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJCImaginarySquare` (3 tests). Exact at all dims. |"
-excerpt = "| Claim ID | Statement | Evidence | Status | Date | Tests | || |----------|-----------|----------|--------|------|-------| || | C-334 | Exponential map: for purely imaginary unit u (Re(u)=0, \\\\|\\\\|u\\\\|\\\\|=1), exp(t*u) = cos(t)*e_0 + sin(t)*u. Verified via 20-term power series at ALL CD dims 4-128. This follows from u^2 = -e_0, giving the same series as complex exponential. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIXExponentialMap` (3 tests). Exact at all dims. | || | C-335 | Squaring Lipschitz constant: \\\\|\\\\|a^2 - b^2\\\\|\\\\|<= C*\\\\|\\\\|a-b\\\\|\\\\|*(\\\\|\\\\|a\\\\|\\\\|+\\\\|\\\\|b\\\\|\\\\|) with C<=1 at dim<=8 and C decreasing with dim: 0.98 (dim=4), 0.86 (dim=8), 0.61 (dim=16), 0.27 (dim=64), 0.15 (dim=256). The squaring map becomes MORE Lipschitz-stable at high dim due to concentration of measure. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIYSquaringLipschitz` (4 tests). C bounded and decreasing. | || | C-336 | Trace of left multiplication: Tr(L_a) = dim*Re(a) at ALL CD dims 2-128. Each diagonal entry L_a[j,j] = Re(a) because (a*e_j)_j = Re(a) for all j. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestIZTraceLa` (3 tests). Exact at all dims. | || | C-337 | Inner derivation: D(a,b) = [L_a, L_b] - L_{[a,b]} = 0 at dim<=4 (associative) and D != 0 at dim>=8. At dim=8, D(a,b) generates the G2 Lie algebra of derivations of the octonions. At dim>=16, D(a,b) is nonzero but no longer a derivation of the algebra. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJAInnerDerivation` (5 tests). Zero iff associative. | || | C-338 | Pythagorean decomposition: \\\\|\\\\|a\\\\|\\\\|^2 = Re(a)^2 + \\\\|\\\\|Im(a)\\\\|\\\\|^2 at ALL CD dims 2-256. This is trivially the Euclidean norm decomposition a = (Re(a), Im_1(a), ..., Im_{d-1}(a)). Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJBPythagorean` (3 tests). Exact at all dims. | || | C-339 | Imaginary square: for purely imaginary u (Re(u)=0), u^2 = -\\\\|\\\\|u\\\\|\\\\|^2*e_0 at ALL CD dims 2-256. This follows from the quadratic identity (C-321) with Re(u)=0. Every purely imaginary unit element squares to -e_0, generalizing i^2 = -1. Universal. | `src/scripts/analysis/cd_algebraic_experiments_v48.py`, `data/csv/cd_algebraic_experiments_v48.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v42.py::TestJCImaginarySquare` (3 tests). Exact at all dims. |"
+excerpt = "| Claim ID | Statement | Evidence | Status | Date | Tests | || |----------|-----------|----------|--------|------|-------| || | C-334 | Exponential map: for purely imaginary unit u (Re(u)=0, \\\\|\\\\|u\\\\|\\\\|=1), exp(t*u) = cos(t)*e_0 + sin(t)*u. ... || | C-335 | Squaring Lipschitz constant: \\\\|\\\\|a^2 - b^2\\\\|\\\\|<= C*\\\\|\\\\|a-b\\\\|\\\\|*(\\\\|\\\\|a\\\\|\\\\|+\\\\|\\\\|b\\\\|\\\\|) with C... || | C-336 | Trace of left multiplication: Tr(L_a) = dim*Re(a) at ALL CD dims 2-128. Each diagonal entry L_a[j,j] = Re(a... || | C-337 | Inner derivation: D(a,b) = [L_a, L_b] - L_{[a,b]} = 0 at dim<=4 (associative) and D != 0 at dim>=8. At dim=..."
 claim_refs = ["C-321", "C-334", "C-335", "C-336", "C-337", "C-338", "C-339"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -659,10 +887,16 @@ section_title = "v53: Inverse, Bol, Doubling, Center, Derivations (KB-KG)"
 section_level = 3
 line_start = 3164
 line_end = 3174
+step_count = 8
+supports_claim = true
+assumption_lines = []
+decision_lines = []
+conclusion_lines = ["| ID | Claim | Where stated | Status | Last verified | What would verify/refute it |", "| C-364 | Inverse multiplicativity: (ab)^{-1} = b^{-1}*a^{-1} iff dim<=8 (alternative algebras). At dim>=16, the relation fails with diffs ~0.001-0.025. This is because non-alternativity breaks the cancellation needed for inverse reversal. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKBInverseMultiplicativity` (5 tests). Holds iff dim<=8. |", "| C-365 | Left Bol identity: a(b(ac)) = (a(ba))c iff dim<=8. In a Moufang loop, left and right Bol identities both hold. At dim>=16, fails with diffs ~300-10600. Together with the three Moufang identities (C-327, C-348, C-351), this verifies the complete Moufang loop structure at dim<=8. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKCLeftBol` (4 tests). Holds iff dim<=8. |", "| C-366 | Left-right operator commutation: L_a*R_b = R_b*L_a iff dim<=4 (associative). At dim>=8, L_a and R_b generically do not commute. Normalized ratio\\|\\|[L_a,R_b]\\|\\|_F/(\\|\\|a\\|\\|*\\|\\|b\\|\\|*dim) is ~0.41 at dim=8, decreasing to ~0.18 at dim=64. Reconfirms C-331. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKDLRCommutation` (3 tests). Commutes iff associative. |", "| C-367 | Cayley-Dickson doubling construction: (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) verified at all dims 4-128 (doubling from 2-64). Direct multiplication at dim 2d matches the doubling formula applied to dim d halves. Universal and exact. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKEDoublingVerification` (3 tests). Exact at all dims. |", "| C-368 | Center of CD algebra: at dim=2 (complex), center = full algebra (commutative). At dim>=4, center = R*e_0 (scalars only). Scalar elements commute with everything at all dims. Pure imaginary elements do NOT commute at dim>=4. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKFCenterOfAlgebra` (5 tests). Center = R iff dim>=4. |", "| C-369 | Derivation algebra dimensions: Der(C) = 0 (dim=2), Der(H) = so(3) dim 3 (dim=4), Der(O) = g2 dim 14 (dim=8). Computed via null space of the Leibniz constraint system D(xy) = D(x)y + xD(y) on basis elements. All three match classical results exactly. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKGDerivationDimension` (5 tests). All dimensions match. |"]
+inference_markers = []
 assumption_text = ""
 decision_rule_text = ""
 conclusion_text = "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it | | | C-364 | Inverse multiplicativity: (ab)^{-1} = b^{-1}*a^{-1} iff dim<=8 (alternative algebras). At dim>=16, the relation fails with diffs ~0.001-0.025. This is because non-alternativity breaks the cancellation needed for inverse reversal. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKBInverseMultiplicativity` (5 tests). Holds iff dim<=8. | | | C-365 | Left Bol identity: a(b(ac)) = (a(ba))c iff dim<=8. In a Moufang loop, left and right Bol identities both hold. At dim>=16, fails with diffs ~300-10600. Together with the three Moufang identities (C-327, C-348, C-351), this verifies the complete Moufang loop structure at dim<=8. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKCLeftBol` (4 tests). Holds iff dim<=8. | | | C-366 | Left-right operator commutation: L_a*R_b = R_b*L_a iff dim<=4 (associative). At dim>=8, L_a and R_b generically do not commute. Normalized ratio\\|\\|[L_a,R_b]\\|\\|_F/(\\|\\|a\\|\\|*\\|\\|b\\|\\|*dim) is ~0.41 at dim=8, decreasing to ~0.18 at dim=64. Reconfirms C-331. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKDLRCommutation` (3 tests). Commutes iff associative. | | | C-367 | Cayley-Dickson doubling construction: (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) verified at all dims 4-128 (doubling from 2-64). Direct multiplication at dim 2d matches the doubling formula applied to dim d halves. Universal and exact. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKEDoublingVerification` (3 tests). Exact at all dims. | | | C-368 | Center of CD algebra: at dim=2 (complex), center = full algebra (commutative). At dim>=4, center = R*e_0 (scalars only). Scalar elements commute with everything at all dims. Pure imaginary elements do NOT commute at dim>=4. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKFCenterOfAlgebra` (5 tests). Center = R iff dim>=4. | | | C-369 | Derivation algebra dimensions: Der(C) = 0 (dim=2), Der(H) = so(3) dim 3 (dim=4), Der(O) = g2 dim 14 (dim=8). Computed via null space of the Leibniz constraint system D(xy) = D(x)y + xD(y) on basis elements. All three match classical results exactly. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKGDerivationDimension` (5 tests). All dimensions match. |"
-excerpt = "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it | || |---:|---|---|---|---|---| || | C-364 | Inverse multiplicativity: (ab)^{-1} = b^{-1}*a^{-1} iff dim<=8 (alternative algebras). At dim>=16, the relation fails with diffs ~0.001-0.025. This is because non-alternativity breaks the cancellation needed for inverse reversal. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKBInverseMultiplicativity` (5 tests). Holds iff dim<=8. | || | C-365 | Left Bol identity: a(b(ac)) = (a(ba))c iff dim<=8. In a Moufang loop, left and right Bol identities both hold. At dim>=16, fails with diffs ~300-10600. Together with the three Moufang identities (C-327, C-348, C-351), this verifies the complete Moufang loop structure at dim<=8. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKCLeftBol` (4 tests). Holds iff dim<=8. | || | C-366 | Left-right operator commutation: L_a*R_b = R_b*L_a iff dim<=4 (associative). At dim>=8, L_a and R_b generically do not commute. Normalized ratio\\|\\|[L_a,R_b]\\|\\|_F/(\\|\\|a\\|\\|*\\|\\|b\\|\\|*dim) is ~0.41 at dim=8, decreasing to ~0.18 at dim=64. Reconfirms C-331. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKDLRCommutation` (3 tests). Commutes iff associative. | || | C-367 | Cayley-Dickson doubling construction: (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) verified at all dims 4-128 (doubling from 2-64). Direct multiplication at dim 2d matches the doubling formula applied to dim d halves. Universal and exact. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKEDoublingVerification` (3 tests). Exact at all dims. | || | C-368 | Center of CD algebra: at dim=2 (complex), center = full algebra (commutative). At dim>=4, center = R*e_0 (scalars only). Scalar elements commute with everything at all dims. Pure imaginary elements do NOT commute at dim>=4. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKFCenterOfAlgebra` (5 tests). Center = R iff dim>=4. | || | C-369 | Derivation algebra dimensions: Der(C) = 0 (dim=2), Der(H) = so(3) dim 3 (dim=4), Der(O) = g2 dim 14 (dim=8). Computed via null space of the Leibniz constraint system D(xy) = D(x)y + xD(y) on basis elements. All three match classical results exactly. | `src/scripts/analysis/cd_algebraic_experiments_v53.py`, `data/csv/cd_algebraic_experiments_v53.json` | **Verified** (math) | 2026-02-01 | `tests/test_cd_algebraic_experiments_v47.py::TestKGDerivationDimension` (5 tests). All dimensions match. |"
+excerpt = "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it | || |---:|---|---|---|---|---| || | C-364 | Inverse multiplicativity: (ab)^{-1} = b^{-1}*a^{-1} iff dim<=8 (alternative algebras). At dim>=16, the rela... || | C-365 | Left Bol identity: a(b(ac)) = (a(ba))c iff dim<=8. In a Moufang loop, left and right Bol identities both ho... || | C-366 | Left-right operator commutation: L_a*R_b = R_b*L_a iff dim<=4 (associative). At dim>=8, L_a and R_b generic... || | C-367 | Cayley-Dickson doubling construction: (a,b)*(c,d) = (ac - conj(d)*b, d*a + b*conj(c)) verified at all dims ..."
 claim_refs = ["C-327", "C-331", "C-348", "C-351", "C-364", "C-365", "C-366", "C-367", "C-368", "C-369"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -676,10 +910,16 @@ section_title = "Emergence Layers Program Claims (inbox -> matrix, 2026-02-01)"
 section_level = 2
 line_start = 3469
 line_end = 3483
+step_count = 11
+supports_claim = true
+assumption_lines = ["| C-408 | Every thesis-level hypothesis must have symmetric falsification boundaries: a disconfirmation threshold (N_min, alpha/effect-size) under which the hypothesis is rejected, not merely \"needs more data\". | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/` | **Speculative** (method) | 2026-02-01 | Verify by writing explicit acceptance/rejection decision rules for each active claim (including N_min) and enforcing them in tests/verifiers; refute if claims remain non-refutable after sufficient sample size without predeclared escape hatches. |"]
+decision_lines = ["| C-403 | Geometry from spectral data must be stated at spectral-triple strength (A,H,D_geom) or equivalent; eigenvalues alone are not sufficient in general due to isospectral non-uniqueness. | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/SPECTRAL_TRIPLE_SCOPE.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/spectral/demo_pairs.py`, `tests/test_isospectral_nonisomorphic_pair.py` | **Speculative** (program) | 2026-02-01 | Verify by (1) using cached primary sources on spectral triples (including Lorentzian/Krein variants) and inverse-spectral counterexamples (see `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`); (2) keeping the existing commutative toy check in scope (`src/spectral_triple_toy.py`, `tests/test_spectral_triple_toy.py`, `data/csv/spectral_triple_toy_summary.csv`); (3) running `tests/test_isospectral_nonisomorphic_pair.py` which checks an isospectral-but-nonisomorphic graph pair (Laplacian spectrum matches, but clique structure differs); (4) enforcing A1 decision rule in `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`. |", "| C-404 | Bulk locality can be organized by boundary modular data K_A=-log rho_A and entanglement wedge reconstruction; robustness is naturally described by operator-algebra QEC (code subspace). | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SUMMARIES.md`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py` | **Speculative** (program) | 2026-02-01 | Verify by (1) using cached primary sources for AdS/CFT, RT/HRT, JLMS, bit threads, and holographic QEC (see `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`); (2) running the offline max-flow/min-cut toy check `tests/test_holography_bit_threads.py` (bit-thread proxy on small graphs, including a submodularity/SSA proxy check); (3) enforcing A2 decision rule in `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`. |", "| C-405 | Observers can be modeled as (approximate) correctable record algebras selected by open-system dynamics L_open (GKSL/Lindblad); redundancy in the environment yields classical records (pointer observables) resembling repetition-code robustness. | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SUMMARIES.md`, `src/quantum/open_systems/lindblad.py`, `tests/test_open_systems_lindblad.py`, `src/quantum/open_systems/redundancy.py`, `tests/test_open_systems_redundancy.py` | **Speculative** (program) | 2026-02-01 | Verify by (1) using cached primary sources for GKSL/Lindblad modeling, decoherence/pointer states, Quantum Darwinism, and operator-algebra QEC (see `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`); (2) running `tests/test_open_systems_lindblad.py` for dephasing and amplitude damping; (3) running `tests/test_open_systems_redundancy.py` for a minimal redundancy proxy; (4) enforcing A3 decision rule in `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`. |", "| C-407 | Reported sky-alignment p-values must include explicit trial-factor accounting (look-elsewhere) across tuned degrees of freedom (e.g., box-kite choice, smoothing scale, catalog cuts). | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py` | **Speculative** (method) | 2026-02-01 | Verify by maintaining an explicit \"tuned vs fixed\" parameter ledger and computing a conservative global bound (e.g., Bonferroni/Holm) consistent with the preregistered decision rule; refute if significance claims are made without a declared trial model. |", "| C-408 | Every thesis-level hypothesis must have symmetric falsification boundaries: a disconfirmation threshold (N_min, alpha/effect-size) under which the hypothesis is rejected, not merely \"needs more data\". | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/` | **Speculative** (method) | 2026-02-01 | Verify by writing explicit acceptance/rejection decision rules for each active claim (including N_min) and enforcing them in tests/verifiers; refute if claims remain non-refutable after sufficient sample size without predeclared escape hatches. |"]
+conclusion_lines = ["statements and (b) offline checks, or else be explicitly rejected.", "| ID | Claim | Where stated | Status | Last verified | What would verify/refute it |", "| C-408 | Every thesis-level hypothesis must have symmetric falsification boundaries: a disconfirmation threshold (N_min, alpha/effect-size) under which the hypothesis is rejected, not merely \"needs more data\". | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/` | **Speculative** (method) | 2026-02-01 | Verify by writing explicit acceptance/rejection decision rules for each active claim (including N_min) and enforcing them in tests/verifiers; refute if claims remain non-refutable after sufficient sample size without predeclared escape hatches. |"]
+inference_markers = []
 assumption_text = "| C-408 | Every thesis-level hypothesis must have symmetric falsification boundaries: a disconfirmation threshold (N_min, alpha/effect-size) under which the hypothesis is rejected, not merely \"needs more data\". | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/` | **Speculative** (method) | 2026-02-01 | Verify by writing explicit acceptance/rejection decision rules for each active claim (including N_min) and enforcing them in tests/verifiers; refute if claims remain non-refutable after sufficient sample size without predeclared escape hatches. |"
 decision_rule_text = "| C-403 | Geometry from spectral data must be stated at spectral-triple strength (A,H,D_geom) or equivalent; eigenvalues alone are not sufficient in general due to isospectral non-uniqueness. | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/SPECTRAL_TRIPLE_SCOPE.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/spectral/demo_pairs.py`, `tests/test_isospectral_nonisomorphic_pair.py` | **Speculative** (program) | 2026-02-01 | Verify by (1) using cached primary sources on spectral triples (including Lorentzian/Krein variants) and inverse-spectral counterexamples (see `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`); (2) keeping the existing commutative toy check in scope (`src/spectral_triple_toy.py`, `tests/test_spectral_triple_toy.py`, `data/csv/spectral_triple_toy_summary.csv`); (3) running `tests/test_isospectral_nonisomorphic_pair.py` which checks an isospectral-but-nonisomorphic graph pair (Laplacian spectrum matches, but clique structure differs); (4) enforcing A1 decision rule in `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`. | | | C-404 | Bulk locality can be organized by boundary modular data K_A=-log rho_A and entanglement wedge reconstruction; robustness is naturally described by operator-algebra QEC (code subspace). | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SUMMARIES.md`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py` | **Speculative** (program) | 2026-02-01 | Verify by (1) using cached primary sources for AdS/CFT, RT/HRT, JLMS, bit threads, and holographic QEC (see `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`); (2) running the offline max-flow/min-cut toy check `tests/test_holography_bit_threads.py` (bit-thread proxy on small graphs, including a submodularity/SSA proxy check); (3) enforcing A2 decision rule in `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`. | | | C-405 | Observers can be modeled as (approximate) correctable record algebras selected by open-system dynamics L_open (GKSL/Lindblad); redundancy in the environment yields classical records (pointer observables) resembling repetition-code robustness. | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SUMMARIES.md`, `src/quantum/open_systems/lindblad.py`, `tests/test_open_systems_lindblad.py`, `src/quantum/open_systems/redundancy.py`, `tests/test_open_systems_redundancy.py` | **Speculative** (program) | 2026-02-01 | Verify by (1) using cached primary sources for GKSL/Lindblad modeling, decoherence/pointer states, Quantum Darwinism, and operator-algebra QEC (see `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`); (2) running `tests/test_open_systems_lindblad.py` for dephasing and amplitude damping; (3) running `tests/test_open_systems_redundancy.py` for a minimal redundancy proxy; (4) enforcing A3 decision rule in `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`. | | | C-407 | Reported sky-alignment p-values must include explicit trial-factor accounting (look-elsewhere) across tuned degrees of freedom (e.g., box-kite choice, smoothing scale, catalog cuts). | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py` | **Speculative** (method) | 2026-02-01 | Verify by maintaining an explicit \"tuned vs fixed\" parameter ledger and computing a conservative global bound (e.g., Bonferroni/Holm) consistent with the preregistered decision rule; refute if significance claims are made without a declared trial model. | | | C-408 | Every thesis-level hypothesis must have symmetric falsification boundaries: a disconfirmation threshold (N_min, alpha/effect-size) under which the hypothesis is rejected, not merely \"needs more data\". | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/` | **Speculative** (method) | 2026-02-01 | Verify by writing explicit acceptance/rejection decision rules for each active claim (including N_min) and enforcing them in tests/verifiers; refute if claims remain non-refutable after sufficient sample size without predeclared escape hatches. |"
 conclusion_text = "statements and (b) offline checks, or else be explicitly rejected. | | ID | Claim | Where stated | Status | Last verified | What would verify/refute it | | | C-408 | Every thesis-level hypothesis must have symmetric falsification boundaries: a disconfirmation threshold (N_min, alpha/effect-size) under which the hypothesis is rejected, not merely \"needs more data\". | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/` | **Speculative** (method) | 2026-02-01 | Verify by writing explicit acceptance/rejection decision rules for each active claim (including N_min) and enforcing them in tests/verifiers; refute if claims remain non-refutable after sufficient sample size without predeclared escape hatches. |"
-excerpt = "These claims capture a research-program decomposition extracted from `convos/`. || They are tracked here so they can be converted into (a) primary-source-backed || statements and (b) offline checks, or else be explicitly rejected. || | ID | Claim | Where stated | Status | Last verified | What would verify/refute it | || |---:|---|---|---|---|---| || | C-403 | Geometry from spectral data must be stated at spectral-triple strength (A,H,D_geom) or equivalent; eigenvalues alone are not sufficient in general due to isospectral non-uniqueness. | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/SPECTRAL_TRIPLE_SCOPE.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `src/spectral/demo_pairs.py`, `tests/test_isospectral_nonisomorphic_pair.py` | **Speculative** (program) | 2026-02-01 | Verify by (1) using cached primary sources on spectral triples (including Lorentzian/Krein variants) and inverse-spectral counterexamples (see `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`); (2) keeping the existing commutative toy check in scope (`src/spectral_triple_toy.py`, `tests/test_spectral_triple_toy.py`, `data/csv/spectral_triple_toy_summary.csv`); (3) running `tests/test_isospectral_nonisomorphic_pair.py` which checks an isospectral-but-nonisomorphic graph pair (Laplacian spectrum matches, but clique structure differs); (4) enforcing A1 decision rule in `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`. | || | C-404 | Bulk locality can be organized by boundary modular data K_A=-log rho_A and entanglement wedge reconstruction; robustness is naturally described by operator-algebra QEC (code subspace). | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SUMMARIES.md`, `src/holography/maxflow.py`, `tests/test_holography_bit_threads.py` | **Speculative** (program) | 2026-02-01 | Verify by (1) using cached primary sources for AdS/CFT, RT/HRT, JLMS, bit threads, and holographic QEC (see `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`); (2) running the offline max-flow/min-cut toy check `tests/test_holography_bit_threads.py` (bit-thread proxy on small graphs, including a submodularity/SSA proxy check); (3) enforcing A2 decision rule in `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`. | || | C-405 | Observers can be modeled as (approximate) correctable record algebras selected by open-system dynamics L_open (GKSL/Lindblad); redundancy in the environment yields classical records (pointer observables) resembling repetition-code robustness. | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`, `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`, `docs/external_sources/EMERGENCE_LAYERS_SUMMARIES.md`, `src/quantum/open_systems/lindblad.py`, `tests/test_open_systems_lindblad.py`, `src/quantum/open_systems/redundancy.py`, `tests/test_open_systems_redundancy.py` | **Speculative** (program) | 2026-02-01 | Verify by (1) using cached primary sources for GKSL/Lindblad modeling, decoherence/pointer states, Quantum Darwinism, and operator-algebra QEC (see `docs/external_sources/EMERGENCE_LAYERS_SOURCES.md`); (2) running `tests/test_open_systems_lindblad.py` for dephasing and amplitude damping; (3) running `tests/test_open_systems_redundancy.py` for a minimal redundancy proxy; (4) enforcing A3 decision rule in `docs/theory/EMERGENCE_LAYERS_AXIOMS.md`. | || | C-406 | TSCP/box-kite sky mapping must be invariant under the relevant algebraic symmetries (or else explicitly enumerate tested embeddings) to avoid \"picked the embedding that worked\". | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py` | **Speculative** (method) | 2026-02-01 | Verify by enumerating automorphism-inequivalent box-kite embeddings (or a justified symmetry group proxy), recomputing the alignment statistic for each, and reporting global-corrected significance; refute if multiple inequivalent embeddings yield materially different \"best\" significance without being accounted for in trial factors. | || | C-407 | Reported sky-alignment p-values must include explicit trial-factor accounting (look-elsewhere) across tuned degrees of freedom (e.g., box-kite choice, smoothing scale, catalog cuts). | `docs/convos/CONVOS_CLAIMS_INBOX.md`, `docs/external_sources/TSCP_METHOD_SOURCES.md`, `docs/preregistered/TSCP_SKY_ALIGNMENT.md`, `tests/test_tscp_alignment_offline.py` | **Speculative** (method) | 2026-02-01 | Verify by maintaining an explicit \"tuned vs fixed\" parameter ledger and computing a conservative global bound (e.g., Bonferroni/Holm) consistent with the preregistered decision rule; refute if significance claims are made without a declared trial model. |"
+excerpt = "These claims capture a research-program decomposition extracted from `convos/`. || They are tracked here so they can be converted into (a) primary-source-backed || statements and (b) offline checks, or else be explicitly rejected. || | ID | Claim | Where stated | Status | Last verified | What would verify/refute it | || |---:|---|---|---|---|---| || | C-403 | Geometry from spectral data must be stated at spectral-triple strength (A,H,D_geom) or equivalent; eigenval..."
 claim_refs = ["C-403", "C-404", "C-405", "C-406", "C-407", "C-408"]
 source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
@@ -693,6 +933,12 @@ section_title = "Fetching External Sources (wget-first, offline reproducibility)
 section_level = 1
 line_start = 10
 line_end = 19
+step_count = 5
+supports_claim = false
+assumption_lines = []
+decision_lines = []
+conclusion_lines = ["Network access is therefore opt-in and must never be required by `make test` or `make check`."]
+inference_markers = ["Network access is therefore opt-in and must never be required by `make test` or `make check`."]
 assumption_text = ""
 decision_rule_text = ""
 conclusion_text = "Network access is therefore opt-in and must never be required by `make test` or `make check`."
@@ -710,10 +956,16 @@ section_title = "3. Pre-Registration Protocol"
 section_level = 2
 line_start = 64
 line_end = 78
+step_count = 10
+supports_claim = true
+assumption_lines = ["1. **Define hypothesis** before looking at data"]
+decision_lines = ["2. **Specify test statistic** and decision rule (e.g., p < 0.05)"]
+conclusion_lines = []
+inference_markers = []
 assumption_text = "1. **Define hypothesis** before looking at data"
 decision_rule_text = "2. **Specify test statistic** and decision rule (e.g., p < 0.05)"
 conclusion_text = ""
-excerpt = "For claims involving statistical tests on data: || 1. **Define hypothesis** before looking at data || 2. **Specify test statistic** and decision rule (e.g., p < 0.05) || 3. **Document sample size** requirements (e.g., N >= 50) || 4. **Record in** `docs/preregistered/CLAIM_NAME.md` || 5. **Execute test** only after pre-registration || 6. **Report result** including effect size and confidence interval || Example: GWTC-3 mass modality test (C-007) was pre-registered with N >= 50 || requirement; test NOT executed because N=34 < 50 (validation correctly || prevented underpowered test)."
+excerpt = "For claims involving statistical tests on data: || 1. **Define hypothesis** before looking at data || 2. **Specify test statistic** and decision rule (e.g., p < 0.05) || 3. **Document sample size** requirements (e.g., N >= 50) || 4. **Record in** `docs/preregistered/CLAIM_NAME.md` || 5. **Execute test** only after pre-registration"
 claim_refs = ["C-007"]
 source_uid = "RN-023"
 source_group = "research_narrative"
@@ -727,10 +979,16 @@ section_title = "5. Null Hypothesis Testing"
 section_level = 2
 line_start = 92
 line_end = 103
+step_count = 7
+supports_claim = true
+assumption_lines = ["All statistical claims require null hypothesis comparison:"]
+decision_lines = ["4. **Apply decision rule** consistently"]
+conclusion_lines = ["Example: Zero-divisor eigenvalue mass matching (C-091) refuted because"]
+inference_markers = []
 assumption_text = "All statistical claims require null hypothesis comparison:"
 decision_rule_text = "4. **Apply decision rule** consistently"
 conclusion_text = "Example: Zero-divisor eigenvalue mass matching (C-091) refuted because"
-excerpt = "All statistical claims require null hypothesis comparison: || 1. **Generate null distribution** via permutation, bootstrap, or parametric model || 2. **Compute test statistic** on observed data || 3. **Report p-value** with correction for multiple comparisons (Bonferroni/Holm) || 4. **Apply decision rule** consistently || Example: Zero-divisor eigenvalue mass matching (C-091) refuted because || null P(>=9/12 matches) = 1.0 (148 eigenvalues trivially cover 12 masses)."
+excerpt = "All statistical claims require null hypothesis comparison: || 1. **Generate null distribution** via permutation, bootstrap, or parametric model || 2. **Compute test statistic** on observed data || 3. **Report p-value** with correction for multiple comparisons (Bonferroni/Holm) || 4. **Apply decision rule** consistently || Example: Zero-divisor eigenvalue mass matching (C-091) refuted because"
 claim_refs = ["C-091"]
 source_uid = "RN-023"
 source_group = "research_narrative"
