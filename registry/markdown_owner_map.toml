@@ -2211,3 +2211,39 @@ canonical_toml = "registry/reports_narratives.toml"
 owner_group = "reports_narratives"
 requires_generated_header = true
 conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_reports_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+
+[[owner]]
+id = "MOWN-0246"
+path = "docs/ALGEBRA_CONSTRUCTION_COMPARISON.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+
+[[owner]]
+id = "MOWN-0247"
+path = "docs/PHASE3B_IMPLEMENTATION_PLAN.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+
+[[owner]]
+id = "MOWN-0248"
+path = "docs/PHASE3C_EXCEPTIONAL_ALGEBRAS_RECONNAISSANCE.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
+
+[[owner]]
+id = "MOWN-0249"
+path = "docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error make docs-publish"
