@@ -6,8 +6,8 @@ updated = "deterministic"
 authoritative = true
 source_inventory = "registry/markdown_inventory.toml"
 document_count = 252
-generated_verified_count = 251
-needs_consolidation_count = 1
+generated_verified_count = 252
+needs_consolidation_count = 0
 
 [scope_counts]
 data_artifacts = 9
@@ -15,17 +15,7 @@ docs = 196
 reports = 47
 
 [origin_status_counts]
-generated_from_repo_process = 251
-non_generated_needs_consolidation = 1
-
-[[consolidation_queue]]
-rank = 1
-path = "docs/PHASE_5_6_CONSOLIDATION.md"
-origin_status = "non_generated_needs_consolidation"
-classification = "toml_destination_exists_manual_markdown"
-consolidation_action = "migrate_to_toml_registry_and_regenerate"
-toml_destination = "registry/docs_root_narratives.toml"
-line_count = 196
+generated_from_repo_process = 252
 
 [[document]]
 path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
@@ -814,17 +804,18 @@ line_count = 54
 [[document]]
 path = "docs/PHASE_5_6_CONSOLIDATION.md"
 scope = "docs"
-classification = "toml_destination_exists_manual_markdown"
+classification = "toml_published_markdown"
 git_status = "ignored"
-origin_status = "non_generated_needs_consolidation"
-origin_process = "unknown"
+origin_status = "generated_from_repo_process"
+origin_process = "src/scripts/analysis/export_registry_markdown_mirrors.py::legacy_exports"
 destination_exists = true
-header_auto_generated = false
-header_source_of_truth = false
+header_auto_generated = true
+header_source_of_truth = true
 toml_destination = "registry/docs_root_narratives.toml"
-source_of_truth_paths = []
-consolidation_action = "migrate_to_toml_registry_and_regenerate"
-line_count = 196
+source_of_truth_raw = "registry/docs_root_narratives.toml"
+source_of_truth_paths = ["registry/docs_root_narratives.toml"]
+consolidation_action = "none"
+line_count = 199
 
 [[document]]
 path = "docs/PHYSICAL_INTERPRETATION.md"

@@ -2,7 +2,7 @@
 
 [roadmap_narrative]
 authoritative = true
-updated = "2026-02-10"
+updated = "2026-02-09"
 source_markdown = "docs/ROADMAP.md"
 body_markdown = """
 # open_gororoba Roadmap
@@ -84,12 +84,10 @@ spectral bands, synchrotron, doppler, gravitational waves, Hawking radiation,
 Penrose process, coordinates, null constraint, energy-conserving integrator.
 **Claims infrastructure**: COMPLETE.  Rust claims-audit + claims-verify binaries
 replace 11 Python scripts.  118 backfill items confirmed Verified (2026-02-07).
-**Test count**: 2315 Rust tests pass (unit + doc + integration), 0 clippy warnings.
+**Test count**: 2312 Rust tests pass (unit + doc + integration), 0 clippy warnings.
 gororoba_kernels removed (2026-02-06).
-**GPU compute**: CUDA ultrametric engine + PEPS tensor network contraction via cudarc 0.19.1 (RTX 4070 Ti).
-**Claims**: 591 (C-001..C-591). **Insights**: I-001..I-042. **Experiments**: E-001..E-013. **Binaries**: 40.
-**Phase 5-6**: COMPLETE. GPU tensor networks (I-040), octonion-lattice connection (C-589),
-CD non-commutativity verified at 99% confidence (C-591, I-042). See `docs/PHASE_5_6_CONSOLIDATION.md`.
+**GPU compute**: CUDA ultrametric engine via cudarc 0.19.1 (RTX 4070 Ti, 10M triples/test).
+**Claims**: 527 (C-001..C-527). **Insights**: I-001..I-018. **Experiments**: E-001..E-013. **Binaries**: 40.
 
 ```
 open_gororoba/
@@ -728,34 +726,6 @@ investigate the relationship between filtration depth and ultrametric structure.
 **Insight**: I-018 (Anti-Diagonal Parity Theorem)
 **Test count**: 2312 (32 new tests in S25 second phase)
 
-### 7.14 Phase 5-6 Consolidation: GPU + Octonion + Non-Commutativity (Sprint 30)
-
-**Goal**: Establish the structural foundations of CD algebra through GPU-accelerated
-computation (Phase 5) and exhaustive non-commutativity verification (Phase 6).
-
-**Phase 5 results** (GPU + Octonion Connection):
-- GPU PEPS row contraction implemented in quantum_core via cudarc 0.19.1
-- Memory transfer overhead dominates at small sizes (~130 ms baseline)
-- 8D lattice dimension resolved: octonion-driven (C-589), NOT E8 (C-455 refuted)
-- All 3840 lattice points satisfy octonion parity constraints (C-458)
-- Insight I-040: Octonion sub-algebra provides fundamental 8D encoding
-
-**Phase 6 results** (CD Non-Commutativity Verification):
-- Literature search: 7 domains, 20+ papers, 0 counterexamples
-- Computational: all 28 standard gamma signatures tested, 0 commuting pairs
-- Confidence: 99% combined (95% literature + 99%+ computational)
-- Non-commutativity is STRUCTURAL (conjugation asymmetry), not parametric
-
-**Cross-validation**: C-546 (theorem) + C-591 (exhaustive verification) + C-589
-(octonion lattice) + I-040 (encoding insight) + I-042 (verification insight)
-form a coherent cluster: non-commutativity at dim>=4 forces the 8D octonion
-base space in the lattice encoding.
-
-**Claims**: C-546 (updated), C-589, C-591 (new)
-**Insights**: I-040 (updated), I-042 (new)
-**Consolidation doc**: `docs/PHASE_5_6_CONSOLIDATION.md`
-**Test count**: 2315
-
 ---
 
 ## 8. Long-Term Vision
@@ -767,15 +737,10 @@ base space in the lattice encoding.
 | ~~Near~~ | ~~GPU acceleration (CUDA ultrametric kernel)~~ | ~~cudarc 0.19.1~~ | **DONE** (RTX 4070 Ti) |
 | ~~Near~~ | ~~Schema checks for all 18 dataset providers~~ | ~~Parser code in data_core~~ | **DONE** (21 tests, 3 URL fixes) |
 | ~~Near~~ | ~~Extend motif census to 64D/128D/256D exact~~ | ~~algebra_core~~ | **DONE** (16 regression tests, 5 scaling laws) |
-| ~~Near~~ | ~~GPU tensor network contraction (cudarc)~~ | ~~Extend GPU path beyond ultrametric~~ | **DONE** (Phase 5, PEPS row contraction) |
-| ~~Near~~ | ~~Octonion-lattice connection (C-589)~~ | ~~Phase 5b research~~ | **DONE** (I-040, 8D = octonion-driven) |
-| ~~Near~~ | ~~CD non-commutativity verification~~ | ~~Phase 6 research~~ | **DONE** (C-591, I-042, 99% confidence) |
-| Medium | Formal octonion basis <-> lattice vector mapping | Phase 5-6 foundation | Phase 7 entry point |
-| Medium | Non-commutative geometry (Connes-style) on CD algebras | C-546, C-591 verified | Phase 7 entry point |
-| Medium | Publication: C-546/C-589/C-591 cluster paper | Phase 5-6 consolidation | Phase 7 entry point |
 | Medium | WASM target for browser visualization | Crate compatibility audit | Future |
 | Medium | Hardware quantum circuit run (IBM Eagle 127q) | F4 circuit design | Future |
 | Medium | Publication pipeline (LaTeX from verified results) | Source-first research | Future |
+| Medium | GPU tensor network contraction (cudarc) | Extend GPU path beyond ultrametric | Future |
 
 ---
 
