@@ -218,14 +218,14 @@ impl Octonion {
         diff < tolerance
     }
 
-    /// Check if self satisfies Moufang identity: ((xa)y)a = x(aya)
+    /// Check if self satisfies right Moufang identity: ((xa)y)a = x(a(ya))
     pub fn moufang_identity_right(&self, x: &Octonion, y: &Octonion, tolerance: f64) -> bool {
         let xa = x.multiply(self);
         let xay = xa.multiply(y);
         let lhs = xay.multiply(self);
 
-        let ay = y.multiply(self);
-        let aya = ay.multiply(self);
+        let ya = y.multiply(self);
+        let aya = self.multiply(&ya);
         let rhs = x.multiply(&aya);
 
         let diff: f64 = lhs
