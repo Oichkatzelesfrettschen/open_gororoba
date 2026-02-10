@@ -91,8 +91,12 @@ lint-all-fix-safe: install
 check: registry-verify-markdown-owner test lint smoke
 	@echo "OK: check suite complete."
 
+# Wave 6 governance verifier targets
+registry-verify-markdown-governance:
+	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
+
 # Wave 6: TOML-first governance acceptance gate (W6-023)
-wave6-gate: registry-verify-markdown-inventory registry-verify-markdown-owner registry-verify-schema-signatures registry-verify-crossrefs
+wave6-gate: registry-verify-markdown-inventory registry-verify-markdown-owner registry-verify-schema-signatures registry-verify-crossrefs registry-verify-markdown-governance
 	@echo ""
 	@echo "=========================================="
 	@echo "WAVE 6 ACCEPTANCE GATE: PASSED"
@@ -101,6 +105,7 @@ wave6-gate: registry-verify-markdown-inventory registry-verify-markdown-owner re
 	@echo "✓ Markdown owner map verified"
 	@echo "✓ Registry schema signatures checked"
 	@echo "✓ Cross-reference integrity verified"
+	@echo "✓ Markdown governance removal policy checked"
 	@echo ""
 	@echo "Wave 6 TOML-first governance is operational."
 	@echo "=========================================="

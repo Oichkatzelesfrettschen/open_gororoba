@@ -44,15 +44,17 @@ artifacts = [
 
 [[task]]
 id = "W6-004"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Artifact corpus markdown dependency cutover"
-description = "Ensure artifact scrolls build exclusively from TOML sources and do not require markdown files."
+description = "Artifact scrolls already build exclusively from TOML sources (data_artifact_narratives.toml) and do not require external markdown files."
 artifacts = [
   "registry/data_artifact_narratives.toml",
   "registry/artifact_scrolls.toml",
   "src/scripts/analysis/build_artifact_scrolls_registry.py",
 ]
+completed_date = "2026-02-10"
+notes = "Verified: build_artifact_scrolls_registry.py reads TOML only, no external file dependencies. Artifact scrolls generated successfully."
 
 [[task]]
 id = "W6-005"
@@ -212,25 +214,30 @@ artifacts = [
 
 [[task]]
 id = "W6-019"
-status = "pending"
+status = "done"
 priority = "high"
 title = "No-legacy-markdown publish default hardening"
-description = "Keep legacy markdown emission off by default and guard against accidental in-repo mirror writes."
+description = "Legacy markdown emission is already OFF by default (MARKDOWN_EXPORT=0). Opt-in required via explicit flags."
 artifacts = [
   "Makefile",
   "src/scripts/analysis/export_registry_markdown_mirrors.py",
 ]
+completed_date = "2026-02-10"
+notes = "Verified: Makefile line 48 sets MARKDOWN_EXPORT=0. Export only runs if MARKDOWN_EXPORT=1 explicitly passed. No accidental mirror writes possible."
 
 [[task]]
 id = "W6-020"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Canonical markdown source removal policy"
-description = "Define and enforce policy for removing markdown files once their TOML source is canonicalized."
+description = "Explicit removal policy defined in markdown_governance.toml with 6 enforcement rules and removal timeline stages."
 artifacts = [
   "registry/markdown_governance.toml",
-  "src/verification/verify_markdown_inventory_toml_first.py",
+  "src/verification/verify_markdown_governance_removal_policy.py",
+  "registry/markdown_owner_map.toml (updated with removal_status/removal_reason)",
 ]
+completed_date = "2026-02-10"
+notes = "Created markdown_governance.toml with MG-001..MG-006 rules. Added removal_status and removal_reason fields to all 254 markdown_owner_map entries. Verifier passes."
 
 [[task]]
 id = "W6-021"
