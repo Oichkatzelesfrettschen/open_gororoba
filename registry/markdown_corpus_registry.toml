@@ -7,9 +7,9 @@ authoritative = true
 source_inventory = "registry/markdown_inventory.toml"
 document_count = 266
 tracked_violation_count = 0
-classification_violation_count = 1
+classification_violation_count = 0
 destination_missing_count = 0
-risk_item_count = 45
+risk_item_count = 44
 
 [policy]
 toml_first_required = true
@@ -33,8 +33,7 @@ tracked = 8
 
 [classification_counts]
 third_party_markdown = 5
-toml_destination_exists_manual_markdown = 1
-toml_published_markdown = 260
+toml_published_markdown = 261
 
 [lifecycle_counts]
 generated_artifact_report = 8
@@ -47,25 +46,8 @@ generated_root_overlay = 2
 third_party_cache = 5
 tracked_entrypoint = 8
 
-[[policy_violation]]
-kind = "classification_outside_safe_set"
-path = "docs/PHASE_5_6_CONSOLIDATION.md"
-
 [[risk_queue]]
 rank = 1
-path = "docs/PHASE_5_6_CONSOLIDATION.md"
-risk_score = 230
-classification = "toml_destination_exists_manual_markdown"
-migration_action = "port_body_to_toml_and_lock_mirror"
-migration_priority = "high"
-lifecycle = "generated_docs_tree"
-destination_exists = true
-toml_destination = "registry/docs_root_narratives.toml"
-line_count = 196
-rationale = "Markdown has TOML destination but still carries manual content; lock to TOML flow."
-
-[[risk_queue]]
-rank = 2
 path = "docs/generated/CLAIMS_REGISTRY_MIRROR.md"
 risk_score = 18
 classification = "toml_published_markdown"
@@ -78,7 +60,7 @@ line_count = 4721
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 3
+rank = 2
 path = "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md"
 risk_score = 16
 classification = "toml_published_markdown"
@@ -91,7 +73,7 @@ line_count = 4117
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 4
+rank = 3
 path = "docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md"
 risk_score = 13
 classification = "toml_published_markdown"
@@ -104,7 +86,7 @@ line_count = 3494
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 5
+rank = 4
 path = "docs/generated/CLAIMS_TASKS_REGISTRY_MIRROR.md"
 risk_score = 11
 classification = "toml_published_markdown"
@@ -117,7 +99,7 @@ line_count = 2840
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 6
+rank = 5
 path = "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md"
 risk_score = 7
 classification = "toml_published_markdown"
@@ -130,7 +112,7 @@ line_count = 1758
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 7
+rank = 6
 path = "docs/convos/audit_1_read_nonuser_lines_cont.md"
 risk_score = 4
 classification = "toml_published_markdown"
@@ -143,7 +125,7 @@ line_count = 1109
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 8
+rank = 7
 path = "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md"
 risk_score = 4
 classification = "toml_published_markdown"
@@ -156,7 +138,7 @@ line_count = 1024
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 9
+rank = 8
 path = "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md"
 risk_score = 3
 classification = "toml_published_markdown"
@@ -169,7 +151,7 @@ line_count = 888
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 10
+rank = 9
 path = "reports/convos_claim_candidates.md"
 risk_score = 3
 classification = "toml_published_markdown"
@@ -182,7 +164,7 @@ line_count = 851
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 11
+rank = 10
 path = "docs/GRAND_SYNTHESIS.md"
 risk_score = 3
 classification = "toml_published_markdown"
@@ -195,7 +177,7 @@ line_count = 814
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 12
+rank = 11
 path = "docs/ROADMAP.md"
 risk_score = 3
 classification = "toml_published_markdown"
@@ -208,7 +190,7 @@ line_count = 769
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 13
+rank = 12
 path = "docs/INSIGHTS.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -221,7 +203,7 @@ line_count = 706
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 14
+rank = 13
 path = "docs/claims/by_domain/meta.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -234,7 +216,7 @@ line_count = 649
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 15
+rank = 14
 path = "docs/CONVOS_CONCEPTS_STATUS_INDEX.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -247,7 +229,7 @@ line_count = 605
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 16
+rank = 15
 path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -260,7 +242,7 @@ line_count = 605
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 17
+rank = 16
 path = "docs/CLAIMS_EVIDENCE_MATRIX.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -273,7 +255,7 @@ line_count = 599
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 18
+rank = 17
 path = "docs/ALGEBRA_CRATES_SURVEY.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -286,7 +268,7 @@ line_count = 583
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 19
+rank = 18
 path = "docs/external_sources/DE_MARRAIS_BOXKITES_III.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -299,7 +281,7 @@ line_count = 579
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 20
+rank = 19
 path = "docs/generated/KNOWLEDGE_MIGRATION_PLAN_REGISTRY_MIRROR.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -312,7 +294,7 @@ line_count = 537
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 21
+rank = 20
 path = "docs/PHASE4_UNIFIED_PHYSICS_FRAMEWORK.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -325,7 +307,7 @@ line_count = 515
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 22
+rank = 21
 path = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -338,7 +320,7 @@ line_count = 509
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 23
+rank = 22
 path = "docs/CORE_ABSTRACTIONS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -351,7 +333,7 @@ line_count = 485
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 24
+rank = 23
 path = "docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -364,7 +346,7 @@ line_count = 429
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 25
+rank = 24
 path = "docs/BIBLIOGRAPHY.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -377,7 +359,7 @@ line_count = 417
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 26
+rank = 25
 path = "docs/claims/by_domain/holography.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -390,7 +372,7 @@ line_count = 412
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 27
+rank = 26
 path = "docs/FINAL_MANUSCRIPT.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -403,7 +385,7 @@ line_count = 399
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 28
+rank = 27
 path = "docs/ALGEBRA_FAMILY_TAXONOMY.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -416,7 +398,7 @@ line_count = 385
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 29
+rank = 28
 path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -429,7 +411,7 @@ line_count = 373
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 30
+rank = 29
 path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -442,7 +424,7 @@ line_count = 359
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 31
+rank = 30
 path = "AGENTS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -455,7 +437,7 @@ line_count = 354
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 32
+rank = 31
 path = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -468,7 +450,7 @@ line_count = 353
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 33
+rank = 32
 path = "docs/ALGEBRA_CONSTRUCTION_COMPARISON.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -481,7 +463,7 @@ line_count = 336
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 34
+rank = 33
 path = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -494,7 +476,7 @@ line_count = 321
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 35
+rank = 34
 path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -507,7 +489,7 @@ line_count = 304
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 36
+rank = 35
 path = "docs/CLAIMS_TASKS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -520,7 +502,7 @@ line_count = 302
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 37
+rank = 36
 path = "reports/claims_batch_backlog_C201_C432.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -533,7 +515,7 @@ line_count = 297
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 38
+rank = 37
 path = "reports/claims_batch_backlog_C201_C430.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -546,7 +528,7 @@ line_count = 293
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 39
+rank = 38
 path = "docs/MATH_CONVENTIONS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -559,7 +541,7 @@ line_count = 291
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 40
+rank = 39
 path = "reports/claims_batch_backlog_C201_C427.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -572,7 +554,7 @@ line_count = 287
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 41
+rank = 40
 path = "docs/PHASE3B_IMPLEMENTATION_PLAN.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -585,7 +567,7 @@ line_count = 286
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 42
+rank = 41
 path = "docs/REPO_STRUCTURE.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -598,7 +580,7 @@ line_count = 260
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 43
+rank = 42
 path = "reports/claims_batch_backlog_C001_C200.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -611,7 +593,7 @@ line_count = 258
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 44
+rank = 43
 path = "docs/PHASE4A_NON_ASSOCIATIVE_RECONNAISSANCE.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -624,7 +606,7 @@ line_count = 254
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 45
+rank = 44
 path = "reports/claims_batch_backlog_C201_C408.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -1521,15 +1503,15 @@ toml_destination = "registry/docs_root_narratives.toml"
 [[document]]
 path = "docs/PHASE_5_6_CONSOLIDATION.md"
 git_status = "ignored"
-classification = "toml_destination_exists_manual_markdown"
+classification = "toml_published_markdown"
 lifecycle = "generated_docs_tree"
-generated = false
+generated = true
 third_party = false
 tracked_allowed = true
 destination_exists = true
-risk_score = 230
-size_bytes = 7482
-line_count = 196
+risk_score = 0
+size_bytes = 7581
+line_count = 199
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
