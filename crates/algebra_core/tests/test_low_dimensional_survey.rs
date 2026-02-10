@@ -38,7 +38,7 @@ impl SimpleBlade {
     }
 
     /// Convert to dense vector representation
-    fn to_vec(&self, dim: usize) -> Vec<f64> {
+    fn to_dense_vector(self, dim: usize) -> Vec<f64> {
         let mut v = vec![0.0; dim];
         v[self.i] = 1.0;
         v[self.j] = self.sign as f64;
@@ -151,8 +151,8 @@ fn count_zero_divisors(dim: usize, sig: &CdSignature) -> usize {
                             let blade1 = SimpleBlade::new(i, j, *si);
                             let blade2 = SimpleBlade::new(k, l, *sk);
 
-                            let v1 = blade1.to_vec(dim);
-                            let v2 = blade2.to_vec(dim);
+                            let v1 = blade1.to_dense_vector(dim);
+                            let v2 = blade2.to_dense_vector(dim);
                             let product = cd_multiply_split(&v1, &v2, sig);
 
                             let norm_sq = cd_norm_sq(&product);
@@ -258,13 +258,10 @@ fn extract_psi_matrix(dim: usize, sig: &CdSignature) -> Vec<Vec<i32>> {
             let product = cd_multiply_split(&ei, &ej, sig);
 
             // Extract leading coefficient sign
-            let mut sign = 0i32;
-            for k in 0..dim {
-                if product[k].abs() > 1e-10 {
-                    sign = if product[k] > 0.0 { 1 } else { -1 };
-                    break;
-                }
-            }
+            let sign = product.iter()
+                .find(|&x| x.abs() > 1e-10)
+                .map(|&x| if x > 0.0 { 1 } else { -1 })
+                .unwrap_or(0);
             psi[i][j] = sign;
         }
     }
