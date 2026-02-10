@@ -56,6 +56,7 @@
 pub mod absorption;
 pub mod constants;
 pub mod coordinates;
+pub mod cosmology_algebra_bridge;
 pub mod doppler;
 pub mod energy_conserving;
 pub mod gravitational_waves;
@@ -97,4 +98,9 @@ pub use null_constraint::{
     adaptive_tolerance, constraint_drift_bound, global_drift_bound, is_null, is_timelike,
     mass_shell_constraint, needs_renormalization, null_constraint, renormalize_massive,
     renormalize_null, renormalize_null_diagonal, renormalize_null_kerr, ConstraintStats,
+};
+
+pub use cosmology_algebra_bridge::{
+    CosmologicalParameters, ConservationLaw, DarkEnergyModel, EnergyMomentumTensor, FLRWMetric,
+    FriedmannSolver, Redshift,
 };

@@ -78,6 +78,166 @@ pub struct MassNullTestResult {
     pub significant: bool,
 }
 
+/// Depth-based generation classification.
+///
+/// Direction 1 (Gresnigt decomposition) found that mass differentiation
+/// comes from "depth" -- the number of basis indices crossing the
+/// octonion/sedenion boundary (index >= dim/2), NOT subalgebra identity.
+///
+/// Depth 0: all indices < half (fully within standard octonion)
+/// Depth 1: one index >= half (boundary-crossing)
+/// Depth 2: two indices >= half
+/// Depth 3: all indices >= half (fully in sedenion extension)
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum TripleDepth {
+    /// All 3 indices in lower half (standard octonion)
+    Depth0,
+    /// Exactly 1 index in upper half
+    Depth1,
+    /// Exactly 2 indices in upper half
+    Depth2,
+    /// All 3 indices in upper half (sedenion extension)
+    Depth3,
+}
+
+/// Classify a triple by its depth (boundary-crossing count).
+pub fn triple_depth(dim: usize, i: usize, j: usize, k: usize) -> TripleDepth {
+    let half = dim / 2;
+    let n_high = [i, j, k].iter().filter(|&&x| x >= half).count();
+    match n_high {
+        0 => TripleDepth::Depth0,
+        1 => TripleDepth::Depth1,
+        2 => TripleDepth::Depth2,
+        _ => TripleDepth::Depth3,
+    }
+}
+
+/// Compute mean associator norm for all triples at a given depth.
+///
+/// Samples up to `max_samples` triples to estimate the mean.
+pub fn mean_norm_at_depth(dim: usize, depth: TripleDepth, max_samples: usize) -> f64 {
+    let half = dim / 2;
+    let lo: Vec<usize> = (1..half).collect();
+    let hi: Vec<usize> = (half..dim).collect();
+
+    let (pool_a, pool_b, pool_c) = match depth {
+        TripleDepth::Depth0 => (&lo, &lo, &lo),
+        TripleDepth::Depth1 => (&lo, &lo, &hi),
+        TripleDepth::Depth2 => (&lo, &hi, &hi),
+        TripleDepth::Depth3 => (&hi, &hi, &hi),
+    };
+
+    let mut norms = Vec::new();
+    let mut count = 0;
+
+    'outer: for &i in pool_a {
+        for &j in pool_b {
+            if j == i {
+                continue;
+            }
+            for &k in pool_c {
+                if k == i || k == j {
+                    continue;
+                }
+                norms.push(basis_associator_norm(dim, i, j, k));
+                count += 1;
+                if count >= max_samples {
+                    break 'outer;
+                }
+            }
+        }
+    }
+
+    if norms.is_empty() {
+        0.0
+    } else {
+        norms.iter().sum::<f64>() / norms.len() as f64
+    }
+}
+
+/// Result of depth-based mass ratio prediction.
+#[derive(Debug, Clone)]
+pub struct DepthMassResult {
+    /// Mean associator norm at each depth (0, 1, 2, 3)
+    pub depth_norms: [f64; 4],
+    /// Generation mapping: which depths map to (electron, muon, tau)
+    pub generation_map: (TripleDepth, TripleDepth, TripleDepth),
+    /// Predicted mass ratios using depth-based norms
+    pub predicted_ratios: (f64, f64, f64),
+    /// RMS deviation from PDG
+    pub rms_deviation: f64,
+}
+
+/// Compute depth-based mass ratio prediction.
+///
+/// Uses Direction 1 finding: associator norm stratifies by boundary-crossing
+/// depth, providing an algebraically principled generation assignment.
+pub fn depth_based_mass_prediction(dim: usize) -> DepthMassResult {
+    let norms = [
+        mean_norm_at_depth(dim, TripleDepth::Depth0, 200),
+        mean_norm_at_depth(dim, TripleDepth::Depth1, 200),
+        mean_norm_at_depth(dim, TripleDepth::Depth2, 200),
+        mean_norm_at_depth(dim, TripleDepth::Depth3, 200),
+    ];
+
+    // Try all 24 permutations of 4 depths -> 3 generations
+    // (actually 4 choose 3 * 3! = 24 orderings)
+    let depths = [
+        TripleDepth::Depth0,
+        TripleDepth::Depth1,
+        TripleDepth::Depth2,
+        TripleDepth::Depth3,
+    ];
+
+    let mut best_rms = f64::INFINITY;
+    let mut best_map = (depths[0], depths[1], depths[2]);
+    let mut best_ratios = (0.0, 0.0, 0.0);
+
+    for &d_e in &depths {
+        for &d_mu in &depths {
+            if d_mu as usize == d_e as usize {
+                continue;
+            }
+            for &d_tau in &depths {
+                if d_tau as usize == d_e as usize || d_tau as usize == d_mu as usize {
+                    continue;
+                }
+                let n_e = norms[d_e as usize];
+                let n_mu = norms[d_mu as usize];
+                let n_tau = norms[d_tau as usize];
+
+                if n_mu < 1e-15 || n_tau < 1e-15 {
+                    continue;
+                }
+
+                let r_e_mu = n_e / n_mu;
+                let r_mu_tau = n_mu / n_tau;
+                let r_e_tau = n_e / n_tau;
+
+                let dev_e_mu = (r_e_mu - RATIO_E_MU).abs() / RATIO_E_MU;
+                let dev_mu_tau = (r_mu_tau - RATIO_MU_TAU).abs() / RATIO_MU_TAU;
+                let dev_e_tau = (r_e_tau - RATIO_E_TAU).abs() / RATIO_E_TAU;
+
+                let rms =
+                    ((dev_e_mu.powi(2) + dev_mu_tau.powi(2) + dev_e_tau.powi(2)) / 3.0).sqrt();
+
+                if rms < best_rms {
+                    best_rms = rms;
+                    best_map = (d_e, d_mu, d_tau);
+                    best_ratios = (r_e_mu, r_mu_tau, r_e_tau);
+                }
+            }
+        }
+    }
+
+    DepthMassResult {
+        depth_norms: norms,
+        generation_map: best_map,
+        predicted_ratios: best_ratios,
+        rms_deviation: best_rms,
+    }
+}
+
 /// Create basis vector for dimension dim.
 fn basis_vector(dim: usize, index: usize) -> Vec<f64> {
     let mut v = vec![0.0; dim];
@@ -509,5 +669,82 @@ mod tests {
 
         // Sedenions should have more structure than octonions
         // (more diverse associator norms)
+    }
+
+    #[test]
+    fn test_triple_depth_classification() {
+        // dim=16: half=8
+        assert_eq!(triple_depth(16, 1, 2, 3), TripleDepth::Depth0);
+        assert_eq!(triple_depth(16, 1, 2, 8), TripleDepth::Depth1);
+        assert_eq!(triple_depth(16, 1, 8, 9), TripleDepth::Depth2);
+        assert_eq!(triple_depth(16, 8, 9, 10), TripleDepth::Depth3);
+    }
+
+    #[test]
+    fn test_depth_norms_stratify() {
+        // Depth 0 norms should differ from depth 3 norms at dim=16
+        let n0 = mean_norm_at_depth(16, TripleDepth::Depth0, 50);
+        let n3 = mean_norm_at_depth(16, TripleDepth::Depth3, 50);
+
+        // Both should be positive (sedenions are non-associative)
+        assert!(n0 > 0.0, "depth 0 norm should be positive");
+        assert!(n3 > 0.0, "depth 3 norm should be positive");
+
+        eprintln!("Depth stratification at dim=16:");
+        eprintln!("  depth 0 mean norm: {:.6}", n0);
+        eprintln!("  depth 3 mean norm: {:.6}", n3);
+    }
+
+    #[test]
+    fn test_depth_based_mass_prediction_dim16() {
+        let result = depth_based_mass_prediction(16);
+
+        eprintln!("Depth-based mass prediction (dim=16):");
+        for (i, &n) in result.depth_norms.iter().enumerate() {
+            eprintln!("  depth {}: mean norm = {:.6}", i, n);
+        }
+        eprintln!(
+            "  best mapping: ({:?}, {:?}, {:?})",
+            result.generation_map.0, result.generation_map.1, result.generation_map.2,
+        );
+        eprintln!(
+            "  predicted e/mu={:.6}, mu/tau={:.6}, e/tau={:.6}",
+            result.predicted_ratios.0, result.predicted_ratios.1, result.predicted_ratios.2,
+        );
+        eprintln!("  RMS deviation: {:.6}", result.rms_deviation);
+        eprintln!("  PDG targets: e/mu={:.6}, mu/tau={:.6}, e/tau={:.6}",
+            RATIO_E_MU, RATIO_MU_TAU, RATIO_E_TAU);
+
+        // Should find a valid prediction
+        assert!(result.rms_deviation < f64::INFINITY);
+        assert!(result.rms_deviation >= 0.0);
+    }
+
+    #[test]
+    fn test_depth_based_mass_prediction_dim32() {
+        let result = depth_based_mass_prediction(32);
+
+        eprintln!("Depth-based mass prediction (dim=32):");
+        for (i, &n) in result.depth_norms.iter().enumerate() {
+            eprintln!("  depth {}: mean norm = {:.6}", i, n);
+        }
+        eprintln!("  RMS deviation: {:.6}", result.rms_deviation);
+
+        assert!(result.rms_deviation >= 0.0);
+    }
+
+    #[test]
+    fn test_depth_vs_random_comparison() {
+        // Compare depth-based prediction vs random search at dim=16
+        let depth_result = depth_based_mass_prediction(16);
+        let random_best = find_best_assignment(16, 500, 42);
+
+        eprintln!("Depth-based vs random search (dim=16):");
+        eprintln!("  depth RMS: {:.6}", depth_result.rms_deviation);
+        eprintln!("  random best RMS: {:.6}", random_best.rms_deviation);
+
+        // Both should produce valid results
+        assert!(depth_result.rms_deviation >= 0.0);
+        assert!(random_best.rms_deviation >= 0.0);
     }
 }

@@ -1,6 +1,8 @@
+pub mod albert;
 pub mod cayley_dickson;
 pub mod clifford;
 pub mod e8_root_system;
+pub mod exceptional_bridge;
 pub mod g2_automorphisms;
 pub mod hypercomplex;
 pub mod jordan;

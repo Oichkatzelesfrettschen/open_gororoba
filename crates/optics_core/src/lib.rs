@@ -19,6 +19,7 @@
 //! - Manetsch et al., arXiv:2403.12021 (2025): Large-scale tweezer arrays
 
 pub mod grin;
+pub mod optics_algebra_bridge;
 pub mod phase_retrieval;
 pub mod sfwm;
 pub mod tcmt;
@@ -66,4 +67,8 @@ pub use tcmt::{
 
 pub use phase_retrieval::{
     gs_continuous, wgs_discrete, zernike_phase, InitialPhase, TargetSpot, WgsConfig, WgsResult,
+};
+
+pub use optics_algebra_bridge::{
+    JonesVector, MaxwellField, MuellerMatrix, OpticalElement, OpticalSystem, PolarizationState,
 };
