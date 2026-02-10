@@ -8205,48 +8205,54 @@ mod tests {
             }
 
             let nodes: Vec<_> = comp.nodes.iter().collect();
-            let dim_half = dim / 2;
 
-            // Count triangles and check APT
+            // Build edge set for O(1) lookup (APT 1:3 ratio applies to graph triangles)
+            let edge_set: std::collections::HashSet<(CrossPair, CrossPair)> =
+                comp.edges.iter().copied().collect();
+            let has_edge = |u: CrossPair, v: CrossPair| -> bool {
+                let (a, b) = if u < v { (u, v) } else { (v, u) };
+                edge_set.contains(&(a, b))
+            };
+
+            // Count graph triangles and check APT
+            // Cross-assessor nodes are (lo, hi) with lo in [1, dim/2) and hi in [dim/2, dim)
             for i in 0..nodes.len() {
                 for j in (i + 1)..nodes.len() {
                     for k in (j + 1)..nodes.len() {
-                        let (ai, bi) = *nodes[i];
-                        let (aj, bj) = *nodes[j];
-                        let (ak, bk) = *nodes[k];
+                        let &ni = nodes[i];
+                        let &nj = nodes[j];
+                        let &nk = nodes[k];
 
-                        let ai = ai as usize;
-                        let bi = bi as usize;
-                        let aj = aj as usize;
-                        let bj = bj as usize;
-                        let ak = ak as usize;
-                        let bk = bk as usize;
+                        if !has_edge(ni, nj) || !has_edge(ni, nk) || !has_edge(nj, nk) {
+                            continue;
+                        }
 
-                        if ai < dim_half && bi < dim_half && aj < dim_half && bj < dim_half
-                            && ak < dim_half && bk < dim_half
-                        {
-                            let eta_ab = psi(dim, ai, aj) ^ psi(dim, bi, bj);
-                            let eta_ac = psi(dim, ai, ak) ^ psi(dim, bi, bk);
-                            let eta_bc = psi(dim, aj, ak) ^ psi(dim, bj, bk);
+                        let (ai, bi) = ni;
+                        let (aj, bj) = nj;
+                        let (ak, bk) = nk;
 
-                            total_triangles += 1;
-                            if eta_ab == eta_ac && eta_ac == eta_bc {
-                                pure_triangles += 1;
-                            }
+                        // Anti-diagonal parity: eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b)
+                        let eta_ab = psi(dim, ai, bj) ^ psi(dim, bi, aj);
+                        let eta_ac = psi(dim, ai, bk) ^ psi(dim, bi, ak);
+                        let eta_bc = psi(dim, aj, bk) ^ psi(dim, bj, ak);
+
+                        total_triangles += 1;
+                        if eta_ab == eta_ac && eta_ac == eta_bc {
+                            pure_triangles += 1;
                         }
                     }
                 }
             }
         }
 
-        if total_triangles > 0 {
-            let ratio = pure_triangles as f64 / total_triangles as f64;
-            eprintln!(
-                "dim=32: {} triangles, {} pure ({:.4} ratio)",
-                total_triangles, pure_triangles, ratio
-            );
-            assert!(ratio >= 0.2 && ratio <= 0.3, "dim=32 pure ratio should be ~0.25");
-        }
+        assert!(total_triangles > 0, "dim=32 should have triangles");
+        let ratio = pure_triangles as f64 / total_triangles as f64;
+        eprintln!(
+            "dim=32: {} triangles, {} pure ({:.4} ratio)",
+            total_triangles, pure_triangles, ratio
+        );
+        // APT guarantees exactly 1:3 pure:mixed => ratio = 0.25
+        assert!((ratio - 0.25).abs() < 0.001, "dim=32 pure ratio should be exactly 0.25, got {:.6}", ratio);
     }
 
     /// TIER 2: Slow tests (dims 64, 128, 256) - ignored in standard CI
