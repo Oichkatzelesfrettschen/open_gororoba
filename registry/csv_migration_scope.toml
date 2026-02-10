@@ -5,25 +5,25 @@
 updated = "2026-02-09"
 authoritative = true
 inventory_path = "registry/csv_inventory.toml"
-document_count = 911
+document_count = 945
 
 [zone_counts]
 archive_csv = 5
 curated_csv = 557
 external_csv = 26
 legacy_csv = 200
-other_csv = 37
+other_csv = 71
 project_csv = 86
 
 [action_counts]
 canonicalized_to_toml = 813
 canonicalized_to_toml_generated_artifact = 30
 canonicalized_to_toml_holding = 31
-manual_triage = 37
+manual_triage = 71
 
 [priority_counts]
 complete = 874
-medium = 37
+medium = 71
 
 [next_waves]
 wave_1 = "complete: 200/200 legacy_csv canonicalized"
@@ -67,9 +67,43 @@ medium_priority_path_sample = [
   "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-1.csv",
   "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-2.csv",
   "data/artifacts/ARTIFACTS_MANIFEST.csv",
+  "docs/ALGEBRA_CRATES_QUICK_REFERENCE.csv",
   "docs/claims/CLAIMS_DOMAIN_MAP.csv",
   "papers/extracted/moreno-2005-math0512516/table_1.csv",
   "reports/GWTC_Augmented_x35.csv",
   "reports/gwtc3_augmented_results.csv",
   "reports/gwtc3_modality_results.csv",
+  "venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/Stocks.csv",
+  "venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/data_x_x2_x3.csv",
+  "venv/lib/python3.14/site-packages/matplotlib/mpl-data/sample_data/msft.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccosh.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsin.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsinh.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctan.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arctanh.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cbrt.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cos.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-cosh.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-exp2.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-expm1.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log10.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log1p.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-log2.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sin.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-sinh.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tan.csv",
+  "venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-tanh.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-1.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/mt19937-testset-2.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-1.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64-testset-2.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-1.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/pcg64dxsm-testset-2.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-1.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/philox-testset-2.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-1.csv",
+  "venv/lib/python3.14/site-packages/numpy/random/tests/data/sfc64-testset-2.csv",
 ]

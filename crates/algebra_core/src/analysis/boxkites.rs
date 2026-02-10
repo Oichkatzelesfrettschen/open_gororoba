@@ -8109,7 +8109,7 @@ mod tests {
                         // Verify Klein-four invariant F
                         let f0 = eta_ab ^ eta_bc;
                         let f1 = eta_bc ^ eta_ac;
-                        let f = (f0, f1);
+                        let _f = (f0, f1);
 
                         // F should be (0,0) for pure (zero element) or nonzero for mixed
                         let expected_pure_f = (f0 == 0) && (f1 == 0);

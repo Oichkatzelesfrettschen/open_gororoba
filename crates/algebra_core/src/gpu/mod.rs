@@ -28,20 +28,20 @@ pub use frustration::FrustrationGpu;
 /// GPU device initialization and error handling.
 #[cfg(feature = "gpu")]
 pub mod device {
-    use cudarc::driver::CudaDevice;
+    use cudarc::driver::CudaContext;
     use std::sync::Arc;
 
     /// Initialize GPU device for computation.
     ///
     /// # Returns
-    /// A handle to GPU device 0, or an error if CUDA is unavailable.
-    pub fn init_gpu() -> Result<Arc<CudaDevice>, String> {
-        CudaDevice::new(0).map_err(|e| format!("CUDA device initialization failed: {}", e))
+    /// A handle to GPU context for device 0, or an error if CUDA is unavailable.
+    pub fn init_gpu() -> Result<Arc<CudaContext>, String> {
+        CudaContext::new(0).map_err(|e| format!("CUDA device initialization failed: {}", e))
     }
 
     /// Check if GPU is available without initializing.
     pub fn is_gpu_available() -> bool {
-        CudaDevice::new(0).is_ok()
+        CudaContext::new(0).is_ok()
     }
 }
 

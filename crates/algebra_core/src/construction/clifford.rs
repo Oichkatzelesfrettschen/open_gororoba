@@ -306,8 +306,6 @@ mod tests {
             ("Cl(0,2) - Hyperbolic plane", CliffordSignature::new(0, 2)),
         ];
 
-        let mut all_non_commutative = true;
-
         for (name, sig) in signatures {
             // Test all basis element pairs (4*4=16 total, but only 16 unordered pairs)
             let mut commutative_pairs = 0;
@@ -322,7 +320,6 @@ mod tests {
                     let commutes = (s_ij - s_ji).abs() < 1e-10 && m_ij == m_ji;
                     if commutes {
                         commutative_pairs += 1;
-                        all_non_commutative = false;
                     }
                     total_pairs += 1;
                 }
