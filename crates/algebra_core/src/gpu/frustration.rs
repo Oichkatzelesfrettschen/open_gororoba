@@ -129,8 +129,8 @@ impl FrustrationGpu {
         let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
         let stream = ctx.default_stream();
 
-        let ptx = compile_ptx(FRUSTRATION_KERNEL_SRC)
-            .map_err(|e| format!("NVRTC compile: {}", e))?;
+        let ptx =
+            compile_ptx(FRUSTRATION_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
 
         let module = ctx
             .load_module(ptx)
@@ -187,7 +187,9 @@ impl FrustrationGpu {
         builder.arg(&mut frustrated_dev);
 
         unsafe {
-            builder.launch(cfg).map_err(|e| format!("Kernel launch: {}", e))?;
+            builder
+                .launch(cfg)
+                .map_err(|e| format!("Kernel launch: {}", e))?;
         }
 
         // Copy result
@@ -309,7 +311,10 @@ mod tests {
         assert!(result.is_ok());
 
         let result = result.unwrap();
-        eprintln!("Test graph: {} frustrated of {} edges", result.frustrated_count, result.total_edges);
+        eprintln!(
+            "Test graph: {} frustrated of {} edges",
+            result.frustrated_count, result.total_edges
+        );
         assert_eq!(result.cycle_rank, 0, "Line graph should have no cycles");
     }
 
@@ -328,7 +333,10 @@ mod tests {
             "Triangle: frustrated={}, cycle_rank={}, ratio={:.4}",
             result.frustrated_count, result.cycle_rank, result.frustration_ratio
         );
-        assert!(result.frustrated_count > 0, "Triangle should have frustration");
+        assert!(
+            result.frustrated_count > 0,
+            "Triangle should have frustration"
+        );
     }
 
     #[cfg(feature = "gpu")]

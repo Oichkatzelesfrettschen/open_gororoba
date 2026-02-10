@@ -5,7 +5,7 @@
 //! Jordan algebras are non-associative algebras defined by the symmetric product:
 //!   a * b = (ab + ba) / 2
 //!
-//! They are fundamentally different from Cayley-Dickson (0% commutative at dim≥4)
+//! They are fundamentally different from Cayley-Dickson (0% commutative at dim>=4)
 //! and Clifford algebras (80-90% commutative at all dims). Jordan algebras are
 //! ALWAYS commutative by definition, but NEVER associative (except in degenerate cases).
 //!
@@ -28,7 +28,7 @@ use std::fmt;
 ///
 /// KEY PROPERTY: All Jordan algebras satisfy:
 ///   - a * b = b * a (ALWAYS commutative by definition)
-///   - (a*b)*c ≠ a*(b*c) in general (NEVER associative, except degenerate)
+///   - (a*b)*c != a*(b*c) in general (NEVER associative, except degenerate)
 ///   - No zero-divisors (formal algebra structure)
 pub trait JordanAlgebra: Clone + fmt::Debug {
     /// Dimension of this Jordan algebra
@@ -44,9 +44,7 @@ pub trait JordanAlgebra: Clone + fmt::Debug {
     fn commutes(&self, a: &[f64], b: &[f64]) -> bool {
         let ab = self.jordan_product(a, b);
         let ba = self.jordan_product(b, a);
-        ab.iter()
-            .zip(ba.iter())
-            .all(|(x, y)| (x - y).abs() < 1e-10)
+        ab.iter().zip(ba.iter()).all(|(x, y)| (x - y).abs() < 1e-10)
     }
 
     /// Associativity violation measure: |(a*b)*c - a*(b*c)| / |a||b||c|
@@ -54,7 +52,7 @@ pub trait JordanAlgebra: Clone + fmt::Debug {
     fn associativity_violation(&self, a: &[f64], b: &[f64], c: &[f64]) -> f64;
 }
 
-/// Jordan A₁ = ℝ (real numbers, 1D)
+/// Jordan A_1 = R (real numbers, 1D)
 /// - Trivial Jordan algebra: scalars commute and associate
 /// - 100% commutative (trivial: single element)
 /// - Actually associative (degenerate case)
@@ -88,10 +86,10 @@ impl JordanAlgebra for JordanA1 {
     }
 }
 
-/// Jordan A₂ = Sym₃(ℝ) (3×3 symmetric matrices, 3D space)
+/// Jordan A_2 = Sym_3(R) (3x3 symmetric matrices, 3D space)
 /// - Basis: diagonal elements and upper triangle (symmetric)
 /// - 100% commutative by Jordan product definition
-/// - Non-associative: (a*b)*c ≠ a*(b*c) in general
+/// - Non-associative: (a*b)*c != a*(b*c) in general
 #[derive(Clone, Debug)]
 pub struct JordanA2;
 
@@ -101,10 +99,10 @@ impl JordanAlgebra for JordanA2 {
     }
 
     fn jordan_product(&self, a: &[f64], b: &[f64]) -> Vec<f64> {
-        // A2 represented as 3D vector: (a₁, a₂, a₁₂)
+        // A2 represented as 3D vector: (a_1, a_2, a_1_2)
         // where full matrix is:
-        // [a₁   a₁₂]
-        // [a₁₂  a₂]
+        // [a_1   a_1_2]
+        // [a_1_2  a_2]
         //
         // Product of two such symmetric matrices gives symmetric result
         // Jordan product: (AB + BA) / 2
@@ -202,11 +200,11 @@ impl JordanAlgebra for JordanA2 {
 
 #[cfg(test)]
 mod tests {
-    use super::{JordanAlgebra, JordanA1, JordanA2};
+    use super::{JordanA1, JordanA2, JordanAlgebra};
 
     /// Phase 3b Step 1: Jordan A1 Implementation and Census
     ///
-    /// A₁ = ℝ (real numbers)
+    /// A_1 = R (real numbers)
     /// Dimension: 1
     /// Properties:
     ///   - Jordan product: a * b = (ab + ba) / 2 = ab (commutative for reals)
@@ -221,14 +219,17 @@ mod tests {
         assert_eq!(a1.dim(), 1, "A1 dimension is 1");
 
         // Test with concrete elements
-        let a = vec![2.0];  // represents 2 in ℝ
-        let b = vec![3.0];  // represents 3 in ℝ
+        let a = vec![2.0]; // represents 2 in R
+        let b = vec![3.0]; // represents 3 in R
 
         // Jordan product: (ab + ba) / 2 = 2 * (ab) / 2 = ab (for commutative!)
         let jordan_prod = a1.jordan_product(&a, &b);
-        let expected = vec![6.0];  // 2 * 3 = 6
+        let expected = vec![6.0]; // 2 * 3 = 6
 
-        assert_eq!(jordan_prod[0], expected[0], "A1 Jordan product should be standard multiplication");
+        assert_eq!(
+            jordan_prod[0], expected[0],
+            "A1 Jordan product should be standard multiplication"
+        );
 
         eprintln!("test_jordan_a1_basic_properties: PASS");
         eprintln!("  Dimension: {}", a1.dim());
@@ -237,17 +238,20 @@ mod tests {
 
     /// Phase 3b Step 1: Verify 100% Commutativity in Jordan A1
     ///
-    /// Check that all basis element pairs in A₁ commute.
-    /// Since A₁ is 1D, there's only one basis element (1), and 1*1 = 1*1.
+    /// Check that all basis element pairs in A_1 commute.
+    /// Since A_1 is 1D, there's only one basis element (1), and 1*1 = 1*1.
     #[test]
     fn test_jordan_a1_commutativity() {
         let a1 = JordanA1;
 
         // A1 has single basis element, trivially commutative
-        let a = vec![1.0];  // basis element
-        let b = vec![1.0];  // same element
+        let a = vec![1.0]; // basis element
+        let b = vec![1.0]; // same element
 
-        assert!(a1.commutes(&a, &b), "A1 should be commutative (by Jordan definition)");
+        assert!(
+            a1.commutes(&a, &b),
+            "A1 should be commutative (by Jordan definition)"
+        );
 
         // Jordan product both ways
         let ab = a1.jordan_product(&a, &b);
@@ -259,8 +263,8 @@ mod tests {
 
     /// Phase 3b Step 1: Verify Associativity in Jordan A1 (degenerate case)
     ///
-    /// A₁ is the degenerate case where Jordan product is associative.
-    /// For all a, b, c in ℝ: (a*b)*c = a*(b*c)
+    /// A_1 is the degenerate case where Jordan product is associative.
+    /// For all a, b, c in R: (a*b)*c = a*(b*c)
     #[test]
     fn test_jordan_a1_associativity() {
         let a1 = JordanA1;
@@ -273,15 +277,18 @@ mod tests {
         assert!(violation < 1e-10, "A1 should be associative (degenerate)");
 
         eprintln!("test_jordan_a1_associativity: PASS");
-        eprintln!("  Associativity violation: {:.2e} (should be ~0)", violation);
+        eprintln!(
+            "  Associativity violation: {:.2e} (should be ~0)",
+            violation
+        );
     }
 
     /// Phase 3b Step 2: Jordan A2 Implementation
     ///
-    /// A₂ = Sym₃(ℝ) (3×3 symmetric matrices)
-    /// Dimension: 3 (represented as (a₁, a₂, a₁₂) for 2×2 symmetric matrix)
+    /// A_2 = Sym_3(R) (3x3 symmetric matrices)
+    /// Dimension: 3 (represented as (a_1, a_2, a_1_2) for 2x2 symmetric matrix)
     /// Properties:
-    ///   - Basis: e₁ = [[1,0],[0,0]], e₂ = [[0,0],[0,1]], e₁₂ = [[0,1],[1,0]]
+    ///   - Basis: e_1 = [[1,0],[0,0]], e_2 = [[0,0],[0,1]], e_1_2 = [[0,1],[1,0]]
     ///   - Jordan product: a * b = (ab + ba) / 2 (matrix product)
     ///   - Commutativity: 100% (by construction)
     ///   - Associativity: NO (matrix multiplication is associative, but Jordan product is not)
@@ -300,6 +307,7 @@ mod tests {
 
         // Diagonal matrices commute
         assert!(a2.commutes(&a, &b), "Diagonal matrices should commute");
+        assert_eq!(ab, ba, "Jordan product must be commutative");
 
         eprintln!("test_jordan_a2_basic_properties: PASS");
         eprintln!("  Dimension: {}", a2.dim());
@@ -308,17 +316,17 @@ mod tests {
 
     /// Phase 3b Step 2: Verify 100% Commutativity in Jordan A2
     ///
-    /// All 3×3=9 basis pair products in A₂ must commute (by Jordan product definition)
+    /// All 3x3=9 basis pair products in A_2 must commute (by Jordan product definition)
     #[test]
     fn test_jordan_a2_commutativity_sample() {
         let a2 = JordanA2;
 
         // Test a few representative basis pairs
         let test_pairs = vec![
-            (vec![1.0, 0.0, 0.0], vec![0.0, 1.0, 0.0]),  // e1 * e2
-            (vec![1.0, 0.0, 0.0], vec![0.0, 0.0, 1.0]),  // e1 * e12
-            (vec![0.0, 1.0, 0.0], vec![0.0, 0.0, 1.0]),  // e2 * e12
-            (vec![1.0, 0.0, 0.0], vec![1.0, 1.0, 1.0]),  // mixed
+            (vec![1.0, 0.0, 0.0], vec![0.0, 1.0, 0.0]), // e1 * e2
+            (vec![1.0, 0.0, 0.0], vec![0.0, 0.0, 1.0]), // e1 * e12
+            (vec![0.0, 1.0, 0.0], vec![0.0, 0.0, 1.0]), // e2 * e12
+            (vec![1.0, 0.0, 0.0], vec![1.0, 1.0, 1.0]), // mixed
         ];
 
         let mut commuting = 0;
@@ -330,20 +338,23 @@ mod tests {
 
         eprintln!("test_jordan_a2_commutativity_sample: PASS");
         eprintln!("  Sample pairs commuting: {}/4 (expected: 4/4)", commuting);
-        assert_eq!(commuting, 4, "All sampled pairs should commute in Jordan A2");
+        assert_eq!(
+            commuting, 4,
+            "All sampled pairs should commute in Jordan A2"
+        );
     }
 
     /// Phase 3b Step 2: Verify Non-Associativity in Jordan A2
     ///
-    /// Unlike A₁, A₂ must show non-associativity: (a*b)*c ≠ a*(b*c) in general
+    /// Unlike A_1, A_2 must show non-associativity: (a*b)*c != a*(b*c) in general
     #[test]
     fn test_jordan_a2_non_associativity() {
         let a2 = JordanA2;
 
         // Create elements that will exhibit non-associativity
-        let a = vec![1.0, 0.0, 1.0];  // [[1,1],[1,0]]
-        let b = vec![0.0, 1.0, 1.0];  // [[0,1],[1,1]]
-        let c = vec![1.0, 1.0, 0.0];  // [[1,0],[0,1]]
+        let a = vec![1.0, 0.0, 1.0]; // [[1,1],[1,0]]
+        let b = vec![0.0, 1.0, 1.0]; // [[0,1],[1,1]]
+        let c = vec![1.0, 1.0, 0.0]; // [[1,0],[0,1]]
 
         let violation = a2.associativity_violation(&a, &b, &c);
 
@@ -358,8 +369,8 @@ mod tests {
 
     /// Phase 3b Step 3: Jordan A3 (Albert Algebra) Scaffolding
     ///
-    /// A₃ = Albert Algebra (exceptional Jordan algebra)
-    /// Dimension: 27 (3×3 matrices over octonions)
+    /// A_3 = Albert Algebra (exceptional Jordan algebra)
+    /// Dimension: 27 (3x3 matrices over octonions)
     /// Properties:
     ///   - EXCEPTIONAL: No larger simple Jordan algebra exists
     ///   - Commutativity: 100% (by Jordan definition)
@@ -377,7 +388,9 @@ mod tests {
         eprintln!("  EXCEPTIONAL: No larger simple Jordan algebra exists");
         eprintln!("  Phase 3c-3d will implement full Albert algebra structure");
         eprintln!("  Expected: 100% commutativity (by Jordan definition)");
-        eprintln!("  Expected: exceptional algebraic structure (non-associative, automorphism group G2)");
+        eprintln!(
+            "  Expected: exceptional algebraic structure (non-associative, automorphism group G2)"
+        );
 
         assert_eq!(dim_a3, 27, "A3 (Albert algebra) has dimension 27");
     }
@@ -404,22 +417,22 @@ mod tests {
         eprintln!("  =========================================================");
         eprintln!();
         eprintln!("  LEVEL 1: CONSTRUCTION MECHANISM");
-        eprintln!("    ├─ Cayley-Dickson:  0% commutative (structural, dims 4-16 verified)");
-        eprintln!("    ├─ Clifford:        80-90% commutative (structural, dims 4-16 verified)");
-        eprintln!("    ├─ Jordan:          100% commutative (structural, by definition)");
-        eprintln!("    └─ Tensor Product:  inherit from components");
+        eprintln!("    |-- Cayley-Dickson:  0% commutative (structural, dims 4-16 verified)");
+        eprintln!("    |-- Clifford:        80-90% commutative (structural, dims 4-16 verified)");
+        eprintln!("    |-- Jordan:          100% commutative (structural, by definition)");
+        eprintln!("    `-- Tensor Product:  inherit from components");
         eprintln!();
         eprintln!("  LEVEL 2: DIMENSION");
-        eprintln!("    ├─ CD:      2^n only (architectural constraint)");
-        eprintln!("    ├─ Clifford: arbitrary (architectural flexibility)");
-        eprintln!("    ├─ Jordan:   1, 3, 27, ... (fundamental theorem)");
-        eprintln!("    └─ Tensor:   product of component dims");
+        eprintln!("    |-- CD:      2^n only (architectural constraint)");
+        eprintln!("    |-- Clifford: arbitrary (architectural flexibility)");
+        eprintln!("    |-- Jordan:   1, 3, 27, ... (fundamental theorem)");
+        eprintln!("    `-- Tensor:   product of component dims");
         eprintln!();
         eprintln!("  LEVEL 3: METRIC/PARAMETERS");
-        eprintln!("    ├─ CD gamma:     controls ZD count, NOT commutativity");
-        eprintln!("    ├─ Clifford (p,q): controls ZD distribution, NOT commutativity %");
-        eprintln!("    ├─ Jordan:       no parameters (purely algebraic)");
-        eprintln!("    └─ Tensor:       inherited from components");
+        eprintln!("    |-- CD gamma:     controls ZD count, NOT commutativity");
+        eprintln!("    |-- Clifford (p,q): controls ZD distribution, NOT commutativity %");
+        eprintln!("    |-- Jordan:       no parameters (purely algebraic)");
+        eprintln!("    `-- Tensor:       inherited from components");
         eprintln!();
         eprintln!("  KEY INSIGHT: Same dimension (e.g., dim=4) with DIFFERENT construction");
         eprintln!("  methods yields FUNDAMENTALLY DIFFERENT commutativity properties:");
@@ -436,7 +449,7 @@ mod tests {
     /// implementing Jordan algebras (100% commutative). This triple validates the
     /// architecture hierarchy across the full commutativity spectrum:
     ///
-    ///   CD 0% ←────────────────────────────────────→ Jordan 100%
+    ///   CD 0% <--------------------------------------> Jordan 100%
     ///         Clifford 80-90% (construction-specific)
     ///
     /// All three represent different CONSTRUCTION MECHANISMS, not dimensional or
@@ -447,12 +460,16 @@ mod tests {
         eprintln!("PHASE 3b ENTRY POINT: Jordan Algebra Implementation");
         eprintln!("=====================================================");
         eprintln!();
-        eprintln!("OBJECTIVE: Validate construction method primacy across full commutativity spectrum");
+        eprintln!(
+            "OBJECTIVE: Validate construction method primacy across full commutativity spectrum"
+        );
         eprintln!();
         eprintln!("PHASE 2 (Phase 2a-2c):  Cayley-Dickson family census (dims 4-16)");
         eprintln!("  Result: 0% commutativity universal (all gamma signatures, all dims)");
         eprintln!("  Formula: (a,b)*(c,d) = (a*c + gamma*conj(d)*b, d*a + b*conj(c))");
-        eprintln!("  Interpretation: conjugation asymmetry in right component forces non-commutativity");
+        eprintln!(
+            "  Interpretation: conjugation asymmetry in right component forces non-commutativity"
+        );
         eprintln!();
         eprintln!("PHASE 3a (Just completed): Clifford algebra family census (dims 4-16)");
         eprintln!("  Result: 80-90% commutativity (selective, all metrics, all dims)");

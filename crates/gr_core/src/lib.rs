@@ -70,6 +70,7 @@ pub mod penrose;
 pub mod photon_graviton;
 pub mod scattering;
 pub mod schwarzschild;
+pub mod spacetime_algebra;
 pub mod spectral_bands;
 pub mod synchrotron;
 

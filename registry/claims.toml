@@ -72,19 +72,19 @@ what_would_verify_refute = "REFUTED (Phase 2A): Pre-registered fit executed: gam
 
 [[claim]]
 id = "C-010"
-statement = 'Hypothesis: Cayley-Dickson (sedenion) zero-divisor motifs can be mapped to physically realizable absorber networks (e.g., TCMT/RLC/CPA), potentially approaching critical coupling; no "perfect absorption" mapping is validated yet.'
-where_stated = "`docs/MATERIALS_APPLICATIONS.md`, `docs/THE_GEMINI_PROTOCOL.md`, `docs/external_sources/METAMATERIAL_ABSORBER_SOURCES.md`, `docs/C010_ABSORBER_TCMT_MAPPING.md`, `docs/C010_ABSORBER_SALISBURY.md`, `docs/C010_ABSORBER_RLC.md`, `docs/C010_ABSORBER_CPA.md`, `src/scripts/analysis/materials_absorber_tcmt.py`, `src/scripts/analysis/materials_absorber_salisbury.py`, `src/scripts/analysis/materials_absorber_rlc.py`, `src/scripts/analysis/materials_absorber_cpa_twoport.py`, `src/scripts/analysis/materials_absorber_cpa_input_sweep.py`, `data/csv/c010_truncated_icosahedron_graph.csv`, `data/csv/c010_tcmt_truncated_icosahedron.csv`, `data/csv/c010_tcmt_truncated_icosahedron_minima.csv`, `data/csv/c010_salisbury_screen.csv`, `data/csv/c010_salisbury_screen_minima.csv`, `data/csv/c010_rlc_surface_impedance.csv`, `data/csv/c010_rlc_surface_impedance_minima.csv`, `data/csv/c010_rlc_fit_summary.csv`, `data/csv/c010_cpa_twoport_scan.csv`, `data/csv/c010_cpa_twoport_minima.csv`, `data/csv/c010_cpa_input_sweep.csv`, `data/csv/c010_cpa_input_sweep_minima.csv`, `data/csv/c010_zd_tcmt_spectral_comparison.csv`, `data/csv/materials_baseline_metrics.csv`, `data/csv/materials_embedding_benchmarks.csv`"
+statement = "Falsifiable thesis: a metamaterial whose unit-cell couplings follow the sedenion zero-divisor incidence graph could realize a mode-selective holographic entropy sink; the disconnected 7-clique ZD topology implies local connected absorbers are insufficient without explicit non-local coupling."
+where_stated = "`docs/MATERIALS_APPLICATIONS.md`, `docs/THE_GEMINI_PROTOCOL.md`, `docs/GRAND_SYNTHESIS.md`, `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/materials_core/src/metamaterial.rs`, `crates/optics_core/src/tcmt.rs`, `crates/control_core/src/bridges/tcmt.rs`, `crates/gororoba_cli/src/bin/tcmt_sweep.rs`, `data/csv/cd_zd_absorber_mapping.csv`, `registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml`, `data/artifacts/images/absorber_pareto_3160x2820.png`"
 status = "Closed/Negative-Result"
-last_verified = "2026-02-06"
-what_would_verify_refute = "CLOSED (Phase 7 Batch F): Phase 3C spectral comparison definitively shows structural incompatibility. The ZD assessor incidence graph (42 vertices, 7 disconnected K6 cliques) has Laplacian spectra fundamentally different from any connected TCMT resonator graph (KS=0.78, p<0.0001). The ZD graph is DISCONNECTED (7 box-kite components with no inter-kite sharing), making it structurally impossible to map to connected absorber networks. Absorber baselines (Salisbury, RLC, CPA, TCMT) are documented but no CD->absorber mapping exists. Research direction: explore connected subgraph embeddings or alternate algebraic structures."
+last_verified = "2026-02-10"
+what_would_verify_refute = "CLOSED/NEGATIVE-RESULT (updated 2026-02-10): the hidden structural finding stands -- the ZD incidence graph is 7 disconnected K6 cliques, while practical TCMT/absorber lattices are connected. This mismatch blocks any straightforward local mapping from algebraic annihilation (xy=0) to physical entropy dumping. Existing absorber and optical-capture pipelines in-repo (including warp-ring/analogue-gravity optical modeling) have not produced a connected local realization of the ZD topology. Verification would require a reproducible design with explicit non-local couplers that recovers ZD-predicted mode suppression and beats baseline connected absorbers; refutation is continued failure of any such non-local design under the same benchmark criteria."
 
 [[claim]]
 id = "C-011"
-statement = "Hypothesis: a Cayley-Dickson (sedenion) structure could parameterize a gravastar-like effective model, but current analysis shows a non-associative obstruction; no physically grounded equivalence mechanism is established."
-where_stated = "`docs/NAVIGATOR.md`, `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/external_sources/GRAVASTAR_SOURCES.md`, `docs/theory/GRAVASTAR_CD_IMPOSSIBILITY_ANALYSIS.md`, `src/scripts/analysis/gravastar_eos_sweep.py`, `src/scripts/analysis/gravastar_thin_shell.py`, `src/scripts/analysis/gravastar_thin_shell_stability.py`, `src/scripts/analysis/gravastar_nonassociative_obstruction.py`, `data/csv/gravastar_eos_pressure_gradient_sweep.csv`, `data/csv/gravastar_thin_shell_matching.csv`, `data/csv/gravastar_thin_shell_stability.csv`, `data/csv/gravastar_nonassociative_obstruction.csv`, `tests/test_tov_gravastar_core.py`, `tests/test_tov_gravastar_sweep.py`, `tests/test_gravastar_thin_shell.py`, `tests/test_gravastar_thin_shell_stability.py`, `tests/test_gravastar_nonassociative_obstruction.py`"
+statement = "Falsifiable thesis: in the repo's cosmology-materials synthesis, a gravastar-like anti-diffusion core pressure can be phenomenologically matched to a sedenion non-associative coherence-failure term from a scalar field at D_eff = -1.5; interpreted literally, black-hole candidates become sedenion solitons."
+where_stated = "`docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/GRAND_SYNTHESIS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, `crates/gororoba_cli/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `data/csv/gravastar_anisotropic_stability.csv`, `data/csv/gravastar_ligo_mass_sweep.csv`, `data/csv/gravastar_polytropic_sweep.csv`, `data/csv/gravastar_radial_stability.csv`"
 status = "Closed/Obstructed"
-last_verified = "2026-02-06"
-what_would_verify_refute = "CLOSED (Phase 7 Batch F): Non-associative obstruction is FUNDAMENTAL. Sedenion associator norms are generically nonzero (mean 1.32 random, 3.67 ZD triples), preventing variational action functional derivation. Bypass mechanisms documented but not implemented: (1) associative subalgebra restriction loses ZD structure, (2) A-infinity framework requires homotopy-coherent machinery not present, (3) Jordan-algebraic formulation incompatible with Lorentzian signature. Research direction preserved in `docs/theory/GRAVASTAR_CD_IMPOSSIBILITY_ANALYSIS.md`."
+last_verified = "2026-02-10"
+what_would_verify_refute = "CLOSED/OBSTRUCTED (updated 2026-02-10): the anti-diffusion <-> coherence-failure correspondence remains a phenomenological match, not a derived GR stress-energy mapping. C-030 still blocks a standard action principle: non-associative associator norms are O(1), so cubic/quartic dynamics are parenthesization-dependent without a bypass. First-source gravastar references are already cached and cited in `docs/BIBLIOGRAPHY.md`/`refs.bib`, but emulator or simulator extension is currently stalled. Verification would require one explicit bypass model (A-infinity, associative surrogate, or restricted associative sector) that reproduces TOV-consistent observables; refutation is any proof that no such bypass can yield physically admissible boundary conditions."
 
 [[claim]]
 id = "C-012"
@@ -4512,37 +4512,37 @@ insights = ["I-027"]
 
 [[claim]]
 id = "C-563"
-statement = "Jordan Algebras Exhibit Universal Commutativity: All tested Jordan algebras A₁ (ℝ, 1D) and A₂ (Sym₃(ℝ), 3D) exhibit 100% commutativity across all basis element pairs. The Jordan product a*b = (ab+ba)/2 is structurally commutative by definition (symmetric formula), independent of dimension or algebraic context. This establishes Jordan algebras as the opposite end of the commutativity spectrum from Cayley-Dickson algebras (0% commutative at dim≥4)."
+statement = "Jordan Algebras Exhibit Universal Commutativity: All tested Jordan algebras A_1 (R, 1D) and A_2 (Sym_3(R), 3D) exhibit 100% commutativity across all basis element pairs. The Jordan product a*b = (ab+ba)/2 is structurally commutative by definition (symmetric formula), independent of dimension or algebraic context. This establishes Jordan algebras as the opposite end of the commutativity spectrum from Cayley-Dickson algebras (0% commutative at dim>=4)."
 where_stated = "`crates/algebra_core/src/construction/jordan.rs` (test_jordan_a1_commutativity, test_jordan_a2_commutativity_sample)"
 status = "Verified"
 last_verified = "2026-02-09"
-what_would_verify_refute = "VERIFIED: A₁ has single basis element, trivially commutative. A₂ sampled 4 basis pair products (diagonal×diagonal, diagonal×off-diagonal, mixed): all 4 pairs commute as expected. A₂ full enumeration (9 pairs) deferred to Phase 3c. WHAT WOULD REFUTE: any basis element pair in any Jordan algebra showing a*b ≠ b*a."
+what_would_verify_refute = "VERIFIED: A_1 has single basis element, trivially commutative. A_2 sampled 4 basis pair products (diagonalxdiagonal, diagonalxoff-diagonal, mixed): all 4 pairs commute as expected. A_2 full enumeration (9 pairs) deferred to Phase 3c. WHAT WOULD REFUTE: any basis element pair in any Jordan algebra showing a*b != b*a."
 claims = ["C-563"]
 sprint = 27
 
 [[claim]]
 id = "C-564"
-statement = "Non-Associativity is Structural Property of Jordan Algebras: Jordan algebras A₂ (Sym₃(ℝ), 3D) exhibit non-associativity: (a*b)*c ≠ a*(b*c) in general. Unlike Cayley-Dickson algebras where non-associativity is dimension-dependent (emerges at dim≥8), Jordan non-associativity is a fundamental property of the construction mechanism itself, independent of dimension. A₁ (degenerate case) is associative; A₂ and A₃ are inherently non-associative."
+statement = "Non-Associativity is Structural Property of Jordan Algebras: Jordan algebras A_2 (Sym_3(R), 3D) exhibit non-associativity: (a*b)*c != a*(b*c) in general. Unlike Cayley-Dickson algebras where non-associativity is dimension-dependent (emerges at dim>=8), Jordan non-associativity is a fundamental property of the construction mechanism itself, independent of dimension. A_1 (degenerate case) is associative; A_2 and A_3 are inherently non-associative."
 where_stated = "`crates/algebra_core/src/construction/jordan.rs` (test_jordan_a1_associativity, test_jordan_a2_non_associativity)"
 status = "Verified"
 last_verified = "2026-02-09"
-what_would_verify_refute = "VERIFIED: A₁ scalars are associative (trivial case). A₂ test_jordan_a2_non_associativity shows associativity_violation() > 0 for sampled triple, confirming non-associativity. WHAT WOULD REFUTE: finding any non-degenerate Jordan algebra that is associative, or any Jordan A₂/A₃ triple violating non-associativity."
+what_would_verify_refute = "VERIFIED: A_1 scalars are associative (trivial case). A_2 test_jordan_a2_non_associativity shows associativity_violation() > 0 for sampled triple, confirming non-associativity. WHAT WOULD REFUTE: finding any non-degenerate Jordan algebra that is associative, or any Jordan A_2/A_3 triple violating non-associativity."
 claims = ["C-564"]
 sprint = 27
 
 [[claim]]
 id = "C-565"
-statement = "Jordan Algebra Architecture: Formal Jordan algebras have no zero-divisors by theorem. The symmetric Jordan product structure (a*b = (ab+ba)/2) ensures closure and divisibility properties. Phase 3b verified A₁ and A₂ yield valid algebraic structures with 100% commutativity and no zero-divisor issues in the formal algebra sense."
-where_stated = "`crates/algebra_core/src/construction/jordan.rs` (JordanAlgebra trait definition, A₁ and A₂ implementations)"
+statement = "Jordan Algebra Architecture: Formal Jordan algebras have no zero-divisors by theorem. The symmetric Jordan product structure (a*b = (ab+ba)/2) ensures closure and divisibility properties. Phase 3b verified A_1 and A_2 yield valid algebraic structures with 100% commutativity and no zero-divisor issues in the formal algebra sense."
+where_stated = "`crates/algebra_core/src/construction/jordan.rs` (JordanAlgebra trait definition, A_1 and A_2 implementations)"
 status = "Verified"
 last_verified = "2026-02-09"
-what_would_verify_refute = "VERIFIED: A₁ (scalars) have no ZD by definition. A₂ (symmetric matrices) have no ZD (symmetric 2×2 matrices form division algebra in Jordan product). WHAT WOULD REFUTE: finding zero-divisor pair in any formal Jordan algebra implementation."
+what_would_verify_refute = "VERIFIED: A_1 (scalars) have no ZD by definition. A_2 (symmetric matrices) have no ZD (symmetric 2x2 matrices form division algebra in Jordan product). WHAT WOULD REFUTE: finding zero-divisor pair in any formal Jordan algebra implementation."
 claims = ["C-565"]
 sprint = 27
 
 [[claim]]
 id = "C-566"
-statement = "Construction Mechanism Determines Property Class: The commutativity class (0%, 80-90%, or 100%) is determined entirely by the algebraic construction mechanism (Cayley-Dickson, Clifford, or Jordan), independent of dimension or metric signature. Cayley-Dickson universally exhibits 0% commutative pairs at all dims ≥4 regardless of gamma. Clifford algebras universally exhibit 80-90% commutative pairs at all dims regardless of (p,q) signature. Jordan algebras universally exhibit 100% commutativity at all dims regardless of A₁/A₂/A₃ choice. This establishes that algebraic property classes are discrete and mechanism-determined, not continuous or metric-tuned."
+statement = "Construction Mechanism Determines Property Class: The commutativity class (0%, 80-90%, or 100%) is determined entirely by the algebraic construction mechanism (Cayley-Dickson, Clifford, or Jordan), independent of dimension or metric signature. Cayley-Dickson universally exhibits 0% commutative pairs at all dims >=4 regardless of gamma. Clifford algebras universally exhibit 80-90% commutative pairs at all dims regardless of (p,q) signature. Jordan algebras universally exhibit 100% commutativity at all dims regardless of A_1/A_2/A_3 choice. This establishes that algebraic property classes are discrete and mechanism-determined, not continuous or metric-tuned."
 where_stated = "`docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 1, 2, Universal Laws section)"
 status = "Verified"
 last_verified = "2026-02-09"
@@ -4566,7 +4566,7 @@ statement = "Commutativity-Associativity Trade-Off Law: Algebras enforcing commu
 where_stated = "`docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 2, 3, Universal Laws)"
 status = "Verified"
 last_verified = "2026-02-09"
-what_would_verify_refute = "VERIFIED: Jordan A₂ exhibits 100% commutativity with demonstrated non-associativity (Phase 3b test_jordan_a2_non_associativity). Clifford always associative with 80-90% commutativity (Phase 3a). CD 0% commutative with dimension-dependent associativity (Phase 2). WHAT WOULD REFUTE: finding a non-trivial algebra with both 100% commutativity AND 100% associativity simultaneously."
+what_would_verify_refute = "VERIFIED: Jordan A_2 exhibits 100% commutativity with demonstrated non-associativity (Phase 3b test_jordan_a2_non_associativity). Clifford always associative with 80-90% commutativity (Phase 3a). CD 0% commutative with dimension-dependent associativity (Phase 2). WHAT WOULD REFUTE: finding a non-trivial algebra with both 100% commutativity AND 100% associativity simultaneously."
 claims = ["C-568"]
 sprint = 27
 
@@ -4576,6 +4576,6 @@ statement = "Metric Signature Is Purely Parametric: Metric parameters (CD gamma 
 where_stated = "`docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md` (Sections 1, 5, 7)"
 status = "Verified"
 last_verified = "2026-02-09"
-what_would_verify_refute = "VERIFIED: CD phase 2 found all gamma signatures {+1,-1}² at dim 4 show 0% commutativity despite ZD count varying. Clifford phase 3a found all (p,q) at dim 4 show ~83% commutativity despite ZD distribution varying. WHAT WOULD REFUTE: finding any metric choice in any family that changes fundamental commutativity or associativity class."
+what_would_verify_refute = "VERIFIED: CD phase 2 found all gamma signatures {+1,-1}^2 at dim 4 show 0% commutativity despite ZD count varying. Clifford phase 3a found all (p,q) at dim 4 show ~83% commutativity despite ZD distribution varying. WHAT WOULD REFUTE: finding any metric choice in any family that changes fundamental commutativity or associativity class."
 claims = ["C-569"]
 sprint = 27

@@ -3,5 +3,6 @@ pub mod clifford;
 pub mod hypercomplex;
 pub mod jordan;
 pub mod mult_table;
+pub mod non_associative;
 pub mod padic;
 pub mod wheels;

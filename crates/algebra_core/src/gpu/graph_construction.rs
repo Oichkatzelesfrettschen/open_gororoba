@@ -165,8 +165,7 @@ impl GraphConstructorGpu {
         let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
         let stream = ctx.default_stream();
 
-        let ptx = compile_ptx(GRAPH_KERNEL_SRC)
-            .map_err(|e| format!("NVRTC compile: {}", e))?;
+        let ptx = compile_ptx(GRAPH_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
 
         let module = ctx
             .load_module(ptx)
@@ -211,7 +210,9 @@ impl GraphConstructorGpu {
         builder.arg(&mut count_dev);
 
         unsafe {
-            builder.launch(cfg).map_err(|e| format!("Count launch: {}", e))?;
+            builder
+                .launch(cfg)
+                .map_err(|e| format!("Count launch: {}", e))?;
         }
 
         let counts: Vec<i32> = stream
@@ -245,7 +246,9 @@ impl GraphConstructorGpu {
         builder.arg(&num_edges_u32);
 
         unsafe {
-            builder.launch(cfg).map_err(|e| format!("Compact launch: {}", e))?;
+            builder
+                .launch(cfg)
+                .map_err(|e| format!("Compact launch: {}", e))?;
         }
 
         let edge_i_host: Vec<u32> = stream
