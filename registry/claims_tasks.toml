@@ -3,7 +3,7 @@
 
 [claims_tasks]
 authoritative = true
-updated = "2026-02-09"
+updated = "2026-02-10"
 source_markdown = "docs/CLAIMS_TASKS.md"
 table_count = 3
 task_count = 212
@@ -344,12 +344,12 @@ section = "Active tasks (start here)"
 section_index = 3
 table_index = 1
 order_index = 16
-status_token = "PARTIAL"
-status_raw = "PARTIAL"
+status_token = "DONE"
+status_raw = "DONE"
 status_canonical = true
-task = "Materials \"perfect absorption\" claim: keep speculative; ground in absorber literature + baseline metrics."
-output_artifacts = ["docs/external_sources/METAMATERIAL_ABSORBER_SOURCES.md", "docs/C010_ABSORBER_TCMT_MAPPING.md", "docs/C010_ABSORBER_SALISBURY.md", "docs/C010_ABSORBER_RLC.md", "docs/C010_ABSORBER_CPA.md", "src/scripts/analysis/materials_absorber_tcmt.py", "src/scripts/analysis/materials_absorber_salisbury.py", "src/scripts/analysis/materials_absorber_rlc.py", "src/scripts/analysis/materials_absorber_cpa_twoport.py", "src/scripts/analysis/materials_absorber_cpa_input_sweep.py", "data/csv/c010_truncated_icosahedron_graph.csv", "data/csv/c010_tcmt_truncated_icosahedron.csv", "data/csv/c010_tcmt_truncated_icosahedron_minima.csv", "data/csv/c010_salisbury_screen.csv", "data/csv/c010_salisbury_screen_minima.csv", "data/csv/c010_rlc_surface_impedance.csv", "data/csv/c010_rlc_surface_impedance_minima.csv", "data/csv/c010_rlc_fit_summary.csv", "data/csv/c010_cpa_twoport_scan.csv", "data/csv/c010_cpa_twoport_minima.csv", "data/csv/c010_cpa_input_sweep.csv", "data/csv/c010_cpa_input_sweep_minima.csv", "data/csv/materials_baseline_metrics.csv", "data/csv/materials_embedding_benchmarks.csv"]
-output_artifacts_raw = "`docs/external_sources/METAMATERIAL_ABSORBER_SOURCES.md`, `docs/C010_ABSORBER_TCMT_MAPPING.md`, `docs/C010_ABSORBER_SALISBURY.md`, `docs/C010_ABSORBER_RLC.md`, `docs/C010_ABSORBER_CPA.md`, `src/scripts/analysis/materials_absorber_tcmt.py`, `src/scripts/analysis/materials_absorber_salisbury.py`, `src/scripts/analysis/materials_absorber_rlc.py`, `src/scripts/analysis/materials_absorber_cpa_twoport.py`, `src/scripts/analysis/materials_absorber_cpa_input_sweep.py`, `data/csv/c010_truncated_icosahedron_graph.csv`, `data/csv/c010_tcmt_truncated_icosahedron.csv`, `data/csv/c010_tcmt_truncated_icosahedron_minima.csv`, `data/csv/c010_salisbury_screen.csv`, `data/csv/c010_salisbury_screen_minima.csv`, `data/csv/c010_rlc_surface_impedance.csv`, `data/csv/c010_rlc_surface_impedance_minima.csv`, `data/csv/c010_rlc_fit_summary.csv`, `data/csv/c010_cpa_twoport_scan.csv`, `data/csv/c010_cpa_twoport_minima.csv`, `data/csv/c010_cpa_input_sweep.csv`, `data/csv/c010_cpa_input_sweep_minima.csv`, `data/csv/materials_baseline_metrics.csv`, `data/csv/materials_embedding_benchmarks.csv`"
+task = "CLOSED/NEGATIVE-RESULT: lock C-010 to reproducible topology evidence and an explicit non-local coupling requirement."
+output_artifacts = ["docs/external_sources/OPEN_CLAIMS_SOURCES.md", "docs/GRAND_SYNTHESIS.md", "data/csv/sedenion_box_kites_clustered.csv", "registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml", "data/csv/cd_zd_absorber_mapping.csv", "registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml", "tests/test_c010_holographic_entropy_trap.py", "data/artifacts/images/absorber_pareto_3160x2820.png"]
+output_artifacts_raw = "`docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `docs/GRAND_SYNTHESIS.md`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `data/csv/cd_zd_absorber_mapping.csv`, `registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml`, `tests/test_c010_holographic_entropy_trap.py`, `data/artifacts/images/absorber_pareto_3160x2820.png`"
 source_line = 35
 
 [[task]]
@@ -359,12 +359,12 @@ section = "Active tasks (start here)"
 section_index = 3
 table_index = 1
 order_index = 17
-status_token = "PARTIAL"
-status_raw = "PARTIAL"
+status_token = "BLOCKED"
+status_raw = "BLOCKED"
 status_canonical = true
-task = "Gravastar equivalence: keep speculative; add primary sources; require derivation+numeric regression."
-output_artifacts = ["docs/external_sources/GRAVASTAR_SOURCES.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "src/gravastar_tov.py", "src/scripts/analysis/gravastar_eos_sweep.py", "src/scripts/analysis/gravastar_thin_shell.py", "src/scripts/analysis/gravastar_thin_shell_stability.py", "data/csv/gravastar_eos_pressure_gradient_sweep.csv", "data/csv/gravastar_thin_shell_matching.csv", "data/csv/gravastar_thin_shell_stability.csv", "tests/test_tov_uniform_density.py", "tests/test_tov_gravastar_core.py", "tests/test_tov_gravastar_sweep.py", "tests/test_gravastar_thin_shell.py", "tests/test_gravastar_thin_shell_stability.py"]
-output_artifacts_raw = "`docs/external_sources/GRAVASTAR_SOURCES.md`, `docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `src/gravastar_tov.py`, `src/scripts/analysis/gravastar_eos_sweep.py`, `src/scripts/analysis/gravastar_thin_shell.py`, `src/scripts/analysis/gravastar_thin_shell_stability.py`, `data/csv/gravastar_eos_pressure_gradient_sweep.csv`, `data/csv/gravastar_thin_shell_matching.csv`, `data/csv/gravastar_thin_shell_stability.csv`, `tests/test_tov_uniform_density.py`, `tests/test_tov_gravastar_core.py`, `tests/test_tov_gravastar_sweep.py`, `tests/test_gravastar_thin_shell.py`, `tests/test_gravastar_thin_shell_stability.py`"
+task = "CLOSED/OBSTRUCTED: keep the phenomenological bridge and cached first-source citations, but mark simulator extension as stalled pending an associative bypass model."
+output_artifacts = ["docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/BIBLIOGRAPHY.md", "refs.bib", "crates/cosmology_core/src/gravastar.rs", "crates/cosmology_core/src/tov.rs", "crates/gororoba_cli/src/bin/gravastar_sweep.rs", "crates/gororoba_cli/tests/integration_gravastar.rs", "data/csv/genesis_gravastar_bridge.csv", "registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml", "data/csv/gravastar_radial_stability.csv", "tests/test_c011_gravastar_equivalence_obstruction.py"]
+output_artifacts_raw = "`docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/gravastar.rs`, `crates/cosmology_core/src/tov.rs`, `crates/gororoba_cli/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml`, `data/csv/gravastar_radial_stability.csv`, `tests/test_c011_gravastar_equivalence_obstruction.py`"
 source_line = 36
 
 [[task]]
