@@ -1,6 +1,6 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum
-.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify
+.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify wave6-gate
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke
 .PHONY: registry registry-knowledge registry-governance registry-migrate-corpus registry-normalize-claims
@@ -90,6 +90,23 @@ lint-all-fix-safe: install
 
 check: registry-verify-markdown-owner test lint smoke
 	@echo "OK: check suite complete."
+
+# Wave 6: TOML-first governance acceptance gate (W6-023)
+wave6-gate: registry-verify-markdown-inventory registry-verify-markdown-owner registry-verify-schema-signatures registry-verify-crossrefs
+	@echo ""
+	@echo "=========================================="
+	@echo "WAVE 6 ACCEPTANCE GATE: PASSED"
+	@echo "=========================================="
+	@echo "✓ Markdown inventory validated (TOML-first)"
+	@echo "✓ Markdown owner map verified"
+	@echo "✓ Registry schema signatures checked"
+	@echo "✓ Cross-reference integrity verified"
+	@echo ""
+	@echo "Wave 6 TOML-first governance is operational."
+	@echo "=========================================="
+	@echo ""
+	@echo "To run full validation pipeline including ASCII check:"
+	@echo "  make check && make ascii-check"
 
 smoke: install
 	PYTHONWARNINGS=error $(PYTHON) -m compileall -q src
