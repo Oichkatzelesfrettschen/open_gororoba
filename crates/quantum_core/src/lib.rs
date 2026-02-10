@@ -33,6 +33,9 @@ pub mod spinor_mechanics;
 pub mod tensor_network_classical;
 pub mod tensor_networks;
 
+#[cfg(feature = "gpu")]
+pub mod gpu;
+
 pub use mera::{
     bootstrap_slope_ci, build_mera_structure, fit_log_scaling, mera_entropy_estimate,
     mera_entropy_scaling_analysis, von_neumann_entropy, MeraLayer, MeraScalingResult,

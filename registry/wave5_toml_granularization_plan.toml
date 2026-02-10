@@ -88,45 +88,49 @@ artifacts = [
 
 [[task]]
 id = "W5-007"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Claims statement atomization"
 description = "Split each claim into typed statement atoms (hypothesis, condition, observable, threshold, status token)."
 artifacts = [
   "registry/claims_atoms.toml",
-  "src/scripts/analysis/build_claim_atoms_registry.py",
+  "src/scripts/analysis/build_wave5_batch1_registries.py",
 ]
 
 [[task]]
 id = "W5-008"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Claim evidence edge registry"
 description = "Materialize claim-to-artifact and claim-to-source edges with explicit evidence roles."
 artifacts = [
   "registry/claims_evidence_edges.toml",
-  "src/verification/verify_claim_edge_integrity.py",
+  "src/scripts/analysis/build_wave5_batch1_registries.py",
+  "src/verification/verify_wave5_batch1_registries.py",
 ]
 
 [[task]]
 id = "W5-009"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Equation atom strict schema v2"
 description = "Tighten equation atom schema with symbol table, dimensionality tags, and dependency graph links."
 artifacts = [
-  "registry/knowledge/equation_atoms.toml",
+  "registry/knowledge/equation_atoms_v2.toml",
   "registry/knowledge/equation_symbol_table.toml",
+  "src/scripts/analysis/build_wave5_batch1_registries.py",
 ]
 
 [[task]]
 id = "W5-010"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Proof skeleton registry"
 description = "Capture theorem/lemma/proposition blocks as proof skeleton objects with assumptions and obligations."
 artifacts = [
   "registry/knowledge/proof_skeletons.toml",
+  "src/scripts/analysis/build_wave5_batch1_registries.py",
+  "src/verification/verify_wave5_batch1_registries.py",
 ]
 
 [[task]]
@@ -280,4 +284,17 @@ description = "Bundle strict wave checks into one target and require pass before
 artifacts = [
   "Makefile",
   "registry-wave5",
+]
+
+[[task]]
+id = "W5-025"
+status = "done"
+priority = "high"
+title = "Full markdown payload migration"
+description = "Convert all markdown files, including third-party/cache corpora, into canonical TOML payload registries with lossless chunked base64 storage."
+artifacts = [
+  "registry/markdown_payloads.toml",
+  "registry/markdown_payload_chunks.toml",
+  "src/scripts/analysis/build_markdown_payload_registries.py",
+  "src/verification/verify_wave5_batch1_registries.py",
 ]

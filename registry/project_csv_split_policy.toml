@@ -33,7 +33,7 @@ classification = "canonical_dataset"
 queue_for_scroll_conversion = true
 size_bytes = 326
 source_sha256 = "e612cc4e32ecd95ecda5d8c051f205e0177e803d505c49465f0836821579b527"
-git_status = "untracked"
+git_status = "tracked"
 rationale = "Not listed in generated artifact contracts; treat as canonical project dataset for TOML-first scroll conversion."
 evidence_refs = [
   "Makefile:357",

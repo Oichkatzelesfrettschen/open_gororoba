@@ -5,8 +5,8 @@
 updated = "2026-02-09"
 authoritative = true
 document_count = 946
-tracked_count = 644
-untracked_count = 1
+tracked_count = 645
+untracked_count = 0
 ignored_count = 301
 archived_count = 5
 legacy_count = 200
@@ -7753,7 +7753,7 @@ rationale = "Project canonical dataset is represented in registry/data/project_c
 
 [[document]]
 path = "data/csv/apt_dimensional_census_summary.csv"
-git_status = "untracked"
+git_status = "tracked"
 zone = "project_csv"
 archived = false
 generated = false
