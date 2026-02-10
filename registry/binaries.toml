@@ -237,3 +237,8 @@ description = "Emit optional non-canonical views (markdown, bibtex, tex, pgfplot
 name = "warp-ring-integration"
 crate = "gororoba_cli"
 description = "8-step pipeline: D2Q9 LBM -> spectral triads -> p-adic/neg-dim warp -> metamaterial TMM filter -> E7 algebra -> hypergraph topology -> GRIN lensing -> visualization"
+
+[[binary]]
+name = "dimensional-census"
+crate = "gororoba_cli"
+description = "APT verification across the Cayley-Dickson dimensional ladder"

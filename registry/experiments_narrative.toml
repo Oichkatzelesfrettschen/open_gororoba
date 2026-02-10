@@ -5,7 +5,7 @@
 authoritative = true
 updated = "2026-02-09"
 source_markdown = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
-entry_count = 13
+entry_count = 14
 preamble_markdown = """
 # Experiments Portfolio Shortlist
 
@@ -344,5 +344,30 @@ Output: data/csv/sky_limit_set_comparison.csv
 Run:
 ```bash
 cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-types A,B,D
+```
+"""
+
+[[entry]]
+id = "E-014"
+title = "Dimensional Ladder APT Census (4D-4096D)"
+body_markdown = """
+Method: Exhaustive and Monte Carlo Anti-Diagonal Parity Theorem verification across the
+  full Cayley-Dickson dimensional ladder from dim=4 to dim=4096.
+  Exhaustive mode: Enumerate ALL graph triangles in each zero-divisor component.
+    For each triangle (a,b,c), compute eta via anti-diagonal parity formula:
+    eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b).
+    Classify as pure (eta constant across 3 edges) or mixed (eta non-constant).
+    Verify 1:3 pure:mixed ratio (Quarter Rule: pure*4 = total exactly).
+    Verify Klein-four fiber symmetry: F(0,0) = F(0,1) = F(1,0) = F(1,1).
+  Monte Carlo mode: Rejection-sample random node triples within components,
+    accept only graph triangles (all 3 edges present), classify via APT.
+    Deterministic with seed=42.
+  Tier classification: dims 4-32 (TIER 0-1, <15s), dims 64-256 (TIER 2, ~5s release),
+    dims 512-1024 (TIER 3, minutes-hours CPU), dims 2048-4096 (TIER 4, GPU Monte Carlo).
+Input: None (Cayley-Dickson structure tables computed on the fly)
+Output: data/csv/apt_dimensional_census_summary.csv, data/csv/apt_dimensional_census_details.csv
+Run:
+```bash
+cargo run --release --bin dimensional-census -- --slow --details
 ```
 """

@@ -5,7 +5,7 @@
 authoritative = true
 updated = "2026-02-09"
 source_markdown = "docs/INSIGHTS.md"
-entry_count = 34
+entry_count = 40
 preamble_markdown = """
 # Insights
 
@@ -683,4 +683,70 @@ Status: verified
 Claims: C-569
 
 Phase 3c reconnaissance determined that exceptional algebras E6/E7/E8 are Lie algebras (group-theoretic structures defined via antisymmetric bracket [a,b]=ab-ba), NOT associative algebras. This fundamental distinction means E6/E7/E8 operate in a different domain: Lie groups and their automorphism actions, not algebraic multiplication tables. Cayley-Dickson, Clifford, and Jordan algebras all have explicit multiplication formulas and are tested via basis element pairs and composition properties. E6/E7/E8 are defined implicitly via root systems, Dynkin diagrams, and representation theory-requiring fundamentally different infrastructure (spinors, principal bundles, Cartan matrices). STRATEGIC DECISION: DEFER E6/E7/E8 to Phase 4+ when the project's scope expands to differential geometry and representation theory. Phase 3d synthesis is COMPLETE and PUBLICATION-READY based on CD/Clifford/Jordan alone: universal architecture hierarchy is proven, commutativity-associativity trade-off is documented, construction method primacy is empirically validated across 8+ months and 2475 tests. The three construction families comprehensively cover the major associative algebra landscape. Exceptional algebras represent a tangential research direction, not a critical gap in the core synthesis.
+"""
+
+[[entry]]
+id = "I-035"
+title = "Dimensional Ladder Validates APT Mechanism with GPU Infrastructure"
+body_markdown = """
+Date: 2026-02-09
+Status: verified
+Claims: C-570, C-571, C-572, C-573, C-574
+
+Complete dimensional census tool (dimensional-census binary) validates the Anti-Diagonal Parity Theorem across dims 16-256 exhaustively (14.2M+ graph triangles) with pure_ratio = 0.250000 EXACTLY at every dimension. The 1:3 ratio, Quarter Rule, and Klein-four fiber symmetry all hold without exception. GPU acceleration infrastructure is operational: eta matrix, graph construction, frustration, and Monte Carlo APT kernels compile via cudarc NVRTC. Monte Carlo rejection sampling at dims 32-64 converges to 0.25 within 0.2% at 100K samples. Criterion benchmarking suite (7 groups) establishes scaling baselines: component extraction O(n^2), triangle enumeration O(n^3), cd_basis_mul_sign O(log dim). The exhaustive census confirms that APT is not an approximation -- the mechanism is algebraically exact at every verified dimension.
+"""
+
+[[entry]]
+id = "I-036"
+title = "8D Lattice Embedding Hardened with Injective Round-Trip Gates"
+body_markdown = """
+Date: 2026-02-10
+Status: verified
+Claims: C-452, C-453
+
+C-452/C-453 evidence was strengthened from parse-only checks to explicit falsifiability gates: injectivity at each dimension (256, 512, 1024, 2048), exact basis-index coverage, exact lattice->index round-trip reconstruction, codomain lock to 8D trinary vectors, and filtration-growth deltas (256, 512, 1024) across the dimensional ladder. New filtration guards now enforce pairwise-disjoint growth layers and exact intersection cardinalities across the full 256->512->1024->2048 chain. Header schema stability is explicitly tested to freeze the external CSV interface while preserving reproducibility.
+"""
+
+[[entry]]
+id = "I-037"
+title = "Phase 4c: Complete Octonion-to-E8 Exceptional Chain Verified"
+body_markdown = """
+Date: 2026-02-09
+Status: verified
+Claims: C-575, C-576, C-577, C-578, C-579, C-580
+
+Phase 4c establishes a rigorous computational bridge from concrete octonion algebra to the full exceptional Lie algebra hierarchy. KEY RESULTS: (1) Octonion multiplication table FIXED: the previous Fano plane had invalid line {4,5,6} causing 8 alternativity failures; the correct CD-derived table uses 7 Fano lines with consistent orientations (C-575). (2) G2 = Der(O) = 14-dimensional: computed via null-space of Leibniz constraint system on so(7); 21 parameters minus 7 constraints = 14 independent derivations (C-576). (3) Cayley plane OP^2 verified as 16-dimensional projective plane with rank-1 idempotent points in J3(O) (C-577). (4) Moufang loop S^7 with all three identities verified exhaustively on 343 basis triples: Left a(x(ay))=((ax)a)y, Right ((xa)y)a=x(a(ya)), Middle (ax)(ya)=(a(xy))a; the PARENTHESIZATION matters critically in non-associative algebras (C-578). (5) Correct Tits dimension formula: dim L(A,B) = Der(J3(B)) + (dim(A)-1)(dim(J3(B))-1) + Der(A) reproduces all 16 magic square entries and is symmetric (C-579). (6) Full exceptional chain cross-validated: G2(14)->F4(52)->E6(78)->E7(133)->E8(248), with E6=F4+traceless_Albert=52+26=78, and E6/(Spin(10)*U(1))=OP^2 giving complexified tangent dim 32=2*16 (C-580). This supersedes I-034's deferral of exceptional algebras: the infrastructure is now operational.
+"""
+
+[[entry]]
+id = "I-038"
+title = "Gresnigt Subalgebra Decomposition: Depth, Not Identity, Discriminates Mass"
+body_markdown = """
+Date: 2026-02-09
+Status: verified
+Claims: C-581, C-582, C-583, C-587
+
+Direction 1 (Gresnigt decomposition) enumerated all 15 octonion subalgebras of sedenions as XOR-closed hyperplanes of Z_2^4. KEY FINDINGS: (1) ALL 15 are alternative algebras with 7 Fano triples each (C-581). (2) All 105 pairwise intersections have exactly 4 elements (C-582). (3) Cross-subalgebra associator norms are UNIFORM (mean=1.0 for every pair) -- the subalgebras are algebraically indistinguishable for mass prediction (C-583). (4) Mass differentiation must come from DEPTH (boundary-crossing count: how many of 3 indices cross the dim/2 boundary), not subalgebra membership. This finding unblocks Direction 4 by showing that the Tang mechanism needs higher-order invariants beyond raw associator norms.
+"""
+
+[[entry]]
+id = "I-039"
+title = "Five-Direction Research Sprint: Stiefel V_{8,2}, Albert J_3(O), and Negative Results"
+body_markdown = """
+Date: 2026-02-09
+Status: verified
+Claims: C-581, C-582, C-583, C-584, C-585, C-586, C-587, C-588
+
+Sprint 29 executed five parallel research directions: (D1) Gresnigt subalgebra decomposition -- 15 alternative subalgebras, uniform structure, depth as mass discriminator (I-038). (D2) Albert algebra J_3(O) -- 27D exceptional Jordan algebra with Cardano eigenvalue solver; Singh delta^2=3/8 NOT reproduced for real trace-free elements, likely requires complexified algebra (C-584, C-585 NEGATIVE). (D3) Koebisu Stiefel manifold -- 168/168 confirmed ZDs satisfy V_{8,2} exactly (C-586). (D4) Tang convention unblocking -- depth-based norms (0.87-2.0 range) insufficient for 3500:1 mass hierarchy (C-587 NEGATIVE). (L4) Frustration convergence -- reusable compute_frustration_ratio() function, dim=2048 test scaffolded (C-588). Two genuine negative results (C-585, C-587) constrain future approaches: raw associator norms and generic real J_3(O) elements are insufficient for mass ratio predictions.
+"""
+
+[[entry]]
+id = "I-040"
+title = "Phase 5b: Octonion Sub-Algebra Provides Fundamental 8D Lattice Encoding for All CD Dimensions"
+body_markdown = """
+Date: 2026-02-10
+Status: verified
+Claims: C-589, C-453, C-455, C-458
+
+Phase 5b research resolved the 8D dimensional correspondence mystery: the 8D lattice is STRUCTURAL (octonion-driven), not coincidental. KEY FINDINGS: (1) C-453 VERIFIED the 8D lattice codomain is INVARIANT across all CD dimensions (256D-2048D); mappings are injective with exact filtration growth deltas (256, 512, 1024). This is NOT arbitrary -- the dimension is hardcoded by algebra. (2) C-455 REFUTED E8 root involvement: zero out of 336 ZD-adjacent lattice differences are E8 roots (norm-squared = 4, not 2). The Freudenthal-Tits magic square does NOT drive the lattice. (3) C-458 VERIFIED octonion constraints: all 3840 lattice points satisfy 4 parity conditions (trinary, even-sum, even-weight, l_0 <U+2260> +1). These are algebraic invariants, not accidents. (4) THE SYNTHESIS: Octonions are the unique 8D normed division algebra (Hurwitz theorem). CD lattice codebook uses an 8D BASE SPACE and partitions it via dimension-specific Lambda filtrations (Lambda_256, Lambda_512, Lambda_1024, Lambda_2048), enabling injective encoding of basis elements from all CD dimensions into a single 8D lattice. This explains the architectural elegance: the octonion subalgebra provides the 'core' structure that compresses larger algebras. The 8D dimension reflects octonion's fundamental role in CD construction, not E8. This opens Layer 6 research: formal octonion basis <U+2194> lattice vector mapping with algebraic preservation.
 """

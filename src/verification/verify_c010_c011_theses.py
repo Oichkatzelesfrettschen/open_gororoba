@@ -19,6 +19,7 @@ from __future__ import annotations
 import csv
 import re
 from collections import Counter, defaultdict
+from math import isclose
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -96,27 +97,85 @@ def verify_c010(errors: list[str]) -> list[str]:
         "C-010: all absorber bridge rows should be marked physical.",
     )
 
+    pair_edges = set()
+    undirected_edges = set()
+    cluster_graph: dict[int, set[int]] = {idx: set() for idx in range(7)}
     cross_cluster_edges = 0
+    intra_cluster_edges = 0
     for row in mapping_rows:
         left = _pair_from_row(row, "i", "j")
         right = _pair_from_row(row, "k", "l")
+        edge = (left, right)
+        pair_edges.add(edge)
+        undirected_edges.add(tuple(sorted((left, right))))
+
         if left not in cluster_by_pair:
             errors.append(f"C-010: missing cluster assignment for pair {left}.")
             continue
         if right not in cluster_by_pair:
             errors.append(f"C-010: missing cluster assignment for pair {right}.")
             continue
-        if cluster_by_pair[left] != cluster_by_pair[right]:
+        c_left = cluster_by_pair[left]
+        c_right = cluster_by_pair[right]
+        if c_left != c_right:
             cross_cluster_edges += 1
+            cluster_graph[c_left].add(c_right)
+            cluster_graph[c_right].add(c_left)
+        else:
+            intra_cluster_edges += 1
 
     _check(
         cross_cluster_edges == len(mapping_rows),
         errors,
         "C-010: expected all absorber bridges to cross cluster boundaries.",
     )
+    _check(
+        intra_cluster_edges == 0,
+        errors,
+        "C-010: expected zero intra-cluster absorber bridges.",
+    )
+    _check(
+        len(pair_edges) == len(mapping_rows) and len(undirected_edges) == len(mapping_rows),
+        errors,
+        "C-010: absorber bridge rows should be unique under directed and undirected pairing.",
+    )
+
+    degrees = {cluster: len(neighbors) for cluster, neighbors in cluster_graph.items()}
+    isolated_clusters = [cluster for cluster, degree in degrees.items() if degree == 0]
+    active_clusters = [cluster for cluster, degree in degrees.items() if degree > 0]
+    _check(
+        len(isolated_clusters) == 1,
+        errors,
+        f"C-010: expected exactly one isolated cluster in projected absorber graph, got {isolated_clusters}.",
+    )
+    _check(
+        len(active_clusters) == 6,
+        errors,
+        f"C-010: expected 6 active clusters, got {active_clusters}.",
+    )
+    _check(
+        all(degrees[cluster] == 4 for cluster in active_clusters),
+        errors,
+        "C-010: active cluster-projection degrees should all be exactly 4.",
+    )
+
+    if active_clusters:
+        visited: set[int] = set()
+        stack = [active_clusters[0]]
+        while stack:
+            node = stack.pop()
+            if node in visited:
+                continue
+            visited.add(node)
+            stack.extend(cluster_graph[node] - visited)
+        _check(
+            len(visited) == len(active_clusters),
+            errors,
+            "C-010: active projected cluster graph should be connected.",
+        )
 
     messages.append(
-        "C-010 OK: seven 6-node ZD groups verified; absorber bridges are cross-group only."
+        "C-010 OK: seven 6-node ZD groups verified; bridge graph is cross-group-only with one isolated cluster."
     )
     return messages
 
@@ -133,6 +192,7 @@ def verify_c011(errors: list[str]) -> list[str]:
         grouped[(row["seed"], row["soliton_id"])].append(row)
     _check(bool(grouped), errors, "C-011: bridge table has no soliton groups.")
 
+    ratio_samples: list[float] = []
     for key, group in grouped.items():
         ordered = sorted(group, key=lambda row: float(row["gamma"]))
         gammas = [float(row["gamma"]) for row in ordered]
@@ -145,6 +205,10 @@ def verify_c011(errors: list[str]) -> list[str]:
         masses = [float(row["M_total"]) for row in ordered]
         radii = [float(row["R2"]) for row in ordered]
         r1 = float(ordered[0]["R1"])
+        rho_v = [float(row["rho_v"]) for row in ordered]
+        rho_shell = [float(row["rho_shell"]) for row in ordered]
+        contrast = [vac / shell for vac, shell in zip(rho_v, rho_shell)]
+        ratio_samples.extend(contrast)
 
         _check(
             masses[0] > masses[1] > masses[2],
@@ -166,13 +230,42 @@ def verify_c011(errors: list[str]) -> list[str]:
             errors,
             f"C-011: {key} has non-stable bridge rows.",
         )
+        _check(
+            all(isclose(value, contrast[0], rel_tol=0.0, abs_tol=1e-12) for value in contrast),
+            errors,
+            f"C-011: {key} rho_v/rho_shell contrast is not gamma-invariant.",
+        )
+
+    _check(
+        bool(ratio_samples),
+        errors,
+        "C-011: missing vacuum-to-shell contrast samples.",
+    )
+    if ratio_samples:
+        contrast_ref = ratio_samples[0]
+        _check(
+            all(isclose(value, contrast_ref, rel_tol=0.0, abs_tol=1e-12) for value in ratio_samples),
+            errors,
+            "C-011: vacuum-to-shell contrast is not globally invariant across bridge rows.",
+        )
+        _check(
+            isclose(contrast_ref, 10.0 / 3.0, rel_tol=0.0, abs_tol=1e-12),
+            errors,
+            f"C-011: expected rho_v/rho_shell = 10/3, observed {contrast_ref}.",
+        )
 
     radial_rows = _load_csv(radial_csv)
     _check(bool(radial_rows), errors, "C-011: radial stability table is empty.")
+    derivatives = [float(row["dM_drho_c"]) for row in radial_rows]
     _check(
-        all(float(row["dM_drho_c"]) < 0.0 for row in radial_rows),
+        all(value < 0.0 for value in derivatives),
         errors,
         "C-011: expected dM/drho_c < 0 for all scanned radial points.",
+    )
+    _check(
+        max(derivatives) < -100.0,
+        errors,
+        "C-011: radial branch should remain strongly negative (max dM/drho_c < -100).",
     )
     _check(
         all(row["harrison_wheeler_stable"].strip().lower() == "false" for row in radial_rows),

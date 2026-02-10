@@ -3332,4 +3332,65 @@ mod tests {
             "Layer union must reconstruct 2048D embedding exactly"
         );
     }
+
+    #[test]
+    fn test_c453_filtration_intersection_cardinalities_are_exact() {
+        let p256: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(256).into_iter().collect();
+        let p512: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(512).into_iter().collect();
+        let p1024: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(1024).into_iter().collect();
+        let p2048: std::collections::BTreeSet<Vec<i32>> =
+            load_lattice_points(2048).into_iter().collect();
+
+        assert_eq!(p256.intersection(&p512).count(), 256);
+        assert_eq!(p256.intersection(&p1024).count(), 256);
+        assert_eq!(p256.intersection(&p2048).count(), 256);
+        assert_eq!(p512.intersection(&p1024).count(), 512);
+        assert_eq!(p512.intersection(&p2048).count(), 512);
+        assert_eq!(p1024.intersection(&p2048).count(), 1024);
+    }
+
+    #[test]
+    fn test_c453_filtration_is_lexicographic_prefix_chain() {
+        let dims = [256usize, 512, 1024, 2048];
+        let sets: Vec<std::collections::BTreeSet<Vec<i32>>> = dims
+            .iter()
+            .map(|&dim| load_lattice_points(dim).into_iter().collect())
+            .collect();
+
+        for i in 0..sets.len() - 1 {
+            let child_dim = dims[i];
+            let parent_dim = dims[i + 1];
+            let child = &sets[i];
+            let parent = &sets[i + 1];
+
+            let cut = learn_prefix_cut(parent, child).unwrap_or_else(|| {
+                panic!(
+                    "Expected lexicographic prefix cut for {}D -> {}D transition",
+                    parent_dim, child_dim
+                )
+            });
+            assert_eq!(cut.parent_size, parent_dim);
+            assert_eq!(cut.child_size, child_dim);
+            assert!(
+                verify_prefix_cut(parent, child, &cut),
+                "Prefix cut verification failed for {}D -> {}D",
+                parent_dim,
+                child_dim
+            );
+
+            let parent_sorted: Vec<&Vec<i32>> = parent.iter().collect();
+            let first_child: std::collections::BTreeSet<Vec<i32>> = parent_sorted[..child_dim]
+                .iter()
+                .map(|&v| v.clone())
+                .collect();
+            assert_eq!(
+                &first_child, child,
+                "{}D map is not lex-prefix-consistent with {}D map",
+                child_dim, parent_dim
+            );
+        }
+    }
 }

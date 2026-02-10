@@ -4,7 +4,7 @@
 [knowledge_proof_skeletons]
 updated = "deterministic"
 authoritative = true
-skeleton_count = 631
+skeleton_count = 632
 
 [[skeleton]]
 id = "PRS-00001"
@@ -8923,8 +8923,8 @@ theorem_label = "C-453"
 claim_id = "C-453"
 assumptions = []
 obligations = ["Establish evidence-backed status for C-453."]
-derivation_steps = ["WHERE STATED: `data/csv/cayley_dickson/{512,1024,2048}d_lattice_mapping", "csv`", "VERIFIED: each dimension has exact row/index coverage, all lattice vectors remain 8D trinary, each dimension-level map is injective with exact reverse lookup, and strict nesting has exact growth deltas (512-256=256, 1024-512=512, 2048-1024=1024)", "WHAT WOULD REFUTE: codomain drift away from 8D, collisions in any dimension, missing coverage, or incorrect filtration-growth deltas"]
-decision_rule = "WHERE STATED: `data/csv/cayley_dickson/{512,1024,2048}d_lattice_mapping.csv`. VERIFIED: each dimension has exact row/index coverage, all lattice vectors remain 8D trinary, each dimension-level map is injective with exact reverse lookup, and strict nesting has exact growth deltas (512-256=256, 1024-512=512, 2048-1024=1024). WHAT WOULD REFUTE: codomain drift away from 8D, collisions in any dimension, missing coverage, or incorrect filtration-growth deltas."
+derivation_steps = ["WHERE STATED: `data/csv/cayley_dickson/{512,1024,2048}d_lattice_mapping", "csv`", "VERIFIED: each dimension has exact row/index coverage, all lattice vectors remain 8D trinary, each dimension-level map is injective with exact reverse lookup, strict nesting has exact growth deltas (512-256=256, 1024-512=512, 2048-1024=1024), filtration layers are pairwise disjoint, and layer union reconstructs 2048 exactly", "WHAT WOULD REFUTE: codomain drift away from 8D, collisions in any dimension, missing coverage, incorrect filtration-growth deltas, non-disjoint filtration layers, or any intersection cardinality that deviates from {256,512,1024}"]
+decision_rule = "WHERE STATED: `data/csv/cayley_dickson/{512,1024,2048}d_lattice_mapping.csv`. VERIFIED: each dimension has exact row/index coverage, all lattice vectors remain 8D trinary, each dimension-level map is injective with exact reverse lookup, strict nesting has exact growth deltas (512-256=256, 1024-512=512, 2048-1024=1024), filtration layers are pairwise disjoint, and layer union reconstructs 2048 exactly. WHAT WOULD REFUTE: codomain drift away from 8D, collisions in any dimension, missing coverage, incorrect filtration-growth deltas, non-disjoint filtration layers, or any intersection cardinality that deviates from {256,512,1024}."
 conclusion = "VERIFIED: Verified"
 source_uid = "C-453"
 source_registry = "registry/claims.toml"
@@ -11301,7 +11301,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-585."]
 derivation_steps = ["NEGATIVE RESULT: delta^2 = 3/8 not observed for generic real trace-free elements", "WOULD VERIFY IF: specific complexified or idempotent construction yields exactly 3/8"]
 decision_rule = "NEGATIVE RESULT: delta^2 = 3/8 not observed for generic real trace-free elements. WOULD VERIFY IF: specific complexified or idempotent construction yields exactly 3/8."
-conclusion = "NEGATIVE: Negative"
+conclusion = "CLOSED_NEGATIVE_RESULT: Closed/Negative-Result"
 source_uid = "C-585"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -11337,7 +11337,7 @@ assumptions = []
 obligations = ["Establish evidence-backed status for C-587."]
 derivation_steps = ["NEGATIVE RESULT: RMS deviation ~875 vs ~1", "0 for random search", "WOULD VERIFY IF: higher-order algebraic invariants (products of associators, or nilpotent orbit indices) produce correct mass hierarchy"]
 decision_rule = "NEGATIVE RESULT: RMS deviation ~875 vs ~1.0 for random search. WOULD VERIFY IF: higher-order algebraic invariants (products of associators, or nilpotent orbit indices) produce correct mass hierarchy."
-conclusion = "NEGATIVE: Negative"
+conclusion = "CLOSED_NEGATIVE_RESULT: Closed/Negative-Result"
 source_uid = "C-587"
 source_registry = "registry/claims.toml"
 source_path = "registry/claims.toml"
@@ -11363,3 +11363,21 @@ line_start = 0
 line_end = 0
 claim_refs = ["C-529", "C-588"]
 evidence_refs = ["C-529", "crates/algebra_core/src/analysis/boxkites.rs"]
+
+[[skeleton]]
+id = "PRS-00632"
+skeleton_kind = "claim_decision_rule"
+theorem_label = "C-589"
+claim_id = "C-589"
+assumptions = []
+obligations = ["Establish evidence-backed status for C-589."]
+derivation_steps = ["VERIFIED: Cross-validated against C-453, C-455, C-458, and existing Lambda_*", "csv datasets", "All 3840 lattice points across all dimensions satisfy constraints", "Injectivity verified through exact filtration deltas", "WHAT WOULD REFUTE: (1) Finding an alternative lattice embedding that uses non-8D codomain for any CD dimension > 8, OR (2) Discovering E8 root involvement via alternative normalization, OR (3) Showing lattice constraints are NOT octonion-derived but arbitrary"]
+decision_rule = "VERIFIED: Cross-validated against C-453, C-455, C-458, and existing Lambda_*.csv datasets. All 3840 lattice points across all dimensions satisfy constraints. Injectivity verified through exact filtration deltas. WHAT WOULD REFUTE: (1) Finding an alternative lattice embedding that uses non-8D codomain for any CD dimension > 8, OR (2) Discovering E8 root involvement via alternative normalization, OR (3) Showing lattice constraints are NOT octonion-derived but arbitrary."
+conclusion = "VERIFIED: Verified"
+source_uid = "C-589"
+source_registry = "registry/claims.toml"
+source_path = "registry/claims.toml"
+line_start = 0
+line_end = 0
+claim_refs = ["C-453", "C-455", "C-458", "C-589"]
+evidence_refs = ["C-453", "C-455", "C-458", "crates/algebra_core/src/analysis/codebook.rs"]

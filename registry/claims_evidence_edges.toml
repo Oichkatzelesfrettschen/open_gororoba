@@ -4,7 +4,7 @@
 [claims_evidence_edges]
 updated = "deterministic"
 authoritative = true
-edge_count = 1790
+edge_count = 1794
 
 [[edge]]
 id = "CED-00001"
@@ -12534,4 +12534,32 @@ id = "CED-01790"
 claim_id = "C-588"
 edge_role = "where_stated"
 target_ref = "crates/algebra_core/src/analysis/boxkites.rs"
+target_kind = "rust_source_path"
+
+[[edge]]
+id = "CED-01791"
+claim_id = "C-589"
+edge_role = "cross_reference"
+target_ref = "C-453"
+target_kind = "claim_ref"
+
+[[edge]]
+id = "CED-01792"
+claim_id = "C-589"
+edge_role = "cross_reference"
+target_ref = "C-455"
+target_kind = "claim_ref"
+
+[[edge]]
+id = "CED-01793"
+claim_id = "C-589"
+edge_role = "cross_reference"
+target_ref = "C-458"
+target_kind = "claim_ref"
+
+[[edge]]
+id = "CED-01794"
+claim_id = "C-589"
+edge_role = "where_stated"
+target_ref = "crates/algebra_core/src/analysis/codebook.rs"
 target_kind = "rust_source_path"

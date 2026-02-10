@@ -64,16 +64,54 @@ def test_c010_absorber_mapping_requires_cross_cluster_links() -> None:
         row["is_physical"].strip().lower() == "true" for row in mapping_rows
     ), "All canonical bridge rows should be physical."
 
+    edge_pairs = set()
+    undirected_edges = set()
+    cluster_graph: dict[int, set[int]] = {idx: set() for idx in range(7)}
     cross_cluster_edges = 0
+    intra_cluster_edges = 0
     for row in mapping_rows:
         left = _pair_from_row(row, "i", "j")
         right = _pair_from_row(row, "k", "l")
+        edge_pairs.add((left, right))
+        undirected_edges.add(tuple(sorted((left, right))))
         assert left in cluster_by_pair, f"Missing cluster assignment for {left}."
         assert right in cluster_by_pair, f"Missing cluster assignment for {right}."
-        if cluster_by_pair[left] != cluster_by_pair[right]:
+        c_left = cluster_by_pair[left]
+        c_right = cluster_by_pair[right]
+        if c_left != c_right:
             cross_cluster_edges += 1
+            cluster_graph[c_left].add(c_right)
+            cluster_graph[c_right].add(c_left)
+        else:
+            intra_cluster_edges += 1
 
     assert cross_cluster_edges == len(mapping_rows), (
         "All mapped absorber bridges currently cross cluster boundaries, "
         "so local intra-cluster-only coupling is insufficient."
+    )
+    assert intra_cluster_edges == 0, "No intra-cluster absorber bridge should appear."
+    assert len(edge_pairs) == len(mapping_rows), "Directed bridge rows must be unique."
+    assert len(undirected_edges) == len(mapping_rows), "Undirected bridge rows must be unique."
+
+    degrees = {cluster: len(neighbors) for cluster, neighbors in cluster_graph.items()}
+    isolated_clusters = [cluster for cluster, degree in degrees.items() if degree == 0]
+    active_clusters = [cluster for cluster, degree in degrees.items() if degree > 0]
+    assert len(isolated_clusters) == 1, (
+        "Projected bridge graph should leave exactly one isolated ZD cluster."
+    )
+    assert len(active_clusters) == 6, "Expected six active clusters in bridge projection."
+    assert all(degrees[cluster] == 4 for cluster in active_clusters), (
+        "Each active projected cluster should have degree four."
+    )
+
+    visited: set[int] = set()
+    stack = [active_clusters[0]]
+    while stack:
+        node = stack.pop()
+        if node in visited:
+            continue
+        visited.add(node)
+        stack.extend(cluster_graph[node] - visited)
+    assert len(visited) == len(active_clusters), (
+        "Active projected cluster graph should be connected."
     )
