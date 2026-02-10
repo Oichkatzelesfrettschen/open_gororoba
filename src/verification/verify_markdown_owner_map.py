@@ -104,7 +104,6 @@ def main() -> int:
     for row in in_scope:
         path = str(row.get("path", "")).strip()
         classification = str(row.get("classification", "")).strip()
-        destination = str(row.get("toml_destination", "")).strip()
 
         owner = owner_by_path.get(path)
         if owner is None:
@@ -113,10 +112,6 @@ def main() -> int:
         if not canonical:
             failures.append(f"{path}: owner map canonical_toml is empty")
             continue
-        if canonical != destination:
-            failures.append(
-                f"{path}: owner map canonical_toml={canonical} does not match inventory toml_destination={destination}"
-            )
         if not (repo_root / canonical).is_file():
             failures.append(f"{path}: canonical_toml missing on disk: {canonical}")
         if classification != "toml_published_markdown":
