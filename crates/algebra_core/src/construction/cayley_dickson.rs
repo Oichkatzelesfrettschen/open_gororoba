@@ -2203,7 +2203,7 @@ mod tests {
         }
     }
 
-    // ── Iterative sign function correctness ──────────────────────────────
+    // -- Iterative sign function correctness ------------------------------
 
     #[test]
     fn test_iter_sign_matches_recursive_small_dims() {
@@ -2278,7 +2278,7 @@ mod tests {
         );
     }
 
-    // ── SignTable correctness ────────────────────────────────────────────
+    // -- SignTable correctness --------------------------------------------
 
     #[test]
     fn test_sign_table_matches_recursive_small_dims() {
@@ -3636,7 +3636,7 @@ mod tests {
 
         eprintln!(
             "  Conclusion: Commutativity is STRUCTURAL (dim/construction-dependent), \
-             not PARAMETRIC (gamma-dependent). Contrasts with Tessarines (C⊗C), which ARE commutative."
+             not PARAMETRIC (gamma-dependent). Contrasts with Tessarines (C otimes C), which ARE commutative."
         );
     }
 
@@ -4169,18 +4169,12 @@ mod tests {
             .map(|(_, count)| count)
             .unwrap_or(&0);
 
+        eprintln!("\n  Sedenion ZD Landscape (sampled subset):");
+        eprintln!("    Standard [-1,-1,-1,-1]: {} ZD pairs", standard_sed);
+        eprintln!("    Split [+1,+1,+1,+1]: {} ZD pairs", split_sed);
         eprintln!(
-            "\n  Sedenion ZD Landscape (sampled subset):"
+            "  Note: Sample covers only low-index basis vectors to keep computation tractable."
         );
-        eprintln!(
-            "    Standard [-1,-1,-1,-1]: {} ZD pairs",
-            standard_sed
-        );
-        eprintln!(
-            "    Split [+1,+1,+1,+1]: {} ZD pairs",
-            split_sed
-        );
-        eprintln!("  Note: Sample covers only low-index basis vectors to keep computation tractable.");
         eprintln!("  Mathematic note: Standard sedenions are conjectured to have zero-divisors (not verified yet).");
 
         // At minimum, split sedenions should show more ZD than standard (if standard has any)

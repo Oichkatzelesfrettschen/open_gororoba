@@ -29,6 +29,7 @@ pub mod mera;
 pub mod mps;
 pub mod peps;
 pub mod qua_ten_net_bridge;
+pub mod spinor_mechanics;
 pub mod tensor_network_classical;
 pub mod tensor_networks;
 

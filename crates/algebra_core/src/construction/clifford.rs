@@ -37,7 +37,10 @@ impl CliffordSignature {
         } else if k <= self.p + self.q {
             -1 // Negative signature basis
         } else {
-            panic!("basis_square: k={} out of range for Cl({},{})", k, self.p, self.q)
+            panic!(
+                "basis_square: k={} out of range for Cl({},{})",
+                k, self.p, self.q
+            )
         }
     }
 }
@@ -74,7 +77,8 @@ pub fn clifford_basis_product(p: usize, q: usize, a_mask: usize, b_mask: usize) 
         let k_bit = 1 << k;
         // After canceling e_k * e_k, remaining factors anticommute through
         // each remaining generator. Count transpositions.
-        let swaps_needed = (a_mask & (k_bit - 1)).count_ones() + (b_mask & (k_bit - 1)).count_ones();
+        let swaps_needed =
+            (a_mask & (k_bit - 1)).count_ones() + (b_mask & (k_bit - 1)).count_ones();
         if swaps_needed % 2 == 1 {
             sign = -sign;
         }
@@ -182,8 +186,14 @@ mod tests {
         // e_1 * e_2 vs e_2 * e_1 should differ in sign
         let (sign_12, _mask_12) = clifford_basis_product(2, 0, 1, 2);
         let (sign_21, _mask_21) = clifford_basis_product(2, 0, 2, 1);
-        assert_eq!(sign_12, -sign_21, "Clifford: anticommutation e_i e_j = -e_j e_i");
-        eprintln!("  Cl(2,0): e_1 e_2 = {} * e_12, e_2 e_1 = {} * e_12 (anticommutative)", sign_12, sign_21);
+        assert_eq!(
+            sign_12, -sign_21,
+            "Clifford: anticommutation e_i e_j = -e_j e_i"
+        );
+        eprintln!(
+            "  Cl(2,0): e_1 e_2 = {} * e_12, e_2 e_1 = {} * e_12 (anticommutative)",
+            sign_12, sign_21
+        );
 
         // Test Cl(1,1) - Spacetime signature (4D algebra)
         let sig_spacetime = CliffordSignature::new(1, 1);
@@ -194,7 +204,10 @@ mod tests {
         let (sq2, _) = clifford_basis_product(1, 1, 2, 2);
         assert_eq!(sq1, 1.0);
         assert_eq!(sq2, -1.0);
-        eprintln!("  Cl(1,1): e_1^2 = {}, e_2^2 = {} (spacetime signature verified)", sq1, sq2);
+        eprintln!(
+            "  Cl(1,1): e_1^2 = {}, e_2^2 = {} (spacetime signature verified)",
+            sq1, sq2
+        );
     }
 
     #[test]
@@ -230,7 +243,11 @@ mod tests {
 
             eprintln!(
                 "  Cl({},{}): {}/{} commutative basis pairs (dim={})",
-                sig.p, sig.q, commutative_pairs, total_pairs, sig.dim()
+                sig.p,
+                sig.q,
+                commutative_pairs,
+                total_pairs,
+                sig.dim()
             );
         }
 
@@ -249,12 +266,18 @@ mod tests {
             // Create Cl(n,0) - all positive signature
             let sig = CliffordSignature::new(n, 0);
             let dim_algebra = sig.dim();
-            eprintln!("  Cl({},0): {} = 2^{} dimensional algebra", n, dim_algebra, n);
+            eprintln!(
+                "  Cl({},0): {} = 2^{} dimensional algebra",
+                n, dim_algebra, n
+            );
 
             // Create Cl(0,n) - all negative signature
             let sig_neg = CliffordSignature::new(0, n);
             assert_eq!(sig_neg.dim(), dim_algebra);
-            eprintln!("  Cl(0,{}): {} = 2^{} dimensional algebra", n, dim_algebra, n);
+            eprintln!(
+                "  Cl(0,{}): {} = 2^{} dimensional algebra",
+                n, dim_algebra, n
+            );
         }
 
         eprintln!("  Observation: Dimension grows as 2^n, matching Cayley-Dickson tower (dims 1,2,4,8,16...)");
@@ -282,7 +305,9 @@ mod tests {
         eprintln!("  Clifford Cl(2,0):  Euclidean plane");
         eprintln!("    - Non-commutative via antisymmetric basis rule: e_i e_j = -e_j e_i");
         eprintln!("    - Geometric interpretation: exterior algebra with Clifford product");
-        eprintln!("    - Composition law: depends on signature (Euclidean: yes; spacetime: modified)");
+        eprintln!(
+            "    - Composition law: depends on signature (Euclidean: yes; spacetime: modified)"
+        );
 
         eprintln!("\n  Hypothesis: Non-commutativity is construction-dependent (CD doubling vs Clifford product)");
         eprintln!("  but may be universal across dims, requiring different mechanisms.");
@@ -348,10 +373,12 @@ mod tests {
         eprintln!("    being non-associative algebras with similar dimension structure");
         eprintln!();
         eprintln!("  HYPOTHESIS UPDATE:");
-        eprintln!("  ✗ Non-commutativity is NOT universal across all algebras at dim>=4");
-        eprintln!("  ✓ Clifford algebras show SELECTIVE commutativity (some pairs commute)");
-        eprintln!("  ✓ CD algebras show UNIVERSAL non-commutativity (NO pairs commute)");
-        eprintln!("  ✓ Different construction mechanisms yield different commutativity patterns");
+        eprintln!("  [FAIL] Non-commutativity is NOT universal across all algebras at dim>=4");
+        eprintln!("  [OK] Clifford algebras show SELECTIVE commutativity (some pairs commute)");
+        eprintln!("  [OK] CD algebras show UNIVERSAL non-commutativity (NO pairs commute)");
+        eprintln!(
+            "  [OK] Different construction mechanisms yield different commutativity patterns"
+        );
     }
 
     #[test]
@@ -393,11 +420,17 @@ mod tests {
 
             eprintln!(
                 "  {}: Center Z(Cl({},{})) has {} basis element(s)",
-                name, sig.p, sig.q, center_elements.len()
+                name,
+                sig.p,
+                sig.q,
+                center_elements.len()
             );
 
             if center_elements.len() == 1 && center_elements[0] == 0 {
-                eprintln!("    Z(Cl({},{})) = R*e_0 (scalars only, matches CD Phase 2)", sig.p, sig.q);
+                eprintln!(
+                    "    Z(Cl({},{})) = R*e_0 (scalars only, matches CD Phase 2)",
+                    sig.p, sig.q
+                );
             }
         }
 
@@ -470,7 +503,9 @@ mod tests {
     #[test]
     fn test_clifford_dim4_zero_divisor_census() {
         eprintln!("\n  Phase 3a Step 1: Clifford Dim=4 Signature Census - Zero-Divisor Landscape");
-        eprintln!("  ==================================================================================");
+        eprintln!(
+            "  =================================================================================="
+        );
 
         let signatures = vec![
             ("Cl(2,0)", CliffordSignature::new(2, 0)),
@@ -512,67 +547,55 @@ mod tests {
         eprintln!("  ==================================================================");
         eprintln!();
         eprintln!("  PROPERTY COMPARISON TABLE (Dim=4):");
-        eprintln!("  {:20} | {:15} | {:15} | {:15}",
-                  "Property",
-                  "Cl(2,0)",
-                  "Cl(1,1)",
-                  "Cl(0,2)");
-        eprintln!("  {:20} | {:15} | {:15} | {:15}",
-                  "----------",
-                  "--------",
-                  "--------",
-                  "--------");
-        eprintln!("  {:20} | {:15} | {:15} | {:15}",
-                  "Commutativity",
-                  "Non-commutative",
-                  "Non-commutative",
-                  "Non-commutative");
-        eprintln!("  {:20} | {:15} | {:15} | {:15}",
-                  "Center",
-                  "R*e_0",
-                  "R*e_0",
-                  "R*e_0");
-        eprintln!("  {:20} | {:15} | {:15} | {:15}",
-                  "Associativity",
-                  "Yes",
-                  "Yes",
-                  "Yes");
-        eprintln!("  {:20} | {:15} | {:15} | {:15}",
-                  "Composition",
-                  "Signature-dep",
-                  "Signature-dep",
-                  "Signature-dep");
+        eprintln!(
+            "  {:20} | {:15} | {:15} | {:15}",
+            "Property", "Cl(2,0)", "Cl(1,1)", "Cl(0,2)"
+        );
+        eprintln!(
+            "  {:20} | {:15} | {:15} | {:15}",
+            "----------", "--------", "--------", "--------"
+        );
+        eprintln!(
+            "  {:20} | {:15} | {:15} | {:15}",
+            "Commutativity", "Non-commutative", "Non-commutative", "Non-commutative"
+        );
+        eprintln!(
+            "  {:20} | {:15} | {:15} | {:15}",
+            "Center", "R*e_0", "R*e_0", "R*e_0"
+        );
+        eprintln!(
+            "  {:20} | {:15} | {:15} | {:15}",
+            "Associativity", "Yes", "Yes", "Yes"
+        );
+        eprintln!(
+            "  {:20} | {:15} | {:15} | {:15}",
+            "Composition", "Signature-dep", "Signature-dep", "Signature-dep"
+        );
         eprintln!();
         eprintln!("  VS CD([-1,-1], dim=4) - Standard Quaternions:");
-        eprintln!("  {:20} | {:30}",
-                  "Property",
-                  "CD([-1,-1])");
-        eprintln!("  {:20} | {:30}",
-                  "----------",
-                  "----------");
-        eprintln!("  {:20} | {:30}",
-                  "Commutativity",
-                  "Non-commutative");
-        eprintln!("  {:20} | {:30}",
-                  "Center",
-                  "R*e_0");
-        eprintln!("  {:20} | {:30}",
-                  "Associativity",
-                  "Yes");
-        eprintln!("  {:20} | {:30}",
-                  "Composition",
-                  "Yes (division)");
+        eprintln!("  {:20} | {:30}", "Property", "CD([-1,-1])");
+        eprintln!("  {:20} | {:30}", "----------", "----------");
+        eprintln!("  {:20} | {:30}", "Commutativity", "Non-commutative");
+        eprintln!("  {:20} | {:30}", "Center", "R*e_0");
+        eprintln!("  {:20} | {:30}", "Associativity", "Yes");
+        eprintln!("  {:20} | {:30}", "Composition", "Yes (division)");
         eprintln!();
         eprintln!("  KEY OBSERVATIONS:");
-        eprintln!("  1. STRUCTURAL SIMILARITY: Both Clifford and CD exhibit non-commutativity at dim>=4");
+        eprintln!(
+            "  1. STRUCTURAL SIMILARITY: Both Clifford and CD exhibit non-commutativity at dim>=4"
+        );
         eprintln!("  2. MECHANISM DIFFERENCE: CD uses conjugation asymmetry; Clifford uses antisymmetric basis");
         eprintln!("  3. CENTER IDENTITY: Both have Z(A) = R*e_0 (scalars only)");
-        eprintln!("  4. COMPOSITION: CD preserves for standard gamma; Clifford varies by signature");
+        eprintln!(
+            "  4. COMPOSITION: CD preserves for standard gamma; Clifford varies by signature"
+        );
         eprintln!();
         eprintln!("  HYPOTHESIS VALIDATION:");
-        eprintln!("  ✓ Non-commutativity is UNIVERSAL at dim>=4 across different constructions");
-        eprintln!("  ✓ Different mechanisms (conjugation vs anticommutation) yield same property outcome");
-        eprintln!("  ✓ This supports the principle: Construction Method determines mechanism, Dimension determines outcome");
+        eprintln!("  [OK] Non-commutativity is UNIVERSAL at dim>=4 across different constructions");
+        eprintln!(
+            "  [OK] Different mechanisms (conjugation vs anticommutation) yield same property outcome"
+        );
+        eprintln!("  [OK] This supports the principle: Construction Method determines mechanism, Dimension determines outcome");
     }
 
     // ========================================================================
@@ -653,7 +676,9 @@ mod tests {
 
         eprintln!("\n  Analysis: Clifford DIM=8 Partial Commutativity Pattern");
         eprintln!("  - If ~80%+ pairs commute: CONSISTENT with dim=4 (selective commutativity)");
-        eprintln!("  - If <20% pairs commute: DEPARTURE from dim=4 (transitioning to non-commutative)");
+        eprintln!(
+            "  - If <20% pairs commute: DEPARTURE from dim=4 (transitioning to non-commutative)"
+        );
         eprintln!("  - Pattern determines scaling of construction difference vs CD algebras");
     }
 
@@ -725,7 +750,10 @@ mod tests {
                 "  {}: Center Z(Cl({},{})) contains at least {} element(s)",
                 name, sig.p, sig.q, center_count
             );
-            eprintln!("    Z(Cl({},{})) = R*e_0 (scalars only, consistent with dim=4)", sig.p, sig.q);
+            eprintln!(
+                "    Z(Cl({},{})) = R*e_0 (scalars only, consistent with dim=4)",
+                sig.p, sig.q
+            );
         }
     }
 
@@ -735,18 +763,20 @@ mod tests {
         eprintln!("  ===================================================================");
         eprintln!();
         eprintln!("  SCALING HYPOTHESIS:");
-        eprintln!("  If Clifford remains ~80%+ commutative at dim=8, suggests dimensional independence");
+        eprintln!(
+            "  If Clifford remains ~80%+ commutative at dim=8, suggests dimensional independence"
+        );
         eprintln!("  If Clifford drops to <20% commutative at dim=8, suggests dimension-dependent transition");
         eprintln!();
         eprintln!("  PHASE 2 REFERENCE (CD Algebras at dim=8):");
         eprintln!("  - All 8 gamma signatures tested, 100% non-commutative");
         eprintln!("  - 0% of basis pairs commute across all CD([gamma_1, gamma_2, gamma_3])");
-        eprintln!("  - Center Z(H⊗C) = R*e_0 (verified)");
+        eprintln!("  - Center Z(H otimes C) = R*e_0 (verified)");
         eprintln!();
         eprintln!("  PHASE 3a Step 2 WILL DETERMINE:");
-        eprintln!("  ✓ Whether Clifford selective commutativity scales to dim=8");
-        eprintln!("  ✓ Whether CD universal non-commutativity is dimension-independent");
-        eprintln!("  ✓ If pattern holds, this explains construction method primacy");
+        eprintln!("  [OK] Whether Clifford selective commutativity scales to dim=8");
+        eprintln!("  [OK] Whether CD universal non-commutativity is dimension-independent");
+        eprintln!("  [OK] If pattern holds, this explains construction method primacy");
     }
 
     // ========================================================================
@@ -837,26 +867,47 @@ mod tests {
         let avg_pct = all_results.iter().map(|(_, p)| p).sum::<f64>() / all_results.len() as f64;
 
         if avg_pct > 75.0 {
-            eprintln!("  ✓ PATTERN CONFIRMED: Selective commutativity scales to dim=16");
-            eprintln!("    Average: {:.1}% commuting pairs across all signatures", avg_pct);
+            eprintln!("  [OK] PATTERN CONFIRMED: Selective commutativity scales to dim=16");
+            eprintln!(
+                "    Average: {:.1}% commuting pairs across all signatures",
+                avg_pct
+            );
             eprintln!("    Interpretation: Clifford algebras maintain ~80%+ commutativity at ALL tested dims (4,8,16)");
             eprintln!("    This CONFIRMS construction method determines commutativity pattern (not dimension)");
         } else if avg_pct > 20.0 {
-            eprintln!("  ⚠ PARTIAL TRANSITION: Commutativity decreases at dim=16");
-            eprintln!("    Average: {:.1}% commuting pairs (down from ~85% at dims 4,8)", avg_pct);
-            eprintln!("    Interpretation: Dimension-dependent scaling; transition region at dim=16");
+            eprintln!("  [WARN] PARTIAL TRANSITION: Commutativity decreases at dim=16");
+            eprintln!(
+                "    Average: {:.1}% commuting pairs (down from ~85% at dims 4,8)",
+                avg_pct
+            );
+            eprintln!(
+                "    Interpretation: Dimension-dependent scaling; transition region at dim=16"
+            );
         } else {
-            eprintln!("  ✗ PHASE TRANSITION: Clifford becomes non-commutative at dim=16");
-            eprintln!("    Average: {:.1}% commuting pairs (matches CD algebras!)", avg_pct);
-            eprintln!("    Interpretation: Commutativity threshold crossed; algebraic behavior changes");
+            eprintln!("  [FAIL] PHASE TRANSITION: Clifford becomes non-commutative at dim=16");
+            eprintln!(
+                "    Average: {:.1}% commuting pairs (matches CD algebras!)",
+                avg_pct
+            );
+            eprintln!(
+                "    Interpretation: Commutativity threshold crossed; algebraic behavior changes"
+            );
         }
 
         eprintln!();
         eprintln!("  COMPARISON TO PHASE 2 CD:");
-        eprintln!("  - CD([-1,-1,-1,-1], dim=16): 0% commuting pairs (sedenions, non-division algebra)");
-        eprintln!("  - Clifford Cl(p,q) dim=16: {:.1}% commuting pairs (pattern {})",
-                  avg_pct,
-                  if avg_pct > 75.0 { "HOLDS" } else { "TRANSITIONS" });
+        eprintln!(
+            "  - CD([-1,-1,-1,-1], dim=16): 0% commuting pairs (sedenions, non-division algebra)"
+        );
+        eprintln!(
+            "  - Clifford Cl(p,q) dim=16: {:.1}% commuting pairs (pattern {})",
+            avg_pct,
+            if avg_pct > 75.0 {
+                "HOLDS"
+            } else {
+                "TRANSITIONS"
+            }
+        );
     }
 
     #[test]
@@ -891,71 +942,86 @@ mod tests {
             }
         }
 
-        eprintln!("  Anticommutation verification: {}/{} sampled pairs verified", passed, total);
+        eprintln!(
+            "  Anticommutation verification: {}/{} sampled pairs verified",
+            passed, total
+        );
         eprintln!("  Result: Anticommutation rule e_i*e_j = -e_j*e_i holds at dim=16");
         eprintln!("  Status: UNIVERSAL property (consistent at dims 4,8,16)");
     }
 
     #[test]
     fn test_clifford_dim16_complete_phase3a_synthesis() {
-        eprintln!("\n  Phase 3a COMPLETE SYNTHESIS: Clifford Algebra Family Census (Dims 4, 8, 16)");
-        eprintln!("  ==================================================================================");
+        eprintln!(
+            "\n  Phase 3a COMPLETE SYNTHESIS: Clifford Algebra Family Census (Dims 4, 8, 16)"
+        );
+        eprintln!(
+            "  =================================================================================="
+        );
         eprintln!();
         eprintln!("  PHASE 3a ARCHITECTURE FINDINGS:");
         eprintln!("  ===============================");
         eprintln!();
         eprintln!("  1. CLIFFORD-CD COMMUTATIVITY DIVIDE (Construction Method = PRIMARY)");
-        eprintln!("     ┌─ Clifford Cl(p,q): SELECTIVE commutativity (~83-89% basis pairs commute)");
-        eprintln!("     │  ├─ Dim=4:  83.3% (all signatures Cl(2,0), Cl(1,1), Cl(0,2))");
-        eprintln!("     │  ├─ Dim=8:  89.3% (all signatures Cl(3,0), Cl(0,3), Cl(2,1), Cl(1,2))");
-        eprintln!("     │  └─ Dim=16: [To be determined - check test results above]");
-        eprintln!("     │");
-        eprintln!("     └─ CD Algebras: UNIVERSAL non-commutativity (0% basis pairs commute)");
-        eprintln!("        ├─ Dim=4:  0% (all 4 gamma signatures tested Phase 2)");
-        eprintln!("        └─ Dim=8:  0% (all 8 gamma signatures tested Phase 2)");
+        eprintln!(
+            "     +- Clifford Cl(p,q): SELECTIVE commutativity (~83-89% basis pairs commute)"
+        );
+        eprintln!("     |  |-- Dim=4:  83.3% (all signatures Cl(2,0), Cl(1,1), Cl(0,2))");
+        eprintln!("     |  |-- Dim=8:  89.3% (all signatures Cl(3,0), Cl(0,3), Cl(2,1), Cl(1,2))");
+        eprintln!("     |  `-- Dim=16: [To be determined - check test results above]");
+        eprintln!("     |");
+        eprintln!("     `-- CD Algebras: UNIVERSAL non-commutativity (0% basis pairs commute)");
+        eprintln!("        |-- Dim=4:  0% (all 4 gamma signatures tested Phase 2)");
+        eprintln!("        `-- Dim=8:  0% (all 8 gamma signatures tested Phase 2)");
         eprintln!();
         eprintln!("  2. DIMENSION INDEPENDENCE (Dimension = SECONDARY)");
-        eprintln!("     ├─ If Clifford remains ~80%+ at dim=16: Pattern is INTRINSIC (not dimension-dependent)");
-        eprintln!("     ├─ If Clifford drops below 20% at dim=16: PHASE TRANSITION occurs");
-        eprintln!("     └─ Pattern consistency validates construction method primacy hypothesis");
+        eprintln!("     |-- If Clifford remains ~80%+ at dim=16: Pattern is INTRINSIC (not dimension-dependent)");
+        eprintln!("     |-- If Clifford drops below 20% at dim=16: PHASE TRANSITION occurs");
+        eprintln!("     `-- Pattern consistency validates construction method primacy hypothesis");
         eprintln!();
         eprintln!("  3. CENTER STRUCTURE (UNIVERSAL FINDING)");
-        eprintln!("     ├─ Clifford Z(Cl(p,q)) = R*e_0 (scalars only, all dims/signatures)");
-        eprintln!("     └─ CD Z(A) = R*e_0 (scalars only, all dims/gammas)");
-        eprintln!("        → Center structure UNIFIED across construction methods");
+        eprintln!("     |-- Clifford Z(Cl(p,q)) = R*e_0 (scalars only, all dims/signatures)");
+        eprintln!("     `-- CD Z(A) = R*e_0 (scalars only, all dims/gammas)");
+        eprintln!("        -> Center structure UNIFIED across construction methods");
         eprintln!();
         eprintln!("  4. ANTICOMMUTATION RULE (UNIVERSAL PROPERTY)");
-        eprintln!("     ├─ Clifford: e_i*e_j = -e_j*e_i verified at dims 4,8,16");
-        eprintln!("     └─ This is STRUCTURAL to Clifford definition (not dimension-dependent)");
+        eprintln!("     |-- Clifford: e_i*e_j = -e_j*e_i verified at dims 4,8,16");
+        eprintln!("     `-- This is STRUCTURAL to Clifford definition (not dimension-dependent)");
         eprintln!();
         eprintln!("  HYPOTHESIS STATUS:");
         eprintln!("  ==================");
-        eprintln!("  ✓ CONFIRMED: Commutativity is CONSTRUCTION-METHOD-DEPENDENT (not dimension-dependent)");
-        eprintln!("  ✓ CONFIRMED: Clifford and CD exhibit fundamentally different commutativity patterns");
-        eprintln!("  ✓ VERIFIED: Pattern scales consistently across dims 4 and 8");
-        eprintln!("  ? PENDING: Does pattern continue at dim=16, or is phase transition occurring?");
+        eprintln!("  [OK] CONFIRMED: Commutativity is CONSTRUCTION-METHOD-DEPENDENT (not dimension-dependent)");
+        eprintln!(
+            "  [OK] CONFIRMED: Clifford and CD exhibit fundamentally different commutativity patterns"
+        );
+        eprintln!("  [OK] VERIFIED: Pattern scales consistently across dims 4 and 8");
+        eprintln!(
+            "  ? PENDING: Does pattern continue at dim=16, or is phase transition occurring?"
+        );
         eprintln!();
         eprintln!("  IMPLICATIONS FOR PHASE 3b-3d:");
         eprintln!("  ==============================");
-        eprintln!("  • Jordan algebras must be tested next to find COMMUTATIVE construction");
-        eprintln!("  • Difference is not in dimension, but in construction choice");
-        eprintln!("  • Architecture hierarchy confirmed: Construction Method >> Dimension >> Metric");
+        eprintln!("  - Jordan algebras must be tested next to find COMMUTATIVE construction");
+        eprintln!("  - Difference is not in dimension, but in construction choice");
+        eprintln!(
+            "  - Architecture hierarchy confirmed: Construction Method >> Dimension >> Metric"
+        );
         eprintln!();
         eprintln!("  CRATE INTEGRATION STATUS:");
         eprintln!("  =========================");
-        eprintln!("  ✓ WEDGED (v0.1.1) added to workspace (optional feature)");
-        eprintln!("  ✓ Cross-validation tests prepared for next execution");
-        eprintln!("  ✓ Comprehensive survey: docs/ALGEBRA_CRATES_SURVEY.md");
-        eprintln!("  ✓ Quick reference: docs/ALGEBRA_CRATES_QUICK_REFERENCE.csv");
+        eprintln!("  [OK] WEDGED (v0.1.1) added to workspace (optional feature)");
+        eprintln!("  [OK] Cross-validation tests prepared for next execution");
+        eprintln!("  [OK] Comprehensive survey: docs/ALGEBRA_CRATES_SURVEY.md");
+        eprintln!("  [OK] Quick reference: docs/ALGEBRA_CRATES_QUICK_REFERENCE.csv");
         eprintln!();
         eprintln!("  PHASE 3a COMPLETION CHECKLIST:");
         eprintln!("  ===============================");
-        eprintln!("  ✓ Dim=4 census complete (5 tests)");
-        eprintln!("  ✓ Dim=8 census complete (4 tests)");
-        eprintln!("  ✓ Dim=16 census complete (3+ tests)");
-        eprintln!("  ✓ Cross-construction comparison done");
-        eprintln!("  ✓ Crate survey completed (71 screened, 25 analyzed)");
-        eprintln!("  ✓ Registry backups created");
-        eprintln!("  → Ready for Phase 3a closure and Phase 3b transition");
+        eprintln!("  [OK] Dim=4 census complete (5 tests)");
+        eprintln!("  [OK] Dim=8 census complete (4 tests)");
+        eprintln!("  [OK] Dim=16 census complete (3+ tests)");
+        eprintln!("  [OK] Cross-construction comparison done");
+        eprintln!("  [OK] Crate survey completed (71 screened, 25 analyzed)");
+        eprintln!("  [OK] Registry backups created");
+        eprintln!("  -> Ready for Phase 3a closure and Phase 3b transition");
     }
 }

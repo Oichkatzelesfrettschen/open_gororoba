@@ -12,18 +12,22 @@
 //! All GPU operations have CPU fallback implementations.
 
 #[cfg(feature = "gpu")]
+pub mod dimensional;
+#[cfg(feature = "gpu")]
 mod eta_matrix;
 #[cfg(feature = "gpu")]
-mod graph_construction;
-#[cfg(feature = "gpu")]
 mod frustration;
+#[cfg(feature = "gpu")]
+mod graph_construction;
 
+#[cfg(feature = "gpu")]
+pub use dimensional::GpuDimensionalEngine;
 #[cfg(feature = "gpu")]
 pub use eta_matrix::EtaMatrixGpu;
 #[cfg(feature = "gpu")]
-pub use graph_construction::GraphConstructorGpu;
-#[cfg(feature = "gpu")]
 pub use frustration::FrustrationGpu;
+#[cfg(feature = "gpu")]
+pub use graph_construction::GraphConstructorGpu;
 
 /// GPU device initialization and error handling.
 #[cfg(feature = "gpu")]

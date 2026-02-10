@@ -143,10 +143,9 @@ impl EtaMatrixGpu {
     #[cfg(feature = "gpu")]
     fn compute_eta_gpu(dim: usize) -> Result<Vec<u8>, String> {
         let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
-        let stream = ctx.default_stream();  // Returns Arc<CudaStream>, not Result
+        let stream = ctx.default_stream(); // Returns Arc<CudaStream>, not Result
 
-        let ptx = compile_ptx(ETA_KERNEL_SRC)
-            .map_err(|e| format!("NVRTC compile: {}", e))?;
+        let ptx = compile_ptx(ETA_KERNEL_SRC).map_err(|e| format!("NVRTC compile: {}", e))?;
 
         let module = ctx
             .load_module(ptx)
@@ -184,7 +183,9 @@ impl EtaMatrixGpu {
         builder.arg(&eta_dev);
 
         unsafe {
-            builder.launch(cfg).map_err(|e| format!("Kernel launch: {}", e))?;
+            builder
+                .launch(cfg)
+                .map_err(|e| format!("Kernel launch: {}", e))?;
         }
 
         // Copy result back to host
@@ -250,7 +251,10 @@ mod tests {
         let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
-        assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=16");
+        assert_eq!(
+            eta_cpu, eta_gpu,
+            "GPU and CPU eta matrices must match exactly at dim=16"
+        );
     }
 
     #[cfg(feature = "gpu")]
@@ -268,7 +272,10 @@ mod tests {
         let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
-        assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=32");
+        assert_eq!(
+            eta_cpu, eta_gpu,
+            "GPU and CPU eta matrices must match exactly at dim=32"
+        );
     }
 
     #[cfg(feature = "gpu")]
@@ -286,7 +293,10 @@ mod tests {
         let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
-        assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=64");
+        assert_eq!(
+            eta_cpu, eta_gpu,
+            "GPU and CPU eta matrices must match exactly at dim=64"
+        );
     }
 
     #[cfg(feature = "gpu")]
@@ -304,7 +314,10 @@ mod tests {
         let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
-        assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=128");
+        assert_eq!(
+            eta_cpu, eta_gpu,
+            "GPU and CPU eta matrices must match exactly at dim=128"
+        );
     }
 
     #[cfg(feature = "gpu")]
@@ -322,7 +335,10 @@ mod tests {
         let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
-        assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=256");
+        assert_eq!(
+            eta_cpu, eta_gpu,
+            "GPU and CPU eta matrices must match exactly at dim=256"
+        );
     }
 
     #[cfg(feature = "gpu")]
@@ -340,6 +356,9 @@ mod tests {
         let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
-        assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=512");
+        assert_eq!(
+            eta_cpu, eta_gpu,
+            "GPU and CPU eta matrices must match exactly at dim=512"
+        );
     }
 }
