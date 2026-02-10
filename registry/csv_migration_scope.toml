@@ -5,7 +5,7 @@
 updated = "2026-02-09"
 authoritative = true
 inventory_path = "registry/csv_inventory.toml"
-document_count = 945
+document_count = 946
 
 [zone_counts]
 archive_csv = 5
@@ -13,22 +13,22 @@ curated_csv = 557
 external_csv = 26
 legacy_csv = 200
 other_csv = 71
-project_csv = 86
+project_csv = 87
 
 [action_counts]
-canonicalized_to_toml = 813
+canonicalized_to_toml = 814
 canonicalized_to_toml_generated_artifact = 30
 canonicalized_to_toml_holding = 31
 manual_triage = 71
 
 [priority_counts]
-complete = 874
+complete = 875
 medium = 71
 
 [next_waves]
 wave_1 = "complete: 200/200 legacy_csv canonicalized"
 wave_2 = "complete: 557/557 curated_csv canonicalized"
-wave_3 = "complete: 86/86 project_csv split-and-scroll complete"
+wave_3 = "complete: 87/87 project_csv split-and-scroll complete"
 wave_4 = "complete: 31/31 external+archive holding scrollified"
 
 high_priority_path_sample = [

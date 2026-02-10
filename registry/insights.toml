@@ -343,7 +343,7 @@ id = "I-036"
 title = "8D Lattice Embedding Hardened with Injective Round-Trip Gates"
 date = "2026-02-10"
 status = "verified"
-summary = "C-452/C-453 evidence was strengthened from parse-only checks to explicit falsifiability gates: injectivity at each dimension (256, 512, 1024, 2048), exact basis-index coverage, exact lattice->index round-trip reconstruction, codomain lock to 8D trinary vectors, and filtration-growth deltas (256, 512, 1024) across the dimensional ladder. Header schema stability is now explicitly tested to freeze the current external CSV interface while preserving reproducibility."
+summary = "C-452/C-453 evidence was strengthened from parse-only checks to explicit falsifiability gates: injectivity at each dimension (256, 512, 1024, 2048), exact basis-index coverage, exact lattice->index round-trip reconstruction, codomain lock to 8D trinary vectors, and filtration-growth deltas (256, 512, 1024) across the dimensional ladder. New filtration guards now enforce pairwise-disjoint growth layers, exact intersection cardinalities across the full 256->512->1024->2048 chain, and exact lexicographic prefix-cut reconstruction at each transition. Header schema stability is explicitly tested to freeze the external CSV interface while preserving reproducibility."
 claims = ["C-452", "C-453"]
 sprint = 28
 

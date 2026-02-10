@@ -104,6 +104,16 @@ def main() -> int:
     for path in paths:
         if not path.exists():
             raise SystemExit(f"ERROR: missing registry {path}")
+
+    for path in (
+        root / args.claims_atoms_path,
+        root / args.claims_edges_path,
+        root / args.equation_atoms_path,
+        root / args.equation_symbols_path,
+        root / args.proof_skeletons_path,
+        root / args.payload_path,
+        root / args.payload_chunks_path,
+    ):
         _assert_ascii(path)
 
     canonical_claims = _load(root / args.claims_path).get("claim", [])

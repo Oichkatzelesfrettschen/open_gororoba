@@ -2,7 +2,7 @@
 # Markdown mirrors: docs/NEXT_ACTIONS.md
 
 [meta]
-updated = "2026-02-09"
+updated = "2026-02-10"
 status = "active"
 
 [[action]]
@@ -35,4 +35,100 @@ area = "optics"
 title = "Refine Kerr Lens Model"
 description = "Use `optics_core::tcmt` to model the Kerr effect in the warp ring's optical path, simulating non-linear refractive index changes."
 priority = "low"
+status = "todo"
+
+[[action]]
+id = "NA-005"
+area = "claims"
+title = "C-010 Cluster Projection Gate"
+description = "Keep C-010 falsifiability gates strict by requiring cross-cluster-only absorber bridges, unique bridge pairs, and explicit projected-cluster connectivity checks."
+priority = "high"
+status = "todo"
+
+[[action]]
+id = "NA-006"
+area = "materials"
+title = "C-010 Non-Local Coupler Baseline"
+description = "Define a benchmark protocol comparing local connected absorbers against explicit non-local coupler designs on the same mode-suppression metrics."
+priority = "high"
+status = "todo"
+
+[[action]]
+id = "NA-007"
+area = "claims"
+title = "C-011 Bridge Contrast Registry"
+description = "Track and verify gamma-invariant vacuum-to-shell contrast rho_v/rho_shell in gravastar bridge datasets as a fixed obstruction-side invariant."
+priority = "high"
+status = "todo"
+
+[[action]]
+id = "NA-008"
+area = "cosmology"
+title = "C-011 Stress-Energy Mapping Prototype"
+description = "Prototype one explicit stress-energy bypass candidate (A-infinity, associative surrogate, or restricted sector) and test against TOV-consistent observables."
+priority = "high"
+status = "todo"
+
+[[action]]
+id = "NA-009"
+area = "claims"
+title = "C-011 Radial Margin Regression"
+description = "Promote strong-negative radial branch margin checks into recurring regression gates to detect accidental stabilizing drift in scan outputs."
+priority = "medium"
+status = "todo"
+
+[[action]]
+id = "NA-010"
+area = "math"
+title = "C-453 Prefix-Chain Formalization"
+description = "Promote lexicographic prefix-cut behavior of Lambda_256 < Lambda_512 < Lambda_1024 < Lambda_2048 from empirical test gate to explicit theorem statement."
+priority = "high"
+status = "todo"
+
+[[action]]
+id = "NA-011"
+area = "math"
+title = "8D Embedding Proof Skeleton"
+description = "Draft a proof skeleton linking 8D codomain lock, injectivity, and filtration growth deltas to an octonion-driven structural argument."
+priority = "high"
+status = "todo"
+
+[[action]]
+id = "NA-012"
+area = "provenance"
+title = "Thesis 4 Source Triangulation"
+description = "Triangulate Thesis 4 against primary sources (Baez 2002, Bott-Milnor 1958, Adams 1960, and Cayley-Dickson subalgebra literature) in canonical TOML narratives."
+priority = "high"
+status = "todo"
+
+[[action]]
+id = "NA-013"
+area = "registry"
+title = "Claim Status Vocabulary Guardrail"
+description = "Add a pre-commit guardrail ensuring new claim status tokens match the registry-check allowlist to prevent drift."
+priority = "medium"
+status = "todo"
+
+[[action]]
+id = "NA-014"
+area = "registry"
+title = "Binary Registry Drift Gate"
+description = "Add a targeted check that `registry/binaries.toml` stays synchronized with `crates/gororoba_cli/Cargo.toml` bin declarations."
+priority = "medium"
+status = "todo"
+
+[[action]]
+id = "NA-015"
+area = "registry"
+title = "Project Counter Auto-Sync"
+description = "Automate project metadata counters in `registry/project.toml` to avoid manual drift for claims, insights, experiments, and binaries."
+priority = "medium"
+status = "todo"
+
+[[action]]
+id = "NA-016"
+area = "docs"
+title = "Thesis 2-3-4 Narrative Pack"
+description = "Publish a single generated narrative pack documenting C-010, C-011, C-452, and C-453 falsifiability criteria, current obstruction state, and next verification checkpoints."
+priority = "high"
 status = "todo"

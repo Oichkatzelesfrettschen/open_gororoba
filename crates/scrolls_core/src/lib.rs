@@ -373,7 +373,9 @@ fn parse_csv(path: &Path) -> Result<ParsedCsv, ScrollError> {
         let row = record?;
         let mut values_semantic: Vec<String> = row.iter().map(str::to_string).collect();
         if parsed_semantic.is_empty() && !values_semantic.is_empty() {
-            values_semantic[0] = values_semantic[0].trim_start_matches('\u{feff}').to_string();
+            values_semantic[0] = values_semantic[0]
+                .trim_start_matches('\u{feff}')
+                .to_string();
         }
         let values_normalized: Vec<String> = values_semantic
             .iter()
@@ -454,17 +456,12 @@ fn parse_csv(path: &Path) -> Result<ParsedCsv, ScrollError> {
         rows_semantic.push(padded);
     }
 
-    let mut original_header = original_header_semantic;
-    while original_header.len() < max_cols {
-        original_header.push(String::new());
-    }
-
     Ok(ParsedCsv {
         has_header,
         delimiter: delimiter as char,
         quotechar: quotechar as char,
         header,
-        original_header,
+        original_header: original_header_semantic,
         rows,
         rows_semantic,
     })
@@ -669,6 +666,36 @@ mod tests {
         assert!(converted
             .rendered_dataset_toml
             .contains("dataset_class = \"canonical_dataset\""));
+    }
+
+    #[test]
+    fn conversion_uses_semantic_rows_for_checksum_with_unicode_cells() {
+        let mut temp = NamedTempFile::new().expect("tmp");
+        writeln!(temp, "Result").expect("write");
+        writeln!(temp, "⊥").expect("write");
+
+        let spec = ConvertSpec {
+            dataset_id: "T-0002",
+            slug: "unicode_sample",
+            source_csv: "tmp/unicode_sample.csv",
+            canonical_toml: "registry/data/test/T-0002_unicode_sample.toml",
+            dataset_class: "canonical_dataset",
+            corpus_label: "test corpus",
+            migrated_by: "scrolls_core::tests",
+        };
+        let converted = convert_csv_to_scroll(temp.path(), &spec).expect("convert");
+
+        let expected_rows = vec![vec!["⊥".to_string()]];
+        let expected_sha = sha_text_ascii(&json_ascii_rows(&expected_rows));
+
+        assert_eq!(
+            converted.dataset.dataset.row_value_sha256, expected_sha,
+            "row checksum must match semantic source CSV rows"
+        );
+        assert!(
+            converted.rendered_dataset_toml.contains("\"\\u22A5\""),
+            "serialized TOML should keep ASCII with Unicode escape semantics"
+        );
     }
 
     #[test]

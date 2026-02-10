@@ -3,7 +3,7 @@
 
 [roadmap]
 source_markdown = "docs/ROADMAP.md"
-consolidated_date = "2026-02-09"
+consolidated_date = "2026-02-10"
 supersedes = [
   "RUST_MIGRATION_PLAN.md",
   "RUST_REFACTOR_PLAN.md",
@@ -126,3 +126,21 @@ primary_outputs = [
   "registry/knowledge/derivation_steps.toml",
   "registry/bibliography_normalized.toml",
 ]
+
+[[workstream]]
+id = "WS-THESIS-002"
+name = "Thesis 2/3/4 Falsifiability Hardening"
+priority = "high"
+status = "in_progress"
+description = "Expand and harden falsifiability for C-010 (Holographic Entropy Trap), C-011 (Sedenion-Gravastar Equivalence), and C-452/C-453 (Universal 8D Lattice Embedding) with stricter tests, explicit obstruction criteria, and primary-source triangulation."
+primary_outputs = [
+  "src/verification/verify_c010_c011_theses.py",
+  "tests/test_c010_holographic_entropy_trap.py",
+  "tests/test_c011_gravastar_equivalence_obstruction.py",
+  "crates/algebra_core/src/experimental/cd_external.rs",
+  "registry/claims.toml",
+  "registry/insights.toml",
+  "registry/next_actions.toml",
+  "registry/todo.toml",
+]
+claims = ["C-010", "C-011", "C-452", "C-453", "C-589"]

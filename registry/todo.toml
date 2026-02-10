@@ -2,7 +2,7 @@
 # Markdown mirrors: docs/TODO.md
 
 [todo]
-updated = "2026-02-09"
+updated = "2026-02-10"
 status = "active"
 
 [[item]]
@@ -43,4 +43,68 @@ area = "docs"
 title = "Fetch Reference PDFs"
 description = "Retrieve or reconstruct missing reference PDFs cited in the monograph."
 priority = "low"
+status = "open"
+
+[[item]]
+id = "T-006"
+area = "claims"
+title = "C-010 Non-Local Benchmark Harness"
+description = "Implement a reusable benchmark harness that scores local vs non-local absorber coupling topologies against the same mode-suppression targets."
+priority = "high"
+status = "open"
+
+[[item]]
+id = "T-007"
+area = "claims"
+title = "C-010 Graph Family Extensions"
+description = "Expand C-010 tests from current bridge projection to alternative candidate ZD-derived graph families and record failure modes."
+priority = "medium"
+status = "open"
+
+[[item]]
+id = "T-008"
+area = "cosmology"
+title = "C-011 Bypass Model Candidate A"
+description = "Prototype an associative-surrogate stress-energy closure and test whether it preserves gravastar boundary conditions."
+priority = "high"
+status = "open"
+
+[[item]]
+id = "T-009"
+area = "cosmology"
+title = "C-011 Bypass Model Candidate B"
+description = "Prototype a restricted associative-sector closure and compare TOV observables against the current obstructed baseline."
+priority = "high"
+status = "open"
+
+[[item]]
+id = "T-010"
+area = "math"
+title = "C-453 Prefix-Cut Theorem Draft"
+description = "Write a formal theorem draft for the observed lexicographic prefix-cut chain across Lambda_256/512/1024/2048."
+priority = "high"
+status = "open"
+
+[[item]]
+id = "T-011"
+area = "math"
+title = "C-453 Octonion Skeleton Mapping"
+description = "Define a candidate explicit map between octonion structural invariants and 8D lattice-coordinate constraints."
+priority = "high"
+status = "open"
+
+[[item]]
+id = "T-012"
+area = "provenance"
+title = "Thesis 4 Primary Source Matrix"
+description = "Build a citation matrix linking C-452/C-453 claims to primary sources on normed division algebras and Cayley-Dickson subalgebra structure."
+priority = "high"
+status = "open"
+
+[[item]]
+id = "T-013"
+area = "registry"
+title = "Registry Drift Guardrails"
+description = "Add automated guardrails for status tokens, binary list parity, and project counter synchronization."
+priority = "medium"
 status = "open"

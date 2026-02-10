@@ -135,45 +135,54 @@ artifacts = [
 
 [[task]]
 id = "W5-011"
-status = "pending"
+status = "done"
 priority = "medium"
 title = "Derivation step graph"
 description = "Represent derivation sequences as typed directed acyclic graphs linked to equation atoms."
 artifacts = [
   "registry/knowledge/derivation_steps.toml",
+  "src/scripts/analysis/build_wave5_batch2_registries.py",
+  "src/verification/verify_wave5_batch2_registries.py",
 ]
 
 [[task]]
 id = "W5-012"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Bibliography field normalization"
 description = "Expand bibliography entries into normalized fields (authors, venue, year, DOI, URL, evidence relevance)."
 artifacts = [
   "registry/bibliography.toml",
   "registry/bibliography_normalized.toml",
+  "src/scripts/analysis/build_wave5_batch2_registries.py",
+  "src/verification/verify_wave5_batch2_registries.py",
 ]
 
 [[task]]
 id = "W5-013"
-status = "pending"
+status = "done"
 priority = "high"
 title = "External source provenance enrichment"
 description = "Add immutable provenance records for all first-party external references used by claims."
 artifacts = [
   "registry/external_sources.toml",
   "registry/provenance_sources.toml",
+  "src/scripts/analysis/build_wave5_batch2_registries.py",
+  "src/verification/verify_wave5_batch2_registries.py",
 ]
 
 [[task]]
 id = "W5-014"
-status = "pending"
+status = "done"
 priority = "medium"
 title = "Narrative paragraph atomization"
 description = "Split long narrative bodies into ordered paragraph records with semantic tags."
 artifacts = [
   "registry/docs_root_narratives.toml",
   "registry/research_narratives.toml",
+  "registry/narrative_paragraph_atoms.toml",
+  "src/scripts/analysis/build_wave5_batch2_registries.py",
+  "src/verification/verify_wave5_batch2_registries.py",
 ]
 
 [[task]]
@@ -277,13 +286,15 @@ artifacts = [
 
 [[task]]
 id = "W5-024"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Wave 5 acceptance gate"
 description = "Bundle strict wave checks into one target and require pass before merge."
 artifacts = [
   "Makefile",
   "registry-wave5",
+  "registry-wave5-batch1",
+  "registry-wave5-batch2",
 ]
 
 [[task]]

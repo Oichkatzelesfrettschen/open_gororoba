@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import csv
 from collections import defaultdict
+from math import isclose
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +30,7 @@ def test_c011_bridge_triplets_show_monotone_gamma_collapse() -> None:
 
     assert grouped, "Bridge table should contain at least one soliton group."
 
+    ratio_samples: list[float] = []
     for key, group in grouped.items():
         ordered = sorted(group, key=lambda row: float(row["gamma"]))
         gammas = [float(row["gamma"]) for row in ordered]
@@ -37,6 +39,10 @@ def test_c011_bridge_triplets_show_monotone_gamma_collapse() -> None:
         masses = [float(row["M_total"]) for row in ordered]
         radii = [float(row["R2"]) for row in ordered]
         r1 = float(ordered[0]["R1"])
+        rho_v = [float(row["rho_v"]) for row in ordered]
+        rho_shell = [float(row["rho_shell"]) for row in ordered]
+        contrast = [vac / shell for vac, shell in zip(rho_v, rho_shell)]
+        ratio_samples.extend(contrast)
 
         assert masses[0] > masses[1] > masses[2], (
             f"{key} does not show monotone mass collapse with gamma."
@@ -50,6 +56,18 @@ def test_c011_bridge_triplets_show_monotone_gamma_collapse() -> None:
         assert all(
             row["is_stable"].strip().lower() == "true" for row in ordered
         ), f"{key} should remain numerically stable in the bridge table."
+        assert all(isclose(value, contrast[0], rel_tol=0.0, abs_tol=1e-12) for value in contrast), (
+            f"{key} should keep rho_v/rho_shell contrast invariant across gamma."
+        )
+
+    assert ratio_samples, "Expected non-empty vacuum-to-shell contrast samples."
+    contrast_ref = ratio_samples[0]
+    assert all(
+        isclose(value, contrast_ref, rel_tol=0.0, abs_tol=1e-12) for value in ratio_samples
+    ), "Expected a global invariant rho_v/rho_shell contrast across bridge rows."
+    assert isclose(contrast_ref, 10.0 / 3.0, rel_tol=0.0, abs_tol=1e-12), (
+        "Bridge rows should realize rho_v/rho_shell = 10/3."
+    )
 
 
 def test_c011_radial_stability_scan_remains_obstructed() -> None:
@@ -61,6 +79,9 @@ def test_c011_radial_stability_scan_remains_obstructed() -> None:
     derivatives = [float(row["dM_drho_c"]) for row in rows]
     assert all(value < 0.0 for value in derivatives), (
         "Expected dM/drho_c < 0 throughout the scanned radial-stability branch."
+    )
+    assert max(derivatives) < -100.0, (
+        "Expected a strong obstruction margin: max dM/drho_c should stay below -100."
     )
 
     hw_stability = [

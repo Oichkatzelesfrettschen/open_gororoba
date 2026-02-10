@@ -76,7 +76,7 @@ statement = "Falsifiable thesis: a metamaterial whose unit-cell couplings follow
 where_stated = "`docs/MATERIALS_APPLICATIONS.md`, `docs/THE_GEMINI_PROTOCOL.md`, `docs/GRAND_SYNTHESIS.md`, `docs/external_sources/OPEN_CLAIMS_SOURCES.md`, `crates/materials_core/src/metamaterial.rs`, `crates/optics_core/src/tcmt.rs`, `crates/control_core/src/bridges/tcmt.rs`, `crates/gororoba_cli/src/bin/tcmt_sweep.rs`, `data/csv/sedenion_box_kites_clustered.csv`, `registry/data/project_csv/canonical/PC-0051_sedenion_box_kites_clustered.toml`, `data/csv/cd_zd_absorber_mapping.csv`, `registry/data/project_csv/canonical/PC-0029_cd_zd_absorber_mapping.toml`, `tests/test_c010_holographic_entropy_trap.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`, `data/artifacts/images/absorber_pareto_3160x2820.png`"
 status = "Closed/Negative-Result"
 last_verified = "2026-02-10"
-what_would_verify_refute = "CLOSED/NEGATIVE-RESULT (updated 2026-02-10): the hidden structural finding stands -- the ZD incidence graph is 7 disconnected K6 cliques, while practical TCMT/absorber lattices are connected. This mismatch blocks any straightforward local mapping from algebraic annihilation (xy=0) to physical entropy dumping. Existing absorber and optical-capture pipelines in-repo (including warp-ring/analogue-gravity optical modeling) have not produced a connected local realization of the ZD topology. Verification would require a reproducible design with explicit non-local couplers that recovers ZD-predicted mode suppression and beats baseline connected absorbers; refutation is continued failure of any such non-local design under the same benchmark criteria."
+what_would_verify_refute = "CLOSED/NEGATIVE-RESULT (updated 2026-02-10): the hidden structural finding stands -- the ZD incidence graph is 7 disconnected K6 cliques, while practical TCMT/absorber lattices are connected. The verifier now enforces cross-cluster-only bridge rows, unique absorber pairing, and a projected cluster graph with one isolated cluster, making the non-local coupling requirement explicit and testable. This mismatch blocks any straightforward local mapping from algebraic annihilation (xy=0) to physical entropy dumping. Existing absorber and optical-capture pipelines in-repo (including warp-ring/analogue-gravity optical modeling) have not produced a connected local realization of the ZD topology. Verification would require a reproducible design with explicit non-local couplers that recovers ZD-predicted mode suppression and beats baseline connected absorbers; refutation is continued failure of any such non-local design under the same benchmark criteria."
 
 [[claim]]
 id = "C-011"
@@ -84,7 +84,7 @@ statement = "Falsifiable thesis: in the repo's cosmology-materials synthesis, a 
 where_stated = "`docs/SEDENION_GRAVASTAR_EQUIVALENCE.md`, `docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md`, `docs/GRAND_SYNTHESIS.md`, `docs/BIBLIOGRAPHY.md`, `refs.bib`, `crates/cosmology_core/src/tov.rs`, `crates/cosmology_core/src/gravastar.rs`, `crates/gororoba_cli/src/bin/gravastar_sweep.rs`, `crates/gororoba_cli/tests/integration_gravastar.rs`, `data/csv/genesis_gravastar_bridge.csv`, `registry/data/project_csv/canonical/PC-0034_genesis_gravastar_bridge.toml`, `data/csv/gravastar_anisotropic_stability.csv`, `data/csv/gravastar_ligo_mass_sweep.csv`, `data/csv/gravastar_polytropic_sweep.csv`, `data/csv/gravastar_radial_stability.csv`, `tests/test_c011_gravastar_equivalence_obstruction.py`, `tests/test_c010_c011_verifier_script.py`, `src/verification/verify_c010_c011_theses.py`"
 status = "Closed/Obstructed"
 last_verified = "2026-02-10"
-what_would_verify_refute = "CLOSED/OBSTRUCTED (updated 2026-02-10): the anti-diffusion <-> coherence-failure correspondence remains a phenomenological match, not a derived GR stress-energy mapping. C-030 still blocks a standard action principle: non-associative associator norms are O(1), so cubic/quartic dynamics are parenthesization-dependent without a bypass. First-source gravastar references are already cached and cited in `docs/BIBLIOGRAPHY.md`/`refs.bib`, but emulator or simulator extension is currently stalled. Verification would require one explicit bypass model (A-infinity, associative surrogate, or restricted associative sector) that reproduces TOV-consistent observables; refutation is any proof that no such bypass can yield physically admissible boundary conditions."
+what_would_verify_refute = "CLOSED/OBSTRUCTED (updated 2026-02-10): the anti-diffusion <-> coherence-failure correspondence remains a phenomenological match, not a derived GR stress-energy mapping. Current reproducible checks enforce complete gamma triplets, monotone mass/radius collapse, gamma-invariant vacuum-to-shell contrast rho_v/rho_shell=10/3, and a strongly negative radial branch (max dM/drho_c < -100) with zero Harrison-Wheeler stable points. C-030 still blocks a standard action principle: non-associative associator norms are O(1), so cubic/quartic dynamics are parenthesization-dependent without a bypass. First-source gravastar references are already cached and cited in `docs/BIBLIOGRAPHY.md`/`refs.bib`, but emulator or simulator extension is currently stalled. Verification would require one explicit bypass model (A-infinity, associative surrogate, or restricted associative sector) that reproduces TOV-consistent observables; refutation is any proof that no such bypass can yield physically admissible boundary conditions."
 
 [[claim]]
 id = "C-012"
@@ -3617,10 +3617,10 @@ what_would_verify_refute = "WHERE STATED: `data/csv/cayley_dickson/256d_lattice_
 [[claim]]
 id = "C-453"
 statement = "The 8D lattice embedding extends to dims 512, 1024, and 2048: each map is injective at its native dimension, codomain dimension remains fixed at 8, and filtration growth is exact (new-point deltas 256, 512, 1024 across 256->512->1024->2048)."
-where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_csv_512d_lattice_mapping_parses, test_csv_1024d_lattice_mapping_parses, test_csv_2048d_lattice_mapping_parses, test_c452_c453_embedding_is_injective_and_roundtrip, test_c452_c453_codomain_and_index_coverage_all_dims, test_c453_filtration_growth_has_expected_new_points)"
+where_stated = "`crates/algebra_core/src/experimental/cd_external.rs` (test_csv_512d_lattice_mapping_parses, test_csv_1024d_lattice_mapping_parses, test_csv_2048d_lattice_mapping_parses, test_c452_c453_embedding_is_injective_and_roundtrip, test_c452_c453_codomain_and_index_coverage_all_dims, test_c453_filtration_growth_has_expected_new_points, test_c453_filtration_layers_are_disjoint_and_partition_2048, test_c453_filtration_intersection_cardinalities_are_exact, test_c453_filtration_is_lexicographic_prefix_chain)"
 status = "Verified"
 last_verified = "2026-02-10"
-what_would_verify_refute = "WHERE STATED: `data/csv/cayley_dickson/{512,1024,2048}d_lattice_mapping.csv`. VERIFIED: each dimension has exact row/index coverage, all lattice vectors remain 8D trinary, each dimension-level map is injective with exact reverse lookup, and strict nesting has exact growth deltas (512-256=256, 1024-512=512, 2048-1024=1024). WHAT WOULD REFUTE: codomain drift away from 8D, collisions in any dimension, missing coverage, or incorrect filtration-growth deltas."
+what_would_verify_refute = "WHERE STATED: `data/csv/cayley_dickson/{512,1024,2048}d_lattice_mapping.csv`. VERIFIED: each dimension has exact row/index coverage, all lattice vectors remain 8D trinary, each dimension-level map is injective with exact reverse lookup, strict nesting has exact growth deltas (512-256=256, 1024-512=512, 2048-1024=1024), filtration layers are pairwise disjoint, layer union reconstructs 2048 exactly, and each transition is an exact lexicographic prefix cut (child set equals first N parent points). WHAT WOULD REFUTE: codomain drift away from 8D, collisions in any dimension, missing coverage, incorrect filtration-growth deltas, non-disjoint filtration layers, any intersection cardinality that deviates from {256,512,1024}, or failure of lex-prefix consistency at any transition."
 
 [[claim]]
 id = "C-454"
@@ -4736,7 +4736,7 @@ sprint = 29
 id = "C-585"
 statement = "Singh's delta^2 = 3/8 is NOT reproduced for arbitrary trace-free real J_3(O) elements. Observed delta^2 values range from 2.5 to 3.75. The result likely requires specific normalized idempotent constructions in the complexified algebra J_3(O_C)."
 where_stated = "`crates/algebra_core/src/construction/albert.rs` (test_singh_delta_squared)"
-status = "Negative"
+status = "Closed/Negative-Result"
 last_verified = "2026-02-09"
 what_would_verify_refute = "NEGATIVE RESULT: delta^2 = 3/8 not observed for generic real trace-free elements. WOULD VERIFY IF: specific complexified or idempotent construction yields exactly 3/8."
 claims = ["C-585"]
@@ -4756,7 +4756,7 @@ sprint = 29
 id = "C-587"
 statement = "Depth-based generation assignment (boundary-crossing count) at dim=16: mean associator norms are 0.87, 1.0, 1.6, 2.0 for depths 2, 1, 0, 3 respectively. The norm ratio spread is insufficient to reproduce PDG lepton mass ratios (3500:1 for e/tau). Raw associator norms alone cannot explain the mass hierarchy."
 where_stated = "`crates/materials_core/src/tang_mass.rs` (test_depth_based_mass_prediction_dim16, test_depth_vs_random_comparison)"
-status = "Negative"
+status = "Closed/Negative-Result"
 last_verified = "2026-02-09"
 what_would_verify_refute = "NEGATIVE RESULT: RMS deviation ~875 vs ~1.0 for random search. WOULD VERIFY IF: higher-order algebraic invariants (products of associators, or nilpotent orbit indices) produce correct mass hierarchy."
 claims = ["C-587"]

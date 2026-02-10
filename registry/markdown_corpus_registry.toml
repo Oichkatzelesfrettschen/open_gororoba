@@ -5,11 +5,11 @@
 updated = "deterministic"
 authoritative = true
 source_inventory = "registry/markdown_inventory.toml"
-document_count = 263
+document_count = 265
 tracked_violation_count = 0
 classification_violation_count = 0
 destination_missing_count = 0
-risk_item_count = 42
+risk_item_count = 44
 
 [policy]
 toml_first_required = true
@@ -28,18 +28,18 @@ allowed_tracked_markdown = [
 ]
 
 [git_status_counts]
-ignored = 255
+ignored = 257
 tracked = 8
 
 [classification_counts]
 third_party_markdown = 5
-toml_published_markdown = 258
+toml_published_markdown = 260
 
 [lifecycle_counts]
 generated_artifact_report = 8
 generated_book_source = 18
 generated_conversation_extract = 5
-generated_docs_tree = 148
+generated_docs_tree = 150
 generated_publish_mirror = 22
 generated_report_output = 47
 generated_root_overlay = 2
@@ -56,7 +56,7 @@ migration_priority = "low"
 lifecycle = "generated_publish_mirror"
 destination_exists = true
 toml_destination = "registry/claims.toml"
-line_count = 4561
+line_count = 4721
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
@@ -75,14 +75,14 @@ rationale = "Published markdown generated from TOML destination."
 [[risk_queue]]
 rank = 3
 path = "docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md"
-risk_score = 14
+risk_score = 13
 classification = "toml_published_markdown"
 migration_action = "keep_generated_mirror"
 migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 3501
+line_count = 3494
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
@@ -95,7 +95,7 @@ migration_priority = "low"
 lifecycle = "generated_publish_mirror"
 destination_exists = true
 toml_destination = "registry/claims_tasks.toml"
-line_count = 2854
+line_count = 2840
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
@@ -159,7 +159,7 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 lifecycle = "generated_report_output"
 destination_exists = true
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 line_count = 851
 rationale = "Published markdown generated from TOML destination."
 
@@ -173,7 +173,7 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 811
+line_count = 814
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
@@ -191,6 +191,19 @@ rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
 rank = 12
+path = "docs/INSIGHTS.md"
+risk_score = 2
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_docs_tree"
+destination_exists = true
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 706
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 13
 path = "docs/claims/by_domain/meta.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -203,8 +216,8 @@ line_count = 649
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 13
-path = "docs/INSIGHTS.md"
+rank = 14
+path = "docs/CONVOS_CONCEPTS_STATUS_INDEX.md"
 risk_score = 2
 classification = "toml_published_markdown"
 migration_action = "keep_generated_mirror"
@@ -212,11 +225,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 606
+line_count = 605
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 14
+rank = 15
 path = "docs/generated/CLAIMS_DOMAINS_REGISTRY_MIRROR.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -229,33 +242,7 @@ line_count = 605
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 15
-path = "docs/CONVOS_CONCEPTS_STATUS_INDEX.md"
-risk_score = 2
-classification = "toml_published_markdown"
-migration_action = "keep_generated_mirror"
-migration_priority = "low"
-lifecycle = "generated_docs_tree"
-destination_exists = true
-toml_destination = "registry/docs_root_narratives.toml"
-line_count = 602
-rationale = "Published markdown generated from TOML destination."
-
-[[risk_queue]]
 rank = 16
-path = "docs/ALGEBRA_CRATES_SURVEY.md"
-risk_score = 2
-classification = "toml_published_markdown"
-migration_action = "keep_generated_mirror"
-migration_priority = "low"
-lifecycle = "generated_docs_tree"
-destination_exists = true
-toml_destination = "registry/docs_root_narratives.toml"
-line_count = 580
-rationale = "Published markdown generated from TOML destination."
-
-[[risk_queue]]
-rank = 17
 path = "docs/CLAIMS_EVIDENCE_MATRIX.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -264,7 +251,20 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 579
+line_count = 599
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 17
+path = "docs/ALGEBRA_CRATES_SURVEY.md"
+risk_score = 2
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_docs_tree"
+destination_exists = true
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 583
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
@@ -295,6 +295,19 @@ rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
 rank = 20
+path = "docs/PHASE4_UNIFIED_PHYSICS_FRAMEWORK.md"
+risk_score = 2
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_docs_tree"
+destination_exists = true
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 515
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 21
 path = "docs/generated/DOCS_ROOT_NARRATIVES_REGISTRY_MIRROR.md"
 risk_score = 2
 classification = "toml_published_markdown"
@@ -303,11 +316,11 @@ migration_priority = "low"
 lifecycle = "generated_publish_mirror"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 501
+line_count = 509
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 21
+rank = 22
 path = "docs/CORE_ABSTRACTIONS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -316,11 +329,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 482
+line_count = 485
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 22
+rank = 23
 path = "docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -329,11 +342,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 426
+line_count = 429
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 23
+rank = 24
 path = "docs/BIBLIOGRAPHY.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -346,7 +359,7 @@ line_count = 417
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 24
+rank = 25
 path = "docs/claims/by_domain/holography.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -359,7 +372,7 @@ line_count = 412
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 25
+rank = 26
 path = "docs/FINAL_MANUSCRIPT.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -368,11 +381,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 396
+line_count = 399
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 26
+rank = 27
 path = "docs/ALGEBRA_FAMILY_TAXONOMY.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -381,11 +394,24 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 382
+line_count = 385
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 27
+rank = 28
+path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
+risk_score = 1
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_publish_mirror"
+destination_exists = true
+toml_destination = "registry/insights.toml"
+line_count = 373
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 29
 path = "docs/generated/BIBLIOGRAPHY_REGISTRY_MIRROR.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -398,20 +424,20 @@ line_count = 359
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 28
-path = "docs/ALGEBRA_CONSTRUCTION_COMPARISON.md"
+rank = 30
+path = "AGENTS.md"
 risk_score = 1
 classification = "toml_published_markdown"
 migration_action = "keep_generated_mirror"
 migration_priority = "low"
-lifecycle = "generated_docs_tree"
+lifecycle = "tracked_entrypoint"
 destination_exists = true
-toml_destination = "registry/docs_root_narratives.toml"
-line_count = 333
+toml_destination = "registry/entrypoint_docs.toml"
+line_count = 354
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 29
+rank = 31
 path = "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -420,11 +446,24 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 329
+line_count = 353
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 30
+rank = 32
+path = "docs/ALGEBRA_CONSTRUCTION_COMPARISON.md"
+risk_score = 1
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_docs_tree"
+destination_exists = true
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 336
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 33
 path = "docs/generated/REPORTS_NARRATIVES_REGISTRY_MIRROR.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -437,7 +476,20 @@ line_count = 321
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 31
+rank = 34
+path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
+risk_score = 1
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_publish_mirror"
+destination_exists = true
+toml_destination = "registry/experiments.toml"
+line_count = 304
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 35
 path = "docs/CLAIMS_TASKS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -450,7 +502,7 @@ line_count = 302
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 32
+rank = 36
 path = "reports/claims_batch_backlog_C201_C432.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -458,12 +510,12 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 lifecycle = "generated_report_output"
 destination_exists = true
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 line_count = 297
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 33
+rank = 37
 path = "reports/claims_batch_backlog_C201_C430.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -471,25 +523,12 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 lifecycle = "generated_report_output"
 destination_exists = true
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 line_count = 293
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 34
-path = "AGENTS.md"
-risk_score = 1
-classification = "toml_published_markdown"
-migration_action = "keep_generated_mirror"
-migration_priority = "low"
-lifecycle = "tracked_entrypoint"
-destination_exists = true
-toml_destination = "registry/entrypoint_docs.toml"
-line_count = 292
-rationale = "Published markdown generated from TOML destination."
-
-[[risk_queue]]
-rank = 35
+rank = 38
 path = "docs/MATH_CONVENTIONS.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -498,11 +537,11 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 288
+line_count = 291
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 36
+rank = 39
 path = "reports/claims_batch_backlog_C201_C427.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -510,12 +549,12 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 lifecycle = "generated_report_output"
 destination_exists = true
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 line_count = 287
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
-rank = 37
+rank = 40
 path = "docs/PHASE3B_IMPLEMENTATION_PLAN.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -524,46 +563,7 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 283
-rationale = "Published markdown generated from TOML destination."
-
-[[risk_queue]]
-rank = 38
-path = "docs/generated/INSIGHTS_REGISTRY_MIRROR.md"
-risk_score = 1
-classification = "toml_published_markdown"
-migration_action = "keep_generated_mirror"
-migration_priority = "low"
-lifecycle = "generated_publish_mirror"
-destination_exists = true
-toml_destination = "registry/insights.toml"
-line_count = 283
-rationale = "Published markdown generated from TOML destination."
-
-[[risk_queue]]
-rank = 39
-path = "docs/generated/EXPERIMENTS_REGISTRY_MIRROR.md"
-risk_score = 1
-classification = "toml_published_markdown"
-migration_action = "keep_generated_mirror"
-migration_priority = "low"
-lifecycle = "generated_publish_mirror"
-destination_exists = true
-toml_destination = "registry/experiments.toml"
-line_count = 275
-rationale = "Published markdown generated from TOML destination."
-
-[[risk_queue]]
-rank = 40
-path = "reports/claims_batch_backlog_C001_C200.md"
-risk_score = 1
-classification = "toml_published_markdown"
-migration_action = "keep_generated_mirror"
-migration_priority = "low"
-lifecycle = "generated_report_output"
-destination_exists = true
-toml_destination = "registry/reports_narratives.toml"
-line_count = 258
+line_count = 286
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
@@ -576,11 +576,37 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 257
+line_count = 260
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
 rank = 42
+path = "reports/claims_batch_backlog_C001_C200.md"
+risk_score = 1
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_report_output"
+destination_exists = true
+toml_destination = "registry/markdown_payloads.toml"
+line_count = 258
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 43
+path = "docs/PHASE4A_NON_ASSOCIATIVE_RECONNAISSANCE.md"
+risk_score = 1
+classification = "toml_published_markdown"
+migration_action = "keep_generated_mirror"
+migration_priority = "low"
+lifecycle = "generated_docs_tree"
+destination_exists = true
+toml_destination = "registry/docs_root_narratives.toml"
+line_count = 254
+rationale = "Published markdown generated from TOML destination."
+
+[[risk_queue]]
+rank = 44
 path = "reports/claims_batch_backlog_C201_C408.md"
 risk_score = 1
 classification = "toml_published_markdown"
@@ -588,7 +614,7 @@ migration_action = "keep_generated_mirror"
 migration_priority = "low"
 lifecycle = "generated_report_output"
 destination_exists = true
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 line_count = 253
 rationale = "Published markdown generated from TOML destination."
 
@@ -600,10 +626,11 @@ lifecycle = "third_party_cache"
 generated = false
 third_party = true
 tracked_allowed = true
-destination_exists = false
+destination_exists = true
 risk_score = 0
 size_bytes = 302
 line_count = 9
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "AGENTS.md"
@@ -615,8 +642,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 9645
-line_count = 292
+size_bytes = 12660
+line_count = 354
 toml_destination = "registry/entrypoint_docs.toml"
 
 [[document]]
@@ -659,7 +686,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3414
 line_count = 76
-toml_destination = "registry/navigator.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "README.md"
@@ -687,7 +714,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2180
 line_count = 53
-toml_destination = "registry/requirements_narrative.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/random/LICENSE.md"
@@ -697,10 +724,11 @@ lifecycle = "third_party_cache"
 generated = false
 third_party = true
 tracked_allowed = true
-destination_exists = false
+destination_exists = true
 risk_score = 0
 size_bytes = 3511
 line_count = 72
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/pip-25.3.dist-info/licenses/src/pip/_vendor/idna/LICENSE.md"
@@ -710,10 +738,11 @@ lifecycle = "third_party_cache"
 generated = false
 third_party = true
 tracked_allowed = true
-destination_exists = false
+destination_exists = true
 risk_score = 0
 size_bytes = 1541
 line_count = 32
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/pip/_vendor/idna/LICENSE.md"
@@ -723,10 +752,11 @@ lifecycle = "third_party_cache"
 generated = false
 third_party = true
 tracked_allowed = true
-destination_exists = false
+destination_exists = true
 risk_score = 0
 size_bytes = 1541
 line_count = 32
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/scipy/fft/_pocketfft/LICENSE.md"
@@ -736,10 +766,11 @@ lifecycle = "third_party_cache"
 generated = false
 third_party = true
 tracked_allowed = true
-destination_exists = false
+destination_exists = true
 risk_score = 0
 size_bytes = 1498
 line_count = 26
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "curated/01_theory_frameworks/README_COQ.md"
@@ -779,9 +810,9 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 5571
-line_count = 84
-toml_destination = "registry/data_artifact_narratives.toml"
+size_bytes = 5550
+line_count = 88
+toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
 path = "data/artifacts/BIBLIOGRAPHY.md"
@@ -793,9 +824,9 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4786
+size_bytes = 4778
 line_count = 62
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
 path = "data/artifacts/FINAL_REPORT.md"
@@ -807,9 +838,9 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3131
-line_count = 62
-toml_destination = "registry/data_artifact_narratives.toml"
+size_bytes = 3128
+line_count = 67
+toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
 path = "data/artifacts/QUANTUM_REPORT.md"
@@ -821,9 +852,9 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1816
-line_count = 33
-toml_destination = "registry/data_artifact_narratives.toml"
+size_bytes = 1811
+line_count = 36
+toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
 path = "data/artifacts/README.md"
@@ -849,9 +880,9 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2816
-line_count = 43
-toml_destination = "registry/data_artifact_narratives.toml"
+size_bytes = 2812
+line_count = 47
+toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
 path = "data/artifacts/WARP_RING_REPORT.md"
@@ -863,9 +894,9 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1554
-line_count = 29
-toml_destination = "registry/data_artifact_narratives.toml"
+size_bytes = 1549
+line_count = 32
+toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
 path = "data/artifacts/extracted_equations.md"
@@ -877,9 +908,9 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 345
-line_count = 11
-toml_destination = "registry/data_artifact_narratives.toml"
+size_bytes = 300
+line_count = 9
+toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
 path = "data/artifacts/reality_check_and_synthesis.md"
@@ -891,9 +922,9 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4852
-line_count = 59
-toml_destination = "registry/data_artifact_narratives.toml"
+size_bytes = 4801
+line_count = 61
+toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
 path = "data/csv/README.md"
@@ -919,8 +950,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 14284
-line_count = 333
+size_bytes = 14383
+line_count = 336
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -933,8 +964,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 2
-size_bytes = 19697
-line_count = 580
+size_bytes = 19796
+line_count = 583
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -947,8 +978,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 15712
-line_count = 382
+size_bytes = 15811
+line_count = 385
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -961,8 +992,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 5094
-line_count = 113
+size_bytes = 5193
+line_count = 116
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -989,8 +1020,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 9164
-line_count = 206
+size_bytes = 9263
+line_count = 209
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1003,8 +1034,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1153
-line_count = 33
+size_bytes = 1252
+line_count = 36
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1017,8 +1048,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2544
-line_count = 56
+size_bytes = 2643
+line_count = 59
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1031,8 +1062,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 2
-size_bytes = 391748
-line_count = 579
+size_bytes = 405335
+line_count = 599
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1044,9 +1075,9 @@ generated = true
 third_party = false
 tracked_allowed = true
 destination_exists = true
-risk_score = 14
-size_bytes = 386969
-line_count = 3501
+risk_score = 13
+size_bytes = 384458
+line_count = 3494
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1059,7 +1090,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 52997
+size_bytes = 52499
 line_count = 302
 toml_destination = "registry/claims_tasks.toml"
 
@@ -1073,8 +1104,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 19049
-line_count = 426
+size_bytes = 19148
+line_count = 429
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1087,8 +1118,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 2
-size_bytes = 44086
-line_count = 602
+size_bytes = 44185
+line_count = 605
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1101,8 +1132,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 13917
-line_count = 482
+size_bytes = 14016
+line_count = 485
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1115,8 +1146,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2118
-line_count = 56
+size_bytes = 2217
+line_count = 59
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1129,8 +1160,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 5202
-line_count = 137
+size_bytes = 5301
+line_count = 140
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1143,8 +1174,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 6404
-line_count = 147
+size_bytes = 6503
+line_count = 150
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1157,8 +1188,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1906
-line_count = 62
+size_bytes = 2005
+line_count = 65
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1171,8 +1202,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 11617
-line_count = 329
+size_bytes = 12864
+line_count = 353
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1185,8 +1216,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1789
-line_count = 40
+size_bytes = 1888
+line_count = 43
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1199,8 +1230,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 22810
-line_count = 396
+size_bytes = 22909
+line_count = 399
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1213,8 +1244,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3203
-line_count = 77
+size_bytes = 3302
+line_count = 80
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1227,8 +1258,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2391
-line_count = 41
+size_bytes = 2490
+line_count = 44
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1241,8 +1272,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 3
-size_bytes = 43646
-line_count = 811
+size_bytes = 43745
+line_count = 814
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1255,8 +1286,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 2
-size_bytes = 36743
-line_count = 606
+size_bytes = 49692
+line_count = 706
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1269,8 +1300,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4716
-line_count = 74
+size_bytes = 4815
+line_count = 77
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1283,8 +1314,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2500
-line_count = 43
+size_bytes = 2599
+line_count = 46
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1297,8 +1328,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2160
-line_count = 65
+size_bytes = 2259
+line_count = 68
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1311,8 +1342,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2607
-line_count = 63
+size_bytes = 2706
+line_count = 66
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1325,8 +1356,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 9709
-line_count = 288
+size_bytes = 9808
+line_count = 291
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1339,8 +1370,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4923
-line_count = 115
+size_bytes = 5022
+line_count = 118
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1353,8 +1384,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2732
-line_count = 83
+size_bytes = 2831
+line_count = 86
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1367,8 +1398,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3131
-line_count = 64
+size_bytes = 3230
+line_count = 67
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1395,8 +1426,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1411
-line_count = 39
+size_bytes = 1510
+line_count = 42
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1409,8 +1440,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 11220
-line_count = 283
+size_bytes = 11319
+line_count = 286
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1423,8 +1454,36 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 9128
-line_count = 241
+size_bytes = 9227
+line_count = 244
+toml_destination = "registry/docs_root_narratives.toml"
+
+[[document]]
+path = "docs/PHASE4A_NON_ASSOCIATIVE_RECONNAISSANCE.md"
+git_status = "ignored"
+classification = "toml_published_markdown"
+lifecycle = "generated_docs_tree"
+generated = true
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 1
+size_bytes = 11431
+line_count = 254
+toml_destination = "registry/docs_root_narratives.toml"
+
+[[document]]
+path = "docs/PHASE4_UNIFIED_PHYSICS_FRAMEWORK.md"
+git_status = "ignored"
+classification = "toml_published_markdown"
+lifecycle = "generated_docs_tree"
+generated = true
+third_party = false
+tracked_allowed = true
+destination_exists = true
+risk_score = 2
+size_bytes = 24631
+line_count = 515
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1437,8 +1496,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2543
-line_count = 51
+size_bytes = 2642
+line_count = 54
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1451,8 +1510,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3704
-line_count = 59
+size_bytes = 3803
+line_count = 62
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1465,8 +1524,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2287
-line_count = 63
+size_bytes = 2386
+line_count = 66
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1479,8 +1538,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3424
-line_count = 81
+size_bytes = 3523
+line_count = 84
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1493,8 +1552,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3438
-line_count = 68
+size_bytes = 3537
+line_count = 71
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1507,8 +1566,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 11065
-line_count = 257
+size_bytes = 11164
+line_count = 260
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1535,8 +1594,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2679
-line_count = 47
+size_bytes = 2778
+line_count = 50
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1549,8 +1608,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2627
-line_count = 47
+size_bytes = 2726
+line_count = 50
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1563,8 +1622,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1827
-line_count = 42
+size_bytes = 1926
+line_count = 45
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1577,8 +1636,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4027
-line_count = 85
+size_bytes = 4126
+line_count = 88
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1605,8 +1664,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3396
-line_count = 78
+size_bytes = 3495
+line_count = 81
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1619,8 +1678,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4911
-line_count = 83
+size_bytes = 5010
+line_count = 86
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1633,8 +1692,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3965
-line_count = 67
+size_bytes = 4069
+line_count = 76
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1647,8 +1706,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1455
-line_count = 42
+size_bytes = 1554
+line_count = 45
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1661,8 +1720,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2958
-line_count = 56
+size_bytes = 3057
+line_count = 59
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1675,8 +1734,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4907
-line_count = 101
+size_bytes = 5006
+line_count = 104
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1689,8 +1748,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3296
-line_count = 52
+size_bytes = 3395
+line_count = 55
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1703,8 +1762,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4541
-line_count = 74
+size_bytes = 4640
+line_count = 77
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1717,8 +1776,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2765
-line_count = 44
+size_bytes = 2864
+line_count = 47
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1731,8 +1790,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1781
-line_count = 39
+size_bytes = 1880
+line_count = 42
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1759,8 +1818,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 8561
-line_count = 134
+size_bytes = 8660
+line_count = 137
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1773,8 +1832,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4427
-line_count = 76
+size_bytes = 4526
+line_count = 79
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1787,8 +1846,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 5763
-line_count = 103
+size_bytes = 5862
+line_count = 106
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1801,8 +1860,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 4379
-line_count = 100
+size_bytes = 4478
+line_count = 103
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1815,8 +1874,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3344
-line_count = 78
+size_bytes = 3443
+line_count = 81
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1829,8 +1888,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3837
-line_count = 115
+size_bytes = 3936
+line_count = 118
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -1843,8 +1902,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 2985
-line_count = 60
+size_bytes = 3084
+line_count = 63
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -2419,7 +2478,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2169
 line_count = 50
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/FABRICATION_PROTOCOL_NANOSCALE.md"
@@ -2433,7 +2492,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3941
 line_count = 83
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/FETCHING_EXTERNAL_SOURCES.md"
@@ -2447,7 +2506,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2747
 line_count = 79
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/GAP_CLOSURE_REPORT.md"
@@ -2461,7 +2520,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 6465
 line_count = 131
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/INDEX.md"
@@ -2475,7 +2534,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1602
 line_count = 28
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/MCP_SKILLS_AUDIT_2026-02-09.md"
@@ -2489,7 +2548,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 6202
 line_count = 219
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/MD_TOML_CENTRALIZATION_AUDIT_2026-02-09.md"
@@ -2503,7 +2562,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 6129
 line_count = 195
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/OPTIX_ELUCIDATION.md"
@@ -2517,7 +2576,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3222
 line_count = 45
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PADIC_SIGNAL_THEORY.md"
@@ -2531,7 +2590,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 5989
 line_count = 105
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_10_MULTIPHYSICS.md"
@@ -2545,7 +2604,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3102
 line_count = 56
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_11_VISUALIZATION.md"
@@ -2559,7 +2618,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2352
 line_count = 43
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_12_RENDERER.md"
@@ -2573,7 +2632,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2148
 line_count = 38
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_13_GRAND_CRITIQUE.md"
@@ -2587,7 +2646,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2249
 line_count = 45
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_14_DEEP_DIVE.md"
@@ -2601,7 +2660,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1886
 line_count = 35
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_15_RESURRECTION.md"
@@ -2615,7 +2674,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2269
 line_count = 39
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_16_FINAL_VALIDATION.md"
@@ -2629,7 +2688,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2103
 line_count = 38
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_6_IMPLEMENTATION.md"
@@ -2643,7 +2702,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3986
 line_count = 82
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_7_REPORT.md"
@@ -2657,7 +2716,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3518
 line_count = 58
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHASE_8_SYNTHESIS.md"
@@ -2671,7 +2730,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3013
 line_count = 53
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/PHYSICS_VALIDATION_REPORT.md"
@@ -2685,7 +2744,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1404
 line_count = 35
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/engineering/WARP_SPACEPLATE_SPECS.md"
@@ -2699,7 +2758,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3143
 line_count = 74
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/external_sources/C071_FRB_ULTRAMETRIC_SOURCES.md"
@@ -2963,8 +3022,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 18
-size_bytes = 433725
-line_count = 4561
+size_bytes = 448826
+line_count = 4721
 toml_destination = "registry/claims.toml"
 
 [[document]]
@@ -2977,8 +3036,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 11
-size_bytes = 82925
-line_count = 2854
+size_bytes = 82410
+line_count = 2840
 toml_destination = "registry/claims_tasks.toml"
 
 [[document]]
@@ -3005,9 +3064,9 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 1807
+size_bytes = 1865
 line_count = 61
-toml_destination = "registry/data_artifact_narratives.toml"
+toml_destination = "registry/artifact_scrolls.toml"
 
 [[document]]
 path = "docs/generated/DOCS_CONVOS_REGISTRY_MIRROR.md"
@@ -3033,8 +3092,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 2
-size_bytes = 17465
-line_count = 501
+size_bytes = 17733
+line_count = 509
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -3061,8 +3120,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 9232
-line_count = 275
+size_bytes = 10588
+line_count = 304
 toml_destination = "registry/experiments.toml"
 
 [[document]]
@@ -3089,8 +3148,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 24989
-line_count = 283
+size_bytes = 38078
+line_count = 373
 toml_destination = "registry/insights.toml"
 
 [[document]]
@@ -3117,8 +3176,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3609
-line_count = 123
+size_bytes = 3913
+line_count = 131
 toml_destination = "registry/markdown_governance.toml"
 
 [[document]]
@@ -3201,8 +3260,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3745
-line_count = 92
+size_bytes = 4275
+line_count = 105
 toml_destination = "registry/roadmap.toml"
 
 [[document]]
@@ -3231,7 +3290,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1438
 line_count = 24
-toml_destination = "registry/monograph.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/monograph/02_turbulence.md"
@@ -3245,7 +3304,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1476
 line_count = 28
-toml_destination = "registry/monograph.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/monograph/03_synthesis.md"
@@ -3259,7 +3318,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1621
 line_count = 27
-toml_destination = "registry/monograph.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/requirements/algebra.md"
@@ -3273,7 +3332,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 4836
 line_count = 119
-toml_destination = "registry/requirements.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/requirements/analysis.md"
@@ -3287,7 +3346,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 719
 line_count = 19
-toml_destination = "registry/requirements.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/requirements/astro.md"
@@ -3301,7 +3360,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 828
 line_count = 28
-toml_destination = "registry/requirements.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/requirements/coq.md"
@@ -3315,7 +3374,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 575
 line_count = 22
-toml_destination = "registry/requirements.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/requirements/cpp.md"
@@ -3329,7 +3388,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 850
 line_count = 36
-toml_destination = "registry/requirements.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/requirements/latex.md"
@@ -3343,7 +3402,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 500
 line_count = 16
-toml_destination = "registry/requirements.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/requirements/materials.md"
@@ -3357,7 +3416,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 754
 line_count = 23
-toml_destination = "registry/requirements.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/requirements/particle.md"
@@ -3371,7 +3430,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 627
 line_count = 20
-toml_destination = "registry/requirements.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/requirements/quantum-docker.md"
@@ -3385,7 +3444,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 616
 line_count = 25
-toml_destination = "registry/requirements.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/research/algebra_fluid_roadmap.md"
@@ -3399,7 +3458,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2398
 line_count = 51
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/theory/CLAIMS_METHODOLOGY.md"
@@ -3413,7 +3472,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 6728
 line_count = 188
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/theory/INDEX.md"
@@ -3427,7 +3486,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 331
 line_count = 10
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/theory/WARP_PHYSICS_RECONCILIATION.md"
@@ -3441,7 +3500,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2847
 line_count = 53
-toml_destination = "registry/research_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "docs/tickets/C001_C050_claims_audit.md"
@@ -3607,8 +3666,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 0
-size_bytes = 3085
-line_count = 68
+size_bytes = 3184
+line_count = 71
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
@@ -3623,7 +3682,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2993
 line_count = 56
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/artifacts_reorg_plan.md"
@@ -3637,7 +3696,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3914
 line_count = 76
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/audit_network_gating.md"
@@ -3651,7 +3710,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1725
 line_count = 48
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/audit_nonpython_toolchains.md"
@@ -3665,7 +3724,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1437
 line_count = 45
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/audit_provenance.md"
@@ -3679,7 +3738,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 940
 line_count = 33
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/audit_pythonpath.md"
@@ -3693,7 +3752,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 5812
 line_count = 118
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C001_C050.md"
@@ -3707,7 +3766,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 19112
 line_count = 104
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C001_C200.md"
@@ -3721,7 +3780,7 @@ destination_exists = true
 risk_score = 1
 size_bytes = 63936
 line_count = 258
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C011_C025.md"
@@ -3735,7 +3794,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 6145
 line_count = 56
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C027_C045.md"
@@ -3749,7 +3808,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 7095
 line_count = 58
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C046_C060.md"
@@ -3763,7 +3822,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 5971
 line_count = 57
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C046_C066.md"
@@ -3777,7 +3836,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 7032
 line_count = 60
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C051_C100.md"
@@ -3791,7 +3850,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 15901
 line_count = 91
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C101_C150.md"
@@ -3805,7 +3864,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 15722
 line_count = 88
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C151_C200.md"
@@ -3819,7 +3878,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 16140
 line_count = 89
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C250.md"
@@ -3833,7 +3892,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 16192
 line_count = 89
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C408.md"
@@ -3847,7 +3906,7 @@ destination_exists = true
 risk_score = 1
 size_bytes = 64988
 line_count = 253
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C427.md"
@@ -3861,7 +3920,7 @@ destination_exists = true
 risk_score = 1
 size_bytes = 73794
 line_count = 287
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C430.md"
@@ -3875,7 +3934,7 @@ destination_exists = true
 risk_score = 1
 size_bytes = 75354
 line_count = 293
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C201_C432.md"
@@ -3889,7 +3948,7 @@ destination_exists = true
 risk_score = 1
 size_bytes = 76406
 line_count = 297
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C251_C300.md"
@@ -3903,7 +3962,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 16203
 line_count = 89
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C301_C350.md"
@@ -3917,7 +3976,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 16112
 line_count = 89
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C351_C400.md"
@@ -3931,7 +3990,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 16102
 line_count = 89
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_batch_backlog_C401_C427.md"
@@ -3945,7 +4004,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 13928
 line_count = 87
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_bold_tokens_inventory.md"
@@ -3959,7 +4018,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1135
 line_count = 41
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_id_inventory.md"
@@ -3973,7 +4032,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 947
 line_count = 39
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_priority_ranking.md"
@@ -3987,7 +4046,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 6996
 line_count = 118
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_staleness_report.md"
@@ -4001,7 +4060,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1037
 line_count = 39
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_status_contradictions.md"
@@ -4015,7 +4074,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 888
 line_count = 30
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/claims_status_inventory.md"
@@ -4029,7 +4088,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 8693
 line_count = 103
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/config_audit.md"
@@ -4043,7 +4102,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1572
 line_count = 43
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/convos_claim_candidates.md"
@@ -4057,7 +4116,7 @@ destination_exists = true
 risk_score = 3
 size_bytes = 163242
 line_count = 851
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/convos_claim_candidates_prioritized.md"
@@ -4071,7 +4130,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2859
 line_count = 66
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/convos_pdf_inventory.md"
@@ -4085,7 +4144,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3738
 line_count = 42
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/handoff_algebra_fluid_duality.md"
@@ -4099,7 +4158,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3423
 line_count = 61
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/non_iso_dates_inventory.md"
@@ -4113,7 +4172,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 869
 line_count = 29
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/open_claims_missing_dedicated_sources.md"
@@ -4127,7 +4186,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 6727
 line_count = 79
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/open_claims_missing_test_hooks.md"
@@ -4141,7 +4200,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 8258
 line_count = 91
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/package_index.md"
@@ -4155,7 +4214,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1991
 line_count = 61
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/pdf_inventory.md"
@@ -4169,7 +4228,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 14772
 line_count = 242
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/pythonpath_refactor_plan.md"
@@ -4183,7 +4242,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 7922
 line_count = 110
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/repo_inventory.md"
@@ -4197,7 +4256,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2428
 line_count = 65
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/repo_structure_audit.md"
@@ -4211,7 +4270,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3134
 line_count = 81
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/script_contracts_inventory.md"
@@ -4225,7 +4284,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 3892
 line_count = 63
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/tickets_inventory.md"
@@ -4239,7 +4298,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2513
 line_count = 58
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/todo_fixme_scan.md"
@@ -4253,7 +4312,7 @@ destination_exists = true
 risk_score = 0
 size_bytes = 1450
 line_count = 44
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "reports/tscp_trial_factor_ledger.md"
@@ -4267,4 +4326,4 @@ destination_exists = true
 risk_score = 0
 size_bytes = 2116
 line_count = 54
-toml_destination = "registry/reports_narratives.toml"
+toml_destination = "registry/markdown_payloads.toml"
