@@ -17,6 +17,7 @@
 .PHONY: registry-normalize-narratives registry-normalize-operational-narratives
 .PHONY: registry-markdown-inventory registry-markdown-corpus registry-toml-inventory
 .PHONY: registry-markdown-origin-audit
+.PHONY: registry-knowledge-atoms registry-verify-knowledge-atoms
 .PHONY: registry-verify-markdown-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-wave4 registry-wave4
 .PHONY: registry-csv-inventory registry-migrate-legacy-csv registry-verify-legacy-csv
 .PHONY: registry-migrate-curated-csv registry-verify-curated-csv registry-csv-scope registry-data
@@ -179,6 +180,12 @@ registry-ingest-legacy: registry-normalize-narratives registry-normalize-operati
 
 registry-refresh: registry-migrate-corpus registry-ingest-legacy registry-governance
 
+registry-knowledge-atoms:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_structured_knowledge_atoms.py
+
+registry-verify-knowledge-atoms: registry-knowledge-atoms
+	PYTHONWARNINGS=error python3 src/verification/verify_structured_knowledge_atoms.py
+
 registry-markdown-inventory:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_inventory_registry.py
 
@@ -200,7 +207,7 @@ registry-verify-markdown-origin: registry-markdown-origin-audit
 registry-verify-markdown-owner: registry-markdown-inventory
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_owner_map.py
 
-registry-verify-wave4: registry-markdown-corpus registry-toml-inventory registry-verify-markdown-origin registry-verify-markdown-owner
+registry-verify-wave4: registry-markdown-corpus registry-toml-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-knowledge-atoms
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_corpus_registry.py
 	PYTHONWARNINGS=error python3 src/verification/verify_toml_inventory_registry.py
 
@@ -508,6 +515,8 @@ help:
 	@echo "    make ascii-check          Verify ASCII-only policy"
 	@echo "    make rust-smoke           Rust clippy + full test suite"
 	@echo "    make registry             Validate TOML registry consistency"
+	@echo "    make registry-wave4       Validate markdown/TOML control-plane + atom extraction gates"
+	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"
 	@echo ""
 	@echo "  Artifacts:"
 	@echo "    make artifacts            Regenerate all core artifact sets"
