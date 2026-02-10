@@ -25,6 +25,9 @@ pub mod lie;
 pub mod physics;
 pub mod universal_algebra;
 
+#[cfg(feature = "gpu")]
+pub mod gpu;
+
 pub use error::{AlgebraError, AlgebraResult};
 pub use universal_algebra::UniversalAlgebra;
 
