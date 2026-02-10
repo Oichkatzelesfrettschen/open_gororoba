@@ -28,6 +28,7 @@ padic = { workspace = true }
 adic = { workspace = true }
 atlas-embeddings = { workspace = true }
 num-bigint = { workspace = true }
+wedged = { workspace = true, optional = true }  # Phase 3a validation (dimension-agnostic geometric algebra)
 
 # Stochastic processes and fractal analysis (workspace)
 diffusionx = { workspace = true }

@@ -74,7 +74,7 @@ lint-all-stats: install
 lint-all-fix-safe: install
 	$(PYTHON) -m ruff check src --select W291,W293,I001 --fix
 
-check: test lint smoke
+check: registry-verify-markdown-owner test lint smoke
 	@echo "OK: check suite complete."
 
 smoke: install
@@ -82,6 +82,7 @@ smoke: install
 	$(PYTHON) -m ruff check src/gemini_physics tests
 	$(PYTHON) -m ruff check src --statistics --exit-zero
 	$(PYTHON) bin/ascii_check.py --check
+	$(MAKE) registry-verify-markdown-owner
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_dataset_manifest_providers.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
