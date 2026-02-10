@@ -47,6 +47,7 @@ padic = "0.1.6"              # P-adic numbers
 adic = "0.5.0"               # P-adic arithmetic and rootfinding
 atlas-embeddings = "0.1.1"   # Exceptional Lie groups (E6/E7/E8) from resonance classes
 num-bigint = "0.4"           # Arbitrary precision integers (Monster group order)
+wedged = "0.1"               # Dimension-agnostic geometric algebra (Phase 3a validation)
 
 # Stochastic processes and fractal analysis
 mimalloc = "0.1"             # Required by diffusionx
