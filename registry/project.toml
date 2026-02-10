@@ -5,9 +5,9 @@ name = "open_gororoba"
 version = "0.12.0"
 description = "Research workbench for Cayley-Dickson algebra and physics applications"
 license = "GPL-2.0-only"
-test_count = 2390
-claim_count = 554
-insight_count = 23
+test_count = 2399
+claim_count = 556
+insight_count = 24
 experiment_count = 13
 paper_count = 19
 binary_count = 43
@@ -15,10 +15,10 @@ binary_count = 43
 [sprints.s27]
 number = 27
 date = "2026-02-09"
-test_count = 2390
-claim_count = 554
-insight_count = 23
-summary = "Phase 2: Exhaustive algebra variant family census across construction methods and metric signatures. Phase 2a (Week 1): Quaternion family commutativity census (4 tests, C-550/C-551/C-552, I-020/I-021/I-022). All 4 gamma signatures at dim=4 non-commutative (structural property); zero-divisor count scales with gamma (parametric property). Phase 2b (Week 2): Octonion family census (3 tests, C-553/C-554, I-023). All 8 gamma signatures at dim=8 non-commutative; standard octonions division algebra (0 ZD pairs), composition law verified. Discovery: Commutativity is construction-dependent (CD doubling) and dimension-dependent, but GAMMA-INVARIANT (metric signature irrelevant). Zero-divisor count GAMMA-DEPENDENT. Extends hierarchy: Construction Method >> Dimension >> Gamma Parameter. Tests now 975 (963 before Phase 2 work). Total gains: 2 new claims (C-553, C-554), 1 new insight (I-023), confirmed structural vs parametric property distinction at dim=4 AND dim=8."
+test_count = 2399
+claim_count = 556
+insight_count = 24
+summary = "Phase 2: Exhaustive algebra variant family census across construction methods and metric signatures. Phase 2a (Week 1): Quaternion family commutativity census (4 tests, C-550/C-551/C-552, I-020/I-021/I-022). All 4 gamma signatures at dim=4 non-commutative (structural property); zero-divisor count scales with gamma (parametric property). Phase 2b (Week 2): Octonion family census (3 tests, C-553/C-554, I-023). All 8 gamma signatures at dim=8 non-commutative; standard octonions division algebra (0 ZD pairs), composition law verified. Phase 2c (Week 3): Sedenion family census (2 tests, C-555/C-556, I-024). Representative sedenion signatures at dim=16 all non-commutative; split sedenions show monotonic ZD scaling. Discovery: Non-commutativity is UNIVERSAL STRUCTURAL property (dims 4-8-16), DIMENSION-DEPENDENT via CD formula, GAMMA-INVARIANT. Zero-divisor count is GAMMA-DEPENDENT (metric-signature-controlled). Monotonic scaling across dims (more +1 entries => more ZD). Complete hierarchy confirmed: Construction Method >> Dimension >> Gamma Parameter. Tests: 962 -> 977 (+15, Phase 2a-2c combined). Gains: 4 new claims (C-550..C-556), 4 new insights (I-020..I-024). Phase 2d (planned): Document full ALGEBRA_FAMILY_TAXONOMY.md with all findings."
 
 [sprints.s26]
 number = 26

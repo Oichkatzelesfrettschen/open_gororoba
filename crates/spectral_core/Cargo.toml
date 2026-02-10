@@ -8,7 +8,8 @@ license = "MIT"
 [dependencies]
 num-complex = { workspace = true }
 ndarray = { workspace = true }
-rustfft = "6.2"
+rustfft = { workspace = true }
+ndrustfft = { workspace = true }
 
 [dev-dependencies]
 approx = { workspace = true }

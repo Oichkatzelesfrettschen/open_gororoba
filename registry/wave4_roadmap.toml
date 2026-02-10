@@ -1,0 +1,259 @@
+# Wave 4 roadmap: narrative/control-plane hardening for TOML-first governance.
+
+[wave4_roadmap]
+id = "WAVE-4"
+title = "TOML-first control plane hardening"
+authoritative = true
+updated = "2026-02-10"
+status = "in_progress"
+task_count = 32
+objective = "Enforce one-source-of-truth TOML registries and eliminate markdown state drift."
+
+[[phase]]
+id = "W4-P1"
+name = "Baseline and scope lock"
+goal = "Freeze baseline metrics and define strict policy invariants."
+
+[[phase]]
+id = "W4-P2"
+name = "Registry builders"
+goal = "Generate machine-readable markdown and TOML inventories."
+
+[[phase]]
+id = "W4-P3"
+name = "Verifier gates"
+goal = "Fail fast on drift, missing destinations, parse errors, and tracked markdown violations."
+
+[[phase]]
+id = "W4-P4"
+name = "Pipeline integration"
+goal = "Wire Wave 4 into make targets and registry lane."
+
+[[phase]]
+id = "W4-P5"
+name = "Execution and publish readiness"
+goal = "Run warning-as-error checks, validate status, then commit and push."
+
+[[task]]
+id = "W4-001"
+phase = "W4-P1"
+title = "Reconfirm git baseline and concurrent edits"
+status = "complete"
+acceptance = "git status and branch/upstream recorded before edits."
+
+[[task]]
+id = "W4-002"
+phase = "W4-P1"
+title = "Recount markdown corpus by git status"
+status = "complete"
+acceptance = "tracked/untracked/ignored markdown counts available."
+
+[[task]]
+id = "W4-003"
+phase = "W4-P1"
+title = "Recount TOML corpus by git status"
+status = "complete"
+acceptance = "tracked/untracked/ignored toml counts available."
+
+[[task]]
+id = "W4-004"
+phase = "W4-P1"
+title = "Define Wave 4 policy invariants"
+status = "in_progress"
+acceptance = "safe classifications, tracked markdown allowlist, and destination coverage rules codified."
+
+[[task]]
+id = "W4-005"
+phase = "W4-P1"
+title = "Record tracked markdown allowlist in control-plane artifacts"
+status = "in_progress"
+acceptance = "allowlist serialized in registry and verifier logic."
+
+[[task]]
+id = "W4-006"
+phase = "W4-P1"
+title = "Define lifecycle buckets for markdown corpus"
+status = "in_progress"
+acceptance = "each markdown file assigned deterministic lifecycle class."
+
+[[task]]
+id = "W4-007"
+phase = "W4-P2"
+title = "Implement build_markdown_corpus_registry.py"
+status = "complete"
+acceptance = "script builds registry/markdown_corpus_registry.toml from markdown inventory."
+
+[[task]]
+id = "W4-008"
+phase = "W4-P2"
+title = "Emit markdown policy violations table"
+status = "complete"
+acceptance = "registry includes explicit policy_violation entries when drift exists."
+
+[[task]]
+id = "W4-009"
+phase = "W4-P2"
+title = "Emit markdown risk queue ranking"
+status = "complete"
+acceptance = "registry includes deterministic risk_queue ordering."
+
+[[task]]
+id = "W4-010"
+phase = "W4-P2"
+title = "Emit per-document markdown lifecycle bindings"
+status = "complete"
+acceptance = "registry includes per-document lifecycle and destination status."
+
+[[task]]
+id = "W4-011"
+phase = "W4-P2"
+title = "Implement build_toml_inventory_registry.py"
+status = "complete"
+acceptance = "script builds registry/toml_inventory.toml from repo TOML corpus."
+
+[[task]]
+id = "W4-012"
+phase = "W4-P2"
+title = "Classify TOML role and zone for each file"
+status = "complete"
+acceptance = "inventory marks dataset_scroll, registry_control_plane, cargo manifests, and config roles."
+
+[[task]]
+id = "W4-013"
+phase = "W4-P2"
+title = "Capture TOML parse status and authoritative flags"
+status = "complete"
+acceptance = "inventory reports parse_ok and has_authoritative per document."
+
+[[task]]
+id = "W4-014"
+phase = "W4-P2"
+title = "Capture markdown reference counts per TOML file"
+status = "complete"
+acceptance = "inventory includes markdown_ref_count signals."
+
+[[task]]
+id = "W4-015"
+phase = "W4-P3"
+title = "Implement verify_markdown_corpus_registry.py"
+status = "complete"
+acceptance = "verifier checks safe classes, tracked allowlist, and destination existence."
+
+[[task]]
+id = "W4-016"
+phase = "W4-P3"
+title = "Implement verify_toml_inventory_registry.py"
+status = "complete"
+acceptance = "verifier checks parse integrity, role consistency, and destination coverage."
+
+[[task]]
+id = "W4-017"
+phase = "W4-P3"
+title = "Enforce required control-plane TOML presence"
+status = "complete"
+acceptance = "verifier requires key registry/*.toml artifacts."
+
+[[task]]
+id = "W4-018"
+phase = "W4-P3"
+title = "Ensure markdown destinations are present in TOML inventory"
+status = "complete"
+acceptance = "all toml_destination paths used by markdown inventory are covered."
+
+[[task]]
+id = "W4-019"
+phase = "W4-P3"
+title = "Set warning-as-error execution for Wave 4 verifiers"
+status = "complete"
+acceptance = "make targets run with PYTHONWARNINGS=error."
+
+[[task]]
+id = "W4-020"
+phase = "W4-P4"
+title = "Add Makefile phony targets for Wave 4"
+status = "complete"
+acceptance = "phony declarations include registry-wave4 and its subtargets."
+
+[[task]]
+id = "W4-021"
+phase = "W4-P4"
+title = "Add registry-markdown-corpus target"
+status = "complete"
+acceptance = "target builds markdown_corpus_registry.toml deterministically."
+
+[[task]]
+id = "W4-022"
+phase = "W4-P4"
+title = "Add registry-toml-inventory target"
+status = "complete"
+acceptance = "target builds toml_inventory.toml deterministically."
+
+[[task]]
+id = "W4-023"
+phase = "W4-P4"
+title = "Add registry-verify-wave4 target"
+status = "complete"
+acceptance = "target runs both new Wave 4 verifiers."
+
+[[task]]
+id = "W4-024"
+phase = "W4-P4"
+title = "Add registry-wave4 aggregate target"
+status = "complete"
+acceptance = "target builds + verifies both new control-plane registries."
+
+[[task]]
+id = "W4-025"
+phase = "W4-P4"
+title = "Attach registry-wave4 to registry-data lane"
+status = "complete"
+acceptance = "registry-data includes Wave 4 for routine execution."
+
+[[task]]
+id = "W4-026"
+phase = "W4-P4"
+title = "Confirm docs publish remains generate-only path"
+status = "complete"
+acceptance = "docs-publish uses generated mirrors and no manual markdown edits."
+
+[[task]]
+id = "W4-027"
+phase = "W4-P5"
+title = "Run make registry-wave4 with warnings as errors"
+status = "complete"
+acceptance = "target exits cleanly."
+
+[[task]]
+id = "W4-028"
+phase = "W4-P5"
+title = "Run make registry-data with Wave 4 included"
+status = "complete"
+acceptance = "CSV and Wave 4 lanes both pass."
+
+[[task]]
+id = "W4-029"
+phase = "W4-P5"
+title = "Run cargo registry-check"
+status = "complete"
+acceptance = "registry-check passes after Wave 4 updates."
+
+[[task]]
+id = "W4-030"
+phase = "W4-P5"
+title = "Audit tracked markdown remains constrained"
+status = "complete"
+acceptance = "only allowlisted markdown files remain tracked."
+
+[[task]]
+id = "W4-031"
+phase = "W4-P5"
+title = "Commit all tracked and untracked modifications for Wave 4"
+status = "pending"
+acceptance = "single commit includes Wave 4 builders, verifiers, registries, and Makefile updates."
+
+[[task]]
+id = "W4-032"
+phase = "W4-P5"
+title = "Push to origin/main and report Wave 5 candidates"
+status = "pending"
+acceptance = "remote branch updated and next-phase backlog listed."

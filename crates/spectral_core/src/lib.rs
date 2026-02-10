@@ -11,6 +11,7 @@
 //! - Kwasnicki (2017): Ten equivalent definitions of the fractional Laplacian
 //! - Caffarelli & Silvestre (2007): Extension problem for fractional Laplacian
 
+pub mod ndfft;
 pub mod neg_dim;
 
 pub use neg_dim::{

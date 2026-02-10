@@ -36,7 +36,6 @@ Global policy is canonical in `AGENTS.md`.
 ### 3.2 Skills and tools
 - Use matching skills when available.
 - Prefer deterministic local MCP tools for file/search/git operations.
-- Use MCP bash tools (`run`, `run_background`) instead of the retired `run_shell_command`.
 - Run parallel operations only when tasks are independent.
 
 ### 3.3 Delegation and integration
