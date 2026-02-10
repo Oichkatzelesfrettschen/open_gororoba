@@ -23,12 +23,14 @@ import tomllib
 from dataclasses import dataclass
 from pathlib import Path
 
-
 CLAIM_ID_RE = re.compile(r"\bC-\d{3}\b")
+EVIDENCE_REF_RE = re.compile(r"\b(?:C|I|E)-\d{3}\b")
 CLAIM_HEADING_RE = re.compile(r"^###\s*(C-\d{3})\s*:\s*(.+?)\s*$")
 HEADING_RE = re.compile(r"^(#{1,6})\s+(.+?)\s*$")
 INLINE_MATH_RE = re.compile(r"\$([^$\n]{3,240})\$")
 BOLD_TOKEN_RE = re.compile(r"\*\*([^*]+)\*\*")
+IDENTIFIER_RE = re.compile(r"\b[A-Za-z_][A-Za-z0-9_]*\b")
+NUMBER_RE = re.compile(r"\b\d+(?:\.\d+)?(?:[eE][+-]?\d+)?\b")
 
 PROOF_KEYWORDS = (
     "proof",
@@ -219,6 +221,13 @@ def _parse_claim_rows(doc: SourceDoc) -> list[dict[str, object]]:
             if status_token_match
             else "UNSPECIFIED"
         )
+        evidence_refs = sorted(
+            set(
+                EVIDENCE_REF_RE.findall(
+                    " ".join([cells[2], status_raw, cells[4], " | ".join(cells[5:])])
+                )
+            )
+        )
         atom = {
             "claim_id": claim_id,
             "statement": _collapse_ws(cells[1]),
@@ -230,6 +239,8 @@ def _parse_claim_rows(doc: SourceDoc) -> list[dict[str, object]]:
             "h0": "",
             "h1": "",
             "decision_rule": "",
+            "hypothesis_block_present": False,
+            "evidence_refs": evidence_refs,
             "source_uid": doc.source_uid,
             "source_group": doc.source_group,
             "source_registry": doc.source_registry,
@@ -242,7 +253,11 @@ def _parse_claim_rows(doc: SourceDoc) -> list[dict[str, object]]:
     sections = _split_sections(doc.body)
     for section in sections:
         heading = f"{section.title}".strip()
-        heading_match = CLAIM_HEADING_RE.match(f"### {heading}") if not heading.startswith("C-") else None
+        heading_match = (
+            CLAIM_HEADING_RE.match(f"### {heading}")
+            if not heading.startswith("C-")
+            else None
+        )
         if heading_match is None:
             direct = re.match(r"^(C-\d{3})\s*:\s*(.+)$", heading)
             if not direct:
@@ -271,6 +286,7 @@ def _parse_claim_rows(doc: SourceDoc) -> list[dict[str, object]]:
         atom["h0"] = h0
         atom["h1"] = h1
         atom["decision_rule"] = decision
+        atom["hypothesis_block_present"] = bool(h0 or h1 or decision)
 
     atoms.sort(key=lambda item: (str(item["claim_id"]), int(item["source_line"])))
     return atoms
@@ -284,6 +300,48 @@ def _classify_equation(expr: str) -> str:
     if any(token in expr for token in ("<=", ">=", "!=", "<", ">")):
         return "inequality_or_constraint"
     return "algebraic_relation"
+
+
+def _parse_relation(expr: str) -> tuple[str, str, str]:
+    for token in ("<=", ">=", "!=", "->", "="):
+        if token in expr:
+            lhs, rhs = expr.split(token, 1)
+            lhs_clean = _collapse_ws(lhs)
+            rhs_clean = _collapse_ws(rhs)
+            if lhs_clean:
+                return token, lhs_clean, rhs_clean
+            break
+    return "implicit", _collapse_ws(expr), ""
+
+
+def _extract_symbol_roles(expr: str) -> tuple[list[str], list[str]]:
+    identifiers = sorted(set(IDENTIFIER_RE.findall(expr)))
+    numbers = sorted(set(NUMBER_RE.findall(expr)))
+    return identifiers, numbers
+
+
+def _infer_domain_hint(doc: SourceDoc, section_title: str, expr: str) -> str:
+    lowered = f"{doc.source_path} {section_title} {expr}".lower()
+    if any(token in lowered for token in ("quantum", "schrodinger", "tensor", "mera", "chern")):
+        return "quantum"
+    if any(token in lowered for token in ("gr", "kerr", "schwarzschild", "gravastar", "geodesic")):
+        return "general_relativity"
+    if any(token in lowered for token in ("cosmo", "hubble", "bao", "pantheon", "flrw")):
+        return "cosmology"
+    if any(token in lowered for token in ("material", "optic", "grin", "metamaterial", "ema")):
+        return "materials_optics"
+    if any(token in lowered for token in ("ultrametric", "bootstrap", "frechet", "stat")):
+        return "statistics"
+    if any(token in lowered for token in ("cayley", "clifford", "jordan", "algebra", "boxkite")):
+        return "algebra"
+    return "cross_domain"
+
+
+def _truncate(text: str, max_chars: int) -> str:
+    out = _collapse_ws(text)
+    if len(out) <= max_chars:
+        return out
+    return out[: max_chars - 3] + "..."
 
 
 def _extract_equations_from_source(doc: SourceDoc) -> list[dict[str, object]]:
@@ -308,6 +366,8 @@ def _extract_equations_from_source(doc: SourceDoc) -> list[dict[str, object]]:
             expr = _collapse_ws(token)
             if len(expr) < 3:
                 continue
+            relation_operator, lhs_expr, rhs_expr = _parse_relation(expr)
+            symbol_names, numeric_constants = _extract_symbol_roles(expr)
             key = (doc.source_uid, line_no, expr)
             if key in seen:
                 continue
@@ -321,8 +381,14 @@ def _extract_equations_from_source(doc: SourceDoc) -> list[dict[str, object]]:
                     "section_title": section_title,
                     "source_line": line_no,
                     "expression": expr,
+                    "relation_operator": relation_operator,
+                    "lhs_expression": lhs_expr,
+                    "rhs_expression": rhs_expr,
                     "extraction_kind": "inline_math",
                     "equation_kind": _classify_equation(expr),
+                    "symbol_names": symbol_names,
+                    "numeric_constants": numeric_constants,
+                    "domain_hint": _infer_domain_hint(doc, section_title, expr),
                     "claim_refs": sorted(set(CLAIM_ID_RE.findall(expr))),
                 }
             )
@@ -346,6 +412,8 @@ def _extract_equations_from_source(doc: SourceDoc) -> list[dict[str, object]]:
         if len(candidate) > 220:
             continue
         expr = _collapse_ws(candidate)
+        relation_operator, lhs_expr, rhs_expr = _parse_relation(expr)
+        symbol_names, numeric_constants = _extract_symbol_roles(expr)
         key = (doc.source_uid, line_no, expr)
         if key in seen:
             continue
@@ -359,13 +427,25 @@ def _extract_equations_from_source(doc: SourceDoc) -> list[dict[str, object]]:
                 "section_title": section_title,
                 "source_line": line_no,
                 "expression": expr,
+                "relation_operator": relation_operator,
+                "lhs_expression": lhs_expr,
+                "rhs_expression": rhs_expr,
                 "extraction_kind": "equation_like_line",
                 "equation_kind": _classify_equation(expr),
+                "symbol_names": symbol_names,
+                "numeric_constants": numeric_constants,
+                "domain_hint": _infer_domain_hint(doc, section_title, expr),
                 "claim_refs": sorted(set(CLAIM_ID_RE.findall(expr))),
             }
         )
 
-    atoms.sort(key=lambda item: (str(item["source_uid"]), int(item["source_line"]), str(item["expression"])))
+    atoms.sort(
+        key=lambda item: (
+            str(item["source_uid"]),
+            int(item["source_line"]),
+            str(item["expression"]),
+        )
+    )
     return atoms
 
 
@@ -397,8 +477,11 @@ def _extract_proofs_from_source(doc: SourceDoc) -> list[dict[str, object]]:
         lowered_title = section.title.lower()
         lowered_body = section_text_ascii.lower()
 
-        is_proof_candidate = any(token in lowered_title for token in PROOF_KEYWORDS) or any(
-            marker in lowered_body for marker in ("**h0**", "**h1**", "decision rule", "therefore", "hence")
+        is_proof_candidate = any(
+            token in lowered_title for token in PROOF_KEYWORDS
+        ) or any(
+            marker in lowered_body
+            for marker in ("**h0**", "**h1**", "decision rule", "therefore", "hence")
         )
         if not is_proof_candidate:
             continue
@@ -407,15 +490,33 @@ def _extract_proofs_from_source(doc: SourceDoc) -> list[dict[str, object]]:
         assumption_lines = [
             line
             for line in non_empty_lines
-            if any(token in line.lower() for token in ("**h0**", "**h1**", "assume", "given", "hypothesis"))
+            if any(
+                token in line.lower()
+                for token in ("**h0**", "**h1**", "assume", "given", "hypothesis")
+            )
         ]
         decision_lines = [line for line in non_empty_lines if "decision rule" in line.lower()]
         conclusion_lines = [
             line
             for line in non_empty_lines
-            if any(token in line.lower() for token in ("status", "therefore", "hence", "rejected", "verified", "refuted"))
+            if any(
+                token in line.lower()
+                for token in (
+                    "status",
+                    "therefore",
+                    "hence",
+                    "rejected",
+                    "verified",
+                    "refuted",
+                )
+            )
         ]
-        excerpt = " || ".join(non_empty_lines[:10])
+        inference_markers = [
+            line
+            for line in non_empty_lines
+            if any(token in line.lower() for token in ("therefore", "hence", "implies", "follows"))
+        ]
+        excerpt = " || ".join(_truncate(line, 120) for line in non_empty_lines[:6])
 
         atoms.append(
             {
@@ -428,6 +529,12 @@ def _extract_proofs_from_source(doc: SourceDoc) -> list[dict[str, object]]:
                 "line_start": section.line_start,
                 "line_end": section.line_end,
                 "proof_kind": _classify_proof_section(section.title, section_text_ascii),
+                "step_count": len(non_empty_lines),
+                "supports_claim": bool(CLAIM_ID_RE.search(section_text_ascii)),
+                "assumption_lines": assumption_lines[:12],
+                "decision_lines": decision_lines[:12],
+                "conclusion_lines": conclusion_lines[:12],
+                "inference_markers": inference_markers[:12],
                 "assumption_text": _collapse_ws(" | ".join(assumption_lines)),
                 "decision_rule_text": _collapse_ws(" | ".join(decision_lines)),
                 "conclusion_text": _collapse_ws(" | ".join(conclusion_lines)),
@@ -436,7 +543,13 @@ def _extract_proofs_from_source(doc: SourceDoc) -> list[dict[str, object]]:
             }
         )
 
-    atoms.sort(key=lambda item: (str(item["source_uid"]), int(item["line_start"]), str(item["section_title"])))
+    atoms.sort(
+        key=lambda item: (
+            str(item["source_uid"]),
+            int(item["line_start"]),
+            str(item["section_title"]),
+        )
+    )
     return atoms
 
 
@@ -466,6 +579,10 @@ def _render_claim_atoms(claim_atoms: list[dict[str, object]]) -> str:
         lines.append(f"h0 = {_esc(str(atom['h0']))}")
         lines.append(f"h1 = {_esc(str(atom['h1']))}")
         lines.append(f"decision_rule = {_esc(str(atom['decision_rule']))}")
+        lines.append(
+            f"hypothesis_block_present = {'true' if atom['hypothesis_block_present'] else 'false'}"
+        )
+        lines.append(f"evidence_refs = {_render_list(list(atom['evidence_refs']))}")
         lines.append(f"source_uid = {_esc(str(atom['source_uid']))}")
         lines.append(f"source_group = {_esc(str(atom['source_group']))}")
         lines.append(f"source_registry = {_esc(str(atom['source_registry']))}")
@@ -490,8 +607,14 @@ def _render_equation_atoms(equation_atoms: list[dict[str, object]]) -> str:
         lines.append("[[atom]]")
         lines.append(f"id = {_esc(f'EQA-{idx:04d}')}")
         lines.append(f"expression = {_esc(str(atom['expression']))}")
+        lines.append(f"relation_operator = {_esc(str(atom['relation_operator']))}")
+        lines.append(f"lhs_expression = {_esc(str(atom['lhs_expression']))}")
+        lines.append(f"rhs_expression = {_esc(str(atom['rhs_expression']))}")
         lines.append(f"equation_kind = {_esc(str(atom['equation_kind']))}")
         lines.append(f"extraction_kind = {_esc(str(atom['extraction_kind']))}")
+        lines.append(f"symbol_names = {_render_list(list(atom['symbol_names']))}")
+        lines.append(f"numeric_constants = {_render_list(list(atom['numeric_constants']))}")
+        lines.append(f"domain_hint = {_esc(str(atom['domain_hint']))}")
         lines.append(f"section_title = {_esc(str(atom['section_title']))}")
         lines.append(f"source_uid = {_esc(str(atom['source_uid']))}")
         lines.append(f"source_group = {_esc(str(atom['source_group']))}")
@@ -505,7 +628,9 @@ def _render_equation_atoms(equation_atoms: list[dict[str, object]]) -> str:
 
 def _render_proof_atoms(proof_atoms: list[dict[str, object]]) -> str:
     lines: list[str] = []
-    lines.append("# Structured proof/derivation atoms extracted from selected high-information corpora.")
+    lines.append(
+        "# Structured proof/derivation atoms extracted from selected high-information corpora."
+    )
     lines.append("# Generated by src/scripts/analysis/build_structured_knowledge_atoms.py")
     lines.append("")
     lines.append("[knowledge_proof_atoms]")
@@ -522,6 +647,12 @@ def _render_proof_atoms(proof_atoms: list[dict[str, object]]) -> str:
         lines.append(f"section_level = {int(atom['section_level'])}")
         lines.append(f"line_start = {int(atom['line_start'])}")
         lines.append(f"line_end = {int(atom['line_end'])}")
+        lines.append(f"step_count = {int(atom['step_count'])}")
+        lines.append(f"supports_claim = {'true' if atom['supports_claim'] else 'false'}")
+        lines.append(f"assumption_lines = {_render_list(list(atom['assumption_lines']))}")
+        lines.append(f"decision_lines = {_render_list(list(atom['decision_lines']))}")
+        lines.append(f"conclusion_lines = {_render_list(list(atom['conclusion_lines']))}")
+        lines.append(f"inference_markers = {_render_list(list(atom['inference_markers']))}")
         lines.append(f"assumption_text = {_esc(str(atom['assumption_text']))}")
         lines.append(f"decision_rule_text = {_esc(str(atom['decision_rule_text']))}")
         lines.append(f"conclusion_text = {_esc(str(atom['conclusion_text']))}")
@@ -581,7 +712,8 @@ def _render_structured_corpora(
         lines.append("reduction_stage = \"structured_atoms_extracted\"")
         lines.append(f"target_summary_max_lines = {target_summary_max_lines}")
         lines.append(
-            "next_step = \"replace long body_markdown with structured summary overlays driven by claim/equation/proof atoms\""
+            "next_step = \"replace long body_markdown with structured summary overlays "
+            "driven by claim/equation/proof atoms\""
         )
         lines.append("")
 

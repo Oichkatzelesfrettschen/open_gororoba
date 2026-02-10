@@ -6,10 +6,12 @@
 //! At dim=1024, this is only 512x512 = 262K elements (~256KB), easily fitting on GPU.
 //! The parallel XOR operations provide 20-100x speedup over CPU.
 
-use std::ffi::CString;
-
 #[cfg(feature = "gpu")]
-use cudarc::driver::{CudaContext, DeviceSlice, DriverError};
+use cudarc::driver::{CudaContext, LaunchConfig, PushKernelArg};
+#[cfg(feature = "gpu")]
+use cudarc::nvrtc::compile_ptx;
+#[cfg(feature = "gpu")]
+use std::sync::Arc;
 
 /// GPU-accelerated eta matrix computation.
 pub struct EtaMatrixGpu;
@@ -70,7 +72,7 @@ __device__ unsigned char psi(unsigned int dim, unsigned int i, unsigned int j) {
 // Kernel: compute eta matrix in parallel
 // Grid: 1D grid of threads, one thread per (i,j) pair
 // Each thread computes eta[flat_idx] = psi(i, j+dim/2) XOR psi(j, i+dim/2)
-__global__ void compute_eta_matrix(
+extern "C" __global__ void compute_eta_matrix(
     unsigned int dim,
     unsigned int dim_half,
     unsigned char* eta_out
@@ -126,7 +128,7 @@ impl EtaMatrixGpu {
         #[cfg(feature = "gpu")]
         {
             // Try GPU first
-            if let Ok(eta) = Self::compute_eta_gpu(dim, psi_fn) {
+            if let Ok(eta) = Self::compute_eta_gpu(dim) {
                 return eta;
             }
         }
@@ -136,28 +138,29 @@ impl EtaMatrixGpu {
     }
 
     /// GPU implementation using cudarc NVRTC.
+    /// Note: The GPU kernel is self-contained and computes eta via cd_basis_mul_sign;
+    /// the psi_fn parameter is not needed in the GPU path.
     #[cfg(feature = "gpu")]
-    fn compute_eta_gpu<F>(dim: usize, psi_fn: F) -> Result<Vec<u8>, String>
-    where
-        F: Fn(usize, usize) -> u8,
-    {
-        let ctx = CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?;
+    fn compute_eta_gpu(dim: usize) -> Result<Vec<u8>, String> {
+        let ctx = Arc::new(CudaContext::new(0).map_err(|e| format!("CUDA init: {}", e))?);
+        let stream = ctx.default_stream();  // Returns Arc<CudaStream>, not Result
 
-        let ptx = cudarc::nvrtc::compile_ptx(ETA_KERNEL_SRC)
+        let ptx = compile_ptx(ETA_KERNEL_SRC)
             .map_err(|e| format!("NVRTC compile: {}", e))?;
 
-        ctx.load_ptx(ptx, "eta_kernel", &["compute_eta_matrix"])
-            .map_err(|e| format!("PTX load: {}", e))?;
+        let module = ctx
+            .load_module(ptx)
+            .map_err(|e| format!("Module load: {}", e))?;
 
-        let kernel = ctx
-            .get_fn("eta_kernel", "compute_eta_matrix")
-            .map_err(|e| format!("Get kernel: {}", e))?;
+        let kernel = module
+            .load_function("compute_eta_matrix")
+            .map_err(|e| format!("Kernel load: {}", e))?;
 
         let dim_half = dim / 2;
         let total = dim_half * dim_half;
 
         // Allocate device memory
-        let eta_dev = ctx
+        let eta_dev = stream
             .alloc_zeros::<u8>(total)
             .map_err(|e| format!("Alloc device: {}", e))?;
 
@@ -166,23 +169,27 @@ impl EtaMatrixGpu {
         let block_size = 256u32;
         let num_blocks = ((total as u32 + block_size - 1) / block_size) as u32;
 
+        let cfg = LaunchConfig {
+            grid_dim: (num_blocks, 1, 1),
+            block_dim: (block_size, 1, 1),
+            shared_mem_bytes: 0,
+        };
+
+        let dim_u32 = dim as u32;
+        let dim_half_u32 = dim_half as u32;
+
+        let mut builder = stream.launch_builder(&kernel);
+        builder.arg(&dim_u32);
+        builder.arg(&dim_half_u32);
+        builder.arg(&eta_dev);
+
         unsafe {
-            kernel
-                .launch_on_stream(
-                    &ctx.stream,
-                    cudarc::driver::LaunchConfig {
-                        grid_dim: (num_blocks, 1, 1),
-                        block_dim: (block_size, 1, 1),
-                        shared_mem_bytes: 0,
-                    },
-                    (dim as u32, dim_half as u32, &eta_dev),
-                )
-                .map_err(|e| format!("Kernel launch: {}", e))?;
+            builder.launch(cfg).map_err(|e| format!("Kernel launch: {}", e))?;
         }
 
         // Copy result back to host
-        let mut eta_host = vec![0u8; total];
-        ctx.copy_d2h_into(&eta_dev, &mut eta_host)
+        let eta_host = stream
+            .clone_dtoh(&eta_dev)
             .map_err(|e| format!("Copy D2H: {}", e))?;
 
         Ok(eta_host)
@@ -240,7 +247,7 @@ mod tests {
         let psi_fn = |i: usize, j: usize| real_psi(dim, i, j);
 
         let eta_cpu = EtaMatrixGpu::compute_eta_cpu(dim, psi_fn);
-        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim, psi_fn)
+        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
         assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=16");
@@ -258,7 +265,7 @@ mod tests {
         let psi_fn = |i: usize, j: usize| real_psi(dim, i, j);
 
         let eta_cpu = EtaMatrixGpu::compute_eta_cpu(dim, psi_fn);
-        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim, psi_fn)
+        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
         assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=32");
@@ -276,7 +283,7 @@ mod tests {
         let psi_fn = |i: usize, j: usize| real_psi(dim, i, j);
 
         let eta_cpu = EtaMatrixGpu::compute_eta_cpu(dim, psi_fn);
-        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim, psi_fn)
+        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
         assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=64");
@@ -294,7 +301,7 @@ mod tests {
         let psi_fn = |i: usize, j: usize| real_psi(dim, i, j);
 
         let eta_cpu = EtaMatrixGpu::compute_eta_cpu(dim, psi_fn);
-        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim, psi_fn)
+        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
         assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=128");
@@ -312,7 +319,7 @@ mod tests {
         let psi_fn = |i: usize, j: usize| real_psi(dim, i, j);
 
         let eta_cpu = EtaMatrixGpu::compute_eta_cpu(dim, psi_fn);
-        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim, psi_fn)
+        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
         assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=256");
@@ -330,7 +337,7 @@ mod tests {
         let psi_fn = |i: usize, j: usize| real_psi(dim, i, j);
 
         let eta_cpu = EtaMatrixGpu::compute_eta_cpu(dim, psi_fn);
-        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim, psi_fn)
+        let eta_gpu = EtaMatrixGpu::compute_eta_gpu(dim)
             .expect("GPU computation should succeed when GPU is available");
 
         assert_eq!(eta_cpu, eta_gpu, "GPU and CPU eta matrices must match exactly at dim=512");

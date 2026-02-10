@@ -81,13 +81,21 @@ def main() -> int:
 
     failures: list[str] = []
 
-    if int(claim.get("knowledge_claim_atoms", {}).get("atom_count", -1)) != len(claim_atoms):
+    if int(claim.get("knowledge_claim_atoms", {}).get("atom_count", -1)) != len(
+        claim_atoms
+    ):
         failures.append("claim_atoms atom_count metadata mismatch.")
-    if int(equation.get("knowledge_equation_atoms", {}).get("atom_count", -1)) != len(equation_atoms):
+    if int(
+        equation.get("knowledge_equation_atoms", {}).get("atom_count", -1)
+    ) != len(equation_atoms):
         failures.append("equation_atoms atom_count metadata mismatch.")
-    if int(proof.get("knowledge_proof_atoms", {}).get("atom_count", -1)) != len(proof_atoms):
+    if int(proof.get("knowledge_proof_atoms", {}).get("atom_count", -1)) != len(
+        proof_atoms
+    ):
         failures.append("proof_atoms atom_count metadata mismatch.")
-    if int(summary.get("structured_corpora", {}).get("source_count", -1)) != len(source_rows):
+    if int(summary.get("structured_corpora", {}).get("source_count", -1)) != len(
+        source_rows
+    ):
         failures.append("structured_corpora source_count metadata mismatch.")
 
     _unique_ids(claim_atoms, "id", failures, "claim_atoms")
@@ -120,20 +128,47 @@ def main() -> int:
         if not claim_id.startswith("C-"):
             failures.append(f"invalid claim_id format: {claim_id}")
             break
+        if not isinstance(atom.get("hypothesis_block_present", None), bool):
+            failures.append(f"claim atom missing bool hypothesis flag: {atom.get('id')}")
+            break
 
     for atom in equation_atoms[:]:
         if not str(atom.get("expression", "")).strip():
             failures.append("equation atom has empty expression.")
             break
+        if not str(atom.get("relation_operator", "")).strip():
+            failures.append(f"equation atom missing relation_operator: {atom.get('id')}")
+            break
+        if not str(atom.get("lhs_expression", "")).strip():
+            failures.append(f"equation atom missing lhs_expression: {atom.get('id')}")
+            break
+
+    for atom in proof_atoms[:]:
+        if int(atom.get("step_count", 0)) <= 0:
+            failures.append(f"proof atom has invalid step_count: {atom.get('id')}")
+            break
+        for key in (
+            "assumption_lines",
+            "decision_lines",
+            "conclusion_lines",
+            "inference_markers",
+        ):
+            if not isinstance(atom.get(key, None), list):
+                failures.append(f"proof atom missing list field {key}: {atom.get('id')}")
+                break
 
     for row in source_rows:
         source_path = root / str(row.get("source_path", ""))
         if not source_path.exists():
             failures.append(f"structured source path missing: {source_path}")
         if row.get("narrative_compaction_recommended") is not True:
-            failures.append(f"source row missing compaction recommendation: {row.get('source_uid')}")
+            failures.append(
+                f"source row missing compaction recommendation: {row.get('source_uid')}"
+            )
         if int(row.get("target_summary_max_lines", 0)) <= 0:
-            failures.append(f"source row has invalid target_summary_max_lines: {row.get('source_uid')}")
+            failures.append(
+                f"source row has invalid target_summary_max_lines: {row.get('source_uid')}"
+            )
 
     if failures:
         print("ERROR: structured knowledge atom verification failed.")
