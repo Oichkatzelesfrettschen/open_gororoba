@@ -180,8 +180,8 @@ mod tests {
         assert_eq!(sig_euclidean_2.dim(), 4);
 
         // e_1 * e_2 vs e_2 * e_1 should differ in sign
-        let (sign_12, mask_12) = clifford_basis_product(2, 0, 1, 2);
-        let (sign_21, mask_21) = clifford_basis_product(2, 0, 2, 1);
+        let (sign_12, _mask_12) = clifford_basis_product(2, 0, 1, 2);
+        let (sign_21, _mask_21) = clifford_basis_product(2, 0, 2, 1);
         assert_eq!(sign_12, -sign_21, "Clifford: anticommutation e_i e_j = -e_j e_i");
         eprintln!("  Cl(2,0): e_1 e_2 = {} * e_12, e_2 e_1 = {} * e_12 (anticommutative)", sign_12, sign_21);
 
@@ -491,7 +491,7 @@ mod tests {
                     let (s_prod, m_prod) = clifford_basis_product(sig.p, sig.q, i, j);
 
                     // Zero-divisor if both factors non-zero but product is zero
-                    let is_zero_divisor = (s_prod.abs() < 1e-10 && m_prod == 0);
+                    let is_zero_divisor = s_prod.abs() < 1e-10 && m_prod == 0;
                     if is_zero_divisor {
                         zd_pairs += 1;
                     }
