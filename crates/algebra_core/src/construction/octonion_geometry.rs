@@ -224,12 +224,12 @@ impl MoufangLoop {
         x.conjugate()
     }
 
-    /// Verify left Moufang identity: a(x(ay)) = (axa)y.
+    /// Verify left Moufang identity: a(x(ay)) = ((ax)a)y.
     pub fn verify_left_moufang(a: &Octonion, x: &Octonion, y: &Octonion, tol: f64) -> bool {
         a.moufang_identity_left(x, y, tol)
     }
 
-    /// Verify right Moufang identity: ((xa)y)a = x(aya).
+    /// Verify right Moufang identity: ((xa)y)a = x(a(ya)).
     pub fn verify_right_moufang(a: &Octonion, x: &Octonion, y: &Octonion, tol: f64) -> bool {
         a.moufang_identity_right(x, y, tol)
     }
