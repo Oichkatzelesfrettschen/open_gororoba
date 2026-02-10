@@ -24,6 +24,7 @@
 .PHONY: registry-project-csv-split registry-csv-holdings
 .PHONY: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated
 .PHONY: registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
+.PHONY: registry-csv-scroll-pipeline registry-verify-csv-scroll-pipeline
 .PHONY: registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-wave3
 .PHONY: registry-ingest-legacy registry-refresh registry-export-markdown registry-verify-mirrors docs-publish
 .PHONY: artifacts artifacts-dimensional artifacts-materials artifacts-boxkites
@@ -284,6 +285,12 @@ registry-scroll-external-csv-holding: registry-csv-holdings
 		--corpus-label 'external CSV holding queue' \
 		--dataset-class holding-external
 
+registry-csv-scroll-pipeline: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated registry-scroll-external-csv-holding registry-scroll-archive-csv-holding
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_scroll_pipeline_registry.py
+
+registry-verify-csv-scroll-pipeline: registry-csv-scroll-pipeline
+	PYTHONWARNINGS=error python3 src/verification/verify_csv_scroll_pipeline.py
+
 registry-verify-project-csv-split: registry-scroll-project-csv-canonical registry-scroll-project-csv-generated
 	PYTHONWARNINGS=error python3 src/verification/verify_legacy_csv_toml_parity.py \
 		--index-path registry/project_csv_canonical_datasets.toml \
@@ -310,7 +317,7 @@ registry-verify-csv-holdings: registry-csv-holdings registry-scroll-external-csv
 registry-verify-csv-corpus-coverage: registry-csv-inventory registry-verify-project-csv-split registry-verify-csv-holdings
 	PYTHONWARNINGS=error python3 src/verification/verify_csv_corpus_coverage.py
 
-registry-wave3: registry-project-csv-split registry-csv-holdings registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage
+registry-wave3: registry-project-csv-split registry-csv-holdings registry-verify-project-csv-split registry-verify-csv-holdings registry-verify-csv-corpus-coverage registry-verify-csv-scroll-pipeline
 
 registry-csv-scope: registry-csv-inventory
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_csv_migration_scope_registry.py
@@ -516,6 +523,7 @@ help:
 	@echo "    make rust-smoke           Rust clippy + full test suite"
 	@echo "    make registry             Validate TOML registry consistency"
 	@echo "    make registry-wave4       Validate markdown/TOML control-plane + atom extraction gates"
+	@echo "    make registry-wave3       Validate project/external/archive CSV scroll pipeline lanes"
 	@echo "    make registry-verify-knowledge-atoms Verify claim/equation/proof atom registries"
 	@echo ""
 	@echo "  Artifacts:"
