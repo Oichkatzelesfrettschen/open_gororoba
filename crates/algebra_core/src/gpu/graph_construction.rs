@@ -183,6 +183,7 @@ impl GraphConstructorGpu {
         let dim_half = (dim / 2) as u32;
         let n_nodes = nodes.len() as u32;
         let tri_total = (nodes.len() * (nodes.len() - 1)) / 2;
+        let tri_total_u32 = tri_total as u32;
 
         // Allocate device memory for eta
         let eta_dev = stream
@@ -195,7 +196,7 @@ impl GraphConstructorGpu {
             .map_err(|e| format!("Alloc count: {}", e))?;
 
         let block_size = 256u32;
-        let grid_size = ((tri_total as u32 + block_size - 1) / block_size) as u32;
+        let grid_size = ((tri_total_u32 + block_size - 1) / block_size) as u32;
 
         let cfg = LaunchConfig {
             grid_dim: (grid_size, 1, 1),
@@ -224,7 +225,7 @@ impl GraphConstructorGpu {
         }
 
         // Phase 2: Compact edges
-        // Allocate output arrays (with extra space for atomic counter)
+        // Allocate output arrays (with extra element for atomic counter)
         let mut edge_i_dev = stream
             .alloc_zeros::<u32>(num_edges + 1)
             .map_err(|e| format!("Alloc edge_i: {}", e))?;
@@ -233,10 +234,7 @@ impl GraphConstructorGpu {
             .alloc_zeros::<u32>(num_edges)
             .map_err(|e| format!("Alloc edge_j: {}", e))?;
 
-        // Set counter location to 0
-        stream
-            .copy_htod_async(&[0u32], &mut edge_i_dev)
-            .map_err(|e| format!("Init counter: {}", e))?;
+        let num_edges_u32 = num_edges as u32;
 
         let mut builder = stream.launch_builder(&compact_kernel);
         builder.arg(&eta_dev);
@@ -244,7 +242,7 @@ impl GraphConstructorGpu {
         builder.arg(&n_nodes);
         builder.arg(&edge_i_dev);
         builder.arg(&edge_j_dev);
-        builder.arg(&(num_edges as u32));
+        builder.arg(&num_edges_u32);
 
         unsafe {
             builder.launch(cfg).map_err(|e| format!("Compact launch: {}", e))?;
