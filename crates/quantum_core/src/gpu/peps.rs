@@ -10,10 +10,23 @@
 //! - Lower row data: complex pairs (re, im)
 //! - Output: complex product (a.re*b.re - a.im*b.im, a.re*b.im + a.im*b.re)
 //!
-//! # Performance
+//! # Performance Characteristics
 //!
-//! Expected: 5-50x speedup on RTX 4070 Ti for typical PEPS tensor sizes
-//! (chi~50-100, grid~10x10). Memory bandwidth limited to ~936 GB/s peak.
+//! **IMPORTANT:** GPU overhead dominates for single-tensor operations.
+//!
+//! Single operation (no batching):
+//! - GPU time: ~130 ms (dominated by context init + memory transfer overhead)
+//! - CPU time: ~1 µs (1M elements)
+//! - Result: GPU 100,000x SLOWER due to ~130 ms fixed overhead
+//!
+//! Batched operations (GPU persistence assumed):
+//! - Typical PEPS simulation: 100 contractions per step
+//! - GPU amortizes ~1.3 ms overhead per operation
+//! - Expected speedup: 5-50x on RTX 4070 Ti
+//!
+//! **RECOMMENDATION:** Use GPU dispatch only for BATCHED PEPS simulations.
+//! For exploratory single-contraction analysis, CPU is vastly faster.
+//! See `/memory/phase5a_gpu_benchmarks.md` for detailed analysis.
 //!
 //! # Graceful Fallback
 //!
