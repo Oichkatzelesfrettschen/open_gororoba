@@ -5,10 +5,346 @@
 updated = "2026-02-09"
 authoritative = true
 source_markdown_glob = "docs/*.md"
-document_count = 55
+document_count = 57
 
 [[document]]
 id = "DRN-001"
+source_markdown = "docs/ALGEBRA_CONSTRUCTION_COMPARISON.md"
+slug = "algebra_construction_comparison"
+title = "Algebra Construction Methods: Comparative Framework"
+status_token = "NARRATIVE"
+content_kind = "research_note"
+claim_refs = ["C-550", "C-556", "C-560", "C-562"]
+path_refs = []
+line_count = 323
+body_markdown = '''
+# Algebra Construction Methods: Comparative Framework
+
+## Executive Summary
+
+This document synthesizes Phase 3a findings into a comparative framework showing how different algebraic construction mechanisms determine fundamental algebraic properties. The framework guides Phase 3b-3d implementation decisions.
+
+**Core Principle**: Construction method is the PRIMARY determinant of algebraic properties. Dimension and metric parameters are secondary and tertiary determinants respectively.
+
+---
+
+## 1. Comparative Properties Matrix
+
+| Property | Cayley-Dickson | Clifford | Jordan | Tensor Product |
+|----------|---|---|---|---|
+| **Commutativity** | Universal 0% | Selective 80-90% | Universal 100% | Universal 100% |
+| **Associativity** | Universal (dim<8) | Universal (all dims) | NEVER (by design) | Universal (all dims) |
+| **Dimension** | 2^n (4, 8, 16, 32...) | Arbitrary (all n) | 1, 3, 27, ... | 2^n (4, 8, 16...) |
+| **Metric Signature** | Gamma-dependent ZD count | Gamma-dependent ZD count | No metric | Implicit (via tensor product) |
+| **Zero-Divisors** | Gamma-dependent | Gamma-dependent | None (formal) | Gamma-dependent |
+| **Division Algebra** | Standard signatures only | Positive-definite only | None | C<U+2297>C has ZD |
+| **Construction** | (a,b) * (c,d) via conjugation | Basis * Basis via sign lookup | {a,b} = (ab+ba)/2 | A <U+2297> B component-wise |
+| **Access to Property Class** | Only 0% commutativity | Only 80-90% commutativity | Only 100% commutativity | Only 100% commutativity |
+
+---
+
+## 2. Construction Mechanisms
+
+### 2.1 Cayley-Dickson Construction
+
+**Formula**:
+```
+(a, b) * (c, d) = (a*c + gamma*conj(d)*b,  d*a + b*conj(c))
+```
+
+**Key Properties**:
+- Right component `d*a + b*conj(c)` introduces asymmetry
+- Conjugation-dependent: conj(a,b) = (conj(a), -b) standard
+- Doubling structure: creates doubling-dependent properties
+- Gamma in {+1, -1} controls metric signature, not commutativity
+
+**Structural Results**:
+- **Commutativity**: Universal 0% at dims 4-16 (structural, not gamma-dependent)
+- **Associativity**: Holds at dims 2-4 (quaternions, octonions), breaks at dim 8 (octonions non-associative)
+- **Zero-Divisors**: Metric-dependent (more +1 entries => more ZD pairs)
+- **Why no tessarines**: Tensor product C<U+2297>C requires component-wise multiplication; CD formula incompatible
+
+**Phase 2 Verification** (C-550-556, I-020-024):
+- Exhaustive signature testing at dims 4, 8, 16
+- 0% commutativity universal across all gamma combinations
+- Commutativity is DIMENSION-DEPENDENT (non-commutative because CD formula), GAMMA-INVARIANT
+
+---
+
+### 2.2 Clifford Algebra Family Cl(p,q)
+
+**Formula**:
+```
+e_i * e_j = -e_j * e_i              (anticommutation, i != j)
+e_i^2 = +1 for i=1..p               (positive signature)
+e_j^2 = -1 for j=p+1..p+q           (negative signature)
+Scalar components: 1
+```
+
+**Key Properties**:
+- Anticommutation rule: basis elements generally anticommute
+- Metric signature (p,q) determines which basis elements square to <U+00B1>1
+- Basis multiplication is deterministic sign lookup + XOR bitmask
+- METRIC-INVARIANT COMMUTATIVITY: pattern holds for all p,q with same dim
+
+**Structural Results**:
+- **Commutativity**: Selective 80-90% (not all pairs anticommute; many pairs commute)
+- **Associativity**: Universal across all dims (Clifford is always associative)
+- **Zero-Divisors**: Metric-dependent (signature (p,q) controls ZD distribution)
+- **Division Algebras**: Only in positive-definite cases (Euclidean signature)
+
+**Phase 3a Verification** (C-560-562, I-025-027):
+- Exhaustive enumeration at dim=4 (all 16 basis pairs)
+- Representative sampling at dims 8, 16 (consistency check)
+- 83% (dim=4) to 90.2% (dim=16) commuting pairs
+- Pattern DIMENSION-INDEPENDENT across dims 4-16
+- Pattern METRIC-INVARIANT: all 4 signatures at dim=4 show ~83%
+
+**Why commutativity happens in Clifford**:
+- Anticommutation e_i * e_j = -e_j * e_i only applies to non-commuting pairs
+- Many basis pairs have XOR patterns that result in same sign/component regardless of order
+- Example: scalar * any element always commutes
+- Example: e_1 * (e_2 <U+2227> e_3) may commute depending on parity
+
+---
+
+### 2.3 Jordan Algebra (to implement Phase 3b)
+
+**Formula**:
+```
+a * b = (ab + ba) / 2  (symmetric Jordan product)
+[a, b] = (ab - ba) / 2 (antisymmetric commutator)
+```
+
+**Key Properties**:
+- ALWAYS commutative by definition: a*b = b*a (via symmetric product)
+- NEVER associative: (a*b)*c <U+2260> a*(b*c) in general (fundamental property)
+- No metric signature: purely algebraic structure
+- No zero-divisors: formal algebra over field (no projective structure needed)
+
+**Structural Results**:
+- **Commutativity**: Universal 100% (by construction, not metric-dependent)
+- **Associativity**: NEVER (fundamental property, not dimension-dependent)
+- **Zero-Divisors**: None (formal algebra structure)
+- **Dimensions**: A<U+2081> = <U+211D> (1D), A<U+2082> = Sym<U+2083>(<U+211D>) (3D), A<U+2083> = Albert (27D)
+
+**Why no crates exist** (C-562):
+- Jordan algebras are non-associative, making them niche in Rust ecosystem
+- Most algebra libraries focus on associative algebras (groups, rings)
+- No established Rust conventions for encoding degree-2 Jordan properties
+- Implementation requires custom trait design (no template to follow)
+
+**Phase 3b Strategy**:
+- Implement `JordanAlgebra` trait with `jordan_product(a, b)` method
+- Follow Clifford's trait-based architecture (composition over inheritance)
+- Test at dims 1, 3, 27 (natural Jordan dimensions)
+- Verify 100% commutativity and 0% associativity
+- Document non-associativity patterns (Moufang properties, etc.)
+
+---
+
+### 2.4 Tensor Product Construction (Reference)
+
+**Example: Tessarines C <U+2297> C**:
+```
+(a<U+2081> + b<U+2081>i) <U+2297> (a<U+2082> + b<U+2082>j) = a<U+2081>a<U+2082> + a<U+2081>b<U+2082>j + b<U+2081>a<U+2082>i + b<U+2081>b<U+2082>(ij)
+where ij = ji (commutative)
+```
+
+**Key Properties**:
+- Component-wise multiplication: (a<U+2297>b) * (c<U+2297>d) = (a*c)<U+2297>(b*d)
+- Commutativity inherited from components
+- Dimension = product of component dimensions
+- No conjugation or metric signature (purely multiplicative)
+
+**Structural Results**:
+- **Commutativity**: Inherited from components (100% if both commutative)
+- **Associativity**: Inherited from components
+- **Zero-Divisors**: Product of component ZD patterns
+- **Accessibility**: Different property class from CD (e.g., tessarines inaccessible via any CD gamma)
+
+**Why not CD-accessible**:
+- C<U+2297>C requires component-wise multiplication (commutes by design)
+- CD formula uses conjugation in right component (breaks commutativity)
+- Different construction mechanisms => different property classes
+- Mathematical proof (Phase 2): no CD gamma choice yields commutative quaternions
+
+---
+
+## 3. Architecture Hierarchy: Empirical Evidence
+
+### The Three-Level Hierarchy
+
+```
+LEVEL 1: CONSTRUCTION MECHANISM (Primary Determinant)
+<U+251C><U+2500> Determines fundamental property CLASS (e.g., 0% vs 100% commutativity)
+<U+251C><U+2500> Structural (not tunable via parameters)
+<U+251C><U+2500> Examples:
+<U+2502>  <U+251C><U+2500> CD mechanism => MUST be 0% commutative at dim<U+2265>4
+<U+2502>  <U+251C><U+2500> Clifford mechanism => MUST be 80-90% commutative at all dims
+<U+2502>  <U+251C><U+2500> Jordan mechanism => MUST be 100% commutative (by definition)
+<U+2502>  <U+2514><U+2500> Tensor mechanism => MUST inherit component properties
+
+LEVEL 2: DIMENSION (Secondary Determinant)
+<U+251C><U+2500> Determines which properties are POSSIBLE within mechanism class
+<U+251C><U+2500> Examples:
+<U+2502>  <U+251C><U+2500> CD dimensions: only 2^n permitted (architectural constraint)
+<U+2502>  <U+251C><U+2500> Clifford dimensions: arbitrary (architectural flexibility)
+<U+2502>  <U+251C><U+2500> Associativity in CD: breaks between dim 4 and dim 8
+<U+2502>  <U+2514><U+2500> Jordan dimensions: only 1, 3, 27 (fundamental theorem)
+
+LEVEL 3: METRIC PARAMETERS (Tertiary Determinant)
+<U+251C><U+2500> Tunes secondary properties WITHIN mechanism class
+<U+251C><U+2500> Examples:
+<U+2502>  <U+251C><U+2500> CD gamma parameter: controls ZD count, NOT commutativity
+<U+2502>  <U+251C><U+2500> Clifford (p,q): controls ZD distribution, NOT commutativity percentage
+<U+2502>  <U+251C><U+2500> Jordan: no metric (no parameters to tune)
+<U+2502>  <U+2514><U+2500> Tensor product: metric from component algebras
+```
+
+### Evidence from Phase 2-3a
+
+| Property | Mechanism-Determined? | Dimension-Dependent? | Gamma-Dependent? |
+|----------|---|---|---|
+| Commutativity class | YES | NO | NO |
+| Associativity (CD dims 4-8) | YES | YES | NO |
+| Associativity (Clifford) | YES | NO | NO |
+| Zero-divisor count | NO | NO | YES |
+| Division algebra status | PARTIALLY | YES | YES |
+
+---
+
+## 4. Phase 3b Design Decisions
+
+### Why Custom Traits?
+
+No Jordan algebra crates exist because:
+1. **Niche domain**: Non-associative algebras are specialized research area
+2. **Trait design novelty**: No established Rust convention for degree-2 structures
+3. **Performance trade-offs**: No one-size-fits-all implementation for all Jordan algebras
+4. **Mathematical depth**: Requires understanding Moufang loops, Malcev properties, etc.
+
+### Trait-Based Architecture (following Clifford pattern)
+
+```rust
+pub trait JordanAlgebra: Clone + Debug {
+    fn dim(&self) -> usize;
+    fn jordan_product(&self, a: &[f64], b: &[f64]) -> Vec<f64>;
+    fn commutator(&self, a: &[f64], b: &[f64]) -> Vec<f64>;
+    fn associator(&self, a: &[f64], b: &[f64], c: &[f64]) -> f64; // Non-zero = failure
+}
+
+// Concrete implementations for A_1, A_2, A_3
+pub struct JordanA1;  // <U+211D> (1D, trivial)
+pub struct JordanA2;  // Sym_3(<U+211D>) (3D, 3x3 symmetric matrices)
+pub struct JordanA3;  // Albert algebra (27D, exceptional)
+```
+
+### Testing Strategy for Phase 3b
+
+```
+Test Layers:
+  L1: Basic properties
+    <U+251C><U+2500> Commutativity: 100% of pairs must commute
+    <U+251C><U+2500> Associativity: 0% (all triples must violate)
+    <U+2514><U+2500> Dimension: correct for A<U+2081>/A<U+2082>/A<U+2083>
+
+  L2: Cross-validation (against Phase 3a)
+    <U+251C><U+2500> Clifford at dims 4, 8: show selective commutativity
+    <U+251C><U+2500> Jordan at dims 1, 3, 27: show 100% commutativity
+    <U+2514><U+2500> Establish dimension/mechanism distinction
+
+  L3: Algebraic structure
+    <U+251C><U+2500> Moufang identity verification
+    <U+251C><U+2500> Power associativity testing
+    <U+2514><U+2500> Exceptional center properties (A<U+2083> only)
+```
+
+---
+
+## 5. Phase Roadmap Integration
+
+### Phase 3a <U+2713> COMPLETE
+- Clifford algebras validated
+- Construction method primacy established
+- Wedged crate integrated (optional)
+- Crate survey completed (71 screened, 3 Tier-1 candidates)
+
+### Phase 3b (PENDING - Task 7)
+- Implement custom Jordan algebra traits
+- Census at dims 1, 3, 27
+- Verify 100% commutativity
+- Compare against Clifford (selective) and CD (universal 0%)
+- Document non-associativity patterns
+
+### Phase 3c-3d (CONDITIONAL PENDING - Task 8)
+- Exceptional algebras (E6, E7, E8) if Phase 3a-3b reveals structure
+- Freudenthal-Tits magic square connections
+- Synthesis of complete taxonomy across all 4 construction methods
+
+---
+
+## 6. Reference: Construction Mechanism Summaries
+
+### Cayley-Dickson at a Glance
+- **Mechanism**: Doubling with conjugation asymmetry in right component
+- **Universals**: 0% commutativity at dim<U+2265>4, non-associative at dim<U+2265>8
+- **Parametrics**: Zero-divisor count gamma-dependent
+- **Dimensions**: Only 2^n
+- **Status**: Phase 2 complete, verified C-550-C-556
+
+### Clifford Algebra at a Glance
+- **Mechanism**: Anticommutation rule with signature-dependent basis squaring
+- **Universals**: 80-90% commutativity (ALL dims), always associative
+- **Parametrics**: Zero-divisor distribution (p,q)-dependent
+- **Dimensions**: Arbitrary (n!)
+- **Status**: Phase 3a complete, verified C-560-C-562
+
+### Jordan Algebra at a Glance
+- **Mechanism**: Symmetric product (ab+ba)/2
+- **Universals**: 100% commutativity (by definition), NEVER associative
+- **Parametrics**: None (purely algebraic)
+- **Dimensions**: 1 (A<U+2081>), 3 (A<U+2082>), 27 (A<U+2083>), conditional others
+- **Status**: Phase 3b pending, to implement custom traits
+
+### Tensor Product at a Glance
+- **Mechanism**: Component-wise multiplication
+- **Universals**: Inherit from components
+- **Parametrics**: None (determined by components)
+- **Dimensions**: Product of component dimensions
+- **Status**: Reference (not implementing; different property class from CD)
+
+---
+
+## 7. Key Insight: Why Construction Method Matters
+
+The discovery that Clifford algebras are selectively commutative (~90%) while Cayley-Dickson algebras are universally non-commutative (0%) at the SAME dimension (e.g., both at dim=4) proves that:
+
+1. **Dimension is NOT the primary determinant**: Both have dim=4, but opposite commutativity properties
+2. **Metric signature is NOT the primary determinant**: All (p,q) combinations at same dim show same pattern
+3. **Construction mechanism IS the primary determinant**: Different doubling rules produce fundamentally different property classes
+
+This hierarchy enables:
+- **Predictive power**: Once construction method is known, properties are determined
+- **Design clarity**: Phase 3b can implement Jordan with confidence that 100% commutativity will emerge from the symmetric product formula
+- **Complete taxonomy**: Phase 3d can map all major construction methods and identify any missing property classes
+
+---
+
+## 8. Next Steps
+
+1. **Task 6 (this document)**: Comparison framework complete <U+2713>
+2. **Task 6 continued**: Setup jordan.rs scaffolding (next)
+3. **Task 7**: Implement Jordan algebra traits and census
+4. **Task 8**: Exceptional algebras and synthesis (conditional)
+
+---
+
+**Status**: This document serves as the intellectual foundation for Phase 3b-3d implementation. The architecture hierarchy is now explicitly formalized based on empirical evidence from Phase 2-3a.
+'''
+
+[[document]]
+id = "DRN-002"
 source_markdown = "docs/ALGEBRA_CRATES_SURVEY.md"
 slug = "algebra_crates_survey"
 title = "Comprehensive Rust Algebra Crates Survey"
@@ -16,8 +352,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["num-quaternion = \"1.0\""]
-line_count = 567
+line_count = 570
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED SURVEY: Rust Algebra Crates -->
 <!-- Generated: 2026-02-09 -->
 
@@ -588,7 +927,7 @@ This document provides a detailed inventory of Rust crates for algebra implement
 '''
 
 [[document]]
-id = "DRN-002"
+id = "DRN-003"
 source_markdown = "docs/ALGEBRA_FAMILY_TAXONOMY.md"
 slug = "algebra_family_taxonomy"
 title = "Algebra Family Taxonomy: Construction Methods and Metric Signatures"
@@ -596,8 +935,11 @@ status_token = "NARRATIVE"
 content_kind = "taxonomy_or_glossary"
 claim_refs = ["C-172", "C-550", "C-551", "C-552", "C-553", "C-554", "C-555", "C-556"]
 path_refs = []
-line_count = 369
+line_count = 372
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -970,7 +1312,7 @@ The complete landscape of 4D algebras now documented:
 '''
 
 [[document]]
-id = "DRN-003"
+id = "DRN-004"
 source_markdown = "docs/AUDIT_REPORT_2026-01-27.md"
 slug = "audit_report_2026-01-27"
 title = "Repository Audit Report (2026-01-27)"
@@ -978,8 +1320,11 @@ status_token = "AUDIT"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["src/", "curated/", "data/csv/legacy/", "data/artifacts/", "docs/", "docs/THE_GEMINI_PROTOCOL.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "pyproject.toml", "src/gemini_physics/__init__.py", "pytest.ini", "tests/", "bin/doctor.py", ".github/workflows/ci.yml", "src/gemini_physics/dimensional_geometry.py", "src/vis_dimensional_geometry.py", "docs/DIMENSIONAL_GEOMETRY.md", "src/fetch_materials_jarvis_subset.py", "src/gemini_physics/materials_jarvis.py", "src/materials_embedding_experiments.py", "docs/MATERIALS_DATASETS.md", "curated/01_theory_frameworks/ConfineModel.v", "bin/coq_prepare_confine.py", "curated/01_theory_frameworks/README_COQ.md", "README.md", "docs/BIBLIOGRAPHY.md", "docs/SEDENION_ATLAS.md", "GEMINI.md", "docs/REPO_OVERVIEW.md", "docs/ULTRA_ROADMAP.md", "src/gemini_physics/"]
-line_count = 100
+line_count = 103
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -1083,7 +1428,7 @@ make artifacts-materials
 '''
 
 [[document]]
-id = "DRN-004"
+id = "DRN-005"
 source_markdown = "docs/CAYLEY_DICKSON_DATA_PROVENANCE.md"
 slug = "cayley_dickson_data_provenance"
 title = "Cayley-Dickson External Data Provenance"
@@ -1091,8 +1436,11 @@ status_token = "NARRATIVE"
 content_kind = "provenance_note"
 claim_refs = ["C-451", "C-454", "C-455", "C-456", "C-458", "C-461", "C-462", "C-463", "C-464"]
 path_refs = ["convos/CayleyDickson/", "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md", "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md", "docs/external_sources/DE_MARRAIS_CATAMARAN.md", "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md", "docs/external_sources/DE_MARRAIS_PLACEHOLDER_III.md"]
-line_count = 193
+line_count = 196
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -1289,7 +1637,7 @@ spectrum {+1, -1} with multiplicity r each.
 '''
 
 [[document]]
-id = "DRN-005"
+id = "DRN-006"
 source_markdown = "docs/CHANGELOG_AUDIT.md"
 slug = "changelog_audit"
 title = "Audit Changelog"
@@ -1297,8 +1645,11 @@ status_token = "AUDIT"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["tests/test_cayley_dickson_properties.py", "docs/MATH_VALIDATION_REPORT.md", "src/gemini_physics/group_theory.py", "tests/test_group_theory.py", "data/external/", "bin/record_external_hashes.py", "data/external/PROVENANCE.local.json"]
-line_count = 20
+line_count = 23
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -1322,7 +1673,7 @@ body_markdown = '''
 '''
 
 [[document]]
-id = "DRN-006"
+id = "DRN-007"
 source_markdown = "docs/CLAIMS_DOMAIN_TAXONOMY.md"
 slug = "claims_domain_taxonomy"
 title = "Claims Domain Taxonomy"
@@ -1330,8 +1681,11 @@ status_token = "NARRATIVE"
 content_kind = "taxonomy_or_glossary"
 claim_refs = ["C-001", "C-427"]
 path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/claims/CLAIMS_DOMAIN_MAP.csv", "docs/claims/by_domain/"]
-line_count = 43
+line_count = 46
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -1378,7 +1732,7 @@ It is consumed by offline scripts/verifiers and can be used to generate per-doma
 '''
 
 [[document]]
-id = "DRN-007"
+id = "DRN-008"
 source_markdown = "docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md"
 slug = "claims_evidence_matrix_notes_2026-02-01"
 title = "Claims / Evidence Matrix (Work-in-Progress)"
@@ -1386,8 +1740,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-001", "C-002", "C-003", "C-004", "C-005", "C-006", "C-007", "C-008", "C-009", "C-010", "C-011", "C-012", "C-013", "C-014", "C-015", "C-016", "C-017", "C-018", "C-019", "C-020", "C-021", "C-022", "C-023", "C-024", "C-025", "C-026", "C-027", "C-028", "C-029", "C-030", "C-031", "C-032", "C-033", "C-034", "C-035", "C-036", "C-037", "C-038", "C-039", "C-040", "C-041", "C-042", "C-043", "C-044", "C-045", "C-046", "C-047", "C-048", "C-049", "C-050", "C-051", "C-052", "C-053", "C-054", "C-055", "C-056", "C-057", "C-058", "C-059", "C-060", "C-061", "C-062", "C-063", "C-064", "C-065", "C-066", "C-067", "C-068", "C-069", "C-070", "C-071", "C-072", "C-073", "C-074", "C-075", "C-076", "C-077", "C-078", "C-079", "C-080", "C-081", "C-082", "C-083", "C-084", "C-085", "C-086", "C-087", "C-088", "C-089", "C-090", "C-091", "C-092", "C-093", "C-094", "C-095", "C-096", "C-097", "C-098", "C-099", "C-100", "C-101", "C-102", "C-103", "C-104", "C-105", "C-106", "C-107", "C-108", "C-109", "C-110", "C-111", "C-112", "C-113", "C-114", "C-115", "C-116", "C-117", "C-118", "C-119", "C-120", "C-121", "C-122", "C-123", "C-124", "C-125", "C-126", "C-127", "C-128", "C-129", "C-130", "C-131", "C-132", "C-133", "C-134", "C-135", "C-136", "C-137", "C-138", "C-139", "C-140", "C-141", "C-142", "C-143", "C-144", "C-145", "C-146", "C-147", "C-148", "C-149", "C-150", "C-151", "C-152", "C-153", "C-154", "C-155", "C-156", "C-157", "C-158", "C-159", "C-160", "C-161", "C-162", "C-163", "C-164", "C-165", "C-166", "C-167", "C-168", "C-169", "C-170", "C-171", "C-172", "C-173", "C-174", "C-175", "C-176", "C-177", "C-178", "C-179", "C-180", "C-181", "C-182", "C-183", "C-184", "C-185", "C-186", "C-187", "C-188", "C-189", "C-190", "C-191", "C-192", "C-193", "C-194", "C-195", "C-196", "C-197", "C-198", "C-199", "C-200", "C-201", "C-202", "C-203", "C-204", "C-205", "C-206", "C-207", "C-208", "C-209", "C-210", "C-211", "C-212", "C-213", "C-214", "C-215", "C-216", "C-217", "C-218", "C-219", "C-220", "C-221", "C-222", "C-223", "C-224", "C-225", "C-226", "C-227", "C-228", "C-229", "C-230", "C-231", "C-232", "C-233", "C-234", "C-235", "C-236", "C-237", "C-238", "C-239", "C-240", "C-241", "C-242", "C-243", "C-244", "C-245", "C-246", "C-247", "C-248", "C-249", "C-250", "C-251", "C-252", "C-253", "C-254", "C-255", "C-256", "C-257", "C-258", "C-259", "C-260", "C-261", "C-262", "C-263", "C-264", "C-265", "C-266", "C-267", "C-268", "C-269", "C-270", "C-271", "C-272", "C-273", "C-274", "C-275", "C-276", "C-277", "C-278", "C-279", "C-280", "C-281", "C-282", "C-283", "C-284", "C-285", "C-286", "C-287", "C-288", "C-289", "C-290", "C-291", "C-292", "C-293", "C-294", "C-295", "C-296", "C-297", "C-298", "C-299", "C-300", "C-301", "C-302", "C-303", "C-304", "C-305", "C-306", "C-307", "C-308", "C-309", "C-310", "C-311", "C-312", "C-313", "C-314", "C-315", "C-316", "C-317", "C-318", "C-319", "C-320", "C-321", "C-322", "C-323", "C-324", "C-325", "C-326", "C-327", "C-328", "C-329", "C-330", "C-331", "C-332", "C-333", "C-334", "C-335", "C-336", "C-337", "C-338", "C-339", "C-340", "C-341", "C-342", "C-343", "C-344", "C-345", "C-346", "C-347", "C-348", "C-349", "C-350", "C-351", "C-352", "C-353", "C-354", "C-355", "C-356", "C-357", "C-358", "C-359", "C-360", "C-361", "C-362", "C-363", "C-364", "C-365", "C-366", "C-367", "C-368", "C-369", "C-370", "C-371", "C-372", "C-373", "C-374", "C-375", "C-376", "C-377", "C-378", "C-379", "C-380", "C-381", "C-382", "C-383", "C-384", "C-385", "C-386", "C-387", "C-388", "C-389", "C-390", "C-391", "C-392", "C-393", "C-394", "C-395", "C-396", "C-397", "C-398", "C-399", "C-400", "C-401", "C-402", "C-403", "C-404", "C-405", "C-406", "C-407", "C-408"]
 path_refs = ["src/verification/verify_algebra.py", "docs/THE_GEMINI_PROTOCOL.md", "crates/algebra_core/src/cayley_dickson.rs", "tests/test_cayley_dickson_properties.py", "docs/SEDENION_ATLAS.md", "src/gemini_physics/de_marrais_boxkites.py", "tests/test_de_marrais_boxkites.py", "docs/DE_MARRAIS_REPLICATION.md", "tests/test_de_marrais_automorphemes.py", "(e_low +/- e_high)", "docs/REGGIANI_REPLICATION.md", "src/gemini_physics/reggiani_replication.py", "tests/test_reggiani_standard_zero_divisors.py", "src/scripts/export/export_reggiani_annihilator_stats.py", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "src/gemini_physics/m3_cd_transfer.py", "tests/test_m3_cd_transfer.py", "(e_i +/- e_j)", "src/gemini_physics/cd_xor_heuristics.py", "tests/test_cd_xor_heuristics.py", "docs/WHEELS_DIVISION_BY_ZERO.md", "crates/algebra_core/src/wheels.rs", "tests/test_wheels.py", "docs/external_sources/WHEELS_CAYLEY_DICKSON_SOURCES.md", "src/scripts/analysis/cd_wheel_roundtrip_test.py", "data/csv/cd_wheel_roundtrip_results.csv", "docs/theory/WHEELS_CD_STRUCTURAL_ANALYSIS.md", "docs/external_sources/PSL_2_7_SOURCES.md", "crates/algebra_core/src/group_theory.rs", "crates/algebra_core/src/boxkites.rs", "tests/test_psl_2_7_action.py", "tests/test_boxkite_symmetry_action.py", "docs/external_sources/REGGIANI_MANIFOLD_CLAIMS.md", "data/external/papers/reggiani_2024_2411.18881.pdf", "docs/theory/REGGIANI_GEOMETRIC_VALIDATION.md", "data/external/GWTC-3_confident.csv", "docs/archive/RESEARCH_STATUS.md", "docs/BIBLIOGRAPHY.md", "src/scripts/data/fetch_gwtc3_confident.py", "data/external/GWTC-3_confident.json", "tests/test_gwosc_eventapi_snapshot.py", "docs/external_sources/GWTC3_MASS_CLUMPING_PLAN.md", "docs/external_sources/GWTC3_DECISION_RULE_SUMMARY.md", "docs/external_sources/GWTC3_POPULATION_SOURCES.md", "docs/external_sources/GWTC3_SELECTION_FUNCTION_SPEC.md", "crates/stats_core/src/claims_gates.rs", "src/scripts/analysis/gwtc3_mass_clumping_null_models.py", "src/scripts/analysis/gwtc3_mass_clumping_bootstrap.py", "src/scripts/analysis/gwtc3_mass_clumping_decision_rule_summary.py", "src/scripts/analysis/gwtc3_selection_weight_sweep.py", "src/scripts/data/convert_gwtc3_injections_hdf.py", "src/scripts/analysis/gwtc3_selection_function_from_injections.py", "src/scripts/analysis/gwtc3_modality_preregistered.py", "src/scripts/analysis/gwtc3_bayesian_mixture.py", "data/external/gwtc3_injection_summary.csv", "data/external/gwtc3_injection_summary_7890398.csv", "data/csv/gwtc3_selection_function_binned.csv", "data/csv/gwtc3_selection_function_binned_7890398.csv", "data/csv/gwtc3_selection_function_binned_combined.csv", "data/csv/gwtc3_selection_function_binned_combined_altbins.csv", "data/csv/gwtc3_mass_clumping_metrics.csv", "data/csv/gwtc3_mass_clumping_null_models.csv", "data/csv/gwtc3_mass_clumping_bootstrap_counts.csv", "data/csv/gwtc3_mass_clumping_bootstrap_summary.csv", "data/csv/gwtc3_mass_clumping_decision_rule_summary.csv", "data/csv/gwtc3_selection_bias_control_metrics.csv", "data/csv/gwtc3_selection_bias_control_metrics_o123.csv", "data/csv/gwtc3_selection_bias_control_metrics_o3a_altbins.csv", "data/csv/gwtc3_selection_bias_control_metrics_o123_altbins.csv", "data/csv/gwtc3_selection_weight_sweep.csv", "data/csv/gwtc3_selection_weight_sweep_o123.csv", "data/csv/gwtc3_selection_weight_sweep_o3a_altbins.csv", "data/csv/gwtc3_selection_weight_sweep_o123_altbins.csv", "data/csv/gwtc3_bayesian_mixture_results.csv", "docs/preregistered/GWTC3_MODALITY_TEST.md", "docs/preregistered/GWTC3_BAYESIAN_MIXTURE.md", "alpha = -1.5", "src/scripts/analysis/neg_dim_pde.py", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/external_sources/NEGATIVE_DIMENSION_SOURCES.md", "docs/theory/PARISI_SOURLAS_ALPHA_DERIVATION.md", "src/scripts/analysis/parisi_sourlas_spectral_dimension.py", "tests/test_parisi_sourlas_connection.py", "data/csv/parisi_sourlas_spectral_dimension.csv", "docs/FRACTIONAL_OPERATOR_POLICY.md", "tests/test_fractional_laplacian_extension.py", "S ~ log(L) + L^{0.5}", "docs/archive/RESEARCH_STATUS_FINAL.md", "docs/external_sources/TENSOR_NETWORK_SOURCES.md", "crates/quantum_core/src/tensor_networks.rs", "src/scripts/measure/measure_tensor_network_entropy.py", "src/scripts/measure/measure_tensor_network_entropy_scaling.py", "src/scripts/measure/measure_tensor_network_entropy_decision.py", "src/scripts/analysis/tensor_entropy_multi_system_fit.py", "data/csv/tensor_network_entropy_metrics.csv", "data/csv/tensor_network_entropy_scaling.csv", "data/csv/tensor_network_entropy_decision.csv", "data/csv/tensor_entropy_scaling_fit.csv", "tests/test_tensor_network_entropy_tiny.py", "tests/test_tensor_network_entropy_scaling.py", "tests/test_tensor_network_entropy_decision.py", "tests/test_tensor_entropy_multi_system_fit.py", "docs/preregistered/TENSOR_ENTROPY_SCALING.md", "docs/MATERIALS_APPLICATIONS.md", "docs/external_sources/METAMATERIAL_ABSORBER_SOURCES.md", "docs/C010_ABSORBER_TCMT_MAPPING.md", "docs/C010_ABSORBER_SALISBURY.md", "docs/C010_ABSORBER_RLC.md", "docs/C010_ABSORBER_CPA.md", "src/scripts/analysis/materials_absorber_tcmt.py", "src/scripts/analysis/materials_absorber_salisbury.py", "src/scripts/analysis/materials_absorber_rlc.py", "src/scripts/analysis/materials_absorber_cpa_twoport.py", "src/scripts/analysis/materials_absorber_cpa_input_sweep.py", "data/csv/c010_truncated_icosahedron_graph.csv", "data/csv/c010_tcmt_truncated_icosahedron.csv", "data/csv/c010_tcmt_truncated_icosahedron_minima.csv", "data/csv/c010_salisbury_screen.csv", "data/csv/c010_salisbury_screen_minima.csv", "data/csv/c010_rlc_surface_impedance.csv", "data/csv/c010_rlc_surface_impedance_minima.csv", "data/csv/c010_rlc_fit_summary.csv", "data/csv/c010_cpa_twoport_scan.csv", "data/csv/c010_cpa_twoport_minima.csv", "data/csv/c010_cpa_input_sweep.csv", "data/csv/c010_cpa_input_sweep_minima.csv", "data/csv/c010_zd_tcmt_spectral_comparison.csv", "data/csv/materials_baseline_metrics.csv", "data/csv/materials_embedding_benchmarks.csv", "docs/NAVIGATOR.md", "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md", "docs/external_sources/GRAVASTAR_SOURCES.md", "docs/theory/GRAVASTAR_CD_IMPOSSIBILITY_ANALYSIS.md", "src/scripts/analysis/gravastar_eos_sweep.py", "src/scripts/analysis/gravastar_thin_shell.py", "src/scripts/analysis/gravastar_thin_shell_stability.py", "src/scripts/analysis/gravastar_nonassociative_obstruction.py", "data/csv/gravastar_eos_pressure_gradient_sweep.csv", "data/csv/gravastar_thin_shell_matching.csv", "data/csv/gravastar_thin_shell_stability.csv", "data/csv/gravastar_nonassociative_obstruction.csv", "tests/test_tov_gravastar_core.py", "tests/test_tov_gravastar_sweep.py", "tests/test_gravastar_thin_shell.py", "tests/test_gravastar_thin_shell_stability.py", "tests/test_gravastar_nonassociative_obstruction.py", "docs/PHYSICAL_INTERPRETATION.md", "docs/external_sources/HZ_DATASETS_SOURCES.md", "docs/external_sources/COSMOLOGY_MULTIPROBE_SOURCES.md", "docs/external_sources/ADDITIONAL_COSMOLOGICAL_DATASETS.md", "docs/NEGATIVE_DIMENSION_DARK_ENERGY_MODEL.md", "docs/NEG_DIM_MULTIPROBE_EXPERIMENT.md", "crates/spectral_core/src/neg_dim.rs", "src/scripts/analysis/neg_dim_model_comparison.py", "src/scripts/analysis/neg_dim_free_eta_comparison.py", "src/scripts/data/fix_bao_observables.py", "tests/test_neg_dim_dark_energy.py", "tests/test_neg_dim_multidata.py", "tests/test_neg_dim_free_eta_comparison.py", "data/csv/neg_dim_model_comparison_results.csv", "data/csv/neg_dim_free_eta_comparison_results.csv", "docs/preregistered/NEG_DIM_MODEL_COMPARISON.md", "docs/preregistered/NEG_DIM_FREE_ETA_AMENDMENT.md", "data/csv/legacy/", "docs/theory/unified_tensor_wheel_cd_framework.md", "src/scripts/analysis/surreal_cd_ordinals.py", "src/surreal_matmul_bench.py", "src/scripts/visualization/vis_grand_synthesis.py", "tests/test_surreal_cd_ordinals.py", "crates/algebra_core/src/grassmannian.rs", "src/scripts/analysis/cd_fiber_holonomy_analysis.py", "crates/algebra_core/src/homotopy_algebra.rs", "tests/test_cd_holonomy.py", "cpp/", "cpp/tests/test_cd_algebra.cpp", "cpp/benchmarks/bench_cd_multiply.cpp", "docs/stellar_cartography/theory/HYPOTHESIS_DEF.md", "docs/preregistered/TSCP_SKY_ALIGNMENT.md", "tests/test_tscp_alignment_offline.py", "docs/external_sources/TSCP_SKY_ALIGNMENT_SOURCES.md", "src/scripts/analysis/verify_tscp_alignment.py", "data/csv/tscp_alignment_results.csv", "docs/external_sources/C026_MASS_GAP_SOURCES.md", "docs/stellar_cartography/theory/ONTOLOGICAL_AXIOMS.md", "docs/external_sources/C027_EFFECTIVE_DIMENSION_SOURCES.md", "docs/external_sources/Sedenion-Valued Field Theories*.pdf", "docs/SEDENION_FIELD_THEORY.md", "crates/algebra_core/src/hypercomplex.rs", "tests/test_sedenion_generations.py", "tests/test_su5_generators.py", "docs/external_sources/__Exceptional Cosmological Framework*.pdf", "docs/EXCEPTIONAL_COSMOLOGY.md", "crates/quantum_core/src/casimir.rs", "crates/cosmology_core/src/spectral.rs", "crates/cosmology_core/src/bounce.rs", "tests/test_spectral_dimension.py", "tests/test_primordial_tilt.py", "docs/theory/PADIC_ANALYSIS_FOUNDATIONS.md", "crates/algebra_core/src/padic.rs", "src/scripts/analysis/verify_kozyrev_wavelets.py", "docs/ROADMAP_DETAILED.md", "src/scripts/data/fetch_compact_objects.py", "data/external/", "crates/algebra_core/src/zd_graphs.rs", "src/scripts/reproduction/reproduce_zd_adjacency.py", "docs/theory/OPERATOR_DEPTH_STRATIFICATION.md", "examples/strang_splitting_demo.py", "archive/legacy_conjectures/", "docs/theory/PHASE_IV_0_2_LEDGER.md", "docs/theory/WARP_FLOW_ALLOCATION.md", "crates/optics_core/src/tcmt.rs", "docs/external_sources/MULTIVERSE_METAMATERIALS_REPORT.md", "src/scripts/analysis/verify_phase_3_tasks.py", "src/scripts/analysis/unified_spacetime_synthesis.py", "src/scripts/analysis/verify_zd_32d_count.py", "tests/test_reggiani_geometric_invariants.py", "src/scripts/analysis/reggiani_geometric_invariants.py", "src/scripts/analysis/gwtc3_augment_35x.py", "crates/materials_core/src/optical_database.rs", "crates/materials_core/src/metamaterial.rs", "tests/test_cd_wheel_roundtrip.py", "src/verification/verify_legacy_16d_zd.py", "data/csv/tscp/alignment_scores.csv", "data/csv/tscp/monte_carlo_results.csv", "data/csv/tscp/real_results.csv", "data/csv/tscp/cosmic_results.csv", "data/csv/tscp/simulated_results.csv", "data/external/gwtc3/IGWN-GWTC3p0-v2-PESkyLocalizations.tar.gz", "tests/test_sedenion_automorphism.py", "tests/test_f4_casimir.py", "tests/test_bigraph_cosmogenesis.py", "tests/test_exceptional_w0.py", "src/scripts/data/fetch_pdg_particle_data.py", "tests/test_pdg_particle_data.py", "tests/test_pdg_coupling_constants.py", "src/scripts/data/fetch_desi_dr1_bao.py", "tests/test_desi_dr1_bao.py", "data/external/bao/", "src/scripts/data/fetch_planck_2018_chains.py", "src/scripts/data/fetch_planck_2018_spectra.py", "tests/test_planck_2018_chains.py", "tests/test_planck_2018_spectra.py", "src/scripts/data/fetch_nanograv_15yr.py", "tests/test_nanograv_15yr.py", "tests/test_gwtc3_sky_localization_areas.py", "src/scripts/data/fetch_o4_events.py", "tests/test_gwtc_o4_events.py", "src/scripts/data/fetch_chime_frb.py", "tests/test_chime_frb.py", "src/scripts/data/fetch_atnf_pulsars_full.py", "src/scripts/data/fetch_mcgill_magnetars.py", "tests/test_atnf_pulsars_full.py", "tests/test_mcgill_magnetars.py", "src/scripts/data/fetch_fermi_grb.py", "tests/test_fermi_grb.py", "src/scripts/data/fetch_cms_dimuon.py", "src/scripts/data/fetch_cms_higgs_diphoton.py", "tests/test_cms_dimuon.py", "tests/test_cms_higgs_diphoton.py", "src/scripts/data/fetch_neutrino_params.py", "tests/test_neutrino_params.py", "src/scripts/data/fetch_aflow_materials.py", "src/scripts/data/fetch_materials_nomad_subset.py", "tests/test_aflow_materials.py", "tests/test_materials_nomad.py", "tests/test_materials_baseline_models.py", "src/scripts/analysis/cd_algebraic_experiments.py", "data/csv/cd_algebraic_experiments.json", "src/scripts/analysis/cd_algebraic_experiments_v15.py", "data/csv/cd_algebraic_experiments_v15.json", "tests/test_cd_algebraic_experiments_v9.py::TestBHNormMultiplicativity", "tests/test_cd_algebraic_experiments_v9.py::TestBIZDProductsDim32", "tests/test_cd_algebraic_experiments_v9.py::TestBJThreeGenSubalgebra", "tests/test_cd_algebraic_experiments_v9.py::TestBKRatioPrecision", "tests/test_cd_algebraic_experiments_v9.py::TestBLAssocComponentEntropy", "tests/test_cd_algebraic_experiments_v9.py::TestBMMixedProductNorms", "src/scripts/analysis/cd_algebraic_experiments_v16.py", "data/csv/cd_algebraic_experiments_v16.json", "tests/test_cd_algebraic_experiments_v10.py::TestBNPowerAssociativity", "tests/test_cd_algebraic_experiments_v10.py::TestBOLROperatorSpectra", "tests/test_cd_algebraic_experiments_v10.py::TestBPZDKernelDim64", "tests/test_cd_algebraic_experiments_v10.py::TestBQFourProduct", "tests/test_cd_algebraic_experiments_v10.py::TestBRDerivation", "tests/test_cd_algebraic_experiments_v10.py::TestBSAlternatorDecomposition", "src/scripts/analysis/cd_algebraic_experiments_v17.py", "data/csv/cd_algebraic_experiments_v17.json", "tests/test_cd_algebraic_experiments_v11.py::TestBTNucleus", "tests/test_cd_algebraic_experiments_v11.py::TestBUCompositionDefect", "tests/test_cd_algebraic_experiments_v11.py::TestBVQuadrupleAssociator", "tests/test_cd_algebraic_experiments_v11.py::TestBWZDNormTableDim64", "tests/test_cd_algebraic_experiments_v11.py::TestBXBracketPolynomial", "tests/test_cd_algebraic_experiments_v11.py::TestBYConjugateAssociator", "src/scripts/analysis/cd_algebraic_experiments_v18.py", "data/csv/cd_algebraic_experiments_v18.json", "tests/test_cd_algebraic_experiments_v12.py::TestBZArtin", "tests/test_cd_algebraic_experiments_v12.py::TestCAJordanIdentity", "tests/test_cd_algebraic_experiments_v12.py::TestCBZDInteractionGraph", "tests/test_cd_algebraic_experiments_v12.py::TestCCJacobiIdentity", "tests/test_cd_algebraic_experiments_v12.py::TestCDIdempotent", "tests/test_cd_algebraic_experiments_v12.py::TestCETraceForm", "src/scripts/analysis/cd_algebraic_experiments_v19.py", "data/csv/cd_algebraic_experiments_v19.json", "tests/test_cd_algebraic_experiments_v13.py::TestCFMoufangIdentities", "tests/test_cd_algebraic_experiments_v13.py::TestCGAssociatorMultilinearity", "tests/test_cd_algebraic_experiments_v13.py::TestCHAnnihilatorDims", "tests/test_cd_algebraic_experiments_v13.py::TestCICommAssocCross", "tests/test_cd_algebraic_experiments_v13.py::TestCJNfoldProductNorm", "tests/test_cd_algebraic_experiments_v13.py::TestCKRotationInvariance", "src/scripts/analysis/cd_algebraic_experiments_v20.py", "data/csv/cd_algebraic_experiments_v20.json", "tests/test_cd_algebraic_experiments_v14.py::TestCLFlexibility", "tests/test_cd_algebraic_experiments_v14.py::TestCMAlternativeIdentities", "tests/test_cd_algebraic_experiments_v14.py::TestCNZDSpectrumDim128", "tests/test_cd_algebraic_experiments_v14.py::TestCOAssocCommutator", "tests/test_cd_algebraic_experiments_v14.py::TestCPAssocNormScaling", "tests/test_cd_algebraic_experiments_v14.py::TestCQMultiplicationDeterminant", "src/scripts/analysis/cd_algebraic_experiments_v21.py", "data/csv/cd_algebraic_experiments_v21.json", "tests/test_cd_algebraic_experiments_v15.py::TestCRCenterDimension", "tests/test_cd_algebraic_experiments_v15.py::TestCSPowerNormRatio", "tests/test_cd_algebraic_experiments_v15.py::TestCTLRCommutant", "tests/test_cd_algebraic_experiments_v15.py::TestCUAssociatorIdeal", "tests/test_cd_algebraic_experiments_v15.py::TestCVCommProductRatio", "tests/test_cd_algebraic_experiments_v15.py::TestCWSubalgebraDimension", "src/scripts/analysis/cd_algebraic_experiments_v22.py", "data/csv/cd_algebraic_experiments_v22.json", "tests/test_cd_algebraic_experiments_v16.py::TestCXDerivationDimension", "tests/test_cd_algebraic_experiments_v16.py::TestCYNilpotentPrevalence", "tests/test_cd_algebraic_experiments_v16.py::TestCZIPPreservation", "tests/test_cd_algebraic_experiments_v16.py::TestDAQuadraticRepresentation", "tests/test_cd_algebraic_experiments_v16.py::TestDBAssociatorAlternation", "tests/test_cd_algebraic_experiments_v16.py::TestDCIteratedCommutator", "src/scripts/analysis/cd_algebraic_experiments_v23.py", "data/csv/cd_algebraic_experiments_v23.json", "tests/test_cd_algebraic_experiments_v17.py::TestDDMalcevIdentity", "tests/test_cd_algebraic_experiments_v17.py::TestDEProductNormDistribution", "tests/test_cd_algebraic_experiments_v17.py::TestDFTriassociator", "tests/test_cd_algebraic_experiments_v17.py::TestDGInverseElement", "tests/test_cd_algebraic_experiments_v17.py::TestDHSubalgebraNucleus", "tests/test_cd_algebraic_experiments_v17.py::TestDIAssociatorSpectrum", "src/scripts/analysis/cd_algebraic_experiments_v24.py", "data/csv/cd_algebraic_experiments_v24.json", "tests/test_cd_algebraic_experiments_v18.py::TestDJBolIdentity", "tests/test_cd_algebraic_experiments_v18.py::TestDKDoubleCommutator", "tests/test_cd_algebraic_experiments_v18.py::TestDLDoublingVerification", "tests/test_cd_algebraic_experiments_v18.py::TestDMConjugateReversal", "tests/test_cd_algebraic_experiments_v18.py::TestDNFourElementAssociator", "tests/test_cd_algebraic_experiments_v18.py::TestDOSubmultiplicativity", "src/scripts/analysis/cd_algebraic_experiments_v25.py", "data/csv/cd_algebraic_experiments_v25.json", "tests/test_cd_algebraic_experiments_v19.py::TestDPArtinTheorem", "tests/test_cd_algebraic_experiments_v19.py::TestDQAssociatorNormScaling", "tests/test_cd_algebraic_experiments_v19.py::TestDRMiddleMoufang", "tests/test_cd_algebraic_experiments_v19.py::TestDSAlternativeLaws", "tests/test_cd_algebraic_experiments_v19.py::TestDTCommAssocLeibniz", "tests/test_cd_algebraic_experiments_v19.py::TestDUIteratedProductNorms", "src/scripts/analysis/cd_algebraic_experiments_v26.py", "data/csv/cd_algebraic_experiments_v26.json", "tests/test_cd_algebraic_experiments_v20.py::TestDVNucleusDimension", "tests/test_cd_algebraic_experiments_v20.py::TestDWDerivationLeibniz", "tests/test_cd_algebraic_experiments_v20.py::TestDXCompositionTest", "tests/test_cd_algebraic_experiments_v20.py::TestDYAssociatorKernel", "tests/test_cd_algebraic_experiments_v20.py::TestDZCommutativityDefect", "tests/test_cd_algebraic_experiments_v20.py::TestEATripleProductNorm", "src/scripts/analysis/cd_algebraic_experiments_v27.py", "data/csv/cd_algebraic_experiments_v27.json", "tests/test_cd_algebraic_experiments_v21.py::TestEBFlexibleNucleus", "tests/test_cd_algebraic_experiments_v21.py::TestECAssociatorDistribution", "tests/test_cd_algebraic_experiments_v21.py::TestEDJordanProduct", "tests/test_cd_algebraic_experiments_v21.py::TestEEQuadraticIdentity", "tests/test_cd_algebraic_experiments_v21.py::TestEFCascadeAssociator", "tests/test_cd_algebraic_experiments_v21.py::TestEGLeftMultSpectrum", "src/scripts/analysis/cd_algebraic_experiments_v28.py", "data/csv/cd_algebraic_experiments_v28.json", "tests/test_cd_algebraic_experiments_v22.py::TestEHRightMultSpectrum", "tests/test_cd_algebraic_experiments_v22.py::TestEIThirdPower", "tests/test_cd_algebraic_experiments_v22.py::TestEJAssociatorSymmetry", "tests/test_cd_algebraic_experiments_v22.py::TestEKJordanNorm", "tests/test_cd_algebraic_experiments_v22.py::TestELBilinearForm", "tests/test_cd_algebraic_experiments_v22.py::TestEMOperatorTrace", "src/scripts/analysis/cd_algebraic_experiments_v29.py", "data/csv/cd_algebraic_experiments_v29.json", "tests/test_cd_algebraic_experiments_v23.py::TestENNormProductRatio", "tests/test_cd_algebraic_experiments_v23.py::TestEOIdempotent", "tests/test_cd_algebraic_experiments_v23.py::TestEPCommutant", "tests/test_cd_algebraic_experiments_v23.py::TestEQAssociatorTrilinear", "tests/test_cd_algebraic_experiments_v23.py::TestERDerivationDimension", "tests/test_cd_algebraic_experiments_v23.py::TestESMoufangCenter", "src/scripts/analysis/cd_algebraic_experiments_v30.py", "data/csv/cd_algebraic_experiments_v30.json", "tests/test_cd_algebraic_experiments_v24.py::TestETPowerAssociativity", "tests/test_cd_algebraic_experiments_v24.py::TestEUSubalgebraDimension", "tests/test_cd_algebraic_experiments_v24.py::TestEVCommutatorNorm", "tests/test_cd_algebraic_experiments_v24.py::TestEWFrobeniusProduct", "tests/test_cd_algebraic_experiments_v24.py::TestEXRealPartSymmetry", "tests/test_cd_algebraic_experiments_v24.py::TestEYReverseAssociator", "src/scripts/analysis/cd_algebraic_experiments_v31.py", "data/csv/cd_algebraic_experiments_v31.json", "tests/test_cd_algebraic_experiments_v25.py::TestEZRealPartFormula", "tests/test_cd_algebraic_experiments_v25.py::TestFALeftAlternative", "tests/test_cd_algebraic_experiments_v25.py::TestFBJordanNormScaling", "tests/test_cd_algebraic_experiments_v25.py::TestFCOperatorDeterminant", "tests/test_cd_algebraic_experiments_v25.py::TestFDRightMoufang", "tests/test_cd_algebraic_experiments_v25.py::TestFELinearizedAssociator", "src/scripts/analysis/cd_algebraic_experiments_v32.py", "data/csv/cd_algebraic_experiments_v32.json", "tests/test_cd_algebraic_experiments_v26.py::TestFFRightAlternative", "tests/test_cd_algebraic_experiments_v26.py::TestFGNormPowerScaling", "tests/test_cd_algebraic_experiments_v26.py::TestFHAdjointIsometry", "tests/test_cd_algebraic_experiments_v26.py::TestFISymmetricAntisymmetricBalance", "tests/test_cd_algebraic_experiments_v26.py::TestFJDoublingVerification", "tests/test_cd_algebraic_experiments_v26.py::TestFKQuadraticForm", "src/scripts/analysis/cd_algebraic_experiments_v33.py", "data/csv/cd_algebraic_experiments_v33.json", "tests/test_cd_algebraic_experiments_v27.py::TestFLInverseElement", "tests/test_cd_algebraic_experiments_v27.py::TestFMArtinTheorem", "tests/test_cd_algebraic_experiments_v27.py::TestFNNucleus", "tests/test_cd_algebraic_experiments_v27.py::TestFOJacobiAssociator", "tests/test_cd_algebraic_experiments_v27.py::TestFPNormDecomposition", "tests/test_cd_algebraic_experiments_v27.py::TestFQTraceRightProduct", "src/scripts/analysis/cd_algebraic_experiments_v34.py", "data/csv/cd_algebraic_experiments_v34.json", "tests/test_cd_algebraic_experiments_v28.py::TestFRLeftBol", "tests/test_cd_algebraic_experiments_v28.py::TestFSLaSpectrum", "tests/test_cd_algebraic_experiments_v28.py::TestFTCommutatorDimension", "tests/test_cd_algebraic_experiments_v28.py::TestFUAssociatorNormScaling", "tests/test_cd_algebraic_experiments_v28.py::TestFVConjugateReversal", "tests/test_cd_algebraic_experiments_v28.py::TestFWLaSquared", "src/scripts/analysis/cd_algebraic_experiments_v35.py", "data/csv/cd_algebraic_experiments_v35.json", "tests/test_cd_algebraic_experiments_v29.py::TestFXRaLaSpectrum", "tests/test_cd_algebraic_experiments_v29.py::TestFYAssociatorConcentration", "tests/test_cd_algebraic_experiments_v29.py::TestFZProductNormRatio", "tests/test_cd_algebraic_experiments_v29.py::TestGADoublingAssociator", "tests/test_cd_algebraic_experiments_v29.py::TestGBAssociator4Form", "tests/test_cd_algebraic_experiments_v29.py::TestGCCenterDimension", "src/scripts/analysis/cd_algebraic_experiments_v36.py", "data/csv/cd_algebraic_experiments_v36.json", "tests/test_cd_algebraic_experiments_v30.py::TestGDAssociatorTrilinearity", "tests/test_cd_algebraic_experiments_v30.py::TestGEProductOfInverses", "tests/test_cd_algebraic_experiments_v30.py::TestGFCommutatorAssociatorRatio", "tests/test_cd_algebraic_experiments_v30.py::TestGGInnerDerivation", "tests/test_cd_algebraic_experiments_v30.py::TestGHFlexibleNucleus", "tests/test_cd_algebraic_experiments_v30.py::TestGIMoufangIdentity", "src/scripts/analysis/cd_algebraic_experiments_v37.py", "data/csv/cd_algebraic_experiments_v37.json", "tests/test_cd_algebraic_experiments_v31.py::TestGJQuadraticIdentity", "tests/test_cd_algebraic_experiments_v31.py::TestGKPowerNormNonUnit", "tests/test_cd_algebraic_experiments_v31.py::TestGLDiAssociator", "tests/test_cd_algebraic_experiments_v31.py::TestGMArtinSubalgebra", "tests/test_cd_algebraic_experiments_v31.py::TestGNTraceCommutator", "tests/test_cd_algebraic_experiments_v31.py::TestGONucleusIdeal", "src/scripts/analysis/cd_algebraic_experiments_v38.py", "data/csv/cd_algebraic_experiments_v38.json", "tests/test_cd_algebraic_experiments_v32.py::TestGPPolarizationIdentity", "tests/test_cd_algebraic_experiments_v32.py::TestGQJordanPowerAssociativity", "tests/test_cd_algebraic_experiments_v32.py::TestGRTripleProduct", "tests/test_cd_algebraic_experiments_v32.py::TestGSBasisElementSquares", "tests/test_cd_algebraic_experiments_v32.py::TestGTNilpotentElements", "tests/test_cd_algebraic_experiments_v32.py::TestGUAlternativeNucleus", "src/scripts/analysis/cd_algebraic_experiments_v39.py", "data/csv/cd_algebraic_experiments_v39.json", "tests/test_cd_algebraic_experiments_v33.py::TestGVLaEigenvalueDistribution", "tests/test_cd_algebraic_experiments_v33.py::TestGWZeroDivisorProductNorm", "tests/test_cd_algebraic_experiments_v33.py::TestGXSubalgebraEmbedding", "tests/test_cd_algebraic_experiments_v33.py::TestGYAssociatorFrobenius", "tests/test_cd_algebraic_experiments_v33.py::TestGZAntiCommutatorNorm", "tests/test_cd_algebraic_experiments_v33.py::TestHAPowerTower", "src/scripts/analysis/cd_algebraic_experiments_v40.py", "data/csv/cd_algebraic_experiments_v40.json", "tests/test_cd_algebraic_experiments_v34.py::TestHBNormProduct", "tests/test_cd_algebraic_experiments_v34.py::TestHCImaginaryProduct", "tests/test_cd_algebraic_experiments_v34.py::TestHDEigenvaluePairing", "tests/test_cd_algebraic_experiments_v34.py::TestHENFoldProductNorm", "tests/test_cd_algebraic_experiments_v34.py::TestHFAssociatorSwapRatio", "tests/test_cd_algebraic_experiments_v34.py::TestHGGeneratedSubalgebra", "src/scripts/analysis/cd_algebraic_experiments_v41.py", "data/csv/cd_algebraic_experiments_v41.json", "tests/test_cd_algebraic_experiments_v35.py::TestHHMoufangLoopFailure", "tests/test_cd_algebraic_experiments_v35.py::TestHIConjugateAntiAutomorphism", "tests/test_cd_algebraic_experiments_v35.py::TestHJCenter", "tests/test_cd_algebraic_experiments_v35.py::TestHKCyclicAssociatorSum", "tests/test_cd_algebraic_experiments_v35.py::TestHLLRIntertwining", "tests/test_cd_algebraic_experiments_v35.py::TestHMProductOfConjugates", "src/scripts/analysis/cd_algebraic_experiments_v42.py", "data/csv/cd_algebraic_experiments_v42.json", "tests/test_cd_algebraic_experiments_v36.py::TestHNTraceLa", "tests/test_cd_algebraic_experiments_v36.py::TestHORightBol", "tests/test_cd_algebraic_experiments_v36.py::TestHPCommAnticommDecomposition", "tests/test_cd_algebraic_experiments_v36.py::TestHQDerivationDimension", "tests/test_cd_algebraic_experiments_v36.py::TestHRAssociatorReversal", "tests/test_cd_algebraic_experiments_v36.py::TestHSRealPartSymmetry", "src/scripts/analysis/cd_algebraic_experiments_v43.py", "data/csv/cd_algebraic_experiments_v43.json", "tests/test_cd_algebraic_experiments_v37.py::TestHTInverse", "tests/test_cd_algebraic_experiments_v37.py::TestHULRSpectralEquiv", "tests/test_cd_algebraic_experiments_v37.py::TestHVFlexibleProductNorm", "tests/test_cd_algebraic_experiments_v37.py::TestHWScalarTripleProduct", "tests/test_cd_algebraic_experiments_v37.py::TestHXInverseComposition", "tests/test_cd_algebraic_experiments_v37.py::TestHYCommutatorNormScaling", "src/scripts/analysis/cd_algebraic_experiments_v44.py", "data/csv/cd_algebraic_experiments_v44.json", "tests/test_cd_algebraic_experiments_v38.py::TestHZDoublingConstruction", "tests/test_cd_algebraic_experiments_v38.py::TestIAAssociator23Swap", "tests/test_cd_algebraic_experiments_v38.py::TestIBChebyshevPowers", "tests/test_cd_algebraic_experiments_v38.py::TestICInnerProductAdjoint", "tests/test_cd_algebraic_experiments_v38.py::TestIDNormOfSum", "tests/test_cd_algebraic_experiments_v38.py::TestIEPolarization", "src/scripts/analysis/cd_algebraic_experiments_v45.py", "data/csv/cd_algebraic_experiments_v45.json", "tests/test_cd_algebraic_experiments_v39.py::TestIFLaQuadratic", "tests/test_cd_algebraic_experiments_v39.py::TestIGProductNormVariance", "tests/test_cd_algebraic_experiments_v39.py::TestIHAssociatorConcentration", "tests/test_cd_algebraic_experiments_v39.py::TestIIFlexibility", "tests/test_cd_algebraic_experiments_v39.py::TestIJJordanIdentity", "tests/test_cd_algebraic_experiments_v39.py::TestIKMinimalPolynomial", "src/scripts/analysis/cd_algebraic_experiments_v46.py", "data/csv/cd_algebraic_experiments_v46.json", "tests/test_cd_algebraic_experiments_v40.py::TestILLeftAlternative", "tests/test_cd_algebraic_experiments_v40.py::TestINRightAlternative", "tests/test_cd_algebraic_experiments_v40.py::TestIMCommAnticommRatio", "tests/test_cd_algebraic_experiments_v40.py::TestIONucleus", "tests/test_cd_algebraic_experiments_v40.py::TestIPNormSubmultiplicativity", "tests/test_cd_algebraic_experiments_v40.py::TestIQLeftMoufang", "src/scripts/analysis/cd_algebraic_experiments_v47.py", "data/csv/cd_algebraic_experiments_v47.json", "tests/test_cd_algebraic_experiments_v41.py::TestIRPowerAssociativity", "tests/test_cd_algebraic_experiments_v41.py::TestISEigenvalueStructure", "tests/test_cd_algebraic_experiments_v41.py::TestITFourthPowerNorm", "tests/test_cd_algebraic_experiments_v41.py::TestIUBimoduleCommutation", "tests/test_cd_algebraic_experiments_v41.py::TestIVArtinTheorem", "tests/test_cd_algebraic_experiments_v41.py::TestIWConjugateProductNorm", "src/scripts/analysis/cd_algebraic_experiments_v48.py", "data/csv/cd_algebraic_experiments_v48.json", "tests/test_cd_algebraic_experiments_v42.py::TestIXExponentialMap", "tests/test_cd_algebraic_experiments_v42.py::TestIYSquaringLipschitz", "tests/test_cd_algebraic_experiments_v42.py::TestIZTraceLa", "tests/test_cd_algebraic_experiments_v42.py::TestJAInnerDerivation", "tests/test_cd_algebraic_experiments_v42.py::TestJBPythagorean", "tests/test_cd_algebraic_experiments_v42.py::TestJCImaginarySquare", "src/scripts/analysis/cd_algebraic_experiments_v49.py", "data/csv/cd_algebraic_experiments_v49.json", "tests/test_cd_algebraic_experiments_v43.py::TestJDConjugateProductNorm", "tests/test_cd_algebraic_experiments_v43.py::TestJEReAConjA", "tests/test_cd_algebraic_experiments_v43.py::TestJFRealPartOfSquare", "tests/test_cd_algebraic_experiments_v43.py::TestJGDeterminantLa", "tests/test_cd_algebraic_experiments_v43.py::TestJHTrilinearAssociativity", "tests/test_cd_algebraic_experiments_v43.py::TestJICyclicTrilinear", "src/scripts/analysis/cd_algebraic_experiments_v50.py", "data/csv/cd_algebraic_experiments_v50.json", "tests/test_cd_algebraic_experiments_v44.py::TestJJPowerNorm", "tests/test_cd_algebraic_experiments_v44.py::TestJKJacobiIdentity", "tests/test_cd_algebraic_experiments_v44.py::TestJLMiddleMoufang", "tests/test_cd_algebraic_experiments_v44.py::TestJMImaginaryProductNorm", "tests/test_cd_algebraic_experiments_v44.py::TestJNLaSquareVsLaSq", "tests/test_cd_algebraic_experiments_v44.py::TestJORightMoufang", "src/scripts/analysis/cd_algebraic_experiments_v51.py", "data/csv/cd_algebraic_experiments_v51.json", "tests/test_cd_algebraic_experiments_v45.py::TestJPMalcevIdentity", "tests/test_cd_algebraic_experiments_v45.py::TestJQSchaferIdentity", "tests/test_cd_algebraic_experiments_v45.py::TestJRCommutatorNormScaling", "tests/test_cd_algebraic_experiments_v45.py::TestJSQuadraticIdentity", "tests/test_cd_algebraic_experiments_v45.py::TestJTArtinSubalgebra", "tests/test_cd_algebraic_experiments_v45.py::TestJUConjugationAntiAutomorphism", "src/scripts/analysis/cd_algebraic_experiments_v52.py", "data/csv/cd_algebraic_experiments_v52.json", "tests/test_cd_algebraic_experiments_v46.py::TestJVAssociatorNormScaling", "tests/test_cd_algebraic_experiments_v46.py::TestJWAdjointIdentity", "tests/test_cd_algebraic_experiments_v46.py::TestJXEigenvalueSignPattern", "tests/test_cd_algebraic_experiments_v46.py::TestJYTraceFormSymmetry", "tests/test_cd_algebraic_experiments_v46.py::TestJZInverseViaConjugate", "tests/test_cd_algebraic_experiments_v46.py::TestKANormSumPolarization", "src/scripts/analysis/cd_algebraic_experiments_v53.py", "data/csv/cd_algebraic_experiments_v53.json", "tests/test_cd_algebraic_experiments_v47.py::TestKBInverseMultiplicativity", "tests/test_cd_algebraic_experiments_v47.py::TestKCLeftBol", "tests/test_cd_algebraic_experiments_v47.py::TestKDLRCommutation", "tests/test_cd_algebraic_experiments_v47.py::TestKEDoublingVerification", "tests/test_cd_algebraic_experiments_v47.py::TestKFCenterOfAlgebra", "tests/test_cd_algebraic_experiments_v47.py::TestKGDerivationDimension", "src/scripts/analysis/cd_algebraic_experiments_v54.py", "data/csv/cd_algebraic_experiments_v54.json", "tests/test_cd_algebraic_experiments_v48.py::TestKHRightBol", "tests/test_cd_algebraic_experiments_v48.py::TestKIAutomorphismDimension", "tests/test_cd_algebraic_experiments_v48.py::TestKJNfoldAssociator", "tests/test_cd_algebraic_experiments_v48.py::TestKKNucleusStructure", "tests/test_cd_algebraic_experiments_v48.py::TestKLNormedDivision", "tests/test_cd_algebraic_experiments_v48.py::TestKMAntiInvolution", "src/scripts/analysis/cd_algebraic_experiments_v55.py", "data/csv/cd_algebraic_experiments_v55.json", "tests/test_cd_algebraic_experiments_v49.py::TestKNFlexibility", "tests/test_cd_algebraic_experiments_v49.py::TestKOPowerAssociativity", "tests/test_cd_algebraic_experiments_v49.py::TestKPIPIdentity", "tests/test_cd_algebraic_experiments_v49.py::TestKQFrobeniusNormScaling", "tests/test_cd_algebraic_experiments_v49.py::TestKRLeftRepDefect", "tests/test_cd_algebraic_experiments_v49.py::TestKSAnticommutatorNorm", "src/scripts/analysis/cd_algebraic_experiments_v56.py", "data/csv/cd_algebraic_experiments_v56.json", "tests/test_cd_algebraic_experiments_v50.py::TestKTRightAlternative", "tests/test_cd_algebraic_experiments_v50.py::TestKULeftAlternative", "tests/test_cd_algebraic_experiments_v50.py::TestKVJordanIdentity", "tests/test_cd_algebraic_experiments_v50.py::TestKWJacobiRemainder", "tests/test_cd_algebraic_experiments_v50.py::TestKXBilinearForm", "tests/test_cd_algebraic_experiments_v50.py::TestKYNormProductRatio", "src/scripts/analysis/cd_algebraic_experiments_v57.py", "data/csv/cd_algebraic_experiments_v57.json", "tests/test_cd_algebraic_experiments_v51.py::TestKZThirdMoufangRelative", "tests/test_cd_algebraic_experiments_v51.py::TestLARightRepDefect", "tests/test_cd_algebraic_experiments_v51.py::TestLBCommutativityMeasure", "tests/test_cd_algebraic_experiments_v51.py::TestLCAssociatorProductRatio", "tests/test_cd_algebraic_experiments_v51.py::TestLDMultTableStructure", "tests/test_cd_algebraic_experiments_v51.py::TestLEEigenvalueDistribution", "src/scripts/analysis/cd_algebraic_experiments_v58.py", "data/csv/cd_algebraic_experiments_v58.json", "tests/test_cd_algebraic_experiments_v52.py::TestLFDeterminantLa", "tests/test_cd_algebraic_experiments_v52.py::TestLGAdjointIdentity", "tests/test_cd_algebraic_experiments_v52.py::TestLHGramSpectrum", "tests/test_cd_algebraic_experiments_v52.py::TestLIZeroDivisors", "tests/test_cd_algebraic_experiments_v52.py::TestLJProductOfConjugates", "tests/test_cd_algebraic_experiments_v52.py::TestLKIdempotents", "convos/", "docs/convos/CONVOS_CLAIMS_INBOX.md", "docs/SPECTRAL_TRIPLE_SCOPE.md", "docs/theory/EMERGENCE_LAYERS_AXIOMS.md", "docs/external_sources/EMERGENCE_LAYERS_SOURCES.md", "src/spectral/demo_pairs.py", "tests/test_isospectral_nonisomorphic_pair.py", "src/spectral_triple_toy.py", "tests/test_spectral_triple_toy.py", "data/csv/spectral_triple_toy_summary.csv", "docs/external_sources/EMERGENCE_LAYERS_SUMMARIES.md", "src/holography/maxflow.py", "tests/test_holography_bit_threads.py", "src/quantum/open_systems/lindblad.py", "tests/test_open_systems_lindblad.py", "src/quantum/open_systems/redundancy.py", "tests/test_open_systems_redundancy.py", "docs/external_sources/TSCP_METHOD_SOURCES.md", "docs/preregistered/"]
-line_count = 3488
+line_count = 3491
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -4879,7 +5236,7 @@ statements and (b) offline checks, or else be explicitly rejected.
 '''
 
 [[document]]
-id = "DRN-008"
+id = "DRN-009"
 source_markdown = "docs/CONVOS_CONCEPTS_STATUS_INDEX.md"
 slug = "convos_concepts_status_index"
 title = "Convos -> Concepts -> Status -> What to Implement Next"
@@ -4887,8 +5244,11 @@ status_token = "STATUS"
 content_kind = "status_note"
 claim_refs = ["C-011", "C-028", "C-029", "C-043", "C-074", "C-087", "C-401"]
 path_refs = ["convos/", "docs/TERMINOLOGY_GLOSSARY.md", "docs/convos/", "docs/convos/audit_1_read_nonuser_lines_cont.md", "convos/3_further_explorations.md:26964", "src/gemini_physics/m3_cd_transfer.py", "tests/test_m3_cd_transfer.py", "src/export_m3_table.py", "convos/4_read_every_nonuser_line.md:8960", "src/gemini_physics/cd_motif_census.py", "tests/test_cd_motif_census.py", "src/export_cd_motif_census.py", "docs/MOTIF_CENSUS_SCHEMA.md", "convos/4_read_every_nonuser_line.md:8968", "src/gemini_physics/cd_xor_heuristics.py", "tests/test_cd_xor_heuristics.py", "convos/3_further_explorations.md:22254", "src/gemini_physics/fractional_laplacian.py", "tests/test_fractional_laplacian.py", "docs/FRACTIONAL_LAPLACIAN_OPERATOR_CHOICES.md", "src/quantum/fractional_schrodinger.py", "src/nonlocal_long_range_ZZ.py", "convos/2_exploration_cont.md:921", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "docs/BIBLIOGRAPHY.md", "src/neg_dim_pde.py", "src/neg_dim_spectrum.py", "convos/3_further_explorations.md:3112", "src/gemini_physics/padic.py", "tests/test_padic_and_cantor.py", "docs/latex/MASTER_SYNTHESIS.tex", "convos/2_exploration_cont.md:710", "src/gemini_physics/nilpotent_orbits.py", "tests/test_nilpotent_orbits.py", "docs/SEDENION_NILPOTENCY.md", "convos/1_read_each_nonuser_line.md:5141", "src/quantum/harper_chern.py", "src/quantum/advanced/projector_fhs_polar.py", "data/artifacts/images/harper_chern_map_highres.png", "convos/1_read_each_nonuser_line.md:6146", "src/quantum/advanced/kk_mskk2.py", "data/artifacts/images/kk_mskk2_bars_fixed_3160x2820.png", "convos/1_read_each_nonuser_line.md:30", "convos/2_exploration_cont.md:4982", "src/gemini_physics/dimensional_geometry.py", "tests/test_dimensional_geometry.py", "src/vis_dimensional_geometry.py", "convos/1_read_nonuser_lines_cont.md:25636", "convos/1_read_nonuser_lines_cont.md:26462", "convos/1_read_nonuser_lines_cont.md:26467", "convos/1_read_nonuser_lines_cont.md:29605", "convos/1_read_nonuser_lines_cont.md:30324", "src/quantum/advanced/pseudospectrum_slice.py", "src/quantum/advanced/fractal_css_expanded.py", "\\\\text{...}", "convos/1_read_nonuser_lines_cont.md:30406", "src/verification/verify_generated_artifacts.py", "src/export_de_marrais_boxkites.py", "src/export_reggiani_annihilator_stats.py", "data/artifacts/", "convos/2_exploration_cont.md:6987", "src/gemini_physics/e8_lattice.py", "src/e6_refinement.py", "docs/LACUNAE.md", "convos/2_exploration_cont.md:9020", "src/gemini_physics/optimized_algebra.py", "src/sedenion_field_sim.py", "convos/3_further_explorations.md:399", "convos/1_read_each_nonuser_line.md:9473", "convos/1_read_each_nonuser_line.md:6000", "data/artifacts/images/pseudospectrum_slice_3160x2820.png", "convos/1_read_nonuser_lines_cont.md:L5", "docs/WHEELS_DIVISION_BY_ZERO.md", "crates/algebra_core/src/wheels.rs", "convos/1_read_nonuser_lines_cont.md:L60", "convos/3_further_explorations.md", "convos/2_exploration_cont.md", "src/gemini_physics/renormalization.py", "tests/test_claim_c074_associator_growth.py", "convos/4_read_every_nonuser_line.md", "src/gemini_physics/algebra/sedenion_automorphism.py", "curated/02_simulations_pde_quantum/Triality-Based_Quantum_Information_Structures.csv", "convos/1_read_nonuser_lines_cont.md", "src/quantum/fracton_code.py", "convos/1_read_each_nonuser_line.md", "convos/compass_artifact_wf-a59991f9...md", "convos/compass_artifact_wf-7f987cff...md", "crates/gr_core/src/constants.rs", "convos/compass_artifact_wf-f3798de2...md", "p(a,b)=(a+b)/2", "crates/algebra_core/src/boxkites.rs", "hypercomplex.rs::AlgebraDim", "e_a e_b = +/- e_{a xor b}", "crates/spectral_core/src/lib.rs", "crates/spectral_core/src/neg_dim.rs", "nilpotent_orbits.rs", "e8_lattice.rs", "triality.py", "fractal_css_expanded.py", "src/quantum/", "papers/arxiv_gr-qc9702026_pfenning_ford_1997_quantum_inequality_restrictions.pdf", "papers/arxiv_1207.5805_fewster_2012_lectures_quantum_energy_inequalities.pdf", "papers/arxiv_1904.05684_kontou_sanders_2020_quantum_energy_inequalities_review.pdf", "papers/arxiv_gr-qc0209036_fewster_roman_2003_null_energy_condition.pdf", "papers/arxiv_2510.09864_cms_2025_discovery_suppressed_oo_collisions.pdf", "papers/arxiv_2509.07008_mazeliauskas_2025_energy_loss_baseline_oo.pdf", "papers/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.pdf", "papers/arxiv_2509.19430_pablos_takacs_2025_alpha_clustering_geometry.pdf", "data/external/cms_oo_raa/table3_oo_raa.csv", "data/external/cms_oo_raa/table1_pp_spectra.csv", "data/external/cms_oo_raa/table2_oo_spectra.csv", "data/external/cms_oo_raa/alice_pbpb_raa_0to5pct_baseline.csv", "papers/arxiv_2105.03079_santiago_schuster_visser_2021_generic_warp_drives.pdf", "papers/arxiv_2407.18908_fuchs_2024_constant_velocity_subluminal_warp.pdf", "papers/arxiv_0904.0141_finazzi_liberati_barcelo_2009_semiclassical_instability.pdf"]
-line_count = 589
+line_count = 592
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -5481,7 +5841,7 @@ primary source caching and offline validation tests.
 '''
 
 [[document]]
-id = "DRN-009"
+id = "DRN-010"
 source_markdown = "docs/CORE_ABSTRACTIONS.md"
 slug = "core_abstractions"
 title = "Core Abstractions: Unified Design Patterns Across Physics Domains"
@@ -5489,8 +5849,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-070"]
 path_refs = ["Q_e = omega_0 * tau_e / 2", "gamma_e = 1/tau_e", "G = (k_source * k_drain) / k_plate^2", "Q_tot = 1/(1/Q_0 + 1/Q_e)", "Delta_omega = omega_0 / Q_tot", "R/d > 132", "TargetSpot.x, TargetSpot.y", "TargetSpot.amplitude", "gamma_kerr = n2 * omega_0 * c / (n0^2 * V_eff)", "G = k_Casimir / k_plate", "k_Casimir = 3*CASIMIR_COEFF*R/d^4", "k ~ pi/(4*theta)", "Omega = 2*delta/gamma_tot", "u^2 = P_in * 2*gamma_e / (gamma_k * P_crit)", "R/d"]
-line_count = 469
+line_count = 472
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -5963,7 +6326,7 @@ assert!(registry.all_pass());
 '''
 
 [[document]]
-id = "DRN-010"
+id = "DRN-011"
 source_markdown = "docs/CURATED_ARTIFACTS_AUDIT.md"
 slug = "curated_artifacts_audit"
 title = "Curated Artifacts Audit (Scope + Provenance)"
@@ -5971,8 +6334,11 @@ status_token = "AUDIT"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["curated/", "curated/01_theory_frameworks/", "curated/02_simulations_pde_quantum/", "curated/03_benchmarks_numeric/", "curated/04_observational_datasets/", "curated/05_summaries_indexes/", "curated/PROVENANCE.local.json", "src/verification/", "data/csv/", "data/artifacts/images/", "docs/LACUNAE.md", "curated/README.md"]
-line_count = 43
+line_count = 46
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -6019,7 +6385,7 @@ See also:
 '''
 
 [[document]]
-id = "DRN-011"
+id = "DRN-012"
 source_markdown = "docs/DATASET_COVERAGE.md"
 slug = "dataset_coverage"
 title = "Dataset Coverage Report"
@@ -6027,8 +6393,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-006", "C-007", "C-025", "C-038", "C-040", "C-043", "C-057", "C-058", "C-059", "C-060", "C-061", "C-062", "C-063", "C-064", "C-070", "C-071", "C-080", "C-436", "C-437", "C-438", "C-439", "C-440", "C-441"]
 path_refs = ["CLAIMS_EVIDENCE_MATRIX.md"]
-line_count = 124
+line_count = 127
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -6156,7 +6525,7 @@ cosmology_core distance-redshift calibration cross-checks.
 '''
 
 [[document]]
-id = "DRN-012"
+id = "DRN-013"
 source_markdown = "docs/DE_MARRAIS_REPLICATION.md"
 slug = "de_marrais_replication"
 title = "de Marrais Replication (Computational)"
@@ -6164,8 +6533,11 @@ status_token = "NARRATIVE"
 content_kind = "validation_note"
 claim_refs = []
 path_refs = ["docs/BIBLIOGRAPHY.md", "gemini_physics.optimized_algebra.cd_multiply_jit", "iin{1..7}", "jin{8..15}", "tests/test_de_marrais_boxkites.py", "+/-(e_i + e_j)/sqrt2", "+/-(e_i - e_j)/sqrt2", "(e_i +/- e_j) * (e_k +/- e_l) = 0", "o in {1..7}", "gemini_physics.de_marrais_boxkites.production_rule_1", "gemini_physics.de_marrais_boxkites.production_rule_2", "tests/test_de_marrais_automorphemes.py", "src/gemini_physics/de_marrais_boxkites.py", "src/export_de_marrais_boxkites.py", "data/csv/de_marrais_assessors.csv", "data/csv/de_marrais_boxkites.csv", "data/csv/de_marrais_boxkite_edges.csv", "data/csv/de_marrais_strut_table.csv"]
-line_count = 134
+line_count = 137
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -6303,7 +6675,7 @@ paper's production rules and are **not** yet implemented here.
 '''
 
 [[document]]
-id = "DRN-013"
+id = "DRN-014"
 source_markdown = "docs/DIMENSIONAL_GEOMETRY.md"
 slug = "dimensional_geometry"
 title = "Dimensional Geometry: Analytic Continuation (-4D -> 32D)"
@@ -6311,8 +6683,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["src/gemini_physics/dimensional_geometry.py", "data/artifacts/images/dimensional_geometry_-4_to_16.png", "data/artifacts/images/dimensional_geometry_0_to_32.png", "data/csv/dimensional_geometry_-4_to_16.csv", "data/csv/dimensional_geometry_0_to_32.csv"]
-line_count = 49
+line_count = 52
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -6365,7 +6740,7 @@ with first-party sources and falsifiable experiments.
 '''
 
 [[document]]
-id = "DRN-014"
+id = "DRN-015"
 source_markdown = "docs/F4_CONNECTION.md"
 slug = "f4_connection"
 title = "Subdomain Expansion: The $F_4$ Connection"
@@ -6373,8 +6748,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = []
-line_count = 27
+line_count = 30
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -6405,7 +6783,7 @@ If the Sedenion geometry is governed by $F_4$ rather than $E_6$, the gauge symme
 '''
 
 [[document]]
-id = "DRN-015"
+id = "DRN-016"
 source_markdown = "docs/FINAL_MANUSCRIPT.md"
 slug = "final_manuscript"
 title = "THE GRAND UNIFICATION: SEDENION-GRAVASTAR FIELD THEORY"
@@ -6413,8 +6791,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["docs/MATH_VALIDATION_REPORT.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "tests/", "src/verification/", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "tests/test_m3_cd_transfer.py", "convos/4_read_every_nonuser_line.md", "convos/3_further_explorations.md", "4_read_every_nonuser_line.md", "src/m3_table_cd.py", "data/csv/sedenion_zd_edges.csv", "src/gravastar_tov.py"]
-line_count = 383
+line_count = 386
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -6801,7 +7182,7 @@ The following artifacts represent the visualization of the theory at 3160x2820 r
 '''
 
 [[document]]
-id = "DRN-016"
+id = "DRN-017"
 source_markdown = "docs/FRACTIONAL_LAPLACIAN_OPERATOR_CHOICES.md"
 slug = "fractional_laplacian_operator_choices"
 title = "Fractional Laplacian: operator choices (Riesz vs spectral vs extension)"
@@ -6809,8 +7190,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["docs/BIBLIOGRAPHY.md", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md", "src/gemini_physics/fractional_laplacian.py", "tests/test_fractional_laplacian.py"]
-line_count = 64
+line_count = 67
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -6878,7 +7262,7 @@ implemented in this repo as an operator that can be cross-validated against the 
 '''
 
 [[document]]
-id = "DRN-017"
+id = "DRN-018"
 source_markdown = "docs/GAP_ANALYSIS.md"
 slug = "gap_analysis"
 title = "Gap Analysis & Future Expansion"
@@ -6886,8 +7270,11 @@ status_token = "ANALYSIS"
 content_kind = "analysis_note"
 claim_refs = []
 path_refs = ["multiplication_table_8D.csv", "multiplication_table_16D.csv", "Cleaned_LIGO_O3.csv", "src/neg_dim_pde.py", "alpha = -1.5", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "convos/"]
-line_count = 28
+line_count = 31
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -6919,7 +7306,7 @@ We are **not** closing the project. We are pivoting to:
 '''
 
 [[document]]
-id = "DRN-018"
+id = "DRN-019"
 source_markdown = "docs/GRAND_SYNTHESIS.md"
 slug = "grand_synthesis"
 title = "Grand Synthesis: Algebraic Structures, Analogue Gravity, and Emergent Physics"
@@ -6927,8 +7314,11 @@ status_token = "NARRATIVE"
 content_kind = "analysis_note"
 claim_refs = ["C-001", "C-002", "C-003", "C-004", "C-005", "C-008", "C-010", "C-011", "C-012", "C-013", "C-014", "C-015", "C-016", "C-018", "C-019", "C-022", "C-023", "C-025", "C-028", "C-029", "C-037", "C-041", "C-069", "C-072", "C-073", "C-074", "C-077", "C-078", "C-079", "C-080", "C-081", "C-083", "C-084", "C-085", "C-091", "C-092", "C-098", "C-335", "C-410", "C-411", "C-412", "C-418", "C-419", "C-420", "C-421", "C-426", "C-431", "C-434", "C-435"]
 path_refs = ["src/gemini_physics/algebra/psl_2_7.py", "standard_model.py", "grin_solver.py", "materials/database.py", "grin_benchmarks.py", "data/csv/grin_benchmark_convergence.csv", "fractional_laplacian.py", "gravastar_tov.py", "scipy.integrate.solve_ivp", "test_cayley_dickson_properties.py", "test_de_marrais_boxkites.py", "test_psl_2_7_action.py", "test_de_marrais_automorphemes.py", "test_reggiani_standard_zero_divisors.py", "test_m3_cd_transfer.py", "test_wheels.py", "SEDENION_FIELD_THEORY.md", "test_sedenion_generations.py", "src/gemini_physics/optics/grin_benchmarks.py", "gororoba_kernels/", "optics/grin_solver.py", "cosmology.py", "animate_warp_v9_sapphire.py", "cd src/gororoba_kernels && maturin build --release && pip install target/wheels/*.whl", "maturin build -m crates/gororoba_py/Cargo.toml --release", "fractional_schrodinger.py", "fluid_dynamics.py", "optics/grin_benchmarks.py", "neg_dim_pde.py", "metamaterial.py", "gr/kerr_geodesic.py", "gr/bardeen_shadow.py", "sedenion_field.py", "algebra.rs", "clifford.rs", "spectral.rs", "mera.rs", "metamaterial.rs", "stats.rs", "holographic.rs", "nalgebra = \"0.33\"", "statrs = \"0.18\"", "num-quaternion = \"1.0\"", "crates/", "integration_spectral.rs", "integration_cd_algebra.rs", "integration_gravastar.rs", "docs/BIBLIOGRAPHY.md"]
-line_count = 798
+line_count = 801
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -7730,7 +8120,7 @@ falsification trigger. Here are the key ones:
 '''
 
 [[document]]
-id = "DRN-019"
+id = "DRN-020"
 source_markdown = "docs/LACUNAE.md"
 slug = "lacunae"
 title = "Lacunae Report: The Gaps in the Gemini Project"
@@ -7738,8 +8128,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["E8-Inspired_Extended_Multiplication_Structure.csv", "0.569", "-0.537", "AI-Optimized_Recursive_Tensor_Quantum_Cosmology_Evolution.csv", "curated/01_theory_frameworks/*.v", "Cohomological_Tools_for_Universal_Algebra_Analysis.csv", "literature_review/", "curated/README.md", "curated/", "curated/PROVENANCE.local.json", "src/gemini_physics/", "algebra.py", "cosmology.py", "lattice.py", "benchmark_integration.py"]
-line_count = 61
+line_count = 64
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -7804,7 +8197,7 @@ This architecture turns "Raw Artifacts" into a "Living Scientific Codebase".
 '''
 
 [[document]]
-id = "DRN-020"
+id = "DRN-021"
 source_markdown = "docs/MATERIALS_APPLICATIONS.md"
 slug = "materials_applications"
 title = "Novel Connections: High-Dimensional Algebra in Condensed Matter"
@@ -7812,8 +8205,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = []
-line_count = 30
+line_count = 33
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -7847,7 +8243,7 @@ eq 0$).
 '''
 
 [[document]]
-id = "DRN-021"
+id = "DRN-022"
 source_markdown = "docs/MATERIALS_DATASETS.md"
 slug = "materials_datasets"
 title = "Materials Datasets (Real Properties, Reproducible)"
@@ -7855,8 +8251,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["data/csv/materials_jarvis_subset.csv", "data/external/jarvis_dft/PROVENANCE.json", "data/csv/materials_embedding_benchmarks.csv", "data/artifacts/images/materials_pca_4d.png", "data/artifacts/images/materials_pca_8d.png", "data/artifacts/images/materials_pca_16d.png", "data/artifacts/images/materials_pca_32d.png", "PROVENANCE.json"]
-line_count = 52
+line_count = 55
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -7912,7 +8311,7 @@ Always keep `PROVENANCE.json` alongside derived datasets and avoid editing it ma
 '''
 
 [[document]]
-id = "DRN-022"
+id = "DRN-023"
 source_markdown = "docs/MATH_ANALYSIS.md"
 slug = "math_analysis"
 title = "Unified Algebra-Lattice-Graph Monograph"
@@ -7920,8 +8319,11 @@ status_token = "ANALYSIS"
 content_kind = "analysis_note"
 claim_refs = []
 path_refs = ["j = i XOR (Dim/16)", "K_{N/2} U K_{N/2}", "i XOR (Dim/16)"]
-line_count = 50
+line_count = 53
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -7975,7 +8377,7 @@ We have identified two distinct graph projections for the 64D/128D algebras:
 '''
 
 [[document]]
-id = "DRN-023"
+id = "DRN-024"
 source_markdown = "docs/MATH_CONVENTIONS.md"
 slug = "math_conventions"
 title = "Mathematical Conventions"
@@ -7983,8 +8385,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-546"]
 path_refs = ["crates/algebra_core/src/cayley_dickson.rs:31-67", "x* = (x_0, -x_1, -x_2, ..., -x_{n-1})", "crates/algebra_core/src/cayley_dickson.rs:266-289", "hypercomplex.rs", "crates/algebra_core/src/octonion_field.rs:23-31", "octonion_field.rs:36-52", "rand_chacha 0.3", "rng.gen::<f64>()", "rng.random()", "coordinates.rs", "casimir.rs", "schwarzschild.rs", "cayley_dickson.rs", "schwarzschild.rs:559", "spectral_bands.rs", "novikov_thorne.rs:379", "octonion_field.rs", "crates/gr_core/src/metric.rs:14-18", "crates/gr_core/src/constants.rs:1-106", "r_s = 2GM/c^2", "r_g = GM/c^2", "T_H = hbar c^3 / (8 pi G M k_B)", "crates/algebra_core/src/cayley_dickson.rs:69-73", "crates/stats_core/src/", "(count_ge + 1) / (n_perm + 1)", "crates/algebra_core/src/construction/cayley_dickson.rs"]
-line_count = 275
+line_count = 278
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8263,7 +8668,7 @@ CD construction. No exotic CD variants permitting commutativity found in literat
 '''
 
 [[document]]
-id = "DRN-024"
+id = "DRN-025"
 source_markdown = "docs/MATH_VALIDATION_REPORT.md"
 slug = "math_validation_report"
 title = "Mathematical Validation Report"
@@ -8271,8 +8676,11 @@ status_token = "REPORT"
 content_kind = "validation_note"
 claim_refs = []
 path_refs = ["tests/test_cayley_dickson_properties.py", "docs/BIBLIOGRAPHY.md", "gemini_physics.optimized_algebra.cd_multiply_jit", "src/gemini_physics/de_marrais_boxkites.py", "tests/test_de_marrais_boxkites.py", "|PSL(2,q)| = q(q^2-1)/gcd(2,q-1)", "tests/test_group_theory.py", "gemini_physics.group_theory.order_psl2_q", "tests/test_dimensional_geometry.py", "src/gemini_physics/dimensional_geometry.py", "docs/NEXT_ACTIONS.md"]
-line_count = 102
+line_count = 105
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8378,7 +8786,7 @@ See `docs/NEXT_ACTIONS.md`.
 '''
 
 [[document]]
-id = "DRN-025"
+id = "DRN-026"
 source_markdown = "docs/MOTIF_CENSUS_SCHEMA.md"
 slug = "motif_census_schema"
 title = "Cayley-Dickson Motif Census: CSV Schemas"
@@ -8386,8 +8794,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["low in [1, dim/2 - 1]", "high in [dim/2, dim-1]", "(e_low +/- e_high)", "src/export_cd_motif_census.py", "data/csv/cd_motif_components_{dim}d.csv", "data/csv/cd_motif_nodes_{dim}d.csv", "data/csv/cd_motif_edges_{dim}d.csv"]
-line_count = 70
+line_count = 73
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8461,7 +8872,7 @@ Notes:
 '''
 
 [[document]]
-id = "DRN-026"
+id = "DRN-027"
 source_markdown = "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md"
 slug = "negative_dimension_clarifications"
 title = "Negative Dimension: What We Mean (and What We Do Not Mean)"
@@ -8469,8 +8880,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["convos/", "src/neg_dim_pde.py", "src/neg_dim_spectrum.py"]
-line_count = 51
+line_count = 54
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8525,7 +8939,7 @@ If a document claims a specific physical identification (e.g., "D_eff = -1.5"), 
 '''
 
 [[document]]
-id = "DRN-027"
+id = "DRN-028"
 source_markdown = "docs/NV_ODMR_BOM.md"
 slug = "nv_odmr_bom"
 title = "NV ODMR / OPU BOM (Jan 2026) -- Local Staging"
@@ -8533,8 +8947,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["~/Playground/HeadOfPreparedness/NV_ODMR_OPU_BOM_Jan2026.xlsx", "data/external/nv_odmr/NV_ODMR_OPU_BOM_Jan2026.xlsx", "data/external/PROVENANCE.local.json", "python3 bin/record_external_hashes.py"]
-line_count = 26
+line_count = 29
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8564,7 +8981,293 @@ To refresh hashes after updating local spreadsheets, run:
 '''
 
 [[document]]
-id = "DRN-028"
+id = "DRN-029"
+source_markdown = "docs/PHASE3B_IMPLEMENTATION_PLAN.md"
+slug = "phase3b_implementation_plan"
+title = "Phase 3b Implementation Plan: Jordan Algebra Census"
+status_token = "NARRATIVE"
+content_kind = "research_note"
+claim_refs = ["C-550", "C-556", "C-560", "C-562", "C-563", "C-564", "C-565"]
+path_refs = ["/crates/algebra_core/src/construction/jordan.rs", "/docs/ALGEBRA_CONSTRUCTION_COMPARISON.md", "/docs/PHASE3B_IMPLEMENTATION_PLAN.md", "/crates/algebra_core/src/construction/mod.rs"]
+line_count = 273
+body_markdown = '''
+# Phase 3b Implementation Plan: Jordan Algebra Census
+
+## Overview
+
+Phase 3b implements a comprehensive census of Jordan algebras across their natural dimensions (1, 3, 27) to complete the construction method validation that Phase 3a began.
+
+**Goal**: Verify that Jordan algebras exhibit 100% commutativity (by construction), demonstrating that the architecture hierarchy established in Phase 3a holds across the full spectrum of construction mechanisms.
+
+---
+
+## Phase Context
+
+### What Phase 3a Proved
+- **Clifford algebras**: 80-90% selectively commutative across dims 4-16
+- **Cayley-Dickson algebras**: 0% universally non-commutative across dims 4-16
+- **Same dimension, different mechanisms**: CD dim=4 (0%) vs Clifford dim=4 (83%)
+- **Conclusion**: Construction method is the PRIMARY determinant of algebra properties
+
+### What Phase 3b Will Prove
+- **Jordan algebras**: 100% commutative across dims 1-3-27 (by construction)
+- **Non-associativity**: All Jordan algebras are non-associative (except degenerate)
+- **Zero-divisors**: No zero-divisors in formal Jordan algebras
+- **Spectrum coverage**: CD (0%) - Clifford (80-90%) - Jordan (100%)
+- **Conclusion**: Architecture hierarchy is universal across all major construction methods
+
+---
+
+## Implementation Structure
+
+### Module Layout
+
+```
+crates/algebra_core/src/construction/jordan.rs
+<U+251C><U+2500><U+2500> Phase 3b Step 1: Jordan A<U+2081> (<U+211D>, 1D)
+<U+2502>   <U+251C><U+2500><U+2500> test_jordan_a1_basic_properties()
+<U+2502>   <U+2514><U+2500><U+2500> test_jordan_a1_commutativity()
+<U+2502>
+<U+251C><U+2500><U+2500> Phase 3b Step 2: Jordan A<U+2082> (Sym<U+2083>(<U+211D>), 3D)
+<U+2502>   <U+251C><U+2500><U+2500> test_jordan_a2_placeholder_scaffolding()
+<U+2502>   <U+2514><U+2500><U+2500> (Full implementation TBD)
+<U+2502>
+<U+251C><U+2500><U+2500> Phase 3b Step 3: Jordan A<U+2083> (Albert, 27D)
+<U+2502>   <U+251C><U+2500><U+2500> test_jordan_a3_placeholder_scaffolding()
+<U+2502>   <U+2514><U+2500><U+2500> (Full implementation deferred to Phase 3c-3d)
+<U+2502>
+<U+2514><U+2500><U+2500> Cross-Validation Tests
+    <U+251C><U+2500><U+2500> test_jordan_vs_clifford_vs_cd_hierarchy()
+    <U+2514><U+2500><U+2500> test_phase3b_architecture_validation()
+```
+
+### Test Coverage Plan
+
+| Phase | Algebra | Dimension | Tests | Status |
+|-------|---------|-----------|-------|--------|
+| 3b.1 | A<U+2081> | 1 | 2 | Scaffolding complete |
+| 3b.2 | A<U+2082> | 3 | 5-8 | Placeholder complete |
+| 3b.3 | A<U+2083> | 27 | 2-3 | Placeholder complete |
+| 3b.X | Cross-Val | Mixed | 2 | Scaffolding complete |
+
+**Total Phase 3b tests**: ~12-15 new tests (placeholder structure ready)
+
+---
+
+## Critical No-Crate Gap: Why We Implement Custom
+
+**Phase 3a Finding (C-562)**: Zero Jordan algebra crates exist in Rust ecosystem after exhaustive survey of 71 crates.
+
+**Reasons**:
+1. **Niche domain**: Non-associative algebras are specialized research area
+2. **No Rust convention**: No established pattern for degree-2 algebraic structures
+3. **Design novelty**: Each concrete Jordan algebra (A<U+2081>, A<U+2082>, A<U+2083>) requires different representation
+   - A<U+2081> = scalar (trivial)
+   - A<U+2082> = 3<U+00D7>3 symmetric matrix (dense vector space)
+   - A<U+2083> = 3<U+00D7>3 octonion matrix (exceptional group structure)
+
+**Our approach**: Trait-based architecture (following Clifford pattern)
+
+```rust
+pub trait JordanAlgebra: Clone + Debug {
+    fn dim(&self) -> usize;
+    fn jordan_product(&self, a: &[f64], b: &[f64]) -> Vec<f64>;
+    fn commutator(&self, a: &[f64], b: &[f64]) -> Vec<f64>;
+    fn is_commutative(&self, a: &[f64], b: &[f64]) -> bool;
+    fn associativity_violation(&self, a: &[f64], b: &[f64], c: &[f64]) -> f64;
+}
+
+// Concrete implementations
+impl JordanAlgebra for JordanA1 { /* 1D reals */ }
+impl JordanAlgebra for JordanA2 { /* 3D symmetric 3<U+00D7>3 matrices */ }
+impl JordanAlgebra for JordanA3 { /* 27D Albert algebra */ }
+```
+
+---
+
+## Expected Test Results
+
+### Commutativity
+
+| Algebra | Expected | Verification |
+|---------|----------|---|
+| A<U+2081> | 100% (degenerate) | All 1 basis pair commutes |
+| A<U+2082> | 100% (by symmetry) | All 3<U+00D7>3=9 basis pair products commute |
+| A<U+2083> | 100% (by definition) | Sampled 27<U+00D7>27 pairs all commute |
+
+**Validation**: Same claim as CD 0% and Clifford 80-90%-commutativity class is construction-determined.
+
+### Associativity
+
+| Algebra | Expected | Verification |
+|---------|----------|---|
+| A<U+2081> | 100% assoc (trivial) | (a*b)*c = a*(b*c) |
+| A<U+2082> | 0% assoc (non-assoc) | Find triple violating (a*b)*c <U+2260> a*(b*c) |
+| A<U+2083> | 0% assoc (exceptional) | Sample from 27<U+00B3> triples, verify violations |
+
+**Key insight**: Jordan algebras are NEVER associative by definition (except A<U+2081> degenerate case). This differs from CD/Clifford where associativity is dimension-dependent.
+
+### Zero-Divisors
+
+| Algebra | Expected | Verification |
+|---------|----------|---|
+| A<U+2081> | 0 | Reals have no ZD |
+| A<U+2082> | 0 | Symmetric matrices have no ZD in Jordan product |
+| A<U+2083> | 0 | Albert algebra has no ZD by theorem |
+
+---
+
+## Implementation Milestones
+
+### Milestone 1: A<U+2081> Full Implementation (2-3 hours)
+```
+<U+251C><U+2500> Implement JordanA1 struct
+<U+251C><U+2500> Write jordan_product for A<U+2081>
+<U+251C><U+2500> Verify 100% commutativity (trivial: 1 basis element)
+<U+251C><U+2500> Verify associativity (trivial: 1 element)
+<U+2514><U+2500> Cross-validate against clifford.rs results
+```
+
+### Milestone 2: A<U+2082> Full Implementation (4-6 hours)
+```
+<U+251C><U+2500> Implement JordanA2 struct (3<U+00D7>3 symmetric matrix encoding)
+<U+251C><U+2500> Write jordan_product for A<U+2082> (matrix symmetric product)
+<U+251C><U+2500> Enumerate all 3<U+00D7>3=9 basis pair products
+<U+251C><U+2500> Verify 100% commutativity (all 9 pairs)
+<U+251C><U+2500> Verify 0% associativity (sample 3 triples)
+<U+2514><U+2500> Cross-validate against clifford.rs (different dim 3 vs 4)
+```
+
+### Milestone 3: A<U+2083> Scaffolding (1-2 hours)
+```
+<U+251C><U+2500> Implement JordanA3 struct (placeholder)
+<U+251C><U+2500> Document exceptional properties (G2 automorphism group)
+<U+251C><U+2500> Create sampled commutativity test (100 random pairs)
+<U+251C><U+2500> Plan full implementation for Phase 3c-3d
+<U+2514><U+2500> Link to Freudenthal-Tits magic square
+```
+
+### Milestone 4: Registry Updates (1 hour)
+```
+<U+251C><U+2500> Add 3 new claims (C-563-565) documenting A<U+2081>/A<U+2082>/A<U+2083> results
+<U+251C><U+2500> Add 2-3 insights (I-028-030) on non-associativity and gaps
+<U+2514><U+2500> Update project.toml with new test/claim/insight counts
+```
+
+---
+
+## Expected Outcomes
+
+### New Claims (C-563-565)
+
+- **C-563**: Jordan algebras exhibit universal commutativity across all dimensions (1, 3, 27)
+- **C-564**: Non-associativity is structural property of Jordan algebras, not dimension-dependent
+- **C-565**: No zero-divisors in formal Jordan algebra structure (proven property)
+
+### New Insights (I-028-030)
+
+- **I-028**: Non-associativity in A<U+2082>/A<U+2083> validates hypothesis that different constructions produce different degree properties
+- **I-029**: Freudenthal-Tits magic square structure emerges as Phase 3c foundation
+- **I-030**: Architecture hierarchy universal: Construction Method >> Dimension >> Parameters across CD/Clifford/Jordan
+
+### Test Count
+- Phase 3b tests: ~13-15 new tests
+- Cumulative test count: 2461 <U+2192> ~2475
+
+---
+
+## Phase Sequence and Dependencies
+
+### Current Status
+- Phase 2 <U+2713> COMPLETE (C-550-C-556, I-020-I-024): CD family census
+- Phase 3a <U+2713> COMPLETE (C-560-C-562, I-025-I-027): Clifford family census
+- Task 6 <U+2713> COMPLETE: Phase 3a-to-3b Transition Framework
+
+### Next Steps
+1. **Task 7** (PENDING): Phase 3b Jordan Algebra Census
+   - Implement A<U+2081> (2-3h)
+   - Implement A<U+2082> (4-6h)
+   - Scaffold A<U+2083> (1-2h)
+   - Registry updates (1h)
+   - Expected: 9-12 hours
+
+2. **Task 8** (CONDITIONAL): Phase 3c-3d Exceptional Algebras
+   - Depends on Phase 3a-3b revealing structure
+   - E6/E7/E8 root systems
+   - Freudenthal-Tits magic square
+
+---
+
+## Success Criteria
+
+### Must Have
+- [x] Phase 3a-to-3b comparison framework complete (ALGEBRA_CONSTRUCTION_COMPARISON.md)
+- [x] jordan.rs scaffolding with placeholder tests (13 tests passing)
+- [ ] A<U+2081> full implementation (all 3 tests passing, 100% commutativity verified)
+- [ ] A<U+2082> full implementation (all 9 tests passing, 100% commutativity + 0% associativity)
+- [ ] A<U+2083> placeholder expanded (sampled tests, phase 3c deferred)
+- [ ] Registry updated (C-563-565, I-028-030)
+
+### Should Have
+- [ ] Performance benchmark (Jordan product vs Clifford basis product)
+- [ ] Comprehensive cross-validation (CD 0% vs Clifford 80-90% vs Jordan 100%)
+- [ ] Moufang identity verification (A<U+2082>/A<U+2083>)
+
+---
+
+## Files Involved
+
+**New**:
+- `/crates/algebra_core/src/construction/jordan.rs` (scaffolding ready)
+- `/docs/ALGEBRA_CONSTRUCTION_COMPARISON.md` (comparative framework)
+- `/docs/PHASE3B_IMPLEMENTATION_PLAN.md` (this file)
+
+**Modified**:
+- `/crates/algebra_core/src/construction/mod.rs` (added jordan module)
+
+---
+
+## Connection to Phase 3a Results
+
+Phase 3a proved:
+> Construction method determines fundamental algebra properties independent of dimension and metric.
+
+Phase 3b validates across the entire commutativity spectrum:
+- CD (0%): Conjugation asymmetry forces universal non-commutativity
+- Clifford (80-90%): Anticommutation with sign patterns yields selective commutativity
+- Jordan (100%): Symmetric product forces universal commutativity
+
+This spectrum-wide validation is the final proof that architecture hierarchy is NOT a dimension or metric property, but a construction-mechanism property.
+
+---
+
+## Risk Assessment
+
+### Low Risk
+- **A<U+2081> implementation**: Trivial (reals are degenerate Jordan algebra)
+- **Placeholder structure**: Already complete, compiles, 13 tests passing
+- **No dependencies**: No external crates required (implementing custom)
+
+### Medium Risk
+- **A<U+2082> matrix encoding**: Need correct 3<U+00D7>3 symmetric matrix representation
+- **A<U+2083> dimensionality**: 27D space is large for exhaustive enumeration
+
+### Mitigation
+- A<U+2081> validates trait design before A<U+2082> complexity
+- A<U+2082> can use dense vector representation initially (optimize later)
+- A<U+2083> uses sampled testing (not exhaustive) for Phase 3b; defer Phase 3c-3d
+
+---
+
+## Conclusion
+
+Phase 3b completes the construction method validation by implementing Jordan algebras-the opposite end of the commutativity spectrum from Cayley-Dickson. With CD (0%), Clifford (80-90%), and Jordan (100%) implemented and verified, the architecture hierarchy is proven across all major construction mechanisms.
+
+This sets up Phase 3c-3d for synthesis and exceptional algebras with confidence that construction method primacy is a universal principle.
+'''
+
+[[document]]
+id = "DRN-030"
 source_markdown = "docs/PHASE_1_SUMMARY.md"
 slug = "phase_1_summary"
 title = "Phase 1 Summary: The Assessor Field Theory"
@@ -8572,8 +9275,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["tests/test_de_marrais_boxkites.py", "sedenion_nilpotent_candidates.csv"]
-line_count = 38
+line_count = 41
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8615,7 +9321,7 @@ We must now prove the *structure* of these 42 elements.
 '''
 
 [[document]]
-id = "DRN-029"
+id = "DRN-031"
 source_markdown = "docs/PHYSICAL_INTERPRETATION.md"
 slug = "physical_interpretation"
 title = "Physical Interpretation: The Sedenion Vacuum & Mass Quantization"
@@ -8623,8 +9329,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-007", "C-008", "C-012"]
 path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md"]
-line_count = 46
+line_count = 49
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8674,7 +9383,7 @@ The Universe is described as a **"Sedenion Crystal"** in this narrative.
 '''
 
 [[document]]
-id = "DRN-030"
+id = "DRN-032"
 source_markdown = "docs/QISKIT_SETUP.md"
 slug = "qiskit_setup"
 title = "Qiskit Environment Setup & Troubleshooting"
@@ -8682,8 +9391,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["python:3.11-slim", "docker/Dockerfile", "run_quantum_container.sh", "src/", "docker build -t qiskit-env -f docker/Dockerfile ."]
-line_count = 50
+line_count = 53
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8737,7 +9449,7 @@ Currently, simulations run on CPU. To enable CUDA acceleration:
 '''
 
 [[document]]
-id = "DRN-031"
+id = "DRN-033"
 source_markdown = "docs/REGGIANI_REPLICATION.md"
 slug = "reggiani_replication"
 title = "Reggiani Alignment & Replication (Computational)"
@@ -8745,8 +9457,11 @@ status_token = "NARRATIVE"
 content_kind = "validation_note"
 claim_refs = []
 path_refs = ["gemini_physics.optimized_algebra.cd_multiply_jit", "tests/test_reggiani_alignment.py", "(e_low +/- e_high)", "tests/test_reggiani_standard_zero_divisors.py", "u = (e_i +/- e_j)", "src/export_reggiani_annihilator_stats.py", "data/csv/reggiani_standard_zero_divisors.csv", "data/csv/reggiani_annihilator_nullity_distribution.csv", "data/csv/reggiani_standard_zero_divisor_pairs.csv", "data/artifacts/images/reggiani_annihilator_nullity_3160x2820.png"]
-line_count = 68
+line_count = 71
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8818,7 +9533,7 @@ Validated by:
 '''
 
 [[document]]
-id = "DRN-032"
+id = "DRN-034"
 source_markdown = "docs/REPO_OVERVIEW.md"
 slug = "repo_overview"
 title = "Repository Overview (Honest Audit)"
@@ -8826,8 +9541,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["src/", "data/", "curated/", "docs/", "src/gemini_physics/", "src/verification/", "src/quantum/", "src/fetch_*.py", "tests/test_de_marrais_boxkites.py", "tests/test_reggiani_standard_zero_divisors.py", "tests/test_m3_cd_transfer.py", "tests/test_cd_xor_heuristics.py", "tests/test_padic_and_cantor.py", "tests/test_nilpotent_orbits.py", "REQUIREMENTS.md", "src/gemini_physics", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/CONVOS_CONCEPTS_STATUS_INDEX.md"]
-line_count = 55
+line_count = 58
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -8886,7 +9604,7 @@ See also:
 '''
 
 [[document]]
-id = "DRN-033"
+id = "DRN-035"
 source_markdown = "docs/REPO_STRUCTURE.md"
 slug = "repo_structure"
 title = "Repository structure"
@@ -8894,8 +9612,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["AGENTS.md", "convos/", "data/external/", "src/", "src/gemini_physics/", "src/verification/", "src/scripts/", "src/spectral/", "src/tensor_networks/", "src/holography/", "src/quantum/", "tests/", "docs/", "data/", "data/artifacts/", "cpp/", "curated/", "*.egg-info", "src/gemini_physics/<subdomain>/...", "src/scripts/<category>/...", "data/csv/", "scripts.*", "data/artifacts/ARTIFACTS_MANIFEST.csv", "data/artifacts/<domain>/<name>.<ext>.PROVENANCE.json", "src/verification/verify_artifacts_manifest.py", "src/scripts/**", "# SCRIPT_CONTRACT: {...json...}", "src/verification/verify_script_contracts.py", "data/artifacts/<domain>/...", "reports/", "tests/conftest.py", "src/gemini_physics/network.py", "src/verification/verify_network_gates.py", "src/verification/verify_script_network_guards.py", "gemini_physics.network.{allow_network,require_network}", "reports/artifacts_reorg_plan.md", "make artifacts-phase0-rollback LOG=reports/artifacts_phase0_moves_<ts>.json", "reports/repo_structure_audit.md", "reports/audit_network_gating.md", "reports/audit_pythonpath.md", "reports/audit_provenance.md", "src/verification/verify_src_layout.py", "src/src", "pytest.ini", "src/scripts/*"]
-line_count = 244
+line_count = 247
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9143,7 +9864,7 @@ If you want to migrate to strict src-layout imports, use:
 '''
 
 [[document]]
-id = "DRN-034"
+id = "DRN-036"
 source_markdown = "docs/RESEARCH_STATUS.md"
 slug = "research_status"
 title = "Research Status: Toy Operator Study (Speculative \"Negative Dimension\" Mapping)"
@@ -9151,8 +9872,11 @@ status_token = "STATUS"
 content_kind = "status_note"
 claim_refs = []
 path_refs = ["data/external/GWTC-3_GWpy_Official.csv", "data/external/PROVENANCE.local.json", "docs/BIBLIOGRAPHY.md", "neg_dim_pde.py", "alpha = -1.5", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md"]
-line_count = 34
+line_count = 37
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9190,7 +9914,7 @@ physical statement about literal negative-dimensional spacetime (see `docs/NEGAT
 '''
 
 [[document]]
-id = "DRN-035"
+id = "DRN-037"
 source_markdown = "docs/RESEARCH_STATUS_FINAL.md"
 slug = "research_status_final"
 title = "RESEARCH STATUS: The Unified Field"
@@ -9198,8 +9922,11 @@ status_token = "STATUS"
 content_kind = "status_note"
 claim_refs = []
 path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "tests/test_de_marrais_boxkites.py", "src/holo_tensor_net.py"]
-line_count = 34
+line_count = 37
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9237,7 +9964,7 @@ The universe is a **Broken $E_6$ Sedenion Crystal** where the defects (Zero Divi
 '''
 
 [[document]]
-id = "DRN-036"
+id = "DRN-038"
 source_markdown = "docs/RESEARCH_STATUS_HYPER.md"
 slug = "research_status_hyper"
 title = "Unified Research Status: The Hyper-Standard"
@@ -9245,8 +9972,11 @@ status_token = "STATUS"
 content_kind = "status_note"
 claim_refs = []
 path_refs = []
-line_count = 29
+line_count = 32
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9279,7 +10009,7 @@ The repository is now a polished artifact.
 '''
 
 [[document]]
-id = "DRN-037"
+id = "DRN-039"
 source_markdown = "docs/RISKS_AND_GAPS.md"
 slug = "risks_and_gaps"
 title = "Risks and Gaps (Open Items)"
@@ -9287,8 +10017,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-468", "C-475"]
 path_refs = ["docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md", "docs/MATH_CONVENTIONS.md"]
-line_count = 72
+line_count = 75
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9364,7 +10097,7 @@ Updated 2026-02-08 (Sprint 10 complete).
 '''
 
 [[document]]
-id = "DRN-038"
+id = "DRN-040"
 source_markdown = "docs/SECOND_PASS_AUDIT.md"
 slug = "second_pass_audit"
 title = "Second-Pass Audit (2026-01-27)"
@@ -9372,8 +10105,11 @@ status_token = "AUDIT"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["data/external/", "PYTHONWARNINGS=error venv/bin/python3 -m compileall -q src", "*3160x2820*.png", "convos/", "src/", "src/verification/verify_grand_images.py", "data/external/PROVENANCE.local.json", "docs/FINAL_MANUSCRIPT.md", "../data/...", "docs/THE_GEMINI_PROTOCOL.md", "docs/RESEARCH_STATUS.md", "src/gemini_physics/", "docs/BIBLIOGRAPHY.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "src/*.py", "data/artifacts/images/", "docs/NEXT_ACTIONS.md"]
-line_count = 65
+line_count = 68
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9442,7 +10178,7 @@ See `docs/NEXT_ACTIONS.md` for a prioritized, testable follow-up list.
 '''
 
 [[document]]
-id = "DRN-039"
+id = "DRN-041"
 source_markdown = "docs/SEDENION_ATLAS.md"
 slug = "sedenion_atlas"
 title = "THE SEDENION ATLAS: First-Party Math & Source Synthesis"
@@ -9450,8 +10186,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["tests/test_group_theory.py", "src/gemini_physics/de_marrais_boxkites.py", "tests/test_de_marrais_boxkites.py", "src/gemini_physics/sedenion_annihilator.py", "tests/test_reggiani_alignment.py", "docs/REGGIANI_REPLICATION.md", "tests/test_reggiani_standard_zero_divisors.py", "docs/MATH_VALIDATION_REPORT.md"]
-line_count = 70
+line_count = 73
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9525,7 +10264,7 @@ body_markdown = '''
 '''
 
 [[document]]
-id = "DRN-040"
+id = "DRN-042"
 source_markdown = "docs/SEDENION_GRAVASTAR_EQUIVALENCE.md"
 slug = "sedenion_gravastar_equivalence"
 title = "The Sedenion-Gravastar Equivalence Principle"
@@ -9533,8 +10272,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-007", "C-011", "C-012"]
 path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "src/gravastar_tov.py"]
-line_count = 54
+line_count = 57
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9592,7 +10334,7 @@ citations, and numerical validation than currently present in this repo.
 '''
 
 [[document]]
-id = "DRN-041"
+id = "DRN-043"
 source_markdown = "docs/SEDENION_NILPOTENCY.md"
 slug = "sedenion_nilpotency"
 title = "THE SEDENION NILPOTENCY: E6 Root Search"
@@ -9600,8 +10342,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = []
-line_count = 29
+line_count = 32
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9634,7 +10379,7 @@ def find_nilpotents(dim=16, samples=1000):
 '''
 
 [[document]]
-id = "DRN-042"
+id = "DRN-044"
 source_markdown = "docs/SUBDOMAIN_EXPANSION.md"
 slug = "subdomain_expansion"
 title = "Subdomain Expansion: Sedenion Physics & Mathematics"
@@ -9642,8 +10387,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["sedenion_field_sim.py", "sedenion_nilpotent_candidates.csv"]
-line_count = 43
+line_count = 46
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9690,7 +10438,7 @@ body_markdown = '''
 '''
 
 [[document]]
-id = "DRN-043"
+id = "DRN-045"
 source_markdown = "docs/TERMINOLOGY_GLOSSARY.md"
 slug = "terminology_glossary"
 title = "Terminology Glossary (Standardized)"
@@ -9698,8 +10446,11 @@ status_token = "GLOSSARY"
 content_kind = "taxonomy_or_glossary"
 claim_refs = []
 path_refs = ["convos/", "e_0, e_1, ..., e_{D-1}", "gemini_physics.optimized_algebra.cd_multiply_jit", "(e_i +/- e_j)", "gemini_physics.de_marrais_boxkites.primitive_assessors", "src/export_de_marrais_boxkites.py", "(e_low +/- e_high)", "gemini_physics.reggiani_replication.standard_zero_divisors", "gemini_physics.m3_cd_transfer", "gemini_physics.padic"]
-line_count = 88
+line_count = 91
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9791,7 +10542,7 @@ script/test.
 '''
 
 [[document]]
-id = "DRN-044"
+id = "DRN-046"
 source_markdown = "docs/THEORETICAL_ANNOTATIONS.md"
 slug = "theoretical_annotations"
 title = "Theoretical Annotations & Interpretations"
@@ -9799,8 +10550,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["docs/latex/MATHEMATICAL_FORMALISM.tex", "docs/CLAIMS_EVIDENCE_MATRIX.md", "docs/DE_MARRAIS_REPLICATION.md", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "src/gemini_physics/m3_cd_transfer.py"]
-line_count = 39
+line_count = 42
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9843,7 +10597,7 @@ below are hypotheses (see `docs/CLAIMS_EVIDENCE_MATRIX.md` and `docs/DE_MARRAIS_
 '''
 
 [[document]]
-id = "DRN-045"
+id = "DRN-047"
 source_markdown = "docs/THEORETICAL_SYNTHESIS_V2.md"
 slug = "theoretical_synthesis_v2"
 title = "Theoretical Synthesis V2: Harmonizing the Reverse Cayley-Dickson Framework"
@@ -9851,8 +10605,11 @@ status_token = "NARRATIVE"
 content_kind = "analysis_note"
 claim_refs = []
 path_refs = ["convos/4_read_every_nonuser_line.md", "convos/3_further_explorations.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "4_read_every_nonuser_line.md", "tests/", "src/verification/", "data/csv/sedenion_zd_edges.csv", "docs/MATH_VALIDATION_REPORT.md"]
-line_count = 61
+line_count = 64
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9917,7 +10674,7 @@ This document is not a closure claim; it is an evolving synthesis. The repo's va
 '''
 
 [[document]]
-id = "DRN-046"
+id = "DRN-048"
 source_markdown = "docs/THE_GEMINI_PROTOCOL.md"
 slug = "the_gemini_protocol"
 title = "The Gemini Protocol: A Unified Physics Engine"
@@ -9925,8 +10682,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["tests/", "src/gemini_physics/cosmology.py", "src/gemini_physics/renormalization.py", "src/gemini_physics/tensor_networks.py"]
-line_count = 31
+line_count = 34
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -9961,7 +10721,7 @@ The Gemini Protocol is an attempt to bridge abstract algebra and computational e
 '''
 
 [[document]]
-id = "DRN-047"
+id = "DRN-049"
 source_markdown = "docs/THE_HYPER_STANDARD.md"
 slug = "the_hyper_standard"
 title = "Why \"Toy Models\"? (And How We Transcend Them)"
@@ -9969,8 +10729,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = []
-line_count = 26
+line_count = 29
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -10000,7 +10763,7 @@ Executing Visual Upgrades now.
 '''
 
 [[document]]
-id = "DRN-048"
+id = "DRN-050"
 source_markdown = "docs/ULTRA_ROADMAP.md"
 slug = "ultra_roadmap"
 title = "Ultra Roadmap (Granular, Test-Driven)"
@@ -10008,8 +10771,11 @@ status_token = "NARRATIVE"
 content_kind = "status_note"
 claim_refs = []
 path_refs = ["docs/ROADMAP.md", "pyproject.toml", "src/gemini_physics/__init__.py", "pytest.ini", "src/gemini_physics/", "src/*.py", "__init__.py", "docs/CLAIMS_EVIDENCE_MATRIX.md", "data/external/GWTC-3_GWpy_Official.csv", "crates/cosmology_core/src/dimensional_geometry.rs", "src/vis_dimensional_geometry.py", "src/fetch_materials_jarvis_subset.py", "src/materials_embedding_experiments.py", "crates/algebra_core/src/cayley_dickson.rs", "annihilator.rs", "reggiani.rs", "m3.rs", "boxkites.rs", "ConfineModel.v", "README.md", "docs/REPO_OVERVIEW.md", "GEMINI.md", "docs/external_sources/DATASET_MANIFEST.md", "docs/DATASET_COVERAGE.md", "docs/CLAIMS_TASKS.md"]
-line_count = 121
+line_count = 124
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -10134,7 +10900,7 @@ end with cached artifacts, provenance hashes, and offline validation hooks.
 '''
 
 [[document]]
-id = "DRN-049"
+id = "DRN-051"
 source_markdown = "docs/UNIFIED_FRAMEWORK_V2.md"
 slug = "unified_framework_v2"
 title = "Unified Recursive Algebraic-Computational Framework (URACF)"
@@ -10142,8 +10908,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["docs/CLAIMS_EVIDENCE_MATRIX.md", "src/genesis_simulation.py"]
-line_count = 63
+line_count = 66
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -10210,7 +10979,7 @@ This avoids violating Hurwitz's Theorem. The "Pre-Reals" are Dyadic/Surreal stru
 '''
 
 [[document]]
-id = "DRN-050"
+id = "DRN-052"
 source_markdown = "docs/UNIFIED_WHITEPAPER.md"
 slug = "unified_whitepaper"
 title = "Unified Mathematical Framework for Surreal-Noncommutative Algebras, Inverse Cayley-Dickson Processes, and Spectral Geometry"
@@ -10218,8 +10987,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["docs/MATH_VALIDATION_REPORT.md", "docs/CLAIMS_EVIDENCE_MATRIX.md", "tests/", "src/verification/", "docs/NEGATIVE_DIMENSION_CLARIFICATIONS.md", "tests/test_m3_cd_transfer.py"]
-line_count = 90
+line_count = 93
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -10313,7 +11085,7 @@ hypothesis and tracked in `docs/CLAIMS_EVIDENCE_MATRIX.md`.
 '''
 
 [[document]]
-id = "DRN-051"
+id = "DRN-053"
 source_markdown = "docs/VERIFIED_CLAIMS_INDEX.md"
 slug = "verified_claims_index"
 title = "Verified Claims Index (Test-Backed)"
@@ -10321,8 +11093,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = ["C-001", "C-002", "C-003", "C-006", "C-011", "C-013", "C-014", "C-015", "C-016", "C-017", "C-018", "C-024", "C-028", "C-029", "C-030", "C-035", "C-036", "C-038"]
 path_refs = ["convos/", "tests/test_cayley_dickson_properties.py", "tests/test_de_marrais_boxkites.py", "tests/test_de_marrais_automorphemes.py", "tests/test_reggiani_standard_zero_divisors.py", "tests/test_m3_cd_transfer.py", "tests/test_cd_xor_heuristics.py", "tests/test_dimensional_geometry.py", "src/scripts/data/fetch_gwtc3_confident.py", "tests/test_gwosc_eventapi_snapshot.py", "src/verification/verify_generated_artifacts.py", "src/verification/verify_grand_images.py", "tests/test_wheels.py", "cpp/tests/test_cd_algebra.cpp", "cpp/benchmarks/bench_cd_multiply.cpp", "tests/test_sedenion_automorphism.py", "tests/test_f4_casimir.py", "tests/test_bigraph_cosmogenesis.py", "tests/test_exceptional_w0.py", "tests/test_gravastar_equivalence_guard.py", "docs/MATH_VALIDATION_REPORT.md", "docs/CLAIMS_EVIDENCE_MATRIX.md"]
-line_count = 87
+line_count = 90
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -10413,7 +11188,7 @@ For narrative scope boundaries and what remains unverified, see:
 '''
 
 [[document]]
-id = "DRN-052"
+id = "DRN-054"
 source_markdown = "docs/WHEELS_DIVISION_BY_ZERO.md"
 slug = "wheels_division_by_zero"
 title = "Wheels (Division by Zero) - Source-first notes"
@@ -10421,8 +11196,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = []
-line_count = 65
+line_count = 68
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -10491,7 +11269,7 @@ To bring wheels into the repo without overclaiming:
 '''
 
 [[document]]
-id = "DRN-053"
+id = "DRN-055"
 source_markdown = "docs/agents.md"
 slug = "agents"
 title = "Visualization Standards and Guidelines"
@@ -10499,8 +11277,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["AGENTS.md", "convos/", "31.6 x 28.2", "0.3-0.5", "data/artifacts/images/", "python3 bin/ascii_check.py --check"]
-line_count = 102
+line_count = 105
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -10606,7 +11387,7 @@ Before finalizing:
 '''
 
 [[document]]
-id = "DRN-054"
+id = "DRN-056"
 source_markdown = "docs/agents_python_access.md"
 slug = "agents_python_access"
 title = "Agent's Python Environment & Hardware Access"
@@ -10614,8 +11395,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = ["~/Playground/venv_gemini"]
-line_count = 47
+line_count = 50
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
@@ -10666,7 +11450,7 @@ Given the bleeding-edge Python 3.14.2 system python, **`venv`** is strictly reco
 '''
 
 [[document]]
-id = "DRN-055"
+id = "DRN-057"
 source_markdown = "docs/x86_SIMD_OPTIMIZATION.md"
 slug = "x86_simd_optimization"
 title = "x86 SIMD/FPU Optimization & History Reference"
@@ -10674,8 +11458,11 @@ status_token = "NARRATIVE"
 content_kind = "research_note"
 claim_refs = []
 path_refs = []
-line_count = 55
+line_count = 58
 body_markdown = '''
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 <!-- AUTO-GENERATED: DO NOT EDIT -->
 <!-- Source of truth: registry/docs_root_narratives.toml -->
 
