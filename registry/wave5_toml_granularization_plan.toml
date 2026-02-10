@@ -187,13 +187,15 @@ artifacts = [
 
 [[task]]
 id = "W5-015"
-status = "pending"
+status = "done"
 priority = "medium"
 title = "Section-level contradiction markers"
 description = "Record contradictory statements and unresolved disputes as explicit registry entries."
 artifacts = [
   "registry/lacunae.toml",
   "registry/conflict_markers.toml",
+  "src/scripts/analysis/build_wave5_batch3_registries.py",
+  "src/verification/verify_wave5_batch3_registries.py",
 ]
 
 [[task]]
@@ -231,23 +233,25 @@ artifacts = [
 
 [[task]]
 id = "W5-019"
-status = "pending"
+status = "done"
 priority = "medium"
 title = "Registry schema checksums"
 description = "Compute and enforce schema signatures for critical registries."
 artifacts = [
   "registry/schema_signatures.toml",
+  "src/scripts/analysis/build_wave5_batch3_registries.py",
   "src/verification/verify_registry_schema_signatures.py",
 ]
 
 [[task]]
 id = "W5-020"
-status = "pending"
+status = "done"
 priority = "medium"
 title = "Cross-registry key consistency verifier"
 description = "Fail on dangling references across claims, insights, experiments, sources, and datasets."
 artifacts = [
   "src/verification/verify_registry_crossrefs.py",
+  "Makefile",
 ]
 
 [[task]]
@@ -295,6 +299,7 @@ artifacts = [
   "registry-wave5",
   "registry-wave5-batch1",
   "registry-wave5-batch2",
+  "registry-wave5-batch3",
 ]
 
 [[task]]
