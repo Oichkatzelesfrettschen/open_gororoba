@@ -3814,7 +3814,7 @@ mod tests {
                                 },
                                 &sig,
                             );
-                            let mut ejei = cd_multiply_split(
+                            let ejei = cd_multiply_split(
                                 &{
                                     let mut v = vec![0.0; dim];
                                     v[j] = 1.0;
@@ -3844,7 +3844,7 @@ mod tests {
                                 },
                                 &sig,
                             );
-                            let mut elEk = cd_multiply_split(
+                            let el_ek = cd_multiply_split(
                                 &{
                                     let mut v = vec![0.0; dim];
                                     v[l] = 1.0;
@@ -4090,7 +4090,7 @@ mod tests {
                                 },
                                 &sig,
                             );
-                            let mut ejei = cd_multiply_split(
+                            let ejei = cd_multiply_split(
                                 &{
                                     let mut v = vec![0.0; dim];
                                     v[j] = 1.0;
@@ -4120,7 +4120,7 @@ mod tests {
                                 },
                                 &sig,
                             );
-                            let mut elEk = cd_multiply_split(
+                            let el_ek = cd_multiply_split(
                                 &{
                                     let mut v = vec![0.0; dim];
                                     v[l] = 1.0;
