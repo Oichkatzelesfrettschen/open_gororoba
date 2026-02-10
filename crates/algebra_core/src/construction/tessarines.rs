@@ -247,7 +247,7 @@ pub fn count_commutativity_violations() -> usize {
     let tolerance = 1e-10;
 
     // Test basis elements
-    let basis = vec![
+    let basis = [
         Tessarine::one(),
         Tessarine::i1(),
         Tessarine::i2(),
@@ -277,7 +277,7 @@ pub fn count_associativity_violations() -> usize {
     let mut violations = 0;
     let tolerance = 1e-10;
 
-    let basis = vec![
+    let basis = [
         Tessarine::one(),
         Tessarine::i1(),
         Tessarine::i2(),
