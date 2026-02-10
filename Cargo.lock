@@ -58,6 +58,7 @@ dependencies = [
  "atlas-embeddings",
  "criterion",
  "csv",
+ "cudarc",
  "diffusionx",
  "hurst",
  "nalgebra 0.33.2",

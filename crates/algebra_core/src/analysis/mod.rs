@@ -9,4 +9,5 @@ pub mod legacy_crossval;
 pub mod projective_geometry;
 pub mod reggiani;
 pub mod stochastic;
+pub mod test_wedged_validation;
 pub mod zd_graphs;
