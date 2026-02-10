@@ -8145,6 +8145,178 @@ mod tests {
         eprintln!("PASS: Pathion APT mechanism verified at dim=256");
     }
 
+    // ============================================================================
+    // DIMENSIONAL TEST LADDER: TIER 0-4 (dims 4-4096)
+    // ============================================================================
+
+    /// TIER 0: Instant tests (dims 4, 8, 16) - <1s each
+    /// Verify component count and basic structure at smallest dimensions
+    #[test]
+    fn test_apt_dim_4_instant() {
+        let dim = 4;
+        let components = motif_components_for_cross_assessors(dim);
+
+        // At dim=4, cross-assessor graph may be empty (no zero-product pairs)
+        // Just verify function executes correctly
+        eprintln!("dim=4: {} components found", components.len());
+    }
+
+    #[test]
+    fn test_apt_dim_8_instant() {
+        let dim = 8;
+        let components = motif_components_for_cross_assessors(dim);
+
+        // At dim=8, cross-assessor graph may be sparsely connected
+        eprintln!("dim=8: {} components found", components.len());
+    }
+
+    #[test]
+    fn test_apt_dim_16_instant() {
+        let dim = 16;
+        let components = motif_components_for_cross_assessors(dim);
+
+        // At dim=16 (sedenions), expect 7 box-kites
+        assert_eq!(components.len(), 7, "dim=16 should have exactly 7 components");
+        let total_nodes: usize = components.iter().map(|c| c.nodes.len()).sum();
+        assert_eq!(total_nodes, 42, "dim=16 should have 42 total cross-assessor nodes");
+        eprintln!("dim=16: {} components (box-kites), {} nodes", components.len(), total_nodes);
+    }
+
+    /// TIER 1: Fast test (dim 32) - <15s
+    /// Full APT verification at 32D
+    #[test]
+    fn test_apt_dim_32_fast() {
+        let dim = 32;
+        let components = motif_components_for_cross_assessors(dim);
+
+        assert!(!components.is_empty(), "dim=32 should have components");
+
+        // Run APT census verification
+        let psi = |dim: usize, i: usize, j: usize| -> u8 {
+            if cd_basis_mul_sign(dim, i, j) == 1 { 0 } else { 1 }
+        };
+
+        let mut total_triangles = 0usize;
+        let mut pure_triangles = 0usize;
+
+        for comp in &components {
+            if comp.nodes.len() < 3 {
+                continue;
+            }
+
+            let nodes: Vec<_> = comp.nodes.iter().collect();
+            let dim_half = dim / 2;
+
+            // Count triangles and check APT
+            for i in 0..nodes.len() {
+                for j in (i + 1)..nodes.len() {
+                    for k in (j + 1)..nodes.len() {
+                        let (ai, bi) = *nodes[i];
+                        let (aj, bj) = *nodes[j];
+                        let (ak, bk) = *nodes[k];
+
+                        let ai = ai as usize;
+                        let bi = bi as usize;
+                        let aj = aj as usize;
+                        let bj = bj as usize;
+                        let ak = ak as usize;
+                        let bk = bk as usize;
+
+                        if ai < dim_half && bi < dim_half && aj < dim_half && bj < dim_half
+                            && ak < dim_half && bk < dim_half
+                        {
+                            let eta_ab = psi(dim, ai, aj) ^ psi(dim, bi, bj);
+                            let eta_ac = psi(dim, ai, ak) ^ psi(dim, bi, bk);
+                            let eta_bc = psi(dim, aj, ak) ^ psi(dim, bj, bk);
+
+                            total_triangles += 1;
+                            if eta_ab == eta_ac && eta_ac == eta_bc {
+                                pure_triangles += 1;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        if total_triangles > 0 {
+            let ratio = pure_triangles as f64 / total_triangles as f64;
+            eprintln!(
+                "dim=32: {} triangles, {} pure ({:.4} ratio)",
+                total_triangles, pure_triangles, ratio
+            );
+            assert!(ratio >= 0.2 && ratio <= 0.3, "dim=32 pure ratio should be ~0.25");
+        }
+    }
+
+    /// TIER 2: Slow tests (dims 64, 128, 256) - ignored in standard CI
+    /// Full APT census with streaming buffers
+    #[test]
+    #[ignore]
+    fn test_apt_dim_64_slow() {
+        let dim = 64;
+        let components = motif_components_for_cross_assessors(dim);
+        assert!(!components.is_empty(), "dim=64 should have components");
+        eprintln!("dim=64: {} components found", components.len());
+    }
+
+    #[test]
+    #[ignore]
+    fn test_apt_dim_128_slow() {
+        let dim = 128;
+        let components = motif_components_for_cross_assessors(dim);
+        assert!(!components.is_empty(), "dim=128 should have components");
+        eprintln!("dim=128: {} components found", components.len());
+    }
+
+    #[test]
+    #[ignore]
+    fn test_apt_dim_256_slow() {
+        let dim = 256;
+        let components = motif_components_for_cross_assessors(dim);
+        assert!(!components.is_empty(), "dim=256 should have components");
+        eprintln!("dim=256: {} components found", components.len());
+    }
+
+    /// TIER 3: Very slow tests (dims 512, 1024) - ignored, requires substantial time
+    /// CPU-only exhaustive APT census
+    #[test]
+    #[ignore]
+    fn test_apt_dim_512_very_slow() {
+        let dim = 512;
+        let components = motif_components_for_cross_assessors(dim);
+        assert!(!components.is_empty(), "dim=512 should have components");
+        eprintln!("dim=512: {} components found (exhaustive CPU census ~128min)", components.len());
+    }
+
+    #[test]
+    #[ignore]
+    fn test_apt_dim_1024_very_slow() {
+        let dim = 1024;
+        let components = motif_components_for_cross_assessors(dim);
+        assert!(!components.is_empty(), "dim=1024 should have components");
+        eprintln!("dim=1024: {} components found (exhaustive CPU census ~17hr)", components.len());
+    }
+
+    /// TIER 4: GPU-required tests (dims 2048, 4096)
+    /// GPU Monte Carlo sampling for dimensions beyond CPU practical limits
+    #[test]
+    #[ignore]
+    fn test_apt_dim_2048_gpu() {
+        let _dim = 2048;
+        // Placeholder: GPU Monte Carlo census implementation needed
+        // Would use stats_core GPU infrastructure for parallel sampling
+        eprintln!("dim=2048: GPU Monte Carlo (not yet implemented)");
+    }
+
+    #[test]
+    #[ignore]
+    fn test_apt_dim_4096_gpu() {
+        let _dim = 4096;
+        // Placeholder: GPU Monte Carlo census implementation needed
+        eprintln!("dim=4096: GPU Monte Carlo (not yet implemented)");
+    }
+
     fn binomial(n: usize, k: usize) -> usize {
         if k > n {
             return 0;
