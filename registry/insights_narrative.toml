@@ -161,7 +161,7 @@ See `data/csv/c071g_exploration_gpu_10M_1000perm.csv` for full results.
 
 [[entry]]
 id = "I-012"
-title = "The Pathion Cubic Anomaly"
+title = "The Pathion Cubic Anomaly and Anti-Diagonal Parity Mechanism"
 body_markdown = """
 **Date:** 2026-02-07
 **Status:** Verified algebraic phenomenon. Physical interpretation: speculative.
