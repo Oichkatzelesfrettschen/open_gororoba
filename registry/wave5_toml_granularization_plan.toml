@@ -213,7 +213,7 @@ artifacts = [
 
 [[task]]
 id = "W5-017"
-status = "pending"
+status = "done"
 priority = "medium"
 title = "CLI emitter contract tests"
 description = "Add golden tests for `registry-emit` targets (bibtex/tex/pgfplots/mermaid/svg) from TOML inputs."
@@ -224,13 +224,14 @@ artifacts = [
 
 [[task]]
 id = "W5-018"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Markdown-free publish profile"
 description = "Support strict publish profile where markdown mirrors are not materialized in git working tree."
 artifacts = [
   "Makefile",
   "src/scripts/analysis/export_registry_markdown_mirrors.py",
+  "src/verification/verify_registry_mirror_freshness.py",
 ]
 
 [[task]]
@@ -285,13 +286,17 @@ artifacts = [
 
 [[task]]
 id = "W5-023"
-status = "pending"
+status = "done"
 priority = "high"
 title = "Generated mirror tracking opt-out by default"
 description = "Keep mirror files untracked and enforce generated-only policy through inventory and owner-map verifiers."
 artifacts = [
   "registry/markdown_inventory.toml",
   "registry/markdown_owner_map.toml",
+  "src/verification/verify_markdown_inventory_toml_first.py",
+  "src/verification/verify_markdown_owner_map.py",
+  "src/scripts/analysis/build_markdown_owner_map.py",
+  "Makefile",
 ]
 
 [[task]]

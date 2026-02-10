@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/experiments.toml"
-lineage_count = 14
-edge_count = 121
+lineage_count = 15
+edge_count = 125
 
 [[lineage]]
 id = "XL-001"
@@ -222,6 +222,21 @@ input_path_refs = []
 output_path_refs = ["data/csv/apt_dimensional_census_summary.csv", "data/csv/apt_dimensional_census_details.csv"]
 dataset_refs = ["PC-0002"]
 replay_steps = ["Confirm required input paths are available.", "cargo run --release --bin dimensional-census -- --slow --details", "Verify expected outputs or stdout artifacts are produced."]
+acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
+
+[[lineage]]
+id = "XL-015"
+experiment_id = "E-015"
+binary = "dimensional-census"
+deterministic = true
+gpu = false
+run_command = "cargo test -p algebra_core --release --lib -- test_separating_degree_formula_universality --nocapture"
+run_command_sha256 = "14fdeb04854fd5796e3e9e39d81ec504b61eb83076dad30cc7813352db6c7dd0"
+claim_refs = ["C-599", "C-600"]
+input_path_refs = []
+output_path_refs = ["data/csv/separating_degree_formula_sweep.csv"]
+dataset_refs = []
+replay_steps = ["Confirm required input paths are available.", "cargo test -p algebra_core --release --lib -- test_separating_degree_formula_universality --nocapture", "Verify expected outputs or stdout artifacts are produced."]
 acceptance_criteria = ["Claim references resolve in registry/claims.toml.", "Binary is registered in registry/binaries.toml.", "Reproducibility class is explicitly declared."]
 
 [[edge]]
@@ -1311,5 +1326,41 @@ from_id = "E-014"
 to_ref = "PC-0002"
 to_kind = "dataset"
 edge_kind = "touches_dataset"
+verified = true
+
+[[edge]]
+id = "XLE-00122"
+lineage_id = "XL-015"
+from_id = "E-015"
+to_ref = "dimensional-census"
+to_kind = "binary"
+edge_kind = "implemented_by_binary"
+verified = true
+
+[[edge]]
+id = "XLE-00123"
+lineage_id = "XL-015"
+from_id = "E-015"
+to_ref = "C-599"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00124"
+lineage_id = "XL-015"
+from_id = "E-015"
+to_ref = "C-600"
+to_kind = "claim"
+edge_kind = "supports_claim"
+verified = true
+
+[[edge]]
+id = "XLE-00125"
+lineage_id = "XL-015"
+from_id = "E-015"
+to_ref = "data/csv/separating_degree_formula_sweep.csv"
+to_kind = "path"
+edge_kind = "produces_path"
 verified = true
 

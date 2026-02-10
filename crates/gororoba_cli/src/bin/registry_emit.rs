@@ -428,10 +428,30 @@ fn extract_author(text: &str) -> Option<String> {
 }
 
 fn extract_title(text: &str) -> Option<String> {
-    let re = Regex::new(r"\*([^*]+)\*").ok()?;
-    re.captures(text)
-        .and_then(|cap| cap.get(1))
-        .map(|m| m.as_str().trim().to_string())
+    let bytes = text.as_bytes();
+    let mut i = 0usize;
+    while i < bytes.len() {
+        if bytes[i] == b'*' {
+            let prev_star = i > 0 && bytes[i - 1] == b'*';
+            let next_star = i + 1 < bytes.len() && bytes[i + 1] == b'*';
+            if !prev_star && !next_star {
+                let start = i + 1;
+                let mut j = start;
+                while j < bytes.len() {
+                    if bytes[j] == b'*' {
+                        let prev_is_star = j > 0 && bytes[j - 1] == b'*';
+                        let next_is_star = j + 1 < bytes.len() && bytes[j + 1] == b'*';
+                        if !prev_is_star && !next_is_star && j > start {
+                            return Some(text[start..j].trim().to_string());
+                        }
+                    }
+                    j += 1;
+                }
+            }
+        }
+        i += 1;
+    }
+    None
 }
 
 fn emit_bibliography_bibtex(args: BibliographyBibtexArgs) -> Result<(), String> {

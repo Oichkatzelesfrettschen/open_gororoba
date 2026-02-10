@@ -213,14 +213,7 @@ status = "Hurwitz division algebra (only octonion family member)"
 dimension = 8
 count = 7
 note = "All 7 mixed/split octonion variants with at least one gamma=+1"
-shared_properties = {
-  zero_divisors = 128,
-  norm_multiplicative = false,
-  invertibility = 0.0,
-  is_division = false,
-  commutative = false,
-  commutator_violations = 21,
-}
+shared_properties = { zero_divisors = 128, norm_multiplicative = false, invertibility = 0.0, is_division = false, commutative = false, commutator_violations = 21 }
 variants = [
   "+--",
   "-+-",
@@ -270,8 +263,10 @@ structural = [
 
 [phase8.architectural_insights.metric_signature_control]
 principle = "Metric signature is the PRIMARY CONTROL KNOB for algebraic structure class"
-lever = "gamma = -1 at all levels => division algebra (Euclidean, norm-multiplicative)"
-lever = "gamma = +1 at any level => non-division algebra (indefinite, norm-failure)"
+lever = [
+  "gamma = -1 at all levels => division algebra (Euclidean, norm-multiplicative)",
+  "gamma = +1 at any level => non-division algebra (indefinite, norm-failure)"
+]
 lever_count = 2
 mechanistic_explanation = "gamma=-1 => all basis elements e_i have e_i^2 = -1 (euclidean); gamma=+1 => e_i^2 = +1 (timelike, enables null vectors)"
 
@@ -279,8 +274,10 @@ mechanistic_explanation = "gamma=-1 => all basis elements e_i have e_i^2 = -1 (e
 principle = "Commutativity is ORTHOGONAL to metric signature"
 statement = "Changing gamma does NOT enable commutativity at dim>=4"
 root_cause = "Commutativity failure is forced by doubling formula structure, not metric"
-level = "dim < 4: commutativity universal (R, C commutative at all signatures)"
-level = "dim >= 4: non-commutativity universal (all signatures produce non-commutative algebras)"
+level = [
+  "dim < 4: commutativity universal (R, C commutative at all signatures)",
+  "dim >= 4: non-commutativity universal (all signatures produce non-commutative algebras)"
+]
 
 [phase8.publication_artifacts]
 test_implementation = "crates/algebra_core/tests/test_low_dimensional_survey.rs"

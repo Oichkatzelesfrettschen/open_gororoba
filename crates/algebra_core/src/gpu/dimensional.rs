@@ -18,6 +18,7 @@ use cudarc::nvrtc::compile_ptx;
 use std::sync::Arc;
 
 #[cfg(not(feature = "gpu"))]
+#[allow(unused_imports)]
 use std::sync::Arc;
 
 /// Result of GPU APT census computation
@@ -208,7 +209,7 @@ impl GpuDimensionalEngine {
         // Scratch: negligible
         // Note: n_samples is not used because we use atomic counters (constant memory)
         let node_mem_bytes = dim + 32; // nodes + counters
-        let node_mem_mb = (node_mem_bytes + 1024 * 1024 - 1) / (1024 * 1024);
+        let node_mem_mb = node_mem_bytes.div_ceil(1024 * 1024);
         let gpu_overhead_mb = 100; // ~100MB CUDA runtime overhead
 
         // At small sizes, overhead dominates; at large sizes, nodes dominate
@@ -460,7 +461,7 @@ impl GpuDimensionalEngine {
                     mixed_count += 1;
                     let f0 = eta_ij ^ eta_jk;
                     let f1 = eta_jk ^ eta_ik;
-                    let fiber_idx = ((f0 as u8) << 1) | f1;
+                    let fiber_idx = (f0 << 1) | f1;
                     match fiber_idx {
                         1 => fiber_01 += 1,
                         2 => fiber_10 += 1,
@@ -591,7 +592,7 @@ impl GpuDimensionalEngine {
                     mixed_count += 1;
                     let f0 = eta_ij ^ eta_jk;
                     let f1 = eta_jk ^ eta_ik;
-                    let fiber_idx = ((f0 as u8) << 1) | f1;
+                    let fiber_idx = (f0 << 1) | f1;
                     match fiber_idx {
                         1 => fiber_01 += 1,
                         2 => fiber_10 += 1,

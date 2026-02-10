@@ -5,10 +5,10 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/knowledge/proof_skeletons.toml"
-step_count = 2700
-skeleton_count = 641
-skeleton_with_steps_count = 641
-claim_linked_step_count = 2548
+step_count = 2754
+skeleton_count = 653
+skeleton_with_steps_count = 653
+claim_linked_step_count = 2602
 max_steps_per_skeleton = 8
 
 [[step]]
@@ -50221,12 +50221,12 @@ claim_id = "C-547"
 claim_refs = ["C-547"]
 step_index = 1
 step_kind = "status_update"
-text = "VERIFIED: exhaustive search over all 2-blade pairs at dim=8"
-text_sha256 = "9e5465278c68e8d54dea9512c098d541c719e3129b3cd68354bc3b050edcd07a"
+text = "VERIFIED: exhaustive search over all wedge 2-blade pairs at dim=8 (full census) yields 128 zero-product pairs"
+text_sha256 = "9e108fa6f4b8a1a6b9283a81877991045016687111f16668426b0e6727b389df"
 equation_refs = []
 symbol_refs = []
-numeric_constants = ["2", "8"]
-key_tokens = ["VERIFIED", "all", "blade", "dim", "exhaustive", "over", "pairs", "search"]
+numeric_constants = ["128", "2", "8"]
+key_tokens = ["VERIFIED", "all", "blade", "census", "dim", "exhaustive", "full", "over", "pairs", "product", "search", "wedge", "yields", "zero"]
 depends_on_step_ids = []
 line_start = 0
 line_end = 0
@@ -50241,18 +50241,78 @@ claim_id = "C-547"
 claim_refs = ["C-547"]
 step_index = 2
 step_kind = "derivation_step"
-text = "WHAT WOULD REFUTE: finding a zero-product pair in standard octonions (impossible, octonions are a normed division algebra)"
-text_sha256 = "f62346df05a6334ba572ab8449b1de70b230a96c66b929321be753c1030fae78"
+text = "CLARIFYING NOTE: the auxiliary geometry test `test_split_octonion_zero_divisor_census` in `crates/algebra_core/tests/test_split_octonion_geometry"
+text_sha256 = "ee5fd70afa2daafc76292f21666e99d7fbef212a33824beae9b24b488c749540"
 equation_refs = []
 symbol_refs = []
 numeric_constants = []
-key_tokens = ["REFUTE", "WHAT", "WOULD", "algebra", "are", "division", "finding", "impossible", "normed", "octonions", "pair", "product", "standard", "zero"]
+key_tokens = ["CLARIFYING", "NOTE", "algebra_core", "auxiliary", "crates", "geometry", "test", "test_split_octonion_geometry", "test_split_octonion_zero_divisor_census", "tests"]
 depends_on_step_ids = ["DS-002511"]
 line_start = 0
 line_end = 0
 
 [[step]]
 id = "DS-002513"
+skeleton_id = "PRS-00590"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-547"
+claim_id = "C-547"
+claim_refs = ["C-547"]
+step_index = 3
+step_kind = "derivation_step"
+text = "rs` reports a restricted simple-blade census (`e_i +/- e_j` only), giving 52 pairs (4 proper + 48 null-involving)"
+text_sha256 = "fa5e6610a0b61c98acded6680c01f9e6fa40233aa7cddaaecd3a345cf65d87e7"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["4", "48", "52"]
+key_tokens = ["blade", "census", "e_i", "e_j", "giving", "involving", "null", "only", "pairs", "proper", "reports", "restricted", "rs", "simple"]
+depends_on_step_ids = ["DS-002512"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002514"
+skeleton_id = "PRS-00590"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-547"
+claim_id = "C-547"
+claim_refs = ["C-547"]
+step_index = 4
+step_kind = "derivation_step"
+text = "that restricted diagnostic is not the full 2-blade count used by this claim"
+text_sha256 = "a48c335a9161496620f5485947b34b36b9d89767eb86fc5a9cf85c240ae72b7e"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = ["blade", "claim", "count", "diagnostic", "full", "not", "restricted", "used"]
+depends_on_step_ids = ["DS-002513"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002515"
+skeleton_id = "PRS-00590"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-547"
+claim_id = "C-547"
+claim_refs = ["C-547"]
+step_index = 5
+step_kind = "derivation_step"
+text = "WHAT WOULD REFUTE: finding a zero-product pair in standard octonions (impossible, octonions are a normed division algebra)"
+text_sha256 = "f62346df05a6334ba572ab8449b1de70b230a96c66b929321be753c1030fae78"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "WHAT", "WOULD", "algebra", "are", "division", "finding", "impossible", "normed", "octonions", "pair", "product", "standard", "zero"]
+depends_on_step_ids = ["DS-002514"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002516"
 skeleton_id = "PRS-00591"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50272,7 +50332,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002514"
+id = "DS-002517"
 skeleton_id = "PRS-00591"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50287,12 +50347,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4"]
 key_tokens = ["REFUTE", "WHAT", "WOULD", "always", "dim", "divisors", "finding", "impossible", "indefinite", "non", "norm", "permits", "signature", "standard", "them", "without", "zero"]
-depends_on_step_ids = ["DS-002513"]
+depends_on_step_ids = ["DS-002516"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002515"
+id = "DS-002518"
 skeleton_id = "PRS-00592"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50312,7 +50372,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002516"
+id = "DS-002519"
 skeleton_id = "PRS-00592"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50327,12 +50387,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "3", "8"]
 key_tokens = ["REFUTE", "WHAT", "WOULD", "coincidence", "converges", "currently", "frustration", "if", "observed", "other", "ratio", "than", "value"]
-depends_on_step_ids = ["DS-002515"]
+depends_on_step_ids = ["DS-002518"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002517"
+id = "DS-002520"
 skeleton_id = "PRS-00592"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50347,12 +50407,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "375"]
 key_tokens = []
-depends_on_step_ids = ["DS-002516"]
+depends_on_step_ids = ["DS-002519"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002518"
+id = "DS-002521"
 skeleton_id = "PRS-00592"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50367,12 +50427,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["385"]
 key_tokens = ["above", "converging", "monotonically", "range"]
-depends_on_step_ids = ["DS-002517"]
+depends_on_step_ids = ["DS-002520"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002519"
+id = "DS-002522"
 skeleton_id = "PRS-00592"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50387,12 +50447,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["CD", "OPEN", "asymptotics", "between", "connection", "explanation", "octonion", "split", "standard", "structure", "theoretical"]
-depends_on_step_ids = ["DS-002518"]
+depends_on_step_ids = ["DS-002521"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002520"
+id = "DS-002523"
 skeleton_id = "PRS-00593"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50412,7 +50472,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002521"
+id = "DS-002524"
 skeleton_id = "PRS-00593"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50427,12 +50487,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["100"]
 key_tokens = ["all", "commutative", "non"]
-depends_on_step_ids = ["DS-002520"]
+depends_on_step_ids = ["DS-002523"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002522"
+id = "DS-002525"
 skeleton_id = "PRS-00593"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50447,12 +50507,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "4"]
 key_tokens = ["ALL", "REFUTE", "WHAT", "WOULD", "all", "any", "basis", "commute", "dim", "e_i", "e_j", "element", "finding", "gamma", "higher", "pairs", "vector", "where"]
-depends_on_step_ids = ["DS-002521"]
+depends_on_step_ids = ["DS-002524"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002523"
+id = "DS-002526"
 skeleton_id = "PRS-00593"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50467,12 +50527,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["After", "exhaustive", "found", "gamma", "literature", "no", "review", "search", "such"]
-depends_on_step_ids = ["DS-002522"]
+depends_on_step_ids = ["DS-002525"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002524"
+id = "DS-002527"
 skeleton_id = "PRS-00593"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50487,12 +50547,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["546"]
 key_tokens = ["claim", "commutativity", "distinguishes", "non", "parametric", "properties", "structural", "supports", "universal"]
-depends_on_step_ids = ["DS-002523"]
+depends_on_step_ids = ["DS-002526"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002525"
+id = "DS-002528"
 skeleton_id = "PRS-00594"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50512,7 +50572,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002526"
+id = "DS-002529"
 skeleton_id = "PRS-00594"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50527,12 +50587,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["ZD", "counts", "mixed", "non", "show", "signatures", "split", "zero"]
-depends_on_step_ids = ["DS-002525"]
+depends_on_step_ids = ["DS-002528"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002527"
+id = "DS-002530"
 skeleton_id = "PRS-00594"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50547,12 +50607,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1"]
 key_tokens = ["Scaling", "ZD", "count", "decreasing", "gamma", "hypothesis", "monotone", "non"]
-depends_on_step_ids = ["DS-002526"]
+depends_on_step_ids = ["DS-002529"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002528"
+id = "DS-002531"
 skeleton_id = "PRS-00594"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50567,12 +50627,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["REFUTE", "WHAT", "WOULD", "ZD", "cases", "census", "counts", "finding", "found", "like", "lower", "mixed", "no", "pairs", "signature", "signatures", "split", "standard", "such", "than"]
-depends_on_step_ids = ["DS-002527"]
+depends_on_step_ids = ["DS-002530"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002529"
+id = "DS-002532"
 skeleton_id = "PRS-00595"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50592,7 +50652,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002530"
+id = "DS-002533"
 skeleton_id = "PRS-00595"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50607,12 +50667,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Tessarines", "require", "tensor"]
-depends_on_step_ids = ["DS-002529"]
+depends_on_step_ids = ["DS-002532"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002531"
+id = "DS-002534"
 skeleton_id = "PRS-00595"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50627,12 +50687,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["CD", "REFUTE", "WHAT", "WOULD", "after", "algebra", "choice", "commutative", "discovering", "exhaustive", "found", "gamma", "non", "none", "product", "search", "tensor", "yields"]
-depends_on_step_ids = ["DS-002530"]
+depends_on_step_ids = ["DS-002533"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002532"
+id = "DS-002535"
 skeleton_id = "PRS-00596"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50652,7 +50712,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002533"
+id = "DS-002536"
 skeleton_id = "PRS-00596"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50667,12 +50727,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "100", "8"]
 key_tokens = ["commutative", "non"]
-depends_on_step_ids = ["DS-002532"]
+depends_on_step_ids = ["DS-002535"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002534"
+id = "DS-002537"
 skeleton_id = "PRS-00596"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50687,12 +50747,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["28"]
 key_tokens = ["Test", "basis", "commutator", "detection", "element", "pairs", "per", "sampled", "scope", "signature", "violation"]
-depends_on_step_ids = ["DS-002533"]
+depends_on_step_ids = ["DS-002536"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002535"
+id = "DS-002538"
 skeleton_id = "PRS-00596"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50707,12 +50767,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["550"]
 key_tokens = ["Cross", "commutativity", "consistent", "construction", "inherent", "non", "quaternion", "result", "theory", "validation"]
-depends_on_step_ids = ["DS-002534"]
+depends_on_step_ids = ["DS-002537"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002536"
+id = "DS-002539"
 skeleton_id = "PRS-00596"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50727,12 +50787,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "3", "8"]
 key_tokens = ["REFUTE", "WHAT", "WOULD", "all", "any", "dim", "e_i", "e_j", "finding", "found", "gamma", "none", "where"]
-depends_on_step_ids = ["DS-002535"]
+depends_on_step_ids = ["DS-002538"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002537"
+id = "DS-002540"
 skeleton_id = "PRS-00597"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50752,7 +50812,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002538"
+id = "DS-002541"
 skeleton_id = "PRS-00597"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50767,12 +50827,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["ZD", "counts", "mixed", "non", "show", "signatures", "split", "zero"]
-depends_on_step_ids = ["DS-002537"]
+depends_on_step_ids = ["DS-002540"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002539"
+id = "DS-002542"
 skeleton_id = "PRS-00597"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50787,12 +50847,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Composition", "law", "octonions", "standard", "verified"]
-depends_on_step_ids = ["DS-002538"]
+depends_on_step_ids = ["DS-002541"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002540"
+id = "DS-002543"
 skeleton_id = "PRS-00597"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50807,12 +50867,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1"]
 key_tokens = ["Scaling", "ZD", "count", "decreasing", "gamma", "hypothesis", "monotone", "non"]
-depends_on_step_ids = ["DS-002539"]
+depends_on_step_ids = ["DS-002542"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002541"
+id = "DS-002544"
 skeleton_id = "PRS-00597"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50827,12 +50887,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["REFUTE", "WHAT", "WOULD", "ZD", "census", "composition", "counts", "failing", "finding", "found", "law", "like", "lower", "mixed", "none", "octonions", "pairs", "signature", "split", "standard"]
-depends_on_step_ids = ["DS-002540"]
+depends_on_step_ids = ["DS-002543"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002542"
+id = "DS-002545"
 skeleton_id = "PRS-00598"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50852,7 +50912,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002543"
+id = "DS-002546"
 skeleton_id = "PRS-00598"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50867,12 +50927,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "100", "4"]
 key_tokens = ["commutative", "non"]
-depends_on_step_ids = ["DS-002542"]
+depends_on_step_ids = ["DS-002545"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002544"
+id = "DS-002547"
 skeleton_id = "PRS-00598"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50887,12 +50947,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Test", "basis", "element", "pairs", "per", "sampled", "scope", "signature"]
-depends_on_step_ids = ["DS-002543"]
+depends_on_step_ids = ["DS-002546"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002545"
+id = "DS-002548"
 skeleton_id = "PRS-00598"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50907,12 +50967,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["550", "553"]
 key_tokens = ["Cross", "consistent", "dimensions", "lower", "octonion", "quaternion", "results", "validation"]
-depends_on_step_ids = ["DS-002544"]
+depends_on_step_ids = ["DS-002547"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002546"
+id = "DS-002549"
 skeleton_id = "PRS-00598"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50927,12 +50987,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "16", "4"]
 key_tokens = ["REFUTE", "WHAT", "WOULD", "all", "any", "dim", "e_i", "e_j", "finding", "found", "gamma", "none", "where"]
-depends_on_step_ids = ["DS-002545"]
+depends_on_step_ids = ["DS-002548"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002547"
+id = "DS-002550"
 skeleton_id = "PRS-00599"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50952,7 +51012,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002548"
+id = "DS-002551"
 skeleton_id = "PRS-00599"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50967,12 +51027,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1"]
 key_tokens = ["Scaling", "ZD", "count", "decreasing", "gamma", "hypothesis", "monotone", "non"]
-depends_on_step_ids = ["DS-002547"]
+depends_on_step_ids = ["DS-002550"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002549"
+id = "DS-002552"
 skeleton_id = "PRS-00599"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -50987,12 +51047,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["2"]
 key_tokens = ["Test", "blade", "dim", "exhaustive", "limited", "not", "pairs", "range", "sampled", "scope"]
-depends_on_step_ids = ["DS-002548"]
+depends_on_step_ids = ["DS-002551"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002550"
+id = "DS-002553"
 skeleton_id = "PRS-00599"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51007,12 +51067,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["REFUTE", "WHAT", "WOULD", "ZD", "commutativity", "contradicting", "fewer", "finding", "have", "independence", "many", "pairs", "sedenion", "sedenions", "signature", "split", "standard", "than"]
-depends_on_step_ids = ["DS-002549"]
+depends_on_step_ids = ["DS-002552"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002551"
+id = "DS-002554"
 skeleton_id = "PRS-00599"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51027,12 +51087,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["16", "2"]
 key_tokens = ["Note", "blade", "census", "dim", "exhaustive", "not", "pairs", "performed"]
-depends_on_step_ids = ["DS-002550"]
+depends_on_step_ids = ["DS-002553"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002552"
+id = "DS-002555"
 skeleton_id = "PRS-00599"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51047,12 +51107,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Phase", "concept", "limited", "proof", "sampled"]
-depends_on_step_ids = ["DS-002551"]
+depends_on_step_ids = ["DS-002554"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002553"
+id = "DS-002556"
 skeleton_id = "PRS-00600"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51072,7 +51132,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002554"
+id = "DS-002557"
 skeleton_id = "PRS-00600"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51087,12 +51147,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "2"]
 key_tokens = ["Component", "against", "checked", "count", "dim", "formula"]
-depends_on_step_ids = ["DS-002553"]
+depends_on_step_ids = ["DS-002556"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002555"
+id = "DS-002558"
 skeleton_id = "PRS-00600"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51107,12 +51167,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["2"]
 key_tokens = ["against", "checked", "component", "count", "dim", "node", "per"]
-depends_on_step_ids = ["DS-002554"]
+depends_on_step_ids = ["DS-002557"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002556"
+id = "DS-002559"
 skeleton_id = "PRS-00600"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51127,12 +51187,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["6"]
 key_tokens = ["All", "dimensions", "exactly", "match"]
-depends_on_step_ids = ["DS-002555"]
+depends_on_step_ids = ["DS-002558"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002557"
+id = "DS-002560"
 skeleton_id = "PRS-00600"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51147,12 +51207,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "2"]
 key_tokens = ["REFUTE", "WHAT", "WOULD", "actual", "any", "component", "count", "deviates", "dim", "dimension", "more", "node", "than", "where"]
-depends_on_step_ids = ["DS-002556"]
+depends_on_step_ids = ["DS-002559"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002558"
+id = "DS-002561"
 skeleton_id = "PRS-00601"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51172,7 +51232,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002559"
+id = "DS-002562"
 skeleton_id = "PRS-00601"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51187,12 +51247,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["009", "128", "4"]
 key_tokens = ["Cycle", "b1", "rank"]
-depends_on_step_ids = ["DS-002558"]
+depends_on_step_ids = ["DS-002561"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002560"
+id = "DS-002563"
 skeleton_id = "PRS-00601"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51207,12 +51267,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "216", "573"]
 key_tokens = ["edges", "frustrated"]
-depends_on_step_ids = ["DS-002559"]
+depends_on_step_ids = ["DS-002562"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002561"
+id = "DS-002564"
 skeleton_id = "PRS-00601"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51227,12 +51287,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = ["ratio"]
-depends_on_step_ids = ["DS-002560"]
+depends_on_step_ids = ["DS-002563"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002562"
+id = "DS-002565"
 skeleton_id = "PRS-00601"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51247,12 +51307,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["381068"]
 key_tokens = []
-depends_on_step_ids = ["DS-002561"]
+depends_on_step_ids = ["DS-002564"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002563"
+id = "DS-002566"
 skeleton_id = "PRS-00601"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51267,12 +51327,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "096", "1", "2", "262"]
 key_tokens = ["Eta", "balance", "distribution", "edge", "edges", "eta", "even", "odd", "perfect"]
-depends_on_step_ids = ["DS-002562"]
+depends_on_step_ids = ["DS-002565"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002564"
+id = "DS-002567"
 skeleton_id = "PRS-00601"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51287,12 +51347,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = ["REFUTE", "WHAT", "WOULD", "above", "frustration", "increasing", "ratio"]
-depends_on_step_ids = ["DS-002563"]
+depends_on_step_ids = ["DS-002566"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002565"
+id = "DS-002568"
 skeleton_id = "PRS-00601"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51307,12 +51367,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "385", "517"]
 key_tokens = ["balance", "breaking", "decrease", "deviation", "eta", "monotone"]
-depends_on_step_ids = ["DS-002564"]
+depends_on_step_ids = ["DS-002567"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002566"
+id = "DS-002569"
 skeleton_id = "PRS-00602"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51332,7 +51392,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002567"
+id = "DS-002570"
 skeleton_id = "PRS-00602"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51347,12 +51407,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["011", "078", "10", "4"]
 key_tokens = ["Pure", "count", "exact", "total"]
-depends_on_step_ids = ["DS-002566"]
+depends_on_step_ids = ["DS-002569"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002568"
+id = "DS-002571"
 skeleton_id = "PRS-00602"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51367,12 +51427,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["033", "234", "3", "30", "4"]
 key_tokens = ["Mixed", "count", "exact", "total"]
-depends_on_step_ids = ["DS-002567"]
+depends_on_step_ids = ["DS-002570"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002569"
+id = "DS-002572"
 skeleton_id = "PRS-00602"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51387,12 +51447,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["2"]
 key_tokens = ["GF", "Klein", "XOR", "check", "compute", "each", "eta_ab", "eta_ac", "eta_bc", "fiber", "four", "triangle"]
-depends_on_step_ids = ["DS-002568"]
+depends_on_step_ids = ["DS-002571"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002570"
+id = "DS-002573"
 skeleton_id = "PRS-00602"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51407,12 +51467,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "100"]
 key_tokens = ["Pure", "consistency", "have", "triangles"]
-depends_on_step_ids = ["DS-002569"]
+depends_on_step_ids = ["DS-002572"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002571"
+id = "DS-002574"
 skeleton_id = "PRS-00602"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51427,12 +51487,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = ["Mismatches", "counterexamples", "found", "no"]
-depends_on_step_ids = ["DS-002570"]
+depends_on_step_ids = ["DS-002573"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002572"
+id = "DS-002575"
 skeleton_id = "PRS-00602"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51447,12 +51507,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["10", "127", "4"]
 key_tokens = ["REFUTE", "WHAT", "WOULD", "across", "actual", "all", "any", "based", "classification", "components", "contradicts", "count", "deviating", "eta", "finding", "invariant", "mixed", "more", "pure", "than"]
-depends_on_step_ids = ["DS-002571"]
+depends_on_step_ids = ["DS-002574"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002573"
+id = "DS-002576"
 skeleton_id = "PRS-00603"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51472,7 +51532,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002574"
+id = "DS-002577"
 skeleton_id = "PRS-00603"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51487,12 +51547,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["56", "8", "89"]
 key_tokens = ["Representative", "commutativity", "dim", "pairs", "per", "sampling", "signatures", "yields"]
-depends_on_step_ids = ["DS-002573"]
+depends_on_step_ids = ["DS-002576"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002575"
+id = "DS-002578"
 skeleton_id = "PRS-00603"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51507,12 +51567,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["120", "16", "4", "90"]
 key_tokens = ["Representative", "dim", "pairs", "per", "sampling", "signatures", "yields"]
-depends_on_step_ids = ["DS-002574"]
+depends_on_step_ids = ["DS-002577"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002576"
+id = "DS-002579"
 skeleton_id = "PRS-00603"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51527,12 +51587,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["2"]
 key_tokens = ["commutativity"]
-depends_on_step_ids = ["DS-002575"]
+depends_on_step_ids = ["DS-002578"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002577"
+id = "DS-002580"
 skeleton_id = "PRS-00603"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51547,12 +51607,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["50", "95"]
 key_tokens = ["Clifford", "REFUTE", "WHAT", "WOULD", "algebra", "any", "commutativity", "commuting", "dependent", "dimension", "full", "indicating", "pairs", "showing", "signature", "transition"]
-depends_on_step_ids = ["DS-002576"]
+depends_on_step_ids = ["DS-002579"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002578"
+id = "DS-002581"
 skeleton_id = "PRS-00604"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51572,7 +51632,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002579"
+id = "DS-002582"
 skeleton_id = "PRS-00604"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51587,12 +51647,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4"]
 key_tokens = ["Both", "basis", "but", "construction", "different", "dimension", "elements", "mechanisms", "same", "use"]
-depends_on_step_ids = ["DS-002578"]
+depends_on_step_ids = ["DS-002581"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002580"
+id = "DS-002583"
 skeleton_id = "PRS-00604"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51607,12 +51667,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "16", "8", "89", "90"]
 key_tokens = ["CD", "Cl", "Pattern", "dim", "holds"]
-depends_on_step_ids = ["DS-002579"]
+depends_on_step_ids = ["DS-002582"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002581"
+id = "DS-002584"
 skeleton_id = "PRS-00604"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51627,12 +51687,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["30", "50"]
 key_tokens = ["Cayley", "Clifford", "Dickson", "REFUTE", "WHAT", "WOULD", "algebra", "any", "commuting", "finding", "gamma", "pairs", "showing", "signature", "variant"]
-depends_on_step_ids = ["DS-002580"]
+depends_on_step_ids = ["DS-002583"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002582"
+id = "DS-002585"
 skeleton_id = "PRS-00605"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51652,7 +51712,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002583"
+id = "DS-002586"
 skeleton_id = "PRS-00605"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51667,12 +51727,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["40"]
 key_tokens = ["GitHub", "GitLab", "io", "search", "terms", "using"]
-depends_on_step_ids = ["DS-002582"]
+depends_on_step_ids = ["DS-002585"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002584"
+id = "DS-002587"
 skeleton_id = "PRS-00605"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51687,12 +51747,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["71"]
 key_tokens = ["crates", "screened"]
-depends_on_step_ids = ["DS-002583"]
+depends_on_step_ids = ["DS-002586"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002585"
+id = "DS-002588"
 skeleton_id = "PRS-00605"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51707,12 +51767,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["25"]
 key_tokens = ["analyzed", "depth"]
-depends_on_step_ids = ["DS-002584"]
+depends_on_step_ids = ["DS-002587"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002586"
+id = "DS-002589"
 skeleton_id = "PRS-00605"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51727,12 +51787,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1"]
 key_tokens = ["ACTIVE", "Tier", "VERY_ACTIVE", "amari", "candidates", "checked", "compatibility", "coverage", "cross", "feature", "geonum", "license", "maintenance", "status", "wedged"]
-depends_on_step_ids = ["DS-002585"]
+depends_on_step_ids = ["DS-002588"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002587"
+id = "DS-002590"
 skeleton_id = "PRS-00605"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51747,12 +51807,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Jordan", "No", "after", "algebra", "crates", "exhaustive", "found", "search"]
-depends_on_step_ids = ["DS-002586"]
+depends_on_step_ids = ["DS-002589"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002588"
+id = "DS-002591"
 skeleton_id = "PRS-00605"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51767,12 +51827,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Clifford", "Jordan", "REFUTE", "WHAT", "WOULD", "active", "agnostic", "algebra", "alternative", "crate", "dimension", "discovery", "licensed", "maintenance", "previously", "unknown", "validation", "wedged"]
-depends_on_step_ids = ["DS-002587"]
+depends_on_step_ids = ["DS-002590"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002589"
+id = "DS-002592"
 skeleton_id = "PRS-00606"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51792,7 +51852,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002590"
+id = "DS-002593"
 skeleton_id = "PRS-00606"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51807,12 +51867,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4"]
 key_tokens = ["A_2", "all", "basis", "commute", "diagonal", "diagonalxdiagonal", "diagonalxoff", "expected", "mixed", "pair", "pairs", "products", "sampled"]
-depends_on_step_ids = ["DS-002589"]
+depends_on_step_ids = ["DS-002592"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002591"
+id = "DS-002594"
 skeleton_id = "PRS-00606"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51827,12 +51887,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["9"]
 key_tokens = ["A_2", "Phase", "deferred", "enumeration", "full", "pairs"]
-depends_on_step_ids = ["DS-002590"]
+depends_on_step_ids = ["DS-002593"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002592"
+id = "DS-002595"
 skeleton_id = "PRS-00606"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51847,12 +51907,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Jordan", "REFUTE", "WHAT", "WOULD", "algebra", "any", "basis", "element", "pair", "showing"]
-depends_on_step_ids = ["DS-002591"]
+depends_on_step_ids = ["DS-002594"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002593"
+id = "DS-002596"
 skeleton_id = "PRS-00607"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51872,7 +51932,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002594"
+id = "DS-002597"
 skeleton_id = "PRS-00607"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51887,12 +51947,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = ["A_2", "associativity", "associativity_violation", "confirming", "non", "sampled", "shows", "test_jordan_a2_non_associativity", "triple"]
-depends_on_step_ids = ["DS-002593"]
+depends_on_step_ids = ["DS-002596"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002595"
+id = "DS-002598"
 skeleton_id = "PRS-00607"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51907,12 +51967,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["A_2", "A_3", "Jordan", "REFUTE", "WHAT", "WOULD", "algebra", "any", "associative", "associativity", "degenerate", "finding", "non", "triple", "violating"]
-depends_on_step_ids = ["DS-002594"]
+depends_on_step_ids = ["DS-002597"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002596"
+id = "DS-002599"
 skeleton_id = "PRS-00608"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51932,7 +51992,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002597"
+id = "DS-002600"
 skeleton_id = "PRS-00608"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51947,12 +52007,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["A_2", "Jordan", "ZD", "algebra", "division", "form", "have", "matrices", "no", "product", "symmetric"]
-depends_on_step_ids = ["DS-002596"]
+depends_on_step_ids = ["DS-002599"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002598"
+id = "DS-002601"
 skeleton_id = "PRS-00608"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51967,12 +52027,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Jordan", "REFUTE", "WHAT", "WOULD", "algebra", "any", "divisor", "finding", "formal", "implementation", "pair", "zero"]
-depends_on_step_ids = ["DS-002597"]
+depends_on_step_ids = ["DS-002600"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002599"
+id = "DS-002602"
 skeleton_id = "PRS-00609"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -51992,7 +52052,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002600"
+id = "DS-002603"
 skeleton_id = "PRS-00609"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52007,12 +52067,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Cross", "confirmed", "consistency", "dimensional"]
-depends_on_step_ids = ["DS-002599"]
+depends_on_step_ids = ["DS-002602"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002601"
+id = "DS-002604"
 skeleton_id = "PRS-00609"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52027,12 +52087,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["100", "50"]
 key_tokens = ["CD", "Clifford", "Jordan", "REFUTE", "WHAT", "WOULD", "any", "commutativity", "finding", "gamma", "showing"]
-depends_on_step_ids = ["DS-002600"]
+depends_on_step_ids = ["DS-002603"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002602"
+id = "DS-002605"
 skeleton_id = "PRS-00610"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52052,7 +52112,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002603"
+id = "DS-002606"
 skeleton_id = "PRS-00610"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52067,12 +52127,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["3"]
 key_tokens = ["Level", "ZD", "affects", "commutativity", "count", "gamma", "not", "only", "secondary"]
-depends_on_step_ids = ["DS-002602"]
+depends_on_step_ids = ["DS-002605"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002604"
+id = "DS-002607"
 skeleton_id = "PRS-00610"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52087,12 +52147,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Clifford", "Jordan", "exhibit", "hierarchy", "same", "structure"]
-depends_on_step_ids = ["DS-002603"]
+depends_on_step_ids = ["DS-002606"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002605"
+id = "DS-002608"
 skeleton_id = "PRS-00610"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52107,12 +52167,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["REFUTE", "WHAT", "WOULD", "algebra", "changes", "class", "commutativity", "dimension", "finding", "fundamental", "has", "impact", "metric", "more", "properties", "signature", "than", "where"]
-depends_on_step_ids = ["DS-002604"]
+depends_on_step_ids = ["DS-002607"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002606"
+id = "DS-002609"
 skeleton_id = "PRS-00611"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52132,7 +52192,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002607"
+id = "DS-002610"
 skeleton_id = "PRS-00611"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52147,12 +52207,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["80", "90"]
 key_tokens = ["Clifford", "Phase", "always", "associative", "commutativity"]
-depends_on_step_ids = ["DS-002606"]
+depends_on_step_ids = ["DS-002609"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002608"
+id = "DS-002611"
 skeleton_id = "PRS-00611"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52167,12 +52227,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "2"]
 key_tokens = ["CD", "Phase", "associativity", "commutative", "dependent", "dimension"]
-depends_on_step_ids = ["DS-002607"]
+depends_on_step_ids = ["DS-002610"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002609"
+id = "DS-002612"
 skeleton_id = "PRS-00611"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52187,12 +52247,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["100"]
 key_tokens = ["REFUTE", "WHAT", "WOULD", "algebra", "associativity", "both", "commutativity", "finding", "non", "simultaneously", "trivial"]
-depends_on_step_ids = ["DS-002608"]
+depends_on_step_ids = ["DS-002611"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002610"
+id = "DS-002613"
 skeleton_id = "PRS-00612"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52212,7 +52272,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002611"
+id = "DS-002614"
 skeleton_id = "PRS-00612"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52227,12 +52287,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4", "83"]
 key_tokens = ["Clifford", "ZD", "all", "commutativity", "despite", "dim", "distribution", "found", "phase", "show", "varying"]
-depends_on_step_ids = ["DS-002610"]
+depends_on_step_ids = ["DS-002613"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002612"
+id = "DS-002615"
 skeleton_id = "PRS-00612"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52247,12 +52307,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["REFUTE", "WHAT", "WOULD", "any", "associativity", "changes", "choice", "class", "commutativity", "family", "finding", "fundamental", "metric"]
-depends_on_step_ids = ["DS-002611"]
+depends_on_step_ids = ["DS-002614"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002613"
+id = "DS-002616"
 skeleton_id = "PRS-00613"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52272,7 +52332,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002614"
+id = "DS-002617"
 skeleton_id = "PRS-00613"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52287,12 +52347,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["128", "16", "250000", "256", "32", "64"]
 key_tokens = ["dims", "violations", "zero"]
-depends_on_step_ids = ["DS-002613"]
+depends_on_step_ids = ["DS-002616"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002615"
+id = "DS-002618"
 skeleton_id = "PRS-00613"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52307,12 +52367,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = ["IF", "REFUTED", "any", "dimension", "produces", "pure_ratio"]
-depends_on_step_ids = ["DS-002614"]
+depends_on_step_ids = ["DS-002617"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002616"
+id = "DS-002619"
 skeleton_id = "PRS-00613"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52327,12 +52387,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["25"]
 key_tokens = ["exhaustive", "mode"]
-depends_on_step_ids = ["DS-002615"]
+depends_on_step_ids = ["DS-002618"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002617"
+id = "DS-002620"
 skeleton_id = "PRS-00614"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52352,7 +52412,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002618"
+id = "DS-002621"
 skeleton_id = "PRS-00614"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52367,12 +52427,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["triangles"]
-depends_on_step_ids = ["DS-002617"]
+depends_on_step_ids = ["DS-002620"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002619"
+id = "DS-002622"
 skeleton_id = "PRS-00614"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52387,12 +52447,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4"]
 key_tokens = ["IF", "REFUTED", "any", "census", "dim", "exhaustive", "pure", "shows", "total"]
-depends_on_step_ids = ["DS-002618"]
+depends_on_step_ids = ["DS-002621"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002620"
+id = "DS-002623"
 skeleton_id = "PRS-00615"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52412,7 +52472,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002621"
+id = "DS-002624"
 skeleton_id = "PRS-00615"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52427,12 +52487,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4"]
 key_tokens = ["IF", "REFUTED", "any", "class", "count", "differs", "fiber", "total"]
-depends_on_step_ids = ["DS-002620"]
+depends_on_step_ids = ["DS-002623"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002622"
+id = "DS-002625"
 skeleton_id = "PRS-00616"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52452,7 +52512,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002623"
+id = "DS-002626"
 skeleton_id = "PRS-00616"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52467,12 +52527,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1"]
 key_tokens = ["CPU", "GPU", "IF", "REFUTED", "any", "census", "deviates", "dimension", "exhaustive"]
-depends_on_step_ids = ["DS-002622"]
+depends_on_step_ids = ["DS-002625"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002624"
+id = "DS-002627"
 skeleton_id = "PRS-00617"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52492,7 +52552,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002625"
+id = "DS-002628"
 skeleton_id = "PRS-00617"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52507,12 +52567,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["IF", "REFUTED", "baselines", "deviates", "documented", "equivalent", "hardware", "scaling"]
-depends_on_step_ids = ["DS-002624"]
+depends_on_step_ids = ["DS-002627"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002626"
+id = "DS-002629"
 skeleton_id = "PRS-00618"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52532,7 +52592,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002627"
+id = "DS-002630"
 skeleton_id = "PRS-00618"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52547,12 +52607,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "1"]
 key_tokens = ["IF", "REFUTED", "alternativity", "anti", "any", "basis", "commutativity", "e_i", "e_j", "fails", "triple"]
-depends_on_step_ids = ["DS-002626"]
+depends_on_step_ids = ["DS-002629"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002628"
+id = "DS-002631"
 skeleton_id = "PRS-00619"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52572,7 +52632,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002629"
+id = "DS-002632"
 skeleton_id = "PRS-00619"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52587,12 +52647,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["14"]
 key_tokens = ["Leibniz", "all", "derivations", "exhaustively", "len", "satisfy", "xD", "xy"]
-depends_on_step_ids = ["DS-002628"]
+depends_on_step_ids = ["DS-002631"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002630"
+id = "DS-002633"
 skeleton_id = "PRS-00619"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52607,12 +52667,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["14"]
 key_tokens = ["IF", "Leibniz", "REFUTED", "any", "basis", "derivation", "differs", "dimension", "fails", "null", "pair", "space"]
-depends_on_step_ids = ["DS-002629"]
+depends_on_step_ids = ["DS-002632"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002631"
+id = "DS-002634"
 skeleton_id = "PRS-00620"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52632,7 +52692,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002632"
+id = "DS-002635"
 skeleton_id = "PRS-00620"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52647,12 +52707,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["IF", "REFUTED", "any", "become", "collinear", "condition", "fails", "idempotent", "standard", "triangle", "vertices"]
-depends_on_step_ids = ["DS-002631"]
+depends_on_step_ids = ["DS-002634"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002633"
+id = "DS-002636"
 skeleton_id = "PRS-00621"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52672,7 +52732,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002634"
+id = "DS-002637"
 skeleton_id = "PRS-00621"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52687,12 +52747,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["IF", "Moufang", "REFUTED", "any", "contains", "elements", "fails", "identity", "non", "nucleus", "octonion", "scalar", "triple", "unit"]
-depends_on_step_ids = ["DS-002633"]
+depends_on_step_ids = ["DS-002636"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002635"
+id = "DS-002638"
 skeleton_id = "PRS-00622"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52712,7 +52772,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002636"
+id = "DS-002639"
 skeleton_id = "PRS-00622"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52727,12 +52787,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["IF", "REFUTED", "Tits", "any", "breaks", "differs", "dimension", "formula", "lookup", "symmetry", "table"]
-depends_on_step_ids = ["DS-002635"]
+depends_on_step_ids = ["DS-002638"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002637"
+id = "DS-002640"
 skeleton_id = "PRS-00623"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52752,7 +52812,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002638"
+id = "DS-002641"
 skeleton_id = "PRS-00623"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52767,12 +52827,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["G2", "IF", "Leibniz", "Moufang", "REFUTED", "any", "breaks", "dimensional", "elements", "fails", "relationship"]
-depends_on_step_ids = ["DS-002637"]
+depends_on_step_ids = ["DS-002640"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002639"
+id = "DS-002642"
 skeleton_id = "PRS-00624"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52792,7 +52852,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002640"
+id = "DS-002643"
 skeleton_id = "PRS-00624"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52807,12 +52867,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["7"]
 key_tokens = ["Fano", "IF", "REFUTED", "alternativity", "any", "count", "differs", "fails", "hyperplane", "triple"]
-depends_on_step_ids = ["DS-002639"]
+depends_on_step_ids = ["DS-002642"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002641"
+id = "DS-002644"
 skeleton_id = "PRS-00625"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52832,7 +52892,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002642"
+id = "DS-002645"
 skeleton_id = "PRS-00625"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52847,12 +52907,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4"]
 key_tokens = ["IF", "REFUTED", "any", "has", "intersection", "pair", "size"]
-depends_on_step_ids = ["DS-002641"]
+depends_on_step_ids = ["DS-002644"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002643"
+id = "DS-002646"
 skeleton_id = "PRS-00626"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52872,7 +52932,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002644"
+id = "DS-002647"
 skeleton_id = "PRS-00626"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52887,12 +52947,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = []
-depends_on_step_ids = ["DS-002643"]
+depends_on_step_ids = ["DS-002646"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002645"
+id = "DS-002648"
 skeleton_id = "PRS-00626"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52907,12 +52967,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1"]
 key_tokens = ["IF", "REFUTED", "any", "associator", "cross", "has", "mean", "norm", "pair"]
-depends_on_step_ids = ["DS-002644"]
+depends_on_step_ids = ["DS-002647"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002646"
+id = "DS-002649"
 skeleton_id = "PRS-00626"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52927,12 +52987,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = []
-depends_on_step_ids = ["DS-002645"]
+depends_on_step_ids = ["DS-002648"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002647"
+id = "DS-002650"
 skeleton_id = "PRS-00627"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52952,7 +53012,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002648"
+id = "DS-002651"
 skeleton_id = "PRS-00627"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52967,12 +53027,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["IF", "REFUTED", "any", "det", "eigenvalue", "element", "product", "sum", "trace"]
-depends_on_step_ids = ["DS-002647"]
+depends_on_step_ids = ["DS-002650"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002649"
+id = "DS-002652"
 skeleton_id = "PRS-00628"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -52992,7 +53052,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002650"
+id = "DS-002653"
 skeleton_id = "PRS-00628"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53007,12 +53067,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["3", "8"]
 key_tokens = ["IF", "VERIFY", "WOULD", "complexified", "construction", "exactly", "idempotent", "specific", "yields"]
-depends_on_step_ids = ["DS-002649"]
+depends_on_step_ids = ["DS-002652"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002651"
+id = "DS-002654"
 skeleton_id = "PRS-00629"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53032,7 +53092,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002652"
+id = "DS-002655"
 skeleton_id = "PRS-00629"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53047,12 +53107,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["IF", "REFUTED", "ZD", "any", "balance", "confirmed", "fails", "norm", "orthogonality"]
-depends_on_step_ids = ["DS-002651"]
+depends_on_step_ids = ["DS-002654"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002653"
+id = "DS-002656"
 skeleton_id = "PRS-00630"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53072,7 +53132,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002654"
+id = "DS-002657"
 skeleton_id = "PRS-00630"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53087,12 +53147,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = ["random", "search"]
-depends_on_step_ids = ["DS-002653"]
+depends_on_step_ids = ["DS-002656"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002655"
+id = "DS-002658"
 skeleton_id = "PRS-00630"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53107,12 +53167,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["IF", "VERIFY", "WOULD", "algebraic", "associators", "correct", "hierarchy", "higher", "indices", "invariants", "mass", "nilpotent", "orbit", "order", "produce", "products"]
-depends_on_step_ids = ["DS-002654"]
+depends_on_step_ids = ["DS-002657"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002656"
+id = "DS-002659"
 skeleton_id = "PRS-00631"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53132,7 +53192,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002657"
+id = "DS-002660"
 skeleton_id = "PRS-00631"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53147,12 +53207,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = ["IF", "REFUTED", "deviates", "ratio"]
-depends_on_step_ids = ["DS-002656"]
+depends_on_step_ids = ["DS-002659"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002658"
+id = "DS-002661"
 skeleton_id = "PRS-00631"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53167,12 +53227,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "01"]
 key_tokens = []
-depends_on_step_ids = ["DS-002657"]
+depends_on_step_ids = ["DS-002660"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002659"
+id = "DS-002662"
 skeleton_id = "PRS-00631"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53187,12 +53247,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["307", "32"]
 key_tokens = ["dim"]
-depends_on_step_ids = ["DS-002658"]
+depends_on_step_ids = ["DS-002661"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002660"
+id = "DS-002663"
 skeleton_id = "PRS-00632"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53212,7 +53272,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002661"
+id = "DS-002664"
 skeleton_id = "PRS-00632"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53227,12 +53287,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["csv", "datasets"]
-depends_on_step_ids = ["DS-002660"]
+depends_on_step_ids = ["DS-002663"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002662"
+id = "DS-002665"
 skeleton_id = "PRS-00632"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53247,12 +53307,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["3840"]
 key_tokens = ["All", "across", "all", "constraints", "dimensions", "lattice", "points", "satisfy"]
-depends_on_step_ids = ["DS-002661"]
+depends_on_step_ids = ["DS-002664"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002663"
+id = "DS-002666"
 skeleton_id = "PRS-00632"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53267,12 +53327,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Injectivity", "deltas", "exact", "filtration", "through", "verified"]
-depends_on_step_ids = ["DS-002662"]
+depends_on_step_ids = ["DS-002665"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002664"
+id = "DS-002667"
 skeleton_id = "PRS-00632"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53287,12 +53347,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4", "546", "6", "99"]
 key_tokens = ["Phase", "algebraic", "base", "commutativity", "confidence", "confirms", "dim", "driven", "encoding", "forces", "foundation", "makes", "necessary", "non", "octonion", "property", "space", "strengthens", "structurally", "universal"]
-depends_on_step_ids = ["DS-002663"]
+depends_on_step_ids = ["DS-002666"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002665"
+id = "DS-002668"
 skeleton_id = "PRS-00632"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53307,66 +53367,6 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "2", "3", "8"]
 key_tokens = ["CD", "Discovering", "E8", "Finding", "NOT", "REFUTE", "Showing", "WHAT", "WOULD", "alternative", "any", "arbitrary", "are", "but", "codomain", "constraints", "derived", "dimension", "embedding", "involvement"]
-depends_on_step_ids = ["DS-002664"]
-line_start = 0
-line_end = 0
-
-[[step]]
-id = "DS-002666"
-skeleton_id = "PRS-00633"
-skeleton_kind = "claim_decision_rule"
-source_path = "registry/claims.toml"
-source_uid = "C-590"
-claim_id = "C-590"
-claim_refs = ["C-590"]
-step_index = 1
-step_kind = "derivation_step"
-text = "Rust test `test_split_octonion_psi_fraction` confirms split-octonion negative fraction is exactly 24/64 = 0"
-text_sha256 = "136eff101a268fe2f3b0e16b43130b3ce0f4845e5642636ecb77f88324708482"
-equation_refs = []
-symbol_refs = []
-numeric_constants = ["0", "24", "64"]
-key_tokens = ["Rust", "confirms", "exactly", "fraction", "negative", "octonion", "split", "test", "test_split_octonion_psi_fraction"]
-depends_on_step_ids = []
-line_start = 0
-line_end = 0
-
-[[step]]
-id = "DS-002667"
-skeleton_id = "PRS-00633"
-skeleton_kind = "claim_decision_rule"
-source_path = "registry/claims.toml"
-source_uid = "C-590"
-claim_id = "C-590"
-claim_refs = ["C-590"]
-step_index = 2
-step_kind = "derivation_step"
-text = "375"
-text_sha256 = "de5872c6bb4494cebd250152ce148cd6231654e4469229f2f993984b3950b422"
-equation_refs = []
-symbol_refs = []
-numeric_constants = ["375"]
-key_tokens = []
-depends_on_step_ids = ["DS-002666"]
-line_start = 0
-line_end = 0
-
-[[step]]
-id = "DS-002668"
-skeleton_id = "PRS-00633"
-skeleton_kind = "claim_decision_rule"
-source_path = "registry/claims.toml"
-source_uid = "C-590"
-claim_id = "C-590"
-claim_refs = ["C-590"]
-step_index = 3
-step_kind = "derivation_step"
-text = "Test `test_split_octonion_attractor_coincidence` confirms standard CD frustration ratio converges toward this value (dim=1024 ratio 0"
-text_sha256 = "b1ccdf900adf1f2e2c739c4fb1bf6244fb958cfef9cad6a6e37babe58bb13279"
-equation_refs = []
-symbol_refs = []
-numeric_constants = ["0", "1024"]
-key_tokens = ["CD", "Test", "confirms", "converges", "dim", "frustration", "ratio", "standard", "test_split_octonion_attractor_coincidence", "toward", "value"]
 depends_on_step_ids = ["DS-002667"]
 line_start = 0
 line_end = 0
@@ -53379,20 +53379,120 @@ source_path = "registry/claims.toml"
 source_uid = "C-590"
 claim_id = "C-590"
 claim_refs = ["C-590"]
-step_index = 4
-step_kind = "derivation_step"
-text = "37849)"
-text_sha256 = "3fa86d7cb141b479ff111e383a575a9ce01f932f836910df99a77d99b0c2bd4a"
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: `test_split_octonion_psi_fraction` establishes exact split target 24/64 = 3/8, while `test_split_octonion_attractor_coincidence` and `test_split_octonion_attractor_regression_dim_128_256_guarded` verify low/high-dimensional trajectories remain above 3/8 and near the attractor with runtime guards (`CD_ATTRACTOR_*`)"
+text_sha256 = "938720bc717f24bff93b0662064203e675d4599c53e82159024c70bea8f713ca"
 equation_refs = []
 symbol_refs = []
-numeric_constants = ["37849"]
-key_tokens = []
-depends_on_step_ids = ["DS-002668"]
+numeric_constants = ["24", "3", "64", "8"]
+key_tokens = ["CD_ATTRACTOR_", "VERIFIED", "above", "attractor", "dimensional", "establishes", "exact", "guards", "high", "low", "near", "remain", "runtime", "split", "target", "test_split_octonion_attractor_coincidence", "test_split_octonion_attractor_regression_dim_128_256_guarded", "test_split_octonion_psi_fraction", "trajectories", "verify"]
+depends_on_step_ids = []
 line_start = 0
 line_end = 0
 
 [[step]]
 id = "DS-002670"
+skeleton_id = "PRS-00633"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-590"
+claim_id = "C-590"
+claim_refs = ["C-590"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Artifact script `src/scripts/analysis/c590_build_attractor_artifacts"
+text_sha256 = "a11859a509ccb104d944e87d782bce2eb476b0a59600c25295f1735cc3e5f080"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Artifact", "analysis", "c590_build_attractor_artifacts", "script", "scripts", "src"]
+depends_on_step_ids = ["DS-002669"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002671"
+skeleton_id = "PRS-00633"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-590"
+claim_id = "C-590"
+claim_refs = ["C-590"]
+step_index = 3
+step_kind = "derivation_step"
+text = "sh` emits tracked CSV outputs (`data/csv/c590_attractor_runtime_baseline"
+text_sha256 = "0ca716f02900a2a0c3e1a0fe94b58c508bf162da04f8e06766f5b52bb0cad43a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["CSV", "c590_attractor_runtime_baseline", "csv", "data", "emits", "outputs", "sh", "tracked"]
+depends_on_step_ids = ["DS-002670"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002672"
+skeleton_id = "PRS-00633"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-590"
+claim_id = "C-590"
+claim_refs = ["C-590"]
+step_index = 4
+step_kind = "derivation_step"
+text = "csv`, `data/csv/c590_attractor_ratio_sweep"
+text_sha256 = "508d62b18e4fa123f2c893ac07679bea14e30086da6cfc349d295270ae660ecc"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["c590_attractor_ratio_sweep", "csv", "data"]
+depends_on_step_ids = ["DS-002671"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002673"
+skeleton_id = "PRS-00633"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-590"
+claim_id = "C-590"
+claim_refs = ["C-590"]
+step_index = 5
+step_kind = "derivation_step"
+text = "csv`) using `c590_attractor_sweep` with script-level guard knobs (`C590_SWEEP_DIMS`, `C590_INCLUDE_DIM1024`, `C590_TIMEOUT_S`) for reproducible ratio/runtime snapshots under bounded runtime"
+text_sha256 = "d64910cfb2b716b97082c845d9cb23572e4d1d01f10a122eed53abcd29948d6a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["C590_INCLUDE_DIM1024", "C590_SWEEP_DIMS", "C590_TIMEOUT_S", "bounded", "c590_attractor_sweep", "csv", "guard", "knobs", "level", "ratio", "reproducible", "runtime", "script", "snapshots", "under", "using"]
+depends_on_step_ids = ["DS-002672"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002674"
+skeleton_id = "PRS-00633"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-590"
+claim_id = "C-590"
+claim_refs = ["C-590"]
+step_index = 6
+step_kind = "derivation_step"
+text = "REFUTE if guarded tests fail or emitted sweeps depart from the documented attractor envelope"
+text_sha256 = "d204699c2d54afbddf3cfbd5035cc835469786e137760d01da47259c07b8df24"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["REFUTE", "attractor", "depart", "documented", "emitted", "envelope", "fail", "guarded", "if", "sweeps", "tests"]
+depends_on_step_ids = ["DS-002673"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002675"
 skeleton_id = "PRS-00634"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53412,7 +53512,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002671"
+id = "DS-002676"
 skeleton_id = "PRS-00634"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53427,12 +53527,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0"]
 key_tokens = ["commuting", "found", "pairs"]
-depends_on_step_ids = ["DS-002670"]
+depends_on_step_ids = ["DS-002675"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002672"
+id = "DS-002677"
 skeleton_id = "PRS-00634"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53447,12 +53547,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "20", "7"]
 key_tokens = ["Literature", "counterexamples", "domains", "papers", "search"]
-depends_on_step_ids = ["DS-002671"]
+depends_on_step_ids = ["DS-002676"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002673"
+id = "DS-002678"
 skeleton_id = "PRS-00634"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53467,12 +53567,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["95", "99"]
 key_tokens = ["Confidence", "computational", "literature"]
-depends_on_step_ids = ["DS-002672"]
+depends_on_step_ids = ["DS-002677"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002674"
+id = "DS-002679"
 skeleton_id = "PRS-00634"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53487,12 +53587,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "2", "3", "4"]
 key_tokens = ["CAN", "CD", "Cayley", "Dickson", "Discovery", "REFUTE", "WHAT", "WOULD", "algebras", "all", "basis", "commutative", "commutativity", "commute", "conjugation", "construction", "dim", "doubling", "enabling", "exotic"]
-depends_on_step_ids = ["DS-002673"]
+depends_on_step_ids = ["DS-002678"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002675"
+id = "DS-002680"
 skeleton_id = "PRS-00635"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53512,7 +53612,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002676"
+id = "DS-002681"
 skeleton_id = "PRS-00635"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53527,12 +53627,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["2", "8"]
 key_tokens = ["Found", "among", "divisors", "exactly", "pairs", "zero"]
-depends_on_step_ids = ["DS-002675"]
+depends_on_step_ids = ["DS-002680"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002677"
+id = "DS-002682"
 skeleton_id = "PRS-00635"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53547,12 +53647,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1"]
 key_tokens = ["NOT", "algebra", "complex", "confirms", "division", "gamma", "split", "standard", "unlike"]
-depends_on_step_ids = ["DS-002676"]
+depends_on_step_ids = ["DS-002681"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002678"
+id = "DS-002683"
 skeleton_id = "PRS-00636"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53572,7 +53672,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002679"
+id = "DS-002684"
 skeleton_id = "PRS-00636"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53587,12 +53687,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4"]
 key_tokens = ["Confirms", "Euclidean", "Hurwitz", "ONLY", "algebra", "dim", "division", "produces", "signature", "standard", "theorem"]
-depends_on_step_ids = ["DS-002678"]
+depends_on_step_ids = ["DS-002683"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002680"
+id = "DS-002685"
 skeleton_id = "PRS-00636"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53607,12 +53707,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["592"]
 key_tokens = ["Cross", "dimension", "higher", "pattern", "validates"]
-depends_on_step_ids = ["DS-002679"]
+depends_on_step_ids = ["DS-002684"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002681"
+id = "DS-002686"
 skeleton_id = "PRS-00637"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53632,7 +53732,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002682"
+id = "DS-002687"
 skeleton_id = "PRS-00637"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53647,12 +53747,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["100"]
 key_tokens = ["Standard", "multiplicativity", "norm", "showed", "signatures"]
-depends_on_step_ids = ["DS-002681"]
+depends_on_step_ids = ["DS-002686"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002683"
+id = "DS-002688"
 skeleton_id = "PRS-00637"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53667,12 +53767,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1", "5"]
 key_tokens = ["All", "containing", "gamma", "rate", "showed", "signatures", "success"]
-depends_on_step_ids = ["DS-002682"]
+depends_on_step_ids = ["DS-002687"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002684"
+id = "DS-002689"
 skeleton_id = "PRS-00637"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53687,12 +53787,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Euclidean", "composition", "difference", "do", "explains", "geometric", "indefinite", "metrics", "not", "preserve"]
-depends_on_step_ids = ["DS-002683"]
+depends_on_step_ids = ["DS-002688"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002685"
+id = "DS-002690"
 skeleton_id = "PRS-00638"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53712,7 +53812,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002686"
+id = "DS-002691"
 skeleton_id = "PRS-00638"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53727,12 +53827,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "11"]
 key_tokens = ["All", "algebras", "correlating", "division", "invertibility", "non", "null", "presence", "showed", "vectors"]
-depends_on_step_ids = ["DS-002685"]
+depends_on_step_ids = ["DS-002690"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002687"
+id = "DS-002692"
 skeleton_id = "PRS-00638"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53747,12 +53847,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "1"]
 key_tokens = ["ZD", "actually", "correlation", "count", "deterministic", "iff", "invertibility_fraction"]
-depends_on_step_ids = ["DS-002686"]
+depends_on_step_ids = ["DS-002691"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002688"
+id = "DS-002693"
 skeleton_id = "PRS-00638"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53767,12 +53867,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["0", "593"]
 key_tokens = ["refining"]
-depends_on_step_ids = ["DS-002687"]
+depends_on_step_ids = ["DS-002692"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002689"
+id = "DS-002694"
 skeleton_id = "PRS-00639"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53792,7 +53892,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002690"
+id = "DS-002695"
 skeleton_id = "PRS-00639"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53807,12 +53907,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["2", "4", "8"]
 key_tokens = ["REFUTED", "dependent", "dims", "gamma", "hypothesis", "initial", "psi"]
-depends_on_step_ids = ["DS-002689"]
+depends_on_step_ids = ["DS-002694"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002691"
+id = "DS-002696"
 skeleton_id = "PRS-00639"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53827,12 +53927,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["However", "basis", "clear", "dependency", "depends", "follows", "gamma", "indices", "local", "not", "path", "pattern", "recursion", "sign", "through", "tree"]
-depends_on_step_ids = ["DS-002690"]
+depends_on_step_ids = ["DS-002695"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002692"
+id = "DS-002697"
 skeleton_id = "PRS-00639"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53847,12 +53947,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["532"]
 key_tokens = ["cross", "dimensions", "eta", "framework", "gamma", "how", "low", "parameters", "propagate", "psi", "revealing", "structure", "through", "validates"]
-depends_on_step_ids = ["DS-002691"]
+depends_on_step_ids = ["DS-002696"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002693"
+id = "DS-002698"
 skeleton_id = "PRS-00639"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53867,12 +53967,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1"]
 key_tokens = ["Key", "are", "finding", "negation", "patterns", "psi", "related", "systematic"]
-depends_on_step_ids = ["DS-002692"]
+depends_on_step_ids = ["DS-002697"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002694"
+id = "DS-002699"
 skeleton_id = "PRS-00640"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53892,7 +53992,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002695"
+id = "DS-002700"
 skeleton_id = "PRS-00640"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53907,12 +54007,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["Zero", "exceptions"]
-depends_on_step_ids = ["DS-002694"]
+depends_on_step_ids = ["DS-002699"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002696"
+id = "DS-002701"
 skeleton_id = "PRS-00640"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53927,12 +54027,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["591", "6"]
 key_tokens = ["Confirms", "Phase", "asymmetry", "commutativity", "conjugation", "consequence", "doubling", "formula", "independent", "metric", "non", "result", "signature", "structural"]
-depends_on_step_ids = ["DS-002695"]
+depends_on_step_ids = ["DS-002700"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002697"
+id = "DS-002702"
 skeleton_id = "PRS-00640"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53947,12 +54047,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["4"]
 key_tokens = ["Cayley", "Dickson", "Strengthens", "claim", "commutativity", "dim", "doubling", "forces", "itself", "mechanism", "non"]
-depends_on_step_ids = ["DS-002696"]
+depends_on_step_ids = ["DS-002701"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002698"
+id = "DS-002703"
 skeleton_id = "PRS-00641"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53972,7 +54072,7 @@ line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002699"
+id = "DS-002704"
 skeleton_id = "PRS-00641"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -53987,12 +54087,12 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = ["1"]
 key_tokens = ["CD", "Extends", "ONE", "algebra", "algebras", "but", "classical", "confirming", "destroys", "division", "even", "gamma", "holds", "just", "modifying", "not", "parameter", "property", "result", "standard"]
-depends_on_step_ids = ["DS-002698"]
+depends_on_step_ids = ["DS-002703"]
 line_start = 0
 line_end = 0
 
 [[step]]
-id = "DS-002700"
+id = "DS-002705"
 skeleton_id = "PRS-00641"
 skeleton_kind = "claim_decision_rule"
 source_path = "registry/claims.toml"
@@ -54007,7 +54107,987 @@ equation_refs = []
 symbol_refs = []
 numeric_constants = []
 key_tokens = ["algebraic", "definitive", "generalization", "obstruction", "octonion", "quaternion"]
-depends_on_step_ids = ["DS-002699"]
+depends_on_step_ids = ["DS-002704"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002706"
+skeleton_id = "PRS-00642"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-599"
+claim_id = "C-599"
+claim_refs = ["C-599"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: Greedy partition refinement algorithm found a separating 6-tuple for all 16 motif classes at dim=256 (PG(6,2) with 127 points)"
+text_sha256 = "5be7b0c0cc12fe727fbd0db3f5974d787d4ba278c3f943bc24c6fc5e8b53143f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["127", "16", "2", "256", "6"]
+key_tokens = ["Greedy", "PG", "VERIFIED", "algorithm", "all", "classes", "dim", "found", "motif", "partition", "points", "refinement", "separating", "tuple"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002707"
+skeleton_id = "PRS-00642"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-599"
+claim_id = "C-599"
+claim_refs = ["C-599"]
+step_index = 2
+step_kind = "derivation_step"
+text = "No 5-tuple sufficed"
+text_sha256 = "e03730642d8532d59f0560cee8e10f8493319164598579b4775aa33d9702e24a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["5"]
+key_tokens = ["No", "sufficed", "tuple"]
+depends_on_step_ids = ["DS-002706"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002708"
+skeleton_id = "PRS-00642"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-599"
+claim_id = "C-599"
+claim_refs = ["C-599"]
+step_index = 3
+step_kind = "derivation_step"
+text = "Confirms prediction log2(256)-2 = 6"
+text_sha256 = "bdd20411c8f967956b0a0896200950f1f473ae51fbc4ed8311ae3b3aaa2fc9cc"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2", "256", "6"]
+key_tokens = ["Confirms", "log2", "prediction"]
+depends_on_step_ids = ["DS-002707"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002709"
+skeleton_id = "PRS-00643"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-600"
+claim_id = "C-600"
+claim_refs = ["C-600"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: Sweep across 4 dimensions confirmed exact match at every step"
+text_sha256 = "9304fa150c07fc471a5014b9b6e4ee12a6ee0ff731997dad73d5564f1e6952dd"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["4"]
+key_tokens = ["Sweep", "VERIFIED", "across", "confirmed", "dimensions", "every", "exact", "match", "step"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002710"
+skeleton_id = "PRS-00643"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-600"
+claim_id = "C-600"
+claim_refs = ["C-600"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Total runtime 55s in release mode"
+text_sha256 = "73dc383cd0f200b27530b0a42c24b4690f79cb93b5efc1fd6e3a543188f60180"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Total", "mode", "release", "runtime"]
+depends_on_step_ids = ["DS-002709"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002711"
+skeleton_id = "PRS-00643"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-600"
+claim_id = "C-600"
+claim_refs = ["C-600"]
+step_index = 3
+step_kind = "derivation_step"
+text = "Formula is degree = projective dimension n-2 of PG(n-2,2)"
+text_sha256 = "1f2a4598e59ad5387aefc892dabcc9039a92528c22672a051e5b7c7a9e0cca74"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = ["Formula", "PG", "degree", "dimension", "projective"]
+depends_on_step_ids = ["DS-002710"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002712"
+skeleton_id = "PRS-00644"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-601"
+claim_id = "C-601"
+claim_refs = ["C-601"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: CPU-path Monte Carlo with 1M triangle samples across 4,192,256 nodes yielded pure_ratio=0"
+text_sha256 = "265d47ef9414af65a3863f6d3e59c09a691f9edf39275d20bd26b8818e5d71a0"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "192", "256", "4"]
+key_tokens = ["CPU", "Carlo", "Monte", "VERIFIED", "across", "nodes", "path", "pure_ratio", "samples", "triangle", "yielded"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002713"
+skeleton_id = "PRS-00644"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-601"
+claim_id = "C-601"
+claim_refs = ["C-601"]
+step_index = 2
+step_kind = "derivation_step"
+text = "2505"
+text_sha256 = "9060ce5653093cd9bff480cb01ff0e3a790e6f545e214a3dd85841daabac7848"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2505"]
+key_tokens = []
+depends_on_step_ids = ["DS-002712"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002714"
+skeleton_id = "PRS-00644"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-601"
+claim_id = "C-601"
+claim_refs = ["C-601"]
+step_index = 3
+step_kind = "status_update"
+text = "Klein-four fiber symmetry verified: all 4 fibers within 0"
+text_sha256 = "dbafd588f15f1a0de8662ee171d6ba56cbc526f76927412f5854b18e2d91cd0a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "4"]
+key_tokens = ["Klein", "all", "fiber", "fibers", "four", "symmetry", "verified", "within"]
+depends_on_step_ids = ["DS-002713"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002715"
+skeleton_id = "PRS-00644"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-601"
+claim_id = "C-601"
+claim_refs = ["C-601"]
+step_index = 4
+step_kind = "derivation_step"
+text = "5% of each other"
+text_sha256 = "c8595359a2d2380f891d659d2e24fc8a2d41fc63fbcd0f258147eaa3cfd67289"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["5"]
+key_tokens = ["each", "other"]
+depends_on_step_ids = ["DS-002714"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002716"
+skeleton_id = "PRS-00645"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-602"
+claim_id = "C-602"
+claim_refs = ["C-524", "C-602"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: Fibers F00=250509, F01=249590, F10=249700, F11=250201 out of 1M samples"
+text_sha256 = "52eaf906734690a557595b5190d286d6514309be5525f80c405907e78631f5fc"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["249590", "249700", "250201", "250509"]
+key_tokens = ["F00", "F01", "F10", "F11", "Fibers", "VERIFIED", "out", "samples"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002717"
+skeleton_id = "PRS-00645"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-602"
+claim_id = "C-602"
+claim_refs = ["C-524", "C-602"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Maximum deviation from mean (250000) is 0"
+text_sha256 = "15cf0fd7c0f28854c3e7abebeb33f1402428904957b6b659201cb0211e9b0383"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0", "250000"]
+key_tokens = ["Maximum", "deviation", "mean"]
+depends_on_step_ids = ["DS-002716"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002718"
+skeleton_id = "PRS-00645"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-602"
+claim_id = "C-602"
+claim_refs = ["C-524", "C-602"]
+step_index = 3
+step_kind = "derivation_step"
+text = "20%"
+text_sha256 = "dc934fe30a942bca07b4c288b4b3e48aa79a717d6db2b586553cd2416dc8b9b8"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["20"]
+key_tokens = []
+depends_on_step_ids = ["DS-002717"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002719"
+skeleton_id = "PRS-00645"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-602"
+claim_id = "C-602"
+claim_refs = ["C-524", "C-602"]
+step_index = 4
+step_kind = "derivation_step"
+text = "Extends C-524 from dim=512 to dim=4096"
+text_sha256 = "29efcc55f85e0a3106c39ba5fa7041680a7f67edf7f703078f44b2b903304ad5"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["4096", "512", "524"]
+key_tokens = ["Extends", "dim"]
+depends_on_step_ids = ["DS-002718"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002720"
+skeleton_id = "PRS-00646"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-603"
+claim_id = "C-603"
+claim_refs = ["C-603"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: enumerate_lambda_4096() returns 2187 vectors = enumerate_base_universe() count"
+text_sha256 = "8eebf737083191b681e69788adbc0f420b174c825163b9f2911adca5b276fbcb"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2187"]
+key_tokens = ["VERIFIED", "count", "enumerate_base_universe", "enumerate_lambda_4096", "returns", "vectors"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002721"
+skeleton_id = "PRS-00646"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-603"
+claim_id = "C-603"
+claim_refs = ["C-603"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Lambda_2048 has 2048 vectors (strict subset)"
+text_sha256 = "2c60eff4235ea41ec0e10929f4163edaac14fd5d01322ee5ae74026a2b896784"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2048"]
+key_tokens = ["Lambda_2048", "has", "strict", "subset", "vectors"]
+depends_on_step_ids = ["DS-002720"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002722"
+skeleton_id = "PRS-00646"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-603"
+claim_id = "C-603"
+claim_refs = ["C-603"]
+step_index = 3
+step_kind = "derivation_step"
+text = "The filtration chain Lambda_256(256) < Lambda_512(512) < Lambda_1024(1026) < Lambda_2048(2048) < Lambda_4096(2187) is monotonically increasing"
+text_sha256 = "1c2312fb8c1f58e3da7b0047f0fe0b320613b65d588101865fb5c4766110dea6"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1026", "2048", "2187", "256", "512"]
+key_tokens = ["Lambda_1024", "Lambda_2048", "Lambda_256", "Lambda_4096", "Lambda_512", "chain", "filtration", "increasing", "monotonically"]
+depends_on_step_ids = ["DS-002721"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002723"
+skeleton_id = "PRS-00647"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-604"
+claim_id = "C-604"
+claim_refs = ["C-604"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: Cross-validated parity constraints at Lambda_4096(2187), Lambda_2048(2048), Lambda_1024(1026), Lambda_512(512), Lambda_256(256)"
+text_sha256 = "a22eaf590f1a69c23a9a79b964c47a7cb63c007f00768aaa0fbf49b15b45b36c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1026", "2048", "2187", "256", "512"]
+key_tokens = ["Cross", "Lambda_1024", "Lambda_2048", "Lambda_256", "Lambda_4096", "Lambda_512", "VERIFIED", "constraints", "parity", "validated"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002724"
+skeleton_id = "PRS-00647"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-604"
+claim_id = "C-604"
+claim_refs = ["C-604"]
+step_index = 2
+step_kind = "derivation_step"
+text = "All pass 100% on all 4 constraints"
+text_sha256 = "cfce3f77c303f6049ea8ff3979bfcee0122b93f58f3f98a8737f8a15ed9a4826"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["100", "4"]
+key_tokens = ["All", "all", "constraints", "pass"]
+depends_on_step_ids = ["DS-002723"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002725"
+skeleton_id = "PRS-00647"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-604"
+claim_id = "C-604"
+claim_refs = ["C-604"]
+step_index = 3
+step_kind = "derivation_step"
+text = "These are structural invariants of the Cayley-Dickson codebook encoding"
+text_sha256 = "f59c4b00d8da287e7513847601e3e773282fab31391365ba3f681e90be20ad69"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Cayley", "Dickson", "These", "are", "codebook", "encoding", "invariants", "structural"]
+depends_on_step_ids = ["DS-002724"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002726"
+skeleton_id = "PRS-00648"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-605"
+claim_id = "C-605"
+claim_refs = ["C-605"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED: dim=512 generates 65280 = C(255,2) node pairs"
+text_sha256 = "ecfbd60b5cf206aa358df03cda80d6ca2f5f74795e68bb40ca98f37107d6fd4b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2", "255", "512", "65280"]
+key_tokens = ["VERIFIED", "dim", "generates", "node", "pairs"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002727"
+skeleton_id = "PRS-00648"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-605"
+claim_id = "C-605"
+claim_refs = ["C-605"]
+step_index = 2
+step_kind = "derivation_step"
+text = "APT census via wide-index path yields pure_ratio=0"
+text_sha256 = "bbbd3691ee750764dadf79c0d5a01c2fc5a0d0bbe32921b2f5556f85cb313d02"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["0"]
+key_tokens = ["APT", "census", "index", "path", "pure_ratio", "via", "wide", "yields"]
+depends_on_step_ids = ["DS-002726"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002728"
+skeleton_id = "PRS-00648"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-605"
+claim_id = "C-605"
+claim_refs = ["C-605"]
+step_index = 3
+step_kind = "derivation_step"
+text = "2481, consistent with 1:3 law"
+text_sha256 = "b540d3d92a93df3f6d606048a35614d9a10b91a493ae68752ea8c0d5030ee32a"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "2481", "3"]
+key_tokens = ["consistent", "law"]
+depends_on_step_ids = ["DS-002727"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002729"
+skeleton_id = "PRS-00648"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-605"
+claim_id = "C-605"
+claim_refs = ["C-605"]
+step_index = 4
+step_kind = "derivation_step"
+text = "Cross-validates against u8 path at dim=256"
+text_sha256 = "aac02dfafa729bf541fb84b6a324f75a5d06cb704fcbde110bc54cf51dc8ea53"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["256"]
+key_tokens = ["Cross", "against", "dim", "path", "u8", "validates"]
+depends_on_step_ids = ["DS-002728"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002730"
+skeleton_id = "PRS-00649"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-606"
+claim_id = "C-606"
+claim_refs = ["C-606"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 9): Tessarines use tensor product construction (z1, z2) with component-wise multiplication (a1,a2)(b1,b2)=(a1*b1, a2*b2), while CD algebras use recursive doubling (a,b)(c,d)=(ac-d*b, da+bc*)"
+text_sha256 = "df4c519ac54f7ba5b45b79f81a5a7cf4dde7048e26c0f9aeab264518ba4071db"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["9"]
+key_tokens = ["CD", "Phase", "Tessarines", "VERIFIED", "a1", "a2", "ac", "algebras", "b1", "b2", "bc", "component", "construction", "da", "doubling", "multiplication", "product", "recursive", "tensor", "use"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002731"
+skeleton_id = "PRS-00649"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-606"
+claim_id = "C-606"
+claim_refs = ["C-606"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Component-wise means tessarines ALWAYS commute, while doubling formula forces non-commutativity at dim>=4"
+text_sha256 = "1b343606ed63ce73ebd40976c121e411ddce032d9f8290e3c6754320bcd89f2b"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["4"]
+key_tokens = ["ALWAYS", "Component", "commutativity", "commute", "dim", "doubling", "forces", "formula", "means", "non", "tessarines", "while", "wise"]
+depends_on_step_ids = ["DS-002730"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002732"
+skeleton_id = "PRS-00649"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-606"
+claim_id = "C-606"
+claim_refs = ["C-606"]
+step_index = 3
+step_kind = "derivation_step"
+text = "Cannot transform one into the other via gamma parameters"
+text_sha256 = "a29090879ef467a70efa95c754461c1af9a3ea6b10d788a9c089369ccbd97f6c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Cannot", "gamma", "into", "one", "other", "parameters", "transform", "via"]
+depends_on_step_ids = ["DS-002731"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002733"
+skeleton_id = "PRS-00650"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-607"
+claim_id = "C-607"
+claim_refs = ["C-607"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 9): Sampled 100 pseudo-random tessarines, all nonzero samples had inverses"
+text_sha256 = "67ad357567f624630dde01507a8045a9f7c5379878c92228aca3fcbff4fadcd9"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["100", "9"]
+key_tokens = ["Phase", "Sampled", "VERIFIED", "all", "had", "inverses", "nonzero", "pseudo", "random", "samples", "tessarines"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002734"
+skeleton_id = "PRS-00650"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-607"
+claim_id = "C-607"
+claim_refs = ["C-607"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Each component inverted independently: (z1, z2)^{-1} = (z1^{-1}, z2^{-1}) where zi^{-1} = conj(zi)/"
+text_sha256 = "5d28cbd39c16bb62f46bd2763e7a9c47a7f28e386d715733a9144a9f1732f50c"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["Each", "component", "conj", "independently", "inverted", "where", "z1", "z2", "zi"]
+depends_on_step_ids = ["DS-002733"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002735"
+skeleton_id = "PRS-00650"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-607"
+claim_id = "C-607"
+claim_refs = ["C-607"]
+step_index = 3
+step_kind = "derivation_step"
+text = "zi"
+text_sha256 = "6df02ca00ca286292ef650571e7fcb42fa67963db8159a3dbcb772128a57c805"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["zi"]
+depends_on_step_ids = ["DS-002734"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002736"
+skeleton_id = "PRS-00650"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-607"
+claim_id = "C-607"
+claim_refs = ["C-607"]
+step_index = 4
+step_kind = "derivation_step"
+text = "^2"
+text_sha256 = "a48fd6407e3d9c41d3e0448c0e6d1db6d436c7a8f150ec30e9175d94ba7bc93f"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["2"]
+key_tokens = []
+depends_on_step_ids = ["DS-002735"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002737"
+skeleton_id = "PRS-00650"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-607"
+claim_id = "C-607"
+claim_refs = ["C-607"]
+step_index = 5
+step_kind = "derivation_step"
+text = "Returns identity (1, 1) for all valid pairs"
+text_sha256 = "9b9da922b2943a28d30316ac2884499152276dd1cb21a1b7af04b0e9aae74f10"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1"]
+key_tokens = ["Returns", "all", "identity", "pairs", "valid"]
+depends_on_step_ids = ["DS-002736"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002738"
+skeleton_id = "PRS-00650"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-607"
+claim_id = "C-607"
+claim_refs = ["C-607"]
+step_index = 6
+step_kind = "derivation_step"
+text = "Non-invertibility only occurs if either component is exactly zero (measure zero set)"
+text_sha256 = "055d1ce776b7b6fa3c525331bc649493b6439be8f818a307eb94e7fcf31779fe"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Non", "component", "either", "exactly", "if", "invertibility", "measure", "occurs", "only", "set", "zero"]
+depends_on_step_ids = ["DS-002737"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002739"
+skeleton_id = "PRS-00651"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-608"
+claim_id = "C-608"
+claim_refs = ["C-608"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 9): For (a1,a2)(b1,b2)=(a1*b1, a2*b2), we have"
+text_sha256 = "15fc33e8bdaf1a04ed5205512f22d7a85f76cc7838960b857573ddf95476daef"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["9"]
+key_tokens = ["Phase", "VERIFIED", "a1", "a2", "b1", "b2", "have", "we"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002740"
+skeleton_id = "PRS-00651"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-608"
+claim_id = "C-608"
+claim_refs = ["C-608"]
+step_index = 2
+step_kind = "derivation_step"
+text = "product"
+text_sha256 = "a8792157cb4f27fb949c035f45518c61e884bb86e6f420204379c2baa8beb66e"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["product"]
+depends_on_step_ids = ["DS-002739"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002741"
+skeleton_id = "PRS-00651"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-608"
+claim_id = "C-608"
+claim_refs = ["C-608"]
+step_index = 3
+step_kind = "derivation_step"
+text = "\\u00B2="
+text_sha256 = "5dd423adc82c627154f5bdd0d504e1b689830db1b4eaa8b3146fb7055b6f62d2"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["u00B2"]
+depends_on_step_ids = ["DS-002740"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002742"
+skeleton_id = "PRS-00651"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-608"
+claim_id = "C-608"
+claim_refs = ["C-608"]
+step_index = 4
+step_kind = "derivation_step"
+text = "a1*b1"
+text_sha256 = "80c615408abec1063da6edf4fd755fd45fc064d24093ca77739d41187843e909"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["a1", "b1"]
+depends_on_step_ids = ["DS-002741"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002743"
+skeleton_id = "PRS-00651"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-608"
+claim_id = "C-608"
+claim_refs = ["C-608"]
+step_index = 5
+step_kind = "derivation_step"
+text = "\\u00B2+"
+text_sha256 = "ee365ed5d498c6df99668476319b85fd5c3f9946c374eb7888907a0ccda939dd"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["u00B2"]
+depends_on_step_ids = ["DS-002742"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002744"
+skeleton_id = "PRS-00651"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-608"
+claim_id = "C-608"
+claim_refs = ["C-608"]
+step_index = 6
+step_kind = "derivation_step"
+text = "a2*b2"
+text_sha256 = "3e847a97d71f39e828c04f45c06812a92b5d3f339d8da99d23adfe67bc3df565"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["a2", "b2"]
+depends_on_step_ids = ["DS-002743"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002745"
+skeleton_id = "PRS-00651"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-608"
+claim_id = "C-608"
+claim_refs = ["C-608"]
+step_index = 7
+step_kind = "derivation_step"
+text = "\\u00B2 (no cross terms), but"
+text_sha256 = "802d974a41785e9f47496c17a8d96ac5a77c2612255f927c3e8747f929af0c27"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["but", "cross", "no", "terms", "u00B2"]
+depends_on_step_ids = ["DS-002744"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002746"
+skeleton_id = "PRS-00651"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-608"
+claim_id = "C-608"
+claim_refs = ["C-608"]
+step_index = 8
+step_kind = "derivation_step"
+text = "a"
+text_sha256 = "ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = []
+depends_on_step_ids = ["DS-002745"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002747"
+skeleton_id = "PRS-00652"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-609"
+claim_id = "C-609"
+claim_refs = ["C-609"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 9): All basis element products satisfy ab=ba (no violations) and (ab)c=a(bc) (no violations)"
+text_sha256 = "d108e8a8e478eb4bee8e8adf3c74efa170ec77a73be258121f9e86eabe18b5a7"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["9"]
+key_tokens = ["All", "Phase", "VERIFIED", "ab", "ba", "basis", "bc", "element", "no", "products", "satisfy", "violations"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002748"
+skeleton_id = "PRS-00652"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-609"
+claim_id = "C-609"
+claim_refs = ["C-609"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Contrasts sharply with quaternions (ab \\u2260 ba for 3 independent pairs) and octonions (non-associative)"
+text_sha256 = "6608ec1e603e85ed30c2d40736534f92ab0cae32441a2989c17d28dd54fd5589"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["3"]
+key_tokens = ["Contrasts", "ab", "associative", "ba", "independent", "non", "octonions", "pairs", "quaternions", "sharply", "u2260"]
+depends_on_step_ids = ["DS-002747"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002749"
+skeleton_id = "PRS-00652"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-609"
+claim_id = "C-609"
+claim_refs = ["C-609"]
+step_index = 3
+step_kind = "derivation_step"
+text = "This structural difference from CD algebras follows directly from component-wise (commutative ring operations) vs doubling formula (inherently non-commutative)"
+text_sha256 = "bdcd1cb961b4cd5cfc894d2d65dc31d78c511cd56bb38626ff3f8d6251f3cbbb"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["CD", "algebras", "commutative", "component", "difference", "directly", "doubling", "follows", "formula", "inherently", "non", "operations", "ring", "structural", "vs", "wise"]
+depends_on_step_ids = ["DS-002748"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002750"
+skeleton_id = "PRS-00653"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-610"
+claim_id = "C-610"
+claim_refs = ["C-610"]
+step_index = 1
+step_kind = "status_update"
+text = "VERIFIED (Phase 9): Quaternions (Hamilton, 1843) satisfy (2), (3), (4) but FAIL (1) - non-commutative"
+text_sha256 = "ee5deb390ddd0763b4eadb4eadc0c0feffc9744f1baa18f43aa89552d93ef7ce"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1", "1843", "2", "3", "4", "9"]
+key_tokens = ["FAIL", "Hamilton", "Phase", "Quaternions", "VERIFIED", "but", "commutative", "non", "satisfy"]
+depends_on_step_ids = []
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002751"
+skeleton_id = "PRS-00653"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-610"
+claim_id = "C-610"
+claim_refs = ["C-610"]
+step_index = 2
+step_kind = "derivation_step"
+text = "Tessarines (Cockle, 1847) satisfy all 4"
+text_sha256 = "c1d44f15c2768b5147af40c8bab3f4bf0db171bef5f544d5a9f6b27c4a3403f5"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["1847", "4"]
+key_tokens = ["Cockle", "Tessarines", "all", "satisfy"]
+depends_on_step_ids = ["DS-002750"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002752"
+skeleton_id = "PRS-00653"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-610"
+claim_id = "C-610"
+claim_refs = ["C-610"]
+step_index = 3
+step_kind = "derivation_step"
+text = "Split quaternions fail (3)"
+text_sha256 = "d02118469291977961734e42baa6edacc3208244b8a5f71d6daece71b7b7cb75"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["3"]
+key_tokens = ["Split", "fail", "quaternions"]
+depends_on_step_ids = ["DS-002751"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002753"
+skeleton_id = "PRS-00653"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-610"
+claim_id = "C-610"
+claim_refs = ["C-610"]
+step_index = 4
+step_kind = "derivation_step"
+text = "This establishes a clear taxonomy: different construction methods over C \\u00D7 C (tensor product) vs C via Cayley-Dickson produce different algebraic landscapes"
+text_sha256 = "dd308b96e295c38e928f1f89383ea777351e86068a3b0d098e815c46616fcd96"
+equation_refs = []
+symbol_refs = []
+numeric_constants = []
+key_tokens = ["Cayley", "Dickson", "algebraic", "clear", "construction", "different", "establishes", "landscapes", "methods", "over", "produce", "product", "taxonomy", "tensor", "u00D7", "via", "vs"]
+depends_on_step_ids = ["DS-002752"]
+line_start = 0
+line_end = 0
+
+[[step]]
+id = "DS-002754"
+skeleton_id = "PRS-00653"
+skeleton_kind = "claim_decision_rule"
+source_path = "registry/claims.toml"
+source_uid = "C-610"
+claim_id = "C-610"
+claim_refs = ["C-610"]
+step_index = 5
+step_kind = "derivation_step"
+text = "Phase 9 discovery bridges the 'missing' 4D algebra between C\\u00B2 (ordered pairs, zero-divisors) and H (quaternions, non-commutative)"
+text_sha256 = "88f36bffe9804ff9e0904fc101aab0504795434211f14eb0c995760c3f2925ab"
+equation_refs = []
+symbol_refs = []
+numeric_constants = ["9"]
+key_tokens = ["Phase", "algebra", "between", "bridges", "commutative", "discovery", "divisors", "missing", "non", "ordered", "pairs", "quaternions", "u00B2", "zero"]
+depends_on_step_ids = ["DS-002753"]
 line_start = 0
 line_end = 0
 

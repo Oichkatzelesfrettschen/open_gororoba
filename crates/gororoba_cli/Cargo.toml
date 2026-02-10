@@ -190,6 +190,10 @@ path = "src/bin/warp_ring_integration.rs"
 name = "dimensional-census"
 path = "src/bin/dimensional_census.rs"
 
+[[bin]]
+name = "c590_attractor_sweep"
+path = "src/bin/c590_attractor_sweep.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe" }
 algebra_core = { path = "../algebra_core" }
