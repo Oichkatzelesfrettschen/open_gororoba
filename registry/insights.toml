@@ -346,3 +346,30 @@ status = "verified"
 summary = "C-452/C-453 evidence was strengthened from parse-only checks to explicit falsifiability gates: injectivity at each dimension (256, 512, 1024, 2048), exact basis-index coverage, exact lattice->index round-trip reconstruction, codomain lock to 8D trinary vectors, and filtration-growth deltas (256, 512, 1024) across the dimensional ladder. Header schema stability is now explicitly tested to freeze the current external CSV interface while preserving reproducibility."
 claims = ["C-452", "C-453"]
 sprint = 28
+
+[[insight]]
+id = "I-037"
+title = "Phase 4c: Complete Octonion-to-E8 Exceptional Chain Verified"
+date = "2026-02-09"
+status = "verified"
+summary = "Phase 4c establishes a rigorous computational bridge from concrete octonion algebra to the full exceptional Lie algebra hierarchy. KEY RESULTS: (1) Octonion multiplication table FIXED: the previous Fano plane had invalid line {4,5,6} causing 8 alternativity failures; the correct CD-derived table uses 7 Fano lines with consistent orientations (C-575). (2) G2 = Der(O) = 14-dimensional: computed via null-space of Leibniz constraint system on so(7); 21 parameters minus 7 constraints = 14 independent derivations (C-576). (3) Cayley plane OP^2 verified as 16-dimensional projective plane with rank-1 idempotent points in J3(O) (C-577). (4) Moufang loop S^7 with all three identities verified exhaustively on 343 basis triples: Left a(x(ay))=((ax)a)y, Right ((xa)y)a=x(a(ya)), Middle (ax)(ya)=(a(xy))a; the PARENTHESIZATION matters critically in non-associative algebras (C-578). (5) Correct Tits dimension formula: dim L(A,B) = Der(J3(B)) + (dim(A)-1)(dim(J3(B))-1) + Der(A) reproduces all 16 magic square entries and is symmetric (C-579). (6) Full exceptional chain cross-validated: G2(14)->F4(52)->E6(78)->E7(133)->E8(248), with E6=F4+traceless_Albert=52+26=78, and E6/(Spin(10)*U(1))=OP^2 giving complexified tangent dim 32=2*16 (C-580). This supersedes I-034's deferral of exceptional algebras: the infrastructure is now operational."
+claims = ["C-575", "C-576", "C-577", "C-578", "C-579", "C-580"]
+sprint = 28
+
+[[insight]]
+id = "I-038"
+title = "Gresnigt Subalgebra Decomposition: Depth, Not Identity, Discriminates Mass"
+date = "2026-02-09"
+status = "verified"
+summary = "Direction 1 (Gresnigt decomposition) enumerated all 15 octonion subalgebras of sedenions as XOR-closed hyperplanes of Z_2^4. KEY FINDINGS: (1) ALL 15 are alternative algebras with 7 Fano triples each (C-581). (2) All 105 pairwise intersections have exactly 4 elements (C-582). (3) Cross-subalgebra associator norms are UNIFORM (mean=1.0 for every pair) -- the subalgebras are algebraically indistinguishable for mass prediction (C-583). (4) Mass differentiation must come from DEPTH (boundary-crossing count: how many of 3 indices cross the dim/2 boundary), not subalgebra membership. This finding unblocks Direction 4 by showing that the Tang mechanism needs higher-order invariants beyond raw associator norms."
+claims = ["C-581", "C-582", "C-583", "C-587"]
+sprint = 29
+
+[[insight]]
+id = "I-039"
+title = "Five-Direction Research Sprint: Stiefel V_{8,2}, Albert J_3(O), and Negative Results"
+date = "2026-02-09"
+status = "verified"
+summary = "Sprint 29 executed five parallel research directions: (D1) Gresnigt subalgebra decomposition -- 15 alternative subalgebras, uniform structure, depth as mass discriminator (I-038). (D2) Albert algebra J_3(O) -- 27D exceptional Jordan algebra with Cardano eigenvalue solver; Singh delta^2=3/8 NOT reproduced for real trace-free elements, likely requires complexified algebra (C-584, C-585 NEGATIVE). (D3) Koebisu Stiefel manifold -- 168/168 confirmed ZDs satisfy V_{8,2} exactly (C-586). (D4) Tang convention unblocking -- depth-based norms (0.87-2.0 range) insufficient for 3500:1 mass hierarchy (C-587 NEGATIVE). (L4) Frustration convergence -- reusable compute_frustration_ratio() function, dim=2048 test scaffolded (C-588). Two genuine negative results (C-585, C-587) constrain future approaches: raw associator norms and generic real J_3(O) elements are insufficient for mass ratio predictions."
+claims = ["C-581", "C-582", "C-583", "C-584", "C-585", "C-586", "C-587", "C-588"]
+sprint = 29

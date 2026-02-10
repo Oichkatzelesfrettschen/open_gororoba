@@ -4631,3 +4631,143 @@ last_verified = "2026-02-09"
 what_would_verify_refute = "VERIFIED: cargo bench --bench dimensional_bench -p algebra_core produces consistent results. REFUTED IF: scaling deviates >2x from documented baselines on equivalent hardware."
 claims = ["C-574"]
 sprint = 28
+
+[[claim]]
+id = "C-575"
+statement = "The CD-derived octonion multiplication table is the unique (up to isomorphism) normed division algebra in 8 dimensions: all 42 non-trivial products verified via Cayley-Dickson doubling of quaternions (a,b)(c,d) = (ac-d*b, da+bc*), with 0 alternativity failures, 0 anti-commutativity failures, 0 composition property failures, and 0 Moufang identity failures across all 7^3=343 basis triples."
+where_stated = "`crates/algebra_core/src/construction/octonion.rs` (fano_multiply), Fano lines: {1,2,3},{1,4,5},{1,7,6},{2,4,6},{2,5,7},{3,4,7},{3,6,5}"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 96 octonion tests pass including exhaustive alternativity, anti-commutativity, composition, and Moufang identity tests. REFUTED IF: any basis triple fails alternativity [x,x,y]=0 or anti-commutativity e_i*e_j = -e_j*e_i (i,j>=1, i!=j)."
+claims = ["C-575"]
+sprint = 28
+
+[[claim]]
+id = "C-576"
+statement = "G2 = Der(O) is 14-dimensional, computed via null-space of Leibniz constraint system on so(7) parameterization: 21 skew-symmetric parameters minus 7 independent constraints yields rank 7 constraint matrix, leaving 14-dimensional null space. All 14 basis derivations verified on all 64 basis pairs AND random octonions."
+where_stated = "`crates/algebra_core/src/construction/g2_automorphisms.rs` (compute_g2_basis), 12 tests"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: compute_g2_basis().len() == 14, all derivations satisfy Leibniz D(xy)=D(x)y+xD(y) exhaustively. REFUTED IF: null-space dimension differs from 14 or any derivation fails Leibniz on any basis pair."
+claims = ["C-576"]
+sprint = 28
+
+[[claim]]
+id = "C-577"
+statement = "The Cayley plane OP^2 is a 16-dimensional projective plane with points represented as rank-1 idempotents in the exceptional Jordan algebra J3(O). Points from homogeneous coordinates satisfy tr(P)=1, P^2=P, and incidence is given by tr(P*L)=0. Standard triangle vertices [1:0:0],[0:1:0],[0:0:1] are non-collinear, confirming projective plane geometry."
+where_stated = "`crates/algebra_core/src/construction/octonion_geometry.rs` (CayleyPlanePoint, from_homogeneous, is_incident, are_collinear)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 18 tests covering standard points, homogeneous coords, incidence, scaling invariance, collinearity. REFUTED IF: any idempotent condition fails or standard triangle vertices become collinear."
+claims = ["C-577"]
+sprint = 28
+
+[[claim]]
+id = "C-578"
+statement = "Unit octonions S^7 form a Moufang loop satisfying all three Moufang identities: Left a(x(ay))=((ax)a)y, Right ((xa)y)a=x(a(ya)), Middle (ax)(ya)=(a(xy))a. Verified exhaustively on all 7^3=343 imaginary basis triples AND on mixed (random) unit octonions. The loop is non-associative (non-zero associators exist) with nucleus equal to real scalars only."
+where_stated = "`crates/algebra_core/src/construction/octonion_geometry.rs` (MoufangLoop), `crates/algebra_core/src/construction/octonion.rs` (moufang_identity_left/right)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: all three identities pass on 343 basis triples + mixed elements, nucleus is {reals}. REFUTED IF: any Moufang identity fails on any unit octonion triple, or nucleus contains non-scalar elements."
+claims = ["C-578"]
+sprint = 28
+
+[[claim]]
+id = "C-579"
+statement = "The Freudenthal-Tits magic square dimensions are correctly computed by the Tits construction formula: dim L(A,B) = Der(J3(B)) + (dim(A)-1)(dim(J3(B))-1) + Der(A), where J3(B) is the 3x3 Hermitian Jordan algebra. All 16 entries match the lookup table, the formula is symmetric L(A,B)=L(B,A), and the exceptional chain G2(14)->F4(52)->E6(78)->E7(133)->E8(248) is strictly ascending."
+where_stated = "`crates/algebra_core/src/construction/exceptional_bridge.rs` (tits_dimension, verify_tits_formula_complete)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 16/16 Tits formula entries match lookup table, symmetry holds for all 16 pairs, exceptional chain monotone. REFUTED IF: any Tits formula dimension differs from lookup table or symmetry breaks."
+claims = ["C-579"]
+sprint = 28
+
+[[claim]]
+id = "C-580"
+statement = "Cross-validation of exceptional algebra dimensions: (1) G2=14 from computed derivation basis matches Der(O) in magic square, (2) F4=52 from Der(J3(O)) matches magic square entry L(O,R), (3) E6=78 decomposes as F4(52)+traceless_Albert(26), (4) OP^2 as E6/(Spin(10)*U(1)) gives complexified tangent dim 32=2*16, (5) G2 derivations satisfy Leibniz on Moufang loop elements (all tests pass)."
+where_stated = "`crates/algebra_core/src/construction/exceptional_bridge.rs` (verify_exceptional_chain, verify_e6_cayley_plane_dimension, verify_g2_moufang_compatibility)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 14 tests cross-validating the complete exceptional bridge. REFUTED IF: any dimensional relationship breaks or G2 Leibniz fails on Moufang elements."
+claims = ["C-580"]
+sprint = 28
+
+[[claim]]
+id = "C-581"
+statement = "All 15 hyperplanes of Z_2^4 (sedenion index group) are alternative algebras (octonion subalgebras). Every order-8 XOR-closed subgroup of {0..15} containing 0 passes the alternative identity [x,x,y]=0 for all basis triples. All 15 subalgebras have 7 Fano triples each."
+where_stated = "`crates/algebra_core/src/analysis/subalgebra.rs` (test_all_subalgebras_are_alternative, test_hyperplane_enumeration_dim16)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 12 tests pass. REFUTED IF: any hyperplane fails alternativity or Fano triple count differs from 7."
+claims = ["C-581"]
+sprint = 29
+
+[[claim]]
+id = "C-582"
+statement = "All 105 pairs of sedenion octonion subalgebras intersect in exactly 4 elements. The intersection matrix is uniform: for any two distinct hyperplanes H_i, H_j of Z_2^4, |H_i cap H_j| = 4."
+where_stated = "`crates/algebra_core/src/analysis/subalgebra.rs` (test_intersection_matrix_dim16)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: intersection_matrix shows all off-diagonal entries = 4. REFUTED IF: any pair has intersection size != 4."
+claims = ["C-582"]
+sprint = 29
+
+[[claim]]
+id = "C-583"
+statement = "Cross-subalgebra associator norms are uniform: for every pair of sedenion octonion subalgebras, the mean associator norm of inter-subalgebra basis triples is 1.0. Mass differentiation in Cayley-Dickson algebras cannot come from subalgebra identity alone."
+where_stated = "`crates/algebra_core/src/analysis/subalgebra.rs` (test_cross_subalgebra_associators)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: all 105 cross-subalgebra mean norms equal 1.0. REFUTED IF: any pair has mean cross-associator norm != 1.0."
+claims = ["C-583"]
+sprint = 29
+
+[[claim]]
+id = "C-584"
+statement = "Albert algebra J_3(O) implementation: trace, S_2, determinant, and Cardano eigenvalue solver all pass for diagonal, unit trace, and random elements. The characteristic polynomial chi(lambda) = lambda^3 - tr(X)*lambda^2 + S_2(X)*lambda - det(X) has correct roots."
+where_stated = "`crates/algebra_core/src/construction/albert.rs` (test_diagonal_eigenvalues, test_unit_trace_element, test_jordan_product_symmetric)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 11 tests pass. REFUTED IF: eigenvalue sum != trace or eigenvalue product != det for any element."
+claims = ["C-584"]
+sprint = 29
+
+[[claim]]
+id = "C-585"
+statement = "Singh's delta^2 = 3/8 is NOT reproduced for arbitrary trace-free real J_3(O) elements. Observed delta^2 values range from 2.5 to 3.75. The result likely requires specific normalized idempotent constructions in the complexified algebra J_3(O_C)."
+where_stated = "`crates/algebra_core/src/construction/albert.rs` (test_singh_delta_squared)"
+status = "Negative"
+last_verified = "2026-02-09"
+what_would_verify_refute = "NEGATIVE RESULT: delta^2 = 3/8 not observed for generic real trace-free elements. WOULD VERIFY IF: specific complexified or idempotent construction yields exactly 3/8."
+claims = ["C-585"]
+sprint = 29
+
+[[claim]]
+id = "C-586"
+statement = "168/168 confirmed diagonal zero-divisors of sedenions satisfy the Stiefel manifold V_{8,2} condition: decomposing z = (a, b) into octonion halves gives |a| = |b| (exact) and <a, b> = 0 (exact) for all zero-product pairs from cross-assessor structure. Supports Koebisu (arXiv:2512.13002)."
+where_stated = "`crates/algebra_core/src/analysis/stiefel.rs` (test_verified_zd_count, test_basis_zd_stiefel)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: 168/168 pass with max violation < 1e-10. REFUTED IF: any confirmed ZD fails norm balance or orthogonality."
+claims = ["C-586"]
+sprint = 29
+
+[[claim]]
+id = "C-587"
+statement = "Depth-based generation assignment (boundary-crossing count) at dim=16: mean associator norms are 0.87, 1.0, 1.6, 2.0 for depths 2, 1, 0, 3 respectively. The norm ratio spread is insufficient to reproduce PDG lepton mass ratios (3500:1 for e/tau). Raw associator norms alone cannot explain the mass hierarchy."
+where_stated = "`crates/materials_core/src/tang_mass.rs` (test_depth_based_mass_prediction_dim16, test_depth_vs_random_comparison)"
+status = "Negative"
+last_verified = "2026-02-09"
+what_would_verify_refute = "NEGATIVE RESULT: RMS deviation ~875 vs ~1.0 for random search. WOULD VERIFY IF: higher-order algebraic invariants (products of associators, or nilpotent orbit indices) produce correct mass hierarchy."
+claims = ["C-587"]
+sprint = 29
+
+[[claim]]
+id = "C-588"
+statement = "Reusable compute_frustration_ratio() function verified at dim=32: frustration ratio = 0.307 (matching C-529 sequence). Function extracts BFS coboundary frustration as frustrated_edges/cycle_rank across all motif components. Ready for dim=2048 extension."
+where_stated = "`crates/algebra_core/src/analysis/boxkites.rs` (test_compute_frustration_ratio_dim32)"
+status = "Verified"
+last_verified = "2026-02-09"
+what_would_verify_refute = "VERIFIED: dim=32 ratio matches C-529. REFUTED IF: ratio deviates >0.01 from 0.307 at dim=32."
+claims = ["C-588"]
+sprint = 29

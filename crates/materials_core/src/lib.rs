@@ -18,6 +18,7 @@
 //! - Palik (1998): Handbook of Optical Constants
 
 pub mod baselines;
+pub mod crystal_symmetry;
 pub mod effective_medium;
 pub mod featurizer;
 pub mod metamaterial;

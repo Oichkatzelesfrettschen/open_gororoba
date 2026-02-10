@@ -1408,6 +1408,137 @@ pub fn generic_face_sign_census(dim: usize) -> GenericFaceSignCensus {
     }
 }
 
+/// Result of frustration ratio computation at a given dimension.
+#[derive(Debug, Clone)]
+pub struct FrustrationResult {
+    /// Cayley-Dickson dimension.
+    pub dim: usize,
+    /// Number of connected components.
+    pub n_components: usize,
+    /// Total edges across all components.
+    pub total_edges: usize,
+    /// Edges with eta=0.
+    pub eta0_count: usize,
+    /// Edges with eta=1.
+    pub eta1_count: usize,
+    /// Total first Betti number (cycle rank).
+    pub total_b1: usize,
+    /// Total frustrated edges (edges not explained by BFS coboundary).
+    pub total_frustrated: usize,
+    /// Frustration ratio: frustrated / b1.
+    pub frustration_ratio: f64,
+    /// Wall-clock time for computation.
+    pub elapsed_secs: f64,
+}
+
+/// Compute the frustration ratio at a given Cayley-Dickson dimension.
+///
+/// This is the ratio of frustrated edges to cycle rank across all
+/// components of the zero-product graph. The BFS coboundary assigns
+/// delta values to minimize disagreement; remaining disagreements
+/// are "frustrated" in the GF(2) sense.
+///
+/// Sequence verified: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381, 0.378
+/// for dims 16, 32, 64, 128, 256, 512, 1024.
+///
+/// Convergence appears toward 3/8 = 0.375 from above.
+pub fn compute_frustration_ratio(dim: usize) -> FrustrationResult {
+    use crate::construction::cayley_dickson::cd_basis_mul_sign;
+    use std::time::Instant;
+
+    let psi = |d: usize, i: usize, j: usize| -> u8 {
+        if cd_basis_mul_sign(d, i, j) == 1 {
+            0
+        } else {
+            1
+        }
+    };
+
+    let t0 = Instant::now();
+    let components = motif_components_for_cross_assessors(dim);
+
+    let mut total_edges = 0usize;
+    let mut total_eta0 = 0usize;
+    let mut total_eta1 = 0usize;
+    let mut total_b1 = 0usize;
+    let mut total_frustrated = 0usize;
+
+    for comp in components.iter() {
+        let nodes: Vec<CrossPair> = comp.nodes.iter().copied().collect();
+        let n = nodes.len();
+        total_edges += comp.edges.len();
+
+        let eta =
+            |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
+
+        // Edge eta balance
+        for &(u, v) in &comp.edges {
+            if eta(u, v) == 0 {
+                total_eta0 += 1;
+            } else {
+                total_eta1 += 1;
+            }
+        }
+
+        // BFS coboundary test
+        let node_idx: std::collections::HashMap<CrossPair, usize> =
+            nodes.iter().enumerate().map(|(i, &nd)| (nd, i)).collect();
+        let mut adj: Vec<Vec<(usize, u8)>> = vec![vec![]; n];
+        for &(u, v) in &comp.edges {
+            let ui = node_idx[&u];
+            let vi = node_idx[&v];
+            let e = eta(u, v);
+            adj[ui].push((vi, e));
+            adj[vi].push((ui, e));
+        }
+
+        let mut delta = vec![0u8; n];
+        let mut visited = vec![false; n];
+        visited[0] = true;
+        let mut queue = std::collections::VecDeque::new();
+        queue.push_back(0usize);
+        while let Some(u) = queue.pop_front() {
+            for &(v, e) in &adj[u] {
+                if !visited[v] {
+                    visited[v] = true;
+                    delta[v] = delta[u] ^ e;
+                    queue.push_back(v);
+                }
+            }
+        }
+
+        let b1 = comp.edges.len() - n + 1;
+        total_b1 += b1;
+
+        for &(u_node, v_node) in &comp.edges {
+            let ui = node_idx[&u_node];
+            let vi = node_idx[&v_node];
+            let e = eta(u_node, v_node);
+            if (delta[ui] ^ delta[vi]) != e {
+                total_frustrated += 1;
+            }
+        }
+    }
+
+    let frust_ratio = if total_b1 > 0 {
+        total_frustrated as f64 / total_b1 as f64
+    } else {
+        0.0
+    };
+
+    FrustrationResult {
+        dim,
+        n_components: components.len(),
+        total_edges,
+        eta0_count: total_eta0,
+        eta1_count: total_eta1,
+        total_b1,
+        total_frustrated,
+        frustration_ratio: frust_ratio,
+        elapsed_secs: t0.elapsed().as_secs_f64(),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -8332,6 +8463,64 @@ mod tests {
         let _dim = 4096;
         // Placeholder: GPU Monte Carlo census implementation needed
         eprintln!("dim=4096: GPU Monte Carlo (not yet implemented)");
+    }
+
+    /// Frustration ratio at dim=2048 using reusable compute_frustration_ratio.
+    ///
+    /// Sequence: 0.000, 0.307, 0.377, 0.388, 0.385, 0.381, 0.378
+    /// for dims 16, 32, 64, 128, 256, 512, 1024.
+    /// dim=2048 should continue convergence toward 3/8 = 0.375.
+    ///
+    /// Runtime: ~60 min in release mode (1023 components x 1022 nodes each).
+    #[test]
+    #[ignore] // ~60 min in release mode
+    fn test_frustration_ratio_dim2048() {
+        let result = compute_frustration_ratio(2048);
+
+        eprintln!("\n=== Frustration at dim=2048 ===");
+        eprintln!("Components: {}", result.n_components);
+        eprintln!("Edges: {}", result.total_edges);
+        eprintln!("eta=0: {}, eta=1: {}", result.eta0_count, result.eta1_count);
+        eprintln!("b1: {}, frustrated: {}", result.total_b1, result.total_frustrated);
+        eprintln!("frustration ratio: {:.8}", result.frustration_ratio);
+        eprintln!("elapsed: {:.2}s", result.elapsed_secs);
+
+        // Eta balance
+        assert_eq!(
+            result.eta0_count, result.eta1_count,
+            "dim=2048: eta not balanced"
+        );
+
+        // Frustration should exist (not coboundary for dim >= 32)
+        assert!(
+            result.total_frustrated > 0,
+            "dim=2048: eta should not be a coboundary"
+        );
+
+        // Should be closer to 3/8 = 0.375 than dim=1024 was (0.378)
+        assert!(
+            result.frustration_ratio > 0.37,
+            "dim=2048: frustration should be near limit"
+        );
+        assert!(
+            result.frustration_ratio < 0.39,
+            "dim=2048: frustration should not exceed 0.39"
+        );
+    }
+
+    /// Quick smoke test of compute_frustration_ratio at dim=32.
+    #[test]
+    fn test_compute_frustration_ratio_dim32() {
+        let result = compute_frustration_ratio(32);
+
+        assert_eq!(result.n_components, 15);
+        assert_eq!(result.eta0_count, result.eta1_count);
+        // Known value from C-529: ~0.307
+        assert!(
+            (result.frustration_ratio - 0.307).abs() < 0.01,
+            "dim=32: frustration should be ~0.307, got {}",
+            result.frustration_ratio
+        );
     }
 
     fn binomial(n: usize, k: usize) -> usize {

@@ -31,6 +31,7 @@
 
 pub mod feedback;
 pub mod filtering;
+pub mod orbital_algebra_mechanics;
 pub mod pid;
 pub mod plant;
 pub mod state_space;
@@ -52,4 +53,9 @@ pub use pid::{anti_windup_clamp, derivative_filter, PidController, PidGains, Pid
 pub use state_space::{
     controllability_matrix, is_controllable, is_observable, observability_matrix, StateSpaceModel,
     TransferFunction,
+};
+
+pub use orbital_algebra_mechanics::{
+    AngularVelocity, AttitudeDynamics, DelaunayVariables, LieTransformation, OrbitalElements,
+    Quaternion,
 };

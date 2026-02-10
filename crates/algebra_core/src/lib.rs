@@ -51,6 +51,8 @@ pub use construction::cayley_dickson::{
     zd_spectrum_analysis,
 };
 
+pub use construction::albert::AlbertElement;
+
 pub use construction::wheels::{canonical_test_set, verify_carlstrom_axioms, WheelQ};
 
 pub use construction::padic::{
@@ -136,9 +138,12 @@ pub use analysis::boxkites::{
     Assessor,
     BoxKite,
     BoxKiteSymmetryResult,
+    // Frustration ratio computation
+    compute_frustration_ratio,
     // Generalized motif census (cd_motif_census port)
     CrossPair,
     EdgeSignType,
+    FrustrationResult,
     MotifComponent,
     StrutTable,
     O_TRIPS,
@@ -152,6 +157,12 @@ pub use analysis::annihilator::{
 pub use analysis::reggiani::{
     assert_standard_zero_divisor_annihilators, standard_zero_divisor_partners,
     standard_zero_divisors, StandardZeroDivisor,
+};
+
+pub use analysis::subalgebra::{
+    classify_generations, cross_reference_boxkites, enumerate_octonion_subalgebras,
+    subalgebra_associator_spectrum, OctonionSubalgebra, SubalgebraEnumeration,
+    SubalgebraGeneration,
 };
 
 pub use analysis::grassmannian::{
