@@ -21,14 +21,14 @@ generated = true
 status = "active"
 migration_priority = "critical"
 toml_backing = "registry/entrypoint_docs.toml"
-sha256 = "e16b0d35d1483f5a66c5146b3716351c1b8084c223c02b3f4772759309b1a789"
-size_bytes = 11924
-line_count = 339
+sha256 = "39ed097bce7381f5d55ed108f2bdfbf6ed5720fa6610341331b7467f4dd588c1"
+size_bytes = 12660
+line_count = 354
 claim_ref_count = 0
 insight_ref_count = 0
 experiment_ref_count = 0
-link_count = 75
-link_sample = ["/init", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "NAVIGATOR.md", "README.md", "REQUIREMENTS.md", "convos/"]
+link_count = 82
+link_sample = ["/init", "AGENTS.md", "CLAUDE.md", "GEMINI.md", "NAVIGATOR.md", "PYTHONWARNINGS=error python3 src/verification/verify_python_core_algorithms_pyo3.py", "README.md", "REQUIREMENTS.md"]
 
 [[document]]
 id = "DOC-0002"

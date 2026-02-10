@@ -1,0 +1,283 @@
+# Wave 5 TOML Granularization Plan
+# Canonical planning source for strict schema-first conversion.
+
+[plan]
+id = "WAVE5-TOML-GRANULARIZATION"
+status = "active"
+owner = "core-integrator"
+updated = "2026-02-10"
+objective = "Convert remaining high-information narrative corpora into strict TOML schemas and reduce free-text fields."
+scope = [
+  "claims decomposition",
+  "equation atoms",
+  "proof skeletons",
+  "source provenance",
+  "dataset metadata harmonization",
+]
+quality_policy = [
+  "warnings_as_errors",
+  "ascii_only",
+  "toml_first",
+  "deterministic_build_outputs",
+]
+
+[[task]]
+id = "W5-001"
+status = "done"
+priority = "high"
+title = "Lock markdown governance gate"
+description = "Reject new in-scope markdown without canonical TOML owner mapping."
+artifacts = [
+  "registry/markdown_owner_map.toml",
+  "src/verification/verify_markdown_owner_map.py",
+]
+
+[[task]]
+id = "W5-002"
+status = "done"
+priority = "high"
+title = "Disable markdown mirror emission by default"
+description = "Keep markdown export optional and build-only."
+artifacts = [
+  "Makefile",
+  "src/verification/verify_registry_mirror_freshness.py",
+]
+
+[[task]]
+id = "W5-003"
+status = "done"
+priority = "high"
+title = "Enforce Python core algorithm mapping"
+description = "Fail if new in-scope Python core algorithm lacks Rust crate and PyO3 plan in TOML."
+artifacts = [
+  "registry/python_core_algorithms.toml",
+  "src/verification/verify_python_core_algorithms_pyo3.py",
+]
+
+[[task]]
+id = "W5-004"
+status = "done"
+priority = "high"
+title = "Enforce project CSV canonical/generated split"
+description = "Partition project CSV corpus into canonical datasets and generated artifacts with hard verification."
+artifacts = [
+  "registry/project_csv_split_policy.toml",
+  "crates/gororoba_cli/src/bin/verify_project_csv_split.rs",
+]
+
+[[task]]
+id = "W5-005"
+status = "done"
+priority = "high"
+title = "Normalize CSV holding queues"
+description = "Maintain dedicated TOML holding lanes for external and archive CSV ingestion."
+artifacts = [
+  "registry/external_csv_holding.toml",
+  "registry/archive_csv_holding.toml",
+]
+
+[[task]]
+id = "W5-006"
+status = "done"
+priority = "high"
+title = "ASCII-safe scroll ingestion"
+description = "Ensure CSV-to-TOML conversion encodes non-ASCII payloads into ASCII-safe escape forms."
+artifacts = [
+  "crates/scrolls_core/src/lib.rs",
+]
+
+[[task]]
+id = "W5-007"
+status = "pending"
+priority = "high"
+title = "Claims statement atomization"
+description = "Split each claim into typed statement atoms (hypothesis, condition, observable, threshold, status token)."
+artifacts = [
+  "registry/claims_atoms.toml",
+  "src/scripts/analysis/build_claim_atoms_registry.py",
+]
+
+[[task]]
+id = "W5-008"
+status = "pending"
+priority = "high"
+title = "Claim evidence edge registry"
+description = "Materialize claim-to-artifact and claim-to-source edges with explicit evidence roles."
+artifacts = [
+  "registry/claims_evidence_edges.toml",
+  "src/verification/verify_claim_edge_integrity.py",
+]
+
+[[task]]
+id = "W5-009"
+status = "pending"
+priority = "high"
+title = "Equation atom strict schema v2"
+description = "Tighten equation atom schema with symbol table, dimensionality tags, and dependency graph links."
+artifacts = [
+  "registry/knowledge/equation_atoms.toml",
+  "registry/knowledge/equation_symbol_table.toml",
+]
+
+[[task]]
+id = "W5-010"
+status = "pending"
+priority = "high"
+title = "Proof skeleton registry"
+description = "Capture theorem/lemma/proposition blocks as proof skeleton objects with assumptions and obligations."
+artifacts = [
+  "registry/knowledge/proof_skeletons.toml",
+]
+
+[[task]]
+id = "W5-011"
+status = "pending"
+priority = "medium"
+title = "Derivation step graph"
+description = "Represent derivation sequences as typed directed acyclic graphs linked to equation atoms."
+artifacts = [
+  "registry/knowledge/derivation_steps.toml",
+]
+
+[[task]]
+id = "W5-012"
+status = "pending"
+priority = "high"
+title = "Bibliography field normalization"
+description = "Expand bibliography entries into normalized fields (authors, venue, year, DOI, URL, evidence relevance)."
+artifacts = [
+  "registry/bibliography.toml",
+  "registry/bibliography_normalized.toml",
+]
+
+[[task]]
+id = "W5-013"
+status = "pending"
+priority = "high"
+title = "External source provenance enrichment"
+description = "Add immutable provenance records for all first-party external references used by claims."
+artifacts = [
+  "registry/external_sources.toml",
+  "registry/provenance_sources.toml",
+]
+
+[[task]]
+id = "W5-014"
+status = "pending"
+priority = "medium"
+title = "Narrative paragraph atomization"
+description = "Split long narrative bodies into ordered paragraph records with semantic tags."
+artifacts = [
+  "registry/docs_root_narratives.toml",
+  "registry/research_narratives.toml",
+]
+
+[[task]]
+id = "W5-015"
+status = "pending"
+priority = "medium"
+title = "Section-level contradiction markers"
+description = "Record contradictory statements and unresolved disputes as explicit registry entries."
+artifacts = [
+  "registry/lacunae.toml",
+  "registry/conflict_markers.toml",
+]
+
+[[task]]
+id = "W5-016"
+status = "pending"
+priority = "medium"
+title = "Experiment metadata normalization"
+description = "Align experiment schemas with dataset lineage, claim links, and deterministic replay metadata."
+artifacts = [
+  "registry/experiments.toml",
+  "registry/experiment_lineage.toml",
+]
+
+[[task]]
+id = "W5-017"
+status = "pending"
+priority = "medium"
+title = "CLI emitter contract tests"
+description = "Add golden tests for `registry-emit` targets (bibtex/tex/pgfplots/mermaid/svg) from TOML inputs."
+artifacts = [
+  "crates/gororoba_cli/src/bin/registry_emit.rs",
+  "tests/test_registry_emit_contracts.py",
+]
+
+[[task]]
+id = "W5-018"
+status = "pending"
+priority = "high"
+title = "Markdown-free publish profile"
+description = "Support strict publish profile where markdown mirrors are not materialized in git working tree."
+artifacts = [
+  "Makefile",
+  "src/scripts/analysis/export_registry_markdown_mirrors.py",
+]
+
+[[task]]
+id = "W5-019"
+status = "pending"
+priority = "medium"
+title = "Registry schema checksums"
+description = "Compute and enforce schema signatures for critical registries."
+artifacts = [
+  "registry/schema_signatures.toml",
+  "src/verification/verify_registry_schema_signatures.py",
+]
+
+[[task]]
+id = "W5-020"
+status = "pending"
+priority = "medium"
+title = "Cross-registry key consistency verifier"
+description = "Fail on dangling references across claims, insights, experiments, sources, and datasets."
+artifacts = [
+  "src/verification/verify_registry_crossrefs.py",
+]
+
+[[task]]
+id = "W5-021"
+status = "pending"
+priority = "medium"
+title = "Roadmap/todo/action schema hardening"
+description = "Constrain planning registries with status enums, dependencies, and acceptance criteria fields."
+artifacts = [
+  "registry/roadmap.toml",
+  "registry/todo.toml",
+  "registry/next_actions.toml",
+]
+
+[[task]]
+id = "W5-022"
+status = "pending"
+priority = "medium"
+title = "Module requirements decomposition"
+description = "Represent installation/runtime requirements as package-level tables with reproducible commands."
+artifacts = [
+  "registry/requirements.toml",
+  "registry/module_requirements.toml",
+]
+
+[[task]]
+id = "W5-023"
+status = "pending"
+priority = "high"
+title = "Generated mirror tracking opt-out by default"
+description = "Keep mirror files untracked and enforce generated-only policy through inventory and owner-map verifiers."
+artifacts = [
+  "registry/markdown_inventory.toml",
+  "registry/markdown_owner_map.toml",
+]
+
+[[task]]
+id = "W5-024"
+status = "pending"
+priority = "high"
+title = "Wave 5 acceptance gate"
+description = "Bundle strict wave checks into one target and require pass before merge."
+artifacts = [
+  "Makefile",
+  "registry-wave5",
+]

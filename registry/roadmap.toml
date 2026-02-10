@@ -111,3 +111,18 @@ primary_outputs = [
   "registry/lacunae.toml",
 ]
 lacunae = ["L-001", "L-002", "L-003", "L-004", "L-005"]
+
+[[workstream]]
+id = "WS-REGISTRY-002"
+name = "Wave 5 Strict TOML Granularization"
+priority = "high"
+status = "active"
+description = "Reduce remaining narrative free-text by moving claims, equations, proofs, provenance, and planning metadata into stricter TOML schemas."
+primary_outputs = [
+  "registry/wave5_toml_granularization_plan.toml",
+  "registry/claims_atoms.toml",
+  "registry/claims_evidence_edges.toml",
+  "registry/knowledge/proof_skeletons.toml",
+  "registry/knowledge/derivation_steps.toml",
+  "registry/bibliography_normalized.toml",
+]
