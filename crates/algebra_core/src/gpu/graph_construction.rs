@@ -226,7 +226,7 @@ impl GraphConstructorGpu {
 
         // Phase 2: Compact edges
         // Allocate output arrays (with extra element for atomic counter)
-        let mut edge_i_dev = stream
+        let edge_i_dev = stream
             .alloc_zeros::<u32>(num_edges + 1)
             .map_err(|e| format!("Alloc edge_i: {}", e))?;
 
