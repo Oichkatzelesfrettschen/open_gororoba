@@ -459,7 +459,7 @@ mod tests {
         let re = 6.371e6;
         let j2 = 1.08263e-3;
         let elem = OrbitalElements::new(6.78e6, 0.0, 0.0, 0.0, 0.0, 0.0);
-        let (d_node, d_peri) = elem.j2_perturbation(mu, re, j2);
+        let (d_node, _d_peri) = elem.j2_perturbation(mu, re, j2);
         // J2 effect should be non-zero for non-polar orbits
         assert!(d_node.abs() < 1.0); // rad/s
     }

@@ -1,0 +1,115 @@
+[dataset]
+id = "PC-0022"
+slug = "c590_attractor_runtime_baseline"
+source_csv = "data/csv/c590_attractor_runtime_baseline.csv"
+source_sha256 = "9193fb4248764b74770d393eded6556ad7851657349f9df78b4180a8fc2acbbe"
+source_size_bytes = 334
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 4
+column_count = 6
+header_value_sha256 = "8132bbef746d66e8a444561cf3d8a66244f4b1dc059b653c6a9cd230cf009b4d"
+row_value_sha256 = "7d07a723503c83d4ac86449b8ff7ba21d362de086ababdaa06114ead547a63ac"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "profile_tag",
+    "dim",
+    "frustration_ratio",
+    "delta_to_three_eighths",
+    "elapsed_seconds",
+    "run_unix_seconds",
+]
+original_header = [
+    "profile_tag",
+    "dim",
+    "frustration_ratio",
+    "delta_to_three_eighths",
+    "elapsed_seconds",
+    "run_unix_seconds",
+]
+rows = [
+    [
+    "debug",
+    "128",
+    "0.387612844246",
+    "0.012612844246",
+    "0.474258",
+    "1770754034",
+],
+    [
+    "debug",
+    "256",
+    "0.384892291869",
+    "0.009892291869",
+    "7.015827",
+    "1770754034",
+],
+    [
+    "release",
+    "128",
+    "0.387612844246",
+    "0.012612844246",
+    "0.274885",
+    "1770754042",
+],
+    [
+    "release",
+    "256",
+    "0.384892291869",
+    "0.009892291869",
+    "3.789074",
+    "1770754042",
+],
+]
+
+[[column]]
+index = 1
+name = "profile_tag"
+original_name = "profile_tag"
+inferred_type = "string"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 2
+name = "dim"
+original_name = "dim"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 3
+name = "frustration_ratio"
+original_name = "frustration_ratio"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 4
+name = "delta_to_three_eighths"
+original_name = "delta_to_three_eighths"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 5
+name = "elapsed_seconds"
+original_name = "elapsed_seconds"
+inferred_type = "float"
+non_empty_count = 4
+empty_count = 0
+
+[[column]]
+index = 6
+name = "run_unix_seconds"
+original_name = "run_unix_seconds"
+inferred_type = "int"
+non_empty_count = 4
+empty_count = 0

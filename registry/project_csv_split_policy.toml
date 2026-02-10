@@ -5,8 +5,8 @@
 updated = "2026-02-09"
 authoritative = true
 source_inventory = "registry/csv_inventory.toml"
-dataset_count = 87
-canonical_dataset_count = 57
+dataset_count = 89
+canonical_dataset_count = 59
 generated_artifact_count = 30
 
 generated_evidence_refs = [
@@ -267,6 +267,32 @@ classification = "canonical_dataset"
 queue_for_scroll_conversion = true
 size_bytes = 400
 source_sha256 = "e4f9a1a93562e9ba2b20a491dd033581d588e5084284a1724ec42d135a5008a5"
+git_status = "tracked"
+rationale = "Not listed in generated artifact contracts; treat as canonical project dataset for TOML-first scroll conversion."
+evidence_refs = [
+  "Makefile:357",
+  "src/verification/verify_generated_artifacts.py:37",
+]
+
+[[dataset]]
+path = "data/csv/c590_attractor_ratio_sweep.csv"
+classification = "canonical_dataset"
+queue_for_scroll_conversion = true
+size_bytes = 462
+source_sha256 = "51ed2d971ac9db2a675b5108b69e1bea5b1343e1759eb8ed56737ab6fc1e046f"
+git_status = "tracked"
+rationale = "Not listed in generated artifact contracts; treat as canonical project dataset for TOML-first scroll conversion."
+evidence_refs = [
+  "Makefile:357",
+  "src/verification/verify_generated_artifacts.py:37",
+]
+
+[[dataset]]
+path = "data/csv/c590_attractor_runtime_baseline.csv"
+classification = "canonical_dataset"
+queue_for_scroll_conversion = true
+size_bytes = 334
+source_sha256 = "9193fb4248764b74770d393eded6556ad7851657349f9df78b4180a8fc2acbbe"
 git_status = "tracked"
 rationale = "Not listed in generated artifact contracts; treat as canonical project dataset for TOML-first scroll conversion."
 evidence_refs = [

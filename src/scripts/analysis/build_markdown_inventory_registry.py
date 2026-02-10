@@ -45,43 +45,11 @@ IGNORED_PREFIXES = (
 )
 
 GENERATED_PATTERNS = (
+    "build/docs/generated/*.md",
     "docs/generated/*.md",
-    "docs/CLAIMS_EVIDENCE_MATRIX.md",
-    "docs/BIBLIOGRAPHY.md",
-    "docs/INSIGHTS.md",
-    "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
-    "docs/ROADMAP.md",
-    "docs/TODO.md",
-    "docs/NEXT_ACTIONS.md",
-    "docs/CLAIMS_TASKS.md",
-    "docs/claims/INDEX.md",
-    "docs/claims/by_domain/*.md",
-    "docs/tickets/*.md",
-    "docs/tickets/INDEX.md",
-    "docs/book/src/*.md",
-    "docs/book/src/*/*.md",
-    "docs/book/src/*/*/*.md",
-    "docs/external_sources/*.md",
-    "docs/external_sources/INDEX.md",
-    "docs/theory/*.md",
-    "docs/theory/INDEX.md",
-    "docs/engineering/*.md",
-    "docs/engineering/INDEX.md",
-    "docs/research/*.md",
-    "docs/monograph/*.md",
-    "docs/convos/*.md",
-    "data/artifacts/ALGEBRAIC_FOUNDATIONS.md",
-    "data/artifacts/BIBLIOGRAPHY.md",
-    "data/artifacts/FINAL_REPORT.md",
-    "data/artifacts/QUANTUM_REPORT.md",
-    "data/artifacts/SIMULATION_REPORT.md",
-    "data/artifacts/extracted_equations.md",
-    "data/artifacts/reality_check_and_synthesis.md",
-    "reports/*.md",
-    "REQUIREMENTS.md",
-    "docs/REQUIREMENTS.md",
-    "docs/requirements/*.md",
-    "NAVIGATOR.md",
+)
+
+TOML_PUBLISHED_ALLOWLIST = {
     "AGENTS.md",
     "CLAUDE.md",
     "GEMINI.md",
@@ -90,7 +58,7 @@ GENERATED_PATTERNS = (
     "curated/01_theory_frameworks/README_COQ.md",
     "data/csv/README.md",
     "data/artifacts/README.md",
-)
+}
 
 DESTINATION_OVERRIDES = {
     "data/artifacts/ALGEBRAIC_FOUNDATIONS.md": "registry/artifact_scrolls.toml",
@@ -125,6 +93,56 @@ DESTINATION_OVERRIDES = {
     "docs/generated/TODO_REGISTRY_MIRROR.md": "registry/todo.toml",
     "docs/claims/INDEX.md": "registry/claims_domains.toml",
 }
+
+
+def _destination_by_scope(path: str) -> str:
+    if path.startswith("build/docs/generated/"):
+        return "registry/markdown_payloads.toml"
+    if path.startswith("docs/generated/"):
+        return "registry/markdown_payloads.toml"
+    if path.startswith("docs/book/src/"):
+        return "registry/book_docs.toml"
+    if path.startswith("docs/external_sources/"):
+        return "registry/external_sources.toml"
+    if path.startswith("docs/claims/by_domain/"):
+        return "registry/claims_domains.toml"
+    if path.startswith("docs/tickets/"):
+        return "registry/claim_tickets.toml"
+    if path.startswith("docs/convos/"):
+        return "registry/docs_convos.toml"
+    if path.startswith("docs/engineering/") or path.startswith("docs/research/") or path.startswith("docs/theory/"):
+        return "registry/research_narratives.toml"
+    if path.startswith("docs/monograph/"):
+        return "registry/monograph.toml"
+    if path.startswith("docs/requirements/"):
+        return "registry/requirements.toml"
+    if path.startswith("reports/"):
+        return "registry/reports_narratives.toml"
+    if path.startswith("data/artifacts/") and path != "data/artifacts/README.md":
+        return "registry/artifact_scrolls.toml"
+    if path in {"AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md", "curated/README.md", "curated/01_theory_frameworks/README_COQ.md", "data/csv/README.md", "data/artifacts/README.md"}:
+        return "registry/entrypoint_docs.toml"
+    if path == "NAVIGATOR.md":
+        return "registry/navigator.toml"
+    if path == "REQUIREMENTS.md":
+        return "registry/requirements.toml"
+    if path == "docs/REQUIREMENTS.md":
+        return "registry/requirements.toml"
+    if path == "docs/CLAIMS_EVIDENCE_MATRIX.md":
+        return "registry/claims.toml"
+    if path == "docs/INSIGHTS.md":
+        return "registry/insights.toml"
+    if path == "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md":
+        return "registry/experiments.toml"
+    if path == "docs/ROADMAP.md":
+        return "registry/roadmap.toml"
+    if path == "docs/TODO.md":
+        return "registry/todo.toml"
+    if path == "docs/NEXT_ACTIONS.md":
+        return "registry/next_actions.toml"
+    if path == "docs/CLAIMS_TASKS.md":
+        return "registry/claims_tasks.toml"
+    return ""
 
 
 @dataclass(frozen=True)
@@ -205,6 +223,12 @@ def _is_archived(path: str) -> bool:
 
 def _is_generated_pattern(path: str) -> bool:
     return any(fnmatch.fnmatch(path, pattern) for pattern in GENERATED_PATTERNS)
+
+
+def _is_pipeline_generated(path: str, generated_declared: bool, toml_destination: str) -> bool:
+    if _is_generated_pattern(path):
+        return True
+    return path in TOML_PUBLISHED_ALLOWLIST and generated_declared and bool(toml_destination)
 
 
 def _is_third_party(path: str) -> bool:
@@ -311,8 +335,7 @@ def _classify(path: str, text: str, toml_destination: str) -> tuple[str, str, st
     third_party = _is_third_party(path)
     manual_exception = path in MANUAL_EXCEPTIONS
     generated_declared = _declared_generated(text)
-    generated_pattern = _is_generated_pattern(path)
-    generated = generated_declared or generated_pattern
+    generated = _is_pipeline_generated(path, generated_declared, toml_destination)
     high_information = (
         path.startswith("docs/")
         or path.startswith("data/artifacts/")
@@ -372,7 +395,14 @@ def _build_doc(
     title = _first_title(text, Path(path).stem)
     sha = hashlib.sha256(text.encode("utf-8")).hexdigest()
     lines = text.count("\n") + (1 if text else 0)
-    toml_destination = DESTINATION_OVERRIDES.get(path, _choose_destination(refs.get(path, set())))
+    generated_declared = _declared_generated(text)
+    generated_pattern = _is_generated_pattern(path)
+    toml_destination = DESTINATION_OVERRIDES.get(path, "")
+    if not toml_destination:
+        toml_destination = _destination_by_scope(path)
+    if not toml_destination:
+        toml_destination = _choose_destination(refs.get(path, set()))
+    generated = _is_pipeline_generated(path, generated_declared, toml_destination)
     classification, action, priority, rationale = _classify(path, text, toml_destination)
     return Doc(
         path=path,
@@ -385,9 +415,9 @@ def _build_doc(
         insight_refs=len(set(INSIGHT_RE.findall(text))),
         experiment_refs=len(set(EXPERIMENT_RE.findall(text))),
         archived=_is_archived(path),
-        generated_declared=_declared_generated(text),
-        generated_pattern=_is_generated_pattern(path),
-        generated=_declared_generated(text) or _is_generated_pattern(path),
+        generated_declared=generated_declared,
+        generated_pattern=generated_pattern,
+        generated=generated,
         manual_exception=path in MANUAL_EXCEPTIONS,
         third_party=_is_third_party(path),
         toml_destination=toml_destination,
@@ -409,7 +439,9 @@ def _render(docs: list[Doc]) -> str:
     third_party = sum(1 for d in docs if d.third_party)
     manual_ex = sum(1 for d in docs if d.manual_exception)
     unbacked = sum(1 for d in docs if d.classification == "unbacked_manual_markdown")
-    toml_backed_manual = sum(1 for d in docs if d.classification == "toml_backed_manual_markdown")
+    toml_backed_manual = sum(
+        1 for d in docs if d.classification == "toml_destination_exists_manual_markdown"
+    )
 
     lines: list[str] = []
     lines.append("# Full markdown inventory registry (TOML-first governance support).")

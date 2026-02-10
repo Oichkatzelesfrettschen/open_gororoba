@@ -1,0 +1,211 @@
+[dataset]
+id = "PC-0054"
+slug = "sedenion_box_kites_clustered"
+source_csv = "data/csv/sedenion_box_kites_clustered.csv"
+source_sha256 = "682d5d45275d0cd803b03af74d52ea1bde21c88968a34e8ee7e501b8e6c9a20f"
+source_size_bytes = 522
+has_header = true
+delimiter = ","
+quotechar = '"'
+row_count = 42
+column_count = 2
+header_value_sha256 = "c86e80840c31903327d11c3077cc7d5b69a6d0904d2502c3f9393c9edc786cbb"
+row_value_sha256 = "972b4a194c45be18a7c001804b40e9c692ee71346df609fd1e867b7d4e01febf"
+migrated_on = "2026-02-09"
+migrated_by = "gororoba_cli::scrollify-csv"
+dataset_class = "canonical_dataset"
+corpus_label = "project CSV canonical dataset"
+header = [
+    "root_indices",
+    "cluster_id",
+]
+original_header = [
+    "Root_Indices",
+    "Cluster_ID",
+]
+rows = [
+    [
+    "(2, 11)",
+    "0",
+],
+    [
+    "(7, 11)",
+    "0",
+],
+    [
+    "(5, 11)",
+    "0",
+],
+    [
+    "(6, 11)",
+    "0",
+],
+    [
+    "(4, 11)",
+    "0",
+],
+    [
+    "(1, 11)",
+    "0",
+],
+    [
+    "(3, 15)",
+    "1",
+],
+    [
+    "(1, 15)",
+    "1",
+],
+    [
+    "(4, 15)",
+    "1",
+],
+    [
+    "(6, 15)",
+    "1",
+],
+    [
+    "(2, 15)",
+    "1",
+],
+    [
+    "(5, 15)",
+    "1",
+],
+    [
+    "(4, 13)",
+    "2",
+],
+    [
+    "(2, 13)",
+    "2",
+],
+    [
+    "(6, 13)",
+    "2",
+],
+    [
+    "(3, 13)",
+    "2",
+],
+    [
+    "(1, 13)",
+    "2",
+],
+    [
+    "(7, 13)",
+    "2",
+],
+    [
+    "(4, 10)",
+    "3",
+],
+    [
+    "(5, 10)",
+    "3",
+],
+    [
+    "(1, 10)",
+    "3",
+],
+    [
+    "(3, 10)",
+    "3",
+],
+    [
+    "(6, 10)",
+    "3",
+],
+    [
+    "(7, 10)",
+    "3",
+],
+    [
+    "(4, 9)",
+    "4",
+],
+    [
+    "(5, 9)",
+    "4",
+],
+    [
+    "(7, 9)",
+    "4",
+],
+    [
+    "(3, 9)",
+    "4",
+],
+    [
+    "(6, 9)",
+    "4",
+],
+    [
+    "(2, 9)",
+    "4",
+],
+    [
+    "(5, 12)",
+    "5",
+],
+    [
+    "(6, 12)",
+    "5",
+],
+    [
+    "(7, 12)",
+    "5",
+],
+    [
+    "(3, 12)",
+    "5",
+],
+    [
+    "(2, 12)",
+    "5",
+],
+    [
+    "(1, 12)",
+    "5",
+],
+    [
+    "(3, 14)",
+    "6",
+],
+    [
+    "(5, 14)",
+    "6",
+],
+    [
+    "(2, 14)",
+    "6",
+],
+    [
+    "(7, 14)",
+    "6",
+],
+    [
+    "(4, 14)",
+    "6",
+],
+    [
+    "(1, 14)",
+    "6",
+],
+]
+
+[[column]]
+index = 1
+name = "root_indices"
+original_name = "Root_Indices"
+inferred_type = "string"
+non_empty_count = 42
+empty_count = 0
+
+[[column]]
+index = 2
+name = "cluster_id"
+original_name = "Cluster_ID"
+inferred_type = "int"
+non_empty_count = 42
+empty_count = 0

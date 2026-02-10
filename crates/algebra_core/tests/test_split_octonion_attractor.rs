@@ -181,3 +181,73 @@ fn test_split_octonion_attractor_regression_dim_128_256_guarded() {
         "dim=256 should not drift far above dim=128 in attractor regime"
     );
 }
+
+#[test]
+fn test_split_octonion_attractor_delta_shrink_128_256_512_guarded() {
+    // Deep guard: include dim=512 only on explicit opt-in.
+    let include_512 = std::env::var("CD_ATTRACTOR_INCLUDE_512")
+        .ok()
+        .map(|v| v == "1")
+        .unwrap_or(false);
+    if !include_512 {
+        eprintln!("Skipping dim 128/256/512 attractor delta-shrink regression (set CD_ATTRACTOR_INCLUDE_512=1 to enable).");
+        return;
+    }
+
+    let split_target = 0.375;
+    let per_dim_budget_s = env_f64("CD_ATTRACTOR_PER_DIM_BUDGET_S_512", 80.0);
+    let total_budget_s = env_f64("CD_ATTRACTOR_TOTAL_BUDGET_S_512", 140.0);
+    let monotone_slack = env_f64("CD_ATTRACTOR_DELTA_MONOTONE_SLACK", 0.001);
+    let dims = [128usize, 256usize, 512usize];
+
+    let mut deltas = Vec::with_capacity(dims.len());
+    let suite_start = Instant::now();
+
+    println!("Guarded attractor delta-shrink regression (128/256/512):");
+    for &dim in &dims {
+        let started = Instant::now();
+        let res = compute_frustration_ratio(dim);
+        let elapsed_s = started.elapsed().as_secs_f64();
+        let delta = res.frustration_ratio - split_target;
+        println!(
+            "dim={}: ratio={:.6}, delta={:.6}, elapsed={:.3}s",
+            dim, res.frustration_ratio, delta, elapsed_s
+        );
+
+        assert!(
+            elapsed_s <= per_dim_budget_s,
+            "dim={} exceeded per-dim budget ({:.3}s > {:.3}s). Override CD_ATTRACTOR_PER_DIM_BUDGET_S_512 if needed.",
+            dim,
+            elapsed_s,
+            per_dim_budget_s
+        );
+        assert!(
+            res.frustration_ratio > split_target,
+            "dim={} ratio should stay above 3/8 in the observed attractor regime",
+            dim
+        );
+        assert!(
+            res.frustration_ratio < 0.39,
+            "dim={} ratio should stay within expected high-dim envelope (< 0.39)",
+            dim
+        );
+        deltas.push(delta);
+    }
+
+    let total_elapsed_s = suite_start.elapsed().as_secs_f64();
+    assert!(
+        total_elapsed_s <= total_budget_s,
+        "dim 128/256/512 suite exceeded total budget ({:.3}s > {:.3}s). Override CD_ATTRACTOR_TOTAL_BUDGET_S_512 if needed.",
+        total_elapsed_s,
+        total_budget_s
+    );
+
+    assert!(
+        deltas[1] <= deltas[0] + monotone_slack,
+        "delta(256) should not exceed delta(128) beyond slack"
+    );
+    assert!(
+        deltas[2] <= deltas[1] + monotone_slack,
+        "delta(512) should not exceed delta(256) beyond slack"
+    );
+}

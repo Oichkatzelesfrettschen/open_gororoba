@@ -4,7 +4,7 @@
 [knowledge_proof_atoms]
 updated = "deterministic"
 authoritative = true
-atom_count = 43
+atom_count = 40
 
 [[atom]]
 id = "PRF-0001"
@@ -925,72 +925,3 @@ source_uid = "DOC-0023"
 source_group = "doc_claim_matrix"
 source_registry = "registry/knowledge/docs/DOC-0023.toml"
 source_path = "docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md"
-
-[[atom]]
-id = "PRF-0041"
-proof_kind = "argument_section"
-section_title = "Fetching External Sources (wget-first, offline reproducibility)"
-section_level = 1
-line_start = 10
-line_end = 19
-step_count = 5
-supports_claim = false
-assumption_lines = []
-decision_lines = []
-conclusion_lines = ["Network access is therefore opt-in and must never be required by `make test` or `make check`."]
-inference_markers = ["Network access is therefore opt-in and must never be required by `make test` or `make check`."]
-assumption_text = ""
-decision_rule_text = ""
-conclusion_text = "Network access is therefore opt-in and must never be required by `make test` or `make check`."
-excerpt = "Access date: 2026-02-02 || This repo treats narrative text as hypotheses unless backed by: || - primary sources (cached under `data/external/`), and/or || - offline checks (tests/verifiers/scripts). || Network access is therefore opt-in and must never be required by `make test` or `make check`."
-claim_refs = []
-source_uid = "RN-003"
-source_group = "research_narrative"
-source_registry = "registry/research_narratives.toml"
-source_path = "docs/engineering/FETCHING_EXTERNAL_SOURCES.md"
-
-[[atom]]
-id = "PRF-0042"
-proof_kind = "argument_section"
-section_title = "3. Pre-Registration Protocol"
-section_level = 2
-line_start = 64
-line_end = 78
-step_count = 10
-supports_claim = true
-assumption_lines = ["1. **Define hypothesis** before looking at data"]
-decision_lines = ["2. **Specify test statistic** and decision rule (e.g., p < 0.05)"]
-conclusion_lines = []
-inference_markers = []
-assumption_text = "1. **Define hypothesis** before looking at data"
-decision_rule_text = "2. **Specify test statistic** and decision rule (e.g., p < 0.05)"
-conclusion_text = ""
-excerpt = "For claims involving statistical tests on data: || 1. **Define hypothesis** before looking at data || 2. **Specify test statistic** and decision rule (e.g., p < 0.05) || 3. **Document sample size** requirements (e.g., N >= 50) || 4. **Record in** `docs/preregistered/CLAIM_NAME.md` || 5. **Execute test** only after pre-registration"
-claim_refs = ["C-007"]
-source_uid = "RN-023"
-source_group = "research_narrative"
-source_registry = "registry/research_narratives.toml"
-source_path = "docs/theory/CLAIMS_METHODOLOGY.md"
-
-[[atom]]
-id = "PRF-0043"
-proof_kind = "hypothesis_block"
-section_title = "5. Null Hypothesis Testing"
-section_level = 2
-line_start = 92
-line_end = 103
-step_count = 7
-supports_claim = true
-assumption_lines = ["All statistical claims require null hypothesis comparison:"]
-decision_lines = ["4. **Apply decision rule** consistently"]
-conclusion_lines = ["Example: Zero-divisor eigenvalue mass matching (C-091) refuted because"]
-inference_markers = []
-assumption_text = "All statistical claims require null hypothesis comparison:"
-decision_rule_text = "4. **Apply decision rule** consistently"
-conclusion_text = "Example: Zero-divisor eigenvalue mass matching (C-091) refuted because"
-excerpt = "All statistical claims require null hypothesis comparison: || 1. **Generate null distribution** via permutation, bootstrap, or parametric model || 2. **Compute test statistic** on observed data || 3. **Report p-value** with correction for multiple comparisons (Bonferroni/Holm) || 4. **Apply decision rule** consistently || Example: Zero-divisor eigenvalue mass matching (C-091) refuted because"
-claim_refs = ["C-091"]
-source_uid = "RN-023"
-source_group = "research_narrative"
-source_registry = "registry/research_narratives.toml"
-source_path = "docs/theory/CLAIMS_METHODOLOGY.md"

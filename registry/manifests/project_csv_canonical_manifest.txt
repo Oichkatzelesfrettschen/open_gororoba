@@ -18,6 +18,8 @@ data/csv/c071g_multi_dataset_ultrametric.csv
 data/csv/c074_associator_growth_empirical.csv
 data/csv/c087_associator_independence_summary.csv
 data/csv/c090_so7_rotation_drift_summary.csv
+data/csv/c590_attractor_ratio_sweep.csv
+data/csv/c590_attractor_runtime_baseline.csv
 data/csv/cayley_dickson/1024d_lattice_mapping.csv
 data/csv/cayley_dickson/2048d_lattice_mapping.csv
 data/csv/cayley_dickson/256d_basis_properties.csv

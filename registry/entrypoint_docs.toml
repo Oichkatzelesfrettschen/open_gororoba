@@ -58,6 +58,10 @@ Research claims are hypotheses unless backed by:
 
 ### 3.3 TOML-first documentation
 - Authoritative state lives in `registry/*.toml`.
+- Canonical data storage is TOML-only for raw, analyzed, narrative, equation,
+  and planning artifacts.
+- HDF5 or any other non-TOML format is export/projection only and must be
+  generated from canonical TOML sources via Rust or approved tooling.
 - Markdown in `docs/`, `reports/`, and `data/artifacts/` is generated or mirror
   output and is never the authoritative source.
 - Do not treat mirrors as authoritative.

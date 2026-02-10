@@ -6,7 +6,7 @@ updated = "2026-02-09"
 authoritative = true
 source_descriptor = "manifest:registry/manifests/project_csv_canonical_manifest.txt"
 canonical_dir = "registry/data/project_csv/canonical"
-dataset_count = 57
+dataset_count = 59
 
 [[dataset]]
 id = "PC-0001"
@@ -330,11 +330,43 @@ dataset_class = "canonical_dataset"
 
 [[dataset]]
 id = "PC-0021"
+slug = "c590_attractor_ratio_sweep"
+source_csv = "data/csv/c590_attractor_ratio_sweep.csv"
+source_sha256 = "51ed2d971ac9db2a675b5108b69e1bea5b1343e1759eb8ed56737ab6fc1e046f"
+source_size_bytes = 462
+canonical_toml = "registry/data/project_csv/canonical/PC-0021_c590_attractor_ratio_sweep.toml"
+row_count = 6
+column_count = 6
+has_header = true
+delimiter = ","
+quotechar = "\""
+header_value_sha256 = "8132bbef746d66e8a444561cf3d8a66244f4b1dc059b653c6a9cd230cf009b4d"
+row_value_sha256 = "4bf9ce5131d358ba5fce112e8719aaca32f59cc6206a92714cd9304ada7ed51a"
+dataset_class = "canonical_dataset"
+
+[[dataset]]
+id = "PC-0022"
+slug = "c590_attractor_runtime_baseline"
+source_csv = "data/csv/c590_attractor_runtime_baseline.csv"
+source_sha256 = "9193fb4248764b74770d393eded6556ad7851657349f9df78b4180a8fc2acbbe"
+source_size_bytes = 334
+canonical_toml = "registry/data/project_csv/canonical/PC-0022_c590_attractor_runtime_baseline.toml"
+row_count = 4
+column_count = 6
+has_header = true
+delimiter = ","
+quotechar = "\""
+header_value_sha256 = "8132bbef746d66e8a444561cf3d8a66244f4b1dc059b653c6a9cd230cf009b4d"
+row_value_sha256 = "7d07a723503c83d4ac86449b8ff7ba21d362de086ababdaa06114ead547a63ac"
+dataset_class = "canonical_dataset"
+
+[[dataset]]
+id = "PC-0023"
 slug = "1024d_lattice_mapping"
 source_csv = "data/csv/cayley_dickson/1024d_lattice_mapping.csv"
 source_sha256 = "b90971a600b5febb5571800ffa96fb8ec865c9c13ef4064cdabedce98b732e30"
 source_size_bytes = 140298
-canonical_toml = "registry/data/project_csv/canonical/PC-0021_1024d_lattice_mapping.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0023_1024d_lattice_mapping.toml"
 row_count = 1024
 column_count = 4
 has_header = true
@@ -345,12 +377,12 @@ row_value_sha256 = "c891b907c46296903d145469fb663a8d88cc7afc3a3867c12d09352c92c5
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0022"
+id = "PC-0024"
 slug = "2048d_lattice_mapping"
 source_csv = "data/csv/cayley_dickson/2048d_lattice_mapping.csv"
 source_sha256 = "2665af21788ae81e134ade860d906be30cbe42210d57d9fbb2f752b0564db61b"
 source_size_bytes = 299803
-canonical_toml = "registry/data/project_csv/canonical/PC-0022_2048d_lattice_mapping.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0024_2048d_lattice_mapping.toml"
 row_count = 2048
 column_count = 4
 has_header = true
@@ -361,12 +393,12 @@ row_value_sha256 = "7fbd88cebcda4266f7a2156548bf40e0197823dc498ce8773c2109ebdec5
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0023"
+id = "PC-0025"
 slug = "256d_basis_properties"
 source_csv = "data/csv/cayley_dickson/256d_basis_properties.csv"
 source_sha256 = "3f341b860713e79eda8606505666b32e7bb96a699e607e226e6cda54ce8f2e44"
 source_size_bytes = 30268
-canonical_toml = "registry/data/project_csv/canonical/PC-0023_256d_basis_properties.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0025_256d_basis_properties.toml"
 row_count = 125
 column_count = 4
 has_header = true
@@ -377,12 +409,12 @@ row_value_sha256 = "825b9a508a9970d4299b6dabc25ea7d4ab0de06d8705ef9f14d5c6f705d9
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0024"
+id = "PC-0026"
 slug = "256d_lattice_mapping"
 source_csv = "data/csv/cayley_dickson/256d_lattice_mapping.csv"
 source_sha256 = "80adc13d38f78ff6e95434a351ec8c41944bbd399f86b56125d0a238e1dd4530"
 source_size_bytes = 30280
-canonical_toml = "registry/data/project_csv/canonical/PC-0024_256d_lattice_mapping.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0026_256d_lattice_mapping.toml"
 row_count = 256
 column_count = 4
 has_header = true
@@ -393,12 +425,12 @@ row_value_sha256 = "959a79ab3ba589b9a9a5124d8d4ed4be8b7a2fd94623e98db874fb11c4a6
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0025"
+id = "PC-0027"
 slug = "256d_structural_analysis"
 source_csv = "data/csv/cayley_dickson/256d_structural_analysis.csv"
 source_sha256 = "b62c0dfcb5b06450d2950af04cd7475df1d84a5cc82af558c0e200a214e3e54f"
 source_size_bytes = 25716
-canonical_toml = "registry/data/project_csv/canonical/PC-0025_256d_structural_analysis.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0027_256d_structural_analysis.toml"
 row_count = 256
 column_count = 5
 has_header = true
@@ -409,12 +441,12 @@ row_value_sha256 = "53a55a20f0376840b2705fc5cf11db1e80296ec68b090ea3b668aeea9b0d
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0026"
+id = "PC-0028"
 slug = "512d_lattice_mapping"
 source_csv = "data/csv/cayley_dickson/512d_lattice_mapping.csv"
 source_sha256 = "f40a9f688839ed07b621495bc910ddfe06d8280b6a73d25f376acd6652574f94"
 source_size_bytes = 65402
-canonical_toml = "registry/data/project_csv/canonical/PC-0026_512d_lattice_mapping.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0028_512d_lattice_mapping.toml"
 row_count = 512
 column_count = 4
 has_header = true
@@ -425,12 +457,12 @@ row_value_sha256 = "97b17909b091ab3f9f1ca8d85c7acbce7102e0f2234fa0b1b261941ebffa
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0027"
+id = "PC-0029"
 slug = "512d_structural_analysis"
 source_csv = "data/csv/cayley_dickson/512d_structural_analysis.csv"
 source_sha256 = "b21fea64e3e9bfdfe8162917d448aedee55191fd37a930d744138bde14721b97"
 source_size_bytes = 51203
-canonical_toml = "registry/data/project_csv/canonical/PC-0027_512d_structural_analysis.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0029_512d_structural_analysis.toml"
 row_count = 512
 column_count = 5
 has_header = true
@@ -441,12 +473,12 @@ row_value_sha256 = "83f9c2c2235fa8f9e65dea26b70aa59963f866fe17f4b335a459f6b79d8a
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0028"
+id = "PC-0030"
 slug = "64d_128d_operation_results"
 source_csv = "data/csv/cayley_dickson/64d_128d_operation_results.csv"
 source_sha256 = "baa325569250ade8380757367fd8dfc654f57f5e039ba9b63e24b1d8b9de7dba"
 source_size_bytes = 2890852
-canonical_toml = "registry/data/project_csv/canonical/PC-0028_64d_128d_operation_results.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0030_64d_128d_operation_results.toml"
 row_count = 25155
 column_count = 4
 has_header = true
@@ -457,12 +489,12 @@ row_value_sha256 = "70d7733f14c78522c1075a0e6a459ded9f88d8cc284e9811d6638cad61fc
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0029"
+id = "PC-0031"
 slug = "64d_chingon_adjacency"
 source_csv = "data/csv/cayley_dickson/64d_chingon_adjacency.csv"
 source_sha256 = "74446154412b6640c459ec8817aedc624a0302bd9a50dc47316de5f28957287d"
 source_size_bytes = 8374
-canonical_toml = "registry/data/project_csv/canonical/PC-0029_64d_chingon_adjacency.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0031_64d_chingon_adjacency.toml"
 row_count = 64
 column_count = 64
 has_header = true
@@ -473,12 +505,12 @@ row_value_sha256 = "c579623f01efefb7c1826f23ffa2a175a6467477c32b2fd420d0f633e93e
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0030"
+id = "PC-0032"
 slug = "cd_zd_absorber_mapping"
 source_csv = "data/csv/cd_zd_absorber_mapping.csv"
 source_sha256 = "c9749fda49d5b1bcd66a8b70bc284a3d96161821ce49d54c05673b737d2f10a7"
 source_size_bytes = 1408
-canonical_toml = "registry/data/project_csv/canonical/PC-0030_cd_zd_absorber_mapping.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0032_cd_zd_absorber_mapping.toml"
 row_count = 20
 column_count = 11
 has_header = true
@@ -489,12 +521,12 @@ row_value_sha256 = "8a6383a1b0b0705ca21e8d33fe30de244d3232486f90bea0fdce01c4ea51
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0031"
+id = "PC-0033"
 slug = "cross_stack_locality_comparison"
 source_csv = "data/csv/cross_stack_locality_comparison.csv"
 source_sha256 = "24c8395a40f3890500b7ad0048012f17952b4671e2eef902c02845c5cd38949b"
 source_size_bytes = 537
-canonical_toml = "registry/data/project_csv/canonical/PC-0031_cross_stack_locality_comparison.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0033_cross_stack_locality_comparison.toml"
 row_count = 3
 column_count = 13
 has_header = true
@@ -505,12 +537,12 @@ row_value_sha256 = "3c0e8c3dd52d3948a23c2b566fa866fce58b8c71e9f280d49574d32e90bc
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0032"
+id = "PC-0034"
 slug = "et_billiard_phase_structure"
 source_csv = "data/csv/et_billiard_phase_structure.csv"
 source_sha256 = "22f1e97cda02ab487ffbf33240ad93eb51d8d6bd3b5ac744807b81b8fe93b8f7"
 source_size_bytes = 1135
-canonical_toml = "registry/data/project_csv/canonical/PC-0032_et_billiard_phase_structure.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0034_et_billiard_phase_structure.toml"
 row_count = 7
 column_count = 15
 has_header = true
@@ -521,12 +553,12 @@ row_value_sha256 = "ec03a5ab1d1ea5b846c3c073f7476f7c71c9d6fcb09760f6fd6ce468204f
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0033"
+id = "PC-0035"
 slug = "fractal_cosmology_comparison"
 source_csv = "data/csv/fractal_cosmology_comparison.csv"
 source_sha256 = "ccbe5d150cf7e3f389da4ecd351ea57217fb6f710dd0313695a385ccd9b794f9"
 source_size_bytes = 134471
-canonical_toml = "registry/data/project_csv/canonical/PC-0033_fractal_cosmology_comparison.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0035_fractal_cosmology_comparison.toml"
 row_count = 1000
 column_count = 7
 has_header = true
@@ -537,12 +569,12 @@ row_value_sha256 = "2ca412a458743271b50dc034b363fd68ee074dbb383a6fcf24f72d84f32f
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0034"
+id = "PC-0036"
 slug = "fractional_schrodinger_benchmark_errors"
 source_csv = "data/csv/fractional_schrodinger_benchmark_errors.csv"
 source_sha256 = "317e5fee2914b0189a756dc54432fa1d566416b355c629b3bb5e1a04ed46554e"
 source_size_bytes = 708
-canonical_toml = "registry/data/project_csv/canonical/PC-0034_fractional_schrodinger_benchmark_errors.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0036_fractional_schrodinger_benchmark_errors.toml"
 row_count = 9
 column_count = 5
 has_header = true
@@ -553,12 +585,12 @@ row_value_sha256 = "3bd6fc94813a4fc7b05c6557ec6d87101b558d479d2e9a855d79fb40332f
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0035"
+id = "PC-0037"
 slug = "genesis_gravastar_bridge"
 source_csv = "data/csv/genesis_gravastar_bridge.csv"
 source_sha256 = "f8e03344e517845d01dd56f818944be7a1d4459ff8119326a3e1b9ac8fc9b8bc"
 source_size_bytes = 11127
-canonical_toml = "registry/data/project_csv/canonical/PC-0035_genesis_gravastar_bridge.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0037_genesis_gravastar_bridge.toml"
 row_count = 90
 column_count = 9
 has_header = true
@@ -569,12 +601,12 @@ row_value_sha256 = "d1e0b4898897b48f0dc3fc4dcb0c3e17efef2f6c32d470afb5b4b9a4b023
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0036"
+id = "PC-0038"
 slug = "genesis_soliton_extraction"
 source_csv = "data/csv/genesis_soliton_extraction.csv"
 source_sha256 = "3a0da7d8b64cec8aa2073f9917bb03498590dc4c2dc1f0f9839a2ede7d734a52"
 source_size_bytes = 2731
-canonical_toml = "registry/data/project_csv/canonical/PC-0036_genesis_soliton_extraction.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0038_genesis_soliton_extraction.toml"
 row_count = 30
 column_count = 6
 has_header = true
@@ -585,12 +617,12 @@ row_value_sha256 = "4cf17cdd75e5c776201b44799b153d9231dbfb2260c201a42cf6515e064d
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0037"
+id = "PC-0039"
 slug = "gravastar_anisotropic_stability"
 source_csv = "data/csv/gravastar_anisotropic_stability.csv"
 source_sha256 = "62701fc820f6ef5b05303a47266dd5877adb77c2296326c0ea811c6ab9c51cfa"
 source_size_bytes = 3919
-canonical_toml = "registry/data/project_csv/canonical/PC-0037_gravastar_anisotropic_stability.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0039_gravastar_anisotropic_stability.toml"
 row_count = 30
 column_count = 11
 has_header = true
@@ -601,12 +633,12 @@ row_value_sha256 = "cac60bdb557e232f28d52d5e631b96aa5589135c79b51c3d22ef3c8fa686
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0038"
+id = "PC-0040"
 slug = "gravastar_ligo_mass_sweep"
 source_csv = "data/csv/gravastar_ligo_mass_sweep.csv"
 source_sha256 = "1bdab79813efcda1b428c8aef6f1be6b4b2842198296874bde027a781a0a1831"
 source_size_bytes = 4828
-canonical_toml = "registry/data/project_csv/canonical/PC-0038_gravastar_ligo_mass_sweep.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0040_gravastar_ligo_mass_sweep.toml"
 row_count = 55
 column_count = 7
 has_header = true
@@ -617,12 +649,12 @@ row_value_sha256 = "91eacd765357a328c53f77589b31e07086497127f4e28a570248bc7f4928
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0039"
+id = "PC-0041"
 slug = "gravastar_polytropic_sweep"
 source_csv = "data/csv/gravastar_polytropic_sweep.csv"
 source_sha256 = "f517f14d5b03d093e71701977ecfcc914e34d5ae2ba0d89939970239d3e4c800"
 source_size_bytes = 47210
-canonical_toml = "registry/data/project_csv/canonical/PC-0039_gravastar_polytropic_sweep.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0041_gravastar_polytropic_sweep.toml"
 row_count = 350
 column_count = 11
 has_header = true
@@ -633,12 +665,12 @@ row_value_sha256 = "1e97c8327611b8ebb9c01c3e0f8dc22ba7c4b485024c5a755a45ed117f59
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0040"
+id = "PC-0042"
 slug = "gravastar_radial_stability"
 source_csv = "data/csv/gravastar_radial_stability.csv"
 source_sha256 = "c6e7f2c7effdd22ee2993e5f7ac77486c59c721ac4a20893cc87b82349cff916"
 source_size_bytes = 9156
-canonical_toml = "registry/data/project_csv/canonical/PC-0040_gravastar_radial_stability.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0042_gravastar_radial_stability.toml"
 row_count = 55
 column_count = 11
 has_header = true
@@ -649,12 +681,12 @@ row_value_sha256 = "ef865ea1a974cc35c14aefe6e917d4475a4a9a4792a656caf12cb954933f
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0041"
+id = "PC-0043"
 slug = "grin_benchmark_convergence"
 source_csv = "data/csv/grin_benchmark_convergence.csv"
 source_sha256 = "54da584d242d6d92cad27b6bc7f5e2390a6920a55f3ba2a7298c7dfb4778048a"
 source_size_bytes = 218
-canonical_toml = "registry/data/project_csv/canonical/PC-0041_grin_benchmark_convergence.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0043_grin_benchmark_convergence.toml"
 row_count = 4
 column_count = 3
 has_header = true
@@ -665,12 +697,12 @@ row_value_sha256 = "f03bcd24ca1af2a83124d40beb050ba21ffb2aafaa29dbba4f709a900426
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0042"
+id = "PC-0044"
 slug = "gwtc3_mass_clumping_dip"
 source_csv = "data/csv/gwtc3_mass_clumping_dip.csv"
 source_sha256 = "11829c7d1c1ec042b61fdd6db858a0e1985ad546ea45169e78593dd3b1a47585"
 source_size_bytes = 236
-canonical_toml = "registry/data/project_csv/canonical/PC-0042_gwtc3_mass_clumping_dip.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0044_gwtc3_mass_clumping_dip.toml"
 row_count = 3
 column_count = 6
 has_header = true
@@ -681,12 +713,12 @@ row_value_sha256 = "e871a884ec71f3d62347a94c023fad716a32fc4ec896656a6941073b4604
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0043"
+id = "PC-0045"
 slug = "lbm_poiseuille_profile"
 source_csv = "data/csv/lbm_poiseuille_profile.csv"
 source_sha256 = "8259c3576ae09e4e181285840f26d8147ace5f63779a2ac4b384945f4075decf"
 source_size_bytes = 1604
-canonical_toml = "registry/data/project_csv/canonical/PC-0043_lbm_poiseuille_profile.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0045_lbm_poiseuille_profile.toml"
 row_count = 41
 column_count = 3
 has_header = true
@@ -697,12 +729,12 @@ row_value_sha256 = "81e8d32221925be62cb3318e61fb009ce8ffd64ddce4c1b5b3a99b64240d
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0044"
+id = "PC-0046"
 slug = "mera_entropy_scaling"
 source_csv = "data/csv/mera_entropy_scaling.csv"
 source_sha256 = "c0f8cf7e2e20d563ec730011105e6481bd7318aaecd1959d196c4c9fd9741ea4"
 source_size_bytes = 135
-canonical_toml = "registry/data/project_csv/canonical/PC-0044_mera_entropy_scaling.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0046_mera_entropy_scaling.toml"
 row_count = 5
 column_count = 3
 has_header = true
@@ -713,12 +745,12 @@ row_value_sha256 = "9558e9ff65a8ec2ae0a1278bde99a991fc41110ba6bd211920656d6e5b38
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0045"
+id = "PC-0047"
 slug = "mera_verification_summary"
 source_csv = "data/csv/mera_verification_summary.csv"
 source_sha256 = "26dfc1f1e3d69e101e55ba0b5ee20e2c1702d83d2877a1ac579e322259126e3d"
 source_size_bytes = 215
-canonical_toml = "registry/data/project_csv/canonical/PC-0045_mera_verification_summary.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0047_mera_verification_summary.toml"
 row_count = 6
 column_count = 2
 has_header = true
@@ -729,12 +761,12 @@ row_value_sha256 = "bb960420d2faa6b8167b4bcfb5ee2d6ae5b5fb509751bed3d470e569f7a3
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0046"
+id = "PC-0048"
 slug = "multiplication_table_16d"
 source_csv = "data/csv/multiplication_table_16D.csv"
 source_sha256 = "b00edcfb9dccd877012099b968402924cf0e2f9d1c630a3a70cead3607b711d7"
 source_size_bytes = 1075
-canonical_toml = "registry/data/project_csv/canonical/PC-0046_multiplication_table_16d.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0048_multiplication_table_16d.toml"
 row_count = 16
 column_count = 17
 has_header = true
@@ -745,12 +777,12 @@ row_value_sha256 = "6fc750bae91263773d9e40e9ec0605ff7bd10c479f6e97a4f4c40489c7a4
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0047"
+id = "PC-0049"
 slug = "multiplication_table_8d"
 source_csv = "data/csv/multiplication_table_8D.csv"
 source_sha256 = "eb02889fe7f1345c7399215aa53b9fe050beff53dd2e0e3a9c01f0f94e783da2"
 source_size_bytes = 259
-canonical_toml = "registry/data/project_csv/canonical/PC-0047_multiplication_table_8d.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0049_multiplication_table_8d.toml"
 row_count = 8
 column_count = 9
 has_header = true
@@ -761,12 +793,12 @@ row_value_sha256 = "12b555622ff93afb6af143705f496aba211ee20850166b5cf57f603b2f0e
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0048"
+id = "PC-0050"
 slug = "neg_dim_convergence_metrics"
 source_csv = "data/csv/neg_dim_convergence_metrics.csv"
 source_sha256 = "1ce9d32411cb621beb45a19ba62acd6f7121f02e24d1f8a8eba375fce2bd1ef1"
 source_size_bytes = 1803
-canonical_toml = "registry/data/project_csv/canonical/PC-0048_neg_dim_convergence_metrics.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0050_neg_dim_convergence_metrics.toml"
 row_count = 40
 column_count = 4
 has_header = true
@@ -777,12 +809,12 @@ row_value_sha256 = "7a2eee38c47b3aefdedc29020957ff7d217bca2df2d8872d0cf5c0683e6f
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0049"
+id = "PC-0051"
 slug = "neg_dim_wavefunction_alpha_1_5"
 source_csv = "data/csv/neg_dim_wavefunction_alpha_-1.5.csv"
 source_sha256 = "199ab98d2687c4459a869268c5e0561703f7456f3aaba4dc6d53c02ea9bfa1f1"
 source_size_bytes = 274648
-canonical_toml = "registry/data/project_csv/canonical/PC-0049_neg_dim_wavefunction_alpha_1_5.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0051_neg_dim_wavefunction_alpha_1_5.toml"
 row_count = 256
 column_count = 50
 has_header = true
@@ -793,12 +825,12 @@ row_value_sha256 = "6183dbed3fd27f101acec44c13e7bdf203e59551a5ee421e87d9d845522f
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0050"
+id = "PC-0052"
 slug = "nonlocal_slopes"
 source_csv = "data/csv/nonlocal_slopes.csv"
 source_sha256 = "24ea2cdf3bd78958a03d5fa9caf2ceaf83b5022156c0d653f32ec15b612a5e14"
 source_size_bytes = 371
-canonical_toml = "registry/data/project_csv/canonical/PC-0050_nonlocal_slopes.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0052_nonlocal_slopes.toml"
 row_count = 12
 column_count = 3
 has_header = true
@@ -809,12 +841,12 @@ row_value_sha256 = "67f74266df3ea5e0776bb36a66f0787ca5caff4916afa6f0136469d67310
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0051"
+id = "PC-0053"
 slug = "pathion_zd_edges"
 source_csv = "data/csv/pathion_zd_edges.csv"
 source_sha256 = "9e0b89de8d2b6c8fd9fee4c9834c0a8f634504ad35e23bbe637e721f2e62c90b"
 source_size_bytes = 212916
-canonical_toml = "registry/data/project_csv/canonical/PC-0051_pathion_zd_edges.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0053_pathion_zd_edges.toml"
 row_count = 3654
 column_count = 10
 has_header = true
@@ -825,12 +857,12 @@ row_value_sha256 = "bd20cb7330435fa675672acb5ddd141894c39c66834c8da23f0dfef31b89
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0052"
+id = "PC-0054"
 slug = "sedenion_box_kites_clustered"
 source_csv = "data/csv/sedenion_box_kites_clustered.csv"
 source_sha256 = "682d5d45275d0cd803b03af74d52ea1bde21c88968a34e8ee7e501b8e6c9a20f"
 source_size_bytes = 522
-canonical_toml = "registry/data/project_csv/canonical/PC-0052_sedenion_box_kites_clustered.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0054_sedenion_box_kites_clustered.toml"
 row_count = 42
 column_count = 2
 has_header = true
@@ -841,12 +873,12 @@ row_value_sha256 = "972b4a194c45be18a7c001804b40e9c692ee71346df609fd1e867b7d4e01
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0053"
+id = "PC-0055"
 slug = "sedenion_mass_spectrum"
 source_csv = "data/csv/sedenion_mass_spectrum.csv"
 source_sha256 = "fa013de9b8736a99b615624f0afa3add52db60f712a3934a28dd0e46e1ef16f3"
 source_size_bytes = 1053
-canonical_toml = "registry/data/project_csv/canonical/PC-0053_sedenion_mass_spectrum.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0055_sedenion_mass_spectrum.toml"
 row_count = 50
 column_count = 2
 has_header = true
@@ -857,12 +889,12 @@ row_value_sha256 = "82233e145a9b9c7617cb8633a16cfa6139c915138318118091ede3eb70b1
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0054"
+id = "PC-0056"
 slug = "sedenion_nilpotent_candidates"
 source_csv = "data/csv/sedenion_nilpotent_candidates.csv"
 source_sha256 = "71814fe5374d1f6fe89fe4eead6d7ab9d262b3baed049eb245c3e9de816694e7"
 source_size_bytes = 23836
-canonical_toml = "registry/data/project_csv/canonical/PC-0054_sedenion_nilpotent_candidates.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0056_sedenion_nilpotent_candidates.toml"
 row_count = 1539
 column_count = 2
 has_header = true
@@ -873,12 +905,12 @@ row_value_sha256 = "24b59a8399a7ba89c5e6a43ceb089c42b4b696c301ec8194567a1ade1984
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0055"
+id = "PC-0057"
 slug = "sedenion_zd_edges"
 source_csv = "data/csv/sedenion_zd_edges.csv"
 source_sha256 = "749c4fff6d41296f3600572777d137bf5c5d3fbe0a6a105e0aae0e833bbe57aa"
 source_size_bytes = 10966
-canonical_toml = "registry/data/project_csv/canonical/PC-0055_sedenion_zd_edges.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0057_sedenion_zd_edges.toml"
 row_count = 360
 column_count = 4
 has_header = true
@@ -889,12 +921,12 @@ row_value_sha256 = "96c8260e26c8a51ff5c646278dbf9bec455220ad6f7ff2c2117c6c128606
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0056"
+id = "PC-0058"
 slug = "sky_limit_set_comparison"
 source_csv = "data/csv/sky_limit_set_comparison.csv"
 source_sha256 = "bc247f26aec4f8d8ae0fc4b9b61c204ddd853fc2d71aaed6e345737fea35930f"
 source_size_bytes = 1273
-canonical_toml = "registry/data/project_csv/canonical/PC-0056_sky_limit_set_comparison.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0058_sky_limit_set_comparison.toml"
 row_count = 9
 column_count = 14
 has_header = true
@@ -905,12 +937,12 @@ row_value_sha256 = "0cb2c157b6a8860785d8e41718f66e09e432c08f6277d0a56b145962b91d
 dataset_class = "canonical_dataset"
 
 [[dataset]]
-id = "PC-0057"
+id = "PC-0059"
 slug = "spectral_exponent_comparisons"
 source_csv = "data/csv/spectral_exponent_comparisons.csv"
 source_sha256 = "876e30ca004a3ef40fa2f55f4ac3563b1760498a5f63b69f176f02515464a8e6"
 source_size_bytes = 227
-canonical_toml = "registry/data/project_csv/canonical/PC-0057_spectral_exponent_comparisons.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0059_spectral_exponent_comparisons.toml"
 row_count = 4
 column_count = 4
 has_header = true

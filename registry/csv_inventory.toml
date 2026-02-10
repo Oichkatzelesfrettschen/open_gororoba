@@ -4,8 +4,8 @@
 [csv_inventory]
 updated = "2026-02-09"
 authoritative = true
-document_count = 946
-tracked_count = 645
+document_count = 948
+tracked_count = 647
 untracked_count = 0
 ignored_count = 301
 archived_count = 5
@@ -7997,6 +7997,32 @@ sha256 = "e4f9a1a93562e9ba2b20a491dd033581d588e5084284a1724ec42d135a5008a5"
 migration_action = "canonicalized_to_toml"
 migration_priority = "complete"
 rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
+
+[[document]]
+path = "data/csv/c590_attractor_ratio_sweep.csv"
+git_status = "tracked"
+zone = "project_csv"
+archived = false
+generated = false
+size_bytes = 462
+line_count = 8
+sha256 = "51ed2d971ac9db2a675b5108b69e1bea5b1343e1759eb8ed56737ab6fc1e046f"
+migration_action = "migrate_to_toml_canonical"
+migration_priority = "high"
+rationale = "Project CSV classified as canonical dataset pending/active TOML migration."
+
+[[document]]
+path = "data/csv/c590_attractor_runtime_baseline.csv"
+git_status = "tracked"
+zone = "project_csv"
+archived = false
+generated = false
+size_bytes = 334
+line_count = 6
+sha256 = "9193fb4248764b74770d393eded6556ad7851657349f9df78b4180a8fc2acbbe"
+migration_action = "migrate_to_toml_canonical"
+migration_priority = "high"
+rationale = "Project CSV classified as canonical dataset pending/active TOML migration."
 
 [[document]]
 path = "data/csv/cayley_dickson/1024d_lattice_mapping.csv"
