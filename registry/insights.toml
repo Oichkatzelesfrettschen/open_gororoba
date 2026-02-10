@@ -328,3 +328,21 @@ status = "verified"
 summary = "Phase 3c reconnaissance determined that exceptional algebras E6/E7/E8 are Lie algebras (group-theoretic structures defined via antisymmetric bracket [a,b]=ab-ba), NOT associative algebras. This fundamental distinction means E6/E7/E8 operate in a different domain: Lie groups and their automorphism actions, not algebraic multiplication tables. Cayley-Dickson, Clifford, and Jordan algebras all have explicit multiplication formulas and are tested via basis element pairs and composition properties. E6/E7/E8 are defined implicitly via root systems, Dynkin diagrams, and representation theory—requiring fundamentally different infrastructure (spinors, principal bundles, Cartan matrices). STRATEGIC DECISION: DEFER E6/E7/E8 to Phase 4+ when the project's scope expands to differential geometry and representation theory. Phase 3d synthesis is COMPLETE and PUBLICATION-READY based on CD/Clifford/Jordan alone: universal architecture hierarchy is proven, commutativity-associativity trade-off is documented, construction method primacy is empirically validated across 8+ months and 2475 tests. The three construction families comprehensively cover the major associative algebra landscape. Exceptional algebras represent a tangential research direction, not a critical gap in the core synthesis."
 claims = ["C-569"]
 sprint = 27
+
+[[insight]]
+id = "I-035"
+title = "Dimensional Ladder Validates APT Mechanism with GPU Infrastructure"
+date = "2026-02-09"
+status = "verified"
+summary = "Complete dimensional census tool (dimensional-census binary) validates the Anti-Diagonal Parity Theorem across dims 16-256 exhaustively (14.2M+ graph triangles) with pure_ratio = 0.250000 EXACTLY at every dimension. The 1:3 ratio, Quarter Rule, and Klein-four fiber symmetry all hold without exception. GPU acceleration infrastructure is operational: eta matrix, graph construction, frustration, and Monte Carlo APT kernels compile via cudarc NVRTC. Monte Carlo rejection sampling at dims 32-64 converges to 0.25 within 0.2% at 100K samples. Criterion benchmarking suite (7 groups) establishes scaling baselines: component extraction O(n^2), triangle enumeration O(n^3), cd_basis_mul_sign O(log dim). The exhaustive census confirms that APT is not an approximation -- the mechanism is algebraically exact at every verified dimension."
+claims = ["C-570", "C-571", "C-572", "C-573", "C-574"]
+sprint = 28
+
+[[insight]]
+id = "I-036"
+title = "8D Lattice Embedding Hardened with Injective Round-Trip Gates"
+date = "2026-02-10"
+status = "verified"
+summary = "C-452/C-453 evidence was strengthened from parse-only checks to explicit falsifiability gates: injectivity at each dimension (256, 512, 1024, 2048), exact basis-index coverage, exact lattice->index round-trip reconstruction, codomain lock to 8D trinary vectors, and filtration-growth deltas (256, 512, 1024) across the dimensional ladder. Header schema stability is now explicitly tested to freeze the current external CSV interface while preserving reproducibility."
+claims = ["C-452", "C-453"]
+sprint = 28

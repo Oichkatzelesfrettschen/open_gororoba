@@ -134,9 +134,10 @@ fn bench_apt_census_exhaustive(c: &mut Criterion) {
                                 let &(aj, bj) = nodes[j];
                                 let &(ak, bk) = nodes[k];
 
-                                let eta_ij = psi(dim, ai, aj) ^ psi(dim, bi, bj);
-                                let eta_ik = psi(dim, ai, ak) ^ psi(dim, bi, bk);
-                                let eta_jk = psi(dim, aj, ak) ^ psi(dim, bj, bk);
+                                // Anti-diagonal parity: eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b)
+                                let eta_ij = psi(dim, ai, bj) ^ psi(dim, bi, aj);
+                                let eta_ik = psi(dim, ai, bk) ^ psi(dim, bi, ak);
+                                let eta_jk = psi(dim, aj, bk) ^ psi(dim, bj, ak);
 
                                 total += 1;
                                 if eta_ij == eta_ik && eta_ik == eta_jk {
@@ -208,9 +209,10 @@ fn bench_apt_census_monte_carlo(c: &mut Criterion) {
                         let (aj, bj) = nodes[j];
                         let (ak, bk) = nodes[k];
 
-                        let eta_ij = psi(dim, ai, aj) ^ psi(dim, bi, bj);
-                        let eta_ik = psi(dim, ai, ak) ^ psi(dim, bi, bk);
-                        let eta_jk = psi(dim, aj, ak) ^ psi(dim, bj, bk);
+                        // Anti-diagonal parity: eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b)
+                        let eta_ij = psi(dim, ai, bj) ^ psi(dim, bi, aj);
+                        let eta_ik = psi(dim, ai, bk) ^ psi(dim, bi, ak);
+                        let eta_jk = psi(dim, aj, bk) ^ psi(dim, bj, ak);
 
                         if eta_ij == eta_ik && eta_ik == eta_jk {
                             pure += 1;

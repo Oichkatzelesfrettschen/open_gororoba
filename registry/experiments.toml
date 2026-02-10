@@ -200,3 +200,27 @@ run = "cargo run --release --bin sky-limit-set -- --n-levels 4,5,6 --coxeter-typ
 claims = ["C-477"]
 deterministic = true
 gpu = false
+
+[[experiment]]
+id = "E-014"
+title = "Dimensional Ladder APT Census (4D-4096D)"
+binary = "dimensional-census"
+method = """Exhaustive and Monte Carlo Anti-Diagonal Parity Theorem verification across the
+  full Cayley-Dickson dimensional ladder from dim=4 to dim=4096.
+  Exhaustive mode: Enumerate ALL graph triangles in each zero-divisor component.
+    For each triangle (a,b,c), compute eta via anti-diagonal parity formula:
+    eta(a,b) = psi(lo_a, hi_b) XOR psi(hi_a, lo_b).
+    Classify as pure (eta constant across 3 edges) or mixed (eta non-constant).
+    Verify 1:3 pure:mixed ratio (Quarter Rule: pure*4 = total exactly).
+    Verify Klein-four fiber symmetry: F(0,0) = F(0,1) = F(1,0) = F(1,1).
+  Monte Carlo mode: Rejection-sample random node triples within components,
+    accept only graph triangles (all 3 edges present), classify via APT.
+    Deterministic with seed=42.
+  Tier classification: dims 4-32 (TIER 0-1, <15s), dims 64-256 (TIER 2, ~5s release),
+    dims 512-1024 (TIER 3, minutes-hours CPU), dims 2048-4096 (TIER 4, GPU Monte Carlo)."""
+input = "None (Cayley-Dickson structure tables computed on the fly)"
+output = ["data/csv/apt_dimensional_census_summary.csv", "data/csv/apt_dimensional_census_details.csv"]
+run = "cargo run --release --bin dimensional-census -- --slow --details"
+claims = ["C-570", "C-571", "C-572"]
+deterministic = true
+gpu = false

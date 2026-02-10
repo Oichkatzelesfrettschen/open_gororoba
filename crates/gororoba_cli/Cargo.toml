@@ -175,8 +175,20 @@ name = "scrollify-csv"
 path = "src/bin/scrollify_csv.rs"
 
 [[bin]]
+name = "verify-project-csv-split"
+path = "src/bin/verify_project_csv_split.rs"
+
+[[bin]]
+name = "registry-emit"
+path = "src/bin/registry_emit.rs"
+
+[[bin]]
 name = "warp-ring-integration"
 path = "src/bin/warp_ring_integration.rs"
+
+[[bin]]
+name = "dimensional-census"
+path = "src/bin/dimensional_census.rs"
 
 [dependencies]
 docpipe = { path = "../docpipe" }
