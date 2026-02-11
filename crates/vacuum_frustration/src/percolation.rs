@@ -305,9 +305,13 @@ pub fn correlate_with_frustration(
     let mut is_channel = vec![false; frustration_field.len()];
     let mut channel_frustrations = Vec::new();
 
+    // Infer grid size from frustration field length (assuming cubic grid)
+    let n_cells = frustration_field.len();
+    let grid_size = (n_cells as f64).cbrt().round() as usize;
+
     for channel in channels {
         for (x, y, z) in &channel.cells {
-            let idx = z * 64 * 64 + y * 64 + x;  // Assumes 64^3 grid; will generalize if needed
+            let idx = z * grid_size * grid_size + y * grid_size + x;
             if idx < is_channel.len() {
                 is_channel[idx] = true;
             }
@@ -365,7 +369,9 @@ pub fn correlate_with_frustration(
 
     // Approximate p-value using normal approximation (df ~ n_ch + n_bg)
     // For simplicity, use standard normal CDF: p = 2 * Phi(-|t|)
-    let p_value = 2.0 * normal_cdf(-t_stat.abs());
+    use statrs::distribution::{Normal, ContinuousCDF};
+    let normal = Normal::new(0.0, 1.0).unwrap();
+    let p_value = 2.0 * normal.cdf(-t_stat.abs());
 
     // Effect size (Cohen's d)
     let pooled_std = ((var_ch + var_bg) / 2.0).sqrt();
@@ -388,28 +394,6 @@ pub fn correlate_with_frustration(
 
 /// Approximate standard normal cumulative distribution function.
 /// Uses Abramowitz and Stegun approximation (accurate to ~0.00012).
-fn normal_cdf(x: f64) -> f64 {
-    // For positive x: use approximation
-    let abs_x = x.abs();
-
-    // Abramowitz and Stegun formula 7.1.26
-    let b1 = 0.319381530;
-    let b2 = -0.356563782;
-    let b3 = 1.781477937;
-    let b4 = -1.821255978;
-    let b5 = 1.330274429;
-    let p = 0.2316419;
-
-    let t = 1.0 / (1.0 + p * abs_x);
-    let tau = t * (b1 + t * (b2 + t * (b3 + t * (b4 + t * b5))));
-    let phi = 1.0 - tau * (-0.5 * abs_x * abs_x).exp() / std::f64::consts::PI.sqrt();
-
-    if x >= 0.0 {
-        phi
-    } else {
-        1.0 - phi
-    }
-}
 
 #[cfg(test)]
 mod tests {

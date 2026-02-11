@@ -79,11 +79,35 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     let frustration_field = generate_apt_frustration_field(args.grid_size, args.seed)?;
 
+    // Compute frustration statistics
+    let f_min = frustration_field.iter().copied().fold(f64::INFINITY, f64::min);
+    let f_max = frustration_field.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+    let f_mean = frustration_field.iter().sum::<f64>() / (frustration_field.len() as f64);
+    let f_std = {
+        let variance = frustration_field.iter()
+            .map(|&f| (f - f_mean).powi(2))
+            .sum::<f64>() / (frustration_field.len() as f64);
+        variance.sqrt()
+    };
+
+    if args.verbose {
+        eprintln!("  Frustration stats: mean={:.4}, std={:.4}, range=[{:.4}, {:.4}]", f_mean, f_std, f_min, f_max);
+    }
+
     // Step 3: Transform frustration to viscosity
     if args.verbose {
         eprintln!("[3/10] Transforming to viscosity field...");
     }
     let viscosity_field = frustration_to_viscosity(&frustration_field, args.nu_base, args.lambda);
+
+    // Compute viscosity statistics
+    let nu_min = viscosity_field.iter().copied().fold(f64::INFINITY, f64::min);
+    let nu_max = viscosity_field.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+    let nu_mean = viscosity_field.iter().sum::<f64>() / (viscosity_field.len() as f64);
+
+    if args.verbose {
+        eprintln!("  Viscosity stats: mean={:.4}, range=[{:.4}, {:.4}]", nu_mean, nu_min, nu_max);
+    }
 
     // Step 4: Initialize LBM solver
     if args.verbose {
@@ -100,6 +124,24 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
     solver.evolve(args.lbm_steps);
 
+    // Compute velocity statistics
+    let u_magnitudes: Vec<f64> = solver.u.iter()
+        .map(|&[ux, uy, uz]| (ux*ux + uy*uy + uz*uz).sqrt())
+        .collect();
+    let u_min = u_magnitudes.iter().copied().fold(f64::INFINITY, f64::min);
+    let u_max = u_magnitudes.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+    let u_mean = u_magnitudes.iter().sum::<f64>() / (u_magnitudes.len() as f64);
+    let u_std = {
+        let variance = u_magnitudes.iter()
+            .map(|&u| (u - u_mean).powi(2))
+            .sum::<f64>() / (u_magnitudes.len() as f64);
+        variance.sqrt()
+    };
+
+    if args.verbose {
+        eprintln!("  Velocity magnitude stats: mean={:.6}, std={:.6}, range=[{:.6}, {:.6}]", u_mean, u_std, u_min, u_max);
+    }
+
     // Step 6: Detect percolation channels
     if args.verbose {
         eprintln!("[6/10] Detecting percolation channels...");
@@ -110,6 +152,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         args.grid_size,
     );
     let threshold = vacuum_frustration::auto_velocity_threshold(&solver.u);
+    let above_threshold = u_magnitudes.iter().filter(|&&u| u > threshold).count();
+
+    if args.verbose {
+        eprintln!("  Velocity threshold: {:.6}", threshold);
+        eprintln!("  Cells above threshold: {}/{}", above_threshold, u_magnitudes.len());
+    }
+
     let channels = detector.detect_channels(&solver.u, threshold);
 
     if args.verbose {
@@ -196,7 +245,7 @@ fn generate_apt_frustration_field(
 
     // Evolve for 1000+ iterations per cell to reach quasi-equilibrium
     // Temperature cooling schedule drives frustration toward vacuum attractor (3/8)
-    let n_iterations = (grid_size as usize).max(100);
+    let n_iterations = grid_size.max(100);
     apt.evolve(n_iterations);
 
     // Extract frustration field after evolution
@@ -215,7 +264,7 @@ fn frustration_to_viscosity(frustration: &[f64], nu_base: f64, lambda: f64) -> V
         .collect()
 }
 
-// Helper: Initialize LBM solver
+// Helper: Initialize LBM solver with velocity shear to seed flow instability
 fn initialize_lbm_solver(
     grid_size: usize,
     viscosity_field: &[f64],
@@ -229,7 +278,29 @@ fn initialize_lbm_solver(
         .collect();
 
     solver.set_viscosity_field(tau_field)?;
-    solver.initialize_uniform(1.0, [0.01, 0.0, 0.0]);
+
+    // Initialize with velocity shear: u_x varies with z-coordinate to create instability
+    // This is more physical than random perturbations
+    for z in 0..grid_size {
+        for y in 0..grid_size {
+            for x in 0..grid_size {
+                let idx = z * (grid_size * grid_size) + y * grid_size + x;
+                let z_normalized = (z as f64) / (grid_size as f64);
+                // Linear shear: u_x increases from 0.005 to 0.015 across z-direction
+                let u_x = 0.01 + 0.005 * (z_normalized - 0.5);
+                let u_y = 0.0;
+                let u_z = 0.0;
+
+                solver.rho[idx] = 1.0;
+                solver.u[idx] = [u_x, u_y, u_z];
+
+                // Initialize distribution function to equilibrium with shear velocity
+                let f_eq = lbm_3d::solver::BgkCollision::initialize_with_velocity(1.0, [u_x, u_y, u_z], &solver.collider.lattice);
+                let f_start = idx * 19;
+                solver.f[f_start..f_start + 19].copy_from_slice(&f_eq);
+            }
+        }
+    }
 
     Ok(solver)
 }
