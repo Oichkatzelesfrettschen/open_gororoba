@@ -23,7 +23,7 @@
 
 ## Violation Categories
 
-### CRITICAL - Core Algorithms (scipy/sklearn) ⚠️ IMMEDIATE REFACTOR
+### CRITICAL - Core Algorithms (scipy/sklearn) WARNING IMMEDIATE REFACTOR
 
 | File | Violations | Type | Lines | Rust Target |
 |------|-----------|------|-------|------------|
@@ -53,7 +53,7 @@
 - `vis_hyper_mera.py` / `v2`: MERA visualization
 - `vis_trajectory.py`: Trajectory visualization
 
-**Action**: Keep in Python IF they only consume CSV/JSON from Rust. Add `.read_csv()` → Rust binary input validation.
+**Action**: Keep in Python IF they only consume CSV/JSON from Rust. Add `.read_csv()` -> Rust binary input validation.
 
 ### LOW - Utilities & Legacy Code (Review for Deprecation)
 
@@ -75,7 +75,7 @@
 
 ### PHASE A: CRITICAL Refactors (Sprint 35-36, Parallel with Phase 10.3)
 
-#### A1: Quantum Hamiltonian Evolution (`nonlocal_long_range_ZZ.py` → Rust)
+#### A1: Quantum Hamiltonian Evolution (`nonlocal_long_range_ZZ.py` -> Rust)
 
 **Target**: `crates/quantum_core/src/hamiltonian_evolution.rs`
 
@@ -107,7 +107,7 @@ impl HamiltonianND {
 
 ---
 
-#### A2: Spectral Flow Simulator (`spectral_flow_sim.py` → Rust)
+#### A2: Spectral Flow Simulator (`spectral_flow_sim.py` -> Rust)
 
 **Target**: `crates/spectral_core/src/flow_simulator.rs`
 
@@ -131,7 +131,7 @@ impl SpectralFlowSimulator {
 
 ---
 
-#### A3: Dimensionality Reduction (`vis_advanced_projections.py` → Rust)
+#### A3: Dimensionality Reduction (`vis_advanced_projections.py` -> Rust)
 
 **Target**: `crates/analysis_core/src/dimensionality_reduction.rs`
 
@@ -145,7 +145,7 @@ impl SpectralFlowSimulator {
 
 ---
 
-#### A4: Spectral Clustering (`vis_box_kites.py` → Rust)
+#### A4: Spectral Clustering (`vis_box_kites.py` -> Rust)
 
 **Target**: `crates/algebra_core/src/analysis/clustering.rs`
 
@@ -161,9 +161,9 @@ impl SpectralFlowSimulator {
 
 ### PHASE B: HIGH Priority Refactors (Sprint 36-37, Sequential)
 
-1. **entropy_pde_fit.py** → `data_core::pde_solver` (1.5 days)
-2. **genesis_simulation.py/v2** → `control_core::field_evolution` (2 days)
-3. **holo_tensor_net.py** → `data_core::tensor_networks` (2 days)
+1. **entropy_pde_fit.py** -> `data_core::pde_solver` (1.5 days)
+2. **genesis_simulation.py/v2** -> `control_core::field_evolution` (2 days)
+3. **holo_tensor_net.py** -> `data_core::tensor_networks` (2 days)
 
 ---
 
@@ -208,7 +208,7 @@ df = pd.read_csv('build/artifacts/motif_census_summary.csv')
 | **S37** | C (Visualization updates) | 2 days, parallel | 2026-02-26 |
 | **S38** | D (Utilities cleanup) | 2 days | 2026-03-04 |
 
-**Total**: ~16 days → Achievable in 2 sprints with parallelization
+**Total**: ~16 days -> Achievable in 2 sprints with parallelization
 
 ---
 
@@ -216,7 +216,7 @@ df = pd.read_csv('build/artifacts/motif_census_summary.csv')
 
 ### Refactoring Validation
 1. **Correctness**: Output bit-identical to Python reference for random seeds
-2. **Performance**: Rust ≥ 2× faster than Python original
+2. **Performance**: Rust >= 2x faster than Python original
 3. **Tests**: 5+ regression tests per refactored file
 4. **Warnings**: 0 clippy warnings
 
@@ -294,9 +294,9 @@ df = pd.read_csv('build/artifacts/motif_census_summary.csv')
 ## Conclusion
 
 **RUST-FIRST enforcement** requires immediate refactoring of 4 critical files containing core algorithms (scipy.linalg, sklearn). This roadmap ensures:
-- ✓ Pure Rust implementations of all numerical methods
-- ✓ Verification against Python reference implementations
-- ✓ Parallel execution with Phase 10-11 research
-- ✓ Visualization layer integrity (matplotlib/plotly) maintained
+- [done] Pure Rust implementations of all numerical methods
+- [done] Verification against Python reference implementations
+- [done] Parallel execution with Phase 10-11 research
+- [done] Visualization layer integrity (matplotlib/plotly) maintained
 
-**Status**: READY FOR EXECUTION → Start NOW
+**Status**: READY FOR EXECUTION -> Start NOW

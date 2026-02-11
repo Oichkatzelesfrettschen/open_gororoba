@@ -1,6 +1,6 @@
 //! Gororoba Engine: The Mathematical Universe
 //!
-//! The 6-layer trait architecture: Bit → Parity → Topology → Dynamics → Correction → Verification
+//! The 6-layer trait architecture: Bit -> Parity -> Topology -> Dynamics -> Correction -> Verification
 //! transforming bit-level Cayley-Dickson algebra into testable physics.
 
 pub mod traits;

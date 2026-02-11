@@ -21,7 +21,7 @@
 
 **Design Decisions**:
 - Undirected graph representation (petgraph UnGraph)
-- HashMap for O(1) basis → node lookup
+- HashMap for O(1) basis -> node lookup
 - DFS for cycle enumeration (efficient for small graphs)
 
 **Tests** (8 total):
@@ -39,12 +39,12 @@
 - `FrustrationResult`: Output struct with min_flips, density, method
 - `SolverMethod` enum: Exact vs SimulatedAnnealing
 - `compute_frustration_index()`: Dispatcher to appropriate solver
-- `brute_force_frustration()`: Exhaustive search (≤20 edges)
+- `brute_force_frustration()`: Exhaustive search (<=20 edges)
 - `greedy_frustration_solver()`: Local search for medium graphs
 - `approximate_frustration_solver()`: Simulated annealing for large graphs
 
 **Algorithm Selection**:
-- Small graphs (edges ≤ 20): Brute force O(2^E)
+- Small graphs (edges <= 20): Brute force O(2^E)
 - Medium graphs (edges 20-128): Greedy local search
 - Large graphs (edges > 128): Simulated annealing with Metropolis-Hastings
 
@@ -83,7 +83,7 @@
 
 ### Cayley-Dickson Integration
 
-The psi matrix `cd_basis_mul_sign(dim, i, j) → ±1` provides:
+The psi matrix `cd_basis_mul_sign(dim, i, j) -> +/-1` provides:
 - **Nodes**: Basis elements {e_0, e_1, ..., e_{dim-1}}
 - **Edge weights**: Signs from psi multiplication table
 - **Graph structure**: Complete graph (all pairs are connected)
@@ -106,7 +106,7 @@ Edges: All 6 pairs with signs determined by psi
 - Small graphs (3-4 nodes)
 - Positive-edge graphs (all balanced)
 - Unbalanced structures (mixed signs)
-- Density normalization (0 ≤ frustration_density ≤ 1)
+- Density normalization (0 <= frustration_density <= 1)
 - Algorithm selection logic
 
 ### No Regressions
@@ -130,7 +130,7 @@ Edges: All 6 pairs with signs determined by psi
 
 ### Current Limitations
 1. **Cycle enumeration**: DFS-based; may find duplicate cycles
-   - Mitigation: Acceptable for small graphs (dim ≤ 256)
+   - Mitigation: Acceptable for small graphs (dim <= 256)
    - Future: Use cycle basis from algebraic topology
 
 2. **Greedy solver**: Not guaranteed optimal for medium graphs
@@ -180,7 +180,7 @@ Edges: All 6 pairs with signs determined by psi
 2. **Week 3**: Frustration-viscosity bridge
    - Connect signed graph frustration to LBM viscosity field
    - ZPE field injection via relaxation time modulation
-   - Integration tests bridging algebra_core → vacuum_frustration → lbm_3d
+   - Integration tests bridging algebra_core -> vacuum_frustration -> lbm_3d
 
 3. **Week 4**: Percolation experiment (E-027)
    - Full pipeline demonstration

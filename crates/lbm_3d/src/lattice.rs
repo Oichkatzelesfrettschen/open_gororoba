@@ -24,8 +24,8 @@ impl D3Q19Lattice {
     ///
     /// Velocity ordering:
     /// - Index 0: Rest particle (0,0,0)
-    /// - Indices 1-6: Axis-aligned (±1,0,0), (0,±1,0), (0,0,±1)
-    /// - Indices 7-18: Face diagonals (±1,±1,0), (±1,0,±1), (0,±1,±1)
+    /// - Indices 1-6: Axis-aligned (+/-1,0,0), (0,+/-1,0), (0,0,+/-1)
+    /// - Indices 7-18: Face diagonals (+/-1,+/-1,0), (+/-1,0,+/-1), (0,+/-1,+/-1)
     pub fn new() -> Self {
         Self {
             velocities: D3Q19Lattice::velocities(),
@@ -153,7 +153,7 @@ impl D3Q19Lattice {
 
     /// Compute equilibrium distribution.
     ///
-    /// f_i^eq(rho, u) = rho * w_i * [1 + (c_i·u)/c_s^2 + (c_i·u)^2/(2c_s^4) - u^2/(2c_s^2)]
+    /// f_i^eq(rho, u) = rho * w_i * [1 + (c_i*u)/c_s^2 + (c_i*u)^2/(2c_s^4) - u^2/(2c_s^2)]
     ///
     /// # Arguments
     /// * `rho` - Local density
@@ -163,7 +163,7 @@ impl D3Q19Lattice {
         let w = self.weight(i);
         let c = self.velocity(i);
 
-        // c_i · u
+        // c_i * u
         let cu = (c[0] as f64) * u[0] + (c[1] as f64) * u[1] + (c[2] as f64) * u[2];
 
         // u^2
