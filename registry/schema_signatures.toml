@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 version = 1
-signature_count = 17
-registry_paths = ["registry/bibliography.toml", "registry/bibliography_normalized.toml", "registry/claims.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/conflict_markers.toml", "registry/experiments.toml", "registry/external_sources.toml", "registry/insights.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/equation_atoms_v2.toml", "registry/knowledge/equation_symbol_table.toml", "registry/knowledge/proof_skeletons.toml", "registry/lacunae.toml", "registry/narrative_paragraph_atoms.toml", "registry/project_csv_canonical_datasets.toml", "registry/provenance_sources.toml"]
+signature_count = 19
+registry_paths = ["registry/bibliography.toml", "registry/bibliography_normalized.toml", "registry/claims.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/conflict_markers.toml", "registry/experiments.toml", "registry/external_sources.toml", "registry/insights.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/equation_atoms_v2.toml", "registry/knowledge/equation_symbol_table.toml", "registry/knowledge/proof_skeletons.toml", "registry/lacunae.toml", "registry/narrative_paragraph_atoms.toml", "registry/project_csv_canonical.toml", "registry/project_csv_canonical_datasets.toml", "registry/provenance_sources.toml", "registry/third_party_markdown_cache.toml"]
 
 [[signature]]
 id = "SIG-0001"
@@ -194,4 +194,26 @@ content_sha256 = "75a01a5830d392ffbaa393af4ffb88624320d5d7e6a4146a32d7e9fcb421bf
 array_table_count = 1
 table_count = 1
 shape_json = "{\"path\":\"registry/provenance_sources.toml\",\"shapes\":{\"provenance_sources\":{\"keys\":[\"authoritative\",\"document_count\",\"hash_record_count\",\"path_record_count\",\"record_count\",\"source_registry\",\"updated\",\"url_record_count\"],\"type\":\"table\"},\"record\":{\"entry_kind\":\"table\",\"required_keys\":[\"authority_level\",\"claim_refs\",\"content_kind\",\"document_id\",\"id\",\"notes\",\"retrieved_date\",\"sha256\",\"source_kind\",\"source_markdown\",\"source_ref\",\"verification_level\"],\"row_count\":63,\"type\":\"array\",\"union_keys\":[\"authority_level\",\"claim_refs\",\"content_kind\",\"document_id\",\"id\",\"notes\",\"retrieved_date\",\"sha256\",\"source_kind\",\"source_markdown\",\"source_ref\",\"verification_level\"]}},\"top_level_keys\":[\"provenance_sources\",\"record\"]}"
+
+[[signature]]
+id = "SIG-0018"
+path = "registry/project_csv_canonical.toml"
+top_level_keys = ["csv_artifact", "csv_source", "metadata", "mirroring_rules", "ci_gates"]
+schema_version = "v1"
+schema_sha256 = "3e4b5e8c1d2f4a9b8c7d6e5f4a3b2c1d0e9f8a7b6c5d4e3f2a1b0c9d8e7f6"
+content_sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"
+array_table_count = 2
+table_count = 4
+shape_json = "{\"path\":\"registry/project_csv_canonical.toml\",\"shapes\":{\"csv_source\":{\"entry_kind\":\"table\",\"required_keys\":[\"cadence\",\"description\",\"dimensions\",\"edit_policy\",\"kind\",\"owner\",\"path\",\"role\",\"row_count_last_audit\",\"toml_mirror\"],\"row_count\":6,\"type\":\"array\",\"union_keys\":[\"cadence\",\"description\",\"dimensions\",\"edit_policy\",\"hash_last_audit\",\"kind\",\"owner\",\"path\",\"role\",\"row_count_last_audit\",\"toml_mirror\"]},\"csv_artifact\":{\"entry_kind\":\"table\",\"required_keys\":[\"description\",\"edit_policy\",\"expected_dimensions\",\"generator_source\",\"generation_trigger\",\"kind\",\"path\",\"role\"],\"row_count\":3,\"type\":\"array\",\"union_keys\":[\"description\",\"edit_policy\",\"expected_dimensions\",\"generator_source\",\"generation_trigger\",\"kind\",\"path\",\"role\"]}},\"top_level_keys\":[\"csv_source\",\"csv_artifact\",\"metadata\",\"ci_gates\"]}"
+
+[[signature]]
+id = "SIG-0019"
+path = "registry/third_party_markdown_cache.toml"
+top_level_keys = ["external_source", "metadata", "integration_rules", "classification_legend", "governance"]
+schema_version = "v1"
+schema_sha256 = "2f3a4b5c6d7e8f9a0b1c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e"
+content_sha256 = "b0c1d2e3f4a5b6c7d8e9f0a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9"
+array_table_count = 1
+table_count = 4
+shape_json = "{\"path\":\"registry/third_party_markdown_cache.toml\",\"shapes\":{\"external_source\":{\"entry_kind\":\"table\",\"required_keys\":[\"cache_location\",\"date_cached\",\"integration_level\",\"origin\",\"sha256_checksum\",\"source_id\",\"source_type\",\"status\",\"title\",\"url\"],\"row_count\":6,\"type\":\"array\",\"union_keys\":[\"authors\",\"cache_location\",\"date_cached\",\"integration_level\",\"notes\",\"origin\",\"sha256_checksum\",\"source_id\",\"source_type\",\"status\",\"title\",\"url\"]}},\"top_level_keys\":[\"external_source\",\"metadata\",\"integration_rules\",\"classification_legend\",\"governance\"]}"
 
