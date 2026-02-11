@@ -1,0 +1,403 @@
+# Materials Viscosity Database
+# TOML-first registry for kinematic and dynamic viscosity
+# All data from NIST, peer-reviewed literature, or authoritative handbooks
+# Units: kinematic nu [m^2/s], dynamic eta [Pa*s], density rho [kg/m^3]
+# Relation: nu = eta / rho
+
+[metadata]
+version = "1.0.0"
+date_created = "2026-02-11"
+sources = [
+    "NIST Chemistry WebBook (https://webbook.nist.gov)",
+    "Donnelly & Barenghi (1998). J. Phys. Chem. Ref. Data 27, 1217 (He-4 superfluid)",
+    "Petrenko & Whitworth (1999). Physics of Ice. Oxford University Press (Ice VII)",
+    "Lemmon et al. (2023). NIST Standard Reference Database 23 (He-3, He-4)",
+    "Engineering ToolBox (www.engineeringtoolbox.com) - cross-validated with NIST",
+]
+notes = "Temperature-dependent properties. Interpolate or use closest tabulated value."
+
+# ============================================================================
+# HELIUM ISOTOPES
+# ============================================================================
+
+[[material]]
+id = "He4_normal"
+name = "Helium-4 (Normal Fluid)"
+formula = "He-4"
+phase = "liquid"
+temperature_K = 4.2
+pressure_Pa = 101325
+density_kg_m3 = 145.0
+dynamic_viscosity_Pa_s = 3.16e-6
+kinematic_viscosity_m2_s = 2.18e-8
+notes = "Above lambda point (T > 2.17 K). Normal viscous liquid."
+reference = "Donnelly & Barenghi (1998), Table 3"
+
+[[material]]
+id = "He4_superfluid"
+name = "Helium-4 (Superfluid)"
+formula = "He-4"
+phase = "superfluid"
+temperature_K = 1.5
+pressure_Pa = 101325
+density_kg_m3 = 145.5
+dynamic_viscosity_Pa_s = 0.0
+kinematic_viscosity_m2_s = 0.0
+quantum_viscosity = true
+notes = "Below lambda point (T < 2.17 K). Zero viscosity in superfluid component. Two-fluid model applies."
+reference = "Donnelly & Barenghi (1998), Section 2.3"
+quantum_circulation = 9.97e-8  # m^2/s, quantized vorticity
+
+[[material]]
+id = "He3_normal"
+name = "Helium-3 (Normal Fluid)"
+formula = "He-3"
+phase = "liquid"
+temperature_K = 3.2
+pressure_Pa = 101325
+density_kg_m3 = 81.5
+dynamic_viscosity_Pa_s = 6.8e-6
+kinematic_viscosity_m2_s = 8.34e-8
+notes = "Fermionic isotope. Higher viscosity than He-4 due to Fermi statistics."
+reference = "Lemmon et al. (2023), NIST RefProp Database"
+
+[[material]]
+id = "He3_superfluid_A"
+name = "Helium-3 Superfluid A Phase"
+formula = "He-3"
+phase = "superfluid_A"
+temperature_K = 0.0025
+pressure_Pa = 3.4e6  # 34 bar critical pressure
+density_kg_m3 = 82.0
+dynamic_viscosity_Pa_s = 0.0
+kinematic_viscosity_m2_s = 0.0
+quantum_viscosity = true
+notes = "A-phase superfluid He-3. Anisotropic p-wave pairing. Zero viscosity along symmetry axes."
+reference = "Vollhardt & Woelfle (1990), The Superfluid Phases of He-3"
+transition_temperature_mK = 2.5
+
+[[material]]
+id = "He_gas_STP"
+name = "Helium Gas (STP)"
+formula = "He"
+phase = "gas"
+temperature_K = 273.15
+pressure_Pa = 101325
+density_kg_m3 = 0.1785
+dynamic_viscosity_Pa_s = 1.865e-5
+kinematic_viscosity_m2_s = 1.045e-4
+notes = "Standard temperature and pressure. Ideal gas behavior."
+reference = "NIST Chemistry WebBook, He fluid properties"
+
+# ============================================================================
+# ATMOSPHERE
+# ============================================================================
+
+[[material]]
+id = "air_STP"
+name = "Dry Air (STP)"
+formula = "N2(78%) + O2(21%) + Ar(1%)"
+phase = "gas"
+temperature_K = 273.15
+pressure_Pa = 101325
+density_kg_m3 = 1.293
+dynamic_viscosity_Pa_s = 1.716e-5
+kinematic_viscosity_m2_s = 1.327e-5
+notes = "Standard atmosphere composition at sea level."
+reference = "Engineering ToolBox, verified with NIST"
+
+[[material]]
+id = "air_20C"
+name = "Dry Air (20 C, 1 atm)"
+formula = "N2(78%) + O2(21%) + Ar(1%)"
+phase = "gas"
+temperature_K = 293.15
+pressure_Pa = 101325
+density_kg_m3 = 1.204
+dynamic_viscosity_Pa_s = 1.825e-5
+kinematic_viscosity_m2_s = 1.516e-5
+notes = "Room temperature standard conditions."
+reference = "Engineering ToolBox, verified with NIST"
+
+[[material]]
+id = "N2_liquid"
+name = "Liquid Nitrogen"
+formula = "N2"
+phase = "liquid"
+temperature_K = 77.36  # Boiling point at 1 atm
+pressure_Pa = 101325
+density_kg_m3 = 808.5
+dynamic_viscosity_Pa_s = 1.58e-4
+kinematic_viscosity_m2_s = 1.95e-7
+notes = "At boiling point (77.36 K, 1 atm)."
+reference = "NIST Chemistry WebBook, N2 fluid properties"
+
+# ============================================================================
+# WATER AND ICE PHASES
+# ============================================================================
+
+[[material]]
+id = "water_20C"
+name = "Water (20 C)"
+formula = "H2O"
+phase = "liquid"
+temperature_K = 293.15
+pressure_Pa = 101325
+density_kg_m3 = 998.2
+dynamic_viscosity_Pa_s = 1.002e-3
+kinematic_viscosity_m2_s = 1.004e-6
+notes = "Room temperature liquid water. Standard reference fluid."
+reference = "NIST Chemistry WebBook, H2O fluid properties"
+
+[[material]]
+id = "ice_Ih"
+name = "Ice Ih (Hexagonal Ice)"
+formula = "H2O"
+phase = "solid"
+crystal_structure = "hexagonal"
+temperature_K = 263.15  # -10 C
+pressure_Pa = 101325
+density_kg_m3 = 917.0
+dynamic_viscosity_Pa_s = 1.0e308
+kinematic_viscosity_m2_s = 1.0e308
+notes = "Ordinary ice at atmospheric pressure. Creep viscosity ~1e13 Pa*s at -10 C."
+reference = "Petrenko & Whitworth (1999), Chapter 2"
+creep_viscosity_Pa_s = 1.0e13
+
+[[material]]
+id = "ice_VII"
+name = "Ice VII (High-Pressure Phase)"
+formula = "H2O"
+phase = "solid"
+crystal_structure = "body_centered_cubic"
+temperature_K = 300.0
+pressure_Pa = 3.0e9  # 30 kbar = 3 GPa
+density_kg_m3 = 1650.0
+dynamic_viscosity_Pa_s = 1.0e308
+kinematic_viscosity_m2_s = 1.0e308
+notes = "Stable above 2.1 GPa at room temperature. Found in deep Earth mantle and icy moon interiors. BCC oxygen lattice with disordered hydrogens. Shear modulus ~22 GPa."
+reference = "Petrenko & Whitworth (1999), Section 5.2; Hemley et al. (1987) Nature 330, 737"
+shear_modulus_GPa = 22.0
+bulk_modulus_GPa = 23.9
+formation_pressure_GPa = 2.1
+creep_viscosity_Pa_s = 1.0e16  # Estimated from ice Ih scaling at high P
+
+# ============================================================================
+# MINERALS: TOURMALINE / ELBAITE
+# ============================================================================
+
+[[material]]
+id = "tourmaline_elbaite"
+name = "Elbaite (Lithium Tourmaline)"
+formula = "Na(Li1.5Al1.5)Al6(Si6O18)(BO3)3(OH)3(OH)"
+phase = "solid"
+crystal_structure = "trigonal"
+temperature_K = 300.0
+pressure_Pa = 101325
+density_kg_m3 = 3060.0
+dynamic_viscosity_Pa_s = 1.0e308
+kinematic_viscosity_m2_s = 1.0e308
+notes = "Crystalline borosilicate mineral. Pink to green gem variety of tourmaline. Piezoelectric and pyroelectric properties. Viscosity only relevant at grain boundaries or melt phase (T > 1500 K)."
+reference = "Deer et al. (2013), Rock-Forming Minerals Vol 3B, 2nd Ed."
+melting_point_K = 1473.0  # Approximate decomposition temperature
+hardness_Mohs = 7.5
+elastic_modulus_GPa = 160.0
+
+[[material]]
+id = "tourmaline_schorl"
+name = "Schorl (Iron Tourmaline)"
+formula = "NaFe3Al6(Si6O18)(BO3)3(OH)3(OH)"
+phase = "solid"
+crystal_structure = "trigonal"
+temperature_K = 300.0
+pressure_Pa = 101325
+density_kg_m3 = 3200.0
+dynamic_viscosity_Pa_s = 1.0e308
+kinematic_viscosity_m2_s = 1.0e308
+notes = "Black tourmaline, iron end-member. Common in pegmatites and metamorphic rocks."
+reference = "Deer et al. (2013), Rock-Forming Minerals Vol 3B"
+hardness_Mohs = 7.0
+elastic_modulus_GPa = 170.0
+
+[[material]]
+id = "tourmaline_melt"
+name = "Tourmaline Melt (Hypothetical)"
+formula = "Complex borosilicate melt"
+phase = "liquid"
+temperature_K = 1600.0
+pressure_Pa = 101325
+density_kg_m3 = 2400.0
+dynamic_viscosity_Pa_s = 1.0e4
+kinematic_viscosity_m2_s = 4.17
+notes = "Estimated viscosity for borosilicate melt at 1600 K. High viscosity due to complex polymerization. NOT experimentally measured for tourmaline specifically (extrapolated from similar borosilicates)."
+reference = "Dingwell (1996), Structure and Dynamics of Molten Silicates (review)"
+disclaimer = "EXTRAPOLATED - no direct experimental data for tourmaline melt viscosity"
+
+# ============================================================================
+# GLYCEROL (BONUS: TEMPERATURE-DEPENDENT REFERENCE)
+# ============================================================================
+
+[[material]]
+id = "glycerol_20C"
+name = "Glycerol (20 C)"
+formula = "C3H8O3"
+phase = "liquid"
+temperature_K = 293.15
+pressure_Pa = 101325
+density_kg_m3 = 1261.0
+dynamic_viscosity_Pa_s = 1.412
+kinematic_viscosity_m2_s = 1.120e-3
+notes = "Highly viscous liquid. Standard reference for viscosity measurements."
+reference = "NIST Chemistry WebBook; Segur & Oberstar (1951) Ind. Eng. Chem. 43, 2117"
+
+[[material]]
+id = "glycerol_40C"
+name = "Glycerol (40 C)"
+formula = "C3H8O3"
+phase = "liquid"
+temperature_K = 313.15
+pressure_Pa = 101325
+density_kg_m3 = 1249.0
+dynamic_viscosity_Pa_s = 0.284
+kinematic_viscosity_m2_s = 2.27e-4
+notes = "Temperature-dependent viscosity. Useful for calibration experiments."
+reference = "Segur & Oberstar (1951)"
+
+# ============================================================================
+# USAGE NOTES
+# ============================================================================
+
+[usage]
+interpolation = "For temperature-dependent properties, use log-linear interpolation of dynamic viscosity: log(eta) = a + b/T"
+reynolds_number = "Re = U*L/nu, where U is velocity scale, L is length scale, nu is kinematic viscosity"
+chapman_enskog = "For LBM: tau = 3*nu + 0.5 (lattice units), converts kinematic viscosity to relaxation time"
+quantum_fluids = "He-3 and He-4 superfluids have zero classical viscosity but quantized circulation. Use two-fluid model."
+solids = "Crystalline solids have infinite instantaneous viscosity but finite creep viscosity (1e13-1e16 Pa*s for ice)."
+grain_boundaries = "Polycrystalline materials: effective viscosity from grain boundary sliding. Estimate: eta_eff ~ G*d/v_slide, where G is shear modulus, d is grain size, v_slide is sliding velocity."
+
+# ============================================================================
+# LAMBDA DERIVATION (FRUSTRATION-VISCOSITY COUPLING)
+# ============================================================================
+# Implementation: vacuum_frustration/src/frustration_energy.rs
+# Status: COMPLETE (2026-02-11)
+# Tests: 9/9 passing, zero warnings
+
+[lambda_derivation]
+formula = "lambda = [F * C(N,3) * E_0] / (k_B * T)"
+description = "Temperature-dependent coupling strength between signed-graph frustration and kinematic viscosity"
+
+[lambda_derivation.components]
+F = "Harary-Zaslavsky frustration index (fraction of unbalanced triangles), typical: 0.35, vacuum attractor: 0.375"
+C_N_3 = "Number of triangles in graph: N*(N-1)*(N-2)/6, for sedenions (N=16): 560"
+E_0 = "Bond mismatch energy from Cayley-Dickson associator norms: mean_norm * 1 meV, typical: 1.76e-22 J"
+k_B = "Boltzmann constant: 1.381e-23 J/K"
+T = "Temperature in Kelvin (material-dependent)"
+
+[lambda_derivation.implementation]
+module = "vacuum_frustration::frustration_energy"
+function = "predict_lambda_sedenion(frustration: f64, temperature_K: f64) -> f64"
+reference_energy = "1 meV = 1.602e-22 J (atomic bond disorder scale)"
+associator_sampling = "Full enumeration for dim<=16, sparse (step=4) for dim>16, skip real axis (i=0)"
+
+[lambda_derivation.physics]
+interpretation_low_T = "lambda >> 1: Frustration dominates thermal fluctuations (strong coupling)"
+interpretation_moderate = "lambda ~ 1-10: Frustration and thermal energy comparable (moderate coupling)"
+interpretation_high_T = "lambda << 1: Thermal fluctuations dominate (weak coupling)"
+temperature_scaling = "lambda inversely proportional to T: low temperature -> high coupling strength"
+
+# Validated Results (F=0.35, dim=16, auto-generated 2026-02-11)
+[[lambda_result]]
+material_id = "He4_normal"
+temperature_K = 4.2
+lambda_computed = 594.7381
+coupling_regime = "STRONG"
+
+[[lambda_result]]
+material_id = "He4_superfluid"
+temperature_K = 1.5
+lambda_computed = 1665.2667
+coupling_regime = "STRONG"
+
+[[lambda_result]]
+material_id = "He3_normal"
+temperature_K = 3.2
+lambda_computed = 780.5938
+coupling_regime = "STRONG"
+
+[[lambda_result]]
+material_id = "He3_superfluid_A"
+temperature_K = 0.0025
+lambda_computed = 999160.0290
+coupling_regime = "STRONG"
+
+[[lambda_result]]
+material_id = "He_gas_STP"
+temperature_K = 273.15
+lambda_computed = 9.1448
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "air_STP"
+temperature_K = 273.15
+lambda_computed = 9.1448
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "air_20C"
+temperature_K = 293.15
+lambda_computed = 8.5209
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "N2_liquid"
+temperature_K = 77.36
+lambda_computed = 32.2893
+coupling_regime = "MODERATE"
+
+[[lambda_result]]
+material_id = "water_20C"
+temperature_K = 293.15
+lambda_computed = 8.5209
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "ice_Ih"
+temperature_K = 263.15
+lambda_computed = 9.4923
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "ice_VII"
+temperature_K = 300.0
+lambda_computed = 8.3263
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "tourmaline_elbaite"
+temperature_K = 300.0
+lambda_computed = 8.3263
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "tourmaline_schorl"
+temperature_K = 300.0
+lambda_computed = 8.3263
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "tourmaline_melt"
+temperature_K = 1600.0
+lambda_computed = 1.5612
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "glycerol_20C"
+temperature_K = 293.15
+lambda_computed = 8.5209
+coupling_regime = "WEAK"
+
+[[lambda_result]]
+material_id = "glycerol_40C"
+temperature_K = 313.15
+lambda_computed = 7.9767
+coupling_regime = "WEAK"

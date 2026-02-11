@@ -1,0 +1,356 @@
+[meta]
+checked_utc = "2026-02-11T19:59:59Z"
+repo = "open_gororoba"
+purpose = "cross-LLM MCP inventory, parity, and repo-fit audit"
+
+[client_config_paths]
+codex_primary = "/home/eirikr/.codex/config.toml"
+codex_secondary = "/home/eirikr/.codex/mcp-config.json"
+claude = "/home/eirikr/.claude/.mcp.json"
+gemini = "/home/eirikr/.gemini/settings.json"
+copilot_primary = "/home/eirikr/.copilot/mcp-config.json"
+copilot_secondary = "/home/eirikr/.copilot/config/settings.json"
+
+[policy]
+critical_servers = ["filesystem", "git", "ripgrep", "rust", "rust-docs", "github", "time"]
+recommended_servers = ["arxiv", "context7", "sqlite", "playwright", "puppeteer", "semgrep", "dotfiles-orchestrator"]
+fallback_rule = "if MCP transport fails, use deterministic shell fallback and record failure"
+expected_enabled_count = 25
+expected_disabled_count = 5
+
+[gpu_relevance]
+primary_servers = ["rust", "rust-docs", "bash", "github", "context7", "playwright", "puppeteer"]
+notes = [
+  "Use rust/rust-docs for crate and API selection in CUDA/OpenCL/Vulkan paths.",
+  "Use containers only when a valid compose service exists; currently disabled in shared configs.",
+  "Use bash for local GPU diagnostics (nvidia-smi, vulkaninfo, clinfo) when available.",
+]
+
+[all_detected_servers]
+names = [
+  "arxiv",
+  "bash",
+  "calculator",
+  "chrome-devtools",
+  "context7",
+  "desktop-commander",
+  "dotfiles-orchestrator",
+  "file-finder",
+  "filesystem",
+  "git",
+  "github",
+  "markitdown",
+  "math",
+  "memory",
+  "ollama",
+  "playwright",
+  "puppeteer",
+  "python",
+  "ripgrep",
+  "rust",
+  "rust-docs",
+  "semgrep",
+  "sequential-thinking",
+  "sqlite",
+  "time",
+]
+
+[disabled_servers_2026_02_11]
+names = ["containers", "fetch", "postgres", "shell", "youtube-transcript"]
+reason = "Disabled across Codex/Gemini/Claude/Copilot to keep only working servers enabled."
+
+[[server]]
+name = "filesystem"
+repo_fit = "critical"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "git"
+repo_fit = "critical"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "ripgrep"
+repo_fit = "critical"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "rust"
+repo_fit = "critical"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "rust-docs"
+repo_fit = "critical"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "github"
+repo_fit = "critical"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "time"
+repo_fit = "critical"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "arxiv"
+repo_fit = "recommended"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "context7"
+repo_fit = "recommended"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "sqlite"
+repo_fit = "recommended"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "puppeteer"
+repo_fit = "recommended"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "playwright"
+repo_fit = "recommended"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "python"
+repo_fit = "optional"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "chrome-devtools"
+repo_fit = "optional"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "desktop-commander"
+repo_fit = "optional"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "markitdown"
+repo_fit = "optional"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "semgrep"
+repo_fit = "recommended"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "bash"
+repo_fit = "optional"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "memory"
+repo_fit = "optional"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "file-finder"
+repo_fit = "optional"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "ollama"
+repo_fit = "optional"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[[server]]
+name = "math"
+repo_fit = "optional"
+codex = true
+claude = true
+gemini = true
+copilot = true
+
+[runtime_checks]
+git_status = "PASS"
+rust_workspace_info = "PASS"
+rust_cargo_search = "PASS"
+rust_docs_search_crate = "PASS"
+ripgrep_search = "PASS"
+github_search_repositories = "PASS"
+arxiv_search_papers = "PASS"
+context7_resolve_library_id = "PASS"
+time_get_current_time = "PASS"
+filesystem_allowed_directories = "PASS"
+sqlite_list_tables = "PASS"
+bash_run = "PASS"
+calculator_calculate = "PASS"
+math_sum = "PASS"
+memory_read_graph = "PASS"
+file_finder_search = "PASS"
+dotfiles_status = "PASS"
+ollama_list = "PASS"
+playwright_browser_tabs = "PASS"
+puppeteer_navigate_default = "FAIL_NO_DISPLAY"
+puppeteer_navigate_headless = "PASS"
+chrome_devtools_startup_probe = "PASS"
+desktop_commander_startup_probe = "PASS"
+markitdown_startup_probe = "PASS"
+semgrep_startup_probe = "PASS"
+mcp_smoke_verify_script = "PASS_25_SERVERS"
+rust_docs_startup_probe = "PASS_HANDSHAKE_CLOSE"
+fetch_fetch = "FAIL_TRANSPORT_CLOSED"
+containers_run_command = "FAIL_NO_CONTAINER_laravel_app_dev"
+postgres_startup_probe = "FAIL_NO_DATABASE_URL_OR_CONNREFUSED"
+shell_startup_probe = "FAIL_RUNTIME_WARNING_COROUTINE_NOT_AWAITED"
+youtube_transcript_get_transcript = "FAIL_LIST_TRANSCRIPTS_ATTR_MISSING"
+
+[smoke_result]
+checked_utc = "2026-02-11T19:59:59Z"
+command = "PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py"
+pass = [
+  "arxiv",
+  "bash",
+  "calculator",
+  "chrome-devtools",
+  "context7",
+  "desktop-commander",
+  "dotfiles-orchestrator",
+  "file-finder",
+  "filesystem",
+  "git",
+  "github",
+  "markitdown",
+  "math",
+  "memory",
+  "ollama",
+  "playwright",
+  "puppeteer",
+  "python",
+  "ripgrep",
+  "rust",
+  "rust-docs",
+  "semgrep",
+  "sequential-thinking",
+  "sqlite",
+  "time",
+]
+fail = ["containers", "fetch", "postgres", "shell", "youtube-transcript"]
+
+[parity_state]
+mode = "uniform_enabled_set_across_all_clients"
+enabled_server_count = 25
+
+[extension_catalogs]
+mcp_registry = "https://modelcontextprotocol.io/registry"
+mcp_registry_repo = "https://github.com/modelcontextprotocol/registry"
+community_index = "https://github.com/punkpeye/awesome-mcp-servers"
+app_store_smithery = "https://smithery.ai/"
+app_store_glama = "https://glama.ai/mcp"
+
+[catalog_status_http]
+mcp_registry = 200
+mcp_registry_repo = 200
+community_index = 200
+app_store_smithery = 429
+app_store_glama = 503
+
+[rust_sdk_and_servers]
+rust_sdk_repo = "https://github.com/modelcontextprotocol/rust-sdk"
+reference_servers_repo = "https://github.com/modelcontextprotocol/servers"
+notes = [
+  "Prefer Rust MCP for workspace introspection and quality gates.",
+  "Use MCP Git and GitHub for sync/review workflows.",
+  "Use shell fallback only when MCP transport/server is unavailable.",
+]
+
+[mcp_expansion_targets]
+new_server_docs = [
+  "/home/eirikr/.codex/config.toml",
+  "/home/eirikr/.codex/mcp-config.json",
+  "/home/eirikr/.claude/.mcp.json",
+  "/home/eirikr/.gemini/settings.json",
+  "/home/eirikr/.copilot/mcp-config.json",
+  "/home/eirikr/.copilot/config/settings.json",
+]
+install_rule = "add servers to all four clients when repo-fit is critical and runtime is available"
+
+[candidate_servers_2026_02_11]
+selection_rule = "prefer official or actively maintained repos; add only after smoke test in local client runtime"
+repos = [
+  "https://github.com/yoda-digital/mcp-gitlab-server",
+  "https://github.com/motherduckdb/mcp-server-motherduck",
+  "https://github.com/Govcraft/rust-docs-mcp-server",
+  "https://github.com/terhechte/cursor-rust-tools",
+  "https://github.com/semgrep/mcp",
+]
+notes = [
+  "GitLab MCP is useful if GitLab mirroring and package workflows increase.",
+  "MotherDuck/DuckDB MCP is useful for large TOML/CSV artifact analytics.",
+  "Alternative Rust docs/cargo MCP stacks are useful if current rust-docs gaps appear.",
+  "Semgrep MCP is already present and passing; keep as security lane.",
+]

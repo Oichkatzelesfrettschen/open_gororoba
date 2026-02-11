@@ -5,4 +5,13 @@
 updated = "deterministic"
 authoritative = true
 scope = "docs reports data_artifacts"
-document_count = 0
+document_count = 1
+
+[[owner]]
+id = "MOWN-0001"
+path = "docs/REAL_MATERIALS_INTEGRATION.md"
+scope = "docs"
+canonical_toml = "registry/docs_root_narratives.toml"
+owner_group = "docs_root_narratives"
+requires_generated_header = true
+conversion_hint = "Run: PYTHONWARNINGS=error python3 src/scripts/analysis/normalize_docs_root_narratives_registry.py --bootstrap-from-markdown && PYTHONWARNINGS=error MARKDOWN_EXPORT=1 MARKDOWN_EXPORT_EMIT_LEGACY=1 make docs-publish"

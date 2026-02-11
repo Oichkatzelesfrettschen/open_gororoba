@@ -1,0 +1,288 @@
+[meta]
+checked_utc = "2026-02-11T19:59:59Z"
+repo = "open_gororoba"
+purpose = "iterative crate source scouting and registry selection"
+policy = "prefer stable/maintained sources; verify before adoption"
+
+[scout_loop]
+steps = [
+  "scope requirement and API shape",
+  "search crates.io with cargo search",
+  "inspect candidate metadata with cargo info",
+  "verify API/docs on docs.rs",
+  "review upstream repository activity/license",
+  "test minimal integration in target crate",
+  "promote accepted shared deps to workspace.dependencies",
+  "run dep-audit and quality gates",
+]
+cargo_commands = [
+  "cargo search <query>",
+  "cargo info <crate>",
+  "cargo tree -d",
+  "cargo metadata --no-deps",
+]
+
+[selection]
+must_have = [
+  "license compatibility",
+  "active maintenance cadence",
+  "clear versioning/changelog",
+  "bounded transitive dependency growth",
+  "fit to exact use case",
+]
+avoid = [
+  "duplicate capability already in workspace",
+  "abandoned crates with unresolved breakage",
+  "large transitive bloat without measurable gain",
+]
+
+[gpu_compute_scout]
+policy = "treat GPU stack as optional feature-gated lanes; keep CPU default deterministic"
+candidate_crates = [
+  "cudarc (CUDA driver/runtime bindings)",
+  "burn-cuda (Burn CUDA backend)",
+  "burn-wgpu (Burn WGPU backend)",
+  "wgpu (portable Vulkan/Metal/DX12 abstraction)",
+  "vulkano (safe Vulkan wrapper)",
+  "ash (low-level Vulkan bindings)",
+  "opencl3 (OpenCL 3.0 bindings)",
+  "ocl (OpenCL convenience wrapper)",
+]
+integration_rules = [
+  "gate heavy backends behind crate features",
+  "keep workspace default features lean and CPU-safe",
+  "run dep-audit after backend additions",
+  "validate release-parity perf and clippy/test gates",
+]
+
+[workspace_audit_2026_02_11]
+duplicate_pressure = [
+  "rand 0.8/0.9 split",
+  "nalgebra 0.33/0.34 split",
+  "image 0.24/0.25 split",
+  "rustix 0.38/1.1 split",
+]
+security_and_policy = [
+  "cargo-machete command missing in current toolchain",
+  "cargo-deny check surfaced unmaintained and vulnerability advisories (for example bincode, gitoxide SHA-1 advisory chain)",
+  "deny.toml is now wired with explicit advisory ignores and license allowlist",
+]
+next_actions = [
+  "install cargo-machete and rerun dead-dependency scan",
+  "burn down deny.toml advisory ignores by replacing unmaintained transitive crates where feasible",
+  "evaluate replacement plan for unmaintained advisories where feasible",
+]
+
+[implemented_2026_02_11]
+actions = [
+  "added deny.toml policy and make cargo-deny-check target",
+  "added make mcp-smoke with parity + startup probing for 25 enabled servers",
+  "updated pre-push-gate-strict to include dep-audit + cargo-deny-check + mcp-smoke",
+]
+
+[[candidate_crate]]
+name = "cargo-vet"
+kind = "supply_chain"
+priority = "high"
+use_for = "third-party dependency review attestation in CI"
+source = "cargo search cargo-vet"
+
+[[candidate_crate]]
+name = "cargo-audit"
+kind = "security"
+priority = "high"
+use_for = "RustSec advisory checks as pre-push or CI lane"
+source = "cargo search cargo-audit"
+
+[[candidate_crate]]
+name = "cargo-deny"
+kind = "security_policy"
+priority = "high"
+use_for = "license/source/advisory policy enforcement with explicit deny.toml"
+source = "cargo search cargo-deny"
+
+[[candidate_crate]]
+name = "cargo-udeps"
+kind = "hygiene"
+priority = "medium"
+use_for = "find unused dependencies before release"
+source = "cargo search cargo-udeps"
+
+[[candidate_crate]]
+name = "cargo-outdated"
+kind = "maintenance"
+priority = "medium"
+use_for = "track stale dependencies and semver drift"
+source = "cargo search cargo-outdated"
+
+[[candidate_crate]]
+name = "guppy"
+kind = "dependency_graph"
+priority = "medium"
+use_for = "programmatic workspace graph analysis"
+source = "cargo search guppy"
+
+[[candidate_crate]]
+name = "krates"
+kind = "dependency_graph"
+priority = "medium"
+use_for = "crate graph extraction and visualization"
+source = "cargo search krates"
+
+[[candidate_crate]]
+name = "cargo-hakari"
+kind = "workspace_build_perf"
+priority = "medium"
+use_for = "feature unification to reduce compile duplication in large workspaces"
+source = "cargo search cargo-hakari"
+
+[[candidate_crate]]
+name = "wgpu-profiler"
+kind = "gpu_perf"
+priority = "medium"
+use_for = "GPU scope timing for wgpu backend lanes"
+source = "cargo search wgpu-profiler"
+
+[[candidate_crate]]
+name = "opencl3"
+kind = "gpu_backend"
+priority = "medium"
+use_for = "OpenCL 3 backend experiments for heterogeneous devices"
+source = "cargo search opencl3"
+
+[[candidate_crate]]
+name = "vulkano"
+kind = "gpu_backend"
+priority = "medium"
+use_for = "higher-level Vulkan experimentation if wgpu abstraction is too limiting"
+source = "cargo search vulkano"
+
+[[source]]
+id = "crates_io"
+kind = "public_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["default ecosystem discovery", "public semver crates"]
+notes = ["Cargo sparse protocol is default and preferred."]
+reference = [
+  "https://index.crates.io/",
+  "https://doc.rust-lang.org/cargo/reference/registries.html",
+]
+cargo_snippet = "[registries.crates-io]\nprotocol = \"sparse\""
+
+[[source]]
+id = "docs_rs"
+kind = "docs_host"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["API validation", "feature/doc examples"]
+notes = ["Use before crate adoption to verify API stability."]
+reference = ["https://docs.rs/about"]
+
+[[source]]
+id = "cargo_search_info"
+kind = "cargo_client_discovery"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["fast candidate shortlist", "metadata triage"]
+reference = [
+  "https://doc.rust-lang.org/cargo/commands/cargo-search.html",
+  "https://doc.rust-lang.org/cargo/commands/cargo-info.html",
+]
+
+[[source]]
+id = "kellnr"
+kind = "self_hosted_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["private crates", "crates.io caching proxy", "private docs hosting"]
+notes = ["Rust-native single-binary model; good homelab fit."]
+reference = ["https://kellnr.io/", "https://github.com/kellnr/kellnr"]
+
+[[source]]
+id = "gitlab_package_registry"
+kind = "hosted_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["built-in GitLab artifact hosting"]
+notes = ["Cargo support is not clearly first-class in the checked docs; verify before relying on it for crates."]
+reference = [
+  "https://docs.gitlab.com/administration/packages/",
+  "https://docs.gitlab.com/user/packages/container_registry/",
+]
+
+[[source]]
+id = "panamax"
+kind = "mirror"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["offline or air-gapped crates.io mirroring"]
+notes = ["Mirror/source-replacement pattern; not primary for publishing private crates."]
+reference = ["https://github.com/panamax-rs/panamax"]
+cargo_snippet = "[source.crates-io]\nreplace-with = \"my-mirror\"\n[source.my-mirror]\nregistry = \"http://panamax.internal/crates.io-index\""
+
+[[source]]
+id = "ktra"
+kind = "self_hosted_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["lightweight alternate private registry"]
+notes = ["Official book/docs reachable; checked GitHub URL from request was 404."]
+reference = ["https://book.ktra.dev/about_ktra/overview", "https://github.com/kwatafana/ktra"]
+
+[[source]]
+id = "cloudsmith"
+kind = "hosted_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["hosted private/public cargo registry"]
+notes = ["Supports sparse index and token auth model."]
+reference = ["https://docs.cloudsmith.com/formats/cargo-registry"]
+cargo_snippet = "[registries]\ncloudsmith = { index = \"https://dl.cloudsmith.io/public/OWNER/REPO/cargo/index.git\" }"
+
+[[source]]
+id = "jfrog_artifactory"
+kind = "enterprise_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["enterprise artifact governance", "private/proxy cargo registries"]
+notes = ["Index URL is instance-specific."]
+reference = ["https://jfrog.com/integrations/cargo-registry/"]
+
+[[source]]
+id = "aws_codeartifact"
+kind = "hosted_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["AWS-native private cargo and proxy workflows"]
+notes = ["Domain/region-specific endpoints; validate IAM/token setup."]
+reference = ["https://aws.amazon.com/about-aws/whats-new/2024/06/aws-codeartifact-cargo-rust-package-manager/"]
+
+[[source]]
+id = "shipyard_rs"
+kind = "hosted_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["managed Rust package registry and docs hosting"]
+notes = ["Useful SaaS option when self-hosting is not desired."]
+reference = ["https://shipyard.rs/", "https://docs.shipyard.rs/"]
+
+[[source]]
+id = "git_dependencies"
+kind = "pseudo_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["pre-release integration", "private repos without registry"]
+notes = ["Pin tag/rev for determinism; avoid floating branches in production."]
+reference = ["https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-dependencies-from-git-repositories"]
+cargo_snippet = "[dependencies]\nmy_crate = { git = \"https://github.com/org/repo\", rev = \"<commit>\" }"
+
+[[source]]
+id = "path_dependencies"
+kind = "pseudo_registry"
+status_http = 200
+checked_utc = "2026-02-11T19:16:15Z"
+best_for = ["monorepo/local multi-crate iteration"]
+notes = ["Great for local development; ensure publish-safe fallbacks when needed."]
+reference = ["https://doc.rust-lang.org/cargo/reference/specifying-dependencies.html#specifying-path-dependencies"]
+cargo_snippet = "[dependencies]\nmy_crate = { path = \"../my_crate\", version = \"0.1.0\" }"

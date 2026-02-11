@@ -1,0 +1,67 @@
+# cargo-deny policy for open_gororoba.
+# Keep this file compact and explicit. Remove ignores as upstream fixes land.
+
+[advisories]
+ignore = [
+    # burn-core transitively depends on bincode; upstream marked unmaintained.
+    "RUSTSEC-2025-0141",
+    # gix-features advisory in burn-dataset transitive chain.
+    "RUSTSEC-2025-0021",
+    # periodic-table-on-an-enum build dependency transitively uses json.
+    "RUSTSEC-2022-0081",
+    # paste appears in transitive macro stack with no maintained upstream.
+    "RUSTSEC-2024-0436",
+]
+
+[licenses]
+allow = [
+    "0BSD",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "BSL-1.0",
+    "CC0-1.0",
+    "CDLA-Permissive-2.0",
+    "GPL-2.0-only",
+    "GPL-3.0",
+    "GPL-3.0-or-later",
+    "ISC",
+    "LGPL-2.1-or-later",
+    "MIT",
+    "MIT-0",
+    "MPL-2.0",
+    "NCSA",
+    "Unicode-3.0",
+    "Unlicense",
+    "Zlib",
+]
+confidence-threshold = 0.8
+exceptions = []
+
+[licenses.private]
+ignore = false
+registries = []
+
+[bans]
+multiple-versions = "warn"
+wildcards = "allow"
+highlight = "all"
+workspace-default-features = "allow"
+external-default-features = "allow"
+allow = []
+allow-workspace = true
+deny = []
+skip = []
+skip-tree = []
+
+[sources]
+unknown-registry = "warn"
+unknown-git = "warn"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+allow-git = []
+
+[sources.allow-org]
+github = []
+gitlab = []
+bitbucket = []
