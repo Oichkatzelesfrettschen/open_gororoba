@@ -3,6 +3,7 @@
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify wave6-gate
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke
+.PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
 .PHONY: verify-pantheon-physicsforge-mapping verify-pantheon-physicsforge-license-headers
 .PHONY: verify-pantheon-physicsforge-overflow seed-pantheon-physicsforge-sqlite
@@ -52,6 +53,7 @@ MARKDOWN_EXPORT ?= 0
 MARKDOWN_EXPORT_OUT_DIR ?= build/docs/generated
 MARKDOWN_EXPORT_EMIT_LEGACY ?= 0
 MARKDOWN_EXPORT_LEGACY_CLAIMS_SYNC ?= 1
+PGO_DIR ?= /tmp/pgo-data
 
 # ---- Environment setup ----
 
@@ -141,6 +143,32 @@ rust-clippy:
 
 rust-smoke: rust-clippy rust-test
 	@echo "OK: Rust quality gate passed (clippy + tests)."
+
+rust-parity:
+	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target cargo test --workspace -j$$(nproc)
+	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target cargo clippy --workspace -j$$(nproc) -- -D warnings
+	@echo "OK: parity lane passed (workspace tests + clippy with release-class optimization semantics)."
+
+rust-release-fat-lto:
+	CARGO_TARGET_DIR=/tmp/open_gororoba_release_target cargo build --release --workspace -j$$(nproc)
+	@echo "OK: release fat-LTO workspace build completed."
+
+rust-pgo-instrument:
+	mkdir -p "$(PGO_DIR)"
+	CARGO_TARGET_DIR=/tmp/open_gororoba_pgo_target \
+	RUSTFLAGS="-Cprofile-generate=$(PGO_DIR)" \
+	cargo build --release --workspace -j$$(nproc)
+	@echo "OK: PGO instrumented build completed. Run representative binaries to collect .profraw files in $(PGO_DIR)."
+
+rust-pgo-merge:
+	llvm-profdata merge -o "$(PGO_DIR)/merged.profdata" "$(PGO_DIR)"/*.profraw
+	@echo "OK: merged profile written to $(PGO_DIR)/merged.profdata."
+
+rust-pgo-build:
+	CARGO_TARGET_DIR=/tmp/open_gororoba_pgo_use_target \
+	RUSTFLAGS="-Cprofile-use=$(PGO_DIR)/merged.profdata" \
+	cargo build --release --workspace -j$$(nproc)
+	@echo "OK: PGO-optimized release build completed."
 
 verify-pantheon-physicsforge-license:
 	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_license_consistency.py

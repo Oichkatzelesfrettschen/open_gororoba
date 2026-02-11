@@ -1,0 +1,55 @@
+[pantheon_physicsforge_acceptance_gate]
+updated = "2026-02-11"
+authoritative = true
+task_ref = "90"
+status = "pass"
+summary = "Claims linked, migration verifiers pass, crate and workspace gates pass, CLI integration validated, and benchmark baselines captured."
+command_transcript = "registry/pantheon_physicsforge_command_transcript.toml"
+
+[[gate]]
+id = "PPF-FINAL-001"
+name = "claims_linked"
+status = "pass"
+evidence_refs = [
+  "registry/pantheon_physicsforge_claims.toml",
+  "registry/pantheon_physicsforge_claim_tasks.toml",
+  "registry/pantheon_physicsforge_claim_links.toml",
+]
+
+[[gate]]
+id = "PPF-FINAL-002"
+name = "license_and_provenance"
+status = "pass"
+evidence_refs = [
+  "src/verification/verify_pantheon_physicsforge_license_consistency.py",
+  "src/verification/verify_pantheon_physicsforge_provenance_gate.py",
+  "src/verification/verify_pantheon_physicsforge_mapping_completeness.py",
+  "src/verification/verify_pantheon_physicsforge_license_headers.py",
+]
+
+[[gate]]
+id = "PPF-FINAL-003"
+name = "rust_quality"
+status = "pass"
+evidence_refs = [
+  "crates/snia_core/tests/pantheon_baseline_compat.rs",
+  "crates/docpipe/tests/equation_catalog_pipeline.rs",
+  "crates/gororoba_cli/tests/integration_snia_ddt.rs",
+]
+
+[[gate]]
+id = "PPF-FINAL-004"
+name = "workspace_gates"
+status = "pass"
+evidence_refs = [
+  "cargo clippy --workspace -j$(nproc) -- -D warnings",
+  "cargo build --workspace -j$(nproc)",
+]
+
+[[gate]]
+id = "PPF-FINAL-005"
+name = "performance_baseline"
+status = "pass"
+evidence_refs = [
+  "registry/pantheon_physicsforge_perf_baseline.toml",
+]

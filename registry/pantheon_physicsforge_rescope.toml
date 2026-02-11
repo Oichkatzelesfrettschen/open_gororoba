@@ -1,0 +1,28 @@
+[pantheon_physicsforge_rescope]
+updated = "2026-02-11"
+authoritative = true
+scope = "task_89_weekly_rescope"
+status = "completed"
+remaining_task_count = 0
+completion_state = "all_90_tasks_closed"
+method = "risk_impact_dependency_rerank"
+
+[[ranking]]
+rank = 1
+id = "RISK-MR-001"
+kind = "open_risk_monitoring"
+severity = "medium"
+physics_impact = "medium"
+integration_dependency = "low"
+summary = "Monitor future regressions in PhysicsForge semantic parity as corpus grows."
+action = "Keep overflow tracker template ready and rerun mapping/parity gates on changes."
+
+[[ranking]]
+rank = 2
+id = "OPS-PERF-001"
+kind = "performance_followup"
+severity = "low"
+physics_impact = "medium"
+integration_dependency = "low"
+summary = "Track SN Ia hot path drift versus baseline bench medians."
+action = "Re-run PPF benchmarks on major solver changes and append new TOML rows."
