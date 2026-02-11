@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Phase 10-11 Ultimate Roadmap: Composition Algebras & Cross-Domain Integration
 
 **Date**: 2026-02-10  
@@ -312,4 +315,3 @@ Phase 10-11 establishes a unified composition algebra taxonomy and connects it t
 
 **Status**: READY FOR EXECUTION  
 **Confidence**: HIGH (10-year+ mathematical foundation; Phase 9-10 already validated core claims)
-

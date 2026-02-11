@@ -5,7 +5,7 @@
 updated = "2026-02-10"
 authoritative = true
 lane_count = 4
-dataset_total = 118
+dataset_total = 120
 policy = "All in-scope CSV corpora must flow through canonical/generated/holding TOML scroll lanes."
 
 [[lane]]
@@ -39,7 +39,7 @@ dataset_class = "canonical_dataset"
 source_descriptor = "manifest:registry/manifests/project_csv_canonical_manifest.txt"
 manifest_path = "registry/manifests/project_csv_canonical_manifest.txt"
 canonical_dir = "registry/data/project_csv/canonical"
-dataset_count = 57
+dataset_count = 59
 
 [[lane]]
 id = "CSP-LANE-0004"
@@ -668,448 +668,472 @@ column_count = 5
 id = "CSP-REF-00052"
 lane_name = "project_canonical"
 dataset_id = "PC-0021"
-slug = "1024d_lattice_mapping"
+slug = "c590_attractor_ratio_sweep"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cayley_dickson/1024d_lattice_mapping.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0021_1024d_lattice_mapping.toml"
-source_sha256 = "b90971a600b5febb5571800ffa96fb8ec865c9c13ef4064cdabedce98b732e30"
-row_count = 1024
-column_count = 4
+source_csv = "data/csv/c590_attractor_ratio_sweep.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0021_c590_attractor_ratio_sweep.toml"
+source_sha256 = "51ed2d971ac9db2a675b5108b69e1bea5b1343e1759eb8ed56737ab6fc1e046f"
+row_count = 6
+column_count = 6
 
 [[dataset_ref]]
 id = "CSP-REF-00053"
 lane_name = "project_canonical"
 dataset_id = "PC-0022"
-slug = "2048d_lattice_mapping"
+slug = "c590_attractor_runtime_baseline"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cayley_dickson/2048d_lattice_mapping.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0022_2048d_lattice_mapping.toml"
-source_sha256 = "2665af21788ae81e134ade860d906be30cbe42210d57d9fbb2f752b0564db61b"
-row_count = 2048
-column_count = 4
+source_csv = "data/csv/c590_attractor_runtime_baseline.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0022_c590_attractor_runtime_baseline.toml"
+source_sha256 = "9193fb4248764b74770d393eded6556ad7851657349f9df78b4180a8fc2acbbe"
+row_count = 4
+column_count = 6
 
 [[dataset_ref]]
 id = "CSP-REF-00054"
 lane_name = "project_canonical"
 dataset_id = "PC-0023"
-slug = "256d_basis_properties"
+slug = "1024d_lattice_mapping"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cayley_dickson/256d_basis_properties.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0023_256d_basis_properties.toml"
-source_sha256 = "3f341b860713e79eda8606505666b32e7bb96a699e607e226e6cda54ce8f2e44"
-row_count = 125
+source_csv = "data/csv/cayley_dickson/1024d_lattice_mapping.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0023_1024d_lattice_mapping.toml"
+source_sha256 = "b90971a600b5febb5571800ffa96fb8ec865c9c13ef4064cdabedce98b732e30"
+row_count = 1024
 column_count = 4
 
 [[dataset_ref]]
 id = "CSP-REF-00055"
 lane_name = "project_canonical"
 dataset_id = "PC-0024"
-slug = "256d_lattice_mapping"
+slug = "2048d_lattice_mapping"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cayley_dickson/256d_lattice_mapping.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0024_256d_lattice_mapping.toml"
-source_sha256 = "80adc13d38f78ff6e95434a351ec8c41944bbd399f86b56125d0a238e1dd4530"
-row_count = 256
+source_csv = "data/csv/cayley_dickson/2048d_lattice_mapping.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0024_2048d_lattice_mapping.toml"
+source_sha256 = "2665af21788ae81e134ade860d906be30cbe42210d57d9fbb2f752b0564db61b"
+row_count = 2048
 column_count = 4
 
 [[dataset_ref]]
 id = "CSP-REF-00056"
 lane_name = "project_canonical"
 dataset_id = "PC-0025"
-slug = "256d_structural_analysis"
+slug = "256d_basis_properties"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cayley_dickson/256d_structural_analysis.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0025_256d_structural_analysis.toml"
-source_sha256 = "b62c0dfcb5b06450d2950af04cd7475df1d84a5cc82af558c0e200a214e3e54f"
-row_count = 256
-column_count = 5
+source_csv = "data/csv/cayley_dickson/256d_basis_properties.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0025_256d_basis_properties.toml"
+source_sha256 = "3f341b860713e79eda8606505666b32e7bb96a699e607e226e6cda54ce8f2e44"
+row_count = 125
+column_count = 4
 
 [[dataset_ref]]
 id = "CSP-REF-00057"
 lane_name = "project_canonical"
 dataset_id = "PC-0026"
-slug = "512d_lattice_mapping"
+slug = "256d_lattice_mapping"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cayley_dickson/512d_lattice_mapping.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0026_512d_lattice_mapping.toml"
-source_sha256 = "f40a9f688839ed07b621495bc910ddfe06d8280b6a73d25f376acd6652574f94"
-row_count = 512
+source_csv = "data/csv/cayley_dickson/256d_lattice_mapping.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0026_256d_lattice_mapping.toml"
+source_sha256 = "80adc13d38f78ff6e95434a351ec8c41944bbd399f86b56125d0a238e1dd4530"
+row_count = 256
 column_count = 4
 
 [[dataset_ref]]
 id = "CSP-REF-00058"
 lane_name = "project_canonical"
 dataset_id = "PC-0027"
-slug = "512d_structural_analysis"
+slug = "256d_structural_analysis"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cayley_dickson/512d_structural_analysis.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0027_512d_structural_analysis.toml"
-source_sha256 = "b21fea64e3e9bfdfe8162917d448aedee55191fd37a930d744138bde14721b97"
-row_count = 512
+source_csv = "data/csv/cayley_dickson/256d_structural_analysis.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0027_256d_structural_analysis.toml"
+source_sha256 = "b62c0dfcb5b06450d2950af04cd7475df1d84a5cc82af558c0e200a214e3e54f"
+row_count = 256
 column_count = 5
 
 [[dataset_ref]]
 id = "CSP-REF-00059"
 lane_name = "project_canonical"
 dataset_id = "PC-0028"
-slug = "64d_128d_operation_results"
+slug = "512d_lattice_mapping"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cayley_dickson/64d_128d_operation_results.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0028_64d_128d_operation_results.toml"
-source_sha256 = "baa325569250ade8380757367fd8dfc654f57f5e039ba9b63e24b1d8b9de7dba"
-row_count = 25155
+source_csv = "data/csv/cayley_dickson/512d_lattice_mapping.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0028_512d_lattice_mapping.toml"
+source_sha256 = "f40a9f688839ed07b621495bc910ddfe06d8280b6a73d25f376acd6652574f94"
+row_count = 512
 column_count = 4
 
 [[dataset_ref]]
 id = "CSP-REF-00060"
 lane_name = "project_canonical"
 dataset_id = "PC-0029"
-slug = "64d_chingon_adjacency"
+slug = "512d_structural_analysis"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cayley_dickson/64d_chingon_adjacency.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0029_64d_chingon_adjacency.toml"
-source_sha256 = "74446154412b6640c459ec8817aedc624a0302bd9a50dc47316de5f28957287d"
-row_count = 64
-column_count = 64
+source_csv = "data/csv/cayley_dickson/512d_structural_analysis.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0029_512d_structural_analysis.toml"
+source_sha256 = "b21fea64e3e9bfdfe8162917d448aedee55191fd37a930d744138bde14721b97"
+row_count = 512
+column_count = 5
 
 [[dataset_ref]]
 id = "CSP-REF-00061"
 lane_name = "project_canonical"
 dataset_id = "PC-0030"
-slug = "cd_zd_absorber_mapping"
+slug = "64d_128d_operation_results"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cd_zd_absorber_mapping.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0030_cd_zd_absorber_mapping.toml"
-source_sha256 = "c9749fda49d5b1bcd66a8b70bc284a3d96161821ce49d54c05673b737d2f10a7"
-row_count = 20
-column_count = 11
+source_csv = "data/csv/cayley_dickson/64d_128d_operation_results.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0030_64d_128d_operation_results.toml"
+source_sha256 = "baa325569250ade8380757367fd8dfc654f57f5e039ba9b63e24b1d8b9de7dba"
+row_count = 25155
+column_count = 4
 
 [[dataset_ref]]
 id = "CSP-REF-00062"
 lane_name = "project_canonical"
 dataset_id = "PC-0031"
-slug = "cross_stack_locality_comparison"
+slug = "64d_chingon_adjacency"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/cross_stack_locality_comparison.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0031_cross_stack_locality_comparison.toml"
-source_sha256 = "24c8395a40f3890500b7ad0048012f17952b4671e2eef902c02845c5cd38949b"
-row_count = 3
-column_count = 13
+source_csv = "data/csv/cayley_dickson/64d_chingon_adjacency.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0031_64d_chingon_adjacency.toml"
+source_sha256 = "74446154412b6640c459ec8817aedc624a0302bd9a50dc47316de5f28957287d"
+row_count = 64
+column_count = 64
 
 [[dataset_ref]]
 id = "CSP-REF-00063"
 lane_name = "project_canonical"
 dataset_id = "PC-0032"
-slug = "et_billiard_phase_structure"
+slug = "cd_zd_absorber_mapping"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/et_billiard_phase_structure.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0032_et_billiard_phase_structure.toml"
-source_sha256 = "22f1e97cda02ab487ffbf33240ad93eb51d8d6bd3b5ac744807b81b8fe93b8f7"
-row_count = 7
-column_count = 15
+source_csv = "data/csv/cd_zd_absorber_mapping.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0032_cd_zd_absorber_mapping.toml"
+source_sha256 = "c9749fda49d5b1bcd66a8b70bc284a3d96161821ce49d54c05673b737d2f10a7"
+row_count = 20
+column_count = 11
 
 [[dataset_ref]]
 id = "CSP-REF-00064"
 lane_name = "project_canonical"
 dataset_id = "PC-0033"
-slug = "fractal_cosmology_comparison"
+slug = "cross_stack_locality_comparison"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/fractal_cosmology_comparison.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0033_fractal_cosmology_comparison.toml"
-source_sha256 = "ccbe5d150cf7e3f389da4ecd351ea57217fb6f710dd0313695a385ccd9b794f9"
-row_count = 1000
-column_count = 7
+source_csv = "data/csv/cross_stack_locality_comparison.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0033_cross_stack_locality_comparison.toml"
+source_sha256 = "24c8395a40f3890500b7ad0048012f17952b4671e2eef902c02845c5cd38949b"
+row_count = 3
+column_count = 13
 
 [[dataset_ref]]
 id = "CSP-REF-00065"
 lane_name = "project_canonical"
 dataset_id = "PC-0034"
-slug = "fractional_schrodinger_benchmark_errors"
+slug = "et_billiard_phase_structure"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/fractional_schrodinger_benchmark_errors.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0034_fractional_schrodinger_benchmark_errors.toml"
-source_sha256 = "317e5fee2914b0189a756dc54432fa1d566416b355c629b3bb5e1a04ed46554e"
-row_count = 9
-column_count = 5
+source_csv = "data/csv/et_billiard_phase_structure.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0034_et_billiard_phase_structure.toml"
+source_sha256 = "22f1e97cda02ab487ffbf33240ad93eb51d8d6bd3b5ac744807b81b8fe93b8f7"
+row_count = 7
+column_count = 15
 
 [[dataset_ref]]
 id = "CSP-REF-00066"
 lane_name = "project_canonical"
 dataset_id = "PC-0035"
-slug = "genesis_gravastar_bridge"
+slug = "fractal_cosmology_comparison"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/genesis_gravastar_bridge.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0035_genesis_gravastar_bridge.toml"
-source_sha256 = "f8e03344e517845d01dd56f818944be7a1d4459ff8119326a3e1b9ac8fc9b8bc"
-row_count = 90
-column_count = 9
+source_csv = "data/csv/fractal_cosmology_comparison.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0035_fractal_cosmology_comparison.toml"
+source_sha256 = "ccbe5d150cf7e3f389da4ecd351ea57217fb6f710dd0313695a385ccd9b794f9"
+row_count = 1000
+column_count = 7
 
 [[dataset_ref]]
 id = "CSP-REF-00067"
 lane_name = "project_canonical"
 dataset_id = "PC-0036"
-slug = "genesis_soliton_extraction"
+slug = "fractional_schrodinger_benchmark_errors"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/genesis_soliton_extraction.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0036_genesis_soliton_extraction.toml"
-source_sha256 = "3a0da7d8b64cec8aa2073f9917bb03498590dc4c2dc1f0f9839a2ede7d734a52"
-row_count = 30
-column_count = 6
+source_csv = "data/csv/fractional_schrodinger_benchmark_errors.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0036_fractional_schrodinger_benchmark_errors.toml"
+source_sha256 = "317e5fee2914b0189a756dc54432fa1d566416b355c629b3bb5e1a04ed46554e"
+row_count = 9
+column_count = 5
 
 [[dataset_ref]]
 id = "CSP-REF-00068"
 lane_name = "project_canonical"
 dataset_id = "PC-0037"
-slug = "gravastar_anisotropic_stability"
+slug = "genesis_gravastar_bridge"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/gravastar_anisotropic_stability.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0037_gravastar_anisotropic_stability.toml"
-source_sha256 = "62701fc820f6ef5b05303a47266dd5877adb77c2296326c0ea811c6ab9c51cfa"
-row_count = 30
-column_count = 11
+source_csv = "data/csv/genesis_gravastar_bridge.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0037_genesis_gravastar_bridge.toml"
+source_sha256 = "f8e03344e517845d01dd56f818944be7a1d4459ff8119326a3e1b9ac8fc9b8bc"
+row_count = 90
+column_count = 9
 
 [[dataset_ref]]
 id = "CSP-REF-00069"
 lane_name = "project_canonical"
 dataset_id = "PC-0038"
-slug = "gravastar_ligo_mass_sweep"
+slug = "genesis_soliton_extraction"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/gravastar_ligo_mass_sweep.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0038_gravastar_ligo_mass_sweep.toml"
-source_sha256 = "1bdab79813efcda1b428c8aef6f1be6b4b2842198296874bde027a781a0a1831"
-row_count = 55
-column_count = 7
+source_csv = "data/csv/genesis_soliton_extraction.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0038_genesis_soliton_extraction.toml"
+source_sha256 = "3a0da7d8b64cec8aa2073f9917bb03498590dc4c2dc1f0f9839a2ede7d734a52"
+row_count = 30
+column_count = 6
 
 [[dataset_ref]]
 id = "CSP-REF-00070"
 lane_name = "project_canonical"
 dataset_id = "PC-0039"
-slug = "gravastar_polytropic_sweep"
+slug = "gravastar_anisotropic_stability"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/gravastar_polytropic_sweep.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0039_gravastar_polytropic_sweep.toml"
-source_sha256 = "f517f14d5b03d093e71701977ecfcc914e34d5ae2ba0d89939970239d3e4c800"
-row_count = 350
+source_csv = "data/csv/gravastar_anisotropic_stability.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0039_gravastar_anisotropic_stability.toml"
+source_sha256 = "62701fc820f6ef5b05303a47266dd5877adb77c2296326c0ea811c6ab9c51cfa"
+row_count = 30
 column_count = 11
 
 [[dataset_ref]]
 id = "CSP-REF-00071"
 lane_name = "project_canonical"
 dataset_id = "PC-0040"
-slug = "gravastar_radial_stability"
+slug = "gravastar_ligo_mass_sweep"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/gravastar_radial_stability.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0040_gravastar_radial_stability.toml"
-source_sha256 = "c6e7f2c7effdd22ee2993e5f7ac77486c59c721ac4a20893cc87b82349cff916"
+source_csv = "data/csv/gravastar_ligo_mass_sweep.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0040_gravastar_ligo_mass_sweep.toml"
+source_sha256 = "1bdab79813efcda1b428c8aef6f1be6b4b2842198296874bde027a781a0a1831"
 row_count = 55
-column_count = 11
+column_count = 7
 
 [[dataset_ref]]
 id = "CSP-REF-00072"
 lane_name = "project_canonical"
 dataset_id = "PC-0041"
-slug = "grin_benchmark_convergence"
+slug = "gravastar_polytropic_sweep"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/grin_benchmark_convergence.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0041_grin_benchmark_convergence.toml"
-source_sha256 = "54da584d242d6d92cad27b6bc7f5e2390a6920a55f3ba2a7298c7dfb4778048a"
-row_count = 4
-column_count = 3
+source_csv = "data/csv/gravastar_polytropic_sweep.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0041_gravastar_polytropic_sweep.toml"
+source_sha256 = "f517f14d5b03d093e71701977ecfcc914e34d5ae2ba0d89939970239d3e4c800"
+row_count = 350
+column_count = 11
 
 [[dataset_ref]]
 id = "CSP-REF-00073"
 lane_name = "project_canonical"
 dataset_id = "PC-0042"
-slug = "gwtc3_mass_clumping_dip"
+slug = "gravastar_radial_stability"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/gwtc3_mass_clumping_dip.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0042_gwtc3_mass_clumping_dip.toml"
-source_sha256 = "11829c7d1c1ec042b61fdd6db858a0e1985ad546ea45169e78593dd3b1a47585"
-row_count = 3
-column_count = 6
+source_csv = "data/csv/gravastar_radial_stability.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0042_gravastar_radial_stability.toml"
+source_sha256 = "c6e7f2c7effdd22ee2993e5f7ac77486c59c721ac4a20893cc87b82349cff916"
+row_count = 55
+column_count = 11
 
 [[dataset_ref]]
 id = "CSP-REF-00074"
 lane_name = "project_canonical"
 dataset_id = "PC-0043"
-slug = "lbm_poiseuille_profile"
+slug = "grin_benchmark_convergence"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/lbm_poiseuille_profile.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0043_lbm_poiseuille_profile.toml"
-source_sha256 = "8259c3576ae09e4e181285840f26d8147ace5f63779a2ac4b384945f4075decf"
-row_count = 41
+source_csv = "data/csv/grin_benchmark_convergence.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0043_grin_benchmark_convergence.toml"
+source_sha256 = "54da584d242d6d92cad27b6bc7f5e2390a6920a55f3ba2a7298c7dfb4778048a"
+row_count = 4
 column_count = 3
 
 [[dataset_ref]]
 id = "CSP-REF-00075"
 lane_name = "project_canonical"
 dataset_id = "PC-0044"
-slug = "mera_entropy_scaling"
+slug = "gwtc3_mass_clumping_dip"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/mera_entropy_scaling.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0044_mera_entropy_scaling.toml"
-source_sha256 = "c0f8cf7e2e20d563ec730011105e6481bd7318aaecd1959d196c4c9fd9741ea4"
-row_count = 5
-column_count = 3
+source_csv = "data/csv/gwtc3_mass_clumping_dip.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0044_gwtc3_mass_clumping_dip.toml"
+source_sha256 = "11829c7d1c1ec042b61fdd6db858a0e1985ad546ea45169e78593dd3b1a47585"
+row_count = 3
+column_count = 6
 
 [[dataset_ref]]
 id = "CSP-REF-00076"
 lane_name = "project_canonical"
 dataset_id = "PC-0045"
-slug = "mera_verification_summary"
+slug = "lbm_poiseuille_profile"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/mera_verification_summary.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0045_mera_verification_summary.toml"
-source_sha256 = "26dfc1f1e3d69e101e55ba0b5ee20e2c1702d83d2877a1ac579e322259126e3d"
-row_count = 6
-column_count = 2
+source_csv = "data/csv/lbm_poiseuille_profile.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0045_lbm_poiseuille_profile.toml"
+source_sha256 = "8259c3576ae09e4e181285840f26d8147ace5f63779a2ac4b384945f4075decf"
+row_count = 41
+column_count = 3
 
 [[dataset_ref]]
 id = "CSP-REF-00077"
 lane_name = "project_canonical"
 dataset_id = "PC-0046"
-slug = "multiplication_table_16d"
+slug = "mera_entropy_scaling"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/multiplication_table_16D.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0046_multiplication_table_16d.toml"
-source_sha256 = "b00edcfb9dccd877012099b968402924cf0e2f9d1c630a3a70cead3607b711d7"
-row_count = 16
-column_count = 17
+source_csv = "data/csv/mera_entropy_scaling.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0046_mera_entropy_scaling.toml"
+source_sha256 = "c0f8cf7e2e20d563ec730011105e6481bd7318aaecd1959d196c4c9fd9741ea4"
+row_count = 5
+column_count = 3
 
 [[dataset_ref]]
 id = "CSP-REF-00078"
 lane_name = "project_canonical"
 dataset_id = "PC-0047"
-slug = "multiplication_table_8d"
+slug = "mera_verification_summary"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/multiplication_table_8D.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0047_multiplication_table_8d.toml"
-source_sha256 = "eb02889fe7f1345c7399215aa53b9fe050beff53dd2e0e3a9c01f0f94e783da2"
-row_count = 8
-column_count = 9
+source_csv = "data/csv/mera_verification_summary.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0047_mera_verification_summary.toml"
+source_sha256 = "26dfc1f1e3d69e101e55ba0b5ee20e2c1702d83d2877a1ac579e322259126e3d"
+row_count = 6
+column_count = 2
 
 [[dataset_ref]]
 id = "CSP-REF-00079"
 lane_name = "project_canonical"
 dataset_id = "PC-0048"
-slug = "neg_dim_convergence_metrics"
+slug = "multiplication_table_16d"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/neg_dim_convergence_metrics.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0048_neg_dim_convergence_metrics.toml"
-source_sha256 = "1ce9d32411cb621beb45a19ba62acd6f7121f02e24d1f8a8eba375fce2bd1ef1"
-row_count = 40
-column_count = 4
+source_csv = "data/csv/multiplication_table_16D.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0048_multiplication_table_16d.toml"
+source_sha256 = "b00edcfb9dccd877012099b968402924cf0e2f9d1c630a3a70cead3607b711d7"
+row_count = 16
+column_count = 17
 
 [[dataset_ref]]
 id = "CSP-REF-00080"
 lane_name = "project_canonical"
 dataset_id = "PC-0049"
-slug = "neg_dim_wavefunction_alpha_1_5"
+slug = "multiplication_table_8d"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/neg_dim_wavefunction_alpha_-1.5.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0049_neg_dim_wavefunction_alpha_1_5.toml"
-source_sha256 = "199ab98d2687c4459a869268c5e0561703f7456f3aaba4dc6d53c02ea9bfa1f1"
-row_count = 256
-column_count = 50
+source_csv = "data/csv/multiplication_table_8D.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0049_multiplication_table_8d.toml"
+source_sha256 = "eb02889fe7f1345c7399215aa53b9fe050beff53dd2e0e3a9c01f0f94e783da2"
+row_count = 8
+column_count = 9
 
 [[dataset_ref]]
 id = "CSP-REF-00081"
 lane_name = "project_canonical"
 dataset_id = "PC-0050"
-slug = "nonlocal_slopes"
+slug = "neg_dim_convergence_metrics"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/nonlocal_slopes.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0050_nonlocal_slopes.toml"
-source_sha256 = "24ea2cdf3bd78958a03d5fa9caf2ceaf83b5022156c0d653f32ec15b612a5e14"
-row_count = 12
-column_count = 3
+source_csv = "data/csv/neg_dim_convergence_metrics.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0050_neg_dim_convergence_metrics.toml"
+source_sha256 = "1ce9d32411cb621beb45a19ba62acd6f7121f02e24d1f8a8eba375fce2bd1ef1"
+row_count = 40
+column_count = 4
 
 [[dataset_ref]]
 id = "CSP-REF-00082"
 lane_name = "project_canonical"
 dataset_id = "PC-0051"
-slug = "pathion_zd_edges"
+slug = "neg_dim_wavefunction_alpha_1_5"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/pathion_zd_edges.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0051_pathion_zd_edges.toml"
-source_sha256 = "9e0b89de8d2b6c8fd9fee4c9834c0a8f634504ad35e23bbe637e721f2e62c90b"
-row_count = 3654
-column_count = 10
+source_csv = "data/csv/neg_dim_wavefunction_alpha_-1.5.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0051_neg_dim_wavefunction_alpha_1_5.toml"
+source_sha256 = "199ab98d2687c4459a869268c5e0561703f7456f3aaba4dc6d53c02ea9bfa1f1"
+row_count = 256
+column_count = 50
 
 [[dataset_ref]]
 id = "CSP-REF-00083"
 lane_name = "project_canonical"
 dataset_id = "PC-0052"
-slug = "sedenion_box_kites_clustered"
+slug = "nonlocal_slopes"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/sedenion_box_kites_clustered.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0052_sedenion_box_kites_clustered.toml"
-source_sha256 = "682d5d45275d0cd803b03af74d52ea1bde21c88968a34e8ee7e501b8e6c9a20f"
-row_count = 42
-column_count = 2
+source_csv = "data/csv/nonlocal_slopes.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0052_nonlocal_slopes.toml"
+source_sha256 = "24ea2cdf3bd78958a03d5fa9caf2ceaf83b5022156c0d653f32ec15b612a5e14"
+row_count = 12
+column_count = 3
 
 [[dataset_ref]]
 id = "CSP-REF-00084"
 lane_name = "project_canonical"
 dataset_id = "PC-0053"
-slug = "sedenion_mass_spectrum"
+slug = "pathion_zd_edges"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/sedenion_mass_spectrum.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0053_sedenion_mass_spectrum.toml"
-source_sha256 = "fa013de9b8736a99b615624f0afa3add52db60f712a3934a28dd0e46e1ef16f3"
-row_count = 50
-column_count = 2
+source_csv = "data/csv/pathion_zd_edges.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0053_pathion_zd_edges.toml"
+source_sha256 = "9e0b89de8d2b6c8fd9fee4c9834c0a8f634504ad35e23bbe637e721f2e62c90b"
+row_count = 3654
+column_count = 10
 
 [[dataset_ref]]
 id = "CSP-REF-00085"
 lane_name = "project_canonical"
 dataset_id = "PC-0054"
-slug = "sedenion_nilpotent_candidates"
+slug = "sedenion_box_kites_clustered"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/sedenion_nilpotent_candidates.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0054_sedenion_nilpotent_candidates.toml"
-source_sha256 = "71814fe5374d1f6fe89fe4eead6d7ab9d262b3baed049eb245c3e9de816694e7"
-row_count = 1539
+source_csv = "data/csv/sedenion_box_kites_clustered.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0054_sedenion_box_kites_clustered.toml"
+source_sha256 = "682d5d45275d0cd803b03af74d52ea1bde21c88968a34e8ee7e501b8e6c9a20f"
+row_count = 42
 column_count = 2
 
 [[dataset_ref]]
 id = "CSP-REF-00086"
 lane_name = "project_canonical"
 dataset_id = "PC-0055"
-slug = "sedenion_zd_edges"
+slug = "sedenion_mass_spectrum"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/sedenion_zd_edges.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0055_sedenion_zd_edges.toml"
-source_sha256 = "749c4fff6d41296f3600572777d137bf5c5d3fbe0a6a105e0aae0e833bbe57aa"
-row_count = 360
-column_count = 4
+source_csv = "data/csv/sedenion_mass_spectrum.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0055_sedenion_mass_spectrum.toml"
+source_sha256 = "fa013de9b8736a99b615624f0afa3add52db60f712a3934a28dd0e46e1ef16f3"
+row_count = 50
+column_count = 2
 
 [[dataset_ref]]
 id = "CSP-REF-00087"
 lane_name = "project_canonical"
 dataset_id = "PC-0056"
-slug = "sky_limit_set_comparison"
+slug = "sedenion_nilpotent_candidates"
 dataset_class = "canonical_dataset"
-source_csv = "data/csv/sky_limit_set_comparison.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0056_sky_limit_set_comparison.toml"
-source_sha256 = "bc247f26aec4f8d8ae0fc4b9b61c204ddd853fc2d71aaed6e345737fea35930f"
-row_count = 9
-column_count = 14
+source_csv = "data/csv/sedenion_nilpotent_candidates.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0056_sedenion_nilpotent_candidates.toml"
+source_sha256 = "71814fe5374d1f6fe89fe4eead6d7ab9d262b3baed049eb245c3e9de816694e7"
+row_count = 1539
+column_count = 2
 
 [[dataset_ref]]
 id = "CSP-REF-00088"
 lane_name = "project_canonical"
 dataset_id = "PC-0057"
+slug = "sedenion_zd_edges"
+dataset_class = "canonical_dataset"
+source_csv = "data/csv/sedenion_zd_edges.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0057_sedenion_zd_edges.toml"
+source_sha256 = "749c4fff6d41296f3600572777d137bf5c5d3fbe0a6a105e0aae0e833bbe57aa"
+row_count = 360
+column_count = 4
+
+[[dataset_ref]]
+id = "CSP-REF-00089"
+lane_name = "project_canonical"
+dataset_id = "PC-0058"
+slug = "sky_limit_set_comparison"
+dataset_class = "canonical_dataset"
+source_csv = "data/csv/sky_limit_set_comparison.csv"
+canonical_toml = "registry/data/project_csv/canonical/PC-0058_sky_limit_set_comparison.toml"
+source_sha256 = "bc247f26aec4f8d8ae0fc4b9b61c204ddd853fc2d71aaed6e345737fea35930f"
+row_count = 9
+column_count = 14
+
+[[dataset_ref]]
+id = "CSP-REF-00090"
+lane_name = "project_canonical"
+dataset_id = "PC-0059"
 slug = "spectral_exponent_comparisons"
 dataset_class = "canonical_dataset"
 source_csv = "data/csv/spectral_exponent_comparisons.csv"
-canonical_toml = "registry/data/project_csv/canonical/PC-0057_spectral_exponent_comparisons.toml"
+canonical_toml = "registry/data/project_csv/canonical/PC-0059_spectral_exponent_comparisons.toml"
 source_sha256 = "876e30ca004a3ef40fa2f55f4ac3563b1760498a5f63b69f176f02515464a8e6"
 row_count = 4
 column_count = 4
 
 [[dataset_ref]]
-id = "CSP-REF-00089"
+id = "CSP-REF-00091"
 lane_name = "project_generated"
 dataset_id = "PG-0001"
 slug = "cd_motif_components_128d"
@@ -1121,7 +1145,7 @@ row_count = 63
 column_count = 13
 
 [[dataset_ref]]
-id = "CSP-REF-00090"
+id = "CSP-REF-00092"
 lane_name = "project_generated"
 dataset_id = "PG-0002"
 slug = "cd_motif_components_16d"
@@ -1133,7 +1157,7 @@ row_count = 7
 column_count = 13
 
 [[dataset_ref]]
-id = "CSP-REF-00091"
+id = "CSP-REF-00093"
 lane_name = "project_generated"
 dataset_id = "PG-0003"
 slug = "cd_motif_components_256d"
@@ -1145,7 +1169,7 @@ row_count = 127
 column_count = 13
 
 [[dataset_ref]]
-id = "CSP-REF-00092"
+id = "CSP-REF-00094"
 lane_name = "project_generated"
 dataset_id = "PG-0004"
 slug = "cd_motif_components_32d"
@@ -1157,7 +1181,7 @@ row_count = 15
 column_count = 13
 
 [[dataset_ref]]
-id = "CSP-REF-00093"
+id = "CSP-REF-00095"
 lane_name = "project_generated"
 dataset_id = "PG-0005"
 slug = "cd_motif_components_64d"
@@ -1169,7 +1193,7 @@ row_count = 31
 column_count = 13
 
 [[dataset_ref]]
-id = "CSP-REF-00094"
+id = "CSP-REF-00096"
 lane_name = "project_generated"
 dataset_id = "PG-0006"
 slug = "cd_motif_edges_128d"
@@ -1181,7 +1205,7 @@ row_count = 65100
 column_count = 6
 
 [[dataset_ref]]
-id = "CSP-REF-00095"
+id = "CSP-REF-00097"
 lane_name = "project_generated"
 dataset_id = "PG-0007"
 slug = "cd_motif_edges_16d"
@@ -1193,7 +1217,7 @@ row_count = 84
 column_count = 6
 
 [[dataset_ref]]
-id = "CSP-REF-00096"
+id = "CSP-REF-00098"
 lane_name = "project_generated"
 dataset_id = "PG-0008"
 slug = "cd_motif_edges_32d"
@@ -1205,7 +1229,7 @@ row_count = 924
 column_count = 6
 
 [[dataset_ref]]
-id = "CSP-REF-00097"
+id = "CSP-REF-00099"
 lane_name = "project_generated"
 dataset_id = "PG-0009"
 slug = "cd_motif_edges_64d"
@@ -1217,7 +1241,7 @@ row_count = 7980
 column_count = 6
 
 [[dataset_ref]]
-id = "CSP-REF-00098"
+id = "CSP-REF-00100"
 lane_name = "project_generated"
 dataset_id = "PG-0010"
 slug = "cd_motif_nodes_128d"
@@ -1229,7 +1253,7 @@ row_count = 3906
 column_count = 4
 
 [[dataset_ref]]
-id = "CSP-REF-00099"
+id = "CSP-REF-00101"
 lane_name = "project_generated"
 dataset_id = "PG-0011"
 slug = "cd_motif_nodes_16d"
@@ -1241,7 +1265,7 @@ row_count = 42
 column_count = 4
 
 [[dataset_ref]]
-id = "CSP-REF-00100"
+id = "CSP-REF-00102"
 lane_name = "project_generated"
 dataset_id = "PG-0012"
 slug = "cd_motif_nodes_32d"
@@ -1253,7 +1277,7 @@ row_count = 210
 column_count = 4
 
 [[dataset_ref]]
-id = "CSP-REF-00101"
+id = "CSP-REF-00103"
 lane_name = "project_generated"
 dataset_id = "PG-0013"
 slug = "cd_motif_nodes_64d"
@@ -1265,7 +1289,7 @@ row_count = 930
 column_count = 4
 
 [[dataset_ref]]
-id = "CSP-REF-00102"
+id = "CSP-REF-00104"
 lane_name = "project_generated"
 dataset_id = "PG-0014"
 slug = "cd_motif_summary_by_dim"
@@ -1277,7 +1301,7 @@ row_count = 5
 column_count = 11
 
 [[dataset_ref]]
-id = "CSP-REF-00103"
+id = "CSP-REF-00105"
 lane_name = "project_generated"
 dataset_id = "PG-0015"
 slug = "de_marrais_assessors"
@@ -1289,7 +1313,7 @@ row_count = 42
 column_count = 2
 
 [[dataset_ref]]
-id = "CSP-REF-00104"
+id = "CSP-REF-00106"
 lane_name = "project_generated"
 dataset_id = "PG-0016"
 slug = "de_marrais_boxkite_edges"
@@ -1301,7 +1325,7 @@ row_count = 84
 column_count = 8
 
 [[dataset_ref]]
-id = "CSP-REF-00105"
+id = "CSP-REF-00107"
 lane_name = "project_generated"
 dataset_id = "PG-0017"
 slug = "de_marrais_boxkites"
@@ -1313,7 +1337,7 @@ row_count = 42
 column_count = 4
 
 [[dataset_ref]]
-id = "CSP-REF-00106"
+id = "CSP-REF-00108"
 lane_name = "project_generated"
 dataset_id = "PG-0018"
 slug = "de_marrais_strut_table"
@@ -1325,7 +1349,7 @@ row_count = 7
 column_count = 14
 
 [[dataset_ref]]
-id = "CSP-REF-00107"
+id = "CSP-REF-00109"
 lane_name = "project_generated"
 dataset_id = "PG-0019"
 slug = "dimensional_geometry_4_to_16"
@@ -1337,7 +1361,7 @@ row_count = 4001
 column_count = 3
 
 [[dataset_ref]]
-id = "CSP-REF-00108"
+id = "CSP-REF-00110"
 lane_name = "project_generated"
 dataset_id = "PG-0020"
 slug = "dimensional_geometry_0_to_32"
@@ -1349,7 +1373,7 @@ row_count = 4001
 column_count = 3
 
 [[dataset_ref]]
-id = "CSP-REF-00109"
+id = "CSP-REF-00111"
 lane_name = "project_generated"
 dataset_id = "PG-0021"
 slug = "m3_table"
@@ -1361,7 +1385,7 @@ row_count = 343
 column_count = 6
 
 [[dataset_ref]]
-id = "CSP-REF-00110"
+id = "CSP-REF-00112"
 lane_name = "project_generated"
 dataset_id = "PG-0022"
 slug = "materials_embedding_benchmarks"
@@ -1373,7 +1397,7 @@ row_count = 4
 column_count = 3
 
 [[dataset_ref]]
-id = "CSP-REF-00111"
+id = "CSP-REF-00113"
 lane_name = "project_generated"
 dataset_id = "PG-0023"
 slug = "materials_jarvis_subset"
@@ -1385,7 +1409,7 @@ row_count = 200
 column_count = 12
 
 [[dataset_ref]]
-id = "CSP-REF-00112"
+id = "CSP-REF-00114"
 lane_name = "project_generated"
 dataset_id = "PG-0024"
 slug = "modular_chaos_n256"
@@ -1397,7 +1421,7 @@ row_count = 100
 column_count = 1
 
 [[dataset_ref]]
-id = "CSP-REF-00113"
+id = "CSP-REF-00115"
 lane_name = "project_generated"
 dataset_id = "PG-0025"
 slug = "modular_chaos_n257"
@@ -1409,7 +1433,7 @@ row_count = 100
 column_count = 2
 
 [[dataset_ref]]
-id = "CSP-REF-00114"
+id = "CSP-REF-00116"
 lane_name = "project_generated"
 dataset_id = "PG-0026"
 slug = "reggiani_annihilator_nullity_distribution"
@@ -1421,7 +1445,7 @@ row_count = 1
 column_count = 3
 
 [[dataset_ref]]
-id = "CSP-REF-00115"
+id = "CSP-REF-00117"
 lane_name = "project_generated"
 dataset_id = "PG-0027"
 slug = "reggiani_standard_zero_divisor_pairs"
@@ -1433,7 +1457,7 @@ row_count = 336
 column_count = 6
 
 [[dataset_ref]]
-id = "CSP-REF-00116"
+id = "CSP-REF-00118"
 lane_name = "project_generated"
 dataset_id = "PG-0028"
 slug = "reggiani_standard_zero_divisors"
@@ -1445,7 +1469,7 @@ row_count = 84
 column_count = 6
 
 [[dataset_ref]]
-id = "CSP-REF-00117"
+id = "CSP-REF-00119"
 lane_name = "project_generated"
 dataset_id = "PG-0029"
 slug = "sedenion_field_metrics_3d"
@@ -1457,7 +1481,7 @@ row_count = 50
 column_count = 3
 
 [[dataset_ref]]
-id = "CSP-REF-00118"
+id = "CSP-REF-00120"
 lane_name = "project_generated"
 dataset_id = "PG-0030"
 slug = "spectral_flow"

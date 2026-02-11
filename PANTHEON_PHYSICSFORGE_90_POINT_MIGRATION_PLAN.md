@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Pantheon + PhysicsForge to open_gororoba: 90-Point Migration Plan
 
 ## Active skills and execution posture

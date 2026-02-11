@@ -1,0 +1,22 @@
+[package]
+name = "gororoba_engine"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-2.0-only"
+repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
+
+[dependencies]
+algebra_core = { path = "../algebra_core" }
+vacuum_frustration = { path = "../vacuum_frustration" }
+lattice_filtration = { path = "../lattice_filtration" }
+neural_homotopy = { path = "../neural_homotopy" }
+stats_core = { path = "../stats_core" }
+lbm_3d = { path = "../lbm_3d" }
+quantum_core = { path = "../quantum_core" }
+petgraph = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+toml = { workspace = true }
+
+[[bench]]
+name = "pipeline_bench"
+harness = false

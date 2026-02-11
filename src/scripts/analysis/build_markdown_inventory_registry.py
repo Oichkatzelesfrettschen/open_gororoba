@@ -49,11 +49,46 @@ GENERATED_PATTERNS = (
     "docs/generated/*.md",
 )
 
+IN_SCOPE_GENERATED_PREFIXES = (
+    "docs/",
+    "reports/",
+    "data/artifacts/",
+)
+
 TOML_PUBLISHED_ALLOWLIST = {
     "AGENTS.md",
     "CLAUDE.md",
     "GEMINI.md",
     "README.md",
+    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md",
+    "PHASE10_11_ULTIMATE_ROADMAP.md",
+    "PYTHON_REFACTORING_ROADMAP.md",
+    "docs/ALGEBRA_CONSTRUCTION_COMPARISON.md",
+    "docs/ALGEBRA_CRATES_SURVEY.md",
+    "docs/ALGEBRA_FAMILY_TAXONOMY.md",
+    "docs/BIBLIOGRAPHY.md",
+    "docs/CLAIMS_EVIDENCE_MATRIX.md",
+    "docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md",
+    "docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md",
+    "docs/CONVOS_CONCEPTS_STATUS_INDEX.md",
+    "docs/CORE_ABSTRACTIONS.md",
+    "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
+    "docs/FINAL_MANUSCRIPT.md",
+    "docs/GRAND_SYNTHESIS.md",
+    "docs/GRAND_SYNTHESIS_PLAN.md",
+    "docs/INSIGHTS.md",
+    "docs/PHASE4_UNIFIED_PHYSICS_FRAMEWORK.md",
+    "docs/PHASE_9_TESSARINES_RESEARCH.md",
+    "docs/ROADMAP.md",
+    "docs/claims/by_domain/holography.md",
+    "docs/claims/by_domain/meta.md",
+    "docs/convos/audit_1_read_nonuser_lines_cont.md",
+    "docs/external_sources/DE_MARRAIS_BOXKITES_III.md",
+    "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md",
+    "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md",
+    "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md",
+    "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md",
+    "reports/convos_claim_candidates.md",
     "curated/README.md",
     "curated/01_theory_frameworks/README_COQ.md",
     "data/csv/README.md",
@@ -92,6 +127,9 @@ DESTINATION_OVERRIDES = {
     "docs/generated/ROADMAP_REGISTRY_MIRROR.md": "registry/roadmap.toml",
     "docs/generated/TODO_REGISTRY_MIRROR.md": "registry/todo.toml",
     "docs/claims/INDEX.md": "registry/claims_domains.toml",
+    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md": "registry/docs_root_narratives.toml",
+    "PHASE10_11_ULTIMATE_ROADMAP.md": "registry/docs_root_narratives.toml",
+    "PYTHON_REFACTORING_ROADMAP.md": "registry/docs_root_narratives.toml",
 }
 
 
@@ -228,6 +266,9 @@ def _is_generated_pattern(path: str) -> bool:
 def _is_pipeline_generated(path: str, generated_declared: bool, toml_destination: str) -> bool:
     if _is_generated_pattern(path):
         return True
+    if generated_declared and bool(toml_destination):
+        if any(path.startswith(prefix) for prefix in IN_SCOPE_GENERATED_PREFIXES):
+            return True
     return path in TOML_PUBLISHED_ALLOWLIST and generated_declared and bool(toml_destination)
 
 

@@ -1,3 +1,6 @@
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/docs_root_narratives.toml -->
+
 # Python-to-Rust Refactoring Roadmap (Wave 6 Integration Track)
 
 **Status**: ACTIVE EXECUTION  
@@ -297,4 +300,3 @@ df = pd.read_csv('build/artifacts/motif_census_summary.csv')
 - ✓ Visualization layer integrity (matplotlib/plotly) maintained
 
 **Status**: READY FOR EXECUTION → Start NOW
-

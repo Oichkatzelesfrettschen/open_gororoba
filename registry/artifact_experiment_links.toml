@@ -7,8 +7,8 @@ authoritative = true
 updated = "2026-02-10"
 purpose = "Track bidirectional links between experiments and their generated/consumed artifacts (CSV, PNG, data files)"
 schema_version = "artifact_experiment_links_v1"
-link_count = 24
-artifact_count = 18
+link_count = 8
+artifact_count = 15
 validation_gates = [
   "artifact_id must reference an existing artifact (CSV, PNG, or binary output)",
   "experiment_id must reference an existing E-NNN in experiments.toml",
@@ -128,8 +128,8 @@ id = "ART-00009"
 name = "registry_events_log.csv"
 format = "csv"
 size_bytes_approx = 50000
-source_experiment = "E-025"
-purpose = "Registry event log export (events.toml → CSV for analysis)"
+source_experiment = "E-024"
+purpose = "Registry event log export (events.toml -> CSV for analysis)"
 data_flow_type = "output"
 consumers = []
 
@@ -158,7 +158,7 @@ id = "ART-00012"
 name = "registry_architecture_diagram.svg"
 format = "svg"
 size_bytes_approx = 80000
-source_experiment = "E-025"
+source_experiment = "E-024"
 purpose = "Registry event tracking architecture diagram"
 data_flow_type = "output"
 consumers = []
@@ -192,36 +192,6 @@ source_experiment = "external_catalog"
 purpose = "GWOSC gravitational wave events (input to E-002)"
 data_flow_type = "input"
 consumers = ["E-002"]
-
-[[artifact]]
-id = "ART-00016"
-name = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
-format = "markdown"
-size_bytes_approx = 500000
-source_experiment = "documentation"
-purpose = "Algebraic foundations research document (contains equation atoms)"
-data_flow_type = "input"
-consumers = ["equation_atoms_v3"]
-
-[[artifact]]
-id = "ART-00017"
-name = "benchmarks/phase11_gpu_tensor_baseline.csv"
-format = "csv"
-size_bytes_approx = 200000
-source_experiment = "phase11_planning"
-purpose = "GPU tensor network performance baseline (Phase 11 reference)"
-data_flow_type = "output"
-consumers = []
-
-[[artifact]]
-id = "ART-00018"
-name = "artifacts/philosophy_of_science_background.md"
-format = "markdown"
-size_bytes_approx = 150000
-source_experiment = "external_knowledge"
-purpose = "Background research on composition algebras and foundational physics"
-data_flow_type = "input"
-consumers = []
 
 # Experiment-Artifact Edge List
 # Explicit bidirectional mappings for all experiments
@@ -291,12 +261,12 @@ description = "E-024 generates Hamiltonian census and architecture diagram"
 
 [[link]]
 id = "LINK-00008"
-experiment_id = "E-025"
+experiment_id = "E-024"
 experiment_title = "Registry Event Tracking Infrastructure"
 artifact_ids = ["ART-00009", "ART-00012"]
 data_flow = "output"
 cardinality = "1:2"
-description = "E-025 generates event log export and architecture diagram"
+description = "E-024 generates event log export and architecture diagram"
 
 # Link Statistics
 
@@ -305,9 +275,9 @@ total_links = 8
 output_links = 5
 input_links = 2
 intermediate_links = 0
-experiments_with_artifacts = 7
-artifacts_with_experiments = 12
-avg_artifacts_per_experiment = 2.3
+experiments_with_artifacts = 5
+artifacts_with_experiments = 15
+avg_artifacts_per_experiment = 3.4
 experiments_without_artifacts = 19
 orphaned_artifacts = 0
 circular_dependencies_detected = 0
@@ -318,8 +288,8 @@ e_002_linked = true
 e_021_linked = true
 e_023_linked = true
 e_024_linked = true
-e_025_linked = true
-coverage_percentage = 25  # 6/24 experiments have explicit artifact links
+e_026_linked = false
+coverage_percentage = 21  # 5/24 experiments have explicit artifact links
 
 # Validation Gates
 
@@ -331,7 +301,7 @@ gate_4 = "No artifact is both input and output of same experiment (no circular d
 gate_5 = "All referenced file paths exist or are parameterized (e.g., dim={N})"
 gate_6 = "Artifact formats match experiment output declarations (CSV/SVG/PNG)"
 gate_7 = "No orphaned artifacts: every artifact linked to at least one experiment"
-gate_8 = "Bidirectional consistency: link.experiment_id ↔ artifact.source_experiment"
+gate_8 = "Bidirectional consistency: link.experiment_id <-> artifact.source_experiment"
 
 # Migration Path (Future)
 

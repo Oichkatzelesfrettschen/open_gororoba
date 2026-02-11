@@ -157,21 +157,21 @@ def verify_cross_registry_references(registry_dir: str = "registry") -> Tuple[in
             if claim_id not in valid_claims:
                 msg = f"DANGLING: {reg_name} references {claim_id} (not found in claims.toml)"
                 errors.append(msg)
-                print(f"  ✗ {msg}")
+                print(f"  [FAIL] {msg}")
 
         # Check insight references
         for source_reg, insight_id in refs['insights']:
             if insight_id not in valid_insights:
                 msg = f"DANGLING: {reg_name} references {insight_id} (not found in insights.toml)"
                 errors.append(msg)
-                print(f"  ✗ {msg}")
+                print(f"  [FAIL] {msg}")
 
         # Check experiment references
         for source_reg, exp_id in refs['experiments']:
             if exp_id not in valid_experiments:
                 msg = f"DANGLING: {reg_name} references {exp_id} (not found in experiments.toml)"
                 errors.append(msg)
-                print(f"  ✗ {msg}")
+                print(f"  [FAIL] {msg}")
 
     # Additional checks for W6-016 enhancements
     print("\nPerforming W6-016 expansion checks...")
@@ -213,9 +213,9 @@ def verify_cross_registry_references(registry_dir: str = "registry") -> Tuple[in
                         errors.append(msg)
 
     if errors:
-        print(f"\n❌ Found {len(errors)} dangling references")
+        print(f"\n[FAIL] Found {len(errors)} dangling references")
     else:
-        print("\n✓ All cross-registry references valid")
+        print("\n[PASS] All cross-registry references valid")
 
     return len(errors), errors
 

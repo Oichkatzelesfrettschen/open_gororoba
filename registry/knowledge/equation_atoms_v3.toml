@@ -63,12 +63,7 @@ assumptions = [
   "algebraic_closure",
   "field_properties"
 ]
-parameter_sweep = {
-  param_name = "dimension",
-  min_value = 8,
-  max_value = 8,
-  fixed = true
-}
+parameter_sweep = { param_name = "dimension", min_value = 8, max_value = 8, fixed = true }
 domain_applicability = "exceptional_algebras"
 source_uid = "ART-001"
 source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
@@ -89,12 +84,7 @@ assumptions = [
   "associativity_assumption",
   "homotopy_transfer_lemma"
 ]
-parameter_sweep = {
-  param_name = "homotopy_order",
-  min_value = 3,
-  max_value = 3,
-  fixed = true
-}
+parameter_sweep = { param_name = "homotopy_order", min_value = 3, max_value = 3, fixed = true }
 domain_applicability = "exceptional_algebras"
 source_uid = "ART-001"
 source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
@@ -115,12 +105,7 @@ assumptions = [
   "cayley_dickson_structure",
   "contraction_validity"
 ]
-parameter_sweep = {
-  param_name = "dimension",
-  min_value = 16,
-  max_value = 16,
-  fixed = true
-}
+parameter_sweep = { param_name = "dimension", min_value = 16, max_value = 16, fixed = true }
 domain_applicability = "cayley_dickson_algebras"
 source_uid = "ART-001"
 source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
@@ -141,12 +126,7 @@ assumptions = [
   "fano_plane_symmetry",
   "automorphism_group_theory"
 ]
-parameter_sweep = {
-  param_name = "fano_plane_automorphisms",
-  min_value = 168,
-  max_value = 168,
-  fixed = true
-}
+parameter_sweep = { param_name = "fano_plane_automorphisms", min_value = 168, max_value = 168, fixed = true }
 domain_applicability = "exceptional_structures"
 source_uid = "ART-001"
 source_path = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
@@ -168,12 +148,7 @@ assumptions = [
   "tree_level_analysis",
   "associator_structure"
 ]
-parameter_sweep = {
-  param_name = "dimension",
-  min_value = 16,
-  max_value = 32,
-  varies_over_family = true
-}
+parameter_sweep = { param_name = "dimension", min_value = 16, max_value = 32, varies_over_family = true }
 domain_applicability = "exceptional_lie_groups"
 supports_claim = "C-620"
 source_uid = "ART-001"

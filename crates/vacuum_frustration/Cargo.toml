@@ -1,0 +1,26 @@
+[package]
+name = "vacuum_frustration"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-2.0-only"
+repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
+
+[dependencies]
+algebra_core = { path = "../algebra_core", version = "0.1" }
+petgraph = { workspace = true }
+rayon = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+toml = { workspace = true }
+cudarc = { version = "0.19", optional = true, default-features = false, features = ["std", "driver", "nvrtc", "dynamic-loading"] }
+
+[dev-dependencies]
+stats_core = { path = "../stats_core" }
+criterion = { workspace = true }
+
+[features]
+default = []
+gpu = ["cudarc"]
+
+[[bench]]
+name = "frustration_bench"
+harness = false
