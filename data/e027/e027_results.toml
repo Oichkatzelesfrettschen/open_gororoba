@@ -1,31 +1,297 @@
 [metadata]
-grid_size = 32
-lbm_steps = 5000
+grid_size = 8
+lbm_steps = 50
 nu_base = 0.333
-lambda = 200.0
+lambda = 50.0
 
 [correlation]
-t_statistic = 0.24718381280048013
-p_value = 0.8047659721934002
-effect_size = 0.005641967761411061
-mean_frustration_channels = 0.3455415366815863
-mean_frustration_background = 0.3449599293758588
-n_channel = 2048
-n_background = 30720
-n_channels_detected = 1
+t_statistic = 8.366193595228536
+p_value = 0.00000000000000005950939272237028
+effect_size = 0.5400354744244545
+mean_frustration_channels = 0.375
+mean_frustration_background = 0.334619605119735
+n_channel = 32
+n_background = 480
+n_channels_detected = 23
 
 [null_model]
-p_value = 0.01
-n_permutations = 1000
+p_value = 0.039603960396039604
+n_permutations = 100
+stopped_early = false
+stop_reason = "MaxReached"
 
 [[channels]]
 id = 0
-size = 2048
-mean_velocity = 0.012265624999999723
-max_velocity = 0.012343750000000014
+size = 6
+mean_velocity = 0.04446804814320668
+max_velocity = 0.04519721480987333
 x_min = 0
-x_max = 31
+x_max = 2
 y_min = 0
-y_max = 31
-z_min = 30
-z_max = 31
+y_max = 1
+z_min = 5
+z_max = 7
+
+[[channels]]
+id = 1
+size = 1
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 4
+x_max = 4
+y_min = 0
+y_max = 0
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 2
+size = 2
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 6
+x_max = 6
+y_min = 0
+y_max = 1
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 3
+size = 1
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 6
+x_max = 6
+y_min = 3
+y_max = 3
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 4
+size = 1
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 0
+x_max = 0
+y_min = 4
+y_max = 4
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 5
+size = 1
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 4
+x_max = 4
+y_min = 4
+y_max = 4
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 6
+size = 1
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 1
+x_max = 1
+y_min = 5
+y_max = 5
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 7
+size = 1
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 7
+x_max = 7
+y_min = 5
+y_max = 5
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 8
+size = 2
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 0
+x_max = 0
+y_min = 6
+y_max = 7
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 9
+size = 3
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 2
+x_max = 3
+y_min = 6
+y_max = 7
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 10
+size = 1
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 6
+x_max = 6
+y_min = 6
+y_max = 6
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 11
+size = 1
+mean_velocity = 0.04394721480987329
+max_velocity = 0.04394721480987329
+x_min = 7
+x_max = 7
+y_min = 7
+y_max = 7
+z_min = 5
+z_max = 5
+
+[[channels]]
+id = 12
+size = 1
+mean_velocity = 0.044572214809873376
+max_velocity = 0.044572214809873376
+x_min = 3
+x_max = 3
+y_min = 1
+y_max = 1
+z_min = 6
+z_max = 6
+
+[[channels]]
+id = 13
+size = 1
+mean_velocity = 0.044572214809873376
+max_velocity = 0.044572214809873376
+x_min = 6
+x_max = 6
+y_min = 2
+y_max = 2
+z_min = 6
+z_max = 6
+
+[[channels]]
+id = 14
+size = 1
+mean_velocity = 0.044572214809873376
+max_velocity = 0.044572214809873376
+x_min = 5
+x_max = 5
+y_min = 3
+y_max = 3
+z_min = 6
+z_max = 6
+
+[[channels]]
+id = 15
+size = 1
+mean_velocity = 0.044572214809873376
+max_velocity = 0.044572214809873376
+x_min = 0
+x_max = 0
+y_min = 5
+y_max = 5
+z_min = 6
+z_max = 6
+
+[[channels]]
+id = 16
+size = 1
+mean_velocity = 0.044572214809873376
+max_velocity = 0.044572214809873376
+x_min = 3
+x_max = 3
+y_min = 7
+y_max = 7
+z_min = 6
+z_max = 6
+
+[[channels]]
+id = 17
+size = 1
+mean_velocity = 0.044572214809873376
+max_velocity = 0.044572214809873376
+x_min = 6
+x_max = 6
+y_min = 7
+y_max = 7
+z_min = 6
+z_max = 6
+
+[[channels]]
+id = 18
+size = 1
+mean_velocity = 0.04519721480987333
+max_velocity = 0.04519721480987333
+x_min = 4
+x_max = 4
+y_min = 0
+y_max = 0
+z_min = 7
+z_max = 7
+
+[[channels]]
+id = 19
+size = 1
+mean_velocity = 0.04519721480987333
+max_velocity = 0.04519721480987333
+x_min = 7
+x_max = 7
+y_min = 0
+y_max = 0
+z_min = 7
+z_max = 7
+
+[[channels]]
+id = 20
+size = 1
+mean_velocity = 0.04519721480987333
+max_velocity = 0.04519721480987333
+x_min = 3
+x_max = 3
+y_min = 3
+y_max = 3
+z_min = 7
+z_max = 7
+
+[[channels]]
+id = 21
+size = 1
+mean_velocity = 0.04519721480987333
+max_velocity = 0.04519721480987333
+x_min = 3
+x_max = 3
+y_min = 5
+y_max = 5
+z_min = 7
+z_max = 7
+
+[[channels]]
+id = 22
+size = 1
+mean_velocity = 0.04519721480987333
+max_velocity = 0.04519721480987333
+x_min = 6
+x_max = 6
+y_min = 6
+y_max = 6
+z_min = 7
+z_max = 7

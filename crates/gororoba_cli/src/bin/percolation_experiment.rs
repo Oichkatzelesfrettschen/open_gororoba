@@ -53,6 +53,14 @@ struct Args {
     /// Verbose output
     #[arg(long, default_value = "false")]
     verbose: bool,
+
+    /// Forcing mode: none, uniform, gradient, vortex
+    #[arg(long, default_value = "none")]
+    forcing_mode: String,
+
+    /// Forcing strength magnitude
+    #[arg(long, default_value = "0.001")]
+    forcing_strength: f64,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -65,6 +73,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         eprintln!("LBM steps: {}", args.lbm_steps);
         eprintln!("nu_base: {}", args.nu_base);
         eprintln!("lambda: {}", args.lambda);
+        eprintln!("forcing_mode: {}", args.forcing_mode);
+        eprintln!("forcing_strength: {}", args.forcing_strength);
         eprintln!("seed: {}", args.seed);
     }
 
@@ -116,6 +126,8 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let mut solver = initialize_lbm_solver(
         args.grid_size,
         &viscosity_field,
+        &args.forcing_mode,
+        args.forcing_strength,
     )?;
 
     // Step 5: Evolve LBM
@@ -179,17 +191,26 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Step 8: Besag-Clifford null model
     if args.verbose {
-        eprintln!("[8/10] Running Besag-Clifford null model ({} permutations)...", args.n_permutations);
+        eprintln!("[8/10] Running Besag-Clifford null model (max {} permutations, adaptive)...", args.n_permutations);
     }
-    let null_result = run_besag_clifford_null(
-        &frustration_field,
-        args.grid_size,
-        args.n_permutations,
-        args.seed,
-    )?;
+    let null_result = run_besag_clifford_null(BesagCliffordParams {
+        frustration_field: &frustration_field,
+        grid_size: args.grid_size,
+        max_permutations: args.n_permutations,
+        seed: args.seed + 1000, // Different seed for null model
+        observed_t: correlation.t_statistic,
+        nu_base: args.nu_base,
+        lambda: args.lambda,
+        lbm_steps: args.lbm_steps,
+        forcing_mode: &args.forcing_mode,
+        forcing_strength: args.forcing_strength,
+    })?;
 
     if args.verbose {
         eprintln!("  null p-value: {:.6}", null_result.p_value);
+        eprintln!("  permutations used: {}", null_result.n_permutations);
+        eprintln!("  stopped early: {}", null_result.stopped_early);
+        eprintln!("  stop reason: {}", null_result.stop_reason);
     }
 
     // Step 9: Export results
@@ -268,6 +289,8 @@ fn frustration_to_viscosity(frustration: &[f64], nu_base: f64, lambda: f64) -> V
 fn initialize_lbm_solver(
     grid_size: usize,
     viscosity_field: &[f64],
+    forcing_mode: &str,
+    forcing_strength: f64,
 ) -> Result<lbm_3d::solver::LbmSolver3D, Box<dyn std::error::Error>> {
     let mut solver = lbm_3d::solver::LbmSolver3D::new(grid_size, grid_size, grid_size, 0.6);
 
@@ -302,23 +325,159 @@ fn initialize_lbm_solver(
         }
     }
 
+    // Apply body forcing based on mode
+    match forcing_mode {
+        "none" => {
+            // No forcing - rely on shear instability alone
+        },
+        "uniform" => {
+            // Uniform body force in x-direction (like electric field or pressure gradient)
+            let force = vec![[forcing_strength, 0.0, 0.0]; grid_size * grid_size * grid_size];
+            solver.set_force_field(force)?;
+        },
+        "gradient" => {
+            // Linearly varying force creates shear flow instability
+            let mut force = vec![[0.0, 0.0, 0.0]; grid_size * grid_size * grid_size];
+            for z in 0..grid_size {
+                for y in 0..grid_size {
+                    for x in 0..grid_size {
+                        let idx = z * (grid_size * grid_size) + y * grid_size + x;
+                        let z_normalized = (z as f64) / (grid_size as f64);
+                        // Force increases with z
+                        force[idx] = [forcing_strength * z_normalized, 0.0, 0.0];
+                    }
+                }
+            }
+            solver.set_force_field(force)?;
+        },
+        "vortex" => {
+            // Rotational forcing around domain center
+            let mut force = vec![[0.0, 0.0, 0.0]; grid_size * grid_size * grid_size];
+            let center = grid_size as f64 / 2.0;
+            for z in 0..grid_size {
+                for y in 0..grid_size {
+                    for x in 0..grid_size {
+                        let idx = z * (grid_size * grid_size) + y * grid_size + x;
+                        let dx = x as f64 - center;
+                        let dy = y as f64 - center;
+                        let r = (dx * dx + dy * dy).sqrt();
+                        if r > 1e-6 {
+                            // Tangential force: F = strength * (-dy/r, dx/r, 0)
+                            force[idx] = [
+                                -forcing_strength * dy / r,
+                                forcing_strength * dx / r,
+                                0.0,
+                            ];
+                        }
+                    }
+                }
+            }
+            solver.set_force_field(force)?;
+        },
+        _ => {
+            return Err(format!("Unknown forcing mode: {}", forcing_mode).into());
+        },
+    }
+
     Ok(solver)
 }
 
-// Helper: Besag-Clifford null model
+/// Parameters for Besag-Clifford null model test
+struct BesagCliffordParams<'a> {
+    frustration_field: &'a [f64],
+    grid_size: usize,
+    max_permutations: usize,
+    seed: u64,
+    observed_t: f64,
+    nu_base: f64,
+    lambda: f64,
+    lbm_steps: usize,
+    forcing_mode: &'a str,
+    forcing_strength: f64,
+}
+
+// Helper: Besag-Clifford null model via adaptive permutation test
+//
+// Tests spatial autocorrelation by shuffling viscosity field and recomputing correlation.
+// Uses adaptive stopping (Besag & Clifford 1991) to terminate early when CI is tight.
 fn run_besag_clifford_null(
-    _frustration_field: &[f64],
-    _grid_size: usize,
-    n_permutations: usize,
-    _seed: u64,
+    params: BesagCliffordParams,
 ) -> Result<NullModelResult, Box<dyn std::error::Error>> {
-    // Mock implementation: return random p-value
-    // Full implementation would shuffle frustration field and recompute correlation
-    let p_value = if n_permutations > 500 { 0.01 } else { 0.5 };
+    use rand::seq::SliceRandom;
+    use rand::SeedableRng;
+
+    let mut rng = rand::rngs::StdRng::seed_from_u64(params.seed);
+
+    // Adaptive configuration
+    let config = stats_core::ultrametric::adaptive::AdaptiveConfig {
+        batch_size: 20,
+        max_permutations: params.max_permutations,
+        alpha: 0.05,
+        confidence: 0.99,
+        min_permutations: 100,
+    };
+
+    // Run adaptive test
+    let result = stats_core::ultrametric::adaptive::adaptive_permutation_test(
+        &config,
+        |batch_size| {
+            let mut batch_extreme = 0;
+
+            for _ in 0..batch_size {
+                // Shuffle frustration field (breaks spatial structure)
+                let mut shuffled_frustration = params.frustration_field.to_vec();
+                shuffled_frustration.shuffle(&mut rng);
+
+                // Transform to viscosity
+                let shuffled_viscosity = frustration_to_viscosity(
+                    &shuffled_frustration,
+                    params.nu_base,
+                    params.lambda,
+                );
+
+                // Initialize and evolve LBM with shuffled field
+                let mut solver_null = match initialize_lbm_solver(
+                    params.grid_size,
+                    &shuffled_viscosity,
+                    params.forcing_mode,
+                    params.forcing_strength,
+                ) {
+                    Ok(s) => s,
+                    Err(_) => continue, // Skip failed initialization
+                };
+
+                solver_null.evolve(params.lbm_steps);
+
+                // Detect channels
+                let mut detector = vacuum_frustration::PercolationDetector::new(
+                    params.grid_size,
+                    params.grid_size,
+                    params.grid_size,
+                );
+                let threshold = vacuum_frustration::auto_velocity_threshold(&solver_null.u);
+                let channels_null = detector.detect_channels(&solver_null.u, threshold);
+
+                // Compute null correlation
+                let corr_null = vacuum_frustration::correlate_with_frustration(
+                    &channels_null,
+                    &shuffled_frustration,
+                );
+
+                // Count if |t_null| >= |t_observed| (two-sided test)
+                if corr_null.t_statistic.abs() >= params.observed_t.abs() {
+                    batch_extreme += 1;
+                }
+            }
+
+            batch_extreme
+        },
+    );
 
     Ok(NullModelResult {
-        p_value,
-        n_permutations,
+        p_value: result.p_value,
+        n_permutations: result.n_permutations_used,
+        stopped_early: result.stopped_early,
+        stop_reason: format!("{:?}", result.stop_reason),
     })
 }
 
@@ -326,6 +485,8 @@ fn run_besag_clifford_null(
 struct NullModelResult {
     p_value: f64,
     n_permutations: usize,
+    stopped_early: bool,
+    stop_reason: String,
 }
 
 #[derive(Serialize)]
@@ -427,6 +588,8 @@ fn export_results(
         null_model: NullModelResult {
             p_value: null_result.p_value,
             n_permutations: null_result.n_permutations,
+            stopped_early: null_result.stopped_early,
+            stop_reason: null_result.stop_reason.clone(),
         },
         channels: channel_data,
     };

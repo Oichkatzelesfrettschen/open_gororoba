@@ -60,14 +60,6 @@ fn get_f64(table: &Value, path: &[&str]) -> Option<f64> {
     current.as_float()
 }
 
-fn get_str(table: &Value, path: &[&str]) -> Option<String> {
-    let mut current = table;
-    for key in path {
-        current = current.get(*key)?;
-    }
-    current.as_str().map(ToString::to_string)
-}
-
 fn compute_viscosity_proxy(nu_base: f64, lambda: f64, frustration_mean: f64, vacuum_attractor: f64) -> f64 {
     let delta = frustration_mean - vacuum_attractor;
     nu_base * (-(lambda * delta * delta)).exp()

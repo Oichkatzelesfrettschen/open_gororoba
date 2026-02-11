@@ -46,6 +46,12 @@ docs_generated_root = "build/docs/generated/"
 artifact_roots = ["data/", "reports/"]
 hooks_root = ".githooks/"
 
+[machine_docs]
+policy_overflow = "registry/agents_contract.toml"
+crate_source_scout = "registry/crate_source_scout.toml"
+mcp_server_matrix = "registry/mcp_server_matrix.toml"
+edit_note = "Edit registry/agents_contract.toml for policy; edit machine docs for inventory/status tables."
+
 [rust_modularization]
 principles = [
   "Design one crate per stable domain boundary; avoid god crates.",
@@ -89,6 +95,7 @@ disqualifiers = [
 
 [dependency_alignment]
 rules = [
+  "Workspace root owns shared versions and profile policy.",
   "Declare shared versions only in Cargo.toml [workspace.dependencies].",
   "In member crates, reference shared deps with workspace = true.",
   "Avoid per-crate version pins unless isolation is intentional and documented.",
@@ -108,7 +115,7 @@ steps = [
   "4_align: move accepted deps to [workspace.dependencies] and workspace=true references",
   "5_validate_local: run crate-focused tests/checks",
   "6_validate_workspace: run rust-smoke and required gates",
-  "7_pre_push: run make pre-push-gate before sync/push",
+  "7_pre_push: run make pre-push-gate; use make pre-push-gate-strict for dependency-sensitive pushes",
   "8_prune: remove dead/duplicate deps and rerun checks",
 ]
 artifacts_to_update = [
@@ -117,16 +124,101 @@ artifacts_to_update = [
   "AGENTS policy only when process rules change",
 ]
 
+[source_discovery]
+hosts = [
+  "crates.io",
+  "docs.rs",
+  "github.com",
+  "gitlab.com",
+  "codeberg.org",
+  "sourcehut",
+  "self-hosted git",
+]
+priority = [
+  "Discover candidate crates via crates.io (cargo search/info).",
+  "Validate API/docs via docs.rs.",
+  "Trace upstream canonical repo (GitHub/GitLab/etc) and release tags.",
+  "Compare official upstream and active community forks before selection.",
+]
+stability_checks = [
+  "recent releases and maintenance cadence",
+  "issue/PR responsiveness",
+  "clear versioning and changelog discipline",
+  "license compatibility",
+  "bounded transitive dependency growth",
+]
+availability_checks = [
+  "repository accessible over HTTPS",
+  "mirrors/tags available when primary host is degraded",
+  "crate publish history present on crates.io",
+]
+
+[mcp_usage]
+scope = "shared_across_llms"
+rule = "Treat MCP servers as model-agnostic control plane for deterministic operations."
+preference = ["MCP Git/Rust/GitHub first", "shell fallback second", "ad-hoc manual last"]
+
+[mcp_rust_features]
+introspection = ["workspace-info", "cargo-metadata", "cargo-tree", "cargo-info", "cargo-search", "cargo-list"]
+quality = ["cargo-check", "cargo-test", "cargo-clippy", "cargo-fmt", "cargo-doc", "rustc-explain"]
+dependency = ["cargo-add", "cargo-remove", "cargo-update", "cargo-machete", "cargo-hack", "cargo-deny-check"]
+release_perf = ["cargo-build", "cargo-package", "cargo-expand", "rustup-show", "rustup-update"]
+
+[mcp_git_features]
+core = ["git_status", "git_diff_unstaged", "git_diff_staged", "git_log", "git_show", "git_branch", "git_checkout", "git_add", "git_commit"]
+
+[mcp_github_features]
+core = ["search_repositories", "search_code", "list_pull_requests", "get_pull_request", "get_pull_request_status", "list_issues"]
+
+[mcp_validation_status]
+git_status = "PASS"
+rust_cargo_list = "PASS"
+rust_workspace_info = "PASS"
+rust_cargo_tree = "PASS"
+rust_cargo_search = "PASS"
+rust_docs_search_crate = "PASS"
+github_search_repositories = "PASS"
+ripgrep_search = "PASS"
+arxiv_search_papers = "PASS"
+context7_resolve_library_id = "PASS"
+time_get_current_time = "PASS"
+filesystem_allowed_directories = "PASS"
+sqlite_list_tables = "PASS"
+bash_run = "PASS"
+calculator_calculate = "PASS"
+math_sum = "PASS"
+memory_read_graph = "PASS"
+file_finder_search = "PASS"
+dotfiles_status = "PASS"
+ollama_list = "PASS"
+playwright_browser_tabs = "PASS"
+puppeteer_navigate_headless = "PASS"
+chrome_devtools_startup_probe = "PASS"
+desktop_commander_startup_probe = "PASS"
+markitdown_startup_probe = "PASS"
+semgrep_startup_probe = "PASS"
+mcp_smoke_verify_script = "PASS_25_SERVERS"
+rust_docs_startup_probe = "PASS_HANDSHAKE_CLOSE"
+fetch_fetch = "FAIL_TRANSPORT_CLOSED"
+containers_run_command = "FAIL_NO_CONTAINER_laravel_app_dev"
+postgres_startup_probe = "FAIL_NO_DATABASE_URL_OR_CONNREFUSED"
+shell_startup_probe = "FAIL_RUNTIME_WARNING_COROUTINE_NOT_AWAITED"
+youtube_transcript_get_transcript = "FAIL_LIST_TRANSCRIPTS_ATTR_MISSING"
+disabled_servers = ["containers", "fetch", "postgres", "shell", "youtube-transcript"]
+last_checked_utc = "2026-02-11T19:59:59Z"
+
 [command_matrix]
 required = [
   "cargo clippy --workspace -j$(nproc) -- -D warnings",
   "cargo test --workspace -j$(nproc)",
   "make ascii-check",
 ]
-recommended = ["make rust-smoke", "make registry", "make check"]
+recommended = ["make rust-smoke", "make mcp-smoke", "make cargo-deny-check", "make registry", "make check"]
+dependency_change = ["make dep-audit", "make cargo-deny-check"]
 pre_push = ["make pre-push-gate"]
+pre_push_strict = ["make pre-push-gate-strict"]
 core = ["check", "smoke", "ascii-check", "registry", "docs-publish", "governance-gate"]
-rust = ["rust-test", "rust-clippy", "rust-smoke", "rust-parity", "rust-release-fat-lto"]
+rust = ["rust-test", "rust-clippy", "rust-smoke", "dep-audit", "cargo-deny-check", "mcp-smoke", "rust-parity", "rust-release-fat-lto"]
 registry = [
   "registry-verify-markdown-inventory",
   "registry-verify-markdown-owner",
@@ -147,8 +239,10 @@ artifacts = [
 
 [hooks]
 install = "make hooks-install"
+install_strict = "make hooks-install-strict"
 status = "make hooks-status"
 pre_push = ".githooks/pre-push -> make pre-push-gate"
+pre_push_strict = ".githooks/pre-push -> make pre-push-gate-strict"
 
 [claims_and_provenance]
 rules = [

@@ -1,8 +1,8 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum
-.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate hooks-install hooks-status
+.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate pre-push-gate-strict hooks-install hooks-install-strict hooks-status
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
-.PHONY: rust-test rust-clippy rust-smoke e027-validate
+.PHONY: rust-test rust-clippy rust-smoke dep-audit cargo-deny-check mcp-smoke e027-validate
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
 .PHONY: verify-pantheon-physicsforge-mapping verify-pantheon-physicsforge-license-headers
@@ -128,12 +128,32 @@ wave6-gate: governance-gate
 pre-push-gate: rust-smoke governance-gate ascii-check
 	@echo "OK: pre-push gate passed (rust-smoke + governance + ASCII)."
 
+# Optional stricter pre-push lane: include dep-audit + cargo-deny + MCP smoke every push
+pre-push-gate-strict: dep-audit cargo-deny-check mcp-smoke pre-push-gate
+	@echo "OK: strict pre-push gate passed (dep-audit + cargo-deny + mcp-smoke + pre-push-gate)."
+
 hooks-install:
 	@mkdir -p "$(HOOKS_DIR)"
 	@chmod +x "$(HOOKS_DIR)/pre-push"
 	@git config core.hooksPath "$(HOOKS_DIR)"
 	@echo "OK: git hooks installed. core.hooksPath=$$(git config --get core.hooksPath)"
 	@echo "Pre-push will run: make pre-push-gate"
+
+hooks-install-strict:
+	@mkdir -p "$(HOOKS_DIR)"
+	@cp "$(HOOKS_DIR)/pre-push" "$(HOOKS_DIR)/pre-push.bak" 2>/dev/null || true
+	@printf '%s\n' \
+		'#!/usr/bin/env bash' \
+		'set -euo pipefail' \
+		'repo_root="$$(git rev-parse --show-toplevel)"' \
+		'cd "$$repo_root"' \
+		'echo "[pre-push] running make pre-push-gate-strict"' \
+		'make pre-push-gate-strict' \
+		> "$(HOOKS_DIR)/pre-push"
+	@chmod +x "$(HOOKS_DIR)/pre-push"
+	@git config core.hooksPath "$(HOOKS_DIR)"
+	@echo "OK: strict git hook installed. core.hooksPath=$$(git config --get core.hooksPath)"
+	@echo "Pre-push will run: make pre-push-gate-strict"
 
 hooks-status:
 	@echo "core.hooksPath=$$(git config --get core.hooksPath || echo .git/hooks)"
@@ -165,6 +185,23 @@ rust-clippy:
 
 rust-smoke: rust-clippy rust-test
 	@echo "OK: Rust quality gate passed (clippy + tests)."
+
+dep-audit:
+	@echo "== dependency audit: duplicate versions =="
+	cargo tree -d
+	@echo ""
+	@echo "== dependency audit: workspace crate topology (depth=1) =="
+	cargo tree --workspace --depth 1
+	@echo ""
+	@echo "OK: dependency audit completed."
+
+cargo-deny-check:
+	@command -v cargo-deny >/dev/null 2>&1 || { echo "ERROR: cargo-deny not found. Install with: cargo install cargo-deny"; exit 1; }
+	cargo deny check --config deny.toml --show-stats --hide-inclusion-graph advisories bans licenses sources
+	@echo "OK: cargo-deny policy gate passed."
+
+mcp-smoke:
+	PYTHONWARNINGS=error python3 src/verification/verify_mcp_smoke.py
 
 e027-validate:
 	@echo "Validating E-027 Percolation Experiment (Thesis 1 binary)..."
@@ -746,6 +783,8 @@ help:
 	@echo "    make verify-pantheon-physicsforge-overflow Verify overflow tracker max-5-active policy"
 	@echo "    make seed-pantheon-physicsforge-sqlite Seed sqlite memoization for migration findings/risks"
 	@echo "    make rust-smoke           Rust clippy + full test suite"
+	@echo "    make mcp-smoke            Re-test configured MCP server parity and startup health"
+	@echo "    make cargo-deny-check     Enforce deny.toml (advisories, bans, licenses, sources)"
 	@echo "    make registry             Validate TOML registry consistency"
 	@echo "    make registry-wave4       Validate markdown/TOML control-plane + atom extraction gates"
 	@echo "    make registry-wave3       Validate project/external/archive CSV scroll pipeline lanes"

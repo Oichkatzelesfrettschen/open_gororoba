@@ -450,7 +450,7 @@ impl LbmSolver3D {
     ///
     /// Implements the Guo et al. (2002) forcing scheme:
     /// delta_f_i = (1 - 1/(2*tau)) * w_i * S_i
-    /// where S_i = (e_i - u)·F / c_s^2 + (e_i·u)*(e_i·F) / c_s^4
+    /// where S_i = (e_i - u)*F / c_s^2 + (e_i*u)*(e_i*F) / c_s^4
     ///
     /// This method modifies f_new in-place by adding the forcing contribution.
     ///
@@ -478,18 +478,18 @@ impl LbmSolver3D {
             let ei = lattice.velocities[i];
             let ei_f64 = [ei[0] as f64, ei[1] as f64, ei[2] as f64];
 
-            // Compute (e_i - u) · F
+            // Compute (e_i - u) * F
             let ei_minus_u_dot_f = (ei_f64[0] - u[0]) * force[0]
                                  + (ei_f64[1] - u[1]) * force[1]
                                  + (ei_f64[2] - u[2]) * force[2];
 
-            // Compute (e_i · u)
+            // Compute (e_i * u)
             let ei_dot_u = ei_f64[0] * u[0] + ei_f64[1] * u[1] + ei_f64[2] * u[2];
 
-            // Compute (e_i · F)
+            // Compute (e_i * F)
             let ei_dot_f = ei_f64[0] * force[0] + ei_f64[1] * force[1] + ei_f64[2] * force[2];
 
-            // Guo forcing term: S_i = (e_i - u)·F / c_s^2 + (e_i·u)*(e_i·F) / c_s^4
+            // Guo forcing term: S_i = (e_i - u)*F / c_s^2 + (e_i*u)*(e_i*F) / c_s^4
             let s_i = ei_minus_u_dot_f / CS2 + (ei_dot_u * ei_dot_f) / CS4;
 
             // Add forcing contribution: delta_f_i = (1 - 1/(2*tau)) * w_i * S_i

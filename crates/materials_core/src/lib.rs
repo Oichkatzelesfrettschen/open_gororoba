@@ -25,6 +25,7 @@ pub mod metamaterial;
 pub mod optical_database;
 pub mod periodic_table;
 pub mod tang_mass;
+pub mod viscosity_database;
 
 pub use metamaterial::{
     build_absorber_stack, canonical_sedenion_zd_pairs, classify_material_type,
@@ -54,6 +55,13 @@ pub use featurizer::{
 };
 
 pub use baselines::{ols_fit, run_baseline, train_test_split, RegressionResult};
+
+pub use viscosity_database::{
+    from_tau, get_coupling_regime, get_lambda, get_material as get_viscosity_material,
+    get_materials_by_phase, get_quantum_fluids, list_lambda_materials,
+    list_materials as list_viscosity_materials, load_lambda_results, load_viscosity_database,
+    reynolds_number, to_lattice_units, LambdaResult, MaterialViscosity,
+};
 
 pub use optical_database::{
     aluminum_drude,

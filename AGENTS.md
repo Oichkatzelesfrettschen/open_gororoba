@@ -22,8 +22,10 @@ gemini = "GEMINI.md -> AGENTS.md"
 
 [overflow]
 file = "registry/agents_contract.toml"
+machine_docs = ["registry/crate_source_scout.toml", "registry/mcp_server_matrix.toml"]
 edit_core_here = true
-edit_overflow_for = "extended_matrices_profiles"
+edit_overflow_for = "extended_matrices_profiles_inventory"
+editor_reminder = "For additional instructions: edit registry/agents_contract.toml first; keep all policy text compact, infodense, imperative."
 
 [paths]
 workspace = "Cargo.toml"
@@ -63,6 +65,7 @@ rules = [
   "Prefer existing make/script targets.",
   "Keep shared Rust deps in Cargo.toml [workspace.dependencies].",
   "Keep domain kernels in crate-local modules and promote reusable parts into focused workspace crates.",
+  "On dependency graph changes, run make dep-audit before pre-push.",
   "Update canonical TOML, then regenerate mirrors.",
   "Record provenance; label synthetic substitutions.",
   "Append citations; never delete.",
@@ -76,13 +79,18 @@ required = [
 ]
 recommended = [
   "make rust-smoke",
+  "make mcp-smoke",
+  "make cargo-deny-check",
   "make registry",
   "make check",
 ]
+dependency_change = ["make dep-audit", "make cargo-deny-check"]
 pre_push = ["make pre-push-gate"]
+pre_push_strict = ["make pre-push-gate-strict"]
 governance = ["make governance-gate"]
 legacy_alias = "wave6-gate -> governance-gate"
 hook_setup = "make hooks-install"
+hook_setup_strict = "make hooks-install-strict"
 registry_verifiers = [
   "make registry-verify-markdown-inventory",
   "make registry-verify-markdown-owner",

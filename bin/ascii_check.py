@@ -137,18 +137,22 @@ SKIP_EXTS = {
 }
 
 
+def _is_skipped_dirname(name: str) -> bool:
+    return name in SKIP_DIRS or name.startswith("target")
+
+
 def iter_files(repo_root: Path) -> list[Path]:
     out: list[Path] = []
     for root, dirs, files in os.walk(repo_root):
         root_path = Path(root)
         rel = root_path.relative_to(repo_root)
-        if rel.parts and rel.parts[0] in SKIP_DIRS:
+        if rel.parts and _is_skipped_dirname(rel.parts[0]):
             dirs[:] = []
             continue
-        if any(part in SKIP_DIRS for part in rel.parts):
+        if any(_is_skipped_dirname(part) for part in rel.parts):
             dirs[:] = []
             continue
-        dirs[:] = [d for d in dirs if d not in SKIP_DIRS and not d.startswith(".")]
+        dirs[:] = [d for d in dirs if not _is_skipped_dirname(d) and not d.startswith(".")]
         for name in files:
             if name.startswith("."):
                 continue

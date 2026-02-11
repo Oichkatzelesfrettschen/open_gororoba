@@ -5,7 +5,7 @@
 //! spatial fields without ad-hoc perturbation.
 //!
 //! Physical interpretation:
-//! - Low frustration (F ≈ 3/8) = vacuum attractor state
+//! - Low frustration (F ~= 3/8) = vacuum attractor state
 //! - High frustration = excited/unstable region
 //! - APT evolution explores algebraic phase space via frustration gradient
 
@@ -32,7 +32,7 @@ impl AptSedenionField {
     /// Initialize APT evolution from identity element (1,0,0,...,0)
     ///
     /// # Arguments
-    /// - grid_size: cubic domain size (e.g., 32 for 32³ grid)
+    /// - grid_size: cubic domain size (e.g., 32 for 32^3 grid)
     /// - seed: random seed for reproducible evolution
     pub fn new(grid_size: usize, seed: u64) -> Self {
         let total_cells = grid_size.pow(3);

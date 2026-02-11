@@ -754,11 +754,13 @@ def main() -> int:
     )
 
     registry_paths = [
+        "registry/artifact_experiment_links.toml",
         "registry/claims.toml",
         "registry/insights.toml",
         "registry/experiments.toml",
         "registry/external_sources.toml",
         "registry/project_csv_canonical_datasets.toml",
+        "registry/project_csv_canonical.toml",
         "registry/claims_atoms.toml",
         "registry/claims_evidence_edges.toml",
         "registry/knowledge/equation_atoms_v2.toml",
@@ -771,6 +773,9 @@ def main() -> int:
         "registry/narrative_paragraph_atoms.toml",
         "registry/conflict_markers.toml",
         "registry/lacunae.toml",
+        "registry/registry_events.toml",
+        "registry/third_party_markdown_cache.toml",
+        "registry/third_party_source_verification.toml",
     ]
     conflict_text = _render_conflict_markers(conflict_rows, conflict_meta)
     lacunae_text = _render_lacunae(lacunae_rows, lacunae_meta)
