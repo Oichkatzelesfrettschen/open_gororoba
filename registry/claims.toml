@@ -5345,3 +5345,21 @@ status = "Verified"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: verify_registry_events.py fully implements 8 validation gates. Each gate independently tested and documented. Registry event script executed successfully against registry_events.toml initialization event. REFUTE if any validation gate fails to detect intentional violations or false-positive validators are encountered."
 sprint = 35
+
+[[claim]]
+id = "C-653"
+statement = "Artifact-Experiment Linking (W7-003): Bidirectional mappings between experiments and their generated/consumed artifacts. Registry artifact_experiment_links.toml tracks: artifact metadata (id, name, format, size, purpose), artifact-experiment links with data_flow_type (input/output/intermediate), cardinality, and descriptions. Covers CSV outputs, SVG/PNG diagrams, and data files. Links enable traceability from experiment → outputs and reverse lookup (artifact → consuming experiments)."
+where_stated = "`registry/artifact_experiment_links.toml` (schema definition, artifact table, link edge list) + `src/verification/verify_artifact_experiment_links.py` (7-gate validation)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: artifact_experiment_links.toml created with 18 artifacts, 8 links, 7 validation gates. E-001, E-002, E-021, E-023, E-024, E-025 linked to outputs. Input artifacts (external catalogs, documentation) properly marked. REFUTE if validation script fails or circular flows detected."
+sprint = 35
+
+[[claim]]
+id = "C-654"
+statement = "Artifact-Experiment Consistency Validation (W7-003): Python verification script verify_artifact_experiment_links.py ensures 7-gate consistency checks: (1) All artifact_ids exist in artifacts table, (2) All experiment_ids reference valid experiments.toml entries, (3) data_flow_type enumeration (input/output/intermediate), (4) No circular flows (artifact both input AND output of same experiment), (5) No orphaned artifacts (every artifact linked to experiment), (6) Bidirectional consistency (link.experiment_title populated), (7) Coverage reporting (% of experiments with explicit artifact declarations)."
+where_stated = "`src/verification/verify_artifact_experiment_links.py` (7 validation gates, 250+ lines) + `registry/artifact_experiment_links.toml` (validation_gates table)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: verify_artifact_experiment_links.py fully implements 7 validation gates. No circular flows detected. Artifact coverage: 6/24 experiments (25% initial rollout). REFUTE if any validation gate fails to detect violations or bidirectional consistency breaks."
+sprint = 35

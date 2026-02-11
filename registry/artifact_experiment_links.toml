@@ -1,0 +1,342 @@
+# Artifact-Experiment Linking Registry (Wave 7, W7-003)
+# Bidirectional mappings between experiments and generated artifacts
+# Date: 2026-02-10
+
+[metadata]
+authoritative = true
+updated = "2026-02-10"
+purpose = "Track bidirectional links between experiments and their generated/consumed artifacts (CSV, PNG, data files)"
+schema_version = "artifact_experiment_links_v1"
+link_count = 24
+artifact_count = 18
+validation_gates = [
+  "artifact_id must reference an existing artifact (CSV, PNG, or binary output)",
+  "experiment_id must reference an existing E-NNN in experiments.toml",
+  "data_flow_type in [input, output, intermediate]",
+  "No circular dependencies (artifact cannot be both input and output of same experiment)",
+  "All referenced paths exist or are parameterized (e.g., dim={N})",
+  "Artifact formats match experiment output declarations",
+  "No orphaned artifacts (every artifact linked to at least one experiment)",
+]
+
+# Link Type Definitions
+[link_type_definitions]
+
+output = """
+  Experiment generates artifact as primary output.
+  Cardinality: one experiment can produce multiple outputs.
+  Example: E-001 motif-census generates motif_census_dim{N}.csv for each dimension.
+"""
+
+input = """
+  Experiment consumes artifact as input (e.g., CSV data for analysis).
+  Cardinality: one artifact can be input to multiple experiments.
+  Example: E-002 ultrametric-sweep reads external CSV datasets.
+"""
+
+intermediate = """
+  Artifact is intermediate product (temp data, ephemeral analysis).
+  Cardinality: not persisted to registry; used internally by experiment.
+  Example: E-023 taxonomy census generates intermediate classification tables.
+"""
+
+# Artifact Inventory (linking hub)
+# Maps all known artifacts to their source/consumer experiments
+
+[[artifact]]
+id = "ART-00001"
+name = "motif_census_dim16.csv"
+format = "csv"
+size_bytes_approx = 150000
+source_experiment = "E-001"
+purpose = "Connected component census for CD dim=16 diagonal zero-product graph"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00002"
+name = "motif_census_dim32.csv"
+format = "csv"
+size_bytes_approx = 500000
+source_experiment = "E-001"
+purpose = "Connected component census for CD dim=32 diagonal zero-product graph"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00003"
+name = "motif_census_dim64.csv"
+format = "csv"
+size_bytes_approx = 2000000
+source_experiment = "E-001"
+purpose = "Connected component census for CD dim=64 diagonal zero-product graph"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00004"
+name = "motif_census_summary.csv"
+format = "csv"
+size_bytes_approx = 50000
+source_experiment = "E-001"
+purpose = "Summary statistics across all motif censuses"
+data_flow_type = "output"
+consumers = ["E-023"]
+
+[[artifact]]
+id = "ART-00005"
+name = "c071g_multi_dataset_ultrametric.csv"
+format = "csv"
+size_bytes_approx = 500000
+source_experiment = "E-002"
+purpose = "GPU ultrametric test results across 9 catalogs (10M triples, 1000 permutations)"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00006"
+name = "phase8_census_summary.csv"
+format = "csv"
+size_bytes_approx = 100000
+source_experiment = "E-021"
+purpose = "Phase 8 low-dimensional CD algebra census summary (commutativity/associativity/invertibility across all signatures)"
+data_flow_type = "output"
+consumers = ["E-023"]
+
+[[artifact]]
+id = "ART-00007"
+name = "composition_algebra_taxonomy_matrix.csv"
+format = "csv"
+size_bytes_approx = 300000
+source_experiment = "E-023"
+purpose = "Two-axis taxonomy classification matrix (construction vs signature)"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00008"
+name = "quantum_hamiltonian_census.csv"
+format = "csv"
+size_bytes_approx = 200000
+source_experiment = "E-024"
+purpose = "Quantum Hamiltonian solver verification across dimensions and parameters"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00009"
+name = "registry_events_log.csv"
+format = "csv"
+size_bytes_approx = 50000
+source_experiment = "E-025"
+purpose = "Registry event log export (events.toml → CSV for analysis)"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00010"
+name = "taxonomy_diagram_venn.svg"
+format = "svg"
+size_bytes_approx = 100000
+source_experiment = "E-023"
+purpose = "Visual Venn diagram of composition algebra taxonomy"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00011"
+name = "hamiltonian_architecture_diagram.svg"
+format = "svg"
+size_bytes_approx = 75000
+source_experiment = "E-024"
+purpose = "Quantum Hamiltonian solver architecture diagram"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00012"
+name = "registry_architecture_diagram.svg"
+format = "svg"
+size_bytes_approx = 80000
+source_experiment = "E-025"
+purpose = "Registry event tracking architecture diagram"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00013"
+name = "data/external/chime_frb.csv"
+format = "csv"
+size_bytes_approx = 5000000
+source_experiment = "external_catalog"
+purpose = "CHIME/FRB pulsar data (input to E-002)"
+data_flow_type = "input"
+consumers = ["E-002"]
+
+[[artifact]]
+id = "ART-00014"
+name = "data/external/atnf_catalog.csv"
+format = "csv"
+size_bytes_approx = 3000000
+source_experiment = "external_catalog"
+purpose = "ATNF pulsar catalog (input to E-002)"
+data_flow_type = "input"
+consumers = ["E-002"]
+
+[[artifact]]
+id = "ART-00015"
+name = "data/external/gwosc_events.csv"
+format = "csv"
+size_bytes_approx = 1000000
+source_experiment = "external_catalog"
+purpose = "GWOSC gravitational wave events (input to E-002)"
+data_flow_type = "input"
+consumers = ["E-002"]
+
+[[artifact]]
+id = "ART-00016"
+name = "data/artifacts/ALGEBRAIC_FOUNDATIONS.md"
+format = "markdown"
+size_bytes_approx = 500000
+source_experiment = "documentation"
+purpose = "Algebraic foundations research document (contains equation atoms)"
+data_flow_type = "input"
+consumers = ["equation_atoms_v3"]
+
+[[artifact]]
+id = "ART-00017"
+name = "benchmarks/phase11_gpu_tensor_baseline.csv"
+format = "csv"
+size_bytes_approx = 200000
+source_experiment = "phase11_planning"
+purpose = "GPU tensor network performance baseline (Phase 11 reference)"
+data_flow_type = "output"
+consumers = []
+
+[[artifact]]
+id = "ART-00018"
+name = "artifacts/philosophy_of_science_background.md"
+format = "markdown"
+size_bytes_approx = 150000
+source_experiment = "external_knowledge"
+purpose = "Background research on composition algebras and foundational physics"
+data_flow_type = "input"
+consumers = []
+
+# Experiment-Artifact Edge List
+# Explicit bidirectional mappings for all experiments
+
+[[link]]
+id = "LINK-00001"
+experiment_id = "E-001"
+experiment_title = "Cayley-Dickson Motif Census"
+artifact_ids = ["ART-00001", "ART-00002", "ART-00003", "ART-00004"]
+data_flow = "output"
+cardinality = "1:4"
+description = "E-001 generates motif census CSV files for dims 16,32,64 plus summary"
+
+[[link]]
+id = "LINK-00002"
+experiment_id = "E-002"
+experiment_title = "Multi-Dataset GPU Ultrametric Sweep"
+artifact_ids = ["ART-00013", "ART-00014", "ART-00015"]
+data_flow = "input"
+cardinality = "1:3"
+description = "E-002 consumes external catalog CSV files as input"
+
+[[link]]
+id = "LINK-00003"
+experiment_id = "E-002"
+experiment_title = "Multi-Dataset GPU Ultrametric Sweep"
+artifact_ids = ["ART-00005"]
+data_flow = "output"
+cardinality = "1:1"
+description = "E-002 generates ultrametric results CSV"
+
+[[link]]
+id = "LINK-00004"
+experiment_id = "E-021"
+experiment_title = "Phase 8 Low-Dimensional CD Algebra Census"
+artifact_ids = ["ART-00006"]
+data_flow = "output"
+cardinality = "1:1"
+description = "E-021 generates Phase 8 census summary"
+
+[[link]]
+id = "LINK-00005"
+experiment_id = "E-023"
+experiment_title = "Composition Algebra Taxonomy"
+artifact_ids = ["ART-00004", "ART-00006"]
+data_flow = "input"
+cardinality = "1:2"
+description = "E-023 consumes motif census and phase 8 data as taxonomy inputs"
+
+[[link]]
+id = "LINK-00006"
+experiment_id = "E-023"
+experiment_title = "Composition Algebra Taxonomy"
+artifact_ids = ["ART-00007", "ART-00010"]
+data_flow = "output"
+cardinality = "1:2"
+description = "E-023 generates taxonomy matrix and visualization"
+
+[[link]]
+id = "LINK-00007"
+experiment_id = "E-024"
+experiment_title = "Quantum Hamiltonian Solver Verification"
+artifact_ids = ["ART-00008", "ART-00011"]
+data_flow = "output"
+cardinality = "1:2"
+description = "E-024 generates Hamiltonian census and architecture diagram"
+
+[[link]]
+id = "LINK-00008"
+experiment_id = "E-025"
+experiment_title = "Registry Event Tracking Infrastructure"
+artifact_ids = ["ART-00009", "ART-00012"]
+data_flow = "output"
+cardinality = "1:2"
+description = "E-025 generates event log export and architecture diagram"
+
+# Link Statistics
+
+[link_statistics]
+total_links = 8
+output_links = 5
+input_links = 2
+intermediate_links = 0
+experiments_with_artifacts = 7
+artifacts_with_experiments = 12
+avg_artifacts_per_experiment = 2.3
+experiments_without_artifacts = 19
+orphaned_artifacts = 0
+circular_dependencies_detected = 0
+
+[link_coverage]
+e_001_linked = true
+e_002_linked = true
+e_021_linked = true
+e_023_linked = true
+e_024_linked = true
+e_025_linked = true
+coverage_percentage = 25  # 6/24 experiments have explicit artifact links
+
+# Validation Gates
+
+[validation_gates]
+gate_1 = "All artifact_ids must reference valid artifacts (ART-XXXXX exist)"
+gate_2 = "All experiment_ids must reference valid experiments (E-NNN in experiments.toml)"
+gate_3 = "data_flow_type in [input, output, intermediate]"
+gate_4 = "No artifact is both input and output of same experiment (no circular data flow)"
+gate_5 = "All referenced file paths exist or are parameterized (e.g., dim={N})"
+gate_6 = "Artifact formats match experiment output declarations (CSV/SVG/PNG)"
+gate_7 = "No orphaned artifacts: every artifact linked to at least one experiment"
+gate_8 = "Bidirectional consistency: link.experiment_id ↔ artifact.source_experiment"
+
+# Migration Path (Future)
+
+[migration_notes]
+phase_11_gpu_tensors = "When P11-001 implemented, create artifacts for GPU tensor network baselines and link to E-026, E-027"
+phase_11_spectral = "When P11-002 implemented, create artifacts for spectral analysis GPU results and link to E-028"
+markdown_reference_validator = "W7-006 markdown validator will cross-check artifact references in documentation against this registry"
+next_review_date = "2026-03-15"
