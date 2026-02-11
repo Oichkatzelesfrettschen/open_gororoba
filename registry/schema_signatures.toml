@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 version = 1
-signature_count = 20
-registry_paths = ["registry/bibliography.toml", "registry/bibliography_normalized.toml", "registry/claims.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/conflict_markers.toml", "registry/experiments.toml", "registry/external_sources.toml", "registry/insights.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/equation_atoms_v2.toml", "registry/knowledge/equation_symbol_table.toml", "registry/knowledge/proof_skeletons.toml", "registry/lacunae.toml", "registry/narrative_paragraph_atoms.toml", "registry/project_csv_canonical.toml", "registry/project_csv_canonical_datasets.toml", "registry/provenance_sources.toml", "registry/registry_events.toml", "registry/third_party_markdown_cache.toml"]
+signature_count = 21
+registry_paths = ["registry/artifact_experiment_links.toml", "registry/bibliography.toml", "registry/bibliography_normalized.toml", "registry/claims.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/conflict_markers.toml", "registry/experiments.toml", "registry/external_sources.toml", "registry/insights.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/equation_atoms_v2.toml", "registry/knowledge/equation_symbol_table.toml", "registry/knowledge/proof_skeletons.toml", "registry/lacunae.toml", "registry/narrative_paragraph_atoms.toml", "registry/project_csv_canonical.toml", "registry/project_csv_canonical_datasets.toml", "registry/provenance_sources.toml", "registry/registry_events.toml", "registry/third_party_markdown_cache.toml"]
 
 [[signature]]
 id = "SIG-0001"
@@ -228,3 +228,14 @@ array_table_count = 1
 table_count = 4
 shape_json = "{\"path\":\"registry/third_party_markdown_cache.toml\",\"shapes\":{\"external_source\":{\"entry_kind\":\"table\",\"required_keys\":[\"cache_location\",\"date_cached\",\"integration_level\",\"origin\",\"sha256_checksum\",\"source_id\",\"source_type\",\"status\",\"title\",\"url\"],\"row_count\":6,\"type\":\"array\",\"union_keys\":[\"authors\",\"cache_location\",\"date_cached\",\"integration_level\",\"notes\",\"origin\",\"sha256_checksum\",\"source_id\",\"source_type\",\"status\",\"title\",\"url\"]}},\"top_level_keys\":[\"external_source\",\"metadata\",\"integration_rules\",\"classification_legend\",\"governance\"]}"
 
+
+[[signature]]
+id = "SIG-0021"
+path = "registry/artifact_experiment_links.toml"
+top_level_keys = ["metadata", "link_type_definitions", "artifact", "link", "link_statistics", "link_coverage", "validation_gates", "migration_notes"]
+schema_version = "v1"
+schema_sha256 = "a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a"
+content_sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b"
+array_table_count = 2
+table_count = 6
+shape_json = "{\"path\":\"registry/artifact_experiment_links.toml\",\"shapes\":{\"metadata\":{\"keys\":[\"authoritative\",\"updated\",\"purpose\",\"schema_version\",\"link_count\",\"artifact_count\",\"validation_gates\"],\"type\":\"table\"},\"artifact\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"name\",\"format\",\"size_bytes_approx\",\"source_experiment\",\"purpose\",\"data_flow_type\"],\"row_count\":18,\"type\":\"array\",\"union_keys\":[\"id\",\"name\",\"format\",\"size_bytes_approx\",\"source_experiment\",\"purpose\",\"data_flow_type\",\"consumers\"]},\"link\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"experiment_id\",\"experiment_title\",\"artifact_ids\",\"data_flow\",\"cardinality\"],\"row_count\":8,\"type\":\"array\",\"union_keys\":[\"id\",\"experiment_id\",\"experiment_title\",\"artifact_ids\",\"data_flow\",\"cardinality\",\"description\"]}},\"top_level_keys\":[\"metadata\",\"link_type_definitions\",\"artifact\",\"link\",\"link_statistics\",\"link_coverage\",\"validation_gates\",\"migration_notes\"]}"
