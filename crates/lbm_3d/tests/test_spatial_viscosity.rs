@@ -105,7 +105,7 @@ fn test_viscosity_field_roundtrip() {
 #[test]
 fn test_backward_compatibility_uniform_constructor() {
     let mut bgk = BgkCollision::new(0.8);
-    assert!(bgk.tau_field.len() > 0);
+    assert!(!bgk.tau_field.is_empty());
     assert!(bgk.tau_field[0] >= 0.5);
 
     // Can be extended to full field
@@ -153,8 +153,8 @@ fn test_mass_conservation_varying_viscosity() {
     let mut solver = LbmSolver3D::new(4, 4, 4, 0.6);
     let mut tau_field = vec![0.6; 64];
     // Create a gradient
-    for i in 0..64 {
-        tau_field[i] = 0.6 + (i as f64) * 0.005;
+    for (i, tau) in tau_field.iter_mut().enumerate() {
+        *tau = 0.6 + (i as f64) * 0.005;
     }
     solver.set_viscosity_field(tau_field).expect("Failed to set");
     solver.initialize_uniform(1.2, [0.05, 0.03, 0.02]);

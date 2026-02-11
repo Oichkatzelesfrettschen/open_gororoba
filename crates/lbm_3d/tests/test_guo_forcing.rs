@@ -133,7 +133,7 @@ fn test_gradient_force_shear_flow() {
     solver.evolve(100);
 
     // Check that u_x increases with z
-    let u_x_bottom = solver.u[0 * 64 + 4 * 8 + 4][0]; // z=0, center
+    let u_x_bottom = solver.u[4 * 8 + 4][0]; // z=0, center
     let u_x_top = solver.u[7 * 64 + 4 * 8 + 4][0];    // z=7, center
 
     assert!(
@@ -293,7 +293,7 @@ fn test_forcing_with_spatial_viscosity() {
 
     // Low-viscosity region (z=7) should develop higher velocity
     let u_x_low_visc = solver.u[7 * 64 + 4 * 8 + 4][0]; // z=7, center
-    let u_x_high_visc = solver.u[0 * 64 + 4 * 8 + 4][0]; // z=0, center
+    let u_x_high_visc = solver.u[4 * 8 + 4][0]; // z=0, center
 
     assert!(
         u_x_low_visc > u_x_high_visc,
