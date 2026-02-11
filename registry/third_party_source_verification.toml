@@ -1,0 +1,191 @@
+# Third-Party Source Verification Log (Wave 7, W7-005)
+# Extends W6-011 third_party_markdown_cache.toml with automated verification
+# Date: 2026-02-10
+
+[metadata]
+authoritative = true
+updated = "2026-02-10"
+purpose = "Track verification status, checksums, and freshness of cached third-party markdown sources"
+schema_version = "third_party_source_verification_v1"
+verification_cadence = "weekly"
+last_verification_date = "2026-02-10"
+next_verification_date = "2026-02-17"
+total_sources_monitored = 6
+sources_verified = 0
+sources_expired = 0
+sources_modified = 0
+sources_inaccessible = 0
+
+# Verification Policy
+
+[verification_policy]
+enabled = true
+cadence = "weekly"  # Every 7 days
+check_types = ["checksum_validation", "freshness_checking", "access_verification"]
+default_ttl_days = 180  # 6 months default before expiration
+archive_on_expiration = true
+archive_location = "s3://archive/third-party-sources/"
+alert_on_modification = true
+alert_method = "email"  # TODO: implement email alert infrastructure
+alert_recipients = ["system-admin@internal"]
+
+[verification_gates]
+gate_1 = "Checksum match: current SHA256 vs cached_sha256 in third_party_markdown_cache.toml"
+gate_2 = "Freshness check: current_date - last_verified_date <= ttl_days (180 days default)"
+gate_3 = "Access verification: HTTP HEAD request succeeds (200-299 status codes)"
+gate_4 = "Content-Type validation: response header matches expected type (text/markdown, text/plain)"
+gate_5 = "Modification detection: if checksum mismatch, flag for review instead of auto-update"
+gate_6 = "No silent failures: if source unreachable, mark status=inaccessible, do NOT delete"
+gate_7 = "Archive integrity: all expired sources moved to archive with original path preserved"
+gate_8 = "Verification log entry created for each check attempt (success, failure, modification)"
+
+# Verification History Log
+# Each verification attempt recorded with outcome
+
+[[verification]]
+id = "VER-00001"
+source_id = "SOURCE-001"
+source_title = "Carlson Symmetric Elliptic Integrals"
+verification_date = "2026-02-10"
+status = "pending"  # First W7-005 implementation, verification not yet run
+checksum_match = "unknown"
+freshness_ok = "unknown"
+access_ok = "unknown"
+content_type_ok = "unknown"
+notes = "W7-005 initialization: verification infrastructure created, first check scheduled for 2026-02-17"
+
+[[verification]]
+id = "VER-00002"
+source_id = "SOURCE-002"
+source_title = "Quaternion Algebra Theory"
+verification_date = "2026-02-10"
+status = "pending"
+checksum_match = "unknown"
+freshness_ok = "unknown"
+access_ok = "unknown"
+content_type_ok = "unknown"
+notes = "Awaiting first verification run"
+
+[[verification]]
+id = "VER-00003"
+source_id = "SOURCE-003"
+source_title = "Octonion Algebra Structure"
+verification_date = "2026-02-10"
+status = "pending"
+checksum_match = "unknown"
+freshness_ok = "unknown"
+access_ok = "unknown"
+content_type_ok = "unknown"
+notes = "Awaiting first verification run"
+
+[[verification]]
+id = "VER-00004"
+source_id = "SOURCE-004"
+source_title = "Exceptional Lie Algebras"
+verification_date = "2026-02-10"
+status = "pending"
+checksum_match = "unknown"
+freshness_ok = "unknown"
+access_ok = "unknown"
+content_type_ok = "unknown"
+notes = "Awaiting first verification run"
+
+[[verification]]
+id = "VER-00005"
+source_id = "SOURCE-005"
+source_title = "Clifford Algebras and Clifford Analysis"
+verification_date = "2026-02-10"
+status = "pending"
+checksum_match = "unknown"
+freshness_ok = "unknown"
+access_ok = "unknown"
+content_type_ok = "unknown"
+notes = "Awaiting first verification run"
+
+[[verification]]
+id = "VER-00006"
+source_id = "SOURCE-006"
+source_title = "Tensor Networks and Contraction Complexity"
+verification_date = "2026-02-10"
+status = "pending"
+checksum_match = "unknown"
+freshness_ok = "unknown"
+access_ok = "unknown"
+content_type_ok = "unknown"
+notes = "Awaiting first verification run"
+
+# Verification Statistics
+
+[verification_statistics]
+total_verification_attempts = 6
+successful_verifications = 0
+failed_verifications = 0
+modified_sources_detected = 0
+inaccessible_sources = 0
+expired_sources = 0
+average_verification_time_ms = 0
+last_batch_size = 6
+
+# Freshness Constraints
+
+[freshness_constraints]
+default_ttl_days = 180
+critical_sources_ttl_days = 90  # Frequently referenced sources verified more often
+rarely_used_ttl_days = 365  # Less critical sources can cache longer
+
+# Source Categories and Freshness Rules
+
+[source_categories]
+
+critical = """
+  Sources integrated into claims, insights, or experiments.
+  TTL: 90 days (quarterly verification).
+  Examples: Algebraic foundations, computation theory papers.
+"""
+
+reference = """
+  Sources used for context/background, not direct claims.
+  TTL: 180 days (semi-annual verification).
+  Examples: Mathematical textbooks, survey papers.
+"""
+
+archival = """
+  Historical/legacy sources, not currently active research.
+  TTL: 365 days (annual verification).
+  Examples: Foundational papers, legacy dissertations.
+"""
+
+# Archive Policy
+
+[archive_policy]
+enabled = true
+trigger = "source_expired OR source_inaccessible"
+archive_location = "s3://archive/third-party-sources/"
+retention_days = 2555  # 7 years
+backup_frequency = "weekly"
+recovery_procedure = "Restore from archive using source_id, retrieve original URL from verification log"
+archival_format = "gzip-tar"  # Preserve original + metadata
+
+# Migration Notes
+
+[migration_notes]
+w6_011_integration = "Extends third_party_markdown_cache.toml with verification tracking and freshness policy"
+next_verification_run = "2026-02-17 (weekly cadence)"
+email_alert_implementation = "TODO: integrate with system mail service for modification alerts"
+s3_archive_setup = "TODO: configure S3 bucket permissions and lifecycle policies"
+monitoring_dashboard = "TODO: build web UI showing verification status of all sources"
+
+# Validation Gates
+
+[validation_gates]
+gate_description = "8-gate verification pipeline ensures cached sources remain valid and fresh"
+gates = [
+  "Checksum SHA256 validation against cached value",
+  "Freshness check: age <= TTL",
+  "Access verification: HTTP HEAD succeeds",
+  "Content-Type validation: matches expected",
+  "Modification detection: flag, don't auto-update",
+  "No silent failures: mark inaccessible clearly",
+  "Archive integrity: expired sources preserved",
+  "Verification log: every attempt recorded",
+]
