@@ -1,0 +1,23 @@
+[overflow_tracker]
+updated = "2026-02-11"
+authoritative = true
+owner = "phase9-10-bookkeeping"
+max_active_tasks = 5
+active_statuses = ["open", "in_progress", "blocked"]
+total_count = 1
+active_count = 0
+policy_note = "At most 5 active overflow tasks are allowed; additional tasks require closure or explicit deferral rationale."
+
+[[overflow_task]]
+id = "OF-09-001"
+source_task_id = "PPF-086"
+phase = 9
+status = "deferred"
+owner = "phase9-10-bookkeeping"
+eta = "2026-02-18"
+rationale = "Prepared overflow template for future failed gates in phase 9 and phase 10."
+deferral_rationale = "No phase gate failure recorded yet; keep deferred until triggered by a real failure."
+evidence_refs = [
+  "registry/pantheon_physicsforge_phase9_10_audit.toml",
+  "src/verification/verify_pantheon_physicsforge_overflow_tracker.py",
+]

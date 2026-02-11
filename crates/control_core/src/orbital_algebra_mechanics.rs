@@ -192,12 +192,7 @@ impl AttitudeDynamics {
     fn quaternion_rate(&self) -> Quaternion {
         let omega_quat = Quaternion::new(0.0, self.omega.wx, self.omega.wy, self.omega.wz);
         let dq = self.q.multiply(&omega_quat);
-        Quaternion::new(
-            0.5 * dq.q0,
-            0.5 * dq.q1,
-            0.5 * dq.q2,
-            0.5 * dq.q3,
-        )
+        Quaternion::new(0.5 * dq.q0, 0.5 * dq.q1, 0.5 * dq.q2, 0.5 * dq.q3)
     }
 }
 
@@ -220,7 +215,14 @@ pub struct OrbitalElements {
 
 impl OrbitalElements {
     /// Create orbital elements.
-    pub fn new(a: f64, e: f64, i: f64, omega_node: f64, omega_peri: f64, mean_anomaly: f64) -> Self {
+    pub fn new(
+        a: f64,
+        e: f64,
+        i: f64,
+        omega_node: f64,
+        omega_peri: f64,
+        mean_anomaly: f64,
+    ) -> Self {
         OrbitalElements {
             a,
             e,
@@ -419,7 +421,11 @@ mod tests {
         let p1 = q1.multiply(&q2);
         let p2 = q2.multiply(&q1);
         // These rotations don't commute
-        assert!((p1.q1 - p2.q1).abs() > 1e-6 || (p1.q2 - p2.q2).abs() > 1e-6 || (p1.q3 - p2.q3).abs() > 1e-6);
+        assert!(
+            (p1.q1 - p2.q1).abs() > 1e-6
+                || (p1.q2 - p2.q2).abs() > 1e-6
+                || (p1.q3 - p2.q3).abs() > 1e-6
+        );
     }
 
     #[test]

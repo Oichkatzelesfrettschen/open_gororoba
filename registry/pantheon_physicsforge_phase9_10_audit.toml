@@ -1,0 +1,104 @@
+[phase_audit]
+id = "PPF-AUDIT-P9P10-001"
+updated = "2026-02-11"
+authoritative = true
+owner = "phase9-10-bookkeeping"
+scope = "Phase 9-10 bookkeeping scaffolding"
+source_of_truth = "registry/pantheon_physicsforge_phase9_10_audit.toml"
+markdown_mirror_required = false
+overall_status = "pass_with_open_risks"
+pass_count = 7
+fail_count = 0
+blocker_count = 0
+open_risk_count = 1
+ownership_note = "Canonical report is TOML-first. Add markdown mirror only when requested for external readers."
+
+[[gate]]
+id = "GATE-077"
+task_number = 77
+status = "pass"
+summary = "Mapping completeness verifier added and wired."
+command = "python3 src/verification/verify_pantheon_physicsforge_mapping_completeness.py"
+evidence_refs = [
+  "src/verification/verify_pantheon_physicsforge_mapping_completeness.py",
+  "registry/pantheon_physicsforge_migration_matrix.toml",
+  "registry/pantheon_physicsforge_migration_todo.toml",
+]
+
+[[gate]]
+id = "GATE-078"
+task_number = 78
+status = "pass"
+summary = "Migrated file license-header consistency verifier added and wired."
+command = "python3 src/verification/verify_pantheon_physicsforge_license_headers.py"
+evidence_refs = [
+  "src/verification/verify_pantheon_physicsforge_license_headers.py",
+  "registry/pantheon_physicsforge_ported_files.toml",
+  "registry/pantheon_physicsforge_license_alignment.toml",
+]
+
+[[gate]]
+id = "GATE-079"
+task_number = 79
+status = "pass"
+summary = "Verifier targets wired into Makefile smoke/check and runbook command set."
+command = "make smoke"
+evidence_refs = [
+  "Makefile",
+  "registry/pantheon_physicsforge_migration_runbook.toml",
+]
+
+[[gate]]
+id = "GATE-080"
+task_number = 80
+status = "pass"
+summary = "SQLite memoization seed utility added with initial findings/risk records."
+command = "python3 src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py"
+evidence_refs = [
+  "src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py",
+  "registry/pantheon_physicsforge_migration_findings.toml",
+  "build/pantheon_physicsforge_migration.db",
+]
+
+[[gate]]
+id = "GATE-081"
+task_number = 81
+status = "pass"
+summary = "Phase audit report published as canonical TOML with ownership metadata."
+command = "python3 -c \"import pathlib,tomllib; tomllib.loads(pathlib.Path('registry/pantheon_physicsforge_phase9_10_audit.toml').read_text(encoding='utf-8'))\""
+evidence_refs = [
+  "registry/pantheon_physicsforge_phase9_10_audit.toml",
+]
+
+[[gate]]
+id = "GATE-086"
+task_number = 86
+status = "pass"
+summary = "Overflow template batch row added with owner and ETA in canonical tracker."
+command = "python3 src/verification/verify_pantheon_physicsforge_overflow_tracker.py"
+evidence_refs = [
+  "registry/pantheon_physicsforge_overflow_tracker.toml",
+  "src/verification/verify_pantheon_physicsforge_overflow_tracker.py",
+]
+
+[[gate]]
+id = "GATE-087"
+task_number = 87
+status = "pass"
+summary = "Max-5-active overflow rule implemented and verified."
+command = "python3 src/verification/verify_pantheon_physicsforge_overflow_tracker.py"
+evidence_refs = [
+  "registry/pantheon_physicsforge_overflow_tracker.toml",
+  "src/verification/verify_pantheon_physicsforge_overflow_tracker.py",
+]
+
+[[open_risk]]
+id = "MR-001"
+status = "open"
+severity = "medium"
+summary = "PhysicsForge-mapped modules are inventoried but remain unimplemented in Rust target crates."
+mitigation = "Carry risk in overflow tracker and re-rank during weekly rescope (task 89)."
+evidence_refs = [
+  "registry/pantheon_physicsforge_migration_findings.toml",
+  "registry/pantheon_physicsforge_overflow_tracker.toml",
+]

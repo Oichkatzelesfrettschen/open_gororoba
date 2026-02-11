@@ -712,8 +712,10 @@ mod tests {
             result.predicted_ratios.0, result.predicted_ratios.1, result.predicted_ratios.2,
         );
         eprintln!("  RMS deviation: {:.6}", result.rms_deviation);
-        eprintln!("  PDG targets: e/mu={:.6}, mu/tau={:.6}, e/tau={:.6}",
-            RATIO_E_MU, RATIO_MU_TAU, RATIO_E_TAU);
+        eprintln!(
+            "  PDG targets: e/mu={:.6}, mu/tau={:.6}, e/tau={:.6}",
+            RATIO_E_MU, RATIO_MU_TAU, RATIO_E_TAU
+        );
 
         // Should find a valid prediction
         assert!(result.rms_deviation < f64::INFINITY);

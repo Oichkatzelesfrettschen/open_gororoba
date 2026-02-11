@@ -1,0 +1,30 @@
+[license_alignment]
+updated = "2026-02-10"
+authoritative = true
+required_license = "GPL-2.0-only"
+task_1_status = "completed"
+task_2_status = "completed"
+task_3_status = "completed"
+task_4_status = "completed"
+
+[[repository]]
+name = "pantheon"
+repo_path = "../pantheon"
+license_file = "../pantheon/LICENSE"
+license_file_detected = "GPLv2-text"
+metadata_file = "../pantheon/pyproject.toml"
+metadata_license_text = "GPL-2.0-only"
+readme_file = "../pantheon/README.md"
+readme_license_phrase = "GNU General Public License v2.0 only (GPL-2.0-only)."
+
+[[repository]]
+name = "PhysicsForge"
+repo_path = "../PhysicsForge"
+license_file = "../PhysicsForge/LICENSE"
+license_file_detected = "GPLv2-text"
+metadata_file = "../PhysicsForge/pyproject.toml"
+metadata_license_text = "GPL-2.0-only"
+readme_file = "../PhysicsForge/README.md"
+readme_license_phrase = "GNU General Public License v2.0 only (GPL v2 only)."
+policy_doc_updated = "../PhysicsForge/docs/RELEASE_NOTES_v1.0.md"
+policy_doc_change = "Removed fallback license placeholders and pinned to GPL-2.0-only."

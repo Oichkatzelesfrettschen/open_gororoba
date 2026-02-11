@@ -3,7 +3,7 @@
 //! Compares performance of GPU-accelerated vs CPU PEPS row contraction
 //! for varying tensor sizes. Compiled with `cargo bench --bench gpu_peps_bench --features gpu`.
 
-use criterion::{black_box, criterion_group, criterion_main, Criterion, BenchmarkId};
+use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
 use faer::complex_native::c64;
 
 /// Benchmark GPU vs CPU for varying tensor sizes (elements).
@@ -31,40 +31,27 @@ fn benchmark_peps_row_contraction(c: &mut Criterion) {
 
         // Benchmark: element-wise complex multiplication
         // (This is what contract_rows does internally)
-        group.bench_with_input(
-            BenchmarkId::new("cpu_multiply", size),
-            &size,
-            |b, &_| {
-                b.iter(|| {
-                    upper
-                        .iter()
-                        .zip(lower.iter())
-                        .map(|(a, b)| {
-                            c64::new(
-                                a.re * b.re - a.im * b.im,
-                                a.re * b.im + a.im * b.re,
-                            )
-                        })
-                        .collect::<Vec<_>>()
-                })
-            },
-        );
+        group.bench_with_input(BenchmarkId::new("cpu_multiply", size), &size, |b, &_| {
+            b.iter(|| {
+                upper
+                    .iter()
+                    .zip(lower.iter())
+                    .map(|(a, b)| c64::new(a.re * b.re - a.im * b.im, a.re * b.im + a.im * b.re))
+                    .collect::<Vec<_>>()
+            })
+        });
 
         // For GPU: only benchmark if feature is enabled
         #[cfg(feature = "gpu")]
         {
-            group.bench_with_input(
-                BenchmarkId::new("gpu_multiply", size),
-                &size,
-                |b, &_| {
-                    b.iter(|| {
-                        quantum_core::gpu::peps::gpu_contract_rows_peps(
-                            black_box(&upper),
-                            black_box(&lower),
-                        )
-                    })
-                },
-            );
+            group.bench_with_input(BenchmarkId::new("gpu_multiply", size), &size, |b, &_| {
+                b.iter(|| {
+                    quantum_core::gpu::peps::gpu_contract_rows_peps(
+                        black_box(&upper),
+                        black_box(&lower),
+                    )
+                })
+            });
         }
     }
 
@@ -80,9 +67,7 @@ fn benchmark_gpu_memory_transfer(c: &mut Criterion) {
     let sizes = vec![10_000, 100_000, 1_000_000];
 
     for size in sizes {
-        let data: Vec<f64> = (0..size)
-            .map(|i| (i as f64) * 0.001)
-            .collect();
+        let data: Vec<f64> = (0..size).map(|i| (i as f64) * 0.001).collect();
 
         group.bench_with_input(
             BenchmarkId::new("host_to_device_to_host", size),
@@ -101,10 +86,7 @@ fn benchmark_gpu_memory_transfer(c: &mut Criterion) {
     group.finish();
 }
 
-criterion_group!(
-    benches,
-    benchmark_peps_row_contraction,
-);
+criterion_group!(benches, benchmark_peps_row_contraction,);
 
 // Conditionally include GPU memory transfer benchmark
 #[cfg(feature = "gpu")]

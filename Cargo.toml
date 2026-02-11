@@ -20,6 +20,7 @@ members = [
     "crates/lbm_core",
     "crates/gororoba_py",
     "crates/gororoba_cli",
+    "crates/snia_core",
 ]
 
 # Shared dependencies across workspace

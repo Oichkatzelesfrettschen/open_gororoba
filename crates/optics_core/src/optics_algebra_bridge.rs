@@ -258,7 +258,9 @@ impl MuellerMatrix {
     /// Apply Mueller matrix to Stokes vector.
     pub fn apply(&self, stokes: &PolarizationState) -> PolarizationState {
         let s = [stokes.intensity, stokes.s1, stokes.s2, stokes.s3];
-        let result: Vec<f64> = self.m.iter()
+        let result: Vec<f64> = self
+            .m
+            .iter()
             .map(|row| row.iter().zip(&s).map(|(m_ij, s_j)| m_ij * s_j).sum())
             .collect();
 
@@ -267,11 +269,15 @@ impl MuellerMatrix {
 
     /// Compose two Mueller matrices.
     pub fn compose(&self, other: &MuellerMatrix) -> MuellerMatrix {
-        let result = self.m.iter()
+        let result = self
+            .m
+            .iter()
             .map(|row| {
                 let mut out_row = [0.0; 4];
                 for (j, out) in out_row.iter_mut().enumerate() {
-                    *out = row.iter().enumerate()
+                    *out = row
+                        .iter()
+                        .enumerate()
                         .map(|(k, &m_ik)| m_ik * other.m[k][j])
                         .sum();
                 }

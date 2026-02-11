@@ -365,7 +365,10 @@ fn extract_fano_triples(dim: usize, imag: &[usize]) -> Vec<(usize, usize, usize)
 ///
 /// Returns a `SubalgebraEnumeration` with all valid subalgebras.
 pub fn enumerate_octonion_subalgebras(dim: usize) -> SubalgebraEnumeration {
-    assert!(dim.is_power_of_two() && dim >= 16, "need dim >= 16 for octonion subalgebras");
+    assert!(
+        dim.is_power_of_two() && dim >= 16,
+        "need dim >= 16 for octonion subalgebras"
+    );
 
     let hyperplanes = enumerate_hyperplanes(dim);
     let tested = hyperplanes.len();
@@ -410,10 +413,7 @@ pub fn enumerate_octonion_subalgebras(dim: usize) -> SubalgebraEnumeration {
 /// within the subalgebra, computes ||[e_i, e_j, e_k]||.
 ///
 /// Returns sorted unique norms (with tolerance 1e-12 for deduplication).
-pub fn subalgebra_associator_spectrum(
-    dim: usize,
-    subalgebra: &OctonionSubalgebra,
-) -> Vec<f64> {
+pub fn subalgebra_associator_spectrum(dim: usize, subalgebra: &OctonionSubalgebra) -> Vec<f64> {
     let imag = &subalgebra.imaginary;
     let mut norms = Vec::new();
 
@@ -454,9 +454,7 @@ pub fn subalgebra_associator_spectrum(
 ///
 /// Generation 0: the standard subalgebra (maximal overlap with lower half)
 /// Higher generations: decreasing overlap with lower half
-pub fn classify_generations(
-    enumeration: &SubalgebraEnumeration,
-) -> Vec<SubalgebraGeneration> {
+pub fn classify_generations(enumeration: &SubalgebraEnumeration) -> Vec<SubalgebraGeneration> {
     let dim = enumeration.dim;
     let half = dim / 2;
 
@@ -502,9 +500,7 @@ pub fn classify_generations(
 /// Returns a map: component_index -> list of subalgebra indices whose
 /// imaginary elements include both the lo and hi indices of at least
 /// one cross-assessor pair in the component.
-pub fn cross_reference_boxkites(
-    enumeration: &SubalgebraEnumeration,
-) -> HashMap<usize, Vec<usize>> {
+pub fn cross_reference_boxkites(enumeration: &SubalgebraEnumeration) -> HashMap<usize, Vec<usize>> {
     use crate::analysis::boxkites::motif_components_for_cross_assessors;
 
     let dim = enumeration.dim;
@@ -519,9 +515,10 @@ pub fn cross_reference_boxkites(
             let sub_set: BTreeSet<usize> = sub.indices.iter().copied().collect();
 
             // Check if any cross-assessor pair (lo, hi) has both indices in the subalgebra
-            let has_overlap = comp.nodes.iter().any(|&(lo, hi)| {
-                sub_set.contains(&lo) && sub_set.contains(&hi)
-            });
+            let has_overlap = comp
+                .nodes
+                .iter()
+                .any(|&(lo, hi)| sub_set.contains(&lo) && sub_set.contains(&hi));
 
             if has_overlap {
                 matching_subs.push(sub_idx);
@@ -935,7 +932,9 @@ mod tests {
         let enumeration = enumerate_octonion_subalgebras(16);
 
         // Standard octonion vs a non-standard subalgebra
-        let standard = &enumeration.subalgebras.iter()
+        let standard = &enumeration
+            .subalgebras
+            .iter()
             .find(|s| s.indices == [0, 1, 2, 3, 4, 5, 6, 7])
             .unwrap();
 
@@ -964,10 +963,7 @@ mod tests {
                     gen, i, j, k, norm
                 );
             } else {
-                eprintln!(
-                    "  depth {}: mean norm = {:.6}",
-                    gen - 10, norm
-                );
+                eprintln!("  depth {}: mean norm = {:.6}", gen - 10, norm);
             }
         }
 

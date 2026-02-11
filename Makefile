@@ -3,6 +3,9 @@
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify wave6-gate
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke
+.PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
+.PHONY: verify-pantheon-physicsforge-mapping verify-pantheon-physicsforge-license-headers
+.PHONY: verify-pantheon-physicsforge-overflow seed-pantheon-physicsforge-sqlite
 .PHONY: registry registry-knowledge registry-governance registry-migrate-corpus registry-normalize-claims
 .PHONY: registry-normalize-bibliography registry-bootstrap-bibliography
 .PHONY: registry-normalize-external-sources registry-bootstrap-external-sources
@@ -123,6 +126,9 @@ smoke: install
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_dataset_manifest_providers.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_generated_artifacts.py
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_grand_images.py
+	$(MAKE) verify-pantheon-physicsforge-mapping
+	$(MAKE) verify-pantheon-physicsforge-license-headers
+	$(MAKE) verify-pantheon-physicsforge-overflow
 
 math-verify: test lint
 	@echo "OK: math validation suite complete. See docs/MATH_VALIDATION_REPORT.md"
@@ -135,6 +141,24 @@ rust-clippy:
 
 rust-smoke: rust-clippy rust-test
 	@echo "OK: Rust quality gate passed (clippy + tests)."
+
+verify-pantheon-physicsforge-license:
+	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_license_consistency.py
+
+verify-pantheon-physicsforge-provenance:
+	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_provenance_gate.py
+
+verify-pantheon-physicsforge-mapping:
+	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_mapping_completeness.py
+
+verify-pantheon-physicsforge-license-headers:
+	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_license_headers.py
+
+verify-pantheon-physicsforge-overflow:
+	PYTHONWARNINGS=error python3 src/verification/verify_pantheon_physicsforge_overflow_tracker.py
+
+seed-pantheon-physicsforge-sqlite:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py
 
 registry-knowledge:
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_knowledge_sources_registry.py
@@ -642,6 +666,10 @@ help:
 	@echo "    make smoke                Compileall + lint stats + artifact verifiers"
 	@echo "    make check                test + lint + smoke (CI entry point)"
 	@echo "    make ascii-check          Verify ASCII-only policy"
+	@echo "    make verify-pantheon-physicsforge-mapping Verify migration matrix/todo mapping completeness"
+	@echo "    make verify-pantheon-physicsforge-license-headers Verify GPL-2.0-only header consistency in migrated files"
+	@echo "    make verify-pantheon-physicsforge-overflow Verify overflow tracker max-5-active policy"
+	@echo "    make seed-pantheon-physicsforge-sqlite Seed sqlite memoization for migration findings/risks"
 	@echo "    make rust-smoke           Rust clippy + full test suite"
 	@echo "    make registry             Validate TOML registry consistency"
 	@echo "    make registry-wave4       Validate markdown/TOML control-plane + atom extraction gates"

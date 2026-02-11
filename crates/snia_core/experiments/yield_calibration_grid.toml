@@ -1,0 +1,19 @@
+[scan]
+name = "yield_calibration_grid"
+target_nickel56_msun = 0.6
+burned_mass_msun = 1.0
+
+[[scan.parameter_sets]]
+transition_density = 1.8e7
+turbulence_intensity = 0.7
+ignition_offset_km = 80.0
+
+[[scan.parameter_sets]]
+transition_density = 2.2e7
+turbulence_intensity = 1.0
+ignition_offset_km = 60.0
+
+[[scan.parameter_sets]]
+transition_density = 2.8e7
+turbulence_intensity = 1.2
+ignition_offset_km = 40.0

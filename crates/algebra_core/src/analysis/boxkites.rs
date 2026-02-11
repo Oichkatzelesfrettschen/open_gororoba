@@ -1468,8 +1468,7 @@ pub fn compute_frustration_ratio(dim: usize) -> FrustrationResult {
         let n = nodes.len();
         total_edges += comp.edges.len();
 
-        let eta =
-            |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
+        let eta = |a: CrossPair, b: CrossPair| -> u8 { psi(dim, a.0, b.1) ^ psi(dim, a.1, b.0) };
 
         // Edge eta balance
         for &(u, v) in &comp.edges {
@@ -1694,7 +1693,7 @@ mod tests {
 
         for bk in &boxkites {
             // Count degree of each vertex
-            let mut degrees = vec![0usize; 6];
+            let mut degrees = [0usize; 6];
             for &(i, j) in &bk.edges {
                 degrees[i] += 1;
                 degrees[j] += 1;
@@ -2524,7 +2523,7 @@ mod tests {
         // Eigenvalues: 2(k-1)=4 (x1), 0 (x k*(m-1)=3), -m=-2 (x k-1=2).
         // Sorted descending: [4, 0, 0, 0, -2, -2]
         let comps = motif_components_for_cross_assessors(16);
-        let expected = vec![4.0, 0.0, 0.0, 0.0, -2.0, -2.0];
+        let expected = [4.0, 0.0, 0.0, 0.0, -2.0, -2.0];
         for (i, c) in comps.iter().enumerate() {
             let spec = c.spectrum();
             assert_eq!(spec.len(), 6, "dim=16 comp[{i}] should have 6 eigenvalues");
@@ -3835,8 +3834,7 @@ mod tests {
         );
 
         // Check if this component's XOR label is distinguishable
-        let all_labels: Vec<Option<usize>> =
-            components.iter().map(|c| component_xor_label(c)).collect();
+        let all_labels: Vec<Option<usize>> = components.iter().map(component_xor_label).collect();
         eprintln!("All XOR labels: {:?}", all_labels);
 
         // The special component has XOR label 8 = dim/4 = 32/4.
@@ -5037,7 +5035,7 @@ mod tests {
                         let sigma_vw = m_vw[0][0] ^ m_vw[1][1];
                         let sigma_uw = m_uw[0][0] ^ m_uw[1][1];
                         let n_same = (sigma_uv + sigma_vw + sigma_uw) as usize;
-                        let product_even = n_same % 2 == 0;
+                        let product_even = n_same.is_multiple_of(2);
                         let is_pure = if product_even {
                             n_same == 0
                         } else {
@@ -5323,7 +5321,7 @@ mod tests {
                             let d_vw = diag(dim, v, w);
                             let d_uw = diag(dim, u, w);
                             let n_same = (d_uv + d_vw + d_uw) as usize;
-                            let product_even = n_same % 2 == 0;
+                            let product_even = n_same.is_multiple_of(2);
                             let is_pure = if product_even {
                                 n_same == 0
                             } else {
@@ -8481,7 +8479,10 @@ mod tests {
         eprintln!("Components: {}", result.n_components);
         eprintln!("Edges: {}", result.total_edges);
         eprintln!("eta=0: {}, eta=1: {}", result.eta0_count, result.eta1_count);
-        eprintln!("b1: {}, frustrated: {}", result.total_b1, result.total_frustrated);
+        eprintln!(
+            "b1: {}, frustrated: {}",
+            result.total_b1, result.total_frustrated
+        );
         eprintln!("frustration ratio: {:.8}", result.frustration_ratio);
         eprintln!("elapsed: {:.2}s", result.elapsed_secs);
 

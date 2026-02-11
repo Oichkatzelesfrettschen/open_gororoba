@@ -11,6 +11,7 @@ pub mod pdfium_backend;
 #[cfg(feature = "fallback")]
 pub mod fallback_backend;
 
+pub mod equation_catalog;
 pub mod image;
 pub mod pdf;
 pub mod table;
@@ -30,6 +31,9 @@ pub enum DocpipeError {
 
     #[error("TOML serialization error: {0}")]
     TomlSerialize(#[from] toml::ser::Error),
+
+    #[error("CSV parse error: {0}")]
+    Csv(#[from] csv::Error),
 
     #[error("extraction error: {0}")]
     Extraction(String),

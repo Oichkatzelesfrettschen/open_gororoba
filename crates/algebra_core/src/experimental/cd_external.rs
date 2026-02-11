@@ -2526,22 +2526,25 @@ mod tests {
             let partner_lo = lo ^ xor_mask;
             let partner_hi = hi ^ xor_mask;
             // Ensure partner is a valid cross-pair (lo in [1,half), hi in [half,dim))
-            if partner_lo >= 1 && partner_lo < half && partner_hi >= half && partner_hi < dim {
-                if pair_index.contains_key(&(partner_lo, partner_hi)) {
-                    n_checked += 1;
+            if partner_lo >= 1
+                && partner_lo < half
+                && partner_hi >= half
+                && partner_hi < dim
+                && pair_index.contains_key(&(partner_lo, partner_hi))
+            {
+                n_checked += 1;
 
-                    // Count shared basis indices between (lo,hi) and (partner_lo, partner_hi)
-                    let mut shared = 0u32;
-                    if lo == partner_lo || lo == partner_hi {
-                        shared += 1;
-                    }
-                    if hi == partner_lo || hi == partner_hi {
-                        shared += 1;
-                    }
+                // Count shared basis indices between (lo,hi) and (partner_lo, partner_hi)
+                let mut shared = 0u32;
+                if lo == partner_lo || lo == partner_hi {
+                    shared += 1;
+                }
+                if hi == partner_lo || hi == partner_hi {
+                    shared += 1;
+                }
 
-                    if shared == 1 {
-                        n_xor_is_matching += 1;
-                    }
+                if shared == 1 {
+                    n_xor_is_matching += 1;
                 }
             }
         }

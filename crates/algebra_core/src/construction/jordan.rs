@@ -224,7 +224,7 @@ mod tests {
 
         // Jordan product: (ab + ba) / 2 = 2 * (ab) / 2 = ab (for commutative!)
         let jordan_prod = a1.jordan_product(&a, &b);
-        let expected = vec![6.0]; // 2 * 3 = 6
+        let expected = [6.0]; // 2 * 3 = 6
 
         assert_eq!(
             jordan_prod[0], expected[0],

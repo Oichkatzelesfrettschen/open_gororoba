@@ -242,3 +242,8 @@ description = "8-step pipeline: D2Q9 LBM -> spectral triads -> p-adic/neg-dim wa
 name = "dimensional-census"
 crate = "gororoba_cli"
 description = "APT verification across the Cayley-Dickson dimensional ladder"
+
+[[binary]]
+name = "snia-ddt"
+crate = "gororoba_cli"
+description = "SN Ia delayed-detonation scaffold runner with reproducible snapshot and summary outputs"

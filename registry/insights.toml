@@ -499,3 +499,31 @@ status = "verified"
 summary = "Phase D implemented the He-4 superfluid foundation: BEC thermodynamics, Landau two-fluid model, and Gross-Pitaevskii equation solver. KEY RESULTS: (1) BEC THERMODYNAMICS: Ideal gas T_c = 3.133 K matches textbook value to 0.003 K. Condensate fraction f(T) = 1-(T/T_c)^(3/2) verified at T=0, T=T_c, and T=T_c/2. Landau empirical superfluid density with exponent 5.6 reproduces the steep onset below T_lambda. (2) TWO-FLUID DYNAMICS: 0D relaxation model with RK4 stepper (same 15-line hand-rolled pattern as TOV solver) correctly equilibrates rho_s_frac on timescale tau_rho = 1 us and temperature on tau_t = 100 us. Mass conservation exact by construction. Thermal relaxation through the lambda transition develops rho_s = 0.987 at 1.0 K. (3) GROSS-PITAEVSKII: Strang split-operator with FFT-based kinetic step, extending the fractional_schrodinger pattern with the nonlinear |psi|^2 mean-field potential updated each half-step. Imaginary-time ground state recovers E = omega/2 = 0.4998 (0.04% error). Repulsive g=50 raises energy to 5.39. Real-time norm preserved to within 5% over 200 steps. ARCHITECTURE INSIGHT: The split-operator pattern from fractional_schrodinger is directly reusable for GPE; only the potential half-step changes (adding g*|psi|^2). Imaginary-time evolution replaces complex exponentials with real ones and mandates renormalization."
 claims = ["C-621", "C-622", "C-623", "C-624", "C-625", "C-626", "C-627", "C-628", "C-629"]
 sprint = 35
+
+[[insight]]
+id = "I-054"
+insight = "Commutativity is not universal across composition algebras. Tensor product constructions (tessarines, dual-octonions, etc.) preserve commutativity from the base field, while recursive doubling (Cayley-Dickson) breaks it universally at dim ≥ 4. This represents two orthogonal paradigms in algebra design."
+supporting_evidence = ["C-634", "C-640", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md (Section 1.2, 3.2)"]
+related_claims = ["C-633", "C-634", "C-640"]
+confidence = "high"
+verified_date = "2026-02-10"
+sprint = 35
+
+[[insight]]
+id = "I-055"
+insight = "Division algebra status depends on BOTH construction method AND signature. Cayley-Dickson algebras have division status fully determined by gamma=-1 vs gamma=+1 (all-division at gamma=+1 up to dim=8, all non-division at gamma=-1). Tessarines are never division algebras regardless of signature, because the zero-divisor structure is inherent to the tensor product. This means 'is this a division algebra?' requires specifying the family, not just the dimension."
+supporting_evidence = ["C-635", "C-636", "C-640", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md (Section 1.2, 3.1)"]
+related_claims = ["C-633", "C-635", "C-636"]
+confidence = "high"
+verified_date = "2026-02-10"
+sprint = 35
+
+[[insight]]
+id = "I-056"
+insight = "Frustration (sign imbalance in multiplication tables) acts as a topological phase boundary marker. The dual-octonion phase boundary 0.4375 lies exactly between elliptic (standard, ~0.375) and hyperbolic (split, ~0.469) regimes, suggesting that algebraic structure is constrained by geometric topology. Tensor product variants (Dual/Bi/Para octonions) exhibit different frustration values (0.4375, 0.4688, 0.6562) predictable from their respective algebraic definitions, independent of Cayley-Dickson theory."
+supporting_evidence = ["C-637", "C-638", "C-639", "docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md (Section 2.4, 4.2)"]
+related_claims = ["C-637", "C-638", "C-639"]
+confidence = "high"
+verified_date = "2026-02-10"
+sprint = 35
+

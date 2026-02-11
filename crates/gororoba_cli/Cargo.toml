@@ -194,6 +194,10 @@ path = "src/bin/dimensional_census.rs"
 name = "c590_attractor_sweep"
 path = "src/bin/c590_attractor_sweep.rs"
 
+[[bin]]
+name = "snia-ddt"
+path = "src/bin/snia_ddt.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe" }
 algebra_core = { path = "../algebra_core" }
@@ -207,6 +211,7 @@ lbm_core = { path = "../lbm_core" }
 stats_core = { path = "../stats_core", features = ["gpu"] }
 data_core = { path = "../data_core" }
 scrolls_core = { path = "../scrolls_core" }
+snia_core = { path = "../snia_core" }
 ndarray = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }

@@ -121,11 +121,7 @@ pub fn detect_entropy_trap(
     let mut total_mi = 0.0;
     for i in 0..n_channels {
         for j in (i + 1)..n_channels {
-            total_mi += pairwise_mutual_info(
-                &trace.energies[i],
-                &trace.energies[j],
-                n_bins,
-            );
+            total_mi += pairwise_mutual_info(&trace.energies[i], &trace.energies[j], n_bins);
         }
     }
 
@@ -233,10 +229,7 @@ pub fn absorption_spectrum(
         // Average energy over measurement window
         let mut channel_energies = Vec::with_capacity(n);
         for ch in 0..n {
-            let avg: f64 = trace.energies[ch][n_transient..]
-                .iter()
-                .sum::<f64>()
-                / n_measure as f64;
+            let avg: f64 = trace.energies[ch][n_transient..].iter().sum::<f64>() / n_measure as f64;
             channel_energies.push(avg);
         }
         results.push((freq, channel_energies));
@@ -292,7 +285,12 @@ mod tests {
         let values = vec![1.0; 10];
         let h = shannon_entropy(&values);
         let expected = (10.0f64).ln();
-        assert!((h - expected).abs() < 1e-10, "uniform H={}, expected={}", h, expected);
+        assert!(
+            (h - expected).abs() < 1e-10,
+            "uniform H={}, expected={}",
+            h,
+            expected
+        );
     }
 
     #[test]
@@ -335,7 +333,8 @@ mod tests {
             assert!(
                 energy < 1e-30,
                 "undriven uncoupled channel {} should have zero energy, got {}",
-                ch, energy
+                ch,
+                energy
             );
         }
 
@@ -352,8 +351,12 @@ mod tests {
         // Two genuinely independent random-ish series should have low MI.
         // Use deterministic sequences with different frequencies.
         let n = 1000;
-        let x: Vec<f64> = (0..n).map(|i| (i as f64 * 0.1).sin().abs() + 0.01).collect();
-        let y: Vec<f64> = (0..n).map(|i| (i as f64 * 0.17 + 2.0).sin().abs() + 0.01).collect();
+        let x: Vec<f64> = (0..n)
+            .map(|i| (i as f64 * 0.1).sin().abs() + 0.01)
+            .collect();
+        let y: Vec<f64> = (0..n)
+            .map(|i| (i as f64 * 0.17 + 2.0).sin().abs() + 0.01)
+            .collect();
         let mi = pairwise_mutual_info(&x, &y, 20);
         eprintln!("Independent sin series MI = {:.6}", mi);
         // Incommensurate frequencies produce near-independent distributions
@@ -374,12 +377,10 @@ mod tests {
             .collect();
 
         let spectrum = absorption_spectrum(
-            &system,
-            &freqs,
-            1.0e-3,  // drive amplitude
-            0.5,     // dt (stable for detuning up to 0.6)
-            2000,    // transient steps (1000 time units >> tau=200)
-            500,     // measurement steps
+            &system, &freqs, 1.0e-3, // drive amplitude
+            0.5,    // dt (stable for detuning up to 0.6)
+            2000,   // transient steps (1000 time units >> tau=200)
+            500,    // measurement steps
         );
 
         // At least some channels should have measurable absorption
@@ -402,10 +403,16 @@ mod tests {
         // Verify that threshold parameter works correctly
         let values = vec![1.0, 2.0, 3.0, 4.0, 5.0];
         let h = shannon_entropy(&values);
-        assert!(h > 0.0, "nonuniform distribution should have positive entropy");
+        assert!(
+            h > 0.0,
+            "nonuniform distribution should have positive entropy"
+        );
 
         // Constant trace should have zero entropy
         let h_const = time_series_entropy(&[1.0; 100], 10);
-        assert!(h_const.abs() < 1e-10, "constant series should have zero entropy");
+        assert!(
+            h_const.abs() < 1e-10,
+            "constant series should have zero entropy"
+        );
     }
 }

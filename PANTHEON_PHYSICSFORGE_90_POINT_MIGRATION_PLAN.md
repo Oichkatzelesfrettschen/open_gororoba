@@ -126,4 +126,13 @@
 ## Iterative todo update protocol
 - After each 5-task block, update status as `todo`, `in_progress`, `blocked`, or `done`.
 - Every status change must include one evidence pointer (test output, diff path, or report path).
-- Maintain one canonical todo index in `docs/tickets/INDEX.md` with links to overflow notes.
+- Maintain one canonical TOML todo index in `registry/pantheon_physicsforge_migration_todo.toml`.
+- Keep `docs/tickets/INDEX.md` reserved for auto-generated claim ticket mirrors.
+
+## Runbook commands (operational)
+- `python3 src/verification/verify_pantheon_physicsforge_license_consistency.py`
+- `python3 src/verification/verify_pantheon_physicsforge_provenance_gate.py`
+- `cargo check --package snia_core --all-targets`
+- `cargo test --package snia_core`
+- `cargo clippy --package snia_core -- -D warnings`
+- `cargo clippy --workspace -j$(nproc) -- -D warnings`

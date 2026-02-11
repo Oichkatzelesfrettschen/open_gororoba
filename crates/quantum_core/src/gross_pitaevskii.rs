@@ -353,7 +353,10 @@ mod tests {
         let e_linear = gpe_ground_state(&cfg_linear, 0.01, 5000).energy;
         let e_nonlinear = gpe_ground_state(&cfg_nonlinear, 0.01, 5000).energy;
 
-        eprintln!("E_linear = {:.4}, E_nonlinear = {:.4}", e_linear, e_nonlinear);
+        eprintln!(
+            "E_linear = {:.4}, E_nonlinear = {:.4}",
+            e_linear, e_nonlinear
+        );
         assert!(
             e_nonlinear > e_linear,
             "repulsive interaction should raise energy: {} vs {}",

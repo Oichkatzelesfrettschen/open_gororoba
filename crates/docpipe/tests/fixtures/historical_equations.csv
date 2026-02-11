@@ -1,0 +1,4 @@
+EqID,Equation,Framework,Domain,Category,SourceDoc,SourceLine,Description,VerificationStatus,RelatedEqs,ExperimentalTest,ImportanceScore
+AE001,E = m c^2,Aether,General,Fundamental,alpha.md,10,fundamental kernel relation,Theoretical,,Theoretical validation required,8
+AE002,E=mc^2,Aether,General,,beta.md,11,duplicate formatting,Theoretical,,Theoretical validation required,4
+GE001,H psi = E psi,Genesis,,,genesis.md,20,Hamiltonian wave relation,Theoretical,module:synthesis/modules/equations/eq_ge001_auto.tex#eq:ge001,Scalar field interferometry,7

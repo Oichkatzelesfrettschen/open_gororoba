@@ -1,0 +1,48 @@
+[migration_decisions]
+updated = "2026-02-10"
+authoritative = true
+decision_count = 4
+
+[[decision]]
+id = "PD-001"
+title = "License lock to GPL-2.0-only"
+status = "accepted"
+scope = ["pantheon", "PhysicsForge", "open_gororoba migration lane"]
+rationale = "User directive and repository policy require GPL-2.0-only consistency for inbound migration."
+evidence_refs = [
+  "registry/pantheon_physicsforge_license_alignment.toml",
+  "src/verification/verify_pantheon_physicsforge_license_consistency.py",
+]
+
+[[decision]]
+id = "PD-002"
+title = "Rewrite, do not copy, for Pantheon and PhysicsForge code"
+status = "accepted"
+scope = ["snia_core", "docpipe equation pipeline", "gororoba_cli migration commands"]
+rationale = "Migration is behavior parity via Rust-native implementations, not source-text duplication."
+evidence_refs = [
+  "registry/pantheon_physicsforge_migration_matrix.toml",
+  "registry/pantheon_physicsforge_ported_files.toml",
+]
+
+[[decision]]
+id = "PD-003"
+title = "TOML-first canonical state"
+status = "accepted"
+scope = ["migration status", "provenance", "risk and runbook tracking"]
+rationale = "All migration data and narrative state should be canonicalized in TOML with optional export projections."
+evidence_refs = [
+  "registry/pantheon_physicsforge_migration_matrix.toml",
+  "registry/pantheon_physicsforge_migration_todo.toml",
+]
+
+[[decision]]
+id = "PD-004"
+title = "Pre-port provenance gate"
+status = "accepted"
+scope = ["all migrated Rust files under required prefixes"]
+rationale = "Any migrated file without provenance row is rejected to reduce legal and attribution risk."
+evidence_refs = [
+  "registry/pantheon_physicsforge_ported_files.toml",
+  "src/verification/verify_pantheon_physicsforge_provenance_gate.py",
+]

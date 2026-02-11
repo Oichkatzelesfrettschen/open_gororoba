@@ -1,0 +1,14 @@
+[experiments]
+owner_crate = "snia_core"
+format_policy = "toml-first"
+optional_export = ["hdf5"]
+
+[[experiments.entries]]
+id = "ddt_baseline"
+config_path = "crates/snia_core/experiments/ddt_baseline.toml"
+intent = "Baseline coupled EOS+hydro+burning integration run"
+
+[[experiments.entries]]
+id = "yield_calibration_grid"
+config_path = "crates/snia_core/experiments/yield_calibration_grid.toml"
+intent = "Parameter scan scaffold for DDT calibration"

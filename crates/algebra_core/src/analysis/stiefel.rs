@@ -59,7 +59,11 @@ fn is_zero_divisor(z: &[f64]) -> bool {
     // More rigorous: build left multiplication matrix and check rank.
     let mat = crate::analysis::annihilator::left_multiplication_matrix(z, 16);
     let svd = nalgebra::SVD::new(mat, false, false);
-    let min_sv = svd.singular_values.iter().copied().fold(f64::INFINITY, f64::min);
+    let min_sv = svd
+        .singular_values
+        .iter()
+        .copied()
+        .fold(f64::INFINITY, f64::min);
 
     // If smallest singular value is near zero, z has non-trivial annihilator
     min_sv < 1e-8
@@ -294,8 +298,14 @@ mod tests {
         eprintln!("  total ZDs tested: {}", result.n_samples);
         eprintln!("  V_{{8,2}} condition satisfied: {}", result.n_stiefel);
         eprintln!("  fraction: {:.4}", result.stiefel_fraction);
-        eprintln!("  max orthogonality violation: {:.2e}", result.max_ortho_violation);
-        eprintln!("  max norm-balance violation: {:.2e}", result.max_norm_violation);
+        eprintln!(
+            "  max orthogonality violation: {:.2e}",
+            result.max_ortho_violation
+        );
+        eprintln!(
+            "  max norm-balance violation: {:.2e}",
+            result.max_norm_violation
+        );
 
         // Norm balance should always hold (each component contributes equally)
         assert!(
@@ -318,7 +328,10 @@ mod tests {
 
         eprintln!("Stiefel V_{{8,2}} random sample verification:");
         eprintln!("  ZDs found: {}", result.n_samples);
-        eprintln!("  V_{{8,2}} condition: {}/{}", result.n_stiefel, result.n_samples);
+        eprintln!(
+            "  V_{{8,2}} condition: {}/{}",
+            result.n_stiefel, result.n_samples
+        );
         eprintln!("  fraction: {:.4}", result.stiefel_fraction);
         eprintln!("  max ortho violation: {:.2e}", result.max_ortho_violation);
         eprintln!("  max norm violation: {:.2e}", result.max_norm_violation);
@@ -372,14 +385,18 @@ mod tests {
                 // Norm balance: |a| = |b| = 1 (single basis element each)
                 assert!(
                     (norm_a - norm_b).abs() < 1e-12,
-                    "norm balance for ({}, {})", a_pair.0, a_pair.1
+                    "norm balance for ({}, {})",
+                    a_pair.0,
+                    a_pair.1
                 );
 
                 // Orthogonality: <a, b> = 0 when lo != hi - 8
                 if a_pair.0 != a_pair.1 - 8 {
                     assert!(
                         dot.abs() < 1e-12,
-                        "<a,b> should be 0 for ({}, {})", a_pair.0, a_pair.1
+                        "<a,b> should be 0 for ({}, {})",
+                        a_pair.0,
+                        a_pair.1
                     );
                 }
 

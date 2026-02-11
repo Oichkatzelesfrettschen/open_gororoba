@@ -1214,10 +1214,10 @@ mod tests {
         // Collect all unique nodes across all components
         for mc in &comps {
             for &cp in &mc.nodes {
-                if !all_nodes.contains_key(&cp) {
+                all_nodes.entry(cp).or_insert_with(|| {
                     let idx = full_graph.add_node(());
-                    all_nodes.insert(cp, idx);
-                }
+                    idx
+                });
             }
         }
         // Add all edges
@@ -1257,10 +1257,10 @@ mod tests {
 
         for mc in &comps {
             for &cp in &mc.nodes {
-                if !all_nodes.contains_key(&cp) {
+                all_nodes.entry(cp).or_insert_with(|| {
                     let idx = full_graph.add_node(());
-                    all_nodes.insert(cp, idx);
-                }
+                    idx
+                });
             }
         }
         for mc in &comps {

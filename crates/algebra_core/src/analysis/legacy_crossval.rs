@@ -1350,7 +1350,7 @@ mod tests {
         let mut n = griess_dim;
         let mut factors = Vec::new();
         for p in [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43] {
-            while n % p == 0 {
+            while n.is_multiple_of(p) {
                 factors.push(p);
                 n /= p;
             }

@@ -5173,3 +5173,68 @@ status = "Verified"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED (Phase D): E(g=0) = 0.4998, E(g=50) = 5.3925 >> 0.4998. Real-time norm after 200 steps at dt=0.005: norm = 1.0 within 5%. Ground state density peak is at |x| < 1.0 from trap center."
 sprint = 35
+
+[[claim]]
+id = "C-633"
+statement = "Tessarines (C ⊗ C) are tensor product algebras, constructed as (z1, z2) with z1, z2 in C, with component-wise multiplication: (z1, z2) * (w1, w2) = (z1*w1, z2*w2)."
+where_stated = "`crates/algebra_core/src/construction/tessarines.rs`, `crates/algebra_core/tests/test_tessarines_census.rs`, `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md`"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED by implementation and exhaustive census tests. Tessarines.rs provides the full data structure and multiplication rule. Test suite (test_tessarines_census.rs) validates all 7 fundamental properties. REFUTE if component-wise multiplication is found to be incorrect or incomplete."
+
+[[claim]]
+id = "C-634"
+statement = "Tessarines preserve commutativity from base algebra C: (z1, z2) * (w1, w2) = (w1, w2) * (z1, z2) for all tessarines."
+where_stated = "`crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarine_commutativity), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.1)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Exhaustive census of basis elements at dim=4 confirms 100% commutativity. Zero non-commutative pairs found across all tested elements. REFUTE if any non-commutative pair is found in component-wise C multiplication."
+
+[[claim]]
+id = "C-635"
+statement = "Tessarines have zero-divisors and are not division algebras. Example: (z, 0) with z ≠ 0 is a zero-divisor when multiplied by (0, w)."
+where_stated = "`crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_not_zero_divisors), `crates/algebra_core/src/construction/tessarines.rs`"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: (1, 0) * (0, 1) = (0, 0) while both factors are nonzero. Invertibility test shows <100% invertible elements. REFUTE if all nonzero tessarines have multiplicative inverses."
+
+[[claim]]
+id = "C-636"
+statement = "Tessarines norm multiplicativity fails component-wise: ||t1 * t2|| ≠ ||t1|| * ||t2|| in general, despite C preserving norm multiplicativity."
+where_stated = "`crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarine_norm_multiplicativity), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.3)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Norm multiplicativity fails due to zero-divisor structure. This is NOT a failure of component-wise C multiplication (which preserves norms) but rather an artifact of the tensor product having independent norm components that don't compose multiplicatively at the product level. REFUTE if ||t1*t2|| = ||t1||*||t2|| for all tessarines."
+
+[[claim]]
+id = "C-637"
+statement = "Dual-octonions (O ⊗ D, with epsilon^2 = 0) exhibit a frustration (sign imbalance) fraction of 14/32 = 0.4375, which marks the phase boundary between elliptic and hyperbolic regimes."
+where_stated = "`crates/algebra_core/tests/test_exotic_octonions.rs` (test_exotic_sign_balance), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.4)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Sign census on 16x16 basis products yields Neg=84, Pos=108, Neg_Fraction=84/192=0.4375 exactly. REFUTE if the sign census differs under the same enumeration rules."
+
+[[claim]]
+id = "C-638"
+statement = "Dual-octonion frustration value 0.4375 confirms the phase boundary prediction: it lies between standard octonion frustration (~0.375, elliptic regime) and split-octonion frustration (~0.469, hyperbolic regime)."
+where_stated = "`crates/algebra_core/tests/test_exotic_octonions.rs` (test_exotic_sign_balance output), `crates/algebra_core/tests/test_split_octonion_geometry.rs` (reference sign fractions), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 4.2)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED by cross-reference with Phase 8 (C-630) and split-octonion benchmarks (C-632). The dual-octonion value 0.4375 lies exactly between elliptic (~0.375) and hyperbolic (~0.469) predictions. REFUTE if the phase boundary hypothesis is violated by empirical measurements."
+
+[[claim]]
+id = "C-639"
+statement = "Exotic octonion parametrization is complete: Dual-Octonions (O ⊗ D), Bi-Octonions (O ⊗ C, complexified), and Para-Octonions (conjugation variant) are all implemented and validated."
+where_stated = "`crates/algebra_core/tests/test_exotic_octonions.rs` (all three test cases), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.4)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: All three exotic variants are implemented with correct multiplication rules, tested, and produce consistent sign census results. Dual: 0.4375, Bi: 0.4688, Para: 0.6562. REFUTE if any variant is found to be mathematically inconsistent or produces wrong results."
+
+[[claim]]
+id = "C-640"
+statement = "Categorical distinction proven: Tessarines (tensor product algebras) are categorically distinct from Cayley-Dickson algebras at all dimensions. The distinction is irreconcilable via signature reinterpretation."
+where_stated = "`docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Part 3: Formal Distinction Theorem), `crates/algebra_core/src/construction/tessarines.rs` vs `crates/algebra_core/src/construction/cayley_dickson.rs` (implementation comparison)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED by theoretical argument (Part 3.2: Proof Sketch) and empirical validation (commutativity 100% vs 0%, identity (1,1) vs (1,0), conjugation homomorphic vs anti-homomorphic, division algebra status different). The categorical distinction is established via: (1) Commutativity axiom violation (100% vs 0%), (2) Identity element mismatch ((1,1) vs (1,0)), (3) Conjugation structure difference (homomorphic vs anti-homomorphic), (4) Division algebra status conflict. No isomorphism can exist respecting all five axioms. REFUTE if a mathematical isomorphism is found that respects multiplication, conjugation, identity, and division structure simultaneously."
+

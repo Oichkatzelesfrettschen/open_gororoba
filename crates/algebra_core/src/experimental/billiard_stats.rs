@@ -1486,13 +1486,13 @@ mod tests {
     #[test]
     fn test_effect_size_sign() {
         // Positive effect size when observed > null mean
-        let result = summarize_permutation_test(0.5, &vec![0.2, 0.3, 0.25, 0.22, 0.28]);
+        let result = summarize_permutation_test(0.5, &[0.2, 0.3, 0.25, 0.22, 0.28]);
         assert!(
             result.effect_size > 0.0,
             "Observed > mean => positive effect size"
         );
 
-        let result2 = summarize_permutation_test(0.1, &vec![0.5, 0.6, 0.55, 0.52, 0.58]);
+        let result2 = summarize_permutation_test(0.1, &[0.5, 0.6, 0.55, 0.52, 0.58]);
         assert!(
             result2.effect_size < 0.0,
             "Observed < mean => negative effect size"
@@ -1637,7 +1637,7 @@ mod tests {
 
         // All r_e8 values should be in [0, 1]
         for &r in &result.r_values {
-            assert!(r >= 0.0 && r <= 1.0, "r_e8 out of range: {}", r);
+            assert!((0.0..=1.0).contains(&r), "r_e8 out of range: {}", r);
         }
 
         // Statistics should be consistent

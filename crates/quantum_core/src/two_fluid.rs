@@ -54,10 +54,10 @@ impl TwoFluidParams {
     /// Default He-4 parameters at ~1 atm.
     pub fn he4_default(t_bath: f64) -> Self {
         Self {
-            rho: 145.0,            // kg/m^3 (liquid He-4 at SVP)
-            t_lambda: 2.1768,      // K
-            tau_rho: 1.0e-6,       // Superfluid density relaxation ~1 us
-            tau_t: 1.0e-4,         // Thermal relaxation ~100 us
+            rho: 145.0,       // kg/m^3 (liquid He-4 at SVP)
+            t_lambda: 2.1768, // K
+            tau_rho: 1.0e-6,  // Superfluid density relaxation ~1 us
+            tau_t: 1.0e-4,    // Thermal relaxation ~100 us
             t_bath,
         }
     }
@@ -129,10 +129,8 @@ pub fn rk4_step_two_fluid(
     let (k4_rho, k4_t) = two_fluid_derivatives(&s4, params);
 
     // Update
-    let new_rho_s = state.rho_s_frac
-        + dt / 6.0 * (k1_rho + 2.0 * k2_rho + 2.0 * k3_rho + k4_rho);
-    let new_t = state.temperature
-        + dt / 6.0 * (k1_t + 2.0 * k2_t + 2.0 * k3_t + k4_t);
+    let new_rho_s = state.rho_s_frac + dt / 6.0 * (k1_rho + 2.0 * k2_rho + 2.0 * k3_rho + k4_rho);
+    let new_t = state.temperature + dt / 6.0 * (k1_t + 2.0 * k2_t + 2.0 * k3_t + k4_t);
 
     TwoFluidState {
         rho: state.rho,

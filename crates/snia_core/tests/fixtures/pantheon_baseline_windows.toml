@@ -1,0 +1,33 @@
+[baseline]
+id = "pantheon_ddt_window_v1"
+description = "Reference envelope used for parity checks against historical Pantheon DDT behavior."
+
+[config]
+n_cells = 32
+dx_cm = 100000.0
+cfl = 0.25
+final_time_s = 0.001
+max_steps = 128
+cell_volume_cm3 = 1.0e23
+detonation_burn_fraction_threshold = 0.05
+detonation_cj_fraction_threshold = 0.8
+
+[initial_hydro]
+density = 2.3e7
+velocity = 1.1e6
+pressure = 2.9e23
+specific_internal_energy = 1.1e17
+temperature = 1.5e9
+
+[initial_burn]
+carbon_mass_fraction = 0.5
+oxygen_mass_fraction = 0.5
+nickel56_mass_fraction = 0.0
+
+[expected]
+min_steps = 1
+max_steps = 200
+nickel56_min_msun = 0.0
+nickel56_max_msun = 1.5
+peak_density_min = 1.0e6
+peak_density_max = 1.0e9
