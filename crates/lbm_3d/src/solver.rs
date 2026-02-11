@@ -228,6 +228,9 @@ pub struct LbmSolver3D {
     pub u: Vec<[f64; 3]>,
     /// BGK collision operator
     pub collider: BgkCollision,
+    /// Optional external body force field (Guo forcing scheme)
+    /// If None, no forcing applied. If Some, must have length nx*ny*nz.
+    pub force_field: Option<Vec<[f64; 3]>>,
     /// Timestep counter
     pub timestep: usize,
 }
@@ -248,6 +251,7 @@ impl LbmSolver3D {
             rho: vec![0.0; n_nodes],
             u: vec![[0.0; 3]; n_nodes],
             collider: BgkCollision::new(tau),
+            force_field: None,
             timestep: 0,
         }
     }
@@ -276,6 +280,59 @@ impl LbmSolver3D {
     /// Get the current viscosity field.
     pub fn get_viscosity_field(&self) -> Vec<f64> {
         self.collider.get_viscosity_field()
+    }
+
+    /// Set the external body force field for Guo forcing scheme.
+    ///
+    /// The Guo forcing method (Guo et al., 2002) adds an external force term to the LBM
+    /// collision step, enabling simulation of driven flows (gravity, pressure gradients,
+    /// electromagnetic forces, etc.).
+    ///
+    /// # Arguments
+    /// * `force_field` - Vector of force vectors [F_x, F_y, F_z], one per grid point
+    ///
+    /// # Errors
+    /// Returns Err if:
+    /// - Force field length != nx*ny*nz
+    /// - Any force component is NaN or Inf
+    ///
+    /// # Example
+    /// ```ignore
+    /// // Uniform gravity in -z direction
+    /// let force = vec![[0.0, 0.0, -0.001]; nx*ny*nz];
+    /// solver.set_force_field(force)?;
+    /// ```
+    pub fn set_force_field(&mut self, force_field: Vec<[f64; 3]>) -> Result<(), String> {
+        let expected_len = self.nx * self.ny * self.nz;
+        if force_field.len() != expected_len {
+            return Err(format!(
+                "Force field length mismatch: got {}, expected {} ({}x{}x{})",
+                force_field.len(), expected_len, self.nx, self.ny, self.nz
+            ));
+        }
+
+        // Validate all force components are finite
+        for (i, &[fx, fy, fz]) in force_field.iter().enumerate() {
+            if !fx.is_finite() || !fy.is_finite() || !fz.is_finite() {
+                return Err(format!(
+                    "Non-finite force at index {}: [{}, {}, {}]",
+                    i, fx, fy, fz
+                ));
+            }
+        }
+
+        self.force_field = Some(force_field);
+        Ok(())
+    }
+
+    /// Clear the external force field (disable forcing).
+    pub fn clear_force_field(&mut self) {
+        self.force_field = None;
+    }
+
+    /// Check if external forcing is enabled.
+    pub fn has_forcing(&self) -> bool {
+        self.force_field.is_some()
     }
 
     /// Initialize entire domain with uniform density and velocity.
@@ -374,6 +431,12 @@ impl LbmSolver3D {
                         f_new[i] = f[i] - (f[i] - f_eq[i]) / tau;
                     }
 
+                    // Apply Guo forcing if enabled
+                    if let Some(ref force_field) = self.force_field {
+                        let force = force_field[idx];
+                        self.apply_guo_forcing(&mut f_new, self.u[idx], force, tau, &lattice);
+                    }
+
                     // Update distribution function
                     self.f[f_start..f_start + 19].copy_from_slice(&f_new);
                 }
@@ -381,6 +444,59 @@ impl LbmSolver3D {
         }
 
         Ok(())
+    }
+
+    /// Apply Guo forcing term to post-collision distribution function.
+    ///
+    /// Implements the Guo et al. (2002) forcing scheme:
+    /// delta_f_i = (1 - 1/(2*tau)) * w_i * S_i
+    /// where S_i = (e_i - u)·F / c_s^2 + (e_i·u)*(e_i·F) / c_s^4
+    ///
+    /// This method modifies f_new in-place by adding the forcing contribution.
+    ///
+    /// # Arguments
+    /// * `f_new` - Post-collision distribution (modified in-place)
+    /// * `u` - Macroscopic velocity [u_x, u_y, u_z]
+    /// * `force` - External force [F_x, F_y, F_z]
+    /// * `tau` - Relaxation time at this grid point
+    /// * `lattice` - D3Q19 lattice structure (for weights and velocities)
+    fn apply_guo_forcing(
+        &self,
+        f_new: &mut [f64; 19],
+        u: [f64; 3],
+        force: [f64; 3],
+        tau: f64,
+        lattice: &D3Q19Lattice,
+    ) {
+        const CS2: f64 = 1.0 / 3.0;   // Speed of sound squared for D3Q19
+        const CS4: f64 = 1.0 / 9.0;   // c_s^4
+
+        let prefactor = 1.0 - 1.0 / (2.0 * tau);
+
+        for (i, f_i) in f_new.iter_mut().enumerate() {
+            // Lattice velocity e_i (cast from i32 to f64)
+            let ei = lattice.velocities[i];
+            let ei_f64 = [ei[0] as f64, ei[1] as f64, ei[2] as f64];
+
+            // Compute (e_i - u) · F
+            let ei_minus_u_dot_f = (ei_f64[0] - u[0]) * force[0]
+                                 + (ei_f64[1] - u[1]) * force[1]
+                                 + (ei_f64[2] - u[2]) * force[2];
+
+            // Compute (e_i · u)
+            let ei_dot_u = ei_f64[0] * u[0] + ei_f64[1] * u[1] + ei_f64[2] * u[2];
+
+            // Compute (e_i · F)
+            let ei_dot_f = ei_f64[0] * force[0] + ei_f64[1] * force[1] + ei_f64[2] * force[2];
+
+            // Guo forcing term: S_i = (e_i - u)·F / c_s^2 + (e_i·u)*(e_i·F) / c_s^4
+            let s_i = ei_minus_u_dot_f / CS2 + (ei_dot_u * ei_dot_f) / CS4;
+
+            // Add forcing contribution: delta_f_i = (1 - 1/(2*tau)) * w_i * S_i
+            let delta_f_i = prefactor * lattice.weights[i] * s_i;
+
+            *f_i += delta_f_i;
+        }
     }
 
     /// Phase 2 (streaming): In the D3Q19 lattice, streaming is implicit via lattice velocity mapping.

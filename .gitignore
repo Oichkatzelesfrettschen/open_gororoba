@@ -135,3 +135,8 @@ data/external/landsat_stac_sample.json
 
 # Strict TOML-only policy: markdown files are generated/ephemeral and not tracked.
 *.md
+![Aa][Gg][Ee][Nn][Tt][Ss].md
+![Cc][Ll][Aa][Uu][Dd][Ee].md
+![Gg][Ee][Mm][Ii][Nn][Ii].md
+![Rr][Ee][Aa][Dd][Mm][Ee].md
+!**/[Rr][Ee][Aa][Dd][Mm][Ee].md
