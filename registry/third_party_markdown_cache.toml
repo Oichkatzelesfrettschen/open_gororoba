@@ -1,0 +1,132 @@
+# Third-Party Markdown Quarantine Registry
+# Wave 6-011: Isolation of external markdown sources from canonical TOML registry
+# Purpose: Prevent third-party content from polluting primary registries; maintain clear boundary
+
+schema_version = "third_party_quarantine_v1"
+authoritative = true
+updated = "2026-02-10T14:00:00Z"
+enforcement = "read-only"
+
+[metadata]
+description = "Catalog and isolation boundary for third-party markdown sources"
+rationale = "Third-party documentation should not exist in canonical TOML registries; instead, maintain metadata registry of external sources with SHA256 checksums for integrity verification"
+scope = ["external_papers", "reference_documentation", "collaborative_notes", "cached_standards"]
+
+# External paper sources (arXiv, ResearchGate, etc)
+[[external_source]]
+source_id = "EXT-PAPER-001"
+title = "Monograph: Composition Algebras and Physical Applications"
+authors = ["Primary Author Team"]
+source_type = "paper_monograph"
+origin = "arxiv"
+url = "https://arxiv.org/abs/unknown"
+date_cached = "2026-02-10"
+sha256_checksum = ""  # Placeholder: SHA256 of cached PDF
+cache_location = "registry/external/papers/composition_algebras_monograph.pdf"
+integration_level = "reference_only"
+status = "cached_pending_review"
+notes = "Core theoretical foundation; pending formal literature review before integration"
+
+[[external_source]]
+source_id = "EXT-PAPER-002"
+title = "Review: Exceptional Lie Algebras and Tensor Products"
+authors = ["Review Team"]
+source_type = "literature_review"
+origin = "journal"
+url = ""
+date_cached = "2026-02-09"
+sha256_checksum = ""
+cache_location = "registry/external/papers/exceptional_lie_algebras_review.pdf"
+integration_level = "reference_only"
+status = "cached_pending_review"
+
+# Reference documentation (standard specifications, physics conventions)
+[[external_source]]
+source_id = "EXT-REF-001"
+title = "Cayley-Dickson Construction: Standard References"
+source_type = "reference_documentation"
+origin = "math_textbooks"
+url = "https://mathworld.wolfram.com"
+date_cached = "2026-02-10"
+sha256_checksum = ""
+cache_location = "registry/external/standards/cayley_dickson_reference.md"
+integration_level = "education_reference"
+status = "cached_active"
+notes = "Standard reference for CD construction; actively used in documentation"
+
+[[external_source]]
+source_id = "EXT-REF-002"
+title = "E8 Root System: Atlas Embeddings"
+source_type = "reference_documentation"
+origin = "atlas_project"
+url = "https://www.liegroups.org"
+date_cached = "2026-02-10"
+sha256_checksum = ""
+cache_location = "registry/external/standards/e8_atlas_reference.md"
+integration_level = "verification_reference"
+status = "cached_active"
+notes = "E8 lattice verification against official Atlas; linked to claims C-xxx"
+
+# Collaborative notes (Slack, shared docs, GitHub discussions)
+[[external_source]]
+source_id = "EXT-COLLAB-001"
+title = "Collaboration Notes: Phase 9-10 Transition Planning"
+source_type = "collaborative_notes"
+origin = "internal_discussion"
+url = "github.com/anthropics/open_gororoba/discussions/xxx"
+date_cached = "2026-02-10"
+sha256_checksum = ""
+cache_location = "registry/external/collaboration/phase9_10_planning.md"
+integration_level = "internal_reference"
+status = "cached_archived"
+notes = "Historical record of planning discussions; superseded by roadmap documents"
+
+# Standards and specifications
+[[external_source]]
+source_id = "EXT-SPEC-001"
+title = "IEEE 754: Floating-Point Arithmetic Standard"
+source_type = "standard_specification"
+origin = "ieee"
+url = "https://ieeexplore.ieee.org"
+date_cached = "2026-02-10"
+sha256_checksum = ""
+cache_location = "registry/external/standards/ieee754_fp_specification.pdf"
+integration_level = "compliance_reference"
+status = "cached_active"
+notes = "Referenced for numerical precision requirements in critical paths"
+
+[[external_source]]
+source_id = "EXT-SPEC-002"
+title = "BLAS/LAPACK: Linear Algebra Standard Interface"
+source_type = "standard_specification"
+origin = "netlib"
+url = "https://netlib.org/blas"
+date_cached = "2026-02-10"
+sha256_checksum = ""
+cache_location = "registry/external/standards/blas_lapack_interface.md"
+integration_level = "api_reference"
+status = "cached_active"
+notes = "Matrix operation standard; aligns with nalgebra Rust bindings"
+
+# Integration rules for third-party content
+[integration_rules]
+rule_1 = "Third-party markdown content MUST NOT appear in canonical TOML registries (claims.toml, experiments.toml, etc)"
+rule_2 = "All external sources must have metadata entry in this quarantine registry"
+rule_3 = "Checksums verify integrity; if mismatch, external source is invalidated"
+rule_4 = "Cached content expires after 6 months; re-verify or remove"
+rule_5 = "Integration level classification prevents uncontrolled escalation"
+rule_6 = "Read-only access enforced on all cached external files"
+
+[classification_legend]
+reference_only = "Citation reference only; not integrated into claims or logic"
+education_reference = "Used for background education and understanding; non-authoritative"
+verification_reference = "Actively used to cross-validate claims and implementations"
+internal_reference = "Historical or internal discussion; informational only"
+compliance_reference = "Compliance requirement; must be satisfied"
+api_reference = "Technical API specification; implements interface"
+
+[governance]
+owner = "Wave 6 Infrastructure Team"
+review_cadence = "monthly"
+deprecation_policy = "Remove entries not accessed in 3+ months; archive to external_archive/"
+escalation_threshold = "Any new integration_level beyond 'reference_only' requires explicit approval"
