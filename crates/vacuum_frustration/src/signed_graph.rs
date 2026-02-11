@@ -34,7 +34,7 @@ impl SignedGraph {
     /// Constructs graph where:
     /// - Nodes = basis elements (0..dim)
     /// - Edges = non-zero products in multiplication table
-    /// - Edge weights = sign of the product (±1)
+    /// - Edge weights = sign of the product (+/-1)
     ///
     /// Returns a connected graph where e_i * e_j creates edge (i,j) with sign psi(i,j).
     ///

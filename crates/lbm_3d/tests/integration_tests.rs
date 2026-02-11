@@ -71,8 +71,8 @@ fn test_stability_over_many_steps() {
 #[test]
 fn test_viscosity_impact() {
     // Compare low vs high viscosity
-    let mut solver_low_nu = LbmSolver3D::new(8, 8, 8, 0.55);   // nu = (1/3) * 0.05 ≈ 0.0167
-    let mut solver_high_nu = LbmSolver3D::new(8, 8, 8, 1.5);   // nu = (1/3) * 1.0 ≈ 0.333
+    let mut solver_low_nu = LbmSolver3D::new(8, 8, 8, 0.55);   // nu = (1/3) * 0.05 approx 0.0167
+    let mut solver_high_nu = LbmSolver3D::new(8, 8, 8, 1.5);   // nu = (1/3) * 1.0 approx 0.333
 
     let u_init = [0.1, 0.0, 0.0];
     solver_low_nu.initialize_uniform(1.0, u_init);
