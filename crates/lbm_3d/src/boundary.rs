@@ -281,9 +281,9 @@ mod tests {
         let f_wall = bb.apply_at_node(&f_fluid);
 
         // Opposite directions should be swapped
-        for i in 1..19 {
+        for (i, f_i) in f_fluid.iter().enumerate().skip(1) {
             let opposite_i = bb.lattice.opposite_direction(i);
-            assert!((f_wall[opposite_i] - f_fluid[i]).abs() < 1e-14);
+            assert!((f_wall[opposite_i] - f_i).abs() < 1e-14);
         }
     }
 
