@@ -9,7 +9,7 @@ jobs = 12
 # Enable native CPU instruction set (AVX2, BMI2, FMA, POPCNT, etc.)
 # This gives ~15-30% speedup on compute-heavy algebra tests.
 # Use mold linker for faster link phase on full rebuilds.
-rustflags = ["-C", "target-cpu=native", "-C", "link-arg=-fuse-ld=mold"]
+rustflags = ["-C", "target-cpu=native", "-C", "link-arg=-fuse-ld=mold", "-Dwarnings"]
 linker = "clang"
 
 # --- PGO (Profile-Guided Optimization) workflow ---

@@ -4,14 +4,14 @@
 [csv_inventory]
 updated = "2026-02-09"
 authoritative = true
-document_count = 948
-tracked_count = 647
+document_count = 949
+tracked_count = 648
 untracked_count = 0
 ignored_count = 301
 archived_count = 5
 legacy_count = 200
 curated_count = 557
-canonicalized_count = 814
+canonicalized_count = 816
 generated_scroll_count = 30
 holding_scroll_count = 31
 holding_queue_count = 0
@@ -93,6 +93,19 @@ sha256 = "f91048eb059da4e2f8734e058603d0b9014c328500b21c786f706a7947655bb0"
 migration_action = "canonicalized_to_toml_holding"
 migration_priority = "complete"
 rationale = "Archive CSV holding source is represented in registry/data/archive_csv_holding."
+
+[[document]]
+path = "crates/docpipe/tests/fixtures/historical_equations.csv"
+git_status = "tracked"
+zone = "other_csv"
+archived = false
+generated = false
+size_bytes = 548
+line_count = 5
+sha256 = "f22ee992356b9c85fb5c1326632f66971992ffb5cc0a4fd25087a1120400eb62"
+migration_action = "manual_triage"
+migration_priority = "medium"
+rationale = "CSV outside expected zones; requires classification."
 
 [[document]]
 path = "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv"
@@ -8007,9 +8020,9 @@ generated = false
 size_bytes = 462
 line_count = 8
 sha256 = "51ed2d971ac9db2a675b5108b69e1bea5b1343e1759eb8ed56737ab6fc1e046f"
-migration_action = "migrate_to_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV classified as canonical dataset pending/active TOML migration."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/c590_attractor_runtime_baseline.csv"
@@ -8020,9 +8033,9 @@ generated = false
 size_bytes = 334
 line_count = 6
 sha256 = "9193fb4248764b74770d393eded6556ad7851657349f9df78b4180a8fc2acbbe"
-migration_action = "migrate_to_toml_canonical"
-migration_priority = "high"
-rationale = "Project CSV classified as canonical dataset pending/active TOML migration."
+migration_action = "canonicalized_to_toml"
+migration_priority = "complete"
+rationale = "Project canonical dataset is represented in registry/data/project_csv/canonical."
 
 [[document]]
 path = "data/csv/cayley_dickson/1024d_lattice_mapping.csv"

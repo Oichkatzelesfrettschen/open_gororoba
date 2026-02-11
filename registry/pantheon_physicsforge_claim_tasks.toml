@@ -1,0 +1,99 @@
+[pantheon_physicsforge_claim_tasks]
+updated = "2026-02-11"
+authoritative = true
+task_count = 6
+
+[[task]]
+id = "PPF-CT-001"
+claim_id = "PPF-C-001"
+status = "DONE"
+task = "Rebuild SN Ia DDT physics kernels in native Rust crate snia_core."
+outputs = [
+  "crates/snia_core/src/eos.rs",
+  "crates/snia_core/src/hydro.rs",
+  "crates/snia_core/src/reaction.rs",
+  "crates/snia_core/src/solver.rs",
+  "crates/snia_core/src/yield_model.rs",
+]
+verification = [
+  "cargo test --package snia_core",
+  "cargo clippy --package snia_core -- -D warnings",
+]
+
+[[task]]
+id = "PPF-CT-002"
+claim_id = "PPF-C-002"
+status = "DONE"
+task = "Port elevated Pantheon workflow lanes (scan, alpha chain, light curve)."
+outputs = [
+  "crates/snia_core/src/calibration_scan.rs",
+  "crates/snia_core/src/alpha_chain.rs",
+  "crates/snia_core/src/lightcurve.rs",
+]
+verification = [
+  "cargo test --package snia_core",
+  "cargo run --package gororoba_cli --bin snia-ddt -- --mode full --scan --output-dir /tmp/ppf_artifacts",
+]
+
+[[task]]
+id = "PPF-CT-003"
+claim_id = "PPF-C-002"
+status = "DONE"
+task = "Expose SN Ia execution via CLI with reproducible quick/full/scan outputs."
+outputs = [
+  "crates/gororoba_cli/src/bin/snia_ddt.rs",
+  "crates/gororoba_cli/tests/integration_snia_ddt.rs",
+  "registry/binaries.toml",
+]
+verification = [
+  "cargo test --package gororoba_cli snia",
+]
+
+[[task]]
+id = "PPF-CT-004"
+claim_id = "PPF-C-003"
+status = "DONE"
+task = "Implement Rust-native equation catalog semantics and historical CSV conversion."
+outputs = [
+  "crates/docpipe/src/equation_catalog.rs",
+  "crates/docpipe/tests/equation_catalog_pipeline.rs",
+  "crates/docpipe/tests/fixtures/historical_equations.csv",
+]
+verification = [
+  "cargo test --package docpipe",
+]
+
+[[task]]
+id = "PPF-CT-005"
+claim_id = "PPF-C-003"
+status = "DONE"
+task = "Integrate equation catalog pipeline with extract-papers CLI flow."
+outputs = [
+  "crates/gororoba_cli/src/bin/extract_papers.rs",
+]
+verification = [
+  "cargo check --package gororoba_cli --all-targets",
+  "cargo run --package gororoba_cli --bin extract-papers -- --help",
+]
+
+[[task]]
+id = "PPF-CT-006"
+claim_id = "PPF-C-004"
+status = "DONE"
+task = "Enforce legal/provenance/mapping/overflow/sqlite migration governance gates."
+outputs = [
+  "src/verification/verify_pantheon_physicsforge_license_consistency.py",
+  "src/verification/verify_pantheon_physicsforge_provenance_gate.py",
+  "src/verification/verify_pantheon_physicsforge_mapping_completeness.py",
+  "src/verification/verify_pantheon_physicsforge_license_headers.py",
+  "src/verification/verify_pantheon_physicsforge_overflow_tracker.py",
+  "src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py",
+  "registry/pantheon_physicsforge_overflow_tracker.toml",
+]
+verification = [
+  "python3 src/verification/verify_pantheon_physicsforge_license_consistency.py",
+  "python3 src/verification/verify_pantheon_physicsforge_provenance_gate.py",
+  "python3 src/verification/verify_pantheon_physicsforge_mapping_completeness.py",
+  "python3 src/verification/verify_pantheon_physicsforge_license_headers.py",
+  "python3 src/verification/verify_pantheon_physicsforge_overflow_tracker.py",
+]

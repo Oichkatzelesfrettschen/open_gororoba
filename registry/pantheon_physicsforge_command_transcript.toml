@@ -1,0 +1,139 @@
+[pantheon_physicsforge_command_transcript]
+updated = "2026-02-11"
+authoritative = true
+entry_count = 27
+
+[[entry]]
+id = "PPF-CMD-001"
+command = "python3 src/verification/verify_pantheon_physicsforge_license_consistency.py"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-002"
+command = "python3 src/verification/verify_pantheon_physicsforge_provenance_gate.py"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-003"
+command = "python3 src/verification/verify_pantheon_physicsforge_mapping_completeness.py"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-004"
+command = "python3 src/verification/verify_pantheon_physicsforge_license_headers.py"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-005"
+command = "python3 src/verification/verify_pantheon_physicsforge_overflow_tracker.py"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-006"
+command = "python3 src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-007"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo check --package snia_core --all-targets"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-008"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo test --package snia_core"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-009"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo check --package docpipe --all-targets"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-010"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo test --package docpipe"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-011"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo check --package gororoba_cli --all-targets"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-012"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo test --package gororoba_cli snia"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-013"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo clippy --workspace -j$(nproc) -- -D warnings"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-014"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo build --workspace -j$(nproc)"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-015"
+command = "cargo bench --package snia_core --bench eos_bench --bench hydro_bench --bench snia_bench"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-016"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo run --package gororoba_cli --bin snia-ddt -- --mode quick --output-dir /tmp/ppf_artifacts"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-017"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_ppf_target cargo run --package gororoba_cli --bin extract-papers -- --help"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-018"
+command = "make -n rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-019"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_profile_continue cargo check --package snia_core --all-targets"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-020"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_profile_continue cargo test --package snia_core"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-021"
+command = "CARGO_TARGET_DIR=/tmp/open_gororoba_profile_continue cargo clippy --workspace -j$(nproc) -- -D warnings"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-022"
+command = "make rust-release-fat-lto"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-023"
+command = "make rust-pgo-instrument"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-024"
+command = "LLVM_PROFILE_FILE=/tmp/pgo-data/%p-%m.profraw /tmp/open_gororoba_pgo_target/release/snia-ddt --mode quick --output-dir /tmp/ppf_artifacts_pgo"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-025"
+command = "make rust-pgo-merge"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-026"
+command = "make rust-pgo-build"
+status = "pass"
+
+[[entry]]
+id = "PPF-CMD-027"
+command = "make -n rust-pgo-build"
+status = "pass"

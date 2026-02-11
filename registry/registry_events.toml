@@ -1,0 +1,123 @@
+# Registry Event Tracking Log (Wave 7, W7-001)
+# Central event log for all modifications to canonical registries
+# Tracks: claims.toml, insights.toml, experiments.toml, artifact_scrolls.toml
+# Date: 2026-02-10
+
+[metadata]
+authoritative = true
+updated = "2026-02-10"
+purpose = "Track modifications to canonical registries with commit metadata and change types"
+schema_version = "registry_events_v1"
+event_count = 0
+last_event_timestamp = "2026-02-10T00:00:00Z"
+validation_gates = [
+  "Event timestamps are monotonically increasing",
+  "All referenced record IDs (C-NNN, I-NNN, E-NNN) must exist in their registries",
+  "Change types are in [add, update, refute, deprecate]",
+  "Author field is non-empty for all events",
+  "Commit SHA is valid hex string (40 chars) or placeholder 'uncommitted'",
+  "No orphaned events (registry_file must be valid)",
+]
+
+# Event Type Definitions
+[event_type_definitions]
+
+add = """
+  New record added to registry.
+  Metadata: record_id, registry_file, initial_fields (subset of full record).
+  Validation: record_id must not exist in registry before this event.
+  Example: E-001 added to experiments.toml on 2026-02-01 by Claude.
+"""
+
+update = """
+  Existing record modified (non-breaking change).
+  Metadata: record_id, registry_file, fields_changed (map of old->new values).
+  Validation: record_id must exist in registry before this event.
+  Example: C-650 description updated (status verified -> status confirmed).
+"""
+
+refute = """
+  Claim explicitly contradicted by new evidence.
+  Metadata: record_id (must be C-NNN), refuting_record_id (evidence source),
+            refutation_evidence (text description).
+  Validation: record_id must exist as status=verified before refute event.
+  Example: C-100 refuted by C-101 with new experimental data.
+"""
+
+deprecate = """
+  Record marked obsolete but preserved for lineage traceability.
+  Metadata: record_id, reason_text, replacement_record_id (optional).
+  Validation: record_id must exist before deprecate event.
+  Example: I-001 deprecated in favor of I-050 (refined analysis).
+"""
+
+# Event Schema (template)
+# [[event]]
+# id = "EVT-XXXXX"
+# sequence_number = N           # Monotonically increasing
+# timestamp = "2026-02-10T12:34:56Z"
+# commit_sha = "abcd1234..."   # First 40 chars of git commit SHA
+# author = "Claude"             # LLM name or human identifier
+# registry_file = "claims.toml" # Target registry
+# record_id = "C-650"           # Affected record (C/I/E/S prefix)
+# change_type = "add|update|refute|deprecate"
+# description = "..."           # Human-readable change summary
+# [event.metadata]              # Type-specific metadata
+#
+# Examples:
+# For add: fields_added = ["status", "confidence", "sprint"]
+# For update: changed_fields = {status = "unverified -> verified"}
+# For refute: refuting_evidence = "E-023 gamma parameter..."
+# For deprecate: replacement_record_id = "C-651"
+
+# Sample events (historical for W7-001 implementation)
+[[event]]
+id = "EVT-00001"
+sequence_number = 1
+timestamp = "2026-02-10T14:00:00Z"
+commit_sha = "uncommitted"  # W7-001 implementation event
+author = "Claude"
+registry_file = "registry_events.toml"
+record_id = "W7-001"
+change_type = "add"
+description = "Registry Event Tracking infrastructure created"
+
+[event.metadata]
+feature = "Event log initialization"
+scope = "claims.toml, insights.toml, experiments.toml, artifact_scrolls.toml"
+event_log_created = true
+
+# Event Count Summary
+[event_statistics]
+total_events = 1
+events_by_type = {add = 1, update = 0, refute = 0, deprecate = 0}
+events_by_registry = {
+  claims_toml = 0,
+  insights_toml = 0,
+  experiments_toml = 0,
+  artifact_scrolls_toml = 0,
+  registry_events_toml = 1,
+}
+date_range_start = "2026-02-10"
+date_range_end = "2026-02-10"
+
+# Validation Gates (CI/CD checks)
+[validation_gates]
+gate_1 = "Monotonic sequence_number: each EVT-XXXXX has sequence_number = previous + 1"
+gate_2 = "Monotonic timestamps: each event.timestamp > previous event.timestamp"
+gate_3 = "Record ID resolution: all record_id values must exist in their target registries OR be special (W7-001, etc.)"
+gate_4 = "Change type enumeration: all change_type in [add, update, refute, deprecate]"
+gate_5 = "Author non-empty: all author fields have length > 0"
+gate_6 = "Commit SHA format: either 40-char hex or literal 'uncommitted'"
+gate_7 = "Registry file exists: all registry_file values point to actual .toml files in /registry/"
+gate_8 = "No duplicate event IDs: EVT-XXXXX IDs are globally unique"
+gate_9 = "Refute events: change_type=refute implies record_id starts with C- (claims only)"
+gate_10 = "Deprecate replacement: if replacement_record_id present, it must exist in target registry"
+
+# Archive Policy
+[archive_policy]
+retention_days = 1825  # 5 years
+compression = "gzip"
+archive_location = "s3://archive/registry-events/"
+backup_frequency = "daily"
+recovery_procedure = "Restore from git history: git log --grep='EVT-' -- registry/registry_events.toml"

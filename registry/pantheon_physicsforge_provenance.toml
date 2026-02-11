@@ -1,0 +1,54 @@
+[pantheon_physicsforge_provenance]
+updated = "2026-02-11"
+authoritative = true
+license_policy = "GPL-2.0-only"
+source_count = 3
+
+[[source]]
+id = "PPF-PROV-001"
+repo = "pantheon"
+kind = "local_repository"
+root_path = "/home/eirikr/Github/pantheon"
+license = "GPL-2.0-only"
+consumed_paths = [
+  "src/spandrel/ddt/eos_white_dwarf.py",
+  "src/spandrel/ddt/flux_hllc.py",
+  "src/spandrel/ddt/reaction_carbon.py",
+  "src/spandrel/ddt/main_zeldovich.py",
+  "src/spandrel/ddt/nickel_yield.py",
+  "src/spandrel/elevated/ddt_parameter_study.py",
+  "src/spandrel/elevated/alpha_chain_network.py",
+  "src/spandrel/elevated/light_curve_synthesis.py",
+]
+usage_mode = "rewrite_only"
+
+[[source]]
+id = "PPF-PROV-002"
+repo = "PhysicsForge"
+kind = "local_repository"
+root_path = "/home/eirikr/Github/PhysicsForge"
+license = "GPL-2.0-only"
+consumed_paths = [
+  "scripts/equation_extractor.py",
+  "scripts/pdf_equation_extractor.py",
+  "scripts/pdf_image_equation_extractor.py",
+  "scripts/merge_and_analyze_equations.py",
+  "scripts/build_catalog_pipeline.py",
+  "scripts/link_modules.py",
+  "scripts/catalog_parity.py",
+]
+usage_mode = "semantic_reimplementation"
+
+[[source]]
+id = "PPF-PROV-003"
+repo = "open_gororoba"
+kind = "canonical_target"
+root_path = "/home/eirikr/Github/open_gororoba"
+license = "GPL-2.0-only"
+consumed_paths = [
+  "crates/docpipe/src/toml_out.rs",
+  "crates/gororoba_cli/src/bin/extract_papers.rs",
+  "registry/pantheon_physicsforge_migration_matrix.toml",
+  "registry/pantheon_physicsforge_ported_files.toml",
+]
+usage_mode = "integration_and_registry_governance"

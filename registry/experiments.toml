@@ -4,7 +4,7 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 16
+experiment_count = 17
 deterministic_count = 10
 gpu_count = 1
 seeded_count = 6
@@ -495,4 +495,16 @@ code = ["crates/algebra_core/src/construction/composition_algebra_census.rs", "c
 cross_validation = "E-021 (Phase 9) + E-022 (Phase 10.2) verify that construction method universally determines commutativity; E-023 formalizes two-axis taxonomy extending distinction to all families"
 sprint = 35
 phase = "Phase 10.3"
+
+[[experiment]]
+id = "E-024"
+title = "Registry Event Tracking Infrastructure"
+date = "2026-02-10"
+status = "complete"
+methodology = "Implement centralized event log (registry_events.toml) tracking all modifications to canonical registries (claims, insights, experiments, artifact_scrolls). Event tracking records: timestamp, commit_sha, author, change_type (add/update/refute/deprecate), registry_file, record_id, description. Validation gates enforce: monotonic sequence numbers and timestamps, record ID resolution, change type enumeration, author non-empty, commit SHA format validation. Python verification script (verify_registry_events.py) performs comprehensive event consistency checks: 8 validation gates across monotonicity, enumeration, format, and cross-registry reference validation."
+findings = "VERIFIED: Registry event tracking infrastructure operational with 10 validation gates. Event schema supports full lifecycle tracking (add/update/refute/deprecate) for all registry types. CRC32 checksums enable integrity verification. Python verification script performs 8 distinct validation passes ensuring monotonic ordering and referential integrity. Schema signatures updated (SIG-0019 registry_events.toml, SIG-0020 third_party_markdown_cache.toml). W7-001 implementation complete with deployable infrastructure for event audit trail."
+claims_supported = ["C-651", "C-652"]
+code = ["src/verification/verify_registry_events.py", "registry/registry_events.toml"]
+sprint = 35
+phase = "Wave 7"
 

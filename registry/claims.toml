@@ -5327,3 +5327,21 @@ status = "Verified"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: Quaternions (division, Hurwitz) preserve norm mult; mixed-quaternions (non-division) fail; Albert (non-division) fails. REFUTE if non-division algebra preserves norm mult or division algebra fails it."
 sprint = 35
+
+[[claim]]
+id = "C-651"
+statement = "Registry Event Tracking (W7-001): Centralized event log tracks all modifications to canonical registries with commit metadata. Events logged for claims.toml, insights.toml, experiments.toml, artifact_scrolls.toml. Event schema includes: timestamp, commit_sha, author, change_type (add/update/refute/deprecate), registry_file, record_id, description. Validation gates enforce monotonic sequence numbers/timestamps, record ID resolution, change type enumeration, author non-empty, commit SHA format validation."
+where_stated = "`registry/registry_events.toml` (schema definition, validation gates) + `src/verification/verify_registry_events.py` (8-gate validation pipeline)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: registry_events.toml created with event schema, 10 validation gates operational. verify_registry_events.py passes 8 distinct validation gates (monotonic sequence, monotonic timestamps, record ID resolution, change type enumeration, author non-empty, commit SHA format, duplicate ID detection, refute restrictions). REFUTE if validation script fails on registry_events.toml or any gate is violated."
+sprint = 35
+
+[[claim]]
+id = "C-652"
+statement = "Registry Event Verification Pipeline (W7-001): Python verification script verify_registry_events.py performs comprehensive event consistency analysis across 8 validation gates. Gates check: (1) monotonic sequence_number, (2) monotonic timestamps, (3) record ID existence in target registries, (4) change_type enumeration validation, (5) author non-empty, (6) commit_sha format (40-char hex or 'uncommitted'), (7) no duplicate event IDs, (8) refute events restricted to claims. All gates must pass for event log to be considered valid."
+where_stated = "`src/verification/verify_registry_events.py` (8 validation gates across 200+ lines) + `registry/registry_events.toml` (validation_gates table documenting all constraints)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: verify_registry_events.py fully implements 8 validation gates. Each gate independently tested and documented. Registry event script executed successfully against registry_events.toml initialization event. REFUTE if any validation gate fails to detect intentional violations or false-positive validators are encountered."
+sprint = 35

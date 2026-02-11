@@ -1,0 +1,95 @@
+[pantheon_physicsforge_claims]
+updated = "2026-02-11"
+authoritative = true
+claim_count = 4
+source_policy = "toml_first"
+
+[[claim]]
+id = "PPF-C-001"
+status = "Verified"
+last_verified = "2026-02-11"
+statement = "Pantheon Type Ia DDT core physics lanes were rebuilt in Rust as native open_gororoba modules (EOS, hydro, reaction, coupling, yields)."
+where_stated = [
+  "crates/snia_core/src/eos.rs",
+  "crates/snia_core/src/hydro.rs",
+  "crates/snia_core/src/reaction.rs",
+  "crates/snia_core/src/solver.rs",
+  "crates/snia_core/src/yield_model.rs",
+]
+what_would_verify_refute = "cargo test --package snia_core and compatibility/replay integration tests remain green with deterministic outputs."
+verification_paths = [
+  "cargo test --package snia_core",
+  "cargo clippy --package snia_core -- -D warnings",
+]
+source_mapping_ids = [
+  "MM-PAN-001",
+  "MM-PAN-002",
+  "MM-PAN-003",
+  "MM-PAN-004",
+  "MM-PAN-005",
+]
+
+[[claim]]
+id = "PPF-C-002"
+status = "Verified"
+last_verified = "2026-02-11"
+statement = "Elevated Pantheon workflows were ported into snia_core (parameter scans, alpha-chain abstractions, and light-curve synthesis)."
+where_stated = [
+  "crates/snia_core/src/calibration_scan.rs",
+  "crates/snia_core/src/alpha_chain.rs",
+  "crates/snia_core/src/lightcurve.rs",
+]
+what_would_verify_refute = "scan/light-curve APIs compile, tests pass, and CLI scan outputs are reproducible."
+verification_paths = [
+  "cargo test --package snia_core",
+  "cargo run --package gororoba_cli --bin snia-ddt -- --mode full --scan --output-dir /tmp/ppf_artifacts",
+]
+source_mapping_ids = ["MM-PAN-006", "MM-PAN-007", "MM-PAN-008"]
+
+[[claim]]
+id = "PPF-C-003"
+status = "Verified"
+last_verified = "2026-02-11"
+statement = "PhysicsForge equation-catalog semantics were reimplemented in Rust and integrated into docpipe plus extract-papers flow."
+where_stated = [
+  "crates/docpipe/src/equation_catalog.rs",
+  "crates/docpipe/tests/equation_catalog_pipeline.rs",
+  "crates/gororoba_cli/src/bin/extract_papers.rs",
+]
+what_would_verify_refute = "docpipe equation-catalog tests and extract-papers integration behavior pass without Python script cloning."
+verification_paths = [
+  "cargo test --package docpipe",
+  "cargo check --package gororoba_cli --all-targets",
+]
+source_mapping_ids = [
+  "PF-STAGE-001",
+  "PF-STAGE-002",
+  "PF-STAGE-003",
+  "PF-STAGE-004",
+  "PF-STAGE-005",
+  "PF-STAGE-006",
+]
+
+[[claim]]
+id = "PPF-C-004"
+status = "Verified"
+last_verified = "2026-02-11"
+statement = "Migration governance enforces GPL-2.0-only alignment, provenance gating, mapping completeness, overflow policy, and sqlite memoization."
+where_stated = [
+  "src/verification/verify_pantheon_physicsforge_license_consistency.py",
+  "src/verification/verify_pantheon_physicsforge_provenance_gate.py",
+  "src/verification/verify_pantheon_physicsforge_mapping_completeness.py",
+  "src/verification/verify_pantheon_physicsforge_license_headers.py",
+  "src/verification/verify_pantheon_physicsforge_overflow_tracker.py",
+  "src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py",
+]
+what_would_verify_refute = "all migration-specific verifiers pass and sqlite memoization database seeds consistently."
+verification_paths = [
+  "python3 src/verification/verify_pantheon_physicsforge_license_consistency.py",
+  "python3 src/verification/verify_pantheon_physicsforge_provenance_gate.py",
+  "python3 src/verification/verify_pantheon_physicsforge_mapping_completeness.py",
+  "python3 src/verification/verify_pantheon_physicsforge_license_headers.py",
+  "python3 src/verification/verify_pantheon_physicsforge_overflow_tracker.py",
+  "python3 src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py",
+]
+source_mapping_ids = []
