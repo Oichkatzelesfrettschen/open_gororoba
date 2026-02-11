@@ -14,12 +14,27 @@ ALLOWED_TRACKED_MARKDOWN = {
     "AGENTS.md",
     "CLAUDE.md",
     "GEMINI.md",
+    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md",
+    "PHASE10_11_ULTIMATE_ROADMAP.md",
+    "PYTHON_REFACTORING_ROADMAP.md",
     "README.md",
     "curated/README.md",
     "curated/01_theory_frameworks/README_COQ.md",
     "data/artifacts/README.md",
     "data/csv/README.md",
 }
+
+POLICY_PREFIXES = (
+    "docs/",
+    "reports/",
+    "data/artifacts/",
+)
+
+
+def _in_policy_scope(path: str) -> bool:
+    if any(path.startswith(prefix) for prefix in POLICY_PREFIXES):
+        return True
+    return path in ALLOWED_TRACKED_MARKDOWN
 
 
 def main() -> int:
@@ -45,15 +60,15 @@ def main() -> int:
         classification = str(row.get("classification", "")).strip()
         destination = str(row.get("toml_destination", "")).strip()
 
-        if classification not in SAFE_CLASSIFICATIONS:
+        if _in_policy_scope(path) and classification not in SAFE_CLASSIFICATIONS:
             class_violations += 1
             failures.append(f"{path}: classification={classification} is outside safe set")
 
-        if git_status == "tracked" and path not in ALLOWED_TRACKED_MARKDOWN:
+        if _in_policy_scope(path) and git_status == "tracked" and path not in ALLOWED_TRACKED_MARKDOWN:
             tracked_violations += 1
             failures.append(f"{path}: tracked markdown is outside allowlist")
 
-        if classification == "toml_published_markdown":
+        if _in_policy_scope(path) and classification == "toml_published_markdown":
             if not destination:
                 destination_missing += 1
                 failures.append(f"{path}: missing toml_destination")

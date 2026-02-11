@@ -44,8 +44,8 @@ gate_8 = "Verification log entry created for each check attempt (success, failur
 
 [[verification]]
 id = "VER-00001"
-source_id = "SOURCE-001"
-source_title = "Carlson Symmetric Elliptic Integrals"
+source_id = "EXT-PAPER-001"
+source_title = "Monograph: Composition Algebras and Physical Applications"
 verification_date = "2026-02-10"
 status = "pending"  # First W7-005 implementation, verification not yet run
 checksum_match = "unknown"
@@ -56,8 +56,8 @@ notes = "W7-005 initialization: verification infrastructure created, first check
 
 [[verification]]
 id = "VER-00002"
-source_id = "SOURCE-002"
-source_title = "Quaternion Algebra Theory"
+source_id = "EXT-PAPER-002"
+source_title = "Review: Exceptional Lie Algebras and Tensor Products"
 verification_date = "2026-02-10"
 status = "pending"
 checksum_match = "unknown"
@@ -68,8 +68,8 @@ notes = "Awaiting first verification run"
 
 [[verification]]
 id = "VER-00003"
-source_id = "SOURCE-003"
-source_title = "Octonion Algebra Structure"
+source_id = "EXT-REF-001"
+source_title = "Cayley-Dickson Construction: Standard References"
 verification_date = "2026-02-10"
 status = "pending"
 checksum_match = "unknown"
@@ -80,8 +80,8 @@ notes = "Awaiting first verification run"
 
 [[verification]]
 id = "VER-00004"
-source_id = "SOURCE-004"
-source_title = "Exceptional Lie Algebras"
+source_id = "EXT-REF-002"
+source_title = "E8 Root System: Atlas Embeddings"
 verification_date = "2026-02-10"
 status = "pending"
 checksum_match = "unknown"
@@ -92,8 +92,8 @@ notes = "Awaiting first verification run"
 
 [[verification]]
 id = "VER-00005"
-source_id = "SOURCE-005"
-source_title = "Clifford Algebras and Clifford Analysis"
+source_id = "EXT-COLLAB-001"
+source_title = "Collaboration Notes: Phase 9-10 Transition Planning"
 verification_date = "2026-02-10"
 status = "pending"
 checksum_match = "unknown"
@@ -104,8 +104,8 @@ notes = "Awaiting first verification run"
 
 [[verification]]
 id = "VER-00006"
-source_id = "SOURCE-006"
-source_title = "Tensor Networks and Contraction Complexity"
+source_id = "EXT-SPEC-001"
+source_title = "IEEE 754: Floating-Point Arithmetic Standard"
 verification_date = "2026-02-10"
 status = "pending"
 checksum_match = "unknown"

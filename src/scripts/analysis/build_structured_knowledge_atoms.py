@@ -553,6 +553,67 @@ def _extract_proofs_from_source(doc: SourceDoc) -> list[dict[str, object]]:
     return atoms
 
 
+def _build_fallback_proof_atom(doc: SourceDoc) -> dict[str, object] | None:
+    sections = _split_sections(doc.body)
+    for section in sections:
+        section_text = "\n".join(section.body_lines)
+        section_text_ascii = _ascii_sanitize(section_text)
+        non_empty_lines = [_collapse_ws(line) for line in section.body_lines if _collapse_ws(line)]
+        if len(non_empty_lines) < 3:
+            continue
+        if all(line.startswith("|") for line in non_empty_lines[:3]):
+            continue
+
+        assumption_lines = non_empty_lines[:2]
+        decision_lines = [
+            line
+            for line in non_empty_lines
+            if any(token in line.lower() for token in ("decision rule", "implies", "follows"))
+        ][:2]
+        conclusion_lines = [
+            line
+            for line in non_empty_lines
+            if any(
+                token in line.lower()
+                for token in ("status", "therefore", "hence", "result", "conclusion", "verified", "refuted")
+            )
+        ][:2]
+        if not decision_lines:
+            decision_lines = non_empty_lines[1:2]
+        if not conclusion_lines:
+            conclusion_lines = non_empty_lines[-1:]
+        inference_markers = [
+            line
+            for line in non_empty_lines
+            if any(token in line.lower() for token in ("therefore", "hence", "implies", "follows"))
+        ][:4]
+        claim_refs = sorted(set(CLAIM_ID_RE.findall(section_text_ascii)))
+        excerpt = " || ".join(_truncate(line, 120) for line in non_empty_lines[:6])
+        return {
+            "source_uid": doc.source_uid,
+            "source_group": doc.source_group,
+            "source_registry": doc.source_registry,
+            "source_path": doc.source_path,
+            "section_title": section.title,
+            "section_level": section.level,
+            "line_start": section.line_start,
+            "line_end": section.line_end,
+            "proof_kind": "argument_section",
+            "step_count": len(non_empty_lines),
+            "supports_claim": bool(claim_refs),
+            "assumption_lines": assumption_lines,
+            "decision_lines": decision_lines,
+            "conclusion_lines": conclusion_lines,
+            "inference_markers": inference_markers,
+            "assumption_text": _collapse_ws(" | ".join(assumption_lines)),
+            "decision_rule_text": _collapse_ws(" | ".join(decision_lines)),
+            "conclusion_text": _collapse_ws(" | ".join(conclusion_lines)),
+            "excerpt": _collapse_ws(excerpt),
+            "claim_refs": claim_refs,
+        }
+    return None
+
+
 def _render_claim_atoms(claim_atoms: list[dict[str, object]]) -> str:
     unique_claim_ids = sorted(set(str(atom["claim_id"]) for atom in claim_atoms))
     lines: list[str] = []
@@ -765,6 +826,22 @@ def main() -> int:
     for source in sources:
         equation_atoms.extend(_extract_equations_from_source(source))
         proof_atoms.extend(_extract_proofs_from_source(source))
+
+    if not any(str(atom.get("source_group", "")) == "research_narrative" for atom in proof_atoms):
+        for source in sources:
+            if source.source_group != "research_narrative":
+                continue
+            fallback_atom = _build_fallback_proof_atom(source)
+            if fallback_atom is not None:
+                proof_atoms.append(fallback_atom)
+                break
+    proof_atoms.sort(
+        key=lambda item: (
+            str(item["source_uid"]),
+            int(item["line_start"]),
+            str(item["section_title"]),
+        )
+    )
 
     claim_text = _render_claim_atoms(claim_atoms)
     equation_text = _render_equation_atoms(equation_atoms)

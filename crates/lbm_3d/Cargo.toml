@@ -1,0 +1,19 @@
+[package]
+name = "lbm_3d"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-2.0-only"
+repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
+
+[dependencies]
+nalgebra = { workspace = true }
+rayon = { workspace = true }
+ndarray = { workspace = true }
+serde = { workspace = true, features = ["derive"] }
+
+[dev-dependencies]
+approx = { workspace = true }
+
+[[bench]]
+name = "lbm_3d_bench"
+harness = false

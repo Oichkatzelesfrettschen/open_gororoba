@@ -10,7 +10,7 @@ import sys
 import re
 from pathlib import Path
 from typing import Dict, List, Set, Tuple
-from datetime import datetime
+from datetime import datetime, timezone
 
 
 def load_toml(path: str) -> dict:
@@ -79,7 +79,7 @@ def validate_event_monotonic_sequence(events: List[dict]) -> Tuple[bool, List[st
 def validate_event_monotonic_timestamps(events: List[dict]) -> Tuple[bool, List[str]]:
     """Verify timestamps are monotonically increasing."""
     errors = []
-    prev_ts = datetime.min
+    prev_ts = datetime.min.replace(tzinfo=timezone.utc)
     for idx, event in enumerate(events):
         ts_str = event.get('timestamp', '')
         try:
@@ -245,18 +245,18 @@ def validate_registry_events(registry_dir: str = "registry") -> Tuple[int, List[
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 2] Monotonic timestamps")
     ok, errs = validate_event_monotonic_timestamps(events)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 3] Record ID resolution")
     ok, errs = validate_event_record_ids(
@@ -269,59 +269,59 @@ def validate_registry_events(registry_dir: str = "registry") -> Tuple[int, List[
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 4] Change type enumeration")
     ok, errs = validate_event_change_types(events)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 5] Author non-empty")
     ok, errs = validate_event_authors(events)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 6] Commit SHA format")
     ok, errs = validate_event_commit_shas(events)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 7] Duplicate event IDs")
     ok, errs = validate_event_duplicate_ids(events)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 8] Refute type restrictions")
     ok, errs = validate_event_refute_restrictions(events)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     if errors:
-        print(f"\n❌ Found {len(errors)} validation errors")
+        print(f"\n[FAIL] Found {len(errors)} validation errors")
     else:
-        print("\n✓ All registry events valid")
+        print("\n[PASS] All registry events valid")
 
     return len(errors), errors
 

@@ -141,9 +141,9 @@ def validate_source_id_references(verify_reg: dict) -> Tuple[bool, List[str]]:
         source_id = verif.get('source_id', '')
         if not source_id:
             errors.append(f"Verification {idx} has empty source_id")
-        elif not source_id.startswith('SOURCE-'):
+        elif not (source_id.startswith('SOURCE-') or source_id.startswith('EXT-')):
             errors.append(
-                f"Verification {idx} source_id '{source_id}' doesn't match SOURCE-XXXX format"
+                f"Verification {idx} source_id '{source_id}' doesn't match SOURCE-XXXX or EXT-XXXX format"
             )
 
     return len(errors) == 0, errors
@@ -198,68 +198,68 @@ def validate_third_party_sources(registry_dir: str = "registry") -> Tuple[int, L
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 2] Checksum format valid (hex string or 'unknown')")
     ok, errs = validate_checksum_format(verify_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 3] Status field enumeration")
     ok, errs = validate_status_enumeration(verify_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 4] Boolean fields format (true/false/'unknown')")
     ok, errs = validate_boolean_fields(verify_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 5] No duplicate verification IDs")
     ok, errs = validate_no_duplicate_verification_ids(verify_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
-    print("[Gate 6] Source ID format validation (SOURCE-XXXX)")
+    print("[Gate 6] Source ID format validation (SOURCE-XXXX or EXT-XXXX)")
     ok, errs = validate_source_id_references(verify_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 7] Verification-Cache consistency (source exists)")
     ok, errs = validate_verification_consistency(verify_reg, cache_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     if errors:
-        print(f"\n❌ Found {len(errors)} validation errors")
+        print(f"\n[FAIL] Found {len(errors)} validation errors")
     else:
-        print("\n✓ All third-party source verifications valid")
+        print("\n[PASS] All third-party source verifications valid")
 
     return len(errors), errors
 

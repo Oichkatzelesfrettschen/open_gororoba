@@ -1,0 +1,173 @@
+# GPU Performance Registry
+# Tracks CPU vs GPU performance across operations and dimensions
+# Enables adaptive runtime decisions via gororoba_engine::AdaptiveGpuRegistry
+#
+# Version: 1.0
+# Hardware: RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)
+# Last Updated: 2026-02-10
+#
+# Schema per benchmark:
+# - operation: String (e.g., "frustration_index_compute")
+# - dimensions: Vec<usize> (test dimensions)
+# - cpu_times_ms: Vec<f64> (CPU times for each dimension)
+# - gpu_times_ms: Vec<f64> (GPU times for each dimension, nan if not benchmarked)
+# - gpu_benefit_threshold: usize (dimension above which GPU is faster)
+# - recommended: String ("cpu_only", "gpu_only", "adaptive", "skip")
+# - last_updated: String (ISO 8601 date)
+# - hardware: String (platform description)
+#
+# Note: This registry is populated during Phases 1-4 as benchmarks are run.
+# Initial structure and schema shown; content will be filled in during development.
+
+version = "1.0"
+hardware = "RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)"
+last_updated = "2026-02-10"
+
+[metadata]
+# Used for validation and schema checking
+schema_version = "1.0"
+operation_count_planned = 8
+operations_benchmarked = 0
+
+# =============================================================================
+# PHASE 1: THESIS 1 (Vacuum Frustration)
+# =============================================================================
+
+# Harary-Zaslavsky signed-graph balance solver
+# Expected: GPU beneficial for graphs > 1000 nodes (dim ~ 128+)
+[[benchmark]]
+operation = "frustration_index_compute"
+phase = "Phase 1"
+description = "Compute frustration index from signed graph (Harary-Zaslavsky algorithm)"
+dimensions = []  # Will be populated after benchmarks
+cpu_times_ms = []
+gpu_times_ms = []
+gpu_benefit_threshold = 999999  # Placeholder: benchmarking required
+recommended = "pending_benchmark"
+last_updated = "2026-02-10"
+hardware = "RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)"
+status = "planned"
+
+# LBM D3Q19 BGK collision operator
+# Expected: GPU beneficial for large grids (64^3 and above)
+[[benchmark]]
+operation = "lbm_bgk_collision_3d"
+phase = "Phase 1"
+description = "LBM BGK collision step on D3Q19 lattice (3D fluid dynamics)"
+dimensions = []  # Will populate for 32^3, 64^3, 128^3 grids
+cpu_times_ms = []
+gpu_times_ms = []
+gpu_benefit_threshold = 999999  # Placeholder: benchmarking required
+recommended = "pending_benchmark"
+last_updated = "2026-02-10"
+hardware = "RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)"
+status = "planned"
+
+# =============================================================================
+# PHASE 2: THESIS 2 (Lattice Filtration)
+# =============================================================================
+
+# Patricia trie operations (likely CPU-only - not GPU-friendly)
+# Expected: CPU-only (tree traversal has poor GPU characteristics)
+[[benchmark]]
+operation = "patricia_trie_lookup"
+phase = "Phase 2"
+description = "Patricia trie prefix queries and survival counting"
+dimensions = []  # Will populate for dims 256, 512, 1024, 2048, 4096
+cpu_times_ms = []
+gpu_times_ms = []  # Expected to be nan (not GPU-accelerated)
+gpu_benefit_threshold = 999999  # CPU-only
+recommended = "cpu_only"
+last_updated = "2026-02-10"
+hardware = "RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)"
+status = "planned"
+
+# Filtration cascade computation
+# Expected: CPU-only (sparse, irregular patterns)
+[[benchmark]]
+operation = "filtration_cascade"
+phase = "Phase 2"
+description = "Apply filtration predicates and count survivors across cascade"
+dimensions = []
+cpu_times_ms = []
+gpu_times_ms = []  # Expected to be nan
+gpu_benefit_threshold = 999999  # CPU-only
+recommended = "cpu_only"
+last_updated = "2026-02-10"
+hardware = "RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)"
+status = "planned"
+
+# =============================================================================
+# PHASE 3: THESIS 3 (Neural Homotopy)
+# =============================================================================
+
+# Transformer training on Sedenion dataset
+# Expected: GPU essential (neural network training)
+[[benchmark]]
+operation = "neural_training_step"
+phase = "Phase 3"
+description = "Burn transformer forward/backward pass on Sedenion data"
+dimensions = []  # Will populate for batch sizes 32, 64, 128, 256
+cpu_times_ms = []
+gpu_times_ms = []  # GPU is mandatory
+gpu_benefit_threshold = 0  # Always use GPU
+recommended = "gpu_mandatory"
+last_updated = "2026-02-10"
+hardware = "RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)"
+status = "planned"
+
+# Pentagon identity residual computation
+# Expected: GPU beneficial for large batch sizes
+[[benchmark]]
+operation = "stasheff_pentagon_residual"
+phase = "Phase 3"
+description = "Compute Stasheff pentagon identity residual for m_4 tensor"
+dimensions = []
+cpu_times_ms = []
+gpu_times_ms = []
+gpu_benefit_threshold = 999999  # Placeholder: benchmarking required
+recommended = "pending_benchmark"
+last_updated = "2026-02-10"
+hardware = "RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)"
+status = "planned"
+
+# =============================================================================
+# PHASE 4: THESIS 4 (Engine Integration)
+# =============================================================================
+
+# Pipeline orchestrator dispatcher
+# Expected: Adaptive based on sub-operation characteristics
+[[benchmark]]
+operation = "pipeline_orchestration"
+phase = "Phase 4"
+description = "Full bit-to-physics pipeline (calls all sub-operations)"
+dimensions = []
+cpu_times_ms = []
+gpu_times_ms = []
+gpu_benefit_threshold = 999999  # Placeholder: depends on mixture
+recommended = "pending_benchmark"
+last_updated = "2026-02-10"
+hardware = "RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)"
+status = "planned"
+
+# CUDA verification task (quick check during Phase 0 GPU setup)
+[[benchmark]]
+operation = "cuda_verification"
+phase = "Phase 0"
+description = "Quick CUDA kernel launch verification (memcpy test)"
+dimensions = [1024]  # Single size test
+cpu_times_ms = [0.0]  # Not CPU
+gpu_times_ms = [2.5]  # Typical CUDA overhead
+gpu_benefit_threshold = 0  # GPU required
+recommended = "status_only"
+last_updated = "2026-02-10"
+hardware = "RTX 4070 Ti, AMD Ryzen 9 5900X (12 cores)"
+status = "completed"
+
+[summary]
+# Quick reference for decision-making
+benchmark_count_total = 9
+benchmark_count_completed = 1
+benchmark_count_pending = 8
+phases_covered = 5
+estimated_total_benchmarking_days = 5

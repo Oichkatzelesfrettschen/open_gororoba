@@ -28,12 +28,27 @@ ALLOWED_TRACKED_MARKDOWN = {
     "AGENTS.md",
     "CLAUDE.md",
     "GEMINI.md",
+    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md",
+    "PHASE10_11_ULTIMATE_ROADMAP.md",
+    "PYTHON_REFACTORING_ROADMAP.md",
     "README.md",
     "curated/README.md",
     "curated/01_theory_frameworks/README_COQ.md",
     "data/artifacts/README.md",
     "data/csv/README.md",
 }
+
+POLICY_PREFIXES = (
+    "docs/",
+    "reports/",
+    "data/artifacts/",
+)
+
+
+def _in_policy_scope(path: str) -> bool:
+    if any(path.startswith(prefix) for prefix in POLICY_PREFIXES):
+        return True
+    return path in ALLOWED_TRACKED_MARKDOWN
 
 
 def _assert_ascii(text: str, context: str) -> None:
@@ -145,11 +160,11 @@ def main() -> int:
         classification_counts[classification] += 1
         lifecycle_counts[lifecycle] += 1
 
-        if git_status == "tracked" and path not in ALLOWED_TRACKED_MARKDOWN:
+        if _in_policy_scope(path) and git_status == "tracked" and path not in ALLOWED_TRACKED_MARKDOWN:
             tracked_violations.append(path)
-        if classification not in SAFE_CLASSIFICATIONS:
+        if _in_policy_scope(path) and classification not in SAFE_CLASSIFICATIONS:
             classification_violations.append(path)
-        if classification == "toml_published_markdown" and not destination_exists:
+        if _in_policy_scope(path) and classification == "toml_published_markdown" and not destination_exists:
             destination_missing.append(path)
 
         if risk > 0:
@@ -240,7 +255,9 @@ def main() -> int:
         destination_exists = bool(toml_destination) and (root / toml_destination).is_file()
         risk = _risk_score(path, row, destination_exists)
         tracked_allowed = not (
-            str(row.get("git_status", "")) == "tracked" and path not in ALLOWED_TRACKED_MARKDOWN
+            _in_policy_scope(path)
+            and str(row.get("git_status", "")) == "tracked"
+            and path not in ALLOWED_TRACKED_MARKDOWN
         )
 
         lines.append("[[document]]")

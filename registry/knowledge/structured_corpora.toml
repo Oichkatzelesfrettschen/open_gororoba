@@ -7,7 +7,7 @@ authoritative = true
 source_count = 10
 claim_atom_count = 408
 equation_atom_count = 785
-proof_atom_count = 40
+proof_atom_count = 41
 
 [[source]]
 id = "SCP-0001"
@@ -163,7 +163,7 @@ title = "The Lost Hexagon and the Split-Octonion Attractor"
 line_count = 0
 claim_atom_count = 0
 equation_atom_count = 9
-proof_atom_count = 0
+proof_atom_count = 1
 narrative_compaction_recommended = true
 reduction_stage = "structured_atoms_extracted"
 target_summary_max_lines = 8

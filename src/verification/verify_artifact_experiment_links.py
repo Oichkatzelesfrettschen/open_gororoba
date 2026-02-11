@@ -205,68 +205,68 @@ def validate_artifact_experiment_links(registry_dir: str = "registry") -> Tuple[
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 2] Experiment IDs exist")
     ok, errs = validate_experiment_ids_exist(links_reg, valid_experiments)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 3] Link data_flow_type enumeration")
     ok, errs = validate_data_flow_types(links_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 4] Artifact data_flow_type enumeration")
     ok, errs = validate_artifact_flow_types(links_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 5] No circular flows (artifact not both input+output)")
     ok, errs = validate_no_circular_flows(links_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 6] No orphaned artifacts")
     ok, errs = validate_no_orphaned_artifacts(links_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     print("[Gate 7] Bidirectional consistency (experiment_title present)")
     ok, errs = validate_bidirectional_consistency(links_reg)
     if not ok:
         errors.extend(errs)
         for err in errs:
-            print(f"  ✗ {err}")
+            print(f"  [FAIL] {err}")
     else:
-        print("  ✓ PASS")
+        print("  [PASS] PASS")
 
     if errors:
-        print(f"\n❌ Found {len(errors)} validation errors")
+        print(f"\n[FAIL] Found {len(errors)} validation errors")
     else:
-        print("\n✓ All artifact-experiment links valid")
+        print("\n[PASS] All artifact-experiment links valid")
 
     return len(errors), errors
 

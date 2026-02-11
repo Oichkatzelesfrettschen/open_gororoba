@@ -91,13 +91,7 @@ event_log_created = true
 [event_statistics]
 total_events = 1
 events_by_type = {add = 1, update = 0, refute = 0, deprecate = 0}
-events_by_registry = {
-  claims_toml = 0,
-  insights_toml = 0,
-  experiments_toml = 0,
-  artifact_scrolls_toml = 0,
-  registry_events_toml = 1,
-}
+events_by_registry = { claims_toml = 0, insights_toml = 0, experiments_toml = 0, artifact_scrolls_toml = 0, registry_events_toml = 1 }
 date_range_start = "2026-02-10"
 date_range_end = "2026-02-10"
 

@@ -4956,7 +4956,7 @@ sprint = 32
 
 [[claim]]
 id = "C-606"
-statement = "Tessarines (bicomplex C ⊗ C) are categorically distinct from Cayley-Dickson algebras: different construction methods produce fundamentally incompatible algebraic structures."
+statement = "Tessarines (bicomplex C x C) are categorically distinct from Cayley-Dickson algebras: different construction methods produce fundamentally incompatible algebraic structures."
 where_stated = "`crates/algebra_core/src/construction/tessarines.rs` (module documentation), `crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_vs_cayley_dickson_comparison)"
 status = "Verified"
 last_verified = "2026-02-10"
@@ -4965,7 +4965,7 @@ sprint = 33
 
 [[claim]]
 id = "C-607"
-statement = "Tessarines have 100% invertibility of nonzero elements; the identity element is (1, 1) representing the tensor product (1+0i) ⊗ (1+0i)."
+statement = "Tessarines have 100% invertibility of nonzero elements; the identity element is (1, 1) representing the tensor product (1+0i) x (1+0i)."
 where_stated = "`crates/algebra_core/src/construction/tessarines.rs` (compute_invertibility_fraction, Tessarine::one, Tessarine::inverse), `crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_basic_properties)"
 status = "Verified"
 last_verified = "2026-02-10"
@@ -4974,11 +4974,11 @@ sprint = 33
 
 [[claim]]
 id = "C-608"
-statement = "Euclidean norm is NOT multiplicative for tessarines under component-wise multiplication; the cross-term structure ||ab||² ≠ ||a||²||b||² is a structural property of tensor products."
+statement = "Euclidean norm is NOT multiplicative for tessarines under component-wise multiplication; the cross-term structure ||ab||^2 != ||a||^2||b||^2 is a structural property of tensor products."
 where_stated = "`crates/algebra_core/src/construction/tessarines.rs` (test_norm_multiplicativity, documentation), `crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_basic_properties, test_tessarines_vs_cayley_dickson_comparison)"
 status = "Verified"
 last_verified = "2026-02-10"
-what_would_verify_refute = "VERIFIED (Phase 9): For (a1,a2)(b1,b2)=(a1*b1, a2*b2), we have ||product||²=|a1*b1|²+|a2*b2|² (no cross terms), but ||a||²||b||²=(|a1|²+|a2|²)(|b1|²+|b2|²) includes cross terms |a1|²|b2|² + |a2|²|b1|². These ALWAYS differ (verified on 50 random pairs). This explains why tessarines are a division algebra (100% invertible) despite lacking norm multiplicativity."
+what_would_verify_refute = "VERIFIED (Phase 9): For (a1,a2)(b1,b2)=(a1*b1, a2*b2), we have ||product||^2=|a1*b1|^2+|a2*b2|^2 (no cross terms), but ||a||^2||b||^2=(|a1|^2+|a2|^2)(|b1|^2+|b2|^2) includes cross terms |a1|^2|b2|^2 + |a2|^2|b1|^2. These ALWAYS differ (verified on 50 random pairs). This explains why tessarines are a division algebra (100% invertible) despite lacking norm multiplicativity."
 sprint = 33
 
 [[claim]]
@@ -4987,7 +4987,7 @@ statement = "Tessarines are fully commutative and associative algebras; commutat
 where_stated = "`crates/algebra_core/src/construction/tessarines.rs` (count_commutativity_violations, count_associativity_violations), `crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_basic_properties, test_tessarines_vs_quaternions)"
 status = "Verified"
 last_verified = "2026-02-10"
-what_would_verify_refute = "VERIFIED (Phase 9): All basis element products satisfy ab=ba (no violations) and (ab)c=a(bc) (no violations). Contrasts sharply with quaternions (ab ≠ ba for 3 independent pairs) and octonions (non-associative). This structural difference from CD algebras follows directly from component-wise (commutative ring operations) vs doubling formula (inherently non-commutative)."
+what_would_verify_refute = "VERIFIED (Phase 9): All basis element products satisfy ab=ba (no violations) and (ab)c=a(bc) (no violations). Contrasts sharply with quaternions (ab != ba for 3 independent pairs) and octonions (non-associative). This structural difference from CD algebras follows directly from component-wise (commutative ring operations) vs doubling formula (inherently non-commutative)."
 sprint = 33
 
 [[claim]]
@@ -4996,7 +4996,7 @@ statement = "Tessarines are the unique 4D hypercomplex algebra that is simultane
 where_stated = "`crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_vs_quaternions, test_tessarines_algebraic_classification)"
 status = "Verified"
 last_verified = "2026-02-10"
-what_would_verify_refute = "VERIFIED (Phase 9): Quaternions (Hamilton, 1843) satisfy (2), (3), (4) but FAIL (1) - non-commutative. Tessarines (Cockle, 1847) satisfy all 4. Split quaternions fail (3). This establishes a clear taxonomy: different construction methods over C × C (tensor product) vs C via Cayley-Dickson produce different algebraic landscapes. Phase 9 discovery bridges the 'missing' 4D algebra between C² (ordered pairs, zero-divisors) and H (quaternions, non-commutative)."
+what_would_verify_refute = "VERIFIED (Phase 9): Quaternions (Hamilton, 1843) satisfy (2), (3), (4) but FAIL (1) - non-commutative. Tessarines (Cockle, 1847) satisfy all 4. Split quaternions fail (3). This establishes a clear taxonomy: different construction methods over C x C (tensor product) vs C via Cayley-Dickson produce different algebraic landscapes. Phase 9 discovery bridges the 'missing' 4D algebra between C^2 (ordered pairs, zero-divisors) and H (quaternions, non-commutative)."
 sprint = 33
 
 # --- Phase B: A-infinity Physics Bridge (T2) ---
@@ -5176,7 +5176,7 @@ sprint = 35
 
 [[claim]]
 id = "C-633"
-statement = "Tessarines (C ⊗ C) are tensor product algebras, constructed as (z1, z2) with z1, z2 in C, with component-wise multiplication: (z1, z2) * (w1, w2) = (z1*w1, z2*w2)."
+statement = "Tessarines (C x C) are tensor product algebras, constructed as (z1, z2) with z1, z2 in C, with component-wise multiplication: (z1, z2) * (w1, w2) = (z1*w1, z2*w2)."
 where_stated = "`crates/algebra_core/src/construction/tessarines.rs`, `crates/algebra_core/tests/test_tessarines_census.rs`, `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md`"
 status = "Verified"
 last_verified = "2026-02-10"
@@ -5192,7 +5192,7 @@ what_would_verify_refute = "VERIFIED: Exhaustive census of basis elements at dim
 
 [[claim]]
 id = "C-635"
-statement = "Tessarines have zero-divisors and are not division algebras. Example: (z, 0) with z ≠ 0 is a zero-divisor when multiplied by (0, w)."
+statement = "Tessarines have zero-divisors and are not division algebras. Example: (z, 0) with z != 0 is a zero-divisor when multiplied by (0, w)."
 where_stated = "`crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarines_not_zero_divisors), `crates/algebra_core/src/construction/tessarines.rs`"
 status = "Verified"
 last_verified = "2026-02-10"
@@ -5200,7 +5200,7 @@ what_would_verify_refute = "VERIFIED: (1, 0) * (0, 1) = (0, 0) while both factor
 
 [[claim]]
 id = "C-636"
-statement = "Tessarines norm multiplicativity fails component-wise: ||t1 * t2|| ≠ ||t1|| * ||t2|| in general, despite C preserving norm multiplicativity."
+statement = "Tessarines norm multiplicativity fails component-wise: ||t1 * t2|| != ||t1|| * ||t2|| in general, despite C preserving norm multiplicativity."
 where_stated = "`crates/algebra_core/tests/test_tessarines_census.rs` (test_tessarine_norm_multiplicativity), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.3)"
 status = "Verified"
 last_verified = "2026-02-10"
@@ -5208,7 +5208,7 @@ what_would_verify_refute = "VERIFIED: Norm multiplicativity fails due to zero-di
 
 [[claim]]
 id = "C-637"
-statement = "Dual-octonions (O ⊗ D, with epsilon^2 = 0) exhibit a frustration (sign imbalance) fraction of 14/32 = 0.4375, which marks the phase boundary between elliptic and hyperbolic regimes."
+statement = "Dual-octonions (O x D, with epsilon^2 = 0) exhibit a frustration (sign imbalance) fraction of 14/32 = 0.4375, which marks the phase boundary between elliptic and hyperbolic regimes."
 where_stated = "`crates/algebra_core/tests/test_exotic_octonions.rs` (test_exotic_sign_balance), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.4)"
 status = "Verified"
 last_verified = "2026-02-10"
@@ -5224,7 +5224,7 @@ what_would_verify_refute = "VERIFIED by cross-reference with Phase 8 (C-630) and
 
 [[claim]]
 id = "C-639"
-statement = "Exotic octonion parametrization is complete: Dual-Octonions (O ⊗ D), Bi-Octonions (O ⊗ C, complexified), and Para-Octonions (conjugation variant) are all implemented and validated."
+statement = "Exotic octonion parametrization is complete: Dual-Octonions (O x D), Bi-Octonions (O x C, complexified), and Para-Octonions (conjugation variant) are all implemented and validated."
 where_stated = "`crates/algebra_core/tests/test_exotic_octonions.rs` (all three test cases), `docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md` (Section 2.4)"
 status = "Verified"
 last_verified = "2026-02-10"
@@ -5244,7 +5244,7 @@ statement = "Albert algebra J_3(O) (27D exceptional Jordan algebra) is 100% comm
 where_stated = "`crates/algebra_core/src/construction/albert.rs` (jordan_product), `crates/algebra_core/tests/test_albert_algebra.rs` (test_albert_commutativity_100_percent)"
 status = "Verified"
 last_verified = "2026-02-10"
-what_would_verify_refute = "VERIFIED: Comprehensive commutativity census across 3 test classes (diagonal-only, mixed diagonal/octonion, octonion-heavy). All 3 classes pass with 100% commutative pairs. REFUTE if any non-commutative pair (X, Y) is found where X . Y ≠ Y . X."
+what_would_verify_refute = "VERIFIED: Comprehensive commutativity census across 3 test classes (diagonal-only, mixed diagonal/octonion, octonion-heavy). All 3 classes pass with 100% commutative pairs. REFUTE if any non-commutative pair (X, Y) is found where X . Y != Y . X."
 sprint = 35
 
 [[claim]]
@@ -5258,7 +5258,7 @@ sprint = 35
 
 [[claim]]
 id = "C-643"
-statement = "Singh's delta^2 prediction (3/8 = 0.375 for trace-free Albert algebra elements) represents a special case, not a universal invariant. Broad survey shows mean delta^2 ≈ 3.27 with range [2.51, 3.75]."
+statement = "Singh's delta^2 prediction (3/8 = 0.375 for trace-free Albert algebra elements) represents a special case, not a universal invariant. Broad survey shows mean delta^2 approx 3.27 with range [2.51, 3.75]."
 where_stated = "`crates/algebra_core/tests/test_albert_algebra.rs` (test_singh_delta_squared_statistics, raw output log)"
 status = "Verified"
 last_verified = "2026-02-10"
@@ -5303,7 +5303,7 @@ sprint = 35
 
 [[claim]]
 id = "C-648"
-statement = "Axis 2 Hypothesis (Metric Signature): In Cayley-Dickson family only, metric signature gamma determines zero-divisor presence: all-gamma=-1 (Hurwitz) → division algebra; any-gamma=+1 (split/mixed) → non-division with zero-divisors. Tensor products have ZD independent of signature; exceptional algebras have no ZD by structure."
+statement = "Axis 2 Hypothesis (Metric Signature): In Cayley-Dickson family only, metric signature gamma determines zero-divisor presence: all-gamma=-1 (Hurwitz) -> division algebra; any-gamma=+1 (split/mixed) -> non-division with zero-divisors. Tensor products have ZD independent of signature; exceptional algebras have no ZD by structure."
 where_stated = "`crates/algebra_core/tests/test_composition_algebra_taxonomy.rs` (test_taxonomy_axis2_signature_division_law, test_taxonomy_zero_divisor_structure_mapping)`"
 status = "Verified"
 last_verified = "2026-02-10"
@@ -5348,11 +5348,11 @@ sprint = 35
 
 [[claim]]
 id = "C-653"
-statement = "Artifact-Experiment Linking (W7-003): Bidirectional mappings between experiments and their generated/consumed artifacts. Registry artifact_experiment_links.toml tracks: artifact metadata (id, name, format, size, purpose), artifact-experiment links with data_flow_type (input/output/intermediate), cardinality, and descriptions. Covers CSV outputs, SVG/PNG diagrams, and data files. Links enable traceability from experiment → outputs and reverse lookup (artifact → consuming experiments)."
+statement = "Artifact-Experiment Linking (W7-003): Bidirectional mappings between experiments and their generated/consumed artifacts. Registry artifact_experiment_links.toml tracks: artifact metadata (id, name, format, size, purpose), artifact-experiment links with data_flow_type (input/output/intermediate), cardinality, and descriptions. Covers CSV outputs, SVG/PNG diagrams, and data files. Links enable traceability from experiment -> outputs and reverse lookup (artifact -> consuming experiments)."
 where_stated = "`registry/artifact_experiment_links.toml` (schema definition, artifact table, link edge list) + `src/verification/verify_artifact_experiment_links.py` (7-gate validation)"
 status = "Verified"
 last_verified = "2026-02-10"
-what_would_verify_refute = "VERIFIED: artifact_experiment_links.toml created with 18 artifacts, 8 links, 7 validation gates. E-001, E-002, E-021, E-023, E-024, E-025 linked to outputs. Input artifacts (external catalogs, documentation) properly marked. REFUTE if validation script fails or circular flows detected."
+what_would_verify_refute = "VERIFIED: artifact_experiment_links.toml created with 15 artifacts, 8 links, 7 validation gates. E-001, E-002, E-021, E-023, E-024 linked to outputs. Input artifacts (external catalogs) properly marked. REFUTE if validation script fails or circular flows detected."
 sprint = 35
 
 [[claim]]

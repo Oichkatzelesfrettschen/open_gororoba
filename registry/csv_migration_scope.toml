@@ -5,30 +5,30 @@
 updated = "2026-02-09"
 authoritative = true
 inventory_path = "registry/csv_inventory.toml"
-document_count = 946
+document_count = 949
 
 [zone_counts]
 archive_csv = 5
 curated_csv = 557
 external_csv = 26
 legacy_csv = 200
-other_csv = 71
-project_csv = 87
+other_csv = 72
+project_csv = 89
 
 [action_counts]
-canonicalized_to_toml = 814
+canonicalized_to_toml = 816
 canonicalized_to_toml_generated_artifact = 30
 canonicalized_to_toml_holding = 31
-manual_triage = 71
+manual_triage = 72
 
 [priority_counts]
-complete = 875
-medium = 71
+complete = 877
+medium = 72
 
 [next_waves]
 wave_1 = "complete: 200/200 legacy_csv canonicalized"
 wave_2 = "complete: 557/557 curated_csv canonicalized"
-wave_3 = "complete: 87/87 project_csv split-and-scroll complete"
+wave_3 = "complete: 89/89 project_csv split-and-scroll complete"
 wave_4 = "complete: 31/31 external+archive holding scrollified"
 
 high_priority_path_sample = [
@@ -36,6 +36,7 @@ high_priority_path_sample = [
 
 medium_priority_path_sample = [
   ".playwright-mcp/sorce-tsi-24hr-l3.csv",
+  "crates/docpipe/tests/fixtures/historical_equations.csv",
   "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccos.csv",
   "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arccosh.csv",
   "crates/gororoba_py/venv/lib/python3.14/site-packages/numpy/_core/tests/data/umath-validation-set-arcsin.csv",
