@@ -672,7 +672,7 @@ mod tests {
     fn conversion_uses_semantic_rows_for_checksum_with_unicode_cells() {
         let mut temp = NamedTempFile::new().expect("tmp");
         writeln!(temp, "Result").expect("write");
-        writeln!(temp, "BOTTOM").expect("write");
+        writeln!(temp, "\\u22A5").expect("write");
 
         let spec = ConvertSpec {
             dataset_id: "T-0002",
@@ -685,7 +685,7 @@ mod tests {
         };
         let converted = convert_csv_to_scroll(temp.path(), &spec).expect("convert");
 
-        let expected_rows = vec![vec!["BOTTOM".to_string()]];
+        let expected_rows = vec![vec!["\\u22A5".to_string()]];
         let expected_sha = sha_text_ascii(&json_ascii_rows(&expected_rows));
 
         assert_eq!(
