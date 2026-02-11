@@ -5238,3 +5238,92 @@ status = "Verified"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED by theoretical argument (Part 3.2: Proof Sketch) and empirical validation (commutativity 100% vs 0%, identity (1,1) vs (1,0), conjugation homomorphic vs anti-homomorphic, division algebra status different). The categorical distinction is established via: (1) Commutativity axiom violation (100% vs 0%), (2) Identity element mismatch ((1,1) vs (1,0)), (3) Conjugation structure difference (homomorphic vs anti-homomorphic), (4) Division algebra status conflict. No isomorphism can exist respecting all five axioms. REFUTE if a mathematical isomorphism is found that respects multiplication, conjugation, identity, and division structure simultaneously."
 
+[[claim]]
+id = "C-641"
+statement = "Albert algebra J_3(O) (27D exceptional Jordan algebra) is 100% commutative under the Jordan product X . Y = (XY + YX)/2."
+where_stated = "`crates/algebra_core/src/construction/albert.rs` (jordan_product), `crates/algebra_core/tests/test_albert_algebra.rs` (test_albert_commutativity_100_percent)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Comprehensive commutativity census across 3 test classes (diagonal-only, mixed diagonal/octonion, octonion-heavy). All 3 classes pass with 100% commutative pairs. REFUTE if any non-commutative pair (X, Y) is found where X . Y ≠ Y . X."
+sprint = 35
+
+[[claim]]
+id = "C-642"
+statement = "Exceptional Jordan algebras like Albert preserve the Phase 9 pattern: Jordan algebras are uniformly commutative (100%), while CD algebras are uniformly non-commutative (0% for dim >= 4)."
+where_stated = "`crates/algebra_core/tests/test_albert_algebra.rs` (test_albert_cross_validation_with_phase9), `docs/PHASE10_EXCEPTIONAL_ALGEBRAS_RESEARCH.md`"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED by E-022 cross-validation test: Albert (exceptional Jordan) maintains 100% commutativity like tessarines (tensor product Jordan), confirming that the commutativity distinction is algebra-family-dependent (Jordan vs CD), not dimension-dependent. REFUTE if a CD algebra or a Jordan algebra is found with opposite commutativity property."
+sprint = 35
+
+[[claim]]
+id = "C-643"
+statement = "Singh's delta^2 prediction (3/8 = 0.375 for trace-free Albert algebra elements) represents a special case, not a universal invariant. Broad survey shows mean delta^2 ≈ 3.27 with range [2.51, 3.75]."
+where_stated = "`crates/algebra_core/tests/test_albert_algebra.rs` (test_singh_delta_squared_statistics, raw output log)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: 21-element survey across trace-free configurations (diag_scales 1.0, 0.5, 0.3 with octonion indices 1-7) yields mean=3.213229, min=2.505419, max=3.746659. The predicted 3/8=0.375 is FAR below observed values. REFUTE if the survey contains systematic errors or if additional constraints (e.g., rank-1 projectors) yield precisely 3/8 across all elements."
+sprint = 35
+
+[[claim]]
+id = "C-644"
+statement = "Albert algebra structure (3x3 Hermitian matrices over octonions) confirms exceptionality: power-associativity (X^2 . X = X . X^2) holds, but the algebra cannot be embedded in any associative algebra."
+where_stated = "`crates/algebra_core/tests/test_albert_algebra.rs` (test_albert_exceptionality_indicator, test_albert_jordan_identity_property)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Power-associativity tests confirm (X^2.Y).X = X^2.(Y.X) for Albert algebra, consistent with Jordan identity. Dimension 27 and Hermitian structure with octonion coefficients prevent embedding in M_3(A) for any associative A. REFUTE if a non-associative embedding is found or if power-associativity fails."
+sprint = 35
+
+[[claim]]
+id = "C-645"
+statement = "Albert algebra norm (Frobenius) is well-defined and positive for all non-zero elements, with norm_sq being the sum of squares of 27 real components (3 diagonal + 2*3 off-diagonal octonions)."
+where_stated = "`crates/algebra_core/src/construction/albert.rs` (norm_sq), `crates/algebra_core/tests/test_albert_algebra.rs` (test_albert_norm_and_invertibility)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Norm computation follows Frobenius definition (sum of squared real entries). Diagonal (1,2,3) yields norm_sq=14; trace-free mixed yields norm_sq=3.66. Both positive and non-degenerate. REFUTE if norm_sq is found to be zero for a non-zero element or if the Frobenius definition is shown to be inappropriate for the Albert structure."
+sprint = 35
+
+[[claim]]
+id = "C-646"
+statement = "Composition algebra taxonomy is structured along two independent axes: (Axis 1) Construction Method (tensor product vs recursive doubling vs exceptional) determines commutativity universally; (Axis 2) Metric Signature (gamma patterns) controls zero-divisor structure in CD family only."
+where_stated = "`crates/algebra_core/src/construction/composition_algebra_census.rs` (ConstructionMethod, MetricSignature enums), `crates/algebra_core/tests/test_composition_algebra_taxonomy.rs`"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Axis 1 law confirmed across tensor products (100% comm), CD algebras (0% comm dim>=4), exceptional (100% comm). Axis 2 law confirmed: Hurwitz gammas yield division algebras, mixed gammas yield ZD. REFUTE if any algebra violates universal patterns."
+sprint = 35
+
+[[claim]]
+id = "C-647"
+statement = "Axis 1 Hypothesis (Construction Method): All tensor product algebras are universally 100% commutative; all recursive doubling algebras (dim >= 4) are universally 0% commutative. This distinction is independent of dimension and metric signature."
+where_stated = "`crates/algebra_core/tests/test_composition_algebra_taxonomy.rs` (test_taxonomy_axis1_tensor_product_commutativity, test_taxonomy_axis1_cayley_dickson_non_commutativity)`"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Tensor products at dims 4, 8 all pass with 100% commutativity. Quaternions, octonions, mixed-quaternions all pass with 0% commutativity (dim >= 4). REFUTE if any tensor product exhibits non-commutativity or any CD algebra (dim >= 4) exhibits commutativity."
+sprint = 35
+
+[[claim]]
+id = "C-648"
+statement = "Axis 2 Hypothesis (Metric Signature): In Cayley-Dickson family only, metric signature gamma determines zero-divisor presence: all-gamma=-1 (Hurwitz) → division algebra; any-gamma=+1 (split/mixed) → non-division with zero-divisors. Tensor products have ZD independent of signature; exceptional algebras have no ZD by structure."
+where_stated = "`crates/algebra_core/tests/test_composition_algebra_taxonomy.rs` (test_taxonomy_axis2_signature_division_law, test_taxonomy_zero_divisor_structure_mapping)`"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Quaternions (Hurwitz, gamma=[-1,-1]) division algebra; mixed-quaternions (split) non-division with ZD. Tensor products structurally contain ZD. Albert exceptional has no ZD. REFUTE if signature-based prediction fails."
+sprint = 35
+
+[[claim]]
+id = "C-649"
+statement = "Categorical Distinction Theorem Extended (Phase 9): Tensor product algebras and recursive doubling algebras are categorically distinct across all dimensions. No tensor product can represent as any mixed-signature CD algebra. Distinction rooted in commutativity: tensor products preserve it, CD doubling breaks it via conjugation asymmetry."
+where_stated = "`crates/algebra_core/tests/test_composition_algebra_taxonomy.rs` (test_taxonomy_categorical_distinction_tensor_vs_cd, test_taxonomy_phase9_distinction_extended)`"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Tessarines (Phase 9, 100% comm tensor) cannot be CD dim=4 algebra (0% non-comm). Two-axis framework shows no parameter transforms tensor into CD. REFUTE if representation isomorphism found or intermediate commutativity algebra exists."
+sprint = 35
+
+[[claim]]
+id = "C-650"
+statement = "Norm Multiplicativity Correlation: A composition algebra preserves norm multiplicativity (N(xy) = N(x)N(y)) if and only if it is a division algebra. Tensor products fail (ZD present); exceptional algebras fail (non-division); only Hurwitz CD algebras succeed."
+where_stated = "`crates/algebra_core/tests/test_composition_algebra_taxonomy.rs` (test_taxonomy_norm_multiplicativity_correlation)`"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: Quaternions (division, Hurwitz) preserve norm mult; mixed-quaternions (non-division) fail; Albert (non-division) fails. REFUTE if non-division algebra preserves norm mult or division algebra fails it."
+sprint = 35

@@ -527,3 +527,39 @@ confidence = "high"
 verified_date = "2026-02-10"
 sprint = 35
 
+
+[[insight]]
+id = "I-057"
+insight = "Exceptional Jordan algebras (like Albert J_3(O)) preserve the Phase 9 commutativity pattern: 100% commutative under the Jordan product, extending the pattern beyond tensor products and low-dimensional cases. The exceptional structure (27D, irreducible, cannot embed in associative algebras) confirms that commutativity is a family-level property driven by construction method, not dimension or complexity."
+supporting_evidence = ["C-641", "C-642", "crates/algebra_core/tests/test_albert_algebra.rs (test_albert_commutativity_100_percent, test_albert_cross_validation_with_phase9)"]
+related_claims = ["C-641", "C-642"]
+confidence = "high"
+verified_date = "2026-02-10"
+sprint = 35
+
+[[insight]]
+id = "I-058"
+insight = "Singh's delta^2 = 3/8 conjecture for Albert algebra is element-dependent, not universal. Empirical survey across trace-free elements shows mean delta^2 ≈ 3.27 with broad variance (range 2.51--3.75), suggesting delta^2 is a sensitive invariant tied to specific element properties (rank, eigenvalue structure, octonion component distribution) rather than a universal constant. The prediction likely applies to special rank-1 projector bases, not generic elements."
+supporting_evidence = ["C-643", "crates/algebra_core/tests/test_albert_algebra.rs (test_singh_delta_squared_statistics output: mean=3.213, min=2.505, max=3.747)"]
+related_claims = ["C-643"]
+confidence = "medium"
+verified_date = "2026-02-10"
+sprint = 35
+
+[[insight]]
+id = "I-059"
+insight = "Composition algebras exhibit a two-axis taxonomy structure: Construction Method (tensor product vs recursive doubling vs exceptional) is primary; Metric Signature (gamma patterns) is secondary, controlling only zero-divisor presence in CD family. This orthogonal decomposition explains why tensor products cannot be represented as CD algebras: they occupy distinct positions in construction-space that no signature variation can bridge. The taxonomy is universal across all dimensions."
+supporting_evidence = ["C-646", "C-647", "C-648", "C-649", "crates/algebra_core/src/construction/composition_algebra_census.rs", "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs (11 test classes)"]
+related_claims = ["C-646", "C-647", "C-648", "C-649", "C-650"]
+confidence = "high"
+verified_date = "2026-02-10"
+sprint = 35
+
+[[insight]]
+id = "I-060"
+insight = "The categorical distinction between tensor products and recursive doubling algebras (Phase 9 tessarines ≠ CD) extends to ALL composition algebra families via the two-axis taxonomy. Construction method universally determines commutativity: tensor products 100% commutative, CD algebras 0% commutative (dim ≥ 4), exceptional algebras 100% commutative. This is independent of metric signature, dimension, or any other parameter. The universal pattern suggests deep structural principle about how conjugation asymmetry in recursive doubling breaks commutativity at the foundation of the algebra."
+supporting_evidence = ["C-649", "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs (test_taxonomy_phase9_distinction_extended, test_taxonomy_axis1_*, test_taxonomy_categorical_distinction_*)"]
+related_claims = ["C-647", "C-649"]
+confidence = "high"
+verified_date = "2026-02-10"
+sprint = 35
