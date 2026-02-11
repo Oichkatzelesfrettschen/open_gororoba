@@ -21,6 +21,7 @@ members = [
     "crates/gororoba_py",
     "crates/gororoba_cli",
     "crates/snia_core",
+    "crates/cosmic_scheduler",
     "crates/vacuum_frustration",
     "crates/lbm_3d",
     "crates/lattice_filtration",

@@ -1209,6 +1209,13 @@ dependencies = [
 ]
 
 [[package]]
+name = "cosmic_scheduler"
+version = "0.1.0"
+dependencies = [
+ "serde",
+]
+
+[[package]]
 name = "cosmology_core"
 version = "0.1.0"
 dependencies = [
@@ -3816,6 +3823,7 @@ name = "lbm_3d"
 version = "0.1.0"
 dependencies = [
  "approx",
+ "cosmic_scheduler",
  "nalgebra 0.33.2",
  "ndarray 0.16.1",
  "rayon",

@@ -1,0 +1,23 @@
+[package]
+name = "cosmic_scheduler"
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+[dependencies]
+serde = { workspace = true, features = ["derive"] }
+
+[dev-dependencies]
+# None currently
+
+[[test]]
+name = "test_phase_scheduler"
+path = "tests/test_phase_scheduler.rs"
+
+[[test]]
+name = "test_lbm_integration"
+path = "tests/test_lbm_integration.rs"
+
+[[test]]
+name = "test_deterministic_evolution"
+path = "tests/test_deterministic_evolution.rs"

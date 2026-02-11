@@ -1,0 +1,276 @@
+# Terminology Standards Registry
+# Source of truth for standardized mathematical and scientific language
+# Generated: 2026-02-11 from Phase 1 Week 2 implementation
+
+[[term]]
+id = "T-LBM-001"
+domain = "Lattice Boltzmann Method"
+informal = "populations"
+standard = "population distribution function f_i"
+definition = "Discrete representation of fluid particle distribution across lattice velocity vectors {c_i}. Sum over velocities yields macroscopic density: ρ = Σ_i f_i"
+mathematical = "f_i(x, t) ∈ ℝ"
+reference = "crates/lbm_3d/src/lattice.rs"
+status = "active"
+
+[[term]]
+id = "T-LBM-002"
+domain = "Lattice Boltzmann Method"
+informal = "target state"
+standard = "equilibrium distribution"
+definition = "Maxwell-Boltzmann equilibrium state toward which BGK collision relaxes. Computed from macroscopic density ρ and velocity u via Chapman-Enskog expansion."
+mathematical = "f_i^eq(ρ, u) = ρ w_i [1 + (c_i · u)/c_s² + (c_i · u)²/(2c_s⁴) - u²/(2c_s²)]"
+reference = "crates/lbm_3d/src/lattice.rs:115"
+status = "active"
+
+[[term]]
+id = "T-LBM-003"
+domain = "Lattice Boltzmann Method"
+informal = "relaxation effect"
+standard = "Chapman-Enskog collision operator"
+definition = "BGK (Bhatnagar-Gross-Krook) approximation to Boltzmann collision integral. Drives distribution toward equilibrium with relaxation time τ."
+mathematical = "Ω_BGK(f) = -(f - f^eq)/τ"
+reference = "crates/lbm_3d/src/solver.rs:98-108"
+status = "active"
+
+[[term]]
+id = "T-LBM-004"
+domain = "Lattice Boltzmann Method"
+informal = "D3Q19 lattice"
+standard = "D3Q19 discrete lattice"
+definition = "3-dimensional, 19-velocity lattice structure. D=dimension, Q=number of discrete velocities. Velocities: {0}, 6 cardinal directions, 12 diagonal directions."
+reference = "crates/lbm_3d/src/lattice.rs:1"
+status = "active"
+
+[[term]]
+id = "T-LBM-005"
+domain = "Lattice Boltzmann Method"
+informal = "viscosity modulation"
+standard = "kinematic viscosity via Chapman-Enskog expansion"
+definition = "Spatial viscosity field derived from relaxation time τ. In LBM, kinematic viscosity ν relates to τ through Mach number expansion."
+mathematical = "ν = c_s²(τ - 0.5) = (1/3)(τ - 0.5)"
+reference = "crates/lbm_3d/src/solver.rs:38-42"
+status = "active"
+
+[[term]]
+id = "T-PHYS-001"
+domain = "Physics & Differential Geometry"
+informal = "viscosity effects"
+standard = "viscosity field ν(x,y,z)"
+definition = "Spatially-varying kinematic viscosity at each grid point. In Navier-Stokes, controls momentum diffusion via stress tensor τ_ij."
+mathematical = "ν: Ω → ℝ where Ω is fluid domain"
+status = "active"
+
+[[term]]
+id = "T-PHYS-002"
+domain = "Physics & Differential Geometry"
+informal = "fluid dynamics equation"
+standard = "Navier-Stokes equation"
+definition = "Fundamental PDE governing incompressible viscous flow. Conservation of momentum with viscous stress."
+mathematical = "∂u/∂t + (u · ∇)u = -∇p + ν∇²u"
+status = "active"
+
+[[term]]
+id = "T-PHYS-003"
+domain = "Physics & Differential Geometry"
+informal = "material response"
+standard = "stress-strain tensor"
+definition = "Relates stress (force per area) to strain (deformation) in continuum mechanics. Linear constitutive relation σ_ij = C_ijkl ε_kl."
+mathematical = "τ_ij = -p δ_ij + 2ρν S_ij where S_ij = (∂u_i/∂x_j + ∂u_j/∂x_i)/2"
+status = "active"
+
+[[term]]
+id = "T-ALGE-001"
+domain = "Algebra & Group Theory"
+informal = "doubling formula"
+standard = "Cayley-Dickson construction"
+definition = "Recursive formula generating composition algebras of dimension 2^n. Defines multiplication on successive algebras via sedenion basis multiplication sign function psi(a,b)."
+mathematical = "Dim 2^n from Dim 2^(n-1) via (x₁, x₂) · (y₁, y₂) = (x₁y₁ - y₂*x₂*, x₂x₁* + y₁x₂)"
+reference = "algebra_core/src/construction/cayley_dickson.rs"
+status = "active"
+
+[[term]]
+id = "T-ALGE-002"
+domain = "Algebra & Group Theory"
+informal = "algebra types"
+standard = "composition algebra with signature γ ∈ {±1}"
+definition = "Algebra closed under composition of norms with metric signature. Γ controls associativity, commutativity, and division algebra structure."
+mathematical = "|ab| = |a||b| for signature-dependent constraints"
+status = "active"
+
+[[term]]
+id = "T-ALGE-003"
+domain = "Algebra & Group Theory"
+informal = "non-invertible elements"
+standard = "zero divisor"
+definition = "Element a ≠ 0 such that ∃b ≠ 0 with ab = 0. Signals non-division algebra structure."
+mathematical = "a ∈ D, a ≠ 0 ∧ ∃b ≠ 0: ab = 0"
+reference = "algebra_core/src/analysis/zero_divisor.rs"
+status = "active"
+
+[[term]]
+id = "T-ALGE-004"
+domain = "Algebra & Group Theory"
+informal = "community property"
+standard = "anticommutative / non-associative"
+definition = "Violation of commutativity (ab ≠ ba) or associativity ((ab)c ≠ a(bc)). Universal in CD algebras dim ≥ 4."
+status = "active"
+
+[[term]]
+id = "T-GRAPH-001"
+domain = "Graph Theory & Topology"
+informal = "frustrated edges"
+standard = "signed graph G = (V, E⁺ ∪ E⁻)"
+definition = "Graph with edge signs. Edge (u,v) ∈ E⁺ (positive/balanced) or (u,v) ∈ E⁻ (negative/frustrated). Cycle balanced iff product of edge signs = +1."
+reference = "crates/vacuum_frustration/src/signed_graph.rs"
+status = "active"
+
+[[term]]
+id = "T-GRAPH-002"
+domain = "Graph Theory & Topology"
+informal = "frustration"
+standard = "balance index / frustration density"
+definition = "Harary-Zaslavsky metric: ratio of frustrated (unbalanced) edges to total edges in signed graph. Ranges [0,1]. Value 3/8 is CD dim=16 attractor."
+mathematical = "F = (min edge flips to balance) / |E|"
+reference = "crates/vacuum_frustration/src/balance.rs"
+status = "active"
+
+[[term]]
+id = "T-TOPO-001"
+domain = "Topology & Filtration"
+informal = "survival depth"
+standard = "homological persistence"
+definition = "Lifetime of topological feature across filtration cascade. In Cayley-Dickson, measured as number of filtration levels Λ_2048 → Λ_256 where basis element survives."
+mathematical = "birth(σ) ≤ death(σ) in filtration order"
+status = "active"
+
+[[term]]
+id = "T-TOPO-002"
+domain = "Topology & Filtration"
+informal = "filtration chain"
+standard = "ordered sequence of nested complexes"
+definition = "Totally ordered sequence K₀ ⊆ K₁ ⊆ ... ⊆ K_n of simplicial complexes. In CD context: Lambda_2048 ⊇ Lambda_1024 ⊇ Lambda_512 ⊇ Lambda_256."
+reference = "crates/lattice_filtration/src/filtration.rs"
+status = "active"
+
+[[term]]
+id = "T-TOPO-003"
+domain = "Topology & Filtration"
+informal = "topological features"
+standard = "Betti numbers"
+definition = "β_k = rank of k-th homology group. β_0 = connected components, β_1 = loops, β_2 = voids. Topological invariants preserved across homotopy."
+mathematical = "β_k = rank H_k(K; ℤ)"
+status = "active"
+
+[[term]]
+id = "T-QFT-001"
+domain = "Quantum Field Theory"
+informal = "vacuum state"
+standard = "vacuum expectation value (VEV)"
+definition = "Expectation value of scalar field operator in ground state. Central to electroweak symmetry breaking and particle mass generation."
+mathematical = "⟨0|φ(x)|0⟩ ∈ ℝ"
+status = "active"
+
+[[term]]
+id = "T-QFT-002"
+domain = "Quantum Field Theory"
+informal = "energy measure"
+standard = "Hamiltonian operator"
+definition = "Generator of time translations. Diagonal in energy eigenbasis. Ground state expectation ⟨0|H|0⟩ gives vacuum energy."
+mathematical = "H = Σ_k E_k |k⟩⟨k|"
+status = "active"
+
+[[term]]
+id = "T-QFT-003"
+domain = "Quantum Field Theory"
+informal = "reversible evolution"
+standard = "unitary evolution"
+definition = "Time evolution preserving inner product: U†U = I. Ensures probability conservation and CPT symmetry in quantum systems."
+mathematical = "U(t) = exp(-iHt/ℏ), U† = U⁻¹"
+status = "active"
+
+[[term]]
+id = "T-QFT-004"
+domain = "Quantum Field Theory"
+informal = "higher homotopies"
+standard = "A_∞ structure"
+definition = "Higher associativity relations encoding deformation of associativity in QFT. Stasheff pentagon identity relates m_2, m_3, m_4 operators."
+reference = "crates/neural_homotopy/src/stasheff.rs"
+status = "active"
+
+[[term]]
+id = "T-STAT-001"
+domain = "Statistics & Testing"
+informal = "significance indicator"
+standard = "p-value"
+definition = "Probability that test statistic under null hypothesis is as extreme as observed value. p < 0.05 conventional threshold for rejection."
+mathematical = "p = P(T ≥ t_obs | H_0)"
+status = "active"
+
+[[term]]
+id = "T-STAT-002"
+domain = "Statistics & Testing"
+informal = "permutation test"
+standard = "Besag-Clifford adaptive test"
+definition = "Non-parametric permutation test with adaptive stopping. Estimates p-value via empirical permutation distribution. Besag-Clifford correction accounts for adaptation."
+reference = "stats_core/src/ultrametric/adaptive.rs"
+status = "active"
+
+[[term]]
+id = "T-STAT-003"
+domain = "Statistics & Testing"
+informal = "error correction"
+standard = "false discovery rate (FDR)"
+definition = "Expected proportion of false discoveries among all discoveries. Controls Type I error in multiple testing. Benjamini-Hochberg procedure at α level."
+mathematical = "FDR = E[V/R] where V=false positives, R=total discoveries"
+status = "active"
+
+[[term]]
+id = "T-STAT-004"
+domain = "Statistics & Testing"
+informal = "practical significance"
+standard = "effect size"
+definition = "Magnitude of difference independent of sample size. Complement to p-value significance. Examples: Cohen's d, Pearson r, odds ratio."
+status = "active"
+
+[[term]]
+id = "T-COSM-001"
+domain = "Cosmic Engine"
+informal = "cosmic engine"
+standard = "unified bit-to-physics synthesis pipeline"
+definition = "6-layer computational architecture transforming Cayley-Dickson bit-level doubling into testable physics predictions. LAYER 0-6 from psi sign function through Besag-Clifford validation."
+reference = "COSMIC_ENGINE_PROGRESS.md"
+status = "active"
+
+[[term]]
+id = "T-COSM-002"
+domain = "Cosmic Engine"
+informal = "Babbage patterns"
+standard = "hierarchical tree-based addressing"
+definition = "Multi-level addressing scheme via column/card/digit hierarchy. Analogous to Patricia trie filtration: Λ_2048 → Λ_1024 → Λ_512 → Λ_256."
+reference = "crates/lattice_filtration/docs/BABBAGE_ANALOGY.md"
+status = "active"
+
+[[term]]
+id = "T-COSM-003"
+domain = "Cosmic Engine"
+informal = "two-phase clock"
+standard = "phi₁/phi₂ coordination"
+definition = "Deterministic two-phase timing abstraction from Intel 4004. phi₁ = collision/preparation, phi₂ = streaming/execution. Isomorphic to LBM phases."
+reference = "cosmic_scheduler/src/phase_scheduler.rs"
+status = "active"
+
+[metadata]
+version = "1.0"
+source = "TOML-first glossary registry"
+generated = "2026-02-11"
+domains = [
+  "Lattice Boltzmann Method",
+  "Physics & Differential Geometry",
+  "Algebra & Group Theory",
+  "Graph Theory & Topology",
+  "Topology & Filtration",
+  "Quantum Field Theory",
+  "Statistics & Testing",
+  "Cosmic Engine"
+]
+total_terms = 28
