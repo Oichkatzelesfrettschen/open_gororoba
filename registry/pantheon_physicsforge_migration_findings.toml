@@ -1,0 +1,50 @@
+[migration_findings]
+updated = "2026-02-11"
+authoritative = true
+seed_target = "build/pantheon_physicsforge_migration.db"
+finding_count = 2
+risk_count = 1
+
+[[finding]]
+id = "MF-001"
+task_id = "PPF-077"
+phase = 9
+severity = "medium"
+status = "open_monitoring"
+owner = "phase9-10-bookkeeping"
+summary = "Mapping completeness gate added to enforce matrix/todo consistency for phase 2 scope tasks."
+evidence_refs = [
+  "src/verification/verify_pantheon_physicsforge_mapping_completeness.py",
+  "registry/pantheon_physicsforge_migration_matrix.toml",
+  "registry/pantheon_physicsforge_migration_todo.toml",
+]
+
+[[finding]]
+id = "MF-002"
+task_id = "PPF-078"
+phase = 9
+severity = "low"
+status = "open_monitoring"
+owner = "phase9-10-bookkeeping"
+summary = "License header verifier added for migrated Rust/Python files with GPL-2.0-only checks."
+evidence_refs = [
+  "src/verification/verify_pantheon_physicsforge_license_headers.py",
+  "registry/pantheon_physicsforge_ported_files.toml",
+  "registry/pantheon_physicsforge_license_alignment.toml",
+]
+
+[[risk]]
+id = "MR-001"
+task_id = "PPF-081"
+phase = 9
+risk_level = "medium"
+status = "open"
+owner = "phase9-10-bookkeeping"
+eta = "2026-02-18"
+summary = "PhysicsForge mapping rows are fully inventoried but not yet implemented in Rust target crates."
+mitigation = "Track unresolved mapping items through phase 10 overflow queue and weekly rescope pass."
+evidence_refs = [
+  "registry/pantheon_physicsforge_migration_matrix.toml",
+  "registry/pantheon_physicsforge_overflow_tracker.toml",
+  "registry/pantheon_physicsforge_phase9_10_audit.toml",
+]

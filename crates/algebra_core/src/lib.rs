@@ -122,6 +122,8 @@ pub use analysis::boxkites::{
     automorphemes_containing_assessor,
     build_coassessor_graph,
     canonical_strut_table,
+    // Frustration ratio computation
+    compute_frustration_ratio,
     compute_strut_signature,
     cross_assessors,
     diagonal_zero_product,
@@ -137,8 +139,6 @@ pub use analysis::boxkites::{
     Assessor,
     BoxKite,
     BoxKiteSymmetryResult,
-    // Frustration ratio computation
-    compute_frustration_ratio,
     // Generalized motif census (cd_motif_census port)
     CrossPair,
     EdgeSignType,

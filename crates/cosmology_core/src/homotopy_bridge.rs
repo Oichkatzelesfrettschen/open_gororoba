@@ -23,9 +23,7 @@
 //! - Bowers & Liang (1974): Anisotropic spheres in GR
 //! - Mazur & Mottola (2004): Gravitational vacuum condensate stars
 
-use crate::gravastar::{
-    AnisotropicParams, GravastarConfig, GravastarSolution, PolytropicEos,
-};
+use crate::gravastar::{AnisotropicParams, GravastarConfig, GravastarSolution, PolytropicEos};
 
 /// Effective stress-energy derived from A-infinity obstruction.
 #[derive(Debug, Clone)]
@@ -174,7 +172,13 @@ pub fn sweep_obstruction_coupling(cfg: &SweepConfig) -> ObstructionSweepResult {
 
         let eos = PolytropicEos::new(1.0, cfg.gamma);
         let sol = solve_gravastar_homotopy(
-            cfg.r1, cfg.m_target, cfg.compactness, eos, cfg.obstruction_norm, c, 1e-4,
+            cfg.r1,
+            cfg.m_target,
+            cfg.compactness,
+            eos,
+            cfg.obstruction_norm,
+            c,
+            1e-4,
         );
 
         match &sol {
@@ -281,7 +285,8 @@ mod tests {
     #[test]
     fn test_solve_gravastar_homotopy_zero_coupling() {
         // Zero coupling should match isotropic gravastar
-        let sol_h = solve_gravastar_homotopy(5.0, 10.0, 0.6, PolytropicEos::stiff(), 8.725, 0.0, 1e-4);
+        let sol_h =
+            solve_gravastar_homotopy(5.0, 10.0, 0.6, PolytropicEos::stiff(), 8.725, 0.0, 1e-4);
         let config_iso = GravastarConfig {
             r1: 5.0,
             m_target: 10.0,
@@ -298,12 +303,14 @@ mod tests {
                 assert!(
                     (h.mass - iso.mass).abs() < 1e-8,
                     "zero-coupling homotopy mass {} should match isotropic {}",
-                    h.mass, iso.mass
+                    h.mass,
+                    iso.mass
                 );
                 assert!(
                     (h.r2 - iso.r2).abs() < 1e-8,
                     "zero-coupling homotopy R2 {} should match isotropic {}",
-                    h.r2, iso.r2
+                    h.r2,
+                    iso.r2
                 );
             }
             (None, None) => {} // Both fail (acceptable)
@@ -314,7 +321,8 @@ mod tests {
     #[test]
     fn test_solve_gravastar_homotopy_nonzero_coupling() {
         // Small nonzero coupling should produce a valid but different solution
-        let sol = solve_gravastar_homotopy(5.0, 10.0, 0.6, PolytropicEos::stiff(), 8.725, 0.001, 1e-4);
+        let sol =
+            solve_gravastar_homotopy(5.0, 10.0, 0.6, PolytropicEos::stiff(), 8.725, 0.001, 1e-4);
         if let Some(s) = sol {
             assert!(s.r2 > 5.0, "outer radius should exceed inner radius");
             assert!(s.mass > 0.0, "mass should be positive");

@@ -51,7 +51,8 @@ impl Redshift {
 
     /// Hubble parameter E(z) = H(z) / H_0 for LCDM.
     pub fn e_of_z_lcdm(z: f64, omega_m: f64, omega_l: f64) -> f64 {
-        (omega_m * (1.0 + z).powi(3) + (1.0 - omega_m - omega_l) * (1.0 + z).powi(2) + omega_l).sqrt()
+        (omega_m * (1.0 + z).powi(3) + (1.0 - omega_m - omega_l) * (1.0 + z).powi(2) + omega_l)
+            .sqrt()
     }
 
     /// Luminosity distance d_L = (1+z) * d_c (Mpc).
@@ -271,7 +272,7 @@ impl CosmologicalParameters {
         (self.omega_m * (1.0 + z).powi(3)
             + self.omega_k * (1.0 + z).powi(2)
             + self.omega_de * (1.0 + z).powf(3.0 * (1.0 + w_de)))
-            .sqrt()
+        .sqrt()
     }
 
     /// Age of universe at redshift z (Gyr).
@@ -372,7 +373,10 @@ mod tests {
 
     #[test]
     fn test_dark_energy_quintessence() {
-        let de = DarkEnergyModel::Quintessence { w_0: -0.9, w_a: 0.2 };
+        let de = DarkEnergyModel::Quintessence {
+            w_0: -0.9,
+            w_a: 0.2,
+        };
         let w_at_a1 = de.equation_of_state(1.0);
         assert!((w_at_a1 - (-0.9)).abs() < 1e-10);
     }

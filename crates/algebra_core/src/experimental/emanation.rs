@@ -4897,7 +4897,7 @@ mod tests {
         let sim = et_block_similarity(&et16, &et32);
         // Similarity should be between 0 and 1
         assert!(
-            sim >= 0.0 && sim <= 1.0,
+            (0.0..=1.0).contains(&sim),
             "Block similarity should be in [0,1], got {}",
             sim
         );
@@ -5021,7 +5021,7 @@ mod tests {
     fn test_lanyard_taxonomy_completeness() {
         let census = lanyard_census_dim16();
         // Every face must be classified as either Sail or TrayRack
-        for (&ltype, _) in &census {
+        for &ltype in census.keys() {
             assert!(
                 ltype == LanyardType::Sail || ltype == LanyardType::TrayRack,
                 "Unexpected lanyard type in dim=16 census: {:?}",
@@ -5381,7 +5381,7 @@ mod tests {
         assert!(!tr.lo.contains(&1), "S=1 must be excluded from tone row");
         // All lo indices should be in [2..8)
         for &l in &tr.lo {
-            assert!(l >= 2 && l <= 7, "LO index {} out of range [2,7]", l);
+            assert!((2..=7).contains(&l), "LO index {} out of range [2,7]", l);
         }
         // Hi indices should be lo XOR X
         for i in 0..6 {
@@ -7211,7 +7211,7 @@ mod tests {
         assert_eq!(components.len(), 15, "dim=32 has 15 components");
         let vz3_count = components
             .iter()
-            .filter_map(|c| vizier_xor_audit(c))
+            .filter_map(vizier_xor_audit)
             .filter(|a| a.vz3_constant)
             .count();
         // Expectation: VZ3 should hold for all 15 pathion components
@@ -7228,7 +7228,7 @@ mod tests {
         let components = motif_components_for_cross_assessors(32);
         let vz1_count = components
             .iter()
-            .filter_map(|c| vizier_xor_audit(c))
+            .filter_map(vizier_xor_audit)
             .filter(|a| a.vz1_lo_eq_hi)
             .count();
         assert_eq!(
@@ -7244,7 +7244,7 @@ mod tests {
         let components = motif_components_for_cross_assessors(32);
         let vz2_count = components
             .iter()
-            .filter_map(|c| vizier_xor_audit(c))
+            .filter_map(vizier_xor_audit)
             .filter(|a| a.vz2_cross_eq)
             .count();
         assert_eq!(
@@ -7768,7 +7768,7 @@ mod tests {
                 for c in 0..k {
                     let sb_cell = &sb.grid[r + 1][c + 1];
                     let et_cell = &sb.et.cells[r][c];
-                    let et_dmz = et_cell.as_ref().map_or(false, |cell| cell.is_dmz);
+                    let et_dmz = et_cell.as_ref().is_some_and(|cell| cell.is_dmz);
                     let et_val = et_cell.as_ref().map_or(0, |cell| cell.emanation_value);
                     assert_eq!(
                         sb_cell.is_dmz, et_dmz,
@@ -8378,7 +8378,7 @@ mod tests {
             let et = create_strutted_et(4, s);
             let graph = extract_signed_graph(&et);
             assert!(
-                graph.edges.len() > 0,
+                !graph.edges.is_empty(),
                 "S={}: should have at least 1 DMZ edge",
                 s
             );

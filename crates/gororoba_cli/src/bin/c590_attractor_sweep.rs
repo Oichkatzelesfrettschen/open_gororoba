@@ -75,7 +75,13 @@ fn build_csv(profile_tag: &str, dims: &[usize], run_unix_seconds: u64) -> String
 
         csv.push_str(&format!(
             "{},{},{},{:.12},{:.12},{:.6},{}\n",
-            SCHEMA_VERSION, profile_tag, dim, res.frustration_ratio, delta, elapsed, run_unix_seconds
+            SCHEMA_VERSION,
+            profile_tag,
+            dim,
+            res.frustration_ratio,
+            delta,
+            elapsed,
+            run_unix_seconds
         ));
     }
     csv
@@ -83,8 +89,12 @@ fn build_csv(profile_tag: &str, dims: &[usize], run_unix_seconds: u64) -> String
 
 fn append_csv(path: &PathBuf, csv: &str) -> Result<(), String> {
     if let Some(parent) = path.parent() {
-        fs::create_dir_all(parent)
-            .map_err(|e| format!("failed to create output directory {}: {e}", parent.display()))?;
+        fs::create_dir_all(parent).map_err(|e| {
+            format!(
+                "failed to create output directory {}: {e}",
+                parent.display()
+            )
+        })?;
     }
 
     let body_lines: Vec<&str> = csv.lines().skip(1).collect();
@@ -125,10 +135,14 @@ fn run(args: Args) -> Result<(), String> {
         } else {
             if let Some(parent) = path.parent() {
                 fs::create_dir_all(parent).map_err(|e| {
-                    format!("failed to create output parent directory {}: {e}", parent.display())
+                    format!(
+                        "failed to create output parent directory {}: {e}",
+                        parent.display()
+                    )
                 })?;
             }
-            fs::write(&path, csv).map_err(|e| format!("failed to write {}: {e}", path.display()))?;
+            fs::write(&path, csv)
+                .map_err(|e| format!("failed to write {}: {e}", path.display()))?;
         }
         eprintln!("Wrote {}", path.display());
     } else {

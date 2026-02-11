@@ -631,10 +631,7 @@ impl GpuDimensionalEngine {
         use crate::analysis::boxkites::cross_assessors;
 
         let pairs = cross_assessors(dim);
-        pairs
-            .iter()
-            .map(|&(a, b)| (a as u16, b as u16))
-            .collect()
+        pairs.iter().map(|&(a, b)| (a as u16, b as u16)).collect()
     }
 }
 
@@ -895,8 +892,8 @@ mod tests {
         let nodes = GpuDimensionalEngine::generate_nodes_wide(dim);
         assert!(!nodes.is_empty(), "dim=512 needs nodes");
 
-        let result = GpuDimensionalEngine::compute_apt_cpu_wide(dim, &nodes, 100_000, 42)
-            .expect("wide APT");
+        let result =
+            GpuDimensionalEngine::compute_apt_cpu_wide(dim, &nodes, 100_000, 42).expect("wide APT");
 
         let pure_ratio = result.base.pure_ratio;
         eprintln!(

@@ -453,3 +453,18 @@ output_path_refs = ["data/csv/he4_gpe_ground_state.csv"]
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
 
+
+[[experiment]]
+id = "E-021"
+title = "Tessarines vs. Mixed-Quaternions Categorical Distinction Census"
+date = "2026-02-10"
+status = "complete"
+methodology = "Exhaustive low-dimensional census at dims 2-8 comparing tensor product (tessarines C ⊗ C) with recursive doubling (Cayley-Dickson mixed-quaternions). Hypothesis: categorical distinction on commutativity and division algebra status."
+findings = "VERIFIED: Tessarines exhibit 100% commutativity and zero-divisor structure. Cayley-Dickson dim=4 shows 0% commutativity and signature-dependent division status. The two algebras are categorically distinct and cannot be reconciled via signature reinterpretation."
+claims_supported = ["C-633", "C-634", "C-635", "C-636", "C-640"]
+insights = ["I-054", "I-055"]
+code = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs", "crates/algebra_core/tests/test_exotic_octonions.rs"]
+data_artifacts = ["docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"]
+sprint = 35
+phase = "Phase 9"
+

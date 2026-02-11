@@ -1,0 +1,419 @@
+# Pantheon + PhysicsForge migration matrix (tasks 10-18).
+# Canonical, TOML-first mapping for source-to-target migration planning.
+
+[migration_matrix]
+id = "PMM-0001"
+updated = "2026-02-10"
+authoritative = true
+matrix_version = "v1"
+scope_tasks = ["10", "11", "12", "14", "15", "16", "17", "18"]
+source_repositories = ["pantheon", "PhysicsForge"]
+target_repository = "open_gororoba"
+
+[policy]
+canonical_data_format = "toml"
+canonical_data_rule = "All raw, analyzed, narrative, equation, and planning data is canonical in TOML under registry/."
+allowed_export_formats = ["hdf5", "csv", "json", "tex", "md"]
+export_constraint = "Exports are projection artifacts only and must be generated from canonical TOML state."
+
+[build_profile_parity]
+objective = "Keep dev, test, and production behavior as close as possible while preserving essential debug and validation instrumentation."
+required_invariants = [
+  "warnings_as_errors",
+  "deterministic_numerics",
+  "native_cpu_tuning",
+  "fat_lto_release",
+  "pgo_release_lane",
+  "llvm_debugger_compatibility",
+]
+notes = [
+  "Debug info and test harness instrumentation may differ by profile.",
+  "Optimization semantics should remain aligned across profiles whenever feasible.",
+]
+
+[[pipeline_stage]]
+id = "PF-STAGE-001"
+name = "Text and Markdown equation extraction"
+source_path = "PhysicsForge/scripts/equation_extractor.py"
+inputs = ["notes/**", "repo text/markdown scan dirs", "synthesis/modules/equations/**"]
+outputs = ["data/catalogs/equation_catalog_preliminary.csv", "optional metrics and plan JSON"]
+semantics = ["normalize", "dedupe", "framework classify", "domain classify"]
+
+[[pipeline_stage]]
+id = "PF-STAGE-002"
+name = "PDF text equation extraction"
+source_path = "PhysicsForge/scripts/pdf_equation_extractor.py"
+inputs = ["source_materials/pdfs/**", "papers/**"]
+outputs = ["equation_catalog_pdfs.csv"]
+semantics = ["regex extraction", "framework classify", "domain classify"]
+
+[[pipeline_stage]]
+id = "PF-STAGE-003"
+name = "PDF image OCR equation extraction"
+source_path = "PhysicsForge/scripts/pdf_image_equation_extractor.py"
+inputs = ["source_materials/pdfs/**", "papers/**"]
+outputs = ["equation_catalog_pdfs_ocr.csv"]
+semantics = ["image OCR", "normalize", "dedupe"]
+
+[[pipeline_stage]]
+id = "PF-STAGE-004"
+name = "Catalog merge, dedupe, analysis"
+source_path = "PhysicsForge/scripts/merge_and_analyze_equations.py"
+inputs = ["equation_catalog_preliminary.csv", "equation_catalog_pdfs.csv", "equation_catalog_pdfs_ocr.csv"]
+outputs = ["equation_catalog.csv", "equation_summary.txt", "notation_conflicts.txt", "top_equations.txt"]
+semantics = ["merge", "signature normalize", "dedupe", "category classify", "ranking"]
+
+[[pipeline_stage]]
+id = "PF-STAGE-005"
+name = "EqID module linking"
+source_path = "PhysicsForge/scripts/link_modules.py"
+inputs = ["equation_catalog.csv", "synthesis/modules/equations/eq_*_auto.tex"]
+outputs = ["equation_catalog.csv", "equation_catalog_linked.csv"]
+semantics = ["module linkage", "related equation stitching"]
+
+[[pipeline_stage]]
+id = "PF-STAGE-006"
+name = "Pipeline orchestration"
+source_path = "PhysicsForge/scripts/build_catalog_pipeline.py"
+inputs = ["stages 1-5"]
+outputs = ["full catalog set", "parity invocation"]
+semantics = ["stage ordering", "exit aggregation", "pipeline control"]
+
+[[overlap_coverage]]
+id = "OG-COVER-001"
+domain = "Pantheon dataset ingestion"
+covered = true
+open_gororoba_paths = [
+  "crates/data_core/src/catalogs/pantheon.rs",
+  "crates/data_core/src/formats/pantheon_dat.rs",
+]
+notes = "Do not rebuild parser fundamentals unless schema change requires it."
+
+[[overlap_coverage]]
+id = "OG-COVER-002"
+domain = "Real observational Pantheon+DESI fitting"
+covered = true
+open_gororoba_paths = ["crates/cosmology_core/src/observational.rs", "crates/cosmology_core/src/flrw.rs"]
+notes = "Existing chi2 and observational fit machinery is already present."
+
+[[overlap_coverage]]
+id = "OG-COVER-003"
+domain = "Document and equation extraction core"
+covered = true
+open_gororoba_paths = [
+  "crates/docpipe/src/text.rs",
+  "crates/docpipe/src/toml_out.rs",
+  "crates/docpipe/src/pdf.rs",
+  "crates/gororoba_cli/src/bin/extract_papers.rs",
+]
+notes = "Extraction exists; catalog semantics expansion is still needed."
+
+[[overlap_coverage]]
+id = "OG-COVER-004"
+domain = "Octonion and Cayley-Dickson algebra"
+covered = true
+open_gororoba_paths = [
+  "crates/algebra_core/src/construction/cayley_dickson.rs",
+  "crates/algebra_core/src/physics/octonion_field.rs",
+  "crates/algebra_core/src/analysis/boxkites.rs",
+]
+notes = "Do not port PhysicsForge octonion scripts as canonical compute code."
+
+[[gap]]
+id = "OG-GAP-001"
+domain = "Type Ia DDT solver stack"
+severity = "high"
+missing_capabilities = ["degenerate EOS integration lane", "HLLC+MUSCL hydro lane", "reaction coupling and detonation loop", "yield synthesis lane"]
+proposed_target = "crates/snia_core"
+
+[[gap]]
+id = "OG-GAP-002"
+domain = "Elevated DDT calibration workflows"
+severity = "high"
+missing_capabilities = ["parameter scan", "alpha chain calibration", "light curve synthesis"]
+proposed_target = "crates/snia_core"
+
+[[gap]]
+id = "OG-GAP-003"
+domain = "Equation catalog semantics"
+severity = "high"
+missing_capabilities = ["catalog schema", "signature normalization", "multi-source merge", "category classification", "parity and gap reporting"]
+proposed_target = "crates/docpipe + crates/gororoba_cli"
+
+[[module_mapping]]
+id = "MM-PAN-001"
+repo = "pantheon"
+source_path = "src/spandrel/ddt/eos_white_dwarf.py"
+source_kind = "physics_kernel"
+inventory_symbols = [
+  "EOSState",
+  "eos_from_rho_T",
+  "temperature_from_rho_e",
+  "eos_from_rho_e",
+  "pressure_degenerate",
+  "effective_gamma",
+]
+action = "rewrite"
+priority = "p0"
+status = "mapped"
+responsibility = "White dwarf EOS forward and inverse thermodynamic closure."
+target_crate = "snia_core"
+target_module = "eos"
+overlap_paths = []
+rationale = "Not present as an SN Ia DDT-ready EOS lane in open_gororoba."
+
+[[module_mapping]]
+id = "MM-PAN-002"
+repo = "pantheon"
+source_path = "src/spandrel/ddt/flux_hllc.py"
+source_kind = "physics_kernel"
+inventory_symbols = [
+  "minmod",
+  "superbee",
+  "mc_limiter",
+  "reconstruct_muscl",
+  "hllc_flux",
+  "compute_hllc_update",
+  "compute_cfl_timestep",
+]
+action = "rewrite"
+priority = "p0"
+status = "mapped"
+responsibility = "HLLC Riemann and MUSCL reconstruction for reactive Euler updates."
+target_crate = "snia_core"
+target_module = "hydro"
+overlap_paths = []
+rationale = "No existing DDT hydro solver lane in target workspace."
+
+[[module_mapping]]
+id = "MM-PAN-003"
+repo = "pantheon"
+source_path = "src/spandrel/ddt/reaction_carbon.py"
+source_kind = "physics_kernel"
+inventory_symbols = [
+  "screening_factor",
+  "c12_c12_rate",
+  "reaction_rate_c12",
+  "burn_substep",
+  "burn_step_subcycled",
+  "chapman_jouguet_velocity",
+]
+action = "rewrite"
+priority = "p0"
+status = "mapped"
+responsibility = "C12 reaction rates, subcycled burn integration, and CJ diagnostics."
+target_crate = "snia_core"
+target_module = "reaction"
+overlap_paths = []
+rationale = "Reaction network and burn subcycling are absent in target crate set."
+
+[[module_mapping]]
+id = "MM-PAN-004"
+repo = "pantheon"
+source_path = "src/spandrel/ddt/main_zeldovich.py"
+source_kind = "orchestrator"
+inventory_symbols = ["SimulationConfig", "ZeldovichDDTSolver", "run_ddt_simulation"]
+action = "rewrite"
+priority = "p0"
+status = "mapped"
+responsibility = "DDT simulation driver with Strang splitting and detonation detection."
+target_crate = "snia_core"
+target_module = "solver"
+overlap_paths = []
+rationale = "Central DDT control loop does not exist in open_gororoba yet."
+
+[[module_mapping]]
+id = "MM-PAN-005"
+repo = "pantheon"
+source_path = "src/spandrel/ddt/nickel_yield.py"
+source_kind = "postprocess"
+inventory_symbols = ["NucleosynthesisResult", "NickelYieldAnalyzer", "DDTWithYieldTracking", "run_yield_analysis"]
+action = "rewrite"
+priority = "p0"
+status = "mapped"
+responsibility = "Ni56 yield and observable synthesis from simulation trajectories."
+target_crate = "snia_core"
+target_module = "yield_model"
+overlap_paths = []
+rationale = "No SN Ia yield postprocess lane in target workspace."
+
+[[module_mapping]]
+id = "MM-PAN-006"
+repo = "pantheon"
+source_path = "src/spandrel/elevated/ddt_parameter_study.py"
+source_kind = "workflow"
+inventory_symbols = ["ParameterPoint", "SimulationResult", "DDTParameterStudy", "run_single_simulation", "run_parameter_study"]
+action = "rewrite"
+priority = "p1"
+status = "mapped"
+responsibility = "Parameter scans and DDT phase map generation."
+target_crate = "snia_core"
+target_module = "calibration_scan"
+overlap_paths = []
+rationale = "Needed for elevated calibration and boundary discovery."
+
+[[module_mapping]]
+id = "MM-PAN-007"
+repo = "pantheon"
+source_path = "src/spandrel/elevated/alpha_chain_network.py"
+source_kind = "workflow"
+inventory_symbols = ["Isotope", "IsotopeData", "alpha_capture_rate", "nse_composition", "AlphaChainNetwork"]
+action = "rewrite"
+priority = "p1"
+status = "mapped"
+responsibility = "Alpha-chain composition and nuclear energy consistency for calibration runs."
+target_crate = "snia_core"
+target_module = "alpha_chain"
+overlap_paths = []
+rationale = "No existing alpha-chain calibration lane in target workspace."
+
+[[module_mapping]]
+id = "MM-PAN-008"
+repo = "pantheon"
+source_path = "src/spandrel/elevated/light_curve_synthesis.py"
+source_kind = "workflow"
+inventory_symbols = ["radioactive_heating", "ArnettModel", "phillips_relation", "compute_delta_m15", "LightCurveGenerator"]
+action = "rewrite"
+priority = "p1"
+status = "mapped"
+responsibility = "Light-curve synthesis and Phillips-space observables."
+target_crate = "snia_core"
+target_module = "lightcurve"
+overlap_paths = []
+rationale = "No equivalent SN Ia light-curve synthesis workflow in target workspace."
+
+[[module_mapping]]
+id = "MM-PAN-009"
+repo = "pantheon"
+source_path = "src/spandrel/core/data_interface.py"
+source_kind = "wrapper"
+inventory_symbols = ["PantheonData", "load_pantheon"]
+action = "skip"
+priority = "p2"
+status = "mapped"
+responsibility = "Compatibility wrapper around external spandrel-core ingestion."
+target_crate = "none"
+target_module = "none"
+overlap_paths = ["crates/data_core/src/catalogs/pantheon.rs"]
+rationale = "Wrapper only; target already has canonical parser/provider."
+
+[[module_mapping]]
+id = "MM-PF-001"
+repo = "PhysicsForge"
+source_path = "scripts/equation_extractor.py"
+source_kind = "pipeline_stage"
+inventory_symbols = ["EquationExtractor", "normalize_equation", "_classify_domain", "process_dirs"]
+action = "rewrite"
+priority = "p1"
+status = "mapped"
+responsibility = "Text-first extraction, normalization, dedupe, and initial classification."
+target_crate = "docpipe"
+target_module = "equation_catalog_text"
+overlap_paths = ["crates/docpipe/src/text.rs"]
+rationale = "Base extraction exists but full catalog semantics are missing."
+
+[[module_mapping]]
+id = "MM-PF-002"
+repo = "PhysicsForge"
+source_path = "scripts/pdf_equation_extractor.py"
+source_kind = "pipeline_stage"
+inventory_symbols = ["PDFEquationExtractor", "normalize_equation", "extract_from_pdf"]
+action = "rewrite"
+priority = "p1"
+status = "mapped"
+responsibility = "PDF text extraction branch for equation catalog pipeline."
+target_crate = "docpipe"
+target_module = "equation_catalog_pdf_text"
+overlap_paths = ["crates/docpipe/src/pdf.rs"]
+rationale = "PDF extraction exists but not catalog-stage orchestration."
+
+[[module_mapping]]
+id = "MM-PF-003"
+repo = "PhysicsForge"
+source_path = "scripts/pdf_image_equation_extractor.py"
+source_kind = "pipeline_stage"
+inventory_symbols = ["PDFImageEquationExtractor", "normalize_equation", "extract_images_from_pdf"]
+action = "rewrite"
+priority = "p1"
+status = "mapped"
+responsibility = "PDF OCR branch for equation extraction."
+target_crate = "docpipe"
+target_module = "equation_catalog_pdf_ocr"
+overlap_paths = ["crates/docpipe/src/pdf.rs"]
+rationale = "OCR-equation branch not represented in current Rust pipeline."
+
+[[module_mapping]]
+id = "MM-PF-004"
+repo = "PhysicsForge"
+source_path = "scripts/merge_and_analyze_equations.py"
+source_kind = "pipeline_stage"
+inventory_symbols = ["EquationMerger", "normalize_equation", "deduplicate", "categorize_equations", "save_final_catalog"]
+action = "rewrite"
+priority = "p1"
+status = "mapped"
+responsibility = "Catalog merge, dedupe, categorization, and summary materialization."
+target_crate = "docpipe"
+target_module = "equation_catalog_merge"
+overlap_paths = []
+rationale = "Core merge semantics are currently missing in open_gororoba."
+
+[[module_mapping]]
+id = "MM-PF-005"
+repo = "PhysicsForge"
+source_path = "scripts/build_catalog_pipeline.py"
+source_kind = "pipeline_stage"
+inventory_symbols = ["run", "main"]
+action = "rewrite"
+priority = "p1"
+status = "mapped"
+responsibility = "End-to-end stage orchestration and exit behavior."
+target_crate = "gororoba_cli"
+target_module = "equation_pipeline_driver"
+overlap_paths = ["crates/gororoba_cli/src/bin/extract_papers.rs"]
+rationale = "Need Rust-native pipeline driver to replace shell-python orchestration."
+
+[[module_mapping]]
+id = "MM-PF-006"
+repo = "PhysicsForge"
+source_path = "scripts/link_modules.py"
+source_kind = "pipeline_stage"
+inventory_symbols = ["build_eq_module_map", "link_catalog", "main"]
+action = "rewrite"
+priority = "p1"
+status = "mapped"
+responsibility = "EqID linkage between catalog rows and LaTeX modules."
+target_crate = "gororoba_cli"
+target_module = "equation_module_linker"
+overlap_paths = []
+rationale = "No equivalent linkage command exists in current CLI tools."
+
+[[boundary_rule]]
+id = "BR-001"
+category = "port"
+definition = "Preserve behavior semantics while reimplementing in Rust with deterministic tests."
+
+[[boundary_rule]]
+id = "BR-002"
+category = "rewrite"
+definition = "Rebuild algorithmic intent in Rust; do not copy source verbatim."
+
+[[boundary_rule]]
+id = "BR-003"
+category = "skip"
+definition = "Do not migrate compatibility wrappers or functionality already canonical in target crates."
+
+[[boundary_rule]]
+id = "BR-004"
+category = "deprecate"
+definition = "Retire legacy pipeline glue once Rust-native replacement reaches parity."
+
+[task_completion]
+task_10 = "completed"
+task_11 = "completed"
+task_12 = "completed"
+task_14 = "completed"
+task_15 = "completed"
+task_16 = "completed"
+task_17 = "completed"
+task_18 = "completed"
+first_artifact_path = "registry/pantheon_physicsforge_migration_matrix.toml"

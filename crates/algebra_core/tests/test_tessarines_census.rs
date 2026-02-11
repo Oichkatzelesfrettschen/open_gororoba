@@ -5,8 +5,8 @@
 //! doubling constructions.
 
 use algebra_core::construction::tessarines::{
-    Tessarine, test_norm_multiplicativity, compute_invertibility_fraction,
-    count_commutativity_violations, count_associativity_violations,
+    compute_invertibility_fraction, count_associativity_violations, count_commutativity_violations,
+    test_norm_multiplicativity, Tessarine,
 };
 
 #[test]
@@ -57,7 +57,13 @@ fn test_tessarines_vs_cayley_dickson_comparison() {
     println!("\n=== TESSARINES vs CAYLEY-DICKSON: PROPERTY COMPARISON ===\n");
 
     println!("Property                   | Tessarines | Cayley-Dickson (dim>=4) | Result");
-    println!("{:<26} | {:<10} | {:<23} | {}", "─".repeat(26), "─".repeat(10), "─".repeat(23), "─".repeat(30));
+    println!(
+        "{:<26} | {:<10} | {:<23} | {}",
+        "─".repeat(26),
+        "─".repeat(10),
+        "─".repeat(23),
+        "─".repeat(30)
+    );
 
     // COMMUTATIVITY
     let t_comm = count_commutativity_violations() == 0;
@@ -82,39 +88,31 @@ fn test_tessarines_vs_cayley_dickson_comparison() {
     // NORM MULTIPLICATIVITY
     let t_norm = test_norm_multiplicativity(50);
     println!(
-        "{:<26} | {:<10} | {:<23} | {}",
+        "{:<26} | {:<10} | {:<23} | SAME (for division algebras)",
         "Norm Multiplicativity",
         if t_norm { "Yes" } else { "No" },
-        "Yes (div algebras only)",
-        "SAME (for division algebras)"
+        "Yes (div algebras only)"
     );
 
     // INVERTIBILITY
     let t_invert = compute_invertibility_fraction(100);
     println!(
-        "{:<26} | {:<10} | {:<23} | {}",
+        "{:<26} | {:<10} | {:<23} | SAME (100% here, variable there)",
         "Invertibility (% nonzero)",
         format!("{:.0}%", t_invert * 100.0),
-        "100% or 0% (binary)",
-        "SAME (100% here, variable there)"
+        "100% or 0% (binary)"
     );
 
     // ZERO-DIVISORS
     println!(
-        "{:<26} | {:<10} | {:<23} | {}",
-        "Zero-Divisors",
-        "No (only idempotents)",
-        "Yes (at dim>=16)",
-        "DIFFERENT"
+        "{:<26} | {:<10} | {:<23} | DIFFERENT",
+        "Zero-Divisors", "No (only idempotents)", "Yes (at dim>=16)"
     );
 
     // CONSTRUCTION METHOD
     println!(
-        "{:<26} | {:<10} | {:<23} | {}",
-        "Construction",
-        "Tensor product (C⊗C)",
-        "Recursive doubling",
-        "FUNDAMENTALLY DIFFERENT"
+        "{:<26} | {:<10} | {:<23} | FUNDAMENTALLY DIFFERENT",
+        "Construction", "Tensor product (C⊗C)", "Recursive doubling"
     );
 
     println!("\n=== KEY FINDING ===");
@@ -135,11 +133,7 @@ fn test_tessarines_idempotents() {
     let i1 = Tessarine::i1();
     let i2 = Tessarine::i2();
 
-    let basis = vec![
-        ("(1, 0)", one),
-        ("(i, 0)", i1),
-        ("(0, i)", i2),
-    ];
+    let basis = vec![("(1, 0)", one), ("(i, 0)", i1), ("(0, i)", i2)];
 
     let tolerance = 1e-10;
 
@@ -152,14 +146,8 @@ fn test_tessarines_idempotents() {
     let proj1 = Tessarine::new(1.0, 0.0, 0.0, 0.0); // (1, 0) - projection onto first component
     let proj2 = Tessarine::new(0.0, 0.0, 1.0, 0.0); // (0, 1) - projection onto second component
 
-    assert!(
-        proj1.is_idempotent(tolerance),
-        "(1, 0) must be idempotent"
-    );
-    assert!(
-        proj2.is_idempotent(tolerance),
-        "(0, 1) must be idempotent"
-    );
+    assert!(proj1.is_idempotent(tolerance), "(1, 0) must be idempotent");
+    assert!(proj2.is_idempotent(tolerance), "(0, 1) must be idempotent");
 
     println!("\nIdempotent structure: VERIFIED (unlike CD algebras)");
 }
@@ -175,7 +163,10 @@ fn test_tessarines_multiplication_table() {
 
     let basis = vec![("1", one), ("i1", i1), ("i2", i2), ("j", j)];
 
-    println!("{:<4} | {:<15} | {:<15} | {:<15} | {:<15}", "a*b", "a=1", "a=i1", "a=i2", "a=j");
+    println!(
+        "{:<4} | {:<15} | {:<15} | {:<15} | {:<15}",
+        "a*b", "a=1", "a=i1", "a=i2", "a=j"
+    );
     println!("{}", "─".repeat(80));
 
     for (b_name, b) in &basis {
@@ -185,10 +176,7 @@ fn test_tessarines_multiplication_table() {
             let prod = a.multiply(b);
             let prod_str = format!(
                 "({:.0}{:+.0}i,{:.0}{:+.0}i)",
-                prod.z1_real,
-                prod.z1_imag,
-                prod.z2_real,
-                prod.z2_imag
+                prod.z1_real, prod.z1_imag, prod.z2_real, prod.z2_imag
             );
             row.push_str(&format!("{:<15} | ", &prod_str[..15.min(prod_str.len())]));
         }
@@ -235,7 +223,7 @@ fn test_tessarines_vs_quaternions() {
 
     // Quaternions would show commutator_violations = 3 at dim=4
     // Tessarines must show 0
-    assert_eq!(quat_commutative, true, "Tessarines MUST be commutative");
+    assert!(quat_commutative, "Tessarines MUST be commutative");
 }
 
 #[test]
@@ -248,30 +236,38 @@ fn test_tessarines_algebraic_classification() {
 
     // Using Phase 8 terminology
     let is_division = compute_invertibility_fraction(100) > 0.95;
-    println!("{:<30} | {}", "Is division algebra?", if is_division { "YES" } else { "NO" });
+    println!(
+        "{:<30} | {}",
+        "Is division algebra?",
+        if is_division { "YES" } else { "NO" }
+    );
 
     let has_zero_divisors = false; // Tessarines have no zero-divisors
     println!(
         "{:<30} | {}",
-        "Has zero-divisors?", if has_zero_divisors { "YES" } else { "NO" }
+        "Has zero-divisors?",
+        if has_zero_divisors { "YES" } else { "NO" }
     );
 
     let norm_mult = test_norm_multiplicativity(50);
     println!(
         "{:<30} | {}",
-        "Norm multiplicative?", if norm_mult { "YES" } else { "NO" }
+        "Norm multiplicative?",
+        if norm_mult { "YES" } else { "NO" }
     );
 
     let commutative = count_commutativity_violations() == 0;
     println!(
         "{:<30} | {}",
-        "Commutative?", if commutative { "YES" } else { "NO" }
+        "Commutative?",
+        if commutative { "YES" } else { "NO" }
     );
 
     let associative = count_associativity_violations() == 0;
     println!(
         "{:<30} | {}",
-        "Associative?", if associative { "YES" } else { "NO" }
+        "Associative?",
+        if associative { "YES" } else { "NO" }
     );
 
     println!("\n=== PHASE 8 COMPARISON ===\n");

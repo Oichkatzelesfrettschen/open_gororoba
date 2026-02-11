@@ -101,6 +101,6 @@ pub use null_constraint::{
 };
 
 pub use cosmology_algebra_bridge::{
-    CosmologicalParameters, ConservationLaw, DarkEnergyModel, EnergyMomentumTensor, FLRWMetric,
+    ConservationLaw, CosmologicalParameters, DarkEnergyModel, EnergyMomentumTensor, FLRWMetric,
     FriedmannSolver, Redshift,
 };

@@ -1,0 +1,35 @@
+[claim_links]
+updated = "2026-02-10"
+authoritative = true
+task_27_status = "completed"
+
+[[claim_link]]
+id = "PPF-CL-001"
+capability = "Type Ia DDT core solver scaffold exists as Rust workspace crate."
+status = "implemented_scaffold"
+rust_crate = "crates/snia_core"
+evidence_paths = [
+  "crates/snia_core/src/lib.rs",
+  "crates/snia_core/src/solver.rs",
+  "crates/snia_core/tests/snia_pipeline.rs",
+]
+verification_paths = [
+  "cargo check --package snia_core --all-targets",
+  "cargo test --package snia_core",
+  "cargo clippy --package snia_core -- -D warnings",
+]
+source_mapping_ids = ["MM-PAN-001", "MM-PAN-002", "MM-PAN-003", "MM-PAN-004", "MM-PAN-005", "MM-PAN-006", "MM-PAN-007", "MM-PAN-008"]
+
+[[claim_link]]
+id = "PPF-CL-002"
+capability = "Pantheon and PhysicsForge licensing is aligned to GPL-2.0-only for migration."
+status = "verified"
+rust_crate = "n/a"
+evidence_paths = [
+  "registry/pantheon_physicsforge_license_alignment.toml",
+  "src/verification/verify_pantheon_physicsforge_license_consistency.py",
+]
+verification_paths = [
+  "python3 src/verification/verify_pantheon_physicsforge_license_consistency.py",
+]
+source_mapping_ids = []

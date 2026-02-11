@@ -15,7 +15,7 @@
 //! (1+2+4+8 dimensions across all valid metric signatures).
 
 use algebra_core::construction::cayley_dickson::{
-    cd_multiply_split, CdSignature, cd_conjugate, cd_norm_sq,
+    cd_conjugate, cd_multiply_split, cd_norm_sq, CdSignature,
 };
 
 // ============================================================================
@@ -62,18 +62,29 @@ struct AlgebraProperties {
 
 impl AlgebraProperties {
     fn to_toml_entry(&self) -> String {
-        let gammas_str = format!("[{}]",
-            self.gammas.iter()
+        let gammas_str = format!(
+            "[{}]",
+            self.gammas
+                .iter()
                 .map(|g| if *g == -1 { "-1" } else { "1" })
                 .collect::<Vec<_>>()
-                .join(", "));
+                .join(", ")
+        );
 
-        let psi_matrix_str = format!("[{}]",
-            self.psi_matrix.iter()
-                .map(|row| format!("[{}]",
-                    row.iter().map(|x| x.to_string()).collect::<Vec<_>>().join(", ")))
+        let psi_matrix_str = format!(
+            "[{}]",
+            self.psi_matrix
+                .iter()
+                .map(|row| format!(
+                    "[{}]",
+                    row.iter()
+                        .map(|x| x.to_string())
+                        .collect::<Vec<_>>()
+                        .join(", ")
+                ))
                 .collect::<Vec<_>>()
-                .join(", "));
+                .join(", ")
+        );
 
         format!(
             r#"[[algebra]]
@@ -258,7 +269,8 @@ fn extract_psi_matrix(dim: usize, sig: &CdSignature) -> Vec<Vec<i32>> {
             let product = cd_multiply_split(&ei, &ej, sig);
 
             // Extract leading coefficient sign
-            let sign = product.iter()
+            let sign = product
+                .iter()
                 .find(|&x| x.abs() > 1e-10)
                 .map(|&x| if x > 0.0 { 1 } else { -1 })
                 .unwrap_or(0);
@@ -299,7 +311,9 @@ fn count_commutator_violations(dim: usize, sig: &CdSignature) -> usize {
 }
 
 fn are_equal(a: &[f64], b: &[f64], tolerance: f64) -> bool {
-    a.iter().zip(b.iter()).all(|(x, y)| (x - y).abs() <= tolerance)
+    a.iter()
+        .zip(b.iter())
+        .all(|(x, y)| (x - y).abs() <= tolerance)
 }
 
 // ============================================================================
@@ -334,15 +348,14 @@ fn pseudo_random_element(dim: usize, seed: u32) -> Vec<f64> {
 fn get_algebra_name(dim: usize, gammas: &[i32]) -> String {
     match dim {
         1 => "Reals".to_string(),
-        2 => {
-            match gammas[0] {
-                -1 => "Complex Numbers".to_string(),
-                1 => "Split-Complex (Hyperbolic)".to_string(),
-                _ => "Unknown".to_string(),
-            }
-        }
+        2 => match gammas[0] {
+            -1 => "Complex Numbers".to_string(),
+            1 => "Split-Complex (Hyperbolic)".to_string(),
+            _ => "Unknown".to_string(),
+        },
         4 => {
-            let sig_str = gammas.iter()
+            let sig_str = gammas
+                .iter()
                 .map(|g| if *g == -1 { "-" } else { "+" })
                 .collect::<String>();
             match sig_str.as_str() {
@@ -354,7 +367,8 @@ fn get_algebra_name(dim: usize, gammas: &[i32]) -> String {
             }
         }
         8 => {
-            let sig_str = gammas.iter()
+            let sig_str = gammas
+                .iter()
                 .map(|g| if *g == -1 { "-" } else { "+" })
                 .collect::<String>();
             match sig_str.as_str() {
@@ -384,8 +398,10 @@ fn test_low_dimensional_algebra_census() {
     let mut results = Vec::new();
 
     // Print header
-    println!("{:<4} {:<12} {:<40} {:<4} {:<6} {:<8} {:<5} {:<8}",
-        "Dim", "Signature", "Name", "ZDs", "Norm%", "Invert%", "Div?", "Commute");
+    println!(
+        "{:<4} {:<12} {:<40} {:<4} {:<6} {:<8} {:<5} {:<8}",
+        "Dim", "Signature", "Name", "ZDs", "Norm%", "Invert%", "Div?", "Commute"
+    );
     println!("{}", "-".repeat(100));
 
     for dim in dims {
@@ -403,15 +419,9 @@ fn test_low_dimensional_algebra_census() {
                 commutator_violations: 0,
             };
 
-            println!("{:<4} {:<12} {:<40} {:<4} {:<6.1}% {:<8.1}% {:<5} {:<8}",
-                1,
-                "std",
-                "Reals",
-                0,
-                100.0,
-                100.0,
-                "Y",
-                0
+            println!(
+                "{:<4} {:<12} {:<40} {:<4} {:<6.1}% {:<8.1}% {:<5} {:<8}",
+                1, "std", "Reals", 0, 100.0, 100.0, "Y", 0
             );
 
             results.push(real_props);
@@ -431,14 +441,20 @@ fn test_low_dimensional_algebra_census() {
 
             let gammas = sig.gammas();
             let name = get_algebra_name(dim, gammas);
-            let sig_str = gammas.iter()
+            let sig_str = gammas
+                .iter()
                 .map(|g| if *g == -1 { "-" } else { "+" })
                 .collect::<String>();
 
             // Print row
-            println!("{:<4} {:<12} {:<40} {:<4} {:<6.1}% {:<8.1}% {:<5} {:<8}",
+            println!(
+                "{:<4} {:<12} {:<40} {:<4} {:<6.1}% {:<8.1}% {:<5} {:<8}",
                 dim,
-                if sig_str.is_empty() { "std".to_string() } else { sig_str },
+                if sig_str.is_empty() {
+                    "std".to_string()
+                } else {
+                    sig_str
+                },
                 &name[..40.min(name.len())],
                 zero_divisor_count,
                 norm_mult_frac * 100.0,
@@ -480,9 +496,7 @@ fn verify_hurwitz_theorem(results: &[AlgebraProperties]) {
     println!("\n=== HURWITZ THEOREM VALIDATION ===");
     println!("Expected: R, C, H, O are the ONLY normed division algebras\n");
 
-    let division_algebras: Vec<_> = results.iter()
-        .filter(|a| a.is_division_algebra)
-        .collect();
+    let division_algebras: Vec<_> = results.iter().filter(|a| a.is_division_algebra).collect();
 
     println!("Division algebras found: {}", division_algebras.len());
     for alg in &division_algebras {
@@ -490,7 +504,8 @@ fn verify_hurwitz_theorem(results: &[AlgebraProperties]) {
     }
 
     // Check that only standard algebras (gamma=-1 all levels) are division algebras
-    let standard_only = division_algebras.iter()
+    let standard_only = division_algebras
+        .iter()
         .all(|a| a.gammas.iter().all(|g| *g == -1));
 
     println!("\nHurwitz Property: All division algebras use standard signature (gamma=-1)?");
@@ -501,27 +516,32 @@ fn verify_phase6_cross_validation(results: &[AlgebraProperties]) {
     println!("\n=== PHASE 6 CROSS-VALIDATION ===");
     println!("Expected: All dim>=4 algebras show commutator_violations > 0\n");
 
-    let dim4_algebras: Vec<_> = results.iter()
-        .filter(|a| a.dimension == 4)
-        .collect();
-    let dim8_algebras: Vec<_> = results.iter()
-        .filter(|a| a.dimension == 8)
-        .collect();
+    let dim4_algebras: Vec<_> = results.iter().filter(|a| a.dimension == 4).collect();
+    let dim8_algebras: Vec<_> = results.iter().filter(|a| a.dimension == 8).collect();
 
-    let all_noncommute = dim4_algebras.iter().all(|a| a.commutator_violations > 0) &&
-                          dim8_algebras.iter().all(|a| a.commutator_violations > 0);
+    let all_noncommute = dim4_algebras.iter().all(|a| a.commutator_violations > 0)
+        && dim8_algebras.iter().all(|a| a.commutator_violations > 0);
 
-    println!("Dim 4: {} algebras, all non-commutative?", dim4_algebras.len());
+    println!(
+        "Dim 4: {} algebras, all non-commutative?",
+        dim4_algebras.len()
+    );
     for alg in &dim4_algebras {
         println!("  - {}: {} violations", alg.name, alg.commutator_violations);
     }
 
-    println!("\nDim 8: {} algebras, all non-commutative?", dim8_algebras.len());
+    println!(
+        "\nDim 8: {} algebras, all non-commutative?",
+        dim8_algebras.len()
+    );
     for alg in &dim8_algebras {
         println!("  - {}: {} violations", alg.name, alg.commutator_violations);
     }
 
-    println!("\nPhase 6 Cross-Check: {}", if all_noncommute { "PASS" } else { "FAIL" });
+    println!(
+        "\nPhase 6 Cross-Check: {}",
+        if all_noncommute { "PASS" } else { "FAIL" }
+    );
 }
 
 fn print_toml_entries(results: &[AlgebraProperties]) {
@@ -535,4 +555,3 @@ fn print_toml_entries(results: &[AlgebraProperties]) {
         print!("{}", alg.to_toml_entry());
     }
 }
-

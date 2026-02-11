@@ -1,0 +1,819 @@
+[migration_todo]
+updated = "2026-02-11"
+authoritative = true
+task_count = 90
+done_count = 34
+in_progress_count = 1
+blocked_count = 0
+todo_count = 55
+canonical_plan = "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md"
+
+[[task]]
+id = "PPF-001"
+number = 1
+phase = 1
+phase_name = "License and governance hardening"
+status = "done"
+title = "Confirm `pantheon` canonical license file is GPL-2.0-only (`mcp-bash`)."
+evidence_refs = ["registry/pantheon_physicsforge_license_alignment.toml", "registry/pantheon_physicsforge_migration_decisions.toml", "registry/pantheon_physicsforge_repo_snapshot.toml"]
+
+[[task]]
+id = "PPF-002"
+number = 2
+phase = 1
+phase_name = "License and governance hardening"
+status = "done"
+title = "Confirm `PhysicsForge` canonical license file is GPL-2.0-only (`mcp-bash`)."
+evidence_refs = ["registry/pantheon_physicsforge_license_alignment.toml", "registry/pantheon_physicsforge_migration_decisions.toml", "registry/pantheon_physicsforge_repo_snapshot.toml"]
+
+[[task]]
+id = "PPF-003"
+number = 3
+phase = 1
+phase_name = "License and governance hardening"
+status = "done"
+title = "Remove dual-license fallback references from `PhysicsForge` policy docs (`mcp-bash`)."
+evidence_refs = ["registry/pantheon_physicsforge_license_alignment.toml", "registry/pantheon_physicsforge_migration_decisions.toml", "registry/pantheon_physicsforge_repo_snapshot.toml"]
+
+[[task]]
+id = "PPF-004"
+number = 4
+phase = 1
+phase_name = "License and governance hardening"
+status = "done"
+title = "Verify package metadata uses `GPL-2.0-only` in both repos (`mcp-ripgrep`)."
+evidence_refs = ["registry/pantheon_physicsforge_license_alignment.toml", "registry/pantheon_physicsforge_migration_decisions.toml", "registry/pantheon_physicsforge_repo_snapshot.toml"]
+
+[[task]]
+id = "PPF-005"
+number = 5
+phase = 1
+phase_name = "License and governance hardening"
+status = "done"
+title = "Record licensing alignment assumptions in a migration decision note (`filesystem` or `mcp-bash`)."
+evidence_refs = ["registry/pantheon_physicsforge_license_alignment.toml", "registry/pantheon_physicsforge_migration_decisions.toml", "registry/pantheon_physicsforge_repo_snapshot.toml"]
+
+[[task]]
+id = "PPF-006"
+number = 6
+phase = 1
+phase_name = "License and governance hardening"
+status = "done"
+title = "Create a legal-risk checklist for incoming files and snippets (`claims-evidence-executor`)."
+evidence_refs = ["registry/pantheon_physicsforge_license_alignment.toml", "registry/pantheon_physicsforge_migration_decisions.toml", "registry/pantheon_physicsforge_repo_snapshot.toml"]
+
+[[task]]
+id = "PPF-007"
+number = 7
+phase = 1
+phase_name = "License and governance hardening"
+status = "done"
+title = "Add a pre-porting gate: reject direct code copy without provenance row (`mcp-ripgrep` + verifier script)."
+evidence_refs = ["registry/pantheon_physicsforge_license_alignment.toml", "registry/pantheon_physicsforge_migration_decisions.toml", "registry/pantheon_physicsforge_repo_snapshot.toml"]
+
+[[task]]
+id = "PPF-008"
+number = 8
+phase = 1
+phase_name = "License and governance hardening"
+status = "done"
+title = "Add license consistency check command to migration runbook (`mcp-bash`)."
+evidence_refs = ["registry/pantheon_physicsforge_license_alignment.toml", "registry/pantheon_physicsforge_migration_decisions.toml", "registry/pantheon_physicsforge_repo_snapshot.toml"]
+
+[[task]]
+id = "PPF-009"
+number = 9
+phase = 1
+phase_name = "License and governance hardening"
+status = "done"
+title = "Snapshot current repo states and branches for all three repos (`mcp-git`)."
+evidence_refs = ["registry/pantheon_physicsforge_license_alignment.toml", "registry/pantheon_physicsforge_migration_decisions.toml", "registry/pantheon_physicsforge_repo_snapshot.toml"]
+
+[[task]]
+id = "PPF-010"
+number = 10
+phase = 2
+phase_name = "Discovery and architecture mapping"
+status = "done"
+title = "Build function-level inventory for Pantheon DDT modules (`mcp-ripgrep`)."
+evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+
+[[task]]
+id = "PPF-011"
+number = 11
+phase = 2
+phase_name = "Discovery and architecture mapping"
+status = "done"
+title = "Build class/function inventory for Pantheon elevated calibration modules (`mcp-ripgrep`)."
+evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+
+[[task]]
+id = "PPF-012"
+number = 12
+phase = 2
+phase_name = "Discovery and architecture mapping"
+status = "done"
+title = "Build PhysicsForge pipeline inventory for extraction and catalog semantics (`mcp-ripgrep`)."
+evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+
+[[task]]
+id = "PPF-013"
+number = 13
+phase = 2
+phase_name = "Discovery and architecture mapping"
+status = "done"
+title = "Map each inventoried unit to target crate/module in open_gororoba (`mcp-bash` + markdown matrix)."
+evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+
+[[task]]
+id = "PPF-014"
+number = 14
+phase = 2
+phase_name = "Discovery and architecture mapping"
+status = "done"
+title = "Identify overlap already covered in `data_core` and `cosmology_core` (`mcp-ripgrep`)."
+evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+
+[[task]]
+id = "PPF-015"
+number = 15
+phase = 2
+phase_name = "Discovery and architecture mapping"
+status = "done"
+title = "Identify overlap already covered in `docpipe` and `gororoba_cli` (`mcp-ripgrep`)."
+evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+
+[[task]]
+id = "PPF-016"
+number = 16
+phase = 2
+phase_name = "Discovery and architecture mapping"
+status = "done"
+title = "Identify overlap already covered in `algebra_core` to avoid redundant octonion ports (`mcp-ripgrep`)."
+evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+
+[[task]]
+id = "PPF-017"
+number = 17
+phase = 2
+phase_name = "Discovery and architecture mapping"
+status = "done"
+title = "Define migration boundaries: port, rewrite, skip, deprecate (`claims-evidence-executor`)."
+evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+
+[[task]]
+id = "PPF-018"
+number = 18
+phase = 2
+phase_name = "Discovery and architecture mapping"
+status = "done"
+title = "Publish source-to-target mapping table under `docs/tickets/` (`filesystem` or `mcp-bash`)."
+evidence_refs = ["registry/pantheon_physicsforge_migration_matrix.toml"]
+
+[[task]]
+id = "PPF-019"
+number = 19
+phase = 3
+phase_name = "New Rust crate scaffolding for Type Ia core"
+status = "done"
+title = "Create crate skeleton `crates/snia_core` with `lib.rs` and module tree (`mcp-rust` + `mcp-bash`)."
+evidence_refs = ["crates/snia_core/src/lib.rs", "registry/pantheon_physicsforge_claim_links.toml"]
+
+[[task]]
+id = "PPF-020"
+number = 20
+phase = 3
+phase_name = "New Rust crate scaffolding for Type Ia core"
+status = "done"
+title = "Add `snia_core` to workspace `Cargo.toml` members (`mcp-bash`)."
+evidence_refs = ["crates/snia_core/src/lib.rs", "registry/pantheon_physicsforge_claim_links.toml"]
+
+[[task]]
+id = "PPF-021"
+number = 21
+phase = 3
+phase_name = "New Rust crate scaffolding for Type Ia core"
+status = "done"
+title = "Set crate dependencies via workspace dependencies only (`gororoba-rust-workflow`)."
+evidence_refs = ["crates/snia_core/src/lib.rs", "registry/pantheon_physicsforge_claim_links.toml"]
+
+[[task]]
+id = "PPF-022"
+number = 22
+phase = 3
+phase_name = "New Rust crate scaffolding for Type Ia core"
+status = "done"
+title = "Add crate-level error types and unit-safe wrappers for physics constants (`mcp-rust`)."
+evidence_refs = ["crates/snia_core/src/lib.rs", "registry/pantheon_physicsforge_claim_links.toml"]
+
+[[task]]
+id = "PPF-023"
+number = 23
+phase = 3
+phase_name = "New Rust crate scaffolding for Type Ia core"
+status = "done"
+title = "Add deterministic config structs equivalent to Pantheon `SimulationConfig` (`mcp-rust`)."
+evidence_refs = ["crates/snia_core/src/lib.rs", "registry/pantheon_physicsforge_claim_links.toml"]
+
+[[task]]
+id = "PPF-024"
+number = 24
+phase = 3
+phase_name = "New Rust crate scaffolding for Type Ia core"
+status = "done"
+title = "Define canonical state vectors for hydro + thermodynamics (`mcp-rust`)."
+evidence_refs = ["crates/snia_core/src/lib.rs", "registry/pantheon_physicsforge_claim_links.toml"]
+
+[[task]]
+id = "PPF-025"
+number = 25
+phase = 3
+phase_name = "New Rust crate scaffolding for Type Ia core"
+status = "done"
+title = "Add serialization feature gates for experiment snapshots (`serde`) (`mcp-rust`)."
+evidence_refs = ["crates/snia_core/src/lib.rs", "registry/pantheon_physicsforge_claim_links.toml"]
+
+[[task]]
+id = "PPF-026"
+number = 26
+phase = 3
+phase_name = "New Rust crate scaffolding for Type Ia core"
+status = "done"
+title = "Create minimal smoke test for crate initialization (`mcp-rust cargo-test`)."
+evidence_refs = ["crates/snia_core/src/lib.rs", "registry/pantheon_physicsforge_claim_links.toml"]
+
+[[task]]
+id = "PPF-027"
+number = 27
+phase = 3
+phase_name = "New Rust crate scaffolding for Type Ia core"
+status = "done"
+title = "Register crate in internal architecture docs and claims matrix links (`claims-evidence-executor`)."
+evidence_refs = ["crates/snia_core/src/lib.rs", "registry/pantheon_physicsforge_claim_links.toml"]
+
+[[task]]
+id = "PPF-028"
+number = 28
+phase = 4
+phase_name = "EOS rebuild"
+status = "in_progress"
+title = "Implement degenerate electron EOS core routines in Rust (`eos_white_dwarf` parity target) (`mcp-rust`)."
+evidence_refs = ["crates/snia_core/src/eos.rs"]
+
+[[task]]
+id = "PPF-029"
+number = 29
+phase = 4
+phase_name = "EOS rebuild"
+status = "todo"
+title = "Implement ion and radiation pressure terms and composition hooks (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-030"
+number = 30
+phase = 4
+phase_name = "EOS rebuild"
+status = "todo"
+title = "Implement `eos_from_rho_T` analog with robust domain checks (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-031"
+number = 31
+phase = 4
+phase_name = "EOS rebuild"
+status = "todo"
+title = "Implement `temperature_from_rho_e` inversion with bounded iterations (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-032"
+number = 32
+phase = 4
+phase_name = "EOS rebuild"
+status = "todo"
+title = "Implement `eos_from_rho_e` analog and cached thermodynamic state (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-033"
+number = 33
+phase = 4
+phase_name = "EOS rebuild"
+status = "todo"
+title = "Implement sound-speed and effective-gamma routines with positivity constraints (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-034"
+number = 34
+phase = 4
+phase_name = "EOS rebuild"
+status = "todo"
+title = "Add unit tests mirroring Pantheon EOS behavior envelopes (`mcp-rust cargo-test`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-035"
+number = 35
+phase = 4
+phase_name = "EOS rebuild"
+status = "todo"
+title = "Add property tests for monotonicity and physical bounds (`mcp-rust` + proptest)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-036"
+number = 36
+phase = 4
+phase_name = "EOS rebuild"
+status = "todo"
+title = "Add benchmark harness for EOS hot paths (`mcp-rust cargo-bench`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-037"
+number = 37
+phase = 5
+phase_name = "Hydro rebuild (HLLC + MUSCL)"
+status = "todo"
+title = "Implement limiter suite (minmod, superbee, MC) in Rust (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-038"
+number = 38
+phase = 5
+phase_name = "Hydro rebuild (HLLC + MUSCL)"
+status = "todo"
+title = "Implement MUSCL reconstruction with ghost-cell boundary policy (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-039"
+number = 39
+phase = 5
+phase_name = "Hydro rebuild (HLLC + MUSCL)"
+status = "todo"
+title = "Implement primitive/conserved conversions with invariant checks (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-040"
+number = 40
+phase = 5
+phase_name = "Hydro rebuild (HLLC + MUSCL)"
+status = "todo"
+title = "Implement HLLC flux solver and wave-speed estimates (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-041"
+number = 41
+phase = 5
+phase_name = "Hydro rebuild (HLLC + MUSCL)"
+status = "todo"
+title = "Implement CFL timestep estimator with configurable safety factors (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-042"
+number = 42
+phase = 5
+phase_name = "Hydro rebuild (HLLC + MUSCL)"
+status = "todo"
+title = "Implement first RK2 hydro update API and integration hooks (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-043"
+number = 43
+phase = 5
+phase_name = "Hydro rebuild (HLLC + MUSCL)"
+status = "todo"
+title = "Build Sod shock-tube regression tests against reference outputs (`mcp-rust cargo-test`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-044"
+number = 44
+phase = 5
+phase_name = "Hydro rebuild (HLLC + MUSCL)"
+status = "todo"
+title = "Add numeric stability tests for near-vacuum edge cases (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-045"
+number = 45
+phase = 5
+phase_name = "Hydro rebuild (HLLC + MUSCL)"
+status = "todo"
+title = "Add throughput benchmark for hydro update kernel (`mcp-rust cargo-bench`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-046"
+number = 46
+phase = 6
+phase_name = "Reactions, coupling, and yields"
+status = "todo"
+title = "Implement C12+C12 rate model and screening factor in Rust (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-047"
+number = 47
+phase = 6
+phase_name = "Reactions, coupling, and yields"
+status = "todo"
+title = "Implement burn substep and subcycling control with fail-safe floors (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-048"
+number = 48
+phase = 6
+phase_name = "Reactions, coupling, and yields"
+status = "todo"
+title = "Implement Chapman-Jouguet velocity estimator (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-049"
+number = 49
+phase = 6
+phase_name = "Reactions, coupling, and yields"
+status = "todo"
+title = "Implement Strang splitting orchestrator (reaction-hydro-reaction) (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-050"
+number = 50
+phase = 6
+phase_name = "Reactions, coupling, and yields"
+status = "todo"
+title = "Implement detonation detection metrics and event capture (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-051"
+number = 51
+phase = 6
+phase_name = "Reactions, coupling, and yields"
+status = "todo"
+title = "Implement Ni56 yield estimator and observable mapping API (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-052"
+number = 52
+phase = 6
+phase_name = "Reactions, coupling, and yields"
+status = "todo"
+title = "Add cross-check tests against Pantheon baseline runs (`mcp-bash` harness + `mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-053"
+number = 53
+phase = 6
+phase_name = "Reactions, coupling, and yields"
+status = "todo"
+title = "Add deterministic replay tests from saved checkpoints (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-054"
+number = 54
+phase = 6
+phase_name = "Reactions, coupling, and yields"
+status = "todo"
+title = "Add calibration parameter structs for elevated studies (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-055"
+number = 55
+phase = 7
+phase_name = "Elevated workflows and CLI integration"
+status = "todo"
+title = "Port DDT parameter scan workflow into Rust experiment module (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-056"
+number = 56
+phase = 7
+phase_name = "Elevated workflows and CLI integration"
+status = "todo"
+title = "Port alpha-chain network abstractions needed for yield calibration (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-057"
+number = 57
+phase = 7
+phase_name = "Elevated workflows and CLI integration"
+status = "todo"
+title = "Port light-curve synthesis interfaces with minimal physically consistent model (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-058"
+number = 58
+phase = 7
+phase_name = "Elevated workflows and CLI integration"
+status = "todo"
+title = "Add `gororoba_cli` subcommand for SN Ia runs (`mcp-rust` + `mcp-bash`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-059"
+number = 59
+phase = 7
+phase_name = "Elevated workflows and CLI integration"
+status = "todo"
+title = "Register CLI binary entry and docs (`gororoba-rust-workflow`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-060"
+number = 60
+phase = 7
+phase_name = "Elevated workflows and CLI integration"
+status = "todo"
+title = "Add CSV/TOML output schema for scan outputs and summaries (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-061"
+number = 61
+phase = 7
+phase_name = "Elevated workflows and CLI integration"
+status = "todo"
+title = "Add snapshot artifact writer under reproducible paths (`mcp-bash` + Rust fs APIs)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-062"
+number = 62
+phase = 7
+phase_name = "Elevated workflows and CLI integration"
+status = "todo"
+title = "Add integration tests for CLI quick/full modes (`mcp-rust cargo-test`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-063"
+number = 63
+phase = 7
+phase_name = "Elevated workflows and CLI integration"
+status = "todo"
+title = "Add manpage/help examples for new CLI commands (`clap_mangen`, `mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-064"
+number = 64
+phase = 8
+phase_name = "PhysicsForge pipeline semantics into docpipe/CLI"
+status = "todo"
+title = "Extract semantics spec for equation extraction states (text, PDF text, OCR) (`mcp-ripgrep`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-065"
+number = 65
+phase = 8
+phase_name = "PhysicsForge pipeline semantics into docpipe/CLI"
+status = "todo"
+title = "Define Rust-native catalog schema equivalent to `equation_catalog.csv` essentials (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-066"
+number = 66
+phase = 8
+phase_name = "PhysicsForge pipeline semantics into docpipe/CLI"
+status = "todo"
+title = "Implement normalize/dedupe/signature logic in `docpipe` or companion module (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-067"
+number = 67
+phase = 8
+phase_name = "PhysicsForge pipeline semantics into docpipe/CLI"
+status = "todo"
+title = "Implement merge pipeline for multi-source equation streams (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-068"
+number = 68
+phase = 8
+phase_name = "PhysicsForge pipeline semantics into docpipe/CLI"
+status = "todo"
+title = "Implement framework/domain/category classification rules from current scripts (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-069"
+number = 69
+phase = 8
+phase_name = "PhysicsForge pipeline semantics into docpipe/CLI"
+status = "todo"
+title = "Implement parity and gap reports in `gororoba_cli` command set (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-070"
+number = 70
+phase = 8
+phase_name = "PhysicsForge pipeline semantics into docpipe/CLI"
+status = "todo"
+title = "Integrate with existing `extract-papers` output flow (`docpipe` + `gororoba_cli`) (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-071"
+number = 71
+phase = 8
+phase_name = "PhysicsForge pipeline semantics into docpipe/CLI"
+status = "todo"
+title = "Add regression tests using fixture PDFs and fixture extracted text (`mcp-rust cargo-test`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-072"
+number = 72
+phase = 8
+phase_name = "PhysicsForge pipeline semantics into docpipe/CLI"
+status = "todo"
+title = "Add compatibility converter for historical PhysicsForge CSV artifacts (`mcp-rust`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-073"
+number = 73
+phase = 9
+phase_name = "Claims, provenance, and evidence gates"
+status = "todo"
+title = "Add claim rows for each imported physics capability (`docs/CLAIMS_EVIDENCE_MATRIX.md`) (`claims-evidence-executor`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-074"
+number = 74
+phase = 9
+phase_name = "Claims, provenance, and evidence gates"
+status = "todo"
+title = "Link each claim to source path and verification test path (`claims-evidence-executor`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-075"
+number = 75
+phase = 9
+phase_name = "Claims, provenance, and evidence gates"
+status = "todo"
+title = "Add task rows in `docs/CLAIMS_TASKS.md` for each migration tranche (`claims-evidence-executor`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-076"
+number = 76
+phase = 9
+phase_name = "Claims, provenance, and evidence gates"
+status = "todo"
+title = "Add provenance notes for all external references and equations corpus inputs (`data_core provenance`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-077"
+number = 77
+phase = 9
+phase_name = "Claims, provenance, and evidence gates"
+status = "done"
+title = "Add verifier script for source-to-target mapping completeness (`mcp-bash`)."
+evidence_refs = ["src/verification/verify_pantheon_physicsforge_mapping_completeness.py", "registry/pantheon_physicsforge_migration_matrix.toml", "registry/pantheon_physicsforge_migration_todo.toml"]
+
+[[task]]
+id = "PPF-078"
+number = 78
+phase = 9
+phase_name = "Claims, provenance, and evidence gates"
+status = "done"
+title = "Add verifier script for license-header consistency in migrated files (`mcp-bash`)."
+evidence_refs = ["src/verification/verify_pantheon_physicsforge_license_headers.py", "registry/pantheon_physicsforge_ported_files.toml", "registry/pantheon_physicsforge_license_alignment.toml"]
+
+[[task]]
+id = "PPF-079"
+number = 79
+phase = 9
+phase_name = "Claims, provenance, and evidence gates"
+status = "done"
+title = "Wire verifiers into existing check targets and CI path (`mcp-bash` + `mcp-git`)."
+evidence_refs = ["Makefile", "registry/pantheon_physicsforge_migration_runbook.toml", "registry/pantheon_physicsforge_phase9_10_audit.toml"]
+
+[[task]]
+id = "PPF-080"
+number = 80
+phase = 9
+phase_name = "Claims, provenance, and evidence gates"
+status = "done"
+title = "Add SQLite memoization for migration findings and unresolved risks (`mcp-sqlite`)."
+evidence_refs = ["src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py", "registry/pantheon_physicsforge_migration_findings.toml", "build/pantheon_physicsforge_migration.db"]
+
+[[task]]
+id = "PPF-081"
+number = 81
+phase = 9
+phase_name = "Claims, provenance, and evidence gates"
+status = "done"
+title = "Publish phase audit report with pass/fail status and blockers (`docs/tickets`)."
+evidence_refs = ["registry/pantheon_physicsforge_phase9_10_audit.toml", "registry/pantheon_physicsforge_migration_findings.toml", "registry/pantheon_physicsforge_overflow_tracker.toml"]
+
+[[task]]
+id = "PPF-082"
+number = 82
+phase = 10
+phase_name = "Quality gates, overflow loops, and iterative todo updates"
+status = "todo"
+title = "Run crate-local test loops per phase before workspace-wide checks (`mcp-rust cargo-test`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-083"
+number = 83
+phase = 10
+phase_name = "Quality gates, overflow loops, and iterative todo updates"
+status = "todo"
+title = "Run `cargo clippy --workspace -j$(nproc) -- -D warnings` at each phase gate (`mcp-rust` + `mcp-bash`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-084"
+number = 84
+phase = 10
+phase_name = "Quality gates, overflow loops, and iterative todo updates"
+status = "todo"
+title = "Run workspace build and selected integration binaries (`mcp-rust cargo-build`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-085"
+number = 85
+phase = 10
+phase_name = "Quality gates, overflow loops, and iterative todo updates"
+status = "todo"
+title = "Add performance baseline capture for EOS/hydro/reaction hot paths (`mcp-rust cargo-bench`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-086"
+number = 86
+phase = 10
+phase_name = "Quality gates, overflow loops, and iterative todo updates"
+status = "done"
+title = "If any phase fails, open overflow task batch `OF-<phase>-<n>` with owner and ETA (`claims-evidence-executor`)."
+evidence_refs = ["registry/pantheon_physicsforge_overflow_tracker.toml", "src/verification/verify_pantheon_physicsforge_overflow_tracker.py", "registry/pantheon_physicsforge_phase9_10_audit.toml"]
+
+[[task]]
+id = "PPF-087"
+number = 87
+phase = 10
+phase_name = "Quality gates, overflow loops, and iterative todo updates"
+status = "done"
+title = "Enforce overflow rule: max 5 active overflow tasks; new tasks require closure or deferral rationale (`sqlite` tracker)."
+evidence_refs = ["registry/pantheon_physicsforge_overflow_tracker.toml", "src/verification/verify_pantheon_physicsforge_overflow_tracker.py", "src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py"]
+
+[[task]]
+id = "PPF-088"
+number = 88
+phase = 10
+phase_name = "Quality gates, overflow loops, and iterative todo updates"
+status = "todo"
+title = "Update migration todo board after every command batch with status, evidence path, and next action (`mcp-sqlite` + markdown sync)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-089"
+number = 89
+phase = 10
+phase_name = "Quality gates, overflow loops, and iterative todo updates"
+status = "todo"
+title = "Weekly rescope pass: re-rank remaining tasks by risk, physics impact, and integration dependency (`gororoba-mcp-orchestrator`)."
+evidence_refs = []
+
+[[task]]
+id = "PPF-090"
+number = 90
+phase = 10
+phase_name = "Quality gates, overflow loops, and iterative todo updates"
+status = "todo"
+title = "Final acceptance gate: all claims linked, tests green, clippy clean, docs updated, and reproducible command transcript attached (`mcp-bash` + `mcp-rust` + `mcp-git`)."
+evidence_refs = []

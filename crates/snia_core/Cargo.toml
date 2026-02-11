@@ -1,0 +1,35 @@
+[package]
+name = "snia_core"
+version = "0.1.0"
+edition = "2021"
+description = "Type Ia SN DDT core scaffold: EOS, hydro, burning, coupling, and calibration"
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+thiserror = { workspace = true }
+toml = { workspace = true }
+hdf5 = { workspace = true, optional = true }
+
+[features]
+default = []
+hdf5-export = ["hdf5"]
+
+[dev-dependencies]
+approx = { workspace = true }
+criterion = { workspace = true }
+tempfile = { workspace = true }
+proptest = { workspace = true }
+
+[[bench]]
+name = "snia_bench"
+harness = false
+
+[[bench]]
+name = "eos_bench"
+harness = false
+
+[[bench]]
+name = "hydro_bench"
+harness = false

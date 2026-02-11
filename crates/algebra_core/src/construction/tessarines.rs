@@ -205,7 +205,7 @@ pub fn test_norm_multiplicativity(n_samples: usize) -> bool {
 pub fn compute_invertibility_fraction(n_samples: usize) -> f64 {
     let mut invertible_count = 0;
     let mut nonzero_count = 0;
-    let tolerance = 1e-8;  // Tolerance for floating point comparisons
+    let tolerance = 1e-8; // Tolerance for floating point comparisons
 
     for seed in 0..n_samples {
         let t = pseudo_random_tessarine(seed as u32);
@@ -220,7 +220,7 @@ pub fn compute_invertibility_fraction(n_samples: usize) -> f64 {
         // Try to compute inverse
         if let Some(t_inv) = t.inverse() {
             let product = t.multiply(&t_inv);
-            let one = Tessarine::one();  // Identity is (1, 1)
+            let one = Tessarine::one(); // Identity is (1, 1)
 
             // Check if t * t^{-1} ≈ (1, 1)
             // Component-wise multiplication means identity is (1, 1), not (1, 0)
@@ -277,11 +277,7 @@ pub fn count_associativity_violations() -> usize {
     let mut violations = 0;
     let tolerance = 1e-10;
 
-    let basis = [
-        Tessarine::one(),
-        Tessarine::i1(),
-        Tessarine::i2(),
-    ];
+    let basis = [Tessarine::one(), Tessarine::i1(), Tessarine::i2()];
 
     for i in 0..basis.len() {
         for j in 0..basis.len() {
@@ -387,7 +383,10 @@ mod tests {
         // but ||a||*||b||^2 = (|a1|^2+|a2|^2)(|b1|^2+|b2|^2) (with cross terms)
         // This is a mathematical property of tensor product algebras under Euclidean metric.
         let result = test_norm_multiplicativity(50);
-        println!("Tessarines norm multiplicativity: {}", if result { "YES" } else { "NO (expected)" });
+        println!(
+            "Tessarines norm multiplicativity: {}",
+            if result { "YES" } else { "NO (expected)" }
+        );
         // Don't assert - the mathematical property is that it FAILS
     }
 
@@ -412,6 +411,67 @@ mod tests {
         assert!(
             product.norm_squared() > 1e-10,
             "Tessarines have no proper zero-divisors"
+        );
+    }
+
+    #[test]
+    fn test_tessarine_identity() {
+        // Test that (1, 1) is the multiplicative identity
+        // For any tessarine t: t * (1, 1) = (1, 1) * t = t
+        let identity = Tessarine::one(); // (1, 1)
+        let t = Tessarine::new(2.5, 3.7, -1.2, 4.3);
+
+        let t_times_id = t.multiply(&identity);
+        let id_times_t = identity.multiply(&t);
+
+        assert!(
+            (t_times_id.z1_real - t.z1_real).abs() < 1e-10
+                && (t_times_id.z1_imag - t.z1_imag).abs() < 1e-10
+                && (t_times_id.z2_real - t.z2_real).abs() < 1e-10
+                && (t_times_id.z2_imag - t.z2_imag).abs() < 1e-10,
+            "Right multiplication by identity must preserve element"
+        );
+
+        assert!(
+            (id_times_t.z1_real - t.z1_real).abs() < 1e-10
+                && (id_times_t.z1_imag - t.z1_imag).abs() < 1e-10
+                && (id_times_t.z2_real - t.z2_real).abs() < 1e-10
+                && (id_times_t.z2_imag - t.z2_imag).abs() < 1e-10,
+            "Left multiplication by identity must preserve element"
+        );
+    }
+
+    #[test]
+    fn test_tessarine_conjugation() {
+        // Test that conjugation is component-wise complex conjugation
+        // and satisfies key properties: (ab)* = a*b* and (a*)* = a
+        let a = Tessarine::new(1.0, 2.0, 3.0, 4.0);
+        let b = Tessarine::new(5.0, 6.0, 7.0, 8.0);
+
+        // Test (a*)* = a (involutive)
+        let a_conj_conj = a.conjugate().conjugate();
+        assert!(
+            (a_conj_conj.z1_real - a.z1_real).abs() < 1e-10
+                && (a_conj_conj.z1_imag - a.z1_imag).abs() < 1e-10
+                && (a_conj_conj.z2_real - a.z2_real).abs() < 1e-10
+                && (a_conj_conj.z2_imag - a.z2_imag).abs() < 1e-10,
+            "Double conjugation must return original element"
+        );
+
+        // Test (ab)* = a*b* (anti-homomorphism property for component-wise multiplication)
+        let product = a.multiply(&b);
+        let product_conj = product.conjugate();
+
+        let a_conj = a.conjugate();
+        let b_conj = b.conjugate();
+        let conj_product = a_conj.multiply(&b_conj);
+
+        assert!(
+            (product_conj.z1_real - conj_product.z1_real).abs() < 1e-10
+                && (product_conj.z1_imag - conj_product.z1_imag).abs() < 1e-10
+                && (product_conj.z2_real - conj_product.z2_real).abs() < 1e-10
+                && (product_conj.z2_imag - conj_product.z2_imag).abs() < 1e-10,
+            "Conjugation must satisfy anti-homomorphism: (ab)* = a*b*"
         );
     }
 }

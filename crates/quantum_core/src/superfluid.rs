@@ -27,10 +27,10 @@ impl He4Params {
     /// Standard He-4 parameters at saturated vapor pressure.
     pub fn standard(temperature: f64) -> Self {
         Self {
-            mass: 6.6464764e-27,        // 4.0026 u in kg
-            number_density: 2.18e28,     // ~145 kg/m^3 liquid He-4
+            mass: 6.6464764e-27,     // 4.0026 u in kg
+            number_density: 2.18e28, // ~145 kg/m^3 liquid He-4
             temperature,
-            t_lambda: 2.1768,            // Lambda point (K)
+            t_lambda: 2.1768, // Lambda point (K)
         }
     }
 }
@@ -195,7 +195,11 @@ mod tests {
 
         // At T = T_lambda/2, significant superfluid fraction
         let f_half = superfluid_density_fraction(t_lambda / 2.0, t_lambda);
-        assert!(f_half > 0.9, "rho_s/rho(Tlambda/2)={}, should be > 0.9", f_half);
+        assert!(
+            f_half > 0.9,
+            "rho_s/rho(Tlambda/2)={}, should be > 0.9",
+            f_half
+        );
     }
 
     #[test]

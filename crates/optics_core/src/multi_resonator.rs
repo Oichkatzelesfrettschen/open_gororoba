@@ -243,7 +243,8 @@ impl MultiResonatorSystem {
     ) -> MultiResonatorTrace {
         let n = self.n_channels();
         let mut times = Vec::with_capacity(n_steps + 1);
-        let mut amplitudes: Vec<Vec<Complex64>> = (0..n).map(|_| Vec::with_capacity(n_steps + 1)).collect();
+        let mut amplitudes: Vec<Vec<Complex64>> =
+            (0..n).map(|_| Vec::with_capacity(n_steps + 1)).collect();
         let mut energies: Vec<Vec<f64>> = (0..n).map(|_| Vec::with_capacity(n_steps + 1)).collect();
 
         // Record initial state
@@ -304,7 +305,11 @@ mod tests {
     fn test_from_boxkites_7_channels() {
         let base = test_base_cavity();
         let system = MultiResonatorSystem::from_boxkites(&base, 1.0e12);
-        assert_eq!(system.n_channels(), 7, "sedenion box-kites produce 7 channels");
+        assert_eq!(
+            system.n_channels(),
+            7,
+            "sedenion box-kites produce 7 channels"
+        );
         for (i, ch) in system.channels.iter().enumerate() {
             assert_eq!(ch.component_index, i);
             assert_eq!(ch.n_assessors, 6);
@@ -383,10 +388,7 @@ mod tests {
 
         // Energy should be bounded (not blow up)
         for ch in 0..7 {
-            let max_energy = trace.energies[ch]
-                .iter()
-                .cloned()
-                .fold(0.0f64, f64::max);
+            let max_energy = trace.energies[ch].iter().cloned().fold(0.0f64, f64::max);
             assert!(
                 max_energy < 1e10,
                 "channel {} energy should be bounded, got {}",
@@ -424,7 +426,8 @@ mod tests {
             assert!(
                 energy < 1e-30,
                 "undriven uncoupled channel {} should have zero energy, got {}",
-                ch, energy
+                ch,
+                energy
             );
         }
     }

@@ -1,0 +1,92 @@
+# Canonical provenance rows for Pantheon/PhysicsForge migration outputs.
+
+[provenance_gate]
+updated = "2026-02-10"
+authoritative = true
+license_policy = "GPL-2.0-only"
+required_prefixes = ["crates/snia_core/src"]
+reject_verbatim_copy = true
+
+[[ported_file]]
+path = "crates/snia_core/src/eos.rs"
+origin = "pantheon"
+source_mapping_ids = ["MM-PAN-001"]
+copy_mode = "rewrite"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/hydro.rs"
+origin = "pantheon"
+source_mapping_ids = ["MM-PAN-002"]
+copy_mode = "rewrite"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/reaction.rs"
+origin = "pantheon"
+source_mapping_ids = ["MM-PAN-003"]
+copy_mode = "rewrite"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/solver.rs"
+origin = "pantheon"
+source_mapping_ids = ["MM-PAN-004"]
+copy_mode = "rewrite"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/yield_model.rs"
+origin = "pantheon"
+source_mapping_ids = ["MM-PAN-005"]
+copy_mode = "rewrite"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/calibration_scan.rs"
+origin = "pantheon"
+source_mapping_ids = ["MM-PAN-006"]
+copy_mode = "rewrite"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/alpha_chain.rs"
+origin = "pantheon"
+source_mapping_ids = ["MM-PAN-007"]
+copy_mode = "rewrite"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/lightcurve.rs"
+origin = "pantheon"
+source_mapping_ids = ["MM-PAN-008"]
+copy_mode = "rewrite"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/output.rs"
+origin = "open_gororoba_native"
+source_mapping_ids = []
+copy_mode = "native_support_scaffold"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/error.rs"
+origin = "open_gororoba_native"
+source_mapping_ids = []
+copy_mode = "native_support_scaffold"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/types.rs"
+origin = "open_gororoba_native"
+source_mapping_ids = []
+copy_mode = "native_support_scaffold"
+license_checked = true
+
+[[ported_file]]
+path = "crates/snia_core/src/lib.rs"
+origin = "open_gororoba_native"
+source_mapping_ids = []
+copy_mode = "native_support_scaffold"
+license_checked = true

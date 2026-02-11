@@ -2429,7 +2429,7 @@ mod tests {
         // one tail coordinate (squared distance = 4 in that coordinate = 2^2).
         // Full 8D d^2 = 0 (prefix) + 4 (one flip) = 4.
         let mut edge_count = 0usize;
-        let mut degree_counts = vec![0usize; 16];
+        let mut degree_counts = [0usize; 16];
         for i in 0..16 {
             for j in (i + 1)..16 {
                 let d2: i32 = (0..8)
@@ -3033,7 +3033,7 @@ mod tests {
         let (basis16, rank16) = gram_schmidt_basis(&phi16);
         assert_eq!(basis16.len(), rank16);
         assert!(
-            rank16 >= 1 && rank16 <= 8,
+            (1..=8).contains(&rank16),
             "rank should be in [1,8], got {rank16}"
         );
 
@@ -3798,7 +3798,11 @@ mod tests {
         );
 
         // Lambda_4096 == base universe
-        assert_eq!(l4096.len(), base.len(), "Lambda_4096 should equal base universe");
+        assert_eq!(
+            l4096.len(),
+            base.len(),
+            "Lambda_4096 should equal base universe"
+        );
 
         // Lambda_4096 > Lambda_2048 (strict superset)
         assert!(
@@ -3809,8 +3813,7 @@ mod tests {
         );
 
         // Every Lambda_2048 vector should be in Lambda_4096
-        let l4096_set: std::collections::HashSet<LatticeVector> =
-            l4096.iter().copied().collect();
+        let l4096_set: std::collections::HashSet<LatticeVector> = l4096.iter().copied().collect();
         for v in &l2048 {
             assert!(
                 l4096_set.contains(v),
@@ -3824,8 +3827,7 @@ mod tests {
     fn test_lambda_4096_parity_constraints() {
         // Verify all 4 octonion parity laws hold for Lambda_4096.
         let l4096 = enumerate_lambda_4096();
-        let (n, n_tri, n_sum, n_wt, n_l0, all_pass) =
-            verify_octonion_parity_constraints(&l4096);
+        let (n, n_tri, n_sum, n_wt, n_l0, all_pass) = verify_octonion_parity_constraints(&l4096);
 
         eprintln!("Lambda_4096 parity check: n={n}");
         eprintln!("  trinary: {n_tri}/{n}");
@@ -3862,11 +3864,8 @@ mod tests {
         ];
 
         for (name, vecs) in &levels {
-            let (n, n_tri, n_sum, n_wt, n_l0, all_pass) =
-                verify_octonion_parity_constraints(vecs);
-            eprintln!(
-                "{name}: {n} vectors, all_parity_pass={all_pass}"
-            );
+            let (n, n_tri, n_sum, n_wt, n_l0, all_pass) = verify_octonion_parity_constraints(vecs);
+            eprintln!("{name}: {n} vectors, all_parity_pass={all_pass}");
             assert!(
                 all_pass,
                 "{name}: parity violation! tri={n_tri}/{n}, sum={n_sum}/{n}, \

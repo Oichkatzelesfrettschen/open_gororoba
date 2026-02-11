@@ -79,6 +79,14 @@ Research claims are hypotheses unless backed by:
 - Track external data provenance and hashes.
 - Tests must not rely on network.
 
+### 3.6 Build profile parity and optimization discipline
+- Keep dev, test, and production build semantics as aligned as feasible.
+- Allowed profile divergence is limited to debug info and essential test harness
+  instrumentation.
+- Enforce warnings-as-errors in development and CI.
+- Release optimization baseline is native CPU tuning with fat LTO; maintain a
+  PGO-capable lane for final production calibration.
+
 ## 4. `/init` Procedure (Mandatory Session Startup)
 
 Every agent session should follow this exact initialization flow.

@@ -1,0 +1,54 @@
+[legal_risk_checklist]
+updated = "2026-02-10"
+authoritative = true
+owner = "migration-agent"
+policy = "GPL-2.0-only and rewrite-only migration"
+max_open_high_risk_items = 0
+
+[[check]]
+id = "LR-001"
+category = "license-consistency"
+severity = "high"
+status = "done"
+description = "Pantheon LICENSE and metadata declare GPL-2.0-only-compatible policy."
+evidence_ref = "registry/pantheon_physicsforge_license_alignment.toml"
+
+[[check]]
+id = "LR-002"
+category = "license-consistency"
+severity = "high"
+status = "done"
+description = "PhysicsForge LICENSE and metadata declare GPL-2.0-only-compatible policy."
+evidence_ref = "registry/pantheon_physicsforge_license_alignment.toml"
+
+[[check]]
+id = "LR-003"
+category = "policy-doc-drift"
+severity = "high"
+status = "done"
+description = "Fallback/ambiguous license placeholders removed from migration-relevant docs."
+evidence_ref = "../PhysicsForge/docs/RELEASE_NOTES_v1.0.md"
+
+[[check]]
+id = "LR-004"
+category = "code-provenance"
+severity = "high"
+status = "done"
+description = "Pre-porting gate rejects migrated files lacking provenance rows."
+evidence_ref = "src/verification/verify_pantheon_physicsforge_provenance_gate.py"
+
+[[check]]
+id = "LR-005"
+category = "copy-mode"
+severity = "high"
+status = "done"
+description = "Verbatim copy mode is disallowed in canonical provenance records."
+evidence_ref = "registry/pantheon_physicsforge_ported_files.toml"
+
+[[check]]
+id = "LR-006"
+category = "auditability"
+severity = "medium"
+status = "done"
+description = "Repo snapshots (branch/commit/dirty state) recorded for all migration repos."
+evidence_ref = "registry/pantheon_physicsforge_repo_snapshot.toml"

@@ -1553,7 +1553,7 @@ mod tests {
         // Sedenions have zero divisors, so norm is NOT multiplicative.
         // This verifies the algebra is genuinely sedenion (not octonion).
         // Use basis elements e1 and e10 which form a zero-divisor pair.
-        let mut e1 = vec![0.0; 16];
+        let mut e1 = [0.0; 16];
         e1[1] = 1.0;
         let mut e10 = vec![0.0; 16];
         e10[10] = 1.0;
@@ -3568,7 +3568,7 @@ mod tests {
 
         eprintln!("\n=== Coquaternion Mixed Signatures Test (C-549) ===");
 
-        let mixed_sigs = vec![
+        let mixed_sigs = [
             CdSignature::from_gammas(&[1, -1]),
             CdSignature::from_gammas(&[-1, 1]),
         ];

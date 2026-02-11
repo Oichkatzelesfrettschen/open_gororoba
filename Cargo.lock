@@ -1035,6 +1035,7 @@ dependencies = [
 name = "docpipe"
 version = "0.1.0"
 dependencies = [
+ "csv",
  "image 0.25.9",
  "lopdf 0.39.0",
  "pdf-extract",
@@ -1822,6 +1823,7 @@ dependencies = [
  "serde",
  "serde_json",
  "sha2",
+ "snia_core",
  "spectral_core",
  "stats_core",
  "toml",
@@ -4311,6 +4313,20 @@ name = "smallvec"
 version = "1.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03"
+
+[[package]]
+name = "snia_core"
+version = "0.1.0"
+dependencies = [
+ "approx",
+ "criterion",
+ "hdf5-metno",
+ "proptest",
+ "serde",
+ "tempfile",
+ "thiserror 2.0.18",
+ "toml",
+]
 
 [[package]]
 name = "sorted-vec"

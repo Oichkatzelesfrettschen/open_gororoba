@@ -344,7 +344,10 @@ mod tests {
         let x = AlbertElement::diagonal(1.0, 1.0, 1.0);
         let eigs = x.eigenvalues();
         for &e in &eigs {
-            assert!((e - 1.0).abs() < 1e-10, "identity should have all eigenvalues = 1");
+            assert!(
+                (e - 1.0).abs() < 1e-10,
+                "identity should have all eigenvalues = 1"
+            );
         }
     }
 
@@ -381,7 +384,9 @@ mod tests {
             assert!(
                 (xy.diag[i] - yx.diag[i]).abs() < 1e-10,
                 "Jordan product must be commutative: diag[{}] = {} vs {}",
-                i, xy.diag[i], yx.diag[i]
+                i,
+                xy.diag[i],
+                yx.diag[i]
             );
         }
         for i in 0..3 {
@@ -389,7 +394,8 @@ mod tests {
                 assert!(
                     (xy.off[i][j] - yx.off[i][j]).abs() < 1e-10,
                     "Jordan product must be commutative: off[{}][{}]",
-                    i, j
+                    i,
+                    j
                 );
             }
         }
@@ -401,7 +407,11 @@ mod tests {
         // delta = 1, delta^2 = 1
         let x = AlbertElement::diagonal(1.0, 2.0, 3.0);
         let d2 = x.delta_squared();
-        assert!((d2 - 1.0).abs() < 1e-10, "diagonal (1,2,3): delta^2 should be 1, got {}", d2);
+        assert!(
+            (d2 - 1.0).abs() < 1e-10,
+            "diagonal (1,2,3): delta^2 should be 1, got {}",
+            d2
+        );
     }
 
     #[test]
@@ -454,7 +464,10 @@ mod tests {
         eprintln!("Trace-free with unit octonion off-diagonals:");
         eprintln!("  eigenvalues: {:?}", eigs_y);
         eprintln!("  delta^2 = {:.6}", d2_y);
-        eprintln!("  arithmetic: {}, q={:.6}, delta={:.6}, residual={:.2e}", is_arith, q, delta, residual);
+        eprintln!(
+            "  arithmetic: {}, q={:.6}, delta={:.6}, residual={:.2e}",
+            is_arith, q, delta, residual
+        );
 
         // Explore a range of configurations
         eprintln!("\nSingh delta^2 survey:");
@@ -493,9 +506,18 @@ mod tests {
         // Report statistics
         if !delta_sq_values.is_empty() {
             let mean = delta_sq_values.iter().sum::<f64>() / delta_sq_values.len() as f64;
-            let min = delta_sq_values.iter().copied().fold(f64::INFINITY, f64::min);
-            let max = delta_sq_values.iter().copied().fold(f64::NEG_INFINITY, f64::max);
-            eprintln!("\ndelta^2 statistics: mean={:.6}, min={:.6}, max={:.6}", mean, min, max);
+            let min = delta_sq_values
+                .iter()
+                .copied()
+                .fold(f64::INFINITY, f64::min);
+            let max = delta_sq_values
+                .iter()
+                .copied()
+                .fold(f64::NEG_INFINITY, f64::max);
+            eprintln!(
+                "\ndelta^2 statistics: mean={:.6}, min={:.6}, max={:.6}",
+                mean, min, max
+            );
             eprintln!("  3/8 = {:.6}", 3.0 / 8.0);
         }
     }
@@ -532,7 +554,8 @@ mod tests {
             assert!(
                 val.abs() < 1e-8,
                 "eigenvalue {} should satisfy characteristic eq, residual = {}",
-                lambda, val
+                lambda,
+                val
             );
         }
     }

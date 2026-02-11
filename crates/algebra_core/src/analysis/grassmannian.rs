@@ -508,7 +508,7 @@ mod tests {
         // According to Reggiani, there should be exactly 6 distinct distances
         // We allow some tolerance for numerical precision
         assert!(
-            n_distinct >= 4 && n_distinct <= 10,
+            (4..=10).contains(&n_distinct),
             "Expected ~6 distinct distances, got {}",
             n_distinct
         );

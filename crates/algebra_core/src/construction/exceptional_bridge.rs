@@ -29,9 +29,7 @@
 
 use crate::construction::g2_automorphisms::compute_g2_basis;
 use crate::construction::octonion::Octonion;
-use crate::lie::e8_lattice::{
-    DivisionAlgebra, FreudenthalTitsMagicSquare, MagicSquareLieAlgebra,
-};
+use crate::lie::e8_lattice::{DivisionAlgebra, FreudenthalTitsMagicSquare, MagicSquareLieAlgebra};
 
 // ============================================================================
 // Tits Construction: Correct Dimension Formula
@@ -355,8 +353,8 @@ mod tests {
 
     #[test]
     fn test_jordan_derivation_dimensions() {
-        assert_eq!(jordan_h3_derivation_dim(DivisionAlgebra::R), 3);  // so(3)
-        assert_eq!(jordan_h3_derivation_dim(DivisionAlgebra::C), 8);  // su(3)
+        assert_eq!(jordan_h3_derivation_dim(DivisionAlgebra::R), 3); // so(3)
+        assert_eq!(jordan_h3_derivation_dim(DivisionAlgebra::C), 8); // su(3)
         assert_eq!(jordan_h3_derivation_dim(DivisionAlgebra::H), 21); // sp(6)
         assert_eq!(jordan_h3_derivation_dim(DivisionAlgebra::O), 52); // F4
     }
@@ -425,7 +423,10 @@ mod tests {
     fn test_exceptional_chain_g2() {
         // Cross-validate: our computed G2 derivation algebra has dim 14
         let chain = verify_exceptional_chain();
-        assert_eq!(chain.g2_computed_dim, 14, "G2 = Der(O) should have 14 derivations");
+        assert_eq!(
+            chain.g2_computed_dim, 14,
+            "G2 = Der(O) should have 14 derivations"
+        );
         assert_eq!(chain.g2_computed_dim, chain.g2_expected_dim);
     }
 
@@ -436,7 +437,10 @@ mod tests {
         assert_eq!(chain.e6_dim, 78, "E6 = L(C,O) should be 78-dimensional");
         assert_eq!(chain.e7_dim, 133, "E7 = L(H,O) should be 133-dimensional");
         assert_eq!(chain.e8_dim, 248, "E8 = L(O,O) should be 248-dimensional");
-        assert!(chain.all_match, "All exceptional chain dimensions must match");
+        assert!(
+            chain.all_match,
+            "All exceptional chain dimensions must match"
+        );
     }
 
     #[test]
@@ -504,7 +508,10 @@ mod tests {
 
         // Points from basis octonions
         let p1 = CayleyPlanePoint::from_homogeneous(&e1, &e2, &Octonion::basis(0));
-        assert!(p1.verify_idempotent(1e-10), "Point from unit octonions must be idempotent");
+        assert!(
+            p1.verify_idempotent(1e-10),
+            "Point from unit octonions must be idempotent"
+        );
 
         // Moufang loop operations preserve unit sphere
         let prod = MoufangLoop::multiply(&e1, &e2);
@@ -520,15 +527,24 @@ mod tests {
         // The Albert algebra J3(O) is 27-dimensional, the unique exceptional
         // Jordan algebra. This dimension is central to the magic square.
         let albert_dim = jordan_h3_dim(DivisionAlgebra::O);
-        assert_eq!(albert_dim, 27, "Albert algebra J3(O) must be 27-dimensional");
+        assert_eq!(
+            albert_dim, 27,
+            "Albert algebra J3(O) must be 27-dimensional"
+        );
 
         // Its derivation algebra is F4 (52-dim)
         let f4_dim = jordan_h3_derivation_dim(DivisionAlgebra::O);
-        assert_eq!(f4_dim, 52, "Der(Albert algebra) = F4 must be 52-dimensional");
+        assert_eq!(
+            f4_dim, 52,
+            "Der(Albert algebra) = F4 must be 52-dimensional"
+        );
 
         // The traceless part is 26-dimensional
         let traceless = albert_dim - 1;
-        assert_eq!(traceless, 26, "Traceless Albert algebra must be 26-dimensional");
+        assert_eq!(
+            traceless, 26,
+            "Traceless Albert algebra must be 26-dimensional"
+        );
 
         // E6 = F4 + 26: the automorphism group of OP^2 decomposes
         assert_eq!(

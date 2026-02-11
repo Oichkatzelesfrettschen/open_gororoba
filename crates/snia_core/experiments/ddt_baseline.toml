@@ -1,0 +1,25 @@
+[run]
+name = "ddt_baseline"
+description = "Reduced Type Ia DDT baseline for crate-local smoke runs"
+
+[grid]
+n_cells = 128
+dx_cm = 100000.0
+cell_volume_cm3 = 1.0e23
+
+[time]
+cfl = 0.35
+final_time_s = 0.002
+max_steps = 400
+
+[initial_hydro]
+density = 2.5e7
+velocity = 1.0e6
+pressure = 3.0e23
+specific_internal_energy = 1.1e17
+temperature = 1.6e9
+
+[initial_burn]
+carbon_mass_fraction = 0.5
+oxygen_mass_fraction = 0.5
+nickel56_mass_fraction = 0.0

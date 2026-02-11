@@ -652,7 +652,10 @@ impl SedenionAInfinity {
     /// The dimension must be a power of 2 and >= 8 (non-associativity starts
     /// at dim=8 for octonions, but the canonical case is dim=16 sedenions).
     pub fn new(dim: usize) -> Self {
-        assert!(dim >= 8 && dim.is_power_of_two(), "dim must be power-of-2 >= 8");
+        assert!(
+            dim >= 8 && dim.is_power_of_two(),
+            "dim must be power-of-2 >= 8"
+        );
 
         let mut algebra = AInfinityAlgebra::new(&format!("CD({})-AInfinity", dim));
         algebra.set_dimension(0, dim);
@@ -691,7 +694,11 @@ impl SedenionAInfinity {
     pub fn verify_relation_n3(&self, a: &[f64], b: &[f64], c: &[f64]) -> f64 {
         let lhs_left = self.m2(&self.m2(a, b), c);
         let lhs_right = self.m2(a, &self.m2(b, c));
-        let lhs: Vec<f64> = lhs_left.iter().zip(&lhs_right).map(|(l, r)| l - r).collect();
+        let lhs: Vec<f64> = lhs_left
+            .iter()
+            .zip(&lhs_right)
+            .map(|(l, r)| l - r)
+            .collect();
         let rhs = self.m3(a, b, c);
         let residual: f64 = lhs.iter().zip(&rhs).map(|(l, r)| (l - r).powi(2)).sum();
         residual.sqrt()
@@ -739,10 +746,7 @@ impl SedenionAInfinity {
         let eigenvalues = Self::symmetric_eigenvalues(&obs_matrix);
 
         let frobenius_norm = eigenvalues.iter().map(|e| e.powi(2)).sum::<f64>().sqrt();
-        let spectral_radius = eigenvalues
-            .iter()
-            .map(|e| e.abs())
-            .fold(0.0f64, f64::max);
+        let spectral_radius = eigenvalues.iter().map(|e| e.abs()).fold(0.0f64, f64::max);
         let nonzero_count = eigenvalues.iter().filter(|e| e.abs() > 1e-10).count();
         let rank_fraction = nonzero_count as f64 / d as f64;
 
@@ -800,12 +804,10 @@ impl SedenionAInfinity {
                     new_a[q][i] = new_a[i][q];
                 }
             }
-            new_a[p][p] = cos_t * cos_t * a[p][p]
-                + 2.0 * sin_t * cos_t * a[p][q]
-                + sin_t * sin_t * a[q][q];
-            new_a[q][q] = sin_t * sin_t * a[p][p]
-                - 2.0 * sin_t * cos_t * a[p][q]
-                + cos_t * cos_t * a[q][q];
+            new_a[p][p] =
+                cos_t * cos_t * a[p][p] + 2.0 * sin_t * cos_t * a[p][q] + sin_t * sin_t * a[q][q];
+            new_a[q][q] =
+                sin_t * sin_t * a[p][p] - 2.0 * sin_t * cos_t * a[p][q] + cos_t * cos_t * a[q][q];
             new_a[p][q] = 0.0;
             new_a[q][p] = 0.0;
 
@@ -1020,9 +1022,18 @@ mod tests {
     #[test]
     fn test_sedenion_a_infinity_m1_zero() {
         let sa = SedenionAInfinity::new(16);
-        assert!(sa.algebra.get_operation(1).unwrap().is_zero, "m_1 should be zero (minimal)");
-        assert!(!sa.algebra.get_operation(2).unwrap().is_zero, "m_2 should be nonzero");
-        assert!(!sa.algebra.get_operation(3).unwrap().is_zero, "m_3 should be nonzero");
+        assert!(
+            sa.algebra.get_operation(1).unwrap().is_zero,
+            "m_1 should be zero (minimal)"
+        );
+        assert!(
+            !sa.algebra.get_operation(2).unwrap().is_zero,
+            "m_2 should be nonzero"
+        );
+        assert!(
+            !sa.algebra.get_operation(3).unwrap().is_zero,
+            "m_3 should be nonzero"
+        );
     }
 
     #[test]
@@ -1038,7 +1049,11 @@ mod tests {
         assert_eq!(product, expected, "m_2 should equal CD multiply");
         // Product should be a single basis element (nonzero)
         let nonzero: Vec<_> = product.iter().filter(|x| x.abs() > 1e-15).collect();
-        assert_eq!(nonzero.len(), 1, "basis product should be a single basis element");
+        assert_eq!(
+            nonzero.len(),
+            1,
+            "basis product should be a single basis element"
+        );
     }
 
     #[test]
@@ -1053,16 +1068,18 @@ mod tests {
         e4[4] = 1.0;
         let assoc = sa.m3(&e1, &e2, &e4);
         let norm_sq: f64 = assoc.iter().map(|x| x * x).sum();
-        assert!(norm_sq > 1e-10, "sedenion associator should be nonzero for generic triple");
+        assert!(
+            norm_sq > 1e-10,
+            "sedenion associator should be nonzero for generic triple"
+        );
     }
 
     #[test]
     fn test_sedenion_a_infinity_relation_n3() {
         let sa = SedenionAInfinity::new(16);
         // Verify (ab)c - a(bc) = m_3(a,b,c) for several triples
-        let triples: Vec<(usize, usize, usize)> = vec![
-            (1, 2, 4), (1, 3, 5), (2, 5, 9), (3, 7, 11), (1, 8, 15),
-        ];
+        let triples: Vec<(usize, usize, usize)> =
+            vec![(1, 2, 4), (1, 3, 5), (2, 5, 9), (3, 7, 11), (1, 8, 15)];
         for (i, j, k) in triples {
             let mut a = vec![0.0; 16];
             a[i] = 1.0;
@@ -1074,7 +1091,10 @@ mod tests {
             assert!(
                 residual < 1e-12,
                 "A-infinity relation n=3 residual {} too large for ({},{},{})",
-                residual, i, j, k
+                residual,
+                i,
+                j,
+                k
             );
         }
     }
@@ -1089,15 +1109,27 @@ mod tests {
 
         // e_0 (identity) should have zero associator with everything,
         // so the matrix should have a zero row/column, reducing rank.
-        assert!(spectrum.rank_fraction < 1.0, "rank should be < full due to identity element");
+        assert!(
+            spectrum.rank_fraction < 1.0,
+            "rank should be < full due to identity element"
+        );
 
         // Spectral radius and Frobenius norm should be positive
-        assert!(spectrum.spectral_radius > 0.0, "spectral radius must be positive");
-        assert!(spectrum.frobenius_norm > 0.0, "Frobenius norm must be positive");
+        assert!(
+            spectrum.spectral_radius > 0.0,
+            "spectral radius must be positive"
+        );
+        assert!(
+            spectrum.frobenius_norm > 0.0,
+            "Frobenius norm must be positive"
+        );
 
         // Obstruction norm (normalized) should be finite and positive
         let norm = sa.obstruction_norm();
-        assert!(norm > 0.0 && norm.is_finite(), "obstruction norm should be finite and positive");
+        assert!(
+            norm > 0.0 && norm.is_finite(),
+            "obstruction norm should be finite and positive"
+        );
         eprintln!("Sedenion obstruction norm = {:.6}", norm);
         eprintln!("Spectral radius = {:.4}", spectrum.spectral_radius);
         eprintln!("Rank fraction = {:.4}", spectrum.rank_fraction);

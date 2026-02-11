@@ -1,0 +1,25 @@
+[repo_snapshot]
+updated = "2026-02-10"
+authoritative = true
+task_9_status = "completed"
+
+[[repo]]
+name = "pantheon"
+path = "../pantheon"
+branch = "main"
+commit = "1962d0eaf2fdc95c4cb93b16133117f9bd7ef41a"
+dirty_count = 3
+
+[[repo]]
+name = "PhysicsForge"
+path = "../PhysicsForge"
+branch = "main"
+commit = "ff44918bcac62917cfc1dd6a8a6f0e847b43e14f"
+dirty_count = 59
+
+[[repo]]
+name = "open_gororoba"
+path = "."
+branch = "main"
+commit = "c4c81658cda0d4cca0f2e039937706e5038ee118"
+dirty_count = 6

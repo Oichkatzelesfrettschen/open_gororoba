@@ -1001,7 +1001,7 @@ mod tests {
                     let k = comp.unwrap();
                     assert_ne!(k, i);
                     assert_ne!(k, j);
-                    assert!(k >= 1 && k <= 7, "complement should be in 1..=7");
+                    assert!((1..=7).contains(&k), "complement should be in 1..=7");
                 }
             }
         }

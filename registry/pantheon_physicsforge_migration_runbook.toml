@@ -1,0 +1,60 @@
+[migration_runbook]
+updated = "2026-02-11"
+authoritative = true
+description = "Operational commands for Pantheon + PhysicsForge migration."
+
+[[command]]
+id = "RB-001"
+name = "license_consistency_gate"
+command = "python3 src/verification/verify_pantheon_physicsforge_license_consistency.py"
+purpose = "Verify Pantheon and PhysicsForge remain GPL-2.0-only."
+task_ref = "8"
+
+[[command]]
+id = "RB-002"
+name = "provenance_preport_gate"
+command = "python3 src/verification/verify_pantheon_physicsforge_provenance_gate.py"
+purpose = "Reject migrated files without provenance rows."
+task_ref = "7"
+
+[[command]]
+id = "RB-003"
+name = "snia_core_quality_gate"
+command = "cargo check --package snia_core --all-targets && cargo test --package snia_core && cargo clippy --package snia_core -- -D warnings"
+purpose = "Phase-local quality gate for SN Ia migration implementation."
+task_ref = "82"
+
+[[command]]
+id = "RB-004"
+name = "workspace_quality_gate"
+command = "cargo clippy --workspace -j$(nproc) -- -D warnings"
+purpose = "Workspace warning-as-error gate."
+task_ref = "83"
+
+[[command]]
+id = "RB-005"
+name = "mapping_completeness_gate"
+command = "python3 src/verification/verify_pantheon_physicsforge_mapping_completeness.py"
+purpose = "Verify migration matrix and todo mapping completeness consistency."
+task_ref = "77"
+
+[[command]]
+id = "RB-006"
+name = "license_header_gate"
+command = "python3 src/verification/verify_pantheon_physicsforge_license_headers.py"
+purpose = "Verify migrated Rust/Python license-header consistency under GPL-2.0-only policy."
+task_ref = "78"
+
+[[command]]
+id = "RB-007"
+name = "overflow_tracker_gate"
+command = "python3 src/verification/verify_pantheon_physicsforge_overflow_tracker.py"
+purpose = "Enforce max-5-active overflow policy and ownership metadata requirements."
+task_ref = "87"
+
+[[command]]
+id = "RB-008"
+name = "sqlite_memoization_seed"
+command = "python3 src/scripts/analysis/seed_pantheon_physicsforge_migration_sqlite.py"
+purpose = "Seed sqlite memoization tables for migration findings, unresolved risks, and overflow tasks."
+task_ref = "80"
