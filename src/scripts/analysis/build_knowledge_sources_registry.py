@@ -98,7 +98,9 @@ def _tracked_markdown_files(repo_root: Path) -> list[str]:
         cwd=repo_root,
         text=True,
     )
-    return sorted([line.strip() for line in output.splitlines() if line.strip()])
+    files = [line.strip() for line in output.splitlines() if line.strip()]
+    existing = [rel for rel in files if (repo_root / rel).exists()]
+    return sorted(existing)
 
 
 def _escape_toml_string(text: str) -> str:

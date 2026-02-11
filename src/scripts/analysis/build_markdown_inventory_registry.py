@@ -55,47 +55,15 @@ IN_SCOPE_GENERATED_PREFIXES = (
     "data/artifacts/",
 )
 
-TOML_PUBLISHED_ALLOWLIST = {
-    "AGENTS.md",
-    "CLAUDE.md",
-    "GEMINI.md",
-    "README.md",
-    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md",
-    "PHASE10_11_ULTIMATE_ROADMAP.md",
-    "PYTHON_REFACTORING_ROADMAP.md",
-    "docs/ALGEBRA_CONSTRUCTION_COMPARISON.md",
-    "docs/ALGEBRA_CRATES_SURVEY.md",
-    "docs/ALGEBRA_FAMILY_TAXONOMY.md",
-    "docs/BIBLIOGRAPHY.md",
-    "docs/CLAIMS_EVIDENCE_MATRIX.md",
-    "docs/CLAIMS_EVIDENCE_MATRIX_NOTES_2026-02-01.md",
-    "docs/COMPLETE_ALGEBRA_FAMILY_TAXONOMY.md",
-    "docs/CONVOS_CONCEPTS_STATUS_INDEX.md",
-    "docs/CORE_ABSTRACTIONS.md",
-    "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md",
-    "docs/FINAL_MANUSCRIPT.md",
-    "docs/GRAND_SYNTHESIS.md",
-    "docs/GRAND_SYNTHESIS_PLAN.md",
-    "docs/INSIGHTS.md",
-    "docs/PHASE4_UNIFIED_PHYSICS_FRAMEWORK.md",
-    "docs/PHASE_9_TESSARINES_RESEARCH.md",
-    "docs/ROADMAP.md",
-    "docs/claims/by_domain/holography.md",
-    "docs/claims/by_domain/meta.md",
-    "docs/convos/audit_1_read_nonuser_lines_cont.md",
-    "docs/external_sources/DE_MARRAIS_BOXKITES_III.md",
-    "docs/external_sources/DE_MARRAIS_FLYING_HIGHER.md",
-    "docs/external_sources/DE_MARRAIS_PLACEHOLDER_I.md",
-    "docs/external_sources/DE_MARRAIS_PRESTO_DIGITIZATION.md",
-    "docs/external_sources/DE_MARRAIS_WOLFRAM_SLIDES.md",
-    "reports/convos_claim_candidates.md",
-    "curated/README.md",
-    "curated/01_theory_frameworks/README_COQ.md",
-    "data/csv/README.md",
-    "data/artifacts/README.md",
-}
+# Strict TOML-only mode: no tracked markdown is implicitly allowlisted.
+TOML_PUBLISHED_ALLOWLIST: set[str] = set()
 
 DESTINATION_OVERRIDES = {
+    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md": "registry/legacy_markdown_interfaces.toml",
+    "PHASE10_11_ULTIMATE_ROADMAP.md": "registry/legacy_markdown_interfaces.toml",
+    "PYTHON_REFACTORING_ROADMAP.md": "registry/legacy_markdown_interfaces.toml",
+    "SYNTHESIS_PIPELINE_PROGRESS.md": "registry/legacy_markdown_interfaces.toml",
+    "crates/vacuum_frustration/IMPLEMENTATION_NOTES.md": "registry/legacy_markdown_interfaces.toml",
     "data/artifacts/ALGEBRAIC_FOUNDATIONS.md": "registry/artifact_scrolls.toml",
     "data/artifacts/BIBLIOGRAPHY.md": "registry/artifact_scrolls.toml",
     "data/artifacts/FINAL_REPORT.md": "registry/artifact_scrolls.toml",
@@ -127,9 +95,6 @@ DESTINATION_OVERRIDES = {
     "docs/generated/ROADMAP_REGISTRY_MIRROR.md": "registry/roadmap.toml",
     "docs/generated/TODO_REGISTRY_MIRROR.md": "registry/todo.toml",
     "docs/claims/INDEX.md": "registry/claims_domains.toml",
-    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md": "registry/docs_root_narratives.toml",
-    "PHASE10_11_ULTIMATE_ROADMAP.md": "registry/docs_root_narratives.toml",
-    "PYTHON_REFACTORING_ROADMAP.md": "registry/docs_root_narratives.toml",
 }
 
 
@@ -587,6 +552,10 @@ def main() -> int:
 
     docs: list[Doc] = []
     for path in all_paths:
+        full = root / path
+        if not full.exists():
+            # Permit staged markdown removals in strict TOML-only migration flow.
+            continue
         if path in tracked:
             git_status = "tracked"
         elif path in untracked:

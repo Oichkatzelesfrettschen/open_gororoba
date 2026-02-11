@@ -198,6 +198,10 @@ path = "src/bin/c590_attractor_sweep.rs"
 name = "snia-ddt"
 path = "src/bin/snia_ddt.rs"
 
+[[bin]]
+name = "percolation-experiment"
+path = "src/bin/percolation_experiment.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe" }
 algebra_core = { path = "../algebra_core" }
@@ -208,10 +212,12 @@ optics_core = { path = "../optics_core" }
 quantum_core = { path = "../quantum_core" }
 spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
+lbm_3d = { path = "../lbm_3d" }
 stats_core = { path = "../stats_core", features = ["gpu"] }
 data_core = { path = "../data_core" }
 scrolls_core = { path = "../scrolls_core" }
 snia_core = { path = "../snia_core" }
+vacuum_frustration = { path = "../vacuum_frustration" }
 ndarray = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }

@@ -3061,6 +3061,7 @@ dependencies = [
  "env_logger",
  "glob",
  "gr_core",
+ "lbm_3d",
  "lbm_core",
  "log",
  "materials_core",
@@ -3083,6 +3084,7 @@ dependencies = [
  "stats_core",
  "toml",
  "ureq 3.2.0",
+ "vacuum_frustration",
  "walkdir",
 ]
 

@@ -15,31 +15,91 @@ use cosmic_scheduler::{TwoPhaseSystem, ScheduleResult};
 /// BGK collision operator for 3D LBM.
 #[derive(Clone, Debug)]
 pub struct BgkCollision {
-    /// Relaxation time (tau >= 0.5 for stability)
-    pub tau: f64,
+    /// Relaxation time field (tau >= 0.5 for stability at each grid point).
+    /// Length must equal nx*ny*nz for spatial viscosity variation.
+    /// For uniform viscosity, all elements are identical.
+    pub tau_field: Vec<f64>,
     /// Lattice for equilibrium computation
     pub lattice: D3Q19Lattice,
 }
 
 impl BgkCollision {
-    /// Create a BGK collision operator with given relaxation time.
+    /// Create a BGK collision operator with uniform relaxation time.
+    ///
+    /// Initializes a uniform tau field (all cells have same relaxation time).
+    /// For spatial viscosity variation, use set_viscosity_field() after construction.
     ///
     /// # Arguments
     /// * `tau` - Relaxation time. For stability: tau >= 0.5
     ///   - tau = 0.5 => zero viscosity (inviscid limit)
     ///   - tau > 0.5 => finite viscosity nu = c_s^2 * (tau - 0.5)
+    ///
+    /// Note: Field length must be set via set_viscosity_field() before use with LbmSolver3D.
     pub fn new(tau: f64) -> Self {
         assert!(tau >= 0.5, "tau must be >= 0.5 for stability");
         Self {
-            tau,
+            tau_field: vec![tau],  // Placeholder; solver will set actual field
             lattice: D3Q19Lattice::new(),
         }
     }
 
-    /// Compute kinematic viscosity from relaxation time.
+    /// Set the spatially-varying viscosity field (relaxation time per grid point).
+    ///
+    /// # Arguments
+    /// * `tau_field` - Vector of relaxation times, one per grid point (length nx*ny*nz)
+    ///
+    /// # Errors
+    /// Returns Err if:
+    /// - Any tau < 0.5 (violates stability constraint)
+    /// - Field contains NaN or Inf
+    /// - Field is empty
+    pub fn set_viscosity_field(&mut self, tau_field: Vec<f64>) -> Result<(), String> {
+        if tau_field.is_empty() {
+            return Err("Viscosity field cannot be empty".to_string());
+        }
+
+        for (i, &tau) in tau_field.iter().enumerate() {
+            if !tau.is_finite() {
+                return Err(format!(
+                    "Non-finite tau at index {}: {}",
+                    i, tau
+                ));
+            }
+            if tau < 0.5 {
+                return Err(format!(
+                    "Stability violation at index {}: tau={} < 0.5",
+                    i, tau
+                ));
+            }
+        }
+
+        self.tau_field = tau_field;
+        Ok(())
+    }
+
+    /// Get the viscosity field (tau values) as-is.
+    pub fn get_tau_field(&self) -> &[f64] {
+        &self.tau_field
+    }
+
+    /// Get the kinematic viscosity field from relaxation time field.
+    /// nu(x) = c_s^2 * (tau(x) - 0.5) = (1/3) * (tau(x) - 0.5)
+    pub fn get_viscosity_field(&self) -> Vec<f64> {
+        self.tau_field.iter()
+            .map(|&tau| self.lattice.cs_sq * (tau - 0.5))
+            .collect()
+    }
+
+    /// Compute kinematic viscosity from first relaxation time (representative value).
+    /// For uniform fields, this is the viscosity everywhere.
+    /// For spatial fields, this is the viscosity at grid point 0.
     /// nu = c_s^2 * (tau - 0.5) = (1/3) * (tau - 0.5)
+    ///
+    /// # Panics
+    /// If tau_field is empty.
     pub fn viscosity(&self) -> f64 {
-        self.lattice.cs_sq * (self.tau - 0.5)
+        assert!(!self.tau_field.is_empty(), "tau_field must not be empty");
+        self.lattice.cs_sq * (self.tau_field[0] - 0.5)
     }
 
     /// Recover macroscopic density from distribution function.
@@ -95,26 +155,31 @@ impl BgkCollision {
         f
     }
 
-    /// Perform one BGK collision step.
+    /// Perform one BGK collision step with specified relaxation time.
     /// f_i^new = f_i - (f_i - f_i^eq) / tau
     ///
     /// # Arguments
     /// * `f` - Current distribution function (19 components)
     /// * `f_eq` - Equilibrium distribution (19 components)
-    pub fn collision_step(&self, f: &[f64; 19], f_eq: &[f64; 19]) -> [f64; 19] {
+    /// * `tau` - Relaxation time for this step
+    pub fn collision_step(&self, f: &[f64; 19], f_eq: &[f64; 19], tau: f64) -> [f64; 19] {
         let mut f_new = [0.0; 19];
         for i in 0..19 {
-            f_new[i] = f[i] - (f[i] - f_eq[i]) / self.tau;
+            f_new[i] = f[i] - (f[i] - f_eq[i]) / tau;
         }
         f_new
     }
 
     /// Perform collision step with automatic equilibrium computation.
+    /// Uses the first tau_field value (representative viscosity).
     ///
     /// # Arguments
     /// * `f` - Current distribution function
     /// * `rho` - Macroscopic density
     /// * `u` - Macroscopic velocity
+    ///
+    /// # Panics
+    /// If tau_field is empty
     pub fn collision_step_with_equilibrium(
         &self,
         f: &[f64; 19],
@@ -127,8 +192,11 @@ impl BgkCollision {
             *f_eq_i = self.lattice.equilibrium(rho, u, i);
         }
 
+        // Use first tau value (representative for uniform fields)
+        let tau = if !self.tau_field.is_empty() { self.tau_field[0] } else { 0.6 };
+
         // Perform collision
-        self.collision_step(f, &f_eq)
+        self.collision_step(f, &f_eq, tau)
     }
 
     /// Check non-negativity of distribution function (stability indicator).
@@ -184,6 +252,32 @@ impl LbmSolver3D {
         }
     }
 
+    /// Set the spatially-varying viscosity field (tau values per grid point).
+    ///
+    /// Must be called before evolving with spatial viscosity variation.
+    /// For uniform viscosity, pass a vector of identical values.
+    ///
+    /// # Arguments
+    /// * `tau_field` - Vector of tau values, one per grid point (must have length nx*ny*nz)
+    ///
+    /// # Errors
+    /// Propagates errors from BgkCollision::set_viscosity_field()
+    pub fn set_viscosity_field(&mut self, tau_field: Vec<f64>) -> Result<(), String> {
+        let expected_len = self.nx * self.ny * self.nz;
+        if tau_field.len() != expected_len {
+            return Err(format!(
+                "Viscosity field length mismatch: got {}, expected {} ({}x{}x{})",
+                tau_field.len(), expected_len, self.nx, self.ny, self.nz
+            ));
+        }
+        self.collider.set_viscosity_field(tau_field)
+    }
+
+    /// Get the current viscosity field.
+    pub fn get_viscosity_field(&self) -> Vec<f64> {
+        self.collider.get_viscosity_field()
+    }
+
     /// Initialize entire domain with uniform density and velocity.
     pub fn initialize_uniform(&mut self, rho_init: f64, u_init: [f64; 3]) {
         let lattice = &self.collider.lattice;
@@ -235,23 +329,34 @@ impl LbmSolver3D {
 
     /// Phase 1 (collision preparation): Compute macroscopic quantities and apply BGK collision operator.
     ///
-    /// Implements the Chapman-Enskog collision operator:
-    /// f_i^new ← f_i - (f_i - f_i^eq) / τ
+    /// Implements the Chapman-Enskog collision operator with spatially-varying relaxation time:
+    /// f_i^new <- f_i - (f_i - f_i^eq) / tau(x,y,z)
     ///
     /// This phase prepares the distribution function for the subsequent streaming step.
+    /// Relaxation time varies per grid point to enable viscosity-driven simulation.
     pub fn phase1_collision(&mut self) -> ScheduleResult<()> {
         let lattice = self.collider.lattice.clone();
-        let tau = self.collider.tau;
+        let tau_field = self.collider.tau_field.clone();
+        let nx = self.nx;
+        let ny = self.ny;
 
-        // Recover macroscopic quantities (density ρ, velocity u_k)
+        // Recover macroscopic quantities (density rho, velocity u_k)
         self.compute_macroscopic();
 
         // Apply BGK collision at each grid point
         for z in 0..self.nz {
-            for y in 0..self.ny {
-                for x in 0..self.nx {
+            for y in 0..ny {
+                for x in 0..nx {
                     let idx = self.linearize(x, y, z);
                     let f_start = idx * 19;
+
+                    // Get per-cell relaxation time
+                    let tau = if idx < tau_field.len() {
+                        tau_field[idx]
+                    } else {
+                        // Fallback: if field not set, use first element
+                        if !tau_field.is_empty() { tau_field[0] } else { 0.6 }
+                    };
 
                     // Extract population distribution function f_i at this lattice site
                     let mut f = [0.0; 19];
@@ -263,7 +368,7 @@ impl LbmSolver3D {
                         *f_eq_i = lattice.equilibrium(self.rho[idx], self.u[idx], i);
                     }
 
-                    // BGK collision step: relax toward equilibrium
+                    // BGK collision step: relax toward equilibrium with per-cell tau
                     let mut f_new = [0.0; 19];
                     for i in 0..19 {
                         f_new[i] = f[i] - (f[i] - f_eq[i]) / tau;
@@ -281,7 +386,7 @@ impl LbmSolver3D {
     /// Phase 2 (streaming): In the D3Q19 lattice, streaming is implicit via lattice velocity mapping.
     ///
     /// In standard LBM, the streaming step redistributes populations to neighboring sites:
-    /// f_i(x + c_i*dt, t + dt) ← f_i(x, t)
+    /// f_i(x + c_i*dt, t + dt) <- f_i(x, t)
     ///
     /// For the collision-streaming operator, we recover macroscopic quantities post-collision.
     /// The lattice structure (D3Q19 discrete velocities) encodes the streaming geometry.
@@ -334,7 +439,7 @@ impl LbmSolver3D {
 /// Implement two-phase system trait for deterministic phase coordination.
 ///
 /// Maps the D3Q19 lattice Boltzmann method to the PhaseScheduler abstraction:
-/// - Phase 1 (collision): BGK collision operator Ω applies Chapman-Enskog relaxation
+/// - Phase 1 (collision): BGK collision operator Omega applies Chapman-Enskog relaxation
 /// - Phase 2 (streaming): Macroscopic recovery; streaming implicit in lattice geometry
 ///
 /// This enables cosmic_scheduler to coordinate LBM evolution with deterministic timing
@@ -355,7 +460,7 @@ impl TwoPhaseSystem for LbmSolver3D {
     /// Validate system state: Check stability.
     ///
     /// Ensures stability of the Navier-Stokes simulator by verifying:
-    /// - Total mass ρ >= 0 (non-negative density everywhere)
+    /// - Total mass rho >= 0 (non-negative density everywhere)
     /// - Population distribution f_i >= 0 (stability in BGK collision)
     ///
     /// Note: Mass conservation is maintained by the BGK collision operator by construction
@@ -394,7 +499,8 @@ mod tests {
     #[test]
     fn test_collision_operator_creation() {
         let bgk = BgkCollision::new(1.0);
-        assert!(bgk.tau >= 0.5);
+        assert!(!bgk.tau_field.is_empty());
+        assert!(bgk.tau_field[0] >= 0.5);
     }
 
     #[test]
@@ -509,7 +615,8 @@ mod tests {
 
         // At equilibrium and rest, collision should not change f
         let f_eq = BgkCollision::initialize_with_velocity(rho, u, &lattice);
-        let f_new = bgk.collision_step(&f, &f_eq);
+        let tau = 1.0;  // Use same tau as bgk
+        let f_new = bgk.collision_step(&f, &f_eq, tau);
 
         for i in 0..19 {
             assert!((f_new[i] - f[i]).abs() < 1e-14);
@@ -532,7 +639,8 @@ mod tests {
         let f_eq = BgkCollision::initialize_with_velocity(rho, u, &lattice);
 
         // Collision should move f toward f_eq
-        let f_new = bgk.collision_step(&f, &f_eq);
+        let tau = 1.5;  // Use same tau as bgk
+        let f_new = bgk.collision_step(&f, &f_eq, tau);
 
         // Check that perturbation decreased
         let pert_old = ((f[1] - f_eq[1]).powi(2) + (f[2] - f_eq[2]).powi(2)).sqrt();

@@ -2,7 +2,7 @@
 .PHONY: help install install-analysis install-astro install-particle install-quantum
 .PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify wave6-gate
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
-.PHONY: rust-test rust-clippy rust-smoke
+.PHONY: rust-test rust-clippy rust-smoke e027-validate
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
 .PHONY: verify-pantheon-physicsforge-license verify-pantheon-physicsforge-provenance
 .PHONY: verify-pantheon-physicsforge-mapping verify-pantheon-physicsforge-license-headers
@@ -143,6 +143,25 @@ rust-clippy:
 
 rust-smoke: rust-clippy rust-test
 	@echo "OK: Rust quality gate passed (clippy + tests)."
+
+e027-validate:
+	@echo "Validating E-027 Percolation Experiment (Thesis 1 binary)..."
+	cargo build --release --bin percolation-experiment -j$$(nproc)
+	@mkdir -p data/e027
+	@rm -f data/e027/e027_results.toml
+	@echo "Running E-027 with small grid (8^3, 100 steps)..."
+	@cargo run --release --bin percolation-experiment -- \
+	  --grid-size 8 \
+	  --lbm-steps 100 \
+	  --seed 42 \
+	  --n-permutations 50 \
+	  --output-dir data/e027 \
+	  2>&1 | grep -E "\[|Found|OK|FAIL" || true
+	@echo "Verifying TOML artifact generation..."
+	@test -f data/e027/e027_results.toml || (echo "ERROR: results TOML not generated"; exit 1)
+	@python3 -c "import tomli; tomli.loads(open('data/e027/e027_results.toml').read()); print('TOML structure valid')" || (echo "ERROR: results TOML is malformed"; exit 1)
+	@echo "OK: E-027 validation passed (binary operational, TOML pipeline functional)."
+	@echo "NOTE: Small grid validation may refute Thesis 1 (expected with mock data). Full validation requires 32x32x32 grid."
 
 rust-parity:
 	CARGO_TARGET_DIR=/tmp/open_gororoba_parity_target cargo test --workspace -j$$(nproc)

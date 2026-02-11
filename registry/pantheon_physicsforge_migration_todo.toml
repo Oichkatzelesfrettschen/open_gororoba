@@ -6,7 +6,8 @@ done_count = 90
 in_progress_count = 0
 blocked_count = 0
 todo_count = 0
-canonical_plan = "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md"
+canonical_plan = "registry/legacy_markdown_interfaces.toml"
+canonical_plan_document_id = "LMD-0001"
 
 [[task]]
 id = "PPF-001"

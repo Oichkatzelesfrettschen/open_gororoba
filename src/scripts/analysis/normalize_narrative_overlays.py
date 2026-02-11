@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 """
-Normalize narrative markdown overlays into TOML registries.
+Normalize narrative overlays into TOML registries.
 
 Inputs:
-- docs/INSIGHTS.md
-- docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md
+- default mode: existing TOML overlays (strict TOML-first)
+- bootstrap mode (`--bootstrap-from-markdown`):
+  - docs/INSIGHTS.md
+  - docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md
 
 Outputs:
 - registry/insights_narrative.toml
 - registry/experiments_narrative.toml
 
-These TOML files capture long-form narrative sections so markdown overlays can be
-regenerated from TOML without losing detail.
+These TOML files capture long-form narrative sections so markdown overlays can
+be regenerated from TOML without losing detail.
 """
 
 from __future__ import annotations
@@ -199,6 +201,11 @@ def main() -> int:
         default=str(Path(__file__).resolve().parents[3]),
         help="Repository root.",
     )
+    parser.add_argument(
+        "--bootstrap-from-markdown",
+        action="store_true",
+        help="Ingest markdown overlays into TOML. Default mode is TOML-first and markdown-free.",
+    )
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
@@ -207,6 +214,27 @@ def main() -> int:
     experiments_src = repo_root / "docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md"
     insights_out = repo_root / "registry/insights_narrative.toml"
     experiments_out = repo_root / "registry/experiments_narrative.toml"
+
+    if not args.bootstrap_from_markdown:
+        for out_path in (insights_out, experiments_out):
+            if not out_path.exists():
+                raise SystemExit(
+                    f"ERROR: missing {out_path}. "
+                    "Run with --bootstrap-from-markdown once to seed TOML overlays."
+                )
+            _assert_ascii(out_path.read_text(encoding="utf-8"), str(out_path))
+        print(
+            "TOML-first mode: narrative overlay bootstrap skipped. "
+            "Use --bootstrap-from-markdown to ingest markdown sources."
+        )
+        return 0
+
+    if not insights_src.exists():
+        raise SystemExit("ERROR: missing docs/INSIGHTS.md for bootstrap mode")
+    if not experiments_src.exists():
+        raise SystemExit(
+            "ERROR: missing docs/EXPERIMENTS_PORTFOLIO_SHORTLIST.md for bootstrap mode"
+        )
 
     insights_preamble, insight_entries = _parse_sections(insights_src, INSIGHT_HEADING_RE)
     experiments_preamble, experiment_entries = _parse_sections(

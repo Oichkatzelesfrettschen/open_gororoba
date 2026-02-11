@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 """
-Normalize operational tracker and requirements narrative markdown into TOML overlays.
+Normalize operational tracker and requirements overlays into TOML.
 
 Inputs:
-- docs/ROADMAP.md
-- docs/TODO.md
-- docs/NEXT_ACTIONS.md
-- REQUIREMENTS.md
-- docs/REQUIREMENTS.md
-- docs/requirements/*.md
+- default mode: existing TOML overlays (strict TOML-first)
+- bootstrap mode (`--bootstrap-from-markdown`):
+  - docs/ROADMAP.md
+  - docs/TODO.md
+  - docs/NEXT_ACTIONS.md
+  - REQUIREMENTS.md
+  - docs/REQUIREMENTS.md
+  - docs/requirements/*.md
 
 Outputs:
 - registry/roadmap_narrative.toml
@@ -139,6 +141,11 @@ def main() -> int:
         default=str(Path(__file__).resolve().parents[3]),
         help="Repository root.",
     )
+    parser.add_argument(
+        "--bootstrap-from-markdown",
+        action="store_true",
+        help="Ingest markdown overlays into TOML. Default mode is TOML-first and markdown-free.",
+    )
     args = parser.parse_args()
 
     repo_root = Path(args.repo_root).resolve()
@@ -151,6 +158,24 @@ def main() -> int:
     todo_out = repo_root / "registry/todo_narrative.toml"
     next_actions_out = repo_root / "registry/next_actions_narrative.toml"
     requirements_out = repo_root / "registry/requirements_narrative.toml"
+
+    if not args.bootstrap_from_markdown:
+        for out_path in (roadmap_out, todo_out, next_actions_out, requirements_out):
+            if not out_path.exists():
+                raise SystemExit(
+                    f"ERROR: missing {out_path}. "
+                    "Run with --bootstrap-from-markdown once to seed TOML overlays."
+                )
+            _assert_ascii(out_path.read_text(encoding="utf-8"), str(out_path))
+        print(
+            "TOML-first mode: operational overlay bootstrap skipped. "
+            "Use --bootstrap-from-markdown to ingest markdown sources."
+        )
+        return 0
+
+    for required in (roadmap_src, todo_src, next_actions_src):
+        if not required.exists():
+            raise SystemExit(f"ERROR: missing {required.relative_to(repo_root)} for bootstrap mode")
 
     roadmap_toml = _render_single_overlay(
         "roadmap_narrative", "docs/ROADMAP.md", _read_file(roadmap_src)
@@ -167,6 +192,8 @@ def main() -> int:
     ]
     requirement_docs: list[tuple[str, str, str]] = []
     for file_path in requirement_files:
+        if not file_path.exists():
+            raise SystemExit(f"ERROR: missing {file_path.relative_to(repo_root)} for bootstrap mode")
         body = _read_file(file_path)
         rel = file_path.relative_to(repo_root).as_posix()
         requirement_docs.append((rel, _title_from_markdown(file_path, body), body))

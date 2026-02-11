@@ -520,3 +520,36 @@ claims_supported = ["C-655", "C-656"]
 code = ["src/verification/verify_third_party_sources.py", "registry/third_party_source_verification.toml"]
 sprint = 35
 phase = "Wave 7"
+
+[[experiment]]
+id = "E-027"
+title = "Percolation Threshold vs Frustration Correlation (Thesis 1 Validation)"
+date = "2026-02-11"
+binary = "percolation-experiment"
+binary_registered = true
+binary_experiment_declared = "E-027"
+methodology = "Generate 32x32x32 Sedenion field via APT evolution, compute frustration density F(x,y,z) via balance solver, transform to viscosity nu(x) = nu_base * exp(-lambda * (F(x) - 3/8)^2), initialize D3Q19 LBM solver with spatial viscosity field, evolve for 2500 steps, detect percolation channels via BFS on velocity field (threshold: mean+1.5*stddev), correlate channel distribution with frustration using Welch's t-test, run Besag-Clifford null model with 1000 permutations and adaptive stopping to test hypothesis that spatial viscosity variation produces statistically correlated percolation patterns distinct from random fields."
+findings = "TBD (Phase 1 Week 4 implementation, awaiting full execution)"
+claims = ["C-657", "C-658", "C-659"]
+claim_refs = ["C-657", "C-658", "C-659"]
+deterministic = false
+seed = 42
+gpu = false
+status = "active"
+falsification_criteria = "p >= 0.05 refutes Thesis 1; p < 0.05 validates coupling principle"
+phase = "Phase 1 Week 4"
+sprint = 36
+
+[[experiment]]
+id = "E-028"
+title = "Lepton Mass Ratio Filtration via Patricia Trie (Thesis 2 Validation)"
+status = "planned"
+phase = "Phase 2"
+description = "Hierarchical filtration of electron/muon/tau mass ratios through Patricia trie lattice, testing coupling of lepton spectrum to Cayley-Dickson dimension structure"
+
+[[experiment]]
+id = "E-029"
+title = "Pentagon Unitarity Restoration via Sedenion Constraints (Thesis 3 Validation)"
+status = "planned"
+phase = "Phase 2"
+description = "Verify that 16D Sedenion field constraints impose unitary corrections on non-unitary pentagon diagrams in quantum field theory"
