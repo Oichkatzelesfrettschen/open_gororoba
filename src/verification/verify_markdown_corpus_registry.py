@@ -8,33 +8,19 @@ from __future__ import annotations
 from pathlib import Path
 import tomllib
 
-SAFE_CLASSIFICATIONS = {"toml_published_markdown", "third_party_markdown"}
-
-ALLOWED_TRACKED_MARKDOWN = {
-    "AGENTS.md",
-    "CLAUDE.md",
-    "GEMINI.md",
-    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md",
-    "PHASE10_11_ULTIMATE_ROADMAP.md",
-    "PYTHON_REFACTORING_ROADMAP.md",
-    "README.md",
-    "curated/README.md",
-    "curated/01_theory_frameworks/README_COQ.md",
-    "data/artifacts/README.md",
-    "data/csv/README.md",
+SAFE_CLASSIFICATIONS = {
+    "toml_published_markdown",
+    "toml_destination_exists_manual_markdown",
+    "generated_artifact",
+    "third_party_markdown",
 }
 
-POLICY_PREFIXES = (
-    "docs/",
-    "reports/",
-    "data/artifacts/",
-)
+ALLOWED_TRACKED_MARKDOWN: set[str] = set()
 
 
 def _in_policy_scope(path: str) -> bool:
-    if any(path.startswith(prefix) for prefix in POLICY_PREFIXES):
-        return True
-    return path in ALLOWED_TRACKED_MARKDOWN
+    # Strict mode applies to every markdown row discovered in inventory.
+    return bool(path)
 
 
 def main() -> int:
@@ -106,12 +92,12 @@ def main() -> int:
         failures.append(f"policy_violation present: {kind} -> {path}")
 
     if failures:
-        print("ERROR: Wave 4 markdown corpus registry verification failed.")
+        print("ERROR: Wave 4 markdown corpus registry verification failed (strict TOML-only mode).")
         for failure in failures:
             print(f"- {failure}")
         return 1
 
-    print("OK: Wave 4 markdown corpus registry invariants satisfied.")
+    print("OK: Wave 4 markdown corpus registry invariants satisfied (no tracked markdown).")
     return 0
 
 

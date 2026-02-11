@@ -4,9 +4,9 @@
 [csv_inventory]
 updated = "2026-02-09"
 authoritative = true
-document_count = 949
+document_count = 951
 tracked_count = 648
-untracked_count = 0
+untracked_count = 2
 ignored_count = 301
 archived_count = 5
 legacy_count = 200
@@ -8439,6 +8439,32 @@ sha256 = "a0dba8b3274848599bc79137b6e3af8d00833790e36ba18b293632807a9d6ff3"
 migration_action = "canonicalized_to_toml_generated_artifact"
 migration_priority = "complete"
 rationale = "Project generated artifact is represented in registry/data/project_csv/generated."
+
+[[document]]
+path = "data/csv/e027_channels.csv"
+git_status = "untracked"
+zone = "project_csv"
+archived = false
+generated = false
+size_bytes = 71
+line_count = 2
+sha256 = "0ed0343ad68e8de2b09c09c0f3a6e5196a82bf13cb3b890b301f335ce13f568e"
+migration_action = "evaluate_for_toml_canonical"
+migration_priority = "high"
+rationale = "Project CSV may be generated artifacts or transition candidates."
+
+[[document]]
+path = "data/csv/e027_correlation.csv"
+git_status = "untracked"
+zone = "project_csv"
+archived = false
+generated = false
+size_bytes = 267
+line_count = 15
+sha256 = "7ded9e956e0eaccd9857febfa13cd96fbe0d3bdd0b9cb17a32e34193383c5695"
+migration_action = "evaluate_for_toml_canonical"
+migration_priority = "high"
+rationale = "Project CSV may be generated artifacts or transition candidates."
 
 [[document]]
 path = "data/csv/et_billiard_phase_structure.csv"

@@ -13,8 +13,10 @@ pub mod signed_graph;
 pub mod balance;
 pub mod frustration;
 pub mod bridge;
+pub mod percolation;
 
 // Re-export key types for ergonomics
 pub use bridge::{SedenionField, FrustrationViscosityBridge};
 pub use signed_graph::SignedGraph;
 pub use balance::{FrustrationResult, SolverMethod, compute_frustration_index};
+pub use percolation::{PercolationChannel, PercolationDetector, CorrelationResult, auto_velocity_threshold, correlate_with_frustration};

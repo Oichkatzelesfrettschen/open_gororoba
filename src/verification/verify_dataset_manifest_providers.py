@@ -1,21 +1,23 @@
 #!/usr/bin/env python3
 """
-Verify dataset providers listed in DATASET_MANIFEST.md exist in fetch_datasets.rs.
+Verify dataset providers listed in registry/external_sources.toml exist in
+fetch_datasets.rs.
 
 Policy:
-- Every provider token in the manifest Provider column (FooProvider) must exist
-  in the Rust fetch registry (Box::new(...FooProvider)).
+- Every provider token in provider-manifest narrative rows (FooProvider) must
+  exist in the Rust fetch registry (Box::new(...FooProvider)).
 - One-way subset check is intentional: Rust may include extra providers that are
-  not yet documented in the manifest.
+  not yet documented in the TOML manifest narrative.
 """
 
 from __future__ import annotations
 
 import re
+import tomllib
 from pathlib import Path
 
 
-MANIFEST_PATH = Path("docs/external_sources/DATASET_MANIFEST.md")
+MANIFEST_REGISTRY_PATH = Path("registry/external_sources.toml")
 FETCH_RS_PATH = Path("crates/gororoba_cli/src/bin/fetch_datasets.rs")
 PROVIDER_TOKEN_RE = re.compile(r"([A-Za-z0-9_]+Provider)")
 RUST_PROVIDER_RE = re.compile(
@@ -23,55 +25,47 @@ RUST_PROVIDER_RE = re.compile(
 )
 
 
-def _parse_manifest_providers(manifest_text: str) -> set[str]:
+def _parse_manifest_providers(external_sources_toml: dict) -> set[str]:
     providers: set[str] = set()
-    for line in manifest_text.splitlines():
-        if not line.startswith("|"):
+    for row in external_sources_toml.get("document", []):
+        if str(row.get("authority_level", "")).strip() != "provider_manifest":
             continue
-        cells = [cell.strip() for cell in line.strip("|").split("|")]
-        if len(cells) < 2:
-            continue
-        if cells[0] == "Dataset":
-            continue
-        if cells[0].startswith("-") and set(cells[0]) <= {"-"}:
-            continue
-        match = PROVIDER_TOKEN_RE.search(cells[1])
-        if match:
-            providers.add(match.group(1))
+        body = str(row.get("body_markdown", ""))
+        providers.update(PROVIDER_TOKEN_RE.findall(body))
     return providers
 
 
 def main() -> int:
     repo_root = Path(__file__).resolve().parents[2]
-    manifest_file = repo_root / MANIFEST_PATH
+    manifest_file = repo_root / MANIFEST_REGISTRY_PATH
     fetch_rs_file = repo_root / FETCH_RS_PATH
 
     if not manifest_file.exists():
-        print(f"ERROR: missing {MANIFEST_PATH}")
+        print(f"ERROR: missing {MANIFEST_REGISTRY_PATH}")
         return 1
     if not fetch_rs_file.exists():
         print(f"ERROR: missing {FETCH_RS_PATH}")
         return 1
 
-    manifest_text = manifest_file.read_text(encoding="utf-8")
+    manifest_data = tomllib.loads(manifest_file.read_text(encoding="utf-8"))
     fetch_rs_text = fetch_rs_file.read_text(encoding="utf-8")
 
-    manifest_providers = _parse_manifest_providers(manifest_text)
+    manifest_providers = _parse_manifest_providers(manifest_data)
     rust_providers = set(RUST_PROVIDER_RE.findall(fetch_rs_text))
 
     if not manifest_providers:
-        print("ERROR: no Provider tokens parsed from dataset manifest")
+        print("ERROR: no Provider tokens parsed from registry/external_sources.toml")
         return 1
 
     missing = sorted(manifest_providers - rust_providers)
     if missing:
-        print("ERROR: dataset manifest providers missing from Rust fetch registry:")
+        print("ERROR: registry external-source providers missing from Rust fetch registry:")
         for provider in missing:
             print(f"- {provider}")
         return 1
 
     print(
-        "OK: dataset manifest providers verified. "
+        "OK: dataset providers verified from TOML registry. "
         f"manifest={len(manifest_providers)} rust={len(rust_providers)}"
     )
     return 0

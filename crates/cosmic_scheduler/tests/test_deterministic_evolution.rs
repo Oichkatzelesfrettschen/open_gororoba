@@ -66,7 +66,7 @@ fn test_reproducible_state() {
     sched2.execute_cycles(&mut sys2, 100).unwrap();
     let final_counter2 = sys2.counter;
 
-    // Same initial conditions → same final state
+    // Same initial conditions -> same final state
     assert_eq!(final_counter1, final_counter2);
     assert_eq!(sys1.phase1_count, sys2.phase1_count);
     assert_eq!(sys1.phase2_count, sys2.phase2_count);
@@ -200,7 +200,7 @@ fn test_custom_period_reproducibility() {
     sched2.execute_cycles(&mut sys2, 10).unwrap();
     let time2 = sched2.total_time();
 
-    // Same cycle period → same time advancement
+    // Same cycle period -> same time advancement
     assert_eq!(time1, time2);
     assert_eq!(time1, custom_period * 10);
 }

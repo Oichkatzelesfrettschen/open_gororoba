@@ -142,7 +142,7 @@ impl FrustrationViscosityBridge {
             .collect()
     }
 
-    /// Full pipeline: Sedenion field → Frustration → Viscosity.
+    /// Full pipeline: Sedenion field -> Frustration -> Viscosity.
     ///
     /// Computes spatially-varying viscosity field from Sedenion field evolution.
     pub fn compute_viscosity_field(

@@ -27,9 +27,9 @@ from typing import Any
 
 MANIFEST_PATH = Path("data/artifacts/ARTIFACTS_MANIFEST.csv")
 SCAN_FILES = [
-    Path("README.md"),
-    Path("docs/CLAIMS_EVIDENCE_MATRIX.md"),
-    Path("docs/CLAIMS_TASKS.md"),
+    Path("registry/entrypoint_docs.toml"),
+    Path("registry/claims.toml"),
+    Path("registry/claims_tasks.toml"),
     Path("src/verification/verify_generated_artifacts.py"),
 ]
 

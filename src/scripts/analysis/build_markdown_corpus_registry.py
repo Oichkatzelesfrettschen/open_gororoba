@@ -10,7 +10,7 @@ Output:
 
 Goal:
 - Enforce one-source-of-truth TOML governance for project markdown.
-- Keep only explicitly allowed tracked markdown entrypoints.
+- Enforce strict TOML-only interfaces (no tracked markdown).
 - Surface any lifecycle/policy drift as machine-readable violations.
 """
 
@@ -22,33 +22,19 @@ import tomllib
 from collections import Counter
 from pathlib import Path
 
-SAFE_CLASSIFICATIONS = {"toml_published_markdown", "third_party_markdown"}
-
-ALLOWED_TRACKED_MARKDOWN = {
-    "AGENTS.md",
-    "CLAUDE.md",
-    "GEMINI.md",
-    "PANTHEON_PHYSICSFORGE_90_POINT_MIGRATION_PLAN.md",
-    "PHASE10_11_ULTIMATE_ROADMAP.md",
-    "PYTHON_REFACTORING_ROADMAP.md",
-    "README.md",
-    "curated/README.md",
-    "curated/01_theory_frameworks/README_COQ.md",
-    "data/artifacts/README.md",
-    "data/csv/README.md",
+SAFE_CLASSIFICATIONS = {
+    "toml_published_markdown",
+    "toml_destination_exists_manual_markdown",
+    "generated_artifact",
+    "third_party_markdown",
 }
 
-POLICY_PREFIXES = (
-    "docs/",
-    "reports/",
-    "data/artifacts/",
-)
+ALLOWED_TRACKED_MARKDOWN: set[str] = set()
 
 
 def _in_policy_scope(path: str) -> bool:
-    if any(path.startswith(prefix) for prefix in POLICY_PREFIXES):
-        return True
-    return path in ALLOWED_TRACKED_MARKDOWN
+    # Strict mode applies to all markdown rows discovered in inventory.
+    return bool(path)
 
 
 def _assert_ascii(text: str, context: str) -> None:
@@ -68,8 +54,6 @@ def _bool(value: object) -> bool:
 def _lifecycle(path: str, row: dict[str, object]) -> str:
     if _bool(row.get("third_party")):
         return "third_party_cache"
-    if path in ALLOWED_TRACKED_MARKDOWN and str(row.get("git_status", "")) == "tracked":
-        return "tracked_entrypoint"
     if path.startswith("docs/generated/"):
         return "generated_publish_mirror"
     if path.startswith("docs/book/src/"):
@@ -189,8 +173,10 @@ def main() -> int:
 
     lines.append("[policy]")
     lines.append("toml_first_required = true")
-    lines.append("allow_tracked_markdown_entrypoints_only = true")
-    lines.append('safe_classifications = ["toml_published_markdown", "third_party_markdown"]')
+    lines.append("allow_tracked_markdown_entrypoints_only = false")
+    lines.append(
+        'safe_classifications = ["toml_published_markdown", "toml_destination_exists_manual_markdown", "generated_artifact", "third_party_markdown"]'
+    )
     lines.append("")
 
     lines.append("allowed_tracked_markdown = [")

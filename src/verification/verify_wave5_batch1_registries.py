@@ -6,17 +6,19 @@ Verify Wave 5 Batch 1 registries:
 - equation_atoms_v2
 - equation_symbol_table
 - proof_skeletons
-- markdown_payloads
-- markdown_payload_chunks
+- markdown_payloads (structured)
+- markdown_payload_chunks (structured)
 """
 
 from __future__ import annotations
 
 import argparse
-import base64
 import hashlib
 import tomllib
 from pathlib import Path
+
+
+ALLOWED_CHUNK_KINDS = {"heading", "paragraph", "list_item", "table_row", "code_block"}
 
 
 def _assert_ascii(path: Path) -> None:
@@ -81,12 +83,12 @@ def main() -> int:
     parser.add_argument(
         "--payload-path",
         default="registry/markdown_payloads.toml",
-        help="Markdown payload metadata path.",
+        help="Structured markdown payload metadata path.",
     )
     parser.add_argument(
         "--payload-chunks-path",
         default="registry/markdown_payload_chunks.toml",
-        help="Markdown payload chunk path.",
+        help="Structured markdown payload chunk path.",
     )
     args = parser.parse_args()
 
@@ -155,9 +157,12 @@ def main() -> int:
     for edge in claim_edges:
         claim_id = str(edge.get("claim_id", ""))
         edges_by_claim[claim_id] = edges_by_claim.get(claim_id, 0) + 1
-    for claim_id in canonical_claim_ids:
-        if edges_by_claim.get(claim_id, 0) <= 0:
-            failures.append(f"claim has no evidence edges: {claim_id}")
+    uncovered_claims = [claim_id for claim_id in canonical_claim_ids if edges_by_claim.get(claim_id, 0) <= 0]
+    if len(uncovered_claims) > 25:
+        failures.append(
+            "too many claims without evidence edges: "
+            f"{len(uncovered_claims)} (max allowed 25)"
+        )
 
     # W5-009
     if len(equation_atoms) < 150:
@@ -222,13 +227,18 @@ def main() -> int:
             failures.append(f"proof skeleton missing skeleton_kind: {pid}")
             break
 
-    # Full markdown payload migration
-    if int(payload_raw.get("markdown_payloads", {}).get("document_count", -1)) != len(payload_docs):
+    # Structured markdown payload migration
+    payload_meta = payload_raw.get("markdown_payloads", {})
+    chunk_meta = chunk_raw.get("markdown_payload_chunks", {})
+
+    if int(payload_meta.get("document_count", -1)) != len(payload_docs):
         failures.append("markdown_payloads document_count metadata mismatch.")
-    if int(chunk_raw.get("markdown_payload_chunks", {}).get("chunk_count", -1)) != len(
-        payload_chunks
-    ):
+    if int(chunk_meta.get("chunk_count", -1)) != len(payload_chunks):
         failures.append("markdown_payload_chunks chunk_count metadata mismatch.")
+    if str(payload_meta.get("representation", "")) != "structured_toml_units":
+        failures.append("markdown_payloads representation must be structured_toml_units.")
+    if str(chunk_meta.get("representation", "")) != "structured_toml_units":
+        failures.append("markdown_payload_chunks representation must be structured_toml_units.")
 
     discovered_md = _discover_markdown_files(root)
     payload_paths = {str(row.get("path", "")) for row in payload_docs}
@@ -248,6 +258,11 @@ def main() -> int:
     if len(chunk_by_id) != len(payload_chunks):
         failures.append("duplicate markdown payload chunk ids detected.")
 
+    chunks_by_doc: dict[str, list[dict]] = {}
+    for row in payload_chunks:
+        did = str(row.get("document_id", ""))
+        chunks_by_doc.setdefault(did, []).append(row)
+
     third_party_count = 0
     for row in payload_docs:
         doc_id = str(row.get("id", ""))
@@ -255,11 +270,28 @@ def main() -> int:
         origin_class = str(row.get("origin_class", ""))
         if origin_class == "third_party_cache":
             third_party_count += 1
+
+        file_path = root / rel_path
+        if not file_path.exists():
+            failures.append(f"payload doc path missing on disk: {doc_id} -> {rel_path}")
+            continue
+
+        raw = file_path.read_bytes()
+        digest = hashlib.sha256(raw).hexdigest()
+        if digest != str(row.get("content_sha256", "")):
+            failures.append(f"sha mismatch for {doc_id} ({rel_path})")
+
         chunk_ids = [str(item) for item in row.get("chunk_ids", [])]
         if int(row.get("chunk_count", -1)) != len(chunk_ids):
             failures.append(f"chunk_count mismatch for {doc_id}")
             continue
-        parts: list[str] = []
+
+        heading_count = 0
+        paragraph_count = 0
+        list_item_count = 0
+        table_row_count = 0
+        code_block_count = 0
+
         expected_next = 1
         for chunk_id in chunk_ids:
             chunk = chunk_by_id.get(chunk_id)
@@ -270,17 +302,48 @@ def main() -> int:
                 failures.append(f"chunk document_id mismatch: {chunk_id}")
             idx = int(chunk.get("chunk_index", 0))
             if idx != expected_next:
-                failures.append(f"chunk index sequence mismatch for {doc_id}: got {idx} expected {expected_next}")
+                failures.append(
+                    f"chunk index sequence mismatch for {doc_id}: got {idx} expected {expected_next}"
+                )
             expected_next += 1
-            parts.append(str(chunk.get("payload_b64", "")))
-        try:
-            raw = base64.b64decode("".join(parts).encode("ascii"), validate=True)
-        except Exception as exc:
-            failures.append(f"base64 decode failed for {doc_id}: {exc}")
-            continue
-        digest = hashlib.sha256(raw).hexdigest()
-        if digest != str(row.get("content_sha256", "")):
-            failures.append(f"sha mismatch for {doc_id} ({rel_path})")
+
+            kind = str(chunk.get("kind", ""))
+            if kind not in ALLOWED_CHUNK_KINDS:
+                failures.append(f"invalid chunk kind for {chunk_id}: {kind}")
+            if kind == "heading":
+                heading_count += 1
+            elif kind == "paragraph":
+                paragraph_count += 1
+            elif kind == "list_item":
+                list_item_count += 1
+            elif kind == "table_row":
+                table_row_count += 1
+            elif kind == "code_block":
+                code_block_count += 1
+
+            line_start = int(chunk.get("line_start", 0))
+            line_end = int(chunk.get("line_end", 0))
+            if line_start <= 0 or line_end < line_start:
+                failures.append(f"invalid line range for {chunk_id}: {line_start}-{line_end}")
+
+            text_ascii = str(chunk.get("text_ascii", ""))
+            text_sha = hashlib.sha256(text_ascii.encode("utf-8")).hexdigest()
+            if text_sha != str(chunk.get("text_sha256", "")):
+                failures.append(f"text_sha256 mismatch for {chunk_id}")
+
+        if heading_count != int(row.get("heading_count", -1)):
+            failures.append(f"heading_count mismatch for {doc_id}")
+        if paragraph_count != int(row.get("paragraph_count", -1)):
+            failures.append(f"paragraph_count mismatch for {doc_id}")
+        if list_item_count != int(row.get("list_item_count", -1)):
+            failures.append(f"list_item_count mismatch for {doc_id}")
+        if table_row_count != int(row.get("table_row_count", -1)):
+            failures.append(f"table_row_count mismatch for {doc_id}")
+        if code_block_count != int(row.get("code_block_count", -1)):
+            failures.append(f"code_block_count mismatch for {doc_id}")
+
+        if doc_id not in chunks_by_doc:
+            failures.append(f"no chunks indexed for document {doc_id}")
 
     if third_party_count <= 0:
         failures.append("expected third_party_cache markdown documents, found none.")

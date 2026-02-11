@@ -1,0 +1,21 @@
+channels = []
+
+[metadata]
+grid_size = 8
+lbm_steps = 100
+nu_base = 0.333
+lambda = 1.0
+
+[correlation]
+t_statistic = nan
+p_value = 1.0
+effect_size = 0.0
+mean_frustration_channels = nan
+mean_frustration_background = nan
+n_channel = 0
+n_background = 512
+n_channels_detected = 0
+
+[null_model]
+p_value = 0.5
+n_permutations = 50
