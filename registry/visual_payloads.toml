@@ -1,0 +1,149 @@
+# Visual Payloads Registry (Wave 6, W6-014)
+# Canonical Mermaid/SVG diagrams with deterministic regeneration contracts
+# Date: 2026-02-10
+
+[metadata]
+authoritative = true
+updated = "2026-02-10"
+purpose = "Store visual diagram definitions (Mermaid/SVG) as TOML payloads with deterministic regeneration"
+schema_version = "visual_payloads_v1"
+governance = "TOML-first: diagrams stored in TOML, SVG/PNG rendered via CI pipeline"
+regeneration_contract = "Identical TOML input produces identical SVG output (deterministic hashing)"
+
+# ---- Composition Algebra Taxonomy Visualization ----
+
+[[visual]]
+id = "VIS-0001"
+title = "Composition Algebra Two-Axis Taxonomy"
+diagram_type = "mermaid_classpath"
+phase = "Phase 10.3"
+related_claims = ["C-646", "C-647", "C-648", "C-649", "C-650"]
+related_experiments = ["E-023"]
+
+[visual.mermaid_payload]
+syntax_version = "10.x"
+diagram_type = "graph_TD"
+definition = """
+graph TD
+    CA["Composition Algebras<br/>(All families)"]
+
+    CA --> TP["Tensor Product<br/>Axis 1: Construction"]
+    CA --> CD["Cayley-Dickson<br/>Axis 1: Construction"]
+    CA --> EX["Exceptional<br/>Axis 1: Construction"]
+
+    TP --> TP_COMM["100% Commutative<br/>(universal law)"]
+    CD --> CD_NONCOMM["0% Commutative<br/>(dim >= 4)"]
+    EX --> EX_MIXED["Variable Commutativity<br/>(algebra-dependent)"]
+
+    CD --> CD_HURWITZ["Axis 2: gamma = -1<br/>(Hurwitz)"]
+    CD --> CD_SPLIT["Axis 2: gamma = +1<br/>(Split/ZD)"]
+
+    CD_HURWITZ --> CD_DIV["Division Algebra<br/>(R, C, H, O only)"]
+    CD_SPLIT --> CD_ZD["Has Zero-Divisors<br/>(all higher dims)"]
+
+    EX --> ALBERT["Albert Algebra<br/>(27D, 100% commutative)"]
+    ALBERT --> ALBERT_NONMULT["Non-Division<br/>(norm not multiplicative)"]
+"""
+
+[visual.svg_metadata]
+description = "Two-axis taxonomy classpath for composition algebras with universal laws"
+dimensions = "1200x800"
+background = "white"
+font_family = "Monaco, monospace"
+content_hash_commitment = "Regenerated SVG must match SHA256 baseline (see ci_gates)"
+
+# ---- Quantum Hamiltonian Evolution Architecture ----
+
+[[visual]]
+id = "VIS-0002"
+title = "Quantum Hamiltonian Solver Architecture"
+diagram_type = "mermaid_flowchart"
+phase = "Phase 10.3 TRACK 1"
+related_modules = ["hamiltonian_evolution.rs"]
+related_tests = ["test_hamiltonian_*"]
+
+[visual.mermaid_payload]
+syntax_version = "10.x"
+diagram_type = "graph_LR"
+definition = """
+graph LR
+    INPUT["Input:<br/>n,dim,alpha,g,j"]
+
+    INPUT --> BUILD["HamiltonianND::build()"]
+    BUILD --> KRON["Kronecker<br/>Tensor Assembly"]
+    KRON --> MATRIX["Matrix Construction<br/>H = ZZ_coupling + transverse"]
+
+    MATRIX --> EIGEN["Eigendecomposition<br/>(nalgebra SVD)"]
+    EIGEN --> ENTROPY["entanglement_entropy()<br/>SVD-based"]
+    ENTROPY --> EVOLVE["evolve_time()<br/>Eigenbasis evolution"]
+
+    EVOLVE --> OUTPUT["Output:<br/>psi(t)"]
+
+    EIGEN -.->|eigenvectors| EVOLVE
+    EIGEN -.->|eigenvalues| EVOLVE
+"""
+
+[visual.svg_metadata]
+description = "Data flow for n-dimensional quantum Hamiltonian solver with SVD entanglement analysis"
+dimensions = "1000x600"
+background = "white"
+content_hash_commitment = "SVG regeneration deterministic per Rust implementation"
+
+# ---- Wave 6 Registry Architecture ----
+
+[[visual]]
+id = "VIS-0003"
+title = "Wave 6 TOML-First Registry Architecture"
+diagram_type = "mermaid_architecture"
+phase = "Wave 6"
+related_registries = ["project_csv_canonical.toml", "third_party_markdown_cache.toml", "schema_signatures.toml"]
+
+[visual.mermaid_payload]
+syntax_version = "10.x"
+diagram_type = "graph_TD"
+definition = """
+graph TD
+    SOURCE["Canonical Sources<br/>(Human-Edited)"]
+
+    SOURCE -->|CSV| CSV["experiments.csv<br/>claims.csv<br/>insights.csv"]
+    SOURCE -->|TOML| DIRECT["third_party_markdown_cache.toml<br/>project_csv_canonical.toml<br/>schema_signatures.toml"]
+
+    CSV -->|registry-data| TOML["Generated TOML<br/>(Derived)"]
+    TOML -->|Registry objects| REGISTRY["Master Registries<br/>(experiments.toml, claims.toml, insights.toml)"]
+
+    DIRECT --> REGISTRY
+
+    REGISTRY -->|docs-publish| MARKDOWN["Markdown Mirrors<br/>(Generated Display)"]
+
+    REGISTRY -->|wave6-gate| VALIDATE["Validation Pipeline"]
+    VALIDATE -->|✓ Pass| CI["CI/CD Success"]
+    VALIDATE -->|✗ Fail| BLOCK["Block Merge"]
+"""
+
+[visual.svg_metadata]
+description = "Three-layer architecture: CSV/TOML sources → Registry objects → Markdown exports with validation gates"
+dimensions = "1200x900"
+background = "lightblue"
+content_hash_commitment = "Architecture deterministic; validation gates binary (pass/fail)"
+
+# ---- CI/CD Visual Contracts ----
+
+[ci_gates]
+gate_1 = "SVG regeneration must be deterministic (bitwise identical with same TOML input)"
+gate_2 = "Mermaid diagram syntax validates against Mermaid 10.x specification"
+gate_3 = "All visual IDs (VIS-XXXX) are unique and immutable across versions"
+gate_4 = "Content hash of mermaid_payload field determines SVG output hash"
+gate_5 = "Visual metadata (dimensions, fonts, colors) preserved in regeneration"
+
+[regeneration_process]
+step_1 = "Extract mermaid_payload.definition from TOML"
+step_2 = "Pass to Mermaid CLI: mermaid-cli render -i payload.mmd -o diagram.svg"
+step_3 = "Hash SVG output with SHA256"
+step_4 = "Compare against baseline (ci_gates enforce idempotency)"
+step_5 = "On mismatch: reject regeneration or update baseline if intentional"
+
+[emit_profiles]
+emit_type_1 = "SVG: Scalable vector graphics (web display)"
+emit_type_2 = "PNG: Raster export at 2x resolution (documentation)"
+emit_type_3 = "PDF: Print-ready vector format (long-form reports)"
+format_determinism = "All formats regenerated from identical TOML input produce identical byte content"
