@@ -1,0 +1,87 @@
+lane = "runtime_type_inference_hott"
+bundle_id = "e027_proxy_curve_bundle"
+[metadata]
+vacuum_attractor = 0.375
+point_count = 8
+loss_csv = "data/equivalence/e027/loss_curve.csv"
+viscosity_csv = "data/equivalence/e027/viscosity_curve.csv"
+
+[[point]]
+index = 0
+source = "data/e027_forced/e027_results.toml"
+label = "e027_forced"
+lambda = 1.0
+nu_base = 0.333
+frustration_mean = 0.37013011155564446
+loss_proxy = 0.004869888444355541
+viscosity_proxy = 0.3329921027277632
+
+[[point]]
+index = 1
+source = "data/e027_forcing_results.toml"
+label = "forcing:uniform_lambda1_large"
+lambda = 1.0
+nu_base = 0.333
+frustration_mean = 0.345
+loss_proxy = 0.030000000000000027
+viscosity_proxy = 0.3292
+
+[[point]]
+index = 2
+source = "data/e027_forcing_results.toml"
+label = "forcing:uniform_lambda1_small"
+lambda = 1.0
+nu_base = 0.333
+frustration_mean = 0.3371
+loss_proxy = 0.03789999999999999
+viscosity_proxy = 0.329
+
+[[point]]
+index = 3
+source = "data/e027/e027_results.toml"
+label = "e027"
+lambda = 50.0
+nu_base = 0.333
+frustration_mean = 0.375
+loss_proxy = 0.0
+viscosity_proxy = 0.333
+
+[[point]]
+index = 4
+source = "data/e027_final/e027_results.toml"
+label = "e027_final"
+lambda = 200.0
+nu_base = 0.333
+frustration_mean = 0.375
+loss_proxy = 0.0
+viscosity_proxy = 0.333
+
+[[point]]
+index = 5
+source = "data/e027_lambda200/e027_results.toml"
+label = "e027_lambda200"
+lambda = 200.0
+nu_base = 0.333
+frustration_mean = 0.375
+loss_proxy = 0.0
+viscosity_proxy = 0.333
+
+[[point]]
+index = 6
+source = "data/e027_no_forcing/e027_results.toml"
+label = "e027_no_forcing"
+lambda = 200.0
+nu_base = 0.333
+frustration_mean = 0.3455415366815863
+loss_proxy = 0.029458463318413675
+viscosity_proxy = 0.2799419549038437
+
+[[point]]
+index = 7
+source = "data/e027_forcing_results.toml"
+label = "forcing:uniform_lambda200_large"
+lambda = 200.0
+nu_base = 0.333
+frustration_mean = 0.345
+loss_proxy = 0.030000000000000027
+viscosity_proxy = 0.092

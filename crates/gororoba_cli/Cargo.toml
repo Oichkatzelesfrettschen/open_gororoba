@@ -202,6 +202,14 @@ path = "src/bin/snia_ddt.rs"
 name = "percolation-experiment"
 path = "src/bin/percolation_experiment.rs"
 
+[[bin]]
+name = "e027-equivalence-adapter"
+path = "src/bin/e027_equivalence_adapter.rs"
+
+[[bin]]
+name = "homotopy-viscosity-equivalence"
+path = "src/bin/homotopy_viscosity_equivalence.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe" }
 algebra_core = { path = "../algebra_core" }

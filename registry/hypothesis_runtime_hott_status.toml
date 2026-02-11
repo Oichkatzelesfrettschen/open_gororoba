@@ -1,0 +1,161 @@
+version = "1"
+lane = "runtime_type_inference_hott"
+updated_at_utc = "2026-02-11T12:10:00Z"
+
+[scope]
+goal = "Evaluate falsifiable homotopy-viscosity equivalence for hypothesis-driven research lane."
+constraints = [
+  "TOML-first outputs",
+  "ASCII-only authored files",
+  "No edits to concurrent in-flight files from other running instance",
+]
+
+[[complete]]
+id = "HVE-COMP-001"
+summary = "Crash-recovery baseline and repo status captured."
+evidence = [
+  "branch=main",
+  "commit=7ca1dada",
+  "concurrent edits detected and isolated",
+]
+
+[[complete]]
+id = "HVE-COMP-002"
+summary = "Hypergranular plan and external-source provenance registries created."
+artifacts = [
+  "registry/hypothesis_runtime_hott_plan.toml",
+  "registry/hypothesis_runtime_hott_sources.toml",
+  "data/external/traces/hypothesis_runtime_hott_downloads.json",
+]
+
+[[complete]]
+id = "HVE-COMP-003"
+summary = "New equivalence experiment binary implemented and wired."
+artifacts = [
+  "crates/gororoba_cli/src/bin/homotopy_viscosity_equivalence.rs",
+  "crates/gororoba_cli/Cargo.toml",
+]
+validation = [
+  "cargo build --bin homotopy-viscosity-equivalence",
+  "cargo test --bin homotopy-viscosity-equivalence",
+  "cargo clippy --bin homotopy-viscosity-equivalence -- -D warnings",
+]
+
+[[complete]]
+id = "HVE-COMP-004"
+summary = "Deterministic positive-control and null-control TOML outputs generated."
+artifacts = [
+  "data/equivalence/synthetic/loss_curve.csv",
+  "data/equivalence/synthetic/viscosity_curve.csv",
+  "data/equivalence/synthetic/viscosity_curve_null.csv",
+  "data/equivalence/homotopy_viscosity_equivalence.toml",
+  "data/equivalence/homotopy_viscosity_equivalence_null.toml",
+]
+
+[[complete]]
+id = "HVE-COMP-005"
+summary = "Real E-027 proxy curve bundle generated and evaluated with equivalence binary."
+artifacts = [
+  "data/equivalence/e027/loss_curve.csv",
+  "data/equivalence/e027/viscosity_curve.csv",
+  "data/equivalence/e027/curve_bundle.toml",
+  "data/equivalence/e027/homotopy_viscosity_equivalence_e027.toml",
+]
+
+[[metric_snapshot]]
+id = "HVE-METRIC-001"
+label = "positive_control"
+best_lag = 7
+best_lagged_correlation = 0.999369942671576
+normalized_dtw_distance = 0.01918211123959098
+permutation_pvalue = 0.0033222591362126247
+accepted_as_isomorphic = true
+
+[[metric_snapshot]]
+id = "HVE-METRIC-002"
+label = "null_control"
+best_lag = 6
+best_lagged_correlation = 0.19937210620984872
+normalized_dtw_distance = 0.9350409993774751
+permutation_pvalue = 0.009966777408637873
+accepted_as_isomorphic = false
+
+[[metric_snapshot]]
+id = "HVE-METRIC-003"
+label = "e027_proxy_real_data"
+best_lag = -5
+best_lagged_correlation = 0.8762506362482658
+normalized_dtw_distance = 1.1188174457242384
+permutation_pvalue = 0.001996007984031936
+accepted_as_isomorphic = false
+
+[[open]]
+id = "HVE-OPEN-001"
+summary = "Real data adapters are not yet wired from neural training outputs into canonical TOML curves."
+owner = "gororoba_cli + registry lane"
+
+[[open]]
+id = "HVE-OPEN-002"
+summary = "Homotopy metrics from neural_homotopy crate are not yet implemented as non-stub exports."
+owner = "neural_homotopy lane"
+
+[[open]]
+id = "HVE-OPEN-003"
+summary = "Cross-registry claim-to-evidence links for EXP-HVE-001 are not yet merged into core claims/experiments registries."
+owner = "registry claims-evidence lane"
+
+[[open]]
+id = "HVE-OPEN-004"
+summary = "Repository-wide ASCII gate is red due to pre-existing non-ASCII in other files."
+evidence = [
+  "crates/vacuum_frustration/src/apt_sedenion.rs",
+  "crates/lbm_3d/src/solver.rs",
+  "docs/REAL_MATERIALS_INTEGRATION.md",
+]
+
+[[open]]
+id = "HVE-OPEN-005"
+summary = "Cargo validation lane is currently blocked by unrelated concurrent compile errors in vacuum_frustration."
+evidence = [
+  "unresolved import associator_norm in crates/vacuum_frustration/src/frustration_energy.rs",
+  "unused import cd_basis_mul_sign in crates/vacuum_frustration/src/frustration_energy.rs",
+]
+
+[[next_batch]]
+id = "HVE-BATCH-001"
+title = "Real-Curve Integration"
+tasks = [
+  "Add converter to map training logs into canonical TOML + CSV curve pairs.",
+  "Feed real viscosity-relaxation runs from existing e027 data into equivalence binary.",
+  "Emit per-run TOML outputs under data/equivalence/runs/ with stable naming.",
+]
+acceptance = [
+  "At least 3 real run reports exist",
+  "Each report has deterministic metadata and thresholds",
+]
+
+[[next_batch]]
+id = "HVE-BATCH-002"
+title = "Statistical Hardening"
+tasks = [
+  "Add block bootstrap and phase-randomized surrogate null tests.",
+  "Add lag-window sensitivity sweep and report confidence intervals.",
+  "Add explicit rejection conditions for p-hacking guardrails.",
+]
+acceptance = [
+  "Null families produce calibrated rejection rates",
+  "Report format includes uncertainty fields",
+]
+
+[[next_batch]]
+id = "HVE-BATCH-003"
+title = "Claim Registry Closure"
+tasks = [
+  "Add EXP-HVE-001 references to canonical experiment and claim registries.",
+  "Link provenance source IDs and artifact hashes to claim rows.",
+  "Run registry verification and mirror freshness checks.",
+]
+acceptance = [
+  "Cross-reference verifier passes",
+  "Registry freshness verifier passes",
+]

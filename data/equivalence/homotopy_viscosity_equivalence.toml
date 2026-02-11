@@ -1,0 +1,42 @@
+hypothesis_lane = "runtime_type_inference_hott"
+experiment_id = "EXP-HVE-001"
+
+[metadata]
+loss_csv = "data/equivalence/synthetic/loss_curve.csv"
+viscosity_csv = "data/equivalence/synthetic/viscosity_curve.csv"
+loss_column = "loss"
+viscosity_column = "value"
+max_lag = 20
+permutations = 300
+seed = 123
+
+[loss_curve]
+raw_length = 240
+aligned_length = 240
+mean = 0.2590176774824996
+std_dev = 0.4345289817212367
+min = -0.0911349841
+max = 1.815
+
+[viscosity_curve]
+raw_length = 240
+aligned_length = 240
+mean = 0.2826891896737498
+std_dev = 0.4567271188738282
+min = -0.0940944563
+max = 1.6463843537
+
+[metrics]
+best_lag = 7
+best_lagged_correlation = 0.999369942671576
+dtw_distance = 4.603706697501836
+normalized_dtw_distance = 0.01918211123959098
+permutation_pvalue = 0.0033222591362126247
+null_mean_abs_correlation = 0.054647016037676806
+
+[decision]
+accepted_as_isomorphic = true
+correlation_threshold = 0.7
+pvalue_threshold = 0.05
+dtw_threshold = 0.8
+reason = "Accepted: strong lagged correlation with significant permutation p-value and low normalized DTW."

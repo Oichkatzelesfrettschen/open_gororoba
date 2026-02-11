@@ -1,0 +1,77 @@
+{
+  "generated_at": "2026-02-11T19:51:52Z",
+  "records": [
+    {
+      "id": "2505.11747v3",
+      "url": "https://arxiv.org/pdf/2505.11747v3.pdf",
+      "path": "data/external/papers/hypothesis_runtime_hott/2505.11747v3.pdf",
+      "downloaded": true,
+      "size_bytes": 376660,
+      "sha256": "b26567a0c598e6ba2ffa7757509c2b0fb627b8264eba3c1470d8e044b932fb47",
+      "error": ""
+    },
+    {
+      "id": "1707.07318v4",
+      "url": "https://arxiv.org/pdf/1707.07318v4.pdf",
+      "path": "data/external/papers/hypothesis_runtime_hott/1707.07318v4.pdf",
+      "downloaded": true,
+      "size_bytes": 358610,
+      "sha256": "c6d8b6d37f474aa0dcef33397ecb12068302b6101566dd0b6c4ffa800a094fd0",
+      "error": ""
+    },
+    {
+      "id": "2411.18881",
+      "url": "https://arxiv.org/pdf/2411.18881.pdf",
+      "path": "data/external/papers/hypothesis_runtime_hott/2411.18881.pdf",
+      "downloaded": true,
+      "size_bytes": 226232,
+      "sha256": "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18",
+      "error": ""
+    },
+    {
+      "id": "2601.18944v2",
+      "url": "https://arxiv.org/pdf/2601.18944v2.pdf",
+      "path": "data/external/papers/hypothesis_runtime_hott/2601.18944v2.pdf",
+      "downloaded": true,
+      "size_bytes": 1460883,
+      "sha256": "11c3fee4e22d6149ba8b6e9a410bcbac19c9a0e03f94f2ea5ff6f428e228c620",
+      "error": ""
+    },
+    {
+      "id": "2404.12534v3",
+      "url": "https://arxiv.org/pdf/2404.12534v3.pdf",
+      "path": "data/external/papers/hypothesis_runtime_hott/2404.12534v3.pdf",
+      "downloaded": true,
+      "size_bytes": 997718,
+      "sha256": "5ac8ca11a79cbc8a8fe5c3ab795d5e7c01fdb15516b2bec0eac5881528e03eae",
+      "error": ""
+    },
+    {
+      "id": "2008.00120v1",
+      "url": "https://arxiv.org/pdf/2008.00120v1.pdf",
+      "path": "data/external/papers/hypothesis_runtime_hott/2008.00120v1.pdf",
+      "downloaded": true,
+      "size_bytes": 379249,
+      "sha256": "6beaa3191f45249f1d8a22295dc2852963c65c4f9d54d10abc693c3330cedbf1",
+      "error": ""
+    },
+    {
+      "id": "2510.25427v1",
+      "url": "https://arxiv.org/pdf/2510.25427v1.pdf",
+      "path": "data/external/papers/hypothesis_runtime_hott/2510.25427v1.pdf",
+      "downloaded": true,
+      "size_bytes": 335671,
+      "sha256": "2be22052738711bfb22aed6fb347c338a2926c782a983295b034c962dc0034c4",
+      "error": ""
+    },
+    {
+      "id": "math-0511691v1",
+      "url": "https://arxiv.org/pdf/math/0511691v1.pdf",
+      "path": "data/external/papers/hypothesis_runtime_hott/math-0511691v1.pdf",
+      "downloaded": true,
+      "size_bytes": 374167,
+      "sha256": "3caddaf6d09b32b76ac4e4081ca0ebd0115d41aff0e94a77581fca85fab9c9a5",
+      "error": ""
+    }
+  ]
+}
