@@ -1,0 +1,219 @@
+# AGENTS overflow extension.
+# Purpose: extended matrices, role contracts, and optimization profile tables.
+# Edit compactly. Use imperative phrasing. Keep machine-readable.
+
+[meta]
+contract_name = "open_gororoba_agents_overflow"
+version = "2.0"
+authority_file = "AGENTS.md"
+repo_kind = "pure_rust_plus_toml"
+
+[roles]
+human = [
+  "Define intent, scope, constraints, acceptance.",
+  "Approve non-obvious tradeoffs.",
+]
+agent = [
+  "Read AGENTS.md first; load overflow as needed.",
+  "Plan hypergranular steps before substantial edits.",
+  "Prefer deterministic local tools.",
+  "Close with validation evidence and open risks.",
+]
+delegate = [
+  "Own bounded subsystem work.",
+  "Return files_touched, commands_run, checks_run, unresolved_risks.",
+]
+
+[startup]
+required = [
+  "Capture branch, commit, scoped status.",
+  "Load task-relevant registry TOML files.",
+  "Choose required and recommended gates before implementation.",
+]
+
+[tooling]
+preferred_sequence = ["filesystem", "ripgrep", "git", "bash_or_containers", "verifiers"]
+parallelize_independent_tasks = true
+prefer_existing_targets = true
+
+[paths]
+workspace_manifest = "Cargo.toml"
+task_runner = "Makefile"
+registry_root = "registry/"
+verification_root = "src/verification/"
+analysis_root = "src/scripts/analysis/"
+docs_generated_root = "build/docs/generated/"
+artifact_roots = ["data/", "reports/"]
+hooks_root = ".githooks/"
+
+[rust_modularization]
+principles = [
+  "Design one crate per stable domain boundary; avoid god crates.",
+  "Keep *_core crates pure: deterministic compute, no CLI, no network, minimal side effects.",
+  "Put orchestration and workflow glue in engine/scheduler/cli crates, not in core kernels.",
+  "Use feature flags for optional heavy backends; keep defaults lean.",
+  "Prefer composition through traits/interfaces over cross-crate leakage.",
+]
+roles = [
+  "core_kernel = math/physics/stat kernels and reusable algorithms",
+  "integration = cross-domain composition and pipelines",
+  "entrypoint = CLI, Python bindings, docs/export",
+]
+module_layout = [
+  "lib.rs exports stable API surface only",
+  "internal modules stay private unless reuse pressure is proven",
+  "tests: unit in crate, integration in tests/ or crate tests/",
+]
+
+[crate_discovery]
+goal = "choose crates deliberately, then align dependency placement workspace-wide"
+search_commands = [
+  "cargo search <keyword>",
+  "cargo info <crate>",
+  "cargo tree -d",
+  "cargo metadata --no-deps",
+]
+selection_criteria = [
+  "API fit to exact use case",
+  "maintenance activity and release cadence",
+  "license compatibility with workspace policy",
+  "pure Rust preference; justify native/system dependencies",
+  "performance characteristics on release-parity profiles",
+]
+disqualifiers = [
+  "unmaintained or low-signal crate history",
+  "license mismatch risk",
+  "duplicate capability already present in workspace",
+  "forces broad transitive bloat without clear gain",
+]
+
+[dependency_alignment]
+rules = [
+  "Declare shared versions only in Cargo.toml [workspace.dependencies].",
+  "In member crates, reference shared deps with workspace = true.",
+  "Avoid per-crate version pins unless isolation is intentional and documented.",
+  "Group related dependency additions and remove dead deps in same change when safe.",
+]
+audit_commands = [
+  "cargo tree -d",
+  "cargo clippy --workspace -j$(nproc) -- -D warnings",
+  "cargo test --workspace -j$(nproc)",
+]
+
+[iteration_loop]
+steps = [
+  "1_scope: define boundary and API in smallest target crate first",
+  "2_search: shortlist crates via cargo search/info and existing workspace scan",
+  "3_spike: integrate minimally behind feature or narrow module",
+  "4_align: move accepted deps to [workspace.dependencies] and workspace=true references",
+  "5_validate_local: run crate-focused tests/checks",
+  "6_validate_workspace: run rust-smoke and required gates",
+  "7_pre_push: run make pre-push-gate before sync/push",
+  "8_prune: remove dead/duplicate deps and rerun checks",
+]
+artifacts_to_update = [
+  "Cargo.toml workspace deps/profile notes",
+  "affected crates/*/Cargo.toml dependency refs",
+  "AGENTS policy only when process rules change",
+]
+
+[command_matrix]
+required = [
+  "cargo clippy --workspace -j$(nproc) -- -D warnings",
+  "cargo test --workspace -j$(nproc)",
+  "make ascii-check",
+]
+recommended = ["make rust-smoke", "make registry", "make check"]
+pre_push = ["make pre-push-gate"]
+core = ["check", "smoke", "ascii-check", "registry", "docs-publish", "governance-gate"]
+rust = ["rust-test", "rust-clippy", "rust-smoke", "rust-parity", "rust-release-fat-lto"]
+registry = [
+  "registry-verify-markdown-inventory",
+  "registry-verify-markdown-owner",
+  "registry-verify-markdown-governance",
+  "registry-verify-schema-signatures",
+  "registry-verify-crossrefs",
+  "registry-verify-mirrors",
+]
+aliases = ["wave6-gate -> governance-gate"]
+artifacts = [
+  "artifacts",
+  "artifacts-motifs",
+  "artifacts-boxkites",
+  "artifacts-reggiani",
+  "artifacts-m3",
+  "artifacts-dimensional",
+]
+
+[hooks]
+install = "make hooks-install"
+status = "make hooks-status"
+pre_push = ".githooks/pre-push -> make pre-push-gate"
+
+[claims_and_provenance]
+rules = [
+  "Treat narrative as hypothesis until verified.",
+  "Map claims to first-party evidence + reproducible checks.",
+  "Keep claim/experiment/source crossrefs consistent.",
+  "Record external provenance and mark synthetic substitutions.",
+  "Append citations; do not remove citations.",
+]
+
+[rust_optimization]
+source = "Cargo.toml [profile.dev|test|release|bench]"
+policy = [
+  "Maintain release-parity optimization across dev/test/release lanes.",
+  "Use fat LTO + codegen-units=1 for runtime parity.",
+  "Keep overflow-checks=true across lanes for safety parity.",
+  "Keep panic='unwind' while catch_unwind call-sites remain.",
+]
+
+[[rust_profile]]
+name = "dev"
+opt_level = 3
+debug = "full"
+strip = "none"
+lto = "fat"
+codegen_units = 1
+incremental = true
+overflow_checks = true
+debug_assertions = true
+panic = "unwind"
+intent = "high-observability local iteration with production-class optimization semantics"
+
+[[rust_profile]]
+name = "test"
+opt_level = 3
+intent = "test-lane compute parity with optimized code paths"
+
+[[rust_profile]]
+name = "release"
+opt_level = 3
+debug = false
+strip = "symbols"
+lto = "fat"
+codegen_units = 1
+overflow_checks = true
+panic = "unwind"
+intent = "maximized runtime optimization for shipped artifacts"
+
+[[rust_profile]]
+name = "bench"
+opt_level = 3
+debug = "line-tables-only"
+lto = "fat"
+codegen_units = 1
+intent = "benchmark parity against production-optimized code"
+
+[handoff]
+required_sections = ["what_changed", "why_changed", "validation_run", "open_risks"]
+require_file_references = true
+require_failed_check_disclosure = true
+
+[forbidden]
+items = [
+  "manual_edits_to_generated_markdown_mirrors",
+  "new_manual_markdown_outside_allowlist",
+  "warnings_in_final_state",
+  "unverifiable_claim_promotion",
+]

@@ -1,6 +1,6 @@
 # ---- Phony targets ----
 .PHONY: help install install-analysis install-astro install-particle install-quantum
-.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify wave6-gate
+.PHONY: test lint lint-all lint-all-stats lint-all-fix-safe check smoke math-verify governance-gate wave6-gate pre-push-gate hooks-install hooks-status
 .PHONY: verify verify-grand verify-c010-c011-theses ascii-check doctor provenance patch-pyfilesystem2
 .PHONY: rust-test rust-clippy rust-smoke e027-validate
 .PHONY: rust-parity rust-release-fat-lto rust-pgo-instrument rust-pgo-merge rust-pgo-build
@@ -50,6 +50,7 @@
 VENV ?= venv
 PYTHON := $(VENV)/bin/python3
 PIP := $(VENV)/bin/pip
+HOOKS_DIR ?= .githooks
 MARKDOWN_EXPORT ?= 0
 MARKDOWN_EXPORT_OUT_DIR ?= build/docs/generated
 MARKDOWN_EXPORT_EMIT_LEGACY ?= 0
@@ -101,11 +102,11 @@ check: registry-verify-markdown-owner test lint smoke
 registry-verify-markdown-governance:
 	PYTHONWARNINGS=error $(PYTHON) src/verification/verify_markdown_governance_removal_policy.py
 
-# Wave 6: TOML-first governance acceptance gate (W6-023)
-wave6-gate: registry-verify-markdown-inventory registry-verify-markdown-owner registry-verify-schema-signatures registry-verify-crossrefs registry-verify-markdown-governance
+# Governance acceptance gate (standardized; replaces wave6-gate naming)
+governance-gate: registry-verify-markdown-inventory registry-verify-markdown-owner registry-verify-schema-signatures registry-verify-crossrefs registry-verify-markdown-governance
 	@echo ""
 	@echo "=========================================="
-	@echo "WAVE 6 ACCEPTANCE GATE: PASSED"
+	@echo "GOVERNANCE ACCEPTANCE GATE: PASSED"
 	@echo "=========================================="
 	@echo "[done] Markdown inventory validated (TOML-first)"
 	@echo "[done] Markdown owner map verified"
@@ -113,11 +114,30 @@ wave6-gate: registry-verify-markdown-inventory registry-verify-markdown-owner re
 	@echo "[done] Cross-reference integrity verified"
 	@echo "[done] Markdown governance removal policy checked"
 	@echo ""
-	@echo "Wave 6 TOML-first governance is operational."
+	@echo "TOML-first governance checks are operational."
 	@echo "=========================================="
 	@echo ""
 	@echo "To run full validation pipeline including ASCII check:"
 	@echo "  make check && make ascii-check"
+
+# Backward-compatibility alias (deprecated naming)
+wave6-gate: governance-gate
+	@echo "NOTE: 'wave6-gate' is deprecated; use 'governance-gate'."
+
+# Pre-push review lane (recommended before push/sync to origin)
+pre-push-gate: rust-smoke governance-gate ascii-check
+	@echo "OK: pre-push gate passed (rust-smoke + governance + ASCII)."
+
+hooks-install:
+	@mkdir -p "$(HOOKS_DIR)"
+	@chmod +x "$(HOOKS_DIR)/pre-push"
+	@git config core.hooksPath "$(HOOKS_DIR)"
+	@echo "OK: git hooks installed. core.hooksPath=$$(git config --get core.hooksPath)"
+	@echo "Pre-push will run: make pre-push-gate"
+
+hooks-status:
+	@echo "core.hooksPath=$$(git config --get core.hooksPath || echo .git/hooks)"
+	@echo "pre-push hook exists? $$(test -f "$(HOOKS_DIR)/pre-push" && echo yes || echo no)"
 
 smoke: install
 	PYTHONWARNINGS=error $(PYTHON) -m compileall -q src
