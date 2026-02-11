@@ -13,6 +13,7 @@ serde = { workspace = true, features = ["derive"] }
 toml = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
+statrs = { workspace = true }
 cudarc = { version = "0.19", optional = true, default-features = false, features = ["std", "driver", "nvrtc", "dynamic-loading"] }
 
 [dev-dependencies]
