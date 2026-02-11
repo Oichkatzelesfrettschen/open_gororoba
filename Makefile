@@ -25,6 +25,7 @@
 .PHONY: registry-artifact-scrolls registry-verify-artifact-scrolls
 .PHONY: registry-verify-markdown-inventory registry-verify-markdown-origin registry-verify-markdown-owner registry-verify-wave4 registry-wave4
 .PHONY: registry-verify-markdown-toml-first
+.PHONY: registry-embedded-markdown registry-verify-embedded-markdown
 .PHONY: registry-wave5-batch1-build registry-verify-wave5-batch1 registry-wave5-batch1
 .PHONY: registry-wave5-batch2-build registry-verify-wave5-batch2 registry-wave5-batch2 registry-wave5
 .PHONY: registry-wave5-batch3-build registry-verify-wave5-batch3 registry-wave5-batch3
@@ -131,6 +132,7 @@ smoke: install
 	$(MAKE) verify-pantheon-physicsforge-mapping
 	$(MAKE) verify-pantheon-physicsforge-license-headers
 	$(MAKE) verify-pantheon-physicsforge-overflow
+	$(MAKE) registry-verify-embedded-markdown
 
 math-verify: test lint
 	@echo "OK: math validation suite complete. See docs/MATH_VALIDATION_REPORT.md"
@@ -310,6 +312,12 @@ registry-toml-inventory: registry-markdown-corpus
 
 registry-markdown-origin-audit: registry-markdown-inventory
 	PYTHONWARNINGS=error python3 src/scripts/analysis/build_markdown_origin_audit.py
+
+registry-embedded-markdown:
+	PYTHONWARNINGS=error python3 src/scripts/analysis/build_embedded_markdown_structured_registry.py
+
+registry-verify-embedded-markdown: registry-embedded-markdown
+	PYTHONWARNINGS=error python3 src/verification/verify_embedded_markdown_structured_registry.py
 
 registry-verify-markdown-inventory: registry-markdown-inventory
 	PYTHONWARNINGS=error python3 src/verification/verify_markdown_inventory_toml_first.py

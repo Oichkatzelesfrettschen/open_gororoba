@@ -7295,6 +7295,8 @@ dependencies = [
  "criterion",
  "cudarc 0.19.1",
  "petgraph",
+ "rand 0.8.5",
+ "rand_chacha 0.3.1",
  "rayon",
  "serde",
  "stats_core",

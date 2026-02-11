@@ -72,13 +72,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if args.verbose {
         eprintln!("\n[1/10] Generating Sedenion field...");
     }
-    let _sedenion_field = generate_sedenion_field(args.grid_size, args.seed)?;
 
-    // Step 2: Compute frustration density (mock for now - would use actual frustration solver)
+    // Step 2: Compute frustration density via APT-evolved Sedenion field
     if args.verbose {
-        eprintln!("[2/10] Computing frustration density...");
+        eprintln!("[2/10] Computing frustration density via APT evolution...");
     }
-    let frustration_field = generate_mock_frustration(args.grid_size, args.seed);
+    let frustration_field = generate_apt_frustration_field(args.grid_size, args.seed)?;
 
     // Step 3: Transform frustration to viscosity
     if args.verbose {
@@ -181,29 +180,27 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     }
 }
 
-// Helper: Generate mock Sedenion field
-fn generate_sedenion_field(
+// Helper: Generate APT-evolved Sedenion field with frustration
+//
+// Implements Attracting-Point-Transformation (APT) evolution on Sedenion algebra.
+// Uses Harary-Zaslavsky frustration as attractor to generate correlated spatial fields
+// without ad-hoc perturbation. This replaces mock data with real algebraic evolution.
+fn generate_apt_frustration_field(
     grid_size: usize,
-    _seed: u64,
-) -> Result<Vec<[f64; 16]>, Box<dyn std::error::Error>> {
-    // In full implementation, would use algebra_core::construction::sedenion
-    // For now, return uniform placeholder
-    Ok(vec![[1.0; 16]; grid_size * grid_size * grid_size])
-}
+    seed: u64,
+) -> Result<Vec<f64>, Box<dyn std::error::Error>> {
+    use vacuum_frustration::AptSedenionField;
 
-// Helper: Generate mock frustration field
-fn generate_mock_frustration(grid_size: usize, seed: u64) -> Vec<f64> {
-    // Mock: uniform with small perturbation seeded by grid position and seed
-    let n_cells = grid_size * grid_size * grid_size;
-    let mut field = vec![0.375; n_cells];  // Vacuum attractor value
+    // Create APT field with Metropolis-Hastings evolution
+    let mut apt = AptSedenionField::new(grid_size, seed);
 
-    // Add deterministic perturbation
-    for (i, f) in field.iter_mut().enumerate() {
-        let perturbation = (((i as u64).wrapping_mul(seed)) % 1000) as f64 / 5000.0;
-        *f = (*f + perturbation).clamp(0.0, 1.0);
-    }
+    // Evolve for 1000+ iterations per cell to reach quasi-equilibrium
+    // Temperature cooling schedule drives frustration toward vacuum attractor (3/8)
+    let n_iterations = (grid_size as usize).max(100);
+    apt.evolve(n_iterations);
 
-    field
+    // Extract frustration field after evolution
+    Ok(apt.frustration_field())
 }
 
 // Helper: Transform frustration to viscosity
