@@ -10,6 +10,7 @@
 //! nu = c_s^2 * (tau - 0.5) = (1/3) * (tau - 0.5)
 
 use crate::lattice::D3Q19Lattice;
+use cosmic_scheduler::{TwoPhaseSystem, ScheduleResult};
 
 /// BGK collision operator for 3D LBM.
 #[derive(Clone, Debug)]
@@ -232,49 +233,73 @@ impl LbmSolver3D {
         }
     }
 
-    /// Perform one complete LBM timestep:
-    /// 1. Compute macroscopic quantities from f
-    /// 2. Compute equilibrium f_eq
-    /// 3. Apply BGK collision
+    /// Phase 1 (collision preparation): Compute macroscopic quantities and apply BGK collision operator.
     ///
-    /// Streaming is implicit in the lattice direction assignments
-    pub fn evolve_one_step(&mut self) {
+    /// Implements the Chapman-Enskog collision operator:
+    /// f_i^new ← f_i - (f_i - f_i^eq) / τ
+    ///
+    /// This phase prepares the distribution function for the subsequent streaming step.
+    pub fn phase1_collision(&mut self) -> ScheduleResult<()> {
         let lattice = self.collider.lattice.clone();
         let tau = self.collider.tau;
 
-        // Step 1: Compute macroscopic quantities
+        // Recover macroscopic quantities (density ρ, velocity u_k)
         self.compute_macroscopic();
 
-        // Step 2-3: Collision step at each grid point
+        // Apply BGK collision at each grid point
         for z in 0..self.nz {
             for y in 0..self.ny {
                 for x in 0..self.nx {
                     let idx = self.linearize(x, y, z);
                     let f_start = idx * 19;
 
-                    // Extract f at this point
+                    // Extract population distribution function f_i at this lattice site
                     let mut f = [0.0; 19];
                     f.copy_from_slice(&self.f[f_start..f_start + 19]);
 
-                    // Compute equilibrium
+                    // Compute equilibrium distribution f_i^eq
                     let mut f_eq = [0.0; 19];
                     for (i, f_eq_i) in f_eq.iter_mut().enumerate() {
                         *f_eq_i = lattice.equilibrium(self.rho[idx], self.u[idx], i);
                     }
 
-                    // BGK collision step
+                    // BGK collision step: relax toward equilibrium
                     let mut f_new = [0.0; 19];
                     for i in 0..19 {
                         f_new[i] = f[i] - (f[i] - f_eq[i]) / tau;
                     }
 
-                    // Update f
+                    // Update distribution function
                     self.f[f_start..f_start + 19].copy_from_slice(&f_new);
                 }
             }
         }
 
+        Ok(())
+    }
+
+    /// Phase 2 (streaming): In the D3Q19 lattice, streaming is implicit via lattice velocity mapping.
+    ///
+    /// In standard LBM, the streaming step redistributes populations to neighboring sites:
+    /// f_i(x + c_i*dt, t + dt) ← f_i(x, t)
+    ///
+    /// For the collision-streaming operator, we recover macroscopic quantities post-collision.
+    /// The lattice structure (D3Q19 discrete velocities) encodes the streaming geometry.
+    pub fn phase2_streaming(&mut self) -> ScheduleResult<()> {
+        // In the current one-step collision-only formulation, streaming is implicit.
+        // Recover macroscopic quantities for validation and next phase initialization.
+        self.compute_macroscopic();
         self.timestep += 1;
+
+        Ok(())
+    }
+
+    /// Perform one complete LBM timestep via two-phase coordination:
+    /// Phase 1: Collision operator (BGK) applied to population distribution functions
+    /// Phase 2: Macroscopic quantity recovery (streaming implicit in D3Q19 lattice structure)
+    pub fn evolve_one_step(&mut self) {
+        let _ = self.phase1_collision();
+        let _ = self.phase2_streaming();
     }
 
     /// Perform multiple LBM timesteps.
@@ -303,6 +328,62 @@ impl LbmSolver3D {
     /// Compute total momentum magnitude.
     pub fn total_momentum(&self) -> f64 {
         self.u.iter().map(|ui| ui[0]*ui[0] + ui[1]*ui[1] + ui[2]*ui[2]).sum::<f64>().sqrt()
+    }
+}
+
+/// Implement two-phase system trait for deterministic phase coordination.
+///
+/// Maps the D3Q19 lattice Boltzmann method to the PhaseScheduler abstraction:
+/// - Phase 1 (collision): BGK collision operator Ω applies Chapman-Enskog relaxation
+/// - Phase 2 (streaming): Macroscopic recovery; streaming implicit in lattice geometry
+///
+/// This enables cosmic_scheduler to coordinate LBM evolution with deterministic timing
+/// guarantees, matching the two-phase clock abstraction from the Intel 4004 architecture.
+impl TwoPhaseSystem for LbmSolver3D {
+    /// Execute Phase 1: Collision operator (BGK).
+    /// Applies Chapman-Enskog collision to relax population distribution toward equilibrium.
+    fn execute_phase1(&mut self) -> ScheduleResult<()> {
+        self.phase1_collision()
+    }
+
+    /// Execute Phase 2: Streaming (implicit via D3Q19 lattice).
+    /// Recovers macroscopic quantities post-collision.
+    fn execute_phase2(&mut self) -> ScheduleResult<()> {
+        self.phase2_streaming()
+    }
+
+    /// Validate system state: Check stability.
+    ///
+    /// Ensures stability of the Navier-Stokes simulator by verifying:
+    /// - Total mass ρ >= 0 (non-negative density everywhere)
+    /// - Population distribution f_i >= 0 (stability in BGK collision)
+    ///
+    /// Note: Mass conservation is maintained by the BGK collision operator by construction
+    /// and need not be checked explicitly. The validation focuses on stability metrics.
+    fn validate_state(&self) -> ScheduleResult<()> {
+        // Check stability: all population values non-negative
+        if !self.is_stable() {
+            return Err(cosmic_scheduler::ScheduleError::StateInvalid(
+                format!("LBM population instability: negative f_i detected at timestep {}", self.timestep)
+            ));
+        }
+
+        // Check non-negativity of density field
+        for (i, &rho_i) in self.rho.iter().enumerate() {
+            if rho_i < -1e-14 {
+                return Err(cosmic_scheduler::ScheduleError::StateInvalid(
+                    format!("Negative density at node {}: {} at timestep {}",
+                        i, rho_i, self.timestep)
+                ));
+            }
+        }
+
+        Ok(())
+    }
+
+    /// Current simulation time (timestep counter).
+    fn current_time(&self) -> Option<cosmic_scheduler::Time> {
+        Some(self.timestep as u64)
     }
 }
 

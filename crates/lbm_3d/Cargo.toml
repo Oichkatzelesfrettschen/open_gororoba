@@ -6,6 +6,7 @@ license = "GPL-2.0-only"
 repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
+cosmic_scheduler = { path = "../cosmic_scheduler" }
 nalgebra = { workspace = true }
 rayon = { workspace = true }
 ndarray = { workspace = true }
