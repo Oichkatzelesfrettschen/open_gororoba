@@ -1,15 +1,15 @@
-# Cosmic Engine Hypothesis - Implementation Progress
+# Physics Synthesis Pipeline - Implementation Progress
 
-**Last Updated**: 2026-02-11 (PHASE 1 WEEK 2 IN PROGRESS)
+**Last Updated**: 2026-02-11 (PHASE 1 WEEK 3-4 ACTIVE)
 **Status**: PHASE 0 TIER 1 COMPLETE + PHASE 1 WEEK 2 LBM INTEGRATION COMPLETE
 
 ---
 
 ## Executive Summary
 
-The **Cosmic Engine Hypothesis** implementation is a 12-16 week pure Rust synthesis of four groundbreaking physics theses. We have successfully completed the first phase of cross-repository extraction and are prepared to proceed with the full implementation pipeline.
+The **Physics Synthesis Pipeline** implementation is a 12-16 week pure Rust synthesis of four groundbreaking physics theses. We have successfully completed the first phase of cross-repository extraction and are prepared to proceed with the full implementation pipeline.
 
-**Grand Vision**: Transform the Universe from abstract mathematical theory into a **testable, runnable Cosmic Engine** where gravity emerges as backpropagation, mass arises from topological filters, and spacetime is orchestrated by a sedenion Babbage machine.
+**Grand Vision**: Transform abstract algebraic theory into **testable, runnable physics simulations** where fluid dynamics emerges from signed-graph frustration, particle masses arise from topological filtration, and quantum unitarity is restored via neural synthesis.
 
 ---
 
@@ -28,7 +28,7 @@ The **Cosmic Engine Hypothesis** implementation is a 12-16 week pure Rust synthe
   - 6 LBM integration tests
   - 10 PhaseScheduler trait tests
 - **Zero clippy warnings** (warnings-as-errors enforced)
-- **CE-002 verification**: TwoPhaseSystem trait properly maps phi1/phi2 to LBM collision/streaming
+- **CRI-002 verification**: TwoPhaseSystem trait properly maps phi1/phi2 to LBM collision/streaming
 
 **Architecture Highlights**:
 - Generic `PhaseScheduler` trait for two-phase evolution
@@ -44,7 +44,7 @@ pub trait TwoPhaseSystem {
 }
 ```
 
-**Cosmic Engine Claim CE-002**: ✓ VERIFIED
+**Cross-Repository Integration Claim CRI-002**: ✓ VERIFIED
 > "Two-phase clock (phi1/phi2) isomorphic to LBM collision/streaming split"
 - phi1 = collision step (precharge, compute)
 - phi2 = streaming step (transfer, evaluate)
@@ -72,7 +72,7 @@ pub trait TwoPhaseSystem {
   - `phase1_collision()`: BGK collision operator (Chapman-Enskog relaxation)
   - `phase2_streaming()`: Macroscopic recovery via D3Q19 lattice implicit streaming
   - `TwoPhaseSystem` trait implementation for deterministic phase coordination
-- Integration tests verify **CE-002 claim**: phi1/phi2 isomorphic to collision/streaming
+- Integration tests verify **CRI-002 claim**: phi1/phi2 isomorphic to collision/streaming
 - **8 phase coordination tests** (determinism, conservation, equivalence vs monolithic)
 - **37 solver tests + 8 integration tests** (existing lbm_3d infrastructure verified)
 - Total Phase 1 W1-W2: **61 lbm_3d tests + 14 vacuum_frustration tests = 75 tests passing**
@@ -110,7 +110,7 @@ pub trait TwoPhaseSystem {
 - 1500-2000 words with code examples
 - Hierarchical addressing (column/card/digit) ~ Patricia trie levels
 - Integration with Phase 2 Week 1 (Patricia trie design)
-- Cosmic Engine Claim CE-003 foundation
+- Physics Synthesis Pipeline Claim CRI-003 foundation
 - Priority: MEDIUM (conceptual clarity)
 - Blocking: None (parallel work)
 
@@ -139,7 +139,7 @@ pub trait TwoPhaseSystem {
 |-----------|-------|--------|-------|
 | cosmic_scheduler (Phase 0 T1) | 38 | ✓ PASS | PhaseScheduler trait + timing |
 | lbm_3d solver + integration | 61 | ✓ PASS | D3Q19 lattice, BGK collision, TwoPhaseSystem |
-| lbm_3d phase coordination | 8 | ✓ PASS | CE-002 verification (phi1/phi2 ~ collision/streaming) |
+| lbm_3d phase coordination | 8 | ✓ PASS | CRI-002 verification (phi1/phi2 ~ collision/streaming) |
 | vacuum_frustration (Phase 1 W1) | 14 | ✓ PASS | Signed-graph + balance solver |
 | **Total** | **121** | **✓ PASS** | Zero warnings, full workspace builds |
 
@@ -179,7 +179,7 @@ pub trait TwoPhaseSystem {
 
 2. **TIER 2b**: Document Babbage addressing patterns (1 day)
    - Hierarchical column/card/digit → Patricia trie levels
-   - Cosmic Engine Claim CE-003 foundation
+   - Physics Synthesis Pipeline Claim CRI-003 foundation
 
 3. **TIER 3**: Collect dependent type papers (0.5 days)
    - lambda-research → docs/references/dependent_types/
@@ -189,7 +189,7 @@ pub trait TwoPhaseSystem {
 
 ---
 
-## Cosmic Engine Architecture (6-Layer Pipeline)
+## Physics Synthesis Pipeline Architecture (6-Layer Pipeline)
 
 The full implementation will orchestrate physics through 6 computational layers:
 
@@ -229,7 +229,7 @@ LAYER 6 (VERIFICATION)
 |-------|----------|--------|-------------------|
 | **Phase 0 (Cross-Repo)** | 1 week | ✓ TIER 1 DONE (Feb 11) | TIER 2/3 parallel |
 | **Phase 1 W1-W2 (Vacuum)** | 2 weeks | ✓ DONE (Feb 11) | LBM integration |
-| **Phase 1 W3-W4 (Bridge)** | 2 weeks | **IN PROGRESS** | Feb 18-25 |
+| **Phase 1 W3-W4 (Bridge)** | 2 weeks | **ACTIVE** | Feb 18-25 |
 | **Phase 2 (Filtration)** | 3-4 weeks | Queued | Mar 1-22 |
 | **Phase 3 (Neural)** | 4-5 weeks | Queued | Mar 23-Apr 26 |
 | **Phase 4 (Engine)** | 2-3 weeks | Queued | Apr 27-May 17 |
@@ -249,7 +249,7 @@ LAYER 6 (VERIFICATION)
 - [x] vacuum_frustration signed-graph solver (14 tests) ✓ W1 DONE
 - [x] lbm_3d D3Q19 implementation + TwoPhaseSystem (61 tests) ✓ W2 DONE
 - [x] LBM phase coordination tests (8 tests) ✓ W2 DONE
-- [x] CE-002 cosmic claim verified ✓ W2 DONE
+- [x] CRI-002 cosmic claim verified ✓ W2 DONE
 - [ ] Frustration-viscosity bridge (W3)
 - [ ] Percolation threshold experiment E-027 (W3-W4)
 - [ ] Claims C-657..C-659 registered (W4)
@@ -259,21 +259,21 @@ LAYER 6 (VERIFICATION)
 - [ ] Survival cascade computation
 - [ ] Lepton mass ratio matching
 - [ ] E-028 experiment
-- [ ] CE-003, CE-004 cosmic claims
+- [ ] CRI-003, CRI-004 cosmic claims
 
 ### Phase 3
 - [ ] burn 0.16 integration
 - [ ] Stasheff pentagon loss function
 - [ ] Transformer training
 - [ ] E-029 experiment
-- [ ] CE-005 cosmic claim
+- [ ] CRI-005 cosmic claim
 
 ### Phase 4
 - [ ] 6-layer trait architecture
 - [ ] Pipeline orchestrator
-- [ ] cosmic_engine_demo binary
+- [ ] synthesis_pipeline_demo binary
 - [ ] Cross-validation tests
-- [ ] CE-001 meta-claim
+- [ ] CRI-001 meta-claim
 
 ---
 
@@ -312,9 +312,9 @@ LAYER 6 (VERIFICATION)
 ## References
 
 - **Grand Synthesis Plan**: `docs/GRAND_SYNTHESIS_PLAN.md`
-- **Cosmic Engine Hypothesis**: Detailed in plan section (7,050-9,050 lines target)
+- **Physics Synthesis Pipeline Hypothesis**: Detailed in plan section (7,050-9,050 lines target)
 - **Task Tracking**: 9 detailed tasks in task system
-- **Claims Registry**: `registry/claims.toml` (C-657+ for theses, CE-001..CE-005 for cosmic)
+- **Claims Registry**: `registry/claims.toml` (C-657+ for theses, CRI-001..CRI-005 for cosmic)
 - **Memory**: `/home/eirikr/.claude/projects/-home-eirikr-Github-open-gororoba/memory/MEMORY.md`
 
 ---
@@ -324,13 +324,15 @@ LAYER 6 (VERIFICATION)
 When resuming work:
 
 1. [ ] Read this file first (progress overview)
-2. [ ] Check task #1 metadata (current phase status)
-3. [ ] Verify cosmic_scheduler tests still pass: `cargo test -p cosmic_scheduler -j12`
-4. [ ] Start Phase 1 Week 2 work (if TIER 2 deferred)
-5. [ ] Or continue TIER 2 parallel work (libgl_math + Babbage)
+2. [ ] Check task #10 metadata (current phase status)
+3. [ ] Verify all 105 tests still pass: `cargo test --workspace -j$(nproc)`
+4. [ ] Continue Phase 1 Week 3-4 frustration-viscosity bridge implementation
+5. [ ] Implement percolation threshold experiment E-027
 
-**Current focus**: Phase 1 Week 2 unblocked - ready to implement lbm_3d D3Q19 solver with cosmic_scheduler integration.
+**Current focus**: Phase 1 Week 3-4 ACTIVE - implementing frustration-viscosity coupling and percolation threshold validation.
+
+**Expected Completion**: Feb 18-25 (frustration-viscosity bridge + E-027 experiment registration)
 
 ---
 
-**Status**: 🟢 ON TRACK - Phase 0 TIER 1 COMPLETE, Phase 1 UNBLOCKED
+**Status**: 🟢 ON TRACK - Phase 1 W1-W2 COMPLETE, W3-W4 ACTIVE

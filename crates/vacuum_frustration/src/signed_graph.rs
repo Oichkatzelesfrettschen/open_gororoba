@@ -10,6 +10,7 @@ use std::collections::HashMap;
 ///
 /// Each edge in the graph carries a sign (+1 or -1) determined by the
 /// multiplication table of the corresponding algebra.
+#[derive(Clone, Debug)]
 pub struct SignedGraph {
     /// Underlying petgraph UnGraph with node = basis index, edge = sign
     pub graph: UnGraph<usize, i32>,
