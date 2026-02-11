@@ -1,0 +1,42 @@
+hypothesis_lane = "runtime_type_inference_hott"
+experiment_id = "EXP-HVE-001"
+
+[metadata]
+loss_csv = "data/equivalence/e027/loss_curve.csv"
+viscosity_csv = "data/equivalence/e027/viscosity_curve.csv"
+loss_column = "loss"
+viscosity_column = "value"
+max_lag = 8
+permutations = 500
+seed = 123
+
+[loss_curve]
+raw_length = 8
+aligned_length = 16
+mean = 0.016468117286799998
+std_dev = 0.013899829579062623
+min = 0.0
+max = 0.036846666666666666
+
+[viscosity_curve]
+raw_length = 8
+aligned_length = 16
+mean = 0.30078480426
+std_dev = 0.06850519867515807
+min = 0.092
+max = 0.333
+
+[metrics]
+best_lag = -5
+best_lagged_correlation = 0.8762506362482658
+dtw_distance = 17.901079131587814
+normalized_dtw_distance = 1.1188174457242384
+permutation_pvalue = 0.001996007984031936
+null_mean_abs_correlation = 0.20990652426724388
+
+[decision]
+accepted_as_isomorphic = false
+correlation_threshold = 0.7
+pvalue_threshold = 0.05
+dtw_threshold = 0.8
+reason = "Rejected: one or more criteria failed (correlation, p-value, or normalized DTW)."

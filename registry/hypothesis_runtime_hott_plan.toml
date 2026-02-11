@@ -1,0 +1,197 @@
+# Hypergranular execution plan for hypothesis lane:
+# "Universe as runtime type-inference proving consistency of a non-associative type system."
+
+[hypothesis_runtime_hott_plan]
+updated = "2026-02-11"
+authoritative = true
+scope = "rust_first_experimentation"
+status = "active"
+owner = "codex_collaboration"
+record_count = 20
+source_refs = [
+  "registry/hypothesis_runtime_hott_sources.toml",
+  "registry/experiments.toml",
+  "crates/vacuum_frustration/src/bridge.rs",
+  "crates/lbm_3d/src/solver.rs",
+  "crates/neural_homotopy/src/lib.rs"
+]
+
+[[record]]
+id = "HRHP-001"
+phase = "P0"
+status = "completed"
+title = "Workspace and toolchain baseline"
+objective = "Confirm repository state, branch, toolchain, and active concurrent modifications."
+outputs = ["runtime baseline captured", "concurrent-change isolation constraint"]
+blocking = false
+
+[[record]]
+id = "HRHP-002"
+phase = "P0"
+status = "completed"
+title = "Hypothesis-module mapping"
+objective = "Map homotopy, viscosity, percolation, scheduler, and gravastar components to concrete Rust symbols."
+outputs = ["module map", "integration risk table", "recommended binary entrypoints"]
+blocking = false
+
+[[record]]
+id = "HRHP-003"
+phase = "P0"
+status = "completed"
+title = "Crate scouting for experiment methods"
+objective = "Identify candidate crates for DTW alignment, optimization, Bayesian comparison, and topology metrics."
+outputs = ["crate shortlist", "integration crate targets", "risk notes"]
+blocking = false
+
+[[record]]
+id = "HRHP-004"
+phase = "P0"
+status = "completed"
+title = "Primary-source corpus acquisition"
+objective = "Download paper corpus for non-associative algebra and neural theorem proving."
+outputs = ["data/external/papers/hypothesis_runtime_hott/*.pdf", "registry/hypothesis_runtime_hott_sources.toml"]
+blocking = false
+
+[[record]]
+id = "HRHP-005"
+phase = "P1"
+status = "open"
+title = "Define atomic falsifiable claims"
+objective = "Split hypothesis into measurable claims with rejection rules."
+outputs = ["claim atoms in registry/claims.toml", "proof skeleton updates"]
+blocking = true
+
+[[record]]
+id = "HRHP-006"
+phase = "P1"
+status = "open"
+title = "Experiment A schema: Homotopy-Viscosity Equivalence"
+objective = "Define canonical TOML schema for paired curves: training-loss and viscosity-relaxation."
+outputs = ["registry schema entry", "example TOML artifact"]
+blocking = true
+
+[[record]]
+id = "HRHP-007"
+phase = "P1"
+status = "open"
+title = "Neural homotopy metric primitives"
+objective = "Implement m3/m4 proxy metrics and associativity error summaries in neural_homotopy."
+outputs = ["crates/neural_homotopy/src/stasheff.rs", "unit tests"]
+blocking = true
+
+[[record]]
+id = "HRHP-008"
+phase = "P1"
+status = "open"
+title = "Homotopy to viscosity bridge"
+objective = "Implement deterministic mapping from homotopy error field to tau/nu field for LBM."
+outputs = ["new bridge module", "integration tests with lbm_3d"]
+blocking = true
+
+[[record]]
+id = "HRHP-009"
+phase = "P1"
+status = "open"
+title = "Experiment A binary entrypoint"
+objective = "Add dedicated CLI binary to run equivalence experiment end-to-end and emit TOML output."
+outputs = ["crates/gororoba_cli/src/bin/homotopy_viscosity_equivalence.rs", "sample outputs"]
+blocking = true
+
+[[record]]
+id = "HRHP-010"
+phase = "P1"
+status = "open"
+title = "Experiment A statistics"
+objective = "Compute DTW distance, lag-correlation, and null-model p-values for curve isomorphism claims."
+outputs = ["stats module", "decision report fields in TOML"]
+blocking = true
+
+[[record]]
+id = "HRHP-011"
+phase = "P2"
+status = "open"
+title = "Mass as type-error proxy"
+objective = "Define topological/type residual metric over frustration graph and correlate with mass observables."
+outputs = ["metric definitions", "registry experiment entry", "validation tests"]
+blocking = true
+
+[[record]]
+id = "HRHP-012"
+phase = "P2"
+status = "open"
+title = "Event-horizon try-catch proxy"
+objective = "Operationalize gravastar stability boundaries as failure containment zones for high residual regions."
+outputs = ["cross-analysis binary integrating gravastar_sweep and residual field"]
+blocking = false
+
+[[record]]
+id = "HRHP-013"
+phase = "P2"
+status = "open"
+title = "Time as synthesis trajectory"
+objective = "Model optimizer-epoch sequence as homotopy correction sequence and measure monotonicity constraints."
+outputs = ["epoch-to-correction mapping artifact", "counterexample tracker"]
+blocking = false
+
+[[record]]
+id = "HRHP-014"
+phase = "P2"
+status = "open"
+title = "Neuro-symbolic vacuum decomposition"
+objective = "Decompose dynamics into exploration-noise term and geometry-loss term and test separability."
+outputs = ["decomposition metrics", "ablation outputs"]
+blocking = false
+
+[[record]]
+id = "HRHP-015"
+phase = "P3"
+status = "open"
+title = "Dataset and trace ingestion lane"
+objective = "Ingest theorem-proving training traces and synchronize with simulation timelines in canonical TOML."
+outputs = ["data/external traces", "registry provenance rows", "schema signatures"]
+blocking = true
+
+[[record]]
+id = "HRHP-016"
+phase = "P3"
+status = "open"
+title = "Crate adoption pass 1"
+objective = "Introduce minimal crate set for DTW and optimization with license and maintenance checks."
+outputs = ["Cargo updates", "compatibility tests", "deny policy updates if needed"]
+blocking = false
+
+[[record]]
+id = "HRHP-017"
+phase = "P3"
+status = "open"
+title = "Crate adoption pass 2"
+objective = "Add Bayesian and topological-analysis crates if pass 1 confirms stability and value."
+outputs = ["model-selection module", "persistent-homology or graph-invariant module"]
+blocking = false
+
+[[record]]
+id = "HRHP-018"
+phase = "P4"
+status = "open"
+title = "Gate integration and reproducibility"
+objective = "Wire experiment verifiers into make/check pipelines with warnings-as-errors."
+outputs = ["new verifiers", "Makefile targets", "offline deterministic tests"]
+blocking = true
+
+[[record]]
+id = "HRHP-019"
+phase = "P4"
+status = "open"
+title = "Claims-evidence close loop"
+objective = "Attach each claim to executable artifacts and pass/fail criteria with date-stamped verification."
+outputs = ["claims/task updates", "evidence edges", "proof skeleton links"]
+blocking = true
+
+[[record]]
+id = "HRHP-020"
+phase = "P4"
+status = "open"
+title = "Publication-ready synthesis"
+objective = "Export TOML-backed synthesis for papers/slides without markdown source dependency."
+outputs = ["structured narrative atoms", "renderable export targets"]
+blocking = false
