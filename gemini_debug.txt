@@ -5,7 +5,7 @@
 0.28.0
 --- NPM LIST ---
 /home/eirikr/.nvm/versions/node/v22.21.0/lib
-└── @google/gemini-cli@0.28.0
+|-- @google/gemini-cli@0.28.0
 
 --- PACMAN QUERY ---
 error: package 'gemini' was not found

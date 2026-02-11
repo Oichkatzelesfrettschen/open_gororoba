@@ -6,7 +6,7 @@ G. P. Wilmot\r
 University of Adelaide, Australia\r
 Abstract\r
 Viewing the Cayley-Dickson process as a graded construction provides a rigorous defini\u0002tion of associativity consisting of three types and the non-associative parts dividing into four\r
-types. These simplify the Moufang loop identities and Mal’cev’s identity, which identifies\r
+types. These simplify the Moufang loop identities and Mal'cev's identity, which identifies\r
 the non-associative Lie algebra structure. Many authors have assumed the Moufang loop\r
 identities are identical but this is not the case for sedenions. Analysing the non-associativity\r
 structure uncovers 3-cycles that distinguish between the Moufang identities and are used to\r
@@ -26,30 +26,30 @@ Keywords. Octonions, sedenions, Cayley-Dickson algebras, split sedenions, zero d
 graded algebras, Moufang loops, Malcev algebra, ultracomplex numbers.\r
 1 Introduction\r
 The standard approach to the Cayley-Dickson construction [5] at step n is to define a multipli\u0002cation operation for An\r
-∼= An−1 ⊕ An−1 by\r
-(a, b)(c, d) = (ac + ǫd∗b, da + bc∗),\r
+~= An-1 + An-1 by\r
+(a, b)(c, d) = (ac + ed*b, da + bc*),\r
 where the conjugate is (a, b)\r
-∗ = (a∗\r
-, −b) and ǫ = 1 for the normed composition algebras analysed\r
+* = (a*\r
+, -b) and e = 1 for the normed composition algebras analysed\r
 by Hurwitz [6]. The products ac, d\r
-∗\r
-b, da and bc∗ are defined according to the construction for\r
-An−1\r
-∼= An−2 ⊕ An−2, which in turn is eventually determined by elements in A0 = R.\r
+*\r
+b, da and bc* are defined according to the construction for\r
+An-1\r
+~= An-2 + An-2, which in turn is eventually determined by elements in A0 = R.\r
 Traditionally, the multiplication operator is introduced using anticommuting imaginaries i, j, l\r
 for the complex numbers, quaternions and octonions, respectively, as\r
-A1 = R ⊕ iR = C,\r
-A2 = C ⊕ Cj = H and\r
-A3 = H ⊕ lH = O. (1)\r
+A1 = R + iR = C,\r
+A2 = C + Cj = H and\r
+A3 = H + lH = O. (1)\r
 This paper introduces a graded decomposition of anticommuting elements, on, at each level, n,\r
 as\r
-An = An−1 ⊕ An−1on\r
-so that o1 = i, o2 = j and o3 = −l. The ungraded notation of using k = ij is then represented\r
+An = An-1 + An-1on\r
+so that o1 = i, o2 = j and o3 = -l. The ungraded notation of using k = ij is then represented\r
 in graded form as ij = o12. All elements of An are generated using the binomial expansion,\r
 which provides an ordering of these elements. This is not important for the normed division\r
 algebras and, for example, the exception Lie algebra G2, which are the automorphisms for\r
 octonions. Swapping any pair of the seven elements of octonions generates another representation\r
-of octonions. The ordering enables power-associativity but only comes into play for An with n ≥ 4\r
+of octonions. The ordering enables power-associativity but only comes into play for An with n >= 4\r
 where A4 = S, the sedenions.\r
 1\r
 arXiv:2505.11747v2 [math.RA] 13 Oct 2025
@@ -64,14 +64,14 @@ and modes that categorise zero divisors and applied to the 84 known sedenion zer
 reduces them to seven distinct triples of basis elements with three cycles and four modes each.\r
 The trigintaduonions have 1,260 zero-divisors, which are derived from 147 distinct triples. The\r
 cyclic forms identify the octonion and three power-associative sub-algebras of A5, called pseudo\u0002octonion algebras in [10]. Each of these algebras contain 12 zero divisors and since they are\r
-embedded in An, n ≥ 4, in multiples of seven, then it is found that zero divisors in An, n > 3\r
+embedded in An, n >= 4, in multiples of seven, then it is found that zero divisors in An, n > 3\r
 occur in multiples of 84. The cardinality formula for zero divisors for all An is derived.\r
 Using loop analysis, Cawagas [7] has previously identified the first power-associative subal\u0002gebra by identifying that it did not satisfy one of the three Moufang identities, unlike octonions.\r
 He called this quasi-octonions and provided an enumeration in [9]. This paper takes a different\r
 approach to loop analysis to prove that most of the sedenion triple products satisfy the three\r
 Moufang identities in different ways. Previous work [10] has shown that the quasi-octonions\r
 are part of a series of six algebras, called pseudo-octonions to allow for the designation Pk,\r
-k ∈ {4, 8, 10, 12, 14, 16} where k is the number of distinct non-associative triple products. These\r
+k in {4, 8, 10, 12, 14, 16} where k is the number of distinct non-associative triple products. These\r
 algebras where shown to break the symmetry of octonions in a way consistent with exceptional\r
 Lie algebra G2. Cawagas found seven copies of P4 embedded in sedenions as well as eighth copies\r
 of octonions. Another two of these power-associative algebras are introduced in the next two\r
@@ -87,7 +87,7 @@ properties to be proved for all Cayley-Dickson algebras showing that the graded 
 equivalent to the usual doubling of algebras [8]. Section 3 derives the four non-associativity types\r
 that simplify the Moufang identities and Malcev algebras and derives the eight non-associative\r
 3-cycles and 3-cycle structure in the Cycle theorem that identifies the subalgebras of An for\r
-n ≥ 3. The 15 octonion and P4 representations embedded in sedenions are identified using the\r
+n >= 3. The 15 octonion and P4 representations embedded in sedenions are identified using the\r
 graded notation.\r
 Section 4 defines zero divisors and modes in the Mode theorem and shows the relationship to\r
 the eight 3-cycles. It proceeds to document the seven and 147 prime zero divisors of A4 and A5,\r
@@ -101,21 +101,21 @@ n\r
 k\r
 \u0001\r
 called a k-grade. Basis elements are\r
-represented as oα where α is a set of digits from A(n) = {∅,(1),(12), . . . ,(12 · · · n)}, generated\r
-by the recurrence relation A(n) = A(n − 1) + A(n − 1)(n), where set multiplication by (n)\r
-extends each member of the set by n, A(n − 1)(n) = {(n),(1n),(12n), . . . ,(12 · · ·(n − 1)n)}.\r
+represented as oalpha where alpha is a set of digits from A(n) = {empty,(1),(12), . . . ,(12 * * * n)}, generated\r
+by the recurrence relation A(n) = A(n - 1) + A(n - 1)(n), where set multiplication by (n)\r
+extends each member of the set by n, A(n - 1)(n) = {(n),(1n),(12n), . . . ,(12 * * *(n - 1)n)}.\r
 This operation is called expansion but multiplying by an existing member will contract some\r
 members. Using the notation of Porteous [17] whereby N\r
 n\r
 1\r
 is the set of natural numbers from 1\r
-up to and including n, then {(12 · · · n)}(k) = {(12 · · ·(k − 1)(k + 1)· · · n)} for k ∈ N\r
-n−1\r
+up to and including n, then {(12 * * * n)}(k) = {(12 * * *(k - 1)(k + 1)* * * n)} for k in N\r
+n-1\r
 3\r
 . Note\r
-that A(n) includes the empty set, ∅, or no digit case, to denote the unit graded element, 1, which\r
+that A(n) includes the empty set, empty, or no digit case, to denote the unit graded element, 1, which\r
 is the only graded element at level zero and the unit notation is preferred to the use of the empty\r
-set, o = 1. The set brackets are dropped in the graded element, (α) → oα.\r
+set, o = 1. The set brackets are dropped in the graded element, (alpha) -> oalpha.\r
 2
 
 The graded recurrence relation is an example of the binomial theorem, which has the property\r
@@ -126,7 +126,7 @@ n\r
 k\r
 \u0013\r
 = 2n, (2)\r
-and the basis has a binary expansion described by Pascal’s triangle. This provides a natural\r
+and the basis has a binary expansion described by Pascal's triangle. This provides a natural\r
 ordering of the graded elements shown in the following graded element pyramid to level 3,\r
 1\r
 {1, o1}\r
@@ -136,105 +136,105 @@ Lemma 1. Any list of distinct graded elements multiplied together via set expans
 Proof. Set expansion and contraction of two distinct members of A(n) is the symmetric difference\r
 or the union minus the intersection of the two groups of indices. This is different to the initial\r
 two members and this process can continue for any number of distinct graded elements as long\r
-as the no digit case is not encountered. Each row of Pascal’s triangle of graded elements contains\r
+as the no digit case is not encountered. Each row of Pascal's triangle of graded elements contains\r
 an even number of each index, excluding level 1, because each index is doubled for the next level\r
 of the recurrence relation and there are an even number of existing elements to double with the\r
 new index. Hence, excluding the first row, the multiplication of all elements of any row contracts\r
-to α being the no digit case. Excluding such cases produces a distinct new graded element.\r
-Definition. A k-grade contains graded elements oα where α has k indices called the length of\r
-α. The k = 1 case is called a generator because all graded elements can be generated from these\r
-by expansion and contraction. At level n these are o1, o2, · · · , on.\r
+to alpha being the no digit case. Excluding such cases produces a distinct new graded element.\r
+Definition. A k-grade contains graded elements oalpha where alpha has k indices called the length of\r
+alpha. The k = 1 case is called a generator because all graded elements can be generated from these\r
+by expansion and contraction. At level n these are o1, o2, * * * , on.\r
 Definition. A pure element excludes the unit basis element, 1. A blade is a pure, non-zero,\r
 scaled basis element and a k-blade is a member of the k-grade. Note that blades may have\r
-positive or negative squares and for the remainder this assumed to be ±1, for blades. A blade is\r
+positive or negative squares and for the remainder this assumed to be +/-1, for blades. A blade is\r
 positive or negative for scale +1 or -1, respectively.\r
 The Cayley-Dickson construction uses pairs of scalars to represent the graded pyramid.\r
 Definition. The pyramid element a, at level n, specifies the n\r
 th row of a binary pyramid with\r
-coefficients aβ, β ∈ B(n), where B(n) = B(n − 1)(0) + B(n − 1)(1) so that B(n) is all binary\r
+coefficients abeta, beta in B(n), where B(n) = B(n - 1)(0) + B(n - 1)(1) so that B(n) is all binary\r
 numbers with n digits from N\r
 1\r
-0 and set multiplication extends the binary numbers in B(n − 1).\r
+0 and set multiplication extends the binary numbers in B(n - 1).\r
 Hence B(n) covers all 2n combinations of n digits in A(n) and this is an equivalence relationship\r
-to graded elements with coefficients aβ = 0 or ±1 because appending a 1 to β at the n\r
+to graded elements with coefficients abeta = 0 or +/-1 because appending a 1 to beta at the n\r
 th position\r
-is the same as appending n to the graded recurrence relation. Hence, at level 1, a0 = (±1, 0) = ±1\r
-and a1 = (0, ±1) = ±o1. To level three this is\r
+is the same as appending n to the graded recurrence relation. Hence, at level 1, a0 = (+/-1, 0) = +/-1\r
+and a1 = (0, +/-1) = +/-o1. To level three this is\r
 a = (a0, a1)\r
 = ((a00, a10),(a01, a11)) (3)\r
 = (((a000, a100),(a010, a110)),((a001, a101),(a011, a111))).\r
 The Cayley-Dickson process in pyramid form provides the same ordering as the graded ele\u0002ments with the last index corresponding to on, if it is 1. Some pyramid coefficients at level 2\r
-are β = ij, i, j ∈ N\r
+are beta = ij, i, j in N\r
 1\r
-0 which corresponds to signed oβ = o1, o2, o12 for aij = a10, a01, a11 in (3),\r
+0 which corresponds to signed obeta = o1, o2, o12 for aij = a10, a01, a11 in (3),\r
 respectively. The four extreme blades at level 3 are\r
-±o1 = (((0, ±1),(0, 0)),((0, 0),(0, 0))) and\r
-±o123 = (((0, 0),(0, 0)),((0, 0),(0, ±1))).\r
-Definition. The Cayley-Dickson product at level i for two pure pyramid elements, aαbβ, with\r
-α, β ∈ B(n), with αi being all indices to the left of position i and αi being all indices to the right\r
++/-o1 = (((0, +/-1),(0, 0)),((0, 0),(0, 0))) and\r
++/-o123 = (((0, 0),(0, 0)),((0, 0),(0, +/-1))).\r
+Definition. The Cayley-Dickson product at level i for two pure pyramid elements, aalphabbeta, with\r
+alpha, beta in B(n), with alphai being all indices to the left of position i and alphai being all indices to the right\r
 of position i, is\r
-(aαi0αi\r
-, aαi1αi)(bβi0βi\r
-, bβi1βi) =\r
+(aalphai0alphai\r
+, aalphai1alphai)(bbetai0betai\r
+, bbetai1betai) =\r
 \u0010\r
-aαi0αi\r
-bβi0βi\r
-− ǫib\r
-∗\r
-βi1βi\r
-aαi1αi\r
-, bβi1βi\r
-aαi0αi + aαi1αi\r
+aalphai0alphai\r
+bbetai0betai\r
+- eib\r
+*\r
+betai1betai\r
+aalphai1alphai\r
+, bbetai1betai\r
+aalphai0alphai + aalphai1alphai\r
 b\r
-∗\r
-βi0βi\r
+*\r
+betai0betai\r
 \u0011\r
 ,\r
 (4)\r
 3
 
-where ǫi = ±1 for i ∈ N\r
+where ei = +/-1 for i in N\r
 n\r
 1\r
 and the conjugate operator at level i is a\r
-∗\r
-α0 = (a\r
-∗\r
-αi0αi\r
-, −aαi1αi\r
+*\r
+alpha0 = (a\r
+*\r
+alphai0alphai\r
+, -aalphai1alphai\r
 ) and\r
-the conjugate operator on the right hand side acts at level i − 1 and has no effect at level 0.\r
+the conjugate operator on the right hand side acts at level i - 1 and has no effect at level 0.\r
 Equation (4) corresponds to a section of the pyramid one pair deep at level i. The terms on the\r
-right hand side of (4) are called the parallel and cross terms, respectively. The αi\r
+right hand side of (4) are called the parallel and cross terms, respectively. The alphai\r
 indices are not\r
 shown if empty.\r
-The construction uses Pascal’s recurrence relation to create a pyramid, n pairs deep, whereby\r
+The construction uses Pascal's recurrence relation to create a pyramid, n pairs deep, whereby\r
 the first division repeats the structure on of the left half on the right but multiplied by on. For\r
-n = 1, so that α, β ∈ B(0), the no index case, then\r
-(a0, a1)(b0, b1) = (a0b0 − ǫ1b1a1, b1a0 + a1b0) (5)\r
-since a0, a1, b0, b1 ∈ R and the conjugate has no effect at level zero.\r
-For n ≥ 2, showing just the first pair in each half, with α ∈ B(n) and β = 00 · · · 0 of length\r
-n − 2, then\r
-aα =\r
+n = 1, so that alpha, beta in B(0), the no index case, then\r
+(a0, a1)(b0, b1) = (a0b0 - e1b1a1, b1a0 + a1b0) (5)\r
+since a0, a1, b0, b1 in R and the conjugate has no effect at level zero.\r
+For n >= 2, showing just the first pair in each half, with alpha in B(n) and beta = 00 * * * 0 of length\r
+n - 2, then\r
+aalpha =\r
 \u0010\r
-n−1 pairs\r
+n-1 pairs\r
 z }| { \r
-(· · ·(\r
+(* * *(\r
 | {z }\r
-n−2\r
-(aβ00, aβ10), . . .)\r
+n-2\r
+(abeta00, abeta10), . . .)\r
 \u0001\r
 ,\r
-n−1 pairs\r
+n-1 pairs\r
 z }| { \r
-(· · ·(\r
+(* * *(\r
 | {z }\r
-n−2\r
-(aβ01, aβ11), . . .)\r
+n-2\r
+(abeta01, abeta11), . . .)\r
 \u0001\r
 \u0011\r
 . (6)\r
-For n = 2, again with α, β ∈ B(1) of lengths 1,\r
+For n = 2, again with alpha, beta in B(1) of lengths 1,\r
 (a0, a1)(b0, b1)\r
 =\r
 \r
@@ -242,204 +242,204 @@ For n = 2, again with α, β ∈ B(1) of lengths 1,\r
 \u0001\r
 =\r
 \r
-(a00, a10)(b00, b10) − ǫ2(b01, b11)\r
-∗\r
+(a00, a10)(b00, b10) - e2(b01, b11)\r
+*\r
 (a01, a11),\r
 (b01, b11)(a00, a10) + (a01, a11)(b00, b10)\r
-∗\r
+*\r
 \u0001\r
 =\r
 \r
-(a00b00 − ǫ1b10a10, b10a00 + a10b10) − ǫ2(b01a01 + ǫ1a11b11, b01a11 − b11a01),\r
+(a00b00 - e1b10a10, b10a00 + a10b10) - e2(b01a01 + e1a11b11, b01a11 - b11a01),\r
 \r
-b01a00 − ǫ1a10b11, a10b01 + b11a00) + (a01b00 + ǫ1b10a11, −b10a01 + a11b00)\r
+b01a00 - e1a10b11, a10b01 + b11a00) + (a01b00 + e1b10a11, -b10a01 + a11b00)\r
 \u0001\r
 =\r
 \r
-(a00b00 − ǫ1b10a10 − ǫ2b01a01 − ǫ1ǫ2a11b11, b10a00 + a10b00 − ǫ2b01a11 + ǫ2b11a01),\r
+(a00b00 - e1b10a10 - e2b01a01 - e1e2a11b11, b10a00 + a10b00 - e2b01a11 + e2b11a01),\r
 \r
-b01a00 − ǫ1a10b11 + a01b00 + ǫ1b10a11, a10b01 + b11a00 − b10a01 + a11b00)\r
+b01a00 - e1a10b11 + a01b00 + e1b10a11, a10b01 + b11a00 - b10a01 + a11b00)\r
 \u0001\r
 .\r
 (7)\r
 Lemma 2. For blade oi1i2...ikthen o\r
 2\r
-i1i2...ik = −ǫi1\r
-ǫi2. . . ǫk, for i1i2 . . . ik, k ∈ N\r
+i1i2...ik = -ei1\r
+ei2. . . ek, for i1i2 . . . ik, k in N\r
 n\r
 1\r
 .\r
-Proof. From (7) or (4) with α = β and β ∈ B(1) then only parallel terms exist at level two,\r
+Proof. From (7) or (4) with alpha = beta and beta in B(1) then only parallel terms exist at level two,\r
 X\r
-β\r
-(aβ0, aβ1)(bβ0, bβ1) = ((a00b00 − ǫ1b10a10 − ǫ2b01a01 − ǫ1ǫ2a11b11, 0),\r
-(b01a00 − ǫ1a10b11 + a01b00 + ǫ1b10a11, 0)).\r
+beta\r
+(abeta0, abeta1)(bbeta0, bbeta1) = ((a00b00 - e1b10a10 - e2b01a01 - e1e2a11b11, 0),\r
+(b01a00 - e1a10b11 + a01b00 + e1b10a11, 0)).\r
 Hence, by symmetry and embedding in (6), the following apply to levels of the pyramid after\r
 one,\r
-o1o1 = ((−ǫ1b10a10, 0),(0, 0)) = −ǫ1,\r
-o2o2 = ((−ǫ2b01a01, 0),(0, 0)) = −ǫ2 and\r
-o12o12 = ((−ǫ1ǫ2a11b11, 0),(0, 0)) = −ǫ1ǫ2.\r
-This is generalised to a k-blade, aα, α ∈ B(n), with α containing ones at positions i1, i2, . . . , ik ∈\r
+o1o1 = ((-e1b10a10, 0),(0, 0)) = -e1,\r
+o2o2 = ((-e2b01a01, 0),(0, 0)) = -e2 and\r
+o12o12 = ((-e1e2a11b11, 0),(0, 0)) = -e1e2.\r
+This is generalised to a k-blade, aalpha, alpha in B(n), with alpha containing ones at positions i1, i2, . . . , ik in\r
 N\r
 n\r
 1\r
-, k ∈ N\r
+, k in N\r
 n\r
 1\r
-, and zeros elsewhere. From (4), if ik 6= n then the zeros at the end of α will act as\r
+, and zeros elsewhere. From (4), if ik 6= n then the zeros at the end of alpha will act as\r
 a\r
 2\r
-α = aαbα until the rightmost index, ik = i, is reached. Then\r
-aαbα = aαi1αi\r
-bαi1αi = (−ǫib\r
-∗\r
-αi1αi\r
-aαi1αi\r
+alpha = aalphabalpha until the rightmost index, ik = i, is reached. Then\r
+aalphabalpha = aalphai1alphai\r
+balphai1alphai = (-eib\r
+*\r
+alphai1alphai\r
+aalphai1alphai\r
 , 0)\r
 where\r
 b\r
-∗\r
-αi1αi\r
-aαi1αi =\r
+*\r
+alphai1alphai\r
+aalphai1alphai =\r
 (\r
-(ǫi−1b\r
-∗\r
-αi−11αi−1\r
-aαi−11αi−1, 0) if i − 1 ∈ i1, i2, . . . , ik,\r
+(ei-1b\r
+*\r
+alphai-11alphai-1\r
+aalphai-11alphai-1, 0) if i - 1 in i1, i2, . . . , ik,\r
 (b\r
-∗\r
-αi−10αi−1\r
-aαi−10αi−1, 0) otherwise.\r
+*\r
+alphai-10alphai-1\r
+aalphai-10alphai-1, 0) otherwise.\r
 The first case is positive because the original conjugation negated the oi element and a new\r
-conjugate for the i−1 level was introduced whereas for b\r
-∗\r
-αi−10αi−1\r
+conjugate for the i-1 level was introduced whereas for b\r
+*\r
+alphai-10alphai-1\r
 the conjugation is passed to the\r
 next level without effect. Continuing to the following levels has no effect on the original sign and\r
-together will introduce ǫj from a\r
+together will introduce ej from a\r
 2\r
-αj 1αj\r
-∀j ∈ i1, i2, . . . , ik−1. This means o\r
+alphaj 1alphaj\r
+for allj in i1, i2, . . . , ik-1. This means o\r
 2\r
-i1i2...ik = −ǫi1\r
-ǫi2\r
-· · · ǫik\r
+i1i2...ik = -ei1\r
+ei2\r
+* * * eik\r
 which is assumed true and by induction a\r
 2\r
-α1\r
-is considered for α having ones in positions i1i2 . . . ik\r
+alpha1\r
+is considered for alpha having ones in positions i1i2 . . . ik\r
 and zeros elsewhere. Then\r
-aα1bα1 = (−ǫn+1b\r
-∗\r
-α1aα1, 0),\r
+aalpha1balpha1 = (-en+1b\r
+*\r
+alpha1aalpha1, 0),\r
 hence o\r
 2\r
-i1i2...ik(n+1) = −ǫi1\r
-ǫi2. . . ǫik\r
-ǫn+1.\r
+i1i2...ik(n+1) = -ei1\r
+ei2. . . eik\r
+en+1.\r
 4
 
-Lemma 3. For δ ∈ A(n − 1) not all zeros then oδon = oδn and onoδ = −oδn.\r
+Lemma 3. For delta in A(n - 1) not all zeros then odeltaon = odeltan and onodelta = -odeltan.\r
 Proof. At level n = 1, 1o1 = (1, 0)(0, 1) = (0, b1a0) = o1. At n = 2,\r
 o1o2 = ((0, 1),(0, 0))((0, 0),(1, 0)) = ((0, 0),(0, a10b01)) = o12.\r
 For the reverse product, at level n = 1, o11 = (0, 1)(1, 0) = (0, b1a0) = o1. At n = 2,\r
 o2o1 = ((0, 0),(1, 0))((0, 1),(0, 0)) = ((0, 0),(0, a01b\r
-∗\r
-10)) = −o12.\r
-The symmetry of the on pyramid used here for any oδ ≡ aα0 is that the first term on the\r
+*\r
+10)) = -o12.\r
+The symmetry of the on pyramid used here for any odelta == aalpha0 is that the first term on the\r
 right hand side of the pyramid is a cross term and all the rest are parallel terms,\r
-aα0bβ1 = (0, aα0bβ1) = (\r
-(0, 0),(0, aαn−110b\r
-∗\r
-βn−101)\r
+aalpha0bbeta1 = (0, aalpha0bbeta1) = (\r
+(0, 0),(0, aalphan-110b\r
+*\r
+betan-101)\r
 \u0001\r
-if oδ contains on−1 and\r
+if odelta contains on-1 and\r
 \r
-(0, 0),(aαn−100bβn−101, 0)\u0001otherwise.\r
-Since conjugation has no effect on bβn−10 then extrapolating to level 0 gives a positive sign,\r
-oδon = oδn. The second case, onoδ, has the same symmetry, with the conjugate having no effect\r
+(0, 0),(aalphan-100bbetan-101, 0)\u0001otherwise.\r
+Since conjugation has no effect on bbetan-10 then extrapolating to level 0 gives a positive sign,\r
+odeltaon = odeltan. The second case, onodelta, has the same symmetry, with the conjugate having no effect\r
 other than the minus sign introduced at level n,\r
-aβ1bα0 = (0, aβ1b\r
-∗\r
-α0\r
+abeta1balpha0 = (0, abeta1b\r
+*\r
+alpha0\r
 ) = (\r
-(0, 0),(0, −bαn−110a\r
-∗\r
-βn−101)\r
+(0, 0),(0, -balphan-110a\r
+*\r
+betan-101)\r
 \u0001\r
-if oδ contains on−1 and\r
+if odelta contains on-1 and\r
 \r
-(0, 0),(aβn−101bαn−100, 0)\u0001otherwise\r
-hence onoδ = −oδn.\r
-Theorem 1 (Cayley-Dickson algebras). The Cayley-Dickson construction to any level, n, gen\u0002erates an algebra with pure elements, x, y satisfying xy = −yx if x 6= y and, if ǫi = 1, ∀i ∈ N\r
+(0, 0),(abetan-101balphan-100, 0)\u0001otherwise\r
+hence onodelta = -odeltan.\r
+Theorem 1 (Cayley-Dickson algebras). The Cayley-Dickson construction to any level, n, gen\u0002erates an algebra with pure elements, x, y satisfying xy = -yx if x 6= y and, if ei = 1, for alli in N\r
 n\r
 1\r
-and x = y, then xy = −1. The unit, 1, has no effect under multiplication.\r
+and x = y, then xy = -1. The unit, 1, has no effect under multiplication.\r
 Proof. From Lemma 1, product expansion and contraction of blades shows that the generators of\r
 the algebra under multiplication are an injection and repeated multiplication becomes a surjection\r
-thus generating the scaled basis of the algebra. Lemma 2 shows that for ǫi = 1, ∀i ∈ N\r
+thus generating the scaled basis of the algebra. Lemma 2 shows that for ei = 1, for alli in N\r
 n\r
 1\r
 then\r
 o\r
 2\r
-α = −1, ∀α ∈ A(n). For the unit, 1 = bβ where β ∈ B(n) is all zeros, the product from (4) at\r
+alpha = -1, for allalpha in A(n). For the unit, 1 = bbeta where beta in B(n) is all zeros, the product from (4) at\r
 level i > 1 is seen to be an identity for itself and pure elements,\r
-(aαi0αi\r
-, aαi1αi)(bβ, 0) = aαi0αibβ, aαi1αib\r
-∗\r
-β\r
+(aalphai0alphai\r
+, aalphai1alphai)(bbeta, 0) = aalphai0alphaibbeta, aalphai1alphaib\r
+*\r
+beta\r
 \u0001\r
 =\r
 \r
-(aαi−10αi−1, 0)(bβ, 0),(aαi−11αi−1, 0)(bβ, 0)\u0001.\r
-The expansion terminates at level 0 with aαbβ = aα and is symmetric so aβbα = bα also.\r
-Anticommutation is proved by induction starting with Lemma 3 for o1o2 = −o2o1. This is the\r
+(aalphai-10alphai-1, 0)(bbeta, 0),(aalphai-11alphai-1, 0)(bbeta, 0)\u0001.\r
+The expansion terminates at level 0 with aalphabbeta = aalpha and is symmetric so abetabalpha = balpha also.\r
+Anticommutation is proved by induction starting with Lemma 3 for o1o2 = -o2o1. This is the\r
 n = 2 level but is provided as the basis of induction in the proof of the lemma. By the symmetry\r
 of the construction, this result applies at all levels n > 2 for these pure elements. Assuming\r
-the n − 1 product is true, aα0bβ0 = −bβ0aα0, for α, β ∈ B(n − 1), not all zeros, and α 6= β,\r
+the n - 1 product is true, aalpha0bbeta0 = -bbeta0aalpha0, for alpha, beta in B(n - 1), not all zeros, and alpha 6= beta,\r
 then multiplying by on produces a pyramid whereby the left-hand half does not contain on and\r
-the right-hand half reflects this structure but includes on for all elements. Proving xy = −yx\r
-for the on case is divided into three equations which need to be proved; onaα0 = −aα0on,\r
-aα1bβ0 = −bβ0aα1 and aα1bβ1 = −bβ1aα1, for α, β not all zeros. Lemma 3 has already shown\r
+the right-hand half reflects this structure but includes on for all elements. Proving xy = -yx\r
+for the on case is divided into three equations which need to be proved; onaalpha0 = -aalpha0on,\r
+aalpha1bbeta0 = -bbeta0aalpha1 and aalpha1bbeta1 = -bbeta1aalpha1, for alpha, beta not all zeros. Lemma 3 has already shown\r
 the first case and found that a\r
-∗\r
-α = −aα since α is not all zeros. Hence, the second case with β\r
+*\r
+alpha = -aalpha since alpha is not all zeros. Hence, the second case with beta\r
 not all zeros, is\r
-aα1bβ0 = (0, aα1)(bβ0, 0) = (0, aα1b\r
-∗\r
-β0\r
+aalpha1bbeta0 = (0, aalpha1)(bbeta0, 0) = (0, aalpha1b\r
+*\r
+beta0\r
 ) and\r
-bβ0aα1 = (bβ0, 0)(0, aα1) = (0, aα1bβ0) = −aα1bβ0.\r
-Finally, induction and symmetry of the pyramid is used on aα1bβ1 + bβ1aα1 = 0,\r
-aα1bβ1 = (0, aα1)(0, bβ1) = (−b\r
-∗\r
-β1aα1, 0) and\r
-bβ1aα1 = (0, bβ1)(0, aα1) = (−a\r
-∗\r
-α1\r
-bβ1, 0).\r
+bbeta0aalpha1 = (bbeta0, 0)(0, aalpha1) = (0, aalpha1bbeta0) = -aalpha1bbeta0.\r
+Finally, induction and symmetry of the pyramid is used on aalpha1bbeta1 + bbeta1aalpha1 = 0,\r
+aalpha1bbeta1 = (0, aalpha1)(0, bbeta1) = (-b\r
+*\r
+beta1aalpha1, 0) and\r
+bbeta1aalpha1 = (0, bbeta1)(0, aalpha1) = (-a\r
+*\r
+alpha1\r
+bbeta1, 0).\r
 (8)\r
 These anticommutator terms occur in the same position on the right-hand half as the terms\r
 without on on the left-hand half of the pyramid. After the first pyramid multiplication they\r
 have identical paths through the each side of the pyramid apart from the minus signs and the\r
-conjugate. The conjugate descends the path until the first 1 in α from the right and changes\r
+conjugate. The conjugate descends the path until the first 1 in alpha from the right and changes\r
 5
 
 the sign and disappears for the rest of the path, a\r
-∗\r
-α1 = −aα1 and similarly, a\r
-∗\r
-β1 = −aβ1. Hence\r
+*\r
+alpha1 = -aalpha1 and similarly, a\r
+*\r
+beta1 = -abeta1. Hence\r
 the minus signs are cancelled in (8) and so using symmetry and arguing by induction with\r
-aα0bβ0 − bβ0aα0 = 0 true at level 2 and assumed true at level n − 1, then\r
-−b\r
-∗\r
-β1aα1 − a\r
-∗\r
-α1\r
-bβ1 = aα0bβ0 + bβ0aα0 = 0.\r
-Corollary. The first four levels of blades with ǫi = 1 ∀i ∈ N\r
+aalpha0bbeta0 - bbeta0aalpha0 = 0 true at level 2 and assumed true at level n - 1, then\r
+-b\r
+*\r
+beta1aalpha1 - a\r
+*\r
+alpha1\r
+bbeta1 = aalpha0bbeta0 + bbeta0aalpha0 = 0.\r
+Corollary. The first four levels of blades with ei = 1 for alli in N\r
 4\r
 1 are isomorphic to complex numbers,\r
 C, quaternions, H, octonions, O, and sedenions, S, respectively.\r
@@ -449,12 +449,12 @@ numbers. At level two, the usual representation of quaternions also have the cyc
 ij = k, jk = i and ki = j. Starting by calculating the cyclic rules in full\r
 o1o2 = ((0, 1),(0, 0))((0, 0),(1, 0)) = ((0, 0),(0, 1)(1, 0))\r
 = ((0, 0),(0, 1\r
-∗\r
+*\r
 )) = o12,\r
-o2o12 = ((0, 0),(1, 0))((0, 0),(0, 1)) = (−(0, 1)∗(1, 0),(0, 0))\r
+o2o12 = ((0, 0),(1, 0))((0, 0),(0, 1)) = (-(0, 1)*(1, 0),(0, 0))\r
 = ((0, 1),(0, 0)) = o1 and\r
-o12o1 = ((0, 0),(0, 1))((0, 1),(0, 0)) = ((0, 0),(0, 1)(0, 1)∗)\r
-= ((0, 0), −(−1, 0)) = o2.\r
+o12o1 = ((0, 0),(0, 1))((0, 1),(0, 0)) = ((0, 0),(0, 1)(0, 1)*)\r
+= ((0, 0), -(-1, 0)) = o2.\r
 (9)\r
 Thus level 2 is isomorphic to H. At level 3 there are seven blades, {o1, o2, o12, o3, o23, o13, o123},\r
 which matches the number of octonion basis elements and it is obvious that the quaternions\r
@@ -463,65 +463,65 @@ the isomorphism. At level 4 there are 15 blades matching the sedenions and the o
 embedded in the first seven blades. This is a requirement of sedenions and will suffice to prove\r
 the isomorphism, given Theorem 1.\r
 The alternative ring properties of Cayley-Dickson algebras that are essential to simplify non\u0002associative expressions are now proved [18].\r
-Lemma 4. For x and y distinct blades with ǫi = 1, i ∈ N\r
+Lemma 4. For x and y distinct blades with ei = 1, i in N\r
 n\r
 1\r
-, then yxx = −y and x(xy) = −y.\r
-Proof. The later statement is true if the former is true, x(xy) = −(xy)x = yxx, if y 6= x and\r
-obviously x(xx) = −x otherwise. The proof of the former proceeds via induction. It works for H\r
+, then yxx = -y and x(xy) = -y.\r
+Proof. The later statement is true if the former is true, x(xy) = -(xy)x = yxx, if y 6= x and\r
+obviously x(xx) = -x otherwise. The proof of the former proceeds via induction. It works for H\r
 which needs to be checked for the six combinations of two from three elements using the cyclic\r
 product rules (9),\r
-o1o2o2 = o12o2 = −o2o12 = −o1,\r
-o1o12o12 = −o2o12 = o12o2 = −o1,\r
-o2o1o1 = −o1o2o1 = −o12o1 = −o2,\r
-o2o12o12 = −o12o2o12 = o1o12 = −o2,\r
-o12o1o1 = −o1o12o1 = o2o1 = −o12 and\r
-o12o2o2 = −o1o2 = −o12.\r
-Assuming aα0bβ0bβ0 = bβ0(bβ0aα0) = −aα0, α, β ∈ B(n − 1) not all zeros, then by induction only\r
+o1o2o2 = o12o2 = -o2o12 = -o1,\r
+o1o12o12 = -o2o12 = o12o2 = -o1,\r
+o2o1o1 = -o1o2o1 = -o12o1 = -o2,\r
+o2o12o12 = -o12o2o12 = o1o12 = -o2,\r
+o12o1o1 = -o1o12o1 = o2o1 = -o12 and\r
+o12o2o2 = -o1o2 = -o12.\r
+Assuming aalpha0bbeta0bbeta0 = bbeta0(bbeta0aalpha0) = -aalpha0, alpha, beta in B(n - 1) not all zeros, then by induction only\r
 the following conditions need to be proved, which for the second two equations again use the\r
 symmetry argument that after the first step in the pyramid expansion the left-right symmetry\r
 means the same path is followed on both sides,\r
-aα1bβ0bβ0 = (0, aα1)(bβ0, 0)(bβ0, 0)\r
-= (0, aα1b\r
-∗\r
-β0\r
-)(bβ0, 0)\r
-= (0, aα1b\r
-∗\r
-β0\r
-bβ0)\r
-= −aα1,\r
+aalpha1bbeta0bbeta0 = (0, aalpha1)(bbeta0, 0)(bbeta0, 0)\r
+= (0, aalpha1b\r
+*\r
+beta0\r
+)(bbeta0, 0)\r
+= (0, aalpha1b\r
+*\r
+beta0\r
+bbeta0)\r
+= -aalpha1,\r
 6
 
-aα0bβ1bβ1 = (aα0, 0)(0, bβ1)(0, bβ1)\r
-= (0, bβ1aα0)(0, bβ1)\r
-= (−b\r
-∗\r
-β1\r
-(bβ1aα0), 0)\r
-= (bβ0(bβ0aα0), 0)\r
-= −aα0 and\r
-aα1bβ1bβ1 = (0, aα1)(0, bβ1)(0, bβ1)\r
-= (−b\r
-∗\r
-β1aα1, 0)(0, bβ1)\r
-= (0, −bβ1(b\r
-∗\r
-β1aα1), 0)\r
-= (0, bβ0(bβ0aα1), 0)\r
-= (0, −aα1)\r
-= −aα1.\r
-This leaves xonon where β is all zeros in the last two equations. In that case the conjugate has\r
-no effect after the first step and −b\r
-∗\r
-β1\r
-(bβ1x) = −bβ1(b\r
-∗\r
-β1x) = −x. Hence aαbβbβ = −aα for all\r
-α, β ∈ B(n). Note that while xyzz = −xy, it is not necessarily true that x(xyz) = −yz for\r
+aalpha0bbeta1bbeta1 = (aalpha0, 0)(0, bbeta1)(0, bbeta1)\r
+= (0, bbeta1aalpha0)(0, bbeta1)\r
+= (-b\r
+*\r
+beta1\r
+(bbeta1aalpha0), 0)\r
+= (bbeta0(bbeta0aalpha0), 0)\r
+= -aalpha0 and\r
+aalpha1bbeta1bbeta1 = (0, aalpha1)(0, bbeta1)(0, bbeta1)\r
+= (-b\r
+*\r
+beta1aalpha1, 0)(0, bbeta1)\r
+= (0, -bbeta1(b\r
+*\r
+beta1aalpha1), 0)\r
+= (0, bbeta0(bbeta0aalpha1), 0)\r
+= (0, -aalpha1)\r
+= -aalpha1.\r
+This leaves xonon where beta is all zeros in the last two equations. In that case the conjugate has\r
+no effect after the first step and -b\r
+*\r
+beta1\r
+(bbeta1x) = -bbeta1(b\r
+*\r
+beta1x) = -x. Hence aalphabbetabbeta = -aalpha for all\r
+alpha, beta in B(n). Note that while xyzz = -xy, it is not necessarily true that x(xyz) = -yz for\r
 distinct blades x, y, z. For example, o1(o1o2o3) = o23.\r
 Definition. The associator is defined, using left-expansion, as\r
-[a, b, c] = (ab)c − a(bc) = abc − a(bc),\r
+[a, b, c] = (ab)c - a(bc) = abc - a(bc),\r
 which is zero for H because quaternions are associative [5] and have one ordered pure triple. This\r
 is not the case for octonions, O, which have \r
 7\r
@@ -538,9 +538,9 @@ the generators represent three dimensional vector space, R\r
 3\r
 . The three remaining triples can\r
 not be interpreted in this way but the graded product of the three blades in all seven triples is\r
-seen to be a scalar, either ±1. The remaining triples will be shown to be non-associative. For\r
+seen to be a scalar, either +/-1. The remaining triples will be shown to be non-associative. For\r
 example, Lemma 2 has o1o2o3 = o123 whereas expanding the pyramid for o1(o2o3) gives the term\r
-−a100b011 in the o123 position so that o1(o2o3) = −o123, hence the associator is non-zero and this\r
+-a100b011 in the o123 position so that o1(o2o3) = -o123, hence the associator is non-zero and this\r
 triple is non-associative, [o1, o2, o3] = 2o123.\r
 The names quaternion and octonion seem to be derived from book binding techniques in\u0002volving a quire of four or eight folios of paper, respectively. Traditionally, an ancient book or\r
 codex would use separate sheets or bifolio with a single fold stacked and bound to the binding\r
@@ -550,14 +550,14 @@ quarto fold type, four has Octavo and eight has extodecimo type, which covers mo
 folios [19]. Accordingly, the prefix ultra is introduced herein to designate all power-associative\r
 Cayley-Dickson algebras. Then, the complex numbers are followed by the hypercomplex num\u0002bers, O and H, and the following power-associative algebras would be known as the ultracomplex\r
 numbers.\r
-Definition. The Cayley-Dickson series for power-associative algebras after A3, with ǫi = 1\r
-for i ∈ N\r
+Definition. The Cayley-Dickson series for power-associative algebras after A3, with ei = 1\r
+for i in N\r
 n\r
 1\r
-, are designated Um, m = n − 3, which refers to the ultronion algebras. Thus the\r
+, are designated Um, m = n - 3, which refers to the ultronion algebras. Thus the\r
 normed algebras, R, C, H and O, are not included in the Um series and the series starts with the\r
-sedenions, S ≡ U1. The split algebras are denoted Uem and later it is shown they are isomorphic\r
-to each other, for any dimension, for any positive number of ǫi = −1, i ∈ N\r
+sedenions, S == U1. The split algebras are denoted Uem and later it is shown they are isomorphic\r
+to each other, for any dimension, for any positive number of ei = -1, i in N\r
 n\r
 1\r
 . The proof of\r
@@ -571,7 +571,7 @@ Definition. There are N3scaled triple products bcd and N\r
 3\r
 \u0001\r
 naturally ordered triples with\r
-blades b < c < d where N = 2n − 1 and n is the number of generators. The ordered triples are\r
+blades b < c < d where N = 2n - 1 and n is the number of generators. The ordered triples are\r
 the same as removing all pairs and triples of the same element from the N3set and dividing by\r
 the number of permutations, 6. A triad is defined as ordered triples containing distinct blades\r
 whereby b < c < d so that bcd is non-zero. Hence basis element a = bcd can be defined for triads\r
@@ -580,112 +580,112 @@ triples for each triad.\r
 Theorem 2 (Associativity theorem). The 24 permutations of triad products generate three types\r
 of associativity, called Types 1, 2 and 3. These are shown in Table 1 where equivalence of\r
 associators means both are zero or both are non-zero, noting that only 12 permutations for ordered\r
-b, c, d and a = bcd are required because [a, b, c] = −[c, b, a].\r
+b, c, d and a = bcd are required because [a, b, c] = -[c, b, a].\r
 Table 1: Triad Associativity Types\r
 Associativity Equivalence Associativity\r
-[b, a, c] ≈ [b, d, c] ≈ [a, b, d] ≈ [a, c, d] Type 1\r
-[a, b, c] ≈ [b, c, d] ≈ [b, a, d] ≈ [a, d, c] Type 2\r
-[a, c, b] ≈ [c, b, d] ≈ [a, d, b] ≈ [c, a, d] Type 3\r
+[b, a, c] approx [b, d, c] approx [a, b, d] approx [a, c, d] Type 1\r
+[a, b, c] approx [b, c, d] approx [b, a, d] approx [a, d, c] Type 2\r
+[a, c, b] approx [c, b, d] approx [a, d, b] approx [c, a, d] Type 3\r
 Proof. Excluding complete associativity for triads where all associativity types are zero means\r
-that a(bc) = −(bc)a = cba if a is not a scaling of bc and similarly for abc = (ab)c = c(ba). Hence\r
-[a, b, c] = abc − a(bc) = c(ba) − (cb)a = −[c, b, a]. This is also true for associative triple products,\r
+that a(bc) = -(bc)a = cba if a is not a scaling of bc and similarly for abc = (ab)c = c(ba). Hence\r
+[a, b, c] = abc - a(bc) = c(ba) - (cb)a = -[c, b, a]. This is also true for associative triple products,\r
 where a is a scalar, because both sides are zero. Now, if b, c, d are not associative, the relation\r
-a = bcd means ad−1 = bc or d = −a(bc)\r
-−1 = −bca/b2/c2\r
+a = bcd means ad-1 = bc or d = -a(bc)\r
+-1 = -bca/b2/c2\r
 , noting that (bc)\r
-2 = −b2\r
+2 = -b2\r
 c\r
 2\r
 . First,\r
 Type 2 and Type 3 associativity are analysed.\r
-Assuming Type 2 associativity, [a, b, c] = abc − a(bc) = 0 or [c, b, a] = cba − c(ba) = 0, then\r
+Assuming Type 2 associativity, [a, b, c] = abc - a(bc) = 0 or [c, b, a] = cba - c(ba) = 0, then\r
 substituting d into the other three associators in the second row in Table 1, scaled by (bc)\r
 2\r
 , gives\r
 [b, c, d](bc)\r
-2 = bc(bca) − b(c(bca)) = −(bca)(bc) − (bca)cb = −(bc)a(bc) + c(ba)cb\r
-= a(bc)(bc) − baccb = a(bc)\r
-2 + abbc2 = −ab2\r
+2 = bc(bca) - b(c(bca)) = -(bca)(bc) - (bca)cb = -(bc)a(bc) + c(ba)cb\r
+= a(bc)(bc) - baccb = a(bc)\r
+2 + abbc2 = -ab2\r
 c\r
 2 + ab2\r
 c\r
 2 = 0,\r
 [b, a, d](bc)\r
-2 = ba(bca) − b(a(bca)) = −ba(c(ba)) + b(bc)a2 = c(ba)(ba) + cbba2 = 0 and\r
+2 = ba(bca) - b(a(bca)) = -ba(c(ba)) + b(bc)a2 = c(ba)(ba) + cbba2 = 0 and\r
 [a, d, c](bc)\r
-2 = a(bca)c − a(bcac) = −(bca)ac + a(c(ba)c) = −bcca2 + (bacc)a = 0.\r
-Assuming Type 3 associativity, [a, c, b] = acb − a(cb) = 0 or [b, c, a] = bca − b(ca) = 0, then\r
+2 = a(bca)c - a(bcac) = -(bca)ac + a(c(ba)c) = -bcca2 + (bacc)a = 0.\r
+Assuming Type 3 associativity, [a, c, b] = acb - a(cb) = 0 or [b, c, a] = bca - b(ca) = 0, then\r
 substituting d into the other three associators in the third row of Table 1, scaled by (bc)\r
 2\r
 , gives\r
 [c, b, d](bc)\r
-2 = cb(bca) − c(b(bca)) = −b(ca)(cb) − bcabc = cab(cb) − b(ca)bc\r
-= −a(cb)(cb) + (ca)bbc = a − cac = 0\r
+2 = cb(bca) - c(b(bca)) = -b(ca)(cb) - bcabc = cab(cb) - b(ca)bc\r
+= -a(cb)(cb) + (ca)bbc = a - cac = 0\r
 [a, d, b](bc)\r
-2 = a(bca)b − a(bcab) = −bcaab + bcaba = bcb + b(ca)ba = 0 and\r
+2 = a(bca)b - a(bcab) = -bcaab + bcaba = bcb + b(ca)ba = 0 and\r
 [c, a, d](bc)\r
-2 = ca(bca) − c(a(bca)) = −bca(ca) − bcaac = −b(ca)(ca) + bcc = 0.\r
-Assuming Type 1 associativity, [b, a, c] = bac − b(ac) = 0 or [c, a, b] = cab − c(ab) = 0, then\r
+2 = ca(bca) - c(a(bca)) = -bca(ca) - bcaac = -b(ca)(ca) + bcc = 0.\r
+Assuming Type 1 associativity, [b, a, c] = bac - b(ac) = 0 or [c, a, b] = cab - c(ab) = 0, then\r
 substituting d into the other three associators in the first row of Table 1, scaled by (bc)\r
 2\r
 , gives\r
 [b, d, c](bc)\r
-2 = b(bca)c − b(bcac) = −bcabc + bcacb,\r
+2 = b(bca)c - b(bcac) = -bcabc + bcacb,\r
 [a, b, d](bc)\r
-2 = ab(bca) − a(b(bca)) = (bca)(ba) − bcaba = −cba(ba) + cbaba and\r
+2 = ab(bca) - a(b(bca)) = (bca)(ba) - bcaba = -cba(ba) + cbaba and\r
 [a, c, d](bc)\r
-2 = ac(bca) − a(c(bca)) = −bca(ac) − bcaca.\r
+2 = ac(bca) - a(c(bca)) = -bca(ac) - bcaca.\r
 If Type 2 associativity is also assumed then cba = c(ba) and, also again using [c, a, b] = 0, the\r
 three equations become\r
-−bcabc + bcacb = c(ba)bc − c(ba)cb = −b(ac)bc + baccb = acbbc + abb = 0,\r
-−cba(ba) + cbaba = c(ba)(ba) − c(ba)ba = −c + bac(ab) = −c + b(ac)ba = −c + cabba = 0 and\r
-−bca(ac) − bcaca = c(ba)(ac) + c(ba)ca = −bac(ac) − bacca = −b(ac)(ac) − b = 0.\r
+-bcabc + bcacb = c(ba)bc - c(ba)cb = -b(ac)bc + baccb = acbbc + abb = 0,\r
+-cba(ba) + cbaba = c(ba)(ba) - c(ba)ba = -c + bac(ab) = -c + b(ac)ba = -c + cabba = 0 and\r
+-bca(ac) - bcaca = c(ba)(ac) + c(ba)ca = -bac(ac) - bacca = -b(ac)(ac) - b = 0.\r
 8
 
-If Type 3 associativity is also assumed with Type 1 then bca = b(ca) or cba = −b(ca) and, also\r
+If Type 3 associativity is also assumed with Type 1 then bca = b(ca) or cba = -b(ca) and, also\r
 again using [c, a, b] = 0, the three equations become\r
-−bcabc + bcacb = −b(ca)bc + b(ca)cb = −acbbc − cabcb = −a − c(ab)cb = −a + abccb = 0,\r
-−cba(ba) + cbaba = b(ca)(ba) − b(ca)ba = −cab(ba) + cabba = c(ab)(ab) + c = 0 and\r
-−bca(ac) − bcaca = b(ca)(ca) − b(ca)ca = −b + cabca = −b + c(ab)ca = −b + bacca = 0.\r
+-bcabc + bcacb = -b(ca)bc + b(ca)cb = -acbbc - cabcb = -a - c(ab)cb = -a + abccb = 0,\r
+-cba(ba) + cbaba = b(ca)(ba) - b(ca)ba = -cab(ba) + cabba = c(ab)(ab) + c = 0 and\r
+-bca(ac) - bcaca = b(ca)(ca) - b(ca)ca = -b + cabca = -b + c(ab)ca = -b + bacca = 0.\r
 Hence Types 2 and 3 associativity are non-associatively equivalent in there own right but Type 1\r
 needs either Type 2 or Type 3 for equivalence.\r
 Definition. The triple associator, T (b, c, d), is introduced to cover associativity Types 1, 2 and\r
 3 to allow for an unambiguous definition of associativity,\r
-T (b, c, d) = [b, d, c] − [d, c, b] + [c, b, d].\r
+T (b, c, d) = [b, d, c] - [d, c, b] + [c, b, d].\r
 Definition. A triad, b, c, d, is associative if T (b, c, d) = 0 and non-associative if T (b, c, d) 6= 0.\r
 This may seem like over-kill but will soon be seen to be a necessary condition.\r
-Artin’s theorem [5] is stated only for associative subalgebras of octonions but can be gener\u0002alised and then extended to find all subalgebras of any Cayley-Dickson algebra.\r
+Artin's theorem [5] is stated only for associative subalgebras of octonions but can be gener\u0002alised and then extended to find all subalgebras of any Cayley-Dickson algebra.\r
 Theorem 3 (Generalised Artin theorem). Any two distinct blades of H, O or Um, m > 0,\r
 generate an algebra isomorphic or anti-isomorphic to quaternions which is thus associative.\r
 Proof. From Lemma 1, multiplying any two distinct blades generates a third distinct blade. Since\r
 the generated blade is the symmetric difference then multiplying this third element by one of the\r
 first two will recover the other of the first two. All such products are closed under multiplication\r
 and forms a Cayley-Dickson algebra, by Theorem 1, because distinct blades anti-commute and\r
-have negative square in this case. For any two blades, b and c then bc = d, cd = c(bc) = −bcc = b\r
-and db = −cbb = c, by Lemma 4. These are the cyclic, quaternion-like product rules and thus\r
+have negative square in this case. For any two blades, b and c then bc = d, cd = c(bc) = -bcc = b\r
+and db = -cbb = c, by Lemma 4. These are the cyclic, quaternion-like product rules and thus\r
 the triad b, c and bc is isomorphic to H. The triple associator shows associativity for the triad,\r
-T (b, c, bc) = b(bc)c − b(bcc) − bc(cb) + bc(cb) + cb(bc) − c(b(bc))\r
-= −bcbc + bb − bc(bc) + c(bcb)\r
-= +1 − 1 + 1 − 1\r
+T (b, c, bc) = b(bc)c - b(bcc) - bc(cb) + bc(cb) + cb(bc) - c(b(bc))\r
+= -bcbc + bb - bc(bc) + c(bcb)\r
+= +1 - 1 + 1 - 1\r
 = 0.\r
 Theorem 4 (Ultronion generation). Any ultacomplex algebra, Um, m > 0, as well as O, can be\r
-generated by n = m + 3 distinct blades, oαk, ∀ k ∈ N\r
+generated by n = m + 3 distinct blades, oalphak, for all k in N\r
 n\r
 1\r
-, with indices αk that include all n indices\r
+, with indices alphak that include all n indices\r
 an odd number of times over all k. For convenience, allow m = 0 as U0 = O.\r
 Proof. Triad b, c, d (ie three distinct blades), with a = bcd non-scalar, is non-associative,\r
-T (b, c, d) = bdc − b(dc) − dcb + d(cb) + cbd − c(bd)\r
-= bdc + dcb − dcb + bcd − bcd + bdc\r
+T (b, c, d) = bdc - b(dc) - dcb + d(cb) + cbd - c(bd)\r
+= bdc + dcb - dcb + bcd - bcd + bdc\r
 = 2bdc\r
-= ±2a.\r
+= +/-2a.\r
 (11)\r
 Combinations of b, c, d give seven distinct blades by Lemma 1, bc, bd, cd, bcd, which are isomorphic\r
 to octonions because they satisfy the rules of Un and these are the same as O by Theorem 1. Any\r
-n such terms similarly generate 2n − 1 distinct terms if, by Lemma 1, the symmetric difference\r
+n such terms similarly generate 2n - 1 distinct terms if, by Lemma 1, the symmetric difference\r
 of their grades do not become the empty set, which is guaranteed by the condition that each\r
 generator is represented an odd number of times in the indices. Hence they are isomorphic to\r
-Un−3, by Theorem 1.\r
+Un-3, by Theorem 1.\r
 The generation theorem disguises the complexity of the algebras since it avoids generating\r
 algebras from arbitrary triads at higher levels. This will take some effort and starts by analysing\r
 the asymmetry of non-associativity.\r
@@ -696,69 +696,69 @@ types are non-zero or only one is non-zero, the other two being zero.\r
 Proof. From Table 1, for triad b, c, d, Type 1 associativity has bdc = b(dc), Type 2 associativity\r
 has bcd = b(cd) and Type 3 associativity has cbd = c(bd). Starting with Type 1 and substituting\r
 Type 3 then Type 2 associativity, is\r
-bdc = −c(db) = −cbd = bcd = −b(dc),\r
+bdc = -c(db) = -cbd = bcd = -b(dc),\r
 which contradicts Type 1 associativity if Types 2 and 3 are assumed. Similarly, substituting the\r
 reverse of Type 3 then Type 1 into Type 2,\r
-bcd = −d(bc) = −dbc = bdc = b(dc) = −b(cd),\r
+bcd = -d(bc) = -dbc = bdc = b(dc) = -b(cd),\r
 which contradicts Type 2 associativity. Finally substituting the reverse of both Type 2 and\r
 Type 1 into Type 3,\r
-cbd = −d(cb) = −dcb = cdb = c(db) = −c(bd),\r
+cbd = -d(cb) = -dcb = cdb = c(db) = -c(bd),\r
 which contradicts Type 3 associativity. This proves existence of associativity pairs for non\u0002associativity. For necessity, if any associator is non-zero then since a = bcd then the associator\r
-must be ±2a. If only one associator type is zero and the other two are non-zero then from (11),\r
+must be +/-2a. If only one associator type is zero and the other two are non-zero then from (11),\r
 the triple associator becomes\r
-T = ±2a ± 2a + 0 = ±2a,\r
+T = +/-2a +/- 2a + 0 = +/-2a,\r
 which is again a contradiction and proves the conjecture. This theorem says nothing about all\r
 three associator types being non-zero and the triple associator is satisfied in this case, as well as\r
 satisfying the paired type associativity.\r
-Definition. Non-associativity types are defined, using ⋆ to mean non-zero, as\r
+Definition. Non-associativity types are defined, using * to mean non-zero, as\r
 Associativity Non-Associativity Type 1 Type 2 Type 3\r
-⋆ 0 0 Type A\r
-0 ⋆ 0 Type B\r
-0 0 ⋆ Type C\r
-⋆ ⋆ ⋆ Type X\r
-Definition. Triad (b, c, d) generates a Malcev algebra if it satisfies Mal’cev’s identity [20], which\r
+* 0 0 Type A\r
+0 * 0 Type B\r
+0 0 * Type C\r
+* * * Type X\r
+Definition. Triad (b, c, d) generates a Malcev algebra if it satisfies Mal'cev's identity [20], which\r
 is immediately simplified for ultracomplex numbers,\r
-bc(bd) − bcdb − cdbb − dbbc = 0,\r
-−bc(db) − bcdb + cd + dc = 0 or\r
+bc(bd) - bcdb - cdbb - dbbc = 0,\r
+-bc(db) - bcdb + cd + dc = 0 or\r
 bcdb + bc(db) = 0.\r
 (12)\r
 The simplified identity means [bc, d, b] 6= 0 which implies A or X non-associativity if bc is\r
 interpreted as a new c. Malcev algebras define non-associative Lie algebras and this is analysed\r
 later where B and C non-associativity types are also encountered. For quaternion-like triads,\r
 d = bc can be substituted into (12),\r
-bcdb + bc(db) = bc(bc)b + bc(bcb) = −b + bcc = −2b\r
+bcdb + bc(db) = bc(bc)b + bc(bcb) = -b + bcc = -2b\r
 and similarly, cycles d = b or d = c are also non-zero. So associative algebras are not Malcev\r
 algebras.\r
 Theorem 6 (Moufang associativity theorem). A Moufang loop [21] is a non-associative algebraic\r
 structure that satisfies three identities for non-associative triad (b, c, d). Calling these types 1 to\r
 3, then each type exhibits the non-associativity shown in the following table.\r
 Type Moufang non-associativity Equivalence\r
-1 d(b(dc)) − dbdc = 0 B or X\r
-2 b(d(cd)) − bdcd = 0 C or X\r
-3 db(cd) − d(bc)d = 0 B or X if Malcev,\r
+1 d(b(dc)) - dbdc = 0 B or X\r
+2 b(d(cd)) - bdcd = 0 C or X\r
+3 db(cd) - d(bc)d = 0 B or X if Malcev,\r
 A or C otherwise\r
 10
 
 Proof. Type 1 and 2 equations, multiplied by d and assuming d\r
-2 = −1, become respectively\r
-d(b(dc))d − dbdcd = −b(dc)dd + bddcd = dcbdd − bcd = −dcb − bcd = −bcd − b(cd) = 0 and\r
-b(d(cd))d − bdcdd = −d(cd)bd + dbcdd = −cddbd + dbcdd = cbd − dbc = cdb + c(db) = 0.\r
-Substituting the first equation into Type 2 associativity is [b, c, d] = bcd − b(cd) = 2bcd, which\r
-is non-zero. Substituting the second into Type 3 associativity is [c, b, d] = cbd − c(bd) = 2cbd,\r
+2 = -1, become respectively\r
+d(b(dc))d - dbdcd = -b(dc)dd + bddcd = dcbdd - bcd = -dcb - bcd = -bcd - b(cd) = 0 and\r
+b(d(cd))d - bdcdd = -d(cd)bd + dbcdd = -cddbd + dbcdd = cbd - dbc = cdb + c(db) = 0.\r
+Substituting the first equation into Type 2 associativity is [b, c, d] = bcd - b(cd) = 2bcd, which\r
+is non-zero. Substituting the second into Type 3 associativity is [c, b, d] = cbd - c(bd) = 2cbd,\r
 which is also non-zero. Hence Moufang loop non-associativity of Type 1 and 2 corresponds to\r
 B-non-associativity and C-non-associativity, respectively, or X-non-associativity in both cases.\r
 Multiplying Moufang type 3 by db gives,\r
-db(cd)(db) − d(bc)d(db) = −cd(db)(db) − bc(db) = 0,\r
-so cd = bc(db). Applying (12) so that cd = −bcdb and substituting into Type 2 associativity\r
+db(cd)(db) - d(bc)d(db) = -cd(db)(db) - bc(db) = 0,\r
+so cd = bc(db). Applying (12) so that cd = -bcdb and substituting into Type 2 associativity\r
 gives,\r
-[b, c, d] = bcd − b(cd) = bcd + b(bcdb) = bcd − bcdbb = bcd + bcd = 2bcd 6= 0.\r
-This implies type B or X non-associativity. If Mal’cev’s identity is not satisfied then (12) takes the\r
+[b, c, d] = bcd - b(cd) = bcd + b(bcdb) = bcd - bcdbb = bcd + bcd = 2bcd 6= 0.\r
+This implies type B or X non-associativity. If Mal'cev's identity is not satisfied then (12) takes the\r
 opposite sign, [bc, d, b] = 0, and Type 2 associativity is then zero so that A or C non-associativity\r
 holds. This completes the proof and it is noted that it is possible to use combinations of the\r
-Moufang types along with Mal’cev’s identity to distinguish all four types of non-associativity A,\r
+Moufang types along with Mal'cev's identity to distinguish all four types of non-associativity A,\r
 B, C and X.\r
 Note that some authors[22, 23] include a fourth Moufang type, db(cd) = d(bcd). But this is\r
-the same as the third type since d(bcd) = −bcdd = d(bc)d.\r
+the same as the third type since d(bcd) = -bcdd = d(bc)d.\r
 The associative triads have pairs (b, c), (b, bc) and (c, bc), which form a 3-cycle of pairs. This\r
 applies to all pairs and can be extended to triads to provide another level of structure to the\r
 ultronions.\r
@@ -775,7 +775,7 @@ U5 10,795 388,620 2,331,720 2,731,135\r
 U6 43,435 3,152,140 18,912,840 22,108,415\r
 U7 174,251 25,390,860 152,345,160 177,910,271\r
 Definition. Naturally ordered basis pairs form 3-cycles, (b, c), (b, bc) and (c, bc), which cover\r
-all ordered pairs. This is because there are (2n − 1)(2n − 2)/2 combinations of pairs which have\r
+all ordered pairs. This is because there are (2n - 1)(2n - 2)/2 combinations of pairs which have\r
 factors one and two numbers less than a power of 2 so one must have a factor of 3. These pairs\r
 can be ordered as b < c < bc and the pairs of the ordered 3-cycles are called the first, second\r
 and third cycle, respectively. A 3-triad cycle extends this to the triads (b, c, d),(b, bc, d),(c, bc, d)\r
@@ -787,7 +787,7 @@ summation of these triad enumerations is provided in the last column of Table 2 
 N\r
 3\r
 \u0001\r
-, where N = 2n − 1.\r
+, where N = 2n - 1.\r
 For quaternions, H, the associative triad in Table 2 is (o1, o2, o12). For octonions, O, the 7\r
 associative triads have been provided by (10). The 24 3-triad cycles are derived from eight triads\r
 starting with the following first cycles,\r
@@ -799,16 +799,16 @@ All these octonion triads have X-non-associativity and it will soon be proved th
 must also be of type X. Remember [o1, o2, o3] = 2o123 and multiplying terms by distinct basis\r
 elements does not change the non-associativity type. To achieve this we need another generator,\r
 o4, for example, so that for b = o1, c = o2 and d = o34 then Type 2 is associative, [o2, o3, o34] =\r
-−o1234 + o1234 = 0 and Type 1 is non-associative, [o1, o34, o2] = −o1234 − o1234 6= 0.\r
+-o1234 + o1234 = 0 and Type 1 is non-associative, [o1, o34, o2] = -o1234 - o1234 6= 0.\r
 Table 3 provides the first A and C triads from U1 and the first B triad from U2 as examples.\r
 For X non-associativity, the first U1 X case not included in O is selected but note that any\r
 octonion non-associative triad could have been selected with generator o3 replaced with o4.\r
 Table 3: Non-associativity to Associativity Examples\r
 Type Type 1 Type 2 Type 3\r
-A [o1, o34, o2] = −2o1234 [o1, o2, o34] = 0 [o2, o1, o34] = 0\r
-B [o1, o345, o24] = 0 [o1, o24, o345] = −2o1235 [o24, o1, o345] = 0\r
-C [o1, o34, o24] = 0 [o1, o24, o34] = 0 [o24, o1, o34] = −2o123\r
-X [o1, o4, o2] = −2o124 [o1, o2, o4] = 2o124 [o2, o1, o4] = −2o124\r
+A [o1, o34, o2] = -2o1234 [o1, o2, o34] = 0 [o2, o1, o34] = 0\r
+B [o1, o345, o24] = 0 [o1, o24, o345] = -2o1235 [o24, o1, o345] = 0\r
+C [o1, o34, o24] = 0 [o1, o24, o34] = 0 [o24, o1, o34] = -2o123\r
+X [o1, o4, o2] = -2o124 [o1, o2, o4] = 2o124 [o2, o1, o4] = -2o124\r
 The enumeration of 3-triad cycles in Table 2 can be divided by three and categorised as\r
 belonging to one of eight 3-triad cycles and the enumeration of non-cycles is separated into the\r
 four single triads rows shown in Table 4. This table provides the 3-triad cycles structure for\r
@@ -836,15 +836,15 @@ Proof. Starting with A-non-associativity for the first cycle then showing that t
 third cycles have Type 2 associativity shows that these are either A or C-non-associative. Here\r
 we use Type 2 associativity [b, c, d] = 0 and Type 3 associativity [c, b, d] = 0 and apply to the\r
 second cycle equivalent,\r
-[b, bc, d] = b(bc)d − b(bcd) = −bcbd + bcdb = cbbd + b(cd)b = −cd + cd = 0 and\r
-[c, bc, d] = c(bc)d − c(bcd) = −bccd + bcdc = bd − c(bd)c = bd − bd = 0. (14)\r
+[b, bc, d] = b(bc)d - b(bcd) = -bcbd + bcdb = cbbd + b(cd)b = -cd + cd = 0 and\r
+[c, bc, d] = c(bc)d - c(bcd) = -bccd + bcdc = bd - c(bd)c = bd - bd = 0. (14)\r
 Hence the result is either A or C and AA means third cycle A and AC means third cycle C needs\r
 to be shown. Using Type 3 associativity, [c, b, d] = 0, then third cycle Type 2 associativity is\r
-[c, bc, d] = c(bc)d − c(bcd) = −bccd − cbdc = bd − c(bd)c = 0,\r
+[c, bc, d] = c(bc)d - c(bcd) = -bccd - cbdc = bd - c(bd)c = 0,\r
 meaning either AAA or AAC. Now assume third cycle Type 3 associativity, then\r
-[bc, c, d] = bccd − bc(cd) = 0 =⇒ db = −bc(cd)\r
+[bc, c, d] = bccd - bc(cd) = 0 ==> db = -bc(cd)\r
 Substitute this into second Type 3 associativity,\r
-[bc, b, d] = bcbd − bc(db) = −cbbd + bc(bc(cd)) = cd + cd(bc)(bc) = 0,\r
+[bc, b, d] = bcbd - bc(db) = -cbbd + bc(bc(cd)) = cd + cd(bc)(bc) = 0,\r
 12
 
 which means the third cycle for AA is also A. To the contrary, if the second cycle is not Type 3\r
@@ -853,36 +853,36 @@ For the BBA and BXC silos we need to show that the second cycle has non-zero Typ
 associator and third cycle Type 2 associativity. Starting with the Type 2 associator for the\r
 second and third cycles and using Type 3 associativity, [c, b, d] = 0, and Type 1 associativity,\r
 [b, d, c] = 0, then\r
-[b, bc, d] = b(bc)d − b(bcd) = −bcbd + bcdb = cbbd − c(bd)b = dc + b(dc)b = 2dc 6= 0 and\r
-[c, bc, d] = c(bc)d − c(bcd) = −bccd + bcdc = bd − c(bd)c = bd − bd = 0.\r
+[b, bc, d] = b(bc)d - b(bcd) = -bcbd + bcdb = cbbd - c(bd)b = dc + b(dc)b = 2dc 6= 0 and\r
+[c, bc, d] = c(bc)d - c(bcd) = -bccd + bcdc = bd - c(bd)c = bd - bd = 0.\r
 So the second cycle is either B or X-non-associative and the third A or C. If the second cycle\r
 is B then the third can be expanded using Type 3 and Type 1 associativity. Considering third\r
 cycle Type 1 associativity and using Type 3 associativity and assuming the third cycle Type 3\r
 associativity from (14), then\r
-[c, d, bc] = cd(bc)− c(d(bc)) = cd(bc)− bcdc = cd(bc) + c(bd)c = cd(bd) + bc(cd) = cd(bd− bc) 6= 0.\r
+[c, d, bc] = cd(bc)- c(d(bc)) = cd(bc)- bcdc = cd(bc) + c(bd)c = cd(bd) + bc(cd) = cd(bd- bc) 6= 0.\r
 Hence BB has A as the third cycle and therefore BXC is the other 3-cycle.\r
 For CAB and CCX silos, consider the second and third Type 2 associativity. Using Type 2\r
 associativity, [b, c, d] = 0, and Type 1 associativity, [b, d, c] = 0, then\r
-[b, bc, d] = b(bc)d − b(bcd) = −bcbd + bcdb = cbbd + b(cd)b = −cd + cd = 0 and\r
-[c, bc, d] = c(bc)d − c(bcd) = −bccd + bcdc = bd + b(cd)c = bd − bdcc = 2bd 6= 0.\r
+[b, bc, d] = b(bc)d - b(bcd) = -bcbd + bcdb = cbbd + b(cd)b = -cd + cd = 0 and\r
+[c, bc, d] = c(bc)d - c(bcd) = -bccd + bcdc = bd + b(cd)c = bd - bdcc = 2bd 6= 0.\r
 Hence the second cycle is either A or C and the third either B or X. This is separated by showing\r
 that the second and third associator are either both associative or both non-zero. Substituting\r
 second Type 3 associativity, [bc, b, d] = 0 as cd = bc(db) into the third gives,\r
-[bc, c, d] = bccd − bc(cd) = −bd − bc(bc(db)) = −bd − db(bc)(bc) = 0.\r
+[bc, c, d] = bccd - bc(cd) = -bd - bc(bc(db)) = -bd - db(bc)(bc) = 0.\r
 Hence C in the first cycle leads to CAB or CCX silos.\r
-The silos that start with X non-associativity are proved using Moufang’s non-associativity.\r
+The silos that start with X non-associativity are proved using Moufang's non-associativity.\r
 From Theorem 6, for X-non-associativity the Moufang types are 1 and 2,\r
-d(b(dc)) − dbdc = dcbd + bddc = 0 ⇒ bc = dcbd and (15)\r
-b(d(cd)) − bdcd = cddb − bdcd = 0 ⇒ bc = bdcd. (16)\r
+d(b(dc)) - dbdc = dcbd + bddc = 0 => bc = dcbd and (15)\r
+b(d(cd)) - bdcd = cddb - bdcd = 0 => bc = bdcd. (16)\r
 So the second cycle is either B or X. Type 3 and 1 for the second cycle using (16) for Type 3 is\r
-[bc, b, d] = bcbd − bc(bd) = cd − bc(bd), (17)\r
-[b, d, bc] = bd(bc) − b(d(bc)) = bd(bc) − bcdb = bd(bc) − dcbddb = bd(bc) − dc = [bc, b, d].\r
+[bc, b, d] = bcbd - bc(bd) = cd - bc(bd), (17)\r
+[b, d, bc] = bd(bc) - b(d(bc)) = bd(bc) - bcdb = bd(bc) - dcbddb = bd(bc) - dc = [bc, b, d].\r
 Type 2 and 3 for the third cycle with (15) applied to Type 2 is\r
-[c, bc, d] = c(bc)d − c(bcd) = bd + bcdc = bd + bdcddc = 2bd 6= 0,\r
-[bc, c, d] = bccd − bc(cd) = −bd − bc(cd). (18)\r
+[c, bc, d] = c(bc)d - c(bcd) = bd + bcdc = bd + bdcddc = 2bd 6= 0,\r
+[bc, c, d] = bccd - bc(cd) = -bd - bc(cd). (18)\r
 Hence, the third cycle is B or X, since Type 2 is non-zero, assuming the first cycle is X or B,\r
 from (15). If Type 3 second cycle is zero, such that cd = bc(bd) from (17), then (18) becomes\r
-−bd − bc(cd) = −bd + bc(bd)(bc) = −bd − bd(bc)(bc) = 0.\r
+-bd - bc(cd) = -bd + bc(bd)(bc) = -bd - bd(bc)(bc) = 0.\r
 So again, the third cycle is B if the second is B, alternatively, both are X. Since the first cycle\r
 was assumed to be X we have 3-triads cycles XXX or XBB.\r
 Half of the 3-triad cycle silos satisfy the identity for Malcev algebra, (12), which can now\r
@@ -890,7 +890,7 @@ be recognised as second and third cycles from the Cycle theorem. Due to the cycl
 AAA and XXX silos satisfy (12) for all cycles so each 3-triads cycle provides a Malcev algebra\r
 of 3 triads. This is applicable to the eight XXX cycles of O indicated in Table 4 and shown in\r
 (13). The four non-cycle X triads are (o2, o3, o13), (o2, o13, o23), (o12, o3, o13) and (o12, o3, o23)\r
-and these also satisfy Mal’cev’s identity since their second and third cycle parts overlap with\r
+and these also satisfy Mal'cev's identity since their second and third cycle parts overlap with\r
 other X triads. This completes the 28 Malcev triads in O that provide the tangent space of\r
 13
 
@@ -907,7 +907,7 @@ and the O parts of U1 in Table 4. Each triad generates 7 distinct blades giving 
 \u0001\r
 = 28 distinct\r
 triads and the members of 3-triad cycles are already included in this set so only the first cycle\r
-needs to be considered. O have 8×3 = 24 triads in the XXX silo and 4 in the non-cycles. U1 has\r
+needs to be considered. O have 8x3 = 24 triads in the XXX silo and 4 in the non-cycles. U1 has\r
 eight times these numbers and these can be identified with 8 triads that generate the composed\r
 O then seven copies of O,\r
 (o1, o2, o3),(o1, o2, o4),(o1, o3, o4),(o1, o23, o4),\r
@@ -923,8 +923,8 @@ each subalgebra for the same algebras as shown in Table 4 is provided in Table 5
 seven quaternion subalgebras, seen in 10 for (o1, o2, o3), and the pseudo-octionions have seven\r
 octonion-like algebras, split or not. Each quaternion-like algebra overlaps three times with other\r
 octonion-like rings. For example, (o1, o2, o12) occurs in (o1, o2, o3), (o1, o2, o4) and (o1, o2, o34).\r
-Hence the number of associative sub-algebras in sedonions is (7 + 8)× 7/3 = 35 and from the ta\u0002ble is can be seen that the number of overlapping quaternion-like algebras for each octonion-like\r
-subalgebra in Uk is 2k+1 − 1.\r
+Hence the number of associative sub-algebras in sedonions is (7 + 8)x 7/3 = 35 and from the ta\u0002ble is can be seen that the number of overlapping quaternion-like algebras for each octonion-like\r
+subalgebra in Uk is 2k+1 - 1.\r
 Table 5: Ultracomplex Subalgebras\r
 Structure O U1 U2 U3 U4 U5 U6 U7\r
 H 7 35 155 651 2,667 10,795 43,435 174,251\r
@@ -933,7 +933,7 @@ P4 0 7 63 413 2,583 16,905 118,251 873,901\r
 P12 0 0 42 504 4,158 30,996 229,194 1,729,728\r
 P14 0 0 0 168 3,024 34,776 332,640 2,912,616\r
 Total Pk 0 7 105 1085 9,765 82,677 680,085 5,516,245\r
-Definition. Define the number of blades or pure basis elements in Um as Nm = 2m+3 − 1. Also\r
+Definition. Define the number of blades or pure basis elements in Um as Nm = 2m+3 - 1. Also\r
 define Hm, Sm and Om as the number of total H, Pk and O copies in Um, respectively. Each Pk\r
 and O consists of 28 unique non-associative triads, unique due to Theorem 4 for O. Hence the\r
 total number of triads in Um, which is the number of faces in the (m + 2)-simplex, is\r
@@ -941,41 +941,41 @@ total number of triads in Um, which is the number of faces in the (m + 2)-simple
 Nm\r
 3\r
 \u0013\r
-= Hm + 28 × (Om + Sm)\r
+= Hm + 28 x (Om + Sm)\r
 .\r
-Theorem 8 (Ultronion subalgebras). The number of Pk subalgebras in Um is Sm+1 = 7×(Om +\r
-Sm). For convenience, m = 0 case is taken to be U0 = O, so m ≥ 0.\r
-Proof. Table 5 shows these numbers for cases m ∈ N\r
+Theorem 8 (Ultronion subalgebras). The number of Pk subalgebras in Um is Sm+1 = 7x(Om +\r
+Sm). For convenience, m = 0 case is taken to be U0 = O, so m >= 0.\r
+Proof. Table 5 shows these numbers for cases m in N\r
 7\r
 0\r
 . It is also observed that the count for\r
-each Pk is divisible by 7, hence Sm is divisible by 7, and that Sm = (Sm−1 + Om−1) × 7,\r
+each Pk is divisible by 7, hence Sm is divisible by 7, and that Sm = (Sm-1 + Om-1) x 7,\r
 14
 
-for m ∈ N\r
+for m in N\r
 7\r
 0\r
 . By induction, assume this is true in general and prove the Sm+1 case. Since\r
 Nm\r
 3\r
 \u0001\r
-− Hm = 28 × (Om + Sm) then\r
+- Hm = 28 x (Om + Sm) then\r
 Sm+1\r
 Sm\r
 =\r
 Nm+1\r
 3\r
 \u0001\r
-− Hm+1\r
+- Hm+1\r
 Nm\r
 3\r
 \u0001\r
-− Hm\r
+- Hm\r
 .\r
 so the ratio of increase of the pseudo-octonion algebras equates to the rate of increase of the non\u0002associate triads. By induction the series proceeds past U7 with the same ratio and the octonions\r
 fill in the difference, Om+1 =\r
 Sm+2\r
-7 − Sm+1.\r
+7 - Sm+1.\r
 The silo sources for each subalgebra are provided in Table 6 along with the non-associative\r
 type counts. Each algebra has 8 3-triad cycles from the silos totalling 24 triads and the remaining\r
 4 triads are always found in the non-cycles, so these are not identified but can be discovered by\r
@@ -996,19 +996,19 @@ Theorem 9 (Projection Theorem). Any triad from an ultracomplex algebra will gene
 algebra isomorphic or anti-isomorphic to H, O, P4, P12 or P14. Furthermore, triads from U1 can\r
 project (or anti-project) to H, O or P4, from U2 to a U1 subalgebra or P12 and all higher levels\r
 can project to U2 subalgebras or P14. This leads to the diagram of injections shown in Figure 1.\r
-0 ℂ ℍ \u0001 \u00021 \u00022 \u00023 \u00024\r
-⤣\r
-⤣\r
-⤣\r
-ℙ4 ℙ12 ℙ14\r
-…\r
-⤣\r
-⤣\r
-⤣\r
-⤣\r
-⤣\r
-⤣\r
-⤣\r
+0 C H \u0001 \u00021 \u00022 \u00023 \u00024\r
+\r
+\r
+\r
+P4 P12 P14\r
+...\r
+\r
+\r
+\r
+\r
+\r
+\r
+\r
 Figure 1: Injections of Cayley Dickson algebras\r
 Proof. The injections of the normed composition algebras, C, H, O, are well defined by doubling,\r
 up to O, which has 7 copies of H and a new non-associative part given by 28 triads. These\r
@@ -1039,32 +1039,32 @@ and the product is zero. Zero divisors can not be single blades so a zero diviso
 Theorem 10 (Zero divisors theorem). The parallel terms and cross terms of the zero divisors\r
 equation separate into\r
 ac + bd = 0 and ad + bc = 0, (19)\r
-with the second equation being an identity thus reducing the definition to just ac = −bd. Further,\r
+with the second equation being an identity thus reducing the definition to just ac = -bd. Further,\r
 this is equivalent to Type 3 associativity and means the number of zero divisors for Un, Zm, is\r
 Zm =\r
 1\r
 16\r
-(Nm − 1)(Nm − 3)(Nm − 7).\r
+(Nm - 1)(Nm - 3)(Nm - 7).\r
 Proof. Uniqueness of a, b, c and d ensures ac does not have the same blade as either ad or bc,\r
 from the symmetric difference of Lemma 1, so the two equations (19) have distinct scaled blades\r
 and are separable. Since b, c, d are distinct blades, they anticommute, and since a is pure then\r
-a ≈ bcd then a is non-scalar so that b, c, d are non-associative, d 6= bc. Hence triple products also\r
+a approx bcd then a is non-scalar so that b, c, d are non-associative, d 6= bc. Hence triple products also\r
 anticommute and the equations can be re-arranged as\r
-a = −(bd)c\r
-−1 = c(bd)/c2\r
-and a = −(bc)d\r
-−1 = cbd/d2\r
+a = -(bd)c\r
+-1 = c(bd)/c2\r
+and a = -(bc)d\r
+-1 = cbd/d2\r
 and (20)\r
-d = acb−1 = b(ca)/b2and d = (bc)a\r
-−1 = bca/a2\r
+d = acb-1 = b(ca)/b2and d = (bc)a\r
+-1 = bca/a2\r
 , (21)\r
 which implies c\r
 2 = d2 and a2 = b2\r
 . Substituting (20) and (21) shows Type 3 associativity\r
-[b, c, a] = bca − b(ca) = da2 − db2 = 0 and\r
-[c, b, d] = cbd − c(bd) = ad2 − ac2 = 0.\r
-Note that the reversed product (c + d)(a + b) generates −ac − bd = 0 so provide the same zero\r
-divisor pair. Finally, substituting for a, ad = cbdd/d2 = −bc so that ad + bc = 0 is an identity.\r
+[b, c, a] = bca - b(ca) = da2 - db2 = 0 and\r
+[c, b, d] = cbd - c(bd) = ad2 - ac2 = 0.\r
+Note that the reversed product (c + d)(a + b) generates -ac - bd = 0 so provide the same zero\r
+divisor pair. Finally, substituting for a, ad = cbdd/d2 = -bc so that ad + bc = 0 is an identity.\r
 Hence zero divisor pairs are separated into two types for A and B non-associative triads that\r
 are both Type 3 associative. Octonions can not have zero divisors because the non-associative\r
 triads are X non-associative. Swapping the last two elements of the associator in Table 1 swaps\r
@@ -1073,61 +1073,61 @@ terms within brackets produces the same zero divisor pair. Table 5 shows 12 A no
 types for P4, which corresponds to 12 zero divisor pairs. The other pseudo-octonion algebras\r
 have mixures of A and B types adding up to more than 12 but since all ordered triples are in\u0002cluded in the list of 28 triads then some A and B types overlap as zero divisors to give 12 distinct\r
 zero divisor pairs. Theorem 8 defines the number of pseudo-octonion algebras at each level as\r
-Sm+1 = 7 × (Om + Sm) = 7\r
+Sm+1 = 7 x (Om + Sm) = 7\r
 28 \u0010Nm\r
 3\r
 \u0001\r
-− Hm\r
+- Hm\r
 \u0011\r
 with Hm quaternion-like or non-trivial associative\r
 algebras in Um. The sequence for Hn shown in Table 5 is provided by M4415 (A006095) in [24]\r
-as the Guassian binomial with coefficients [n, 2] for q = 2. This is a(n) = (2n − 1)(2n−1 − 1)/3,\r
-n > 2. Substituting 2n = Nm + 1 and n = m + 3 gives, for m ≥ 0,\r
+as the Guassian binomial with coefficients [n, 2] for q = 2. This is a(n) = (2n - 1)(2n-1 - 1)/3,\r
+n > 2. Substituting 2n = Nm + 1 and n = m + 3 gives, for m >= 0,\r
 Hm =\r
 1\r
 6\r
 (N\r
 2\r
-m − Nm).\r
+m - Nm).\r
 Hence\r
 Sm =\r
 7\r
-28 \u0012\u0012Nm−1\r
+28 \u0012\u0012Nm-1\r
 3\r
 \u0013\r
-− Hm−1\r
+- Hm-1\r
 \u0013\r
 =\r
 7\r
 168\r
 \r
-Nm−1(Nm−1 − 1)(Nm−1 − 2) − N\r
+Nm-1(Nm-1 - 1)(Nm-1 - 2) - N\r
 2\r
-m−1 + Nm−1\r
+m-1 + Nm-1\r
 \u0001\r
 =\r
 1\r
 24\r
 (N\r
 3\r
-m−1 − 4N\r
+m-1 - 4N\r
 2\r
-m−1 + 3Nm−1)\r
+m-1 + 3Nm-1)\r
 =\r
 1\r
 24\r
-Nm−1(Nm−1 − 1)(Nm−1 − 3).\r
-Substituting Nm−1 = (Nm − 1)/2, gives Sm =\r
+Nm-1(Nm-1 - 1)(Nm-1 - 3).\r
+Substituting Nm-1 = (Nm - 1)/2, gives Sm =\r
 1\r
-192 (Nm − 1)(Nm − 3)(Nm − 7). Since each Pk\r
+192 (Nm - 1)(Nm - 3)(Nm - 7). Since each Pk\r
 algebra has 12 zero-divisors [10] then Zm = 12Sm.\r
 16
 
-Definition (Modes). Calling (19) the prime zero divisor pair then (−d + b)(c + a), is called the\r
+Definition (Modes). Calling (19) the prime zero divisor pair then (-d + b)(c + a), is called the\r
 dual of the prime. The terminology dual is appropriate for zero divisors. Also (a\r
-′+b)(c+abs(db)),\r
++b)(c+abs(db)),\r
 with a\r
-′ = bc abs(db), is called the extended zero divisor pair, and (− abs(db) + b)(c + a′\r
+ = bc abs(db), is called the extended zero divisor pair, and (- abs(db) + b)(c + a\r
 ), is called\r
 both extended and dual. These four cases are called modes and whether they are zero divisors\r
 determines another level of structure for the ultronions.\r
@@ -1171,47 +1171,47 @@ d\r
 Figure 2: Special mode transformations\r
 Proof. The dual mode replaces d with a in the triad (b, c, d) so substituting this into Table 1 we\r
 find,\r
-Type 1 associativity [b, d, c] → [b, a, c] which is Type 1 associativity,\r
-Type 2 associativity [b, c, d] → [b, c, a] which is Type 3 associativity (reversed), and\r
-Type 3 associativity [c, b, d] → [c, b, a] which is Type 2 associativity (reversed).\r
-Together these mean under the dual transformation A → A, X → X and B ↔ C and this applies\r
+Type 1 associativity [b, d, c] -> [b, a, c] which is Type 1 associativity,\r
+Type 2 associativity [b, c, d] -> [b, c, a] which is Type 3 associativity (reversed), and\r
+Type 3 associativity [c, b, d] -> [c, b, a] which is Type 2 associativity (reversed).\r
+Together these mean under the dual transformation A -> A, X -> X and B <-> C and this applies\r
 to all the triad cycles and to dual extended mode as well. Hence, only the extended mode, where\r
-d → abs(db), for all cycles needs to be considered.\r
+d -> abs(db), for all cycles needs to be considered.\r
 For easier traceability, the terminology Ppq is introduced to identify a prime Type p assoc\u0002iativity equation for the q\r
-th cycle, where p, q ∈ N3\r
+th cycle, where p, q in N3\r
 1 and Epq for the equivalent types and cycles\r
 for the extended modes. Then the Type 1 and Type 3 associativity equations for the first and\r
 second cycles are\r
-[b, d, c] = bdc − b(dc) = bdc + dcb, (P11)\r
-[c, b, d] = cbd − c(bd) = cbd + bdc, = −bcd − dbc (P31)\r
-[b, d, bc] = bd(bc) − b(d(bc)) = bd(bc) − bcdb, (P12)\r
-[bc, b, d] = bcbd − bc(bd) = cd − bc(bd). (P32)\r
+[b, d, c] = bdc - b(dc) = bdc + dcb, (P11)\r
+[c, b, d] = cbd - c(bd) = cbd + bdc, = -bcd - dbc (P31)\r
+[b, d, bc] = bd(bc) - b(d(bc)) = bd(bc) - bcdb, (P12)\r
+[bc, b, d] = bcbd - bc(bd) = cd - bc(bd). (P32)\r
 The extended mode associativity equations that are required are Types 1 and 3 for the first and\r
 second cycles and Types 2 and 3 for the third cycle,\r
-[b, abs(db), c] = ±(b(db)c − b(dbc)) = ±(dc − bdcb), (E11)\r
-[c, b, abs(db)] = ±(cb(db) − c(b(db))) = ±(bc(bd) − cd), (E31)\r
-[b, abs(db), bc] = ±(b(db)(bc) − b(db(bc))) = ±(−bcd − bd(bc)b), (E12)\r
-[bc, b, abs(db)] = ±(bcb(db) − bc(b(db))) = ±(−dbc − bcd), (E32)\r
-[c, bc, abs(db)] = ±(c(bc)(db) − c(bc(db))) = ±(d − bc(bd)c), (E23)\r
-[bc, c, abs(db)] = ±(bcc(db) − bc(c(db))) = ±(−d + bc(dbc)). (E33)\r
+[b, abs(db), c] = +/-(b(db)c - b(dbc)) = +/-(dc - bdcb), (E11)\r
+[c, b, abs(db)] = +/-(cb(db) - c(b(db))) = +/-(bc(bd) - cd), (E31)\r
+[b, abs(db), bc] = +/-(b(db)(bc) - b(db(bc))) = +/-(-bcd - bd(bc)b), (E12)\r
+[bc, b, abs(db)] = +/-(bcb(db) - bc(b(db))) = +/-(-dbc - bcd), (E32)\r
+[c, bc, abs(db)] = +/-(c(bc)(db) - c(bc(db))) = +/-(d - bc(bd)c), (E23)\r
+[bc, c, abs(db)] = +/-(bcc(db) - bc(c(db))) = +/-(-d + bc(dbc)). (E33)\r
 17
 
-The following equivalences can be identified. E11 ≡ P11b, E31 ≡ P32, E12 ≡ P12b, E32 ≡ P31,\r
-E23 ≡ P32c and E33 ≡ P31. The later one is because if (P31) is zero then bc(dbc) = (bcd)(bc) =\r
-−d(bc)(bc) = d so that (E33) is zero or both are non-zero. This is used in Table 7 to transform\r
+The following equivalences can be identified. E11 == P11b, E31 == P32, E12 == P12b, E32 == P31,\r
+E23 == P32c and E33 == P31. The later one is because if (P31) is zero then bc(dbc) = (bcd)(bc) =\r
+-d(bc)(bc) = d so that (E33) is zero or both are non-zero. This is used in Table 7 to transform\r
 all silos to the extended mode equivalents and to show that this behaves as shown in Figures 2\r
-where ⋆ means non-zero.\r
+where * means non-zero.\r
 Table 7: Extended Mode Transformations\r
 Prime Mode Extended Mode\r
 Silo P11 P31 P12 P32 E11 E31 E12 E32 E23 E33 Silo\r
-AAA ⋆ 0 ⋆ 0 ⋆ 0 ⋆ 0 0 0 AAA\r
+AAA * 0 * 0 * 0 * 0 0 0 AAA\r
 BBA 0 0 0 0 0 0 0 0 0 0 BBA\r
-ACC ⋆ 0 0 ⋆ ⋆ ⋆ 0 0 ⋆ 0 XBB\r
-XBB ⋆ ⋆ 0 0 ⋆ 0 0 ⋆ 0 ⋆ ACC\r
-BXC 0 0 ⋆ ⋆ 0 ⋆ ⋆ 0 ⋆ 0 CAB\r
-CAB 0 ⋆ ⋆ 0 0 0 ⋆ ⋆ 0 ⋆ BXC\r
-CCX 0 ⋆ 0 ⋆ 0 ⋆ 0 ⋆ ⋆ ⋆ CCX\r
-XXX ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ XXX\r
+ACC * 0 0 * * * 0 0 * 0 XBB\r
+XBB * * 0 0 * 0 0 * 0 * ACC\r
+BXC 0 0 * * 0 * * 0 * 0 CAB\r
+CAB 0 * * 0 0 0 * * 0 * BXC\r
+CCX 0 * 0 * 0 * 0 * * * CCX\r
+XXX * * * * * * * * * * XXX\r
 It is observed that the non-cycle transformations occur in blocks according to the cycle (b, c)\r
 with d < bc. The A and X transformations for non-cycles act like the dual whereas overlapping\r
 cycle cases may swap types but keep the same number of each type for each cycle.\r
@@ -1219,24 +1219,24 @@ The definition of zero divisor pairs required that a\r
 2 = b2 and c2 = d2\r
 . For the extended\r
 equation to hold these become a\r
-′2 = b2 and c2 = (db)2\r
+2 = b2 and c2 = (db)2\r
 , which implies b\r
-2 = c2 = −1. Hence for\r
+2 = c2 = -1. Hence for\r
 all subsequent work we assume a\r
-2 = b2 = c2 = d2 = ±1 and take b, c and d to be positive blades.\r
+2 = b2 = c2 = d2 = +/-1 and take b, c and d to be positive blades.\r
 All zero divisor pairs in Table 4 are derived only from the silos that contain A and B non\u0002associative types. The mode transformations for the AAA silo all act as dual transformation,\r
 which by Figure 2(a) provides other A types. Hence the AAA silo can be reduced by factors of\r
 3 cycles and 4 modes in all ultracomplex algebras. The BBA silo can also be reduced by 3 cycles\r
 but the modes are more complicated. Only the A dual mode and B extended mode generate zero\r
 divisors so modes provide a reduction by two only. It is observed that for the ultronions shown\r
 in Table 4, that for U1 only the AAA silo can provide distinct zero divisor pairs, numbering\r
-28 × 3 = 84.\r
+28 x 3 = 84.\r
 Cawagas [7] labels the pure sedenions as ei\r
-, for i ∈ N\r
+, for i in N\r
 16\r
 1\r
 . The graded single, pure elements,\r
-called the basis of S ≡ U1, have a natural order generated by the Cayley-Dickson process, which\r
+called the basis of S == U1, have a natural order generated by the Cayley-Dickson process, which\r
 match these in order as\r
 (e1, e2, . . . e15) = (o1, o2, o12, o3, o13, o23, o123, o4, o14, o24, o124, o34, o134, o234, o1234). (22)\r
 The first three elements are recognised as the pure quaternions and the first seven match the\r
@@ -1247,41 +1247,41 @@ Sedenions are power-associative which means the associator with repeated terms i
 zero, [a, a, a] = 0. This is obvious for an algebra where the single terms square to a scalar and\r
 other than the zero divisor pairs all terms have inverses. Octonions are alternate associative\r
 which means swapping terms of the associator changes the sign or [a, a, b] = [a, b, a] = 0 for all\r
-a, b ∈ O. But sedenions are not alternate associative and demonstrate asymmetric associativity.\r
+a, b in O. But sedenions are not alternate associative and demonstrate asymmetric associativity.\r
 For example, the A type from Table 3 is\r
-[o1, o2, o34] = −o12o34 − o1o234 = 0 and\r
-[o1, o34, o2] = o134o2 + o1o234 = −2o1234.\r
-This example produces the zero divisor pair (o1 − o1234)(o2 + o34) that provides an example of\r
+[o1, o2, o34] = -o12o34 - o1o234 = 0 and\r
+[o1, o34, o2] = o134o2 + o1o234 = -2o1234.\r
+This example produces the zero divisor pair (o1 - o1234)(o2 + o34) that provides an example of\r
 non-alternate associativity, [a, a, b] 6= 0 even though [a, b, a] = 0,\r
-[(o1 − o1234),(o1 − o1234),(o2 + o34)] = −2o2 − 2o34 and\r
-[(o1 − o1234),(o2 + o34),(o1 − o1234)] = 0.\r
-This is because each term is invertible so that (o1 −o1234)\r
-2 = −2 but multiplying the zero divisor\r
+[(o1 - o1234),(o1 - o1234),(o2 + o34)] = -2o2 - 2o34 and\r
+[(o1 - o1234),(o2 + o34),(o1 - o1234)] = 0.\r
+This is because each term is invertible so that (o1 -o1234)\r
+2 = -2 but multiplying the zero divisor\r
 terms first gives zero. For U1, we found above that zero divisors need d = oi4 or d = oij4 or\r
 18
 
 Table 8: U1 Zero Divisors\r
 b c d a db ab\r
-1 o1 o2 o34 −o1234 o134 o234\r
+1 o1 o2 o34 -o1234 o134 o234\r
 2 o1 o12 o34 o234 o134 o1234\r
-3 o1 o3 o24 o1234 o124 −o234\r
-4 o1 o13 o24 −o234 o124 −o1234\r
+3 o1 o3 o24 o1234 o124 -o234\r
+4 o1 o13 o24 -o234 o124 -o1234\r
 5 o1 o23 o24 o134 o124 o34\r
-6 o1 o123 o24 −o34 o124 o134\r
-7 o2 o12 o34 −o134 o234 o1234\r
-8 o2 o3 o14 −o1234 −o124 −o134\r
-9 o2 o13 o14 o234 −o124 o34\r
-10 o2 o23 o14 −o134 −o124 o1234\r
-11 o2 o123 o14 o34 −o124 −o234\r
-12 o12 o3 o14 o234 o24 −o134\r
+6 o1 o123 o24 -o34 o124 o134\r
+7 o2 o12 o34 -o134 o234 o1234\r
+8 o2 o3 o14 -o1234 -o124 -o134\r
+9 o2 o13 o14 o234 -o124 o34\r
+10 o2 o23 o14 -o134 -o124 o1234\r
+11 o2 o123 o14 o34 -o124 -o234\r
+12 o12 o3 o14 o234 o24 -o134\r
 13 o12 o13 o14 o1234 o24 o34\r
-14 o12 o23 o14 −o34 o24 o1234\r
-15 o12 o123 o14 −o134 o24 −o234\r
-16 o3 o13 o24 −o124 −o234 −o1234\r
-17 o3 o23 o14 o124 −o134 o1234\r
-18 o3 o123 o14 −o24 −o134 −o234\r
+14 o12 o23 o14 -o34 o24 o1234\r
+15 o12 o123 o14 -o134 o24 -o234\r
+16 o3 o13 o24 -o124 -o234 -o1234\r
+17 o3 o23 o14 o124 -o134 o1234\r
+18 o3 o123 o14 -o24 -o134 -o234\r
 19 o13 o23 o14 o24 o34 o1234\r
-20 o13 o123 o14 o124 o34 −o234\r
+20 o13 o123 o14 o124 o34 -o234\r
 21 o23 o123 o24 o124 o34 o134\r
 Table 9: AAA Primary Zero Divisors in U1\r
 bc d\r
@@ -1292,12 +1292,12 @@ o2o3 o14\r
 o2o13 o14\r
 o12o3 o14\r
 o12o13 o14\r
-d = o1234, for i, j ∈ N\r
+d = o1234, for i, j in N\r
 3\r
 1\r
 , but b and c do not contain o4 in order to satisfy [c, b, d] = 0. This means\r
 a also contains the o4 generator, satisfying the symmetry required for the dual and other modes.\r
-Sedenions contain 455 ordered triples split into 35 associative and, from Table 4, 84 A non\u0002associative, 112 C non-associative and 224 X or completely non-associative. Cawagas’s 84 zero\r
+Sedenions contain 455 ordered triples split into 35 associative and, from Table 4, 84 A non\u0002associative, 112 C non-associative and 224 X or completely non-associative. Cawagas's 84 zero\r
 divisor pairs are summarised in AAA 3-triad cycle form in Table 9 which shows the primes only.\r
 Applying the Mode and Cycles Theorems gives twelve zero divisor pairs, applicable for the AAA\r
 silo, over the seven 3-triad cycles generating all 84 zero divisor pairs in Table 8.\r
@@ -1361,22 +1361,22 @@ o123o14 o123o234 o14o234 o15 o245 o1245\r
 o123o24 o123o134 o24o134 o25 o145 o1245\r
 o123o124 o123o34 o124o34 o125 o145 o245\r
 Five of the rows can be derived by rotating the bc indices positively and one negatively,\r
-wrapping 1 → 4. The other two rows, o2o13 → o13o4 and o12o13 → o123o4, do not follow a\r
+wrapping 1 -> 4. The other two rows, o2o13 -> o13o4 and o12o13 -> o123o4, do not follow a\r
 pattern nor do the d columns when compared with Table 10, so such pattern recognition is\r
-ignored. Since Table 11 contains AAA non-associative cycles this gives another 21 × 4 × 3 = 252\r
+ignored. Since Table 11 contains AAA non-associative cycles this gives another 21 x 4 x 3 = 252\r
 zero divisor pairs.\r
-Now all other bc pairs that don’t include o5 can be covered. This involves triads with over\u0002lapping AAA and BBA cycles but the AAA cases still have four modes and the BBA have prime\r
+Now all other bc pairs that don't include o5 can be covered. This involves triads with over\u0002lapping AAA and BBA cycles but the AAA cases still have four modes and the BBA have prime\r
 and extended modes only. Table 6 shows that for P12 and P14 the type B triads provide half\r
 of the 12 zero divisors for the algebra. In Table 12 the d column provides the AAA structure\r
-and the d1 and d2 columns the BBA structure. The 21 sets of 3-cycles in Table 12 thus rep\u0002resent 21 × 3 × 4 = 252 zero divisor pairs in the d column and the d1 and d2 columns provide\r
-21 × 3 × 2 = 126 solutions each which means the table provides 252 + 126 × 2 = 504 zero divisor\r
+and the d1 and d2 columns the BBA structure. The 21 sets of 3-cycles in Table 12 thus rep\u0002resent 21 x 3 x 4 = 252 zero divisor pairs in the d column and the d1 and d2 columns provide\r
+21 x 3 x 2 = 126 solutions each which means the table provides 252 + 126 x 2 = 504 zero divisor\r
 pairs.\r
 Table 12 can be replicated, apart from the d column, with o4 replaced with o5 in the bc\r
 cycles, as shown in Table 13. The d1 and d2 columns have the same BBA structure and modes\r
 20
 
-as Table 12 which represents 21 × 3 × 4 = 252 solutions. Tables 12 and 13 provide the only B\r
-non-associative triads in d1 and d2 columns giving 21 × 3 × 2 × 2 = 252 triads, as expected.\r
+as Table 12 which represents 21 x 3 x 4 = 252 solutions. Tables 12 and 13 provide the only B\r
+non-associative triads in d1 and d2 columns giving 21 x 3 x 2 x 2 = 252 triads, as expected.\r
 Adding all solutions from Tables 10 through 13 gives 252 + 252 + 504 + 252 = 1260 which is\r
 enumerated in Table 14 under the U2 zero divisors.\r
 Table 13: BBA only Primary Zero Divisors in U2\r
@@ -1394,7 +1394,7 @@ o3o15 o245 o2345 o123o125 o145 o245\r
 o3o25 o145 o1245\r
 Table 14 provides the number of non-associative elements and zero divisors for the ultronions\r
 up to level 10. These are labelled Um where n = m + 3 is the number of generators. Each\r
-generator level defines an algebra with N = 2n − 1 pure basis elements and N\r
+generator level defines an algebra with N = 2n - 1 pure basis elements and N\r
 3\r
 \u0001\r
 ordered product\r
@@ -1410,9 +1410,9 @@ Table 14: Ultronion Algebras Cardinality\r
 Label Pure Basis Non-Associative Zero Divisors\r
 Size Triads 28 Factor Count 84 Factor\r
 O 7 28 1 0 0\r
-Oe 7 28 – 24 –\r
-U1 ≡ S 15 420 15 84 1\r
-Ue1 15 420 – 180 –\r
+Oe 7 28 - 24 -\r
+U1 == S 15 420 15 84 1\r
+Ue1 15 420 - 180 -\r
 U2 31 4,340 155 1,260 15\r
 U3 63 39,060 1,395 13,020 155\r
 U4 127 330,708 11,811 117,180 1,395\r
@@ -1420,22 +1420,22 @@ U5 255 2,720,340 97,155 992,124 11,811\r
 U6 511 22,064,980 788,035 8,161,020 97,155\r
 U7 1023 177,736,020 6,347,715 66,194,940 788,035\r
 5 Split Cayley-Dickson Algebras\r
-Equation (5) can also be defined with a positive number of ǫi = 1 for i ∈ N\r
+Equation (5) can also be defined with a positive number of ei = 1 for i in N\r
 n\r
 1\r
 . Such unitary\r
 generators are represented as ui with u\r
 2\r
-i = 1 for i ∈ N\r
+i = 1 for i in N\r
 n\r
 1\r
 . This provides a mixed sign basis with\r
-elements oαuβ with α, β ∈ B(n) such that α∩β = ∅. Lemma 3 shows that squaring such elements\r
-is −1 for even length of β and is +1 for an odd length. This is now applied to each level of the\r
+elements oalphaubeta with alpha, beta in B(n) such that alphacapbeta = empty. Lemma 3 shows that squaring such elements\r
+is -1 for even length of beta and is +1 for an odd length. This is now applied to each level of the\r
 graded algebras.\r
 By the binomial theorem, the number of basis elements is the sum over all grades including\r
 the number one, as shown in (2). An enumeration of the binomial theorem is expressed in\r
-Pascal’s triangle that starts as\r
+Pascal's triangle that starts as\r
 21
 
 1\r
@@ -1447,8 +1447,8 @@ and is described by the recurrence relation that each position after the first i
 elements above. For graded algebras the triangle enumerates Cayley-Dickson algebras starting\r
 with the reals, R. Each row after this is the statement that the number of terms of any k-grade is\r
 given by the number of terms at grade k without the generator on or un plus those that include\r
-this generator from grade k−1. Pascal’s triangle is horizontally symmetric because for each term\r
-of grade k, the complimentary term with grade n − k contains the same k indices removed from\r
+this generator from grade k-1. Pascal's triangle is horizontally symmetric because for each term\r
+of grade k, the complimentary term with grade n - k contains the same k indices removed from\r
 the n generator case. For n odd there are an equal number of terms with on or un as without\r
 in the complimentary terms. For n even the same applies apart from the middle grade k = n/2.\r
 But  n\r
@@ -1459,44 +1459,44 @@ generators equally into an even set, half of which contain on or un and the othe
 course, the left-hand side has grade k = 0 that specifies the basis number 1 while the right-hand\r
 side, the compliment of 1, has k = n and always contains on or un.\r
 Definition. The pure trace of the multiplication table for the algebra with n generators is the\r
-sum of the squares of the 2n − 1 pure basis terms, which is −(2n − 1) for Cayley-Dickson algebra\r
-at level n. Thus for octonions this is −7.\r
+sum of the squares of the 2n - 1 pure basis terms, which is -(2n - 1) for Cayley-Dickson algebra\r
+at level n. Thus for octonions this is -7.\r
 Theorem 12 (Trace theorem). The pure trace for all of the split ultracomplex algebras is one,\r
 as it is for split octonions, Oe, split quaternions, He, and Lorentz numbers, Ce.\r
-Proof. For any blade oαuβ, α and β from disjoint sets of B(n) then Lemma 3 shows that\r
-(oαuβ)\r
-2 = ±1, −1 if β has even length and +1 if β has odd length. Starting at n = 1 the\r
+Proof. For any blade oalphaubeta, alpha and beta from disjoint sets of B(n) then Lemma 3 shows that\r
+(oalphaubeta)\r
+2 = +/-1, -1 if beta has even length and +1 if beta has odd length. Starting at n = 1 the\r
 Lorentz numbers, Ce, have one blade, u1, so has pure trace one. Split quaternions, He, can have\r
 pure basis, {o1, u2, o1u2} or {u1, u2, u12}, both of which satisfy the theorem. By induction, the\r
-basis at level n − 1 is assumed to have pure trace one and either on or un will multiplying all\r
+basis at level n - 1 is assumed to have pure trace one and either on or un will multiplying all\r
 basis elements. By the binomial theorem recurrence relation the existing pure basis is doubled by\r
 multiplying all existing basis elements by on and adding the on (multiplication by 1). Extending\r
-each α in this way does not change the parity of β so this doubles the pure trace count and adds\r
+each alpha in this way does not change the parity of beta so this doubles the pure trace count and adds\r
 the -1 trace part for on, keeping the pure trace to one.\r
-Now applying the same recurrence relation with un swaps even and odd parities of each β\r
-in the new multiplied terms when excluding the unit, 1. Hence a trace of one at level n − 1 has\r
+Now applying the same recurrence relation with un swaps even and odd parities of each beta\r
+in the new multiplied terms when excluding the unit, 1. Hence a trace of one at level n - 1 has\r
 terms added with opposite trace parity giving a total parity of zero. But the extra term, un,\r
 from multiplication by 1, regains the pure trace of one.\r
 Theorem 13 (Split Cayley-Dickson algebras). All Cayley-Dickson algebras with any positive\r
-number of ǫi = −1 for i ∈ N\r
+number of ei = -1 for i in N\r
 n\r
 1 are isomorphic to each other so may be represented as the\r
-algebra of unitary generators, u1, u2, · · · , un, called the split algebra, either Ce, He, Oe or Uem,\r
-m = n − 3 > 0.\r
-Proof. From Theorem 1, all blades x, y anti-commute, xy = −yx, if x 6= y, and by Lemma 3\r
+algebra of unitary generators, u1, u2, * * * , un, called the split algebra, either Ce, He, Oe or Uem,\r
+m = n - 3 > 0.\r
+Proof. From Theorem 1, all blades x, y anti-commute, xy = -yx, if x 6= y, and by Lemma 3\r
 have squares x\r
-2 = ±1, positive for an odd number of unitary generators and negative otherwise.\r
-A basis of the algebra is x = oαuβ, such that α ∩ β = ∅, ∀α, β ∈ B(n). By Theorem 12, any\r
+2 = +/-1, positive for an odd number of unitary generators and negative otherwise.\r
+A basis of the algebra is x = oalphaubeta, such that alpha cap beta = empty, for allalpha, beta in B(n). By Theorem 12, any\r
 positive number of unitary generators produce a basis with pure trace one. Selecting a set of n\r
-of α + β so that (oαuβ)\r
-2 = 1 but the set elements are not all from the split algebra at level n − 1\r
+of alpha + beta so that (oalphaubeta)\r
+2 = 1 but the set elements are not all from the split algebra at level n - 1\r
 then from Lemma 1 this set generates the whole of B(n) and the corresponding basis elements\r
 can be relabelled as new generators u\r
-′\r
+\r
 1\r
-, u′\r
+, u\r
 2\r
-, . . . , u′\r
+, . . . , u\r
 n.\r
 The unitary Type 1, Type 2 and Type 3 associativity scheme for triads does not change\r
 from the non-split case because the same sign changes apply to each associativity term. This\r
@@ -1508,43 +1508,43 @@ a partial cyclic structure,\r
 (u1, u12, u123),(u2, u12, u123),(u3, u13, u123).\r
 22
 
-Split octonions have idempotents of the form (1 + uα) with nilpotents (1 + uα)(1 − uα) for\r
-α ∈ N\r
+Split octonions have idempotents of the form (1 + ualpha) with nilpotents (1 + ualpha)(1 - ualpha) for\r
+alpha in N\r
 3\r
-1 ∪ {123}. These are derived from the four positive square blades of Oe, u\r
+1 cup {123}. These are derived from the four positive square blades of Oe, u\r
 2\r
-α = 1 with\r
+alpha = 1 with\r
 u\r
 2\r
 123 = 1. Each idempotent can be multiplied on the left by the three blades that do not contain\r
-uα, which form a left ideal and gives 16 nilponents. Multiplying by different terms of the nilpotent\r
-gives another zero divisor. For example, (1 + u1) has (−u2 + u12)(u3 + u13) = 0, which satisfies\r
-the definition for a zero divisor since u12u3u13 = −u2. Hence ideals overlap with zero divisors\r
+ualpha, which form a left ideal and gives 16 nilponents. Multiplying by different terms of the nilpotent\r
+gives another zero divisor. For example, (1 + u1) has (-u2 + u12)(u3 + u13) = 0, which satisfies\r
+the definition for a zero divisor since u12u3u13 = -u2. Hence ideals overlap with zero divisors\r
 for split algebras.\r
 Table 15: Split Sedenion Zero Divisors\r
 b c d blades b c d blades\r
-u1 u2 u13, u14, −u134 u12 u3 u34, −u134\r
-u1 u3 u23, u14, u124 u12 u13 −u4, u14\r
+u1 u2 u13, u14, -u134 u12 u3 u34, -u134\r
+u1 u3 u23, u14, u124 u12 u13 -u4, u14\r
 u1 u23 u4, u24 u12 u4 u34\r
-u1 u4 u24, u34, u1234 u12 u14 −u134\r
-u1 u24 −u134, −u234 u3 u4 u14, u24\r
-u1 u34 −u234 u3 u14 −u124\r
-u2 u3 u13, u24, −u124 u3 u24 −u124\r
+u1 u4 u24, u34, u1234 u12 u14 -u134\r
+u1 u24 -u134, -u234 u3 u4 u14, u24\r
+u1 u34 -u234 u3 u14 -u124\r
+u2 u3 u13, u24, -u124 u3 u24 -u124\r
 u2 u13 u4, u14 u13 u4 u24\r
-u2 u4 u14, u34, u1234 u13 u14 −u124\r
-u2 u14 −u134, −u234 u23 u4 u14\r
-u2 u34 u134 u23 u24 −u124\r
+u2 u4 u14, u34, u1234 u13 u14 -u124\r
+u2 u14 -u134, -u234 u23 u4 u14\r
+u2 u34 u134 u23 u24 -u124\r
 Split sedenions, Ue1, have 180 zero divisor pairs derived from 108 X, 48 A and 24 C-non\u0002associative triads which includes extending the zero divisor to allow for unitary products. Unlike\r
 the split octonions, Ue1 has a full cyclic structure with correspondence of the d terms for all cycle\r
 triads. The X types have only two modes and not necessarily the dual. The A and C types\r
 either have only the primary mode or all four modes with A type having three such cases and\r
 C have just two. This reduces to the 39 primaries shown in Table 15 and with 21 modes then\r
 the 3 triad cycles for each triad gives the 180 zero divisor pairs for Ue1. The d blades shown as\r
-negative in the table require (−a + b)(c + d) for all first cycles but some second and third cycles\r
-need the extended dual mode as well. The two exceptions are (u1, u2, −u134) and (u2, u3, −u124)\r
+negative in the table require (-a + b)(c + d) for all first cycles but some second and third cycles\r
+need the extended dual mode as well. The two exceptions are (u1, u2, -u134) and (u2, u3, -u124)\r
 which need the extended dual mode with the standard positive zero divisor.\r
 An overlap between split and non-split zero divisors does not occur. The triad (u12, u13, u14)\r
-and its product, u12u13u14 = −u1234, contains terms that are all imaginary, which should be\r
+and its product, u12u13u14 = -u1234, contains terms that are all imaginary, which should be\r
 analogous to the non-split triad (o12, o13, o14) but this has product +o1234 providing a zero\r
 divisor with opposite parity.\r
 6 Summary\r
@@ -1558,7 +1558,7 @@ properties in cycles that lead to multiples of 84 zero divisor pairs and modes t
 cycles, can reduce these down to 7, if overlap is taken into account. The total number of zero\r
 divisors for each algebra is also derived.\r
 The graded approach also applies to split ultracomplex numbers by showing that, like the hy\u0002percomplex case, there is only one split algebra at each level of the Cayley-Dickson construction.\r
-In this case it is convenient to use ǫ = −1 for all generators, which then have positive square\r
+In this case it is convenient to use e = -1 for all generators, which then have positive square\r
 generators, u\r
 2\r
 i = 1. The convenient symmetry thereafter is that all odd length grades are unitary\r
@@ -1581,26 +1581,26 @@ References\r
 [2] L. Sorgsepp and J. Lohmus, Binary and Ternary Sedenions, Hadronic J. 4 (1981) pp. 327-\r
 353.\r
 [3] K. Imaeda and M. Imaeda, Sedenions: Algebra and Analysis, Applied Mathematics and\r
-Computation, 115 Issue 2-3, (2000) pp. 77–88.\r
-[4] J. C. Baez, The Octonions. Bull. Amer. Math. Soc. (N.S.) 39, No.2, 2002, pp. 145–205.\r
+Computation, 115 Issue 2-3, (2000) pp. 77-88.\r
+[4] J. C. Baez, The Octonions. Bull. Amer. Math. Soc. (N.S.) 39, No.2, 2002, pp. 145-205.\r
 [5] F. R. Harvey, Spinors and Calibrations. Academic Press, San Diego, 1990, ISBN 0-12-\r
 329650-1.\r
 [6] T. Dray and C. A. Manogue, The geometry of the octonions. World Scientific Publishing\r
 Co. Pte. Ltd, Singapore, 2015, ISBN 978-9814401814.\r
 [7] R. E. Cawagas, On the structure and zero divisors of the Cayley-Dickson sedenion algebra,\r
-Discussiones Mathematicae, General Algebra and Applications 24, 2004, pp. 251–265.\r
+Discussiones Mathematicae, General Algebra and Applications 24, 2004, pp. 251-265.\r
 [8] J. H. Conway and D. A. Smith, On quaternions and octonions : their geometry, arithmetic,\r
 and symmetry. CRC Press LLC, Florida, 2003, ISBN 978-1-56881-134-5.\r
 [9] R. E. Cawagas and S.A.G.Gutierez, The Subloop Structure of the Cayley-Dickson Sedenion\r
-Loop, Journal of the Mathematical Society of the Philippines, 28, Nos 1-3 (2005), pp. 10–20.\r
+Loop, Journal of the Mathematical Society of the Philippines, 28, Nos 1-3 (2005), pp. 10-20.\r
 [10] G. P. Wilmot, Construction of exception Lie algebra G2 and non-associative algebras using\r
 Clifford algebra, arXiv:2505.06011 [math.RA].\r
 [11] C. Furey, Three generations, two unbroken gauge symmetries, and one eight-dimensional\r
-algebra. Physics Letters B, 2018. 785 pp. 84–89.\r
-[12] C. Furey. SU(3)C×SU(2)L×U(1)Y(×U(1)X) as a symmetry of division algebraic ladder oper\u0002ators, The European Physical Journal C, 78(5):1-–12, 2018.\r
+algebra. Physics Letters B, 2018. 785 pp. 84-89.\r
+[12] C. Furey. SU(3)CxSU(2)LxU(1)Y(xU(1)X) as a symmetry of division algebraic ladder oper\u0002ators, The European Physical Journal C, 78(5):1--12, 2018.\r
 [13] N. G. Gresnigt, L. Gourlay and A. Varma, Toward a description of three generations of\r
 fermions from the Cayley-Dickson sedenions, Physics of Particles and Nuclei, 2023, 54,\r
-No. 6, pp. 1006-–1010.\r
+No. 6, pp. 1006--1010.\r
 [14] N. Gresnigt, A sedenion algebraic representation of three colored fermion genera\u0002tions, Journal of Physics: Conference Series, 2667 (2023) 012061, doi:10.1088/1742-\r
 6596/2667/1/012061.\r
 [15] Q. Tang and J. Tang, Sedenion algebra for three lepton/quark generations and its relations\r
@@ -1613,13 +1613,13 @@ Issue, doi:10.3390/sym16050626.\r
 
 [18] R. H. Bruck, E. Kleinfeld, The structure of alternative division rings, Proc. of the Amer.\r
 Math. Soc., 1951, 2 (6), 1951, p.878-890.\r
-[19] F. D´eroche, Islamic Codicology: An Introduction to the Study of Manuscripts in Arabic\r
-Script, London: Al-Furqan Islamic Heritage Foundation, 2006), pp. 65–102.\r
-[20] A. A. Sagle, Malcev algebras, Trans. Amer. Math. Soc. 1961, 101 (3), pp. 426–458.\r
+[19] F. D'eroche, Islamic Codicology: An Introduction to the Study of Manuscripts in Arabic\r
+Script, London: Al-Furqan Islamic Heritage Foundation, 2006), pp. 65-102.\r
+[20] A. A. Sagle, Malcev algebras, Trans. Amer. Math. Soc. 1961, 101 (3), pp. 426-458.\r
 [21] R. H. Bruck, A survey of binary systems, Reihe: Gruppentheorie, Spinger-Verlag, Berlin\r
-G¨ottingen-Heidelberg. 1958. DOI 10.1007/978-3-662-35338-7, pp. 65–102.\r
-[22] K. Kunen, Moufang Quasigroups, Journal of Algebra, 183, (1996) pp. 231–234.\r
-[23] P. Vojtˇechovsk´y, Toward the classification of Moufang loops of order 64, European J. Com\u0002bin. 27, Issue 3 (2006), pp. 444-460\r
+G"ottingen-Heidelberg. 1958. DOI 10.1007/978-3-662-35338-7, pp. 65-102.\r
+[22] K. Kunen, Moufang Quasigroups, Journal of Algebra, 183, (1996) pp. 231-234.\r
+[23] P. Vojtechovsk'y, Toward the classification of Moufang loops of order 64, European J. Com\u0002bin. 27, Issue 3 (2006), pp. 444-460\r
 [24] N. J. A. Sloane and S. Plouffe, The Encyclopedia of Integer Sequences, Academic Press, San\r
 Diego, 1995, ISBN 0-12-558630-2.\r
 25"""
@@ -1639,7 +1639,7 @@ G. P. Wilmot\r
 University of Adelaide, Australia\r
 Abstract\r
 Viewing the Cayley-Dickson process as a graded construction provides a rigorous defini\u0002tion of associativity consisting of three types and the non-associative parts dividing into four\r
-types. These simplify the Moufang loop identities and Mal’cev’s identity, which identifies\r
+types. These simplify the Moufang loop identities and Mal'cev's identity, which identifies\r
 the non-associative Lie algebra structure. Many authors have assumed the Moufang loop\r
 identities are identical but this is not the case for sedenions. Analysing the non-associativity\r
 structure uncovers 3-cycles that distinguish between the Moufang identities and are used to\r
@@ -1663,30 +1663,30 @@ number = "1"
 title = "Introduction"
 text = """
 The standard approach to the Cayley-Dickson construction [5] at step n is to define a multipli\u0002cation operation for An\r
-∼= An−1 ⊕ An−1 by\r
-(a, b)(c, d) = (ac + ǫd∗b, da + bc∗),\r
+~= An-1 + An-1 by\r
+(a, b)(c, d) = (ac + ed*b, da + bc*),\r
 where the conjugate is (a, b)\r
-∗ = (a∗\r
-, −b) and ǫ = 1 for the normed composition algebras analysed\r
+* = (a*\r
+, -b) and e = 1 for the normed composition algebras analysed\r
 by Hurwitz [6]. The products ac, d\r
-∗\r
-b, da and bc∗ are defined according to the construction for\r
-An−1\r
-∼= An−2 ⊕ An−2, which in turn is eventually determined by elements in A0 = R.\r
+*\r
+b, da and bc* are defined according to the construction for\r
+An-1\r
+~= An-2 + An-2, which in turn is eventually determined by elements in A0 = R.\r
 Traditionally, the multiplication operator is introduced using anticommuting imaginaries i, j, l\r
 for the complex numbers, quaternions and octonions, respectively, as\r
-A1 = R ⊕ iR = C,\r
-A2 = C ⊕ Cj = H and\r
-A3 = H ⊕ lH = O. (1)\r
+A1 = R + iR = C,\r
+A2 = C + Cj = H and\r
+A3 = H + lH = O. (1)\r
 This paper introduces a graded decomposition of anticommuting elements, on, at each level, n,\r
 as\r
-An = An−1 ⊕ An−1on\r
-so that o1 = i, o2 = j and o3 = −l. The ungraded notation of using k = ij is then represented\r
+An = An-1 + An-1on\r
+so that o1 = i, o2 = j and o3 = -l. The ungraded notation of using k = ij is then represented\r
 in graded form as ij = o12. All elements of An are generated using the binomial expansion,\r
 which provides an ordering of these elements. This is not important for the normed division\r
 algebras and, for example, the exception Lie algebra G2, which are the automorphisms for\r
 octonions. Swapping any pair of the seven elements of octonions generates another representation\r
-of octonions. The ordering enables power-associativity but only comes into play for An with n ≥ 4\r
+of octonions. The ordering enables power-associativity but only comes into play for An with n >= 4\r
 where A4 = S, the sedenions.\r
 1\r
 arXiv:2505.11747v2 [math.RA] 13 Oct 2025
@@ -1701,14 +1701,14 @@ and modes that categorise zero divisors and applied to the 84 known sedenion zer
 reduces them to seven distinct triples of basis elements with three cycles and four modes each.\r
 The trigintaduonions have 1,260 zero-divisors, which are derived from 147 distinct triples. The\r
 cyclic forms identify the octonion and three power-associative sub-algebras of A5, called pseudo\u0002octonion algebras in [10]. Each of these algebras contain 12 zero divisors and since they are\r
-embedded in An, n ≥ 4, in multiples of seven, then it is found that zero divisors in An, n > 3\r
+embedded in An, n >= 4, in multiples of seven, then it is found that zero divisors in An, n > 3\r
 occur in multiples of 84. The cardinality formula for zero divisors for all An is derived.\r
 Using loop analysis, Cawagas [7] has previously identified the first power-associative subal\u0002gebra by identifying that it did not satisfy one of the three Moufang identities, unlike octonions.\r
 He called this quasi-octonions and provided an enumeration in [9]. This paper takes a different\r
 approach to loop analysis to prove that most of the sedenion triple products satisfy the three\r
 Moufang identities in different ways. Previous work [10] has shown that the quasi-octonions\r
 are part of a series of six algebras, called pseudo-octonions to allow for the designation Pk,\r
-k ∈ {4, 8, 10, 12, 14, 16} where k is the number of distinct non-associative triple products. These\r
+k in {4, 8, 10, 12, 14, 16} where k is the number of distinct non-associative triple products. These\r
 algebras where shown to break the symmetry of octonions in a way consistent with exceptional\r
 Lie algebra G2. Cawagas found seven copies of P4 embedded in sedenions as well as eighth copies\r
 of octonions. Another two of these power-associative algebras are introduced in the next two\r
@@ -1724,7 +1724,7 @@ properties to be proved for all Cayley-Dickson algebras showing that the graded 
 equivalent to the usual doubling of algebras [8]. Section 3 derives the four non-associativity types\r
 that simplify the Moufang identities and Malcev algebras and derives the eight non-associative\r
 3-cycles and 3-cycle structure in the Cycle theorem that identifies the subalgebras of An for\r
-n ≥ 3. The 15 octonion and P4 representations embedded in sedenions are identified using the\r
+n >= 3. The 15 octonion and P4 representations embedded in sedenions are identified using the\r
 graded notation.\r
 Section 4 defines zero divisors and modes in the Mode theorem and shows the relationship to\r
 the eight 3-cycles. It proceeds to document the seven and 147 prime zero divisors of A4 and A5,\r
@@ -1742,24 +1742,24 @@ n\r
 k\r
 \u0001\r
 called a k-grade. Basis elements are\r
-represented as oα where α is a set of digits from A(n) = {∅,(1),(12), . . . ,(12 · · · n)}, generated\r
-by the recurrence relation A(n) = A(n − 1) + A(n − 1)(n), where set multiplication by (n)\r
-extends each member of the set by n, A(n − 1)(n) = {(n),(1n),(12n), . . . ,(12 · · ·(n − 1)n)}.\r
+represented as oalpha where alpha is a set of digits from A(n) = {empty,(1),(12), . . . ,(12 * * * n)}, generated\r
+by the recurrence relation A(n) = A(n - 1) + A(n - 1)(n), where set multiplication by (n)\r
+extends each member of the set by n, A(n - 1)(n) = {(n),(1n),(12n), . . . ,(12 * * *(n - 1)n)}.\r
 This operation is called expansion but multiplying by an existing member will contract some\r
 members. Using the notation of Porteous [17] whereby N\r
 n\r
 1\r
 is the set of natural numbers from 1\r
-up to and including n, then {(12 · · · n)}(k) = {(12 · · ·(k − 1)(k + 1)· · · n)} for k ∈ N\r
-n−1"""
+up to and including n, then {(12 * * * n)}(k) = {(12 * * *(k - 1)(k + 1)* * * n)} for k in N\r
+n-1"""
 
 [[sections]]
 number = "3"
 title = "Note"
 text = """
-that A(n) includes the empty set, ∅, or no digit case, to denote the unit graded element, 1, which\r
+that A(n) includes the empty set, empty, or no digit case, to denote the unit graded element, 1, which\r
 is the only graded element at level zero and the unit notation is preferred to the use of the empty\r
-set, o = 1. The set brackets are dropped in the graded element, (α) → oα.\r
+set, o = 1. The set brackets are dropped in the graded element, (alpha) -> oalpha.\r
 2
 
 The graded recurrence relation is an example of the binomial theorem, which has the property\r
@@ -1770,7 +1770,7 @@ n\r
 k\r
 \u0013\r
 = 2n, (2)\r
-and the basis has a binary expansion described by Pascal’s triangle. This provides a natural\r
+and the basis has a binary expansion described by Pascal's triangle. This provides a natural\r
 ordering of the graded elements shown in the following graded element pyramid to level 3,\r
 1\r
 {1, o1}\r
@@ -1780,105 +1780,105 @@ Lemma 1. Any list of distinct graded elements multiplied together via set expans
 Proof. Set expansion and contraction of two distinct members of A(n) is the symmetric difference\r
 or the union minus the intersection of the two groups of indices. This is different to the initial\r
 two members and this process can continue for any number of distinct graded elements as long\r
-as the no digit case is not encountered. Each row of Pascal’s triangle of graded elements contains\r
+as the no digit case is not encountered. Each row of Pascal's triangle of graded elements contains\r
 an even number of each index, excluding level 1, because each index is doubled for the next level\r
 of the recurrence relation and there are an even number of existing elements to double with the\r
 new index. Hence, excluding the first row, the multiplication of all elements of any row contracts\r
-to α being the no digit case. Excluding such cases produces a distinct new graded element.\r
-Definition. A k-grade contains graded elements oα where α has k indices called the length of\r
-α. The k = 1 case is called a generator because all graded elements can be generated from these\r
-by expansion and contraction. At level n these are o1, o2, · · · , on.\r
+to alpha being the no digit case. Excluding such cases produces a distinct new graded element.\r
+Definition. A k-grade contains graded elements oalpha where alpha has k indices called the length of\r
+alpha. The k = 1 case is called a generator because all graded elements can be generated from these\r
+by expansion and contraction. At level n these are o1, o2, * * * , on.\r
 Definition. A pure element excludes the unit basis element, 1. A blade is a pure, non-zero,\r
 scaled basis element and a k-blade is a member of the k-grade. Note that blades may have\r
-positive or negative squares and for the remainder this assumed to be ±1, for blades. A blade is\r
+positive or negative squares and for the remainder this assumed to be +/-1, for blades. A blade is\r
 positive or negative for scale +1 or -1, respectively.\r
 The Cayley-Dickson construction uses pairs of scalars to represent the graded pyramid.\r
 Definition. The pyramid element a, at level n, specifies the n\r
 th row of a binary pyramid with\r
-coefficients aβ, β ∈ B(n), where B(n) = B(n − 1)(0) + B(n − 1)(1) so that B(n) is all binary\r
+coefficients abeta, beta in B(n), where B(n) = B(n - 1)(0) + B(n - 1)(1) so that B(n) is all binary\r
 numbers with n digits from N\r
 1\r
-0 and set multiplication extends the binary numbers in B(n − 1).\r
+0 and set multiplication extends the binary numbers in B(n - 1).\r
 Hence B(n) covers all 2n combinations of n digits in A(n) and this is an equivalence relationship\r
-to graded elements with coefficients aβ = 0 or ±1 because appending a 1 to β at the n\r
+to graded elements with coefficients abeta = 0 or +/-1 because appending a 1 to beta at the n\r
 th position\r
-is the same as appending n to the graded recurrence relation. Hence, at level 1, a0 = (±1, 0) = ±1\r
-and a1 = (0, ±1) = ±o1. To level three this is\r
+is the same as appending n to the graded recurrence relation. Hence, at level 1, a0 = (+/-1, 0) = +/-1\r
+and a1 = (0, +/-1) = +/-o1. To level three this is\r
 a = (a0, a1)\r
 = ((a00, a10),(a01, a11)) (3)\r
 = (((a000, a100),(a010, a110)),((a001, a101),(a011, a111))).\r
 The Cayley-Dickson process in pyramid form provides the same ordering as the graded ele\u0002ments with the last index corresponding to on, if it is 1. Some pyramid coefficients at level 2\r
-are β = ij, i, j ∈ N\r
+are beta = ij, i, j in N\r
 1\r
-0 which corresponds to signed oβ = o1, o2, o12 for aij = a10, a01, a11 in (3),\r
+0 which corresponds to signed obeta = o1, o2, o12 for aij = a10, a01, a11 in (3),\r
 respectively. The four extreme blades at level 3 are\r
-±o1 = (((0, ±1),(0, 0)),((0, 0),(0, 0))) and\r
-±o123 = (((0, 0),(0, 0)),((0, 0),(0, ±1))).\r
-Definition. The Cayley-Dickson product at level i for two pure pyramid elements, aαbβ, with\r
-α, β ∈ B(n), with αi being all indices to the left of position i and αi being all indices to the right\r
++/-o1 = (((0, +/-1),(0, 0)),((0, 0),(0, 0))) and\r
++/-o123 = (((0, 0),(0, 0)),((0, 0),(0, +/-1))).\r
+Definition. The Cayley-Dickson product at level i for two pure pyramid elements, aalphabbeta, with\r
+alpha, beta in B(n), with alphai being all indices to the left of position i and alphai being all indices to the right\r
 of position i, is\r
-(aαi0αi\r
-, aαi1αi)(bβi0βi\r
-, bβi1βi) =\r
+(aalphai0alphai\r
+, aalphai1alphai)(bbetai0betai\r
+, bbetai1betai) =\r
 \u0010\r
-aαi0αi\r
-bβi0βi\r
-− ǫib\r
-∗\r
-βi1βi\r
-aαi1αi\r
-, bβi1βi\r
-aαi0αi + aαi1αi\r
+aalphai0alphai\r
+bbetai0betai\r
+- eib\r
+*\r
+betai1betai\r
+aalphai1alphai\r
+, bbetai1betai\r
+aalphai0alphai + aalphai1alphai\r
 b\r
-∗\r
-βi0βi\r
+*\r
+betai0betai\r
 \u0011\r
 ,\r
 (4)\r
 3
 
-where ǫi = ±1 for i ∈ N\r
+where ei = +/-1 for i in N\r
 n\r
 1\r
 and the conjugate operator at level i is a\r
-∗\r
-α0 = (a\r
-∗\r
-αi0αi\r
-, −aαi1αi\r
+*\r
+alpha0 = (a\r
+*\r
+alphai0alphai\r
+, -aalphai1alphai\r
 ) and\r
-the conjugate operator on the right hand side acts at level i − 1 and has no effect at level 0.\r
+the conjugate operator on the right hand side acts at level i - 1 and has no effect at level 0.\r
 Equation (4) corresponds to a section of the pyramid one pair deep at level i. The terms on the\r
-right hand side of (4) are called the parallel and cross terms, respectively. The αi\r
+right hand side of (4) are called the parallel and cross terms, respectively. The alphai\r
 indices are not\r
 shown if empty.\r
-The construction uses Pascal’s recurrence relation to create a pyramid, n pairs deep, whereby\r
+The construction uses Pascal's recurrence relation to create a pyramid, n pairs deep, whereby\r
 the first division repeats the structure on of the left half on the right but multiplied by on. For\r
-n = 1, so that α, β ∈ B(0), the no index case, then\r
-(a0, a1)(b0, b1) = (a0b0 − ǫ1b1a1, b1a0 + a1b0) (5)\r
-since a0, a1, b0, b1 ∈ R and the conjugate has no effect at level zero.\r
-For n ≥ 2, showing just the first pair in each half, with α ∈ B(n) and β = 00 · · · 0 of length\r
-n − 2, then\r
-aα =\r
+n = 1, so that alpha, beta in B(0), the no index case, then\r
+(a0, a1)(b0, b1) = (a0b0 - e1b1a1, b1a0 + a1b0) (5)\r
+since a0, a1, b0, b1 in R and the conjugate has no effect at level zero.\r
+For n >= 2, showing just the first pair in each half, with alpha in B(n) and beta = 00 * * * 0 of length\r
+n - 2, then\r
+aalpha =\r
 \u0010\r
-n−1 pairs\r
+n-1 pairs\r
 z }| { \r
-(· · ·(\r
+(* * *(\r
 | {z }\r
-n−2\r
-(aβ00, aβ10), . . .)\r
+n-2\r
+(abeta00, abeta10), . . .)\r
 \u0001\r
 ,\r
-n−1 pairs\r
+n-1 pairs\r
 z }| { \r
-(· · ·(\r
+(* * *(\r
 | {z }\r
-n−2\r
-(aβ01, aβ11), . . .)\r
+n-2\r
+(abeta01, abeta11), . . .)\r
 \u0001\r
 \u0011\r
 . (6)\r
-For n = 2, again with α, β ∈ B(1) of lengths 1,\r
+For n = 2, again with alpha, beta in B(1) of lengths 1,\r
 (a0, a1)(b0, b1)\r
 =\r
 \r
@@ -1886,206 +1886,206 @@ For n = 2, again with α, β ∈ B(1) of lengths 1,\r
 \u0001\r
 =\r
 \r
-(a00, a10)(b00, b10) − ǫ2(b01, b11)\r
-∗\r
+(a00, a10)(b00, b10) - e2(b01, b11)\r
+*\r
 (a01, a11),\r
 (b01, b11)(a00, a10) + (a01, a11)(b00, b10)\r
-∗\r
+*\r
 \u0001\r
 =\r
 \r
-(a00b00 − ǫ1b10a10, b10a00 + a10b10) − ǫ2(b01a01 + ǫ1a11b11, b01a11 − b11a01),\r
+(a00b00 - e1b10a10, b10a00 + a10b10) - e2(b01a01 + e1a11b11, b01a11 - b11a01),\r
 \r
-b01a00 − ǫ1a10b11, a10b01 + b11a00) + (a01b00 + ǫ1b10a11, −b10a01 + a11b00)\r
+b01a00 - e1a10b11, a10b01 + b11a00) + (a01b00 + e1b10a11, -b10a01 + a11b00)\r
 \u0001\r
 =\r
 \r
-(a00b00 − ǫ1b10a10 − ǫ2b01a01 − ǫ1ǫ2a11b11, b10a00 + a10b00 − ǫ2b01a11 + ǫ2b11a01),\r
+(a00b00 - e1b10a10 - e2b01a01 - e1e2a11b11, b10a00 + a10b00 - e2b01a11 + e2b11a01),\r
 \r
-b01a00 − ǫ1a10b11 + a01b00 + ǫ1b10a11, a10b01 + b11a00 − b10a01 + a11b00)\r
+b01a00 - e1a10b11 + a01b00 + e1b10a11, a10b01 + b11a00 - b10a01 + a11b00)\r
 \u0001\r
 .\r
 (7)\r
 Lemma 2. For blade oi1i2...ikthen o\r
 2\r
-i1i2...ik = −ǫi1\r
-ǫi2. . . ǫk, for i1i2 . . . ik, k ∈ N\r
+i1i2...ik = -ei1\r
+ei2. . . ek, for i1i2 . . . ik, k in N\r
 n\r
 1\r
 .\r
-Proof. From (7) or (4) with α = β and β ∈ B(1) then only parallel terms exist at level two,\r
+Proof. From (7) or (4) with alpha = beta and beta in B(1) then only parallel terms exist at level two,\r
 X\r
-β\r
-(aβ0, aβ1)(bβ0, bβ1) = ((a00b00 − ǫ1b10a10 − ǫ2b01a01 − ǫ1ǫ2a11b11, 0),\r
-(b01a00 − ǫ1a10b11 + a01b00 + ǫ1b10a11, 0)).\r
+beta\r
+(abeta0, abeta1)(bbeta0, bbeta1) = ((a00b00 - e1b10a10 - e2b01a01 - e1e2a11b11, 0),\r
+(b01a00 - e1a10b11 + a01b00 + e1b10a11, 0)).\r
 Hence, by symmetry and embedding in (6), the following apply to levels of the pyramid after\r
 one,\r
-o1o1 = ((−ǫ1b10a10, 0),(0, 0)) = −ǫ1,\r
-o2o2 = ((−ǫ2b01a01, 0),(0, 0)) = −ǫ2 and\r
-o12o12 = ((−ǫ1ǫ2a11b11, 0),(0, 0)) = −ǫ1ǫ2.\r
-This is generalised to a k-blade, aα, α ∈ B(n), with α containing ones at positions i1, i2, . . . , ik ∈\r
+o1o1 = ((-e1b10a10, 0),(0, 0)) = -e1,\r
+o2o2 = ((-e2b01a01, 0),(0, 0)) = -e2 and\r
+o12o12 = ((-e1e2a11b11, 0),(0, 0)) = -e1e2.\r
+This is generalised to a k-blade, aalpha, alpha in B(n), with alpha containing ones at positions i1, i2, . . . , ik in\r
 N\r
 n\r
 1\r
-, k ∈ N\r
+, k in N\r
 n\r
 1\r
-, and zeros elsewhere. From (4), if ik 6= n then the zeros at the end of α will act as\r
+, and zeros elsewhere. From (4), if ik 6= n then the zeros at the end of alpha will act as\r
 a\r
 2\r
-α = aαbα until the rightmost index, ik = i, is reached. Then\r
-aαbα = aαi1αi\r
-bαi1αi = (−ǫib\r
-∗\r
-αi1αi\r
-aαi1αi\r
+alpha = aalphabalpha until the rightmost index, ik = i, is reached. Then\r
+aalphabalpha = aalphai1alphai\r
+balphai1alphai = (-eib\r
+*\r
+alphai1alphai\r
+aalphai1alphai\r
 , 0)\r
 where\r
 b\r
-∗\r
-αi1αi\r
-aαi1αi =\r
+*\r
+alphai1alphai\r
+aalphai1alphai =\r
 (\r
-(ǫi−1b\r
-∗\r
-αi−11αi−1\r
-aαi−11αi−1, 0) if i − 1 ∈ i1, i2, . . . , ik,\r
+(ei-1b\r
+*\r
+alphai-11alphai-1\r
+aalphai-11alphai-1, 0) if i - 1 in i1, i2, . . . , ik,\r
 (b\r
-∗\r
-αi−10αi−1\r
-aαi−10αi−1, 0) otherwise.\r
+*\r
+alphai-10alphai-1\r
+aalphai-10alphai-1, 0) otherwise.\r
 The first case is positive because the original conjugation negated the oi element and a new\r
-conjugate for the i−1 level was introduced whereas for b\r
-∗\r
-αi−10αi−1\r
+conjugate for the i-1 level was introduced whereas for b\r
+*\r
+alphai-10alphai-1\r
 the conjugation is passed to the\r
 next level without effect. Continuing to the following levels has no effect on the original sign and\r
-together will introduce ǫj from a\r
+together will introduce ej from a\r
 2\r
-αj 1αj\r
-∀j ∈ i1, i2, . . . , ik−1. This means o\r
+alphaj 1alphaj\r
+for allj in i1, i2, . . . , ik-1. This means o\r
 2\r
-i1i2...ik = −ǫi1\r
-ǫi2\r
-· · · ǫik\r
+i1i2...ik = -ei1\r
+ei2\r
+* * * eik\r
 which is assumed true and by induction a\r
 2\r
-α1\r
-is considered for α having ones in positions i1i2 . . . ik\r
+alpha1\r
+is considered for alpha having ones in positions i1i2 . . . ik\r
 and zeros elsewhere. Then\r
-aα1bα1 = (−ǫn+1b\r
-∗\r
-α1aα1, 0),\r
+aalpha1balpha1 = (-en+1b\r
+*\r
+alpha1aalpha1, 0),\r
 hence o\r
 2\r
-i1i2...ik(n+1) = −ǫi1\r
-ǫi2. . . ǫik\r
-ǫn+1."""
+i1i2...ik(n+1) = -ei1\r
+ei2. . . eik\r
+en+1."""
 
 [[sections]]
 number = "4"
-title = "Lemma 3. For δ ∈ A(n − 1) not all zeros then oδon = oδn and onoδ = −oδn."
+title = "Lemma 3. For delta in A(n - 1) not all zeros then odeltaon = odeltan and onodelta = -odeltan."
 text = """
 Proof. At level n = 1, 1o1 = (1, 0)(0, 1) = (0, b1a0) = o1. At n = 2,\r
 o1o2 = ((0, 1),(0, 0))((0, 0),(1, 0)) = ((0, 0),(0, a10b01)) = o12.\r
 For the reverse product, at level n = 1, o11 = (0, 1)(1, 0) = (0, b1a0) = o1. At n = 2,\r
 o2o1 = ((0, 0),(1, 0))((0, 1),(0, 0)) = ((0, 0),(0, a01b\r
-∗\r
-10)) = −o12.\r
-The symmetry of the on pyramid used here for any oδ ≡ aα0 is that the first term on the\r
+*\r
+10)) = -o12.\r
+The symmetry of the on pyramid used here for any odelta == aalpha0 is that the first term on the\r
 right hand side of the pyramid is a cross term and all the rest are parallel terms,\r
-aα0bβ1 = (0, aα0bβ1) = (\r
-(0, 0),(0, aαn−110b\r
-∗\r
-βn−101)\r
+aalpha0bbeta1 = (0, aalpha0bbeta1) = (\r
+(0, 0),(0, aalphan-110b\r
+*\r
+betan-101)\r
 \u0001\r
-if oδ contains on−1 and\r
+if odelta contains on-1 and\r
 \r
-(0, 0),(aαn−100bβn−101, 0)\u0001otherwise.\r
-Since conjugation has no effect on bβn−10 then extrapolating to level 0 gives a positive sign,\r
-oδon = oδn. The second case, onoδ, has the same symmetry, with the conjugate having no effect\r
+(0, 0),(aalphan-100bbetan-101, 0)\u0001otherwise.\r
+Since conjugation has no effect on bbetan-10 then extrapolating to level 0 gives a positive sign,\r
+odeltaon = odeltan. The second case, onodelta, has the same symmetry, with the conjugate having no effect\r
 other than the minus sign introduced at level n,\r
-aβ1bα0 = (0, aβ1b\r
-∗\r
-α0\r
+abeta1balpha0 = (0, abeta1b\r
+*\r
+alpha0\r
 ) = (\r
-(0, 0),(0, −bαn−110a\r
-∗\r
-βn−101)\r
+(0, 0),(0, -balphan-110a\r
+*\r
+betan-101)\r
 \u0001\r
-if oδ contains on−1 and\r
+if odelta contains on-1 and\r
 \r
-(0, 0),(aβn−101bαn−100, 0)\u0001otherwise\r
-hence onoδ = −oδn.\r
-Theorem 1 (Cayley-Dickson algebras). The Cayley-Dickson construction to any level, n, gen\u0002erates an algebra with pure elements, x, y satisfying xy = −yx if x 6= y and, if ǫi = 1, ∀i ∈ N\r
+(0, 0),(abetan-101balphan-100, 0)\u0001otherwise\r
+hence onodelta = -odeltan.\r
+Theorem 1 (Cayley-Dickson algebras). The Cayley-Dickson construction to any level, n, gen\u0002erates an algebra with pure elements, x, y satisfying xy = -yx if x 6= y and, if ei = 1, for alli in N\r
 n\r
 1\r
-and x = y, then xy = −1. The unit, 1, has no effect under multiplication.\r
+and x = y, then xy = -1. The unit, 1, has no effect under multiplication.\r
 Proof. From Lemma 1, product expansion and contraction of blades shows that the generators of\r
 the algebra under multiplication are an injection and repeated multiplication becomes a surjection\r
-thus generating the scaled basis of the algebra. Lemma 2 shows that for ǫi = 1, ∀i ∈ N\r
+thus generating the scaled basis of the algebra. Lemma 2 shows that for ei = 1, for alli in N\r
 n\r
 1\r
 then\r
 o\r
 2\r
-α = −1, ∀α ∈ A(n). For the unit, 1 = bβ where β ∈ B(n) is all zeros, the product from (4) at\r
+alpha = -1, for allalpha in A(n). For the unit, 1 = bbeta where beta in B(n) is all zeros, the product from (4) at\r
 level i > 1 is seen to be an identity for itself and pure elements,\r
-(aαi0αi\r
-, aαi1αi)(bβ, 0) = aαi0αibβ, aαi1αib\r
-∗\r
-β\r
+(aalphai0alphai\r
+, aalphai1alphai)(bbeta, 0) = aalphai0alphaibbeta, aalphai1alphaib\r
+*\r
+beta\r
 \u0001\r
 =\r
 \r
-(aαi−10αi−1, 0)(bβ, 0),(aαi−11αi−1, 0)(bβ, 0)\u0001.\r
-The expansion terminates at level 0 with aαbβ = aα and is symmetric so aβbα = bα also.\r
-Anticommutation is proved by induction starting with Lemma 3 for o1o2 = −o2o1. This is the\r
+(aalphai-10alphai-1, 0)(bbeta, 0),(aalphai-11alphai-1, 0)(bbeta, 0)\u0001.\r
+The expansion terminates at level 0 with aalphabbeta = aalpha and is symmetric so abetabalpha = balpha also.\r
+Anticommutation is proved by induction starting with Lemma 3 for o1o2 = -o2o1. This is the\r
 n = 2 level but is provided as the basis of induction in the proof of the lemma. By the symmetry\r
 of the construction, this result applies at all levels n > 2 for these pure elements. Assuming\r
-the n − 1 product is true, aα0bβ0 = −bβ0aα0, for α, β ∈ B(n − 1), not all zeros, and α 6= β,\r
+the n - 1 product is true, aalpha0bbeta0 = -bbeta0aalpha0, for alpha, beta in B(n - 1), not all zeros, and alpha 6= beta,\r
 then multiplying by on produces a pyramid whereby the left-hand half does not contain on and\r
-the right-hand half reflects this structure but includes on for all elements. Proving xy = −yx\r
-for the on case is divided into three equations which need to be proved; onaα0 = −aα0on,\r
-aα1bβ0 = −bβ0aα1 and aα1bβ1 = −bβ1aα1, for α, β not all zeros. Lemma 3 has already shown\r
+the right-hand half reflects this structure but includes on for all elements. Proving xy = -yx\r
+for the on case is divided into three equations which need to be proved; onaalpha0 = -aalpha0on,\r
+aalpha1bbeta0 = -bbeta0aalpha1 and aalpha1bbeta1 = -bbeta1aalpha1, for alpha, beta not all zeros. Lemma 3 has already shown\r
 the first case and found that a\r
-∗\r
-α = −aα since α is not all zeros. Hence, the second case with β\r
+*\r
+alpha = -aalpha since alpha is not all zeros. Hence, the second case with beta\r
 not all zeros, is\r
-aα1bβ0 = (0, aα1)(bβ0, 0) = (0, aα1b\r
-∗\r
-β0\r
+aalpha1bbeta0 = (0, aalpha1)(bbeta0, 0) = (0, aalpha1b\r
+*\r
+beta0\r
 ) and\r
-bβ0aα1 = (bβ0, 0)(0, aα1) = (0, aα1bβ0) = −aα1bβ0.\r
-Finally, induction and symmetry of the pyramid is used on aα1bβ1 + bβ1aα1 = 0,\r
-aα1bβ1 = (0, aα1)(0, bβ1) = (−b\r
-∗\r
-β1aα1, 0) and\r
-bβ1aα1 = (0, bβ1)(0, aα1) = (−a\r
-∗\r
-α1\r
-bβ1, 0).\r
+bbeta0aalpha1 = (bbeta0, 0)(0, aalpha1) = (0, aalpha1bbeta0) = -aalpha1bbeta0.\r
+Finally, induction and symmetry of the pyramid is used on aalpha1bbeta1 + bbeta1aalpha1 = 0,\r
+aalpha1bbeta1 = (0, aalpha1)(0, bbeta1) = (-b\r
+*\r
+beta1aalpha1, 0) and\r
+bbeta1aalpha1 = (0, bbeta1)(0, aalpha1) = (-a\r
+*\r
+alpha1\r
+bbeta1, 0).\r
 (8)\r
 These anticommutator terms occur in the same position on the right-hand half as the terms\r
 without on on the left-hand half of the pyramid. After the first pyramid multiplication they\r
 have identical paths through the each side of the pyramid apart from the minus signs and the\r
-conjugate. The conjugate descends the path until the first 1 in α from the right and changes\r
+conjugate. The conjugate descends the path until the first 1 in alpha from the right and changes\r
 5
 
 the sign and disappears for the rest of the path, a\r
-∗\r
-α1 = −aα1 and similarly, a\r
-∗\r
-β1 = −aβ1. Hence\r
+*\r
+alpha1 = -aalpha1 and similarly, a\r
+*\r
+beta1 = -abeta1. Hence\r
 the minus signs are cancelled in (8) and so using symmetry and arguing by induction with\r
-aα0bβ0 − bβ0aα0 = 0 true at level 2 and assumed true at level n − 1, then\r
-−b\r
-∗\r
-β1aα1 − a\r
-∗\r
-α1\r
-bβ1 = aα0bβ0 + bβ0aα0 = 0.\r
-Corollary. The first four levels of blades with ǫi = 1 ∀i ∈ N\r
+aalpha0bbeta0 - bbeta0aalpha0 = 0 true at level 2 and assumed true at level n - 1, then\r
+-b\r
+*\r
+beta1aalpha1 - a\r
+*\r
+alpha1\r
+bbeta1 = aalpha0bbeta0 + bbeta0aalpha0 = 0.\r
+Corollary. The first four levels of blades with ei = 1 for alli in N\r
 4\r
 1 are isomorphic to complex numbers,\r
 C, quaternions, H, octonions, O, and sedenions, S, respectively.\r
@@ -2095,12 +2095,12 @@ numbers. At level two, the usual representation of quaternions also have the cyc
 ij = k, jk = i and ki = j. Starting by calculating the cyclic rules in full\r
 o1o2 = ((0, 1),(0, 0))((0, 0),(1, 0)) = ((0, 0),(0, 1)(1, 0))\r
 = ((0, 0),(0, 1\r
-∗\r
+*\r
 )) = o12,\r
-o2o12 = ((0, 0),(1, 0))((0, 0),(0, 1)) = (−(0, 1)∗(1, 0),(0, 0))\r
+o2o12 = ((0, 0),(1, 0))((0, 0),(0, 1)) = (-(0, 1)*(1, 0),(0, 0))\r
 = ((0, 1),(0, 0)) = o1 and\r
-o12o1 = ((0, 0),(0, 1))((0, 1),(0, 0)) = ((0, 0),(0, 1)(0, 1)∗)\r
-= ((0, 0), −(−1, 0)) = o2.\r
+o12o1 = ((0, 0),(0, 1))((0, 1),(0, 0)) = ((0, 0),(0, 1)(0, 1)*)\r
+= ((0, 0), -(-1, 0)) = o2.\r
 (9)\r
 Thus level 2 is isomorphic to H. At level 3 there are seven blades, {o1, o2, o12, o3, o23, o13, o123},\r
 which matches the number of octonion basis elements and it is obvious that the quaternions\r
@@ -2109,65 +2109,65 @@ the isomorphism. At level 4 there are 15 blades matching the sedenions and the o
 embedded in the first seven blades. This is a requirement of sedenions and will suffice to prove\r
 the isomorphism, given Theorem 1.\r
 The alternative ring properties of Cayley-Dickson algebras that are essential to simplify non\u0002associative expressions are now proved [18].\r
-Lemma 4. For x and y distinct blades with ǫi = 1, i ∈ N\r
+Lemma 4. For x and y distinct blades with ei = 1, i in N\r
 n\r
 1\r
-, then yxx = −y and x(xy) = −y.\r
-Proof. The later statement is true if the former is true, x(xy) = −(xy)x = yxx, if y 6= x and\r
-obviously x(xx) = −x otherwise. The proof of the former proceeds via induction. It works for H\r
+, then yxx = -y and x(xy) = -y.\r
+Proof. The later statement is true if the former is true, x(xy) = -(xy)x = yxx, if y 6= x and\r
+obviously x(xx) = -x otherwise. The proof of the former proceeds via induction. It works for H\r
 which needs to be checked for the six combinations of two from three elements using the cyclic\r
 product rules (9),\r
-o1o2o2 = o12o2 = −o2o12 = −o1,\r
-o1o12o12 = −o2o12 = o12o2 = −o1,\r
-o2o1o1 = −o1o2o1 = −o12o1 = −o2,\r
-o2o12o12 = −o12o2o12 = o1o12 = −o2,\r
-o12o1o1 = −o1o12o1 = o2o1 = −o12 and\r
-o12o2o2 = −o1o2 = −o12.\r
-Assuming aα0bβ0bβ0 = bβ0(bβ0aα0) = −aα0, α, β ∈ B(n − 1) not all zeros, then by induction only\r
+o1o2o2 = o12o2 = -o2o12 = -o1,\r
+o1o12o12 = -o2o12 = o12o2 = -o1,\r
+o2o1o1 = -o1o2o1 = -o12o1 = -o2,\r
+o2o12o12 = -o12o2o12 = o1o12 = -o2,\r
+o12o1o1 = -o1o12o1 = o2o1 = -o12 and\r
+o12o2o2 = -o1o2 = -o12.\r
+Assuming aalpha0bbeta0bbeta0 = bbeta0(bbeta0aalpha0) = -aalpha0, alpha, beta in B(n - 1) not all zeros, then by induction only\r
 the following conditions need to be proved, which for the second two equations again use the\r
 symmetry argument that after the first step in the pyramid expansion the left-right symmetry\r
 means the same path is followed on both sides,\r
-aα1bβ0bβ0 = (0, aα1)(bβ0, 0)(bβ0, 0)\r
-= (0, aα1b\r
-∗\r
-β0\r
-)(bβ0, 0)\r
-= (0, aα1b\r
-∗\r
-β0\r
-bβ0)\r
-= −aα1,\r
+aalpha1bbeta0bbeta0 = (0, aalpha1)(bbeta0, 0)(bbeta0, 0)\r
+= (0, aalpha1b\r
+*\r
+beta0\r
+)(bbeta0, 0)\r
+= (0, aalpha1b\r
+*\r
+beta0\r
+bbeta0)\r
+= -aalpha1,\r
 6
 
-aα0bβ1bβ1 = (aα0, 0)(0, bβ1)(0, bβ1)\r
-= (0, bβ1aα0)(0, bβ1)\r
-= (−b\r
-∗\r
-β1\r
-(bβ1aα0), 0)\r
-= (bβ0(bβ0aα0), 0)\r
-= −aα0 and\r
-aα1bβ1bβ1 = (0, aα1)(0, bβ1)(0, bβ1)\r
-= (−b\r
-∗\r
-β1aα1, 0)(0, bβ1)\r
-= (0, −bβ1(b\r
-∗\r
-β1aα1), 0)\r
-= (0, bβ0(bβ0aα1), 0)\r
-= (0, −aα1)\r
-= −aα1.\r
-This leaves xonon where β is all zeros in the last two equations. In that case the conjugate has\r
-no effect after the first step and −b\r
-∗\r
-β1\r
-(bβ1x) = −bβ1(b\r
-∗\r
-β1x) = −x. Hence aαbβbβ = −aα for all\r
-α, β ∈ B(n). Note that while xyzz = −xy, it is not necessarily true that x(xyz) = −yz for\r
+aalpha0bbeta1bbeta1 = (aalpha0, 0)(0, bbeta1)(0, bbeta1)\r
+= (0, bbeta1aalpha0)(0, bbeta1)\r
+= (-b\r
+*\r
+beta1\r
+(bbeta1aalpha0), 0)\r
+= (bbeta0(bbeta0aalpha0), 0)\r
+= -aalpha0 and\r
+aalpha1bbeta1bbeta1 = (0, aalpha1)(0, bbeta1)(0, bbeta1)\r
+= (-b\r
+*\r
+beta1aalpha1, 0)(0, bbeta1)\r
+= (0, -bbeta1(b\r
+*\r
+beta1aalpha1), 0)\r
+= (0, bbeta0(bbeta0aalpha1), 0)\r
+= (0, -aalpha1)\r
+= -aalpha1.\r
+This leaves xonon where beta is all zeros in the last two equations. In that case the conjugate has\r
+no effect after the first step and -b\r
+*\r
+beta1\r
+(bbeta1x) = -bbeta1(b\r
+*\r
+beta1x) = -x. Hence aalphabbetabbeta = -aalpha for all\r
+alpha, beta in B(n). Note that while xyzz = -xy, it is not necessarily true that x(xyz) = -yz for\r
 distinct blades x, y, z. For example, o1(o1o2o3) = o23.\r
 Definition. The associator is defined, using left-expansion, as\r
-[a, b, c] = (ab)c − a(bc) = abc − a(bc),\r
+[a, b, c] = (ab)c - a(bc) = abc - a(bc),\r
 which is zero for H because quaternions are associative [5] and have one ordered pure triple. This\r
 is not the case for octonions, O, which have \r
 7\r
@@ -2187,9 +2187,9 @@ number = "3"
 title = "The three remaining triples can"
 text = """
 not be interpreted in this way but the graded product of the three blades in all seven triples is\r
-seen to be a scalar, either ±1. The remaining triples will be shown to be non-associative. For\r
+seen to be a scalar, either +/-1. The remaining triples will be shown to be non-associative. For\r
 example, Lemma 2 has o1o2o3 = o123 whereas expanding the pyramid for o1(o2o3) gives the term\r
-−a100b011 in the o123 position so that o1(o2o3) = −o123, hence the associator is non-zero and this\r
+-a100b011 in the o123 position so that o1(o2o3) = -o123, hence the associator is non-zero and this\r
 triple is non-associative, [o1, o2, o3] = 2o123.\r
 The names quaternion and octonion seem to be derived from book binding techniques in\u0002volving a quire of four or eight folios of paper, respectively. Traditionally, an ancient book or\r
 codex would use separate sheets or bifolio with a single fold stacked and bound to the binding\r
@@ -2199,14 +2199,14 @@ quarto fold type, four has Octavo and eight has extodecimo type, which covers mo
 folios [19]. Accordingly, the prefix ultra is introduced herein to designate all power-associative\r
 Cayley-Dickson algebras. Then, the complex numbers are followed by the hypercomplex num\u0002bers, O and H, and the following power-associative algebras would be known as the ultracomplex\r
 numbers.\r
-Definition. The Cayley-Dickson series for power-associative algebras after A3, with ǫi = 1\r
-for i ∈ N\r
+Definition. The Cayley-Dickson series for power-associative algebras after A3, with ei = 1\r
+for i in N\r
 n\r
 1\r
-, are designated Um, m = n − 3, which refers to the ultronion algebras. Thus the\r
+, are designated Um, m = n - 3, which refers to the ultronion algebras. Thus the\r
 normed algebras, R, C, H and O, are not included in the Um series and the series starts with the\r
-sedenions, S ≡ U1. The split algebras are denoted Uem and later it is shown they are isomorphic\r
-to each other, for any dimension, for any positive number of ǫi = −1, i ∈ N\r
+sedenions, S == U1. The split algebras are denoted Uem and later it is shown they are isomorphic\r
+to each other, for any dimension, for any positive number of ei = -1, i in N\r
 n"""
 
 [[sections]]
@@ -2226,7 +2226,7 @@ Definition. There are N3scaled triple products bcd and N\r
 3\r
 \u0001\r
 naturally ordered triples with\r
-blades b < c < d where N = 2n − 1 and n is the number of generators. The ordered triples are\r
+blades b < c < d where N = 2n - 1 and n is the number of generators. The ordered triples are\r
 the same as removing all pairs and triples of the same element from the N3set and dividing by\r
 the number of permutations, 6. A triad is defined as ordered triples containing distinct blades\r
 whereby b < c < d so that bcd is non-zero. Hence basis element a = bcd can be defined for triads\r
@@ -2235,20 +2235,20 @@ triples for each triad.\r
 Theorem 2 (Associativity theorem). The 24 permutations of triad products generate three types\r
 of associativity, called Types 1, 2 and 3. These are shown in Table 1 where equivalence of\r
 associators means both are zero or both are non-zero, noting that only 12 permutations for ordered\r
-b, c, d and a = bcd are required because [a, b, c] = −[c, b, a].\r
+b, c, d and a = bcd are required because [a, b, c] = -[c, b, a].\r
 Table 1: Triad Associativity Types\r
 Associativity Equivalence Associativity\r
-[b, a, c] ≈ [b, d, c] ≈ [a, b, d] ≈ [a, c, d] Type 1\r
-[a, b, c] ≈ [b, c, d] ≈ [b, a, d] ≈ [a, d, c] Type 2\r
-[a, c, b] ≈ [c, b, d] ≈ [a, d, b] ≈ [c, a, d] Type 3\r
+[b, a, c] approx [b, d, c] approx [a, b, d] approx [a, c, d] Type 1\r
+[a, b, c] approx [b, c, d] approx [b, a, d] approx [a, d, c] Type 2\r
+[a, c, b] approx [c, b, d] approx [a, d, b] approx [c, a, d] Type 3\r
 Proof. Excluding complete associativity for triads where all associativity types are zero means\r
-that a(bc) = −(bc)a = cba if a is not a scaling of bc and similarly for abc = (ab)c = c(ba). Hence\r
-[a, b, c] = abc − a(bc) = c(ba) − (cb)a = −[c, b, a]. This is also true for associative triple products,\r
+that a(bc) = -(bc)a = cba if a is not a scaling of bc and similarly for abc = (ab)c = c(ba). Hence\r
+[a, b, c] = abc - a(bc) = c(ba) - (cb)a = -[c, b, a]. This is also true for associative triple products,\r
 where a is a scalar, because both sides are zero. Now, if b, c, d are not associative, the relation\r
-a = bcd means ad−1 = bc or d = −a(bc)\r
-−1 = −bca/b2/c2\r
+a = bcd means ad-1 = bc or d = -a(bc)\r
+-1 = -bca/b2/c2\r
 , noting that (bc)\r
-2 = −b2\r
+2 = -b2\r
 c"""
 
 [[sections]]
@@ -2256,94 +2256,94 @@ number = "2"
 title = "First,"
 text = """
 Type 2 and Type 3 associativity are analysed.\r
-Assuming Type 2 associativity, [a, b, c] = abc − a(bc) = 0 or [c, b, a] = cba − c(ba) = 0, then\r
+Assuming Type 2 associativity, [a, b, c] = abc - a(bc) = 0 or [c, b, a] = cba - c(ba) = 0, then\r
 substituting d into the other three associators in the second row in Table 1, scaled by (bc)\r
 2\r
 , gives\r
 [b, c, d](bc)\r
-2 = bc(bca) − b(c(bca)) = −(bca)(bc) − (bca)cb = −(bc)a(bc) + c(ba)cb\r
-= a(bc)(bc) − baccb = a(bc)\r
-2 + abbc2 = −ab2\r
+2 = bc(bca) - b(c(bca)) = -(bca)(bc) - (bca)cb = -(bc)a(bc) + c(ba)cb\r
+= a(bc)(bc) - baccb = a(bc)\r
+2 + abbc2 = -ab2\r
 c\r
 2 + ab2\r
 c\r
 2 = 0,\r
 [b, a, d](bc)\r
-2 = ba(bca) − b(a(bca)) = −ba(c(ba)) + b(bc)a2 = c(ba)(ba) + cbba2 = 0 and\r
+2 = ba(bca) - b(a(bca)) = -ba(c(ba)) + b(bc)a2 = c(ba)(ba) + cbba2 = 0 and\r
 [a, d, c](bc)\r
-2 = a(bca)c − a(bcac) = −(bca)ac + a(c(ba)c) = −bcca2 + (bacc)a = 0.\r
-Assuming Type 3 associativity, [a, c, b] = acb − a(cb) = 0 or [b, c, a] = bca − b(ca) = 0, then\r
+2 = a(bca)c - a(bcac) = -(bca)ac + a(c(ba)c) = -bcca2 + (bacc)a = 0.\r
+Assuming Type 3 associativity, [a, c, b] = acb - a(cb) = 0 or [b, c, a] = bca - b(ca) = 0, then\r
 substituting d into the other three associators in the third row of Table 1, scaled by (bc)\r
 2\r
 , gives\r
 [c, b, d](bc)\r
-2 = cb(bca) − c(b(bca)) = −b(ca)(cb) − bcabc = cab(cb) − b(ca)bc\r
-= −a(cb)(cb) + (ca)bbc = a − cac = 0\r
+2 = cb(bca) - c(b(bca)) = -b(ca)(cb) - bcabc = cab(cb) - b(ca)bc\r
+= -a(cb)(cb) + (ca)bbc = a - cac = 0\r
 [a, d, b](bc)\r
-2 = a(bca)b − a(bcab) = −bcaab + bcaba = bcb + b(ca)ba = 0 and\r
+2 = a(bca)b - a(bcab) = -bcaab + bcaba = bcb + b(ca)ba = 0 and\r
 [c, a, d](bc)\r
-2 = ca(bca) − c(a(bca)) = −bca(ca) − bcaac = −b(ca)(ca) + bcc = 0.\r
-Assuming Type 1 associativity, [b, a, c] = bac − b(ac) = 0 or [c, a, b] = cab − c(ab) = 0, then\r
+2 = ca(bca) - c(a(bca)) = -bca(ca) - bcaac = -b(ca)(ca) + bcc = 0.\r
+Assuming Type 1 associativity, [b, a, c] = bac - b(ac) = 0 or [c, a, b] = cab - c(ab) = 0, then\r
 substituting d into the other three associators in the first row of Table 1, scaled by (bc)\r
 2\r
 , gives\r
 [b, d, c](bc)\r
-2 = b(bca)c − b(bcac) = −bcabc + bcacb,\r
+2 = b(bca)c - b(bcac) = -bcabc + bcacb,\r
 [a, b, d](bc)\r
-2 = ab(bca) − a(b(bca)) = (bca)(ba) − bcaba = −cba(ba) + cbaba and\r
+2 = ab(bca) - a(b(bca)) = (bca)(ba) - bcaba = -cba(ba) + cbaba and\r
 [a, c, d](bc)\r
-2 = ac(bca) − a(c(bca)) = −bca(ac) − bcaca.\r
+2 = ac(bca) - a(c(bca)) = -bca(ac) - bcaca.\r
 If Type 2 associativity is also assumed then cba = c(ba) and, also again using [c, a, b] = 0, the\r
 three equations become\r
-−bcabc + bcacb = c(ba)bc − c(ba)cb = −b(ac)bc + baccb = acbbc + abb = 0,\r
-−cba(ba) + cbaba = c(ba)(ba) − c(ba)ba = −c + bac(ab) = −c + b(ac)ba = −c + cabba = 0 and\r
-−bca(ac) − bcaca = c(ba)(ac) + c(ba)ca = −bac(ac) − bacca = −b(ac)(ac) − b = 0.\r
+-bcabc + bcacb = c(ba)bc - c(ba)cb = -b(ac)bc + baccb = acbbc + abb = 0,\r
+-cba(ba) + cbaba = c(ba)(ba) - c(ba)ba = -c + bac(ab) = -c + b(ac)ba = -c + cabba = 0 and\r
+-bca(ac) - bcaca = c(ba)(ac) + c(ba)ca = -bac(ac) - bacca = -b(ac)(ac) - b = 0.\r
 8
 
-If Type 3 associativity is also assumed with Type 1 then bca = b(ca) or cba = −b(ca) and, also\r
+If Type 3 associativity is also assumed with Type 1 then bca = b(ca) or cba = -b(ca) and, also\r
 again using [c, a, b] = 0, the three equations become\r
-−bcabc + bcacb = −b(ca)bc + b(ca)cb = −acbbc − cabcb = −a − c(ab)cb = −a + abccb = 0,\r
-−cba(ba) + cbaba = b(ca)(ba) − b(ca)ba = −cab(ba) + cabba = c(ab)(ab) + c = 0 and\r
-−bca(ac) − bcaca = b(ca)(ca) − b(ca)ca = −b + cabca = −b + c(ab)ca = −b + bacca = 0.\r
+-bcabc + bcacb = -b(ca)bc + b(ca)cb = -acbbc - cabcb = -a - c(ab)cb = -a + abccb = 0,\r
+-cba(ba) + cbaba = b(ca)(ba) - b(ca)ba = -cab(ba) + cabba = c(ab)(ab) + c = 0 and\r
+-bca(ac) - bcaca = b(ca)(ca) - b(ca)ca = -b + cabca = -b + c(ab)ca = -b + bacca = 0.\r
 Hence Types 2 and 3 associativity are non-associatively equivalent in there own right but Type 1\r
 needs either Type 2 or Type 3 for equivalence.\r
 Definition. The triple associator, T (b, c, d), is introduced to cover associativity Types 1, 2 and\r
 3 to allow for an unambiguous definition of associativity,\r
-T (b, c, d) = [b, d, c] − [d, c, b] + [c, b, d].\r
+T (b, c, d) = [b, d, c] - [d, c, b] + [c, b, d].\r
 Definition. A triad, b, c, d, is associative if T (b, c, d) = 0 and non-associative if T (b, c, d) 6= 0.\r
 This may seem like over-kill but will soon be seen to be a necessary condition.\r
-Artin’s theorem [5] is stated only for associative subalgebras of octonions but can be gener\u0002alised and then extended to find all subalgebras of any Cayley-Dickson algebra.\r
+Artin's theorem [5] is stated only for associative subalgebras of octonions but can be gener\u0002alised and then extended to find all subalgebras of any Cayley-Dickson algebra.\r
 Theorem 3 (Generalised Artin theorem). Any two distinct blades of H, O or Um, m > 0,\r
 generate an algebra isomorphic or anti-isomorphic to quaternions which is thus associative.\r
 Proof. From Lemma 1, multiplying any two distinct blades generates a third distinct blade. Since\r
 the generated blade is the symmetric difference then multiplying this third element by one of the\r
 first two will recover the other of the first two. All such products are closed under multiplication\r
 and forms a Cayley-Dickson algebra, by Theorem 1, because distinct blades anti-commute and\r
-have negative square in this case. For any two blades, b and c then bc = d, cd = c(bc) = −bcc = b\r
-and db = −cbb = c, by Lemma 4. These are the cyclic, quaternion-like product rules and thus\r
+have negative square in this case. For any two blades, b and c then bc = d, cd = c(bc) = -bcc = b\r
+and db = -cbb = c, by Lemma 4. These are the cyclic, quaternion-like product rules and thus\r
 the triad b, c and bc is isomorphic to H. The triple associator shows associativity for the triad,\r
-T (b, c, bc) = b(bc)c − b(bcc) − bc(cb) + bc(cb) + cb(bc) − c(b(bc))\r
-= −bcbc + bb − bc(bc) + c(bcb)\r
-= +1 − 1 + 1 − 1\r
+T (b, c, bc) = b(bc)c - b(bcc) - bc(cb) + bc(cb) + cb(bc) - c(b(bc))\r
+= -bcbc + bb - bc(bc) + c(bcb)\r
+= +1 - 1 + 1 - 1\r
 = 0.\r
 Theorem 4 (Ultronion generation). Any ultacomplex algebra, Um, m > 0, as well as O, can be\r
-generated by n = m + 3 distinct blades, oαk, ∀ k ∈ N\r
+generated by n = m + 3 distinct blades, oalphak, for all k in N\r
 n\r
 1\r
-, with indices αk that include all n indices\r
+, with indices alphak that include all n indices\r
 an odd number of times over all k. For convenience, allow m = 0 as U0 = O.\r
 Proof. Triad b, c, d (ie three distinct blades), with a = bcd non-scalar, is non-associative,\r
-T (b, c, d) = bdc − b(dc) − dcb + d(cb) + cbd − c(bd)\r
-= bdc + dcb − dcb + bcd − bcd + bdc\r
+T (b, c, d) = bdc - b(dc) - dcb + d(cb) + cbd - c(bd)\r
+= bdc + dcb - dcb + bcd - bcd + bdc\r
 = 2bdc\r
-= ±2a.\r
+= +/-2a.\r
 (11)\r
 Combinations of b, c, d give seven distinct blades by Lemma 1, bc, bd, cd, bcd, which are isomorphic\r
 to octonions because they satisfy the rules of Un and these are the same as O by Theorem 1. Any\r
-n such terms similarly generate 2n − 1 distinct terms if, by Lemma 1, the symmetric difference\r
+n such terms similarly generate 2n - 1 distinct terms if, by Lemma 1, the symmetric difference\r
 of their grades do not become the empty set, which is guaranteed by the condition that each\r
 generator is represented an odd number of times in the indices. Hence they are isomorphic to\r
-Un−3, by Theorem 1.\r
+Un-3, by Theorem 1.\r
 The generation theorem disguises the complexity of the algebras since it avoids generating\r
 algebras from arbitrary triads at higher levels. This will take some effort and starts by analysing\r
 the asymmetry of non-associativity.\r
@@ -2354,71 +2354,71 @@ types are non-zero or only one is non-zero, the other two being zero.\r
 Proof. From Table 1, for triad b, c, d, Type 1 associativity has bdc = b(dc), Type 2 associativity\r
 has bcd = b(cd) and Type 3 associativity has cbd = c(bd). Starting with Type 1 and substituting\r
 Type 3 then Type 2 associativity, is\r
-bdc = −c(db) = −cbd = bcd = −b(dc),\r
+bdc = -c(db) = -cbd = bcd = -b(dc),\r
 which contradicts Type 1 associativity if Types 2 and 3 are assumed. Similarly, substituting the\r
 reverse of Type 3 then Type 1 into Type 2,\r
-bcd = −d(bc) = −dbc = bdc = b(dc) = −b(cd),\r
+bcd = -d(bc) = -dbc = bdc = b(dc) = -b(cd),\r
 which contradicts Type 2 associativity. Finally substituting the reverse of both Type 2 and\r
 Type 1 into Type 3,\r
-cbd = −d(cb) = −dcb = cdb = c(db) = −c(bd),\r
+cbd = -d(cb) = -dcb = cdb = c(db) = -c(bd),\r
 which contradicts Type 3 associativity. This proves existence of associativity pairs for non\u0002associativity. For necessity, if any associator is non-zero then since a = bcd then the associator\r
-must be ±2a. If only one associator type is zero and the other two are non-zero then from (11),\r
+must be +/-2a. If only one associator type is zero and the other two are non-zero then from (11),\r
 the triple associator becomes\r
-T = ±2a ± 2a + 0 = ±2a,\r
+T = +/-2a +/- 2a + 0 = +/-2a,\r
 which is again a contradiction and proves the conjecture. This theorem says nothing about all\r
 three associator types being non-zero and the triple associator is satisfied in this case, as well as\r
 satisfying the paired type associativity.\r
-Definition. Non-associativity types are defined, using ⋆ to mean non-zero, as\r
+Definition. Non-associativity types are defined, using * to mean non-zero, as\r
 Associativity Non-Associativity Type 1 Type 2 Type 3\r
-⋆ 0 0 Type A\r
-0 ⋆ 0 Type B\r
-0 0 ⋆ Type C\r
-⋆ ⋆ ⋆ Type X\r
-Definition. Triad (b, c, d) generates a Malcev algebra if it satisfies Mal’cev’s identity [20], which\r
+* 0 0 Type A\r
+0 * 0 Type B\r
+0 0 * Type C\r
+* * * Type X\r
+Definition. Triad (b, c, d) generates a Malcev algebra if it satisfies Mal'cev's identity [20], which\r
 is immediately simplified for ultracomplex numbers,\r
-bc(bd) − bcdb − cdbb − dbbc = 0,\r
-−bc(db) − bcdb + cd + dc = 0 or\r
+bc(bd) - bcdb - cdbb - dbbc = 0,\r
+-bc(db) - bcdb + cd + dc = 0 or\r
 bcdb + bc(db) = 0.\r
 (12)\r
 The simplified identity means [bc, d, b] 6= 0 which implies A or X non-associativity if bc is\r
 interpreted as a new c. Malcev algebras define non-associative Lie algebras and this is analysed\r
 later where B and C non-associativity types are also encountered. For quaternion-like triads,\r
 d = bc can be substituted into (12),\r
-bcdb + bc(db) = bc(bc)b + bc(bcb) = −b + bcc = −2b\r
+bcdb + bc(db) = bc(bc)b + bc(bcb) = -b + bcc = -2b\r
 and similarly, cycles d = b or d = c are also non-zero. So associative algebras are not Malcev\r
 algebras.\r
 Theorem 6 (Moufang associativity theorem). A Moufang loop [21] is a non-associative algebraic\r
 structure that satisfies three identities for non-associative triad (b, c, d). Calling these types 1 to\r
 3, then each type exhibits the non-associativity shown in the following table.\r
 Type Moufang non-associativity Equivalence\r
-1 d(b(dc)) − dbdc = 0 B or X\r
-2 b(d(cd)) − bdcd = 0 C or X\r
-3 db(cd) − d(bc)d = 0 B or X if Malcev,\r
+1 d(b(dc)) - dbdc = 0 B or X\r
+2 b(d(cd)) - bdcd = 0 C or X\r
+3 db(cd) - d(bc)d = 0 B or X if Malcev,\r
 A or C otherwise"""
 
 [[sections]]
 number = "10"
 title = "Proof. Type 1 and 2 equations, multiplied by d and assuming d"
 text = """
-2 = −1, become respectively\r
-d(b(dc))d − dbdcd = −b(dc)dd + bddcd = dcbdd − bcd = −dcb − bcd = −bcd − b(cd) = 0 and\r
-b(d(cd))d − bdcdd = −d(cd)bd + dbcdd = −cddbd + dbcdd = cbd − dbc = cdb + c(db) = 0.\r
-Substituting the first equation into Type 2 associativity is [b, c, d] = bcd − b(cd) = 2bcd, which\r
-is non-zero. Substituting the second into Type 3 associativity is [c, b, d] = cbd − c(bd) = 2cbd,\r
+2 = -1, become respectively\r
+d(b(dc))d - dbdcd = -b(dc)dd + bddcd = dcbdd - bcd = -dcb - bcd = -bcd - b(cd) = 0 and\r
+b(d(cd))d - bdcdd = -d(cd)bd + dbcdd = -cddbd + dbcdd = cbd - dbc = cdb + c(db) = 0.\r
+Substituting the first equation into Type 2 associativity is [b, c, d] = bcd - b(cd) = 2bcd, which\r
+is non-zero. Substituting the second into Type 3 associativity is [c, b, d] = cbd - c(bd) = 2cbd,\r
 which is also non-zero. Hence Moufang loop non-associativity of Type 1 and 2 corresponds to\r
 B-non-associativity and C-non-associativity, respectively, or X-non-associativity in both cases.\r
 Multiplying Moufang type 3 by db gives,\r
-db(cd)(db) − d(bc)d(db) = −cd(db)(db) − bc(db) = 0,\r
-so cd = bc(db). Applying (12) so that cd = −bcdb and substituting into Type 2 associativity\r
+db(cd)(db) - d(bc)d(db) = -cd(db)(db) - bc(db) = 0,\r
+so cd = bc(db). Applying (12) so that cd = -bcdb and substituting into Type 2 associativity\r
 gives,\r
-[b, c, d] = bcd − b(cd) = bcd + b(bcdb) = bcd − bcdbb = bcd + bcd = 2bcd 6= 0.\r
-This implies type B or X non-associativity. If Mal’cev’s identity is not satisfied then (12) takes the\r
+[b, c, d] = bcd - b(cd) = bcd + b(bcdb) = bcd - bcdbb = bcd + bcd = 2bcd 6= 0.\r
+This implies type B or X non-associativity. If Mal'cev's identity is not satisfied then (12) takes the\r
 opposite sign, [bc, d, b] = 0, and Type 2 associativity is then zero so that A or C non-associativity\r
 holds. This completes the proof and it is noted that it is possible to use combinations of the\r
-Moufang types along with Mal’cev’s identity to distinguish all four types of non-associativity A,\r
+Moufang types along with Mal'cev's identity to distinguish all four types of non-associativity A,\r
 B, C and X.\r
 Note that some authors[22, 23] include a fourth Moufang type, db(cd) = d(bcd). But this is\r
-the same as the third type since d(bcd) = −bcdd = d(bc)d.\r
+the same as the third type since d(bcd) = -bcdd = d(bc)d.\r
 The associative triads have pairs (b, c), (b, bc) and (c, bc), which form a 3-cycle of pairs. This\r
 applies to all pairs and can be extended to triads to provide another level of structure to the\r
 ultronions.\r
@@ -2435,7 +2435,7 @@ U5 10,795 388,620 2,331,720 2,731,135\r
 U6 43,435 3,152,140 18,912,840 22,108,415\r
 U7 174,251 25,390,860 152,345,160 177,910,271\r
 Definition. Naturally ordered basis pairs form 3-cycles, (b, c), (b, bc) and (c, bc), which cover\r
-all ordered pairs. This is because there are (2n − 1)(2n − 2)/2 combinations of pairs which have\r
+all ordered pairs. This is because there are (2n - 1)(2n - 2)/2 combinations of pairs which have\r
 factors one and two numbers less than a power of 2 so one must have a factor of 3. These pairs\r
 can be ordered as b < c < bc and the pairs of the ordered 3-cycles are called the first, second\r
 and third cycle, respectively. A 3-triad cycle extends this to the triads (b, c, d),(b, bc, d),(c, bc, d)\r
@@ -2447,7 +2447,7 @@ summation of these triad enumerations is provided in the last column of Table 2 
 N\r
 3\r
 \u0001\r
-, where N = 2n − 1.\r
+, where N = 2n - 1.\r
 For quaternions, H, the associative triad in Table 2 is (o1, o2, o12). For octonions, O, the 7\r
 associative triads have been provided by (10). The 24 3-triad cycles are derived from eight triads\r
 starting with the following first cycles,\r
@@ -2459,16 +2459,16 @@ All these octonion triads have X-non-associativity and it will soon be proved th
 must also be of type X. Remember [o1, o2, o3] = 2o123 and multiplying terms by distinct basis\r
 elements does not change the non-associativity type. To achieve this we need another generator,\r
 o4, for example, so that for b = o1, c = o2 and d = o34 then Type 2 is associative, [o2, o3, o34] =\r
-−o1234 + o1234 = 0 and Type 1 is non-associative, [o1, o34, o2] = −o1234 − o1234 6= 0.\r
+-o1234 + o1234 = 0 and Type 1 is non-associative, [o1, o34, o2] = -o1234 - o1234 6= 0.\r
 Table 3 provides the first A and C triads from U1 and the first B triad from U2 as examples.\r
 For X non-associativity, the first U1 X case not included in O is selected but note that any\r
 octonion non-associative triad could have been selected with generator o3 replaced with o4.\r
 Table 3: Non-associativity to Associativity Examples\r
 Type Type 1 Type 2 Type 3\r
-A [o1, o34, o2] = −2o1234 [o1, o2, o34] = 0 [o2, o1, o34] = 0\r
-B [o1, o345, o24] = 0 [o1, o24, o345] = −2o1235 [o24, o1, o345] = 0\r
-C [o1, o34, o24] = 0 [o1, o24, o34] = 0 [o24, o1, o34] = −2o123\r
-X [o1, o4, o2] = −2o124 [o1, o2, o4] = 2o124 [o2, o1, o4] = −2o124\r
+A [o1, o34, o2] = -2o1234 [o1, o2, o34] = 0 [o2, o1, o34] = 0\r
+B [o1, o345, o24] = 0 [o1, o24, o345] = -2o1235 [o24, o1, o345] = 0\r
+C [o1, o34, o24] = 0 [o1, o24, o34] = 0 [o24, o1, o34] = -2o123\r
+X [o1, o4, o2] = -2o124 [o1, o2, o4] = 2o124 [o2, o1, o4] = -2o124\r
 The enumeration of 3-triad cycles in Table 2 can be divided by three and categorised as\r
 belonging to one of eight 3-triad cycles and the enumeration of non-cycles is separated into the\r
 four single triads rows shown in Table 4. This table provides the 3-triad cycles structure for\r
@@ -2496,15 +2496,15 @@ Proof. Starting with A-non-associativity for the first cycle then showing that t
 third cycles have Type 2 associativity shows that these are either A or C-non-associative. Here\r
 we use Type 2 associativity [b, c, d] = 0 and Type 3 associativity [c, b, d] = 0 and apply to the\r
 second cycle equivalent,\r
-[b, bc, d] = b(bc)d − b(bcd) = −bcbd + bcdb = cbbd + b(cd)b = −cd + cd = 0 and\r
-[c, bc, d] = c(bc)d − c(bcd) = −bccd + bcdc = bd − c(bd)c = bd − bd = 0. (14)\r
+[b, bc, d] = b(bc)d - b(bcd) = -bcbd + bcdb = cbbd + b(cd)b = -cd + cd = 0 and\r
+[c, bc, d] = c(bc)d - c(bcd) = -bccd + bcdc = bd - c(bd)c = bd - bd = 0. (14)\r
 Hence the result is either A or C and AA means third cycle A and AC means third cycle C needs\r
 to be shown. Using Type 3 associativity, [c, b, d] = 0, then third cycle Type 2 associativity is\r
-[c, bc, d] = c(bc)d − c(bcd) = −bccd − cbdc = bd − c(bd)c = 0,\r
+[c, bc, d] = c(bc)d - c(bcd) = -bccd - cbdc = bd - c(bd)c = 0,\r
 meaning either AAA or AAC. Now assume third cycle Type 3 associativity, then\r
-[bc, c, d] = bccd − bc(cd) = 0 =⇒ db = −bc(cd)\r
+[bc, c, d] = bccd - bc(cd) = 0 ==> db = -bc(cd)\r
 Substitute this into second Type 3 associativity,\r
-[bc, b, d] = bcbd − bc(db) = −cbbd + bc(bc(cd)) = cd + cd(bc)(bc) = 0,\r
+[bc, b, d] = bcbd - bc(db) = -cbbd + bc(bc(cd)) = cd + cd(bc)(bc) = 0,\r
 12
 
 which means the third cycle for AA is also A. To the contrary, if the second cycle is not Type 3\r
@@ -2513,36 +2513,36 @@ For the BBA and BXC silos we need to show that the second cycle has non-zero Typ
 associator and third cycle Type 2 associativity. Starting with the Type 2 associator for the\r
 second and third cycles and using Type 3 associativity, [c, b, d] = 0, and Type 1 associativity,\r
 [b, d, c] = 0, then\r
-[b, bc, d] = b(bc)d − b(bcd) = −bcbd + bcdb = cbbd − c(bd)b = dc + b(dc)b = 2dc 6= 0 and\r
-[c, bc, d] = c(bc)d − c(bcd) = −bccd + bcdc = bd − c(bd)c = bd − bd = 0.\r
+[b, bc, d] = b(bc)d - b(bcd) = -bcbd + bcdb = cbbd - c(bd)b = dc + b(dc)b = 2dc 6= 0 and\r
+[c, bc, d] = c(bc)d - c(bcd) = -bccd + bcdc = bd - c(bd)c = bd - bd = 0.\r
 So the second cycle is either B or X-non-associative and the third A or C. If the second cycle\r
 is B then the third can be expanded using Type 3 and Type 1 associativity. Considering third\r
 cycle Type 1 associativity and using Type 3 associativity and assuming the third cycle Type 3\r
 associativity from (14), then\r
-[c, d, bc] = cd(bc)− c(d(bc)) = cd(bc)− bcdc = cd(bc) + c(bd)c = cd(bd) + bc(cd) = cd(bd− bc) 6= 0.\r
+[c, d, bc] = cd(bc)- c(d(bc)) = cd(bc)- bcdc = cd(bc) + c(bd)c = cd(bd) + bc(cd) = cd(bd- bc) 6= 0.\r
 Hence BB has A as the third cycle and therefore BXC is the other 3-cycle.\r
 For CAB and CCX silos, consider the second and third Type 2 associativity. Using Type 2\r
 associativity, [b, c, d] = 0, and Type 1 associativity, [b, d, c] = 0, then\r
-[b, bc, d] = b(bc)d − b(bcd) = −bcbd + bcdb = cbbd + b(cd)b = −cd + cd = 0 and\r
-[c, bc, d] = c(bc)d − c(bcd) = −bccd + bcdc = bd + b(cd)c = bd − bdcc = 2bd 6= 0.\r
+[b, bc, d] = b(bc)d - b(bcd) = -bcbd + bcdb = cbbd + b(cd)b = -cd + cd = 0 and\r
+[c, bc, d] = c(bc)d - c(bcd) = -bccd + bcdc = bd + b(cd)c = bd - bdcc = 2bd 6= 0.\r
 Hence the second cycle is either A or C and the third either B or X. This is separated by showing\r
 that the second and third associator are either both associative or both non-zero. Substituting\r
 second Type 3 associativity, [bc, b, d] = 0 as cd = bc(db) into the third gives,\r
-[bc, c, d] = bccd − bc(cd) = −bd − bc(bc(db)) = −bd − db(bc)(bc) = 0.\r
+[bc, c, d] = bccd - bc(cd) = -bd - bc(bc(db)) = -bd - db(bc)(bc) = 0.\r
 Hence C in the first cycle leads to CAB or CCX silos.\r
-The silos that start with X non-associativity are proved using Moufang’s non-associativity.\r
+The silos that start with X non-associativity are proved using Moufang's non-associativity.\r
 From Theorem 6, for X-non-associativity the Moufang types are 1 and 2,\r
-d(b(dc)) − dbdc = dcbd + bddc = 0 ⇒ bc = dcbd and (15)\r
-b(d(cd)) − bdcd = cddb − bdcd = 0 ⇒ bc = bdcd. (16)\r
+d(b(dc)) - dbdc = dcbd + bddc = 0 => bc = dcbd and (15)\r
+b(d(cd)) - bdcd = cddb - bdcd = 0 => bc = bdcd. (16)\r
 So the second cycle is either B or X. Type 3 and 1 for the second cycle using (16) for Type 3 is\r
-[bc, b, d] = bcbd − bc(bd) = cd − bc(bd), (17)\r
-[b, d, bc] = bd(bc) − b(d(bc)) = bd(bc) − bcdb = bd(bc) − dcbddb = bd(bc) − dc = [bc, b, d].\r
+[bc, b, d] = bcbd - bc(bd) = cd - bc(bd), (17)\r
+[b, d, bc] = bd(bc) - b(d(bc)) = bd(bc) - bcdb = bd(bc) - dcbddb = bd(bc) - dc = [bc, b, d].\r
 Type 2 and 3 for the third cycle with (15) applied to Type 2 is\r
-[c, bc, d] = c(bc)d − c(bcd) = bd + bcdc = bd + bdcddc = 2bd 6= 0,\r
-[bc, c, d] = bccd − bc(cd) = −bd − bc(cd). (18)\r
+[c, bc, d] = c(bc)d - c(bcd) = bd + bcdc = bd + bdcddc = 2bd 6= 0,\r
+[bc, c, d] = bccd - bc(cd) = -bd - bc(cd). (18)\r
 Hence, the third cycle is B or X, since Type 2 is non-zero, assuming the first cycle is X or B,\r
 from (15). If Type 3 second cycle is zero, such that cd = bc(bd) from (17), then (18) becomes\r
-−bd − bc(cd) = −bd + bc(bd)(bc) = −bd − bd(bc)(bc) = 0.\r
+-bd - bc(cd) = -bd + bc(bd)(bc) = -bd - bd(bc)(bc) = 0.\r
 So again, the third cycle is B if the second is B, alternatively, both are X. Since the first cycle\r
 was assumed to be X we have 3-triads cycles XXX or XBB.\r
 Half of the 3-triad cycle silos satisfy the identity for Malcev algebra, (12), which can now\r
@@ -2550,7 +2550,7 @@ be recognised as second and third cycles from the Cycle theorem. Due to the cycl
 AAA and XXX silos satisfy (12) for all cycles so each 3-triads cycle provides a Malcev algebra\r
 of 3 triads. This is applicable to the eight XXX cycles of O indicated in Table 4 and shown in\r
 (13). The four non-cycle X triads are (o2, o3, o13), (o2, o13, o23), (o12, o3, o13) and (o12, o3, o23)\r
-and these also satisfy Mal’cev’s identity since their second and third cycle parts overlap with\r
+and these also satisfy Mal'cev's identity since their second and third cycle parts overlap with\r
 other X triads. This completes the 28 Malcev triads in O that provide the tangent space of\r
 13
 
@@ -2567,7 +2567,7 @@ and the O parts of U1 in Table 4. Each triad generates 7 distinct blades giving 
 \u0001\r
 = 28 distinct\r
 triads and the members of 3-triad cycles are already included in this set so only the first cycle\r
-needs to be considered. O have 8×3 = 24 triads in the XXX silo and 4 in the non-cycles. U1 has\r
+needs to be considered. O have 8x3 = 24 triads in the XXX silo and 4 in the non-cycles. U1 has\r
 eight times these numbers and these can be identified with 8 triads that generate the composed\r
 O then seven copies of O,\r
 (o1, o2, o3),(o1, o2, o4),(o1, o3, o4),(o1, o23, o4),\r
@@ -2583,8 +2583,8 @@ each subalgebra for the same algebras as shown in Table 4 is provided in Table 5
 seven quaternion subalgebras, seen in 10 for (o1, o2, o3), and the pseudo-octionions have seven\r
 octonion-like algebras, split or not. Each quaternion-like algebra overlaps three times with other\r
 octonion-like rings. For example, (o1, o2, o12) occurs in (o1, o2, o3), (o1, o2, o4) and (o1, o2, o34).\r
-Hence the number of associative sub-algebras in sedonions is (7 + 8)× 7/3 = 35 and from the ta\u0002ble is can be seen that the number of overlapping quaternion-like algebras for each octonion-like\r
-subalgebra in Uk is 2k+1 − 1.\r
+Hence the number of associative sub-algebras in sedonions is (7 + 8)x 7/3 = 35 and from the ta\u0002ble is can be seen that the number of overlapping quaternion-like algebras for each octonion-like\r
+subalgebra in Uk is 2k+1 - 1.\r
 Table 5: Ultracomplex Subalgebras\r
 Structure O U1 U2 U3 U4 U5 U6 U7\r
 H 7 35 155 651 2,667 10,795 43,435 174,251\r
@@ -2593,7 +2593,7 @@ P4 0 7 63 413 2,583 16,905 118,251 873,901\r
 P12 0 0 42 504 4,158 30,996 229,194 1,729,728\r
 P14 0 0 0 168 3,024 34,776 332,640 2,912,616\r
 Total Pk 0 7 105 1085 9,765 82,677 680,085 5,516,245\r
-Definition. Define the number of blades or pure basis elements in Um as Nm = 2m+3 − 1. Also\r
+Definition. Define the number of blades or pure basis elements in Um as Nm = 2m+3 - 1. Also\r
 define Hm, Sm and Om as the number of total H, Pk and O copies in Um, respectively. Each Pk\r
 and O consists of 28 unique non-associative triads, unique due to Theorem 4 for O. Hence the\r
 total number of triads in Um, which is the number of faces in the (m + 2)-simplex, is\r
@@ -2601,21 +2601,21 @@ total number of triads in Um, which is the number of faces in the (m + 2)-simple
 Nm\r
 3\r
 \u0013\r
-= Hm + 28 × (Om + Sm)\r
+= Hm + 28 x (Om + Sm)\r
 .\r
-Theorem 8 (Ultronion subalgebras). The number of Pk subalgebras in Um is Sm+1 = 7×(Om +\r
-Sm). For convenience, m = 0 case is taken to be U0 = O, so m ≥ 0.\r
-Proof. Table 5 shows these numbers for cases m ∈ N\r
+Theorem 8 (Ultronion subalgebras). The number of Pk subalgebras in Um is Sm+1 = 7x(Om +\r
+Sm). For convenience, m = 0 case is taken to be U0 = O, so m >= 0.\r
+Proof. Table 5 shows these numbers for cases m in N\r
 7"""
 
 [[sections]]
 number = "0"
 title = "It is also observed that the count for"
 text = """
-each Pk is divisible by 7, hence Sm is divisible by 7, and that Sm = (Sm−1 + Om−1) × 7,\r
+each Pk is divisible by 7, hence Sm is divisible by 7, and that Sm = (Sm-1 + Om-1) x 7,\r
 14
 
-for m ∈ N\r
+for m in N\r
 7"""
 
 [[sections]]
@@ -2625,23 +2625,23 @@ text = """
 Nm\r
 3\r
 \u0001\r
-− Hm = 28 × (Om + Sm) then\r
+- Hm = 28 x (Om + Sm) then\r
 Sm+1\r
 Sm\r
 =\r
 Nm+1\r
 3\r
 \u0001\r
-− Hm+1\r
+- Hm+1\r
 Nm\r
 3\r
 \u0001\r
-− Hm\r
+- Hm\r
 .\r
 so the ratio of increase of the pseudo-octonion algebras equates to the rate of increase of the non\u0002associate triads. By induction the series proceeds past U7 with the same ratio and the octonions\r
 fill in the difference, Om+1 =\r
 Sm+2\r
-7 − Sm+1.\r
+7 - Sm+1.\r
 The silo sources for each subalgebra are provided in Table 6 along with the non-associative\r
 type counts. Each algebra has 8 3-triad cycles from the silos totalling 24 triads and the remaining\r
 4 triads are always found in the non-cycles, so these are not identified but can be discovered by\r
@@ -2662,19 +2662,19 @@ Theorem 9 (Projection Theorem). Any triad from an ultracomplex algebra will gene
 algebra isomorphic or anti-isomorphic to H, O, P4, P12 or P14. Furthermore, triads from U1 can\r
 project (or anti-project) to H, O or P4, from U2 to a U1 subalgebra or P12 and all higher levels\r
 can project to U2 subalgebras or P14. This leads to the diagram of injections shown in Figure 1.\r
-0 ℂ ℍ \u0001 \u00021 \u00022 \u00023 \u00024\r
-⤣\r
-⤣\r
-⤣\r
-ℙ4 ℙ12 ℙ14\r
-…\r
-⤣\r
-⤣\r
-⤣\r
-⤣\r
-⤣\r
-⤣\r
-⤣\r
+0 C H \u0001 \u00021 \u00022 \u00023 \u00024\r
+\r
+\r
+\r
+P4 P12 P14\r
+...\r
+\r
+\r
+\r
+\r
+\r
+\r
+\r
 Figure 1: Injections of Cayley Dickson algebras\r
 Proof. The injections of the normed composition algebras, C, H, O, are well defined by doubling,\r
 up to O, which has 7 copies of H and a new non-associative part given by 28 triads. These\r
@@ -2708,32 +2708,32 @@ and the product is zero. Zero divisors can not be single blades so a zero diviso
 Theorem 10 (Zero divisors theorem). The parallel terms and cross terms of the zero divisors\r
 equation separate into\r
 ac + bd = 0 and ad + bc = 0, (19)\r
-with the second equation being an identity thus reducing the definition to just ac = −bd. Further,\r
+with the second equation being an identity thus reducing the definition to just ac = -bd. Further,\r
 this is equivalent to Type 3 associativity and means the number of zero divisors for Un, Zm, is\r
 Zm =\r
 1\r
 16\r
-(Nm − 1)(Nm − 3)(Nm − 7).\r
+(Nm - 1)(Nm - 3)(Nm - 7).\r
 Proof. Uniqueness of a, b, c and d ensures ac does not have the same blade as either ad or bc,\r
 from the symmetric difference of Lemma 1, so the two equations (19) have distinct scaled blades\r
 and are separable. Since b, c, d are distinct blades, they anticommute, and since a is pure then\r
-a ≈ bcd then a is non-scalar so that b, c, d are non-associative, d 6= bc. Hence triple products also\r
+a approx bcd then a is non-scalar so that b, c, d are non-associative, d 6= bc. Hence triple products also\r
 anticommute and the equations can be re-arranged as\r
-a = −(bd)c\r
-−1 = c(bd)/c2\r
-and a = −(bc)d\r
-−1 = cbd/d2\r
+a = -(bd)c\r
+-1 = c(bd)/c2\r
+and a = -(bc)d\r
+-1 = cbd/d2\r
 and (20)\r
-d = acb−1 = b(ca)/b2and d = (bc)a\r
-−1 = bca/a2\r
+d = acb-1 = b(ca)/b2and d = (bc)a\r
+-1 = bca/a2\r
 , (21)\r
 which implies c\r
 2 = d2 and a2 = b2\r
 . Substituting (20) and (21) shows Type 3 associativity\r
-[b, c, a] = bca − b(ca) = da2 − db2 = 0 and\r
-[c, b, d] = cbd − c(bd) = ad2 − ac2 = 0.\r
-Note that the reversed product (c + d)(a + b) generates −ac − bd = 0 so provide the same zero\r
-divisor pair. Finally, substituting for a, ad = cbdd/d2 = −bc so that ad + bc = 0 is an identity.\r
+[b, c, a] = bca - b(ca) = da2 - db2 = 0 and\r
+[c, b, d] = cbd - c(bd) = ad2 - ac2 = 0.\r
+Note that the reversed product (c + d)(a + b) generates -ac - bd = 0 so provide the same zero\r
+divisor pair. Finally, substituting for a, ad = cbdd/d2 = -bc so that ad + bc = 0 is an identity.\r
 Hence zero divisor pairs are separated into two types for A and B non-associative triads that\r
 are both Type 3 associative. Octonions can not have zero divisors because the non-associative\r
 triads are X non-associative. Swapping the last two elements of the associator in Table 1 swaps\r
@@ -2742,66 +2742,66 @@ terms within brackets produces the same zero divisor pair. Table 5 shows 12 A no
 types for P4, which corresponds to 12 zero divisor pairs. The other pseudo-octonion algebras\r
 have mixures of A and B types adding up to more than 12 but since all ordered triples are in\u0002cluded in the list of 28 triads then some A and B types overlap as zero divisors to give 12 distinct\r
 zero divisor pairs. Theorem 8 defines the number of pseudo-octonion algebras at each level as\r
-Sm+1 = 7 × (Om + Sm) = 7\r
+Sm+1 = 7 x (Om + Sm) = 7\r
 28 \u0010Nm\r
 3\r
 \u0001\r
-− Hm\r
+- Hm\r
 \u0011\r
 with Hm quaternion-like or non-trivial associative\r
 algebras in Um. The sequence for Hn shown in Table 5 is provided by M4415 (A006095) in [24]\r
-as the Guassian binomial with coefficients [n, 2] for q = 2. This is a(n) = (2n − 1)(2n−1 − 1)/3,\r
-n > 2. Substituting 2n = Nm + 1 and n = m + 3 gives, for m ≥ 0,\r
+as the Guassian binomial with coefficients [n, 2] for q = 2. This is a(n) = (2n - 1)(2n-1 - 1)/3,\r
+n > 2. Substituting 2n = Nm + 1 and n = m + 3 gives, for m >= 0,\r
 Hm =\r
 1\r
 6\r
 (N\r
 2\r
-m − Nm).\r
+m - Nm).\r
 Hence\r
 Sm =\r
 7\r
-28 \u0012\u0012Nm−1\r
+28 \u0012\u0012Nm-1\r
 3\r
 \u0013\r
-− Hm−1\r
+- Hm-1\r
 \u0013\r
 =\r
 7"""
 
 [[sections]]
 number = "168"
-title = "Nm−1(Nm−1 − 1)(Nm−1 − 2) − N"
+title = "Nm-1(Nm-1 - 1)(Nm-1 - 2) - N"
 text = """
 2\r
-m−1 + Nm−1\r
+m-1 + Nm-1\r
 \u0001\r
 =\r
 1\r
 24\r
 (N\r
 3\r
-m−1 − 4N\r
+m-1 - 4N\r
 2\r
-m−1 + 3Nm−1)\r
+m-1 + 3Nm-1)\r
 =\r
 1"""
 
 [[sections]]
 number = "24"
-title = "Nm−1(Nm−1 − 1)(Nm−1 − 3)."
+title = "Nm-1(Nm-1 - 1)(Nm-1 - 3)."
 text = """
-Substituting Nm−1 = (Nm − 1)/2, gives Sm =\r
+Substituting Nm-1 = (Nm - 1)/2, gives Sm =\r
 1\r
-192 (Nm − 1)(Nm − 3)(Nm − 7). Since each Pk\r
+192 (Nm - 1)(Nm - 3)(Nm - 7). Since each Pk\r
 algebra has 12 zero-divisors [10] then Zm = 12Sm.\r
 16
 
-Definition (Modes). Calling (19) the prime zero divisor pair then (−d + b)(c + a), is called the\r
+Definition (Modes). Calling (19) the prime zero divisor pair then (-d + b)(c + a), is called the\r
 dual of the prime. The terminology dual is appropriate for zero divisors. Also (a\r
-′+b)(c+abs(db)),\r
++b)(c+abs(db)),\r
 with a\r
-′ = bc abs(db), is called the extended zero divisor pair, and (− abs(db) + b)(c + a′\r
+ = bc abs(db), is called the extended zero divisor pair, and (- abs(db) + b)(c + a\r
 ), is called\r
 both extended and dual. These four cases are called modes and whether they are zero divisors\r
 determines another level of structure for the ultronions.\r
@@ -2845,47 +2845,47 @@ d\r
 Figure 2: Special mode transformations\r
 Proof. The dual mode replaces d with a in the triad (b, c, d) so substituting this into Table 1 we\r
 find,\r
-Type 1 associativity [b, d, c] → [b, a, c] which is Type 1 associativity,\r
-Type 2 associativity [b, c, d] → [b, c, a] which is Type 3 associativity (reversed), and\r
-Type 3 associativity [c, b, d] → [c, b, a] which is Type 2 associativity (reversed).\r
-Together these mean under the dual transformation A → A, X → X and B ↔ C and this applies\r
+Type 1 associativity [b, d, c] -> [b, a, c] which is Type 1 associativity,\r
+Type 2 associativity [b, c, d] -> [b, c, a] which is Type 3 associativity (reversed), and\r
+Type 3 associativity [c, b, d] -> [c, b, a] which is Type 2 associativity (reversed).\r
+Together these mean under the dual transformation A -> A, X -> X and B <-> C and this applies\r
 to all the triad cycles and to dual extended mode as well. Hence, only the extended mode, where\r
-d → abs(db), for all cycles needs to be considered.\r
+d -> abs(db), for all cycles needs to be considered.\r
 For easier traceability, the terminology Ppq is introduced to identify a prime Type p assoc\u0002iativity equation for the q\r
-th cycle, where p, q ∈ N3\r
+th cycle, where p, q in N3\r
 1 and Epq for the equivalent types and cycles\r
 for the extended modes. Then the Type 1 and Type 3 associativity equations for the first and\r
 second cycles are\r
-[b, d, c] = bdc − b(dc) = bdc + dcb, (P11)\r
-[c, b, d] = cbd − c(bd) = cbd + bdc, = −bcd − dbc (P31)\r
-[b, d, bc] = bd(bc) − b(d(bc)) = bd(bc) − bcdb, (P12)\r
-[bc, b, d] = bcbd − bc(bd) = cd − bc(bd). (P32)\r
+[b, d, c] = bdc - b(dc) = bdc + dcb, (P11)\r
+[c, b, d] = cbd - c(bd) = cbd + bdc, = -bcd - dbc (P31)\r
+[b, d, bc] = bd(bc) - b(d(bc)) = bd(bc) - bcdb, (P12)\r
+[bc, b, d] = bcbd - bc(bd) = cd - bc(bd). (P32)\r
 The extended mode associativity equations that are required are Types 1 and 3 for the first and\r
 second cycles and Types 2 and 3 for the third cycle,\r
-[b, abs(db), c] = ±(b(db)c − b(dbc)) = ±(dc − bdcb), (E11)\r
-[c, b, abs(db)] = ±(cb(db) − c(b(db))) = ±(bc(bd) − cd), (E31)\r
-[b, abs(db), bc] = ±(b(db)(bc) − b(db(bc))) = ±(−bcd − bd(bc)b), (E12)\r
-[bc, b, abs(db)] = ±(bcb(db) − bc(b(db))) = ±(−dbc − bcd), (E32)\r
-[c, bc, abs(db)] = ±(c(bc)(db) − c(bc(db))) = ±(d − bc(bd)c), (E23)\r
-[bc, c, abs(db)] = ±(bcc(db) − bc(c(db))) = ±(−d + bc(dbc)). (E33)\r
+[b, abs(db), c] = +/-(b(db)c - b(dbc)) = +/-(dc - bdcb), (E11)\r
+[c, b, abs(db)] = +/-(cb(db) - c(b(db))) = +/-(bc(bd) - cd), (E31)\r
+[b, abs(db), bc] = +/-(b(db)(bc) - b(db(bc))) = +/-(-bcd - bd(bc)b), (E12)\r
+[bc, b, abs(db)] = +/-(bcb(db) - bc(b(db))) = +/-(-dbc - bcd), (E32)\r
+[c, bc, abs(db)] = +/-(c(bc)(db) - c(bc(db))) = +/-(d - bc(bd)c), (E23)\r
+[bc, c, abs(db)] = +/-(bcc(db) - bc(c(db))) = +/-(-d + bc(dbc)). (E33)\r
 17
 
-The following equivalences can be identified. E11 ≡ P11b, E31 ≡ P32, E12 ≡ P12b, E32 ≡ P31,\r
-E23 ≡ P32c and E33 ≡ P31. The later one is because if (P31) is zero then bc(dbc) = (bcd)(bc) =\r
-−d(bc)(bc) = d so that (E33) is zero or both are non-zero. This is used in Table 7 to transform\r
+The following equivalences can be identified. E11 == P11b, E31 == P32, E12 == P12b, E32 == P31,\r
+E23 == P32c and E33 == P31. The later one is because if (P31) is zero then bc(dbc) = (bcd)(bc) =\r
+-d(bc)(bc) = d so that (E33) is zero or both are non-zero. This is used in Table 7 to transform\r
 all silos to the extended mode equivalents and to show that this behaves as shown in Figures 2\r
-where ⋆ means non-zero.\r
+where * means non-zero.\r
 Table 7: Extended Mode Transformations\r
 Prime Mode Extended Mode\r
 Silo P11 P31 P12 P32 E11 E31 E12 E32 E23 E33 Silo\r
-AAA ⋆ 0 ⋆ 0 ⋆ 0 ⋆ 0 0 0 AAA\r
+AAA * 0 * 0 * 0 * 0 0 0 AAA\r
 BBA 0 0 0 0 0 0 0 0 0 0 BBA\r
-ACC ⋆ 0 0 ⋆ ⋆ ⋆ 0 0 ⋆ 0 XBB\r
-XBB ⋆ ⋆ 0 0 ⋆ 0 0 ⋆ 0 ⋆ ACC\r
-BXC 0 0 ⋆ ⋆ 0 ⋆ ⋆ 0 ⋆ 0 CAB\r
-CAB 0 ⋆ ⋆ 0 0 0 ⋆ ⋆ 0 ⋆ BXC\r
-CCX 0 ⋆ 0 ⋆ 0 ⋆ 0 ⋆ ⋆ ⋆ CCX\r
-XXX ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ ⋆ XXX\r
+ACC * 0 0 * * * 0 0 * 0 XBB\r
+XBB * * 0 0 * 0 0 * 0 * ACC\r
+BXC 0 0 * * 0 * * 0 * 0 CAB\r
+CAB 0 * * 0 0 0 * * 0 * BXC\r
+CCX 0 * 0 * 0 * 0 * * * CCX\r
+XXX * * * * * * * * * * XXX\r
 It is observed that the non-cycle transformations occur in blocks according to the cycle (b, c)\r
 with d < bc. The A and X transformations for non-cycles act like the dual whereas overlapping\r
 cycle cases may swap types but keep the same number of each type for each cycle.\r
@@ -2893,27 +2893,27 @@ The definition of zero divisor pairs required that a\r
 2 = b2 and c2 = d2\r
 . For the extended\r
 equation to hold these become a\r
-′2 = b2 and c2 = (db)2\r
+2 = b2 and c2 = (db)2\r
 , which implies b\r
-2 = c2 = −1. Hence for\r
+2 = c2 = -1. Hence for\r
 all subsequent work we assume a\r
-2 = b2 = c2 = d2 = ±1 and take b, c and d to be positive blades.\r
+2 = b2 = c2 = d2 = +/-1 and take b, c and d to be positive blades.\r
 All zero divisor pairs in Table 4 are derived only from the silos that contain A and B non\u0002associative types. The mode transformations for the AAA silo all act as dual transformation,\r
 which by Figure 2(a) provides other A types. Hence the AAA silo can be reduced by factors of\r
 3 cycles and 4 modes in all ultracomplex algebras. The BBA silo can also be reduced by 3 cycles\r
 but the modes are more complicated. Only the A dual mode and B extended mode generate zero\r
 divisors so modes provide a reduction by two only. It is observed that for the ultronions shown\r
 in Table 4, that for U1 only the AAA silo can provide distinct zero divisor pairs, numbering\r
-28 × 3 = 84.\r
+28 x 3 = 84.\r
 Cawagas [7] labels the pure sedenions as ei\r
-, for i ∈ N\r
+, for i in N\r
 16"""
 
 [[sections]]
 number = "1"
 title = "The graded single, pure elements,"
 text = """
-called the basis of S ≡ U1, have a natural order generated by the Cayley-Dickson process, which\r
+called the basis of S == U1, have a natural order generated by the Cayley-Dickson process, which\r
 match these in order as\r
 (e1, e2, . . . e15) = (o1, o2, o12, o3, o13, o23, o123, o4, o14, o24, o124, o34, o134, o234, o1234). (22)\r
 The first three elements are recognised as the pure quaternions and the first seven match the\r
@@ -2924,16 +2924,16 @@ Sedenions are power-associative which means the associator with repeated terms i
 zero, [a, a, a] = 0. This is obvious for an algebra where the single terms square to a scalar and\r
 other than the zero divisor pairs all terms have inverses. Octonions are alternate associative\r
 which means swapping terms of the associator changes the sign or [a, a, b] = [a, b, a] = 0 for all\r
-a, b ∈ O. But sedenions are not alternate associative and demonstrate asymmetric associativity.\r
+a, b in O. But sedenions are not alternate associative and demonstrate asymmetric associativity.\r
 For example, the A type from Table 3 is\r
-[o1, o2, o34] = −o12o34 − o1o234 = 0 and\r
-[o1, o34, o2] = o134o2 + o1o234 = −2o1234.\r
-This example produces the zero divisor pair (o1 − o1234)(o2 + o34) that provides an example of\r
+[o1, o2, o34] = -o12o34 - o1o234 = 0 and\r
+[o1, o34, o2] = o134o2 + o1o234 = -2o1234.\r
+This example produces the zero divisor pair (o1 - o1234)(o2 + o34) that provides an example of\r
 non-alternate associativity, [a, a, b] 6= 0 even though [a, b, a] = 0,\r
-[(o1 − o1234),(o1 − o1234),(o2 + o34)] = −2o2 − 2o34 and\r
-[(o1 − o1234),(o2 + o34),(o1 − o1234)] = 0.\r
-This is because each term is invertible so that (o1 −o1234)\r
-2 = −2 but multiplying the zero divisor\r
+[(o1 - o1234),(o1 - o1234),(o2 + o34)] = -2o2 - 2o34 and\r
+[(o1 - o1234),(o2 + o34),(o1 - o1234)] = 0.\r
+This is because each term is invertible so that (o1 -o1234)\r
+2 = -2 but multiplying the zero divisor\r
 terms first gives zero. For U1, we found above that zero divisors need d = oi4 or d = oij4 or"""
 
 [[sections]]
@@ -2941,26 +2941,26 @@ number = "18"
 title = "Table 8: U1 Zero Divisors"
 text = """
 b c d a db ab\r
-1 o1 o2 o34 −o1234 o134 o234\r
+1 o1 o2 o34 -o1234 o134 o234\r
 2 o1 o12 o34 o234 o134 o1234\r
-3 o1 o3 o24 o1234 o124 −o234\r
-4 o1 o13 o24 −o234 o124 −o1234\r
+3 o1 o3 o24 o1234 o124 -o234\r
+4 o1 o13 o24 -o234 o124 -o1234\r
 5 o1 o23 o24 o134 o124 o34\r
-6 o1 o123 o24 −o34 o124 o134\r
-7 o2 o12 o34 −o134 o234 o1234\r
-8 o2 o3 o14 −o1234 −o124 −o134\r
-9 o2 o13 o14 o234 −o124 o34\r
-10 o2 o23 o14 −o134 −o124 o1234\r
-11 o2 o123 o14 o34 −o124 −o234\r
-12 o12 o3 o14 o234 o24 −o134\r
+6 o1 o123 o24 -o34 o124 o134\r
+7 o2 o12 o34 -o134 o234 o1234\r
+8 o2 o3 o14 -o1234 -o124 -o134\r
+9 o2 o13 o14 o234 -o124 o34\r
+10 o2 o23 o14 -o134 -o124 o1234\r
+11 o2 o123 o14 o34 -o124 -o234\r
+12 o12 o3 o14 o234 o24 -o134\r
 13 o12 o13 o14 o1234 o24 o34\r
-14 o12 o23 o14 −o34 o24 o1234\r
-15 o12 o123 o14 −o134 o24 −o234\r
-16 o3 o13 o24 −o124 −o234 −o1234\r
-17 o3 o23 o14 o124 −o134 o1234\r
-18 o3 o123 o14 −o24 −o134 −o234\r
+14 o12 o23 o14 -o34 o24 o1234\r
+15 o12 o123 o14 -o134 o24 -o234\r
+16 o3 o13 o24 -o124 -o234 -o1234\r
+17 o3 o23 o14 o124 -o134 o1234\r
+18 o3 o123 o14 -o24 -o134 -o234\r
 19 o13 o23 o14 o24 o34 o1234\r
-20 o13 o123 o14 o124 o34 −o234\r
+20 o13 o123 o14 o124 o34 -o234\r
 21 o23 o123 o24 o124 o34 o134\r
 Table 9: AAA Primary Zero Divisors in U1\r
 bc d\r
@@ -2971,12 +2971,12 @@ o2o3 o14\r
 o2o13 o14\r
 o12o3 o14\r
 o12o13 o14\r
-d = o1234, for i, j ∈ N\r
+d = o1234, for i, j in N\r
 3\r
 1\r
 , but b and c do not contain o4 in order to satisfy [c, b, d] = 0. This means\r
 a also contains the o4 generator, satisfying the symmetry required for the dual and other modes.\r
-Sedenions contain 455 ordered triples split into 35 associative and, from Table 4, 84 A non\u0002associative, 112 C non-associative and 224 X or completely non-associative. Cawagas’s 84 zero\r
+Sedenions contain 455 ordered triples split into 35 associative and, from Table 4, 84 A non\u0002associative, 112 C non-associative and 224 X or completely non-associative. Cawagas's 84 zero\r
 divisor pairs are summarised in AAA 3-triad cycle form in Table 9 which shows the primes only.\r
 Applying the Mode and Cycles Theorems gives twelve zero divisor pairs, applicable for the AAA\r
 silo, over the seven 3-triad cycles generating all 84 zero divisor pairs in Table 8.\r
@@ -3040,22 +3040,22 @@ o123o14 o123o234 o14o234 o15 o245 o1245\r
 o123o24 o123o134 o24o134 o25 o145 o1245\r
 o123o124 o123o34 o124o34 o125 o145 o245\r
 Five of the rows can be derived by rotating the bc indices positively and one negatively,\r
-wrapping 1 → 4. The other two rows, o2o13 → o13o4 and o12o13 → o123o4, do not follow a\r
+wrapping 1 -> 4. The other two rows, o2o13 -> o13o4 and o12o13 -> o123o4, do not follow a\r
 pattern nor do the d columns when compared with Table 10, so such pattern recognition is\r
-ignored. Since Table 11 contains AAA non-associative cycles this gives another 21 × 4 × 3 = 252\r
+ignored. Since Table 11 contains AAA non-associative cycles this gives another 21 x 4 x 3 = 252\r
 zero divisor pairs.\r
-Now all other bc pairs that don’t include o5 can be covered. This involves triads with over\u0002lapping AAA and BBA cycles but the AAA cases still have four modes and the BBA have prime\r
+Now all other bc pairs that don't include o5 can be covered. This involves triads with over\u0002lapping AAA and BBA cycles but the AAA cases still have four modes and the BBA have prime\r
 and extended modes only. Table 6 shows that for P12 and P14 the type B triads provide half\r
 of the 12 zero divisors for the algebra. In Table 12 the d column provides the AAA structure\r
-and the d1 and d2 columns the BBA structure. The 21 sets of 3-cycles in Table 12 thus rep\u0002resent 21 × 3 × 4 = 252 zero divisor pairs in the d column and the d1 and d2 columns provide\r
-21 × 3 × 2 = 126 solutions each which means the table provides 252 + 126 × 2 = 504 zero divisor\r
+and the d1 and d2 columns the BBA structure. The 21 sets of 3-cycles in Table 12 thus rep\u0002resent 21 x 3 x 4 = 252 zero divisor pairs in the d column and the d1 and d2 columns provide\r
+21 x 3 x 2 = 126 solutions each which means the table provides 252 + 126 x 2 = 504 zero divisor\r
 pairs.\r
 Table 12 can be replicated, apart from the d column, with o4 replaced with o5 in the bc\r
 cycles, as shown in Table 13. The d1 and d2 columns have the same BBA structure and modes\r
 20
 
-as Table 12 which represents 21 × 3 × 4 = 252 solutions. Tables 12 and 13 provide the only B\r
-non-associative triads in d1 and d2 columns giving 21 × 3 × 2 × 2 = 252 triads, as expected.\r
+as Table 12 which represents 21 x 3 x 4 = 252 solutions. Tables 12 and 13 provide the only B\r
+non-associative triads in d1 and d2 columns giving 21 x 3 x 2 x 2 = 252 triads, as expected.\r
 Adding all solutions from Tables 10 through 13 gives 252 + 252 + 504 + 252 = 1260 which is\r
 enumerated in Table 14 under the U2 zero divisors.\r
 Table 13: BBA only Primary Zero Divisors in U2\r
@@ -3073,7 +3073,7 @@ o3o15 o245 o2345 o123o125 o145 o245\r
 o3o25 o145 o1245\r
 Table 14 provides the number of non-associative elements and zero divisors for the ultronions\r
 up to level 10. These are labelled Um where n = m + 3 is the number of generators. Each\r
-generator level defines an algebra with N = 2n − 1 pure basis elements and N\r
+generator level defines an algebra with N = 2n - 1 pure basis elements and N\r
 3\r
 \u0001\r
 ordered product\r
@@ -3089,9 +3089,9 @@ Table 14: Ultronion Algebras Cardinality\r
 Label Pure Basis Non-Associative Zero Divisors\r
 Size Triads 28 Factor Count 84 Factor\r
 O 7 28 1 0 0\r
-Oe 7 28 – 24 –\r
-U1 ≡ S 15 420 15 84 1\r
-Ue1 15 420 – 180 –\r
+Oe 7 28 - 24 -\r
+U1 == S 15 420 15 84 1\r
+Ue1 15 420 - 180 -\r
 U2 31 4,340 155 1,260 15\r
 U3 63 39,060 1,395 13,020 155\r
 U4 127 330,708 11,811 117,180 1,395\r
@@ -3103,7 +3103,7 @@ U7 1023 177,736,020 6,347,715 66,194,940 788,035"""
 number = "5"
 title = "Split Cayley-Dickson Algebras"
 text = """
-Equation (5) can also be defined with a positive number of ǫi = 1 for i ∈ N\r
+Equation (5) can also be defined with a positive number of ei = 1 for i in N\r
 n"""
 
 [[sections]]
@@ -3112,19 +3112,19 @@ title = "Such unitary"
 text = """
 generators are represented as ui with u\r
 2\r
-i = 1 for i ∈ N\r
+i = 1 for i in N\r
 n"""
 
 [[sections]]
 number = "1"
 title = "This provides a mixed sign basis with"
 text = """
-elements oαuβ with α, β ∈ B(n) such that α∩β = ∅. Lemma 3 shows that squaring such elements\r
-is −1 for even length of β and is +1 for an odd length. This is now applied to each level of the\r
+elements oalphaubeta with alpha, beta in B(n) such that alphacapbeta = empty. Lemma 3 shows that squaring such elements\r
+is -1 for even length of beta and is +1 for an odd length. This is now applied to each level of the\r
 graded algebras.\r
 By the binomial theorem, the number of basis elements is the sum over all grades including\r
 the number one, as shown in (2). An enumeration of the binomial theorem is expressed in\r
-Pascal’s triangle that starts as\r
+Pascal's triangle that starts as\r
 21
 
 1\r
@@ -3136,8 +3136,8 @@ and is described by the recurrence relation that each position after the first i
 elements above. For graded algebras the triangle enumerates Cayley-Dickson algebras starting\r
 with the reals, R. Each row after this is the statement that the number of terms of any k-grade is\r
 given by the number of terms at grade k without the generator on or un plus those that include\r
-this generator from grade k−1. Pascal’s triangle is horizontally symmetric because for each term\r
-of grade k, the complimentary term with grade n − k contains the same k indices removed from\r
+this generator from grade k-1. Pascal's triangle is horizontally symmetric because for each term\r
+of grade k, the complimentary term with grade n - k contains the same k indices removed from\r
 the n generator case. For n odd there are an equal number of terms with on or un as without\r
 in the complimentary terms. For n even the same applies apart from the middle grade k = n/2.\r
 But  n\r
@@ -3148,44 +3148,44 @@ generators equally into an even set, half of which contain on or un and the othe
 course, the left-hand side has grade k = 0 that specifies the basis number 1 while the right-hand\r
 side, the compliment of 1, has k = n and always contains on or un.\r
 Definition. The pure trace of the multiplication table for the algebra with n generators is the\r
-sum of the squares of the 2n − 1 pure basis terms, which is −(2n − 1) for Cayley-Dickson algebra\r
-at level n. Thus for octonions this is −7.\r
+sum of the squares of the 2n - 1 pure basis terms, which is -(2n - 1) for Cayley-Dickson algebra\r
+at level n. Thus for octonions this is -7.\r
 Theorem 12 (Trace theorem). The pure trace for all of the split ultracomplex algebras is one,\r
 as it is for split octonions, Oe, split quaternions, He, and Lorentz numbers, Ce.\r
-Proof. For any blade oαuβ, α and β from disjoint sets of B(n) then Lemma 3 shows that\r
-(oαuβ)\r
-2 = ±1, −1 if β has even length and +1 if β has odd length. Starting at n = 1 the\r
+Proof. For any blade oalphaubeta, alpha and beta from disjoint sets of B(n) then Lemma 3 shows that\r
+(oalphaubeta)\r
+2 = +/-1, -1 if beta has even length and +1 if beta has odd length. Starting at n = 1 the\r
 Lorentz numbers, Ce, have one blade, u1, so has pure trace one. Split quaternions, He, can have\r
 pure basis, {o1, u2, o1u2} or {u1, u2, u12}, both of which satisfy the theorem. By induction, the\r
-basis at level n − 1 is assumed to have pure trace one and either on or un will multiplying all\r
+basis at level n - 1 is assumed to have pure trace one and either on or un will multiplying all\r
 basis elements. By the binomial theorem recurrence relation the existing pure basis is doubled by\r
 multiplying all existing basis elements by on and adding the on (multiplication by 1). Extending\r
-each α in this way does not change the parity of β so this doubles the pure trace count and adds\r
+each alpha in this way does not change the parity of beta so this doubles the pure trace count and adds\r
 the -1 trace part for on, keeping the pure trace to one.\r
-Now applying the same recurrence relation with un swaps even and odd parities of each β\r
-in the new multiplied terms when excluding the unit, 1. Hence a trace of one at level n − 1 has\r
+Now applying the same recurrence relation with un swaps even and odd parities of each beta\r
+in the new multiplied terms when excluding the unit, 1. Hence a trace of one at level n - 1 has\r
 terms added with opposite trace parity giving a total parity of zero. But the extra term, un,\r
 from multiplication by 1, regains the pure trace of one.\r
 Theorem 13 (Split Cayley-Dickson algebras). All Cayley-Dickson algebras with any positive\r
-number of ǫi = −1 for i ∈ N\r
+number of ei = -1 for i in N\r
 n\r
 1 are isomorphic to each other so may be represented as the\r
-algebra of unitary generators, u1, u2, · · · , un, called the split algebra, either Ce, He, Oe or Uem,\r
-m = n − 3 > 0.\r
-Proof. From Theorem 1, all blades x, y anti-commute, xy = −yx, if x 6= y, and by Lemma 3\r
+algebra of unitary generators, u1, u2, * * * , un, called the split algebra, either Ce, He, Oe or Uem,\r
+m = n - 3 > 0.\r
+Proof. From Theorem 1, all blades x, y anti-commute, xy = -yx, if x 6= y, and by Lemma 3\r
 have squares x\r
-2 = ±1, positive for an odd number of unitary generators and negative otherwise.\r
-A basis of the algebra is x = oαuβ, such that α ∩ β = ∅, ∀α, β ∈ B(n). By Theorem 12, any\r
+2 = +/-1, positive for an odd number of unitary generators and negative otherwise.\r
+A basis of the algebra is x = oalphaubeta, such that alpha cap beta = empty, for allalpha, beta in B(n). By Theorem 12, any\r
 positive number of unitary generators produce a basis with pure trace one. Selecting a set of n\r
-of α + β so that (oαuβ)\r
-2 = 1 but the set elements are not all from the split algebra at level n − 1\r
+of alpha + beta so that (oalphaubeta)\r
+2 = 1 but the set elements are not all from the split algebra at level n - 1\r
 then from Lemma 1 this set generates the whole of B(n) and the corresponding basis elements\r
 can be relabelled as new generators u\r
-′\r
+\r
 1\r
-, u′\r
+, u\r
 2\r
-, . . . , u′\r
+, . . . , u\r
 n.\r
 The unitary Type 1, Type 2 and Type 3 associativity scheme for triads does not change\r
 from the non-split case because the same sign changes apply to each associativity term. This\r
@@ -3197,43 +3197,43 @@ a partial cyclic structure,\r
 (u1, u12, u123),(u2, u12, u123),(u3, u13, u123).\r
 22
 
-Split octonions have idempotents of the form (1 + uα) with nilpotents (1 + uα)(1 − uα) for\r
-α ∈ N\r
+Split octonions have idempotents of the form (1 + ualpha) with nilpotents (1 + ualpha)(1 - ualpha) for\r
+alpha in N\r
 3\r
-1 ∪ {123}. These are derived from the four positive square blades of Oe, u\r
+1 cup {123}. These are derived from the four positive square blades of Oe, u\r
 2\r
-α = 1 with\r
+alpha = 1 with\r
 u\r
 2\r
 123 = 1. Each idempotent can be multiplied on the left by the three blades that do not contain\r
-uα, which form a left ideal and gives 16 nilponents. Multiplying by different terms of the nilpotent\r
-gives another zero divisor. For example, (1 + u1) has (−u2 + u12)(u3 + u13) = 0, which satisfies\r
-the definition for a zero divisor since u12u3u13 = −u2. Hence ideals overlap with zero divisors\r
+ualpha, which form a left ideal and gives 16 nilponents. Multiplying by different terms of the nilpotent\r
+gives another zero divisor. For example, (1 + u1) has (-u2 + u12)(u3 + u13) = 0, which satisfies\r
+the definition for a zero divisor since u12u3u13 = -u2. Hence ideals overlap with zero divisors\r
 for split algebras.\r
 Table 15: Split Sedenion Zero Divisors\r
 b c d blades b c d blades\r
-u1 u2 u13, u14, −u134 u12 u3 u34, −u134\r
-u1 u3 u23, u14, u124 u12 u13 −u4, u14\r
+u1 u2 u13, u14, -u134 u12 u3 u34, -u134\r
+u1 u3 u23, u14, u124 u12 u13 -u4, u14\r
 u1 u23 u4, u24 u12 u4 u34\r
-u1 u4 u24, u34, u1234 u12 u14 −u134\r
-u1 u24 −u134, −u234 u3 u4 u14, u24\r
-u1 u34 −u234 u3 u14 −u124\r
-u2 u3 u13, u24, −u124 u3 u24 −u124\r
+u1 u4 u24, u34, u1234 u12 u14 -u134\r
+u1 u24 -u134, -u234 u3 u4 u14, u24\r
+u1 u34 -u234 u3 u14 -u124\r
+u2 u3 u13, u24, -u124 u3 u24 -u124\r
 u2 u13 u4, u14 u13 u4 u24\r
-u2 u4 u14, u34, u1234 u13 u14 −u124\r
-u2 u14 −u134, −u234 u23 u4 u14\r
-u2 u34 u134 u23 u24 −u124\r
+u2 u4 u14, u34, u1234 u13 u14 -u124\r
+u2 u14 -u134, -u234 u23 u4 u14\r
+u2 u34 u134 u23 u24 -u124\r
 Split sedenions, Ue1, have 180 zero divisor pairs derived from 108 X, 48 A and 24 C-non\u0002associative triads which includes extending the zero divisor to allow for unitary products. Unlike\r
 the split octonions, Ue1 has a full cyclic structure with correspondence of the d terms for all cycle\r
 triads. The X types have only two modes and not necessarily the dual. The A and C types\r
 either have only the primary mode or all four modes with A type having three such cases and\r
 C have just two. This reduces to the 39 primaries shown in Table 15 and with 21 modes then\r
 the 3 triad cycles for each triad gives the 180 zero divisor pairs for Ue1. The d blades shown as\r
-negative in the table require (−a + b)(c + d) for all first cycles but some second and third cycles\r
-need the extended dual mode as well. The two exceptions are (u1, u2, −u134) and (u2, u3, −u124)\r
+negative in the table require (-a + b)(c + d) for all first cycles but some second and third cycles\r
+need the extended dual mode as well. The two exceptions are (u1, u2, -u134) and (u2, u3, -u124)\r
 which need the extended dual mode with the standard positive zero divisor.\r
 An overlap between split and non-split zero divisors does not occur. The triad (u12, u13, u14)\r
-and its product, u12u13u14 = −u1234, contains terms that are all imaginary, which should be\r
+and its product, u12u13u14 = -u1234, contains terms that are all imaginary, which should be\r
 analogous to the non-split triad (o12, o13, o14) but this has product +o1234 providing a zero\r
 divisor with opposite parity."""
 
@@ -3251,7 +3251,7 @@ properties in cycles that lead to multiples of 84 zero divisor pairs and modes t
 cycles, can reduce these down to 7, if overlap is taken into account. The total number of zero\r
 divisors for each algebra is also derived.\r
 The graded approach also applies to split ultracomplex numbers by showing that, like the hy\u0002percomplex case, there is only one split algebra at each level of the Cayley-Dickson construction.\r
-In this case it is convenient to use ǫ = −1 for all generators, which then have positive square\r
+In this case it is convenient to use e = -1 for all generators, which then have positive square\r
 generators, u\r
 2\r
 i = 1. The convenient symmetry thereafter is that all odd length grades are unitary\r
@@ -3274,26 +3274,26 @@ References\r
 [2] L. Sorgsepp and J. Lohmus, Binary and Ternary Sedenions, Hadronic J. 4 (1981) pp. 327-\r
 353.\r
 [3] K. Imaeda and M. Imaeda, Sedenions: Algebra and Analysis, Applied Mathematics and\r
-Computation, 115 Issue 2-3, (2000) pp. 77–88.\r
-[4] J. C. Baez, The Octonions. Bull. Amer. Math. Soc. (N.S.) 39, No.2, 2002, pp. 145–205.\r
+Computation, 115 Issue 2-3, (2000) pp. 77-88.\r
+[4] J. C. Baez, The Octonions. Bull. Amer. Math. Soc. (N.S.) 39, No.2, 2002, pp. 145-205.\r
 [5] F. R. Harvey, Spinors and Calibrations. Academic Press, San Diego, 1990, ISBN 0-12-\r
 329650-1.\r
 [6] T. Dray and C. A. Manogue, The geometry of the octonions. World Scientific Publishing\r
 Co. Pte. Ltd, Singapore, 2015, ISBN 978-9814401814.\r
 [7] R. E. Cawagas, On the structure and zero divisors of the Cayley-Dickson sedenion algebra,\r
-Discussiones Mathematicae, General Algebra and Applications 24, 2004, pp. 251–265.\r
+Discussiones Mathematicae, General Algebra and Applications 24, 2004, pp. 251-265.\r
 [8] J. H. Conway and D. A. Smith, On quaternions and octonions : their geometry, arithmetic,\r
 and symmetry. CRC Press LLC, Florida, 2003, ISBN 978-1-56881-134-5.\r
 [9] R. E. Cawagas and S.A.G.Gutierez, The Subloop Structure of the Cayley-Dickson Sedenion\r
-Loop, Journal of the Mathematical Society of the Philippines, 28, Nos 1-3 (2005), pp. 10–20.\r
+Loop, Journal of the Mathematical Society of the Philippines, 28, Nos 1-3 (2005), pp. 10-20.\r
 [10] G. P. Wilmot, Construction of exception Lie algebra G2 and non-associative algebras using\r
 Clifford algebra, arXiv:2505.06011 [math.RA].\r
 [11] C. Furey, Three generations, two unbroken gauge symmetries, and one eight-dimensional\r
-algebra. Physics Letters B, 2018. 785 pp. 84–89.\r
-[12] C. Furey. SU(3)C×SU(2)L×U(1)Y(×U(1)X) as a symmetry of division algebraic ladder oper\u0002ators, The European Physical Journal C, 78(5):1-–12, 2018.\r
+algebra. Physics Letters B, 2018. 785 pp. 84-89.\r
+[12] C. Furey. SU(3)CxSU(2)LxU(1)Y(xU(1)X) as a symmetry of division algebraic ladder oper\u0002ators, The European Physical Journal C, 78(5):1--12, 2018.\r
 [13] N. G. Gresnigt, L. Gourlay and A. Varma, Toward a description of three generations of\r
 fermions from the Cayley-Dickson sedenions, Physics of Particles and Nuclei, 2023, 54,\r
-No. 6, pp. 1006-–1010.\r
+No. 6, pp. 1006--1010.\r
 [14] N. Gresnigt, A sedenion algebraic representation of three colored fermion genera\u0002tions, Journal of Physics: Conference Series, 2667 (2023) 012061, doi:10.1088/1742-\r
 6596/2667/1/012061.\r
 [15] Q. Tang and J. Tang, Sedenion algebra for three lepton/quark generations and its relations\r
@@ -3306,13 +3306,13 @@ Issue, doi:10.3390/sym16050626.\r
 
 [18] R. H. Bruck, E. Kleinfeld, The structure of alternative division rings, Proc. of the Amer.\r
 Math. Soc., 1951, 2 (6), 1951, p.878-890.\r
-[19] F. D´eroche, Islamic Codicology: An Introduction to the Study of Manuscripts in Arabic\r
-Script, London: Al-Furqan Islamic Heritage Foundation, 2006), pp. 65–102.\r
-[20] A. A. Sagle, Malcev algebras, Trans. Amer. Math. Soc. 1961, 101 (3), pp. 426–458.\r
+[19] F. D'eroche, Islamic Codicology: An Introduction to the Study of Manuscripts in Arabic\r
+Script, London: Al-Furqan Islamic Heritage Foundation, 2006), pp. 65-102.\r
+[20] A. A. Sagle, Malcev algebras, Trans. Amer. Math. Soc. 1961, 101 (3), pp. 426-458.\r
 [21] R. H. Bruck, A survey of binary systems, Reihe: Gruppentheorie, Spinger-Verlag, Berlin\r
-G¨ottingen-Heidelberg. 1958. DOI 10.1007/978-3-662-35338-7, pp. 65–102.\r
-[22] K. Kunen, Moufang Quasigroups, Journal of Algebra, 183, (1996) pp. 231–234.\r
-[23] P. Vojtˇechovsk´y, Toward the classification of Moufang loops of order 64, European J. Com\u0002bin. 27, Issue 3 (2006), pp. 444-460\r
+G"ottingen-Heidelberg. 1958. DOI 10.1007/978-3-662-35338-7, pp. 65-102.\r
+[22] K. Kunen, Moufang Quasigroups, Journal of Algebra, 183, (1996) pp. 231-234.\r
+[23] P. Vojtechovsk'y, Toward the classification of Moufang loops of order 64, European J. Com\u0002bin. 27, Issue 3 (2006), pp. 444-460\r
 [24] N. J. A. Sloane and S. Plouffe, The Encyclopedia of Integer Sequences, Academic Press, San\r
 Diego, 1995, ISBN 0-12-558630-2.\r
 25"""

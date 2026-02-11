@@ -69,7 +69,7 @@ body_markdown = '''
 # Volume III: Synthesis - The Warp Ring
 
 ## 3.1 The Warp Ring Hypothesis
-The "Warp Ring" is the visual manifestation of the E7 polytope projected onto the turbulent flow field. It represents the "event horizon" of energy transfer—the boundary between the inertial range and the dissipation range.
+The "Warp Ring" is the visual manifestation of the E7 polytope projected onto the turbulent flow field. It represents the "event horizon" of energy transfer--the boundary between the inertial range and the dissipation range.
 
 ### 3.1.1 Visualization
 By projecting the 56-dimensional E7 weight space onto a 2D plane (the Coxeter plane), we observe a ring-like structure. When overlaid with the spectral energy density of the fluid, active triads cluster along the vertices of this projection.
@@ -88,5 +88,5 @@ $$ \partial_t \Psi = [H_{E7}, \Psi] + \nu \Delta \Psi $$
 Here $\Psi$ is the unified field (a 56-dim vector), and $H_{E7}$ is the Hamiltonian derived from the E7 structure constants.
 
 ## 3.3 Conclusion
-This monograph synthesizes the algebraic rigor of Lie theory with the statistical chaos of fluid dynamics. The resulting framework—the "Algebra-Fluid Duality"—provides a novel pathway for solving the closure problem of turbulence.
+This monograph synthesizes the algebraic rigor of Lie theory with the statistical chaos of fluid dynamics. The resulting framework--the "Algebra-Fluid Duality"--provides a novel pathway for solving the closure problem of turbulence.
 '''

@@ -5,117 +5,117 @@ arXiv:math/0703745v3 [math.RA] 22 Nov 2007\r
 Placeholder Substructures I: The Road from\r
 NKS to Scale-Free Networks is Paved with\r
 Zero Divisors\r
-Robert P. C. de Marrais ∗\r
+Robert P. C. de Marrais *\r
 Thothic Technology Partners, P.O.Box 3083, Plymouth MA 02361\r
 October 23, 2018\r
 Abstract\r
 Zero-divisors (ZDs) derived by Cayley-Dickson Process (CDP) from N\u0002dimensional hypercomplex numbers (N a power of 2, and at least 4) can\r
-represent singularities and, as N → ∞, fractals – and thereby, scale-free net\u0002works. Any integer > 8 and not a power of 2 generates a meta-fractal or\r
+represent singularities and, as N -> infinity, fractals - and thereby, scale-free net\u0002works. Any integer > 8 and not a power of 2 generates a meta-fractal or\r
 Sky when it is interpreted as the strut constant (S) of an ensemble of octahe\u0002dral vertex figures called Box-Kites (the fundamental ZD building blocks).\r
-Remarkably simple bit-manipulation rules or recipes provide tools for trans\u0002forming one fractal genus into others within the context of Wolfram’s Class\r
+Remarkably simple bit-manipulation rules or recipes provide tools for trans\u0002forming one fractal genus into others within the context of Wolfram's Class\r
 4 complexity.\r
 1 Introduction: A Sky for Box-Kites\r
-Within a generation of Imaginary Numbers’ taming, William Rowan Hamilton\r
+Within a generation of Imaginary Numbers' taming, William Rowan Hamilton\r
 etched his famous i\r
-2 = j2 = k2 = i jk = −1 equation on the bridge he was cross\u0002ing, thereby giving us Quaternions (and, eventually, the tools of vector calculus\r
+2 = j2 = k2 = i jk = -1 equation on the bridge he was cross\u0002ing, thereby giving us Quaternions (and, eventually, the tools of vector calculus\r
 derived from their workings). Within months, Arthur Cayley and John Graves\r
 independently generalized his 4-D (noncommutative) Complex quantities to the\r
 8-D (nonassociative) Octonions. But before the century was out, attempts to ex\u0002tend hypercomplex number systems indefinitely, by the CDP dimension-doubling\r
-∗Email address: rdemarrais@alum.mit.edu\r
+*Email address: rdemarrais@alum.mit.edu\r
 1
 
 algorithm, met with an impediment: in 1896, Adolf Hurwitz proved that the next\r
 redoubling (to the 16-D Sedenions) would continue the pattern of giving up some\u0002thing familiar as the price of admission; only this time, the very notion of a norm\r
 (and hence, of division algebra itself) would be forfeit. [1] The necessity of zero\u0002divisors (non-null numbers with zero product) in all higher 2\r
-N-ions, N ≥ 4, almost\r
-instantly squelched the ambitions of number theorists – with such thoroughness,\r
-that the next (32-D) numbers were never even given a name, much less inves\u0002tigated seriously. Yet these Pathions, as we’ll term them (as in “pathological,”\r
+N-ions, N >= 4, almost\r
+instantly squelched the ambitions of number theorists - with such thoroughness,\r
+that the next (32-D) numbers were never even given a name, much less inves\u0002tigated seriously. Yet these Pathions, as we'll term them (as in "pathological,"\r
 which is what such entities were deemed) are precisely those which hold the key\r
 to underwriting (and algebraically generalizing) fractals with Number Theory.\r
-There is much more than irony in the fact that fractals themselves were sim\u0002ilarly dismissed as “monstrosities” – only to be later tamed and rendered com\u0002monplace by Benoit Mandelbrot. [2] For, thanks to their attribute of being scale\u0002free (as statistical distributions), fractals buttress the recent theory of complex net\u0002works [3] – which theory can be given its own Number Theoretic basis (making\r
+There is much more than irony in the fact that fractals themselves were sim\u0002ilarly dismissed as "monstrosities" - only to be later tamed and rendered com\u0002monplace by Benoit Mandelbrot. [2] For, thanks to their attribute of being scale\u0002free (as statistical distributions), fractals buttress the recent theory of complex net\u0002works [3] - which theory can be given its own Number Theoretic basis (making\r
 it henceforth less reliant on empirical methods) by dint of ZD ensembles. Such\r
 a network-enabling meta-fractal (each of whose infinite points is associated with\r
-one among an infinite number of orthogonal lines of ZDs) we call a Sky – for\r
+one among an infinite number of orthogonal lines of ZDs) we call a Sky - for\r
 it is where Box-Kites fly. These latter ensembles of 6 orthogonal planes, each\r
 represented by a vertex on an octahedral frame, are the basic molecules of ZD\r
-structures. Their workings (and manner of embedding in Skies, which we’ll vi\u0002sualize via spreadsheet-like “emanation tables” or ETs) will be our first concern.\r
+structures. Their workings (and manner of embedding in Skies, which we'll vi\u0002sualize via spreadsheet-like "emanation tables" or ETs) will be our first concern.\r
 Once we understand their interrelations, we will be able to generate the simple\r
-rules that use the bit-string of a Box-Kite ensemble’s integer signature to fill or\r
-hide ET cells, in a manner implying approach to the “fractal limit.”\r
-Our argument, like Caesar’s Gaul, naturally divides into three parts. In this\r
+rules that use the bit-string of a Box-Kite ensemble's integer signature to fill or\r
+hide ET cells, in a manner implying approach to the "fractal limit."\r
+Our argument, like Caesar's Gaul, naturally divides into three parts. In this\r
 Part I, our focus will be on the octahedral Box-Kite representation, which can\r
 organize all the seminal concepts of Zero-Divisor Theory in the 16-D context\r
 in which it first emerged, and end with a first foray into 32-D, fabricating the\r
-small set of fundamental tools we’ll need to keep expanding our agenda recur\u0002sively into 64, 128, 256, then infinite dimensions. In Part II, we introduce the\r
-spreadsheet-like means of representing ensembles of Box-Kites – the Emanation\r
-Tables alluded to last paragraph – which lead to a graphics more suggestive of\r
+small set of fundamental tools we'll need to keep expanding our agenda recur\u0002sively into 64, 128, 256, then infinite dimensions. In Part II, we introduce the\r
+spreadsheet-like means of representing ensembles of Box-Kites - the Emanation\r
+Tables alluded to last paragraph - which lead to a graphics more suggestive of\r
 colored quilts than any regular figures Euclid might have known. Their resem\u0002blance to classical fractals will soon be evident, and culminate in our construction\r
-of the simplest (“Whorfian”) Sky, whose basic building blocks only first emerge in\r
+of the simplest ("Whorfian") Sky, whose basic building blocks only first emerge in\r
 32-D. Finally, in Part III, we will construct the component parts of the algorithm\r
 which lets us build an infinite-dimensional meta-fractal Sky that is unique to any\r
 2
 
 integer > 8 and not a power of 2 (which is how we can justify calling our study\r
-a branch of Number Theory – but one based on bit-string-suggestive placeholder\r
+a branch of Number Theory - but one based on bit-string-suggestive placeholder\r
 structures, with powers of 2 playing a role roughly akin to that of prime num\u0002bers in the quantity-fixated contemplations of which the Greeks were so fond).\r
-Here, we conclude with what literally boils down to“cookbook instructions” for\r
-building arbitrary Skies, allowing for NKS-style movements between them – the\r
+Here, we conclude with what literally boils down to"cookbook instructions" for\r
+building arbitrary Skies, allowing for NKS-style movements between them - the\r
 Recipe Theory suggested in our abstract.\r
 2 Preliminaries: CDP; What Zero-Division Means\r
-We use the most general CDP labeling scheme: units are subscripted from 0 (Re\u0002als) to 2N −1; the product (up to sign) of any two has subscript equal to the XOR\r
-of the producing terms’ subscripts. Call G the index of the CDP generator of\r
+We use the most general CDP labeling scheme: units are subscripted from 0 (Re\u0002als) to 2N -1; the product (up to sign) of any two has subscript equal to the XOR\r
+of the producing terms' subscripts. Call G the index of the CDP generator of\r
 2\r
 N+1\r
 -ions from 2N-ions. Then G = 2\r
 N ( = 8 for Sedenions), and we have Rule 1:\r
-for 2N-ion index L < G, iL ·iG = +i\r
-(G+L) ≡ +i(G xor L)\r
+for 2N-ion index L < G, iL *iG = +i\r
+(G+L) == +i(G xor L)\r
 . Once we have at least one\r
 associative triplet (trip) to work with, we can invoke Rule 2: writing in cyclically\r
 positive order (CPO) so positive units multiplied left to right always result in an\u0002other, creating a new trip by adding G to 2 terms of another reverses the order:\r
-(a,b, c) → (a, c+G,b+G). These 2 rules (plus a Rule 0 which says trips in 2N\u0002ions remain trips in all higher 2N+k\r
+(a,b, c) -> (a, c+G,b+G). These 2 rules (plus a Rule 0 which says trips in 2N\u0002ions remain trips in all higher 2N+k\r
 -ions, k > 0) completely describe trip-making,\r
 hence CDP.\r
 Examples. Appending a unit i2 to the standard Complex plane, Rule 1 gives\r
-us i1 · i2 = +i3 – the usual i, j, k of Quaternions (22-ions). Performing one fur\u0002ther iteration with G = 4, Rule 1 applied to the singleton Q-trip (1,2,3) yields\r
-G−1 = 3 O-trips (1,4,5);(2,4,6);(3,4,7). By Rule 2, we also derive 3 more:\r
-(1,2,3) → (1,7,6); (2,3,1) → (2,5,7); and, (3,1,2) → (3,6,5). Altogether, then,\r
-CDP says Octonions contain 1+3+3 = 7 O-trips – the trip count for N = 3, or\r
+us i1 * i2 = +i3 - the usual i, j, k of Quaternions (22-ions). Performing one fur\u0002ther iteration with G = 4, Rule 1 applied to the singleton Q-trip (1,2,3) yields\r
+G-1 = 3 O-trips (1,4,5);(2,4,6);(3,4,7). By Rule 2, we also derive 3 more:\r
+(1,2,3) -> (1,7,6); (2,3,1) -> (2,5,7); and, (3,1,2) -> (3,6,5). Altogether, then,\r
+CDP says Octonions contain 1+3+3 = 7 O-trips - the trip count for N = 3, or\r
 just Trip3, a number we derive independently by simple combinatorics: to form\r
 an associative triplet, pick one unit from those available, then pick a second from\r
 those remaining, and then divide by 6 to allow for all the permutations that could\r
 have led to the designated triplet being fixed by 2 selections. (Hence, the Sede\u0002nions, with N = 4, have (2\r
-N −1)(2N −2)/3! = 35 S-trips; Pathions, with N = 5,\r
+N -1)(2N -2)/3! = 35 S-trips; Pathions, with N = 5,\r
 have 155 P-trips; Trip6 = 651, and so on.)\r
-Remarks. The unique Q-trip can be rotated to bring its units’ indices into ACO\r
-(ascending counting order) as well as CPO: (1,2,3). 2 of the 7 O-trips, though –\r
-(1,7,6) and (3,6,5) – are “bad trips.” Inspection of our examples indicates that\r
-of the 3 new trips resulting from applying Rule 2 to the Q-trip, only one – O-trip\r
+Remarks. The unique Q-trip can be rotated to bring its units' indices into ACO\r
+(ascending counting order) as well as CPO: (1,2,3). 2 of the 7 O-trips, though -\r
+(1,7,6) and (3,6,5) - are "bad trips." Inspection of our examples indicates that\r
+of the 3 new trips resulting from applying Rule 2 to the Q-trip, only one - O-trip\r
 3
 
-(2,5,7) – will be “good” in turn. Corollarily, starting with the Sedenions, Rule 2\r
-will produce 2 “good” and 1 “bad” trip for each “bad trip” fed into it: for instance,\r
-(1,7,6) → (1,14,15);(7,9,14);(6,15,9). Simple algebra readily persuades us\r
-that TripN+1 = 4 · TripN +2\r
-N −1; further, that “bad trips” among the 2N+1\r
+(2,5,7) - will be "good" in turn. Corollarily, starting with the Sedenions, Rule 2\r
+will produce 2 "good" and 1 "bad" trip for each "bad trip" fed into it: for instance,\r
+(1,7,6) -> (1,14,15);(7,9,14);(6,15,9). Simple algebra readily persuades us\r
+that TripN+1 = 4 * TripN +2\r
+N -1; further, that "bad trips" among the 2N+1\r
 -ions\r
-= 2 · TripN, and “good,” this number augmented by the Rule 1 contribution, or\r
-2 · TripN +G−1. Hence, as N → ∞, good and bad trips approach parity.\r
+= 2 * TripN, and "good," this number augmented by the Rule 1 contribution, or\r
+2 * TripN +G-1. Hence, as N -> infinity, good and bad trips approach parity.\r
 3 Getting Started: Box-Kite Exclusion Rules\r
 Treat the 8 triangles of an octahedron as like a checkerboard, with those of same\r
 color meeting only at vertices. But instead of colors, envisage 4 are Sails (jibs X,\r
 Y, Z, W, made of mylar, say), while those on the faces opposite them are Vents\r
 (through which the wind blows). The 3 pairs of opposite vertices are separated by\r
-struts – wood or plastic doweling in real-world kites. Such strut-opposites are the\r
-only pairings of vertices which are not mutual “divisors making zero” (DMZs):\r
-traversing any of the 12 edges always “makes zero,” as the ends of each host two\r
+struts - wood or plastic doweling in real-world kites. Such strut-opposites are the\r
+only pairings of vertices which are not mutual "divisors making zero" (DMZs):\r
+traversing any of the 12 edges always "makes zero," as the ends of each host two\r
 (mutually exclusive) DMZ pairs.\r
-For this to make sense, we must explain what we mean by “traverse” in this\r
-context. At each vertex are two imaginary units of different index (one, as we’ll\r
-show, always with index less than G – A or B, say – while the other is always of\r
-index greater – H or J). The edge between any two Box-Kite vertices which aren’t\r
+For this to make sense, we must explain what we mean by "traverse" in this\r
+context. At each vertex are two imaginary units of different index (one, as we'll\r
+show, always with index less than G - A or B, say - while the other is always of\r
+index greater - H or J). The edge between any two Box-Kite vertices which aren't\r
 strut opposites always connects two such dyads whose possible products include\r
-zeros. Their general product consists of four components, created by simple term\u0002by-term multiplication. With proper sign choices (a crucial matter to which we’ll\r
+zeros. Their general product consists of four components, created by simple term\u0002by-term multiplication. With proper sign choices (a crucial matter to which we'll\r
 4
 
 return shortly), the product of the units indexed B and H will exactly cancel that\r
@@ -124,26 +124,26 @@ exactly cancel that of units indexed H and J. (Note, in this last case, the high
 of H and J cancel by XOR, whereas A and B, being less than G, lack these high\r
 bits to begin with.) Also, we say two sets of DMZ pairs framing each edge, since\r
 each vertex represents one among 6 orthogonal planes, each spanned by a pair of\r
-hypercomplex axes, whose diagonals house all (and only) “primitive” ZDs.\r
-For the case just given, we write (iA + iH) and (iA − iH), with one of these\r
+hypercomplex axes, whose diagonals house all (and only) "primitive" ZDs.\r
+For the case just given, we write (iA + iH) and (iA - iH), with one of these\r
 providing 2 of the 4 terms in the zero product made with a (B, J)-indexed diag\u0002onal. We will see in Theorem 3 that 2 of the 4 possible choices of diagonals to\r
 multiply together will always have zero product, and determining which pairings\r
-“make zero” is where signing comes in. Put another way, since CDP-generated\r
-imaginaries square to (−1) tautologically, a ZD is “primitive” only if comprised\r
-of the sum or difference of two such imaginaries. (DMZ also signifies “dyads\r
-making zero.”) “Traversing” an edge, then, entails multiplying arbitrary points\r
+"make zero" is where signing comes in. Put another way, since CDP-generated\r
+imaginaries square to (-1) tautologically, a ZD is "primitive" only if comprised\r
+of the sum or difference of two such imaginaries. (DMZ also signifies "dyads\r
+making zero.") "Traversing" an edge, then, entails multiplying arbitrary points\r
 on suitably matched diagonals, one chosen from each terminating dyad, allowing\r
 some choice (since the order in which we multiply them has no effect on whether\r
 we get a zero or not) as to which end we think of as the starting point.\r
 The reason for this image will become clear when we consider chaining such\r
 traversals: certain sequences of vertex-to-vertex multiplication effectively take us\r
-on closed tours of some subset of the Box-Kite’s pathways, in such a way that\r
-we always “make zero” at each step in our circuiting. There are only a few such\r
+on closed tours of some subset of the Box-Kite's pathways, in such a way that\r
+we always "make zero" at each step in our circuiting. There are only a few such\r
 closed circuits, falling into a small number of types. These have surprisingly\r
 rich and distinctive properties as we shall see. Our focus here, though, will be\r
-primarily on the 3-vertex, 6-cyclic, kind, which we’ve already given a name: the\r
+primarily on the 3-vertex, 6-cyclic, kind, which we've already given a name: the\r
 Sail. (The third vertex is emanated by the first two ZDs, since the zero the latter\r
-make is in fact the sum of two oppositely signed copies of this third dyad’s terms.\r
+make is in fact the sum of two oppositely signed copies of this third dyad's terms.\r
 What makes the Sail an algebraic whole is the fact, shown in Theorem 5, that any\r
 of its 3 edges, when traversed, emanates the third vertex in this sense.)\r
 As the general reader is likely not a trained algebraist, some connection be\u0002tween such notions and those more familiar to computer-based thinking are appro\u0002priate. We note, then, that no notion is more fundamental than that of a solution,\r
@@ -157,18 +157,18 @@ extensions of such methods led to the classic group-theory-spawning studies of\r
 
 Abel and Galois. And here, we find the symmetry groups of equations devolving\r
 upon the structure of the zeros they contain.\r
-Taking the step from calling the two terms (x − b)(x − c) = 0 in a quadratic\r
+Taking the step from calling the two terms (x - b)(x - c) = 0 in a quadratic\r
 equation, say, mere factors, to legitimate zero-divisors in our sense here, is one in\r
 keeping with historically recent paradigm shifts in physics. The move from point\r
 particles to 1-D strings and multi-dimensional n-branes is roughly parallel to our\r
 own shift from zero-divisor points to diagonal lines and exotica like the Seinfeld\r
 hyperplanes of our November, 2000, paper. And just as one gets from points to\r
 lines by stringing an indefinite number of the former together in an ensemble, we\r
-will expand the singleton imaginary fundamental to Galois’ thinking to the infinite\r
+will expand the singleton imaginary fundamental to Galois' thinking to the infinite\r
 array of such units afforded by CDP.\r
 As CDP will be our starting point when our argument resumes, we allow our\u0002selves one final comment before returning to it. Galoisian zeros offer a basis for\r
 modern representation theory, providing the starter kit (once embedded in Sophus\r
-Lie’s continuous-groups treatment) for handling all linear forms (and even the “el\u0002ementary” singularities of nonlinear kind comprising Ren´e Thom’s now-classical\r
+Lie's continuous-groups treatment) for handling all linear forms (and even the "el\u0002ementary" singularities of nonlinear kind comprising Ren'e Thom's now-classical\r
 Catastrophe Theory). But the representation of the nonlinear, we claim, requires\r
 methods in the general case like those we adumbrate (and, to some small degree,\r
 actually implement) herein. And, knowing nothing more than the CDP rules, we\r
@@ -176,13 +176,13 @@ can exclude some very general cases:\r
 Theorem 1. Neither dyad can contain only indices < G.\r
 Proof. If both dyads contain only Octonions, their product will contain only Oc\u0002tonions, which have no ZDs; by induction, no ZDs new to the 2N-ions generated\r
 by G can emerge from products of terms with indices < G. If only one dyad has\r
-both terms’ indices < G, the term ≥ G in the other will have unequal products\r
-with the first dyad’s two terms. But, by XOR, these will also be the only terms\r
-with indices ≥ G, preventing cancelation of either. \u0004\r
+both terms' indices < G, the term >= G in the other will have unequal products\r
+with the first dyad's two terms. But, by XOR, these will also be the only terms\r
+with indices >= G, preventing cancelation of either. \u0004\r
 Theorem 2. For any 2N-ions, the unit indexed by G cannot belong to a ZD dyad.\r
-Proof. Given trip (a,b, c) and binary variable (sg) = ±1, write (ia+iG) below, and\r
-(ib +sg · iG+c) above, and multiply term by term. The products by iG are −iG+b\r
-and sg·+ic (Rule 1). Products by ia, however, are +ic (given) and sg·+iG+b (Rule\r
+Proof. Given trip (a,b, c) and binary variable (sg) = +/-1, write (ia+iG) below, and\r
+(ib +sg * iG+c) above, and multiply term by term. The products by iG are -iG+b\r
+and sg*+ic (Rule 1). Products by ia, however, are +ic (given) and sg*+iG+b (Rule\r
 2). Depending on sg, one or the other, but not both, pairs will cancel. \u0004\r
 Remark. When N increases, former generators form ZDs. Starting with the\r
 Pathions, though, a condition we term carrybit overflow can arise, wherein in\u0002dices sufficiently large to play different roles for different N cause the breakdown\r
@@ -190,25 +190,25 @@ of zero-division behavior in many cases where we would expect it, and it is pre\
 6
 
 Theorem 3. Suppose two dyads each contain one unit whose index > G, written in\r
-upper case, and another whose index < G, written lower case. Then if (a + A)·\r
-(b+B) = 0, (a+A)·(b−B) does not, and vice-versa.\r
+upper case, and another whose index < G, written lower case. Then if (a + A)*\r
+(b+B) = 0, (a+A)*(b-B) does not, and vice-versa.\r
 Proof. Given the zero result, the aB and Ab terms, however signed, must cancel,\r
 as must AB and ab. But changing only one sign in one or the other dyad reverses\r
 sign on one unit only in each pair. \u0004\r
 Remark. Clearly, multiplying either dyad by a real scalar k has no effect on ZD\r
 status, which is why these ZDs are best thought of as diagonal line elements.\r
-Represent ZD diagonals k(x + X) and k(x − X) in the obvious graphical manner\r
+Represent ZD diagonals k(x + X) and k(x - X) in the obvious graphical manner\r
 as (X,/) and (X,\\) respectively. It is easy to show these corollaries:\r
-(A,/) · (B,/) = 0 ⇔ (A,\\) · (B,\\) = 0\r
-(A,/) · (B,\\) = 0 ⇔ (A,\\) · (B,/) = 0\r
+(A,/) * (B,/) = 0 <=> (A,\\) * (B,\\) = 0\r
+(A,/) * (B,\\) = 0 <=> (A,\\) * (B,/) = 0\r
 Theorem 4. Two ZD diagonals spanned by the same imaginary units cannot be\r
 DMZs.\r
-Proof. (a+A)(a−A) = +Aa+1 on top, and −1−aA = −1+Aa on the bottom.\r
+Proof. (a+A)(a-A) = +Aa+1 on top, and -1-aA = -1+Aa on the bottom.\r
 But 2Aa 6= 0. \u0004\r
 Remark. This is the exact opposite of the (non-CDP) ZDs found in quantum me\u0002chanics (QM), where the mutual annihilation of the idempotent projection opera\u0002tors 1\r
 2\r
-(1±m), m a Pauli spin matrix (so that m\r
-2 = +1, m 6= ±1), serves to define\r
+(1+/-m), m a Pauli spin matrix (so that m\r
+2 = +1, m 6= +/-1), serves to define\r
 observables. There is a sense, however, in which the QM case is a degenerate\r
 form of the behaviors being examined here: this would take us off topic, but those\r
 interested in such questions should see [4].\r
@@ -222,9 +222,9 @@ In the Sedenions, the most general production rule allows anything not excluded\
 by the rules above: pick any Octonion of index O (7 ways), then any pure Sede\u0002nion with index S > G not the XOR of O with G; the resulting dyad spans one of\r
 7
 
-42 planes – the 42 Assessors of [5], where the other production rules are also de\u0002scribed for the first time. For higher 2N-ions, restrictions due to carrybit overflow\r
-arise, but the approach just limned still generates all candidates for “primitive\r
-ZD” status.\r
+42 planes - the 42 Assessors of [5], where the other production rules are also de\u0002scribed for the first time. For higher 2N-ions, restrictions due to carrybit overflow\r
+arise, but the approach just limned still generates all candidates for "primitive\r
+ZD" status.\r
 From this rule to Box-Kites is but a short distance: for, since each Sedenion\r
 Assessor will have an Octonion in its dyad of units, clearly we can arrange their\r
 42 planes in 7 clusters of 6, each of which excludes a different Octonion from its\r
@@ -233,26 +233,26 @@ set. Call the Octonion index in each dyad (and, more generally, the 2N-ion index
 and iU . Since each Octonion is involved in precisely 3 O-trips, the 6 L-indices\r
 in each cluster can be uniquely fixed in 2 steps: first, assign each pair whose\r
 XOR is the excluded index to one of the 3 struts, which is necessary and sufficient\r
-to guarantee that their product does not appear in the set. (From what we’ve\r
+to guarantee that their product does not appear in the set. (From what we've\r
 already seen, even without specifying what their U-indices are, this is tantamount\r
-to guaranteeing that no pairing of their Assessors’ diagonals can be DMZs.) Call\r
-the excluded index S, for “Strut Constant” and “signature.” The last parenthetical\r
+to guaranteeing that no pairing of their Assessors' diagonals can be DMZs.) Call\r
+the excluded index S, for "Strut Constant" and "signature." The last parenthetical\r
 remark tells us it somehow fixes the U-indices of the Assessors in its cluster. We\r
 will see how in the next section. For now, the more immediate problem of fixing\r
 L-indices leads us to perform our second step.\r
 Orient the strut-opposite L-indices so that S is the central label in the PSL(2,7)\r
 triangle which represents the smallest finite projective group, also called the Fano\r
-plane. Its 3 vertices, 3 sides’ midpoints, and center each host an Octonion index,\r
+plane. Its 3 vertices, 3 sides' midpoints, and center each host an Octonion index,\r
 in 7 oriented lines of 3 points each, one per O-trip (in 480 possible configurations).\r
-Then, assign the L-index trip in the circle threading the sides’ midpoints to vertices\r
+Then, assign the L-index trip in the circle threading the sides' midpoints to vertices\r
 A, B,C on a Box-Kite, in CPO order. The strut-opposite L-indices will then appear\r
 as the vertices which terminate the lines extending from their L-index partners\r
-through S. We label them, in “nested parentheses” order, F, E, D respectively.\r
+through S. We label them, in "nested parentheses" order, F, E, D respectively.\r
 By removing the central label, four of the 7 lines in PSL(2,7) remain con\u0002nected: that of the central circle just discussed, whose L-indices form the triplet\r
-(a,b, c); and, the 3 along the triangle’s sides, which the diagram tells us have CPO\r
+(a,b, c); and, the 3 along the triangle's sides, which the diagram tells us have CPO\r
 labels (a,d, e), (f,d,b), and (f, c, e). We will show next section how these form\r
-the bases of the two types of Sails – the singleton Zigzag at vertices (A,B,C),\r
-and the three Trefoils which each share a different vertex with the Zigzag – and\r
+the bases of the two types of Sails - the singleton Zigzag at vertices (A,B,C),\r
+and the three Trefoils which each share a different vertex with the Zigzag - and\r
 demonstrate their special properties, which hold for all Box-Kites in all 2N-ions.\r
 For now, we introduce the other production rules, the first of which motivates the\r
 very idea of a Sail.\r
@@ -262,37 +262,37 @@ Theorem 5. If Assessors(U,u) and (V, v)form DMZs, then a third Assessor(W,w),\r
 forming DMZs with both, can be created by setting the index of W to |U xor v| =\r
 |u xor V|, and that of w to |u xor v| = |U xor V|.\r
 Proof. Without loss of generality, assume L-index trip (u, v,w) is CPO, and the\r
-dyads of the given DMZ have same internal signing: that is, (u+U)·(v+V) = 0.\r
-We then have u · v = −U ·V; but (u, v,w) → v ·w = +u, so w = −U ·V as well.\r
-Using sg as before, write W = sg · [+Uv] = sg · [−uV]. Consider (v +V)·(w +\r
-sg ·W), the former written under the latter. (The same basic argument applies if\r
+dyads of the given DMZ have same internal signing: that is, (u+U)*(v+V) = 0.\r
+We then have u * v = -U *V; but (u, v,w) -> v *w = +u, so w = -U *V as well.\r
+Using sg as before, write W = sg * [+Uv] = sg * [-uV]. Consider (v +V)*(w +\r
+sg *W), the former written under the latter. (The same basic argument applies if\r
 we choose (u+U) instead and write it on top.) Multiplying left to right by v, we\r
-have +u and sg ·(v ·Uv) = sg ·(−v · vU) = sg ·(+U). Next, V ·w = V ·(−UV) =\r
-V ·(+VU) = −U. And V ·sg ·W = V ·sg ·(−uV) = sg ·(−u). Set sg = (−1), and\r
+have +u and sg *(v *Uv) = sg *(-v * vU) = sg *(+U). Next, V *w = V *(-UV) =\r
+V *(+VU) = -U. And V *sg *W = V *sg *(-uV) = sg *(-u). Set sg = (-1), and\r
 all terms cancel. \u0004\r
 Remark. Two Assessors in the same Box-Kite emanate a third whose L-index\r
 completes the L-trip implied by the other two. (The zero they make is also a sum\r
 of oppositely signed copies of the emanated Assessor.) Such a triad defines a Sail.\r
 Caveat. The proof as given is complete within the Sedenions, which display\r
-alternativity: (aa)·b = a·(ab). Generalizing to higher 2N-ions, however, requires\r
-a further result we’ll derive later, namely: all three index-triples involving one\r
+alternativity: (aa)*b = a*(ab). Generalizing to higher 2N-ions, however, requires\r
+a further result we'll derive later, namely: all three index-triples involving one\r
 lowercase and two uppercase letters, each from a different Assessor in a Sail, are\r
 trips, so that even associativity among units combined as required in our proof is\r
 guaranteed.\r
-Theorem 6. If (U +u) and (V +sg · v) are DMZs, then so are their twist products\r
-(U +sg · v) and (V −u).\r
-Proof. By direct multiplication, the DMZ given requires U · v = −u ·V and u · v =\r
-−U ·V. The proposed DMZ resulting from the twist would require V · v = u ·U,\r
-and u · v = V ·U. But the second requirement is identical to what we know is true\r
+Theorem 6. If (U +u) and (V +sg * v) are DMZs, then so are their twist products\r
+(U +sg * v) and (V -u).\r
+Proof. By direct multiplication, the DMZ given requires U * v = -u *V and u * v =\r
+-U *V. The proposed DMZ resulting from the twist would require V * v = u *U,\r
+and u * v = V *U. But the second requirement is identical to what we know is true\r
 in the given DMZ. As for the first requirement, multiply the terms of the other\r
-known relation on the right by u · v = w to obtain it. \u0004\r
-Caveat added in V3. The proof as given is complete within the Sedenions; how\u0002ever, it doesn’t hold universally for the Pathions and beyond, when strut constants\r
-can exceed 8 – a side-effect, and necessary correlate, of the emergence of the\r
-“meta-fractal” structures that will concern us in the second and third installments\r
+known relation on the right by u * v = w to obtain it. \u0004\r
+Caveat added in V3. The proof as given is complete within the Sedenions; how\u0002ever, it doesn't hold universally for the Pathions and beyond, when strut constants\r
+can exceed 8 - a side-effect, and necessary correlate, of the emergence of the\r
+"meta-fractal" structures that will concern us in the second and third installments\r
 of this argument. Perhaps surprisingly, this proves to be a virtue: the lanyards\r
 based on circuiting squares, not triangles, are the natural vehicles with which to\r
 see twist products deployed, and it is thanks to the twists which do not yield ZDs\r
-that we can study transformations between legitimate box-kites and the “broken”\r
+that we can study transformations between legitimate box-kites and the "broken"\r
 9
 
 kind lacking ZD pathing which comprise meta-fractals. Such topics, however,\r
@@ -303,7 +303,7 @@ by programmatic exploration, using his Finitas software, of loops (which do for\
 nonassociative algebras what groups do for their more orderly cousins). [6] In our\r
 correspondence, it became clear that twist products in fact connect ZDs which,\r
 while necessarily in different Box-Kites, are always in the same loop. Each of a\r
-Box-Kite’s 4 Sails “twist” to different loops, while each Cawagas loop meanwhile\r
+Box-Kite's 4 Sails "twist" to different loops, while each Cawagas loop meanwhile\r
 partitions into 4 sets that correspond to Sails in different Box-Kites, indicating an\r
 interesting duality between the two quite differently framed approaches and their\r
 objects. For the surprising symmetries inherent in twist product patterns, see the\r
@@ -311,9 +311,9 @@ discussions surrounding the Royal Hunt and Twisted Sister diagrams in [7, pp.\r
 14-16]. See [5, pp. 11-21] for full exposition of all the production rules being\r
 discussed here, and pp. 15-16 for the twist product rule in particular.\r
 Coming Attractions. Once the workings of the Strut Constant are understood,\r
-the reader will find it trivial to prove that opposite sides of any of the 3 orthog\u0002onal squares comprising the Box-Kite’s octahedral framework twist to the same\r
+the reader will find it trivial to prove that opposite sides of any of the 3 orthog\u0002onal squares comprising the Box-Kite's octahedral framework twist to the same\r
 Box-Kite, while adjacent sides twist to different ones. (The trick is to realize\r
-that, for all Assessors in any given Box-Kite, the XOR of their dyads’ indices is\r
+that, for all Assessors in any given Box-Kite, the XOR of their dyads' indices is\r
 G+S). This suggests that the 3 squares, which we will call Catamarans (Tray\u0002Racks in earlier papers), are as fundamental as the 4 Sails, but for the different\r
 purpose of long-distance navigating; we conventionally name them for the tall\r
 masts planted orthogonally on the transverse frames joining their hulls: AF for\r
@@ -326,42 +326,42 @@ Lemma. As every L-index appears in two distinct L-trips in a given Box-Kite,\r
 likewise every Assessor appears in two distinct Sails.\r
 Remark. Full XOR-based calculation requires knowledge of the U-indices, which\r
 requires, in turn, a better understanding of the special role played by the Strut\r
-Constant – which will be our focus in the next section.\r
+Constant - which will be our focus in the next section.\r
 10
 
-5 Strut Constants, Sails, and “Slipcover Proofs”\r
+5 Strut Constants, Sails, and "Slipcover Proofs"\r
 The debt to the groundbreaking work of R. Guillermo Moreno is evident: his\r
 1997 preprint (appearing in a Mexican journal the following year [8]) revivified\r
-the long-neglected study of ZDs. Moreno’s now-classic paper culminated in a\r
+the long-neglected study of ZDs. Moreno's now-classic paper culminated in a\r
 formal demonstration that the algebra of ZDs in the Sedenions was homomorphic\r
 to the Lie algebra G2, itself the automorphism group of E8, in turn represented\r
-by the Octonions – a result seemingly of interest only to physicists. Yet he also\r
+by the Octonions - a result seemingly of interest only to physicists. Yet he also\r
 pointed out that this same G2 is the derivation algebra of 2N+1-ions from 2N-ions,\r
 implying a deepset recursiveness in ZD structuring. We underscore that the Fano\r
 Plane diagram for Octonion labeling is likewise a potentially recursive tool: the\r
 15 points and 35 lines, with 7 lines through every point and 3 planes in each line,\r
-of the 3-D “projective tetrahedron” that schematizes Sedenion labeling, is further\r
+of the 3-D "projective tetrahedron" that schematizes Sedenion labeling, is further\r
 cobbled together from 15 planes isomorphic to the PSL(2,7) triangle. Higher\r
-labeling structures of 2N −1 points, TripN lines, and so on, are readily imagined\r
+labeling structures of 2N -1 points, TripN lines, and so on, are readily imagined\r
 (albeit impossible to visualize). Our next results will be derived with virtually no\r
 tools beyond CDP and PSL(2,7). We begin with a concretization of the discussion\r
 which introduced the latter last section.\r
 Place the indices of the Octonions so as to reflect their construction via CDP\r
 from Quaternions: in the center of an equilateral triangle, place G = 4; with apex\r
-extending above 12 o’clock, place (1,2,3) at the midpoints of the left, right, and\r
-bottom sides, oriented clockwise, at 10, 2, and 6 o’clock in that order. Now its\r
+extending above 12 o'clock, place (1,2,3) at the midpoints of the left, right, and\r
+bottom sides, oriented clockwise, at 10, 2, and 6 o'clock in that order. Now its\r
 projective line, the only one drawn as a circle, represents the Rule 0 trip; lines\r
 oriented from the midpoints to and through the center are the Rule 1 trips; the\r
 sides, meanwhile, constitute the Rule 2 trips, and are all oriented in a clockwise\r
 manner, paralleling the flow along the Rule 0 circle.\r
 Now replace (1,2,3) with the letters (u, v,w), and replace the indices at the\r
-angles with the symbols (uopp, vopp,wopp), as these are indeed u, v and w’s strut\u0002opposites with respect to the central index, which we now replace with the symbol\r
+angles with the symbols (uopp, vopp,wopp), as these are indeed u, v and w's strut\u0002opposites with respect to the central index, which we now replace with the symbol\r
 S for Strut Constant. The contents of the labels are indeterminate, but their choices\r
 must conform to the network of flows: clockwise along edges and central circle,\r
 and pointing inward along the 3 lines bifurcating sides, then angles. In our initial\r
 setup, the Octonion generator is indeed the S for the Sedenion Box-Kite impli\u0002cated. In a manner suggestive of how one pulls on and removes slipcovers from\r
 upholstery, we claim that this flow pattern is not only uniquely linked to represen\u0002tations with the central circle comprising the L-indices of the Zigzag Sail; but that\r
-one can, without inducing any tearing in the network of flows, “pull” any Octo\u0002nion index into the center, thereby representing a Zigzag-centric depiction of the\r
+one can, without inducing any tearing in the network of flows, "pull" any Octo\u0002nion index into the center, thereby representing a Zigzag-centric depiction of the\r
 11
 
 Box-Kite whose S is that index.\r
@@ -370,16 +370,16 @@ obtain a correct multiplication scheme for the 7 units, it suffices to place (u,
 on any line, mark any of the remaining 4 points S, and then pass through it to\r
 designate the last trio of points as opposites of the first. Swapping in one point for\r
 another, then, is easy. The symmetries are so complete that we can take any point\r
-we please and make the case for all, so let’s take 7 in the S = 4 diagram. Rotate\r
+we please and make the case for all, so let's take 7 in the S = 4 diagram. Rotate\r
 the line containing 4 and 7 once in the downward direction to keep orientation: the\r
 vertical line, in top-down order, now reads (3,7,4) instead of (7,4,3). The central\r
 circle, if its clockwise orientation is to be kept, must be CPO starting with the left\r
-midpoint and ending in the 4 now on the bottom. There are just 2 possibilities –\r
-(6,2,4) and (5,1,4) – but the former would reverse the flow on the right flank,\r
+midpoint and ending in the 4 now on the bottom. There are just 2 possibilities -\r
+(6,2,4) and (5,1,4) - but the former would reverse the flow on the right flank,\r
 reading (1,2,3) from the lower right to the apex. As is readily checked, (5,1,4)\r
-does exactly what we want – and, as our table of Sedenion Assessors and Strut\r
+does exactly what we want - and, as our table of Sedenion Assessors and Strut\r
 Constants makes clear, that is in fact the Zigzag L-trip for the S = 7 Box-Kite. The\r
-3-fold symmetry of the flows lets us choose any of the central circle’s 3 nodes to\r
+3-fold symmetry of the flows lets us choose any of the central circle's 3 nodes to\r
 house the 1 (which is the L-index of the A Assessor in the Box-Kite in question)\r
 without effecting the pattern.\r
 But suppose we wish to swap two lines instead of nodes: one of the Tre\u0002foil Sails on the sides for the central Zigzag, say. This can be done, but at\r
@@ -388,46 +388,46 @@ the cost of changing the flow structure. Keeping the convention of mapping\r
 as (u,wopp, vopp), (uopp,wopp, v) and (uopp,w, vopp). If we insist on maintaining\r
 the clockwise orientation of the central circle after replacing its labels with one of\r
 the 3 sets just written, the flows on the 2 sides not corresponding to the original\r
-(u, v,w) circle will be counterclockwise, and the 2 rays through the center start\u0002ing from midpoints suffixed “opp” will now lead away from, not into, the angles.\r
+(u, v,w) circle will be counterclockwise, and the 2 rays through the center start\u0002ing from midpoints suffixed "opp" will now lead away from, not into, the angles.\r
 12
 
-“Slipcover tugs” on the fabric of this network will send a Trefoil linked to one S\r
-value into one linked to a different S – but the lack of the Zigzag L-trip’s threefold\r
+"Slipcover tugs" on the fabric of this network will send a Trefoil linked to one S\r
+value into one linked to a different S - but the lack of the Zigzag L-trip's threefold\r
 symmetry means it typically will be a different Trefoil: if one tugs 2, say, into the\r
 center, the (a,d, e) Trefoil of the S = 4 Box-Kite is transformed into an (f,d,b).\r
-The side-effect of Trefoils’ broken symmetry explains why, in the table provided\r
+The side-effect of Trefoils' broken symmetry explains why, in the table provided\r
 above, Zigzags are so regular (each O-trip appears as one exactly once), while\r
 Trefoils behave so erratically (each O-trip appears thrice as a Trefoil, but never in\r
 an evenly distributed manner; in fact, (3,6,5) makes all its Trefoil appearances as\r
 (f, c, e), while (1,2,3) qua Trefoil shows up only as (a,d, e)).\r
 We mentioned above that PSL(2,7) diagrams can be used to map not merely\r
-the interconnections of Octonion labelings, but – given the recursive modularity of\r
-all higher 2N-ions – heptads among the Sedenions and beyond. We have used, for\r
-instance, “stereo Fano” diagramming to navigate and notate the structures found\r
-in the 32-D Pathions. [9] For the present, though, we’ll need nothing so exotic:\r
-we’ll just want to drop G into the center of diagrams already seen, not to replace\r
+the interconnections of Octonion labelings, but - given the recursive modularity of\r
+all higher 2N-ions - heptads among the Sedenions and beyond. We have used, for\r
+instance, "stereo Fano" diagramming to navigate and notate the structures found\r
+in the 32-D Pathions. [9] For the present, though, we'll need nothing so exotic:\r
+we'll just want to drop G into the center of diagrams already seen, not to replace\r
 S, however, but to supplement it. The reason for this is implicit in this critical\r
 theorem.\r
 Theorem 7. The U-index of any Assessor is the XOR of its L-index with G+S.\r
 For Zigzag Sails, all 3 edges connecting Assessors conform, in the notation of the\r
 Remark to Theorem 3, to this pattern:\r
-(M,/) · (N,\\) = 0 ⇔ (M,\\) · (N,/) = 0\r
+(M,/) * (N,\\) = 0 <=> (M,\\) * (N,/) = 0\r
 For Trefoil Sails, the 2 edges including the Assessor shared with the Zigzag are\r
 governed, instead, by the other pattern from the same Remark, namely:\r
-(M,/) · (N,/) = 0 ⇔ (M,\\) · (N,\\) = 0\r
+(M,/) * (N,/) = 0 <=> (M,\\) * (N,\\) = 0\r
 Proof. Place (u, v,w) on the central circle of a PSL(2,7) diagram, with all 7 lines\r
-in zigzag flow orientation. Place G+S in the diagram’s central node, calculate\r
+in zigzag flow orientation. Place G+S in the diagram's central node, calculate\r
 the angle nodes, and readjust flows by Rule 2: the trips on the lines through\r
 the center are now oriented to point from angles to midpoints, and are writ\u0002ten thus: (G+uopp,G+S,u); (G+vopp,G+S,v); (G+wopp,G+S,w). The\r
 side trips now flow counterclockwise. In CPO, from the top, we have these:\r
 (G+wopp,u,G+vopp); (G+vopp,w,G+uopp); (G+uopp,v,G+wopp). We\r
-assert U = (G+uopp) and V = (G+vopp). Multiply (u +U)·(v −V), the in\u0002dices assumed to be subscripts of implied imaginary units.\r
+assert U = (G+uopp) and V = (G+vopp). Multiply (u +U)*(v -V), the in\u0002dices assumed to be subscripts of implied imaginary units.\r
 13
 
-+v−(G+vopp)\r
++v-(G+vopp)\r
 +u+ (G+uopp)\r
-+(G+wopp)−w\r
-+w−(G+wopp)\r
++(G+wopp)-w\r
++w-(G+wopp)\r
 0\r
 Now place (u,wopp, vopp) on the central circle of a trefoil-flow-oriented PSL(2,7);\r
 plunk (G+S) down in the center of it; multiply dyads as above, but with same\r
@@ -435,52 +435,52 @@ inner sign for the two products including Assessor U, to complete the proof. \u0
 Corollary. As a side-effect of Theorem 7, we see that indeed each Sail is com\u0002prised of 4 trips, thereby addressing the Caveat to Theorem 5. The Zigzag, for\r
 instance, has one L-trip, (a,b, c), and 3 U-trips where high bits are lost by XOR,\r
 written (a,B,C); (A,b,C); (A,B, c). Each, supplemented by the Reals, makes a le\u0002gitimate copy of the Quaternions. Moreover, any Box-Kite in any 2N-ion domain\r
-will have Sails with this property, it being a feature of our Rule 2 and PSL(2,7)’s\r
-recursivity, rather than anything specific to (hence subject to the limits of) Sede\u0002nion space. We merely use whatever G is appropriate in our “slipcover proofs”\r
+will have Sails with this property, it being a feature of our Rule 2 and PSL(2,7)'s\r
+recursivity, rather than anything specific to (hence subject to the limits of) Sede\u0002nion space. We merely use whatever G is appropriate in our "slipcover proofs"\r
 and choose a Rule 0 triplet to place in the central circle; or, equivalently, pick\r
 whatever trio of strut-opposites you care to use which satisfy the given S value.\r
 (There will be many to choose from as N grows large, so that we speak more of\r
 Box-Kite ensembles than Box-Kites as individuals).\r
 6 Intermezzo: Lanyards, Semiotic Squares, Ema\u0002nation Tables, Sand Mandalas . . .\r
-Moreno’s G2, as root system, has order 12 (14, if we’re physicists and add in the\r
-2-D Cartan subalgebra). The Sedenions’ 7 Box-Kites x 12 edges x 2 oriented\r
-flows along each → 168, order of the second simple group, and 12 times 14. The\r
-integer 168 is also a “magic number” in Boolean function theory, where it arises in\r
+Moreno's G2, as root system, has order 12 (14, if we're physicists and add in the\r
+2-D Cartan subalgebra). The Sedenions' 7 Box-Kites x 12 edges x 2 oriented\r
+flows along each -> 168, order of the second simple group, and 12 times 14. The\r
+integer 168 is also a "magic number" in Boolean function theory, where it arises in\r
 the context of the Dedekind Problem as the number of 4-variable monotone func\u0002tions, with the same number of complements. The Dedekind Problem concerns\r
 determining this rapidly growing number for arbitrarily large counts of variables.\r
-The relevance of such abstruse topics to rule-based approaches like cellular au\u0002tomata theory and Stephen Wolfram’s New Kind of Science has been the focus of\r
+The relevance of such abstruse topics to rule-based approaches like cellular au\u0002tomata theory and Stephen Wolfram's New Kind of Science has been the focus of\r
 ongoing work by Rodrigo Obando [10], [9, pp. 18-19], who has employed their\r
 toolkit to create a kind of Periodic Chart of such rule-driven systems, highlighting\r
 14
 
 which are not just Class 1 (boringly homogenous outcomes), Class 2 (evolving\r
 into simple periodic structures), or Class 3 (chaotic, aperiodic), but truly complex\r
-Class 4 patterns, like Wolfram’s famous Rule 30. All of which has provided moti\u0002vation to search ZD space for connections to similar modes of complexity, driven\r
+Class 4 patterns, like Wolfram's famous Rule 30. All of which has provided moti\u0002vation to search ZD space for connections to similar modes of complexity, driven\r
 by similarly simple rules. We will conclude, as our abstract suggests, with just\r
-such a “recipe theory” with which to study infinite-dimensional meta-fractals. We\r
+such a "recipe theory" with which to study infinite-dimensional meta-fractals. We\r
 will prepare for that journey by taking leave of simple Box-Kites in the Sedenions,\r
 and go so far in this section as to find the first truly anomalous ensembles, with\r
-the “wrong number” of Box-Kites, in the 32-D Pathions.\r
+the "wrong number" of Box-Kites, in the 32-D Pathions.\r
 We first want to indicate that even simple Box-Kites are much richer in struc\u0002ture than we have seen thus far. The two kinds of Sails are instantiations of abstract\r
-objects we call lanyards – cords worn around the neck to hold knives or whistles,\r
+objects we call lanyards - cords worn around the neck to hold knives or whistles,\r
 or strands of leather or plastic used to string beads and other gewgaws into charm\r
 bracelets. By chaining together DMZs, a lanyard threads the ZD diagonals of mul\u0002tiple Assessors, attaining closure by returning to its starting point having touched\r
 all other ZDs in its ambit but once. They can be given signatures even more com\u0002pressed than the notation developed in the Remark to Theorem 3: the Zigzag is a\r
-6-cycle lanyard, which “makes zero” with all its Sail’s diagonals, in a sequence\r
+6-cycle lanyard, which "makes zero" with all its Sail's diagonals, in a sequence\r
 cyclically equivalent to the glyph inspiring its name: / \\ / \\ / \\ . The Tre\u0002foil has its own 6-cycle signature: / / / \\ \\ \\ . (The Catamaran, meanwhile,\r
 has 4-cycle signature / / \\ \\, which should clarify our earlier cryptic comments\r
 concerning it.)\r
 Joins between diagonals with opposite inner sign we designate either with a [-]\r
-edge symbol, else – if availing ourselves of color graphics – draw in red. Exactly\r
-half a Box-Kite’s 12 edges are red, consisting of the trio defining the Zigzag, and\r
+edge symbol, else - if availing ourselves of color graphics - draw in red. Exactly\r
+half a Box-Kite's 12 edges are red, consisting of the trio defining the Zigzag, and\r
 those bordering the Vent on the face opposite it. (See diagram on left of Figure 2.)\r
 Those edges linking similarly inner-signed diagonals are marked [+] or painted\r
-blue. “The Blues,” in fact, are two other 6-cycle lanyards which contain all and\r
+blue. "The Blues," in fact, are two other 6-cycle lanyards which contain all and\r
 only the blue edges, corresponding to the perimeter of the hexagon in the prior\r
-image. Two, because one connects only \\ diagonals, the other only /’s. What\r
+image. Two, because one connects only \\ diagonals, the other only /'s. What\r
 might a simulation that switched edge-signs (converting the Blues into Zigzags,\r
 perhaps?) correspond to in real-world processes?\r
-Another type of 6-cycle lanyard, the 2-Sail, 5-Assessor “Bow-Tie” whose dou\u0002bly passed-through “knot” must be in the Zigzag, has deep symmetry-breaking\r
+Another type of 6-cycle lanyard, the 2-Sail, 5-Assessor "Bow-Tie" whose dou\u0002bly passed-through "knot" must be in the Zigzag, has deep symmetry-breaking\r
 properties that may well play a fundamental role in string theory [4]. In general,\r
 each distinct lanyard (and there are others which the reader is invited to explore in\u0002volving 4, 5, and all 6 Assessors: see Section III of [5] for more on some of these)\r
 creates a distinctive context of dynamic possibilities, rather than the semblance of\r
@@ -489,46 +489,46 @@ creates a distinctive context of dynamic possibilities, rather than the semblanc
 an answer (as groups, too often, are assumed to offer). And, unlike groups, and\r
 as one might expect in 0- rather than 1- based algebraics, an identity element is\r
 nowhere in sight, with strut opposites the closest thing to inverses. Rather, the zero\r
-resultant defining the transit of each link in a lanyard’s chain guarantees a certain\r
+resultant defining the transit of each link in a lanyard's chain guarantees a certain\r
 design-hiding, suggestive of the unfolding of the multitude of zeros packed in a\r
-single seed-form or morphogenetic “vanishing point.” Put another way, a theory\r
+single seed-form or morphogenetic "vanishing point." Put another way, a theory\r
 of lanyards can be expected to provide some crucial ideas in an area currently\r
 lacking many: the study of nonlinear representations.\r
 One area where a theory of nonlinear representations exists is in semiotics,\r
-where the French school of Jean Petitot – dually inspired by Ren´e Thom’s Catas\u0002trophe Theory (CT) mathematics in the 1970’s, and the structural rapprochement\r
-of semantics and syntax essayed by Algirdas Greimas – led to CT modeling of\r
-“archetypal nouns and verbs” on the one hand, and a delving beneath Chomskian\r
+where the French school of Jean Petitot - dually inspired by Ren'e Thom's Catas\u0002trophe Theory (CT) mathematics in the 1970's, and the structural rapprochement\r
+of semantics and syntax essayed by Algirdas Greimas - led to CT modeling of\r
+"archetypal nouns and verbs" on the one hand, and a delving beneath Chomskian\r
 notions of semantically impoverished recursiveness on the other. Using the CT\r
-toolkit, Petitot has built models of Greimas’ own famous (among literary theo\u0002rists, at least) Semiotic Square, [11] as well as the equally celebrated (among,\r
+toolkit, Petitot has built models of Greimas' own famous (among literary theo\u0002rists, at least) Semiotic Square, [11] as well as the equally celebrated (among,\r
 at least, the structuralism-savvy with anthropological leanings) canonical law of\r
-myths of Claude L´evi-Strauss. [12] But both these models can be embedded, in\r
+myths of Claude L'evi-Strauss. [12] But both these models can be embedded, in\r
 their turn, in ZD-based networks, which put the recursiveness back where it be\u0002longs: not at the level of meaning as such, but rather in how meaning-rich nodes\r
 can be constellated in an open-ended scale-free dynamic.\r
-The key insights are two: first, to see the entire program of structural linguis\u0002tics – whose origins were contemporary with the algebraic death-knell sounded\r
-by Hurwitz’s Proof – as a kind of CDP manque´, thanks to Hjelmslev’s indefi\u0002nitely extensible notion (seminal to Greimas’ thinking) of form vs. content dou\u0002ble articulation. [13] The second insight is to find semiotic substance in what\r
+The key insights are two: first, to see the entire program of structural linguis\u0002tics - whose origins were contemporary with the algebraic death-knell sounded\r
+by Hurwitz's Proof - as a kind of CDP manque', thanks to Hjelmslev's indefi\u0002nitely extensible notion (seminal to Greimas' thinking) of form vs. content dou\u0002ble articulation. [13] The second insight is to find semiotic substance in what\r
 would seem a lack of substance from our purview: by analogy with Shannon\u0002Weaver self-correcting error-code theory, where most of the bits are expended in\r
 the error-trapping as opposed to the content being transmitted, we assume the area\r
 of interest is precisely the ZD-challenged parts of the ZD ensembles that convey\r
-the significances. Specifically, we find our meta-model of Petitot’s CT reading of\r
+the significances. Specifically, we find our meta-model of Petitot's CT reading of\r
 the Semiotic Square in the 4 units whose invariant workings govern the ZD-free\r
 strut-opposites: the real unit (which never appears in primitive ZDs), G and S, and\r
 their XOR (which, given that G always has only one bit, always to the left of all\r
-of S’s, is also their simple sum, henceforth to be called X).\r
+of S's, is also their simple sum, henceforth to be called X).\r
 The index set {0,G,S,X} defines the units of a Quaternion copy, part of what\r
 Moreno terms the 4-D, ZD-free boundary of Sedenion space, in which all Box\u0002Kites, each with their own S and X, participate. We argue at length in [7] that\r
 16
 
-the square with drawn diagonals – ⊠ – which Greimas made the centerpiece of\r
+the square with drawn diagonals - box - which Greimas made the centerpiece of\r
 his thinking, can be modeled by placing G on the diagonals, X on the horizontals,\r
 and S on the verticals. From the ZD perspective, the workings of the 3 modes\r
-of binary relations (contradiction between a seme and its absence – an on/off bit\r
-– along diagonals; contrareity of reciprocal presupposition along the horizontals;\r
+of binary relations (contradiction between a seme and its absence - an on/off bit\r
+- along diagonals; contrareity of reciprocal presupposition along the horizontals;\r
 complementarity of implication along the verticals) can be formally encapsulated\r
 in the following relations. Pick two strut-opposite Assessors, dubbing the Zigzag\r
 dyad picked as (Z,z), and the Vent dyad linked to it, (V, v). Then\r
-v ·z = V · Z = S\r
-Z · v = V ·z = G\r
-V · v = z· Z = (G+S) ≡ X.\r
+v *z = V * Z = S\r
+Z * v = V *z = G\r
+V * v = z* Z = (G+S) == X.\r
 These 3 relations were implicitly derived in passing while proving Theorem 7.\r
 Their importance (and not just for semiotic applications) suggests we give them\r
 a special name: the Three Viziers, to be shorthanded henceforth (and rewritten in\r
@@ -543,88 +543,88 @@ of vent and zigzag terms reversed, so that such struts have their VZ1 L-index\r
 triplets, for instance, written (z, v,S). Implied in this is the existence of a second\r
 kind of box-kite, whose nature and very existence only became apparent in work\r
 subsequent to this monograph, once catamaran twisting was investigated. (These\r
-“Type II” box-kites are in fact indistinguishable from the “normal” kind except\r
+"Type II" box-kites are in fact indistinguishable from the "normal" kind except\r
 in regards to such twisting, since struts do not mutually zero-divide anyway, and\r
-hence their triplets’ orientational variations “fly under the radar” of the tools we’ve\r
-built thus far. They serve as “middlemen,” however, between the “normal” kind\r
+hence their triplets' orientational variations "fly under the radar" of the tools we've\r
+built thus far. They serve as "middlemen," however, between the "normal" kind\r
 exclusively in evidence in the Sedenions, and the ZD-free substructures which\r
-make up the body of the meta-fractals we’ll focus on next.) Skipping over such\r
+make up the body of the meta-fractals we'll focus on next.) Skipping over such\r
 subtleties, fortunately, has no effect on the outcome of the general argument we\r
 make in this monograph; a handful of steps in the proofs, however, will require\r
 modification in Parts II and III.\r
 17
 
-Getting from the atomic level of Greimas’ Square, to the small-worlds net\u0002working of literally thousands of mythic fragments, all interconnected and mutu\u0002ally unfolded in the four fat volumes of L´evi-Strauss’s magnum opus, would re\u0002quire some surgery on the Square, to allow for a competition between contraries,\r
+Getting from the atomic level of Greimas' Square, to the small-worlds net\u0002working of literally thousands of mythic fragments, all interconnected and mutu\u0002ally unfolded in the four fat volumes of L'evi-Strauss's magnum opus, would re\u0002quire some surgery on the Square, to allow for a competition between contraries,\r
 say, to be transmuted into an agreed-upon implication. But the simplest such trans\u0002formative structures already require the Pathions, and hence meta-fractal Skies to\r
 fly in. Those are the vistas in front of ZD theory, only some of which we will\r
 get to see herein. One such surgery, corresponding to the type just suggested as\r
 an example, will in fact provide the first recursive iteration leading to the fractal\r
-limit. And, as we’re about to see, it arises naturally, virtually as a built-in feature,\r
+limit. And, as we're about to see, it arises naturally, virtually as a built-in feature,\r
 of the ZD framework.\r
 As anyone seeing a ZD diagonal on an oscilloscope screen would think, Asses\u0002sors are ultimately patterns of synchrony and anti-synchrony between their dyadic\r
 terms. Assume Assessor-unit synchrony breaks down, with dyads recast as strut\u0002opposites. Each finds higher-index partners; the former G and S are transformed\r
 into Pathion L-indices at B and E, the former X moves to center stage as the new\r
-S. 14 Assessors (G−1, minus 1 more to exclude the Strut Constant) form into 3\r
+S. 14 Assessors (G-1, minus 1 more to exclude the Strut Constant) form into 3\r
 Box-Kites sharing the BE strut. It is quite possible to draw this three-headed beast\r
-– but the many-headed hydras in higher 2N-ions will not prove so amenable. It is\r
+- but the many-headed hydras in higher 2N-ions will not prove so amenable. It is\r
 time to explore a different mode of representing things, which means Emanation\r
-Tables. And it is time to deal with a new phenomenon whose crucial nature we’ve\r
-indicated more than once: for values of S ≤ 8, the ensembles associated with each\r
-such integer, contain seven, not three, Box-Kites, and are dubbed Pleiades ´ for this\r
+Tables. And it is time to deal with a new phenomenon whose crucial nature we've\r
+indicated more than once: for values of S <= 8, the ensembles associated with each\r
+such integer, contain seven, not three, Box-Kites, and are dubbed Pleiades ' for this\r
 reason. But the surprising graphical sequence revealed as one thumbs through\r
 a flip-book, whose successive pages display emanation tables linked to progres\u0002sively incremented S values from 9 through 15, inspired a different name for these\r
 entities:\r
 Viewed in sequence, these tables suggest the patterns made by cellu\u0002lar automata; seen individually, they suggest nothing so much as the\r
-short-shelf-life “sand mandalas” of Tibetan Buddhist ritual, made by\r
+short-shelf-life "sand mandalas" of Tibetan Buddhist ritual, made by\r
 monks on large flat surfaces with colored sands or powdered flowers,\r
 minerals, or even gemstones. [14, p. 15]\r
 The second sweep of our argument [15] will begin with these two themes as\r
-its ultimate agenda – pursuing them in accordance with our originally advertised\r
+its ultimate agenda - pursuing them in accordance with our originally advertised\r
 intentions. Once we have classified types and characteristics of emanation tables\r
 through the 64-D Chingons, we will have all the basic patterns needed for crafting\r
-(and proving) the algorithmics of “Recipe Theory” in Part III. [16]\r
+(and proving) the algorithmics of "Recipe Theory" in Part III. [16]\r
 18
 
 References\r
 [1] I. L. Kantor and A. S. Solodovnikov, Hypercomplex Numbers: An Elemen\u0002tary Introduction to Algebras (Springer-Verlag, New York, 1989)\r
 [2] Benoit Mandelbrot, The Fractal Geometry of Nature (W. H. Freeman and\r
 Company, San Francisco, 1983)\r
-[3] Mark Newman, Albert-L´aszl´o Barab´asi, and Duncan J. Watts, editors, The\r
+[3] Mark Newman, Albert-L'aszl'o Barab'asi, and Duncan J. Watts, editors, The\r
 Structure and Dynamics of Networks (Princeton University Press, Princeton\r
 and Oxford, 2006)\r
-[4] Robert P. C. de Marrais, “The Marriage of Nothing and All: Zero-Divisor\r
-Box-Kites in a ‘TOE’ Sky”, in Proceedings of the 26th International Col\u0002loquium on Group Theoretical Methods in Physics, The Graduate Center\r
+[4] Robert P. C. de Marrais, "The Marriage of Nothing and All: Zero-Divisor\r
+Box-Kites in a 'TOE' Sky", in Proceedings of the 26th International Col\u0002loquium on Group Theoretical Methods in Physics, The Graduate Center\r
 of the City University of New York, June 26-30, 2006, forthcoming from\r
-Springer–Verlag.\r
-[5] Robert P. C. de Marrais, “The 42 Assessors and the Box-Kites They Fly,”\r
+Springer-Verlag.\r
+[5] Robert P. C. de Marrais, "The 42 Assessors and the Box-Kites They Fly,"\r
 arXiv:math.GM/0011260\r
-[6] R. E. Cawagas, “Loops Embedded in Generalized Cayley Algebras of Di\u0002mension 2r\r
-, r ≥ 2,” International Journal of Mathematics and Mathematical\r
+[6] R. E. Cawagas, "Loops Embedded in Generalized Cayley Algebras of Di\u0002mension 2r\r
+, r >= 2," International Journal of Mathematics and Mathematical\r
 Science, 28:3 (2001), 181-7.\r
-[7] Robert P. C. de Marrais, “Presto! Digitization” arXiv:math.RA/0603281\r
-[8] R. Guillermo Moreno, “The Zero Divisors of the Cayley-Dickson Algebras\r
-over the Real Numbers,” Boletin Sociedad Matematica Mexicana (3), 4, 1\r
+[7] Robert P. C. de Marrais, "Presto! Digitization" arXiv:math.RA/0603281\r
+[8] R. Guillermo Moreno, "The Zero Divisors of the Cayley-Dickson Algebras\r
+over the Real Numbers," Boletin Sociedad Matematica Mexicana (3), 4, 1\r
 (1998), 13-28; preprint available online at arXiv:q-alg/9710013\r
-[9] Robert P. C. de Marrais, “The ‘Something From Nothing’ Insertion Point”,\r
+[9] Robert P. C. de Marrais, "The 'Something From Nothing' Insertion Point",\r
 http://www.wolframscience.com/conference/2004/presentations/materials/\r
 rdemarrais.pdf\r
-[10] Rodrigo Obando, “Mapping the Cellular Automata Rule Spaces,” on http://\r
+[10] Rodrigo Obando, "Mapping the Cellular Automata Rule Spaces," on http://\r
 wolframscience.com/conference/2006/presentations/obando.nb\r
 [11] Jean Petitot, Morphogenesis of Meaning, (Peter Lang, New York and Bern,\r
 2004; French original, 1985).\r
 19
 
-[12] Jean Petitot, “A Morphodynamical Schematization of the Canonical For\u0002mula for Myths,” in The Double Twist: From Ethnography to Morphody\u0002namics , edited by Pierre Maranda (University of Toronto Press, Toronto\r
+[12] Jean Petitot, "A Morphodynamical Schematization of the Canonical For\u0002mula for Myths," in The Double Twist: From Ethnography to Morphody\u0002namics , edited by Pierre Maranda (University of Toronto Press, Toronto\r
 and Buffalo, 2001, pp. 267-311).\r
-[13] Gilles Deleuze and F´elix Guatteri, A Thousand Plateaus: Capitalism and\r
+[13] Gilles Deleuze and F'elix Guatteri, A Thousand Plateaus: Capitalism and\r
 Schizophrenia (University of Minnesota Press, Minneapolis and London,\r
 1987; French original, 1980).\r
-[14] Robert P. C. de Marrais, “Flying Higher Than A Box-Kite,”\r
+[14] Robert P. C. de Marrais, "Flying Higher Than A Box-Kite,"\r
 arXiv:math.RA/0207003\r
-[15] Robert P. C. de Marrais, “Placeholder Substructures II: Meta-Fractals,\r
-Made of Box-Kites, Fill Infinite-Dimensional Skies,” arXiv:0704.0026\r
+[15] Robert P. C. de Marrais, "Placeholder Substructures II: Meta-Fractals,\r
+Made of Box-Kites, Fill Infinite-Dimensional Skies," arXiv:0704.0026\r
 [math.RA]\r
-[16] Robert P. C. de Marrais, “Placeholder Substructures III: A Bit-String\u0002Driven ‘Recipe Theory’ for Infinite-Dimensional Zero-Divisor Spaces,”\r
+[16] Robert P. C. de Marrais, "Placeholder Substructures III: A Bit-String\u0002Driven 'Recipe Theory' for Infinite-Dimensional Zero-Divisor Spaces,"\r
 arXiv:0704.0112 [math.RA]\r
 20"""
 
@@ -642,73 +642,73 @@ arXiv:math/0703745v3 [math.RA] 22 Nov 2007\r
 Placeholder Substructures I: The Road from\r
 NKS to Scale-Free Networks is Paved with\r
 Zero Divisors\r
-Robert P. C. de Marrais ∗\r
+Robert P. C. de Marrais *\r
 Thothic Technology Partners, P.O.Box 3083, Plymouth MA 02361\r
 October 23, 2018\r
 Abstract\r
 Zero-divisors (ZDs) derived by Cayley-Dickson Process (CDP) from N\u0002dimensional hypercomplex numbers (N a power of 2, and at least 4) can\r
-represent singularities and, as N → ∞, fractals – and thereby, scale-free net\u0002works. Any integer > 8 and not a power of 2 generates a meta-fractal or\r
+represent singularities and, as N -> infinity, fractals - and thereby, scale-free net\u0002works. Any integer > 8 and not a power of 2 generates a meta-fractal or\r
 Sky when it is interpreted as the strut constant (S) of an ensemble of octahe\u0002dral vertex figures called Box-Kites (the fundamental ZD building blocks).\r
-Remarkably simple bit-manipulation rules or recipes provide tools for trans\u0002forming one fractal genus into others within the context of Wolfram’s Class\r
+Remarkably simple bit-manipulation rules or recipes provide tools for trans\u0002forming one fractal genus into others within the context of Wolfram's Class\r
 4 complexity."""
 
 [[sections]]
 number = "1"
 title = "Introduction: A Sky for Box-Kites"
 text = """
-Within a generation of Imaginary Numbers’ taming, William Rowan Hamilton\r
+Within a generation of Imaginary Numbers' taming, William Rowan Hamilton\r
 etched his famous i\r
-2 = j2 = k2 = i jk = −1 equation on the bridge he was cross\u0002ing, thereby giving us Quaternions (and, eventually, the tools of vector calculus\r
+2 = j2 = k2 = i jk = -1 equation on the bridge he was cross\u0002ing, thereby giving us Quaternions (and, eventually, the tools of vector calculus\r
 derived from their workings). Within months, Arthur Cayley and John Graves\r
 independently generalized his 4-D (noncommutative) Complex quantities to the\r
 8-D (nonassociative) Octonions. But before the century was out, attempts to ex\u0002tend hypercomplex number systems indefinitely, by the CDP dimension-doubling\r
-∗Email address: rdemarrais@alum.mit.edu\r
+*Email address: rdemarrais@alum.mit.edu\r
 1
 
 algorithm, met with an impediment: in 1896, Adolf Hurwitz proved that the next\r
 redoubling (to the 16-D Sedenions) would continue the pattern of giving up some\u0002thing familiar as the price of admission; only this time, the very notion of a norm\r
 (and hence, of division algebra itself) would be forfeit. [1] The necessity of zero\u0002divisors (non-null numbers with zero product) in all higher 2\r
-N-ions, N ≥ 4, almost\r
-instantly squelched the ambitions of number theorists – with such thoroughness,\r
-that the next (32-D) numbers were never even given a name, much less inves\u0002tigated seriously. Yet these Pathions, as we’ll term them (as in “pathological,”\r
+N-ions, N >= 4, almost\r
+instantly squelched the ambitions of number theorists - with such thoroughness,\r
+that the next (32-D) numbers were never even given a name, much less inves\u0002tigated seriously. Yet these Pathions, as we'll term them (as in "pathological,"\r
 which is what such entities were deemed) are precisely those which hold the key\r
 to underwriting (and algebraically generalizing) fractals with Number Theory.\r
-There is much more than irony in the fact that fractals themselves were sim\u0002ilarly dismissed as “monstrosities” – only to be later tamed and rendered com\u0002monplace by Benoit Mandelbrot. [2] For, thanks to their attribute of being scale\u0002free (as statistical distributions), fractals buttress the recent theory of complex net\u0002works [3] – which theory can be given its own Number Theoretic basis (making\r
+There is much more than irony in the fact that fractals themselves were sim\u0002ilarly dismissed as "monstrosities" - only to be later tamed and rendered com\u0002monplace by Benoit Mandelbrot. [2] For, thanks to their attribute of being scale\u0002free (as statistical distributions), fractals buttress the recent theory of complex net\u0002works [3] - which theory can be given its own Number Theoretic basis (making\r
 it henceforth less reliant on empirical methods) by dint of ZD ensembles. Such\r
 a network-enabling meta-fractal (each of whose infinite points is associated with\r
-one among an infinite number of orthogonal lines of ZDs) we call a Sky – for\r
+one among an infinite number of orthogonal lines of ZDs) we call a Sky - for\r
 it is where Box-Kites fly. These latter ensembles of 6 orthogonal planes, each\r
 represented by a vertex on an octahedral frame, are the basic molecules of ZD\r
-structures. Their workings (and manner of embedding in Skies, which we’ll vi\u0002sualize via spreadsheet-like “emanation tables” or ETs) will be our first concern.\r
+structures. Their workings (and manner of embedding in Skies, which we'll vi\u0002sualize via spreadsheet-like "emanation tables" or ETs) will be our first concern.\r
 Once we understand their interrelations, we will be able to generate the simple\r
-rules that use the bit-string of a Box-Kite ensemble’s integer signature to fill or\r
-hide ET cells, in a manner implying approach to the “fractal limit.”\r
-Our argument, like Caesar’s Gaul, naturally divides into three parts. In this\r
+rules that use the bit-string of a Box-Kite ensemble's integer signature to fill or\r
+hide ET cells, in a manner implying approach to the "fractal limit."\r
+Our argument, like Caesar's Gaul, naturally divides into three parts. In this\r
 Part I, our focus will be on the octahedral Box-Kite representation, which can\r
 organize all the seminal concepts of Zero-Divisor Theory in the 16-D context\r
 in which it first emerged, and end with a first foray into 32-D, fabricating the\r
-small set of fundamental tools we’ll need to keep expanding our agenda recur\u0002sively into 64, 128, 256, then infinite dimensions. In Part II, we introduce the\r
-spreadsheet-like means of representing ensembles of Box-Kites – the Emanation\r
-Tables alluded to last paragraph – which lead to a graphics more suggestive of\r
+small set of fundamental tools we'll need to keep expanding our agenda recur\u0002sively into 64, 128, 256, then infinite dimensions. In Part II, we introduce the\r
+spreadsheet-like means of representing ensembles of Box-Kites - the Emanation\r
+Tables alluded to last paragraph - which lead to a graphics more suggestive of\r
 colored quilts than any regular figures Euclid might have known. Their resem\u0002blance to classical fractals will soon be evident, and culminate in our construction\r
-of the simplest (“Whorfian”) Sky, whose basic building blocks only first emerge in\r
+of the simplest ("Whorfian") Sky, whose basic building blocks only first emerge in\r
 32-D. Finally, in Part III, we will construct the component parts of the algorithm\r
 which lets us build an infinite-dimensional meta-fractal Sky that is unique to any\r
 2
 
 integer > 8 and not a power of 2 (which is how we can justify calling our study\r
-a branch of Number Theory – but one based on bit-string-suggestive placeholder\r
+a branch of Number Theory - but one based on bit-string-suggestive placeholder\r
 structures, with powers of 2 playing a role roughly akin to that of prime num\u0002bers in the quantity-fixated contemplations of which the Greeks were so fond).\r
-Here, we conclude with what literally boils down to“cookbook instructions” for\r
-building arbitrary Skies, allowing for NKS-style movements between them – the\r
+Here, we conclude with what literally boils down to"cookbook instructions" for\r
+building arbitrary Skies, allowing for NKS-style movements between them - the\r
 Recipe Theory suggested in our abstract."""
 
 [[sections]]
 number = "2"
 title = "Preliminaries: CDP; What Zero-Division Means"
 text = """
-We use the most general CDP labeling scheme: units are subscripted from 0 (Re\u0002als) to 2N −1; the product (up to sign) of any two has subscript equal to the XOR\r
-of the producing terms’ subscripts. Call G the index of the CDP generator of"""
+We use the most general CDP labeling scheme: units are subscripted from 0 (Re\u0002als) to 2N -1; the product (up to sign) of any two has subscript equal to the XOR\r
+of the producing terms' subscripts. Call G the index of the CDP generator of"""
 
 [[sections]]
 number = "2"
@@ -716,39 +716,39 @@ title = "N+1"
 text = """
 -ions from 2N-ions. Then G = 2\r
 N ( = 8 for Sedenions), and we have Rule 1:\r
-for 2N-ion index L < G, iL ·iG = +i\r
-(G+L) ≡ +i(G xor L)\r
+for 2N-ion index L < G, iL *iG = +i\r
+(G+L) == +i(G xor L)\r
 . Once we have at least one\r
 associative triplet (trip) to work with, we can invoke Rule 2: writing in cyclically\r
 positive order (CPO) so positive units multiplied left to right always result in an\u0002other, creating a new trip by adding G to 2 terms of another reverses the order:\r
-(a,b, c) → (a, c+G,b+G). These 2 rules (plus a Rule 0 which says trips in 2N\u0002ions remain trips in all higher 2N+k\r
+(a,b, c) -> (a, c+G,b+G). These 2 rules (plus a Rule 0 which says trips in 2N\u0002ions remain trips in all higher 2N+k\r
 -ions, k > 0) completely describe trip-making,\r
 hence CDP.\r
 Examples. Appending a unit i2 to the standard Complex plane, Rule 1 gives\r
-us i1 · i2 = +i3 – the usual i, j, k of Quaternions (22-ions). Performing one fur\u0002ther iteration with G = 4, Rule 1 applied to the singleton Q-trip (1,2,3) yields\r
-G−1 = 3 O-trips (1,4,5);(2,4,6);(3,4,7). By Rule 2, we also derive 3 more:\r
-(1,2,3) → (1,7,6); (2,3,1) → (2,5,7); and, (3,1,2) → (3,6,5). Altogether, then,\r
-CDP says Octonions contain 1+3+3 = 7 O-trips – the trip count for N = 3, or\r
+us i1 * i2 = +i3 - the usual i, j, k of Quaternions (22-ions). Performing one fur\u0002ther iteration with G = 4, Rule 1 applied to the singleton Q-trip (1,2,3) yields\r
+G-1 = 3 O-trips (1,4,5);(2,4,6);(3,4,7). By Rule 2, we also derive 3 more:\r
+(1,2,3) -> (1,7,6); (2,3,1) -> (2,5,7); and, (3,1,2) -> (3,6,5). Altogether, then,\r
+CDP says Octonions contain 1+3+3 = 7 O-trips - the trip count for N = 3, or\r
 just Trip3, a number we derive independently by simple combinatorics: to form\r
 an associative triplet, pick one unit from those available, then pick a second from\r
 those remaining, and then divide by 6 to allow for all the permutations that could\r
 have led to the designated triplet being fixed by 2 selections. (Hence, the Sede\u0002nions, with N = 4, have (2\r
-N −1)(2N −2)/3! = 35 S-trips; Pathions, with N = 5,\r
+N -1)(2N -2)/3! = 35 S-trips; Pathions, with N = 5,\r
 have 155 P-trips; Trip6 = 651, and so on.)\r
-Remarks. The unique Q-trip can be rotated to bring its units’ indices into ACO\r
-(ascending counting order) as well as CPO: (1,2,3). 2 of the 7 O-trips, though –\r
-(1,7,6) and (3,6,5) – are “bad trips.” Inspection of our examples indicates that\r
-of the 3 new trips resulting from applying Rule 2 to the Q-trip, only one – O-trip\r
+Remarks. The unique Q-trip can be rotated to bring its units' indices into ACO\r
+(ascending counting order) as well as CPO: (1,2,3). 2 of the 7 O-trips, though -\r
+(1,7,6) and (3,6,5) - are "bad trips." Inspection of our examples indicates that\r
+of the 3 new trips resulting from applying Rule 2 to the Q-trip, only one - O-trip\r
 3
 
-(2,5,7) – will be “good” in turn. Corollarily, starting with the Sedenions, Rule 2\r
-will produce 2 “good” and 1 “bad” trip for each “bad trip” fed into it: for instance,\r
-(1,7,6) → (1,14,15);(7,9,14);(6,15,9). Simple algebra readily persuades us\r
-that TripN+1 = 4 · TripN +2\r
-N −1; further, that “bad trips” among the 2N+1\r
+(2,5,7) - will be "good" in turn. Corollarily, starting with the Sedenions, Rule 2\r
+will produce 2 "good" and 1 "bad" trip for each "bad trip" fed into it: for instance,\r
+(1,7,6) -> (1,14,15);(7,9,14);(6,15,9). Simple algebra readily persuades us\r
+that TripN+1 = 4 * TripN +2\r
+N -1; further, that "bad trips" among the 2N+1\r
 -ions\r
-= 2 · TripN, and “good,” this number augmented by the Rule 1 contribution, or\r
-2 · TripN +G−1. Hence, as N → ∞, good and bad trips approach parity."""
+= 2 * TripN, and "good," this number augmented by the Rule 1 contribution, or\r
+2 * TripN +G-1. Hence, as N -> infinity, good and bad trips approach parity."""
 
 [[sections]]
 number = "3"
@@ -758,16 +758,16 @@ Treat the 8 triangles of an octahedron as like a checkerboard, with those of sam
 color meeting only at vertices. But instead of colors, envisage 4 are Sails (jibs X,\r
 Y, Z, W, made of mylar, say), while those on the faces opposite them are Vents\r
 (through which the wind blows). The 3 pairs of opposite vertices are separated by\r
-struts – wood or plastic doweling in real-world kites. Such strut-opposites are the\r
-only pairings of vertices which are not mutual “divisors making zero” (DMZs):\r
-traversing any of the 12 edges always “makes zero,” as the ends of each host two\r
+struts - wood or plastic doweling in real-world kites. Such strut-opposites are the\r
+only pairings of vertices which are not mutual "divisors making zero" (DMZs):\r
+traversing any of the 12 edges always "makes zero," as the ends of each host two\r
 (mutually exclusive) DMZ pairs.\r
-For this to make sense, we must explain what we mean by “traverse” in this\r
-context. At each vertex are two imaginary units of different index (one, as we’ll\r
-show, always with index less than G – A or B, say – while the other is always of\r
-index greater – H or J). The edge between any two Box-Kite vertices which aren’t\r
+For this to make sense, we must explain what we mean by "traverse" in this\r
+context. At each vertex are two imaginary units of different index (one, as we'll\r
+show, always with index less than G - A or B, say - while the other is always of\r
+index greater - H or J). The edge between any two Box-Kite vertices which aren't\r
 strut opposites always connects two such dyads whose possible products include\r
-zeros. Their general product consists of four components, created by simple term\u0002by-term multiplication. With proper sign choices (a crucial matter to which we’ll\r
+zeros. Their general product consists of four components, created by simple term\u0002by-term multiplication. With proper sign choices (a crucial matter to which we'll\r
 4
 
 return shortly), the product of the units indexed B and H will exactly cancel that\r
@@ -776,26 +776,26 @@ exactly cancel that of units indexed H and J. (Note, in this last case, the high
 of H and J cancel by XOR, whereas A and B, being less than G, lack these high\r
 bits to begin with.) Also, we say two sets of DMZ pairs framing each edge, since\r
 each vertex represents one among 6 orthogonal planes, each spanned by a pair of\r
-hypercomplex axes, whose diagonals house all (and only) “primitive” ZDs.\r
-For the case just given, we write (iA + iH) and (iA − iH), with one of these\r
+hypercomplex axes, whose diagonals house all (and only) "primitive" ZDs.\r
+For the case just given, we write (iA + iH) and (iA - iH), with one of these\r
 providing 2 of the 4 terms in the zero product made with a (B, J)-indexed diag\u0002onal. We will see in Theorem 3 that 2 of the 4 possible choices of diagonals to\r
 multiply together will always have zero product, and determining which pairings\r
-“make zero” is where signing comes in. Put another way, since CDP-generated\r
-imaginaries square to (−1) tautologically, a ZD is “primitive” only if comprised\r
-of the sum or difference of two such imaginaries. (DMZ also signifies “dyads\r
-making zero.”) “Traversing” an edge, then, entails multiplying arbitrary points\r
+"make zero" is where signing comes in. Put another way, since CDP-generated\r
+imaginaries square to (-1) tautologically, a ZD is "primitive" only if comprised\r
+of the sum or difference of two such imaginaries. (DMZ also signifies "dyads\r
+making zero.") "Traversing" an edge, then, entails multiplying arbitrary points\r
 on suitably matched diagonals, one chosen from each terminating dyad, allowing\r
 some choice (since the order in which we multiply them has no effect on whether\r
 we get a zero or not) as to which end we think of as the starting point.\r
 The reason for this image will become clear when we consider chaining such\r
 traversals: certain sequences of vertex-to-vertex multiplication effectively take us\r
-on closed tours of some subset of the Box-Kite’s pathways, in such a way that\r
-we always “make zero” at each step in our circuiting. There are only a few such\r
+on closed tours of some subset of the Box-Kite's pathways, in such a way that\r
+we always "make zero" at each step in our circuiting. There are only a few such\r
 closed circuits, falling into a small number of types. These have surprisingly\r
 rich and distinctive properties as we shall see. Our focus here, though, will be\r
-primarily on the 3-vertex, 6-cyclic, kind, which we’ve already given a name: the\r
+primarily on the 3-vertex, 6-cyclic, kind, which we've already given a name: the\r
 Sail. (The third vertex is emanated by the first two ZDs, since the zero the latter\r
-make is in fact the sum of two oppositely signed copies of this third dyad’s terms.\r
+make is in fact the sum of two oppositely signed copies of this third dyad's terms.\r
 What makes the Sail an algebraic whole is the fact, shown in Theorem 5, that any\r
 of its 3 edges, when traversed, emanates the third vertex in this sense.)\r
 As the general reader is likely not a trained algebraist, some connection be\u0002tween such notions and those more familiar to computer-based thinking are appro\u0002priate. We note, then, that no notion is more fundamental than that of a solution,\r
@@ -811,18 +811,18 @@ number = "5"
 title = "Abel and Galois. And here, we find the symmetry groups of equations devolving"
 text = """
 upon the structure of the zeros they contain.\r
-Taking the step from calling the two terms (x − b)(x − c) = 0 in a quadratic\r
+Taking the step from calling the two terms (x - b)(x - c) = 0 in a quadratic\r
 equation, say, mere factors, to legitimate zero-divisors in our sense here, is one in\r
 keeping with historically recent paradigm shifts in physics. The move from point\r
 particles to 1-D strings and multi-dimensional n-branes is roughly parallel to our\r
 own shift from zero-divisor points to diagonal lines and exotica like the Seinfeld\r
 hyperplanes of our November, 2000, paper. And just as one gets from points to\r
 lines by stringing an indefinite number of the former together in an ensemble, we\r
-will expand the singleton imaginary fundamental to Galois’ thinking to the infinite\r
+will expand the singleton imaginary fundamental to Galois' thinking to the infinite\r
 array of such units afforded by CDP.\r
 As CDP will be our starting point when our argument resumes, we allow our\u0002selves one final comment before returning to it. Galoisian zeros offer a basis for\r
 modern representation theory, providing the starter kit (once embedded in Sophus\r
-Lie’s continuous-groups treatment) for handling all linear forms (and even the “el\u0002ementary” singularities of nonlinear kind comprising Ren´e Thom’s now-classical\r
+Lie's continuous-groups treatment) for handling all linear forms (and even the "el\u0002ementary" singularities of nonlinear kind comprising Ren'e Thom's now-classical\r
 Catastrophe Theory). But the representation of the nonlinear, we claim, requires\r
 methods in the general case like those we adumbrate (and, to some small degree,\r
 actually implement) herein. And, knowing nothing more than the CDP rules, we\r
@@ -830,13 +830,13 @@ can exclude some very general cases:\r
 Theorem 1. Neither dyad can contain only indices < G.\r
 Proof. If both dyads contain only Octonions, their product will contain only Oc\u0002tonions, which have no ZDs; by induction, no ZDs new to the 2N-ions generated\r
 by G can emerge from products of terms with indices < G. If only one dyad has\r
-both terms’ indices < G, the term ≥ G in the other will have unequal products\r
-with the first dyad’s two terms. But, by XOR, these will also be the only terms\r
-with indices ≥ G, preventing cancelation of either. \u0004\r
+both terms' indices < G, the term >= G in the other will have unequal products\r
+with the first dyad's two terms. But, by XOR, these will also be the only terms\r
+with indices >= G, preventing cancelation of either. \u0004\r
 Theorem 2. For any 2N-ions, the unit indexed by G cannot belong to a ZD dyad.\r
-Proof. Given trip (a,b, c) and binary variable (sg) = ±1, write (ia+iG) below, and\r
-(ib +sg · iG+c) above, and multiply term by term. The products by iG are −iG+b\r
-and sg·+ic (Rule 1). Products by ia, however, are +ic (given) and sg·+iG+b (Rule\r
+Proof. Given trip (a,b, c) and binary variable (sg) = +/-1, write (ia+iG) below, and\r
+(ib +sg * iG+c) above, and multiply term by term. The products by iG are -iG+b\r
+and sg*+ic (Rule 1). Products by ia, however, are +ic (given) and sg*+iG+b (Rule\r
 2). Depending on sg, one or the other, but not both, pairs will cancel. \u0004\r
 Remark. When N increases, former generators form ZDs. Starting with the\r
 Pathions, though, a condition we term carrybit overflow can arise, wherein in\u0002dices sufficiently large to play different roles for different N cause the breakdown\r
@@ -846,25 +846,25 @@ of zero-division behavior in many cases where we would expect it, and it is pre\
 number = "6"
 title = "Theorem 3. Suppose two dyads each contain one unit whose index > G, written in"
 text = """
-upper case, and another whose index < G, written lower case. Then if (a + A)·\r
-(b+B) = 0, (a+A)·(b−B) does not, and vice-versa.\r
+upper case, and another whose index < G, written lower case. Then if (a + A)*\r
+(b+B) = 0, (a+A)*(b-B) does not, and vice-versa.\r
 Proof. Given the zero result, the aB and Ab terms, however signed, must cancel,\r
 as must AB and ab. But changing only one sign in one or the other dyad reverses\r
 sign on one unit only in each pair. \u0004\r
 Remark. Clearly, multiplying either dyad by a real scalar k has no effect on ZD\r
 status, which is why these ZDs are best thought of as diagonal line elements.\r
-Represent ZD diagonals k(x + X) and k(x − X) in the obvious graphical manner\r
+Represent ZD diagonals k(x + X) and k(x - X) in the obvious graphical manner\r
 as (X,/) and (X,\\) respectively. It is easy to show these corollaries:\r
-(A,/) · (B,/) = 0 ⇔ (A,\\) · (B,\\) = 0\r
-(A,/) · (B,\\) = 0 ⇔ (A,\\) · (B,/) = 0\r
+(A,/) * (B,/) = 0 <=> (A,\\) * (B,\\) = 0\r
+(A,/) * (B,\\) = 0 <=> (A,\\) * (B,/) = 0\r
 Theorem 4. Two ZD diagonals spanned by the same imaginary units cannot be\r
 DMZs.\r
-Proof. (a+A)(a−A) = +Aa+1 on top, and −1−aA = −1+Aa on the bottom.\r
+Proof. (a+A)(a-A) = +Aa+1 on top, and -1-aA = -1+Aa on the bottom.\r
 But 2Aa 6= 0. \u0004\r
 Remark. This is the exact opposite of the (non-CDP) ZDs found in quantum me\u0002chanics (QM), where the mutual annihilation of the idempotent projection opera\u0002tors 1\r
 2\r
-(1±m), m a Pauli spin matrix (so that m\r
-2 = +1, m 6= ±1), serves to define\r
+(1+/-m), m a Pauli spin matrix (so that m\r
+2 = +1, m 6= +/-1), serves to define\r
 observables. There is a sense, however, in which the QM case is a degenerate\r
 form of the behaviors being examined here: this would take us off topic, but those\r
 interested in such questions should see [4].\r
@@ -882,9 +882,9 @@ In the Sedenions, the most general production rule allows anything not excluded\
 by the rules above: pick any Octonion of index O (7 ways), then any pure Sede\u0002nion with index S > G not the XOR of O with G; the resulting dyad spans one of\r
 7
 
-42 planes – the 42 Assessors of [5], where the other production rules are also de\u0002scribed for the first time. For higher 2N-ions, restrictions due to carrybit overflow\r
-arise, but the approach just limned still generates all candidates for “primitive\r
-ZD” status.\r
+42 planes - the 42 Assessors of [5], where the other production rules are also de\u0002scribed for the first time. For higher 2N-ions, restrictions due to carrybit overflow\r
+arise, but the approach just limned still generates all candidates for "primitive\r
+ZD" status.\r
 From this rule to Box-Kites is but a short distance: for, since each Sedenion\r
 Assessor will have an Octonion in its dyad of units, clearly we can arrange their\r
 42 planes in 7 clusters of 6, each of which excludes a different Octonion from its\r
@@ -893,26 +893,26 @@ set. Call the Octonion index in each dyad (and, more generally, the 2N-ion index
 and iU . Since each Octonion is involved in precisely 3 O-trips, the 6 L-indices\r
 in each cluster can be uniquely fixed in 2 steps: first, assign each pair whose\r
 XOR is the excluded index to one of the 3 struts, which is necessary and sufficient\r
-to guarantee that their product does not appear in the set. (From what we’ve\r
+to guarantee that their product does not appear in the set. (From what we've\r
 already seen, even without specifying what their U-indices are, this is tantamount\r
-to guaranteeing that no pairing of their Assessors’ diagonals can be DMZs.) Call\r
-the excluded index S, for “Strut Constant” and “signature.” The last parenthetical\r
+to guaranteeing that no pairing of their Assessors' diagonals can be DMZs.) Call\r
+the excluded index S, for "Strut Constant" and "signature." The last parenthetical\r
 remark tells us it somehow fixes the U-indices of the Assessors in its cluster. We\r
 will see how in the next section. For now, the more immediate problem of fixing\r
 L-indices leads us to perform our second step.\r
 Orient the strut-opposite L-indices so that S is the central label in the PSL(2,7)\r
 triangle which represents the smallest finite projective group, also called the Fano\r
-plane. Its 3 vertices, 3 sides’ midpoints, and center each host an Octonion index,\r
+plane. Its 3 vertices, 3 sides' midpoints, and center each host an Octonion index,\r
 in 7 oriented lines of 3 points each, one per O-trip (in 480 possible configurations).\r
-Then, assign the L-index trip in the circle threading the sides’ midpoints to vertices\r
+Then, assign the L-index trip in the circle threading the sides' midpoints to vertices\r
 A, B,C on a Box-Kite, in CPO order. The strut-opposite L-indices will then appear\r
 as the vertices which terminate the lines extending from their L-index partners\r
-through S. We label them, in “nested parentheses” order, F, E, D respectively.\r
+through S. We label them, in "nested parentheses" order, F, E, D respectively.\r
 By removing the central label, four of the 7 lines in PSL(2,7) remain con\u0002nected: that of the central circle just discussed, whose L-indices form the triplet\r
-(a,b, c); and, the 3 along the triangle’s sides, which the diagram tells us have CPO\r
+(a,b, c); and, the 3 along the triangle's sides, which the diagram tells us have CPO\r
 labels (a,d, e), (f,d,b), and (f, c, e). We will show next section how these form\r
-the bases of the two types of Sails – the singleton Zigzag at vertices (A,B,C),\r
-and the three Trefoils which each share a different vertex with the Zigzag – and\r
+the bases of the two types of Sails - the singleton Zigzag at vertices (A,B,C),\r
+and the three Trefoils which each share a different vertex with the Zigzag - and\r
 demonstrate their special properties, which hold for all Box-Kites in all 2N-ions.\r
 For now, we introduce the other production rules, the first of which motivates the\r
 very idea of a Sail."""
@@ -924,37 +924,37 @@ text = """
 forming DMZs with both, can be created by setting the index of W to |U xor v| =\r
 |u xor V|, and that of w to |u xor v| = |U xor V|.\r
 Proof. Without loss of generality, assume L-index trip (u, v,w) is CPO, and the\r
-dyads of the given DMZ have same internal signing: that is, (u+U)·(v+V) = 0.\r
-We then have u · v = −U ·V; but (u, v,w) → v ·w = +u, so w = −U ·V as well.\r
-Using sg as before, write W = sg · [+Uv] = sg · [−uV]. Consider (v +V)·(w +\r
-sg ·W), the former written under the latter. (The same basic argument applies if\r
+dyads of the given DMZ have same internal signing: that is, (u+U)*(v+V) = 0.\r
+We then have u * v = -U *V; but (u, v,w) -> v *w = +u, so w = -U *V as well.\r
+Using sg as before, write W = sg * [+Uv] = sg * [-uV]. Consider (v +V)*(w +\r
+sg *W), the former written under the latter. (The same basic argument applies if\r
 we choose (u+U) instead and write it on top.) Multiplying left to right by v, we\r
-have +u and sg ·(v ·Uv) = sg ·(−v · vU) = sg ·(+U). Next, V ·w = V ·(−UV) =\r
-V ·(+VU) = −U. And V ·sg ·W = V ·sg ·(−uV) = sg ·(−u). Set sg = (−1), and\r
+have +u and sg *(v *Uv) = sg *(-v * vU) = sg *(+U). Next, V *w = V *(-UV) =\r
+V *(+VU) = -U. And V *sg *W = V *sg *(-uV) = sg *(-u). Set sg = (-1), and\r
 all terms cancel. \u0004\r
 Remark. Two Assessors in the same Box-Kite emanate a third whose L-index\r
 completes the L-trip implied by the other two. (The zero they make is also a sum\r
 of oppositely signed copies of the emanated Assessor.) Such a triad defines a Sail.\r
 Caveat. The proof as given is complete within the Sedenions, which display\r
-alternativity: (aa)·b = a·(ab). Generalizing to higher 2N-ions, however, requires\r
-a further result we’ll derive later, namely: all three index-triples involving one\r
+alternativity: (aa)*b = a*(ab). Generalizing to higher 2N-ions, however, requires\r
+a further result we'll derive later, namely: all three index-triples involving one\r
 lowercase and two uppercase letters, each from a different Assessor in a Sail, are\r
 trips, so that even associativity among units combined as required in our proof is\r
 guaranteed.\r
-Theorem 6. If (U +u) and (V +sg · v) are DMZs, then so are their twist products\r
-(U +sg · v) and (V −u).\r
-Proof. By direct multiplication, the DMZ given requires U · v = −u ·V and u · v =\r
-−U ·V. The proposed DMZ resulting from the twist would require V · v = u ·U,\r
-and u · v = V ·U. But the second requirement is identical to what we know is true\r
+Theorem 6. If (U +u) and (V +sg * v) are DMZs, then so are their twist products\r
+(U +sg * v) and (V -u).\r
+Proof. By direct multiplication, the DMZ given requires U * v = -u *V and u * v =\r
+-U *V. The proposed DMZ resulting from the twist would require V * v = u *U,\r
+and u * v = V *U. But the second requirement is identical to what we know is true\r
 in the given DMZ. As for the first requirement, multiply the terms of the other\r
-known relation on the right by u · v = w to obtain it. \u0004\r
-Caveat added in V3. The proof as given is complete within the Sedenions; how\u0002ever, it doesn’t hold universally for the Pathions and beyond, when strut constants\r
-can exceed 8 – a side-effect, and necessary correlate, of the emergence of the\r
-“meta-fractal” structures that will concern us in the second and third installments\r
+known relation on the right by u * v = w to obtain it. \u0004\r
+Caveat added in V3. The proof as given is complete within the Sedenions; how\u0002ever, it doesn't hold universally for the Pathions and beyond, when strut constants\r
+can exceed 8 - a side-effect, and necessary correlate, of the emergence of the\r
+"meta-fractal" structures that will concern us in the second and third installments\r
 of this argument. Perhaps surprisingly, this proves to be a virtue: the lanyards\r
 based on circuiting squares, not triangles, are the natural vehicles with which to\r
 see twist products deployed, and it is thanks to the twists which do not yield ZDs\r
-that we can study transformations between legitimate box-kites and the “broken”\r
+that we can study transformations between legitimate box-kites and the "broken"\r
 9
 
 kind lacking ZD pathing which comprise meta-fractals. Such topics, however,\r
@@ -965,7 +965,7 @@ by programmatic exploration, using his Finitas software, of loops (which do for\
 nonassociative algebras what groups do for their more orderly cousins). [6] In our\r
 correspondence, it became clear that twist products in fact connect ZDs which,\r
 while necessarily in different Box-Kites, are always in the same loop. Each of a\r
-Box-Kite’s 4 Sails “twist” to different loops, while each Cawagas loop meanwhile\r
+Box-Kite's 4 Sails "twist" to different loops, while each Cawagas loop meanwhile\r
 partitions into 4 sets that correspond to Sails in different Box-Kites, indicating an\r
 interesting duality between the two quite differently framed approaches and their\r
 objects. For the surprising symmetries inherent in twist product patterns, see the\r
@@ -973,9 +973,9 @@ discussions surrounding the Royal Hunt and Twisted Sister diagrams in [7, pp.\r
 14-16]. See [5, pp. 11-21] for full exposition of all the production rules being\r
 discussed here, and pp. 15-16 for the twist product rule in particular.\r
 Coming Attractions. Once the workings of the Strut Constant are understood,\r
-the reader will find it trivial to prove that opposite sides of any of the 3 orthog\u0002onal squares comprising the Box-Kite’s octahedral framework twist to the same\r
+the reader will find it trivial to prove that opposite sides of any of the 3 orthog\u0002onal squares comprising the Box-Kite's octahedral framework twist to the same\r
 Box-Kite, while adjacent sides twist to different ones. (The trick is to realize\r
-that, for all Assessors in any given Box-Kite, the XOR of their dyads’ indices is\r
+that, for all Assessors in any given Box-Kite, the XOR of their dyads' indices is\r
 G+S). This suggests that the 3 squares, which we will call Catamarans (Tray\u0002Racks in earlier papers), are as fundamental as the 4 Sails, but for the different\r
 purpose of long-distance navigating; we conventionally name them for the tall\r
 masts planted orthogonally on the transverse frames joining their hulls: AF for\r
@@ -988,45 +988,45 @@ Lemma. As every L-index appears in two distinct L-trips in a given Box-Kite,\r
 likewise every Assessor appears in two distinct Sails.\r
 Remark. Full XOR-based calculation requires knowledge of the U-indices, which\r
 requires, in turn, a better understanding of the special role played by the Strut\r
-Constant – which will be our focus in the next section.\r
+Constant - which will be our focus in the next section.\r
 10"""
 
 [[sections]]
 number = "5"
-title = "Strut Constants, Sails, and “Slipcover Proofs”"
+title = "Strut Constants, Sails, and \"Slipcover Proofs\""
 text = """
 The debt to the groundbreaking work of R. Guillermo Moreno is evident: his\r
 1997 preprint (appearing in a Mexican journal the following year [8]) revivified\r
-the long-neglected study of ZDs. Moreno’s now-classic paper culminated in a\r
+the long-neglected study of ZDs. Moreno's now-classic paper culminated in a\r
 formal demonstration that the algebra of ZDs in the Sedenions was homomorphic\r
 to the Lie algebra G2, itself the automorphism group of E8, in turn represented\r
-by the Octonions – a result seemingly of interest only to physicists. Yet he also\r
+by the Octonions - a result seemingly of interest only to physicists. Yet he also\r
 pointed out that this same G2 is the derivation algebra of 2N+1-ions from 2N-ions,\r
 implying a deepset recursiveness in ZD structuring. We underscore that the Fano\r
 Plane diagram for Octonion labeling is likewise a potentially recursive tool: the\r
 15 points and 35 lines, with 7 lines through every point and 3 planes in each line,\r
-of the 3-D “projective tetrahedron” that schematizes Sedenion labeling, is further\r
+of the 3-D "projective tetrahedron" that schematizes Sedenion labeling, is further\r
 cobbled together from 15 planes isomorphic to the PSL(2,7) triangle. Higher\r
-labeling structures of 2N −1 points, TripN lines, and so on, are readily imagined\r
+labeling structures of 2N -1 points, TripN lines, and so on, are readily imagined\r
 (albeit impossible to visualize). Our next results will be derived with virtually no\r
 tools beyond CDP and PSL(2,7). We begin with a concretization of the discussion\r
 which introduced the latter last section.\r
 Place the indices of the Octonions so as to reflect their construction via CDP\r
 from Quaternions: in the center of an equilateral triangle, place G = 4; with apex\r
-extending above 12 o’clock, place (1,2,3) at the midpoints of the left, right, and\r
-bottom sides, oriented clockwise, at 10, 2, and 6 o’clock in that order. Now its\r
+extending above 12 o'clock, place (1,2,3) at the midpoints of the left, right, and\r
+bottom sides, oriented clockwise, at 10, 2, and 6 o'clock in that order. Now its\r
 projective line, the only one drawn as a circle, represents the Rule 0 trip; lines\r
 oriented from the midpoints to and through the center are the Rule 1 trips; the\r
 sides, meanwhile, constitute the Rule 2 trips, and are all oriented in a clockwise\r
 manner, paralleling the flow along the Rule 0 circle.\r
 Now replace (1,2,3) with the letters (u, v,w), and replace the indices at the\r
-angles with the symbols (uopp, vopp,wopp), as these are indeed u, v and w’s strut\u0002opposites with respect to the central index, which we now replace with the symbol\r
+angles with the symbols (uopp, vopp,wopp), as these are indeed u, v and w's strut\u0002opposites with respect to the central index, which we now replace with the symbol\r
 S for Strut Constant. The contents of the labels are indeterminate, but their choices\r
 must conform to the network of flows: clockwise along edges and central circle,\r
 and pointing inward along the 3 lines bifurcating sides, then angles. In our initial\r
 setup, the Octonion generator is indeed the S for the Sedenion Box-Kite impli\u0002cated. In a manner suggestive of how one pulls on and removes slipcovers from\r
 upholstery, we claim that this flow pattern is not only uniquely linked to represen\u0002tations with the central circle comprising the L-indices of the Zigzag Sail; but that\r
-one can, without inducing any tearing in the network of flows, “pull” any Octo\u0002nion index into the center, thereby representing a Zigzag-centric depiction of the"""
+one can, without inducing any tearing in the network of flows, "pull" any Octo\u0002nion index into the center, thereby representing a Zigzag-centric depiction of the"""
 
 [[sections]]
 number = "11"
@@ -1037,16 +1037,16 @@ obtain a correct multiplication scheme for the 7 units, it suffices to place (u,
 on any line, mark any of the remaining 4 points S, and then pass through it to\r
 designate the last trio of points as opposites of the first. Swapping in one point for\r
 another, then, is easy. The symmetries are so complete that we can take any point\r
-we please and make the case for all, so let’s take 7 in the S = 4 diagram. Rotate\r
+we please and make the case for all, so let's take 7 in the S = 4 diagram. Rotate\r
 the line containing 4 and 7 once in the downward direction to keep orientation: the\r
 vertical line, in top-down order, now reads (3,7,4) instead of (7,4,3). The central\r
 circle, if its clockwise orientation is to be kept, must be CPO starting with the left\r
-midpoint and ending in the 4 now on the bottom. There are just 2 possibilities –\r
-(6,2,4) and (5,1,4) – but the former would reverse the flow on the right flank,\r
+midpoint and ending in the 4 now on the bottom. There are just 2 possibilities -\r
+(6,2,4) and (5,1,4) - but the former would reverse the flow on the right flank,\r
 reading (1,2,3) from the lower right to the apex. As is readily checked, (5,1,4)\r
-does exactly what we want – and, as our table of Sedenion Assessors and Strut\r
+does exactly what we want - and, as our table of Sedenion Assessors and Strut\r
 Constants makes clear, that is in fact the Zigzag L-trip for the S = 7 Box-Kite. The\r
-3-fold symmetry of the flows lets us choose any of the central circle’s 3 nodes to\r
+3-fold symmetry of the flows lets us choose any of the central circle's 3 nodes to\r
 house the 1 (which is the L-index of the A Assessor in the Box-Kite in question)\r
 without effecting the pattern.\r
 But suppose we wish to swap two lines instead of nodes: one of the Tre\u0002foil Sails on the sides for the central Zigzag, say. This can be done, but at\r
@@ -1055,46 +1055,46 @@ the cost of changing the flow structure. Keeping the convention of mapping\r
 as (u,wopp, vopp), (uopp,wopp, v) and (uopp,w, vopp). If we insist on maintaining\r
 the clockwise orientation of the central circle after replacing its labels with one of\r
 the 3 sets just written, the flows on the 2 sides not corresponding to the original\r
-(u, v,w) circle will be counterclockwise, and the 2 rays through the center start\u0002ing from midpoints suffixed “opp” will now lead away from, not into, the angles.\r
+(u, v,w) circle will be counterclockwise, and the 2 rays through the center start\u0002ing from midpoints suffixed "opp" will now lead away from, not into, the angles.\r
 12
 
-“Slipcover tugs” on the fabric of this network will send a Trefoil linked to one S\r
-value into one linked to a different S – but the lack of the Zigzag L-trip’s threefold\r
+"Slipcover tugs" on the fabric of this network will send a Trefoil linked to one S\r
+value into one linked to a different S - but the lack of the Zigzag L-trip's threefold\r
 symmetry means it typically will be a different Trefoil: if one tugs 2, say, into the\r
 center, the (a,d, e) Trefoil of the S = 4 Box-Kite is transformed into an (f,d,b).\r
-The side-effect of Trefoils’ broken symmetry explains why, in the table provided\r
+The side-effect of Trefoils' broken symmetry explains why, in the table provided\r
 above, Zigzags are so regular (each O-trip appears as one exactly once), while\r
 Trefoils behave so erratically (each O-trip appears thrice as a Trefoil, but never in\r
 an evenly distributed manner; in fact, (3,6,5) makes all its Trefoil appearances as\r
 (f, c, e), while (1,2,3) qua Trefoil shows up only as (a,d, e)).\r
 We mentioned above that PSL(2,7) diagrams can be used to map not merely\r
-the interconnections of Octonion labelings, but – given the recursive modularity of\r
-all higher 2N-ions – heptads among the Sedenions and beyond. We have used, for\r
-instance, “stereo Fano” diagramming to navigate and notate the structures found\r
-in the 32-D Pathions. [9] For the present, though, we’ll need nothing so exotic:\r
-we’ll just want to drop G into the center of diagrams already seen, not to replace\r
+the interconnections of Octonion labelings, but - given the recursive modularity of\r
+all higher 2N-ions - heptads among the Sedenions and beyond. We have used, for\r
+instance, "stereo Fano" diagramming to navigate and notate the structures found\r
+in the 32-D Pathions. [9] For the present, though, we'll need nothing so exotic:\r
+we'll just want to drop G into the center of diagrams already seen, not to replace\r
 S, however, but to supplement it. The reason for this is implicit in this critical\r
 theorem.\r
 Theorem 7. The U-index of any Assessor is the XOR of its L-index with G+S.\r
 For Zigzag Sails, all 3 edges connecting Assessors conform, in the notation of the\r
 Remark to Theorem 3, to this pattern:\r
-(M,/) · (N,\\) = 0 ⇔ (M,\\) · (N,/) = 0\r
+(M,/) * (N,\\) = 0 <=> (M,\\) * (N,/) = 0\r
 For Trefoil Sails, the 2 edges including the Assessor shared with the Zigzag are\r
 governed, instead, by the other pattern from the same Remark, namely:\r
-(M,/) · (N,/) = 0 ⇔ (M,\\) · (N,\\) = 0\r
+(M,/) * (N,/) = 0 <=> (M,\\) * (N,\\) = 0\r
 Proof. Place (u, v,w) on the central circle of a PSL(2,7) diagram, with all 7 lines\r
-in zigzag flow orientation. Place G+S in the diagram’s central node, calculate\r
+in zigzag flow orientation. Place G+S in the diagram's central node, calculate\r
 the angle nodes, and readjust flows by Rule 2: the trips on the lines through\r
 the center are now oriented to point from angles to midpoints, and are writ\u0002ten thus: (G+uopp,G+S,u); (G+vopp,G+S,v); (G+wopp,G+S,w). The\r
 side trips now flow counterclockwise. In CPO, from the top, we have these:\r
 (G+wopp,u,G+vopp); (G+vopp,w,G+uopp); (G+uopp,v,G+wopp). We\r
-assert U = (G+uopp) and V = (G+vopp). Multiply (u +U)·(v −V), the in\u0002dices assumed to be subscripts of implied imaginary units.\r
+assert U = (G+uopp) and V = (G+vopp). Multiply (u +U)*(v -V), the in\u0002dices assumed to be subscripts of implied imaginary units.\r
 13
 
-+v−(G+vopp)\r
++v-(G+vopp)\r
 +u+ (G+uopp)\r
-+(G+wopp)−w\r
-+w−(G+wopp)\r
++(G+wopp)-w\r
++w-(G+wopp)\r
 0\r
 Now place (u,wopp, vopp) on the central circle of a trefoil-flow-oriented PSL(2,7);\r
 plunk (G+S) down in the center of it; multiply dyads as above, but with same\r
@@ -1102,8 +1102,8 @@ inner sign for the two products including Assessor U, to complete the proof. \u0
 Corollary. As a side-effect of Theorem 7, we see that indeed each Sail is com\u0002prised of 4 trips, thereby addressing the Caveat to Theorem 5. The Zigzag, for\r
 instance, has one L-trip, (a,b, c), and 3 U-trips where high bits are lost by XOR,\r
 written (a,B,C); (A,b,C); (A,B, c). Each, supplemented by the Reals, makes a le\u0002gitimate copy of the Quaternions. Moreover, any Box-Kite in any 2N-ion domain\r
-will have Sails with this property, it being a feature of our Rule 2 and PSL(2,7)’s\r
-recursivity, rather than anything specific to (hence subject to the limits of) Sede\u0002nion space. We merely use whatever G is appropriate in our “slipcover proofs”\r
+will have Sails with this property, it being a feature of our Rule 2 and PSL(2,7)'s\r
+recursivity, rather than anything specific to (hence subject to the limits of) Sede\u0002nion space. We merely use whatever G is appropriate in our "slipcover proofs"\r
 and choose a Rule 0 triplet to place in the central circle; or, equivalently, pick\r
 whatever trio of strut-opposites you care to use which satisfy the given S value.\r
 (There will be many to choose from as N grows large, so that we speak more of\r
@@ -1113,45 +1113,45 @@ Box-Kite ensembles than Box-Kites as individuals)."""
 number = "6"
 title = "Intermezzo: Lanyards, Semiotic Squares, Ema\u0002nation Tables, Sand Mandalas . . ."
 text = """
-Moreno’s G2, as root system, has order 12 (14, if we’re physicists and add in the\r
-2-D Cartan subalgebra). The Sedenions’ 7 Box-Kites x 12 edges x 2 oriented\r
-flows along each → 168, order of the second simple group, and 12 times 14. The\r
-integer 168 is also a “magic number” in Boolean function theory, where it arises in\r
+Moreno's G2, as root system, has order 12 (14, if we're physicists and add in the\r
+2-D Cartan subalgebra). The Sedenions' 7 Box-Kites x 12 edges x 2 oriented\r
+flows along each -> 168, order of the second simple group, and 12 times 14. The\r
+integer 168 is also a "magic number" in Boolean function theory, where it arises in\r
 the context of the Dedekind Problem as the number of 4-variable monotone func\u0002tions, with the same number of complements. The Dedekind Problem concerns\r
 determining this rapidly growing number for arbitrarily large counts of variables.\r
-The relevance of such abstruse topics to rule-based approaches like cellular au\u0002tomata theory and Stephen Wolfram’s New Kind of Science has been the focus of\r
+The relevance of such abstruse topics to rule-based approaches like cellular au\u0002tomata theory and Stephen Wolfram's New Kind of Science has been the focus of\r
 ongoing work by Rodrigo Obando [10], [9, pp. 18-19], who has employed their\r
 toolkit to create a kind of Periodic Chart of such rule-driven systems, highlighting\r
 14
 
 which are not just Class 1 (boringly homogenous outcomes), Class 2 (evolving\r
 into simple periodic structures), or Class 3 (chaotic, aperiodic), but truly complex\r
-Class 4 patterns, like Wolfram’s famous Rule 30. All of which has provided moti\u0002vation to search ZD space for connections to similar modes of complexity, driven\r
+Class 4 patterns, like Wolfram's famous Rule 30. All of which has provided moti\u0002vation to search ZD space for connections to similar modes of complexity, driven\r
 by similarly simple rules. We will conclude, as our abstract suggests, with just\r
-such a “recipe theory” with which to study infinite-dimensional meta-fractals. We\r
+such a "recipe theory" with which to study infinite-dimensional meta-fractals. We\r
 will prepare for that journey by taking leave of simple Box-Kites in the Sedenions,\r
 and go so far in this section as to find the first truly anomalous ensembles, with\r
-the “wrong number” of Box-Kites, in the 32-D Pathions.\r
+the "wrong number" of Box-Kites, in the 32-D Pathions.\r
 We first want to indicate that even simple Box-Kites are much richer in struc\u0002ture than we have seen thus far. The two kinds of Sails are instantiations of abstract\r
-objects we call lanyards – cords worn around the neck to hold knives or whistles,\r
+objects we call lanyards - cords worn around the neck to hold knives or whistles,\r
 or strands of leather or plastic used to string beads and other gewgaws into charm\r
 bracelets. By chaining together DMZs, a lanyard threads the ZD diagonals of mul\u0002tiple Assessors, attaining closure by returning to its starting point having touched\r
 all other ZDs in its ambit but once. They can be given signatures even more com\u0002pressed than the notation developed in the Remark to Theorem 3: the Zigzag is a\r
-6-cycle lanyard, which “makes zero” with all its Sail’s diagonals, in a sequence\r
+6-cycle lanyard, which "makes zero" with all its Sail's diagonals, in a sequence\r
 cyclically equivalent to the glyph inspiring its name: / \\ / \\ / \\ . The Tre\u0002foil has its own 6-cycle signature: / / / \\ \\ \\ . (The Catamaran, meanwhile,\r
 has 4-cycle signature / / \\ \\, which should clarify our earlier cryptic comments\r
 concerning it.)\r
 Joins between diagonals with opposite inner sign we designate either with a [-]\r
-edge symbol, else – if availing ourselves of color graphics – draw in red. Exactly\r
-half a Box-Kite’s 12 edges are red, consisting of the trio defining the Zigzag, and\r
+edge symbol, else - if availing ourselves of color graphics - draw in red. Exactly\r
+half a Box-Kite's 12 edges are red, consisting of the trio defining the Zigzag, and\r
 those bordering the Vent on the face opposite it. (See diagram on left of Figure 2.)\r
 Those edges linking similarly inner-signed diagonals are marked [+] or painted\r
-blue. “The Blues,” in fact, are two other 6-cycle lanyards which contain all and\r
+blue. "The Blues," in fact, are two other 6-cycle lanyards which contain all and\r
 only the blue edges, corresponding to the perimeter of the hexagon in the prior\r
-image. Two, because one connects only \\ diagonals, the other only /’s. What\r
+image. Two, because one connects only \\ diagonals, the other only /'s. What\r
 might a simulation that switched edge-signs (converting the Blues into Zigzags,\r
 perhaps?) correspond to in real-world processes?\r
-Another type of 6-cycle lanyard, the 2-Sail, 5-Assessor “Bow-Tie” whose dou\u0002bly passed-through “knot” must be in the Zigzag, has deep symmetry-breaking\r
+Another type of 6-cycle lanyard, the 2-Sail, 5-Assessor "Bow-Tie" whose dou\u0002bly passed-through "knot" must be in the Zigzag, has deep symmetry-breaking\r
 properties that may well play a fundamental role in string theory [4]. In general,\r
 each distinct lanyard (and there are others which the reader is invited to explore in\u0002volving 4, 5, and all 6 Assessors: see Section III of [5] for more on some of these)\r
 creates a distinctive context of dynamic possibilities, rather than the semblance of\r
@@ -1160,46 +1160,46 @@ creates a distinctive context of dynamic possibilities, rather than the semblanc
 an answer (as groups, too often, are assumed to offer). And, unlike groups, and\r
 as one might expect in 0- rather than 1- based algebraics, an identity element is\r
 nowhere in sight, with strut opposites the closest thing to inverses. Rather, the zero\r
-resultant defining the transit of each link in a lanyard’s chain guarantees a certain\r
+resultant defining the transit of each link in a lanyard's chain guarantees a certain\r
 design-hiding, suggestive of the unfolding of the multitude of zeros packed in a\r
-single seed-form or morphogenetic “vanishing point.” Put another way, a theory\r
+single seed-form or morphogenetic "vanishing point." Put another way, a theory\r
 of lanyards can be expected to provide some crucial ideas in an area currently\r
 lacking many: the study of nonlinear representations.\r
 One area where a theory of nonlinear representations exists is in semiotics,\r
-where the French school of Jean Petitot – dually inspired by Ren´e Thom’s Catas\u0002trophe Theory (CT) mathematics in the 1970’s, and the structural rapprochement\r
-of semantics and syntax essayed by Algirdas Greimas – led to CT modeling of\r
-“archetypal nouns and verbs” on the one hand, and a delving beneath Chomskian\r
+where the French school of Jean Petitot - dually inspired by Ren'e Thom's Catas\u0002trophe Theory (CT) mathematics in the 1970's, and the structural rapprochement\r
+of semantics and syntax essayed by Algirdas Greimas - led to CT modeling of\r
+"archetypal nouns and verbs" on the one hand, and a delving beneath Chomskian\r
 notions of semantically impoverished recursiveness on the other. Using the CT\r
-toolkit, Petitot has built models of Greimas’ own famous (among literary theo\u0002rists, at least) Semiotic Square, [11] as well as the equally celebrated (among,\r
+toolkit, Petitot has built models of Greimas' own famous (among literary theo\u0002rists, at least) Semiotic Square, [11] as well as the equally celebrated (among,\r
 at least, the structuralism-savvy with anthropological leanings) canonical law of\r
-myths of Claude L´evi-Strauss. [12] But both these models can be embedded, in\r
+myths of Claude L'evi-Strauss. [12] But both these models can be embedded, in\r
 their turn, in ZD-based networks, which put the recursiveness back where it be\u0002longs: not at the level of meaning as such, but rather in how meaning-rich nodes\r
 can be constellated in an open-ended scale-free dynamic.\r
-The key insights are two: first, to see the entire program of structural linguis\u0002tics – whose origins were contemporary with the algebraic death-knell sounded\r
-by Hurwitz’s Proof – as a kind of CDP manque´, thanks to Hjelmslev’s indefi\u0002nitely extensible notion (seminal to Greimas’ thinking) of form vs. content dou\u0002ble articulation. [13] The second insight is to find semiotic substance in what\r
+The key insights are two: first, to see the entire program of structural linguis\u0002tics - whose origins were contemporary with the algebraic death-knell sounded\r
+by Hurwitz's Proof - as a kind of CDP manque', thanks to Hjelmslev's indefi\u0002nitely extensible notion (seminal to Greimas' thinking) of form vs. content dou\u0002ble articulation. [13] The second insight is to find semiotic substance in what\r
 would seem a lack of substance from our purview: by analogy with Shannon\u0002Weaver self-correcting error-code theory, where most of the bits are expended in\r
 the error-trapping as opposed to the content being transmitted, we assume the area\r
 of interest is precisely the ZD-challenged parts of the ZD ensembles that convey\r
-the significances. Specifically, we find our meta-model of Petitot’s CT reading of\r
+the significances. Specifically, we find our meta-model of Petitot's CT reading of\r
 the Semiotic Square in the 4 units whose invariant workings govern the ZD-free\r
 strut-opposites: the real unit (which never appears in primitive ZDs), G and S, and\r
 their XOR (which, given that G always has only one bit, always to the left of all\r
-of S’s, is also their simple sum, henceforth to be called X).\r
+of S's, is also their simple sum, henceforth to be called X).\r
 The index set {0,G,S,X} defines the units of a Quaternion copy, part of what\r
 Moreno terms the 4-D, ZD-free boundary of Sedenion space, in which all Box\u0002Kites, each with their own S and X, participate. We argue at length in [7] that\r
 16
 
-the square with drawn diagonals – ⊠ – which Greimas made the centerpiece of\r
+the square with drawn diagonals - box - which Greimas made the centerpiece of\r
 his thinking, can be modeled by placing G on the diagonals, X on the horizontals,\r
 and S on the verticals. From the ZD perspective, the workings of the 3 modes\r
-of binary relations (contradiction between a seme and its absence – an on/off bit\r
-– along diagonals; contrareity of reciprocal presupposition along the horizontals;\r
+of binary relations (contradiction between a seme and its absence - an on/off bit\r
+- along diagonals; contrareity of reciprocal presupposition along the horizontals;\r
 complementarity of implication along the verticals) can be formally encapsulated\r
 in the following relations. Pick two strut-opposite Assessors, dubbing the Zigzag\r
 dyad picked as (Z,z), and the Vent dyad linked to it, (V, v). Then\r
-v ·z = V · Z = S\r
-Z · v = V ·z = G\r
-V · v = z· Z = (G+S) ≡ X.\r
+v *z = V * Z = S\r
+Z * v = V *z = G\r
+V * v = z* Z = (G+S) == X.\r
 These 3 relations were implicitly derived in passing while proving Theorem 7.\r
 Their importance (and not just for semiotic applications) suggests we give them\r
 a special name: the Three Viziers, to be shorthanded henceforth (and rewritten in\r
@@ -1214,46 +1214,46 @@ of vent and zigzag terms reversed, so that such struts have their VZ1 L-index\r
 triplets, for instance, written (z, v,S). Implied in this is the existence of a second\r
 kind of box-kite, whose nature and very existence only became apparent in work\r
 subsequent to this monograph, once catamaran twisting was investigated. (These\r
-“Type II” box-kites are in fact indistinguishable from the “normal” kind except\r
+"Type II" box-kites are in fact indistinguishable from the "normal" kind except\r
 in regards to such twisting, since struts do not mutually zero-divide anyway, and\r
-hence their triplets’ orientational variations “fly under the radar” of the tools we’ve\r
-built thus far. They serve as “middlemen,” however, between the “normal” kind\r
+hence their triplets' orientational variations "fly under the radar" of the tools we've\r
+built thus far. They serve as "middlemen," however, between the "normal" kind\r
 exclusively in evidence in the Sedenions, and the ZD-free substructures which\r
-make up the body of the meta-fractals we’ll focus on next.) Skipping over such\r
+make up the body of the meta-fractals we'll focus on next.) Skipping over such\r
 subtleties, fortunately, has no effect on the outcome of the general argument we\r
 make in this monograph; a handful of steps in the proofs, however, will require\r
 modification in Parts II and III.\r
 17
 
-Getting from the atomic level of Greimas’ Square, to the small-worlds net\u0002working of literally thousands of mythic fragments, all interconnected and mutu\u0002ally unfolded in the four fat volumes of L´evi-Strauss’s magnum opus, would re\u0002quire some surgery on the Square, to allow for a competition between contraries,\r
+Getting from the atomic level of Greimas' Square, to the small-worlds net\u0002working of literally thousands of mythic fragments, all interconnected and mutu\u0002ally unfolded in the four fat volumes of L'evi-Strauss's magnum opus, would re\u0002quire some surgery on the Square, to allow for a competition between contraries,\r
 say, to be transmuted into an agreed-upon implication. But the simplest such trans\u0002formative structures already require the Pathions, and hence meta-fractal Skies to\r
 fly in. Those are the vistas in front of ZD theory, only some of which we will\r
 get to see herein. One such surgery, corresponding to the type just suggested as\r
 an example, will in fact provide the first recursive iteration leading to the fractal\r
-limit. And, as we’re about to see, it arises naturally, virtually as a built-in feature,\r
+limit. And, as we're about to see, it arises naturally, virtually as a built-in feature,\r
 of the ZD framework.\r
 As anyone seeing a ZD diagonal on an oscilloscope screen would think, Asses\u0002sors are ultimately patterns of synchrony and anti-synchrony between their dyadic\r
 terms. Assume Assessor-unit synchrony breaks down, with dyads recast as strut\u0002opposites. Each finds higher-index partners; the former G and S are transformed\r
 into Pathion L-indices at B and E, the former X moves to center stage as the new\r
-S. 14 Assessors (G−1, minus 1 more to exclude the Strut Constant) form into 3\r
+S. 14 Assessors (G-1, minus 1 more to exclude the Strut Constant) form into 3\r
 Box-Kites sharing the BE strut. It is quite possible to draw this three-headed beast\r
-– but the many-headed hydras in higher 2N-ions will not prove so amenable. It is\r
+- but the many-headed hydras in higher 2N-ions will not prove so amenable. It is\r
 time to explore a different mode of representing things, which means Emanation\r
-Tables. And it is time to deal with a new phenomenon whose crucial nature we’ve\r
-indicated more than once: for values of S ≤ 8, the ensembles associated with each\r
-such integer, contain seven, not three, Box-Kites, and are dubbed Pleiades ´ for this\r
+Tables. And it is time to deal with a new phenomenon whose crucial nature we've\r
+indicated more than once: for values of S <= 8, the ensembles associated with each\r
+such integer, contain seven, not three, Box-Kites, and are dubbed Pleiades ' for this\r
 reason. But the surprising graphical sequence revealed as one thumbs through\r
 a flip-book, whose successive pages display emanation tables linked to progres\u0002sively incremented S values from 9 through 15, inspired a different name for these\r
 entities:\r
 Viewed in sequence, these tables suggest the patterns made by cellu\u0002lar automata; seen individually, they suggest nothing so much as the\r
-short-shelf-life “sand mandalas” of Tibetan Buddhist ritual, made by\r
+short-shelf-life "sand mandalas" of Tibetan Buddhist ritual, made by\r
 monks on large flat surfaces with colored sands or powdered flowers,\r
 minerals, or even gemstones. [14, p. 15]\r
 The second sweep of our argument [15] will begin with these two themes as\r
-its ultimate agenda – pursuing them in accordance with our originally advertised\r
+its ultimate agenda - pursuing them in accordance with our originally advertised\r
 intentions. Once we have classified types and characteristics of emanation tables\r
 through the 64-D Chingons, we will have all the basic patterns needed for crafting\r
-(and proving) the algorithmics of “Recipe Theory” in Part III. [16]"""
+(and proving) the algorithmics of "Recipe Theory" in Part III. [16]"""
 
 [[sections]]
 number = "18"
@@ -1262,42 +1262,42 @@ text = """
 [1] I. L. Kantor and A. S. Solodovnikov, Hypercomplex Numbers: An Elemen\u0002tary Introduction to Algebras (Springer-Verlag, New York, 1989)\r
 [2] Benoit Mandelbrot, The Fractal Geometry of Nature (W. H. Freeman and\r
 Company, San Francisco, 1983)\r
-[3] Mark Newman, Albert-L´aszl´o Barab´asi, and Duncan J. Watts, editors, The\r
+[3] Mark Newman, Albert-L'aszl'o Barab'asi, and Duncan J. Watts, editors, The\r
 Structure and Dynamics of Networks (Princeton University Press, Princeton\r
 and Oxford, 2006)\r
-[4] Robert P. C. de Marrais, “The Marriage of Nothing and All: Zero-Divisor\r
-Box-Kites in a ‘TOE’ Sky”, in Proceedings of the 26th International Col\u0002loquium on Group Theoretical Methods in Physics, The Graduate Center\r
+[4] Robert P. C. de Marrais, "The Marriage of Nothing and All: Zero-Divisor\r
+Box-Kites in a 'TOE' Sky", in Proceedings of the 26th International Col\u0002loquium on Group Theoretical Methods in Physics, The Graduate Center\r
 of the City University of New York, June 26-30, 2006, forthcoming from\r
-Springer–Verlag.\r
-[5] Robert P. C. de Marrais, “The 42 Assessors and the Box-Kites They Fly,”\r
+Springer-Verlag.\r
+[5] Robert P. C. de Marrais, "The 42 Assessors and the Box-Kites They Fly,"\r
 arXiv:math.GM/0011260\r
-[6] R. E. Cawagas, “Loops Embedded in Generalized Cayley Algebras of Di\u0002mension 2r\r
-, r ≥ 2,” International Journal of Mathematics and Mathematical\r
+[6] R. E. Cawagas, "Loops Embedded in Generalized Cayley Algebras of Di\u0002mension 2r\r
+, r >= 2," International Journal of Mathematics and Mathematical\r
 Science, 28:3 (2001), 181-7.\r
-[7] Robert P. C. de Marrais, “Presto! Digitization” arXiv:math.RA/0603281\r
-[8] R. Guillermo Moreno, “The Zero Divisors of the Cayley-Dickson Algebras\r
-over the Real Numbers,” Boletin Sociedad Matematica Mexicana (3), 4, 1\r
+[7] Robert P. C. de Marrais, "Presto! Digitization" arXiv:math.RA/0603281\r
+[8] R. Guillermo Moreno, "The Zero Divisors of the Cayley-Dickson Algebras\r
+over the Real Numbers," Boletin Sociedad Matematica Mexicana (3), 4, 1\r
 (1998), 13-28; preprint available online at arXiv:q-alg/9710013\r
-[9] Robert P. C. de Marrais, “The ‘Something From Nothing’ Insertion Point”,\r
+[9] Robert P. C. de Marrais, "The 'Something From Nothing' Insertion Point",\r
 http://www.wolframscience.com/conference/2004/presentations/materials/\r
 rdemarrais.pdf\r
-[10] Rodrigo Obando, “Mapping the Cellular Automata Rule Spaces,” on http://\r
+[10] Rodrigo Obando, "Mapping the Cellular Automata Rule Spaces," on http://\r
 wolframscience.com/conference/2006/presentations/obando.nb\r
 [11] Jean Petitot, Morphogenesis of Meaning, (Peter Lang, New York and Bern,\r
 2004; French original, 1985).\r
 19
 
-[12] Jean Petitot, “A Morphodynamical Schematization of the Canonical For\u0002mula for Myths,” in The Double Twist: From Ethnography to Morphody\u0002namics , edited by Pierre Maranda (University of Toronto Press, Toronto\r
+[12] Jean Petitot, "A Morphodynamical Schematization of the Canonical For\u0002mula for Myths," in The Double Twist: From Ethnography to Morphody\u0002namics , edited by Pierre Maranda (University of Toronto Press, Toronto\r
 and Buffalo, 2001, pp. 267-311).\r
-[13] Gilles Deleuze and F´elix Guatteri, A Thousand Plateaus: Capitalism and\r
+[13] Gilles Deleuze and F'elix Guatteri, A Thousand Plateaus: Capitalism and\r
 Schizophrenia (University of Minnesota Press, Minneapolis and London,\r
 1987; French original, 1980).\r
-[14] Robert P. C. de Marrais, “Flying Higher Than A Box-Kite,”\r
+[14] Robert P. C. de Marrais, "Flying Higher Than A Box-Kite,"\r
 arXiv:math.RA/0207003\r
-[15] Robert P. C. de Marrais, “Placeholder Substructures II: Meta-Fractals,\r
-Made of Box-Kites, Fill Infinite-Dimensional Skies,” arXiv:0704.0026\r
+[15] Robert P. C. de Marrais, "Placeholder Substructures II: Meta-Fractals,\r
+Made of Box-Kites, Fill Infinite-Dimensional Skies," arXiv:0704.0026\r
 [math.RA]\r
-[16] Robert P. C. de Marrais, “Placeholder Substructures III: A Bit-String\u0002Driven ‘Recipe Theory’ for Infinite-Dimensional Zero-Divisor Spaces,”\r
+[16] Robert P. C. de Marrais, "Placeholder Substructures III: A Bit-String\u0002Driven 'Recipe Theory' for Infinite-Dimensional Zero-Divisor Spaces,"\r
 arXiv:0704.0112 [math.RA]\r
 20"""
 

@@ -133,7 +133,7 @@ procedure_5 = "Archival: moved outdated canonical CSVs to archive/csv_history/{d
 rule_1 = "Canonical TOML files are GENERATED from canonical CSVs via 'make registry-data'"
 rule_2 = "DO NOT hand-edit TOML files; edits to TOML must come from CSV upstream"
 rule_3 = "Markdown mirrors of TOML are GENERATED via 'make docs-publish'; never edit markdown"
-rule_4 = "Three-layer architecture: CSV (canonical) → TOML (derived) → Markdown (display)"
+rule_4 = "Three-layer architecture: CSV (canonical) -> TOML (derived) -> Markdown (display)"
 
 [ci_gates]
 gate_1 = "Test gate: TOML parsers must validate all generated TOML files"

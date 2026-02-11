@@ -250,10 +250,10 @@ When updating project state (claims, insights, experiments, registries):
 - Exception: `README.md`, `CLAUDE.md`, `GEMINI.md` (special overlay files)
 
 ### 9.3 When to trigger regeneration
-- Any TOML registry edit → `make registry`
-- Narrative/structured corpus changes → `make registry-knowledge`
-- Claims/insights/proofs → `make registry`
-- CSV conversions → `make registry-csv-scroll-pipeline`
+- Any TOML registry edit -> `make registry`
+- Narrative/structured corpus changes -> `make registry-knowledge`
+- Claims/insights/proofs -> `make registry`
+- CSV conversions -> `make registry-csv-scroll-pipeline`
 
 ### 9.4 Validation ordering
 1. TOML syntax valid (implicit in edit, explicit in `make registry-data`)

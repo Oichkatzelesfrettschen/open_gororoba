@@ -193,7 +193,7 @@ fn test_albert_cross_validation_with_phase9() {
         );
     }
 
-    println!("Albert ↔ Phase 9 cross-validation: PASS (100% commutativity confirmed)");
+    println!("Albert <-> Phase 9 cross-validation: PASS (100% commutativity confirmed)");
 }
 
 #[test]
@@ -224,7 +224,7 @@ fn test_albert_norm_and_invertibility() {
 #[test]
 fn test_albert_exceptionality_indicator() {
     // Albert algebra is exceptional: it cannot be embedded in any associative algebra.
-    // One indicator: dimension 27 and 3×3 Hermitian matrices over octonions.
+    // One indicator: dimension 27 and 3x3 Hermitian matrices over octonions.
     // Check that the structure resists reduction to lower-dimensional associative forms.
 
     let x = AlbertElement::diagonal(1.0, 2.0, 3.0);

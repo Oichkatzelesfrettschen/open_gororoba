@@ -70,7 +70,7 @@ pattern = "Adding ONE gamma=+1 at any level instantly creates zero-divisors"
 title = "Norm multiplicativity follows zero-divisor structure"
 finding = "Division algebras preserve ||ab||=||a||||b|| (100% success); non-division algebras universally fail (<5% success)"
 significance = "Indefinite metrics (gamma=+1) enable null vectors, breaking multiplicative structure"
-mechanism = "Null vectors satisfy ||x||^2=0 for x≠0, violating fundamental norm property"
+mechanism = "Null vectors satisfy ||x||^2=0 for x!=0, violating fundamental norm property"
 consequence = "Norm multiplicativity is a CONSEQUENCE of division algebra structure, not independent"
 
 [phase8.key_findings.invertibility]

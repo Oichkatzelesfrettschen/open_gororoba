@@ -2,7 +2,7 @@
 //!
 //! Comprehensive verification of the two-axis taxonomy framework established in Phase 10.
 //! Tests confirm:
-//! - Axis 1: Construction method determines commutativity (tensor ≠ recursive doubling)
+//! - Axis 1: Construction method determines commutativity (tensor != recursive doubling)
 //! - Axis 2: Metric signature controls zero-divisor structure (CD family only)
 //! - Exceptional algebras (Albert, variants) form distinct class
 //! - Phase 9-10 categorical distinction theorem generalizes to all families
@@ -17,7 +17,7 @@ use algebra_core::construction::composition_algebra_census::*;
 fn test_taxonomy_axis1_tensor_product_commutativity() {
     let mut census = CompositionAlgebraCensus::new();
 
-    // Tessarines: C ⊗ C tensor product (Phase 9 result)
+    // Tessarines: C x C tensor product (Phase 9 result)
     let mut tessarines = AlgebraProperties::new(
         "Tessarines_4D",
         4,
@@ -107,12 +107,12 @@ fn test_taxonomy_axis1_cayley_dickson_non_commutativity() {
 }
 
 /// TEST CLASS 3: Axis 2 Hypothesis - Metric Signature Controls Division Status
-/// Hypothesis: In CD family, gamma=-1 always → division algebra, gamma=+1 → zero-divisors
+/// Hypothesis: In CD family, gamma=-1 always -> division algebra, gamma=+1 -> zero-divisors
 #[test]
 fn test_taxonomy_axis2_signature_division_law() {
     let mut census = CompositionAlgebraCensus::new();
 
-    // Hurwitz: gamma=[-1,-1] (Quaternions) → division algebra
+    // Hurwitz: gamma=[-1,-1] (Quaternions) -> division algebra
     let mut quat = AlgebraProperties::new(
         "Quaternions_Hurwitz",
         4,
@@ -123,7 +123,7 @@ fn test_taxonomy_axis2_signature_division_law() {
     quat.has_zero_divisors = false;
     quat.invertibility_percentage = 100.0;
 
-    // Mixed: gamma=[+1,-1] (Mixed Quaternions) → zero-divisors
+    // Mixed: gamma=[+1,-1] (Mixed Quaternions) -> zero-divisors
     let mut mixed = AlgebraProperties::new(
         "MixedQuaternions_Split",
         4,
@@ -366,7 +366,7 @@ fn test_taxonomy_two_axis_coverage() {
 }
 
 /// TEST CLASS 9: Phase 9-10 Categorical Distinction Extension
-/// Hypothesis: Categorical distinction (tessarines ≠ CD) extends to all families
+/// Hypothesis: Categorical distinction (tessarines != CD) extends to all families
 /// No tensor product algebra can be represented as any CD algebra
 #[test]
 fn test_taxonomy_phase9_distinction_extended() {
@@ -392,7 +392,7 @@ fn test_taxonomy_phase9_distinction_extended() {
         (true, false),  // all exceptional have this pattern
     ];
 
-    // Verify no overlap: tensor ≠ CD
+    // Verify no overlap: tensor != CD
     for (t_comm, _) in &tensor_algebraic_properties {
         for (cd_comm, _) in &cd_algebraic_properties {
             // At minimum, commutativity differs

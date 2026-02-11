@@ -209,19 +209,19 @@ impl fmt::Display for PointGroup {
 /// The 7 crystal lattice systems.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Hash)]
 pub enum LatticeSystem {
-    /// a ≠ b ≠ c, α ≠ β ≠ γ ≠ 90°
+    /// a != b != c, alpha != beta != gamma != 90 deg
     Triclinic,
-    /// a ≠ b ≠ c, α = γ = 90° ≠ β
+    /// a != b != c, alpha = gamma = 90 deg != beta
     Monoclinic,
-    /// a ≠ b ≠ c, α = β = γ = 90°
+    /// a != b != c, alpha = beta = gamma = 90 deg
     Orthorhombic,
-    /// a = b ≠ c, α = β = γ = 90°
+    /// a = b != c, alpha = beta = gamma = 90 deg
     Tetragonal,
-    /// a = b ≠ c, α = β = 90°, γ = 120°
+    /// a = b != c, alpha = beta = 90 deg, gamma = 120 deg
     Hexagonal,
-    /// a = b = c, α = β = γ (not 90°)
+    /// a = b = c, alpha = beta = gamma (not 90 deg)
     Rhombohedral,
-    /// a = b = c, α = β = γ = 90°
+    /// a = b = c, alpha = beta = gamma = 90 deg
     Cubic,
 }
 
@@ -4036,11 +4036,11 @@ mod tests {
 
     #[test]
     fn test_extinction_rules_diamond_allowed() {
-        // Diamond: all odd with h+k+l ≡ 3 (mod 4)
+        // Diamond: all odd with h+k+l == 3 (mod 4)
         let allowed = vec![
-            (1, 1, 1), // sum=3, 3 mod 4 = 3 ✓
-            (3, 3, 1), // sum=7, 7 mod 4 = 3 ✓
-            (5, 1, 1), // sum=7, 7 mod 4 = 3 ✓
+            (1, 1, 1), // sum=3, 3 mod 4 = 3 [done]
+            (3, 3, 1), // sum=7, 7 mod 4 = 3 [done]
+            (5, 1, 1), // sum=7, 7 mod 4 = 3 [done]
         ];
         for (h, k, l) in allowed {
             assert!(

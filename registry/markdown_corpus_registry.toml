@@ -32,8 +32,7 @@ allowed_tracked_markdown = [
 
 [git_status_counts]
 ignored = 284
-tracked = 11
-untracked = 1
+tracked = 12
 
 [classification_counts]
 third_party_markdown = 5
@@ -56,7 +55,7 @@ tracked_entrypoint = 11
 [[risk_queue]]
 rank = 1
 path = "crates/vacuum_frustration/IMPLEMENTATION_NOTES.md"
-risk_score = 230
+risk_score = 310
 classification = "unbacked_manual_markdown"
 migration_action = "migrate_to_new_registry"
 migration_priority = "high"
@@ -673,7 +672,7 @@ migration_priority = "low"
 lifecycle = "generated_docs_tree"
 destination_exists = true
 toml_destination = "registry/docs_root_narratives.toml"
-line_count = 309
+line_count = 308
 rationale = "Published markdown generated from TOML destination."
 
 [[risk_queue]]
@@ -869,7 +868,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 15432
+size_bytes = 15428
 line_count = 410
 toml_destination = "registry/entrypoint_docs.toml"
 
@@ -939,7 +938,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 13595
+size_bytes = 13600
 line_count = 318
 toml_destination = "registry/docs_root_narratives.toml"
 
@@ -953,7 +952,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 11363
+size_bytes = 11364
 line_count = 303
 toml_destination = "registry/docs_root_narratives.toml"
 
@@ -1351,15 +1350,15 @@ toml_destination = "registry/markdown_payloads.toml"
 
 [[document]]
 path = "crates/vacuum_frustration/IMPLEMENTATION_NOTES.md"
-git_status = "untracked"
+git_status = "tracked"
 classification = "unbacked_manual_markdown"
 lifecycle = "generated_other"
 generated = false
 third_party = false
 tracked_allowed = true
 destination_exists = false
-risk_score = 230
-size_bytes = 6571
+risk_score = 310
+size_bytes = 6563
 line_count = 194
 
 [[document]]
@@ -1876,7 +1875,7 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 12501
+size_bytes = 12517
 line_count = 363
 toml_destination = "registry/docs_root_narratives.toml"
 
@@ -2100,8 +2099,8 @@ third_party = false
 tracked_allowed = true
 destination_exists = true
 risk_score = 1
-size_bytes = 13538
-line_count = 309
+size_bytes = 13473
+line_count = 308
 toml_destination = "registry/docs_root_narratives.toml"
 
 [[document]]
