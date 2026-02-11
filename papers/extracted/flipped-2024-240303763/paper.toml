@@ -3,50 +3,50 @@ tables = []
 full_text = """
 arXiv:2403.03763v3 [math.RA] 10 Sep 2024\r
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS AND THE\r
-CAYLEY–DICKSON CONSTRUCTION\r
-MASOOD ARYAPOOR AND PER BACK ¨\r
+CAYLEY-DICKSON CONSTRUCTION\r
+MASOOD ARYAPOOR AND PER BACK "\r
 Abstract. We introduce and study flipped non-associative polynomial rings.\r
-In particular, we show that all Cayley–Dickson algebras naturally appear as\r
+In particular, we show that all Cayley-Dickson algebras naturally appear as\r
 quotients of a certain type of such rings; this extends the classical construction\r
 of the complex numbers (and quaternions) as a quotient of a (skew) polynomial\r
 ring to the octonions, and beyond. We also extend some classical results on\r
-algebraic properties of Cayley–Dickson algebras by McCrimmon to a class of\r
+algebraic properties of Cayley-Dickson algebras by McCrimmon to a class of\r
 flipped non-associative polynomial rings.\r
 1. Introduction\r
-The Cayley–Dickson construction, introduced by Dickson [4] based on previous\r
+The Cayley-Dickson construction, introduced by Dickson [4] based on previous\r
 work by Cayley [3] and then generalized by Albert [2], is a famous construction for\r
-generating new ∗-algebras out of old ones. It is perhaps best known for generating\r
+generating new *-algebras out of old ones. It is perhaps best known for generating\r
 all the real, normed division algebras: the real numbers (R), the complex numbers\r
 (C), the quaternions (H), and the octonions (O) [1, 14, 15]. However, the construc\u0002tion is undoubtedly quite mysterious; a first (second and third. . . ) encounter with\r
 its strange product leaves one rather puzzled and with a feeling that it is a patch\u0002work created ad hoc to make certain algebras, like the above, fit in a construction.\r
-In this article, we try to shed new light on the Cayley–Dickson construction with\r
+In this article, we try to shed new light on the Cayley-Dickson construction with\r
 the purpose of illuminating the underlying patchwork. To this end, we introduce\r
 and study the notion of flipped non-associative polynomial rings. In particular, we\r
-show that all Cayley–Dickson algebras naturally appear as quotients of a certain\r
+show that all Cayley-Dickson algebras naturally appear as quotients of a certain\r
 type of such rings (Theorem 1). By using this new class of polynomial rings, we\r
 may in particular extend the classical construction of C (and H) as a quotient of a\r
 (skew) polynomial ring to O, and beyond (see Example 3).\r
-The flipped non-associative polynomial rings that give rise to the Cayley–Dickson\r
-algebras are “flipped” versions of a type of non-associative and non-commutative\r
+The flipped non-associative polynomial rings that give rise to the Cayley-Dickson\r
+algebras are "flipped" versions of a type of non-associative and non-commutative\r
 polynomial rings known as non-associative Ore extensions, introduced by Nystedt,\r
-Oinert, and Richter [11]. Non-associative Ore extensions are in turn ¨ non-associative\r
+Oinert, and Richter [11]. Non-associative Ore extensions are in turn " non-associative\r
 generalizations of Ore extensions, the latter introduced by Ore [12] under the name\r
-“non-commutative polynomial rings”. Since their introduction, Ore extensions have\r
-been studied quite extensively (see e.g. [5–7] for comprehensive introductions).\r
+"non-commutative polynomial rings". Since their introduction, Ore extensions have\r
+been studied quite extensively (see e.g. [5-7] for comprehensive introductions).\r
 We study the underlying non-associative and non-commutative ring structure of\r
 flipped non-associative Ore extensions and discover, rather surprisingly, that the\r
-flipped non-associative Ore extensions that give rise to the Cayley–Dickson algebras\r
+flipped non-associative Ore extensions that give rise to the Cayley-Dickson algebras\r
 Date: September 11, 2024.\r
 2020 Mathematics Subject Classification. 16W10, 17A20, 17A35, 17A70, 17A75, 17D05.\r
-Key words and phrases. Cayley–Dickson algebra, Cayley–Dickson construction, Cayley dou\u0002ble, flipped non-associative Ore extensions, flipped non-associative polynomial rings, flipped non\u0002associative skew polynomial rings.\r
+Key words and phrases. Cayley-Dickson algebra, Cayley-Dickson construction, Cayley dou\u0002ble, flipped non-associative Ore extensions, flipped non-associative polynomial rings, flipped non\u0002associative skew polynomial rings.\r
 1
 
-2 MASOOD ARYAPOOR AND PER BACK ¨\r
-are themselves Cayley–Dickson algebras of a certain kind (Theorem 2). With this\r
+2 MASOOD ARYAPOOR AND PER BACK "\r
+are themselves Cayley-Dickson algebras of a certain kind (Theorem 2). With this\r
 discovery, we may rather easily prove results regarding their algebraic properties\r
 (Theorem 3 and Theorem 4). These results are in turn natural counterparts of some\r
-classical results on Cayley–Dickson algebras obtained by McCrimmon [9, Theorem\r
-6.8 (i)–(v), (viii)–(xii)].\r
+classical results on Cayley-Dickson algebras obtained by McCrimmon [9, Theorem\r
+6.8 (i)-(v), (viii)-(xii)].\r
 The article is organized as follows:\r
 In Section 2, we provide conventions and preliminaries from non-associative ring\r
 theory (Subsection 2.1). We also recall what Ore extensions are (Subsection 2.2)\r
@@ -56,10 +56,10 @@ In Section 3, we introduce the concept of flipped non-associative polynomial\r
 rings (Definition 3) and flipped non-associative Ore extensions (Definition 5). We\r
 then prove results regarding their underlying non-associative and non-commutative\r
 ring structure.\r
-In Section 4, we give a brief introduction to ∗-algebras and the Cayley–Dickson\r
-construction. We then show that all Cayley–Dickson algebras naturally appear as\r
+In Section 4, we give a brief introduction to *-algebras and the Cayley-Dickson\r
+construction. We then show that all Cayley-Dickson algebras naturally appear as\r
 quotients of certain flipped non-associative Ore extensions (Theorem 1), and that\r
-these flipped non-associative Ore extensions are in turn Cayley–Dickson algebras of\r
+these flipped non-associative Ore extensions are in turn Cayley-Dickson algebras of\r
 a particular type (Theorem 2). We conclude the article by proving results regarding\r
 algebraic properties of the aforementioned flipped non-associative Ore extensions\r
 (Theorem 3 and Theorem 4).\r
@@ -69,27 +69,27 @@ All rings and algebras are assumed to be unital, unless stated otherwise, and th
 multiplicative identity element is written 1. Any endomorphism is assumed to\r
 respect 1. By a non-associative ring, we mean a ring which is not necessarily\r
 associative. If R is a non-associative ring, by a left R-module, we mean an additive\r
-group M equipped with a biadditive map R × M → M, (r, m) 7→ rm for any r ∈ R\r
-and m ∈ M. A subset B of M is a basis if any m ∈ M can be uniquely written as\r
+group M equipped with a biadditive map R x M -> M, (r, m) 7-> rm for any r in R\r
+and m in M. A subset B of M is a basis if any m in M can be uniquely written as\r
 a sum m =\r
 P\r
-b∈B rbb with finite support, where rb ∈ R. A left R-module that has\r
+binB rbb with finite support, where rb in R. A left R-module that has\r
 a basis is called free.\r
 We also recall the following standard concepts and notations from non-associative\r
-ring theory (see e.g. [11, Section 2]). Let R be a non-associative ring. For r, s, t ∈ R,\r
-we set [r, s] := rs − sr and (r, s, t) := (rs)t − r(st). We define the left, middle, and\r
-right nucleus of R as follows: Nl(R) := {r ∈ R: (r, s, t) = 0 for all s, t ∈ R},\r
-Nm(R) := {s ∈ R: (r, s, t) = 0 for all r, t ∈ R}, and Nr(R) := {t ∈ R: (r, s, t) =\r
-0 for all r, s ∈ R}. It turns out that Nl(R), Nm(R), and Nr(R) are all associative\r
+ring theory (see e.g. [11, Section 2]). Let R be a non-associative ring. For r, s, t in R,\r
+we set [r, s] := rs - sr and (r, s, t) := (rs)t - r(st). We define the left, middle, and\r
+right nucleus of R as follows: Nl(R) := {r in R: (r, s, t) = 0 for all s, t in R},\r
+Nm(R) := {s in R: (r, s, t) = 0 for all r, t in R}, and Nr(R) := {t in R: (r, s, t) =\r
+0 for all r, s in R}. It turns out that Nl(R), Nm(R), and Nr(R) are all associative\r
 subrings of R. We also define the nucleus of R, denoted by N(R), as the set\r
-Nl(R)∩ Nm(R)∩ Nr(R). The center of R, Z(R), is defined as C(R)∩ N(R), where\r
-C(R) := {r ∈ R: [r, s] = 0 for all s ∈ R} is the commuter of R. In particular, Z(R)\r
+Nl(R)cap Nm(R)cap Nr(R). The center of R, Z(R), is defined as C(R)cap N(R), where\r
+C(R) := {r in R: [r, s] = 0 for all s in R} is the commuter of R. In particular, Z(R)\r
 is an associative and commutative subring of R.\r
 A non-associative ring D is called a division ring if the equations r = qs and\r
-r = sq′, where r, s ∈ D with s 6= 0, have unique solutions q, q′ ∈ R. Since we require\r
-our rings to be unital, for each non-zero s ∈ D, there must be unique q, q′ ∈ D such\r
-that 1 = qs and 1 = sq′ hold (q need not equal q\r
-′\r
+r = sq, where r, s in D with s 6= 0, have unique solutions q, q in R. Since we require\r
+our rings to be unital, for each non-zero s in D, there must be unique q, q in D such\r
+that 1 = qs and 1 = sq hold (q need not equal q\r
+\r
 , however). Recall that over the\r
 real numbers, there are precisely four normed division algebras: R, C, H, and O.\r
 In particular, H is not commutative and O is neither commutative, nor associative.
@@ -99,109 +99,109 @@ FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 3\r
 given in [11, Definition 1.1].\r
 Definition 1 (Ore extension). Let S be a ring, and let R be an associative subring\r
 of S containing the multiplicative identity element 1 of S. Then S is called an Ore\r
-extension of R if there is an element x ∈ S such that the following axioms hold:\r
+extension of R if there is an element x in S such that the following axioms hold:\r
 (O1) S is associative;\r
 (O2) S is a free left R-module with basis {1, x, x2, . . .};\r
-(O3) xR ⊆ Rx + R.\r
+(O3) xR subseteq Rx + R.\r
 As usual, we use the convention that x\r
 0\r
 := 1. If (O3) is replaced by\r
-(O3)′ xR ⊆ Rx;\r
+(O3) xR subseteq Rx;\r
 then S is called a skew polynomial ring.\r
-If R is a non-associative ring with an endomorphism σ, then an additive map δ\r
-on R is called a left σ-derivation if for all r, s ∈ R,\r
-δ(rs) = σ(r)δ(s) + δ(r)s.\r
-Similarly, an additive map δ\r
-′ on R is called a right σ-derivation if for all r, s ∈ R,\r
-δ\r
-′\r
-(rs) = δ\r
-′\r
-(r)σ(s) + rδ′(s).\r
-An ordinary generalized polynomial ring R[X; σ, δ] (see e.g. [11, Section 1]) where\r
-σ is an endomorphism and δ is a left σ-derivation on R consists of left polynomials\r
+If R is a non-associative ring with an endomorphism sigma, then an additive map delta\r
+on R is called a left sigma-derivation if for all r, s in R,\r
+delta(rs) = sigma(r)delta(s) + delta(r)s.\r
+Similarly, an additive map delta\r
+ on R is called a right sigma-derivation if for all r, s in R,\r
+delta\r
+\r
+(rs) = delta\r
+\r
+(r)sigma(s) + rdelta(s).\r
+An ordinary generalized polynomial ring R[X; sigma, delta] (see e.g. [11, Section 1]) where\r
+sigma is an endomorphism and delta is a left sigma-derivation on R consists of left polynomials\r
 in X with coefficients in R. The addition in this ring is the ordinary addition of\r
 polynomials, and the multiplication is defined by the biadditive extension of the\r
 relations\r
 (1) (rXm)(sXn) = X\r
-i∈N\r
-(rπm\r
+iinN\r
+(rpim\r
 i\r
 (s))X\r
 i+n\r
 ,\r
-where the functions π\r
+where the functions pi\r
 m\r
 i\r
-: R → R, called π functions, are defined as the sum of all\r
+: R -> R, called pi functions, are defined as the sum of all\r
 m\r
 i\r
 \u0001\r
-compositions of σ and δ in which σ occurs i times and δ occurs m − i times.\r
-For instance, π\r
+compositions of sigma and delta in which sigma occurs i times and delta occurs m - i times.\r
+For instance, pi\r
 3\r
-2 = σ◦σ◦δ+σ◦δ ◦σ+δ ◦σ◦σ, while π\r
+2 = sigmaosigmaodelta+sigmaodelta osigma+delta osigmaosigma, while pi\r
 0\r
 0\r
 is defined as idR. Whenever\r
-i > m or i < 0, we set π\r
+i > m or i < 0, we set pi\r
 m\r
-i = 0. It is known that R[X; σ, δ] is an Ore extension of\r
-R with x = X (for a proof, see e.g. [11, Proposition 3.2]). If δ = 0, then R[X; σ, δ]\r
+i = 0. It is known that R[X; sigma, delta] is an Ore extension of\r
+R with x = X (for a proof, see e.g. [11, Proposition 3.2]). If delta = 0, then R[X; sigma, delta]\r
 is a skew polynomial ring, and the product (1) is\r
-(2) (rXm)(sXn) = (rσm(s))Xm+n.\r
-If σ = idR and δ = 0, then R[X; σ, δ] is the ordinary polynomial ring R[X]. The\r
+(2) (rXm)(sXn) = (rsigmam(s))Xm+n.\r
+If sigma = idR and delta = 0, then R[X; sigma, delta] is the ordinary polynomial ring R[X]. The\r
 above construction moreover gives us all Ore extensions of R in the sense that\r
 any Ore extension of R is isomorphic to an ordinary generalized polynomial ring\r
-R[X; σ, δ] (for a proof, see e.g. [11, Proposition 3.3]).\r
-2.3. Non-associative Ore extensions. In [11], the authors noted that the prod\u0002uct (1) equips the additive group R[X; σ, δ] of ordinary generalized polynomials\r
+R[X; sigma, delta] (for a proof, see e.g. [11, Proposition 3.3]).\r
+2.3. Non-associative Ore extensions. In [11], the authors noted that the prod\u0002uct (1) equips the additive group R[X; sigma, delta] of ordinary generalized polynomials\r
 over any non-associative ring R with a non-associative ring structure for any two\r
-additive maps σ and δ on R satisfying σ(1) = 1 and δ(1) = 0. Hence, in order\r
+additive maps sigma and delta on R satisfying sigma(1) = 1 and delta(1) = 0. Hence, in order\r
 to define non-associative Ore extensions, they investigated how to adapt the ax\u0002ioms (O1), (O2), and (O3) so that these rings would still correspond to the above\r
 generalized polynomial rings. They then suggested the following definition:
 
-4 MASOOD ARYAPOOR AND PER BACK ¨\r
+4 MASOOD ARYAPOOR AND PER BACK "\r
 Definition 2 (Non-associative Ore extension). Let S be a non-associative ring,\r
 and let R be a subring of S containing the multiplicative identity element 1 of S.\r
-Then S is called a non-associative Ore extension of R if there is an element x ∈ S\r
+Then S is called a non-associative Ore extension of R if there is an element x in S\r
 such that the following axioms hold:\r
-(N1) x ∈ Nr(S) ∩ Nm(S);\r
+(N1) x in Nr(S) cap Nm(S);\r
 (N2) S is a free left R-module with basis {1, x, x2, . . .};\r
-(N3) xR ⊆ Rx + R.\r
+(N3) xR subseteq Rx + R.\r
 If (N3) is replaced by\r
-(N3)′ xR ⊆ Rx;\r
+(N3) xR subseteq Rx;\r
 then S is called a non-associative skew polynomial ring.\r
 Remark 1. Axiom (N1) ensures that the element x associates with itself, so that\r
 there is no ambiguity in writing x\r
-n for the n-fold product of x with itself, for n ∈ N.\r
+n for the n-fold product of x with itself, for n in N.\r
 P\r
 Let R be a non-associative ring. We denote by R[X] the set of formal sums\r
-i∈N\r
-riXi of finite support, where ri ∈ R, equipped with pointwise addition. Now,\r
-let σ and δ be additive maps on R satisfying σ(1) = 1 and δ(1) = 0. The gen\u0002eralized polynomial ring R[X; σ, δ] over R is defined as the additive group R[X]\r
-with multiplication defined by (1). One readily verifies that this makes R[X; σ, δ]\r
+iinN\r
+riXi of finite support, where ri in R, equipped with pointwise addition. Now,\r
+let sigma and delta be additive maps on R satisfying sigma(1) = 1 and delta(1) = 0. The gen\u0002eralized polynomial ring R[X; sigma, delta] over R is defined as the additive group R[X]\r
+with multiplication defined by (1). One readily verifies that this makes R[X; sigma, delta]\r
 a non-associative ring.\r
-In [11], the authors then showed that R[X; σ, δ] is indeed a non-associative Ore\r
+In [11], the authors then showed that R[X; sigma, delta] is indeed a non-associative Ore\r
 extension of R with x = X [11, Proposition 3.2], and that every non-associative Ore\r
 extension of R is isomorphic to a generalized polynomial ring over R [11, Proposition\r
-3.3]. If δ = 0, then R[X; σ, δ] is a non-associative skew polynomial ring, and the\r
-multiplication is given by (2). If σ = idR and δ = 0, then R[X; σ, δ] is the ordinary\r
+3.3]. If delta = 0, then R[X; sigma, delta] is a non-associative skew polynomial ring, and the\r
+multiplication is given by (2). If sigma = idR and delta = 0, then R[X; sigma, delta] is the ordinary\r
 polynomial ring R[X].\r
 3. Flipped non-associative Ore extensions\r
 We begin with a general discussion, introducing the notion of flipped non-as\u0002sociative polynomial rings. Let R be a non-associative ring. The additive group\r
 R[X] of left polynomials P\r
-i∈N\r
-riXi with coefficients ri ∈ R can be equipped with\r
-a natural left R-module structure in the following fashion: for any r ∈ R,\r
+iinN\r
+riXi with coefficients ri in R can be equipped with\r
+a natural left R-module structure in the following fashion: for any r in R,\r
 r\r
 \u0010X\r
-i∈N\r
+iinN\r
 riX\r
 i\r
 \u0011\r
 =\r
 X\r
-i∈N\r
+iinN\r
 (rri)X\r
 i\r
 .\r
@@ -210,77 +210,77 @@ a multiplication on the left R-module R[X] that turns R[X] into a (not necessari
 unital) non-associative ring and which is compatible with the R-module structure\r
 on R[X] in the following sense:\r
 (3) (rXm)(sXn) = X\r
-i∈N\r
-(rℓm,n;i(s))Xi,\r
-for any r, s ∈ R and some additive maps ℓm,n;i: R → R (m, n, i ∈ N). It is easy to\r
+iinN\r
+(rlm,n;i(s))Xi,\r
+for any r, s in R and some additive maps lm,n;i: R -> R (m, n, i in N). It is easy to\r
 see that there is a 1-1 correspondence between the set of non-associative polynomial\r
 rings over R and the set of all collections of such additive maps subject to the\r
-condition that for every m, n ∈ N and s ∈ R, there exist only finitely many i ∈ N\r
-such that ℓm,n;i(s) 6= 0.\r
-Let τ : R × R → R × R be the flip map, i.e., τ is defined by τ(r, s) = (s, r) for\r
-arbitrary r, s ∈ R. We may now use τ to “flip” the above multiplication depending
+condition that for every m, n in N and s in R, there exist only finitely many i in N\r
+such that lm,n;i(s) 6= 0.\r
+Let tau : R x R -> R x R be the flip map, i.e., tau is defined by tau(r, s) = (s, r) for\r
+arbitrary r, s in R. We may now use tau to "flip" the above multiplication depending
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 5\r
 on whether n is even or odd to get a new non-associative ring structure on the same\r
 underlying additive group R[X]:\r
 (4) (rXm)(sXn) = X\r
-i∈N\r
-τn(r, ℓm,n;i(s))Xi.\r
-Here, τn is defined as the composition of the multiplication on R and τ\r
+iinN\r
+taun(r, lm,n;i(s))Xi.\r
+Here, taun is defined as the composition of the multiplication on R and tau\r
 n, so that\r
-τn(r, s) = (\r
+taun(r, s) = (\r
 rs if n is even,\r
 sr if n is odd.\r
 We call the resulting rings flipped non-associative polynomial rings:\r
 Definition 3 (Flipped non-associative polynomial ring). Let S be a non-associative\r
 polynomial ring over a non-associative ring R, defined by a collection of additive\r
-maps ℓm,n;i (m, n, k ∈ N) satisfying (3). The flipped non-associative polynomial\r
+maps lm,n;i (m, n, k in N) satisfying (3). The flipped non-associative polynomial\r
 ring of S, written S\r
 f l, is the additive group S equipped with the multiplication\r
 defined by (4).\r
 We now apply the notion of flipped non-associative polynomial rings to the class\r
 of generalized polynomial rings introduced in Subsection 2.3.\r
 Definition 4 (Flipped generalized polynomial ring). The flipped non-associative\r
-polynomial ring R[X; σ, δ]\r
-f l of a generalized polynomial ring R[X; σ, δ] over a non\u0002associative ring R is called a flipped generalized polynomial ring over R.\r
-Note that the multiplication in the flipped generalized polynomial ring R[X; σ, δ]\r
+polynomial ring R[X; sigma, delta]\r
+f l of a generalized polynomial ring R[X; sigma, delta] over a non\u0002associative ring R is called a flipped generalized polynomial ring over R.\r
+Note that the multiplication in the flipped generalized polynomial ring R[X; sigma, delta]\r
 f l\r
 satisfies the identity\r
 (5) (rXm)(sXn) = X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))Xi+n,\r
-for arbitrary r, s ∈ R. Here, the π-functions π\r
+for arbitrary r, s in R. Here, the pi-functions pi\r
 m\r
 i\r
 on R are defined just as for\r
-generalized polynomial rings. By identifying any r ∈ R with rX0 ∈ R[X; σ, δ]\r
+generalized polynomial rings. By identifying any r in R with rX0 in R[X; sigma, delta]\r
 f l\r
 ,\r
-we see that R[X; σ, δ]\r
-f l naturally contains R as a subring, and that R[X; σ, δ]f l is a\r
+we see that R[X; sigma, delta]\r
+f l naturally contains R as a subring, and that R[X; sigma, delta]f l is a\r
 free left R-module.\r
 The next example is perhaps the simplest example of a flipped non-associative\r
 polynomial ring.\r
 Example 1. If R is a non-associative ring, then the multiplication in the flipped\r
 generalized polynomial ring R[X]\r
 f l = R[X; idR, 0]f l satisfies the identity\r
-(rXm)(sXn) = τn(r, s)Xm+n\r
-for any m, n ∈ N and r, s ∈ R. We note that R[X]\r
+(rXm)(sXn) = taun(r, s)Xm+n\r
+for any m, n in N and r, s in R. We note that R[X]\r
 f l is commutative if and only if\r
 R is commutative, and that R[X]\r
 f l is associative if and only if R is associative and\r
 commutative; in both cases, R[X]\r
 f l = R[X].\r
-Continuing, we note that we may split the π-functions of any (flipped) generalized\r
-polynomial ring into two disjoint parts: those that contain σ innermost (outermost)\r
-and those that contain δ innermost (outermost). If we denote by δ\r
+Continuing, we note that we may split the pi-functions of any (flipped) generalized\r
+polynomial ring into two disjoint parts: those that contain sigma innermost (outermost)\r
+and those that contain delta innermost (outermost). If we denote by delta\r
 m\r
 i\r
 the Kronecker\r
 delta,\r
-δ\r
+delta\r
 m\r
 i\r
 :=\r
@@ -289,34 +289,34 @@ i\r
 1 if i = m,\r
 then the following lemma is immediate:
 
-6 MASOOD ARYAPOOR AND PER BACK ¨\r
-Lemma 1. If R is a non-associative ring with additive maps σ and δ where σ(1) = 1\r
-and δ(1) = 0, then the following equalities hold for any i, m, n ∈ N and r, s ∈ R:\r
-(i) π\r
+6 MASOOD ARYAPOOR AND PER BACK "\r
+Lemma 1. If R is a non-associative ring with additive maps sigma and delta where sigma(1) = 1\r
+and delta(1) = 0, then the following equalities hold for any i, m, n in N and r, s in R:\r
+(i) pi\r
 m\r
 i\r
-(1) = δ\r
+(1) = delta\r
 m\r
 i\r
 ;\r
-(ii) π\r
+(ii) pi\r
 m+1\r
 i\r
-(s) = π\r
+(s) = pi\r
 m\r
-i−1\r
-(σ(s)) + π\r
+i-1\r
+(sigma(s)) + pi\r
 m\r
 i\r
-(δ(s)) = σ(π\r
+(delta(s)) = sigma(pi\r
 m\r
-i−1\r
-(s)) + δ(π\r
+i-1\r
+(s)) + delta(pi\r
 m\r
 i\r
 (s));\r
-(iii) σ(τn(r, s)) = τn(σ(r), σ(s)) if and only if σ is an endomorphism;\r
-(iv) σ(τn(r, s)) = τn(σ(s), σ(r)) if and only if σ is an anti-endomorphism.\r
+(iii) sigma(taun(r, s)) = taun(sigma(r), sigma(s)) if and only if sigma is an endomorphism;\r
+(iv) sigma(taun(r, s)) = taun(sigma(s), sigma(r)) if and only if sigma is an anti-endomorphism.\r
 Next we turn to the notion of flipped non-associative Ore extensions. As in\r
 the case of non-associative Ore extensions (see Definition 2), we wish to define the\r
 flipped ditto in such a way that they correspond to the above flipped generalized\r
@@ -324,50 +324,50 @@ polynomial rings. We suggest the following definition:\r
 Definition 5 (Flipped non-associative Ore extension). Let S be a non-associative\r
 ring, and let R be a subring of S containing the multiplicative identity element 1\r
 of S. Then S is called a flipped non-associative Ore extension of R if there is an\r
-element x ∈ S such that the following axioms hold:\r
-(F1) The following identities hold for any m, n ∈ N and r, s ∈ R:\r
-(rxm+1)(sxn) = ((rxm)(σ(s)x\r
+element x in S such that the following axioms hold:\r
+(F1) The following identities hold for any m, n in N and r, s in R:\r
+(rxm+1)(sxn) = ((rxm)(sigma(s)x\r
 n\r
-))x+ (rxm)(δ(s)x\r
+))x+ (rxm)(delta(s)x\r
 n\r
-), r(sxn) = τn(r, s)x\r
+), r(sxn) = taun(r, s)x\r
 n\r
 ,\r
-where σ and δ are additive maps such that xr = σ(r)x + δ(r) for all r ∈ R;\r
+where sigma and delta are additive maps such that xr = sigma(r)x + delta(r) for all r in R;\r
 (F2) S is a free left R-module with basis {1, x, x2, . . .}.\r
-Remark 2. Axiom (F1) implies that xR ⊆ Rx+R, and that the element x is power\r
+Remark 2. Axiom (F1) implies that xR subseteq Rx+R, and that the element x is power\r
 associative, so that x\r
-n is well defined for any n ∈ N.\r
-Proposition 1. Let R be a non-associative ring with additive maps σ and δ where\r
-σ(1) = 1 and δ(1) = 0. Then R[X; σ, δ]\r
+n is well defined for any n in N.\r
+Proposition 1. Let R be a non-associative ring with additive maps sigma and delta where\r
+sigma(1) = 1 and delta(1) = 0. Then R[X; sigma, delta]\r
 f l is a flipped non-associative Ore extension\r
 of R with x = X.\r
-Proof. That (F2) holds in R[X; σ, δ]\r
+Proof. That (F2) holds in R[X; sigma, delta]\r
 f l is immediate from the previous discussion.\r
 From (5), Xr = (1X)(rX0) = P\r
-i∈N\r
-τ0(1, π1\r
+iinN\r
+tau0(1, pi1\r
 i\r
-(r))Xi+0 = σ(r)X +δ(r) for any r ∈ R.\r
-By using (i) in Lemma 1, for any m ∈ N and r ∈ R,\r
+(r))Xi+0 = sigma(r)X +delta(r) for any r in R.\r
+By using (i) in Lemma 1, for any m in N and r in R,\r
 (6)\r
 (rXm)X\r
 (5)\r
 =\r
 X\r
-i∈N\r
-τ1(r, πm\r
+iinN\r
+tau1(r, pim\r
 i\r
 (1))Xi+1 =\r
 X\r
-i∈N\r
-(π\r
+iinN\r
+(pi\r
 m\r
 i\r
 (1)r)Xi+1 (i)=\r
 X\r
-i∈N\r
-(δ\r
+iinN\r
+(delta\r
 m\r
 i\r
 r)Xi+1 = rXm+1.\r
@@ -376,81 +376,81 @@ Now, with the help of (ii) in Lemma 1, we can prove that (F1) holds:\r
 (5)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm+1\r
+iinN\r
+taun(r, pim+1\r
 i\r
 (s))Xi+n\r
 (ii)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
-i−1\r
-(σ(s)))X\r
+iinN\r
+taun(r, pim\r
+i-1\r
+(sigma(s)))X\r
 i+n +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(σ(s))Xi+n+1 +\r
+(sigma(s))Xi+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))Xi+n\r
+(delta(s)))Xi+n\r
 (6)\r
 =\r
 \u0010X\r
-j∈N\r
-τn(r, πm\r
+jinN\r
+taun(r, pim\r
 i\r
-(σ(s))X\r
+(sigma(s))X\r
 i+n\r
 \u0011\r
 X +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
-(5) = ((rXm)(σ(s)Xn\r
-))X + (rXm)(δ(s)Xn),\r
+(5) = ((rXm)(sigma(s)Xn\r
+))X + (rXm)(delta(s)Xn),\r
 r(sXn)\r
 (5)\r
 =\r
 X\r
-i∈N\r
-τn(r, π0\r
+iinN\r
+taun(r, pi0\r
 i\r
 (s))X\r
-i+n = τn(r, π0\r
+i+n = taun(r, pi0\r
 0\r
 (s))X\r
-n = τn(r, s)Xn\r
+n = taun(r, s)Xn\r
 . \u0003
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 7\r
 Proposition 2. Every flipped non-associative Ore extension of R is isomorphic to\r
-a flipped generalized polynomial ring R[X; σ, δ]\r
+a flipped generalized polynomial ring R[X; sigma, delta]\r
 f l\r
 .\r
 Proof. The proof is similar to the proof of [11, Proposition 3.3].\r
 First, let R be a non-associative ring and let S be a flipped non-associative Ore\r
 extension of R defined by x. By letting n = 0 and s = 1 in the first identity in\r
-(F1), we have that for any m ∈ N and r ∈ R,\r
+(F1), we have that for any m in N and r in R,\r
 (7) rxm+1 = (rxm)x.\r
-We claim that for any m, n ∈ N and r, s ∈ R,\r
+We claim that for any m, n in N and r, s in R,\r
 (8) (rxm)(sxn) = X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))x\r
 i+n\r
@@ -459,237 +459,237 @@ We prove this by induction on m where (8) is the induction hypothesis.\r
 Base case (m = 0):\r
 (rx0)(sxn) = r(sxn)\r
 (F1)\r
-= τn(r, s)x\r
+= taun(r, s)x\r
 n =\r
 X\r
-i∈N\r
-τn(r, π0\r
+iinN\r
+taun(r, pi0\r
 i\r
 (s))x\r
 i+n\r
 .\r
 Induction step (m + 1):\r
 (rxm+1)(sxn)\r
-(F1) = ((rxm)(σ(s)x\r
+(F1) = ((rxm)(sigma(s)x\r
 n\r
-))x + (rxm)(δ(s)x\r
+))x + (rxm)(delta(s)x\r
 n\r
 )\r
 (8)\r
 =\r
 \u0010X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(σ(s)))x\r
+(sigma(s)))x\r
 i+n\r
 \u0011\r
 x +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))x\r
+(delta(s)))x\r
 i+n\r
 (7)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(σ(s)))x\r
+(sigma(s)))x\r
 i+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))x\r
+(delta(s)))x\r
 i+n\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
-i−1\r
-(σ(s)))x\r
+iinN\r
+taun(r, pim\r
+i-1\r
+(sigma(s)))x\r
 i+n +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))x\r
+(delta(s)))x\r
 i+n\r
 (ii)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm+1\r
+iinN\r
+taun(r, pim+1\r
 i\r
 (s))x\r
 i+n\r
 ,\r
 where (ii) refers to that in Lemma 1.\r
-Now, define a function φ: S → R[X; σ, δ]\r
+Now, define a function phi: S -> R[X; sigma, delta]\r
 f l by the additive extension of the\r
-relations φ(rxn) = rXn for any n ∈ N and r ∈ R. Then φ is an isomorphism of\r
-additive groups, and moreover, for any m, n ∈ N and r, s ∈ R,\r
-φ((rxm)(sxn)) (8)= φ\r
+relations phi(rxn) = rXn for any n in N and r in R. Then phi is an isomorphism of\r
+additive groups, and moreover, for any m, n in N and r, s in R,\r
+phi((rxm)(sxn)) (8)= phi\r
 \u0010X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))x\r
 i+n\r
 \u0011\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))Xi+n\r
 (5) = (rXm)(sXn\r
-) = φ(rxm)φ(sxn),\r
-so φ is an isomorphism of rings. \u0003\r
-Remark 3. If σ and δ satisfy the relation σ◦δ+δ◦σ = 0, then the flipped generalized\r
-polynomial ring S := R[X; σ, δ]\r
+) = phi(rxm)phi(sxn),\r
+so phi is an isomorphism of rings. \u0003\r
+Remark 3. If sigma and delta satisfy the relation sigmaodelta+deltaosigma = 0, then the flipped generalized\r
+polynomial ring S := R[X; sigma, delta]\r
 f l of R can naturally be considered as a Z2-graded\r
-ring. More precisely, we have S = S0 ⊕S0X, where S0 is the subring of S generated\r
+ring. More precisely, we have S = S0 +S0X, where S0 is the subring of S generated\r
 by R and X2. Furthermore, the ring S0 is isomorphic to the generalized polynomial\r
-ring R[Y ; σ\r
+ring R[Y ; sigma\r
 2\r
-, δ2], where Y is the image of X2.\r
+, delta2], where Y is the image of X2.\r
 Next, we give some properties of flipped generalized polynomial rings.\r
-Proposition 3. Let R be a non-associative ring with additive maps σ and δ where\r
-σ(1) = 1 and δ(1) = 0. If S = R[X; σ, δ]\r
+Proposition 3. Let R be a non-associative ring with additive maps sigma and delta where\r
+sigma(1) = 1 and delta(1) = 0. If S = R[X; sigma, delta]\r
 f l, then the following assertions hold:
 
-8 MASOOD ARYAPOOR AND PER BACK ¨\r
-(i) X ∈ Nl(S) if and only if σ is an endomorphism and δ is both a left and a\r
-right σ-derivation;\r
-(ii) X ∈ Nm(S) if and only if im(δ\r
-n ◦ σ) ⊆ C(R) for any n ∈ N;\r
-(iii) X ∈ Nr(S) if and only if R is commutative.\r
-Proof. (i): We first show that the conditions are necessary. If r, s ∈ R are arbitrary,\r
+8 MASOOD ARYAPOOR AND PER BACK "\r
+(i) X in Nl(S) if and only if sigma is an endomorphism and delta is both a left and a\r
+right sigma-derivation;\r
+(ii) X in Nm(S) if and only if im(delta\r
+n o sigma) subseteq C(R) for any n in N;\r
+(iii) X in Nr(S) if and only if R is commutative.\r
+Proof. (i): We first show that the conditions are necessary. If r, s in R are arbitrary,\r
 then in S,\r
-X(rs) = σ(rs)X + δ(rs),\r
-(Xr)s = (σ(r)X + δ(r))s = (σ(r)σ(s))X + σ(r)δ(s) + δ(r)s.\r
-Hence, by comparing coefficients, if X ∈ Nl(S), then σ is an endomorphism and δ\r
-is a left σ-derivation. Similarly,\r
-X(s(rX)) = X((rs)X) = σ(rs)X2 + δ(rs)X,\r
-(Xs)(rX) = (σ(s)X + δ(s))(rX) = (σ(r)σ(s))X\r
-2 + (δ(r)σ(s) + rδ(s))X,\r
-so if X ∈ Nl(S), then δ must also be a right σ-derivation. Next, we show that the\r
-conditions are sufficient. To this end, assume that σ is an endomorphism and that\r
-δ is both a left and a right σ-derivation. Then, for any n ∈ N and r, s ∈ R,\r
-δ(τn(r, s)) = (\r
-δ(rs) if n is even,\r
-δ(sr) if n is odd.\r
+X(rs) = sigma(rs)X + delta(rs),\r
+(Xr)s = (sigma(r)X + delta(r))s = (sigma(r)sigma(s))X + sigma(r)delta(s) + delta(r)s.\r
+Hence, by comparing coefficients, if X in Nl(S), then sigma is an endomorphism and delta\r
+is a left sigma-derivation. Similarly,\r
+X(s(rX)) = X((rs)X) = sigma(rs)X2 + delta(rs)X,\r
+(Xs)(rX) = (sigma(s)X + delta(s))(rX) = (sigma(r)sigma(s))X\r
+2 + (delta(r)sigma(s) + rdelta(s))X,\r
+so if X in Nl(S), then delta must also be a right sigma-derivation. Next, we show that the\r
+conditions are sufficient. To this end, assume that sigma is an endomorphism and that\r
+delta is both a left and a right sigma-derivation. Then, for any n in N and r, s in R,\r
+delta(taun(r, s)) = (\r
+delta(rs) if n is even,\r
+delta(sr) if n is odd.\r
 =\r
 (\r
-σ(r)δ(s) + δ(r)s if n is even,\r
-δ(s)σ(r) + sδ(r) if n is odd.\r
+sigma(r)delta(s) + delta(r)s if n is even,\r
+delta(s)sigma(r) + sdelta(r) if n is odd.\r
 (9)\r
-= τn(σ(r), δ(s)) + τn(δ(r), s).\r
-It is sufficient to show that X((rXm)(sXn)) = (X(rXm))(sXn) for any m, n ∈ N\r
-and r, s ∈ R. By using (9) together with (ii) and (iii) in Lemma 1,\r
+= taun(sigma(r), delta(s)) + taun(delta(r), s).\r
+It is sufficient to show that X((rXm)(sXn)) = (X(rXm))(sXn) for any m, n in N\r
+and r, s in R. By using (9) together with (ii) and (iii) in Lemma 1,\r
 X((rXm)(sXn)) = X\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))X\r
 i+n =\r
 X\r
-i∈N\r
-X(τn(r, πm\r
+iinN\r
+X(taun(r, pim\r
 i\r
 (s))X\r
 i+n\r
 )\r
 =\r
 X\r
-i∈N\r
-σ(τn(r, πm\r
+iinN\r
+sigma(taun(r, pim\r
 i\r
 (s)))Xi+n+1 +\r
 X\r
-i∈N\r
-δ(τn(r, πm\r
+iinN\r
+delta(taun(r, pim\r
 i\r
 (s)))Xi+n,\r
-(X(rXm))(sXn) = (σ(r)X\r
-m+1 + δ(r)Xm)(sXn\r
+(X(rXm))(sXn) = (sigma(r)X\r
+m+1 + delta(r)Xm)(sXn\r
 )\r
 =\r
 X\r
-i∈N\r
-τn(σ(r), πm+1\r
+iinN\r
+taun(sigma(r), pim+1\r
 i\r
 (s))Xi+n +\r
 X\r
-i∈N\r
-τn(δ(r), πm\r
+iinN\r
+taun(delta(r), pim\r
 i\r
 (s))Xi+n\r
 (ii)\r
 =\r
 X\r
-i∈N\r
-τn(σ(r), σ(π\r
+iinN\r
+taun(sigma(r), sigma(pi\r
 m\r
-i−1\r
+i-1\r
 (s)))X\r
 i+n +\r
 X\r
-i∈N\r
-τn(σ(r), δ(π\r
+iinN\r
+taun(sigma(r), delta(pi\r
 m\r
 i\r
 (s)))X\r
 i+n\r
 +\r
 X\r
-i∈N\r
-τn(δ(r), πm\r
+iinN\r
+taun(delta(r), pim\r
 i\r
 (s))Xi+n\r
 =\r
 X\r
-i∈N\r
-τn(σ(r), σ(π\r
+iinN\r
+taun(sigma(r), sigma(pi\r
 m\r
 i\r
 (s)))X\r
 i+n+1 +\r
 X\r
-i∈N\r
-τn(σ(r), δ(π\r
+iinN\r
+taun(sigma(r), delta(pi\r
 m\r
 i\r
 (s)))X\r
 i+n\r
 +\r
 X\r
-i∈N\r
-τn(δ(r), πm\r
+iinN\r
+taun(delta(r), pim\r
 i\r
 (s))Xi+n\r
 (iii)\r
 =\r
 X\r
-i∈N\r
-σ(τn(r, πm\r
+iinN\r
+sigma(taun(r, pim\r
 i\r
 (s)))Xi+n+1 +\r
 X\r
-i∈N\r
-τn(σ(r), δ(π\r
+iinN\r
+taun(sigma(r), delta(pi\r
 m\r
 i\r
 (s)))Xi+n\r
 +\r
 X\r
-i∈N\r
-τn(δ(r), πm\r
+iinN\r
+taun(delta(r), pim\r
 i\r
 (s))X\r
 i+n
@@ -698,406 +698,406 @@ FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 9\r
 (9)\r
 =\r
 X\r
-i∈N\r
-σ(τn(r, πm\r
+iinN\r
+sigma(taun(r, pim\r
 i\r
 (s)))Xi+n+1 +\r
 X\r
-i∈N\r
-δ(τn(r, πm\r
+iinN\r
+delta(taun(r, pim\r
 i\r
 (s)))Xi+n.\r
-(ii): By using (ii) in Lemma 1, for any m, n ∈ N and r, s ∈ R,\r
+(ii): By using (ii) in Lemma 1, for any m, n in N and r, s in R,\r
 ((rXm)X)(sXn) = (rXm+1)(sXn) = X\r
-i∈N\r
-τn(r, πm+1\r
+iinN\r
+taun(r, pim+1\r
 i\r
 (s))Xi+n\r
 (ii)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
-i−1\r
-(σ(s)))X\r
+iinN\r
+taun(r, pim\r
+i-1\r
+(sigma(s)))X\r
 i+n +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(σ(s)))Xi+n+1 +\r
+(sigma(s)))Xi+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))Xi+n\r
+(delta(s)))Xi+n\r
 =\r
 X\r
-i∈N\r
-τn+1(π\r
+iinN\r
+taun+1(pi\r
 m\r
 i\r
-(σ(s)), r)X\r
+(sigma(s)), r)X\r
 i+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
 ,\r
-(rXm)(X(sXn)) = (rXm)(σ(s)Xn+1 + δ(s)Xn)\r
+(rXm)(X(sXn)) = (rXm)(sigma(s)Xn+1 + delta(s)Xn)\r
 =\r
 X\r
-i∈N\r
-τn+1(r, πm\r
+iinN\r
+taun+1(r, pim\r
 i\r
-(σ(s)))X\r
+(sigma(s)))X\r
 i+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
 .\r
-Hence X ∈ Nm(S) if and only if\r
+Hence X in Nm(S) if and only if\r
 X\r
-i∈N\r
-τn+1(π\r
+iinN\r
+taun+1(pi\r
 m\r
 i\r
-(σ(s)), r)X\r
+(sigma(s)), r)X\r
 i+n+1 =\r
 X\r
-i∈N\r
-τn+1(r, πm\r
+iinN\r
+taun+1(r, pim\r
 i\r
-(σ(s)))X\r
+(sigma(s)))X\r
 i+n+1\r
 .\r
-By comparing coefficients, the above equality is equivalent to τn+1(π\r
+By comparing coefficients, the above equality is equivalent to taun+1(pi\r
 m\r
 i\r
-(σ(s)), r) =\r
-τn+1(r, πm\r
+(sigma(s)), r) =\r
+taun+1(r, pim\r
 i\r
-(σ(s))), which in turn is equivalent to rπm\r
+(sigma(s))), which in turn is equivalent to rpim\r
 i\r
-(σ(s)) = π\r
+(sigma(s)) = pi\r
 m\r
 i\r
-(σ(s))r for any\r
-i, m ∈ N and r, s ∈ R. We claim that the latter equality is equivalent to im(δ\r
-n ◦σ) ⊆\r
-C(R) for any n ∈ N. By setting m = n and i = 0 in rπm\r
+(sigma(s))r for any\r
+i, m in N and r, s in R. We claim that the latter equality is equivalent to im(delta\r
+n osigma) subseteq\r
+C(R) for any n in N. By setting m = n and i = 0 in rpim\r
 i\r
-(σ(s)) = π\r
+(sigma(s)) = pi\r
 m\r
 i\r
-(σ(s))r, we\r
+(sigma(s))r, we\r
 see that the conditions are necessary. To show sufficiency, we note that each term\r
-in π\r
+in pi\r
 m\r
 i\r
-(σ(s)) must contain δ\r
-n ◦ σ outermost for some n ≤ m−i, and so we are done.\r
-(iii): If r, s ∈ R are arbitrary, then r(sX) = (sr)X, so r(sX) = (rs)X if and only\r
-if rs = sr. Hence, if X ∈ Nr(S), then R is commutative. To prove the converse,\r
-assume that R is commutative. Then τn(r, s) = rs for any n ∈ N and r, s ∈ R,\r
-so S is a generalized polynomial ring R[X; σ, δ]. Hence S is a non-associative Ore\r
-extension of R with x = X, so by (N1) in Definition 2, X ∈ Nr(S). \u0003\r
-Corollary 1. Let R be a non-associative ring with additive maps σ and δ where\r
-σ(1) = 1 and δ(1) = 0. Then R[X; σ, δ]\r
-f l = R[X; σ, δ] if and only if R is commuta\u0002tive.\r
-Proof. Let S = R[X; σ, δ]. If R is commutative, then τn(r, s) = rs for any n ∈ N\r
-and r, s ∈ R, and so S\r
-f l = S. If Sf l = S, then X ∈ Nr(S) = Nr(Sf l) which by (iii)\r
+(sigma(s)) must contain delta\r
+n o sigma outermost for some n <= m-i, and so we are done.\r
+(iii): If r, s in R are arbitrary, then r(sX) = (sr)X, so r(sX) = (rs)X if and only\r
+if rs = sr. Hence, if X in Nr(S), then R is commutative. To prove the converse,\r
+assume that R is commutative. Then taun(r, s) = rs for any n in N and r, s in R,\r
+so S is a generalized polynomial ring R[X; sigma, delta]. Hence S is a non-associative Ore\r
+extension of R with x = X, so by (N1) in Definition 2, X in Nr(S). \u0003\r
+Corollary 1. Let R be a non-associative ring with additive maps sigma and delta where\r
+sigma(1) = 1 and delta(1) = 0. Then R[X; sigma, delta]\r
+f l = R[X; sigma, delta] if and only if R is commuta\u0002tive.\r
+Proof. Let S = R[X; sigma, delta]. If R is commutative, then taun(r, s) = rs for any n in N\r
+and r, s in R, and so S\r
+f l = S. If Sf l = S, then X in Nr(S) = Nr(Sf l) which by (iii)\r
 in Proposition 3 is equivalent to R being commutative. \u0003\r
-Proposition 4. Let S = R[X; σ, δ]\r
+Proposition 4. Let S = R[X; sigma, delta]\r
 f l be a flipped generalized polynomial ring over\r
 a non-associative ring R. Then the following conditions are equivalent:\r
-(i) R is associative and commutative, σ is an endomorphism and δ is a left\r
-σ-derivation;\r
+(i) R is associative and commutative, sigma is an endomorphism and delta is a left\r
+sigma-derivation;\r
 (ii) S is an ordinary generalized polynomial ring;\r
 (iii) S is associative.
 
-10 MASOOD ARYAPOOR AND PER BACK ¨\r
-Proof. (i) =⇒ (ii): If R is commutative, then R[X; σ, δ]\r
-f l = R[X; σ, δ] by Corollary 1,\r
+10 MASOOD ARYAPOOR AND PER BACK "\r
+Proof. (i) ==> (ii): If R is commutative, then R[X; sigma, delta]\r
+f l = R[X; sigma, delta] by Corollary 1,\r
 and so the result follows immediately.\r
-(ii) =⇒ (iii): For a proof of the associativity of the ordinary generalized polynomial\r
-ring R[X; σ, δ], see [10] or [13].\r
-(iii) =⇒ (i): Assume that S is associative. Then so is R, since R is a subring of S.\r
-Also, X ∈ Nl(S)∩Nr (S), so the result follows from (i) and (iii) in Proposition 3. \u0003\r
-4. The Cayley–Dickson construction\r
+(ii) ==> (iii): For a proof of the associativity of the ordinary generalized polynomial\r
+ring R[X; sigma, delta], see [10] or [13].\r
+(iii) ==> (i): Assume that S is associative. Then so is R, since R is a subring of S.\r
+Also, X in Nl(S)capNr (S), so the result follows from (i) and (iii) in Proposition 3. \u0003\r
+4. The Cayley-Dickson construction\r
 Let A be a non-associative algebra over an associative and commutative ring K\r
-of scalars. We say that a K-linear map ∗: A → A, also written as a 7→ a\r
-∗\r
+of scalars. We say that a K-linear map *: A -> A, also written as a 7-> a\r
+*\r
 , is an\r
 involution of A if (ab)\r
-∗ = b∗a∗ and (a∗\r
+* = b*a* and (a*\r
 )\r
-∗ = a hold for any a, b ∈ A. In particular,\r
-an involution is an anti-automorphism. We note that 1∗ = 1 since for any a ∈ A,\r
+* = a hold for any a, b in A. In particular,\r
+an involution is an anti-automorphism. We note that 1* = 1 since for any a in A,\r
 1\r
-∗a∗ = (a1)∗ = a∗ = (1a)∗ = a∗1∗\r
-, so by the surjectivity of ∗ and the uniqueness\r
-of 1, 1∗ = 1.\r
-We refer to a non-associative algebra with an involution ∗ as a non-associative\r
-∗-algebra. If A and B are non-associative ∗-algebras over the same ring K, then\r
-a ∗-homomorphism f : A → B is a K-algebra homomorphism that is compatible\r
+*a* = (a1)* = a* = (1a)* = a*1*\r
+, so by the surjectivity of * and the uniqueness\r
+of 1, 1* = 1.\r
+We refer to a non-associative algebra with an involution * as a non-associative\r
+*-algebra. If A and B are non-associative *-algebras over the same ring K, then\r
+a *-homomorphism f : A -> B is a K-algebra homomorphism that is compatible\r
 with the involutions on A and B, i.e., with some abuse of notation, f(a\r
-∗\r
+*\r
 ) = f(a)\r
-∗\r
-for any a ∈ A. A bijective ∗-homomorphism is called a ∗-isomorphism, and the\r
-corresponding algebras are said to be isomorphic as ∗-algebras. For an introduction\r
-to ∗ -algebras, we refer the reader to [8, Section 2.2].\r
-From the above discussion, we note that any non-associative ∗-algebra A nat\u0002urally gives rise to a flipped non-associative skew polynomial ring A[X; ∗]\r
+*\r
+for any a in A. A bijective *-homomorphism is called a *-isomorphism, and the\r
+corresponding algebras are said to be isomorphic as *-algebras. For an introduction\r
+to * -algebras, we refer the reader to [8, Section 2.2].\r
+From the above discussion, we note that any non-associative *-algebra A nat\u0002urally gives rise to a flipped non-associative skew polynomial ring A[X; *]\r
 f l :=\r
-A[X; ∗, 0]f l. From (5), the multiplication in A[X; ∗]\r
+A[X; *, 0]f l. From (5), the multiplication in A[X; *]\r
 f l is thus given by\r
-(10) (aXm)(bXn) = τn(a, ∗\r
+(10) (aXm)(bXn) = taun(a, *\r
 m(b))Xm+n\r
-for arbitrary m, n ∈ N and a, b ∈ A. The next proposition shows that A[X; ∗]\r
+for arbitrary m, n in N and a, b in A. The next proposition shows that A[X; *]\r
 f l can\r
-also be made into a ∗-algebra.\r
-Proposition 5. Let A be a non-associative ∗-algebra over an associative and com\u0002mutative ring K. Then the maps α, β : A[X; ∗]\r
-f l → A[X; ∗]f l defined by\r
-α(a0 + a1X + a2X2 + · · ·) = X\r
-i∈N\r
-(−1)i∗\r
+also be made into a *-algebra.\r
+Proposition 5. Let A be a non-associative *-algebra over an associative and com\u0002mutative ring K. Then the maps alpha, beta : A[X; *]\r
+f l -> A[X; *]f l defined by\r
+alpha(a0 + a1X + a2X2 + * * *) = X\r
+iinN\r
+(-1)i*\r
 i+1 (ai)Xi\r
 ,\r
-β(a0 + a1X + a2X2 + · · ·) = X\r
-i∈N\r
-∗\r
+beta(a0 + a1X + a2X2 + * * *) = X\r
+iinN\r
+*\r
 i+1(ai)Xi\r
-are involutions of A[X; ∗]\r
-f l, which extend the involution ∗ of A. Furthermore, if ∗\r
-is nontrivial, A does not have zero divisors, and 2A 6= 0, then α and β are the only\r
-involutions of A[X; ∗]\r
-f l that extend the involution ∗ of A.\r
-Proof. First, we show that α is an involution of A[X; ∗]\r
+are involutions of A[X; *]\r
+f l, which extend the involution * of A. Furthermore, if *\r
+is nontrivial, A does not have zero divisors, and 2A 6= 0, then alpha and beta are the only\r
+involutions of A[X; *]\r
+f l that extend the involution * of A.\r
+Proof. First, we show that alpha is an involution of A[X; *]\r
 f l. It is clear from the\r
-definition that α is K-linear and satisfies α\r
+definition that alpha is K-linear and satisfies alpha\r
 2\r
-(p) = p for all p ∈ A[X; ∗]\r
+(p) = p for all p in A[X; *]\r
 f l. Hence we\r
-only need to show that α(pq) = α(q)α(p) for any p, q ∈ A[X; ∗]\r
+only need to show that alpha(pq) = alpha(q)alpha(p) for any p, q in A[X; *]\r
 f l. We claim that\r
-for any m, n ∈ N and a, b ∈ A,\r
-(11) τm(a, b) = τm+1(b, a),\r
-∗\r
+for any m, n in N and a, b in A,\r
+(11) taum(a, b) = taum+1(b, a),\r
+*\r
 m+n\r
-(τm(∗\r
+(taum(*\r
 n\r
-(a), b)) = τn(∗\r
-m(a), ∗m+n\r
+(a), b)) = taun(*\r
+m(a), *m+n\r
 (12) (b)).
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 11\r
 The first equality is immediate. Regarding the last equality, we note that if m+n is\r
-even, then ∗\r
+even, then *\r
 m+n is the identity map, and either m and n are both even, or m and n\r
-are both odd, so that τm = τn. If m+n is odd, then ∗\r
+are both odd, so that taum = taun. If m+n is odd, then *\r
 m+n is an anti-endomorphism\r
-and either m is even and n is odd, or m is odd and n is even, so that τm(a, b) =\r
-τn(b, a). The result now follows from (iv) in Lemma 1. Now, write p =\r
+and either m is even and n is odd, or m is odd and n is even, so that taum(a, b) =\r
+taun(b, a). The result now follows from (iv) in Lemma 1. Now, write p =\r
 P\r
-i∈N\r
+iinN\r
 piXi\r
 and q =\r
 P\r
-j∈N\r
-qjXj where pi, qj ∈ A. By definition, α(p) = P\r
-i∈N\r
-(−1)i ∗\r
+jinN\r
+qjXj where pi, qj in A. By definition, alpha(p) = P\r
+iinN\r
+(-1)i *\r
 i+1 (pi)Xi\r
 ,\r
 so\r
-α(pq) = α\r
+alpha(pq) = alpha\r
 \u0010\u0010X\r
-i∈N\r
+iinN\r
 piXi\r
 \u0011\u0010X\r
-j∈N\r
+jinN\r
 qjXj\r
 \u0011\u0011 (10)\r
-= α\r
+= alpha\r
 \u0010 X\r
-i,j∈N\r
-τj (pi, ∗\r
+i,jinN\r
+tauj (pi, *\r
 i\r
 (qj ))Xi+j\r
 \u0011\r
 =\r
 X\r
-i,j∈N\r
-(−1)i+j∗\r
-i+j+1 (τj (pi\r
-, ∗\r
+i,jinN\r
+(-1)i+j*\r
+i+j+1 (tauj (pi\r
+, *\r
 i\r
 (qj )))Xi+j\r
 (11)\r
 =\r
 X\r
-i,j∈N\r
-(−1)i+j∗\r
-i+j+1 (τj+1(∗i\r
+i,jinN\r
+(-1)i+j*\r
+i+j+1 (tauj+1(*i\r
 (qj ), pi))Xi+j\r
 (12)\r
 =\r
 X\r
-i,j∈N\r
-(−1)i+jτi(∗\r
-j+1(qj ), ∗i+j+1(pi))Xi+j\r
+i,jinN\r
+(-1)i+jtaui(*\r
+j+1(qj ), *i+j+1(pi))Xi+j\r
 (10)\r
 =\r
 \u0010X\r
-j∈N\r
-(−1)j∗\r
+jinN\r
+(-1)j*\r
 j+1 (qj )Xj\r
 \u0011\u0010X\r
-i∈N\r
-(−1)i∗\r
+iinN\r
+(-1)i*\r
 i+1 (pi)Xi\r
 \u0011\r
-= α(q)α(p).\r
-In a similar fashion, one can show that β is an involution of A[X; ∗]\r
+= alpha(q)alpha(p).\r
+In a similar fashion, one can show that beta is an involution of A[X; *]\r
 f l\r
 .\r
-To prove the last statement, assume that ∗ is nontrivial, A does not have zero\r
-divisors, and 2A 6= 0. Let γ be an involution of A[X; ∗]\r
-f l that extends ∗ of A.\r
-Our goal is to show that γ coincides with either α or β. Since γ\r
+To prove the last statement, assume that * is nontrivial, A does not have zero\r
+divisors, and 2A 6= 0. Let gamma be an involution of A[X; *]\r
+f l that extends * of A.\r
+Our goal is to show that gamma coincides with either alpha or beta. Since gamma\r
 2\r
 (X) = X, an\r
-argument involving counting degrees reveals that γ(X) must be of degree 1. So,\r
-γ(X) = a + bX for some a, b ∈ A. The identity γ\r
+argument involving counting degrees reveals that gamma(X) must be of degree 1. So,\r
+gamma(X) = a + bX for some a, b in A. The identity gamma\r
 2\r
 (X) = X gives\r
-X = γ\r
+X = gamma\r
 2\r
-(X) = γ(a + bX) = a\r
-∗ + γ(X)b∗ = a∗ + (a + bX)b∗ = a∗ + ab∗ + b2X.\r
+(X) = gamma(a + bX) = a\r
+* + gamma(X)b* = a* + (a + bX)b* = a* + ab* + b2X.\r
 It follows that a\r
-∗ + ab∗ = 0 and b2 = 1. Since A does not have zero divisors and\r
-(b + 1)(b − 1) = 0, b is either 1 or −1. Applying γ to the identity Xc = c\r
-∗X, where\r
-c ∈ A, yields c\r
-∗\r
+* + ab* = 0 and b2 = 1. Since A does not have zero divisors and\r
+(b + 1)(b - 1) = 0, b is either 1 or -1. Applying gamma to the identity Xc = c\r
+*X, where\r
+c in A, yields c\r
+*\r
 (a + bX) = (a + bX)c, from which it follows that c\r
-∗a = ac for all\r
-a ∈ A. We distinguish two cases.\r
-Case 1. b = −1. From a\r
-∗ + ab∗ = 0, it follows that a∗ = a. We also have\r
+*a = ac for all\r
+a in A. We distinguish two cases.\r
+Case 1. b = -1. From a\r
+* + ab* = 0, it follows that a* = a. We also have\r
 c\r
-∗a = ac for all a ∈ A. We apply γ to both sides of the identity (cX)X = cX2\r
+*a = ac for all a in A. We apply gamma to both sides of the identity (cX)X = cX2\r
 . On\r
 the one hand, we have\r
-γ((cX)X) = γ(X)γ(cX) = γ(X)\r
+gamma((cX)X) = gamma(X)gamma(cX) = gamma(X)\r
 \r
-γ(X)γ(c)\r
+gamma(X)gamma(c)\r
 \u0001\r
-= (a − X)\r
+= (a - X)\r
 \r
-(a − X)c\r
-∗\r
+(a - X)c\r
+*\r
 \u0001\r
-= (a − X)(ac∗ − Xc∗) = (a − X)(ac∗ − cX)\r
-= a(ac∗) − X(ac∗) − a(cX) + X(cX)\r
-= a(ac∗) − (ac∗)\r
-∗X − (ca)X + c∗X2\r
-= a(ac∗) − (ca∗)X − (ca)X + c\r
-∗X2 = a(ac∗\r
-) − (2ca)X + c\r
-∗X2\r
+= (a - X)(ac* - Xc*) = (a - X)(ac* - cX)\r
+= a(ac*) - X(ac*) - a(cX) + X(cX)\r
+= a(ac*) - (ac*)\r
+*X - (ca)X + c*X2\r
+= a(ac*) - (ca*)X - (ca)X + c\r
+*X2 = a(ac*\r
+) - (2ca)X + c\r
+*X2\r
 .
 
-12 MASOOD ARYAPOOR AND PER BACK ¨\r
+12 MASOOD ARYAPOOR AND PER BACK "\r
 On the other hand, we have\r
-γ(cX2) = γ(X\r
+gamma(cX2) = gamma(X\r
 2\r
-)γ(c) = γ(X)γ(X)\r
+)gamma(c) = gamma(X)gamma(X)\r
 \u0001\r
-γ(c) = (a − X)(a − X)\r
+gamma(c) = (a - X)(a - X)\r
 \u0001\r
 c\r
-∗\r
+*\r
 = (a\r
-2 − Xa − aX + X2\r
+2 - Xa - aX + X2\r
 )c\r
-∗ = (a2 − a∗X − aX + X2\r
+* = (a2 - a*X - aX + X2\r
 )c\r
-∗\r
+*\r
 = (a\r
-2 − 2aX + X2\r
+2 - 2aX + X2\r
 )c\r
-∗ = a2\r
+* = a2\r
 c\r
-∗ − (2aX)c∗ + X2\r
+* - (2aX)c* + X2\r
 c\r
-∗\r
+*\r
 = a\r
 2\r
 c\r
-∗ − (2ac)X + c∗X2 = a2\r
+* - (2ac)X + c*X2 = a2\r
 c\r
-∗ − (2c∗\r
+* - (2c*\r
 a)X + c\r
-∗X2\r
+*X2\r
 .\r
 Comparing the coefficients of the flipped polynomials, we see that 2c\r
-∗a = 2ca, or\r
+*a = 2ca, or\r
 equivalently, 2(c\r
-∗ − c)a = 0, for all a ∈ A. Since A does not have zero divisors,\r
-2A 6= 0, and ∗ is nontrivial, we conclude that a = 0, that is, γ = α.\r
+* - c)a = 0, for all a in A. Since A does not have zero divisors,\r
+2A 6= 0, and * is nontrivial, we conclude that a = 0, that is, gamma = alpha.\r
 Case 2. b = 1. It follows from a\r
-∗ + ab∗ = 0 that a∗ + a = 0. We also have\r
+* + ab* = 0 that a* + a = 0. We also have\r
 c\r
-∗a = ac for all a ∈ A. Setting c = a, we obtain a∗a = a2\r
+*a = ac for all a in A. Setting c = a, we obtain a*a = a2\r
 implying 2a\r
 2 = 0 because\r
 a\r
-∗ = −a. Since A does not have zero divisors and 2A 6= 0, we conclude that a = 0,\r
-that is, γ = β. This completes the proof of the proposition. \u0003\r
-In what follows, we consider A[X; ∗]\r
-f l as a ∗-algebra using the involution α\r
-introduced in Proposition 5. Also, we follow McCrimmon’s conventions in [9].\r
-Let A be a non-associative ∗-algebra over an associative and commutative ring\r
-K, and assume that µ ∈ K is a cancellable scalar, meaning that if µa = 0 for\r
-some a ∈ A, then a = 0. Further assume that K acts faithfully on A, meaning\r
-that if kA = 0 for some k ∈ K, then k = 0. We can now construct a new non\u0002associative ∗-algebra over K, the Cayley double of A, written Cay(A, µ). Cay(A, µ)\r
-is defined as A ⊕ A with involution and product defined by (a, b)\r
-∗ = (a∗\r
-, −b) and\r
-(a, b)(c, d) = (ac + µd∗b, da + bc∗) for arbitrary a, b, c, d ∈ A, respectively.\r
-Example 2. If we start with ∗ = idK on K = R and choose µ = −1 and then\r
-double, we obtain C, H, O, . . .. If we instead choose µ = +1 and then double, we\r
+* = -a. Since A does not have zero divisors and 2A 6= 0, we conclude that a = 0,\r
+that is, gamma = beta. This completes the proof of the proposition. \u0003\r
+In what follows, we consider A[X; *]\r
+f l as a *-algebra using the involution alpha\r
+introduced in Proposition 5. Also, we follow McCrimmon's conventions in [9].\r
+Let A be a non-associative *-algebra over an associative and commutative ring\r
+K, and assume that  in K is a cancellable scalar, meaning that if a = 0 for\r
+some a in A, then a = 0. Further assume that K acts faithfully on A, meaning\r
+that if kA = 0 for some k in K, then k = 0. We can now construct a new non\u0002associative *-algebra over K, the Cayley double of A, written Cay(A, ). Cay(A, )\r
+is defined as A + A with involution and product defined by (a, b)\r
+* = (a*\r
+, -b) and\r
+(a, b)(c, d) = (ac + d*b, da + bc*) for arbitrary a, b, c, d in A, respectively.\r
+Example 2. If we start with * = idK on K = R and choose  = -1 and then\r
+double, we obtain C, H, O, . . .. If we instead choose  = +1 and then double, we\r
 obtain the so-called split versions C\r
-′\r
-, H′, O′, . . . of the above algebras:\r
-Cay(R, −1) ∼= C, Cay(R, +1) ∼= C\r
-′\r
+\r
+, H, O, . . . of the above algebras:\r
+Cay(R, -1) ~= C, Cay(R, +1) ~= C\r
+\r
 ,\r
-Cay(C, −1) ∼= H, Cay(C\r
-′\r
-, +1) ∼= H\r
-′\r
+Cay(C, -1) ~= H, Cay(C\r
+\r
+, +1) ~= H\r
+\r
 ,\r
-Cay(H, −1) ∼= O, Cay(H\r
-′\r
-, +1) ∼= O\r
-′\r
+Cay(H, -1) ~= O, Cay(H\r
+\r
+, +1) ~= O\r
+\r
 ,\r
 .\r
 .\r
@@ -1105,33 +1105,33 @@ Cay(H, −1) ∼= O, Cay(H\r
 .\r
 .\r
 .\r
-There is a connection between A[X; ∗]\r
+There is a connection between A[X; *]\r
 f l and the concept of a Cayley double.\r
-More precisely, the Cayley double of A is isomorphic to a quotient ring of A[X; ∗]\r
+More precisely, the Cayley double of A is isomorphic to a quotient ring of A[X; *]\r
 f l\r
-(see Theorem 1), and furthermore, A[X; ∗]\r
+(see Theorem 1), and furthermore, A[X; *]\r
 f l is isomorphic to the Cayley double of\r
 an appropriate ring (see Theorem 2).\r
-Before the next theorem, let us remark that if I is an ideal of B := A[X; ∗]\r
+Before the next theorem, let us remark that if I is an ideal of B := A[X; *]\r
 f l such\r
 that I\r
-∗ ⊆ I, then the extended involution ∗ of B induces a well-defined involution\r
+* subseteq I, then the extended involution * of B induces a well-defined involution\r
 of B/I by [p]\r
-∗\r
+*\r
 := [p\r
-∗\r
-] for any p ∈ B and its equivalence class [p] ∈ B/I. In this\r
-way, B/I naturally becomes a ∗-algebra. In particular, if I = hX2 − µi, then by\r
+*\r
+] for any p in B and its equivalence class [p] in B/I. In this\r
+way, B/I naturally becomes a *-algebra. In particular, if I = hX2 - i, then by\r
 iteratively using that (pq)\r
-∗ = q∗p∗\r
-for any p, q ∈ B and (X2 − µ)\r
-∗ = X2 − µ ∈ I,\r
+* = q*p*\r
+for any p, q in B and (X2 - )\r
+* = X2 -  in I,\r
 we see that I\r
-∗ ⊆ I.\r
-Theorem 1. Cay(A, µ) and A[X; ∗]\r
-f l/hX2 − µi are isomorphic as ∗-algebras.\r
-Proof. Define B := A[X; ∗]\r
-f l and I := hX2 − µi, and let n ∈ N and a ∈ A be\r
+* subseteq I.\r
+Theorem 1. Cay(A, ) and A[X; *]\r
+f l/hX2 - i are isomorphic as *-algebras.\r
+Proof. Define B := A[X; *]\r
+f l and I := hX2 - i, and let n in N and a in A be\r
 arbitrary. Since aXnis the product of a with Xn, we have [aXn] = [a][Xn].
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 13\r
@@ -1145,7 +1145,7 @@ n\r
 ] = [a][X\r
 2\r
 ]\r
-n = [a][µ]n = [aµn\r
+n = [a][]n = [an\r
 ],\r
 [aX2n+1] = [a][X\r
 2n+1] = [a][X(X2\r
@@ -1155,112 +1155,112 @@ n\r
 2\r
 ]\r
 n\r
-) = [a]([X][µ\r
+) = [a]([X][\r
 n\r
-]) = [aµnX].\r
+]) = [anX].\r
 Since B is a free left A-module with basis {1, X, X2, . . .}, the above computations\r
 imply that any element in B/I may be written as [a\r
-′ + b′X] for some a′\r
-, b′ ∈ A.\r
-Now, for arbitrary a, b, c, d ∈ A,\r
+ + bX] for some a\r
+, b in A.\r
+Now, for arbitrary a, b, c, d in A,\r
 [a + bX][c + dX] = [ac + a(dX) + (bX)c + (bX)(dX)]\r
 (13)\r
-= [ac + τ1(a, d)X + τ0(b, c∗)X + τ1(b, d∗)X\r
+= [ac + tau1(a, d)X + tau0(b, c*)X + tau1(b, d*)X\r
 2\r
 ]\r
-= [ab + (da)X + (bc∗)X + (d\r
-∗\r
-b)X2] = [ab + µd∗b + (da + bc∗)X].\r
-Define a map φ: B/I → Cay(A, µ) by [a + bX] 7→ (a, b) and extend it K-linearly.\r
-Then φ is clearly surjective. Moreover, by comparing degrees, [a + bX] = 0 ⇐⇒\r
-a + bX ∈ I ⇐⇒ a = b = 0. Hence ker φ = 0, so φ is injective. We then have\r
-φ([a + bX][c + dX]) (13)= φ([ab + µd∗b + (da + bc∗)X]) = (ab + µd∗b, da + bc∗)\r
-= (a, b)(c, d) = φ([a + bX])φ([c + dX]),\r
-so φ is an isomorphism of K-algebras. Last, we show that φ is compatible with the\r
-involutions of B/I and Cay(A, µ): φ([a + bX]\r
-∗\r
-) = φ([(a + bX)\r
-∗\r
-]) = φ([a\r
-∗ − bX]) =\r
+= [ab + (da)X + (bc*)X + (d\r
+*\r
+b)X2] = [ab + d*b + (da + bc*)X].\r
+Define a map phi: B/I -> Cay(A, ) by [a + bX] 7-> (a, b) and extend it K-linearly.\r
+Then phi is clearly surjective. Moreover, by comparing degrees, [a + bX] = 0 <==>\r
+a + bX in I <==> a = b = 0. Hence ker phi = 0, so phi is injective. We then have\r
+phi([a + bX][c + dX]) (13)= phi([ab + d*b + (da + bc*)X]) = (ab + d*b, da + bc*)\r
+= (a, b)(c, d) = phi([a + bX])phi([c + dX]),\r
+so phi is an isomorphism of K-algebras. Last, we show that phi is compatible with the\r
+involutions of B/I and Cay(A, ): phi([a + bX]\r
+*\r
+) = phi([(a + bX)\r
+*\r
+]) = phi([a\r
+* - bX]) =\r
 (a\r
-∗\r
-, −b) = φ([a + bX])∗. \u0003\r
+*\r
+, -b) = phi([a + bX])*. \u0003\r
 Example 3. This example follows immediately from Example 2 and Theorem 1.\r
-C ∼= R[X]/hX2 + 1i, C\r
-′ ∼= R[X]/hX2 − 1i,\r
-H ∼= C[X; ∗]/hX2 + 1i, H\r
-′ ∼= C\r
-′\r
-[X; ∗]/hX2 − 1i,\r
-O ∼= H[X; ∗]\r
-f l/hX2 + 1i, O′ ∼= H\r
-′\r
-[X; ∗]\r
-f l/hX2 − 1i,\r
+C ~= R[X]/hX2 + 1i, C\r
+ ~= R[X]/hX2 - 1i,\r
+H ~= C[X; *]/hX2 + 1i, H\r
+ ~= C\r
+\r
+[X; *]/hX2 - 1i,\r
+O ~= H[X; *]\r
+f l/hX2 + 1i, O ~= H\r
+\r
+[X; *]\r
+f l/hX2 - 1i,\r
 .\r
 .\r
 .\r
 .\r
 .\r
 .\r
-Let A be a non-associative ∗-algebra over an associative and commutative ring\r
+Let A be a non-associative *-algebra over an associative and commutative ring\r
 K. Consider the generalized polynomial ring A[t] = A[t; idA, 0], which is naturally\r
-an algebra over the associative and commutative ring K[t]. Extending ∗ to A[t]\r
+an algebra over the associative and commutative ring K[t]. Extending * to A[t]\r
 using t\r
-∗ = t, we consider A[t] as a non-associative ∗-algebra over K[t]. Since the\r
-element t ∈ K[t] is a cancellable scalar, we can form the Cayley double Cay(A[t], t).\r
-Theorem 2. Cay(A[t], t) and A[X; ∗]\r
-f l are isomorphic as ∗-algebras.\r
-Proof. We define a map φ : Cay(A[t], t) → A[X; ∗]\r
+* = t, we consider A[t] as a non-associative *-algebra over K[t]. Since the\r
+element t in K[t] is a cancellable scalar, we can form the Cayley double Cay(A[t], t).\r
+Theorem 2. Cay(A[t], t) and A[X; *]\r
+f l are isomorphic as *-algebras.\r
+Proof. We define a map phi : Cay(A[t], t) -> A[X; *]\r
 f l as follows:\r
-φ(p(t), q(t)) = p(X\r
+phi(p(t), q(t)) = p(X\r
 2\r
 ) + q(X\r
 2\r
-)X, for any p(t), q(t) ∈ A[t].\r
-In the light of Remark 3, it is straightforward to check that φ is an isomorphism of\r
-K-algebras. We also see that φ is compatible with the involutions of Cay(A[t], t) and\r
-A[X; ∗]\r
-f l: φ((p(t), q(t))∗\r
-) = φ(p(t)\r
-∗\r
-, −q(t)) = p(X2)\r
-∗ − q(X2\r
-)X = φ(p(t), q(t))∗.\r
+)X, for any p(t), q(t) in A[t].\r
+In the light of Remark 3, it is straightforward to check that phi is an isomorphism of\r
+K-algebras. We also see that phi is compatible with the involutions of Cay(A[t], t) and\r
+A[X; *]\r
+f l: phi((p(t), q(t))*\r
+) = phi(p(t)\r
+*\r
+, -q(t)) = p(X2)\r
+* - q(X2\r
+)X = phi(p(t), q(t))*.\r
 \u0003\r
 Recall that A is called flexible if (a, b, a) = 0, and alternative if (a, a, b) =\r
-(b, a, a) = 0 for all a, b ∈ A. The criteria for A[X; ∗]\r
+(b, a, a) = 0 for all a, b in A. The criteria for A[X; *]\r
 f l to inherit algebraic properties\r
 like the above from A are given by the following two theorems (compare with [9,\r
 Theorem 6.8]):
 
-14 MASOOD ARYAPOOR AND PER BACK ¨\r
-Theorem 3. If B = A[X; ∗]\r
+14 MASOOD ARYAPOOR AND PER BACK "\r
+Theorem 3. If B = A[X; *]\r
 f l, then the following assertions hold:\r
-(i) The involution α on B is trivial if and only if the involution ∗ on A is\r
+(i) The involution alpha on B is trivial if and only if the involution * on A is\r
 trivial and 2A = 0;\r
 (ii) B is commutative if and only if A is commutative with trivial involution;\r
 (iii) B is associative if and only if A is associative and commutative;\r
-(iv) B is flexible if and only if A is flexible, aa∗commutes with A, and (a, b, c) =\r
-(a, b∗, c∗) for all a, b, c ∈ A;\r
-(v) B is alternative if and only if A is alternative, aa∗commutes with A, and\r
+(iv) B is flexible if and only if A is flexible, aa*commutes with A, and (a, b, c) =\r
+(a, b*, c*) for all a, b, c in A;\r
+(v) B is alternative if and only if A is alternative, aa*commutes with A, and\r
 2a + a\r
-∗\r
-lies in the nucleus of A for all a ∈ A.\r
+*\r
+lies in the nucleus of A for all a in A.\r
 Proof. (i): Assume that B has trivial involution. Since the involution of A is the\r
-involution of B restricted to A, it is also trivial. Also, for any a ∈ A, (aX)\r
-∗ =\r
-X∗a\r
-∗ = −Xa∗ = −aX, so (aX)∗ = aX ⇐⇒ (2a)X = 0 ⇐⇒ 2a = 0.\r
-Now, assume instead that A has trivial involution, 2A = 0, and let p ∈ B. Then\r
-p = a0+a1X+a2X2+· · · for some a0, a1, a2, . . . ∈ A and p\r
-∗ = a∗\r
-0−a1X+a\r
-∗\r
-2X+· · · =\r
-a0 − a1X + a2X2 + · · · . Since a2i+1 = −a2i+1 for any i ∈ N, p = p\r
-∗\r
+involution of B restricted to A, it is also trivial. Also, for any a in A, (aX)\r
+* =\r
+X*a\r
+* = -Xa* = -aX, so (aX)* = aX <==> (2a)X = 0 <==> 2a = 0.\r
+Now, assume instead that A has trivial involution, 2A = 0, and let p in B. Then\r
+p = a0+a1X+a2X2+* * * for some a0, a1, a2, . . . in A and p\r
+* = a*\r
+0-a1X+a\r
+*\r
+2X+* * * =\r
+a0 - a1X + a2X2 + * * * . Since a2i+1 = -a2i+1 for any i in N, p = p\r
+*\r
 .\r
 For a different proof, one can use Theorem 2 together with [9, Theorem 6.8 (i)].\r
 (ii): From Corollary 1, it is immediate that B is commutative if and only if\r
@@ -1271,244 +1271,244 @@ together with [9, Theorem 6.8 (ii)].\r
 proof, one can again use Theorem 2 together with [9, Theorem 6.8 (iii)].\r
 (iv): By Theorem 2, B is flexible if and only if Cay(A[t], t) is flexible, which by [9,\r
 Theorem 6.8 (iv)] is equivalent to the conditions that A[t] is flexible, p(t)p(t)\r
-∗\r
+*\r
 com\u0002mutes with A[t], and (p(t), q(t), r(t)) = (p(t), q(t)\r
-∗\r
+*\r
 , r(t)\r
-∗\r
-) for all p(t), q(t), r(t) ∈\r
-A[t]. Since t ∈ Z(A[t]) and t\r
-∗ = t, a moment’s reflection shows that these condi\u0002tions hold over A[t] if and only if they hold over A.\r
+*\r
+) for all p(t), q(t), r(t) in\r
+A[t]. Since t in Z(A[t]) and t\r
+* = t, a moment's reflection shows that these condi\u0002tions hold over A[t] if and only if they hold over A.\r
 (v): By Theorem 2, B is alternative if and only if Cay(A[t], t) is alternative, which\r
 by [9, Theorem 6.8 (v)] is equivalent to the conditions that A[t] is alternative,\r
 p(t)p(t)\r
-∗\r
+*\r
 commutes with A[t], and 2p(t) + p(t)\r
-∗ ∈ N(A[t]) for all p(t) ∈ A[t]. Since\r
-t ∈ Z(A[t]) and t\r
-∗ = t, it is easy to see that these conditions hold over A[t] if and\r
+* in N(A[t]) for all p(t) in A[t]. Since\r
+t in Z(A[t]) and t\r
+* = t, it is easy to see that these conditions hold over A[t] if and\r
 only if they hold over A. \u0003\r
-We define C∗(A) as {a ∈ C(A): a\r
-∗ = a} and Z∗(A) as {a ∈ Z(A): a∗ = a}.\r
+We define C*(A) as {a in C(A): a\r
+* = a} and Z*(A) as {a in Z(A): a* = a}.\r
 With these notations, we have the following theorem:\r
-Theorem 4. If B = A[X; ∗]\r
+Theorem 4. If B = A[X; *]\r
 f l, then the following equalities hold:\r
 (i) C(B) = \bP\r
-i∈N\r
-aiXi: ai ∈ C∗(A), a2i+1b\r
-∗ = a2i+1b ∀b ∈ A, i ∈ N\r
+iinN\r
+aiXi: ai in C*(A), a2i+1b\r
+* = a2i+1b for allb in A, i in N\r
 \t\r
 ;\r
 (ii) Nl(B) = Nr(B) = \b P\r
-i∈N\r
-aiXi: a2i ∈ Z(A), a2i+1 ∈ C(A) ∩ Nm(A),\r
-(a2i+1b)c = a2i+1(cb),(bc)a2i+1 = c(ba2i+1) ∀b, c ∈ A, i ∈ N\r
+iinN\r
+aiXi: a2i in Z(A), a2i+1 in C(A) cap Nm(A),\r
+(a2i+1b)c = a2i+1(cb),(bc)a2i+1 = c(ba2i+1) for allb, c in A, i in N\r
 \t\r
 ;\r
 (iii) Nm(B) = \bP\r
-i∈N\r
-aiXi: a2i ∈ C(A) ∩ Nm(A), a2i+1 ∈ C(A),\r
-(a2i+1b)c = (a2i+1c)b, b(ca2i+1) = c(ba2i+1) ∀b, c ∈ A, i ∈ N\r
+iinN\r
+aiXi: a2i in C(A) cap Nm(A), a2i+1 in C(A),\r
+(a2i+1b)c = (a2i+1c)b, b(ca2i+1) = c(ba2i+1) for allb, c in A, i in N\r
 \t\r
 ;\r
 (iv) N(B) = \bP\r
-i∈N\r
-aiXi: ai ∈ Z(A), a2i+1[A, A] = 0 ∀i ∈ N\r
+iinN\r
+aiXi: ai in Z(A), a2i+1[A, A] = 0 for alli in N\r
 \t\r
 ;\r
 (v) Z(B) = \bP\r
-i∈N\r
-aiXi: ai ∈ Z∗(A), a2i+1b\r
-∗ = a2i+1b ∀b ∈ A, i ∈ N\r
+iinN\r
+aiXi: ai in Z*(A), a2i+1b\r
+* = a2i+1b for allb in A, i in N\r
 \t\r
 .
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 15\r
 Proof. (i): We note that P\r
-i∈N\r
-aiXi ∈ C(B), where ai ∈ A is arbitrary, if and\r
-only if aiXi ∈ C(B) for any i ∈ N. Hence, to show that the conditions are nec\u0002essary, assume that aiXi ∈ C(B) and let b ∈ A be arbitrary. Then [a2iX2i\r
+iinN\r
+aiXi in C(B), where ai in A is arbitrary, if and\r
+only if aiXi in C(B) for any i in N. Hence, to show that the conditions are nec\u0002essary, assume that aiXi in C(B) and let b in A be arbitrary. Then [a2iX2i\r
 , b] =\r
-[a2i+1X2i+1, b] = 0, and by (10), [a2iX2i, b] = (a2ib−ba2i)X2i and [a2i+1X2i+1, b] =\r
+[a2i+1X2i+1, b] = 0, and by (10), [a2iX2i, b] = (a2ib-ba2i)X2i and [a2i+1X2i+1, b] =\r
 (a2i+1b\r
-∗ − a2i+1b)X2i+1. By comparing coefficients, a2i ∈ C(A) and a2i+1b∗ =\r
-a2i+1b for any i ∈ N. Similarly, [a2iX2i, bX] = [a2i+1X2i+1, b∗X] = 0, and by (10),\r
-[a2iX2i, bX] = (a2ib−ba∗\r
+* - a2i+1b)X2i+1. By comparing coefficients, a2i in C(A) and a2i+1b* =\r
+a2i+1b for any i in N. Similarly, [a2iX2i, bX] = [a2i+1X2i+1, b*X] = 0, and by (10),\r
+[a2iX2i, bX] = (a2ib-ba*\r
 2i\r
-)X2i+1 and [a2i+1X2i+1, b∗X] = (ba2i+1−a\r
-∗\r
+)X2i+1 and [a2i+1X2i+1, b*X] = (ba2i+1-a\r
+*\r
 2i+1b\r
-∗\r
+*\r
 )X2i+2.\r
 By letting b = 1, we thus have a\r
-∗\r
+*\r
 2i = a2i and a\r
-∗\r
+*\r
 2i+1 = a2i+1. By then com\u0002paring coefficients in the original expression, ba2i+1 = a\r
-∗\r
+*\r
 2i+1b\r
-∗ = a2i+1b∗\r
+* = a2i+1b*\r
 , and\r
 since a2i+1b\r
-∗ = a2i+1b, we have a2i+1 ∈ C(A). To show that the conditions\r
-are sufficient, it suffices to show that [aiXi, bXj] = 0 for any i, j ∈ N. From\r
-(10), [aiXi, bXj] = (τj (ai, ∗\r
+* = a2i+1b, we have a2i+1 in C(A). To show that the conditions\r
+are sufficient, it suffices to show that [aiXi, bXj] = 0 for any i, j in N. From\r
+(10), [aiXi, bXj] = (tauj (ai, *\r
 i\r
-(b)) − τi(b, ∗\r
+(b)) - taui(b, *\r
 j\r
-(ai)))Xi+j = (ai ∗\r
+(ai)))Xi+j = (ai *\r
 i\r
-(b) − τi(b, ai))Xi+j =\r
-(ai ∗\r
+(b) - taui(b, ai))Xi+j =\r
+(ai *\r
 i\r
-(b) − aib)Xi+j = (aib − aib)Xi+j = 0.\r
+(b) - aib)Xi+j = (aib - aib)Xi+j = 0.\r
 For a different proof, one can use Theorem 2 together with [9, Theorem 6.8 (viii)].\r
-(ii)–(iii): We note that P\r
-i∈N\r
-aiXi ∈ Nx(B) where ai ∈ A and x is any of l, m,\r
-and r, if and only if aiXi ∈ Nx(B) for any i ∈ N. The necessary conditions in\r
-(ii)–(iii) now follow by replacing a and bl in the proof of [9, Theorem 6.8 (ix)–\r
-(x)] by a2iX2i and a2i+1X2i+1, respectively, and using that X2i ∈ Z(B) and\r
+(ii)-(iii): We note that P\r
+iinN\r
+aiXi in Nx(B) where ai in A and x is any of l, m,\r
+and r, if and only if aiXi in Nx(B) for any i in N. The necessary conditions in\r
+(ii)-(iii) now follow by replacing a and bl in the proof of [9, Theorem 6.8 (ix)-\r
+(x)] by a2iX2i and a2i+1X2i+1, respectively, and using that X2i in Z(B) and\r
 X2i+1 = XX2itogether with Theorem 1. (The proof regarding the right nucleus\r
 in [9] has been omitted, however; it can be obtained by similar methods to that\r
 of the left nucleus.) To show that the conditions for Nl(B) are sufficient, it suf\u0002fices to show that (aiXi\r
-, bXj, cXk) = 0 for any b, c ∈ A and i, j, k ∈ N. By (10),\r
-(aiXi, bXj, cXk) = (τk(τj (ai, ∗\r
+, bXj, cXk) = 0 for any b, c in A and i, j, k in N. By (10),\r
+(aiXi, bXj, cXk) = (tauk(tauj (ai, *\r
 i\r
-(b)), ∗\r
+(b)), *\r
 i+j\r
-(c)) − τj+k(ai, ∗\r
+(c)) - tauj+k(ai, *\r
 i\r
-(τk(b, ∗\r
+(tauk(b, *\r
 j\r
 (c)))))Xi+j+k =\r
-(τk(ai ∗\r
+(tauk(ai *\r
 i\r
-(b), ∗\r
+(b), *\r
 i+j\r
-(c)) − ai ∗\r
+(c)) - ai *\r
 i\r
-(τk(b, ∗\r
+(tauk(b, *\r
 j\r
 (c))))Xi+j+k, so if k is even, then\r
 (aiX\r
 i\r
-, bXj, cXk) = ((ai ∗\r
+, bXj, cXk) = ((ai *\r
 i\r
-(b)) ∗\r
+(b)) *\r
 i+j\r
-(c) − ai ∗\r
+(c) - ai *\r
 i\r
-(b ∗\r
+(b *\r
 j\r
 (c)))X\r
 i+j+k\r
-= ((ai ∗\r
+= ((ai *\r
 i\r
-(b)) ∗\r
+(b)) *\r
 i+j\r
-(c) − (ai ∗\r
+(c) - (ai *\r
 i\r
-(b))(∗\r
+(b))(*\r
 i+j\r
 (c)))X\r
 i+j+k = 0.\r
 If k is odd, then\r
-(aiXi, bXj, cXk) = (∗\r
+(aiXi, bXj, cXk) = (*\r
 i+j\r
-(c)(ai ∗\r
+(c)(ai *\r
 i\r
-(b)) − ai ∗\r
+(b)) - ai *\r
 i\r
-(∗\r
+(*\r
 j\r
 (c)b))Xi+j+k\r
-= (∗\r
+= (*\r
 i+j\r
-(c)(ai ∗\r
+(c)(ai *\r
 i\r
-(b)) − (ai ∗\r
+(b)) - (ai *\r
 i+j\r
-(c)) ∗\r
+(c)) *\r
 i\r
 (b))Xi+j+k\r
-= (∗\r
+= (*\r
 i+j\r
-(c)(ai ∗\r
+(c)(ai *\r
 i\r
-(b)) − (∗\r
+(b)) - (*\r
 i+j\r
-(c)ai) ∗\r
+(c)ai) *\r
 i\r
 (b))X\r
 i+j+k\r
-= (∗\r
+= (*\r
 i+j\r
-(c)(ai ∗\r
+(c)(ai *\r
 i\r
-(b)) − ∗i+j(c)(ai ∗\r
+(b)) - *i+j(c)(ai *\r
 i\r
 (b)))X\r
 i+j+k = 0.\r
 The conditions for Nm(B) and Nr(B) can be shown sufficient by similar calcu\u0002lations. Moreover, similarly to the previous proofs, one can also use Theorem 2\r
-together with [9, Theorem 6.8 (ix)–(x)].\r
-(iv)–(v): This follows from the equalities N(B) = Nl(B) ∩ Nm(B) ∩ Nr(B) and\r
-Z(B) = C(B) ∩ N(B) together with (i)–(iii) above. \u0003\r
-With Z∗(B) := {b ∈ Z(B): b\r
-∗ = b}, we have the following corollary:\r
-Corollary 2. If B = A[X; ∗]\r
+together with [9, Theorem 6.8 (ix)-(x)].\r
+(iv)-(v): This follows from the equalities N(B) = Nl(B) cap Nm(B) cap Nr(B) and\r
+Z(B) = C(B) cap N(B) together with (i)-(iii) above. \u0003\r
+With Z*(B) := {b in Z(B): b\r
+* = b}, we have the following corollary:\r
+Corollary 2. If B = A[X; *]\r
 f l\r
-, 1/2 ∈ K, and A is obtained from K by n repeated\r
+, 1/2 in K, and A is obtained from K by n repeated\r
 applications of the Cayley-Dickson process, then the following equalities hold:
 
-16 MASOOD ARYAPOOR AND PER BACK ¨\r
+16 MASOOD ARYAPOOR AND PER BACK "\r
 (i) C(B) = Z(B) = (\r
 K[X] if n = 0,\r
-K[X2] if n ≥ 1.\r
+K[X2] if n >= 1.\r
 ;\r
-(ii) Z∗(B) = K[X2];\r
+(ii) Z*(B) = K[X2];\r
 (iii) N(B) = (\r
-B if 0 ≤ n ≤ 1,\r
-K[X2] if n ≥ 2.\r
+B if 0 <= n <= 1,\r
+K[X2] if n >= 2.\r
 Proof. (i): By [9, Corollary 6.9 (i)], C(A) = Z(A), and so by (i) and (v) in\r
-Theorem 4, C(B) = Z(B). Moreover, by [9, Corollary 16.9 (ii)], Z∗(A) = K.\r
+Theorem 4, C(B) = Z(B). Moreover, by [9, Corollary 16.9 (ii)], Z*(A) = K.\r
 If n = 0, then A = K, and so a\r
-∗ = a for any a ∈ A = K. Hence ka∗ = ka\r
-for any k ∈ K, so by (v) in Theorem 4, Z(B) = K[X] if n = 0. If n ≥ 1, then\r
-A = Cay(C, µ) for some C, so an arbitrary element a ∈ A is of the form (b, c) for\r
-some b, c ∈ C and (b, c)\r
-∗ = (b∗\r
-, −c). Then ka∗ = ka for some k ∈ K if and only if\r
-kb∗ = kb and 2kc = 0. Since 1/2 ∈ K, c may be chosen arbitrarily, and since K\r
-acts faithfully on C by assumption, we have 2kc = 0 =⇒ k = 0. Hence, by (v) in\r
-Theorem 4, Z(B) = K[X2] if n ≥ 1.\r
-(ii): By (i), Z(B) = K[X] if n = 0. If p = k0 + k1X + k2X2 + · · · ∈ K[X] = Z(B)\r
-for some k0, k1, k2 ∈ K, then p\r
-∗ = k0 − k1X + k2X2 + · · · . Hence p∗ = p if\r
-and only if 2k2i+1 = 0 for any i ∈ N. Since 1/2 ∈ K, the latter equality is\r
-equivalent to k2i+1 = 0 for any i ∈ N. Therefore, p ∈ Z∗(B) if and only if\r
-p = k0 + k2X2 + k4X4 + · · · , so Z∗(B) = K[X2] if n = 0. Moreover, by (i),\r
-Z(B) = K[X2] if n ≥ 1, so by a similar argument, Z∗(B) = K[X2] if n ≥ 1.\r
-(iii): If 0 ≤ n ≤ 1, then A is associative and commutative. By (iii) in Theorem 3,\r
-B is associative, so N(B) = B. By [9, Corollary 16.9 (iii)], Z(A) = K if n ≥ 2.\r
-Moreover, by the proof of [9, Corollary 16.9 (iv)], k[A, A] = 0 =⇒ k = 0 for any\r
-k ∈ K if n ≥ 2. Hence, by (iii) in Theorem 4, N(B) = K[X2] if n ≥ 2. \u0003\r
+* = a for any a in A = K. Hence ka* = ka\r
+for any k in K, so by (v) in Theorem 4, Z(B) = K[X] if n = 0. If n >= 1, then\r
+A = Cay(C, ) for some C, so an arbitrary element a in A is of the form (b, c) for\r
+some b, c in C and (b, c)\r
+* = (b*\r
+, -c). Then ka* = ka for some k in K if and only if\r
+kb* = kb and 2kc = 0. Since 1/2 in K, c may be chosen arbitrarily, and since K\r
+acts faithfully on C by assumption, we have 2kc = 0 ==> k = 0. Hence, by (v) in\r
+Theorem 4, Z(B) = K[X2] if n >= 1.\r
+(ii): By (i), Z(B) = K[X] if n = 0. If p = k0 + k1X + k2X2 + * * * in K[X] = Z(B)\r
+for some k0, k1, k2 in K, then p\r
+* = k0 - k1X + k2X2 + * * * . Hence p* = p if\r
+and only if 2k2i+1 = 0 for any i in N. Since 1/2 in K, the latter equality is\r
+equivalent to k2i+1 = 0 for any i in N. Therefore, p in Z*(B) if and only if\r
+p = k0 + k2X2 + k4X4 + * * * , so Z*(B) = K[X2] if n = 0. Moreover, by (i),\r
+Z(B) = K[X2] if n >= 1, so by a similar argument, Z*(B) = K[X2] if n >= 1.\r
+(iii): If 0 <= n <= 1, then A is associative and commutative. By (iii) in Theorem 3,\r
+B is associative, so N(B) = B. By [9, Corollary 16.9 (iii)], Z(A) = K if n >= 2.\r
+Moreover, by the proof of [9, Corollary 16.9 (iv)], k[A, A] = 0 ==> k = 0 for any\r
+k in K if n >= 2. Hence, by (iii) in Theorem 4, N(B) = K[X2] if n >= 2. \u0003\r
 The next example follows immediately from Corollary 2 and Example 2.\r
-Example 4. If B = A[X; ∗]\r
+Example 4. If B = A[X; *]\r
 f l and K = R, then\r
 C(B) = Z(B) = (\r
 R[X] if A = R,\r
 R[X2] if A = C, C\r
-′\r
-, H, H′, . . . ,\r
-Z∗(B) = R[X2] if A = R, C, C\r
-′\r
+\r
+, H, H, . . . ,\r
+Z*(B) = R[X2] if A = R, C, C\r
+\r
 , . . . ,\r
 N(B) = (\r
 B if A = R, C, or C\r
-′\r
+\r
 ,\r
-R[X2] if A = H, H′, O, O′, . . . .\r
+R[X2] if A = H, H, O, O, . . . .\r
 Acknowledgments\r
 We would like to thank the anonymous referee for comments on the manuscript\r
 which improved its presentation. We would also like to thank Johan Richter for\r
@@ -1516,12 +1516,12 @@ pointing out a mistake in the formulation of an earlier version of Definition 3.
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 17\r
 References\r
-[1] A. A. Albert, Absolute valued real algebras, Ann. Math 48(2) (1947), pp. 495–501.\r
-[2] A. A. Albert, Quadratic forms permitting composition, Ann. Math 43(1) (1942), pp. 161–177.\r
-[3] A. Cayley, On Jacobi’s elliptic functions, in reply to Rev. B. Bronwin; and on quaternions,\r
-Philos. Mag. 26(3) (1845), pp. 208–211.\r
+[1] A. A. Albert, Absolute valued real algebras, Ann. Math 48(2) (1947), pp. 495-501.\r
+[2] A. A. Albert, Quadratic forms permitting composition, Ann. Math 43(1) (1942), pp. 161-177.\r
+[3] A. Cayley, On Jacobi's elliptic functions, in reply to Rev. B. Bronwin; and on quaternions,\r
+Philos. Mag. 26(3) (1845), pp. 208-211.\r
 [4] L. E. Dickson, On quaternions and their generalization and the history of the eight square\r
-theorem, Ann. Math 20(3) (1919), pp. 155–171.\r
+theorem, Ann. Math 20(3) (1919), pp. 155-171.\r
 [5] K. R. Goodearl and R. B. Warfield, An introduction to noncommutative Noetherian rings,\r
 2nd ed., Cambridge University Press, Cambridge U.K. (2004).\r
 [6] T. Y. Lam, A first course in noncommutative rings, 2nd ed. Springer, New York (2001).\r
@@ -1529,22 +1529,22 @@ theorem, Ann. Math 20(3) (1919), pp. 155–171.\r
 Noetherian rings, Rev. ed., Amer. Math. Soc., Providence, R.I. (2001).\r
 [8] K. McCrimmon, A taste of Jordan algebras, Springer, New York (2004).\r
 [9] K. McCrimmon, Nonassociative algebras with scalar involution, Pacific J. Math. 116(1)\r
-(1985), pp. 85–109.\r
+(1985), pp. 85-109.\r
 [10] P. Nystedt, A combinatorial proof of associativity of Ore extensions, Discrete Math. 313(23)\r
-(2013), pp. 2748–2750.\r
-[11] P. Nystedt, J. Oinert, and J. Richter, ¨ Non-associative Ore extensions, Isr. J. Math. 224(1)\r
-(2018), pp. 263–292.\r
-[12] O. Ore, Theory of non-commutative polynomials, Ann. Math. 34(3), 480–508 (1933).\r
-[13] J. Richter, A note on “A combinatorial proof of associativity of Ore extensions”, Discrete\r
-Math. 315–316 (2014), pp. 156–157.\r
+(2013), pp. 2748-2750.\r
+[11] P. Nystedt, J. Oinert, and J. Richter, " Non-associative Ore extensions, Isr. J. Math. 224(1)\r
+(2018), pp. 263-292.\r
+[12] O. Ore, Theory of non-commutative polynomials, Ann. Math. 34(3), 480-508 (1933).\r
+[13] J. Richter, A note on "A combinatorial proof of associativity of Ore extensions", Discrete\r
+Math. 315-316 (2014), pp. 156-157.\r
 [14] K. Urbanik and F. B. Wright, Absolute-valued algebras, Proc. Amer. Math. Soc. 11 (1960),\r
-pp. 861–866.\r
-[15] F. B. Wright, Absolute-valued algebras, Proc. Nat. Acad. Sci. 39(4) (1953), pp. 330–332.\r
-(Masood Aryapoor) Division of Mathematics and Physics, Malardalen University, Box ¨\r
+pp. 861-866.\r
+[15] F. B. Wright, Absolute-valued algebras, Proc. Nat. Acad. Sci. 39(4) (1953), pp. 330-332.\r
+(Masood Aryapoor) Division of Mathematics and Physics, Malardalen University, Box "\r
 325, SE-631 05 Eskilstuna, Sweden\r
 Email address: masood.aryapoor@mdu.se\r
-(Per B¨ack) Division of Mathematics and Physics, Malardalen University, Box 883, ¨\r
-SE-721 23 Vaster ¨ ˚as, Sweden\r
+(Per B"ack) Division of Mathematics and Physics, Malardalen University, Box 883, "\r
+SE-721 23 Vaster "  as, Sweden\r
 Email address, corresponding author: per.back@mdu.se"""
 
 [metadata]
@@ -1562,61 +1562,61 @@ title = "Preamble"
 text = """
 arXiv:2403.03763v3 [math.RA] 10 Sep 2024\r
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS AND THE\r
-CAYLEY–DICKSON CONSTRUCTION\r
-MASOOD ARYAPOOR AND PER BACK ¨\r
+CAYLEY-DICKSON CONSTRUCTION\r
+MASOOD ARYAPOOR AND PER BACK "\r
 Abstract. We introduce and study flipped non-associative polynomial rings.\r
-In particular, we show that all Cayley–Dickson algebras naturally appear as\r
+In particular, we show that all Cayley-Dickson algebras naturally appear as\r
 quotients of a certain type of such rings; this extends the classical construction\r
 of the complex numbers (and quaternions) as a quotient of a (skew) polynomial\r
 ring to the octonions, and beyond. We also extend some classical results on\r
-algebraic properties of Cayley–Dickson algebras by McCrimmon to a class of\r
+algebraic properties of Cayley-Dickson algebras by McCrimmon to a class of\r
 flipped non-associative polynomial rings."""
 
 [[sections]]
 number = "1"
 title = "Introduction"
 text = """
-The Cayley–Dickson construction, introduced by Dickson [4] based on previous\r
+The Cayley-Dickson construction, introduced by Dickson [4] based on previous\r
 work by Cayley [3] and then generalized by Albert [2], is a famous construction for\r
-generating new ∗-algebras out of old ones. It is perhaps best known for generating\r
+generating new *-algebras out of old ones. It is perhaps best known for generating\r
 all the real, normed division algebras: the real numbers (R), the complex numbers\r
 (C), the quaternions (H), and the octonions (O) [1, 14, 15]. However, the construc\u0002tion is undoubtedly quite mysterious; a first (second and third. . . ) encounter with\r
 its strange product leaves one rather puzzled and with a feeling that it is a patch\u0002work created ad hoc to make certain algebras, like the above, fit in a construction.\r
-In this article, we try to shed new light on the Cayley–Dickson construction with\r
+In this article, we try to shed new light on the Cayley-Dickson construction with\r
 the purpose of illuminating the underlying patchwork. To this end, we introduce\r
 and study the notion of flipped non-associative polynomial rings. In particular, we\r
-show that all Cayley–Dickson algebras naturally appear as quotients of a certain\r
+show that all Cayley-Dickson algebras naturally appear as quotients of a certain\r
 type of such rings (Theorem 1). By using this new class of polynomial rings, we\r
 may in particular extend the classical construction of C (and H) as a quotient of a\r
 (skew) polynomial ring to O, and beyond (see Example 3).\r
-The flipped non-associative polynomial rings that give rise to the Cayley–Dickson\r
-algebras are “flipped” versions of a type of non-associative and non-commutative\r
+The flipped non-associative polynomial rings that give rise to the Cayley-Dickson\r
+algebras are "flipped" versions of a type of non-associative and non-commutative\r
 polynomial rings known as non-associative Ore extensions, introduced by Nystedt,\r
-Oinert, and Richter [11]. Non-associative Ore extensions are in turn ¨ non-associative\r
+Oinert, and Richter [11]. Non-associative Ore extensions are in turn " non-associative\r
 generalizations of Ore extensions, the latter introduced by Ore [12] under the name\r
-“non-commutative polynomial rings”. Since their introduction, Ore extensions have\r
-been studied quite extensively (see e.g. [5–7] for comprehensive introductions).\r
+"non-commutative polynomial rings". Since their introduction, Ore extensions have\r
+been studied quite extensively (see e.g. [5-7] for comprehensive introductions).\r
 We study the underlying non-associative and non-commutative ring structure of\r
 flipped non-associative Ore extensions and discover, rather surprisingly, that the\r
-flipped non-associative Ore extensions that give rise to the Cayley–Dickson algebras\r
+flipped non-associative Ore extensions that give rise to the Cayley-Dickson algebras\r
 Date: September 11, 2024."""
 
 [[sections]]
 number = "2020"
 title = "Mathematics Subject Classification. 16W10, 17A20, 17A35, 17A70, 17A75, 17D05."
 text = """
-Key words and phrases. Cayley–Dickson algebra, Cayley–Dickson construction, Cayley dou\u0002ble, flipped non-associative Ore extensions, flipped non-associative polynomial rings, flipped non\u0002associative skew polynomial rings.\r
+Key words and phrases. Cayley-Dickson algebra, Cayley-Dickson construction, Cayley dou\u0002ble, flipped non-associative Ore extensions, flipped non-associative polynomial rings, flipped non\u0002associative skew polynomial rings.\r
 1"""
 
 [[sections]]
 number = "2"
-title = "MASOOD ARYAPOOR AND PER BACK ¨"
+title = "MASOOD ARYAPOOR AND PER BACK"
 text = """
-are themselves Cayley–Dickson algebras of a certain kind (Theorem 2). With this\r
+are themselves Cayley-Dickson algebras of a certain kind (Theorem 2). With this\r
 discovery, we may rather easily prove results regarding their algebraic properties\r
 (Theorem 3 and Theorem 4). These results are in turn natural counterparts of some\r
-classical results on Cayley–Dickson algebras obtained by McCrimmon [9, Theorem\r
-6.8 (i)–(v), (viii)–(xii)].\r
+classical results on Cayley-Dickson algebras obtained by McCrimmon [9, Theorem\r
+6.8 (i)-(v), (viii)-(xii)].\r
 The article is organized as follows:\r
 In Section 2, we provide conventions and preliminaries from non-associative ring\r
 theory (Subsection 2.1). We also recall what Ore extensions are (Subsection 2.2)\r
@@ -1626,10 +1626,10 @@ In Section 3, we introduce the concept of flipped non-associative polynomial\r
 rings (Definition 3) and flipped non-associative Ore extensions (Definition 5). We\r
 then prove results regarding their underlying non-associative and non-commutative\r
 ring structure.\r
-In Section 4, we give a brief introduction to ∗-algebras and the Cayley–Dickson\r
-construction. We then show that all Cayley–Dickson algebras naturally appear as\r
+In Section 4, we give a brief introduction to *-algebras and the Cayley-Dickson\r
+construction. We then show that all Cayley-Dickson algebras naturally appear as\r
 quotients of certain flipped non-associative Ore extensions (Theorem 1), and that\r
-these flipped non-associative Ore extensions are in turn Cayley–Dickson algebras of\r
+these flipped non-associative Ore extensions are in turn Cayley-Dickson algebras of\r
 a particular type (Theorem 2). We conclude the article by proving results regarding\r
 algebraic properties of the aforementioned flipped non-associative Ore extensions\r
 (Theorem 3 and Theorem 4)."""
@@ -1647,27 +1647,27 @@ All rings and algebras are assumed to be unital, unless stated otherwise, and th
 multiplicative identity element is written 1. Any endomorphism is assumed to\r
 respect 1. By a non-associative ring, we mean a ring which is not necessarily\r
 associative. If R is a non-associative ring, by a left R-module, we mean an additive\r
-group M equipped with a biadditive map R × M → M, (r, m) 7→ rm for any r ∈ R\r
-and m ∈ M. A subset B of M is a basis if any m ∈ M can be uniquely written as\r
+group M equipped with a biadditive map R x M -> M, (r, m) 7-> rm for any r in R\r
+and m in M. A subset B of M is a basis if any m in M can be uniquely written as\r
 a sum m =\r
 P\r
-b∈B rbb with finite support, where rb ∈ R. A left R-module that has\r
+binB rbb with finite support, where rb in R. A left R-module that has\r
 a basis is called free.\r
 We also recall the following standard concepts and notations from non-associative\r
-ring theory (see e.g. [11, Section 2]). Let R be a non-associative ring. For r, s, t ∈ R,\r
-we set [r, s] := rs − sr and (r, s, t) := (rs)t − r(st). We define the left, middle, and\r
-right nucleus of R as follows: Nl(R) := {r ∈ R: (r, s, t) = 0 for all s, t ∈ R},\r
-Nm(R) := {s ∈ R: (r, s, t) = 0 for all r, t ∈ R}, and Nr(R) := {t ∈ R: (r, s, t) =\r
-0 for all r, s ∈ R}. It turns out that Nl(R), Nm(R), and Nr(R) are all associative\r
+ring theory (see e.g. [11, Section 2]). Let R be a non-associative ring. For r, s, t in R,\r
+we set [r, s] := rs - sr and (r, s, t) := (rs)t - r(st). We define the left, middle, and\r
+right nucleus of R as follows: Nl(R) := {r in R: (r, s, t) = 0 for all s, t in R},\r
+Nm(R) := {s in R: (r, s, t) = 0 for all r, t in R}, and Nr(R) := {t in R: (r, s, t) =\r
+0 for all r, s in R}. It turns out that Nl(R), Nm(R), and Nr(R) are all associative\r
 subrings of R. We also define the nucleus of R, denoted by N(R), as the set\r
-Nl(R)∩ Nm(R)∩ Nr(R). The center of R, Z(R), is defined as C(R)∩ N(R), where\r
-C(R) := {r ∈ R: [r, s] = 0 for all s ∈ R} is the commuter of R. In particular, Z(R)\r
+Nl(R)cap Nm(R)cap Nr(R). The center of R, Z(R), is defined as C(R)cap N(R), where\r
+C(R) := {r in R: [r, s] = 0 for all s in R} is the commuter of R. In particular, Z(R)\r
 is an associative and commutative subring of R.\r
 A non-associative ring D is called a division ring if the equations r = qs and\r
-r = sq′, where r, s ∈ D with s 6= 0, have unique solutions q, q′ ∈ R. Since we require\r
-our rings to be unital, for each non-zero s ∈ D, there must be unique q, q′ ∈ D such\r
-that 1 = qs and 1 = sq′ hold (q need not equal q\r
-′\r
+r = sq, where r, s in D with s 6= 0, have unique solutions q, q in R. Since we require\r
+our rings to be unital, for each non-zero s in D, there must be unique q, q in D such\r
+that 1 = qs and 1 = sq hold (q need not equal q\r
+\r
 , however). Recall that over the\r
 real numbers, there are precisely four normed division algebras: R, C, H, and O.\r
 In particular, H is not commutative and O is neither commutative, nor associative.
@@ -1681,96 +1681,96 @@ text = """
 given in [11, Definition 1.1].\r
 Definition 1 (Ore extension). Let S be a ring, and let R be an associative subring\r
 of S containing the multiplicative identity element 1 of S. Then S is called an Ore\r
-extension of R if there is an element x ∈ S such that the following axioms hold:\r
+extension of R if there is an element x in S such that the following axioms hold:\r
 (O1) S is associative;\r
 (O2) S is a free left R-module with basis {1, x, x2, . . .};\r
-(O3) xR ⊆ Rx + R.\r
+(O3) xR subseteq Rx + R.\r
 As usual, we use the convention that x\r
 0\r
 := 1. If (O3) is replaced by\r
-(O3)′ xR ⊆ Rx;\r
+(O3) xR subseteq Rx;\r
 then S is called a skew polynomial ring.\r
-If R is a non-associative ring with an endomorphism σ, then an additive map δ\r
-on R is called a left σ-derivation if for all r, s ∈ R,\r
-δ(rs) = σ(r)δ(s) + δ(r)s.\r
-Similarly, an additive map δ\r
-′ on R is called a right σ-derivation if for all r, s ∈ R,\r
-δ\r
-′\r
-(rs) = δ\r
-′\r
-(r)σ(s) + rδ′(s).\r
-An ordinary generalized polynomial ring R[X; σ, δ] (see e.g. [11, Section 1]) where\r
-σ is an endomorphism and δ is a left σ-derivation on R consists of left polynomials\r
+If R is a non-associative ring with an endomorphism sigma, then an additive map delta\r
+on R is called a left sigma-derivation if for all r, s in R,\r
+delta(rs) = sigma(r)delta(s) + delta(r)s.\r
+Similarly, an additive map delta\r
+ on R is called a right sigma-derivation if for all r, s in R,\r
+delta\r
+\r
+(rs) = delta\r
+\r
+(r)sigma(s) + rdelta(s).\r
+An ordinary generalized polynomial ring R[X; sigma, delta] (see e.g. [11, Section 1]) where\r
+sigma is an endomorphism and delta is a left sigma-derivation on R consists of left polynomials\r
 in X with coefficients in R. The addition in this ring is the ordinary addition of\r
 polynomials, and the multiplication is defined by the biadditive extension of the\r
 relations\r
 (1) (rXm)(sXn) = X\r
-i∈N\r
-(rπm\r
+iinN\r
+(rpim\r
 i\r
 (s))X\r
 i+n\r
 ,\r
-where the functions π\r
+where the functions pi\r
 m\r
 i\r
-: R → R, called π functions, are defined as the sum of all\r
+: R -> R, called pi functions, are defined as the sum of all\r
 m\r
 i\r
 \u0001\r
-compositions of σ and δ in which σ occurs i times and δ occurs m − i times.\r
-For instance, π\r
+compositions of sigma and delta in which sigma occurs i times and delta occurs m - i times.\r
+For instance, pi\r
 3\r
-2 = σ◦σ◦δ+σ◦δ ◦σ+δ ◦σ◦σ, while π\r
+2 = sigmaosigmaodelta+sigmaodelta osigma+delta osigmaosigma, while pi\r
 0\r
 0\r
 is defined as idR. Whenever\r
-i > m or i < 0, we set π\r
+i > m or i < 0, we set pi\r
 m\r
-i = 0. It is known that R[X; σ, δ] is an Ore extension of\r
-R with x = X (for a proof, see e.g. [11, Proposition 3.2]). If δ = 0, then R[X; σ, δ]\r
+i = 0. It is known that R[X; sigma, delta] is an Ore extension of\r
+R with x = X (for a proof, see e.g. [11, Proposition 3.2]). If delta = 0, then R[X; sigma, delta]\r
 is a skew polynomial ring, and the product (1) is\r
-(2) (rXm)(sXn) = (rσm(s))Xm+n.\r
-If σ = idR and δ = 0, then R[X; σ, δ] is the ordinary polynomial ring R[X]. The\r
+(2) (rXm)(sXn) = (rsigmam(s))Xm+n.\r
+If sigma = idR and delta = 0, then R[X; sigma, delta] is the ordinary polynomial ring R[X]. The\r
 above construction moreover gives us all Ore extensions of R in the sense that\r
 any Ore extension of R is isomorphic to an ordinary generalized polynomial ring\r
-R[X; σ, δ] (for a proof, see e.g. [11, Proposition 3.3]).\r
-2.3. Non-associative Ore extensions. In [11], the authors noted that the prod\u0002uct (1) equips the additive group R[X; σ, δ] of ordinary generalized polynomials\r
+R[X; sigma, delta] (for a proof, see e.g. [11, Proposition 3.3]).\r
+2.3. Non-associative Ore extensions. In [11], the authors noted that the prod\u0002uct (1) equips the additive group R[X; sigma, delta] of ordinary generalized polynomials\r
 over any non-associative ring R with a non-associative ring structure for any two\r
-additive maps σ and δ on R satisfying σ(1) = 1 and δ(1) = 0. Hence, in order\r
+additive maps sigma and delta on R satisfying sigma(1) = 1 and delta(1) = 0. Hence, in order\r
 to define non-associative Ore extensions, they investigated how to adapt the ax\u0002ioms (O1), (O2), and (O3) so that these rings would still correspond to the above\r
 generalized polynomial rings. They then suggested the following definition:"""
 
 [[sections]]
 number = "4"
-title = "MASOOD ARYAPOOR AND PER BACK ¨"
+title = "MASOOD ARYAPOOR AND PER BACK"
 text = """
 Definition 2 (Non-associative Ore extension). Let S be a non-associative ring,\r
 and let R be a subring of S containing the multiplicative identity element 1 of S.\r
-Then S is called a non-associative Ore extension of R if there is an element x ∈ S\r
+Then S is called a non-associative Ore extension of R if there is an element x in S\r
 such that the following axioms hold:\r
-(N1) x ∈ Nr(S) ∩ Nm(S);\r
+(N1) x in Nr(S) cap Nm(S);\r
 (N2) S is a free left R-module with basis {1, x, x2, . . .};\r
-(N3) xR ⊆ Rx + R.\r
+(N3) xR subseteq Rx + R.\r
 If (N3) is replaced by\r
-(N3)′ xR ⊆ Rx;\r
+(N3) xR subseteq Rx;\r
 then S is called a non-associative skew polynomial ring.\r
 Remark 1. Axiom (N1) ensures that the element x associates with itself, so that\r
 there is no ambiguity in writing x\r
-n for the n-fold product of x with itself, for n ∈ N.\r
+n for the n-fold product of x with itself, for n in N.\r
 P\r
 Let R be a non-associative ring. We denote by R[X] the set of formal sums\r
-i∈N\r
-riXi of finite support, where ri ∈ R, equipped with pointwise addition. Now,\r
-let σ and δ be additive maps on R satisfying σ(1) = 1 and δ(1) = 0. The gen\u0002eralized polynomial ring R[X; σ, δ] over R is defined as the additive group R[X]\r
-with multiplication defined by (1). One readily verifies that this makes R[X; σ, δ]\r
+iinN\r
+riXi of finite support, where ri in R, equipped with pointwise addition. Now,\r
+let sigma and delta be additive maps on R satisfying sigma(1) = 1 and delta(1) = 0. The gen\u0002eralized polynomial ring R[X; sigma, delta] over R is defined as the additive group R[X]\r
+with multiplication defined by (1). One readily verifies that this makes R[X; sigma, delta]\r
 a non-associative ring.\r
-In [11], the authors then showed that R[X; σ, δ] is indeed a non-associative Ore\r
+In [11], the authors then showed that R[X; sigma, delta] is indeed a non-associative Ore\r
 extension of R with x = X [11, Proposition 3.2], and that every non-associative Ore\r
 extension of R is isomorphic to a generalized polynomial ring over R [11, Proposition\r
-3.3]. If δ = 0, then R[X; σ, δ] is a non-associative skew polynomial ring, and the\r
-multiplication is given by (2). If σ = idR and δ = 0, then R[X; σ, δ] is the ordinary\r
+3.3]. If delta = 0, then R[X; sigma, delta] is a non-associative skew polynomial ring, and the\r
+multiplication is given by (2). If sigma = idR and delta = 0, then R[X; sigma, delta] is the ordinary\r
 polynomial ring R[X]."""
 
 [[sections]]
@@ -1779,18 +1779,18 @@ title = "Flipped non-associative Ore extensions"
 text = """
 We begin with a general discussion, introducing the notion of flipped non-as\u0002sociative polynomial rings. Let R be a non-associative ring. The additive group\r
 R[X] of left polynomials P\r
-i∈N\r
-riXi with coefficients ri ∈ R can be equipped with\r
-a natural left R-module structure in the following fashion: for any r ∈ R,\r
+iinN\r
+riXi with coefficients ri in R can be equipped with\r
+a natural left R-module structure in the following fashion: for any r in R,\r
 r\r
 \u0010X\r
-i∈N\r
+iinN\r
 riX\r
 i\r
 \u0011\r
 =\r
 X\r
-i∈N\r
+iinN\r
 (rri)X\r
 i\r
 .\r
@@ -1799,77 +1799,77 @@ a multiplication on the left R-module R[X] that turns R[X] into a (not necessari
 unital) non-associative ring and which is compatible with the R-module structure\r
 on R[X] in the following sense:\r
 (3) (rXm)(sXn) = X\r
-i∈N\r
-(rℓm,n;i(s))Xi,\r
-for any r, s ∈ R and some additive maps ℓm,n;i: R → R (m, n, i ∈ N). It is easy to\r
+iinN\r
+(rlm,n;i(s))Xi,\r
+for any r, s in R and some additive maps lm,n;i: R -> R (m, n, i in N). It is easy to\r
 see that there is a 1-1 correspondence between the set of non-associative polynomial\r
 rings over R and the set of all collections of such additive maps subject to the\r
-condition that for every m, n ∈ N and s ∈ R, there exist only finitely many i ∈ N\r
-such that ℓm,n;i(s) 6= 0.\r
-Let τ : R × R → R × R be the flip map, i.e., τ is defined by τ(r, s) = (s, r) for\r
-arbitrary r, s ∈ R. We may now use τ to “flip” the above multiplication depending
+condition that for every m, n in N and s in R, there exist only finitely many i in N\r
+such that lm,n;i(s) 6= 0.\r
+Let tau : R x R -> R x R be the flip map, i.e., tau is defined by tau(r, s) = (s, r) for\r
+arbitrary r, s in R. We may now use tau to "flip" the above multiplication depending
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 5\r
 on whether n is even or odd to get a new non-associative ring structure on the same\r
 underlying additive group R[X]:\r
 (4) (rXm)(sXn) = X\r
-i∈N\r
-τn(r, ℓm,n;i(s))Xi.\r
-Here, τn is defined as the composition of the multiplication on R and τ\r
+iinN\r
+taun(r, lm,n;i(s))Xi.\r
+Here, taun is defined as the composition of the multiplication on R and tau\r
 n, so that\r
-τn(r, s) = (\r
+taun(r, s) = (\r
 rs if n is even,\r
 sr if n is odd.\r
 We call the resulting rings flipped non-associative polynomial rings:\r
 Definition 3 (Flipped non-associative polynomial ring). Let S be a non-associative\r
 polynomial ring over a non-associative ring R, defined by a collection of additive\r
-maps ℓm,n;i (m, n, k ∈ N) satisfying (3). The flipped non-associative polynomial\r
+maps lm,n;i (m, n, k in N) satisfying (3). The flipped non-associative polynomial\r
 ring of S, written S\r
 f l, is the additive group S equipped with the multiplication\r
 defined by (4).\r
 We now apply the notion of flipped non-associative polynomial rings to the class\r
 of generalized polynomial rings introduced in Subsection 2.3.\r
 Definition 4 (Flipped generalized polynomial ring). The flipped non-associative\r
-polynomial ring R[X; σ, δ]\r
-f l of a generalized polynomial ring R[X; σ, δ] over a non\u0002associative ring R is called a flipped generalized polynomial ring over R.\r
-Note that the multiplication in the flipped generalized polynomial ring R[X; σ, δ]\r
+polynomial ring R[X; sigma, delta]\r
+f l of a generalized polynomial ring R[X; sigma, delta] over a non\u0002associative ring R is called a flipped generalized polynomial ring over R.\r
+Note that the multiplication in the flipped generalized polynomial ring R[X; sigma, delta]\r
 f l\r
 satisfies the identity\r
 (5) (rXm)(sXn) = X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))Xi+n,\r
-for arbitrary r, s ∈ R. Here, the π-functions π\r
+for arbitrary r, s in R. Here, the pi-functions pi\r
 m\r
 i\r
 on R are defined just as for\r
-generalized polynomial rings. By identifying any r ∈ R with rX0 ∈ R[X; σ, δ]\r
+generalized polynomial rings. By identifying any r in R with rX0 in R[X; sigma, delta]\r
 f l\r
 ,\r
-we see that R[X; σ, δ]\r
-f l naturally contains R as a subring, and that R[X; σ, δ]f l is a\r
+we see that R[X; sigma, delta]\r
+f l naturally contains R as a subring, and that R[X; sigma, delta]f l is a\r
 free left R-module.\r
 The next example is perhaps the simplest example of a flipped non-associative\r
 polynomial ring.\r
 Example 1. If R is a non-associative ring, then the multiplication in the flipped\r
 generalized polynomial ring R[X]\r
 f l = R[X; idR, 0]f l satisfies the identity\r
-(rXm)(sXn) = τn(r, s)Xm+n\r
-for any m, n ∈ N and r, s ∈ R. We note that R[X]\r
+(rXm)(sXn) = taun(r, s)Xm+n\r
+for any m, n in N and r, s in R. We note that R[X]\r
 f l is commutative if and only if\r
 R is commutative, and that R[X]\r
 f l is associative if and only if R is associative and\r
 commutative; in both cases, R[X]\r
 f l = R[X].\r
-Continuing, we note that we may split the π-functions of any (flipped) generalized\r
-polynomial ring into two disjoint parts: those that contain σ innermost (outermost)\r
-and those that contain δ innermost (outermost). If we denote by δ\r
+Continuing, we note that we may split the pi-functions of any (flipped) generalized\r
+polynomial ring into two disjoint parts: those that contain sigma innermost (outermost)\r
+and those that contain delta innermost (outermost). If we denote by delta\r
 m\r
 i\r
 the Kronecker\r
 delta,\r
-δ\r
+delta\r
 m\r
 i\r
 :=\r
@@ -1880,35 +1880,35 @@ then the following lemma is immediate:"""
 
 [[sections]]
 number = "6"
-title = "MASOOD ARYAPOOR AND PER BACK ¨"
+title = "MASOOD ARYAPOOR AND PER BACK"
 text = """
-Lemma 1. If R is a non-associative ring with additive maps σ and δ where σ(1) = 1\r
-and δ(1) = 0, then the following equalities hold for any i, m, n ∈ N and r, s ∈ R:\r
-(i) π\r
+Lemma 1. If R is a non-associative ring with additive maps sigma and delta where sigma(1) = 1\r
+and delta(1) = 0, then the following equalities hold for any i, m, n in N and r, s in R:\r
+(i) pi\r
 m\r
 i\r
-(1) = δ\r
+(1) = delta\r
 m\r
 i\r
 ;\r
-(ii) π\r
+(ii) pi\r
 m+1\r
 i\r
-(s) = π\r
+(s) = pi\r
 m\r
-i−1\r
-(σ(s)) + π\r
+i-1\r
+(sigma(s)) + pi\r
 m\r
 i\r
-(δ(s)) = σ(π\r
+(delta(s)) = sigma(pi\r
 m\r
-i−1\r
-(s)) + δ(π\r
+i-1\r
+(s)) + delta(pi\r
 m\r
 i\r
 (s));\r
-(iii) σ(τn(r, s)) = τn(σ(r), σ(s)) if and only if σ is an endomorphism;\r
-(iv) σ(τn(r, s)) = τn(σ(s), σ(r)) if and only if σ is an anti-endomorphism.\r
+(iii) sigma(taun(r, s)) = taun(sigma(r), sigma(s)) if and only if sigma is an endomorphism;\r
+(iv) sigma(taun(r, s)) = taun(sigma(s), sigma(r)) if and only if sigma is an anti-endomorphism.\r
 Next we turn to the notion of flipped non-associative Ore extensions. As in\r
 the case of non-associative Ore extensions (see Definition 2), we wish to define the\r
 flipped ditto in such a way that they correspond to the above flipped generalized\r
@@ -1916,50 +1916,50 @@ polynomial rings. We suggest the following definition:\r
 Definition 5 (Flipped non-associative Ore extension). Let S be a non-associative\r
 ring, and let R be a subring of S containing the multiplicative identity element 1\r
 of S. Then S is called a flipped non-associative Ore extension of R if there is an\r
-element x ∈ S such that the following axioms hold:\r
-(F1) The following identities hold for any m, n ∈ N and r, s ∈ R:\r
-(rxm+1)(sxn) = ((rxm)(σ(s)x\r
+element x in S such that the following axioms hold:\r
+(F1) The following identities hold for any m, n in N and r, s in R:\r
+(rxm+1)(sxn) = ((rxm)(sigma(s)x\r
 n\r
-))x+ (rxm)(δ(s)x\r
+))x+ (rxm)(delta(s)x\r
 n\r
-), r(sxn) = τn(r, s)x\r
+), r(sxn) = taun(r, s)x\r
 n\r
 ,\r
-where σ and δ are additive maps such that xr = σ(r)x + δ(r) for all r ∈ R;\r
+where sigma and delta are additive maps such that xr = sigma(r)x + delta(r) for all r in R;\r
 (F2) S is a free left R-module with basis {1, x, x2, . . .}.\r
-Remark 2. Axiom (F1) implies that xR ⊆ Rx+R, and that the element x is power\r
+Remark 2. Axiom (F1) implies that xR subseteq Rx+R, and that the element x is power\r
 associative, so that x\r
-n is well defined for any n ∈ N.\r
-Proposition 1. Let R be a non-associative ring with additive maps σ and δ where\r
-σ(1) = 1 and δ(1) = 0. Then R[X; σ, δ]\r
+n is well defined for any n in N.\r
+Proposition 1. Let R be a non-associative ring with additive maps sigma and delta where\r
+sigma(1) = 1 and delta(1) = 0. Then R[X; sigma, delta]\r
 f l is a flipped non-associative Ore extension\r
 of R with x = X.\r
-Proof. That (F2) holds in R[X; σ, δ]\r
+Proof. That (F2) holds in R[X; sigma, delta]\r
 f l is immediate from the previous discussion.\r
 From (5), Xr = (1X)(rX0) = P\r
-i∈N\r
-τ0(1, π1\r
+iinN\r
+tau0(1, pi1\r
 i\r
-(r))Xi+0 = σ(r)X +δ(r) for any r ∈ R.\r
-By using (i) in Lemma 1, for any m ∈ N and r ∈ R,\r
+(r))Xi+0 = sigma(r)X +delta(r) for any r in R.\r
+By using (i) in Lemma 1, for any m in N and r in R,\r
 (6)\r
 (rXm)X\r
 (5)\r
 =\r
 X\r
-i∈N\r
-τ1(r, πm\r
+iinN\r
+tau1(r, pim\r
 i\r
 (1))Xi+1 =\r
 X\r
-i∈N\r
-(π\r
+iinN\r
+(pi\r
 m\r
 i\r
 (1)r)Xi+1 (i)=\r
 X\r
-i∈N\r
-(δ\r
+iinN\r
+(delta\r
 m\r
 i\r
 r)Xi+1 = rXm+1.\r
@@ -1968,81 +1968,81 @@ Now, with the help of (ii) in Lemma 1, we can prove that (F1) holds:\r
 (5)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm+1\r
+iinN\r
+taun(r, pim+1\r
 i\r
 (s))Xi+n\r
 (ii)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
-i−1\r
-(σ(s)))X\r
+iinN\r
+taun(r, pim\r
+i-1\r
+(sigma(s)))X\r
 i+n +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(σ(s))Xi+n+1 +\r
+(sigma(s))Xi+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))Xi+n\r
+(delta(s)))Xi+n\r
 (6)\r
 =\r
 \u0010X\r
-j∈N\r
-τn(r, πm\r
+jinN\r
+taun(r, pim\r
 i\r
-(σ(s))X\r
+(sigma(s))X\r
 i+n\r
 \u0011\r
 X +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
-(5) = ((rXm)(σ(s)Xn\r
-))X + (rXm)(δ(s)Xn),\r
+(5) = ((rXm)(sigma(s)Xn\r
+))X + (rXm)(delta(s)Xn),\r
 r(sXn)\r
 (5)\r
 =\r
 X\r
-i∈N\r
-τn(r, π0\r
+iinN\r
+taun(r, pi0\r
 i\r
 (s))X\r
-i+n = τn(r, π0\r
+i+n = taun(r, pi0\r
 0\r
 (s))X\r
-n = τn(r, s)Xn\r
+n = taun(r, s)Xn\r
 . \u0003
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 7\r
 Proposition 2. Every flipped non-associative Ore extension of R is isomorphic to\r
-a flipped generalized polynomial ring R[X; σ, δ]\r
+a flipped generalized polynomial ring R[X; sigma, delta]\r
 f l\r
 .\r
 Proof. The proof is similar to the proof of [11, Proposition 3.3].\r
 First, let R be a non-associative ring and let S be a flipped non-associative Ore\r
 extension of R defined by x. By letting n = 0 and s = 1 in the first identity in\r
-(F1), we have that for any m ∈ N and r ∈ R,\r
+(F1), we have that for any m in N and r in R,\r
 (7) rxm+1 = (rxm)x.\r
-We claim that for any m, n ∈ N and r, s ∈ R,\r
+We claim that for any m, n in N and r, s in R,\r
 (8) (rxm)(sxn) = X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))x\r
 i+n\r
@@ -2051,240 +2051,240 @@ We prove this by induction on m where (8) is the induction hypothesis.\r
 Base case (m = 0):\r
 (rx0)(sxn) = r(sxn)\r
 (F1)\r
-= τn(r, s)x\r
+= taun(r, s)x\r
 n =\r
 X\r
-i∈N\r
-τn(r, π0\r
+iinN\r
+taun(r, pi0\r
 i\r
 (s))x\r
 i+n\r
 .\r
 Induction step (m + 1):\r
 (rxm+1)(sxn)\r
-(F1) = ((rxm)(σ(s)x\r
+(F1) = ((rxm)(sigma(s)x\r
 n\r
-))x + (rxm)(δ(s)x\r
+))x + (rxm)(delta(s)x\r
 n\r
 )\r
 (8)\r
 =\r
 \u0010X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(σ(s)))x\r
+(sigma(s)))x\r
 i+n\r
 \u0011\r
 x +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))x\r
+(delta(s)))x\r
 i+n\r
 (7)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(σ(s)))x\r
+(sigma(s)))x\r
 i+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))x\r
+(delta(s)))x\r
 i+n\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
-i−1\r
-(σ(s)))x\r
+iinN\r
+taun(r, pim\r
+i-1\r
+(sigma(s)))x\r
 i+n +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))x\r
+(delta(s)))x\r
 i+n\r
 (ii)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm+1\r
+iinN\r
+taun(r, pim+1\r
 i\r
 (s))x\r
 i+n\r
 ,\r
 where (ii) refers to that in Lemma 1.\r
-Now, define a function φ: S → R[X; σ, δ]\r
+Now, define a function phi: S -> R[X; sigma, delta]\r
 f l by the additive extension of the\r
-relations φ(rxn) = rXn for any n ∈ N and r ∈ R. Then φ is an isomorphism of\r
-additive groups, and moreover, for any m, n ∈ N and r, s ∈ R,\r
-φ((rxm)(sxn)) (8)= φ\r
+relations phi(rxn) = rXn for any n in N and r in R. Then phi is an isomorphism of\r
+additive groups, and moreover, for any m, n in N and r, s in R,\r
+phi((rxm)(sxn)) (8)= phi\r
 \u0010X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))x\r
 i+n\r
 \u0011\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))Xi+n\r
 (5) = (rXm)(sXn\r
-) = φ(rxm)φ(sxn),\r
-so φ is an isomorphism of rings. \u0003\r
-Remark 3. If σ and δ satisfy the relation σ◦δ+δ◦σ = 0, then the flipped generalized\r
-polynomial ring S := R[X; σ, δ]\r
+) = phi(rxm)phi(sxn),\r
+so phi is an isomorphism of rings. \u0003\r
+Remark 3. If sigma and delta satisfy the relation sigmaodelta+deltaosigma = 0, then the flipped generalized\r
+polynomial ring S := R[X; sigma, delta]\r
 f l of R can naturally be considered as a Z2-graded\r
-ring. More precisely, we have S = S0 ⊕S0X, where S0 is the subring of S generated\r
+ring. More precisely, we have S = S0 +S0X, where S0 is the subring of S generated\r
 by R and X2. Furthermore, the ring S0 is isomorphic to the generalized polynomial\r
-ring R[Y ; σ\r
+ring R[Y ; sigma\r
 2\r
-, δ2], where Y is the image of X2.\r
+, delta2], where Y is the image of X2.\r
 Next, we give some properties of flipped generalized polynomial rings.\r
-Proposition 3. Let R be a non-associative ring with additive maps σ and δ where\r
-σ(1) = 1 and δ(1) = 0. If S = R[X; σ, δ]\r
+Proposition 3. Let R be a non-associative ring with additive maps sigma and delta where\r
+sigma(1) = 1 and delta(1) = 0. If S = R[X; sigma, delta]\r
 f l, then the following assertions hold:"""
 
 [[sections]]
 number = "8"
-title = "MASOOD ARYAPOOR AND PER BACK ¨"
+title = "MASOOD ARYAPOOR AND PER BACK"
 text = """
-(i) X ∈ Nl(S) if and only if σ is an endomorphism and δ is both a left and a\r
-right σ-derivation;\r
-(ii) X ∈ Nm(S) if and only if im(δ\r
-n ◦ σ) ⊆ C(R) for any n ∈ N;\r
-(iii) X ∈ Nr(S) if and only if R is commutative.\r
-Proof. (i): We first show that the conditions are necessary. If r, s ∈ R are arbitrary,\r
+(i) X in Nl(S) if and only if sigma is an endomorphism and delta is both a left and a\r
+right sigma-derivation;\r
+(ii) X in Nm(S) if and only if im(delta\r
+n o sigma) subseteq C(R) for any n in N;\r
+(iii) X in Nr(S) if and only if R is commutative.\r
+Proof. (i): We first show that the conditions are necessary. If r, s in R are arbitrary,\r
 then in S,\r
-X(rs) = σ(rs)X + δ(rs),\r
-(Xr)s = (σ(r)X + δ(r))s = (σ(r)σ(s))X + σ(r)δ(s) + δ(r)s.\r
-Hence, by comparing coefficients, if X ∈ Nl(S), then σ is an endomorphism and δ\r
-is a left σ-derivation. Similarly,\r
-X(s(rX)) = X((rs)X) = σ(rs)X2 + δ(rs)X,\r
-(Xs)(rX) = (σ(s)X + δ(s))(rX) = (σ(r)σ(s))X\r
-2 + (δ(r)σ(s) + rδ(s))X,\r
-so if X ∈ Nl(S), then δ must also be a right σ-derivation. Next, we show that the\r
-conditions are sufficient. To this end, assume that σ is an endomorphism and that\r
-δ is both a left and a right σ-derivation. Then, for any n ∈ N and r, s ∈ R,\r
-δ(τn(r, s)) = (\r
-δ(rs) if n is even,\r
-δ(sr) if n is odd.\r
+X(rs) = sigma(rs)X + delta(rs),\r
+(Xr)s = (sigma(r)X + delta(r))s = (sigma(r)sigma(s))X + sigma(r)delta(s) + delta(r)s.\r
+Hence, by comparing coefficients, if X in Nl(S), then sigma is an endomorphism and delta\r
+is a left sigma-derivation. Similarly,\r
+X(s(rX)) = X((rs)X) = sigma(rs)X2 + delta(rs)X,\r
+(Xs)(rX) = (sigma(s)X + delta(s))(rX) = (sigma(r)sigma(s))X\r
+2 + (delta(r)sigma(s) + rdelta(s))X,\r
+so if X in Nl(S), then delta must also be a right sigma-derivation. Next, we show that the\r
+conditions are sufficient. To this end, assume that sigma is an endomorphism and that\r
+delta is both a left and a right sigma-derivation. Then, for any n in N and r, s in R,\r
+delta(taun(r, s)) = (\r
+delta(rs) if n is even,\r
+delta(sr) if n is odd.\r
 =\r
 (\r
-σ(r)δ(s) + δ(r)s if n is even,\r
-δ(s)σ(r) + sδ(r) if n is odd.\r
+sigma(r)delta(s) + delta(r)s if n is even,\r
+delta(s)sigma(r) + sdelta(r) if n is odd.\r
 (9)\r
-= τn(σ(r), δ(s)) + τn(δ(r), s).\r
-It is sufficient to show that X((rXm)(sXn)) = (X(rXm))(sXn) for any m, n ∈ N\r
-and r, s ∈ R. By using (9) together with (ii) and (iii) in Lemma 1,\r
+= taun(sigma(r), delta(s)) + taun(delta(r), s).\r
+It is sufficient to show that X((rXm)(sXn)) = (X(rXm))(sXn) for any m, n in N\r
+and r, s in R. By using (9) together with (ii) and (iii) in Lemma 1,\r
 X((rXm)(sXn)) = X\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
 (s))X\r
 i+n =\r
 X\r
-i∈N\r
-X(τn(r, πm\r
+iinN\r
+X(taun(r, pim\r
 i\r
 (s))X\r
 i+n\r
 )\r
 =\r
 X\r
-i∈N\r
-σ(τn(r, πm\r
+iinN\r
+sigma(taun(r, pim\r
 i\r
 (s)))Xi+n+1 +\r
 X\r
-i∈N\r
-δ(τn(r, πm\r
+iinN\r
+delta(taun(r, pim\r
 i\r
 (s)))Xi+n,\r
-(X(rXm))(sXn) = (σ(r)X\r
-m+1 + δ(r)Xm)(sXn\r
+(X(rXm))(sXn) = (sigma(r)X\r
+m+1 + delta(r)Xm)(sXn\r
 )\r
 =\r
 X\r
-i∈N\r
-τn(σ(r), πm+1\r
+iinN\r
+taun(sigma(r), pim+1\r
 i\r
 (s))Xi+n +\r
 X\r
-i∈N\r
-τn(δ(r), πm\r
+iinN\r
+taun(delta(r), pim\r
 i\r
 (s))Xi+n\r
 (ii)\r
 =\r
 X\r
-i∈N\r
-τn(σ(r), σ(π\r
+iinN\r
+taun(sigma(r), sigma(pi\r
 m\r
-i−1\r
+i-1\r
 (s)))X\r
 i+n +\r
 X\r
-i∈N\r
-τn(σ(r), δ(π\r
+iinN\r
+taun(sigma(r), delta(pi\r
 m\r
 i\r
 (s)))X\r
 i+n\r
 +\r
 X\r
-i∈N\r
-τn(δ(r), πm\r
+iinN\r
+taun(delta(r), pim\r
 i\r
 (s))Xi+n\r
 =\r
 X\r
-i∈N\r
-τn(σ(r), σ(π\r
+iinN\r
+taun(sigma(r), sigma(pi\r
 m\r
 i\r
 (s)))X\r
 i+n+1 +\r
 X\r
-i∈N\r
-τn(σ(r), δ(π\r
+iinN\r
+taun(sigma(r), delta(pi\r
 m\r
 i\r
 (s)))X\r
 i+n\r
 +\r
 X\r
-i∈N\r
-τn(δ(r), πm\r
+iinN\r
+taun(delta(r), pim\r
 i\r
 (s))Xi+n\r
 (iii)\r
 =\r
 X\r
-i∈N\r
-σ(τn(r, πm\r
+iinN\r
+sigma(taun(r, pim\r
 i\r
 (s)))Xi+n+1 +\r
 X\r
-i∈N\r
-τn(σ(r), δ(π\r
+iinN\r
+taun(sigma(r), delta(pi\r
 m\r
 i\r
 (s)))Xi+n\r
 +\r
 X\r
-i∈N\r
-τn(δ(r), πm\r
+iinN\r
+taun(delta(r), pim\r
 i\r
 (s))X\r
 i+n
@@ -2293,416 +2293,416 @@ FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 9\r
 (9)\r
 =\r
 X\r
-i∈N\r
-σ(τn(r, πm\r
+iinN\r
+sigma(taun(r, pim\r
 i\r
 (s)))Xi+n+1 +\r
 X\r
-i∈N\r
-δ(τn(r, πm\r
+iinN\r
+delta(taun(r, pim\r
 i\r
 (s)))Xi+n.\r
-(ii): By using (ii) in Lemma 1, for any m, n ∈ N and r, s ∈ R,\r
+(ii): By using (ii) in Lemma 1, for any m, n in N and r, s in R,\r
 ((rXm)X)(sXn) = (rXm+1)(sXn) = X\r
-i∈N\r
-τn(r, πm+1\r
+iinN\r
+taun(r, pim+1\r
 i\r
 (s))Xi+n\r
 (ii)\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
-i−1\r
-(σ(s)))X\r
+iinN\r
+taun(r, pim\r
+i-1\r
+(sigma(s)))X\r
 i+n +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
 =\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(σ(s)))Xi+n+1 +\r
+(sigma(s)))Xi+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))Xi+n\r
+(delta(s)))Xi+n\r
 =\r
 X\r
-i∈N\r
-τn+1(π\r
+iinN\r
+taun+1(pi\r
 m\r
 i\r
-(σ(s)), r)X\r
+(sigma(s)), r)X\r
 i+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
 ,\r
-(rXm)(X(sXn)) = (rXm)(σ(s)Xn+1 + δ(s)Xn)\r
+(rXm)(X(sXn)) = (rXm)(sigma(s)Xn+1 + delta(s)Xn)\r
 =\r
 X\r
-i∈N\r
-τn+1(r, πm\r
+iinN\r
+taun+1(r, pim\r
 i\r
-(σ(s)))X\r
+(sigma(s)))X\r
 i+n+1 +\r
 X\r
-i∈N\r
-τn(r, πm\r
+iinN\r
+taun(r, pim\r
 i\r
-(δ(s)))X\r
+(delta(s)))X\r
 i+n\r
 .\r
-Hence X ∈ Nm(S) if and only if\r
+Hence X in Nm(S) if and only if\r
 X\r
-i∈N\r
-τn+1(π\r
+iinN\r
+taun+1(pi\r
 m\r
 i\r
-(σ(s)), r)X\r
+(sigma(s)), r)X\r
 i+n+1 =\r
 X\r
-i∈N\r
-τn+1(r, πm\r
+iinN\r
+taun+1(r, pim\r
 i\r
-(σ(s)))X\r
+(sigma(s)))X\r
 i+n+1\r
 .\r
-By comparing coefficients, the above equality is equivalent to τn+1(π\r
+By comparing coefficients, the above equality is equivalent to taun+1(pi\r
 m\r
 i\r
-(σ(s)), r) =\r
-τn+1(r, πm\r
+(sigma(s)), r) =\r
+taun+1(r, pim\r
 i\r
-(σ(s))), which in turn is equivalent to rπm\r
+(sigma(s))), which in turn is equivalent to rpim\r
 i\r
-(σ(s)) = π\r
+(sigma(s)) = pi\r
 m\r
 i\r
-(σ(s))r for any\r
-i, m ∈ N and r, s ∈ R. We claim that the latter equality is equivalent to im(δ\r
-n ◦σ) ⊆\r
-C(R) for any n ∈ N. By setting m = n and i = 0 in rπm\r
+(sigma(s))r for any\r
+i, m in N and r, s in R. We claim that the latter equality is equivalent to im(delta\r
+n osigma) subseteq\r
+C(R) for any n in N. By setting m = n and i = 0 in rpim\r
 i\r
-(σ(s)) = π\r
+(sigma(s)) = pi\r
 m\r
 i\r
-(σ(s))r, we\r
+(sigma(s))r, we\r
 see that the conditions are necessary. To show sufficiency, we note that each term\r
-in π\r
+in pi\r
 m\r
 i\r
-(σ(s)) must contain δ\r
-n ◦ σ outermost for some n ≤ m−i, and so we are done.\r
-(iii): If r, s ∈ R are arbitrary, then r(sX) = (sr)X, so r(sX) = (rs)X if and only\r
-if rs = sr. Hence, if X ∈ Nr(S), then R is commutative. To prove the converse,\r
-assume that R is commutative. Then τn(r, s) = rs for any n ∈ N and r, s ∈ R,\r
-so S is a generalized polynomial ring R[X; σ, δ]. Hence S is a non-associative Ore\r
-extension of R with x = X, so by (N1) in Definition 2, X ∈ Nr(S). \u0003\r
-Corollary 1. Let R be a non-associative ring with additive maps σ and δ where\r
-σ(1) = 1 and δ(1) = 0. Then R[X; σ, δ]\r
-f l = R[X; σ, δ] if and only if R is commuta\u0002tive.\r
-Proof. Let S = R[X; σ, δ]. If R is commutative, then τn(r, s) = rs for any n ∈ N\r
-and r, s ∈ R, and so S\r
-f l = S. If Sf l = S, then X ∈ Nr(S) = Nr(Sf l) which by (iii)\r
+(sigma(s)) must contain delta\r
+n o sigma outermost for some n <= m-i, and so we are done.\r
+(iii): If r, s in R are arbitrary, then r(sX) = (sr)X, so r(sX) = (rs)X if and only\r
+if rs = sr. Hence, if X in Nr(S), then R is commutative. To prove the converse,\r
+assume that R is commutative. Then taun(r, s) = rs for any n in N and r, s in R,\r
+so S is a generalized polynomial ring R[X; sigma, delta]. Hence S is a non-associative Ore\r
+extension of R with x = X, so by (N1) in Definition 2, X in Nr(S). \u0003\r
+Corollary 1. Let R be a non-associative ring with additive maps sigma and delta where\r
+sigma(1) = 1 and delta(1) = 0. Then R[X; sigma, delta]\r
+f l = R[X; sigma, delta] if and only if R is commuta\u0002tive.\r
+Proof. Let S = R[X; sigma, delta]. If R is commutative, then taun(r, s) = rs for any n in N\r
+and r, s in R, and so S\r
+f l = S. If Sf l = S, then X in Nr(S) = Nr(Sf l) which by (iii)\r
 in Proposition 3 is equivalent to R being commutative. \u0003\r
-Proposition 4. Let S = R[X; σ, δ]\r
+Proposition 4. Let S = R[X; sigma, delta]\r
 f l be a flipped generalized polynomial ring over\r
 a non-associative ring R. Then the following conditions are equivalent:\r
-(i) R is associative and commutative, σ is an endomorphism and δ is a left\r
-σ-derivation;\r
+(i) R is associative and commutative, sigma is an endomorphism and delta is a left\r
+sigma-derivation;\r
 (ii) S is an ordinary generalized polynomial ring;\r
 (iii) S is associative."""
 
 [[sections]]
 number = "10"
-title = "MASOOD ARYAPOOR AND PER BACK ¨"
+title = "MASOOD ARYAPOOR AND PER BACK"
 text = """
-Proof. (i) =⇒ (ii): If R is commutative, then R[X; σ, δ]\r
-f l = R[X; σ, δ] by Corollary 1,\r
+Proof. (i) ==> (ii): If R is commutative, then R[X; sigma, delta]\r
+f l = R[X; sigma, delta] by Corollary 1,\r
 and so the result follows immediately.\r
-(ii) =⇒ (iii): For a proof of the associativity of the ordinary generalized polynomial\r
-ring R[X; σ, δ], see [10] or [13].\r
-(iii) =⇒ (i): Assume that S is associative. Then so is R, since R is a subring of S.\r
-Also, X ∈ Nl(S)∩Nr (S), so the result follows from (i) and (iii) in Proposition 3. \u0003"""
+(ii) ==> (iii): For a proof of the associativity of the ordinary generalized polynomial\r
+ring R[X; sigma, delta], see [10] or [13].\r
+(iii) ==> (i): Assume that S is associative. Then so is R, since R is a subring of S.\r
+Also, X in Nl(S)capNr (S), so the result follows from (i) and (iii) in Proposition 3. \u0003"""
 
 [[sections]]
 number = "4"
-title = "The Cayley–Dickson construction"
+title = "The Cayley-Dickson construction"
 text = """
 Let A be a non-associative algebra over an associative and commutative ring K\r
-of scalars. We say that a K-linear map ∗: A → A, also written as a 7→ a\r
-∗\r
+of scalars. We say that a K-linear map *: A -> A, also written as a 7-> a\r
+*\r
 , is an\r
 involution of A if (ab)\r
-∗ = b∗a∗ and (a∗\r
+* = b*a* and (a*\r
 )\r
-∗ = a hold for any a, b ∈ A. In particular,\r
-an involution is an anti-automorphism. We note that 1∗ = 1 since for any a ∈ A,\r
+* = a hold for any a, b in A. In particular,\r
+an involution is an anti-automorphism. We note that 1* = 1 since for any a in A,\r
 1\r
-∗a∗ = (a1)∗ = a∗ = (1a)∗ = a∗1∗\r
-, so by the surjectivity of ∗ and the uniqueness\r
-of 1, 1∗ = 1.\r
-We refer to a non-associative algebra with an involution ∗ as a non-associative\r
-∗-algebra. If A and B are non-associative ∗-algebras over the same ring K, then\r
-a ∗-homomorphism f : A → B is a K-algebra homomorphism that is compatible\r
+*a* = (a1)* = a* = (1a)* = a*1*\r
+, so by the surjectivity of * and the uniqueness\r
+of 1, 1* = 1.\r
+We refer to a non-associative algebra with an involution * as a non-associative\r
+*-algebra. If A and B are non-associative *-algebras over the same ring K, then\r
+a *-homomorphism f : A -> B is a K-algebra homomorphism that is compatible\r
 with the involutions on A and B, i.e., with some abuse of notation, f(a\r
-∗\r
+*\r
 ) = f(a)\r
-∗\r
-for any a ∈ A. A bijective ∗-homomorphism is called a ∗-isomorphism, and the\r
-corresponding algebras are said to be isomorphic as ∗-algebras. For an introduction\r
-to ∗ -algebras, we refer the reader to [8, Section 2.2].\r
-From the above discussion, we note that any non-associative ∗-algebra A nat\u0002urally gives rise to a flipped non-associative skew polynomial ring A[X; ∗]\r
+*\r
+for any a in A. A bijective *-homomorphism is called a *-isomorphism, and the\r
+corresponding algebras are said to be isomorphic as *-algebras. For an introduction\r
+to * -algebras, we refer the reader to [8, Section 2.2].\r
+From the above discussion, we note that any non-associative *-algebra A nat\u0002urally gives rise to a flipped non-associative skew polynomial ring A[X; *]\r
 f l :=\r
-A[X; ∗, 0]f l. From (5), the multiplication in A[X; ∗]\r
+A[X; *, 0]f l. From (5), the multiplication in A[X; *]\r
 f l is thus given by\r
-(10) (aXm)(bXn) = τn(a, ∗\r
+(10) (aXm)(bXn) = taun(a, *\r
 m(b))Xm+n\r
-for arbitrary m, n ∈ N and a, b ∈ A. The next proposition shows that A[X; ∗]\r
+for arbitrary m, n in N and a, b in A. The next proposition shows that A[X; *]\r
 f l can\r
-also be made into a ∗-algebra.\r
-Proposition 5. Let A be a non-associative ∗-algebra over an associative and com\u0002mutative ring K. Then the maps α, β : A[X; ∗]\r
-f l → A[X; ∗]f l defined by\r
-α(a0 + a1X + a2X2 + · · ·) = X\r
-i∈N\r
-(−1)i∗\r
+also be made into a *-algebra.\r
+Proposition 5. Let A be a non-associative *-algebra over an associative and com\u0002mutative ring K. Then the maps alpha, beta : A[X; *]\r
+f l -> A[X; *]f l defined by\r
+alpha(a0 + a1X + a2X2 + * * *) = X\r
+iinN\r
+(-1)i*\r
 i+1 (ai)Xi\r
 ,\r
-β(a0 + a1X + a2X2 + · · ·) = X\r
-i∈N\r
-∗\r
+beta(a0 + a1X + a2X2 + * * *) = X\r
+iinN\r
+*\r
 i+1(ai)Xi\r
-are involutions of A[X; ∗]\r
-f l, which extend the involution ∗ of A. Furthermore, if ∗\r
-is nontrivial, A does not have zero divisors, and 2A 6= 0, then α and β are the only\r
-involutions of A[X; ∗]\r
-f l that extend the involution ∗ of A.\r
-Proof. First, we show that α is an involution of A[X; ∗]\r
+are involutions of A[X; *]\r
+f l, which extend the involution * of A. Furthermore, if *\r
+is nontrivial, A does not have zero divisors, and 2A 6= 0, then alpha and beta are the only\r
+involutions of A[X; *]\r
+f l that extend the involution * of A.\r
+Proof. First, we show that alpha is an involution of A[X; *]\r
 f l. It is clear from the\r
-definition that α is K-linear and satisfies α\r
+definition that alpha is K-linear and satisfies alpha\r
 2\r
-(p) = p for all p ∈ A[X; ∗]\r
+(p) = p for all p in A[X; *]\r
 f l. Hence we\r
-only need to show that α(pq) = α(q)α(p) for any p, q ∈ A[X; ∗]\r
+only need to show that alpha(pq) = alpha(q)alpha(p) for any p, q in A[X; *]\r
 f l. We claim that\r
-for any m, n ∈ N and a, b ∈ A,\r
-(11) τm(a, b) = τm+1(b, a),\r
-∗\r
+for any m, n in N and a, b in A,\r
+(11) taum(a, b) = taum+1(b, a),\r
+*\r
 m+n\r
-(τm(∗\r
+(taum(*\r
 n\r
-(a), b)) = τn(∗\r
-m(a), ∗m+n\r
+(a), b)) = taun(*\r
+m(a), *m+n\r
 (12) (b)).
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 11\r
 The first equality is immediate. Regarding the last equality, we note that if m+n is\r
-even, then ∗\r
+even, then *\r
 m+n is the identity map, and either m and n are both even, or m and n\r
-are both odd, so that τm = τn. If m+n is odd, then ∗\r
+are both odd, so that taum = taun. If m+n is odd, then *\r
 m+n is an anti-endomorphism\r
-and either m is even and n is odd, or m is odd and n is even, so that τm(a, b) =\r
-τn(b, a). The result now follows from (iv) in Lemma 1. Now, write p =\r
+and either m is even and n is odd, or m is odd and n is even, so that taum(a, b) =\r
+taun(b, a). The result now follows from (iv) in Lemma 1. Now, write p =\r
 P\r
-i∈N\r
+iinN\r
 piXi\r
 and q =\r
 P\r
-j∈N\r
-qjXj where pi, qj ∈ A. By definition, α(p) = P\r
-i∈N\r
-(−1)i ∗\r
+jinN\r
+qjXj where pi, qj in A. By definition, alpha(p) = P\r
+iinN\r
+(-1)i *\r
 i+1 (pi)Xi\r
 ,\r
 so\r
-α(pq) = α\r
+alpha(pq) = alpha\r
 \u0010\u0010X\r
-i∈N\r
+iinN\r
 piXi\r
 \u0011\u0010X\r
-j∈N\r
+jinN\r
 qjXj\r
 \u0011\u0011 (10)\r
-= α\r
+= alpha\r
 \u0010 X\r
-i,j∈N\r
-τj (pi, ∗\r
+i,jinN\r
+tauj (pi, *\r
 i\r
 (qj ))Xi+j\r
 \u0011\r
 =\r
 X\r
-i,j∈N\r
-(−1)i+j∗\r
-i+j+1 (τj (pi\r
-, ∗\r
+i,jinN\r
+(-1)i+j*\r
+i+j+1 (tauj (pi\r
+, *\r
 i\r
 (qj )))Xi+j\r
 (11)\r
 =\r
 X\r
-i,j∈N\r
-(−1)i+j∗\r
-i+j+1 (τj+1(∗i\r
+i,jinN\r
+(-1)i+j*\r
+i+j+1 (tauj+1(*i\r
 (qj ), pi))Xi+j\r
 (12)\r
 =\r
 X\r
-i,j∈N\r
-(−1)i+jτi(∗\r
-j+1(qj ), ∗i+j+1(pi))Xi+j\r
+i,jinN\r
+(-1)i+jtaui(*\r
+j+1(qj ), *i+j+1(pi))Xi+j\r
 (10)\r
 =\r
 \u0010X\r
-j∈N\r
-(−1)j∗\r
+jinN\r
+(-1)j*\r
 j+1 (qj )Xj\r
 \u0011\u0010X\r
-i∈N\r
-(−1)i∗\r
+iinN\r
+(-1)i*\r
 i+1 (pi)Xi\r
 \u0011\r
-= α(q)α(p).\r
-In a similar fashion, one can show that β is an involution of A[X; ∗]\r
+= alpha(q)alpha(p).\r
+In a similar fashion, one can show that beta is an involution of A[X; *]\r
 f l\r
 .\r
-To prove the last statement, assume that ∗ is nontrivial, A does not have zero\r
-divisors, and 2A 6= 0. Let γ be an involution of A[X; ∗]\r
-f l that extends ∗ of A.\r
-Our goal is to show that γ coincides with either α or β. Since γ\r
+To prove the last statement, assume that * is nontrivial, A does not have zero\r
+divisors, and 2A 6= 0. Let gamma be an involution of A[X; *]\r
+f l that extends * of A.\r
+Our goal is to show that gamma coincides with either alpha or beta. Since gamma\r
 2\r
 (X) = X, an\r
-argument involving counting degrees reveals that γ(X) must be of degree 1. So,\r
-γ(X) = a + bX for some a, b ∈ A. The identity γ\r
+argument involving counting degrees reveals that gamma(X) must be of degree 1. So,\r
+gamma(X) = a + bX for some a, b in A. The identity gamma\r
 2\r
 (X) = X gives\r
-X = γ\r
+X = gamma\r
 2\r
-(X) = γ(a + bX) = a\r
-∗ + γ(X)b∗ = a∗ + (a + bX)b∗ = a∗ + ab∗ + b2X.\r
+(X) = gamma(a + bX) = a\r
+* + gamma(X)b* = a* + (a + bX)b* = a* + ab* + b2X.\r
 It follows that a\r
-∗ + ab∗ = 0 and b2 = 1. Since A does not have zero divisors and\r
-(b + 1)(b − 1) = 0, b is either 1 or −1. Applying γ to the identity Xc = c\r
-∗X, where\r
-c ∈ A, yields c\r
-∗\r
+* + ab* = 0 and b2 = 1. Since A does not have zero divisors and\r
+(b + 1)(b - 1) = 0, b is either 1 or -1. Applying gamma to the identity Xc = c\r
+*X, where\r
+c in A, yields c\r
+*\r
 (a + bX) = (a + bX)c, from which it follows that c\r
-∗a = ac for all\r
-a ∈ A. We distinguish two cases.\r
-Case 1. b = −1. From a\r
-∗ + ab∗ = 0, it follows that a∗ = a. We also have\r
+*a = ac for all\r
+a in A. We distinguish two cases.\r
+Case 1. b = -1. From a\r
+* + ab* = 0, it follows that a* = a. We also have\r
 c\r
-∗a = ac for all a ∈ A. We apply γ to both sides of the identity (cX)X = cX2\r
+*a = ac for all a in A. We apply gamma to both sides of the identity (cX)X = cX2\r
 . On\r
 the one hand, we have\r
-γ((cX)X) = γ(X)γ(cX) = γ(X)\r
+gamma((cX)X) = gamma(X)gamma(cX) = gamma(X)\r
 \r
-γ(X)γ(c)\r
+gamma(X)gamma(c)\r
 \u0001\r
-= (a − X)\r
+= (a - X)\r
 \r
-(a − X)c\r
-∗\r
+(a - X)c\r
+*\r
 \u0001\r
-= (a − X)(ac∗ − Xc∗) = (a − X)(ac∗ − cX)\r
-= a(ac∗) − X(ac∗) − a(cX) + X(cX)\r
-= a(ac∗) − (ac∗)\r
-∗X − (ca)X + c∗X2\r
-= a(ac∗) − (ca∗)X − (ca)X + c\r
-∗X2 = a(ac∗\r
-) − (2ca)X + c\r
-∗X2\r
+= (a - X)(ac* - Xc*) = (a - X)(ac* - cX)\r
+= a(ac*) - X(ac*) - a(cX) + X(cX)\r
+= a(ac*) - (ac*)\r
+*X - (ca)X + c*X2\r
+= a(ac*) - (ca*)X - (ca)X + c\r
+*X2 = a(ac*\r
+) - (2ca)X + c\r
+*X2\r
 ."""
 
 [[sections]]
 number = "12"
-title = "MASOOD ARYAPOOR AND PER BACK ¨"
+title = "MASOOD ARYAPOOR AND PER BACK"
 text = """
 On the other hand, we have\r
-γ(cX2) = γ(X\r
+gamma(cX2) = gamma(X\r
 2\r
-)γ(c) = γ(X)γ(X)\r
+)gamma(c) = gamma(X)gamma(X)\r
 \u0001\r
-γ(c) = (a − X)(a − X)\r
+gamma(c) = (a - X)(a - X)\r
 \u0001\r
 c\r
-∗\r
+*\r
 = (a\r
-2 − Xa − aX + X2\r
+2 - Xa - aX + X2\r
 )c\r
-∗ = (a2 − a∗X − aX + X2\r
+* = (a2 - a*X - aX + X2\r
 )c\r
-∗\r
+*\r
 = (a\r
-2 − 2aX + X2\r
+2 - 2aX + X2\r
 )c\r
-∗ = a2\r
+* = a2\r
 c\r
-∗ − (2aX)c∗ + X2\r
+* - (2aX)c* + X2\r
 c\r
-∗\r
+*\r
 = a\r
 2\r
 c\r
-∗ − (2ac)X + c∗X2 = a2\r
+* - (2ac)X + c*X2 = a2\r
 c\r
-∗ − (2c∗\r
+* - (2c*\r
 a)X + c\r
-∗X2\r
+*X2\r
 .\r
 Comparing the coefficients of the flipped polynomials, we see that 2c\r
-∗a = 2ca, or\r
+*a = 2ca, or\r
 equivalently, 2(c\r
-∗ − c)a = 0, for all a ∈ A. Since A does not have zero divisors,\r
-2A 6= 0, and ∗ is nontrivial, we conclude that a = 0, that is, γ = α.\r
+* - c)a = 0, for all a in A. Since A does not have zero divisors,\r
+2A 6= 0, and * is nontrivial, we conclude that a = 0, that is, gamma = alpha.\r
 Case 2. b = 1. It follows from a\r
-∗ + ab∗ = 0 that a∗ + a = 0. We also have\r
+* + ab* = 0 that a* + a = 0. We also have\r
 c\r
-∗a = ac for all a ∈ A. Setting c = a, we obtain a∗a = a2\r
+*a = ac for all a in A. Setting c = a, we obtain a*a = a2\r
 implying 2a\r
 2 = 0 because\r
 a\r
-∗ = −a. Since A does not have zero divisors and 2A 6= 0, we conclude that a = 0,\r
-that is, γ = β. This completes the proof of the proposition. \u0003\r
-In what follows, we consider A[X; ∗]\r
-f l as a ∗-algebra using the involution α\r
-introduced in Proposition 5. Also, we follow McCrimmon’s conventions in [9].\r
-Let A be a non-associative ∗-algebra over an associative and commutative ring\r
-K, and assume that µ ∈ K is a cancellable scalar, meaning that if µa = 0 for\r
-some a ∈ A, then a = 0. Further assume that K acts faithfully on A, meaning\r
-that if kA = 0 for some k ∈ K, then k = 0. We can now construct a new non\u0002associative ∗-algebra over K, the Cayley double of A, written Cay(A, µ). Cay(A, µ)\r
-is defined as A ⊕ A with involution and product defined by (a, b)\r
-∗ = (a∗\r
-, −b) and\r
-(a, b)(c, d) = (ac + µd∗b, da + bc∗) for arbitrary a, b, c, d ∈ A, respectively.\r
-Example 2. If we start with ∗ = idK on K = R and choose µ = −1 and then\r
-double, we obtain C, H, O, . . .. If we instead choose µ = +1 and then double, we\r
+* = -a. Since A does not have zero divisors and 2A 6= 0, we conclude that a = 0,\r
+that is, gamma = beta. This completes the proof of the proposition. \u0003\r
+In what follows, we consider A[X; *]\r
+f l as a *-algebra using the involution alpha\r
+introduced in Proposition 5. Also, we follow McCrimmon's conventions in [9].\r
+Let A be a non-associative *-algebra over an associative and commutative ring\r
+K, and assume that  in K is a cancellable scalar, meaning that if a = 0 for\r
+some a in A, then a = 0. Further assume that K acts faithfully on A, meaning\r
+that if kA = 0 for some k in K, then k = 0. We can now construct a new non\u0002associative *-algebra over K, the Cayley double of A, written Cay(A, ). Cay(A, )\r
+is defined as A + A with involution and product defined by (a, b)\r
+* = (a*\r
+, -b) and\r
+(a, b)(c, d) = (ac + d*b, da + bc*) for arbitrary a, b, c, d in A, respectively.\r
+Example 2. If we start with * = idK on K = R and choose  = -1 and then\r
+double, we obtain C, H, O, . . .. If we instead choose  = +1 and then double, we\r
 obtain the so-called split versions C\r
-′\r
-, H′, O′, . . . of the above algebras:\r
-Cay(R, −1) ∼= C, Cay(R, +1) ∼= C\r
-′\r
+\r
+, H, O, . . . of the above algebras:\r
+Cay(R, -1) ~= C, Cay(R, +1) ~= C\r
+\r
 ,\r
-Cay(C, −1) ∼= H, Cay(C\r
-′\r
-, +1) ∼= H\r
-′\r
+Cay(C, -1) ~= H, Cay(C\r
+\r
+, +1) ~= H\r
+\r
 ,\r
-Cay(H, −1) ∼= O, Cay(H\r
-′\r
-, +1) ∼= O\r
-′\r
+Cay(H, -1) ~= O, Cay(H\r
+\r
+, +1) ~= O\r
+\r
 ,\r
 .\r
 .\r
@@ -2710,33 +2710,33 @@ Cay(H, −1) ∼= O, Cay(H\r
 .\r
 .\r
 .\r
-There is a connection between A[X; ∗]\r
+There is a connection between A[X; *]\r
 f l and the concept of a Cayley double.\r
-More precisely, the Cayley double of A is isomorphic to a quotient ring of A[X; ∗]\r
+More precisely, the Cayley double of A is isomorphic to a quotient ring of A[X; *]\r
 f l\r
-(see Theorem 1), and furthermore, A[X; ∗]\r
+(see Theorem 1), and furthermore, A[X; *]\r
 f l is isomorphic to the Cayley double of\r
 an appropriate ring (see Theorem 2).\r
-Before the next theorem, let us remark that if I is an ideal of B := A[X; ∗]\r
+Before the next theorem, let us remark that if I is an ideal of B := A[X; *]\r
 f l such\r
 that I\r
-∗ ⊆ I, then the extended involution ∗ of B induces a well-defined involution\r
+* subseteq I, then the extended involution * of B induces a well-defined involution\r
 of B/I by [p]\r
-∗\r
+*\r
 := [p\r
-∗\r
-] for any p ∈ B and its equivalence class [p] ∈ B/I. In this\r
-way, B/I naturally becomes a ∗-algebra. In particular, if I = hX2 − µi, then by\r
+*\r
+] for any p in B and its equivalence class [p] in B/I. In this\r
+way, B/I naturally becomes a *-algebra. In particular, if I = hX2 - i, then by\r
 iteratively using that (pq)\r
-∗ = q∗p∗\r
-for any p, q ∈ B and (X2 − µ)\r
-∗ = X2 − µ ∈ I,\r
+* = q*p*\r
+for any p, q in B and (X2 - )\r
+* = X2 -  in I,\r
 we see that I\r
-∗ ⊆ I.\r
-Theorem 1. Cay(A, µ) and A[X; ∗]\r
-f l/hX2 − µi are isomorphic as ∗-algebras.\r
-Proof. Define B := A[X; ∗]\r
-f l and I := hX2 − µi, and let n ∈ N and a ∈ A be\r
+* subseteq I.\r
+Theorem 1. Cay(A, ) and A[X; *]\r
+f l/hX2 - i are isomorphic as *-algebras.\r
+Proof. Define B := A[X; *]\r
+f l and I := hX2 - i, and let n in N and a in A be\r
 arbitrary. Since aXnis the product of a with Xn, we have [aXn] = [a][Xn].
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 13\r
@@ -2750,7 +2750,7 @@ n\r
 ] = [a][X\r
 2\r
 ]\r
-n = [a][µ]n = [aµn\r
+n = [a][]n = [an\r
 ],\r
 [aX2n+1] = [a][X\r
 2n+1] = [a][X(X2\r
@@ -2760,115 +2760,115 @@ n\r
 2\r
 ]\r
 n\r
-) = [a]([X][µ\r
+) = [a]([X][\r
 n\r
-]) = [aµnX].\r
+]) = [anX].\r
 Since B is a free left A-module with basis {1, X, X2, . . .}, the above computations\r
 imply that any element in B/I may be written as [a\r
-′ + b′X] for some a′\r
-, b′ ∈ A.\r
-Now, for arbitrary a, b, c, d ∈ A,\r
+ + bX] for some a\r
+, b in A.\r
+Now, for arbitrary a, b, c, d in A,\r
 [a + bX][c + dX] = [ac + a(dX) + (bX)c + (bX)(dX)]\r
 (13)\r
-= [ac + τ1(a, d)X + τ0(b, c∗)X + τ1(b, d∗)X\r
+= [ac + tau1(a, d)X + tau0(b, c*)X + tau1(b, d*)X\r
 2\r
 ]\r
-= [ab + (da)X + (bc∗)X + (d\r
-∗\r
-b)X2] = [ab + µd∗b + (da + bc∗)X].\r
-Define a map φ: B/I → Cay(A, µ) by [a + bX] 7→ (a, b) and extend it K-linearly.\r
-Then φ is clearly surjective. Moreover, by comparing degrees, [a + bX] = 0 ⇐⇒\r
-a + bX ∈ I ⇐⇒ a = b = 0. Hence ker φ = 0, so φ is injective. We then have\r
-φ([a + bX][c + dX]) (13)= φ([ab + µd∗b + (da + bc∗)X]) = (ab + µd∗b, da + bc∗)\r
-= (a, b)(c, d) = φ([a + bX])φ([c + dX]),\r
-so φ is an isomorphism of K-algebras. Last, we show that φ is compatible with the\r
-involutions of B/I and Cay(A, µ): φ([a + bX]\r
-∗\r
-) = φ([(a + bX)\r
-∗\r
-]) = φ([a\r
-∗ − bX]) =\r
+= [ab + (da)X + (bc*)X + (d\r
+*\r
+b)X2] = [ab + d*b + (da + bc*)X].\r
+Define a map phi: B/I -> Cay(A, ) by [a + bX] 7-> (a, b) and extend it K-linearly.\r
+Then phi is clearly surjective. Moreover, by comparing degrees, [a + bX] = 0 <==>\r
+a + bX in I <==> a = b = 0. Hence ker phi = 0, so phi is injective. We then have\r
+phi([a + bX][c + dX]) (13)= phi([ab + d*b + (da + bc*)X]) = (ab + d*b, da + bc*)\r
+= (a, b)(c, d) = phi([a + bX])phi([c + dX]),\r
+so phi is an isomorphism of K-algebras. Last, we show that phi is compatible with the\r
+involutions of B/I and Cay(A, ): phi([a + bX]\r
+*\r
+) = phi([(a + bX)\r
+*\r
+]) = phi([a\r
+* - bX]) =\r
 (a\r
-∗\r
-, −b) = φ([a + bX])∗. \u0003\r
+*\r
+, -b) = phi([a + bX])*. \u0003\r
 Example 3. This example follows immediately from Example 2 and Theorem 1.\r
-C ∼= R[X]/hX2 + 1i, C\r
-′ ∼= R[X]/hX2 − 1i,\r
-H ∼= C[X; ∗]/hX2 + 1i, H\r
-′ ∼= C\r
-′\r
-[X; ∗]/hX2 − 1i,\r
-O ∼= H[X; ∗]\r
-f l/hX2 + 1i, O′ ∼= H\r
-′\r
-[X; ∗]\r
-f l/hX2 − 1i,\r
+C ~= R[X]/hX2 + 1i, C\r
+ ~= R[X]/hX2 - 1i,\r
+H ~= C[X; *]/hX2 + 1i, H\r
+ ~= C\r
+\r
+[X; *]/hX2 - 1i,\r
+O ~= H[X; *]\r
+f l/hX2 + 1i, O ~= H\r
+\r
+[X; *]\r
+f l/hX2 - 1i,\r
 .\r
 .\r
 .\r
 .\r
 .\r
 .\r
-Let A be a non-associative ∗-algebra over an associative and commutative ring\r
+Let A be a non-associative *-algebra over an associative and commutative ring\r
 K. Consider the generalized polynomial ring A[t] = A[t; idA, 0], which is naturally\r
-an algebra over the associative and commutative ring K[t]. Extending ∗ to A[t]\r
+an algebra over the associative and commutative ring K[t]. Extending * to A[t]\r
 using t\r
-∗ = t, we consider A[t] as a non-associative ∗-algebra over K[t]. Since the\r
-element t ∈ K[t] is a cancellable scalar, we can form the Cayley double Cay(A[t], t).\r
-Theorem 2. Cay(A[t], t) and A[X; ∗]\r
-f l are isomorphic as ∗-algebras.\r
-Proof. We define a map φ : Cay(A[t], t) → A[X; ∗]\r
+* = t, we consider A[t] as a non-associative *-algebra over K[t]. Since the\r
+element t in K[t] is a cancellable scalar, we can form the Cayley double Cay(A[t], t).\r
+Theorem 2. Cay(A[t], t) and A[X; *]\r
+f l are isomorphic as *-algebras.\r
+Proof. We define a map phi : Cay(A[t], t) -> A[X; *]\r
 f l as follows:\r
-φ(p(t), q(t)) = p(X\r
+phi(p(t), q(t)) = p(X\r
 2\r
 ) + q(X\r
 2\r
-)X, for any p(t), q(t) ∈ A[t].\r
-In the light of Remark 3, it is straightforward to check that φ is an isomorphism of\r
-K-algebras. We also see that φ is compatible with the involutions of Cay(A[t], t) and\r
-A[X; ∗]\r
-f l: φ((p(t), q(t))∗\r
-) = φ(p(t)\r
-∗\r
-, −q(t)) = p(X2)\r
-∗ − q(X2\r
-)X = φ(p(t), q(t))∗.\r
+)X, for any p(t), q(t) in A[t].\r
+In the light of Remark 3, it is straightforward to check that phi is an isomorphism of\r
+K-algebras. We also see that phi is compatible with the involutions of Cay(A[t], t) and\r
+A[X; *]\r
+f l: phi((p(t), q(t))*\r
+) = phi(p(t)\r
+*\r
+, -q(t)) = p(X2)\r
+* - q(X2\r
+)X = phi(p(t), q(t))*.\r
 \u0003\r
 Recall that A is called flexible if (a, b, a) = 0, and alternative if (a, a, b) =\r
-(b, a, a) = 0 for all a, b ∈ A. The criteria for A[X; ∗]\r
+(b, a, a) = 0 for all a, b in A. The criteria for A[X; *]\r
 f l to inherit algebraic properties\r
 like the above from A are given by the following two theorems (compare with [9,\r
 Theorem 6.8]):"""
 
 [[sections]]
 number = "14"
-title = "MASOOD ARYAPOOR AND PER BACK ¨"
+title = "MASOOD ARYAPOOR AND PER BACK"
 text = """
-Theorem 3. If B = A[X; ∗]\r
+Theorem 3. If B = A[X; *]\r
 f l, then the following assertions hold:\r
-(i) The involution α on B is trivial if and only if the involution ∗ on A is\r
+(i) The involution alpha on B is trivial if and only if the involution * on A is\r
 trivial and 2A = 0;\r
 (ii) B is commutative if and only if A is commutative with trivial involution;\r
 (iii) B is associative if and only if A is associative and commutative;\r
-(iv) B is flexible if and only if A is flexible, aa∗commutes with A, and (a, b, c) =\r
-(a, b∗, c∗) for all a, b, c ∈ A;\r
-(v) B is alternative if and only if A is alternative, aa∗commutes with A, and\r
+(iv) B is flexible if and only if A is flexible, aa*commutes with A, and (a, b, c) =\r
+(a, b*, c*) for all a, b, c in A;\r
+(v) B is alternative if and only if A is alternative, aa*commutes with A, and\r
 2a + a\r
-∗\r
-lies in the nucleus of A for all a ∈ A.\r
+*\r
+lies in the nucleus of A for all a in A.\r
 Proof. (i): Assume that B has trivial involution. Since the involution of A is the\r
-involution of B restricted to A, it is also trivial. Also, for any a ∈ A, (aX)\r
-∗ =\r
-X∗a\r
-∗ = −Xa∗ = −aX, so (aX)∗ = aX ⇐⇒ (2a)X = 0 ⇐⇒ 2a = 0.\r
-Now, assume instead that A has trivial involution, 2A = 0, and let p ∈ B. Then\r
-p = a0+a1X+a2X2+· · · for some a0, a1, a2, . . . ∈ A and p\r
-∗ = a∗\r
-0−a1X+a\r
-∗\r
-2X+· · · =\r
-a0 − a1X + a2X2 + · · · . Since a2i+1 = −a2i+1 for any i ∈ N, p = p\r
-∗\r
+involution of B restricted to A, it is also trivial. Also, for any a in A, (aX)\r
+* =\r
+X*a\r
+* = -Xa* = -aX, so (aX)* = aX <==> (2a)X = 0 <==> 2a = 0.\r
+Now, assume instead that A has trivial involution, 2A = 0, and let p in B. Then\r
+p = a0+a1X+a2X2+* * * for some a0, a1, a2, . . . in A and p\r
+* = a*\r
+0-a1X+a\r
+*\r
+2X+* * * =\r
+a0 - a1X + a2X2 + * * * . Since a2i+1 = -a2i+1 for any i in N, p = p\r
+*\r
 .\r
 For a different proof, one can use Theorem 2 together with [9, Theorem 6.8 (i)].\r
 (ii): From Corollary 1, it is immediate that B is commutative if and only if\r
@@ -2879,247 +2879,247 @@ together with [9, Theorem 6.8 (ii)].\r
 proof, one can again use Theorem 2 together with [9, Theorem 6.8 (iii)].\r
 (iv): By Theorem 2, B is flexible if and only if Cay(A[t], t) is flexible, which by [9,\r
 Theorem 6.8 (iv)] is equivalent to the conditions that A[t] is flexible, p(t)p(t)\r
-∗\r
+*\r
 com\u0002mutes with A[t], and (p(t), q(t), r(t)) = (p(t), q(t)\r
-∗\r
+*\r
 , r(t)\r
-∗\r
-) for all p(t), q(t), r(t) ∈\r
-A[t]. Since t ∈ Z(A[t]) and t\r
-∗ = t, a moment’s reflection shows that these condi\u0002tions hold over A[t] if and only if they hold over A.\r
+*\r
+) for all p(t), q(t), r(t) in\r
+A[t]. Since t in Z(A[t]) and t\r
+* = t, a moment's reflection shows that these condi\u0002tions hold over A[t] if and only if they hold over A.\r
 (v): By Theorem 2, B is alternative if and only if Cay(A[t], t) is alternative, which\r
 by [9, Theorem 6.8 (v)] is equivalent to the conditions that A[t] is alternative,\r
 p(t)p(t)\r
-∗\r
+*\r
 commutes with A[t], and 2p(t) + p(t)\r
-∗ ∈ N(A[t]) for all p(t) ∈ A[t]. Since\r
-t ∈ Z(A[t]) and t\r
-∗ = t, it is easy to see that these conditions hold over A[t] if and\r
+* in N(A[t]) for all p(t) in A[t]. Since\r
+t in Z(A[t]) and t\r
+* = t, it is easy to see that these conditions hold over A[t] if and\r
 only if they hold over A. \u0003\r
-We define C∗(A) as {a ∈ C(A): a\r
-∗ = a} and Z∗(A) as {a ∈ Z(A): a∗ = a}.\r
+We define C*(A) as {a in C(A): a\r
+* = a} and Z*(A) as {a in Z(A): a* = a}.\r
 With these notations, we have the following theorem:\r
-Theorem 4. If B = A[X; ∗]\r
+Theorem 4. If B = A[X; *]\r
 f l, then the following equalities hold:\r
 (i) C(B) = \bP\r
-i∈N\r
-aiXi: ai ∈ C∗(A), a2i+1b\r
-∗ = a2i+1b ∀b ∈ A, i ∈ N\r
+iinN\r
+aiXi: ai in C*(A), a2i+1b\r
+* = a2i+1b for allb in A, i in N\r
 \t\r
 ;\r
 (ii) Nl(B) = Nr(B) = \b P\r
-i∈N\r
-aiXi: a2i ∈ Z(A), a2i+1 ∈ C(A) ∩ Nm(A),\r
-(a2i+1b)c = a2i+1(cb),(bc)a2i+1 = c(ba2i+1) ∀b, c ∈ A, i ∈ N\r
+iinN\r
+aiXi: a2i in Z(A), a2i+1 in C(A) cap Nm(A),\r
+(a2i+1b)c = a2i+1(cb),(bc)a2i+1 = c(ba2i+1) for allb, c in A, i in N\r
 \t\r
 ;\r
 (iii) Nm(B) = \bP\r
-i∈N\r
-aiXi: a2i ∈ C(A) ∩ Nm(A), a2i+1 ∈ C(A),\r
-(a2i+1b)c = (a2i+1c)b, b(ca2i+1) = c(ba2i+1) ∀b, c ∈ A, i ∈ N\r
+iinN\r
+aiXi: a2i in C(A) cap Nm(A), a2i+1 in C(A),\r
+(a2i+1b)c = (a2i+1c)b, b(ca2i+1) = c(ba2i+1) for allb, c in A, i in N\r
 \t\r
 ;\r
 (iv) N(B) = \bP\r
-i∈N\r
-aiXi: ai ∈ Z(A), a2i+1[A, A] = 0 ∀i ∈ N\r
+iinN\r
+aiXi: ai in Z(A), a2i+1[A, A] = 0 for alli in N\r
 \t\r
 ;\r
 (v) Z(B) = \bP\r
-i∈N\r
-aiXi: ai ∈ Z∗(A), a2i+1b\r
-∗ = a2i+1b ∀b ∈ A, i ∈ N\r
+iinN\r
+aiXi: ai in Z*(A), a2i+1b\r
+* = a2i+1b for allb in A, i in N\r
 \t\r
 .
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 15\r
 Proof. (i): We note that P\r
-i∈N\r
-aiXi ∈ C(B), where ai ∈ A is arbitrary, if and\r
-only if aiXi ∈ C(B) for any i ∈ N. Hence, to show that the conditions are nec\u0002essary, assume that aiXi ∈ C(B) and let b ∈ A be arbitrary. Then [a2iX2i\r
+iinN\r
+aiXi in C(B), where ai in A is arbitrary, if and\r
+only if aiXi in C(B) for any i in N. Hence, to show that the conditions are nec\u0002essary, assume that aiXi in C(B) and let b in A be arbitrary. Then [a2iX2i\r
 , b] =\r
-[a2i+1X2i+1, b] = 0, and by (10), [a2iX2i, b] = (a2ib−ba2i)X2i and [a2i+1X2i+1, b] =\r
+[a2i+1X2i+1, b] = 0, and by (10), [a2iX2i, b] = (a2ib-ba2i)X2i and [a2i+1X2i+1, b] =\r
 (a2i+1b\r
-∗ − a2i+1b)X2i+1. By comparing coefficients, a2i ∈ C(A) and a2i+1b∗ =\r
-a2i+1b for any i ∈ N. Similarly, [a2iX2i, bX] = [a2i+1X2i+1, b∗X] = 0, and by (10),\r
-[a2iX2i, bX] = (a2ib−ba∗\r
+* - a2i+1b)X2i+1. By comparing coefficients, a2i in C(A) and a2i+1b* =\r
+a2i+1b for any i in N. Similarly, [a2iX2i, bX] = [a2i+1X2i+1, b*X] = 0, and by (10),\r
+[a2iX2i, bX] = (a2ib-ba*\r
 2i\r
-)X2i+1 and [a2i+1X2i+1, b∗X] = (ba2i+1−a\r
-∗\r
+)X2i+1 and [a2i+1X2i+1, b*X] = (ba2i+1-a\r
+*\r
 2i+1b\r
-∗\r
+*\r
 )X2i+2.\r
 By letting b = 1, we thus have a\r
-∗\r
+*\r
 2i = a2i and a\r
-∗\r
+*\r
 2i+1 = a2i+1. By then com\u0002paring coefficients in the original expression, ba2i+1 = a\r
-∗\r
+*\r
 2i+1b\r
-∗ = a2i+1b∗\r
+* = a2i+1b*\r
 , and\r
 since a2i+1b\r
-∗ = a2i+1b, we have a2i+1 ∈ C(A). To show that the conditions\r
-are sufficient, it suffices to show that [aiXi, bXj] = 0 for any i, j ∈ N. From\r
-(10), [aiXi, bXj] = (τj (ai, ∗\r
+* = a2i+1b, we have a2i+1 in C(A). To show that the conditions\r
+are sufficient, it suffices to show that [aiXi, bXj] = 0 for any i, j in N. From\r
+(10), [aiXi, bXj] = (tauj (ai, *\r
 i\r
-(b)) − τi(b, ∗\r
+(b)) - taui(b, *\r
 j\r
-(ai)))Xi+j = (ai ∗\r
+(ai)))Xi+j = (ai *\r
 i\r
-(b) − τi(b, ai))Xi+j =\r
-(ai ∗\r
+(b) - taui(b, ai))Xi+j =\r
+(ai *\r
 i\r
-(b) − aib)Xi+j = (aib − aib)Xi+j = 0.\r
+(b) - aib)Xi+j = (aib - aib)Xi+j = 0.\r
 For a different proof, one can use Theorem 2 together with [9, Theorem 6.8 (viii)].\r
-(ii)–(iii): We note that P\r
-i∈N\r
-aiXi ∈ Nx(B) where ai ∈ A and x is any of l, m,\r
-and r, if and only if aiXi ∈ Nx(B) for any i ∈ N. The necessary conditions in\r
-(ii)–(iii) now follow by replacing a and bl in the proof of [9, Theorem 6.8 (ix)–\r
-(x)] by a2iX2i and a2i+1X2i+1, respectively, and using that X2i ∈ Z(B) and\r
+(ii)-(iii): We note that P\r
+iinN\r
+aiXi in Nx(B) where ai in A and x is any of l, m,\r
+and r, if and only if aiXi in Nx(B) for any i in N. The necessary conditions in\r
+(ii)-(iii) now follow by replacing a and bl in the proof of [9, Theorem 6.8 (ix)-\r
+(x)] by a2iX2i and a2i+1X2i+1, respectively, and using that X2i in Z(B) and\r
 X2i+1 = XX2itogether with Theorem 1. (The proof regarding the right nucleus\r
 in [9] has been omitted, however; it can be obtained by similar methods to that\r
 of the left nucleus.) To show that the conditions for Nl(B) are sufficient, it suf\u0002fices to show that (aiXi\r
-, bXj, cXk) = 0 for any b, c ∈ A and i, j, k ∈ N. By (10),\r
-(aiXi, bXj, cXk) = (τk(τj (ai, ∗\r
+, bXj, cXk) = 0 for any b, c in A and i, j, k in N. By (10),\r
+(aiXi, bXj, cXk) = (tauk(tauj (ai, *\r
 i\r
-(b)), ∗\r
+(b)), *\r
 i+j\r
-(c)) − τj+k(ai, ∗\r
+(c)) - tauj+k(ai, *\r
 i\r
-(τk(b, ∗\r
+(tauk(b, *\r
 j\r
 (c)))))Xi+j+k =\r
-(τk(ai ∗\r
+(tauk(ai *\r
 i\r
-(b), ∗\r
+(b), *\r
 i+j\r
-(c)) − ai ∗\r
+(c)) - ai *\r
 i\r
-(τk(b, ∗\r
+(tauk(b, *\r
 j\r
 (c))))Xi+j+k, so if k is even, then\r
 (aiX\r
 i\r
-, bXj, cXk) = ((ai ∗\r
+, bXj, cXk) = ((ai *\r
 i\r
-(b)) ∗\r
+(b)) *\r
 i+j\r
-(c) − ai ∗\r
+(c) - ai *\r
 i\r
-(b ∗\r
+(b *\r
 j\r
 (c)))X\r
 i+j+k\r
-= ((ai ∗\r
+= ((ai *\r
 i\r
-(b)) ∗\r
+(b)) *\r
 i+j\r
-(c) − (ai ∗\r
+(c) - (ai *\r
 i\r
-(b))(∗\r
+(b))(*\r
 i+j\r
 (c)))X\r
 i+j+k = 0.\r
 If k is odd, then\r
-(aiXi, bXj, cXk) = (∗\r
+(aiXi, bXj, cXk) = (*\r
 i+j\r
-(c)(ai ∗\r
+(c)(ai *\r
 i\r
-(b)) − ai ∗\r
+(b)) - ai *\r
 i\r
-(∗\r
+(*\r
 j\r
 (c)b))Xi+j+k\r
-= (∗\r
+= (*\r
 i+j\r
-(c)(ai ∗\r
+(c)(ai *\r
 i\r
-(b)) − (ai ∗\r
+(b)) - (ai *\r
 i+j\r
-(c)) ∗\r
+(c)) *\r
 i\r
 (b))Xi+j+k\r
-= (∗\r
+= (*\r
 i+j\r
-(c)(ai ∗\r
+(c)(ai *\r
 i\r
-(b)) − (∗\r
+(b)) - (*\r
 i+j\r
-(c)ai) ∗\r
+(c)ai) *\r
 i\r
 (b))X\r
 i+j+k\r
-= (∗\r
+= (*\r
 i+j\r
-(c)(ai ∗\r
+(c)(ai *\r
 i\r
-(b)) − ∗i+j(c)(ai ∗\r
+(b)) - *i+j(c)(ai *\r
 i\r
 (b)))X\r
 i+j+k = 0.\r
 The conditions for Nm(B) and Nr(B) can be shown sufficient by similar calcu\u0002lations. Moreover, similarly to the previous proofs, one can also use Theorem 2\r
-together with [9, Theorem 6.8 (ix)–(x)].\r
-(iv)–(v): This follows from the equalities N(B) = Nl(B) ∩ Nm(B) ∩ Nr(B) and\r
-Z(B) = C(B) ∩ N(B) together with (i)–(iii) above. \u0003\r
-With Z∗(B) := {b ∈ Z(B): b\r
-∗ = b}, we have the following corollary:\r
-Corollary 2. If B = A[X; ∗]\r
+together with [9, Theorem 6.8 (ix)-(x)].\r
+(iv)-(v): This follows from the equalities N(B) = Nl(B) cap Nm(B) cap Nr(B) and\r
+Z(B) = C(B) cap N(B) together with (i)-(iii) above. \u0003\r
+With Z*(B) := {b in Z(B): b\r
+* = b}, we have the following corollary:\r
+Corollary 2. If B = A[X; *]\r
 f l\r
-, 1/2 ∈ K, and A is obtained from K by n repeated\r
+, 1/2 in K, and A is obtained from K by n repeated\r
 applications of the Cayley-Dickson process, then the following equalities hold:"""
 
 [[sections]]
 number = "16"
-title = "MASOOD ARYAPOOR AND PER BACK ¨"
+title = "MASOOD ARYAPOOR AND PER BACK"
 text = """
 (i) C(B) = Z(B) = (\r
 K[X] if n = 0,\r
-K[X2] if n ≥ 1.\r
+K[X2] if n >= 1.\r
 ;\r
-(ii) Z∗(B) = K[X2];\r
+(ii) Z*(B) = K[X2];\r
 (iii) N(B) = (\r
-B if 0 ≤ n ≤ 1,\r
-K[X2] if n ≥ 2.\r
+B if 0 <= n <= 1,\r
+K[X2] if n >= 2.\r
 Proof. (i): By [9, Corollary 6.9 (i)], C(A) = Z(A), and so by (i) and (v) in\r
-Theorem 4, C(B) = Z(B). Moreover, by [9, Corollary 16.9 (ii)], Z∗(A) = K.\r
+Theorem 4, C(B) = Z(B). Moreover, by [9, Corollary 16.9 (ii)], Z*(A) = K.\r
 If n = 0, then A = K, and so a\r
-∗ = a for any a ∈ A = K. Hence ka∗ = ka\r
-for any k ∈ K, so by (v) in Theorem 4, Z(B) = K[X] if n = 0. If n ≥ 1, then\r
-A = Cay(C, µ) for some C, so an arbitrary element a ∈ A is of the form (b, c) for\r
-some b, c ∈ C and (b, c)\r
-∗ = (b∗\r
-, −c). Then ka∗ = ka for some k ∈ K if and only if\r
-kb∗ = kb and 2kc = 0. Since 1/2 ∈ K, c may be chosen arbitrarily, and since K\r
-acts faithfully on C by assumption, we have 2kc = 0 =⇒ k = 0. Hence, by (v) in\r
-Theorem 4, Z(B) = K[X2] if n ≥ 1.\r
-(ii): By (i), Z(B) = K[X] if n = 0. If p = k0 + k1X + k2X2 + · · · ∈ K[X] = Z(B)\r
-for some k0, k1, k2 ∈ K, then p\r
-∗ = k0 − k1X + k2X2 + · · · . Hence p∗ = p if\r
-and only if 2k2i+1 = 0 for any i ∈ N. Since 1/2 ∈ K, the latter equality is\r
-equivalent to k2i+1 = 0 for any i ∈ N. Therefore, p ∈ Z∗(B) if and only if\r
-p = k0 + k2X2 + k4X4 + · · · , so Z∗(B) = K[X2] if n = 0. Moreover, by (i),\r
-Z(B) = K[X2] if n ≥ 1, so by a similar argument, Z∗(B) = K[X2] if n ≥ 1.\r
-(iii): If 0 ≤ n ≤ 1, then A is associative and commutative. By (iii) in Theorem 3,\r
-B is associative, so N(B) = B. By [9, Corollary 16.9 (iii)], Z(A) = K if n ≥ 2.\r
-Moreover, by the proof of [9, Corollary 16.9 (iv)], k[A, A] = 0 =⇒ k = 0 for any\r
-k ∈ K if n ≥ 2. Hence, by (iii) in Theorem 4, N(B) = K[X2] if n ≥ 2. \u0003\r
+* = a for any a in A = K. Hence ka* = ka\r
+for any k in K, so by (v) in Theorem 4, Z(B) = K[X] if n = 0. If n >= 1, then\r
+A = Cay(C, ) for some C, so an arbitrary element a in A is of the form (b, c) for\r
+some b, c in C and (b, c)\r
+* = (b*\r
+, -c). Then ka* = ka for some k in K if and only if\r
+kb* = kb and 2kc = 0. Since 1/2 in K, c may be chosen arbitrarily, and since K\r
+acts faithfully on C by assumption, we have 2kc = 0 ==> k = 0. Hence, by (v) in\r
+Theorem 4, Z(B) = K[X2] if n >= 1.\r
+(ii): By (i), Z(B) = K[X] if n = 0. If p = k0 + k1X + k2X2 + * * * in K[X] = Z(B)\r
+for some k0, k1, k2 in K, then p\r
+* = k0 - k1X + k2X2 + * * * . Hence p* = p if\r
+and only if 2k2i+1 = 0 for any i in N. Since 1/2 in K, the latter equality is\r
+equivalent to k2i+1 = 0 for any i in N. Therefore, p in Z*(B) if and only if\r
+p = k0 + k2X2 + k4X4 + * * * , so Z*(B) = K[X2] if n = 0. Moreover, by (i),\r
+Z(B) = K[X2] if n >= 1, so by a similar argument, Z*(B) = K[X2] if n >= 1.\r
+(iii): If 0 <= n <= 1, then A is associative and commutative. By (iii) in Theorem 3,\r
+B is associative, so N(B) = B. By [9, Corollary 16.9 (iii)], Z(A) = K if n >= 2.\r
+Moreover, by the proof of [9, Corollary 16.9 (iv)], k[A, A] = 0 ==> k = 0 for any\r
+k in K if n >= 2. Hence, by (iii) in Theorem 4, N(B) = K[X2] if n >= 2. \u0003\r
 The next example follows immediately from Corollary 2 and Example 2.\r
-Example 4. If B = A[X; ∗]\r
+Example 4. If B = A[X; *]\r
 f l and K = R, then\r
 C(B) = Z(B) = (\r
 R[X] if A = R,\r
 R[X2] if A = C, C\r
-′\r
-, H, H′, . . . ,\r
-Z∗(B) = R[X2] if A = R, C, C\r
-′\r
+\r
+, H, H, . . . ,\r
+Z*(B) = R[X2] if A = R, C, C\r
+\r
 , . . . ,\r
 N(B) = (\r
 B if A = R, C, or C\r
-′\r
+\r
 ,\r
-R[X2] if A = H, H′, O, O′, . . . .\r
+R[X2] if A = H, H, O, O, . . . .\r
 Acknowledgments\r
 We would like to thank the anonymous referee for comments on the manuscript\r
 which improved its presentation. We would also like to thank Johan Richter for\r
@@ -3127,12 +3127,12 @@ pointing out a mistake in the formulation of an earlier version of Definition 3.
 
 FLIPPED NON-ASSOCIATIVE POLYNOMIAL RINGS 17\r
 References\r
-[1] A. A. Albert, Absolute valued real algebras, Ann. Math 48(2) (1947), pp. 495–501.\r
-[2] A. A. Albert, Quadratic forms permitting composition, Ann. Math 43(1) (1942), pp. 161–177.\r
-[3] A. Cayley, On Jacobi’s elliptic functions, in reply to Rev. B. Bronwin; and on quaternions,\r
-Philos. Mag. 26(3) (1845), pp. 208–211.\r
+[1] A. A. Albert, Absolute valued real algebras, Ann. Math 48(2) (1947), pp. 495-501.\r
+[2] A. A. Albert, Quadratic forms permitting composition, Ann. Math 43(1) (1942), pp. 161-177.\r
+[3] A. Cayley, On Jacobi's elliptic functions, in reply to Rev. B. Bronwin; and on quaternions,\r
+Philos. Mag. 26(3) (1845), pp. 208-211.\r
 [4] L. E. Dickson, On quaternions and their generalization and the history of the eight square\r
-theorem, Ann. Math 20(3) (1919), pp. 155–171.\r
+theorem, Ann. Math 20(3) (1919), pp. 155-171.\r
 [5] K. R. Goodearl and R. B. Warfield, An introduction to noncommutative Noetherian rings,\r
 2nd ed., Cambridge University Press, Cambridge U.K. (2004).\r
 [6] T. Y. Lam, A first course in noncommutative rings, 2nd ed. Springer, New York (2001).\r
@@ -3140,22 +3140,22 @@ theorem, Ann. Math 20(3) (1919), pp. 155–171.\r
 Noetherian rings, Rev. ed., Amer. Math. Soc., Providence, R.I. (2001).\r
 [8] K. McCrimmon, A taste of Jordan algebras, Springer, New York (2004).\r
 [9] K. McCrimmon, Nonassociative algebras with scalar involution, Pacific J. Math. 116(1)\r
-(1985), pp. 85–109.\r
+(1985), pp. 85-109.\r
 [10] P. Nystedt, A combinatorial proof of associativity of Ore extensions, Discrete Math. 313(23)\r
-(2013), pp. 2748–2750.\r
-[11] P. Nystedt, J. Oinert, and J. Richter, ¨ Non-associative Ore extensions, Isr. J. Math. 224(1)\r
-(2018), pp. 263–292.\r
-[12] O. Ore, Theory of non-commutative polynomials, Ann. Math. 34(3), 480–508 (1933).\r
-[13] J. Richter, A note on “A combinatorial proof of associativity of Ore extensions”, Discrete\r
-Math. 315–316 (2014), pp. 156–157.\r
+(2013), pp. 2748-2750.\r
+[11] P. Nystedt, J. Oinert, and J. Richter, " Non-associative Ore extensions, Isr. J. Math. 224(1)\r
+(2018), pp. 263-292.\r
+[12] O. Ore, Theory of non-commutative polynomials, Ann. Math. 34(3), 480-508 (1933).\r
+[13] J. Richter, A note on "A combinatorial proof of associativity of Ore extensions", Discrete\r
+Math. 315-316 (2014), pp. 156-157.\r
 [14] K. Urbanik and F. B. Wright, Absolute-valued algebras, Proc. Amer. Math. Soc. 11 (1960),\r
-pp. 861–866.\r
-[15] F. B. Wright, Absolute-valued algebras, Proc. Nat. Acad. Sci. 39(4) (1953), pp. 330–332.\r
-(Masood Aryapoor) Division of Mathematics and Physics, Malardalen University, Box ¨\r
+pp. 861-866.\r
+[15] F. B. Wright, Absolute-valued algebras, Proc. Nat. Acad. Sci. 39(4) (1953), pp. 330-332.\r
+(Masood Aryapoor) Division of Mathematics and Physics, Malardalen University, Box "\r
 325, SE-631 05 Eskilstuna, Sweden\r
 Email address: masood.aryapoor@mdu.se\r
-(Per B¨ack) Division of Mathematics and Physics, Malardalen University, Box 883, ¨\r
-SE-721 23 Vaster ¨ ˚as, Sweden\r
+(Per B"ack) Division of Mathematics and Physics, Malardalen University, Box 883, "\r
+SE-721 23 Vaster "  as, Sweden\r
 Email address, corresponding author: per.back@mdu.se"""
 
 [[figures]]

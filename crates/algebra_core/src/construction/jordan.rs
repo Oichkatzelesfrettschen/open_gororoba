@@ -1,12 +1,12 @@
 // Phase 10.1: Jordan Algebras Research
-// Exceptional algebras family: A₁ (reals), A₂ (3x3 symmetric matrices)
-// Construction: symmetrized product a ∘ b = (ab + ba) / 2
+// Exceptional algebras family: A_1 (reals), A_2 (3x3 symmetric matrices)
+// Construction: symmetrized product a o b = (ab + ba) / 2
 // Cross-validation: commutativity vs Phase 9 (tessarines 100%, CD 0%)
 // Date: 2026-02-10, Sprint 35-36
 
 use nalgebra::Matrix3;
 
-/// Jordan algebra A₁: Real numbers with symmetrized product
+/// Jordan algebra A_1: Real numbers with symmetrized product
 #[derive(Clone, Copy, Debug)]
 pub struct JordanA1(pub f64);
 
@@ -30,7 +30,7 @@ impl JordanA1 {
     }
 }
 
-/// Jordan algebra A₂: 3×3 symmetric matrices with symmetrized product
+/// Jordan algebra A_2: 3x3 symmetric matrices with symmetrized product
 #[derive(Clone, Copy, Debug)]
 pub struct JordanA2 {
     data: [f64; 6], // [a11, a22, a33, a12, a13, a23]
@@ -119,7 +119,7 @@ mod tests {
     #[test]
     fn test_jordan_algebras_100_percent_commutative() {
         // Cross-validation: Jordan algebras are ALWAYS commutative
-        // Contrasts with CD dim≥4 (0% commutativity)
+        // Contrasts with CD dim>=4 (0% commutativity)
         let samples_a1 = [JordanA1::new(1.0), JordanA1::new(2.0), JordanA1::new(3.0)];
         let samples_a2 = [
             JordanA2::new(1.0, 2.0, 3.0, 0.5, 0.3, 0.7),

@@ -56,7 +56,7 @@ edge_type = "derives_from"
 strength = 0.85
 rationale = "E-001 motif component census directly inputs to algebra taxonomy classification"
 claim_refs = ["C-485", "C-486", "C-487"]
-evidence_coupling = "Output format: motif_census_summary.csv → Input: algebra family components"
+evidence_coupling = "Output format: motif_census_summary.csv -> Input: algebra family components"
 methodological_distance = 0.15
 data_flow_completeness = 0.95
 
@@ -130,11 +130,11 @@ median_strength = 0.82
 [lineage_structure]
 root_experiments = ["E-001", "E-002", "E-011"]  # No incoming derives_from edges
 leaf_experiments = ["E-023"]  # Phase 10.3 synthesis experiment
-primary_path = "E-001 → E-023 (derives_from, strength 0.85)"
+primary_path = "E-001 -> E-023 (derives_from, strength 0.85)"
 secondary_paths = [
-  "E-002 → E-023 (extends, strength 0.72)",
-  "E-011 → E-023 (complements, strength 0.88)",
-  "E-007 → E-023 (extends, strength 0.81)"
+  "E-002 -> E-023 (extends, strength 0.72)",
+  "E-011 -> E-023 (complements, strength 0.88)",
+  "E-007 -> E-023 (extends, strength 0.81)"
 ]
 convergence_point = "E-023 (synthesis of Phase 8/9/11 lineage)"
 

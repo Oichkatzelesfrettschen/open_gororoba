@@ -3,206 +3,206 @@ tables = []
 figures = []
 full_text = """
 A Mnemonic Matrix Rule for (Split) Octonionic Multiplication\r
-and its Extension to the Cayley–Dickson Tower\r
+and its Extension to the Cayley-Dickson Tower\r
 Jean-Pierre Gazeau\r
-Université Paris Cité, CNRS, Astroparticule et Cosmologie, F-75013 Paris, France\r
-Faculty of Mathematics, University of Białystok, 15-245 Białystok, Poland\r
+Universite Paris Cite, CNRS, Astroparticule et Cosmologie, F-75013 Paris, France\r
+Faculty of Mathematics, University of Biaystok, 15-245 Biaystok, Poland\r
 gazeau@apc.in2p3.fr, j.gazeau@uwb.edu.pl\r
 January 27, 2026\r
 Abstract\r
 We present a compact mnemonic device for computing the product of two (split)\r
-octonions written in Cayley–Dickson form q + ℓp with q, p ∈ H. The rule appears as a\r
+octonions written in Cayley-Dickson form q + lp with q, p in H. The rule appears as a\r
 simple (R + L) pattern of right-ordered and left-ordered (quaternionic) products inside\r
-a 2 × 2 quaternionic matrix model. The pattern extends verbatim to all algebras in\r
-the Cayley–Dickson tower, providing an efficient computational tool in non-associative\r
-settings. To our knowledge, this explicit “(R + L)” mnemonic does not appear in the\r
+a 2 x 2 quaternionic matrix model. The pattern extends verbatim to all algebras in\r
+the Cayley-Dickson tower, providing an efficient computational tool in non-associative\r
+settings. To our knowledge, this explicit "(R + L)" mnemonic does not appear in the\r
 classical literature on octonions or composition algebras.\r
 1 Introduction\r
-The octonions O [1, 2, 3, 4, 6] may be described as pairs of quaternions (q, p) ∈ H ⊕ H ℓ via\r
-the Cayley–Dickson construction. The multiplication is\r
-(q1 + ℓp1)(q2 + ℓp2) = q1q2 + ℓ\r
+The octonions O [1, 2, 3, 4, 6] may be described as pairs of quaternions (q, p) in H + H l via\r
+the Cayley-Dickson construction. The multiplication is\r
+(q1 + lp1)(q2 + lp2) = q1q2 + l\r
 2\r
 p2p\r
-∗\r
-1 + ℓ (q2p1 + q\r
-∗\r
+*\r
+1 + l (q2p1 + q\r
+*\r
 1p2), (1)\r
-where ∗ denotes quaternionic conjugation and ℓ\r
-2 = ±1 covers the division and split cases.\r
+where * denotes quaternionic conjugation and l\r
+2 = +/-1 covers the division and split cases.\r
 While (1) is standard, its direct use can become cumbersome because it mixes conjugation\r
 with order-sensitive products.\r
 In this note we isolate a simple mnemonic rule that organizes octonion multiplication into\r
-a 2 × 2 block pattern of quaternionic products, where exactly half of the elementary products\r
-appear in reversed order. The pattern propagates inductively to all Cayley–Dickson algebras\r
+a 2 x 2 block pattern of quaternionic products, where exactly half of the elementary products\r
+appear in reversed order. The pattern propagates inductively to all Cayley-Dickson algebras\r
 An of dimension 2\r
-n and motivates a compatible “interlaced” product for 2 × 2 matrices over a\r
+n and motivates a compatible "interlaced" product for 2 x 2 matrices over a\r
 unital non-associative algebra.\r
-2 Cayley–Dickson form and a 2 × 2 quaternionic model\r
+2 Cayley-Dickson form and a 2 x 2 quaternionic model\r
 Write a (split) octonion as\r
-o = q + ℓp, q, p ∈ H, ℓ2 = ±1.\r
+o = q + lp, q, p in H, l2 = +/-1.\r
 Define the linear map\r
 M(o) := \u0012\r
-q ℓ2 p\r
-∗\r
-p q∗\r
+q l2 p\r
+*\r
+p q*\r
 \u0013\r
 . (2)\r
 Definition 2.1 (Reversal marker). Given a product xy in a (possibly non-commutative)\r
-algebra, we denote by ↶xy the reversed product yx.\r
+algebra, we denote by loopxy the reversed product yx.\r
 1\r
 arXiv:2512.22134v3 [math.RA] 26 Jan 2026
 
-Remark 2.2. The symbol ↶ is purely typographical: it does not define a new operation on\r
+Remark 2.2. The symbol loop is purely typographical: it does not define a new operation on\r
 the algebra. It only indicates that, in the marked contraction, the two factors are multiplied\r
 in the opposite order.\r
-Definition 2.3 (Interlaced 2 × 2 product over H). For matrices of the form (2), define an\r
-“interlaced” multiplication ⟲by expanding the usual matrix product, but reversing the order\r
+Definition 2.3 (Interlaced 2 x 2 product over H). For matrices of the form (2), define an\r
+"interlaced" multiplication by expanding the usual matrix product, but reversing the order\r
 in the off-diagonal contractions:\r
 \u0012\r
 a b\r
 c d\u0013\r
-⟲ \u0012\r
+ \u0012\r
 a\r
-′\r
+\r
 b\r
-′\r
+\r
 c\r
-′ d′\r
+ d\r
 \u0013\r
 :=\r
-\r
-\r
-aa′ +\r
-↶\r
-bc′\r
-↶\r
-ab′ + bd′\r
-↶\r
-ca′ + dc′cb′ +\r
-↶\r
-dd′\r
-\r
- . (3)\r
-A direct computation shows that the Cayley–Dickson multiplication is reproduced at the\r
-level of M(·).\r
-Proposition 2.4 (Matrix mnemonic for octonion multiplication). For oi = qi + ℓpi with\r
-qi, pi ∈ H,\r
-M(o1) ⟲M(o2) = M(o1o2), (4)\r
+(\r
+(\r
+aa +\r
+loop\r
+bc\r
+loop\r
+ab + bd\r
+loop\r
+ca + dccb +\r
+loop\r
+dd\r
+)\r
+) . (3)\r
+A direct computation shows that the Cayley-Dickson multiplication is reproduced at the\r
+level of M(*).\r
+Proposition 2.4 (Matrix mnemonic for octonion multiplication). For oi = qi + lpi with\r
+qi, pi in H,\r
+M(o1) M(o2) = M(o1o2), (4)\r
 where o1o2 is given by (1).\r
 Remark 2.5. The point of (4) is not a new model of O (many exist), but a visible order-pattern:\r
 each block in the product is a sum of a right-ordered product and a left-ordered one.\r
-Remark 2.6. Unlike Zorn’s vector–matrix formulation [6], where non-associativity is encoded\r
-in the replacement of ordinary products by vector dot and cross products in the off–diagonal\r
+Remark 2.6. Unlike Zorn's vector-matrix formulation [6], where non-associativity is encoded\r
+in the replacement of ordinary products by vector dot and cross products in the off-diagonal\r
 blocks, the present construction retains standard block entries and shifts all non-associativity\r
-into a systematic pattern of order reversals within an interlaced 2 × 2 matrix multiplication.\r
+into a systematic pattern of order reversals within an interlaced 2 x 2 matrix multiplication.\r
 3 The mnemonic (R + L) pattern\r
-Inspection of (3)–(4) yields the rule:\r
-• each block is the sum of exactly two products;\r
-• one term is in right (natural) order (call it R);\r
-• the other is in left (reversed) order (call it L);\r
-• the pattern is\r
+Inspection of (3)-(4) yields the rule:\r
+- each block is the sum of exactly two products;\r
+- one term is in right (natural) order (call it R);\r
+- the other is in left (reversed) order (call it L);\r
+- the pattern is\r
 \u0012\r
 R + L L + R\r
 L + R R + L\r
 \u0013\r
 .\r
 This compact (R + L) pattern provides a fast and reliable way to compute octonionic\r
-products in Cayley–Dickson form without repeatedly re-deriving where conjugations and order\u0002reversals must occur.\r
-4 Propagation through the Cayley–Dickson tower\r
+products in Cayley-Dickson form without repeatedly re-deriving where conjugations and order\u0002reversals must occur.\r
+4 Propagation through the Cayley-Dickson tower\r
 Let An denote the 2\r
 n\r
--dimensional algebra obtained by iterating the Cayley–Dickson doubling.\r
-Assume An is equipped with its standard involution ∗. Represent an element of An+1 as a+ϵb\r
-with a, b ∈ An and ϵ\r
-2 = ±1, and define\r
-Mn+1(a + ϵb) := \u0012\r
-a ϵ2b\r
-∗\r
-b a∗\r
+-dimensional algebra obtained by iterating the Cayley-Dickson doubling.\r
+Assume An is equipped with its standard involution *. Represent an element of An+1 as a+epsilonb\r
+with a, b in An and epsilon\r
+2 = +/-1, and define\r
+Mn+1(a + epsilonb) := \u0012\r
+a epsilon2b\r
+*\r
+b a*\r
 \u0013\r
 .\r
 2
 
-Theorem 4.1 ((R+L) propagation). The interlaced product (3) applied to Mn+1(·) reproduces\r
-the Cayley–Dickson multiplication on An+1. Consequently the (R + L) order-reversal pattern\r
-propagates inductively through all Cayley–Dickson algebras An.\r
-Remark 4.2. For n ≥ 4 the algebras cease to be alternative, and zero divisors appear. The\r
+Theorem 4.1 ((R+L) propagation). The interlaced product (3) applied to Mn+1(*) reproduces\r
+the Cayley-Dickson multiplication on An+1. Consequently the (R + L) order-reversal pattern\r
+propagates inductively through all Cayley-Dickson algebras An.\r
+Remark 4.2. For n >= 4 the algebras cease to be alternative, and zero divisors appear. The\r
 mnemonic remains valid as an identity in the defining multiplication, but invertibility and\r
-“determinant-like” constructions must be stated with care.\r
+"determinant-like" constructions must be stated with care.\r
 5 Toward matrix structures over non-associative algebras\r
-The representation (2) may be viewed as the natural octonionic analogue of the classical 2×2\r
+The representation (2) may be viewed as the natural octonionic analogue of the classical 2x2\r
 real and complex matrix models for C and H:\r
-C ∋ z = x+ iy 7−→ \u0012\r
-x −y\r
+C contains z = x+ iy 7--> \u0012\r
+x -y\r
 y x \u0013\r
-, H ∋ q = q0 +q1i+q2j+q3k 7−→ \u0012\r
-q0 + iq3 −q2 + iq1\r
-q2 + iq1 q0 − iq3\r
+, H contains q = q0 +q1i+q2j+q3k 7--> \u0012\r
+q0 + iq3 -q2 + iq1\r
+q2 + iq1 q0 - iq3\r
 \u0013\r
 .\r
 (5)\r
 At the level of the tower, one obtains maps\r
-Mn : An −→ Mat2(An−1),\r
+Mn : An --> Mat2(An-1),\r
 and the interlaced product provides a natural way to retain a controlled multiplication on\r
-these 2 × 2 blocks even when An is non-associative. In particular, one may introduce:\r
-• flexible or alternative matrix products, obtained by restricting the matrix multiplica\u0002tion on Mat2(An−1) to combinations that respect the underlying (left, right, or fully)\r
+these 2 x 2 blocks even when An is non-associative. In particular, one may introduce:\r
+- flexible or alternative matrix products, obtained by restricting the matrix multiplica\u0002tion on Mat2(An-1) to combinations that respect the underlying (left, right, or fully)\r
 alternative laws in An;\r
-• Moufang-type identities on special subspaces, such as the “Hermitian” or “pure” compo\u0002nents of An, where the algebra retains sufficient alternativity for the classical Moufang\r
+- Moufang-type identities on special subspaces, such as the "Hermitian" or "pure" compo\u0002nents of An, where the algebra retains sufficient alternativity for the classical Moufang\r
 identities to descend to matrix form;\r
-• groups of norm-preserving transformations, defined as those 2 × 2 matrices over An−1\r
+- groups of norm-preserving transformations, defined as those 2 x 2 matrices over An-1\r
 whose action (by left or right multiplication, or by conjugation) preserves the quadratic\r
-form induced by the Cayley–Dickson norm on An;\r
-• generalized determinant-like invariants, obtained by replacing the usual determinant with\r
+form induced by the Cayley-Dickson norm on An;\r
+- generalized determinant-like invariants, obtained by replacing the usual determinant with\r
 quadratic or quartic expressions that remain invariant under the above norm-preserving\r
-groups (the determinant of a Hermitian 3 × 3 octonionic matrix being the archetypal\r
+groups (the determinant of a Hermitian 3 x 3 octonionic matrix being the archetypal\r
 example).\r
-Such constructions arise naturally in exceptional geometry and the theory of Jordan al\u0002gebras (Albert algebra), in the triality phenomena associated with Spin(8), and in Tits’ con\u0002structions of exceptional Lie groups. Within this framework, the representation Mn serves as\r
-a bridge between the non-associative algebraic world of the Cayley–Dickson sequence and the\r
+Such constructions arise naturally in exceptional geometry and the theory of Jordan al\u0002gebras (Albert algebra), in the triality phenomena associated with Spin(8), and in Tits' con\u0002structions of exceptional Lie groups. Within this framework, the representation Mn serves as\r
+a bridge between the non-associative algebraic world of the Cayley-Dickson sequence and the\r
 classical matrix formalisms underlying these exceptional structures.\r
-6 Interlaced 2 × 2 multiplication over a unital non-associative\r
+6 Interlaced 2 x 2 multiplication over a unital non-associative\r
 algebra\r
-Let A be a unital (not necessarily associative, not necessarily commutative) algebra. Define ⟲\r
+Let A be a unital (not necessarily associative, not necessarily commutative) algebra. Define \r
 on Mat2(A) by the same rule (3):\r
 \u0012\r
 a b\r
 c d\u0013\r
-⟲ \u0012\r
+ \u0012\r
 a\r
-′\r
+\r
 b\r
-′\r
+\r
 c\r
-′ d′\r
+ d\r
 \u0013\r
 :=\r
-\r
-\r
-aa′ +\r
-↶\r
-bc′\r
-↶\r
-ab′ + bd′\r
-↶\r
-ca′ + dc′cb′ +\r
-↶\r
-dd′\r
-\r
- =\r
+(\r
+(\r
+aa +\r
+loop\r
+bc\r
+loop\r
+ab + bd\r
+loop\r
+ca + dccb +\r
+loop\r
+dd\r
+)\r
+) =\r
 \u0012\r
-aa′ + c\r
-′\r
-b b′a + bd′\r
+aa + c\r
+\r
+b ba + bd\r
 a\r
-′\r
-c + dc′cb′ + d\r
-′d\r
+\r
+c + dccb + d\r
+d\r
 \u0013\r
 , (6)\r
 3
 
-where the displayed form uses ↶\r
+where the displayed form uses loop\r
 xy = yx to remove the reversal notation.\r
-Remark 6.1 (On inverses and “determinants”). In a general non-associative algebra A, expres\u0002sions such as ad − cb and da − cb need not coincide, need not be central, and may fail to\r
+Remark 6.1 (On inverses and "determinants"). In a general non-associative algebra A, expres\u0002sions such as ad - cb and da - cb need not coincide, need not be central, and may fail to\r
 associate with the surrounding factors. Therefore one should distinguish left and right inverse\r
 candidates, and state sufficient conditions ensuring that scalar prefactors can be moved safely.\r
 A convenient safe statement is the following.\r
@@ -210,42 +210,42 @@ Proposition 6.2 (One-sided inverses under nucleus/centrality assumptions). Let X
 \u0012\r
 a b\r
 c d\u0013\r
-∈\r
+in\r
 Mat2(A) and define\r
-∆L := da − cb, ∆R := ad − cb, X♯:= \u0012\r
-d −b\r
-−c a \u0013\r
+DeltaL := da - cb, DeltaR := ad - cb, X#:= \u0012\r
+d -b\r
+-c a \u0013\r
 .\r
 Assume:\r
-• ∆L is invertible and belongs to the left nucleus of A (so that (∆−1\r
+- DeltaL is invertible and belongs to the left nucleus of A (so that (Delta-1\r
 L\r
-x)y = ∆−1\r
+x)y = Delta-1\r
 L\r
 (xy) for all\r
 x, y),\r
-• ∆R is invertible and belongs to the right nucleus of A,\r
+- DeltaR is invertible and belongs to the right nucleus of A,\r
 then\r
-(∆L)\r
-−1X♯\r
-⟲X = 12 , X ⟲X♯\r
-(∆R)\r
-−1 = 12\r
+(DeltaL)\r
+-1X#\r
+X = 12 , X X#\r
+(DeltaR)\r
+-1 = 12\r
 i.e. the displayed matrices provide a left inverse and a right inverse of X for the interlaced\r
 product, yielding a loop structure [7].\r
 Remark 6.3. For alternative division algebras (e.g. H and O), nucleus conditions are automat\u0002ically much easier to satisfy on many natural subalgebras, and one recovers familiar inverse\r
 formulae in Zorn-type models [5, 6].\r
 7 Conclusion\r
 The (R + L) mnemonic yields a compact and effective method for computing with octonions\r
-(and split octonions) in Cayley–Dickson form, and it propagates uniformly through the entire\r
-Cayley–Dickson tower. The same order-reversal pattern motivates an interlaced product on 2×\r
-2 matrices over a unital non-associative algebra, which in turn suggests structured “matrix-like”\r
+(and split octonions) in Cayley-Dickson form, and it propagates uniformly through the entire\r
+Cayley-Dickson tower. The same order-reversal pattern motivates an interlaced product on 2x\r
+2 matrices over a unital non-associative algebra, which in turn suggests structured "matrix-like"\r
 formalisms adapted to non-associativity. We hope this note will be useful both pedagogically\r
 and as a computational device in exceptional algebra and geometry.\r
 Acknowledgements\r
 The author is grateful to Dr. Hamed Pehjan for his careful reading of the manuscript and for\r
 several helpful suggestions and corrections.\r
 References\r
-[1] J. C. Baez, The Octonions, Bull. Amer. Math. Soc. 39 (2001), 145–205.\r
+[1] J. C. Baez, The Octonions, Bull. Amer. Math. Soc. 39 (2001), 145-205.\r
 [2] R. D. Schafer, An Introduction to Nonassociative Algebras, Academic Press, 1966.\r
 [3] S. Okubo, Introduction to Octonion and Other Non-Associative Algebras in Physics, Cam\u0002bridge University Press, 1995.\r
 4
@@ -253,7 +253,7 @@ References\r
 [4] T. A. Springer and F. D. Veldkamp, Octonions, Jordan Algebras and Exceptional Groups,\r
 Springer, 2000.\r
 [5] J. Daboul and R. Delbourgo, Matrix representation of octonions and generalizations, J.\r
-Math. Phys. 40 (1999) 4134–4150.\r
+Math. Phys. 40 (1999) 4134-4150.\r
 [6] J. H. Conway and D. A. Smith, On Quaternions and Octonions: Their Geometry, Arith\u0002metic, and Symmetry, A K Peters / CRC Press (2003).\r
 [7] H. O. Pflugfelder, Quasigroups and Loops: Introduction, Sigma Series in Pure Mathemat\u0002ics, Vol. 7, Heldermann Verlag, 1990.\r
 5"""
@@ -269,230 +269,230 @@ number = "0"
 title = "Preamble"
 text = """
 A Mnemonic Matrix Rule for (Split) Octonionic Multiplication\r
-and its Extension to the Cayley–Dickson Tower\r
+and its Extension to the Cayley-Dickson Tower\r
 Jean-Pierre Gazeau\r
-Université Paris Cité, CNRS, Astroparticule et Cosmologie, F-75013 Paris, France\r
-Faculty of Mathematics, University of Białystok, 15-245 Białystok, Poland\r
+Universite Paris Cite, CNRS, Astroparticule et Cosmologie, F-75013 Paris, France\r
+Faculty of Mathematics, University of Biaystok, 15-245 Biaystok, Poland\r
 gazeau@apc.in2p3.fr, j.gazeau@uwb.edu.pl\r
 January 27, 2026\r
 Abstract\r
 We present a compact mnemonic device for computing the product of two (split)\r
-octonions written in Cayley–Dickson form q + ℓp with q, p ∈ H. The rule appears as a\r
+octonions written in Cayley-Dickson form q + lp with q, p in H. The rule appears as a\r
 simple (R + L) pattern of right-ordered and left-ordered (quaternionic) products inside\r
-a 2 × 2 quaternionic matrix model. The pattern extends verbatim to all algebras in\r
-the Cayley–Dickson tower, providing an efficient computational tool in non-associative\r
-settings. To our knowledge, this explicit “(R + L)” mnemonic does not appear in the\r
+a 2 x 2 quaternionic matrix model. The pattern extends verbatim to all algebras in\r
+the Cayley-Dickson tower, providing an efficient computational tool in non-associative\r
+settings. To our knowledge, this explicit "(R + L)" mnemonic does not appear in the\r
 classical literature on octonions or composition algebras."""
 
 [[sections]]
 number = "1"
 title = "Introduction"
 text = """
-The octonions O [1, 2, 3, 4, 6] may be described as pairs of quaternions (q, p) ∈ H ⊕ H ℓ via\r
-the Cayley–Dickson construction. The multiplication is\r
-(q1 + ℓp1)(q2 + ℓp2) = q1q2 + ℓ\r
+The octonions O [1, 2, 3, 4, 6] may be described as pairs of quaternions (q, p) in H + H l via\r
+the Cayley-Dickson construction. The multiplication is\r
+(q1 + lp1)(q2 + lp2) = q1q2 + l\r
 2\r
 p2p\r
-∗\r
-1 + ℓ (q2p1 + q\r
-∗\r
+*\r
+1 + l (q2p1 + q\r
+*\r
 1p2), (1)\r
-where ∗ denotes quaternionic conjugation and ℓ\r
-2 = ±1 covers the division and split cases.\r
+where * denotes quaternionic conjugation and l\r
+2 = +/-1 covers the division and split cases.\r
 While (1) is standard, its direct use can become cumbersome because it mixes conjugation\r
 with order-sensitive products.\r
 In this note we isolate a simple mnemonic rule that organizes octonion multiplication into\r
-a 2 × 2 block pattern of quaternionic products, where exactly half of the elementary products\r
-appear in reversed order. The pattern propagates inductively to all Cayley–Dickson algebras\r
+a 2 x 2 block pattern of quaternionic products, where exactly half of the elementary products\r
+appear in reversed order. The pattern propagates inductively to all Cayley-Dickson algebras\r
 An of dimension 2\r
-n and motivates a compatible “interlaced” product for 2 × 2 matrices over a\r
+n and motivates a compatible "interlaced" product for 2 x 2 matrices over a\r
 unital non-associative algebra."""
 
 [[sections]]
 number = "2"
-title = "Cayley–Dickson form and a 2 × 2 quaternionic model"
+title = "Cayley-Dickson form and a 2 x 2 quaternionic model"
 text = """
 Write a (split) octonion as\r
-o = q + ℓp, q, p ∈ H, ℓ2 = ±1.\r
+o = q + lp, q, p in H, l2 = +/-1.\r
 Define the linear map\r
 M(o) := \u0012\r
-q ℓ2 p\r
-∗\r
-p q∗\r
+q l2 p\r
+*\r
+p q*\r
 \u0013\r
 . (2)\r
 Definition 2.1 (Reversal marker). Given a product xy in a (possibly non-commutative)\r
-algebra, we denote by ↶xy the reversed product yx.\r
+algebra, we denote by loopxy the reversed product yx.\r
 1\r
 arXiv:2512.22134v3 [math.RA] 26 Jan 2026
 
-Remark 2.2. The symbol ↶ is purely typographical: it does not define a new operation on\r
+Remark 2.2. The symbol loop is purely typographical: it does not define a new operation on\r
 the algebra. It only indicates that, in the marked contraction, the two factors are multiplied\r
 in the opposite order.\r
-Definition 2.3 (Interlaced 2 × 2 product over H). For matrices of the form (2), define an\r
-“interlaced” multiplication ⟲by expanding the usual matrix product, but reversing the order\r
+Definition 2.3 (Interlaced 2 x 2 product over H). For matrices of the form (2), define an\r
+"interlaced" multiplication by expanding the usual matrix product, but reversing the order\r
 in the off-diagonal contractions:\r
 \u0012\r
 a b\r
 c d\u0013\r
-⟲ \u0012\r
+ \u0012\r
 a\r
-′\r
+\r
 b\r
-′\r
+\r
 c\r
-′ d′\r
+ d\r
 \u0013\r
 :=\r
-\r
-\r
-aa′ +\r
-↶\r
-bc′\r
-↶\r
-ab′ + bd′\r
-↶\r
-ca′ + dc′cb′ +\r
-↶\r
-dd′\r
-\r
- . (3)\r
-A direct computation shows that the Cayley–Dickson multiplication is reproduced at the\r
-level of M(·).\r
-Proposition 2.4 (Matrix mnemonic for octonion multiplication). For oi = qi + ℓpi with\r
-qi, pi ∈ H,\r
-M(o1) ⟲M(o2) = M(o1o2), (4)\r
+(\r
+(\r
+aa +\r
+loop\r
+bc\r
+loop\r
+ab + bd\r
+loop\r
+ca + dccb +\r
+loop\r
+dd\r
+)\r
+) . (3)\r
+A direct computation shows that the Cayley-Dickson multiplication is reproduced at the\r
+level of M(*).\r
+Proposition 2.4 (Matrix mnemonic for octonion multiplication). For oi = qi + lpi with\r
+qi, pi in H,\r
+M(o1) M(o2) = M(o1o2), (4)\r
 where o1o2 is given by (1).\r
 Remark 2.5. The point of (4) is not a new model of O (many exist), but a visible order-pattern:\r
 each block in the product is a sum of a right-ordered product and a left-ordered one.\r
-Remark 2.6. Unlike Zorn’s vector–matrix formulation [6], where non-associativity is encoded\r
-in the replacement of ordinary products by vector dot and cross products in the off–diagonal\r
+Remark 2.6. Unlike Zorn's vector-matrix formulation [6], where non-associativity is encoded\r
+in the replacement of ordinary products by vector dot and cross products in the off-diagonal\r
 blocks, the present construction retains standard block entries and shifts all non-associativity\r
-into a systematic pattern of order reversals within an interlaced 2 × 2 matrix multiplication."""
+into a systematic pattern of order reversals within an interlaced 2 x 2 matrix multiplication."""
 
 [[sections]]
 number = "3"
 title = "The mnemonic (R + L) pattern"
 text = """
-Inspection of (3)–(4) yields the rule:\r
-• each block is the sum of exactly two products;\r
-• one term is in right (natural) order (call it R);\r
-• the other is in left (reversed) order (call it L);\r
-• the pattern is\r
+Inspection of (3)-(4) yields the rule:\r
+- each block is the sum of exactly two products;\r
+- one term is in right (natural) order (call it R);\r
+- the other is in left (reversed) order (call it L);\r
+- the pattern is\r
 \u0012\r
 R + L L + R\r
 L + R R + L\r
 \u0013\r
 .\r
 This compact (R + L) pattern provides a fast and reliable way to compute octonionic\r
-products in Cayley–Dickson form without repeatedly re-deriving where conjugations and order\u0002reversals must occur."""
+products in Cayley-Dickson form without repeatedly re-deriving where conjugations and order\u0002reversals must occur."""
 
 [[sections]]
 number = "4"
-title = "Propagation through the Cayley–Dickson tower"
+title = "Propagation through the Cayley-Dickson tower"
 text = """
 Let An denote the 2\r
 n\r
--dimensional algebra obtained by iterating the Cayley–Dickson doubling.\r
-Assume An is equipped with its standard involution ∗. Represent an element of An+1 as a+ϵb\r
-with a, b ∈ An and ϵ\r
-2 = ±1, and define\r
-Mn+1(a + ϵb) := \u0012\r
-a ϵ2b\r
-∗\r
-b a∗\r
+-dimensional algebra obtained by iterating the Cayley-Dickson doubling.\r
+Assume An is equipped with its standard involution *. Represent an element of An+1 as a+epsilonb\r
+with a, b in An and epsilon\r
+2 = +/-1, and define\r
+Mn+1(a + epsilonb) := \u0012\r
+a epsilon2b\r
+*\r
+b a*\r
 \u0013\r
 .\r
 2
 
-Theorem 4.1 ((R+L) propagation). The interlaced product (3) applied to Mn+1(·) reproduces\r
-the Cayley–Dickson multiplication on An+1. Consequently the (R + L) order-reversal pattern\r
-propagates inductively through all Cayley–Dickson algebras An.\r
-Remark 4.2. For n ≥ 4 the algebras cease to be alternative, and zero divisors appear. The\r
+Theorem 4.1 ((R+L) propagation). The interlaced product (3) applied to Mn+1(*) reproduces\r
+the Cayley-Dickson multiplication on An+1. Consequently the (R + L) order-reversal pattern\r
+propagates inductively through all Cayley-Dickson algebras An.\r
+Remark 4.2. For n >= 4 the algebras cease to be alternative, and zero divisors appear. The\r
 mnemonic remains valid as an identity in the defining multiplication, but invertibility and\r
-“determinant-like” constructions must be stated with care."""
+"determinant-like" constructions must be stated with care."""
 
 [[sections]]
 number = "5"
 title = "Toward matrix structures over non-associative algebras"
 text = """
-The representation (2) may be viewed as the natural octonionic analogue of the classical 2×2\r
+The representation (2) may be viewed as the natural octonionic analogue of the classical 2x2\r
 real and complex matrix models for C and H:\r
-C ∋ z = x+ iy 7−→ \u0012\r
-x −y\r
+C contains z = x+ iy 7--> \u0012\r
+x -y\r
 y x \u0013\r
-, H ∋ q = q0 +q1i+q2j+q3k 7−→ \u0012\r
-q0 + iq3 −q2 + iq1\r
-q2 + iq1 q0 − iq3\r
+, H contains q = q0 +q1i+q2j+q3k 7--> \u0012\r
+q0 + iq3 -q2 + iq1\r
+q2 + iq1 q0 - iq3\r
 \u0013\r
 .\r
 (5)\r
 At the level of the tower, one obtains maps\r
-Mn : An −→ Mat2(An−1),\r
+Mn : An --> Mat2(An-1),\r
 and the interlaced product provides a natural way to retain a controlled multiplication on\r
-these 2 × 2 blocks even when An is non-associative. In particular, one may introduce:\r
-• flexible or alternative matrix products, obtained by restricting the matrix multiplica\u0002tion on Mat2(An−1) to combinations that respect the underlying (left, right, or fully)\r
+these 2 x 2 blocks even when An is non-associative. In particular, one may introduce:\r
+- flexible or alternative matrix products, obtained by restricting the matrix multiplica\u0002tion on Mat2(An-1) to combinations that respect the underlying (left, right, or fully)\r
 alternative laws in An;\r
-• Moufang-type identities on special subspaces, such as the “Hermitian” or “pure” compo\u0002nents of An, where the algebra retains sufficient alternativity for the classical Moufang\r
+- Moufang-type identities on special subspaces, such as the "Hermitian" or "pure" compo\u0002nents of An, where the algebra retains sufficient alternativity for the classical Moufang\r
 identities to descend to matrix form;\r
-• groups of norm-preserving transformations, defined as those 2 × 2 matrices over An−1\r
+- groups of norm-preserving transformations, defined as those 2 x 2 matrices over An-1\r
 whose action (by left or right multiplication, or by conjugation) preserves the quadratic\r
-form induced by the Cayley–Dickson norm on An;\r
-• generalized determinant-like invariants, obtained by replacing the usual determinant with\r
+form induced by the Cayley-Dickson norm on An;\r
+- generalized determinant-like invariants, obtained by replacing the usual determinant with\r
 quadratic or quartic expressions that remain invariant under the above norm-preserving\r
-groups (the determinant of a Hermitian 3 × 3 octonionic matrix being the archetypal\r
+groups (the determinant of a Hermitian 3 x 3 octonionic matrix being the archetypal\r
 example).\r
-Such constructions arise naturally in exceptional geometry and the theory of Jordan al\u0002gebras (Albert algebra), in the triality phenomena associated with Spin(8), and in Tits’ con\u0002structions of exceptional Lie groups. Within this framework, the representation Mn serves as\r
-a bridge between the non-associative algebraic world of the Cayley–Dickson sequence and the\r
+Such constructions arise naturally in exceptional geometry and the theory of Jordan al\u0002gebras (Albert algebra), in the triality phenomena associated with Spin(8), and in Tits' con\u0002structions of exceptional Lie groups. Within this framework, the representation Mn serves as\r
+a bridge between the non-associative algebraic world of the Cayley-Dickson sequence and the\r
 classical matrix formalisms underlying these exceptional structures."""
 
 [[sections]]
 number = "6"
-title = "Interlaced 2 × 2 multiplication over a unital non-associative"
+title = "Interlaced 2 x 2 multiplication over a unital non-associative"
 text = """
 algebra\r
-Let A be a unital (not necessarily associative, not necessarily commutative) algebra. Define ⟲\r
+Let A be a unital (not necessarily associative, not necessarily commutative) algebra. Define \r
 on Mat2(A) by the same rule (3):\r
 \u0012\r
 a b\r
 c d\u0013\r
-⟲ \u0012\r
+ \u0012\r
 a\r
-′\r
+\r
 b\r
-′\r
+\r
 c\r
-′ d′\r
+ d\r
 \u0013\r
 :=\r
-\r
-\r
-aa′ +\r
-↶\r
-bc′\r
-↶\r
-ab′ + bd′\r
-↶\r
-ca′ + dc′cb′ +\r
-↶\r
-dd′\r
-\r
- =\r
+(\r
+(\r
+aa +\r
+loop\r
+bc\r
+loop\r
+ab + bd\r
+loop\r
+ca + dccb +\r
+loop\r
+dd\r
+)\r
+) =\r
 \u0012\r
-aa′ + c\r
-′\r
-b b′a + bd′\r
+aa + c\r
+\r
+b ba + bd\r
 a\r
-′\r
-c + dc′cb′ + d\r
-′d\r
+\r
+c + dccb + d\r
+d\r
 \u0013\r
 , (6)\r
 3
 
-where the displayed form uses ↶\r
+where the displayed form uses loop\r
 xy = yx to remove the reversal notation.\r
-Remark 6.1 (On inverses and “determinants”). In a general non-associative algebra A, expres\u0002sions such as ad − cb and da − cb need not coincide, need not be central, and may fail to\r
+Remark 6.1 (On inverses and "determinants"). In a general non-associative algebra A, expres\u0002sions such as ad - cb and da - cb need not coincide, need not be central, and may fail to\r
 associate with the surrounding factors. Therefore one should distinguish left and right inverse\r
 candidates, and state sufficient conditions ensuring that scalar prefactors can be moved safely.\r
 A convenient safe statement is the following.\r
@@ -500,26 +500,26 @@ Proposition 6.2 (One-sided inverses under nucleus/centrality assumptions). Let X
 \u0012\r
 a b\r
 c d\u0013\r
-∈\r
+in\r
 Mat2(A) and define\r
-∆L := da − cb, ∆R := ad − cb, X♯:= \u0012\r
-d −b\r
-−c a \u0013\r
+DeltaL := da - cb, DeltaR := ad - cb, X#:= \u0012\r
+d -b\r
+-c a \u0013\r
 .\r
 Assume:\r
-• ∆L is invertible and belongs to the left nucleus of A (so that (∆−1\r
+- DeltaL is invertible and belongs to the left nucleus of A (so that (Delta-1\r
 L\r
-x)y = ∆−1\r
+x)y = Delta-1\r
 L\r
 (xy) for all\r
 x, y),\r
-• ∆R is invertible and belongs to the right nucleus of A,\r
+- DeltaR is invertible and belongs to the right nucleus of A,\r
 then\r
-(∆L)\r
-−1X♯\r
-⟲X = 12 , X ⟲X♯\r
-(∆R)\r
-−1 = 12\r
+(DeltaL)\r
+-1X#\r
+X = 12 , X X#\r
+(DeltaR)\r
+-1 = 12\r
 i.e. the displayed matrices provide a left inverse and a right inverse of X for the interlaced\r
 product, yielding a loop structure [7].\r
 Remark 6.3. For alternative division algebras (e.g. H and O), nucleus conditions are automat\u0002ically much easier to satisfy on many natural subalgebras, and one recovers familiar inverse\r
@@ -530,16 +530,16 @@ number = "7"
 title = "Conclusion"
 text = """
 The (R + L) mnemonic yields a compact and effective method for computing with octonions\r
-(and split octonions) in Cayley–Dickson form, and it propagates uniformly through the entire\r
-Cayley–Dickson tower. The same order-reversal pattern motivates an interlaced product on 2×\r
-2 matrices over a unital non-associative algebra, which in turn suggests structured “matrix-like”\r
+(and split octonions) in Cayley-Dickson form, and it propagates uniformly through the entire\r
+Cayley-Dickson tower. The same order-reversal pattern motivates an interlaced product on 2x\r
+2 matrices over a unital non-associative algebra, which in turn suggests structured "matrix-like"\r
 formalisms adapted to non-associativity. We hope this note will be useful both pedagogically\r
 and as a computational device in exceptional algebra and geometry.\r
 Acknowledgements\r
 The author is grateful to Dr. Hamed Pehjan for his careful reading of the manuscript and for\r
 several helpful suggestions and corrections.\r
 References\r
-[1] J. C. Baez, The Octonions, Bull. Amer. Math. Soc. 39 (2001), 145–205.\r
+[1] J. C. Baez, The Octonions, Bull. Amer. Math. Soc. 39 (2001), 145-205.\r
 [2] R. D. Schafer, An Introduction to Nonassociative Algebras, Academic Press, 1966.\r
 [3] S. Okubo, Introduction to Octonion and Other Non-Associative Algebras in Physics, Cam\u0002bridge University Press, 1995.\r
 4
@@ -547,7 +547,7 @@ References\r
 [4] T. A. Springer and F. D. Veldkamp, Octonions, Jordan Algebras and Exceptional Groups,\r
 Springer, 2000.\r
 [5] J. Daboul and R. Delbourgo, Matrix representation of octonions and generalizations, J.\r
-Math. Phys. 40 (1999) 4134–4150.\r
+Math. Phys. 40 (1999) 4134-4150.\r
 [6] J. H. Conway and D. A. Smith, On Quaternions and Octonions: Their Geometry, Arith\u0002metic, and Symmetry, A K Peters / CRC Press (2003).\r
 [7] H. O. Pflugfelder, Quasigroups and Loops: Introduction, Sigma Series in Pure Mathemat\u0002ics, Vol. 7, Heldermann Verlag, 1990.\r
 5"""

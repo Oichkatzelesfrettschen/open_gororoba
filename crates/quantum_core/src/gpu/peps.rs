@@ -16,7 +16,7 @@
 //!
 //! Single operation (no batching):
 //! - GPU time: ~130 ms (dominated by context init + memory transfer overhead)
-//! - CPU time: ~1 µs (1M elements)
+//! - CPU time: ~1 mus (1M elements)
 //! - Result: GPU 100,000x SLOWER due to ~130 ms fixed overhead
 //!
 //! Batched operations (GPU persistence assumed):

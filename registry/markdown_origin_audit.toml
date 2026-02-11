@@ -815,7 +815,7 @@ toml_destination = "registry/docs_root_narratives.toml"
 source_of_truth_raw = "registry/docs_root_narratives.toml"
 source_of_truth_paths = ["registry/docs_root_narratives.toml"]
 consolidation_action = "none"
-line_count = 309
+line_count = 308
 
 [[document]]
 path = "docs/PHASE_1_SUMMARY.md"

@@ -1,26 +1,26 @@
 //! Tessarine (Bicomplex) Algebra Implementation
 //!
 //! Tessarines (T) are 4D commutative hypercomplex numbers constructed as the
-//! tensor product C ⊗ C. They are fundamentally distinct from Cayley-Dickson
+//! tensor product C x C. They are fundamentally distinct from Cayley-Dickson
 //! algebras:
 //!
-//! - **Construction**: Tensor product (C ⊗ C), element-wise multiplication
+//! - **Construction**: Tensor product (C x C), element-wise multiplication
 //! - **Commutativity**: Always commutative (ab = ba for all a,b)
 //! - **Associativity**: Always associative
 //! - **Zero-divisors**: None (all nonzero elements invertible); idempotents exist
-//! - **Norm**: Euclidean norm (NOT multiplicative: ||ab|| ≠ ||a|| ||b|| in general)
+//! - **Norm**: Euclidean norm (NOT multiplicative: ||ab|| != ||a|| ||b|| in general)
 //! - **Invertibility**: All nonzero elements have multiplicative inverses (100%)
 //!
 //! # Representation
 //!
-//! A tessarine is represented as (z₁, z₂) where z₁, z₂ ∈ ℂ.
-//! Multiplication: (a₁, a₂)(b₁, b₂) = (a₁b₁, a₂b₂)
+//! A tessarine is represented as (z_1, z_2) where z_1, z_2 in C.
+//! Multiplication: (a_1, a_2)(b_1, b_2) = (a_1b_1, a_2b_2)
 //!
 //! Equivalent to 4D vector [x, y, u, v] where:
-//! - (x + yi, u + vi) ↔ [x, y, u, v]
+//! - (x + yi, u + vi) <-> [x, y, u, v]
 //! - Multiplication is component-wise in complex pairs
 
-/// Tessarine number: (z1, z2) where z1, z2 ∈ ℂ
+/// Tessarine number: (z1, z2) where z1, z2 in C
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct Tessarine {
     /// First complex component
@@ -42,7 +42,7 @@ impl Tessarine {
         }
     }
 
-    /// Create a tessarine from scalar: Scalar α as (α, α) - the scalar embedding
+    /// Create a tessarine from scalar: Scalar alpha as (alpha, alpha) - the scalar embedding
     /// where both complex components have the same real part.
     pub fn from_scalar(a: f64) -> Self {
         Self::new(a, 0.0, a, 0.0)
@@ -69,7 +69,7 @@ impl Tessarine {
         Self::new(0.0, 0.0, 0.0, 1.0)
     }
 
-    /// Tessarine multiplication: (a₁, a₂)(b₁, b₂) = (a₁b₁, a₂b₂)
+    /// Tessarine multiplication: (a_1, a_2)(b_1, b_2) = (a_1b_1, a_2b_2)
     /// Component-wise complex multiplication.
     pub fn multiply(&self, other: &Tessarine) -> Tessarine {
         // z1 = z1_a * z1_b
@@ -99,14 +99,14 @@ impl Tessarine {
         Tessarine::new(self.z1_real, -self.z1_imag, self.z2_real, -self.z2_imag)
     }
 
-    /// Euclidean norm squared: ||t||² = |z1|² + |z2|²
+    /// Euclidean norm squared: ||t||^2 = |z1|^2 + |z2|^2
     pub fn norm_squared(&self) -> f64 {
         let z1_norm_sq = self.z1_real * self.z1_real + self.z1_imag * self.z1_imag;
         let z2_norm_sq = self.z2_real * self.z2_real + self.z2_imag * self.z2_imag;
         z1_norm_sq + z2_norm_sq
     }
 
-    /// Euclidean norm: ||t|| = sqrt(|z1|² + |z2|²)
+    /// Euclidean norm: ||t|| = sqrt(|z1|^2 + |z2|^2)
     pub fn norm(&self) -> f64 {
         self.norm_squared().sqrt()
     }
@@ -132,7 +132,7 @@ impl Tessarine {
         ))
     }
 
-    /// Check if this tessarine is an idempotent: t² = t
+    /// Check if this tessarine is an idempotent: t^2 = t
     pub fn is_idempotent(&self, tolerance: f64) -> bool {
         let t_sq = self.multiply(self);
         (t_sq.z1_real - self.z1_real).abs() <= tolerance
@@ -142,7 +142,7 @@ impl Tessarine {
     }
 
     /// Check if this tessarine is nilpotent: t^k = 0 for some k
-    /// For simplicity, we check if t² = 0 (square-nilpotent).
+    /// For simplicity, we check if t^2 = 0 (square-nilpotent).
     pub fn is_nilpotent_square(&self, tolerance: f64) -> bool {
         let t_sq = self.multiply(self);
         t_sq.norm_squared() < tolerance
@@ -153,7 +153,7 @@ impl Tessarine {
         vec![self.z1_real, self.z1_imag, self.z2_real, self.z2_imag]
     }
 
-    /// Create from 4D vector: [x, y, u, v] → (x+yi, u+vi)
+    /// Create from 4D vector: [x, y, u, v] -> (x+yi, u+vi)
     pub fn from_vector(v: &[f64]) -> Self {
         assert_eq!(v.len(), 4);
         Self::new(v[0], v[1], v[2], v[3])
@@ -222,7 +222,7 @@ pub fn compute_invertibility_fraction(n_samples: usize) -> f64 {
             let product = t.multiply(&t_inv);
             let one = Tessarine::one(); // Identity is (1, 1)
 
-            // Check if t * t^{-1} ≈ (1, 1)
+            // Check if t * t^{-1} approx (1, 1)
             // Component-wise multiplication means identity is (1, 1), not (1, 0)
             if (product.z1_real - one.z1_real).abs() <= tolerance
                 && (product.z1_imag - one.z1_imag).abs() <= tolerance
@@ -241,7 +241,7 @@ pub fn compute_invertibility_fraction(n_samples: usize) -> f64 {
     }
 }
 
-/// Count commutativity violations: pairs where ab ≠ ba
+/// Count commutativity violations: pairs where ab != ba
 pub fn count_commutativity_violations() -> usize {
     let mut violations = 0;
     let tolerance = 1e-10;
@@ -272,7 +272,7 @@ pub fn count_commutativity_violations() -> usize {
     violations
 }
 
-/// Count associativity violations: (ab)c ≠ a(bc)
+/// Count associativity violations: (ab)c != a(bc)
 pub fn count_associativity_violations() -> usize {
     let mut violations = 0;
     let tolerance = 1e-10;
@@ -303,7 +303,7 @@ pub fn count_associativity_violations() -> usize {
     violations
 }
 
-/// Count idempotents: tessarines t where t² = t
+/// Count idempotents: tessarines t where t^2 = t
 pub fn count_idempotents(n_samples: usize) -> usize {
     let tolerance = 1e-10;
     let mut count = 0;

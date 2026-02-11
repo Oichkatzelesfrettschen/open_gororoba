@@ -84,7 +84,7 @@ impl HamiltonianND {
                 
                 let coupling = self.j / dist.powf(self.alpha);
 
-                // Kron product: ... ⊗ Sz_i ⊗ ... ⊗ Sz_j ⊗ ...
+                // Kron product: ... x Sz_i x ... x Sz_j x ...
                 let term = self.kron_operator(&sz, i, &sz, j);
 
                 h = &h + &(Complex64::new(coupling, 0.0) * &term);
@@ -100,7 +100,7 @@ impl HamiltonianND {
         h
     }
 
-    /// Single-qubit Kronecker product (identity ⊗ ... ⊗ op_i ⊗ ... ⊗ identity)
+    /// Single-qubit Kronecker product (identity x ... x op_i x ... x identity)
     fn kron_single(&self, op: &Array2<Complex64>, target: usize) -> Array2<Complex64> {
         let mut result = Array2::from_diag(&Array1::from_vec(vec![
             Complex64::new(1.0, 0.0);
@@ -271,7 +271,7 @@ mod tests {
         let ham = HamiltonianND::new(vec![4], 1.0, 0.5, 1.0);
         let psi = vec![Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)];
         let s = ham.entanglement_entropy(&psi);
-        // Ground state has S ≈ 0
+        // Ground state has S approx 0
         assert!(s.abs() < 1e-10);
     }
 

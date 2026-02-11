@@ -749,7 +749,7 @@ mod tests {
         assert_eq!(inv.girth, None);
     }
 
-    // ── GraphPredicate trait tests ──────────────────────────────────────
+    // -- GraphPredicate trait tests --------------------------------------
 
     #[test]
     fn test_zd_predicate_matches_direct_function() {
@@ -862,7 +862,7 @@ mod tests {
         assert!(!pred.test(5, 0));
     }
 
-    // ── Original invariant tests ────────────────────────────────────────
+    // -- Original invariant tests ----------------------------------------
 
     #[test]
     fn test_zd_parity_cliques_invariants_32d() {
@@ -894,7 +894,7 @@ mod tests {
         assert_eq!(inv.girth, Some(3));
     }
 
-    // ── Layer 4: InvariantSuite tests ───────────────────────────────────
+    // -- Layer 4: InvariantSuite tests -----------------------------------
 
     #[test]
     fn test_invariant_suite_zd_32d() {
@@ -1283,7 +1283,7 @@ mod tests {
         assert_eq!(total, 31);
     }
 
-    // ── Layer 3/4 Bridge tests ────────────────────────────────────────
+    // -- Layer 3/4 Bridge tests ----------------------------------------
 
     #[test]
     fn test_light_invariants_match_full_for_small_graph() {

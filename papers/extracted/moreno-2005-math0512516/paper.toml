@@ -3,9 +3,9 @@ full_text = """
 arXiv:math/0512516v1 [math.RA] 22 Dec 2005\r
 Monomorphisms between Cayley-Dickson Algebras\r
 Guillermo Moreno\r
-Departamento de Matem´aticas\r
+Departamento de Matem'aticas\r
 CINVESTAV del IPN\r
-M´exico, D.F.\r
+M'exico, D.F.\r
 gmoreno@math.cinvestav.mx\r
 Abstract: In this paper we study the algebra monomorphisms from\r
 Am = R\r
@@ -13,8 +13,8 @@ Am = R\r
 into An = R\r
 2\r
 n\r
-for 1 ≤ m ≤ n, where An are the Cayley-Dickson\r
-algebras. For n ≥ 4, we show that there are many types of monomorphisms\r
+for 1 <= m <= n, where An are the Cayley-Dickson\r
+algebras. For n >= 4, we show that there are many types of monomorphisms\r
 and we describe them in terms of the zero divisors in An.\r
 Key words and phrases: Cayley-Dickson, Quaternions, Octonions, non\u0002associative, alternative, flexible and G2.\r
 AMS Subject classification: 17A99\r
@@ -24,17 +24,17 @@ Introduction: The Cayley-Dickson algebras An over the real numbers is an\r
 algebra structure on R\r
 2\r
 n\r
-= An for n ≥ 0.\r
+= An for n >= 0.\r
 By definition the Cayley-Dickson algebras (C-D algebras) are given by\r
 doubling process of Dickson [D].\r
-For (a, b) and (x, y) in An × An, define the product in An+1 = An × An\r
+For (a, b) and (x, y) in An x An, define the product in An+1 = An x An\r
 as follows:\r
-(a, b) · (x, y) = (ax − yb, ya + bx).\r
+(a, b) * (x, y) = (ax - yb, ya + bx).\r
 So if A0 = R and x = x for all x in R then A1 = C the complex numbers\r
-A2 = H the quaternion numbers and A3 = ø the octonion numbers.\r
-As is well known An is commutative for n ≤ 1; associative for n ≤ 2 and\r
-alternative for n ≤ 3, also An is normed for n ≤ 3.\r
-For n ≥ 4 An is flexible and has zero divisors [Mo1].\r
+A2 = H the quaternion numbers and A3 = o the octonion numbers.\r
+As is well known An is commutative for n <= 1; associative for n <= 2 and\r
+alternative for n <= 3, also An is normed for n <= 3.\r
+For n >= 4 An is flexible and has zero divisors [Mo1].\r
 Let Aut(An) be the automorphism group of the algebra An.\r
 As is well known\r
 Aut(A1) = Z/2 = { Identity, Conjugation}.\r
@@ -42,8 +42,8 @@ Aut(A2) = SO(3) the rotation group in R\r
 3\r
 Aut(A3) = G2 the exceptional Lie group.\r
 (See [H-Y] and [Wh]).\r
-For n ≥ 4, Eakin-Sathaye showed that\r
-Aut(An) = Aut(An−1) ×\r
+For n >= 4, Eakin-Sathaye showed that\r
+Aut(An) = Aut(An-1) x\r
 P\r
 3\r
 .\r
@@ -52,106 +52,106 @@ Where P\r
 is the symmetric group of order 6.\r
 (See [E-K] and [Mo2]).\r
 In this paper we will extend the above results in the following sense:\r
-Suppose that 1 ≤ m ≤ n.\r
-By definition an algebra monomorphism ϕ : Am → An is a linear monomor\u0002phism such that (i) ϕ(e0) = e0 and (ii) ϕ(xy) = ϕ(x)ϕ(y) for all x and y in\r
+Suppose that 1 <= m <= n.\r
+By definition an algebra monomorphism  : Am -> An is a linear monomor\u0002phism such that (i) (e0) = e0 and (ii) (xy) = (x)(y) for all x and y in\r
 Am where e0 = (1, 0, . . . , 0) is the unit element in Am and An respectively.\r
 We will describe the set\r
-M(Am, An) = {ϕ : Am → An|ϕ algebra monomorphism}.\r
-We will see that this set is more complicated to describe for n ≥ 4.\r
-For n ≤ 3 we will recover known results about the relationship between\r
-Aut(An) and the Stiefel manifolds V2n−1,2.\r
-For n ≥ 3, recall that {e0, e1, . . . , e2n−1} denotes the canonical basis in\r
+M(Am, An) = { : Am -> An| algebra monomorphism}.\r
+We will see that this set is more complicated to describe for n >= 4.\r
+For n <= 3 we will recover known results about the relationship between\r
+Aut(An) and the Stiefel manifolds V2n-1,2.\r
+For n >= 3, recall that {e0, e1, . . . , e2n-1} denotes the canonical basis in\r
 An and that the doubling process is given by\r
-An+1 = An ⊕ Anee0\r
+An+1 = An + Anee0\r
 2
 
-where ˜e0 := e2n (half of the way basic in An+1).\r
-For ϕ ∈ M(Am; An+1) for n ≥ 3,\r
-ϕ is of type I if e2n = ˜e0 ∈ (Imϕ) ⊂ An+1 and ϕ is of type II if also\r
-e2n−1 := ε ∈ (Imϕ) ⊂ An+1.\r
+where ~e0 := e2n (half of the way basic in An+1).\r
+For  in M(Am; An+1) for n >= 3,\r
+ is of type I if e2n = ~e0 in (Im) subset An+1 and  is of type II if also\r
+e2n-1 := epsilon in (Im) subset An+1.\r
 The main result of this paper is Theorem 2.5: the set of type II monomor\u0002phisms from A3 to An+1 can be described by the set of zero divisors in An+1\r
-for n ≥ 4.\r
-§1. Pure and doubly pure elements in An+1.\r
+for n >= 4.\r
+Sec 1. Pure and doubly pure elements in An+1.\r
 Throughout this paper we will stablish the following notational conven\u0002tions:Elements in An will be denoted by Latin characters a, b, c, . . . , x, y, z.\r
-Elements in An+1 will be denoted by Greek characters α, β, γ, . . . For exam\u0002ple,\r
-α = (a, b) ∈ An × An.\r
-When we need to represent elements in An as elements in An−1 × An−1\r
+Elements in An+1 will be denoted by Greek characters alpha, beta, gamma, . . . For exam\u0002ple,\r
+alpha = (a, b) in An x An.\r
+When we need to represent elements in An as elements in An-1 x An-1\r
 we use subscripts, for instance, a = (a1, a2), b = (b1, b2), and so on, with\r
-a1, a2, b1, b2 in An−1.\r
-Now {e0, e1, . . . , e2n−1} denotes the canonical basis in An. Then by the\r
+a1, a2, b1, b2 in An-1.\r
+Now {e0, e1, . . . , e2n-1} denotes the canonical basis in An. Then by the\r
 doubling process\r
-{(e0, 0),(e1, 0), . . . ,(e2n−1, 0),(0, e0), . . . ,(0, e2n−1)}\r
-is the canonical basis in An+1 = An ×An. By standard abuse of notation, we\r
-denote, also e0 = (e0, 0), e1 = (e1, 0), . . . , e2n−1 = (e2n−1, 0),\r
-e2n = (0, e0), . . . , e2n+1−1 = (0, e2n−1) in An+1.\r
-For α = (a, b) ∈ An × An = An+1 we denote αe = (−b, a) (the complexifi\u0002cation of α) so ee0 = (0, e0) and αee0 = (a, b)(0, e0) = (−b, a) = αe. Notice that\r
-eαe = −α.\r
-The trace on An+1 is the linear map tn+1 : An+1 → R given by tn+1(α) =\r
-α + α = 2(real part of α) so tn+1(α) = tn(a) when α = (a, b) ∈ An × An.\r
-Definition: α = (a, b) in An+1 is pure if\r
-tn+1(α) = tn(a) = 0.\r
+{(e0, 0),(e1, 0), . . . ,(e2n-1, 0),(0, e0), . . . ,(0, e2n-1)}\r
+is the canonical basis in An+1 = An xAn. By standard abuse of notation, we\r
+denote, also e0 = (e0, 0), e1 = (e1, 0), . . . , e2n-1 = (e2n-1, 0),\r
+e2n = (0, e0), . . . , e2n+1-1 = (0, e2n-1) in An+1.\r
+For alpha = (a, b) in An x An = An+1 we denote alphae = (-b, a) (the complexifi\u0002cation of alpha) so ee0 = (0, e0) and alphaee0 = (a, b)(0, e0) = (-b, a) = alphae. Notice that\r
+ealphae = -alpha.\r
+The trace on An+1 is the linear map tn+1 : An+1 -> R given by tn+1(alpha) =\r
+alpha + alpha = 2(real part of alpha) so tn+1(alpha) = tn(a) when alpha = (a, b) in An x An.\r
+Definition: alpha = (a, b) in An+1 is pure if\r
+tn+1(alpha) = tn(a) = 0.\r
 3
 
-α = (a, b) in An+1 is doubly pure if it is pure and also tn(b) = 0; i.e., αe is\r
+alpha = (a, b) in An+1 is doubly pure if it is pure and also tn(b) = 0; i.e., alphae is\r
 pure in An+1.\r
 Also 2ha, bi = tn(ab) for h,i the inner product in R\r
 2\r
 n\r
 (see [Mo1]).\r
-Notice that for a and b pure elements a ⊥ b if and only if ab = −ba.\r
+Notice that for a and b pure elements a perp b if and only if ab = -ba.\r
 Notation: Im(An) = {eo}\r
-⊥ ⊂ An is the vector subspace consisting of pure\r
+perp subset An is the vector subspace consisting of pure\r
 elements in An; i.e., Im(An) = Ker(tn) = R\r
 2\r
-n−1\r
+n-1\r
 .\r
-Aen+1 = Im(An) × Im(An) = {e0, ee0}\r
-⊥ = R\r
+Aen+1 = Im(An) x Im(An) = {e0, ee0}\r
+perp = R\r
 2\r
-n+1−2\r
+n+1-2\r
 is the vector subspace\r
 consisting of doubly pure elements in An+1.\r
 Lemma 1.1. For a and b in Afn we have that\r
-1) aee0 = ea and ee0a = −ea.\r
-2) aea = −||a||2ee0 and eaa = ||a||2ee0 so a ⊥ ea.\r
-3) eab = −abe with a a pure element.\r
-4) a ⊥ b if and only if eab + eba = 0.\r
-5) ea ⊥ b if and only if ab = ebea.\r
-6) eab = aeb if and only if a ⊥ b and ea ⊥ b.\r
-Proof: Notice that a is pure if a = −a and if a = (a1, a2) is doubly pure,\r
-then a1 = −a1 and a2 = −a2.\r
-1) ee0a = (0, e0)(a1, a2) = (−a2, a1) = (a2, −a1) = −(−a2, a1) = −ea.\r
-2) aea = (a1, a2)(−a2, a1) = (−a1a2 + a1a2, a2\r
+1) aee0 = ea and ee0a = -ea.\r
+2) aea = -||a||2ee0 and eaa = ||a||2ee0 so a perp ea.\r
+3) eab = -abe with a a pure element.\r
+4) a perp b if and only if eab + eba = 0.\r
+5) ea perp b if and only if ab = ebea.\r
+6) eab = aeb if and only if a perp b and ea perp b.\r
+Proof: Notice that a is pure if a = -a and if a = (a1, a2) is doubly pure,\r
+then a1 = -a1 and a2 = -a2.\r
+1) ee0a = (0, e0)(a1, a2) = (-a2, a1) = (a2, -a1) = -(-a2, a1) = -ea.\r
+2) aea = (a1, a2)(-a2, a1) = (-a1a2 + a1a2, a2\r
 1 + a\r
 2\r
 2\r
-) = (0, −||a||2e0) =\r
-−||a||2ee0.\r
-Similarly eaa = (−a2, a1)(a1, a2) = (−a2a1 + a2a1, −a\r
+) = (0, -||a||2e0) =\r
+-||a||2ee0.\r
+Similarly eaa = (-a2, a1)(a1, a2) = (-a2a1 + a2a1, -a\r
 2\r
-2 − a\r
+2 - a\r
 2\r
 1\r
 ) = ||a||2ee0.\r
-Now, since −2hea, ai = aea + eaa = 0 we have a ⊥ ea.\r
-3) eab = (−a2, a1)(b1, b2) = (−a2b1 + b2a1, −b2a2 − a1b1).\r
-So eeab = (a1b1 + b2a2, b2a1 − a2b1) = (a1, a2)(b1, b2) = ab then −eab = ab. e\r
-Notice that in this proof we only use that a1 = −a1; i.e., a is pure and\r
+Now, since -2hea, ai = aea + eaa = 0 we have a perp ea.\r
+3) eab = (-a2, a1)(b1, b2) = (-a2b1 + b2a1, -b2a2 - a1b1).\r
+So eeab = (a1b1 + b2a2, b2a1 - a2b1) = (a1, a2)(b1, b2) = ab then -eab = ab. e\r
+Notice that in this proof we only use that a1 = -a1; i.e., a is pure and\r
 b doubly pure.\r
 4
 
-4) a ⊥ b ⇔ ab + ba = 0 ⇔ ab = −ba ⇔ abe = −ba. e\r
-⇔ −eab = eba ⇔ eab + eba = 0 by (3).\r
-5) ea ⊥ b ⇔ eeab + ebea = 0 (by (4)) ⇔ −ab + ebea = 0.\r
-6) If ea ⊥ b and a ⊥ b, then by (3) and (4) eab = −abe = bae = −eba = aeb.\r
-Conversely, put a = (a1, a2) and b = (b1, b2) in An−1 × An−1 and define\r
-c := (a1b1 + b2a2) and d := (b2a1 − a2b1) in An−1.\r
-Then aeb = (a1, a2)(−b2, b1) = (−a1b2+b1a2, b1a1+a2b2) so aeb = (−d, c).\r
-Now ab = (a1, a2)(b1, b2) = (a1b1 + b2a2, b2a1 − a2b1) = (c, d), so abe = (−d, c)\r
-and then eab = (d, −c).\r
-Thus, if aeb = eab then c = −c and d = −d. Then\r
-tn(ab) = tn−1(c) = c + c = 0 and a ⊥ b\r
-tn(eab) = tn−1(d) = d + d = 0 and ea ⊥ b.\r
+4) a perp b <=> ab + ba = 0 <=> ab = -ba <=> abe = -ba. e\r
+<=> -eab = eba <=> eab + eba = 0 by (3).\r
+5) ea perp b <=> eeab + ebea = 0 (by (4)) <=> -ab + ebea = 0.\r
+6) If ea perp b and a perp b, then by (3) and (4) eab = -abe = bae = -eba = aeb.\r
+Conversely, put a = (a1, a2) and b = (b1, b2) in An-1 x An-1 and define\r
+c := (a1b1 + b2a2) and d := (b2a1 - a2b1) in An-1.\r
+Then aeb = (a1, a2)(-b2, b1) = (-a1b2+b1a2, b1a1+a2b2) so aeb = (-d, c).\r
+Now ab = (a1, a2)(b1, b2) = (a1b1 + b2a2, b2a1 - a2b1) = (c, d), so abe = (-d, c)\r
+and then eab = (d, -c).\r
+Thus, if aeb = eab then c = -c and d = -d. Then\r
+tn(ab) = tn-1(c) = c + c = 0 and a perp b\r
+tn(eab) = tn-1(d) = d + d = 0 and ea perp b.\r
 Q.E.D\r
 Corollary 1.2 For each a 6= 0 in Aen. The four dimensional vector subspace\r
 generated by {e0, ea, a, ee0} is a copy of A2 = H.(We denote it by Ha).\r
@@ -160,59 +160,59 @@ Proof: We suppose that ||a|| = 1, otherwise we take a\r
 following multiplication table.\r
 e0 ea a ee0\r
 e0 e0 ea a ee0\r
-ea ea −e0 +ee0 −a\r
-a a −ee0 −e0 ea\r
-ee0 a ee0 −ea −e0\r
-By lemma 2.1. aee0 = ea; ee0a = −ea; eaee0 = eea = −a; ee0ea = −eea = a;\r
-aea = −ee0 and eaa = ee0.\r
-But this is the multiplication table of A2 = H identifying e0 ↔ 1, ea ↔ ˆi,\r
-a ↔ ˆj and ee0 ↔ ˆk.\r
+ea ea -e0 +ee0 -a\r
+a a -ee0 -e0 ea\r
+ee0 a ee0 -ea -e0\r
+By lemma 2.1. aee0 = ea; ee0a = -ea; eaee0 = eea = -a; ee0ea = -eea = a;\r
+aea = -ee0 and eaa = ee0.\r
+But this is the multiplication table of A2 = H identifying e0 <-> 1, ea <-> ^i,\r
+a <-> ^j and ee0 <-> ^k.\r
 Q.E.D.\r
 5
 
-§ 2. Monomorphism from Am to An.\r
-Throughout this chapter 1 ≤ m ≤ n.\r
-Definition. An algebra monomorphism from Am to An is a linear monomor\u0002phism ϕ : Am → An such that\r
-i) ϕ(e0) = e0 (the first e0 is in Am and the second e0 in An)\r
-ii) ϕ(xy) = ϕ(x)ϕ(y) for all x and y in Am.\r
-By definition we have that ϕ(re0) = rϕ(e0) for all r in R so\r
-ϕ(Im(Am)) ⊂ ϕ(Im(An)) and ϕ(x) = ϕ(x).\r
-Therefore ||ϕ(x)||2 = ϕ(x)ϕ(x) = ϕ(x)ϕ(x) = ϕ(xx) = ϕ(||x||2\r
+Sec  2. Monomorphism from Am to An.\r
+Throughout this chapter 1 <= m <= n.\r
+Definition. An algebra monomorphism from Am to An is a linear monomor\u0002phism  : Am -> An such that\r
+i) (e0) = e0 (the first e0 is in Am and the second e0 in An)\r
+ii) (xy) = (x)(y) for all x and y in Am.\r
+By definition we have that (re0) = r(e0) for all r in R so\r
+(Im(Am)) subset (Im(An)) and (x) = (x).\r
+Therefore ||(x)||2 = (x)(x) = (x)(x) = (xx) = (||x||2\r
 ) = ||x||2\r
-for all x ∈ Am and ||ϕ(x)|| = ||x|| and ϕ is an orthogonal linear transforma\u0002tion from R\r
-2m−1\r
+for all x in Am and ||(x)|| = ||x|| and  is an orthogonal linear transforma\u0002tion from R\r
+2m-1\r
 to R\r
 2\r
-n−1\r
+n-1\r
 .\r
-The trivial monomorphism is the one given by ϕ(x) = (x, 0, 0, . . . , 0) for\r
-x ∈ Am and 0 in Am (2n−m−1-times).\r
+The trivial monomorphism is the one given by (x) = (x, 0, 0, . . . , 0) for\r
+x in Am and 0 in Am (2n-m-1-times).\r
 M(Am, An) denotes the set of algebra monomorphisms from Am to An.\r
 For m = n, M(Am; An) = Aut(An) the group of algebra automorphisms\r
 of An\r
 Proposition 2.1. M(A1; An) = S(Im(An)) = S\r
 2\r
-n−2\r
+n-2\r
 .\r
 Proof: A1 = C = Span{e0, e1}.\r
-If x ∈ A1 then x = re0 + se1 and for w ∈ Im(An) with ||w|| = 1 we have\r
-that ϕw(x) = re0+sw define an algebra monomorphism from A1 to An. This\r
+If x in A1 then x = re0 + se1 and for w in Im(An) with ||w|| = 1 we have\r
+that w(x) = re0+sw define an algebra monomorphism from A1 to An. This\r
 can be seen by direct calculations, recalling that, Center (An) = R for all n\r
 and that every associator with one real entrie vanish.\r
-ϕw(x)ϕw(y) = (re0 + sw)(pe0 + qw) = (rp + sqw2)e0 + (rq + sp)w\r
-= (rp − sq)e0 + (rq + sp)w\r
-= ϕw(x)ϕw(y)\r
-when y = pe0 + qe1 and p and q in R. Clearly ϕw(e0) = e0.\r
-Conversely, for ϕ ∈ M(A1; An), set w = ϕ(e1) in An so ||w|| = 1 and\r
-ϕw = ϕ.\r
+w(x)w(y) = (re0 + sw)(pe0 + qw) = (rp + sqw2)e0 + (rq + sp)w\r
+= (rp - sq)e0 + (rq + sp)w\r
+= w(x)w(y)\r
+when y = pe0 + qe1 and p and q in R. Clearly w(e0) = e0.\r
+Conversely, for  in M(A1; An), set w = (e1) in An so ||w|| = 1 and\r
+w = .\r
 Q.E.D.\r
 Remark: In particular, we have that\r
 Aut(A1) = S\r
-0 = Z/2 = {Identity, conjugation} = {ϕe1\r
-, ϕ−e1}.\r
+0 = Z/2 = {Identity, conjugation} = {e1\r
+, -e1}.\r
 6
 
-To calculate M(A2; An) for n ≥ 2 we need to recall (see [Mo2]).\r
+To calculate M(A2; An) for n >= 2 we need to recall (see [Mo2]).\r
 Definition: For a and b in An. We said that a alternate with b, we denote\r
 it by a b, if (a, a, b) = 0.\r
 We said that a alternate strongly with b, we denote it by a ! b, if\r
@@ -222,196 +222,196 @@ linearly dependent then a ! b (by flexibility).\r
 Also,by definition,a is an alternative element if and only if a x for all\r
 x in An.\r
 By Lemma 1.1 (1) and (2) we have that for any doubly pure element a in\r
-An (a, a, e˜0) = 0 and (by the above remarks) ˜e0 alternate strongly with any\r
+An (a, a, e~0) = 0 and (by the above remarks) ~e0 alternate strongly with any\r
 a in An.\r
 For a and b pure elements in An, we define the vector subspace of An\r
 V (a; b) = Span{e0, a, b, ab}.\r
-Also we identify the Stiefel manifold V2n−1,2 as\r
-{(a, b) ∈ Im(An) × Im(An)|a ⊥ b, ||a|| = ||b|| = 1}\r
-Lemma 2.2. If (a, b) ∈ V2n−1,2 and a ! b then V (a; b) = A2 = H the\r
+Also we identify the Stiefel manifold V2n-1,2 as\r
+{(a, b) in Im(An) x Im(An)|a perp b, ||a|| = ||b|| = 1}\r
+Lemma 2.2. If (a, b) in V2n-1,2 and a ! b then V (a; b) = A2 = H the\r
 quaternions.\r
-Proof: Suppose that (a, b) ∈ V2n−1,2 and that (a, a, b) = 0 then we have\r
+Proof: Suppose that (a, b) in V2n-1,2 and that (a, a, b) = 0 then we have\r
 hab, ai = hb, aai = hb, ||a||2\r
 e0i = ||a||2hb, e0i = 0\r
 hab, ai = ha, bbi = ha, ||b||2\r
 e0i = ||b||2ha, e0i = 0\r
-||ab||2 = hab, abi = ha(ab), bi = h−a(ab), bi = h−a\r
+||ab||2 = hab, abi = ha(ab), bi = h-a(ab), bi = h-a\r
 2\r
 b, bi\r
-= −a\r
+= -a\r
 2\r
 hb, bi = ||a||2||b||2 = 1\r
 so {e0, a, b, ab} is an orthonormal set of vectors in An.\r
-Finally using also that (a, b, b) = 0 and ab = −ba we may check by direct\r
+Finally using also that (a, b, b) = 0 and ab = -ba we may check by direct\r
 calculations that the multiplication table of {e0, a, b, ab} coincides with the\r
-one of the quaternions and by the identification e0 7→ e0, a 7→ e1, b 7→ e2 and\r
-ab 7→ e3 we have an algebra isomorphism between A2 = H and V (a; b).\r
+one of the quaternions and by the identification e0 7-> e0, a 7-> e1, b 7-> e2 and\r
+ab 7-> e3 we have an algebra isomorphism between A2 = H and V (a; b).\r
 Q.E. D.\r
-Proposition 2.3. M(A2; An) = {(a, b) ∈ V2n−1,2|a ! b} for n ≥ 2.\r
+Proposition 2.3. M(A2; An) = {(a, b) in V2n-1,2|a ! b} for n >= 2.\r
 7
 
 In particular\r
 Aut(A2) = M(A2; A2) = V3,2 = SO(3)\r
 and\r
 M(A2, A3) = V7,2.\r
-Proof. The inclusion “⊃” follows from Lemma 2.2. Conversely suppose that\r
-ϕ ∈ M(A2, An) then ϕ(e0) = e0,(ϕ(e1), ϕ(e2)) ∈ V2n−1,2 and\r
-V (ϕ(e1), ϕ(e2)) = Imϕ = H ⊂ An.\r
+Proof. The inclusion "supset" follows from Lemma 2.2. Conversely suppose that\r
+ in M(A2, An) then (e0) = e0,((e1), (e2)) in V2n-1,2 and\r
+V ((e1), (e2)) = Im = H subset An.\r
 Since A2 is an associative algebra and A3 is an alternative algebra we\r
 have that a ! b for any two elements in An for n = 2 or n = 3.\r
 Q.E.D.\r
-Remark. Recall that A˜\r
-n = {e0, e˜0}\r
-⊥ = R\r
+Remark. Recall that A~\r
+n = {e0, e~0}\r
+perp = R\r
 2\r
-n−2\r
+n-2\r
 denotes the vector subspace\r
-of doubly pure elements. Since a ! e˜0 for any element in A˜\r
+of doubly pure elements. Since a ! e~0 for any element in A~\r
 n, we have\r
-that, if a ∈ S(A˜\r
-n) i.e., ||a|| = 1 then (a, e˜0) ∈ V2n−1,2 and the assignment\r
-a 7→ (a, e˜0) define an inclusion from S(A˜\r
+that, if a in S(A~\r
+n) i.e., ||a|| = 1 then (a, e~0) in V2n-1,2 and the assignment\r
+a 7-> (a, e~0) define an inclusion from S(A~\r
 n) = S\r
 2\r
-n−3\r
-֒→ M(A2; An) ⊂ V2n−1,2\r
-which resembles “the bottom cell” inclusion in V2n−1,2.\r
-To deal with the cases 3 = m ≤ n we have to use the notion of a\r
+n-3\r
+-> M(A2; An) subset V2n-1,2\r
+which resembles "the bottom cell" inclusion in V2n-1,2.\r
+To deal with the cases 3 = m <= n we have to use the notion of a\r
 special triple (see [Wh] and [Mo1]).\r
 Definition: A set {a, b, c} in Im(An) is a special triple if\r
 (i) {a, b, c} is an orthonormal set\r
 (ii) a ! b, a ! c and b ! c i.e. its elements alternate strongly,\r
 pairwise.\r
-(iii) c ∈ V (a; b)\r
-⊥ ⊂ An.\r
+(iii) c in V (a; b)\r
+perp subset An.\r
 Now is easy to see that if {a, b, c} is a special triple then V (a; b); V (a, c); V (b, c)\r
 are isomorphic to A2.\r
 For a special triple {a, b, c} consider the following vector subspace of An\r
-ø(a; b; c) := Span{e0, a, b, ab, c(ab), cb, ac, c}.\r
-Proposition 2.4: For a special triple {a, b, c} in An and n ≥ 3; ø(a, b, c) is\r
-an eight-dimensional vector subspace isomorphic, as algebra, to A3 = ø the\r
-octonions and M(A3, An) = {(a, b, c) ∈ (An)\r
+o(a; b; c) := Span{e0, a, b, ab, c(ab), cb, ac, c}.\r
+Proposition 2.4: For a special triple {a, b, c} in An and n >= 3; o(a, b, c) is\r
+an eight-dimensional vector subspace isomorphic, as algebra, to A3 = o the\r
+octonions and M(A3, An) = {(a, b, c) in (An)\r
 3\r
 |{a, b, c} special triple}.\r
 Proof: We know that all elements in {e0, a, b, ab, c(ab), cb, ac, c} are of norm\r
 one and also\r
-hc(ab), ai = −hab, aci = ha(ab), ci = ha\r
+hc(ab), ai = -hab, aci = ha(ab), ci = ha\r
 2\r
 b, ci = a\r
 2\r
 hb, ci = 0.\r
 8
 
-Similarly (c(ab)) ⊥ b and (c(ab)) ⊥ c. Thus {e0, a, b, ab, c(ab), cb, ac, c} is an\r
-orthonormal set of vectors and ø(a; b; c) is eight-dimensional. To see that\r
-ø(a; b; c) ∼= A3 we have to construct the corresponding multiplication ta\u0002ble,which is, a routine calculation.(See [Mo2])\r
-Conversely, if ϕ ∈ M(A3, An) then a = ϕ(e1), b = ϕ(e2) and c = ϕ(e7)\r
+Similarly (c(ab)) perp b and (c(ab)) perp c. Thus {e0, a, b, ab, c(ab), cb, ac, c} is an\r
+orthonormal set of vectors and o(a; b; c) is eight-dimensional. To see that\r
+o(a; b; c) ~= A3 we have to construct the corresponding multiplication ta\u0002ble,which is, a routine calculation.(See [Mo2])\r
+Conversely, if  in M(A3, An) then a = (e1), b = (e2) and c = (e7)\r
 form an special triple, when {e0, e1, e2, e3, e4, e5, e6, e7} is the canonical basis\r
 in A3, and we recall that e1e2 = e3, e7e3 = e4, e7e2 = e5 and e1e7 = e6 in A3.\r
 Q.E.D.\r
 Remark. For n = 3, A3 is an alternative algebra so a special triple in A3 is\r
 every triple such that\r
 (i) {a, b, c} is orthonormal\r
-(ii) c ⊥ (ab).\r
+(ii) c perp (ab).\r
 So Proposition 4.4 gives the construction of G2 = Aut(A3) as in [Wh] and\r
 the assignment\r
 G2 = Aut(A3)\r
-π→ M(A2, A3) = V7,2\r
-(a, b, c) 7→ (a, b)\r
+pi-> M(A2, A3) = V7,2\r
+(a, b, c) 7-> (a, b)\r
 is the known fibration G2\r
-π→ V7,2 with fiber S\r
+pi-> V7,2 with fiber S\r
 3\r
 .\r
-Remark. Suppose that n ≥ 4 and that {a, b, c} is a special triple in An so\r
-ø(a; b; c) is the image of some algebra monomorphism from A3 to An and any\r
-orthonormal triple {x, y, z} of pure elements in ø(a; b; c) with z ⊥ (xy) is also\r
+Remark. Suppose that n >= 4 and that {a, b, c} is a special triple in An so\r
+o(a; b; c) is the image of some algebra monomorphism from A3 to An and any\r
+orthonormal triple {x, y, z} of pure elements in o(a; b; c) with z perp (xy) is also\r
 a special triple in An and\r
-ø(x; y; z) = ø(a; b; c).\r
-Definition: For 1 ≤ m ≤ n. ϕ ∈ M(Am, An) is a type I monomorphism if\r
-ee0 ∈ (Image of ϕ) ⊂ AAn.\r
-Since ˜e0 = e2n−1 in AAn then the trivial monomorphism is not a type I\r
+o(x; y; z) = o(a; b; c).\r
+Definition: For 1 <= m <= n.  in M(Am, An) is a type I monomorphism if\r
+ee0 in (Image of ) subset AAn.\r
+Since ~e0 = e2n-1 in AAn then the trivial monomorphism is not a type I\r
 monomorphism unless n = m, because by definition its image is generated\r
-by {e0, e1, . . . , e2m−1−1}.\r
-Denote by M1(AAm; AAn) = {ϕ ∈ M(AAm; AAn)|e˜0 ∈ (Imϕ)} the sub\u0002set of all type I monomorphisms, clearly M1(AAn, AAn) = M(AAn; AAn) =\r
+by {e0, e1, . . . , e2m-1-1}.\r
+Denote by M1(AAm; AAn) = { in M(AAm; AAn)|e~0 in (Im)} the sub\u0002set of all type I monomorphisms, clearly M1(AAn, AAn) = M(AAn; AAn) =\r
 Aut(AAn).\r
-Using proposition 2.1 we may verify that for n ≥ 2.\r
-M1(AA1, AAn) = {re0 + se˜0|r\r
+Using proposition 2.1 we may verify that for n >= 2.\r
+M1(AA1, AAn) = {re0 + se~0|r\r
 2 + s2 = 1} = S1\r
 .\r
 9
 
-Also,by Lemma 2.2, for a non-zero a ∈ A˜An we have that V (a; ˜e0) = AHa\r
+Also,by Lemma 2.2, for a non-zero a in A~An we have that V (a; ~e0) = AHa\r
 and\r
-M1(AA2; AAn) = S(A˜An) = S\r
+M1(AA2; AAn) = S(A~An) = S\r
 2\r
-n−3\r
+n-3\r
 . In particular\r
 S\r
-5 = M1(AA2; AA3) ⊂ M(AA2; AA3) = V7,2\r
-is “the bottom cell” of V7,2.\r
-Also we can check,using the fact that a e˜0 for all a ∈ A˜An, that\r
-M1(AA3; AAn) = M(AA2; AAn) ∩ V2n−2,2\r
-where V2n−2,2 = {(a, b) ∈ V2n−1,2|a and b are in A˜An}.\r
-Definition: A type I monomorphism ϕ ∈ M1(AAm; AAn+1) is of type II if\r
-e2n−1 := ε ∈ (Im ϕ) ⊂ AAn+1.\r
-By definition if ϕ ∈ M1(AAm; AAn+1) then ˜e0 ∈ (Im ϕ) ⊂ AAn+1 and\r
-if we also assume that ε ∈ (Imϕ) ⊂ AAn+1 then εe˜0 = ˜ε and AHε :=\r
-Span{e0, ε, ε, ˜ e˜0} lies in (Im ϕ) ⊂ AAn+1; therefore\r
-ϕ ∈ M(AAm, AAn+1) is of type II if and only if AHε ⊂ (Im ϕ).\r
-Denote M2(AAm, AAn+1) = {ϕ ∈ M(AAm; AAn+1)|ϕ is type II}.\r
-Theorem 2.5 For n ≥ 3.\r
+5 = M1(AA2; AA3) subset M(AA2; AA3) = V7,2\r
+is "the bottom cell" of V7,2.\r
+Also we can check,using the fact that a e~0 for all a in A~An, that\r
+M1(AA3; AAn) = M(AA2; AAn) cap V2n-2,2\r
+where V2n-2,2 = {(a, b) in V2n-1,2|a and b are in A~An}.\r
+Definition: A type I monomorphism  in M1(AAm; AAn+1) is of type II if\r
+e2n-1 := epsilon in (Im ) subset AAn+1.\r
+By definition if  in M1(AAm; AAn+1) then ~e0 in (Im ) subset AAn+1 and\r
+if we also assume that epsilon in (Im) subset AAn+1 then epsilone~0 = ~epsilon and AHepsilon :=\r
+Span{e0, epsilon, epsilon, ~ e~0} lies in (Im ) subset AAn+1; therefore\r
+ in M(AAm, AAn+1) is of type II if and only if AHepsilon subset (Im ).\r
+Denote M2(AAm, AAn+1) = { in M(AAm; AAn+1)| is type II}.\r
+Theorem 2.5 For n >= 3.\r
 M2(AA3; AAn+1) = ACP2\r
-n−1−1 ∪ Xn\r
+n-1-1 cup Xn\r
 where ACP m is the complex projective space in AC\r
 m and\r
-Xn = {(x, y) ∈ AAn × AAn|xy = 0, x 6= 0 and y 6= 0}.\r
-In particular for n = 3 X3 = Φ (empty set) and M2(AA3; AA4) = ACP3.\r
-Proof: Suppose that ϕ : AA3 → AAn+1 is an algebra monomorphism for\r
-n ≥ 3 with AHε ⊂ (Im ϕ). So Im ϕ is isomorphic to AO = AA3, as algebras,\r
-then there is a non-zero α ∈ AH\r
-⊥\r
-ε ⊂ A˜\r
+Xn = {(x, y) in AAn x AAn|xy = 0, x 6= 0 and y 6= 0}.\r
+In particular for n = 3 X3 = Phi (empty set) and M2(AA3; AA4) = ACP3.\r
+Proof: Suppose that  : AA3 -> AAn+1 is an algebra monomorphism for\r
+n >= 3 with AHepsilon subset (Im ). So Im  is isomorphic to AO = AA3, as algebras,\r
+then there is a non-zero alpha in AH\r
+perp\r
+epsilon subset A~\r
 n+1 such that\r
-Im ϕ = AOα := Span{e0, ε, ε, ˜ e˜0, α, αε, ˜ εα, α ˜ } ⊂ AAn+1\r
+Im  = AOalpha := Span{e0, epsilon, epsilon, ~ e~0, alpha, alphaepsilon, ~ epsilonalpha, alpha ~ } subset AAn+1\r
 10
 
-Suppose that α = (a, b) ∈ A˜An × A˜An = AH\r
-⊥\r
-ε ⊂ AAn+1 and that a 6= 0\r
+Suppose that alpha = (a, b) in A~An x A~An = AH\r
+perp\r
+epsilon subset AAn+1 and that a 6= 0\r
 (similarly we may assume b 6= 0).\r
-Now Im ϕ = AOα = AA3 if and only if\r
-(α, α, ε) := α\r
+Now Im  = AOalpha = AA3 if and only if\r
+(alpha, alpha, epsilon) := alpha\r
 2\r
-ε − α(αε) = 0 i.e. − ||α||2ε = α(αε).\r
+epsilon - alpha(alphaepsilon) = 0 i.e. - ||alpha||2epsilon = alpha(alphaepsilon).\r
 Using Lemma 1.1 we have that\r
-α(αε) = (a, b)[(a, b)(˜e0, 0)] = (a, b)[(˜a, −˜b)] =\r
-= (aa˜ − ˜bb, −˜ba − ba˜) = (−||a||2e˜0 − ||b||2e˜0, 0) − (0,(be˜0)a − b(˜e0a))\r
-= −||α||2ε + (0,(a, e˜0, b)).\r
-Therefore (a, e˜0, b) = 0 in AAn if and only if (α, α, ε) = 0 in AAn+1.\r
-Since AAn = AHa ⊕ AH\r
-⊥\r
-a we have that b = c + d where c ∈ AHa and\r
-d ∈ AH\r
-⊥\r
-a with c doubly pure i.e., c ∈ Span{a, a˜} ⊂ AHa.\r
+alpha(alphaepsilon) = (a, b)[(a, b)(~e0, 0)] = (a, b)[(~a, -~b)] =\r
+= (aa~ - ~bb, -~ba - ba~) = (-||a||2e~0 - ||b||2e~0, 0) - (0,(be~0)a - b(~e0a))\r
+= -||alpha||2epsilon + (0,(a, e~0, b)).\r
+Therefore (a, e~0, b) = 0 in AAn if and only if (alpha, alpha, epsilon) = 0 in AAn+1.\r
+Since AAn = AHa + AH\r
+perp\r
+a we have that b = c + d where c in AHa and\r
+d in AH\r
+perp\r
+a with c doubly pure i.e., c in Span{a, a~} subset AHa.\r
 Since AHa is associative we have that\r
-(a, e˜0, b) = (a, e˜0, c + d) = (a, e˜0, c) + (a, e˜0, d) = 0 + (a, e˜0, d)\r
-= (a, e˜0, d) = ˜ad + a\r
-˜d = 2˜ad\r
+(a, e~0, b) = (a, e~0, c + d) = (a, e~0, c) + (a, e~0, d) = 0 + (a, e~0, d)\r
+= (a, e~0, d) = ~ad + a\r
+~d = 2~ad\r
 by Lemma 1.1 (1), (2) and (6).\r
-Therefore (α, α, ε) = 0 in AAn+1 if and only if ad = ˜ad = 0 in AAn.\r
+Therefore (alpha, alpha, epsilon) = 0 in AAn+1 if and only if ad = ~ad = 0 in AAn.\r
 So, we have two cases: namely d = 0 and d 6= 0 in AAn.\r
-Suppose d = 0. Thus b = c ∈ AHa and b ∈ Span{a, a˜} so (a, b) determine\r
-a complex line in A˜An = R\r
+Suppose d = 0. Thus b = c in AHa and b in Span{a, a~} so (a, b) determine\r
+a complex line in A~An = R\r
 2\r
-n−2 = AC\r
+n-2 = AC\r
 2\r
-n−1−1\r
-and α ∈ ACP2\r
-n−1−1\r
+n-1-1\r
+and alpha in ACP2\r
+n-1-1\r
 .\r
 Suppose d 6= 0 (so b 6= 0 and a 6= 0).\r
-Thus ad = 0 and (a, d) ∈ Xn.\r
+Thus ad = 0 and (a, d) in Xn.\r
 Q.E.D.\r
 11
 
@@ -421,7 +421,7 @@ of the 8 square theorem. Annals of Math; 20 155-171, 1919.\r
 [E-K] Eakin-Sathaye. On automorphisms and derivations of Cayley-Dickson\r
 algebras. Journal of Pure and Applied Algebra 129, 263-280, 1990.\r
 [H-Y] S.H. Khalil and P. Yiu. The Cayley-Dickson algebras: A theorem of\r
-Hurwitz and quaternions. Bolet´ın de la Sociedad de L´odz Vol. XLVIII\r
+Hurwitz and quaternions. Bolet'in de la Sociedad de L'odz Vol. XLVIII\r
 117-169. 1997.\r
 [Mo1] G. Moreno. The zero divisors of the Cayley-Dickson algebras over the\r
 real numbers. Bol. Soc. Mat. Mex. 4 13-27. 1998\r
@@ -444,9 +444,9 @@ text = """
 arXiv:math/0512516v1 [math.RA] 22 Dec 2005\r
 Monomorphisms between Cayley-Dickson Algebras\r
 Guillermo Moreno\r
-Departamento de Matem´aticas\r
+Departamento de Matem'aticas\r
 CINVESTAV del IPN\r
-M´exico, D.F.\r
+M'exico, D.F.\r
 gmoreno@math.cinvestav.mx\r
 Abstract: In this paper we study the algebra monomorphisms from\r
 Am = R\r
@@ -454,8 +454,8 @@ Am = R\r
 into An = R\r
 2\r
 n\r
-for 1 ≤ m ≤ n, where An are the Cayley-Dickson\r
-algebras. For n ≥ 4, we show that there are many types of monomorphisms\r
+for 1 <= m <= n, where An are the Cayley-Dickson\r
+algebras. For n >= 4, we show that there are many types of monomorphisms\r
 and we describe them in terms of the zero divisors in An.\r
 Key words and phrases: Cayley-Dickson, Quaternions, Octonions, non\u0002associative, alternative, flexible and G2.\r
 AMS Subject classification: 17A99"""
@@ -467,17 +467,17 @@ text = """
 algebra structure on R\r
 2\r
 n\r
-= An for n ≥ 0.\r
+= An for n >= 0.\r
 By definition the Cayley-Dickson algebras (C-D algebras) are given by\r
 doubling process of Dickson [D].\r
-For (a, b) and (x, y) in An × An, define the product in An+1 = An × An\r
+For (a, b) and (x, y) in An x An, define the product in An+1 = An x An\r
 as follows:\r
-(a, b) · (x, y) = (ax − yb, ya + bx).\r
+(a, b) * (x, y) = (ax - yb, ya + bx).\r
 So if A0 = R and x = x for all x in R then A1 = C the complex numbers\r
-A2 = H the quaternion numbers and A3 = ø the octonion numbers.\r
-As is well known An is commutative for n ≤ 1; associative for n ≤ 2 and\r
-alternative for n ≤ 3, also An is normed for n ≤ 3.\r
-For n ≥ 4 An is flexible and has zero divisors [Mo1].\r
+A2 = H the quaternion numbers and A3 = o the octonion numbers.\r
+As is well known An is commutative for n <= 1; associative for n <= 2 and\r
+alternative for n <= 3, also An is normed for n <= 3.\r
+For n >= 4 An is flexible and has zero divisors [Mo1].\r
 Let Aut(An) be the automorphism group of the algebra An.\r
 As is well known\r
 Aut(A1) = Z/2 = { Identity, Conjugation}.\r
@@ -488,8 +488,8 @@ number = "3"
 title = "Aut(A3) = G2 the exceptional Lie group."
 text = """
 (See [H-Y] and [Wh]).\r
-For n ≥ 4, Eakin-Sathaye showed that\r
-Aut(An) = Aut(An−1) ×\r
+For n >= 4, Eakin-Sathaye showed that\r
+Aut(An) = Aut(An-1) x\r
 P"""
 
 [[sections]]
@@ -500,106 +500,106 @@ text = """
 is the symmetric group of order 6.\r
 (See [E-K] and [Mo2]).\r
 In this paper we will extend the above results in the following sense:\r
-Suppose that 1 ≤ m ≤ n.\r
-By definition an algebra monomorphism ϕ : Am → An is a linear monomor\u0002phism such that (i) ϕ(e0) = e0 and (ii) ϕ(xy) = ϕ(x)ϕ(y) for all x and y in\r
+Suppose that 1 <= m <= n.\r
+By definition an algebra monomorphism  : Am -> An is a linear monomor\u0002phism such that (i) (e0) = e0 and (ii) (xy) = (x)(y) for all x and y in\r
 Am where e0 = (1, 0, . . . , 0) is the unit element in Am and An respectively.\r
 We will describe the set\r
-M(Am, An) = {ϕ : Am → An|ϕ algebra monomorphism}.\r
-We will see that this set is more complicated to describe for n ≥ 4.\r
-For n ≤ 3 we will recover known results about the relationship between\r
-Aut(An) and the Stiefel manifolds V2n−1,2.\r
-For n ≥ 3, recall that {e0, e1, . . . , e2n−1} denotes the canonical basis in\r
+M(Am, An) = { : Am -> An| algebra monomorphism}.\r
+We will see that this set is more complicated to describe for n >= 4.\r
+For n <= 3 we will recover known results about the relationship between\r
+Aut(An) and the Stiefel manifolds V2n-1,2.\r
+For n >= 3, recall that {e0, e1, . . . , e2n-1} denotes the canonical basis in\r
 An and that the doubling process is given by\r
-An+1 = An ⊕ Anee0\r
+An+1 = An + Anee0\r
 2
 
-where ˜e0 := e2n (half of the way basic in An+1).\r
-For ϕ ∈ M(Am; An+1) for n ≥ 3,\r
-ϕ is of type I if e2n = ˜e0 ∈ (Imϕ) ⊂ An+1 and ϕ is of type II if also\r
-e2n−1 := ε ∈ (Imϕ) ⊂ An+1.\r
+where ~e0 := e2n (half of the way basic in An+1).\r
+For  in M(Am; An+1) for n >= 3,\r
+ is of type I if e2n = ~e0 in (Im) subset An+1 and  is of type II if also\r
+e2n-1 := epsilon in (Im) subset An+1.\r
 The main result of this paper is Theorem 2.5: the set of type II monomor\u0002phisms from A3 to An+1 can be described by the set of zero divisors in An+1\r
-for n ≥ 4.\r
-§1. Pure and doubly pure elements in An+1.\r
+for n >= 4.\r
+Sec 1. Pure and doubly pure elements in An+1.\r
 Throughout this paper we will stablish the following notational conven\u0002tions:Elements in An will be denoted by Latin characters a, b, c, . . . , x, y, z.\r
-Elements in An+1 will be denoted by Greek characters α, β, γ, . . . For exam\u0002ple,\r
-α = (a, b) ∈ An × An.\r
-When we need to represent elements in An as elements in An−1 × An−1\r
+Elements in An+1 will be denoted by Greek characters alpha, beta, gamma, . . . For exam\u0002ple,\r
+alpha = (a, b) in An x An.\r
+When we need to represent elements in An as elements in An-1 x An-1\r
 we use subscripts, for instance, a = (a1, a2), b = (b1, b2), and so on, with\r
-a1, a2, b1, b2 in An−1.\r
-Now {e0, e1, . . . , e2n−1} denotes the canonical basis in An. Then by the\r
+a1, a2, b1, b2 in An-1.\r
+Now {e0, e1, . . . , e2n-1} denotes the canonical basis in An. Then by the\r
 doubling process\r
-{(e0, 0),(e1, 0), . . . ,(e2n−1, 0),(0, e0), . . . ,(0, e2n−1)}\r
-is the canonical basis in An+1 = An ×An. By standard abuse of notation, we\r
-denote, also e0 = (e0, 0), e1 = (e1, 0), . . . , e2n−1 = (e2n−1, 0),\r
-e2n = (0, e0), . . . , e2n+1−1 = (0, e2n−1) in An+1.\r
-For α = (a, b) ∈ An × An = An+1 we denote αe = (−b, a) (the complexifi\u0002cation of α) so ee0 = (0, e0) and αee0 = (a, b)(0, e0) = (−b, a) = αe. Notice that\r
-eαe = −α.\r
-The trace on An+1 is the linear map tn+1 : An+1 → R given by tn+1(α) =\r
-α + α = 2(real part of α) so tn+1(α) = tn(a) when α = (a, b) ∈ An × An.\r
-Definition: α = (a, b) in An+1 is pure if\r
-tn+1(α) = tn(a) = 0.\r
+{(e0, 0),(e1, 0), . . . ,(e2n-1, 0),(0, e0), . . . ,(0, e2n-1)}\r
+is the canonical basis in An+1 = An xAn. By standard abuse of notation, we\r
+denote, also e0 = (e0, 0), e1 = (e1, 0), . . . , e2n-1 = (e2n-1, 0),\r
+e2n = (0, e0), . . . , e2n+1-1 = (0, e2n-1) in An+1.\r
+For alpha = (a, b) in An x An = An+1 we denote alphae = (-b, a) (the complexifi\u0002cation of alpha) so ee0 = (0, e0) and alphaee0 = (a, b)(0, e0) = (-b, a) = alphae. Notice that\r
+ealphae = -alpha.\r
+The trace on An+1 is the linear map tn+1 : An+1 -> R given by tn+1(alpha) =\r
+alpha + alpha = 2(real part of alpha) so tn+1(alpha) = tn(a) when alpha = (a, b) in An x An.\r
+Definition: alpha = (a, b) in An+1 is pure if\r
+tn+1(alpha) = tn(a) = 0.\r
 3
 
-α = (a, b) in An+1 is doubly pure if it is pure and also tn(b) = 0; i.e., αe is\r
+alpha = (a, b) in An+1 is doubly pure if it is pure and also tn(b) = 0; i.e., alphae is\r
 pure in An+1.\r
 Also 2ha, bi = tn(ab) for h,i the inner product in R\r
 2\r
 n\r
 (see [Mo1]).\r
-Notice that for a and b pure elements a ⊥ b if and only if ab = −ba.\r
+Notice that for a and b pure elements a perp b if and only if ab = -ba.\r
 Notation: Im(An) = {eo}\r
-⊥ ⊂ An is the vector subspace consisting of pure\r
+perp subset An is the vector subspace consisting of pure\r
 elements in An; i.e., Im(An) = Ker(tn) = R\r
 2\r
-n−1\r
+n-1\r
 .\r
-Aen+1 = Im(An) × Im(An) = {e0, ee0}\r
-⊥ = R\r
+Aen+1 = Im(An) x Im(An) = {e0, ee0}\r
+perp = R\r
 2\r
-n+1−2\r
+n+1-2\r
 is the vector subspace\r
 consisting of doubly pure elements in An+1.\r
 Lemma 1.1. For a and b in Afn we have that\r
-1) aee0 = ea and ee0a = −ea.\r
-2) aea = −||a||2ee0 and eaa = ||a||2ee0 so a ⊥ ea.\r
-3) eab = −abe with a a pure element.\r
-4) a ⊥ b if and only if eab + eba = 0.\r
-5) ea ⊥ b if and only if ab = ebea.\r
-6) eab = aeb if and only if a ⊥ b and ea ⊥ b.\r
-Proof: Notice that a is pure if a = −a and if a = (a1, a2) is doubly pure,\r
-then a1 = −a1 and a2 = −a2.\r
-1) ee0a = (0, e0)(a1, a2) = (−a2, a1) = (a2, −a1) = −(−a2, a1) = −ea.\r
-2) aea = (a1, a2)(−a2, a1) = (−a1a2 + a1a2, a2\r
+1) aee0 = ea and ee0a = -ea.\r
+2) aea = -||a||2ee0 and eaa = ||a||2ee0 so a perp ea.\r
+3) eab = -abe with a a pure element.\r
+4) a perp b if and only if eab + eba = 0.\r
+5) ea perp b if and only if ab = ebea.\r
+6) eab = aeb if and only if a perp b and ea perp b.\r
+Proof: Notice that a is pure if a = -a and if a = (a1, a2) is doubly pure,\r
+then a1 = -a1 and a2 = -a2.\r
+1) ee0a = (0, e0)(a1, a2) = (-a2, a1) = (a2, -a1) = -(-a2, a1) = -ea.\r
+2) aea = (a1, a2)(-a2, a1) = (-a1a2 + a1a2, a2\r
 1 + a\r
 2\r
 2\r
-) = (0, −||a||2e0) =\r
-−||a||2ee0.\r
-Similarly eaa = (−a2, a1)(a1, a2) = (−a2a1 + a2a1, −a\r
+) = (0, -||a||2e0) =\r
+-||a||2ee0.\r
+Similarly eaa = (-a2, a1)(a1, a2) = (-a2a1 + a2a1, -a\r
 2\r
-2 − a\r
+2 - a\r
 2\r
 1\r
 ) = ||a||2ee0.\r
-Now, since −2hea, ai = aea + eaa = 0 we have a ⊥ ea.\r
-3) eab = (−a2, a1)(b1, b2) = (−a2b1 + b2a1, −b2a2 − a1b1).\r
-So eeab = (a1b1 + b2a2, b2a1 − a2b1) = (a1, a2)(b1, b2) = ab then −eab = ab. e\r
-Notice that in this proof we only use that a1 = −a1; i.e., a is pure and\r
+Now, since -2hea, ai = aea + eaa = 0 we have a perp ea.\r
+3) eab = (-a2, a1)(b1, b2) = (-a2b1 + b2a1, -b2a2 - a1b1).\r
+So eeab = (a1b1 + b2a2, b2a1 - a2b1) = (a1, a2)(b1, b2) = ab then -eab = ab. e\r
+Notice that in this proof we only use that a1 = -a1; i.e., a is pure and\r
 b doubly pure.\r
 4
 
-4) a ⊥ b ⇔ ab + ba = 0 ⇔ ab = −ba ⇔ abe = −ba. e\r
-⇔ −eab = eba ⇔ eab + eba = 0 by (3).\r
-5) ea ⊥ b ⇔ eeab + ebea = 0 (by (4)) ⇔ −ab + ebea = 0.\r
-6) If ea ⊥ b and a ⊥ b, then by (3) and (4) eab = −abe = bae = −eba = aeb.\r
-Conversely, put a = (a1, a2) and b = (b1, b2) in An−1 × An−1 and define\r
-c := (a1b1 + b2a2) and d := (b2a1 − a2b1) in An−1.\r
-Then aeb = (a1, a2)(−b2, b1) = (−a1b2+b1a2, b1a1+a2b2) so aeb = (−d, c).\r
-Now ab = (a1, a2)(b1, b2) = (a1b1 + b2a2, b2a1 − a2b1) = (c, d), so abe = (−d, c)\r
-and then eab = (d, −c).\r
-Thus, if aeb = eab then c = −c and d = −d. Then\r
-tn(ab) = tn−1(c) = c + c = 0 and a ⊥ b\r
-tn(eab) = tn−1(d) = d + d = 0 and ea ⊥ b.\r
+4) a perp b <=> ab + ba = 0 <=> ab = -ba <=> abe = -ba. e\r
+<=> -eab = eba <=> eab + eba = 0 by (3).\r
+5) ea perp b <=> eeab + ebea = 0 (by (4)) <=> -ab + ebea = 0.\r
+6) If ea perp b and a perp b, then by (3) and (4) eab = -abe = bae = -eba = aeb.\r
+Conversely, put a = (a1, a2) and b = (b1, b2) in An-1 x An-1 and define\r
+c := (a1b1 + b2a2) and d := (b2a1 - a2b1) in An-1.\r
+Then aeb = (a1, a2)(-b2, b1) = (-a1b2+b1a2, b1a1+a2b2) so aeb = (-d, c).\r
+Now ab = (a1, a2)(b1, b2) = (a1b1 + b2a2, b2a1 - a2b1) = (c, d), so abe = (-d, c)\r
+and then eab = (d, -c).\r
+Thus, if aeb = eab then c = -c and d = -d. Then\r
+tn(ab) = tn-1(c) = c + c = 0 and a perp b\r
+tn(eab) = tn-1(d) = d + d = 0 and ea perp b.\r
 Q.E.D\r
 Corollary 1.2 For each a 6= 0 in Aen. The four dimensional vector subspace\r
 generated by {e0, ea, a, ee0} is a copy of A2 = H.(We denote it by Ha).\r
@@ -608,60 +608,60 @@ Proof: We suppose that ||a|| = 1, otherwise we take a\r
 following multiplication table.\r
 e0 ea a ee0\r
 e0 e0 ea a ee0\r
-ea ea −e0 +ee0 −a\r
-a a −ee0 −e0 ea\r
-ee0 a ee0 −ea −e0\r
-By lemma 2.1. aee0 = ea; ee0a = −ea; eaee0 = eea = −a; ee0ea = −eea = a;\r
-aea = −ee0 and eaa = ee0.\r
-But this is the multiplication table of A2 = H identifying e0 ↔ 1, ea ↔ ˆi,\r
-a ↔ ˆj and ee0 ↔ ˆk.\r
+ea ea -e0 +ee0 -a\r
+a a -ee0 -e0 ea\r
+ee0 a ee0 -ea -e0\r
+By lemma 2.1. aee0 = ea; ee0a = -ea; eaee0 = eea = -a; ee0ea = -eea = a;\r
+aea = -ee0 and eaa = ee0.\r
+But this is the multiplication table of A2 = H identifying e0 <-> 1, ea <-> ^i,\r
+a <-> ^j and ee0 <-> ^k.\r
 Q.E.D.\r
 5
 
-§ 2. Monomorphism from Am to An.\r
-Throughout this chapter 1 ≤ m ≤ n.\r
-Definition. An algebra monomorphism from Am to An is a linear monomor\u0002phism ϕ : Am → An such that\r
-i) ϕ(e0) = e0 (the first e0 is in Am and the second e0 in An)\r
-ii) ϕ(xy) = ϕ(x)ϕ(y) for all x and y in Am.\r
-By definition we have that ϕ(re0) = rϕ(e0) for all r in R so\r
-ϕ(Im(Am)) ⊂ ϕ(Im(An)) and ϕ(x) = ϕ(x).\r
-Therefore ||ϕ(x)||2 = ϕ(x)ϕ(x) = ϕ(x)ϕ(x) = ϕ(xx) = ϕ(||x||2\r
+Sec  2. Monomorphism from Am to An.\r
+Throughout this chapter 1 <= m <= n.\r
+Definition. An algebra monomorphism from Am to An is a linear monomor\u0002phism  : Am -> An such that\r
+i) (e0) = e0 (the first e0 is in Am and the second e0 in An)\r
+ii) (xy) = (x)(y) for all x and y in Am.\r
+By definition we have that (re0) = r(e0) for all r in R so\r
+(Im(Am)) subset (Im(An)) and (x) = (x).\r
+Therefore ||(x)||2 = (x)(x) = (x)(x) = (xx) = (||x||2\r
 ) = ||x||2\r
-for all x ∈ Am and ||ϕ(x)|| = ||x|| and ϕ is an orthogonal linear transforma\u0002tion from R\r
-2m−1\r
+for all x in Am and ||(x)|| = ||x|| and  is an orthogonal linear transforma\u0002tion from R\r
+2m-1\r
 to R\r
 2\r
-n−1\r
+n-1\r
 .\r
-The trivial monomorphism is the one given by ϕ(x) = (x, 0, 0, . . . , 0) for\r
-x ∈ Am and 0 in Am (2n−m−1-times).\r
+The trivial monomorphism is the one given by (x) = (x, 0, 0, . . . , 0) for\r
+x in Am and 0 in Am (2n-m-1-times).\r
 M(Am, An) denotes the set of algebra monomorphisms from Am to An.\r
 For m = n, M(Am; An) = Aut(An) the group of algebra automorphisms\r
 of An\r
 Proposition 2.1. M(A1; An) = S(Im(An)) = S\r
 2\r
-n−2\r
+n-2\r
 .\r
 Proof: A1 = C = Span{e0, e1}.\r
-If x ∈ A1 then x = re0 + se1 and for w ∈ Im(An) with ||w|| = 1 we have\r
-that ϕw(x) = re0+sw define an algebra monomorphism from A1 to An. This\r
+If x in A1 then x = re0 + se1 and for w in Im(An) with ||w|| = 1 we have\r
+that w(x) = re0+sw define an algebra monomorphism from A1 to An. This\r
 can be seen by direct calculations, recalling that, Center (An) = R for all n\r
 and that every associator with one real entrie vanish.\r
-ϕw(x)ϕw(y) = (re0 + sw)(pe0 + qw) = (rp + sqw2)e0 + (rq + sp)w\r
-= (rp − sq)e0 + (rq + sp)w\r
-= ϕw(x)ϕw(y)\r
-when y = pe0 + qe1 and p and q in R. Clearly ϕw(e0) = e0.\r
-Conversely, for ϕ ∈ M(A1; An), set w = ϕ(e1) in An so ||w|| = 1 and\r
-ϕw = ϕ.\r
+w(x)w(y) = (re0 + sw)(pe0 + qw) = (rp + sqw2)e0 + (rq + sp)w\r
+= (rp - sq)e0 + (rq + sp)w\r
+= w(x)w(y)\r
+when y = pe0 + qe1 and p and q in R. Clearly w(e0) = e0.\r
+Conversely, for  in M(A1; An), set w = (e1) in An so ||w|| = 1 and\r
+w = .\r
 Q.E.D.\r
 Remark: In particular, we have that\r
 Aut(A1) = S\r
-0 = Z/2 = {Identity, conjugation} = {ϕe1\r
-, ϕ−e1}."""
+0 = Z/2 = {Identity, conjugation} = {e1\r
+, -e1}."""
 
 [[sections]]
 number = "6"
-title = "To calculate M(A2; An) for n ≥ 2 we need to recall (see [Mo2])."
+title = "To calculate M(A2; An) for n >= 2 we need to recall (see [Mo2])."
 text = """
 Definition: For a and b in An. We said that a alternate with b, we denote\r
 it by a b, if (a, a, b) = 0.\r
@@ -672,32 +672,32 @@ linearly dependent then a ! b (by flexibility).\r
 Also,by definition,a is an alternative element if and only if a x for all\r
 x in An.\r
 By Lemma 1.1 (1) and (2) we have that for any doubly pure element a in\r
-An (a, a, e˜0) = 0 and (by the above remarks) ˜e0 alternate strongly with any\r
+An (a, a, e~0) = 0 and (by the above remarks) ~e0 alternate strongly with any\r
 a in An.\r
 For a and b pure elements in An, we define the vector subspace of An\r
 V (a; b) = Span{e0, a, b, ab}.\r
-Also we identify the Stiefel manifold V2n−1,2 as\r
-{(a, b) ∈ Im(An) × Im(An)|a ⊥ b, ||a|| = ||b|| = 1}\r
-Lemma 2.2. If (a, b) ∈ V2n−1,2 and a ! b then V (a; b) = A2 = H the\r
+Also we identify the Stiefel manifold V2n-1,2 as\r
+{(a, b) in Im(An) x Im(An)|a perp b, ||a|| = ||b|| = 1}\r
+Lemma 2.2. If (a, b) in V2n-1,2 and a ! b then V (a; b) = A2 = H the\r
 quaternions.\r
-Proof: Suppose that (a, b) ∈ V2n−1,2 and that (a, a, b) = 0 then we have\r
+Proof: Suppose that (a, b) in V2n-1,2 and that (a, a, b) = 0 then we have\r
 hab, ai = hb, aai = hb, ||a||2\r
 e0i = ||a||2hb, e0i = 0\r
 hab, ai = ha, bbi = ha, ||b||2\r
 e0i = ||b||2ha, e0i = 0\r
-||ab||2 = hab, abi = ha(ab), bi = h−a(ab), bi = h−a\r
+||ab||2 = hab, abi = ha(ab), bi = h-a(ab), bi = h-a\r
 2\r
 b, bi\r
-= −a\r
+= -a\r
 2\r
 hb, bi = ||a||2||b||2 = 1\r
 so {e0, a, b, ab} is an orthonormal set of vectors in An.\r
-Finally using also that (a, b, b) = 0 and ab = −ba we may check by direct\r
+Finally using also that (a, b, b) = 0 and ab = -ba we may check by direct\r
 calculations that the multiplication table of {e0, a, b, ab} coincides with the\r
-one of the quaternions and by the identification e0 7→ e0, a 7→ e1, b 7→ e2 and\r
-ab 7→ e3 we have an algebra isomorphism between A2 = H and V (a; b).\r
+one of the quaternions and by the identification e0 7-> e0, a 7-> e1, b 7-> e2 and\r
+ab 7-> e3 we have an algebra isomorphism between A2 = H and V (a; b).\r
 Q.E. D.\r
-Proposition 2.3. M(A2; An) = {(a, b) ∈ V2n−1,2|a ! b} for n ≥ 2."""
+Proposition 2.3. M(A2; An) = {(a, b) in V2n-1,2|a ! b} for n >= 2."""
 
 [[sections]]
 number = "7"
@@ -706,170 +706,170 @@ text = """
 Aut(A2) = M(A2; A2) = V3,2 = SO(3)\r
 and\r
 M(A2, A3) = V7,2.\r
-Proof. The inclusion “⊃” follows from Lemma 2.2. Conversely suppose that\r
-ϕ ∈ M(A2, An) then ϕ(e0) = e0,(ϕ(e1), ϕ(e2)) ∈ V2n−1,2 and\r
-V (ϕ(e1), ϕ(e2)) = Imϕ = H ⊂ An.\r
+Proof. The inclusion "supset" follows from Lemma 2.2. Conversely suppose that\r
+ in M(A2, An) then (e0) = e0,((e1), (e2)) in V2n-1,2 and\r
+V ((e1), (e2)) = Im = H subset An.\r
 Since A2 is an associative algebra and A3 is an alternative algebra we\r
 have that a ! b for any two elements in An for n = 2 or n = 3.\r
 Q.E.D.\r
-Remark. Recall that A˜\r
-n = {e0, e˜0}\r
-⊥ = R\r
+Remark. Recall that A~\r
+n = {e0, e~0}\r
+perp = R\r
 2\r
-n−2\r
+n-2\r
 denotes the vector subspace\r
-of doubly pure elements. Since a ! e˜0 for any element in A˜\r
+of doubly pure elements. Since a ! e~0 for any element in A~\r
 n, we have\r
-that, if a ∈ S(A˜\r
-n) i.e., ||a|| = 1 then (a, e˜0) ∈ V2n−1,2 and the assignment\r
-a 7→ (a, e˜0) define an inclusion from S(A˜\r
+that, if a in S(A~\r
+n) i.e., ||a|| = 1 then (a, e~0) in V2n-1,2 and the assignment\r
+a 7-> (a, e~0) define an inclusion from S(A~\r
 n) = S\r
 2\r
-n−3\r
-֒→ M(A2; An) ⊂ V2n−1,2\r
-which resembles “the bottom cell” inclusion in V2n−1,2.\r
-To deal with the cases 3 = m ≤ n we have to use the notion of a\r
+n-3\r
+-> M(A2; An) subset V2n-1,2\r
+which resembles "the bottom cell" inclusion in V2n-1,2.\r
+To deal with the cases 3 = m <= n we have to use the notion of a\r
 special triple (see [Wh] and [Mo1]).\r
 Definition: A set {a, b, c} in Im(An) is a special triple if\r
 (i) {a, b, c} is an orthonormal set\r
 (ii) a ! b, a ! c and b ! c i.e. its elements alternate strongly,\r
 pairwise.\r
-(iii) c ∈ V (a; b)\r
-⊥ ⊂ An.\r
+(iii) c in V (a; b)\r
+perp subset An.\r
 Now is easy to see that if {a, b, c} is a special triple then V (a; b); V (a, c); V (b, c)\r
 are isomorphic to A2.\r
 For a special triple {a, b, c} consider the following vector subspace of An\r
-ø(a; b; c) := Span{e0, a, b, ab, c(ab), cb, ac, c}.\r
-Proposition 2.4: For a special triple {a, b, c} in An and n ≥ 3; ø(a, b, c) is\r
-an eight-dimensional vector subspace isomorphic, as algebra, to A3 = ø the\r
-octonions and M(A3, An) = {(a, b, c) ∈ (An)\r
+o(a; b; c) := Span{e0, a, b, ab, c(ab), cb, ac, c}.\r
+Proposition 2.4: For a special triple {a, b, c} in An and n >= 3; o(a, b, c) is\r
+an eight-dimensional vector subspace isomorphic, as algebra, to A3 = o the\r
+octonions and M(A3, An) = {(a, b, c) in (An)\r
 3\r
 |{a, b, c} special triple}.\r
 Proof: We know that all elements in {e0, a, b, ab, c(ab), cb, ac, c} are of norm\r
 one and also\r
-hc(ab), ai = −hab, aci = ha(ab), ci = ha\r
+hc(ab), ai = -hab, aci = ha(ab), ci = ha\r
 2\r
 b, ci = a\r
 2\r
 hb, ci = 0.\r
 8
 
-Similarly (c(ab)) ⊥ b and (c(ab)) ⊥ c. Thus {e0, a, b, ab, c(ab), cb, ac, c} is an\r
-orthonormal set of vectors and ø(a; b; c) is eight-dimensional. To see that\r
-ø(a; b; c) ∼= A3 we have to construct the corresponding multiplication ta\u0002ble,which is, a routine calculation.(See [Mo2])\r
-Conversely, if ϕ ∈ M(A3, An) then a = ϕ(e1), b = ϕ(e2) and c = ϕ(e7)\r
+Similarly (c(ab)) perp b and (c(ab)) perp c. Thus {e0, a, b, ab, c(ab), cb, ac, c} is an\r
+orthonormal set of vectors and o(a; b; c) is eight-dimensional. To see that\r
+o(a; b; c) ~= A3 we have to construct the corresponding multiplication ta\u0002ble,which is, a routine calculation.(See [Mo2])\r
+Conversely, if  in M(A3, An) then a = (e1), b = (e2) and c = (e7)\r
 form an special triple, when {e0, e1, e2, e3, e4, e5, e6, e7} is the canonical basis\r
 in A3, and we recall that e1e2 = e3, e7e3 = e4, e7e2 = e5 and e1e7 = e6 in A3.\r
 Q.E.D.\r
 Remark. For n = 3, A3 is an alternative algebra so a special triple in A3 is\r
 every triple such that\r
 (i) {a, b, c} is orthonormal\r
-(ii) c ⊥ (ab).\r
+(ii) c perp (ab).\r
 So Proposition 4.4 gives the construction of G2 = Aut(A3) as in [Wh] and\r
 the assignment\r
 G2 = Aut(A3)\r
-π→ M(A2, A3) = V7,2\r
-(a, b, c) 7→ (a, b)\r
+pi-> M(A2, A3) = V7,2\r
+(a, b, c) 7-> (a, b)\r
 is the known fibration G2\r
-π→ V7,2 with fiber S"""
+pi-> V7,2 with fiber S"""
 
 [[sections]]
 number = "3"
-title = "Remark. Suppose that n ≥ 4 and that {a, b, c} is a special triple in An so"
+title = "Remark. Suppose that n >= 4 and that {a, b, c} is a special triple in An so"
 text = """
-ø(a; b; c) is the image of some algebra monomorphism from A3 to An and any\r
-orthonormal triple {x, y, z} of pure elements in ø(a; b; c) with z ⊥ (xy) is also\r
+o(a; b; c) is the image of some algebra monomorphism from A3 to An and any\r
+orthonormal triple {x, y, z} of pure elements in o(a; b; c) with z perp (xy) is also\r
 a special triple in An and\r
-ø(x; y; z) = ø(a; b; c).\r
-Definition: For 1 ≤ m ≤ n. ϕ ∈ M(Am, An) is a type I monomorphism if\r
-ee0 ∈ (Image of ϕ) ⊂ AAn.\r
-Since ˜e0 = e2n−1 in AAn then the trivial monomorphism is not a type I\r
+o(x; y; z) = o(a; b; c).\r
+Definition: For 1 <= m <= n.  in M(Am, An) is a type I monomorphism if\r
+ee0 in (Image of ) subset AAn.\r
+Since ~e0 = e2n-1 in AAn then the trivial monomorphism is not a type I\r
 monomorphism unless n = m, because by definition its image is generated\r
-by {e0, e1, . . . , e2m−1−1}.\r
-Denote by M1(AAm; AAn) = {ϕ ∈ M(AAm; AAn)|e˜0 ∈ (Imϕ)} the sub\u0002set of all type I monomorphisms, clearly M1(AAn, AAn) = M(AAn; AAn) =\r
+by {e0, e1, . . . , e2m-1-1}.\r
+Denote by M1(AAm; AAn) = { in M(AAm; AAn)|e~0 in (Im)} the sub\u0002set of all type I monomorphisms, clearly M1(AAn, AAn) = M(AAn; AAn) =\r
 Aut(AAn).\r
-Using proposition 2.1 we may verify that for n ≥ 2.\r
-M1(AA1, AAn) = {re0 + se˜0|r\r
+Using proposition 2.1 we may verify that for n >= 2.\r
+M1(AA1, AAn) = {re0 + se~0|r\r
 2 + s2 = 1} = S1\r
 ."""
 
 [[sections]]
 number = "9"
-title = "Also,by Lemma 2.2, for a non-zero a ∈ A˜An we have that V (a; ˜e0) = AHa"
+title = "Also,by Lemma 2.2, for a non-zero a in A~An we have that V (a; ~e0) = AHa"
 text = """
 and\r
-M1(AA2; AAn) = S(A˜An) = S\r
+M1(AA2; AAn) = S(A~An) = S\r
 2\r
-n−3\r
+n-3\r
 . In particular\r
 S\r
-5 = M1(AA2; AA3) ⊂ M(AA2; AA3) = V7,2\r
-is “the bottom cell” of V7,2.\r
-Also we can check,using the fact that a e˜0 for all a ∈ A˜An, that\r
-M1(AA3; AAn) = M(AA2; AAn) ∩ V2n−2,2\r
-where V2n−2,2 = {(a, b) ∈ V2n−1,2|a and b are in A˜An}.\r
-Definition: A type I monomorphism ϕ ∈ M1(AAm; AAn+1) is of type II if\r
-e2n−1 := ε ∈ (Im ϕ) ⊂ AAn+1.\r
-By definition if ϕ ∈ M1(AAm; AAn+1) then ˜e0 ∈ (Im ϕ) ⊂ AAn+1 and\r
-if we also assume that ε ∈ (Imϕ) ⊂ AAn+1 then εe˜0 = ˜ε and AHε :=\r
-Span{e0, ε, ε, ˜ e˜0} lies in (Im ϕ) ⊂ AAn+1; therefore\r
-ϕ ∈ M(AAm, AAn+1) is of type II if and only if AHε ⊂ (Im ϕ).\r
-Denote M2(AAm, AAn+1) = {ϕ ∈ M(AAm; AAn+1)|ϕ is type II}.\r
-Theorem 2.5 For n ≥ 3.\r
+5 = M1(AA2; AA3) subset M(AA2; AA3) = V7,2\r
+is "the bottom cell" of V7,2.\r
+Also we can check,using the fact that a e~0 for all a in A~An, that\r
+M1(AA3; AAn) = M(AA2; AAn) cap V2n-2,2\r
+where V2n-2,2 = {(a, b) in V2n-1,2|a and b are in A~An}.\r
+Definition: A type I monomorphism  in M1(AAm; AAn+1) is of type II if\r
+e2n-1 := epsilon in (Im ) subset AAn+1.\r
+By definition if  in M1(AAm; AAn+1) then ~e0 in (Im ) subset AAn+1 and\r
+if we also assume that epsilon in (Im) subset AAn+1 then epsilone~0 = ~epsilon and AHepsilon :=\r
+Span{e0, epsilon, epsilon, ~ e~0} lies in (Im ) subset AAn+1; therefore\r
+ in M(AAm, AAn+1) is of type II if and only if AHepsilon subset (Im ).\r
+Denote M2(AAm, AAn+1) = { in M(AAm; AAn+1)| is type II}.\r
+Theorem 2.5 For n >= 3.\r
 M2(AA3; AAn+1) = ACP2\r
-n−1−1 ∪ Xn\r
+n-1-1 cup Xn\r
 where ACP m is the complex projective space in AC\r
 m and\r
-Xn = {(x, y) ∈ AAn × AAn|xy = 0, x 6= 0 and y 6= 0}.\r
-In particular for n = 3 X3 = Φ (empty set) and M2(AA3; AA4) = ACP3.\r
-Proof: Suppose that ϕ : AA3 → AAn+1 is an algebra monomorphism for\r
-n ≥ 3 with AHε ⊂ (Im ϕ). So Im ϕ is isomorphic to AO = AA3, as algebras,\r
-then there is a non-zero α ∈ AH\r
-⊥\r
-ε ⊂ A˜\r
+Xn = {(x, y) in AAn x AAn|xy = 0, x 6= 0 and y 6= 0}.\r
+In particular for n = 3 X3 = Phi (empty set) and M2(AA3; AA4) = ACP3.\r
+Proof: Suppose that  : AA3 -> AAn+1 is an algebra monomorphism for\r
+n >= 3 with AHepsilon subset (Im ). So Im  is isomorphic to AO = AA3, as algebras,\r
+then there is a non-zero alpha in AH\r
+perp\r
+epsilon subset A~\r
 n+1 such that\r
-Im ϕ = AOα := Span{e0, ε, ε, ˜ e˜0, α, αε, ˜ εα, α ˜ } ⊂ AAn+1"""
+Im  = AOalpha := Span{e0, epsilon, epsilon, ~ e~0, alpha, alphaepsilon, ~ epsilonalpha, alpha ~ } subset AAn+1"""
 
 [[sections]]
 number = "10"
-title = "Suppose that α = (a, b) ∈ A˜An × A˜An = AH"
+title = "Suppose that alpha = (a, b) in A~An x A~An = AH"
 text = """
-⊥\r
-ε ⊂ AAn+1 and that a 6= 0\r
+perp\r
+epsilon subset AAn+1 and that a 6= 0\r
 (similarly we may assume b 6= 0).\r
-Now Im ϕ = AOα = AA3 if and only if\r
-(α, α, ε) := α\r
+Now Im  = AOalpha = AA3 if and only if\r
+(alpha, alpha, epsilon) := alpha\r
 2\r
-ε − α(αε) = 0 i.e. − ||α||2ε = α(αε).\r
+epsilon - alpha(alphaepsilon) = 0 i.e. - ||alpha||2epsilon = alpha(alphaepsilon).\r
 Using Lemma 1.1 we have that\r
-α(αε) = (a, b)[(a, b)(˜e0, 0)] = (a, b)[(˜a, −˜b)] =\r
-= (aa˜ − ˜bb, −˜ba − ba˜) = (−||a||2e˜0 − ||b||2e˜0, 0) − (0,(be˜0)a − b(˜e0a))\r
-= −||α||2ε + (0,(a, e˜0, b)).\r
-Therefore (a, e˜0, b) = 0 in AAn if and only if (α, α, ε) = 0 in AAn+1.\r
-Since AAn = AHa ⊕ AH\r
-⊥\r
-a we have that b = c + d where c ∈ AHa and\r
-d ∈ AH\r
-⊥\r
-a with c doubly pure i.e., c ∈ Span{a, a˜} ⊂ AHa.\r
+alpha(alphaepsilon) = (a, b)[(a, b)(~e0, 0)] = (a, b)[(~a, -~b)] =\r
+= (aa~ - ~bb, -~ba - ba~) = (-||a||2e~0 - ||b||2e~0, 0) - (0,(be~0)a - b(~e0a))\r
+= -||alpha||2epsilon + (0,(a, e~0, b)).\r
+Therefore (a, e~0, b) = 0 in AAn if and only if (alpha, alpha, epsilon) = 0 in AAn+1.\r
+Since AAn = AHa + AH\r
+perp\r
+a we have that b = c + d where c in AHa and\r
+d in AH\r
+perp\r
+a with c doubly pure i.e., c in Span{a, a~} subset AHa.\r
 Since AHa is associative we have that\r
-(a, e˜0, b) = (a, e˜0, c + d) = (a, e˜0, c) + (a, e˜0, d) = 0 + (a, e˜0, d)\r
-= (a, e˜0, d) = ˜ad + a\r
-˜d = 2˜ad\r
+(a, e~0, b) = (a, e~0, c + d) = (a, e~0, c) + (a, e~0, d) = 0 + (a, e~0, d)\r
+= (a, e~0, d) = ~ad + a\r
+~d = 2~ad\r
 by Lemma 1.1 (1), (2) and (6).\r
-Therefore (α, α, ε) = 0 in AAn+1 if and only if ad = ˜ad = 0 in AAn.\r
+Therefore (alpha, alpha, epsilon) = 0 in AAn+1 if and only if ad = ~ad = 0 in AAn.\r
 So, we have two cases: namely d = 0 and d 6= 0 in AAn.\r
-Suppose d = 0. Thus b = c ∈ AHa and b ∈ Span{a, a˜} so (a, b) determine\r
-a complex line in A˜An = R\r
+Suppose d = 0. Thus b = c in AHa and b in Span{a, a~} so (a, b) determine\r
+a complex line in A~An = R\r
 2\r
-n−2 = AC\r
+n-2 = AC\r
 2\r
-n−1−1\r
-and α ∈ ACP2\r
-n−1−1\r
+n-1-1\r
+and alpha in ACP2\r
+n-1-1\r
 .\r
 Suppose d 6= 0 (so b 6= 0 and a 6= 0).\r
-Thus ad = 0 and (a, d) ∈ Xn.\r
+Thus ad = 0 and (a, d) in Xn.\r
 Q.E.D."""
 
 [[sections]]
@@ -881,7 +881,7 @@ of the 8 square theorem. Annals of Math; 20 155-171, 1919.\r
 [E-K] Eakin-Sathaye. On automorphisms and derivations of Cayley-Dickson\r
 algebras. Journal of Pure and Applied Algebra 129, 263-280, 1990.\r
 [H-Y] S.H. Khalil and P. Yiu. The Cayley-Dickson algebras: A theorem of\r
-Hurwitz and quaternions. Bolet´ın de la Sociedad de L´odz Vol. XLVIII\r
+Hurwitz and quaternions. Bolet'in de la Sociedad de L'odz Vol. XLVIII\r
 117-169. 1997.\r
 [Mo1] G. Moreno. The zero divisors of the Cayley-Dickson algebras over the\r
 real numbers. Bol. Soc. Mat. Mex. 4 13-27. 1998\r
@@ -916,7 +916,7 @@ rows = [
 ],
     [
     "ab",
-    "2 = hab, abi = ha(ab), bi = h−a(ab), bi = h−a",
+    "2 = hab, abi = ha(ab), bi = h-a(ab), bi = h-a",
 ],
 ]
 

@@ -116,12 +116,12 @@ graph TD
     REGISTRY -->|docs-publish| MARKDOWN["Markdown Mirrors<br/>(Generated Display)"]
 
     REGISTRY -->|wave6-gate| VALIDATE["Validation Pipeline"]
-    VALIDATE -->|✓ Pass| CI["CI/CD Success"]
-    VALIDATE -->|✗ Fail| BLOCK["Block Merge"]
+    VALIDATE -->|[done] Pass| CI["CI/CD Success"]
+    VALIDATE -->|[fail] Fail| BLOCK["Block Merge"]
 """
 
 [visual.svg_metadata]
-description = "Three-layer architecture: CSV/TOML sources → Registry objects → Markdown exports with validation gates"
+description = "Three-layer architecture: CSV/TOML sources -> Registry objects -> Markdown exports with validation gates"
 dimensions = "1200x900"
 background = "lightblue"
 content_hash_commitment = "Architecture deterministic; validation gates binary (pass/fail)"

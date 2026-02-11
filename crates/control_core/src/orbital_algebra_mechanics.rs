@@ -257,9 +257,9 @@ impl OrbitalElements {
 
     /// Perturbation due to oblateness (J2 term).
     ///
-    /// Δa/dt = 0 (semi-major axis unchanged by J2)
-    /// Δ(omega_node)/dt = -3/2 * J2 * (R_e/p)^2 * n * cos(i)
-    /// Δ(omega_peri)/dt = 3/4 * J2 * (R_e/p)^2 * n * (5*cos^2(i) - 1)
+    /// Deltaa/dt = 0 (semi-major axis unchanged by J2)
+    /// Delta(omega_node)/dt = -3/2 * J2 * (R_e/p)^2 * n * cos(i)
+    /// Delta(omega_peri)/dt = 3/4 * J2 * (R_e/p)^2 * n * (5*cos^2(i) - 1)
     pub fn j2_perturbation(&self, mu: f64, re: f64, j2: f64) -> (f64, f64) {
         let n = self.mean_motion(mu);
         let p = self.semi_latus_rectum();

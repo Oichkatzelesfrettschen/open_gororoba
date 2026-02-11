@@ -63,7 +63,7 @@ impl Redshift {
 
 /// FLRW (Friedmann-Lema\^itre-Robertson-Walker) spacetime metric.
 ///
-/// ds² = -c²dt² + a(t)² [dr²/(1-kr²) + r²(dθ² + sin²θ dφ²)]
+/// ds^2 = -c^2dt^2 + a(t)^2 [dr^2/(1-kr^2) + r^2(dtheta^2 + sin^2theta dphi^2)]
 ///
 /// where k = 0 (flat), +1 (closed), -1 (open) spatial curvature.
 #[derive(Debug, Clone, Copy)]
@@ -87,14 +87,14 @@ impl FLRWMetric {
         self.da_dt / self.a
     }
 
-    /// Deceleration parameter q = -a * d²a/dt² / (da/dt)²
+    /// Deceleration parameter q = -a * d^2a/dt^2 / (da/dt)^2
     /// q > 0: deceleration, q < 0: acceleration
     pub fn deceleration_parameter(&self, d2a_dt2: f64) -> f64 {
         -self.a * d2a_dt2 / (self.da_dt * self.da_dt)
     }
 
-    /// Metric tensor component g_μν at position (t, r, θ, φ).
-    /// Returns diagonal components [g_tt, g_rr, g_θθ, g_φφ]
+    /// Metric tensor component g_munu at position (t, r, theta, phi).
+    /// Returns diagonal components [g_tt, g_rr, g_thetatheta, g_phiphi]
     pub fn metric_diagonal(&self, r: f64, theta: f64) -> [f64; 4] {
         let sin_theta = theta.sin();
         let spatial_part_r = if self.k == 0 {
@@ -114,7 +114,7 @@ impl FLRWMetric {
     }
 
     /// Second time derivative of scale factor (assuming equation of state w).
-    /// d²a/dt² = -a * H² * (1 + 3*w) / 2
+    /// d^2a/dt^2 = -a * H^2 * (1 + 3*w) / 2
     pub fn scale_factor_acceleration(&self, w: f64) -> f64 {
         let h = self.hubble();
         -self.a * h * h * (1.0 + 3.0 * w) / 2.0
@@ -123,11 +123,11 @@ impl FLRWMetric {
 
 /// Energy-momentum tensor components for cosmological fluids.
 ///
-/// T^μν = (ρ + p/c²) u^μ u^ν + p g^μν
-/// Diagonal: T_μμ = [ρc², -p, -p, -p]
+/// T^munu = (rho + p/c^2) u^mu u^nu + p g^munu
+/// Diagonal: T_mumu = [rhoc^2, -p, -p, -p]
 #[derive(Debug, Clone, Copy)]
 pub struct EnergyMomentumTensor {
-    /// Density (kg/m³)
+    /// Density (kg/m^3)
     pub rho: f64,
     /// Pressure (Pa)
     pub pressure: f64,
@@ -139,13 +139,13 @@ impl EnergyMomentumTensor {
         EnergyMomentumTensor { rho, pressure }
     }
 
-    /// Equation of state parameter w = p / (ρ c²).
+    /// Equation of state parameter w = p / (rho c^2).
     /// w = 0: dust (matter), w = 1/3: radiation, w = -1: cosmological constant
     pub fn equation_of_state(&self) -> f64 {
         self.pressure / (self.rho) // c=1 units
     }
 
-    /// Trace of energy-momentum tensor T^μ_μ = T^0_0 + T^1_1 + T^2_2 + T^3_3
+    /// Trace of energy-momentum tensor T^mu_mu = T^0_0 + T^1_1 + T^2_2 + T^3_3
     pub fn trace(&self) -> f64 {
         self.rho - 3.0 * self.pressure // In units c=1
     }
@@ -153,8 +153,8 @@ impl EnergyMomentumTensor {
 
 /// Friedmann equations (first and second).
 ///
-/// First: H² + k/a² = (8πG/3) ρ
-/// Second: d²a/dt² / a = -(4πG/3)(ρ + 3p/c²)
+/// First: H^2 + k/a^2 = (8piG/3) rho
+/// Second: d^2a/dt^2 / a = -(4piG/3)(rho + 3p/c^2)
 #[derive(Debug, Clone, Copy)]
 pub struct FriedmannSolver {
     /// Gravitational constant G
@@ -167,19 +167,19 @@ impl FriedmannSolver {
         FriedmannSolver { g }
     }
 
-    /// First Friedmann equation: H² = (8πG/3)ρ - k/a²
+    /// First Friedmann equation: H^2 = (8piG/3)rho - k/a^2
     pub fn first_friedmann(&self, metric: &FLRWMetric, temt: &EnergyMomentumTensor) -> f64 {
         let h_squared = metric.hubble().powi(2);
         let rhs = 8.0 * PI * self.g / 3.0 * temt.rho - (metric.k as f64) / (metric.a * metric.a);
         h_squared - rhs
     }
 
-    /// Second Friedmann equation: d²a/dt² = -(4πG/3)(ρ + 3p)
+    /// Second Friedmann equation: d^2a/dt^2 = -(4piG/3)(rho + 3p)
     pub fn second_friedmann(&self, _metric: &FLRWMetric, temt: &EnergyMomentumTensor) -> f64 {
         -(4.0 * PI * self.g / 3.0) * (temt.rho + 3.0 * temt.pressure)
     }
 
-    /// Acceleration equation: d²a/dt² / a = -(4πG/3)(ρ + 3p/c²)
+    /// Acceleration equation: d^2a/dt^2 / a = -(4piG/3)(rho + 3p/c^2)
     /// Positive if decelerating, negative if accelerating.
     pub fn acceleration(&self, metric: &FLRWMetric, temt: &EnergyMomentumTensor) -> f64 {
         self.second_friedmann(metric, temt) / metric.a
@@ -211,8 +211,8 @@ impl DarkEnergyModel {
         }
     }
 
-    /// Energy density relative to critical: Ω_DE(a)
-    /// Ω_DE(a) = Ω_DE,0 * exp[3 * integral_0^a (1+w) da'/a']
+    /// Energy density relative to critical: Omega_DE(a)
+    /// Omega_DE(a) = Omega_DE,0 * exp[3 * integral_0^a (1+w) da'/a']
     pub fn density_parameter(&self, a: f64, omega_de_0: f64) -> f64 {
         let mut integral = 0.0;
         let da = a / 100.0;
@@ -227,14 +227,14 @@ impl DarkEnergyModel {
 
 /// Cosmological parameters and solution.
 ///
-/// Encodes Ω_m, Ω_k, Ω_Λ at z=0 and evolution equations.
+/// Encodes Omega_m, Omega_k, Omega_Lambda at z=0 and evolution equations.
 #[derive(Debug, Clone)]
 pub struct CosmologicalParameters {
-    /// Matter density parameter (Ω_m) today
+    /// Matter density parameter (Omega_m) today
     pub omega_m: f64,
-    /// Curvature density parameter (Ω_k) today
+    /// Curvature density parameter (Omega_k) today
     pub omega_k: f64,
-    /// Dark energy density parameter (Ω_Λ or Ω_DE) today
+    /// Dark energy density parameter (Omega_Lambda or Omega_DE) today
     pub omega_de: f64,
     /// Hubble parameter today H_0 (1/time)
     pub h0: f64,
@@ -254,7 +254,7 @@ impl CosmologicalParameters {
         }
     }
 
-    /// Lambda-CDM: Ω_m, Ω_k = 0, Ω_Λ = 1 - Ω_m
+    /// Lambda-CDM: Omega_m, Omega_k = 0, Omega_Lambda = 1 - Omega_m
     pub fn lambda_cdm(omega_m: f64, h0: f64) -> Self {
         CosmologicalParameters {
             omega_m,
@@ -292,8 +292,8 @@ impl CosmologicalParameters {
 
 /// Lie algebra structure: Conservation laws as commutation relations.
 ///
-/// [H, ρ] = 3H ρ (continuity equation: dρ/dt + 3H(ρ+p) = 0)
-/// [H, a] = ȧ (definition: H = ȧ/a)
+/// [H, rho] = 3H rho (continuity equation: drho/dt + 3H(rho+p) = 0)
+/// [H, a] = a_dot (definition: H = a_dot/a)
 #[derive(Debug, Clone)]
 pub struct ConservationLaw {
     /// Quantity being conserved (e.g., "energy", "number")
@@ -311,7 +311,7 @@ impl ConservationLaw {
         }
     }
 
-    /// Continuity equation: dρ/dt = -3H(ρ + p)
+    /// Continuity equation: drho/dt = -3H(rho + p)
     pub fn continuity(&self, h: f64, rho: f64, pressure: f64) -> f64 {
         -3.0 * h * (rho + pressure)
     }
@@ -355,7 +355,7 @@ mod tests {
     #[test]
     fn test_friedmann_lambda_cdm() {
         // Test Friedmann solver with physically consistent parameters
-        // H = 0.07 Gyr^-1, ρ = 0.3 (normalized critical density unit)
+        // H = 0.07 Gyr^-1, rho = 0.3 (normalized critical density unit)
         // Check that the equation evaluates without panic
         let metric = FLRWMetric::new(0, 1.0, 0.07);
         let temt = EnergyMomentumTensor::new(0.3, 0.0);

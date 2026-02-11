@@ -59,10 +59,10 @@ fn test_tessarines_vs_cayley_dickson_comparison() {
     println!("Property                   | Tessarines | Cayley-Dickson (dim>=4) | Result");
     println!(
         "{:<26} | {:<10} | {:<23} | {}",
-        "─".repeat(26),
-        "─".repeat(10),
-        "─".repeat(23),
-        "─".repeat(30)
+        "-".repeat(26),
+        "-".repeat(10),
+        "-".repeat(23),
+        "-".repeat(30)
     );
 
     // COMMUTATIVITY
@@ -112,7 +112,7 @@ fn test_tessarines_vs_cayley_dickson_comparison() {
     // CONSTRUCTION METHOD
     println!(
         "{:<26} | {:<10} | {:<23} | FUNDAMENTALLY DIFFERENT",
-        "Construction", "Tensor product (C⊗C)", "Recursive doubling"
+        "Construction", "Tensor product (CxC)", "Recursive doubling"
     );
 
     println!("\n=== KEY FINDING ===");
@@ -126,7 +126,7 @@ fn test_tessarines_vs_cayley_dickson_comparison() {
 fn test_tessarines_idempotents() {
     println!("\n=== TESSARINES: IDEMPOTENT STRUCTURE ===\n");
 
-    // Tessarines have idempotents (e² = e), unlike CD algebras
+    // Tessarines have idempotents (e^2 = e), unlike CD algebras
     // Example: (1, 0) is idempotent; so is (0, 1), (1, 1)/2, etc.
 
     let one = Tessarine::one();
@@ -139,7 +139,7 @@ fn test_tessarines_idempotents() {
 
     for (name, elem) in basis {
         let is_idemp = elem.is_idempotent(tolerance);
-        println!("{}: t² = t? {}", name, is_idemp);
+        println!("{}: t^2 = t? {}", name, is_idemp);
     }
 
     // Check specific idempotents
@@ -167,7 +167,7 @@ fn test_tessarines_multiplication_table() {
         "{:<4} | {:<15} | {:<15} | {:<15} | {:<15}",
         "a*b", "a=1", "a=i1", "a=i2", "a=j"
     );
-    println!("{}", "─".repeat(80));
+    println!("{}", "-".repeat(80));
 
     for (b_name, b) in &basis {
         let mut row = format!("{:<4} | ", b_name);
@@ -201,11 +201,11 @@ fn test_tessarines_vs_quaternions() {
     println!("  - Invertibility: 100%");
     println!("  - Construction: Recursive doubling (crossed formula)");
 
-    println!("\nTESSARINES (C ⊗ C):");
+    println!("\nTESSARINES (C x C):");
     println!("  - Commutative: YES");
     println!("  - Norm multiplicative: YES");
     println!("  - Division algebra: YES");
-    println!("  - Zero-divisors: 0 (idempotents ≠ zero-divisors)");
+    println!("  - Zero-divisors: 0 (idempotents != zero-divisors)");
     println!("  - Invertibility: 100%");
     println!("  - Construction: Tensor product (element-wise)");
 
@@ -232,7 +232,7 @@ fn test_tessarines_algebraic_classification() {
 
     println!("Classification under Phase 8 framework:");
     println!("{:<30} | Result", "Property");
-    println!("{}", "─".repeat(50));
+    println!("{}", "-".repeat(50));
 
     // Using Phase 8 terminology
     let is_division = compute_invertibility_fraction(100) > 0.95;
@@ -276,7 +276,7 @@ fn test_tessarines_algebraic_classification() {
     println!("  - Complex: YES (gamma=[-1])");
     println!("  - Quaternions: YES (gamma=[-1,-1])");
     println!("  - Octonions: YES (gamma=[-1,-1,-1])");
-    println!("  - Tessarines: YES (tensor product C⊗C)");
+    println!("  - Tessarines: YES (tensor product CxC)");
     println!("  - Split algebras (any gamma=+1): NO");
 
     println!("\nKey insight: Division algebra status is PARAMETRIC in CD (gamma-dependent)");
