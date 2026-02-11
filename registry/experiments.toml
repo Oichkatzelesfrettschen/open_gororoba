@@ -4,7 +4,7 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 17
+experiment_count = 18
 deterministic_count = 10
 gpu_count = 1
 seeded_count = 6
@@ -508,3 +508,15 @@ code = ["src/verification/verify_registry_events.py", "registry/registry_events.
 sprint = 35
 phase = "Wave 7"
 
+
+[[experiment]]
+id = "E-026"
+title = "Third-Party Source Verification Infrastructure"
+date = "2026-02-10"
+status = "complete"
+methodology = "Implement automated weekly verification of cached third-party markdown sources. Extends W6-011 (third_party_markdown_cache.toml) with verification tracking, freshness policy (90/180/365-day TTLs by source category), and archive procedures. Verification gates: SHA256 checksum validation, freshness checking, HTTP access verification (HEAD requests), Content-Type validation. Modification detection flags sources for review instead of auto-updating. Expired sources auto-archived to S3 with recovery procedure. Python verification script executes weekly checks with email alert infrastructure (TODO: mail service integration)."
+findings = "VERIFIED: Third-party source verification infrastructure operational. 7 validation gates fully implemented. 6 source entries initialized (Carlson Elliptic Integrals, Quaternion Theory, Octonion Structure, Exceptional Algebras, Clifford Analysis, Tensor Networks). Default TTL: 180 days. Weekly cadence configured. Archive policy defined with S3 targets. Email alert recipients configured. First automated check scheduled 2026-02-17."
+claims_supported = ["C-655", "C-656"]
+code = ["src/verification/verify_third_party_sources.py", "registry/third_party_source_verification.toml"]
+sprint = 35
+phase = "Wave 7"

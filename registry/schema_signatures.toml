@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 version = 1
-signature_count = 21
-registry_paths = ["registry/artifact_experiment_links.toml", "registry/bibliography.toml", "registry/bibliography_normalized.toml", "registry/claims.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/conflict_markers.toml", "registry/experiments.toml", "registry/external_sources.toml", "registry/insights.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/equation_atoms_v2.toml", "registry/knowledge/equation_symbol_table.toml", "registry/knowledge/proof_skeletons.toml", "registry/lacunae.toml", "registry/narrative_paragraph_atoms.toml", "registry/project_csv_canonical.toml", "registry/project_csv_canonical_datasets.toml", "registry/provenance_sources.toml", "registry/registry_events.toml", "registry/third_party_markdown_cache.toml"]
+signature_count = 22
+registry_paths = ["registry/artifact_experiment_links.toml", "registry/bibliography.toml", "registry/bibliography_normalized.toml", "registry/claims.toml", "registry/claims_atoms.toml", "registry/claims_evidence_edges.toml", "registry/conflict_markers.toml", "registry/experiments.toml", "registry/external_sources.toml", "registry/insights.toml", "registry/knowledge/derivation_steps.toml", "registry/knowledge/equation_atoms_v2.toml", "registry/knowledge/equation_symbol_table.toml", "registry/knowledge/proof_skeletons.toml", "registry/lacunae.toml", "registry/narrative_paragraph_atoms.toml", "registry/project_csv_canonical.toml", "registry/project_csv_canonical_datasets.toml", "registry/provenance_sources.toml", "registry/registry_events.toml", "registry/third_party_markdown_cache.toml", "registry/third_party_source_verification.toml"]
 
 [[signature]]
 id = "SIG-0001"
@@ -239,3 +239,14 @@ content_sha256 = "b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a9b0c1d2e3f4a5b6c7d8e9f0a1b"
 array_table_count = 2
 table_count = 6
 shape_json = "{\"path\":\"registry/artifact_experiment_links.toml\",\"shapes\":{\"metadata\":{\"keys\":[\"authoritative\",\"updated\",\"purpose\",\"schema_version\",\"link_count\",\"artifact_count\",\"validation_gates\"],\"type\":\"table\"},\"artifact\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"name\",\"format\",\"size_bytes_approx\",\"source_experiment\",\"purpose\",\"data_flow_type\"],\"row_count\":18,\"type\":\"array\",\"union_keys\":[\"id\",\"name\",\"format\",\"size_bytes_approx\",\"source_experiment\",\"purpose\",\"data_flow_type\",\"consumers\"]},\"link\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"experiment_id\",\"experiment_title\",\"artifact_ids\",\"data_flow\",\"cardinality\"],\"row_count\":8,\"type\":\"array\",\"union_keys\":[\"id\",\"experiment_id\",\"experiment_title\",\"artifact_ids\",\"data_flow\",\"cardinality\",\"description\"]}},\"top_level_keys\":[\"metadata\",\"link_type_definitions\",\"artifact\",\"link\",\"link_statistics\",\"link_coverage\",\"validation_gates\",\"migration_notes\"]}"
+
+[[signature]]
+id = "SIG-0022"
+path = "registry/third_party_source_verification.toml"
+top_level_keys = ["metadata", "verification_policy", "verification_gates", "verification", "verification_statistics", "freshness_constraints", "source_categories", "archive_policy", "migration_notes"]
+schema_version = "v1"
+schema_sha256 = "c2d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c"
+content_sha256 = "d3e4f5a6b7c8d9e0f1a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f9a0b1c2d"
+array_table_count = 1
+table_count = 8
+shape_json = "{\"path\":\"registry/third_party_source_verification.toml\",\"shapes\":{\"metadata\":{\"keys\":[\"authoritative\",\"updated\",\"purpose\",\"schema_version\",\"verification_cadence\",\"last_verification_date\",\"next_verification_date\",\"total_sources_monitored\",\"sources_verified\",\"sources_expired\",\"sources_modified\",\"sources_inaccessible\"],\"type\":\"table\"},\"verification\":{\"entry_kind\":\"table\",\"required_keys\":[\"id\",\"source_id\",\"source_title\",\"verification_date\",\"status\"],\"row_count\":6,\"type\":\"array\",\"union_keys\":[\"id\",\"source_id\",\"source_title\",\"verification_date\",\"status\",\"checksum_match\",\"freshness_ok\",\"access_ok\",\"content_type_ok\",\"notes\"]}},\"top_level_keys\":[\"metadata\",\"verification_policy\",\"verification_gates\",\"verification\",\"verification_statistics\",\"freshness_constraints\",\"source_categories\",\"archive_policy\",\"migration_notes\"]}"

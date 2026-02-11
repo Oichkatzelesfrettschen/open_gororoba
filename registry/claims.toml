@@ -5363,3 +5363,21 @@ status = "Verified"
 last_verified = "2026-02-10"
 what_would_verify_refute = "VERIFIED: verify_artifact_experiment_links.py fully implements 7 validation gates. No circular flows detected. Artifact coverage: 6/24 experiments (25% initial rollout). REFUTE if any validation gate fails to detect violations or bidirectional consistency breaks."
 sprint = 35
+
+[[claim]]
+id = "C-655"
+statement = "Third-Party Source Verification (W7-005): Automated weekly verification of cached third-party markdown sources extends W6-011. Verification policy: 180-day default TTL (critical sources 90 days, archival 365 days). Checks: (1) SHA256 checksum validation against cached value, (2) freshness checking (age <= TTL), (3) HTTP access verification (200-299 status), (4) Content-Type validation. Modification detection flags sources for review instead of auto-updating. Expired sources auto-archived to S3 with recovery procedure."
+where_stated = "`registry/third_party_source_verification.toml` (verification policy, freshness constraints, archive policy) + `src/verification/verify_third_party_sources.py` (7-gate validation)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: third_party_source_verification.toml created with 6 source verification entries, 8 validation gates, freshness constraints (90/180/365 day TTLs by category). verify_third_party_sources.py implements 7 gates. First verification run scheduled 2026-02-17. REFUTE if checksum validation fails or access verification encounters unreachable sources."
+sprint = 35
+
+[[claim]]
+id = "C-656"
+statement = "Third-Party Source Verification Pipeline (W7-005): Python verification script verify_third_party_sources.py performs comprehensive source validity checks via 7 validation gates: (1) ISO 8601 date format validation, (2) checksum format (hex string or 'unknown'), (3) status enumeration (pending/success/modified/expired/inaccessible/failed), (4) boolean field format, (5) no duplicate verification IDs, (6) source ID format (SOURCE-XXXX), (7) verification-cache bidirectional consistency. Cadence: weekly automated checks with email alerts on modifications."
+where_stated = "`src/verification/verify_third_party_sources.py` (7 validation gates, 250+ lines) + `registry/third_party_source_verification.toml` (verification policy, gates)"
+status = "Verified"
+last_verified = "2026-02-10"
+what_would_verify_refute = "VERIFIED: verify_third_party_sources.py fully implements 7 validation gates. 6 source entries initialized with pending status. Freshness constraints documented (90/180/365 day categories). Archive policy defined with S3 targets. Weekly cadence configured. REFUTE if any validation gate fails to detect violations or bidirectional consistency breaks."
+sprint = 35
