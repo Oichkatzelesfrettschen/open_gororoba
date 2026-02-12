@@ -3061,11 +3061,13 @@ dependencies = [
  "env_logger",
  "glob",
  "gr_core",
+ "lattice_filtration",
  "lbm_3d",
  "lbm_core",
  "log",
  "materials_core",
  "ndarray 0.16.1",
+ "neural_homotopy",
  "num-complex",
  "optics_core",
  "plotters",
@@ -3833,6 +3835,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "lbm_3d_cuda"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "approx",
+ "cosmic_scheduler",
+ "cudarc 0.19.1",
+ "lbm_3d",
+]
+
+[[package]]
 name = "lbm_core"
 version = "0.1.0"
 dependencies = [
@@ -4488,6 +4501,7 @@ dependencies = [
  "burn",
  "burn-cuda",
  "burn-wgpu",
+ "cosmology_core",
  "ndarray 0.16.1",
  "quantum_core",
  "rayon",
@@ -7294,6 +7308,7 @@ name = "vacuum_frustration"
 version = "0.1.0"
 dependencies = [
  "algebra_core",
+ "cosmology_core",
  "criterion",
  "cudarc 0.19.1",
  "petgraph",

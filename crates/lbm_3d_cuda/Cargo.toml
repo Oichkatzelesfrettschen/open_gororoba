@@ -1,0 +1,27 @@
+[package]
+name = "lbm_3d_cuda"
+version = "0.1.0"
+edition = "2021"
+authors = ["open_gororoba contributors"]
+description = "GPU-accelerated Lattice Boltzmann Method (D3Q19) with CUDA"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+lbm_3d = { path = "../lbm_3d" }
+cosmic_scheduler = { path = "../cosmic_scheduler" }
+cudarc = { workspace = true }
+anyhow = { workspace = true }
+
+[dev-dependencies]
+approx = "0.5"
+
+[features]
+default = []
+
+[[bench]]
+name = "gpu_performance"
+harness = false
+
+[[bench]]
+name = "gpu_exhaustive"
+harness = false

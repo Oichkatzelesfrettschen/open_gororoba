@@ -1,0 +1,139 @@
+# LBM 3D CUDA Performance Registry
+# Canonical source of truth for GPU vs CPU performance data
+# Hardware: NVIDIA RTX 4070 Ti (7680 CUDA cores, 12GB VRAM, 504 GB/s bandwidth)
+# CPU: 12 cores (AMD Ryzen / Intel equivalent), parallel Rayon LBM
+# Date: 2026-02-11
+
+[[benchmark]]
+grid_size = 32
+n_cells = 32768
+memory_mb = 6.0
+steps = 2500
+cpu_time_s = 5.359
+gpu_time_s = 0.559
+speedup = 9.58
+cpu_throughput_mcells_per_s = 15.29
+gpu_throughput_mcells_per_s = 146.45
+platform_comparison = "CPU vs GPU"
+
+[[benchmark]]
+grid_size = 32
+n_cells = 32768
+memory_mb = 6.0
+steps = 5000
+cpu_time_s = 9.167
+gpu_time_s = 1.194
+speedup = 7.68
+cpu_throughput_mcells_per_s = 17.87
+gpu_throughput_mcells_per_s = 137.19
+platform_comparison = "CPU vs GPU"
+
+[[benchmark]]
+grid_size = 32
+n_cells = 32768
+memory_mb = 6.0
+steps = 7500
+cpu_time_s = 13.725
+gpu_time_s = 1.625
+speedup = 8.45
+cpu_throughput_mcells_per_s = 17.91
+gpu_throughput_mcells_per_s = 151.23
+platform_comparison = "CPU vs GPU"
+
+[[benchmark]]
+grid_size = 32
+n_cells = 32768
+memory_mb = 6.0
+steps = 10000
+cpu_time_s = 18.239
+gpu_time_s = 1.962
+speedup = 9.29
+cpu_throughput_mcells_per_s = 17.97
+gpu_throughput_mcells_per_s = 166.97
+platform_comparison = "CPU vs GPU"
+
+[[benchmark]]
+grid_size = 64
+n_cells = 262144
+memory_mb = 48.0
+steps = 2500
+cpu_time_s = 36.639
+gpu_time_s = 2.781
+speedup = 13.17
+cpu_throughput_mcells_per_s = 17.89
+gpu_throughput_mcells_per_s = 235.62
+platform_comparison = "CPU vs GPU"
+
+[[benchmark]]
+grid_size = 64
+n_cells = 262144
+memory_mb = 48.0
+steps = 5000
+cpu_time_s = 73.208
+gpu_time_s = 5.247
+speedup = 13.95
+cpu_throughput_mcells_per_s = 17.90
+gpu_throughput_mcells_per_s = 249.81
+platform_comparison = "CPU vs GPU"
+
+[[benchmark]]
+grid_size = 64
+n_cells = 262144
+memory_mb = 48.0
+steps = 7500
+cpu_time_s = 109.841
+gpu_time_s = 7.641
+speedup = 14.38
+cpu_throughput_mcells_per_s = 17.90
+gpu_throughput_mcells_per_s = 257.31
+platform_comparison = "CPU vs GPU"
+
+[[benchmark]]
+grid_size = 64
+n_cells = 262144
+memory_mb = 48.0
+steps = 10000
+cpu_time_s = 151.489
+gpu_time_s = 10.024
+speedup = 15.11
+cpu_throughput_mcells_per_s = 17.30
+gpu_throughput_mcells_per_s = 261.53
+platform_comparison = "CPU vs GPU"
+
+[[benchmark]]
+grid_size = 128
+n_cells = 2097152
+memory_mb = 384.0
+steps = 2500
+cpu_time_s = 301.135
+gpu_time_s = 18.999
+speedup = 15.85
+cpu_throughput_mcells_per_s = 17.41
+gpu_throughput_mcells_per_s = 275.95
+platform_comparison = "CPU vs GPU (legacy)"
+note = "From initial benchmark run 2026-02-11"
+
+# Platform selection guidelines
+[guidelines]
+cpu_feasible_max = "64^3 grid, up to 10000 steps"
+cpu_slow_threshold = "128^3 grid (>5 minutes for 2500 steps)"
+gpu_recommended_min = "32^3 grid (initialization overhead <1s)"
+gpu_optimal_min = "64^3 grid (speedup >13x)"
+gpu_required = "128^3+ grids (CPU >5 minutes)"
+
+[hardware]
+gpu_model = "NVIDIA RTX 4070 Ti"
+gpu_cuda_cores = 7680
+gpu_vram_gb = 12
+gpu_bandwidth_gb_per_s = 504
+cpu_cores = 12
+cpu_parallel = "Rayon"
+cpu_description = "AMD Ryzen / Intel equivalent"
+
+[analysis]
+speedup_trend = "Increases with grid size: 8-10x (32^3), 13-15x (64^3), 15-16x (128^3+)"
+step_scaling = "GPU scales linearly with steps (3.5x time for 4x steps)"
+cpu_saturation = "17-18 Mcells/s throughput ceiling"
+gpu_throughput_scaling = "137 -> 276 Mcells/s as grid size increases"
+memory_bandwidth_limit = "Not reached at 128^3 (384 MB)"
+initialization_overhead = "~0.5-1s GPU initialization amortized at 2500+ steps"
