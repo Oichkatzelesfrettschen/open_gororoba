@@ -7,6 +7,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 
 [dependencies]
 algebra_core = { path = "../algebra_core", version = "0.1" }
+cosmology_core = { path = "../cosmology_core", version = "0.1" }
 petgraph = { workspace = true }
 rayon = { workspace = true }
 serde = { workspace = true, features = ["derive"] }
@@ -14,7 +15,8 @@ toml = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
 statrs = { workspace = true }
-cudarc = { version = "0.19", optional = true, default-features = false, features = ["std", "driver", "nvrtc", "dynamic-loading"] }
+anyhow = { workspace = true }
+cudarc = { workspace = true, optional = true }
 
 [dev-dependencies]
 stats_core = { path = "../stats_core" }

@@ -111,14 +111,26 @@ impl AptSedenionField {
             return FrustrationStats::default();
         }
 
-        let mean = self.frustration_cache.iter().sum::<f64>() / (self.frustration_cache.len() as f64);
-        let variance = self.frustration_cache.iter()
+        let mean =
+            self.frustration_cache.iter().sum::<f64>() / (self.frustration_cache.len() as f64);
+        let variance = self
+            .frustration_cache
+            .iter()
             .map(|&f| (f - mean).powi(2))
-            .sum::<f64>() / (self.frustration_cache.len() as f64);
+            .sum::<f64>()
+            / (self.frustration_cache.len() as f64);
         let std = variance.sqrt();
 
-        let min = self.frustration_cache.iter().copied().fold(f64::INFINITY, f64::min);
-        let max = self.frustration_cache.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+        let min = self
+            .frustration_cache
+            .iter()
+            .copied()
+            .fold(f64::INFINITY, f64::min);
+        let max = self
+            .frustration_cache
+            .iter()
+            .copied()
+            .fold(f64::NEG_INFINITY, f64::max);
 
         FrustrationStats {
             mean,
@@ -179,7 +191,11 @@ mod tests {
 
         let stats = apt.frustration_stats();
         // After evolution, frustration should be close to vacuum attractor
-        assert!(stats.vacuum_distance < 0.2, "Frustration should converge to attractor, got mean={}", stats.mean);
+        assert!(
+            stats.vacuum_distance < 0.2,
+            "Frustration should converge to attractor, got mean={}",
+            stats.mean
+        );
     }
 
     #[test]
@@ -195,7 +211,12 @@ mod tests {
 
         // Same seed should produce bitwise-identical results
         for (f1, f2) in field1.iter().zip(field2.iter()) {
-            assert!((f1 - f2).abs() < 1e-14, "Determinism violated: {:.15} vs {:.15}", f1, f2);
+            assert!(
+                (f1 - f2).abs() < 1e-14,
+                "Determinism violated: {:.15} vs {:.15}",
+                f1,
+                f2
+            );
         }
     }
 
@@ -207,10 +228,18 @@ mod tests {
         let stats = apt.frustration_stats();
 
         // Multimodal check: std > 0.01 indicates spread
-        assert!(stats.std > 0.01, "Frustration should show variation, got std={}", stats.std);
+        assert!(
+            stats.std > 0.01,
+            "Frustration should show variation, got std={}",
+            stats.std
+        );
 
         // Vacuum attractor check: mean should be close to 3/8
-        assert!(stats.vacuum_distance < 0.2, "Mean should be near vacuum attractor 3/8, got {}", stats.mean);
+        assert!(
+            stats.vacuum_distance < 0.2,
+            "Mean should be near vacuum attractor 3/8, got {}",
+            stats.mean
+        );
     }
 
     #[test]
@@ -242,6 +271,10 @@ mod tests {
 
         let stats = apt.frustration_stats();
         // After many cooling iterations, should be well-converged
-        assert!(stats.vacuum_distance < 0.2, "Poor convergence: vacuum_distance={}", stats.vacuum_distance);
+        assert!(
+            stats.vacuum_distance < 0.2,
+            "Poor convergence: vacuum_distance={}",
+            stats.vacuum_distance
+        );
     }
 }

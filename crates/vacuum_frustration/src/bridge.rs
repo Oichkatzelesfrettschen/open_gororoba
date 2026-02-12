@@ -5,8 +5,8 @@
 //! in Cayley-Dickson signed graphs. Local viscosity nu(x,y,z) is derived from
 //! per-cell frustration index via spatial evolution of Sedenion field.
 
-use crate::signed_graph::SignedGraph;
 use crate::balance::compute_frustration_index;
+use crate::signed_graph::SignedGraph;
 
 /// Spatial Sedenion field abstraction.
 ///
@@ -70,11 +70,17 @@ impl SedenionField {
 
                 // Create edges between basis elements weighted by field magnitude
                 for i in 0..dim {
-                    for j in (i+1)..dim {
-                        let weight = (sedenion[i].abs() + sedenion[j].abs()) / (2.0 * magnitude_sum);
+                    for j in (i + 1)..dim {
+                        let weight =
+                            (sedenion[i].abs() + sedenion[j].abs()) / (2.0 * magnitude_sum);
                         // Use simple heuristic: edge sign determined by Sedenion component correlation
-                        let sign = if sedenion[i] * sedenion[j] >= 0.0 { 1 } else { -1 };
-                        if weight > 0.01 {  // Only include significant edges
+                        let sign = if sedenion[i] * sedenion[j] >= 0.0 {
+                            1
+                        } else {
+                            -1
+                        };
+                        if weight > 0.01 {
+                            // Only include significant edges
                             edges.push((i, j, sign));
                         }
                     }
@@ -107,9 +113,7 @@ impl FrustrationViscosityBridge {
     pub fn new(dim: usize) -> Self {
         use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
 
-        let signed_graph = SignedGraph::from_psi_matrix(dim, |i, j| {
-            cd_basis_mul_sign(dim, i, j)
-        });
+        let signed_graph = SignedGraph::from_psi_matrix(dim, |i, j| cd_basis_mul_sign(dim, i, j));
 
         Self { dim, signed_graph }
     }
@@ -188,33 +192,47 @@ mod tests {
     #[test]
     fn test_frustration_to_viscosity_vacuum() {
         let bridge = FrustrationViscosityBridge::new(16);
-        let frustration = vec![3.0/8.0; 100];  // All vacuum
-        let viscosity = bridge.frustration_to_viscosity(&frustration, 1.0/3.0, 1.0);
+        let frustration = vec![3.0 / 8.0; 100]; // All vacuum
+        let viscosity = bridge.frustration_to_viscosity(&frustration, 1.0 / 3.0, 1.0);
 
         // At vacuum attractor, nu should be nu_base
         for &nu in viscosity.iter() {
-            assert!((nu - 1.0/3.0).abs() < 1e-10, "Expected nu={}, got {}", 1.0/3.0, nu);
+            assert!(
+                (nu - 1.0 / 3.0).abs() < 1e-10,
+                "Expected nu={}, got {}",
+                1.0 / 3.0,
+                nu
+            );
         }
     }
 
     #[test]
     fn test_frustration_to_viscosity_variance() {
         let bridge = FrustrationViscosityBridge::new(16);
-        let frustration = vec![0.2, 0.375, 0.8];  // Varying frustration around vacuum (3/8)
-        let viscosity = bridge.frustration_to_viscosity(&frustration, 1.0/3.0, 1.0);
+        let frustration = vec![0.2, 0.375, 0.8]; // Varying frustration around vacuum (3/8)
+        let viscosity = bridge.frustration_to_viscosity(&frustration, 1.0 / 3.0, 1.0);
 
         // At vacuum attractor (0.375), viscosity should equal nu_base
         // Away from attractor, viscosity should decrease (exponential decay)
-        assert!(viscosity[0] < viscosity[1], "Viscosity at 0.2 should be less than at 0.375");
-        assert!(viscosity[1].abs() - (1.0/3.0) < 1e-10, "Viscosity at vacuum should equal nu_base");
-        assert!(viscosity[2] < viscosity[1], "Viscosity at 0.8 should be less than at 0.375");
+        assert!(
+            viscosity[0] < viscosity[1],
+            "Viscosity at 0.2 should be less than at 0.375"
+        );
+        assert!(
+            viscosity[1].abs() - (1.0 / 3.0) < 1e-10,
+            "Viscosity at vacuum should equal nu_base"
+        );
+        assert!(
+            viscosity[2] < viscosity[1],
+            "Viscosity at 0.8 should be less than at 0.375"
+        );
     }
 
     #[test]
     fn test_full_pipeline_uniform_field() {
         let bridge = FrustrationViscosityBridge::new(16);
         let field = SedenionField::uniform(8, 8, 4);
-        let viscosity = bridge.compute_viscosity_field(&field, 1.0/3.0, 1.0);
+        let viscosity = bridge.compute_viscosity_field(&field, 1.0 / 3.0, 1.0);
 
         // Uniform field should produce roughly uniform viscosity
         assert_eq!(viscosity.len(), 8 * 8 * 4);
@@ -245,7 +263,7 @@ mod tests {
             }
         }
 
-        let viscosity = bridge.compute_viscosity_field(&field, 1.0/3.0, 1.0);
+        let viscosity = bridge.compute_viscosity_field(&field, 1.0 / 3.0, 1.0);
 
         // Viscosity should be positive and reasonable (may not vary significantly
         // depending on frustration distribution, but should all be valid)
@@ -261,9 +279,11 @@ mod tests {
         let mut field = SedenionField::uniform(4, 4, 4);
 
         // Extreme frustration values
-        field.data[0] = [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6];
+        field.data[0] = [
+            0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5, 1.6,
+        ];
 
-        let viscosity = bridge.compute_viscosity_field(&field, 1.0/3.0, 1.0);
+        let viscosity = bridge.compute_viscosity_field(&field, 1.0 / 3.0, 1.0);
 
         // All viscosities must be positive and finite
         for &nu in viscosity.iter() {
@@ -277,6 +297,6 @@ mod tests {
         let mut field = SedenionField::uniform(2, 2, 2);
         field.get_mut(0, 0, 0)[5] = 0.5;
         assert!((field.get(0, 0, 0)[5] - 0.5).abs() < 1e-14);
-        assert!((field.get(0, 0, 1)[5]).abs() < 1e-14);  // Other points unchanged
+        assert!((field.get(0, 0, 1)[5]).abs() < 1e-14); // Other points unchanged
     }
 }

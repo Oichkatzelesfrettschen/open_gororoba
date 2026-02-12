@@ -9,18 +9,33 @@
 //! - SedenionField: 3D lattice of 16D Sedenion algebra elements
 //! - FrustrationViscosityBridge: Maps frustration density to kinematic viscosity nu(x,y,z)
 
-pub mod signed_graph;
-pub mod balance;
-pub mod frustration;
-pub mod bridge;
-pub mod percolation;
 pub mod apt_sedenion;
+pub mod balance;
+pub mod bridge;
+pub mod frustration;
 pub mod frustration_energy;
+pub mod percolation;
+pub mod signed_graph;
+
+// GPU-accelerated null model testing (optional feature)
+#[cfg(feature = "gpu")]
+pub mod besag_clifford_cuda;
 
 // Re-export key types for ergonomics
-pub use bridge::{SedenionField, FrustrationViscosityBridge};
-pub use signed_graph::SignedGraph;
-pub use balance::{FrustrationResult, SolverMethod, compute_frustration_index};
-pub use percolation::{PercolationChannel, PercolationDetector, CorrelationResult, auto_velocity_threshold, correlate_with_frustration};
 pub use apt_sedenion::{AptSedenionField, FrustrationStats};
-pub use frustration_energy::{FrustrationEnergy, compute_frustration_energy, estimate_e0_from_associators, compute_lambda, predict_lambda_sedenion};
+pub use balance::{compute_frustration_index, FrustrationResult, SolverMethod};
+pub use bridge::{FrustrationViscosityBridge, SedenionField};
+pub use frustration::{
+    evaluate_frustration_star, frustration_density_from_edges, omega_eff_from_phi,
+    violates_cassini, FrustrationStarConfig, FrustrationStarResult, ScalarFrustrationMap,
+    CASSINI_OMEGA_BD_LOWER_BOUND,
+};
+pub use frustration_energy::{
+    compute_frustration_energy, compute_lambda, estimate_e0_from_associators,
+    predict_lambda_sedenion, FrustrationEnergy,
+};
+pub use percolation::{
+    auto_velocity_threshold, correlate_with_frustration, CorrelationResult, PercolationChannel,
+    PercolationDetector,
+};
+pub use signed_graph::SignedGraph;
