@@ -570,28 +570,29 @@ reproducibility_class = "non_deterministic"
 
 [[experiment]]
 id = "E-027"
-title = "Percolation Threshold vs Frustration Correlation (Thesis 1 Validation)"
-status_note = "Inconclusive (p=0.605). Deferred to Phase 2 for grid upscaling (64^3 or 128^3), lambda sweep, and percolation algorithm refinement. See reports/e027_decision_protocol.toml."
-deferral_date = "2026-02-13"
-alternative_primary = "STPT-006"
-binary = "percolation-experiment"
-binary_registered = false
-binary_experiment_declared = ""
-method = ""
-input = ""
-output = []
-run = ""
+title = "Topology-Frustration Correlation via Persistent Homology (Thesis 1)"
+status_note = "Phase 2 active: Vietoris-Rips persistent homology + CD psi-weighted frustration. Phase 1 percolation approach (p=0.605) replaced with topological analysis."
+phase1_result = "Inconclusive (p=0.605, percolation-experiment)"
+phase2_binary = "e027-topology-analyzer"
+phase2_method = "VR filtration + Betti number correlation + permutation null model"
+binary = "e027-topology-analyzer"
+binary_registered = true
+binary_experiment_declared = "E-027"
+method = "VR persistent homology on velocity point cloud, CD psi-weighted triangle frustration, Pearson correlation + Fisher-Yates permutation test"
+input = "Synthetic Poiseuille+vortex velocity field, SedenionField with random perturbation"
+output = ["data/e027/e027_topology_NNNcubed.toml", "data/e027/betti_timeseries_NNNcubed.csv"]
+run = "cargo run --bin e027-topology-analyzer -- --grid-size 16 --epsilon-steps 20 --max-points 100 --n-permutations 200"
 run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 claims = ["C-657", "C-658", "C-659"]
 claim_refs = ["C-657", "C-658", "C-659"]
 deterministic = false
 seed = 42
 gpu = false
-status = "deferred"
-status_token = "DEFERRED"
+status = "active"
+status_token = "ACTIVE"
 lineage_id = "XL-025"
 input_path_refs = []
-output_path_refs = []
+output_path_refs = ["data/e027/topology_16/e027_topology_16cubed.toml"]
 dataset_refs = []
 reproducibility_class = "seeded_stochastic_replay"
 

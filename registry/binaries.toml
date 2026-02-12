@@ -247,3 +247,8 @@ description = "APT verification across the Cayley-Dickson dimensional ladder"
 name = "snia-ddt"
 crate = "gororoba_cli"
 description = "SN Ia delayed-detonation scaffold runner with reproducible snapshot and summary outputs"
+
+[[binary]]
+name = "e027-topology-analyzer"
+crate = "gororoba_cli"
+description = "E-027 Phase 2: Vietoris-Rips persistent homology topology-frustration correlation analyzer for Thesis 1 validation"
