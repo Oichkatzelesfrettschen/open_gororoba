@@ -20,7 +20,9 @@ pub fn extract_paper(
     pdf_path: &Path,
     metadata_override: Option<PaperMetadata>,
 ) -> Result<ExtractedPaper> {
-    let pages = pdf::extract_text(pdf_path)?;
+    // Some PDFs are image-only/scanned and may not yield text; keep extracting
+    // figures/tables metadata so we still emit a structured artifact.
+    let pages = pdf::extract_text(pdf_path).unwrap_or_default();
     let full_text = pages
         .iter()
         .map(|p| p.text.as_str())
@@ -32,9 +34,21 @@ pub fn extract_paper(
         text::extract_metadata(first)
     });
 
-    let sections = text::split_sections(&full_text);
-    let equations = text::extract_equations(&full_text);
-    let tables = table::detect_tables(&pages);
+    let sections = if full_text.trim().is_empty() {
+        Vec::new()
+    } else {
+        text::split_sections(&full_text)
+    };
+    let equations = if full_text.trim().is_empty() {
+        Vec::new()
+    } else {
+        text::extract_equations(&full_text)
+    };
+    let tables = if pages.is_empty() {
+        Vec::new()
+    } else {
+        table::detect_tables(&pages)
+    };
 
     // Image extraction: just record metadata, don't embed raw bytes in TOML
     let images = pdf::extract_images(pdf_path).unwrap_or_default();
@@ -48,6 +62,12 @@ pub fn extract_paper(
             image_path: None, // populated later when saving to disk
         })
         .collect();
+
+    if full_text.trim().is_empty() && figures.is_empty() {
+        return Err(DocpipeError::Extraction(
+            "no text or figures extracted from PDF".to_string(),
+        ));
+    }
 
     Ok(ExtractedPaper {
         metadata,
@@ -70,7 +90,23 @@ pub fn extract_and_write(
     output_dir: &Path,
     metadata_override: Option<PaperMetadata>,
 ) -> Result<ExtractedPaper> {
-    let paper = extract_paper(pdf_path, metadata_override)?;
+    let mut paper = extract_paper(pdf_path, metadata_override)?;
+
+    // Persist extracted figure assets and wire relative image paths into paper.toml.
+    let images = pdf::extract_images(pdf_path).unwrap_or_default();
+    if !images.is_empty() {
+        let image_dir = output_dir.join("images");
+        let saved_paths = crate::image::save_images(&images, &image_dir)?;
+        for (figure, image_path) in paper.figures.iter_mut().zip(saved_paths.iter()) {
+            let relative = image_path
+                .strip_prefix(output_dir)
+                .unwrap_or(image_path)
+                .to_string_lossy()
+                .replace('\\', "/");
+            figure.image_path = Some(relative);
+        }
+    }
+
     let toml_str = paper_to_toml(&paper)?;
 
     std::fs::create_dir_all(output_dir)?;
@@ -96,7 +132,7 @@ pub fn extract_and_write(
         }
     }
 
-    // Write tables as CSV files
+    // Write tables as CSV files.
     for (i, tbl) in paper.tables.iter().enumerate() {
         let mut csv_content = tbl.headers.join(",");
         csv_content.push('\n');
