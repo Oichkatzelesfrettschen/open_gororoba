@@ -1,6 +1,6 @@
 /// Tests for deterministic and reproducible evolution
 /// This is critical for CE-002: two-phase clock coordination
-use cosmic_scheduler::{TwoPhaseClockScheduler, TwoPhaseSystem, ScheduleResult};
+use cosmic_scheduler::{ScheduleResult, TwoPhaseClockScheduler, TwoPhaseSystem};
 
 /// Deterministic system with predictable behavior
 struct DeterministicSystem {

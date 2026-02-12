@@ -1,6 +1,6 @@
 /// Unit tests for PhaseScheduler trait and TwoPhaseClockScheduler
 use cosmic_scheduler::{
-    Phase, ScheduleError, TwoPhaseClockScheduler, TwoPhaseSystem, ScheduleResult,
+    Phase, ScheduleError, ScheduleResult, TwoPhaseClockScheduler, TwoPhaseSystem,
 };
 
 /// Simple mock system for testing
