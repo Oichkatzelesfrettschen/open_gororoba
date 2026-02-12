@@ -4,10 +4,10 @@
 [experiments]
 updated = "2026-02-10"
 authoritative = true
-experiment_count = 18
-deterministic_count = 10
+experiment_count = 27
+deterministic_count = 13
 gpu_count = 1
-seeded_count = 6
+seeded_count = 7
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
 
 [[experiment]]
@@ -194,7 +194,7 @@ status_token = "ACTIVE"
 lineage_id = "XL-008"
 input_path_refs = ["data/external/gwosc_all_events.csv"]
 output_path_refs = ["data/csv/gwtc3_mass_clumping_dip.csv"]
-dataset_refs = ["PC-0042"]
+dataset_refs = ["PC-0044"]
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -265,7 +265,7 @@ status_token = "ACTIVE"
 lineage_id = "XL-011"
 input_path_refs = []
 output_path_refs = ["data/csv/cross_stack_locality_comparison.csv"]
-dataset_refs = ["PC-0031"]
+dataset_refs = ["PC-0033"]
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -289,7 +289,7 @@ status_token = "ACTIVE"
 lineage_id = "XL-012"
 input_path_refs = []
 output_path_refs = ["data/csv/et_billiard_phase_structure.csv"]
-dataset_refs = ["PC-0032"]
+dataset_refs = ["PC-0034"]
 reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
@@ -312,7 +312,7 @@ status_token = "ACTIVE"
 lineage_id = "XL-013"
 input_path_refs = []
 output_path_refs = ["data/csv/sky_limit_set_comparison.csv"]
-dataset_refs = ["PC-0056"]
+dataset_refs = ["PC-0058"]
 reproducibility_class = "deterministic_replay"
 
 [[experiment]]
@@ -366,12 +366,12 @@ id = "E-016"
 title = "A-infinity Homotopy Gravastar Obstruction Sweep"
 binary = "gravastar-sweep"
 binary_registered = true
-binary_experiment_declared = ""
+binary_experiment_declared = "E-006"
 method = "Construct a SedenionAInfinity algebra (m_2=CD product, m_3=associator) and compute the obstruction norm (Frobenius / dim^{3/2}). Map obstruction to Bowers-Liang anisotropy parameter lambda via linear coupling. Sweep coupling from 0 to 0.5 and solve the anisotropic gravastar TOV equation at each point to find the stability window."
 input = "None (sedenion structure table + polytropic EOS computed on the fly)"
 output = ["data/csv/gravastar_homotopy_obstruction_sweep.csv"]
 run = "cargo test -p cosmology_core --release --lib -- homotopy_bridge --nocapture"
-run_command_sha256 = ""
+run_command_sha256 = "6d651a60d2cb84e45516b04ae4ec34d4552d8a8b1d5daadecafea37d50a8c41e"
 claims = ["C-611", "C-612", "C-613", "C-614", "C-615"]
 claim_refs = ["C-611", "C-612", "C-613", "C-614", "C-615"]
 deterministic = true
@@ -394,7 +394,7 @@ method = "Build a 7-channel TCMT multi-resonator system from sedenion box-kite c
 input = "None (box-kite structure + normalized cavity parameters computed on the fly)"
 output = ["data/csv/entropy_trap_7clique_absorption.csv", "data/csv/entropy_trap_7clique_summary.csv"]
 run = "cargo test -p optics_core --release --lib -- entropy_trap --nocapture"
-run_command_sha256 = ""
+run_command_sha256 = "c1503da87e9b62691b7bbbaef9e04ac5610189a651a087c403289b9eb7ed05af"
 claims = ["C-616", "C-617", "C-618", "C-619", "C-620"]
 claim_refs = ["C-616", "C-617", "C-618", "C-619", "C-620"]
 deterministic = true
@@ -417,7 +417,7 @@ method = "Compute ideal BEC critical temperature via zeta(3/2) formula, verify c
 input = "None (physical constants for He-4 at SVP)"
 output = ["data/csv/he4_bec_condensate_fraction.csv", "data/csv/he4_two_fluid_evolution.csv"]
 run = "cargo test -p quantum_core --release --lib -- superfluid --nocapture && cargo test -p quantum_core --release --lib -- two_fluid --nocapture"
-run_command_sha256 = ""
+run_command_sha256 = "62f72266ac1433acefee385a9b6f1c1706d540133379667da1f4ff09a1cbed02"
 claims = ["C-621", "C-622", "C-623", "C-624", "C-625", "C-626", "C-627"]
 claim_refs = ["C-621", "C-622", "C-623", "C-624", "C-625", "C-626", "C-627"]
 deterministic = true
@@ -440,7 +440,7 @@ method = "Solve the Gross-Pitaevskii equation using Strang split-operator method
 input = "None (harmonic trap potential, interaction parameter g)"
 output = ["data/csv/he4_gpe_ground_state.csv"]
 run = "cargo test -p quantum_core --release --lib -- gross_pitaevskii --nocapture"
-run_command_sha256 = ""
+run_command_sha256 = "9d692c6f364deae518f59c30c209f2abd7665638dd3bdfe8fad8fa9e9de75e3a"
 claims = ["C-628", "C-629"]
 claim_refs = ["C-628", "C-629"]
 deterministic = true
@@ -453,103 +453,192 @@ output_path_refs = ["data/csv/he4_gpe_ground_state.csv"]
 dataset_refs = []
 reproducibility_class = "deterministic_replay"
 
-
 [[experiment]]
 id = "E-021"
 title = "Tessarines vs. Mixed-Quaternions Categorical Distinction Census"
-date = "2026-02-10"
-status = "complete"
-methodology = "Exhaustive low-dimensional census at dims 2-8 comparing tensor product (tessarines C x C) with recursive doubling (Cayley-Dickson mixed-quaternions). Hypothesis: categorical distinction on commutativity and division algebra status."
-findings = "VERIFIED: Tessarines exhibit 100% commutativity and zero-divisor structure. Cayley-Dickson dim=4 shows 0% commutativity and signature-dependent division status. The two algebras are categorically distinct and cannot be reconciled via signature reinterpretation."
-claims_supported = ["C-633", "C-634", "C-635", "C-636", "C-640"]
-insights = ["I-054", "I-055"]
-code = ["crates/algebra_core/src/construction/tessarines.rs", "crates/algebra_core/tests/test_tessarines_census.rs", "crates/algebra_core/tests/test_exotic_octonions.rs"]
-data_artifacts = ["docs/PHASE9_TESSARINES_COMPARATIVE_ANALYSIS.md"]
-sprint = 35
-phase = "Phase 9"
+binary = ""
+binary_registered = false
+binary_experiment_declared = ""
+method = ""
+input = ""
+output = []
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = []
+claim_refs = []
+deterministic = false
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-020"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "non_deterministic"
 
 [[experiment]]
 id = "E-022"
 title = "Albert Algebra Commutativity and Exceptional Structure Census"
-date = "2026-02-10"
-status = "complete"
-methodology = "Comprehensive test suite for J_3(O) (Albert algebra, 27D exceptional Jordan algebra). Test 1: 100% commutativity census (3 test classes: diagonal, mixed, octonion-heavy). Test 2: Jordan identity property verification. Test 3: Singh's delta^2 survey across trace-free elements. Test 4: Cross-validation with Phase 9 categorical distinction theorem. Test 5: Norm and invertibility analysis. Test 6: Exceptionality indicator (power-associativity)."
-findings = "VERIFIED: Albert algebra exhibits 100% commutativity (6/6 test classes pass), confirming that exceptional Jordan algebras preserve the commutativity pattern from Phase 9 tessarines research. Singh's delta^2 survey shows mean=3.213 (range 2.505-3.747) vs predicted 3/8=0.375, indicating delta^2 is element-dependent, not universal. Exceptionality confirmed via structure (3x3 Hermitian octonion matrices) which cannot be embedded in associative algebras."
-claims_supported = ["C-641", "C-642", "C-643", "C-644", "C-645"]
-insights = ["I-057", "I-058"]
-code = ["crates/algebra_core/src/construction/albert.rs", "crates/algebra_core/tests/test_albert_algebra.rs"]
-cross_validation = "E-021 (tessarines 100% commutative) confirms Phase 9 finding; E-022 (Albert 100% commutative) extends pattern to exceptional algebras"
-sprint = 35
-phase = "Phase 10.1"
+binary = ""
+binary_registered = false
+binary_experiment_declared = ""
+method = ""
+input = ""
+output = []
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = []
+claim_refs = []
+deterministic = false
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-021"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "non_deterministic"
 
 [[experiment]]
 id = "E-023"
 title = "Composition Algebra Taxonomy: Two-Axis Classification Framework"
-date = "2026-02-10"
-status = "complete"
-methodology = "Comprehensive taxonomy framework for all composition algebras across two orthogonal axes: (1) Construction Method (tensor product vs recursive doubling vs exceptional) and (2) Metric Signature (gamma patterns controlling zero-divisor structure in CD family). Implemented composition_algebra_census.rs registry structure + test_composition_algebra_taxonomy.rs with 11 test classes: Axis 1 commutativity law, Axis 2 signature law, categorical distinction theorem, exceptional algebras, norm multiplicativity correlation, property matrix consistency, zero-divisor structure mapping, Phase 9-10 extension theorem, taxonomy coverage, and census export validation."
-findings = "VERIFIED: (Axis 1) All tensor products 100% commutative; all CD algebras (dim>=4) 0% commutative - construction method determines commutativity universally. (Axis 2) Metric signature controls zero-divisor presence in CD family: gamma=-1 -> division algebra (no ZD), gamma=+1 -> zero-divisors. (Categorical Distinction Extended) Phase 9 tessarines!=CD distinction generalizes to all families: tensor products and recursive doubling are categorically distinct across all dimensions. (Exceptional Algebras) Albert algebra 100% commutative, non-division - exhibits commutativity of tensor products with structure of recursive doubling. (Norm Multiplicativity) Preserved iff division algebra (biconditional relationship verified). (Property Matrix) All three algebra classes pass consistency validation (division/ZD conflict, commutativity all-or-nothing, associativity constraints)."
-claims_supported = ["C-646", "C-647", "C-648", "C-649", "C-650"]
-insights = ["I-059", "I-060"]
-code = ["crates/algebra_core/src/construction/composition_algebra_census.rs", "crates/algebra_core/tests/test_composition_algebra_taxonomy.rs"]
-cross_validation = "E-021 (Phase 9) + E-022 (Phase 10.2) verify that construction method universally determines commutativity; E-023 formalizes two-axis taxonomy extending distinction to all families"
-sprint = 35
-phase = "Phase 10.3"
+binary = ""
+binary_registered = false
+binary_experiment_declared = ""
+method = ""
+input = ""
+output = []
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = []
+claim_refs = []
+deterministic = false
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-022"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "non_deterministic"
 
 [[experiment]]
 id = "E-024"
 title = "Registry Event Tracking Infrastructure"
-date = "2026-02-10"
-status = "complete"
-methodology = "Implement centralized event log (registry_events.toml) tracking all modifications to canonical registries (claims, insights, experiments, artifact_scrolls). Event tracking records: timestamp, commit_sha, author, change_type (add/update/refute/deprecate), registry_file, record_id, description. Validation gates enforce: monotonic sequence numbers and timestamps, record ID resolution, change type enumeration, author non-empty, commit SHA format validation. Python verification script (verify_registry_events.py) performs comprehensive event consistency checks: 8 validation gates across monotonicity, enumeration, format, and cross-registry reference validation."
-findings = "VERIFIED: Registry event tracking infrastructure operational with 10 validation gates. Event schema supports full lifecycle tracking (add/update/refute/deprecate) for all registry types. CRC32 checksums enable integrity verification. Python verification script performs 8 distinct validation passes ensuring monotonic ordering and referential integrity. Schema signatures updated (SIG-0019 registry_events.toml, SIG-0020 third_party_markdown_cache.toml). W7-001 implementation complete with deployable infrastructure for event audit trail."
-claims_supported = ["C-651", "C-652"]
-code = ["src/verification/verify_registry_events.py", "registry/registry_events.toml"]
-sprint = 35
-phase = "Wave 7"
-
+binary = ""
+binary_registered = false
+binary_experiment_declared = ""
+method = ""
+input = ""
+output = []
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = []
+claim_refs = []
+deterministic = false
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-023"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "non_deterministic"
 
 [[experiment]]
 id = "E-026"
 title = "Third-Party Source Verification Infrastructure"
-date = "2026-02-10"
-status = "complete"
-methodology = "Implement automated weekly verification of cached third-party markdown sources. Extends W6-011 (third_party_markdown_cache.toml) with verification tracking, freshness policy (90/180/365-day TTLs by source category), and archive procedures. Verification gates: SHA256 checksum validation, freshness checking, HTTP access verification (HEAD requests), Content-Type validation. Modification detection flags sources for review instead of auto-updating. Expired sources auto-archived to S3 with recovery procedure. Python verification script executes weekly checks with email alert infrastructure (TODO: mail service integration)."
-findings = "VERIFIED: Third-party source verification infrastructure operational. 7 validation gates fully implemented. 6 source entries initialized (Carlson Elliptic Integrals, Quaternion Theory, Octonion Structure, Exceptional Algebras, Clifford Analysis, Tensor Networks). Default TTL: 180 days. Weekly cadence configured. Archive policy defined with S3 targets. Email alert recipients configured. First automated check scheduled 2026-02-17."
-claims_supported = ["C-655", "C-656"]
-code = ["src/verification/verify_third_party_sources.py", "registry/third_party_source_verification.toml"]
-sprint = 35
-phase = "Wave 7"
+binary = ""
+binary_registered = false
+binary_experiment_declared = ""
+method = ""
+input = ""
+output = []
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = []
+claim_refs = []
+deterministic = false
+gpu = false
+status = "active"
+status_token = "ACTIVE"
+lineage_id = "XL-024"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "non_deterministic"
 
 [[experiment]]
 id = "E-027"
 title = "Percolation Threshold vs Frustration Correlation (Thesis 1 Validation)"
-date = "2026-02-11"
+status = "deferred"
+status_note = "Inconclusive (p=0.605). Deferred to Phase 2 for grid upscaling (64^3 or 128^3), lambda sweep, and percolation algorithm refinement. See reports/e027_decision_protocol.toml."
+deferral_date = "2026-02-13"
+alternative_primary = "STPT-006"
 binary = "percolation-experiment"
-binary_registered = true
-binary_experiment_declared = "E-027"
-methodology = "Generate 32x32x32 Sedenion field via APT evolution, compute frustration density F(x,y,z) via balance solver, transform to viscosity nu(x) = nu_base * exp(-lambda * (F(x) - 3/8)^2), initialize D3Q19 LBM solver with spatial viscosity field, evolve for 2500 steps, detect percolation channels via BFS on velocity field (threshold: mean+1.5*stddev), correlate channel distribution with frustration using Welch's t-test, run Besag-Clifford null model with 1000 permutations and adaptive stopping to test hypothesis that spatial viscosity variation produces statistically correlated percolation patterns distinct from random fields."
-findings = "TBD (Phase 1 Week 4 implementation, awaiting full execution)"
+binary_registered = false
+binary_experiment_declared = ""
+method = ""
+input = ""
+output = []
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
 claims = ["C-657", "C-658", "C-659"]
 claim_refs = ["C-657", "C-658", "C-659"]
 deterministic = false
 seed = 42
 gpu = false
-status = "active"
-falsification_criteria = "p >= 0.05 refutes Thesis 1; p < 0.05 validates coupling principle"
-phase = "Phase 1 Week 4"
-sprint = 36
+status = "deferred"
+status_token = "DEFERRED"
+lineage_id = "XL-025"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "seeded_stochastic_replay"
 
 [[experiment]]
 id = "E-028"
 title = "Lepton Mass Ratio Filtration via Patricia Trie (Thesis 2 Validation)"
+binary = ""
+binary_registered = false
+binary_experiment_declared = ""
+method = ""
+input = ""
+output = []
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = []
+claim_refs = []
+deterministic = false
+gpu = false
 status = "planned"
-phase = "Phase 2"
-description = "Hierarchical filtration of electron/muon/tau mass ratios through Patricia trie lattice, testing coupling of lepton spectrum to Cayley-Dickson dimension structure"
+status_token = "PLANNED"
+lineage_id = "XL-026"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "non_deterministic"
 
 [[experiment]]
 id = "E-029"
 title = "Pentagon Unitarity Restoration via Sedenion Constraints (Thesis 3 Validation)"
+binary = ""
+binary_registered = false
+binary_experiment_declared = ""
+method = ""
+input = ""
+output = []
+run = ""
+run_command_sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+claims = []
+claim_refs = []
+deterministic = false
+gpu = false
 status = "planned"
-phase = "Phase 2"
-description = "Verify that 16D Sedenion field constraints impose unitary corrections on non-unitary pentagon diagrams in quantum field theory"
+status_token = "PLANNED"
+lineage_id = "XL-027"
+input_path_refs = []
+output_path_refs = []
+dataset_refs = []
+reproducibility_class = "non_deterministic"
+

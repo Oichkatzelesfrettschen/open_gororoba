@@ -234,29 +234,29 @@ status = "active"
 
 [[term]]
 id = "T-COSM-001"
-domain = "Cosmic Engine"
+domain = "Engine Architecture"
 informal = "cosmic engine"
 standard = "unified bit-to-physics synthesis pipeline"
-definition = "6-layer computational architecture transforming Cayley-Dickson bit-level doubling into testable physics predictions. LAYER 0-6 from psi sign function through Besag-Clifford validation."
-reference = "COSMIC_ENGINE_PROGRESS.md"
+definition = "Six-layer computational architecture mapping Cayley-Dickson bit operations to testable model outputs, with explicit falsification and statistical validation gates."
+reference = "registry/sedenion_thesis_program.toml"
 status = "active"
 
 [[term]]
 id = "T-COSM-002"
-domain = "Cosmic Engine"
+domain = "Engine Architecture"
 informal = "Babbage patterns"
 standard = "hierarchical tree-based addressing"
-definition = "Multi-level addressing scheme via column/card/digit hierarchy. Analogous to Patricia trie filtration: \u039B_2048 -> \u039B_1024 -> \u039B_512 -> \u039B_256."
-reference = "crates/lattice_filtration/docs/BABBAGE_ANALOGY.md"
+definition = "Multi-level addressing scheme via column/card/digit hierarchy, represented in Rust with trie-like filtration and deterministic key projection."
+reference = "crates/lattice_filtration/src/patricia_trie.rs"
 status = "active"
 
 [[term]]
 id = "T-COSM-003"
-domain = "Cosmic Engine"
+domain = "Engine Architecture"
 informal = "two-phase clock"
 standard = "phi_1/phi_2 coordination"
 definition = "Deterministic two-phase timing abstraction from Intel 4004. phi_1 = collision/preparation, phi_2 = streaming/execution. Isomorphic to LBM phases."
-reference = "cosmic_scheduler/src/phase_scheduler.rs"
+reference = "crates/cosmic_scheduler/src/phase_scheduler.rs"
 status = "active"
 
 [metadata]
@@ -271,6 +271,6 @@ domains = [
   "Topology & Filtration",
   "Quantum Field Theory",
   "Statistics & Testing",
-  "Cosmic Engine"
+  "Engine Architecture"
 ]
 total_terms = 28

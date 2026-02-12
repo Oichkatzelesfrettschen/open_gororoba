@@ -4,7 +4,54 @@
 
 [knowledge_documents]
 generated_at = "deterministic"
-raw_capture_count = 0
-skipped_generated_count = 0
+raw_capture_count = 1
+skipped_generated_count = 4
 authoritative = false
 normalization_required = true
+
+[[document]]
+id = "DOC-0005"
+source_path = "crates/lbm_3d_cuda/README.md"
+title = "lbm_3d_cuda"
+kind = "manual_source"
+migration_priority = "medium"
+raw_captured = true
+authoritative = false
+normalization_status = "pending"
+document_toml = "registry/knowledge/docs/DOC-0005.toml"
+
+[[document]]
+id = "DOC-0001"
+source_path = "AGENTS.md"
+title = "AGENTS"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0002"
+source_path = "CLAUDE.md"
+title = "CLAUDE"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0003"
+source_path = "GEMINI.md"
+title = "GEMINI"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"
+
+[[document]]
+id = "DOC-0004"
+source_path = "README.md"
+title = "open_gororoba"
+kind = "markdown_mirror"
+raw_captured = false
+authoritative = false
+skip_reason = "generated_markdown_or_artifact"

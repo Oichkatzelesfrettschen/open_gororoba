@@ -5,11 +5,11 @@
 updated = "2026-02-10"
 authoritative = true
 source_registries = ["registry/requirements.toml", "pyproject.toml", "Cargo.toml"]
-module_count = 10
-package_count = 92
-command_count = 24
+module_count = 11
+package_count = 94
+command_count = 26
 python_package_count = 22
-rust_package_count = 70
+rust_package_count = 72
 
 [[module]]
 id = "REQ-ALGEBRA"
@@ -64,7 +64,7 @@ status_token = "ACTIVE"
 source_markdown = "docs/REQUIREMENTS.md"
 requires_modules = []
 command_refs = ["CMD-0007", "CMD-0008", "CMD-0009", "CMD-0010"]
-package_refs = ["PKG-00001", "PKG-00002", "PKG-00003", "PKG-00004", "PKG-00005", "PKG-00006", "PKG-00007", "PKG-00008", "PKG-00009", "PKG-00010", "PKG-00023", "PKG-00024", "PKG-00025", "PKG-00026", "PKG-00027", "PKG-00028", "PKG-00029", "PKG-00030", "PKG-00031", "PKG-00032", "PKG-00033", "PKG-00034", "PKG-00035", "PKG-00036", "PKG-00037", "PKG-00038", "PKG-00039", "PKG-00040", "PKG-00041", "PKG-00042", "PKG-00043", "PKG-00044", "PKG-00045", "PKG-00046", "PKG-00047", "PKG-00048", "PKG-00049", "PKG-00050", "PKG-00051", "PKG-00052", "PKG-00053", "PKG-00054", "PKG-00055", "PKG-00056", "PKG-00059", "PKG-00060", "PKG-00062", "PKG-00063", "PKG-00064", "PKG-00065", "PKG-00066", "PKG-00067", "PKG-00068", "PKG-00069", "PKG-00070", "PKG-00071", "PKG-00072", "PKG-00073", "PKG-00074", "PKG-00075", "PKG-00076", "PKG-00077", "PKG-00078", "PKG-00079", "PKG-00080", "PKG-00081", "PKG-00082", "PKG-00083", "PKG-00084", "PKG-00085", "PKG-00086", "PKG-00089", "PKG-00090", "PKG-00091", "PKG-00092"]
+package_refs = ["PKG-00001", "PKG-00002", "PKG-00003", "PKG-00004", "PKG-00005", "PKG-00006", "PKG-00007", "PKG-00008", "PKG-00009", "PKG-00010", "PKG-00023", "PKG-00024", "PKG-00025", "PKG-00026", "PKG-00027", "PKG-00028", "PKG-00029", "PKG-00030", "PKG-00031", "PKG-00032", "PKG-00033", "PKG-00034", "PKG-00035", "PKG-00036", "PKG-00037", "PKG-00038", "PKG-00039", "PKG-00040", "PKG-00041", "PKG-00042", "PKG-00043", "PKG-00044", "PKG-00045", "PKG-00046", "PKG-00047", "PKG-00048", "PKG-00049", "PKG-00050", "PKG-00051", "PKG-00052", "PKG-00053", "PKG-00054", "PKG-00055", "PKG-00056", "PKG-00059", "PKG-00060", "PKG-00062", "PKG-00063", "PKG-00064", "PKG-00065", "PKG-00066", "PKG-00067", "PKG-00068", "PKG-00069", "PKG-00070", "PKG-00071", "PKG-00072", "PKG-00073", "PKG-00074", "PKG-00075", "PKG-00076", "PKG-00077", "PKG-00078", "PKG-00079", "PKG-00080", "PKG-00081", "PKG-00082", "PKG-00083", "PKG-00084", "PKG-00085", "PKG-00086", "PKG-00087", "PKG-00088", "PKG-00091", "PKG-00092", "PKG-00093", "PKG-00094"]
 
 [[module]]
 id = "REQ-CPP"
@@ -89,6 +89,17 @@ command_refs = ["CMD-0015", "CMD-0016"]
 package_refs = []
 
 [[module]]
+id = "REQ-LBM-CUDA"
+name = "lbm_3d_cuda"
+runtime_stack = "mixed"
+status = "active"
+status_token = "ACTIVE"
+source_markdown = "crates/lbm_3d_cuda/README.md"
+requires_modules = ["REQ-CORE"]
+command_refs = ["CMD-0017", "CMD-0018"]
+package_refs = []
+
+[[module]]
 id = "REQ-MATERIALS"
 name = "materials"
 runtime_stack = "mixed"
@@ -107,7 +118,7 @@ status = "active"
 status_token = "ACTIVE"
 source_markdown = "docs/requirements/particle.md"
 requires_modules = ["REQ-CORE"]
-command_refs = ["CMD-0017", "CMD-0018"]
+command_refs = ["CMD-0019", "CMD-0020"]
 package_refs = ["PKG-00017", "PKG-00018", "PKG-00019"]
 
 [[module]]
@@ -118,8 +129,8 @@ status = "active"
 status_token = "ACTIVE"
 source_markdown = "docs/requirements/quantum-docker.md"
 requires_modules = ["REQ-CORE"]
-command_refs = ["CMD-0019", "CMD-0020", "CMD-0021", "CMD-0022", "CMD-0023", "CMD-0024"]
-package_refs = ["PKG-00020", "PKG-00021", "PKG-00022", "PKG-00057", "PKG-00058", "PKG-00061", "PKG-00087", "PKG-00088"]
+command_refs = ["CMD-0021", "CMD-0022", "CMD-0023", "CMD-0024", "CMD-0025", "CMD-0026"]
+package_refs = ["PKG-00020", "PKG-00021", "PKG-00022", "PKG-00057", "PKG-00058", "PKG-00061", "PKG-00089", "PKG-00090"]
 
 [[command]]
 id = "CMD-0001"
@@ -219,48 +230,60 @@ command = "make latex"
 
 [[command]]
 id = "CMD-0017"
-module_id = "REQ-PARTICLE"
+module_id = "REQ-LBM-CUDA"
 kind = "install"
-command = "make install-particle"
+command = "cargo check -p lbm_3d_cuda"
 
 [[command]]
 id = "CMD-0018"
-module_id = "REQ-PARTICLE"
+module_id = "REQ-LBM-CUDA"
 kind = "verify"
-command = "make install-particle"
+command = "cargo check -p lbm_3d_cuda"
 
 [[command]]
 id = "CMD-0019"
-module_id = "REQ-QUANTUM"
+module_id = "REQ-PARTICLE"
 kind = "install"
-command = "make install-quantum"
+command = "make install-particle"
 
 [[command]]
 id = "CMD-0020"
-module_id = "REQ-QUANTUM"
-kind = "install"
-command = "docker-quantum-build"
+module_id = "REQ-PARTICLE"
+kind = "verify"
+command = "make install-particle"
 
 [[command]]
 id = "CMD-0021"
 module_id = "REQ-QUANTUM"
 kind = "install"
-command = "docker-quantum-run"
+command = "make install-quantum"
 
 [[command]]
 id = "CMD-0022"
 module_id = "REQ-QUANTUM"
-kind = "verify"
+kind = "install"
 command = "docker-quantum-build"
 
 [[command]]
 id = "CMD-0023"
 module_id = "REQ-QUANTUM"
-kind = "verify"
+kind = "install"
 command = "docker-quantum-run"
 
 [[command]]
 id = "CMD-0024"
+module_id = "REQ-QUANTUM"
+kind = "verify"
+command = "docker-quantum-build"
+
+[[command]]
+id = "CMD-0025"
+module_id = "REQ-QUANTUM"
+kind = "verify"
+command = "docker-quantum-run"
+
+[[command]]
+id = "CMD-0026"
 module_id = "REQ-QUANTUM"
 kind = "verify"
 command = "make install-quantum"
@@ -940,6 +963,17 @@ source = "Cargo.toml"
 id = "PKG-00062"
 module_id = "REQ-CORE"
 manager = "cargo"
+name = "burn"
+constraint = "{\"features\": [\"train\", \"autodiff\"], \"version\": \"0.16\"}"
+spec = "burn {\"features\": [\"train\", \"autodiff\"], \"version\": \"0.16\"}"
+group = "workspace.dependencies"
+optional = false
+source = "Cargo.toml"
+
+[[package]]
+id = "PKG-00063"
+module_id = "REQ-CORE"
+manager = "cargo"
 name = "thiserror"
 constraint = "2.0"
 spec = "thiserror 2.0"
@@ -948,7 +982,18 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00063"
+id = "PKG-00064"
+module_id = "REQ-CORE"
+manager = "cargo"
+name = "anyhow"
+constraint = "1.0"
+spec = "anyhow 1.0"
+group = "workspace.dependencies"
+optional = false
+source = "Cargo.toml"
+
+[[package]]
+id = "PKG-00065"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "clap"
@@ -959,7 +1004,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00064"
+id = "PKG-00066"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "serde"
@@ -970,7 +1015,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00065"
+id = "PKG-00067"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "serde_json"
@@ -981,7 +1026,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00066"
+id = "PKG-00068"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "csv"
@@ -992,7 +1037,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00067"
+id = "PKG-00069"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "regex"
@@ -1003,7 +1048,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00068"
+id = "PKG-00070"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "walkdir"
@@ -1014,7 +1059,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00069"
+id = "PKG-00071"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "glob"
@@ -1025,7 +1070,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00070"
+id = "PKG-00072"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "sha2"
@@ -1036,7 +1081,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00071"
+id = "PKG-00073"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "ureq"
@@ -1047,7 +1092,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00072"
+id = "PKG-00074"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "flate2"
@@ -1058,7 +1103,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00073"
+id = "PKG-00075"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "zip"
@@ -1069,7 +1114,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00074"
+id = "PKG-00076"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "tar"
@@ -1080,7 +1125,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00075"
+id = "PKG-00077"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "pdfium-render"
@@ -1091,7 +1136,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00076"
+id = "PKG-00078"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "image"
@@ -1102,7 +1147,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00077"
+id = "PKG-00079"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "lopdf"
@@ -1113,7 +1158,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00078"
+id = "PKG-00080"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "pdf-extract"
@@ -1124,7 +1169,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00079"
+id = "PKG-00081"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "toml"
@@ -1135,7 +1180,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00080"
+id = "PKG-00082"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "hdf5"
@@ -1146,7 +1191,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00081"
+id = "PKG-00083"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "clap_mangen"
@@ -1157,7 +1202,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00082"
+id = "PKG-00084"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "plotters"
@@ -1168,7 +1213,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00083"
+id = "PKG-00085"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "plotters-svg"
@@ -1179,7 +1224,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00084"
+id = "PKG-00086"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "log"
@@ -1190,7 +1235,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00085"
+id = "PKG-00087"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "env_logger"
@@ -1201,7 +1246,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00086"
+id = "PKG-00088"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "config"
@@ -1212,7 +1257,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00087"
+id = "PKG-00089"
 module_id = "REQ-QUANTUM"
 manager = "cargo"
 name = "pyo3"
@@ -1223,7 +1268,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00088"
+id = "PKG-00090"
 module_id = "REQ-QUANTUM"
 manager = "cargo"
 name = "numpy"
@@ -1234,7 +1279,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00089"
+id = "PKG-00091"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "approx"
@@ -1245,7 +1290,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00090"
+id = "PKG-00092"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "tempfile"
@@ -1256,7 +1301,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00091"
+id = "PKG-00093"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "proptest"
@@ -1267,7 +1312,7 @@ optional = false
 source = "Cargo.toml"
 
 [[package]]
-id = "PKG-00092"
+id = "PKG-00094"
 module_id = "REQ-CORE"
 manager = "cargo"
 name = "criterion"
