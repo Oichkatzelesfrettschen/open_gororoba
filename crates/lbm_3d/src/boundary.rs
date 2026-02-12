@@ -31,15 +31,13 @@ impl GridIndex {
     }
 
     /// Check if grid point is at domain boundary.
-    pub fn is_at_boundary(
-        &self,
-        nx: usize,
-        ny: usize,
-        nz: usize,
-    ) -> bool {
-        self.x == 0 || self.x == nx - 1
-            || self.y == 0 || self.y == ny - 1
-            || self.z == 0 || self.z == nz - 1
+    pub fn is_at_boundary(&self, nx: usize, ny: usize, nz: usize) -> bool {
+        self.x == 0
+            || self.x == nx - 1
+            || self.y == 0
+            || self.y == ny - 1
+            || self.z == 0
+            || self.z == nz - 1
     }
 
     /// Apply periodic wraparound.
@@ -82,10 +80,7 @@ impl BounceBackBoundary {
     /// f_i^wall = f_opposite(i)^fluid (from previous time step)
     ///
     /// This enforces zero velocity at the wall (no-slip condition).
-    pub fn apply_at_node(
-        &self,
-        f_fluid: &[f64; 19],
-    ) -> [f64; 19] {
+    pub fn apply_at_node(&self, f_fluid: &[f64; 19]) -> [f64; 19] {
         let mut f_wall = [0.0; 19];
 
         for (i, &fi) in f_fluid.iter().enumerate() {
@@ -99,7 +94,7 @@ impl BounceBackBoundary {
     /// Apply bounce-back across entire boundary slice (e.g., z=0 plane).
     pub fn apply_on_plane(
         &self,
-        f_grid: &mut [f64],  // Flattened 3D grid
+        f_grid: &mut [f64], // Flattened 3D grid
         nx: usize,
         ny: usize,
         nz: usize,
@@ -111,9 +106,9 @@ impl BounceBackBoundary {
                     for z in 0..nz {
                         let idx = GridIndex::new(0, y, z).linearize(nx, ny) * 19;
                         let mut f_local = [0.0; 19];
-                        f_local.copy_from_slice(&f_grid[idx..idx+19]);
+                        f_local.copy_from_slice(&f_grid[idx..idx + 19]);
                         let f_bounce = self.apply_at_node(&f_local);
-                        f_grid[idx..idx+19].copy_from_slice(&f_bounce);
+                        f_grid[idx..idx + 19].copy_from_slice(&f_bounce);
                     }
                 }
             }
@@ -122,9 +117,9 @@ impl BounceBackBoundary {
                     for z in 0..nz {
                         let idx = GridIndex::new(nx - 1, y, z).linearize(nx, ny) * 19;
                         let mut f_local = [0.0; 19];
-                        f_local.copy_from_slice(&f_grid[idx..idx+19]);
+                        f_local.copy_from_slice(&f_grid[idx..idx + 19]);
                         let f_bounce = self.apply_at_node(&f_local);
-                        f_grid[idx..idx+19].copy_from_slice(&f_bounce);
+                        f_grid[idx..idx + 19].copy_from_slice(&f_bounce);
                     }
                 }
             }
@@ -133,9 +128,9 @@ impl BounceBackBoundary {
                     for z in 0..nz {
                         let idx = GridIndex::new(x, 0, z).linearize(nx, ny) * 19;
                         let mut f_local = [0.0; 19];
-                        f_local.copy_from_slice(&f_grid[idx..idx+19]);
+                        f_local.copy_from_slice(&f_grid[idx..idx + 19]);
                         let f_bounce = self.apply_at_node(&f_local);
-                        f_grid[idx..idx+19].copy_from_slice(&f_bounce);
+                        f_grid[idx..idx + 19].copy_from_slice(&f_bounce);
                     }
                 }
             }
@@ -144,9 +139,9 @@ impl BounceBackBoundary {
                     for z in 0..nz {
                         let idx = GridIndex::new(x, ny - 1, z).linearize(nx, ny) * 19;
                         let mut f_local = [0.0; 19];
-                        f_local.copy_from_slice(&f_grid[idx..idx+19]);
+                        f_local.copy_from_slice(&f_grid[idx..idx + 19]);
                         let f_bounce = self.apply_at_node(&f_local);
-                        f_grid[idx..idx+19].copy_from_slice(&f_bounce);
+                        f_grid[idx..idx + 19].copy_from_slice(&f_bounce);
                     }
                 }
             }
@@ -155,9 +150,9 @@ impl BounceBackBoundary {
                     for y in 0..ny {
                         let idx = GridIndex::new(x, y, 0).linearize(nx, ny) * 19;
                         let mut f_local = [0.0; 19];
-                        f_local.copy_from_slice(&f_grid[idx..idx+19]);
+                        f_local.copy_from_slice(&f_grid[idx..idx + 19]);
                         let f_bounce = self.apply_at_node(&f_local);
-                        f_grid[idx..idx+19].copy_from_slice(&f_bounce);
+                        f_grid[idx..idx + 19].copy_from_slice(&f_bounce);
                     }
                 }
             }
@@ -166,9 +161,9 @@ impl BounceBackBoundary {
                     for y in 0..ny {
                         let idx = GridIndex::new(x, y, nz - 1).linearize(nx, ny) * 19;
                         let mut f_local = [0.0; 19];
-                        f_local.copy_from_slice(&f_grid[idx..idx+19]);
+                        f_local.copy_from_slice(&f_grid[idx..idx + 19]);
                         let f_bounce = self.apply_at_node(&f_local);
-                        f_grid[idx..idx+19].copy_from_slice(&f_bounce);
+                        f_grid[idx..idx + 19].copy_from_slice(&f_bounce);
                     }
                 }
             }
@@ -193,7 +188,7 @@ impl PeriodicBoundary {
         nx: usize,
         ny: usize,
         nz: usize,
-        direction: usize,  // Velocity index 0..18
+        direction: usize, // Velocity index 0..18
         lattice: &D3Q19Lattice,
     ) -> GridIndex {
         let c = lattice.velocity(direction);
@@ -209,12 +204,7 @@ impl PeriodicBoundary {
     }
 
     /// Apply periodic boundary condition (implicit in streaming step, verified here).
-    pub fn verify_conservation(
-        f_grid: &[f64],
-        _nx: usize,
-        _ny: usize,
-        _nz: usize,
-    ) -> f64 {
+    pub fn verify_conservation(f_grid: &[f64], _nx: usize, _ny: usize, _nz: usize) -> f64 {
         f_grid.iter().sum()
     }
 }
@@ -276,7 +266,7 @@ mod tests {
     fn test_bounce_back_reflection() {
         let bb = BounceBackBoundary::new();
         let mut f_fluid = [0.1; 19];
-        f_fluid[0] = 0.5;  // Special value for rest particle
+        f_fluid[0] = 0.5; // Special value for rest particle
 
         let f_wall = bb.apply_at_node(&f_fluid);
 
@@ -327,7 +317,7 @@ mod tests {
         // Boundary point wrapping x
         let idx_edge = GridIndex::new(9, 4, 3);
         let neighbor_wrapped = PeriodicBoundary::get_neighbor(idx_edge, nx, ny, nz, 1, &lattice);
-        assert_eq!(neighbor_wrapped, GridIndex::new(0, 4, 3));  // Wraps to x=0
+        assert_eq!(neighbor_wrapped, GridIndex::new(0, 4, 3)); // Wraps to x=0
     }
 
     #[test]

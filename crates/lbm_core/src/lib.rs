@@ -109,6 +109,37 @@ impl D2Q9 {
         }
     }
 
+    /// Perform one BGK collision step with non-associative shear thickening.
+    ///
+    /// The collision increment is scaled by `(1 + alpha * ||m3||)`, where
+    /// `||m3||` is the local associator norm field.
+    pub fn collide_with_associator(
+        &mut self,
+        y_start: usize,
+        y_end: usize,
+        alpha: f64,
+        associator_norm: &Array2<f64>,
+    ) {
+        let omega = 1.0 / self.tau;
+        let (rho, ux, uy) = self.macroscopic();
+        let feq = equilibrium(&rho, &ux, &uy);
+        assert_eq!(
+            associator_norm.dim(),
+            (self.nx, self.ny),
+            "associator_norm must match simulation dimensions"
+        );
+
+        for i in 0..9 {
+            for x in 0..self.nx {
+                for y in y_start..y_end {
+                    let thickening = 1.0 + alpha * associator_norm[[x, y]].max(0.0);
+                    let delta = omega * (feq[[i, x, y]] - self.f[[i, x, y]]);
+                    self.f[[i, x, y]] += thickening * delta;
+                }
+            }
+        }
+    }
+
     /// Apply body force using Guo forcing scheme (first order).
     pub fn apply_force(&mut self, fx: f64, y_start: usize, y_end: usize) {
         let (rho, _, _) = self.macroscopic();
@@ -137,6 +168,13 @@ impl D2Q9 {
     pub fn total_mass(&self) -> f64 {
         self.f.sum()
     }
+}
+
+/// Effective viscosity under associator-driven thickening.
+///
+/// `nu_eff = nu_base * (1 + alpha * ||m3||)`.
+pub fn viscosity_with_associator(nu_base: f64, alpha: f64, associator_norm: f64) -> f64 {
+    nu_base * (1.0 + alpha * associator_norm.max(0.0))
 }
 
 /// Compute D2Q9 equilibrium distributions.
@@ -671,5 +709,24 @@ mod tests {
             enst,
             expected
         );
+    }
+
+    #[test]
+    fn test_viscosity_with_associator_is_monotone() {
+        let base = 0.1;
+        let low = viscosity_with_associator(base, 0.8, 0.1);
+        let high = viscosity_with_associator(base, 0.8, 0.7);
+        assert!(high > low);
+    }
+
+    #[test]
+    fn test_collide_with_associator_keeps_mass_finite() {
+        let mut sim = D2Q9::new(8, 8, 0.8);
+        let norms = Array2::from_elem((8, 8), 0.5);
+        let mass_before = sim.total_mass();
+        sim.collide_with_associator(0, 8, 0.2, &norms);
+        let mass_after = sim.total_mass();
+        assert!(mass_after.is_finite());
+        assert!(mass_before > 0.0);
     }
 }

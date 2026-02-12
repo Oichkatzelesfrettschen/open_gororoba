@@ -45,12 +45,15 @@ fn bench_gpu(config: &GpuBenchConfig) -> Result<f64, String> {
         config.grid_size,
         config.grid_size,
         config.tau,
-    ).map_err(|e| format!("GPU initialization failed: {:?}", e))?;
+    )
+    .map_err(|e| format!("GPU initialization failed: {:?}", e))?;
 
-    solver.initialize_uniform(config.rho_init, config.u_init)
+    solver
+        .initialize_uniform(config.rho_init, config.u_init)
         .map_err(|e| format!("GPU initialization failed: {:?}", e))?;
 
-    solver.evolve(config.steps)
+    solver
+        .evolve(config.steps)
         .map_err(|e| format!("GPU evolution failed: {:?}", e))?;
 
     let elapsed = start_total.elapsed();
@@ -88,12 +91,19 @@ fn print_result_single(config: &GpuBenchConfig, time_s: f64) {
     println!("\n{}", "=".repeat(80));
     println!("Benchmark: {}", config.name);
     println!("{}", "=".repeat(80));
-    println!("Grid size:       {}^3 = {} cells", config.grid_size, config.grid_size.pow(3));
+    println!(
+        "Grid size:       {}^3 = {} cells",
+        config.grid_size,
+        config.grid_size.pow(3)
+    );
     println!("Steps:           {}", config.steps);
     println!("Memory (GPU):    {:.2} MB", config.memory_mb());
     println!();
     println!("GPU time:        {:.3} s", time_s);
-    println!("Throughput:      {:.2} Mcells/s", config.throughput_mcells_per_sec(time_s));
+    println!(
+        "Throughput:      {:.2} Mcells/s",
+        config.throughput_mcells_per_sec(time_s)
+    );
     println!("{}", "=".repeat(80));
 }
 
@@ -102,13 +112,20 @@ fn print_result_multi(config: &GpuBenchConfig, mean: f64, stddev: f64, min: f64,
     println!("\n{}", "=".repeat(80));
     println!("Benchmark: {} (averaged)", config.name);
     println!("{}", "=".repeat(80));
-    println!("Grid size:       {}^3 = {} cells", config.grid_size, config.grid_size.pow(3));
+    println!(
+        "Grid size:       {}^3 = {} cells",
+        config.grid_size,
+        config.grid_size.pow(3)
+    );
     println!("Steps:           {}", config.steps);
     println!("Memory (GPU):    {:.2} MB", config.memory_mb());
     println!();
     println!("Mean GPU time:   {:.3} +/- {:.3} s", mean, stddev);
     println!("Range:           {:.3} - {:.3} s", min, max);
-    println!("Throughput:      {:.2} Mcells/s", config.throughput_mcells_per_sec(mean));
+    println!(
+        "Throughput:      {:.2} Mcells/s",
+        config.throughput_mcells_per_sec(mean)
+    );
     println!();
 
     // 25-second test threshold check
@@ -215,26 +232,32 @@ fn main() {
         println!("# COMPREHENSIVE SUMMARY TABLE - GPU-ONLY");
         println!("{}", "#".repeat(80));
         println!();
-        println!("{:<25} {:>10} {:>12} {:>12} {:>12}",
-                 "Benchmark", "Grid", "Steps", "GPU (s)", "Throughput");
+        println!(
+            "{:<25} {:>10} {:>12} {:>12} {:>12}",
+            "Benchmark", "Grid", "Steps", "GPU (s)", "Throughput"
+        );
         println!("{}", "-".repeat(80));
 
         for (config, mean, stddev) in &all_results {
             if *stddev > 0.0 {
-                println!("{:<25} {:>10} {:>12} {:>9.3}+/-{:.3} {:>10.2} M",
-                         config.name,
-                         format!("{}^3", config.grid_size),
-                         config.steps,
-                         mean,
-                         stddev,
-                         config.throughput_mcells_per_sec(*mean));
+                println!(
+                    "{:<25} {:>10} {:>12} {:>9.3}+/-{:.3} {:>10.2} M",
+                    config.name,
+                    format!("{}^3", config.grid_size),
+                    config.steps,
+                    mean,
+                    stddev,
+                    config.throughput_mcells_per_sec(*mean)
+                );
             } else {
-                println!("{:<25} {:>10} {:>12} {:>12.3} {:>10.2} M",
-                         config.name,
-                         format!("{}^3", config.grid_size),
-                         config.steps,
-                         mean,
-                         config.throughput_mcells_per_sec(*mean));
+                println!(
+                    "{:<25} {:>10} {:>12} {:>12.3} {:>10.2} M",
+                    config.name,
+                    format!("{}^3", config.grid_size),
+                    config.steps,
+                    mean,
+                    config.throughput_mcells_per_sec(*mean)
+                );
             }
         }
 

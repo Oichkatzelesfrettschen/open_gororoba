@@ -29,20 +29,25 @@ fn test_debug_initialization() {
     println!("\n=== INITIAL STATE COMPARISON ===");
     println!("First 5 cells:");
     for i in 0..5 {
-        println!("Cell {}: CPU rho={:.6}, GPU rho={:.6}, CPU u={:?}, GPU u={:?}",
-                 i, cpu_solver.rho[i], gpu_solver.rho[i],
-                 cpu_solver.u[i], gpu_solver.u[i]);
+        println!(
+            "Cell {}: CPU rho={:.6}, GPU rho={:.6}, CPU u={:?}, GPU u={:?}",
+            i, cpu_solver.rho[i], gpu_solver.rho[i], cpu_solver.u[i], gpu_solver.u[i]
+        );
     }
 
     // Check if initialization is correct
     for i in 0..cpu_solver.rho.len() {
         let rho_err = (cpu_solver.rho[i] - gpu_solver.rho[i]).abs();
         let u_err = ((cpu_solver.u[i][0] - gpu_solver.u[i][0]).powi(2)
-                   + (cpu_solver.u[i][1] - gpu_solver.u[i][1]).powi(2)
-                   + (cpu_solver.u[i][2] - gpu_solver.u[i][2]).powi(2)).sqrt();
+            + (cpu_solver.u[i][1] - gpu_solver.u[i][1]).powi(2)
+            + (cpu_solver.u[i][2] - gpu_solver.u[i][2]).powi(2))
+        .sqrt();
 
         if rho_err > 1e-10 || u_err > 1e-10 {
-            println!("Cell {} BAD: rho_err={:.3e}, u_err={:.3e}", i, rho_err, u_err);
+            println!(
+                "Cell {} BAD: rho_err={:.3e}, u_err={:.3e}",
+                i, rho_err, u_err
+            );
         }
     }
 
@@ -53,14 +58,19 @@ fn test_debug_initialization() {
 
     println!("First 5 cells:");
     for i in 0..5 {
-        println!("Cell {}: CPU rho={:.6}, GPU rho={:.6}, CPU u={:?}, GPU u={:?}",
-                 i, cpu_solver.rho[i], gpu_solver.rho[i],
-                 cpu_solver.u[i], gpu_solver.u[i]);
+        println!(
+            "Cell {}: CPU rho={:.6}, GPU rho={:.6}, CPU u={:?}, GPU u={:?}",
+            i, cpu_solver.rho[i], gpu_solver.rho[i], cpu_solver.u[i], gpu_solver.u[i]
+        );
     }
 
     // Check mass conservation
     let cpu_mass: f64 = cpu_solver.rho.iter().sum();
     let gpu_mass: f64 = gpu_solver.rho.iter().sum();
-    println!("\nMass: CPU={:.6}, GPU={:.6}, err={:.3e}",
-             cpu_mass, gpu_mass, (cpu_mass - gpu_mass).abs());
+    println!(
+        "\nMass: CPU={:.6}, GPU={:.6}, err={:.3e}",
+        cpu_mass,
+        gpu_mass,
+        (cpu_mass - gpu_mass).abs()
+    );
 }

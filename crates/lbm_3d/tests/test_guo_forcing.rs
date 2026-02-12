@@ -96,7 +96,11 @@ fn test_uniform_gravity_momentum_injection() {
     let avg_uz = total_uz / (8.0 * 8.0 * 8.0);
 
     // After 100 steps with gravity g=-0.001, expect negative velocity
-    assert!(avg_uz < -1e-4, "Expected negative z-velocity, got {}", avg_uz);
+    assert!(
+        avg_uz < -1e-4,
+        "Expected negative z-velocity, got {}",
+        avg_uz
+    );
 
     // Check mass conservation
     let total_mass: f64 = solver.rho.iter().sum();
@@ -134,7 +138,7 @@ fn test_gradient_force_shear_flow() {
 
     // Check that u_x increases with z
     let u_x_bottom = solver.u[4 * 8 + 4][0]; // z=0, center
-    let u_x_top = solver.u[7 * 64 + 4 * 8 + 4][0];    // z=7, center
+    let u_x_top = solver.u[7 * 64 + 4 * 8 + 4][0]; // z=7, center
 
     assert!(
         u_x_top > u_x_bottom,

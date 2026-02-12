@@ -49,7 +49,10 @@ fn test_medium_domain_conservation() {
     // Check conservation
     assert!((mass_f - mass_i).abs() < 1e-7, "Mass not conserved");
     // Momentum in uniform periodic domain should decrease due to relaxation
-    assert!(mom_f < mom_i || (mom_f - mom_i).abs() < 1e-10, "Momentum unexpected change");
+    assert!(
+        mom_f < mom_i || (mom_f - mom_i).abs() < 1e-10,
+        "Momentum unexpected change"
+    );
 }
 
 #[test]
@@ -71,8 +74,8 @@ fn test_stability_over_many_steps() {
 #[test]
 fn test_viscosity_impact() {
     // Compare low vs high viscosity
-    let mut solver_low_nu = LbmSolver3D::new(8, 8, 8, 0.55);   // nu = (1/3) * 0.05 approx 0.0167
-    let mut solver_high_nu = LbmSolver3D::new(8, 8, 8, 1.5);   // nu = (1/3) * 1.0 approx 0.333
+    let mut solver_low_nu = LbmSolver3D::new(8, 8, 8, 0.55); // nu = (1/3) * 0.05 approx 0.0167
+    let mut solver_high_nu = LbmSolver3D::new(8, 8, 8, 1.5); // nu = (1/3) * 1.0 approx 0.333
 
     let u_init = [0.1, 0.0, 0.0];
     solver_low_nu.initialize_uniform(1.0, u_init);
@@ -94,7 +97,7 @@ fn test_viscosity_impact() {
     let dissipation_high = (mom_high_i - mom_high_f).abs();
 
     assert!(
-        dissipation_high > dissipation_low * 0.9,  // Allow some numerical variation
+        dissipation_high > dissipation_low * 0.9, // Allow some numerical variation
         "Higher viscosity should dissipate more: low={}, high={}",
         dissipation_low,
         dissipation_high
@@ -117,7 +120,7 @@ fn test_rest_state_persistence() {
         for y in 0..5 {
             for x in 0..5 {
                 let (_, u) = solver.get_macroscopic(x, y, z);
-                let u_mag = (u[0]*u[0] + u[1]*u[1] + u[2]*u[2]).sqrt();
+                let u_mag = (u[0] * u[0] + u[1] * u[1] + u[2] * u[2]).sqrt();
                 if u_mag > 1e-10 {
                     all_at_rest = false;
                     break;
