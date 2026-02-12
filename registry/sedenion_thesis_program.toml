@@ -1,0 +1,605 @@
+# Sedenion thesis execution program (TOML-first, falsifiability-first).
+
+[sedenion_thesis_program]
+updated = "2026-02-12"
+authoritative = true
+status = "active"
+status_token = "ACTIVE"
+scope = "pure_rust_workspace"
+thesis_count = 4
+task_count = 36
+source_repositories = [
+  "~/Github/open_gororoba",
+  "~/Github/MathScienceCompendium",
+  "~/Github/PhysicsForge",
+  "~/Github/ancient_compute",
+  "~/Github/lambda-research"
+]
+workspace_crates = [
+  "crates/algebra_core",
+  "crates/vacuum_frustration",
+  "crates/lbm_core",
+  "crates/neural_homotopy",
+  "crates/lattice_filtration",
+  "crates/gororoba_engine"
+]
+required_gates = [
+  "cargo clippy --workspace -j$(nproc) -- -D warnings",
+  "cargo test --workspace -j$(nproc)",
+  "make ascii-check"
+]
+
+[chat_review]
+summary = "User requested exhaustive repo audit, pure-Rust thesis execution, biblio/TOML updates, and explicit task orchestration with falsifiability gates."
+key_decisions = [
+  "Treat all four theses as hypotheses until executable evidence gates pass.",
+  "Replace placeholder modules first to reduce hidden non-determinism risk.",
+  "Use TOML-first updates, then regenerate derived mirrors."
+]
+constraints = [
+  "ASCII-only outputs.",
+  "Warnings-as-errors discipline.",
+  "No unverifiable claim promotion."
+]
+
+[blocking_risks]
+license_alignment = "Direct code ports are blocked pending explicit GPL-2.0/GPL-3.0 compatibility decision and an explicit license for ancient_compute."
+evidence_alignment = "Thesis 2/3/4 remain below done-grade external support and must remain in_progress/blocked."
+
+[rescope]
+strategy = "Build -> Scope -> Engineer -> Harmonize -> Validate"
+immediate_focus = [
+  "convert placeholder crates to executable Rust modules",
+  "ground thesis falsifiers in bibliography and registry control plane",
+  "track owner/effort/dependency per task"
+]
+
+[[thesis]]
+id = "STP-T1"
+title = "Scalar-Frustration Equivalence"
+scope = "modified_gravity"
+domain_map = "scalar_tensor_gravity <-> signed_graph_frustration"
+algebraic_structure = "16D sedenion signed graphs (Cayley-Dickson psi twist)"
+physical_principle = "frustration-viscosity coupling"
+hypothesis = "high frustration maps to stiff spacetime, low frustration maps to vacuum-like low viscosity"
+experiment_crate = "crates/vacuum_frustration"
+falsifier = "refute if omega_eff < 40000 under the Cassini-bound gate"
+metrics = ["r_s", "omega_eff", "phi_mean", "frustration_density"]
+claim_refs = ["C-011", "C-103"]
+status = "done"
+status_token = "DONE"
+
+[[thesis]]
+id = "STP-T2"
+title = "Associativity-Viscosity Transport"
+scope = "quantum_fluid_dynamics"
+domain_map = "LBM BGK dynamics <-> associator norm modulation"
+algebraic_structure = "sedenion associator tensor m3"
+physical_principle = "non-associative shear thickening"
+hypothesis = "effective viscosity scales with local associator norm and produces non-Newtonian response"
+experiment_crate = "crates/lbm_core"
+falsifier = "refute if thickening response fails at configured threshold regime"
+metrics = ["Re", "tau_xy", "nu_eff", "associator_norm"]
+claim_refs = ["C-103"]
+status = "in_progress"
+status_token = "IN_PROGRESS"
+
+[[thesis]]
+id = "STP-T3"
+title = "Homotopy-Time Correspondence"
+scope = "cosmology_neurosymbolic"
+domain_map = "A-infinity optimization traces <-> H(z) trajectories"
+algebraic_structure = "Stasheff polytope constraints"
+physical_principle = "time as optimization trajectory"
+hypothesis = "loss evolution under pentagon residual constraints aligns with cosmological expansion traces"
+experiment_crate = "crates/neural_homotopy"
+falsifier = "refute when persistent loss plateaus have no mapped cosmological epoch"
+metrics = ["cross_entropy", "pentagon_residual", "hubble_alignment"]
+claim_refs = ["C-030"]
+status = "in_progress"
+status_token = "IN_PROGRESS"
+
+[[thesis]]
+id = "STP-T4"
+title = "Grand Unified Sedenion Engine"
+scope = "emergent_gravity_compute_architecture"
+domain_map = "hash collision dynamics <-> emergent latency law"
+algebraic_structure = "S16 projection onto 8D lattice filtration"
+physical_principle = "moire/aliasing interpretation"
+hypothesis = "collision storms generate inverse-square-like latency distributions"
+experiment_crate = "crates/lattice_filtration"
+falsifier = "refute if latency law is uniformly O(1) or dominantly linear O(n)"
+metrics = ["collision_rate", "latency", "inverse_square_r2", "latency_law"]
+claim_refs = ["C-453"]
+status = "blocked"
+status_token = "BLOCKED"
+
+[[task]]
+id = "STPT-001"
+thesis_id = "STP-T1"
+title = "Implement scalar map and Cassini gate"
+owner = "codex"
+responsibility = "vacuum_frustration module hardening"
+effort = "S"
+duration_estimate = "0.5d"
+status = "done"
+status_token = "DONE"
+dependencies = []
+deliverables = [
+  "crates/vacuum_frustration/src/frustration.rs",
+  "crates/vacuum_frustration/tests/integration_test.rs"
+]
+
+[[task]]
+id = "STPT-002"
+thesis_id = "STP-T2"
+title = "Add associator-scaled BGK collision"
+owner = "codex"
+responsibility = "lbm_core collision operator extension"
+effort = "S"
+duration_estimate = "0.5d"
+status = "done"
+status_token = "DONE"
+dependencies = []
+deliverables = [
+  "crates/lbm_core/src/lib.rs"
+]
+
+[[task]]
+id = "STPT-003"
+thesis_id = "STP-T3"
+title = "Implement training data, pentagon residual, and alignment metrics"
+owner = "codex"
+responsibility = "neural_homotopy placeholder replacement"
+effort = "M"
+duration_estimate = "1d"
+status = "done"
+status_token = "DONE"
+dependencies = []
+deliverables = [
+  "crates/neural_homotopy/src/training_data.rs",
+  "crates/neural_homotopy/src/stasheff.rs",
+  "crates/neural_homotopy/src/model.rs",
+  "crates/neural_homotopy/src/tensor_ops.rs"
+]
+
+[[task]]
+id = "STPT-004"
+thesis_id = "STP-T4"
+title = "Implement lattice collision-storm and latency-law classifier"
+owner = "codex"
+responsibility = "lattice_filtration placeholder replacement"
+effort = "M"
+duration_estimate = "1d"
+status = "done"
+status_token = "DONE"
+dependencies = []
+deliverables = [
+  "crates/lattice_filtration/src/filtration.rs",
+  "crates/lattice_filtration/src/survival_spectrum.rs"
+]
+
+[[task]]
+id = "STPT-005"
+thesis_id = "STP-T4"
+title = "Wire six-layer executable engine pipeline"
+owner = "codex"
+responsibility = "gororoba_engine placeholder replacement"
+effort = "M"
+duration_estimate = "1d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-001", "STPT-002", "STPT-003", "STPT-004"]
+deliverables = [
+  "crates/gororoba_engine/src/pipeline.rs",
+  "crates/gororoba_engine/src/traits.rs"
+]
+
+[[task]]
+id = "STPT-006"
+thesis_id = "STP-T1"
+title = "Run scalar->TOV coupling sweeps"
+owner = "physics_lane"
+responsibility = "calibrate obstruction/coupling map with gravastar outputs"
+effort = "L"
+duration_estimate = "2d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-001"]
+deliverables = ["data/evidence/thesis1_scalar_tov_sweep.toml"]
+
+[[task]]
+id = "STPT-007"
+thesis_id = "STP-T2"
+title = "Percolation-threshold validation for non-Newtonian response"
+owner = "fluid_lane"
+responsibility = "threshold sweep and regression metrics"
+effort = "L"
+duration_estimate = "2d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-002"]
+deliverables = ["data/evidence/thesis2_thickening_threshold.toml"]
+
+[[task]]
+id = "STPT-008"
+thesis_id = "STP-T3"
+title = "Map training plateaus to cosmological epochs"
+owner = "cosmo_lane"
+responsibility = "epoch labeling and mismatch refutation logic"
+effort = "L"
+duration_estimate = "2d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-003"]
+deliverables = ["data/evidence/thesis3_epoch_alignment.toml"]
+
+[[task]]
+id = "STPT-009"
+thesis_id = "STP-T4"
+title = "Collision-law stress tests across hash geometries"
+owner = "engine_lane"
+responsibility = "uniform vs linear vs inverse-square falsification suite"
+effort = "L"
+duration_estimate = "2d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-004", "STPT-005"]
+deliverables = ["data/evidence/thesis4_latency_law_suite.toml"]
+
+[[task]]
+id = "STPT-010"
+thesis_id = "STP-T1"
+title = "Expand scalar-tensor bibliography and citation links"
+owner = "registry_lane"
+responsibility = "biblio and refs updates"
+effort = "S"
+duration_estimate = "0.5d"
+status = "done"
+status_token = "DONE"
+dependencies = []
+deliverables = ["registry/bibliography.toml", "registry/bibliography_normalized.toml", "refs.bib"]
+
+[[task]]
+id = "STPT-011"
+thesis_id = "STP-T4"
+title = "Integrate thesis tasks into next-actions control plane"
+owner = "registry_lane"
+responsibility = "next_actions tracking"
+effort = "S"
+duration_estimate = "0.5d"
+status = "done"
+status_token = "DONE"
+dependencies = []
+deliverables = ["registry/next_actions.toml"]
+
+[[task]]
+id = "STPT-012"
+thesis_id = "STP-T4"
+title = "Run full workspace gates after integration"
+owner = "qa_lane"
+responsibility = "clippy/test/ascii-check evidence"
+effort = "M"
+duration_estimate = "1d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-011"]
+deliverables = ["reports/thesis_program_gate_report.toml"]
+
+[[task]]
+id = "STPT-013"
+thesis_id = "STP-T4"
+title = "Capture git sync state and remote divergence"
+owner = "qa_lane"
+responsibility = "origin fetch/pull/push state tracking"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+dependencies = []
+deliverables = ["reports/git_sync_state.toml"]
+
+[[task]]
+id = "STPT-014"
+thesis_id = "STP-T4"
+title = "Full repository structure and clutter audit"
+owner = "audit_lane"
+responsibility = "recursive inventory and hygiene findings"
+effort = "M"
+duration_estimate = "0.5d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-013"]
+deliverables = ["reports/repo_structure_audit.toml"]
+
+[[task]]
+id = "STPT-015"
+thesis_id = "STP-T4"
+title = "Global TODO/FIXME placeholder triage"
+owner = "audit_lane"
+responsibility = "classify placeholders by severity and ownership"
+effort = "M"
+duration_estimate = "0.5d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-014"]
+deliverables = ["reports/todo_placeholder_audit.toml"]
+
+[[task]]
+id = "STPT-016"
+thesis_id = "STP-T4"
+title = "Cross-repo port inventory from MathScienceCompendium"
+owner = "port_lane"
+responsibility = "candidate extraction and crate mapping"
+effort = "M"
+duration_estimate = "0.75d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-014"]
+deliverables = ["reports/port_inventory_mathsciencecompendium.toml"]
+
+[[task]]
+id = "STPT-017"
+thesis_id = "STP-T4"
+title = "Cross-repo port inventory from PhysicsForge and ancient_compute"
+owner = "port_lane"
+responsibility = "candidate extraction and crate mapping"
+effort = "M"
+duration_estimate = "0.75d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-014"]
+deliverables = ["reports/port_inventory_physicsforge_ancient_compute.toml"]
+
+[[task]]
+id = "STPT-018"
+thesis_id = "STP-T4"
+title = "Requirements coverage audit per module/package"
+owner = "requirements_lane"
+responsibility = "registry and docs requirements completeness"
+effort = "M"
+duration_estimate = "0.5d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-014"]
+deliverables = ["reports/requirements_gap_matrix.toml"]
+
+[[task]]
+id = "STPT-019"
+thesis_id = "STP-T1"
+title = "Formal requirements and test matrix for scalar-to-TOV sweep"
+owner = "physics_lane"
+responsibility = "functional spec and acceptance criteria"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-018"]
+deliverables = ["reports/spec_stpt_006_scalar_tov.toml"]
+
+[[task]]
+id = "STPT-020"
+thesis_id = "STP-T2"
+title = "Formal requirements and test matrix for thickening threshold"
+owner = "fluid_lane"
+responsibility = "functional spec and acceptance criteria"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-018"]
+deliverables = ["reports/spec_stpt_007_thickening.toml"]
+
+[[task]]
+id = "STPT-021"
+thesis_id = "STP-T3"
+title = "Formal requirements and test matrix for epoch alignment"
+owner = "cosmo_lane"
+responsibility = "functional spec and acceptance criteria"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-018"]
+deliverables = ["reports/spec_stpt_008_epoch_alignment.toml"]
+
+[[task]]
+id = "STPT-022"
+thesis_id = "STP-T4"
+title = "Formal requirements and test matrix for collision-law stress suite"
+owner = "engine_lane"
+responsibility = "functional spec and acceptance criteria"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-018"]
+deliverables = ["reports/spec_stpt_009_collision_law.toml"]
+
+[[task]]
+id = "STPT-023"
+thesis_id = "STP-T1"
+title = "Implement deterministic scalar-to-TOV evidence pipeline"
+owner = "physics_lane"
+responsibility = "artifact generation and schema checks"
+effort = "L"
+duration_estimate = "1.5d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-019"]
+deliverables = ["data/evidence/thesis1_scalar_tov_sweep.toml"]
+
+[[task]]
+id = "STPT-024"
+thesis_id = "STP-T2"
+title = "Implement deterministic thickening-threshold evidence pipeline"
+owner = "fluid_lane"
+responsibility = "artifact generation and schema checks"
+effort = "L"
+duration_estimate = "1.5d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-020"]
+deliverables = ["data/evidence/thesis2_thickening_threshold.toml"]
+
+[[task]]
+id = "STPT-025"
+thesis_id = "STP-T3"
+title = "Implement deterministic epoch alignment evidence pipeline"
+owner = "cosmo_lane"
+responsibility = "artifact generation and schema checks"
+effort = "L"
+duration_estimate = "1.5d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-021"]
+deliverables = ["data/evidence/thesis3_epoch_alignment.toml"]
+
+[[task]]
+id = "STPT-026"
+thesis_id = "STP-T4"
+title = "Implement deterministic collision-law stress evidence pipeline"
+owner = "engine_lane"
+responsibility = "artifact generation and schema checks"
+effort = "L"
+duration_estimate = "1.5d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-022"]
+deliverables = ["data/evidence/thesis4_latency_law_suite.toml"]
+
+[[task]]
+id = "STPT-027"
+thesis_id = "STP-T4"
+title = "Add integration tests for thesis evidence artifact contracts"
+owner = "qa_lane"
+responsibility = "schema and invariants tests"
+effort = "M"
+duration_estimate = "1d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-023", "STPT-024", "STPT-025", "STPT-026"]
+deliverables = ["reports/evidence_contract_tests.toml"]
+
+[[task]]
+id = "STPT-028"
+thesis_id = "STP-T1"
+title = "Online primary-source validation for Cassini and Brans-Dicke bounds"
+owner = "evidence_lane"
+responsibility = "source-backed supported/refuted classification"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-010"]
+deliverables = ["reports/online_validation_t1.toml"]
+
+[[task]]
+id = "STPT-029"
+thesis_id = "STP-T2"
+title = "Online primary-source validation for shear-thickening threshold claims"
+owner = "evidence_lane"
+responsibility = "source-backed supported/refuted classification"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-010"]
+deliverables = ["reports/online_validation_t2.toml"]
+
+[[task]]
+id = "STPT-030"
+thesis_id = "STP-T3"
+title = "Online primary-source validation for cosmology epoch alignment assumptions"
+owner = "evidence_lane"
+responsibility = "source-backed supported/refuted classification"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-010"]
+deliverables = ["reports/online_validation_t3.toml"]
+
+[[task]]
+id = "STPT-031"
+thesis_id = "STP-T4"
+title = "Online primary-source validation for emergent inverse-square latency analogs"
+owner = "evidence_lane"
+responsibility = "source-backed supported/refuted classification"
+effort = "S"
+duration_estimate = "0.25d"
+status = "done"
+status_token = "DONE"
+dependencies = ["STPT-010"]
+deliverables = ["reports/online_validation_t4.toml"]
+
+[[task]]
+id = "STPT-032"
+thesis_id = "STP-T4"
+title = "Consolidate audits, evidence, roadmap states, and rerun strict gates"
+owner = "qa_lane"
+responsibility = "final synthesis and handoff evidence"
+effort = "M"
+duration_estimate = "1d"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+dependencies = ["STPT-015", "STPT-016", "STPT-017", "STPT-018", "STPT-027", "STPT-028", "STPT-029", "STPT-030", "STPT-031"]
+deliverables = ["reports/thesis_program_phase_report.toml"]
+
+[[task]]
+id = "STPT-033"
+thesis_id = "STP-T4"
+title = "Cross-repo port licensing and provenance compatibility gate"
+owner = "port_lane"
+responsibility = "resolve GPL and unlicensed source constraints before direct code import"
+effort = "M"
+duration_estimate = "0.5d"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+dependencies = ["STPT-016", "STPT-017"]
+deliverables = ["reports/port_ingest_reaudit.toml"]
+
+[[task]]
+id = "STPT-034"
+thesis_id = "STP-T4"
+title = "Documents corpus shortlist for falsifiable thesis evidence"
+owner = "evidence_lane"
+responsibility = "extract high-signal imported sources from data/external/documents_ingest and map into provenance lanes"
+effort = "M"
+duration_estimate = "0.5d"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+dependencies = ["STPT-013", "STPT-014"]
+deliverables = ["reports/port_ingest_reaudit.toml"]
+
+[[task]]
+id = "STPT-035"
+thesis_id = "STP-T4"
+title = "Pure-Rust port boundary specification for top external candidates"
+owner = "port_lane"
+responsibility = "define clean-room-compatible module boundaries and acceptance tests"
+effort = "M"
+duration_estimate = "0.75d"
+status = "todo"
+status_token = "TODO"
+dependencies = ["STPT-033", "STPT-034"]
+deliverables = ["reports/port_ingest_reaudit.toml"]
+
+[[task]]
+id = "STPT-036"
+thesis_id = "STP-T4"
+title = "Re-run strict gates and refresh synthesis report with corrected statuses"
+owner = "qa_lane"
+responsibility = "execute clippy/test/ascii and refresh phase synthesis to match real state"
+effort = "M"
+duration_estimate = "0.5d"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+dependencies = ["STPT-029", "STPT-030", "STPT-031", "STPT-032", "STPT-033", "STPT-034", "STPT-035"]
+deliverables = ["reports/thesis_program_gate_report.toml", "reports/thesis_program_phase_report.toml"]
+
+[tracking]
+master_roadmap = "registry/sedenion_thesis_program.toml"
+individual_todo_registry = "registry/next_actions.toml"
+execution_log_target = "reports/"
+progress_rule = "update status_token for every task transition"

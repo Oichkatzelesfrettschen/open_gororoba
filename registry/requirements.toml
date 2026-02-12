@@ -9,7 +9,7 @@ updated = "2026-02-10"
 python_recommended = "3.11-3.12"
 python_allowed = "3.13+ (with optional extras caveats)"
 primary_markdown = "docs/REQUIREMENTS.md"
-module_count = 10
+module_count = 11
 coverage_gap_count = 2
 status_allowlist = ["active", "deprecated", "planned", "blocked"]
 runtime_stack_allowlist = ["mixed", "rust", "python", "docker_python", "coq", "latex", "cpp"]
@@ -100,6 +100,18 @@ runtime_stack = "latex"
 requires_modules = ["REQ-CORE"]
 install_targets = ["make latex"]
 verify_targets = ["make latex"]
+acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
+
+[[module]]
+id = "REQ-LBM-CUDA"
+name = "lbm_3d_cuda"
+markdown = "crates/lbm_3d_cuda/README.md"
+status = "active"
+status_token = "ACTIVE"
+runtime_stack = "mixed"
+requires_modules = ["REQ-CORE"]
+install_targets = ["cargo check -p lbm_3d_cuda"]
+verify_targets = ["cargo check -p lbm_3d_cuda"]
 acceptance_criteria = ["Runtime stack classification is explicit.", "Install and verify commands are reproducible.", "Module dependencies are fully declared in TOML."]
 
 [[module]]

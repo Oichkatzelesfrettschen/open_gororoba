@@ -2252,3 +2252,47 @@ notes = ["*Papers I-VI of the first EHT M87 results. Our eht.rs providers fetch 
 urls = []
 dois = []
 source_line = 417
+
+[[entry]]
+id = "BIB-0187"
+order_index = 187
+group = "Primary Research & Data Sources"
+section = "Scalar-Tensor Gravity and Cassini Constraints"
+citation_markdown = "**Brans, C., & Dicke, R. H.** (1961). *Mach's principle and a relativistic theory of gravitation*. Physical Review 124(3), 925-935. DOI: 10.1103/PhysRev.124.925."
+notes = ["*Foundational Jordan-Brans-Dicke scalar-tensor gravity formulation used by Thesis 1 falsification mapping.*"]
+urls = []
+dois = ["10.1103/PhysRev.124.925"]
+source_line = 421
+
+[[entry]]
+id = "BIB-0188"
+order_index = 188
+group = "Primary Research & Data Sources"
+section = "Scalar-Tensor Gravity and Cassini Constraints"
+citation_markdown = "**Bertotti, B., Iess, L., & Tortora, P.** (2003). *A test of general relativity using radio links with the Cassini spacecraft*. Nature 425, 374-376. DOI: 10.1038/nature01997."
+notes = ["*Primary Cassini-bound source commonly used to constrain scalar-tensor parameters. Thesis 1 refutes when omega_BD falls below bound regime.*"]
+urls = []
+dois = ["10.1038/nature01997"]
+source_line = 422
+
+[[entry]]
+id = "BIB-0189"
+order_index = 189
+group = "Primary Research & Data Sources"
+section = "Scalar-Tensor Gravity and Cassini Constraints"
+citation_markdown = "**Will, C. M.** (2014). *The confrontation between general relativity and experiment*. Living Reviews in Relativity 17, 4. DOI: 10.12942/lrr-2014-4."
+notes = ["*Comprehensive review of post-Newtonian tests and scalar-tensor limits used to interpret Cassini-era bounds.*"]
+urls = []
+dois = ["10.12942/lrr-2014-4"]
+source_line = 423
+
+[[entry]]
+id = "BIB-0190"
+order_index = 190
+group = "Primary Research & Data Sources"
+section = "Scalar-Tensor Gravity and Cassini Constraints"
+citation_markdown = "**Will, C. M.** (2018). *Theory and experiment in gravitational physics* (2nd ed.). Cambridge University Press."
+notes = ["*Reference monograph for PPN interpretation and experimental-gravity methodology.*"]
+urls = []
+dois = []
+source_line = 424

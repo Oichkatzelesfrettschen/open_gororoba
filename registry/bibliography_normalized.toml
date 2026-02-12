@@ -5,8 +5,8 @@
 updated = "2026-02-10"
 authoritative = true
 source_registry = "registry/bibliography.toml"
-entry_count = 186
-parse_warning_count = 49
+entry_count = 190
+parse_warning_count = 50
 
 [[entry]]
 id = "BIBN-0001"
@@ -4099,4 +4099,92 @@ parse_warnings = []
 raw_citation = "**EHT Collaboration.** (2019). *First M87 Event Horizon Telescope Results. VI. The Shadow and Mass of the Central Black Hole*. ApJL 875, L6."
 raw_notes = ["*Papers I-VI of the first EHT M87 results. Our eht.rs providers fetch data products from these releases.*"]
 source_line = 417
+
+[[entry]]
+id = "BIBN-0187"
+source_entry_id = "BIB-0187"
+order_index = 187
+group = "Primary Research & Data Sources"
+section = "Scalar-Tensor Gravity and Cassini Constraints"
+authors = ["Brans", "C", "Dicke", "R. H"]
+author_count = 4
+publication_year = 1961
+title = "Mach's principle and a relativistic theory of gravitation"
+venue = "Physical Review 124(3), 925-935. DOI: 10.1103/PhysRev.124.925"
+arxiv_id = ""
+doi_list = ["10.1103/PhysRev.124.925"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Brans, C., & Dicke, R. H.** (1961). *Mach's principle and a relativistic theory of gravitation*. Physical Review 124(3), 925-935. DOI: 10.1103/PhysRev.124.925."
+raw_notes = ["*Foundational Jordan-Brans-Dicke scalar-tensor gravity formulation used by Thesis 1 falsification mapping.*"]
+source_line = 421
+
+[[entry]]
+id = "BIBN-0188"
+source_entry_id = "BIB-0188"
+order_index = 188
+group = "Primary Research & Data Sources"
+section = "Scalar-Tensor Gravity and Cassini Constraints"
+authors = ["Bertotti", "B", "Iess", "L", "Tortora", "P"]
+author_count = 6
+publication_year = 2003
+title = "A test of general relativity using radio links with the Cassini spacecraft"
+venue = "Nature 425, 374-376. DOI: 10.1038/nature01997"
+arxiv_id = ""
+doi_list = ["10.1038/nature01997"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 1
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Bertotti, B., Iess, L., & Tortora, P.** (2003). *A test of general relativity using radio links with the Cassini spacecraft*. Nature 425, 374-376. DOI: 10.1038/nature01997."
+raw_notes = ["*Primary Cassini-bound source commonly used to constrain scalar-tensor parameters. Thesis 1 refutes when omega_BD falls below bound regime.*"]
+source_line = 422
+
+[[entry]]
+id = "BIBN-0189"
+source_entry_id = "BIB-0189"
+order_index = 189
+group = "Primary Research & Data Sources"
+section = "Scalar-Tensor Gravity and Cassini Constraints"
+authors = ["Will", "C. M"]
+author_count = 2
+publication_year = 2014
+title = "The confrontation between general relativity and experiment"
+venue = "Living Reviews in Relativity 17, 4. DOI: 10.12942/lrr-2014-4"
+arxiv_id = ""
+doi_list = ["10.12942/lrr-2014-4"]
+url_list = []
+document_type = "doi_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = []
+raw_citation = "**Will, C. M.** (2014). *The confrontation between general relativity and experiment*. Living Reviews in Relativity 17, 4. DOI: 10.12942/lrr-2014-4."
+raw_notes = ["*Comprehensive review of post-Newtonian tests and scalar-tensor limits used to interpret Cassini-era bounds.*"]
+source_line = 423
+
+[[entry]]
+id = "BIBN-0190"
+source_entry_id = "BIB-0190"
+order_index = 190
+group = "Primary Research & Data Sources"
+section = "Scalar-Tensor Gravity and Cassini Constraints"
+authors = ["Will", "C. M"]
+author_count = 2
+publication_year = 2018
+title = "*Theory and experiment in gravitational physics* (2nd ed.). Cambridge University Press"
+venue = ""
+arxiv_id = ""
+doi_list = []
+url_list = []
+document_type = "general_reference"
+evidence_relevance_score = 0
+claim_refs = []
+parse_warnings = ["missing_venue"]
+raw_citation = "**Will, C. M.** (2018). *Theory and experiment in gravitational physics* (2nd ed.). Cambridge University Press."
+raw_notes = ["*Reference monograph for PPN interpretation and experimental-gravity methodology.*"]
+source_line = 424
 

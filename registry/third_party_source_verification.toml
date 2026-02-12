@@ -24,10 +24,10 @@ cadence = "weekly"  # Every 7 days
 check_types = ["checksum_validation", "freshness_checking", "access_verification"]
 default_ttl_days = 180  # 6 months default before expiration
 archive_on_expiration = true
-archive_location = "s3://archive/third-party-sources/"
+archive_location = "local://archive/third-party-sources/"
 alert_on_modification = true
-alert_method = "email"  # TODO: implement email alert infrastructure
-alert_recipients = ["system-admin@internal"]
+alert_method = "manual_review"
+alert_recipients = ["manual_review"]
 
 [verification_gates]
 gate_1 = "Checksum match: current SHA256 vs cached_sha256 in third_party_markdown_cache.toml"
@@ -160,7 +160,7 @@ archival = """
 [archive_policy]
 enabled = true
 trigger = "source_expired OR source_inaccessible"
-archive_location = "s3://archive/third-party-sources/"
+archive_location = "local://archive/third-party-sources/"
 retention_days = 2555  # 7 years
 backup_frequency = "weekly"
 recovery_procedure = "Restore from archive using source_id, retrieve original URL from verification log"
@@ -171,8 +171,8 @@ archival_format = "gzip-tar"  # Preserve original + metadata
 [migration_notes]
 w6_011_integration = "Extends third_party_markdown_cache.toml with verification tracking and freshness policy"
 next_verification_run = "2026-02-17 (weekly cadence)"
-email_alert_implementation = "TODO: integrate with system mail service for modification alerts"
-s3_archive_setup = "TODO: configure S3 bucket permissions and lifecycle policies"
+alert_delivery_path = "Manual review workflow in verification logs"
+local_archive_setup = "TODO: configure local archive path and retention policy"
 monitoring_dashboard = "TODO: build web UI showing verification status of all sources"
 
 # Validation Gates

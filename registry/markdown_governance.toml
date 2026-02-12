@@ -4,4 +4,51 @@
 [markdown_governance]
 generated_at = "deterministic"
 authoritative = true
-document_count = 0
+document_count = 5
+toml_generated_mirror_count = 4
+toml_manual_source_count = 1
+
+[[document]]
+path = "AGENTS.md"
+id = "MDG-0001"
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "CLAUDE.md"
+id = "MDG-0002"
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "GEMINI.md"
+id = "MDG-0003"
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "README.md"
+id = "MDG-0004"
+kind = "markdown_mirror"
+mode = "toml_generated_mirror"
+header_required = true
+source_toml_refs = ["registry/entrypoint_docs.toml", "registry/knowledge_sources.toml", "registry/markdown_governance.toml", "registry/markdown_inventory.toml"]
+notes = "Generated from TOML registries and overlays."
+
+[[document]]
+path = "crates/lbm_3d_cuda/README.md"
+id = "MDG-0005"
+kind = "manual_source"
+mode = "toml_manual_source"
+header_required = false
+source_toml_refs = ["registry/knowledge_sources.toml", "registry/markdown_inventory.toml", "registry/module_requirements.toml", "registry/requirements.toml"]
+notes = "Manual source consumed by TOML normalizers."

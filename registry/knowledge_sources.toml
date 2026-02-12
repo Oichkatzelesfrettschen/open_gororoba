@@ -4,9 +4,102 @@
 
 [knowledge_sources]
 generated_at = "deterministic"
-tracked_markdown_count = 0
-manual_source_count = 0
-markdown_mirror_count = 0
+tracked_markdown_count = 5
+manual_source_count = 1
+markdown_mirror_count = 4
 generated_markdown_count = 0
 artifact_report_count = 0
 transcript_input_count = 0
+
+[[document]]
+id = "DOC-0001"
+path = "AGENTS.md"
+title = "AGENTS"
+kind = "markdown_mirror"
+authoring_mode = "generated"
+generated = true
+status = "active"
+migration_priority = "critical"
+toml_backing = "registry/entrypoint_docs.toml"
+sha256 = "1d5041678000d5441c1b7a803617a430b63c77bebd1eb4cfc378f94782f5ef43"
+size_bytes = 3968
+line_count = 125
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 0
+
+[[document]]
+id = "DOC-0002"
+path = "CLAUDE.md"
+title = "CLAUDE"
+kind = "markdown_mirror"
+authoring_mode = "generated"
+generated = true
+status = "active"
+migration_priority = "critical"
+toml_backing = "registry/entrypoint_docs.toml"
+sha256 = "00ee326fc08f8c8ae78761b92edc3836ba6bed54aaca6436bcddf2c909c12a4d"
+size_bytes = 67
+line_count = 4
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 1
+link_sample = ["AGENTS.md"]
+
+[[document]]
+id = "DOC-0003"
+path = "GEMINI.md"
+title = "GEMINI"
+kind = "markdown_mirror"
+authoring_mode = "generated"
+generated = true
+status = "active"
+migration_priority = "critical"
+toml_backing = "registry/entrypoint_docs.toml"
+sha256 = "9de470fac536fb7a11677e2188403c3fdce2bd2f668002c278d445ba13bea544"
+size_bytes = 67
+line_count = 4
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 1
+link_sample = ["AGENTS.md"]
+
+[[document]]
+id = "DOC-0004"
+path = "README.md"
+title = "open_gororoba"
+kind = "markdown_mirror"
+authoring_mode = "generated"
+generated = true
+status = "active"
+migration_priority = "critical"
+toml_backing = "registry/entrypoint_docs.toml"
+sha256 = "e7492a00474a57575b29408e6d1d76cefa3366b6604e8ba5d442833885b8f28d"
+size_bytes = 832
+line_count = 32
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 7
+link_sample = ["AGENTS.md", "Cargo.toml", "registry/*.toml", "registry/agents_contract.toml", "registry/crate_source_scout.toml", "registry/mcp_server_matrix.toml"]
+
+[[document]]
+id = "DOC-0005"
+path = "crates/lbm_3d_cuda/README.md"
+title = "lbm_3d_cuda"
+kind = "manual_source"
+authoring_mode = "manual"
+generated = false
+status = "active"
+migration_priority = "medium"
+sha256 = "ce3bd6c916d91dac7ac0b19cec618ca633a82cf8d085717addc6c8095d8ca563"
+size_bytes = 1711
+line_count = 52
+claim_ref_count = 0
+insight_ref_count = 0
+experiment_ref_count = 0
+link_count = 12
+link_sample = ["crates/lbm_3d", "nu = (tau - 0.5) / 3.0", "registry/lbm_gpu_performance.toml"]

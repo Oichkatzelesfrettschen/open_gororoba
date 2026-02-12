@@ -112,6 +112,6 @@ gate_10 = "Deprecate replacement: if replacement_record_id present, it must exis
 [archive_policy]
 retention_days = 1825  # 5 years
 compression = "gzip"
-archive_location = "s3://archive/registry-events/"
+archive_location = "local://archive/registry-events/"
 backup_frequency = "daily"
 recovery_procedure = "Restore from git history: git log --grep='EVT-' -- registry/registry_events.toml"
