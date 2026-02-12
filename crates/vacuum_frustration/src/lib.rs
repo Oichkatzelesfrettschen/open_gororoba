@@ -16,6 +16,7 @@ pub mod frustration;
 pub mod frustration_energy;
 pub mod percolation;
 pub mod signed_graph;
+pub mod vietoris_rips;
 
 // GPU-accelerated null model testing (optional feature)
 #[cfg(feature = "gpu")]
