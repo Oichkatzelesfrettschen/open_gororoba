@@ -1,5 +1,5 @@
 /// Integration tests simulating LBM interaction with PhaseScheduler
-use cosmic_scheduler::{TwoPhaseClockScheduler, TwoPhaseSystem, ScheduleResult};
+use cosmic_scheduler::{ScheduleResult, TwoPhaseClockScheduler, TwoPhaseSystem};
 
 /// Mock LBM-like system for testing phi1/phi2 coordination
 struct MockLbmSystem {
@@ -52,7 +52,8 @@ impl TwoPhaseSystem for MockLbmSystem {
 
             // Simple velocity averaging (simplified from D3Q19)
             if self.rho[i] > 0.0 {
-                self.u[i][0] = (self.f[i * 19 + 1] as f64 - self.f[i * 19 + 2] as f64) / self.rho[i];
+                self.u[i][0] =
+                    (self.f[i * 19 + 1] as f64 - self.f[i * 19 + 2] as f64) / self.rho[i];
             }
         }
 
@@ -100,9 +101,10 @@ impl TwoPhaseSystem for MockLbmSystem {
         let total_rho: f64 = self.rho.iter().sum();
         let expected = self.grid_size as f64;
         if (total_rho - expected).abs() > 0.1 * expected {
-            return Err(cosmic_scheduler::ScheduleError::StateInvalid(
-                format!("Mass conservation violated: {} vs {}", total_rho, expected),
-            ));
+            return Err(cosmic_scheduler::ScheduleError::StateInvalid(format!(
+                "Mass conservation violated: {} vs {}",
+                total_rho, expected
+            )));
         }
         Ok(())
     }

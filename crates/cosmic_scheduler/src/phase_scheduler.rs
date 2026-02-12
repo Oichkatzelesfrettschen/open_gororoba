@@ -6,7 +6,7 @@
 ///
 /// This trait enables any system to use deterministic, coordinated two-phase evolution
 /// with well-defined timing guarantees.
-use crate::timing_constants::{Time, clock_spec};
+use crate::timing_constants::{clock_spec, Time};
 use serde::{Deserialize, Serialize};
 
 /// Result type for scheduler operations
@@ -174,12 +174,10 @@ impl TwoPhaseClockScheduler {
     /// Execute phase 1 on a system
     pub fn execute_phase1<S: TwoPhaseSystem>(&mut self, system: &mut S) -> ScheduleResult<()> {
         if self.current_phase != Phase::Phi1 {
-            return Err(ScheduleError::PhaseOutOfOrder(
-                format!(
-                    "Expected phase1 but in {:?}",
-                    self.current_phase
-                )
-            ));
+            return Err(ScheduleError::PhaseOutOfOrder(format!(
+                "Expected phase1 but in {:?}",
+                self.current_phase
+            )));
         }
 
         // Validate system state before execution
@@ -198,12 +196,10 @@ impl TwoPhaseClockScheduler {
     /// Execute phase 2 on a system
     pub fn execute_phase2<S: TwoPhaseSystem>(&mut self, system: &mut S) -> ScheduleResult<()> {
         if self.current_phase != Phase::Phi2 {
-            return Err(ScheduleError::PhaseOutOfOrder(
-                format!(
-                    "Expected phase2 but in {:?}",
-                    self.current_phase
-                )
-            ));
+            return Err(ScheduleError::PhaseOutOfOrder(format!(
+                "Expected phase2 but in {:?}",
+                self.current_phase
+            )));
         }
 
         // Validate system state before execution

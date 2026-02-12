@@ -42,4 +42,6 @@ pub mod timing_constants;
 pub use phase_scheduler::{
     Phase, ScheduleError, ScheduleResult, TwoPhaseClockScheduler, TwoPhaseSystem,
 };
-pub use timing_constants::{Time, format_time, clock_spec, gate_delay, MILLISECOND, MICROSECOND, NANOSECOND, PICOSECOND};
+pub use timing_constants::{
+    clock_spec, format_time, gate_delay, Time, MICROSECOND, MILLISECOND, NANOSECOND, PICOSECOND,
+};
