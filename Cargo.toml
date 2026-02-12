@@ -24,6 +24,7 @@ members = [
     "crates/cosmic_scheduler",
     "crates/vacuum_frustration",
     "crates/lbm_3d",
+    "crates/lbm_3d_cuda",
     "crates/lattice_filtration",
     "crates/neural_homotopy",
     "crates/gororoba_engine",
@@ -108,6 +109,7 @@ burn = { version = "0.16", features = ["train", "autodiff"] }
 
 # Error handling
 thiserror = "2.0"
+anyhow = "1.0"
 
 # CLI and serialization
 clap = { version = "4.5", features = ["derive"] }
