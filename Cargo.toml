@@ -43,6 +43,9 @@ num-quaternion = "1.0"
 petgraph = "0.7"
 ordered-float = "4.6"
 
+# Topological Data Analysis
+tda = "0.1.0"
+
 # Statistics
 statrs = "0.18"
 rand = "0.8"

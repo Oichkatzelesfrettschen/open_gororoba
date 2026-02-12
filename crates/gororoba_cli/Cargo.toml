@@ -99,6 +99,10 @@ name = "cosmic-dendrogram"
 path = "src/bin/cosmic_dendrogram.rs"
 
 [[bin]]
+name = "test-tda-api"
+path = "src/bin/test_tda_api.rs"
+
+[[bin]]
 name = "fetch-datasets"
 path = "src/bin/fetch_datasets.rs"
 
@@ -214,6 +218,10 @@ path = "src/bin/homotopy_viscosity_equivalence.rs"
 name = "thesis-program-sweep"
 path = "src/bin/thesis_program_sweep.rs"
 
+[[bin]]
+name = "e027-topology-analyzer"
+path = "src/bin/e027_topology_analyzer.rs"
+
 [dependencies]
 docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
@@ -233,6 +241,8 @@ snia_core = { path = "../snia_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
 neural_homotopy = { path = "../neural_homotopy" }
 lattice_filtration = { path = "../lattice_filtration" }
+tda = { workspace = true }
+nalgebra = { workspace = true }
 ndarray = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
