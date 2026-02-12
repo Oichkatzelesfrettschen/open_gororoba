@@ -201,17 +201,11 @@ impl CompositionAlgebraCensus {
         node.algebra.validate_associativity_law()?;
 
         // Determine family key
-        let family_key = format!(
-            "{:?}",
-            node.axis1_construction
-        );
+        let family_key = format!("{:?}", node.axis1_construction);
 
         // Register
         self.algebras.insert(name.clone(), node);
-        self.families
-            .entry(family_key)
-            .or_default()
-            .push(name);
+        self.families.entry(family_key).or_default().push(name);
 
         Ok(())
     }
@@ -357,18 +351,8 @@ mod tests {
 
     #[test]
     fn test_taxonomy_node_family_matching() {
-        let props1 = AlgebraProperties::new(
-            "Algebra1",
-            4,
-            ConstructionMethod::TensorProduct,
-            None,
-        );
-        let props2 = AlgebraProperties::new(
-            "Algebra2",
-            8,
-            ConstructionMethod::TensorProduct,
-            None,
-        );
+        let props1 = AlgebraProperties::new("Algebra1", 4, ConstructionMethod::TensorProduct, None);
+        let props2 = AlgebraProperties::new("Algebra2", 8, ConstructionMethod::TensorProduct, None);
         let props3 = AlgebraProperties::new(
             "Algebra3",
             4,
@@ -388,12 +372,8 @@ mod tests {
     fn test_census_registration() {
         let mut census = CompositionAlgebraCensus::new();
 
-        let mut props = AlgebraProperties::new(
-            "TestAlgebra",
-            4,
-            ConstructionMethod::TensorProduct,
-            None,
-        );
+        let mut props =
+            AlgebraProperties::new("TestAlgebra", 4, ConstructionMethod::TensorProduct, None);
         props.is_commutative = true;
         props.commutativity_percentage = 100.0;
 
@@ -421,21 +401,13 @@ mod tests {
     fn test_axis1_family_hypothesis() {
         let mut census = CompositionAlgebraCensus::new();
 
-        let mut props1 = AlgebraProperties::new(
-            "TensorProduct1",
-            4,
-            ConstructionMethod::TensorProduct,
-            None,
-        );
+        let mut props1 =
+            AlgebraProperties::new("TensorProduct1", 4, ConstructionMethod::TensorProduct, None);
         props1.is_commutative = true;
         props1.commutativity_percentage = 100.0;
 
-        let mut props2 = AlgebraProperties::new(
-            "TensorProduct2",
-            8,
-            ConstructionMethod::TensorProduct,
-            None,
-        );
+        let mut props2 =
+            AlgebraProperties::new("TensorProduct2", 8, ConstructionMethod::TensorProduct, None);
         props2.is_commutative = true;
         props2.commutativity_percentage = 100.0;
 

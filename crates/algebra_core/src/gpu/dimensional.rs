@@ -637,6 +637,7 @@ impl GpuDimensionalEngine {
 
 /// CUDA kernel source for u16 wide-index APT census
 #[cfg(feature = "gpu")]
+#[allow(dead_code)]
 const APT_CENSUS_WIDE_KERNEL_SRC: &str = r#"
 // Splitmix64 PRNG
 __device__ unsigned long long splitmix64(unsigned long long x) {

@@ -204,7 +204,10 @@ fn test_albert_norm_and_invertibility() {
     // Diagonal invertible
     let x1 = AlbertElement::diagonal(1.0, 2.0, 3.0);
     let n1_sq = x1.norm_sq();
-    assert!(n1_sq > 0.0, "Diagonal element should have positive norm squared");
+    assert!(
+        n1_sq > 0.0,
+        "Diagonal element should have positive norm squared"
+    );
 
     // Trace-free with octonions
     let mut x2 = AlbertElement::zero();
@@ -213,7 +216,10 @@ fn test_albert_norm_and_invertibility() {
     x2.off[1][1] = 0.3;
     x2.off[2][2] = 0.7;
     let n2_sq = x2.norm_sq();
-    assert!(n2_sq > 0.0, "Octonion element should have positive norm squared");
+    assert!(
+        n2_sq > 0.0,
+        "Octonion element should have positive norm squared"
+    );
 
     println!(
         "Albert norm tests: x1_norm_sq={:.6}, x2_norm_sq={:.6}",

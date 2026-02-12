@@ -11,7 +11,9 @@ use nalgebra::Matrix3;
 pub struct JordanA1(pub f64);
 
 impl JordanA1 {
-    pub fn new(x: f64) -> Self { JordanA1(x) }
+    pub fn new(x: f64) -> Self {
+        JordanA1(x)
+    }
     pub fn jordan_product(self, other: JordanA1) -> JordanA1 {
         JordanA1((self.0 * other.0 + other.0 * self.0) / 2.0)
     }
@@ -56,15 +58,22 @@ impl JordanA2 {
         let m2 = other.to_matrix3();
         let prod = (m1 * m2 + m2 * m1) / 2.0;
         let [a11, a22, a33, a12, a13, a23] = [
-            prod[(0, 0)], prod[(1, 1)], prod[(2, 2)],
-            prod[(0, 1)], prod[(0, 2)], prod[(1, 2)],
+            prod[(0, 0)],
+            prod[(1, 1)],
+            prod[(2, 2)],
+            prod[(0, 1)],
+            prod[(0, 2)],
+            prod[(1, 2)],
         ];
         JordanA2::new(a11, a22, a33, a12, a13, a23)
     }
     pub fn is_commutative_with(self, other: JordanA2) -> bool {
         let prod1 = self.jordan_product(other);
         let prod2 = other.jordan_product(self);
-        prod1.data.iter().zip(prod2.data.iter())
+        prod1
+            .data
+            .iter()
+            .zip(prod2.data.iter())
             .all(|(x, y)| (x - y).abs() < 1e-12)
     }
     pub fn satisfies_jordan_identity(self, other: JordanA2) -> bool {
@@ -73,7 +82,9 @@ impl JordanA2 {
         let lhs = ab.jordan_product(a_sq);
         let b_aa = other.jordan_product(a_sq);
         let rhs = self.jordan_product(b_aa);
-        lhs.data.iter().zip(rhs.data.iter())
+        lhs.data
+            .iter()
+            .zip(rhs.data.iter())
             .all(|(x, y)| (x - y).abs() < 1e-12)
     }
     pub fn determinant(self) -> f64 {
