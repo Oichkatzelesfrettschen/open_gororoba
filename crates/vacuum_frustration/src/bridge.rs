@@ -5,7 +5,6 @@
 //! in Cayley-Dickson signed graphs. Local viscosity nu(x,y,z) is derived from
 //! per-cell frustration index via spatial evolution of Sedenion field.
 
-use crate::balance::compute_frustration_index;
 use crate::signed_graph::SignedGraph;
 
 /// Spatial Sedenion field abstraction.
@@ -52,46 +51,72 @@ impl SedenionField {
 
     /// Compute local frustration density at each grid point.
     ///
-    /// Projects Sedenion field onto signed graph and measures
-    /// frustration via Harary-Zaslavsky index.
+    /// Uses the Cayley-Dickson psi matrix as the base signed graph, with
+    /// Sedenion component magnitudes as vertex weights. The weighted
+    /// triangle frustration is:
+    ///
+    ///   F(x) = sum_T w_i*w_j*w_k * frustrated(T) / sum_T w_i*w_j*w_k
+    ///
+    /// where w_i = |sedenion[i]| and frustrated(T) = 1 iff psi(i,j)*psi(j,k)*psi(i,k) = -1.
+    ///
+    /// At uniform weights, this reduces to the global CD frustration (~3/8).
+    /// Spatially varying Sedenion fields produce spatially varying frustration
+    /// because different components dominate at different grid points,
+    /// weighting different triangles.
     pub fn local_frustration_density(&self, dim: usize) -> Vec<f64> {
+        use algebra_core::construction::cayley_dickson::cd_basis_mul_sign;
+
+        // Precompute psi sign matrix (dim x dim) once for all cells.
+        // Use a flat vec indexed by (i * dim + j) to avoid clippy range-loop lint.
+        let mut psi_flat = vec![0i32; dim * dim];
+        for i in 0..dim {
+            for j in (i + 1)..dim {
+                let sign = cd_basis_mul_sign(dim, i, j);
+                psi_flat[i * dim + j] = sign;
+                psi_flat[j * dim + i] = sign;
+            }
+        }
+
+        // Precompute which triangles are frustrated (topology-independent).
+        let mut triangles: Vec<(usize, usize, usize, bool)> = Vec::new();
+        for i in 0..dim {
+            for j in (i + 1)..dim {
+                for k in (j + 1)..dim {
+                    let product = psi_flat[i * dim + j]
+                        * psi_flat[j * dim + k]
+                        * psi_flat[i * dim + k];
+                    triangles.push((i, j, k, product == -1));
+                }
+            }
+        }
+
         self.data
             .iter()
             .map(|sedenion| {
-                // Build projection edges from Sedenion components
-                // Simple projection: use magnitude of Sedenion basis components
-                // to weight graph edges. This creates a local subgraph.
-                let mut edges = Vec::new();
                 let magnitude_sum: f64 = sedenion[0..dim].iter().map(|x| x.abs()).sum();
 
                 if magnitude_sum < 1e-10 {
-                    return 0.375; // Default vacuum frustration (3/8)
+                    return 0.375;
                 }
 
-                // Create edges between basis elements weighted by field magnitude
-                for i in 0..dim {
-                    for j in (i + 1)..dim {
-                        let weight =
-                            (sedenion[i].abs() + sedenion[j].abs()) / (2.0 * magnitude_sum);
-                        // Use simple heuristic: edge sign determined by Sedenion component correlation
-                        let sign = if sedenion[i] * sedenion[j] >= 0.0 {
-                            1
-                        } else {
-                            -1
-                        };
-                        if weight > 0.01 {
-                            // Only include significant edges
-                            edges.push((i, j, sign));
-                        }
+                let weights: Vec<f64> =
+                    sedenion[0..dim].iter().map(|x| x.abs()).collect();
+
+                let mut weighted_frustrated = 0.0f64;
+                let mut weighted_total = 0.0f64;
+
+                for &(i, j, k, is_frustrated) in &triangles {
+                    let w = weights[i] * weights[j] * weights[k];
+                    weighted_total += w;
+                    if is_frustrated {
+                        weighted_frustrated += w;
                     }
                 }
 
-                // Compute frustration for this local projection
-                if !edges.is_empty() {
-                    let result = compute_frustration_index(&edges, dim);
-                    result.frustration_density
+                if weighted_total < 1e-30 {
+                    0.375
                 } else {
-                    0.375 // Default to vacuum
+                    weighted_frustrated / weighted_total
                 }
             })
             .collect()
