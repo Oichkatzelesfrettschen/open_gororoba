@@ -1,0 +1,84 @@
+# Verification evidence for sedenion thesis program integration.
+
+[gate_report]
+updated = "2026-02-12"
+last_full_rerun_utc = "2026-02-12T02:50:52Z"
+status = "pass"
+status_token = "PASS"
+program_ref = "registry/sedenion_thesis_program.toml"
+
+[[gate]]
+name = "cargo clippy --workspace -j$(nproc) -- -D warnings"
+result = "pass"
+notes = "Finished cleanly with warnings denied."
+
+[[gate]]
+name = "cargo test --workspace -j$(nproc)"
+result = "pass"
+notes = "Workspace unit/integration/doc tests completed; long quantum_core doctests passed."
+
+[[gate]]
+name = "make ascii-check"
+result = "pass"
+notes = "ASCII verifier passed."
+
+[[gate]]
+name = "make governance-gate"
+result = "pass"
+notes = "Inventory and governance checks passed after adding TOML destination override for crates/lbm_3d_cuda/README.md."
+
+[[gate]]
+name = "make dep-audit"
+result = "pass"
+notes = "Dependency topology and duplicate-version audit completed without hard failures."
+
+[[gate]]
+name = "make cargo-deny-check"
+result = "pass"
+notes = "Advisories/bans/licenses/sources checks passed; duplicate-version warnings remain tracked."
+
+[[gate]]
+name = "full_strict_stack_rerun_2026_02_12"
+result = "pass"
+notes = "Executed sequentially: clippy -> workspace tests -> ascii-check -> governance-gate -> dep-audit -> cargo-deny-check."
+
+[[gate]]
+name = "PYTHONWARNINGS=error python3 src/verification/verify_module_requirements.py"
+result = "pass"
+notes = "Verifier confirms module_requirements overlay is synchronized (11 modules)."
+
+[[gate]]
+name = "PYTHONWARNINGS=error python3 src/scripts/analysis/build_wave5_batch4_registries.py"
+result = "pass"
+notes = "Regenerated requirements/module registries to include REQ-LBM-CUDA in module overlay."
+
+[[gate]]
+name = "PYTHONWARNINGS=error python3 src/scripts/analysis/build_wave5_batch3_registries.py"
+result = "pass"
+notes = "Regenerated schema_signatures after registry content update."
+
+[[gate]]
+name = "cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence -j$(nproc)"
+result = "pass"
+notes = "10/10 GPU-CPU equivalence tests pass."
+
+[[gate]]
+name = "cargo test -p lbm_3d_cuda test_debug_initialization -j$(nproc) -- --nocapture"
+result = "pass"
+notes = "Initialization and one-step state alignment pass with zero mass error."
+
+[[gate]]
+name = "make pre-push-gate"
+result = "pass"
+notes = "Completed end-to-end during git push hook."
+
+[[gate]]
+name = "git push origin main"
+result = "pass"
+notes = "Remote was synchronized; result was Everything up-to-date."
+
+[artifacts]
+roadmap = "registry/sedenion_thesis_program.toml"
+next_actions = "registry/next_actions.toml"
+phase_report = "reports/thesis_program_phase_report.toml"
+lbm_cuda_reaudit = "reports/lbm_3d_cuda_equivalence_reaudit_2026_02_12.toml"

@@ -1,0 +1,427 @@
+# Placeholder audit snapshot.
+
+[todo_placeholder_audit]
+updated = "2026-02-12"
+total_hits = 213
+fixme_count = 13
+todo_count = 162
+hack_count = 0
+xxx_count = 38
+status = "in_progress"
+status_token = "IN_PROGRESS"
+
+[actionable_scan]
+updated = "2026-02-12"
+scope = "crates src bin Makefile Cargo.toml Cargo.lock (excluding target and tests)"
+command = "rg -n \"\\b(TODO|FIXME|XXX)\\b\" crates src bin Makefile Cargo.toml Cargo.lock --glob '!**/target/**' --glob '!**/tests/**'"
+actionable_code_comment_hits = 0
+summary = "Current hits in scoped source are status-token/string references and migration scripts, not unresolved code-comment placeholders."
+
+[[section]]
+name = "hits_by_top_level"
+[[section.item]]
+key = "."
+value = 213
+
+[[section]]
+name = "top_priority_hits"
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164777"
+value = 4
+token = "FIXME"
+note = "text_ascii = \"TODO/FIXME Scan (2026-02-07)\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164799"
+value = 4
+token = "FIXME"
+note = "text_ascii = \"`rg -n \\"\\\\b(TODO|FIXME)\\\\b\\" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'`\""
+[[section.item]]
+key = "./registry/embedded_markdown_payloads.toml:3382"
+value = 4
+token = "FIXME"
+note = "source_title = \"TODO/FIXME Scan (2026-02-07)\""
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0169.toml:323"
+value = 4
+token = "FIXME"
+note = "### RPT-045: TODO/FIXME Scan (2026-02-07)"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0242.toml:7"
+value = 4
+token = "FIXME"
+note = "title = \"TODO/FIXME Scan (2026-02-07)\""
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0242.toml:36"
+value = 4
+token = "FIXME"
+note = "# TODO/FIXME Scan (2026-02-07)"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0242.toml:40"
+value = 4
+token = "FIXME"
+note = "`rg -n \\"\\\\b(TODO|FIXME)\\\\b\\" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'`"
+[[section.item]]
+key = "./registry/markdown_payload_chunks.toml:98073"
+value = 4
+token = "FIXME"
+note = "text_ascii = \"RPT-046: TODO/FIXME Scan (2026-02-07)\""
+[[section.item]]
+key = "./registry/reports_narratives.toml:5496"
+value = 4
+token = "FIXME"
+note = "title = \"TODO/FIXME Scan (2026-02-07)\""
+[[section.item]]
+key = "./registry/reports_narratives.toml:5499"
+value = 4
+token = "FIXME"
+note = "path_refs = [\"rg -n \\"\\\\b(TODO|FIXME)\\\\b\\" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'\", \"docs/CLAIMS_TASKS.md\", \"docs/TODO.md\", \"docs/tickets/TICKET_"
+[[section.item]]
+key = "./registry/reports_narratives.toml:5520"
+value = 4
+token = "FIXME"
+note = "# TODO/FIXME Scan (2026-02-07)"
+[[section.item]]
+key = "./registry/reports_narratives.toml:5524"
+value = 4
+token = "FIXME"
+note = "`rg -n \"\\b(TODO|FIXME)\\b\" -S --glob '!venv/**' --glob '!.mamba/**' --glob '!data/**' --glob '!curated/**' --glob '!archive/**'`"
+[[section.item]]
+key = "./registry/sedenion_thesis_program.toml:313"
+value = 4
+token = "FIXME"
+note = "title = \"Global TODO/FIXME placeholder triage\""
+[[section.item]]
+key = "./crates/gororoba_cli/src/claims/schema.rs:35"
+value = 3
+token = "TODO"
+note = "\"TODO\","
+[[section.item]]
+key = "./crates/gororoba_cli/src/claims/verify.rs:490"
+value = 3
+token = "TODO"
+note = "let text = \"Date: 2026-02-07\n\n| C-001 | Task | TODO |\n\";"
+[[section.item]]
+key = "./crates/gororoba_cli/src/claims/verify.rs:497"
+value = 3
+token = "TODO"
+note = "let text = \"No date header here\n\n| C-001 | Task | TODO |\n\";"
+[[section.item]]
+key = "./registry/claim_tickets.toml:188"
+value = 3
+token = "TODO"
+note = "status_raw = \"TODO\""
+[[section.item]]
+key = "./registry/claim_tickets.toml:189"
+value = 3
+token = "TODO"
+note = "status_token = \"TODO\""
+[[section.item]]
+key = "./registry/claims_tasks.toml:13"
+value = 3
+token = "TODO"
+note = "canonical_status_tokens = [\"TODO\", \"IN_PROGRESS\", \"PARTIAL\", \"DONE\", \"REFUTED\", \"DEFERRED\", \"BLOCKED\"]"
+[[section.item]]
+key = "./registry/claims_tasks.toml:167"
+value = 3
+token = "TODO"
+note = "status_token = \"TODO\""
+[[section.item]]
+key = "./registry/claims_tasks.toml:168"
+value = 3
+token = "TODO"
+note = "status_raw = \"TODO\""
+[[section.item]]
+key = "./registry/claims_tasks.toml:2897"
+value = 3
+token = "TODO"
+note = "status_token = \"TODO\""
+[[section.item]]
+key = "./registry/claims_tasks.toml:2898"
+value = 3
+token = "TODO"
+note = "status_raw = \"TODO\""
+[[section.item]]
+key = "./registry/claims_tasks.toml:2972"
+value = 3
+token = "TODO"
+note = "status_token = \"TODO\""
+[[section.item]]
+key = "./registry/claims_tasks.toml:2973"
+value = 3
+token = "TODO"
+note = "status_raw = \"TODO\""
+[[section.item]]
+key = "./registry/claims_tasks.toml:2987"
+value = 3
+token = "TODO"
+note = "status_token = \"TODO\""
+[[section.item]]
+key = "./registry/claims_tasks.toml:2988"
+value = 3
+token = "TODO"
+note = "status_raw = \"TODO\""
+[[section.item]]
+key = "./registry/docs_root_narratives.toml:12800"
+value = 3
+token = "TODO"
+note = "all 7 tracking documents (ROADMAP, TODO, ULTRA_ROADMAP, NEXT_ACTIONS,"
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:82233"
+value = 3
+token = "TODO"
+note = "text_ascii = \"all 7 tracking documents (ROADMAP, TODO, ULTRA_ROADMAP, NEXT_ACTIONS, CLAIMS_TASKS, AGENTS, this file).\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164436"
+value = 3
+token = "TODO"
+note = "text_ascii = \"TODO: 3\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164557"
+value = 3
+token = "TODO"
+note = "text_ascii = \"A5_gwtc3_selection_bias_control | 2026-01-28 | TODO | `docs/tickets/A5_gwtc3_selection_bias_control.md`\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164568"
+value = 3
+token = "TODO"
+note = "text_ascii = \"A6_tensor_network_measurement_pipeline | 2026-01-28 | TODO | `docs/tickets/A6_tensor_network_measurement_pipeline.md`\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164579"
+value = 3
+token = "TODO"
+note = "text_ascii = \"A7_psl_2_7_explicit_action | 2026-01-28 | TODO | `docs/tickets/A7_psl_2_7_explicit_action.md`\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164821"
+value = 3
+token = "TODO"
+note = "text_ascii = \"Claims pipeline backlog: `docs/CLAIMS_TASKS.md` (many rows still `TODO`)\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164832"
+value = 3
+token = "TODO"
+note = "text_ascii = \"Global tracker: `docs/TODO.md`\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164876"
+value = 3
+token = "TODO"
+note = "text_ascii = \"Code-level implementation TODOs:\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164920"
+value = 3
+token = "TODO"
+note = "text_ascii = \"This scan is a navigation aid only. Treat each TODO as a scoped\""
+[[section.item]]
+key = "./registry/embedded_markdown_chunks.toml:164942"
+value = 3
+token = "TODO"
+note = "text_ascii = \"TODO entries in docs are expected and intentionally retained for provenance.\""
+[[section.item]]
+key = "./registry/entrypoint_docs.toml:1352"
+value = 3
+token = "TODO"
+note = "text_ascii = \"`docs/TODO.md`\""
+[[section.item]]
+key = "./registry/experiments.toml:517"
+value = 3
+token = "TODO"
+note = "methodology = \"Implement automated weekly verification of cached third-party markdown sources. Extends W6-011 (third_party_markdown_cache.toml) with verification tracking, freshness policy (90/180/365-day TTLs by source"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0001.toml:167"
+value = 3
+token = "TODO"
+note = "- `docs/TODO.md`"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0058.toml:57"
+value = 3
+token = "TODO"
+note = "all 7 tracking documents (ROADMAP, TODO, ULTRA_ROADMAP, NEXT_ACTIONS,"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0123.toml:149"
+value = 3
+token = "TODO"
+note = "3. Sprint trackers (`docs/TODO.md`, `docs/NEXT_ACTIONS.md`, `docs/ROADMAP.md`)"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0158.toml:100"
+value = 3
+token = "TODO"
+note = "### CTASK-0004 (C-025, TODO)"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0158.toml:104"
+value = 3
+token = "TODO"
+note = "- Status raw: TODO"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0158.toml:2491"
+value = 3
+token = "TODO"
+note = "### CTASK-0186 (C-417, TODO)"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0158.toml:2495"
+value = 3
+token = "TODO"
+note = "- Status raw: TODO"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0158.toml:2556"
+value = 3
+token = "TODO"
+note = "### CTASK-0191 (C-426, TODO)"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0158.toml:2560"
+value = 3
+token = "TODO"
+note = "- Status raw: TODO"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0158.toml:2570"
+value = 3
+token = "TODO"
+note = "### CTASK-0192 (C-427, TODO)"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0158.toml:2574"
+value = 3
+token = "TODO"
+note = "- Status raw: TODO"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0159.toml:190"
+value = 3
+token = "TODO"
+note = "- Status: `TODO` (TODO)"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0166.toml:111"
+value = 3
+token = "TODO"
+note = "- `docs/TODO.md`"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0166.toml:119"
+value = 3
+token = "TODO"
+note = "- `docs/generated/TODO_REGISTRY_MIRROR.md`"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0167.toml:650"
+value = 3
+token = "TODO"
+note = "### MDG-0070: `docs/TODO.md`"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0167.toml:1539"
+value = 3
+token = "TODO"
+note = "### MDG-0173: `docs/generated/TODO_REGISTRY_MIRROR.md`"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0172.toml:34"
+value = 3
+token = "TODO"
+note = "- `docs/TODO.md`"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0173.toml:6"
+value = 3
+token = "TODO"
+note = "source_path = \"docs/generated/TODO_REGISTRY_MIRROR.md\""
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0173.toml:7"
+value = 3
+token = "TODO"
+note = "title = \"TODO Registry Mirror\""
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0173.toml:21"
+value = 3
+token = "TODO"
+note = "# TODO Registry Mirror"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0181.toml:25"
+value = 3
+token = "TODO"
+note = "Status: TODO"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0241.toml:43"
+value = 3
+token = "TODO"
+note = "- TODO: 3"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0241.toml:56"
+value = 3
+token = "TODO"
+note = "| A5_gwtc3_selection_bias_control | 2026-01-28 | TODO | `docs/tickets/A5_gwtc3_selection_bias_control.md` |"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0241.toml:57"
+value = 3
+token = "TODO"
+note = "| A6_tensor_network_measurement_pipeline | 2026-01-28 | TODO | `docs/tickets/A6_tensor_network_measurement_pipeline.md` |"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0241.toml:58"
+value = 3
+token = "TODO"
+note = "| A7_psl_2_7_explicit_action | 2026-01-28 | TODO | `docs/tickets/A7_psl_2_7_explicit_action.md` |"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0242.toml:44"
+value = 3
+token = "TODO"
+note = "- Claims pipeline backlog: `docs/CLAIMS_TASKS.md` (many rows still `TODO`)"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0242.toml:45"
+value = 3
+token = "TODO"
+note = "- Global tracker: `docs/TODO.md`"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0242.toml:49"
+value = 3
+token = "TODO"
+note = "- Code-level implementation TODOs:"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0242.toml:55"
+value = 3
+token = "TODO"
+note = "- This scan is a navigation aid only. Treat each TODO as a scoped"
+[[section.item]]
+key = "./registry/knowledge/docs/DOC-0242.toml:57"
+value = 3
+token = "TODO"
+note = "- TODO entries in docs are expected and intentionally retained for provenance."
+[[section.item]]
+key = "./registry/knowledge_migration_plan.toml:76"
+value = 3
+token = "TODO"
+note = "source_markdown = [\"docs/ROADMAP.md\", \"docs/TODO.md\", \"docs/NEXT_ACTIONS.md\"]"
+[[section.item]]
+key = "./registry/knowledge_migration_plan.toml:80"
+value = 3
+token = "TODO"
+note = "\"docs/generated/TODO_REGISTRY_MIRROR.md\","
+[[section.item]]
+key = "./registry/markdown_corpus_registry.toml:515"
+value = 3
+token = "TODO"
+note = "path = \"build/docs/generated/TODO_REGISTRY_MIRROR.md\""
+[[section.item]]
+key = "./registry/markdown_inventory.toml:697"
+value = 3
+token = "TODO"
+note = "path = \"build/docs/generated/TODO_REGISTRY_MIRROR.md\""
+[[section.item]]
+key = "./registry/markdown_inventory.toml:698"
+value = 3
+token = "TODO"
+note = "title = \"TODO Registry Mirror\""
+[[section.item]]
+key = "./registry/markdown_payload_chunks.toml:53006"
+value = 3
+token = "TODO"
+note = "text_ascii = \"CTASK-0004 (C-025, TODO)\""
+[[section.item]]
+key = "./registry/markdown_payload_chunks.toml:53039"
+value = 3
+token = "TODO"
+note = "text_ascii = \"Status raw: TODO\""
+[[section.item]]
+key = "./registry/markdown_payload_chunks.toml:71145"
+value = 3
+token = "TODO"
+note = "text_ascii = \"CTASK-0186 (C-417, TODO)\""
+[[section.item]]
+key = "./registry/markdown_payload_chunks.toml:71178"
+value = 3
+token = "TODO"
+note = "text_ascii = \"Status raw: TODO\""
+[[section.item]]
+key = "./registry/markdown_payload_chunks.toml:71640"
+value = 3
+token = "TODO"
+note = "text_ascii = \"CTASK-0191 (C-426, TODO)\""

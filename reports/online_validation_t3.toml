@@ -1,0 +1,22 @@
+# Online validation report for STPT-030 (Thesis 3 cosmology alignment).
+
+[online_validation]
+id = "STPT-030"
+updated = "2026-02-12"
+claim = "Neural loss-curve plateaus should map cleanly to known cosmological epochs and H(z) evolution"
+verdict = "partially_supported"
+status_token = "PARTIAL"
+
+[[evidence]]
+source = "Planck 2018 cosmological parameters"
+url = "https://arxiv.org/abs/1807.06209"
+relevance = "Provides precision baseline for LCDM expansion history and late-time parameters."
+
+[[evidence]]
+source = "Pantheon+ cosmological constraints"
+url = "https://arxiv.org/abs/2202.04077"
+relevance = "Provides supernova-driven constraints and w0/wa context for expansion-history fitting."
+
+[inference]
+summary = "Mapping model traces to H(z)-like trajectories is testable and meaningful, but exact epoch-plateau correspondence is not a known established physical law."
+recommended_action = "Keep STPT-008 verdict logic strict: classify as refuted when plateaus have no defensible epoch mapping."

@@ -1,0 +1,39 @@
+# Evidence artifact contract check report.
+
+[evidence_contract_tests]
+updated = "2026-02-12"
+status = "pass"
+status_token = "PASS"
+checked_artifact_count = 4
+
+[[artifact]]
+id = "thesis1"
+path = "data/evidence/thesis1_scalar_tov_sweep.toml"
+bytes = 5110
+passed = true
+missing = []
+
+[[artifact]]
+id = "thesis2"
+path = "data/evidence/thesis2_thickening_threshold.toml"
+bytes = 1035
+passed = true
+missing = []
+
+[[artifact]]
+id = "thesis3"
+path = "data/evidence/thesis3_epoch_alignment.toml"
+bytes = 678
+passed = true
+missing = []
+
+[[artifact]]
+id = "thesis4"
+path = "data/evidence/thesis4_latency_law_suite.toml"
+bytes = 3365
+passed = true
+missing = []
+
+[[command]]
+name = "cargo test -p gororoba_cli --test integration_thesis_program_sweep"
+result = "pass"

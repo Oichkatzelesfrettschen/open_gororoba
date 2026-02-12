@@ -1,0 +1,27 @@
+# Online validation report for STPT-028 (Thesis 1 falsifier).
+
+[online_validation]
+id = "STPT-028"
+updated = "2026-02-12"
+claim = "Frustration-Star solutions requiring omega_BD < 40000 violate Cassini-derived Brans-Dicke constraints"
+verdict = "supported"
+status_token = "SUPPORTED"
+
+[[evidence]]
+source = "Nature 425, 374-376 (Bertotti, Iess, Tortora, 2003)"
+url = "https://www.nature.com/articles/nature01997"
+relevance = "Primary Cassini Shapiro-delay experiment used for strong PPN gamma constraints."
+
+[[evidence]]
+source = "Alsing et al., Phys. Rev. D 85, 064041 (2012)"
+url = "https://arxiv.org/abs/1112.4903"
+relevance = "Explicitly states Cassini implies omega_BD > 40000 (95% CL) for light scalar masses."
+
+[[evidence]]
+source = "Planck and late-time tests context"
+url = "https://arxiv.org/abs/1807.06209"
+relevance = "Supports modern precision-cosmology context for testing gravity model extensions."
+
+[inference]
+summary = "Using omega_BD = 40000 as a falsifier gate is consistent with mainstream scalar-tensor test literature anchored on Cassini results."
+recommended_action = "Retain Cassini lower-bound gate in STPT-006 artifact generation and claim evaluation."

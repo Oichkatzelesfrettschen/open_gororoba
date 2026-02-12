@@ -1,0 +1,115 @@
+# Consolidated ultra-audit synthesis (multi-agent + gate reruns).
+
+[ultra_audit]
+updated_utc = "2026-02-12T02:50:52Z"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+scope = "pure_rust_workspace_and_registry_control_plane"
+
+[gate_summary]
+clippy_workspace = "pass"
+test_workspace = "pass"
+ascii_check = "pass"
+governance_gate = "pass"
+dep_audit = "pass_with_duplicate_warnings"
+cargo_deny = "pass_with_duplicate_warnings"
+sync_cycle = "fetch_pull_push_completed"
+
+[gpu_summary]
+crate = "crates/lbm_3d_cuda"
+backend_policy = "cudarc_runtime_compilation_preferred"
+equivalence_tests = "pass_10_of_10"
+debug_initialization = "pass"
+evidence = "reports/lbm_3d_cuda_equivalence_reaudit_2026_02_12.toml"
+
+[requirements_summary]
+requirements_modules = 11
+module_requirements_modules = 11
+module_requirements_commands = 26
+module_requirements_verifier = "pass"
+notes = "Batch4 + Batch3 registry regeneration resolved module and schema signature drift."
+
+[[critical_finding]]
+id = "CF-001"
+severity = "medium"
+area = "license_governance"
+statement = "Direct cross-repo code porting remains blocked by unresolved GPL compatibility and no-license sources."
+evidence_refs = ["reports/port_ingest_reaudit.toml", "registry/sedenion_thesis_program.toml"]
+recommended_action = "Record explicit license compatibility decision before any direct import."
+
+[[critical_finding]]
+id = "CF-002"
+severity = "medium"
+area = "placeholder_infra"
+statement = "Actionable TODO placeholders remain in third-party source verification infra (manual alerts, local archive policies, dashboard)."
+evidence_refs = ["registry/third_party_source_verification.toml:29", "registry/third_party_source_verification.toml:174", "registry/third_party_source_verification.toml:175", "registry/third_party_source_verification.toml:176"]
+recommended_action = "Implement alert and archival infrastructure first; dashboard can be deferred."
+
+[[critical_finding]]
+id = "CF-003"
+severity = "medium"
+area = "tracking_language"
+statement = "Some thesis and report narratives can be normalized to stricter falsifiability-first phrasing."
+evidence_refs = ["registry/sedenion_thesis_program.toml", "reports/thesis_program_phase_report.toml", "reports/thesis_program_reality_check_2026_02_12.toml"]
+recommended_action = "Rewrite hypothesis/progress statements to explicit metric-threshold refutation language."
+
+[[critical_finding]]
+id = "CF-004"
+severity = "low"
+area = "repo_hygiene"
+statement = "Top-level clutter persists in logs, caches, and large artifacts that can be moved non-destructively."
+evidence_refs = ["reports/repo_structure_audit.toml"]
+recommended_action = "Apply low-risk archive moves first, then medium-risk cache/build moves."
+
+[[critical_finding]]
+id = "CF-005"
+severity = "low"
+area = "governance_hygiene"
+statement = "Unmanaged markdown in docs/ can fail owner-map verification even when ignored by git."
+evidence_refs = ["registry/markdown_inventory.toml", "reports/thesis_program_phase_report.toml"]
+recommended_action = "Keep ad hoc benchmark artifacts out of docs/ markdown; store as archived .txt or mapped TOML-backed markdown."
+
+[[agent_output]]
+agent = "TODO_FIXME_triage"
+result = "No actionable code TODO/FIXME in Rust/Python sources; only infra placeholders in registry lane."
+source = "agent:019c4fc4-1f1b-7df0-bcb3-58df68181724"
+
+[[agent_output]]
+agent = "language_normalization"
+result = "Provided line-targeted rewrites for hypothesis and report language normalization."
+source = "agent:019c4fc4-38f4-7e81-a8d3-4bec844ddbfe"
+
+[[agent_output]]
+agent = "structure_cleanup"
+result = "Provided reversible move plan for logs/caches/artifacts with risk labeling."
+source = "agent:019c4fc4-5223-73d2-8c68-03e52bd3631d"
+
+[[next_step]]
+id = "NX-001"
+priority = "high"
+title = "Finalize tracker reconciliation for STPT-032/036 and NA-024"
+depends_on = []
+
+[[next_step]]
+id = "NX-002"
+priority = "high"
+title = "Implement third-party verification alert path (manual review + local archive policy)"
+depends_on = ["NX-001"]
+
+[[next_step]]
+id = "NX-003"
+priority = "medium"
+title = "Apply falsifiability-first language rewrites in thesis/reality-check reports"
+depends_on = ["NX-001"]
+
+[[next_step]]
+id = "NX-004"
+priority = "medium"
+title = "Execute low-risk archive move subset for top-level clutter"
+depends_on = ["NX-001"]
+
+[[next_step]]
+id = "NX-005"
+priority = "medium"
+title = "Prepare license decision record for external repository porting policy"
+depends_on = ["NX-001"]

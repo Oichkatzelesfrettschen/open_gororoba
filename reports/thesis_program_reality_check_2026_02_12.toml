@@ -1,0 +1,29 @@
+# Reality-check audit after status normalization.
+
+[meta]
+updated = "2026-02-12"
+status = "active"
+status_token = "ACTIVE"
+
+[summary]
+statement = "This report supersedes optimistic done-state assumptions for evidence-sensitive thesis lanes."
+
+[findings]
+f1 = "Thesis 1 remains done-grade with supported external falsifier references (Cassini-bound lane)."
+f2 = "Thesis 2 external support is inconclusive for exact 1.2-radian threshold; keep in_progress."
+f3 = "Thesis 3 has partial support for epoch alignment framing; keep in_progress."
+f4 = "Thesis 4 physical equivalence claim remains unsupported; keep blocked for non-promotional status."
+f5 = "External code-port candidates are constrained by GPL/no-license blockers until explicit compatibility decision."
+
+[status_changes]
+registry_sedenion = "STP-T2/T3 downgraded to in_progress; STP-T4 downgraded to blocked; STPT-029/030/032 set in_progress; STPT-031 set blocked."
+registry_next_actions = "NA-018/019 set in_progress; NA-020 set blocked; NA-021..024 added for licensing, provenance shortlist, port boundaries, and strict revalidation."
+
+[validation_snapshot]
+lbm_3d_cuda_equivalence = "pass"
+lbm_3d_cuda_equivalence_cmd = "cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence -j$(nproc)"
+
+[open_risks]
+r1 = "Potential license incompatibility for direct reuse of GPL-2.0/GPL-3.0 external code in non-GPL workflows."
+r2 = "ancient_compute lacks explicit license marker in scanned root; treat as blocked for code transfer."
+r3 = "Phase synthesis reports that claim full closure must be interpreted as historical snapshots, not current live state."

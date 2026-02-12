@@ -1,0 +1,47 @@
+# Consolidated outputs from parallel explorer agents.
+
+[agent_audit_consolidated]
+updated = "2026-02-12"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+agent_count = 3
+
+[[agent]]
+id = "019c4f61-3a9f-70f1-a64e-7583e2af5461"
+focus = "repo_structure_and_placeholders"
+primary_output = "reports/repo_structure_audit.toml"
+
+[[agent]]
+id = "019c4f61-3d04-76b2-969b-9698e56fe5c1"
+focus = "mathsciencecompendium_port_inventory"
+primary_output = "reports/port_inventory_mathsciencecompendium.toml"
+
+[[agent]]
+id = "019c4f61-401a-78c3-a2f7-1a047a07486a"
+focus = "physicsforge_ancientcompute_ports_and_requirements"
+primary_output = "reports/port_inventory_physicsforge_ancient_compute.toml"
+
+[[mapping]]
+finding = "repo clutter and cache artifacts"
+roadmap_task = "STPT-014"
+action = "normalize artifact placement and cleanup policy"
+
+[[mapping]]
+finding = "TODO/FIXME hotspot concentration in scripts/registries"
+roadmap_task = "STPT-015"
+action = "triage placeholders into actionable engineering tickets"
+
+[[mapping]]
+finding = "MathScienceCompendium candidate ports"
+roadmap_task = "STPT-016"
+action = "prioritize MSC-001 and MSC-004 first"
+
+[[mapping]]
+finding = "PhysicsForge/ancient_compute candidate ports"
+roadmap_task = "STPT-017"
+action = "prioritize PFA-001 and PFA-002 first"
+
+[[mapping]]
+finding = "requirements markdown gaps and generator gap"
+roadmap_task = "STPT-018"
+action = "complete requirements generator and coverage closure"

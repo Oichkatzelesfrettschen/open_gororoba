@@ -1,0 +1,59 @@
+# Formal spec for STPT-008: epoch alignment from homotopy training traces.
+
+[spec]
+id = "STPT-008"
+updated = "2026-02-12"
+status = "draft"
+status_token = "DRAFT"
+crate = "crates/neural_homotopy"
+objective = "Generate deterministic epoch-alignment artifact from loss and H(z) reference traces."
+
+[[functional_requirement]]
+id = "FR-008-01"
+text = "System shall generate training trace with loss and pentagon residual metrics for fixed config."
+
+[[functional_requirement]]
+id = "FR-008-02"
+text = "System shall generate reference H(z)-derived trajectory for same sample count."
+
+[[functional_requirement]]
+id = "FR-008-03"
+text = "System shall compute alignment score and plateau segments, then map segments to epoch labels or mismatch verdict."
+
+[[functional_requirement]]
+id = "FR-008-04"
+text = "System shall emit deterministic TOML artifact at data/evidence/thesis3_epoch_alignment.toml."
+
+[[technical_spec]]
+id = "TS-008-01"
+text = "Use train_homotopy_surrogate and reference_hubble_curve as canonical data generators."
+
+[[technical_spec]]
+id = "TS-008-02"
+text = "Plateau detection shall be slope-threshold based and parameterized in metadata."
+
+[[acceptance_criteria]]
+id = "AC-008-01"
+text = "Artifact includes alignment score, plateau segments, and final epoch verdict."
+
+[[acceptance_criteria]]
+id = "AC-008-02"
+text = "At least one synthetic mismatch case is classifiable as refuted when no epoch mapping exists."
+
+[[test_case]]
+id = "TC-008-01"
+kind = "unit"
+path = "crates/neural_homotopy/src/model.rs"
+assertion = "training trace lengths and finite metrics"
+
+[[test_case]]
+id = "TC-008-02"
+kind = "unit"
+path = "crates/neural_homotopy/src/tensor_ops.rs"
+assertion = "alignment score bounded and finite"
+
+[[test_case]]
+id = "TC-008-03"
+kind = "artifact"
+path = "data/evidence/thesis3_epoch_alignment.toml"
+assertion = "schema fields exist and deterministic verdict is stable"

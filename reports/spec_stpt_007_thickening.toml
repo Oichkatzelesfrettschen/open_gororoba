@@ -1,0 +1,59 @@
+# Formal spec for STPT-007: non-Newtonian thickening threshold sweep.
+
+[spec]
+id = "STPT-007"
+updated = "2026-02-12"
+status = "draft"
+status_token = "DRAFT"
+crate = "crates/lbm_core"
+objective = "Establish deterministic threshold sweep for associator-driven viscosity thickening behavior."
+
+[[functional_requirement]]
+id = "FR-007-01"
+text = "System shall sweep alpha and associator norm ranges and compute nu_eff responses."
+
+[[functional_requirement]]
+id = "FR-007-02"
+text = "System shall classify response as Newtonian/non-Newtonian based on slope of stress-viscosity trend."
+
+[[functional_requirement]]
+id = "FR-007-03"
+text = "System shall emit deterministic TOML artifact at data/evidence/thesis2_thickening_threshold.toml."
+
+[[technical_spec]]
+id = "TS-007-01"
+text = "Implementation shall use viscosity_with_associator and collide_with_associator as canonical operators."
+
+[[technical_spec]]
+id = "TS-007-02"
+text = "Threshold comparison must be explicit and configurable in artifact metadata."
+
+[[technical_spec]]
+id = "TS-007-03"
+text = "Artifact shall include sampled Reynolds proxy, shear proxy, and associator norm buckets."
+
+[[acceptance_criteria]]
+id = "AC-007-01"
+text = "Monotone nu_eff increase with associator norm for fixed alpha in deterministic baseline suite."
+
+[[acceptance_criteria]]
+id = "AC-007-02"
+text = "Artifact includes threshold crossing index or explicit no-crossing verdict."
+
+[[test_case]]
+id = "TC-007-01"
+kind = "unit"
+path = "crates/lbm_core/src/lib.rs"
+assertion = "viscosity_with_associator monotonicity across sampled norms"
+
+[[test_case]]
+id = "TC-007-02"
+kind = "integration"
+path = "crates/lbm_core/src/lib.rs"
+assertion = "collide_with_associator keeps finite mass and finite distribution values"
+
+[[test_case]]
+id = "TC-007-03"
+kind = "artifact"
+path = "data/evidence/thesis2_thickening_threshold.toml"
+assertion = "schema contains threshold and verdict fields"

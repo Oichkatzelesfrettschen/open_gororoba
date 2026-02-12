@@ -41,7 +41,10 @@ hooks = ".githooks/"
 track_default = false
 allowlist = ["AGENTS.md", "CLAUDE.md", "GEMINI.md", "README.md", "**/README.md"]
 rules = [
+  "Allowlist markdown files remain in place as TOML-owned entrypoints.",
   "No manual markdown outside allowlist.",
+  "When unmanaged markdown appears, migrate content into canonical TOML via normalize_* scripts and refresh markdown inventory/owner maps.",
+  "Do not use archival move/delete as the default policy response for unmanaged markdown; perform TOML-first rewrite and ownership mapping.",
   "No manual edits to generated mirrors.",
 ]
 
@@ -64,6 +67,7 @@ steps = [
 rules = [
   "Prefer existing make/script targets.",
   "Keep shared Rust deps in Cargo.toml [workspace.dependencies].",
+  "For CUDA-backed Rust crates, prefer cudarc runtime integration over build-time nvcc pipelines unless explicitly scoped otherwise.",
   "Keep domain kernels in crate-local modules and promote reusable parts into focused workspace crates.",
   "On dependency graph changes, run make dep-audit before pre-push.",
   "Update canonical TOML, then regenerate mirrors.",

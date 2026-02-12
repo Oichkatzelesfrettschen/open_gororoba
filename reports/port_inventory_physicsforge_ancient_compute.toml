@@ -1,0 +1,53 @@
+# Reverse-port candidate inventory from PhysicsForge and ancient_compute.
+
+[port_inventory]
+updated = "2026-02-12"
+source_repos = ["~/Github/PhysicsForge", "~/Github/ancient_compute"]
+status = "in_progress"
+status_token = "IN_PROGRESS"
+candidate_count = 4
+rust_native_sources_found = false
+
+[[candidate]]
+id = "PFA-001"
+source_path = "~/Github/ancient_compute/tools/babbage_emulator.py"
+target_crate = "crates/gororoba_engine"
+target_module = "emulator_core"
+summary = "Port deterministic emulator core for engine orchestration and latency experiments."
+effort = "M"
+risk = "state-machine semantics drift if partial port"
+test_strategy = "instruction trace golden tests"
+priority = "high"
+
+[[candidate]]
+id = "PFA-002"
+source_path = "~/Github/ancient_compute/scripts/measure_emulator_clock.py"
+target_crate = "crates/lattice_filtration"
+target_module = "latency_harness"
+summary = "Port timing harness for inverse-square latency falsifier experiments."
+effort = "S"
+risk = "low"
+test_strategy = "repeatability and distribution-shape assertions"
+priority = "high"
+
+[[candidate]]
+id = "PFA-003"
+source_path = "~/Github/PhysicsForge/scripts/equation_extractor.py"
+target_crate = "crates/algebra_core"
+target_module = "equation_extract"
+summary = "Port equation extraction/domain classifier to reduce Python dependency in evidence workflows."
+effort = "M"
+risk = "parser parity with legacy grammar"
+test_strategy = "fixture-based parse parity tests"
+priority = "medium"
+
+[[candidate]]
+id = "PFA-004"
+source_path = "~/Github/PhysicsForge/scripts/build_catalog_pipeline.py"
+target_crate = "crates/gororoba_engine"
+target_module = "catalog_pipeline"
+summary = "Port catalog build/validation orchestration into Rust CLI pipeline."
+effort = "M"
+risk = "schema and data format drift"
+test_strategy = "schema validation and deterministic artifact checks"
+priority = "medium"

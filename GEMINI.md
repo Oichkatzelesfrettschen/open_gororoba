@@ -1,3 +1,6 @@
-# GEMINI
+<!-- AUTO-GENERATED: DO NOT EDIT -->
+<!-- Source of truth: registry/entrypoint_docs.toml -->
 
-Pointer file. Canonical instructions are in `AGENTS.md`.
+# Gemini Overlay for open_gororoba
+
+(No body_markdown captured in registry/entrypoint_docs.toml.)

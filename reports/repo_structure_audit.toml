@@ -1,0 +1,480 @@
+# Repository structure audit snapshot (local scan).
+
+[repo_structure_audit]
+updated = "2026-02-12"
+total_files = 4154
+top_level_entry_count = 44
+misplaced_candidate_count = 46
+status = "in_progress"
+status_token = "IN_PROGRESS"
+
+[[section]]
+name = "top_level_file_counts"
+[[section.item]]
+key = "registry"
+value = 1303
+[[section.item]]
+key = "data"
+value = 699
+[[section.item]]
+key = "curated"
+value = 616
+[[section.item]]
+key = "target_codex_hve"
+value = 486
+[[section.item]]
+key = "crates"
+value = 399
+[[section.item]]
+key = "cpp"
+value = 332
+[[section.item]]
+key = "src"
+value = 147
+[[section.item]]
+key = "papers"
+value = 41
+[[section.item]]
+key = "docs"
+value = 26
+[[section.item]]
+key = "build"
+value = 23
+[[section.item]]
+key = "reports"
+value = 16
+[[section.item]]
+key = ".playwright-mcp"
+value = 12
+[[section.item]]
+key = "bin"
+value = 9
+[[section.item]]
+key = "tests"
+value = 6
+[[section.item]]
+key = "archive"
+value = 6
+[[section.item]]
+key = ".pytest_cache"
+value = 5
+[[section.item]]
+key = ".gitignore"
+value = 1
+[[section.item]]
+key = "AGENTS.md"
+value = 1
+[[section.item]]
+key = "Cargo.toml"
+value = 1
+[[section.item]]
+key = "gemini_debug.txt"
+value = 1
+[[section.item]]
+key = "deny.toml"
+value = 1
+[[section.item]]
+key = "GEMINI.md"
+value = 1
+[[section.item]]
+key = "run_quantum_container.sh"
+value = 1
+[[section.item]]
+key = "Makefile"
+value = 1
+[[section.item]]
+key = "LICENSE"
+value = 1
+
+[[section]]
+name = "extension_counts"
+[[section.item]]
+key = ".toml"
+value = 1357
+[[section.item]]
+key = ".csv"
+value = 893
+[[section.item]]
+key = ".rs"
+value = 384
+[[section.item]]
+key = "<none>"
+value = 284
+[[section.item]]
+key = ".pdf"
+value = 179
+[[section.item]]
+key = ".txt"
+value = 160
+[[section.item]]
+key = ".py"
+value = 156
+[[section.item]]
+key = ".make"
+value = 119
+[[section.item]]
+key = ".cmake"
+value = 104
+[[section.item]]
+key = ".o"
+value = 76
+[[section.item]]
+key = ".png"
+value = 70
+[[section.item]]
+key = ".d"
+value = 70
+[[section.item]]
+key = ".timestamp"
+value = 53
+[[section.item]]
+key = ".ts"
+value = 35
+[[section.item]]
+key = ".so"
+value = 29
+[[section.item]]
+key = ".md"
+value = 28
+[[section.item]]
+key = ".log"
+value = 15
+[[section.item]]
+key = ".json"
+value = 13
+[[section.item]]
+key = ".v"
+value = 10
+[[section.item]]
+key = ".glob"
+value = 10
+[[section.item]]
+key = ".sh"
+value = 9
+[[section.item]]
+key = ".aux"
+value = 9
+[[section.item]]
+key = ".internal"
+value = 7
+[[section.item]]
+key = ".vo"
+value = 7
+[[section.item]]
+key = ".vok"
+value = 7
+
+[[section]]
+name = "largest_files"
+[[section.item]]
+key = "reports/trufflehog_results.json"
+value = 1508057385
+[[section.item]]
+key = "data/h5/genesis_trajectory.h5"
+value = 163920744
+[[section.item]]
+key = "data/external/jarvis_dft/jdft_3d-4-26-2020/jdft_3d-4-26-2020.json"
+value = 74456082
+[[section.item]]
+key = "data/external/papers/sutton_barto_2020_rl_intro.pdf"
+value = 73129769
+[[section.item]]
+key = "data/external/hip_main.dat"
+value = 53316318
+[[section.item]]
+key = "target_codex_hve/debug/incremental/algebra_core-1avvw742ei2ur/s-hfpm8niu4c-1guek00-a63oxkly6adlrazk161k6r18r/4lyghe8w4b43vgcgdyd0342rt.o"
+value = 43331712
+[[section.item]]
+key = "target_codex_hve/debug/build/zstd-sys-f8afeb2b4790a37f/out/libzstd.a"
+value = 20078676
+[[section.item]]
+key = "target_codex_hve/debug/incremental/materials_core-2z7hgf6ymk2yq/s-hfpm9d9cvb-0gbqqwr-3jo4aqr9p8lmmws0g9k9fkq1b/7d3z8rvx28ok3q6agrkyljhop.o"
+value = 19125056
+[[section.item]]
+key = "bin/micromamba"
+value = 17542752
+[[section.item]]
+key = "target_codex_hve/debug/incremental/spectral_core-1imdmrdyq4ftk/s-hfpm9f8qx5-0ae94gg-06491xlqzvspwjr04ag2k4tvd/dv76g8b60csg2sl2y20zdgcva.o"
+value = 17375424
+[[section.item]]
+key = "data/external/jarvis_dft/jdft_3d-4-26-2020.zip"
+value = 16551136
+[[section.item]]
+key = "data/external/papers/vanderpol_2023_symmetry_structure_deep_rl_thesis.pdf"
+value = 14329754
+[[section.item]]
+key = "data/external/papers/t_hooft_veltman_1972_dimreg.pdf"
+value = 12616901
+[[section.item]]
+key = "registry/data/external_csv_holding/EH-0018_gaia_dr3_nearby.toml"
+value = 12562979
+[[section.item]]
+key = "data/external/papers/desi_dr2_bao_cosmology_2503.14738.pdf"
+value = 12175089
+[[section.item]]
+key = "data/external/papers/lvc_2021_2111.03634_population_properties_gwtc3.pdf"
+value = 11436130
+[[section.item]]
+key = "data/external/papers/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf"
+value = 11436130
+[[section.item]]
+key = "target_codex_hve/debug/deps/libpest_derive-4ba6d61875ca5268.so"
+value = 11387792
+[[section.item]]
+key = "target_codex_hve/debug/deps/libserde_derive-9fd8cdd4151ce33e.so"
+value = 10770656
+[[section.item]]
+key = "target_codex_hve/debug/build/physical_constants-37265d3f185d4e7b/build_script_build-37265d3f185d4e7b"
+value = 10754600
+[[section.item]]
+key = "target_codex_hve/debug/build/physical_constants-37265d3f185d4e7b/build-script-build"
+value = 10754600
+[[section.item]]
+key = "target_codex_hve/debug/deps/libtracing_attributes-407c62d19d620de2.so"
+value = 10104208
+[[section.item]]
+key = "target_codex_hve/debug/deps/libclap_derive-706243c198df0eaf.so"
+value = 9939512
+[[section.item]]
+key = "target_codex_hve/debug/deps/libzerocopy_derive-2a2a95bff725f73c.so"
+value = 9771976
+[[section.item]]
+key = "target_codex_hve/debug/deps/libnumeric_literals-0af6e40c2508e444.so"
+value = 9765400
+
+[[section]]
+name = "misplaced_candidates"
+[[section.item]]
+key = "warp_ring_integration.png"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-07T03-42-35-916Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-06T18-07-06-041Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-07T16-17-11-571Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-07T06-00-02-456Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-07T16-17-34-559Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-06T18-05-13-525Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-06T18-05-10-096Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-06T18-05-11-770Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-07T06-00-17-316Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-07T03-14-48-690Z.log"
+value = 1
+[[section.item]]
+key = ".playwright-mcp/console-2026-02-06T18-04-12-337Z.log"
+value = 1
+[[section.item]]
+key = "reports/phase5_results_dashboard.png"
+value = 1
+[[section.item]]
+key = "docs/latex/out/MASTER_SYNTHESIS.log"
+value = 1
+[[section.item]]
+key = "docs/latex/out/MATHEMATICAL_FORMALISM.log"
+value = 1
+[[section.item]]
+key = "papers/pdf/moreno_2005_math0512517_zero_divisors_2n_ions.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/de_marrais_2007_math0703745_placeholder_substructures_III.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/de_marrais_2007_07040026_catamaran_sails.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/moreno_2005_math0512516_companion.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/reggiani_2025_251207210_automorphisms_sedenions.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/baez_2002_math0105155_octonions.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/de_marrais_2002_math0207003_placeholder_substructures_I.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/flipped_2024_240303763_polynomial_rings_cd.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/de_marrais_2004_wolfram_science_slides.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/tang_2023_230814768_sedenion_su5.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/de_marrais_2000_math0011260.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/reggiani_2024_241118881_cd_manifold.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/brown_2009_09072047_trigintaduonion_subalgebra.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/reggiani_2025_251213002_cd_algebras.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/de_marrais_2004_math0403113_boxkites_III.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/de_marrais_2006_math0603281_presto_digitization_I.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/de_marrais_2007_07040112_sedenions_xor.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/structure_2025_250511747_cayley_dickson.pdf"
+value = 1
+[[section.item]]
+key = "papers/pdf/tower_2025_251222134_cd_mnemonic.pdf"
+value = 1
+[[section.item]]
+key = "cpp/build/Release/Testing/Temporary/LastTestsFailed.log"
+value = 1
+[[section.item]]
+key = "cpp/build/Release/Testing/Temporary/LastTest.log"
+value = 1
+[[section.item]]
+key = "curated/05_summaries_indexes/gemini_unified_synthesis.png"
+value = 1
+[[section.item]]
+key = "curated/01_theory_frameworks/e8_quasicrystal_projection.png"
+value = 1
+[[section.item]]
+key = "curated/01_theory_frameworks/fano_plane_structure.png"
+value = 1
+[[section.item]]
+key = "curated/01_theory_frameworks/standard_model_associativity_leak.png"
+value = 1
+[[section.item]]
+key = "curated/02_simulations_pde_quantum/fractal_dla_growth.png"
+value = 1
+[[section.item]]
+key = "curated/02_simulations_pde_quantum/tensor_network_entropy.png"
+value = 1
+[[section.item]]
+key = "curated/02_simulations_pde_quantum/lbm_substrate_fluid.png"
+value = 1
+[[section.item]]
+key = "curated/02_simulations_pde_quantum/non_associative_circuit_response.png"
+value = 1
+[[section.item]]
+key = "curated/02_simulations_pde_quantum/cosmology_hurst_analysis.png"
+value = 1
+[[section.item]]
+key = "curated/02_simulations_pde_quantum/rg_flow_evolution.png"
+value = 1
+
+[agent_summary]
+source = "explorer_agent"
+severity_critical_count = 4
+severity_high_count = 4
+severity_medium_count = 3
+severity_low_count = 1
+placeholder_total_hits = 174
+placeholder_distinct_files = 44
+
+[[finding]]
+severity = "critical"
+path = "target"
+summary = "Very large build artifact directory (~122G) should remain untracked and excluded from governance scans."
+recommended_action = "Enforce target cleanup policy and keep ignore coverage explicit."
+
+[[finding]]
+severity = "critical"
+path = "target_codex_hve"
+summary = "Secondary build artifact directory (~630M) with same risk profile as target."
+recommended_action = "Keep untracked and add cleanup target."
+
+[[finding]]
+severity = "critical"
+path = "reports"
+summary = "Large report output tree (~1.5G); generated artifacts should be policy-classified."
+recommended_action = "Separate canonical reports from generated bulk outputs."
+
+[[finding]]
+severity = "critical"
+path = "venv"
+summary = "Repository-local Python environment (~709M) should be external or ignored."
+recommended_action = "Document environment strategy and enforce ignores."
+
+[[finding]]
+severity = "high"
+path = "cpp/build"
+summary = "Compiled output outside canonical artifact policy."
+recommended_action = "Relocate or ignore generated C++ build artifacts."
+
+[[finding]]
+severity = "high"
+path = ".playwright-mcp"
+summary = "Root-level logs and data dumps violate logs/data placement hygiene."
+recommended_action = "Relocate to logs or data and enforce ignore policy."
+
+[[finding]]
+severity = "high"
+path = "rustc-ice-2026-02-08T22_02_14-645331.txt"
+summary = "Crash artifact in repository root."
+recommended_action = "Move crash diagnostics into reports/logs policy path."
+
+[[finding]]
+severity = "high"
+path = "src/__pycache__"
+summary = "Tool caches present in source paths."
+recommended_action = "Maintain ignore and cleanup automation."
+
+[[finding]]
+severity = "medium"
+path = "warp_ring_integration.png"
+summary = "Root-level image artifact should be in docs/assets/reports policy path."
+recommended_action = "Relocate or classify in governance registry."
+
+[[finding]]
+severity = "medium"
+path = "modify_settings.py"
+summary = "Root-level utility script bypasses scripts organization."
+recommended_action = "Move utility scripts into scripts/bin policy path."
+
+[[finding]]
+severity = "medium"
+path = "check_gemini.sh"
+summary = "Root-level utility shell script bypasses scripts organization."
+recommended_action = "Move utility scripts into scripts/bin policy path."
+
+[[finding]]
+severity = "low"
+path = "build/docs"
+summary = "Generated docs path is valid but should remain explicitly generated-only."
+recommended_action = "Keep generated docs regeneration deterministic."
+
+[[quick_win]]
+id = "QW-001"
+action = "Define cleanup target for tool caches and diagnostics"
+status = "todo"
+
+[[quick_win]]
+id = "QW-002"
+action = "Classify canonical vs generated reports under reports policy"
+status = "todo"
+
+[[quick_win]]
+id = "QW-003"
+action = "Normalize root utilities into scripts/bin paths"
+status = "todo"

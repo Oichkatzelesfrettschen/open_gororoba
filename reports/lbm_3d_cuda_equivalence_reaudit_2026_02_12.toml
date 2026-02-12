@@ -1,0 +1,39 @@
+# Re-audit evidence for lbm_3d_cuda CPU/GPU equivalence and cudarc runtime path.
+
+[lbm_3d_cuda_reaudit]
+updated = "2026-02-12"
+verified_utc = "2026-02-12T02:43:46Z"
+crate = "crates/lbm_3d_cuda"
+status = "pass"
+status_token = "PASS"
+backend_policy = "cudarc_runtime_compilation_preferred"
+
+[[command]]
+cmd = "cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence -j$(nproc)"
+result = "pass"
+notes = "10/10 tests passed: uniform, small, large, gradient, high-contrast, mass conservation, momentum evolution, and determinism."
+
+[[command]]
+cmd = "cargo test -p lbm_3d_cuda test_debug_initialization -j$(nproc) -- --nocapture"
+result = "pass"
+notes = "Initialization and one-step evolution aligned with CPU reference; mass error reported as 0.000e0."
+
+[[observation]]
+id = "OBS-001"
+summary = "Deterministic GPU pass confirms stable kernel behavior after API and kernel alignment."
+evidence = "test_gpu_determinism in test_gpu_cpu_equivalence suite."
+
+[[observation]]
+id = "OBS-002"
+summary = "Uniform-field one-step regression no longer injects spurious transverse velocity components."
+evidence = "test_debug_initialization output shows GPU u_y and u_z remain 0.0 in first sampled cells."
+
+[[observation]]
+id = "OBS-003"
+summary = "Cudarc-first note is present in canonical crate documentation."
+evidence = "crates/lbm_3d_cuda/README.md backend policy section."
+
+[artifacts]
+readme = "crates/lbm_3d_cuda/README.md"
+performance_registry = "registry/lbm_gpu_performance.toml"
+program_gate_report = "reports/thesis_program_gate_report.toml"

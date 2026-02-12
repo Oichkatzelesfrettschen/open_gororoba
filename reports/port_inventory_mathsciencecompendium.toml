@@ -1,0 +1,74 @@
+# Reverse-port candidate inventory from MathScienceCompendium.
+
+[port_inventory]
+updated = "2026-02-12"
+source_repo = "~/Github/MathScienceCompendium"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+candidate_count = 6
+
+[[candidate]]
+id = "MSC-001"
+source_path = "src/mathphysics/quantum_lattice_boltzmann.py"
+target_crate = "crates/lbm_core"
+target_module = "quantum_fields"
+summary = "Port D2Q9 quantum extensions (coherence, ZPE field, harmonic scaffold, tau modulation)."
+effort = "M"
+risk = "optional algebra roots dependency; prefer feature-gated integration"
+test_strategy = "deterministic small-grid runs, mass conservation, bounded velocity checks"
+priority = "high"
+
+[[candidate]]
+id = "MSC-002"
+source_path = "src/mathphysics/accelerated_lbm.py"
+target_crate = "crates/lbm_core"
+target_module = "parallel_step"
+summary = "Port accelerated step path as CPU rayon or optional GPU branch."
+effort = "M"
+risk = "GPU path increases dependency surface"
+test_strategy = "numeric parity tests against scalar solver"
+priority = "medium"
+
+[[candidate]]
+id = "MSC-003"
+source_path = "src/mathphysics/algebras/cayley_dickson.py"
+target_crate = "crates/vacuum_frustration"
+target_module = "cd_algebra"
+summary = "Trimmed sedenion-focused CD multiplication and zero-divisor search utilities."
+effort = "L"
+risk = "large algebraic surface; avoid over-porting non-required dimensions"
+test_strategy = "golden multiplication identities and known zero-divisor fixtures"
+priority = "high"
+
+[[candidate]]
+id = "MSC-004"
+source_path = "src/mathphysics/lattice_theory.py"
+target_crate = "crates/lattice_filtration"
+target_module = "e8_lattice"
+summary = "Port E8/Leech generators and theta-series helpers for filtration metrics."
+effort = "S"
+risk = "low"
+test_strategy = "root count, kissing number, and coefficient regression tests"
+priority = "high"
+
+[[candidate]]
+id = "MSC-005"
+source_path = "src/mathphysics/topology_bridge.py"
+target_crate = "crates/gororoba_engine"
+target_module = "topology_geometry"
+summary = "Port persistence/betti extraction bridge for topology-derived diagnostics."
+effort = "M"
+risk = "Rust persistent homology ecosystem selection"
+test_strategy = "point-cloud fixtures with known Betti signatures"
+priority = "medium"
+
+[[candidate]]
+id = "MSC-006"
+source_path = "src/mathphysics/data_handler.py"
+target_crate = "crates/gororoba_engine"
+target_module = "io_parquet"
+summary = "Port parquet snapshot pipeline for deterministic field artifact export."
+effort = "M"
+risk = "Arrow/Parquet dependencies increase compile cost"
+test_strategy = "schema-locked roundtrip tests"
+priority = "medium"

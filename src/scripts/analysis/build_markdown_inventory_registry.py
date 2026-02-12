@@ -95,6 +95,7 @@ DESTINATION_OVERRIDES = {
     "docs/generated/ROADMAP_REGISTRY_MIRROR.md": "registry/roadmap.toml",
     "docs/generated/TODO_REGISTRY_MIRROR.md": "registry/todo.toml",
     "docs/claims/INDEX.md": "registry/claims_domains.toml",
+    "crates/lbm_3d_cuda/README.md": "registry/entrypoint_docs.toml",
 }
 
 

@@ -1,0 +1,466 @@
+# Clean-room mathematical port specification for thesis program integration.
+# Authoritative for planning only; implementation remains hypothesis-driven until validated.
+
+[metadata]
+authoritative = false
+updated = "2026-02-12"
+report_id = "CRPS-2026-02-12"
+scope = "Pure Rust clean-room port design from sibling repositories into open_gororoba"
+intent = "Normalize thesis language, remove non-technical rhetoric, define falsifiable implementation backlog"
+
+[policy]
+warnings_as_errors = true
+ascii_only = true
+registry_first = true
+build_discipline = "cargo clippy --workspace -D warnings; cargo test --workspace; make ascii-check"
+cuda_backend_policy = "Prefer cudarc runtime NVRTC/PTX path; avoid build-time nvcc pipelines unless explicitly scoped."
+email_alerts_allowed = false
+s3_dependencies_allowed = false
+
+[clean_room_constraints]
+code_copy_allowed = false
+implementation_mode = "spec-first reimplementation from mathematical behavior and tests"
+provenance_required = true
+license_gate_required = true
+falsifiability_required = true
+
+[source_inventory]
+source_roots = [
+  "external_ref:MathScienceCompendium",
+  "external_ref:PhysicsForge",
+  "external_ref:lambda-research",
+  "external_ref:ancient_compute",
+  "external_ref:graphics-programming",
+  "data/external/documents_ingest"
+]
+documents_inventory_status = "completed_2026_02_12"
+documents_inventory_ref = "reports/documents_recursive_inventory_2026_02_12.toml"
+documents_inventory_id = "DOCINV-2026-02-12"
+documents_extraction_status = "partial_success_164_of_165"
+documents_extraction_ref = "reports/documents_pdf_extraction_batch_2026_02_12.toml"
+documents_extraction_manifest = "data/external/documents_ingest/MANIFEST.toml"
+documents_extraction_output_root = "data/external/documents_extracted"
+
+[[source_repo]]
+name = "MathScienceCompendium"
+path = "external_ref:MathScienceCompendium"
+license_detected = "GPL-3.0"
+license_risk = "blocked_for_direct_copy_into_gpl2_only_repo"
+port_mode = "clean_room_only"
+
+[[source_repo]]
+name = "PhysicsForge"
+path = "external_ref:PhysicsForge"
+license_detected = "GPL-2.0-only"
+license_risk = "compatible_but_clean_room_requested"
+port_mode = "clean_room_preferred"
+
+[[source_repo]]
+name = "lambda-research"
+path = "external_ref:lambda-research"
+license_detected = "MIT"
+license_risk = "low"
+port_mode = "clean_room_or_direct_with_attribution"
+
+[[source_repo]]
+name = "ancient_compute"
+path = "external_ref:ancient_compute"
+license_detected = "missing_license_file"
+license_risk = "blocked_for_direct_copy"
+port_mode = "algorithmic_reference_only"
+
+[[source_repo]]
+name = "graphics-programming"
+path = "external_ref:graphics-programming"
+license_detected = "mixed_mit_zlib_gpl2_gpl3_sgi"
+license_risk = "subset_based_import_rules_required"
+port_mode = "clean_room_by_default"
+
+[thesis_normalization]
+t1 = "Frustration-metric coupling hypothesis: map signed-graph frustration density F(x) to scalar viscosity modifier phi(x)=exp(-lambda*F(x)) and test against bounded Brans-Dicke/TOV constraints."
+t2 = "Associator-viscosity transport hypothesis: map local non-associativity norm ||m3|| into LBM collision operator and test for thresholded shear-thickening."
+t3 = "Homotopy-time correspondence hypothesis: synthesize m4 correction tensor by minimizing pentagon residual and test epoch alignment against H(z) benchmarks."
+t4 = "Lattice projection engine hypothesis: model 16D->8D filtration collisions and test latency scaling law against inverse-square null alternatives."
+sanity_filter = "All statements are hypotheses until reproduced by local tests and external-source-backed validation."
+
+[[port_unit]]
+id = "PU-001"
+source_repo = "MathScienceCompendium"
+source_path = "src/mathphysics/quantum_lattice_boltzmann.py"
+target_crate = "crates/lbm_core"
+target_module = "quantum_fields"
+math_object = "D2Q9 collision-streaming with field-coupled tau"
+required_outputs = ["deterministic_stepper", "mass_conservation_metrics", "field_coupled_tau_map"]
+required_tests = ["lbm_mass_conservation", "lbm_velocity_bound", "lbm_seed_determinism"]
+
+[[port_unit]]
+id = "PU-002"
+source_repo = "MathScienceCompendium"
+source_path = "src/mathphysics/accelerated_lbm.py"
+target_crate = "crates/lbm_core"
+target_module = "parallel_step"
+math_object = "vectorized streaming/collision equivalence"
+required_outputs = ["cpu_reference_path", "optimized_path", "equivalence_harness"]
+required_tests = ["cpu_vs_optimized_rms_density", "cpu_vs_optimized_rms_velocity"]
+
+[[port_unit]]
+id = "PU-003"
+source_repo = "MathScienceCompendium"
+source_path = "src/mathphysics/algebras/cayley_dickson.py"
+target_crate = "crates/algebra_core"
+target_module = "cayley_dickson_clean_room"
+math_object = "doubling, conjugation, norm, multiplication"
+required_outputs = ["typed_basis", "table_generator", "zero_divisor_scan"]
+required_tests = ["closure_tests", "norm_multiplicativity_up_to_octonions", "sedenion_zero_divisor_examples"]
+
+[[port_unit]]
+id = "PU-004"
+source_repo = "MathScienceCompendium"
+source_path = "src/mathphysics/lattice_theory.py"
+target_crate = "crates/lattice_filtration"
+target_module = "e8_lattice_metrics"
+math_object = "lattice filtration counts and survival spectra"
+required_outputs = ["survival_spectrum_table", "ratio_audit", "null_model_sampler"]
+required_tests = ["count_regression_256_512_1024_2048_4096", "ratio_significance_pvalue"]
+
+[[port_unit]]
+id = "PU-005"
+source_repo = "PhysicsForge"
+source_path = "scripts/equation_extractor.py"
+target_crate = "crates/docpipe"
+target_module = "equation_extract"
+math_object = "symbol/equation extraction from technical corpora"
+required_outputs = ["deterministic_extractor", "schema_checked_catalog"]
+required_tests = ["fixture_equation_parse", "symbol_table_stability"]
+
+[[port_unit]]
+id = "PU-006"
+source_repo = "PhysicsForge"
+source_path = "simulation/cpp/scalar_lattice.cpp"
+target_crate = "crates/vacuum_frustration"
+target_module = "scalar_lattice"
+math_object = "stencil-based scalar evolution for thesis-1 bridge"
+required_outputs = ["scalar_field_solver", "boundary_conditions", "energy_monitor"]
+required_tests = ["energy_boundedness", "grid_refinement_convergence"]
+
+[[port_unit]]
+id = "PU-007"
+source_repo = "PhysicsForge"
+source_path = "simulation/python/noise_budget_analysis.py"
+target_crate = "crates/stats_core"
+target_module = "noise_budget"
+math_object = "noise decomposition and PSD audit"
+required_outputs = ["noise_terms", "fft_psd", "snr_report"]
+required_tests = ["closed_form_noise_cases", "fft_dimensional_sanity"]
+
+[[port_unit]]
+id = "PU-008"
+source_repo = "lambda-research"
+source_path = "language cores and typed term generators"
+target_crate = "crates/neural_homotopy"
+target_module = "typed_term_dataset"
+math_object = "typed term synthesis for m4 search"
+required_outputs = ["typed_tensor_contraction_dataset", "pentagon_residual_loss"]
+required_tests = ["type_safety_checks", "loss_decrease_smoke"]
+
+[[port_unit]]
+id = "PU-009"
+source_repo = "ancient_compute"
+source_path = "emulator and timing scripts"
+target_crate = "crates/gororoba_engine"
+target_module = "latency_harness"
+math_object = "latency scaling instrumentation only"
+required_outputs = ["instruction_timing_sampler", "latency_distribution_audit"]
+required_tests = ["timing_reproducibility", "latency_model_fit"]
+
+[[port_unit]]
+id = "PU-010"
+source_repo = "graphics-programming"
+source_path = "MIT/zlib-compatible math and raster references"
+target_crate = "crates/optics_core"
+target_module = "projection_support"
+math_object = "projection/raster math for lattice visualization only"
+required_outputs = ["camera_projection_math", "grid_projection_debugger"]
+required_tests = ["pixel_projection_regression", "depth_order_sanity"]
+
+[owners]
+primary = "codex"
+secondary = ["explorer-agent-audit", "explorer-agent-port-map", "explorer-agent-gpu-triage"]
+
+[phase_overview]
+phase_0 = "Policy normalization and registry cleanup"
+phase_1 = "Clean-room math kernel extraction"
+phase_2 = "Rust crate scaffolding and interfaces"
+phase_3 = "Test harnesses and falsifiability gates"
+phase_4 = "Performance and scalability benchmarks"
+phase_5 = "Cross-claim validation and external-source audit"
+
+[[roadmap_task]]
+id = "CRP-001"
+phase = "phase_0"
+title = "Remove email alert policy and S3 archive policy from canonical registries"
+owner = "codex"
+effort = "S"
+depends_on = []
+acceptance = "No internal policy references to email alerts or s3:// archive URIs in target registries."
+
+[[roadmap_task]]
+id = "CRP-002"
+phase = "phase_0"
+title = "Regenerate schema signatures after policy edits"
+owner = "codex"
+effort = "S"
+depends_on = ["CRP-001"]
+acceptance = "verify_registry_schema_signatures.py passes."
+
+[[roadmap_task]]
+id = "CRP-003"
+phase = "phase_0"
+title = "Re-run third-party verification gate under warnings-as-errors"
+owner = "codex"
+effort = "S"
+depends_on = ["CRP-001"]
+acceptance = "verify_third_party_sources.py returns PASS."
+
+[[roadmap_task]]
+id = "CRP-004"
+phase = "phase_1"
+title = "Inventory and ingest thesis-relevant document corpus into repo-owned source tree"
+owner = "explorer-agent-port-map"
+effort = "M"
+depends_on = []
+acceptance = "Source list with provenance rows and deduped identifiers."
+
+[[roadmap_task]]
+id = "CRP-005"
+phase = "phase_1"
+title = "Formalize frustration index definition and numeric solver bounds"
+owner = "codex"
+effort = "M"
+depends_on = []
+acceptance = "Documented F(G) definition with exact and approximate solver regimes."
+
+[[roadmap_task]]
+id = "CRP-006"
+phase = "phase_1"
+title = "Define Brans-Dicke coupling mapping constraints and Cassini bound check"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-005"]
+acceptance = "Executable check reports refutation when omega_eff < 40000."
+
+[[roadmap_task]]
+id = "CRP-007"
+phase = "phase_1"
+title = "Normalize thesis language in registry records to falsifiable form"
+owner = "codex"
+effort = "S"
+depends_on = []
+acceptance = "Claims use measurable metrics, thresholds, and refutation conditions."
+
+[[roadmap_task]]
+id = "CRP-008"
+phase = "phase_2"
+title = "Scaffold crates/vacuum_frustration signed-graph API"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-005"]
+acceptance = "SignedGraph API compiles with clippy -D warnings."
+
+[[roadmap_task]]
+id = "CRP-009"
+phase = "phase_2"
+title = "Implement exact frustration solver for small graphs"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-008"]
+acceptance = "Exact solver matches brute-force fixtures up to configured N."
+
+[[roadmap_task]]
+id = "CRP-010"
+phase = "phase_2"
+title = "Implement approximate frustration solver for large graphs"
+owner = "codex"
+effort = "L"
+depends_on = ["CRP-009"]
+acceptance = "Approximate solver reaches stable objective with reproducible seeds."
+
+[[roadmap_task]]
+id = "CRP-011"
+phase = "phase_2"
+title = "Scaffold crates/lbm_core clean-room collision/streaming interfaces"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-005"]
+acceptance = "LBM interfaces compile and expose deterministic step API."
+
+[[roadmap_task]]
+id = "CRP-012"
+phase = "phase_2"
+title = "Inject frustration-derived viscosity into LBM collision operator"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-010", "CRP-011"]
+acceptance = "nu(x) coupling path covered by unit and integration tests."
+
+[[roadmap_task]]
+id = "CRP-013"
+phase = "phase_2"
+title = "Scaffold crates/lattice_filtration survival spectrum engine"
+owner = "codex"
+effort = "M"
+depends_on = []
+acceptance = "Spectrum engine produces deterministic counts for configured dimensions."
+
+[[roadmap_task]]
+id = "CRP-014"
+phase = "phase_2"
+title = "Add Besag-Clifford null model for filtration ratio significance"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-013"]
+acceptance = "p-value outputs reproducible across seeded runs."
+
+[[roadmap_task]]
+id = "CRP-015"
+phase = "phase_2"
+title = "Scaffold crates/neural_homotopy tensor and training data pipeline"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-008"]
+acceptance = "Dataset builder emits typed tensors and passes shape checks."
+
+[[roadmap_task]]
+id = "CRP-016"
+phase = "phase_2"
+title = "Implement pentagon residual loss and sparse m4 serialization"
+owner = "codex"
+effort = "L"
+depends_on = ["CRP-015"]
+acceptance = "Loss decreases on smoke run; m4 output written to registry path."
+
+[[roadmap_task]]
+id = "CRP-017"
+phase = "phase_2"
+title = "Scaffold crates/gororoba_engine cross-layer integration API"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-012", "CRP-014", "CRP-016"]
+acceptance = "Engine pipeline executes deterministic integration smoke case."
+
+[[roadmap_task]]
+id = "CRP-018"
+phase = "phase_3"
+title = "Define falsifiability tests for thesis-1 (omega bound)"
+owner = "codex"
+effort = "S"
+depends_on = ["CRP-012"]
+acceptance = "Test fails when omega_eff below bound and passes otherwise."
+
+[[roadmap_task]]
+id = "CRP-019"
+phase = "phase_3"
+title = "Define falsifiability tests for thesis-2 (percolation shear threshold)"
+owner = "codex"
+effort = "S"
+depends_on = ["CRP-012"]
+acceptance = "Threshold test refutes Newtonian behavior when condition unmet."
+
+[[roadmap_task]]
+id = "CRP-020"
+phase = "phase_3"
+title = "Define falsifiability tests for thesis-3 (epoch-loss alignment)"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-016"]
+acceptance = "Loss curve alignment checks produce pass/fail with explicit residual bounds."
+
+[[roadmap_task]]
+id = "CRP-021"
+phase = "phase_3"
+title = "Define falsifiability tests for thesis-4 (latency law classification)"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-017"]
+acceptance = "Classifier distinguishes inverse-square vs linear/uniform latency profiles."
+
+[[roadmap_task]]
+id = "CRP-022"
+phase = "phase_3"
+title = "Add GPU/CPU parity tests for lbm_3d_cuda and lbm_3d reference"
+owner = "explorer-agent-gpu-triage"
+effort = "M"
+depends_on = ["CRP-011"]
+acceptance = "Uniform, gradient, and high-contrast equivalence tests pass."
+
+[[roadmap_task]]
+id = "CRP-023"
+phase = "phase_3"
+title = "Add post-collision macroscopic parity checks in CUDA path"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-022"]
+acceptance = "No persistent y/z drift in one-step debug parity test."
+
+[[roadmap_task]]
+id = "CRP-024"
+phase = "phase_4"
+title = "Benchmark solver scaling on CPU and GPU with deterministic seeds"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-022"]
+acceptance = "Benchmark report captures throughput, error metrics, and hardware context."
+
+[[roadmap_task]]
+id = "CRP-025"
+phase = "phase_4"
+title = "Benchmark filtration spectrum computation up to target dimensions"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-014"]
+acceptance = "Dimension sweep completes with memory/time profiles and stable counts."
+
+[[roadmap_task]]
+id = "CRP-026"
+phase = "phase_4"
+title = "Benchmark neural homotopy convergence and sparse tensor footprint"
+owner = "codex"
+effort = "M"
+depends_on = ["CRP-016"]
+acceptance = "Training reports include convergence curve and serialized tensor size."
+
+[[roadmap_task]]
+id = "CRP-027"
+phase = "phase_5"
+title = "Map every thesis claim to first-party evidence artifact"
+owner = "codex"
+effort = "S"
+depends_on = ["CRP-018", "CRP-019", "CRP-020", "CRP-021"]
+acceptance = "Claims-evidence map has no orphan claims in scoped thesis set."
+
+[[roadmap_task]]
+id = "CRP-028"
+phase = "phase_5"
+title = "Run online primary-source validation for temporal or external bounds"
+owner = "explorer-agent-port-map"
+effort = "M"
+depends_on = ["CRP-027"]
+acceptance = "Bound values and references logged with retrieval dates and URLs."
+
+[[roadmap_task]]
+id = "CRP-029"
+phase = "phase_5"
+title = "Run full governance gate and strict pre-push gate"
+owner = "codex"
+effort = "S"
+depends_on = ["CRP-027"]
+acceptance = "make governance-gate and make pre-push-gate pass."
+
+[[roadmap_task]]
+id = "CRP-030"
+phase = "phase_5"
+title = "Publish phase summary with open risks and next-step queue"
+owner = "codex"
+effort = "S"
+depends_on = ["CRP-029"]
+acceptance = "Report includes what_changed, why_changed, validation_run, open_risks."

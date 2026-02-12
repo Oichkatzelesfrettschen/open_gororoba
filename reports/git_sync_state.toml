@@ -1,0 +1,18 @@
+# Git synchronization state snapshot for thesis program tracking.
+
+[sync_state]
+updated = "2026-02-12"
+branch = "main"
+remote = "origin"
+fetch_status = "ok"
+pull_status = "skipped_dirty_worktree"
+push_status = "not_run_no_new_commit"
+ahead_count = 1
+behind_count = 0
+notes = "git fetch origin completed; branch is ahead by one commit and worktree is dirty, so pull/push were not executed in this pass."
+
+[governance_failure]
+check = "registry-verify-markdown-owner"
+failing_path = "docs/PHASE1_REMAINING_ROADMAP.md"
+required_fix = "archive unmanaged root markdown and regenerate markdown inventory/governance artifacts"
+status = "resolved"
