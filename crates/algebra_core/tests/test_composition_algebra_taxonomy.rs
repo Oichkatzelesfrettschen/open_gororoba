@@ -18,12 +18,8 @@ fn test_taxonomy_axis1_tensor_product_commutativity() {
     let mut census = CompositionAlgebraCensus::new();
 
     // Tessarines: C x C tensor product (Phase 9 result)
-    let mut tessarines = AlgebraProperties::new(
-        "Tessarines_4D",
-        4,
-        ConstructionMethod::TensorProduct,
-        None,
-    );
+    let mut tessarines =
+        AlgebraProperties::new("Tessarines_4D", 4, ConstructionMethod::TensorProduct, None);
     tessarines.is_commutative = true;
     tessarines.commutativity_percentage = 100.0;
     tessarines.num_samples = 100;
@@ -152,12 +148,8 @@ fn test_taxonomy_axis2_signature_division_law() {
 /// Cannot represent tessarines as any mixed-signature CD algebra
 #[test]
 fn test_taxonomy_categorical_distinction_tensor_vs_cd() {
-    let mut tensor_props = AlgebraProperties::new(
-        "Tessarines",
-        4,
-        ConstructionMethod::TensorProduct,
-        None,
-    );
+    let mut tensor_props =
+        AlgebraProperties::new("Tessarines", 4, ConstructionMethod::TensorProduct, None);
     tensor_props.is_commutative = true;
     tensor_props.commutativity_percentage = 100.0;
     tensor_props.is_associative = true;
@@ -284,22 +276,14 @@ fn test_taxonomy_property_matrix_consistency() {
     hurwitz.invertibility_percentage = 100.0;
 
     // Type B: Tensor product (always commutative)
-    let mut tensor = AlgebraProperties::new(
-        "Tessarines",
-        4,
-        ConstructionMethod::TensorProduct,
-        None,
-    );
+    let mut tensor =
+        AlgebraProperties::new("Tessarines", 4, ConstructionMethod::TensorProduct, None);
     tensor.is_commutative = true;
     tensor.is_associative = true;
 
     // Type C: Exceptional (commutative non-division)
-    let mut exceptional = AlgebraProperties::new(
-        "Albert",
-        27,
-        ConstructionMethod::Exceptional,
-        None,
-    );
+    let mut exceptional =
+        AlgebraProperties::new("Albert", 27, ConstructionMethod::Exceptional, None);
     exceptional.is_commutative = true;
     exceptional.is_associative = false;
     exceptional.is_division_algebra = false;
@@ -374,9 +358,9 @@ fn test_taxonomy_phase9_distinction_extended() {
 
     // Tensor product family: always 100% commutative and associative
     let tensor_algebraic_properties = vec![
-        (true, true),  // commutative, associative
-        (true, true),  // all tensors have this pattern
-        (true, true),  // cannot vary
+        (true, true), // commutative, associative
+        (true, true), // all tensors have this pattern
+        (true, true), // cannot vary
     ];
 
     // CD family: always 0% commutative for dim >= 4
@@ -388,8 +372,8 @@ fn test_taxonomy_phase9_distinction_extended() {
 
     // Exceptional family: 100% commutative, mostly non-associative
     let exceptional_algebraic_properties = vec![
-        (true, false),  // commutative, non-associative
-        (true, false),  // all exceptional have this pattern
+        (true, false), // commutative, non-associative
+        (true, false), // all exceptional have this pattern
     ];
 
     // Verify no overlap: tensor != CD
@@ -407,7 +391,10 @@ fn test_taxonomy_phase9_distinction_extended() {
     for (e_comm, _) in &exceptional_algebraic_properties {
         for (cd_comm, _) in &cd_algebraic_properties {
             // Exceptional (true) differs from CD (false)
-            assert!(e_comm != cd_comm, "Exceptional and CD differ in commutativity");
+            assert!(
+                e_comm != cd_comm,
+                "Exceptional and CD differ in commutativity"
+            );
         }
     }
 }
@@ -418,15 +405,24 @@ fn test_taxonomy_phase9_distinction_extended() {
 fn test_taxonomy_zero_divisor_structure_mapping() {
     // CD family: zero-divisors depend on signature
     let hurwitz_no_zd = MetricSignature::hurwitz(2);
-    assert!(!hurwitz_no_zd.has_zero_divisors(), "Hurwitz has no zero-divisors");
+    assert!(
+        !hurwitz_no_zd.has_zero_divisors(),
+        "Hurwitz has no zero-divisors"
+    );
 
     let mixed_has_zd = MetricSignature::mixed(vec![1, -1]);
-    assert!(mixed_has_zd.has_zero_divisors(), "Mixed signature has zero-divisors");
+    assert!(
+        mixed_has_zd.has_zero_divisors(),
+        "Mixed signature has zero-divisors"
+    );
 
     // Tensor products: always have zero-divisors (z,0) family
     // (but these are "simple" - can be factored or ignored)
     let tensor_zd_present = true;
-    assert!(tensor_zd_present, "Tensor products contain (a,0) zero-divisors");
+    assert!(
+        tensor_zd_present,
+        "Tensor products contain (a,0) zero-divisors"
+    );
 
     // Exceptional (Albert): no zero-divisors by structure
     let albert_no_zd = false;
