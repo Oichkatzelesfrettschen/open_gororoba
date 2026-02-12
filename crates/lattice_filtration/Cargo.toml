@@ -14,6 +14,7 @@ serde = { workspace = true, features = ["derive"] }
 [dev-dependencies]
 stats_core = { path = "../stats_core" }
 proptest = "1.5"
+criterion = { workspace = true }
 
 [[bench]]
 name = "filtration_bench"

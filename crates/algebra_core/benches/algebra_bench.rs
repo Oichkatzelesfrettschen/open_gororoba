@@ -9,10 +9,9 @@
 //! - fBm algorithm comparison (Hosking vs diffusionx)
 
 use algebra_core::{
-    batch_associator_norms, batch_associator_norms_parallel, cd_associator, cd_associator_norm,
-    cd_multiply, cd_multiply_simd, find_zero_divisors,
-    fractal_analysis::{calculate_hurst, generate_fbm},
-    gaussian_wave_packet, oct_multiply, stormer_verlet_step, FieldParams,
+    batch_associator_norms, batch_associator_norms_parallel, calculate_hurst, cd_associator,
+    cd_associator_norm, cd_multiply, cd_multiply_simd, find_zero_divisors, gaussian_wave_packet,
+    generate_fbm, oct_multiply, stormer_verlet_step, FieldParams,
 };
 use criterion::{black_box, criterion_group, criterion_main, BenchmarkId, Criterion};
 use diffusionx::simulation::{continuous::FBm, prelude::*};

@@ -8,6 +8,7 @@ repository = "https://github.com/Oichkatzelesfrettschen/open_gororoba"
 [dependencies]
 algebra_core = { path = "../algebra_core" }
 quantum_core = { path = "../quantum_core" }
+cosmology_core = { path = "../cosmology_core" }
 burn = { version = "0.16", features = ["train", "autodiff"] }
 burn-wgpu = { version = "0.16", optional = true }
 burn-cuda = { version = "0.16", optional = true }
@@ -17,6 +18,8 @@ serde = { workspace = true, features = ["derive"] }
 
 [dev-dependencies]
 approx = { workspace = true }
+criterion = { workspace = true }
+proptest = "1.5"
 
 [features]
 default = ["wgpu-backend"]
