@@ -571,7 +571,6 @@ reproducibility_class = "non_deterministic"
 [[experiment]]
 id = "E-027"
 title = "Percolation Threshold vs Frustration Correlation (Thesis 1 Validation)"
-status = "deferred"
 status_note = "Inconclusive (p=0.605). Deferred to Phase 2 for grid upscaling (64^3 or 128^3), lambda sweep, and percolation algorithm refinement. See reports/e027_decision_protocol.toml."
 deferral_date = "2026-02-13"
 alternative_primary = "STPT-006"
