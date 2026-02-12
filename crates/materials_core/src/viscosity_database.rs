@@ -110,10 +110,7 @@ pub fn list_materials() -> Vec<String> {
 /// Get materials by phase.
 pub fn get_materials_by_phase(phase: &str) -> Vec<MaterialViscosity> {
     let db = load_viscosity_database();
-    db.values()
-        .filter(|m| m.phase == phase)
-        .cloned()
-        .collect()
+    db.values().filter(|m| m.phase == phase).cloned().collect()
 }
 
 /// Get materials with quantum properties (superfluids).
@@ -273,7 +270,10 @@ mod tests {
     #[test]
     fn test_get_ice_vii() {
         let ice = get_material("ice_VII").unwrap();
-        assert_eq!(ice.crystal_structure, Some("body_centered_cubic".to_string()));
+        assert_eq!(
+            ice.crystal_structure,
+            Some("body_centered_cubic".to_string())
+        );
         assert!((ice.density_kg_m3 - 1650.0).abs() < 1.0);
         assert!(ice.shear_modulus_GPa.is_some());
     }
@@ -339,13 +339,19 @@ mod tests {
     #[test]
     fn test_load_lambda_results() {
         let results = load_lambda_results();
-        assert!(results.len() >= 16, "Should have lambda results for all materials");
+        assert!(
+            results.len() >= 16,
+            "Should have lambda results for all materials"
+        );
     }
 
     #[test]
     fn test_get_lambda_he4() {
         let lambda = get_lambda("He4_normal").unwrap();
-        assert!((lambda - 594.7381).abs() < 0.01, "He4_normal lambda mismatch");
+        assert!(
+            (lambda - 594.7381).abs() < 0.01,
+            "He4_normal lambda mismatch"
+        );
     }
 
     #[test]
@@ -357,7 +363,10 @@ mod tests {
     #[test]
     fn test_get_lambda_superfluid() {
         let lambda = get_lambda("He3_superfluid_A").unwrap();
-        assert!(lambda > 900000.0, "He3 superfluid should have ultra-strong coupling");
+        assert!(
+            lambda > 900000.0,
+            "He3 superfluid should have ultra-strong coupling"
+        );
     }
 
     #[test]
@@ -393,11 +402,17 @@ mod tests {
         let lambda_cold = get_lambda("He4_superfluid").unwrap(); // 1.5 K
         let lambda_warm = get_lambda("He4_normal").unwrap(); // 4.2 K
 
-        assert!(lambda_cold > lambda_warm, "Colder material should have higher lambda");
+        assert!(
+            lambda_cold > lambda_warm,
+            "Colder material should have higher lambda"
+        );
 
         // Check approximate 1/T scaling: lambda_cold / lambda_warm ~ T_warm / T_cold
         let ratio = lambda_cold / lambda_warm;
         let temp_ratio = 4.2 / 1.5;
-        assert!((ratio - temp_ratio).abs() < 0.2, "Lambda should scale as 1/T");
+        assert!(
+            (ratio - temp_ratio).abs() < 0.2,
+            "Lambda should scale as 1/T"
+        );
     }
 }
