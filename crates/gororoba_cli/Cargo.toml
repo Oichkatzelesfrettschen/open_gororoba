@@ -210,8 +210,12 @@ path = "src/bin/e027_equivalence_adapter.rs"
 name = "homotopy-viscosity-equivalence"
 path = "src/bin/homotopy_viscosity_equivalence.rs"
 
+[[bin]]
+name = "thesis-program-sweep"
+path = "src/bin/thesis_program_sweep.rs"
+
 [dependencies]
-docpipe = { path = "../docpipe" }
+docpipe = { path = "../docpipe", features = ["fallback"] }
 algebra_core = { path = "../algebra_core" }
 cosmology_core = { path = "../cosmology_core" }
 gr_core = { path = "../gr_core" }
@@ -221,11 +225,14 @@ quantum_core = { path = "../quantum_core" }
 spectral_core = { path = "../spectral_core" }
 lbm_core = { path = "../lbm_core" }
 lbm_3d = { path = "../lbm_3d" }
+lbm_3d_cuda = { path = "../lbm_3d_cuda", optional = true }
 stats_core = { path = "../stats_core", features = ["gpu"] }
 data_core = { path = "../data_core" }
 scrolls_core = { path = "../scrolls_core" }
 snia_core = { path = "../snia_core" }
 vacuum_frustration = { path = "../vacuum_frustration" }
+neural_homotopy = { path = "../neural_homotopy" }
+lattice_filtration = { path = "../lattice_filtration" }
 ndarray = { workspace = true }
 rand = { workspace = true }
 rand_chacha = { workspace = true }
@@ -248,4 +255,5 @@ env_logger = { workspace = true }
 
 [features]
 default = []
+gpu = ["lbm_3d_cuda"]
 hdf5-export = ["data_core/hdf5-export"]
