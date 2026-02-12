@@ -63,10 +63,7 @@ pub fn compute_frustration_index(
 ///
 /// Uses a greedy approach with exhaustive search on small subgraphs.
 /// Time complexity: O(2^E) in worst case, but pruning helps significantly.
-fn exact_frustration_solver(
-    edges: &[(usize, usize, i32)],
-    num_nodes: usize,
-) -> FrustrationResult {
+fn exact_frustration_solver(edges: &[(usize, usize, i32)], num_nodes: usize) -> FrustrationResult {
     let total_edges = edges.len();
 
     // For very small graphs, try all possible sign configurations
@@ -79,10 +76,7 @@ fn exact_frustration_solver(
 }
 
 /// Brute force frustration solver for very small graphs (<= 20 edges).
-fn brute_force_frustration(
-    edges: &[(usize, usize, i32)],
-    num_nodes: usize,
-) -> FrustrationResult {
+fn brute_force_frustration(edges: &[(usize, usize, i32)], num_nodes: usize) -> FrustrationResult {
     let total_edges = edges.len();
     if total_edges > 20 {
         return greedy_frustration_solver(edges, num_nodes);
@@ -310,12 +304,7 @@ mod tests {
     #[test]
     fn test_larger_graph() {
         // 4-cycle with alternating negative edges
-        let edges = vec![
-            (0, 1, -1),
-            (1, 2, 1),
-            (2, 3, -1),
-            (3, 0, 1),
-        ];
+        let edges = vec![(0, 1, -1), (1, 2, 1), (2, 3, -1), (3, 0, 1)];
         let result = compute_frustration_index(&edges, 4);
         assert!(result.min_flips <= edges.len());
     }

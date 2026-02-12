@@ -177,7 +177,11 @@ mod tests {
         let dim = 4;
         let graph = SignedGraph::from_psi_matrix(dim, |i, j| {
             // Dummy psi: alternating +1/-1
-            if (i + j) % 2 == 0 { 1 } else { -1 }
+            if (i + j) % 2 == 0 {
+                1
+            } else {
+                -1
+            }
         });
 
         assert_eq!(graph.node_count(), 4);
@@ -187,9 +191,7 @@ mod tests {
     #[test]
     fn test_signed_graph_node_lookup() {
         let dim = 8;
-        let graph = SignedGraph::from_psi_matrix(dim, |i, j| {
-            if (i * j) % 2 == 0 { 1 } else { -1 }
-        });
+        let graph = SignedGraph::from_psi_matrix(dim, |i, j| if (i * j) % 2 == 0 { 1 } else { -1 });
 
         for i in 0..dim {
             let node = graph.node_for_basis(i).unwrap();
@@ -226,6 +228,9 @@ mod tests {
         let graph = SignedGraph::from_psi_matrix(dim, |_i, _j| 1);
 
         let (_balanced, unbalanced) = graph.count_balanced_cycles();
-        assert_eq!(unbalanced, 0, "All-positive graph should have all balanced cycles");
+        assert_eq!(
+            unbalanced, 0,
+            "All-positive graph should have all balanced cycles"
+        );
     }
 }

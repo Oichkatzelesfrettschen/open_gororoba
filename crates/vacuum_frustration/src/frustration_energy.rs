@@ -249,7 +249,11 @@ mod tests {
         // Reference: 1 meV = 1.602e-22 J
         const MEV_TO_JOULES: f64 = 1.602e-22;
         assert!(e0 > 0.0, "e0 should be positive, got {}", e0);
-        assert!(e0 < 10.0 * MEV_TO_JOULES, "e0 should be < 10 meV, got {:.3e} J", e0);
+        assert!(
+            e0 < 10.0 * MEV_TO_JOULES,
+            "e0 should be < 10 meV, got {:.3e} J",
+            e0
+        );
     }
 
     #[test]
@@ -259,7 +263,11 @@ mod tests {
         // Sedenions: associator norms ~ O(1), E_0 ~ mean_norm * 1 meV
         const MEV_TO_JOULES: f64 = 1.602e-22;
         assert!(e0 > 0.0);
-        assert!(e0 < 10.0 * MEV_TO_JOULES, "e0 should be < 10 meV, got {:.3e} J", e0);
+        assert!(
+            e0 < 10.0 * MEV_TO_JOULES,
+            "e0 should be < 10 meV, got {:.3e} J",
+            e0
+        );
     }
 
     #[test]

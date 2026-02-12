@@ -158,12 +158,7 @@ impl PercolationDetector {
                     }
 
                     // Start BFS from this seed
-                    let channel = self.bfs_channel(
-                        x, y, z,
-                        velocity_field,
-                        threshold,
-                        next_id,
-                    );
+                    let channel = self.bfs_channel(x, y, z, velocity_field, threshold, next_id);
 
                     if !channel.cells.is_empty() {
                         channels.push(channel);
@@ -271,11 +266,8 @@ pub fn auto_velocity_threshold(velocity_field: &[[f64; 3]]) -> f64 {
         .collect();
 
     let mean = velocities.iter().sum::<f64>() / (velocities.len() as f64);
-    let variance = velocities
-        .iter()
-        .map(|&v| (v - mean).powi(2))
-        .sum::<f64>()
-        / (velocities.len() as f64);
+    let variance =
+        velocities.iter().map(|&v| (v - mean).powi(2)).sum::<f64>() / (velocities.len() as f64);
     let stddev = variance.sqrt();
 
     mean + 1.5 * stddev
@@ -369,7 +361,7 @@ pub fn correlate_with_frustration(
 
     // Approximate p-value using normal approximation (df ~ n_ch + n_bg)
     // For simplicity, use standard normal CDF: p = 2 * Phi(-|t|)
-    use statrs::distribution::{Normal, ContinuousCDF};
+    use statrs::distribution::{ContinuousCDF, Normal};
     let normal = Normal::new(0.0, 1.0).unwrap();
     let p_value = 2.0 * normal.cdf(-t_stat.abs());
 
@@ -449,9 +441,9 @@ mod tests {
 
         // Create connected cells (cardinal directions)
         // At (0,0,0), (1,0,0), (0,1,0) - should form one channel
-        velocity_field[0] = [0.8, 0.0, 0.0];     // (0,0,0)
-        velocity_field[1] = [0.8, 0.0, 0.0];     // (1,0,0)
-        velocity_field[4] = [0.8, 0.0, 0.0];     // (0,1,0)
+        velocity_field[0] = [0.8, 0.0, 0.0]; // (0,0,0)
+        velocity_field[1] = [0.8, 0.0, 0.0]; // (1,0,0)
+        velocity_field[4] = [0.8, 0.0, 0.0]; // (0,1,0)
 
         let channels = detector.detect_channels(&velocity_field, 0.5);
         assert_eq!(channels.len(), 1);
@@ -464,8 +456,8 @@ mod tests {
         let mut velocity_field = vec![[0.0, 0.0, 0.0]; 8];
 
         // Place cells at opposite corners (diagonal) - should NOT connect
-        velocity_field[0] = [1.0, 0.0, 0.0];  // (0,0,0)
-        velocity_field[7] = [1.0, 0.0, 0.0];  // (1,1,1)
+        velocity_field[0] = [1.0, 0.0, 0.0]; // (0,0,0)
+        velocity_field[7] = [1.0, 0.0, 0.0]; // (1,1,1)
 
         let channels = detector.detect_channels(&velocity_field, 0.5);
         assert_eq!(channels.len(), 2);
@@ -495,12 +487,12 @@ mod tests {
         let mut velocity_field = vec![[0.0, 0.0, 0.0]; 64];
 
         // Create a single channel with two connected cells
-        velocity_field[0] = [1.0, 0.0, 0.0];  // u_mag = 1.0 at (0,0,0)
-        velocity_field[1] = [0.8, 0.0, 0.0];  // u_mag = 0.8 at (1,0,0) - adjacent to (0,0,0)
+        velocity_field[0] = [1.0, 0.0, 0.0]; // u_mag = 1.0 at (0,0,0)
+        velocity_field[1] = [0.8, 0.0, 0.0]; // u_mag = 0.8 at (1,0,0) - adjacent to (0,0,0)
 
         let channels = detector.detect_channels(&velocity_field, 0.5);
-        assert_eq!(channels.len(), 1);  // One connected channel
-        assert_eq!(channels[0].size, 2);  // Two cells
+        assert_eq!(channels.len(), 1); // One connected channel
+        assert_eq!(channels[0].size, 2); // Two cells
         assert_eq!(channels[0].max_velocity, 1.0);
         let expected_mean = (1.0 + 0.8) / 2.0;
         assert!((channels[0].mean_velocity - expected_mean).abs() < 1e-14);
@@ -508,11 +500,7 @@ mod tests {
 
     #[test]
     fn test_auto_threshold() {
-        let velocity_field = vec![
-            [0.0, 0.0, 0.0],
-            [1.0, 0.0, 0.0],
-            [2.0, 0.0, 0.0],
-        ];
+        let velocity_field = vec![[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [2.0, 0.0, 0.0]];
         let threshold = auto_velocity_threshold(&velocity_field);
         assert!(threshold > 0.0);
     }
@@ -535,7 +523,7 @@ mod tests {
             cells: vec![(0, 0, 0), (1, 0, 0), (0, 1, 0), (1, 1, 0)],
         };
 
-        let frustration_field = vec![0.3; 4096];  // Uniform frustration
+        let frustration_field = vec![0.3; 4096]; // Uniform frustration
         let result = correlate_with_frustration(&[channel], &frustration_field);
 
         assert_eq!(result.n_channel, 4);
