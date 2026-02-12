@@ -26,7 +26,13 @@ impl HamiltonianND {
     /// Create a new Hamiltonian for an n-dimensional lattice
     pub fn new(dims: Vec<usize>, alpha: f64, g: f64, j: f64) -> Self {
         let n: usize = dims.iter().product();
-        Self { n, dims, alpha, g, j }
+        Self {
+            n,
+            dims,
+            alpha,
+            g,
+            j,
+        }
     }
 
     /// Get Cartesian coordinates for spin index
@@ -45,7 +51,7 @@ impl HamiltonianND {
     fn distance(&self, i: usize, j: usize) -> f64 {
         let coords_i = self.index_to_coords(i);
         let coords_j = self.index_to_coords(j);
-        
+
         let mut dist_sq = 0.0;
         for (ci, cj) in coords_i.iter().zip(coords_j.iter()) {
             let delta = (*ci as f64) - (*cj as f64);
@@ -64,24 +70,36 @@ impl HamiltonianND {
         let mut h = Array2::<Complex64>::zeros((dim_hilbert, dim_hilbert));
 
         // Pauli matrices
-        let sz = Array2::from_shape_vec((2, 2), vec![
-            Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0),
-            Complex64::new(0.0, 0.0), Complex64::new(-1.0, 0.0),
-        ]).unwrap();
+        let sz = Array2::from_shape_vec(
+            (2, 2),
+            vec![
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(0.0, 0.0),
+                Complex64::new(-1.0, 0.0),
+            ],
+        )
+        .unwrap();
 
-        let sx = Array2::from_shape_vec((2, 2), vec![
-            Complex64::new(0.0, 0.0), Complex64::new(1.0, 0.0),
-            Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0),
-        ]).unwrap();
+        let sx = Array2::from_shape_vec(
+            (2, 2),
+            vec![
+                Complex64::new(0.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(1.0, 0.0),
+                Complex64::new(0.0, 0.0),
+            ],
+        )
+        .unwrap();
 
         // ZZ terms: sum_{i<j} J/dist^alpha * Sz_i Sz_j
         for i in 0..self.n {
-            for j in (i+1)..self.n {
+            for j in (i + 1)..self.n {
                 let dist = self.distance(i, j);
                 if dist.abs() < 1e-10 {
                     continue; // Skip self-distance
                 }
-                
+
                 let coupling = self.j / dist.powf(self.alpha);
 
                 // Kron product: ... x Sz_i x ... x Sz_j x ...
@@ -151,11 +169,7 @@ impl HamiltonianND {
     }
 
     /// Kronecker product of two matrices
-    fn kron_two_ops(
-        &self,
-        a: &Array2<Complex64>,
-        b: &Array2<Complex64>,
-    ) -> Array2<Complex64> {
+    fn kron_two_ops(&self, a: &Array2<Complex64>, b: &Array2<Complex64>) -> Array2<Complex64> {
         let (am, an) = a.dim();
         let (bm, bn) = b.dim();
         let mut result = Array2::zeros((am * bm, an * bn));
@@ -192,9 +206,9 @@ impl HamiltonianND {
         // SVD via nalgebra (simpler than ndarray for now)
         let h_matrix = DMatrix::from_fn(dim_a, dim_b, |i, j| psi_mat[[i, j]]);
         let svd = h_matrix.svd(true, true);
-        
+
         let singular_values = svd.singular_values;
-        
+
         // Entropy from squared singular values
         let mut entropy = 0.0;
         for s in singular_values.iter() {
@@ -217,7 +231,7 @@ impl HamiltonianND {
         t: f64,
     ) -> Vec<Complex64> {
         let n_states = eigenvalues.len();
-        
+
         // Compute coefficients: c_n = <E_n|psi_0>
         let mut coeffs = vec![Complex64::new(0.0, 0.0); n_states];
         for n in 0..n_states {
@@ -231,7 +245,7 @@ impl HamiltonianND {
         for n in 0..n_states {
             let phase = Complex64::new(0.0, -eigenvalues[n] * t).exp();
             let c_n_t = coeffs[n] * phase;
-            
+
             for i in 0..psi_0.len() {
                 psi_t[i] += eigenvectors[[i, n]] * c_n_t;
             }
@@ -269,7 +283,12 @@ mod tests {
     #[test]
     fn test_entropy_zero_state() {
         let ham = HamiltonianND::new(vec![4], 1.0, 0.5, 1.0);
-        let psi = vec![Complex64::new(1.0, 0.0), Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0), Complex64::new(0.0, 0.0)];
+        let psi = vec![
+            Complex64::new(1.0, 0.0),
+            Complex64::new(0.0, 0.0),
+            Complex64::new(0.0, 0.0),
+            Complex64::new(0.0, 0.0),
+        ];
         let s = ham.entanglement_entropy(&psi);
         // Ground state has S approx 0
         assert!(s.abs() < 1e-10);
