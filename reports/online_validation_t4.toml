@@ -1,0 +1,22 @@
+# Online validation report for STPT-031 (Thesis 4 emergent gravity analogy).
+
+[online_validation]
+id = "STPT-031"
+updated = "2026-02-12"
+claim = "Hash-collision latency storms derive inverse-square gravity behavior"
+verdict = "unsupported"
+status_token = "UNSUPPORTED"
+
+[[evidence]]
+source = "Schmid (2012) on Newton shell theorem and inverse-square law geometry"
+url = "https://arxiv.org/abs/1201.6534"
+relevance = "Provides an explicit geometric derivation context for inverse-square gravitational behavior under spherical symmetry."
+
+[[evidence]]
+source = "Pagh and Rodler (2004) Cuckoo Hashing"
+url = "https://doi.org/10.1016/j.jalgor.2003.12.002"
+relevance = "Formal hashing analysis frames collision behavior in algorithmic complexity terms, not a derivation of physical inverse-square force laws."
+
+[inference]
+summary = "The proposed latency-to-gravity relationship is currently an analogy, not an externally validated physical derivation."
+recommended_action = "Use STPT-009 strictly as computational falsification experiment; avoid promoting physical equivalence claims without new evidence."

@@ -1,0 +1,32 @@
+# Batch extraction report for imported PDF corpus.
+
+[meta]
+updated = "2026-02-12"
+status = "active"
+status_token = "ACTIVE"
+authoritative = true
+report_id = "DOCEXTRACT-2026-02-12"
+
+[inputs]
+manifest = "data/external/documents_ingest/MANIFEST.toml"
+output_root = "data/external/documents_extracted"
+
+[summary]
+manifest_paper_count = 165
+extracted_paper_count = 164
+failed_paper_count = 1
+image_asset_count = 20173
+table_csv_count = 125
+equations_tex_count = 0
+equation_catalog_rows = 42
+
+[quality]
+backend_primary = "pdfium"
+backend_fallback = "lopdf_pdf_extract"
+image_only_mode_enabled = true
+
+[[failure]]
+id = "DOCFAIL-001"
+paper_id = "malitson-1962-sapphire"
+reason = "no text or figures extracted from source PDF"
+next_step = "route through OCR/renderer pipeline and re-ingest"

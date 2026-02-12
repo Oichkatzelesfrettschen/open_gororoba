@@ -1,0 +1,2403 @@
+# Full recursive import manifest for thesis keyword candidates.
+
+[meta]
+updated = "2026-02-12"
+status = "active"
+status_token = "ACTIVE"
+authoritative = true
+manifest_id = "DOCIMP-2026-02-12"
+source_scope = "keyword-filtered recursive import from local Documents corpus into repo-owned data tree"
+
+[import]
+source_root_hint = "Documents corpus (local workstation)"
+destination_root = "data/external/documents_ingest"
+candidate_count = 298
+imported_count = 298
+missing_count = 0
+md_converted_to_txt_count = 1
+imported_bytes = 345795515
+notes = "All imported artifacts now resolve inside repository paths; no absolute workstation paths retained in this manifest."
+
+[[file]]
+id = "DOCIMP-0001"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Pathions3.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Pathions3.pdf"
+source_extension = ".pdf"
+bytes = 7374006
+sha256 = "9e099c71a2a3f11f6feb10312cf53d8f76db05316dd4c77ee963d12a234fd3b3"
+
+[[file]]
+id = "DOCIMP-0002"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.txt"
+source_extension = ".txt"
+bytes = 42992
+sha256 = "9a99ec1a9981d05748754312f3b8007dcf36e7584e4e248dcff4c1965feef36b"
+
+[[file]]
+id = "DOCIMP-0003"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9712019_carroll_1997_lecture_notes_general_relativity.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9712019_carroll_1997_lecture_notes_general_relativity.txt"
+source_extension = ".txt"
+bytes = 499074
+sha256 = "9e90e8a0609758a16c2c25fba6b7c1beb2c6d25ffffbc12d9a64c81d83b0687c"
+
+[[file]]
+id = "DOCIMP-0004"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2509.19430_pablos_takacs_2025_alpha_clustering_geometry.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2509.19430_pablos_takacs_2025_alpha_clustering_geometry.txt"
+source_extension = ".txt"
+bytes = 61402
+sha256 = "7709f65a840cf7060bede25c2193e95e5393959e7a8f840d7d5c9f56b5b67687"
+
+[[file]]
+id = "DOCIMP-0005"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.pdf"
+source_extension = ".pdf"
+bytes = 589012
+sha256 = "9c766906f32852c89caf6b9aec08fd3d6ef134bee939e3bd70046b1b20da5c32"
+
+[[file]]
+id = "DOCIMP-0006"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.txt"
+source_extension = ".txt"
+bytes = 33401
+sha256 = "cad96d88cffe6154659cfb30b482ccba3340d20e5b20d779f7d89bd72e85f82d"
+
+[[file]]
+id = "DOCIMP-0007"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/universal_entanglement_correction_2405.10230.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/universal_entanglement_correction_2405.10230.txt"
+source_extension = ".txt"
+bytes = 36069
+sha256 = "51108726d2d71a23f860c760235ce85ff150661cc12c99c2ed2efa22fbe636ae"
+
+[[file]]
+id = "DOCIMP-0008"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.pdf"
+source_extension = ".pdf"
+bytes = 108620
+sha256 = "3b96c5632dfc5fb5d19d2a6ffc0ce0ace07ca184965c96238182b96a99f6bfd4"
+
+[[file]]
+id = "DOCIMP-0009"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.txt"
+source_extension = ".txt"
+bytes = 66551
+sha256 = "06732f6d4fb484a027b91bcd7a740ba4a185d3ace20bee26f2cd4ec48bed59c4"
+
+[[file]]
+id = "DOCIMP-0010"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/des_y6_cosmology_2601.14559.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/des_y6_cosmology_2601.14559.pdf"
+source_extension = ".pdf"
+bytes = 4832597
+sha256 = "bced63f554eccba48005f47ad570d0b41399805084ecfb1d6865e070f2b27031"
+
+[[file]]
+id = "DOCIMP-0011"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/stinga_torrea_2010_0910.2569v2_extension_harnack_fractional_operators.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/stinga_torrea_2010_0910.2569v2_extension_harnack_fractional_operators.txt"
+source_extension = ".txt"
+bytes = 62348
+sha256 = "cbb78fa65f55f3602eeb38fbff870f1c1920d06ce36018dcd2fe75a08f96ee66"
+
+[[file]]
+id = "DOCIMP-0012"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9410014_barbero_1994_real_ashtekar_variables.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9410014_barbero_1994_real_ashtekar_variables.txt"
+source_extension = ".txt"
+bytes = 18121
+sha256 = "350279c142d71e7a5ff53433aee03cfde5b414fef552b1601d62384f147e9420"
+
+[[file]]
+id = "DOCIMP-0013"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Lorentzian_Threads_2025.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Lorentzian_Threads_2025.txt"
+source_extension = ".txt"
+bytes = 88813
+sha256 = "6554a5c04ec85b72a0e39c05d0ab0fbe8a60d4f77a51a1811a7ba9465a024462"
+
+[[file]]
+id = "DOCIMP-0014"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9702026_pfenning_ford_1997_quantum_inequality_restrictions.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9702026_pfenning_ford_1997_quantum_inequality_restrictions.pdf"
+source_extension = ".pdf"
+bytes = 142740
+sha256 = "c77ede864c527c7773507e73dabc0054b8c7220ba3f1fb96caba50d90ceb1207"
+
+[[file]]
+id = "DOCIMP-0015"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/vidal_2005_cond-mat0512165_entanglement_renormalization.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/vidal_2005_cond-mat0512165_entanglement_renormalization.pdf"
+source_extension = ".pdf"
+bytes = 263673
+sha256 = "e1fdcd321a9a368e7851d144bc6c651b31796eceb738492efe82ec167e6983f4"
+
+[[file]]
+id = "DOCIMP-0016"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/sagave_2009_0711.4499v3_dg_algebras_derived_ainfty.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/sagave_2009_0711.4499v3_dg_algebras_derived_ainfty.pdf"
+source_extension = ".pdf"
+bytes = 388574
+sha256 = "c4db8b800578a1ed1ed49a53a732eb3c2b221722ddea6ce3f584f37cae2cb155"
+
+[[file]]
+id = "DOCIMP-0017"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Rodal_2025_Metamaterial_Gravity.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Rodal_2025_Metamaterial_Gravity.txt"
+source_extension = ".txt"
+bytes = 38030
+sha256 = "8535a0abc7fbb4899783a907a912547e1d6d3109d7dddf3ccb88b361227532df"
+
+[[file]]
+id = "DOCIMP-0018"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.txt"
+source_extension = ".txt"
+bytes = 65284
+sha256 = "b3f9b2dd5a066a6a9cb07fa538ca7b9a4a8e0f46d13306dfd4ba2623316a42ba"
+
+[[file]]
+id = "DOCIMP-0019"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.pdf"
+source_extension = ".pdf"
+bytes = 404058
+sha256 = "b9f0db61ad9cc06ccabcdcdfb0a8cee407b2e282f1116c4b1658ed376d015b03"
+
+[[file]]
+id = "DOCIMP-0020"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.txt"
+source_extension = ".txt"
+bytes = 62797
+sha256 = "133522cff93ff862bd4e32124cef389f72687af9bdd0fe48c3b554964429b040"
+
+[[file]]
+id = "DOCIMP-0021"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/gwtc3_2021_arxiv2111.03606.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/gwtc3_2021_arxiv2111.03606.txt"
+source_extension = ".txt"
+bytes = 472075
+sha256 = "d31c89cc6111a229a213992e5aa923cb72af5e34004f347a023b364bd2abf453"
+
+[[file]]
+id = "DOCIMP-0022"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.txt"
+source_extension = ".txt"
+bytes = 820450
+sha256 = "27516c439e165d278768e7c74a5fee2849dbc1a9ccef5b66751f8bd95dcd9402"
+
+[[file]]
+id = "DOCIMP-0023"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/dragovich_padic_math_physics_review_1705.04758.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/dragovich_padic_math_physics_review_1705.04758.txt"
+source_extension = ".txt"
+bytes = 133970
+sha256 = "d3f5be2d7b33461065b0abaf3db48264b174a5392797a67bf96c51b266163b39"
+
+[[file]]
+id = "DOCIMP-0024"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.pdf"
+source_extension = ".pdf"
+bytes = 223353
+sha256 = "5fbca853f9f9d5de248fe3027958f547b1026dd65c8e44115c16e991be1dd7d0"
+
+[[file]]
+id = "DOCIMP-0025"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.18433v1_clifford_split_octonion_conformal_space.pdf"
+source_extension = ".pdf"
+bytes = 2472812
+sha256 = "74111b6e4be468583efae99f8700c5f5427b50fd46e41945dd90a84175809289"
+
+[[file]]
+id = "DOCIMP-0026"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2505.11747v2_structure_cayley_dickson.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2505.11747v2_structure_cayley_dickson.pdf"
+source_extension = ".pdf"
+bytes = 369591
+sha256 = "815b797e690def4bd889ea30b17ecd715f3009ed60526a76ea9fd92f45aab7e2"
+
+[[file]]
+id = "DOCIMP-0027"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/researchsquare_2023_rs-3109229_metamaterial_perfect_absorber.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/researchsquare_2023_rs-3109229_metamaterial_perfect_absorber.txt"
+source_extension = ".txt"
+bytes = 33580
+sha256 = "794812db1e2856dc9674a8755bb2213f4896d2356d3e3308c2297af47ab7f624"
+
+[[file]]
+id = "DOCIMP-0028"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/stinga_torrea_2010_0910.2569v2_extension_harnack_fractional_operators.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/stinga_torrea_2010_0910.2569v2_extension_harnack_fractional_operators.pdf"
+source_extension = ".pdf"
+bytes = 362590
+sha256 = "8790df99f4cc825c004341ccdeedbc3872b280c77f8dcc14b7da0c47c0ddd029"
+
+[[file]]
+id = "DOCIMP-0029"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.pdf"
+source_extension = ".pdf"
+bytes = 596143
+sha256 = "cbe7e0805bc8ff98f5bca11681c2651854d9c814abb8da5b29f6c4a11d370a2e"
+
+[[file]]
+id = "DOCIMP-0030"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/ligo_webinar_gwtc3_population_o3_G2102458.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/ligo_webinar_gwtc3_population_o3_G2102458.pdf"
+source_extension = ".pdf"
+bytes = 7442430
+sha256 = "f23ef101d0eaf5a665d2c9c76d2a890967ab64e4a1d60e76cc75a331958b5bdc"
+
+[[file]]
+id = "DOCIMP-0031"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_physics0111203_smith_et_al_2002_effective_eps_mu_from_rt.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_physics0111203_smith_et_al_2002_effective_eps_mu_from_rt.pdf"
+source_extension = ".pdf"
+bytes = 179816
+sha256 = "622ba15ba37273bf1e02db1d62578651e99df06dc8d6a476f3ce31218127754c"
+
+[[file]]
+id = "DOCIMP-0032"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/reggiani_2024_2411.18881.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/reggiani_2024_2411.18881.pdf"
+source_extension = ".pdf"
+bytes = 226232
+sha256 = "12b3e6adcc432f2590b6883624778830e988a96dfb4a337f8ef5f5b5290e9d18"
+
+[[file]]
+id = "DOCIMP-0033"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1609.00026_freedman_headrick_2016_bit_threads.pdf"
+source_extension = ".pdf"
+bytes = 1014315
+sha256 = "98a0efccd5ed3f3adc523445ebb82a248793268bd9114a9b56d84b62b2373362"
+
+[[file]]
+id = "DOCIMP-0034"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kaviraj_2021_jhep03_219_parisi_sourlas_rg.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kaviraj_2021_jhep03_219_parisi_sourlas_rg.pdf"
+source_extension = ".pdf"
+bytes = 1742744
+sha256 = "09f160ab48b697215569fde3e16ab882addcc409da4725b6e77bdcfcb0bfaae4"
+
+[[file]]
+id = "DOCIMP-0035"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.txt"
+source_extension = ".txt"
+bytes = 75773
+sha256 = "99283b35e141706741b3458373688a96323ad07fab08fc9dcaa6bfb99a05d3c9"
+
+[[file]]
+id = "DOCIMP-0036"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1005.1891_gross_vitells_2010_look_elsewhere_effect.pdf"
+source_extension = ".pdf"
+bytes = 235923
+sha256 = "edd8948d1fbba4b7082ffe63c5846474bdb4a51a3a09cca122ba53d7eb786fd3"
+
+[[file]]
+id = "DOCIMP-0037"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.pdf"
+source_extension = ".pdf"
+bytes = 222411
+sha256 = "628bf2d787097a32c1991a6192e255b0092e689bafa8b0495d7cc96a2bb9ef30"
+
+[[file]]
+id = "DOCIMP-0038"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1601.05416_dong_harlow_wall_2016_entanglement_wedge_reconstruction.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1601.05416_dong_harlow_wall_2016_entanglement_wedge_reconstruction.pdf"
+source_extension = ".pdf"
+bytes = 421836
+sha256 = "0e005ea46b67299bcb5169a1861c8e93f52529b9e7e6b4028c138ee9654cadd2"
+
+[[file]]
+id = "DOCIMP-0039"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_math0105155_baez_2002_octonions.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_math0105155_baez_2002_octonions.pdf"
+source_extension = ".pdf"
+bytes = 526062
+sha256 = "f8087fb91b10cdbee2157e8eec8c33ac6b918b0de2c8c1fd16b4d8183f0868cc"
+
+[[file]]
+id = "DOCIMP-0040"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/universal_entanglement_correction_2405.10230.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/universal_entanglement_correction_2405.10230.pdf"
+source_extension = ".pdf"
+bytes = 896582
+sha256 = "88632c1e4f510da5441b4dbb6b0d64d4f47fdb99f948c729da1d80bd8fafa9dc"
+
+[[file]]
+id = "DOCIMP-0041"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/carlstrom_2001_wheels_report.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/carlstrom_2001_wheels_report.txt"
+source_extension = ".txt"
+bytes = 110315
+sha256 = "6e3776422448e5b08ceecfa45de77d61e24829ff9bef8a49dd1a936302ab6444"
+
+[[file]]
+id = "DOCIMP-0042"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2007_math0703745_placeholder_substructures_III.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2007_math0703745_placeholder_substructures_III.pdf"
+source_extension = ".pdf"
+bytes = 150837
+sha256 = "56a6662680ef99beaae71abbdffbf55895f3b74184806075cb4cc9e640539cca"
+
+[[file]]
+id = "DOCIMP-0043"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/moreno_2005_math0512517_zero_divisors_2n_ions.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/moreno_2005_math0512517_zero_divisors_2n_ions.pdf"
+source_extension = ".pdf"
+bytes = 179042
+sha256 = "32fe067046f230b7b8f1f30fef9411170ea9223b68ec31de4bc27b61cc73d129"
+
+[[file]]
+id = "DOCIMP-0044"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9606001_chamseddine_connes_1996_spectral_action_principle.pdf"
+source_extension = ".pdf"
+bytes = 196251
+sha256 = "2c5cdd1bd8da1dcc65d90cb2d28d17e8d4cddd9697af1eb7387128f15d47b756"
+
+[[file]]
+id = "DOCIMP-0045"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.txt"
+source_extension = ".txt"
+bytes = 88425
+sha256 = "e2b9ffca9190304d8e043a1ad94482e0091d2cffac15249edf7b833cb2c667e2"
+
+[[file]]
+id = "DOCIMP-0046"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.txt"
+source_extension = ".txt"
+bytes = 41813
+sha256 = "e869fbfb97def4b2a5d3ef5bb024dac5171e543482ca8bd327209926300400b6"
+
+[[file]]
+id = "DOCIMP-0047"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9603053_connes_1996_gravity_coupled_with_matter.txt"
+source_extension = ".txt"
+bytes = 67564
+sha256 = "34be3bbd903b7725e7686450053cbf5155918c03eb40576b2d83aff3eaade0bf"
+
+[[file]]
+id = "DOCIMP-0048"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.pdf"
+source_extension = ".pdf"
+bytes = 168282
+sha256 = "2de07e909b17c5a5117b4021c0a42d2ed3deeedad318a446c233de63d2cbf9f3"
+
+[[file]]
+id = "DOCIMP-0049"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/mera_quantum_computer_entanglement_2412.18602.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mera_quantum_computer_entanglement_2412.18602.pdf"
+source_extension = ".pdf"
+bytes = 1914747
+sha256 = "f76e5fe7bf2cbfe3ad0bdf9369db23f1afde5a47d7a16ff55bcf48090e0ccb55"
+
+[[file]]
+id = "DOCIMP-0050"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.pdf"
+source_extension = ".pdf"
+bytes = 693869
+sha256 = "6f0df8d48c7d331203247a81eddd44c3e037f88a02feb2fd1eb439a656029b56"
+
+[[file]]
+id = "DOCIMP-0051"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_pseudodiff_0303045.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_pseudodiff_0303045.txt"
+source_extension = ".txt"
+bytes = 26286
+sha256 = "40775373328a673e7a1ab7787a00320535bea47fc5bac337daf25a4fd510c833"
+
+[[file]]
+id = "DOCIMP-0052"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2306.16213_agazie_et_al_2023_nanograv_15yr_gwb.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2306.16213_agazie_et_al_2023_nanograv_15yr_gwb.pdf"
+source_extension = ".pdf"
+bytes = 3095832
+sha256 = "3a33495ae465768f832d5e55efff0769a6a6c41564ce8714e3f51ba929785aeb"
+
+[[file]]
+id = "DOCIMP-0053"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.pdf"
+source_extension = ".pdf"
+bytes = 130831
+sha256 = "1207c7576cf33f7c540f657af588f32389e14ba5926c65564ec033d4e91aa2ca"
+
+[[file]]
+id = "DOCIMP-0054"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/reggiani_2024_2411.18881.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/reggiani_2024_2411.18881.txt"
+source_extension = ".txt"
+bytes = 59976
+sha256 = "329b4a11ec932fac8f8a007168945dfc58ee17beb193f84b8753b224f678bf9d"
+
+[[file]]
+id = "DOCIMP-0055"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.pdf"
+source_extension = ".pdf"
+bytes = 423052
+sha256 = "d2539a55d6c63c598ee00b26bc1e7320a77c6fcdd58d17663ef7cdca2af1bc1b"
+
+[[file]]
+id = "DOCIMP-0056"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1904.05684_kontou_sanders_2020_quantum_energy_inequalities_review.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1904.05684_kontou_sanders_2020_quantum_energy_inequalities_review.pdf"
+source_extension = ".pdf"
+bytes = 349422
+sha256 = "de4ff595c746c67433dfa50be6a8659fd05e1e1eaf04277fac0a44e3965d44ee"
+
+[[file]]
+id = "DOCIMP-0057"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.pdf"
+source_extension = ".pdf"
+bytes = 3587505
+sha256 = "bc6879758ea4280a5c7638270718224fb4a1959a2017dbe029453fcb1959935f"
+
+[[file]]
+id = "DOCIMP-0058"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9702026_pfenning_ford_1997_quantum_inequality_restrictions.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9702026_pfenning_ford_1997_quantum_inequality_restrictions.txt"
+source_extension = ".txt"
+bytes = 24067
+sha256 = "332764c37cc5ed7268fe9b9299aa6435fa9f38d39c987bfdbb0e8f03bfb7fe44"
+
+[[file]]
+id = "DOCIMP-0059"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/JHEP_10_2025_079.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/JHEP_10_2025_079.txt"
+source_extension = ".txt"
+bytes = 84482
+sha256 = "5013a2d781a4ef206b911813ac7e1eede130571ed5f13eb50e0fd8929bc2cf57"
+
+[[file]]
+id = "DOCIMP-0060"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_wolfram_science_slides.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_wolfram_science_slides.txt"
+source_extension = ".txt"
+bytes = 69997
+sha256 = "03c068111128f78b50f84e169d6b433458d637b756c8411b9a5b5f821285a834"
+
+[[file]]
+id = "DOCIMP-0061"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1207.5805_fewster_2012_lectures_quantum_energy_inequalities.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1207.5805_fewster_2012_lectures_quantum_energy_inequalities.txt"
+source_extension = ".txt"
+bytes = 29348
+sha256 = "60a0d11a35f2ea473b560aaeddbccf36ee039268430e42d54871e173991ca166"
+
+[[file]]
+id = "DOCIMP-0062"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_wavelet_spectral_0012019.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_wavelet_spectral_0012019.txt"
+source_extension = ".txt"
+bytes = 16530
+sha256 = "5ff0f01f043347812475a9f07053dbd5e6202d96b63c78ff11cfce85e3b17a6e"
+
+[[file]]
+id = "DOCIMP-0063"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2510.09864_cms_2025_discovery_suppressed_oo_collisions.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2510.09864_cms_2025_discovery_suppressed_oo_collisions.txt"
+source_extension = ".txt"
+bytes = 103837
+sha256 = "28ad4b99e0ad4ef1a3adf1f22df7ec35712d9a1955c76a010c7e3c2353240c2d"
+
+[[file]]
+id = "DOCIMP-0064"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kass_raftery_1995_bayes_factors.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kass_raftery_1995_bayes_factors.txt"
+source_extension = ".txt"
+bytes = 24
+sha256 = "bfe719d1c68277189402336c3dfe046c0b89ae887c52c23466847efe4374a90a"
+
+[[file]]
+id = "DOCIMP-0065"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.pdf"
+source_extension = ".pdf"
+bytes = 208813
+sha256 = "550e4a027c0ead746040167912911e92ed77f3bd73dfb7ad702990e168e1966c"
+
+[[file]]
+id = "DOCIMP-0066"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/hogg_1999_distance_measures.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/hogg_1999_distance_measures.pdf"
+source_extension = ".pdf"
+bytes = 235473
+sha256 = "d1d01604d15d656951f720c0ca22ecfe8bd0621c6eb702269511171d8cdeaac0"
+
+[[file]]
+id = "DOCIMP-0067"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Landy_2008_Thermal_Metamaterials.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Landy_2008_Thermal_Metamaterials.txt"
+source_extension = ".txt"
+bytes = 24894
+sha256 = "99f34e0eccd5f505030f258db3c76f632d1ef1e1a0f65bade95e69d77fa69060"
+
+[[file]]
+id = "DOCIMP-0068"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Babar_Weaver_Gold_Optical.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Babar_Weaver_Gold_Optical.pdf"
+source_extension = ".pdf"
+bytes = 176610
+sha256 = "7fb74d9bb70c68214a5f3e18f0701b087794f960032e23bedfe06a859e5debbb"
+
+[[file]]
+id = "DOCIMP-0069"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.txt"
+source_extension = ".txt"
+bytes = 55470
+sha256 = "96a6244dbe663be16585909fff1aa287b13d16c48613be78cdb6c43556cd72e7"
+
+[[file]]
+id = "DOCIMP-0070"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.txt"
+source_extension = ".txt"
+bytes = 52830
+sha256 = "8a6617231e33608bc96f0c789848e441a1ce15a805fc2eacb804952d2ff9571e"
+
+[[file]]
+id = "DOCIMP-0071"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_math0011260.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_math0011260.pdf"
+source_extension = ".pdf"
+bytes = 441893
+sha256 = "20a66711a71e41714fa2305a03a05ae4b9e8d90d65ee52f439bdeb733ff9ea45"
+
+[[file]]
+id = "DOCIMP-0072"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.pdf"
+source_extension = ".pdf"
+bytes = 394757
+sha256 = "5269c0e7ff5e2e14bed7f753757e9927a4dd42f5a4b87b06d4481ed15c71c194"
+
+[[file]]
+id = "DOCIMP-0073"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2509.07008_mazeliauskas_2025_energy_loss_baseline_oo.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2509.07008_mazeliauskas_2025_energy_loss_baseline_oo.pdf"
+source_extension = ".pdf"
+bytes = 825671
+sha256 = "dc9c51649032a7ec3c917ff0243b550792e966902b729f2c45a7cd6cea96fe55"
+
+[[file]]
+id = "DOCIMP-0074"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/caffarelli_silvestre_2007_math0608640v2_extension_fractional_laplacian.txt"
+source_extension = ".txt"
+bytes = 33159
+sha256 = "37cf72df884925aa97f636bc37336ddf3f7bb9ca909833a06cf46d8be2e7dee9"
+
+[[file]]
+id = "DOCIMP-0075"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/abdi_2007_bonferroni_sidak_corrections.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/abdi_2007_bonferroni_sidak_corrections.txt"
+source_extension = ".txt"
+bytes = 14957
+sha256 = "93db71f5caf8f216c79f93c729cb4382da0a4341e0eedc036302de7a9424fd25"
+
+[[file]]
+id = "DOCIMP-0076"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.pdf"
+source_extension = ".pdf"
+bytes = 249216
+sha256 = "a943c4d4120fc8c35316c9901fc0fa867daf00bda371aa1eb03cfca6d09f80a9"
+
+[[file]]
+id = "DOCIMP-0077"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/holm_1979_sequentially_rejective_multiple_test_procedure.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/holm_1979_sequentially_rejective_multiple_test_procedure.txt"
+source_extension = ".txt"
+bytes = 27463
+sha256 = "85d612d7a911c4e223403e5f955e10ac146e563bca427aacefbe866f73b35e72"
+
+[[file]]
+id = "DOCIMP-0078"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.pdf"
+source_extension = ".pdf"
+bytes = 330386
+sha256 = "36d4c72353ed82ecd5958ec60d52d82b9696e2955c8e85ebf55d407ddbff414f"
+
+[[file]]
+id = "DOCIMP-0079"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/entanglement_scaling_continuous_TN_2410.23624.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/entanglement_scaling_continuous_TN_2410.23624.txt"
+source_extension = ".txt"
+bytes = 39301
+sha256 = "473557d1b4706c2c16fcb30fa8d382acfecbbd62e85a3c41a0ecc69cc8ae8159"
+
+[[file]]
+id = "DOCIMP-0080"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.txt"
+source_extension = ".txt"
+bytes = 31994
+sha256 = "abb81120f158a338b280fdf4a2e445bf39f52e54557897678fcabcf096210f7e"
+
+[[file]]
+id = "DOCIMP-0081"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/JHEP_01_2025_025.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/JHEP_01_2025_025.txt"
+source_extension = ".txt"
+bytes = 108304
+sha256 = "417ed4e178d4fa0f8ddd8be384214f577d1f895eb91a1b4b36bfa3b68b0eccaa"
+
+[[file]]
+id = "DOCIMP-0082"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2510.09864_cms_2025_discovery_suppressed_oo_collisions.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2510.09864_cms_2025_discovery_suppressed_oo_collisions.pdf"
+source_extension = ".pdf"
+bytes = 1130037
+sha256 = "bb11ec81920f9527c95f72b97cc52d9ede26e412560f654845cd3518a06a7955"
+
+[[file]]
+id = "DOCIMP-0083"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1505.04753_jacobson_2015_entanglement_equilibrium.txt"
+source_extension = ".txt"
+bytes = 60450
+sha256 = "2c4faa51bb8a2c60e1857e250b896320db39624744951c38281095d87a2b0574"
+
+[[file]]
+id = "DOCIMP-0084"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.txt"
+source_extension = ".txt"
+bytes = 149137
+sha256 = "65f3636ca0015573c64fcf7874ba0fe0de0b545ef3bc77253d8ffe41e37b0be6"
+
+[[file]]
+id = "DOCIMP-0085"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0903.5082_zurek_2009_quantum_darwinism.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0903.5082_zurek_2009_quantum_darwinism.pdf"
+source_extension = ".pdf"
+bytes = 843308
+sha256 = "1c887b195b8b2e23ccc436e153fc4e7506c75aa7f8ae997ca2da4e6489b9fd17"
+
+[[file]]
+id = "DOCIMP-0086"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0306060_larranaga_2003_introduction_to_bosonic_string_theory.txt"
+source_extension = ".txt"
+bytes = 35579
+sha256 = "8bae641acb8629a3ce1c39538fcde65e941297c5255cd456135758fc10ef6f16"
+
+[[file]]
+id = "DOCIMP-0087"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1701.05984_liu_sun_cao_2017_cant_hear_drum_3d.txt"
+source_extension = ".txt"
+bytes = 58516
+sha256 = "03d4e34bd054303cbe64fe28c49b45c402a87ac1bf8d8aebc0f33f798864571d"
+
+[[file]]
+id = "DOCIMP-0088"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2007_07040112_sedenions_xor.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2007_07040112_sedenions_xor.pdf"
+source_extension = ".pdf"
+bytes = 252285
+sha256 = "11b098adace527d5c7c8c723a09468ccc681a64b8fe24c0390e5bbf22eda2d10"
+
+[[file]]
+id = "DOCIMP-0089"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.pdf"
+source_extension = ".pdf"
+bytes = 284042
+sha256 = "4c36445978cf6afbb8d912975e79b2a3724ab422e3be6b6fa756548a90653478"
+
+[[file]]
+id = "DOCIMP-0090"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2509.07008_mazeliauskas_2025_energy_loss_baseline_oo.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2509.07008_mazeliauskas_2025_energy_loss_baseline_oo.txt"
+source_extension = ".txt"
+bytes = 43440
+sha256 = "064e019dbbe3f007abd4593660788916b9d35aa068725f8b95d42d4a3b1e39f5"
+
+[[file]]
+id = "DOCIMP-0091"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.pdf"
+source_extension = ".pdf"
+bytes = 468228
+sha256 = "0048d573ffb2efd0e1d335c89b54acb24e00787a82f60acc888835fe5f17a577"
+
+[[file]]
+id = "DOCIMP-0092"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/White_2021_Casimir_Warp.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/White_2021_Casimir_Warp.txt"
+source_extension = ".txt"
+bytes = 41204
+sha256 = "8db9d424d9f4dcb9d0f2589f3aff78015c3b114d43a409823d7e2debac4a58b0"
+
+[[file]]
+id = "DOCIMP-0093"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/pastawski_yoshida_harlow_preskill_2015_1503.06237_happy_code.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/pastawski_yoshida_harlow_preskill_2015_1503.06237_happy_code.pdf"
+source_extension = ".pdf"
+bytes = 4496178
+sha256 = "55572e7133514f4adc54f5bfb025111fc3fcb911c87ca22bae0a9e30955d1e05"
+
+[[file]]
+id = "DOCIMP-0094"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.pdf"
+source_extension = ".pdf"
+bytes = 113224
+sha256 = "4624ea2fb4d318ad118e333446e66a3af77c744d7192cbffe0742915ad33d4ff"
+
+[[file]]
+id = "DOCIMP-0095"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_multidim_wavelets_0612049.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_multidim_wavelets_0612049.pdf"
+source_extension = ".pdf"
+bytes = 282629
+sha256 = "0e51350ae56fa3faf46fd208879b2db2ae6b8aea2aa41378c99c07c86d60e641"
+
+[[file]]
+id = "DOCIMP-0096"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/des_y6_cosmology_2601.14559.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/des_y6_cosmology_2601.14559.txt"
+source_extension = ".txt"
+bytes = 198648
+sha256 = "41147072f42ce5896cbe366a300f97e24ce11334da0b61af39b806f86c274c86"
+
+[[file]]
+id = "DOCIMP-0097"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Pozar_2005_Microwave_Engineering_Transitions.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Pozar_2005_Microwave_Engineering_Transitions.pdf"
+source_extension = ".pdf"
+bytes = 560226
+sha256 = "8456a1e8124251330a47da3784815c4995f937937edab8cba4aa8e8b05066a50"
+
+[[file]]
+id = "DOCIMP-0098"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/pirsa_08010005_vidal_entanglement_renormalization_talk.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/pirsa_08010005_vidal_entanglement_renormalization_talk.txt"
+source_extension = ".txt"
+bytes = 6758
+sha256 = "4d85211e5ff9ec586fc5158fcb71f01e04c94a7382c7cfad9b04953932884c4b"
+
+[[file]]
+id = "DOCIMP-0099"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2512.22134v3_cayley_dickson_tower_mnemonic.pdf"
+source_extension = ".pdf"
+bytes = 368706
+sha256 = "5e2e39feff3716ece2116071dcc6139bb2835478805e22ec9a69af7a43834281"
+
+[[file]]
+id = "DOCIMP-0100"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0903.5082_zurek_2009_quantum_darwinism.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0903.5082_zurek_2009_quantum_darwinism.txt"
+source_extension = ".txt"
+bytes = 80570
+sha256 = "b9f617bda1851dd93dba42ed63060abce937165b4581465e1114847696095978"
+
+[[file]]
+id = "DOCIMP-0101"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_math0403113_boxkites_III.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_math0403113_boxkites_III.txt"
+source_extension = ".txt"
+bytes = 41481
+sha256 = "a4ae47cafa3e61bf4cb8311cd1244d86dcaf82ba7e81f64bdb8b1e636a602613"
+
+[[file]]
+id = "DOCIMP-0102"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/ligo_webinar_gwtc3_population_o3_G2102458.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/ligo_webinar_gwtc3_population_o3_G2102458.txt"
+source_extension = ".txt"
+bytes = 34599
+sha256 = "7bee2723872fbdaff332fcb00284de299e460761e6edca259f85c5e5c3e159ea"
+
+[[file]]
+id = "DOCIMP-0103"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2000_math0011260.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2000_math0011260.txt"
+source_extension = ".txt"
+bytes = 201039
+sha256 = "e630361093bb2041d5eb54b3cfde5d3dd3603328cb76fb3fafe5c7417e3e29fb"
+
+[[file]]
+id = "DOCIMP-0104"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9712019_carroll_1997_lecture_notes_general_relativity.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9712019_carroll_1997_lecture_notes_general_relativity.pdf"
+source_extension = ".pdf"
+bytes = 1583209
+sha256 = "d4cbfeed3a18370cb7e1a256da6fa7de722982ad7f6a146b4fc0fe14a6bebf6c"
+
+[[file]]
+id = "DOCIMP-0105"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Pathions2.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Pathions2.pdf"
+source_extension = ".pdf"
+bytes = 304671
+sha256 = "4ce77adf6d0ac2cdde814d7f93ccf4b26da7cfe172a53ff5c18b3f6629a4cf3a"
+
+[[file]]
+id = "DOCIMP-0106"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2105.03079_santiago_schuster_visser_2021_generic_warp_drives.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2105.03079_santiago_schuster_visser_2021_generic_warp_drives.pdf"
+source_extension = ".pdf"
+bytes = 663131
+sha256 = "4dca80f871be164599c4bb6917b833fd40b781dd27e023f567046e747cdf52d7"
+
+[[file]]
+id = "DOCIMP-0107"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2006_math0603281_presto_digitization_I.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2006_math0603281_presto_digitization_I.pdf"
+source_extension = ".pdf"
+bytes = 402016
+sha256 = "3ca3892d929f027deb676e17586c2a4fbde0762fca30717f8841cd363459ac5c"
+
+[[file]]
+id = "DOCIMP-0108"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/nosek_et_al_2018_preregistration_revolution_osf_2dxu5.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/nosek_et_al_2018_preregistration_revolution_osf_2dxu5.pdf"
+source_extension = ".pdf"
+bytes = 221013
+sha256 = "937416ea98b92b0df93cd3ab40fa8edfd6b285d9fdfef152ee277faed33bd783"
+
+[[file]]
+id = "DOCIMP-0109"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9612030_immirzi_1996_real_and_complex_connections.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9612030_immirzi_1996_real_and_complex_connections.pdf"
+source_extension = ".pdf"
+bytes = 110522
+sha256 = "316ffcb718bf5b0f78e415aa5d6e6b02b1a230edf95b3718060396985232ee86"
+
+[[file]]
+id = "DOCIMP-0110"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2006.12611_abbott_et_al_2020_gw190814_mass_gap.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2006.12611_abbott_et_al_2020_gw190814_mass_gap.txt"
+source_extension = ".txt"
+bytes = 194140
+sha256 = "9bc2faa0888f6a60e6450dd4934a0a864009c6c7137a87a0a5ec91a2b496baf1"
+
+[[file]]
+id = "DOCIMP-0111"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/huebschmann_2008_0809.4791v1_construction_ainfty_structures.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/huebschmann_2008_0809.4791v1_construction_ainfty_structures.pdf"
+source_extension = ".pdf"
+bytes = 380911
+sha256 = "c13d7c26a74bca1f55701debbd92873ea897372676b24920581063db1b5c6d65"
+
+[[file]]
+id = "DOCIMP-0112"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2509.19430_pablos_takacs_2025_alpha_clustering_geometry.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2509.19430_pablos_takacs_2025_alpha_clustering_geometry.pdf"
+source_extension = ".pdf"
+bytes = 1695330
+sha256 = "8956975a256c215d09ff5c838b514ac4a6880b9961fdda167c59cf4a9899e6d2"
+
+[[file]]
+id = "DOCIMP-0113"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Pathions1.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Pathions1.pdf"
+source_extension = ".pdf"
+bytes = 22877680
+sha256 = "035dd224affcf76e3a8a6aed64dae226231c87ef353718f6de1e2e2e46ab15a8"
+
+[[file]]
+id = "DOCIMP-0114"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.pdf"
+source_extension = ".pdf"
+bytes = 203299
+sha256 = "98524443dc2728b87016ecac9c4e33ad7bccac30de70ccd64fd1f47416f9a7cc"
+
+[[file]]
+id = "DOCIMP-0115"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2407.18908_fuchs_2024_constant_velocity_subluminal_warp.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2407.18908_fuchs_2024_constant_velocity_subluminal_warp.txt"
+source_extension = ".txt"
+bytes = 63536
+sha256 = "839c6792094afd668b3f68ecc78e4fd30e75713320e1a75d4b6d50ec1d87ca4e"
+
+[[file]]
+id = "DOCIMP-0116"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_math0403113_boxkites_III.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_math0403113_boxkites_III.pdf"
+source_extension = ".pdf"
+bytes = 206494
+sha256 = "3ebb75f053d225d8602fa0e70157fcbae40a8d42ef807c75501ecc704ed10872"
+
+[[file]]
+id = "DOCIMP-0117"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/reggiani_2025_251213002_cd_algebras.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/reggiani_2025_251213002_cd_algebras.pdf"
+source_extension = ".pdf"
+bytes = 845244
+sha256 = "469f13cd838152fd661ac6e4585658542c68532a04ce1c7c38b26645bf35adc9"
+
+[[file]]
+id = "DOCIMP-0118"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0301032_mirror.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0301032_mirror.pdf"
+source_extension = ".pdf"
+bytes = 423052
+sha256 = "d2539a55d6c63c598ee00b26bc1e7320a77c6fcdd58d17663ef7cdca2af1bc1b"
+
+[[file]]
+id = "DOCIMP-0119"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/evenbly_vidal_tnr_mera_1502.05385.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/evenbly_vidal_tnr_mera_1502.05385.pdf"
+source_extension = ".pdf"
+bytes = 1668158
+sha256 = "181278b9b077b0d86644820e817f864d420fcef3ad90891be86171608aa2393a"
+
+[[file]]
+id = "DOCIMP-0120"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.txt"
+source_extension = ".txt"
+bytes = 18490
+sha256 = "34cff53620da862dc7e8f0ce783e770f90d40ae1aac4668c7f2d4b9e70b7937d"
+
+[[file]]
+id = "DOCIMP-0121"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kadeishvili_1980_math0504437v1_homology_fiber_spaces.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kadeishvili_1980_math0504437v1_homology_fiber_spaces.pdf"
+source_extension = ".pdf"
+bytes = 109971
+sha256 = "af476afd4e5eee7abd19b8217076975864362350cf4c63f596f0ff783a2e1ae2"
+
+[[file]]
+id = "DOCIMP-0122"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kaviraj_2022_jhep08_290_random_field_phi3.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kaviraj_2022_jhep08_290_random_field_phi3.pdf"
+source_extension = ".pdf"
+bytes = 1028384
+sha256 = "f50637a20567be8de1804efc1e2f292b6a953a1526c016cab53bac2dadf92e04"
+
+[[file]]
+id = "DOCIMP-0123"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/White_2021_Casimir_Warp.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/White_2021_Casimir_Warp.pdf"
+source_extension = ".pdf"
+bytes = 2024021
+sha256 = "1580be671a957993b796344cb55cfd9b99ea2dbdb37cb57327c4205f005732b5"
+
+[[file]]
+id = "DOCIMP-0124"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1312.7856_faulkner_et_al_2014_gravity_from_entanglement.txt"
+source_extension = ".txt"
+bytes = 146948
+sha256 = "213250ad790a09693a7273407145826412911b44d5e1181392f3c2cf359baa9f"
+
+[[file]]
+id = "DOCIMP-0125"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_math0105155_baez_2002_octonions.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_math0105155_baez_2002_octonions.txt"
+source_extension = ".txt"
+bytes = 198765
+sha256 = "10da368039c15a22e0e100d34630bab409b7f8750ecc31a258543eba6a48f82d"
+
+[[file]]
+id = "DOCIMP-0126"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/desi_dr2_bao_cosmology_2503.14738.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/desi_dr2_bao_cosmology_2503.14738.pdf"
+source_extension = ".pdf"
+bytes = 12175089
+sha256 = "1e82f26e4cc3901b16168cd147f252bfa804f9c3caad3f4f7e3532640d237841"
+
+[[file]]
+id = "DOCIMP-0127"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2102.06824_bobrick_martire_2021_introducing_physical_warp_drives.pdf"
+source_extension = ".pdf"
+bytes = 558814
+sha256 = "9dabbc035f5a3fa8d6a8cf263e800279971fddd9bb1cfcf222655ff5b8368d63"
+
+[[file]]
+id = "DOCIMP-0128"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.txt"
+source_extension = ".txt"
+bytes = 96790
+sha256 = "4ecc712788398e3b19110b1e4a7990b7a3f52183724f936f1c433e14792f449e"
+
+[[file]]
+id = "DOCIMP-0129"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.pdf"
+source_extension = ".pdf"
+bytes = 11436130
+sha256 = "3e616e77962260040e3def02a4d7aac3152ee62a76fa8d5a8262b64b34c96ed9"
+
+[[file]]
+id = "DOCIMP-0130"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.pdf"
+source_extension = ".pdf"
+bytes = 207055
+sha256 = "92e0748b36ea76befe754ab7247cd4ac44cf6c321fa83e1b487360df62fcfd4e"
+
+[[file]]
+id = "DOCIMP-0131"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kadeishvili_1980_math0504437v1_homology_fiber_spaces.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kadeishvili_1980_math0504437v1_homology_fiber_spaces.txt"
+source_extension = ".txt"
+bytes = 17675
+sha256 = "b3104ef21f204ec11ae00002f7530d3fdd7a97b9d11e9f1fc767a6b8976ab8a1"
+
+[[file]]
+id = "DOCIMP-0132"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2006_math0603281_presto_digitization_I.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2006_math0603281_presto_digitization_I.txt"
+source_extension = ".txt"
+bytes = 121132
+sha256 = "4f8d52ca6fc5b12a2dc0f798cbb0746dc75ab284e6eb049a85a5b9b105193ad3"
+
+[[file]]
+id = "DOCIMP-0133"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1005.3035_van_raamsdonk_2010_building_spacetime.txt"
+source_extension = ".txt"
+bytes = 16694
+sha256 = "d26ed4a147e41793e75c9777427e87df19ca7423b6a764cddec9b3a8e5040a80"
+
+[[file]]
+id = "DOCIMP-0134"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.txt"
+source_extension = ".txt"
+bytes = 44357
+sha256 = "8b3dc276d4e5ddc3c869b8dcaf1f9cb2d1d013e24e83081d780c8e7ba1ede8ef"
+
+[[file]]
+id = "DOCIMP-0135"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2411.13258_arleo_falmagne_2024_nene_predictions.txt"
+source_extension = ".txt"
+bytes = 18131
+sha256 = "f7fc6b6f500605949f3d1fef9979541ab0d2a1fe0a9ad45ee008f07b38d530a0"
+
+[[file]]
+id = "DOCIMP-0136"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0608071_beny_kempf_kribs_2006_operator_algebra_qec.txt"
+source_extension = ".txt"
+bytes = 31788
+sha256 = "6f897046e168e2b6b35c2feeeadd97cb60c9f1d75a33c6d206f25b2b2bd3c181"
+
+[[file]]
+id = "DOCIMP-0137"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/desi_dr2_lya_bao_2503.14739.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/desi_dr2_lya_bao_2503.14739.pdf"
+source_extension = ".pdf"
+bytes = 1977967
+sha256 = "c6d4688027e9e83bebba85bfb05d68a6cdd3603f30b222ed8e2d26ca66a237a8"
+
+[[file]]
+id = "DOCIMP-0138"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2512.07210v1_automorphisms_sedenions.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2512.07210v1_automorphisms_sedenions.pdf"
+source_extension = ".pdf"
+bytes = 353728
+sha256 = "2fefa736f6ed2ac9b10485a2110a7b2c4689b0039730f2c536edbbd625051f4d"
+
+[[file]]
+id = "DOCIMP-0139"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1601.05416_dong_harlow_wall_2016_entanglement_wedge_reconstruction.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1601.05416_dong_harlow_wall_2016_entanglement_wedge_reconstruction.txt"
+source_extension = ".txt"
+bytes = 46843
+sha256 = "8553d3b7e5c7848dfa298482f49b7770035615b1cfc55b900620f947f84ac60e"
+
+[[file]]
+id = "DOCIMP-0140"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0407052_meissner_2004_bh_entropy_lqg.txt"
+source_extension = ".txt"
+bytes = 15218
+sha256 = "7834b7898385f53e96f7cd6ca6671ea06f270fa23f9c377ea4ca7a2ed5daa60e"
+
+[[file]]
+id = "DOCIMP-0141"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.pdf"
+source_extension = ".pdf"
+bytes = 882578
+sha256 = "4aac18a0f2a8c1070923579f67f2bc31aab2ec6dc91d98286508345a30ea91ca"
+
+[[file]]
+id = "DOCIMP-0142"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/dragovich_padic_math_physics_review_1705.04758.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/dragovich_padic_math_physics_review_1705.04758.pdf"
+source_extension = ".pdf"
+bytes = 512076
+sha256 = "0f1f9ed3b024d47134698862c36fdeb609bfdaabde371995b9f5f2f588933902"
+
+[[file]]
+id = "DOCIMP-0143"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2407.18908_fuchs_2024_constant_velocity_subluminal_warp.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2407.18908_fuchs_2024_constant_velocity_subluminal_warp.pdf"
+source_extension = ".pdf"
+bytes = 3014149
+sha256 = "ec0d10f3a73fefce03c5e41e33cc1809c6f5c12cf4c178dcca8fcafbd868761e"
+
+[[file]]
+id = "DOCIMP-0144"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0904.0141_finazzi_liberati_barcelo_2009_semiclassical_instability.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0904.0141_finazzi_liberati_barcelo_2009_semiclassical_instability.txt"
+source_extension = ".txt"
+bytes = 65130
+sha256 = "f1c402e55f5b7d38c11b2250698783dc81608292655f6a1a83a14b34b55b7225"
+
+[[file]]
+id = "DOCIMP-0145"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/lvc_2021_2111.03634_population_properties_gwtc3.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/lvc_2021_2111.03634_population_properties_gwtc3.txt"
+source_extension = ".txt"
+bytes = 560831
+sha256 = "88cc548a27a8ad61d62147a8bfea639fca47366efc5ae89508888bb56bac0eae"
+
+[[file]]
+id = "DOCIMP-0146"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9409089_susskind_1994_world_as_hologram.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9409089_susskind_1994_world_as_hologram.pdf"
+source_extension = ".pdf"
+bytes = 365965
+sha256 = "8f4ee75f384178c942bcff69809fb683c58ad257e05c7dff23f3ee403fd23934"
+
+[[file]]
+id = "DOCIMP-0147"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2106.15163_abbott_et_al_2021_two_nsbh_coalescences.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2106.15163_abbott_et_al_2021_two_nsbh_coalescences.txt"
+source_extension = ".txt"
+bytes = 208970
+sha256 = "7c586a61f16e8779e122f2dff7821a15b57ed83da0800e2a952415827e03be46"
+
+[[file]]
+id = "DOCIMP-0148"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.txt"
+source_extension = ".txt"
+bytes = 25975
+sha256 = "42c3d39abe17e37f12edf9bc4d6c47947c97a0891353cf0855b1df493ffe4084"
+
+[[file]]
+id = "DOCIMP-0149"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/desi_dr2_dynamical_de_2504.06118.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/desi_dr2_dynamical_de_2504.06118.pdf"
+source_extension = ".pdf"
+bytes = 1989157
+sha256 = "e396959e2ecb85a43db589ca31f21736c4bce1bb5d7fdc78a86ad5b0c6e30ff5"
+
+[[file]]
+id = "DOCIMP-0150"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/sagave_2009_0711.4499v3_dg_algebras_derived_ainfty.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/sagave_2009_0711.4499v3_dg_algebras_derived_ainfty.txt"
+source_extension = ".txt"
+bytes = 82935
+sha256 = "5a620fbe6b4d67f7911358801a665955319ad93f85c0219abe71fcecb9578d62"
+
+[[file]]
+id = "DOCIMP-0151"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.pdf"
+source_extension = ".pdf"
+bytes = 161527
+sha256 = "dea6b95fc781f47cf367677a8c01ca18e356b83a7c70159cca5351d7efcbae12"
+
+[[file]]
+id = "DOCIMP-0152"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9612030_immirzi_1996_real_and_complex_connections.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9612030_immirzi_1996_real_and_complex_connections.txt"
+source_extension = ".txt"
+bytes = 15608
+sha256 = "5d77350224416696b14f44f479425e29b2ac19927defbea423b71e0408aad31a"
+
+[[file]]
+id = "DOCIMP-0153"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0710.4310_joshi_2007_gravitational_collapse_story_continues.pdf"
+source_extension = ".pdf"
+bytes = 459991
+sha256 = "9a7757f998b7f6808f05324c7f3e26e9270a6c32a40846f450fe7c357f84b1ed"
+
+[[file]]
+id = "DOCIMP-0154"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/preprints202511.0427_v1_tang_2025_sedenionic_qed.txt"
+source_extension = ".txt"
+bytes = 50170
+sha256 = "a120d388537a9b6e834728f30a7284b8104e2bce1244f501b452438aab7e0893"
+
+[[file]]
+id = "DOCIMP-0155"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.txt"
+source_extension = ".txt"
+bytes = 219542
+sha256 = "93c1a4cfc9bb4788e09823a4840fb0e3b7ab020a83fe016ce0a3ef814c0bc582"
+
+[[file]]
+id = "DOCIMP-0156"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.pdf"
+source_extension = ".pdf"
+bytes = 279339
+sha256 = "d7e998e2cb18382bce4840c6a8683db6afa227e8502a35959ed24f9a546f90ce"
+
+[[file]]
+id = "DOCIMP-0157"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/vidal_2005_cond-mat0512165_entanglement_renormalization.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/vidal_2005_cond-mat0512165_entanglement_renormalization.txt"
+source_extension = ".txt"
+bytes = 33473
+sha256 = "09c15896d977bba40b2e2e29afebab97170bcefbba42b7c53cf9c63b1bb61c2a"
+
+[[file]]
+id = "DOCIMP-0158"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/0804.3416v2.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/0804.3416v2.pdf"
+source_extension = ".pdf"
+bytes = 382389
+sha256 = "7e7ecd97f7fa1b770bbdedd7bab97f35fca92313a69f1c73f57c97b31b0cadd4"
+
+[[file]]
+id = "DOCIMP-0159"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.pdf"
+source_extension = ".pdf"
+bytes = 95375
+sha256 = "9702624fb1696893a175a142fd4960dc67ff787cf6291310a3277fad5f271099"
+
+[[file]]
+id = "DOCIMP-0160"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th_0212256_damour_henneaux_nicolai_2002_e10_small_tension.pdf"
+source_extension = ".pdf"
+bytes = 579634
+sha256 = "36c01c4a6271358758717b208601401254a6bd13733e5c5ee925029ff8ae3f75"
+
+[[file]]
+id = "DOCIMP-0161"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/di_nezza_palatucci_valdinoci_2011_1104.4345v3_fractional_sobolev_hitchhiker.txt"
+source_extension = ".txt"
+bytes = 102919
+sha256 = "9f49f1e2684514d718653ac560a264edd29e5c18864ed858e4a6ca2d5e751847"
+
+[[file]]
+id = "DOCIMP-0162"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9701052_immirzi_1997_quantum_gravity_and_regge_calculus.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9701052_immirzi_1997_quantum_gravity_and_regge_calculus.txt"
+source_extension = ".txt"
+bytes = 26367
+sha256 = "8cb5adc5825113bbb2e82a13221fc206da10d9c9610458976b6b250f57e06d01"
+
+[[file]]
+id = "DOCIMP-0163"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/evenbly_vidal_tnr_mera_1502.05385.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/evenbly_vidal_tnr_mera_1502.05385.txt"
+source_extension = ".txt"
+bytes = 47986
+sha256 = "7d8f68bf014b0f500acf1be0e92ed218563df0d446208c50cc01963fa4716c4f"
+
+[[file]]
+id = "DOCIMP-0164"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0009013_alcubierre_2000_warp_drive_hyperfast_travel.txt"
+source_extension = ".txt"
+bytes = 14515
+sha256 = "278ce7883bd13d801a3c559c35dfd7d63440c809fd30104ab0011765a2d7b9d7"
+
+[[file]]
+id = "DOCIMP-0165"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1904.05684_kontou_sanders_2020_quantum_energy_inequalities_review.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1904.05684_kontou_sanders_2020_quantum_energy_inequalities_review.txt"
+source_extension = ".txt"
+bytes = 64311
+sha256 = "48d9dbccc20c1665208f0904956962adee9031f365327fd96fe7fc69d99dbd2b"
+
+[[file]]
+id = "DOCIMP-0166"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2106.12106_page_et_al_2021_designing_spaceplates_multilayer_stacks.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2106.12106_page_et_al_2021_designing_spaceplates_multilayer_stacks.pdf"
+source_extension = ".pdf"
+bytes = 862967
+sha256 = "c7feb44fc848c3137f70eb17126fe64c091d6d761d5e809f9630a4392edf5739"
+
+[[file]]
+id = "DOCIMP-0167"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.txt"
+source_extension = ".txt"
+bytes = 45069
+sha256 = "de8a3c6e7bd500fba56b965a52e2ce3d46368c20a0e99d54d6eb4d096a4ca630"
+
+[[file]]
+id = "DOCIMP-0168"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/ising_ads_tensor_networks_2512.20838.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/ising_ads_tensor_networks_2512.20838.txt"
+source_extension = ".txt"
+bytes = 32270
+sha256 = "644f902f34310998c0e4ccd5af91f747d106f30b0db8ed8a4b0e3329d1b836fe"
+
+[[file]]
+id = "DOCIMP-0169"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2002_math0207003_placeholder_substructures_I.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2002_math0207003_placeholder_substructures_I.txt"
+source_extension = ".txt"
+bytes = 69288
+sha256 = "318019a4f6c430cdeaa384abe6af2d25466041a67366ea35fb024fdabc555710"
+
+[[file]]
+id = "DOCIMP-0170"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2106.12106_page_et_al_2021_designing_spaceplates_multilayer_stacks.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2106.12106_page_et_al_2021_designing_spaceplates_multilayer_stacks.txt"
+source_extension = ".txt"
+bytes = 29067
+sha256 = "b4d52a5139f766d768e971b3150fb4347455a2b01a3dc9d14b2975062c0f6f18"
+
+[[file]]
+id = "DOCIMP-0171"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0902.4191_aastrup_grimstrup_nest_2009_holonomy_loops_spectral_triples_qg.pdf"
+source_extension = ".pdf"
+bytes = 185812
+sha256 = "40665f9848e9a02f81219b23b693986ad0026d56d5bbb3bdc89dd7d8eaa9261e"
+
+[[file]]
+id = "DOCIMP-0172"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9409089_susskind_1994_world_as_hologram.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9409089_susskind_1994_world_as_hologram.txt"
+source_extension = ".txt"
+bytes = 74947
+sha256 = "ec9f8842d0f5b47d7c9ba5e5c3f57bcb996b149c73b7689b660606e7310007b4"
+
+[[file]]
+id = "DOCIMP-0173"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0407051_domagala_lewandowski_2004_bh_entropy_quantum_geometry.txt"
+source_extension = ".txt"
+bytes = 29452
+sha256 = "ad2e97df340b9a57dc130963b2647ace96f925eb59d9897def2dfa3ef6d83c33"
+
+[[file]]
+id = "DOCIMP-0174"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/t_hooft_veltman_1972_dimreg.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/t_hooft_veltman_1972_dimreg.pdf"
+source_extension = ".pdf"
+bytes = 12616901
+sha256 = "0893ece2cdb211f78180f279f8e1f04674eabde8d1d7a9f45006085eea1571b0"
+
+[[file]]
+id = "DOCIMP-0175"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/orus_2014_1306.2164_tensor_networks_intro.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/orus_2014_1306.2164_tensor_networks_intro.pdf"
+source_extension = ".pdf"
+bytes = 3024215
+sha256 = "7ae0a9dcff8347e8acb7ff1f628be971f982d0d46cc7738501b1f21b70c271c3"
+
+[[file]]
+id = "DOCIMP-0176"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.txt"
+source_extension = ".txt"
+bytes = 193939
+sha256 = "ae90aef51a461a723e217b7fb71cb0da726d29da5b86cdb2fa19d16d4fe76651"
+
+[[file]]
+id = "DOCIMP-0177"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1207.5805_fewster_2012_lectures_quantum_energy_inequalities.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1207.5805_fewster_2012_lectures_quantum_energy_inequalities.pdf"
+source_extension = ".pdf"
+bytes = 300535
+sha256 = "8dc1e8bc788aa13ec0f46655afcc47d67618ce0a18337ad15ba330a755b9ef15"
+
+[[file]]
+id = "DOCIMP-0178"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.pdf"
+source_extension = ".pdf"
+bytes = 348274
+sha256 = "5bda12d536bf039231ccbeb8da13861be3525aa21faa4b4e8e4c256aa2960e52"
+
+[[file]]
+id = "DOCIMP-0179"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2000_math0011260.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2000_math0011260.pdf"
+source_extension = ".pdf"
+bytes = 441893
+sha256 = "20a66711a71e41714fa2305a03a05ae4b9e8d90d65ee52f439bdeb733ff9ea45"
+
+[[file]]
+id = "DOCIMP-0180"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/t_hooft_veltman_1972_dimreg_handle_1874_4845.html"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/t_hooft_veltman_1972_dimreg_handle_1874_4845.html"
+source_extension = ".html"
+bytes = 15976
+sha256 = "25bec9fe87eba4dfa2c3b89d47af5bc353ad0cfd0efcb443b50c3b89fd07b4bc"
+
+[[file]]
+id = "DOCIMP-0181"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/researchsquare_2023_rs-3109229_metamaterial_perfect_absorber.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/researchsquare_2023_rs-3109229_metamaterial_perfect_absorber.pdf"
+source_extension = ".pdf"
+bytes = 1346801
+sha256 = "214bc5a04bb062db22defaf265521e6735982a3349047e4f362735a37667c164"
+
+[[file]]
+id = "DOCIMP-0182"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.txt"
+source_extension = ".txt"
+bytes = 102150
+sha256 = "1866e32576f7362cf1e706fb94db748565842eff3097e249a7d647c1ca222cd1"
+
+[[file]]
+id = "DOCIMP-0183"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/vanderpol_2023_symmetry_structure_deep_rl_thesis.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/vanderpol_2023_symmetry_structure_deep_rl_thesis.pdf"
+source_extension = ".pdf"
+bytes = 14329754
+sha256 = "100984217c0707eb293eb8a38c75247d4b465b7f560fee9a2767ddc62d0384fd"
+
+[[file]]
+id = "DOCIMP-0184"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/carlstrom_2001_wheels_report.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/carlstrom_2001_wheels_report.pdf"
+source_extension = ".pdf"
+bytes = 350294
+sha256 = "339fd916659b381dd8e03ca58164e533c15173b7700bb7f3b08d42ad7ed5319b"
+
+[[file]]
+id = "DOCIMP-0185"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1609.00026_freedman_headrick_2016_bit_threads.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1609.00026_freedman_headrick_2016_bit_threads.txt"
+source_extension = ".txt"
+bytes = 211352
+sha256 = "9961acbe1dd02fb3d9ccade5e8cfd81fe09f4f3246f5837141d22e3d2af35f53"
+
+[[file]]
+id = "DOCIMP-0186"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/refractiveindex_info_Si3N4.html"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/refractiveindex_info_Si3N4.html"
+source_extension = ".html"
+bytes = 41135
+sha256 = "94f2c846b13ef3caeecd3a9c15670989b65d9494b506ee9dc58ef17b2ae75fae"
+
+[[file]]
+id = "DOCIMP-0187"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_wolfram_science_slides.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_wolfram_science_slides.pdf"
+source_extension = ".pdf"
+bytes = 473273
+sha256 = "aee5ce85600658b21c2c29fdd2d56dc5c831a77e4fa42c28e5c2da5ffa5e20d9"
+
+[[file]]
+id = "DOCIMP-0188"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9410014_barbero_1994_real_ashtekar_variables.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9410014_barbero_1994_real_ashtekar_variables.pdf"
+source_extension = ".pdf"
+bytes = 109033
+sha256 = "c3e454b0a752acd69c154a087b4bc012cf7a1cab0cb1dd635d9f932bbe43a934"
+
+[[file]]
+id = "DOCIMP-0189"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0904.0141_finazzi_liberati_barcelo_2009_semiclassical_instability.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0904.0141_finazzi_liberati_barcelo_2009_semiclassical_instability.pdf"
+source_extension = ".pdf"
+bytes = 351291
+sha256 = "80471f649a07bfcbafec02a231b0c4864210e7bd1e44fecc84e205f985e4bc3b"
+
+[[file]]
+id = "DOCIMP-0190"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/desi_dr2_bao_cosmology_2503.14738.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/desi_dr2_bao_cosmology_2503.14738.txt"
+source_extension = ".txt"
+bytes = 197614
+sha256 = "e10026cdfbca92925e1a84437a864ed073a6cee6801836c014fdf7ebfa5626dc"
+
+[[file]]
+id = "DOCIMP-0191"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0705.0016_hubeny_rangamani_takayanagi_2007_hrt.pdf"
+source_extension = ".pdf"
+bytes = 831313
+sha256 = "6b99da71d95f5231a8bc921d19831dcc260b0a03ad34065160d65268a188da6e"
+
+[[file]]
+id = "DOCIMP-0192"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1906.04478_manzano_2019_lindblad_short_intro.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1906.04478_manzano_2019_lindblad_short_intro.txt"
+source_extension = ".txt"
+bytes = 113961
+sha256 = "8657977bdbd07b7aeeeaaad6e19c1537c8d2cda6a1e98448e69eef9e1782b0cd"
+
+[[file]]
+id = "DOCIMP-0193"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.txt"
+source_extension = ".txt"
+bytes = 30366
+sha256 = "c676c3fb28af18aa38d11c31929079af13b0b770579d426f4d2ca45992284276"
+
+[[file]]
+id = "DOCIMP-0194"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Lorentzian_Threads_2025.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Lorentzian_Threads_2025.pdf"
+source_extension = ".pdf"
+bytes = 730682
+sha256 = "44ffd93d771ac9e96e71f468d394bbb75255dde674715cf56fbb09bce03b53e0"
+
+[[file]]
+id = "DOCIMP-0195"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/soton_2025_psl2_7_structure_957754.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/soton_2025_psl2_7_structure_957754.txt"
+source_extension = ".txt"
+bytes = 217271
+sha256 = "13c30142574abd91ee4ef184e49a220b858efb28f12167caf1869ce72c7bc43b"
+
+[[file]]
+id = "DOCIMP-0196"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/JHEP_01_2025_025.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/JHEP_01_2025_025.pdf"
+source_extension = ".pdf"
+bytes = 907477
+sha256 = "5770c5280142d45b7755fee12359f970d0cd7a4de6a083727e07c2d77c435b93"
+
+[[file]]
+id = "DOCIMP-0197"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0603001_ryu_takayanagi_2006_rt.pdf"
+source_extension = ".pdf"
+bytes = 187229
+sha256 = "2c8802f8ce95275be371de0eebf143aac8827856d502b26249ea16851bcf27db"
+
+[[file]]
+id = "DOCIMP-0198"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/padgett_2008_oe_16_7181_terahertz_metamaterial_absorber.captcha.html"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/padgett_2008_oe_16_7181_terahertz_metamaterial_absorber.captcha.html"
+source_extension = ".html"
+bytes = 15033
+sha256 = "841505cdeda90e6cfd7c81766a9683147d15984932f2095d18f6bf8e03516af9"
+
+[[file]]
+id = "DOCIMP-0199"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/refractiveindex_info_sapphire.html"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/refractiveindex_info_sapphire.html"
+source_extension = ".html"
+bytes = 42939
+sha256 = "6ceedcaa699a3275b711c176751fe833db6b9ff4a590bf759efbf05f2098bfab"
+
+[[file]]
+id = "DOCIMP-0200"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf"
+source_extension = ".pdf"
+bytes = 245005
+sha256 = "202833bbbf36b0c8bb6ca0c448c98df3f21e2f072a82e3b30c0b029f19cb8ce1"
+
+[[file]]
+id = "DOCIMP-0201"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/NIST_Silicon.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/NIST_Silicon.pdf"
+source_extension = ".pdf"
+bytes = 4697030
+sha256 = "2da850527f40fd815fcf737dbebd4218f26989793b581743b99b73382dbd8610"
+
+[[file]]
+id = "DOCIMP-0202"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/scirp_2014_mironov_sedeonic_equations_gravitoelectromagnetism.txt"
+source_extension = ".txt"
+bytes = 34318
+sha256 = "0c0afaf27f6c0652adffe8d22c61e7a718ecad062ee47105d597ec88f9d99b3c"
+
+[[file]]
+id = "DOCIMP-0203"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/0704.0112v3.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/0704.0112v3.pdf"
+source_extension = ".pdf"
+bytes = 252285
+sha256 = "11b098adace527d5c7c8c723a09468ccc681a64b8fe24c0390e5bbf22eda2d10"
+
+[[file]]
+id = "DOCIMP-0204"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_pseudodiff_0303045.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_pseudodiff_0303045.pdf"
+source_extension = ".pdf"
+bytes = 128142
+sha256 = "a22fa1f15292cf908a152f8c10d1bbdb331c6e469426ad11a92df636ff3d84b6"
+
+[[file]]
+id = "DOCIMP-0205"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2105.03079_santiago_schuster_visser_2021_generic_warp_drives.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2105.03079_santiago_schuster_visser_2021_generic_warp_drives.txt"
+source_extension = ".txt"
+bytes = 94317
+sha256 = "61c54e52da64b514fb85e41deef512b3591b641b2eef321a5030e0bf48a9bfb2"
+
+[[file]]
+id = "DOCIMP-0206"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1507.01968_thas_2015_isospectral_drums_simple_groups.pdf"
+source_extension = ".pdf"
+bytes = 339843
+sha256 = "23aaef1103e759cde2e9ff1d13a27b5e8696d72d9131b87768e57e6dfd83dee4"
+
+[[file]]
+id = "DOCIMP-0207"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0802.1783_aastrup_grimstrup_2008_spectral_triples_lqg_1.pdf"
+source_extension = ".pdf"
+bytes = 589322
+sha256 = "08fbac64b6b86fb84a51d38f64c29387d3e616832b40ff0064e3691963f4cba8"
+
+[[file]]
+id = "DOCIMP-0208"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1411.7041_almheiri_dong_harlow_2015_qec_bulk_locality.txt"
+source_extension = ".txt"
+bytes = 109665
+sha256 = "c57a53d13315d74379a2cd9afd7479f899d35e00cfcea48ff059f32b773c7d71"
+
+[[file]]
+id = "DOCIMP-0209"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_wavelet_spectral_0012019.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_wavelet_spectral_0012019.pdf"
+source_extension = ".pdf"
+bytes = 115686
+sha256 = "428ccfc616d09c02cd6e6998720adc13608ddcca8fd66bade3881c1ca4ca6cbc"
+
+[[file]]
+id = "DOCIMP-0210"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Soft486 on NetBSD 11 i386_ Legacy Soft-Float, FPU Emulation, and 386SX_386DX Compatibility.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Soft486 on NetBSD 11 i386_ Legacy Soft-Float, FPU Emulation, and 386SX_386DX Compatibility.pdf"
+source_extension = ".pdf"
+bytes = 68312
+sha256 = "41ab1a3f1869b7e75f691758a6810cacf6947402158bfce2f4eb9a12c881b306"
+
+[[file]]
+id = "DOCIMP-0211"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/gwtc3_2021_arxiv2111.03606.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/gwtc3_2021_arxiv2111.03606.pdf"
+source_extension = ".pdf"
+bytes = 7324786
+sha256 = "8d7401dfae3ffe3d7abc1faa7252bc6423ec0e4784ed7a2e9118d9c18aefed68"
+
+[[file]]
+id = "DOCIMP-0212"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/0703745v3.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/0703745v3.pdf"
+source_extension = ".pdf"
+bytes = 150837
+sha256 = "56a6662680ef99beaae71abbdffbf55895f3b74184806075cb4cc9e640539cca"
+
+[[file]]
+id = "DOCIMP-0213"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2403.03763v3_flipped_polynomial_rings_cd_construction.pdf"
+source_extension = ".pdf"
+bytes = 235836
+sha256 = "56e792505db42aec0983968ce761fcde4b6b9b9e6a3107291ef5834cd3eb7a99"
+
+[[file]]
+id = "DOCIMP-0214"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2002_math0207003_placeholder_substructures_I.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2002_math0207003_placeholder_substructures_I.pdf"
+source_extension = ".pdf"
+bytes = 304671
+sha256 = "4ce77adf6d0ac2cdde814d7f93ccf4b26da7cfe172a53ff5c18b3f6629a4cf3a"
+
+[[file]]
+id = "DOCIMP-0215"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9711200_maldacena_1997_ads_cft.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9711200_maldacena_1997_ads_cft.pdf"
+source_extension = ".pdf"
+bytes = 246327
+sha256 = "b711c300aac9a8c93d84451675554da8829d4b7d3c1ae23cdd16e94523975f06"
+
+[[file]]
+id = "DOCIMP-0216"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.pdf"
+source_extension = ".pdf"
+bytes = 750625
+sha256 = "50981b73078009f4bd5dd9b26e366bd63a9fd02093b7e916c016a71751f5b8e0"
+
+[[file]]
+id = "DOCIMP-0217"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/holm_1979_sequentially_rejective_multiple_test_procedure.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/holm_1979_sequentially_rejective_multiple_test_procedure.pdf"
+source_extension = ".pdf"
+bytes = 1059670
+sha256 = "4317a0d1555dad949dc1760605d925ba20037402827741fdf99cd8ea37e80c46"
+
+[[file]]
+id = "DOCIMP-0218"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/desi_dr2_dynamical_de_2504.06118.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/desi_dr2_dynamical_de_2504.06118.txt"
+source_extension = ".txt"
+bytes = 81862
+sha256 = "0267557a9b85d2856e454ff6b96a926eb9ad6fed30ca52f81cc1a209a2addc40"
+
+[[file]]
+id = "DOCIMP-0219"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0802.1784_aastrup_grimstrup_2008_spectral_triples_lqg_2.pdf"
+source_extension = ".pdf"
+bytes = 331230
+sha256 = "41239e8508a65b86716c43857443a67db3883088f11a985db6ae6363b93f0022"
+
+[[file]]
+id = "DOCIMP-0220"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/nasa_lambda_hubble_constant.html"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/nasa_lambda_hubble_constant.html"
+source_extension = ".html"
+bytes = 24278
+sha256 = "b0dce2ad6fc71b753f6fda4eb412bb5379306b1bdac52f3de3a7c1fdc531c1bb"
+
+[[file]]
+id = "DOCIMP-0221"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.pdf"
+source_extension = ".pdf"
+bytes = 1090250
+sha256 = "7723208a4df4eeee90b9f07002dc93eabf4ae45586dc497804f5a9adf6b5f841"
+
+[[file]]
+id = "DOCIMP-0222"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Landy_2008_Thermal_Metamaterials.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Landy_2008_Thermal_Metamaterials.pdf"
+source_extension = ".pdf"
+bytes = 635245
+sha256 = "cdf688e214b4e76b1c6aabd34d2c0881536301abdf08ba3da857a9a80d8d7f6c"
+
+[[file]]
+id = "DOCIMP-0223"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/orus_2014_1306.2164_tensor_networks_intro.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/orus_2014_1306.2164_tensor_networks_intro.txt"
+source_extension = ".txt"
+bytes = 142899
+sha256 = "1d4c820dd08dd1f647265025f82ec511d404e9c1fd6651670eb9bf24eb91b9bb"
+
+[[file]]
+id = "DOCIMP-0224"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1512.06431_jafferis_lewkowycz_maldacena_suh_2016_jlms.pdf"
+source_extension = ".pdf"
+bytes = 870595
+sha256 = "04198f2251ee5d14074b00ea4decc5ba856c758e0d81d96313457112bc99e08a"
+
+[[file]]
+id = "DOCIMP-0225"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1009.5663_smolyaninov_2010_metamaterial_based_model_alcubierre_warp_drive.pdf"
+source_extension = ".pdf"
+bytes = 133977
+sha256 = "94ad70d51b9317f0a5e6ae4f02a68e4ca6f1458395a5a664793208093f2d2ee8"
+
+[[file]]
+id = "DOCIMP-0226"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th_0104081_west_2001_e11_and_m_theory.pdf"
+source_extension = ".pdf"
+bytes = 196765
+sha256 = "c69ae97ce4fcb557bececc59c3449512ca97071a60983f097a2591ab35419f4a"
+
+[[file]]
+id = "DOCIMP-0227"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/huebschmann_2008_0809.4791v1_construction_ainfty_structures.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/huebschmann_2008_0809.4791v1_construction_ainfty_structures.txt"
+source_extension = ".txt"
+bytes = 90140
+sha256 = "20f5416389c66bf40fc0dbe423ba9f746c2c8e8b892223270f107a7d1e76f74d"
+
+[[file]]
+id = "DOCIMP-0228"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf"
+source_extension = ".pdf"
+bytes = 588679
+sha256 = "38ad641c6f2683cf4a00a817fc7129e568added96ea0fe0cfa99b672142d1138"
+
+[[file]]
+id = "DOCIMP-0229"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0011039_zurek_2001_einselection_decoherence_info.pdf"
+source_extension = ".pdf"
+bytes = 137315
+sha256 = "d22c9fdfcaf3ec867631e3c903c404d3819cc3959a680facf0a47df1aa1df011"
+
+[[file]]
+id = "DOCIMP-0230"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2111.03634_abbott_et_al_2021_gwtc3_population_properties.txt"
+source_extension = ".txt"
+bytes = 560831
+sha256 = "88cc548a27a8ad61d62147a8bfea639fca47366efc5ae89508888bb56bac0eae"
+
+[[file]]
+id = "DOCIMP-0231"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/CMS_TOP-22-007.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/CMS_TOP-22-007.txt"
+source_extension = ".txt"
+bytes = 126023
+sha256 = "cddcb6d23d409e291cc184581cc1c129adc3d976fa0ed755f317bf8f94b95d39"
+
+[[file]]
+id = "DOCIMP-0232"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/evenbly_vidal_tnr_1412.0732.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/evenbly_vidal_tnr_1412.0732.pdf"
+source_extension = ".pdf"
+bytes = 1593926
+sha256 = "0202b510bcd99cc03e5f80ab338d6f508ec08c2c7561b2039208254548c32fa9"
+
+[[file]]
+id = "DOCIMP-0233"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1906.04478_manzano_2019_lindblad_short_intro.pdf"
+source_extension = ".pdf"
+bytes = 729107
+sha256 = "bc8b30cb6561ee0e9487573e9e23e7408cf5e09b19fde5c8936fd802b7236941"
+
+[[file]]
+id = "DOCIMP-0234"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0209036_fewster_roman_2003_null_energy_condition.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0209036_fewster_roman_2003_null_energy_condition.pdf"
+source_extension = ".pdf"
+bytes = 574608
+sha256 = "7fc80341a80cfca247af83fa1c5a954524271c0f36f7af521520ef7de1123e5a"
+
+[[file]]
+id = "DOCIMP-0235"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/lvc_2021_2111.03634_population_properties_gwtc3.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/lvc_2021_2111.03634_population_properties_gwtc3.pdf"
+source_extension = ".pdf"
+bytes = 11436130
+sha256 = "3e616e77962260040e3def02a4d7aac3152ee62a76fa8d5a8262b64b34c96ed9"
+
+[[file]]
+id = "DOCIMP-0236"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kaviraj_2020_jhep04_090_parisi_sourlas_cft.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kaviraj_2020_jhep04_090_parisi_sourlas_cft.pdf"
+source_extension = ".pdf"
+bytes = 787246
+sha256 = "1a105f0240376000c9f908c9a7ab8de55e075ceb916626d29ffa0c099feed660"
+
+[[file]]
+id = "DOCIMP-0237"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1710.05993_chruscinski_pascazio_2017_brief_history_gkls_equation.txt"
+source_extension = ".txt"
+bytes = 54480
+sha256 = "d4a48f4ea510aaf2915c4e384c018b707727d92c962dbf6eb981448b26624624"
+
+[[file]]
+id = "DOCIMP-0238"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/landy_2008_prl_perfect_metamaterial_absorber.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/landy_2008_prl_perfect_metamaterial_absorber.txt"
+source_extension = ".txt"
+bytes = 34412
+sha256 = "056addf219bce5c2b61bdf1d02773d31119774b64bb409c8313942183da9659e"
+
+[[file]]
+id = "DOCIMP-0239"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.pdf"
+source_extension = ".pdf"
+bytes = 4036949
+sha256 = "2173fcd10d99c269eec4d28d2089887452eb972456c52a1b961a2bf186194029"
+
+[[file]]
+id = "DOCIMP-0240"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/landy_2008_prl_perfect_metamaterial_absorber.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/landy_2008_prl_perfect_metamaterial_absorber.pdf"
+source_extension = ".pdf"
+bytes = 414004
+sha256 = "1d1dba01afa9292f5f59979367d77a672dd6f2c69d99b492ddaa0c220cb78677"
+
+[[file]]
+id = "DOCIMP-0241"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Malitson_1962_Sapphire.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Malitson_1962_Sapphire.pdf"
+source_extension = ".pdf"
+bytes = 355
+sha256 = "cc0b4e42510d49c6decd464123ecf3b14ae9b47f9b4ed2ee64893e2d6520a264"
+
+[[file]]
+id = "DOCIMP-0242"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.23279v1_ahmadiniaz_2026_photon_graviton_mixing.pdf"
+source_extension = ".pdf"
+bytes = 1374894
+sha256 = "c647509b343b7348f8eff8b31a1a311f67e1e2bb442b53167ac89f902b8e0b90"
+
+[[file]]
+id = "DOCIMP-0243"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2106.15163_abbott_et_al_2021_two_nsbh_coalescences.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2106.15163_abbott_et_al_2021_two_nsbh_coalescences.pdf"
+source_extension = ".pdf"
+bytes = 3734431
+sha256 = "efed66f662086821000450c62cf9667384ead500e70857c9b1c642a309cefafb"
+
+[[file]]
+id = "DOCIMP-0244"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1301.1493_mckay_piperno_2013_practical_graph_isomorphism_II.txt"
+source_extension = ".txt"
+bytes = 71467
+sha256 = "454da4e7f752e8ec1139c2bc1cb5cae38d198c31a49f5e7a556db078d27e81f4"
+
+[[file]]
+id = "DOCIMP-0245"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/pirsa_08010005_vidal_entanglement_renormalization_talk.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/pirsa_08010005_vidal_entanglement_renormalization_talk.pdf"
+source_extension = ".pdf"
+bytes = 9598274
+sha256 = "99daa9204d4f39da152de94d34d33ace58ba696e1e7254cd9fb222ffafcbb83e"
+
+[[file]]
+id = "DOCIMP-0246"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/ising_ads_tensor_networks_2512.20838.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/ising_ads_tensor_networks_2512.20838.pdf"
+source_extension = ".pdf"
+bytes = 1312267
+sha256 = "7ef467fa5988d4e5a43a0fdca59c8421835c419371f0ba0a487b75cd42bb9902"
+
+[[file]]
+id = "DOCIMP-0247"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_multidim_wavelets_0612049.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kozyrev_padic_multidim_wavelets_0612049.txt"
+source_extension = ".txt"
+bytes = 44998
+sha256 = "18c88302e1042105befb6824972173bb36e06b570eb2e31cf5883ebc862a957e"
+
+[[file]]
+id = "DOCIMP-0248"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/vanderpol_2020_mdp_homomorphic_networks_neurips.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/vanderpol_2020_mdp_homomorphic_networks_neurips.pdf"
+source_extension = ".pdf"
+bytes = 680494
+sha256 = "1b0d077a326e013f891ac9d2e4ac8ab99bb6bd77c23228da10263f8276e1d42c"
+
+[[file]]
+id = "DOCIMP-0249"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/ruan_fan_2009_tcmt_fano_arxiv_0909.3323.pdf"
+source_extension = ".pdf"
+bytes = 316457
+sha256 = "a355dc5a9358d05e6eeae3475c4722a37fb3d521fa457e6aac474d71a06d5c9a"
+
+[[file]]
+id = "DOCIMP-0250"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1502.05293_chanyal_2015_octonionic_gravi_electromagnetism_dark_matter.pdf"
+source_extension = ".pdf"
+bytes = 236258
+sha256 = "c0d09d86fbd11fb5229b8becc1692065c8f99c2ab33178076220758c3f4b2a4e"
+
+[[file]]
+id = "DOCIMP-0251"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/moreno_2005_math0512516_companion.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/moreno_2005_math0512516_companion.pdf"
+source_extension = ".pdf"
+bytes = 98925
+sha256 = "03e277ad675158c7f6ee32d3710a84d522c0bb3836a17d00fb92383ffa8e86a4"
+
+[[file]]
+id = "DOCIMP-0252"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/JHEP_10_2025_079.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/JHEP_10_2025_079.pdf"
+source_extension = ".pdf"
+bytes = 1402586
+sha256 = "ad0af34ee506931c061ccb8052a50fcb5a51b7db83ac6372c2d89089e4a85e9e"
+
+[[file]]
+id = "DOCIMP-0253"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1710.04965_van_den_dungen_2017_lorentz_signature_twisted_spectral_triples.txt"
+source_extension = ".txt"
+bytes = 64969
+sha256 = "aee7a3437cfc43ef6a1cb2e7d9cec9aeb24aacf92306ba0361f00e63415c6199"
+
+[[file]]
+id = "DOCIMP-0254"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0901.3629_beny_2009_information_flow_qc_boundary.txt"
+source_extension = ".txt"
+bytes = 365734
+sha256 = "5297af83b36415dbf0f81d15f2937d33f5e1b17d4c48682412456395e3d23f40"
+
+[[file]]
+id = "DOCIMP-0255"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/entanglement_scaling_continuous_TN_2410.23624.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/entanglement_scaling_continuous_TN_2410.23624.pdf"
+source_extension = ".pdf"
+bytes = 2441226
+sha256 = "080764a7f26af949b458b64db97329dd59810f7343d4c5166de1c50374c75961"
+
+[[file]]
+id = "DOCIMP-0256"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/kass_raftery_1995_bayes_factors.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kass_raftery_1995_bayes_factors.pdf"
+source_extension = ".pdf"
+bytes = 5376776
+sha256 = "bb8d4451e98bd76998522018906a8042be809c57bc49fae8151183649da5a42e"
+
+[[file]]
+id = "DOCIMP-0257"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_1505.01939_van_den_dungen_van_suijlekom_2015_krein_spectral_triples.txt"
+source_extension = ".txt"
+bytes = 81975
+sha256 = "30d306db77cd9e816de49eb914e7c6512d7cd3887f9ad87ebb9317c98254b51e"
+
+[[file]]
+id = "DOCIMP-0258"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/soton_2025_psl2_7_structure_957754.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/soton_2025_psl2_7_structure_957754.pdf"
+source_extension = ".pdf"
+bytes = 3935180
+sha256 = "84722a39e6595c67151aae725ca3e340d0adf2df8bfdfef1da986f53abfc9013"
+
+[[file]]
+id = "DOCIMP-0259"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0508202_lauscher_reuter_2005_fractal_spacetime_structure_asymptotic_safety.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0508202_lauscher_reuter_2005_fractal_spacetime_structure_asymptotic_safety.txt"
+source_extension = ".txt"
+bytes = 37531
+sha256 = "2685d5d8b036bc99afd2ef17ec1f5a7e127931c85241652a77625f86b59848d4"
+
+[[file]]
+id = "DOCIMP-0260"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0901.1632_dugger_isaksen_2009_motivic_adams_spectral_sequence.pdf"
+source_extension = ".pdf"
+bytes = 409478
+sha256 = "daace87c360fa46f300000fed03c1a92ab4b9ed6227b885f9e32dae0dd5b7f28"
+
+[[file]]
+id = "DOCIMP-0261"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.pdf"
+source_extension = ".pdf"
+bytes = 5515834
+sha256 = "25c92caa576a805711fc0050291f8f15977147be927f32b4b8e3ae01112ec8e6"
+
+[[file]]
+id = "DOCIMP-0262"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.23137v1_son_chekhova_2026_sfwm_thin_layer.txt"
+source_extension = ".txt"
+bytes = 21079
+sha256 = "433009bb523880ab307723c4b8266f697d97dd75355b48fece323c73601e4364"
+
+[[file]]
+id = "DOCIMP-0263"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf"
+source_extension = ".pdf"
+bytes = 7324786
+sha256 = "8d7401dfae3ffe3d7abc1faa7252bc6423ec0e4784ed7a2e9118d9c18aefed68"
+
+[[file]]
+id = "DOCIMP-0264"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/parisi_sourlas_1979_prl_negative_dimensions.blocked.html"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/parisi_sourlas_1979_prl_negative_dimensions.blocked.html"
+source_extension = ".html"
+bytes = 9027
+sha256 = "f80c78acd6c8c190442a505100e8ba1c3c74ead3f55233ff8ecbe9cf227c6f1b"
+
+[[file]]
+id = "DOCIMP-0265"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_nlin0105068_okada_shudo_2001_isospectrality_iso_length_spectrality.txt"
+source_extension = ".txt"
+bytes = 37412
+sha256 = "ba320847a0e3c6aae348b7a0e5d6f149552d2dea5d871d9804b65734df615825"
+
+[[file]]
+id = "DOCIMP-0266"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2103.07933_woosley_heger_2021_pair_instability_mass_gap.txt"
+source_extension = ".txt"
+bytes = 120532
+sha256 = "01a01948a293bc7011d5c3317be9ab61253a409ec2048ddf9709688918e0c432"
+
+[[file]]
+id = "DOCIMP-0267"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2006.12611_abbott_et_al_2020_gw190814_mass_gap.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2006.12611_abbott_et_al_2020_gw190814_mass_gap.pdf"
+source_extension = ".pdf"
+bytes = 4377907
+sha256 = "1844a0eb939671c93f994c69db53edf34713505a82f0cd39006e46ea2298b435"
+
+[[file]]
+id = "DOCIMP-0268"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/calabrese_cardy_2004_hep-th0405152_entanglement_entropy_qft.txt"
+source_extension = ".txt"
+bytes = 99058
+sha256 = "1ecd52059ad19bff1ff605c839285ff291f6a3074829c993559bf6c2d6dfd8fa"
+
+[[file]]
+id = "DOCIMP-0269"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0810.2088_connes_2008_spectral_characterization_manifolds.txt"
+source_extension = ".txt"
+bytes = 209441
+sha256 = "417888d9d5cdc1ff52a969d7c00dbcf12412f6f4dd0656aed69ab631cc0de23c"
+
+[[file]]
+id = "DOCIMP-0270"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_quant-ph0301032_lidar_whaley_2003_decoherence_free_subspaces.txt"
+source_extension = ".txt"
+bytes = 121406
+sha256 = "a72ec6fd2386b689786708ca6622e37c3464035e52ce11eb61bb7b668a64e4a4"
+
+[[file]]
+id = "DOCIMP-0271"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/de_marrais_2007_07040026_catamaran_sails.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2007_07040026_catamaran_sails.pdf"
+source_extension = ".pdf"
+bytes = 201711
+sha256 = "64c8d447564c3d066471bb9352e33fd6a05d5215918a044a1db25fbe70a604f1"
+
+[[file]]
+id = "DOCIMP-0272"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/chong_2010_cpa_arxiv_1003.4968.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/chong_2010_cpa_arxiv_1003.4968.pdf"
+source_extension = ".pdf"
+bytes = 598926
+sha256 = "2aee24f71078be4a779f9a3caf1c433ec9e066f8365ddea84c6bd95b9d0adeb3"
+
+[[file]]
+id = "DOCIMP-0273"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/CMS_TOP-22-007.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/CMS_TOP-22-007.pdf"
+source_extension = ".pdf"
+bytes = 2169479
+sha256 = "8363a41a1c8359b0058230858815c65d2a7c1a00db4ce3852133782b58337b11"
+
+[[file]]
+id = "DOCIMP-0274"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/mera_quantum_computer_entanglement_2412.18602.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mera_quantum_computer_entanglement_2412.18602.txt"
+source_extension = ".txt"
+bytes = 89110
+sha256 = "deda1cf80f62309b61addaff92aa90cd9cd080acde8a6f123b185fa8ba38e739"
+
+[[file]]
+id = "DOCIMP-0275"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/nosek_et_al_2018_preregistration_revolution_osf_2dxu5.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/nosek_et_al_2018_preregistration_revolution_osf_2dxu5.txt"
+source_extension = ".txt"
+bytes = 58409
+sha256 = "3b8af6cdf17634375de8ae876c720d782ee83d8ee4f1aa23dc52c42d5ebcde3d"
+
+[[file]]
+id = "DOCIMP-0276"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/t_hooft_veltman_1972_dimreg.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/t_hooft_veltman_1972_dimreg.txt"
+source_extension = ".txt"
+bytes = 25
+sha256 = "c30b0131124bde0ba2adde1d09c45eb953842cb9b556b82629a85c81db9652d6"
+
+[[file]]
+id = "DOCIMP-0277"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0209036_fewster_roman_2003_null_energy_condition.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc0209036_fewster_roman_2003_null_energy_condition.txt"
+source_extension = ".txt"
+bytes = 45587
+sha256 = "c2d42cc454480e9c2101750f832970147f87d78c42a2d640f114e180af62cc26"
+
+[[file]]
+id = "DOCIMP-0278"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0504052_nojiri_odintsov_sasaki_2005_gauss_bonnet_dark_energy.txt"
+source_extension = ".txt"
+bytes = 24249
+sha256 = "f86488ff468f43af682cb7ac16c8e8924861c37fdac97eeda98d84c967db37e7"
+
+[[file]]
+id = "DOCIMP-0279"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Pozar_2005_Microwave_Engineering_Transitions.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Pozar_2005_Microwave_Engineering_Transitions.txt"
+source_extension = ".txt"
+bytes = 48714
+sha256 = "61fbacdac83f1e514214c4f17b50035bb32488eadf12438eb567b57580676abc"
+
+[[file]]
+id = "DOCIMP-0280"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/Rodal_2025_Metamaterial_Gravity.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/Rodal_2025_Metamaterial_Gravity.pdf"
+source_extension = ".pdf"
+bytes = 378440
+sha256 = "204c4fcb88bfcb3fc1a52efe720d9e608fa4ff8588c88b83b5af3f84c6f91253"
+
+[[file]]
+id = "DOCIMP-0281"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/evenbly_vidal_tnr_1412.0732.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/evenbly_vidal_tnr_1412.0732.txt"
+source_extension = ".txt"
+bytes = 56791
+sha256 = "152f073d0ace91eb6d9411c400469c8838ac70428335dee123b64a9827315611"
+
+[[file]]
+id = "DOCIMP-0282"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9310026_thooft_1993_dimensional_reduction_qg.pdf"
+source_extension = ".pdf"
+bytes = 350359
+sha256 = "2d8055bc9173a66100787ca229a0da7e218f1bf8db393f74d221912609901006"
+
+[[file]]
+id = "DOCIMP-0283"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/abdi_2007_bonferroni_sidak_corrections.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/abdi_2007_bonferroni_sidak_corrections.pdf"
+source_extension = ".pdf"
+bytes = 72811
+sha256 = "243227b8fc609e69791bff6909b1bd18a9b160110202ec4c6c4517d3ce6c951c"
+
+[[file]]
+id = "DOCIMP-0284"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2006.07125_lentz_2021_breaking_the_warp_barrier.pdf"
+source_extension = ".pdf"
+bytes = 5801454
+sha256 = "12e765d1897467e78a158e520405fb0ed2c54f9a73e979fd3e2f002da0dfad8b"
+
+[[file]]
+id = "DOCIMP-0285"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/desi_dr2_lya_bao_2503.14739.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/desi_dr2_lya_bao_2503.14739.txt"
+source_extension = ".txt"
+bytes = 124936
+sha256 = "8a45da241d7b091c8fca23440613aacf859aa5fa99055a5c52d50d27292d0aa5"
+
+[[file]]
+id = "DOCIMP-0286"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0508202_lauscher_reuter_2005_fractal_spacetime_structure_asymptotic_safety.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0508202_lauscher_reuter_2005_fractal_spacetime_structure_asymptotic_safety.pdf"
+source_extension = ".pdf"
+bytes = 184037
+sha256 = "77d6ba4c3af9e5cfb89584ab83e8dffc07fd3bcc392509241a490ff6ee9d83a7"
+
+[[file]]
+id = "DOCIMP-0287"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9711200_maldacena_1997_ads_cft.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th9711200_maldacena_1997_ads_cft.txt"
+source_extension = ".txt"
+bytes = 61504
+sha256 = "3e9162ac5bf3c91f821ff38a4e182c145a86feb7381c1469becf5db7d60f8b80"
+
+[[file]]
+id = "DOCIMP-0288"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/pastawski_yoshida_harlow_preskill_2015_1503.06237_happy_code.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/pastawski_yoshida_harlow_preskill_2015_1503.06237_happy_code.txt"
+source_extension = ".txt"
+bytes = 180777
+sha256 = "80d348b80fed2777b51532bb05de842c2f6c65ef1a22088602fa9597896c65d6"
+
+[[file]]
+id = "DOCIMP-0289"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/CSC_KTH_Ray_Tracing.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/CSC_KTH_Ray_Tracing.pdf"
+source_extension = ".pdf"
+bytes = 113097
+sha256 = "88ab42e11b11054e8f6a96281028dac7240de9bf0a735c8139e6d2b71e7f6709"
+
+[[file]]
+id = "DOCIMP-0290"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_hep-th0505113_ambjorn_jurkiewicz_loll_2005_spectral_dimension_universe.pdf"
+source_extension = ".pdf"
+bytes = 136521
+sha256 = "66111197414ccb8f3fb8dbaaac8355084c49aa7d1f6879092bd16ad76744f00b"
+
+[[file]]
+id = "DOCIMP-0291"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9701052_immirzi_1997_quantum_gravity_and_regge_calculus.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_gr-qc9701052_immirzi_1997_quantum_gravity_and_regge_calculus.pdf"
+source_extension = ".pdf"
+bytes = 147553
+sha256 = "c8478eb3557415aa007c12cd7bf5c0c1e3892bf7ad1bc5baec1b118051b66b45"
+
+[[file]]
+id = "DOCIMP-0292"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_physics0111203_smith_et_al_2002_effective_eps_mu_from_rt.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_physics0111203_smith_et_al_2002_effective_eps_mu_from_rt.txt"
+source_extension = ".txt"
+bytes = 32508
+sha256 = "971fc078c0c9cfb71c69dfbaa1f4032e1e756d9d539046580d747e5c999baae1"
+
+[[file]]
+id = "DOCIMP-0293"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/arxiv_2601.19734v1_clifford_invariant_unification.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2601.19734v1_clifford_invariant_unification.pdf"
+source_extension = ".pdf"
+bytes = 428362
+sha256 = "c96b2c2e20303e3e1d3a59431e2f6eddbaf3b8642364b60f6da3f6e0589b37a9"
+
+[[file]]
+id = "DOCIMP-0294"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/dfs_content.txt"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/dfs_content.txt"
+source_extension = ".txt"
+bytes = 105462
+sha256 = "fe660bf6a8d80ec57eac7fd051996c2f1f8fbc083803bcb21f57fcdd6e17b0bb"
+
+[[file]]
+id = "DOCIMP-0295"
+source_relative = "1_CAYLEYDICKSON_AND_MORE/sutton_barto_2020_rl_intro.pdf"
+repo_path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/sutton_barto_2020_rl_intro.pdf"
+source_extension = ".pdf"
+bytes = 73129769
+sha256 = "2dd0d71d9ee883fbeb99f9b888c65ac3255fae2512203d11b18e838befffe9a6"
+
+[[file]]
+id = "DOCIMP-0296"
+source_relative = "A Unified Algebra–Lattice–Graph–Inference Monograph Reconstructing the Full Chat Corpus.pdf"
+repo_path = "data/external/documents_ingest/A Unified Algebra–Lattice–Graph–Inference Monograph Reconstructing the Full Chat Corpus.pdf"
+source_extension = ".pdf"
+bytes = 119266
+sha256 = "4aa4c92ba3b4511ea89b9b1a0839c5d0585b6c30bf2e7b00200a22c0a1eeec80"
+
+[[file]]
+id = "DOCIMP-0297"
+source_relative = "1_SedenionsXOR_Convo.md"
+repo_path = "data/external/documents_ingest/1_SedenionsXOR_Convo.txt"
+source_extension = ".md"
+bytes = 361993
+sha256 = "42a216a9da29ba6a9cd9f36816226a0d75747d6b7bc2fd9f0c682dd828a94e75"
+
+[[file]]
+id = "DOCIMP-0298"
+source_relative = "E10 Billiards, Octonion Locality, and Zero‑Divisor Skies.pdf"
+repo_path = "data/external/documents_ingest/E10 Billiards, Octonion Locality, and Zero‑Divisor Skies.pdf"
+source_extension = ".pdf"
+bytes = 87740
+sha256 = "2661360e23beb62326a949f90e471f2de1106e84d3aeb3d87c4fb91bc5b0fb91"

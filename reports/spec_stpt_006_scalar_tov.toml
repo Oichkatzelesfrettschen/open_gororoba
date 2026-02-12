@@ -1,0 +1,71 @@
+# Formal spec for STPT-006: scalar->TOV coupling sweep.
+
+[spec]
+id = "STPT-006"
+updated = "2026-02-12"
+status = "draft"
+status_token = "DRAFT"
+crate = "crates/vacuum_frustration"
+objective = "Generate deterministic scalar-to-TOV sweep artifacts and Cassini-bound verdicts."
+
+[[functional_requirement]]
+id = "FR-006-01"
+text = "System shall accept a deterministic list of frustration densities and lambda values."
+
+[[functional_requirement]]
+id = "FR-006-02"
+text = "System shall map frustration to phi using phi = exp(-lambda * F)."
+
+[[functional_requirement]]
+id = "FR-006-03"
+text = "System shall compute omega_eff and classify Cassini pass/fail per sample."
+
+[[functional_requirement]]
+id = "FR-006-04"
+text = "System shall optionally run TOV/homotopy coupling path when enabled."
+
+[[functional_requirement]]
+id = "FR-006-05"
+text = "System shall emit deterministic TOML artifact at data/evidence/thesis1_scalar_tov_sweep.toml."
+
+[[technical_spec]]
+id = "TS-006-01"
+text = "Implementation entrypoint should live in gororoba_cli binary for artifact generation, delegating physics to vacuum_frustration APIs."
+
+[[technical_spec]]
+id = "TS-006-02"
+text = "Use CASSINI_OMEGA_BD_LOWER_BOUND from vacuum_frustration/frustration.rs as the authoritative threshold."
+
+[[technical_spec]]
+id = "TS-006-03"
+text = "Artifact schema shall include run metadata, parameter grid, sample outputs, and aggregate pass ratio."
+
+[[acceptance_criteria]]
+id = "AC-006-01"
+text = "Given fixed seeds and parameter grid, generated artifact checksum remains stable across reruns."
+
+[[acceptance_criteria]]
+id = "AC-006-02"
+text = "At least one known failing omega_eff sample is classified as Cassini fail."
+
+[[acceptance_criteria]]
+id = "AC-006-03"
+text = "Artifact includes explicit omega threshold and verdict counts."
+
+[[test_case]]
+id = "TC-006-01"
+kind = "unit"
+path = "crates/vacuum_frustration/src/frustration.rs"
+assertion = "phi mapping monotonicity and omega mapping finiteness"
+
+[[test_case]]
+id = "TC-006-02"
+kind = "integration"
+path = "crates/vacuum_frustration/tests/integration_test.rs"
+assertion = "artifact writer generates required keys and deterministic values"
+
+[[test_case]]
+id = "TC-006-03"
+kind = "gate"
+path = "reports/thesis_program_gate_report.toml"
+assertion = "cargo clippy/test/ascii-check pass after implementation"

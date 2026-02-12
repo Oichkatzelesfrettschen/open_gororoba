@@ -1,0 +1,59 @@
+# Formal spec for STPT-009: collision-law stress suite.
+
+[spec]
+id = "STPT-009"
+updated = "2026-02-12"
+status = "draft"
+status_token = "DRAFT"
+crate = "crates/lattice_filtration"
+objective = "Classify latency-law family from deterministic collision storm sweeps."
+
+[[functional_requirement]]
+id = "FR-009-01"
+text = "System shall run deterministic collision storm simulations across parameterized bucket sizes and step counts."
+
+[[functional_requirement]]
+id = "FR-009-02"
+text = "System shall compute inverse-square and linear R2 scores for each sample set."
+
+[[functional_requirement]]
+id = "FR-009-03"
+text = "System shall classify latency law as inverse_square, linear, or uniform."
+
+[[functional_requirement]]
+id = "FR-009-04"
+text = "System shall emit deterministic TOML artifact at data/evidence/thesis4_latency_law_suite.toml."
+
+[[technical_spec]]
+id = "TS-009-01"
+text = "Use simulate_fibonacci_collision_storm and classify_latency_law as canonical kernels."
+
+[[technical_spec]]
+id = "TS-009-02"
+text = "Artifact must preserve raw sampled pairs for reproducibility."
+
+[[acceptance_criteria]]
+id = "AC-009-01"
+text = "At least one deterministic sample classifies as inverse_square with higher inverse_square_r2 than linear_r2."
+
+[[acceptance_criteria]]
+id = "AC-009-02"
+text = "Artifact includes explicit falsifier verdict against uniform or purely linear outcome."
+
+[[test_case]]
+id = "TC-009-01"
+kind = "unit"
+path = "crates/lattice_filtration/src/filtration.rs"
+assertion = "simulation emits non-empty observations and finite stats"
+
+[[test_case]]
+id = "TC-009-02"
+kind = "unit"
+path = "crates/lattice_filtration/src/survival_spectrum.rs"
+assertion = "classifier distinguishes synthetic inverse-square and uniform fixtures"
+
+[[test_case]]
+id = "TC-009-03"
+kind = "artifact"
+path = "data/evidence/thesis4_latency_law_suite.toml"
+assertion = "schema fields present and deterministic classification stable"

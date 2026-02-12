@@ -1,0 +1,102 @@
+[decision]
+experiment_id = "E-027"
+status = "deferred"
+decision_date = "2026-02-13"
+p_value = 0.605
+threshold = 0.05
+decision_rationale = """
+Percolation experiment inconclusive (p=0.605 >> 0.05 threshold).
+Root causes: (1) Grid resolution insufficient (16^3 = 4,096 cells, only 1 channel detected which is full z-slice),
+(2) Lambda parameter saturated (5.0 compresses viscosity range),
+(3) Percolation detection insensitive (BFS mean+1.5*std detects single massive blob instead of multiple channels),
+(4) Effect size tiny (3.3% difference: 0.351 vs 0.348 mean frustration).
+
+DEFER to Phase 2 for re-parametrization (grid upscaling, lambda sweep, improved percolation algorithm).
+PROMOTE STPT-006 (scalar-TOV Cassini gates) as PRIMARY Thesis 1 validator.
+"""
+
+[root_causes]
+
+[[root_causes.cause]]
+category = "technical"
+issue = "Grid resolution insufficient"
+evidence = "16^3 = 4,096 cells, n_channels_detected = 1 (full z=15 slice with 256 cells = 16^2)"
+impact = "Statistical power too low for meaningful percolation correlation"
+severity = "high"
+
+[[root_causes.cause]]
+category = "technical"
+issue = "Lambda parameter saturated"
+evidence = "lambda = 5.0 compresses viscosity to narrow range"
+impact = "No dynamic contrast between high/low frustration regions"
+severity = "medium"
+
+[[root_causes.cause]]
+category = "algorithmic"
+issue = "Percolation detection insensitive"
+evidence = "BFS with mean+1.5*std threshold detects single blob instead of spanning clusters"
+impact = "Cannot distinguish multiple independent channels"
+severity = "high"
+
+[[root_causes.cause]]
+category = "scientific"
+issue = "Effect size below resolution"
+evidence = "3.3% difference (mean_frustration_channels=0.351 vs background=0.348)"
+impact = "Signal may be real but below experimental resolution, or coupling is genuinely weak"
+severity = "medium"
+
+[alternative_validation]
+primary_experiment = "STPT-006"
+primary_mechanism = "Scalar-tensor gravity (Brans-Dicke) with Cassini bound omega_eff >= 40000"
+primary_binary = "thesis-program-sweep"
+primary_status = "active"
+justification = """
+STPT-006 provides independent validation of Thesis 1 (Sedenion frustration ↔ emergent viscosity)
+via different physical channel: scalar field phi_scalar coupled to metric,
+constrained by Cassini spacecraft bounds on gravitational coupling.
+If lambda-dependent frustration manifests as scalar-tensor coupling,
+omega_eff should satisfy observational bounds.
+"""
+
+[phase2_rework]
+grid_target = ["128^3", "256^3"]
+lambda_sweep = [0.1, 0.5, 1.0, 2.0, 5.0, 10.0, 20.0, 50.0]
+percolation_algorithm = "Replace BFS with true spanning cluster detection (union-find or Hoshen-Kopelman)"
+estimated_effort_days = 1.5
+existing_infrastructure = "percolation-experiment binary with --grid-size, --lambda, --use-gpu flags already implemented and validated at 64^3"
+execution_strategy = """
+LEVERAGE EXISTING WORK (Phase 1.4.1):
+- percolation-experiment binary is GPU-enabled and parameterized
+- Lambda sweep [0.1..50.0] already executed at 64^3 (data/e027/lambda_sweep/gpu_sweep_v2.log)
+- RTX 4070 Ti validated for 64^3 grids, can handle 128^3 (memory estimate: 8GB VRAM)
+
+Phase 2 Week 3 Execution:
+  Day 1: Run sweep at 128^3 (8 lambda values × ~30min/run = 4 hours GPU time)
+  Day 2: Analyze 128^3 results, if p > 0.05 still then run 256^3 sample (2 lambda values)
+  Day 3: Implement improved percolation detection (union-find) if BFS still insufficient
+
+Command template:
+  cargo run --release --bin percolation-experiment -- \\
+    --grid-size 128 \\
+    --lbm-steps 5000 \\
+    --lambda {0.1,0.5,1.0,2.0,5.0,10.0,20.0,50.0} \\
+    --use-gpu \\
+    --output-dir data/e027/lambda_sweep_phase2 \\
+    --verbose
+"""
+prerequisites = [
+  "64^3 sweep completed (DONE, see data/e027/lambda_sweep/)",
+  "GPU memory capacity confirmed for 128^3 (RTX 4070 Ti 12GB VRAM sufficient)"
+]
+success_criteria = [
+  "n_channels_detected >= 3 (multiple independent channels)",
+  "p_value < 0.05 (statistically significant correlation) for at least one lambda value",
+  "effect_size > 10% (practically meaningful difference)",
+  "If all lambda values fail at 128^3, escalate to 256^3 or pivot to direct viscosity measurement"
+]
+
+[lessons_learned]
+- "Small-grid prototypes (16^3) insufficient for percolation experiments"
+- "Parameter sweeps (lambda) should be performed BEFORE single-point experiments"
+- "Percolation detection algorithms need validation on synthetic test cases with known channel count"
+- "Effect size estimates (power analysis) should guide grid resolution choice upfront"

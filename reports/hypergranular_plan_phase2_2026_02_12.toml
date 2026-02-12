@@ -1,0 +1,224 @@
+# Hypergranular execution queue for pure-Rust thesis program normalization.
+
+[hypergranular_plan]
+updated_utc = "2026-02-12T02:50:52Z"
+status = "active"
+status_token = "ACTIVE"
+task_count = 30
+authoritative_tracker = "registry/sedenion_thesis_program.toml"
+companion_tracker = "registry/next_actions.toml"
+
+[[task]]
+id = "P01"
+title = "Capture baseline git status, branch, and remote sync state"
+owner = "qa_lane"
+status = "done"
+depends_on = []
+
+[[task]]
+id = "P02"
+title = "Inventory top-level repo structure by file type and ownership lane"
+owner = "audit_lane"
+status = "done"
+depends_on = ["P01"]
+
+[[task]]
+id = "P03"
+title = "Enumerate workspace members from Cargo metadata"
+owner = "qa_lane"
+status = "done"
+depends_on = ["P01"]
+
+[[task]]
+id = "P04"
+title = "Detect non-Rust or orphan components requiring archive normalization"
+owner = "audit_lane"
+status = "done"
+depends_on = ["P02"]
+
+[[task]]
+id = "P05"
+title = "Audit AGENTS contract alignment for cudarc/pure-Rust policy"
+owner = "governance_lane"
+status = "done"
+depends_on = ["P01"]
+
+[[task]]
+id = "P06"
+title = "Audit cudarc policy coverage in crate and governance docs"
+owner = "gpu_lane"
+status = "done"
+depends_on = ["P05"]
+
+[[task]]
+id = "P07"
+title = "Reproduce lbm_3d_cuda CPU/GPU equivalence tests"
+owner = "gpu_lane"
+status = "done"
+depends_on = ["P06"]
+
+[[task]]
+id = "P08"
+title = "Isolate mismatch hypotheses from prior failing logs"
+owner = "gpu_lane"
+status = "done"
+depends_on = ["P07"]
+
+[[task]]
+id = "P09"
+title = "Patch minimal documentation/report deltas for cudarc-first runtime model"
+owner = "gpu_lane"
+status = "done"
+depends_on = ["P08"]
+
+[[task]]
+id = "P10"
+title = "Re-run focused lbm_3d_cuda debug and equivalence lanes"
+owner = "gpu_lane"
+status = "done"
+depends_on = ["P09"]
+
+[[task]]
+id = "P11"
+title = "Run clippy across workspace with warnings as errors"
+owner = "qa_lane"
+status = "done"
+depends_on = ["P03"]
+
+[[task]]
+id = "P12"
+title = "Run full workspace tests with doctest coverage"
+owner = "qa_lane"
+status = "done"
+depends_on = ["P11"]
+
+[[task]]
+id = "P13"
+title = "Run ascii and governance acceptance gates"
+owner = "qa_lane"
+status = "done"
+depends_on = ["P12"]
+
+[[task]]
+id = "P14"
+title = "Audit requirements coverage across requirements and module overlays"
+owner = "requirements_lane"
+status = "done"
+depends_on = ["P13"]
+
+[[task]]
+id = "P15"
+title = "Patch requirements overlay drift and regenerate registries"
+owner = "requirements_lane"
+status = "done"
+depends_on = ["P14"]
+
+[[task]]
+id = "P16"
+title = "Refresh requirements gap matrix with current command/module counts"
+owner = "requirements_lane"
+status = "done"
+depends_on = ["P15"]
+
+[[task]]
+id = "P17"
+title = "Deep scan TODO/FIXME placeholders in source and registry lanes"
+owner = "audit_lane"
+status = "done"
+depends_on = ["P02"]
+
+[[task]]
+id = "P18"
+title = "Classify placeholders into actionable vs provenance-only buckets"
+owner = "audit_lane"
+status = "todo"
+depends_on = ["P17"]
+
+[[task]]
+id = "P19"
+title = "Reconcile next_actions and thesis tracker statuses after gate reruns"
+owner = "tracking_lane"
+status = "in_progress"
+depends_on = ["P13", "P16"]
+
+[[task]]
+id = "P20"
+title = "Audit bibliography and source provenance for thesis assertions"
+owner = "evidence_lane"
+status = "todo"
+depends_on = ["P19"]
+
+[[task]]
+id = "P21"
+title = "Validate online-claim reports for falsifiability and verdict normalization"
+owner = "evidence_lane"
+status = "todo"
+depends_on = ["P20"]
+
+[[task]]
+id = "P22"
+title = "Normalize speculative language in technical artifacts"
+owner = "editorial_lane"
+status = "todo"
+depends_on = ["P21"]
+
+[[task]]
+id = "P23"
+title = "Audit docs/scripts/logs/source-material directory hygiene"
+owner = "audit_lane"
+status = "done"
+depends_on = ["P02"]
+
+[[task]]
+id = "P24"
+title = "Propose non-destructive archive moves for obsolete clutter"
+owner = "audit_lane"
+status = "todo"
+depends_on = ["P23"]
+
+[[task]]
+id = "P25"
+title = "Execute approved non-destructive moves and verify references"
+owner = "integration_lane"
+status = "todo"
+depends_on = ["P24"]
+
+[[task]]
+id = "P26"
+title = "Regenerate markdown inventory and mirror consistency checks"
+owner = "governance_lane"
+status = "done"
+depends_on = ["P15"]
+
+[[task]]
+id = "P27"
+title = "Run dep-audit and cargo-deny-check for dependency health"
+owner = "qa_lane"
+status = "done"
+depends_on = ["P11"]
+
+[[task]]
+id = "P28"
+title = "Sync cycle with origin (fetch/pull/push with pre-push gate)"
+owner = "qa_lane"
+status = "done"
+depends_on = ["P13", "P27"]
+
+[[task]]
+id = "P29"
+title = "Produce consolidated ultra-detailed audit synthesis artifact"
+owner = "tracking_lane"
+status = "in_progress"
+depends_on = ["P19", "P21", "P24"]
+
+[[task]]
+id = "P30"
+title = "Publish handoff with what_changed/why/validation/open_risks"
+owner = "tracking_lane"
+status = "todo"
+depends_on = ["P29"]
+
+[validation]
+strict_gates_latest_utc = "2026-02-12T02:50:52Z"
+sync_cycle_latest_utc = "2026-02-12T02:50:52Z"
+notes = "All mandatory gates passing; remaining work is synthesis, cleanup proposals, and evidence normalization."

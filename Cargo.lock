@@ -3063,6 +3063,7 @@ dependencies = [
  "gr_core",
  "lattice_filtration",
  "lbm_3d",
+ "lbm_3d_cuda",
  "lbm_core",
  "log",
  "materials_core",
@@ -3095,10 +3096,12 @@ name = "gororoba_engine"
 version = "0.1.0"
 dependencies = [
  "algebra_core",
+ "criterion",
  "lattice_filtration",
  "lbm_3d",
  "neural_homotopy",
  "petgraph",
+ "proptest",
  "quantum_core",
  "serde",
  "stats_core",
@@ -3796,6 +3799,7 @@ name = "lattice_filtration"
 version = "0.1.0"
 dependencies = [
  "algebra_core",
+ "criterion",
  "num-bigint",
  "proptest",
  "rayon",
@@ -3828,6 +3832,7 @@ version = "0.1.0"
 dependencies = [
  "approx",
  "cosmic_scheduler",
+ "criterion",
  "nalgebra 0.33.2",
  "ndarray 0.16.1",
  "rayon",
@@ -4502,7 +4507,9 @@ dependencies = [
  "burn-cuda",
  "burn-wgpu",
  "cosmology_core",
+ "criterion",
  "ndarray 0.16.1",
+ "proptest",
  "quantum_core",
  "rayon",
  "serde",
@@ -7308,6 +7315,7 @@ name = "vacuum_frustration"
 version = "0.1.0"
 dependencies = [
  "algebra_core",
+ "anyhow",
  "cosmology_core",
  "criterion",
  "cudarc 0.19.1",

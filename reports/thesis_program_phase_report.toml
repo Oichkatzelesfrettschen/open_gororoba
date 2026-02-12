@@ -1,0 +1,101 @@
+# Phase synthesis report for STPT-032.
+
+[phase_report]
+id = "STPT-032"
+updated = "2026-02-12"
+last_validation_utc = "2026-02-12T02:50:52Z"
+status = "in_progress"
+status_token = "IN_PROGRESS"
+roadmap = "registry/sedenion_thesis_program.toml"
+next_actions = "registry/next_actions.toml"
+
+[what_changed]
+summary = "Re-ran strict workspace gates, fixed governance classification and schema overlay drift, captured fresh CUDA equivalence evidence, published a 30-task hypergranular execution plan, and removed an unmanaged markdown owner-map blocker."
+files = [
+  "src/scripts/analysis/build_markdown_inventory_registry.py",
+  "archive/artifacts/benchmarks/2026-02-12/GPU_BENCHMARK_RESULTS_PHASE1.8.3.txt",
+  "reports/hypergranular_plan_phase2_2026_02_12.toml",
+  "registry/markdown_inventory.toml",
+  "reports/thesis_program_gate_report.toml",
+  "reports/lbm_3d_cuda_equivalence_reaudit_2026_02_12.toml",
+  "reports/thesis_program_phase_report.toml"
+]
+
+[why_changed]
+summary = "Governance strict mode initially rejected unbacked markdown ownership and then stale registry signatures after requirements overlays changed; both blockers were resolved."
+
+[[why_changed.reason]]
+id = "R-001"
+detail = "markdown inventory builder lacked destination mapping for crates/lbm_3d_cuda/README.md, producing classification=unbacked_manual_markdown."
+
+[[why_changed.reason]]
+id = "R-002"
+detail = "GPU/CPU parity had previously shown catastrophic divergence in user-provided logs; re-audit was required to establish current executable truth."
+
+[[why_changed.reason]]
+id = "R-003"
+detail = "requirements/module_requirements and schema_signatures overlays drifted after batch updates; regenerated Wave5 Batch3/Batch4 registries to restore schema verification."
+
+[[why_changed.reason]]
+id = "R-004"
+detail = "A stray unmanaged markdown benchmark file in docs/ failed markdown owner-map governance; moved to archive artifact lane as plain text."
+
+[validation_run]
+summary = "Mandatory and governance gates pass in current working tree, including a fresh full-stack strict rerun and prior remote synchronization evidence."
+
+[[validation_run.command]]
+cmd = "cargo clippy --workspace -j$(nproc) -- -D warnings"
+result = "pass"
+
+[[validation_run.command]]
+cmd = "cargo test --workspace -j$(nproc)"
+result = "pass"
+
+[[validation_run.command]]
+cmd = "make ascii-check"
+result = "pass"
+
+[[validation_run.command]]
+cmd = "make governance-gate"
+result = "pass"
+
+[[validation_run.command]]
+cmd = "make dep-audit"
+result = "pass"
+
+[[validation_run.command]]
+cmd = "make cargo-deny-check"
+result = "pass"
+notes = "Completed with duplicate-version warnings."
+
+[[validation_run.command]]
+cmd = "cargo test -p lbm_3d_cuda --test test_gpu_cpu_equivalence -j$(nproc)"
+result = "pass"
+
+[[validation_run.command]]
+cmd = "cargo test -p lbm_3d_cuda test_debug_initialization -j$(nproc) -- --nocapture"
+result = "pass"
+
+[[validation_run.command]]
+cmd = "make pre-push-gate"
+result = "pass"
+
+[[validation_run.command]]
+cmd = "git push origin main"
+result = "pass"
+notes = "Result was Everything up-to-date."
+
+[open_risks]
+summary = "Primary remaining risk is dependency/porting governance and license constraints, not local build health."
+
+[[open_risks.item]]
+id = "RK-001"
+severity = "medium"
+detail = "Main branch remains heavily dirty with mixed prior edits; reviewability and provenance are reduced until change batches are commit-partitioned."
+mitigation = "Stage and commit in bounded thematic batches with report-linked evidence per batch."
+
+[[open_risks.item]]
+id = "RK-002"
+severity = "medium"
+detail = "Cross-repo direct porting is blocked by GPL/no-license compatibility for some candidate repositories."
+mitigation = "Enforce clean-room pure-Rust reimplementation boundary until licensing is explicitly cleared."

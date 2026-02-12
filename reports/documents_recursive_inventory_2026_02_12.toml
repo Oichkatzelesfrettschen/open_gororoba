@@ -1,0 +1,177 @@
+# Recursive source inventory for thesis-relevant material in the repo-owned ingest tree.
+
+[meta]
+updated = "2026-02-12"
+status = "active"
+status_token = "ACTIVE"
+authoritative = true
+root = "data/external/documents_ingest"
+inventory_id = "DOCINV-2026-02-12"
+
+[method]
+command_total_files = "rg --files data/external/documents_ingest | wc -l"
+command_extension_histogram = "rg --files data/external/documents_ingest | awk -F. 'NF>1{print tolower($NF)}' | sort | uniq -c | sort -nr"
+command_candidate_filter = "rg --files data/external/documents_ingest | rg -i '(sedenion|octonion|cayley|dickson|gravastar|brans|tov|homotopy|stasheff|associat|lattice|box-?kite|zero[-_ ]divisor|ainfty|a-infinity|viscosity|lbm|hubble|cassini)'"
+command_stem_dedupe = "normalize basename extension (.pdf/.txt/.md/.tex/.html) then count unique stems"
+notes = "Filter is intentionally high-recall; ranking and lane assignment happen in shortlist sections."
+
+[scan_stats]
+total_files = 9737
+candidate_files = 298
+candidate_unique_stems = 174
+candidate_multi_format_stems = 124
+candidate_by_extension = {pdf = 165, txt = 126, md = 1, html = 6}
+
+[thesis_bucket_counts]
+t1_scalar_gravity_keywords = 4
+t2_lbm_viscosity_keywords = 0
+t3_homotopy_ainfty_keywords = 6
+t4_cd_sedenion_lattice_keywords = 298
+cosmology_alignment_keywords = 24
+
+[quality_findings]
+mirror_pair_density = "high"
+mirror_pair_note = "Most high-value entries exist as both PDF and TXT, enabling parser-independent validation."
+lbm_gap = "No strong LBM-specific file-name matches in the imported document corpus; thesis-2 evidence currently comes primarily from code and experiments."
+license_boundary = "This report is inventory/provenance only; no external code transfer implied."
+
+[repo_ingest]
+manifest = "reports/documents_recursive_import_manifest_2026_02_12.toml"
+ingest_root = "data/external/documents_ingest"
+imported_files = 298
+imported_bytes = 345795515
+md_converted_to_txt_count = 1
+pdf_extraction_report = "reports/documents_pdf_extraction_batch_2026_02_12.toml"
+pdf_extraction_output_root = "data/external/documents_extracted"
+
+[[priority_source]]
+id = "DOCSRC-001"
+lane = "thesis_1_scalar_gravity"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.pdf"
+rationale = "Foundational gravastar formulation for non-singular compact object context."
+
+[[priority_source]]
+id = "DOCSRC-002"
+lane = "thesis_1_scalar_gravity"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.pdf"
+rationale = "Stability analysis reference for gravastar-like solutions."
+
+[[priority_source]]
+id = "DOCSRC-003"
+lane = "thesis_1_scalar_gravity"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/mazur_mottola_2001_gr-qc-0109035_gravastars.txt"
+rationale = "Text mirror of DOCSRC-001 for reproducible parsing and citation extraction."
+
+[[priority_source]]
+id = "DOCSRC-004"
+lane = "thesis_1_scalar_gravity"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.txt"
+rationale = "Text mirror of DOCSRC-002 for parser-stable evidence extraction."
+
+[[priority_source]]
+id = "DOCSRC-005"
+lane = "thesis_3_homotopy"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kadeishvili_1980_math0504437v1_homology_fiber_spaces.pdf"
+rationale = "Canonical A-infinity homotopy algebra source for higher-order correction framing."
+
+[[priority_source]]
+id = "DOCSRC-006"
+lane = "thesis_3_homotopy"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/sagave_2009_0711.4499v3_dg_algebras_derived_ainfty.pdf"
+rationale = "Derived A-infinity structures reference aligned with pentagon-residual training objective."
+
+[[priority_source]]
+id = "DOCSRC-007"
+lane = "thesis_3_homotopy"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/huebschmann_2008_0809.4791v1_construction_ainfty_structures.pdf"
+rationale = "Constructive A-infinity procedures useful for explicit constraint encoding."
+
+[[priority_source]]
+id = "DOCSRC-008"
+lane = "thesis_3_homotopy"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/kadeishvili_1980_math0504437v1_homology_fiber_spaces.txt"
+rationale = "Text mirror of DOCSRC-005 for deterministic theorem extraction."
+
+[[priority_source]]
+id = "DOCSRC-009"
+lane = "thesis_4_cd_algebra"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_math0105155_baez_2002_octonions.pdf"
+rationale = "Core octonion reference grounding the 8D base layer assumptions."
+
+[[priority_source]]
+id = "DOCSRC-010"
+lane = "thesis_4_cd_algebra"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf"
+rationale = "Recent sedenion narrative source for strict hypothesis classification."
+
+[[priority_source]]
+id = "DOCSRC-011"
+lane = "thesis_4_cd_algebra"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2512.07210v1_automorphisms_sedenions.pdf"
+rationale = "Automorphism-focused source relevant to algebraic symmetry constraints."
+
+[[priority_source]]
+id = "DOCSRC-012"
+lane = "thesis_4_cd_algebra"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf"
+rationale = "Higher-dimensional subalgebra structure reference for filtration extrapolation limits."
+
+[[priority_source]]
+id = "DOCSRC-013"
+lane = "thesis_4_cd_algebra"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2004_math0403113_boxkites_III.pdf"
+rationale = "Box-kite and zero-divisor structure source used in legacy formulations."
+
+[[priority_source]]
+id = "DOCSRC-014"
+lane = "thesis_4_cd_algebra"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/de_marrais_2007_07040112_sedenions_xor.pdf"
+rationale = "Sedenion XOR structure source aligned with graph/frustration decomposition."
+
+[[priority_source]]
+id = "DOCSRC-015"
+lane = "thesis_4_cd_algebra"
+path = "data/external/documents_ingest/1_SedenionsXOR_Convo.txt"
+rationale = "Local synthesis narrative; must remain hypothesis-tagged until source-backed."
+
+[[priority_source]]
+id = "DOCSRC-016"
+lane = "cosmology_alignment"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/desi_dr2_bao_cosmology_2503.14738.pdf"
+rationale = "Recent BAO cosmology baseline for H(z) alignment checks."
+
+[[priority_source]]
+id = "DOCSRC-017"
+lane = "cosmology_alignment"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/desi_dr2_lya_bao_2503.14739.pdf"
+rationale = "Independent BAO lane for cross-checking redshift-evolution fits."
+
+[[priority_source]]
+id = "DOCSRC-018"
+lane = "cosmology_alignment"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/desi_dr2_dynamical_de_2504.06118.pdf"
+rationale = "Dark-energy dynamics source for epoch segmentation sanity checks."
+
+[[priority_source]]
+id = "DOCSRC-019"
+lane = "cosmology_alignment"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2306.16213_agazie_et_al_2023_nanograv_15yr_gwb.pdf"
+rationale = "Independent astrophysical channel to test overfitting of cosmology alignment narratives."
+
+[[priority_source]]
+id = "DOCSRC-020"
+lane = "cosmology_alignment"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/arxiv_2111.03606_abbott_et_al_2021_gwtc3_compact_binary_coalescences.pdf"
+rationale = "GWTC-3 population context for cross-domain benchmark robustness."
+
+[[priority_source]]
+id = "DOCSRC-021"
+lane = "cosmology_alignment"
+path = "data/external/documents_ingest/1_CAYLEYDICKSON_AND_MORE/nasa_lambda_hubble_constant.html"
+rationale = "Reference summary source for Hubble-constant contextual anchors."
+
+[next_actions]
+step_1 = "Promote this shortlist into bibliography/provenance registries with stable IDs and retrieval metadata."
+step_2 = "Split DOCSRC entries into verify_now vs context_only lanes to avoid overstating claim support."
+step_3 = "Map DOCSRC IDs to thesis tasks CRP-004/CRP-028 and NA-022 evidence refs."
+step_4 = "For thesis-2, add code-first evidence from LBM experiments because the imported document corpus lacks direct LBM-name sources."

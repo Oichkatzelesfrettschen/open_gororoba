@@ -1,0 +1,82 @@
+# Requirements coverage and reproducibility gap matrix.
+
+[requirements_gap_matrix]
+updated = "2026-02-12"
+module_count = 11
+command_count = 26
+coverage_gap_declared_count = 2
+missing_source_markdown_count = 10
+actionable_missing_source_markdown_count = 0
+missing_make_target_count = 0
+toml_first_canonical = true
+physical_markdown_required = false
+status = "in_progress"
+status_token = "IN_PROGRESS"
+
+[validation]
+module_requirements_check = "pass"
+module_requirements_check_cmd = "PYTHONWARNINGS=error python3 src/verification/verify_module_requirements.py"
+module_requirements_check_note = "Verifier now reports 11 modules after registry module_requirements refresh."
+
+[interpretation]
+summary = "Missing docs/requirements/*.md files are legacy path refs in TOML overlays; canonical requirements content is maintained in registry/requirements_narrative.toml and emitted via generated mirrors."
+recommended_resolution = "Keep requirements authoritative in TOML and avoid manual markdown reconstruction outside policy allowlist."
+
+[delta]
+note = "REQ-LBM-CUDA was added to registry/requirements.toml with crate-local validation targets; this report continues to track legacy docs/* requirements gaps separately."
+
+[[section]]
+name = "missing_source_markdown"
+[[section.item]]
+key = "REQ-ALGEBRA"
+value = 1
+module_name = "algebra"
+path = "docs/requirements/algebra.md"
+[[section.item]]
+key = "REQ-ANALYSIS"
+value = 1
+module_name = "analysis"
+path = "docs/requirements/analysis.md"
+[[section.item]]
+key = "REQ-ASTRO"
+value = 1
+module_name = "astro"
+path = "docs/requirements/astro.md"
+[[section.item]]
+key = "REQ-COQ"
+value = 1
+module_name = "coq"
+path = "docs/requirements/coq.md"
+[[section.item]]
+key = "REQ-CORE"
+value = 1
+module_name = "core"
+path = "docs/REQUIREMENTS.md"
+[[section.item]]
+key = "REQ-CPP"
+value = 1
+module_name = "cpp"
+path = "docs/requirements/cpp.md"
+[[section.item]]
+key = "REQ-LATEX"
+value = 1
+module_name = "latex"
+path = "docs/requirements/latex.md"
+[[section.item]]
+key = "REQ-MATERIALS"
+value = 1
+module_name = "materials"
+path = "docs/requirements/materials.md"
+[[section.item]]
+key = "REQ-PARTICLE"
+value = 1
+module_name = "particle"
+path = "docs/requirements/particle.md"
+[[section.item]]
+key = "REQ-QUANTUM"
+value = 1
+module_name = "quantum_docker"
+path = "docs/requirements/quantum-docker.md"
+
+[[section]]
+name = "missing_make_targets"

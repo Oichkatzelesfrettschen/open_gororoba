@@ -1,0 +1,149 @@
+# Port and ingest re-audit for thesis execution lanes.
+
+[meta]
+updated = "2026-02-12"
+status = "active"
+status_token = "ACTIVE"
+authoritative = true
+
+[scope]
+repo = "."
+source_repos = [
+  "external_ref:MathScienceCompendium",
+  "external_ref:PhysicsForge",
+  "external_ref:lambda-research",
+  "external_ref:ancient_compute"
+]
+documents_root = "data/external/documents_ingest"
+
+[current_truth]
+lbm_3d_cuda_equivalence = "pass_10_of_10"
+lbm_3d_cuda_note = "GPU/CPU equivalence is currently passing after D3Q19 direction correction."
+registry_status_correction = "required"
+
+[blocking_constraints]
+license_compatibility = "MathScienceCompendium is GPL-3.0 and PhysicsForge is GPL-2.0; direct porting requires explicit project-level compatibility decision."
+missing_license = "ancient_compute currently has no explicit license file in scanned root; treat as blocked for direct code import."
+evidence_grade = "Thesis 2 inconclusive, Thesis 3 partially supported, Thesis 4 unsupported in current online validation reports."
+
+[[status_correction]]
+path = "registry/sedenion_thesis_program.toml"
+change = "STP-T2 -> in_progress"
+reason = "online_validation_t2 verdict is inconclusive"
+
+[[status_correction]]
+path = "registry/sedenion_thesis_program.toml"
+change = "STP-T3 -> in_progress"
+reason = "online_validation_t3 verdict is partially_supported"
+
+[[status_correction]]
+path = "registry/sedenion_thesis_program.toml"
+change = "STP-T4 -> blocked"
+reason = "online_validation_t4 verdict is unsupported"
+
+[[status_correction]]
+path = "registry/next_actions.toml"
+change = "NA-018/NA-019 -> in_progress, NA-020 -> blocked"
+reason = "next actions must mirror evidence quality"
+
+[[port_candidate]]
+priority = 1
+source_path = "MathScienceCompendium/src/mathphysics/quantum_lattice_boltzmann.py"
+target_crate = "crates/lbm_core"
+port_rationale = "Directly supports Thesis 2 collision and viscosity hypotheses with existing experiment outputs."
+estimated_effort = "L"
+blockers = ["GPL-3.0 compatibility decision required"]
+
+[[port_candidate]]
+priority = 2
+source_path = "PhysicsForge/simulation/cpp/scalar_lattice.cpp"
+target_crate = "crates/vacuum_frustration"
+port_rationale = "Scalar-field lattice evolution is relevant to Thesis 1 scalar-frustration gate behavior."
+estimated_effort = "M"
+blockers = ["GPL-2.0 compatibility decision required"]
+
+[[port_candidate]]
+priority = 3
+source_path = "MathScienceCompendium/src/mathphysics/algebras/cayley_dickson.py"
+target_crate = "crates/algebra_core"
+port_rationale = "Useful for deterministic algebraic regression vectors against existing Rust logic."
+estimated_effort = "M"
+blockers = ["GPL-3.0 compatibility decision required"]
+
+[[port_candidate]]
+priority = 4
+source_path = "MathScienceCompendium/src/mathphysics/algebras/roots.py"
+target_crate = "crates/algebra_core"
+port_rationale = "Can provide additional lattice/root-system test fixtures for filtration checks."
+estimated_effort = "M"
+blockers = ["GPL-3.0 compatibility decision required"]
+
+[[port_candidate]]
+priority = 5
+source_path = "PhysicsForge/simulation/python/noise_budget_analysis.py"
+target_crate = "crates/stats_core"
+port_rationale = "Adds falsifiable FFT/SNR baseline analysis for signal-validation lanes."
+estimated_effort = "M"
+blockers = ["GPL-2.0 compatibility decision required"]
+
+[[port_candidate]]
+priority = 6
+source_path = "ancient_compute/backend/src/emulator"
+target_crate = "crates/control_core"
+port_rationale = "Potentially useful for deterministic compute-trace experiments in Thesis 4 engine narratives."
+estimated_effort = "L"
+blockers = ["No explicit license found; blocked pending clarification"]
+
+[[documents_shortlist]]
+priority = 1
+path = "data/external/papers/arxiv_math0105155_baez_2002_octonions.pdf"
+lane = "algebra_core"
+note = "Primary octonions reference for algebraic background and terminology normalization."
+
+[[documents_shortlist]]
+priority = 2
+path = "data/external/papers/reggiani_2024_2411.18881.pdf"
+lane = "vacuum_frustration"
+note = "Recent geometry of sedenion zero divisors, relevant to topology/frustration claims framing."
+
+[[documents_shortlist]]
+priority = 3
+path = "data/external/papers/visser_wiltshire_2004_gr-qc-0310107_stable_gravastars.txt"
+lane = "vacuum_frustration"
+note = "Gravastar stability context for Thesis 1 falsifiability references."
+
+[[documents_shortlist]]
+priority = 4
+path = "data/external/papers/mazur_mottola_2001_gr-qc-0109035_gravastars.txt"
+lane = "vacuum_frustration"
+note = "Foundational gravastar proposal text for historical/claim context."
+
+[[documents_shortlist]]
+priority = 5
+path = "data/external/papers/sagave_2009_0711.4499v3_dg_algebras_derived_ainfty.pdf"
+lane = "neural_homotopy"
+note = "A-infinity and higher structures reference for Thesis 3 formalization."
+
+[[documents_shortlist]]
+priority = 6
+path = "data/external/papers/arxiv_2308.14768_tang_tang_2023_sedenion_su5_generations.pdf"
+lane = "neural_homotopy"
+note = "Recent sedenion-physics narrative source to classify as hypothesis/support/refutation."
+
+[[documents_shortlist]]
+priority = 7
+path = "data/external/papers/arxiv_0907.2047v3_trigintaduonion_subalgebra_structure.pdf"
+lane = "lattice_filtration"
+note = "Higher Cayley-Dickson structural reference for filtration and embedding assumptions."
+
+[[documents_shortlist]]
+priority = 8
+path = "data/external/papers/1_sedenionsxor_convo.txt"
+lane = "registry"
+note = "Local synthesis narrative to normalize into non-speculative, falsifiability-first language only."
+
+[next_steps]
+step_1 = "Resolve license compatibility policy before importing any external code into workspace crates."
+step_2 = "Treat external repository code as reference behavior only and implement clean-room Rust equivalents where needed."
+step_3 = "Promote only source-backed claims to done; keep analogy-grade material blocked or hypothesis-tagged."
+step_4 = "Re-run strict gates after status and roadmap normalization updates."

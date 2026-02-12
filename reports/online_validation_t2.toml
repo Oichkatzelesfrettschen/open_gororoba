@@ -1,0 +1,22 @@
+# Online validation report for STPT-029 (Thesis 2 threshold claim).
+
+[online_validation]
+id = "STPT-029"
+updated = "2026-02-12"
+claim = "Non-Newtonian shear thickening occurs exactly at a percolation threshold of 1.2 radians"
+verdict = "inconclusive"
+status_token = "INCONCLUSIVE"
+
+[[evidence]]
+source = "Pathak et al. force percolation in jammed systems"
+url = "https://arxiv.org/abs/1706.02457"
+relevance = "Percolation transitions in force/contact networks are established, but no universal 1.2-radian threshold is given."
+
+[[evidence]]
+source = "D'Amico et al. topological loops and discontinuous shear thickening"
+url = "https://arxiv.org/abs/2501.02062"
+relevance = "Links shear thickening to contact-network topology, not an exact universal angular threshold."
+
+[inference]
+summary = "Current checked sources support topology/percolation-driven thickening mechanisms but do not support an exact 1.2-radian universal threshold claim."
+recommended_action = "Treat 1.2-radian threshold as an internal hypothesis requiring empirical calibration in STPT-007, not a pre-validated constant."
