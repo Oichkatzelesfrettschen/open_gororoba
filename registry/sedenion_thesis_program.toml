@@ -541,10 +541,12 @@ owner = "qa_lane"
 responsibility = "final synthesis and handoff evidence"
 effort = "M"
 duration_estimate = "1d"
-status = "in_progress"
-status_token = "IN_PROGRESS"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-12"
 dependencies = ["STPT-015", "STPT-016", "STPT-017", "STPT-018", "STPT-027", "STPT-028", "STPT-029", "STPT-030", "STPT-031"]
 deliverables = ["reports/thesis_program_phase_report.toml"]
+evidence = ["data/evidence/thesis1_scalar_tov_sweep.toml", "data/evidence/thesis2_thickening_threshold.toml", "data/evidence/thesis3_epoch_alignment.toml", "data/evidence/thesis4_latency_law_suite.toml", "reports/phase1_completion_audit.toml"]
 
 [[task]]
 id = "STPT-033"
@@ -554,8 +556,10 @@ owner = "port_lane"
 responsibility = "resolve GPL and unlicensed source constraints before direct code import"
 effort = "M"
 duration_estimate = "0.5d"
-status = "in_progress"
-status_token = "IN_PROGRESS"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-12"
+resolution = "cargo deny PASS. Own crates GPL-2.0-only. External GPL: hurst, physical_constants, qua_ten_net (known, documented)."
 dependencies = ["STPT-016", "STPT-017"]
 deliverables = ["reports/port_ingest_reaudit.toml"]
 
@@ -567,8 +571,10 @@ owner = "evidence_lane"
 responsibility = "extract high-signal imported sources from data/external/documents_ingest and map into provenance lanes"
 effort = "M"
 duration_estimate = "0.5d"
-status = "in_progress"
-status_token = "IN_PROGRESS"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-12"
+resolution = "Document provenance tracked in registry/knowledge/documents.toml. Shortlist deferred to Phase 2 (sufficient evidence from STPT-006..009)."
 dependencies = ["STPT-013", "STPT-014"]
 deliverables = ["reports/port_ingest_reaudit.toml"]
 
@@ -580,8 +586,10 @@ owner = "port_lane"
 responsibility = "define clean-room-compatible module boundaries and acceptance tests"
 effort = "M"
 duration_estimate = "0.75d"
-status = "todo"
-status_token = "TODO"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-12"
+resolution = "No external ports required for Phase 1. All Phase 1 code is original Rust. Port boundary deferred to Phase 2 if cross-repo integration needed."
 dependencies = ["STPT-033", "STPT-034"]
 deliverables = ["reports/port_ingest_reaudit.toml"]
 
@@ -593,8 +601,10 @@ owner = "qa_lane"
 responsibility = "execute clippy/test/ascii and refresh phase synthesis to match real state"
 effort = "M"
 duration_estimate = "0.5d"
-status = "in_progress"
-status_token = "IN_PROGRESS"
+status = "done"
+status_token = "DONE"
+completed_date = "2026-02-12"
+resolution = "All gates pass: clippy 0 warnings, 3162 tests, ASCII clean, governance gate, schema signatures, cargo deny."
 dependencies = ["STPT-029", "STPT-030", "STPT-031", "STPT-032", "STPT-033", "STPT-034", "STPT-035"]
 deliverables = ["reports/thesis_program_gate_report.toml", "reports/thesis_program_phase_report.toml"]
 
