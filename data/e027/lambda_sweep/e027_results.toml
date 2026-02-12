@@ -1,0 +1,33 @@
+[metadata]
+grid_size = 64
+lbm_steps = 2500
+nu_base = 0.333
+lambda = 0.1
+
+[correlation]
+t_statistic = -0.6793177395543264
+p_value = 0.49693655873560383
+effect_size = -0.0054741465189626255
+mean_frustration_channels = 0.3447340838861517
+mean_frustration_background = 0.3452965739477296
+n_channel = 16384
+n_background = 245760
+n_channels_detected = 1
+
+[null_model]
+p_value = 0.4752475247524752
+n_permutations = 100
+stopped_early = true
+stop_reason = "NonSignificantEarly"
+
+[[channels]]
+id = 0
+size = 16384
+mean_velocity = 0.012304687500001674
+max_velocity = 0.012421874999999865
+x_min = 0
+x_max = 63
+y_min = 0
+y_max = 63
+z_min = 60
+z_max = 63

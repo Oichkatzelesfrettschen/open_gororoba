@@ -14,9 +14,9 @@
 //! 9. Export results to TOML
 //! 10. Validate/falsify Thesis 1 (p < 0.05 threshold)
 
-use std::fs;
 use clap::Parser;
 use serde::Serialize;
+use std::fs;
 
 #[derive(Parser)]
 #[command(name = "percolation-experiment")]
@@ -61,6 +61,10 @@ struct Args {
     /// Forcing strength magnitude
     #[arg(long, default_value = "0.001")]
     forcing_strength: f64,
+
+    /// Use GPU acceleration for LBM (requires gpu feature)
+    #[arg(long, default_value = "false")]
+    use_gpu: bool,
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -90,18 +94,29 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let frustration_field = generate_apt_frustration_field(args.grid_size, args.seed)?;
 
     // Compute frustration statistics
-    let f_min = frustration_field.iter().copied().fold(f64::INFINITY, f64::min);
-    let f_max = frustration_field.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+    let f_min = frustration_field
+        .iter()
+        .copied()
+        .fold(f64::INFINITY, f64::min);
+    let f_max = frustration_field
+        .iter()
+        .copied()
+        .fold(f64::NEG_INFINITY, f64::max);
     let f_mean = frustration_field.iter().sum::<f64>() / (frustration_field.len() as f64);
     let f_std = {
-        let variance = frustration_field.iter()
+        let variance = frustration_field
+            .iter()
             .map(|&f| (f - f_mean).powi(2))
-            .sum::<f64>() / (frustration_field.len() as f64);
+            .sum::<f64>()
+            / (frustration_field.len() as f64);
         variance.sqrt()
     };
 
     if args.verbose {
-        eprintln!("  Frustration stats: mean={:.4}, std={:.4}, range=[{:.4}, {:.4}]", f_mean, f_std, f_min, f_max);
+        eprintln!(
+            "  Frustration stats: mean={:.4}, std={:.4}, range=[{:.4}, {:.4}]",
+            f_mean, f_std, f_min, f_max
+        );
     }
 
     // Step 3: Transform frustration to viscosity
@@ -111,47 +126,84 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let viscosity_field = frustration_to_viscosity(&frustration_field, args.nu_base, args.lambda);
 
     // Compute viscosity statistics
-    let nu_min = viscosity_field.iter().copied().fold(f64::INFINITY, f64::min);
-    let nu_max = viscosity_field.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+    let nu_min = viscosity_field
+        .iter()
+        .copied()
+        .fold(f64::INFINITY, f64::min);
+    let nu_max = viscosity_field
+        .iter()
+        .copied()
+        .fold(f64::NEG_INFINITY, f64::max);
     let nu_mean = viscosity_field.iter().sum::<f64>() / (viscosity_field.len() as f64);
 
     if args.verbose {
-        eprintln!("  Viscosity stats: mean={:.4}, range=[{:.4}, {:.4}]", nu_mean, nu_min, nu_max);
+        eprintln!(
+            "  Viscosity stats: mean={:.4}, range=[{:.4}, {:.4}]",
+            nu_mean, nu_min, nu_max
+        );
     }
 
-    // Step 4: Initialize LBM solver
-    if args.verbose {
-        eprintln!("[4/10] Initializing LBM solver...");
-    }
-    let mut solver = initialize_lbm_solver(
-        args.grid_size,
-        &viscosity_field,
-        &args.forcing_mode,
-        args.forcing_strength,
-    )?;
+    // Step 4-5: Initialize and evolve LBM solver (CPU or GPU)
+    let velocity_field = if args.use_gpu {
+        #[cfg(feature = "gpu")]
+        {
+            if args.verbose {
+                eprintln!("[4/10] Initializing GPU LBM solver...");
+            }
+            evolve_lbm_gpu(
+                args.grid_size,
+                &viscosity_field,
+                args.lbm_steps,
+                args.verbose,
+            )?
+        }
+        #[cfg(not(feature = "gpu"))]
+        {
+            return Err("GPU support not compiled. Build with --features gpu".into());
+        }
+    } else {
+        if args.verbose {
+            eprintln!("[4/10] Initializing CPU LBM solver...");
+        }
+        let mut solver = initialize_lbm_solver(
+            args.grid_size,
+            &viscosity_field,
+            &args.forcing_mode,
+            args.forcing_strength,
+        )?;
 
-    // Step 5: Evolve LBM
-    if args.verbose {
-        eprintln!("[5/10] Evolving LBM for {} steps...", args.lbm_steps);
-    }
-    solver.evolve(args.lbm_steps);
+        if args.verbose {
+            eprintln!("[5/10] Evolving LBM for {} steps (CPU)...", args.lbm_steps);
+        }
+        solver.evolve(args.lbm_steps);
+        solver.u.clone()
+    };
 
     // Compute velocity statistics
-    let u_magnitudes: Vec<f64> = solver.u.iter()
-        .map(|&[ux, uy, uz]| (ux*ux + uy*uy + uz*uz).sqrt())
+    let u_magnitudes: Vec<f64> = velocity_field
+        .iter()
+        .map(|&[ux, uy, uz]| (ux * ux + uy * uy + uz * uz).sqrt())
         .collect();
     let u_min = u_magnitudes.iter().copied().fold(f64::INFINITY, f64::min);
-    let u_max = u_magnitudes.iter().copied().fold(f64::NEG_INFINITY, f64::max);
+    let u_max = u_magnitudes
+        .iter()
+        .copied()
+        .fold(f64::NEG_INFINITY, f64::max);
     let u_mean = u_magnitudes.iter().sum::<f64>() / (u_magnitudes.len() as f64);
     let u_std = {
-        let variance = u_magnitudes.iter()
+        let variance = u_magnitudes
+            .iter()
             .map(|&u| (u - u_mean).powi(2))
-            .sum::<f64>() / (u_magnitudes.len() as f64);
+            .sum::<f64>()
+            / (u_magnitudes.len() as f64);
         variance.sqrt()
     };
 
     if args.verbose {
-        eprintln!("  Velocity magnitude stats: mean={:.6}, std={:.6}, range=[{:.6}, {:.6}]", u_mean, u_std, u_min, u_max);
+        eprintln!(
+            "  Velocity magnitude stats: mean={:.6}, std={:.6}, range=[{:.6}, {:.6}]",
+            u_mean, u_std, u_min, u_max
+        );
     }
 
     // Step 6: Detect percolation channels
@@ -163,15 +215,19 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         args.grid_size,
         args.grid_size,
     );
-    let threshold = vacuum_frustration::auto_velocity_threshold(&solver.u);
+    let threshold = vacuum_frustration::auto_velocity_threshold(&velocity_field);
     let above_threshold = u_magnitudes.iter().filter(|&&u| u > threshold).count();
 
     if args.verbose {
         eprintln!("  Velocity threshold: {:.6}", threshold);
-        eprintln!("  Cells above threshold: {}/{}", above_threshold, u_magnitudes.len());
+        eprintln!(
+            "  Cells above threshold: {}/{}",
+            above_threshold,
+            u_magnitudes.len()
+        );
     }
 
-    let channels = detector.detect_channels(&solver.u, threshold);
+    let channels = detector.detect_channels(&velocity_field, threshold);
 
     if args.verbose {
         eprintln!("  Found {} channels", channels.len());
@@ -191,7 +247,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     // Step 8: Besag-Clifford null model
     if args.verbose {
-        eprintln!("[8/10] Running Besag-Clifford null model (max {} permutations, adaptive)...", args.n_permutations);
+        eprintln!(
+            "[8/10] Running Besag-Clifford null model (max {} permutations, adaptive)...",
+            args.n_permutations
+        );
     }
     let null_result = run_besag_clifford_null(BesagCliffordParams {
         frustration_field: &frustration_field,
@@ -239,7 +298,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let null_rejects_random = null_result.p_value < 0.05;
 
     if thesis1_validated && null_rejects_random {
-        println!("E-027 PASS: Thesis 1 validated (p={:.6})", correlation.p_value);
+        println!(
+            "E-027 PASS: Thesis 1 validated (p={:.6})",
+            correlation.p_value
+        );
         Ok(())
     } else {
         eprintln!(
@@ -248,6 +310,70 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         );
         std::process::exit(1);
     }
+}
+// Helper: Evolve LBM on GPU and return velocity field
+//
+// Uses GPU-accelerated D3Q19 LBM solver for frustration-viscosity coupling validation.
+// Initializes with velocity shear profile and evolves on GPU, then transfers results
+// back to CPU for percolation analysis.
+#[cfg(feature = "gpu")]
+fn evolve_lbm_gpu(
+    grid_size: usize,
+    viscosity_field: &[f64],
+    lbm_steps: usize,
+    verbose: bool,
+) -> Result<Vec<[f64; 3]>, Box<dyn std::error::Error>> {
+    if verbose {
+        eprintln!("  Creating GPU solver (grid: {}^3)...", grid_size);
+    }
+
+    // Create GPU solver with placeholder tau (will be replaced by viscosity field)
+    let mut solver = lbm_3d_cuda::LbmSolver3DCuda::new(grid_size, grid_size, grid_size, 0.6)?;
+
+    if verbose {
+        eprintln!("  Setting spatially-varying viscosity field...");
+    }
+
+    // Set frustration-derived viscosity field
+    solver.set_viscosity_field(viscosity_field)?;
+
+    if verbose {
+        eprintln!("  Initializing velocity field with shear profile...");
+    }
+
+    // Create shear velocity profile on CPU (same as CPU solver)
+    let n_cells = grid_size * grid_size * grid_size;
+    let rho_init = vec![1.0; n_cells];
+    let mut u_init = vec![[0.0, 0.0, 0.0]; n_cells];
+
+    for z in 0..grid_size {
+        for y in 0..grid_size {
+            for x in 0..grid_size {
+                let idx = z * (grid_size * grid_size) + y * grid_size + x;
+                let z_normalized = (z as f64) / (grid_size as f64);
+                // Linear shear: u_x increases from 0.005 to 0.015 across z-direction
+                let u_x = 0.01 + 0.005 * (z_normalized - 0.5);
+                u_init[idx] = [u_x, 0.0, 0.0];
+            }
+        }
+    }
+
+    // Upload custom velocity field to GPU and initialize distributions
+    solver.initialize_custom(&rho_init, &u_init)?;
+
+    if verbose {
+        eprintln!("[5/10] Evolving LBM for {} steps on GPU...", lbm_steps);
+    }
+
+    // Evolve on GPU (includes automatic sync to host at end)
+    solver.evolve(lbm_steps)?;
+
+    if verbose {
+        eprintln!("  GPU evolution complete, velocity field ready");
+    }
+
+    // Return velocity field (already synced to host by evolve())
+    Ok(solver.u)
 }
 
 // Helper: Generate APT-evolved Sedenion field with frustration
@@ -295,10 +421,7 @@ fn initialize_lbm_solver(
     let mut solver = lbm_3d::solver::LbmSolver3D::new(grid_size, grid_size, grid_size, 0.6);
 
     // Convert viscosity to tau
-    let tau_field: Vec<f64> = viscosity_field
-        .iter()
-        .map(|&nu| 3.0 * nu + 0.5)
-        .collect();
+    let tau_field: Vec<f64> = viscosity_field.iter().map(|&nu| 3.0 * nu + 0.5).collect();
 
     solver.set_viscosity_field(tau_field)?;
 
@@ -318,7 +441,11 @@ fn initialize_lbm_solver(
                 solver.u[idx] = [u_x, u_y, u_z];
 
                 // Initialize distribution function to equilibrium with shear velocity
-                let f_eq = lbm_3d::solver::BgkCollision::initialize_with_velocity(1.0, [u_x, u_y, u_z], &solver.collider.lattice);
+                let f_eq = lbm_3d::solver::BgkCollision::initialize_with_velocity(
+                    1.0,
+                    [u_x, u_y, u_z],
+                    &solver.collider.lattice,
+                );
                 let f_start = idx * 19;
                 solver.f[f_start..f_start + 19].copy_from_slice(&f_eq);
             }
@@ -329,12 +456,12 @@ fn initialize_lbm_solver(
     match forcing_mode {
         "none" => {
             // No forcing - rely on shear instability alone
-        },
+        }
         "uniform" => {
             // Uniform body force in x-direction (like electric field or pressure gradient)
             let force = vec![[forcing_strength, 0.0, 0.0]; grid_size * grid_size * grid_size];
             solver.set_force_field(force)?;
-        },
+        }
         "gradient" => {
             // Linearly varying force creates shear flow instability
             let mut force = vec![[0.0, 0.0, 0.0]; grid_size * grid_size * grid_size];
@@ -349,7 +476,7 @@ fn initialize_lbm_solver(
                 }
             }
             solver.set_force_field(force)?;
-        },
+        }
         "vortex" => {
             // Rotational forcing around domain center
             let mut force = vec![[0.0, 0.0, 0.0]; grid_size * grid_size * grid_size];
@@ -363,20 +490,17 @@ fn initialize_lbm_solver(
                         let r = (dx * dx + dy * dy).sqrt();
                         if r > 1e-6 {
                             // Tangential force: F = strength * (-dy/r, dx/r, 0)
-                            force[idx] = [
-                                -forcing_strength * dy / r,
-                                forcing_strength * dx / r,
-                                0.0,
-                            ];
+                            force[idx] =
+                                [-forcing_strength * dy / r, forcing_strength * dx / r, 0.0];
                         }
                     }
                 }
             }
             solver.set_force_field(force)?;
-        },
+        }
         _ => {
             return Err(format!("Unknown forcing mode: {}", forcing_mode).into());
-        },
+        }
     }
 
     Ok(solver)
@@ -418,9 +542,8 @@ fn run_besag_clifford_null(
     };
 
     // Run adaptive test
-    let result = stats_core::ultrametric::adaptive::adaptive_permutation_test(
-        &config,
-        |batch_size| {
+    let result =
+        stats_core::ultrametric::adaptive::adaptive_permutation_test(&config, |batch_size| {
             let mut batch_extreme = 0;
 
             for _ in 0..batch_size {
@@ -429,11 +552,8 @@ fn run_besag_clifford_null(
                 shuffled_frustration.shuffle(&mut rng);
 
                 // Transform to viscosity
-                let shuffled_viscosity = frustration_to_viscosity(
-                    &shuffled_frustration,
-                    params.nu_base,
-                    params.lambda,
-                );
+                let shuffled_viscosity =
+                    frustration_to_viscosity(&shuffled_frustration, params.nu_base, params.lambda);
 
                 // Initialize and evolve LBM with shuffled field
                 let mut solver_null = match initialize_lbm_solver(
@@ -470,8 +590,7 @@ fn run_besag_clifford_null(
             }
 
             batch_extreme
-        },
-    );
+        });
 
     Ok(NullModelResult {
         p_value: result.p_value,

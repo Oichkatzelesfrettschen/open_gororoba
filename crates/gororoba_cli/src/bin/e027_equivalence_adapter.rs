@@ -60,14 +60,19 @@ fn get_f64(table: &Value, path: &[&str]) -> Option<f64> {
     current.as_float()
 }
 
-fn compute_viscosity_proxy(nu_base: f64, lambda: f64, frustration_mean: f64, vacuum_attractor: f64) -> f64 {
+fn compute_viscosity_proxy(
+    nu_base: f64,
+    lambda: f64,
+    frustration_mean: f64,
+    vacuum_attractor: f64,
+) -> f64 {
     let delta = frustration_mean - vacuum_attractor;
     nu_base * (-(lambda * delta * delta)).exp()
 }
 
 fn parse_single_run(path: &Path, vacuum_attractor: f64) -> Result<PointRecord, String> {
-    let raw = fs::read_to_string(path)
-        .map_err(|e| format!("failed to read {}: {e}", path.display()))?;
+    let raw =
+        fs::read_to_string(path).map_err(|e| format!("failed to read {}: {e}", path.display()))?;
     let value: Value = raw
         .parse::<Value>()
         .map_err(|e| format!("failed to parse TOML {}: {e}", path.display()))?;
@@ -76,14 +81,16 @@ fn parse_single_run(path: &Path, vacuum_attractor: f64) -> Result<PointRecord, S
         .ok_or_else(|| format!("missing metadata.lambda in {}", path.display()))?;
     let nu_base = get_f64(&value, &["metadata", "nu_base"])
         .ok_or_else(|| format!("missing metadata.nu_base in {}", path.display()))?;
-    let frustration_mean = get_f64(&value, &["correlation", "mean_frustration_channels"]).ok_or_else(|| {
-        format!(
-            "missing correlation.mean_frustration_channels in {}",
-            path.display()
-        )
-    })?;
+    let frustration_mean = get_f64(&value, &["correlation", "mean_frustration_channels"])
+        .ok_or_else(|| {
+            format!(
+                "missing correlation.mean_frustration_channels in {}",
+                path.display()
+            )
+        })?;
 
-    let viscosity_proxy = compute_viscosity_proxy(nu_base, lambda, frustration_mean, vacuum_attractor);
+    let viscosity_proxy =
+        compute_viscosity_proxy(nu_base, lambda, frustration_mean, vacuum_attractor);
     let loss_proxy = (frustration_mean - vacuum_attractor).abs();
 
     let label = path
@@ -105,8 +112,8 @@ fn parse_single_run(path: &Path, vacuum_attractor: f64) -> Result<PointRecord, S
 }
 
 fn parse_forcing_runs(path: &Path, vacuum_attractor: f64) -> Result<Vec<PointRecord>, String> {
-    let raw = fs::read_to_string(path)
-        .map_err(|e| format!("failed to read {}: {e}", path.display()))?;
+    let raw =
+        fs::read_to_string(path).map_err(|e| format!("failed to read {}: {e}", path.display()))?;
     let value: Value = raw
         .parse::<Value>()
         .map_err(|e| format!("failed to parse TOML {}: {e}", path.display()))?;
@@ -132,10 +139,15 @@ fn parse_forcing_runs(path: &Path, vacuum_attractor: f64) -> Result<Vec<PointRec
             .get("nu_base")
             .and_then(Value::as_float)
             .ok_or_else(|| format!("run {name}: missing nu_base in {}", path.display()))?;
-        let frustration_mean = get_f64(run, &["results", "frustration_mean"])
-            .ok_or_else(|| format!("run {name}: missing results.frustration_mean in {}", path.display()))?;
-        let viscosity_proxy = get_f64(run, &["results", "viscosity_mean"])
-            .unwrap_or_else(|| compute_viscosity_proxy(nu_base, lambda, frustration_mean, vacuum_attractor));
+        let frustration_mean = get_f64(run, &["results", "frustration_mean"]).ok_or_else(|| {
+            format!(
+                "run {name}: missing results.frustration_mean in {}",
+                path.display()
+            )
+        })?;
+        let viscosity_proxy = get_f64(run, &["results", "viscosity_mean"]).unwrap_or_else(|| {
+            compute_viscosity_proxy(nu_base, lambda, frustration_mean, vacuum_attractor)
+        });
         let loss_proxy = (frustration_mean - vacuum_attractor).abs();
 
         out.push(PointRecord {
@@ -158,8 +170,8 @@ fn write_curves(output_dir: &Path, points: &[PointRecord]) -> Result<(), String>
     let loss_path = output_dir.join("loss_curve.csv");
     let viscosity_path = output_dir.join("viscosity_curve.csv");
 
-    let mut loss_wtr =
-        Writer::from_path(&loss_path).map_err(|e| format!("failed to open {}: {e}", loss_path.display()))?;
+    let mut loss_wtr = Writer::from_path(&loss_path)
+        .map_err(|e| format!("failed to open {}: {e}", loss_path.display()))?;
     loss_wtr
         .write_record(["step", "loss"])
         .map_err(|e| format!("failed write header {}: {e}", loss_path.display()))?;
@@ -190,7 +202,8 @@ fn write_curves(output_dir: &Path, points: &[PointRecord]) -> Result<(), String>
 
 fn write_bundle(output_dir: &Path, bundle: &CurveBundle) -> Result<(), String> {
     let path = output_dir.join("curve_bundle.toml");
-    let text = toml::to_string_pretty(bundle).map_err(|e| format!("failed serializing TOML bundle: {e}"))?;
+    let text = toml::to_string_pretty(bundle)
+        .map_err(|e| format!("failed serializing TOML bundle: {e}"))?;
     fs::write(&path, text).map_err(|e| format!("failed writing {}: {e}", path.display()))?;
     Ok(())
 }

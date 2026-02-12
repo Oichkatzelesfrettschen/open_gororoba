@@ -1,33 +1,33 @@
 [metadata]
-grid_size = 8
-lbm_steps = 100
+grid_size = 16
+lbm_steps = 500
 nu_base = 0.333
-lambda = 1.0
+lambda = 5.0
 
 [correlation]
-t_statistic = -0.8211850912331613
-p_value = 0.4115408473429557
-effect_size = -0.10855000641348558
-mean_frustration_channels = 0.3274836232611047
-mean_frustration_background = 0.3385233450195585
-n_channel = 64
-n_background = 448
+t_statistic = 0.5171400361494513
+p_value = 0.6050584073237103
+effect_size = 0.03346163784953314
+mean_frustration_channels = 0.35140432515749676
+mean_frustration_background = 0.34792572196834576
+n_channel = 256
+n_background = 3840
 n_channels_detected = 1
 
 [null_model]
-p_value = 0.5454545454545454
-n_permutations = 10
-stopped_early = false
-stop_reason = "MaxReached"
+p_value = 0.5841584158415841
+n_permutations = 100
+stopped_early = true
+stop_reason = "NonSignificantEarly"
 
 [[channels]]
 id = 0
-size = 64
-mean_velocity = 0.011874999999999959
-max_velocity = 0.011874999999999941
+size = 256
+mean_velocity = 0.012187500000000047
+max_velocity = 0.01218750000000009
 x_min = 0
-x_max = 7
+x_max = 15
 y_min = 0
-y_max = 7
-z_min = 7
-z_max = 7
+y_max = 15
+z_min = 15
+z_max = 15

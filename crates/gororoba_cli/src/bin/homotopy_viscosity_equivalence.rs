@@ -35,7 +35,10 @@ struct Args {
     #[arg(long, default_value_t = 42)]
     seed: u64,
 
-    #[arg(long, default_value = "data/equivalence/homotopy_viscosity_equivalence.toml")]
+    #[arg(
+        long,
+        default_value = "data/equivalence/homotopy_viscosity_equivalence.toml"
+    )]
     output: PathBuf,
 }
 
@@ -239,9 +242,7 @@ fn parse_numeric_cell(cell: &str) -> Option<f64> {
 }
 
 fn column_index(headers: &StringRecord, wanted: &str) -> Option<usize> {
-    headers
-        .iter()
-        .position(|h| h.eq_ignore_ascii_case(wanted))
+    headers.iter().position(|h| h.eq_ignore_ascii_case(wanted))
 }
 
 fn read_curve(path: &Path, preferred_column: &str) -> Result<Vec<f64>, String> {
@@ -339,13 +340,20 @@ fn build_report(args: &Args) -> Result<EquivalenceReport, String> {
         dtw / aligned_len as f64
     };
 
-    let (pvalue, null_mean_abs) =
-        permutation_pvalue(&loss_z, &visc_z, best_corr.abs(), args.permutations, args.seed);
+    let (pvalue, null_mean_abs) = permutation_pvalue(
+        &loss_z,
+        &visc_z,
+        best_corr.abs(),
+        args.permutations,
+        args.seed,
+    );
 
     let corr_threshold = 0.70;
     let pvalue_threshold = 0.05;
     let dtw_threshold = 0.80;
-    let accepted = best_corr.abs() >= corr_threshold && pvalue <= pvalue_threshold && dtw_norm <= dtw_threshold;
+    let accepted = best_corr.abs() >= corr_threshold
+        && pvalue <= pvalue_threshold
+        && dtw_norm <= dtw_threshold;
 
     let decision_reason = if accepted {
         "Accepted: strong lagged correlation with significant permutation p-value and low normalized DTW."
@@ -409,10 +417,15 @@ fn build_report(args: &Args) -> Result<EquivalenceReport, String> {
 fn main() -> Result<(), String> {
     let args = Args::parse();
     let report = build_report(&args)?;
-    let text = toml::to_string_pretty(&report).map_err(|e| format!("failed to serialize TOML: {e}"))?;
+    let text =
+        toml::to_string_pretty(&report).map_err(|e| format!("failed to serialize TOML: {e}"))?;
     if let Some(parent) = args.output.parent() {
-        fs::create_dir_all(parent)
-            .map_err(|e| format!("failed to create output directory {}: {e}", parent.display()))?;
+        fs::create_dir_all(parent).map_err(|e| {
+            format!(
+                "failed to create output directory {}: {e}",
+                parent.display()
+            )
+        })?;
     }
     fs::write(&args.output, text)
         .map_err(|e| format!("failed to write output {}: {e}", args.output.display()))?;
