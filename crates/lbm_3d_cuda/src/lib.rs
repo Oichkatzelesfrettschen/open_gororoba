@@ -3,7 +3,9 @@
 
 use anyhow::{Context, Result};
 use cosmic_scheduler::{ScheduleError, ScheduleResult, TwoPhaseSystem};
-use cudarc::driver::{CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg};
+use cudarc::driver::{
+    CudaContext, CudaFunction, CudaSlice, CudaStream, LaunchConfig, PushKernelArg,
+};
 use cudarc::nvrtc::compile_ptx;
 use std::sync::Arc;
 
@@ -22,18 +24,18 @@ pub struct LbmSolver3DCuda {
     stream: Arc<CudaStream>,
 
     // Device memory buffers
-    d_f: CudaSlice<f64>,      // Distributions (19 x n_cells)
+    d_f: CudaSlice<f64>, // Distributions (19 x n_cells)
     #[allow(dead_code)]
-    d_f_tmp: CudaSlice<f64>,  // Temp buffer (unused in fused collision-streaming)
-    d_rho: CudaSlice<f64>,    // Density (n_cells)
-    d_u: CudaSlice<f64>,      // Velocity (3 x n_cells)
-    d_tau: CudaSlice<f64>,    // Relaxation time (n_cells) - spatially varying!
+    d_f_tmp: CudaSlice<f64>, // Temp buffer (unused in fused collision-streaming)
+    d_rho: CudaSlice<f64>, // Density (n_cells)
+    d_u: CudaSlice<f64>, // Velocity (3 x n_cells)
+    d_tau: CudaSlice<f64>, // Relaxation time (n_cells) - spatially varying!
 
     // Compiled kernels
     compute_macro_kernel: CudaFunction,
     collision_kernel: CudaFunction,
     #[allow(dead_code)]
-    streaming_kernel: CudaFunction,  // Unused in fused collision-streaming
+    streaming_kernel: CudaFunction, // Unused in fused collision-streaming
     init_kernel: CudaFunction,
 
     // Host-side state (for CPU fallback and data export)
@@ -68,18 +70,23 @@ impl LbmSolver3DCuda {
             .context("Kernel initialize_uniform_kernel not found")?;
 
         // Allocate device memory.
-        let d_f = stream.alloc_zeros::<f64>(19 * n_cells)
+        let d_f = stream
+            .alloc_zeros::<f64>(19 * n_cells)
             .context("Failed to allocate d_f")?;
-        let d_f_tmp = stream.alloc_zeros::<f64>(19 * n_cells)
+        let d_f_tmp = stream
+            .alloc_zeros::<f64>(19 * n_cells)
             .context("Failed to allocate d_f_tmp")?;
-        let d_rho = stream.alloc_zeros::<f64>(n_cells)
+        let d_rho = stream
+            .alloc_zeros::<f64>(n_cells)
             .context("Failed to allocate d_rho")?;
-        let d_u = stream.alloc_zeros::<f64>(3 * n_cells)
+        let d_u = stream
+            .alloc_zeros::<f64>(3 * n_cells)
             .context("Failed to allocate d_u")?;
 
         // Initialize uniform tau field
         let tau_vec = vec![tau; n_cells];
-        let d_tau = stream.clone_htod(&tau_vec)
+        let d_tau = stream
+            .clone_htod(&tau_vec)
             .context("Failed to initialize d_tau")?;
 
         // Host-side state
@@ -123,12 +130,17 @@ impl LbmSolver3DCuda {
         // Validate: all tau >= 0.5 for BGK stability
         if let Some(&min_tau) = tau_field.iter().min_by(|a, b| a.partial_cmp(b).unwrap()) {
             if min_tau < 0.5 {
-                anyhow::bail!("tau field contains values < 0.5 (unstable): min={}", min_tau);
+                anyhow::bail!(
+                    "tau field contains values < 0.5 (unstable): min={}",
+                    min_tau
+                );
             }
         }
 
         // Upload to GPU
-        self.d_tau = self.stream.clone_htod(&tau_field)
+        self.d_tau = self
+            .stream
+            .clone_htod(&tau_field)
             .context("Failed to upload tau field to GPU")?;
 
         Ok(())
@@ -136,7 +148,9 @@ impl LbmSolver3DCuda {
 
     /// Get current viscosity field from GPU
     pub fn get_viscosity_field(&self) -> Result<Vec<f64>> {
-        let tau_field = self.stream.clone_dtoh(&self.d_tau)
+        let tau_field = self
+            .stream
+            .clone_dtoh(&self.d_tau)
             .context("Failed to download tau field from GPU")?;
 
         // Convert tau -> nu: nu = (tau - 0.5) / 3
@@ -179,6 +193,105 @@ impl LbmSolver3DCuda {
         // Update host-side state
         self.rho = vec![rho_init; self.n_cells];
         self.u = vec![u_init; self.n_cells];
+
+        Ok(())
+    }
+
+    /// Initialize with custom velocity field (for shear initialization)
+    ///
+    /// Takes a host-side velocity field and initializes distributions to local equilibrium.
+    /// Useful for seeding flow instabilities with velocity shear profiles.
+    pub fn initialize_custom(&mut self, rho: &[f64], u: &[[f64; 3]]) -> Result<()> {
+        if rho.len() != self.n_cells || u.len() != self.n_cells {
+            anyhow::bail!(
+                "Field size mismatch: rho.len()={}, u.len()={}, expected={}",
+                rho.len(),
+                u.len(),
+                self.n_cells
+            );
+        }
+
+        // Upload rho to GPU
+        self.d_rho = self
+            .stream
+            .clone_htod(rho)
+            .context("Failed to upload rho field")?;
+
+        // Flatten u for GPU: [ux0, uy0, uz0, ux1, uy1, uz1, ...]
+        let u_flat: Vec<f64> = u
+            .iter()
+            .flat_map(|&[ux, uy, uz]| vec![ux, uy, uz])
+            .collect();
+
+        self.d_u = self
+            .stream
+            .clone_htod(&u_flat)
+            .context("Failed to upload velocity field")?;
+
+        // Initialize distribution function to local equilibrium using uploaded u
+        // We'll use the init kernel with per-cell velocities (requires kernel modification)
+        // For now, use a workaround: loop over cells and initialize f directly on CPU, then upload
+
+        let mut f_host = vec![0.0; 19 * self.n_cells];
+
+        for idx in 0..self.n_cells {
+            let rho_val = rho[idx];
+            let u_val = u[idx];
+
+            // D3Q19 lattice velocities (from kernels.cu)
+            let cx = [0, 1, -1, 0, 0, 0, 0, 1, -1, 1, -1, 1, -1, 1, -1, 0, 0, 0, 0];
+            let cy = [0, 0, 0, 1, -1, 0, 0, 1, 1, -1, -1, 0, 0, 0, 0, 1, -1, 1, -1];
+            let cz = [0, 0, 0, 0, 0, 1, -1, 0, 0, 0, 0, 1, 1, -1, -1, 1, 1, -1, -1];
+            let w = [
+                1.0 / 3.0,
+                1.0 / 18.0,
+                1.0 / 18.0,
+                1.0 / 18.0,
+                1.0 / 18.0,
+                1.0 / 18.0,
+                1.0 / 18.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+                1.0 / 36.0,
+            ];
+
+            // Compute equilibrium distribution for this cell
+            let ux = u_val[0];
+            let uy = u_val[1];
+            let uz = u_val[2];
+            let usqr = ux * ux + uy * uy + uz * uz;
+
+            for i in 0..19 {
+                let ci_dot_u = (cx[i] as f64) * ux + (cy[i] as f64) * uy + (cz[i] as f64) * uz;
+                let f_eq = w[i]
+                    * rho_val
+                    * (1.0 + 3.0 * ci_dot_u + 4.5 * ci_dot_u * ci_dot_u - 1.5 * usqr);
+                f_host[idx * 19 + i] = f_eq;
+            }
+        }
+
+        // Upload initialized distribution function to GPU
+        self.d_f = self
+            .stream
+            .clone_htod(&f_host)
+            .context("Failed to upload distribution function")?;
+
+        self.stream
+            .synchronize()
+            .context("CUDA synchronize failed")?;
+
+        // Update host-side state
+        self.rho = rho.to_vec();
+        self.u = u.to_vec();
 
         Ok(())
     }
@@ -335,10 +448,12 @@ impl LbmSolver3DCuda {
 
 impl TwoPhaseSystem for LbmSolver3DCuda {
     fn execute_phase1(&mut self) -> ScheduleResult<()> {
-        self.compute_macroscopic()
-            .map_err(|e| ScheduleError::StateInvalid(format!("CUDA phase1 macroscopic failure: {e}")))?;
-        self.collision()
-            .map_err(|e| ScheduleError::StateInvalid(format!("CUDA phase1 collision failure: {e}")))?;
+        self.compute_macroscopic().map_err(|e| {
+            ScheduleError::StateInvalid(format!("CUDA phase1 macroscopic failure: {e}"))
+        })?;
+        self.collision().map_err(|e| {
+            ScheduleError::StateInvalid(format!("CUDA phase1 collision failure: {e}"))
+        })?;
         Ok(())
     }
 

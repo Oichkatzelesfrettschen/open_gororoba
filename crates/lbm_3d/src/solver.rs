@@ -10,7 +10,7 @@
 //! nu = c_s^2 * (tau - 0.5) = (1/3) * (tau - 0.5)
 
 use crate::lattice::D3Q19Lattice;
-use cosmic_scheduler::{TwoPhaseSystem, ScheduleResult};
+use cosmic_scheduler::{ScheduleResult, TwoPhaseSystem};
 
 /// BGK collision operator for 3D LBM.
 #[derive(Clone, Debug)]
@@ -38,7 +38,7 @@ impl BgkCollision {
     pub fn new(tau: f64) -> Self {
         assert!(tau >= 0.5, "tau must be >= 0.5 for stability");
         Self {
-            tau_field: vec![tau],  // Placeholder; solver will set actual field
+            tau_field: vec![tau], // Placeholder; solver will set actual field
             lattice: D3Q19Lattice::new(),
         }
     }
@@ -60,10 +60,7 @@ impl BgkCollision {
 
         for (i, &tau) in tau_field.iter().enumerate() {
             if !tau.is_finite() {
-                return Err(format!(
-                    "Non-finite tau at index {}: {}",
-                    i, tau
-                ));
+                return Err(format!("Non-finite tau at index {}: {}", i, tau));
             }
             if tau < 0.5 {
                 return Err(format!(
@@ -85,7 +82,8 @@ impl BgkCollision {
     /// Get the kinematic viscosity field from relaxation time field.
     /// nu(x) = c_s^2 * (tau(x) - 0.5) = (1/3) * (tau(x) - 0.5)
     pub fn get_viscosity_field(&self) -> Vec<f64> {
-        self.tau_field.iter()
+        self.tau_field
+            .iter()
             .map(|&tau| self.lattice.cs_sq * (tau - 0.5))
             .collect()
     }
@@ -114,7 +112,7 @@ impl BgkCollision {
         let mut u = [0.0; 3];
 
         if rho.abs() < 1e-14 {
-            return u;  // Zero density => zero velocity
+            return u; // Zero density => zero velocity
         }
 
         for (i, &fi) in f.iter().enumerate() {
@@ -143,11 +141,7 @@ impl BgkCollision {
 
     /// Initialize distribution function with velocity.
     /// f_i = f_i^eq(rho, u)
-    pub fn initialize_with_velocity(
-        rho: f64,
-        u: [f64; 3],
-        lattice: &D3Q19Lattice,
-    ) -> [f64; 19] {
+    pub fn initialize_with_velocity(rho: f64, u: [f64; 3], lattice: &D3Q19Lattice) -> [f64; 19] {
         let mut f = [0.0; 19];
         for (i, f_i) in f.iter_mut().enumerate() {
             *f_i = lattice.equilibrium(rho, u, i);
@@ -193,7 +187,11 @@ impl BgkCollision {
         }
 
         // Use first tau value (representative for uniform fields)
-        let tau = if !self.tau_field.is_empty() { self.tau_field[0] } else { 0.6 };
+        let tau = if !self.tau_field.is_empty() {
+            self.tau_field[0]
+        } else {
+            0.6
+        };
 
         // Perform collision
         self.collision_step(f, &f_eq, tau)
@@ -202,7 +200,7 @@ impl BgkCollision {
     /// Check non-negativity of distribution function (stability indicator).
     /// For typical flows at low Mach number, f_i >= 0 always.
     pub fn is_stable(f: &[f64; 19]) -> bool {
-        f.iter().all(|&fi| fi >= -1e-14)  // Allow small numerical error
+        f.iter().all(|&fi| fi >= -1e-14) // Allow small numerical error
     }
 }
 
@@ -271,7 +269,11 @@ impl LbmSolver3D {
         if tau_field.len() != expected_len {
             return Err(format!(
                 "Viscosity field length mismatch: got {}, expected {} ({}x{}x{})",
-                tau_field.len(), expected_len, self.nx, self.ny, self.nz
+                tau_field.len(),
+                expected_len,
+                self.nx,
+                self.ny,
+                self.nz
             ));
         }
         self.collider.set_viscosity_field(tau_field)
@@ -307,7 +309,11 @@ impl LbmSolver3D {
         if force_field.len() != expected_len {
             return Err(format!(
                 "Force field length mismatch: got {}, expected {} ({}x{}x{})",
-                force_field.len(), expected_len, self.nx, self.ny, self.nz
+                force_field.len(),
+                expected_len,
+                self.nx,
+                self.ny,
+                self.nz
             ));
         }
 
@@ -412,7 +418,11 @@ impl LbmSolver3D {
                         tau_field[idx]
                     } else {
                         // Fallback: if field not set, use first element
-                        if !tau_field.is_empty() { tau_field[0] } else { 0.6 }
+                        if !tau_field.is_empty() {
+                            tau_field[0]
+                        } else {
+                            0.6
+                        }
                     };
 
                     // Extract population distribution function f_i at this lattice site
@@ -468,8 +478,8 @@ impl LbmSolver3D {
         tau: f64,
         lattice: &D3Q19Lattice,
     ) {
-        const CS2: f64 = 1.0 / 3.0;   // Speed of sound squared for D3Q19
-        const CS4: f64 = 1.0 / 9.0;   // c_s^4
+        const CS2: f64 = 1.0 / 3.0; // Speed of sound squared for D3Q19
+        const CS4: f64 = 1.0 / 9.0; // c_s^4
 
         let prefactor = 1.0 - 1.0 / (2.0 * tau);
 
@@ -480,8 +490,8 @@ impl LbmSolver3D {
 
             // Compute (e_i - u) * F
             let ei_minus_u_dot_f = (ei_f64[0] - u[0]) * force[0]
-                                 + (ei_f64[1] - u[1]) * force[1]
-                                 + (ei_f64[2] - u[2]) * force[2];
+                + (ei_f64[1] - u[1]) * force[1]
+                + (ei_f64[2] - u[2]) * force[2];
 
             // Compute (e_i * u)
             let ei_dot_u = ei_f64[0] * u[0] + ei_f64[1] * u[1] + ei_f64[2] * u[2];
@@ -548,7 +558,11 @@ impl LbmSolver3D {
 
     /// Compute total momentum magnitude.
     pub fn total_momentum(&self) -> f64 {
-        self.u.iter().map(|ui| ui[0]*ui[0] + ui[1]*ui[1] + ui[2]*ui[2]).sum::<f64>().sqrt()
+        self.u
+            .iter()
+            .map(|ui| ui[0] * ui[0] + ui[1] * ui[1] + ui[2] * ui[2])
+            .sum::<f64>()
+            .sqrt()
     }
 }
 
@@ -584,18 +598,19 @@ impl TwoPhaseSystem for LbmSolver3D {
     fn validate_state(&self) -> ScheduleResult<()> {
         // Check stability: all population values non-negative
         if !self.is_stable() {
-            return Err(cosmic_scheduler::ScheduleError::StateInvalid(
-                format!("LBM population instability: negative f_i detected at timestep {}", self.timestep)
-            ));
+            return Err(cosmic_scheduler::ScheduleError::StateInvalid(format!(
+                "LBM population instability: negative f_i detected at timestep {}",
+                self.timestep
+            )));
         }
 
         // Check non-negativity of density field
         for (i, &rho_i) in self.rho.iter().enumerate() {
             if rho_i < -1e-14 {
-                return Err(cosmic_scheduler::ScheduleError::StateInvalid(
-                    format!("Negative density at node {}: {} at timestep {}",
-                        i, rho_i, self.timestep)
-                ));
+                return Err(cosmic_scheduler::ScheduleError::StateInvalid(format!(
+                    "Negative density at node {}: {} at timestep {}",
+                    i, rho_i, self.timestep
+                )));
             }
         }
 
@@ -731,7 +746,7 @@ mod tests {
 
         // At equilibrium and rest, collision should not change f
         let f_eq = BgkCollision::initialize_with_velocity(rho, u, &lattice);
-        let tau = 1.0;  // Use same tau as bgk
+        let tau = 1.0; // Use same tau as bgk
         let f_new = bgk.collision_step(&f, &f_eq, tau);
 
         for i in 0..19 {
@@ -749,20 +764,20 @@ mod tests {
 
         // Start with non-equilibrium distribution (perturbed)
         let mut f = BgkCollision::initialize_with_velocity(rho, u, &lattice);
-        f[1] += 0.01;  // Perturb one component
+        f[1] += 0.01; // Perturb one component
         f[2] -= 0.01;
 
         let f_eq = BgkCollision::initialize_with_velocity(rho, u, &lattice);
 
         // Collision should move f toward f_eq
-        let tau = 1.5;  // Use same tau as bgk
+        let tau = 1.5; // Use same tau as bgk
         let f_new = bgk.collision_step(&f, &f_eq, tau);
 
         // Check that perturbation decreased
         let pert_old = ((f[1] - f_eq[1]).powi(2) + (f[2] - f_eq[2]).powi(2)).sqrt();
         let pert_new = ((f_new[1] - f_eq[1]).powi(2) + (f_new[2] - f_eq[2]).powi(2)).sqrt();
 
-        assert!(pert_new < pert_old);  // Relaxation should decrease perturbation
+        assert!(pert_new < pert_old); // Relaxation should decrease perturbation
     }
 
     #[test]
@@ -876,7 +891,11 @@ mod tests {
 
         // Check that f changed minimally (only due to floating point)
         for (i, (fb, fa)) in f_before.iter().zip(solver.f.iter()).enumerate() {
-            assert!((fa - fb).abs() < 1e-14, "Component {} changed unexpectedly", i);
+            assert!(
+                (fa - fb).abs() < 1e-14,
+                "Component {} changed unexpectedly",
+                i
+            );
         }
     }
 }

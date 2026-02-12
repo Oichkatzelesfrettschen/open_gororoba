@@ -57,7 +57,11 @@ fn test_lbm_deterministic_evolution_10_cycles() {
     assert_eq!(lbm1.timestep, lbm2.timestep);
     assert_eq!(lbm1.total_mass(), lbm2.total_mass());
     assert!(
-        (lbm1.f.iter().zip(lbm2.f.iter()).all(|(a, b)| (a - b).abs() < 1e-14)),
+        (lbm1
+            .f
+            .iter()
+            .zip(lbm2.f.iter())
+            .all(|(a, b)| (a - b).abs() < 1e-14)),
         "Population distributions differ between runs"
     );
 
@@ -141,14 +145,18 @@ fn test_phase_coordination_vs_monolithic_equivalence() {
 
     // Initial states should match
     assert!(
-        f_monolithic_before.iter().zip(f_coordinated_before.iter())
+        f_monolithic_before
+            .iter()
+            .zip(f_coordinated_before.iter())
             .all(|(a, b)| (a - b).abs() < 1e-14),
         "Initial distributions differ"
     );
 
     // Final states should match within numerical precision
     assert!(
-        f_monolithic_after.iter().zip(f_coordinated_after.iter())
+        f_monolithic_after
+            .iter()
+            .zip(f_coordinated_after.iter())
             .all(|(a, b)| (a - b).abs() < 1e-14),
         "Final distributions differ between monolithic and coordinated evolution"
     );

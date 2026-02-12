@@ -67,7 +67,11 @@ impl BenchResult {
         println!("\n{}", "=".repeat(80));
         println!("Benchmark: {}", self.config.name);
         println!("{}", "=".repeat(80));
-        println!("Grid size:       {}^3 = {} cells", self.config.grid_size, self.config.grid_size.pow(3));
+        println!(
+            "Grid size:       {}^3 = {} cells",
+            self.config.grid_size,
+            self.config.grid_size.pow(3)
+        );
         println!("Steps:           {}", self.config.steps);
         println!("Memory (GPU):    {:.2} MB", self.config.memory_mb());
         println!();
@@ -77,14 +81,22 @@ impl BenchResult {
         println!();
         println!("CPU throughput:  {:.2} Mcells/s", self.cpu_throughput);
         println!("GPU throughput:  {:.2} Mcells/s", self.gpu_throughput);
-        println!("Throughput gain: {:.2}x", self.gpu_throughput / self.cpu_throughput);
+        println!(
+            "Throughput gain: {:.2}x",
+            self.gpu_throughput / self.cpu_throughput
+        );
         println!("{}", "=".repeat(80));
     }
 }
 
 /// Run CPU benchmark
 fn bench_cpu(config: &BenchConfig) -> Result<f64, String> {
-    let mut solver = LbmSolver3D::new(config.grid_size, config.grid_size, config.grid_size, config.tau);
+    let mut solver = LbmSolver3D::new(
+        config.grid_size,
+        config.grid_size,
+        config.grid_size,
+        config.tau,
+    );
     solver.initialize_uniform(config.rho_init, config.u_init);
 
     let start = Instant::now();
@@ -103,12 +115,15 @@ fn bench_gpu(config: &BenchConfig) -> Result<f64, String> {
         config.grid_size,
         config.grid_size,
         config.tau,
-    ).map_err(|e| format!("GPU initialization failed: {:?}", e))?;
+    )
+    .map_err(|e| format!("GPU initialization failed: {:?}", e))?;
 
-    solver.initialize_uniform(config.rho_init, config.u_init)
+    solver
+        .initialize_uniform(config.rho_init, config.u_init)
         .map_err(|e| format!("GPU initialization failed: {:?}", e))?;
 
-    solver.evolve(config.steps)
+    solver
+        .evolve(config.steps)
         .map_err(|e| format!("GPU evolution failed: {:?}", e))?;
 
     let elapsed = start_total.elapsed();
@@ -142,7 +157,10 @@ fn run_single_benchmark(config: &BenchConfig) -> Option<BenchResult> {
 
 /// Run multiple GPU-only benchmarks and average (for 256^3 production validation)
 fn run_gpu_only_multi(config: &BenchConfig, n_runs: usize) -> Option<f64> {
-    println!("\nRunning GPU-only: {} ({} runs for averaging)", config.name, n_runs);
+    println!(
+        "\nRunning GPU-only: {} ({} runs for averaging)",
+        config.name, n_runs
+    );
 
     let mut times = Vec::new();
     for i in 1..=n_runs {
@@ -159,10 +177,17 @@ fn run_gpu_only_multi(config: &BenchConfig, n_runs: usize) -> Option<f64> {
     }
 
     let avg_time = times.iter().sum::<f64>() / times.len() as f64;
-    let stddev = (times.iter().map(|t| (t - avg_time).powi(2)).sum::<f64>() / times.len() as f64).sqrt();
+    let stddev =
+        (times.iter().map(|t| (t - avg_time).powi(2)).sum::<f64>() / times.len() as f64).sqrt();
 
-    println!("\n  Average GPU time: {:.3} s +/- {:.3} s", avg_time, stddev);
-    println!("  Throughput:       {:.2} Mcells/s", config.throughput_mcells_per_sec(avg_time));
+    println!(
+        "\n  Average GPU time: {:.3} s +/- {:.3} s",
+        avg_time, stddev
+    );
+    println!(
+        "  Throughput:       {:.2} Mcells/s",
+        config.throughput_mcells_per_sec(avg_time)
+    );
 
     Some(avg_time)
 }
@@ -177,25 +202,35 @@ fn print_summary(results: &[BenchResult]) {
     println!("# COMPREHENSIVE SUMMARY TABLE");
     println!("{}", "#".repeat(80));
     println!();
-    println!("{:<20} {:>10} {:>12} {:>12} {:>10} {:>12}",
-             "Benchmark", "Grid", "Steps", "GPU (s)", "Speedup", "Throughput");
+    println!(
+        "{:<20} {:>10} {:>12} {:>12} {:>10} {:>12}",
+        "Benchmark", "Grid", "Steps", "GPU (s)", "Speedup", "Throughput"
+    );
     println!("{}", "-".repeat(80));
 
     for result in results {
-        println!("{:<20} {:>10} {:>12} {:>12.3} {:>9.2}x {:>10.2} M",
-                 result.config.name,
-                 format!("{}^3", result.config.grid_size),
-                 result.config.steps,
-                 result.gpu_time,
-                 result.speedup,
-                 result.gpu_throughput);
+        println!(
+            "{:<20} {:>10} {:>12} {:>12.3} {:>9.2}x {:>10.2} M",
+            result.config.name,
+            format!("{}^3", result.config.grid_size),
+            result.config.steps,
+            result.gpu_time,
+            result.speedup,
+            result.gpu_throughput
+        );
     }
 
     println!("{}", "-".repeat(80));
 
     let avg_speedup: f64 = results.iter().map(|r| r.speedup).sum::<f64>() / results.len() as f64;
-    let max_speedup = results.iter().map(|r| r.speedup).fold(f64::NEG_INFINITY, f64::max);
-    let min_speedup = results.iter().map(|r| r.speedup).fold(f64::INFINITY, f64::min);
+    let max_speedup = results
+        .iter()
+        .map(|r| r.speedup)
+        .fold(f64::NEG_INFINITY, f64::max);
+    let min_speedup = results
+        .iter()
+        .map(|r| r.speedup)
+        .fold(f64::INFINITY, f64::min);
 
     println!("Average speedup: {:.2}x", avg_speedup);
     println!("Speedup range:   {:.2}x - {:.2}x", min_speedup, max_speedup);
@@ -251,7 +286,9 @@ fn main() {
 
                     if avg_gpu_time < 25.0 {
                         println!(">>> FAST ENOUGH FOR TESTING! (<25s threshold)");
-                        println!(">>> Recommend: Add as regression test in test_gpu_cpu_equivalence.rs");
+                        println!(
+                            ">>> Recommend: Add as regression test in test_gpu_cpu_equivalence.rs"
+                        );
                     } else {
                         println!(">>> TOO SLOW FOR TESTING (>=25s threshold)");
                         println!(">>> Recommend: Keep for production runs only");
@@ -259,10 +296,16 @@ fn main() {
                 }
             } else {
                 // GPU-only for other 256^3 configs (CPU too slow)
-                println!("\nRunning GPU-only: {} (CPU too slow at this scale)", config.name);
+                println!(
+                    "\nRunning GPU-only: {} (CPU too slow at this scale)",
+                    config.name
+                );
                 if let Some(gpu_time) = run_gpu_only_multi(config, 1) {
                     println!("  GPU time: {:.3} s", gpu_time);
-                    println!("  Throughput: {:.2} Mcells/s", config.throughput_mcells_per_sec(gpu_time));
+                    println!(
+                        "  Throughput: {:.2} Mcells/s",
+                        config.throughput_mcells_per_sec(gpu_time)
+                    );
                 }
             }
         } else {

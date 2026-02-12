@@ -28,9 +28,7 @@ fn rms_error_velocity(a: &[[f64; 3]], b: &[[f64; 3]]) -> f64 {
     let sum_sq: f64 = a
         .iter()
         .zip(b.iter())
-        .map(|(va, vb)| {
-            (va[0] - vb[0]).powi(2) + (va[1] - vb[1]).powi(2) + (va[2] - vb[2]).powi(2)
-        })
+        .map(|(va, vb)| (va[0] - vb[0]).powi(2) + (va[1] - vb[1]).powi(2) + (va[2] - vb[2]).powi(2))
         .sum();
     (sum_sq / (3 * a.len()) as f64).sqrt()
 }
@@ -55,14 +53,19 @@ fn test_uniform_field_equivalence() {
             return;
         }
     };
-    gpu_solver.initialize_uniform(1.0, [0.01, 0.0, 0.0]).unwrap();
+    gpu_solver
+        .initialize_uniform(1.0, [0.01, 0.0, 0.0])
+        .unwrap();
     gpu_solver.evolve(steps).unwrap();
 
     // Compare results
     let rho_err = rms_error(&cpu_solver.rho, &gpu_solver.rho);
     let u_err = rms_error_velocity(&cpu_solver.u, &gpu_solver.u);
 
-    println!("Uniform field: rho_err={:.3e}, u_err={:.3e}", rho_err, u_err);
+    println!(
+        "Uniform field: rho_err={:.3e}, u_err={:.3e}",
+        rho_err, u_err
+    );
 
     assert!(rho_err < 1e-6, "Density RMS error too large: {}", rho_err);
     assert!(u_err < 1e-6, "Velocity RMS error too large: {}", u_err);
@@ -103,14 +106,19 @@ fn test_gradient_viscosity_equivalence() {
         }
     };
     gpu_solver.set_viscosity_field(&nu_field).unwrap();
-    gpu_solver.initialize_uniform(1.0, [0.01, 0.0, 0.0]).unwrap();
+    gpu_solver
+        .initialize_uniform(1.0, [0.01, 0.0, 0.0])
+        .unwrap();
     gpu_solver.evolve(steps).unwrap();
 
     // Compare results
     let rho_err = rms_error(&cpu_solver.rho, &gpu_solver.rho);
     let u_err = rms_error_velocity(&cpu_solver.u, &gpu_solver.u);
 
-    println!("Gradient field: rho_err={:.3e}, u_err={:.3e}", rho_err, u_err);
+    println!(
+        "Gradient field: rho_err={:.3e}, u_err={:.3e}",
+        rho_err, u_err
+    );
 
     assert!(rho_err < 1e-6, "Density RMS error too large: {}", rho_err);
     assert!(u_err < 1e-6, "Velocity RMS error too large: {}", u_err);
@@ -139,15 +147,25 @@ fn test_mass_conservation_equivalence() {
             return;
         }
     };
-    gpu_solver.initialize_uniform(rho_init, [0.02, 0.01, 0.0]).unwrap();
+    gpu_solver
+        .initialize_uniform(rho_init, [0.02, 0.01, 0.0])
+        .unwrap();
     let gpu_mass_init: f64 = gpu_solver.rho.iter().sum();
     gpu_solver.evolve(steps).unwrap();
     let gpu_mass_final: f64 = gpu_solver.rho.iter().sum();
 
-    println!("CPU mass: init={:.6}, final={:.6}, delta={:.3e}",
-             cpu_mass_init, cpu_mass_final, cpu_mass_final - cpu_mass_init);
-    println!("GPU mass: init={:.6}, final={:.6}, delta={:.3e}",
-             gpu_mass_init, gpu_mass_final, gpu_mass_final - gpu_mass_init);
+    println!(
+        "CPU mass: init={:.6}, final={:.6}, delta={:.3e}",
+        cpu_mass_init,
+        cpu_mass_final,
+        cpu_mass_final - cpu_mass_init
+    );
+    println!(
+        "GPU mass: init={:.6}, final={:.6}, delta={:.3e}",
+        gpu_mass_init,
+        gpu_mass_final,
+        gpu_mass_final - gpu_mass_init
+    );
 
     // Both should conserve mass
     assert_abs_diff_eq!(cpu_mass_init, cpu_mass_final, epsilon = 1e-6);
@@ -193,7 +211,10 @@ fn test_equilibrium_stability_equivalence() {
         .map(|v| (v[0].powi(2) + v[1].powi(2) + v[2].powi(2)).sqrt())
         .fold(0.0_f64, f64::max);
 
-    println!("Equilibrium: CPU max_u={:.3e}, GPU max_u={:.3e}", cpu_max_u, gpu_max_u);
+    println!(
+        "Equilibrium: CPU max_u={:.3e}, GPU max_u={:.3e}",
+        cpu_max_u, gpu_max_u
+    );
 
     assert!(cpu_max_u < 1e-10, "CPU equilibrium not stable");
     assert!(gpu_max_u < 1e-10, "GPU equilibrium not stable");
@@ -241,14 +262,19 @@ fn test_high_contrast_viscosity_equivalence() {
         }
     };
     gpu_solver.set_viscosity_field(&nu_field).unwrap();
-    gpu_solver.initialize_uniform(1.0, [0.01, 0.0, 0.0]).unwrap();
+    gpu_solver
+        .initialize_uniform(1.0, [0.01, 0.0, 0.0])
+        .unwrap();
     gpu_solver.evolve(steps).unwrap();
 
     // Compare results
     let rho_err = rms_error(&cpu_solver.rho, &gpu_solver.rho);
     let u_err = rms_error_velocity(&cpu_solver.u, &gpu_solver.u);
 
-    println!("High contrast: rho_err={:.3e}, u_err={:.3e}", rho_err, u_err);
+    println!(
+        "High contrast: rho_err={:.3e}, u_err={:.3e}",
+        rho_err, u_err
+    );
 
     assert!(rho_err < 1e-6, "Density RMS error too large: {}", rho_err);
     assert!(u_err < 1e-6, "Velocity RMS error too large: {}", u_err);
@@ -274,14 +300,19 @@ fn test_large_grid_equivalence() {
             return;
         }
     };
-    gpu_solver.initialize_uniform(1.0, [0.01, 0.0, 0.0]).unwrap();
+    gpu_solver
+        .initialize_uniform(1.0, [0.01, 0.0, 0.0])
+        .unwrap();
     gpu_solver.evolve(steps).unwrap();
 
     // Compare results
     let rho_err = rms_error(&cpu_solver.rho, &gpu_solver.rho);
     let u_err = rms_error_velocity(&cpu_solver.u, &gpu_solver.u);
 
-    println!("Large grid (32^3): rho_err={:.3e}, u_err={:.3e}", rho_err, u_err);
+    println!(
+        "Large grid (32^3): rho_err={:.3e}, u_err={:.3e}",
+        rho_err, u_err
+    );
 
     assert!(rho_err < 1e-6, "Density RMS error too large: {}", rho_err);
     assert!(u_err < 1e-6, "Velocity RMS error too large: {}", u_err);
@@ -356,8 +387,12 @@ fn test_momentum_evolution_equivalence() {
         .map(|v| (v[0].powi(2) + v[1].powi(2) + v[2].powi(2)).sqrt())
         .sum();
 
-    println!("Momentum: CPU={:.6}, GPU={:.6}, err={:.3e}",
-             cpu_momentum, gpu_momentum, (cpu_momentum - gpu_momentum).abs());
+    println!(
+        "Momentum: CPU={:.6}, GPU={:.6}, err={:.3e}",
+        cpu_momentum,
+        gpu_momentum,
+        (cpu_momentum - gpu_momentum).abs()
+    );
 
     assert_abs_diff_eq!(cpu_momentum, gpu_momentum, epsilon = 1e-6);
 }
@@ -410,14 +445,19 @@ fn test_small_grid_equivalence() {
             return;
         }
     };
-    gpu_solver.initialize_uniform(1.0, [0.01, 0.0, 0.0]).unwrap();
+    gpu_solver
+        .initialize_uniform(1.0, [0.01, 0.0, 0.0])
+        .unwrap();
     gpu_solver.evolve(steps).unwrap();
 
     // Compare results
     let rho_err = rms_error(&cpu_solver.rho, &gpu_solver.rho);
     let u_err = rms_error_velocity(&cpu_solver.u, &gpu_solver.u);
 
-    println!("Small grid (8^3): rho_err={:.3e}, u_err={:.3e}", rho_err, u_err);
+    println!(
+        "Small grid (8^3): rho_err={:.3e}, u_err={:.3e}",
+        rho_err, u_err
+    );
 
     assert!(rho_err < 1e-6, "Density RMS error too large: {}", rho_err);
     assert!(u_err < 1e-6, "Velocity RMS error too large: {}", u_err);

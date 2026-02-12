@@ -70,14 +70,14 @@ impl D3Q19Lattice {
     /// - w_7..w_18 = 1/36 (face diagonals)
     fn weights() -> [f64; 19] {
         [
-            1.0 / 3.0,   // rest
-            1.0 / 18.0,  // axis-aligned (6 directions)
+            1.0 / 3.0,  // rest
+            1.0 / 18.0, // axis-aligned (6 directions)
             1.0 / 18.0,
             1.0 / 18.0,
             1.0 / 18.0,
             1.0 / 18.0,
             1.0 / 18.0,
-            1.0 / 36.0,  // face diagonals (12 directions)
+            1.0 / 36.0, // face diagonals (12 directions)
             1.0 / 36.0,
             1.0 / 36.0,
             1.0 / 36.0,
@@ -173,11 +173,7 @@ impl D3Q19Lattice {
         let cs2_inv = 1.0 / self.cs_sq;
         let cs4_inv = cs2_inv * cs2_inv;
 
-        w * rho
-            * (1.0
-                + cu * cs2_inv
-                + cu * cu * cs4_inv / 2.0
-                - u_sq * cs2_inv / 2.0)
+        w * rho * (1.0 + cu * cs2_inv + cu * cu * cs4_inv / 2.0 - u_sq * cs2_inv / 2.0)
     }
 }
 
